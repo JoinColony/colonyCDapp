@@ -84,214 +84,214 @@ addProcess('reputationMonitor', async () => {
   return monitorProcess;
 });
 
-addProcess('db', async () => {
-  const dbProcess = spawn('npm', ['run', 'db:start'], {
-    cwd: path.resolve(__dirname, '..', 'src/lib/colonyServer'),
-    stdio: 'pipe',
-  });
-  if (args.foreground) {
-    dbProcess.stdout.pipe(process.stdout);
-    dbProcess.stderr.pipe(process.stderr);
-  }
-  dbProcess.on('error', e => {
-    console.error(e);
-    dbProcess.kill();
-  });
-  await waitOn({ resources: ['tcp:27018'] });
-  const cleanProcess = spawn('npm', ['run', 'db:clean'], {
-    cwd: path.resolve(__dirname, '..', 'src/lib/colonyServer'),
-    stdio: 'pipe',
-  });
-  if (args.foreground) {
-    cleanProcess.stdout.pipe(process.stdout);
-    cleanProcess.stderr.pipe(process.stderr);
-  }
-  await new Promise((resolve, reject) => {
-    cleanProcess.on('exit', cleanCode => {
-      if (cleanCode) {
-        dbProcess.kill();
-        return reject(new Error(`Clean process exited with code ${cleanCode}`));
-      }
-      const setupProcess = spawn('npm', ['run', 'db:setup'], {
-        cwd: path.resolve(__dirname, '..', 'src/lib/colonyServer'),
-      });
-      setupProcess.on('exit', setupCode => {
-        if (setupCode) {
-          dbProcess.kill();
-          return reject(new Error(`Setup process exited with code ${setupCode}`));
-        }
-        resolve();
-      });
-    });
-  });
-  return dbProcess;
-});
+// addProcess('db', async () => {
+//   const dbProcess = spawn('npm', ['run', 'db:start'], {
+//     cwd: path.resolve(__dirname, '..', 'src/lib/colonyServer'),
+//     stdio: 'pipe',
+//   });
+//   if (args.foreground) {
+//     dbProcess.stdout.pipe(process.stdout);
+//     dbProcess.stderr.pipe(process.stderr);
+//   }
+//   dbProcess.on('error', e => {
+//     console.error(e);
+//     dbProcess.kill();
+//   });
+//   await waitOn({ resources: ['tcp:27018'] });
+//   const cleanProcess = spawn('npm', ['run', 'db:clean'], {
+//     cwd: path.resolve(__dirname, '..', 'src/lib/colonyServer'),
+//     stdio: 'pipe',
+//   });
+//   if (args.foreground) {
+//     cleanProcess.stdout.pipe(process.stdout);
+//     cleanProcess.stderr.pipe(process.stderr);
+//   }
+//   await new Promise((resolve, reject) => {
+//     cleanProcess.on('exit', cleanCode => {
+//       if (cleanCode) {
+//         dbProcess.kill();
+//         return reject(new Error(`Clean process exited with code ${cleanCode}`));
+//       }
+//       const setupProcess = spawn('npm', ['run', 'db:setup'], {
+//         cwd: path.resolve(__dirname, '..', 'src/lib/colonyServer'),
+//       });
+//       setupProcess.on('exit', setupCode => {
+//         if (setupCode) {
+//           dbProcess.kill();
+//           return reject(new Error(`Setup process exited with code ${setupCode}`));
+//         }
+//         resolve();
+//       });
+//     });
+//   });
+//   return dbProcess;
+// });
 
-addProcess('server', async () => {
-  const serverProcess = spawn('npm', ['run', 'dev'], {
-    cwd: path.resolve(__dirname, '..', 'src/lib/colonyServer'),
-    stdio: 'pipe',
-  });
-  if (args.foreground) {
-    serverProcess.stdout.pipe(process.stdout);
-    serverProcess.stderr.pipe(process.stderr);
-  }
-  serverProcess.on('error', e => {
-    serverProcess.kill();
-    /*
-     * @NOTE Just stop the startup orchestration process is something goes wrong
-     */
-    console.error(error);
-    process.exit(1);
-  });
-  await waitOn({ resources: ['tcp:3000'] });
-  return serverProcess;
-});
+// addProcess('server', async () => {
+//   const serverProcess = spawn('npm', ['run', 'dev'], {
+//     cwd: path.resolve(__dirname, '..', 'src/lib/colonyServer'),
+//     stdio: 'pipe',
+//   });
+//   if (args.foreground) {
+//     serverProcess.stdout.pipe(process.stdout);
+//     serverProcess.stderr.pipe(process.stderr);
+//   }
+//   serverProcess.on('error', e => {
+//     serverProcess.kill();
+//     /*
+//      * @NOTE Just stop the startup orchestration process is something goes wrong
+//      */
+//     console.error(error);
+//     process.exit(1);
+//   });
+//   await waitOn({ resources: ['tcp:3000'] });
+//   return serverProcess;
+// });
 
-addProcess('graph-node', async () => {
-  await new Promise(resolve => {
-    console.log(); // New line
-    console.log('Cleaning up the old graph-node docker data folder. For this we need', chalk.bold.red('ROOT'), 'permissions');
-    sudo.exec(`rm -Rf ${path.resolve(__dirname, '..', 'src/lib/graph-node/docker/data')}`, {name: 'GraphNodeCleanup'},
-      function (error) {
-        if (error) {
-          throw new Error(`graph-node cleanup process failed: ${error}`);
-        };
-        resolve();
-      }
-    );
-  });
+// addProcess('graph-node', async () => {
+//   await new Promise(resolve => {
+//     console.log(); // New line
+//     console.log('Cleaning up the old graph-node docker data folder. For this we need', chalk.bold.red('ROOT'), 'permissions');
+//     sudo.exec(`rm -Rf ${path.resolve(__dirname, '..', 'src/lib/graph-node/docker/data')}`, {name: 'GraphNodeCleanup'},
+//       function (error) {
+//         if (error) {
+//           throw new Error(`graph-node cleanup process failed: ${error}`);
+//         };
+//         resolve();
+//       }
+//     );
+//   });
 
-  await new Promise((resolve, reject) => {
-    const setupProcess = spawn('node', ['./setup_graph_node.js'], {
-      cwd: path.resolve(__dirname),
-    });
+//   await new Promise((resolve, reject) => {
+//     const setupProcess = spawn('node', ['./setup_graph_node.js'], {
+//       cwd: path.resolve(__dirname),
+//     });
 
-    console.log(); // New line
-    console.log('Setting up docker-compose with the local environment ...');
+//     console.log(); // New line
+//     console.log('Setting up docker-compose with the local environment ...');
 
-    if (args.foreground) {
-      setupProcess.stdout.pipe(process.stdout);
-      setupProcess.stderr.pipe(process.stderr);
-    }
+//     if (args.foreground) {
+//       setupProcess.stdout.pipe(process.stdout);
+//       setupProcess.stderr.pipe(process.stderr);
+//     }
 
-    setupProcess.on('exit', errorCode => {
-      if (errorCode) {
-        return reject(new Error(`Setup process exited with code ${errorCode}`));
-      }
-      resolve();
-    });
-  });
+//     setupProcess.on('exit', errorCode => {
+//       if (errorCode) {
+//         return reject(new Error(`Setup process exited with code ${errorCode}`));
+//       }
+//       resolve();
+//     });
+//   });
 
-  const graphNodeProcess = spawn('docker-compose', ['up'], {
-    cwd: path.resolve(__dirname, '..', 'src/lib/graph-node/docker'),
-  });
+//   const graphNodeProcess = spawn('docker-compose', ['up'], {
+//     cwd: path.resolve(__dirname, '..', 'src/lib/graph-node/docker'),
+//   });
 
-  if (args.foreground) {
-    graphNodeProcess.stdout.pipe(process.stdout);
-    graphNodeProcess.stderr.pipe(process.stderr);
-  }
+//   if (args.foreground) {
+//     graphNodeProcess.stdout.pipe(process.stdout);
+//     graphNodeProcess.stderr.pipe(process.stderr);
+//   }
 
-  graphNodeProcess.on('error', error => {
-    graphNodeProcess.kill();
-    /*
-     * @NOTE Just stop the startup orchestration process is something goes wrong
-     */
-    console.error(error);
-    process.exit(1);
-  });
+//   graphNodeProcess.on('error', error => {
+//     graphNodeProcess.kill();
+//     /*
+//      * @NOTE Just stop the startup orchestration process is something goes wrong
+//      */
+//     console.error(error);
+//     process.exit(1);
+//   });
 
-  return graphNodeProcess;
-});
+//   return graphNodeProcess;
+// });
 
-addProcess('subgraph', async () => {
+// addProcess('subgraph', async () => {
 
-  /*
-   * Wait for the
-   */
-  await fetchRetry('http://localhost:8000', {
-    retryOptions: {
-      /*
-       * Max try time of 5 minutes
-       * If it's not up by now we should just give up...
-       */
-      retryMaxDuration: 300000,  // 5m retry max duration
-      /*
-       * Wait a second before retrying
-       */
-      retryInitialDelay: 5000,
-      /*
-       * Don't backoff, just keep hammering
-       */
-      retryBackoff: 1.0
-    }
-  });
+//   /*
+//    * Wait for the
+//    */
+//   await fetchRetry('http://localhost:8000', {
+//     retryOptions: {
+//       /*
+//        * Max try time of 5 minutes
+//        * If it's not up by now we should just give up...
+//        */
+//       retryMaxDuration: 300000,  // 5m retry max duration
+//       /*
+//        * Wait a second before retrying
+//        */
+//       retryInitialDelay: 5000,
+//       /*
+//        * Don't backoff, just keep hammering
+//        */
+//       retryBackoff: 1.0
+//     }
+//   });
 
-  await new Promise((resolve, reject) => {
-    const codeGenProcess = spawn('npm', ['run', 'codegen'], {
-      cwd: path.resolve(__dirname, '..', 'src/lib/subgraph'),
-    });
+//   await new Promise((resolve, reject) => {
+//     const codeGenProcess = spawn('npm', ['run', 'codegen'], {
+//       cwd: path.resolve(__dirname, '..', 'src/lib/subgraph'),
+//     });
 
-    console.log(); // New line
-    console.log('Generating subgraph types and schema ...');
+//     console.log(); // New line
+//     console.log('Generating subgraph types and schema ...');
 
-    if (args.foreground) {
-      codeGenProcess.stdout.pipe(process.stdout);
-      codeGenProcess.stderr.pipe(process.stderr);
-    }
+//     if (args.foreground) {
+//       codeGenProcess.stdout.pipe(process.stdout);
+//       codeGenProcess.stderr.pipe(process.stderr);
+//     }
 
-    codeGenProcess.on('exit', errorCode => {
-      if (errorCode) {
-        return reject(new Error(`Codegen process exited with code ${errorCode}`));
-      }
-      resolve();
-    });
-  });
+//     codeGenProcess.on('exit', errorCode => {
+//       if (errorCode) {
+//         return reject(new Error(`Codegen process exited with code ${errorCode}`));
+//       }
+//       resolve();
+//     });
+//   });
 
-  await new Promise((resolve, reject) => {
-    const createLocalProcess = spawn('npm', ['run', 'create-local'], {
-      cwd: path.resolve(__dirname, '..', 'src/lib/subgraph'),
-    });
+//   await new Promise((resolve, reject) => {
+//     const createLocalProcess = spawn('npm', ['run', 'create-local'], {
+//       cwd: path.resolve(__dirname, '..', 'src/lib/subgraph'),
+//     });
 
-    console.log(); // New line
-    console.log('Creating a local subgraph instance ...');
+//     console.log(); // New line
+//     console.log('Creating a local subgraph instance ...');
 
-    if (args.foreground) {
-      createLocalProcess.stdout.pipe(process.stdout);
-      createLocalProcess.stderr.pipe(process.stderr);
-    }
+//     if (args.foreground) {
+//       createLocalProcess.stdout.pipe(process.stdout);
+//       createLocalProcess.stderr.pipe(process.stderr);
+//     }
 
-    createLocalProcess.on('exit', errorCode => {
-      if (errorCode) {
-        return reject(new Error(`Create local process exited with code ${errorCode}`));
-      }
-      resolve();
-    });
-  });
+//     createLocalProcess.on('exit', errorCode => {
+//       if (errorCode) {
+//         return reject(new Error(`Create local process exited with code ${errorCode}`));
+//       }
+//       resolve();
+//     });
+//   });
 
-  const deployLocalProcess = spawn('npm', ['run', 'deploy-local'], {
-    cwd: path.resolve(__dirname, '..', 'src/lib/subgraph'),
-  });
+//   const deployLocalProcess = spawn('npm', ['run', 'deploy-local'], {
+//     cwd: path.resolve(__dirname, '..', 'src/lib/subgraph'),
+//   });
 
-  console.log(); // New line
-  console.log('Deploying the local subgraph instance ...');
+//   console.log(); // New line
+//   console.log('Deploying the local subgraph instance ...');
 
-  if (args.foreground) {
-    deployLocalProcess.stdout.pipe(process.stdout);
-    deployLocalProcess.stderr.pipe(process.stderr);
-  }
+//   if (args.foreground) {
+//     deployLocalProcess.stdout.pipe(process.stdout);
+//     deployLocalProcess.stderr.pipe(process.stderr);
+//   }
 
-  deployLocalProcess.on('error', error => {
-    deployLocalProcess.kill();
-    /*
-     * @NOTE Just stop the startup orchestration process is something goes wrong
-     */
-    console.error(error);
-    process.exit(1);
-  });
+//   deployLocalProcess.on('error', error => {
+//     deployLocalProcess.kill();
+//     /*
+//      * @NOTE Just stop the startup orchestration process is something goes wrong
+//      */
+//     console.error(error);
+//     process.exit(1);
+//   });
 
-  return deployLocalProcess;
-});
+//   return deployLocalProcess;
+// });
 
 addProcess('webpack', () =>
   new Promise((resolve, reject) => {

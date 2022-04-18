@@ -29,9 +29,9 @@ LIB_PATH="src/lib"
 ENV_FILE="./.env"
 
 NETWORK="colonyNetwork"
-SERVER="colonyServer"
-SUBGRAPH="subgraph"
-GRAPH_NODE="graph-node"
+# SERVER="colonyServer"
+# SUBGRAPH="subgraph"
+# GRAPH_NODE="graph-node"
 REPUTATIONMONITOR="reputationMonitor"
 
 ROOT_PATH=$(pwd)
@@ -79,10 +79,10 @@ fi
 
 # For the submodules that we don't track  changes for, make sure to remove the existing
 # forder first, otherwise the git submodule update won't work
-if [ -f "${ROOT_PATH}/${LIB_PATH}/${SUBGRAPH}/subgraph.yaml" ]; then
-  log "Removing the '${SUBGRAPH}' submodule folder"
-  rm -Rf "${ROOT_PATH}/${LIB_PATH}/${SUBGRAPH}"
-fi
+# if [ -f "${ROOT_PATH}/${LIB_PATH}/${SUBGRAPH}/subgraph.yaml" ]; then
+#   log "Removing the '${SUBGRAPH}' submodule folder"
+#   rm -Rf "${ROOT_PATH}/${LIB_PATH}/${SUBGRAPH}"
+# fi
 
 # Update / re-pull submodules
 log "Initialize submodule libs"
@@ -100,42 +100,42 @@ else
     warn "Skipping '${NETWORK}' submodule provision"
 fi
 
-if [ "$SKIP_SERVER_BUILD" != true ]
-then
-    log "Building '${SERVER}' submodule"
-    cd "${ROOT_PATH}/${LIB_PATH}/${SERVER}"
-    cp .env.example .env
-    mkdir -p mongo-data
-    npm install
-    cd ${ROOT_PATH}
-else
-    warn "Skipping '${SERVER}' submodule provision"
-fi
+# if [ "$SKIP_SERVER_BUILD" != true ]
+# then
+#     log "Building '${SERVER}' submodule"
+#     cd "${ROOT_PATH}/${LIB_PATH}/${SERVER}"
+#     cp .env.example .env
+#     mkdir -p mongo-data
+#     npm install
+#     cd ${ROOT_PATH}
+# else
+#     warn "Skipping '${SERVER}' submodule provision"
+# fi
 
-# Subgraph
-if [ "$SKIP_SUBGRAPH_BUILD" != true ]
-then
-    err "If this is your first time installing, \"@graphprotocol/graph-ts\" will take a long time"
-    log "Building the '${SUBGRAPH}' submodule"
-    cd "${ROOT_PATH}/${LIB_PATH}/${SUBGRAPH}"
-    log "Installing the '${SUBGRAPH}' submodule node_modules"
-    npm install
-    cd ${ROOT_PATH}
-else
-    warn "Skipping '${SUBGRAPH}' submodule provision"
-fi
+# # Subgraph
+# if [ "$SKIP_SUBGRAPH_BUILD" != true ]
+# then
+#     err "If this is your first time installing, \"@graphprotocol/graph-ts\" will take a long time"
+#     log "Building the '${SUBGRAPH}' submodule"
+#     cd "${ROOT_PATH}/${LIB_PATH}/${SUBGRAPH}"
+#     log "Installing the '${SUBGRAPH}' submodule node_modules"
+#     npm install
+#     cd ${ROOT_PATH}
+# else
+#     warn "Skipping '${SUBGRAPH}' submodule provision"
+# fi
 
-# Graph Node
-if [ "$SKIP_GRAPH_NODE_BUILD" != true ]
-then
-    log "Building the '${GRAPH_NODE}' submodule"
-    cd "${ROOT_PATH}/${LIB_PATH}/${GRAPH_NODE}"
-    log "Installing the '${GRAPH_NODE}' submodule node_modules"
-    npm install
-    cd ${ROOT_PATH}
-else
-    warn "Skipping '${GRAPH_NODE}' submodule provision"
-fi
+# # Graph Node
+# if [ "$SKIP_GRAPH_NODE_BUILD" != true ]
+# then
+#     log "Building the '${GRAPH_NODE}' submodule"
+#     cd "${ROOT_PATH}/${LIB_PATH}/${GRAPH_NODE}"
+#     log "Installing the '${GRAPH_NODE}' submodule node_modules"
+#     npm install
+#     cd ${ROOT_PATH}
+# else
+#     warn "Skipping '${GRAPH_NODE}' submodule provision"
+# fi
 
 if [ "$SKIP_REPUTATIONMONITOR" != true ]
 then
