@@ -1,0 +1,66 @@
+{
+    "transform": {
+        "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "/__tests__/.*\\.test\\.tsx?$",
+    "moduleFileExtensions": [
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "json"
+    ],
+    "testURL": "http://localhost/",
+    "rootDir": "src",
+    "moduleNameMapper": {
+        "^\\~constants$": "<rootDir>/modules/constants.ts",
+        "^\\~externalUrls$": "<rootDir>/modules/externalUrls.ts",
+        "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.ts",
+        "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.ts",
+        "^\\~context(.*)$": "<rootDir>/context$1",
+        "^\\~redux(.*)$": "<rootDir>/redux$1",
+        "^\\~data(.*)$": "<rootDir>/data$1",
+        "^\\~lib(.*)$": "<rootDir>/lib$1",
+        "^\\~routes(.*)$": "<rootDir>/routes$1",
+        "^\\~utils(.*)$": "<rootDir>/utils$1",
+        "^\\~types(.*)$": "<rootDir>/types$1",
+        "^\\~immutable(.*)$": "<rootDir>/immutable$1",
+        "\\~([a-zA-Z0-9-_]+)\\/(.*)": "<rootDir>/modules/$1/components/$2",
+        "^\\~testutils$": "<rootDir>/__tests__/utils.ts"
+    },
+    "setupFiles": [
+        "<rootDir>/__tests__/setup.ts",
+        "<rootDir>/__tests__/shims.ts"
+    ],
+    "setupFilesAfterEnv": ["jest-enzyme"],
+    "collectCoverageFrom" : ["**/*.{ts,tsx,js,jsx}"],
+    "coverageDirectory": "../coverage",
+    "coverageThreshold": {
+        "global": {
+            "branches": 0
+        }
+    },
+    "testPathIgnorePatterns": [
+        "node_modules",
+        "src/lib/colonyNetwork",
+        "src/lib/colonyServer",
+        "src/lib/mock-oracle",
+        "src/lib/subgraph",
+        "src/lib/graph-node"
+    ],
+    "coveragePathIgnorePatterns": [
+        "node_modules",
+        "src/data",
+        "src/lib/colonyNetwork",
+        "src/lib/colonyServer",
+        "src/lib/mock-oracle",
+        "src/lib/subgraph",
+        "src/lib/graph-node"
+    ],
+    "globals": {
+        "ts-jest": {
+            "diagnostics": false,
+            "tsConfig": "tsconfig.json"
+        }
+    }
+}
