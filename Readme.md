@@ -1,11 +1,15 @@
-# Colony Dapp
+# Colony CDapp
+
+A interation of the Colony Dapp sporting both a fully decentralized operating mode, as well as a mode enhanced by a metadata caching layer
 
 ## Prerequisites
 * `node` `v14.18.x` (Best use [nvm](https://github.com/nvm-sh/nvm))
 * `npm` `v8.x.x`
+* `jq` (See [install instructions](https://github.com/stedolan/jq/wiki/Installation))
+
+**Deprecated**
 * `docker` (See [install instructions](https://docs.docker.com/engine/install/))
 * `docker-compose` (See [install instructions](https://docs.docker.com/compose/install/))
-* `jq` (See [install instructions](https://github.com/stedolan/jq/wiki/Installation))
 
 ## Installation
 

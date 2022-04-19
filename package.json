@@ -1,12 +1,12 @@
 {
-  "name": "colony-dapp",
+  "name": "colony-cdapp",
   "private": true,
   "engines": {
     "node": "14.18",
     "npm": "^8"
   },
-  "version": "4.4.3",
-  "description": "",
+  "version": "5.0.0-alpha.0",
+  "description": "A interation of the Colony Dapp sporting both a fully decentralized operating mode, as well as a mode enhanced by a metadata caching layer",
   "main": "index.js",
   "scripts": {
     "contracts:deploy": "scripts/deploy_contracts.js",
