@@ -36,7 +36,7 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "target": "es6",
-    "typeRoots": ["src/typeDefs", "node_modules/@types"],
+    "typeRoots": ["src/types/definitions", "node_modules/@types"],
     "types": ["node", "jest"]
   }
 }
