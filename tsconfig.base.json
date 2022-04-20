@@ -10,7 +10,6 @@
       "~dashboard/*": ["src/modules/dashboard/components/*"],
       "~data/*": ["src/data/*"],
       "~dialogs/*": ["src/modules/dashboard/components/Dialogs/*"],
-      "~immutable/*": ["src/immutable/*"],
       "~lib/*": ["src/lib/*"],
       "~pages/*": ["src/modules/pages/components/*"],
       "~redux/*": ["src/redux/*"],

@@ -36,22 +36,21 @@ const config = {
   resolve: {
     alias: Object.assign(
       {},
-      // {
+      {
       //   '~constants': path.resolve(__dirname, 'src/modules/constants'),
       //   '~externalUrls': path.resolve(__dirname, 'src/modules/externalUrls'),
       //   '~context': path.resolve(__dirname, 'src/context'),
-      //   '~lib': path.resolve(__dirname, 'src/lib'),
+        '~lib': path.resolve(__dirname, 'src/lib'),
       //   '~data': path.resolve(__dirname, 'src/data'),
-      //   '~redux': path.resolve(__dirname, 'src/redux'),
+        '~redux': path.resolve(__dirname, 'src/redux'),
       //   '~routes': path.resolve(__dirname, 'src/routes'),
       //   '~utils': path.resolve(__dirname, 'src/utils'),
-      //   '~styles': path.resolve(__dirname, 'src/styles/shared'),
+        '~styles': path.resolve(__dirname, 'src/styles/shared'),
       //   '~testutils': path.resolve(__dirname, 'src/__tests__/utils.ts'),
-      //   '~types': path.resolve(__dirname, 'src/types'),
-      //   '~immutable': path.resolve(__dirname, 'src/immutable'),
+        '~types': path.resolve(__dirname, 'src/types'),
       //   '~modules': path.resolve(__dirname, 'src/modules'),
       //   '~dialogs': path.resolve(__dirname, 'src/modules/dashboard/components/Dialogs')
-      // },
+      },
       // generateModulesAliases(),
     ),
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
