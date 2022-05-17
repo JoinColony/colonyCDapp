@@ -2,7 +2,7 @@ import { Address } from '~types/index';
 
 import { ActionType, ErrorActionType, UniqueActionType } from './index';
 
-import { ActionTypes } from '../../index';
+import { ActionTypes } from '../../actionTypes';
 
 export type UserActionTypes =
   | UniqueActionType<ActionTypes.USERNAME_CREATE, { username: string }, object>

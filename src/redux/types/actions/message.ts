@@ -1,8 +1,5 @@
-import {
-  ActionTypeWithPayload,
-  ActionTypes,
-  UniqueActionType,
-} from '~redux/index';
+import { ActionTypes } from '../../actionTypes';
+import { ActionTypeWithPayload, UniqueActionType } from '../../types/actions';
 import { ErrorActionType } from './index';
 
 export type MessageActionTypes =

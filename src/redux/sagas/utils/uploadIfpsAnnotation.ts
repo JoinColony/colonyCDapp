@@ -1,5 +1,5 @@
 import { call } from 'redux-saga/effects';
-import { ipfsUpload } from '../../../core/sagas/ipfs';
+import { ipfsUpload } from '../ipfs';
 
 export function* uploadIfpsAnnotation(annotationMessage: string) {
   let ipfsHash: string | null = null;

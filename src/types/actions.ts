@@ -5,7 +5,7 @@ import { MotionTimeoutPeriods } from '~data/generated';
 import { MotionState } from '~utils/colonyMotions';
 
 import { Address, ActionUserRoles } from './index';
-import { ColonyMotions } from './colonyMotions';
+import { ColonyMotions } from './motions';
 
 export enum ColonyActions {
   Generic = 'Generic',

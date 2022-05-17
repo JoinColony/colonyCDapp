@@ -5,7 +5,7 @@ import {
   UniqueActionType,
 } from './index';
 
-import { ActionTypes } from '../../index';
+import { ActionTypes } from '../../actionTypes';
 
 export type IpfsActionTypes =
   | UniqueActionType<

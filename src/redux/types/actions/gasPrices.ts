@@ -1,4 +1,5 @@
-import { ActionTypeWithPayload, ActionTypes } from '~redux/index';
+import { ActionTypes } from '../../actionTypes';
+import { ActionTypeWithPayload } from '../../types/actions';
 import { GasPricesProps } from '~immutable/index';
 
 export type GasPricesActionTypes = ActionTypeWithPayload<

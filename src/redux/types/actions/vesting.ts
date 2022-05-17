@@ -1,4 +1,4 @@
-import { ActionTypes } from '~redux/index';
+import { ActionTypes } from '../../actionTypes';
 import { ErrorActionType, UniqueActionType } from './index';
 
 export type MetacolonyVestingTypes =
