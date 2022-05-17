@@ -22,3 +22,8 @@ export * from './ipfs';
 export * from './users';
 export * from './utils';
 export * from './wallet';
+export * from './actions';
+export * from './extensions';
+export * from './motions';
+export * from './vesting';
+export * from './whitelist';
