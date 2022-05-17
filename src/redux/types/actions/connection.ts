@@ -1,6 +1,6 @@
 import { ActionType, ActionTypeWithPayload, ErrorActionType } from './index';
 
-import { ActionTypes } from '../../index';
+import { ActionTypes } from '../../actionTypes';
 
 export type ConnectionActionTypes =
   | ErrorActionType<ActionTypes.CONNECTION_STATS_SUB_ERROR, { scope: string }>

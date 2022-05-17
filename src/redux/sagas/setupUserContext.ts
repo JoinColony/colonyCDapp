@@ -12,8 +12,6 @@ import {
   TEMP_setContext,
   ContextModule,
 } from '~context/index';
-import { putError } from '../utils';
-import { log } from '~utils/debug';
 import { setLastWallet } from '~utils/autoLogin';
 import {
   refetchUserNotifications,
@@ -29,19 +27,40 @@ import {
 import setupResolvers from '~context/setupResolvers';
 import AppLoadingState from '~context/appLoadingState';
 import { authenticate, clearToken } from '../../../api';
-
 import ENS from '../../../lib/ENS';
-import setupDashboardSagas from '../../dashboard/sagas';
-import { getWallet, setupUsersSagas } from '../../users/sagas';
-import { createUserWithSecondAttempt } from '../../users/sagas/utils';
-import { getGasPrices, reinitializeColonyManager } from './utils';
+
+import {
+  getGasPrices,
+  reinitializeColonyManager,
+  putError,
+  createUserWithSecondAttempt,
+} from './utils';
 import setupOnBeforeUnload from './setupOnBeforeUnload';
 import { setupUserBalanceListener } from './setupUserBalanceListener';
+
+import actionsSagas from './actions';
+import colonySagas, {
+  colonyCreateSaga,
+  colonyFinishDeploymentSaga,
+} from './colony';
+import colonyExtensionSagas from './extensions';
+import motionSagas from './motions';
+import whitelistSagas from './whitelist';
+import vestingSagas from './vesting';
+import { setupUsersSagas } from './users';
+import { getWallet } from './wallet';
 
 function* setupContextDependentSagas() {
   const appLoadingState: typeof AppLoadingState = AppLoadingState;
   yield all([
-    call(setupDashboardSagas),
+    call(actionsSagas),
+    call(colonySagas),
+    call(colonyCreateSaga),
+    call(colonyFinishDeploymentSaga),
+    call(colonyExtensionSagas),
+    call(motionSagas),
+    call(whitelistSagas),
+    call(vestingSagas),
     call(setupUsersSagas),
     /**
      * We've loaded all the context sagas, so we can proceed with redering
@@ -158,7 +177,7 @@ export default function* setupUserContext(
 
       yield refetchUserNotifications(walletAddress);
     } catch (caughtError) {
-      log.verbose(`Could not find username for ${walletAddress}`);
+      console.info(`Could not find username for ${walletAddress}`);
     }
 
     const balance = yield colonyManager.provider.getBalance(walletAddress);

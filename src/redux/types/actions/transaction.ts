@@ -1,9 +1,9 @@
 import { TransactionReceipt } from 'ethers/providers';
+import { ActionTypes } from '../../actionTypes';
 import {
-  ActionTypeWithPayloadAndMeta,
   ActionTypeWithMeta,
-  ActionTypes,
-} from '~redux/index';
+  ActionTypeWithPayloadAndMeta,
+} from '../../types/actions';
 import { TransactionError, TransactionType } from '~immutable/index';
 import { MethodParams } from '~types/index';
 
@@ -34,7 +34,6 @@ export type TransactionActionTypes =
         | 'identifier'
         | 'methodContext'
         | 'methodName'
-        | 'multisig'
         | 'options'
         | 'params'
         | 'gasPrice'

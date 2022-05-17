@@ -1,4 +1,4 @@
-import { ActionTypes } from '~redux/index';
+import { ActionTypes } from '../../actionTypes';
 import { Address, WithKey } from '~types/index';
 
 import {

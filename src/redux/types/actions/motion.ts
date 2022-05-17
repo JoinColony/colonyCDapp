@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers/utils';
 import { ColonyRole } from '@colony/colony-js';
 
-import { ActionTypes } from '~redux/index';
+import { ActionTypes } from '../../actionTypes';
 import { Address } from '~types/index';
 import { Color } from '~core/ColorTag';
 
