@@ -4,7 +4,7 @@ import { AddressZero } from 'ethers/constants';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom } from '~utils/saga/effects';
+import { putError, takeFrom, updateMotionValues } from '../utils';
 
 import {
   createTransaction,
@@ -12,7 +12,6 @@ import {
   getTxChannel,
 } from '../transactions';
 import { transactionReady } from '../../actionCreators';
-import { updateMotionValues } from '../utils';
 import { ContextModule, TEMP_getContext } from '~context/index';
 
 function* escalateMotion({

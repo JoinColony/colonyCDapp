@@ -5,7 +5,7 @@ import { soliditySha3Raw } from 'web3-utils';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import { TEMP_getContext, ContextModule } from '~context/index';
-import { putError, takeFrom } from '~utils/saga/effects';
+import { putError, takeFrom, updateMotionValues } from '../utils';
 
 import {
   createTransaction,
@@ -14,7 +14,6 @@ import {
 } from '../transactions';
 import { transactionReady } from '../../actionCreators';
 import { signMessage } from '../messages';
-import { updateMotionValues } from '../utils';
 
 function* revealVoteMotion({
   meta,

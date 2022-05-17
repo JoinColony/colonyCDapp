@@ -4,15 +4,13 @@ import { ClientType, getExtensionHash } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom } from '~utils/saga/effects';
+import { putError, takeFrom, refreshExtension } from '../utils';
 
 import {
   createTransaction,
   getTxChannel,
   waitForTxResult,
 } from '../transactions';
-
-import { refreshExtension } from '../utils';
 
 function* colonyExtensionUpgrade({
   meta,

@@ -1,6 +1,6 @@
 import { call } from 'redux-saga/effects';
 
-import { create } from '~utils/saga/effects';
+import { create } from '../utils';
 
 import ColonyManager from '../../../../lib/ColonyManager';
 import getNetworkClient from './getNetworkClient';

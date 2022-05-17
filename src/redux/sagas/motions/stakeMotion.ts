@@ -4,7 +4,7 @@ import { ClientType, ExtensionClient } from '@colony/colony-js';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import { TEMP_getContext, ContextModule } from '~context/index';
-import { putError, takeFrom } from '~utils/saga/effects';
+import { putError, takeFrom, updateMotionValues } from '../utils';
 
 import {
   createTransaction,
@@ -17,8 +17,6 @@ import {
   transactionAddParams,
 } from '../../actionCreators';
 import { ipfsUpload } from '../ipfs';
-
-import { updateMotionValues } from '../utils';
 
 function* stakeMotion({
   meta,

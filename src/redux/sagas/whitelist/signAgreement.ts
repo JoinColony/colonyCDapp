@@ -3,9 +3,8 @@ import { ClientType, Extension } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
-import { putError, takeFrom } from '~utils/saga/effects';
+import { putError, takeFrom, refreshExtension } from '../utils';
 import { createTransaction, getTxChannel } from '../transactions';
-import { refreshExtension } from '../utils';
 
 function* signAgreement({
   payload: { agreementHash, colonyAddress },

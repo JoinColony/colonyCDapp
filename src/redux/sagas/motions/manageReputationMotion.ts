@@ -10,7 +10,12 @@ import { AddressZero } from 'ethers/constants';
 import { ContextModule, TEMP_getContext } from '~context/index';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, routeRedirect } from '~utils/saga/effects';
+import {
+  putError,
+  takeFrom,
+  routeRedirect,
+  updateDomainReputation,
+} from '../utils';
 
 import {
   createTransaction,
@@ -23,7 +28,6 @@ import {
   transactionPending,
   transactionAddParams,
 } from '../../actionCreators';
-import { updateDomainReputation } from '../utils';
 
 function* manageReputationMotion({
   payload: {

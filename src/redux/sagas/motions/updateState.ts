@@ -2,8 +2,7 @@ import { put, takeEvery, fork } from 'redux-saga/effects';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError } from '~utils/saga/effects';
-import { updateMotionValues } from '../utils';
+import { putError, updateMotionValues } from '../utils';
 
 function* motionStateUpdate({
   payload: { colonyAddress, motionId, userAddress },

@@ -7,7 +7,7 @@ import abis from '@colony/colony-js/lib-esm/abis';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
-import { selectAsJS } from '~utils/saga/effects';
+import { selectAsJS } from '../utils';
 import { mergePayload } from '~utils/actions';
 import { TRANSACTION_STATUSES, TransactionRecord } from '../../immutable';
 import { ContextModule, TEMP_getContext } from '~context/index';

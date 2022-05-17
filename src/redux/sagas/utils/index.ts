@@ -15,3 +15,4 @@ export {
   Channel,
 } from './enableExtensionHelpers';
 export { updateDomainReputation } from './updateDomainReputation';
+export * from './effects';

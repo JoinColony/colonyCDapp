@@ -7,7 +7,6 @@ import { isEmpty } from 'lodash';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import { TEMP_getContext, ContextModule } from '~context/index';
-import { putError, takeFrom } from '~utils/saga/effects';
 import { TxConfig } from '~types/index';
 import {
   ClaimableStakedMotionsDocument,
@@ -25,7 +24,7 @@ import {
   getTxChannel,
 } from '../transactions';
 
-import { updateMotionValues } from '../utils';
+import { updateMotionValues, putError, takeFrom } from '../utils';
 
 function* claimMotionRewards({
   meta,

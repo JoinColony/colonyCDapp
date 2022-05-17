@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, raceError } from '~utils/saga/effects';
+import { putError, raceError } from '../utils';
 import { filterUniqueAction } from '~utils/actions';
 import { ContextModule, TEMP_getContext } from '~context/index';
 

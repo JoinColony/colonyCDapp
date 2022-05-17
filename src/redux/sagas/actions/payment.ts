@@ -15,10 +15,14 @@ import {
 } from '~data/index';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, routeRedirect } from '~utils/saga/effects';
+import {
+  putError,
+  takeFrom,
+  routeRedirect,
+  uploadIfpsAnnotation,
+} from '../utils';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 
-import { uploadIfpsAnnotation } from '../utils';
 import {
   createTransaction,
   createTransactionChannels,

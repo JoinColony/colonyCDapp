@@ -5,7 +5,7 @@ import { bigNumberify } from 'ethers/utils';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom } from '~utils/saga/effects';
+import { putError, takeFrom, updateMotionValues } from '../utils';
 import { TEMP_getContext, ContextModule } from '~context/index';
 
 import {
@@ -14,7 +14,6 @@ import {
   getTxChannel,
 } from '../transactions';
 import { transactionReady, transactionUpdateGas } from '../../actionCreators';
-import { updateMotionValues } from '../utils';
 
 function* finalizeMotion({
   meta,

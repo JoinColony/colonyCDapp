@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import { call, put, race, take } from 'redux-saga/effects';
 
-import { putError } from '~utils/saga/effects';
+import { putError } from '../utils';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions } from '../../types/actions';
 import { ContextModule, TEMP_getContext } from '~context/index';

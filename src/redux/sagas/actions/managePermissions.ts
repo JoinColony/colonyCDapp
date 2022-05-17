@@ -10,9 +10,13 @@ import {
 } from '~data/index';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, routeRedirect } from '~utils/saga/effects';
+import {
+  putError,
+  takeFrom,
+  routeRedirect,
+  uploadIfpsAnnotation,
+} from '../utils';
 
-import { uploadIfpsAnnotation } from '../utils';
 import {
   createTransaction,
   createTransactionChannels,

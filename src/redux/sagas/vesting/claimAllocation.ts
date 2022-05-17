@@ -12,7 +12,7 @@ import {
   ClaimTokensFromMetacolonyQueryVariables,
 } from '~data/index';
 import { TEMP_getContext, ContextModule } from '~context/index';
-import { putError, takeFrom } from '~utils/saga/effects';
+import { putError, takeFrom } from '../utils';
 
 import {
   createTransaction,

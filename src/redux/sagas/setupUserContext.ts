@@ -12,7 +12,7 @@ import {
   TEMP_setContext,
   ContextModule,
 } from '~context/index';
-import { putError } from '~utils/saga/effects';
+import { putError } from '../utils';
 import { log } from '~utils/debug';
 import { setLastWallet } from '~utils/autoLogin';
 import {

@@ -9,7 +9,6 @@ import {
 } from '~data/index';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, routeRedirect } from '~utils/saga/effects';
 
 import {
   createTransaction,
@@ -22,7 +21,13 @@ import {
   transactionPending,
   transactionAddParams,
 } from '../../actionCreators';
-import { updateColonyDisplayCache, uploadIfpsAnnotation } from '../utils';
+import {
+  updateColonyDisplayCache,
+  uploadIfpsAnnotation,
+  putError,
+  takeFrom,
+  routeRedirect,
+} from '../utils';
 
 function* editColonyAction({
   payload: {

@@ -6,7 +6,7 @@ import abis from '@colony/colony-js/lib-esm/abis';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
-import { selectAsJS } from '~utils/saga/effects';
+import { selectAsJS, getGasPrices } from '../utils';
 import { ContextModule, TEMP_getContext } from '~context/index';
 import { TransactionRecordProps } from '../../immutable';
 import { ExtendedReduxContext } from '~types/index';
@@ -17,7 +17,6 @@ import {
   transactionEstimateError,
   transactionSend,
 } from '../../actionCreators';
-import { getGasPrices } from '../utils';
 
 /*
  * @area: including a bit of buffer on the gas sent can be a good thing.

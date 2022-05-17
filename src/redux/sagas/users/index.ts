@@ -26,7 +26,7 @@ import {
   UserBalanceWithLockQuery,
   UserBalanceWithLockQueryVariables,
 } from '~data/index';
-import { putError, takeFrom } from '~utils/saga/effects';
+import { putError, takeFrom, createUserWithSecondAttempt } from '../utils';
 import { clearLastWallet } from '~utils/autoLogin';
 import { IPFSAvatarImage } from '~types/index';
 
@@ -38,7 +38,6 @@ import {
   createTransaction,
   getTxChannel,
 } from '../transactions';
-import { createUserWithSecondAttempt } from '../utils';
 
 function* userAvatarRemove({ meta }: Action<ActionTypes.USER_AVATAR_REMOVE>) {
   try {

@@ -12,7 +12,7 @@ import {
 import { ActionTypes } from '../../actionTypes';
 import { filterUniqueAction } from '~utils/actions';
 import { getLoggedInUser } from '~data/index';
-import { takeFrom } from '~utils/saga/effects';
+import { takeFrom } from '../utils';
 import { TxConfig } from '~types/index';
 import { createTxAction } from '../../actionCreators';
 import estimateGasCost from './estimateGasCost';

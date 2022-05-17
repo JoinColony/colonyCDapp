@@ -4,7 +4,12 @@ import { ClientType } from '@colony/colony-js';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 
-import { putError, takeFrom, routeRedirect } from '~utils/saga/effects';
+import {
+  putError,
+  takeFrom,
+  routeRedirect,
+  updateDomainReputation,
+} from '../utils';
 
 import {
   createTransaction,
@@ -17,7 +22,6 @@ import {
   transactionPending,
   transactionAddParams,
 } from '../../actionCreators';
-import { updateDomainReputation } from '../utils';
 
 function* manageReputationAction({
   payload: {

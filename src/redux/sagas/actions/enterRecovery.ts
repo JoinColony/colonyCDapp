@@ -3,7 +3,12 @@ import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
-import { putError, takeFrom, routeRedirect } from '~utils/saga/effects';
+import {
+  putError,
+  takeFrom,
+  routeRedirect,
+  uploadIfpsAnnotation,
+} from '../utils';
 import {
   ProcessedColonyDocument,
   ProcessedColonyQuery,
@@ -26,7 +31,6 @@ import {
 } from '~data/index';
 import { ContextModule, TEMP_getContext } from '~context/index';
 
-import { uploadIfpsAnnotation } from '../utils';
 import {
   transactionReady,
   transactionPending,

@@ -10,7 +10,7 @@ import {
   WhitelistedUsersQueryVariables,
 } from '~data/index';
 import { ContextModule, TEMP_getContext } from '~context/index';
-import { putError, takeFrom } from '~utils/saga/effects';
+import { putError, takeFrom, refreshExtension } from '../utils';
 import { TxConfig } from '~types/index';
 
 import {
@@ -18,7 +18,6 @@ import {
   createTransaction,
   createTransactionChannels,
 } from '../transactions';
-import { refreshExtension } from '../utils';
 
 export function* updateWhitelist({
   meta,

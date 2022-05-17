@@ -10,7 +10,6 @@ import {
 } from '~data/index';
 import extensionData from '~data/staticData/extensionData';
 import { ContextModule, TEMP_getContext } from '~context/index';
-import { putError, takeFrom } from '~utils/saga/effects';
 import { intArrayToBytes32 } from '~utils/web3';
 
 import { getTxChannel } from '../transactions';
@@ -21,6 +20,8 @@ import {
   removeOldExtensionClients,
   setupEnablingGroupTransactions,
   Channel,
+  putError,
+  takeFrom,
 } from '../utils';
 
 function* colonyExtensionEnable({

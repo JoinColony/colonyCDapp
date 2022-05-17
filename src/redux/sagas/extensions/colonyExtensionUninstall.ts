@@ -9,7 +9,7 @@ import {
 } from '~data/index';
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
-import { putError, takeFrom } from '~utils/saga/effects';
+import { putError, takeFrom, refreshExtension } from '../utils';
 
 import { ContextModule, TEMP_getContext } from '~context/index';
 import {
@@ -18,8 +18,6 @@ import {
   createTransactionChannels,
 } from '../transactions';
 import { transactionReady } from '../../actionCreators';
-
-import { refreshExtension } from '../utils';
 
 export function* colonyExtensionUninstall({
   meta: { id: metaId },
