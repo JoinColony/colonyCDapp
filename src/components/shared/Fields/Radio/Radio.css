@@ -1,0 +1,190 @@
+.delegate {
+  position: absolute;
+  opacity: 0;
+}
+
+.themeColorPicker {
+  display: inline-block;
+  margin: 8px 8px 0 0;
+}
+
+.themeColorPicker + .themeColorPicker {
+  margin: 8px 8px 0 0;
+}
+
+.labelContainer {
+  display: inline-block;
+}
+
+.radio {
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  position: relative;
+  top: -3px; /* because the pseudo-radio is a bit smaller, let's shift it up a couple pixels */
+  border: 2px solid var(--grey-4);
+  border-radius: 50%;
+
+  &::after {
+    height: 3px;
+    width: 3px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    background-color: var(--primary);
+    content: '';
+    transform: translate(-50%, -50%);
+    transition: opacity 30ms ease-in;
+    opacity: 0;
+  }
+}
+
+.delegate:focus + .radio {
+  box-shadow: 0 0 3px 1px var(--primary);
+}
+
+.main.stateIsChecked .radio {
+  border-color: var(--primary);
+
+  &::after {
+    opacity: 1;
+  }
+}
+
+.themeColorPicker.stateIsChecked .radio {
+  border-color: var(--primary);
+}
+
+.themeColorPicker .radio {
+  margin-right: 5px;
+  height: 18px;
+  width: 18px;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.themeColorPicker .radio::after {
+  height: 16px;
+  width: 16px;
+  border: 2px solid var(--grey-1);
+  background-color: transparent;
+}
+
+.themeFakeCheckbox .radio {
+  display: inline-block;
+  flex: 0 0 auto;
+  margin-right: 5px;
+  height: 18px;
+  width: 18px;
+  position: relative;
+  border: 1px solid var(--primary);
+  border-radius: 2px;
+  background-color: var(--temp-grey-2);
+}
+
+.themeFakeCheckbox .radio::after {
+  opacity: 0;
+}
+
+/*
+ * We copied over the checkmark styles here, as we can't compose in children
+ * This is something we might want to solve using some sort of mixins eventually
+ */
+.themeFakeCheckbox .checkmark {
+  display: inline-block;
+  height: 80%;
+  width: 80%;
+  position: absolute;
+  top: -20%;
+  transform: rotate(45deg);
+}
+
+.themeFakeCheckbox.stateIsChecked .checkmark::before {
+  height: 80%;
+  width: 2px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-color: var(--primary);
+  content: '';
+}
+
+.themeFakeCheckbox.stateIsChecked .checkmark::after {
+  height: 2px;
+  width: 40%;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-color: var(--primary);
+  content: '';
+}
+
+.themeButtonGroup {
+  display: inline-block;
+  padding: 6px 15px 0px 15px;
+  border: 1px solid var(--grey-blue-1);
+  background-color: var(--colony-white);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.themeButtonGroup:first-of-type {
+  border-top-left-radius: var(--radius-small);
+  border-bottom-left-radius: var(--radius-small);
+}
+
+.themeButtonGroup + .themeButtonGroup:last-of-type {
+  border-top-right-radius: var(--radius-small);
+  border-bottom-right-radius: var(--radius-small);
+}
+
+.themeButtonGroup.stateIsChecked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+  color: var(--colony-white);
+}
+
+.themeButtonGroup + .themeButtonGroup {
+  border-left: none;
+}
+
+.themeButtonGroup .radio {
+  display: none;
+}
+
+.themeButtonGroup .labelContainer label {
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Direction */
+
+.directionHorizontal {
+  display: inline-block;
+  margin-right: 10px;
+
+  & .radio {
+    margin-right: 5px;
+  }
+}
+
+.directionVertical {
+  display: block;
+  padding: 5px 0;
+
+  & .radio {
+    margin-right: 10px;
+  }
+}
+
+/* State */
+
+.stateIsDisabled {
+  color: var(--grey-5);
+  cursor: not-allowed;
+
+  & .labelContainer label {
+    cursor: not-allowed;
+  }
+}

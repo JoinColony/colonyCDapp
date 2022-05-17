@@ -7,28 +7,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
-const utils = require('./scripts/utils');
-
 const mode = process.env.NODE_ENV || 'development';
-
-/*
- * Wrapper method to generate aliases for all the dapp's modules
- *
- * @NOTE It's declared here instead of `utils` so you can *get* it's purpouse
- * at a glance when reading the webpack config
- */
-const generateModulesAliases = () => {
-  let modulesAliases = {};
-  const foundDappModules = utils.getDappModules();
-  foundDappModules.map((dappModule) => {
-    modulesAliases = Object.assign(
-      {},
-      modulesAliases,
-      utils.generateWebpackAlias(dappModule),
-    );
-  });
-  return modulesAliases;
-};
 
 const config = {
   entry: './src/index.ts',
@@ -37,7 +16,9 @@ const config = {
     alias: Object.assign(
       {},
       {
-      //   '~constants': path.resolve(__dirname, 'src/modules/constants'),
+        '~shared': path.resolve(__dirname, 'src/components/shared'),
+        '~common': path.resolve(__dirname, 'src/components/common'),
+        //   '~constants': path.resolve(__dirname, 'src/modules/constants'),
       //   '~externalUrls': path.resolve(__dirname, 'src/modules/externalUrls'),
       //   '~context': path.resolve(__dirname, 'src/context'),
         '~lib': path.resolve(__dirname, 'src/lib'),
@@ -48,10 +29,8 @@ const config = {
         '~styles': path.resolve(__dirname, 'src/styles/shared'),
       //   '~testutils': path.resolve(__dirname, 'src/__tests__/utils.ts'),
         '~types': path.resolve(__dirname, 'src/types'),
-      //   '~modules': path.resolve(__dirname, 'src/modules'),
       //   '~dialogs': path.resolve(__dirname, 'src/modules/dashboard/components/Dialogs')
       },
-      // generateModulesAliases(),
     ),
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
   },

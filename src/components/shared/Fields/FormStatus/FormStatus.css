@@ -1,0 +1,17 @@
+.main {
+  padding: 20px 0;
+}
+
+.text {
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+}
+
+.info {
+  composes: text;
+}
+
+.error {
+  composes: text;
+  color: var(--danger);
+}

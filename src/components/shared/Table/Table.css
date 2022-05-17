@@ -1,0 +1,194 @@
+@value tableRadii: 4px; /* --radius-normal */
+
+.baseStyles {
+  border-radius: tableRadii;
+  font-size: var(--size-normal);
+  font-weight: var(--weight-normal);
+}
+
+/*
+  Border radii for corner cells of table
+  =====================
+*/
+
+/* top left cell */
+.baseStyles tbody tr:first-child td:first-child {
+  border-top-left-radius: tableRadii;
+}
+
+/* top left cell (of tbody) if thead */
+.baseStyles thead + tbody tr:first-child td:first-child {
+  border-top-left-radius: 0;
+}
+
+/* top right cell */
+.baseStyles tbody tr:first-child td:last-child {
+  border-top-right-radius: tableRadii;
+}
+
+/* top right cell (of tbody) if thead */
+.baseStyles thead + tbody tr:first-child td:last-child {
+  border-top-right-radius: 0;
+}
+
+/* top left table header */
+.baseStyles thead tr:first-child th:first-child {
+  border-top-left-radius: tableRadii;
+}
+
+/* top right table header */
+.baseStyles thead tr:first-child th:last-child {
+  border-top-right-radius: tableRadii;
+}
+
+/* bottom left cell */
+.baseStyles tbody tr:last-child td:first-child {
+  border-bottom-left-radius: tableRadii;
+}
+
+/* bottom right cell */
+.baseStyles tbody tr:last-child td:last-child {
+  border-bottom-right-radius: tableRadii;
+}
+
+/* State */
+
+.stateScrollable {
+  display: flex;
+  flex-flow: column;
+}
+
+.stateScrollable tr {
+  display: flex;
+}
+
+.stateScrollable th,
+.stateScrollable td {
+  display: flex;
+  align-items: center;
+}
+
+.stateScrollable tbody {
+  display: block;
+  max-height: 100%;
+  overflow: auto;
+}
+
+.stateScrollable tr td:last-child {
+  /*
+   * Last cell expand to fill any remaining space in row (useful for `td` hover styles).
+   *
+   * Can be overridden when this is undesirable.
+   */
+  flex: 1 0 auto;
+}
+
+/* Appearance */
+
+.separatorsBorders th,
+.separatorsBorders td {
+  border-width: 1px;
+  border-style: solid;
+}
+
+.separatorsRows tbody tr:nth-child(n+2),
+.separatorsRows thead + tbody tr:first-child {
+  border-width: 1px;
+  border-style: solid;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.main {
+  composes: baseStyles;
+  border-color: var(--grey-blue-1);
+  background-color: white;
+  box-shadow: 0px 2px 11px var(--drop-shadow);
+
+  &.separatorsBorders td,
+  &.separatorsBorders th {
+    border-color: var(--grey-blue-1);
+  }
+
+  & tbody tr:hover td {
+    background-color: var(--colony-white);
+  }
+}
+
+.themeDark {
+  composes: baseStyles;
+  border-color: color-mod(var(--grey-blue-1) alpha(30%));
+  background-color: var(--grey-3);
+  color: var(--colony-white);
+  box-shadow: 0 0 20px -2px var(--grey-4);
+
+  &.separatorsBorders td,
+  &.separatorsBorders th {
+    border-color: color-mod(var(--grey-blue-1) alpha(30%));
+  }
+
+  & tbody tr:hover td {
+    background-color: var(--grey-4);
+  }
+}
+
+.themeRounder {
+  composes: main;
+  border-radius: var(--radius-large);
+
+  /* top left cell */
+  & tbody tr:first-child td:first-child {
+    border-top-left-radius: var(--radius-large);
+  }
+
+  /* top left cell (of tbody) if thead */
+  & thead + tbody tr:first-child td:first-child {
+    border-top-left-radius: 0;
+  }
+
+  /* top right cell */
+  & tbody tr:first-child td:last-child {
+    border-top-right-radius: var(--radius-large);
+  }
+
+  /* top right cell (of tbody) if thead */
+  & thead + tbody tr:first-child td:last-child {
+    border-top-right-radius: 0;
+  }
+
+  /* top left table header */
+  & thead tr:first-child th:first-child {
+    border-top-left-radius: var(--radius-large);
+  }
+
+  /* top right table header */
+  & thead tr:first-child th:last-child {
+    border-top-right-radius: var(--radius-large);
+  }
+
+  /* bottom left cell */
+  & tbody tr:last-child td:first-child {
+    border-bottom-left-radius: var(--radius-large);
+  }
+
+  /* bottom right cell */
+  & tbody tr:last-child td:last-child {
+    border-bottom-right-radius: var(--radius-large);
+  }
+}
+
+.themeLined {
+  & td {
+    height: 44px;
+    vertical-align: middle;
+  }
+
+  & tr {
+    border-bottom: 1px solid var(--temp-grey-5);
+  }
+
+  & tr:first-child {
+    border-top: 1px solid var(--temp-grey-5);
+  }
+}

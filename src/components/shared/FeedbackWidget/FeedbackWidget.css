@@ -1,0 +1,26 @@
+.main {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  background-color: transparent;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  text-align: right;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.link {
+  padding: 9px;
+  color: color-mod(var(--temp-grey-blue-7) alpha(85%));
+}
+
+.link:hover {
+  color: var(--text);
+}
+
+.heart {
+  color: rgb(221, 46, 68);
+}

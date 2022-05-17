@@ -1,0 +1,26 @@
+.main {
+  width: 100%;
+  position: absolute;
+  top: 100%;
+  bottom: 0;
+  border-top-right-radius: var(--radius-large);
+  border-top-left-radius: var(--radius-large);
+}
+
+.header {
+  padding: 4px 10px;
+  background-color: var(--grey-1);
+  font-size: var(--size-small);
+  font-weight: var(--weight-bold);
+  color: var(--grey-5);
+}
+
+.header-top {
+  border-top-left-radius: var(--radius-large);
+  border-top-right-radius: var(--radius-large);
+}
+
+.header-bottom {
+  border-bottom-left-radius: var(--radius-large);
+  border-bottom-right-radius: var(--radius-large);
+}

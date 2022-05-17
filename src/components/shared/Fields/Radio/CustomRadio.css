@@ -1,0 +1,135 @@
+.input {
+  height: 0;
+  width: 0;
+  opacity: 0;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  padding: 7px;
+  height: 41px;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: var(--radius-normal);
+  background-color: color-mod(var(--temp-grey-blue-7) alpha(6%));
+  color: var(--dark);
+  cursor: pointer;
+}
+
+.themePrimary {
+  composes: main;
+}
+
+.themeDanger {
+  composes: main;
+}
+
+.themeGreyWithCircle {
+  composes: main;
+  border-color: color-mod(var(--action-secondary) alpha(25%));
+  border-radius: var(--radius-tiny);
+  background-color: color-mod(var(--temp-grey-blue-7) alpha(5%));
+}
+
+.themePrimary.stateIsChecked,
+.themeGreyWithCircle.stateIsChecked {
+  border: 1px solid var(--primary);
+  background-color: color-mod(var(--primary) alpha(12%));
+}
+
+.themeDanger.stateIsChecked {
+  border: 1px solid var(--pink);
+  background-color: color-mod(var(--pink) alpha(12%));
+}
+
+.themePrimary:hover {
+  background-color: color-mod(var(--primary) alpha(12%));
+}
+
+.themeDanger:hover {
+  background-color: color-mod(var(--pink) alpha(12%));
+}
+
+.main.stateIsChecked .description {
+  color: var(--temp-grey-blue-7);
+  opacity: 0.85;
+}
+
+.main.stateIsDisabled .description {
+  color: var(--temp-grey-blue-7);
+  opacity: 0.85;
+}
+
+.main.stateIsDisabled .label {
+  color: color-mod(var(--dark) alpha(65%));
+}
+
+.main.stateIsDisabled {
+  border-color: transparent;
+  background-color: var(--text-disabled);
+  cursor: default;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  font-size: var(--size-smallish);
+  font-weight: var(--weight-bold);
+  gap: 6px;
+}
+
+.description,
+.description span {
+  margin-left: auto;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+.content {
+  display: flex;
+  align-items: baseline;
+  width: 100%;
+  white-space: nowrap;
+  gap: 6px;
+}
+
+.directionVertical .content {
+  flex-direction: column;
+  gap: 0;
+}
+
+.directionVertical .description {
+  margin-left: 0;
+}
+
+.customRadioIcon {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  height: 27px;
+  width: 27px;
+  border: 1px solid var(--temp-grey-blue-4);
+  border-radius: 50%;
+  background: var(--colony-white);
+  box-shadow: inset 0px 2px 4px rgba(14, 37, 88, 0.07);
+}
+
+.checkedCustomRadioIcon {
+  border-color: var(--primary);
+}
+
+.customRadioCheck {
+  height: 7px;
+  width: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: var(--box-shadow-medium);
+}

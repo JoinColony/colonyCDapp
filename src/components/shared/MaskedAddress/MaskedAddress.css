@@ -1,0 +1,10 @@
+.address {
+  font-family: var(--family-techie);
+  font-size: var(--size-smallish);
+  font-weight: 600;
+  line-height: var(--size-smallish);
+}
+
+.middleSection {
+  margin: 0 5px;
+}

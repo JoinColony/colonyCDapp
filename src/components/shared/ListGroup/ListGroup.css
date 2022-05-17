@@ -1,0 +1,40 @@
+.main {
+  display: block;
+  width: 100%;
+  box-shadow: var(--box-shadow-medium);
+}
+
+.main:not(.gapsTrue) > :not(:first-child) {
+  border-top: 1px solid var(--grey-blue-1);
+}
+
+.main > li {
+  background-color: var(--colony-white);
+}
+
+.main > li:first-of-type {
+  border-top-left-radius: var(--radius-large);
+  border-top-right-radius: var(--radius-large);
+}
+
+.main > li:last-of-type {
+  border-bottom-left-radius: var(--radius-large);
+  border-bottom-right-radius: var(--radius-large);
+}
+
+.main.gapsTrue {
+  box-shadow: none;
+}
+
+.main.gapsTrue > li {
+  border-radius: var(--radius-large);
+  box-shadow: var(--box-shadow-medium);
+}
+
+.gapsTrue > li + li {
+  margin-top: 10px;
+}
+
+.hoverColorDark > li:hover {
+  background-color: var(--colonylight-blue);
+}

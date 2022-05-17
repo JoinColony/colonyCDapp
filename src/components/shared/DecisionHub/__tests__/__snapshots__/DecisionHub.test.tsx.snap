@@ -1,0 +1,257 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DecisionHub component Renders initial component 1`] = `
+<Formik
+  initialValues={Object {}}
+  onSubmit={[Function]}
+>
+  <DecisionHub
+    name="decisionHubTest"
+    options={
+      Array [
+        Object {
+          "subtitle": Object {
+            "defaultMessage": "Collaborate with others",
+            "id": "ComponentName.exceptional",
+          },
+          "title": Object {
+            "defaultMessage": "Rule the world",
+            "id": "ComponentName.special",
+          },
+          "value": "create",
+        },
+        Object {
+          "subtitle": Object {
+            "defaultMessage": "Collaborate with others",
+            "id": "ComponentName.exceptional",
+          },
+          "title": Object {
+            "defaultMessage": "Rule the world",
+            "id": "ComponentName.special",
+          },
+          "value": "select",
+        },
+      ]
+    }
+  >
+    <div
+      data-test="hubOptions"
+    >
+      <DecisionOption
+        key="row-create"
+        name="decisionHubTest"
+        option={
+          Object {
+            "subtitle": Object {
+              "defaultMessage": "Collaborate with others",
+              "id": "ComponentName.exceptional",
+            },
+            "title": Object {
+              "defaultMessage": "Rule the world",
+              "id": "ComponentName.special",
+            },
+            "value": "create",
+          }
+        }
+      >
+        <button
+          className=""
+          onClick={[Function]}
+          type="submit"
+        >
+          <DecisionOptionIcon
+            subtitle={
+              Object {
+                "defaultMessage": "Collaborate with others",
+                "id": "ComponentName.exceptional",
+              }
+            }
+            title={
+              Object {
+                "defaultMessage": "Rule the world",
+                "id": "ComponentName.special",
+              }
+            }
+            value="create"
+          />
+          <div>
+            <Heading
+              appearance={
+                Object {
+                  "margin": "small",
+                  "size": "small",
+                  "weight": "bold",
+                }
+              }
+              text={
+                Object {
+                  "defaultMessage": "Rule the world",
+                  "id": "ComponentName.special",
+                }
+              }
+            >
+              <h5
+                className=""
+                title="Rule the world"
+              >
+                Rule the world
+              </h5>
+            </Heading>
+            <Heading
+              appearance={
+                Object {
+                  "margin": "small",
+                  "size": "tiny",
+                  "weight": "thin",
+                }
+              }
+              text={
+                Object {
+                  "defaultMessage": "Collaborate with others",
+                  "id": "ComponentName.exceptional",
+                }
+              }
+            >
+              <h6
+                className=""
+                title="Collaborate with others"
+              >
+                Collaborate with others
+              </h6>
+            </Heading>
+          </div>
+          <Icon
+            name="caret-right"
+            title={
+              Object {
+                "defaultMessage": "Choose this option",
+                "id": "DecisionOption.iconTitle",
+              }
+            }
+          >
+            <i
+              className=""
+              title="Choose this option"
+            >
+              <svg
+                viewBox="0 0 30 30"
+              >
+                <use
+                  xlinkHref="#undefined"
+                />
+              </svg>
+            </i>
+          </Icon>
+        </button>
+      </DecisionOption>
+      <DecisionOption
+        key="row-select"
+        name="decisionHubTest"
+        option={
+          Object {
+            "subtitle": Object {
+              "defaultMessage": "Collaborate with others",
+              "id": "ComponentName.exceptional",
+            },
+            "title": Object {
+              "defaultMessage": "Rule the world",
+              "id": "ComponentName.special",
+            },
+            "value": "select",
+          }
+        }
+      >
+        <button
+          className=""
+          onClick={[Function]}
+          type="submit"
+        >
+          <DecisionOptionIcon
+            subtitle={
+              Object {
+                "defaultMessage": "Collaborate with others",
+                "id": "ComponentName.exceptional",
+              }
+            }
+            title={
+              Object {
+                "defaultMessage": "Rule the world",
+                "id": "ComponentName.special",
+              }
+            }
+            value="select"
+          />
+          <div>
+            <Heading
+              appearance={
+                Object {
+                  "margin": "small",
+                  "size": "small",
+                  "weight": "bold",
+                }
+              }
+              text={
+                Object {
+                  "defaultMessage": "Rule the world",
+                  "id": "ComponentName.special",
+                }
+              }
+            >
+              <h5
+                className=""
+                title="Rule the world"
+              >
+                Rule the world
+              </h5>
+            </Heading>
+            <Heading
+              appearance={
+                Object {
+                  "margin": "small",
+                  "size": "tiny",
+                  "weight": "thin",
+                }
+              }
+              text={
+                Object {
+                  "defaultMessage": "Collaborate with others",
+                  "id": "ComponentName.exceptional",
+                }
+              }
+            >
+              <h6
+                className=""
+                title="Collaborate with others"
+              >
+                Collaborate with others
+              </h6>
+            </Heading>
+          </div>
+          <Icon
+            name="caret-right"
+            title={
+              Object {
+                "defaultMessage": "Choose this option",
+                "id": "DecisionOption.iconTitle",
+              }
+            }
+          >
+            <i
+              className=""
+              title="Choose this option"
+            >
+              <svg
+                viewBox="0 0 30 30"
+              >
+                <use
+                  xlinkHref="#undefined"
+                />
+              </svg>
+            </i>
+          </Icon>
+        </button>
+      </DecisionOption>
+    </div>
+  </DecisionHub>
+</Formik>
+`;

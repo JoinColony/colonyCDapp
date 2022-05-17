@@ -1,0 +1,18 @@
+.main {
+  width: 108px;
+  position: relative;
+  bottom: 6px;
+}
+
+.stepCounter {
+  padding-top: 5px;
+  top: 10px;
+  font-size: var(--size-small);
+  font-weight: var(--weight-bold);
+  text-align: center;
+  color: var(--temp-grey-2);
+}
+
+.progressContainer {
+  margin-bottom: 13px;
+}

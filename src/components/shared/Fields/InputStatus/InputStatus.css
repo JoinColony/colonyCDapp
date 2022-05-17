@@ -1,0 +1,57 @@
+.main {
+  margin-top: 4px;
+  height: 15px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  white-space: nowrap;
+
+  &::before {
+    display: inline-block;
+    margin-right: 8px;
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    content: '';
+  }
+}
+
+.statusSchemaInfo {
+  &::before {
+    background-color: var(--golden);
+  }
+}
+
+.directionHorizontal {
+  margin-left: 5px;
+}
+
+.stateHidden {
+  visibility: hidden;
+}
+
+.stateError {
+  color: var(--danger);
+
+  &::before {
+    background-color: var(--danger);
+  }
+}
+
+/*
+ * Themes with same name as the ones from `InputComponent` so that no extra
+ * styles are needed when one of the inputs has a theme applied.
+ */
+.themeFat, .themeUnderlined, .themeMinimal {
+  composes: main;
+}
+
+.themeMinimal::before {
+  display: none;
+}
+
+.textSpaceWrap {
+  height: 38px;
+  line-height: 18px;
+  white-space: pre-wrap;
+}

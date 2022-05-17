@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button component Renders initial component 1`] = `
+<Button
+  text="Some Text"
+>
+  <button
+    aria-busy={false}
+    className=""
+    disabled={false}
+    type="button"
+  >
+    Some Text
+  </button>
+</Button>
+`;

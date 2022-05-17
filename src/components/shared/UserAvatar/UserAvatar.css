@@ -1,0 +1,8 @@
+.main {
+  max-width: max-content;
+  line-height: 0;
+}
+
+.stateShowOnClick {
+  cursor: pointer;
+}

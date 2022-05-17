@@ -10,30 +10,6 @@ const envs = new Dotenv({
 });
 
 /**
- * Helper method to generate a specific webpack alias format entry object
- *
- * See the webpack alias format:
- * https://webpack.js.org/configuration/resolve/#resolve-alias
- *
- * @method generateWebpackAlias
- *
- * @param {string} moduleName Module name to generate the entry for
- * @param {string} searchPath The search path where the module can be found
- *
- * @return {Object} A new object with the alias entry
- */
-const generateWebpackAlias = (
-  moduleName,
-  searchPath = DAPP_MODULES
-) => ({
-  [`~${moduleName}`]: path.resolve(
-    searchPath,
-    moduleName,
-    COMPONENTS_FOLDER,
-  ),
-});
-
-/**
  * Method to list all dapp module folders in a specific location.
  * The way this method interprets modules is:
  * - It must be a folder
@@ -138,7 +114,6 @@ const injectEnvironmentVariables = (filter) => {
 };
 
 module.exports = {
-  generateWebpackAlias,
   getDappModules,
   getStaticDevResource,
   injectEnvironmentVariables,

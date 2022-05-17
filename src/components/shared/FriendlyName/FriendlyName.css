@@ -1,0 +1,12 @@
+.main {
+  display: inline-flex;
+  max-width: 200px;
+}
+
+:global(.popoverWrapper) .main {
+  max-width: 100%;
+}
+
+.name {
+  composes: inlineEllipsis from '~styles/text.css';
+}
