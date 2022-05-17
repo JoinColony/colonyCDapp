@@ -1,0 +1,8 @@
+.main {
+  font-weight: var(--weight-bold);
+  color: var(--sky-blue);
+}
+
+.main:hover {
+  text-decoration: underline;
+}

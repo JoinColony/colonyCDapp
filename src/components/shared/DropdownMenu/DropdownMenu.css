@@ -1,0 +1,47 @@
+.baseStyles {
+  min-width: 200px;
+}
+
+.baseStyles a {
+  display: block;
+}
+
+.baseStyles button {
+  /* Reset button styles to look like a link in here */
+  display: block;
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  text-align: inherit;
+  line-height: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* themes */
+.main {
+  composes: baseStyles;
+  color: var(--dark);
+}
+
+.main a:hover, .main button:hover {
+  background-color: var(--grey-blue-0);
+  color: var(--grey-1);
+}
+
+.themeDark {
+  composes: baseStyles;
+  background-color: var(--grey-1);
+  color: var(--colony-white);
+}
+
+.themeDark a, .themeDark button {
+  color: var(--dark);
+}
+
+.themeDark a:hover .themeDark button:hover {
+  color: var(--grey-blue-2);
+}

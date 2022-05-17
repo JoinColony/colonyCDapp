@@ -1,0 +1,52 @@
+.main {
+  composes: field from '~styles/fields.css';
+}
+
+.dropzone {
+  padding: 35px;
+  border-top: 1px dashed var(--secondary);
+  border-right: 2px solid var(--grey-blue-0);
+  border-bottom: 1px dashed var(--secondary);
+  border-left: 2px solid var(--grey-blue-0);
+  background-color: var(--grey-blue-1);
+}
+
+.dropzoneAccept {
+  background-color: var(--grey-blue-2);
+}
+
+.dropzoneReject {
+  border: 1px solid var(--danger);
+  background-color: color-mod(var(--danger) alpha(30%));
+}
+
+.dropzone[aria-invalid="true"] {
+  border: 1px solid var(--danger);
+  background-color: color-mod(var(--danger) alpha(20%));
+}
+
+.placeholderText {
+  margin-right: 20px;
+  font-weight: var(--weight-bold);
+  text-align: center;
+}
+
+.browseButton {
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: inherit;
+  font-weight: inherit;
+  color: var(--sky-blue);
+  cursor: pointer;
+}
+
+.placeholderTextDisabled {
+  composes: placeholderText;
+  color: var(--temp-grey-4);
+}
+
+.filesContainer {
+  height: 100%;
+  width: 100%;
+}

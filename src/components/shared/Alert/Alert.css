@@ -1,0 +1,80 @@
+@value newInfoBlue: rgb(0, 40, 75);
+
+.main {
+  margin: 10px 0;
+  padding: 5px 15px;
+  position: relative;
+  border-radius: var(--radius-tiny);
+}
+
+.closeButton {
+  composes: button from '~styles/reset.css';
+  position: absolute;
+  top: 10px;
+  right: 5px;
+
+  & i {
+    fill: var(--colony-white);
+    stroke: var(--colony-white);
+  }
+}
+
+/* Theme */
+
+.themePrimary {
+  composes: main;
+  background-color: var(--primary);
+  color: var(--colony-white);
+}
+
+.themeInfo {
+  composes: main;
+  background-color: newInfoBlue;
+  color: var(--colony-white);
+}
+
+.themeDanger {
+  composes: main;
+  background-color: var(--danger);
+  color: var(--colony-white);
+}
+
+.themePinky {
+  composes: main;
+  background-color: var(--pink);
+  color: var(--colony-white);
+}
+
+.sizeSmall {
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  line-height: 18px;
+}
+
+.borderRadiusSmall {
+  border-radius: var(--radius-small);
+}
+
+.borderRadiusMedium {
+  border-radius: var(--radius-normal);
+}
+
+.borderRadiusLarge {
+  border-radius: var(--radius-large);
+}
+
+.borderRadiusRound {
+  border-radius: 50px;
+}
+
+.borderRadiusNone {
+  border-radius: 0;
+}
+
+.marginDefault {
+  margin: 10px 0;
+}
+
+.marginNone {
+  margin: 0;
+}

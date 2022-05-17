@@ -1,0 +1,36 @@
+.main {
+  display: flex;
+  overflow: hidden;
+  color: var(--dark);
+}
+
+.invisibleLink {
+  color: var(--dark);
+}
+
+.invisibleLink:hover {
+  color: color-mod(var(--dark) alpha(50%));
+}
+
+.breadCrumble {
+  font-size: var(--size-medium-l);
+}
+
+.element {
+  flex: 0 0 auto;
+}
+
+.elementLast {
+  composes: inlineEllipsis from "~styles/text.css";
+  flex: 1 1 auto;
+}
+
+.elementLast a {
+  font-weight: var(--weight-bold);
+}
+
+.arrow {
+  display: inline-block;
+  padding: 3px 5px;
+  vertical-align: top;
+}

@@ -1,0 +1,112 @@
+.main {
+  max-width: 480px;
+  font-size: var(--size-small);
+}
+
+.section {
+  padding: 10px 15px;
+}
+
+.section:first-of-type {
+  padding-top: 15px;
+}
+
+.section:last-of-type {
+  padding-bottom: 15px;
+}
+
+.section + .section {
+  border-top: 1px solid var(--temp-grey-5);
+}
+
+.displayName {
+  margin: 0 0 6px 0;
+  font-weight: var(--weight-bold);
+  color: var(--colony-black);
+}
+
+/*
+ * @NOTE Directly adding element styles
+ * This is because we needed to create a super-custom, super-small size for the icon
+ * Using our image sizing logic, this would have been: `xxxxs`
+ */
+.displayName div {
+  display: inline-block;
+  margin-right: 8px;
+  height: 12px;
+  width: 12px;
+}
+
+.displayName figure {
+  margin: 0 2px -2px 0;
+  vertical-align: bottom;
+}
+
+.userName {
+  composes: inlineEllipsis from "~styles/text.css";
+  margin-bottom: 2px;
+  width: 100%;
+}
+
+.userName a {
+  font-size: var(--size-smallish);
+  font-weight: var(--weight-bold);
+  color: var(--pink);
+}
+
+.address span {
+  font-size: var(--size-smallish);
+}
+
+.address button {
+  height: auto;
+}
+
+.reputationHeading h4 {
+  color: var(--temp-grey-blue-7);
+}
+
+.badges {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.badges > figure {
+  margin-right: 5px;
+}
+
+.symbol {
+  composes: inlineEllipsis from '~styles/text.css';
+  margin: 0 0 6px 0;
+  font-weight: var(--weight-bold);
+  color: var(--pink);
+}
+
+.nativeTokenMessage {
+  margin-top: 6px;
+}
+
+.etherscanLink {
+  font-weight: var(--weight-bold);
+  color: var(--colony-blue);
+}
+
+.container {
+  composes: flexContainerRow flexAlignCenter from '~styles/layout.css';
+  display: flex;
+}
+
+.textContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-left: 12px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.addToWallet {
+  float: right;
+}

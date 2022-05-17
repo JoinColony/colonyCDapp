@@ -1,0 +1,26 @@
+.main {
+  display: flex;
+  align-items: center;
+}
+
+.copyButton {
+  margin: -3px 0 0 5px;
+}
+
+.themeBig {
+  composes: main;
+  font-size: var(--size-medium-l);
+  letter-spacing: 1px;
+}
+
+.addressContainer {
+  font-family: var(--family-techie);
+}
+
+.address {
+  margin: 0 5px;
+}
+
+.boldAddress {
+  font-weight: var(--weight-medium);
+}

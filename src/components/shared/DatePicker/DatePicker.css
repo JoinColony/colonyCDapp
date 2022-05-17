@@ -1,0 +1,7 @@
+.main {
+  composes: field from '~styles/fields.css';
+}
+
+.picker {
+  cursor: pointer;
+}

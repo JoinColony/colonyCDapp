@@ -1,0 +1,89 @@
+@keyframes spin-around {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.main {
+  display: inline-block;
+  text-align: center;
+}
+
+.loader {
+  display: block;
+  margin: 0 auto;
+  height: 16px;
+  width: 16px;
+  position: relative;
+  border: 2px solid var(--grey-5);
+  border-radius: 50%;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  animation: spin-around 500ms infinite linear;
+  content: '';
+}
+
+.sizeSmall .loader {
+  height: 14px;
+  width: 14px;
+}
+
+.sizeMedium .loader {
+  height: 28px;
+  width: 28px;
+}
+
+.sizeLarge .loader {
+  height: 42px;
+  width: 42px;
+}
+
+.sizeHuge .loader {
+  height: 54px;
+  width: 54px;
+}
+
+.sizeMassive {
+  position: relative;
+}
+
+.sizeMassive .loader {
+  height: 210px;
+  width: 210px;
+}
+
+.sizeMassive .loadingTextContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: var(--size-medium);
+  user-select: none;
+}
+
+.themeGrey {
+  composes: main;
+}
+
+.themePrimary .loader {
+  border-left-color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.layoutHorizontal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.layoutHorizontal .loader {
+  margin: 0 10px 0 0;
+}

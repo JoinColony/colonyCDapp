@@ -1,0 +1,10 @@
+.main {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.inputContainer {
+  flex-grow: 1;
+  padding-right: 20px;
+}

@@ -1,0 +1,11 @@
+node_modules
+.env*
+!.env.example
+*.log
+reports
+ganache-accounts.json
+/dist
+/styleguide
+.dappPids.json
+cypress/videos
+cypress/screenshots

@@ -1,0 +1,82 @@
+.main {
+  display: block;
+  margin-bottom: 6px;
+  width: 100%;
+  position: relative;
+  font-size: var(--size-smallish);
+  font-weight: var(--weight-bold);
+  text-align: left;
+  line-height: calc(var(--size-small) + 2px);
+}
+
+.themeFat {
+  composes: main;
+}
+
+.themeUnderlined {
+  composes: main;
+}
+
+.themeMinimal {
+  composes: main;
+}
+
+.directionHorizontal {
+  display: inline-block;
+  margin-bottom: 0;
+  margin-right: 6px;
+  width: auto;
+  vertical-align: super;
+}
+
+.colorSchemaDark .labelText {
+  color: var(--grey-5);
+}
+
+.colorSchemaGrey .labelText {
+  font-weight: var(--weight-bold);
+  color: var(--dark);
+}
+
+.error, .help {
+  display: inline-block;
+  margin-left: 5px;
+  font-size: var(--size-tiny);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.error {
+  color: var(--danger);
+}
+
+.help {
+  color: var(--text);
+}
+
+.helpAlignRight {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.extra {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.stateScreenReaderOnly {
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  position: absolute;
+  overflow: hidden;
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+}
+
+.sizeMedium {
+  font-size: var(--size-medium-l);
+}

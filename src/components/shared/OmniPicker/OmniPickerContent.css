@@ -1,0 +1,7 @@
+.main {
+  max-height: 180px;
+  overflow-y: auto;
+  border-radius: var(--radius-normal);
+  background-color: white;
+  box-shadow: 0px 2px 11px rgb(62 118 244 / 14%);
+}

@@ -1,0 +1,100 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  height: 16px;
+  position: relative;
+  border-radius: var(--radius-small);
+  box-shadow: inset 0px 2px 4px rgba(14, 37, 88, 0.07);
+}
+
+.main {
+  height: 16px;
+  width: 100%;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.sizeNormal {
+  height: 16px;
+}
+
+.sizeSmall {
+  height: 7px;
+}
+
+.backgroundThemeTransparent {
+  box-shadow: none;
+}
+
+.main::-webkit-progress-bar {
+  border-radius: var(--radius-small);
+}
+
+.main::-webkit-progress-value {
+  border-radius: var(--radius-small);
+}
+
+.main::-moz-progress-bar {
+  border-radius: var(--radius-small);
+  background-color: var(--primary);
+}
+
+.backgroundThemeDefault .main::-webkit-progress-bar {
+  background-color: var(--colony-light-blue);
+}
+
+.backgroundThemeDark .main::-webkit-progress-bar {
+  background-color: rgb(207, 213, 229);
+}
+
+.backgroundThemeTransparent .main::-webkit-progress-bar {
+  background-color: transparent;
+}
+
+.barThemePrimary .main::-webkit-progress-value {
+  background-color: var(--primary);
+}
+
+.barThemeDanger .main::-webkit-progress-value {
+  background-color: var(--pink);
+}
+
+.sizeSmall .main {
+  height: 7px;
+}
+
+.threshold {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: -21px;
+}
+
+.thresholdPercentage {
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  line-height: 18px;
+  color: var(--temp-grey-blue-7);
+}
+
+.thresholdSeparator {
+  height: 14px;
+  width: 2px;
+  border-radius: 1px;
+  background-color: var(--pink);
+}
+
+.sizeNormal .thresholdSeparator {
+  height: 22px;
+}
+
+.borderRadiusSmall .main::-webkit-progress-bar {
+  border-radius: 1px;
+}
+
+.borderRadiusSmall .main::-moz-progress-bar {
+  border-radius: 1px;
+}

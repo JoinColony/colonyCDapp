@@ -1,0 +1,73 @@
+.dropzone {
+  height: 160px;
+  width: 160px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.dropzoneNoButtonsVariant {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 77px;
+  position: relative;
+  overflow: hidden;
+  background-color: color-mod(var(--temp-grey-blue-4) alpha(33%));
+}
+
+.dropzoneNoButtonsVariant:focus {
+  border: 1px solid var(--primary);
+  border-color: var(--primary);
+  border-radius: var(--radius-tiny);
+  outline: none;
+}
+
+.dropzoneNoButtonsVariant > figure {
+  margin-left: 20px;
+}
+
+.dropzoneNoButtonsVariant > button {
+  margin-right: 20px;
+}
+
+.dropzoneNoButtonsVariant > button:visited[aria-busy="false"] {
+  outline: none;
+}
+
+.dropzoneNoButtonsVariant > button:disabled[aria-busy="false"] {
+  color: var(--temp-grey-4);
+}
+
+.disabled {
+  background-color: var(--temp-grey-0);
+}
+
+.filesContainer {
+  height: 100%;
+  width: 100%;
+}
+
+.overlay {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--primary);
+  font-size: var(--size-medium);
+  font-weight: var(--weight-bold);
+  color: white;
+  opacity: 0.7;
+}
+
+.dropzoneAccept .overlay {
+  display: flex;
+}
+
+.buttonContainer {
+  margin-top: 25px;
+}

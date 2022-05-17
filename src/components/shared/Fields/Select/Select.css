@@ -1,0 +1,158 @@
+.baseSelect {
+  padding: 5px 10px;
+  width: auto;
+  width: 100%;
+  position: relative;
+  border: 0;
+  font-size: var(--size-normal);
+  font-style: normal;
+  color: var(--text);
+  transition: none;
+  cursor: pointer;
+  outline-color: var(--primary);
+  outline-width: 1px;
+}
+
+.main {
+  composes: field from '~styles/fields.css';
+}
+
+.selectInner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.select[aria-disabled="true"], .select[aria-busy="true"] {
+  background-color: var(--temp-grey-0);
+  opacity: 0.7;
+}
+
+.select svg {
+  fill: var(--grey-4);
+  stroke: var(--grey-4);
+}
+
+.select[aria-expanded="true"] .selectExpandContainer i {
+  transform: rotate(180deg);
+}
+
+.select[aria-expanded="true"] .selectExpandContainer i svg {
+  fill: var(--colony-blue);
+  stroke: var(--colony-blue);
+}
+
+.selectExpandContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 21px;
+  width: 21px;
+}
+
+.activeOption {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  font-weight: var(--weight-bold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select[aria-expanded="true"] .activeOption,
+.select[aria-expanded="true"]:focus {
+  color: var(--colony-blue);
+}
+
+.select[aria-expanded="false"]:focus {
+  outline-color: var(--colony-blue);
+}
+
+/* themes */
+.themeDefault {
+  composes: baseSelect;
+  border: 1px solid var(--temp-grey-5);
+  background-color: white;
+}
+
+.themeDefault:focus {
+  border-color: var(--primary);
+  outline: 0;
+}
+
+.themeAlt {
+  composes: baseSelect;
+  padding: 10px 0;
+  border: none;
+  border-radius: var(--radius-normal);
+  background-color: transparent;
+  outline: 0;
+}
+
+.themeAlt:active,
+.themeAlt[aria-expanded="true"]:focus {
+  outline: none;
+}
+
+.themeGrey {
+  composes: baseSelect;
+  padding: 10.5px 5px 10.5px 15px;
+  border: 1px solid rgb(200, 214, 245);
+  border-radius: var(--radius-tiny);
+  background-color: rgb(249, 250, 250);
+  color: rgb(60, 68, 77);
+  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.07);
+}
+
+.themeGrey .activeOption {
+  font-weight: var(--weight-normal);
+}
+
+.themeGrid {
+  padding: 11px 14px;
+  border: 1px solid rgb(200, 214, 245);
+  background-color: rgb(249, 250, 250);
+  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.07);
+
+  &:focus {
+    border-color: var(--primary);
+    outline: none;
+  }
+
+  &[aria-disabled="true"] {
+    opacity: 1;
+  }
+}
+
+.widthContent {
+  width: min-content;
+}
+
+.widthFluid {
+  width: 100%;
+}
+
+.widthStrict {
+  width: 100px;
+}
+
+/* sizes */
+
+.sizeMedium,
+.baseSelect.sizeMedium {
+  font-size: var(--size-medium);
+}
+
+.sizeMediumLarge,
+.baseSelect.sizeMediumLarge {
+  font-size: var(--size-medium-l);
+}
+
+.sizeLarge,
+.baseSelect.sizeLarge {
+  font-size: var(--size-large);
+}

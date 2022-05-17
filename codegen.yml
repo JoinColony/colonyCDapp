@@ -1,0 +1,26 @@
+overwrite: true
+schema:
+  - 'http://localhost:3000/graphql':
+      headers:
+        'authorization': 'codegen'
+documents:
+  - 'src/data/graphql/*.graphql'
+  - 'src/data/graphql/queries/*.graphql'
+  - 'src/data/graphql/subscriptions/*.graphql'
+generates:
+  src/data/generated.ts:
+    schema:
+      - 'src/data/graphql/*.ts'
+      - 'src/data/graphql/typeDefs/*.ts'
+    config:
+      skipTypename: true
+    plugins:
+      - 'fragment-matcher'
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+config:
+  skipDocumentsValidation:
+    ignore: [
+      'UniqueInputFieldNamesRule'
+    ]
