@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { ROOT_DOMAIN_ID } from '@colony/colony-js';
-import { AddressZero } from 'ethers/constants';
+import { AddressZero } from '@ethersproject/constants';
 
 import { useUserReputationQuery } from '~data/index';
 import { Address } from '~types/index';

@@ -1,7 +1,7 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, ExtensionClient } from '@colony/colony-js';
-import { AddressZero } from 'ethers/constants';
-import { bigNumberify } from 'ethers/utils';
+import { AddressZero } from '@ethersproject/constants';
+import { BigNumber } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
@@ -55,7 +55,9 @@ function* finalizeMotion({
      * that requires even more gas, but since we don't use that one yet, there's
      * no reason to account for it just yet
      */
-    const estimate = bigNumberify(networkEstimate).add(bigNumberify(100000));
+    const estimate = BigNumber.from(networkEstimate).add(
+      BigNumber.from(100000),
+    );
 
     const { finalizeMotionTransaction } = yield createTransactionChannels(
       meta.id,

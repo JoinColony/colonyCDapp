@@ -1,6 +1,6 @@
 import { eventChannel } from '@redux-saga/core';
 import { take } from '@redux-saga/core/effects';
-import { formatEther } from 'ethers/utils';
+import { formatEther } from 'ethers/lib/utils';
 
 import { TEMP_getContext, ContextModule } from '~context/index';
 import { Address } from '~types/index';

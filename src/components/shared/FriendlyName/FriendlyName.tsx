@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { AddressZero } from 'ethers/constants';
+import { AddressZero } from '@ethersproject/constants';
 
 import { isEmpty } from 'lodash';
 import MaskedAddress from '~shared/MaskedAddress';

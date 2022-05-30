@@ -1,5 +1,5 @@
 import { RefObject } from 'react';
-import { BigNumber } from 'ethers/utils';
+import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '~redux/index';

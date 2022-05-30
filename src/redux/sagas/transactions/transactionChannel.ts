@@ -2,8 +2,8 @@ import {
   Provider,
   TransactionReceipt,
   TransactionResponse,
-} from 'ethers/providers';
-import { poll } from 'ethers/utils';
+} from '@ethersproject/providers';
+import { poll } from 'ethers/lib/utils';
 import { buffers, END, eventChannel } from 'redux-saga';
 import { ContractClient } from '@colony/colony-js';
 

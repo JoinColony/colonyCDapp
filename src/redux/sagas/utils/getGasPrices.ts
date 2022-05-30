@@ -1,5 +1,5 @@
 import { ColonyNetworkClient, Network } from '@colony/colony-js';
-import { bigNumberify } from 'ethers/utils';
+import { BigNumber } from 'ethers';
 import { call, put, select } from 'redux-saga/effects';
 
 import { GasPricesProps } from '../../immutable';
@@ -32,7 +32,7 @@ interface BlockscoutGasStationAPIResponse {
   slow: number;
 }
 
-const DEFAULT_GAS_PRICE = bigNumberify('1000000000');
+const DEFAULT_GAS_PRICE = BigNumber.from('1000000000');
 
 const fetchGasPrices = async (
   networkClient: ColonyNetworkClient,
@@ -74,14 +74,14 @@ const fetchGasPrices = async (
     if (DEFAULT_NETWORK === Network.Mainnet) {
       const data: EthGasStationAPIResponse = await response.json();
       // API prices are in 10Gwei, so they need to be normalised
-      const pointOneGwei = bigNumberify(10 ** 8);
+      const pointOneGwei = BigNumber.from(10 ** 8);
 
       return {
         ...defaultGasPrices,
 
-        suggested: bigNumberify(data.average).mul(pointOneGwei),
-        cheaper: bigNumberify(data.safeLow).mul(pointOneGwei),
-        faster: bigNumberify(data.fast).mul(pointOneGwei),
+        suggested: BigNumber.from(data.average).mul(pointOneGwei),
+        cheaper: BigNumber.from(data.safeLow).mul(pointOneGwei),
+        faster: BigNumber.from(data.fast).mul(pointOneGwei),
 
         suggestedWait: data.avgWait * 60,
         cheaperWait: data.safeLowWait * 60,
@@ -95,7 +95,7 @@ const fetchGasPrices = async (
     ) {
       const data: BlockscoutGasStationAPIResponse = await response.json();
       // API prices are in Gwei, so they need to be normalised
-      const oneGwei = bigNumberify(10 ** 9);
+      const oneGwei = BigNumber.from(10 ** 9);
 
       /*
        * @NOTE Split the values into integer and remainder
@@ -113,13 +113,13 @@ const fetchGasPrices = async (
       return {
         ...defaultGasPrices,
 
-        suggested: bigNumberify(averageInteger)
+        suggested: BigNumber.from(averageInteger)
           .mul(oneGwei)
           .add(String(averageRemainder).padEnd(9, '0')),
-        cheaper: bigNumberify(slowInteger)
+        cheaper: BigNumber.from(slowInteger)
           .mul(oneGwei)
           .add(String(slowRemainder).padEnd(9, '0')),
-        faster: bigNumberify(fastInteger)
+        faster: BigNumber.from(fastInteger)
           .mul(oneGwei)
           .add(String(fastRemainder).padEnd(9, '0')),
       };

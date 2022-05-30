@@ -1,6 +1,6 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { BigNumberish } from 'ethers/utils';
+import { BigNumberish } from 'ethers';
 
 import Heading from '~shared/Heading';
 import { getFormattedTokenValue } from '~utils/tokens';

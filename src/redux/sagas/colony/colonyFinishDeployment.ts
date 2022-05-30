@@ -10,8 +10,8 @@ import {
   ColonyRole,
   TokenClientType,
 } from '@colony/colony-js';
-import { AddressZero } from 'ethers/constants';
-import { poll } from 'ethers/utils';
+import { AddressZero } from '@ethersproject/constants';
+import { poll } from 'ethers/lib/utils';
 
 import { ContextModule, TEMP_getContext } from '~context/index';
 import {

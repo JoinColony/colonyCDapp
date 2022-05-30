@@ -1,5 +1,5 @@
 import { call, put, take } from 'redux-saga/effects';
-import { TransactionResponse } from 'ethers/providers';
+import { TransactionResponse } from '@ethersproject/providers';
 import type { ContractClient, TransactionOverrides } from '@colony/colony-js';
 import { ClientType } from '@colony/colony-js';
 import { Contract } from 'ethers';

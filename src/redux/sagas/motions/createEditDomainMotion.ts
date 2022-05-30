@@ -6,7 +6,7 @@ import {
   getChildIndex,
   ColonyRole,
 } from '@colony/colony-js';
-import { AddressZero } from 'ethers/constants';
+import { AddressZero } from '@ethersproject/constants';
 
 import { ContextModule, TEMP_getContext } from '~context/index';
 import { ActionTypes } from '../../actionTypes';
@@ -120,16 +120,12 @@ function* createEditDomainMotion({
       }),
     );
 
-    const encodedAction = colonyClient.interface.functions[
+    const encodedAction = colonyClient.interface.encodeFunctionData(
       isCreateDomain
         ? 'addDomain(uint256,uint256,uint256,string)'
-        : 'editDomain'
-    ].encode([
-      permissionDomainId,
-      childSkillIndex,
-      domainId,
-      domainMetadataIpfsHash,
-    ]);
+        : 'editDomain',
+      [permissionDomainId, childSkillIndex, domainId, domainMetadataIpfsHash],
+    );
 
     // create transactions
     yield fork(createTransaction, createMotion.id, {

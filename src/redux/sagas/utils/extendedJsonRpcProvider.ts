@@ -1,5 +1,5 @@
-import { JsonRpcProvider, BlockTag } from 'ethers/providers';
-import { poll } from 'ethers/utils';
+import { JsonRpcProvider, BlockTag } from '@ethersproject/providers';
+import { poll } from 'ethers/lib/utils';
 
 export class ExtendedJsonRpcProvider extends JsonRpcProvider {
   _parentGetCode: (
@@ -20,7 +20,7 @@ export class ExtendedJsonRpcProvider extends JsonRpcProvider {
       async () => {
         const result = await this._parentGetCode(addressOrName, blockTag);
         if (result === '0x') {
-          return undefined;
+          return '';
         }
         return result;
       },

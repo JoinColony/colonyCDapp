@@ -1,7 +1,7 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, ExtensionClient } from '@colony/colony-js';
 import { $Values } from 'utility-types';
-import { BigNumber } from 'ethers/utils';
+import { BigNumber } from 'ethers';
 import { isEmpty } from 'lodash';
 
 import { ActionTypes } from '../../actionTypes';

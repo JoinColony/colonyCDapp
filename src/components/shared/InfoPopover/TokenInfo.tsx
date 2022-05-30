@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { addToken } from '@purser/metamask/lib-esm/helpers';
-import { AddressZero } from 'ethers/constants';
+import { AddressZero } from '@ethersproject/constants';
 
 import CopyableAddress from '~shared/CopyableAddress';
 import TokenLink from '~shared/TokenLink';

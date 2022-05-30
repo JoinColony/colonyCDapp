@@ -1,5 +1,5 @@
 import React, { HTMLAttributes, useEffect, useRef } from 'react';
-import { BigNumber } from 'ethers/utils';
+import { BigNumberish } from 'ethers';
 
 import { getMainClasses } from '~utils/css';
 import { numberDisplayFormatter } from '~utils/numbers';
@@ -34,7 +34,7 @@ export interface Props extends HTMLAttributes<HTMLSpanElement> {
   unit?: number | string;
 
   /** Actual value */
-  value: string | BigNumber | number;
+  value: BigNumberish;
 }
 
 const Numeral = ({

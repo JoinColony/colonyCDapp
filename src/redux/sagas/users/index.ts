@@ -1,6 +1,6 @@
 import { call, fork, put, takeLatest } from 'redux-saga/effects';
 import { ClientType, TokenLockingClient } from '@colony/colony-js';
-import { BigNumber } from 'ethers/utils';
+import { BigNumber } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
@@ -241,7 +241,7 @@ function* userDepositToken({
       context: ClientType.TokenClient,
       methodName: 'approve',
       identifier: tokenAddress,
-      params: [tokenLockingClient.address, new BigNumber(amount)],
+      params: [tokenLockingClient.address, BigNumber.from(amount)],
       ready: false,
     });
 
@@ -249,7 +249,7 @@ function* userDepositToken({
       context: ClientType.TokenLockingClient,
       methodName: 'deposit',
       identifier: colonyAddress,
-      params: [tokenAddress, new BigNumber(amount), false],
+      params: [tokenAddress, BigNumber.from(amount), false],
       ready: false,
     });
 
@@ -305,7 +305,7 @@ function* userWithdrawToken({
       context: ClientType.TokenLockingClient,
       methodName: 'withdraw',
       identifier: colonyAddress,
-      params: [tokenAddress, new BigNumber(amount), false],
+      params: [tokenAddress, BigNumber.from(amount), false],
       ready: false,
       group: {
         key: 'withdraw',
