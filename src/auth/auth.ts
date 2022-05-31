@@ -1,15 +1,12 @@
 import jwtDecode from 'jwt-decode';
 
 import { createAddress } from '~utils/web3';
-import { log } from '~utils/debug';
 
-const TOKEN_STORAGE = 'colony-server-token';
+import { getToken, clearToken, setToken } from './token';
+import { URL_AUTH_TOKEN, URL_AUTH_CHALLENGE } from './constants';
 
-const postRequest = async (path: string, data: object, kyc = false) => {
-  const URL = kyc
-    ? process.env.KYC_ORACLE_ENDPOINT
-    : process.env.SERVER_ENDPOINT;
-  const response = await fetch(`${URL}${path}`, {
+const postRequest = async (path: string, data: object) => {
+  const response = await fetch(path, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -17,49 +14,6 @@ const postRequest = async (path: string, data: object, kyc = false) => {
     body: JSON.stringify(data),
   });
   return response.json();
-};
-
-export const setTokenStorage = () =>
-  localStorage.setItem(TOKEN_STORAGE, JSON.stringify({}));
-
-export const setToken = (walletAddress: string, token: string) => {
-  const storedTokens = localStorage.getItem(TOKEN_STORAGE);
-
-  if (!storedTokens) {
-    setTokenStorage();
-  }
-
-  if (storedTokens) {
-    const parsedStoredTokens = JSON.parse(storedTokens);
-
-    parsedStoredTokens[`${TOKEN_STORAGE}-${walletAddress}`] = token;
-
-    localStorage.setItem(TOKEN_STORAGE, JSON.stringify(parsedStoredTokens));
-  }
-};
-
-export const getToken = (walletAddress: string) => {
-  const storedTokens = localStorage.getItem(TOKEN_STORAGE);
-
-  if (storedTokens) {
-    const parsedStoredTokens = JSON.parse(storedTokens);
-
-    return parsedStoredTokens[`${TOKEN_STORAGE}-${walletAddress}`];
-  }
-
-  return null;
-};
-
-export const clearToken = (walletAddress: string) => {
-  const storedTokens = localStorage.getItem(TOKEN_STORAGE);
-
-  if (storedTokens) {
-    const parsedStoredTokens = JSON.parse(storedTokens);
-
-    delete parsedStoredTokens[`${TOKEN_STORAGE}-${walletAddress}`];
-
-    localStorage.setItem(TOKEN_STORAGE, JSON.stringify(parsedStoredTokens));
-  }
 };
 
 export const authenticate = async (wallet) => {
@@ -77,44 +31,22 @@ export const authenticate = async (wallet) => {
       }
     }
   } catch (error) {
-    log.error(error);
-    log.debug(
-      `Found invalid JWT, clearing token for address ${wallet.address}`,
+    console.error(error);
+    console.info(
+      'Found invalid JWT, clearing token for address',
+      wallet.address,
     );
     clearToken(wallet.address);
   }
 
-  const { challenge } = await postRequest('/auth/challenge', {
+  const { challenge } = await postRequest(URL_AUTH_CHALLENGE, {
     address: wallet.address,
   });
   const signature = await wallet.signMessage({ message: challenge });
-  const { token: refreshedToken } = await postRequest('/auth/token', {
+  const { token: refreshedToken } = await postRequest(URL_AUTH_TOKEN, {
     challenge,
     signature,
   });
   setToken(wallet.address, refreshedToken);
   return refreshedToken;
-};
-
-export const authenticateKYC = async (wallet, email = '') => {
-  const { challenge } = await postRequest(
-    '/auth/challenge',
-    {
-      address: wallet.address,
-    },
-    true,
-  );
-  const signature = await wallet.signMessage({
-    message: `${challenge}-${email}`,
-  });
-  const { sessionId } = await postRequest(
-    '/auth/token',
-    {
-      challenge,
-      signature,
-      email,
-    },
-    true,
-  );
-  return sessionId;
 };
