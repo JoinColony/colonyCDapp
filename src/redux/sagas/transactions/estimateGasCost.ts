@@ -72,7 +72,7 @@ export default function* estimateGasCost({
     }
 
     // Estimate the gas limit with the method.
-    const estimatedGas = yield contextClient.estimate[methodName](
+    const estimatedGas = yield contextClient.estimateGas[methodName](
       ...params,
       options,
     );

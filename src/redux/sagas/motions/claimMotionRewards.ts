@@ -64,7 +64,7 @@ function* claimMotionRewards({
            * @NOTE For some reason colonyJS doesn't export types for the estimate methods
            */
           // @ts-ignore
-          await votingReputationClient.estimate.claimRewardWithProofs(
+          await votingReputationClient.estimateGas.claimRewardWithProofs(
             motionId,
             userAddress,
             1,
@@ -85,7 +85,7 @@ function* claimMotionRewards({
            * @NOTE For some reason colonyJS doesn't export types for the estimate methods
            */
           // @ts-ignore
-          await votingReputationClient.estimate.claimRewardWithProofs(
+          await votingReputationClient.estimateGas.claimRewardWithProofs(
             motionId,
             userAddress,
             0,

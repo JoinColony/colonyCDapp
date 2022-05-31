@@ -73,7 +73,7 @@ function* revealVoteMotion({
        * @NOTE For some reason colonyJS doesn't export types for the estimate methods
        */
       // @ts-ignore
-      yield votingReputationClient.estimate.revealVote(
+      yield votingReputationClient.estimateGas.revealVote(
         motionId,
         salt,
         0,
@@ -98,7 +98,7 @@ function* revealVoteMotion({
        * @NOTE For some reason colonyJS doesn't export types for the estimate methods
        */
       // @ts-ignore
-      yield votingReputationClient.estimate.revealVote(
+      yield votingReputationClient.estimateGas.revealVote(
         motionId,
         salt,
         1,
