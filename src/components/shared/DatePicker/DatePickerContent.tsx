@@ -1,10 +1,10 @@
 import React, { ReactNode, useCallback } from 'react';
 // @ts-ignore (version troubles?)
-import DayPicker, { DateUtils } from 'react-day-picker';
+import { DateUtils, DayPicker } from 'react-day-picker';
 
 import { Close } from './DatePicker';
 import CaptionElement from './CaptionElement';
-import NavbarElement from './NavbarElement';
+// import NavbarElement from './NavbarElement';
 
 import styles from './DatePickerContent.css';
 
@@ -53,9 +53,12 @@ const DatePickerContent = ({
         classNames={styles}
         month={currentDate || new Date()}
         onDayClick={handleDayPick}
-        selectedDays={isSelectedDay}
-        captionElement={(props) => <CaptionElement {...props} />}
-        navbarElement={(props) => <NavbarElement {...props} />}
+        selected={isSelectedDay}
+        components={{ Caption: (props) => <CaptionElement {...props} /> }}
+        /* Doesn't work with the new package version and we are not using it anywhere.
+         It's hard to fix it without running the app. SO leaving it here for now for
+         potential fix or removal */
+        // navbarElement={(props) => <NavbarElement {...props} />}
       />
       {typeof renderContentFooter == 'function'
         ? renderContentFooter(close, currentDate)

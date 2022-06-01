@@ -109,7 +109,7 @@ const DatePicker = ({
 
   // Handle what should happen when the popover closes based on current state
   const handlePopoverClose = useCallback(
-    (day, { cancelled } = {}) => {
+    (day, { cancelled }) => {
       // User cancelled using ESC
       if (cancelled) {
         setCurrentDate(value);

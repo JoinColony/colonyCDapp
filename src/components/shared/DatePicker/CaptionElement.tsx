@@ -4,13 +4,13 @@ import { FormattedDate } from 'react-intl';
 import styles from './CaptionElement.css';
 
 interface Props {
-  date: Date;
+  displayMonth: Date;
 }
 
-const CaptionElement = ({ date }: Props) => (
+const CaptionElement = ({ displayMonth }: Props) => (
   <div className={styles.main}>
     <div className={styles.monthName}>
-      <FormattedDate value={date} month="long" year="numeric" />
+      <FormattedDate value={displayMonth} month="long" year="numeric" />
     </div>
   </div>
 );

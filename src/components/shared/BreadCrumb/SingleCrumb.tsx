@@ -1,19 +1,18 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 import NavLink from '~shared/NavLink';
-
-import { CrumbText } from './BreadCrumb';
 
 import styles from './BreadCrumb.css';
 
 interface Props {
-  crumbText: CrumbText;
+  crumbText: string | ReactElement;
   crumbLink?: string;
   lastCrumb?: boolean;
 }
 
 const SingleCrumb = ({ crumbText, crumbLink, lastCrumb }: Props) => {
   const crumbTitle = typeof crumbText === 'string' ? crumbText : '';
+
   if (lastCrumb) {
     return (
       <div className={styles.elementLast} title={crumbTitle}>
