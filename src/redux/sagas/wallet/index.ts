@@ -55,10 +55,7 @@ function* metaMaskWatch(walletAddress: Address) {
 }
 
 function* metamaskSwitchNetwork() {
-  if (
-    DEFAULT_NETWORK === Network.Xdai ||
-    DEFAULT_NETWORK === Network.XdaiFork
-  ) {
+  if (DEFAULT_NETWORK === Network.Xdai || DEFAULT_NETWORK === Network.XdaiQa) {
     const {
       name: chainName,
       chainId,

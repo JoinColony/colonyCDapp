@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
-import { ROOT_DOMAIN_ID } from '@colony/colony-js';
+import { Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
 import { useUserReputationQuery } from '~data/index';
@@ -36,7 +36,7 @@ const displayName = 'MemberReputation';
 const MemberReputation = ({
   walletAddress,
   colonyAddress,
-  domainId = ROOT_DOMAIN_ID,
+  domainId = Id.RootDomain,
   rootHash,
   onReputationLoaded = () => null,
   showIconTitle = true,

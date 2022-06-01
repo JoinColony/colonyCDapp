@@ -5,8 +5,8 @@ import {
   getExtensionHash,
   Extension,
   ClientType,
-  ROOT_DOMAIN_ID,
-  ColonyClient,
+  Id,
+  AnyColonyClient,
   ColonyRole,
   TokenClientType,
 } from '@colony/colony-js';
@@ -72,7 +72,7 @@ function* colonyRestartDeployment({
       );
     }
 
-    const colonyClient: ColonyClient = yield networkClient.getColonyClient(
+    const colonyClient: AnyColonyClient = yield networkClient.getColonyClient(
       colonyAddress,
     );
     const { tokenClient } = colonyClient;
@@ -88,17 +88,17 @@ function* colonyRestartDeployment({
      */
     const hasRootRole = yield colonyClient.hasUserRole(
       walletAddress,
-      ROOT_DOMAIN_ID,
+      Id.RootDomain,
       ColonyRole.Root,
     );
     const hasAdministrationRole = yield colonyClient.hasUserRole(
       walletAddress,
-      ROOT_DOMAIN_ID,
+      Id.RootDomain,
       ColonyRole.Administration,
     );
     const hasRecoveryRole = yield colonyClient.hasUserRole(
       walletAddress,
-      ROOT_DOMAIN_ID,
+      Id.RootDomain,
       ColonyRole.Recovery,
     );
     const isTokenOwner = tokenOwnerAddress === walletAddress;
@@ -153,7 +153,7 @@ function* colonyRestartDeployment({
       if (
         yield colonyClient.hasUserRole(
           oneTxExtensionAddress,
-          ROOT_DOMAIN_ID,
+          Id.RootDomain,
           ColonyRole.Administration,
         )
       ) {
@@ -163,7 +163,7 @@ function* colonyRestartDeployment({
       if (
         yield colonyClient.hasUserRole(
           oneTxExtensionAddress,
-          ROOT_DOMAIN_ID,
+          Id.RootDomain,
           ColonyRole.Funding,
         )
       ) {
@@ -356,7 +356,7 @@ function* colonyRestartDeployment({
       yield put(
         transactionAddParams(setOneTxRoleAdministration.id, [
           extensionAddress,
-          ROOT_DOMAIN_ID,
+          Id.RootDomain,
           true,
         ]),
       );
@@ -372,7 +372,7 @@ function* colonyRestartDeployment({
       yield put(
         transactionAddParams(setOneTxRoleFunding.id, [
           extensionAddress,
-          ROOT_DOMAIN_ID,
+          Id.RootDomain,
           true,
         ]),
       );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ColonyRole, ROOT_DOMAIN_ID } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 
 import { getMainClasses } from '~utils/css';
 import { useTransformer } from '~utils/hooks';
@@ -61,7 +61,7 @@ const Comment = ({
   const rootRoles = useTransformer(getUserRolesForDomain, [
     colony,
     walletAddress,
-    ROOT_DOMAIN_ID,
+    Id.RootDomain,
   ]);
 
   // Check for permissions for comment actions

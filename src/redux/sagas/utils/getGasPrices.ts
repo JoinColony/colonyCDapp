@@ -62,7 +62,7 @@ const fetchGasPrices = async (
     }
     if (
       DEFAULT_NETWORK === Network.Xdai ||
-      DEFAULT_NETWORK === Network.XdaiFork
+      DEFAULT_NETWORK === Network.XdaiQa
     ) {
       response = await fetch(XDAI_GAS_STATION);
     }
@@ -91,7 +91,7 @@ const fetchGasPrices = async (
 
     if (
       DEFAULT_NETWORK === Network.Xdai ||
-      DEFAULT_NETWORK === Network.XdaiFork
+      DEFAULT_NETWORK === Network.XdaiQa
     ) {
       const data: BlockscoutGasStationAPIResponse = await response.json();
       // API prices are in Gwei, so they need to be normalised

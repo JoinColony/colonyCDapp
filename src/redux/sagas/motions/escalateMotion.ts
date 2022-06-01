@@ -1,5 +1,5 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, ROOT_DOMAIN_ID } from '@colony/colony-js';
+import { ClientType, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
 import { ActionTypes } from '../../actionTypes';
@@ -28,7 +28,7 @@ function* escalateMotion({
 
     const { skillId } = yield call(
       [colonyClient, colonyClient.getDomain],
-      ROOT_DOMAIN_ID,
+      Id.RootDomain,
     );
 
     const { key, value, branchMask, siblings } = yield call(
@@ -64,7 +64,7 @@ function* escalateMotion({
          * We can only escalate the motion in a parent domain, and all current
          * sub-domains have ROOT as the parent domain
          */
-        ROOT_DOMAIN_ID,
+        Id.RootDomain,
         key,
         value,
         branchMask,

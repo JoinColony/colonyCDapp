@@ -1,5 +1,5 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, ROOT_DOMAIN_ID } from '@colony/colony-js';
+import { ClientType, Id } from '@colony/colony-js';
 
 import { ContextModule, TEMP_getContext } from '~context/index';
 import {
@@ -36,7 +36,7 @@ function* createDomainAction({
     domainColor,
     domainPurpose,
     annotationMessage,
-    parentId = ROOT_DOMAIN_ID,
+    parentId = Id.RootDomain,
   },
   meta: { id: metaId, history },
   meta,

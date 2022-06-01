@@ -1,5 +1,5 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, ColonyClient } from '@colony/colony-js';
+import { AnyColonyClient, ClientType } from '@colony/colony-js';
 
 import { ContextModule, TEMP_getContext } from '~context/index';
 import {
@@ -58,7 +58,7 @@ function* createMoveFundsAction({
     const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
     const colonyManager = TEMP_getContext(ContextModule.ColonyManager);
 
-    const colonyClient: ColonyClient = yield colonyManager.getClient(
+    const colonyClient: AnyColonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );

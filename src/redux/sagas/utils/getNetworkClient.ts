@@ -49,7 +49,7 @@ export default function* getNetworkClient() {
 
   if (
     process.env.NODE_ENV === 'development' &&
-    DEFAULT_NETWORK === Network.Local
+    DEFAULT_NETWORK === Network.Custom
   ) {
     reputationOracleUrl = new URL(`/reputation`, 'http://localhost:3001');
     return yield call(getColonyNetworkClient, network, signer, {

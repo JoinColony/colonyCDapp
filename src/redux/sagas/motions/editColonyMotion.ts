@@ -1,5 +1,5 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, ROOT_DOMAIN_ID, getChildIndex } from '@colony/colony-js';
+import { ClientType, Id, getChildIndex } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
 import { ContextModule, TEMP_getContext } from '~context/index';
@@ -56,13 +56,13 @@ function* editColonyMotion({
     const childSkillIndex = yield call(
       getChildIndex,
       colonyClient,
-      ROOT_DOMAIN_ID,
-      ROOT_DOMAIN_ID,
+      Id.RootDomain,
+      Id.RootDomain,
     );
 
     const { skillId } = yield call(
       [colonyClient, colonyClient.getDomain],
-      ROOT_DOMAIN_ID,
+      Id.RootDomain,
     );
 
     const { key, value, branchMask, siblings } = yield call(
@@ -126,7 +126,7 @@ function* editColonyMotion({
       methodName: 'createMotion',
       identifier: colonyAddress,
       params: [
-        ROOT_DOMAIN_ID,
+        Id.RootDomain,
         childSkillIndex,
         AddressZero,
         encodedAction,

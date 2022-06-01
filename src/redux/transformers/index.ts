@@ -1,9 +1,4 @@
-import {
-  ColonyRole,
-  ColonyRoles,
-  DomainRoles,
-  ROOT_DOMAIN_ID,
-} from '@colony/colony-js';
+import { ColonyRole, ColonyRoles, DomainRoles, Id } from '@colony/colony-js';
 
 import { Address, UserRolesForDomain } from '~types/index';
 
@@ -113,7 +108,7 @@ export const getAllRootAccounts = (colony): Address[] => {
       ({ domains }) =>
         !!domains.find(
           ({ domainId, roles }) =>
-            domainId === ROOT_DOMAIN_ID && roles.includes(ColonyRole.Root),
+            domainId === Id.RootDomain && roles.includes(ColonyRole.Root),
         ),
     )
     .map(({ address }) => address);

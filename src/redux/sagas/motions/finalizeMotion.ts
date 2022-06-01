@@ -1,5 +1,5 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, ExtensionClient } from '@colony/colony-js';
+import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 
@@ -29,7 +29,7 @@ function* finalizeMotion({
     );
     // @NOTE This line exceeds the max-len but there's no prettier solution
     // eslint-disable-next-line max-len
-    const votingReputationClient: ExtensionClient =
+    const votingReputationClient: AnyVotingReputationClient =
       yield colonyManager.getClient(
         ClientType.VotingReputationClient,
         colonyAddress,

@@ -4,7 +4,7 @@ import {
   ColonyVersion,
   getMoveFundsPermissionProofs,
   getChildIndex,
-  ROOT_DOMAIN_ID,
+  Id,
 } from '@colony/colony-js';
 import { AddressZero, MaxUint256 } from '@ethersproject/constants';
 
@@ -96,13 +96,13 @@ function* moveFundsMotion({
     const motionChildSkillIndex = yield call(
       getChildIndex,
       colonyClient,
-      ROOT_DOMAIN_ID,
-      ROOT_DOMAIN_ID,
+      Id.RootDomain,
+      Id.RootDomain,
     );
 
     const { skillId } = yield call(
       [colonyClient, colonyClient.getDomain],
-      ROOT_DOMAIN_ID,
+      Id.RootDomain,
     );
 
     const { key, value, branchMask, siblings } = yield call(
@@ -146,7 +146,7 @@ function* moveFundsMotion({
       methodName: 'createMotion',
       identifier: colonyAddress,
       params: [
-        ROOT_DOMAIN_ID,
+        Id.RootDomain,
         motionChildSkillIndex,
         AddressZero,
         encodedAction,

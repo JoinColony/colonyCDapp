@@ -1,12 +1,7 @@
 import { $Values } from 'utility-types';
 import { Channel } from 'redux-saga';
 import { all, call, fork, put } from 'redux-saga/effects';
-import {
-  getExtensionHash,
-  Extension,
-  ClientType,
-  ROOT_DOMAIN_ID,
-} from '@colony/colony-js';
+import { getExtensionHash, Extension, ClientType, Id } from '@colony/colony-js';
 import { poll } from 'ethers/lib/utils';
 
 import { ContextModule, TEMP_getContext } from '~context/index';
@@ -482,7 +477,7 @@ function* colonyCreate({
       yield put(
         transactionAddParams(setOneTxRoleAdministration.id, [
           extensionAddress,
-          ROOT_DOMAIN_ID,
+          Id.RootDomain,
           true,
         ]),
       );
@@ -498,7 +493,7 @@ function* colonyCreate({
       yield put(
         transactionAddParams(setOneTxRoleFunding.id, [
           extensionAddress,
-          ROOT_DOMAIN_ID,
+          Id.RootDomain,
           true,
         ]),
       );
