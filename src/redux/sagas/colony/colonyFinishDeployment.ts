@@ -76,7 +76,13 @@ function* colonyRestartDeployment({
       colonyAddress,
     );
     const { tokenClient } = colonyClient;
-    const tokenOwnerAddress = yield tokenClient.owner();
+
+    let isTokenOwner = false;
+    if (tokenClient.tokenClientType === TokenClientType.Colony) {
+      const tokenOwnerAddress = yield tokenClient.owner();
+
+      isTokenOwner = tokenOwnerAddress === walletAddress;
+    }
 
     /*
      * Check if the user **actually** has permissions to restart the colony
@@ -101,7 +107,6 @@ function* colonyRestartDeployment({
       Id.RootDomain,
       ColonyRole.Recovery,
     );
-    const isTokenOwner = tokenOwnerAddress === walletAddress;
 
     if (
       !hasRootRole ||
