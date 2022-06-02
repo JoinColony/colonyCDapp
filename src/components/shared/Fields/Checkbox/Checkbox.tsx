@@ -131,29 +131,31 @@ const Checkbox = ({
 
   return (
     <label className={classNames} htmlFor={elementOnly ? inputId : undefined}>
-      {disabled && tooltipText ? (
-        <Tooltip
-          content={tooltipText}
-          placement="bottom"
-          popperOptions={tooltipPopperOptions}
-        >
-          <div>{checkboxInputContent}</div>
-        </Tooltip>
-      ) : (
-        checkboxInputContent
-      )}
-      {!elementOnly && !!label ? (
-        <InputLabel
-          inputId={inputId}
-          label={label}
-          labelValues={labelValues}
-          help={help}
-          helpValues={helpValues}
-          appearance={{ direction: 'horizontal' }}
-        />
-      ) : (
-        label || children
-      )}
+      <>
+        {disabled && tooltipText ? (
+          <Tooltip
+            content={tooltipText}
+            placement="bottom"
+            popperOptions={tooltipPopperOptions}
+          >
+            <div>{checkboxInputContent}</div>
+          </Tooltip>
+        ) : (
+          checkboxInputContent
+        )}
+        {!elementOnly && !!label ? (
+          <InputLabel
+            inputId={inputId}
+            label={label}
+            labelValues={labelValues}
+            help={help}
+            helpValues={helpValues}
+            appearance={{ direction: 'horizontal' }}
+          />
+        ) : (
+          label || children
+        )}
+      </>
     </label>
   );
 };

@@ -170,15 +170,18 @@ const Popover = ({
 
   const ReferenceContent = useMemo<() => ReactElement>(() => {
     if (typeof children === 'function') {
-      return () =>
-        children({
-          ref: setReferenceElement,
-          id: elementId,
-          isOpen: !!isOpen,
-          open: () => requestOpen(),
-          close,
-          toggle: () => (isOpen ? close() : requestOpen()),
-        });
+      return () => (
+        <>
+          {children({
+            ref: setReferenceElement,
+            id: elementId,
+            isOpen: !!isOpen,
+            open: () => requestOpen(),
+            close,
+            toggle: () => (isOpen ? close() : requestOpen()),
+          })}
+        </>
+      );
     }
     return () =>
       cloneElement<ReferenceElementProps>(children as ReactElement, {

@@ -52,7 +52,7 @@ const NavLink = ({
   return (
     <NavLinkComponent
       to={to}
-      className={({ isActive }) => (isActive ? activeClassName : undefined)}
+      activeClassName={activeClassName}
       title={titleText}
       {...linkProps}
     >

@@ -100,7 +100,7 @@ const CustomRadio = ({
       <div className={styles.content}>
         {label && (
           <span className={styles.label}>
-            {label === 'string' ? (
+            {typeof label === 'string' ? (
               label
             ) : (
               <FormattedMessage {...label} values={labelValues} />
@@ -109,7 +109,7 @@ const CustomRadio = ({
         )}
         {description && (
           <span className={styles.description}>
-            {description === 'string' ? (
+            {typeof description === 'string' ? (
               description
             ) : (
               <FormattedMessage {...description} values={descriptionValues} />

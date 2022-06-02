@@ -14,11 +14,12 @@ interface Props extends HTMLAttributes<any> {
 
 const displayName = 'Tab';
 
-const Tab = ({ className, ...otherProps }: Props) => (
+const Tab = ({ className, tabIndex, ...otherProps }: Props) => (
   <ReactTab
     className={className || styles.main}
     selectedClassName={styles.selected}
     disabledClassName={styles.disabled}
+    tabIndex={tabIndex?.toString()}
     {...otherProps}
   />
 );

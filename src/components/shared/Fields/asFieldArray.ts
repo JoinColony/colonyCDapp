@@ -3,10 +3,17 @@ import { FieldArray, FieldArrayRenderProps } from 'formik';
 
 export type AsFieldArrayEnhancedProps<P> = P & FieldArrayRenderProps;
 
+interface Props {
+  name: string;
+  value?: string;
+  className?: string;
+  disabled?: boolean;
+}
+
 const asFieldArray =
   () =>
   (Component: any) =>
-  ({ name, ...props }: { name: string }) =>
+  ({ name, ...props }: Props) =>
     createElement(FieldArray, {
       name,
       render: (formikProps) =>
