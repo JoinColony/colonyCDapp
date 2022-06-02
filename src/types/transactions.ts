@@ -1,6 +1,5 @@
 import { TransactionReceipt } from '@ethersproject/providers';
-import { BigNumberish } from 'ethers';
-import { TransactionOverrides } from '@colony/colony-js';
+import { BigNumberish, Overrides } from 'ethers';
 
 import { TransactionMultisig } from '~immutable/index';
 
@@ -18,7 +17,7 @@ export interface TxConfig {
   methodContext?: string;
   methodName: string;
   multisig?: boolean | TransactionMultisig;
-  options?: TransactionOverrides;
+  options?: Overrides;
   params?: MethodParams;
   ready?: boolean;
 }
