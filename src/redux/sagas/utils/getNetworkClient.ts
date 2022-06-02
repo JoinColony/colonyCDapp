@@ -2,7 +2,7 @@ import { call } from 'redux-saga/effects';
 import {
   getColonyNetworkClient,
   Network,
-  colonyNetworkAddresses,
+  ColonyNetworkAddress,
 } from '@colony/colony-js';
 import { EthersSigner } from '@purser/signer-ethers';
 
@@ -65,7 +65,7 @@ export default function* getNetworkClient() {
      * and we want to be able to differentiate between them
      */
     networkAddress:
-      process.env.NETWORK_CONTRACT_ADDRESS || colonyNetworkAddresses[network],
+      process.env.NETWORK_CONTRACT_ADDRESS || ColonyNetworkAddress[network],
     reputationOracleEndpoint: reputationOracleUrl.href,
   });
 }
