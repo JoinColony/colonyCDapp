@@ -1,12 +1,6 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import {
-  ClientType,
-  ColonyVersion,
-  getMoveFundsPermissionProofs,
-  getChildIndex,
-  Id,
-} from '@colony/colony-js';
-import { AddressZero, MaxUint256 } from '@ethersproject/constants';
+import { ClientType, getChildIndex, Id } from '@colony/colony-js';
+import { AddressZero } from '@ethersproject/constants';
 
 import { ContextModule, TEMP_getContext } from '~context/index';
 import { ActionTypes } from '../../actionTypes';
@@ -74,24 +68,11 @@ function* moveFundsMotion({
       ClientType.ColonyClient,
       colonyAddress,
     );
-    const votingReputationClient = yield context.getClient(
-      ClientType.VotingReputationClient,
-      colonyAddress,
-    );
 
     const [{ fundingPotId: fromPot }, { fundingPotId: toPot }] = yield all([
       call([colonyClient, colonyClient.getDomain], fromDomainId),
       call([colonyClient, colonyClient.getDomain], toDomainId),
     ]);
-
-    const [permissionDomainId, fromChildSkillIndex, toChildSkillIndex] =
-      yield call(
-        getMoveFundsPermissionProofs,
-        colonyClient,
-        fromPot,
-        toPot,
-        votingReputationClient.address,
-      );
 
     const motionChildSkillIndex = yield call(
       getChildIndex,
@@ -122,22 +103,12 @@ function* moveFundsMotion({
         'annotateMoveFundsMotion',
       ]);
 
-    const isOldVersion =
-      parseInt(version, 10) <= ColonyVersion.CeruleanLightweightSpaceship;
+    const isOldVersion = parseInt(version, 10) <= 6;
     const encodedAction = colonyClient.interface.encodeFunctionData(
       isOldVersion
-        ? `moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)`
-        : 'moveFundsBetweenPots',
-      [
-        ...(isOldVersion ? [] : [permissionDomainId, MaxUint256]),
-        permissionDomainId,
-        fromChildSkillIndex,
-        toChildSkillIndex,
-        fromPot,
-        toPot,
-        amount,
-        tokenAddress,
-      ],
+        ? `moveFundsBetweenPotsWithProofs(uint256,uint256,uint256,address)`
+        : 'moveFundsBetweenPotsWithProofs',
+      [fromPot, toPot, amount, tokenAddress],
     );
 
     // create transactions
