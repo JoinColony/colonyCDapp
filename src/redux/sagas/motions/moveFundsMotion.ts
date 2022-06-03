@@ -6,7 +6,7 @@ import {
   getChildIndex,
   ROOT_DOMAIN_ID,
 } from '@colony/colony-js';
-import { AddressZero, MaxUint256 } from 'ethers/constants';
+import { AddressZero, MaxUint256 } from '@ethersproject/constants';
 
 import { ContextModule, TEMP_getContext } from '~context/index';
 import { ActionTypes } from '../../actionTypes';
@@ -124,20 +124,21 @@ function* moveFundsMotion({
 
     const isOldVersion =
       parseInt(version, 10) <= ColonyVersion.CeruleanLightweightSpaceship;
-    const encodedAction = colonyClient.interface.functions[
+    const encodedAction = colonyClient.interface.encodeFunctionData(
       isOldVersion
         ? `moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)`
-        : 'moveFundsBetweenPots'
-    ].encode([
-      ...(isOldVersion ? [] : [permissionDomainId, MaxUint256]),
-      permissionDomainId,
-      fromChildSkillIndex,
-      toChildSkillIndex,
-      fromPot,
-      toPot,
-      amount,
-      tokenAddress,
-    ]);
+        : 'moveFundsBetweenPots',
+      [
+        ...(isOldVersion ? [] : [permissionDomainId, MaxUint256]),
+        permissionDomainId,
+        fromChildSkillIndex,
+        toChildSkillIndex,
+        fromPot,
+        toPot,
+        amount,
+        tokenAddress,
+      ],
+    );
 
     // create transactions
     yield fork(createTransaction, createMotion.id, {

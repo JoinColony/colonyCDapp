@@ -1,4 +1,4 @@
-import { bigNumberify } from 'ethers/utils';
+import { BigNumber } from 'ethers';
 
 import ganacheAccounts from '~lib/colonyNetwork/ganache-accounts.json';
 import { createAddress } from '~utils/web3';
@@ -11,7 +11,7 @@ describe('User can create actions via UAC', () => {
     cy.getBySel('backButton').click();
 
     cy.get('@totalFunds').then(($totalFunds) => {
-      const totalFunds = bigNumberify($totalFunds.split(',').join(''))
+      const totalFunds = BigNumber.from($totalFunds.split(',').join(''))
         .add(amountToMint)
         .toString();
 
@@ -33,7 +33,7 @@ describe('User can create actions via UAC', () => {
     cy.getBySel('backButton').click();
 
     cy.get('@totalFunds').then(($totalFunds) => {
-      const totalFunds = bigNumberify($totalFunds.split(',').join(''))
+      const totalFunds = BigNumber.from($totalFunds.split(',').join(''))
         .sub(amountToPay)
         .toString();
 
@@ -89,7 +89,7 @@ describe('User can create actions via UAC', () => {
     cy.getBySel('colonyDomainSelectorItem').last().click();
 
     cy.get('@teamFunds').then(($teamFunds) => {
-      const teamFunds = bigNumberify($teamFunds.split(',').join(''))
+      const teamFunds = BigNumber.from($teamFunds.split(',').join(''))
         .add(amountToTransfer)
         .toString();
 

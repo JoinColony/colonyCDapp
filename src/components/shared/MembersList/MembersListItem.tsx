@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { AddressZero } from 'ethers/constants';
+import { AddressZero } from '@ethersproject/constants';
 
 import { createAddress } from '~utils/web3';
 import UserMention from '~shared/UserMention';

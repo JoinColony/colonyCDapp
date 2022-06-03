@@ -1,5 +1,5 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { hexlify, hexZeroPad } from 'ethers/utils';
+import { hexlify, hexZeroPad } from 'ethers/lib/utils';
 import { ClientType } from '@colony/colony-js';
 
 import { ContextModule, TEMP_getContext } from '~context/index';

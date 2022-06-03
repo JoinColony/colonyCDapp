@@ -1,6 +1,6 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, ROOT_DOMAIN_ID } from '@colony/colony-js';
-import { AddressZero } from 'ethers/constants';
+import { AddressZero } from '@ethersproject/constants';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';

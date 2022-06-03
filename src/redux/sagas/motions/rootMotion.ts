@@ -1,6 +1,6 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, ROOT_DOMAIN_ID, getChildIndex } from '@colony/colony-js';
-import { AddressZero } from 'ethers/constants';
+import { AddressZero } from '@ethersproject/constants';
 
 import { ContextModule, TEMP_getContext } from '~context/index';
 import { ActionTypes } from '../../actionTypes';
@@ -53,8 +53,10 @@ function* createRootMotionSaga({
       ROOT_DOMAIN_ID,
     );
 
-    const encodedAction =
-      colonyClient.interface.functions[operationName].encode(motionParams);
+    const encodedAction = colonyClient.interface.encodeFunctionData(
+      operationName,
+      motionParams,
+    );
 
     const { skillId } = yield call(
       [colonyClient, colonyClient.getDomain],

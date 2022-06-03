@@ -1,5 +1,5 @@
-import { InfuraProvider, BlockTag } from 'ethers/providers';
-import { poll } from 'ethers/utils';
+import { InfuraProvider, BlockTag } from '@ethersproject/providers';
+import { poll } from 'ethers/lib/utils';
 
 export class ExtendedInfuraProvider extends InfuraProvider {
   _parentGetCode: (
@@ -20,7 +20,7 @@ export class ExtendedInfuraProvider extends InfuraProvider {
       async () => {
         const result = await this._parentGetCode(addressOrName, blockTag);
         if (result === '0x') {
-          return undefined;
+          return '';
         }
         return result;
       },

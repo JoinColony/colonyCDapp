@@ -5,7 +5,7 @@ import {
   getPermissionProofs,
   ColonyRole,
 } from '@colony/colony-js';
-import { AddressZero } from 'ethers/constants';
+import { AddressZero } from '@ethersproject/constants';
 
 import { ContextModule, TEMP_getContext } from '~context/index';
 import { ActionTypes } from '../../actionTypes';
@@ -116,22 +116,16 @@ function* manageReputationMotion({
 
     if (isSmitingReputation) {
       // eslint-disable-next-line max-len
-      encodedAction =
-        colonyClient.interface.functions.emitDomainReputationPenalty.encode([
-          permissionDomainId,
-          childSkillIndex,
-          domainId,
-          userAddress,
-          amount,
-        ]);
+      encodedAction = colonyClient.interface.encodeFunctionData(
+        'emitDomainReputationPenalty',
+        [permissionDomainId, childSkillIndex, domainId, userAddress, amount],
+      );
     } else {
       // eslint-disable-next-line max-len
-      encodedAction =
-        colonyClient.interface.functions.emitDomainReputationReward.encode([
-          domainId,
-          userAddress,
-          amount,
-        ]);
+      encodedAction = colonyClient.interface.encodeFunctionData(
+        'emitDomainReputationReward',
+        [domainId, userAddress, amount],
+      );
     }
 
     // create transactions

@@ -1,11 +1,13 @@
-import { TransactionReceipt } from 'ethers/providers';
+import { TransactionReceipt } from '@ethersproject/providers';
+
+import { TransactionError, TransactionType } from '~immutable/index';
+import { MethodParams } from '~types/index';
+
 import { ActionTypes } from '../../actionTypes';
 import {
   ActionTypeWithMeta,
   ActionTypeWithPayloadAndMeta,
 } from '../../types/actions';
-import { TransactionError, TransactionType } from '~immutable/index';
-import { MethodParams } from '~types/index';
 
 type WithId = { id: string };
 

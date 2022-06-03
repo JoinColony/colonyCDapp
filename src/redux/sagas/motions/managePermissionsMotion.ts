@@ -6,8 +6,8 @@ import {
   getChildIndex,
   ColonyRole,
 } from '@colony/colony-js';
-import { AddressZero } from 'ethers/constants';
-import { hexlify, hexZeroPad } from 'ethers/utils';
+import { AddressZero } from '@ethersproject/constants';
+import { hexlify, hexZeroPad } from 'ethers/lib/utils';
 
 import { ContextModule, TEMP_getContext } from '~context/index';
 import { ActionTypes } from '../../actionTypes';
@@ -119,13 +119,16 @@ function* managePermissionsMotion({
     const hexString = hexlify(parseInt(roleBitmask, 2));
     const zeroPadHexString = hexZeroPad(hexString, 32);
 
-    const encodedAction = colonyClient.interface.functions.setUserRoles.encode([
-      permissionDomainId,
-      childSkillIndex,
-      userAddress,
-      domainId,
-      zeroPadHexString,
-    ]);
+    const encodedAction = colonyClient.interface.encodeFunctionData(
+      'setUserRoles',
+      [
+        permissionDomainId,
+        childSkillIndex,
+        userAddress,
+        domainId,
+        zeroPadHexString,
+      ],
+    );
 
     // create transactions
     yield fork(createTransaction, createMotion.id, {

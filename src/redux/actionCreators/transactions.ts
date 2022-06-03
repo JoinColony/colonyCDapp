@@ -1,4 +1,4 @@
-import { TransactionReceipt } from 'ethers/providers';
+import { TransactionReceipt } from '@ethersproject/providers';
 
 import { MethodParams, TxConfig } from '~types/index';
 

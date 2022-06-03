@@ -1,6 +1,6 @@
 import { call, put, takeEvery, fork } from 'redux-saga/effects';
+import { BigNumber } from 'ethers';
 
-import { bigNumberify } from 'ethers/utils';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import { ExtendedReduxContext } from '~types/index';
@@ -34,7 +34,7 @@ function* unwrapToken({
       context: ExtendedReduxContext.WrappedToken,
       methodName: 'withdraw',
       identifier: process.env.META_WRAPPED_TOKEN_ADDRESS,
-      params: [bigNumberify(amount)],
+      params: [BigNumber.from(amount)],
     });
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);

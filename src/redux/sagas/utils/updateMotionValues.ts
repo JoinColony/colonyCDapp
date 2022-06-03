@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers/utils';
+import { BigNumber } from 'ethers';
 import { ClientType } from '@colony/colony-js';
 
 import { TEMP_getContext, ContextModule } from '~context/index';

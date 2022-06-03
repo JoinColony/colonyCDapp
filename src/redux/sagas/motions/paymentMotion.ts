@@ -4,8 +4,8 @@ import {
   getExtensionPermissionProofs,
   getChildIndex,
 } from '@colony/colony-js';
-import { AddressZero } from 'ethers/constants';
-import { bigNumberify } from 'ethers/utils';
+import { AddressZero } from '@ethersproject/constants';
+import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
 import { ContextModule, TEMP_getContext } from '~context/index';
@@ -109,25 +109,25 @@ function* createPaymentMotion({
     const { amount, tokenAddress, decimals = 18 } = singlePayment;
 
     // eslint-disable-next-line max-len
-    const encodedAction =
-      oneTxPaymentClient.interface.functions.makePaymentFundedFromDomain.encode(
-        [
-          extensionPDID,
-          extensionCSI,
-          votingReputationPDID,
-          votingReputationCSI,
-          [recipientAddress],
-          [tokenAddress],
-          [bigNumberify(moveDecimal(amount, decimals))],
-          domainId,
-          /*
-           * NOTE Always make the payment in the global skill 0
-           * This will make it so that the user only receives reputation in the
-           * above domain, but none in the skill itself.
-           */
-          0,
-        ],
-      );
+    const encodedAction = oneTxPaymentClient.interface.encodeFunctionData(
+      'makePaymentFundedFromDomain',
+      [
+        extensionPDID,
+        extensionCSI,
+        votingReputationPDID,
+        votingReputationCSI,
+        [recipientAddress],
+        [tokenAddress],
+        [BigNumber.from(moveDecimal(amount, decimals))],
+        domainId,
+        /*
+         * NOTE Always make the payment in the global skill 0
+         * This will make it so that the user only receives reputation in the
+         * above domain, but none in the skill itself.
+         */
+        0,
+      ],
+    );
 
     const { skillId } = yield call(
       [colonyClient, colonyClient.getDomain],

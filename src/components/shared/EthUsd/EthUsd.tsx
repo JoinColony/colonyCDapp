@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { BigNumber, parseUnits } from 'ethers/utils';
+import { BigNumber } from 'ethers';
+import { parseUnits } from 'ethers/lib/utils';
 import { defineMessages, useIntl } from 'react-intl';
 import { Network } from '@colony/colony-js';
 

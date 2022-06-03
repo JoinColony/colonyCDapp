@@ -1,5 +1,5 @@
 import { fork } from 'redux-saga/effects';
-import { bigNumberify } from 'ethers/utils';
+import { BigNumber } from 'ethers';
 
 import { TxConfig } from '~types/index';
 import {
@@ -28,7 +28,7 @@ export const removeOldExtensionClients = (
 export const modifyParams = (params, payload) =>
   params.map(({ paramName }) => {
     if (typeof payload[paramName] === 'number') {
-      return bigNumberify(String(payload[paramName]));
+      return BigNumber.from(String(payload[paramName]));
     }
     return payload[paramName];
   });

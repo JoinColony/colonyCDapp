@@ -1,7 +1,6 @@
 import { call, put } from 'redux-saga/effects';
-import { bigNumberify } from 'ethers/utils';
 import { ClientType, ContractClient } from '@colony/colony-js';
-import { Contract } from 'ethers';
+import { BigNumber, Contract } from 'ethers';
 import abis from '@colony/colony-js/lib-esm/abis';
 
 import { ActionTypes } from '../../actionTypes';
@@ -24,7 +23,7 @@ import {
  * estimateGas'd it, which might cause it to still work, but use a bit more gas
  */
 // Plus 10%
-const SAFE_GAS_LIMIT_MULTIPLIER = bigNumberify(10);
+const SAFE_GAS_LIMIT_MULTIPLIER = BigNumber.from(10);
 
 export default function* estimateGasCost({
   meta: { id },
@@ -73,7 +72,7 @@ export default function* estimateGasCost({
     }
 
     // Estimate the gas limit with the method.
-    const estimatedGas = yield contextClient.estimate[methodName](
+    const estimatedGas = yield contextClient.estimateGas[methodName](
       ...params,
       options,
     );

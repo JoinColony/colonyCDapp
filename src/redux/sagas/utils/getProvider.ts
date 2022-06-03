@@ -1,5 +1,6 @@
-import { Provider } from 'ethers/providers';
+import { Provider } from '@ethersproject/providers';
 import { Network } from '@colony/colony-js';
+
 import { ExtendedInfuraProvider } from './extendedInfuraProvider';
 import { ExtendedJsonRpcProvider } from './extendedJsonRpcProvider';
 

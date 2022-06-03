@@ -1,6 +1,6 @@
 import React from 'react';
 import isEmpty from 'lodash/isEmpty';
-import { bigNumberify } from 'ethers/utils';
+import { BigNumber } from 'ethers';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import Tag from '~shared/Tag';
@@ -93,9 +93,9 @@ const MemberInfoPopover = ({
   }
   const nativeToken = userBalanceData?.user.userLock.nativeToken;
   const userLock = userBalanceData?.user.userLock;
-  const inactiveBalance = bigNumberify(userLock?.nativeToken?.balance || 0);
-  const lockedBalance = bigNumberify(userLock?.totalObligation || 0);
-  const activeBalance = bigNumberify(userLock?.activeTokens || 0);
+  const inactiveBalance = BigNumber.from(userLock?.nativeToken?.balance || 0);
+  const lockedBalance = BigNumber.from(userLock?.totalObligation || 0);
+  const activeBalance = BigNumber.from(userLock?.activeTokens || 0);
 
   const totalBalance = inactiveBalance.add(activeBalance).add(lockedBalance);
 

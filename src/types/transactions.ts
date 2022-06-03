@@ -1,5 +1,5 @@
-import { TransactionReceipt } from 'ethers/providers';
-import { BigNumberish } from 'ethers/utils';
+import { TransactionReceipt } from '@ethersproject/providers';
+import { BigNumberish } from 'ethers';
 import { TransactionOverrides } from '@colony/colony-js';
 
 import { TransactionMultisig } from '~immutable/index';

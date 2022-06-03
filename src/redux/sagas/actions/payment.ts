@@ -1,5 +1,5 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { bigNumberify } from 'ethers/utils';
+import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { ClientType } from '@colony/colony-js';
 
@@ -111,7 +111,7 @@ function* createPaymentAction({
       params: [
         [recipientAddress],
         [tokenAddress],
-        [bigNumberify(moveDecimal(amount, decimals))],
+        [BigNumber.from(moveDecimal(amount, decimals))],
         domainId,
         /*
          * NOTE Always make the payment in the global skill 0

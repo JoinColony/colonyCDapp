@@ -1,8 +1,8 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, FormattedNumber } from 'react-intl';
 import cx from 'classnames';
-import { bigNumberify } from 'ethers/utils';
-import { AddressZero } from 'ethers/constants';
+import { BigNumber } from 'ethers';
+import { AddressZero } from '@ethersproject/constants';
 import moveDecimal from 'move-decimal-point';
 import InfoPopover from '~shared/InfoPopover';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
@@ -78,7 +78,7 @@ const PayoutsList = ({
                   })}
                   suffix={token.symbol}
                   unit={getTokenDecimalsWithFallback(token.decimals)}
-                  value={bigNumberify(
+                  value={BigNumber.from(
                     moveDecimal(
                       amount,
                       getTokenDecimalsWithFallback(token.decimals),
@@ -100,7 +100,7 @@ const PayoutsList = ({
                     [styles.native]: token.address === nativeTokenAddress,
                   })}
                   key={token.address}
-                  value={bigNumberify(
+                  value={BigNumber.from(
                     moveDecimal(
                       amount,
                       getTokenDecimalsWithFallback(token.decimals),

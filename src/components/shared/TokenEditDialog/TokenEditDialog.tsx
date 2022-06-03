@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { ColonyRole } from '@colony/colony-js';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { AddressZero } from 'ethers/constants';
+import { AddressZero } from '@ethersproject/constants';
 import isEqual from 'lodash/isEqual';
 import { FormikProps } from 'formik';
 

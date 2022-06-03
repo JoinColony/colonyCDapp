@@ -1,4 +1,4 @@
-import { bigNumberify } from 'ethers/utils';
+import { BigNumber } from 'ethers';
 import { Extension } from '@colony/colony-js';
 
 import ganacheAccounts from '~lib/colonyNetwork/ganache-accounts.json';
@@ -167,7 +167,7 @@ describe('User can create motions via UAC', () => {
     cy.getBySel('claimForColonyButton', { timeout: 100000 }).click().wait(5000);
 
     cy.get('@totalFunds').then(($totalFunds) => {
-      const totalFunds = bigNumberify($totalFunds.split(',').join(''))
+      const totalFunds = BigNumber.from($totalFunds.split(',').join(''))
         .add(amountToMint)
         .toString();
 

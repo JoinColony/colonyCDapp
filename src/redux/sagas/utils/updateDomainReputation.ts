@@ -1,4 +1,4 @@
-import { AddressZero } from 'ethers/constants';
+import { AddressZero } from '@ethersproject/constants';
 
 import { ContextModule, TEMP_getContext } from '~context/index';
 import {

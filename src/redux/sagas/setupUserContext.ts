@@ -1,5 +1,5 @@
 import { all, call, fork, put } from 'redux-saga/effects';
-import { formatEther } from 'ethers/utils';
+import { formatEther } from 'ethers/lib/utils';
 import userflow from 'userflow.js';
 
 import { WalletMethod } from '../immutable';

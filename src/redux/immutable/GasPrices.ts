@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers/utils';
+import { BigNumber } from 'ethers';
 import { Record } from 'immutable';
 
 import { DefaultValues, RecordToJS } from '~types/index';
@@ -30,7 +30,7 @@ const defaultValues: DefaultValues<GasPricesProps> = {
   /**
    * 1 Gwei converted into wei
    */
-  fixed: new BigNumber('1000000000'),
+  fixed: BigNumber.from('1000000000'),
   fixedWait: 5,
   timestamp: undefined,
 };

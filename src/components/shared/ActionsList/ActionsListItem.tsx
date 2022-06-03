@@ -1,5 +1,6 @@
 import React, { useMemo, useCallback, useEffect } from 'react';
-import { bigNumberify, BigNumberish } from 'ethers/utils';
+import { BigNumber, BigNumberish } from 'ethers';
+import { AddressZero } from '@ethersproject/constants';
 import {
   FormattedDateParts,
   FormattedMessage,
@@ -8,7 +9,6 @@ import {
 } from 'react-intl';
 import { ColonyRoles } from '@colony/colony-js';
 import Decimal from 'decimal.js';
-import { AddressZero } from 'ethers/constants';
 
 import HookedUserAvatar from '~users/HookedUserAvatar';
 import Numeral, { AbbreviatedNumeral } from '~shared/Numeral';
@@ -169,9 +169,9 @@ const ActionsListItem = ({
     [handleOnClick, id, transactionHash],
   );
 
-  const totalNayStakeValue = bigNumberify(totalNayStake || 0);
+  const totalNayStakeValue = BigNumber.from(totalNayStake || 0);
   const isFullyNayStaked = totalNayStakeValue.gte(
-    bigNumberify(requiredStake || 0),
+    BigNumber.from(requiredStake || 0),
   );
 
   let domainName;
@@ -210,14 +210,14 @@ const ActionsListItem = ({
 
   const { feeInverse: networkFeeInverse } = useNetworkContracts();
   const feePercentage = networkFeeInverse
-    ? bigNumberify(100).div(networkFeeInverse)
+    ? BigNumber.from(100).div(networkFeeInverse)
     : undefined;
 
   // In case it is a Payment Motion or Action, calculate the payment the recipient gets, after network fees
   const paymentReceivedFn = feePercentage
     ? (paymentAmount: BigNumberish) =>
-        bigNumberify(paymentAmount)
-          .mul(bigNumberify(100).sub(feePercentage))
+        BigNumber.from(paymentAmount)
+          .mul(BigNumber.from(100).sub(feePercentage))
           .div(100)
     : (x: any) => x;
 
