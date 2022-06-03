@@ -5,6 +5,7 @@ A interation of the Colony Dapp sporting both a fully decentralized operating mo
 ## Prerequisites
 * `node` `v14.18.x` (Best use [nvm](https://github.com/nvm-sh/nvm))
 * `npm` `v8.x.x`
+* `yarn` `v1.22.x`
 * `jq` (See [install instructions](https://github.com/stedolan/jq/wiki/Installation))
 
 **Deprecated**

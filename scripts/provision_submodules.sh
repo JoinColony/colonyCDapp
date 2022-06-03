@@ -36,7 +36,7 @@ REPUTATIONMONITOR="reputationMonitor"
 
 ROOT_PATH=$(pwd)
 
-YARN="${ROOT_PATH}/node_modules/.bin/yarn"
+YARN="yarn"
 
 log() {
   # Colors
