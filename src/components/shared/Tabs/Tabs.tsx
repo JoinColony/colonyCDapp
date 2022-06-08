@@ -15,7 +15,7 @@ interface Props {
   defaultIndex?: number;
 
   /** Register a callback that will receive the underlying DOM node for every mount */
-  innerRef?: (node: HTMLElement | null) => void;
+  innerRef?: (node: HTMLElement | undefined) => void;
 
   /** By default only the current active tab will be rendered to DOM. If set to true all tabs will be rendered to the DOM always. */
   forceRenderTabPanel?: boolean;

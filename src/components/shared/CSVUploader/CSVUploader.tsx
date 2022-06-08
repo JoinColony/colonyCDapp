@@ -15,7 +15,9 @@ interface Props {
   setProcessingData: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MIME_TYPES = ['text/csv'];
+const MIME_TYPES = {
+  text: ['.csv'],
+};
 
 const CSVUploader = ({
   name,

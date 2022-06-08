@@ -37,11 +37,14 @@ const MiniSpinnerLoader = ({
         />
       )}
       <SpinnerLoader appearance={appearance} />
-      {loadingText && (
-        <span className={loadingTextClassName || styles.loadingText}>
-          <FormattedMessage {...loadingText} />
-        </span>
-      )}
+      {loadingText &&
+        (typeof loadingText === 'string' ? (
+          loadingText
+        ) : (
+          <span className={loadingTextClassName || styles.loadingText}>
+            <FormattedMessage {...loadingText} />
+          </span>
+        ))}
     </div>
   );
 };

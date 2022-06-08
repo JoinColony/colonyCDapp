@@ -108,7 +108,7 @@ const validateFile: ValidateFileFn = (value) =>
 const FileUpload = ({
   children,
   classNames = styles,
-  dropzoneOptions: { accept: acceptProp, disabled, ...dropzoneOptions } = {},
+  dropzoneOptions: { accept: acceptProp, disabled, ...dropzoneOptions },
   elementOnly,
   extra,
   form: { errors, resetForm, values },

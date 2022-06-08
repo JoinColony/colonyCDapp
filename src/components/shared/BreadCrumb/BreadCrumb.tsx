@@ -20,7 +20,7 @@ const BreadCrumb = ({ elements }: Props) => {
     <div className={styles.main}>
       {elements.map((crumb, i) => {
         let crumbLink: string;
-        let crumbText: CrumbText;
+        let crumbText: string | ReactElement;
         if (Array.isArray(crumb)) {
           /*
            * It's a react element or a string, we handle both cases the same

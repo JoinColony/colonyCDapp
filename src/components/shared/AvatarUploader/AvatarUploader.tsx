@@ -28,7 +28,9 @@ const MSG = defineMessages({
   },
 });
 
-export const ACCEPTED_MIME_TYPES: string[] = ['image/png', 'image/svg+xml'];
+export const ACCEPTED_MIME_TYPES = {
+  'image/*': ['.png', 'svg+xml'],
+};
 
 export const ACCEPTED_MAX_FILE_SIZE = 1048576; // 1 Mb
 

@@ -68,7 +68,7 @@ const PermissionsLabel = ({
     <Tooltip
       content={
         <div className={styles.tooltip}>
-          {infoMessage && infoMessage === 'string' ? (
+          {infoMessage && typeof infoMessage === 'string' ? (
             infoMessage
           ) : (
             <FormattedMessage {...infoMessage} values={infoMessageValues} />

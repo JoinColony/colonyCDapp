@@ -1,13 +1,15 @@
 import { createElement } from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import ReactModal from 'react-modal';
 import userflow from 'userflow.js';
 
 const rootNode = document.getElementById('root');
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const root = createRoot(rootNode!);
 
 if (rootNode) {
   ReactModal.setAppElement(rootNode);
-  render(createElement('div'), rootNode);
+  root.render(createElement('div'));
 }
 
 // @ts-ignore

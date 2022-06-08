@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { isValidElement } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import NavLink from '~shared/NavLink';
 
 import { CrumbText } from './BreadCrumb';
-
 import styles from './BreadCrumb.css';
 
 interface Props {
@@ -14,16 +14,23 @@ interface Props {
 
 const SingleCrumb = ({ crumbText, crumbLink, lastCrumb }: Props) => {
   const crumbTitle = typeof crumbText === 'string' ? crumbText : '';
+  const text =
+    typeof crumbText === 'string' || isValidElement(crumbText) ? (
+      crumbText
+    ) : (
+      <FormattedMessage {...crumbText} />
+    );
+
   if (lastCrumb) {
     return (
       <div className={styles.elementLast} title={crumbTitle}>
         <span className={styles.breadCrumble}>
           {crumbLink ? (
             <NavLink className={styles.invisibleLink} to={crumbLink}>
-              {crumbText}
+              {text}
             </NavLink>
           ) : (
-            crumbText
+            text
           )}
         </span>
       </div>
@@ -34,10 +41,10 @@ const SingleCrumb = ({ crumbText, crumbLink, lastCrumb }: Props) => {
       <span className={styles.breadCrumble}>
         {crumbLink ? (
           <NavLink className={styles.invisibleLink} to={crumbLink}>
-            {crumbText}
+            {text}
           </NavLink>
         ) : (
-          crumbText
+          text
         )}
       </span>
       <span className={styles.arrow}>&gt;</span>
