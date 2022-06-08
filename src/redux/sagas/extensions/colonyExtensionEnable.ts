@@ -1,5 +1,5 @@
 import { all, call, takeEvery } from 'redux-saga/effects';
-import { ClientType, ROOT_DOMAIN_ID } from '@colony/colony-js';
+import { ClientType, Id } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
@@ -70,7 +70,7 @@ function* colonyExtensionEnable({
         const bytes32Roles = intArrayToBytes32(details.missingPermissions);
         additionalChannels.setUserRolesWithProofs = {
           context: ClientType.ColonyClient,
-          params: [address, ROOT_DOMAIN_ID, bytes32Roles],
+          params: [address, Id.RootDomain, bytes32Roles],
         };
       }
 

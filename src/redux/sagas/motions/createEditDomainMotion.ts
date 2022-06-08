@@ -1,7 +1,7 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import {
   ClientType,
-  ROOT_DOMAIN_ID,
+  Id,
   getPermissionProofs,
   getChildIndex,
   ColonyRole,
@@ -40,7 +40,7 @@ function* createEditDomainMotion({
     annotationMessage,
     domainId: editDomainId,
     isCreateDomain,
-    parentId = ROOT_DOMAIN_ID,
+    parentId = Id.RootDomain,
     motionDomainId,
   },
   meta: { id: metaId, history },

@@ -1,5 +1,5 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, ExtensionClient } from '@colony/colony-js';
+import { ClientType, AnyVotingReputationClient } from '@colony/colony-js';
 import { soliditySha3Raw } from 'web3-utils';
 
 import { ActionTypes } from '../../actionTypes';
@@ -29,7 +29,7 @@ function* revealVoteMotion({
     );
     // @NOTE This line exceeds the max-len but there's no prettier solution
     // eslint-disable-next-line max-len
-    const votingReputationClient: ExtensionClient =
+    const votingReputationClient: AnyVotingReputationClient =
       yield colonyManager.getClient(
         ClientType.VotingReputationClient,
         colonyAddress,

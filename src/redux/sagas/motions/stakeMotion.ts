@@ -1,5 +1,5 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, ExtensionClient } from '@colony/colony-js';
+import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
@@ -39,10 +39,8 @@ function* stakeMotion({
 
     // @NOTE This line exceeds the max-len but there's no prettier solution
     // eslint-disable-next-line max-len
-    const votingReputationClient: ExtensionClient = yield context.getClient(
-      ClientType.VotingReputationClient,
-      colonyAddress,
-    );
+    const votingReputationClient: AnyVotingReputationClient =
+      yield context.getClient(ClientType.VotingReputationClient, colonyAddress);
 
     const { domainId, rootHash } = yield votingReputationClient.getMotion(
       motionId,

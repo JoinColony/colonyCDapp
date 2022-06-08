@@ -1,7 +1,7 @@
 import { Record } from 'immutable';
-import { BigNumber } from 'ethers';
+import { BigNumber, Overrides } from 'ethers';
 import { TransactionReceipt } from '@ethersproject/providers';
-import { ClientType, TransactionOverrides } from '@colony/colony-js';
+import { ClientType } from '@colony/colony-js';
 
 import {
   AddressOrENSName,
@@ -52,7 +52,7 @@ export interface TransactionRecordProps {
   identifier?: AddressOrENSName;
   methodContext?: string; // Context in which method is used e.g. setOneTxRole
   methodName: string;
-  options: TransactionOverrides;
+  options: Overrides;
   params: MethodParams;
   receipt?: TransactionReceipt;
   status: TRANSACTION_STATUSES;

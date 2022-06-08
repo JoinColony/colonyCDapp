@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects';
-import { ClientType, ContractClient } from '@colony/colony-js';
+import { ClientType } from '@colony/colony-js';
 import { BigNumber, Contract } from 'ethers';
 import abis from '@colony/colony-js/lib-esm/abis';
 
@@ -40,7 +40,7 @@ export default function* estimateGasCost({
     }: TransactionRecordProps = yield selectAsJS(oneTransaction, id);
     const colonyManager = TEMP_getContext(ContextModule.ColonyManager);
 
-    let contextClient: ContractClient;
+    let contextClient: Contract;
     if (context === ClientType.TokenClient) {
       contextClient = yield colonyManager.getTokenClient(identifier as string);
     } else if (

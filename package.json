@@ -2,7 +2,7 @@
   "name": "colony-cdapp",
   "private": true,
   "engines": {
-    "node": "14.18",
+    "node": "16.14",
     "npm": "^8"
   },
   "version": "5.0.0-alpha.0",
@@ -136,7 +136,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.0.2",
-    "@colony/colony-js": "^4.1.2",
+    "@colony/colony-js": "^5.1.1",
     "@colony/redux-promise-listener": "^1.2.0",
     "@formatjs/intl-pluralrules": "^1.5.7",
     "@formatjs/intl-relativetimeformat": "^4.5.14",

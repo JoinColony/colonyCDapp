@@ -1,7 +1,7 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import {
   ClientType,
-  ROOT_DOMAIN_ID,
+  Id,
   getPermissionProofs,
   getChildIndex,
   ColonyRole,
@@ -74,7 +74,7 @@ function* managePermissionsMotion({
       getPermissionProofs,
       colonyClient,
       domainId,
-      domainId === ROOT_DOMAIN_ID ? ColonyRole.Root : ColonyRole.Architecture,
+      domainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture,
       votingReputationClient.address,
     );
 

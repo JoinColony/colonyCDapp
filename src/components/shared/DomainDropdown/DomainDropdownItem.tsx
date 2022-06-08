@@ -1,4 +1,4 @@
-import { ROOT_DOMAIN_ID } from '@colony/colony-js';
+import { Id } from '@colony/colony-js';
 import React, {
   KeyboardEventHandler,
   MouseEventHandler,
@@ -106,7 +106,7 @@ const DomainDropdownItem = ({
               text={name}
             />
           </div>
-          {ethDomainId === ROOT_DOMAIN_ID && (
+          {ethDomainId === Id.RootDomain && (
             <div className={styles.rootText}>
               <FormattedMessage {...MSG.rootDomain} />
             </div>
@@ -131,7 +131,7 @@ const DomainDropdownItem = ({
            * - we haven't provider a `onDomainEdit` method
            */
           ethDomainId !== COLONY_TOTAL_BALANCE_DOMAIN_ID &&
-            ethDomainId !== ROOT_DOMAIN_ID &&
+            ethDomainId !== Id.RootDomain &&
             onDomainEdit && (
               <div className={styles.editButton}>
                 <Button

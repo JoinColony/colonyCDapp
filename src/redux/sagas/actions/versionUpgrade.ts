@@ -1,5 +1,5 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, ColonyVersion } from '@colony/colony-js';
+import { ClientType } from '@colony/colony-js';
 
 import { ContextModule, TEMP_getContext } from '~context/index';
 import {
@@ -45,8 +45,7 @@ function* createVersionUpgradeAction({
       throw new Error('Colony has the newest version');
     }
 
-    const supportAnnotation =
-      currentVersion >= ColonyVersion.LightweightSpaceship && annotationMessage;
+    const supportAnnotation = currentVersion >= 5 && annotationMessage;
 
     txChannel = yield call(getTxChannel, metaId);
 

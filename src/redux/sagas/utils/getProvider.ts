@@ -12,13 +12,13 @@ import { DEFAULT_NETWORK } from '~constants';
 const getProvider = (): Provider => {
   const network = DEFAULT_NETWORK as Network;
 
-  if (network === Network.Local) {
+  if (network === Network.Custom) {
     return new ExtendedJsonRpcProvider();
   }
   if (network === Network.Xdai) {
     return new ExtendedJsonRpcProvider(process.env.RPC_URL);
   }
-  if (network === Network.XdaiFork) {
+  if (network === Network.XdaiQa) {
     return new ExtendedJsonRpcProvider(process.env.RPC_URL);
   }
   return new ExtendedInfuraProvider(network, process.env.INFURA_ID);

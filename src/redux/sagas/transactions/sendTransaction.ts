@@ -1,8 +1,7 @@
 import { call, put, take } from 'redux-saga/effects';
 import { TransactionResponse } from '@ethersproject/providers';
-import type { ContractClient, TransactionOverrides } from '@colony/colony-js';
 import { ClientType } from '@colony/colony-js';
-import { Contract } from 'ethers';
+import { Contract, Overrides } from 'ethers';
 import abis from '@colony/colony-js/lib-esm/abis';
 
 import { ActionTypes } from '../../actionTypes';
@@ -24,7 +23,7 @@ import transactionChannel from './transactionChannel';
  */
 async function getMethodTransactionPromise(
   // @TODO this is not great but I feel like we will replace this anyways at some point
-  client: ContractClient,
+  client: Contract,
   tx: TransactionRecord,
 ): Promise<TransactionResponse> {
   const {
@@ -38,7 +37,7 @@ async function getMethodTransactionPromise(
     gasLimit,
     gasPrice,
   } = tx;
-  const sendOptions: TransactionOverrides = {
+  const sendOptions: Overrides = {
     gasLimit: gasLimitOverride || gasLimit,
     gasPrice: gasPriceOverride || gasPrice,
     ...restOptions,
@@ -58,7 +57,7 @@ export default function* sendTransaction({
   }
   const colonyManager = TEMP_getContext(ContextModule.ColonyManager);
 
-  let contextClient: ContractClient;
+  let contextClient: Contract;
   if (context === ClientType.TokenClient) {
     contextClient = yield colonyManager.getTokenClient(identifier as string);
   } else if (

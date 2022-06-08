@@ -5,7 +5,7 @@ import {
 } from '@ethersproject/providers';
 import { poll } from 'ethers/lib/utils';
 import { buffers, END, eventChannel } from 'redux-saga';
-import { ContractClient } from '@colony/colony-js';
+import { Contract } from 'ethers';
 
 import { MethodParams, RequireProps } from '~types/index';
 import { TransactionRecord } from '../../immutable';
@@ -30,10 +30,7 @@ type TxSucceededEvent = {
   deployedContractAddress?: string;
 };
 
-const parseEventData = (
-  client: ContractClient,
-  receipt: TransactionReceipt,
-) => {
+const parseEventData = (client: Contract, receipt: TransactionReceipt) => {
   const parsedLogs =
     receipt && receipt.logs
       ? receipt.logs.map((log) => client.interface.parseLog(log))
@@ -105,7 +102,7 @@ const channelGetTransactionReceipt = async (
 const channelGetEventData = async (
   { id, params }: TransactionRecord,
   receipt: TransactionReceipt,
-  client: ContractClient,
+  client: Contract,
   emit,
 ) => {
   try {
@@ -131,7 +128,7 @@ const channelGetEventData = async (
 const channelStart = async (
   tx: TransactionRecord,
   txPromise: Promise<TransactionResponse>,
-  client: ContractClient,
+  client: Contract,
   emit,
 ) => {
   try {
@@ -178,7 +175,7 @@ const channelStart = async (
 const transactionChannel = (
   txPromise: Promise<TransactionResponse>,
   tx: TransactionRecord,
-  client: ContractClient,
+  client: Contract,
 ) =>
   eventChannel((emit) => {
     channelStart(tx, txPromise, client, emit);

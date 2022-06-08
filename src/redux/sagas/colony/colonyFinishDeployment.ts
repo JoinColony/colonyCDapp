@@ -5,8 +5,8 @@ import {
   getExtensionHash,
   Extension,
   ClientType,
-  ROOT_DOMAIN_ID,
-  ColonyClient,
+  Id,
+  AnyColonyClient,
   ColonyRole,
   TokenClientType,
 } from '@colony/colony-js';
@@ -72,11 +72,17 @@ function* colonyRestartDeployment({
       );
     }
 
-    const colonyClient: ColonyClient = yield networkClient.getColonyClient(
+    const colonyClient: AnyColonyClient = yield networkClient.getColonyClient(
       colonyAddress,
     );
     const { tokenClient } = colonyClient;
-    const tokenOwnerAddress = yield tokenClient.owner();
+
+    let isTokenOwner = false;
+    if (tokenClient.tokenClientType === TokenClientType.Colony) {
+      const tokenOwnerAddress = yield tokenClient.owner();
+
+      isTokenOwner = tokenOwnerAddress === walletAddress;
+    }
 
     /*
      * Check if the user **actually** has permissions to restart the colony
@@ -88,20 +94,19 @@ function* colonyRestartDeployment({
      */
     const hasRootRole = yield colonyClient.hasUserRole(
       walletAddress,
-      ROOT_DOMAIN_ID,
+      Id.RootDomain,
       ColonyRole.Root,
     );
     const hasAdministrationRole = yield colonyClient.hasUserRole(
       walletAddress,
-      ROOT_DOMAIN_ID,
+      Id.RootDomain,
       ColonyRole.Administration,
     );
     const hasRecoveryRole = yield colonyClient.hasUserRole(
       walletAddress,
-      ROOT_DOMAIN_ID,
+      Id.RootDomain,
       ColonyRole.Recovery,
     );
-    const isTokenOwner = tokenOwnerAddress === walletAddress;
 
     if (
       !hasRootRole ||
@@ -153,7 +158,7 @@ function* colonyRestartDeployment({
       if (
         yield colonyClient.hasUserRole(
           oneTxExtensionAddress,
-          ROOT_DOMAIN_ID,
+          Id.RootDomain,
           ColonyRole.Administration,
         )
       ) {
@@ -163,7 +168,7 @@ function* colonyRestartDeployment({
       if (
         yield colonyClient.hasUserRole(
           oneTxExtensionAddress,
-          ROOT_DOMAIN_ID,
+          Id.RootDomain,
           ColonyRole.Funding,
         )
       ) {
@@ -356,7 +361,7 @@ function* colonyRestartDeployment({
       yield put(
         transactionAddParams(setOneTxRoleAdministration.id, [
           extensionAddress,
-          ROOT_DOMAIN_ID,
+          Id.RootDomain,
           true,
         ]),
       );
@@ -372,7 +377,7 @@ function* colonyRestartDeployment({
       yield put(
         transactionAddParams(setOneTxRoleFunding.id, [
           extensionAddress,
-          ROOT_DOMAIN_ID,
+          Id.RootDomain,
           true,
         ]),
       );
