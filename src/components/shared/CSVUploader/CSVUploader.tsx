@@ -18,7 +18,6 @@ interface Props {
 const MIME_TYPES = {
   text: ['.csv'],
 };
-// ['text/csv'];
 
 const CSVUploader = ({
   name,

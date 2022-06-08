@@ -95,7 +95,7 @@ const FriendlyName = ({
       <div className={styles.name}>
         {userDisplay || (isColony && colonyDisplay) || (
           <MaskedAddress
-            address={userDisplayAddress || colonyDisplayAddress || ''}
+            address={userDisplayAddress || colonyDisplayAddress || AddressZero}
             full={!maskedAddress}
             ref={addressRef}
           />
