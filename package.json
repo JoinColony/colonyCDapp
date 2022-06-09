@@ -158,7 +158,7 @@
     "formik": "^2.2.9",
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.1",
-    "immutable": "^4.0.0-rc.12",
+    "immutable": "^4.1.0",
     "ipfs": "^0.43.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.21",
