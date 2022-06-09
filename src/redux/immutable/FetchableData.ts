@@ -19,7 +19,7 @@ const defaultValues: DefaultValues<Shared> = {
 };
 
 export class FetchableDataRecord<R> extends Record<Shared>(defaultValues) {
-  get record() {
+  get getRecord() {
     return super.record as R;
   }
 
