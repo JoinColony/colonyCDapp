@@ -1,4 +1,4 @@
-import React, { useState, ReactType } from 'react';
+import React, { useState, ElementType } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
 import { ActionTransformFnType } from '~utils/actions';
@@ -8,7 +8,7 @@ import DefaultButton from '~shared/Button';
 import { Props as DefaultButtonProps } from './Button';
 
 interface Props extends DefaultButtonProps {
-  button?: ReactType;
+  button?: ElementType;
   confirmText?: any;
   error: string;
   onConfirmToggled?: (...args: any[]) => void;

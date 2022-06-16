@@ -1,7 +1,6 @@
 import React, { HTMLAttributes } from 'react';
 import { BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { UnifiedNumberFormatOptions } from '@formatjs/intl-unified-numberformat';
 import moveDecimal from 'move-decimal-point';
 import { useIntl } from 'react-intl';
 
@@ -13,7 +12,7 @@ interface Props extends HTMLAttributes<HTMLSpanElement> {
   /** Disallow children */
   children?: never;
   /** Format options for `intl-unified-numberformat` */
-  formatOptions: UnifiedNumberFormatOptions;
+  formatOptions: Intl.NumberFormatOptions;
   /** Actual value */
   value: BigNumberish;
 }
