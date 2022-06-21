@@ -1,7 +1,7 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 import { ActionTypeString, AllActions } from '../../types/actions';
-import { FetchableData, FetchableDataType } from '../../immutable';
+import { FetchableDataType } from '../../immutable';
 import { getActionTypes } from './index';
 
 export type DataReducer<S extends ImmutableMap<any, any>> = (
@@ -9,20 +9,20 @@ export type DataReducer<S extends ImmutableMap<any, any>> = (
   action: any,
 ) => S;
 
-const getNextState = <S extends ImmutableMap<any, any>, V extends any>(
+const getNextState = <S extends ImmutableMap<any, any>, V>(
   state: S,
   key: any,
   payload: Partial<FetchableDataType<V>>,
 ) => {
   const immutablePayload = fromJS(payload);
-  const data = FetchableData<V>(immutablePayload);
+  const data = immutablePayload;
 
   return state.has(key)
     ? state.mergeDeepIn([key], immutablePayload)
     : state.set(key, data);
 };
 
-const handleFetch = <S extends ImmutableMap<any, any>, V extends any>(
+const handleFetch = <S extends ImmutableMap<any, any>, V>(
   state: S,
   action: any,
 ) => {
@@ -32,7 +32,7 @@ const handleFetch = <S extends ImmutableMap<any, any>, V extends any>(
   return getNextState<S, V>(state, key, { isFetching: true });
 };
 
-const handleSuccess = <S extends ImmutableMap<any, any>, V extends any>(
+const handleSuccess = <S extends ImmutableMap<any, any>, V>(
   state: S,
   action: any,
 ) => {
@@ -46,7 +46,7 @@ const handleSuccess = <S extends ImmutableMap<any, any>, V extends any>(
   });
 };
 
-const handleError = <S extends ImmutableMap<any, any>, V extends any>(
+const handleError = <S extends ImmutableMap<any, any>, V>(
   state: S,
   { meta: { key }, payload: error }: any,
 ) =>
@@ -82,7 +82,7 @@ const handleError = <S extends ImmutableMap<any, any>, V extends any>(
  * {V} The value wrapped in the data record, e.g. `ColonyRecord` or `ListType<TransationRecord>`
  */
 const withFetchableDataMap =
-  <S extends ImmutableMap<any, any>, V extends any>(
+  <S extends ImmutableMap<any, any>, V>(
     actionTypes: ActionTypeString | Set<ActionTypeString>,
     initialState: S,
   ) =>

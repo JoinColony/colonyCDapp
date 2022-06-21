@@ -63,5 +63,5 @@ export type UniversalMessageValues = Record<string, PrimitiveType | ReactNode>;
 export type DefaultValues<V> = Record<keyof V, any>;
 
 export interface RecordToJS<T> {
-  toJS(): T;
+  toJS: (props: T) => void;
 }
