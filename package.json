@@ -145,6 +145,7 @@
     "@purser/signer-ethers": "^1.0.3",
     "@purser/software": "^2.0.0",
     "@synaps-io/verify.js": "^3.0.5",
+    "aws-amplify": "^4.3.29",
     "bn.js": "^5.1.1",
     "camelcase": "^6.0.0",
     "classnames": "^2.2.6",
