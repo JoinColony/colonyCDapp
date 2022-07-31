@@ -8,6 +8,7 @@
     //   "~context/*": ["src/context/*"],
       "~shared/*": ["src/components/shared/*"],
       "~common/*": ["src/components/common/*"],
+      "~root/*": ["src/components/root/*"],
     //   "~dashboard/*": ["src/modules/dashboard/components/*"],
     //   "~data/*": ["src/data/*"],
     //   "~dialogs/*": ["src/modules/dashboard/components/Dialogs/*"],
