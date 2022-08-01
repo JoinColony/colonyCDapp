@@ -85,23 +85,75 @@ addProcess('reputationMonitor', async () => {
 });
 
 addProcess('amplify', async () => {
-  const serverProcess = spawn('npm', ['run', 'amplify:start'], {
+  const amplifyProcess = spawn('npm', ['run', 'amplify:start'], {
     cwd: path.resolve(__dirname),
     stdio: 'pipe',
   });
   if (args.foreground) {
-    serverProcess.stdout.pipe(process.stdout);
-    serverProcess.stderr.pipe(process.stderr);
+    amplifyProcess.stdout.pipe(process.stdout);
+    amplifyProcess.stderr.pipe(process.stderr);
   }
-  serverProcess.on('error', e => {
-    serverProcess.kill();
+  amplifyProcess.on('error', e => {
+    amplifyProcess.kill();
     /*
      * @NOTE Just stop the startup orchestration process is something goes wrong
      */
     console.error(error);
     process.exit(1);
   });
-  return serverProcess;
+  await new Promise((resolve, reject) => {
+    const oldSQLiteCleanupProcess = spawn('rm', ['fake_us-fake-1.db'], {
+      cwd: path.resolve(__dirname, '..', 'amplify/mock-data/dynamodb'),
+    });
+    oldSQLiteCleanupProcess.on('exit', cleanupCode => {
+      if (cleanupCode) {
+        return reject(new Error(`Setup process exited with code ${cleanupCode}`));
+      }
+      resolve();
+    });
+  });
+  return amplifyProcess;
+});
+
+addProcess('blockIngestor', async () => {
+  const ingestorProcess = spawn('npm', ['run', 'start'], {
+    cwd: path.resolve(__dirname, '..', 'src/lib/blockIngestor'),
+    stdio: 'pipe',
+  });
+  if (args.foreground) {
+    ingestorProcess.stdout.pipe(process.stdout);
+    ingestorProcess.stderr.pipe(process.stderr);
+  }
+  ingestorProcess.on('error', e => {
+    ingestorProcess.kill();
+    /*
+     * @NOTE Just stop the startup orchestration process is something goes wrong
+     */
+    console.error(error);
+    process.exit(1);
+  });
+  await waitOn({ resources: ['tcp:20002'] });
+  return ingestorProcess;
+});
+
+addProcess('createTestAccounts', async () => {
+  const createTestAccountsProcess = spawn('node', ['createTestAccounts.js'], {
+    cwd: path.resolve(__dirname),
+    stdio: 'pipe',
+  });
+  if (args.foreground) {
+    createTestAccountsProcess.stdout.pipe(process.stdout);
+    createTestAccountsProcess.stderr.pipe(process.stderr);
+  }
+  createTestAccountsProcess.on('error', e => {
+    createTestAccountsProcess.kill();
+    /*
+     * @NOTE Just stop the startup orchestration process is something goes wrong
+     */
+    console.error(error);
+    process.exit(1);
+  });
+  return createTestAccountsProcess;
 });
 
 // addProcess('db', async () => {
