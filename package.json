@@ -14,6 +14,7 @@
     "cy:open": "cypress open",
     "dev": "scripts/start_all.js --foreground --skip-graph-node --skip-subgraph",
     "dev:heavy": "scripts/start_all.js --foreground",
+    "dev:aws": "scripts/start_all_aws.js --foreground",
     "ganache": "scripts/start_ganache.js",
     "graphql:generate": "graphql-codegen --config codegen.yml",
     "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
@@ -27,7 +28,8 @@
     "typecheck:watch": "tsc -p tsconfig.json --noEmit --watch",
     "webpack": "webpack-dev-server --config webpack.dev.js --port 9090",
     "webpack:build": "webpack-cli --config webpack.dev.js",
-    "webpack:build:prod": "NODE_OPTIONS=\"--max-old-space-size=4096\" NODE_ENV=production webpack-cli --config webpack.prod.js"
+    "webpack:build:prod": "NODE_OPTIONS=\"--max-old-space-size=4096\" NODE_ENV=production webpack-cli --config webpack.prod.js",
+    "amplify:start": "amplify mock"
   },
   "repository": {
     "type": "git",
