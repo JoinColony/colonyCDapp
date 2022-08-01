@@ -60,6 +60,11 @@ const getStaticDevResource = (processName) => {
         { desc: 'Mock Oracle API Endpoint', res: 'http://0.0.0.0:3001' },
       ];
     }
+    case 'amplify': {
+      return [
+        { desc: 'AppSync Mock endpoint', res: 'http://0.0.0.0:20002' },
+      ];
+    }
     case 'db': {
       return [
         { desc: 'MongoDB Server', res: 'mongodb://localhost:27018' },
