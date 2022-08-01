@@ -9,6 +9,7 @@
       "~shared/*": ["src/components/shared/*"],
       "~common/*": ["src/components/common/*"],
       "~root/*": ["src/components/root/*"],
+      "~gql/*": ["src/graphql/*"],
     //   "~dashboard/*": ["src/modules/dashboard/components/*"],
     //   "~data/*": ["src/data/*"],
     //   "~dialogs/*": ["src/modules/dashboard/components/Dialogs/*"],
