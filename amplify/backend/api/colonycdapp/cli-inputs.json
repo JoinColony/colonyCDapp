@@ -3,7 +3,7 @@
   "serviceConfiguration": {
     "apiName": "colonycdapp",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/home/rdig/development/colony/colonyCDapp/amplify/backend/api/colonycdapp/schema.graphql",
+    "gqlSchemaPath": "schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
       "expirationTime": 7
