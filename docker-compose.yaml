@@ -1,0 +1,9 @@
+services:
+  backend:
+    container_name: 'cdapp-backend'
+    image: colonycdapp-backend-local-dev:1.0.0
+    volumes:
+      - '~/.aws:/root/.aws'
+      - '~/.amplify:/root/.amplify'
+      - './amplify:/colonyCDappBackend/amplify'
+    network_mode: 'host'
