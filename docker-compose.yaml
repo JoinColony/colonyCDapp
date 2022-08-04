@@ -5,7 +5,9 @@ services:
     volumes:
       - '~/.aws:/root/.aws'
       - '~/.amplify:/root/.amplify'
-      - './amplify:/colonyCDappBackend/amplify'
+      - './amplify/backend:/colonyCDapp/amplify/backend'
+      - './amplify/mock-data:/colonyCDapp/amplify/mock-data'
+      - './src/graphql:/colonyCDapp/src/graphql'
     network_mode: 'host'
     tty: true
     environment:

@@ -6,6 +6,8 @@ ARG REPUTATIONMONITOR_HASH=master
 
 FROM node:16.16.0
 
+VOLUME [ "/colonyCDapp/amplify/backend", "/colonyCDapp/amplify/mock-data", "/colonyCDapp/src/graphql" ]
+
 # Update the apt cache
 RUN apt-get clean
 RUN apt-get update
@@ -41,18 +43,23 @@ RUN npm install --location=global --registry=https://registry.npmjs.org npm@8.11
 RUN git config --global url."https://github".insteadOf ssh://git@github
 
 
-WORKDIR /colonyCDappBackend
+WORKDIR /colonyCDapp
 
 # Add dependencies from the host
-ADD --chown=root:root package.json /colonyCDappBackend/package.colonyCDapp.json
+ADD --chown=root:root package.json /colonyCDapp/package.colonyCDapp.json
+ADD --chown=root:root amplify /colonyCDapp/amplify
+ADD --chown=root:root src/aws-exports.js /colonyCDapp/src/aws-exports.js
+ADD --chown=root:root .graphqlconfig.yml /colonyCDapp/.graphqlconfig.yml
 
 #
 # Amplify
 #
 
+WORKDIR /colonyCDapp
+
 # Generate the local "light" version of package json
 # It gets the amplify version from the CDapp's package.json file
-RUN AMPLIFY_VERSION=$(jq '.dependencies."@aws-amplify/cli"' package.colonyCDapp.json) && echo "{\"scripts\":{\"amplify\":\"amplify\"},\"dependencies\":{\"@aws-amplify/cli\": $AMPLIFY_VERSION}}" >> package.json
+RUN AMPLIFY_VERSION=$(jq '.dependencies."@aws-amplify/cli"' package.colonyCDapp.json) && echo "{\"scripts\":{\"amplify\":\"amplify\"},\"dependencies\":{\"@aws-amplify/cli\": $AMPLIFY_VERSION}}" > package.json
 
 # Install amplify as a dependency
 RUN npm install
@@ -60,9 +67,14 @@ RUN npm install
 # Actually download the amplify tarball (don't ask me, it's how it works)
 RUN npm run amplify
 
+# Update amplify local env config
+RUN tmp=$(mktemp) && jq '.projectPath="/colonyCDapp"' amplify/.config/local-env-info.json > $tmp && mv $tmp amplify/.config/local-env-info.json
+
 #
 # Colony Network
 #
+
+WORKDIR /colonyCDappBackend
 
 # Clone the network repo
 RUN git clone https://github.com/JoinColony/colonyNetwork.git
@@ -81,7 +93,7 @@ RUN DISABLE_DOCKER=true yarn provision:token:contracts
 
 # Initialize the justification tree cache
 # To avoid the error spewed by the miner at startup
-RUN echo "{}" >> ./packages/reputation-miner/justificationTreeCache.json
+RUN echo "{}" > ./packages/reputation-miner/justificationTreeCache.json
 
 #
 # Block Ingestor
@@ -137,8 +149,8 @@ RUN echo "cd colonyNetwork\n" \
   "node index.js \$ETHER_ROUTER_ADDRESS &\n" \
   "cd ../block-ingestor\n" \
   "npm run start &\n" \
-  "cd ..\n" \
-  "npm run amplify mock" >> ./run.sh
+  "cd /colonyCDapp\n" \
+  "npm run amplify mock" > ./run.sh
 RUN chmod +x ./run.sh
 
 # Battlecruiser Operational!
