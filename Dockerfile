@@ -79,6 +79,10 @@ RUN yarn
 # Compile network contracts
 RUN DISABLE_DOCKER=true yarn provision:token:contracts
 
+# Initialize the justification tree cache
+# To avoid the error spewed by the miner at startup
+RUN echo "{}" >> ./packages/reputation-miner/justificationTreeCache.json
+
 #
 # Block Ingestor
 #
@@ -113,6 +117,11 @@ RUN npm install
 
 WORKDIR /colonyCDappBackend
 
+#
+# Orchestration script
+#
+
+EXPOSE 3002
 EXPOSE 8545
 EXPOSE 20002
 
