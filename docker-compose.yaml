@@ -7,3 +7,8 @@ services:
       - '~/.amplify:/root/.amplify'
       - './amplify:/colonyCDappBackend/amplify'
     network_mode: 'host'
+    tty: true
+    environment:
+      DEBUG_COLORS: "true"
+      TERM: xterm-256color
+      COLORTERM: truecolor
