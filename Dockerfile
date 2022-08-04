@@ -42,9 +42,9 @@ RUN git config --global url."https://github".insteadOf ssh://git@github
 
 
 WORKDIR /colonyCDappBackend
+
 # Add dependencies from the host
 ADD --chown=root:root package.json /colonyCDappBackend/package.colonyCDapp.json
-ADD --chown=root:root src/lib/reputationMonitor /colonyCDappBackend/reputationMonitor
 
 #
 # Amplify
@@ -99,9 +99,14 @@ RUN npm install
 # Reputation Monitor
 #
 
-# Clone reputation monitor repo
-# TODO Change to repo
-WORKDIR /colonyCDappBackend/reputationMonitor
+# Clone block ingestor repo
+WORKDIR /colonyCDappBackend
+RUN git clone https://github.com/JoinColony/reputation-monitor-dev.git
+WORKDIR /colonyCDappBackend/reputation-monitor-dev
+
+# Fetch the correct network repo commit/branch/tag
+RUN git fetch origin $REPUTATIONMONITOR_HASH
+RUN git checkout $REPUTATIONMONITOR_HASH
 
 # Install reputation monitor dependencies
 RUN npm install
@@ -119,7 +124,9 @@ RUN echo "cd colonyNetwork\n" \
   "MINER_ACCOUNT_ADDRESS=\$(jq -r '.addresses | keys[5]'  ganache-accounts.json)\n" \
   "cd packages/reputation-miner\n" \
   "node ./bin/index.js --minerAddress \$MINER_ACCOUNT_ADDRESS --syncFrom 1 --colonyNetworkAddress \$ETHER_ROUTER_ADDRESS --oracle --auto --dbPath reputationStates.sqlite --oraclePort 3002 --processingDelay 1 &\n" \
-  "cd ../../../block-ingestor\n" \
+  "cd ../../../reputation-monitor-dev\n" \
+  "node index.js \$ETHER_ROUTER_ADDRESS &\n" \
+  "cd ../block-ingestor\n" \
   "npm run start &\n" \
   "cd ..\n" \
   "npm run amplify mock" >> ./run.sh
