@@ -1,5 +1,8 @@
 ARG NETWORK_HASH=develop
 ARG BLOCKINGESTOR_HASH=master
+ARG REPUTATIONMONITOR_HASH=master
+
+# TODO Actually check if they are set, otherwise break
 
 FROM node:16.16.0
 
@@ -41,9 +44,11 @@ RUN git config --global url."https://github".insteadOf ssh://git@github
 WORKDIR /colonyCDappBackend
 # Add dependencies from the host
 ADD --chown=root:root package.json /colonyCDappBackend/package.colonyCDapp.json
-# TODO Move to own repo
-ADD --chown=root:root src/lib/blockIngestor /colonyCDappBackend/blockIngestor
 ADD --chown=root:root src/lib/reputationMonitor /colonyCDappBackend/reputationMonitor
+
+#
+# Amplify
+#
 
 # Generate the local "light" version of package json
 # It gets the amplify version from the CDapp's package.json file
@@ -55,9 +60,12 @@ RUN npm install
 # Actually download the amplify tarball (don't ask me, it's how it works)
 RUN npm run amplify
 
+#
+# Colony Network
+#
+
 # Clone the network repo
 RUN git clone https://github.com/JoinColony/colonyNetwork.git
-
 WORKDIR /colonyCDappBackend/colonyNetwork
 
 # Fetch the correct network repo commit/branch/tag
@@ -71,12 +79,25 @@ RUN yarn
 # Compile network contracts
 RUN DISABLE_DOCKER=true yarn provision:token:contracts
 
+#
+# Block Ingestor
+#
+
 # Clone block ingestor repo
-# TODO Change to repo
-WORKDIR /colonyCDappBackend/blockIngestor
+WORKDIR /colonyCDappBackend
+RUN git clone https://github.com/JoinColony/block-ingestor.git
+WORKDIR /colonyCDappBackend/block-ingestor
+
+# Fetch the correct network repo commit/branch/tag
+RUN git fetch origin $BLOCKINGESTOR_HASH
+RUN git checkout $BLOCKINGESTOR_HASH
 
 # Install block ingestor dependencies
 RUN npm install
+
+#
+# Reputation Monitor
+#
 
 # Clone reputation monitor repo
 # TODO Change to repo
@@ -98,8 +119,7 @@ RUN echo "cd colonyNetwork\n" \
   "MINER_ACCOUNT_ADDRESS=\$(jq -r '.addresses | keys[5]'  ganache-accounts.json)\n" \
   "cd packages/reputation-miner\n" \
   "node ./bin/index.js --minerAddress \$MINER_ACCOUNT_ADDRESS --syncFrom 1 --colonyNetworkAddress \$ETHER_ROUTER_ADDRESS --oracle --auto --dbPath reputationStates.sqlite --oraclePort 3002 --processingDelay 1 &\n" \
-  # TODO Change to .temp folder once this is a repo
-  "cd ../../../blockIngestor\n" \
+  "cd ../../../block-ingestor\n" \
   "npm run start &\n" \
   "cd ..\n" \
   "npm run amplify mock" >> ./run.sh
