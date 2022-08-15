@@ -10,4 +10,80 @@ type User @model {
     @index(name: "byUsername", queryField: "getUserByUsername")
   displayName: String
   avatarHash: String
+  roles: [ColonyRole]
+  tokens: [Token] @hasMany
+}
+
+type Colony @model {
+  internalId: ID!
+  chainId: Int!
+  chain: Int!
+  contractAddress: String!
+    @primaryKey(sortKeyFields: ["name"])
+    @index(name: "byAddress", queryField: "getColonyByAddress")
+  name: String!
+    @index(name: "byName", queryField: "getColonyByName")
+  displayName: String
+  avatarHash: String
+  nativeToken: Token @hasOne
+  chainVersion: Int!
+
+  # TO TEST
+  domains: [Domain] @hasMany
+  tokens: [Token] @hasMany
+
+  # Note: This might not work in this particular format, and might need refactoring
+  roles: [Role] @hasMany
+
+  # TODO
+  # extensions
+  # colonyFlags (canMintNativeToken, etc)
+  # token transfers
+  # events ?
+}
+
+type Domain @model {
+  internalId: ID! @primaryKey(sortKeyFields: ["chainId"])
+  chainId: Int! @index
+}
+
+enum TokenType {
+  COLONY
+  ERC20
+  SAI
+}
+
+type Token @model {
+  internalId: ID!
+  contractAddress: String!
+    @primaryKey(sortKeyFields: ["name"])
+    @index(name: "byAddress", queryField: "getTokenByAddress")
+  name: String!
+    @index(name: "byName", queryField: "getTokensByName")
+  symbol: String!
+    @index(name: "bySymbol", queryField: "getTokensBySymbol")
+  decimals: Int!
+  type: TokenType!
+    @index(name: "byType", queryField: "getTokensByType")
+}
+
+# Experimental
+type ColonyRole @model {
+  colony: Colony @hasOne
+  roles: [Role] @hasMany
+}
+
+enum RoleType {
+  RECOVERY
+  ROOT
+  ARBITRATION
+  ARCHITECTURE
+  ARCHITECTURE_SUBDOMAIN_DEPRECATED
+  FUNDING
+  ADMINISTRATION
+}
+
+type Role @model {
+  internalId: ID! @primaryKey
+  type: RoleType! @index(name: "byType", queryField: "getRolesByType")
 }
