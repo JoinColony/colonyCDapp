@@ -508,6 +508,100 @@ export type ModelRoleFilterInput = {
   colonyRoleRolesId?: ModelIDInput | null,
 };
 
+export type ModelSubscriptionUserFilterInput = {
+  walletAddress?: ModelSubscriptionStringInput | null,
+  username?: ModelSubscriptionStringInput | null,
+  displayName?: ModelSubscriptionStringInput | null,
+  avatarHash?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionUserFilterInput | null > | null,
+  or?: Array< ModelSubscriptionUserFilterInput | null > | null,
+};
+
+export type ModelSubscriptionStringInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  in?: Array< string | null > | null,
+  notIn?: Array< string | null > | null,
+};
+
+export type ModelSubscriptionColonyFilterInput = {
+  internalId?: ModelSubscriptionIDInput | null,
+  chainId?: ModelSubscriptionIntInput | null,
+  chain?: ModelSubscriptionIntInput | null,
+  contractAddress?: ModelSubscriptionStringInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  displayName?: ModelSubscriptionStringInput | null,
+  avatarHash?: ModelSubscriptionStringInput | null,
+  chainVersion?: ModelSubscriptionIntInput | null,
+  and?: Array< ModelSubscriptionColonyFilterInput | null > | null,
+  or?: Array< ModelSubscriptionColonyFilterInput | null > | null,
+};
+
+export type ModelSubscriptionIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  in?: Array< string | null > | null,
+  notIn?: Array< string | null > | null,
+};
+
+export type ModelSubscriptionIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  in?: Array< number | null > | null,
+  notIn?: Array< number | null > | null,
+};
+
+export type ModelSubscriptionDomainFilterInput = {
+  internalId?: ModelSubscriptionIDInput | null,
+  chainId?: ModelSubscriptionIntInput | null,
+  and?: Array< ModelSubscriptionDomainFilterInput | null > | null,
+  or?: Array< ModelSubscriptionDomainFilterInput | null > | null,
+};
+
+export type ModelSubscriptionTokenFilterInput = {
+  internalId?: ModelSubscriptionIDInput | null,
+  contractAddress?: ModelSubscriptionStringInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  symbol?: ModelSubscriptionStringInput | null,
+  decimals?: ModelSubscriptionIntInput | null,
+  type?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionTokenFilterInput | null > | null,
+  or?: Array< ModelSubscriptionTokenFilterInput | null > | null,
+};
+
+export type ModelSubscriptionColonyRoleFilterInput = {
+  and?: Array< ModelSubscriptionColonyRoleFilterInput | null > | null,
+  or?: Array< ModelSubscriptionColonyRoleFilterInput | null > | null,
+};
+
+export type ModelSubscriptionRoleFilterInput = {
+  internalId?: ModelSubscriptionIDInput | null,
+  type?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionRoleFilterInput | null > | null,
+  or?: Array< ModelSubscriptionRoleFilterInput | null > | null,
+};
+
 export type CreateUserMutationVariables = {
   input: CreateUserInput,
   condition?: ModelUserConditionInput | null,
@@ -1605,6 +1699,10 @@ export type GetRolesByTypeQuery = {
   } | null,
 };
 
+export type OnCreateUserSubscriptionVariables = {
+  filter?: ModelSubscriptionUserFilterInput | null,
+};
+
 export type OnCreateUserSubscription = {
   onCreateUser?:  {
     __typename: "User",
@@ -1627,6 +1725,10 @@ export type OnCreateUserSubscription = {
     createdAt: string,
     updatedAt: string,
   } | null,
+};
+
+export type OnUpdateUserSubscriptionVariables = {
+  filter?: ModelSubscriptionUserFilterInput | null,
 };
 
 export type OnUpdateUserSubscription = {
@@ -1653,6 +1755,10 @@ export type OnUpdateUserSubscription = {
   } | null,
 };
 
+export type OnDeleteUserSubscriptionVariables = {
+  filter?: ModelSubscriptionUserFilterInput | null,
+};
+
 export type OnDeleteUserSubscription = {
   onDeleteUser?:  {
     __typename: "User",
@@ -1675,6 +1781,10 @@ export type OnDeleteUserSubscription = {
     createdAt: string,
     updatedAt: string,
   } | null,
+};
+
+export type OnCreateColonySubscriptionVariables = {
+  filter?: ModelSubscriptionColonyFilterInput | null,
 };
 
 export type OnCreateColonySubscription = {
@@ -1722,6 +1832,10 @@ export type OnCreateColonySubscription = {
   } | null,
 };
 
+export type OnUpdateColonySubscriptionVariables = {
+  filter?: ModelSubscriptionColonyFilterInput | null,
+};
+
 export type OnUpdateColonySubscription = {
   onUpdateColony?:  {
     __typename: "Colony",
@@ -1765,6 +1879,10 @@ export type OnUpdateColonySubscription = {
     colonyNativeTokenId?: string | null,
     colonyNativeTokenName?: string | null,
   } | null,
+};
+
+export type OnDeleteColonySubscriptionVariables = {
+  filter?: ModelSubscriptionColonyFilterInput | null,
 };
 
 export type OnDeleteColonySubscription = {
@@ -1812,6 +1930,10 @@ export type OnDeleteColonySubscription = {
   } | null,
 };
 
+export type OnCreateDomainSubscriptionVariables = {
+  filter?: ModelSubscriptionDomainFilterInput | null,
+};
+
 export type OnCreateDomainSubscription = {
   onCreateDomain?:  {
     __typename: "Domain",
@@ -1822,6 +1944,10 @@ export type OnCreateDomainSubscription = {
     colonyDomainsId?: string | null,
     colonyDomainsName?: string | null,
   } | null,
+};
+
+export type OnUpdateDomainSubscriptionVariables = {
+  filter?: ModelSubscriptionDomainFilterInput | null,
 };
 
 export type OnUpdateDomainSubscription = {
@@ -1836,6 +1962,10 @@ export type OnUpdateDomainSubscription = {
   } | null,
 };
 
+export type OnDeleteDomainSubscriptionVariables = {
+  filter?: ModelSubscriptionDomainFilterInput | null,
+};
+
 export type OnDeleteDomainSubscription = {
   onDeleteDomain?:  {
     __typename: "Domain",
@@ -1846,6 +1976,10 @@ export type OnDeleteDomainSubscription = {
     colonyDomainsId?: string | null,
     colonyDomainsName?: string | null,
   } | null,
+};
+
+export type OnCreateTokenSubscriptionVariables = {
+  filter?: ModelSubscriptionTokenFilterInput | null,
 };
 
 export type OnCreateTokenSubscription = {
@@ -1866,6 +2000,10 @@ export type OnCreateTokenSubscription = {
   } | null,
 };
 
+export type OnUpdateTokenSubscriptionVariables = {
+  filter?: ModelSubscriptionTokenFilterInput | null,
+};
+
 export type OnUpdateTokenSubscription = {
   onUpdateToken?:  {
     __typename: "Token",
@@ -1884,6 +2022,10 @@ export type OnUpdateTokenSubscription = {
   } | null,
 };
 
+export type OnDeleteTokenSubscriptionVariables = {
+  filter?: ModelSubscriptionTokenFilterInput | null,
+};
+
 export type OnDeleteTokenSubscription = {
   onDeleteToken?:  {
     __typename: "Token",
@@ -1900,6 +2042,10 @@ export type OnDeleteTokenSubscription = {
     colonyTokensId?: string | null,
     colonyTokensName?: string | null,
   } | null,
+};
+
+export type OnCreateColonyRoleSubscriptionVariables = {
+  filter?: ModelSubscriptionColonyRoleFilterInput | null,
 };
 
 export type OnCreateColonyRoleSubscription = {
@@ -1932,6 +2078,10 @@ export type OnCreateColonyRoleSubscription = {
   } | null,
 };
 
+export type OnUpdateColonyRoleSubscriptionVariables = {
+  filter?: ModelSubscriptionColonyRoleFilterInput | null,
+};
+
 export type OnUpdateColonyRoleSubscription = {
   onUpdateColonyRole?:  {
     __typename: "ColonyRole",
@@ -1960,6 +2110,10 @@ export type OnUpdateColonyRoleSubscription = {
     colonyRoleColonyId?: string | null,
     colonyRoleColonyName?: string | null,
   } | null,
+};
+
+export type OnDeleteColonyRoleSubscriptionVariables = {
+  filter?: ModelSubscriptionColonyRoleFilterInput | null,
 };
 
 export type OnDeleteColonyRoleSubscription = {
@@ -1992,6 +2146,10 @@ export type OnDeleteColonyRoleSubscription = {
   } | null,
 };
 
+export type OnCreateRoleSubscriptionVariables = {
+  filter?: ModelSubscriptionRoleFilterInput | null,
+};
+
 export type OnCreateRoleSubscription = {
   onCreateRole?:  {
     __typename: "Role",
@@ -2005,6 +2163,10 @@ export type OnCreateRoleSubscription = {
   } | null,
 };
 
+export type OnUpdateRoleSubscriptionVariables = {
+  filter?: ModelSubscriptionRoleFilterInput | null,
+};
+
 export type OnUpdateRoleSubscription = {
   onUpdateRole?:  {
     __typename: "Role",
@@ -2016,6 +2178,10 @@ export type OnUpdateRoleSubscription = {
     colonyRolesName?: string | null,
     colonyRoleRolesId?: string | null,
   } | null,
+};
+
+export type OnDeleteRoleSubscriptionVariables = {
+  filter?: ModelSubscriptionRoleFilterInput | null,
 };
 
 export type OnDeleteRoleSubscription = {

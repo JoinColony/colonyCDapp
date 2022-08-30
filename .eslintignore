@@ -8,3 +8,7 @@ src/lib/colonyServer
 src/lib/mock-oracle
 src/lib/subgraph
 src/lib/graph-node
+
+# amplify
+
+src/graphql

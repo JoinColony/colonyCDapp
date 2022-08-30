@@ -3,8 +3,6 @@ services:
     container_name: 'cdapp-backend'
     image: colonycdapp-backend-local-dev:1.0.0
     volumes:
-      - '~/.aws:/root/.aws'
-      - '~/.amplify:/root/.amplify'
       - './amplify/backend:/colonyCDapp/amplify/backend'
       - './amplify/mock-data:/colonyCDapp/amplify/mock-data'
       - './src/graphql:/colonyCDapp/src/graphql'
