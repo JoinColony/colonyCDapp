@@ -31,4 +31,10 @@ amplifytools.xcconfig
 **.sample
 #amplify-do-not-edit-end
 
+# Custom Amplify Ignores
 amplify/mock-data
+# @NOTE These are actually required when deploying, however they are recreated
+# on each run (unless you customize them manually)
+# Due to the way the Docker container is set up, they will always be under the root
+# user, so ignoring them will prevent alot of unpleasantness
+amplify/backend/api/colonycdapp/resolvers/*.vtl

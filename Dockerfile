@@ -6,7 +6,7 @@ ARG REPUTATIONMONITOR_HASH=master
 
 FROM node:16.16.0
 
-VOLUME [ "/colonyCDapp/amplify/backend", "/colonyCDapp/amplify/mock-data", "/colonyCDapp/src/graphql" ]
+USER root
 
 # Update the apt cache
 RUN apt-get clean
@@ -42,14 +42,16 @@ RUN npm install --location=global --registry=https://registry.npmjs.org npm@8.11
 # This counteracts the fact that you need a GH account in order to use ssh keys
 RUN git config --global url."https://github".insteadOf ssh://git@github
 
+# Declare volumes to set up metadata
+VOLUME [ "/colonyCDapp/amplify/backend", "/colonyCDapp/amplify/mock-data", "/colonyCDapp/src/graphql" ]
 
 WORKDIR /colonyCDapp
 
 # Add dependencies from the host
-ADD --chown=root:root package.json /colonyCDapp/package.colonyCDapp.json
-ADD --chown=root:root amplify /colonyCDapp/amplify
-ADD --chown=root:root src/aws-exports.js /colonyCDapp/src/aws-exports.js
-ADD --chown=root:root .graphqlconfig.yml /colonyCDapp/.graphqlconfig.yml
+ADD package.json /colonyCDapp/package.colonyCDapp.json
+ADD amplify /colonyCDapp/amplify
+ADD src/aws-exports.js /colonyCDapp/src/aws-exports.js
+ADD .graphqlconfig.yml /colonyCDapp/.graphqlconfig.yml
 
 #
 # Amplify
@@ -154,4 +156,4 @@ RUN echo "cd colonyNetwork\n" \
 RUN chmod +x ./run.sh
 
 # Battlecruiser Operational!
-CMD ./run.sh
+CMD [ "./run.sh" ]
