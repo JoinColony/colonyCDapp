@@ -152,6 +152,8 @@ RUN echo "cd colonyNetwork\n" \
   "cd ../block-ingestor\n" \
   "npm run start &\n" \
   "cd /colonyCDapp\n" \
+  # Create build folder if it does not exist
+  "mkdir /colonyCDapp/amplify/backend/api/colonycdapp/build\n" \
   "npm run amplify mock" > ./run.sh
 RUN chmod +x ./run.sh
 
