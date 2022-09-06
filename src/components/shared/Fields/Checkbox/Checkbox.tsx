@@ -45,7 +45,7 @@ interface Props {
   /** Input field name (form variable) */
   name: string;
   /** Standard input field property */
-  onChange?: Function;
+  onChange?: (event: { [s: string]: any }) => void;
   /** Input field value */
   value: string;
   /**  Text for the checkbox tooltip */

@@ -11,7 +11,8 @@
   "scripts": {
     "docker:build": "DOCKER_BUILDKIT=1 docker build --tag colonycdapp-backend-local-dev:1.0.0 .",
     "docker:start": "docker compose up --force-recreate -V",
-    "start": "npm run docker:build && npm run docker:start"
+    "start": "npm run docker:build && npm run docker:start",
+    "lint": "eslint --fix 'src/**/*.{ts,tsx}'"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "@graphql-codegen/typescript-operations": "^2.5.3",
     "@graphql-codegen/typescript-react-apollo": "^3.3.3",
     "@jackfranklin/test-data-bot": "^1.4.0",
+    "@jest/globals": "^29.0.2",
     "@svgr/webpack": "^5.4.0",
     "@testing-library/cypress": "^8.0.2",
     "@types/cleave.js": "^1.4.1",
@@ -91,7 +93,7 @@
     "postcss-import": "^12.0.0",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.0.10",
-    "prettier": "^2.0.5",
+    "prettier": "^2.7.1",
     "style-loader": "^1.2.1",
     "stylelint": "^13.3.3",
     "stylelint-config-css-modules": "^2.2.0",

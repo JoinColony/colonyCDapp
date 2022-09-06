@@ -12,7 +12,7 @@ const badgeIcons = badges.reduce((badgeObj, badgeName) => {
   const id = camelcase(badgeName);
   return {
     ...badgeObj,
-    // eslint-disable-next-line no-param-reassign, global-require, import/no-dynamic-require
+    // eslint-disable-next-line no-param-reassign, global-require, import/no-dynamic-require, @typescript-eslint/no-var-requires
     [id]: require(`../../../../img/badges/${id}.svg`).default,
   };
 }, {});

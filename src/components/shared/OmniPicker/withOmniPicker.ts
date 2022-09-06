@@ -248,7 +248,7 @@ const getClass = (WrappedComponent) => {
         : null;
     };
 
-    getWrapper = (props: {}) => {
+    getWrapper = (props: Record<string, unknown>) => {
       const { isOpen } = this.state;
       const { id } = this;
       return createElement('div', {

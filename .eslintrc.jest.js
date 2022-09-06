@@ -6,10 +6,9 @@ module.exports = {
   'jest/no-disabled-tests': 'warn',
   'jest/no-focused-tests': 'error',
   'jest/no-identical-title': 'error',
-  'jest/no-jest-import': 'error',
   'jest/no-jasmine-globals': 'warn',
   'jest/no-test-prefixes': 'error',
-  'jest/valid-describe': 'error',
+  'jest/valid-describe-callback': 'error',
   'jest/valid-expect': 'error',
-  'jest/valid-expect-in-promise': 'error'
+  'jest/valid-expect-in-promise': 'error',
 };

@@ -101,7 +101,10 @@ const BanUser = ({ colonyAddress, cancel, close, isBanning = true }: Props) => {
       },
     });
 
-  const membersBanned = bannedMembers?.bannedUsers || [];
+  const membersBanned = useMemo(
+    () => bannedMembers?.bannedUsers || [],
+    [bannedMembers?.bannedUsers],
+  );
 
   const membersNotBanned = useMemo(() => {
     const subscribedUsers = colonyMembers?.subscribedUsers || [];

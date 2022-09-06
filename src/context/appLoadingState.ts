@@ -1,3 +1,5 @@
+/* eslint-disable no-constructor-return, @typescript-eslint/no-this-alias */
+
 let instance: AppLoadingState | null = null;
 
 /**

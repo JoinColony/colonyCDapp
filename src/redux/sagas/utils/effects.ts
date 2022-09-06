@@ -31,7 +31,7 @@ export const takeFrom = (channel: Channel<any>, type: string | string[]) =>
 /*
  * Effect to create a new class instance of Class (use instead of "new Class")
  */
-export const create = (Class: Function, ...args: any[]) =>
+export const create = <C>(Class: C, ...args: any[]) =>
   // @ts-ignore
   call(() => new Class(...args));
 

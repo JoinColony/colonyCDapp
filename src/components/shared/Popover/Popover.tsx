@@ -30,15 +30,6 @@ import {
   PopoverTriggerType,
 } from './types';
 
-interface PopoverChildFnProps {
-  ref: (arg0: HTMLElement | null) => void;
-  id: string;
-  isOpen: boolean;
-  open: () => void;
-  close: () => void;
-  toggle: () => void;
-}
-
 interface Props {
   /** Appearance object for styling */
   appearance?: PopoverAppearanceType;

@@ -1,10 +1,10 @@
-import { StringSchema, TestOptionsMessage } from 'yup';
+import { StringSchema as StringSchemaOriginal, TestOptionsMessage } from 'yup';
 
 declare module 'yup' {
   interface StringSchema<T> {
-    address(message?: TestOptionsMessage): StringSchema<T>;
-    ensAddress(message?: TestOptionsMessage): StringSchema<T>;
-    hexString(message?: TestOptionsMessage): StringSchema<T>;
-    hasHexPrefix(message?: TestOptionsMessage): StringSchema<T>;
+    address(message?: TestOptionsMessage): StringSchemaOriginal<T>;
+    ensAddress(message?: TestOptionsMessage): StringSchemaOriginal<T>;
+    hexString(message?: TestOptionsMessage): StringSchemaOriginal<T>;
+    hasHexPrefix(message?: TestOptionsMessage): StringSchemaOriginal<T>;
   }
 }
