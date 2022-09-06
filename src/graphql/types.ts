@@ -2,6 +2,56 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
+export type CreateChainMetaInput = {
+  confirmedOnChain: boolean,
+  id?: string | null,
+};
+
+export type ModelChainMetaConditionInput = {
+  confirmedOnChain?: ModelBooleanInput | null,
+  and?: Array< ModelChainMetaConditionInput | null > | null,
+  or?: Array< ModelChainMetaConditionInput | null > | null,
+  not?: ModelChainMetaConditionInput | null,
+};
+
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export enum ModelAttributeTypes {
+  binary = "binary",
+  binarySet = "binarySet",
+  bool = "bool",
+  list = "list",
+  map = "map",
+  number = "number",
+  numberSet = "numberSet",
+  string = "string",
+  stringSet = "stringSet",
+  _null = "_null",
+}
+
+
+export type ChainMeta = {
+  __typename: "ChainMeta",
+  confirmedOnChain: boolean,
+  id: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateChainMetaInput = {
+  confirmedOnChain?: boolean | null,
+  id: string,
+};
+
+export type DeleteChainMetaInput = {
+  id: string,
+};
+
 export type CreateUserInput = {
   walletAddress: string,
   username: string,
@@ -33,20 +83,6 @@ export type ModelStringInput = {
   size?: ModelSizeInput | null,
 };
 
-export enum ModelAttributeTypes {
-  binary = "binary",
-  binarySet = "binarySet",
-  bool = "bool",
-  list = "list",
-  map = "map",
-  number = "number",
-  numberSet = "numberSet",
-  string = "string",
-  stringSet = "stringSet",
-  _null = "_null",
-}
-
-
 export type ModelSizeInput = {
   ne?: number | null,
   eq?: number | null,
@@ -65,6 +101,7 @@ export type User = {
   avatarHash?: string | null,
   roles?:  Array<ColonyRole | null > | null,
   tokens?: ModelTokenConnection | null,
+  chainMeta?: ChainMeta | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -94,6 +131,7 @@ export type Colony = {
   domains?: ModelDomainConnection | null,
   tokens?: ModelTokenConnection | null,
   roles?: ModelRoleConnection | null,
+  chainMeta?: ChainMeta | null,
   createdAt: string,
   updatedAt: string,
   colonyNativeTokenId?: string | null,
@@ -108,6 +146,7 @@ export type Token = {
   symbol: string,
   decimals: number,
   type: TokenType,
+  chainMeta?: ChainMeta | null,
   createdAt: string,
   updatedAt: string,
   userTokensId?: string | null,
@@ -133,6 +172,7 @@ export type Domain = {
   __typename: "Domain",
   internalId: string,
   chainId: number,
+  chainMeta?: ChainMeta | null,
   createdAt: string,
   updatedAt: string,
   colonyDomainsId?: string | null,
@@ -155,6 +195,7 @@ export type Role = {
   __typename: "Role",
   internalId: string,
   type: RoleType,
+  chainMeta?: ChainMeta | null,
   createdAt: string,
   updatedAt: string,
   colonyRolesId?: string | null,
@@ -394,6 +435,19 @@ export type DeleteRoleInput = {
   internalId: string,
 };
 
+export type ModelChainMetaFilterInput = {
+  confirmedOnChain?: ModelBooleanInput | null,
+  and?: Array< ModelChainMetaFilterInput | null > | null,
+  or?: Array< ModelChainMetaFilterInput | null > | null,
+  not?: ModelChainMetaFilterInput | null,
+};
+
+export type ModelChainMetaConnection = {
+  __typename: "ModelChainMetaConnection",
+  items:  Array<ChainMeta | null >,
+  nextToken?: string | null,
+};
+
 export type ModelStringKeyConditionInput = {
   eq?: string | null,
   le?: string | null,
@@ -508,6 +562,17 @@ export type ModelRoleFilterInput = {
   colonyRoleRolesId?: ModelIDInput | null,
 };
 
+export type ModelSubscriptionChainMetaFilterInput = {
+  confirmedOnChain?: ModelSubscriptionBooleanInput | null,
+  and?: Array< ModelSubscriptionChainMetaFilterInput | null > | null,
+  or?: Array< ModelSubscriptionChainMetaFilterInput | null > | null,
+};
+
+export type ModelSubscriptionBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+};
+
 export type ModelSubscriptionUserFilterInput = {
   walletAddress?: ModelSubscriptionStringInput | null,
   username?: ModelSubscriptionStringInput | null,
@@ -602,6 +667,51 @@ export type ModelSubscriptionRoleFilterInput = {
   or?: Array< ModelSubscriptionRoleFilterInput | null > | null,
 };
 
+export type CreateChainMetaMutationVariables = {
+  input: CreateChainMetaInput,
+  condition?: ModelChainMetaConditionInput | null,
+};
+
+export type CreateChainMetaMutation = {
+  createChainMeta?:  {
+    __typename: "ChainMeta",
+    confirmedOnChain: boolean,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateChainMetaMutationVariables = {
+  input: UpdateChainMetaInput,
+  condition?: ModelChainMetaConditionInput | null,
+};
+
+export type UpdateChainMetaMutation = {
+  updateChainMeta?:  {
+    __typename: "ChainMeta",
+    confirmedOnChain: boolean,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteChainMetaMutationVariables = {
+  input: DeleteChainMetaInput,
+  condition?: ModelChainMetaConditionInput | null,
+};
+
+export type DeleteChainMetaMutation = {
+  deleteChainMeta?:  {
+    __typename: "ChainMeta",
+    confirmedOnChain: boolean,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type CreateUserMutationVariables = {
   input: CreateUserInput,
   condition?: ModelUserConditionInput | null,
@@ -625,6 +735,13 @@ export type CreateUserMutation = {
     tokens?:  {
       __typename: "ModelTokenConnection",
       nextToken?: string | null,
+    } | null,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -655,6 +772,13 @@ export type UpdateUserMutation = {
       __typename: "ModelTokenConnection",
       nextToken?: string | null,
     } | null,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -683,6 +807,13 @@ export type DeleteUserMutation = {
     tokens?:  {
       __typename: "ModelTokenConnection",
       nextToken?: string | null,
+    } | null,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -731,6 +862,13 @@ export type CreateColonyMutation = {
     roles?:  {
       __typename: "ModelRoleConnection",
       nextToken?: string | null,
+    } | null,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -782,6 +920,13 @@ export type UpdateColonyMutation = {
       __typename: "ModelRoleConnection",
       nextToken?: string | null,
     } | null,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId?: string | null,
@@ -832,6 +977,13 @@ export type DeleteColonyMutation = {
       __typename: "ModelRoleConnection",
       nextToken?: string | null,
     } | null,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId?: string | null,
@@ -849,6 +1001,13 @@ export type CreateDomainMutation = {
     __typename: "Domain",
     internalId: string,
     chainId: number,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyDomainsId?: string | null,
@@ -866,6 +1025,13 @@ export type UpdateDomainMutation = {
     __typename: "Domain",
     internalId: string,
     chainId: number,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyDomainsId?: string | null,
@@ -883,6 +1049,13 @@ export type DeleteDomainMutation = {
     __typename: "Domain",
     internalId: string,
     chainId: number,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyDomainsId?: string | null,
@@ -904,6 +1077,13 @@ export type CreateTokenMutation = {
     symbol: string,
     decimals: number,
     type: TokenType,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     userTokensId?: string | null,
@@ -927,6 +1107,13 @@ export type UpdateTokenMutation = {
     symbol: string,
     decimals: number,
     type: TokenType,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     userTokensId?: string | null,
@@ -950,6 +1137,13 @@ export type DeleteTokenMutation = {
     symbol: string,
     decimals: number,
     type: TokenType,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     userTokensId?: string | null,
@@ -1074,6 +1268,13 @@ export type CreateRoleMutation = {
     __typename: "Role",
     internalId: string,
     type: RoleType,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyRolesId?: string | null,
@@ -1092,6 +1293,13 @@ export type UpdateRoleMutation = {
     __typename: "Role",
     internalId: string,
     type: RoleType,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyRolesId?: string | null,
@@ -1110,11 +1318,52 @@ export type DeleteRoleMutation = {
     __typename: "Role",
     internalId: string,
     type: RoleType,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyRolesId?: string | null,
     colonyRolesName?: string | null,
     colonyRoleRolesId?: string | null,
+  } | null,
+};
+
+export type GetChainMetaQueryVariables = {
+  id: string,
+};
+
+export type GetChainMetaQuery = {
+  getChainMeta?:  {
+    __typename: "ChainMeta",
+    confirmedOnChain: boolean,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListChainMetasQueryVariables = {
+  filter?: ModelChainMetaFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListChainMetasQuery = {
+  listChainMetas?:  {
+    __typename: "ModelChainMetaConnection",
+    items:  Array< {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -1141,6 +1390,13 @@ export type GetUserQuery = {
     tokens?:  {
       __typename: "ModelTokenConnection",
       nextToken?: string | null,
+    } | null,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1215,6 +1471,13 @@ export type GetColonyQuery = {
       __typename: "ModelRoleConnection",
       nextToken?: string | null,
     } | null,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId?: string | null,
@@ -1263,6 +1526,13 @@ export type GetDomainQuery = {
     __typename: "Domain",
     internalId: string,
     chainId: number,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyDomainsId?: string | null,
@@ -1309,6 +1579,13 @@ export type GetTokenQuery = {
     symbol: string,
     decimals: number,
     type: TokenType,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     userTokensId?: string | null,
@@ -1413,6 +1690,13 @@ export type GetRoleQuery = {
     __typename: "Role",
     internalId: string,
     type: RoleType,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyRolesId?: string | null,
@@ -1699,6 +1983,48 @@ export type GetRolesByTypeQuery = {
   } | null,
 };
 
+export type OnCreateChainMetaSubscriptionVariables = {
+  filter?: ModelSubscriptionChainMetaFilterInput | null,
+};
+
+export type OnCreateChainMetaSubscription = {
+  onCreateChainMeta?:  {
+    __typename: "ChainMeta",
+    confirmedOnChain: boolean,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateChainMetaSubscriptionVariables = {
+  filter?: ModelSubscriptionChainMetaFilterInput | null,
+};
+
+export type OnUpdateChainMetaSubscription = {
+  onUpdateChainMeta?:  {
+    __typename: "ChainMeta",
+    confirmedOnChain: boolean,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteChainMetaSubscriptionVariables = {
+  filter?: ModelSubscriptionChainMetaFilterInput | null,
+};
+
+export type OnDeleteChainMetaSubscription = {
+  onDeleteChainMeta?:  {
+    __typename: "ChainMeta",
+    confirmedOnChain: boolean,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type OnCreateUserSubscriptionVariables = {
   filter?: ModelSubscriptionUserFilterInput | null,
 };
@@ -1721,6 +2047,13 @@ export type OnCreateUserSubscription = {
     tokens?:  {
       __typename: "ModelTokenConnection",
       nextToken?: string | null,
+    } | null,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1750,6 +2083,13 @@ export type OnUpdateUserSubscription = {
       __typename: "ModelTokenConnection",
       nextToken?: string | null,
     } | null,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1777,6 +2117,13 @@ export type OnDeleteUserSubscription = {
     tokens?:  {
       __typename: "ModelTokenConnection",
       nextToken?: string | null,
+    } | null,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1824,6 +2171,13 @@ export type OnCreateColonySubscription = {
     roles?:  {
       __typename: "ModelRoleConnection",
       nextToken?: string | null,
+    } | null,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1874,6 +2228,13 @@ export type OnUpdateColonySubscription = {
       __typename: "ModelRoleConnection",
       nextToken?: string | null,
     } | null,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId?: string | null,
@@ -1923,6 +2284,13 @@ export type OnDeleteColonySubscription = {
       __typename: "ModelRoleConnection",
       nextToken?: string | null,
     } | null,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId?: string | null,
@@ -1939,6 +2307,13 @@ export type OnCreateDomainSubscription = {
     __typename: "Domain",
     internalId: string,
     chainId: number,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyDomainsId?: string | null,
@@ -1955,6 +2330,13 @@ export type OnUpdateDomainSubscription = {
     __typename: "Domain",
     internalId: string,
     chainId: number,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyDomainsId?: string | null,
@@ -1971,6 +2353,13 @@ export type OnDeleteDomainSubscription = {
     __typename: "Domain",
     internalId: string,
     chainId: number,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyDomainsId?: string | null,
@@ -1991,6 +2380,13 @@ export type OnCreateTokenSubscription = {
     symbol: string,
     decimals: number,
     type: TokenType,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     userTokensId?: string | null,
@@ -2013,6 +2409,13 @@ export type OnUpdateTokenSubscription = {
     symbol: string,
     decimals: number,
     type: TokenType,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     userTokensId?: string | null,
@@ -2035,6 +2438,13 @@ export type OnDeleteTokenSubscription = {
     symbol: string,
     decimals: number,
     type: TokenType,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     userTokensId?: string | null,
@@ -2155,6 +2565,13 @@ export type OnCreateRoleSubscription = {
     __typename: "Role",
     internalId: string,
     type: RoleType,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyRolesId?: string | null,
@@ -2172,6 +2589,13 @@ export type OnUpdateRoleSubscription = {
     __typename: "Role",
     internalId: string,
     type: RoleType,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyRolesId?: string | null,
@@ -2189,6 +2613,13 @@ export type OnDeleteRoleSubscription = {
     __typename: "Role",
     internalId: string,
     type: RoleType,
+    chainMeta?:  {
+      __typename: "ChainMeta",
+      confirmedOnChain: boolean,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyRolesId?: string | null,

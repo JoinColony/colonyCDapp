@@ -2,6 +2,45 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createChainMeta = /* GraphQL */ `
+  mutation CreateChainMeta(
+    $input: CreateChainMetaInput!
+    $condition: ModelChainMetaConditionInput
+  ) {
+    createChainMeta(input: $input, condition: $condition) {
+      confirmedOnChain
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateChainMeta = /* GraphQL */ `
+  mutation UpdateChainMeta(
+    $input: UpdateChainMetaInput!
+    $condition: ModelChainMetaConditionInput
+  ) {
+    updateChainMeta(input: $input, condition: $condition) {
+      confirmedOnChain
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteChainMeta = /* GraphQL */ `
+  mutation DeleteChainMeta(
+    $input: DeleteChainMetaInput!
+    $condition: ModelChainMetaConditionInput
+  ) {
+    deleteChainMeta(input: $input, condition: $condition) {
+      confirmedOnChain
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser(
     $input: CreateUserInput!
@@ -21,6 +60,12 @@ export const createUser = /* GraphQL */ `
       }
       tokens {
         nextToken
+      }
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -47,6 +92,12 @@ export const updateUser = /* GraphQL */ `
       tokens {
         nextToken
       }
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -71,6 +122,12 @@ export const deleteUser = /* GraphQL */ `
       }
       tokens {
         nextToken
+      }
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -113,6 +170,12 @@ export const createColony = /* GraphQL */ `
       }
       roles {
         nextToken
+      }
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -158,6 +221,12 @@ export const updateColony = /* GraphQL */ `
       roles {
         nextToken
       }
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -202,6 +271,12 @@ export const deleteColony = /* GraphQL */ `
       roles {
         nextToken
       }
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -217,6 +292,12 @@ export const createDomain = /* GraphQL */ `
     createDomain(input: $input, condition: $condition) {
       internalId
       chainId
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyDomainsId
@@ -232,6 +313,12 @@ export const updateDomain = /* GraphQL */ `
     updateDomain(input: $input, condition: $condition) {
       internalId
       chainId
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyDomainsId
@@ -247,6 +334,12 @@ export const deleteDomain = /* GraphQL */ `
     deleteDomain(input: $input, condition: $condition) {
       internalId
       chainId
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyDomainsId
@@ -266,6 +359,12 @@ export const createToken = /* GraphQL */ `
       symbol
       decimals
       type
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       userTokensId
@@ -287,6 +386,12 @@ export const updateToken = /* GraphQL */ `
       symbol
       decimals
       type
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       userTokensId
@@ -308,6 +413,12 @@ export const deleteToken = /* GraphQL */ `
       symbol
       decimals
       type
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       userTokensId
@@ -418,6 +529,12 @@ export const createRole = /* GraphQL */ `
     createRole(input: $input, condition: $condition) {
       internalId
       type
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyRolesId
@@ -434,6 +551,12 @@ export const updateRole = /* GraphQL */ `
     updateRole(input: $input, condition: $condition) {
       internalId
       type
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyRolesId
@@ -450,6 +573,12 @@ export const deleteRole = /* GraphQL */ `
     deleteRole(input: $input, condition: $condition) {
       internalId
       type
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyRolesId

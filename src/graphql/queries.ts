@@ -2,6 +2,33 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getChainMeta = /* GraphQL */ `
+  query GetChainMeta($id: ID!) {
+    getChainMeta(id: $id) {
+      confirmedOnChain
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listChainMetas = /* GraphQL */ `
+  query ListChainMetas(
+    $filter: ModelChainMetaFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listChainMetas(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getUser = /* GraphQL */ `
   query GetUser($walletAddress: String!, $username: String!) {
     getUser(walletAddress: $walletAddress, username: $username) {
@@ -18,6 +45,12 @@ export const getUser = /* GraphQL */ `
       }
       tokens {
         nextToken
+      }
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -87,6 +120,12 @@ export const getColony = /* GraphQL */ `
       roles {
         nextToken
       }
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -134,6 +173,12 @@ export const getDomain = /* GraphQL */ `
     getDomain(internalId: $internalId, chainId: $chainId) {
       internalId
       chainId
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyDomainsId
@@ -179,6 +224,12 @@ export const getToken = /* GraphQL */ `
       symbol
       decimals
       type
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       userTokensId
@@ -274,6 +325,12 @@ export const getRole = /* GraphQL */ `
     getRole(internalId: $internalId) {
       internalId
       type
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyRolesId

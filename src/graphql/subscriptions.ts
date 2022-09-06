@@ -2,6 +2,42 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateChainMeta = /* GraphQL */ `
+  subscription OnCreateChainMeta(
+    $filter: ModelSubscriptionChainMetaFilterInput
+  ) {
+    onCreateChainMeta(filter: $filter) {
+      confirmedOnChain
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateChainMeta = /* GraphQL */ `
+  subscription OnUpdateChainMeta(
+    $filter: ModelSubscriptionChainMetaFilterInput
+  ) {
+    onUpdateChainMeta(filter: $filter) {
+      confirmedOnChain
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteChainMeta = /* GraphQL */ `
+  subscription OnDeleteChainMeta(
+    $filter: ModelSubscriptionChainMetaFilterInput
+  ) {
+    onDeleteChainMeta(filter: $filter) {
+      confirmedOnChain
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
     onCreateUser(filter: $filter) {
@@ -18,6 +54,12 @@ export const onCreateUser = /* GraphQL */ `
       }
       tokens {
         nextToken
+      }
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -41,6 +83,12 @@ export const onUpdateUser = /* GraphQL */ `
       tokens {
         nextToken
       }
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -62,6 +110,12 @@ export const onDeleteUser = /* GraphQL */ `
       }
       tokens {
         nextToken
+      }
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -101,6 +155,12 @@ export const onCreateColony = /* GraphQL */ `
       }
       roles {
         nextToken
+      }
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -143,6 +203,12 @@ export const onUpdateColony = /* GraphQL */ `
       roles {
         nextToken
       }
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -184,6 +250,12 @@ export const onDeleteColony = /* GraphQL */ `
       roles {
         nextToken
       }
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -196,6 +268,12 @@ export const onCreateDomain = /* GraphQL */ `
     onCreateDomain(filter: $filter) {
       internalId
       chainId
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyDomainsId
@@ -208,6 +286,12 @@ export const onUpdateDomain = /* GraphQL */ `
     onUpdateDomain(filter: $filter) {
       internalId
       chainId
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyDomainsId
@@ -220,6 +304,12 @@ export const onDeleteDomain = /* GraphQL */ `
     onDeleteDomain(filter: $filter) {
       internalId
       chainId
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyDomainsId
@@ -236,6 +326,12 @@ export const onCreateToken = /* GraphQL */ `
       symbol
       decimals
       type
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       userTokensId
@@ -254,6 +350,12 @@ export const onUpdateToken = /* GraphQL */ `
       symbol
       decimals
       type
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       userTokensId
@@ -272,6 +374,12 @@ export const onDeleteToken = /* GraphQL */ `
       symbol
       decimals
       type
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       userTokensId
@@ -376,6 +484,12 @@ export const onCreateRole = /* GraphQL */ `
     onCreateRole(filter: $filter) {
       internalId
       type
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyRolesId
@@ -389,6 +503,12 @@ export const onUpdateRole = /* GraphQL */ `
     onUpdateRole(filter: $filter) {
       internalId
       type
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyRolesId
@@ -402,6 +522,12 @@ export const onDeleteRole = /* GraphQL */ `
     onDeleteRole(filter: $filter) {
       internalId
       type
+      chainMeta {
+        confirmedOnChain
+        id
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       colonyRolesId
