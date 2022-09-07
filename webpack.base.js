@@ -41,8 +41,8 @@ const config = {
       {
         test: /\.css$/,
         include: [
-          // path.resolve(__dirname, 'src', 'modules'),
-          // path.resolve(__dirname, 'src', 'styles'),
+          path.resolve(__dirname, 'src', 'components'),
+          path.resolve(__dirname, 'src', 'styles'),
         ],
         use: [
           'style-loader',
@@ -83,7 +83,7 @@ const config = {
       {
         test: /\.svg$/,
         exclude: [
-          // path.resolve(__dirname, 'src', 'img', 'icons')
+          path.resolve(__dirname, 'src', 'img', 'icons')
         ],
         use: '@svgr/webpack',
       },
@@ -95,7 +95,7 @@ const config = {
       {
         test: /\.svg$/,
         include: [
-          // path.resolve(__dirname, 'src', 'img', 'icons')
+          path.resolve(__dirname, 'src', 'img', 'icons')
         ],
         use: [
           {
@@ -116,7 +116,7 @@ const config = {
       {
         test: /\.svg$/,
         include: [
-          // path.resolve(__dirname, 'src', 'img', 'tokens'),
+          path.resolve(__dirname, 'src', 'img', 'tokens'),
         ],
         use: [
           {
