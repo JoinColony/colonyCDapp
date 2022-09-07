@@ -12,8 +12,9 @@
     "docker:build": "DOCKER_BUILDKIT=1 docker build --tag colonycdapp-backend-local-dev:1.0.0 .",
     "docker:start": "docker compose up --force-recreate -V",
     "start": "npm run docker:build && npm run docker:start",
-    "lint": "eslint --fix 'src/**/*.{ts,tsx}'"
-  },
+    "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
+    "webpack": "webpack-dev-server --config webpack.dev.js --port 9090"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JoinColony/colonyDapp.git"
