@@ -1,6 +1,10 @@
 import { Network } from '@colony/colony-js';
 
-import { DEFAULT_NETWORK, NETWORK_DATA, SUPPORTED_NETWORKS } from '~constants';
+import {
+  DEFAULT_NETWORK,
+  NETWORK_DATA,
+  SUPPORTED_NETWORKS,
+} from '~constants/index';
 
 export const checkIfNetworkIsAllowed = (
   walletNetworkId: number | null | undefined,

@@ -4,7 +4,7 @@ import { ClientType, ContractClient, TokenClientType } from '@colony/colony-js';
 
 import { Address, ExtendedClientType } from '~types/index';
 import { TransactionError } from '~redux/immutable/Transaction';
-import { SUPPORTED_NETWORKS } from '~constants';
+import { SUPPORTED_NETWORKS } from '~constants/index';
 
 export const createAddress = (address: string): Address => getAddress(address);
 

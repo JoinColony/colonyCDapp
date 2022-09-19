@@ -15,5 +15,3 @@ export const CORE_MESSAGES_LIST = 'list';
 
 export const USERS_NAMESPACE = 'users';
 export const USERS_WALLET = 'wallet';
-
-export const PAGES_NAMESPACE = 'pages';
