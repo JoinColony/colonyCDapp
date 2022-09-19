@@ -108,7 +108,6 @@ function* createPaymentMotion({
 
     const { amount, tokenAddress, decimals = 18 } = singlePayment;
 
-    // eslint-disable-next-line max-len
     const encodedAction = oneTxPaymentClient.interface.encodeFunctionData(
       'makePaymentFundedFromDomain',
       [

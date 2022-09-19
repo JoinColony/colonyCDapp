@@ -70,6 +70,7 @@ RUN npm install
 RUN npm run amplify
 
 # Update amplify local env config
+# FIX!!!
 RUN tmp=$(mktemp) && jq '.projectPath="/colonyCDapp"' amplify/.config/local-env-info.json > $tmp && mv $tmp amplify/.config/local-env-info.json
 
 #
@@ -131,20 +132,18 @@ RUN npm install
 
 WORKDIR /colonyCDappBackend
 
-#
-# Orchestration script
-#
-
-EXPOSE 3002
-EXPOSE 8545
-EXPOSE 20002
-
 # Generate the local start script
 RUN echo "cd colonyNetwork\n" \
   "yarn start:blockchain:client &\n" \
   "DISABLE_DOCKER=true yarn truffle migrate\n" \
   "ETHER_ROUTER_ADDRESS=\$(jq -r .etherRouterAddress etherrouter-address.json)\n" \
   "MINER_ACCOUNT_ADDRESS=\$(jq -r '.addresses | keys[5]'  ganache-accounts.json)\n" \
+  # Copy over colony network build artifacts to aid in development
+  # Some of the files are needed to be imported and used in the app for local dev
+  "rm --recursive --force /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts\n" \
+  "mkdir --parents /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts\n" \
+  "cp -R ./build /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/\n" \
+  "cp ./etherrouter-address.json /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json\n" \
   "cd packages/reputation-miner\n" \
   "node ./bin/index.js --minerAddress \$MINER_ACCOUNT_ADDRESS --syncFrom 1 --colonyNetworkAddress \$ETHER_ROUTER_ADDRESS --oracle --auto --dbPath reputationStates.sqlite --oraclePort 3002 --processingDelay 1 &\n" \
   "cd ../../../reputation-monitor-dev\n" \

@@ -10,7 +10,7 @@ import { selectAsJS } from '../utils';
 import { mergePayload } from '~utils/actions';
 import { TRANSACTION_STATUSES, TransactionRecord } from '../../immutable';
 import { ContextModule, getContext } from '~context';
-import { ExtendedReduxContext } from '~types';
+import { ExtendedClientType } from '~types';
 
 import { transactionSendError } from '../../actionCreators';
 import { oneTransaction } from '../../selectors';
@@ -61,7 +61,7 @@ export default function* sendTransaction({
   if (context === ClientType.TokenClient) {
     contextClient = yield colonyManager.getTokenClient(identifier as string);
   } else if (
-    context === (ExtendedReduxContext.WrappedToken as unknown as ClientType)
+    context === (ExtendedClientType.WrappedTokenClient as unknown as ClientType)
   ) {
     // @ts-ignore
     const wrappedTokenAbi = abis.WrappedToken.default.abi;
@@ -71,7 +71,8 @@ export default function* sendTransaction({
       colonyManager.signer,
     );
   } else if (
-    context === (ExtendedReduxContext.VestingSimple as unknown as ClientType)
+    context ===
+    (ExtendedClientType.VestingSimpleClient as unknown as ClientType)
   ) {
     // @ts-ignore
     const vestingSimpleAbi = abis.vestingSimple.default.abi;

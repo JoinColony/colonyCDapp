@@ -106,5 +106,16 @@ module.exports = {
     '@typescript-eslint/no-shadow': ['error'],
     '@typescript-eslint/ban-ts-comment': 'off',
     'default-param-last': 'off',
+    'max-len': [
+      'error',
+      {
+        code: 120,
+        // Allow import, export and implements statements. Also long backticks
+        ignorePattern: '^import [^,]+ from |^export | implements | `.{30,}`',
+        ignoreComments: true,
+        tabWidth: 2,
+        ignoreUrls: true,
+      },
+    ],
   },
 };

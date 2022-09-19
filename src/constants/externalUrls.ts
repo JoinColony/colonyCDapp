@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-
 export const FEEDBACK = `https://portal.productboard.com/colony/1-colony-portal/tabs/4-bugs`;
 export const HELP = `https://colony.gitbook.io/colony`;
 export const BETA_DISCLAIMER = `https://colony.gitbook.io/colony/disclaimers/beta`;

@@ -4,11 +4,7 @@ import { BigNumber } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
-import {
-  getContext,
-  ContextModule,
-  TEMP_removeContext,
-} from '~context';
+import { getContext, ContextModule, TEMP_removeContext } from '~context';
 import ENS from '~lib/ENS';
 import {
   getLoggedInUser,
@@ -212,8 +208,6 @@ function* userDepositToken({
     const colonyManager = getContext(ContextModule.ColonyManager);
     const { walletAddress } = yield getLoggedInUser();
 
-    // @NOTE This line exceeds the max-len but there's no prettier solution
-    // eslint-disable-next-line max-len
     const tokenLockingClient: TokenLockingClient =
       yield colonyManager.getClient(
         ClientType.TokenLockingClient,

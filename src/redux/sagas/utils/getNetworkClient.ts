@@ -12,26 +12,6 @@ import { ContextModule, getContext } from '~context';
 
 import getProvider from './getProvider';
 
-interface LocalContractABI {
-  networks: Record<string, { address: string }>;
-}
-
-const getLocalContractAddress = (contractName: string) => {
-  // process.env.DEV is set by the QA server in case we want to have a debug build. We don't have access to the compiled contracts hen
-  if (process.env.NODE_ENV === 'development' && !process.env.DEV) {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires, max-len, global-require, import/no-dynamic-require
-      const contractABI: LocalContractABI = require(`~lib/colonyNetwork/build/contracts/${contractName}.json`);
-      return Object.values(contractABI.networks)[0].address;
-    } catch {
-      throw new Error(
-        `Could not get local contract address for ${contractName}. Please deploy contracts first`,
-      );
-    }
-  }
-  return undefined;
-};
-
 /*
  * Return an initialized ColonyNetworkClient instance.
  */
@@ -53,12 +33,16 @@ export default function* getNetworkClient() {
     DEFAULT_NETWORK === Network.Custom
   ) {
     reputationOracleUrl = new URL(`/reputation`, 'http://localhost:3001');
+    const {
+      etherRouterAddress: networkAddress,
+      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
+    } = require('amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
     return yield call(
       getColonyNetworkClient,
       network,
       signer as unknown as Signer,
       {
-        networkAddress: getLocalContractAddress('EtherRouter'),
+        networkAddress,
         reputationOracleEndpoint: reputationOracleUrl.href,
       },
     );

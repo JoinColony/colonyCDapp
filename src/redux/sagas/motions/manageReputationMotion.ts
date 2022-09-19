@@ -115,13 +115,11 @@ function* manageReputationMotion({
     let encodedAction;
 
     if (isSmitingReputation) {
-      // eslint-disable-next-line max-len
       encodedAction = colonyClient.interface.encodeFunctionData(
         'emitDomainReputationPenalty',
         [permissionDomainId, childSkillIndex, domainId, userAddress, amount],
       );
     } else {
-      // eslint-disable-next-line max-len
       encodedAction = colonyClient.interface.encodeFunctionData(
         'emitDomainReputationReward',
         [domainId, userAddress, amount],

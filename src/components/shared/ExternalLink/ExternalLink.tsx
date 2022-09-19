@@ -41,7 +41,6 @@ const ExternalLink = ({
   download,
 }: Props) => {
   const { formatMessage } = useIntl();
-  // eslint-disable-next-line max-len
   const typeOfText =
     typeof text == 'string' ? text : text && formatMessage(text, textValues);
   const linkText = children || typeOfText || href;

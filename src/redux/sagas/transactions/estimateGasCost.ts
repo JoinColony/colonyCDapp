@@ -8,7 +8,7 @@ import { Action } from '../../types/actions';
 import { selectAsJS, getGasPrices } from '../utils';
 import { ContextModule, getContext } from '~context';
 import { TransactionRecordProps } from '../../immutable';
-import { ExtendedReduxContext } from '~types';
+import { ExtendedClientType } from '~types';
 
 import { oneTransaction } from '../../selectors';
 import {
@@ -44,7 +44,8 @@ export default function* estimateGasCost({
     if (context === ClientType.TokenClient) {
       contextClient = yield colonyManager.getTokenClient(identifier as string);
     } else if (
-      context === (ExtendedReduxContext.WrappedToken as unknown as ClientType)
+      context ===
+      (ExtendedClientType.WrappedTokenClient as unknown as ClientType)
     ) {
       // @ts-ignore
       const wrappedTokenAbi = abis.WrappedToken.default.abi;
@@ -54,7 +55,8 @@ export default function* estimateGasCost({
         colonyManager.signer,
       );
     } else if (
-      context === (ExtendedReduxContext.VestingSimple as unknown as ClientType)
+      context ===
+      (ExtendedClientType.VestingSimpleClient as unknown as ClientType)
     ) {
       // @ts-ignore
       const vestingSimpleAbi = abis.vestingSimple.default.abi;

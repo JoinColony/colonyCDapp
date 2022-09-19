@@ -37,8 +37,6 @@ function* stakeMotion({
       colonyAddress,
     );
 
-    // @NOTE This line exceeds the max-len but there's no prettier solution
-    // eslint-disable-next-line max-len
     const votingReputationClient: AnyVotingReputationClient =
       yield context.getClient(ClientType.VotingReputationClient, colonyAddress);
 

@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { ExtendedReduxContext } from '~types';
+import { ExtendedClientType } from '~types';
 import {
   UserBalanceWithLockDocument,
   UserBalanceWithLockQuery,
@@ -31,7 +31,7 @@ function* unwrapToken({
     const apolloClient = getContext(ContextModule.ApolloClient);
 
     yield fork(createTransaction, meta.id, {
-      context: ExtendedReduxContext.WrappedToken,
+      context: ExtendedClientType.WrappedTokenClient,
       methodName: 'withdraw',
       identifier: process.env.META_WRAPPED_TOKEN_ADDRESS,
       params: [BigNumber.from(amount)],

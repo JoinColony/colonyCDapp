@@ -12,7 +12,6 @@ const MSG = defineMessages({
   defaultError: {
     id: 'ActionForm.defaultError',
     defaultMessage:
-      // eslint-disable-next-line max-len
       "Something went wrong with the thing you just wanted to do. It's not your fault. Promise!",
   },
 });

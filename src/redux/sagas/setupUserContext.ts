@@ -1,67 +1,66 @@
 import { all, call, fork, put } from 'redux-saga/effects';
-import { formatEther } from 'ethers/lib/utils';
-import userflow from 'userflow.js';
+// import { formatEther } from 'ethers/lib/utils';
 
-import { WalletMethod } from '../immutable';
+// import actionsSagas from './actions';
+// import colonySagas, {
+//   colonyCreateSaga,
+//   colonyFinishDeploymentSaga,
+// } from './colony';
+// import colonyExtensionSagas from './extensions';
+// import motionSagas from './motions';
+// import whitelistSagas from './whitelist';
+// import vestingSagas from './vesting';
+// import { setupUsersSagas } from './users';
+import { getWallet } from './wallet';
+
+// import { WalletMethod } from '../immutable';
 import { createAddress } from '~utils/web3';
 import { ActionTypes } from '../actionTypes';
 import { AllActions, Action } from '../types/actions';
 
 import {
   getContext,
-  TEMP_setContext,
+  // setContext,
   ContextModule,
 } from '~context';
-import { setLastWallet } from '~utils/autoLogin';
-import {
-  refetchUserNotifications,
-  SetLoggedInUserDocument,
-  SetLoggedInUserMutation,
-  SetLoggedInUserMutationVariables,
-  LoggedInUserQuery,
-  LoggedInUserQueryVariables,
-  LoggedInUserDocument,
-  updateNetworkContracts,
-} from '~data/index';
+// import { setLastWallet } from '~utils/autoLogin';
+// import {
+//   refetchUserNotifications,
+//   SetLoggedInUserDocument,
+//   SetLoggedInUserMutation,
+//   SetLoggedInUserMutationVariables,
+//   LoggedInUserQuery,
+//   LoggedInUserQueryVariables,
+//   LoggedInUserDocument,
+//   updateNetworkContracts,
+// } from '~data/index';
 
-import setupResolvers from '~context/setupResolvers';
+// import setupResolvers from '~context/setupResolvers';
 import AppLoadingState from '~context/appLoadingState';
-import { authenticate, clearToken } from '../../../api';
-import ENS from '../../../lib/ENS';
+// import { authenticate, clearToken } from '../../../api';
+// import ENS from '../../../lib/ENS';
 
 import {
-  getGasPrices,
-  reinitializeColonyManager,
+  // getGasPrices,
+  // reinitializeColonyManager,
   putError,
   createUserWithSecondAttempt,
 } from './utils';
 import setupOnBeforeUnload from './setupOnBeforeUnload';
 import { setupUserBalanceListener } from './setupUserBalanceListener';
 
-import actionsSagas from './actions';
-import colonySagas, {
-  colonyCreateSaga,
-  colonyFinishDeploymentSaga,
-} from './colony';
-import colonyExtensionSagas from './extensions';
-import motionSagas from './motions';
-import whitelistSagas from './whitelist';
-import vestingSagas from './vesting';
-import { setupUsersSagas } from './users';
-import { getWallet } from './wallet';
-
 function* setupContextDependentSagas() {
   const appLoadingState: typeof AppLoadingState = AppLoadingState;
   yield all([
-    call(actionsSagas),
-    call(colonySagas),
-    call(colonyCreateSaga),
-    call(colonyFinishDeploymentSaga),
-    call(colonyExtensionSagas),
-    call(motionSagas),
-    call(whitelistSagas),
-    call(vestingSagas),
-    call(setupUsersSagas),
+    // call(actionsSagas),
+    // call(colonySagas),
+    // call(colonyCreateSaga),
+    // call(colonyFinishDeploymentSaga),
+    // call(colonyExtensionSagas),
+    // call(motionSagas),
+    // call(whitelistSagas),
+    // call(vestingSagas),
+    // call(setupUsersSagas),
     /**
      * We've loaded all the context sagas, so we can proceed with redering
      * all the app's routes
@@ -78,10 +77,10 @@ function* setupContextDependentSagas() {
 export default function* setupUserContext(
   action: Action<ActionTypes.WALLET_CREATE>,
 ) {
-  const {
-    meta,
-    payload: { method },
-  } = action;
+  // const {
+  //   meta,
+  //   payload: { method },
+  // } = action;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -89,21 +88,21 @@ export default function* setupUserContext(
      * Get the "old" wallet address, and if it's ethereal, remove it's authetication
      * token from local host as it won't be needed anymore
      */
-    const {
-      data: {
-        loggedInUser: {
-          walletAddress: etherealWalletAddress,
-          ethereal: isWalletTypeEthereal,
-        },
-      },
-    } = yield apolloClient.query<LoggedInUserQuery, LoggedInUserQueryVariables>(
-      {
-        query: LoggedInUserDocument,
-      },
-    );
-    if (isWalletTypeEthereal && etherealWalletAddress) {
-      clearToken(etherealWalletAddress);
-    }
+    // const {
+    //   data: {
+    //     loggedInUser: {
+    //       walletAddress: etherealWalletAddress,
+    //       ethereal: isWalletTypeEthereal,
+    //     },
+    //   },
+    // } = yield apolloClient.query<LoggedInUserQuery, LoggedInUserQueryVariables>(
+    //   {
+    //     query: LoggedInUserDocument,
+    //   },
+    // );
+    // if (isWalletTypeEthereal && etherealWalletAddress) {
+    //   clearToken(etherealWalletAddress);
+    // }
 
     /*
      * Get the new wallet and set it in context.
@@ -117,23 +116,12 @@ export default function* setupUserContext(
       walletNetworkId = window.ethereum.networkVersion;
     }
     /*
-     * @NOTE Detecting Ganache via it's network id is a bit iffy
-     * It's randomized on start so we can reliably count on it.
-     *
-     * For that, if the chainId is bigger then 10k, we assume we're on
-     * ganache (on dev mode only), and set our own chainId to `13131313`
-     *
-     * We really need a better way of detecting ganache here, it will have to do
-     * for now
-     */
-    if (
-      process.env.NODE_ENV === 'development' &&
-      parseInt(walletNetworkId, 10) > 10000
+     * @NOTE Detecting Ganache via it's network id isrc
     ) {
       walletNetworkId = '13131313';
     }
 
-    TEMP_setContext(ContextModule.Wallet, wallet);
+    setContext(ContextModule.Wallet, wallet);
 
     yield authenticate(wallet);
 
@@ -147,10 +135,6 @@ export default function* setupUserContext(
     yield call(setLastWallet, method, walletAddress);
 
     const colonyManager = yield call(reinitializeColonyManager);
-
-    if (method !== WalletMethod.Ethereal && process.env.USERFLOW_TOKEN) {
-      yield userflow.identify(walletAddress);
-    }
 
     yield call(getGasPrices);
 
@@ -175,7 +159,7 @@ export default function* setupUserContext(
       );
       username = ENS.stripDomainParts('user', domain);
 
-      yield refetchUserNotifications(walletAddress);
+      // yield refetchUserNotifications(walletAddress);
     } catch (caughtError) {
       console.info(`Could not find username for ${walletAddress}`);
     }
@@ -184,38 +168,38 @@ export default function* setupUserContext(
 
     // @TODO refactor setupUserContext for graphql
     // @BODY eventually we want to move everything to resolvers, so all of this has to happen outside of sagas. There is no need to have a separate state or anything, just set it up in an aync function (instead of WALLET_CREATE), then call this function
-    const ipfsWithFallback = getContext(ContextModule.IPFSWithFallback);
+    // const ipfsWithFallback = getContext(ContextModule.IPFSWithFallback);
     const userContext = {
       apolloClient,
       colonyManager,
       ens,
       wallet,
-      ipfsWithFallback,
+      // ipfsWithFallback,
     };
-    yield setupResolvers(apolloClient, userContext);
+    // yield setupResolvers(apolloClient, userContext);
 
     yield createUserWithSecondAttempt(username, true);
 
-    yield apolloClient.mutate<
-      SetLoggedInUserMutation,
-      SetLoggedInUserMutationVariables
-    >({
-      mutation: SetLoggedInUserDocument,
-      variables: {
-        input: {
-          balance: formatEther(balance),
-          username,
-          walletAddress,
-          ethereal: method === WalletMethod.Ethereal,
-          networkId: parseInt(walletNetworkId, 10),
-        },
-      },
-    });
+    // yield apolloClient.mutate<
+    //   SetLoggedInUserMutation,
+    //   SetLoggedInUserMutationVariables
+    // >({
+    //   mutation: SetLoggedInUserDocument,
+    //   variables: {
+    //     input: {
+    //       balance: formatEther(balance),
+    //       username,
+    //       walletAddress,
+    //       ethereal: method === WalletMethod.Ethereal,
+    //       networkId: parseInt(walletNetworkId, 10),
+    //     },
+    //   },
+    // });
 
     /*
      * Get the network contract values from the resolver
      */
-    yield updateNetworkContracts();
+    // yield updateNetworkContracts();
 
     setupOnBeforeUnload();
 

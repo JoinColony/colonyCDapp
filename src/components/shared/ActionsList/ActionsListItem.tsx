@@ -339,12 +339,7 @@ const ActionsListItem = ({
                     text={motionStyles.name}
                     appearance={{
                       theme: motionStyles.theme as TagAppearance['theme'],
-                      /*
-                       * @NOTE Prettier is being stupid
-                       */
-                      // eslint-disable-next-line max-len
                       colorSchema:
-                        // eslint-disable-next-line max-len
                         motionStyles.colorSchema as TagAppearance['colorSchema'],
                     }}
                   />

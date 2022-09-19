@@ -187,10 +187,6 @@ export const getDomainMetadataMessageDescriptorsIds = (
 
 export const getAssignmentEventDescriptorsIds = (
   roleSetTo: boolean | undefined,
-  /*
-   * prettier is being uncooperative again
-   */
-  // eslint-disable-next-line max-len
   eventName: ColonyAndExtensionsEvents = ColonyAndExtensionsEvents.ColonyRoleSet,
   eventMessageType = 'eventList',
 ) => {

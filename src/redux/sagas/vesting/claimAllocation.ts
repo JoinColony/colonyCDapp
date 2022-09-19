@@ -2,7 +2,7 @@ import { call, put, takeEvery, fork } from 'redux-saga/effects';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { ExtendedReduxContext } from '~types';
+import { ExtendedClientType } from '~types';
 import {
   UserBalanceWithLockDocument,
   UserBalanceWithLockQuery,
@@ -30,7 +30,7 @@ function* claimAllocation({
     const apolloClient = getContext(ContextModule.ApolloClient);
 
     yield fork(createTransaction, meta.id, {
-      context: ExtendedReduxContext.VestingSimple,
+      context: ExtendedClientType.VestingSimpleClient,
       methodName: 'claimGrant',
       identifier: process.env.META_VESTING_CONTRACT_ADDRESS,
     });

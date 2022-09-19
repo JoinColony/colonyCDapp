@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers';
-import { ClientType } from '@colony/colony-js';
+import { ClientType } from 'node_modules/@colony/colony-js/dist/esm/index';
 
 import { getContext, ContextModule } from '~context';
 import { Address } from '~types';

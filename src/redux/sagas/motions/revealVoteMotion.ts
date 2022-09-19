@@ -27,8 +27,6 @@ function* revealVoteMotion({
       ClientType.ColonyClient,
       colonyAddress,
     );
-    // @NOTE This line exceeds the max-len but there's no prettier solution
-    // eslint-disable-next-line max-len
     const votingReputationClient: AnyVotingReputationClient =
       yield colonyManager.getClient(
         ClientType.VotingReputationClient,
@@ -56,7 +54,6 @@ function* revealVoteMotion({
      * Metamask doesn't play nice with them and will replace them, in the message
      * presented to the user with \n
      */
-    // eslint-disable-next-line max-len
     const message = `Sign this message to generate 'salt' entropy. Extension Address: ${
       votingReputationClient.address
     } Motion ID: ${motionId.toNumber()}`;
