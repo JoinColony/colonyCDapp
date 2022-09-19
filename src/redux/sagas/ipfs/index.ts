@@ -5,7 +5,7 @@ import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import { putError, raceError } from '../utils';
 import { filterUniqueAction } from '~utils/actions';
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 
 import { uploadIpfsData } from '../../actionCreators';
 
@@ -35,7 +35,7 @@ function* ipfsDataUpload({
   payload: { ipfsData },
 }: Action<ActionTypes.IPFS_DATA_UPLOAD>) {
   try {
-    const ipfs = TEMP_getContext(ContextModule.IPFSWithFallback);
+    const ipfs = getContext(ContextModule.IPFSWithFallback);
 
     const ipfsHash = yield call([ipfs, ipfs.addString], ipfsData);
 
@@ -55,7 +55,7 @@ function* ipfsDataFetch({
   payload: { ipfsHash },
 }: Action<ActionTypes.IPFS_DATA_FETCH>) {
   try {
-    const ipfs = TEMP_getContext(ContextModule.IPFSWithFallback);
+    const ipfs = getContext(ContextModule.IPFSWithFallback);
 
     const ipfsData = yield call([ipfs, ipfs.getString], ipfsHash);
 

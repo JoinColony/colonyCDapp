@@ -50,8 +50,7 @@ export interface Context {
   [ContextModule.UserSettings]?: UserSettingsClass;
 }
 
-/* Eventually the whole context will live in the newContext (not in sagas anymore). This becomes more important as we move away from redux and redux-saga entirely */
-const TEMP_newContext: Context = {
+const context: Context = {
   [ContextModule.ApolloClient]: apolloClient,
   // [ContextModule.ColonyManager]: undefined,
   // [ContextModule.ENS]: ens,
@@ -64,13 +63,13 @@ export const setContext = <K extends keyof Context>(
   contextKey: K,
   contextValue: Context[K],
 ) => {
-  TEMP_newContext[contextKey] = contextValue;
+  context[contextKey] = contextValue;
 };
 
 export const getContext = <K extends keyof Context>(
   contextKey: K,
 ): NonNullable<Context[K]> => {
-  const ctx = TEMP_newContext[contextKey];
+  const ctx = context[contextKey];
   if (!ctx) throw new Error(`Could not get context: ${contextKey}`);
   // ctx is always defined from here on
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -78,5 +77,5 @@ export const getContext = <K extends keyof Context>(
 };
 
 export const removeContext = <K extends keyof Context>(contextKey: K) => {
-  TEMP_newContext[contextKey] = undefined;
+  context[contextKey] = undefined;
 };

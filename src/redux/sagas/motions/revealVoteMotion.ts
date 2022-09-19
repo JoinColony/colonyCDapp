@@ -4,7 +4,7 @@ import { soliditySha3Raw } from 'web3-utils';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { TEMP_getContext, ContextModule } from '~context/index';
+import { getContext, ContextModule } from '~context';
 import { putError, takeFrom, updateMotionValues } from '../utils';
 
 import {
@@ -21,8 +21,8 @@ function* revealVoteMotion({
 }: Action<ActionTypes.COLONY_MOTION_REVEAL_VOTE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const context = TEMP_getContext(ContextModule.ColonyManager);
-    const colonyManager = TEMP_getContext(ContextModule.ColonyManager);
+    const context = getContext(ContextModule.ColonyManager);
+    const colonyManager = getContext(ContextModule.ColonyManager);
     const colonyClient = yield context.getClient(
       ClientType.ColonyClient,
       colonyAddress,

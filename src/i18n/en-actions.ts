@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 
-import { ColonyActions, ColonyMotions } from '~types/index';
+import { ColonyActions, ColonyMotions } from '~types';
 
 const actionsMessageDescriptors = {
   'action.title': `{actionType, select,

@@ -1,4 +1,4 @@
-import { Address } from '~types/index';
+import { Address } from '~types';
 
 import { ActionType, ErrorActionType, UniqueActionType } from './index';
 

@@ -3,10 +3,7 @@ import Decimal from 'decimal.js';
 
 import { minimalFormatter } from '~utils/numbers';
 import { TokenWithBalances } from '~data/index';
-import {
-  DEFAULT_TOKEN_DECIMALS,
-  SMALL_TOKEN_AMOUNT_FORMAT,
-} from '~constants/index';
+import { DEFAULT_TOKEN_DECIMALS, SMALL_TOKEN_AMOUNT_FORMAT } from '~constants';
 
 export const getBalanceFromToken = (
   token: TokenWithBalances | undefined,

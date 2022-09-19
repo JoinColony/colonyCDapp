@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Address } from '~types/index';
+import { Address } from '~types';
 import { AnyColonyProfile } from '~data/index';
 
 import Avatar from '~shared/Avatar';

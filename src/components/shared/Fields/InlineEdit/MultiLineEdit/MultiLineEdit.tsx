@@ -13,7 +13,7 @@ import 'draft-js/dist/Draft.css';
 
 import { InputLabel } from '~shared/Fields';
 import InputStatus from '~shared/Fields/InputStatus';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import styles from './MultiLineEdit.css';

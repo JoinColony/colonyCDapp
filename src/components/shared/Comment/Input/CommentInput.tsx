@@ -21,7 +21,7 @@ import {
   TransactionMessagesDocument,
   ColonyActionQueryVariables,
 } from '~data/index';
-import { Address, ENTER } from '~types/index';
+import { Address, ENTER } from '~types';
 
 import styles from './CommentInput.css';
 

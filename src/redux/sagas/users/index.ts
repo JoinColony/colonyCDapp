@@ -5,10 +5,10 @@ import { BigNumber } from 'ethers';
 import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
 import {
-  TEMP_getContext,
+  getContext,
   ContextModule,
   TEMP_removeContext,
-} from '~context/index';
+} from '~context';
 import ENS from '~lib/ENS';
 import {
   getLoggedInUser,
@@ -28,7 +28,7 @@ import {
 } from '~data/index';
 import { putError, takeFrom, createUserWithSecondAttempt } from '../utils';
 import { clearLastWallet } from '~utils/autoLogin';
-import { IPFSAvatarImage } from '~types/index';
+import { IPFSAvatarImage } from '~types';
 
 import { clearToken } from '../../../api/auth';
 import { ipfsUpload } from '../ipfs';
@@ -42,7 +42,7 @@ import {
 function* userAvatarRemove({ meta }: Action<ActionTypes.USER_AVATAR_REMOVE>) {
   try {
     const { walletAddress } = yield getLoggedInUser();
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
     yield apolloClient.mutate<EditUserMutation, EditUserMutationVariables>({
       mutation: EditUserDocument,
       variables: { input: { avatarHash: null } },
@@ -65,7 +65,7 @@ function* userAvatarUpload({
 }: Action<ActionTypes.USER_AVATAR_UPLOAD>) {
   try {
     const { walletAddress } = yield getLoggedInUser();
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
 
     let ipfsHash = null;
     if (payload.data) {
@@ -106,7 +106,7 @@ function* usernameCreate({
 }: Action<ActionTypes.USERNAME_CREATE>) {
   const { walletAddress } = yield getLoggedInUser();
   const txChannel = yield call(getTxChannel, id);
-  const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+  const apolloClient = getContext(ContextModule.ApolloClient);
   try {
     // Normalize again, just to be sure
     const username = ENS.normalize(givenUsername);
@@ -165,7 +165,7 @@ function* usernameCreate({
 
 function* userLogout() {
   try {
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
     const { walletAddress } = yield getLoggedInUser();
     /*
      *  1. Destroy instances of colonyJS in the colonyManager? Probably.
@@ -208,8 +208,8 @@ function* userDepositToken({
 }: Action<ActionTypes.USER_DEPOSIT_TOKEN>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
-    const colonyManager = TEMP_getContext(ContextModule.ColonyManager);
+    const apolloClient = getContext(ContextModule.ApolloClient);
+    const colonyManager = getContext(ContextModule.ColonyManager);
     const { walletAddress } = yield getLoggedInUser();
 
     // @NOTE This line exceeds the max-len but there's no prettier solution
@@ -296,7 +296,7 @@ function* userWithdrawToken({
 }: Action<ActionTypes.USER_WITHDRAW_TOKEN>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
     const { walletAddress } = yield getLoggedInUser();
 
     const { withdraw } = yield createTransactionChannels(meta.id, ['withdraw']);

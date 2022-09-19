@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import styles from './InputLabel.css';

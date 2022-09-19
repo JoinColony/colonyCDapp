@@ -9,7 +9,7 @@ import {
 import { AddressZero } from '@ethersproject/constants';
 import { hexlify, hexZeroPad } from 'ethers/lib/utils';
 
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
@@ -60,7 +60,7 @@ function* managePermissionsMotion({
       throw new Error('Roles not set for setUserRole transaction');
     }
 
-    const context = TEMP_getContext(ContextModule.ColonyManager);
+    const context = getContext(ContextModule.ColonyManager);
     const colonyClient = yield context.getClient(
       ClientType.ColonyClient,
       colonyAddress,

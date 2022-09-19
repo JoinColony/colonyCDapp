@@ -4,7 +4,7 @@ import { Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
 import { useUserReputationQuery } from '~data/index';
-import { Address } from '~types/index';
+import { Address } from '~types';
 import Numeral from '~shared/Numeral';
 import Icon from '~shared/Icon';
 import { calculatePercentageReputation, ZeroValue } from '~utils/reputation';

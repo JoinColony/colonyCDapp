@@ -8,7 +8,7 @@ import {
   NetworkExtensionVersionQueryVariables,
   NetworkExtensionVersionDocument,
 } from '~data/index';
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import { putError, takeFrom, refreshExtension } from '../utils';
 
 import {
@@ -22,8 +22,8 @@ export function* colonyExtensionInstall({
   payload: { colonyAddress, extensionId },
 }: Action<ActionTypes.COLONY_EXTENSION_INSTALL>) {
   const txChannel = yield call(getTxChannel, meta.id);
-  const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
-  const { networkClient } = TEMP_getContext(ContextModule.ColonyManager);
+  const apolloClient = getContext(ContextModule.ApolloClient);
+  const { networkClient } = getContext(ContextModule.ColonyManager);
 
   try {
     /*

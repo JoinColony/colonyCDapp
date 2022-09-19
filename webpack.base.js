@@ -22,7 +22,7 @@ const config = {
         '~gql': path.resolve(__dirname, 'src/graphql'),
         '~constants': path.resolve(__dirname, 'src/constants'),
       //   '~externalUrls': path.resolve(__dirname, 'src/modules/externalUrls'),
-      //   '~context': path.resolve(__dirname, 'src/context'),
+        '~context': path.resolve(__dirname, 'src/context'),
         '~lib': path.resolve(__dirname, 'src/lib'),
       //   '~data': path.resolve(__dirname, 'src/data'),
         '~redux': path.resolve(__dirname, 'src/redux'),

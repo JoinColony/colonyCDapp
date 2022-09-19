@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { splitAddress } from '~utils/strings';
 
-import { Address } from '~types/index';
+import { Address } from '~types';
 
 import { getMainClasses } from '~utils/css';
 import MaskedAddress from '~shared/MaskedAddress';

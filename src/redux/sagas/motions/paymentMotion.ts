@@ -8,7 +8,7 @@ import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
@@ -69,7 +69,7 @@ function* createPaymentMotion({
       }
     }
 
-    const context = TEMP_getContext(ContextModule.ColonyManager);
+    const context = getContext(ContextModule.ColonyManager);
     const oneTxPaymentClient = yield context.getClient(
       ClientType.OneTxPaymentClient,
       colonyAddress,

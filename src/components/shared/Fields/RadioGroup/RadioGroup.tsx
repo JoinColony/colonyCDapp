@@ -2,7 +2,7 @@ import { MessageDescriptor } from 'react-intl';
 import React, { ReactNode } from 'react';
 
 import Radio, { Appearance as RadioAppearance } from '~shared/Fields/Radio';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import styles from './RadioGroup.css';

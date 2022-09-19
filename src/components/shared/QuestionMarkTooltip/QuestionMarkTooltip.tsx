@@ -4,7 +4,7 @@ import { MessageDescriptor, FormattedMessage } from 'react-intl';
 
 import Icon from '~shared/Icon';
 import { Tooltip } from '~shared/Popover';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 
 const displayName = 'QuestionMarkTooltip';
 

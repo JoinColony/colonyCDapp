@@ -1,7 +1,7 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import {
   ColonyFromNameDocument,
   ColonyFromNameQuery,
@@ -43,7 +43,7 @@ function* editDomainAction({
 }: Action<ActionTypes.COLONY_ACTION_DOMAIN_EDIT>) {
   let txChannel;
   try {
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
 
     if (!domainId) {
       throw new Error('A domain id is required to edit domain');

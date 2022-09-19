@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 import { NavLink as NavLinkComponent, NavLinkProps } from 'react-router-dom';
 
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 
 import styles from './NavLink.css';
 

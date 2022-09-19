@@ -6,9 +6,9 @@ import abis from '@colony/colony-js/lib-esm/abis';
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
 import { selectAsJS, getGasPrices } from '../utils';
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import { TransactionRecordProps } from '../../immutable';
-import { ExtendedReduxContext } from '~types/index';
+import { ExtendedReduxContext } from '~types';
 
 import { oneTransaction } from '../../selectors';
 import {
@@ -38,7 +38,7 @@ export default function* estimateGasCost({
       gasLimit,
       options,
     }: TransactionRecordProps = yield selectAsJS(oneTransaction, id);
-    const colonyManager = TEMP_getContext(ContextModule.ColonyManager);
+    const colonyManager = getContext(ContextModule.ColonyManager);
 
     let contextClient: Contract;
     if (context === ClientType.TokenClient) {

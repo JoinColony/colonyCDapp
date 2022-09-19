@@ -4,9 +4,9 @@ import { open as purserOpenSoftwareWallet } from '@purser/software';
 
 import { getAccounts } from '~users/ConnectWalletWizard/StepGanache';
 import { WalletMethod } from '~redux/immutable';
-import { Address } from '~types/index';
+import { Address } from '~types';
 import { createAddress } from '~utils/web3';
-import { ActionTypes } from '~redux/index';
+import { ActionTypes } from '~redux';
 
 import { useAsyncFunction } from './hooks';
 import { log } from './debug';

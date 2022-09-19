@@ -13,7 +13,7 @@ import { compose } from 'recompose';
 
 import { AsFieldArrayEnhancedProps } from '~shared/Fields/asFieldArray';
 import { Appearance } from '~shared/Fields/Input/InputComponent';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { withForwardingRef, ForwardedRefProps } from '~utils/hoc';
 
 import DefaultPlaceholder from './DefaultPlaceholder';

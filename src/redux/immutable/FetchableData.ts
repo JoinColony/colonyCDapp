@@ -1,6 +1,6 @@
 import { Record } from 'immutable';
 
-import { DefaultValues } from '~types/index';
+import { DefaultValues } from '~types';
 
 interface Shared {
   record: any;

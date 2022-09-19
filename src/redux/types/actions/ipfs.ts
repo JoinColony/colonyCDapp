@@ -1,4 +1,4 @@
-import { WithKey } from '~types/index';
+import { WithKey } from '~types';
 import {
   ActionTypeWithPayloadAndMeta,
   ErrorActionType,

@@ -4,7 +4,7 @@ import React, { ReactNode, ButtonHTMLAttributes } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { useMainClasses } from '~utils/hooks';
 
 import styles from './Button.css';

@@ -8,10 +8,10 @@ import { ActionTypes } from '../actionTypes';
 import { AllActions, Action } from '../types/actions';
 
 import {
-  TEMP_getContext,
+  getContext,
   TEMP_setContext,
   ContextModule,
-} from '~context/index';
+} from '~context';
 import { setLastWallet } from '~utils/autoLogin';
 import {
   refetchUserNotifications,
@@ -83,7 +83,7 @@ export default function* setupUserContext(
     payload: { method },
   } = action;
   try {
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
 
     /*
      * Get the "old" wallet address, and if it's ethereal, remove it's authetication
@@ -154,7 +154,7 @@ export default function* setupUserContext(
 
     yield call(getGasPrices);
 
-    const ens = TEMP_getContext(ContextModule.ENS);
+    const ens = getContext(ContextModule.ENS);
 
     /*
      * This needs to happen first because USER_CONTEXT_SETUP_SUCCESS causes a redirect
@@ -184,7 +184,7 @@ export default function* setupUserContext(
 
     // @TODO refactor setupUserContext for graphql
     // @BODY eventually we want to move everything to resolvers, so all of this has to happen outside of sagas. There is no need to have a separate state or anything, just set it up in an aync function (instead of WALLET_CREATE), then call this function
-    const ipfsWithFallback = TEMP_getContext(ContextModule.IPFSWithFallback);
+    const ipfsWithFallback = getContext(ContextModule.IPFSWithFallback);
     const userContext = {
       apolloClient,
       colonyManager,

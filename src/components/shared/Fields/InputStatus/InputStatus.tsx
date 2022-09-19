@@ -2,7 +2,7 @@ import { MessageDescriptor, useIntl } from 'react-intl';
 import React from 'react';
 
 import { isNil } from 'lodash';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import styles from './InputStatus.css';

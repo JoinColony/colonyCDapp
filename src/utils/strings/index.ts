@@ -3,7 +3,7 @@ import { customAlphabet, urlAlphabet } from 'nanoid';
 
 import { isTransactionFormat } from '~utils/web3';
 
-import { Address } from '~types/index';
+import { Address } from '~types';
 
 const HTTP_PROTOCOL = 'http://';
 const HTTPS_PROTOCOL = 'https://';

@@ -2,9 +2,9 @@ import BN from 'bn.js';
 import { getAddress, hexlify } from 'ethers/lib.esm/utils';
 import { ClientType, ContractClient, TokenClientType } from '@colony/colony-js';
 
-import { Address, ExtendedClientType } from '~types/index';
+import { Address, ExtendedClientType } from '~types';
 import { TransactionError } from '~redux/immutable/Transaction';
-import { SUPPORTED_NETWORKS } from '~constants/index';
+import { SUPPORTED_NETWORKS } from '~constants';
 
 export const createAddress = (address: string): Address => getAddress(address);
 

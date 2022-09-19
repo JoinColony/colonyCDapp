@@ -9,7 +9,7 @@ import React, {
 import { MessageDescriptor, useIntl } from 'react-intl';
 import { State as PopperJsState } from '@popperjs/core';
 
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import getPopoverArrowClasses from './getPopoverArrowClasses';

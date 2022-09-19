@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 
 import Icon from '../Icon';
 import Heading from '../Heading';

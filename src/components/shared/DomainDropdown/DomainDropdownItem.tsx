@@ -13,7 +13,7 @@ import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import Paragraph from '~shared/Paragraph';
 import { OneDomain } from '~data/index';
-import { ENTER } from '~types/index';
+import { ENTER } from '~types';
 
 import {
   ALLDOMAINS_DOMAIN_SELECTION,

@@ -11,7 +11,7 @@ import {
   select,
 } from 'redux-saga/effects';
 
-import { ErrorActionType, TakeFilter, Action } from '~redux/index';
+import { ErrorActionType, TakeFilter, Action } from '~redux';
 
 import { log } from '~utils/debug';
 

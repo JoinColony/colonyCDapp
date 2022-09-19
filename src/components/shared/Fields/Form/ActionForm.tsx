@@ -2,7 +2,7 @@ import { FormikBag, FormikProps, FormikHelpers, FormikErrors } from 'formik';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { ActionTypeString } from '~redux/index';
+import { ActionTypeString } from '~redux';
 import { ActionTransformFnType } from '~utils/actions';
 import { log } from '~utils/debug';
 import { useAsyncFunction } from '~utils/hooks';

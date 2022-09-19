@@ -20,7 +20,7 @@ import {
   useUnBanUserTransactionMessagesMutation,
   BannedUsersDocument,
 } from '~data/index';
-import { Address } from '~types/index';
+import { Address } from '~types';
 
 import styles from './BanUser.css';
 import Button from '~shared/Button';

@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { ExtendedReduxContext } from '~types/index';
+import { ExtendedReduxContext } from '~types';
 import {
   UserBalanceWithLockDocument,
   UserBalanceWithLockQuery,
@@ -12,7 +12,7 @@ import {
   UnwrapTokenForMetacolonyQuery,
   UnwrapTokenForMetacolonyQueryVariables,
 } from '~data/index';
-import { TEMP_getContext, ContextModule } from '~context/index';
+import { getContext, ContextModule } from '~context';
 import { putError, takeFrom } from '../utils';
 
 import {
@@ -28,7 +28,7 @@ function* unwrapToken({
 }: Action<ActionTypes.META_UNWRAP_TOKEN>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
 
     yield fork(createTransaction, meta.id, {
       context: ExtendedReduxContext.WrappedToken,

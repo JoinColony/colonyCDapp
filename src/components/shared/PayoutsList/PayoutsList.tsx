@@ -7,7 +7,7 @@ import moveDecimal from 'move-decimal-point';
 import InfoPopover from '~shared/InfoPopover';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
-import { Address } from '~types/index';
+import { Address } from '~types';
 
 import { Tooltip } from '../Popover';
 import Numeral from '../Numeral';

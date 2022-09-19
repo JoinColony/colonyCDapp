@@ -1,6 +1,6 @@
 import { ColonyRole, ColonyRoles, DomainRoles, Id } from '@colony/colony-js';
 
-import { Address, UserRolesForDomain } from '~types/index';
+import { Address, UserRolesForDomain } from '~types';
 
 export const getRolesForUserAndDomain = (
   roles: ColonyRoles,

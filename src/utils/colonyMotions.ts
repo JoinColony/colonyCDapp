@@ -6,7 +6,7 @@ import { ColonyRoles } from '@colony/colony-js';
 
 import { getRolesForUserAndDomain } from '~redux/transformers';
 import { AnyUser } from '~data/index';
-import { ActionUserRoles } from '~types/index';
+import { ActionUserRoles } from '~types';
 
 export enum MotionState {
   Staked = 'Staked',

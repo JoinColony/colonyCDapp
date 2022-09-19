@@ -29,7 +29,7 @@ import {
   RecoveryRolesUsersQueryVariables,
   RecoveryRolesUsersDocument,
 } from '~data/index';
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 
 import {
   transactionReady,
@@ -50,7 +50,7 @@ function* enterRecoveryAction({
   let txChannel;
 
   try {
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
 
     txChannel = yield call(getTxChannel, metaId);
 
@@ -222,7 +222,7 @@ function* setStorageSlotValue({
       );
     }
 
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
 
     txChannel = yield call(getTxChannel, metaId);
 
@@ -316,7 +316,7 @@ function* approveExitRecovery({
 }: Action<ActionTypes.COLONY_ACTION_RECOVERY_APPROVE>) {
   let txChannel;
   try {
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
 
     txChannel = yield call(getTxChannel, metaId);
 
@@ -441,7 +441,7 @@ function* exitRecoveryMode({
 }: Action<ActionTypes.COLONY_ACTION_RECOVERY_APPROVE>) {
   let txChannel;
   try {
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
 
     txChannel = yield call(getTxChannel, metaId);
 

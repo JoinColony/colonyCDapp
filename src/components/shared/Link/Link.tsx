@@ -5,7 +5,7 @@ import {
   LinkProps as LinkComponentProps,
 } from 'react-router-dom';
 
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 
 interface Props extends LinkComponentProps {
   /** A string or a `messageDescriptor` that make up the link's text */

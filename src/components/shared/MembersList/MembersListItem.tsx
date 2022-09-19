@@ -12,7 +12,7 @@ import UserMention from '~shared/UserMention';
 import { ListGroupItem } from '~shared/ListGroup';
 import CopyableAddress from '~shared/CopyableAddress';
 import { AnyUser, Colony, useUser } from '~data/index';
-import { ENTER } from '~types/index';
+import { ENTER } from '~types';
 import HookedUserAvatar from '~users/HookedUserAvatar';
 import { getMainClasses } from '~utils/css';
 import MemberReputation from '~shared/MemberReputation';

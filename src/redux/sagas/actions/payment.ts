@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { ClientType } from '@colony/colony-js';
 
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import {
   TokenBalancesForDomainsDocument,
   TokenBalancesForDomainsQuery,
@@ -61,7 +61,7 @@ function* createPaymentAction({
 }: Action<ActionTypes.COLONY_ACTION_EXPENDITURE_PAYMENT>) {
   let txChannel;
   try {
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
 
     /*
      * Validate the required values for the payment

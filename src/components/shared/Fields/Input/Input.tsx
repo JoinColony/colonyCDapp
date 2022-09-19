@@ -5,7 +5,7 @@ import { MessageDescriptor, useIntl } from 'react-intl';
 import { useField } from 'formik';
 import { nanoid } from 'nanoid';
 
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 
 import InputLabel from '../InputLabel';
 import InputStatus from '../InputStatus';

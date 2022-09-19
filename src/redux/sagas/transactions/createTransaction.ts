@@ -13,7 +13,7 @@ import { ActionTypes } from '../../actionTypes';
 import { filterUniqueAction } from '~utils/actions';
 import { getLoggedInUser } from '~data/index';
 import { takeFrom } from '../utils';
-import { TxConfig } from '~types/index';
+import { TxConfig } from '~types';
 import { createTxAction } from '../../actionCreators';
 import estimateGasCost from './estimateGasCost';
 import sendTransaction from './sendTransaction';

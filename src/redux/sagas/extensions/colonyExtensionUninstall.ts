@@ -11,7 +11,7 @@ import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
 import { putError, takeFrom, refreshExtension } from '../utils';
 
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import {
   createTransaction,
   getTxChannel,
@@ -26,8 +26,8 @@ export function* colonyExtensionUninstall({
 }: Action<ActionTypes.COLONY_EXTENSION_UNINSTALL>) {
   let txChannel;
   try {
-    const colonyManager = TEMP_getContext(ContextModule.ColonyManager);
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const colonyManager = getContext(ContextModule.ColonyManager);
+    const apolloClient = getContext(ContextModule.ApolloClient);
     txChannel = yield call(getTxChannel, metaId);
 
     let haveToUpdateCoinMachineWhitelist = false;

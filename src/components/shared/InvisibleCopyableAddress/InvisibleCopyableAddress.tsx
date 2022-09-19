@@ -7,7 +7,7 @@ import {
 } from 'react-intl';
 
 import copyToClipboard from 'copy-to-clipboard';
-import { Address } from '~types/index';
+import { Address } from '~types';
 import { Tooltip } from '~shared/Popover';
 
 import styles from './InvisibleCopyableAddress.css';

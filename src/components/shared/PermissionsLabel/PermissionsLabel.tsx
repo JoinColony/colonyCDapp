@@ -6,7 +6,7 @@ import Icon from '~shared/Icon';
 import { Tooltip } from '../Popover';
 import { permissionsObject } from './permissions';
 
-import { UniversalMessageValues } from '~types/index';
+import { UniversalMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import styles from './PermissionsLabel.css';

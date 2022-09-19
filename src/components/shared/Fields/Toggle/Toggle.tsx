@@ -6,7 +6,7 @@ import { MessageDescriptor } from 'react-intl';
 import InputLabel from '~shared/Fields/InputLabel';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import styles from './Toggle.css';

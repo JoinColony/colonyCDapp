@@ -10,7 +10,7 @@ import { nanoid } from 'nanoid';
 
 import OmniPicker, { Props as OmniPickerProps } from './OmniPicker';
 import { OmniPickerData, WrappedComponentProps } from './types';
-import { ESC, TAB, UP, DOWN, ENTER } from '~types/index';
+import { ESC, TAB, UP, DOWN, ENTER } from '~types';
 
 const defaultProps = {
   getItem: (filteredData: OmniPickerData[], selectedIdx: number) =>

@@ -1,7 +1,7 @@
 import { MessageDescriptor, useIntl } from 'react-intl';
 import React, { ReactNode } from 'react';
 
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 
 import styles from './ExternalLink.css';
 

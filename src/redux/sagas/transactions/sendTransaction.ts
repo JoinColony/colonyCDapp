@@ -9,8 +9,8 @@ import { Action } from '../../types/actions';
 import { selectAsJS } from '../utils';
 import { mergePayload } from '~utils/actions';
 import { TRANSACTION_STATUSES, TransactionRecord } from '../../immutable';
-import { ContextModule, TEMP_getContext } from '~context/index';
-import { ExtendedReduxContext } from '~types/index';
+import { ContextModule, getContext } from '~context';
+import { ExtendedReduxContext } from '~types';
 
 import { transactionSendError } from '../../actionCreators';
 import { oneTransaction } from '../../selectors';
@@ -55,7 +55,7 @@ export default function* sendTransaction({
   if (status !== TRANSACTION_STATUSES.READY) {
     throw new Error('Transaction is not ready to send.');
   }
-  const colonyManager = TEMP_getContext(ContextModule.ColonyManager);
+  const colonyManager = getContext(ContextModule.ColonyManager);
 
   let contextClient: Contract;
   if (context === ClientType.TokenClient) {

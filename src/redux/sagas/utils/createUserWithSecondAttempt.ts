@@ -1,4 +1,4 @@
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import {
   CreateUserDocument,
   CreateUserMutation,
@@ -22,7 +22,7 @@ export default function* createUserWithSecondAttempt(
   username: string,
   reattempt = false,
 ) {
-  const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+  const apolloClient = getContext(ContextModule.ApolloClient);
 
   if (!username) {
     return undefined;

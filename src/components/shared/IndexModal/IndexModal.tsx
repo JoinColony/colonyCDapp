@@ -8,7 +8,7 @@ import IndexModalItem from './IndexModalItem';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 
-import { UniversalMessageValues } from '~types/index';
+import { UniversalMessageValues } from '~types';
 
 import styles from './IndexModal.css';
 

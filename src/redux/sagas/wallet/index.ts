@@ -17,7 +17,7 @@ import { addChain } from '@purser/metamask/lib-esm/helpers';
 import { WalletMethod } from '../../immutable';
 import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
-import { Address } from '~types/index';
+import { Address } from '~types';
 import { createAddress } from '~utils/web3';
 import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';
 

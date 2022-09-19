@@ -8,7 +8,7 @@ import { EthersSigner } from '@purser/signer-ethers';
 
 import { Signer } from 'ethers';
 import { DEFAULT_NETWORK } from '~constants';
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 
 import getProvider from './getProvider';
 
@@ -36,7 +36,7 @@ const getLocalContractAddress = (contractName: string) => {
  * Return an initialized ColonyNetworkClient instance.
  */
 export default function* getNetworkClient() {
-  const wallet = TEMP_getContext(ContextModule.Wallet);
+  const wallet = getContext(ContextModule.Wallet);
 
   if (!wallet) throw new Error('No wallet in context');
 

@@ -1,6 +1,6 @@
 import { AddressZero } from 'ethers/constants';
 import { addressNormalizer } from '@purser/core';
-import { Address } from '~types/index';
+import { Address } from '~types';
 
 export enum SlotKey {
   Metatransactions = 'metatransactions',

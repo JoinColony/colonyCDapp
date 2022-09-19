@@ -3,7 +3,7 @@ import { MessageDescriptor } from 'react-intl';
 
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { AnyTokens } from '~data/index';
-import { Address } from '~types/index';
+import { Address } from '~types';
 
 import Select from '../Select';
 import Input from '../Input';

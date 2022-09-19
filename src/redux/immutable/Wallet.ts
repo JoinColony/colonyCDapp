@@ -1,6 +1,6 @@
 import { Record } from 'immutable';
 
-import { Address, DefaultValues, RecordToJS } from '~types/index';
+import { Address, DefaultValues, RecordToJS } from '~types';
 
 export enum WalletMethod {
   Ethereal = 'Ethereal',

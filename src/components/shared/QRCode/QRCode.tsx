@@ -3,7 +3,7 @@ import QRCodeGenerator from 'qrcode';
 
 import { log } from '~utils/debug';
 
-import { Address } from '~types/index';
+import { Address } from '~types';
 
 interface Props {
   address: Address;

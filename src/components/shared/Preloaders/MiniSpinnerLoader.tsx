@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage, MessageDescriptor } from 'react-intl';
 
 import Heading, { Appearance as HeadingAppearance } from '~shared/Heading';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 
 import SpinnerLoader, { Appearance } from './SpinnerLoader';
 import styles from './MiniSpinnerLoader.css';

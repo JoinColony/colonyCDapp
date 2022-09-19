@@ -8,7 +8,7 @@ import {
   ColonyAndExtensionsEvents,
   FormattedAction,
   Address,
-} from '~types/index';
+} from '~types';
 import { ColonyAction, SugraphEventProcessedValues } from '~data/index';
 
 import {

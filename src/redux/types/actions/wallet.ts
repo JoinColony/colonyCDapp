@@ -1,4 +1,4 @@
-import { WalletMethod } from '~immutable/index';
+import { WalletMethod } from '~redux/immutable';
 import {
   ActionType,
   ActionTypeWithPayload,

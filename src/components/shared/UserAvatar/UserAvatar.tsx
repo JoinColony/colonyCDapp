@@ -4,7 +4,7 @@ import { PopperOptions } from 'react-popper-tooltip';
 import Avatar from '~shared/Avatar';
 import InfoPopover, { Props as InfoPopoverProps } from '~shared/InfoPopover';
 import Link from '~shared/NavLink';
-import { Address } from '~types/index';
+import { Address } from '~types';
 import { AnyUser, Colony } from '~data/index';
 import { getUsername } from '~modules/users/transformers';
 

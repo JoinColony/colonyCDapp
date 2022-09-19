@@ -6,8 +6,8 @@ import { isEmpty } from 'lodash';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { TEMP_getContext, ContextModule } from '~context/index';
-import { TxConfig } from '~types/index';
+import { getContext, ContextModule } from '~context';
+import { TxConfig } from '~types';
 import {
   ClaimableStakedMotionsDocument,
   ClaimableStakedMotionsQuery,
@@ -31,10 +31,10 @@ function* claimMotionRewards({
   payload: { userAddress, colonyAddress, motionIds },
 }: Action<ActionTypes.COLONY_MOTION_CLAIM>) {
   const txChannel = yield call(getTxChannel, meta.id);
-  const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+  const apolloClient = getContext(ContextModule.ApolloClient);
 
   try {
-    const colonyManager = TEMP_getContext(ContextModule.ColonyManager);
+    const colonyManager = getContext(ContextModule.ColonyManager);
     // @NOTE This line exceeds the max-len but there's no prettier solution
     // eslint-disable-next-line max-len
     const votingReputationClient: ExtensionClient =

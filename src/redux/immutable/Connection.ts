@@ -2,7 +2,7 @@
 
 import { Record, Set as ImmutableSet } from 'immutable';
 
-import { DefaultValues, RecordToJS } from '~types/index';
+import { DefaultValues, RecordToJS } from '~types';
 
 // ConnectionStats
 interface ConnectionStatsRecordProps {

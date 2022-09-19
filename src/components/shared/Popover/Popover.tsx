@@ -19,7 +19,7 @@ import { PopperOptions } from 'react-popper-tooltip';
 import { Placement } from '@popperjs/core';
 import { Unionize } from 'utility-types';
 
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { usePrevious } from '~utils/hooks';
 
 import PopoverWrapper from './PopoverWrapper';

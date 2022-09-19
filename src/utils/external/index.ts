@@ -2,7 +2,7 @@ import { formatUnits } from 'ethers/lib.esm/utils';
 import { BigNumber } from 'ethers';
 import { Network, ColonyVersion, releaseMap } from '@colony/colony-js';
 
-import { DEFAULT_NETWORK } from '~constants/index';
+import { DEFAULT_NETWORK } from '~constants';
 import {
   NETWORK_RELEASES,
   ETHERSCAN_CONVERSION_RATE,

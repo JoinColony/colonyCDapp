@@ -2,9 +2,9 @@ import { RefObject } from 'react';
 import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
-import { ActionTypes } from '~redux/index';
-import { Address, WithKey } from '~types/index';
-import { Color } from '~core/ColorTag';
+import { ActionTypes } from '~redux';
+import { Address, WithKey } from '~types';
+import { Color } from '~shared/ColorTag';
 
 import {
   ErrorActionType,
