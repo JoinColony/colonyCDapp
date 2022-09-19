@@ -2,6 +2,8 @@ import { Network } from '@colony/colony-js';
 
 import { Color } from '~shared/ColorTag';
 
+export * from './externalUrls';
+
 export type TokenInfo = {
   name: string;
   symbol: string;
