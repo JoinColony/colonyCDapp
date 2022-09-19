@@ -22,7 +22,7 @@
     //   "~modules/*": ["src/modules/*"],
       "~types/*": ["src/types/*"],
     //   "~users/*": ["src/modules/users/components/*"],
-    //   "~utils/*": ["src/utils/*"]
+      "~utils/*": ["src/utils/*"]
     },
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,
