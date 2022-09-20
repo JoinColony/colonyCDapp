@@ -12,9 +12,9 @@ module.exports = () => ({
   devtool: 'inline-source-map',
   devServer: {
     historyApiFallback: true,
-    contentBase: [
-      path.resolve(__dirname, '..', 'colonyNetwork', 'build')
-    ],
+    // contentBase: [
+      // path.resolve(__dirname, '..', 'colonyNetwork', 'build')
+    // ],
     hotOnly: true,
   },
   output: {
@@ -51,7 +51,6 @@ module.exports = () => ({
     new webpack.WatchIgnorePlugin([
       /css\.d\.ts$/
     ]),
-    new webpack.HotModuleReplacementPlugin(),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,

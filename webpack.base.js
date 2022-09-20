@@ -32,6 +32,7 @@ const config = {
       //   '~testutils': path.resolve(__dirname, 'src/__tests__/utils.ts'),
         '~types': path.resolve(__dirname, 'src/types'),
       //   '~dialogs': path.resolve(__dirname, 'src/modules/dashboard/components/Dialogs')
+        '@colony/colony-js': path.resolve(__dirname, 'node_modules/@colony/colony-js'),
       },
     ),
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
