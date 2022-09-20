@@ -19,14 +19,14 @@ module.exports = () => ({
     minimizer: [new TerserPlugin()],
     splitChunks: {
       cacheGroups: {
-        vendor: {
+        defaultVendors: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
+          idHint: 'defaultVendors',
           chunks: 'all',
         },
-        lib: {
+        libs: {
           test: /[\\/]src\/lib[\\/]/,
-          name: 'libs',
+          idHint: 'libs',
           chunks: 'all',
         }
       }
@@ -58,12 +58,5 @@ module.exports = () => ({
      * Add the rest of the PRODUCTION environment required plugins here
      */
     new CleanWebpackPlugin(),
-    /**
-     * Ignore the colonyNetwork imports from the final bundle
-     */
-    new webpack.IgnorePlugin({
-      resourceRegExp: /^(.*)\.json$/,
-      contextRegExp: /colonyNetwork\/build\/contracts$/
-    }),
   ],
 });

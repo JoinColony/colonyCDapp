@@ -10,7 +10,7 @@ const Dotenv = require('dotenv-webpack');
 const mode = process.env.NODE_ENV || 'development';
 
 const config = {
-  entry: './src/index.ts',
+  // entry: './src/index.ts',
   mode,
   resolve: {
     alias: Object.assign(
@@ -36,6 +36,13 @@ const config = {
       },
     ),
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
+    fallback: {
+      fs: false,
+      net: false,
+      child_process: false,
+      Buffer: false,
+      process: false,
+    },
   },
   module: {
     rules: [
@@ -47,14 +54,17 @@ const config = {
         ],
         use: [
           'style-loader',
+          '@teamsupercell/typings-for-css-modules-loader',
           {
-            loader: 'typings-for-css-modules-loader',
+            loader: 'css-loader',
             options: {
-              modules: true,
-              namedExport: true,
-              camelCase: true,
+              modules: {
+                namedExport: true,
+                // camelCase: true,
+                exportLocalsConvention: 'camelCaseOnly',
+                localIdentName: '[name]_[local]_[contenthash:base64:8]',
+              },
               importLoaders: 1,
-              localIdentName: '[name]_[local]_[hash:base64:8]',
             },
           },
           'postcss-loader',
@@ -68,15 +78,25 @@ const config = {
         ],
         use: ['style-loader', 'css-loader'],
       },
+      // {
+      //   test: /\.(woff|woff2|png|jpe?g|gif)$/,
+      //   loader: 'file-loader',
+        // include: [
+        //   path.resolve('src'),
+        // ],
+        // options: {
+        //   esModule: false,
+        // },
+      // },
       {
         test: /\.(woff|woff2|png|jpe?g|gif)$/,
-        loader: 'file-loader',
         include: [
           path.resolve('src'),
         ],
-        options: {
-          esModule: false,
-        },
+        // options: {
+        //   esModule: false,
+        // },
+        type: 'asset/resource',
       },
       /*
        * To load svg icons and token icons to import
@@ -136,11 +156,13 @@ const config = {
       },
     ],
   },
-  node: {
-    net: 'empty',
-    child_process: 'empty',
-    fs: 'empty',
-  },
+  // node: {
+  //   net: 'empty',
+  //   child_process: 'empty',
+  //   fs: 'empty',
+  //   Buffer: false,
+  //   process: false,
+  // },
   plugins: [
     new Dotenv({
       systemvars: !!process.env.CI || !!process.env.DEV,

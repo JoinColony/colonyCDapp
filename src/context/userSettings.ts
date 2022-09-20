@@ -1,6 +1,7 @@
-import { AddressZero } from 'ethers/constants';
 import { addressNormalizer } from '@purser/core';
+
 import { Address } from '~types';
+import { ADDRESS_ZERO } from '~constants';
 
 export enum SlotKey {
   Metatransactions = 'metatransactions',
@@ -30,12 +31,12 @@ const defaultSlotValues: UserSettingsSlot = {
  * Basic singleton that handles all the user's settings stored in local storage
  */
 class UserSettings {
-  slot: string = AddressZero;
+  slot: string = ADDRESS_ZERO;
 
   currentSettings: UserSettingsSlot;
 
   constructor(userAddress?: Address) {
-    this.slot = addressNormalizer(userAddress || AddressZero, false);
+    this.slot = addressNormalizer(userAddress || ADDRESS_ZERO, false);
     this.currentSettings = this.getStorageSlot() as UserSettingsSlot;
     if (!this.currentSettings) {
       this.currentSettings = defaultSlotValues;

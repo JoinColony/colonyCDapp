@@ -36,7 +36,7 @@ export default function* getNetworkClient() {
     const {
       etherRouterAddress: networkAddress,
       // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
-    } = require('amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+    } = require('../../../../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
     return yield call(
       getColonyNetworkClient,
       network,

@@ -1,4 +1,5 @@
 import { Network } from '@colony/colony-js';
+import { constants as ethersContants } from 'ethers';
 
 import { Color } from '~shared/ColorTag';
 
@@ -161,3 +162,5 @@ export const ALLDOMAINS_DOMAIN_SELECTION = {
 };
 
 export const SMALL_TOKEN_AMOUNT_FORMAT = '0.00000...';
+
+export const ADDRESS_ZERO = ethersContants.AddressZero;
