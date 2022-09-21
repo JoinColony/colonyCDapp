@@ -117,5 +117,11 @@ module.exports = {
         ignoreUrls: true,
       },
     ],
+    'react/function-component-definition': [
+      2,
+      {
+        namedComponents: 'arrow-function',
+      },
+    ],
   },
 };

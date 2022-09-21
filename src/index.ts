@@ -5,8 +5,8 @@ import { Logger } from 'ethers/lib.esm/utils';
 
 import './styles/main.css';
 
-// import Entry from './Entry';
-// import store from '~redux/createReduxStore';
+import Entry from './Entry';
+import store from '~redux/createReduxStore';
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
@@ -16,5 +16,5 @@ const root = createRoot(rootNode!);
 
 if (rootNode) {
   ReactModal.setAppElement(rootNode);
-  root.render(createElement('div'));
+  root.render(createElement(Entry, { store }));
 }

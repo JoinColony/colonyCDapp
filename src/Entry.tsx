@@ -1,7 +1,6 @@
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 // import { BrowserRouter } from 'react-router-dom';
-import { StoreContext } from 'redux-react-hook';
 import { IntlProvider } from 'react-intl';
 import { ApolloProvider } from '@apollo/client';
 
@@ -23,7 +22,7 @@ import TemporaryHome from '~root/Entry';
 if (!Intl.RelativeTimeFormat) {
   /* eslint-disable global-require */
   require('@formatjs/intl-relativetimeformat/polyfill');
-  require('@formatjs/intl-relativetimeformat/dist/locale-data/en');
+  require('@formatjs/intl-relativetimeformat/locale-data/en');
   /* eslint-enable global-require */
 }
 
@@ -44,20 +43,18 @@ const Entry = ({ store }: Props) => (
     }}
   >
     <ApolloProvider client={apolloClient}>
-      <StoreContext.Provider value={store}>
-        <ReduxProvider store={store}>
-          {/* <BrowserRouter> */}
-          <DialogProvider>
-            {/* <TokenActivationProvider> */}
-            <div className={layout.stretch}>
-              {/* <Routes /> */}
-              <TemporaryHome />
-            </div>
-            {/* </TokenActivationProvider> */}
-          </DialogProvider>
-          {/* </BrowserRouter> */}
-        </ReduxProvider>
-      </StoreContext.Provider>
+      <ReduxProvider store={store}>
+        {/* <BrowserRouter> */}
+        <DialogProvider>
+          {/* <TokenActivationProvider> */}
+          <div className={layout.stretch}>
+            {/* <Routes /> */}
+            <TemporaryHome />
+          </div>
+          {/* </TokenActivationProvider> */}
+        </DialogProvider>
+        {/* </BrowserRouter> */}
+      </ReduxProvider>
     </ApolloProvider>
   </IntlProvider>
 );

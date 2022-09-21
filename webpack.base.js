@@ -21,7 +21,6 @@ const config = {
         '~root': path.resolve(__dirname, 'src/components/root'),
         '~gql': path.resolve(__dirname, 'src/graphql'),
         '~constants': path.resolve(__dirname, 'src/constants'),
-      //   '~externalUrls': path.resolve(__dirname, 'src/modules/externalUrls'),
         '~context': path.resolve(__dirname, 'src/context'),
         '~lib': path.resolve(__dirname, 'src/lib'),
       //   '~data': path.resolve(__dirname, 'src/data'),
@@ -32,7 +31,6 @@ const config = {
       //   '~testutils': path.resolve(__dirname, 'src/__tests__/utils.ts'),
         '~types': path.resolve(__dirname, 'src/types'),
       //   '~dialogs': path.resolve(__dirname, 'src/modules/dashboard/components/Dialogs')
-        '@colony/colony-js': path.resolve(__dirname, 'node_modules/@colony/colony-js'),
       },
     ),
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
@@ -44,6 +42,9 @@ const config = {
       process: false,
     },
   },
+  // stats: {
+  //   errorDetails: true,
+  // },
   module: {
     rules: [
       {
