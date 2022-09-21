@@ -7,7 +7,7 @@ import { getMainClasses } from '~utils/css';
 import {
   icons as iconNames,
   multiColorIcons as multiColorIconNames,
-} from '../../../../img/icons.json';
+} from '~images/icons.json';
 import styles from './Icon.css';
 
 const displayName = 'Icon';
@@ -50,7 +50,7 @@ interface Props extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
 const getIcons = (map: string[]) =>
   map.reduce((prev, current) => {
     // eslint-disable-next-line global-require, import/no-dynamic-require, no-param-reassign
-    prev[current] = require(`../../../../img/icons/${current}.svg`);
+    prev[current] = require(`~images/icons/${current}.svg`);
     return prev;
   }, {});
 

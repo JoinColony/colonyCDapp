@@ -3,7 +3,7 @@ import { MessageDescriptor } from 'react-intl';
 
 import { ActionTransformFnType } from '~utils/actions';
 import { log } from '~utils/debug';
-import { useAsyncFunction, useMounted } from '~utils/hooks';
+import { useAsyncFunction, useMounted } from '~hooks';
 import DefaultButton from '~shared/Button';
 import { Props as DefaultButtonProps } from './Button';
 

@@ -4,7 +4,7 @@ import { MessageDescriptor, FormattedMessage } from 'react-intl';
 import Button, { Props as DefaultButtonProps } from './Button';
 import Icon from '~shared/Icon';
 import { SimpleMessageValues } from '~types';
-import { useMainClasses } from '~utils/hooks';
+import { useMainClasses } from '~hooks';
 
 import styles from './IconButton.css';
 

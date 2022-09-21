@@ -22,7 +22,9 @@ const config = {
         '~gql': path.resolve(__dirname, 'src/graphql'),
         '~constants': path.resolve(__dirname, 'src/constants'),
         '~context': path.resolve(__dirname, 'src/context'),
-        '~lib': path.resolve(__dirname, 'src/lib'),
+        // '~lib': path.resolve(__dirname, 'src/lib'),
+        '~hooks': path.resolve(__dirname, 'src/hooks'),
+        '~images': path.resolve(__dirname, 'src/images'),
       //   '~data': path.resolve(__dirname, 'src/data'),
         '~redux': path.resolve(__dirname, 'src/redux'),
       //   '~routes': path.resolve(__dirname, 'src/routes'),
@@ -105,19 +107,19 @@ const config = {
       {
         test: /\.svg$/,
         exclude: [
-          path.resolve(__dirname, 'src', 'img', 'icons')
+          path.resolve(__dirname, 'src', 'images', 'icons')
         ],
         use: '@svgr/webpack',
       },
       /*
-       * We are only parsing images inside `src/client/img/icons`. Doing so allows us to bundle the commonly-used icons.
+       * We are only parsing images inside `src/client/images/icons`. Doing so allows us to bundle the commonly-used icons.
        * This loader also runs the images through a svg optimizer. See: https://github.com/svg/svgo#what-it-can-do
        * To use with Icon component
        */
       {
         test: /\.svg$/,
         include: [
-          path.resolve(__dirname, 'src', 'img', 'icons')
+          path.resolve(__dirname, 'src', 'images', 'icons')
         ],
         use: [
           {
@@ -138,7 +140,7 @@ const config = {
       {
         test: /\.svg$/,
         include: [
-          path.resolve(__dirname, 'src', 'img', 'tokens'),
+          path.resolve(__dirname, 'src', 'images', 'tokens'),
         ],
         use: [
           {
@@ -170,7 +172,7 @@ const config = {
     }),
     new HtmlWebpackPlugin({
       template: 'src/templates/index.html',
-      favicon: 'src/img/favicon.png',
+      favicon: 'src/images/favicon.png',
     }),
   ],
   /*

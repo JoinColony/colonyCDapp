@@ -5,7 +5,7 @@ import Avatar, { Props as AvatarProps } from '~shared/Avatar';
 
 import styles from './Badge.css';
 
-import { badges } from '../../../../img/icons.json';
+import { badges } from '~images/icons.json';
 
 // @todo we should have typed badges / icon names
 const badgeIcons = badges.reduce((badgeObj, badgeName) => {
@@ -13,7 +13,7 @@ const badgeIcons = badges.reduce((badgeObj, badgeName) => {
   return {
     ...badgeObj,
     // eslint-disable-next-line no-param-reassign, global-require, import/no-dynamic-require, @typescript-eslint/no-var-requires
-    [id]: require(`../../../../img/badges/${id}.svg`).default,
+    [id]: require(`~images/badges/${id}.svg`).default,
   };
 }, {});
 

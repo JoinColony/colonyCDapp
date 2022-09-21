@@ -3,7 +3,7 @@ describe('Colony user can update their settings', () => {
   const userSettingsBio = 'I really like Colony';
   const userSettingsWebsite = 'http://colony.io';
   const userSettingsLocation = 'Earth';
-  const profilePicturePath = 'src/img/favicon.png';
+  const profilePicturePath = 'src/images/favicon.png';
 
   beforeEach(() => {
     cy.login();
