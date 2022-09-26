@@ -18,11 +18,11 @@ import { createAddress } from '~utils/web3';
 import { ActionTypes } from '../actionTypes';
 import { AllActions, Action } from '../types/actions';
 
-import {
-  getContext,
-  // setContext,
-  ContextModule,
-} from '~context';
+// import {
+//   getContext,
+//   // setContext,
+//   ContextModule,
+// } from '~context';
 // import { setLastWallet } from '~utils/autoLogin';
 // import {
 //   refetchUserNotifications,
@@ -42,7 +42,7 @@ import AppLoadingState from '~context/appLoadingState';
 
 import {
   // getGasPrices,
-  // reinitializeColonyManager,
+  reinitializeColonyManager,
   putError,
   createUserWithSecondAttempt,
 } from './utils';
@@ -77,12 +77,12 @@ function* setupContextDependentSagas() {
 export default function* setupUserContext(
   action: Action<ActionTypes.WALLET_CREATE>,
 ) {
-  // const {
-  //   meta,
-  //   payload: { method },
-  // } = action;
+  const {
+    meta,
+    // payload: { method },
+  } = action;
   try {
-    const apolloClient = getContext(ContextModule.ApolloClient);
+    // const apolloClient = getContext(ContextModule.ApolloClient);
 
     /*
      * Get the "old" wallet address, and if it's ethereal, remove it's authetication
@@ -109,12 +109,12 @@ export default function* setupUserContext(
      */
     const wallet = yield call(getWallet, action);
     const walletAddress = createAddress(wallet.address);
-    let walletNetworkId = '1';
+    // let walletNetworkId = '1';
     // @ts-ignore
-    if (window.ethereum) {
-      // @ts-ignore
-      walletNetworkId = window.ethereum.networkVersion;
-    }
+    // if (window.ethereum) {
+    // @ts-ignore
+    // walletNetworkId = window.ethereum.networkVersion;
+    // }
     /*
      * @NOTE Detecting Ganache via it's network id isrc
     ) {
@@ -139,6 +139,9 @@ export default function* setupUserContext(
     yield call(getGasPrices);
 
     const ens = getContext(ContextModule.ENS);
+    */
+
+    const colonyManager = yield call(reinitializeColonyManager);
 
     /*
      * This needs to happen first because USER_CONTEXT_SETUP_SUCCESS causes a redirect
@@ -165,17 +168,18 @@ export default function* setupUserContext(
     }
 
     const balance = yield colonyManager.provider.getBalance(walletAddress);
+    yield balance;
 
     // @TODO refactor setupUserContext for graphql
     // @BODY eventually we want to move everything to resolvers, so all of this has to happen outside of sagas. There is no need to have a separate state or anything, just set it up in an aync function (instead of WALLET_CREATE), then call this function
     // const ipfsWithFallback = getContext(ContextModule.IPFSWithFallback);
-    const userContext = {
-      apolloClient,
-      colonyManager,
-      ens,
-      wallet,
-      // ipfsWithFallback,
-    };
+    // const userContext = {
+    //   apolloClient,
+    //   colonyManager,
+    //   ens,
+    //   wallet,
+    //   // ipfsWithFallback,
+    // };
     // yield setupResolvers(apolloClient, userContext);
 
     yield createUserWithSecondAttempt(username, true);
