@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
-import { BigNumber, Contract } from 'ethers';
-import abis from '@colony/colony-js/lib-esm/abis';
+import { BigNumber, Contract, ContractInterface } from 'ethers';
+// import abis from '@colony/colony-js/lib-esm/abis';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
@@ -16,6 +16,14 @@ import {
   transactionEstimateError,
   transactionSend,
 } from '../../actionCreators';
+
+/*
+ * @TODO Refactor to support abis (either added to the app or from colonyJS)
+ */
+const abis = {
+  WrappedToken: { default: { abi: {} } },
+  vestingSimple: { default: { abi: {} } },
+};
 
 /*
  * @area: including a bit of buffer on the gas sent can be a good thing.
@@ -51,7 +59,7 @@ export default function* estimateGasCost({
       const wrappedTokenAbi = abis.WrappedToken.default.abi;
       contextClient = new Contract(
         identifier || '',
-        wrappedTokenAbi,
+        wrappedTokenAbi as ContractInterface, // @TODO Refactor when refactoring abis
         colonyManager.signer,
       );
     } else if (
@@ -62,7 +70,7 @@ export default function* estimateGasCost({
       const vestingSimpleAbi = abis.vestingSimple.default.abi;
       contextClient = new Contract(
         identifier || '',
-        vestingSimpleAbi,
+        vestingSimpleAbi as ContractInterface, // @TODO Refactor when refactoring abis
         colonyManager.signer,
       );
     } else {

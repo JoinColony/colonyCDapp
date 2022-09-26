@@ -1,4 +1,4 @@
-import { addressNormalizer, addressValidator } from '@purser/core';
+// import { addressNormalizer, addressValidator } from '@purser/core';
 import { customAlphabet, urlAlphabet } from 'nanoid';
 
 import { isTransactionFormat } from '~utils/web3';
@@ -102,9 +102,18 @@ export type AddressElements = {
  */
 export const splitAddress = (address: Address): AddressElements | Error => {
   try {
-    addressValidator(address);
+    /*
+     * @TODO Refactor to remove the use of purser
+     *
+     * Maybe copy-paste the validator logic from puser and store it here under utils
+     * as it's quite robust and light weight. No point in importing the whole
+     * deprecated lib just for this one validator
+     *
+     * https://github.com/JoinColony/purser/blob/master/packages/%40purser/core/src/validators.ts#L202-L259
+     */
+    // addressValidator(address);
     const HEX_HEADER = '0x';
-    const rawAddress: string = addressNormalizer(address, false);
+    const rawAddress: string = address.replace('0x', '');
     const addressStart: string = rawAddress.slice(0, 4);
     const addressMiddle: string = rawAddress.slice(4, -4);
     const addressEnd: string = rawAddress.slice(-4);

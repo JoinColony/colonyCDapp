@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { open as purserOpenMetaMaskWallet } from '@purser/metamask';
-import { open as purserOpenSoftwareWallet } from '@purser/software';
+// import { open as purserOpenMetaMaskWallet } from '@purser/metamask';
+// import { open as purserOpenSoftwareWallet } from '@purser/software';
 
 import { getAccounts } from '~users/ConnectWalletWizard/StepGanache';
 import { WalletMethod } from '~redux/immutable';
@@ -8,7 +8,7 @@ import { Address } from '~types';
 import { createAddress } from '~utils/web3';
 import { ActionTypes } from '~redux';
 
-import { useAsyncFunction } from './hooks';
+import { useAsyncFunction } from '~hooks';
 import { log } from './debug';
 
 export const LAST_WALLET_KEY = 'colony-last-wallet-type';
@@ -50,7 +50,12 @@ export const useWalletAutoLogin = (
     (async () => {
       if (lastWalletType === WalletMethod.MetaMask) {
         try {
-          const wallet = await purserOpenMetaMaskWallet();
+          /*
+           * @TODO Refactor to remove the use of purser
+           */
+          // const wallet = await purserOpenMetaMaskWallet();
+          const wallet = { address: '' };
+
           if (
             createAddress(wallet.address) === createAddress(lastWalletAddress)
           ) {
@@ -73,14 +78,20 @@ export const useWalletAutoLogin = (
         process.env.NODE_ENV === 'development' &&
         !process.env.DEV
       ) {
+        const ganacheAccounts = getAccounts();
         try {
-          const ganacheAccounts = getAccounts();
           const lastGanacheAccount = ganacheAccounts.find(
             ({ label }) => label === lastWalletAddress.toLowerCase(),
           );
-          const wallet = await purserOpenSoftwareWallet({
-            privateKey: lastGanacheAccount?.value,
-          });
+
+          /*
+           * @TODO Refactor to remove the use of purser
+           */
+          // const wallet = await purserOpenSoftwareWallet({
+          //   privateKey: lastGanacheAccount?.value,
+          // });
+
+          const wallet = { getPrivateKey: () => lastGanacheAccount };
           const privateKey = wallet ? await wallet.getPrivateKey() : '';
           await login({
             method: WalletMethod.Ganache,

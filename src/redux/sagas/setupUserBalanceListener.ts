@@ -5,11 +5,24 @@ import { formatEther } from 'ethers/lib/utils';
 import { getContext, ContextModule } from '~context';
 import { Address } from '~types';
 import { log } from '~utils/debug';
-import {
-  SetLoggedInUserDocument,
-  SetLoggedInUserMutation,
-  SetLoggedInUserMutationVariables,
-} from '~data/index';
+// import {
+//   SetLoggedInUserDocument,
+//   SetLoggedInUserMutation,
+//   SetLoggedInUserMutationVariables,
+// } from '~data/index';
+
+/*
+ * @TOOD Refactor to remove reliance on
+ */
+let SetLoggedInUserDocument;
+interface SetLoggedInUserMutation {
+  placeholder?: boolean;
+}
+interface SetLoggedInUserMutationVariables {
+  input: {
+    balance: any;
+  };
+}
 
 export function* setupUserBalanceListener(walletAddress: Address) {
   let channel;

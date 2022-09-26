@@ -190,3 +190,21 @@ export interface FormattedEvent {
   activePeriod?: string;
   currentPeriod?: string;
 }
+
+/*
+ * This list will get longer once we add more system events to the dapp
+ */
+export enum SystemMessagesName {
+  EnoughExitRecoveryApprovals = 'EnoughExitRecoveryApprovals',
+  MotionHasPassed = 'MotionHasPassed',
+  MotionHasFailedNotFinalizable = 'MotionHasFailedNotFinalizable',
+  MotionHasFailedFinalizable = 'MotionHasFailedFinalizable',
+  MotionRevealPhase = 'MotionRevealPhase',
+  MotionVotingPhase = 'MotionVotingPhase',
+  MotionFullyStaked = 'MotionFullyStaked',
+  MotionFullyStakedAfterObjection = 'MotionFullyStakedAfterObjection',
+  ObjectionFullyStaked = 'ObjectionFullyStaked',
+  MotionRevealResultObjectionWon = 'MotionRevealResultObjectionWon',
+  MotionRevealResultMotionWon = 'MotionRevealResultMotionWon',
+  MotionCanBeEscalated = 'MotionCanBeEscalated',
+}

@@ -1,5 +1,3 @@
-import { addressNormalizer } from '@purser/core';
-
 import { Address } from '~types';
 import { ADDRESS_ZERO } from '~constants';
 
@@ -36,7 +34,7 @@ class UserSettings {
   currentSettings: UserSettingsSlot;
 
   constructor(userAddress?: Address) {
-    this.slot = addressNormalizer(userAddress || ADDRESS_ZERO, false);
+    this.slot = (userAddress || ADDRESS_ZERO).replace('0x', '');
     this.currentSettings = this.getStorageSlot() as UserSettingsSlot;
     if (!this.currentSettings) {
       this.currentSettings = defaultSlotValues;

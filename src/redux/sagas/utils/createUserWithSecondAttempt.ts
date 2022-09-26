@@ -1,123 +1,215 @@
-import { ContextModule, getContext } from '~context';
-import {
-  CreateUserDocument,
-  CreateUserMutation,
-  CreateUserMutationVariables,
-  SubscribeToColonyMutation,
-  SubscribeToColonyMutationVariables,
-  SubscribeToColonyDocument,
-  MetaColonyQuery,
-  MetaColonyQueryVariables,
-  MetaColonyDocument,
-  UserAddressQuery,
-  UserAddressQueryVariables,
-  UserAddressDocument,
-  UserQuery,
-  UserQueryVariables,
-  UserDocument,
-} from '~data/index';
+// import { ContextModule, getContext } from '~context';
+// import {
+//   CreateUserDocument,
+//   CreateUserMutation,
+//   CreateUserMutationVariables,
+//   SubscribeToColonyMutation,
+//   SubscribeToColonyMutationVariables,
+//   SubscribeToColonyDocument,
+//   MetaColonyQuery,
+//   MetaColonyQueryVariables,
+//   MetaColonyDocument,
+//   UserAddressQuery,
+//   UserAddressQueryVariables,
+//   UserAddressDocument,
+//   UserQuery,
+//   UserQueryVariables,
+//   UserDocument,
+// } from '~data/index';
 import { log } from '~utils/debug';
 
 export default function* createUserWithSecondAttempt(
   username: string,
   reattempt = false,
 ) {
-  const apolloClient = getContext(ContextModule.ApolloClient);
+  // const apolloClient = getContext(ContextModule.ApolloClient);
 
-  if (!username) {
-    return undefined;
-  }
+  // if (!username) {
+  //   return undefined;
+  // }
 
   try {
-    let user;
+    //   let user;
 
-    if (reattempt) {
-      try {
-        const { data: userAddressData } = yield apolloClient.query<
-          UserAddressQuery,
-          UserAddressQueryVariables
-        >({
-          query: UserAddressDocument,
-          variables: {
-            name: username,
-          },
-        });
+    //   if (reattempt) {
+    //     try {
+    //       const { data: userAddressData } = yield apolloClient.query<
+    //         UserAddressQuery,
+    //         UserAddressQueryVariables
+    //       >({
+    //         query: UserAddressDocument,
+    //         variables: {
+    //           name: username,
+    //         },
+    //       });
 
-        const { data: potentialUserData } = yield apolloClient.query<
-          UserQuery,
-          UserQueryVariables
-        >({
-          query: UserDocument,
-          variables: {
-            address: userAddressData?.userAddress,
-          },
-        });
+    //       const { data: potentialUserData } = yield apolloClient.query<
+    //         UserQuery,
+    //         UserQueryVariables
+    //       >({
+    //         query: UserDocument,
+    //         variables: {
+    //           address: userAddressData?.userAddress,
+    //         },
+    //       });
 
-        user = potentialUserData?.user;
-      } catch (error) {
-        log.verbose(
-          `User with username ${username} was not found, attempting to create a new entry`,
-          error.message,
-        );
-      }
-    }
+    //       user = potentialUserData?.user;
+    //     } catch (error) {const apolloClient = getContext(ContextModule.ApolloClient);
 
-    if (!user?.profile?.username) {
-      /*
-       * Create an entry for the user in the database
-       */
-      const { data: userData } = yield apolloClient.mutate<
-        CreateUserMutation,
-        CreateUserMutationVariables
-      >({
-        mutation: CreateUserDocument,
-        variables: {
-          createUserInput: { username },
-        },
-      });
+    // if (!username) {
+    //   return undefined;
+    // }
 
-      user = userData?.createUser;
+    // try {
+    //   let user;
 
-      if (!userData?.createUser?.profile?.username) {
-        const { data: userDataSecondAttempt } = yield apolloClient.mutate<
-          CreateUserMutation,
-          CreateUserMutationVariables
-        >({
-          mutation: CreateUserDocument,
-          variables: {
-            createUserInput: { username },
-          },
-        });
+    //   if (reattempt) {
+    //     try {
+    //       const { data: userAddressData } = yield apolloClient.query<
+    //         UserAddressQuery,
+    //         UserAddressQueryVariables
+    //       >({
+    //         query: UserAddressDocument,
+    //         variables: {
+    //           name: username,
+    //         },
+    //       });
 
-        if (!userDataSecondAttempt?.createUser?.profile?.username) {
-          throw new Error(`Apollo 'CreateUser' mutation failed`);
-        }
+    //       const { data: potentialUserData } = yield apolloClient.query<
+    //         UserQuery,
+    //         UserQueryVariables
+    //       >({
+    //         query: UserDocument,
+    //         variables: {
+    //           address: userAddressData?.userAddress,
+    //         },
+    //       });
 
-        user = userDataSecondAttempt.createUser;
-      }
+    //       user = potentialUserData?.user;
+    //     } catch (error) {
+    //       log.verbose(
+    //         `User with username ${username} was not found, attempting to create a new entry`,
+    //         error.message,
+    //       );
+    //     }
+    //   }
 
-      const { data: metaColonyData } = yield apolloClient.query<
-        MetaColonyQuery,
-        MetaColonyQueryVariables
-      >({
-        query: MetaColonyDocument,
-      });
+    //   if (!user?.profile?.username) {
+    //     /*
+    //      * Create an entry for the user in the database
+    //      */
+    //     const { data: userData } = yield apolloClient.mutate<
+    //       CreateUserMutation,
+    //       CreateUserMutationVariables
+    //     >({
+    //       mutation: CreateUserDocument,
+    //       variables: {
+    //         createUserInput: { username },
+    //       },
+    //     });
 
-      if (metaColonyData?.processedMetaColony?.colonyName) {
-        yield apolloClient.mutate<
-          SubscribeToColonyMutation,
-          SubscribeToColonyMutationVariables
-        >({
-          mutation: SubscribeToColonyDocument,
-          variables: {
-            input: {
-              colonyAddress: metaColonyData.processedMetaColony.colonyAddress,
-            },
-          },
-        });
-      }
-    }
-    return user;
+    //     user = userData?.createUser;
+
+    //     if (!userData?.createUser?.profile?.username) {
+    //       const { data: userDataSecondAttempt } = yield apolloClient.mutate<
+    //         CreateUserMutation,
+    //         CreateUserMutationVariables
+    //       >({
+    //         mutation: CreateUserDocument,
+    //         variables: {
+    //           createUserInput: { username },
+    //         },
+    //       });
+
+    //       if (!userDataSecondAttempt?.createUser?.profile?.username) {
+    //         throw new Error(`Apollo 'CreateUser' mutation failed`);
+    //       }
+
+    //       user = userDataSecondAttempt.createUser;
+    //     }
+
+    //     const { data: metaColonyData } = yield apolloClient.query<
+    //       MetaColonyQuery,
+    //       MetaColonyQueryVariables
+    //     >({
+    //       query: MetaColonyDocument,
+    //     });
+
+    //     if (metaColonyData?.processedMetaColony?.colonyName) {
+    //       yield apolloClient.mutate<
+    //         SubscribeToColonyMutation,
+    //         SubscribeToColonyMutationVariables
+    //       >({
+    //         mutation: SubscribeToColonyDocument,
+    //         variables: {
+    //           input: {
+    //             colonyAddress: metaColonyData.processedMetaColony.colonyAddress,
+    //           },
+    //         },
+    //       });
+    //     }
+    //   }
+    //   return user;
+    //   }
+
+    //   if (!user?.profile?.username) {
+    //     /*
+    //      * Create an entry for the user in the database
+    //      */
+    //     const { data: userData } = yield apolloClient.mutate<
+    //       CreateUserMutation,
+    //       CreateUserMutationVariables
+    //     >({
+    //       mutation: CreateUserDocument,
+    //       variables: {
+    //         createUserInput: { username },
+    //       },
+    //     });
+
+    //     user = userData?.createUser;
+
+    //     if (!userData?.createUser?.profile?.username) {
+    //       const { data: userDataSecondAttempt } = yield apolloClient.mutate<
+    //         CreateUserMutation,
+    //         CreateUserMutationVariables
+    //       >({
+    //         mutation: CreateUserDocument,
+    //         variables: {
+    //           createUserInput: { username },
+    //         },
+    //       });
+
+    //       if (!userDataSecondAttempt?.createUser?.profile?.username) {
+    //         throw new Error(`Apollo 'CreateUser' mutation failed`);
+    //       }
+
+    //       user = userDataSecondAttempt.createUser;
+    //     }
+
+    //     const { data: metaColonyData } = yield apolloClient.query<
+    //       MetaColonyQuery,
+    //       MetaColonyQueryVariables
+    //     >({
+    //       query: MetaColonyDocument,
+    //     });
+
+    //     if (metaColonyData?.processedMetaColony?.colonyName) {
+    //       yield apolloClient.mutate<
+    //         SubscribeToColonyMutation,
+    //         SubscribeToColonyMutationVariables
+    //       >({
+    //         mutation: SubscribeToColonyDocument,
+    //         variables: {
+    //           input: {
+    //             colonyAddress: metaColonyData.processedMetaColony.colonyAddress,
+    //           },
+    //         },
+    //       });
+    //     }
+    //   }
+    //   return user;
+    yield reattempt;
+    yield username;
   } catch (error) {
     log.verbose(`Could not create metadata entry for user ${username}`, error);
   }

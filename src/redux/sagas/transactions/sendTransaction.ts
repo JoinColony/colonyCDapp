@@ -1,8 +1,8 @@
 import { call, put, take } from 'redux-saga/effects';
 import { TransactionResponse } from '@ethersproject/providers';
 import { ClientType } from '@colony/colony-js';
-import { Contract, Overrides } from 'ethers';
-import abis from '@colony/colony-js/lib-esm/abis';
+import { Contract, Overrides, ContractInterface } from 'ethers';
+// import abis from '@colony/colony-js/lib-esm/abis';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
@@ -16,6 +16,14 @@ import { transactionSendError } from '../../actionCreators';
 import { oneTransaction } from '../../selectors';
 
 import transactionChannel from './transactionChannel';
+
+/*
+ * @TODO Refactor to support abis (either added to the app or from colonyJS)
+ */
+const abis = {
+  WrappedToken: { default: { abi: {} } },
+  vestingSimple: { default: { abi: {} } },
+};
 
 /*
  * Given a method and a transaction record, create a promise for sending the
@@ -67,7 +75,7 @@ export default function* sendTransaction({
     const wrappedTokenAbi = abis.WrappedToken.default.abi;
     contextClient = new Contract(
       identifier || '',
-      wrappedTokenAbi,
+      wrappedTokenAbi as ContractInterface, // @TODO Refactor when refactoring abis
       colonyManager.signer,
     );
   } else if (
@@ -78,7 +86,7 @@ export default function* sendTransaction({
     const vestingSimpleAbi = abis.vestingSimple.default.abi;
     contextClient = new Contract(
       identifier || '',
-      vestingSimpleAbi,
+      vestingSimpleAbi as ContractInterface, // @TODO Refactor when refactoring abis
       colonyManager.signer,
     );
   } else {

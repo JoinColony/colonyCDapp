@@ -1,102 +1,124 @@
-import { eventChannel } from 'redux-saga';
-import { Network } from '@colony/colony-js';
-
-import { call, put, spawn, take } from 'redux-saga/effects';
+// import { eventChannel } from 'redux-saga';
+// import { Network } from '@colony/colony-js';
 
 import {
-  create as createSoftwareWallet,
-  open as purserOpenSoftwareWallet,
-} from '@purser/software';
-import {
-  open as purserOpenMetaMaskWallet,
-  accountChangeHook,
-  chainChangeHook,
-} from '@purser/metamask';
-import { addChain } from '@purser/metamask/lib-esm/helpers';
+  call,
+  // put,
+  spawn,
+  // take
+} from 'redux-saga/effects';
+
+// import {
+//   create as createSoftwareWallet,
+//   open as purserOpenSoftwareWallet,
+// } from '@purser/software';
+// import {
+//   open as purserOpenMetaMaskWallet,
+//   accountChangeHook,
+//   chainChangeHook,
+// } from '@purser/metamask';
+// import { addChain } from '@purser/metamask/lib-esm/helpers';
 
 import { WalletMethod } from '../../immutable';
 import { ActionTypes } from '../../actionTypes';
-import { Action, AllActions } from '../../types/actions';
+import {
+  Action,
+  // AllActions,
+} from '../../types/actions';
 import { Address } from '~types';
 import { createAddress } from '~utils/web3';
-import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';
+// import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';
 
 /**
  * Watch for changes in Metamask account, and log the user out when they happen.
+ *
+ * @TODO Refactor to remove the use of purser
  */
 function* metaMaskWatch(walletAddress: Address) {
-  const channel = eventChannel((emit) => {
-    accountChangeHook((addresses): void => {
-      const [selectedAddress] = addresses;
-      if (selectedAddress) {
-        return emit(createAddress(selectedAddress));
-      }
-      return undefined;
-    });
-    return () => null;
-  });
+  // // const channel = eventChannel((emit) => {
+  // //   accountChangeHook((addresses): void => {
+  // //     const [selectedAddress] = addresses;
+  // //     if (selectedAddress) {
+  // //       return emit(createAddress(selectedAddress));
+  // //     }
+  // //     return undefined;
+  // //   });
+  // //   return () => null;
+  // });
   /*
    * @TODO Make this smart at some point by allowing the chain to change
    * w/o needing to refresh the page
    */
-  chainChangeHook((): void => {
-    return window.location.reload();
-  });
-  let previousAddress = walletAddress;
-  while (true) {
-    const selectedAddress: Address = yield take(channel);
-    if (previousAddress !== selectedAddress) {
-      previousAddress = selectedAddress;
-      yield put<AllActions>({
-        type: ActionTypes.USER_LOGOUT,
-      });
-    }
-  }
+  // chainChangeHook((): void => {
+  //   return window.location.reload();
+  // });
+  // let previousAddress = walletAddress;
+  // while (true) {
+  //   const selectedAddress: Address = yield take(channel);
+  //   if (previousAddress !== selectedAddress) {
+  //     previousAddress = selectedAddress;
+  //     yield put<AllActions>({
+  //       type: ActionTypes.USER_LOGOUT,
+  //     });
+  //   }
+  // }
+  yield walletAddress;
 }
 
+/*
+ * @TODO Refactor to remove the use of purser
+ */
 function* metamaskSwitchNetwork() {
-  if (DEFAULT_NETWORK === Network.Xdai || DEFAULT_NETWORK === Network.XdaiQa) {
-    const {
-      name: chainName,
-      chainId,
-      blockExplorerUrl = '',
-      rpcUrl = '',
-    } = NETWORK_DATA[Network.Xdai];
-    const { name, symbol, decimals } = TOKEN_DATA[Network.Xdai];
-    /*
-     * @NOTE This method adds a new network to metamask and then switches to it
-     * (or tries to anyway)
-     *
-     * If it exists already (it matches the chainId), then it will just
-     * attempt to switch to it
-     */
-    yield addChain({
-      chainId,
-      chainName,
-      nativeCurrency: {
-        name,
-        symbol,
-        decimals,
-      },
-      blockExplorerUrls: [blockExplorerUrl],
-      rpcUrls: [rpcUrl],
-    });
-  }
+  // if (DEFAULT_NETWORK === Network.Xdai || DEFAULT_NETWORK === Network.XdaiQa) {
+  //   const {
+  //     name: chainName,
+  //     chainId,
+  //     blockExplorerUrl = '',
+  //     rpcUrl = '',
+  //   } = NETWORK_DATA[Network.Xdai];
+  //   const { name, symbol, decimals } = TOKEN_DATA[Network.Xdai];
+  //   /*
+  //    * @NOTE This method adds a new network to metamask and then switches to it
+  //    * (or tries to anyway)
+  //    *
+  //    * If it exists already (it matches the chainId), then it will just
+  //    * attempt to switch to it
+  //    */
+  //   yield addChain({
+  //     chainId,
+  //     chainName,
+  //     nativeCurrency: {
+  //       name,
+  //       symbol,
+  //       decimals,
+  //     },
+  //     blockExplorerUrls: [blockExplorerUrl],
+  //     rpcUrls: [rpcUrl],
+  //   });
+  // }
 }
 
+/*
+ * @TODO Refactor to remove the use of purser
+ */
 function* openMetamaskWallet() {
-  const wallet = yield call(purserOpenMetaMaskWallet);
+  // const wallet = yield call(purserOpenMetaMaskWallet);
+  const wallet = { address: '' };
   yield spawn(metaMaskWatch, createAddress(wallet.address));
   yield spawn(metamaskSwitchNetwork);
   return wallet;
 }
 
+/*
+ * @TODO Refactor to remove the use of purser
+ */
 function* openGanacheWallet({
   payload: { privateKey },
 }: Action<ActionTypes.WALLET_CREATE>) {
-  return yield call(purserOpenSoftwareWallet, {
-    privateKey,
-  });
+  // return yield call(purserOpenSoftwareWallet, {
+  //   privateKey,
+  // });
+  yield privateKey;
 }
 
 function* createEtherealWallet() {
@@ -110,7 +132,11 @@ function* createEtherealWallet() {
    * That being said, we should still plan to change this when we'll have some
    * time for proper maintenance
    */
-  const wallet = yield call(createSoftwareWallet);
+  /*
+   * @TODO Refactor to remove the use of purser
+   */
+  // const wallet = yield call(createSoftwareWallet);
+  const wallet = yield {};
   return wallet;
 }
 

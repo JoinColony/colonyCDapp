@@ -4,7 +4,6 @@ import {
   Network,
   ColonyNetworkAddress,
 } from '@colony/colony-js';
-import { EthersSigner } from '@purser/signer-ethers';
 
 import { Signer } from 'ethers';
 import { DEFAULT_NETWORK } from '~constants';
@@ -24,7 +23,11 @@ export default function* getNetworkClient() {
 
   const provider = getProvider();
 
-  const signer = new EthersSigner({ purserWallet: wallet, provider });
+  /*
+   * @TODO Refactor this to remove the use of Purser/EthersSigner
+   */
+  // const signer = new EthersSigner({ purserWallet: wallet, provider });
+  const signer = { provider };
 
   let reputationOracleUrl = new URL(`/reputation`, window.location.origin);
 

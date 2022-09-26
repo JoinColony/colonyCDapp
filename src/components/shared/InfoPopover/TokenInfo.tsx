@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { addToken } from '@purser/metamask/lib-esm/helpers';
 import { AddressZero } from '@ethersproject/constants';
 
 import CopyableAddress from '~shared/CopyableAddress';
@@ -36,16 +35,26 @@ interface Props {
 const displayName = 'InfoPopover.TokenInfoPopover.TokenInfo';
 
 const TokenInfo = ({ token, isTokenNative }: Props) => {
-  const { name, symbol, address, decimals } = token;
+  const {
+    name,
+    symbol,
+    address,
+    // decimals,
+  } = token;
 
   const handleAddAssetToMetamask = useCallback(
-    () =>
-      addToken({
-        address,
-        symbol,
-        decimals,
-      }),
-    [address, symbol, decimals],
+    /*
+     * @TODO Refactor to remove the user of puser
+     */
+    //   addToken({
+    // () =>
+    //     address,
+    //     symbol,
+    //     decimals,
+    //   }),
+    // [address, symbol, decimals],
+    () => {},
+    [],
   );
 
   return (

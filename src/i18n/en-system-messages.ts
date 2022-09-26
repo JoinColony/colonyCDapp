@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 
-import { SystemMessagesName } from '~dashboard/ActionsPageFeed';
+import { SystemMessagesName } from '~types';
 
 const systemMessagesMessageDescriptors = {
   'systemMessage.title': `{name, select,
