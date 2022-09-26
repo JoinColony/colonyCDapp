@@ -18,11 +18,11 @@ import { createAddress } from '~utils/web3';
 import { ActionTypes } from '../actionTypes';
 import { AllActions, Action } from '../types/actions';
 
-// import {
-//   getContext,
-//   // setContext,
-//   ContextModule,
-// } from '~context';
+import {
+  getContext,
+  // setContext,
+  ContextModule,
+} from '~context';
 // import { setLastWallet } from '~utils/autoLogin';
 // import {
 //   refetchUserNotifications,
@@ -38,7 +38,7 @@ import { AllActions, Action } from '../types/actions';
 // import setupResolvers from '~context/setupResolvers';
 import AppLoadingState from '~context/appLoadingState';
 // import { authenticate, clearToken } from '../../../api';
-// import ENS from '../../../lib/ENS';
+import ENS from '~context/ENS';
 
 import {
   // getGasPrices,
@@ -140,6 +140,7 @@ export default function* setupUserContext(
 
     const ens = getContext(ContextModule.ENS);
     */
+    const ens = getContext(ContextModule.ENS);
 
     const colonyManager = yield call(reinitializeColonyManager);
 

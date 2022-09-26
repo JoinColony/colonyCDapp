@@ -12,11 +12,11 @@ import {
   ExtensionClient,
 } from '@colony/colony-js';
 
-import ENS from '~lib/ENS';
+import ENS from './ENS';
 import { isAddress } from '~utils/web3';
 import { Address, AddressOrENSName } from '~types/index';
 
-import ens from '../../context/ensContext';
+import ens from './ensContext';
 
 export default class ColonyManager {
   private metaColonyClient?: any;
