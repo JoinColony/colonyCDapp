@@ -3,10 +3,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateChainMeta = /* GraphQL */ `
-  subscription OnCreateChainMeta(
-    $filter: ModelSubscriptionChainMetaFilterInput
-  ) {
-    onCreateChainMeta(filter: $filter) {
+  subscription OnCreateChainMeta {
+    onCreateChainMeta {
       confirmedOnChain
       id
       createdAt
@@ -15,10 +13,8 @@ export const onCreateChainMeta = /* GraphQL */ `
   }
 `;
 export const onUpdateChainMeta = /* GraphQL */ `
-  subscription OnUpdateChainMeta(
-    $filter: ModelSubscriptionChainMetaFilterInput
-  ) {
-    onUpdateChainMeta(filter: $filter) {
+  subscription OnUpdateChainMeta {
+    onUpdateChainMeta {
       confirmedOnChain
       id
       createdAt
@@ -27,10 +23,8 @@ export const onUpdateChainMeta = /* GraphQL */ `
   }
 `;
 export const onDeleteChainMeta = /* GraphQL */ `
-  subscription OnDeleteChainMeta(
-    $filter: ModelSubscriptionChainMetaFilterInput
-  ) {
-    onDeleteChainMeta(filter: $filter) {
+  subscription OnDeleteChainMeta {
+    onDeleteChainMeta {
       confirmedOnChain
       id
       createdAt
@@ -39,8 +33,8 @@ export const onDeleteChainMeta = /* GraphQL */ `
   }
 `;
 export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
-    onCreateUser(filter: $filter) {
+  subscription OnCreateUser {
+    onCreateUser {
       walletAddress
       username
       displayName
@@ -67,8 +61,8 @@ export const onCreateUser = /* GraphQL */ `
   }
 `;
 export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
-    onUpdateUser(filter: $filter) {
+  subscription OnUpdateUser {
+    onUpdateUser {
       walletAddress
       username
       displayName
@@ -95,8 +89,8 @@ export const onUpdateUser = /* GraphQL */ `
   }
 `;
 export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
-    onDeleteUser(filter: $filter) {
+  subscription OnDeleteUser {
+    onDeleteUser {
       walletAddress
       username
       displayName
@@ -123,8 +117,8 @@ export const onDeleteUser = /* GraphQL */ `
   }
 `;
 export const onCreateColony = /* GraphQL */ `
-  subscription OnCreateColony($filter: ModelSubscriptionColonyFilterInput) {
-    onCreateColony(filter: $filter) {
+  subscription OnCreateColony {
+    onCreateColony {
       internalId
       chainId
       chain
@@ -170,8 +164,8 @@ export const onCreateColony = /* GraphQL */ `
   }
 `;
 export const onUpdateColony = /* GraphQL */ `
-  subscription OnUpdateColony($filter: ModelSubscriptionColonyFilterInput) {
-    onUpdateColony(filter: $filter) {
+  subscription OnUpdateColony {
+    onUpdateColony {
       internalId
       chainId
       chain
@@ -217,8 +211,8 @@ export const onUpdateColony = /* GraphQL */ `
   }
 `;
 export const onDeleteColony = /* GraphQL */ `
-  subscription OnDeleteColony($filter: ModelSubscriptionColonyFilterInput) {
-    onDeleteColony(filter: $filter) {
+  subscription OnDeleteColony {
+    onDeleteColony {
       internalId
       chainId
       chain
@@ -264,8 +258,8 @@ export const onDeleteColony = /* GraphQL */ `
   }
 `;
 export const onCreateDomain = /* GraphQL */ `
-  subscription OnCreateDomain($filter: ModelSubscriptionDomainFilterInput) {
-    onCreateDomain(filter: $filter) {
+  subscription OnCreateDomain {
+    onCreateDomain {
       internalId
       chainId
       chainMeta {
@@ -282,8 +276,8 @@ export const onCreateDomain = /* GraphQL */ `
   }
 `;
 export const onUpdateDomain = /* GraphQL */ `
-  subscription OnUpdateDomain($filter: ModelSubscriptionDomainFilterInput) {
-    onUpdateDomain(filter: $filter) {
+  subscription OnUpdateDomain {
+    onUpdateDomain {
       internalId
       chainId
       chainMeta {
@@ -300,8 +294,8 @@ export const onUpdateDomain = /* GraphQL */ `
   }
 `;
 export const onDeleteDomain = /* GraphQL */ `
-  subscription OnDeleteDomain($filter: ModelSubscriptionDomainFilterInput) {
-    onDeleteDomain(filter: $filter) {
+  subscription OnDeleteDomain {
+    onDeleteDomain {
       internalId
       chainId
       chainMeta {
@@ -318,8 +312,8 @@ export const onDeleteDomain = /* GraphQL */ `
   }
 `;
 export const onCreateToken = /* GraphQL */ `
-  subscription OnCreateToken($filter: ModelSubscriptionTokenFilterInput) {
-    onCreateToken(filter: $filter) {
+  subscription OnCreateToken {
+    onCreateToken {
       internalId
       contractAddress
       name
@@ -342,8 +336,8 @@ export const onCreateToken = /* GraphQL */ `
   }
 `;
 export const onUpdateToken = /* GraphQL */ `
-  subscription OnUpdateToken($filter: ModelSubscriptionTokenFilterInput) {
-    onUpdateToken(filter: $filter) {
+  subscription OnUpdateToken {
+    onUpdateToken {
       internalId
       contractAddress
       name
@@ -366,8 +360,8 @@ export const onUpdateToken = /* GraphQL */ `
   }
 `;
 export const onDeleteToken = /* GraphQL */ `
-  subscription OnDeleteToken($filter: ModelSubscriptionTokenFilterInput) {
-    onDeleteToken(filter: $filter) {
+  subscription OnDeleteToken {
+    onDeleteToken {
       internalId
       contractAddress
       name
@@ -390,10 +384,8 @@ export const onDeleteToken = /* GraphQL */ `
   }
 `;
 export const onCreateColonyRole = /* GraphQL */ `
-  subscription OnCreateColonyRole(
-    $filter: ModelSubscriptionColonyRoleFilterInput
-  ) {
-    onCreateColonyRole(filter: $filter) {
+  subscription OnCreateColonyRole {
+    onCreateColonyRole {
       colony {
         internalId
         chainId
@@ -420,10 +412,8 @@ export const onCreateColonyRole = /* GraphQL */ `
   }
 `;
 export const onUpdateColonyRole = /* GraphQL */ `
-  subscription OnUpdateColonyRole(
-    $filter: ModelSubscriptionColonyRoleFilterInput
-  ) {
-    onUpdateColonyRole(filter: $filter) {
+  subscription OnUpdateColonyRole {
+    onUpdateColonyRole {
       colony {
         internalId
         chainId
@@ -450,10 +440,8 @@ export const onUpdateColonyRole = /* GraphQL */ `
   }
 `;
 export const onDeleteColonyRole = /* GraphQL */ `
-  subscription OnDeleteColonyRole(
-    $filter: ModelSubscriptionColonyRoleFilterInput
-  ) {
-    onDeleteColonyRole(filter: $filter) {
+  subscription OnDeleteColonyRole {
+    onDeleteColonyRole {
       colony {
         internalId
         chainId
@@ -480,8 +468,8 @@ export const onDeleteColonyRole = /* GraphQL */ `
   }
 `;
 export const onCreateRole = /* GraphQL */ `
-  subscription OnCreateRole($filter: ModelSubscriptionRoleFilterInput) {
-    onCreateRole(filter: $filter) {
+  subscription OnCreateRole {
+    onCreateRole {
       internalId
       type
       chainMeta {
@@ -499,8 +487,8 @@ export const onCreateRole = /* GraphQL */ `
   }
 `;
 export const onUpdateRole = /* GraphQL */ `
-  subscription OnUpdateRole($filter: ModelSubscriptionRoleFilterInput) {
-    onUpdateRole(filter: $filter) {
+  subscription OnUpdateRole {
+    onUpdateRole {
       internalId
       type
       chainMeta {
@@ -518,8 +506,8 @@ export const onUpdateRole = /* GraphQL */ `
   }
 `;
 export const onDeleteRole = /* GraphQL */ `
-  subscription OnDeleteRole($filter: ModelSubscriptionRoleFilterInput) {
-    onDeleteRole(filter: $filter) {
+  subscription OnDeleteRole {
+    onDeleteRole {
       internalId
       type
       chainMeta {

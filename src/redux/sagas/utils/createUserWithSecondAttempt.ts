@@ -18,6 +18,9 @@
 // } from '~data/index';
 import { log } from '~utils/debug';
 
+/*
+ * @TODO Refactor to remove reliance
+ */
 export default function* createUserWithSecondAttempt(
   username: string,
   reattempt = false,

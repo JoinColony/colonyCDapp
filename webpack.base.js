@@ -62,8 +62,9 @@ const config = {
             loader: 'css-loader',
             options: {
               modules: {
-                namedExport: true,
-                // camelCase: true,
+                mode: 'local',
+                // auto: true,
+                // namedExport: true,
                 exportLocalsConvention: 'camelCaseOnly',
                 localIdentName: '[name]_[local]_[contenthash:base64:8]',
               },

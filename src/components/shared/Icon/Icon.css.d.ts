@@ -1,10 +1,21 @@
-export const main: string;
-export const sizeExtraTiny: string;
-export const sizeTiny: string;
-export const sizeSmall: string;
-export const sizeNormal: string;
-export const sizeMedium: string;
-export const sizeLarge: string;
-export const sizeHuge: string;
-export const themePrimary: string;
-export const themeInvert: string;
+declare namespace IconCssNamespace {
+  export interface IIconCss {
+    main: string;
+    sizeExtraTiny: string;
+    sizeHuge: string;
+    sizeLarge: string;
+    sizeMedium: string;
+    sizeNormal: string;
+    sizeSmall: string;
+    sizeTiny: string;
+    themeInvert: string;
+    themePrimary: string;
+  }
+}
+
+declare const IconCssModule: IconCssNamespace.IIconCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: IconCssNamespace.IIconCss;
+};
+
+export = IconCssModule;
