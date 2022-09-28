@@ -1,49 +1,85 @@
-import React, { useEffect, useState } from 'react';
-import { Amplify, API, graphqlOperation } from 'aws-amplify'
+import React, { useCallback } from 'react';
+import {
+  useQuery,
+  gql,
+  ApolloClient,
+  InMemoryCache,
+  HttpLink,
+  useMutation,
+} from '@apollo/client';
+import { Wallet, utils } from 'ethers';
 
-import { listUsers } from '~gql';
+import { listUsers, createUser } from '~gql/index';
 
-import awsExports from '../../../aws-exports.js';
-
-Amplify.configure({
-  Auth: {
-    identityPoolId: '123',
-    region: awsExports.aws_project_region,
-    cookieStorage: {
-      domain: 'localhost',
-      path: '/',
-      secure: true
-    }
+const httpLink = new HttpLink({
+  uri: 'http://localhost:20002/graphql',
+  headers: {
+    'x-api-key': 'da2-fakeApiId123456',
   },
-  ...awsExports,
+});
+
+const client = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache(),
+  connectToDevTools: true,
 });
 
 const Entry = () => {
-  const [users, setUsers] = useState([])
+  const { data, error, loading } = useQuery(gql(listUsers), {
+    client,
+  });
 
-  useEffect(() => {
-    fetchUsers();
-  }, [])
+  console.log('QUERY', data);
 
-  async function fetchUsers() {
-    try {
-      const usersData = await API.graphql(graphqlOperation(listUsers));
-      const users = usersData.data.listUsers.items;
-      setUsers(users);
-    } catch (err) {
-      console.log('error fetching todos');
-    }
-  }
+  const [
+    createUserMutation,
+    { data: mutationData, loading: mutationLoading, error: mutationError },
+  ] = useMutation(gql(createUser), {
+    client,
+    refetchQueries: [{ query: gql(listUsers) }, 'ListUsers'],
+  });
+
+  console.log('MUTATION', mutationData);
+
+  const handleUserCreate = useCallback(() => {
+    const randomWallet = Wallet.createRandom();
+    createUserMutation({
+      variables: {
+        input: {
+          walletAddress: randomWallet.address,
+          username: `user-${utils.id(randomWallet.address).slice(2, 8)}`,
+        },
+      },
+    });
+  }, [createUserMutation]);
 
   return (
-    <>
-      <div>Users created in Colony Network</div>
-      <ul>
-        {users.map(({ walletAddress, username }) => (
-          <li><b>Username:</b> {username} <b>Address:</b> {walletAddress}</li>
-        ))}
-      </ul>
-    </>
+    <div>
+      {loading ? (
+        <>Loading...</>
+      ) : (
+        <>
+          <p>Users</p>
+          <br />
+          <button
+            type="button"
+            onClick={handleUserCreate}
+            disabled={mutationLoading}
+          >
+            {mutationLoading ? 'Loading...' : 'Create new user'}
+          </button>
+          <br />
+          <br />
+          <ul>
+            {data?.listUsers?.items?.map(({ walletAddress, username }) => (
+              <li key={walletAddress}>
+                <b>Username:</b> {username} <b>Wallet:</b> {walletAddress}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
   );
 };
 
