@@ -43,12 +43,15 @@ npm run start &
 # Amplify
 
 cd /colonyCDapp
-# Reset the build folder
+# Make sure the build folder exists
 mkdir /colonyCDapp/amplify/backend/api/colonycdapp/build
+# Make sure the temp cloud backend folder exists
+mkdir /colonyCDapp/amplify/\#current-cloud-backend
 # Hidrate the meta config
 # Note that this needs to be done in the run script as the backend folder will
 # not be mounted in the docker image phase, only after the container has started
-mv /colonyCDappBackend/scripts/amplify-meta.json.example /colonyCDapp/amplify/backend/amplify-meta.json
+cp /colonyCDappBackend/scripts/amplify-meta.json.example /colonyCDapp/amplify/backend/amplify-meta.json
+cp /colonyCDappBackend/scripts/amplify-meta.json.example /colonyCDapp/amplify/\#current-cloud-backend/amplify-meta.json
 
 # Liftoff!
 

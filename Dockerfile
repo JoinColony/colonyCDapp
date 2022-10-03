@@ -70,10 +70,10 @@ RUN npm install
 RUN npm run amplify
 
 # Hidrate amplify configuration artifacts
-RUN mv /colonyCDappBackend/scripts/local-env-info.json.example /colonyCDapp/amplify/.config/local-env-info.json
-RUN mv /colonyCDappBackend/scripts/local-aws-info.json.example /colonyCDapp/amplify/.config/local-aws-info.json
+RUN cp /colonyCDappBackend/scripts/local-env-info.json.example /colonyCDapp/amplify/.config/local-env-info.json
+RUN cp /colonyCDappBackend/scripts/local-aws-info.json.example /colonyCDapp/amplify/.config/local-aws-info.json
 RUN mkdir -p /colonyCDapp/src
-RUN mv /colonyCDappBackend/scripts/aws-exports.js.example /colonyCDapp/src/aws-exports.js
+RUN cp /colonyCDappBackend/scripts/aws-exports.js.example /colonyCDapp/src/aws-exports.js
 
 #
 # Colony Network
@@ -135,7 +135,7 @@ RUN npm install
 WORKDIR /colonyCDappBackend
 
 # Hidrate the run script
-RUN mv /colonyCDappBackend/scripts/run.sh.example /colonyCDappBackend/run.sh
+RUN cp /colonyCDappBackend/scripts/run.sh.example /colonyCDappBackend/run.sh
 RUN chmod +x ./run.sh
 
 # Battlecruiser Operational!
