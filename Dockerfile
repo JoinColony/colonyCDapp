@@ -69,9 +69,8 @@ RUN npm install
 # Actually download the amplify tarball (don't ask me, it's how it works)
 RUN npm run amplify
 
-# Update amplify local env config
-# FIX!!!
-RUN tmp=$(mktemp) && jq '.projectPath="/colonyCDapp"' amplify/.config/local-env-info.json > $tmp && mv $tmp amplify/.config/local-env-info.json
+# Create amplify local env config
+RUN jq -n '{projectPath: "/colonyCDapp", envName: "dev"}' > amplify/.config/local-env-info.json
 
 #
 # Colony Network
