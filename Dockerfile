@@ -50,7 +50,7 @@ WORKDIR /colonyCDapp
 # Add dependencies from the host
 ADD package.json /colonyCDapp/package.colonyCDapp.json
 ADD amplify /colonyCDapp/amplify
-ADD src/aws-exports.js /colonyCDapp/src/aws-exports.js
+ADD scripts /colonyCDappBackend/scripts
 ADD .graphqlconfig.yml /colonyCDapp/.graphqlconfig.yml
 
 #
@@ -69,8 +69,11 @@ RUN npm install
 # Actually download the amplify tarball (don't ask me, it's how it works)
 RUN npm run amplify
 
-# Create amplify local env config
-RUN jq -n '{projectPath: "/colonyCDapp", envName: "dev"}' > amplify/.config/local-env-info.json
+# Hidrate amplify configuration artifacts
+RUN mv /colonyCDappBackend/scripts/local-env-info.json.example /colonyCDapp/amplify/.config/local-env-info.json
+RUN mv /colonyCDappBackend/scripts/local-aws-info.json.example /colonyCDapp/amplify/.config/local-aws-info.json
+RUN mkdir -p /colonyCDapp/src
+RUN mv /colonyCDappBackend/scripts/aws-exports.js.example /colonyCDapp/src/aws-exports.js
 
 #
 # Colony Network
@@ -131,28 +134,8 @@ RUN npm install
 
 WORKDIR /colonyCDappBackend
 
-# Generate the local start script
-RUN echo "cd colonyNetwork\n" \
-  "yarn start:blockchain:client &\n" \
-  "DISABLE_DOCKER=true yarn truffle migrate\n" \
-  "ETHER_ROUTER_ADDRESS=\$(jq -r .etherRouterAddress etherrouter-address.json)\n" \
-  "MINER_ACCOUNT_ADDRESS=\$(jq -r '.addresses | keys[5]'  ganache-accounts.json)\n" \
-  # Copy over colony network build artifacts to aid in development
-  # Some of the files are needed to be imported and used in the app for local dev
-  "rm --recursive --force /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts\n" \
-  "mkdir --parents /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts\n" \
-  "cp -R ./build /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/\n" \
-  "cp ./etherrouter-address.json /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json\n" \
-  "cd packages/reputation-miner\n" \
-  "node ./bin/index.js --minerAddress \$MINER_ACCOUNT_ADDRESS --syncFrom 1 --colonyNetworkAddress \$ETHER_ROUTER_ADDRESS --oracle --auto --dbPath reputationStates.sqlite --oraclePort 3002 --processingDelay 1 &\n" \
-  "cd ../../../reputation-monitor-dev\n" \
-  "node index.js \$ETHER_ROUTER_ADDRESS &\n" \
-  "cd ../block-ingestor\n" \
-  "npm run start &\n" \
-  "cd /colonyCDapp\n" \
-  # Create build folder if it does not exist
-  "mkdir /colonyCDapp/amplify/backend/api/colonycdapp/build\n" \
-  "npm run amplify mock" > ./run.sh
+# Hidrate the run script
+RUN mv /colonyCDappBackend/scripts/run.sh.example /colonyCDappBackend/run.sh
 RUN chmod +x ./run.sh
 
 # Battlecruiser Operational!
