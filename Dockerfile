@@ -80,13 +80,13 @@ RUN cp /colonyCDappBackend/scripts/aws-exports.js.base /colonyCDapp/src/aws-expo
 WORKDIR /colonyCDappBackend
 
 # Clone the network repo
-RUN git clone https://github.com/JoinColony/colonyNetwork.git
+RUN git clone https://github.com/JoinColony/colonyNetwork.git --depth 1
 WORKDIR /colonyCDappBackend/colonyNetwork
 
 # Fetch the correct network repo commit/branch/tag
-RUN git fetch origin $NETWORK_HASH
+RUN git fetch origin $NETWORK_HASH --depth 1
 RUN git checkout $NETWORK_HASH
-RUN git submodule update --init --recursive
+RUN git submodule update --init --recursive --depth 1
 
 # Install required network dependencies
 RUN yarn
@@ -104,11 +104,11 @@ RUN echo "{}" > ./packages/reputation-miner/justificationTreeCache.json
 
 # Clone block ingestor repo
 WORKDIR /colonyCDappBackend
-RUN git clone https://github.com/JoinColony/block-ingestor.git
+RUN git clone https://github.com/JoinColony/block-ingestor.git --depth 1
 WORKDIR /colonyCDappBackend/block-ingestor
 
 # Fetch the correct network repo commit/branch/tag
-RUN git fetch origin $BLOCKINGESTOR_HASH
+RUN git fetch origin $BLOCKINGESTOR_HASH --depth 1
 RUN git checkout $BLOCKINGESTOR_HASH
 
 # Install block ingestor dependencies
@@ -120,11 +120,11 @@ RUN npm install
 
 # Clone block ingestor repo
 WORKDIR /colonyCDappBackend
-RUN git clone https://github.com/JoinColony/reputation-monitor-dev.git
+RUN git clone https://github.com/JoinColony/reputation-monitor-dev.git --depth 1
 WORKDIR /colonyCDappBackend/reputation-monitor-dev
 
 # Fetch the correct network repo commit/branch/tag
-RUN git fetch origin $REPUTATIONMONITOR_HASH
+RUN git fetch origin $REPUTATIONMONITOR_HASH --depth 1
 RUN git checkout $REPUTATIONMONITOR_HASH
 
 # Install reputation monitor dependencies
