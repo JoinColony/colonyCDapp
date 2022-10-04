@@ -9,6 +9,7 @@
     "docker:start": "docker compose up --force-recreate -V",
     "start": "npm run docker:build && npm run docker:start",
     "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "webpack": "webpack serve --config webpack.dev.js --port 9090",
     "webpack:prod": "NODE_ENV=production webpack-cli --config webpack.prod.js",
     "DEPRECATED:webpack:prod": "NODE_OPTIONS=\"--max-old-space-size=4096\" NODE_ENV=production webpack-cli --config webpack.prod.js"
