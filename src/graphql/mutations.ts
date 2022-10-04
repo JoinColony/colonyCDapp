@@ -2,132 +2,57 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createChainMeta = /* GraphQL */ `
-  mutation CreateChainMeta(
-    $input: CreateChainMetaInput!
-    $condition: ModelChainMetaConditionInput
+export const createToken = /* GraphQL */ `
+  mutation CreateToken(
+    $input: CreateTokenInput!
+    $condition: ModelTokenConditionInput
   ) {
-    createChainMeta(input: $input, condition: $condition) {
-      confirmedOnChain
+    createToken(input: $input, condition: $condition) {
       id
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateChainMeta = /* GraphQL */ `
-  mutation UpdateChainMeta(
-    $input: UpdateChainMetaInput!
-    $condition: ModelChainMetaConditionInput
-  ) {
-    updateChainMeta(input: $input, condition: $condition) {
-      confirmedOnChain
-      id
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteChainMeta = /* GraphQL */ `
-  mutation DeleteChainMeta(
-    $input: DeleteChainMetaInput!
-    $condition: ModelChainMetaConditionInput
-  ) {
-    deleteChainMeta(input: $input, condition: $condition) {
-      confirmedOnChain
-      id
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createUser = /* GraphQL */ `
-  mutation CreateUser(
-    $input: CreateUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    createUser(input: $input, condition: $condition) {
-      walletAddress
-      username
-      displayName
-      avatarHash
-      roles {
-        id
-        createdAt
-        updatedAt
-        colonyRoleColonyId
-        colonyRoleColonyName
-      }
-      tokens {
+      name
+      symbol
+      decimals
+      type
+      colonies {
         nextToken
       }
-      chainMeta {
-        confirmedOnChain
-        id
-        createdAt
-        updatedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateToken = /* GraphQL */ `
+  mutation UpdateToken(
+    $input: UpdateTokenInput!
+    $condition: ModelTokenConditionInput
+  ) {
+    updateToken(input: $input, condition: $condition) {
+      id
+      name
+      symbol
+      decimals
+      type
+      colonies {
+        nextToken
       }
       createdAt
       updatedAt
     }
   }
 `;
-export const updateUser = /* GraphQL */ `
-  mutation UpdateUser(
-    $input: UpdateUserInput!
-    $condition: ModelUserConditionInput
+export const deleteToken = /* GraphQL */ `
+  mutation DeleteToken(
+    $input: DeleteTokenInput!
+    $condition: ModelTokenConditionInput
   ) {
-    updateUser(input: $input, condition: $condition) {
-      walletAddress
-      username
-      displayName
-      avatarHash
-      roles {
-        id
-        createdAt
-        updatedAt
-        colonyRoleColonyId
-        colonyRoleColonyName
-      }
-      tokens {
+    deleteToken(input: $input, condition: $condition) {
+      id
+      name
+      symbol
+      decimals
+      type
+      colonies {
         nextToken
-      }
-      chainMeta {
-        confirmedOnChain
-        id
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteUser = /* GraphQL */ `
-  mutation DeleteUser(
-    $input: DeleteUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    deleteUser(input: $input, condition: $condition) {
-      walletAddress
-      username
-      displayName
-      avatarHash
-      roles {
-        id
-        createdAt
-        updatedAt
-        colonyRoleColonyId
-        colonyRoleColonyName
-      }
-      tokens {
-        nextToken
-      }
-      chainMeta {
-        confirmedOnChain
-        id
-        createdAt
-        updatedAt
       }
       createdAt
       updatedAt
@@ -140,47 +65,23 @@ export const createColony = /* GraphQL */ `
     $condition: ModelColonyConditionInput
   ) {
     createColony(input: $input, condition: $condition) {
-      internalId
-      chainId
-      chain
-      contractAddress
+      id
       name
-      displayName
-      avatarHash
       nativeToken {
-        internalId
-        contractAddress
+        id
         name
         symbol
         decimals
         type
         createdAt
         updatedAt
-        userTokensId
-        userTokensUsername
-        colonyTokensId
-        colonyTokensName
-      }
-      chainVersion
-      domains {
-        nextToken
       }
       tokens {
         nextToken
       }
-      roles {
-        nextToken
-      }
-      chainMeta {
-        confirmedOnChain
-        id
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
       colonyNativeTokenId
-      colonyNativeTokenName
     }
   }
 `;
@@ -190,47 +91,23 @@ export const updateColony = /* GraphQL */ `
     $condition: ModelColonyConditionInput
   ) {
     updateColony(input: $input, condition: $condition) {
-      internalId
-      chainId
-      chain
-      contractAddress
+      id
       name
-      displayName
-      avatarHash
       nativeToken {
-        internalId
-        contractAddress
+        id
         name
         symbol
         decimals
         type
         createdAt
         updatedAt
-        userTokensId
-        userTokensUsername
-        colonyTokensId
-        colonyTokensName
-      }
-      chainVersion
-      domains {
-        nextToken
       }
       tokens {
         nextToken
       }
-      roles {
-        nextToken
-      }
-      chainMeta {
-        confirmedOnChain
-        id
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
       colonyNativeTokenId
-      colonyNativeTokenName
     }
   }
 `;
@@ -240,350 +117,113 @@ export const deleteColony = /* GraphQL */ `
     $condition: ModelColonyConditionInput
   ) {
     deleteColony(input: $input, condition: $condition) {
-      internalId
-      chainId
-      chain
-      contractAddress
+      id
       name
-      displayName
-      avatarHash
       nativeToken {
-        internalId
-        contractAddress
+        id
         name
         symbol
         decimals
         type
         createdAt
         updatedAt
-        userTokensId
-        userTokensUsername
-        colonyTokensId
-        colonyTokensName
-      }
-      chainVersion
-      domains {
-        nextToken
       }
       tokens {
         nextToken
       }
-      roles {
-        nextToken
-      }
-      chainMeta {
-        confirmedOnChain
-        id
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
       colonyNativeTokenId
-      colonyNativeTokenName
     }
   }
 `;
-export const createDomain = /* GraphQL */ `
-  mutation CreateDomain(
-    $input: CreateDomainInput!
-    $condition: ModelDomainConditionInput
+export const createColonyTokens = /* GraphQL */ `
+  mutation CreateColonyTokens(
+    $input: CreateColonyTokensInput!
+    $condition: ModelColonyTokensConditionInput
   ) {
-    createDomain(input: $input, condition: $condition) {
-      internalId
-      chainId
-      chainMeta {
-        confirmedOnChain
+    createColonyTokens(input: $input, condition: $condition) {
+      id
+      tokenID
+      colonyID
+      token {
         id
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      colonyDomainsId
-      colonyDomainsName
-    }
-  }
-`;
-export const updateDomain = /* GraphQL */ `
-  mutation UpdateDomain(
-    $input: UpdateDomainInput!
-    $condition: ModelDomainConditionInput
-  ) {
-    updateDomain(input: $input, condition: $condition) {
-      internalId
-      chainId
-      chainMeta {
-        confirmedOnChain
-        id
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      colonyDomainsId
-      colonyDomainsName
-    }
-  }
-`;
-export const deleteDomain = /* GraphQL */ `
-  mutation DeleteDomain(
-    $input: DeleteDomainInput!
-    $condition: ModelDomainConditionInput
-  ) {
-    deleteDomain(input: $input, condition: $condition) {
-      internalId
-      chainId
-      chainMeta {
-        confirmedOnChain
-        id
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      colonyDomainsId
-      colonyDomainsName
-    }
-  }
-`;
-export const createToken = /* GraphQL */ `
-  mutation CreateToken(
-    $input: CreateTokenInput!
-    $condition: ModelTokenConditionInput
-  ) {
-    createToken(input: $input, condition: $condition) {
-      internalId
-      contractAddress
-      name
-      symbol
-      decimals
-      type
-      chainMeta {
-        confirmedOnChain
-        id
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      userTokensId
-      userTokensUsername
-      colonyTokensId
-      colonyTokensName
-    }
-  }
-`;
-export const updateToken = /* GraphQL */ `
-  mutation UpdateToken(
-    $input: UpdateTokenInput!
-    $condition: ModelTokenConditionInput
-  ) {
-    updateToken(input: $input, condition: $condition) {
-      internalId
-      contractAddress
-      name
-      symbol
-      decimals
-      type
-      chainMeta {
-        confirmedOnChain
-        id
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      userTokensId
-      userTokensUsername
-      colonyTokensId
-      colonyTokensName
-    }
-  }
-`;
-export const deleteToken = /* GraphQL */ `
-  mutation DeleteToken(
-    $input: DeleteTokenInput!
-    $condition: ModelTokenConditionInput
-  ) {
-    deleteToken(input: $input, condition: $condition) {
-      internalId
-      contractAddress
-      name
-      symbol
-      decimals
-      type
-      chainMeta {
-        confirmedOnChain
-        id
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      userTokensId
-      userTokensUsername
-      colonyTokensId
-      colonyTokensName
-    }
-  }
-`;
-export const createColonyRole = /* GraphQL */ `
-  mutation CreateColonyRole(
-    $input: CreateColonyRoleInput!
-    $condition: ModelColonyRoleConditionInput
-  ) {
-    createColonyRole(input: $input, condition: $condition) {
-      colony {
-        internalId
-        chainId
-        chain
-        contractAddress
         name
-        displayName
-        avatarHash
-        chainVersion
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      colony {
+        id
+        name
         createdAt
         updatedAt
         colonyNativeTokenId
-        colonyNativeTokenName
       }
-      roles {
-        nextToken
-      }
-      id
       createdAt
       updatedAt
-      colonyRoleColonyId
-      colonyRoleColonyName
     }
   }
 `;
-export const updateColonyRole = /* GraphQL */ `
-  mutation UpdateColonyRole(
-    $input: UpdateColonyRoleInput!
-    $condition: ModelColonyRoleConditionInput
+export const updateColonyTokens = /* GraphQL */ `
+  mutation UpdateColonyTokens(
+    $input: UpdateColonyTokensInput!
+    $condition: ModelColonyTokensConditionInput
   ) {
-    updateColonyRole(input: $input, condition: $condition) {
-      colony {
-        internalId
-        chainId
-        chain
-        contractAddress
+    updateColonyTokens(input: $input, condition: $condition) {
+      id
+      tokenID
+      colonyID
+      token {
+        id
         name
-        displayName
-        avatarHash
-        chainVersion
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      colony {
+        id
+        name
         createdAt
         updatedAt
         colonyNativeTokenId
-        colonyNativeTokenName
       }
-      roles {
-        nextToken
-      }
-      id
       createdAt
       updatedAt
-      colonyRoleColonyId
-      colonyRoleColonyName
     }
   }
 `;
-export const deleteColonyRole = /* GraphQL */ `
-  mutation DeleteColonyRole(
-    $input: DeleteColonyRoleInput!
-    $condition: ModelColonyRoleConditionInput
+export const deleteColonyTokens = /* GraphQL */ `
+  mutation DeleteColonyTokens(
+    $input: DeleteColonyTokensInput!
+    $condition: ModelColonyTokensConditionInput
   ) {
-    deleteColonyRole(input: $input, condition: $condition) {
-      colony {
-        internalId
-        chainId
-        chain
-        contractAddress
+    deleteColonyTokens(input: $input, condition: $condition) {
+      id
+      tokenID
+      colonyID
+      token {
+        id
         name
-        displayName
-        avatarHash
-        chainVersion
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      colony {
+        id
+        name
         createdAt
         updatedAt
         colonyNativeTokenId
-        colonyNativeTokenName
-      }
-      roles {
-        nextToken
-      }
-      id
-      createdAt
-      updatedAt
-      colonyRoleColonyId
-      colonyRoleColonyName
-    }
-  }
-`;
-export const createRole = /* GraphQL */ `
-  mutation CreateRole(
-    $input: CreateRoleInput!
-    $condition: ModelRoleConditionInput
-  ) {
-    createRole(input: $input, condition: $condition) {
-      internalId
-      type
-      chainMeta {
-        confirmedOnChain
-        id
-        createdAt
-        updatedAt
       }
       createdAt
       updatedAt
-      colonyRolesId
-      colonyRolesName
-      colonyRoleRolesId
-    }
-  }
-`;
-export const updateRole = /* GraphQL */ `
-  mutation UpdateRole(
-    $input: UpdateRoleInput!
-    $condition: ModelRoleConditionInput
-  ) {
-    updateRole(input: $input, condition: $condition) {
-      internalId
-      type
-      chainMeta {
-        confirmedOnChain
-        id
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      colonyRolesId
-      colonyRolesName
-      colonyRoleRolesId
-    }
-  }
-`;
-export const deleteRole = /* GraphQL */ `
-  mutation DeleteRole(
-    $input: DeleteRoleInput!
-    $condition: ModelRoleConditionInput
-  ) {
-    deleteRole(input: $input, condition: $condition) {
-      internalId
-      type
-      chainMeta {
-        confirmedOnChain
-        id
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      colonyRolesId
-      colonyRolesName
-      colonyRoleRolesId
     }
   }
 `;

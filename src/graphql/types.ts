@@ -2,69 +2,29 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateChainMetaInput = {
-  confirmedOnChain: boolean,
+export type CreateTokenInput = {
   id?: string | null,
+  name: string,
+  symbol: string,
+  decimals: number,
+  type?: TokenType | null,
 };
 
-export type ModelChainMetaConditionInput = {
-  confirmedOnChain?: ModelBooleanInput | null,
-  and?: Array< ModelChainMetaConditionInput | null > | null,
-  or?: Array< ModelChainMetaConditionInput | null > | null,
-  not?: ModelChainMetaConditionInput | null,
-};
-
-export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
-export enum ModelAttributeTypes {
-  binary = "binary",
-  binarySet = "binarySet",
-  bool = "bool",
-  list = "list",
-  map = "map",
-  number = "number",
-  numberSet = "numberSet",
-  string = "string",
-  stringSet = "stringSet",
-  _null = "_null",
+export enum TokenType {
+  COLONY = "COLONY",
+  ERC20 = "ERC20",
+  SAI = "SAI",
 }
 
 
-export type ChainMeta = {
-  __typename: "ChainMeta",
-  confirmedOnChain: boolean,
-  id: string,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type UpdateChainMetaInput = {
-  confirmedOnChain?: boolean | null,
-  id: string,
-};
-
-export type DeleteChainMetaInput = {
-  id: string,
-};
-
-export type CreateUserInput = {
-  walletAddress: string,
-  username: string,
-  displayName?: string | null,
-  avatarHash?: string | null,
-};
-
-export type ModelUserConditionInput = {
-  displayName?: ModelStringInput | null,
-  avatarHash?: ModelStringInput | null,
-  and?: Array< ModelUserConditionInput | null > | null,
-  or?: Array< ModelUserConditionInput | null > | null,
-  not?: ModelUserConditionInput | null,
+export type ModelTokenConditionInput = {
+  name?: ModelStringInput | null,
+  symbol?: ModelStringInput | null,
+  decimals?: ModelIntInput | null,
+  type?: ModelTokenTypeInput | null,
+  and?: Array< ModelTokenConditionInput | null > | null,
+  or?: Array< ModelTokenConditionInput | null > | null,
+  not?: ModelTokenConditionInput | null,
 };
 
 export type ModelStringInput = {
@@ -83,6 +43,20 @@ export type ModelStringInput = {
   size?: ModelSizeInput | null,
 };
 
+export enum ModelAttributeTypes {
+  binary = "binary",
+  binarySet = "binarySet",
+  bool = "bool",
+  list = "list",
+  map = "map",
+  number = "number",
+  numberSet = "numberSet",
+  string = "string",
+  stringSet = "stringSet",
+  _null = "_null",
+}
+
+
 export type ModelSizeInput = {
   ne?: number | null,
   eq?: number | null,
@@ -93,164 +67,87 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
-export type User = {
-  __typename: "User",
-  walletAddress: string,
-  username: string,
-  displayName?: string | null,
-  avatarHash?: string | null,
-  roles?:  Array<ColonyRole | null > | null,
-  tokens?: ModelTokenConnection | null,
-  chainMeta?: ChainMeta | null,
-  createdAt: string,
-  updatedAt: string,
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
 };
 
-export type ColonyRole = {
-  __typename: "ColonyRole",
-  colony?: Colony | null,
-  roles?: ModelRoleConnection | null,
-  id: string,
-  createdAt: string,
-  updatedAt: string,
-  colonyRoleColonyId?: string | null,
-  colonyRoleColonyName?: string | null,
-};
-
-export type Colony = {
-  __typename: "Colony",
-  internalId: string,
-  chainId: number,
-  chain: number,
-  contractAddress: string,
-  name: string,
-  displayName?: string | null,
-  avatarHash?: string | null,
-  nativeToken?: Token | null,
-  chainVersion: number,
-  domains?: ModelDomainConnection | null,
-  tokens?: ModelTokenConnection | null,
-  roles?: ModelRoleConnection | null,
-  chainMeta?: ChainMeta | null,
-  createdAt: string,
-  updatedAt: string,
-  colonyNativeTokenId?: string | null,
-  colonyNativeTokenName?: string | null,
+export type ModelTokenTypeInput = {
+  eq?: TokenType | null,
+  ne?: TokenType | null,
 };
 
 export type Token = {
   __typename: "Token",
-  internalId: string,
-  contractAddress: string,
+  id: string,
   name: string,
   symbol: string,
   decimals: number,
-  type: TokenType,
-  chainMeta?: ChainMeta | null,
+  type?: TokenType | null,
+  colonies?: ModelColonyTokensConnection | null,
   createdAt: string,
   updatedAt: string,
-  userTokensId?: string | null,
-  userTokensUsername?: string | null,
-  colonyTokensId?: string | null,
-  colonyTokensName?: string | null,
 };
 
-export enum TokenType {
-  COLONY = "COLONY",
-  ERC20 = "ERC20",
-  SAI = "SAI",
-}
-
-
-export type ModelDomainConnection = {
-  __typename: "ModelDomainConnection",
-  items:  Array<Domain | null >,
+export type ModelColonyTokensConnection = {
+  __typename: "ModelColonyTokensConnection",
+  items:  Array<ColonyTokens | null >,
   nextToken?: string | null,
 };
 
-export type Domain = {
-  __typename: "Domain",
-  internalId: string,
-  chainId: number,
-  chainMeta?: ChainMeta | null,
+export type ColonyTokens = {
+  __typename: "ColonyTokens",
+  id: string,
+  tokenID: string,
+  colonyID: string,
+  token: Token,
+  colony: Colony,
   createdAt: string,
   updatedAt: string,
-  colonyDomainsId?: string | null,
-  colonyDomainsName?: string | null,
 };
 
-export type ModelTokenConnection = {
-  __typename: "ModelTokenConnection",
-  items:  Array<Token | null >,
-  nextToken?: string | null,
-};
-
-export type ModelRoleConnection = {
-  __typename: "ModelRoleConnection",
-  items:  Array<Role | null >,
-  nextToken?: string | null,
-};
-
-export type Role = {
-  __typename: "Role",
-  internalId: string,
-  type: RoleType,
-  chainMeta?: ChainMeta | null,
+export type Colony = {
+  __typename: "Colony",
+  id: string,
+  name: string,
+  nativeToken: Token,
+  tokens?: ModelColonyTokensConnection | null,
   createdAt: string,
   updatedAt: string,
-  colonyRolesId?: string | null,
-  colonyRolesName?: string | null,
-  colonyRoleRolesId?: string | null,
+  colonyNativeTokenId: string,
 };
 
-export enum RoleType {
-  RECOVERY = "RECOVERY",
-  ROOT = "ROOT",
-  ARBITRATION = "ARBITRATION",
-  ARCHITECTURE = "ARCHITECTURE",
-  ARCHITECTURE_SUBDOMAIN_DEPRECATED = "ARCHITECTURE_SUBDOMAIN_DEPRECATED",
-  FUNDING = "FUNDING",
-  ADMINISTRATION = "ADMINISTRATION",
-}
-
-
-export type UpdateUserInput = {
-  walletAddress: string,
-  username: string,
-  displayName?: string | null,
-  avatarHash?: string | null,
+export type UpdateTokenInput = {
+  id: string,
+  name?: string | null,
+  symbol?: string | null,
+  decimals?: number | null,
+  type?: TokenType | null,
 };
 
-export type DeleteUserInput = {
-  walletAddress: string,
-  username: string,
+export type DeleteTokenInput = {
+  id: string,
 };
 
 export type CreateColonyInput = {
-  internalId: string,
-  chainId: number,
-  chain: number,
-  contractAddress: string,
+  id?: string | null,
   name: string,
-  displayName?: string | null,
-  avatarHash?: string | null,
-  chainVersion: number,
-  colonyNativeTokenId?: string | null,
-  colonyNativeTokenName?: string | null,
+  colonyNativeTokenId: string,
 };
 
 export type ModelColonyConditionInput = {
-  internalId?: ModelIDInput | null,
-  chainId?: ModelIntInput | null,
-  chain?: ModelIntInput | null,
-  displayName?: ModelStringInput | null,
-  avatarHash?: ModelStringInput | null,
-  chainVersion?: ModelIntInput | null,
+  name?: ModelStringInput | null,
   and?: Array< ModelColonyConditionInput | null > | null,
   or?: Array< ModelColonyConditionInput | null > | null,
   not?: ModelColonyConditionInput | null,
   colonyNativeTokenId?: ModelIDInput | null,
-  colonyNativeTokenName?: ModelStringInput | null,
 };
 
 export type ModelIDInput = {
@@ -269,231 +166,64 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
 export type UpdateColonyInput = {
-  internalId?: string | null,
-  chainId?: number | null,
-  chain?: number | null,
-  contractAddress: string,
-  name: string,
-  displayName?: string | null,
-  avatarHash?: string | null,
-  chainVersion?: number | null,
-  colonyNativeTokenId?: string | null,
-  colonyNativeTokenName?: string | null,
+  id: string,
+  name?: string | null,
+  colonyNativeTokenId: string,
 };
 
 export type DeleteColonyInput = {
-  contractAddress: string,
-  name: string,
+  id: string,
 };
 
-export type CreateDomainInput = {
-  internalId: string,
-  chainId: number,
-  colonyDomainsId?: string | null,
-  colonyDomainsName?: string | null,
+export type CreateColonyTokensInput = {
+  id?: string | null,
+  tokenID: string,
+  colonyID: string,
 };
 
-export type ModelDomainConditionInput = {
-  and?: Array< ModelDomainConditionInput | null > | null,
-  or?: Array< ModelDomainConditionInput | null > | null,
-  not?: ModelDomainConditionInput | null,
-  colonyDomainsId?: ModelIDInput | null,
-  colonyDomainsName?: ModelStringInput | null,
+export type ModelColonyTokensConditionInput = {
+  tokenID?: ModelIDInput | null,
+  colonyID?: ModelIDInput | null,
+  and?: Array< ModelColonyTokensConditionInput | null > | null,
+  or?: Array< ModelColonyTokensConditionInput | null > | null,
+  not?: ModelColonyTokensConditionInput | null,
 };
 
-export type UpdateDomainInput = {
-  internalId: string,
-  chainId: number,
-  colonyDomainsId?: string | null,
-  colonyDomainsName?: string | null,
+export type UpdateColonyTokensInput = {
+  id: string,
+  tokenID?: string | null,
+  colonyID?: string | null,
 };
 
-export type DeleteDomainInput = {
-  internalId: string,
-  chainId: number,
+export type DeleteColonyTokensInput = {
+  id: string,
 };
 
-export type CreateTokenInput = {
-  internalId: string,
-  contractAddress: string,
-  name: string,
-  symbol: string,
-  decimals: number,
-  type: TokenType,
-  userTokensId?: string | null,
-  userTokensUsername?: string | null,
-  colonyTokensId?: string | null,
-  colonyTokensName?: string | null,
-};
-
-export type ModelTokenConditionInput = {
-  internalId?: ModelIDInput | null,
+export type ModelTokenFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
   symbol?: ModelStringInput | null,
   decimals?: ModelIntInput | null,
   type?: ModelTokenTypeInput | null,
-  and?: Array< ModelTokenConditionInput | null > | null,
-  or?: Array< ModelTokenConditionInput | null > | null,
-  not?: ModelTokenConditionInput | null,
-  userTokensId?: ModelIDInput | null,
-  userTokensUsername?: ModelStringInput | null,
-  colonyTokensId?: ModelIDInput | null,
-  colonyTokensName?: ModelStringInput | null,
+  and?: Array< ModelTokenFilterInput | null > | null,
+  or?: Array< ModelTokenFilterInput | null > | null,
+  not?: ModelTokenFilterInput | null,
 };
 
-export type ModelTokenTypeInput = {
-  eq?: TokenType | null,
-  ne?: TokenType | null,
-};
-
-export type UpdateTokenInput = {
-  internalId?: string | null,
-  contractAddress: string,
-  name: string,
-  symbol?: string | null,
-  decimals?: number | null,
-  type?: TokenType | null,
-  userTokensId?: string | null,
-  userTokensUsername?: string | null,
-  colonyTokensId?: string | null,
-  colonyTokensName?: string | null,
-};
-
-export type DeleteTokenInput = {
-  contractAddress: string,
-  name: string,
-};
-
-export type CreateColonyRoleInput = {
-  id?: string | null,
-  colonyRoleColonyId?: string | null,
-  colonyRoleColonyName?: string | null,
-};
-
-export type ModelColonyRoleConditionInput = {
-  and?: Array< ModelColonyRoleConditionInput | null > | null,
-  or?: Array< ModelColonyRoleConditionInput | null > | null,
-  not?: ModelColonyRoleConditionInput | null,
-  colonyRoleColonyId?: ModelIDInput | null,
-  colonyRoleColonyName?: ModelStringInput | null,
-};
-
-export type UpdateColonyRoleInput = {
-  id: string,
-  colonyRoleColonyId?: string | null,
-  colonyRoleColonyName?: string | null,
-};
-
-export type DeleteColonyRoleInput = {
-  id: string,
-};
-
-export type CreateRoleInput = {
-  internalId: string,
-  type: RoleType,
-  colonyRolesId?: string | null,
-  colonyRolesName?: string | null,
-  colonyRoleRolesId?: string | null,
-};
-
-export type ModelRoleConditionInput = {
-  type?: ModelRoleTypeInput | null,
-  and?: Array< ModelRoleConditionInput | null > | null,
-  or?: Array< ModelRoleConditionInput | null > | null,
-  not?: ModelRoleConditionInput | null,
-  colonyRolesId?: ModelIDInput | null,
-  colonyRolesName?: ModelStringInput | null,
-  colonyRoleRolesId?: ModelIDInput | null,
-};
-
-export type ModelRoleTypeInput = {
-  eq?: RoleType | null,
-  ne?: RoleType | null,
-};
-
-export type UpdateRoleInput = {
-  internalId: string,
-  type?: RoleType | null,
-  colonyRolesId?: string | null,
-  colonyRolesName?: string | null,
-  colonyRoleRolesId?: string | null,
-};
-
-export type DeleteRoleInput = {
-  internalId: string,
-};
-
-export type ModelChainMetaFilterInput = {
-  confirmedOnChain?: ModelBooleanInput | null,
-  and?: Array< ModelChainMetaFilterInput | null > | null,
-  or?: Array< ModelChainMetaFilterInput | null > | null,
-  not?: ModelChainMetaFilterInput | null,
-};
-
-export type ModelChainMetaConnection = {
-  __typename: "ModelChainMetaConnection",
-  items:  Array<ChainMeta | null >,
-  nextToken?: string | null,
-};
-
-export type ModelStringKeyConditionInput = {
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-};
-
-export type ModelUserFilterInput = {
-  walletAddress?: ModelStringInput | null,
-  username?: ModelStringInput | null,
-  displayName?: ModelStringInput | null,
-  avatarHash?: ModelStringInput | null,
-  and?: Array< ModelUserFilterInput | null > | null,
-  or?: Array< ModelUserFilterInput | null > | null,
-  not?: ModelUserFilterInput | null,
-};
-
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
-}
-
-
-export type ModelUserConnection = {
-  __typename: "ModelUserConnection",
-  items:  Array<User | null >,
+export type ModelTokenConnection = {
+  __typename: "ModelTokenConnection",
+  items:  Array<Token | null >,
   nextToken?: string | null,
 };
 
 export type ModelColonyFilterInput = {
-  internalId?: ModelIDInput | null,
-  chainId?: ModelIntInput | null,
-  chain?: ModelIntInput | null,
-  contractAddress?: ModelStringInput | null,
+  id?: ModelIDInput | null,
   name?: ModelStringInput | null,
-  displayName?: ModelStringInput | null,
-  avatarHash?: ModelStringInput | null,
-  chainVersion?: ModelIntInput | null,
   and?: Array< ModelColonyFilterInput | null > | null,
   or?: Array< ModelColonyFilterInput | null > | null,
   not?: ModelColonyFilterInput | null,
   colonyNativeTokenId?: ModelIDInput | null,
-  colonyNativeTokenName?: ModelStringInput | null,
 };
 
 export type ModelColonyConnection = {
@@ -502,213 +232,81 @@ export type ModelColonyConnection = {
   nextToken?: string | null,
 };
 
-export type ModelIntKeyConditionInput = {
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
+export type ModelColonyTokensFilterInput = {
+  id?: ModelIDInput | null,
+  tokenID?: ModelIDInput | null,
+  colonyID?: ModelIDInput | null,
+  and?: Array< ModelColonyTokensFilterInput | null > | null,
+  or?: Array< ModelColonyTokensFilterInput | null > | null,
+  not?: ModelColonyTokensFilterInput | null,
 };
 
-export type ModelDomainFilterInput = {
-  internalId?: ModelIDInput | null,
-  chainId?: ModelIntInput | null,
-  and?: Array< ModelDomainFilterInput | null > | null,
-  or?: Array< ModelDomainFilterInput | null > | null,
-  not?: ModelDomainFilterInput | null,
-  colonyDomainsId?: ModelIDInput | null,
-  colonyDomainsName?: ModelStringInput | null,
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
+export type CreateTokenMutationVariables = {
+  input: CreateTokenInput,
+  condition?: ModelTokenConditionInput | null,
 };
 
-export type ModelTokenFilterInput = {
-  internalId?: ModelIDInput | null,
-  contractAddress?: ModelStringInput | null,
-  name?: ModelStringInput | null,
-  symbol?: ModelStringInput | null,
-  decimals?: ModelIntInput | null,
-  type?: ModelTokenTypeInput | null,
-  and?: Array< ModelTokenFilterInput | null > | null,
-  or?: Array< ModelTokenFilterInput | null > | null,
-  not?: ModelTokenFilterInput | null,
-  userTokensId?: ModelIDInput | null,
-  userTokensUsername?: ModelStringInput | null,
-  colonyTokensId?: ModelIDInput | null,
-  colonyTokensName?: ModelStringInput | null,
-};
-
-export type ModelColonyRoleFilterInput = {
-  and?: Array< ModelColonyRoleFilterInput | null > | null,
-  or?: Array< ModelColonyRoleFilterInput | null > | null,
-  not?: ModelColonyRoleFilterInput | null,
-  colonyRoleColonyId?: ModelIDInput | null,
-  colonyRoleColonyName?: ModelStringInput | null,
-};
-
-export type ModelColonyRoleConnection = {
-  __typename: "ModelColonyRoleConnection",
-  items:  Array<ColonyRole | null >,
-  nextToken?: string | null,
-};
-
-export type ModelRoleFilterInput = {
-  internalId?: ModelIDInput | null,
-  type?: ModelRoleTypeInput | null,
-  and?: Array< ModelRoleFilterInput | null > | null,
-  or?: Array< ModelRoleFilterInput | null > | null,
-  not?: ModelRoleFilterInput | null,
-  colonyRolesId?: ModelIDInput | null,
-  colonyRolesName?: ModelStringInput | null,
-  colonyRoleRolesId?: ModelIDInput | null,
-};
-
-export type CreateChainMetaMutationVariables = {
-  input: CreateChainMetaInput,
-  condition?: ModelChainMetaConditionInput | null,
-};
-
-export type CreateChainMetaMutation = {
-  createChainMeta?:  {
-    __typename: "ChainMeta",
-    confirmedOnChain: boolean,
+export type CreateTokenMutation = {
+  createToken?:  {
+    __typename: "Token",
     id: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdateChainMetaMutationVariables = {
-  input: UpdateChainMetaInput,
-  condition?: ModelChainMetaConditionInput | null,
-};
-
-export type UpdateChainMetaMutation = {
-  updateChainMeta?:  {
-    __typename: "ChainMeta",
-    confirmedOnChain: boolean,
-    id: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteChainMetaMutationVariables = {
-  input: DeleteChainMetaInput,
-  condition?: ModelChainMetaConditionInput | null,
-};
-
-export type DeleteChainMetaMutation = {
-  deleteChainMeta?:  {
-    __typename: "ChainMeta",
-    confirmedOnChain: boolean,
-    id: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type CreateUserMutationVariables = {
-  input: CreateUserInput,
-  condition?: ModelUserConditionInput | null,
-};
-
-export type CreateUserMutation = {
-  createUser?:  {
-    __typename: "User",
-    walletAddress: string,
-    username: string,
-    displayName?: string | null,
-    avatarHash?: string | null,
-    roles?:  Array< {
-      __typename: "ColonyRole",
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-      colonyRoleColonyId?: string | null,
-      colonyRoleColonyName?: string | null,
-    } | null > | null,
-    tokens?:  {
-      __typename: "ModelTokenConnection",
+    name: string,
+    symbol: string,
+    decimals: number,
+    type?: TokenType | null,
+    colonies?:  {
+      __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
     } | null,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateTokenMutationVariables = {
+  input: UpdateTokenInput,
+  condition?: ModelTokenConditionInput | null,
+};
+
+export type UpdateTokenMutation = {
+  updateToken?:  {
+    __typename: "Token",
+    id: string,
+    name: string,
+    symbol: string,
+    decimals: number,
+    type?: TokenType | null,
+    colonies?:  {
+      __typename: "ModelColonyTokensConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type UpdateUserMutationVariables = {
-  input: UpdateUserInput,
-  condition?: ModelUserConditionInput | null,
+export type DeleteTokenMutationVariables = {
+  input: DeleteTokenInput,
+  condition?: ModelTokenConditionInput | null,
 };
 
-export type UpdateUserMutation = {
-  updateUser?:  {
-    __typename: "User",
-    walletAddress: string,
-    username: string,
-    displayName?: string | null,
-    avatarHash?: string | null,
-    roles?:  Array< {
-      __typename: "ColonyRole",
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-      colonyRoleColonyId?: string | null,
-      colonyRoleColonyName?: string | null,
-    } | null > | null,
-    tokens?:  {
-      __typename: "ModelTokenConnection",
+export type DeleteTokenMutation = {
+  deleteToken?:  {
+    __typename: "Token",
+    id: string,
+    name: string,
+    symbol: string,
+    decimals: number,
+    type?: TokenType | null,
+    colonies?:  {
+      __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
-    } | null,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteUserMutationVariables = {
-  input: DeleteUserInput,
-  condition?: ModelUserConditionInput | null,
-};
-
-export type DeleteUserMutation = {
-  deleteUser?:  {
-    __typename: "User",
-    walletAddress: string,
-    username: string,
-    displayName?: string | null,
-    avatarHash?: string | null,
-    roles?:  Array< {
-      __typename: "ColonyRole",
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-      colonyRoleColonyId?: string | null,
-      colonyRoleColonyName?: string | null,
-    } | null > | null,
-    tokens?:  {
-      __typename: "ModelTokenConnection",
-      nextToken?: string | null,
-    } | null,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -723,52 +321,25 @@ export type CreateColonyMutationVariables = {
 export type CreateColonyMutation = {
   createColony?:  {
     __typename: "Colony",
-    internalId: string,
-    chainId: number,
-    chain: number,
-    contractAddress: string,
+    id: string,
     name: string,
-    displayName?: string | null,
-    avatarHash?: string | null,
-    nativeToken?:  {
+    nativeToken:  {
       __typename: "Token",
-      internalId: string,
-      contractAddress: string,
+      id: string,
       name: string,
       symbol: string,
       decimals: number,
-      type: TokenType,
+      type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
-      userTokensId?: string | null,
-      userTokensUsername?: string | null,
-      colonyTokensId?: string | null,
-      colonyTokensName?: string | null,
-    } | null,
-    chainVersion: number,
-    domains?:  {
-      __typename: "ModelDomainConnection",
-      nextToken?: string | null,
-    } | null,
+    },
     tokens?:  {
-      __typename: "ModelTokenConnection",
+      __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
-    } | null,
-    roles?:  {
-      __typename: "ModelRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
-    colonyNativeTokenId?: string | null,
-    colonyNativeTokenName?: string | null,
+    colonyNativeTokenId: string,
   } | null,
 };
 
@@ -780,52 +351,25 @@ export type UpdateColonyMutationVariables = {
 export type UpdateColonyMutation = {
   updateColony?:  {
     __typename: "Colony",
-    internalId: string,
-    chainId: number,
-    chain: number,
-    contractAddress: string,
+    id: string,
     name: string,
-    displayName?: string | null,
-    avatarHash?: string | null,
-    nativeToken?:  {
+    nativeToken:  {
       __typename: "Token",
-      internalId: string,
-      contractAddress: string,
+      id: string,
       name: string,
       symbol: string,
       decimals: number,
-      type: TokenType,
+      type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
-      userTokensId?: string | null,
-      userTokensUsername?: string | null,
-      colonyTokensId?: string | null,
-      colonyTokensName?: string | null,
-    } | null,
-    chainVersion: number,
-    domains?:  {
-      __typename: "ModelDomainConnection",
-      nextToken?: string | null,
-    } | null,
+    },
     tokens?:  {
-      __typename: "ModelTokenConnection",
+      __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
-    } | null,
-    roles?:  {
-      __typename: "ModelRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
-    colonyNativeTokenId?: string | null,
-    colonyNativeTokenName?: string | null,
+    colonyNativeTokenId: string,
   } | null,
 };
 
@@ -837,485 +381,167 @@ export type DeleteColonyMutationVariables = {
 export type DeleteColonyMutation = {
   deleteColony?:  {
     __typename: "Colony",
-    internalId: string,
-    chainId: number,
-    chain: number,
-    contractAddress: string,
+    id: string,
     name: string,
-    displayName?: string | null,
-    avatarHash?: string | null,
-    nativeToken?:  {
+    nativeToken:  {
       __typename: "Token",
-      internalId: string,
-      contractAddress: string,
+      id: string,
       name: string,
       symbol: string,
       decimals: number,
-      type: TokenType,
+      type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
-      userTokensId?: string | null,
-      userTokensUsername?: string | null,
-      colonyTokensId?: string | null,
-      colonyTokensName?: string | null,
-    } | null,
-    chainVersion: number,
-    domains?:  {
-      __typename: "ModelDomainConnection",
-      nextToken?: string | null,
-    } | null,
+    },
     tokens?:  {
-      __typename: "ModelTokenConnection",
+      __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
     } | null,
-    roles?:  {
-      __typename: "ModelRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
     createdAt: string,
     updatedAt: string,
-    colonyNativeTokenId?: string | null,
-    colonyNativeTokenName?: string | null,
+    colonyNativeTokenId: string,
   } | null,
 };
 
-export type CreateDomainMutationVariables = {
-  input: CreateDomainInput,
-  condition?: ModelDomainConditionInput | null,
+export type CreateColonyTokensMutationVariables = {
+  input: CreateColonyTokensInput,
+  condition?: ModelColonyTokensConditionInput | null,
 };
 
-export type CreateDomainMutation = {
-  createDomain?:  {
-    __typename: "Domain",
-    internalId: string,
-    chainId: number,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    colonyDomainsId?: string | null,
-    colonyDomainsName?: string | null,
-  } | null,
-};
-
-export type UpdateDomainMutationVariables = {
-  input: UpdateDomainInput,
-  condition?: ModelDomainConditionInput | null,
-};
-
-export type UpdateDomainMutation = {
-  updateDomain?:  {
-    __typename: "Domain",
-    internalId: string,
-    chainId: number,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    colonyDomainsId?: string | null,
-    colonyDomainsName?: string | null,
-  } | null,
-};
-
-export type DeleteDomainMutationVariables = {
-  input: DeleteDomainInput,
-  condition?: ModelDomainConditionInput | null,
-};
-
-export type DeleteDomainMutation = {
-  deleteDomain?:  {
-    __typename: "Domain",
-    internalId: string,
-    chainId: number,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    colonyDomainsId?: string | null,
-    colonyDomainsName?: string | null,
-  } | null,
-};
-
-export type CreateTokenMutationVariables = {
-  input: CreateTokenInput,
-  condition?: ModelTokenConditionInput | null,
-};
-
-export type CreateTokenMutation = {
-  createToken?:  {
-    __typename: "Token",
-    internalId: string,
-    contractAddress: string,
-    name: string,
-    symbol: string,
-    decimals: number,
-    type: TokenType,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    userTokensId?: string | null,
-    userTokensUsername?: string | null,
-    colonyTokensId?: string | null,
-    colonyTokensName?: string | null,
-  } | null,
-};
-
-export type UpdateTokenMutationVariables = {
-  input: UpdateTokenInput,
-  condition?: ModelTokenConditionInput | null,
-};
-
-export type UpdateTokenMutation = {
-  updateToken?:  {
-    __typename: "Token",
-    internalId: string,
-    contractAddress: string,
-    name: string,
-    symbol: string,
-    decimals: number,
-    type: TokenType,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    userTokensId?: string | null,
-    userTokensUsername?: string | null,
-    colonyTokensId?: string | null,
-    colonyTokensName?: string | null,
-  } | null,
-};
-
-export type DeleteTokenMutationVariables = {
-  input: DeleteTokenInput,
-  condition?: ModelTokenConditionInput | null,
-};
-
-export type DeleteTokenMutation = {
-  deleteToken?:  {
-    __typename: "Token",
-    internalId: string,
-    contractAddress: string,
-    name: string,
-    symbol: string,
-    decimals: number,
-    type: TokenType,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    userTokensId?: string | null,
-    userTokensUsername?: string | null,
-    colonyTokensId?: string | null,
-    colonyTokensName?: string | null,
-  } | null,
-};
-
-export type CreateColonyRoleMutationVariables = {
-  input: CreateColonyRoleInput,
-  condition?: ModelColonyRoleConditionInput | null,
-};
-
-export type CreateColonyRoleMutation = {
-  createColonyRole?:  {
-    __typename: "ColonyRole",
-    colony?:  {
-      __typename: "Colony",
-      internalId: string,
-      chainId: number,
-      chain: number,
-      contractAddress: string,
-      name: string,
-      displayName?: string | null,
-      avatarHash?: string | null,
-      chainVersion: number,
-      createdAt: string,
-      updatedAt: string,
-      colonyNativeTokenId?: string | null,
-      colonyNativeTokenName?: string | null,
-    } | null,
-    roles?:  {
-      __typename: "ModelRoleConnection",
-      nextToken?: string | null,
-    } | null,
+export type CreateColonyTokensMutation = {
+  createColonyTokens?:  {
+    __typename: "ColonyTokens",
     id: string,
-    createdAt: string,
-    updatedAt: string,
-    colonyRoleColonyId?: string | null,
-    colonyRoleColonyName?: string | null,
-  } | null,
-};
-
-export type UpdateColonyRoleMutationVariables = {
-  input: UpdateColonyRoleInput,
-  condition?: ModelColonyRoleConditionInput | null,
-};
-
-export type UpdateColonyRoleMutation = {
-  updateColonyRole?:  {
-    __typename: "ColonyRole",
-    colony?:  {
-      __typename: "Colony",
-      internalId: string,
-      chainId: number,
-      chain: number,
-      contractAddress: string,
+    tokenID: string,
+    colonyID: string,
+    token:  {
+      __typename: "Token",
+      id: string,
       name: string,
-      displayName?: string | null,
-      avatarHash?: string | null,
-      chainVersion: number,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
-      colonyNativeTokenId?: string | null,
-      colonyNativeTokenName?: string | null,
-    } | null,
-    roles?:  {
-      __typename: "ModelRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    id: string,
-    createdAt: string,
-    updatedAt: string,
-    colonyRoleColonyId?: string | null,
-    colonyRoleColonyName?: string | null,
-  } | null,
-};
-
-export type DeleteColonyRoleMutationVariables = {
-  input: DeleteColonyRoleInput,
-  condition?: ModelColonyRoleConditionInput | null,
-};
-
-export type DeleteColonyRoleMutation = {
-  deleteColonyRole?:  {
-    __typename: "ColonyRole",
-    colony?:  {
+    },
+    colony:  {
       __typename: "Colony",
-      internalId: string,
-      chainId: number,
-      chain: number,
-      contractAddress: string,
+      id: string,
       name: string,
-      displayName?: string | null,
-      avatarHash?: string | null,
-      chainVersion: number,
       createdAt: string,
       updatedAt: string,
-      colonyNativeTokenId?: string | null,
-      colonyNativeTokenName?: string | null,
-    } | null,
-    roles?:  {
-      __typename: "ModelRoleConnection",
-      nextToken?: string | null,
-    } | null,
+      colonyNativeTokenId: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateColonyTokensMutationVariables = {
+  input: UpdateColonyTokensInput,
+  condition?: ModelColonyTokensConditionInput | null,
+};
+
+export type UpdateColonyTokensMutation = {
+  updateColonyTokens?:  {
+    __typename: "ColonyTokens",
     id: string,
-    createdAt: string,
-    updatedAt: string,
-    colonyRoleColonyId?: string | null,
-    colonyRoleColonyName?: string | null,
-  } | null,
-};
-
-export type CreateRoleMutationVariables = {
-  input: CreateRoleInput,
-  condition?: ModelRoleConditionInput | null,
-};
-
-export type CreateRoleMutation = {
-  createRole?:  {
-    __typename: "Role",
-    internalId: string,
-    type: RoleType,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
+    tokenID: string,
+    colonyID: string,
+    token:  {
+      __typename: "Token",
       id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    colonyRolesId?: string | null,
-    colonyRolesName?: string | null,
-    colonyRoleRolesId?: string | null,
-  } | null,
-};
-
-export type UpdateRoleMutationVariables = {
-  input: UpdateRoleInput,
-  condition?: ModelRoleConditionInput | null,
-};
-
-export type UpdateRoleMutation = {
-  updateRole?:  {
-    __typename: "Role",
-    internalId: string,
-    type: RoleType,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
+    },
+    colony:  {
+      __typename: "Colony",
       id: string,
+      name: string,
       createdAt: string,
       updatedAt: string,
-    } | null,
+      colonyNativeTokenId: string,
+    },
     createdAt: string,
     updatedAt: string,
-    colonyRolesId?: string | null,
-    colonyRolesName?: string | null,
-    colonyRoleRolesId?: string | null,
   } | null,
 };
 
-export type DeleteRoleMutationVariables = {
-  input: DeleteRoleInput,
-  condition?: ModelRoleConditionInput | null,
+export type DeleteColonyTokensMutationVariables = {
+  input: DeleteColonyTokensInput,
+  condition?: ModelColonyTokensConditionInput | null,
 };
 
-export type DeleteRoleMutation = {
-  deleteRole?:  {
-    __typename: "Role",
-    internalId: string,
-    type: RoleType,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
+export type DeleteColonyTokensMutation = {
+  deleteColonyTokens?:  {
+    __typename: "ColonyTokens",
+    id: string,
+    tokenID: string,
+    colonyID: string,
+    token:  {
+      __typename: "Token",
       id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
+    },
+    colony:  {
+      __typename: "Colony",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      colonyNativeTokenId: string,
+    },
     createdAt: string,
     updatedAt: string,
-    colonyRolesId?: string | null,
-    colonyRolesName?: string | null,
-    colonyRoleRolesId?: string | null,
   } | null,
 };
 
-export type GetChainMetaQueryVariables = {
+export type GetTokenQueryVariables = {
   id: string,
 };
 
-export type GetChainMetaQuery = {
-  getChainMeta?:  {
-    __typename: "ChainMeta",
-    confirmedOnChain: boolean,
+export type GetTokenQuery = {
+  getToken?:  {
+    __typename: "Token",
     id: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type ListChainMetasQueryVariables = {
-  filter?: ModelChainMetaFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListChainMetasQuery = {
-  listChainMetas?:  {
-    __typename: "ModelChainMetaConnection",
-    items:  Array< {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetUserQueryVariables = {
-  walletAddress: string,
-  username: string,
-};
-
-export type GetUserQuery = {
-  getUser?:  {
-    __typename: "User",
-    walletAddress: string,
-    username: string,
-    displayName?: string | null,
-    avatarHash?: string | null,
-    roles?:  Array< {
-      __typename: "ColonyRole",
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-      colonyRoleColonyId?: string | null,
-      colonyRoleColonyName?: string | null,
-    } | null > | null,
-    tokens?:  {
-      __typename: "ModelTokenConnection",
+    name: string,
+    symbol: string,
+    decimals: number,
+    type?: TokenType | null,
+    colonies?:  {
+      __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
     } | null,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type ListUsersQueryVariables = {
-  walletAddress?: string | null,
-  username?: ModelStringKeyConditionInput | null,
-  filter?: ModelUserFilterInput | null,
+export type ListTokensQueryVariables = {
+  filter?: ModelTokenFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
-  sortDirection?: ModelSortDirection | null,
 };
 
-export type ListUsersQuery = {
-  listUsers?:  {
-    __typename: "ModelUserConnection",
+export type ListTokensQuery = {
+  listTokens?:  {
+    __typename: "ModelTokenConnection",
     items:  Array< {
-      __typename: "User",
-      walletAddress: string,
-      username: string,
-      displayName?: string | null,
-      avatarHash?: string | null,
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -1324,69 +550,38 @@ export type ListUsersQuery = {
 };
 
 export type GetColonyQueryVariables = {
-  contractAddress: string,
-  name: string,
+  id: string,
 };
 
 export type GetColonyQuery = {
   getColony?:  {
     __typename: "Colony",
-    internalId: string,
-    chainId: number,
-    chain: number,
-    contractAddress: string,
+    id: string,
     name: string,
-    displayName?: string | null,
-    avatarHash?: string | null,
-    nativeToken?:  {
+    nativeToken:  {
       __typename: "Token",
-      internalId: string,
-      contractAddress: string,
+      id: string,
       name: string,
       symbol: string,
       decimals: number,
-      type: TokenType,
+      type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
-      userTokensId?: string | null,
-      userTokensUsername?: string | null,
-      colonyTokensId?: string | null,
-      colonyTokensName?: string | null,
-    } | null,
-    chainVersion: number,
-    domains?:  {
-      __typename: "ModelDomainConnection",
-      nextToken?: string | null,
-    } | null,
+    },
     tokens?:  {
-      __typename: "ModelTokenConnection",
+      __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
-    } | null,
-    roles?:  {
-      __typename: "ModelRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
-    colonyNativeTokenId?: string | null,
-    colonyNativeTokenName?: string | null,
+    colonyNativeTokenId: string,
   } | null,
 };
 
 export type ListColoniesQueryVariables = {
-  contractAddress?: string | null,
-  name?: ModelStringKeyConditionInput | null,
   filter?: ModelColonyFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
-  sortDirection?: ModelSortDirection | null,
 };
 
 export type ListColoniesQuery = {
@@ -1394,347 +589,72 @@ export type ListColoniesQuery = {
     __typename: "ModelColonyConnection",
     items:  Array< {
       __typename: "Colony",
-      internalId: string,
-      chainId: number,
-      chain: number,
-      contractAddress: string,
-      name: string,
-      displayName?: string | null,
-      avatarHash?: string | null,
-      chainVersion: number,
-      createdAt: string,
-      updatedAt: string,
-      colonyNativeTokenId?: string | null,
-      colonyNativeTokenName?: string | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetDomainQueryVariables = {
-  internalId: string,
-  chainId: number,
-};
-
-export type GetDomainQuery = {
-  getDomain?:  {
-    __typename: "Domain",
-    internalId: string,
-    chainId: number,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
       id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    colonyDomainsId?: string | null,
-    colonyDomainsName?: string | null,
-  } | null,
-};
-
-export type ListDomainsQueryVariables = {
-  internalId?: string | null,
-  chainId?: ModelIntKeyConditionInput | null,
-  filter?: ModelDomainFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  sortDirection?: ModelSortDirection | null,
-};
-
-export type ListDomainsQuery = {
-  listDomains?:  {
-    __typename: "ModelDomainConnection",
-    items:  Array< {
-      __typename: "Domain",
-      internalId: string,
-      chainId: number,
-      createdAt: string,
-      updatedAt: string,
-      colonyDomainsId?: string | null,
-      colonyDomainsName?: string | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetTokenQueryVariables = {
-  contractAddress: string,
-  name: string,
-};
-
-export type GetTokenQuery = {
-  getToken?:  {
-    __typename: "Token",
-    internalId: string,
-    contractAddress: string,
-    name: string,
-    symbol: string,
-    decimals: number,
-    type: TokenType,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    userTokensId?: string | null,
-    userTokensUsername?: string | null,
-    colonyTokensId?: string | null,
-    colonyTokensName?: string | null,
-  } | null,
-};
-
-export type ListTokensQueryVariables = {
-  contractAddress?: string | null,
-  name?: ModelStringKeyConditionInput | null,
-  filter?: ModelTokenFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  sortDirection?: ModelSortDirection | null,
-};
-
-export type ListTokensQuery = {
-  listTokens?:  {
-    __typename: "ModelTokenConnection",
-    items:  Array< {
-      __typename: "Token",
-      internalId: string,
-      contractAddress: string,
       name: string,
-      symbol: string,
-      decimals: number,
-      type: TokenType,
       createdAt: string,
       updatedAt: string,
-      userTokensId?: string | null,
-      userTokensUsername?: string | null,
-      colonyTokensId?: string | null,
-      colonyTokensName?: string | null,
+      colonyNativeTokenId: string,
     } | null >,
     nextToken?: string | null,
   } | null,
 };
 
-export type GetColonyRoleQueryVariables = {
+export type GetColonyTokensQueryVariables = {
   id: string,
 };
 
-export type GetColonyRoleQuery = {
-  getColonyRole?:  {
-    __typename: "ColonyRole",
-    colony?:  {
-      __typename: "Colony",
-      internalId: string,
-      chainId: number,
-      chain: number,
-      contractAddress: string,
-      name: string,
-      displayName?: string | null,
-      avatarHash?: string | null,
-      chainVersion: number,
-      createdAt: string,
-      updatedAt: string,
-      colonyNativeTokenId?: string | null,
-      colonyNativeTokenName?: string | null,
-    } | null,
-    roles?:  {
-      __typename: "ModelRoleConnection",
-      nextToken?: string | null,
-    } | null,
+export type GetColonyTokensQuery = {
+  getColonyTokens?:  {
+    __typename: "ColonyTokens",
     id: string,
+    tokenID: string,
+    colonyID: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    colony:  {
+      __typename: "Colony",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      colonyNativeTokenId: string,
+    },
     createdAt: string,
     updatedAt: string,
-    colonyRoleColonyId?: string | null,
-    colonyRoleColonyName?: string | null,
   } | null,
 };
 
-export type ListColonyRolesQueryVariables = {
-  filter?: ModelColonyRoleFilterInput | null,
+export type ListColonyTokensQueryVariables = {
+  filter?: ModelColonyTokensFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListColonyRolesQuery = {
-  listColonyRoles?:  {
-    __typename: "ModelColonyRoleConnection",
+export type ListColonyTokensQuery = {
+  listColonyTokens?:  {
+    __typename: "ModelColonyTokensConnection",
     items:  Array< {
-      __typename: "ColonyRole",
+      __typename: "ColonyTokens",
       id: string,
+      tokenID: string,
+      colonyID: string,
       createdAt: string,
       updatedAt: string,
-      colonyRoleColonyId?: string | null,
-      colonyRoleColonyName?: string | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetRoleQueryVariables = {
-  internalId: string,
-};
-
-export type GetRoleQuery = {
-  getRole?:  {
-    __typename: "Role",
-    internalId: string,
-    type: RoleType,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    colonyRolesId?: string | null,
-    colonyRolesName?: string | null,
-    colonyRoleRolesId?: string | null,
-  } | null,
-};
-
-export type ListRolesQueryVariables = {
-  internalId?: string | null,
-  filter?: ModelRoleFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  sortDirection?: ModelSortDirection | null,
-};
-
-export type ListRolesQuery = {
-  listRoles?:  {
-    __typename: "ModelRoleConnection",
-    items:  Array< {
-      __typename: "Role",
-      internalId: string,
-      type: RoleType,
-      createdAt: string,
-      updatedAt: string,
-      colonyRolesId?: string | null,
-      colonyRolesName?: string | null,
-      colonyRoleRolesId?: string | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetUserByAddressQueryVariables = {
-  walletAddress: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelUserFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type GetUserByAddressQuery = {
-  getUserByAddress?:  {
-    __typename: "ModelUserConnection",
-    items:  Array< {
-      __typename: "User",
-      walletAddress: string,
-      username: string,
-      displayName?: string | null,
-      avatarHash?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetUserByUsernameQueryVariables = {
-  username: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelUserFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type GetUserByUsernameQuery = {
-  getUserByUsername?:  {
-    __typename: "ModelUserConnection",
-    items:  Array< {
-      __typename: "User",
-      walletAddress: string,
-      username: string,
-      displayName?: string | null,
-      avatarHash?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetColonyByAddressQueryVariables = {
-  contractAddress: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelColonyFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type GetColonyByAddressQuery = {
-  getColonyByAddress?:  {
-    __typename: "ModelColonyConnection",
-    items:  Array< {
-      __typename: "Colony",
-      internalId: string,
-      chainId: number,
-      chain: number,
-      contractAddress: string,
-      name: string,
-      displayName?: string | null,
-      avatarHash?: string | null,
-      chainVersion: number,
-      createdAt: string,
-      updatedAt: string,
-      colonyNativeTokenId?: string | null,
-      colonyNativeTokenName?: string | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetColonyByNameQueryVariables = {
-  name: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelColonyFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type GetColonyByNameQuery = {
-  getColonyByName?:  {
-    __typename: "ModelColonyConnection",
-    items:  Array< {
-      __typename: "Colony",
-      internalId: string,
-      chainId: number,
-      chain: number,
-      contractAddress: string,
-      name: string,
-      displayName?: string | null,
-      avatarHash?: string | null,
-      chainVersion: number,
-      createdAt: string,
-      updatedAt: string,
-      colonyNativeTokenId?: string | null,
-      colonyNativeTokenName?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
 };
 
 export type GetTokenByAddressQueryVariables = {
-  contractAddress: string,
+  id: string,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelTokenFilterInput | null,
   limit?: number | null,
@@ -1746,78 +666,13 @@ export type GetTokenByAddressQuery = {
     __typename: "ModelTokenConnection",
     items:  Array< {
       __typename: "Token",
-      internalId: string,
-      contractAddress: string,
+      id: string,
       name: string,
       symbol: string,
       decimals: number,
-      type: TokenType,
+      type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
-      userTokensId?: string | null,
-      userTokensUsername?: string | null,
-      colonyTokensId?: string | null,
-      colonyTokensName?: string | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetTokensByNameQueryVariables = {
-  name: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelTokenFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type GetTokensByNameQuery = {
-  getTokensByName?:  {
-    __typename: "ModelTokenConnection",
-    items:  Array< {
-      __typename: "Token",
-      internalId: string,
-      contractAddress: string,
-      name: string,
-      symbol: string,
-      decimals: number,
-      type: TokenType,
-      createdAt: string,
-      updatedAt: string,
-      userTokensId?: string | null,
-      userTokensUsername?: string | null,
-      colonyTokensId?: string | null,
-      colonyTokensName?: string | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetTokensBySymbolQueryVariables = {
-  symbol: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelTokenFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type GetTokensBySymbolQuery = {
-  getTokensBySymbol?:  {
-    __typename: "ModelTokenConnection",
-    items:  Array< {
-      __typename: "Token",
-      internalId: string,
-      contractAddress: string,
-      name: string,
-      symbol: string,
-      decimals: number,
-      type: TokenType,
-      createdAt: string,
-      updatedAt: string,
-      userTokensId?: string | null,
-      userTokensUsername?: string | null,
-      colonyTokensId?: string | null,
-      colonyTokensName?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1836,165 +691,109 @@ export type GetTokensByTypeQuery = {
     __typename: "ModelTokenConnection",
     items:  Array< {
       __typename: "Token",
-      internalId: string,
-      contractAddress: string,
+      id: string,
       name: string,
       symbol: string,
       decimals: number,
-      type: TokenType,
+      type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
-      userTokensId?: string | null,
-      userTokensUsername?: string | null,
-      colonyTokensId?: string | null,
-      colonyTokensName?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
 };
 
-export type GetRolesByTypeQueryVariables = {
-  type: RoleType,
+export type GetColonyByAddressQueryVariables = {
+  id: string,
   sortDirection?: ModelSortDirection | null,
-  filter?: ModelRoleFilterInput | null,
+  filter?: ModelColonyFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type GetRolesByTypeQuery = {
-  getRolesByType?:  {
-    __typename: "ModelRoleConnection",
+export type GetColonyByAddressQuery = {
+  getColonyByAddress?:  {
+    __typename: "ModelColonyConnection",
     items:  Array< {
-      __typename: "Role",
-      internalId: string,
-      type: RoleType,
+      __typename: "Colony",
+      id: string,
+      name: string,
       createdAt: string,
       updatedAt: string,
-      colonyRolesId?: string | null,
-      colonyRolesName?: string | null,
-      colonyRoleRolesId?: string | null,
+      colonyNativeTokenId: string,
     } | null >,
     nextToken?: string | null,
   } | null,
 };
 
-export type OnCreateChainMetaSubscription = {
-  onCreateChainMeta?:  {
-    __typename: "ChainMeta",
-    confirmedOnChain: boolean,
-    id: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
+export type GetColonyByNameQueryVariables = {
+  name: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelColonyFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
 };
 
-export type OnUpdateChainMetaSubscription = {
-  onUpdateChainMeta?:  {
-    __typename: "ChainMeta",
-    confirmedOnChain: boolean,
-    id: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteChainMetaSubscription = {
-  onDeleteChainMeta?:  {
-    __typename: "ChainMeta",
-    confirmedOnChain: boolean,
-    id: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnCreateUserSubscription = {
-  onCreateUser?:  {
-    __typename: "User",
-    walletAddress: string,
-    username: string,
-    displayName?: string | null,
-    avatarHash?: string | null,
-    roles?:  Array< {
-      __typename: "ColonyRole",
+export type GetColonyByNameQuery = {
+  getColonyByName?:  {
+    __typename: "ModelColonyConnection",
+    items:  Array< {
+      __typename: "Colony",
       id: string,
+      name: string,
       createdAt: string,
       updatedAt: string,
-      colonyRoleColonyId?: string | null,
-      colonyRoleColonyName?: string | null,
-    } | null > | null,
-    tokens?:  {
-      __typename: "ModelTokenConnection",
+      colonyNativeTokenId: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type OnCreateTokenSubscription = {
+  onCreateToken?:  {
+    __typename: "Token",
+    id: string,
+    name: string,
+    symbol: string,
+    decimals: number,
+    type?: TokenType | null,
+    colonies?:  {
+      __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
     } | null,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateTokenSubscription = {
+  onUpdateToken?:  {
+    __typename: "Token",
+    id: string,
+    name: string,
+    symbol: string,
+    decimals: number,
+    type?: TokenType | null,
+    colonies?:  {
+      __typename: "ModelColonyTokensConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnUpdateUserSubscription = {
-  onUpdateUser?:  {
-    __typename: "User",
-    walletAddress: string,
-    username: string,
-    displayName?: string | null,
-    avatarHash?: string | null,
-    roles?:  Array< {
-      __typename: "ColonyRole",
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-      colonyRoleColonyId?: string | null,
-      colonyRoleColonyName?: string | null,
-    } | null > | null,
-    tokens?:  {
-      __typename: "ModelTokenConnection",
+export type OnDeleteTokenSubscription = {
+  onDeleteToken?:  {
+    __typename: "Token",
+    id: string,
+    name: string,
+    symbol: string,
+    decimals: number,
+    type?: TokenType | null,
+    colonies?:  {
+      __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
-    } | null,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteUserSubscription = {
-  onDeleteUser?:  {
-    __typename: "User",
-    walletAddress: string,
-    username: string,
-    displayName?: string | null,
-    avatarHash?: string | null,
-    roles?:  Array< {
-      __typename: "ColonyRole",
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-      colonyRoleColonyId?: string | null,
-      colonyRoleColonyName?: string | null,
-    } | null > | null,
-    tokens?:  {
-      __typename: "ModelTokenConnection",
-      nextToken?: string | null,
-    } | null,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -2004,437 +803,161 @@ export type OnDeleteUserSubscription = {
 export type OnCreateColonySubscription = {
   onCreateColony?:  {
     __typename: "Colony",
-    internalId: string,
-    chainId: number,
-    chain: number,
-    contractAddress: string,
+    id: string,
     name: string,
-    displayName?: string | null,
-    avatarHash?: string | null,
-    nativeToken?:  {
+    nativeToken:  {
       __typename: "Token",
-      internalId: string,
-      contractAddress: string,
+      id: string,
       name: string,
       symbol: string,
       decimals: number,
-      type: TokenType,
+      type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
-      userTokensId?: string | null,
-      userTokensUsername?: string | null,
-      colonyTokensId?: string | null,
-      colonyTokensName?: string | null,
-    } | null,
-    chainVersion: number,
-    domains?:  {
-      __typename: "ModelDomainConnection",
-      nextToken?: string | null,
-    } | null,
+    },
     tokens?:  {
-      __typename: "ModelTokenConnection",
+      __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
-    } | null,
-    roles?:  {
-      __typename: "ModelRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
-    colonyNativeTokenId?: string | null,
-    colonyNativeTokenName?: string | null,
+    colonyNativeTokenId: string,
   } | null,
 };
 
 export type OnUpdateColonySubscription = {
   onUpdateColony?:  {
     __typename: "Colony",
-    internalId: string,
-    chainId: number,
-    chain: number,
-    contractAddress: string,
+    id: string,
     name: string,
-    displayName?: string | null,
-    avatarHash?: string | null,
-    nativeToken?:  {
+    nativeToken:  {
       __typename: "Token",
-      internalId: string,
-      contractAddress: string,
+      id: string,
       name: string,
       symbol: string,
       decimals: number,
-      type: TokenType,
+      type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
-      userTokensId?: string | null,
-      userTokensUsername?: string | null,
-      colonyTokensId?: string | null,
-      colonyTokensName?: string | null,
-    } | null,
-    chainVersion: number,
-    domains?:  {
-      __typename: "ModelDomainConnection",
-      nextToken?: string | null,
-    } | null,
+    },
     tokens?:  {
-      __typename: "ModelTokenConnection",
+      __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
-    } | null,
-    roles?:  {
-      __typename: "ModelRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
-    colonyNativeTokenId?: string | null,
-    colonyNativeTokenName?: string | null,
+    colonyNativeTokenId: string,
   } | null,
 };
 
 export type OnDeleteColonySubscription = {
   onDeleteColony?:  {
     __typename: "Colony",
-    internalId: string,
-    chainId: number,
-    chain: number,
-    contractAddress: string,
+    id: string,
     name: string,
-    displayName?: string | null,
-    avatarHash?: string | null,
-    nativeToken?:  {
+    nativeToken:  {
       __typename: "Token",
-      internalId: string,
-      contractAddress: string,
+      id: string,
       name: string,
       symbol: string,
       decimals: number,
-      type: TokenType,
+      type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
-      userTokensId?: string | null,
-      userTokensUsername?: string | null,
-      colonyTokensId?: string | null,
-      colonyTokensName?: string | null,
-    } | null,
-    chainVersion: number,
-    domains?:  {
-      __typename: "ModelDomainConnection",
-      nextToken?: string | null,
-    } | null,
+    },
     tokens?:  {
-      __typename: "ModelTokenConnection",
+      __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
     } | null,
-    roles?:  {
-      __typename: "ModelRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
     createdAt: string,
     updatedAt: string,
-    colonyNativeTokenId?: string | null,
-    colonyNativeTokenName?: string | null,
+    colonyNativeTokenId: string,
   } | null,
 };
 
-export type OnCreateDomainSubscription = {
-  onCreateDomain?:  {
-    __typename: "Domain",
-    internalId: string,
-    chainId: number,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    colonyDomainsId?: string | null,
-    colonyDomainsName?: string | null,
-  } | null,
-};
-
-export type OnUpdateDomainSubscription = {
-  onUpdateDomain?:  {
-    __typename: "Domain",
-    internalId: string,
-    chainId: number,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    colonyDomainsId?: string | null,
-    colonyDomainsName?: string | null,
-  } | null,
-};
-
-export type OnDeleteDomainSubscription = {
-  onDeleteDomain?:  {
-    __typename: "Domain",
-    internalId: string,
-    chainId: number,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    colonyDomainsId?: string | null,
-    colonyDomainsName?: string | null,
-  } | null,
-};
-
-export type OnCreateTokenSubscription = {
-  onCreateToken?:  {
-    __typename: "Token",
-    internalId: string,
-    contractAddress: string,
-    name: string,
-    symbol: string,
-    decimals: number,
-    type: TokenType,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    userTokensId?: string | null,
-    userTokensUsername?: string | null,
-    colonyTokensId?: string | null,
-    colonyTokensName?: string | null,
-  } | null,
-};
-
-export type OnUpdateTokenSubscription = {
-  onUpdateToken?:  {
-    __typename: "Token",
-    internalId: string,
-    contractAddress: string,
-    name: string,
-    symbol: string,
-    decimals: number,
-    type: TokenType,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    userTokensId?: string | null,
-    userTokensUsername?: string | null,
-    colonyTokensId?: string | null,
-    colonyTokensName?: string | null,
-  } | null,
-};
-
-export type OnDeleteTokenSubscription = {
-  onDeleteToken?:  {
-    __typename: "Token",
-    internalId: string,
-    contractAddress: string,
-    name: string,
-    symbol: string,
-    decimals: number,
-    type: TokenType,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    userTokensId?: string | null,
-    userTokensUsername?: string | null,
-    colonyTokensId?: string | null,
-    colonyTokensName?: string | null,
-  } | null,
-};
-
-export type OnCreateColonyRoleSubscription = {
-  onCreateColonyRole?:  {
-    __typename: "ColonyRole",
-    colony?:  {
-      __typename: "Colony",
-      internalId: string,
-      chainId: number,
-      chain: number,
-      contractAddress: string,
-      name: string,
-      displayName?: string | null,
-      avatarHash?: string | null,
-      chainVersion: number,
-      createdAt: string,
-      updatedAt: string,
-      colonyNativeTokenId?: string | null,
-      colonyNativeTokenName?: string | null,
-    } | null,
-    roles?:  {
-      __typename: "ModelRoleConnection",
-      nextToken?: string | null,
-    } | null,
+export type OnCreateColonyTokensSubscription = {
+  onCreateColonyTokens?:  {
+    __typename: "ColonyTokens",
     id: string,
-    createdAt: string,
-    updatedAt: string,
-    colonyRoleColonyId?: string | null,
-    colonyRoleColonyName?: string | null,
-  } | null,
-};
-
-export type OnUpdateColonyRoleSubscription = {
-  onUpdateColonyRole?:  {
-    __typename: "ColonyRole",
-    colony?:  {
-      __typename: "Colony",
-      internalId: string,
-      chainId: number,
-      chain: number,
-      contractAddress: string,
+    tokenID: string,
+    colonyID: string,
+    token:  {
+      __typename: "Token",
+      id: string,
       name: string,
-      displayName?: string | null,
-      avatarHash?: string | null,
-      chainVersion: number,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
-      colonyNativeTokenId?: string | null,
-      colonyNativeTokenName?: string | null,
-    } | null,
-    roles?:  {
-      __typename: "ModelRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    id: string,
-    createdAt: string,
-    updatedAt: string,
-    colonyRoleColonyId?: string | null,
-    colonyRoleColonyName?: string | null,
-  } | null,
-};
-
-export type OnDeleteColonyRoleSubscription = {
-  onDeleteColonyRole?:  {
-    __typename: "ColonyRole",
-    colony?:  {
+    },
+    colony:  {
       __typename: "Colony",
-      internalId: string,
-      chainId: number,
-      chain: number,
-      contractAddress: string,
+      id: string,
       name: string,
-      displayName?: string | null,
-      avatarHash?: string | null,
-      chainVersion: number,
       createdAt: string,
       updatedAt: string,
-      colonyNativeTokenId?: string | null,
-      colonyNativeTokenName?: string | null,
-    } | null,
-    roles?:  {
-      __typename: "ModelRoleConnection",
-      nextToken?: string | null,
-    } | null,
+      colonyNativeTokenId: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateColonyTokensSubscription = {
+  onUpdateColonyTokens?:  {
+    __typename: "ColonyTokens",
     id: string,
+    tokenID: string,
+    colonyID: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    colony:  {
+      __typename: "Colony",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      colonyNativeTokenId: string,
+    },
     createdAt: string,
     updatedAt: string,
-    colonyRoleColonyId?: string | null,
-    colonyRoleColonyName?: string | null,
   } | null,
 };
 
-export type OnCreateRoleSubscription = {
-  onCreateRole?:  {
-    __typename: "Role",
-    internalId: string,
-    type: RoleType,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
+export type OnDeleteColonyTokensSubscription = {
+  onDeleteColonyTokens?:  {
+    __typename: "ColonyTokens",
+    id: string,
+    tokenID: string,
+    colonyID: string,
+    token:  {
+      __typename: "Token",
       id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    colonyRolesId?: string | null,
-    colonyRolesName?: string | null,
-    colonyRoleRolesId?: string | null,
-  } | null,
-};
-
-export type OnUpdateRoleSubscription = {
-  onUpdateRole?:  {
-    __typename: "Role",
-    internalId: string,
-    type: RoleType,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
+    },
+    colony:  {
+      __typename: "Colony",
       id: string,
+      name: string,
       createdAt: string,
       updatedAt: string,
-    } | null,
+      colonyNativeTokenId: string,
+    },
     createdAt: string,
     updatedAt: string,
-    colonyRolesId?: string | null,
-    colonyRolesName?: string | null,
-    colonyRoleRolesId?: string | null,
-  } | null,
-};
-
-export type OnDeleteRoleSubscription = {
-  onDeleteRole?:  {
-    __typename: "Role",
-    internalId: string,
-    type: RoleType,
-    chainMeta?:  {
-      __typename: "ChainMeta",
-      confirmedOnChain: boolean,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    colonyRolesId?: string | null,
-    colonyRolesName?: string | null,
-    colonyRoleRolesId?: string | null,
   } | null,
 };

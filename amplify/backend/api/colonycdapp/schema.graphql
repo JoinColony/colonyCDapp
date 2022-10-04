@@ -2,58 +2,6 @@
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
-type ChainMeta @model {
-  confirmedOnChain: Boolean!
-}
-
-type User @model {
-  walletAddress: String!
-    @primaryKey(sortKeyFields: ["username"])
-    @index(name: "byAddress", queryField: "getUserByAddress")
-  username: String!
-    @index(name: "byUsername", queryField: "getUserByUsername")
-  displayName: String
-  avatarHash: String
-  roles: [ColonyRole]
-  tokens: [Token] @hasMany
-  chainMeta: ChainMeta
-}
-
-type Colony @model {
-  internalId: ID!
-  chainId: Int!
-  chain: Int!
-  contractAddress: String!
-    @primaryKey(sortKeyFields: ["name"])
-    @index(name: "byAddress", queryField: "getColonyByAddress")
-  name: String!
-    @index(name: "byName", queryField: "getColonyByName")
-  displayName: String
-  avatarHash: String
-  nativeToken: Token @hasOne
-  chainVersion: Int!
-
-  # TO TEST
-  domains: [Domain] @hasMany
-  tokens: [Token] @hasMany
-
-  # Note: This might not work in this particular format, and might need refactoring
-  roles: [Role] @hasMany
-
-  # TODO
-  # extensions
-  # colonyFlags (canMintNativeToken, etc)
-  # token transfers
-  # events ?
-  chainMeta: ChainMeta
-}
-
-type Domain @model {
-  internalId: ID! @primaryKey(sortKeyFields: ["chainId"])
-  chainId: Int! @index
-  chainMeta: ChainMeta
-}
-
 enum TokenType {
   COLONY
   ERC20
@@ -61,38 +9,18 @@ enum TokenType {
 }
 
 type Token @model {
-  internalId: ID!
-  contractAddress: String!
-    @primaryKey(sortKeyFields: ["name"])
-    @index(name: "byAddress", queryField: "getTokenByAddress")
+  id: ID! @index(name: "byAddress", queryField: "getTokenByAddress") # contract address
   name: String!
-    @index(name: "byName", queryField: "getTokensByName")
   symbol: String!
-    @index(name: "bySymbol", queryField: "getTokensBySymbol")
   decimals: Int!
-  type: TokenType!
+  type: TokenType
     @index(name: "byType", queryField: "getTokensByType")
-  chainMeta: ChainMeta
+  colonies: [Colony] @manyToMany(relationName: "ColonyTokens")
 }
 
-# Experimental
-type ColonyRole @model {
-  colony: Colony @hasOne
-  roles: [Role] @hasMany
-}
-
-enum RoleType {
-  RECOVERY
-  ROOT
-  ARBITRATION
-  ARCHITECTURE
-  ARCHITECTURE_SUBDOMAIN_DEPRECATED
-  FUNDING
-  ADMINISTRATION
-}
-
-type Role @model {
-  internalId: ID! @primaryKey
-  type: RoleType! @index(name: "byType", queryField: "getRolesByType")
-  chainMeta: ChainMeta
+type Colony @model {
+  id: ID! @index(name: "byAddress", queryField: "getColonyByAddress") # contract address
+  name: String! @index(name: "byName", queryField: "getColonyByName")
+  nativeToken: Token! @hasOne
+  tokens: [Token] @manyToMany(relationName: "ColonyTokens")
 }
