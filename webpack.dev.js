@@ -12,15 +12,10 @@ module.exports = () => ({
   devtool: 'inline-source-map',
   devServer: {
     historyApiFallback: true,
-    // contentBase: [
-      // path.resolve(__dirname, '..', 'colonyNetwork', 'build')
-    // ],
-    // hotOnly: true,
     hot: true,
   },
   output: {
     filename: 'dev-[name].js',
-    // path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
   },
   module: {

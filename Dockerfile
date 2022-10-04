@@ -2,8 +2,6 @@ ARG NETWORK_HASH=develop
 ARG BLOCKINGESTOR_HASH=master
 ARG REPUTATIONMONITOR_HASH=master
 
-# TODO Actually check if they are set, otherwise break
-
 FROM node:16.16.0
 
 USER root

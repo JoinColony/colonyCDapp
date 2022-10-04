@@ -10,7 +10,6 @@ const Dotenv = require('dotenv-webpack');
 const mode = process.env.NODE_ENV || 'development';
 
 const config = {
-  // entry: './src/index.ts',
   mode,
   resolve: {
     alias: Object.assign(
@@ -22,7 +21,6 @@ const config = {
         '~gql': path.resolve(__dirname, 'src/graphql'),
         '~constants': path.resolve(__dirname, 'src/constants'),
         '~context': path.resolve(__dirname, 'src/context'),
-        // '~lib': path.resolve(__dirname, 'src/lib'),
         '~hooks': path.resolve(__dirname, 'src/hooks'),
         '~images': path.resolve(__dirname, 'src/images'),
       //   '~data': path.resolve(__dirname, 'src/data'),
@@ -44,9 +42,6 @@ const config = {
       process: false,
     },
   },
-  // stats: {
-  //   errorDetails: true,
-  // },
   module: {
     rules: [
       {
@@ -63,8 +58,6 @@ const config = {
             options: {
               modules: {
                 mode: 'local',
-                // auto: true,
-                // namedExport: true,
                 exportLocalsConvention: 'camelCaseOnly',
                 localIdentName: '[name]_[local]_[contenthash:base64:8]',
               },
@@ -82,24 +75,11 @@ const config = {
         ],
         use: ['style-loader', 'css-loader'],
       },
-      // {
-      //   test: /\.(woff|woff2|png|jpe?g|gif)$/,
-      //   loader: 'file-loader',
-        // include: [
-        //   path.resolve('src'),
-        // ],
-        // options: {
-        //   esModule: false,
-        // },
-      // },
       {
         test: /\.(woff|woff2|png|jpe?g|gif)$/,
         include: [
           path.resolve('src'),
         ],
-        // options: {
-        //   esModule: false,
-        // },
         type: 'asset/resource',
       },
       /*
@@ -160,13 +140,6 @@ const config = {
       },
     ],
   },
-  // node: {
-  //   net: 'empty',
-  //   child_process: 'empty',
-  //   fs: 'empty',
-  //   Buffer: false,
-  //   process: false,
-  // },
   plugins: [
     new Dotenv({
       systemvars: !!process.env.CI || !!process.env.DEV,
