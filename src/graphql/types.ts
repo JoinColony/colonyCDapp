@@ -2,6 +2,52 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
+export enum TokenType {
+  COLONY = "COLONY",
+  ERC20 = "ERC20",
+}
+
+
+export type Token = {
+  __typename: "Token",
+  id: string,
+  name: string,
+  symbol: string,
+  decimals: number,
+  type?: TokenType | null,
+  colonies?: ModelColonyTokensConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelColonyTokensConnection = {
+  __typename: "ModelColonyTokensConnection",
+  items:  Array<ColonyTokens | null >,
+  nextToken?: string | null,
+};
+
+export type ColonyTokens = {
+  __typename: "ColonyTokens",
+  id: string,
+  tokenID: string,
+  colonyID: string,
+  token: Token,
+  colony: Colony,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Colony = {
+  __typename: "Colony",
+  id: string,
+  name: string,
+  nativeToken: Token,
+  tokens?: ModelColonyTokensConnection | null,
+  createdAt: string,
+  updatedAt: string,
+  colonyNativeTokenId: string,
+};
+
 export type CreateTokenInput = {
   id?: string | null,
   name: string,
@@ -9,12 +55,6 @@ export type CreateTokenInput = {
   decimals: number,
   type?: TokenType | null,
 };
-
-export enum TokenType {
-  COLONY = "COLONY",
-  ERC20 = "ERC20",
-}
-
 
 export type ModelTokenConditionInput = {
   name?: ModelStringInput | null,
@@ -81,46 +121,6 @@ export type ModelIntInput = {
 export type ModelTokenTypeInput = {
   eq?: TokenType | null,
   ne?: TokenType | null,
-};
-
-export type Token = {
-  __typename: "Token",
-  id: string,
-  name: string,
-  symbol: string,
-  decimals: number,
-  type?: TokenType | null,
-  colonies?: ModelColonyTokensConnection | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type ModelColonyTokensConnection = {
-  __typename: "ModelColonyTokensConnection",
-  items:  Array<ColonyTokens | null >,
-  nextToken?: string | null,
-};
-
-export type ColonyTokens = {
-  __typename: "ColonyTokens",
-  id: string,
-  tokenID: string,
-  colonyID: string,
-  token: Token,
-  colony: Colony,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type Colony = {
-  __typename: "Colony",
-  id: string,
-  name: string,
-  nativeToken: Token,
-  tokens?: ModelColonyTokensConnection | null,
-  createdAt: string,
-  updatedAt: string,
-  colonyNativeTokenId: string,
 };
 
 export type UpdateTokenInput = {
@@ -254,6 +254,31 @@ export enum ModelSortDirection {
   DESC = "DESC",
 }
 
+
+export type CreateColonyWithTokenMutationVariables = {
+  colonyAddress: string,
+  colonyName: string,
+  tokenAddress: string,
+  tokenName: string,
+  tokenSymbol: string,
+  tokenDecimals?: number | null,
+  tokenType?: TokenType | null,
+};
+
+export type CreateColonyWithTokenMutation = {
+  createToken?:  {
+    __typename: "Token",
+    id: string,
+  } | null,
+  createColony?:  {
+    __typename: "Colony",
+    id: string,
+  } | null,
+  createColonyTokens?:  {
+    __typename: "ColonyTokens",
+    id: string,
+  } | null,
+};
 
 export type CreateTokenMutationVariables = {
   input: CreateTokenInput,
