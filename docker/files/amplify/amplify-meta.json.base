@@ -19,5 +19,12 @@
                 "GraphQLAPIKeyOutput": "da2-fakeApiId123456"
             }
         }
+    },
+    "function": {
+            "fetchTokenFromChain": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda"
+        }
     }
 }

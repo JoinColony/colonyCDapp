@@ -12,7 +12,7 @@ VOLUME [ "/colonyCDapp/amplify/mock-data" ]
 # Add dependencies from the host
 # Note: these are listed individually so that if they change, they won't affect
 # the build of the other images
-ADD scripts/run-network.sh.base /colonyCDappBackend/scripts/run-network.sh.base
+ADD docker/files/network/run.sh.base /colonyCDappBackend/run.sh
 
 WORKDIR /colonyCDappBackend
 
@@ -37,8 +37,7 @@ RUN echo "{}" > ./packages/reputation-miner/justificationTreeCache.json
 
 WORKDIR /colonyCDappBackend
 
-# Hidrate the run script
-RUN cp /colonyCDappBackend/scripts/run-network.sh.base /colonyCDappBackend/run.sh
+# Make the run script executable
 RUN chmod +x ./run.sh
 
 # Battlecruiser Operational!

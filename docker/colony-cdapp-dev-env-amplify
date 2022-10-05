@@ -12,13 +12,14 @@ ADD .graphqlconfig.yml /colonyCDapp/.graphqlconfig.yml
 
 # Note: these are listed individually so that if they change, they won't affect
 # the build of the other images
-ADD scripts/run-amplify.sh.base /colonyCDappBackend/scripts/run-amplify.sh.base
-ADD scripts/local-env-info.json.base /colonyCDappBackend/scripts/local-env-info.json.base
-ADD scripts/local-aws-info.json.base /colonyCDappBackend/scripts/local-aws-info.json.base
-ADD scripts/aws-exports.js.base /colonyCDappBackend/scripts/aws-exports.js.base
-ADD scripts/amplify-meta.json.base /colonyCDappBackend/scripts/amplify-meta.json.base
-ADD scripts/aws-user-config.base /root/.aws/config
-ADD scripts/aws-user-credentials.base /root/.aws/credentials
+ADD docker/files/amplify/run.sh.base /colonyCDappBackend/run.sh
+ADD docker/files/amplify/local-env-info.json.base /colonyCDapp/amplify/.config/local-env-info.json
+ADD docker/files/amplify/local-aws-info.json.base /colonyCDapp/amplify/.config/local-aws-info.json
+ADD docker/files/amplify/aws-exports.js.base /colonyCDapp/src/aws-exports.js
+# This still needs to be saved as a "template" since it will only be moved to it's final location at runtime
+ADD docker/files/amplify/amplify-meta.json.base /colonyCDappBackend/scripts/amplify-meta.json.base
+ADD docker/files/amplify/config.base /root/.aws/config
+ADD docker/files/amplify/credentials.base /root/.aws/credentials
 
 #
 # Amplify
@@ -34,14 +35,7 @@ RUN npm install
 # Actually download the amplify tarball (don't ask me, it's how it works)
 RUN npm run amplify
 
-# Hidrate amplify configuration artifacts
-RUN cp /colonyCDappBackend/scripts/local-env-info.json.base /colonyCDapp/amplify/.config/local-env-info.json
-RUN cp /colonyCDappBackend/scripts/local-aws-info.json.base /colonyCDapp/amplify/.config/local-aws-info.json
-RUN mkdir -p /colonyCDapp/src
-RUN cp /colonyCDappBackend/scripts/aws-exports.js.base /colonyCDapp/src/aws-exports.js
-
-# Hidrate the run script
-RUN cp /colonyCDappBackend/scripts/run-amplify.sh.base /colonyCDappBackend/run.sh
+# Make the run script executable
 RUN chmod +x /colonyCDappBackend/run.sh
 
 # Battlecruiser Operational!

@@ -8,7 +8,7 @@ VOLUME [ "/colonyCDapp/amplify/mock-data" ]
 # Add dependencies from the host
 # Note: these are listed individually so that if they change, they won't affect
 # the build of the other images
-ADD scripts/run-reputation-monitor.sh.base /colonyCDappBackend/scripts/run-reputation-monitor.sh.base
+ADD docker/files/reputation-monitor/run.sh.base /colonyCDappBackend/run.sh
 
 WORKDIR /colonyCDappBackend
 
@@ -29,8 +29,7 @@ RUN npm install
 
 WORKDIR /colonyCDappBackend
 
-# Hidrate the run script
-RUN cp /colonyCDappBackend/scripts/run-reputation-monitor.sh.base /colonyCDappBackend/run.sh
+# Make the run script executable
 RUN chmod +x ./run.sh
 
 # Battlecruiser Operational!

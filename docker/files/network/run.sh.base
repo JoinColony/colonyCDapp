@@ -23,6 +23,7 @@ rm --recursive --force /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts
 mkdir --parents /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts
 cp -R ./build /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/
 cp ./etherrouter-address.json /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json
+cp ./ganache-accounts.json /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json
 
 # Reputation Miner
 
