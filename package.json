@@ -10,15 +10,16 @@
     "docker:build:ingestor": "DOCKER_BUILDKIT=1 docker build --tag colony-cdapp-dev-env/block-ingestor --file ./docker/colony-cdapp-dev-env-block-ingestor .",
     "docker:build:amplify": "DOCKER_BUILDKIT=1 docker build --tag colony-cdapp-dev-env/amplify --file ./docker/colony-cdapp-dev-env-amplify .",
     "docker:build": "npm run docker:build:base && npm run docker:build:network && npm run docker:build:monitor && npm run docker:build:ingestor && npm run docker:build:amplify",
-    "docker:compose": "docker compose --file docker/colony-cdapp-dev-env-orchestration.yaml --force-recreate -V",
-    "start": "npm run docker:build && npm run docker:compose up",
+    "docker:compose": "docker compose --file docker/colony-cdapp-dev-env-orchestration.yaml",
+    "start": "npm run docker:build && npm run docker:compose up -- --force-recreate -V",
     "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "webpack": "webpack serve --config webpack.dev.js --port 9090",
     "webpack:prod": "NODE_ENV=production webpack-cli --config webpack.prod.js",
     "truffle": "truffle",
     "amplify": "amplify",
-    "DEPRECATED:webpack:prod": "NODE_OPTIONS=\"--max-old-space-size=4096\" NODE_ENV=production webpack-cli --config webpack.prod.js"
+    "DEPRECATED:webpack:prod": "NODE_OPTIONS=\"--max-old-space-size=4096\" NODE_ENV=production webpack-cli --config webpack.prod.js",
+    "postinstall": "bash scripts/lambda-functions-dependencies.sh"
   },
   "repository": {
     "type": "git",
