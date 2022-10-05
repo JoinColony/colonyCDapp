@@ -17,6 +17,8 @@ ADD scripts/local-env-info.json.base /colonyCDappBackend/scripts/local-env-info.
 ADD scripts/local-aws-info.json.base /colonyCDappBackend/scripts/local-aws-info.json.base
 ADD scripts/aws-exports.js.base /colonyCDappBackend/scripts/aws-exports.js.base
 ADD scripts/amplify-meta.json.base /colonyCDappBackend/scripts/amplify-meta.json.base
+ADD scripts/aws-user-config.base /root/.aws/config
+ADD scripts/aws-user-credentials.base /root/.aws/credentials
 
 #
 # Amplify
@@ -38,11 +40,9 @@ RUN cp /colonyCDappBackend/scripts/local-aws-info.json.base /colonyCDapp/amplify
 RUN mkdir -p /colonyCDapp/src
 RUN cp /colonyCDappBackend/scripts/aws-exports.js.base /colonyCDapp/src/aws-exports.js
 
-WORKDIR /colonyCDappBackend
-
 # Hidrate the run script
 RUN cp /colonyCDappBackend/scripts/run-amplify.sh.base /colonyCDappBackend/run.sh
-RUN chmod +x ./run.sh
+RUN chmod +x /colonyCDappBackend/run.sh
 
 # Battlecruiser Operational!
-CMD [ "./run.sh" ]
+CMD [ "/colonyCDappBackend/run.sh" ]

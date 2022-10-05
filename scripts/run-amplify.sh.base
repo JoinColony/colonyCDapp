@@ -2,8 +2,6 @@
 
 # Amplify
 
-cd /colonyCDapp
-
 # Cleanup
 rm --recursive --force /colonyCDapp/amplify/backend/api/colonycdapp/build
 rm --recursive --force /colonyCDapp/amplify/backend/api/colonycdapp/resolvers/*.vtl
