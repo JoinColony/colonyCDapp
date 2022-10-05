@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Block Ingestor
+
+mkdir --parents /colonyCDappBackend/colonyNetwork/
+cp -R /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/build /colonyCDappBackend/colonyNetwork/
+cp /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json /colonyCDappBackend/colonyNetwork/
+
+cd block-ingestor
+npm run start

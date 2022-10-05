@@ -1,0 +1,39 @@
+FROM node:16.16.0
+
+USER root
+
+# Update the apt cache
+RUN apt-get clean
+RUN apt-get update
+
+# Adding various nicities and libraries we use through the container
+RUN apt-get install -y \
+  apt-utils \
+  locales \
+  build-essential \
+  curl \
+  file \
+  zip \
+  jq \
+  netcat
+
+# Download and install the `java-common` package which is needed for Amazon's Java SDK
+RUN curl -LO http://mirrors.kernel.org/ubuntu/pool/main/j/java-common/java-common_0.72_all.deb
+RUN dpkg -i java-common_0.72_all.deb
+
+# Download and install Amazon's version of a Java SDK
+RUN curl -LO https://corretto.aws/downloads/latest/amazon-corretto-11-x64-linux-jdk.deb
+RUN dpkg -i amazon-corretto-11-x64-linux-jdk.deb
+
+# Reconfigure locales
+RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+RUN locale-gen
+
+# Install a certain version of NPM
+RUN npm install --location=global --registry=https://registry.npmjs.org npm@8.11
+
+# Configure git to always use HTTPS instead of SSH
+# This counteracts the fact that you need a GH account in order to use ssh keys
+RUN git config --global url."https://github".insteadOf ssh://git@github
+
+WORKDIR /colonyCDapp

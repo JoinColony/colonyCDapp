@@ -1,0 +1,48 @@
+FROM colony-cdapp-dev-env/base:latest
+
+# Declare volumes to set up metadata
+VOLUME [ "/colonyCDapp/amplify/backend", "/colonyCDapp/amplify/mock-data", "/colonyCDapp/src/graphql" ]
+
+WORKDIR /colonyCDapp
+
+# Add dependencies from the host
+ADD package.json /colonyCDapp/package.colonyCDapp.json
+ADD amplify /colonyCDapp/amplify
+ADD .graphqlconfig.yml /colonyCDapp/.graphqlconfig.yml
+
+# Note: these are listed individually so that if they change, they won't affect
+# the build of the other images
+ADD scripts/run-amplify.sh.base /colonyCDappBackend/scripts/run-amplify.sh.base
+ADD scripts/local-env-info.json.base /colonyCDappBackend/scripts/local-env-info.json.base
+ADD scripts/local-aws-info.json.base /colonyCDappBackend/scripts/local-aws-info.json.base
+ADD scripts/aws-exports.js.base /colonyCDappBackend/scripts/aws-exports.js.base
+ADD scripts/amplify-meta.json.base /colonyCDappBackend/scripts/amplify-meta.json.base
+
+#
+# Amplify
+#
+
+# Generate the local "light" version of package json
+# It gets the amplify version from the CDapp's package.json file
+RUN AMPLIFY_VERSION=$(jq '.dependencies."@aws-amplify/cli"' package.colonyCDapp.json) && echo "{\"scripts\":{\"amplify\":\"amplify\"},\"dependencies\":{\"@aws-amplify/cli\": $AMPLIFY_VERSION}}" > package.json
+
+# Install amplify as a dependency
+RUN npm install
+
+# Actually download the amplify tarball (don't ask me, it's how it works)
+RUN npm run amplify
+
+# Hidrate amplify configuration artifacts
+RUN cp /colonyCDappBackend/scripts/local-env-info.json.base /colonyCDapp/amplify/.config/local-env-info.json
+RUN cp /colonyCDappBackend/scripts/local-aws-info.json.base /colonyCDapp/amplify/.config/local-aws-info.json
+RUN mkdir -p /colonyCDapp/src
+RUN cp /colonyCDappBackend/scripts/aws-exports.js.base /colonyCDapp/src/aws-exports.js
+
+WORKDIR /colonyCDappBackend
+
+# Hidrate the run script
+RUN cp /colonyCDappBackend/scripts/run-amplify.sh.base /colonyCDappBackend/run.sh
+RUN chmod +x ./run.sh
+
+# Battlecruiser Operational!
+CMD [ "./run.sh" ]

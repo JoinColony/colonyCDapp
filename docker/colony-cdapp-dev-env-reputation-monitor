@@ -1,0 +1,37 @@
+ARG REPUTATION_MONITOR_HASH=master
+
+FROM colony-cdapp-dev-env/base:latest
+
+# Declare volumes to set up metadata
+VOLUME [ "/colonyCDapp/amplify/mock-data" ]
+
+# Add dependencies from the host
+# Note: these are listed individually so that if they change, they won't affect
+# the build of the other images
+ADD scripts/run-reputation-monitor.sh.base /colonyCDappBackend/scripts/run-reputation-monitor.sh.base
+
+WORKDIR /colonyCDappBackend
+
+#
+# Reputation Monitor
+#
+
+# Clone block ingestor repo
+RUN git clone https://github.com/JoinColony/reputation-monitor-dev.git --depth 1
+WORKDIR /colonyCDappBackend/reputation-monitor-dev
+
+# Fetch the correct network repo commit/branch/tag
+RUN git fetch origin $REPUTATION_MONITOR_HASH --depth 1
+RUN git checkout $REPUTATION_MONITOR_HASH
+
+# Install reputation monitor dependencies
+RUN npm install
+
+WORKDIR /colonyCDappBackend
+
+# Hidrate the run script
+RUN cp /colonyCDappBackend/scripts/run-reputation-monitor.sh.base /colonyCDappBackend/run.sh
+RUN chmod +x ./run.sh
+
+# Battlecruiser Operational!
+CMD [ "./run.sh" ]
