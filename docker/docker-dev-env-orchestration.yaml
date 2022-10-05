@@ -1,5 +1,6 @@
 name: colony-cdapp-dev-env
 services:
+
   network-contracts:
     container_name: 'network'
     image: colony-cdapp-dev-env/network:latest
@@ -10,6 +11,7 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:3002"]
       interval: 5s
       retries: 36
+
   reputation-monitor:
     container_name: 'monitor'
     image: colony-cdapp-dev-env/reputation-monitor:latest
@@ -19,6 +21,7 @@ services:
     depends_on:
       network-contracts:
         condition: service_healthy
+
   block-ingestor:
     container_name: 'ingestor'
     image: colony-cdapp-dev-env/block-ingestor:latest
@@ -28,6 +31,7 @@ services:
     depends_on:
       network-contracts:
         condition: service_healthy
+
   amplify:
     container_name: 'amplify'
     image: colony-cdapp-dev-env/amplify:latest
@@ -39,3 +43,8 @@ services:
     depends_on:
       network-contracts:
         condition: service_healthy
+    tty: true
+    environment:
+      DEBUG_COLORS: "true"
+      TERM: xterm-256color
+      COLORTERM: truecolor
