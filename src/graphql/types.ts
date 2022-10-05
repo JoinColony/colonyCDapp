@@ -13,7 +13,6 @@ export type CreateTokenInput = {
 export enum TokenType {
   COLONY = "COLONY",
   ERC20 = "ERC20",
-  SAI = "SAI",
 }
 
 
@@ -198,6 +197,15 @@ export type UpdateColonyTokensInput = {
 
 export type DeleteColonyTokensInput = {
   id: string,
+};
+
+export type TokenFromEverywhereArguments = {
+  tokenAddress: string,
+};
+
+export type TokenFromEverywhereReturn = {
+  __typename: "TokenFromEverywhereReturn",
+  items?:  Array<Token | null > | null,
 };
 
 export type ModelTokenFilterInput = {
@@ -502,6 +510,26 @@ export type DeleteColonyTokensMutation = {
     },
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type GetTokenFromEverywhereQueryVariables = {
+  input?: TokenFromEverywhereArguments | null,
+};
+
+export type GetTokenFromEverywhereQuery = {
+  getTokenFromEverywhere?:  {
+    __typename: "TokenFromEverywhereReturn",
+    items?:  Array< {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
   } | null,
 };
 

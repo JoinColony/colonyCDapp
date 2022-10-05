@@ -1,15 +1,20 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-colonycdapp-dev-204832-authRole",
-      "UnauthRoleArn": "arn:aws:iam::355830175047:role/amplify-colonycdapp-dev-204832-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::355830175047:role/amplify-colonycdapp-dev-204832-authRole",
+      "AuthRoleName": "amplify-colonycdapp-dev-123456-authRole",
+      "UnauthRoleArn": "arn:aws:iam::123456789:role/amplify-colonycdapp-dev-123456-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::123456789:role/amplify-colonycdapp-dev-123456-authRole",
       "Region": "eu-central-1",
-      "DeploymentBucketName": "amplify-colonycdapp-dev-204832-deployment",
-      "UnauthRoleName": "amplify-colonycdapp-dev-204832-unauthRole",
-      "StackName": "amplify-colonycdapp-dev-204832",
-      "StackId": "arn:aws:cloudformation:eu-central-1:355830175047:stack/amplify-colonycdapp-dev-204832/ff23e630-10f8-11ed-9814-0a7cc218f77c",
-      "AmplifyAppId": "dr4plwwtfr379"
+      "DeploymentBucketName": "amplify-colonycdapp-dev-123456-deployment",
+      "UnauthRoleName": "amplify-colonycdapp-dev-123456-unauthRole",
+      "StackName": "amplify-colonycdapp-dev-123456",
+      "StackId": "arn:aws:cloudformation:eu-central-1:123456789:stack/amplify-colonycdapp-dev-123456/fake-stack-id",
+      "AmplifyAppId": "fakeAppId"
+    },
+    "categories": {
+      "function": {
+        "fetchTokenFromChain": {}
+      }
     }
   }
 }

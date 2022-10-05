@@ -10,7 +10,7 @@
     "docker:build:ingestor": "DOCKER_BUILDKIT=1 docker build --tag colony-cdapp-dev-env/block-ingestor --file ./docker/colony-cdapp-dev-env-block-ingestor .",
     "docker:build:amplify": "DOCKER_BUILDKIT=1 docker build --tag colony-cdapp-dev-env/amplify --file ./docker/colony-cdapp-dev-env-amplify .",
     "docker:build": "npm run docker:build:base && npm run docker:build:network && npm run docker:build:monitor && npm run docker:build:ingestor && npm run docker:build:amplify",
-    "docker:compose": "docker compose --file docker/colony-cdapp-dev-env-orchestration.yaml",
+    "docker:compose": "docker compose --file docker/colony-cdapp-dev-env-orchestration.yaml --force-recreate -V",
     "start": "npm run docker:build && npm run docker:compose up",
     "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
     "typecheck": "tsc -p tsconfig.json --noEmit",
