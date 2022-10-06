@@ -137,6 +137,22 @@ export type UserTokens = {
   updatedAt: string,
 };
 
+export type CreateUniqueUserInput = {
+  id: string,
+  name: string,
+  profile?: UserProfileInput | null,
+};
+
+export type UserProfileInput = {
+  avatar?: string | null,
+  thumbnail?: string | null,
+  displayName?: string | null,
+  bio?: string | null,
+  location?: string | null,
+  website?: string | null,
+  email?: string | null,
+};
+
 export type CreateTokenInput = {
   id?: string | null,
   name: string,
@@ -504,6 +520,38 @@ export type CreateColonyWithTokenMutation = {
   createColonyTokens?:  {
     __typename: "ColonyTokens",
     id: string,
+  } | null,
+};
+
+export type CreateUniqueUserMutationVariables = {
+  input?: CreateUniqueUserInput | null,
+};
+
+export type CreateUniqueUserMutation = {
+  createUniqueUser?:  {
+    __typename: "User",
+    id: string,
+    name: string,
+    tokens?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+      email?: string | null,
+    } | null,
+    watchlist?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 

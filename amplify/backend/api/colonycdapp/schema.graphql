@@ -6,6 +6,22 @@ input TokenFromEverywhereArguments {
   tokenAddress: String!
 }
 
+input CreateUniqueUserInput {
+  id: ID!
+  name: String!
+  profile: UserProfileInput
+}
+
+input UserProfileInput {
+  avatar: String
+  thumbnail: String
+  displayName: String
+  bio: String
+  location: String
+  website: AWSURL
+  email: AWSEmail
+}
+
 type TokenFromEverywhereReturn {
   items: [Token]
 }
@@ -22,7 +38,15 @@ enum Networks {
 }
 
 type Query {
-  getTokenFromEverywhere(input: TokenFromEverywhereArguments): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain-dev")
+  getTokenFromEverywhere(
+    input: TokenFromEverywhereArguments
+  ): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain")
+}
+
+type Mutation {
+  createUniqueUser(
+    input: CreateUniqueUserInput
+  ): User @function(name: "createUser")
 }
 
 # Applies to both Users and Colonies

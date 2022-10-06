@@ -13,7 +13,8 @@
     },
     "categories": {
       "function": {
-        "fetchTokenFromChain": {}
+        "fetchTokenFromChain": {},
+        "createUser": {}
       }
     }
   }

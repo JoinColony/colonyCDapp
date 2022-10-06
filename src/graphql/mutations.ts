@@ -2,6 +2,31 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createUniqueUser = /* GraphQL */ `
+  mutation CreateUniqueUser($input: CreateUniqueUserInput) {
+    createUniqueUser(input: $input) {
+      id
+      name
+      tokens {
+        nextToken
+      }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+        email
+      }
+      watchlist {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createToken = /* GraphQL */ `
   mutation CreateToken(
     $input: CreateTokenInput!
