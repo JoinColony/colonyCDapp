@@ -49,13 +49,13 @@
             "FunctionName": {
                 "Fn::If": [
                     "ShouldNotCreateEnvResources",
-                    "createUser",
+                    "createUniqueColony",
                     {
 
                         "Fn::Join": [
                             "",
                             [
-                                "createUser",
+                                "createUniqueColony",
                                 "-",
                                 {
                                     "Ref": "env"
@@ -80,13 +80,13 @@
                 "RoleName": {
                     "Fn::If": [
                         "ShouldNotCreateEnvResources",
-                        "colonycdappLambdaRole2bb80aa3",
+                        "colonycdappLambdaRole23f5ce4d",
                         {
 
                             "Fn::Join": [
                                 "",
                                 [
-                                    "colonycdappLambdaRole2bb80aa3",
+                                    "colonycdappLambdaRole23f5ce4d",
                                     "-",
                                     {
                                         "Ref": "env"

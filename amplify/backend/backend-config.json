@@ -23,7 +23,12 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "createUser": {
+    "createUniqueUser": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "createUniqueColony": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"

@@ -2,11 +2,49 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export enum TokenType {
-  COLONY = "COLONY",
-  ERC20 = "ERC20",
-}
+export type CreateUniqueUserInput = {
+  id: string,
+  name: string,
+  profile?: ProfileInput | null,
+};
 
+export type ProfileInput = {
+  avatar?: string | null,
+  thumbnail?: string | null,
+  displayName?: string | null,
+  bio?: string | null,
+  location?: string | null,
+  website?: string | null,
+  email?: string | null,
+};
+
+export type User = {
+  __typename: "User",
+  id: string,
+  name: string,
+  tokens?: ModelUserTokensConnection | null,
+  profile?: Profile | null,
+  watchlist?: ModelWatchedColoniesConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelUserTokensConnection = {
+  __typename: "ModelUserTokensConnection",
+  items:  Array<UserTokens | null >,
+  nextToken?: string | null,
+};
+
+export type UserTokens = {
+  __typename: "UserTokens",
+  id: string,
+  tokenID: string,
+  userID: string,
+  token: Token,
+  user: User,
+  createdAt: string,
+  updatedAt: string,
+};
 
 export type Token = {
   __typename: "Token",
@@ -21,6 +59,12 @@ export type Token = {
   createdAt: string,
   updatedAt: string,
 };
+
+export enum TokenType {
+  COLONY = "COLONY",
+  ERC20 = "ERC20",
+}
+
 
 export type ModelColonyTokensConnection = {
   __typename: "ModelColonyTokensConnection",
@@ -109,48 +153,11 @@ export type WatchedColonies = {
   updatedAt: string,
 };
 
-export type User = {
-  __typename: "User",
+export type CreateUniqueColonyInput = {
   id: string,
   name: string,
-  tokens?: ModelUserTokensConnection | null,
-  profile?: Profile | null,
-  watchlist?: ModelWatchedColoniesConnection | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type ModelUserTokensConnection = {
-  __typename: "ModelUserTokensConnection",
-  items:  Array<UserTokens | null >,
-  nextToken?: string | null,
-};
-
-export type UserTokens = {
-  __typename: "UserTokens",
-  id: string,
-  tokenID: string,
-  userID: string,
-  token: Token,
-  user: User,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type CreateUniqueUserInput = {
-  id: string,
-  name: string,
-  profile?: UserProfileInput | null,
-};
-
-export type UserProfileInput = {
-  avatar?: string | null,
-  thumbnail?: string | null,
-  displayName?: string | null,
-  bio?: string | null,
-  location?: string | null,
-  website?: string | null,
-  email?: string | null,
+  colonyNativeTokenId: string,
+  profile?: ProfileInput | null,
 };
 
 export type CreateTokenInput = {
@@ -254,16 +261,6 @@ export type CreateColonyInput = {
   status?: ColonyStatusInput | null,
   chain?: ChainInput | null,
   colonyNativeTokenId: string,
-};
-
-export type ProfileInput = {
-  avatar?: string | null,
-  thumbnail?: string | null,
-  displayName?: string | null,
-  bio?: string | null,
-  location?: string | null,
-  website?: string | null,
-  email?: string | null,
 };
 
 export type ColonyStatusInput = {
@@ -498,37 +495,44 @@ export enum ModelSortDirection {
 }
 
 
-export type CreateColonyWithTokenMutationVariables = {
-  colonyAddress: string,
-  colonyName: string,
-  tokenAddress: string,
-  tokenName: string,
-  tokenSymbol: string,
-  tokenDecimals?: number | null,
-  tokenType?: TokenType | null,
-};
-
-export type CreateColonyWithTokenMutation = {
-  createToken?:  {
-    __typename: "Token",
-    id: string,
-  } | null,
-  createColony?:  {
-    __typename: "Colony",
-    id: string,
-  } | null,
-  createColonyTokens?:  {
-    __typename: "ColonyTokens",
-    id: string,
-  } | null,
-};
-
 export type CreateUniqueUserMutationVariables = {
   input?: CreateUniqueUserInput | null,
 };
 
 export type CreateUniqueUserMutation = {
   createUniqueUser?:  {
+    __typename: "User",
+    id: string,
+    name: string,
+    tokens?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+      email?: string | null,
+    } | null,
+    watchlist?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateUniqueColonyMutationVariables = {
+  input?: CreateUniqueColonyInput | null,
+};
+
+export type CreateUniqueColonyMutation = {
+  createUniqueColony?:  {
     __typename: "User",
     id: string,
     name: string,

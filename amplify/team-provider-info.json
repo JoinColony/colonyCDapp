@@ -14,7 +14,8 @@
     "categories": {
       "function": {
         "fetchTokenFromChain": {},
-        "createUser": {}
+        "createUniqueUser": {},
+        "createUniqueColony": {}
       }
     }
   }

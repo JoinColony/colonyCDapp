@@ -9,10 +9,17 @@ input TokenFromEverywhereArguments {
 input CreateUniqueUserInput {
   id: ID!
   name: String!
-  profile: UserProfileInput
+  profile: ProfileInput
 }
 
-input UserProfileInput {
+input CreateUniqueColonyInput {
+  id: ID!
+  name: String!
+  colonyNativeTokenId: ID!
+  profile: ProfileInput
+}
+
+input ProfileInput {
   avatar: String
   thumbnail: String
   displayName: String
@@ -46,7 +53,10 @@ type Query {
 type Mutation {
   createUniqueUser(
     input: CreateUniqueUserInput
-  ): User @function(name: "createUser")
+  ): User @function(name: "createUniqueUser")
+  createUniqueColony(
+    input: CreateUniqueColonyInput
+  ): User @function(name: "createUniqueColony")
 }
 
 # Applies to both Users and Colonies

@@ -20,7 +20,7 @@ const GRAPHQL_URI = 'http://localhost:20002/graphql';
 exports.handler = async (event) => {
   const { id: walletAddress, name, profile } = event.arguments?.input || {};
 
-  let checksummedWalletAddress = walletAddress;
+  let checksummedWalletAddress;
   try {
     checksummedWalletAddress = utils.getAddress(walletAddress);
   } catch (error) {

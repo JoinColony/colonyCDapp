@@ -27,6 +27,31 @@ export const createUniqueUser = /* GraphQL */ `
     }
   }
 `;
+export const createUniqueColony = /* GraphQL */ `
+  mutation CreateUniqueColony($input: CreateUniqueColonyInput) {
+    createUniqueColony(input: $input) {
+      id
+      name
+      tokens {
+        nextToken
+      }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+        email
+      }
+      watchlist {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createToken = /* GraphQL */ `
   mutation CreateToken(
     $input: CreateTokenInput!
