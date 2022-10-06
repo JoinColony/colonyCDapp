@@ -13,6 +13,16 @@ export const onCreateToken = /* GraphQL */ `
       colonies {
         nextToken
       }
+      users {
+        nextToken
+      }
+      status {
+        unlocked
+        canMint
+        canUnlock
+        recovery
+        deploymentFinished
+      }
       createdAt
       updatedAt
     }
@@ -29,6 +39,16 @@ export const onUpdateToken = /* GraphQL */ `
       colonies {
         nextToken
       }
+      users {
+        nextToken
+      }
+      status {
+        unlocked
+        canMint
+        canUnlock
+        recovery
+        deploymentFinished
+      }
       createdAt
       updatedAt
     }
@@ -44,6 +64,16 @@ export const onDeleteToken = /* GraphQL */ `
       type
       colonies {
         nextToken
+      }
+      users {
+        nextToken
+      }
+      status {
+        unlocked
+        canMint
+        canUnlock
+        recovery
+        deploymentFinished
       }
       createdAt
       updatedAt
@@ -66,6 +96,21 @@ export const onCreateColony = /* GraphQL */ `
       }
       tokens {
         nextToken
+      }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+      }
+      status {
+        unlocked
+        canMint
+        canUnlock
+        recovery
+        deploymentFinished
       }
       createdAt
       updatedAt
@@ -90,6 +135,21 @@ export const onUpdateColony = /* GraphQL */ `
       tokens {
         nextToken
       }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+      }
+      status {
+        unlocked
+        canMint
+        canUnlock
+        recovery
+        deploymentFinished
+      }
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -113,9 +173,87 @@ export const onDeleteColony = /* GraphQL */ `
       tokens {
         nextToken
       }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+      }
+      status {
+        unlocked
+        canMint
+        canUnlock
+        recovery
+        deploymentFinished
+      }
       createdAt
       updatedAt
       colonyNativeTokenId
+    }
+  }
+`;
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser {
+    onCreateUser {
+      id
+      name
+      tokens {
+        nextToken
+      }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser {
+    onUpdateUser {
+      id
+      name
+      tokens {
+        nextToken
+      }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser {
+    onDeleteUser {
+      id
+      name
+      tokens {
+        nextToken
+      }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+      }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -194,6 +332,84 @@ export const onDeleteColonyTokens = /* GraphQL */ `
         createdAt
         updatedAt
         colonyNativeTokenId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateUserTokens = /* GraphQL */ `
+  subscription OnCreateUserTokens {
+    onCreateUserTokens {
+      id
+      tokenID
+      userID
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateUserTokens = /* GraphQL */ `
+  subscription OnUpdateUserTokens {
+    onUpdateUserTokens {
+      id
+      tokenID
+      userID
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteUserTokens = /* GraphQL */ `
+  subscription OnDeleteUserTokens {
+    onDeleteUserTokens {
+      id
+      tokenID
+      userID
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt

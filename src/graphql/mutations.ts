@@ -16,6 +16,16 @@ export const createToken = /* GraphQL */ `
       colonies {
         nextToken
       }
+      users {
+        nextToken
+      }
+      status {
+        unlocked
+        canMint
+        canUnlock
+        recovery
+        deploymentFinished
+      }
       createdAt
       updatedAt
     }
@@ -35,6 +45,16 @@ export const updateToken = /* GraphQL */ `
       colonies {
         nextToken
       }
+      users {
+        nextToken
+      }
+      status {
+        unlocked
+        canMint
+        canUnlock
+        recovery
+        deploymentFinished
+      }
       createdAt
       updatedAt
     }
@@ -53,6 +73,16 @@ export const deleteToken = /* GraphQL */ `
       type
       colonies {
         nextToken
+      }
+      users {
+        nextToken
+      }
+      status {
+        unlocked
+        canMint
+        canUnlock
+        recovery
+        deploymentFinished
       }
       createdAt
       updatedAt
@@ -78,6 +108,21 @@ export const createColony = /* GraphQL */ `
       }
       tokens {
         nextToken
+      }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+      }
+      status {
+        unlocked
+        canMint
+        canUnlock
+        recovery
+        deploymentFinished
       }
       createdAt
       updatedAt
@@ -105,6 +150,21 @@ export const updateColony = /* GraphQL */ `
       tokens {
         nextToken
       }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+      }
+      status {
+        unlocked
+        canMint
+        canUnlock
+        recovery
+        deploymentFinished
+      }
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -131,9 +191,96 @@ export const deleteColony = /* GraphQL */ `
       tokens {
         nextToken
       }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+      }
+      status {
+        unlocked
+        canMint
+        canUnlock
+        recovery
+        deploymentFinished
+      }
       createdAt
       updatedAt
       colonyNativeTokenId
+    }
+  }
+`;
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
+      id
+      name
+      tokens {
+        nextToken
+      }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    updateUser(input: $input, condition: $condition) {
+      id
+      name
+      tokens {
+        nextToken
+      }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser(
+    $input: DeleteUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    deleteUser(input: $input, condition: $condition) {
+      id
+      name
+      tokens {
+        nextToken
+      }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+      }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -221,6 +368,93 @@ export const deleteColonyTokens = /* GraphQL */ `
         createdAt
         updatedAt
         colonyNativeTokenId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createUserTokens = /* GraphQL */ `
+  mutation CreateUserTokens(
+    $input: CreateUserTokensInput!
+    $condition: ModelUserTokensConditionInput
+  ) {
+    createUserTokens(input: $input, condition: $condition) {
+      id
+      tokenID
+      userID
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateUserTokens = /* GraphQL */ `
+  mutation UpdateUserTokens(
+    $input: UpdateUserTokensInput!
+    $condition: ModelUserTokensConditionInput
+  ) {
+    updateUserTokens(input: $input, condition: $condition) {
+      id
+      tokenID
+      userID
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteUserTokens = /* GraphQL */ `
+  mutation DeleteUserTokens(
+    $input: DeleteUserTokensInput!
+    $condition: ModelUserTokensConditionInput
+  ) {
+    deleteUserTokens(input: $input, condition: $condition) {
+      id
+      tokenID
+      userID
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt

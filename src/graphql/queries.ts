@@ -28,6 +28,16 @@ export const getToken = /* GraphQL */ `
       colonies {
         nextToken
       }
+      users {
+        nextToken
+      }
+      status {
+        unlocked
+        canMint
+        canUnlock
+        recovery
+        deploymentFinished
+      }
       createdAt
       updatedAt
     }
@@ -70,6 +80,21 @@ export const getColony = /* GraphQL */ `
       tokens {
         nextToken
       }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+      }
+      status {
+        unlocked
+        canMint
+        canUnlock
+        recovery
+        deploymentFinished
+      }
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -89,6 +114,44 @@ export const listColonies = /* GraphQL */ `
         createdAt
         updatedAt
         colonyNativeTokenId
+      }
+      nextToken
+    }
+  }
+`;
+export const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      id
+      name
+      tokens {
+        nextToken
+      }
+      profile {
+        avatar
+        thumbnail
+        displayName
+        bio
+        location
+        website
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -132,6 +195,50 @@ export const listColonyTokens = /* GraphQL */ `
         id
         tokenID
         colonyID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getUserTokens = /* GraphQL */ `
+  query GetUserTokens($id: ID!) {
+    getUserTokens(id: $id) {
+      id
+      tokenID
+      userID
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUserTokens = /* GraphQL */ `
+  query ListUserTokens(
+    $filter: ModelUserTokensFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserTokens(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        tokenID
+        userID
         createdAt
         updatedAt
       }
@@ -242,6 +349,56 @@ export const getColonyByName = /* GraphQL */ `
         createdAt
         updatedAt
         colonyNativeTokenId
+      }
+      nextToken
+    }
+  }
+`;
+export const getUserByAddress = /* GraphQL */ `
+  query GetUserByAddress(
+    $id: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    getUserByAddress(
+      id: $id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getUserByName = /* GraphQL */ `
+  query GetUserByName(
+    $name: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    getUserByName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
       }
       nextToken
     }

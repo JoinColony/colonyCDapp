@@ -19,6 +19,23 @@ type Query {
   getTokenFromEverywhere(input: TokenFromEverywhereArguments): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain-dev")
 }
 
+type Profile {
+  avatar: String
+  thumbnail: String
+  displayName: String
+  bio: String
+  location: String
+  website: String
+}
+
+type Status {
+  unlocked: Boolean
+  canMint: Boolean
+  canUnlock: Boolean
+  recovery: Boolean
+  deploymentFinished: Boolean
+}
+
 type Token @model {
   id: ID! @index(name: "byAddress", queryField: "getTokenByAddress") # contract address
   name: String!
@@ -27,6 +44,8 @@ type Token @model {
   type: TokenType
     @index(name: "byType", queryField: "getTokensByType")
   colonies: [Colony] @manyToMany(relationName: "ColonyTokens")
+  users: [User] @manyToMany(relationName: "UserTokens")
+  status: Status
 }
 
 type Colony @model {
@@ -34,4 +53,13 @@ type Colony @model {
   name: String! @index(name: "byName", queryField: "getColonyByName")
   nativeToken: Token! @hasOne
   tokens: [Token] @manyToMany(relationName: "ColonyTokens")
+  profile: Profile
+  status: Status
+}
+
+type User @model {
+  id: ID! @index(name: "byAddress", queryField: "getUserByAddress") # wallet address
+  name: String! @index(name: "byName", queryField: "getUserByName")
+  tokens: [Token] @manyToMany(relationName: "UserTokens")
+  profile: Profile
 }

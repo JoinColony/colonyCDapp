@@ -16,6 +16,8 @@ export type Token = {
   decimals: number,
   type?: TokenType | null,
   colonies?: ModelColonyTokensConnection | null,
+  users?: ModelUserTokensConnection | null,
+  status?: Status | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -43,9 +45,57 @@ export type Colony = {
   name: string,
   nativeToken: Token,
   tokens?: ModelColonyTokensConnection | null,
+  profile?: Profile | null,
+  status?: Status | null,
   createdAt: string,
   updatedAt: string,
   colonyNativeTokenId: string,
+};
+
+export type Profile = {
+  __typename: "Profile",
+  avatar?: string | null,
+  thumbnail?: string | null,
+  displayName?: string | null,
+  bio?: string | null,
+  location?: string | null,
+  website?: string | null,
+};
+
+export type Status = {
+  __typename: "Status",
+  unlocked?: boolean | null,
+  canMint?: boolean | null,
+  canUnlock?: boolean | null,
+  recovery?: boolean | null,
+  deploymentFinished?: boolean | null,
+};
+
+export type ModelUserTokensConnection = {
+  __typename: "ModelUserTokensConnection",
+  items:  Array<UserTokens | null >,
+  nextToken?: string | null,
+};
+
+export type UserTokens = {
+  __typename: "UserTokens",
+  id: string,
+  tokenID: string,
+  userID: string,
+  token: Token,
+  user: User,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type User = {
+  __typename: "User",
+  id: string,
+  name: string,
+  tokens?: ModelUserTokensConnection | null,
+  profile?: Profile | null,
+  createdAt: string,
+  updatedAt: string,
 };
 
 export type CreateTokenInput = {
@@ -54,6 +104,15 @@ export type CreateTokenInput = {
   symbol: string,
   decimals: number,
   type?: TokenType | null,
+  status?: StatusInput | null,
+};
+
+export type StatusInput = {
+  unlocked?: boolean | null,
+  canMint?: boolean | null,
+  canUnlock?: boolean | null,
+  recovery?: boolean | null,
+  deploymentFinished?: boolean | null,
 };
 
 export type ModelTokenConditionInput = {
@@ -129,6 +188,7 @@ export type UpdateTokenInput = {
   symbol?: string | null,
   decimals?: number | null,
   type?: TokenType | null,
+  status?: StatusInput | null,
 };
 
 export type DeleteTokenInput = {
@@ -138,7 +198,18 @@ export type DeleteTokenInput = {
 export type CreateColonyInput = {
   id?: string | null,
   name: string,
+  profile?: ProfileInput | null,
+  status?: StatusInput | null,
   colonyNativeTokenId: string,
+};
+
+export type ProfileInput = {
+  avatar?: string | null,
+  thumbnail?: string | null,
+  displayName?: string | null,
+  bio?: string | null,
+  location?: string | null,
+  website?: string | null,
 };
 
 export type ModelColonyConditionInput = {
@@ -168,10 +239,35 @@ export type ModelIDInput = {
 export type UpdateColonyInput = {
   id: string,
   name?: string | null,
+  profile?: ProfileInput | null,
+  status?: StatusInput | null,
   colonyNativeTokenId: string,
 };
 
 export type DeleteColonyInput = {
+  id: string,
+};
+
+export type CreateUserInput = {
+  id?: string | null,
+  name: string,
+  profile?: ProfileInput | null,
+};
+
+export type ModelUserConditionInput = {
+  name?: ModelStringInput | null,
+  and?: Array< ModelUserConditionInput | null > | null,
+  or?: Array< ModelUserConditionInput | null > | null,
+  not?: ModelUserConditionInput | null,
+};
+
+export type UpdateUserInput = {
+  id: string,
+  name?: string | null,
+  profile?: ProfileInput | null,
+};
+
+export type DeleteUserInput = {
   id: string,
 };
 
@@ -196,6 +292,30 @@ export type UpdateColonyTokensInput = {
 };
 
 export type DeleteColonyTokensInput = {
+  id: string,
+};
+
+export type CreateUserTokensInput = {
+  id?: string | null,
+  tokenID: string,
+  userID: string,
+};
+
+export type ModelUserTokensConditionInput = {
+  tokenID?: ModelIDInput | null,
+  userID?: ModelIDInput | null,
+  and?: Array< ModelUserTokensConditionInput | null > | null,
+  or?: Array< ModelUserTokensConditionInput | null > | null,
+  not?: ModelUserTokensConditionInput | null,
+};
+
+export type UpdateUserTokensInput = {
+  id: string,
+  tokenID?: string | null,
+  userID?: string | null,
+};
+
+export type DeleteUserTokensInput = {
   id: string,
 };
 
@@ -240,6 +360,20 @@ export type ModelColonyConnection = {
   nextToken?: string | null,
 };
 
+export type ModelUserFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  and?: Array< ModelUserFilterInput | null > | null,
+  or?: Array< ModelUserFilterInput | null > | null,
+  not?: ModelUserFilterInput | null,
+};
+
+export type ModelUserConnection = {
+  __typename: "ModelUserConnection",
+  items:  Array<User | null >,
+  nextToken?: string | null,
+};
+
 export type ModelColonyTokensFilterInput = {
   id?: ModelIDInput | null,
   tokenID?: ModelIDInput | null,
@@ -247,6 +381,15 @@ export type ModelColonyTokensFilterInput = {
   and?: Array< ModelColonyTokensFilterInput | null > | null,
   or?: Array< ModelColonyTokensFilterInput | null > | null,
   not?: ModelColonyTokensFilterInput | null,
+};
+
+export type ModelUserTokensFilterInput = {
+  id?: ModelIDInput | null,
+  tokenID?: ModelIDInput | null,
+  userID?: ModelIDInput | null,
+  and?: Array< ModelUserTokensFilterInput | null > | null,
+  or?: Array< ModelUserTokensFilterInput | null > | null,
+  not?: ModelUserTokensFilterInput | null,
 };
 
 export enum ModelSortDirection {
@@ -297,6 +440,18 @@ export type CreateTokenMutation = {
       __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
     } | null,
+    users?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    status?:  {
+      __typename: "Status",
+      unlocked?: boolean | null,
+      canMint?: boolean | null,
+      canUnlock?: boolean | null,
+      recovery?: boolean | null,
+      deploymentFinished?: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -319,6 +474,18 @@ export type UpdateTokenMutation = {
       __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
     } | null,
+    users?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    status?:  {
+      __typename: "Status",
+      unlocked?: boolean | null,
+      canMint?: boolean | null,
+      canUnlock?: boolean | null,
+      recovery?: boolean | null,
+      deploymentFinished?: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -340,6 +507,18 @@ export type DeleteTokenMutation = {
     colonies?:  {
       __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
+    } | null,
+    users?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    status?:  {
+      __typename: "Status",
+      unlocked?: boolean | null,
+      canMint?: boolean | null,
+      canUnlock?: boolean | null,
+      recovery?: boolean | null,
+      deploymentFinished?: boolean | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -369,6 +548,23 @@ export type CreateColonyMutation = {
     tokens?:  {
       __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
+    } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+    } | null,
+    status?:  {
+      __typename: "Status",
+      unlocked?: boolean | null,
+      canMint?: boolean | null,
+      canUnlock?: boolean | null,
+      recovery?: boolean | null,
+      deploymentFinished?: boolean | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -400,6 +596,23 @@ export type UpdateColonyMutation = {
       __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
     } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+    } | null,
+    status?:  {
+      __typename: "Status",
+      unlocked?: boolean | null,
+      canMint?: boolean | null,
+      canUnlock?: boolean | null,
+      recovery?: boolean | null,
+      deploymentFinished?: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -430,9 +643,110 @@ export type DeleteColonyMutation = {
       __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
     } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+    } | null,
+    status?:  {
+      __typename: "Status",
+      unlocked?: boolean | null,
+      canMint?: boolean | null,
+      canUnlock?: boolean | null,
+      recovery?: boolean | null,
+      deploymentFinished?: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
+  } | null,
+};
+
+export type CreateUserMutationVariables = {
+  input: CreateUserInput,
+  condition?: ModelUserConditionInput | null,
+};
+
+export type CreateUserMutation = {
+  createUser?:  {
+    __typename: "User",
+    id: string,
+    name: string,
+    tokens?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateUserMutationVariables = {
+  input: UpdateUserInput,
+  condition?: ModelUserConditionInput | null,
+};
+
+export type UpdateUserMutation = {
+  updateUser?:  {
+    __typename: "User",
+    id: string,
+    name: string,
+    tokens?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteUserMutationVariables = {
+  input: DeleteUserInput,
+  condition?: ModelUserConditionInput | null,
+};
+
+export type DeleteUserMutation = {
+  deleteUser?:  {
+    __typename: "User",
+    id: string,
+    name: string,
+    tokens?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -538,6 +852,105 @@ export type DeleteColonyTokensMutation = {
   } | null,
 };
 
+export type CreateUserTokensMutationVariables = {
+  input: CreateUserTokensInput,
+  condition?: ModelUserTokensConditionInput | null,
+};
+
+export type CreateUserTokensMutation = {
+  createUserTokens?:  {
+    __typename: "UserTokens",
+    id: string,
+    tokenID: string,
+    userID: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateUserTokensMutationVariables = {
+  input: UpdateUserTokensInput,
+  condition?: ModelUserTokensConditionInput | null,
+};
+
+export type UpdateUserTokensMutation = {
+  updateUserTokens?:  {
+    __typename: "UserTokens",
+    id: string,
+    tokenID: string,
+    userID: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteUserTokensMutationVariables = {
+  input: DeleteUserTokensInput,
+  condition?: ModelUserTokensConditionInput | null,
+};
+
+export type DeleteUserTokensMutation = {
+  deleteUserTokens?:  {
+    __typename: "UserTokens",
+    id: string,
+    tokenID: string,
+    userID: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type GetTokenFromEverywhereQueryVariables = {
   input?: TokenFromEverywhereArguments | null,
 };
@@ -573,6 +986,18 @@ export type GetTokenQuery = {
     colonies?:  {
       __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
+    } | null,
+    users?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    status?:  {
+      __typename: "Status",
+      unlocked?: boolean | null,
+      canMint?: boolean | null,
+      canUnlock?: boolean | null,
+      recovery?: boolean | null,
+      deploymentFinished?: boolean | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -625,6 +1050,23 @@ export type GetColonyQuery = {
       __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
     } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+    } | null,
+    status?:  {
+      __typename: "Status",
+      unlocked?: boolean | null,
+      canMint?: boolean | null,
+      canUnlock?: boolean | null,
+      recovery?: boolean | null,
+      deploymentFinished?: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -647,6 +1089,53 @@ export type ListColoniesQuery = {
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetUserQueryVariables = {
+  id: string,
+};
+
+export type GetUserQuery = {
+  getUser?:  {
+    __typename: "User",
+    id: string,
+    name: string,
+    tokens?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListUsersQueryVariables = {
+  filter?: ModelUserFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListUsersQuery = {
+  listUsers?:  {
+    __typename: "ModelUserConnection",
+    items:  Array< {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -699,6 +1188,59 @@ export type ListColonyTokensQuery = {
       id: string,
       tokenID: string,
       colonyID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetUserTokensQueryVariables = {
+  id: string,
+};
+
+export type GetUserTokensQuery = {
+  getUserTokens?:  {
+    __typename: "UserTokens",
+    id: string,
+    tokenID: string,
+    userID: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListUserTokensQueryVariables = {
+  filter?: ModelUserTokensFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListUserTokensQuery = {
+  listUserTokens?:  {
+    __typename: "ModelUserTokensConnection",
+    items:  Array< {
+      __typename: "UserTokens",
+      id: string,
+      tokenID: string,
+      userID: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -802,6 +1344,50 @@ export type GetColonyByNameQuery = {
   } | null,
 };
 
+export type GetUserByAddressQueryVariables = {
+  id: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelUserFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type GetUserByAddressQuery = {
+  getUserByAddress?:  {
+    __typename: "ModelUserConnection",
+    items:  Array< {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetUserByNameQueryVariables = {
+  name: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelUserFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type GetUserByNameQuery = {
+  getUserByName?:  {
+    __typename: "ModelUserConnection",
+    items:  Array< {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type OnCreateTokenSubscription = {
   onCreateToken?:  {
     __typename: "Token",
@@ -813,6 +1399,18 @@ export type OnCreateTokenSubscription = {
     colonies?:  {
       __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
+    } | null,
+    users?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    status?:  {
+      __typename: "Status",
+      unlocked?: boolean | null,
+      canMint?: boolean | null,
+      canUnlock?: boolean | null,
+      recovery?: boolean | null,
+      deploymentFinished?: boolean | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -831,6 +1429,18 @@ export type OnUpdateTokenSubscription = {
       __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
     } | null,
+    users?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    status?:  {
+      __typename: "Status",
+      unlocked?: boolean | null,
+      canMint?: boolean | null,
+      canUnlock?: boolean | null,
+      recovery?: boolean | null,
+      deploymentFinished?: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -847,6 +1457,18 @@ export type OnDeleteTokenSubscription = {
     colonies?:  {
       __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
+    } | null,
+    users?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    status?:  {
+      __typename: "Status",
+      unlocked?: boolean | null,
+      canMint?: boolean | null,
+      canUnlock?: boolean | null,
+      recovery?: boolean | null,
+      deploymentFinished?: boolean | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -871,6 +1493,23 @@ export type OnCreateColonySubscription = {
     tokens?:  {
       __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
+    } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+    } | null,
+    status?:  {
+      __typename: "Status",
+      unlocked?: boolean | null,
+      canMint?: boolean | null,
+      canUnlock?: boolean | null,
+      recovery?: boolean | null,
+      deploymentFinished?: boolean | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -897,6 +1536,23 @@ export type OnUpdateColonySubscription = {
       __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
     } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+    } | null,
+    status?:  {
+      __typename: "Status",
+      unlocked?: boolean | null,
+      canMint?: boolean | null,
+      canUnlock?: boolean | null,
+      recovery?: boolean | null,
+      deploymentFinished?: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -922,9 +1578,95 @@ export type OnDeleteColonySubscription = {
       __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
     } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+    } | null,
+    status?:  {
+      __typename: "Status",
+      unlocked?: boolean | null,
+      canMint?: boolean | null,
+      canUnlock?: boolean | null,
+      recovery?: boolean | null,
+      deploymentFinished?: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
+  } | null,
+};
+
+export type OnCreateUserSubscription = {
+  onCreateUser?:  {
+    __typename: "User",
+    id: string,
+    name: string,
+    tokens?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateUserSubscription = {
+  onUpdateUser?:  {
+    __typename: "User",
+    id: string,
+    name: string,
+    tokens?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteUserSubscription = {
+  onDeleteUser?:  {
+    __typename: "User",
+    id: string,
+    name: string,
+    tokens?:  {
+      __typename: "ModelUserTokensConnection",
+      nextToken?: string | null,
+    } | null,
+    profile?:  {
+      __typename: "Profile",
+      avatar?: string | null,
+      thumbnail?: string | null,
+      displayName?: string | null,
+      bio?: string | null,
+      location?: string | null,
+      website?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -1009,6 +1751,90 @@ export type OnDeleteColonyTokensSubscription = {
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateUserTokensSubscription = {
+  onCreateUserTokens?:  {
+    __typename: "UserTokens",
+    id: string,
+    tokenID: string,
+    userID: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateUserTokensSubscription = {
+  onUpdateUserTokens?:  {
+    __typename: "UserTokens",
+    id: string,
+    tokenID: string,
+    userID: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteUserTokensSubscription = {
+  onDeleteUserTokens?:  {
+    __typename: "UserTokens",
+    id: string,
+    tokenID: string,
+    userID: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
     },
     createdAt: string,
     updatedAt: string,
