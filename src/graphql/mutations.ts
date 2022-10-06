@@ -19,12 +19,9 @@ export const createToken = /* GraphQL */ `
       users {
         nextToken
       }
-      status {
-        unlocked
-        canMint
-        canUnlock
-        recovery
-        deploymentFinished
+      chain {
+        network
+        chainId
       }
       createdAt
       updatedAt
@@ -48,12 +45,9 @@ export const updateToken = /* GraphQL */ `
       users {
         nextToken
       }
-      status {
-        unlocked
-        canMint
-        canUnlock
-        recovery
-        deploymentFinished
+      chain {
+        network
+        chainId
       }
       createdAt
       updatedAt
@@ -77,12 +71,9 @@ export const deleteToken = /* GraphQL */ `
       users {
         nextToken
       }
-      status {
-        unlocked
-        canMint
-        canUnlock
-        recovery
-        deploymentFinished
+      chain {
+        network
+        chainId
       }
       createdAt
       updatedAt
@@ -116,13 +107,18 @@ export const createColony = /* GraphQL */ `
         bio
         location
         website
+        email
       }
       status {
-        unlocked
-        canMint
-        canUnlock
         recovery
-        deploymentFinished
+        deployed
+      }
+      chain {
+        network
+        chainId
+      }
+      watchers {
+        nextToken
       }
       createdAt
       updatedAt
@@ -157,13 +153,18 @@ export const updateColony = /* GraphQL */ `
         bio
         location
         website
+        email
       }
       status {
-        unlocked
-        canMint
-        canUnlock
         recovery
-        deploymentFinished
+        deployed
+      }
+      chain {
+        network
+        chainId
+      }
+      watchers {
+        nextToken
       }
       createdAt
       updatedAt
@@ -198,13 +199,18 @@ export const deleteColony = /* GraphQL */ `
         bio
         location
         website
+        email
       }
       status {
-        unlocked
-        canMint
-        canUnlock
         recovery
-        deploymentFinished
+        deployed
+      }
+      chain {
+        network
+        chainId
+      }
+      watchers {
+        nextToken
       }
       createdAt
       updatedAt
@@ -230,6 +236,10 @@ export const createUser = /* GraphQL */ `
         bio
         location
         website
+        email
+      }
+      watchlist {
+        nextToken
       }
       createdAt
       updatedAt
@@ -254,6 +264,10 @@ export const updateUser = /* GraphQL */ `
         bio
         location
         website
+        email
+      }
+      watchlist {
+        nextToken
       }
       createdAt
       updatedAt
@@ -278,6 +292,10 @@ export const deleteUser = /* GraphQL */ `
         bio
         location
         website
+        email
+      }
+      watchlist {
+        nextToken
       }
       createdAt
       updatedAt
@@ -449,6 +467,87 @@ export const deleteUserTokens = /* GraphQL */ `
         type
         createdAt
         updatedAt
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createWatchedColonies = /* GraphQL */ `
+  mutation CreateWatchedColonies(
+    $input: CreateWatchedColoniesInput!
+    $condition: ModelWatchedColoniesConditionInput
+  ) {
+    createWatchedColonies(input: $input, condition: $condition) {
+      id
+      colonyID
+      userID
+      colony {
+        id
+        name
+        createdAt
+        updatedAt
+        colonyNativeTokenId
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateWatchedColonies = /* GraphQL */ `
+  mutation UpdateWatchedColonies(
+    $input: UpdateWatchedColoniesInput!
+    $condition: ModelWatchedColoniesConditionInput
+  ) {
+    updateWatchedColonies(input: $input, condition: $condition) {
+      id
+      colonyID
+      userID
+      colony {
+        id
+        name
+        createdAt
+        updatedAt
+        colonyNativeTokenId
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteWatchedColonies = /* GraphQL */ `
+  mutation DeleteWatchedColonies(
+    $input: DeleteWatchedColoniesInput!
+    $condition: ModelWatchedColoniesConditionInput
+  ) {
+    deleteWatchedColonies(input: $input, condition: $condition) {
+      id
+      colonyID
+      userID
+      colony {
+        id
+        name
+        createdAt
+        updatedAt
+        colonyNativeTokenId
       }
       user {
         id

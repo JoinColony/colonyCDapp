@@ -17,7 +17,7 @@ export type Token = {
   type?: TokenType | null,
   colonies?: ModelColonyTokensConnection | null,
   users?: ModelUserTokensConnection | null,
-  status?: Status | null,
+  chain?: Chain | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -46,7 +46,9 @@ export type Colony = {
   nativeToken: Token,
   tokens?: ModelColonyTokensConnection | null,
   profile?: Profile | null,
-  status?: Status | null,
+  status?: ColonyStatus | null,
+  chain?: Chain | null,
+  watchers?: ModelWatchedColoniesConnection | null,
   createdAt: string,
   updatedAt: string,
   colonyNativeTokenId: string,
@@ -60,15 +62,62 @@ export type Profile = {
   bio?: string | null,
   location?: string | null,
   website?: string | null,
+  email?: string | null,
 };
 
-export type Status = {
-  __typename: "Status",
-  unlocked?: boolean | null,
-  canMint?: boolean | null,
-  canUnlock?: boolean | null,
+export type ColonyStatus = {
+  __typename: "ColonyStatus",
+  nativeToken?: NativeTokenStatus | null,
   recovery?: boolean | null,
-  deploymentFinished?: boolean | null,
+  deployed?: boolean | null,
+};
+
+export type NativeTokenStatus = {
+  __typename: "NativeTokenStatus",
+  unlocked?: boolean | null,
+  mintable?: boolean | null,
+  unlockable?: boolean | null,
+};
+
+export type Chain = {
+  __typename: "Chain",
+  network?: Networks | null,
+  chainId?: number | null,
+};
+
+export enum Networks {
+  LOCAL = "LOCAL",
+  MAINNET = "MAINNET",
+  XDAI = "XDAI",
+}
+
+
+export type ModelWatchedColoniesConnection = {
+  __typename: "ModelWatchedColoniesConnection",
+  items:  Array<WatchedColonies | null >,
+  nextToken?: string | null,
+};
+
+export type WatchedColonies = {
+  __typename: "WatchedColonies",
+  id: string,
+  colonyID: string,
+  userID: string,
+  colony: Colony,
+  user: User,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type User = {
+  __typename: "User",
+  id: string,
+  name: string,
+  tokens?: ModelUserTokensConnection | null,
+  profile?: Profile | null,
+  watchlist?: ModelWatchedColoniesConnection | null,
+  createdAt: string,
+  updatedAt: string,
 };
 
 export type ModelUserTokensConnection = {
@@ -88,31 +137,18 @@ export type UserTokens = {
   updatedAt: string,
 };
 
-export type User = {
-  __typename: "User",
-  id: string,
-  name: string,
-  tokens?: ModelUserTokensConnection | null,
-  profile?: Profile | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
 export type CreateTokenInput = {
   id?: string | null,
   name: string,
   symbol: string,
   decimals: number,
   type?: TokenType | null,
-  status?: StatusInput | null,
+  chain?: ChainInput | null,
 };
 
-export type StatusInput = {
-  unlocked?: boolean | null,
-  canMint?: boolean | null,
-  canUnlock?: boolean | null,
-  recovery?: boolean | null,
-  deploymentFinished?: boolean | null,
+export type ChainInput = {
+  network?: Networks | null,
+  chainId?: number | null,
 };
 
 export type ModelTokenConditionInput = {
@@ -188,7 +224,7 @@ export type UpdateTokenInput = {
   symbol?: string | null,
   decimals?: number | null,
   type?: TokenType | null,
-  status?: StatusInput | null,
+  chain?: ChainInput | null,
 };
 
 export type DeleteTokenInput = {
@@ -199,7 +235,8 @@ export type CreateColonyInput = {
   id?: string | null,
   name: string,
   profile?: ProfileInput | null,
-  status?: StatusInput | null,
+  status?: ColonyStatusInput | null,
+  chain?: ChainInput | null,
   colonyNativeTokenId: string,
 };
 
@@ -210,6 +247,19 @@ export type ProfileInput = {
   bio?: string | null,
   location?: string | null,
   website?: string | null,
+  email?: string | null,
+};
+
+export type ColonyStatusInput = {
+  nativeToken?: NativeTokenStatusInput | null,
+  recovery?: boolean | null,
+  deployed?: boolean | null,
+};
+
+export type NativeTokenStatusInput = {
+  unlocked?: boolean | null,
+  mintable?: boolean | null,
+  unlockable?: boolean | null,
 };
 
 export type ModelColonyConditionInput = {
@@ -240,7 +290,8 @@ export type UpdateColonyInput = {
   id: string,
   name?: string | null,
   profile?: ProfileInput | null,
-  status?: StatusInput | null,
+  status?: ColonyStatusInput | null,
+  chain?: ChainInput | null,
   colonyNativeTokenId: string,
 };
 
@@ -319,6 +370,30 @@ export type DeleteUserTokensInput = {
   id: string,
 };
 
+export type CreateWatchedColoniesInput = {
+  id?: string | null,
+  colonyID: string,
+  userID: string,
+};
+
+export type ModelWatchedColoniesConditionInput = {
+  colonyID?: ModelIDInput | null,
+  userID?: ModelIDInput | null,
+  and?: Array< ModelWatchedColoniesConditionInput | null > | null,
+  or?: Array< ModelWatchedColoniesConditionInput | null > | null,
+  not?: ModelWatchedColoniesConditionInput | null,
+};
+
+export type UpdateWatchedColoniesInput = {
+  id: string,
+  colonyID?: string | null,
+  userID?: string | null,
+};
+
+export type DeleteWatchedColoniesInput = {
+  id: string,
+};
+
 export type TokenFromEverywhereArguments = {
   tokenAddress: string,
 };
@@ -392,6 +467,15 @@ export type ModelUserTokensFilterInput = {
   not?: ModelUserTokensFilterInput | null,
 };
 
+export type ModelWatchedColoniesFilterInput = {
+  id?: ModelIDInput | null,
+  colonyID?: ModelIDInput | null,
+  userID?: ModelIDInput | null,
+  and?: Array< ModelWatchedColoniesFilterInput | null > | null,
+  or?: Array< ModelWatchedColoniesFilterInput | null > | null,
+  not?: ModelWatchedColoniesFilterInput | null,
+};
+
 export enum ModelSortDirection {
   ASC = "ASC",
   DESC = "DESC",
@@ -444,13 +528,10 @@ export type CreateTokenMutation = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
-    status?:  {
-      __typename: "Status",
-      unlocked?: boolean | null,
-      canMint?: boolean | null,
-      canUnlock?: boolean | null,
-      recovery?: boolean | null,
-      deploymentFinished?: boolean | null,
+    chain?:  {
+      __typename: "Chain",
+      network?: Networks | null,
+      chainId?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -478,13 +559,10 @@ export type UpdateTokenMutation = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
-    status?:  {
-      __typename: "Status",
-      unlocked?: boolean | null,
-      canMint?: boolean | null,
-      canUnlock?: boolean | null,
-      recovery?: boolean | null,
-      deploymentFinished?: boolean | null,
+    chain?:  {
+      __typename: "Chain",
+      network?: Networks | null,
+      chainId?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -512,13 +590,10 @@ export type DeleteTokenMutation = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
-    status?:  {
-      __typename: "Status",
-      unlocked?: boolean | null,
-      canMint?: boolean | null,
-      canUnlock?: boolean | null,
-      recovery?: boolean | null,
-      deploymentFinished?: boolean | null,
+    chain?:  {
+      __typename: "Chain",
+      network?: Networks | null,
+      chainId?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -557,14 +632,21 @@ export type CreateColonyMutation = {
       bio?: string | null,
       location?: string | null,
       website?: string | null,
+      email?: string | null,
     } | null,
     status?:  {
-      __typename: "Status",
-      unlocked?: boolean | null,
-      canMint?: boolean | null,
-      canUnlock?: boolean | null,
+      __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deploymentFinished?: boolean | null,
+      deployed?: boolean | null,
+    } | null,
+    chain?:  {
+      __typename: "Chain",
+      network?: Networks | null,
+      chainId?: number | null,
+    } | null,
+    watchers?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -604,14 +686,21 @@ export type UpdateColonyMutation = {
       bio?: string | null,
       location?: string | null,
       website?: string | null,
+      email?: string | null,
     } | null,
     status?:  {
-      __typename: "Status",
-      unlocked?: boolean | null,
-      canMint?: boolean | null,
-      canUnlock?: boolean | null,
+      __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deploymentFinished?: boolean | null,
+      deployed?: boolean | null,
+    } | null,
+    chain?:  {
+      __typename: "Chain",
+      network?: Networks | null,
+      chainId?: number | null,
+    } | null,
+    watchers?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -651,14 +740,21 @@ export type DeleteColonyMutation = {
       bio?: string | null,
       location?: string | null,
       website?: string | null,
+      email?: string | null,
     } | null,
     status?:  {
-      __typename: "Status",
-      unlocked?: boolean | null,
-      canMint?: boolean | null,
-      canUnlock?: boolean | null,
+      __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deploymentFinished?: boolean | null,
+      deployed?: boolean | null,
+    } | null,
+    chain?:  {
+      __typename: "Chain",
+      network?: Networks | null,
+      chainId?: number | null,
+    } | null,
+    watchers?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -688,6 +784,11 @@ export type CreateUserMutation = {
       bio?: string | null,
       location?: string | null,
       website?: string | null,
+      email?: string | null,
+    } | null,
+    watchlist?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -716,6 +817,11 @@ export type UpdateUserMutation = {
       bio?: string | null,
       location?: string | null,
       website?: string | null,
+      email?: string | null,
+    } | null,
+    watchlist?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -744,6 +850,11 @@ export type DeleteUserMutation = {
       bio?: string | null,
       location?: string | null,
       website?: string | null,
+      email?: string | null,
+    } | null,
+    watchlist?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -951,6 +1062,99 @@ export type DeleteUserTokensMutation = {
   } | null,
 };
 
+export type CreateWatchedColoniesMutationVariables = {
+  input: CreateWatchedColoniesInput,
+  condition?: ModelWatchedColoniesConditionInput | null,
+};
+
+export type CreateWatchedColoniesMutation = {
+  createWatchedColonies?:  {
+    __typename: "WatchedColonies",
+    id: string,
+    colonyID: string,
+    userID: string,
+    colony:  {
+      __typename: "Colony",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      colonyNativeTokenId: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateWatchedColoniesMutationVariables = {
+  input: UpdateWatchedColoniesInput,
+  condition?: ModelWatchedColoniesConditionInput | null,
+};
+
+export type UpdateWatchedColoniesMutation = {
+  updateWatchedColonies?:  {
+    __typename: "WatchedColonies",
+    id: string,
+    colonyID: string,
+    userID: string,
+    colony:  {
+      __typename: "Colony",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      colonyNativeTokenId: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteWatchedColoniesMutationVariables = {
+  input: DeleteWatchedColoniesInput,
+  condition?: ModelWatchedColoniesConditionInput | null,
+};
+
+export type DeleteWatchedColoniesMutation = {
+  deleteWatchedColonies?:  {
+    __typename: "WatchedColonies",
+    id: string,
+    colonyID: string,
+    userID: string,
+    colony:  {
+      __typename: "Colony",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      colonyNativeTokenId: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type GetTokenFromEverywhereQueryVariables = {
   input?: TokenFromEverywhereArguments | null,
 };
@@ -991,13 +1195,10 @@ export type GetTokenQuery = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
-    status?:  {
-      __typename: "Status",
-      unlocked?: boolean | null,
-      canMint?: boolean | null,
-      canUnlock?: boolean | null,
-      recovery?: boolean | null,
-      deploymentFinished?: boolean | null,
+    chain?:  {
+      __typename: "Chain",
+      network?: Networks | null,
+      chainId?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1058,14 +1259,21 @@ export type GetColonyQuery = {
       bio?: string | null,
       location?: string | null,
       website?: string | null,
+      email?: string | null,
     } | null,
     status?:  {
-      __typename: "Status",
-      unlocked?: boolean | null,
-      canMint?: boolean | null,
-      canUnlock?: boolean | null,
+      __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deploymentFinished?: boolean | null,
+      deployed?: boolean | null,
+    } | null,
+    chain?:  {
+      __typename: "Chain",
+      network?: Networks | null,
+      chainId?: number | null,
+    } | null,
+    watchers?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1115,6 +1323,11 @@ export type GetUserQuery = {
       bio?: string | null,
       location?: string | null,
       website?: string | null,
+      email?: string | null,
+    } | null,
+    watchlist?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1240,6 +1453,57 @@ export type ListUserTokensQuery = {
       __typename: "UserTokens",
       id: string,
       tokenID: string,
+      userID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetWatchedColoniesQueryVariables = {
+  id: string,
+};
+
+export type GetWatchedColoniesQuery = {
+  getWatchedColonies?:  {
+    __typename: "WatchedColonies",
+    id: string,
+    colonyID: string,
+    userID: string,
+    colony:  {
+      __typename: "Colony",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      colonyNativeTokenId: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListWatchedColoniesQueryVariables = {
+  filter?: ModelWatchedColoniesFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListWatchedColoniesQuery = {
+  listWatchedColonies?:  {
+    __typename: "ModelWatchedColoniesConnection",
+    items:  Array< {
+      __typename: "WatchedColonies",
+      id: string,
+      colonyID: string,
       userID: string,
       createdAt: string,
       updatedAt: string,
@@ -1404,13 +1668,10 @@ export type OnCreateTokenSubscription = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
-    status?:  {
-      __typename: "Status",
-      unlocked?: boolean | null,
-      canMint?: boolean | null,
-      canUnlock?: boolean | null,
-      recovery?: boolean | null,
-      deploymentFinished?: boolean | null,
+    chain?:  {
+      __typename: "Chain",
+      network?: Networks | null,
+      chainId?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1433,13 +1694,10 @@ export type OnUpdateTokenSubscription = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
-    status?:  {
-      __typename: "Status",
-      unlocked?: boolean | null,
-      canMint?: boolean | null,
-      canUnlock?: boolean | null,
-      recovery?: boolean | null,
-      deploymentFinished?: boolean | null,
+    chain?:  {
+      __typename: "Chain",
+      network?: Networks | null,
+      chainId?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1462,13 +1720,10 @@ export type OnDeleteTokenSubscription = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
-    status?:  {
-      __typename: "Status",
-      unlocked?: boolean | null,
-      canMint?: boolean | null,
-      canUnlock?: boolean | null,
-      recovery?: boolean | null,
-      deploymentFinished?: boolean | null,
+    chain?:  {
+      __typename: "Chain",
+      network?: Networks | null,
+      chainId?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1502,14 +1757,21 @@ export type OnCreateColonySubscription = {
       bio?: string | null,
       location?: string | null,
       website?: string | null,
+      email?: string | null,
     } | null,
     status?:  {
-      __typename: "Status",
-      unlocked?: boolean | null,
-      canMint?: boolean | null,
-      canUnlock?: boolean | null,
+      __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deploymentFinished?: boolean | null,
+      deployed?: boolean | null,
+    } | null,
+    chain?:  {
+      __typename: "Chain",
+      network?: Networks | null,
+      chainId?: number | null,
+    } | null,
+    watchers?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1544,14 +1806,21 @@ export type OnUpdateColonySubscription = {
       bio?: string | null,
       location?: string | null,
       website?: string | null,
+      email?: string | null,
     } | null,
     status?:  {
-      __typename: "Status",
-      unlocked?: boolean | null,
-      canMint?: boolean | null,
-      canUnlock?: boolean | null,
+      __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deploymentFinished?: boolean | null,
+      deployed?: boolean | null,
+    } | null,
+    chain?:  {
+      __typename: "Chain",
+      network?: Networks | null,
+      chainId?: number | null,
+    } | null,
+    watchers?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1586,14 +1855,21 @@ export type OnDeleteColonySubscription = {
       bio?: string | null,
       location?: string | null,
       website?: string | null,
+      email?: string | null,
     } | null,
     status?:  {
-      __typename: "Status",
-      unlocked?: boolean | null,
-      canMint?: boolean | null,
-      canUnlock?: boolean | null,
+      __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deploymentFinished?: boolean | null,
+      deployed?: boolean | null,
+    } | null,
+    chain?:  {
+      __typename: "Chain",
+      network?: Networks | null,
+      chainId?: number | null,
+    } | null,
+    watchers?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1618,6 +1894,11 @@ export type OnCreateUserSubscription = {
       bio?: string | null,
       location?: string | null,
       website?: string | null,
+      email?: string | null,
+    } | null,
+    watchlist?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1641,6 +1922,11 @@ export type OnUpdateUserSubscription = {
       bio?: string | null,
       location?: string | null,
       website?: string | null,
+      email?: string | null,
+    } | null,
+    watchlist?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1664,6 +1950,11 @@ export type OnDeleteUserSubscription = {
       bio?: string | null,
       location?: string | null,
       website?: string | null,
+      email?: string | null,
+    } | null,
+    watchlist?:  {
+      __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1828,6 +2119,84 @@ export type OnDeleteUserTokensSubscription = {
       type?: TokenType | null,
       createdAt: string,
       updatedAt: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateWatchedColoniesSubscription = {
+  onCreateWatchedColonies?:  {
+    __typename: "WatchedColonies",
+    id: string,
+    colonyID: string,
+    userID: string,
+    colony:  {
+      __typename: "Colony",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      colonyNativeTokenId: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateWatchedColoniesSubscription = {
+  onUpdateWatchedColonies?:  {
+    __typename: "WatchedColonies",
+    id: string,
+    colonyID: string,
+    userID: string,
+    colony:  {
+      __typename: "Colony",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      colonyNativeTokenId: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteWatchedColoniesSubscription = {
+  onDeleteWatchedColonies?:  {
+    __typename: "WatchedColonies",
+    id: string,
+    colonyID: string,
+    userID: string,
+    colony:  {
+      __typename: "Colony",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      colonyNativeTokenId: string,
     },
     user:  {
       __typename: "User",

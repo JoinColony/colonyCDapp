@@ -31,12 +31,9 @@ export const getToken = /* GraphQL */ `
       users {
         nextToken
       }
-      status {
-        unlocked
-        canMint
-        canUnlock
-        recovery
-        deploymentFinished
+      chain {
+        network
+        chainId
       }
       createdAt
       updatedAt
@@ -87,13 +84,18 @@ export const getColony = /* GraphQL */ `
         bio
         location
         website
+        email
       }
       status {
-        unlocked
-        canMint
-        canUnlock
         recovery
-        deploymentFinished
+        deployed
+      }
+      chain {
+        network
+        chainId
+      }
+      watchers {
+        nextToken
       }
       createdAt
       updatedAt
@@ -134,6 +136,10 @@ export const getUser = /* GraphQL */ `
         bio
         location
         website
+        email
+      }
+      watchlist {
+        nextToken
       }
       createdAt
       updatedAt
@@ -238,6 +244,48 @@ export const listUserTokens = /* GraphQL */ `
       items {
         id
         tokenID
+        userID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getWatchedColonies = /* GraphQL */ `
+  query GetWatchedColonies($id: ID!) {
+    getWatchedColonies(id: $id) {
+      id
+      colonyID
+      userID
+      colony {
+        id
+        name
+        createdAt
+        updatedAt
+        colonyNativeTokenId
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listWatchedColonies = /* GraphQL */ `
+  query ListWatchedColonies(
+    $filter: ModelWatchedColoniesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listWatchedColonies(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        colonyID
         userID
         createdAt
         updatedAt

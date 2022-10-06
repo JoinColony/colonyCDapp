@@ -15,25 +15,45 @@ enum TokenType {
   ERC20
 }
 
+enum Networks {
+  LOCAL
+  MAINNET
+  XDAI
+}
+
 type Query {
   getTokenFromEverywhere(input: TokenFromEverywhereArguments): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain-dev")
 }
 
+# Applies to both Users and Colonies
+# Might need to separate it into two later down the line
 type Profile {
   avatar: String
   thumbnail: String
   displayName: String
   bio: String
   location: String
-  website: String
+  website: AWSURL
+  email: AWSEmail
 }
 
-type Status {
+type NativeTokenStatus {
   unlocked: Boolean
-  canMint: Boolean
-  canUnlock: Boolean
+  mintable: Boolean
+  unlockable: Boolean
+}
+
+type ColonyStatus {
+  nativeToken: NativeTokenStatus
   recovery: Boolean
-  deploymentFinished: Boolean
+  deployed: Boolean
+}
+
+# Applies to both Colonies and Tokens
+# It does not apply to user accounts as they can live on all networks
+type Chain {
+  network: Networks
+  chainId: Int
 }
 
 type Token @model {
@@ -45,7 +65,7 @@ type Token @model {
     @index(name: "byType", queryField: "getTokensByType")
   colonies: [Colony] @manyToMany(relationName: "ColonyTokens")
   users: [User] @manyToMany(relationName: "UserTokens")
-  status: Status
+  chain: Chain
 }
 
 type Colony @model {
@@ -54,7 +74,9 @@ type Colony @model {
   nativeToken: Token! @hasOne
   tokens: [Token] @manyToMany(relationName: "ColonyTokens")
   profile: Profile
-  status: Status
+  status: ColonyStatus
+  chain: Chain
+  watchers: [User] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
 }
 
 type User @model {
@@ -62,4 +84,5 @@ type User @model {
   name: String! @index(name: "byName", queryField: "getUserByName")
   tokens: [Token] @manyToMany(relationName: "UserTokens")
   profile: Profile
+  watchlist: [Colony] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
 }

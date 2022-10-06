@@ -16,12 +16,9 @@ export const onCreateToken = /* GraphQL */ `
       users {
         nextToken
       }
-      status {
-        unlocked
-        canMint
-        canUnlock
-        recovery
-        deploymentFinished
+      chain {
+        network
+        chainId
       }
       createdAt
       updatedAt
@@ -42,12 +39,9 @@ export const onUpdateToken = /* GraphQL */ `
       users {
         nextToken
       }
-      status {
-        unlocked
-        canMint
-        canUnlock
-        recovery
-        deploymentFinished
+      chain {
+        network
+        chainId
       }
       createdAt
       updatedAt
@@ -68,12 +62,9 @@ export const onDeleteToken = /* GraphQL */ `
       users {
         nextToken
       }
-      status {
-        unlocked
-        canMint
-        canUnlock
-        recovery
-        deploymentFinished
+      chain {
+        network
+        chainId
       }
       createdAt
       updatedAt
@@ -104,13 +95,18 @@ export const onCreateColony = /* GraphQL */ `
         bio
         location
         website
+        email
       }
       status {
-        unlocked
-        canMint
-        canUnlock
         recovery
-        deploymentFinished
+        deployed
+      }
+      chain {
+        network
+        chainId
+      }
+      watchers {
+        nextToken
       }
       createdAt
       updatedAt
@@ -142,13 +138,18 @@ export const onUpdateColony = /* GraphQL */ `
         bio
         location
         website
+        email
       }
       status {
-        unlocked
-        canMint
-        canUnlock
         recovery
-        deploymentFinished
+        deployed
+      }
+      chain {
+        network
+        chainId
+      }
+      watchers {
+        nextToken
       }
       createdAt
       updatedAt
@@ -180,13 +181,18 @@ export const onDeleteColony = /* GraphQL */ `
         bio
         location
         website
+        email
       }
       status {
-        unlocked
-        canMint
-        canUnlock
         recovery
-        deploymentFinished
+        deployed
+      }
+      chain {
+        network
+        chainId
+      }
+      watchers {
+        nextToken
       }
       createdAt
       updatedAt
@@ -209,6 +215,10 @@ export const onCreateUser = /* GraphQL */ `
         bio
         location
         website
+        email
+      }
+      watchlist {
+        nextToken
       }
       createdAt
       updatedAt
@@ -230,6 +240,10 @@ export const onUpdateUser = /* GraphQL */ `
         bio
         location
         website
+        email
+      }
+      watchlist {
+        nextToken
       }
       createdAt
       updatedAt
@@ -251,6 +265,10 @@ export const onDeleteUser = /* GraphQL */ `
         bio
         location
         website
+        email
+      }
+      watchlist {
+        nextToken
       }
       createdAt
       updatedAt
@@ -404,6 +422,78 @@ export const onDeleteUserTokens = /* GraphQL */ `
         type
         createdAt
         updatedAt
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateWatchedColonies = /* GraphQL */ `
+  subscription OnCreateWatchedColonies {
+    onCreateWatchedColonies {
+      id
+      colonyID
+      userID
+      colony {
+        id
+        name
+        createdAt
+        updatedAt
+        colonyNativeTokenId
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateWatchedColonies = /* GraphQL */ `
+  subscription OnUpdateWatchedColonies {
+    onUpdateWatchedColonies {
+      id
+      colonyID
+      userID
+      colony {
+        id
+        name
+        createdAt
+        updatedAt
+        colonyNativeTokenId
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteWatchedColonies = /* GraphQL */ `
+  subscription OnDeleteWatchedColonies {
+    onDeleteWatchedColonies {
+      id
+      colonyID
+      userID
+      colony {
+        id
+        name
+        createdAt
+        updatedAt
+        colonyNativeTokenId
       }
       user {
         id
