@@ -27,7 +27,7 @@ ADD docker/files/amplify/credentials.base /root/.aws/credentials
 
 # Generate the local "light" version of package json
 # It gets the amplify version from the CDapp's package.json file
-RUN AMPLIFY_VERSION=$(jq '.dependencies."@aws-amplify/cli"' package.colonyCDapp.json) && echo "{\"scripts\":{\"amplify\":\"amplify\"},\"dependencies\":{\"@aws-amplify/cli\": $AMPLIFY_VERSION}}" > package.json
+RUN AMPLIFY_VERSION=$(jq '.devDependencies."@aws-amplify/cli"' package.colonyCDapp.json) && echo "{\"scripts\":{\"amplify\":\"amplify\"},\"dependencies\":{\"@aws-amplify/cli\": $AMPLIFY_VERSION}}" > package.json
 
 # Install amplify as a dependency
 RUN npm install
