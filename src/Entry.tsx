@@ -16,7 +16,7 @@ import systemMessages from './i18n/en-system-messages';
 // import Routes from './routes';
 import apolloClient from './context/apolloClient';
 
-import TemporaryHome from '~root/Entry';
+import WalletTests from '~root/WalletTests';
 
 // @ts-ignore
 if (!Intl.RelativeTimeFormat) {
@@ -49,7 +49,7 @@ const Entry = ({ store }: Props) => (
           {/* <TokenActivationProvider> */}
           <div className={layout.stretch}>
             {/* <Routes /> */}
-            <TemporaryHome />
+            <WalletTests />
           </div>
           {/* </TokenActivationProvider> */}
         </DialogProvider>

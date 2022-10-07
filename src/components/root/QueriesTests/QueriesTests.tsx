@@ -24,7 +24,7 @@ const client = new ApolloClient({
   connectToDevTools: true,
 });
 
-const Entry = () => {
+const QueriesTests = () => {
   const { data, error, loading } = useQuery(gql(listUsers), {
     client,
   });
@@ -83,4 +83,4 @@ const Entry = () => {
   );
 };
 
-export default Entry;
+export default QueriesTests;

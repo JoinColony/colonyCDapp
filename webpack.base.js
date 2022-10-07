@@ -6,6 +6,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const webpack = require('webpack');
 
 const mode = process.env.NODE_ENV || 'development';
 
@@ -31,6 +32,15 @@ const config = {
       //   '~testutils': path.resolve(__dirname, 'src/__tests__/utils.ts'),
         '~types': path.resolve(__dirname, 'src/types'),
       //   '~dialogs': path.resolve(__dirname, 'src/modules/dashboard/components/Dialogs')
+        assert: 'assert',
+        buffer: 'buffer',
+        crypto: 'crypto-browserify',
+        http: 'stream-http',
+        https: 'https-browserify',
+        os: 'os-browserify/browser',
+        process: 'process/browser',
+        stream: 'stream-browserify',
+        util: 'util'
       },
     ),
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
@@ -148,6 +158,10 @@ const config = {
       template: 'src/templates/index.html',
       favicon: 'src/images/favicon.png',
     }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+      Buffer: ['buffer', 'Buffer']
+    })
   ],
   /*
    * Fix for the XMLHttpRequest compile-time bug.
@@ -160,6 +174,9 @@ const config = {
       xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}',
     },
   ],
+  experiments: {
+    asyncWebAssembly: true
+  },
 };
 
 module.exports = config;

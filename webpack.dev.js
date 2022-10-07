@@ -52,6 +52,7 @@ module.exports = () => ({
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,
+      excludeAssets: /dev-vendors|dev-node|dev-main/
     }),
   ],
 });
