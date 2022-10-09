@@ -1,18 +1,21 @@
-import React, { useMemo, useEffect } from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import React from 'react'; // useEffect // useMemo,
+import // defineMessages,
+// FormattedMessage,
+// useIntl
+'react-intl';
 // import { useParams } from 'react-router-dom';
 // import { useDispatch, useSelector } from 'react-redux';
 
-import Icon from '~shared/Icon';
+// import Icon from '~shared/Icon';
 import MaskedAddress from '~shared/MaskedAddress';
-import MemberReputation from '~shared/MemberReputation';
-import { MiniSpinnerLoader } from '~shared/Preloaders';
-import { Tooltip } from '~shared/Popover';
+// import MemberReputation from '~shared/MemberReputation';
+// import { MiniSpinnerLoader } from '~shared/Preloaders';
+// import { Tooltip } from '~shared/Popover';
 
 // import { GasStationPopover, GasStationProvider } from '~users/GasStation';
 // import UserTokenActivationButton from '~users/UserTokenActivationButton';
 // import { readyTransactionsCount } from '~users/GasStation/transactionGroup';
-// import AvatarDropdown from '~users/AvatarDropdown';
+import AvatarDropdown from '~root/AvatarDropdown';
 // import InboxPopover from '~users/Inbox/InboxPopover';
 // import { ConnectWalletPopover } from '~users/ConnectWalletWizard';
 
@@ -31,63 +34,35 @@ import { SUPPORTED_NETWORKS } from '~constants';
 
 import styles from './UserNavigation.css';
 
-const MSG = defineMessages({
-  inboxTitle: {
-    id: 'pages.NavigationWrapper.UserNavigation.inboxTitle',
-    defaultMessage: 'Go to your Inbox',
-  },
-  connectWallet: {
-    id: 'pages.NavigationWrapper.UserNavigation.connectWallet',
-    defaultMessage: 'Connect Wallet',
-  },
-  wrongNetworkAlert: {
-    id: 'pages.NavigationWrapper.UserNavigation.wrongNetworkAlert',
-    defaultMessage: 'Connected to wrong network',
-  },
-  walletAutologin: {
-    id: 'pages.NavigationWrapper.UserNavigation.walletAutologin',
-    defaultMessage: 'Connecting wallet...',
-  },
-  userReputationTooltip: {
-    id: 'pages.NavigationWrapper.UserNavigation.userReputationTooltip',
-    defaultMessage: 'This is your share of the reputation in this colony',
-  },
-});
+// const MSG = defineMessages({
+//   inboxTitle: {
+//     id: 'pages.NavigationWrapper.UserNavigation.inboxTitle',
+//     defaultMessage: 'Go to your Inbox',
+//   },
+//   connectWallet: {
+//     id: 'pages.NavigationWrapper.UserNavigation.connectWallet',
+//     defaultMessage: 'Connect Wallet',
+//   },
+//   wrongNetworkAlert: {
+//     id: 'pages.NavigationWrapper.UserNavigation.wrongNetworkAlert',
+//     defaultMessage: 'Connected to wrong network',
+//   },
+//   walletAutologin: {
+//     id: 'pages.NavigationWrapper.UserNavigation.walletAutologin',
+//     defaultMessage: 'Connecting wallet...',
+//   },
+//   userReputationTooltip: {
+//     id: 'pages.NavigationWrapper.UserNavigation.userReputationTooltip',
+//     defaultMessage: 'This is your share of the reputation in this colony',
+//   },
+// });
 
 const displayName = 'pages.NavigationWrapper.UserNavigation';
 
 const UserNavigation = () => {
   // const { walletAddress, ethereal, networkId } = useLoggedInUser();
   const networkId = 1;
-  // const { colonyName } = useParams<{
-  //   colonyName: string;
-  // }>();
-  // const dispatch = useDispatch();
-
-  // const { data: colonyData } = useColonyFromNameQuery({
-  //   variables: { name: colonyName, address: '' },
-  // });
-
-  // const { data } = useUserNotificationsQuery({
-  //   variables: { address: walletAddress },
-  // });
-
-  // const {
-  //   data: userData,
-  //   loading: userDataLoading,
-  // } = useUserBalanceWithLockQuery({
-  //   variables: {
-  //     address: walletAddress,
-  //     tokenAddress: colonyData?.processedColony?.nativeTokenAddress || '',
-  //     colonyAddress: colonyData?.colonyAddress || '',
-  //   },
-  // });
-
-  // const notifications = (data && data.user && data.user.notifications) || [];
-  // const hasUnreadNotifications = notifications.some(
-  //   (notification) => !notification.read,
-  // );
-
+  // const { colonyName } = useParams<{src/redux
   // const transactionAndMessageGroups = useSelector(
   //   groupedTransactionsAndMessages,
   // );
@@ -178,6 +153,17 @@ const UserNavigation = () => {
           )}
         </ConnectWalletPopover>
       )} */}
+      <button
+        type="button"
+        className={styles.walletAddressTemp}
+        // ref={ref}
+        // onClick={toggle}
+        data-test="gasStationPopover"
+      >
+        <span>
+          <MaskedAddress address="0x0" />
+        </span>
+      </button>
       {/* {previousWalletConnected && attemptingAutoLogin && userDataLoading ? (
         <div className={styles.walletAutoLogin}>
           <MiniSpinnerLoader title={MSG.walletAutologin} />
@@ -254,6 +240,7 @@ const UserNavigation = () => {
         preventTransactions={!isNetworkAllowed}
         colony={colonyData?.processedColony as Colony}
       /> */}
+      <AvatarDropdown preventTransactions={false} colony={{}} />
     </div>
   );
 };

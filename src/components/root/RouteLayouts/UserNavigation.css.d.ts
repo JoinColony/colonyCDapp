@@ -13,6 +13,7 @@ declare namespace UserNavigationCssNamespace {
     reputation: string;
     walletAddress: string;
     walletAddressActive: string;
+    walletAddressTemp: string;
     walletAutoLogin: string;
     walletWrapper: string;
     wrongNetwork: string;

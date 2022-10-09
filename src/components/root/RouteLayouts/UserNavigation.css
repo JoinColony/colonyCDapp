@@ -115,6 +115,12 @@
   cursor: pointer;
 }
 
+/* @TODO Remove when done */
+.walletAddressTemp {
+  composes: walletAddress;
+  margin: 0 15px 0 0;
+}
+
 .walletAddress > span {
   display: block;
   margin-top: -2px;
