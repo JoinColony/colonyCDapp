@@ -26,7 +26,7 @@ const config = {
         '~images': path.resolve(__dirname, 'src/images'),
       //   '~data': path.resolve(__dirname, 'src/data'),
         '~redux': path.resolve(__dirname, 'src/redux'),
-      //   '~routes': path.resolve(__dirname, 'src/routes'),
+        '~routes': path.resolve(__dirname, 'src/routes'),
         '~utils': path.resolve(__dirname, 'src/utils'),
         '~styles': path.resolve(__dirname, 'src/styles/shared'),
       //   '~testutils': path.resolve(__dirname, 'src/__tests__/utils.ts'),

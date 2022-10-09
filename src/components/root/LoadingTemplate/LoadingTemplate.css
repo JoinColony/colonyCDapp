@@ -1,0 +1,34 @@
+.main {
+  composes: stretchVertical stretchHorizontal from '~styles/layout.css';
+  position: absolute;
+  top: 0;
+  overflow: auto;
+  background: var(--gradient-default);
+}
+
+.mainContent {
+  margin-top: 160px;
+  padding-bottom: var(--pad-large);
+  text-align: center;
+}
+
+.loaderContainer {
+  composes: marginBottomLarge from '~styles/layout.css';
+}
+
+.loadingDelayedOrFailed {
+  margin: 0 auto;
+  height: 108px;
+  width: 380px;
+  font-size: var(--size-medium-l);
+}
+
+.loadingDelayedOrFailedDetail {
+  padding-top: 24px;
+  font-size: var(--size-normal);
+}
+
+.nakedMole {
+  margin: 0 auto;
+  padding-bottom: 12px;
+}

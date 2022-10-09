@@ -38,6 +38,10 @@ const ganacheWalletModule = (accountIndex = 0) => {
             );
             return balance.toString();
           },
+          /*
+           * @TODO Add the "main" transaction methods:
+           * sign, signTransaction, sendTransaction, signTypedData, etc
+           */
         });
         const eventEmitter = new EventEmitter();
         provider.on = eventEmitter.on.bind(eventEmitter);

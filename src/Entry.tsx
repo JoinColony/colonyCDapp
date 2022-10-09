@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
-// import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import { ApolloProvider } from '@apollo/client';
 
@@ -13,10 +13,8 @@ import actionMessages from './i18n/en-actions';
 import eventsMessages from './i18n/en-events';
 import motionMessages from './i18n/en-motions';
 import systemMessages from './i18n/en-system-messages';
-// import Routes from './routes';
+import Routes from './routes';
 import apolloClient from './context/apolloClient';
-
-import WalletTests from '~root/WalletTests';
 
 // @ts-ignore
 if (!Intl.RelativeTimeFormat) {
@@ -44,16 +42,15 @@ const Entry = ({ store }: Props) => (
   >
     <ApolloProvider client={apolloClient}>
       <ReduxProvider store={store}>
-        {/* <BrowserRouter> */}
-        <DialogProvider>
-          {/* <TokenActivationProvider> */}
-          <div className={layout.stretch}>
-            {/* <Routes /> */}
-            <WalletTests />
-          </div>
-          {/* </TokenActivationProvider> */}
-        </DialogProvider>
-        {/* </BrowserRouter> */}
+        <Router>
+          <DialogProvider>
+            {/* <TokenActivationProvider> */}
+            <div className={layout.stretch}>
+              <Routes />
+            </div>
+            {/* </TokenActivationProvider> */}
+          </DialogProvider>
+        </Router>
       </ReduxProvider>
     </ApolloProvider>
   </IntlProvider>

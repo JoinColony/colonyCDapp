@@ -1,4 +1,15 @@
-export const reputationColor: string;
-export const reputationWrapper: string;
-export const reputation: string;
-export const icon: string;
+declare namespace MemberReputationCssNamespace {
+  export interface IMemberReputationCss {
+    icon: string;
+    reputation: string;
+    reputationColor: string;
+    reputationWrapper: string;
+  }
+}
+
+declare const MemberReputationCssModule: MemberReputationCssNamespace.IMemberReputationCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: MemberReputationCssNamespace.IMemberReputationCss;
+};
+
+export = MemberReputationCssModule;

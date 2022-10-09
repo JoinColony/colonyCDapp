@@ -11,18 +11,18 @@ import { all, call, fork, put } from 'redux-saga/effects';
 // import whitelistSagas from './whitelist';
 // import vestingSagas from './vesting';
 // import { setupUsersSagas } from './users';
-import { getWallet } from './wallet';
+// import { getWallet } from './wallet';
 
 // import { WalletMethod } from '../immutable';
-import { createAddress } from '~utils/web3';
+// import { createAddress } from '~utils/web3';
 import { ActionTypes } from '../actionTypes';
 import { AllActions, Action } from '../types/actions';
 
-import {
-  getContext,
-  // setContext,
-  ContextModule,
-} from '~context';
+// import {
+// getContext,
+// setContext,
+// ContextModule,
+// } from '~context';
 // import { setLastWallet } from '~utils/autoLogin';
 // import {
 //   refetchUserNotifications,
@@ -38,16 +38,16 @@ import {
 // import setupResolvers from '~context/setupResolvers';
 import AppLoadingState from '~context/appLoadingState';
 // import { authenticate, clearToken } from '../../../api';
-import ENS from '~context/ENS';
+// import ENS from '~context/ENS';
 
 import {
   // getGasPrices,
-  reinitializeColonyManager,
+  // reinitializeColonyManager,
   putError,
-  createUserWithSecondAttempt,
+  // createUserWithSecondAttempt,
 } from './utils';
 import setupOnBeforeUnload from './setupOnBeforeUnload';
-import { setupUserBalanceListener } from './setupUserBalanceListener';
+// import { setupUserBalanceListener } from './setupUserBalanceListener';
 
 function* setupContextDependentSagas() {
   const appLoadingState: typeof AppLoadingState = AppLoadingState;
@@ -107,8 +107,8 @@ export default function* setupUserContext(
     /*
      * Get the new wallet and set it in context.
      */
-    const wallet = yield call(getWallet, action);
-    const walletAddress = createAddress(wallet.address);
+    // const wallet = yield call(getWallet, action);
+    // const walletAddress = createAddress(wallet.address);
     // let walletNetworkId = '1';
     // @ts-ignore
     // if (window.ethereum) {
@@ -140,9 +140,9 @@ export default function* setupUserContext(
 
     const ens = getContext(ContextModule.ENS);
     */
-    const ens = getContext(ContextModule.ENS);
+    // const ens = getContext(ContextModule.ENS);
 
-    const colonyManager = yield call(reinitializeColonyManager);
+    // const colonyManager = yield call(reinitializeColonyManager);
 
     /*
      * This needs to happen first because USER_CONTEXT_SETUP_SUCCESS causes a redirect
@@ -153,23 +153,23 @@ export default function* setupUserContext(
     yield fork(setupContextDependentSagas);
 
     // Start a forked task to listen for user balance events
-    yield fork(setupUserBalanceListener, walletAddress);
+    // yield fork(setupUserBalanceListener, walletAddress);
 
-    let username;
-    try {
-      const domain = yield ens.getDomain(
-        walletAddress,
-        colonyManager.networkClient,
-      );
-      username = ENS.stripDomainParts('user', domain);
+    // let username;
+    // try {
+    //   const domain = yield ens.getDomain(
+    //     walletAddress,
+    //     colonyManager.networkClient,
+    //   );
+    //   username = ENS.stripDomainParts('user', domain);
 
-      // yield refetchUserNotifications(walletAddress);
-    } catch (caughtError) {
-      console.info(`Could not find username for ${walletAddress}`);
-    }
+    //   // yield refetchUserNotifications(walletAddress);
+    // } catch (caughtError) {
+    //   console.info(`Could not find username for ${walletAddress}`);
+    // }
 
-    const balance = yield colonyManager.provider.getBalance(walletAddress);
-    yield balance;
+    // const balance = yield colonyManager.provider.getBalance(walletAddress);
+    // yield balance;
 
     // @TODO refactor setupUserContext for graphql
     // @BODY eventually we want to move everything to resolvers, so all of this has to happen outside of sagas. There is no need to have a separate state or anything, just set it up in an aync function (instead of WALLET_CREATE), then call this function
@@ -183,7 +183,7 @@ export default function* setupUserContext(
     // };
     // yield setupResolvers(apolloClient, userContext);
 
-    yield createUserWithSecondAttempt(username, true);
+    // yield createUserWithSecondAttempt(username, true);
 
     // yield apolloClient.mutate<
     //   SetLoggedInUserMutation,

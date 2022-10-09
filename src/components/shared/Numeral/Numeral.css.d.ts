@@ -1,11 +1,22 @@
-export const main: string;
-export const sizeSmall: string;
-export const sizeSmallish: string;
-export const sizeMedium: string;
-export const sizeLarge: string;
-export const themePrimary: string;
-export const themeGrey: string;
-export const themeDark: string;
-export const themeBlue: string;
-export const weightMedium: string;
-export const numeral: string;
+declare namespace NumeralCssNamespace {
+  export interface INumeralCss {
+    main: string;
+    numeral: string;
+    sizeLarge: string;
+    sizeMedium: string;
+    sizeSmall: string;
+    sizeSmallish: string;
+    themeBlue: string;
+    themeDark: string;
+    themeGrey: string;
+    themePrimary: string;
+    weightMedium: string;
+  }
+}
+
+declare const NumeralCssModule: NumeralCssNamespace.INumeralCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: NumeralCssNamespace.INumeralCss;
+};
+
+export = NumeralCssModule;

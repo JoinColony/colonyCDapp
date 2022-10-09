@@ -1,0 +1,45 @@
+.layoutMain {
+  composes: stretchVertical stretchHorizontal from '~styles/layout.css';
+  overflow: auto;
+  background-color: var(--grey-blue-2);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 8px;
+  height: 60px;
+  width: 100%;
+}
+
+.logo {
+  flex: 1;
+  margin-left: 13px;
+  max-width: 130px;
+}
+
+.hero {
+  display: block;
+  margin: auto;
+  height: calc(100% - 120px);
+  min-height: min-content;
+  width: 660px;
+}
+
+.herowrapper {
+  padding-top: 100px;
+}
+
+.title {
+  margin: 0;
+  text-align: center;
+}
+
+.description {
+  margin: 10px 0 0 0;
+  text-align: center;
+}
+
+.naked-mole {
+  width: 660px;
+}
