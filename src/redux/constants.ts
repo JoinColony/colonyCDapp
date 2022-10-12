@@ -12,6 +12,3 @@ export const CORE_IPFS_DATA = 'ipfsData';
  */
 export const CORE_MESSAGES = 'messages';
 export const CORE_MESSAGES_LIST = 'list';
-
-export const USERS_NAMESPACE = 'users';
-export const USERS_WALLET = 'wallet';

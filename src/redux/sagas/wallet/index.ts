@@ -2,7 +2,7 @@
 // import { Network } from '@colony/colony-js';
 
 import {
-  call,
+  // call,
   // put,
   spawn,
   // take
@@ -19,7 +19,6 @@ import {
 // } from '@purser/metamask';
 // import { addChain } from '@purser/metamask/lib-esm/helpers';
 
-import { WalletMethod } from '../../immutable';
 import { ActionTypes } from '../../actionTypes';
 import {
   Action,
@@ -141,17 +140,7 @@ function* createEtherealWallet() {
 }
 
 export function* getWallet(action: Action<ActionTypes.WALLET_CREATE>) {
-  const { method } = action.payload;
-  switch (method) {
-    case WalletMethod.MetaMask:
-      return yield call(openMetamaskWallet);
-    case WalletMethod.Ethereal:
-      return yield call(createEtherealWallet);
-    case WalletMethod.Ganache:
-      return yield call(openGanacheWallet, action);
-    default:
-      throw new Error(
-        `Method ${method} is not recognized for getting a wallet`,
-      );
-  }
+  yield openMetamaskWallet();
+  yield openGanacheWallet(action);
+  yield createEtherealWallet();
 }
