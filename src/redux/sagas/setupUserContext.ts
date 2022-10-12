@@ -10,19 +10,19 @@ import { all, call, fork, put } from 'redux-saga/effects';
 // import motionSagas from './motions';
 // import whitelistSagas from './whitelist';
 // import vestingSagas from './vesting';
-// import { setupUsersSagas } from './users';
-// import { getWallet } from './wallet';
+import { setupUsersSagas } from './users';
+import { getWallet } from './wallet';
 
 // import { WalletMethod } from '../immutable';
 // import { createAddress } from '~utils/web3';
 import { ActionTypes } from '../actionTypes';
 import { AllActions, Action } from '../types/actions';
 
-// import {
-// getContext,
-// setContext,
-// ContextModule,
-// } from '~context';
+import {
+  getContext,
+  setContext,
+  ContextModule,
+} from '~context';
 // import { setLastWallet } from '~utils/autoLogin';
 // import {
 //   refetchUserNotifications,
@@ -60,7 +60,7 @@ function* setupContextDependentSagas() {
     // call(motionSagas),
     // call(whitelistSagas),
     // call(vestingSagas),
-    // call(setupUsersSagas),
+    call(setupUsersSagas),
     /**
      * We've loaded all the context sagas, so we can proceed with redering
      * all the app's routes
@@ -74,13 +74,7 @@ function* setupContextDependentSagas() {
  * context that depends on it (the wallet itself, the DDB, the ColonyManager),
  * and then any other context that depends on that.
  */
-export default function* setupUserContext(
-  action: Action<ActionTypes.WALLET_CREATE>,
-) {
-  const {
-    meta,
-    // payload: { method },
-  } = action;
+export default function* setupUserContext() {
   try {
     // const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -107,7 +101,14 @@ export default function* setupUserContext(
     /*
      * Get the new wallet and set it in context.
      */
-    // const wallet = yield call(getWallet, action);
+    const wallet = yield call(getWallet);
+
+    setContext(ContextModule.Wallet, wallet);
+
+    yield put<AllActions>({
+      type: ActionTypes.WALLET_OPEN_SUCCESS,
+    });
+
     // const walletAddress = createAddress(wallet.address);
     // let walletNetworkId = '1';
     // @ts-ignore
@@ -126,7 +127,7 @@ export default function* setupUserContext(
     yield authenticate(wallet);
 
     yield put<AllActions>({
-      type: ActionTypes.WALLET_CREATE_SUCCESS,
+      type: ActionTypes.WALLET_OPEN_SUCCESS,
       payload: {
         walletType: method,
       },
@@ -172,7 +173,7 @@ export default function* setupUserContext(
     // yield balance;
 
     // @TODO refactor setupUserContext for graphql
-    // @BODY eventually we want to move everything to resolvers, so all of this has to happen outside of sagas. There is no need to have a separate state or anything, just set it up in an aync function (instead of WALLET_CREATE), then call this function
+    // @BODY eventually we want to move everything to resolvers, so all of this has to happen outside of sagas. There is no need to have a separate state or anything, just set it up in an aync function (instead of WALLET_OPEN), then call this function
     // const ipfsWithFallback = getContext(ContextModule.IPFSWithFallback);
     // const userContext = {
     //   apolloClient,
@@ -212,7 +213,7 @@ export default function* setupUserContext(
       type: ActionTypes.USER_CONTEXT_SETUP_SUCCESS,
     });
   } catch (caughtError) {
-    return yield putError(ActionTypes.WALLET_CREATE_ERROR, caughtError, meta);
+    return yield putError(ActionTypes.WALLET_OPEN_ERROR, caughtError, meta);
   }
   return null;
 }

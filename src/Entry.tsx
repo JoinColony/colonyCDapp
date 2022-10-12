@@ -15,6 +15,7 @@ import motionMessages from './i18n/en-motions';
 import systemMessages from './i18n/en-system-messages';
 import Routes from './routes';
 import apolloClient from './context/apolloClient';
+import { AppContextProvider } from '~context';
 
 // @ts-ignore
 if (!Intl.RelativeTimeFormat) {
@@ -42,15 +43,17 @@ const Entry = ({ store }: Props) => (
   >
     <ApolloProvider client={apolloClient}>
       <ReduxProvider store={store}>
-        <Router>
-          <DialogProvider>
-            {/* <TokenActivationProvider> */}
-            <div className={layout.stretch}>
-              <Routes />
-            </div>
-            {/* </TokenActivationProvider> */}
-          </DialogProvider>
-        </Router>
+        <AppContextProvider>
+          <Router>
+            <DialogProvider>
+              {/* <TokenActivationProvider> */}
+              <div className={layout.stretch}>
+                <Routes />
+              </div>
+              {/* </TokenActivationProvider> */}
+            </DialogProvider>
+          </Router>
+        </AppContextProvider>
       </ReduxProvider>
     </ApolloProvider>
   </IntlProvider>

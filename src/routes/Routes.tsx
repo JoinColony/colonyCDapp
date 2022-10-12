@@ -30,7 +30,7 @@ import LadingPage from '~root/LandingPage';
 // import appLoadingContext from '~context/appLoadingState';
 // import ColonyFunding from '~dashboard/ColonyFunding';
 // import { useLoggedInUser } from '~data/index';
-// import { ActionTypes } from '~redux/index';
+// import { ActionTypes } from '~redux';
 
 import {
   // COLONY_EVENTS_ROUTE,
@@ -76,7 +76,7 @@ const Routes = () => {
   // const dispatch = useDispatch();
   // useEffect(() => {
   //   dispatch({
-  //     type: ActionTypes.WALLET_CREATE,
+  //     type: ActionTypes.WALLET_OPEN,
   //   });
   // }, [dispatch]);
 

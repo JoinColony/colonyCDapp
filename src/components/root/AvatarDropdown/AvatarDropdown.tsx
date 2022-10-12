@@ -6,6 +6,7 @@ import UserAvatar from '~shared/UserAvatar';
 // import HookedUserAvatar from '~users/HookedUserAvatar';
 // import { useLoggedInUser, Colony } from '~data/index';
 import { removeValueUnits } from '~utils/css';
+import { useAppContext } from '~hooks';
 
 import AvatarDropdownPopover from './AvatarDropdownPopover';
 
@@ -24,8 +25,9 @@ const AvatarDropdown = ({
   colony = {},
 }: Props) => {
   // const { username, walletAddress, ethereal } = useLoggedInUser();
+  const { wallet } = useAppContext();
+
   const username = 'tempUser';
-  const walletAddress = '0x0';
 
   const { refWidth, horizontalOffset, verticalOffset } = styles;
 
@@ -54,8 +56,7 @@ const AvatarDropdown = ({
         <AvatarDropdownPopover
           closePopover={close}
           username={username}
-          // walletConnected={!!walletAddress && !ethereal}
-          walletConnected
+          walletConnected={!!wallet?.address}
           preventTransactions={preventTransactions}
           colony={colony}
         />
@@ -84,7 +85,11 @@ const AvatarDropdown = ({
           type="button"
           data-test="avatarDropdown"
         >
-          <UserAvatar address={walletAddress} notSet={false} size="s" />
+          <UserAvatar
+            address={wallet?.address || ''}
+            notSet={!wallet?.address}
+            size="s"
+          />
         </button>
       )}
     </Popover>

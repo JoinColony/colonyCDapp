@@ -2,6 +2,7 @@ declare namespace UserNavigationCssNamespace {
   export interface IUserNavigationCss {
     connectWalletButton: string;
     connectWalletButtonActive: string;
+    connectWalletButtonLoading: string;
     elementWrapper: string;
     main: string;
     networkInfo: string;

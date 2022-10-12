@@ -11,12 +11,14 @@ import DropdownMenu, {
   DropdownMenuSection,
   DropdownMenuItem,
 } from '~shared/DropdownMenu';
-import { ActionTypes } from '~redux/index';
+import { ActionTypes } from '~redux';
 import {
   USER_EDIT_ROUTE,
   CREATE_COLONY_ROUTE,
   CREATE_USER_ROUTE,
 } from '~routes/index';
+import { useAppContext } from '~hooks';
+
 
 import styles from './AvatarDropdownPopover.css';
 
@@ -69,6 +71,15 @@ const AvatarDropdownPopover = ({
   preventTransactions = false,
   colony,
 }: Props) => {
+  const { updateWallet } = useAppContext();
+
+  // const handleLogout = useCallback(() => {
+  //   if (updateWallet) {
+  //     console.log('called?')
+  //     updateWallet();
+  //   }
+  // }, [updateWallet]);
+
   const renderUserSection = useCallback(() => {
     return (
       <DropdownMenuSection separator>
@@ -144,6 +155,7 @@ const AvatarDropdownPopover = ({
             submit={ActionTypes.USER_LOGOUT}
             error={ActionTypes.USER_LOGOUT_ERROR}
             success={ActionTypes.USER_LOGOUT_SUCCESS}
+            onSuccess={updateWallet}
           />
         </DropdownMenuItem>
       </DropdownMenuSection>
@@ -151,21 +163,20 @@ const AvatarDropdownPopover = ({
 
   return (
     <DropdownMenu onClick={closePopover}>
-      {/* {!preventTransactions ? (
+      {!preventTransactions ? (
         <>
-          {renderUserSection()}
-          {renderColonySection()}
+          {/* {renderUserSection()} */}
+          {/* {renderColonySection()} */}
           {renderHelperSection()}
           {renderMetaSection()}
         </>
       ) : (
         <>
-          {renderUserSection()}
+          {/* {renderUserSection()} */}
           {renderHelperSection()}
           {renderMetaSection()}
         </>
-      )} */}
-      {renderHelperSection()}
+      )}
     </DropdownMenu>
   );
 };

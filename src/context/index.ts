@@ -1,11 +1,15 @@
 import { ApolloClient as ApolloClientClass } from '@apollo/client';
 
+import { Wallet as WalletType } from '~types';
+
 // import ColonyManagerClass from './ColonyManager';
 
 import apolloClient from './apolloClient';
 import UserSettingsClass from './userSettings';
 
 export { UserSettingsClass as UserSettings };
+
+export { AppContext, AppContextProvider } from './AppContext';
 
 export enum ContextModule {
   Wallet = 'wallet',
@@ -20,7 +24,7 @@ export interface IpfsWithFallbackSkeleton {
 }
 
 export interface Context {
-  [ContextModule.Wallet]?: Record<string, any>;
+  [ContextModule.Wallet]?: WalletType;
   // [ContextModule.ColonyManager]?: ColonyManagerClass;
   [ContextModule.ApolloClient]?: ApolloClientClass<object>;
   [ContextModule.UserSettings]?: UserSettingsClass;

@@ -35,6 +35,7 @@ export { default as useTokenInfo, TokenInfoProvider } from './useTokenInfo';
 export { default as useUserAvatarImageFromIPFS } from './useUserAvatarImageFromIPFS';
 export { default as useUserSettings, SlotKey } from './useUserSettings';
 export { default as useWindowSize } from './useWindowSize';
+export { default as useAppContext } from './useAppContext';
 
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously

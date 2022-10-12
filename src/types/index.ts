@@ -8,6 +8,7 @@ export * from './users';
 export * from './tokens';
 export * from './transactions';
 export * from './contracts';
+export * from './wallet';
 
 export type WithKey = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

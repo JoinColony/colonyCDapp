@@ -1,12 +1,21 @@
 // import { eventChannel } from 'redux-saga';
 // import { Network } from '@colony/colony-js';
 
+import Onboard, { ConnectOptions } from '@web3-onboard/core';
+// import { WalletInit } from '@web3-onboard/common';
+import injectedModule from '@web3-onboard/injected-wallets';
+import ledgerModule from '@web3-onboard/ledger';
 import {
   // call,
   // put,
   spawn,
   // take
 } from 'redux-saga/effects';
+
+import colonyIcon from '~images/icons/colony-logo.svg';
+import ganacheModule from './ganacheModule';
+
+import { private_keys as ganachePrivateKeys } from '../../../../amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json';
 
 // import {
 //   create as createSoftwareWallet,
@@ -19,6 +28,8 @@ import {
 // } from '@purser/metamask';
 // import { addChain } from '@purser/metamask/lib-esm/helpers';
 
+import { setLastWallet, getLastWallet } from '~utils/autoLogin';
+
 import { ActionTypes } from '../../actionTypes';
 import {
   Action,
@@ -27,6 +38,49 @@ import {
 import { Address } from '~types';
 import { createAddress } from '~utils/web3';
 // import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';
+
+const injected = injectedModule();
+const ledger = ledgerModule();
+const ganache =
+  process.env.NODE_ENV === 'development'
+    ? Object.values(ganachePrivateKeys).map((privateKey, index) =>
+        ganacheModule(privateKey, index + 1),
+      )
+    : [];
+
+const onboard = Onboard({
+  wallets: [injected, ledger, ...ganache],
+  /*
+   * @TODO This needs to be set up properly
+   */
+  chains: [
+    {
+      id: '0x2889B3',
+      token: 'ETH',
+      label: 'Ganache',
+      rpcUrl: 'http://localhost:8545',
+    },
+  ],
+  accountCenter: {
+    desktop: { enabled: false },
+    mobile: { enabled: false },
+  },
+  connect: {
+    showSidebar: false,
+  },
+  notify: {
+    desktop: { enabled: false, transactionHandler: () => {} },
+    mobile: { enabled: false, transactionHandler: () => {} },
+  },
+  /*
+   * @TODO These need to be message descriptors
+   */
+  appMetadata: {
+    name: 'Colony CDapp',
+    icon: colonyIcon.content.replace('symbol', 'svg'),
+    description: `A interation of the Colony Dapp sporting both a fully decentralized operating mode, as well as a mode enhanced by a metadata caching layer`,
+  },
+});
 
 /**
  * Watch for changes in Metamask account, and log the user out when they happen.
@@ -113,7 +167,7 @@ function* openMetamaskWallet() {
  */
 function* openGanacheWallet({
   payload: { privateKey },
-}: Action<ActionTypes.WALLET_CREATE>) {
+}: Action<ActionTypes.WALLET_OPEN>) {
   // return yield call(purserOpenSoftwareWallet, {
   //   privateKey,
   // });
@@ -139,8 +193,38 @@ function* createEtherealWallet() {
   return wallet;
 }
 
-export function* getWallet(action: Action<ActionTypes.WALLET_CREATE>) {
-  yield openMetamaskWallet();
-  yield openGanacheWallet(action);
-  yield createEtherealWallet();
+export function* getWallet() {
+  // yield openMetamaskWallet();
+  // yield openGanacheWallet(action);
+  // yield createEtherealWallet();
+
+  const lastWalletLabel = getLastWallet();
+  const connectOptions = {
+    autoSelect: {
+      label: lastWalletLabel,
+      disableModals: true,
+    },
+  };
+
+  let wallet;
+  if (lastWalletLabel) {
+    [wallet] = yield onboard.connectWallet(connectOptions as ConnectOptions);
+  } else {
+    [wallet] = yield onboard.connectWallet();
+  }
+
+  if (!wallet) {
+    return undefined;
+  }
+
+  setLastWallet(wallet.label);
+
+  if (wallet.label.includes('Dev')) {
+    wallet.label = 'Ganache';
+  }
+  const [account] = wallet.accounts;
+  return {
+    ...wallet,
+    ...account,
+  };
 }
