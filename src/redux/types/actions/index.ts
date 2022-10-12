@@ -1,13 +1,11 @@
 import { ColonyActionTypes } from './colony';
 import { ColonyActionsActionTypes } from './colonyActions';
-import { ConnectionActionTypes } from './connection';
 import { MotionActionTypes } from './motion';
 import { GasPricesActionTypes } from './gasPrices';
 import { IpfsActionTypes } from './ipfs';
 import { TransactionActionTypes } from './transaction';
 import { MessageActionTypes } from './message';
 import { UserActionTypes } from './user';
-import { WalletActionTypes } from './wallet';
 import { WhitelistActionTypes } from './whitelist';
 import { MetacolonyVestingTypes } from './vesting';
 
@@ -98,13 +96,11 @@ export interface ErrorActionType<T extends string, M>
 export type AllActions =
   | ColonyActionTypes
   | ColonyActionsActionTypes
-  | ConnectionActionTypes
   | GasPricesActionTypes
   | IpfsActionTypes
   | TransactionActionTypes
   | MessageActionTypes
   | UserActionTypes
-  | WalletActionTypes
   | WhitelistActionTypes
   | MotionActionTypes
   | MetacolonyVestingTypes;
