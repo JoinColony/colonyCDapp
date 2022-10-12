@@ -1,35 +1,16 @@
 import { ApolloClient as ApolloClientClass } from '@apollo/client';
 
-import ColonyManagerClass from './ColonyManager';
+// import ColonyManagerClass from './ColonyManager';
 
 import apolloClient from './apolloClient';
-// import ipfsWithFallback from './ipfsWithFallbackContext';
 import UserSettingsClass from './userSettings';
 
 export { UserSettingsClass as UserSettings };
 
-/*
- * @TOOD Refactor to remove the use of purser
- */
-// interface ExtendedPurserWallet extends PurserWallet {
-//   mmProvider?: {
-//     _network?: {
-//       chainId?: number;
-//       name?: string;
-//     };
-//   };
-//   signTypedData: (
-//     typedData: Record<string, any>,
-//   ) => Promise<{ signature: string; r: string; s: string; v?: number }>;
-// }
-
 export enum ContextModule {
   Wallet = 'wallet',
-  ColonyManager = 'colonyManager',
-  // IPFS = 'ipfs',
+  // ColonyManager = 'colonyManager',
   ApolloClient = 'apolloClient',
-  // Pinata = 'pinataClient',
-  // IPFSWithFallback = 'ipfsWithFallback',
   UserSettings = 'userSettings',
 }
 
@@ -40,18 +21,15 @@ export interface IpfsWithFallbackSkeleton {
 
 export interface Context {
   [ContextModule.Wallet]?: Record<string, any>;
-  [ContextModule.ColonyManager]?: ColonyManagerClass;
-  // @todo type the client cache properly
+  // [ContextModule.ColonyManager]?: ColonyManagerClass;
   [ContextModule.ApolloClient]?: ApolloClientClass<object>;
-  // [ContextModule.IPFSWithFallback]?: IpfsWithFallbackSkeleton;
   [ContextModule.UserSettings]?: UserSettingsClass;
 }
 
 const context: Context = {
   [ContextModule.ApolloClient]: apolloClient,
-  [ContextModule.ColonyManager]: undefined,
+  // [ContextModule.ColonyManager]: undefined,
   [ContextModule.Wallet]: undefined,
-  // [ContextModule.IPFSWithFallback]: ipfsWithFallback,
   [ContextModule.UserSettings]: undefined,
 };
 
