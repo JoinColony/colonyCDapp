@@ -1,4 +1,3 @@
-export const CORE_NAMESPACE = 'core';
 export const CORE_CONNECTION = 'connection';
 export const CORE_CONNECTION_STATS = 'stats';
 export const CORE_CONNECTION_ERRORS = 'errors';

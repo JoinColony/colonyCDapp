@@ -1,5 +1,3 @@
-import { combineReducers } from 'redux-immutable';
-
 import transactionsReducer from './transactions';
 import gasPricesReducer from './gasPrices';
 import ipfsDataReducer from './ipfsData';
@@ -14,10 +12,10 @@ import {
   CORE_TRANSACTIONS,
 } from '../constants';
 
-export const coreReducer = combineReducers({
+export const coreReducer = {
   [CORE_CONNECTION]: connectionReducer,
   [CORE_GAS_PRICES]: gasPricesReducer,
   [CORE_IPFS_DATA]: ipfsDataReducer,
   [CORE_MESSAGES]: messagesReducer,
   [CORE_TRANSACTIONS]: transactionsReducer,
-});
+};
