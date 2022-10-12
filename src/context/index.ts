@@ -2,9 +2,6 @@ import { ApolloClient as ApolloClientClass } from '@apollo/client';
 
 import ColonyManagerClass from './ColonyManager';
 
-import ENSClass from './ENS';
-
-import ens from './ensContext';
 import apolloClient from './apolloClient';
 // import ipfsWithFallback from './ipfsWithFallbackContext';
 import UserSettingsClass from './userSettings';
@@ -31,7 +28,6 @@ export enum ContextModule {
   ColonyManager = 'colonyManager',
   // IPFS = 'ipfs',
   ApolloClient = 'apolloClient',
-  ENS = 'ens',
   // Pinata = 'pinataClient',
   // IPFSWithFallback = 'ipfsWithFallback',
   UserSettings = 'userSettings',
@@ -47,7 +43,6 @@ export interface Context {
   [ContextModule.ColonyManager]?: ColonyManagerClass;
   // @todo type the client cache properly
   [ContextModule.ApolloClient]?: ApolloClientClass<object>;
-  [ContextModule.ENS]?: ENSClass;
   // [ContextModule.IPFSWithFallback]?: IpfsWithFallbackSkeleton;
   [ContextModule.UserSettings]?: UserSettingsClass;
 }
@@ -55,7 +50,6 @@ export interface Context {
 const context: Context = {
   [ContextModule.ApolloClient]: apolloClient,
   [ContextModule.ColonyManager]: undefined,
-  [ContextModule.ENS]: ens,
   [ContextModule.Wallet]: undefined,
   // [ContextModule.IPFSWithFallback]: ipfsWithFallback,
   [ContextModule.UserSettings]: undefined,

@@ -12,11 +12,8 @@ import {
   ExtensionClient,
 } from '@colony/colony-js';
 
-import ENS from './ENS';
 import { isAddress } from '~utils/web3';
 import { Address, AddressOrENSName } from '~types/index';
-
-import ens from './ensContext';
 
 export default class ColonyManager {
   private metaColonyClient?: any;
@@ -82,15 +79,15 @@ export default class ColonyManager {
     return client as Promise<ExtensionClient>;
   }
 
+  /*
+   * @TODO Thiss needs to be refactored (or removed), as the ENS logic was removed
+   * from this, due to it being deprecated
+   */
+  // eslint-disable-next-line class-methods-use-this
   private async resolveColonyIdentifier(
     identifier: AddressOrENSName,
   ): Promise<Address> {
-    return isAddress(identifier)
-      ? identifier
-      : ens.getAddress(
-          ENS.getFullDomain('colony', identifier),
-          this.networkClient,
-        );
+    return isAddress(identifier) ? identifier : '0x0';
   }
 
   /*
