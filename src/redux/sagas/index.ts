@@ -1,9 +1,8 @@
-import { call, takeLatest } from 'redux-saga/effects';
+import { takeLatest } from 'redux-saga/effects';
 
 import { ActionTypes } from '../actionTypes';
 
 import setupUserContext from './setupUserContext';
-import ipfsSagas from './ipfs';
 
 export default function* rootSaga() {
   /*
@@ -12,8 +11,6 @@ export default function* rootSaga() {
    * -> ddb, colonyJS, etc and all subsequent actions
    */
   yield takeLatest(ActionTypes.WALLET_CREATE, setupUserContext);
-  // Everything else that does not require a wallet
-  yield call(ipfsSagas);
 }
 
 export * from './messages';

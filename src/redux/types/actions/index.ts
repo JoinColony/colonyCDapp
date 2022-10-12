@@ -2,7 +2,6 @@ import { ColonyActionTypes } from './colony';
 import { ColonyActionsActionTypes } from './colonyActions';
 import { MotionActionTypes } from './motion';
 import { GasPricesActionTypes } from './gasPrices';
-import { IpfsActionTypes } from './ipfs';
 import { TransactionActionTypes } from './transaction';
 import { MessageActionTypes } from './message';
 import { UserActionTypes } from './user';
@@ -97,7 +96,6 @@ export type AllActions =
   | ColonyActionTypes
   | ColonyActionsActionTypes
   | GasPricesActionTypes
-  | IpfsActionTypes
   | TransactionActionTypes
   | MessageActionTypes
   | UserActionTypes
