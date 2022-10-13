@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Address } from '~types';
-import { AnyColonyProfile } from '~data/index';
+import { Colony } from '~gql';
 
 import Avatar from '~shared/Avatar';
 import NavLink from '~shared/NavLink';
@@ -26,7 +26,9 @@ export interface Props {
   size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
 
   /** The corresponding user object if available */
-  colony?: AnyColonyProfile;
+  colony?: Colony;
+
+  prefferThumbnail?: boolean;
 }
 
 const displayName = 'ColonyAvatar';
@@ -35,25 +37,31 @@ const ColonyAvatar = ({
   colonyAddress,
   avatarURL,
   className,
-  // @ts-ignore
-  colony: { displayName: colonyDisplayName, colonyName } = {},
+  colony: {
+    // @ts-ignore
+    name,
+    // @ts-ignore
+    profile: { displayName: colonyDisplayName, avatar, thumbnail },
+  },
   notSet,
   size,
   showLink,
+  prefferThumbnail = true,
 }: Props) => {
+  const imageString = prefferThumbnail ? thumbnail : avatar;
   const colonyAvatar = (
     <Avatar
-      avatarURL={avatarURL}
+      avatarURL={avatarURL || imageString}
       className={className}
       notSet={notSet}
       placeholderIcon="at-sign-circle"
       seed={colonyAddress && colonyAddress.toLowerCase()}
       size={size}
-      title={colonyDisplayName || colonyName || colonyAddress}
+      title={colonyDisplayName || name || colonyAddress}
     />
   );
-  if (showLink && colonyName) {
-    return <NavLink to={`/colony/${colonyName}`}>{colonyAvatar}</NavLink>;
+  if (showLink && name) {
+    return <NavLink to={`/colony/${name}`}>{colonyAvatar}</NavLink>;
   }
   return colonyAvatar;
 };

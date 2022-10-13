@@ -9,7 +9,7 @@ import { Route, Routes as RoutesSwitch, Navigate } from 'react-router-dom';
 // import { WalletMethod } from '~immutable/index';
 // import CreateColonyWizard from '~dashboard/CreateColonyWizard';
 // import CreateUserWizard from '~dashboard/CreateUserWizard';
-// import ColonyHome from '~dashboard/ColonyHome';
+import ColonyHome from '~common/ColonyHome';
 // import ColonyMembers from '~dashboard/ColonyMembers';
 import FourOFour from '~root/FourOFour';
 // import Inbox from '~users/Inbox';
@@ -33,12 +33,12 @@ import LadingPage from '~root/LandingPage';
 // import { ActionTypes } from '~redux';
 
 import {
-  // COLONY_EVENTS_ROUTE,
-  // COLONY_EXTENSIONS_ROUTE,
-  // COLONY_EXTENSION_DETAILS_ROUTE,
-  // COLONY_EXTENSION_SETUP_ROUTE,
+  COLONY_EVENTS_ROUTE,
+  COLONY_EXTENSIONS_ROUTE,
+  COLONY_EXTENSION_DETAILS_ROUTE,
+  COLONY_EXTENSION_SETUP_ROUTE,
   // COLONY_FUNDING_ROUTE,
-  // COLONY_HOME_ROUTE,
+  COLONY_HOME_ROUTE,
   // CONNECT_ROUTE,
   // CREATE_COLONY_ROUTE,
   // CREATE_USER_ROUTE,
@@ -113,6 +113,24 @@ const Routes = () => {
           element={
             <AlwaysAccesibleRoute
               component={LadingPage}
+              layout={Default}
+              routeProps={{ hasBackLink: false }}
+            />
+          }
+        />
+
+        <Route
+          // path={[
+          //   COLONY_EXTENSION_DETAILS_ROUTE,
+          //   COLONY_EXTENSIONS_ROUTE,
+          //   COLONY_EXTENSION_SETUP_ROUTE,
+          //   COLONY_HOME_ROUTE,
+          //   COLONY_EVENTS_ROUTE,
+          // ]}
+          path={COLONY_HOME_ROUTE}
+          element={
+            <AlwaysAccesibleRoute
+              component={ColonyHome}
               layout={Default}
               routeProps={{ hasBackLink: false }}
             />

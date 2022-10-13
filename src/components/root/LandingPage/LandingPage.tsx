@@ -47,6 +47,7 @@ const LandingPage = () => {
     <div className={styles.main}>
       <div>
         <div className={styles.title}>
+          LANDING ROUTE
           {/* {(ethereal || isNetworkAllowed) && (
             <Heading
               text={MSG.callToAction}

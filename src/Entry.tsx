@@ -14,8 +14,7 @@ import eventsMessages from './i18n/en-events';
 import motionMessages from './i18n/en-motions';
 import systemMessages from './i18n/en-system-messages';
 import Routes from './routes';
-import apolloClient from './context/apolloClient';
-import { AppContextProvider } from '~context';
+import { AppContextProvider, getContext, ContextModule } from '~context';
 
 // @ts-ignore
 if (!Intl.RelativeTimeFormat) {
@@ -29,34 +28,38 @@ interface Props {
   store: any;
 }
 
-const Entry = ({ store }: Props) => (
-  <IntlProvider
-    locale="en"
-    defaultLocale="en"
-    messages={{
-      ...messages,
-      ...actionMessages,
-      ...eventsMessages,
-      ...systemMessages,
-      ...motionMessages,
-    }}
-  >
-    <ApolloProvider client={apolloClient}>
-      <ReduxProvider store={store}>
-        <AppContextProvider>
-          <Router>
-            <DialogProvider>
-              {/* <TokenActivationProvider> */}
-              <div className={layout.stretch}>
-                <Routes />
-              </div>
-              {/* </TokenActivationProvider> */}
-            </DialogProvider>
-          </Router>
-        </AppContextProvider>
-      </ReduxProvider>
-    </ApolloProvider>
-  </IntlProvider>
-);
+const Entry = ({ store }: Props) => {
+  const apolloClient = getContext(ContextModule.ApolloClient);
+
+  return (
+    <IntlProvider
+      locale="en"
+      defaultLocale="en"
+      messages={{
+        ...messages,
+        ...actionMessages,
+        ...eventsMessages,
+        ...systemMessages,
+        ...motionMessages,
+      }}
+    >
+      <ApolloProvider client={apolloClient}>
+        <ReduxProvider store={store}>
+          <AppContextProvider>
+            <Router>
+              <DialogProvider>
+                {/* <TokenActivationProvider> */}
+                <div className={layout.stretch}>
+                  <Routes />
+                </div>
+                {/* </TokenActivationProvider> */}
+              </DialogProvider>
+            </Router>
+          </AppContextProvider>
+        </ReduxProvider>
+      </ApolloProvider>
+    </IntlProvider>
+  );
+};
 
 export default Entry;

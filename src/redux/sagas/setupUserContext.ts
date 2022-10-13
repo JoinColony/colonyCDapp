@@ -36,7 +36,7 @@ import {
 // } from '~data/index';
 
 // import setupResolvers from '~context/setupResolvers';
-import AppLoadingState from '~context/appLoadingState';
+// import AppLoadingState from '~context/appLoadingState';
 // import { authenticate, clearToken } from '../../../api';
 // import ENS from '~context/ENS';
 
@@ -50,7 +50,7 @@ import setupOnBeforeUnload from './setupOnBeforeUnload';
 // import { setupUserBalanceListener } from './setupUserBalanceListener';
 
 function* setupContextDependentSagas() {
-  const appLoadingState: typeof AppLoadingState = AppLoadingState;
+  // const appLoadingState: typeof AppLoadingState = AppLoadingState;
   yield all([
     // call(actionsSagas),
     // call(colonySagas),
@@ -65,7 +65,7 @@ function* setupContextDependentSagas() {
      * We've loaded all the context sagas, so we can proceed with redering
      * all the app's routes
      */
-    call([appLoadingState, appLoadingState.setIsLoading], false),
+    // call([appLoadingState, appLoadingState.setIsLoading], false),
   ]);
 }
 

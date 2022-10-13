@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 0;
+  border-top: 1px solid var(--grey-blue-0);
+}
+
+.main {
+  composes: button from "~styles/reset.css";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 38px;
+  width: 199px;
+  position: relative;
+  border-radius: 15px;
+  font-size: var(--size-small);
+  font-weight: var(--weight-bold);
+}
+
+.main:focus {
+  outline: var(--colony-blue) auto 1px;
+}
+
+.main:hover {
+  background-color: color-mod(var(--colony-blue) alpha(10%));
+  color: var(--colony-blue);
+
+  /* Makes the SVG icon fill with color, dependent on the entire button hover state. */
+  fill: var(--colony-blue);
+}
+
+.buttonIcon {
+  height: 28px;
+  position: absolute;
+  left: 5px;
+}

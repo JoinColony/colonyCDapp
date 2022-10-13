@@ -27,6 +27,7 @@ const MSG = defineMessages({
     defaultMessage: `{copied, select,
       true {Copied}
       false {{tooltipMessage}}
+      other {}
     }`,
   },
   copyMessage: {
