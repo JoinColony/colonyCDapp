@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 // import { useDialog } from '~core/Dialog';
 
 // import ColonyDomainSelector from '~dashboard/ColonyHome/ColonyDomainSelector';
-// import ColonyHomeActions from '~dashboard/ColonyHomeActions';
+import ColonyHomeActions from '~common/ColonyHomeActions';
 import ColonyTotalFunds from '~common/ColonyTotalFunds';
 // import WrongNetworkDialog from '~dialogs/WrongNetworkDialog';
 
@@ -36,7 +36,7 @@ type Props = {
   showControls?: boolean;
   // showNavigation?: boolean;
   showSidebar?: boolean;
-  // showActions?: boolean;
+  showActions?: boolean;
   // ethDomainId?: number;
 };
 
@@ -49,8 +49,8 @@ const ColonyHomeLayout = ({
   showControls = true,
   // showNavigation = true,
   showSidebar = true,
-}: // showActions = true,
-// onDomainChange = () => null,
+  showActions = true,
+}: // onDomainChange = () => null,
 // ethDomainId,
 Props) => {
   // const { ethereal, networkId } = useLoggedInUser();
@@ -76,21 +76,22 @@ Props) => {
           {showControls && (
             <>
               <ColonyTotalFunds colony={colony} />
-              {/* <div className={styles.contentActionsPanel}>
+              <div className={styles.contentActionsPanel}>
                 <div className={styles.domainsDropdownContainer}>
-                  <ColonyDomainSelector
+                  {/* <ColonyDomainSelector
                     filteredDomainId={filteredDomainId}
                     onDomainChange={onDomainChange}
                     colony={colony}
-                  />
+                  /> */}
                 </div>
                 {showActions && (
                   <ColonyHomeActions
-                    colony={colony}
-                    ethDomainId={ethDomainId}
+                  // colony={colony}
+                  // ethDomainId={ethDomainId}
+                  // ethDomainId={0}
                   />
                 )}
-              </div> */}
+              </div>
             </>
           )}
           {children}
