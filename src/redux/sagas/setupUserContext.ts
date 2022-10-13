@@ -213,7 +213,7 @@ export default function* setupUserContext() {
       type: ActionTypes.USER_CONTEXT_SETUP_SUCCESS,
     });
   } catch (caughtError) {
-    return yield putError(ActionTypes.WALLET_OPEN_ERROR, caughtError, meta);
+    return yield putError(ActionTypes.WALLET_OPEN_ERROR, caughtError, {});
   }
   return null;
 }

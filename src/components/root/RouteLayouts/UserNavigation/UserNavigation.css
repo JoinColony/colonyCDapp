@@ -59,36 +59,6 @@
   box-shadow: 0px 2px 11px var(--drop-shadow);
 }
 
-.connectWalletButton {
-  margin-right: 25px;
-  padding: 4px 9px 5px 9px;
-  border: 1px solid var(--temp-grey-blue-7);
-  border-radius: var(--radius-tiny);
-  background-color: transparent;
-  font-size: var(--size-smallish);
-  font-weight: var(--weight-bold);
-  color: var(--temp-grey-blue-7);
-  cursor: pointer;
-}
-
-.connectWalletButton:hover {
-  border-color: transparent;
-  background-color: color-mod(var(--temp-grey-blue-7) alpha(25%));
-  color: var(--colony-blue);
-}
-
-.connectWalletButtonActive {
-  composes: connectWalletButton;
-  border-color: transparent;
-  background-color: color-mod(var(--temp-grey-blue-7) alpha(25%));
-  color: var(--colony-blue);
-}
-
-.connectWalletButtonLoading {
-  composes: connectWalletButton;
-  display: none;
-}
-
 .networkInfo {
   font-weight: var(--weight-bold);
   color: var(--grey-1);
@@ -106,44 +76,6 @@
   padding: 4px 10px;
   background-color: var(--danger);
   color: var(--colony-white);
-}
-
-.walletAddress {
-  margin: 0;
-  padding: 0 9px;
-  height: 100%;
-  position: relative;
-  border: 1px solid transparent;
-  border-radius: var(--radius-normal);
-  background-color: color-mod(var(--temp-grey-blue-7) alpha(10%));
-  color: var(--temp-grey-blue-7);
-  cursor: pointer;
-}
-
-/* @TODO Remove when done */
-.walletAddressTemp {
-  composes: walletAddress;
-  margin: 0 15px 0 0;
-}
-
-.walletAddress > span {
-  display: block;
-  margin-top: -2px;
-}
-
-.walletAddress:hover {
-  background-color: color-mod(var(--colony-blue) alpha(10%));
-  color: var(--colony-blue);
-}
-
-.walletAddressActive {
-  composes: walletAddress;
-  border: 1px solid var(--colony-blue);
-  color: var(--colony-blue);
-}
-
-.walletWrapper {
-  padding: 1px;
 }
 
 .readyTransactionsCount {
@@ -183,21 +115,4 @@
 
 .reputation:hover svg {
   stroke: var(--colony-blue);
-}
-
-.walletAutoLogin {
-  margin-right: 12px;
-  padding: 4px 10px 0;
-  height: 26px;
-  border-radius: var(--radius-normal);
-  background-color: color-mod(var(--temp-grey-blue-7) alpha(10%));
-  text-align: center;
-}
-
-.walletAutoLogin h4 {
-  display: inline-block;
-  margin-top: 1px;
-  margin-right: 10px;
-  vertical-align: top;
-  font-size: var(--size-tiny);
 }

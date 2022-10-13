@@ -1,8 +1,5 @@
 declare namespace UserNavigationCssNamespace {
   export interface IUserNavigationCss {
-    connectWalletButton: string;
-    connectWalletButtonActive: string;
-    connectWalletButtonLoading: string;
     elementWrapper: string;
     main: string;
     networkInfo: string;
@@ -12,11 +9,6 @@ declare namespace UserNavigationCssNamespace {
     notificationsIconActive: string;
     readyTransactionsCount: string;
     reputation: string;
-    walletAddress: string;
-    walletAddressActive: string;
-    walletAddressTemp: string;
-    walletAutoLogin: string;
-    walletWrapper: string;
     wrongNetwork: string;
   }
 }

@@ -1,18 +1,15 @@
-import React, { useCallback, useState, useRef, useLayoutEffect } from 'react'; // useEffect // useMemo,
-import { defineMessages } from 'react-intl'; // useIntl
+import React from 'react'; // useEffect // useMemo,
+// import { defineMessages } from 'react-intl'; // useIntl
 // import { useParams } from 'react-router-dom';
 
 // import Icon from '~shared/Icon';
-import MaskedAddress from '~shared/MaskedAddress';
 // import MemberReputation from '~shared/MemberReputation';
-import { MiniSpinnerLoader } from '~shared/Preloaders';
 // import { Tooltip } from '~shared/Popover';
 
 // import { GasStationPopover, GasStationProvider } from '~users/GasStation';
 // import UserTokenActivationButton from '~users/UserTokenActivationButton';
 // import { readyTransactionsCount } from '~users/GasStation/transactionGroup';
 import AvatarDropdown from '~root/AvatarDropdown';
-import { ActionButton } from '~shared/Button';
 // import InboxPopover from '~users/Inbox/InboxPopover';
 // import { ConnectWalletPopover } from '~users/ConnectWalletWizard';
 
@@ -26,70 +23,31 @@ import { ActionButton } from '~shared/Button';
 // import { useAutoLogin, getLastWallet } from '~utils/autoLogin';
 // import { checkIfNetworkIsAllowed } from '~utils/networks';
 import { SUPPORTED_NETWORKS } from '~constants';
-import { ActionTypes } from '~redux';
-import { useAppContext } from '~hooks';
-
-import { getLastWallet } from '~utils/autoLogin';
 
 // import { groupedTransactionsAndMessages } from '~redux/selectors';
 
+import Wallet from './Wallet';
+
 import styles from './UserNavigation.css';
 
-const MSG = defineMessages({
-  inboxTitle: {
-    id: 'pages.NavigationWrapper.UserNavigation.inboxTitle',
-    defaultMessage: 'Go to your Inbox',
-  },
-  connectWallet: {
-    id: 'pages.NavigationWrapper.UserNavigation.connectWallet',
-    defaultMessage: 'Connect Wallet',
-  },
-  wrongNetworkAlert: {
-    id: 'pages.NavigationWrapper.UserNavigation.wrongNetworkAlert',
-    defaultMessage: 'Connected to wrong network',
-  },
-  walletAutologin: {
-    id: 'pages.NavigationWrapper.UserNavigation.walletAutologin',
-    defaultMessage: 'Connecting wallet...',
-  },
-  userReputationTooltip: {
-    id: 'pages.NavigationWrapper.UserNavigation.userReputationTooltip',
-    defaultMessage: 'This is your share of the reputation in this colony',
-  },
-});
+// const MSG = defineMessages({
+//   inboxTitle: {
+//     id: 'root.RouteLayouts.UserNavigation.inboxTitle',
+//     defaultMessage: 'Go to your Inbox',
+//   },
+//   wrongNetworkAlert: {
+//     id: 'root.RouteLayouts.UserNavigation.wrongNetworkAlert',
+//     defaultMessage: 'Connected to wrong network',
+//   },
+//   userReputationTooltip: {
+//     id: 'root.RouteLayouts.UserNavigation.userReputationTooltip',
+//     defaultMessage: 'This is your share of the reputation in this colony',
+//   },
+// });
 
-const displayName = 'pages.NavigationWrapper.UserNavigation';
+const displayName = 'root.RouteLayouts.UserNavigation';
 
 const UserNavigation = () => {
-  const [walletConnecting, setWalletConnecting] = useState<boolean>(false);
-  const { wallet, updateWallet } = useAppContext();
-  const connectWalletButton = useRef<HTMLElement | null>(null);
-  const connectWalletButtonWrapper = useRef<HTMLDivElement | null>(null);
-
-  const handleWalletConnected = useCallback(() => {
-    if (updateWallet) {
-      updateWallet();
-    }
-    setWalletConnecting(false);
-  }, [updateWallet]);
-
-  const handleConnectWallet = useCallback(() => setWalletConnecting(true), []);
-
-  const setActionButtonRef = useCallback((ref) => {
-    connectWalletButton.current = ref;
-  }, []);
-
-  useLayoutEffect(() => {
-    if (!wallet && getLastWallet()) {
-      if (connectWalletButtonWrapper.current) {
-        connectWalletButtonWrapper.current.click();
-      }
-      if (connectWalletButton.current) {
-        connectWalletButton.current.click();
-      }
-    }
-  }, [wallet]);
-
   // const { walletAddress, ethereal, networkId } = useLoggedInUser();
   const networkId = 1;
   // const { colonyName } = useParams<{src/redux
@@ -179,45 +137,7 @@ const UserNavigation = () => {
           )}
         </ConnectWalletPopover>
       )} */}
-      {wallet?.address && (
-        <button
-          type="button"
-          className={styles.walletAddressTemp}
-          // ref={ref}
-          // onClick={toggle}
-          data-test="gasStationPopover"
-        >
-          <span>
-            <MaskedAddress address={wallet.address as string} />
-          </span>
-        </button>
-      )}
-      {walletConnecting && (
-        <div className={styles.walletAutoLogin}>
-          <MiniSpinnerLoader title={MSG.walletAutologin} />
-        </div>
-      )}
-      {!wallet?.address && (
-        <div
-          onClick={handleConnectWallet}
-          aria-hidden="true"
-          ref={connectWalletButtonWrapper}
-        >
-          <ActionButton
-            innerRef={setActionButtonRef}
-            className={
-              walletConnecting
-                ? styles.connectWalletButtonLoading
-                : styles.connectWalletButton
-            }
-            text={MSG.connectWallet}
-            submit={ActionTypes.WALLET_OPEN}
-            error={ActionTypes.WALLET_OPEN_ERROR}
-            success={ActionTypes.WALLET_OPEN_SUCCESS}
-            onSuccess={handleWalletConnected}
-          />
-        </div>
-      )}
+
       {/* {previousWalletConnected && attemptingAutoLogin && userDataLoading ? (
         <div className={styles.walletAutoLogin}>
           <MiniSpinnerLoader title={MSG.walletAutologin} />
@@ -294,6 +214,7 @@ const UserNavigation = () => {
         preventTransactions={!isNetworkAllowed}
         colony={colonyData?.processedColony as Colony}
       /> */}
+      <Wallet />
       <AvatarDropdown preventTransactions={false} colony={{}} />
     </div>
   );
