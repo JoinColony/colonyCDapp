@@ -17,7 +17,7 @@ export type FullModelWatchedColoniesConnection = ModelWatchedColoniesConnection 
 };
 
 export type FullColonyTokens = ColonyTokens & {
-  tokenAddress: string,
+  token: FullToken,
 };
 
 export type FullModelColonyTokensConnection = ModelColonyTokensConnection & {
