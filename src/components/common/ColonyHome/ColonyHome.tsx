@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 import {
   Navigate,
-  // Route,
+  Route,
   // RouteChildrenProps,
-  // Switch,
+  Routes as RoutesSwitch,
   useParams,
 } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
@@ -28,11 +28,11 @@ import { getFullColonyByName } from '~gql/index';
 import styles from './ColonyHomeLayout.css';
 
 import {
-  //   COLONY_EVENTS_ROUTE,
-  //   COLONY_EXTENSIONS_ROUTE,
+  COLONY_EVENTS_ROUTE,
+  COLONY_EXTENSIONS_ROUTE,
   //   COLONY_EXTENSION_DETAILS_ROUTE,
   //   COLONY_EXTENSION_SETUP_ROUTE,
-  //   COLONY_HOME_ROUTE,
+  // COLONY_HOME_ROUTE,
   NOT_FOUND_ROUTE,
 } from '~routes/index';
 
@@ -92,76 +92,48 @@ const ColonyHome = ({ match, location }) => {
   //   [extensionId],
   // );
 
-  // const memoizedSwitch = useMemo(() => {
-  //   if (data?.processedColony && isExtensionIdValid) {
-  //     const { processedColony: colony } = data;
-  //     const { colonyAddress } = colony;
-  //     return (
-  //       <Switch>
-  //         <Route
-  //           path={COLONY_EVENTS_ROUTE}
-  //           component={() => (
-  //             <ColonyHomeLayout
-  //               colony={colony}
-  //               filteredDomainId={filteredDomainId}
-  //               onDomainChange={setDomainIdFilter}
-  //               showActions={false}
-  //             >
-  //               <ColonyEvents colony={colony} ethDomainId={filteredDomainId} />
-  //             </ColonyHomeLayout>
-  //           )}
-  //         />
-  //         <Route
-  //           exact
-  //           path={COLONY_EXTENSIONS_ROUTE}
-  //           render={(props) => (
-  //             <ColonyHomeLayout
-  //               colony={colony}
-  //               filteredDomainId={filteredDomainId}
-  //               onDomainChange={setDomainIdFilter}
-  //               showControls={false}
-  //               showSidebar={false}
-  //             >
-  //               <Extensions {...props} colonyAddress={colonyAddress} />
-  //             </ColonyHomeLayout>
-  //           )}
-  //         />
-  //         <Route
-  //           exact
-  //           path={[
-  //             COLONY_EXTENSION_DETAILS_ROUTE,
-  //             COLONY_EXTENSION_SETUP_ROUTE,
-  //           ]}
-  //           render={(props) => (
-  //             <ColonyHomeLayout
-  //               colony={colony}
-  //               filteredDomainId={filteredDomainId}
-  //               onDomainChange={setDomainIdFilter}
-  //               showControls={false}
-  //               showSidebar={false}
-  //             >
-  //               <ExtensionDetails {...props} colony={colony} />
-  //             </ColonyHomeLayout>
-  //           )}
-  //         />
-  //         <Route
-  //           path={COLONY_HOME_ROUTE}
-  //           component={() => (
-  // <ColonyHomeLayout
-  //   colony={colony}
-  //   filteredDomainId={filteredDomainId}
-  //   onDomainChange={setDomainIdFilter}
-  //   ethDomainId={filteredDomainId}
-  // >
-  //   <ColonyActions colony={colony} ethDomainId={filteredDomainId} />
-  // </ColonyHomeLayout>
-  //           )}
-  //         />
-  //       </Switch>
-  //     );
-  //   }
-  //   return null;
-  // }, [data, isExtensionIdValid, filteredDomainId]);
+  const memoizedSwitch = useMemo(() => {
+    // if (data?.processedColony && isExtensionIdValid) {
+    if (colony) {
+      return (
+        <RoutesSwitch>
+          {/* <Route
+            exact
+            path={[
+              COLONY_EXTENSION_DETAILS_ROUTE,
+              COLONY_EXTENSION_SETUP_ROUTE,
+            ]}
+            render={(props) => (
+              <ColonyHomeLayout
+                colony={colony}
+                filteredDomainId={filteredDomainId}
+                onDomainChange={setDomainIdFilter}
+                showControls={false}
+                showSidebar={false}
+              >
+                <ExtensionDetails {...props} colony={colony} />
+              </ColonyHomeLayout>
+            )}
+          /> */}
+          <Route
+            path="/"
+            element={
+              <ColonyHomeLayout
+                colony={colony}
+                // filteredDomainId={filteredDomainId}
+                // onDomainChange={setDomainIdFilter}
+                // ethDomainId={filteredDomainId}
+              >
+                {/* <ColonyActions colony={colony} ethDomainId={filteredDomainId} /> */}
+                <div>Actions & Motions List</div>
+              </ColonyHomeLayout>
+            }
+          />
+        </RoutesSwitch>
+      );
+    }
+    return null;
+  }, [colony]);
 
   if (loading || (colony && colony.name !== colonyName)) {
     return (
@@ -181,18 +153,18 @@ const ColonyHome = ({ match, location }) => {
     return <Navigate to={NOT_FOUND_ROUTE} />;
   }
 
-  // return memoizedSwitch;
+  return memoizedSwitch;
   // return <div>COLONY HOME</div>;
-  return (
-    <ColonyHomeLayout
-      colony={colony}
-      // filteredDomainId={0}
-      // onDomainChange={() => {}}
-      // ethDomainId={0}
-    >
-      <div>Actions & Motions List</div>
-    </ColonyHomeLayout>
-  );
+  // return (
+  //   <ColonyHomeLayout
+  //     colony={colony}
+  //     // filteredDomainId={0}
+  //     // onDomainChange={() => {}}
+  //     // ethDomainId={0}
+  //   >
+  //     <div>Actions & Motions List</div>
+  //   </ColonyHomeLayout>
+  // );
 };
 
 ColonyHome.displayName = displayName;

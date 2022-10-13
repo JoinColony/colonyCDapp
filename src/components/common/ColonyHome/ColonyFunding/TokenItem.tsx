@@ -1,15 +1,17 @@
 import React from 'react';
 
-import Numeral from '~core/Numeral';
-import IconTooltip from '~core/IconTooltip';
-import { TokenBalancesForDomainsQuery } from '~data/index';
+import Numeral from '~shared/Numeral';
+import IconTooltip from '~shared/IconTooltip';
+// import { TokenBalancesForDomainsQuery } from '~data/index';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+
+import { FullToken } from '~gql';
 
 import styles from './ColonyFunding.css';
 
 interface Props {
-  currentDomainId: number;
-  token: TokenBalancesForDomainsQuery['tokens'][0];
+  // currentDomainId: number;
+  token: FullToken;
   isTokenNative?: boolean;
   isNativeTokenLocked?: boolean;
 }
@@ -17,15 +19,16 @@ interface Props {
 const displayName = 'dashboard.ColonyHome.ColonyFunding.TokenItem';
 
 const TokenItem = ({
-  currentDomainId,
-  token: { balances, decimals, symbol },
+  // currentDomainId,
+  token: { decimals, symbol },
   isTokenNative,
   isNativeTokenLocked,
 }: Props) => {
-  const domainBalance = balances.find(
-    ({ domainId }) => domainId === currentDomainId,
-  );
-  const balance = domainBalance && domainBalance.amount;
+  // const domainBalance = balances.find(
+  //   ({ domainId }) => domainId === currentDomainId,
+  // );
+  // const balance = domainBalance && domainBalance.amount;
+  const balance = 0;
 
   return typeof balance === 'undefined' ? null : (
     <div className={styles.tokenItem}>

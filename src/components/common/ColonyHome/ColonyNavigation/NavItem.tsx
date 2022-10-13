@@ -1,14 +1,14 @@
 import React, { KeyboardEvent, useCallback } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
-import NavLink from '~core/NavLink';
+import NavLink from '~shared/NavLink';
 import { ENTER } from '~types/index';
 
 import styles from './NavItem.css';
 
 interface Props {
   disabled?: boolean;
-  exact?: boolean;
+  // exact?: boolean;
   extra?: MessageDescriptor;
   linkTo: string;
   showDot?: boolean;
@@ -20,7 +20,7 @@ const displayName = 'dashboard.ColonyHome.ColonyNavigation.NavItem';
 
 const NavItem = ({
   disabled = false,
-  exact = true,
+  // exact = true,
   extra: extraProp,
   linkTo,
   showDot = false,
@@ -49,7 +49,7 @@ const NavItem = ({
       activeClassName={styles.active}
       aria-disabled={disabled}
       className={classNames.join(' ')}
-      exact={exact}
+      // exact={exact}
       onKeyDown={handleLinkKeyDown}
       to={linkTo}
       data-test={dataTest}

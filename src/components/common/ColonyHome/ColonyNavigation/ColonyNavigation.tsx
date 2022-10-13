@@ -1,7 +1,7 @@
 import React, { ComponentProps, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { Colony } from '~data/index';
+import { FullColony } from '~gql';
 
 import NavItem from './NavItem';
 
@@ -35,12 +35,12 @@ const MSG = defineMessages({
 });
 
 type Props = {
-  colony: Colony;
+  colony: FullColony;
 };
 
 const displayName = 'dashboard.ColonyHome.ColonyNavigation';
 
-const ColonyNavigation = ({ colony: { colonyName } }: Props) => {
+const ColonyNavigation = ({ colony: { name } }: Props) => {
   /*
    * @TODO actually determine these
    * This can be easily inferred from the subgraph queries
@@ -56,13 +56,12 @@ const ColonyNavigation = ({ colony: { colonyName } }: Props) => {
   const items = useMemo<ComponentProps<typeof NavItem>[]>(() => {
     const navigationItems: ComponentProps<typeof NavItem>[] = [
       {
-        linkTo: `/colony/${colonyName}`,
+        linkTo: `/colony/${name}`,
         showDot: hasNewActions,
         text: MSG.linkTextActions,
       },
       {
-        exact: false,
-        linkTo: `/colony/${colonyName}/extensions`,
+        linkTo: `/colony/${name}/extensions`,
         showDot: hasNewExtensions,
         text: MSG.linkTextExtensions,
         dataTest: 'extensionsNavigationButton',
@@ -70,7 +69,7 @@ const ColonyNavigation = ({ colony: { colonyName } }: Props) => {
     ];
 
     return navigationItems;
-  }, [colonyName, hasNewActions, hasNewExtensions]);
+  }, [name, hasNewActions, hasNewExtensions]);
 
   return (
     <nav role="navigation" className={styles.main}>

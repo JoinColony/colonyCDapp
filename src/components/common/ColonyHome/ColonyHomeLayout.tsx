@@ -11,10 +11,10 @@ import ColonyTotalFunds from '~common/ColonyTotalFunds';
 
 import { FullColony } from '~gql';
 
-// import ColonyFunding from './ColonyFunding';
+import ColonyFunding from './ColonyFunding';
 // import ColonyUnclaimedTransfers from './ColonyUnclaimedTransfers';
 import ColonyTitle from './ColonyTitle';
-// import ColonyNavigation from './ColonyNavigation';
+import ColonyNavigation from './ColonyNavigation';
 // import ColonyMembers from './ColonyMembers';
 // import ColonyExtensions from './ColonyExtensions';
 // import ColonyDomainDescription from './ColonyDomainDescription';
@@ -34,7 +34,7 @@ type Props = {
    */
   children: ReactNode;
   showControls?: boolean;
-  // showNavigation?: boolean;
+  showNavigation?: boolean;
   showSidebar?: boolean;
   showActions?: boolean;
   // ethDomainId?: number;
@@ -47,7 +47,7 @@ const ColonyHomeLayout = ({
   // filteredDomainId,
   children,
   showControls = true,
-  // showNavigation = true,
+  showNavigation = true,
   showSidebar = true,
   showActions = true,
 }: // onDomainChange = () => null,
@@ -70,7 +70,7 @@ Props) => {
       >
         <aside className={styles.leftAside}>
           <ColonyTitle colony={colony} />
-          {/* {showNavigation && <ColonyNavigation colony={colony} />} */}
+          {showNavigation && <ColonyNavigation colony={colony} />}
         </aside>
         <div className={styles.mainContent}>
           {showControls && (
@@ -103,7 +103,10 @@ Props) => {
               currentDomainId={filteredDomainId}
             /> */}
             {/* <ColonyUnclaimedTransfers colony={colony} /> */}
-            {/* <ColonyFunding colony={colony} currentDomainId={filteredDomainId} /> */}
+            <ColonyFunding
+              colony={colony}
+              // currentDomainId={filteredDomainId}
+            />
             {/* <ColonyMembers colony={colony} currentDomainId={filteredDomainId} /> */}
             {/* <ColonyExtensions colony={colony} /> */}
           </aside>

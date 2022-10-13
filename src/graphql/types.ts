@@ -2,48 +2,25 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateUniqueUserInput = {
-  id: string,
-  name: string,
-  profile?: ProfileInput | null,
-};
-
-export type ProfileInput = {
-  avatar?: string | null,
-  thumbnail?: string | null,
-  displayName?: string | null,
-  bio?: string | null,
-  location?: string | null,
-  website?: string | null,
-  email?: string | null,
-};
-
-export type User = {
-  __typename: "User",
-  id: string,
-  name: string,
-  tokens?: ModelUserTokensConnection | null,
-  profile?: Profile | null,
-  watchlist?: ModelWatchedColoniesConnection | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type ModelUserTokensConnection = {
-  __typename: "ModelUserTokensConnection",
-  items:  Array<UserTokens | null >,
+export type ModelColonyConnection = {
+  __typename: "ModelColonyConnection",
+  items:  Array<Colony | null >,
   nextToken?: string | null,
 };
 
-export type UserTokens = {
-  __typename: "UserTokens",
+export type Colony = {
+  __typename: "Colony",
   id: string,
-  tokenID: string,
-  userID: string,
-  token: Token,
-  user: User,
+  name: string,
+  nativeToken: Token,
+  tokens?: ModelColonyTokensConnection | null,
+  profile?: Profile | null,
+  status?: ColonyStatus | null,
+  chain?: Chain | null,
+  watchers?: ModelWatchedColoniesConnection | null,
   createdAt: string,
   updatedAt: string,
+  colonyNativeTokenId: string,
 };
 
 export type Token = {
@@ -83,19 +60,32 @@ export type ColonyTokens = {
   updatedAt: string,
 };
 
-export type Colony = {
-  __typename: "Colony",
+export type ModelUserTokensConnection = {
+  __typename: "ModelUserTokensConnection",
+  items:  Array<UserTokens | null >,
+  nextToken?: string | null,
+};
+
+export type UserTokens = {
+  __typename: "UserTokens",
   id: string,
-  name: string,
-  nativeToken: Token,
-  tokens?: ModelColonyTokensConnection | null,
-  profile?: Profile | null,
-  status?: ColonyStatus | null,
-  chain?: Chain | null,
-  watchers?: ModelWatchedColoniesConnection | null,
+  tokenID: string,
+  userID: string,
+  token: Token,
+  user: User,
   createdAt: string,
   updatedAt: string,
-  colonyNativeTokenId: string,
+};
+
+export type User = {
+  __typename: "User",
+  id: string,
+  name: string,
+  tokens?: ModelUserTokensConnection | null,
+  profile?: Profile | null,
+  watchlist?: ModelWatchedColoniesConnection | null,
+  createdAt: string,
+  updatedAt: string,
 };
 
 export type Profile = {
@@ -108,33 +98,6 @@ export type Profile = {
   website?: string | null,
   email?: string | null,
 };
-
-export type ColonyStatus = {
-  __typename: "ColonyStatus",
-  nativeToken?: NativeTokenStatus | null,
-  recovery?: boolean | null,
-  deployed?: boolean | null,
-};
-
-export type NativeTokenStatus = {
-  __typename: "NativeTokenStatus",
-  unlocked?: boolean | null,
-  mintable?: boolean | null,
-  unlockable?: boolean | null,
-};
-
-export type Chain = {
-  __typename: "Chain",
-  network?: Networks | null,
-  chainId?: number | null,
-};
-
-export enum Networks {
-  LOCAL = "LOCAL",
-  MAINNET = "MAINNET",
-  XDAI = "XDAI",
-}
-
 
 export type ModelWatchedColoniesConnection = {
   __typename: "ModelWatchedColoniesConnection",
@@ -151,6 +114,49 @@ export type WatchedColonies = {
   user: User,
   createdAt: string,
   updatedAt: string,
+};
+
+export type Chain = {
+  __typename: "Chain",
+  network?: Networks | null,
+  chainId?: number | null,
+};
+
+export enum Networks {
+  LOCAL = "LOCAL",
+  MAINNET = "MAINNET",
+  XDAI = "XDAI",
+}
+
+
+export type ColonyStatus = {
+  __typename: "ColonyStatus",
+  nativeToken?: NativeTokenStatus | null,
+  recovery?: boolean | null,
+  deployed?: boolean | null,
+};
+
+export type NativeTokenStatus = {
+  __typename: "NativeTokenStatus",
+  unlocked?: boolean | null,
+  mintable?: boolean | null,
+  unlockable?: boolean | null,
+};
+
+export type CreateUniqueUserInput = {
+  id: string,
+  name: string,
+  profile?: ProfileInput | null,
+};
+
+export type ProfileInput = {
+  avatar?: string | null,
+  thumbnail?: string | null,
+  displayName?: string | null,
+  bio?: string | null,
+  location?: string | null,
+  website?: string | null,
+  email?: string | null,
 };
 
 export type CreateUniqueColonyInput = {
@@ -442,12 +448,6 @@ export type ModelColonyFilterInput = {
   colonyNativeTokenId?: ModelIDInput | null,
 };
 
-export type ModelColonyConnection = {
-  __typename: "ModelColonyConnection",
-  items:  Array<Colony | null >,
-  nextToken?: string | null,
-};
-
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -494,6 +494,85 @@ export enum ModelSortDirection {
   DESC = "DESC",
 }
 
+
+export type GetFullColonyByNameQueryVariables = {
+  name: string,
+};
+
+export type GetFullColonyByNameQuery = {
+  getColonyByName?:  {
+    __typename: "ModelColonyConnection",
+    items:  Array< {
+      __typename: "Colony",
+      colonyAddress: string,
+      name: string,
+      nativeToken:  {
+        __typename: "Token",
+        decimals: number,
+        tokenAddress: string,
+        name: string,
+        symbol: string,
+        type?: TokenType | null,
+      },
+      profile?:  {
+        __typename: "Profile",
+        avatar?: string | null,
+        bio?: string | null,
+        displayName?: string | null,
+        email?: string | null,
+        location?: string | null,
+        thumbnail?: string | null,
+        website?: string | null,
+      } | null,
+      status?:  {
+        __typename: "ColonyStatus",
+        deployed?: boolean | null,
+        recovery?: boolean | null,
+        nativeToken?:  {
+          __typename: "NativeTokenStatus",
+          mintable?: boolean | null,
+          unlockable?: boolean | null,
+          unlocked?: boolean | null,
+        } | null,
+      } | null,
+      tokens?:  {
+        __typename: "ModelColonyTokensConnection",
+        items:  Array< {
+          __typename: "ColonyTokens",
+          token:  {
+            __typename: "Token",
+            decimals: number,
+            tokenAddress: string,
+            name: string,
+            symbol: string,
+            type?: TokenType | null,
+          },
+        } | null >,
+      } | null,
+      watchers?:  {
+        __typename: "ModelWatchedColoniesConnection",
+        items:  Array< {
+          __typename: "WatchedColonies",
+          user:  {
+            __typename: "User",
+            walletAddress: string,
+            name: string,
+            profile?:  {
+              __typename: "Profile",
+              avatar?: string | null,
+              bio?: string | null,
+              displayName?: string | null,
+              email?: string | null,
+              location?: string | null,
+              website?: string | null,
+              thumbnail?: string | null,
+            } | null,
+          },
+        } | null >,
+      } | null,
+    } | null >,
+  } | null,
+};
 
 export type CreateUniqueUserMutationVariables = {
   input?: CreateUniqueUserInput | null,
