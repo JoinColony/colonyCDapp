@@ -26,7 +26,7 @@ RUN git checkout $NETWORK_HASH
 RUN git submodule update --init --recursive --depth 1
 
 # Install required network dependencies
-RUN yarn
+RUN npm i --build-from-source
 
 # Compile network contracts
 RUN DISABLE_DOCKER=true yarn provision:token:contracts

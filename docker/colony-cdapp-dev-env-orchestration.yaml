@@ -39,7 +39,9 @@ services:
       - '../amplify/backend:/colonyCDapp/amplify/backend'
       - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
       - '../src/graphql:/colonyCDapp/src/graphql'
-    network_mode: 'host'
+    network_mode: 'bridge'
+    ports:
+      - "20002:20002"
     depends_on:
       network-contracts:
         condition: service_healthy

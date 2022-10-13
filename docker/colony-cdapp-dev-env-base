@@ -15,15 +15,20 @@ RUN apt-get install -y \
   file \
   zip \
   jq \
-  netcat
+  netcat \
+  libusb-1.0-0-dev \
+  libudev-dev
 
 # Download and install the `java-common` package which is needed for Amazon's Java SDK
 RUN curl -LO http://mirrors.kernel.org/ubuntu/pool/main/j/java-common/java-common_0.72_all.deb
 RUN dpkg -i java-common_0.72_all.deb
 
 # Download and install Amazon's version of a Java SDK
-RUN curl -LO https://corretto.aws/downloads/latest/amazon-corretto-11-x64-linux-jdk.deb
-RUN dpkg -i amazon-corretto-11-x64-linux-jdk.deb
+ARG AMAZON_ARCH_FLAG
+
+RUN curl -LO https://corretto.aws/downloads/latest/amazon-corretto-11-$AMAZON_ARCH_FLAG-linux-jdk.deb
+RUN dpkg -i amazon-corretto-11-$AMAZON_ARCH_FLAG-linux-jdk.deb
+
 
 # Reconfigure locales
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
