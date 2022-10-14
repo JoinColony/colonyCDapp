@@ -97,6 +97,35 @@ const ColonyHome = ({ match, location }) => {
     if (colony) {
       return (
         <RoutesSwitch>
+          <Route
+            path={COLONY_EVENTS_ROUTE}
+            element={
+              <ColonyHomeLayout
+                colony={colony}
+                // filteredDomainId={filteredDomainId}
+                // onDomainChange={setDomainIdFilter}
+                // showActions={false}
+              >
+                {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> */}
+                <div>Events (Transactions Log)</div>
+              </ColonyHomeLayout>
+            }
+          />
+          <Route
+            path={COLONY_EXTENSIONS_ROUTE}
+            element={
+              <ColonyHomeLayout
+                colony={colony}
+                // filteredDomainId={filteredDomainId}
+                // onDomainChange={setDomainIdFilter}
+                // showControls={false}
+                // showSidebar={false}
+              >
+                {/* <Extensions {...props} colonyAddress={colonyAddress} /> */}
+                <div>Extensions</div>
+              </ColonyHomeLayout>
+            }
+          />
           {/* <Route
             exact
             path={[
