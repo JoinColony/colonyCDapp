@@ -31,10 +31,6 @@ export const getToken = /* GraphQL */ `
       users {
         nextToken
       }
-      chain {
-        network
-        chainId
-      }
       createdAt
       updatedAt
     }
@@ -90,9 +86,8 @@ export const getColony = /* GraphQL */ `
         recovery
         deployed
       }
-      chain {
-        network
-        chainId
+      domains {
+        nextToken
       }
       watchers {
         nextToken
@@ -158,6 +153,54 @@ export const listUsers = /* GraphQL */ `
         name
         createdAt
         updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getDomain = /* GraphQL */ `
+  query GetDomain($id: ID!) {
+    getDomain(id: $id) {
+      id
+      nativeId
+      name
+      description
+      color
+      parent {
+        id
+        nativeId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      createdAt
+      updatedAt
+      colonyDomainsId
+      domainParentId
+    }
+  }
+`;
+export const listDomains = /* GraphQL */ `
+  query ListDomains(
+    $filter: ModelDomainFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listDomains(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        nativeId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
       }
       nextToken
     }

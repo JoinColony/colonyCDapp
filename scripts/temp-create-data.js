@@ -1,10 +1,17 @@
-// import { ethers } from "ethers";
-
 const { utils, Wallet, Contract, ContractFactory, providers } = require('ethers');
 
 const colonyJSExtras = require('@colony/colony-js/extras')
 
+/*
+ * @NOTE To preserve time, I just re-used a script I wrote for one of the lambda functions
+ * So if that lambda function gets removed, this script will stop working
+ */
 const { graphqlRequest } = require('../amplify/backend/function/createUniqueColony/src/utils');
+/*
+ * @NOTE This script depends on both the ganache chain (and especially accounts) being active
+ * as well as the network contracts being deployed on said chain
+ * So make sure to only run this script after the dev environment (via docker compose) was started
+ */
 const { private_keys } = require('../amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json');
 const { etherRouterAddress } = require('../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json')
 

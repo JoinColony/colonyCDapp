@@ -69,10 +69,6 @@ export const createToken = /* GraphQL */ `
       users {
         nextToken
       }
-      chain {
-        network
-        chainId
-      }
       createdAt
       updatedAt
     }
@@ -95,10 +91,6 @@ export const updateToken = /* GraphQL */ `
       users {
         nextToken
       }
-      chain {
-        network
-        chainId
-      }
       createdAt
       updatedAt
     }
@@ -120,10 +112,6 @@ export const deleteToken = /* GraphQL */ `
       }
       users {
         nextToken
-      }
-      chain {
-        network
-        chainId
       }
       createdAt
       updatedAt
@@ -163,9 +151,8 @@ export const createColony = /* GraphQL */ `
         recovery
         deployed
       }
-      chain {
-        network
-        chainId
+      domains {
+        nextToken
       }
       watchers {
         nextToken
@@ -209,9 +196,8 @@ export const updateColony = /* GraphQL */ `
         recovery
         deployed
       }
-      chain {
-        network
-        chainId
+      domains {
+        nextToken
       }
       watchers {
         nextToken
@@ -255,9 +241,8 @@ export const deleteColony = /* GraphQL */ `
         recovery
         deployed
       }
-      chain {
-        network
-        chainId
+      domains {
+        nextToken
       }
       watchers {
         nextToken
@@ -349,6 +334,93 @@ export const deleteUser = /* GraphQL */ `
       }
       createdAt
       updatedAt
+    }
+  }
+`;
+export const createDomain = /* GraphQL */ `
+  mutation CreateDomain(
+    $input: CreateDomainInput!
+    $condition: ModelDomainConditionInput
+  ) {
+    createDomain(input: $input, condition: $condition) {
+      id
+      nativeId
+      name
+      description
+      color
+      parent {
+        id
+        nativeId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      createdAt
+      updatedAt
+      colonyDomainsId
+      domainParentId
+    }
+  }
+`;
+export const updateDomain = /* GraphQL */ `
+  mutation UpdateDomain(
+    $input: UpdateDomainInput!
+    $condition: ModelDomainConditionInput
+  ) {
+    updateDomain(input: $input, condition: $condition) {
+      id
+      nativeId
+      name
+      description
+      color
+      parent {
+        id
+        nativeId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      createdAt
+      updatedAt
+      colonyDomainsId
+      domainParentId
+    }
+  }
+`;
+export const deleteDomain = /* GraphQL */ `
+  mutation DeleteDomain(
+    $input: DeleteDomainInput!
+    $condition: ModelDomainConditionInput
+  ) {
+    deleteDomain(input: $input, condition: $condition) {
+      id
+      nativeId
+      name
+      description
+      color
+      parent {
+        id
+        nativeId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      createdAt
+      updatedAt
+      colonyDomainsId
+      domainParentId
     }
   }
 `;

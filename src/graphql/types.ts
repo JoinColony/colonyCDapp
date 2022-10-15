@@ -16,7 +16,7 @@ export type Colony = {
   tokens?: ModelColonyTokensConnection | null,
   profile?: Profile | null,
   status?: ColonyStatus | null,
-  chain?: Chain | null,
+  domains?: ModelDomainConnection | null,
   watchers?: ModelWatchedColoniesConnection | null,
   createdAt: string,
   updatedAt: string,
@@ -32,7 +32,6 @@ export type Token = {
   type?: TokenType | null,
   colonies?: ModelColonyTokensConnection | null,
   users?: ModelUserTokensConnection | null,
-  chain?: Chain | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -116,19 +115,6 @@ export type WatchedColonies = {
   updatedAt: string,
 };
 
-export type Chain = {
-  __typename: "Chain",
-  network?: Networks | null,
-  chainId?: number | null,
-};
-
-export enum Networks {
-  LOCAL = "LOCAL",
-  MAINNET = "MAINNET",
-  XDAI = "XDAI",
-}
-
-
 export type ColonyStatus = {
   __typename: "ColonyStatus",
   nativeToken?: NativeTokenStatus | null,
@@ -142,6 +128,46 @@ export type NativeTokenStatus = {
   mintable?: boolean | null,
   unlockable?: boolean | null,
 };
+
+export type ModelDomainConnection = {
+  __typename: "ModelDomainConnection",
+  items:  Array<Domain | null >,
+  nextToken?: string | null,
+};
+
+export type Domain = {
+  __typename: "Domain",
+  id: string,
+  nativeId: number,
+  name?: string | null,
+  description?: string | null,
+  color?: DomainColor | null,
+  parent?: Domain | null,
+  createdAt: string,
+  updatedAt: string,
+  colonyDomainsId?: string | null,
+  domainParentId?: string | null,
+};
+
+export enum DomainColor {
+  LIGHTPINK = "LIGHTPINK",
+  PINK = "PINK",
+  BLACK = "BLACK",
+  EMERALDGREEN = "EMERALDGREEN",
+  BLUE = "BLUE",
+  YELLOW = "YELLOW",
+  RED = "RED",
+  GREEN = "GREEN",
+  PERIWINKLE = "PERIWINKLE",
+  GOLD = "GOLD",
+  AQUA = "AQUA",
+  BLUEGREY = "BLUEGREY",
+  PURPLE = "PURPLE",
+  ORANGE = "ORANGE",
+  MAGENTA = "MAGENTA",
+  PURPLEGREY = "PURPLEGREY",
+}
+
 
 export type ModelUserConnection = {
   __typename: "ModelUserConnection",
@@ -178,12 +204,6 @@ export type CreateTokenInput = {
   symbol: string,
   decimals: number,
   type?: TokenType | null,
-  chain?: ChainInput | null,
-};
-
-export type ChainInput = {
-  network?: Networks | null,
-  chainId?: number | null,
 };
 
 export type ModelTokenConditionInput = {
@@ -259,7 +279,6 @@ export type UpdateTokenInput = {
   symbol?: string | null,
   decimals?: number | null,
   type?: TokenType | null,
-  chain?: ChainInput | null,
 };
 
 export type DeleteTokenInput = {
@@ -271,7 +290,6 @@ export type CreateColonyInput = {
   name: string,
   profile?: ProfileInput | null,
   status?: ColonyStatusInput | null,
-  chain?: ChainInput | null,
   colonyNativeTokenId: string,
 };
 
@@ -316,7 +334,6 @@ export type UpdateColonyInput = {
   name?: string | null,
   profile?: ProfileInput | null,
   status?: ColonyStatusInput | null,
-  chain?: ChainInput | null,
   colonyNativeTokenId: string,
 };
 
@@ -344,6 +361,47 @@ export type UpdateUserInput = {
 };
 
 export type DeleteUserInput = {
+  id: string,
+};
+
+export type CreateDomainInput = {
+  id?: string | null,
+  nativeId: number,
+  name?: string | null,
+  description?: string | null,
+  color?: DomainColor | null,
+  colonyDomainsId?: string | null,
+  domainParentId?: string | null,
+};
+
+export type ModelDomainConditionInput = {
+  nativeId?: ModelIntInput | null,
+  name?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  color?: ModelDomainColorInput | null,
+  and?: Array< ModelDomainConditionInput | null > | null,
+  or?: Array< ModelDomainConditionInput | null > | null,
+  not?: ModelDomainConditionInput | null,
+  colonyDomainsId?: ModelIDInput | null,
+  domainParentId?: ModelIDInput | null,
+};
+
+export type ModelDomainColorInput = {
+  eq?: DomainColor | null,
+  ne?: DomainColor | null,
+};
+
+export type UpdateDomainInput = {
+  id: string,
+  nativeId?: number | null,
+  name?: string | null,
+  description?: string | null,
+  color?: DomainColor | null,
+  colonyDomainsId?: string | null,
+  domainParentId?: string | null,
+};
+
+export type DeleteDomainInput = {
   id: string,
 };
 
@@ -460,6 +518,19 @@ export type ModelUserFilterInput = {
   and?: Array< ModelUserFilterInput | null > | null,
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
+};
+
+export type ModelDomainFilterInput = {
+  id?: ModelIDInput | null,
+  nativeId?: ModelIntInput | null,
+  name?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  color?: ModelDomainColorInput | null,
+  and?: Array< ModelDomainFilterInput | null > | null,
+  or?: Array< ModelDomainFilterInput | null > | null,
+  not?: ModelDomainFilterInput | null,
+  colonyDomainsId?: ModelIDInput | null,
+  domainParentId?: ModelIDInput | null,
 };
 
 export type ModelColonyTokensFilterInput = {
@@ -693,11 +764,6 @@ export type CreateTokenMutation = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
-    chain?:  {
-      __typename: "Chain",
-      network?: Networks | null,
-      chainId?: number | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -724,11 +790,6 @@ export type UpdateTokenMutation = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
-    chain?:  {
-      __typename: "Chain",
-      network?: Networks | null,
-      chainId?: number | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -754,11 +815,6 @@ export type DeleteTokenMutation = {
     users?:  {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
-    } | null,
-    chain?:  {
-      __typename: "Chain",
-      network?: Networks | null,
-      chainId?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -804,10 +860,9 @@ export type CreateColonyMutation = {
       recovery?: boolean | null,
       deployed?: boolean | null,
     } | null,
-    chain?:  {
-      __typename: "Chain",
-      network?: Networks | null,
-      chainId?: number | null,
+    domains?:  {
+      __typename: "ModelDomainConnection",
+      nextToken?: string | null,
     } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
@@ -858,10 +913,9 @@ export type UpdateColonyMutation = {
       recovery?: boolean | null,
       deployed?: boolean | null,
     } | null,
-    chain?:  {
-      __typename: "Chain",
-      network?: Networks | null,
-      chainId?: number | null,
+    domains?:  {
+      __typename: "ModelDomainConnection",
+      nextToken?: string | null,
     } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
@@ -912,10 +966,9 @@ export type DeleteColonyMutation = {
       recovery?: boolean | null,
       deployed?: boolean | null,
     } | null,
-    chain?:  {
-      __typename: "Chain",
-      network?: Networks | null,
-      chainId?: number | null,
+    domains?:  {
+      __typename: "ModelDomainConnection",
+      nextToken?: string | null,
     } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
@@ -1023,6 +1076,102 @@ export type DeleteUserMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type CreateDomainMutationVariables = {
+  input: CreateDomainInput,
+  condition?: ModelDomainConditionInput | null,
+};
+
+export type CreateDomainMutation = {
+  createDomain?:  {
+    __typename: "Domain",
+    id: string,
+    nativeId: number,
+    name?: string | null,
+    description?: string | null,
+    color?: DomainColor | null,
+    parent?:  {
+      __typename: "Domain",
+      id: string,
+      nativeId: number,
+      name?: string | null,
+      description?: string | null,
+      color?: DomainColor | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyDomainsId?: string | null,
+      domainParentId?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    colonyDomainsId?: string | null,
+    domainParentId?: string | null,
+  } | null,
+};
+
+export type UpdateDomainMutationVariables = {
+  input: UpdateDomainInput,
+  condition?: ModelDomainConditionInput | null,
+};
+
+export type UpdateDomainMutation = {
+  updateDomain?:  {
+    __typename: "Domain",
+    id: string,
+    nativeId: number,
+    name?: string | null,
+    description?: string | null,
+    color?: DomainColor | null,
+    parent?:  {
+      __typename: "Domain",
+      id: string,
+      nativeId: number,
+      name?: string | null,
+      description?: string | null,
+      color?: DomainColor | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyDomainsId?: string | null,
+      domainParentId?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    colonyDomainsId?: string | null,
+    domainParentId?: string | null,
+  } | null,
+};
+
+export type DeleteDomainMutationVariables = {
+  input: DeleteDomainInput,
+  condition?: ModelDomainConditionInput | null,
+};
+
+export type DeleteDomainMutation = {
+  deleteDomain?:  {
+    __typename: "Domain",
+    id: string,
+    nativeId: number,
+    name?: string | null,
+    description?: string | null,
+    color?: DomainColor | null,
+    parent?:  {
+      __typename: "Domain",
+      id: string,
+      nativeId: number,
+      name?: string | null,
+      description?: string | null,
+      color?: DomainColor | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyDomainsId?: string | null,
+      domainParentId?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    colonyDomainsId?: string | null,
+    domainParentId?: string | null,
   } | null,
 };
 
@@ -1360,11 +1509,6 @@ export type GetTokenQuery = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
-    chain?:  {
-      __typename: "Chain",
-      network?: Networks | null,
-      chainId?: number | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1431,10 +1575,9 @@ export type GetColonyQuery = {
       recovery?: boolean | null,
       deployed?: boolean | null,
     } | null,
-    chain?:  {
-      __typename: "Chain",
-      network?: Networks | null,
-      chainId?: number | null,
+    domains?:  {
+      __typename: "ModelDomainConnection",
+      nextToken?: string | null,
     } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
@@ -1514,6 +1657,62 @@ export type ListUsersQuery = {
       name: string,
       createdAt: string,
       updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetDomainQueryVariables = {
+  id: string,
+};
+
+export type GetDomainQuery = {
+  getDomain?:  {
+    __typename: "Domain",
+    id: string,
+    nativeId: number,
+    name?: string | null,
+    description?: string | null,
+    color?: DomainColor | null,
+    parent?:  {
+      __typename: "Domain",
+      id: string,
+      nativeId: number,
+      name?: string | null,
+      description?: string | null,
+      color?: DomainColor | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyDomainsId?: string | null,
+      domainParentId?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    colonyDomainsId?: string | null,
+    domainParentId?: string | null,
+  } | null,
+};
+
+export type ListDomainsQueryVariables = {
+  filter?: ModelDomainFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListDomainsQuery = {
+  listDomains?:  {
+    __typename: "ModelDomainConnection",
+    items:  Array< {
+      __typename: "Domain",
+      id: string,
+      nativeId: number,
+      name?: string | null,
+      description?: string | null,
+      color?: DomainColor | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyDomainsId?: string | null,
+      domainParentId?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1833,11 +2032,6 @@ export type OnCreateTokenSubscription = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
-    chain?:  {
-      __typename: "Chain",
-      network?: Networks | null,
-      chainId?: number | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1859,11 +2053,6 @@ export type OnUpdateTokenSubscription = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
-    chain?:  {
-      __typename: "Chain",
-      network?: Networks | null,
-      chainId?: number | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1884,11 +2073,6 @@ export type OnDeleteTokenSubscription = {
     users?:  {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
-    } | null,
-    chain?:  {
-      __typename: "Chain",
-      network?: Networks | null,
-      chainId?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1929,10 +2113,9 @@ export type OnCreateColonySubscription = {
       recovery?: boolean | null,
       deployed?: boolean | null,
     } | null,
-    chain?:  {
-      __typename: "Chain",
-      network?: Networks | null,
-      chainId?: number | null,
+    domains?:  {
+      __typename: "ModelDomainConnection",
+      nextToken?: string | null,
     } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
@@ -1978,10 +2161,9 @@ export type OnUpdateColonySubscription = {
       recovery?: boolean | null,
       deployed?: boolean | null,
     } | null,
-    chain?:  {
-      __typename: "Chain",
-      network?: Networks | null,
-      chainId?: number | null,
+    domains?:  {
+      __typename: "ModelDomainConnection",
+      nextToken?: string | null,
     } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
@@ -2027,10 +2209,9 @@ export type OnDeleteColonySubscription = {
       recovery?: boolean | null,
       deployed?: boolean | null,
     } | null,
-    chain?:  {
-      __typename: "Chain",
-      network?: Networks | null,
-      chainId?: number | null,
+    domains?:  {
+      __typename: "ModelDomainConnection",
+      nextToken?: string | null,
     } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
@@ -2123,6 +2304,87 @@ export type OnDeleteUserSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type OnCreateDomainSubscription = {
+  onCreateDomain?:  {
+    __typename: "Domain",
+    id: string,
+    nativeId: number,
+    name?: string | null,
+    description?: string | null,
+    color?: DomainColor | null,
+    parent?:  {
+      __typename: "Domain",
+      id: string,
+      nativeId: number,
+      name?: string | null,
+      description?: string | null,
+      color?: DomainColor | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyDomainsId?: string | null,
+      domainParentId?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    colonyDomainsId?: string | null,
+    domainParentId?: string | null,
+  } | null,
+};
+
+export type OnUpdateDomainSubscription = {
+  onUpdateDomain?:  {
+    __typename: "Domain",
+    id: string,
+    nativeId: number,
+    name?: string | null,
+    description?: string | null,
+    color?: DomainColor | null,
+    parent?:  {
+      __typename: "Domain",
+      id: string,
+      nativeId: number,
+      name?: string | null,
+      description?: string | null,
+      color?: DomainColor | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyDomainsId?: string | null,
+      domainParentId?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    colonyDomainsId?: string | null,
+    domainParentId?: string | null,
+  } | null,
+};
+
+export type OnDeleteDomainSubscription = {
+  onDeleteDomain?:  {
+    __typename: "Domain",
+    id: string,
+    nativeId: number,
+    name?: string | null,
+    description?: string | null,
+    color?: DomainColor | null,
+    parent?:  {
+      __typename: "Domain",
+      id: string,
+      nativeId: number,
+      name?: string | null,
+      description?: string | null,
+      color?: DomainColor | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyDomainsId?: string | null,
+      domainParentId?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    colonyDomainsId?: string | null,
+    domainParentId?: string | null,
   } | null,
 };
 

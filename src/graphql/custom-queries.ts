@@ -43,6 +43,16 @@ export const getFullColonyByName = /* GraphQL */ `
             }
           }
         }
+        domains {
+          items {
+            color
+            description
+            id
+            name
+            nativeId
+            parentId: domainParentId
+          }
+        }
         watchers {
           items {
             user {

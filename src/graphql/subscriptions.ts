@@ -16,10 +16,6 @@ export const onCreateToken = /* GraphQL */ `
       users {
         nextToken
       }
-      chain {
-        network
-        chainId
-      }
       createdAt
       updatedAt
     }
@@ -39,10 +35,6 @@ export const onUpdateToken = /* GraphQL */ `
       users {
         nextToken
       }
-      chain {
-        network
-        chainId
-      }
       createdAt
       updatedAt
     }
@@ -61,10 +53,6 @@ export const onDeleteToken = /* GraphQL */ `
       }
       users {
         nextToken
-      }
-      chain {
-        network
-        chainId
       }
       createdAt
       updatedAt
@@ -101,9 +89,8 @@ export const onCreateColony = /* GraphQL */ `
         recovery
         deployed
       }
-      chain {
-        network
-        chainId
+      domains {
+        nextToken
       }
       watchers {
         nextToken
@@ -144,9 +131,8 @@ export const onUpdateColony = /* GraphQL */ `
         recovery
         deployed
       }
-      chain {
-        network
-        chainId
+      domains {
+        nextToken
       }
       watchers {
         nextToken
@@ -187,9 +173,8 @@ export const onDeleteColony = /* GraphQL */ `
         recovery
         deployed
       }
-      chain {
-        network
-        chainId
+      domains {
+        nextToken
       }
       watchers {
         nextToken
@@ -272,6 +257,84 @@ export const onDeleteUser = /* GraphQL */ `
       }
       createdAt
       updatedAt
+    }
+  }
+`;
+export const onCreateDomain = /* GraphQL */ `
+  subscription OnCreateDomain {
+    onCreateDomain {
+      id
+      nativeId
+      name
+      description
+      color
+      parent {
+        id
+        nativeId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      createdAt
+      updatedAt
+      colonyDomainsId
+      domainParentId
+    }
+  }
+`;
+export const onUpdateDomain = /* GraphQL */ `
+  subscription OnUpdateDomain {
+    onUpdateDomain {
+      id
+      nativeId
+      name
+      description
+      color
+      parent {
+        id
+        nativeId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      createdAt
+      updatedAt
+      colonyDomainsId
+      domainParentId
+    }
+  }
+`;
+export const onDeleteDomain = /* GraphQL */ `
+  subscription OnDeleteDomain {
+    onDeleteDomain {
+      id
+      nativeId
+      name
+      description
+      color
+      parent {
+        id
+        nativeId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      createdAt
+      updatedAt
+      colonyDomainsId
+      domainParentId
     }
   }
 `;

@@ -38,10 +38,29 @@ enum TokenType {
   ERC20
 }
 
-enum Networks {
+enum Network {
   LOCAL
   MAINNET
   XDAI
+}
+
+enum DomainColor {
+  LIGHTPINK
+  PINK
+  BLACK
+  EMERALDGREEN
+  BLUE
+  YELLOW
+  RED
+  GREEN
+  PERIWINKLE
+  GOLD
+  AQUA
+  BLUEGREY
+  PURPLE
+  ORANGE
+  MAGENTA
+  PURPLEGREY
 }
 
 type Query {
@@ -86,7 +105,7 @@ type ColonyStatus {
 # Applies to both Colonies and Tokens
 # It does not apply to user accounts as they can live on all networks
 type Chain {
-  network: Networks
+  network: Network
   chainId: Int
 }
 
@@ -99,7 +118,6 @@ type Token @model {
     @index(name: "byType", queryField: "getTokensByType")
   colonies: [Colony] @manyToMany(relationName: "ColonyTokens")
   users: [User] @manyToMany(relationName: "UserTokens")
-  chain: Chain
 }
 
 type Colony @model {
@@ -109,7 +127,7 @@ type Colony @model {
   tokens: [Token] @manyToMany(relationName: "ColonyTokens")
   profile: Profile
   status: ColonyStatus
-  chain: Chain
+  domains: [Domain] @hasMany
   watchers: [User] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
 }
 
@@ -119,4 +137,13 @@ type User @model {
   tokens: [Token] @manyToMany(relationName: "UserTokens")
   profile: Profile
   watchlist: [Colony] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
+}
+
+type Domain @model {
+  id: ID!
+  nativeId: Int!
+  name: String
+  description: String
+  color: DomainColor
+  parent: Domain @hasOne
 }
