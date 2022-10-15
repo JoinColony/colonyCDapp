@@ -143,6 +143,12 @@ export type NativeTokenStatus = {
   unlockable?: boolean | null,
 };
 
+export type ModelUserConnection = {
+  __typename: "ModelUserConnection",
+  items:  Array<User | null >,
+  nextToken?: string | null,
+};
+
 export type CreateUniqueUserInput = {
   id: string,
   name: string,
@@ -456,12 +462,6 @@ export type ModelUserFilterInput = {
   not?: ModelUserFilterInput | null,
 };
 
-export type ModelUserConnection = {
-  __typename: "ModelUserConnection",
-  items:  Array<User | null >,
-  nextToken?: string | null,
-};
-
 export type ModelColonyTokensFilterInput = {
   id?: ModelIDInput | null,
   tokenID?: ModelIDInput | null,
@@ -566,6 +566,40 @@ export type GetFullColonyByNameQuery = {
               location?: string | null,
               website?: string | null,
               thumbnail?: string | null,
+            } | null,
+          },
+        } | null >,
+      } | null,
+    } | null >,
+  } | null,
+};
+
+export type GetUserColonyWatchlistQueryVariables = {
+  address: string,
+};
+
+export type GetUserColonyWatchlistQuery = {
+  getUserByAddress?:  {
+    __typename: "ModelUserConnection",
+    items:  Array< {
+      __typename: "User",
+      watchlist?:  {
+        __typename: "ModelWatchedColoniesConnection",
+        items:  Array< {
+          __typename: "WatchedColonies",
+          colony:  {
+            __typename: "Colony",
+            colonyAddress: string,
+            name: string,
+            profile?:  {
+              __typename: "Profile",
+              avatar?: string | null,
+              bio?: string | null,
+              displayName?: string | null,
+              email?: string | null,
+              location?: string | null,
+              thumbnail?: string | null,
+              website?: string | null,
             } | null,
           },
         } | null >,

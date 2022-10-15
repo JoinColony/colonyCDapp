@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { utils } = require('ethers');
 
-// const basicTokenAbi = require('./basicTokenAbi.json');
 const { graphqlRequest } = require('./utils');
 
 /*
