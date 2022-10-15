@@ -23,7 +23,7 @@ import LoadingTemplate from '~root/LoadingTemplate';
 
 import ColonyHomeLayout from './ColonyHomeLayout';
 
-import { getFullColonyByName } from '~gql/index';
+import { getFullColonyByName } from '~gql';
 
 import styles from './ColonyHomeLayout.css';
 

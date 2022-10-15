@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { RouteComponentProps } from '~root/RouteLayouts';
-// import SubscribedColoniesList from '~dashboard/SubscribedColoniesList';
+import SubscribedColoniesList from '~root/SubscribedColoniesList';
 import SimpleNav from '../SimpleNav';
 import HistoryNavigation from '../HistoryNavigation';
 
@@ -47,7 +47,7 @@ const Default = ({
         <div className={styles.content}>
           {hasSubscribedColonies && (
             <div className={styles.coloniesList}>
-              {/* <SubscribedColoniesList /> */}
+              <SubscribedColoniesList />
             </div>
           )}
           <div className={styles.children}>{children}</div>

@@ -64,3 +64,29 @@ export const getFullColonyByName = /* GraphQL */ `
     }
   }
 `;
+
+export const getUserColonyWatchlist = /* GraphQL */ `
+  query GetUserColonyWatchlist($address: ID!) {
+    getUserByAddress(id: $address) {
+      items {
+        watchlist {
+          items {
+            colony {
+              colonyAddress: id
+              name
+              profile {
+                avatar
+                bio
+                displayName
+                email
+                location
+                thumbnail
+                website
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

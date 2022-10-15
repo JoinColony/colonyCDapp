@@ -9,6 +9,7 @@ import {
 } from './types';
 
 export type FullWatchedColonies = WatchedColonies & {
+  colonyAddress: string,
   user: FullUser,
 };
 
@@ -26,6 +27,7 @@ export type FullModelColonyTokensConnection = ModelColonyTokensConnection & {
 
 export type FullUser = User & {
   walletAddress: string,
+  watchlist?: FullModelWatchedColoniesConnection | null,
 };
 
 export type FullToken = Token & {
