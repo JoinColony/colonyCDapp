@@ -7,6 +7,7 @@ import Link from '~shared/NavLink';
 import { Address } from '~types';
 // import { AnyUser, Colony } from '~data/index';
 // import { getUsername } from '~redux/transformers';
+import { FullUser } from '~gql';
 
 import styles from './UserAvatar.css';
 import { getMainClasses } from '~utils/css';
@@ -38,7 +39,7 @@ interface BaseProps {
 
   /** The corresponding user object if available */
   // user?: AnyUser;
-  user?: Record<string, unknown>;
+  user?: FullUser;
 
   /** Banned comment status */
   banned?: boolean;
@@ -65,14 +66,11 @@ const UserAvatar = ({
   popperOptions,
   size,
   banned = false,
-  user = {
-    id: address,
-    profile: { walletAddress: address },
-  },
+  user,
   ...rest
 }: Props) => {
   // const username = getUsername(user);
-  const username = 'tempUser';
+  // const username = 'tempUser';
   // let popoverProps: InfoPopoverProps = {
   //   popperOptions,
   //   trigger: showInfo ? 'click' : 'disabled',
@@ -121,7 +119,9 @@ const UserAvatar = ({
       placeholderIcon="circle-person"
       seed={address && address.toLowerCase()}
       size={size}
-      title={showInfo ? '' : username || address}
+      title={
+        showInfo ? '' : user?.profile?.displayName || user?.name || address
+      }
     />
   );
 };

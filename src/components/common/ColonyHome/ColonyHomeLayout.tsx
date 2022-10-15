@@ -15,7 +15,7 @@ import ColonyFunding from './ColonyFunding';
 // import ColonyUnclaimedTransfers from './ColonyUnclaimedTransfers';
 import ColonyTitle from './ColonyTitle';
 import ColonyNavigation from './ColonyNavigation';
-// import ColonyMembers from './ColonyMembers';
+import ColonyMembers from './ColonyMembers';
 // import ColonyExtensions from './ColonyExtensions';
 // import ColonyDomainDescription from './ColonyDomainDescription';
 // import ColonyUpgrade from './ColonyUpgrade';
@@ -107,7 +107,11 @@ Props) => {
               colony={colony}
               // currentDomainId={filteredDomainId}
             />
-            {/* <ColonyMembers colony={colony} currentDomainId={filteredDomainId} /> */}
+            <ColonyMembers
+              colony={colony}
+              // currentDomainId={filteredDomainId}
+              currentDomainId={0}
+            />
             {/* <ColonyExtensions colony={colony} /> */}
           </aside>
         )}
