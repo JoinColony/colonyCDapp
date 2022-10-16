@@ -1,6 +1,8 @@
 const { utils, Wallet, Contract, ContractFactory, providers } = require('ethers');
 
 const colonyJSExtras = require('@colony/colony-js/extras')
+const colonyJSIColony = require('../node_modules/@colony/colony-js/dist/cjs/contracts/IColony/9/factories/IColony__factory.js')
+const { addAugmentsB } = require('../node_modules/@colony/colony-js/dist/cjs/clients/Core/augments/AddDomain.js');
 
 /*
  * @NOTE To preserve time, I just re-used a script I wrote for one of the lambda functions
@@ -91,7 +93,7 @@ const createUserAndColonyData = async () => {
    */
   const { abi: IColonyNetworkAbi } = colonyJSExtras.factories.latest.IColonyNetwork__factory;
 
-  const colonyNetork = new Contract(etherRouterAddress, IColonyNetworkAbi, firstUserWallet);
+  const colonyNetwork = new Contract(etherRouterAddress, IColonyNetworkAbi, firstUserWallet);
 
   /*
    * Token
@@ -128,11 +130,16 @@ const createUserAndColonyData = async () => {
   /*
    * Colony
    */
-  const currentNetworkVersion = await colonyNetork.getCurrentColonyVersion();
-  const colonyDeployment = await colonyNetork['createColony(address,uint256,string,string)'](tokenAddress, currentNetworkVersion, '', '');
+  const currentNetworkVersion = await colonyNetwork.getCurrentColonyVersion();
+  const colonyDeployment = await colonyNetwork['createColony(address,uint256,string,string)'](tokenAddress, currentNetworkVersion, '', '');
   const colonyDeploymentTransaction = await colonyDeployment.wait();
   const createColonyEvent = colonyDeploymentTransaction.events.find(event => !!event?.args?.colonyAddress);
   const colonyAddress = utils.getAddress(createColonyEvent.args.colonyAddress);
+
+  const { abi: IColonyAbi } = colonyJSIColony.IColony__factory;
+  const colony = new Contract(colonyAddress, IColonyAbi, firstUserWallet);
+
+  addAugmentsB(colony);
 
   const colonyQuery = await graphqlRequest(
     createUniqueColony,
@@ -178,6 +185,25 @@ const createUserAndColonyData = async () => {
     console.log('COLONY COULD NOT BE CREATED.', colonyQuery.errors[0].message);
   } else {
     console.log(`Creating colony { name: "a", colonyAddress: "${colonyAddress}", profile: { displayName: "Colony A" }, nativeToken: "${tokenAddress}", version: "${currentNetworkVersion.toString()}" }`);
+  }
+
+  /*
+   * Domains
+   */
+  if (!colonyQuery?.errors) {
+    console.log(`Creating root domain { name: "Root", nativeId: "1", parentId: "null", id: "${colonyAddress}_1"`);
+
+    const firstSubdomainDeployment = await colony['addDomainWithProofs(uint256)'](1);
+    const firstSubdomainTransactions = await firstSubdomainDeployment.wait();
+    const { args: { domainId: firstSubdomainId } } = firstSubdomainTransactions.events.find(event => !!event?.args?.domainId);
+
+    console.log(`Creating subdomain { name: "First Subdomain", nativeId: "${firstSubdomainId.toString()}", parentId: "1", id: "${colonyAddress}_${firstSubdomainId.toString()}"`);
+
+    const secondSubdomainDeployment = await colony['addDomainWithProofs(uint256)'](1);
+    const secondSubdomainTransactions = await secondSubdomainDeployment.wait();
+    const { args: { domainId: secondSubdomainId } } = secondSubdomainTransactions.events.find(event => !!event?.args?.domainId);
+
+    console.log(`Creating subdomain { name: "Second Subdomain", nativeId: "${secondSubdomainId.toString()}", parentId: "1", id: "${colonyAddress}_${secondSubdomainId.toString()}"`);
   }
 };
 

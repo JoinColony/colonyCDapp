@@ -48,9 +48,8 @@ module.exports = {
           recovery
           deployed
         }
-        chain {
-          network
-          chainId
+        domains {
+          nextToken
         }
         watchers {
           nextToken

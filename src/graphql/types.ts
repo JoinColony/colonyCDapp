@@ -620,6 +620,18 @@ export type GetFullColonyByNameQuery = {
           },
         } | null >,
       } | null,
+      domains?:  {
+        __typename: "ModelDomainConnection",
+        items:  Array< {
+          __typename: "Domain",
+          color?: DomainColor | null,
+          description?: string | null,
+          id: string,
+          name?: string | null,
+          nativeId: number,
+          parentId?: string | null,
+        } | null >,
+      } | null,
       watchers?:  {
         __typename: "ModelWatchedColoniesConnection",
         items:  Array< {
