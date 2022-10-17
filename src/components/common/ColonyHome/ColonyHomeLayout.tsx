@@ -17,7 +17,7 @@ import ColonyTitle from './ColonyTitle';
 import ColonyNavigation from './ColonyNavigation';
 import ColonyMembers from './ColonyMembers';
 // import ColonyExtensions from './ColonyExtensions';
-// import ColonyDomainDescription from './ColonyDomainDescription';
+import ColonyDomainDescription from './ColonyDomainDescription';
 // import ColonyUpgrade from './ColonyUpgrade';
 // import ColonyFinishDeployment from './ColonyFinishDeployment';
 // import ExtensionUpgrade from './ExtensionUpgrade';
@@ -26,8 +26,8 @@ import styles from './ColonyHomeLayout.css';
 
 type Props = {
   colony: FullColony;
-  // filteredDomainId: number;
-  // onDomainChange?: (domainId: number) => void;
+  filteredDomainId: number;
+  onDomainChange?: (domainId: number) => void;
   /*
    * This component should only be used with a child to render,
    * otherwise it has no point
@@ -44,14 +44,14 @@ const displayName = 'dashboard.ColonyHome.ColonyHomeLayout';
 
 const ColonyHomeLayout = ({
   colony,
-  // filteredDomainId,
+  filteredDomainId,
   children,
   showControls = true,
   showNavigation = true,
   showSidebar = true,
   showActions = true,
-}: // onDomainChange = () => null,
-// ethDomainId,
+  onDomainChange = () => null,
+}: // ethDomainId,
 Props) => {
   // const { ethereal, networkId } = useLoggedInUser();
   // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
@@ -79,8 +79,8 @@ Props) => {
               <div className={styles.contentActionsPanel}>
                 <div className={styles.domainsDropdownContainer}>
                   <ColonyDomainSelector
-                    filteredDomainId={0}
-                    // onDomainChange={onDomainChange}
+                    filteredDomainId={filteredDomainId}
+                    onDomainChange={onDomainChange}
                     colony={colony}
                   />
                 </div>
@@ -98,10 +98,10 @@ Props) => {
         </div>
         {showSidebar && (
           <aside className={styles.rightAside}>
-            {/* <ColonyDomainDescription
+            <ColonyDomainDescription
               colony={colony}
               currentDomainId={filteredDomainId}
-            /> */}
+            />
             {/* <ColonyUnclaimedTransfers colony={colony} /> */}
             <ColonyFunding
               colony={colony}

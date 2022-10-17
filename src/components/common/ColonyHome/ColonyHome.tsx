@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import {
   Navigate,
@@ -14,7 +14,7 @@ import { useQuery, gql } from '@apollo/client';
 import LoadingTemplate from '~root/LoadingTemplate';
 // import Extensions, { ExtensionDetails } from '~dashboard/Extensions';
 
-// import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
+import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 // import { useColonyFromNameQuery } from '~data/index';
 // import { allAllowedExtensions } from '~data/staticData/';
 
@@ -73,11 +73,9 @@ const ColonyHome = ({ match, location }) => {
   //   domainFilter: string | undefined;
   // };
 
-  // const [domainIdFilter, setDomainIdFilter] = useState<number>(
-  //   Number(queryDomainFilterId),
-  // );
+  const [domainIdFilter, setDomainIdFilter] = useState<number>(0);
 
-  // const filteredDomainId = domainIdFilter || COLONY_TOTAL_BALANCE_DOMAIN_ID;
+  const filteredDomainId = domainIdFilter || COLONY_TOTAL_BALANCE_DOMAIN_ID;
 
   // const { data, error, loading } = useColonyFromNameQuery({
   //   // We have to define an empty address here for type safety, will be replaced by the query
@@ -102,8 +100,8 @@ const ColonyHome = ({ match, location }) => {
             element={
               <ColonyHomeLayout
                 colony={colony}
-                // filteredDomainId={filteredDomainId}
-                // onDomainChange={setDomainIdFilter}
+                filteredDomainId={filteredDomainId}
+                onDomainChange={setDomainIdFilter}
                 // showActions={false}
               >
                 {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> */}
@@ -116,8 +114,8 @@ const ColonyHome = ({ match, location }) => {
             element={
               <ColonyHomeLayout
                 colony={colony}
-                // filteredDomainId={filteredDomainId}
-                // onDomainChange={setDomainIdFilter}
+                filteredDomainId={filteredDomainId}
+                onDomainChange={setDomainIdFilter}
                 // showControls={false}
                 // showSidebar={false}
               >
@@ -149,8 +147,8 @@ const ColonyHome = ({ match, location }) => {
             element={
               <ColonyHomeLayout
                 colony={colony}
-                // filteredDomainId={filteredDomainId}
-                // onDomainChange={setDomainIdFilter}
+                filteredDomainId={filteredDomainId}
+                onDomainChange={setDomainIdFilter}
                 // ethDomainId={filteredDomainId}
               >
                 {/* <ColonyActions colony={colony} ethDomainId={filteredDomainId} /> */}
@@ -162,7 +160,7 @@ const ColonyHome = ({ match, location }) => {
       );
     }
     return null;
-  }, [colony]);
+  }, [colony, filteredDomainId]);
 
   if (loading || (colony && colony.name !== colonyName)) {
     return (
