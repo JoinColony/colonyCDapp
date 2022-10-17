@@ -1,7 +1,7 @@
 module.exports = {
   listDomains: /* GraphQL */ `
-    query ListDomains {
-      listDomains {
+    query ListDomains($colonyAddress: ID!) {
+      listDomains(filter: { colonyDomainsId: { eq: $colonyAddress } }) {
         items {
           nativeId
         }

@@ -127,7 +127,7 @@ const DomainDropdown = ({
                 showDescription={showDescription}
               />
             ),
-            label: domainName,
+            label: domainName || `Domain #${nativeId}`,
             value: `${nativeId}`,
           };
         }),

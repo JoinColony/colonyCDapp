@@ -26,10 +26,9 @@ exports.handler = async (event) => {
     parentId = 1,
     colonyAddress,
   } = event.arguments?.input || {};
-  // console.log(name, description, color, parentId, colonyAddress);
   const existingDomainsQuery = await graphqlRequest(
     listDomains,
-    {},
+    { colonyAddress },
     GRAPHQL_URI,
     API_KEY,
   );

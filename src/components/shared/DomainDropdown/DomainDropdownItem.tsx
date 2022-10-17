@@ -114,7 +114,7 @@ const DomainDropdownItem = ({
           >
             <Heading
               appearance={{ margin: 'none', size: 'normal', theme: 'dark' }}
-              text={name}
+              text={name || `Domain #${nativeId}`}
             />
           </div>
           {nativeId === Id.RootDomain && (
