@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Address } from '~types';
-import { Colony } from '~types';
+import { Address, Colony } from '~types';
 
 import Avatar from '~shared/Avatar';
 import NavLink from '~shared/NavLink';
@@ -41,14 +40,14 @@ const ColonyAvatar = ({
     // @ts-ignore
     name,
     // @ts-ignore
-    profile: { displayName: colonyDisplayName, avatar, thumbnail },
+    profile,
   },
   notSet,
   size,
   showLink,
   prefferThumbnail = true,
 }: Props) => {
-  const imageString = prefferThumbnail ? thumbnail : avatar;
+  const imageString = prefferThumbnail ? profile?.thumbnail : profile?.avatar;
   const colonyAvatar = (
     <Avatar
       avatarURL={avatarURL || imageString}
@@ -57,7 +56,7 @@ const ColonyAvatar = ({
       placeholderIcon="at-sign-circle"
       seed={colonyAddress && colonyAddress.toLowerCase()}
       size={size}
-      title={colonyDisplayName || name || colonyAddress}
+      title={profile?.colonyDisplayName || name || colonyAddress}
     />
   );
   if (showLink && name) {

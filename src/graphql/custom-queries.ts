@@ -100,3 +100,23 @@ export const getUserColonyWatchlist = /* GraphQL */ `
     }
   }
 `;
+
+export const getMetacolony = /* GraphQL */ `
+  query GetMetacolony {
+    getColonyByType(type: METACOLONY) {
+      items {
+        colonyAddress: id
+        name
+        profile {
+          avatar
+          bio
+          displayName
+          email
+          location
+          thumbnail
+          website
+        }
+      }
+    }
+  }
+`;

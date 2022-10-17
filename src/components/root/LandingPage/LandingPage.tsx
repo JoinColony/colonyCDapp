@@ -1,40 +1,44 @@
 import React from 'react';
-// import { defineMessages, FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
+import { useQuery, gql } from '@apollo/client';
 
-// import NavLink from '~shared/NavLink';
+import NavLink from '~shared/NavLink';
 // import Icon from '~shared/Icon';
 // import HookedColonyAvatar from '~dashboard/HookedColonyAvatar';
 // import Heading from '~shared/Heading';
-// import { SpinnerLoader } from '~shared/Preloaders';
+import { SpinnerLoader } from '~shared/Preloaders';
+import ColonyAvatar from '~shared/ColonyAvatar';
 
 // import { CREATE_COLONY_ROUTE } from '~routes/index';
 // import { useLoggedInUser, useMetaColonyQuery } from '~data/index';
 // import { checkIfNetworkIsAllowed } from '~utils/networks';
 
+import { getMetacolony } from '~gql';
+
 import styles from './LandingPage.css';
 
-// const MSG = defineMessages({
-//   callToAction: {
-//     id: 'pages.LandingPage.callToAction',
-//     defaultMessage: 'Welcome, what would you like to do?',
-//   },
-//   wrongNetwork: {
-//     id: 'pages.LandingPage.wrongNetwork',
-//     defaultMessage: `You're connected to the wrong network. Please connect to the appriopriate Ethereum network.`,
-//   },
-//   createColony: {
-//     id: 'pages.LandingPage.createColony',
-//     defaultMessage: 'Create a colony',
-//   },
-//   exploreColony: {
-//     id: 'pages.LandingPage.exploreColony',
-//     defaultMessage: 'Explore the {colonyName}',
-//   },
-// });
+const displayName = 'root.LandingPage';
+
+const MSG = defineMessages({
+  // callToAction: {
+  //   id: 'pages.LandingPage.callToAction',
+  //   defaultMessage: 'Welcome, what would you like to do?',
+  // },
+  // wrongNetwork: {
+  //   id: 'pages.LandingPage.wrongNetwork',
+  //   defaultMessage: `You're connected to the wrong network. Please connect to the appriopriate Ethereum network.`,
+  // },
+  // createColony: {
+  //   id: 'pages.LandingPage.createColony',
+  //   defaultMessage: 'Create a colony',
+  // },
+  exploreColony: {
+    id: `${displayName}.exploreColony`,
+    defaultMessage: 'Explore the {colonyName}',
+  },
+});
 
 // const ColonyAvatar = HookedColonyAvatar({ fetchColony: false });
-
-const displayName = 'pages.LandingPage';
 
 const LandingPage = () => {
   // const { networkId, ethereal } = useLoggedInUser();
@@ -43,11 +47,14 @@ const LandingPage = () => {
 
   // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
 
+  const { data, loading } = useQuery(gql(getMetacolony));
+
+  const [metacolony] = data?.getColonyByType?.items || [];
+
   return (
     <div className={styles.main}>
       <div>
         <div className={styles.title}>
-          LANDING ROUTE
           {/* {(ethereal || isNetworkAllowed) && (
             <Heading
               text={MSG.callToAction}
@@ -76,21 +83,21 @@ const LandingPage = () => {
               </NavLink>
             </li>
           )} */}
-          {/* {loading && !data?.processedMetaColony && (
+          {loading && (
             <li className={styles.itemLoading}>
               <SpinnerLoader appearance={{ size: 'medium' }} />
             </li>
-          )} */}
-          {/* {data?.processedMetaColony && (
+          )}
+          {metacolony && (
             <li className={styles.item}>
               <NavLink
-                to={`/colony/${data?.processedMetaColony.colonyName}`}
+                to={`/colony/${metacolony.name}`}
                 className={styles.itemLink}
               >
                 <ColonyAvatar
                   className={styles.itemIcon}
-                  colonyAddress={data?.processedMetaColony?.colonyAddress}
-                  colony={data?.processedMetaColony}
+                  colonyAddress={metacolony.colonyAddress}
+                  colony={metacolony}
                   size="xl"
                 />
                 <span className={styles.itemTitle}>
@@ -98,14 +105,13 @@ const LandingPage = () => {
                     {...MSG.exploreColony}
                     values={{
                       colonyName:
-                        data?.processedMetaColony.displayName ||
-                        data?.processedMetaColony.colonyName,
+                        metacolony?.profile?.displayName || metacolony.name,
                     }}
                   />
                 </span>
               </NavLink>
             </li>
-          )} */}
+          )}
         </ul>
       </div>
     </div>
