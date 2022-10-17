@@ -4,6 +4,8 @@ cd colonyNetwork
 
 # Ganache
 
+# Uncomment the line below if you need ganache to run in verbose mode
+# sed -i 's/100000000000000000000" >\/dev\/null 2>&1/100000000000000000000" --verbose/g' scripts/start-blockchain-client.sh
 yarn start:blockchain:client &
 
 # Colony Network Contracts
