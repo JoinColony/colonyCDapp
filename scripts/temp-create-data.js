@@ -48,6 +48,11 @@ const createWatchedColonies = /* GraphQL */ `
     createWatchedColonies(input: $input) { id }
   }
 `;
+const createUniqueDomain = /* GraphQL */ `
+  mutation CreateUniqueDomain($input: CreateUniqueDomainInput) {
+    createUniqueDomain(input: $input) { nativeId }
+  }
+`;
 
 /*
  * Queries
@@ -100,7 +105,7 @@ const createUserAndColonyData = async () => {
    */
   const { abi: TokenAbi, bytecode: TokenBytecode } = colonyJSExtras.factories.latest.MetaTxToken__factory;
   const tokenFactory = new ContractFactory(TokenAbi, TokenBytecode, firstUserWallet);
-  const token = await tokenFactory.deploy('Token A', 'A', 18);
+  const token = await tokenFactory.deploy('Token A', 'A', 18, { gasPrice: '2000000000' });
   await token.deployed();
   const tokenAddress = utils.getAddress(token.address);
 
@@ -191,19 +196,73 @@ const createUserAndColonyData = async () => {
    * Domains
    */
   if (!colonyQuery?.errors) {
-    console.log(`Creating root domain { name: "Root", nativeId: "1", parentId: "null", id: "${colonyAddress}_1"`);
+    /*
+     * Root
+     */
+    const rootDomainMutation = await graphqlRequest(
+      createUniqueDomain,
+      {
+        input: {
+          colonyAddress: colonyAddress,
+        }
+      },
+      GRAPHQL_URI,
+      API_KEY,
+    );
+    if (!rootDomainMutation?.errors) {
+      console.log(`Creating root domain { name: "Root", nativeId: "1", parentId: "null", id: "${colonyAddress}_1"`);
+    }
 
+
+    /*
+     * First Domain
+     */
     const firstSubdomainDeployment = await colony['addDomainWithProofs(uint256)'](1);
     const firstSubdomainTransactions = await firstSubdomainDeployment.wait();
     const { args: { domainId: firstSubdomainId } } = firstSubdomainTransactions.events.find(event => !!event?.args?.domainId);
 
-    console.log(`Creating subdomain { name: "First Subdomain", nativeId: "${firstSubdomainId.toString()}", parentId: "1", id: "${colonyAddress}_${firstSubdomainId.toString()}"`);
+    const firstDomainMutation = await graphqlRequest(
+      createUniqueDomain,
+      {
+        input: {
+          colonyAddress: colonyAddress,
+          name: 'Red',
+          description: 'First domain',
+          color: 'RED',
+        }
+      },
+      GRAPHQL_URI,
+      API_KEY,
+    );
 
+    if (!firstDomainMutation?.errors) {
+      console.log(`Creating subdomain { name: "First Subdomain", nativeId: "${firstSubdomainId.toString()}", parentId: "1", id: "${colonyAddress}_${firstSubdomainId.toString()}"`);
+    }
+
+    /*
+     * Second Domain
+     */
     const secondSubdomainDeployment = await colony['addDomainWithProofs(uint256)'](1);
     const secondSubdomainTransactions = await secondSubdomainDeployment.wait();
     const { args: { domainId: secondSubdomainId } } = secondSubdomainTransactions.events.find(event => !!event?.args?.domainId);
 
-    console.log(`Creating subdomain { name: "Second Subdomain", nativeId: "${secondSubdomainId.toString()}", parentId: "1", id: "${colonyAddress}_${secondSubdomainId.toString()}"`);
+    const secondDomainMutation = await graphqlRequest(
+      createUniqueDomain,
+      {
+        input: {
+          colonyAddress: colonyAddress,
+          name: 'Orange',
+          description: 'Second domain',
+          color: 'ORANGE',
+        }
+      },
+      GRAPHQL_URI,
+      API_KEY,
+    );
+
+    if (!secondDomainMutation?.errors) {
+      console.log(`Creating subdomain { name: "Second Subdomain", nativeId: "${secondSubdomainId.toString()}", parentId: "1", id: "${colonyAddress}_${secondSubdomainId.toString()}"`);
+    }
   }
 };
 

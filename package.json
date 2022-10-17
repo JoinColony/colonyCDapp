@@ -150,6 +150,7 @@
     "lodash": "^4.17.21",
     "move-decimal-point": "^0.0.4",
     "nanoid": "^3.1.31",
+    "node-fetch": "^2.6.7",
     "numbro": "^2.3.6",
     "papaparse": "^5.3.1",
     "qrcode": "^1.4.4",

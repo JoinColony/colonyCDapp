@@ -52,6 +52,32 @@ export const createUniqueColony = /* GraphQL */ `
     }
   }
 `;
+export const createUniqueDomain = /* GraphQL */ `
+  mutation CreateUniqueDomain($input: CreateUniqueDomainInput) {
+    createUniqueDomain(input: $input) {
+      id
+      nativeId
+      name
+      description
+      color
+      parent {
+        id
+        nativeId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      createdAt
+      updatedAt
+      colonyDomainsId
+      domainParentId
+    }
+  }
+`;
 export const createToken = /* GraphQL */ `
   mutation CreateToken(
     $input: CreateTokenInput!

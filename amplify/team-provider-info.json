@@ -15,7 +15,8 @@
       "function": {
         "fetchTokenFromChain": {},
         "createUniqueUser": {},
-        "createUniqueColony": {}
+        "createUniqueColony": {},
+        "createUniqueDomain": {}
       }
     }
   }

@@ -198,6 +198,14 @@ export type CreateUniqueColonyInput = {
   profile?: ProfileInput | null,
 };
 
+export type CreateUniqueDomainInput = {
+  colonyAddress: string,
+  parentId?: string | null,
+  name?: string | null,
+  description?: string | null,
+  color?: DomainColor | null,
+};
+
 export type CreateTokenInput = {
   id?: string | null,
   name: string,
@@ -752,6 +760,37 @@ export type CreateUniqueColonyMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type CreateUniqueDomainMutationVariables = {
+  input?: CreateUniqueDomainInput | null,
+};
+
+export type CreateUniqueDomainMutation = {
+  createUniqueDomain?:  {
+    __typename: "Domain",
+    id: string,
+    nativeId: number,
+    name?: string | null,
+    description?: string | null,
+    color?: DomainColor | null,
+    parent?:  {
+      __typename: "Domain",
+      id: string,
+      nativeId: number,
+      name?: string | null,
+      description?: string | null,
+      color?: DomainColor | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyDomainsId?: string | null,
+      domainParentId?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    colonyDomainsId?: string | null,
+    domainParentId?: string | null,
   } | null,
 };
 

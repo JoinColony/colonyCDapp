@@ -29,6 +29,14 @@ input ProfileInput {
   email: AWSEmail
 }
 
+input CreateUniqueDomainInput {
+  colonyAddress: ID!
+  parentId: ID
+  name: String
+  description: String
+  color: DomainColor
+}
+
 type TokenFromEverywhereReturn {
   items: [Token]
 }
@@ -76,6 +84,9 @@ type Mutation {
   createUniqueColony(
     input: CreateUniqueColonyInput
   ): User @function(name: "createUniqueColony")
+  createUniqueDomain(
+    input: CreateUniqueDomainInput
+  ): Domain @function(name: "createUniqueDomain")
 }
 
 # Applies to both Users and Colonies
