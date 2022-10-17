@@ -18,6 +18,7 @@ export type Colony = {
   status?: ColonyStatus | null,
   domains?: ModelDomainConnection | null,
   watchers?: ModelWatchedColoniesConnection | null,
+  type?: ColonyType | null,
   createdAt: string,
   updatedAt: string,
   colonyNativeTokenId: string,
@@ -169,6 +170,12 @@ export enum DomainColor {
 }
 
 
+export enum ColonyType {
+  COLONY = "COLONY",
+  METACOLONY = "METACOLONY",
+}
+
+
 export type ModelUserConnection = {
   __typename: "ModelUserConnection",
   items:  Array<User | null >,
@@ -196,6 +203,7 @@ export type CreateUniqueColonyInput = {
   name: string,
   colonyNativeTokenId: string,
   profile?: ProfileInput | null,
+  type?: ColonyType | null,
 };
 
 export type CreateUniqueDomainInput = {
@@ -298,6 +306,7 @@ export type CreateColonyInput = {
   name: string,
   profile?: ProfileInput | null,
   status?: ColonyStatusInput | null,
+  type?: ColonyType | null,
   colonyNativeTokenId: string,
 };
 
@@ -315,10 +324,16 @@ export type NativeTokenStatusInput = {
 
 export type ModelColonyConditionInput = {
   name?: ModelStringInput | null,
+  type?: ModelColonyTypeInput | null,
   and?: Array< ModelColonyConditionInput | null > | null,
   or?: Array< ModelColonyConditionInput | null > | null,
   not?: ModelColonyConditionInput | null,
   colonyNativeTokenId?: ModelIDInput | null,
+};
+
+export type ModelColonyTypeInput = {
+  eq?: ColonyType | null,
+  ne?: ColonyType | null,
 };
 
 export type ModelIDInput = {
@@ -342,6 +357,7 @@ export type UpdateColonyInput = {
   name?: string | null,
   profile?: ProfileInput | null,
   status?: ColonyStatusInput | null,
+  type?: ColonyType | null,
   colonyNativeTokenId: string,
 };
 
@@ -514,6 +530,7 @@ export type ModelTokenConnection = {
 export type ModelColonyFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
+  type?: ModelColonyTypeInput | null,
   and?: Array< ModelColonyFilterInput | null > | null,
   or?: Array< ModelColonyFilterInput | null > | null,
   not?: ModelColonyFilterInput | null,
@@ -919,6 +936,7 @@ export type CreateColonyMutation = {
       __typename: "ModelWatchedColoniesConnection",
       nextToken?: string | null,
     } | null,
+    type?: ColonyType | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -972,6 +990,7 @@ export type UpdateColonyMutation = {
       __typename: "ModelWatchedColoniesConnection",
       nextToken?: string | null,
     } | null,
+    type?: ColonyType | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -1025,6 +1044,7 @@ export type DeleteColonyMutation = {
       __typename: "ModelWatchedColoniesConnection",
       nextToken?: string | null,
     } | null,
+    type?: ColonyType | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -1251,6 +1271,7 @@ export type CreateColonyTokensMutation = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -1285,6 +1306,7 @@ export type UpdateColonyTokensMutation = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -1319,6 +1341,7 @@ export type DeleteColonyTokensMutation = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -1442,6 +1465,7 @@ export type CreateWatchedColoniesMutation = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -1473,6 +1497,7 @@ export type UpdateWatchedColoniesMutation = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -1504,6 +1529,7 @@ export type DeleteWatchedColoniesMutation = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -1634,6 +1660,7 @@ export type GetColonyQuery = {
       __typename: "ModelWatchedColoniesConnection",
       nextToken?: string | null,
     } | null,
+    type?: ColonyType | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -1653,6 +1680,7 @@ export type ListColoniesQuery = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -1793,6 +1821,7 @@ export type GetColonyTokensQuery = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -1890,6 +1919,7 @@ export type GetWatchedColoniesQuery = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -1992,6 +2022,7 @@ export type GetColonyByAddressQuery = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -2015,6 +2046,31 @@ export type GetColonyByNameQuery = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyNativeTokenId: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetColonyByTypeQueryVariables = {
+  type: ColonyType,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelColonyFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type GetColonyByTypeQuery = {
+  getColonyByType?:  {
+    __typename: "ModelColonyConnection",
+    items:  Array< {
+      __typename: "Colony",
+      id: string,
+      name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -2172,6 +2228,7 @@ export type OnCreateColonySubscription = {
       __typename: "ModelWatchedColoniesConnection",
       nextToken?: string | null,
     } | null,
+    type?: ColonyType | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -2220,6 +2277,7 @@ export type OnUpdateColonySubscription = {
       __typename: "ModelWatchedColoniesConnection",
       nextToken?: string | null,
     } | null,
+    type?: ColonyType | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -2268,6 +2326,7 @@ export type OnDeleteColonySubscription = {
       __typename: "ModelWatchedColoniesConnection",
       nextToken?: string | null,
     } | null,
+    type?: ColonyType | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -2459,6 +2518,7 @@ export type OnCreateColonyTokensSubscription = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -2488,6 +2548,7 @@ export type OnUpdateColonyTokensSubscription = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -2517,6 +2578,7 @@ export type OnDeleteColonyTokensSubscription = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -2620,6 +2682,7 @@ export type OnCreateWatchedColoniesSubscription = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -2646,6 +2709,7 @@ export type OnUpdateWatchedColoniesSubscription = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,
@@ -2672,6 +2736,7 @@ export type OnDeleteWatchedColoniesSubscription = {
       __typename: "Colony",
       id: string,
       name: string,
+      type?: ColonyType | null,
       createdAt: string,
       updatedAt: string,
       colonyNativeTokenId: string,

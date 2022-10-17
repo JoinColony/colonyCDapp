@@ -17,6 +17,7 @@ input CreateUniqueColonyInput {
   name: String!
   colonyNativeTokenId: ID!
   profile: ProfileInput
+  type: ColonyType
 }
 
 input ProfileInput {
@@ -71,6 +72,11 @@ enum DomainColor {
   PURPLEGREY
 }
 
+enum ColonyType {
+  COLONY
+  METACOLONY
+}
+
 type Query {
   getTokenFromEverywhere(
     input: TokenFromEverywhereArguments
@@ -102,15 +108,15 @@ type Profile {
 }
 
 type NativeTokenStatus {
-  unlocked: Boolean
-  mintable: Boolean
-  unlockable: Boolean
+  unlocked: Boolean # If it's already unlocked
+  mintable: Boolean # User has permissions to mint new tokens
+  unlockable: Boolean # Token can be unlocked
 }
 
 type ColonyStatus {
   nativeToken: NativeTokenStatus
-  recovery: Boolean
-  deployed: Boolean
+  recovery: Boolean # if it's in recovery mode
+  deployed: Boolean # if it has finished deployment (might be able to remove this at some point)
 }
 
 # Applies to both Colonies and Tokens
@@ -125,8 +131,7 @@ type Token @model {
   name: String!
   symbol: String!
   decimals: Int!
-  type: TokenType
-    @index(name: "byType", queryField: "getTokensByType")
+  type: TokenType @index(name: "byType", queryField: "getTokensByType")
   colonies: [Colony] @manyToMany(relationName: "ColonyTokens")
   users: [User] @manyToMany(relationName: "UserTokens")
 }
@@ -140,6 +145,7 @@ type Colony @model {
   status: ColonyStatus
   domains: [Domain] @hasMany
   watchers: [User] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
+  type: ColonyType @index(name: "byType", queryField: "getColonyByType")
 }
 
 type User @model {

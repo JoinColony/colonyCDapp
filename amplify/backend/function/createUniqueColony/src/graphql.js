@@ -13,6 +13,12 @@ module.exports = {
           name
         }
       }
+      getColonyByType(type: METACOLONY) {
+        items {
+          id
+          name
+        }
+      }
     }
   `,
   createColony: /* GraphQL */ `
@@ -57,6 +63,7 @@ module.exports = {
         createdAt
         updatedAt
         colonyNativeTokenId
+        type
       }
     }
   `,

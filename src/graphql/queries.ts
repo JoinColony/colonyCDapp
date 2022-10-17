@@ -92,6 +92,7 @@ export const getColony = /* GraphQL */ `
       watchers {
         nextToken
       }
+      type
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -108,6 +109,7 @@ export const listColonies = /* GraphQL */ `
       items {
         id
         name
+        type
         createdAt
         updatedAt
         colonyNativeTokenId
@@ -224,6 +226,7 @@ export const getColonyTokens = /* GraphQL */ `
       colony {
         id
         name
+        type
         createdAt
         updatedAt
         colonyNativeTokenId
@@ -304,6 +307,7 @@ export const getWatchedColonies = /* GraphQL */ `
       colony {
         id
         name
+        type
         createdAt
         updatedAt
         colonyNativeTokenId
@@ -411,6 +415,7 @@ export const getColonyByAddress = /* GraphQL */ `
       items {
         id
         name
+        type
         createdAt
         updatedAt
         colonyNativeTokenId
@@ -437,6 +442,34 @@ export const getColonyByName = /* GraphQL */ `
       items {
         id
         name
+        type
+        createdAt
+        updatedAt
+        colonyNativeTokenId
+      }
+      nextToken
+    }
+  }
+`;
+export const getColonyByType = /* GraphQL */ `
+  query GetColonyByType(
+    $type: ColonyType!
+    $sortDirection: ModelSortDirection
+    $filter: ModelColonyFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    getColonyByType(
+      type: $type
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        type
         createdAt
         updatedAt
         colonyNativeTokenId

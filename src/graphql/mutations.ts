@@ -183,6 +183,7 @@ export const createColony = /* GraphQL */ `
       watchers {
         nextToken
       }
+      type
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -228,6 +229,7 @@ export const updateColony = /* GraphQL */ `
       watchers {
         nextToken
       }
+      type
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -273,6 +275,7 @@ export const deleteColony = /* GraphQL */ `
       watchers {
         nextToken
       }
+      type
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -471,6 +474,7 @@ export const createColonyTokens = /* GraphQL */ `
       colony {
         id
         name
+        type
         createdAt
         updatedAt
         colonyNativeTokenId
@@ -501,6 +505,7 @@ export const updateColonyTokens = /* GraphQL */ `
       colony {
         id
         name
+        type
         createdAt
         updatedAt
         colonyNativeTokenId
@@ -531,6 +536,7 @@ export const deleteColonyTokens = /* GraphQL */ `
       colony {
         id
         name
+        type
         createdAt
         updatedAt
         colonyNativeTokenId
@@ -639,6 +645,7 @@ export const createWatchedColonies = /* GraphQL */ `
       colony {
         id
         name
+        type
         createdAt
         updatedAt
         colonyNativeTokenId
@@ -666,6 +673,7 @@ export const updateWatchedColonies = /* GraphQL */ `
       colony {
         id
         name
+        type
         createdAt
         updatedAt
         colonyNativeTokenId
@@ -693,6 +701,7 @@ export const deleteWatchedColonies = /* GraphQL */ `
       colony {
         id
         name
+        type
         createdAt
         updatedAt
         colonyNativeTokenId

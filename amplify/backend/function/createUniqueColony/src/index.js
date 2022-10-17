@@ -22,6 +22,7 @@ exports.handler = async (event) => {
     name,
     profile,
     colonyNativeTokenId,
+    type = 'COLONY',
   } = event.arguments?.input || {};
 
   /*
@@ -69,19 +70,28 @@ exports.handler = async (event) => {
   }
 
   const [existingColonyAddress] =
-    colonyQuery?.data?.getColonyByAddress?.items || {};
-  const [existingColonyName] = colonyQuery?.data?.getColonyByName?.items || {};
+    colonyQuery?.data?.getColonyByAddress?.items || [];
+  const [existingColonyName] = colonyQuery?.data?.getColonyByName?.items || [];
 
   if (existingColonyAddress) {
     throw new Error(
       `Colony with address "${existingColonyAddress.id}" is already registered`,
     );
   }
-
   if (existingColonyName) {
     throw new Error(
       `Colony with name "${existingColonyName.name}" is already registered`,
     );
+  }
+
+  if (type === 'METACOLONY') {
+    const [existingMetacolony] =
+      colonyQuery?.data?.getColonyByType?.items || [];
+    if (existingMetacolony) {
+      throw new Error(
+        `Metacolony "${existingMetacolony.name}" already exists. There can be only one metacolony.`,
+      );
+    }
   }
 
   /*
@@ -102,7 +112,7 @@ exports.handler = async (event) => {
   }
 
   const [existingTokenAddress] =
-    tokenQuery?.data?.getTokenByAddress?.items || {};
+    tokenQuery?.data?.getTokenByAddress?.items || [];
 
   if (!existingTokenAddress) {
     throw new Error(
@@ -122,6 +132,7 @@ exports.handler = async (event) => {
         colonyNativeTokenId: checksummedToken,
         name,
         profile,
+        type,
       },
     },
     GRAPHQL_URI,
