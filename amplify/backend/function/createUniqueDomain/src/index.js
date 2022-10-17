@@ -46,6 +46,14 @@ exports.handler = async (event) => {
   const nextDomainName = nextNativeDomainId === 1 ? 'Root' : name;
 
   /*
+   * @TODO Confirm the domain actually exists on chain before creating it,
+   * maybe even use the id returned by getDomain as a sanity check for `nextNativeDomainId`
+   *
+   * Yes, this will increase node requests expenses, but will ensure better
+   * data synchronicity across the chain and database
+   */
+
+  /*
    * Create the domain
    */
   const mutation = await graphqlRequest(

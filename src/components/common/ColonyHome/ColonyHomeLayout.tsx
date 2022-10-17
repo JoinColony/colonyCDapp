@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 
 // import { useDialog } from '~core/Dialog';
 
-// import ColonyDomainSelector from '~dashboard/ColonyHome/ColonyDomainSelector';
 import ColonyHomeActions from '~common/ColonyHomeActions';
 import ColonyTotalFunds from '~common/ColonyTotalFunds';
 // import WrongNetworkDialog from '~dialogs/WrongNetworkDialog';
@@ -11,6 +10,7 @@ import ColonyTotalFunds from '~common/ColonyTotalFunds';
 
 import { FullColony } from '~gql';
 
+import ColonyDomainSelector from './ColonyDomainSelector';
 import ColonyFunding from './ColonyFunding';
 // import ColonyUnclaimedTransfers from './ColonyUnclaimedTransfers';
 import ColonyTitle from './ColonyTitle';
@@ -78,11 +78,11 @@ Props) => {
               <ColonyTotalFunds colony={colony} />
               <div className={styles.contentActionsPanel}>
                 <div className={styles.domainsDropdownContainer}>
-                  {/* <ColonyDomainSelector
-                    filteredDomainId={filteredDomainId}
-                    onDomainChange={onDomainChange}
+                  <ColonyDomainSelector
+                    filteredDomainId={0}
+                    // onDomainChange={onDomainChange}
                     colony={colony}
-                  /> */}
+                  />
                 </div>
                 {showActions && (
                   <ColonyHomeActions

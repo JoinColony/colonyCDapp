@@ -1,9 +1,20 @@
-export const main: string;
-export const statusSchemaInfo: string;
-export const directionHorizontal: string;
-export const stateHidden: string;
-export const stateError: string;
-export const themeFat: string;
-export const themeUnderlined: string;
-export const themeMinimal: string;
-export const textSpaceWrap: string;
+declare namespace InputStatusCssNamespace {
+  export interface IInputStatusCss {
+    directionHorizontal: string;
+    main: string;
+    stateError: string;
+    stateHidden: string;
+    statusSchemaInfo: string;
+    textSpaceWrap: string;
+    themeFat: string;
+    themeMinimal: string;
+    themeUnderlined: string;
+  }
+}
+
+declare const InputStatusCssModule: InputStatusCssNamespace.IInputStatusCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: InputStatusCssNamespace.IInputStatusCss;
+};
+
+export = InputStatusCssModule;

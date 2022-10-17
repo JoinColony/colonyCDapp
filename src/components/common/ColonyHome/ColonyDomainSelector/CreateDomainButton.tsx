@@ -1,46 +1,49 @@
-import React, { MouseEventHandler, useCallback } from 'react';
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import Icon from '~core/Icon';
-import { useDialog } from '~core/Dialog';
+import Icon from '~shared/Icon';
+// import { useDialog } from '~core/Dialog';
 
-import CreateDomainDialog from '~dialogs/CreateDomainDialog';
+// import CreateDomainDialog from '~dialogs/CreateDomainDialog';
 
-import { Colony } from '~data/index';
+// import { Colony } from '~data/index';
+import { FullColony } from '~gql';
 
 import styles from './CreateDomainButton.css';
 
+const displayName = 'common.ColonuHome.ColonyDomainSelector.CreateDomainButton';
+
 const MSG = defineMessages({
   buttonCreateNewDomain: {
-    id: 'dashboard.DomainDropdown.CreateDomainButton.buttonCreateNewDomain',
+    id: `${displayName}.buttonCreateNewDomain`,
     defaultMessage: 'Create new team',
   },
 });
 
 interface Props {
-  colony: Colony;
+  colony: FullColony;
 }
-
-const displayName = 'dashboard.DomainDropdown.CreateDomainButton';
 
 const CreateDomainButton = ({ colony }: Props) => {
   const { formatMessage } = useIntl();
-  const openCreateDomainDialog = useDialog(CreateDomainDialog);
+  // const openCreateDomainDialog = useDialog(CreateDomainDialog);
 
-  const handleClick = useCallback<MouseEventHandler<HTMLButtonElement>>(
-    (evt) => {
-      evt.stopPropagation();
-      /*
-       * We don't have, and can't inject all the required props that the component
-       * is expecting when using it in a wizard
-       */
-      // @ts-ignore
-      return openCreateDomainDialog({
-        colony,
-      });
-    },
-    [openCreateDomainDialog, colony],
-  );
+  // const handleClick = useCallback<MouseEventHandler<HTMLButtonElement>>(
+  //   (evt) => {
+  //     evt.stopPropagation();
+  //     /*
+  //      * We don't have, and can't inject all the required props that the component
+  //      * is expecting when using it in a wizard
+  //      */
+  //     // @ts-ignore
+  //     return openCreateDomainDialog({
+  //       colony,
+  //     });
+  //   },
+  //   [openCreateDomainDialog, colony],
+  // );
+
+  const handleClick = () => colony;
 
   const text = formatMessage(MSG.buttonCreateNewDomain);
 

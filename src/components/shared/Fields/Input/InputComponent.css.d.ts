@@ -1,15 +1,26 @@
-export const main: string;
-export const themeFat: string;
-export const themeUnderlined: string;
-export const sizeMedium: string;
-export const themeMinimal: string;
-export const themeDotted: string;
-export const alignRight: string;
-export const sizeSmall: string;
-export const colorSchemaGrey: string;
-export const colorSchemaDark: string;
-export const colorSchemaTransparent: string;
-export const inputContainer: string;
-export const characterCounter: string;
-export const paddingRightExtra: string;
-export const maxButton: string;
+declare namespace InputComponentCssNamespace {
+  export interface IInputComponentCss {
+    alignRight: string;
+    characterCounter: string;
+    colorSchemaDark: string;
+    colorSchemaGrey: string;
+    colorSchemaTransparent: string;
+    inputContainer: string;
+    main: string;
+    maxButton: string;
+    paddingRightExtra: string;
+    sizeMedium: string;
+    sizeSmall: string;
+    themeDotted: string;
+    themeFat: string;
+    themeMinimal: string;
+    themeUnderlined: string;
+  }
+}
+
+declare const InputComponentCssModule: InputComponentCssNamespace.IInputComponentCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: InputComponentCssNamespace.IInputComponentCss;
+};
+
+export = InputComponentCssModule;

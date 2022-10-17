@@ -1,4 +1,15 @@
-export const main: string;
-export const text: string;
-export const info: string;
-export const error: string;
+declare namespace FormStatusCssNamespace {
+  export interface IFormStatusCss {
+    error: string;
+    info: string;
+    main: string;
+    text: string;
+  }
+}
+
+declare const FormStatusCssModule: FormStatusCssNamespace.IFormStatusCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: FormStatusCssNamespace.IFormStatusCss;
+};
+
+export = FormStatusCssModule;

@@ -1,17 +1,28 @@
-export const baseSelect: string;
-export const main: string;
-export const selectInner: string;
-export const inputWrapper: string;
-export const select: string;
-export const selectExpandContainer: string;
-export const activeOption: string;
-export const themeDefault: string;
-export const themeAlt: string;
-export const themeGrey: string;
-export const themeGrid: string;
-export const widthContent: string;
-export const widthFluid: string;
-export const widthStrict: string;
-export const sizeMedium: string;
-export const sizeMediumLarge: string;
-export const sizeLarge: string;
+declare namespace SelectCssNamespace {
+  export interface ISelectCss {
+    activeOption: string;
+    baseSelect: string;
+    inputWrapper: string;
+    main: string;
+    select: string;
+    selectExpandContainer: string;
+    selectInner: string;
+    sizeLarge: string;
+    sizeMedium: string;
+    sizeMediumLarge: string;
+    themeAlt: string;
+    themeDefault: string;
+    themeGrey: string;
+    themeGrid: string;
+    widthContent: string;
+    widthFluid: string;
+    widthStrict: string;
+  }
+}
+
+declare const SelectCssModule: SelectCssNamespace.ISelectCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: SelectCssNamespace.ISelectCss;
+};
+
+export = SelectCssModule;
