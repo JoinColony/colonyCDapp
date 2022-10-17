@@ -7,7 +7,7 @@ import Icon from '~shared/Icon';
 // import CreateDomainDialog from '~dialogs/CreateDomainDialog';
 
 // import { Colony } from '~data/index';
-import { FullColony } from '~gql';
+import { Colony } from '~types';
 
 import styles from './CreateDomainButton.css';
 
@@ -21,7 +21,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  colony: FullColony;
+  colony: Colony;
 }
 
 const CreateDomainButton = ({ colony }: Props) => {

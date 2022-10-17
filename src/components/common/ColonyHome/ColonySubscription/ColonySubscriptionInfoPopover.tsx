@@ -6,7 +6,7 @@ import Button from '~shared/Button';
 import MaskedAddress from '~shared/MaskedAddress';
 import ColonyAvatar from '~shared/ColonyAvatar';
 
-import { FullColony } from '~gql';
+import { olony } from '~types';
 
 import styles from './ColonySubscriptionInfoPopover.css';
 
@@ -22,7 +22,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  colony: FullColony;
+  colony: Colony;
   onUnsubscribe?: () => void;
   children?: ReactNode;
   canUnsubscribe?: boolean;

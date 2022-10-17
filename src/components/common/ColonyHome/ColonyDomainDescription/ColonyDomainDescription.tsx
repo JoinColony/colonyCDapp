@@ -4,12 +4,12 @@ import ColorTag from '~shared/ColorTag';
 
 // import { Colony } from '~data/index';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { FullColony } from '~gql';
+import { Colony } from '~types';
 
 import styles from './ColonyDomainDescription.css';
 
 interface Props {
-  colony: FullColony;
+  colony: Colony;
   currentDomainId: number;
 }
 

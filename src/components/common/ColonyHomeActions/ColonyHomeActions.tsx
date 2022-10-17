@@ -35,8 +35,6 @@ import Button from '~shared/Button';
 //   oneTxMustBeUpgraded,
 // } from '~modules/dashboard/checks';
 
-// import { FullColony } from '~gql';
-
 const displayName = 'commmon.ColonyHomeCreateActionsButton';
 
 const MSG = defineMessages({

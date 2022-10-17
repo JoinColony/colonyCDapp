@@ -1,7 +1,7 @@
 import React, { ComponentProps, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { FullColony } from '~gql';
+import { Colony } from '~types';
 
 import NavItem from './NavItem';
 
@@ -35,7 +35,7 @@ const MSG = defineMessages({
 });
 
 type Props = {
-  colony: FullColony;
+  colony: Colony;
 };
 
 const displayName = 'dashboard.ColonyHome.ColonyNavigation';

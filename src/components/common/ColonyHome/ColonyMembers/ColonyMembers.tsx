@@ -5,7 +5,7 @@ import React from 'react';
 // import { MiniSpinnerLoader } from '~shared/Preloaders';
 // import { Colony, useContributorsAndWatchersQuery } from '~data/index';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { FullColony } from '~gql';
+import { Colony } from '~types';
 
 // import styles from './ColonyMembers.css';
 import MembersSubsection from './MembersSubsection';
@@ -24,7 +24,7 @@ const displayName = 'common.ColonyHome.ColonyMembers';
 // });
 
 interface Props {
-  colony: FullColony;
+  colony: Colony;
   currentDomainId?: number;
   maxAvatars?: number;
 }

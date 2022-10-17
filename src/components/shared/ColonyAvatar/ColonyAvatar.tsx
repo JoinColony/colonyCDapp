@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Address } from '~types';
-import { Colony } from '~gql';
+import { Colony } from '~types';
 
 import Avatar from '~shared/Avatar';
 import NavLink from '~shared/NavLink';

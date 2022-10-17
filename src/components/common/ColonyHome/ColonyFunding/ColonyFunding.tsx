@@ -6,7 +6,7 @@ import Heading from '~shared/Heading';
 // import InfoPopover from '~shared/InfoPopover';
 import NavLink from '~shared/NavLink';
 // import { Colony, useTokenBalancesForDomainsQuery } from '~data/index';
-import { FullColony, FullColonyTokens } from '~gql';
+import { Colony, ColonyTokens } from '~types';
 
 import TokenItem from './TokenItem';
 
@@ -22,7 +22,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  colony: FullColony;
+  colony: Colony;
   // currentDomainId: number;
 }
 
@@ -56,7 +56,7 @@ const ColonyFunding = ({
       </Heading>
       {/* {data && !isLoadingTokenBalances ? ( */}
       <ul data-test="availableFunds">
-        {(tokens?.items as FullColonyTokens[]).map(({ token }) => (
+        {(tokens?.items as ColonyTokens[]).map(({ token }) => (
           <li key={token.tokenAddress}>
             {/* <InfoPopover
               token={token}

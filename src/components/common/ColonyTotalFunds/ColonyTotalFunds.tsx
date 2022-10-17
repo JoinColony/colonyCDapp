@@ -17,7 +17,7 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens';
 // import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 // import { checkIfNetworkIsAllowed } from '~utils/networks';
 
-import { FullColony, FullColonyTokens } from '~gql';
+import { Colony, ColonyTokens } from '~types';
 
 import ColonyTotalFundsPopover from './ColonyTotalFundsPopover';
 
@@ -43,7 +43,7 @@ const MSG = defineMessages({
 });
 
 type Props = {
-  colony: FullColony;
+  colony: Colony;
 };
 
 const displayName = 'dashboard.ColonyTotalFunds';
@@ -80,7 +80,7 @@ const ColonyTotalFunds = ({
 
   const currentToken = useMemo(() => {
     if (tokens) {
-      return (tokens.items as unknown as FullColonyTokens[]).find(
+      return (tokens.items as unknown as ColonyTokens[]).find(
         ({ token }) => token.tokenAddress === currentTokenAddress,
       );
     }

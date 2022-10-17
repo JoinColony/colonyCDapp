@@ -5,13 +5,13 @@ import IconTooltip from '~shared/IconTooltip';
 // import { TokenBalancesForDomainsQuery } from '~data/index';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
-import { FullToken } from '~gql';
+import { Token } from '~types';
 
 import styles from './ColonyFunding.css';
 
 interface Props {
   // currentDomainId: number;
-  token: FullToken;
+  token: Token;
   isTokenNative?: boolean;
   isNativeTokenLocked?: boolean;
 }

@@ -11,7 +11,8 @@ import ColonyAvatar from '~shared/ColonyAvatar';
 import { CREATE_COLONY_ROUTE } from '~routes/index';
 // import { checkIfNetworkIsAllowed } from '~utils/networks';
 import { useAppContext } from '~hooks';
-import { getUserColonyWatchlist, FullColony } from '~gql';
+import { getUserColonyWatchlist } from '~gql';
+import { Colony } from '~types';
 
 import styles from './SubscribedColoniesList.css';
 
@@ -33,7 +34,7 @@ const SubscribedColoniesList = () => {
     },
   });
 
-  const watchlist: Array<{ colony: FullColony }> =
+  const watchlist: Array<{ colony: Colony }> =
     data?.getUserByAddress?.items[0]?.watchlist?.items || [];
 
   // const { walletAddress, networkId, ethereal } = useLoggedInUser();

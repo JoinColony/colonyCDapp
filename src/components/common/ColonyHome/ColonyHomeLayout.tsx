@@ -8,7 +8,7 @@ import ColonyTotalFunds from '~common/ColonyTotalFunds';
 
 // import { checkIfNetworkIsAllowed } from '~utils/networks';
 
-import { FullColony } from '~gql';
+import { Colony } from '~types';
 
 import ColonyDomainSelector from './ColonyDomainSelector';
 import ColonyFunding from './ColonyFunding';
@@ -25,7 +25,7 @@ import ColonyDomainDescription from './ColonyDomainDescription';
 import styles from './ColonyHomeLayout.css';
 
 type Props = {
-  colony: FullColony;
+  colony: Colony;
   filteredDomainId: number;
   onDomainChange?: (domainId: number) => void;
   /*

@@ -9,7 +9,7 @@ import {
 // import Link from '~shared/Link';
 import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
-import { FullColony } from '~gql';
+import { Colony } from '~types';
 
 // import { checkIfNetworkIsAllowed } from '~utils/networks';
 // import { CREATE_USER_ROUTE } from '~routes/index';
@@ -34,7 +34,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  colony: FullColony;
+  colony: Colony;
 }
 
 const ColonySubscription = ({ colony: { colonyAddress }, colony }: Props) => {

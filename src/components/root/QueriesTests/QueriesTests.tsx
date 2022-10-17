@@ -9,7 +9,7 @@ import {
 } from '@apollo/client';
 import { Wallet, utils } from 'ethers';
 
-import { listUsers, createUser } from '~gql/index';
+import { listUsers, createUser } from '~gql';
 
 const httpLink = new HttpLink({
   uri: 'http://localhost:20002/graphql',

@@ -9,13 +9,13 @@ import { Address } from '~types/index';
 // import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
-import { FullColonyTokens } from '~gql';
+import { ColonyTokens } from '~types';
 
 import styles from './ColonyTotalFundsPopover.css';
 
 interface Props {
   onSelectToken?: Dispatch<SetStateAction<Address>>;
-  tokens?: FullColonyTokens[];
+  tokens?: ColonyTokens[];
   children?: ReactNode;
   currentTokenAddress?: Address;
 }

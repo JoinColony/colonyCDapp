@@ -10,7 +10,7 @@ import DomainDropdown from '~shared/DomainDropdown';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 // import { checkIfNetworkIsAllowed } from '~utils/networks';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
-import { FullColony } from '~gql';
+import { Colony } from '~types';
 
 import CreateDomainButton from './CreateDomainButton';
 
@@ -23,7 +23,7 @@ interface FormValues {
 interface Props {
   filteredDomainId?: number;
   onDomainChange?: (domainId: number) => any;
-  colony: FullColony;
+  colony: Colony;
 }
 
 const displayName = 'common.ColonyHome.ColonyDomainSelector';

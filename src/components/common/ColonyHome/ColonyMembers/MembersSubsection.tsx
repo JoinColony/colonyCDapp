@@ -19,7 +19,7 @@ import UserAvatar from '~shared/UserAvatar';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 // import { getAllUserRoles } from '~modules/transformers';
 // import { hasRoot, canAdminister } from '~modules/users/checks';
-import { FullColony, FullUser } from '~gql';
+import { Colony, User } from '~types';
 
 import styles from './ColonyMembers.css';
 
@@ -65,7 +65,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  colony: FullColony;
+  colony: Colony;
   currentDomainId?: number;
   maxAvatars?: number;
   // members?: ColonyContributor[] | ColonyWatcher[];
@@ -165,7 +165,7 @@ Props) => {
     <div className={styles.main}>
       {setHeading(true)}
       <ul className={styles.userAvatars}>
-        {(colonyWatchers as { user: FullUser }[])
+        {(colonyWatchers as { user: User }[])
           // .slice(0, avatarsDisplaySplitRules)
           .map(
             (

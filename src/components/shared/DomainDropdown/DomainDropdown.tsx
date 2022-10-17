@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 import { ALLDOMAINS_DOMAIN_SELECTION } from '~constants';
 import { Select, SelectOption } from '~shared/Fields';
 // import { Colony } from '~data/index';
-import { FullColony } from '~gql';
+import { Colony } from '~types';
 
 import DomainDropdownItem from './DomainDropdownItem';
 
@@ -17,7 +17,7 @@ const MSG = defineMessages({
 
 interface Props {
   /** Current colony from which to extract the valid domains */
-  colony: FullColony;
+  colony: Colony;
 
   /** Optional form element name */
   name?: string;

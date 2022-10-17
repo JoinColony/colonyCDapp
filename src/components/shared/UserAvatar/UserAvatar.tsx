@@ -7,7 +7,7 @@ import Link from '~shared/NavLink';
 import { Address } from '~types';
 // import { AnyUser, Colony } from '~data/index';
 // import { getUsername } from '~redux/transformers';
-import { FullUser } from '~gql';
+import { User } from '~types';
 
 import styles from './UserAvatar.css';
 import { getMainClasses } from '~utils/css';
@@ -39,7 +39,7 @@ interface BaseProps {
 
   /** The corresponding user object if available */
   // user?: AnyUser;
-  user?: FullUser;
+  user?: User;
 
   /** Banned comment status */
   banned?: boolean;

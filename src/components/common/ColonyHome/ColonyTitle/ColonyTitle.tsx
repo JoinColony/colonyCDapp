@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 import Heading from '~shared/Heading';
 import ColonySubscription from '../ColonySubscription';
 
-import { FullColony } from '~gql';
+import { Colony } from '~types';
 
 import styles from './ColonyTitle.css';
 
@@ -18,7 +18,7 @@ const MSG = defineMessages({
 });
 
 type Props = {
-  colony: FullColony;
+  colony: Colony;
 };
 
 const ColonyTitle = ({ colony: { name, profile }, colony }: Props) => {
