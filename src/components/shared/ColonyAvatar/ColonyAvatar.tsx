@@ -56,7 +56,7 @@ const ColonyAvatar = ({
       placeholderIcon="at-sign-circle"
       seed={colonyAddress && colonyAddress.toLowerCase()}
       size={size}
-      title={profile?.colonyDisplayName || name || colonyAddress}
+      title={profile?.displayName || name || colonyAddress}
     />
   );
   if (showLink && name) {

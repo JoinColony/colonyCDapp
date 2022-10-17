@@ -11,8 +11,7 @@ import ColonyAvatar from '~shared/ColonyAvatar';
 import { CREATE_COLONY_ROUTE } from '~routes/index';
 // import { checkIfNetworkIsAllowed } from '~utils/networks';
 import { useAppContext } from '~hooks';
-import { getUserColonyWatchlist } from '~gql';
-import { Colony } from '~types';
+import { getWatchlist } from '~gql';
 
 import styles from './SubscribedColoniesList.css';
 
@@ -28,14 +27,24 @@ const MSG = defineMessages({
 const SubscribedColoniesList = () => {
   const { wallet } = useAppContext();
 
-  const { data, loading } = useQuery(gql(getUserColonyWatchlist), {
+  const { data, loading } = useQuery(gql(getWatchlist), {
     variables: {
       address: wallet?.address,
     },
   });
 
-  const watchlist: Array<{ colony: Colony }> =
-    data?.getUserByAddress?.items[0]?.watchlist?.items || [];
+  const { items: watchlist = [] } = data?.listWatchedColonies || {};
+
+  const sortByDate = (firstWatchEntry, secondWatchEntry) => {
+    const firstWatchTime = new Date(firstWatchEntry?.createdAt || 1).getTime();
+    const secondWatchTime = new Date(
+      secondWatchEntry?.createdAt || 1,
+    ).getTime();
+    return firstWatchTime - secondWatchTime;
+  };
+
+  // const watchlist: Array<{ colony: Colony }> =
+  //   data?.listWatchedColonies?.items[0]?.watchlist?.items || [];
 
   // const { walletAddress, networkId, ethereal } = useLoggedInUser();
   // const { data, loading } = useUserColoniesQuery({
@@ -54,7 +63,7 @@ const SubscribedColoniesList = () => {
         )}
         {!loading &&
           // data?.user?.processedColonies.map((colony) => {
-          watchlist.map(({ colony }) => {
+          [...watchlist].sort(sortByDate).map(({ colony }) => {
             const { colonyAddress, name } = colony;
             return (
               <div className={styles.item} key={colonyAddress}>
