@@ -10,4 +10,3 @@ for d in amplify/backend/function/*/ ; do
     npm i
     echo
 done
-
