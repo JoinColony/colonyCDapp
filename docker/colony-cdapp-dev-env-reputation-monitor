@@ -29,6 +29,10 @@ RUN npm install
 
 WORKDIR /colonyCDappBackend
 
+# Open up ports to the docker image
+# Reputation Oracle
+EXPOSE 3002
+
 # Make the run script executable
 RUN chmod +x ./run.sh
 

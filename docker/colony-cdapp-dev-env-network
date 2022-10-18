@@ -37,6 +37,12 @@ RUN echo "{}" > ./packages/reputation-miner/justificationTreeCache.json
 
 WORKDIR /colonyCDappBackend
 
+# Open up ports to the docker image
+# Ganache
+EXPOSE 8545
+# Reputation Oracle
+EXPOSE 3002
+
 # Make the run script executable
 RUN chmod +x ./run.sh
 

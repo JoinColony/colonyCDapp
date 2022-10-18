@@ -16,7 +16,7 @@ const { createToken, getTokenByAddress } = require('./graphql');
  */
 const API_KEY = 'da2-fakeApiId123456';
 const GRAPHQL_URI = 'http://localhost:20002/graphql';
-const RPC_URL = 'http://localhost:8545'; // this needs to be extended to all supported networks
+const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
 
 const baseToken = {
   __typename: 'Token',

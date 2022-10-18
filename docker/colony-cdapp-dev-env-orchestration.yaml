@@ -6,7 +6,9 @@ services:
     image: colony-cdapp-dev-env/network:latest
     volumes:
       - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
-    network_mode: 'host'
+    ports:
+      - '8545:8545'
+      - '3002:3002'
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3002"]
       interval: 5s
@@ -17,7 +19,6 @@ services:
     image: colony-cdapp-dev-env/reputation-monitor:latest
     volumes:
       - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
-    network_mode: 'host'
     depends_on:
       network-contracts:
         condition: service_healthy
@@ -27,10 +28,11 @@ services:
     image: colony-cdapp-dev-env/block-ingestor:latest
     volumes:
       - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
-    network_mode: 'host'
     depends_on:
       network-contracts:
         condition: service_healthy
+    links:
+      - "network-contracts:network-contracts.docker"
 
   amplify:
     container_name: 'amplify'
@@ -39,7 +41,6 @@ services:
       - '../amplify/backend:/colonyCDapp/amplify/backend'
       - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
       - '../src/graphql:/colonyCDapp/src/graphql'
-    network_mode: 'bridge'
     depends_on:
       network-contracts:
         condition: service_healthy
@@ -48,3 +49,7 @@ services:
       DEBUG_COLORS: "true"
       TERM: xterm-256color
       COLORTERM: truecolor
+    links:
+      - "network-contracts:network-contracts.docker"
+    ports:
+      - '20002:20002'

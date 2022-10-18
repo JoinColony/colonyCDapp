@@ -3,8 +3,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateToken = /* GraphQL */ `
-  subscription OnCreateToken {
-    onCreateToken {
+  subscription OnCreateToken($filter: ModelSubscriptionTokenFilterInput) {
+    onCreateToken(filter: $filter) {
       id
       name
       symbol
@@ -22,8 +22,8 @@ export const onCreateToken = /* GraphQL */ `
   }
 `;
 export const onUpdateToken = /* GraphQL */ `
-  subscription OnUpdateToken {
-    onUpdateToken {
+  subscription OnUpdateToken($filter: ModelSubscriptionTokenFilterInput) {
+    onUpdateToken(filter: $filter) {
       id
       name
       symbol
@@ -41,8 +41,8 @@ export const onUpdateToken = /* GraphQL */ `
   }
 `;
 export const onDeleteToken = /* GraphQL */ `
-  subscription OnDeleteToken {
-    onDeleteToken {
+  subscription OnDeleteToken($filter: ModelSubscriptionTokenFilterInput) {
+    onDeleteToken(filter: $filter) {
       id
       name
       symbol
@@ -60,8 +60,8 @@ export const onDeleteToken = /* GraphQL */ `
   }
 `;
 export const onCreateColony = /* GraphQL */ `
-  subscription OnCreateColony {
-    onCreateColony {
+  subscription OnCreateColony($filter: ModelSubscriptionColonyFilterInput) {
+    onCreateColony(filter: $filter) {
       id
       name
       nativeToken {
@@ -103,8 +103,8 @@ export const onCreateColony = /* GraphQL */ `
   }
 `;
 export const onUpdateColony = /* GraphQL */ `
-  subscription OnUpdateColony {
-    onUpdateColony {
+  subscription OnUpdateColony($filter: ModelSubscriptionColonyFilterInput) {
+    onUpdateColony(filter: $filter) {
       id
       name
       nativeToken {
@@ -146,8 +146,8 @@ export const onUpdateColony = /* GraphQL */ `
   }
 `;
 export const onDeleteColony = /* GraphQL */ `
-  subscription OnDeleteColony {
-    onDeleteColony {
+  subscription OnDeleteColony($filter: ModelSubscriptionColonyFilterInput) {
+    onDeleteColony(filter: $filter) {
       id
       name
       nativeToken {
@@ -189,8 +189,8 @@ export const onDeleteColony = /* GraphQL */ `
   }
 `;
 export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser {
-    onCreateUser {
+  subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
+    onCreateUser(filter: $filter) {
       id
       name
       tokens {
@@ -214,8 +214,8 @@ export const onCreateUser = /* GraphQL */ `
   }
 `;
 export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser {
-    onUpdateUser {
+  subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
+    onUpdateUser(filter: $filter) {
       id
       name
       tokens {
@@ -239,8 +239,8 @@ export const onUpdateUser = /* GraphQL */ `
   }
 `;
 export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser {
-    onDeleteUser {
+  subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
+    onDeleteUser(filter: $filter) {
       id
       name
       tokens {
@@ -264,8 +264,8 @@ export const onDeleteUser = /* GraphQL */ `
   }
 `;
 export const onCreateDomain = /* GraphQL */ `
-  subscription OnCreateDomain {
-    onCreateDomain {
+  subscription OnCreateDomain($filter: ModelSubscriptionDomainFilterInput) {
+    onCreateDomain(filter: $filter) {
       id
       nativeId
       name
@@ -290,8 +290,8 @@ export const onCreateDomain = /* GraphQL */ `
   }
 `;
 export const onUpdateDomain = /* GraphQL */ `
-  subscription OnUpdateDomain {
-    onUpdateDomain {
+  subscription OnUpdateDomain($filter: ModelSubscriptionDomainFilterInput) {
+    onUpdateDomain(filter: $filter) {
       id
       nativeId
       name
@@ -316,8 +316,8 @@ export const onUpdateDomain = /* GraphQL */ `
   }
 `;
 export const onDeleteDomain = /* GraphQL */ `
-  subscription OnDeleteDomain {
-    onDeleteDomain {
+  subscription OnDeleteDomain($filter: ModelSubscriptionDomainFilterInput) {
+    onDeleteDomain(filter: $filter) {
       id
       nativeId
       name
@@ -342,8 +342,10 @@ export const onDeleteDomain = /* GraphQL */ `
   }
 `;
 export const onCreateColonyTokens = /* GraphQL */ `
-  subscription OnCreateColonyTokens {
-    onCreateColonyTokens {
+  subscription OnCreateColonyTokens(
+    $filter: ModelSubscriptionColonyTokensFilterInput
+  ) {
+    onCreateColonyTokens(filter: $filter) {
       id
       tokenID
       colonyID
@@ -370,8 +372,10 @@ export const onCreateColonyTokens = /* GraphQL */ `
   }
 `;
 export const onUpdateColonyTokens = /* GraphQL */ `
-  subscription OnUpdateColonyTokens {
-    onUpdateColonyTokens {
+  subscription OnUpdateColonyTokens(
+    $filter: ModelSubscriptionColonyTokensFilterInput
+  ) {
+    onUpdateColonyTokens(filter: $filter) {
       id
       tokenID
       colonyID
@@ -398,8 +402,10 @@ export const onUpdateColonyTokens = /* GraphQL */ `
   }
 `;
 export const onDeleteColonyTokens = /* GraphQL */ `
-  subscription OnDeleteColonyTokens {
-    onDeleteColonyTokens {
+  subscription OnDeleteColonyTokens(
+    $filter: ModelSubscriptionColonyTokensFilterInput
+  ) {
+    onDeleteColonyTokens(filter: $filter) {
       id
       tokenID
       colonyID
@@ -426,8 +432,10 @@ export const onDeleteColonyTokens = /* GraphQL */ `
   }
 `;
 export const onCreateUserTokens = /* GraphQL */ `
-  subscription OnCreateUserTokens {
-    onCreateUserTokens {
+  subscription OnCreateUserTokens(
+    $filter: ModelSubscriptionUserTokensFilterInput
+  ) {
+    onCreateUserTokens(filter: $filter) {
       id
       tokenID
       userID
@@ -452,8 +460,10 @@ export const onCreateUserTokens = /* GraphQL */ `
   }
 `;
 export const onUpdateUserTokens = /* GraphQL */ `
-  subscription OnUpdateUserTokens {
-    onUpdateUserTokens {
+  subscription OnUpdateUserTokens(
+    $filter: ModelSubscriptionUserTokensFilterInput
+  ) {
+    onUpdateUserTokens(filter: $filter) {
       id
       tokenID
       userID
@@ -478,8 +488,10 @@ export const onUpdateUserTokens = /* GraphQL */ `
   }
 `;
 export const onDeleteUserTokens = /* GraphQL */ `
-  subscription OnDeleteUserTokens {
-    onDeleteUserTokens {
+  subscription OnDeleteUserTokens(
+    $filter: ModelSubscriptionUserTokensFilterInput
+  ) {
+    onDeleteUserTokens(filter: $filter) {
       id
       tokenID
       userID
@@ -504,8 +516,10 @@ export const onDeleteUserTokens = /* GraphQL */ `
   }
 `;
 export const onCreateWatchedColonies = /* GraphQL */ `
-  subscription OnCreateWatchedColonies {
-    onCreateWatchedColonies {
+  subscription OnCreateWatchedColonies(
+    $filter: ModelSubscriptionWatchedColoniesFilterInput
+  ) {
+    onCreateWatchedColonies(filter: $filter) {
       id
       colonyID
       userID
@@ -529,8 +543,10 @@ export const onCreateWatchedColonies = /* GraphQL */ `
   }
 `;
 export const onUpdateWatchedColonies = /* GraphQL */ `
-  subscription OnUpdateWatchedColonies {
-    onUpdateWatchedColonies {
+  subscription OnUpdateWatchedColonies(
+    $filter: ModelSubscriptionWatchedColoniesFilterInput
+  ) {
+    onUpdateWatchedColonies(filter: $filter) {
       id
       colonyID
       userID
@@ -554,8 +570,10 @@ export const onUpdateWatchedColonies = /* GraphQL */ `
   }
 `;
 export const onDeleteWatchedColonies = /* GraphQL */ `
-  subscription OnDeleteWatchedColonies {
-    onDeleteWatchedColonies {
+  subscription OnDeleteWatchedColonies(
+    $filter: ModelSubscriptionWatchedColoniesFilterInput
+  ) {
+    onDeleteWatchedColonies(filter: $filter) {
       id
       colonyID
       userID

@@ -35,6 +35,10 @@ RUN npm install
 # Actually download the amplify tarball (don't ask me, it's how it works)
 RUN npm run amplify
 
+# Open up ports to the docker image
+# Amplify
+EXPOSE 20002
+
 # Make the run script executable
 RUN chmod +x /colonyCDappBackend/run.sh
 
