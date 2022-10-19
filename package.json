@@ -14,7 +14,7 @@
     "start": "npm run docker:build && npm run docker:compose up -- --force-recreate -V",
     "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "webpack": "webpack serve --config webpack.dev.js --port 9090",
+    "webpack": "webpack serve --config webpack.dev.js --port 9091",
     "webpack:prod": "NODE_ENV=production webpack-cli --config webpack.prod.js",
     "truffle": "truffle",
     "amplify": "amplify",
