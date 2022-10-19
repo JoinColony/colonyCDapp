@@ -1,12 +1,23 @@
-export const toggleHeight: string;
-export const toggleWidth: string;
-export const container: string;
-export const delegate: string;
-export const toggle: string;
-export const toggleDisabled: string;
-export const toggleSwitch: string;
-export const checked: string;
-export const themePrimary: string;
-export const themeDanger: string;
-export const icon: string;
-export const main: string;
+declare namespace ToggleCssNamespace {
+  export interface IToggleCss {
+    checked: string;
+    container: string;
+    delegate: string;
+    icon: string;
+    main: string;
+    themeDanger: string;
+    themePrimary: string;
+    toggle: string;
+    toggleDisabled: string;
+    toggleHeight: string;
+    toggleSwitch: string;
+    toggleWidth: string;
+  }
+}
+
+declare const ToggleCssModule: ToggleCssNamespace.IToggleCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: ToggleCssNamespace.IToggleCss;
+};
+
+export = ToggleCssModule;

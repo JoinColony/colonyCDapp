@@ -2,17 +2,16 @@ import { FormikBag, FormikProps, FormikHelpers, FormikErrors } from 'formik';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { ActionTypeString } from '~redux/index';
+import { ActionTypeString } from '~redux';
 import { ActionTransformFnType } from '~utils/actions';
 import { log } from '~utils/debug';
-import { useAsyncFunction } from '~utils/hooks';
+import { useAsyncFunction } from '~hooks';
 import Form from './Form';
 
 const MSG = defineMessages({
   defaultError: {
     id: 'ActionForm.defaultError',
     defaultMessage:
-      // eslint-disable-next-line max-len
       "Something went wrong with the thing you just wanted to do. It's not your fault. Promise!",
   },
 });

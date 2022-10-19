@@ -1,7 +1,8 @@
 import { TransactionReceipt } from '@ethersproject/providers';
 import { BigNumberish, Overrides } from 'ethers';
+import { MessageDescriptor } from 'react-intl';
 
-import { TransactionMultisig } from '~immutable/index';
+import { SimpleMessageValues } from './index';
 
 export type MethodParam = string | BigNumberish | boolean;
 export type MethodParams = (MethodParam | MethodParam[])[];
@@ -12,29 +13,24 @@ export interface TxConfig {
     key: string;
     id: string | string[];
     index: number;
+    title?: MessageDescriptor;
+    titleValues?: SimpleMessageValues;
+    description?: MessageDescriptor;
+    descriptionValues?: SimpleMessageValues;
   };
   identifier?: string;
   methodContext?: string;
   methodName: string;
-  multisig?: boolean | TransactionMultisig;
   options?: Overrides;
   params?: MethodParams;
   ready?: boolean;
+  metatransaction?: boolean;
+  title?: MessageDescriptor;
+  titleValues?: SimpleMessageValues;
 }
 
 export interface TransactionResponse {
   receipt?: TransactionReceipt;
   eventData?: object;
   error?: Error;
-}
-
-export interface MultisigOperationJSON {
-  nonce: number;
-  payload: object; // MultisigOperationPayload
-  signers: object; // Signers
-}
-
-export enum ExtendedReduxContext {
-  WrappedToken = 'WrappedToken',
-  VestingSimple = 'VestingSimple',
 }

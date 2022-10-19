@@ -1,14 +1,25 @@
-export const reputationColor: string;
-export const main: string;
-export const section: string;
-export const loadingSpinnerContainer: string;
-export const sectionContainer: string;
-export const roleList: string;
-export const tokenAmount: string;
-export const domainName: string;
-export const domainReputationItem: string;
-export const noReputationDescription: string;
-export const reputationContainer: string;
-export const reputation: string;
-export const icon: string;
-export const bannedTag: string;
+declare namespace MemberInfoPopoverCssNamespace {
+  export interface IMemberInfoPopoverCss {
+    bannedTag: string;
+    domainName: string;
+    domainReputationItem: string;
+    icon: string;
+    loadingSpinnerContainer: string;
+    main: string;
+    noReputationDescription: string;
+    reputation: string;
+    reputationColor: string;
+    reputationContainer: string;
+    roleList: string;
+    section: string;
+    sectionContainer: string;
+    tokenAmount: string;
+  }
+}
+
+declare const MemberInfoPopoverCssModule: MemberInfoPopoverCssNamespace.IMemberInfoPopoverCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: MemberInfoPopoverCssNamespace.IMemberInfoPopoverCss;
+};
+
+export = MemberInfoPopoverCssModule;

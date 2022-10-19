@@ -2,7 +2,7 @@ import React, { ReactNode, useState } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 
 import Button from '~shared/Button';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { multiLineTextEllipsis } from '~utils/strings';
 
 import styles from './ExpandedParagraph.css';

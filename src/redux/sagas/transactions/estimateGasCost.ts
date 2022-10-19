@@ -1,14 +1,14 @@
 import { call, put } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
-import { BigNumber, Contract } from 'ethers';
-import abis from '@colony/colony-js/lib-esm/abis';
+import { BigNumber, Contract, ContractInterface } from 'ethers';
+// import abis from '@colony/colony-js/lib-esm/abis';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
 import { selectAsJS, getGasPrices } from '../utils';
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import { TransactionRecordProps } from '../../immutable';
-import { ExtendedReduxContext } from '~types/index';
+import { ExtendedClientType } from '~types';
 
 import { oneTransaction } from '../../selectors';
 import {
@@ -16,6 +16,14 @@ import {
   transactionEstimateError,
   transactionSend,
 } from '../../actionCreators';
+
+/*
+ * @TODO Refactor to support abis (either added to the app or from colonyJS)
+ */
+const abis = {
+  WrappedToken: { default: { abi: {} } },
+  vestingSimple: { default: { abi: {} } },
+};
 
 /*
  * @area: including a bit of buffer on the gas sent can be a good thing.
@@ -38,29 +46,31 @@ export default function* estimateGasCost({
       gasLimit,
       options,
     }: TransactionRecordProps = yield selectAsJS(oneTransaction, id);
-    const colonyManager = TEMP_getContext(ContextModule.ColonyManager);
+    const colonyManager = getContext(ContextModule.ColonyManager);
 
     let contextClient: Contract;
     if (context === ClientType.TokenClient) {
       contextClient = yield colonyManager.getTokenClient(identifier as string);
     } else if (
-      context === (ExtendedReduxContext.WrappedToken as unknown as ClientType)
+      context ===
+      (ExtendedClientType.WrappedTokenClient as unknown as ClientType)
     ) {
       // @ts-ignore
       const wrappedTokenAbi = abis.WrappedToken.default.abi;
       contextClient = new Contract(
         identifier || '',
-        wrappedTokenAbi,
+        wrappedTokenAbi as ContractInterface, // @TODO Refactor when refactoring abis
         colonyManager.signer,
       );
     } else if (
-      context === (ExtendedReduxContext.VestingSimple as unknown as ClientType)
+      context ===
+      (ExtendedClientType.VestingSimpleClient as unknown as ClientType)
     ) {
       // @ts-ignore
       const vestingSimpleAbi = abis.vestingSimple.default.abi;
       contextClient = new Contract(
         identifier || '',
-        vestingSimpleAbi,
+        vestingSimpleAbi as ContractInterface, // @TODO Refactor when refactoring abis
         colonyManager.signer,
       );
     } else {

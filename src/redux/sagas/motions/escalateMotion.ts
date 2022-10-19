@@ -12,7 +12,7 @@ import {
   getTxChannel,
 } from '../transactions';
 import { transactionReady } from '../../actionCreators';
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 
 function* escalateMotion({
   meta,
@@ -20,7 +20,7 @@ function* escalateMotion({
 }: Action<ActionTypes.COLONY_MOTION_ESCALATE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const context = TEMP_getContext(ContextModule.ColonyManager);
+    const context = getContext(ContextModule.ColonyManager);
     const colonyClient = yield context.getClient(
       ClientType.ColonyClient,
       colonyAddress,

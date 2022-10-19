@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import { useField } from 'formik';
 import { MessageDescriptor } from 'react-intl';
 
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import InputLabel from '../InputLabel';

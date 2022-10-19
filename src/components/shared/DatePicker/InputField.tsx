@@ -8,7 +8,7 @@ import { MessageDescriptor } from 'react-intl';
 
 import { ESC, TAB } from './keyTypes';
 import { InputComponentAppearance, InputComponent } from '../Fields/Input';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 
 interface Props
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {

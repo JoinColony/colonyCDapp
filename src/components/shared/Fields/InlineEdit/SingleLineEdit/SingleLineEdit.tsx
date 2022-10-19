@@ -10,7 +10,7 @@ import { useField } from 'formik';
 import { nanoid } from 'nanoid';
 
 import { InputComponent } from '~shared/Fields/Input';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import styles from './SingleLineEdit.css';

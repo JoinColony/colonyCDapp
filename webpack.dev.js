@@ -12,14 +12,10 @@ module.exports = () => ({
   devtool: 'inline-source-map',
   devServer: {
     historyApiFallback: true,
-    contentBase: [
-      path.resolve(__dirname, '..', 'colonyNetwork', 'build')
-    ],
-    hotOnly: true,
+    hot: true,
   },
   output: {
     filename: 'dev-[name].js',
-    path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
   },
   module: {
@@ -48,13 +44,15 @@ module.exports = () => ({
     /*
      * Add the rest of the DEVELOPMENT environment required plugins here
      */
-    new webpack.WatchIgnorePlugin([
-      /css\.d\.ts$/
-    ]),
-    new webpack.HotModuleReplacementPlugin(),
+    new webpack.WatchIgnorePlugin({
+      paths: [
+        /css\.d\.ts$/
+      ],
+    }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,
+      excludeAssets: /dev-vendors|dev-node|dev-main/
     }),
   ],
 });

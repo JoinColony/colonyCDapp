@@ -1,0 +1,57 @@
+@value itemLinkSize: 42px;
+@value itemMarginBotton: 4px;
+
+.main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.scrollableContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 8px;
+  max-height: calc(100vh - (itemLinkSize + itemMarginBotton));
+  width: 100%;
+  overflow-y: auto;
+}
+
+.item {
+  margin-bottom: itemMarginBotton;
+}
+
+.itemLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: itemLinkSize;
+  width: itemLinkSize;
+  border: 3px solid transparent;
+  border-radius: 50%;
+}
+
+.activeColony {
+  border-color: var(--primary);
+}
+
+.itemImage {
+  height: 36px;
+  width: 36px;
+  border: 1px solid transparent;
+}
+
+.newColonyIcon {
+  height: 34px;
+  width: 34px;
+  fill: var(--temp-grey-blue-7);
+}
+
+.newColonyItem {
+  position: sticky;
+  bottom: 0;
+}
+
+.loadingColonies {
+  padding: 8px 0 2px;
+}

@@ -1,4 +1,4 @@
-import { ColonyMotions } from '~types/index';
+import { ColonyMotions } from '~types';
 
 const motionsMessageDescriptors = {
   'motion.title': `{actionType, select,

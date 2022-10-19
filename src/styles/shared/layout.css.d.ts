@@ -1,21 +1,32 @@
-export const flexContainerRow: string;
-export const flexContainerColumn: string;
-export const flexJustifyCenter: string;
-export const flexJustifyBetween: string;
-export const flexJustifyEnd: string;
-export const flexInlineChild: string;
-export const flexAlignStart: string;
-export const flexAlignCenter: string;
-export const flexPullRight: string;
-export const pullRight: string;
-export const stretch: string;
-export const stretchVertical: string;
-export const stretchHorizontal: string;
-export const isRelative: string;
-export const mainPadded: string;
-export const mainPaddedNoBottom: string;
-export const mainPaddedFullscreen: string;
-export const mainPaddedFullscreenNoBottom: string;
-export const sectionPaddedVertical: string;
-export const marginBottomMedium: string;
-export const marginBottomLarge: string;
+declare namespace LayoutCssNamespace {
+  export interface ILayoutCss {
+    flexAlignCenter: string;
+    flexAlignStart: string;
+    flexContainerColumn: string;
+    flexContainerRow: string;
+    flexInlineChild: string;
+    flexJustifyBetween: string;
+    flexJustifyCenter: string;
+    flexJustifyEnd: string;
+    flexPullRight: string;
+    isRelative: string;
+    mainPadded: string;
+    mainPaddedFullscreen: string;
+    mainPaddedFullscreenNoBottom: string;
+    mainPaddedNoBottom: string;
+    marginBottomLarge: string;
+    marginBottomMedium: string;
+    pullRight: string;
+    sectionPaddedVertical: string;
+    stretch: string;
+    stretchHorizontal: string;
+    stretchVertical: string;
+  }
+}
+
+declare const LayoutCssModule: LayoutCssNamespace.ILayoutCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: LayoutCssNamespace.ILayoutCss;
+};
+
+export = LayoutCssModule;

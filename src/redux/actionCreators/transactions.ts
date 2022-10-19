@@ -1,6 +1,6 @@
 import { TransactionReceipt } from '@ethersproject/providers';
 
-import { MethodParams, TxConfig } from '~types/index';
+import { MethodParams, TxConfig } from '~types';
 
 import { ActionTypes } from '../actionTypes';
 import { AllActions } from '../types/actions';

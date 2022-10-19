@@ -19,8 +19,8 @@ import { PopperOptions } from 'react-popper-tooltip';
 import { Placement } from '@popperjs/core';
 import { Unionize } from 'utility-types';
 
-import { SimpleMessageValues } from '~types/index';
-import { usePrevious } from '~utils/hooks';
+import { SimpleMessageValues } from '~types';
+import { usePrevious } from '~hooks';
 
 import PopoverWrapper from './PopoverWrapper';
 import {
@@ -30,24 +30,19 @@ import {
   PopoverTriggerType,
 } from './types';
 
-interface PopoverChildFnProps {
-  ref: (arg0: HTMLElement | null) => void;
-  id: string;
-  isOpen: boolean;
-  open: () => void;
-  close: () => void;
-  toggle: () => void;
-}
-
 interface Props {
   /** Appearance object for styling */
   appearance?: PopoverAppearanceType;
   /** Child element to trigger the popover */
   children: ReactNode | PopoverChildFn;
+  /*
+   * @NOTE These two props were rendered because of this rule
+   * https://github.com/jsx-eslint/eslint-plugin-react/blob/master/docs/rules/no-unstable-nested-components.md
+   */
   /** Popover content */
-  content: PopoverContent;
+  renderContent: PopoverContent;
   /** Values for content (react-intl interpolation) */
-  contentValues?: SimpleMessageValues;
+  renderContentValues?: SimpleMessageValues;
   /** Set the open state from outside */
   isOpen?: boolean;
   /** Called when Popover closes */
@@ -82,8 +77,8 @@ const displayName = 'Popover';
 const Popover = ({
   appearance,
   children,
-  content,
-  contentValues,
+  renderContent,
+  renderContentValues,
   isOpen: isOpenProp = false,
   onClose,
   openDelay,
@@ -168,20 +163,22 @@ const Popover = ({
     [close, popperElement, referenceElement],
   );
 
-  const ReferenceContent = useMemo<() => ReactElement>(() => {
+  const ReferenceContent = useMemo(() => {
     if (typeof children === 'function') {
-      return () => (
-        <>
-          {children({
-            ref: setReferenceElement,
-            id: elementId,
-            isOpen: !!isOpen,
-            open: () => requestOpen(),
-            close,
-            toggle: () => (isOpen ? close() : requestOpen()),
-          })}
-        </>
-      );
+      return function () {
+        return (
+          <>
+            {children({
+              ref: setReferenceElement,
+              id: elementId,
+              isOpen: !!isOpen,
+              open: () => requestOpen(),
+              close,
+              toggle: () => (isOpen ? close() : requestOpen()),
+            })}
+          </>
+        );
+      };
     }
     return () =>
       cloneElement<ReferenceElementProps>(children as ReactElement, {
@@ -272,8 +269,8 @@ const Popover = ({
           arrowRef={setArrowElement}
           close={close}
           contentRef={setPopperElement}
-          content={content}
-          contentValues={contentValues}
+          content={renderContent}
+          contentValues={renderContentValues}
           onFocus={handleWrapperFocus}
           popperAttributes={attributes}
           popperStyles={styles}

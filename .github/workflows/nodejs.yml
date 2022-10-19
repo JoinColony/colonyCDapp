@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.14.2]
+        node-version: [16.16.0]
 
     steps:
     - uses: actions/checkout@v2
@@ -40,7 +40,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: npm
-      run: npm i -g npm@8 --registry=https://registry.npmjs.org
+      run: npm i -g npm@8.11 --registry=https://registry.npmjs.org
 
     - run: npm install --legacy-peer-deps
     - run: npm run typecheck

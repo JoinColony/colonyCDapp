@@ -1,11 +1,22 @@
-export const main: string;
-export const childDomainIcon: string;
-export const mainContent: string;
-export const title: string;
-export const color: string;
-export const rootText: string;
-export const description: string;
-export const editButtonCol: string;
-export const editButton: string;
-export const headingWrapper: string;
-export const activeDomain: string;
+declare namespace DomainDropdownItemCssNamespace {
+  export interface IDomainDropdownItemCss {
+    activeDomain: string;
+    childDomainIcon: string;
+    color: string;
+    description: string;
+    editButton: string;
+    editButtonCol: string;
+    headingWrapper: string;
+    main: string;
+    mainContent: string;
+    rootText: string;
+    title: string;
+  }
+}
+
+declare const DomainDropdownItemCssModule: DomainDropdownItemCssNamespace.IDomainDropdownItemCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: DomainDropdownItemCssNamespace.IDomainDropdownItemCss;
+};
+
+export = DomainDropdownItemCssModule;

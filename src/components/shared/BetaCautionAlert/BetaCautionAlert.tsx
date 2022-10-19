@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import ExternalLink from '~shared/ExternalLink';
 
-import { BETA_DISCLAIMER } from '~externalUrls';
+import { BETA_DISCLAIMER } from '~constants/externalUrls';
 
 import styles from './BetaCautionAlert.css';
 

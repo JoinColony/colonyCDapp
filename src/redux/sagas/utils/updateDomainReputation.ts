@@ -1,19 +1,19 @@
 import { AddressZero } from '@ethersproject/constants';
 
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import {
   UserReputationQuery,
   UserReputationQueryVariables,
   UserReputationDocument,
 } from '~data/index';
-import { Address } from '~types/index';
+import { Address } from '~types';
 
 export function* updateDomainReputation(
   colonyAddress: Address,
   userAddress: Address,
   domainId: number,
 ) {
-  const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+  const apolloClient = getContext(ContextModule.ApolloClient);
 
   yield apolloClient.query<UserReputationQuery, UserReputationQueryVariables>({
     query: UserReputationDocument,

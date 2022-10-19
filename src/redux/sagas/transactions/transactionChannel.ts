@@ -7,7 +7,7 @@ import { poll } from 'ethers/lib/utils';
 import { buffers, END, eventChannel } from 'redux-saga';
 import { Contract } from 'ethers';
 
-import { MethodParams, RequireProps } from '~types/index';
+import { MethodParams, RequireProps } from '~types';
 import { TransactionRecord } from '../../immutable';
 
 import {

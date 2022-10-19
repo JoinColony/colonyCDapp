@@ -2,7 +2,7 @@ import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
-import { Address } from '~types/index';
+import { Address } from '~types';
 import { Color } from '~core/ColorTag';
 
 import {

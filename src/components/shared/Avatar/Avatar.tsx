@@ -1,6 +1,6 @@
 import React, { CSSProperties, ReactNode } from 'react';
 
-import getIcon from '../../../../lib/identicon';
+import getIcon from './identicon';
 import Icon from '../Icon';
 import styles from './Avatar.css';
 

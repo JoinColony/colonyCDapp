@@ -1,6 +1,17 @@
-export const main: string;
-export const copyButton: string;
-export const themeBig: string;
-export const addressContainer: string;
-export const address: string;
-export const boldAddress: string;
+declare namespace CopyableAddressCssNamespace {
+  export interface ICopyableAddressCss {
+    address: string;
+    addressContainer: string;
+    boldAddress: string;
+    copyButton: string;
+    main: string;
+    themeBig: string;
+  }
+}
+
+declare const CopyableAddressCssModule: CopyableAddressCssNamespace.ICopyableAddressCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: CopyableAddressCssNamespace.ICopyableAddressCss;
+};
+
+export = CopyableAddressCssModule;

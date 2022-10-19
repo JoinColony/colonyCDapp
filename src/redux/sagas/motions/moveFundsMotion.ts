@@ -2,7 +2,7 @@ import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, getChildIndex, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
@@ -63,7 +63,7 @@ function* moveFundsMotion({
       );
     }
 
-    const context = TEMP_getContext(ContextModule.ColonyManager);
+    const context = getContext(ContextModule.ColonyManager);
     const colonyClient = yield context.getClient(
       ClientType.ColonyClient,
       colonyAddress,

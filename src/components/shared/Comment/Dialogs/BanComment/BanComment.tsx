@@ -34,9 +34,7 @@ const MSG = defineMessages({
   },
   note: {
     id: 'core.Comment.BanComment.note',
-    /* eslint-disable max-len */
     defaultMessage: `Please note: this only prevents this user from chatting in this colony. They will still be able to interact with any smart contracts they have permission to use.`,
-    /* eslint-enable max-len */
   },
   commentLabel: {
     id: 'core.Comment.BanComment.commentLabel',

@@ -1,0 +1,69 @@
+.main {
+  composes: stretch from '~styles/layout.css';
+  overflow: visible;
+}
+
+.mainContentGrid {
+  display: grid;
+  margin: 0 80px;
+
+  /*
+   * @NOTE On the below width calculations
+   * full view width, minus a little trick to disregrad the scrollback, minus
+   * the width of the left subscribed colonies list
+   */
+  max-width: calc(100vw - (100vw - 100%));
+  grid-template-columns: [left] minmax(0, 1fr) [content] minmax(700px, 2fr) [sidebar] minmax(180px, 1fr);
+  column-gap: 80px;
+}
+
+.minimalGrid {
+  composes: mainContentGrid;
+}
+
+.minimalGrid .mainContent {
+  /*
+   * @NOTE Span the content over the last two columns of the grid
+   * I have no idea this existed. This is super cool!
+   */
+  grid-column: content / sidebar;
+}
+
+.leftAside {
+  padding-top: 0;
+  text-align: right;
+}
+
+.mainContent {
+  padding: 100px 0 30px;
+}
+
+.domainsDropdownContainer {
+  width: 320px;
+}
+
+.domainsDropdownContainer ul {
+  max-height: 458px;
+}
+
+.contentActionsPanel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--temp-grey-13);
+}
+
+.rightAside {
+  padding-top: 225px;
+  text-align: left;
+}
+
+.events {
+  display: block;
+}
+
+.loadingWrapper {
+  height: 100%;
+  position: relative;
+}

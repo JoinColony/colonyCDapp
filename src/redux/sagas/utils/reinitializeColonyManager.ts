@@ -1,9 +1,5 @@
 import { call } from 'redux-saga/effects';
-import {
-  TEMP_getContext,
-  TEMP_setContext,
-  ContextModule,
-} from '~context/index';
+import { getContext, setContext, ContextModule } from '~context';
 import { getColonyManager } from '.';
 
 export default function* reinitializeColonyManager() {
@@ -15,7 +11,7 @@ export default function* reinitializeColonyManager() {
    * gets set just after this try/catch block
    */
   try {
-    const oldColonyManager = TEMP_getContext(ContextModule.ColonyManager);
+    const oldColonyManager = getContext(ContextModule.ColonyManager);
     colonyClients = oldColonyManager.colonyClients;
   } catch (error) {
     /*
@@ -24,7 +20,7 @@ export default function* reinitializeColonyManager() {
   }
 
   const colonyManager = yield call(getColonyManager);
-  TEMP_setContext(ContextModule.ColonyManager, colonyManager);
+  setContext(ContextModule.ColonyManager, colonyManager);
 
   /*
    * Rehydrate the colony manage with (potentially) existing colony clients

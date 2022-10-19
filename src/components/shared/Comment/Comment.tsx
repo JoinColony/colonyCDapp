@@ -3,7 +3,7 @@ import { ColonyRole, Id } from '@colony/colony-js';
 
 import { getMainClasses } from '~utils/css';
 import { useTransformer } from '~utils/hooks';
-import { COMMENT_MODERATION } from '~immutable/index';
+import { COMMENT_MODERATION } from '~redux/immutable';
 
 import { TransactionMeta } from '~dashboard/ActionsPage';
 import UserMention from '~shared/UserMention';
@@ -13,7 +13,7 @@ import HookedUserAvatar from '~users/HookedUserAvatar';
 import { AnyUser, Colony, useLoggedInUser } from '~data/index';
 import TextDecorator from '~lib/TextDecorator';
 import { userHasRole } from '~modules/users/checks';
-import { getUserRolesForDomain } from '~modules/transformers';
+import { getUserRolesForDomain } from '~redux/transformers';
 
 import CommentActions from './Actions';
 

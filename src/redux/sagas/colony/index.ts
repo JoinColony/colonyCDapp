@@ -12,7 +12,7 @@ import {
   TokenBalancesForDomainsQueryVariables,
   TokenBalancesForDomainsDocument,
 } from '~data/index';
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 
 import { createTransaction, getTxChannel } from '../transactions';
 
@@ -25,7 +25,7 @@ function* colonyClaimToken({
 }: Action<ActionTypes.COLONY_CLAIM_TOKEN>) {
   let txChannel;
   try {
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
 
     txChannel = yield call(getTxChannel, meta.id);
     yield fork(createTransaction, meta.id, {

@@ -2,7 +2,7 @@ import { call, put, takeEvery, fork } from 'redux-saga/effects';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { ExtendedReduxContext } from '~types/index';
+import { ExtendedClientType } from '~types';
 import {
   UserBalanceWithLockDocument,
   UserBalanceWithLockQuery,
@@ -11,7 +11,7 @@ import {
   ClaimTokensFromMetacolonyQuery,
   ClaimTokensFromMetacolonyQueryVariables,
 } from '~data/index';
-import { TEMP_getContext, ContextModule } from '~context/index';
+import { getContext, ContextModule } from '~context';
 import { putError, takeFrom } from '../utils';
 
 import {
@@ -27,10 +27,10 @@ function* claimAllocation({
 }: Action<ActionTypes.META_CLAIM_ALLOCATION>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
 
     yield fork(createTransaction, meta.id, {
-      context: ExtendedReduxContext.VestingSimple,
+      context: ExtendedClientType.VestingSimpleClient,
       methodName: 'claimGrant',
       identifier: process.env.META_VESTING_CONTRACT_ADDRESS,
     });

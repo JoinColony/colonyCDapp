@@ -8,7 +8,7 @@ import {
   DefaultValues,
   MethodParams,
   RecordToJS,
-} from '~types/index';
+} from '~types';
 
 export enum TRANSACTION_ERRORS {
   ESTIMATE = 'ESTIMATE',

@@ -1,10 +1,10 @@
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import {
   ProcessedColonyQuery,
   ProcessedColonyQueryVariables,
   ProcessedColonyDocument,
 } from '~data/index';
-import { Address } from '~types/index';
+import { Address } from '~types';
 
 export function* updateColonyDisplayCache(
   colonyAddress: Address,
@@ -12,7 +12,7 @@ export function* updateColonyDisplayCache(
   avatarHash: string | null,
   avatarURL: string | null,
 ) {
-  const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+  const apolloClient = getContext(ContextModule.ApolloClient);
 
   const {
     data: { processedColony },

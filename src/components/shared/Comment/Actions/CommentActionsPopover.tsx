@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { COMMENT_MODERATION } from '~immutable/index';
+import { COMMENT_MODERATION } from '~redux/immutable';
 import DropdownMenu, {
   DropdownMenuSection,
   DropdownMenuItem,

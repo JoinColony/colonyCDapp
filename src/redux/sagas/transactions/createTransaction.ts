@@ -11,12 +11,17 @@ import {
 
 import { ActionTypes } from '../../actionTypes';
 import { filterUniqueAction } from '~utils/actions';
-import { getLoggedInUser } from '~data/index';
+// import { getLoggedInUser } from '~data/index';
 import { takeFrom } from '../utils';
-import { TxConfig } from '~types/index';
+import { TxConfig } from '~types';
 import { createTxAction } from '../../actionCreators';
 import estimateGasCost from './estimateGasCost';
 import sendTransaction from './sendTransaction';
+
+/*
+ * @TODO Refactor to remove dependency on data/index ex-module
+ */
+const getLoggedInUser = () => {};
 
 export function* createTransaction(id: string, config: TxConfig) {
   const { walletAddress } = yield getLoggedInUser();

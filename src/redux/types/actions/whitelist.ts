@@ -1,5 +1,5 @@
 import { ActionTypes } from '../../actionTypes';
-import { Address, WithKey } from '~types/index';
+import { Address, WithKey } from '~types';
 
 import {
   ErrorActionType,

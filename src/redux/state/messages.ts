@@ -1,6 +1,6 @@
 import { Record, Map as ImmutableMap } from 'immutable';
 
-import { DefaultValues, RecordToJS } from '~types/index';
+import { DefaultValues, RecordToJS } from '~types';
 
 import { MessageRecord, MessageType, TransactionId } from '../immutable';
 import { CORE_MESSAGES_LIST } from '../constants';

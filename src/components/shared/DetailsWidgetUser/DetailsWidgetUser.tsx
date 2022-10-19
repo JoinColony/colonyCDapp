@@ -4,7 +4,7 @@ import HookedUserAvatar from '~users/HookedUserAvatar';
 import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 import { useUser, Colony } from '~data/index';
-import { Address } from '~types/index';
+import { Address } from '~types';
 
 import styles from './DetailsWidgetUser.css';
 

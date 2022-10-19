@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import cx from 'classnames';
 
 import { AnyUser } from '~data/index';
-import { Address } from '~types/index';
+import { Address } from '~types';
 import { ItemDataType } from '~shared/OmniPicker';
 import MaskedAddress from '~shared/MaskedAddress';
 import UserMention from '~shared/UserMention';

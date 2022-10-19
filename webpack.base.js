@@ -6,11 +6,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const webpack = require('webpack');
 
 const mode = process.env.NODE_ENV || 'development';
 
 const config = {
-  entry: './src/index.ts',
   mode,
   resolve: {
     alias: Object.assign(
@@ -18,40 +18,60 @@ const config = {
       {
         '~shared': path.resolve(__dirname, 'src/components/shared'),
         '~common': path.resolve(__dirname, 'src/components/common'),
-        //   '~constants': path.resolve(__dirname, 'src/modules/constants'),
-      //   '~externalUrls': path.resolve(__dirname, 'src/modules/externalUrls'),
-      //   '~context': path.resolve(__dirname, 'src/context'),
-        '~lib': path.resolve(__dirname, 'src/lib'),
+        '~root': path.resolve(__dirname, 'src/components/root'),
+        '~gql': path.resolve(__dirname, 'src/graphql'),
+        '~constants': path.resolve(__dirname, 'src/constants'),
+        '~context': path.resolve(__dirname, 'src/context'),
+        '~hooks': path.resolve(__dirname, 'src/hooks'),
+        '~images': path.resolve(__dirname, 'src/images'),
       //   '~data': path.resolve(__dirname, 'src/data'),
         '~redux': path.resolve(__dirname, 'src/redux'),
-      //   '~routes': path.resolve(__dirname, 'src/routes'),
-      //   '~utils': path.resolve(__dirname, 'src/utils'),
+        '~routes': path.resolve(__dirname, 'src/routes'),
+        '~utils': path.resolve(__dirname, 'src/utils'),
         '~styles': path.resolve(__dirname, 'src/styles/shared'),
       //   '~testutils': path.resolve(__dirname, 'src/__tests__/utils.ts'),
         '~types': path.resolve(__dirname, 'src/types'),
       //   '~dialogs': path.resolve(__dirname, 'src/modules/dashboard/components/Dialogs')
+        assert: 'assert',
+        buffer: 'buffer',
+        crypto: 'crypto-browserify',
+        http: 'stream-http',
+        https: 'https-browserify',
+        os: 'os-browserify/browser',
+        process: 'process/browser',
+        stream: 'stream-browserify',
+        util: 'util'
       },
     ),
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
+    fallback: {
+      fs: false,
+      net: false,
+      child_process: false,
+      Buffer: false,
+      process: false,
+    },
   },
   module: {
     rules: [
       {
         test: /\.css$/,
         include: [
-          // path.resolve(__dirname, 'src', 'modules'),
-          // path.resolve(__dirname, 'src', 'styles'),
+          path.resolve(__dirname, 'src', 'components'),
+          path.resolve(__dirname, 'src', 'styles'),
         ],
         use: [
           'style-loader',
+          '@teamsupercell/typings-for-css-modules-loader',
           {
-            loader: 'typings-for-css-modules-loader',
+            loader: 'css-loader',
             options: {
-              modules: true,
-              namedExport: true,
-              camelCase: true,
+              modules: {
+                mode: 'local',
+                exportLocalsConvention: 'camelCaseOnly',
+                localIdentName: '[name]_[local]_[contenthash:base64:8]',
+              },
               importLoaders: 1,
-              localIdentName: '[name]_[local]_[hash:base64:8]',
             },
           },
           'postcss-loader',
@@ -67,13 +87,10 @@ const config = {
       },
       {
         test: /\.(woff|woff2|png|jpe?g|gif)$/,
-        loader: 'file-loader',
         include: [
           path.resolve('src'),
         ],
-        options: {
-          esModule: false,
-        },
+        type: 'asset/resource',
       },
       /*
        * To load svg icons and token icons to import
@@ -81,19 +98,19 @@ const config = {
       {
         test: /\.svg$/,
         exclude: [
-          // path.resolve(__dirname, 'src', 'img', 'icons')
+          path.resolve(__dirname, 'src', 'images', 'icons')
         ],
         use: '@svgr/webpack',
       },
       /*
-       * We are only parsing images inside `src/client/img/icons`. Doing so allows us to bundle the commonly-used icons.
+       * We are only parsing images inside `src/client/images/icons`. Doing so allows us to bundle the commonly-used icons.
        * This loader also runs the images through a svg optimizer. See: https://github.com/svg/svgo#what-it-can-do
        * To use with Icon component
        */
       {
         test: /\.svg$/,
         include: [
-          // path.resolve(__dirname, 'src', 'img', 'icons')
+          path.resolve(__dirname, 'src', 'images', 'icons')
         ],
         use: [
           {
@@ -114,7 +131,7 @@ const config = {
       {
         test: /\.svg$/,
         include: [
-          // path.resolve(__dirname, 'src', 'img', 'tokens'),
+          path.resolve(__dirname, 'src', 'images', 'tokens'),
         ],
         use: [
           {
@@ -133,19 +150,18 @@ const config = {
       },
     ],
   },
-  node: {
-    net: 'empty',
-    child_process: 'empty',
-    fs: 'empty',
-  },
   plugins: [
     new Dotenv({
       systemvars: !!process.env.CI || !!process.env.DEV,
     }),
     new HtmlWebpackPlugin({
       template: 'src/templates/index.html',
-      favicon: 'src/img/favicon.png',
+      favicon: 'src/images/favicon.png',
     }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+      Buffer: ['buffer', 'Buffer']
+    })
   ],
   /*
    * Fix for the XMLHttpRequest compile-time bug.
@@ -158,6 +174,9 @@ const config = {
       xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}',
     },
   ],
+  experiments: {
+    asyncWebAssembly: true
+  },
 };
 
 module.exports = config;

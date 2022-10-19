@@ -8,7 +8,7 @@ import {
   PopoverChildFnProps,
   PopoverTriggerElementType,
 } from '~shared/Popover/types';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 
 import DatePickerContent from './DatePickerContent';
 import InputField from './InputField';

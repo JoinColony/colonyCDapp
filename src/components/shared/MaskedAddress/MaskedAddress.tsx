@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { splitAddress, AddressElements } from '~utils/strings';
 
-import { Address } from '~types/index';
+import { Address } from '~types';
 
 import styles from './MaskedAddress.css';
 

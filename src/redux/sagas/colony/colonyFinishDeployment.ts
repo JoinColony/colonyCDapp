@@ -13,7 +13,7 @@ import {
 import { AddressZero } from '@ethersproject/constants';
 import { poll } from 'ethers/lib/utils';
 
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import {
   getLoggedInUser,
   ProcessedColonyQuery,
@@ -30,7 +30,7 @@ import {
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import { putError, takeFrom } from '../utils';
-import { TxConfig } from '~types/index';
+import { TxConfig } from '~types';
 
 import {
   transactionAddParams,
@@ -51,8 +51,8 @@ function* colonyRestartDeployment({
 }: Action<ActionTypes.COLONY_DEPLOYMENT_RESTART>) {
   try {
     const { walletAddress, username } = yield getLoggedInUser();
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
-    const colonyManager = TEMP_getContext(ContextModule.ColonyManager);
+    const apolloClient = getContext(ContextModule.ApolloClient);
+    const colonyManager = getContext(ContextModule.ColonyManager);
     const { networkClient } = colonyManager;
 
     let startingIndex = 7;

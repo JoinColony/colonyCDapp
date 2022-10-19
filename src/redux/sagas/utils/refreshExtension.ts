@@ -27,7 +27,7 @@ import {
   CoinMachineSalePeriodsQueryVariables,
   CoinMachineSalePeriodsDocument,
 } from '~data/index';
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import { PREV_PERIODS_LIMIT } from '~dashboard/CoinMachine/TokenSalesTable/TokenSalesTable';
 
 export function* refreshExtension(
@@ -35,7 +35,7 @@ export function* refreshExtension(
   extensionId: string,
   extensionAddress?: string,
 ) {
-  const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+  const apolloClient = getContext(ContextModule.ApolloClient);
 
   if (extensionId === Extension.Whitelist) {
     const { walletAddress } = yield getLoggedInUser();

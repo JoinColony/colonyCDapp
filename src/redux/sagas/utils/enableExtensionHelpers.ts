@@ -1,17 +1,10 @@
 import { fork } from 'redux-saga/effects';
 import { BigNumber } from 'ethers';
 
-import { TxConfig } from '~types/index';
-import {
-  ContextModule,
-  TEMP_getContext,
-  TEMP_setContext,
-} from '~context/index';
+import { TxConfig } from '~types';
+import { ContextModule, getContext, setContext } from '~context';
 
-import {
-  createTransaction,
-  createTransactionChannels,
-} from '../../../core/sagas';
+import { createTransaction, createTransactionChannels } from '~redux/sagas';
 
 export type Channel = Omit<TxConfig, 'methodName'>;
 
@@ -19,10 +12,10 @@ export const removeOldExtensionClients = (
   colonyAddress: string,
   extensionId: string,
 ) => {
-  const colonyManager = TEMP_getContext(ContextModule.ColonyManager);
+  const colonyManager = getContext(ContextModule.ColonyManager);
   // Remove old extensions client if exist
   colonyManager.extensionClients.delete(`${colonyAddress}-${extensionId}`);
-  TEMP_setContext(ContextModule.ColonyManager, colonyManager);
+  setContext(ContextModule.ColonyManager, colonyManager);
 };
 
 export const modifyParams = (params, payload) =>

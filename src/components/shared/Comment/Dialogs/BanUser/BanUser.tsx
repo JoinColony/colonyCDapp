@@ -20,7 +20,7 @@ import {
   useUnBanUserTransactionMessagesMutation,
   BannedUsersDocument,
 } from '~data/index';
-import { Address } from '~types/index';
+import { Address } from '~types';
 
 import styles from './BanUser.css';
 import Button from '~shared/Button';
@@ -101,7 +101,10 @@ const BanUser = ({ colonyAddress, cancel, close, isBanning = true }: Props) => {
       },
     });
 
-  const membersBanned = bannedMembers?.bannedUsers || [];
+  const membersBanned = useMemo(
+    () => bannedMembers?.bannedUsers || [],
+    [bannedMembers?.bannedUsers],
+  );
 
   const membersNotBanned = useMemo(() => {
     const subscribedUsers = colonyMembers?.subscribedUsers || [];

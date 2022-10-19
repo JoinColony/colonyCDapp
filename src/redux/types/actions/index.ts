@@ -1,15 +1,13 @@
 import { ColonyActionTypes } from './colony';
 import { ColonyActionsActionTypes } from './colonyActions';
-import { ConnectionActionTypes } from './connection';
 import { MotionActionTypes } from './motion';
 import { GasPricesActionTypes } from './gasPrices';
-import { IpfsActionTypes } from './ipfs';
 import { TransactionActionTypes } from './transaction';
 import { MessageActionTypes } from './message';
 import { UserActionTypes } from './user';
-import { WalletActionTypes } from './wallet';
 import { WhitelistActionTypes } from './whitelist';
 import { MetacolonyVestingTypes } from './vesting';
+import { WalletActionTypes } from './wallet';
 
 export { RootMotionOperationNames } from './motion';
 
@@ -39,8 +37,10 @@ export interface ActionTypeWithPayload<T extends string, P>
  *
  * M: any additional `meta` properties, e.g. `key: *`
  */
-export interface ActionTypeWithMeta<T extends string, M extends {}>
-  extends ActionType<T> {
+export interface ActionTypeWithMeta<
+  T extends string,
+  M extends Record<string, unknown>,
+> extends ActionType<T> {
   type: T;
   meta: M;
 }
@@ -51,8 +51,11 @@ export interface ActionTypeWithMeta<T extends string, M extends {}>
  * P: the action payload, e.g. `{| tokenAddress: string |}`
  * M: any additional `meta` properties, e.g. `key: *`
  */
-export interface ActionTypeWithPayloadAndMeta<T extends string, P, M extends {}>
-  extends ActionType<T> {
+export interface ActionTypeWithPayloadAndMeta<
+  T extends string,
+  P,
+  M extends Record<string, unknown>,
+> extends ActionType<T> {
   type: T;
   meta: M;
   payload: P;
@@ -93,16 +96,14 @@ export interface ErrorActionType<T extends string, M>
 export type AllActions =
   | ColonyActionTypes
   | ColonyActionsActionTypes
-  | ConnectionActionTypes
   | GasPricesActionTypes
-  | IpfsActionTypes
   | TransactionActionTypes
   | MessageActionTypes
   | UserActionTypes
-  | WalletActionTypes
   | WhitelistActionTypes
   | MotionActionTypes
-  | MetacolonyVestingTypes;
+  | MetacolonyVestingTypes
+  | WalletActionTypes;
 
 export type Action<T extends AllActions['type']> = Extract<
   AllActions,

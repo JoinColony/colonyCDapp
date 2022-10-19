@@ -6,7 +6,7 @@ import classnames from 'classnames';
 
 import { getMainClasses } from '~utils/css';
 import Icon from '~shared/Icon';
-import { UniversalMessageValues } from '~types/index';
+import { UniversalMessageValues } from '~types';
 
 import styles from './CustomRadio.css';
 

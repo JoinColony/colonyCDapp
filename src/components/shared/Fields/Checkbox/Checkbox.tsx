@@ -13,7 +13,7 @@ import { PopperOptions } from 'react-popper-tooltip';
 import InputLabel from '~shared/Fields/InputLabel';
 import { Tooltip } from '~shared/Popover';
 import asFieldArray from '~shared/Fields/asFieldArray';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import styles from './Checkbox.css';
@@ -45,7 +45,7 @@ interface Props {
   /** Input field name (form variable) */
   name: string;
   /** Standard input field property */
-  onChange?: Function;
+  onChange?: (event: { [s: string]: any }) => void;
   /** Input field value */
   value: string;
   /**  Text for the checkbox tooltip */

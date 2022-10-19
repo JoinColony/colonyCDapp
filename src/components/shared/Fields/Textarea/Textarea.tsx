@@ -4,7 +4,7 @@ import { useField } from 'formik';
 import cx from 'classnames';
 import { nanoid } from 'nanoid';
 
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import styles from './Textarea.css';

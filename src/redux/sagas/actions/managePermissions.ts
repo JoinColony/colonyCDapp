@@ -2,7 +2,7 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { hexlify, hexZeroPad } from 'ethers/lib/utils';
 import { ClientType } from '@colony/colony-js';
 
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import {
   ProcessedColonyQuery,
   ProcessedColonyQueryVariables,
@@ -42,7 +42,7 @@ function* managePermissionsAction({
 }: Action<ActionTypes.COLONY_ACTION_USER_ROLES_SET>) {
   let txChannel;
   try {
-    const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+    const apolloClient = getContext(ContextModule.ApolloClient);
 
     if (!userAddress) {
       throw new Error('User address not set for setUserRole transaction');

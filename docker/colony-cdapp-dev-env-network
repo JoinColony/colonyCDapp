@@ -1,0 +1,50 @@
+ARG NETWORK_HASH=develop
+
+FROM colony-cdapp-dev-env/base:latest
+
+# Declare volumes to set up metadata
+VOLUME [ "/colonyCDapp/amplify/mock-data" ]
+
+#
+# Colony Network
+#
+
+# Add dependencies from the host
+# Note: these are listed individually so that if they change, they won't affect
+# the build of the other images
+ADD docker/files/network/run.sh.base /colonyCDappBackend/run.sh
+
+WORKDIR /colonyCDappBackend
+
+# Clone the network repo
+RUN git clone https://github.com/JoinColony/colonyNetwork.git --depth 1
+WORKDIR /colonyCDappBackend/colonyNetwork
+
+# Fetch the correct network repo commit/branch/tag
+RUN git fetch origin $NETWORK_HASH --depth 1
+RUN git checkout $NETWORK_HASH
+RUN git submodule update --init --recursive --depth 1
+
+# Install required network dependencies
+RUN npm i --build-from-source
+
+# Compile network contracts
+RUN DISABLE_DOCKER=true yarn provision:token:contracts
+
+# Initialize the justification tree cache
+# To avoid the error spewed by the miner at startup
+RUN echo "{}" > ./packages/reputation-miner/justificationTreeCache.json
+
+WORKDIR /colonyCDappBackend
+
+# Open up ports to the docker image
+# Ganache
+EXPOSE 8545
+# Reputation Oracle
+EXPOSE 3002
+
+# Make the run script executable
+RUN chmod +x ./run.sh
+
+# Battlecruiser Operational!
+CMD [ "./run.sh" ]

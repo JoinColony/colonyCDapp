@@ -3,7 +3,7 @@ module.exports = {
   parserOptions: {
     sourceType: 'module',
     ecmaFeatures: {
-      jsx: true
+      jsx: true,
     },
   },
   env: {
@@ -16,16 +16,8 @@ module.exports = {
     'eslint-config-airbnb/rules/react-a11y',
     'plugin:@typescript-eslint/recommended',
     '@colony/eslint-config-colony',
-    'prettier/react',
-    'prettier/@typescript-eslint',
   ],
-  plugins: [
-    '@typescript-eslint',
-    'react',
-    'jsx-a11y',
-    'jsdoc',
-    'react-hooks',
-  ],
+  plugins: ['@typescript-eslint', 'react', 'jsx-a11y', 'jsdoc', 'react-hooks'],
   overrides: [
     {
       files: [
@@ -37,6 +29,7 @@ module.exports = {
       rules: {
         'max-len': 'off',
         'no-underscore-dangle': 'off',
+        // eslint-disable-next-line global-require
         ...require('./.eslintrc.jest.js'),
       },
       env: {
@@ -49,7 +42,7 @@ module.exports = {
     'no-unused-vars': 'off',
     // TypeScript overloads
     'no-dupe-class-members': 'off',
-    'camelcase': ['error', {allow: ["^TEMP_"]}],
+    camelcase: ['error', { allow: ['^TEMP_'] }],
     'eslint-comments/disable-enable-pair': ['error', { allowWholeFile: true }],
 
     // @typescript-eslint
@@ -101,7 +94,34 @@ module.exports = {
     'import/extensions': 'off',
 
     // Disallow TODO but not @todo; these are expected to be handled by the jsdoc plugin
-    'no-warning-comments': ['error', { terms: ['fixme', 'todo', 'xxx', '@fixme'], location: 'start' }],
+    'no-warning-comments': [
+      'error',
+      { terms: ['fixme', 'todo', 'xxx', '@fixme'], location: 'start' },
+    ],
     'jsdoc/check-indentation': 'off',
+    'no-restricted-exports': 'off',
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': ['error'],
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
+    '@typescript-eslint/ban-ts-comment': 'off',
+    'default-param-last': 'off',
+    'max-len': [
+      'error',
+      {
+        code: 120,
+        // Allow import, export and implements statements. Also long backticks
+        ignorePattern: '^import [^,]+ from |^export | implements | `.{30,}`',
+        ignoreComments: true,
+        tabWidth: 2,
+        ignoreUrls: true,
+      },
+    ],
+    'react/function-component-definition': [
+      2,
+      {
+        namedComponents: 'arrow-function',
+      },
+    ],
   },
 };

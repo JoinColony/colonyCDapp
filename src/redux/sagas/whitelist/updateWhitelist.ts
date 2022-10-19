@@ -9,9 +9,9 @@ import {
   WhitelistedUsersQuery,
   WhitelistedUsersQueryVariables,
 } from '~data/index';
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import { putError, takeFrom, refreshExtension } from '../utils';
-import { TxConfig } from '~types/index';
+import { TxConfig } from '~types';
 
 import {
   ChannelDefinition,
@@ -23,7 +23,7 @@ export function* updateWhitelist({
   meta,
   payload: { userAddresses, colonyAddress, status },
 }: Action<ActionTypes.WHITELIST_UPDATE>) {
-  const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+  const apolloClient = getContext(ContextModule.ApolloClient);
   const requireTransactions = Math.ceil(userAddresses.length / 100);
   const channelNames: string[] = [];
 

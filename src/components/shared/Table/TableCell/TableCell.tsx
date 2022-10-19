@@ -1,6 +1,6 @@
 import React, { ReactNode, TdHTMLAttributes } from 'react';
 
-interface Props extends TdHTMLAttributes<HTMLTableDataCellElement> {
+interface Props extends TdHTMLAttributes<unknown> {
   className?: string;
   children: ReactNode;
 }

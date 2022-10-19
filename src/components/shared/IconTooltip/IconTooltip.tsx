@@ -6,7 +6,7 @@ import cx from 'classnames';
 
 import Icon from '~shared/Icon';
 import { Tooltip } from '~shared/Popover';
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import styles from './IconTooltip.css';

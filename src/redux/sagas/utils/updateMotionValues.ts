@@ -1,8 +1,8 @@
 import { BigNumber } from 'ethers';
-import { ClientType } from '@colony/colony-js';
+import { ClientType } from 'node_modules/@colony/colony-js/dist/esm/index';
 
-import { TEMP_getContext, ContextModule } from '~context/index';
-import { Address } from '~types/index';
+import { getContext, ContextModule } from '~context';
+import { Address } from '~types';
 import {
   MotionStakesQuery,
   MotionStakesQueryVariables,
@@ -50,8 +50,8 @@ export function* updateMotionValues(
   userAddress: Address,
   motionId: BigNumber,
 ) {
-  const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
-  const context = TEMP_getContext(ContextModule.ColonyManager);
+  const apolloClient = getContext(ContextModule.ApolloClient);
+  const context = getContext(ContextModule.ColonyManager);
   const colonyClient = yield context.getClient(
     ClientType.ColonyClient,
     colonyAddress,

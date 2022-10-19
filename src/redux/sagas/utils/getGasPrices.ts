@@ -3,10 +3,10 @@ import { BigNumber } from 'ethers';
 import { call, put, select } from 'redux-saga/effects';
 
 import { GasPricesProps } from '../../immutable';
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import { log } from '~utils/debug';
 import { DEFAULT_NETWORK } from '~constants';
-import { ETH_GAS_STATION, XDAI_GAS_STATION } from '~externalUrls';
+import { ETH_GAS_STATION, XDAI_GAS_STATION } from '~constants/externalUrls';
 
 import { gasPrices as gasPricesSelector } from '../../selectors';
 import { updateGasPrices } from '../../actionCreators';
@@ -145,7 +145,7 @@ export default function* getGasPrices() {
     return cachedPrices;
   }
 
-  const { networkClient } = TEMP_getContext(ContextModule.ColonyManager);
+  const { networkClient } = getContext(ContextModule.ColonyManager);
 
   const gasPrices: GasPricesProps = yield call(fetchGasPrices, networkClient);
 

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 import { useField } from 'formik';
 import { AnyUser } from '~data/index';
-import { Address, SimpleMessageValues } from '~types/index';
+import { Address, SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import {

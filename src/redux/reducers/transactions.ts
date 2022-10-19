@@ -8,7 +8,10 @@ import {
 } from '../immutable';
 import { ActionTypes } from '../actionTypes';
 import { ReducerType } from '../types/reducer';
-import { CoreTransactions, CoreTransactionsRecord } from '../state/core';
+import {
+  CoreTransactions,
+  CoreTransactionsRecord,
+} from '../state/transactions';
 import { CORE_TRANSACTIONS_LIST } from '../constants';
 
 const transactionGroup = (tx: TransactionRecord) => {

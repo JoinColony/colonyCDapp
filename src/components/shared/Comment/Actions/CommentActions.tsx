@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 
 import classnames from 'classnames';
-import { COMMENT_MODERATION } from '~immutable/index';
+import { COMMENT_MODERATION } from '~redux/immutable';
 import Icon from '~shared/Icon';
 import Popover from '~shared/Popover';
 

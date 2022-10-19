@@ -1,0 +1,166 @@
+﻿# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+input TokenFromEverywhereArguments {
+  tokenAddress: String!
+}
+
+input CreateUniqueUserInput {
+  id: ID!
+  name: String!
+  profile: ProfileInput
+}
+
+input CreateUniqueColonyInput {
+  id: ID!
+  name: String!
+  colonyNativeTokenId: ID!
+  profile: ProfileInput
+  type: ColonyType
+}
+
+input ProfileInput {
+  avatar: String
+  thumbnail: String
+  displayName: String
+  bio: String
+  location: String
+  website: AWSURL
+  email: AWSEmail
+}
+
+input CreateUniqueDomainInput {
+  colonyAddress: ID!
+  parentId: ID
+  name: String
+  description: String
+  color: DomainColor
+}
+
+type TokenFromEverywhereReturn {
+  items: [Token]
+}
+
+enum TokenType {
+  COLONY
+  ERC20
+}
+
+enum Network {
+  LOCAL
+  MAINNET
+  XDAI
+}
+
+enum DomainColor {
+  LIGHTPINK
+  PINK
+  BLACK
+  EMERALDGREEN
+  BLUE
+  YELLOW
+  RED
+  GREEN
+  PERIWINKLE
+  GOLD
+  AQUA
+  BLUEGREY
+  PURPLE
+  ORANGE
+  MAGENTA
+  PURPLEGREY
+}
+
+enum ColonyType {
+  COLONY
+  METACOLONY
+}
+
+type Query {
+  getTokenFromEverywhere(
+    input: TokenFromEverywhereArguments
+  ): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain")
+}
+
+type Mutation {
+  createUniqueUser(
+    input: CreateUniqueUserInput
+  ): User @function(name: "createUniqueUser")
+  createUniqueColony(
+    input: CreateUniqueColonyInput
+  ): User @function(name: "createUniqueColony")
+  createUniqueDomain(
+    input: CreateUniqueDomainInput
+  ): Domain @function(name: "createUniqueDomain")
+}
+
+# Applies to both Users and Colonies
+# Might need to separate it into two later down the line
+type Profile {
+  avatar: String
+  thumbnail: String
+  displayName: String
+  bio: String
+  location: String
+  website: AWSURL
+  email: AWSEmail
+}
+
+type NativeTokenStatus {
+  unlocked: Boolean # If it's already unlocked
+  mintable: Boolean # User has permissions to mint new tokens
+  unlockable: Boolean # Token can be unlocked
+}
+
+type ColonyStatus {
+  nativeToken: NativeTokenStatus
+  recovery: Boolean # if it's in recovery mode
+  deployed: Boolean # if it has finished deployment (might be able to remove this at some point)
+}
+
+# Applies to both Colonies and Tokens
+# It does not apply to user accounts as they can live on all networks
+type Chain {
+  network: Network
+  chainId: Int
+}
+
+type Token @model {
+  id: ID! @index(name: "byAddress", queryField: "getTokenByAddress") # contract address
+  name: String!
+  symbol: String!
+  decimals: Int!
+  type: TokenType @index(name: "byType", queryField: "getTokensByType")
+  colonies: [Colony] @manyToMany(relationName: "ColonyTokens")
+  users: [User] @manyToMany(relationName: "UserTokens")
+}
+
+type Colony @model {
+  id: ID! @index(name: "byAddress", queryField: "getColonyByAddress") # contract address
+  name: String! @index(name: "byName", queryField: "getColonyByName")
+  nativeToken: Token! @hasOne
+  tokens: [Token] @manyToMany(relationName: "ColonyTokens")
+  profile: Profile
+  status: ColonyStatus
+  domains: [Domain] @hasMany
+  watchers: [User] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
+  type: ColonyType @index(name: "byType", queryField: "getColonyByType")
+}
+
+type User @model {
+  id: ID! @index(name: "byAddress", queryField: "getUserByAddress") # wallet address
+  name: String! @index(name: "byName", queryField: "getUserByName")
+  tokens: [Token] @manyToMany(relationName: "UserTokens")
+  profile: Profile
+  watchlist: [Colony] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
+}
+
+type Domain @model {
+  id: ID!
+  nativeId: Int!
+  name: String
+  description: String
+  color: DomainColor
+  parent: Domain @hasOne
+}

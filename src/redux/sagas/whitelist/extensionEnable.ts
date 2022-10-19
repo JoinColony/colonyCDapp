@@ -9,9 +9,9 @@ import {
   ColonyExtensionDocument,
 } from '~data/index';
 import extensionData from '~data/staticData/extensionData';
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import { intArrayToBytes32 } from '~utils/web3';
-import { WhitelistPolicy } from '~types/index';
+import { WhitelistPolicy } from '~types';
 
 import { getTxChannel } from '../transactions';
 
@@ -41,7 +41,7 @@ function* extensionEnable({
 
   const initChannel = yield call(getTxChannel, initChannelName);
 
-  const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
+  const apolloClient = getContext(ContextModule.ApolloClient);
 
   try {
     const { data } = yield apolloClient.query<

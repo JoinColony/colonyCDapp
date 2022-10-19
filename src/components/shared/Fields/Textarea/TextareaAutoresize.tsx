@@ -3,7 +3,7 @@ import Textarea, { TextareaAutosizeProps } from 'react-textarea-autosize';
 import { useField } from 'formik';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
-import { SimpleMessageValues } from '~types/index';
+import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import styles from './Textarea.css';

@@ -12,8 +12,8 @@ import ColorTag, { Color } from '~shared/ColorTag';
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import Paragraph from '~shared/Paragraph';
-import { OneDomain } from '~data/index';
-import { ENTER } from '~types/index';
+// import { OneDomain } from '~data/index';
+import { ENTER } from '~types';
 
 import {
   ALLDOMAINS_DOMAIN_SELECTION,
@@ -31,7 +31,7 @@ const MSG = defineMessages({
 
 interface Props {
   /** Domain to render the entry for */
-  domain: OneDomain | typeof ALLDOMAINS_DOMAIN_SELECTION;
+  domain: any; // todo proper types
 
   /** Toggle if mark the current domain with the "selected" highlight */
   isSelected: boolean;
@@ -46,13 +46,7 @@ interface Props {
 const displayName = `DomainDropdown.DomainDropdownItem`;
 
 const DomainDropdownItem = ({
-  domain: {
-    color = Color.LightPink,
-    description,
-    ethDomainId,
-    ethParentDomainId,
-    name,
-  },
+  domain: { color = Color.LightPink, description, nativeId, parentId, name },
   isSelected,
   onDomainEdit,
   showDescription = true,
@@ -61,10 +55,10 @@ const DomainDropdownItem = ({
     (evt) => {
       evt.stopPropagation();
       if (onDomainEdit) {
-        onDomainEdit(ethDomainId);
+        onDomainEdit(nativeId);
       }
     },
-    [onDomainEdit, ethDomainId],
+    [onDomainEdit, nativeId],
   );
 
   const handleEditDomainKeyDown = useCallback<
@@ -74,16 +68,33 @@ const DomainDropdownItem = ({
       if (evt.key === ENTER) {
         evt.stopPropagation();
         if (onDomainEdit) {
-          onDomainEdit(ethDomainId);
+          onDomainEdit(nativeId);
         }
       }
     },
-    [onDomainEdit, ethDomainId],
+    [onDomainEdit, nativeId],
   );
+
+  /*
+   * @TODO a proper color transformation
+   * This was just quickly thrown together to ensure it works
+   * Maybe even change the gql scalar type ?
+   */
+  const transformColor = useCallback((domainColor) => {
+    const colorMap = {
+      0: 0, // Light Pink
+      LIGHTPINK: 0,
+      5: 5, // Yellow
+      RED: 6,
+      ORANGE: 13,
+    };
+    return colorMap[domainColor];
+  }, []);
 
   return (
     <div className={styles.main}>
-      {typeof ethParentDomainId === 'number' && (
+      {/* {typeof parseInt(parentId) === 'number' && ( */}
+      {!!parentId && (
         <div className={styles.childDomainIcon}>
           <Icon name="return-arrow" title="Child Domain" />
         </div>
@@ -95,7 +106,7 @@ const DomainDropdownItem = ({
           })}
         >
           <div className={styles.color}>
-            <ColorTag color={color} />
+            <ColorTag color={transformColor(color)} />
           </div>
           <div
             className={styles.headingWrapper}
@@ -103,10 +114,10 @@ const DomainDropdownItem = ({
           >
             <Heading
               appearance={{ margin: 'none', size: 'normal', theme: 'dark' }}
-              text={name}
+              text={name || `Domain #${nativeId}`}
             />
           </div>
-          {ethDomainId === Id.RootDomain && (
+          {nativeId === Id.RootDomain && (
             <div className={styles.rootText}>
               <FormattedMessage {...MSG.rootDomain} />
             </div>
@@ -130,8 +141,8 @@ const DomainDropdownItem = ({
            * - the selected domain is "Root"
            * - we haven't provider a `onDomainEdit` method
            */
-          ethDomainId !== COLONY_TOTAL_BALANCE_DOMAIN_ID &&
-            ethDomainId !== Id.RootDomain &&
+          nativeId !== COLONY_TOTAL_BALANCE_DOMAIN_ID &&
+            nativeId !== Id.RootDomain &&
             onDomainEdit && (
               <div className={styles.editButton}>
                 <Button

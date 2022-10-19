@@ -1,21 +1,24 @@
-import { Record, Map as ImmutableMap } from 'immutable';
+import { Record } from 'immutable';
 
-import { FetchableDataRecord, FetchableDataType } from '../immutable';
-import { CORE_NAMESPACE, USERS_NAMESPACE } from '../constants';
+import { GasPrices, GasPricesRecord } from '../immutable';
 
-import { CoreStateRecord } from './core';
-import { UsersStateRecord } from './users';
+import {
+  CORE_GAS_PRICES,
+  CORE_MESSAGES,
+  CORE_TRANSACTIONS,
+} from '../constants';
 
-export type IpfsDataType = ImmutableMap<string, FetchableDataRecord<string>> & {
-  toJS(): { [hash: string]: FetchableDataType<string> };
+import { CoreTransactions, CoreTransactionsRecord } from './transactions';
+import { CoreMessages, CoreMessagesRecord } from './messages';
+
+type RootStateProps = {
+  [CORE_GAS_PRICES]: GasPricesRecord;
+  [CORE_MESSAGES]: CoreMessagesRecord;
+  [CORE_TRANSACTIONS]: CoreTransactionsRecord;
 };
 
-export interface RootStateProps {
-  core: CoreStateRecord;
-  users: UsersStateRecord;
-}
-
 export class RootStateRecord extends Record<RootStateProps>({
-  [CORE_NAMESPACE]: new CoreStateRecord(),
-  [USERS_NAMESPACE]: new UsersStateRecord(),
+  [CORE_GAS_PRICES]: GasPrices(),
+  [CORE_MESSAGES]: CoreMessages(),
+  [CORE_TRANSACTIONS]: CoreTransactions(),
 }) {}

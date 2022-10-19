@@ -1,7 +1,7 @@
 import { TransactionReceipt } from '@ethersproject/providers';
 
-import { TransactionError, TransactionType } from '~immutable/index';
-import { MethodParams } from '~types/index';
+import { TransactionError, TransactionType } from '~redux/immutable';
+import { MethodParams } from '~types';
 
 import { ActionTypes } from '../../actionTypes';
 import {

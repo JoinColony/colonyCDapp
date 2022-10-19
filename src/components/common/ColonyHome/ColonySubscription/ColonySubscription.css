@@ -1,0 +1,66 @@
+.main {
+  composes: flexContainerRow flexAlignCenter from '~styles/layout.css';
+}
+
+.spinnerContainer {
+  margin: 5px 0 0px 2px;
+  position: absolute;
+}
+
+.colonySubscribed {
+  composes: flexContainerRow flexAlignCenter from '~styles/layout.css';
+}
+
+.colonyJoin {
+  margin-top: 4px;
+}
+
+.colonyAddress {
+  padding: 4px 6px;
+  height: 24px;
+  border-radius: var(--radius-normal);
+  text-align: center;
+  line-height: var(--size-smallish);
+  color: var(--temp-grey-blue-7);
+  cursor: pointer;
+  user-select: none;
+  outline: 0;
+}
+
+.colonyAddress:hover {
+  background-color: color-mod(var(--colony-blue) alpha(10%));
+  color: var(--colony-blue);
+}
+
+.menuIconContainer {
+  height: 14px;
+  width: 6px;
+  vertical-align: bottom;
+  border-radius: var(--radius-normal);
+}
+
+.menuIconContainer:hover, .menuIconContainer.menuActive {
+  background-color: color-mod(var(--colony-blue) alpha(10%));
+}
+
+.colonyJoinBtn {
+  composes: flexItemCenter from '~styles/layout.css';
+  display: block;
+  padding: 10px 12px;
+  width: auto;
+  border: 0;
+  border-radius: var(--radius-normal);
+  background-color: color-mod(var(--action-secondary) alpha(12%));
+  font-size: var(--size-small);
+  font-weight: var(--weight-bold);
+  text-align: center;
+  line-height: var(--size-small);
+  color: var(--action-secondary);
+  cursor: pointer;
+  outline: 0;
+}
+
+.colonyJoinBtn:hover {
+  background-color: color-mod(var(--action-secondary) alpha(25%));
+  color: var(--action-secondary);
+}

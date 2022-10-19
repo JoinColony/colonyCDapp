@@ -4,7 +4,7 @@ import { all, call, fork, put } from 'redux-saga/effects';
 import { getExtensionHash, Extension, ClientType, Id } from '@colony/colony-js';
 import { poll } from 'ethers/lib/utils';
 
-import { ContextModule, TEMP_getContext } from '~context/index';
+import { ContextModule, getContext } from '~context';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import {
   getLoggedInUser,
@@ -31,7 +31,7 @@ import {
   takeLatestCancellable,
   createUserWithSecondAttempt,
 } from '../utils';
-import { TxConfig } from '~types/index';
+import { TxConfig } from '~types';
 
 import {
   transactionAddParams,
@@ -62,8 +62,8 @@ function* colonyCreate({
   },
 }: Action<ActionTypes.COLONY_CREATE>) {
   const { username: currentUsername, walletAddress } = yield getLoggedInUser();
-  const apolloClient = TEMP_getContext(ContextModule.ApolloClient);
-  const colonyManager = TEMP_getContext(ContextModule.ColonyManager);
+  const apolloClient = getContext(ContextModule.ApolloClient);
+  const colonyManager = getContext(ContextModule.ColonyManager);
   const { networkClient } = colonyManager;
 
   const channelNames: string[] = [];

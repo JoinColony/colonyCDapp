@@ -3,7 +3,7 @@ import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { TEMP_getContext, ContextModule } from '~context/index';
+import { getContext, ContextModule } from '~context';
 import { putError, takeFrom, updateMotionValues } from '../utils';
 
 import {
@@ -31,14 +31,12 @@ function* stakeMotion({
 }: Action<ActionTypes.COLONY_MOTION_STAKE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const context = TEMP_getContext(ContextModule.ColonyManager);
+    const context = getContext(ContextModule.ColonyManager);
     const colonyClient = yield context.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
 
-    // @NOTE This line exceeds the max-len but there's no prettier solution
-    // eslint-disable-next-line max-len
     const votingReputationClient: AnyVotingReputationClient =
       yield context.getClient(ClientType.VotingReputationClient, colonyAddress);
 

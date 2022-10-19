@@ -3,7 +3,8 @@ import { defineMessages } from 'react-intl';
 
 import { ALLDOMAINS_DOMAIN_SELECTION } from '~constants';
 import { Select, SelectOption } from '~shared/Fields';
-import { Colony } from '~data/index';
+// import { Colony } from '~data/index';
+import { Colony } from '~types';
 
 import DomainDropdownItem from './DomainDropdownItem';
 
@@ -103,12 +104,12 @@ const DomainDropdown = ({
       return showAllDomainsOption;
     }
     const sortByDomainId = (
-      { ethDomainId: firstDomainId },
-      { ethDomainId: secondDomainId },
+      { nativeId: firstDomainId },
+      { nativeId: secondDomainId },
     ) => firstDomainId - secondDomainId;
     const domainOptions = [
       ...showAllDomainsOption,
-      ...colony.domains
+      ...(colony?.domains?.items || [])
         /*
          * While this looks like an array, it's not a "true" one (this is the result from the subgraph query)
          * So we must first convert it to an array in order to sort it
@@ -116,18 +117,18 @@ const DomainDropdown = ({
         .slice(0)
         .sort(sortByDomainId)
         .map((domain) => {
-          const { ethDomainId, name: domainName } = domain;
+          const { nativeId, name: domainName } = domain;
           return {
             children: (
               <DomainDropdownItem
                 domain={domain}
-                isSelected={currentDomainId === ethDomainId}
+                isSelected={currentDomainId === nativeId}
                 onDomainEdit={onDomainEdit}
                 showDescription={showDescription}
               />
             ),
-            label: domainName,
-            value: `${ethDomainId}`,
+            label: domainName || `Domain #${nativeId}`,
+            value: `${nativeId}`,
           };
         }),
     ];

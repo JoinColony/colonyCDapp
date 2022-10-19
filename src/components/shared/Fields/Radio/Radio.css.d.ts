@@ -1,12 +1,23 @@
-export const delegate: string;
-export const themeColorPicker: string;
-export const labelContainer: string;
-export const radio: string;
-export const main: string;
-export const stateIsChecked: string;
-export const themeFakeCheckbox: string;
-export const checkmark: string;
-export const themeButtonGroup: string;
-export const directionHorizontal: string;
-export const directionVertical: string;
-export const stateIsDisabled: string;
+declare namespace RadioCssNamespace {
+  export interface IRadioCss {
+    checkmark: string;
+    delegate: string;
+    directionHorizontal: string;
+    directionVertical: string;
+    labelContainer: string;
+    main: string;
+    radio: string;
+    stateIsChecked: string;
+    stateIsDisabled: string;
+    themeButtonGroup: string;
+    themeColorPicker: string;
+    themeFakeCheckbox: string;
+  }
+}
+
+declare const RadioCssModule: RadioCssNamespace.IRadioCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: RadioCssNamespace.IRadioCss;
+};
+
+export = RadioCssModule;

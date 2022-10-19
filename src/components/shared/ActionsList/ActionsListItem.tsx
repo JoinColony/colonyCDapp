@@ -30,7 +30,7 @@ import {
   useNetworkContracts,
 } from '~data/index';
 import { createAddress } from '~utils/web3';
-import { FormattedAction, ColonyActions, ColonyMotions } from '~types/index';
+import { FormattedAction, ColonyActions, ColonyMotions } from '~types';
 import { useDataFetcher } from '~utils/hooks';
 import { parseDomainMetadata } from '~utils/colonyActions';
 import { useFormatRolesTitle } from '~utils/hooks/useFormatRolesTitle';
@@ -339,12 +339,7 @@ const ActionsListItem = ({
                     text={motionStyles.name}
                     appearance={{
                       theme: motionStyles.theme as TagAppearance['theme'],
-                      /*
-                       * @NOTE Prettier is being stupid
-                       */
-                      // eslint-disable-next-line max-len
                       colorSchema:
-                        // eslint-disable-next-line max-len
                         motionStyles.colorSchema as TagAppearance['colorSchema'],
                     }}
                   />

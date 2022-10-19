@@ -6,7 +6,7 @@ import { BigNumber } from 'ethers';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import { putError, takeFrom, updateMotionValues } from '../utils';
-import { TEMP_getContext, ContextModule } from '~context/index';
+import { getContext, ContextModule } from '~context';
 
 import {
   createTransaction,
@@ -21,14 +21,12 @@ function* finalizeMotion({
 }: Action<ActionTypes.COLONY_MOTION_FINALIZE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const colonyManager = TEMP_getContext(ContextModule.ColonyManager);
+    const colonyManager = getContext(ContextModule.ColonyManager);
     const { provider } = colonyManager;
     const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
-    // @NOTE This line exceeds the max-len but there's no prettier solution
-    // eslint-disable-next-line max-len
     const votingReputationClient: AnyVotingReputationClient =
       yield colonyManager.getClient(
         ClientType.VotingReputationClient,
