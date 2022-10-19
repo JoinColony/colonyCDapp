@@ -4,7 +4,7 @@ A interation of the Colony Dapp sporting both a fully decentralized operating mo
 
 ## Prerequisites
 * `node` `v16.16.x` (Best use [nvm](https://github.com/nvm-sh/nvm))
-* `npm` `v8.11.x`
+* `npm` `v8.11.x` _(At least. The newer, the better)_
 * `docker` `v19.03.0+` (See [install instructions](https://docs.docker.com/engine/install/))
 
 ## Installation
@@ -25,17 +25,32 @@ Install all dependencies:
 npm install
 ```
 
+_Note: at the end of the install there's a post-install script that will recursively install dependencies for all the currently declared lambda functions_
+
 ## Running the dev environment
 
 ```bash
-npm run start
+npm run dev
 ```
 
-This will build your local docker image, then attempt to start it _(the local dev environment runs inside a docker container).
+This will build your local docker images, then attempt to start them _(the local dev environment runs inside a couple of docker containers).
 
 On the next start, assuming no key cache files changed, it will skip the image building step _(as it will just used the cached version)_, and go strait to starting your environment
 
+## Running the dev web server
+
+Once the above dev environment is up and running, you need to start your dev web server, running through webpack:
+```bash
+npm run webpack
+```
+
+You can access it at `http://localhost:9091` _(notice the different port, as to not cause a local storage and cache conflict with the Dapp)_
+
 ## Additional services
+
+### Amplify
+
+You can access the Amplify / Mock Appsync GraphQL api playground at `http://localhost:20002`
 
 ### Reputation Monitor
 
