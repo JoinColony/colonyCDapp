@@ -11,7 +11,7 @@
     "docker:build:amplify": "DOCKER_BUILDKIT=1 docker build --tag colony-cdapp-dev-env/amplify --file ./docker/colony-cdapp-dev-env-amplify .",
     "docker:build": "npm run docker:build:base && npm run docker:build:network && npm run docker:build:monitor && npm run docker:build:ingestor && npm run docker:build:amplify",
     "docker:compose": "docker compose --file docker/colony-cdapp-dev-env-orchestration.yaml",
-    "start": "npm run docker:build && npm run docker:compose up -- --force-recreate -V",
+    "dev": "npm run docker:build && npm run docker:compose up -- --force-recreate -V",
     "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "webpack": "webpack serve --config webpack.dev.js --port 9091",
