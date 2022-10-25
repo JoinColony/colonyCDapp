@@ -8,7 +8,7 @@
       "~context/*": ["src/context/*"],
       "~shared/*": ["src/components/shared/*"],
       "~common/*": ["src/components/common/*"],
-      "~root/*": ["src/components/root/*"],
+      "~frame/*": ["src/components/frame/*"],
       "~gql": ["src/graphql"],
       "~gql/*": ["src/graphql/*"],
       "~hooks": ["src/hooks"],

@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { RouteComponentProps } from 'src/components/frame/RouteLayouts';
-import SubscribedColoniesList from 'src/components/frame/SubscribedColoniesList';
+import { RouteComponentProps } from '~frame/RouteLayouts';
+import SubscribedColoniesList from '~frame/SubscribedColoniesList';
 import SimpleNav from '../SimpleNav';
 import HistoryNavigation from '../HistoryNavigation';
 
