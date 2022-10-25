@@ -117,3 +117,35 @@ export const getMetacolony = /* GraphQL */ `
     }
   }
 `;
+
+export const getCurrentUser = /* GraphQL */ `
+  query GetCurrentUser($address: ID!) {
+    getUserByAddress(id: $address) {
+      items {
+        profile {
+          avatar
+          bio
+          displayName
+          email
+          location
+          thumbnail
+          website
+        }
+        walletAddress: id
+        name
+        watchlist {
+          items {
+            colony {
+              colonyAddress: id
+              name
+              profile {
+                displayName
+                thumbnail
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
