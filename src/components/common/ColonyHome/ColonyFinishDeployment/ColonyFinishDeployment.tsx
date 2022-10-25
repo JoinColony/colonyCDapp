@@ -5,8 +5,7 @@ import Alert from '~core/Alert';
 import { ActionButton } from '~core/Button';
 
 import { Colony, useNetworkContracts } from '~data/index';
-import { useLoggedInUser } from '~data/helpers';
-import { useTransformer } from '~utils/hooks';
+import { useTransformer, useAppContext } from '~hooks';
 import { ActionTypes } from '~redux/index';
 import { mapPayload } from '~utils/actions';
 import { colonyCanBeUpgraded } from '~modules/dashboard/checks';
@@ -37,7 +36,7 @@ const ColonyFinishDeployment = ({
   colony: { isDeploymentFinished, colonyAddress },
 }: Props) => {
   const { version: networkVersion } = useNetworkContracts();
-  const { walletAddress, username, ethereal } = useLoggedInUser();
+  const { user, wallet } = useAppContext();
 
   const transform = useCallback(
     mapPayload(() => ({
@@ -46,9 +45,12 @@ const ColonyFinishDeployment = ({
     [colonyAddress],
   );
 
-  const allUserRoles = useTransformer(getAllUserRoles, [colony, walletAddress]);
+  const allUserRoles = useTransformer(getAllUserRoles, [
+    colony,
+    wallet?.address,
+  ]);
 
-  const hasRegisteredProfile = !!username && !ethereal;
+  const hasRegisteredProfile = user?.name;
   const canUpgradeColony = hasRegisteredProfile && hasRoot(allUserRoles);
   const canFinishDeployment =
     canUpgradeColony && canEnterRecoveryMode(allUserRoles);

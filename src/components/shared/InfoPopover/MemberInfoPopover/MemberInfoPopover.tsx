@@ -10,9 +10,8 @@ import {
   Colony,
   useUserBalanceWithLockQuery,
   useUserReputationForTopDomainsQuery,
-  useLoggedInUser,
 } from '~data/index';
-import { useTransformer } from '~utils/hooks';
+import { useTransformer, useAppContext } from '~hooks';
 import { getAllUserRoles } from '~modules/transformers';
 import UserInfo from '../UserInfo';
 
@@ -36,7 +35,7 @@ const MemberInfoPopover = ({
   user = { id: '', profile: { walletAddress: '' } },
   banned = false,
 }: Props) => {
-  const { walletAddress: currentUserWalletAddress } = useLoggedInUser();
+  const { wallet } = useAppContext();
   const {
     profile: { walletAddress },
   } = user;
@@ -119,9 +118,7 @@ const MemberInfoPopover = ({
               userReputationForTopDomains={
                 userReputationData?.userReputationForTopDomains || []
               }
-              isCurrentUserReputation={
-                currentUserWalletAddress === walletAddress
-              }
+              isCurrentUserReputation={wallet?.address === walletAddress}
             />
           </div>
         )}

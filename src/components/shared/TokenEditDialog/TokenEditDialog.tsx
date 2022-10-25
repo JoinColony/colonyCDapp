@@ -17,8 +17,8 @@ import Toggle from '~shared/Fields/Toggle';
 import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import MotionDomainSelect from '~dashboard/MotionDomainSelect';
 
-import { AnyToken, OneToken, useLoggedInUser } from '~data/index';
-import { useTransformer } from '~utils/hooks';
+import { AnyToken, OneToken } from '~data/index';
+import { useTransformer, useAppContext } from '~hooks';
 import { useDialogActionPermissions } from '~utils/hooks/useDialogActionPermissions';
 import { getAllUserRoles } from '~modules/transformers';
 import { hasRoot } from '~modules/users/checks';
@@ -73,7 +73,7 @@ const TokenEditDialog = ({
   handleSubmit,
   isVotingExtensionEnabled,
 }: Props & FormikProps<FormValues>) => {
-  const { walletAddress, username, ethereal } = useLoggedInUser();
+  const { user, wallet } = useAppContext();
 
   const [tokenData, setTokenData] = useState<OneToken | undefined>();
   const [tokenSelectorHasError, setTokenSelectorHasError] =
@@ -99,10 +99,12 @@ const TokenEditDialog = ({
       selectedTokenAddresses?.sort(),
     );
 
-  const allUserRoles = useTransformer(getAllUserRoles, [colony, walletAddress]);
+  const allUserRoles = useTransformer(getAllUserRoles, [
+    colony,
+    wallet?.address,
+  ]);
 
-  const hasRegisteredProfile = !!username && !ethereal;
-  const canEditTokens = hasRegisteredProfile && hasRoot(allUserRoles);
+  const canEditTokens = user?.name && hasRoot(allUserRoles);
   const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(

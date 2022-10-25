@@ -53,7 +53,6 @@ const ColonyHomeLayout = ({
   onDomainChange = () => null,
 }: // ethDomainId,
 Props) => {
-  // const { ethereal, networkId } = useLoggedInUser();
   // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
   // const openWrongNetworkDialog = useDialog(WrongNetworkDialog);
 

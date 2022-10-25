@@ -15,7 +15,6 @@ import AvatarDropdown from '~frame/AvatarDropdown';
 
 // import {
 //   useUserNotificationsQuery,
-//   useLoggedInUser,
 //   useUserBalanceWithLockQuery,
 //   useColonyFromNameQuery,
 //   Colony,
@@ -48,7 +47,6 @@ import styles from './UserNavigation.css';
 const displayName = 'root.RouteLayouts.UserNavigation';
 
 const UserNavigation = () => {
-  // const { walletAddress, ethereal, networkId } = useLoggedInUser();
   const networkId = 1;
   // const { colonyName } = useParams<{src/redux
   // const transactionAndMessageGroups = useSelector(

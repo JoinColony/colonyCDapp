@@ -10,7 +10,6 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import ColonyAvatar from '~shared/ColonyAvatar';
 
 // import { CREATE_COLONY_ROUTE } from '~routes/index';
-// import { useLoggedInUser, useMetaColonyQuery } from '~data/index';
 // import { checkIfNetworkIsAllowed } from '~utils/networks';
 
 import { getMetacolony } from '~gql';
@@ -41,8 +40,6 @@ const MSG = defineMessages({
 // const ColonyAvatar = HookedColonyAvatar({ fetchColony: false });
 
 const LandingPage = () => {
-  // const { networkId, ethereal } = useLoggedInUser();
-
   // const { data, loading } = useMetaColonyQuery();
 
   // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);

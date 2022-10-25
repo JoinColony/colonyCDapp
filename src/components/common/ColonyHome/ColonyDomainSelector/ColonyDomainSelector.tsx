@@ -7,6 +7,7 @@ import DomainDropdown from '~shared/DomainDropdown';
 // import { useDialog } from '~shared/Dialog';
 // import EditDomainDialog from '~dialogs/EditDomainDialog';
 
+import { useAppContext } from '~hooks';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 // import { checkIfNetworkIsAllowed } from '~utils/networks';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
@@ -34,7 +35,7 @@ const ColonyDomainSelector = ({
   colony: { domains },
   colony,
 }: Props) => {
-  // const { networkId, ethereal, username } = useLoggedInUser();
+  const { user } = useAppContext();
   // const { data } = useColonyExtensionsQuery({
   //   variables: { address: colonyAddress },
   // });
@@ -113,7 +114,7 @@ const ColonyDomainSelector = ({
   // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
   // const isSupportedColonyVersion =
   //   parseInt(colony.version, 10) >= ColonyVersion.LightweightSpaceship;
-  // const hasRegisteredProfile = !!username && !ethereal;
+  const hasRegisteredProfile = user?.name;
   // const canInteract =
   //   isSupportedColonyVersion &&
   //   isNetworkAllowed &&

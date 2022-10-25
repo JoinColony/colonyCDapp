@@ -1,18 +1,17 @@
 import React from 'react';
-import {
-  defineMessages,
-  // FormattedMessage
-} from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 // import { SpinnerLoader } from '~core/Preloaders';
-// import Button, { ThreeDotsButton } from '~shared/Button';
-// import Link from '~shared/Link';
+import Button /* ThreeDotsButton */ from '~shared/Button';
+import Link from '~shared/Link';
 import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
+
 import { Colony } from '~types';
+import { useAppContext } from '~hooks';
 
 // import { checkIfNetworkIsAllowed } from '~utils/networks';
-// import { CREATE_USER_ROUTE } from '~routes/index';
+import { CREATE_USER_ROUTE } from '~routes/index';
 
 import ColonySubscriptionInfoPopover from './ColonySubscriptionInfoPopover';
 
@@ -38,11 +37,7 @@ interface Props {
 }
 
 const ColonySubscription = ({ colony: { colonyAddress }, colony }: Props) => {
-  // const { username, walletAddress, networkId } = useLoggedInUser();
-
-  // const { data } = useUserColonyAddressesQuery({
-  //   variables: { address: walletAddress },
-  // });
+  const { user } = useAppContext();
 
   // const [
   //   subscribe,
@@ -59,10 +54,9 @@ const ColonySubscription = ({ colony: { colonyAddress }, colony }: Props) => {
   //   update: cacheUpdates.unsubscribeFromColony(colonyAddress),
   // });
 
-  // const isSubscribed = (data?.user?.colonyAddresses || []).includes(
-  //   colonyAddress,
-  // );
-  const isSubscribed = true;
+  const isSubscribed = !!(user?.watchlist?.items || []).find(
+    (item) => (item?.colony as Colony)?.colonyAddress === colonyAddress,
+  );
 
   // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
   const isNetworkAllowed = true;
@@ -110,9 +104,11 @@ const ColonySubscription = ({ colony: { colonyAddress }, colony }: Props) => {
         )}
         {!isSubscribed && (
           <div className={styles.colonyJoin}>
-            {/* {username && (
+            {user?.name && (
               <Button
-                onClick={() => subscribe()}
+                onClick={() => {
+                  /* subscribe() */
+                }}
                 appearance={{ theme: 'blue', size: 'small' }}
                 data-test="joinColonyButton"
                 className={styles.colonyJoinBtn}
@@ -120,16 +116,16 @@ const ColonySubscription = ({ colony: { colonyAddress }, colony }: Props) => {
                 <FormattedMessage {...MSG.joinColony} />
               </Button>
             )}
-            {!username && (
+            {!user?.name && (
               <Link
                 className={styles.colonyJoinBtn}
                 to={{
                   pathname: CREATE_USER_ROUTE,
-                  state: { colonyURL: `/colony/${colonyName}` },
+                  // state: { colonyURL: `/colony/${colonyName}` },
                 }}
                 text={MSG.joinColony}
               />
-            )} */}
+            )}
           </div>
         )}
       </div>

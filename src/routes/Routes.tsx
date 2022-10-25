@@ -29,8 +29,8 @@ import LadingPage from '~frame/LandingPage';
 
 // import appLoadingContext from '~context/appLoadingState';
 // import ColonyFunding from '~dashboard/ColonyFunding';
-// import { useLoggedInUser } from '~data/index';
 // import { ActionTypes } from '~redux';
+import { useAppContext } from '~hooks';
 
 import {
   COLONY_EVENTS_ROUTE,
@@ -70,8 +70,8 @@ import AlwaysAccesibleRoute from './AlwaysAccesibleRoute';
 // });
 
 const Routes = () => {
+  const { user, wallet } = useAppContext();
   // const isAppLoading = appLoadingContext.getIsLoading();
-  // const { walletAddress, username, ethereal } = useLoggedInUser();
 
   // const dispatch = useDispatch();
   // useEffect(() => {
@@ -80,8 +80,8 @@ const Routes = () => {
   //   });
   // }, [dispatch]);
 
-  // const isConnected = !!walletAddress && !ethereal;
-  // const didClaimProfile = !!username;
+  const isConnected = wallet?.address;
+  const didClaimProfile = user?.name;
 
   // useTitle();
 
@@ -91,7 +91,7 @@ const Routes = () => {
    * We need to memoize the entire route switch to prevent re-renders at not
    * so oportune times.
    *
-   * The `balance` value, accessible through `useLoggedInUser`, even if we don't
+   * The `balance` value, accessible through (no longer isLoggedInUser), even if we don't
    * use it here directly, will cause a re-render of the `<Routes />` component
    * every time it changes (using the subscription).
    *
