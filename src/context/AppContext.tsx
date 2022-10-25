@@ -15,6 +15,7 @@ import { getContext, ContextModule } from './index';
 export const AppContext = createContext<{
   wallet?: Wallet;
   user?: User;
+  userLoading?: boolean;
   updateWallet?: () => void;
 }>({});
 
@@ -34,10 +35,12 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   const [wallet, setWallet] = useState(initialWallet);
   const [user, setUser] = useState(initialUser);
+  const [userLoading, setUserLoading] = useState(false);
 
   const updateUser = useCallback((address) => {
     if (address) {
       try {
+        setUserLoading(true);
         const apolloClient = getContext(ContextModule.ApolloClient);
         const query = apolloClient.query({
           query: gql(getCurrentUser),
@@ -48,9 +51,11 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
           if (currentUser) {
             setUser(currentUser);
           }
+          setUserLoading(false);
         });
       } catch (error) {
         console.error(error);
+        setUserLoading(false);
       }
     }
   }, []);
@@ -75,8 +80,12 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const appContext = useMemo<{
     wallet?: Wallet;
     user?: User;
+    userLoading?: boolean;
     updateWallet: () => void;
-  }>(() => ({ wallet, user, updateWallet }), [updateWallet, user, wallet]);
+  }>(
+    () => ({ wallet, user, userLoading, updateWallet }),
+    [updateWallet, user, userLoading, wallet],
+  );
 
   return (
     <AppContext.Provider value={appContext}>{children}</AppContext.Provider>

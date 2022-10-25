@@ -1,17 +1,14 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { useQuery, gql } from '@apollo/client';
 
 import Icon from '~shared/Icon';
 import { SpinnerLoader } from '~shared/Preloaders';
 import NavLink from '~shared/NavLink';
 import ColonyAvatar from '~shared/ColonyAvatar';
 
-// import { useLoggedInUser, useUserColoniesQuery } from '~data/index';
 import { CREATE_COLONY_ROUTE } from '~routes/index';
 // import { checkIfNetworkIsAllowed } from '~utils/networks';
 import { useAppContext } from '~hooks';
-import { getWatchlist } from '~gql';
 
 import styles from './SubscribedColoniesList.css';
 
@@ -25,15 +22,9 @@ const MSG = defineMessages({
 });
 
 const SubscribedColoniesList = () => {
-  const { wallet } = useAppContext();
+  const { user, userLoading } = useAppContext();
 
-  const { data, loading } = useQuery(gql(getWatchlist), {
-    variables: {
-      address: wallet?.address,
-    },
-  });
-
-  const { items: watchlist = [] } = data?.listWatchedColonies || {};
+  const { items: watchlist = [] } = user?.watchlist || {};
 
   const sortByDate = (firstWatchEntry, secondWatchEntry) => {
     const firstWatchTime = new Date(firstWatchEntry?.createdAt || 1).getTime();
@@ -43,28 +34,18 @@ const SubscribedColoniesList = () => {
     return firstWatchTime - secondWatchTime;
   };
 
-  // const watchlist: Array<{ colony: Colony }> =
-  //   data?.listWatchedColonies?.items[0]?.watchlist?.items || [];
-
-  // const { walletAddress, networkId, ethereal } = useLoggedInUser();
-  // const { data, loading } = useUserColoniesQuery({
-  //   variables: { address: walletAddress },
-  // });
-
-  // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
-
   return (
     <div className={styles.main}>
       <div className={styles.scrollableContainer}>
-        {loading && (
+        {userLoading && (
           <div className={styles.loadingColonies}>
             <SpinnerLoader appearance={{ size: 'medium' }} />
           </div>
         )}
-        {!loading &&
+        {
           // data?.user?.processedColonies.map((colony) => {
-          [...watchlist].sort(sortByDate).map(({ colony }) => {
-            const { colonyAddress, name } = colony;
+          [...watchlist].sort(sortByDate).map((item) => {
+            const { colonyAddress = '', name } = item?.colony || {};
             return (
               <div className={styles.item} key={colonyAddress}>
                 <NavLink
@@ -75,7 +56,7 @@ const SubscribedColoniesList = () => {
                 >
                   <div className={styles.itemImage}>
                     <ColonyAvatar
-                      colony={colony}
+                      colony={item?.colony}
                       colonyAddress={colonyAddress}
                       size="s"
                     />
@@ -83,7 +64,8 @@ const SubscribedColoniesList = () => {
                 </NavLink>
               </div>
             );
-          })}
+          })
+        }
       </div>
       {/* {(ethereal || isNetworkAllowed) && ( */}
       <div className={`${styles.item} ${styles.newColonyItem}`}>
