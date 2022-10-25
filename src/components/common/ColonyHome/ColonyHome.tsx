@@ -11,7 +11,7 @@ import { useQuery, gql } from '@apollo/client';
 
 // import { parse as parseQS } from 'query-string';
 
-import LoadingTemplate from '~root/LoadingTemplate';
+import LoadingTemplate from 'src/components/frame/LoadingTemplate';
 // import Extensions, { ExtensionDetails } from '~dashboard/Extensions';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';

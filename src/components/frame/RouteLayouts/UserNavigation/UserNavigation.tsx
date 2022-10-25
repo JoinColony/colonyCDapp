@@ -9,7 +9,7 @@ import React from 'react'; // useEffect // useMemo,
 // import { GasStationPopover, GasStationProvider } from '~users/GasStation';
 // import UserTokenActivationButton from '~users/UserTokenActivationButton';
 // import { readyTransactionsCount } from '~users/GasStation/transactionGroup';
-import AvatarDropdown from '~root/AvatarDropdown';
+import AvatarDropdown from 'src/components/frame/AvatarDropdown';
 // import InboxPopover from '~users/Inbox/InboxPopover';
 // import { ConnectWalletPopover } from '~users/ConnectWalletWizard';
 

@@ -2,7 +2,7 @@ import React, { ComponentType } from 'react';
 import { RouteProps, useParams } from 'react-router-dom';
 
 import FeedbackWidget from '~shared/FeedbackWidget';
-import { RouteComponentProps } from '~root/RouteLayouts';
+import { RouteComponentProps } from 'src/components/frame/RouteLayouts';
 
 type routePropsFn = (params: any) => RouteComponentProps;
 

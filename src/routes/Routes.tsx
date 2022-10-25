@@ -11,7 +11,7 @@ import { Route, Routes as RoutesSwitch, Navigate } from 'react-router-dom';
 // import CreateUserWizard from '~dashboard/CreateUserWizard';
 import ColonyHome from '~common/ColonyHome';
 // import ColonyMembers from '~dashboard/ColonyMembers';
-import FourOFour from '~root/FourOFour';
+import FourOFour from 'src/components/frame/FourOFour';
 // import Inbox from '~users/Inbox';
 // import Wallet from '~dashboard/Wallet';
 // import ConnectWalletWizard from '~users/ConnectWalletWizard';
@@ -20,10 +20,10 @@ import FourOFour from '~root/FourOFour';
 import {
   // NavBar, Plain, SimpleNav,
   Default,
-} from '~root/RouteLayouts';
+} from 'src/components/frame/RouteLayouts';
 // import { ColonyBackText } from '~pages/BackTexts';
 // import LoadingTemplate from '~root/LoadingTemplate';
-import LadingPage from '~root/LandingPage';
+import LadingPage from 'src/components/frame/LandingPage';
 // import ActionsPage from '~dashboard/ActionsPage';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
