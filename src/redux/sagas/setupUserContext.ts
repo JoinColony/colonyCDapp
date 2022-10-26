@@ -18,11 +18,7 @@ import { getWallet } from './wallet';
 import { ActionTypes } from '../actionTypes';
 import { AllActions, Action } from '../types/actions';
 
-import {
-  getContext,
-  setContext,
-  ContextModule,
-} from '~context';
+import { getContext, setContext, ContextModule } from '~context';
 // import { setLastWallet } from '~utils/autoLogin';
 // import {
 //   refetchUserNotifications,

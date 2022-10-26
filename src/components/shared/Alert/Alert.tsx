@@ -58,11 +58,9 @@ const Alert = ({
     typeof text === 'string' ? text : text && formatMessage(text, textValues);
   return (
     <div className={getMainClasses(appearance, styles)}>
-      <>
-        {alertText || typeof children === 'function'
-          ? (children as childrenFn)(handleDismiss)
-          : children}
-      </>
+      {alertText || typeof children === 'function'
+        ? (children as childrenFn)(handleDismiss)
+        : children}
     </div>
   );
 };

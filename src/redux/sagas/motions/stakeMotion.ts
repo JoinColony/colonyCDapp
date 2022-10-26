@@ -28,7 +28,7 @@ function* stakeMotion({
     amount,
     annotationMessage,
   },
-}: Action<ActionTypes.COLONY_MOTION_STAKE>) {
+}: Action<ActionTypes.MOTION_STAKE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
     const context = getContext(ContextModule.ColonyManager);
@@ -164,11 +164,11 @@ function* stakeMotion({
     yield fork(updateMotionValues, colonyAddress, userAddress, motionId);
 
     yield put<AllActions>({
-      type: ActionTypes.COLONY_MOTION_STAKE_SUCCESS,
+      type: ActionTypes.MOTION_STAKE_SUCCESS,
       meta,
     });
   } catch (error) {
-    return yield putError(ActionTypes.COLONY_MOTION_STAKE_ERROR, error, meta);
+    return yield putError(ActionTypes.MOTION_STAKE_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
@@ -176,5 +176,5 @@ function* stakeMotion({
 }
 
 export default function* stakeMotionSaga() {
-  yield takeEvery(ActionTypes.COLONY_MOTION_STAKE, stakeMotion);
+  yield takeEvery(ActionTypes.MOTION_STAKE, stakeMotion);
 }

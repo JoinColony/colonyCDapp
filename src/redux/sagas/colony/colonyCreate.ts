@@ -60,7 +60,7 @@ function* colonyCreate({
     tokenSymbol: givenTokenSymbol,
     username: givenUsername,
   },
-}: Action<ActionTypes.COLONY_CREATE>) {
+}: Action<ActionTypes.CREATE>) {
   const { username: currentUsername, walletAddress } = yield getLoggedInUser();
   const apolloClient = getContext(ContextModule.ApolloClient);
   const colonyManager = getContext(ContextModule.ColonyManager);
@@ -224,7 +224,7 @@ function* colonyCreate({
      * where transactions can get processed.
      */
     yield put<AllActions>({
-      type: ActionTypes.COLONY_CREATE_SUCCESS,
+      type: ActionTypes.CREATE_SUCCESS,
       meta,
       payload: undefined,
     });
@@ -354,7 +354,7 @@ function* colonyCreate({
       colonyAddress = createdColonyAddress;
       if (!colonyAddress) {
         return yield putError(
-          ActionTypes.COLONY_CREATE_ERROR,
+          ActionTypes.CREATE_ERROR,
           new Error('Missing colony address'),
           meta,
         );
@@ -541,7 +541,7 @@ function* colonyCreate({
 
     return null;
   } catch (error) {
-    yield putError(ActionTypes.COLONY_CREATE_ERROR, error, meta);
+    yield putError(ActionTypes.CREATE_ERROR, error, meta);
     // For non-transaction errors (where something is probably irreversibly wrong),
     // cancel the saga.
     return null;
@@ -559,8 +559,8 @@ function* colonyCreate({
 
 export default function* colonyCreateSaga() {
   yield takeLatestCancellable(
-    ActionTypes.COLONY_CREATE,
-    ActionTypes.COLONY_CREATE_CANCEL,
+    ActionTypes.CREATE,
+    ActionTypes.CREATE_CANCEL,
     colonyCreate,
   );
 }

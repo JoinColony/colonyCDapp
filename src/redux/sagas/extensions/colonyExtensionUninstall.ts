@@ -23,7 +23,7 @@ export function* colonyExtensionUninstall({
   meta: { id: metaId },
   meta,
   payload: { colonyAddress, extensionId },
-}: Action<ActionTypes.COLONY_EXTENSION_UNINSTALL>) {
+}: Action<ActionTypes.EXTENSION_UNINSTALL>) {
   let txChannel;
   try {
     const colonyManager = getContext(ContextModule.ColonyManager);
@@ -139,11 +139,7 @@ export function* colonyExtensionUninstall({
       fetchPolicy: 'network-only',
     });
   } catch (error) {
-    return yield putError(
-      ActionTypes.COLONY_EXTENSION_UNINSTALL_ERROR,
-      error,
-      meta,
-    );
+    return yield putError(ActionTypes.EXTENSION_UNINSTALL_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
@@ -151,8 +147,5 @@ export function* colonyExtensionUninstall({
 }
 
 export default function* colonyExtensionUninstallSaga() {
-  yield takeEvery(
-    ActionTypes.COLONY_EXTENSION_UNINSTALL,
-    colonyExtensionUninstall,
-  );
+  yield takeEvery(ActionTypes.EXTENSION_UNINSTALL, colonyExtensionUninstall);
 }

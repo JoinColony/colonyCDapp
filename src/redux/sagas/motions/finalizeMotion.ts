@@ -18,7 +18,7 @@ import { transactionReady, transactionUpdateGas } from '../../actionCreators';
 function* finalizeMotion({
   meta,
   payload: { userAddress, colonyAddress, motionId },
-}: Action<ActionTypes.COLONY_MOTION_FINALIZE>) {
+}: Action<ActionTypes.MOTION_FINALIZE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
     const colonyManager = getContext(ContextModule.ColonyManager);
@@ -106,15 +106,11 @@ function* finalizeMotion({
     yield fork(updateMotionValues, colonyAddress, userAddress, motionId);
 
     yield put<AllActions>({
-      type: ActionTypes.COLONY_MOTION_FINALIZE_SUCCESS,
+      type: ActionTypes.MOTION_FINALIZE_SUCCESS,
       meta,
     });
   } catch (error) {
-    return yield putError(
-      ActionTypes.COLONY_MOTION_FINALIZE_ERROR,
-      error,
-      meta,
-    );
+    return yield putError(ActionTypes.MOTION_FINALIZE_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
@@ -122,5 +118,5 @@ function* finalizeMotion({
 }
 
 export default function* finalizeMotionSaga() {
-  yield takeEvery(ActionTypes.COLONY_MOTION_FINALIZE, finalizeMotion);
+  yield takeEvery(ActionTypes.MOTION_FINALIZE, finalizeMotion);
 }

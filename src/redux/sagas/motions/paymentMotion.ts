@@ -41,7 +41,7 @@ function* createPaymentMotion({
   },
   meta: { id: metaId, history },
   meta,
-}: Action<ActionTypes.COLONY_MOTION_EXPENDITURE_PAYMENT>) {
+}: Action<ActionTypes.MOTION_EXPENDITURE_PAYMENT>) {
   let txChannel;
   try {
     /*
@@ -223,7 +223,7 @@ function* createPaymentMotion({
       );
     }
     yield put<AllActions>({
-      type: ActionTypes.COLONY_MOTION_EXPENDITURE_PAYMENT_SUCCESS,
+      type: ActionTypes.MOTION_EXPENDITURE_PAYMENT_SUCCESS,
       meta,
     });
 
@@ -231,19 +231,12 @@ function* createPaymentMotion({
       yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
     }
   } catch (caughtError) {
-    putError(
-      ActionTypes.COLONY_MOTION_EXPENDITURE_PAYMENT_ERROR,
-      caughtError,
-      meta,
-    );
+    putError(ActionTypes.MOTION_EXPENDITURE_PAYMENT_ERROR, caughtError, meta);
   } finally {
     txChannel.close();
   }
 }
 
 export default function* paymentMotionSaga() {
-  yield takeEvery(
-    ActionTypes.COLONY_MOTION_EXPENDITURE_PAYMENT,
-    createPaymentMotion,
-  );
+  yield takeEvery(ActionTypes.MOTION_EXPENDITURE_PAYMENT, createPaymentMotion);
 }

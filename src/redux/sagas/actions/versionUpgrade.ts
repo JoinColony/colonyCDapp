@@ -32,7 +32,7 @@ function* createVersionUpgradeAction({
   payload: { colonyAddress, colonyName, version, annotationMessage },
   meta: { id: metaId, history },
   meta,
-}: Action<ActionTypes.COLONY_ACTION_VERSION_UPGRADE>) {
+}: Action<ActionTypes.ACTION_VERSION_UPGRADE>) {
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
@@ -128,7 +128,7 @@ function* createVersionUpgradeAction({
     yield colonyManager.setColonyClient(colonyAddress);
 
     yield put<AllActions>({
-      type: ActionTypes.COLONY_ACTION_VERSION_UPGRADE_SUCCESS,
+      type: ActionTypes.ACTION_VERSION_UPGRADE_SUCCESS,
       meta,
     });
 
@@ -136,11 +136,7 @@ function* createVersionUpgradeAction({
       yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
     }
   } catch (caughtError) {
-    putError(
-      ActionTypes.COLONY_ACTION_VERSION_UPGRADE_ERROR,
-      caughtError,
-      meta,
-    );
+    putError(ActionTypes.ACTION_VERSION_UPGRADE_ERROR, caughtError, meta);
   } finally {
     txChannel.close();
   }
@@ -148,7 +144,7 @@ function* createVersionUpgradeAction({
 
 export default function* versionUpgradeActionSaga() {
   yield takeEvery(
-    ActionTypes.COLONY_ACTION_VERSION_UPGRADE,
+    ActionTypes.ACTION_VERSION_UPGRADE,
     createVersionUpgradeAction,
   );
 }

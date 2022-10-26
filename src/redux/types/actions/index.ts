@@ -5,7 +5,6 @@ import { GasPricesActionTypes } from './gasPrices';
 import { TransactionActionTypes } from './transaction';
 import { MessageActionTypes } from './message';
 import { UserActionTypes } from './user';
-import { WhitelistActionTypes } from './whitelist';
 import { MetacolonyVestingTypes } from './vesting';
 import { WalletActionTypes } from './wallet';
 
@@ -100,7 +99,6 @@ export type AllActions =
   | TransactionActionTypes
   | MessageActionTypes
   | UserActionTypes
-  | WhitelistActionTypes
   | MotionActionTypes
   | MetacolonyVestingTypes
   | WalletActionTypes;

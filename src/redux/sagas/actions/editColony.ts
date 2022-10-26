@@ -42,7 +42,7 @@ function* editColonyAction({
   },
   meta: { id: metaId, history },
   meta,
-}: Action<ActionTypes.COLONY_ACTION_EDIT_COLONY>) {
+}: Action<ActionTypes.ACTION_EDIT_COLONY>) {
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
@@ -202,7 +202,7 @@ function* editColonyAction({
     );
 
     yield put<AllActions>({
-      type: ActionTypes.COLONY_ACTION_EDIT_COLONY_SUCCESS,
+      type: ActionTypes.ACTION_EDIT_COLONY_SUCCESS,
       meta,
     });
 
@@ -210,11 +210,7 @@ function* editColonyAction({
       yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
     }
   } catch (error) {
-    return yield putError(
-      ActionTypes.COLONY_ACTION_EDIT_COLONY_ERROR,
-      error,
-      meta,
-    );
+    return yield putError(ActionTypes.ACTION_EDIT_COLONY_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
@@ -222,5 +218,5 @@ function* editColonyAction({
 }
 
 export default function* editColonyActionSaga() {
-  yield takeEvery(ActionTypes.COLONY_ACTION_EDIT_COLONY, editColonyAction);
+  yield takeEvery(ActionTypes.ACTION_EDIT_COLONY, editColonyAction);
 }
