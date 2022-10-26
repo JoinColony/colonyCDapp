@@ -1,15 +1,14 @@
 import React, { useCallback } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { useDialog } from '~core/Dialog';
+import { useDialog } from '~shared/Dialog';
 import NetworkContractUpgradeDialog from '~dialogs/NetworkContractUpgradeDialog';
-import Alert from '~core/Alert';
-import Button from '~core/Button';
-import ExternalLink from '~core/ExternalLink';
+import Alert from '~shared/Alert';
+import Button from '~shared/Button';
+import ExternalLink from '~shared/ExternalLink';
 
 import { Colony, useNetworkContracts } from '~data/index';
-import { useLoggedInUser } from '~data/helpers';
-import { useTransformer } from '~utils/hooks';
+import { useTransformer, useAppContext } from '~hooks';
 import { getNetworkRelaseLink } from '~utils/external';
 import {
   colonyMustBeUpgraded,
@@ -41,7 +40,7 @@ const displayName = 'dashboard.ColonyHome.ColonyUpgrade';
 const ColonyUpgrade = ({ colony }: Props) => {
   const openUpgradeVersionDialog = useDialog(NetworkContractUpgradeDialog);
   const { version: networkVersion } = useNetworkContracts();
-  const { walletAddress, username, ethereal } = useLoggedInUser();
+  const { user, wallet } = useAppContext();
 
   const handleUpgradeColony = useCallback(
     () =>
@@ -51,10 +50,12 @@ const ColonyUpgrade = ({ colony }: Props) => {
     [colony, openUpgradeVersionDialog],
   );
 
-  const allUserRoles = useTransformer(getAllUserRoles, [colony, walletAddress]);
+  const allUserRoles = useTransformer(getAllUserRoles, [
+    colony,
+    wallet?.address,
+  ]);
 
-  const hasRegisteredProfile = !!username && !ethereal;
-  const canUpgradeColony = hasRegisteredProfile && hasRoot(allUserRoles);
+  const canUpgradeColony = user?.name && hasRoot(allUserRoles);
 
   const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
   const shouldUpdgrade = colonyShouldBeUpgraded(

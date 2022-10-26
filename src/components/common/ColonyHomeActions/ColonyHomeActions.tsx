@@ -35,6 +35,8 @@ import Button from '~shared/Button';
 //   oneTxMustBeUpgraded,
 // } from '~modules/dashboard/checks';
 
+import { useAppContext } from '~hooks';
+
 const displayName = 'commmon.ColonyHomeCreateActionsButton';
 
 const MSG = defineMessages({
@@ -58,7 +60,7 @@ const MSG = defineMessages({
 // }
 
 const ColonyHomeActions = (/* { colony, ethDomainId}: Props */) => {
-  // const { networkId, username, ethereal } = useLoggedInUser();
+  const { user } = useAppContext();
   // const { version: networkVersion } = useNetworkContracts();
 
   // const [isLoadingUser, setIsLoadingUser] = useState<boolean>(!ethereal);
@@ -271,11 +273,11 @@ const ColonyHomeActions = (/* { colony, ethDomainId}: Props */) => {
           // disabled={
           //   mustUpgrade ||
           //   !isNetworkAllowed ||
-          //   !hasRegisteredProfile ||
+          //   !user?.name ||
           //   !colony?.isDeploymentFinished ||
           //   mustUpgradeOneTx
           // }
-          disabled
+          disabled={!user?.name}
           data-test="newActionButton"
         />
       )}

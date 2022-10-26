@@ -75,29 +75,6 @@ export const getFullColonyByName = /* GraphQL */ `
   }
 `;
 
-export const getWatchlist = /* GraphQL */ `
-  query GetWatchlist($address: ID!) {
-    listWatchedColonies(filter: { userID: { eq: $address } }) {
-      items {
-        colony {
-          colonyAddress: id
-          name
-          profile {
-            avatar
-            bio
-            displayName
-            email
-            location
-            thumbnail
-            website
-          }
-        }
-        createdAt
-      }
-    }
-  }
-`;
-
 export const getMetacolony = /* GraphQL */ `
   query GetMetacolony {
     getColonyByType(type: METACOLONY) {
@@ -112,6 +89,39 @@ export const getMetacolony = /* GraphQL */ `
           location
           thumbnail
           website
+        }
+      }
+    }
+  }
+`;
+
+export const getCurrentUser = /* GraphQL */ `
+  query GetCurrentUser($address: ID!) {
+    getUserByAddress(id: $address) {
+      items {
+        profile {
+          avatar
+          bio
+          displayName
+          email
+          location
+          thumbnail
+          website
+        }
+        walletAddress: id
+        name
+        watchlist {
+          items {
+            colony {
+              colonyAddress: id
+              name
+              profile {
+                displayName
+                thumbnail
+              }
+            }
+            createdAt
+          }
         }
       }
     }

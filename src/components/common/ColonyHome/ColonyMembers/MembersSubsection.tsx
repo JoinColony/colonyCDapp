@@ -12,11 +12,11 @@ import UserAvatar from '~shared/UserAvatar';
 // import { useAvatarDisplayCounter, useTransformer } from '~hooks';
 // import {
 //   Colony,
-//   useLoggedInUser,
 //   ColonyContributor,
 //   ColonyWatcher,
 // } from '~data/index';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
+import { useAppContext } from '~hooks';
 // import { getAllUserRoles } from '~modules/transformers';
 // import { hasRoot, canAdminister } from '~modules/users/checks';
 import { Colony, User } from '~types';
@@ -85,12 +85,8 @@ const MembersSubsection = ({
 }: // maxAvatars = MAX_AVATARS,
 Props) => {
   const colonyWatchers = useMemo(() => watchers?.items || [], [watchers]);
-  // const {
-  //   walletAddress: currentUserWalletAddress,
-  //   username,
-  //   ethereal,
-  // } = useLoggedInUser();
-  // const hasRegisteredProfile = !!username && !ethereal;
+  const { user, wallet } = useAppContext();
+  const hasRegisteredProfile = user?.name;
   // const allUserRoles = useTransformer(getAllUserRoles, [
   //   colony,
   //   currentUserWalletAddress,

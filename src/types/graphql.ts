@@ -11,6 +11,7 @@ import {
 export type WatchedColonies = BaseWatchedColonies & {
   colonyAddress: string;
   user: User;
+  colony: Colony;
 };
 
 export type ModelWatchedColoniesConnection =

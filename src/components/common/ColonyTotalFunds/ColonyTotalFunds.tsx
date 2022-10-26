@@ -10,7 +10,6 @@ import IconTooltip from '~shared/IconTooltip';
 // import {
 //   Colony,
 //   useTokenBalancesForDomainsQuery,
-//   useLoggedInUser,
 // } from '~data/index';
 import { Address } from '~types/index';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
@@ -58,8 +57,6 @@ const ColonyTotalFunds = ({
     // isNativeTokenLocked,
   },
 }: Props) => {
-  // const { networkId } = useLoggedInUser();
-
   const [currentTokenAddress, setCurrentTokenAddress] =
     useState<Address>(nativeTokenAddress);
 

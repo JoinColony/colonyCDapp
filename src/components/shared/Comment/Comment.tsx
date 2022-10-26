@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
 
 import { getMainClasses } from '~utils/css';
-import { useTransformer } from '~utils/hooks';
+import { useTransformer, useAppContext } from '~hooks';
 import { COMMENT_MODERATION } from '~redux/immutable';
 
 import { TransactionMeta } from '~dashboard/ActionsPage';
@@ -10,7 +10,7 @@ import UserMention from '~shared/UserMention';
 import FriendlyName from '~shared/FriendlyName';
 import Tag from '~shared/Tag';
 import HookedUserAvatar from '~users/HookedUserAvatar';
-import { AnyUser, Colony, useLoggedInUser } from '~data/index';
+import { AnyUser, Colony } from '~data/index';
 import TextDecorator from '~lib/TextDecorator';
 import { userHasRole } from '~modules/users/checks';
 import { getUserRolesForDomain } from '~redux/transformers';
@@ -57,10 +57,10 @@ const Comment = ({
   showControls = false,
   disableHover = false,
 }: Props) => {
-  const { walletAddress } = useLoggedInUser();
+  const { wallet } = useAppContext();
   const rootRoles = useTransformer(getUserRolesForDomain, [
     colony,
-    walletAddress,
+    wallet?.address,
     Id.RootDomain,
   ]);
 
