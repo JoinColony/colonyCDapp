@@ -19,7 +19,7 @@
 .themeLight {
   composes: baseStyles;
   background-color: var(--grey-blue-1);
-  color: var(--grey-dark);
+  color: var(--dark);
 }
 
 .themeGolden {

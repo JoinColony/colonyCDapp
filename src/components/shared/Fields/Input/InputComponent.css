@@ -80,7 +80,7 @@
   background-color: transparent;
   font-size: var(--size-medium);
   font-weight: var(--weight-bold);
-  color: var(--grey-dark);
+  color: var(--dark);
   outline: none;
 
   &:focus {

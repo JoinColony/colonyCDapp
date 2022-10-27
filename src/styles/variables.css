@@ -22,8 +22,11 @@
   --danger: rgb(248, 43, 101); /* user mentions color */
   --pink: rgb(254, 94, 124);
   --golden: rgba(255, 176, 0); /* Think pending states (golden yellow) */
+
+  /* REMOVED --grey-darkrgb(47, 47, 47), replaced with --dark; not used in so many places */
+
+  /* --grey-dark: rgb(47, 47, 47); */
   --dark: rgb(60, 68, 77); /* Used for colony name display (colony simplified) */
-  --grey-dark: rgb(47, 47, 47);
   --grey-1: rgb(58, 58, 58);
   --grey-2: rgb(54, 54, 54);
   --grey-3: rgb(82, 84, 85);
@@ -107,7 +110,9 @@
    * Fonts
    */
   --family-primary: "MuliWeb", sans-serif;
-  --text: color-mod(var(--grey-dark) alpha(70%));
+
+  /* replace color-mod(var(--grey-dark) alpha(70%)) with below */
+  --text: color-mod(var(--dark) alpha(80%));
   --text-dark: var(--colony-black);
   --text-invert: var(--colony-white);
   --weight-normal: 400;
