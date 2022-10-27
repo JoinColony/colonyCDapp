@@ -28,7 +28,7 @@
 }
 
 .select[aria-disabled="true"], .select[aria-busy="true"] {
-  background-color: var(--temp-grey-0);
+  background-color: var(--text-disabled);
   opacity: 0.7;
 }
 

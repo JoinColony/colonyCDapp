@@ -37,7 +37,7 @@
   font-size: var(--size-tiny);
   font-weight: var(--weight-bold);
   text-align: right;
-  color: var(--temp-grey-0);
+  color: var(--text-disabled);
   opacity: 0;
   transition: opacity 0.2s linear;
 }

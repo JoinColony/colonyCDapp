@@ -40,7 +40,7 @@
 }
 
 .disabled {
-  background-color: var(--temp-grey-0);
+  background-color: var(--text-disabled);
 }
 
 .filesContainer {
