@@ -23,7 +23,7 @@ import {
 } from '~frame/RouteLayouts';
 // import { ColonyBackText } from '~pages/BackTexts';
 // import LoadingTemplate from '~root/LoadingTemplate';
-import LadingPage from '~frame/LandingPage';
+import LandingPage from '~frame/LandingPage';
 // import ActionsPage from '~dashboard/ActionsPage';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
@@ -33,10 +33,10 @@ import LadingPage from '~frame/LandingPage';
 import { useAppContext } from '~hooks';
 
 import {
-  COLONY_EVENTS_ROUTE,
-  COLONY_EXTENSIONS_ROUTE,
-  COLONY_EXTENSION_DETAILS_ROUTE,
-  COLONY_EXTENSION_SETUP_ROUTE,
+  // COLONY_EVENTS_ROUTE,
+  // COLONY_EXTENSIONS_ROUTE,
+  // COLONY_EXTENSION_DETAILS_ROUTE,
+  // COLONY_EXTENSION_SETUP_ROUTE,
   // COLONY_FUNDING_ROUTE,
   COLONY_HOME_ROUTE,
   // CONNECT_ROUTE,
@@ -48,13 +48,14 @@ import {
   // USER_ROUTE,
   // WALLET_ROUTE,
   LANDING_PAGE_ROUTE,
+  NOT_FOUND_ROUTE,
   // MEMBERS_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
 } from './routeConstants';
 
-import AlwaysAccesibleRoute from './AlwaysAccesibleRoute';
+import AlwaysAccessibleRoute from './AlwaysAccesibleRoute';
 // import WalletRequiredRoute from './WalletRequiredRoute';
 // import useTitle from '~hooks/useTitle';
 
@@ -80,7 +81,10 @@ const Routes = () => {
   //   });
   // }, [dispatch]);
 
+  // disabling rules to silence eslint warnings
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isConnected = wallet?.address;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const didClaimProfile = user?.name;
 
   // useTitle();
@@ -106,13 +110,13 @@ const Routes = () => {
     () => (
       <RoutesSwitch>
         <Route path="/" element={<Navigate to={LANDING_PAGE_ROUTE} />} />
-        <Route path="*" element={<FourOFour />} />
+        <Route path={NOT_FOUND_ROUTE} element={<FourOFour />} />
 
         <Route
           path={LANDING_PAGE_ROUTE}
           element={
-            <AlwaysAccesibleRoute
-              component={LadingPage}
+            <AlwaysAccessibleRoute
+              component={LandingPage}
               layout={Default}
               routeProps={{ hasBackLink: false }}
             />
@@ -129,7 +133,7 @@ const Routes = () => {
           // ]}
           path={COLONY_HOME_ROUTE}
           element={
-            <AlwaysAccesibleRoute
+            <AlwaysAccessibleRoute
               component={ColonyHome}
               layout={Default}
               routeProps={{ hasBackLink: false }}
@@ -265,8 +269,7 @@ const Routes = () => {
         {/*
          * Redirect anything else that's not found to the 404 route
          */}
-        {/* <Navigate to={NOT_FOUND_ROUTE} /> */}
-        {/* <Route render={() => <Navigate to={NOT_FOUND_ROUTE} />} /> */}
+        <Route path="*" element={<Navigate to={NOT_FOUND_ROUTE} replace />} />
       </RoutesSwitch>
     ),
     [

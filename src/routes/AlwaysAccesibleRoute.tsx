@@ -12,7 +12,7 @@ type Props = {
   routeProps?: RouteComponentProps | routePropsFn;
 } & RouteProps;
 
-const AlwaysAccesibleRoute = ({
+const AlwaysAccessibleRoute = ({
   routeProps,
   component: Component,
   layout: Layout,
@@ -31,4 +31,4 @@ const AlwaysAccesibleRoute = ({
   );
 };
 
-export default AlwaysAccesibleRoute;
+export default AlwaysAccessibleRoute;
