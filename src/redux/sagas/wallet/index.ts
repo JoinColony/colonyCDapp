@@ -43,9 +43,13 @@ const injected = injectedModule();
 const ledger = ledgerModule();
 const ganache =
   process.env.NODE_ENV === 'development'
-    ? Object.values(ganachePrivateKeys).map((privateKey, index) =>
-        ganacheModule(privateKey, index + 1),
-      )
+    ? Object.values(ganachePrivateKeys)
+        .map((privateKey, index) => ganacheModule(privateKey, index + 1))
+        /*
+         * Remove the wallets used by the reputation miner and the block ingestor
+         * As to not cause any "unplesantness"
+         */
+        .slice(0, -2)
     : [];
 
 const onboard = Onboard({
