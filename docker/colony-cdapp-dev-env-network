@@ -42,6 +42,8 @@ WORKDIR /colonyCDappBackend
 EXPOSE 8545
 # Reputation Oracle
 EXPOSE 3002
+# Broadcaster Service
+EXPOSE 3004
 
 # Make the run script executable
 RUN chmod +x ./run.sh

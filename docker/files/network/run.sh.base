@@ -16,8 +16,8 @@ DISABLE_DOCKER=true yarn truffle migrate
 # Export deployed addresses
 
 ETHER_ROUTER_ADDRESS=$(jq -r .etherRouterAddress etherrouter-address.json)
-MINER_ACCOUNT_ADDRESS=$(jq -r '.addresses | keys[5]'  ganache-accounts.json)
-
+MINER_ACCOUNT_ADDRESS=$(jq -r '.addresses | to_entries | .[16] | .value' ganache-accounts.json)
+BROADCASTER_ACCOUNT_PRIVKEY=$(jq -r '.private_keys | to_entries | .[17] | .value' ganache-accounts.json)
 
 # Copy over colony network build artifacts to aid in development
 # Some of the files are needed to be imported and used in the app for local dev
@@ -31,4 +31,9 @@ cp ./ganache-accounts.json /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts
 # Reputation Miner
 
 cd packages/reputation-miner
-node ./bin/index.js --minerAddress $MINER_ACCOUNT_ADDRESS --syncFrom 1 --colonyNetworkAddress $ETHER_ROUTER_ADDRESS --oracle --auto --dbPath reputationStates.sqlite --oraclePort 3002 --processingDelay 1
+node ./bin/index.js --minerAddress $MINER_ACCOUNT_ADDRESS --syncFrom 1 --colonyNetworkAddress $ETHER_ROUTER_ADDRESS --oracle --auto --dbPath reputationStates.sqlite --oraclePort 3002 --processingDelay 1 &
+
+# Broadcaster Service
+
+cd ../metatransaction-broadcaster
+node ./bin/index.js --privateKey $BROADCASTER_ACCOUNT_PRIVKEY --gasPrice 1 --gasLimit 6000000 --colonyNetworkAddress $ETHER_ROUTER_ADDRESS --port 3004
