@@ -31,28 +31,31 @@
 
   /* --temp-grey-0: rgb(195, 204, 205); */
 
+  /* !!! REMOVED --grey-3: rgb(82, 84, 85), replaced with --dark, not used much, looks simila */
+
+  /* --grey-3: rgb(82, 84, 85); */
+
   --dark: rgb(60, 68, 77); /* Used for colony name display (colony simplified) */
   --grey-1: rgb(58, 58, 58);
   --grey-2: rgb(54, 54, 54);
   --temp-grey-2: rgb(46, 50, 53);
   --temp-grey-8: rgb(52, 55, 56);
-  --grey-3: rgb(82, 84, 85);
   --grey-4: rgb(124, 124, 124);
   --temp-grey-11: rgb(136, 136, 136); /* Used for the text color of time for the 'CardActivity' items */
-  --grey-5: rgb(173, 186, 189);
-  --grey-blue-0: rgb(232, 232, 232);
   --grey-blue-2: rgb(244, 246, 250);
   --grey-blue-3: rgb(246, 246, 246);
   --colony-light-blue: rgb(238, 242, 245);
   --text-disabled: rgb(194, 204, 204);
-  --temp-grey-1: rgb(188, 197, 216);
+  --grey-5: rgb(173, 186, 189);
   --temp-grey-4: rgb(153, 153, 153);
   --temp-grey-5: rgb(213, 213, 213);
   --temp-grey-6: rgb(220, 226, 227);
+  --temp-grey-blue-2: rgb(209, 214, 215); /* Used for the border of attachments preview ('CardActivity' attachment items) */
+  --grey-blue-0: rgb(232, 232, 232);
   --temp-grey-13: rgb(227, 224, 227); /* Used for separator background */
   --temp-grey-12: rgb(152, 164, 193); /* Used for Drag & Drop placeholder */
+  --temp-grey-1: rgb(188, 197, 216);
   --temp-grey-blue-1: rgb(242, 246, 246); /* Used for the background-color of comments ('CardActivity' comment items) */
-  --temp-grey-blue-2: rgb(209, 214, 215); /* Used for the border of attachments preview ('CardActivity' attachment items) */
   --grey-blue-1: rgb(232, 236, 245);
   --temp-grey-blue-3: rgb(251, 252, 253); /* Used for the board list item ('BordListItem' hover clickable) */
   --temp-grey-blue-4: rgb(200, 214, 247); /* Used for some box shadows */
