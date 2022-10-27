@@ -28,7 +28,7 @@
 
 .themeGreyWithCircle {
   composes: main;
-  border-color: color-mod(var(--action-secondary) alpha(25%));
+  border-color: color-mod(var(--colony-blue) alpha(25%));
   border-radius: var(--radius-tiny);
   background-color: color-mod(var(--temp-grey-blue-7) alpha(5%));
 }

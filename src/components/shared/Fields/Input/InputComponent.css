@@ -185,6 +185,6 @@
   background: none;
   font-size: var(--size-tiny);
   font-weight: var(--weight-bold);
-  color: var(--action-secondary);
+  color: var(--colony-blue);
   cursor: pointer;
 }

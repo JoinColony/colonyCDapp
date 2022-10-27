@@ -58,8 +58,8 @@
 }
 
 .remaningAvatars:hover > a {
-  background-color: color-mod(var(--action-secondary) alpha(12%));
-  color: var(--action-secondary);
+  background-color: color-mod(var(--colony-blue) alpha(12%));
+  color: var(--colony-blue);
 }
 
 .loadingText {

@@ -50,17 +50,17 @@
   width: auto;
   border: 0;
   border-radius: var(--radius-normal);
-  background-color: color-mod(var(--action-secondary) alpha(12%));
+  background-color: color-mod(var(--colony-blue) alpha(12%));
   font-size: var(--size-small);
   font-weight: var(--weight-bold);
   text-align: center;
   line-height: var(--size-small);
-  color: var(--action-secondary);
+  color: var(--colony-blue);
   cursor: pointer;
   outline: 0;
 }
 
 .colonyJoinBtn:hover {
-  background-color: color-mod(var(--action-secondary) alpha(25%));
-  color: var(--action-secondary);
+  background-color: color-mod(var(--colony-blue) alpha(25%));
+  color: var(--colony-blue);
 }

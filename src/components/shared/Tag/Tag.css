@@ -39,7 +39,7 @@
 
 .themeBlue {
   composes: baseStyles;
-  background-color: var(--action-secondary);
+  background-color: var(--colony-blue);
 }
 
 .themeDangerGhost {
@@ -90,8 +90,8 @@
 }
 
 .themeBlue.colorSchemaInverted {
-  border: 1px solid var(--action-secondary);
-  color: var(--action-secondary);
+  border: 1px solid var(--colony-blue);
+  color: var(--colony-blue);
 }
 
 .themeDanger.colorSchemaInverted {
@@ -112,7 +112,7 @@
 }
 
 .themeBlue.colorSchemaPlain {
-  color: var(--action-secondary);
+  color: var(--colony-blue);
 }
 
 .themeDanger.colorSchemaPlain {

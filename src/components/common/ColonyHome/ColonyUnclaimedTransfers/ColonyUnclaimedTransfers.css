@@ -37,11 +37,11 @@
   width: 45px;
   border: none;
   border-radius: 5px;
-  background-color: color-mod(var(--action-secondary) alpha(16%));
+  background-color: color-mod(var(--colony-blue) alpha(16%));
   font-size: var(--size-tiny);
   font-weight: var(--weight-bold);
   line-height: 11px;
-  color: var(--action-secondary);
+  color: var(--colony-blue);
 }
 
 .button:hover {

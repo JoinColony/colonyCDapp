@@ -4,9 +4,9 @@
 
 .dropzone {
   padding: 35px;
-  border-top: 1px dashed var(--secondary);
+  border-top: 1px dashed var(--primary);
   border-right: 2px solid var(--grey-blue-0);
-  border-bottom: 1px dashed var(--secondary);
+  border-bottom: 1px dashed var(--primary);
   border-left: 2px solid var(--grey-blue-0);
   background-color: var(--grey-blue-1);
 }

@@ -9,7 +9,7 @@
 }
 
 .main:not(.stateDisableHover):hover, .main.stateActiveActions:not(.stateDisableHover) {
-  background-color: color-mod(var(--action-secondary) alpha(6%));
+  background-color: color-mod(var(--colony-blue) alpha(6%));
   opacity: 1;
 }
 

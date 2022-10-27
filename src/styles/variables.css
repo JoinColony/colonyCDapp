@@ -1,14 +1,25 @@
 :root {
   --primary: rgb(104, 210, 210); /* curreny colony primary */
-  --secondary: rgb(0, 230, 196); /* greenish primary color */
+
+  /* !!! REMOVED --secondary: rgb(0, 230, 196) & replaced with primary; used only in `FileUpload`,
+     it seems more logical to use primary anyway, as it's consistent with all other input fields */
+
+  /* --secondary: rgb(0, 230, 196); greenish primary color */
   --colony-white: rgb(251, 251, 251);
   --colony-black: rgb(31, 35, 39);
+
+  /* !!! REMOVED --action-secondary: rgb(76, 93, 255), replaced with colony-blue */
+
+  /* --action-secondary: rgb(76, 93, 255); */
+
+  /* !!! REMOVED --violet: rgb(89, 100, 240), replaced with colony-blue
+  it was used only in `PayoutsList`, and that is not used anywhere for now */
+
+  /* --violet: rgb(89, 100, 240); */
   --colony-blue: rgb(79, 93, 255);
-  --colony-light-blue: rgb(238, 242, 245);
   --dark-blue: rgb(69, 85, 230);
   --sky-blue: rgb(90, 145, 255);
   --danger: rgb(248, 43, 101); /* user mentions color */
-  --violet: rgb(89, 100, 240);
   --pink: rgb(254, 94, 124);
   --golden: rgba(255, 176, 0); /* Think pending states (golden yellow) */
   --dark: rgb(60, 68, 77); /* Used for colony name display (colony simplified) */
@@ -22,7 +33,7 @@
   --grey-blue-1: rgb(232, 236, 245);
   --grey-blue-2: rgb(244, 246, 250);
   --grey-blue-3: rgb(246, 246, 246);
-  --action-secondary: rgb(76, 93, 255);
+  --colony-light-blue: rgb(238, 242, 245);
 
   /*
    * We really need to cleanup the greys, as they're growing larger and larger by the day
