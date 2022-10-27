@@ -54,8 +54,8 @@ import {
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
 } from './routeConstants';
+import NotFoundRoute from './NotFoundRoute';
 
-import AlwaysAccessibleRoute from './AlwaysAccesibleRoute';
 // import WalletRequiredRoute from './WalletRequiredRoute';
 // import useTitle from '~hooks/useTitle';
 
@@ -115,31 +115,33 @@ const Routes = () => {
         <Route
           path={LANDING_PAGE_ROUTE}
           element={
-            <AlwaysAccessibleRoute
-              component={LandingPage}
-              layout={Default}
-              routeProps={{ hasBackLink: false }}
-            />
+            <Default routeProps={{ hasBackLink: false }}>
+              <LandingPage />
+            </Default>
           }
         />
 
         <Route
-          // path={[
-          //   COLONY_EXTENSION_DETAILS_ROUTE,
-          //   COLONY_EXTENSIONS_ROUTE,
-          //   COLONY_EXTENSION_SETUP_ROUTE,
-          //   COLONY_HOME_ROUTE,
-          //   COLONY_EVENTS_ROUTE,
-          // ]}
           path={COLONY_HOME_ROUTE}
           element={
-            <AlwaysAccessibleRoute
-              component={ColonyHome}
-              layout={Default}
-              routeProps={{ hasBackLink: false }}
-            />
+            <Default routeProps={{ hasBackLink: false }}>
+              <ColonyHome />
+            </Default>
           }
         />
+        {/* <Route
+          path={COLONY_FUNDING_ROUTE}
+          element={
+            <Default>
+              <ColonyFunding />
+            </Default>
+          }
+          routeProps={({ colonyName }) => ({
+            backText: ColonyBackText,
+            backRoute: `/colony/${colonyName}`,
+            hasSubscribedColonies: false,
+          })}
+        /> */}
 
         {/* <WalletRequiredRoute
           isConnected={isConnected}
@@ -196,17 +198,6 @@ const Routes = () => {
           component={ColonyHome}
           layout={Default}
           routeProps={{ hasBackLink: false }}
-        />
-        <AlwaysAccesibleRoute
-          exact
-          path={COLONY_FUNDING_ROUTE}
-          component={ColonyFunding}
-          layout={Default}
-          routeProps={({ colonyName }) => ({
-            backText: ColonyBackText,
-            backRoute: `/colony/${colonyName}`,
-            hasSubscribedColonies: false,
-          })}
         />
         <AlwaysAccesibleRoute
           path={USER_ROUTE}
@@ -269,12 +260,10 @@ const Routes = () => {
         {/*
          * Redirect anything else that's not found to the 404 route
          */}
-        <Route path="*" element={<Navigate to={NOT_FOUND_ROUTE} replace />} />
+        <Route path="*" element={<NotFoundRoute />} />
       </RoutesSwitch>
     ),
-    [
-      // didClaimProfile, isConnected, username
-    ],
+    [],
   );
 
   // if (isAppLoading) {
