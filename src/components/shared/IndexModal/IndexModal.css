@@ -16,7 +16,7 @@
   right: 40px;
   bottom: 0;
   left: 40px;
-  background-color: color-mod(var(--grey-2) alpha(15%));
+  background-color: color-mod(var(--dark-grey) alpha(15%));
   content: "";
 }
 

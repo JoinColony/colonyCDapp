@@ -44,7 +44,7 @@
 /* Theme */
 
 .themeDark .checkbox {
-  background-color: var(--temp-grey-2);
+  background-color: var(--dark-grey);
 }
 
 /* Direction */

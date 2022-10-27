@@ -1,7 +1,7 @@
 @value arrowSize: 8px;
 @value arrowBorder: 1px;
 @value backgroundColor: rgb(251, 251, 251); /* --colony-white */
-@value themeDarkBackgroundColor: rgb(58, 58, 58); /* --grey-1 */
+@value themeDarkBackgroundColor: rgb(58, 58, 58); /* --dark-grey */
 @value themeGreyBackgroundColor: var(--grey-blue-2);
 
 @value arrowHorizontalEnd: calc(var(--radius-small) + arrowBorder);

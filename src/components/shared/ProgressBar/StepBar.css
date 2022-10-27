@@ -10,7 +10,7 @@
   font-size: var(--size-small);
   font-weight: var(--weight-bold);
   text-align: center;
-  color: var(--temp-grey-2);
+  color: var(--dark-grey);
 }
 
 .progressContainer {

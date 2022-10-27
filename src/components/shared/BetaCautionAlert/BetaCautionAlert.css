@@ -8,7 +8,7 @@
   left: 60px;
   border-radius: var(--radius-normal);
   background-color: var(--grey-blue-2);
-  box-shadow: 0px 4px 27px color-mod(var(--temp-grey-8) alpha(25%));
+  box-shadow: 0px 4px 27px color-mod(var(--dark-grey) alpha(25%));
 }
 
 .pinkStripe {
