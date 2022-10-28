@@ -20,7 +20,7 @@ const defaultSlotValues: UserSettingsSlot = {
    */
   metatransactions: process.env.NODE_ENV !== 'development',
   decentralizedModeEnabled: false,
-  customRpc: 'http://localhost:8545',
+  customRpc: '',
 };
 
 /**
