@@ -83,6 +83,10 @@ const ganacheWalletModule = (privateKey, optionalAccountIndex = 1) => {
               currentWalletAddress,
               JSON.parse(typedData),
             ]),
+          eth_gasPrice: async () => {
+            const gasPrice = await ganacheProvider.getGasPrice();
+            return gasPrice.toHexString();
+          },
         });
         const eventEmitter = new EventEmitter();
         provider.on = eventEmitter.on.bind(eventEmitter);
