@@ -45,8 +45,8 @@
   width: 26px;
 
   & svg {
-    fill: var(--grey-5);
-    stroke: var(--grey-5);
+    fill: var(--text-disabled);
+    stroke: var(--text-disabled);
   }
 }
 

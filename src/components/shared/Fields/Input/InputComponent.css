@@ -106,7 +106,7 @@
   padding: 5px 0;
   border: 0;
   border-radius: 0;
-  border-bottom: 1px solid var(--grey-5);
+  border-bottom: 1px solid var(--text-disabled);
   border-style: dotted;
   background-color: transparent;
   font-size: var(--size-medium);
@@ -156,7 +156,7 @@
 }
 
 .colorSchemaTransparent {
-  border: 1px solid var(--grey-5);
+  border: 1px solid var(--text-disabled);
   background-color: transparent;
   color: inherit;
   box-shadow: none;

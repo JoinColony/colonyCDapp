@@ -50,7 +50,7 @@
   color: var(--grey);
 
   &::first-letter {
-    color: var(--grey-5);
+    color: var(--text-disabled);
   }
 }
 

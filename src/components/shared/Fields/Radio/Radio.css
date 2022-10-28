@@ -181,7 +181,7 @@
 /* State */
 
 .stateIsDisabled {
-  color: var(--grey-5);
+  color: var(--text-disabled);
   cursor: not-allowed;
 
   & .labelContainer label {

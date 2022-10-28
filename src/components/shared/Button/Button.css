@@ -57,7 +57,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  border: 2px solid var(--grey-5);
+  border: 2px solid var(--text-disabled);
   border-radius: 50%;
   border-right-color: transparent;
   border-top-color: transparent;
@@ -316,7 +316,7 @@
   display: block;
   padding: 31.5px 25px;
   width: 100%;
-  border: 2px dashed var(--grey-5);
+  border: 2px dashed var(--text-disabled);
   border-radius: 5px;
   background-color: transparent;
   text-align: left;

@@ -59,13 +59,17 @@
   --dark-grey: rgb(58, 58, 58);
   --dark: rgb(60, 68, 77); /* Used for colony name display (colony simplified) */
 
+  /* !!! REMOVED --grey-5: rgb(173, 186, 189), replaced with --text-disabled, not used that much, looks similar */
+
+  /* --grey-5: rgb(173, 186, 189); */
+
+
   /* Remane `--grey-4` to `--grey` */
-  --grey-4: rgb(124, 124, 124);
+  --grey: rgb(124, 124, 124);
+  --text-disabled: rgb(194, 204, 204);
   --grey-blue-2: rgb(244, 246, 250);
   --grey-blue-3: rgb(246, 246, 246);
   --colony-light-blue: rgb(238, 242, 245);
-  --grey-5: rgb(173, 186, 189);
-  --text-disabled: rgb(194, 204, 204);
   --temp-grey-5: rgb(213, 213, 213);
   --temp-grey-6: rgb(220, 226, 227);
   --temp-grey-blue-2: rgb(209, 214, 215); /* Used for the border of attachments preview ('CardActivity' attachment items) */
