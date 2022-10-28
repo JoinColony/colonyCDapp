@@ -8,6 +8,7 @@ export * from './transactions';
 export * from './contracts';
 export * from './wallet';
 export * from './graphql';
+export * from './rpcMethods';
 
 export type WithKey = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

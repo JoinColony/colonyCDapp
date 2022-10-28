@@ -3,6 +3,8 @@
 import { createEIP1193Provider } from '@web3-onboard/common';
 import { providers, Wallet, utils } from 'ethers';
 
+import { RpcMethods } from '~types';
+
 import walletIcon from '~images/icons/wallet.svg';
 
 const ganacheWalletModule = (privateKey, optionalAccountIndex = 1) => {
@@ -27,32 +29,32 @@ const ganacheWalletModule = (privateKey, optionalAccountIndex = 1) => {
            * properly
            */
           // @ts-ignore
-          eth_blockNumber: async () => {
+          [RpcMethods.BlockNumber]: async () => {
             const { number } = await ganacheProvider.getBlock('latest');
             return number;
           },
-          eth_estimateGas: async ({ params: [transaction] }) =>
+          [RpcMethods.EstimateGas]: async ({ params: [transaction] }) =>
             ganacheProvider.estimateGas(transaction),
-          eth_accounts: async () => {
+          [RpcMethods.Accounts]: async () => {
             return [currentWalletAddress];
           },
-          eth_selectAccounts: async () => {
+          [RpcMethods.SelectAccounts]: async () => {
             return [currentWalletAddress];
           },
-          eth_requestAccounts: async () => {
+          [RpcMethods.RequestAccounts]: async () => {
             return [currentWalletAddress];
           },
-          eth_chainId: async () => {
+          [RpcMethods.ChainId]: async () => {
             return (currentChain && currentChain.id) || '';
           },
-          eth_getBalance: async () => {
+          [RpcMethods.GetBalance]: async () => {
             const balance = await ganacheProvider.getBalance(
               currentWalletAddress,
               'latest',
             );
             return balance.toString();
           },
-          eth_sendTransaction: async ({
+          [RpcMethods.SendTransaction]: async ({
             params: [{ gas, ...transaction }],
           }) => {
             const { hash } = await ganacheWallet.sendTransaction({
@@ -61,14 +63,15 @@ const ganacheWalletModule = (privateKey, optionalAccountIndex = 1) => {
             });
             return hash;
           },
-          eth_getTransactionByHash: async ({ params: [transactionHash] }) =>
-            ganacheProvider.getTransaction(transactionHash),
-          eth_sign: async ({ params: [, message] }) =>
+          [RpcMethods.GetTransactionByHash]: async ({
+            params: [transactionHash],
+          }) => ganacheProvider.getTransaction(transactionHash),
+          [RpcMethods.Sign]: async ({ params: [, message] }) =>
             ganacheWallet.signMessage(message),
-          personal_sign: async ({ params: [message] }) =>
+          [RpcMethods.PersonalSign]: async ({ params: [message] }) =>
             ganacheWallet.signMessage(message),
-          eth_signTypedData: async ({ params: [, typedData] }) =>
-            ganacheProvider.send('eth_signTypedData', [
+          [RpcMethods.SignTypedData]: async ({ params: [, typedData] }) =>
+            ganacheProvider.send(RpcMethods.SignTypedData, [
               currentWalletAddress,
               JSON.parse(typedData),
             ]),
@@ -78,12 +81,12 @@ const ganacheWalletModule = (privateKey, optionalAccountIndex = 1) => {
            * properly sign typed data we actually have to support it
            */
           // @ts-ignore
-          eth_signTypedData_v4: async ({ params: [, typedData] }) =>
-            ganacheProvider.send('eth_signTypedData', [
+          [RpcMethods.SignTypedDataV4]: async ({ params: [, typedData] }) =>
+            ganacheProvider.send(RpcMethods.SignTypedData, [
               currentWalletAddress,
               JSON.parse(typedData),
             ]),
-          eth_gasPrice: async () => {
+          [RpcMethods.GasPrice]: async () => {
             const gasPrice = await ganacheProvider.getGasPrice();
             return gasPrice.toHexString();
           },
