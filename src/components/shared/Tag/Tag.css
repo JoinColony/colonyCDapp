@@ -71,7 +71,7 @@
 
 .colorSchemaPlain {
   border: none;
-  background-color: var(--temp-grey-blue-8);
+  background-color: var(--colony-light-blue);
 }
 
 .themePrimary.colorSchemaInverted {

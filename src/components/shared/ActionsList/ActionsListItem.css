@@ -23,7 +23,7 @@
 }
 
 .main:hover {
-  background-color: var(--temp-grey-blue-8);
+  background-color: var(--colony-light-blue);
 }
 
 .avatar {
