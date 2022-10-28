@@ -46,18 +46,26 @@
     --temp-grey-2: rgb(46, 50, 53);
     --temp-grey-8: rgb(52, 55, 56); */
 
+  /* !!! REMOVED
+    --temp-grey-11: rgb(136, 136, 136);
+    --temp-grey-4: rgb(153, 153, 153);
+    replaced with --dark-grey, not used that much, looks very similar */
+
+  /* --temp-grey-11: rgb(136, 136, 136); Used for the text color of time for the 'CardActivity' items */
+
+  /* --temp-grey-4: rgb(153, 153, 153); */
 
   /* Remane `--grey-1` to `--dark-grey` */
   --dark-grey: rgb(58, 58, 58);
   --dark: rgb(60, 68, 77); /* Used for colony name display (colony simplified) */
+
+  /* Remane `--grey-4` to `--grey` */
   --grey-4: rgb(124, 124, 124);
-  --temp-grey-11: rgb(136, 136, 136); /* Used for the text color of time for the 'CardActivity' items */
-  --temp-grey-4: rgb(153, 153, 153);
   --grey-blue-2: rgb(244, 246, 250);
   --grey-blue-3: rgb(246, 246, 246);
   --colony-light-blue: rgb(238, 242, 245);
-  --text-disabled: rgb(194, 204, 204);
   --grey-5: rgb(173, 186, 189);
+  --text-disabled: rgb(194, 204, 204);
   --temp-grey-5: rgb(213, 213, 213);
   --temp-grey-6: rgb(220, 226, 227);
   --temp-grey-blue-2: rgb(209, 214, 215); /* Used for the border of attachments preview ('CardActivity' attachment items) */

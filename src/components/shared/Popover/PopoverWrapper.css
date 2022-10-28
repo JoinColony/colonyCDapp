@@ -13,7 +13,7 @@
   z-index: calc(var(--z-index-notification) + 1);
   border-radius: var(--radius-normal);
   background-color: backgroundColor;
-  color: var(--grey-4);
+  color: var(--grey);
   box-shadow: 0 2px 11px 0px var(--drop-shadow);
 }
 

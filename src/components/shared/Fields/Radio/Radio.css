@@ -22,7 +22,7 @@
   width: 12px;
   position: relative;
   top: -3px; /* because the pseudo-radio is a bit smaller, let's shift it up a couple pixels */
-  border: 2px solid var(--grey-4);
+  border: 2px solid var(--grey);
   border-radius: 50%;
 
   &::after {

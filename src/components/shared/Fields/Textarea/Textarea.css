@@ -100,18 +100,18 @@
 }
 
 .colorSchemaDark {
-  border: 1px solid var(--grey-4);
+  border: 1px solid var(--grey);
   background-color: var(--dark-grey);
   color: var(--text-disabled);
   box-shadow: inset 0 5px 5px 0 rgba(0, 0, 0, 0.2);
 
   &::placeholder {
-    color: var(--grey-4);
+    color: var(--grey);
   }
 
   & svg {
-    fill: var(--grey-4);
-    stroke: var(--grey-4);
+    fill: var(--grey);
+    stroke: var(--grey);
   }
 }
 
@@ -142,7 +142,7 @@
   bottom: 10px;
   font-size: var(--size-unreadable);
   font-weight: var(--weight-bold);
-  color: var(--temp-grey-4);
+  color: var(--grey);
 }
 
 .count.limit {

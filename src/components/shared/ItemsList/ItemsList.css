@@ -54,7 +54,7 @@
 
 .item:disabled,
 .item:disabled:hover {
-  color: var(--grey-4);
+  color: var(--grey);
   cursor: default;
 }
 

@@ -121,7 +121,7 @@
   border-color: color-mod(var(--grey-blue-1) alpha(30%));
   background-color: var(--dark);
   color: var(--colony-white);
-  box-shadow: 0 0 20px -2px var(--grey-4);
+  box-shadow: 0 0 20px -2px var(--grey);
 
   &.separatorsBorders td,
   &.separatorsBorders th {
@@ -129,7 +129,7 @@
   }
 
   & tbody tr:hover td {
-    background-color: var(--grey-4);
+    background-color: var(--grey);
   }
 }
 

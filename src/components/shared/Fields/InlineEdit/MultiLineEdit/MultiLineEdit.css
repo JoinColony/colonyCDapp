@@ -12,8 +12,8 @@
     }
 
     & .public-DraftEditorPlaceholder-root {
-      border-bottom: 1px dotted var(--grey-4);
-      color: var(--grey-4);
+      border-bottom: 1px dotted var(--grey);
+      color: var(--grey);
 
       &.public-DraftEditorPlaceholder-hasFocus {
         border-bottom-color: transparent;

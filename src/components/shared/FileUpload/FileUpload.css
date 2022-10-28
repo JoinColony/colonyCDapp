@@ -43,7 +43,7 @@
 
 .placeholderTextDisabled {
   composes: placeholderText;
-  color: var(--temp-grey-4);
+  color: var(--grey);
 }
 
 .filesContainer {

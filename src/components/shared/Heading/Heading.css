@@ -37,7 +37,7 @@
 .themeUppercase {
   composes: main;
   text-transform: uppercase;
-  color: var(--temp-grey-11);
+  color: var(--grey);
 }
 
 .themeGrey {
