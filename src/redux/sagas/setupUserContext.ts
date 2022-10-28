@@ -14,9 +14,9 @@ import { setupUsersSagas } from './users';
 import { getWallet } from './wallet';
 
 import { ActionTypes } from '../actionTypes';
-import { AllActions, Action } from '../types/actions';
+import { AllActions } from '../types/actions';
 
-import { getContext, setContext, ContextModule, UserSettings } from '~context';
+import { setContext, ContextModule, UserSettings } from '~context';
 
 // import setupResolvers from '~context/setupResolvers';
 // import AppLoadingState from '~context/appLoadingState';
@@ -84,7 +84,7 @@ export default function* setupUserContext() {
     const colonyManager = yield call(reinitializeColonyManager);
     */
 
-    // yield call(getGasPrices);
+    yield call(getGasPrices);
 
     /*
     const ens = getContext(ContextModule.ENS);

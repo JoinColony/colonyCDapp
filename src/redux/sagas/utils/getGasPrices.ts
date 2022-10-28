@@ -1,4 +1,4 @@
-import { ColonyNetworkClient, Network } from '@colony/colony-js';
+import { Network } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { call, put, select } from 'redux-saga/effects';
 
@@ -7,6 +7,7 @@ import { ContextModule, getContext } from '~context';
 import { log } from '~utils/debug';
 import { DEFAULT_NETWORK } from '~constants';
 import { ETH_GAS_STATION, XDAI_GAS_STATION } from '~constants/externalUrls';
+import { RpcMethods } from '~types';
 
 import { gasPrices as gasPricesSelector } from '../../selectors';
 import { updateGasPrices } from '../../actionCreators';
@@ -34,14 +35,16 @@ interface BlockscoutGasStationAPIResponse {
 
 const DEFAULT_GAS_PRICE = BigNumber.from('1000000000');
 
-const fetchGasPrices = async (
-  networkClient: ColonyNetworkClient,
-): Promise<GasPricesProps> => {
-  let networkGasPrice = DEFAULT_GAS_PRICE;
+const fetchGasPrices = async (): Promise<GasPricesProps> => {
+  const userWallet = getContext(ContextModule.Wallet);
+
+  if (!userWallet) {
+    throw new Error('User wallet is not connected, aborting gas price update');
+  }
 
   const defaultGasPrices = {
     timestamp: Date.now(),
-    network: networkGasPrice,
+    network: DEFAULT_GAS_PRICE,
 
     suggested: DEFAULT_GAS_PRICE,
     cheaper: DEFAULT_GAS_PRICE,
@@ -53,7 +56,10 @@ const fetchGasPrices = async (
   };
 
   try {
-    networkGasPrice = await networkClient.provider.getGasPrice();
+    const rawNetworkGasPrice = await userWallet.provider.request({
+      method: RpcMethods.GasPrice,
+    });
+    defaultGasPrices.network = BigNumber.from(rawNetworkGasPrice);
 
     let response;
 
@@ -145,9 +151,7 @@ export default function* getGasPrices() {
     return cachedPrices;
   }
 
-  const { networkClient } = getContext(ContextModule.ColonyManager);
-
-  const gasPrices: GasPricesProps = yield call(fetchGasPrices, networkClient);
+  const gasPrices: GasPricesProps = yield call(fetchGasPrices);
 
   yield put(updateGasPrices(gasPrices));
 
