@@ -83,6 +83,10 @@
 
   /* --temp-grey-blue-3: rgb(251, 252, 253); Used for the board list item ('BordListItem' hover clickable) */
 
+  /* !!! REMOVED  --temp-grey-blue-12: rgb(152, 164, 193), only found it in an unused class in Members.css */
+
+  /* --temp-grey-12: rgb(152, 164, 193); Used for Drag & Drop placeholder */
+
   /* Remane `--grey-4` to `--grey` */
   --grey: rgb(124, 124, 124);
 
@@ -94,7 +98,6 @@
   --grey-blue-0: rgb(232, 232, 232);
   --colony-light-blue: rgb(238, 242, 245);
   --grey-blue-2: rgb(244, 246, 250);
-  --temp-grey-12: rgb(152, 164, 193); /* Used for Drag & Drop placeholder */
   --temp-grey-1: rgb(188, 197, 216);
   --grey-blue-1: rgb(232, 236, 245);
   --temp-grey-blue-4: rgb(200, 214, 247); /* Used for some box shadows */
