@@ -79,6 +79,10 @@
 
   /* --temp-grey-blue-1: rgb(242, 246, 246); Used for the background-color of comments ('CardActivity' comment items) */
 
+  /* !!! REMOVED  --temp-grey-blue-3: rgb(251, 252, 253), not used anywhere */
+
+  /* --temp-grey-blue-3: rgb(251, 252, 253); Used for the board list item ('BordListItem' hover clickable) */
+
   /* Remane `--grey-4` to `--grey` */
   --grey: rgb(124, 124, 124);
 
@@ -93,7 +97,6 @@
   --temp-grey-12: rgb(152, 164, 193); /* Used for Drag & Drop placeholder */
   --temp-grey-1: rgb(188, 197, 216);
   --grey-blue-1: rgb(232, 236, 245);
-  --temp-grey-blue-3: rgb(251, 252, 253); /* Used for the board list item ('BordListItem' hover clickable) */
   --temp-grey-blue-4: rgb(200, 214, 247); /* Used for some box shadows */
   --temp-grey-blue-5: rgb(244, 238, 242); /* Used for user profile gradient start color */
   --temp-grey-blue-6: rgb(231, 242, 246); /* Used for user profile gradient end color */
