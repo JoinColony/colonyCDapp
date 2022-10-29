@@ -28,7 +28,7 @@
 .cautionText {
   font-size: var(--size-tiny);
   font-weight: var(--weight-bold);
-  color: color-mod(var(--temp-grey-blue-7) alpha(85%));
+  color: color-mod(var(--grey-purple) alpha(85%));
 }
 
 .link {

@@ -10,7 +10,7 @@
   padding: 10px 8px;
   height: auto;
   border-radius: var(--radius-tiny);
-  border: 1px solid var(--temp-grey-blue-4);
+  border: 1px solid var(--light-purple);
   background-color: inputBackground;
   font-size: var(--size-smallish);
   font-weight: var(--weight-normal);
@@ -19,7 +19,7 @@
 }
 
 .commentBox textarea[aria-invalid="true"] {
-  border: 1px solid var(--temp-grey-blue-4);
+  border: 1px solid var(--light-purple);
 }
 
 .commentBox textarea:focus,
@@ -44,7 +44,7 @@
 
 .sendInstructions b {
   font-weight: var(--weight-bold);
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
 }
 
 .sendInstructions b:last-child {

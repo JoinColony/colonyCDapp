@@ -17,7 +17,7 @@
 
 .themeFooter {
   padding: 20px;
-  background-color: color-mod(var(--temp-grey-blue-4) alpha(25%));
+  background-color: color-mod(var(--light-purple) alpha(25%));
 }
 
 .alignRight {

@@ -1,25 +1,25 @@
 .connectWalletButton {
   margin-right: 25px;
   padding: 4px 9px 5px 9px;
-  border: 1px solid var(--temp-grey-blue-7);
+  border: 1px solid var(--grey-purple);
   border-radius: var(--radius-tiny);
   background-color: transparent;
   font-size: var(--size-smallish);
   font-weight: var(--weight-bold);
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
   cursor: pointer;
 }
 
 .connectWalletButton:hover {
   border-color: transparent;
-  background-color: color-mod(var(--temp-grey-blue-7) alpha(25%));
+  background-color: color-mod(var(--grey-purple) alpha(25%));
   color: var(--colony-blue);
 }
 
 .connectWalletButtonActive {
   composes: connectWalletButton;
   border-color: transparent;
-  background-color: color-mod(var(--temp-grey-blue-7) alpha(25%));
+  background-color: color-mod(var(--grey-purple) alpha(25%));
   color: var(--colony-blue);
 }
 
@@ -35,8 +35,8 @@
   position: relative;
   border: 1px solid transparent;
   border-radius: var(--radius-normal);
-  background-color: color-mod(var(--temp-grey-blue-7) alpha(10%));
-  color: var(--temp-grey-blue-7);
+  background-color: color-mod(var(--grey-purple) alpha(10%));
+  color: var(--grey-purple);
   cursor: pointer;
 }
 
@@ -71,7 +71,7 @@
   padding: 4px 10px 0;
   height: 26px;
   border-radius: var(--radius-normal);
-  background-color: color-mod(var(--temp-grey-blue-7) alpha(10%));
+  background-color: color-mod(var(--grey-purple) alpha(10%));
   text-align: center;
 }
 

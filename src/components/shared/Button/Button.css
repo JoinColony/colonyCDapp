@@ -244,13 +244,13 @@
 
 .themeGhost.colorSchemaGrey {
   padding: 3px 16px;
-  border-color: var(--temp-grey-1);
+  border-color: var(--light-grey-blue);
   border-width: 2px;
   color: var(--text);
 }
 
 .themeGhost.colorSchemaGrey:hover {
-  border-color: var(--temp-grey-1);
+  border-color: var(--light-grey-blue);
   color: color-mod(var(--text) shade(30%));
 }
 
@@ -281,7 +281,7 @@
   bottom: 0;
   left: 0;
   border-radius: 6px;
-  background-color: var(--temp-grey-1);
+  background-color: var(--light-grey-blue);
   content: '';
 }
 
@@ -330,14 +330,14 @@
 
 /*
  * White
- * buttons with white background, --temp-grey-blue-7 border & font color
+ * buttons with white background, --grey-purple border & font color
  */
 
 .themeWhite {
   composes: main;
-  border: 1px solid var(--temp-grey-blue-7);
+  border: 1px solid var(--grey-purple);
   background-color: rgba(255, 255, 255);
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
   opacity: 0.65;
 }
 

@@ -42,7 +42,7 @@
 
 .themeGrey {
   composes: main;
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
 }
 
 /*

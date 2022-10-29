@@ -20,7 +20,7 @@
   border: 1px solid var(--primary);
   border-radius: 2px;
   background-color: var(--colony-white);
-  box-shadow: 0 0 0 2px color-mod(var(--temp-grey-blue-4) alpha(25%));
+  box-shadow: 0 0 0 2px color-mod(var(--light-purple) alpha(25%));
 }
 
 .stateIsChecked .checkbox {

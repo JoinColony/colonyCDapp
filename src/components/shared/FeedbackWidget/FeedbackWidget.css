@@ -14,7 +14,7 @@
 
 .link {
   padding: 9px;
-  color: color-mod(var(--temp-grey-blue-7) alpha(85%));
+  color: color-mod(var(--grey-purple) alpha(85%));
 }
 
 .link:hover {

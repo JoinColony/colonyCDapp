@@ -21,7 +21,7 @@
   border-radius: var(--radius-normal);
   text-align: center;
   line-height: var(--size-smallish);
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
   cursor: pointer;
   user-select: none;
   outline: 0;

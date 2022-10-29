@@ -98,16 +98,22 @@
 
   /* Remane `--temp-grey-blue-6` to `--light-ash` */
   --light-ash: rgb(231, 242, 246); /* Used for user profile gradient end color */
+
+  /* Remane `--temp-grey-blue-4` to `--light-purple` */
+  --light-purple: rgb(200, 214, 247); /* Used for some box shadows */
+
+  /* Remane `--temp-grey-blue-7` to `--grey-purple` */
+  --grey-purple: rgb(118, 116, 139); /* Used for the wallet connect button in the user navigation */
+
+  /* Remane `--temp-grey-blue-1` to `--light-grey-blue` */
+  --light-grey-blue: rgb(188, 197, 216);
   --text-disabled: rgb(194, 204, 204);
   --colony-light-blue: rgb(238, 242, 245);
   --temp-grey-5: rgb(213, 213, 213);
   --temp-grey-13: rgb(227, 224, 227); /* Used for separator background */
   --grey-blue-0: rgb(232, 232, 232);
   --grey-blue-2: rgb(244, 246, 250);
-  --temp-grey-1: rgb(188, 197, 216);
   --grey-blue-1: rgb(232, 236, 245);
-  --temp-grey-blue-4: rgb(200, 214, 247); /* Used for some box shadows */
-  --temp-grey-blue-7: rgb(118, 116, 139); /* Used for the wallet connect button in the user navigation */
   --drop-shadow: rgba(62, 118, 244, 0.14);
 
   /*
@@ -120,7 +126,7 @@
    * Box Shadows
    */
   --box-shadow-medium: 0px 2px 11px var(--drop-shadow);
-  --box-shadow-grey-blue-large: 0 0 20px -2px var(--temp-grey-blue-4);
+  --box-shadow-grey-blue-large: 0 0 20px -2px var(--light-purple);
 
   /*
    * Radius

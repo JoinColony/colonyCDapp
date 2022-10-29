@@ -13,7 +13,7 @@
   overflow: hidden;
   border: 1px solid transparent;
   border-radius: var(--radius-normal);
-  background-color: color-mod(var(--temp-grey-blue-7) alpha(6%));
+  background-color: color-mod(var(--grey-purple) alpha(6%));
   color: var(--dark);
   cursor: pointer;
 }
@@ -30,7 +30,7 @@
   composes: main;
   border-color: color-mod(var(--colony-blue) alpha(25%));
   border-radius: var(--radius-tiny);
-  background-color: color-mod(var(--temp-grey-blue-7) alpha(5%));
+  background-color: color-mod(var(--grey-purple) alpha(5%));
 }
 
 .themePrimary.stateIsChecked,
@@ -53,12 +53,12 @@
 }
 
 .main.stateIsChecked .description {
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
   opacity: 0.85;
 }
 
 .main.stateIsDisabled .description {
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
   opacity: 0.85;
 }
 
@@ -116,7 +116,7 @@
   margin-right: 10px;
   height: 27px;
   width: 27px;
-  border: 1px solid var(--temp-grey-blue-4);
+  border: 1px solid var(--light-purple);
   border-radius: 50%;
   background: var(--colony-white);
   box-shadow: inset 0px 2px 4px rgba(14, 37, 88, 0.07);

@@ -9,7 +9,7 @@
 .description {
   font-size: var(--size-tiny);
   font-weight: var(--weight-bold);
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
 }
 
 .main {
@@ -83,7 +83,7 @@
   background-color: var(--grey-blue-2);
   font-size: var(--size-tiny);
   font-weight: var(--weight-bold);
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
 }
 
 .iconWarning {

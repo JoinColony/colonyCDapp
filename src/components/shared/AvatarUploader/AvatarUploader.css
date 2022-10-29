@@ -13,7 +13,7 @@
   height: 77px;
   position: relative;
   overflow: hidden;
-  background-color: color-mod(var(--temp-grey-blue-4) alpha(33%));
+  background-color: color-mod(var(--light-purple) alpha(33%));
 }
 
 .dropzoneNoButtonsVariant:focus {

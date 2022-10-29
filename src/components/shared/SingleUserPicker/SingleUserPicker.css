@@ -68,7 +68,7 @@
   max-width: 305px;
   vertical-align: baseline;
   border: none;
-  border-bottom: 1px solid var(--temp-grey-blue-7);
+  border-bottom: 1px solid var(--grey-purple);
   background-color: transparent;
   font-size: var(--size-normal);
   text-align: left;
@@ -81,12 +81,12 @@
 
   &:disabled {
     border-color: var(--text-disabled);
-    color: var(--temp-grey-blue-7);
+    color: var(--grey-purple);
   }
 }
 
 .baseInput::placeholder {
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
   opacity: 0.65;
 }
 

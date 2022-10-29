@@ -22,14 +22,14 @@
   margin-bottom: 4px;
   padding: 18px 15px 20px 15px;
   border-radius: 5px;
-  background-color: color-mod(var(--temp-grey-blue-7) alpha(15%));
+  background-color: color-mod(var(--grey-purple) alpha(15%));
 }
 
 .note {
   margin-bottom: 10px;
   font-size: var(--size-tiny);
   line-height: 18px;
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
 }
 
 .commentContainer {
@@ -38,7 +38,7 @@
   margin-top: 8px;
   padding: 8px 0px;
   border-radius: 5px;
-  background-color: color-mod(var(--temp-grey-blue-7) alpha(15%));
+  background-color: color-mod(var(--grey-purple) alpha(15%));
 }
 
 .commentContainer p {
