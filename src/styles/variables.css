@@ -1,91 +1,59 @@
-:root {
-  --primary: rgb(104, 210, 210); /* curreny colony primary */
-
-  /* !!! REMOVED --secondary: rgb(0, 230, 196) & replaced with primary; used only in `FileUpload`,
+/* !!! REMOVED --secondary: rgb(0, 230, 196) & replaced with primary; used only in `FileUpload`,
      it seems more logical to use primary anyway, as it's consistent with all other input fields */
 
-  /* --secondary: rgb(0, 230, 196); greenish primary color */
-  --colony-white: rgb(251, 251, 251);
-  --colony-black: rgb(31, 35, 39);
+/* !!! REMOVED --action-secondary: rgb(76, 93, 255), replaced with colony-blue */
 
-  /* !!! REMOVED --action-secondary: rgb(76, 93, 255), replaced with colony-blue */
-
-  /* --action-secondary: rgb(76, 93, 255); */
-
-  /* !!! REMOVED --violet: rgb(89, 100, 240), replaced with colony-blue
+/* !!! REMOVED --violet: rgb(89, 100, 240), replaced with colony-blue
   it was used only in `PayoutsList`, and that is not used anywhere for now */
 
-  /* --violet: rgb(89, 100, 240); */
+/* !!! REMOVED --grey-darkrgb(47, 47, 47), replaced with --dark; not used in many places */
+
+/* !!! REMOVED temp-grey-0: rgb(195, 204, 205), replaced with --text-disabled; almost identical */
+
+/* !!! REMOVED --grey-3: rgb(82, 84, 85), replaced with --dark, not used much, looks similar */
+
+/* !!! REMOVED
+    --grey-2: rgb(54, 54, 54);
+    --temp-grey-2: rgb(46, 50, 53);
+    --temp-grey-8: rgb(52, 55, 56);
+    replaced with --dark-grey, not used that much, looks very similar */
+
+/* !!! REMOVED
+    --temp-grey-11: rgb(136, 136, 136);
+    --temp-grey-4: rgb(153, 153, 153);
+    replaced with --dark-grey, not used that much, looks very similar */
+
+/* !!! REMOVED --grey-5: rgb(173, 186, 189), replaced with --text-disabled, not used that much, looks similar */
+
+/* !!! REMOVED --temp-grey-blue-8: rgb(238, 242, 245), replaced with --colony-light-blue, duplicate */
+
+/* !!! REMOVED --temp-grey-6: rgb(220, 226, 227), not used anywhere */
+
+/* !!! REMOVED --temp-grey-blue-2: rgb(209, 214, 215), replaced with --temp-grey-5, almost the same */
+
+/* !!! REMOVED --temp-grey-blue-1: rgb(242, 246, 246), not used anywhere */
+
+/* !!! REMOVED  --temp-grey-blue-3: rgb(251, 252, 253), not used anywhere */
+
+/* !!! REMOVED  --temp-grey-blue-12: rgb(152, 164, 193), only found it in an unused class in Members.css */
+
+:root {
+  --primary: rgb(104, 210, 210); /* curreny colony primary */
+  --colony-white: rgb(251, 251, 251);
+  --colony-black: rgb(31, 35, 39);
   --colony-blue: rgb(79, 93, 255);
   --dark-blue: rgb(69, 85, 230);
   --sky-blue: rgb(90, 145, 255);
   --danger: rgb(248, 43, 101); /* user mentions color */
   --pink: rgb(254, 94, 124);
   --golden: rgba(255, 176, 0); /* Think pending states (golden yellow) */
-
-  /* !!! REMOVED --grey-darkrgb(47, 47, 47), replaced with --dark; not used in many places */
-
-  /* --grey-dark: rgb(47, 47, 47); */
-
-  /* !!! REMOVED temp-grey-0: rgb(195, 204, 205), replaced with --text-disabled; almost identical */
-
-  /* --temp-grey-0: rgb(195, 204, 205); */
-
-  /* !!! REMOVED --grey-3: rgb(82, 84, 85), replaced with --dark, not used much, looks similar */
-
-  /* --grey-3: rgb(82, 84, 85); */
-
-
-  /* !!! REMOVED
-    --grey-2: rgb(54, 54, 54);
-    --temp-grey-2: rgb(46, 50, 53);
-    --temp-grey-8: rgb(52, 55, 56);
-    replaced with --dark-grey, not used that much, looks very similar */
-
-  /* --grey-2: rgb(54, 54, 54);
-    --temp-grey-2: rgb(46, 50, 53);
-    --temp-grey-8: rgb(52, 55, 56); */
-
-  /* !!! REMOVED
-    --temp-grey-11: rgb(136, 136, 136);
-    --temp-grey-4: rgb(153, 153, 153);
-    replaced with --dark-grey, not used that much, looks very similar */
-
-  /* --temp-grey-11: rgb(136, 136, 136); Used for the text color of time for the 'CardActivity' items */
-
-  /* --temp-grey-4: rgb(153, 153, 153); */
+  --dark: rgb(60, 68, 77); /* Used for colony name display (colony simplified) */
+  --text-disabled: rgb(194, 204, 204);
+  --colony-light-blue: rgb(238, 242, 245);
+  --drop-shadow: rgba(62, 118, 244, 0.14);
 
   /* Remane `--grey-1` to `--dark-grey` */
   --dark-grey: rgb(58, 58, 58);
-  --dark: rgb(60, 68, 77); /* Used for colony name display (colony simplified) */
-
-  /* !!! REMOVED --grey-5: rgb(173, 186, 189), replaced with --text-disabled, not used that much, looks similar */
-
-  /* --grey-5: rgb(173, 186, 189); */
-
-  /* !!! REMOVED --temp-grey-blue-8: rgb(238, 242, 245), replaced with --colony-light-blue, duplicate */
-
-  /* --temp-grey-blue-8: rgb(238, 242, 245); Used for the actions list hover background */
-
-  /* !!! REMOVED --temp-grey-6: rgb(220, 226, 227), not used anywhere */
-
-  /* --temp-grey-6: rgb(220, 226, 227); */
-
-  /* !!! REMOVED --temp-grey-blue-2: rgb(209, 214, 215), replaced with --temp-grey-5, almost the same */
-
-  /* --temp-grey-blue-2: rgb(209, 214, 215); Used for the border of attachments preview ('CardActivity' attachment items) */
-
-  /* !!! REMOVED --temp-grey-blue-1: rgb(242, 246, 246), not used anywhere */
-
-  /* --temp-grey-blue-1: rgb(242, 246, 246); Used for the background-color of comments ('CardActivity' comment items) */
-
-  /* !!! REMOVED  --temp-grey-blue-3: rgb(251, 252, 253), not used anywhere */
-
-  /* --temp-grey-blue-3: rgb(251, 252, 253); Used for the board list item ('BordListItem' hover clickable) */
-
-  /* !!! REMOVED  --temp-grey-blue-12: rgb(152, 164, 193), only found it in an unused class in Members.css */
-
-  /* --temp-grey-12: rgb(152, 164, 193); Used for Drag & Drop placeholder */
 
   /* Remane `--grey-4` to `--grey` */
   --grey: rgb(124, 124, 124);
@@ -107,14 +75,13 @@
 
   /* Remane `--temp-grey-blue-1` to `--light-grey-blue` */
   --light-grey-blue: rgb(188, 197, 216);
-  --text-disabled: rgb(194, 204, 204);
-  --colony-light-blue: rgb(238, 242, 245);
+
+  /* Potential to be renamed */
   --temp-grey-5: rgb(213, 213, 213);
   --temp-grey-13: rgb(227, 224, 227); /* Used for separator background */
   --grey-blue-0: rgb(232, 232, 232);
-  --grey-blue-2: rgb(244, 246, 250);
   --grey-blue-1: rgb(232, 236, 245);
-  --drop-shadow: rgba(62, 118, 244, 0.14);
+  --grey-blue-2: rgb(244, 246, 250);
 
   /*
    * Gradients
