@@ -2,18 +2,18 @@ import { Signer, providers } from 'ethers';
 import {
   // getTokenClient,
   ClientType,
-  // ColonyClient,
+  AnyOneTxPaymentClient,
   ContractClient,
   ColonyNetworkClient,
   Extension,
-  // OneTxPaymentClient,
   TokenClient,
   TokenLockingClient,
   ExtensionClient,
+  AnyColonyClient,
 } from '@colony/colony-js';
 
 import { isAddress } from '~utils/web3';
-import { Address, AddressOrENSName } from '~types/index';
+import { Address } from '~types';
 
 export default class ColonyManager {
   private metaColonyClient?: any;
@@ -42,7 +42,7 @@ export default class ColonyManager {
     this.signer = networkClient.signer;
   }
 
-  private async getColonyPromise(address: Address) {
+  private async getColonyPromise(address: Address): Promise<AnyColonyClient> {
     const client = await this.networkClient.getColonyClient(address);
 
     // Check if the colony exists by calling `version()` (in lieu of an
@@ -55,21 +55,23 @@ export default class ColonyManager {
     return client;
   }
 
-  private async getColonyClient(identifier: AddressOrENSName): Promise<any> {
-    if (!(typeof identifier === 'string' && identifier.length)) {
-      throw new Error('A colony address or ENS name must be provided');
+  private async getColonyClient(identifier: Address): Promise<AnyColonyClient> {
+    if (!isAddress(identifier)) {
+      throw new Error('A colony address must be provided');
     }
-
-    const address = await this.resolveColonyIdentifier(identifier);
-    return this.colonyClients.get(address) || this.setColonyClient(address);
+    return (
+      this.colonyClients.get(identifier) || this.setColonyClient(identifier)
+    );
   }
 
   private async getColonyExtensionClient(
-    identifier: AddressOrENSName,
+    identifier: Address,
     extensionId: Extension,
   ): Promise<ExtensionClient> {
-    const address = await this.resolveColonyIdentifier(identifier);
-    const key = `${address}-${extensionId}`;
+    if (!isAddress(identifier)) {
+      throw new Error('A colony address must be provided');
+    }
+    const key = `${identifier}-${extensionId}`;
     let client = this.extensionClients.get(key);
     if (!client) {
       const colonyClient = await this.getColonyClient(identifier);
@@ -79,68 +81,49 @@ export default class ColonyManager {
     return client as Promise<ExtensionClient>;
   }
 
-  /*
-   * @TODO Thiss needs to be refactored (or removed), as the ENS logic was removed
-   * from this, due to it being deprecated
-   */
-  // eslint-disable-next-line class-methods-use-this
-  private async resolveColonyIdentifier(
-    identifier: AddressOrENSName,
-  ): Promise<Address> {
-    return isAddress(identifier) ? identifier : '0x0';
+  async setColonyClient(address: Address): Promise<AnyColonyClient> {
+    const clientPromise = this.getColonyPromise(address);
+    this.colonyClients.set(address, clientPromise);
+    clientPromise.catch(() => this.colonyClients.delete(address));
+    return clientPromise;
   }
 
-  /*
-   * @TODO Refactor to fix the broken colonyJS imports
-   *
-   * everything that's below is just a placeholders
-   */
-  // async setColonyClient(address: Address): Promise<ColonyClient> {
-  //   const clientPromise = this.getColonyPromise(address);
-  //   this.colonyClients.set(address, clientPromise);
-  //   clientPromise.catch(() => this.colonyClients.delete(address));
-  //   return clientPromise;
-  // }
-  async setColonyClient(address: Address) {
-    return this.getColonyPromise(address);
+  async getMetaColonyClient(): Promise<AnyColonyClient> {
+    if (this.metaColonyClient) return this.metaColonyClient;
+    this.metaColonyClient = await this.networkClient.getMetaColonyClient();
+    return this.metaColonyClient;
   }
-
-  // async getMetaColonyClient(): Promise<ColonyClient> {
-  //   if (this.metaColonyClient) return this.metaColonyClient;
-  //   this.metaColonyClient = await this.networkClient.getMetaColonyClient();
-  //   return this.metaColonyClient;
-  // }
 
   async getClient(type: ClientType.NetworkClient): Promise<ColonyNetworkClient>;
 
-  // async getClient(
-  //   type: ClientType.ColonyClient,
-  //   identifier?: AddressOrENSName,
-  // ): Promise<ColonyClient>;
+  async getClient(
+    type: ClientType.ColonyClient,
+    identifier?: Address,
+  ): Promise<AnyColonyClient>;
 
   async getClient(
     type: ClientType.TokenClient,
-    identifier?: AddressOrENSName,
+    identifier?: Address,
   ): Promise<TokenClient>;
 
   async getClient(
     type: ClientType.TokenLockingClient,
-    identifier?: AddressOrENSName,
+    identifier?: Address,
   ): Promise<TokenLockingClient>;
 
-  // async getClient(
-  //   type: ClientType.OneTxPaymentClient,
-  //   identifier?: AddressOrENSName,
-  // ): Promise<OneTxPaymentClient>;
+  async getClient(
+    type: ClientType.OneTxPaymentClient,
+    identifier?: Address,
+  ): Promise<AnyOneTxPaymentClient>;
 
   async getClient(
     type: ClientType,
-    identifier?: AddressOrENSName,
+    identifier?: Address,
   ): Promise<ContractClient>;
 
   async getClient(
     type: ClientType,
-    identifier?: AddressOrENSName,
+    identifier?: Address,
   ): Promise<ContractClient> {
     switch (type) {
       case ClientType.NetworkClient: {
@@ -203,6 +186,9 @@ export default class ColonyManager {
     }
   }
 
+  /*
+   * @TODO Fix getTokenClient once colonyJS implements it
+   */
   // async getTokenClient(address: Address): Promise<TokenClient> {
   //   let clientPromise = this.tokenClients.get(address);
   //   if (!clientPromise) {
@@ -211,13 +197,19 @@ export default class ColonyManager {
   //   }
   //   return clientPromise;
   // }
+  async getTokenClient(address: Address): Promise<TokenClient> {
+    if (!address)
+      throw new Error('Need colony identifier to get the WhitelistClient');
+    const fakeClient = this.networkClient as unknown as TokenClient;
+    return fakeClient;
+  }
 
-  // async getTokenLockingClient(address: Address): Promise<TokenLockingClient> {
-  //   let clientPromise = this.tokenLockingClients.get(address);
-  //   if (!clientPromise) {
-  //     clientPromise = this.networkClient.getTokenLockingClient();
-  //     this.tokenLockingClients.set(address, clientPromise);
-  //   }
-  //   return clientPromise;
-  // }
+  async getTokenLockingClient(address: Address): Promise<TokenLockingClient> {
+    let clientPromise = this.tokenLockingClients.get(address);
+    if (!clientPromise) {
+      clientPromise = this.networkClient.getTokenLockingClient();
+      this.tokenLockingClients.set(address, clientPromise);
+    }
+    return clientPromise;
+  }
 }
