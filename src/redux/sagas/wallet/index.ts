@@ -1,9 +1,7 @@
 // import { eventChannel } from 'redux-saga';
 
 import Onboard, { ConnectOptions } from '@web3-onboard/core';
-// import { WalletInit } from '@web3-onboard/common';
 import injectedModule from '@web3-onboard/injected-wallets';
-import ledgerModule from '@web3-onboard/ledger';
 import {
   // call,
   // put,
@@ -36,12 +34,11 @@ import {
   Action,
   // AllActions,
 } from '../../types/actions';
-import { Address, Network } from '~types';
+import { Address, Network, DevelopmentWallets } from '~types';
 import { createAddress } from '~utils/web3';
 // import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';
 
 const injected = injectedModule();
-const ledger = ledgerModule();
 const ganache =
   process.env.NODE_ENV === 'development'
     ? Object.values(ganachePrivateKeys)
@@ -54,7 +51,7 @@ const ganache =
     : [];
 
 const onboard = Onboard({
-  wallets: [injected, ledger, ...ganache],
+  wallets: [injected, ...ganache],
   /*
    * @TODO This needs to be set up properly for other networks as well
    */
@@ -65,7 +62,7 @@ const onboard = Onboard({
        */
       id: `0x${GANACHE_NETWORK.chainId.toString(16)}`,
       token: TOKEN_DATA[Network.Ganache].symbol,
-      label: 'Ganache Wallet',
+      label: DevelopmentWallets.Ganache,
       rpcUrl: GANACHE_LOCAL_RPC_URL,
     },
   ],
@@ -228,7 +225,7 @@ export function* getWallet() {
   setLastWallet(wallet.label);
 
   if (wallet.label.includes('Dev')) {
-    wallet.label = 'Ganache Wallet';
+    wallet.label = DevelopmentWallets.Ganache;
   }
   const [account] = wallet.accounts;
   return {
