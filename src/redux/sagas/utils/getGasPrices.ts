@@ -72,7 +72,7 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
       response = await fetch(XDAI_GAS_STATION);
     }
 
-    if (!response.ok) {
+    if (DEFAULT_NETWORK !== Network.Ganache && !response.ok) {
       throw new Error(response.statusText);
     }
 
