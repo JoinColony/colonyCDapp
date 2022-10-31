@@ -1,0 +1,32 @@
+
+.main {
+  composes: stretchHorizontal from '~styles/layout.css';
+}
+
+.mainContentGrid {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mainContent {
+  flex: 1;
+  margin-left: 26.5%;
+  padding: 90px 0 40px;
+}
+
+.rightAside {
+  display: flex;
+  padding: 200px 0 20px 100px;
+  width: 26.5%;
+}
+
+.loadingWrapper {
+  margin-left: 60px;
+  height: 100%;
+  width: calc(100% - 60px);
+  position: relative;
+}
+
+.controls li + li {
+  margin: 18px 0 0;
+}

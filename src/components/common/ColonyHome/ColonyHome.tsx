@@ -1,15 +1,17 @@
 import React, { useMemo, useState } from 'react';
 import { defineMessages } from 'react-intl';
-import { Route, Routes as RoutesSwitch, useParams } from 'react-router-dom';
+import {
+  Outlet,
+  Route,
+  Routes as RoutesSwitch,
+  useParams,
+} from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
-
-// import { parse as parseQS } from 'query-string';
 
 import LoadingTemplate from '~frame/LoadingTemplate';
 // import Extensions, { ExtensionDetails } from '~dashboard/Extensions';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-// import { useColonyFromNameQuery } from '~data/index';
 // import { allAllowedExtensions } from '~data/staticData/';
 
 // import ColonyActions from '~dashboard/ColonyActions';
@@ -26,8 +28,14 @@ import {
   COLONY_EXTENSIONS_ROUTE,
   COLONY_EXTENSION_DETAILS_ROUTE,
   COLONY_EXTENSION_SETUP_ROUTE,
+  COLONY_FUNDING_ROUTE,
+  COLONY_MEMBERS_ROUTE,
+  COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
 } from '~routes/index';
 import NotFoundRoute from '~routes/NotFoundRoute';
+import { Default } from '~frame/RouteLayouts';
+import ColonyFunding from '~common/ColonyFunding';
+import ColonyMembers from '~common/ColonyMembers';
 
 const displayName = 'common.ColonyHome';
 
@@ -147,13 +155,41 @@ const ColonyHome = () => {
               </ColonyHomeLayout>
             }
           />
+          <Route
+            element={
+              <Default
+                routeProps={{
+                  // backText: ColonyBackText,
+                  backRoute: `/colony/${colonyName}`,
+                  hasSubscribedColonies: false,
+                }}
+              >
+                <Outlet />
+              </Default>
+            }
+          >
+            <Route
+              path={COLONY_FUNDING_ROUTE}
+              element={<ColonyFunding colony={colony} />}
+            />
+            {/* Why? See https://stackoverflow.com/questions/70005601/alternate-way-for-optional-parameters-in-v6 */}
+            {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
+              (path) => (
+                <Route
+                  key={path}
+                  path={path}
+                  element={<ColonyMembers colony={colony} />}
+                />
+              ),
+            )}
+          </Route>
 
           <Route path="*" element={<NotFoundRoute />} />
         </RoutesSwitch>
       );
     }
     return null;
-  }, [colony, filteredDomainId]);
+  }, [colony, colonyName, filteredDomainId]);
 
   if (loading || (colony && colony.name !== colonyName)) {
     return (

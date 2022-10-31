@@ -33,11 +33,6 @@ import LandingPage from '~frame/LandingPage';
 import { useAppContext } from '~hooks';
 
 import {
-  // COLONY_EVENTS_ROUTE,
-  // COLONY_EXTENSIONS_ROUTE,
-  // COLONY_EXTENSION_DETAILS_ROUTE,
-  // COLONY_EXTENSION_SETUP_ROUTE,
-  // COLONY_FUNDING_ROUTE,
   COLONY_HOME_ROUTE,
   // CONNECT_ROUTE,
   // CREATE_COLONY_ROUTE,
@@ -49,7 +44,6 @@ import {
   // WALLET_ROUTE,
   LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
-  // MEMBERS_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -129,20 +123,6 @@ const Routes = () => {
             </Default>
           }
         />
-        {/* <Route
-          path={COLONY_FUNDING_ROUTE}
-          element={
-            <Default>
-              <ColonyFunding />
-            </Default>
-          }
-          routeProps={({ colonyName }) => ({
-            backText: ColonyBackText,
-            backRoute: `/colony/${colonyName}`,
-            hasSubscribedColonies: false,
-          })}
-        /> */}
-
         {/* <WalletRequiredRoute
           isConnected={isConnected}
           didClaimProfile={didClaimProfile}
@@ -185,20 +165,6 @@ const Routes = () => {
           }}
         />
 
-
-        <AlwaysAccesibleRoute
-          exact
-          path={[
-            COLONY_EXTENSION_DETAILS_ROUTE,
-            COLONY_EXTENSIONS_ROUTE,
-            COLONY_EXTENSION_SETUP_ROUTE,
-            COLONY_HOME_ROUTE,
-            COLONY_EVENTS_ROUTE,
-          ]}
-          component={ColonyHome}
-          layout={Default}
-          routeProps={{ hasBackLink: false }}
-        />
         <AlwaysAccesibleRoute
           path={USER_ROUTE}
           component={UserProfile}
@@ -216,17 +182,6 @@ const Routes = () => {
             backText: MSG.userProfileEditBack,
             backRoute: `/user/${username}`,
           }}
-        />
-        <AlwaysAccesibleRoute
-          exact
-          path={MEMBERS_ROUTE}
-          component={ColonyMembers}
-          layout={Default}
-          routeProps={({ colonyName }) => ({
-            backText: ColonyBackText,
-            backRoute: `/colony/${colonyName}`,
-            hasSubscribedColonies: false,
-          })}
         />
         <AlwaysAccesibleRoute
           exact
