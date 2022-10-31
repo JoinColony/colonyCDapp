@@ -75,7 +75,7 @@
 /* themes */
 .themeDefault {
   composes: baseSelect;
-  border: 1px solid var(--temp-grey-5);
+  border: 1px solid var(--light-grey);
   background-color: white;
 }
 

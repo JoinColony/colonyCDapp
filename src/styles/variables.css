@@ -83,8 +83,8 @@
   /* Remane `--temp-grey-blue-1` to `--grey-blue` */
   --grey-blue: rgb(188, 197, 216);
 
-  /* Potential to be renamed */
-  --temp-grey-5: rgb(213, 213, 213);
+  /* Remane `--temp-grey-5` to `--light-grey` */
+  --light-grey: rgb(213, 213, 213);
   --temp-grey-13: rgb(227, 224, 227); /* Used for separator background */
 
 

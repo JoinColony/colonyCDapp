@@ -25,7 +25,7 @@
   padding: 8px;
   min-height: 80px;
   width: 100%;
-  border: 1px solid var(--temp-grey-5);
+  border: 1px solid var(--light-grey);
   border-radius: var(--radius-tiny);
   background-color: var(--colony-white);
   font-size: var(--size-normal);

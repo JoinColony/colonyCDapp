@@ -32,7 +32,7 @@
   padding: 0 16px;
   height: 45px;
   width: 100%;
-  border: 1px solid var(--temp-grey-5);
+  border: 1px solid var(--light-grey);
   border-radius: 0 var(--radius-tiny) var(--radius-tiny) 0;
   background-color: var(--colony-white);
   font-size: var(--size-normal);
