@@ -9,22 +9,19 @@ import {
   takeEvery,
 } from 'redux-saga/effects';
 
-import { ActionTypes } from '../../actionTypes';
-import { filterUniqueAction } from '~utils/actions';
-// import { getLoggedInUser } from '~data/index';
-import { takeFrom } from '../utils';
 import { TxConfig } from '~types';
-import { createTxAction } from '../../actionCreators';
+import { filterUniqueAction } from '~utils/actions';
+import { getContext, ContextModule } from '~context';
+
+import { ActionTypes } from '../../actionTypes';
+import { takeFrom, getCanUserSendMetatransactions } from '../utils';
+import { createTransactionAction } from '../../actionCreators';
 import estimateGasCost from './estimateGasCost';
 import sendTransaction from './sendTransaction';
 
-/*
- * @TODO Refactor to remove dependency on data/index ex-module
- */
-const getLoggedInUser = () => {};
-
 export function* createTransaction(id: string, config: TxConfig) {
-  const { walletAddress } = yield getLoggedInUser();
+  const { address: walletAddress } = getContext(ContextModule.Wallet);
+  const shouldSendMetatransaction = yield getCanUserSendMetatransactions();
 
   if (!walletAddress) {
     throw new Error(
@@ -36,14 +33,41 @@ export function* createTransaction(id: string, config: TxConfig) {
     throw new Error('Could not create transaction. No transaction id provided');
   }
 
-  yield put(createTxAction(id, walletAddress, config));
+  if (shouldSendMetatransaction) {
+    yield put(
+      createTransactionAction(id, walletAddress, {
+        ...config,
+        metatransaction:
+          /*
+           * This allows us to manually "force" a transaction to never be executed
+           * as a Metatransaction
+           *
+           * This is useful in places where we have transactions we don't want to
+           * pay for ourselves.
+           *
+           * However this is VERY DANGEROUS, so must be treated with the utmost care
+           * as it has very serious gas cost implications if the user is not aware
+           * they are sending a transaction on mainnet !!!
+           */
+          typeof config.metatransaction === 'boolean'
+            ? config.metatransaction
+            : true,
+      }),
+    );
+  } else {
+    yield put(createTransactionAction(id, walletAddress, config));
+  }
 
   // Create tasks for estimating and sending; the actions may be taken multiple times
-  const estimateGasTask = yield takeEvery(
-    filterUniqueAction(id, ActionTypes.TRANSACTION_ESTIMATE_GAS),
-    estimateGasCost,
-  );
-  const sendTask = yield takeEvery(
+  let estimateGasTask;
+  if (!shouldSendMetatransaction) {
+    estimateGasTask = yield takeEvery(
+      filterUniqueAction(id, ActionTypes.TRANSACTION_ESTIMATE_GAS),
+      estimateGasCost,
+    );
+  }
+
+  const sendTransactionTask = yield takeEvery(
     filterUniqueAction(id, ActionTypes.TRANSACTION_SEND),
     sendTransaction,
   );
@@ -55,7 +79,13 @@ export function* createTransaction(id: string, config: TxConfig) {
         action.type === ActionTypes.TRANSACTION_CANCEL) &&
       action.meta.id === id,
   );
-  yield cancel([estimateGasTask, sendTask]);
+
+  const tasks = [sendTransactionTask];
+  if (estimateGasTask) {
+    tasks.push(estimateGasTask);
+  }
+
+  yield cancel(tasks);
 }
 
 export function* getTxChannel(id: string) {
