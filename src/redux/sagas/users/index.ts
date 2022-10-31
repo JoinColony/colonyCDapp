@@ -16,7 +16,8 @@ import { ContextModule, removeContext } from '~context';
 import {
   putError,
   // takeFrom,
-  // createUserWithSecondAttempt
+  // createUserWithSecondAttempt,
+  // getColonyManager
 } from '../utils';
 import { clearLastWallet } from '~utils/autoLogin';
 
@@ -172,7 +173,7 @@ function* userLogout() {
 //   const txChannel = yield call(getTxChannel, meta.id);
 //   try {
 //     const apolloClient = getContext(ContextModule.ApolloClient);
-//     const colonyManager = getContext(ContextModule.ColonyManager);
+//     const colonyManager = yield getColonyManager();
 //     const { walletAddress } = yield getLoggedInUser();
 
 //     const tokenLockingClient: TokenLockingClient =

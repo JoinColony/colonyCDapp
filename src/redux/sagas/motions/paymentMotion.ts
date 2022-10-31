@@ -8,7 +8,6 @@ import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
-import { ContextModule, getContext } from '~context';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
@@ -16,6 +15,7 @@ import {
   takeFrom,
   routeRedirect,
   uploadIfpsAnnotation,
+  getColonyManager,
 } from '../utils';
 
 import {
@@ -69,7 +69,7 @@ function* createPaymentMotion({
       }
     }
 
-    const context = getContext(ContextModule.ColonyManager);
+    const context = yield getColonyManager();
     const oneTxPaymentClient = yield context.getClient(
       ClientType.OneTxPaymentClient,
       colonyAddress,

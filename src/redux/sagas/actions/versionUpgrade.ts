@@ -15,6 +15,7 @@ import {
   takeFrom,
   routeRedirect,
   uploadIfpsAnnotation,
+  getColonyManager,
 } from '../utils';
 
 import {
@@ -36,7 +37,7 @@ function* createVersionUpgradeAction({
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
-    const colonyManager = getContext(ContextModule.ColonyManager);
+    const colonyManager = yield getColonyManager();
 
     const { version: newestVersion } = yield getNetworkContracts();
     const currentVersion = parseInt(version, 10);

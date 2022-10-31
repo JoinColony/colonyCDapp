@@ -30,6 +30,7 @@ import {
   takeFrom,
   takeLatestCancellable,
   createUserWithSecondAttempt,
+  getColonyManager,
 } from '../utils';
 import { TxConfig } from '~types';
 
@@ -63,7 +64,7 @@ function* colonyCreate({
 }: Action<ActionTypes.CREATE>) {
   const { username: currentUsername, walletAddress } = yield getLoggedInUser();
   const apolloClient = getContext(ContextModule.ApolloClient);
-  const colonyManager = getContext(ContextModule.ColonyManager);
+  const colonyManager = yield getColonyManager();
   const { networkClient } = colonyManager;
 
   const channelNames: string[] = [];

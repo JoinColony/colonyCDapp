@@ -9,7 +9,12 @@ import {
 } from '~data/index';
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
-import { putError, takeFrom, refreshExtension } from '../utils';
+import {
+  putError,
+  takeFrom,
+  refreshExtension,
+  getColonyManager,
+} from '../utils';
 
 import { ContextModule, getContext } from '~context';
 import {
@@ -26,7 +31,7 @@ export function* colonyExtensionUninstall({
 }: Action<ActionTypes.EXTENSION_UNINSTALL>) {
   let txChannel;
   try {
-    const colonyManager = getContext(ContextModule.ColonyManager);
+    const colonyManager = yield getColonyManager();
     const apolloClient = getContext(ContextModule.ApolloClient);
     txChannel = yield call(getTxChannel, metaId);
 

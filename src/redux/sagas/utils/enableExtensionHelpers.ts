@@ -12,10 +12,16 @@ export const removeOldExtensionClients = (
   colonyAddress: string,
   extensionId: string,
 ) => {
-  const colonyManager = getContext(ContextModule.ColonyManager);
-  // Remove old extensions client if exist
-  colonyManager.extensionClients.delete(`${colonyAddress}-${extensionId}`);
-  setContext(ContextModule.ColonyManager, colonyManager);
+  try {
+    const colonyManager = getContext(ContextModule.ColonyManager);
+    // Remove old extensions client if exist
+    colonyManager.extensionClients.delete(`${colonyAddress}-${extensionId}`);
+    setContext(ContextModule.ColonyManager, colonyManager);
+  } catch (error) {
+    /*
+     * Colony manager was not set yet, so there isn't any extension client to remove
+     */
+  }
 };
 
 export const modifyParams = (params, payload) =>

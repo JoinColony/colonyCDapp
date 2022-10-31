@@ -7,7 +7,6 @@ import {
 } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
-import { ContextModule, getContext } from '~context';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
@@ -15,6 +14,7 @@ import {
   takeFrom,
   routeRedirect,
   updateDomainReputation,
+  getColonyManager,
 } from '../utils';
 
 import {
@@ -64,7 +64,7 @@ function* manageReputationMotion({
       );
     }
 
-    const context = getContext(ContextModule.ColonyManager);
+    const context = yield getColonyManager();
     const colonyClient = yield context.getClient(
       ClientType.ColonyClient,
       colonyAddress,

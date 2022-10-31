@@ -9,7 +9,6 @@ import {
 import { AddressZero } from '@ethersproject/constants';
 import { hexlify, hexZeroPad } from 'ethers/lib/utils';
 
-import { ContextModule, getContext } from '~context';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
@@ -17,6 +16,7 @@ import {
   takeFrom,
   routeRedirect,
   uploadIfpsAnnotation,
+  getColonyManager,
 } from '../utils';
 
 import {
@@ -60,7 +60,7 @@ function* managePermissionsMotion({
       throw new Error('Roles not set for setUserRole transaction');
     }
 
-    const context = getContext(ContextModule.ColonyManager);
+    const context = yield getColonyManager();
     const colonyClient = yield context.getClient(
       ClientType.ColonyClient,
       colonyAddress,

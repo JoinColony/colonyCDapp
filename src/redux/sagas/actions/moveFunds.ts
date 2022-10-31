@@ -14,6 +14,7 @@ import {
   takeFrom,
   routeRedirect,
   uploadIfpsAnnotation,
+  getColonyManager,
 } from '../utils';
 
 import {
@@ -56,7 +57,7 @@ function* createMoveFundsAction({
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
-    const colonyManager = getContext(ContextModule.ColonyManager);
+    const colonyManager = yield getColonyManager();
 
     const colonyClient: AnyColonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,

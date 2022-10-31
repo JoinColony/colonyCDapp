@@ -4,8 +4,12 @@ import { utils } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { getContext, ContextModule } from '~context';
-import { putError, takeFrom, updateMotionValues } from '../utils';
+import {
+  putError,
+  takeFrom,
+  updateMotionValues,
+  getColonyManager,
+} from '../utils';
 
 import {
   createTransaction,
@@ -21,13 +25,8 @@ function* revealVoteMotion({
 }: Action<ActionTypes.MOTION_REVEAL_VOTE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    /*
-     * @TODO This needs to be refactor, and most likely removed
-     * As there's a lot of weirdness going on here
-     */
-    const context = getContext(ContextModule.ColonyManager);
-    const colonyManager = getContext(ContextModule.ColonyManager);
-    const colonyClient = yield context.getClient(
+    const colonyManager = yield getColonyManager();
+    const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );

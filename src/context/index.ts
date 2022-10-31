@@ -10,6 +10,7 @@ import UserSettingsClass from './userSettings';
 export { UserSettingsClass as UserSettings };
 
 export { AppContext, AppContextProvider } from './AppContext';
+export { ColonyManagerClass as ColonyManager };
 
 export enum ContextModule {
   Wallet = 'wallet',

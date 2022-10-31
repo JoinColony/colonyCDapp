@@ -4,7 +4,12 @@ import { AddressZero } from '@ethersproject/constants';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, updateMotionValues } from '../utils';
+import {
+  putError,
+  takeFrom,
+  updateMotionValues,
+  getColonyManager,
+} from '../utils';
 
 import {
   createTransaction,
@@ -12,7 +17,6 @@ import {
   getTxChannel,
 } from '../transactions';
 import { transactionReady } from '../../actionCreators';
-import { ContextModule, getContext } from '~context';
 
 function* escalateMotion({
   meta,
@@ -20,7 +24,7 @@ function* escalateMotion({
 }: Action<ActionTypes.MOTION_ESCALATE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const context = getContext(ContextModule.ColonyManager);
+    const context = yield getColonyManager();
     const colonyClient = yield context.getClient(
       ClientType.ColonyClient,
       colonyAddress,

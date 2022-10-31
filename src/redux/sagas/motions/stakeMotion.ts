@@ -3,8 +3,12 @@ import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { getContext, ContextModule } from '~context';
-import { putError, takeFrom, updateMotionValues } from '../utils';
+import {
+  putError,
+  takeFrom,
+  updateMotionValues,
+  getColonyManager,
+} from '../utils';
 
 import {
   createTransaction,
@@ -31,14 +35,17 @@ function* stakeMotion({
 }: Action<ActionTypes.MOTION_STAKE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const context = getContext(ContextModule.ColonyManager);
-    const colonyClient = yield context.getClient(
+    const colonyManager = yield getColonyManager();
+    const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
 
     const votingReputationClient: AnyVotingReputationClient =
-      yield context.getClient(ClientType.VotingReputationClient, colonyAddress);
+      yield colonyManager.getClient(
+        ClientType.VotingReputationClient,
+        colonyAddress,
+      );
 
     const { domainId, rootHash } = yield votingReputationClient.getMotion(
       motionId,

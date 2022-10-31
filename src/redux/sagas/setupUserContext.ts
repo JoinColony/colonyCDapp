@@ -20,13 +20,8 @@ import { setContext, ContextModule, UserSettings } from '~context';
 
 // import setupResolvers from '~context/setupResolvers';
 // import AppLoadingState from '~context/appLoadingState';
-// import ENS from '~context/ENS';
 
-import {
-  getGasPrices,
-  // reinitializeColonyManager,
-  putError,
-} from './utils';
+import { getGasPrices, putError } from './utils';
 import setupOnBeforeUnload from './setupOnBeforeUnload';
 // import { setupUserBalanceListener } from './setupUserBalanceListener';
 
@@ -79,19 +74,7 @@ export default function* setupUserContext() {
     const userSettings = new UserSettings(wallet.address);
     setContext(ContextModule.UserSettings, userSettings);
 
-    /*
-
-    const colonyManager = yield call(reinitializeColonyManager);
-    */
-
     yield call(getGasPrices);
-
-    /*
-    const ens = getContext(ContextModule.ENS);
-    */
-    // const ens = getContext(ContextModule.ENS);
-
-    // const colonyManager = yield call(reinitializeColonyManager);
 
     /*
      * This needs to happen first because USER_CONTEXT_SETUP_SUCCESS causes a redirect

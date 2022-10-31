@@ -24,7 +24,12 @@ import {
   getTxChannel,
 } from '../transactions';
 
-import { updateMotionValues, putError, takeFrom } from '../utils';
+import {
+  updateMotionValues,
+  putError,
+  takeFrom,
+  getColonyManager,
+} from '../utils';
 
 function* claimMotionRewards({
   meta,
@@ -34,7 +39,7 @@ function* claimMotionRewards({
   const apolloClient = getContext(ContextModule.ApolloClient);
 
   try {
-    const colonyManager = getContext(ContextModule.ColonyManager);
+    const colonyManager = yield getColonyManager();
     const votingReputationClient: ExtensionClient =
       yield colonyManager.getClient(
         ClientType.VotingReputationClient,

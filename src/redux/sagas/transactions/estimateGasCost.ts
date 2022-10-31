@@ -5,8 +5,7 @@ import { BigNumber, Contract, ContractInterface } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
-import { selectAsJS, getGasPrices } from '../utils';
-import { ContextModule, getContext } from '~context';
+import { selectAsJS, getGasPrices, getColonyManager } from '../utils';
 import { TransactionRecordProps } from '../../immutable';
 import { ExtendedClientType } from '~types';
 
@@ -46,7 +45,7 @@ export default function* estimateGasCost({
       gasLimit,
       options,
     }: TransactionRecordProps = yield selectAsJS(oneTransaction, id);
-    const colonyManager = getContext(ContextModule.ColonyManager);
+    const colonyManager = yield getColonyManager();
 
     let contextClient: Contract;
     if (context === ClientType.TokenClient) {

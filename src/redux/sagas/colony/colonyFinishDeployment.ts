@@ -29,7 +29,7 @@ import {
 } from '~data/index';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom } from '../utils';
+import { putError, takeFrom, getColonyManager } from '../utils';
 import { TxConfig } from '~types';
 
 import {
@@ -52,7 +52,7 @@ function* colonyRestartDeployment({
   try {
     const { walletAddress, username } = yield getLoggedInUser();
     const apolloClient = getContext(ContextModule.ApolloClient);
-    const colonyManager = getContext(ContextModule.ColonyManager);
+    const colonyManager = yield getColonyManager();
     const { networkClient } = colonyManager;
 
     let startingIndex = 7;

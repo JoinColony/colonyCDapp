@@ -9,7 +9,12 @@ import {
   NetworkExtensionVersionDocument,
 } from '~data/index';
 import { ContextModule, getContext } from '~context';
-import { putError, takeFrom, refreshExtension } from '../utils';
+import {
+  putError,
+  takeFrom,
+  refreshExtension,
+  getColonyManager,
+} from '../utils';
 
 import {
   createTransaction,
@@ -23,7 +28,7 @@ export function* colonyExtensionInstall({
 }: Action<ActionTypes.EXTENSION_INSTALL>) {
   const txChannel = yield call(getTxChannel, meta.id);
   const apolloClient = getContext(ContextModule.ApolloClient);
-  const { networkClient } = getContext(ContextModule.ColonyManager);
+  const { networkClient } = yield getColonyManager();
 
   try {
     /*

@@ -5,8 +5,12 @@ import { BigNumber } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, updateMotionValues } from '../utils';
-import { getContext, ContextModule } from '~context';
+import {
+  putError,
+  takeFrom,
+  updateMotionValues,
+  getColonyManager,
+} from '../utils';
 
 import {
   createTransaction,
@@ -21,7 +25,7 @@ function* finalizeMotion({
 }: Action<ActionTypes.MOTION_FINALIZE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const colonyManager = getContext(ContextModule.ColonyManager);
+    const colonyManager = yield getColonyManager();
     const { provider } = colonyManager;
     const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
