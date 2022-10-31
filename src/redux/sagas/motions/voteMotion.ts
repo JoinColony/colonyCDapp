@@ -1,6 +1,6 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, ExtensionClient } from '@colony/colony-js';
-import { soliditySha3, soliditySha3Raw } from 'web3-utils';
+import { utils } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
@@ -21,6 +21,10 @@ function* voteMotion({
 }: Action<ActionTypes.MOTION_VOTE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
+    /*
+     * @TODO This needs to be refactor, and most likely removed
+     * As there's a lot of weirdness going on here
+     */
     const context = getContext(ContextModule.ColonyManager);
     const colonyManager = getContext(ContextModule.ColonyManager);
     const colonyClient = yield context.getClient(
@@ -59,7 +63,10 @@ function* voteMotion({
     } Motion ID: ${motionId.toNumber()}`;
 
     const signature = yield signMessage('motionRevealVote', message);
-    const hash = soliditySha3(soliditySha3Raw(signature), vote);
+    const hash = utils.solidityKeccak256(
+      ['bytes', 'uint256'],
+      [utils.keccak256(signature), vote],
+    );
 
     const { voteMotionTransaction } = yield createTransactionChannels(meta.id, [
       'voteMotionTransaction',

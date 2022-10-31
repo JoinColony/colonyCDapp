@@ -1,6 +1,6 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, AnyVotingReputationClient } from '@colony/colony-js';
-import { soliditySha3Raw } from 'web3-utils';
+import { utils } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
@@ -21,6 +21,10 @@ function* revealVoteMotion({
 }: Action<ActionTypes.MOTION_REVEAL_VOTE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
+    /*
+     * @TODO This needs to be refactor, and most likely removed
+     * As there's a lot of weirdness going on here
+     */
     const context = getContext(ContextModule.ColonyManager);
     const colonyManager = getContext(ContextModule.ColonyManager);
     const colonyClient = yield context.getClient(
@@ -59,7 +63,7 @@ function* revealVoteMotion({
     } Motion ID: ${motionId.toNumber()}`;
 
     const signature = yield signMessage('motionRevealVote', message);
-    const salt = soliditySha3Raw(signature);
+    const salt = utils.keccak256(signature);
 
     /*
      * Infferr which side the user voted based on the same salt
