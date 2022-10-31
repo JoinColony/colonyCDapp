@@ -11,30 +11,9 @@ import {
   RecordToJS,
   SimpleMessageValues,
   ExtendedClientType,
-} from '~types/index';
-
-export enum TRANSACTION_ERRORS {
-  ESTIMATE = 'ESTIMATE',
-  EVENT_DATA = 'EVENT_DATA',
-  RECEIPT = 'RECEIPT',
-  SEND = 'SEND',
-  UNSUCCESSFUL = 'UNSUCCESSFUL',
-}
-
-export enum TRANSACTION_STATUSES {
-  CREATED = 'CREATED',
-  READY = 'READY',
-  PENDING = 'PENDING',
-  FAILED = 'FAILED',
-  SUCCEEDED = 'SUCCEEDED',
-}
-
-export enum TRANSACTION_METHODS {
-  DeployToken = 'deployToken',
-  DeployTokenViaNetwork = 'deployTokenViaNetwork',
-  DeployTokenAuthority = 'deployTokenAuthority',
-  Approve = 'approve',
-}
+  TRANSACTION_ERRORS,
+  TRANSACTION_STATUSES,
+} from '~types';
 
 export interface TransactionError {
   type: TRANSACTION_ERRORS;

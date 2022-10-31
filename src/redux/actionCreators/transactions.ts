@@ -1,15 +1,15 @@
 import { TransactionReceipt } from '@ethersproject/providers';
 
-import { MethodParams, TxConfig } from '~types';
+import {
+  MethodParams,
+  TxConfig,
+  TRANSACTION_STATUSES,
+  TRANSACTION_ERRORS,
+} from '~types';
 
 import { ActionTypes } from '../actionTypes';
 import { AllActions } from '../types/actions';
-import {
-  GasPricesProps,
-  TransactionError,
-  TRANSACTION_STATUSES,
-  TRANSACTION_ERRORS,
-} from '../immutable';
+import { GasPricesProps, TransactionError } from '../immutable';
 
 export const createTransactionAction = (
   id: string,

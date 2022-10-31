@@ -5,7 +5,6 @@ export * from './actions';
 export * from './motions';
 export * from './extensions';
 export * from './transactions';
-export * from './contracts';
 export * from './wallet';
 export * from './graphql';
 export * from './rpcMethods';
