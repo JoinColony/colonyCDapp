@@ -149,3 +149,5 @@ export const SMALL_TOKEN_AMOUNT_FORMAT = '0.00000...';
 export const ADDRESS_ZERO = ethersContants.AddressZero;
 
 export const GANACHE_LOCAL_RPC_URL = 'http://localhost:8545';
+
+export const isDev = process.env.NODE_ENV === 'development';

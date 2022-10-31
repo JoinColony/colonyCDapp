@@ -4,7 +4,12 @@ import Onboard, { ConnectOptions } from '@web3-onboard/core';
 import injectedModule from '@web3-onboard/injected-wallets';
 
 import colonyIcon from '~images/icons/colony-logo.svg';
-import { GANACHE_NETWORK, TOKEN_DATA, GANACHE_LOCAL_RPC_URL } from '~constants';
+import {
+  GANACHE_NETWORK,
+  TOKEN_DATA,
+  GANACHE_LOCAL_RPC_URL,
+  isDev,
+} from '~constants';
 
 import ganacheModule from './ganacheModule';
 
@@ -32,16 +37,15 @@ import { Network, DevelopmentWallets } from '~types';
 // import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';
 
 const injected = injectedModule();
-const ganache =
-  process.env.NODE_ENV === 'development'
-    ? Object.values(ganachePrivateKeys)
-        .map((privateKey, index) => ganacheModule(privateKey, index + 1))
-        /*
-         * Remove the wallets used by the reputation miner and the block ingestor
-         * As to not cause any "unplesantness"
-         */
-        .slice(0, -2)
-    : [];
+const ganache = isDev
+  ? Object.values(ganachePrivateKeys)
+      .map((privateKey, index) => ganacheModule(privateKey, index + 1))
+      /*
+       * Remove the wallets used by the reputation miner and the block ingestor
+       * As to not cause any "unplesantness"
+       */
+      .slice(0, -2)
+  : [];
 
 const onboard = Onboard({
   wallets: [injected, ...ganache],
