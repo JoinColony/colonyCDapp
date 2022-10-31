@@ -24,7 +24,6 @@ import { defineMessages } from 'react-intl';
 // import { getAllUserRoles } from '~modules/transformers';
 // import { hasRoot, canAdminister } from '~modules/users/checks';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
-import { Colony } from '~types/graphql';
 
 import styles from './ColonyMembers.css';
 
@@ -49,11 +48,7 @@ const MSG = defineMessages({
   },
 });
 
-interface Props {
-  colony: Colony;
-}
-
-const ColonyMembers = ({ colony }: Props) => {
+const ColonyMembers = () => {
   return <div>Colony Members</div>;
 
   // const {

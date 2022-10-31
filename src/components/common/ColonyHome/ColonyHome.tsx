@@ -155,41 +155,13 @@ const ColonyHome = () => {
               </ColonyHomeLayout>
             }
           />
-          <Route
-            element={
-              <Default
-                routeProps={{
-                  // backText: ColonyBackText,
-                  backRoute: `/colony/${colonyName}`,
-                  hasSubscribedColonies: false,
-                }}
-              >
-                <Outlet />
-              </Default>
-            }
-          >
-            <Route
-              path={COLONY_FUNDING_ROUTE}
-              element={<ColonyFunding colony={colony} />}
-            />
-            {/* Why? See https://stackoverflow.com/questions/70005601/alternate-way-for-optional-parameters-in-v6 */}
-            {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
-              (path) => (
-                <Route
-                  key={path}
-                  path={path}
-                  element={<ColonyMembers colony={colony} />}
-                />
-              ),
-            )}
-          </Route>
 
           <Route path="*" element={<NotFoundRoute />} />
         </RoutesSwitch>
       );
     }
     return null;
-  }, [colony, colonyName, filteredDomainId]);
+  }, [colony, filteredDomainId]);
 
   if (loading || (colony && colony.name !== colonyName)) {
     return (

@@ -2,7 +2,12 @@ import React, {
   // useEffect,
   useMemo,
 } from 'react';
-import { Route, Routes as RoutesSwitch, Navigate } from 'react-router-dom';
+import {
+  Route,
+  Routes as RoutesSwitch,
+  Navigate,
+  Outlet,
+} from 'react-router-dom';
 // import { defineMessages } from 'react-intl';
 // import { useDispatch } from 'react-redux';
 
@@ -10,7 +15,8 @@ import { Route, Routes as RoutesSwitch, Navigate } from 'react-router-dom';
 // import CreateColonyWizard from '~dashboard/CreateColonyWizard';
 // import CreateUserWizard from '~dashboard/CreateUserWizard';
 import ColonyHome from '~common/ColonyHome';
-// import ColonyMembers from '~dashboard/ColonyMembers';
+import ColonyFunding from '~common/ColonyFunding';
+import ColonyMembers from '~common/ColonyMembers';
 import FourOFour from '~frame/FourOFour';
 // import Inbox from '~users/Inbox';
 // import Wallet from '~dashboard/Wallet';
@@ -28,12 +34,14 @@ import LandingPage from '~frame/LandingPage';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
 // import appLoadingContext from '~context/appLoadingState';
-// import ColonyFunding from '~dashboard/ColonyFunding';
 // import { ActionTypes } from '~redux';
 import { useAppContext } from '~hooks';
 
 import {
+  COLONY_FUNDING_ROUTE,
   COLONY_HOME_ROUTE,
+  COLONY_MEMBERS_ROUTE,
+  COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   // CONNECT_ROUTE,
   // CREATE_COLONY_ROUTE,
   // CREATE_USER_ROUTE,
@@ -115,6 +123,27 @@ const Routes = () => {
           }
         />
 
+        <Route
+          element={
+            <Default
+              routeProps={{
+                // backText: ColonyBackText,
+                backRoute: ({ colonyName }) => `/colony/${colonyName}`,
+                hasSubscribedColonies: false,
+              }}
+            >
+              <Outlet />
+            </Default>
+          }
+        >
+          <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
+          {/* Why? See https://stackoverflow.com/questions/70005601/alternate-way-for-optional-parameters-in-v6 */}
+          {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
+            (path) => (
+              <Route key={path} path={path} element={<ColonyMembers />} />
+            ),
+          )}
+        </Route>
         <Route
           path={COLONY_HOME_ROUTE}
           element={

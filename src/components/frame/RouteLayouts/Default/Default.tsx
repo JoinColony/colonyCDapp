@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import { RouteComponentProps } from '~frame/RouteLayouts';
 import SubscribedColoniesList from '~frame/SubscribedColoniesList';
@@ -31,12 +31,16 @@ const Default = ({
       ? location.state && location.state.hasBackLink
       : hasBackLink;
 
+  const params = useParams();
+  const resolvedBackRoute =
+    typeof backRoute === 'function' ? backRoute(params) : backRoute;
+
   return (
     <div className={styles.main}>
       <SimpleNav>
         {backLinkExists && (
           <HistoryNavigation
-            backRoute={backRoute}
+            backRoute={resolvedBackRoute}
             backText={backText}
             backTextValues={backTextValues}
             className={

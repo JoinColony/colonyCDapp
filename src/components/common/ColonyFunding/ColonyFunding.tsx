@@ -11,10 +11,9 @@ import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 // import ColonyFundingMenu from '~dashboard/ColonyFundingMenu';
 // import TokenCardList from '~dashboard/TokenCardList';
 // import { useColonyFromNameQuery } from '~data/index';
+import Heading from '~shared/Heading';
 
 import styles from './ColonyFunding.css';
-import { Colony } from '~types';
-import Heading from '~shared/Heading';
 
 const MSG = defineMessages({
   labelSelectDomain: {
@@ -33,11 +32,7 @@ const MSG = defineMessages({
 
 const displayName = 'dashboard.ColonyFunding';
 
-interface Props {
-  colony: Colony;
-}
-
-const ColonyFunding = ({ colony }: Props) => {
+const ColonyFunding = () => {
   const { formatMessage } = useIntl();
 
   const [selectedDomainId, setSelectedDomainId] = useState<number>(
