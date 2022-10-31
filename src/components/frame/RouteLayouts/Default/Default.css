@@ -11,7 +11,7 @@
   flex: 0 0 auto;
   width: 60px;
   position: fixed;
-  border-right: 1px solid var(--temp-grey-13);
+  border-right: 1px solid var(--light-grey-beige);
 }
 
 .children {
