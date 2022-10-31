@@ -1,5 +1,5 @@
 import React from 'react'; // useEffect // useMemo,
-// import { defineMessages } from 'react-intl'; // useIntl
+import { defineMessages, useIntl } from 'react-intl'; // useIntl
 // import { useParams } from 'react-router-dom';
 
 // import Icon from '~shared/Icon';
@@ -14,14 +14,10 @@ import AvatarDropdown from '~frame/AvatarDropdown';
 // import { ConnectWalletPopover } from '~users/ConnectWalletWizard';
 
 // import {
-//   useUserNotificationsQuery,
 //   useUserBalanceWithLockQuery,
-//   useColonyFromNameQuery,
-//   Colony,
 // } from '~data/index';
-// import { useAutoLogin, getLastWallet } from '~utils/autoLogin';
-// import { checkIfNetworkIsAllowed } from '~utils/networks';
 import { SUPPORTED_NETWORKS } from '~constants';
+import { useAppContext } from '~hooks';
 
 // import { groupedTransactionsAndMessages } from '~redux/selectors';
 
@@ -29,25 +25,41 @@ import Wallet from './Wallet';
 
 import styles from './UserNavigation.css';
 
-// const MSG = defineMessages({
-//   inboxTitle: {
-//     id: 'root.RouteLayouts.UserNavigation.inboxTitle',
-//     defaultMessage: 'Go to your Inbox',
-//   },
-//   wrongNetworkAlert: {
-//     id: 'root.RouteLayouts.UserNavigation.wrongNetworkAlert',
-//     defaultMessage: 'Connected to wrong network',
-//   },
-//   userReputationTooltip: {
-//     id: 'root.RouteLayouts.UserNavigation.userReputationTooltip',
-//     defaultMessage: 'This is your share of the reputation in this colony',
-//   },
-// });
+const displayName = 'frame.RouteLayouts.UserNavigation';
 
-const displayName = 'root.RouteLayouts.UserNavigation';
+const MSG = defineMessages({
+  // inboxTitle: {
+  //   id: 'root.RouteLayouts.UserNavigation.inboxTitle',
+  //   defaultMessage: 'Go to your Inbox',
+  // },
+  // wrongNetworkAlert: {
+  //   id: 'root.RouteLayouts.UserNavigation.wrongNetworkAlert',
+  //   defaultMessage: 'Connected to wrong network',
+  // },
+  // userReputationTooltip: {
+  //   id: 'root.RouteLayouts.UserNavigation.userReputationTooltip',
+  //   defaultMessage: 'This is your share of the reputation in this colony',
+  // },
+  networkNotSupportedName: {
+    id: `${displayName}.networkNotSupportedName`,
+    defaultMessage: 'Network not supported by CDapp',
+  },
+  networkNotSupportedShort: {
+    id: `${displayName}.networkNotSupportedName`,
+    defaultMessage: 'Not Supported',
+  },
+});
 
 const UserNavigation = () => {
-  const networkId = 1;
+  const { wallet } = useAppContext();
+  const { formatMessage } = useIntl();
+
+  const [{ id: networkId = '0x1' }] = wallet?.chains || [{}];
+  /*
+   * convert from hex to number, remove 0x hex prefix
+   */
+  const humanReadableId = parseInt(networkId.slice(2), 16);
+
   // const { colonyName } = useParams<{src/redux
   // const transactionAndMessageGroups = useSelector(
   //   groupedTransactionsAndMessages,
@@ -58,34 +70,21 @@ const UserNavigation = () => {
   //   [transactionAndMessageGroups],
   // );
 
-  // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
-  const isNetworkAllowed = true;
-  // const userCanNavigate = !ethereal && isNetworkAllowed;
-  const userCanNavigate = true;
-
   // const userLock = userData?.user.userLock;
   // const nativeToken = userLock?.nativeToken;
 
-  // const { formatMessage } = useIntl();
-
-  // useEffect(() => {
-  //   if (!userDataLoading && !ethereal) {
-  //     dispatch({ type: 'USER_CONNECTED', payload: { isUserConnected: true } });
-  //   }
-  // }, [userDataLoading, userLock, dispatch, ethereal]);
-
   return (
     <div className={styles.main}>
-      {userCanNavigate && (
+      {wallet && (
         <div
           className={`${styles.elementWrapper} ${styles.networkInfo}`}
           title={
-            isNetworkAllowed
-              ? SUPPORTED_NETWORKS[networkId || 1]?.name
-              : undefined
+            SUPPORTED_NETWORKS[humanReadableId]?.name ||
+            formatMessage(MSG.networkNotSupportedName)
           }
         >
-          {isNetworkAllowed && SUPPORTED_NETWORKS[networkId || 1]?.shortName}
+          {SUPPORTED_NETWORKS[humanReadableId]?.shortName ||
+            formatMessage(MSG.networkNotSupportedShort)}
         </div>
       )}
       {/* {!ethereal && !isNetworkAllowed && (
