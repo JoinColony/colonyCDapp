@@ -12,6 +12,7 @@ import {
 } from 'redux-saga/effects';
 
 import colonyIcon from '~images/icons/colony-logo.svg';
+import { GANACHE_NETWORK, TOKEN_DATA, GANACHE_LOCAL_RPC_URL } from '~constants';
 
 import ganacheModule from './ganacheModule';
 
@@ -35,7 +36,7 @@ import {
   Action,
   // AllActions,
 } from '../../types/actions';
-import { Address } from '~types';
+import { Address, Network } from '~types';
 import { createAddress } from '~utils/web3';
 // import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';
 
@@ -55,14 +56,17 @@ const ganache =
 const onboard = Onboard({
   wallets: [injected, ledger, ...ganache],
   /*
-   * @TODO This needs to be set up properly
+   * @TODO This needs to be set up properly for other networks as well
    */
   chains: [
     {
-      id: '0x2889B3',
-      token: 'ETH',
-      label: 'Ganache',
-      rpcUrl: 'http://localhost:8545',
+      /*
+       * chain id for @web3-onboard needs to be expressed as a hex string
+       */
+      id: `0x${GANACHE_NETWORK.chainId.toString(16)}`,
+      token: TOKEN_DATA[Network.Ganache].symbol,
+      label: 'Ganache Wallet',
+      rpcUrl: GANACHE_LOCAL_RPC_URL,
     },
   ],
   accountCenter: {
@@ -224,7 +228,7 @@ export function* getWallet() {
   setLastWallet(wallet.label);
 
   if (wallet.label.includes('Dev')) {
-    wallet.label = 'Ganache';
+    wallet.label = 'Ganache Wallet';
   }
   const [account] = wallet.accounts;
   return {

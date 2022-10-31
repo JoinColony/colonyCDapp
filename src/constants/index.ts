@@ -65,9 +65,6 @@ export const GOERLI_TOKEN: TokenInfo = {
 };
 
 export const GNOSIS_NETWORK: NetworkInfo = {
-  /*
-   * Needs to be this exact name, otherwise Metamask marks it as "not valid" when adding it
-   */
   name: 'Gnosis Chain',
   chainId: 100,
   shortName: 'xDai',
@@ -76,7 +73,6 @@ export const GNOSIS_NETWORK: NetworkInfo = {
   blockExplorerUrl: 'https://blockscout.com/poa/xdai',
   tokenExplorerLink: 'https://blockscout.com/poa/xdai/tokens',
   contractAddressLink: 'https://blockscout.com/poa/xdai/address',
-  rpcUrl: 'https://rpc.gnosischain.com',
 };
 
 export const ETHEREUM_NETWORK: NetworkInfo = {
@@ -88,7 +84,6 @@ export const ETHEREUM_NETWORK: NetworkInfo = {
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'https://etherscan.io/tokens',
   contractAddressLink: 'https://etherscan.io/address',
-  rpcUrl: 'https://mainnet.infura.io/v3',
 };
 
 export const GOERLI_NETWORK: NetworkInfo = {
@@ -100,7 +95,6 @@ export const GOERLI_NETWORK: NetworkInfo = {
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'https://goerli.etherscan.io/tokens',
   contractAddressLink: 'https://goerli.etherscan.io/address',
-  rpcUrl: 'https://goerli.infura.io/v3',
 };
 
 export const GANACHE_NETWORK: NetworkInfo = {
@@ -112,7 +106,6 @@ export const GANACHE_NETWORK: NetworkInfo = {
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'http://localhost',
   contractAddressLink: 'http://localhost',
-  rpcUrl: 'http://localhost:8545',
 };
 
 export const NETWORK_DATA: { [key: string]: NetworkInfo } = {
@@ -154,3 +147,5 @@ export const ALLDOMAINS_DOMAIN_SELECTION = {
 export const SMALL_TOKEN_AMOUNT_FORMAT = '0.00000...';
 
 export const ADDRESS_ZERO = ethersContants.AddressZero;
+
+export const GANACHE_LOCAL_RPC_URL = 'http://localhost:8545';
