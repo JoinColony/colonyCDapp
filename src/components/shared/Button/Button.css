@@ -244,13 +244,13 @@
 
 .themeGhost.colorSchemaGrey {
   padding: 3px 16px;
-  border-color: var(--light-grey-blue);
+  border-color: var(--grey-blue);
   border-width: 2px;
   color: var(--text);
 }
 
 .themeGhost.colorSchemaGrey:hover {
-  border-color: var(--light-grey-blue);
+  border-color: var(--grey-blue);
   color: color-mod(var(--text) shade(30%));
 }
 
@@ -281,7 +281,7 @@
   bottom: 0;
   left: 0;
   border-radius: 6px;
-  background-color: var(--light-grey-blue);
+  background-color: var(--grey-blue);
   content: '';
 }
 

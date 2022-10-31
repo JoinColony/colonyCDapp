@@ -73,8 +73,8 @@
   /* Remane `--temp-grey-blue-7` to `--grey-purple` */
   --grey-purple: rgb(118, 116, 139); /* Used for the wallet connect button in the user navigation */
 
-  /* Remane `--temp-grey-blue-1` to `--light-grey-blue` */
-  --light-grey-blue: rgb(188, 197, 216);
+  /* Remane `--temp-grey-blue-1` to `--grey-blue` */
+  --grey-blue: rgb(188, 197, 216);
 
   /* Potential to be renamed */
   --temp-grey-5: rgb(213, 213, 213);

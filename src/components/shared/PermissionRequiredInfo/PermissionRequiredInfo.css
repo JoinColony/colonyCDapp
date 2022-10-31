@@ -33,7 +33,7 @@
 }
 
 .labelIcon svg {
-  fill: var(--light-grey-blue);
+  fill: var(--grey-blue);
   stroke: unset;
 }
 

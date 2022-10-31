@@ -14,7 +14,7 @@
   composes: baseStar;
 
   & svg {
-    fill: var(--light-grey-blue);
-    stroke: var(--light-grey-blue);
+    fill: var(--grey-blue);
+    stroke: var(--grey-blue);
   }
 }
