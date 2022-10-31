@@ -3,13 +3,11 @@ import {
   getColonyNetworkClient,
   ColonyNetworkAddress,
 } from '@colony/colony-js';
-import { Signer } from 'ethers';
+import { providers } from 'ethers';
 
 import { DEFAULT_NETWORK } from '~constants';
 import { ContextModule, getContext } from '~context';
 import { Network } from '~types';
-
-import getProvider from './getProvider';
 
 /*
  * Return an initialized ColonyNetworkClient instance.
@@ -19,51 +17,34 @@ export default function* getNetworkClient() {
 
   if (!wallet) throw new Error('No wallet in context');
 
-  const network = DEFAULT_NETWORK as Network;
+  const network = DEFAULT_NETWORK;
 
-  const provider = getProvider();
+  const walletProvider = new providers.Web3Provider(wallet.provider);
 
-  /*
-   * @TODO Refactor this to remove the use of Purser/EthersSigner
-   */
-  // const signer = new EthersSigner({ purserWallet: wallet, provider });
-  const signer = { provider };
+  const signer = walletProvider.getSigner();
 
   let reputationOracleUrl = new URL(`/reputation`, window.location.origin);
 
-  if (
-    process.env.NODE_ENV === 'development' &&
-    DEFAULT_NETWORK === Network.Ganache
-  ) {
+  if (DEFAULT_NETWORK === Network.Ganache) {
     reputationOracleUrl = new URL(`/reputation`, 'http://localhost:3001');
     const {
       etherRouterAddress: networkAddress,
       // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
     } = require('../../../../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-    return yield call(
-      getColonyNetworkClient,
-      network,
-      signer as unknown as Signer,
-      {
-        networkAddress,
-        reputationOracleEndpoint: reputationOracleUrl.href,
-      },
-    );
+    return yield call(getColonyNetworkClient, network, signer, {
+      networkAddress,
+      reputationOracleEndpoint: reputationOracleUrl.href,
+    });
   }
 
-  return yield call(
-    getColonyNetworkClient,
-    network,
-    signer as unknown as Signer,
-    {
-      /*
-       * Manually set the network address to instantiate the network client
-       * This is usefull for networks where we have two deployments (like xDAI)
-       * and we want to be able to differentiate between them
-       */
-      networkAddress:
-        process.env.NETWORK_CONTRACT_ADDRESS || ColonyNetworkAddress[network],
-      reputationOracleEndpoint: reputationOracleUrl.href,
-    },
-  );
+  return yield call(getColonyNetworkClient, network, signer, {
+    /*
+     * Manually set the network address to instantiate the network client
+     * This is usefull for networks where we have two deployments (like xDAI)
+     * and we want to be able to differentiate between them
+     */
+    networkAddress:
+      process.env.NETWORK_CONTRACT_ADDRESS || ColonyNetworkAddress[network],
+    reputationOracleEndpoint: reputationOracleUrl.href,
+  });
 }
