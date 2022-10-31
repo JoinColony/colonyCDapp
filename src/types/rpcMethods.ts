@@ -1,5 +1,6 @@
 export enum RpcMethods {
   BlockNumber = 'eth_blockNumber',
+  GetBlockNumber = 'eth_getBlockByNumber',
   EstimateGas = 'eth_estimateGas',
   GasPrice = 'eth_gasPrice',
   Accounts = 'eth_accounts',
