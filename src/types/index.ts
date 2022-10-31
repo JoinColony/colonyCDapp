@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export * from './keys';
+export * from './keyboard';
 export * from './actions';
 export * from './motions';
 export * from './extensions';
@@ -9,6 +9,7 @@ export * from './contracts';
 export * from './wallet';
 export * from './graphql';
 export * from './rpcMethods';
+export * from './network';
 
 export type WithKey = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

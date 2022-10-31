@@ -1,5 +1,4 @@
 // import { eventChannel } from 'redux-saga';
-// import { Network } from '@colony/colony-js';
 
 import Onboard, { ConnectOptions } from '@web3-onboard/core';
 // import { WalletInit } from '@web3-onboard/common';
@@ -13,6 +12,7 @@ import {
 } from 'redux-saga/effects';
 
 import colonyIcon from '~images/icons/colony-logo.svg';
+
 import ganacheModule from './ganacheModule';
 
 import { private_keys as ganachePrivateKeys } from '../../../../amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json';

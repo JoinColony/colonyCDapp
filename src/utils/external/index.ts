@@ -1,12 +1,13 @@
 import { formatUnits } from 'ethers/lib.esm/utils';
 import { BigNumber } from 'ethers';
-import { Network, ColonyVersion, releaseMap } from '@colony/colony-js';
+import { ColonyVersion, releaseMap } from '@colony/colony-js';
 
 import { DEFAULT_NETWORK } from '~constants';
 import {
   NETWORK_RELEASES,
   ETHERSCAN_CONVERSION_RATE,
 } from '~constants/externalUrls';
+import { Network } from '~types';
 
 interface EthUsdResponse {
   status: string;
@@ -42,7 +43,7 @@ export const getEthToUsd = (ethValue: BigNumber): Promise<number | void> => {
   /**
    * Since the xDai token is "stable", it will always have parity to 1 USD
    */
-  if (DEFAULT_NETWORK === Network.Xdai) {
+  if (DEFAULT_NETWORK === Network.Gnosis) {
     return new Promise((resolve) => {
       localStorage.setItem(ETH_USD_KEY, '1');
       localStorage.setItem(ETH_USD_TIMESTAMP_KEY, currentTimestamp.toString());
@@ -97,10 +98,10 @@ export const getBlockExplorerLink = ({
   if (!addressOrHash) {
     return '';
   }
-  if (network === Network.Local) {
+  if (network === Network.Ganache) {
     return '#';
   }
-  if (network === Network.Xdai) {
+  if (network === Network.Ganache) {
     const xdaiLinkType = linkType === 'token' ? 'address' : linkType;
     /**
      * Using a network string template here since in the future we might wanna

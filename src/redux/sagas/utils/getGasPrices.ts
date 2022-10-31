@@ -1,4 +1,3 @@
-import { Network } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { call, put, select } from 'redux-saga/effects';
 
@@ -7,7 +6,7 @@ import { ContextModule, getContext } from '~context';
 import { log } from '~utils/debug';
 import { DEFAULT_NETWORK } from '~constants';
 import { ETH_GAS_STATION, XDAI_GAS_STATION } from '~constants/externalUrls';
-import { RpcMethods } from '~types';
+import { RpcMethods, Network } from '~types';
 
 import { gasPrices as gasPricesSelector } from '../../selectors';
 import { updateGasPrices } from '../../actionCreators';
@@ -67,8 +66,8 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
       response = await fetch(ETH_GAS_STATION);
     }
     if (
-      DEFAULT_NETWORK === Network.Xdai ||
-      DEFAULT_NETWORK === Network.XdaiQa
+      DEFAULT_NETWORK === Network.Gnosis ||
+      DEFAULT_NETWORK === Network.GnosisFork
     ) {
       response = await fetch(XDAI_GAS_STATION);
     }
@@ -96,8 +95,8 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
     }
 
     if (
-      DEFAULT_NETWORK === Network.Xdai ||
-      DEFAULT_NETWORK === Network.XdaiQa
+      DEFAULT_NETWORK === Network.Gnosis ||
+      DEFAULT_NETWORK === Network.GnosisFork
     ) {
       const data: BlockscoutGasStationAPIResponse = await response.json();
       // API prices are in Gwei, so they need to be normalised

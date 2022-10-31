@@ -1,13 +1,13 @@
 import { call } from 'redux-saga/effects';
 import {
   getColonyNetworkClient,
-  Network,
   ColonyNetworkAddress,
 } from '@colony/colony-js';
-
 import { Signer } from 'ethers';
+
 import { DEFAULT_NETWORK } from '~constants';
 import { ContextModule, getContext } from '~context';
+import { Network } from '~types';
 
 import getProvider from './getProvider';
 
@@ -33,7 +33,7 @@ export default function* getNetworkClient() {
 
   if (
     process.env.NODE_ENV === 'development' &&
-    DEFAULT_NETWORK === Network.Custom
+    DEFAULT_NETWORK === Network.Ganache
   ) {
     reputationOracleUrl = new URL(`/reputation`, 'http://localhost:3001');
     const {
