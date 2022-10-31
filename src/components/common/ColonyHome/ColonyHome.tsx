@@ -12,14 +12,13 @@ import LoadingTemplate from '~frame/LoadingTemplate';
 // import Extensions, { ExtensionDetails } from '~dashboard/Extensions';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
+import { getFullColonyByName } from '~gql';
 // import { allAllowedExtensions } from '~data/staticData/';
 
 // import ColonyActions from '~dashboard/ColonyActions';
 // import ColonyEvents from '~dashboard/ColonyEvents';
 
 import ColonyHomeLayout from './ColonyHomeLayout';
-
-import { getFullColonyByName } from '~gql';
 
 import styles from './ColonyHomeLayout.css';
 
@@ -28,14 +27,8 @@ import {
   COLONY_EXTENSIONS_ROUTE,
   COLONY_EXTENSION_DETAILS_ROUTE,
   COLONY_EXTENSION_SETUP_ROUTE,
-  COLONY_FUNDING_ROUTE,
-  COLONY_MEMBERS_ROUTE,
-  COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
 } from '~routes/index';
 import NotFoundRoute from '~routes/NotFoundRoute';
-import { Default } from '~frame/RouteLayouts';
-import ColonyFunding from '~common/ColonyFunding';
-import ColonyMembers from '~common/ColonyMembers';
 
 const displayName = 'common.ColonyHome';
 
@@ -103,15 +96,15 @@ const ColonyHome = () => {
                 colony={colony}
                 filteredDomainId={filteredDomainId}
                 onDomainChange={setDomainIdFilter}
-                // showActions={false}
+                showActions={false}
               >
                 {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> */}
                 <div>Events (Transactions Log)</div>
               </ColonyHomeLayout>
             }
           />
+
           <Route
-            path={COLONY_EXTENSIONS_ROUTE}
             element={
               <ColonyHomeLayout
                 colony={colony}
@@ -120,41 +113,38 @@ const ColonyHome = () => {
                 showControls={false}
                 showSidebar={false}
               >
-                {/* <Extensions {...props} colonyAddress={colonyAddress} /> */}
-                <div>Extensions</div>
+                <Outlet />
               </ColonyHomeLayout>
             }
-          />
-          <Route
-            path={COLONY_EXTENSION_DETAILS_ROUTE}
-            element={
-              <ColonyHomeLayout
-                colony={colony}
-                filteredDomainId={filteredDomainId}
-                onDomainChange={setDomainIdFilter}
-                showControls={false}
-                showSidebar={false}
-              >
-                <div>Extension details</div>
-                {/* <ExtensionDetails {...props} colony={colony} /> */}
-              </ColonyHomeLayout>
-            }
-          />
-          <Route
-            path={COLONY_EXTENSION_SETUP_ROUTE}
-            element={
-              <ColonyHomeLayout
-                colony={colony}
-                filteredDomainId={filteredDomainId}
-                onDomainChange={setDomainIdFilter}
-                showControls={false}
-                showSidebar={false}
-              >
-                <div>Extension setup</div>
-                {/* <ExtensionDetails {...props} colony={colony} /> */}
-              </ColonyHomeLayout>
-            }
-          />
+          >
+            <Route
+              path={COLONY_EXTENSIONS_ROUTE}
+              element={
+                <>
+                  {/* <Extensions {...props} colonyAddress={colonyAddress} /> */}
+                  <div>Extensions</div>
+                </>
+              }
+            />
+            <Route
+              path={COLONY_EXTENSION_DETAILS_ROUTE}
+              element={
+                <>
+                  <div>Extension details</div>
+                  {/* <ExtensionDetails {...props} colony={colony} /> */}
+                </>
+              }
+            />
+            <Route
+              path={COLONY_EXTENSION_SETUP_ROUTE}
+              element={
+                <>
+                  <div>Extension setup</div>
+                  {/* <ExtensionDetails {...props} colony={colony} /> */}
+                </>
+              }
+            />
+          </Route>
 
           <Route path="*" element={<NotFoundRoute />} />
         </RoutesSwitch>
