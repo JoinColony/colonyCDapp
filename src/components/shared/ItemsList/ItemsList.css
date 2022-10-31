@@ -74,6 +74,6 @@
 .controls {
   margin-top: paddingValue;
   padding: paddingValue 0 0 0;
-  border-top: 1px solid var(--grey-blue-0);
+  border-top: 1px solid var(--light-grey-blue);
   text-align: right;
 }

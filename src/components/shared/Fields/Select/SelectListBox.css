@@ -16,7 +16,7 @@
 .themeDefault {
   composes: baseTheme;
   border: 1px solid var(--temp-grey-5);
-  background-color: var(--grey-blue-2);
+  background-color: var(--light-grey-blue);
 }
 
 .themeAlt {

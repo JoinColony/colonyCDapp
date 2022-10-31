@@ -80,7 +80,7 @@
   padding: 2px 8px 0;
   height: 20px;
   border-radius: var(--radius-normal);
-  background-color: var(--grey-blue-2);
+  background-color: var(--light-grey-blue);
   font-size: var(--size-tiny);
   font-weight: var(--weight-bold);
   color: var(--grey-purple);

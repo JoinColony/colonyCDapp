@@ -5,14 +5,14 @@
 .dropzone {
   padding: 35px;
   border-top: 1px dashed var(--primary);
-  border-right: 2px solid var(--grey-blue-0);
+  border-right: 2px solid var(--light-grey-blue);
   border-bottom: 1px dashed var(--primary);
-  border-left: 2px solid var(--grey-blue-0);
-  background-color: var(--grey-blue-1);
+  border-left: 2px solid var(--light-grey-blue);
+  background-color: var(--light-grey-blue);
 }
 
 .dropzoneAccept {
-  background-color: var(--grey-blue-2);
+  background-color: var(--light-grey-blue);
 }
 
 .dropzoneReject {

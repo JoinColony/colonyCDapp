@@ -1,6 +1,6 @@
 .dialogBox {
   width: 500px;
-  border: 1px solid var(--grey-blue-0);
+  border: 1px solid var(--light-grey-blue);
   border-radius: var(--radius-large);
   background-color: var(--colony-white);
 }

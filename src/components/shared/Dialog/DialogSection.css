@@ -1,4 +1,4 @@
-@value borderColor: var(--grey-blue-0);
+@value borderColor: var(--light-grey-blue);
 
 .main {
   padding: 20px;
@@ -41,6 +41,6 @@
 }
 
 .borderGrey {
-  border: 1px solid var(--grey-blue-0);
+  border: 1px solid var(--light-grey-blue);
   border-radius: var(--radius-tiny);
 }

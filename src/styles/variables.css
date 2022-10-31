@@ -23,6 +23,12 @@
     --temp-grey-4: rgb(153, 153, 153);
     replaced with --dark-grey, not used that much, looks very similar */
 
+/* !!! REMOVED
+  --grey-blue-0: rgb(232, 232, 232);
+  --grey-blue-1: rgb(232, 236, 245);
+  --grey-blue-2: rgb(244, 246, 250);
+  replaced with --light-grey-blue which is combination of all 3 of them (via Raul's function) */
+
 /* !!! REMOVED --grey-5: rgb(173, 186, 189), replaced with --text-disabled, not used that much, looks similar */
 
 /* !!! REMOVED --temp-grey-blue-8: rgb(238, 242, 245), replaced with --colony-light-blue, duplicate */
@@ -50,6 +56,7 @@
   --dark: rgb(60, 68, 77); /* Used for colony name display (colony simplified) */
   --text-disabled: rgb(194, 204, 204);
   --colony-light-blue: rgb(238, 242, 245);
+  --light-grey-blue: rgb(236, 238, 242);
   --drop-shadow: rgba(62, 118, 244, 0.14);
 
   /* Remane `--grey-1` to `--dark-grey` */
@@ -79,9 +86,7 @@
   /* Potential to be renamed */
   --temp-grey-5: rgb(213, 213, 213);
   --temp-grey-13: rgb(227, 224, 227); /* Used for separator background */
-  --grey-blue-0: rgb(232, 232, 232);
-  --grey-blue-1: rgb(232, 236, 245);
-  --grey-blue-2: rgb(244, 246, 250);
+
 
   /*
    * Gradients

@@ -18,7 +18,7 @@
 
 .themeLight {
   composes: baseStyles;
-  background-color: var(--grey-blue-1);
+  background-color: var(--light-grey-blue);
   color: var(--dark);
 }
 

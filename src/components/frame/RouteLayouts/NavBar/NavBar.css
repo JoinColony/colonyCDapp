@@ -18,7 +18,7 @@
   align-content: stretch;
   padding: 0 20px;
   border: 1px solid transparent;
-  border-color: var(--grey-blue-0);
+  border-color: var(--light-grey-blue);
   background-color: var(--grey-navbar);
   grid-column: 1;
   grid-row: 1;

@@ -1,7 +1,7 @@
 .layoutMain {
   composes: stretchVertical stretchHorizontal from '~styles/layout.css';
   overflow: auto;
-  background-color: var(--grey-blue-2);
+  background-color: var(--light-grey-blue);
 }
 
 .header {
