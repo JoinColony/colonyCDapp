@@ -144,6 +144,15 @@ export const ALLDOMAINS_DOMAIN_SELECTION = {
   description: '',
 };
 
+/*
+ * List all networks that curently support metatransactions
+ */
+export const NETWORKS_WITH_METATRANSACTIONS = [
+  Network.Ganache,
+  Network.Gnosis,
+  Network.GnosisFork,
+];
+
 export const SMALL_TOKEN_AMOUNT_FORMAT = '0.00000...';
 
 export const ADDRESS_ZERO = ethersContants.AddressZero;
