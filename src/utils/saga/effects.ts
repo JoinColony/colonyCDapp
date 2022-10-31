@@ -13,8 +13,6 @@ import {
 
 import { ErrorActionType, TakeFilter, Action } from '~redux';
 
-import { log } from '~utils/debug';
-
 /*
  * Effect to take a specific action from a channel.
  */
@@ -48,7 +46,7 @@ export const putError = (type: string, error: Error, meta: object = {}) => {
     error: true,
     payload: error,
   };
-  log.error(error);
+  console.error(error);
   return put(action);
 };
 

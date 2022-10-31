@@ -2,7 +2,6 @@ import React, { useState, ElementType } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
 import { ActionTransformFnType } from '~utils/actions';
-import { log } from '~utils/debug';
 import { useAsyncFunction, useMounted } from '~hooks';
 import DefaultButton from '~shared/Button';
 import { Props as DefaultButtonProps } from './Button';
@@ -44,7 +43,6 @@ const ActionButton = ({
       result = await asyncFunction(asyncFuncValues);
       if (isMountedRef.current) setLoading(false);
     } catch (err) {
-      log.verbose(err);
       setLoading(false);
 
       /**

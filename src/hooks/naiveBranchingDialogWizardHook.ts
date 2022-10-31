@@ -1,7 +1,7 @@
 import { ComponentType } from 'react';
 
 import { useDialog, DialogType } from '~shared/Dialog';
-import { isDev } from '~utils/debug';
+import { isDev } from '~constants';
 
 type PotentialProps = Record<string, any>;
 

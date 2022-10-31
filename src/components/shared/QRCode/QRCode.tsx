@@ -1,8 +1,6 @@
 import React, { useRef, useLayoutEffect } from 'react';
 import QRCodeGenerator from 'qrcode';
 
-import { log } from '~utils/debug';
-
 import { Address } from '~types';
 
 interface Props {
@@ -33,7 +31,7 @@ const QRCode = ({ address, width }: Props) => {
            * See: https://www.npmjs.com/package/qrcode#cb
            */
           if (error) {
-            log.error(error);
+            console.error(error);
           }
         },
       );

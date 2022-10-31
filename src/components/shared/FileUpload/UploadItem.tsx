@@ -2,7 +2,6 @@ import React, { SyntheticEvent, useEffect, useCallback, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useField } from 'formik';
-import { log } from '~utils/debug';
 
 import { UploadFile, UploadItemComponentProps } from './types';
 import Button from '../Button';
@@ -71,7 +70,7 @@ const UploadItem = ({
       setValue({ ...value, preview: readFile.data });
       fileReference = await upload(readFile);
     } catch (caughtError) {
-      log.error(caughtError);
+      console.error(caughtError);
 
       /**
        * @todo  better error handling here
