@@ -1,7 +1,7 @@
 export enum Network {
-  Mainnet = 'Mainnet',
-  Goerli = 'Goerli',
-  Gnosis = 'Gnosis',
-  GnosisFork = 'GnosisFork',
-  Ganache = 'Ganache',
+  Mainnet = 'mainnet',
+  Goerli = 'goerli',
+  Gnosis = 'gnosis',
+  GnosisFork = 'gnosisFork',
+  Ganache = 'ganache',
 }
