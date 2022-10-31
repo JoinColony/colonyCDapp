@@ -2,13 +2,16 @@ import { Record } from 'immutable';
 import { BigNumber, Overrides } from 'ethers';
 import { TransactionReceipt } from '@ethersproject/providers';
 import { ClientType } from '@colony/colony-js';
+import { MessageDescriptor } from 'react-intl';
 
 import {
   AddressOrENSName,
   DefaultValues,
   MethodParams,
   RecordToJS,
-} from '~types';
+  SimpleMessageValues,
+  ExtendedClientType,
+} from '~types/index';
 
 export enum TRANSACTION_ERRORS {
   ESTIMATE = 'ESTIMATE',
@@ -26,6 +29,13 @@ export enum TRANSACTION_STATUSES {
   SUCCEEDED = 'SUCCEEDED',
 }
 
+export enum TRANSACTION_METHODS {
+  DeployToken = 'deployToken',
+  DeployTokenViaNetwork = 'deployTokenViaNetwork',
+  DeployTokenAuthority = 'deployTokenAuthority',
+  Approve = 'approve',
+}
+
 export interface TransactionError {
   type: TRANSACTION_ERRORS;
   message: string;
@@ -34,7 +44,7 @@ export interface TransactionError {
 export type TransactionId = string;
 
 export interface TransactionRecordProps {
-  context: ClientType;
+  context: ClientType | ExtendedClientType;
   createdAt: Date;
   deployedContractAddress?: string;
   error?: TransactionError;
@@ -46,6 +56,10 @@ export interface TransactionRecordProps {
     key: string;
     id: string | string[];
     index: number;
+    title?: MessageDescriptor;
+    titleValues?: SimpleMessageValues;
+    description?: MessageDescriptor;
+    descriptionValues?: SimpleMessageValues;
   };
   hash?: string;
   id: TransactionId;
@@ -57,6 +71,9 @@ export interface TransactionRecordProps {
   receipt?: TransactionReceipt;
   status: TRANSACTION_STATUSES;
   loadingRelated?: boolean;
+  metatransaction: boolean;
+  title?: MessageDescriptor;
+  titleValues?: SimpleMessageValues;
 }
 
 export type TransactionType = Readonly<TransactionRecordProps>;
@@ -82,6 +99,9 @@ const defaultValues: DefaultValues<TransactionRecordProps> = {
   receipt: undefined,
   status: undefined,
   loadingRelated: false,
+  metatransaction: false,
+  title: undefined,
+  titleValues: undefined,
 };
 
 export class TransactionRecord

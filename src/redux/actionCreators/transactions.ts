@@ -11,7 +11,7 @@ import {
   TRANSACTION_ERRORS,
 } from '../immutable';
 
-export const createTxAction = (
+export const createTransactionAction = (
   id: string,
   from: string,
   {
@@ -23,6 +23,9 @@ export const createTxAction = (
     options,
     params = [],
     ready,
+    metatransaction = false,
+    title,
+    titleValues,
   }: TxConfig,
 ) => ({
   type: ActionTypes.TRANSACTION_CREATED,
@@ -40,6 +43,9 @@ export const createTxAction = (
       ready === false
         ? TRANSACTION_STATUSES.CREATED
         : TRANSACTION_STATUSES.READY,
+    metatransaction,
+    title,
+    titleValues,
   },
   meta: { id },
 });
@@ -121,10 +127,11 @@ export const transactionSucceeded = (
     receipt: TransactionReceipt;
     deployedContractAddress?: string;
   },
+  metatransaction = false,
 ): AllActions => ({
   type: ActionTypes.TRANSACTION_SUCCEEDED,
   payload,
-  meta: { id },
+  meta: { id, metatransaction },
 });
 
 export const transactionAddIdentifier = (
