@@ -166,6 +166,7 @@
     "react-popper": "^2.3.0",
     "react-popper-tooltip": "^4.4.2",
     "react-redux": "^8.0.2",
+    "react-responsive": "^9.0.0",
     "react-router-dom": "^6.4.2",
     "react-tabs": "^5.1.0",
     "react-textarea-autosize": "^8.3.4",
