@@ -6,11 +6,8 @@ import { defineMessages, useIntl } from 'react-intl'; // useIntl
 // import MemberReputation from '~shared/MemberReputation';
 // import { Tooltip } from '~shared/Popover';
 
-// import { GasStationPopover, GasStationProvider } from '~users/GasStation';
 // import UserTokenActivationButton from '~users/UserTokenActivationButton';
-// import { readyTransactionsCount } from '~users/GasStation/transactionGroup';
 import AvatarDropdown from '~frame/AvatarDropdown';
-// import { ConnectWalletPopover } from '~users/ConnectWalletWizard';
 
 // import {
 //   useUserBalanceWithLockQuery,
@@ -27,14 +24,6 @@ import styles from './UserNavigation.css';
 const displayName = 'frame.RouteLayouts.UserNavigation';
 
 const MSG = defineMessages({
-  // inboxTitle: {
-  //   id: 'root.RouteLayouts.UserNavigation.inboxTitle',
-  //   defaultMessage: 'Go to your Inbox',
-  // },
-  // wrongNetworkAlert: {
-  //   id: 'root.RouteLayouts.UserNavigation.wrongNetworkAlert',
-  //   defaultMessage: 'Connected to wrong network',
-  // },
   // userReputationTooltip: {
   //   id: 'root.RouteLayouts.UserNavigation.userReputationTooltip',
   //   defaultMessage: 'This is your share of the reputation in this colony',
@@ -60,16 +49,6 @@ const UserNavigation = () => {
    */
   const humanReadableId = parseInt(networkId.slice(2), 16);
 
-  // const { colonyName } = useParams<{src/redux
-  // const transactionAndMessageGroups = useSelector(
-  //   groupedTransactionsAndMessages,
-  // );
-
-  // const readyTransactions = useMemo(
-  //   () => readyTransactionsCount(transactionAndMessageGroups),
-  //   [transactionAndMessageGroups],
-  // );
-
   // const userLock = userData?.user.userLock;
   // const nativeToken = userLock?.nativeToken;
 
@@ -87,11 +66,6 @@ const UserNavigation = () => {
             formatMessage(MSG.networkNotSupportedShort)}
         </div>
       )}
-      {/* {!ethereal && !isNetworkAllowed && (
-        <div className={`${styles.elementWrapper} ${styles.wrongNetwork}`}>
-          <FormattedMessage {...MSG.wrongNetworkAlert} />
-        </div>
-      )} */}
       {/* {userCanNavigate && colonyData?.colonyAddress && (
         <Tooltip
           content={formatMessage(MSG.userReputationTooltip)}
@@ -116,30 +90,7 @@ const UserNavigation = () => {
           </div>
         </Tooltip>
       )} */}
-      {/* {ethereal && (
-        <ConnectWalletPopover>
-          {({ isOpen, toggle, ref }) => (
-            <button
-              type="button"
-              className={
-                isOpen
-                  ? styles.connectWalletButtonActive
-                  : styles.connectWalletButton
-              }
-              ref={ref}
-              onClick={toggle}
-            >
-              <FormattedMessage {...MSG.connectWallet} />
-            </button>
-          )}
-        </ConnectWalletPopover>
-      )} */}
-
-      {/* {previousWalletConnected && attemptingAutoLogin && userDataLoading ? (
-        <div className={styles.walletAutoLogin}>
-          <MiniSpinnerLoader title={MSG.walletAutologin} />
-        </div>
-      ) : (
+      {/*
         <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
           {userCanNavigate && nativeToken && userLock && (
             <UserTokenActivationButton
@@ -150,43 +101,9 @@ const UserNavigation = () => {
               dataTest="tokenActivationButton"
             />
           )}
-          {userCanNavigate && (
-            <GasStationProvider>
-              <GasStationPopover
-                transactionAndMessageGroups={transactionAndMessageGroups}
-              >
-                {({ isOpen, toggle, ref }) => (
-                  <>
-                    <button
-                      type="button"
-                      className={
-                        isOpen
-                          ? styles.walletAddressActive
-                          : styles.walletAddress
-                      }
-                      ref={ref}
-                      onClick={toggle}
-                      data-test="gasStationPopover"
-                    >
-                      <span>
-                        <MaskedAddress address={walletAddress} />
-                      </span>
-                    </button>
-                    {readyTransactions >= 1 && (
-                      <span className={styles.readyTransactionsCount}>
-                        <span>{readyTransactions}</span>
-                      </span>
-                    )}
-                  </>
-                )}
-              </GasStationPopover>
-            </GasStationProvider>
-          )}
         </div>
-      )} */}
-      <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
-        <Wallet />
-      </div>
+      */}
+      <Wallet />
       <AvatarDropdown preventTransactions={false} colony={{}} />
       {/* <AvatarDropdown
         preventTransactions={!isNetworkAllowed}
