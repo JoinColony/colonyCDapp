@@ -1,6 +1,6 @@
 import { Signer, providers } from 'ethers';
 import {
-  // getTokenClient,
+  getTokenClient,
   ClientType,
   AnyOneTxPaymentClient,
   ContractClient,
@@ -186,22 +186,15 @@ export default class ColonyManager {
     }
   }
 
-  /*
-   * @TODO Fix getTokenClient once colonyJS implements it
-   */
-  // async getTokenClient(address: Address): Promise<TokenClient> {
-  //   let clientPromise = this.tokenClients.get(address);
-  //   if (!clientPromise) {
-  //     clientPromise = getTokenClient(address, this.signer);
-  //     this.tokenClients.set(address, clientPromise);
-  //   }
-  //   return clientPromise;
-  // }
   async getTokenClient(address: Address): Promise<TokenClient> {
     if (!address)
-      throw new Error('Need colony identifier to get the WhitelistClient');
-    const fakeClient = this.networkClient as unknown as TokenClient;
-    return fakeClient;
+      throw new Error('Need colony identifier to get the TokenClient');
+    let clientPromise = this.tokenClients.get(address);
+    if (!clientPromise) {
+      clientPromise = getTokenClient(address, this.signer);
+      this.tokenClients.set(address, clientPromise);
+    }
+    return clientPromise;
   }
 
   async getTokenLockingClient(address: Address): Promise<TokenLockingClient> {
