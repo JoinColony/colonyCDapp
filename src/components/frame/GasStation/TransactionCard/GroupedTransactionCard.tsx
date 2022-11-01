@@ -23,7 +23,7 @@ import styles from './GroupedTransactionCard.css';
 import TransactionStatus from './TransactionStatus';
 // import { GasStationContext } from '../GasStationProvider';
 
-const displayName = 'users.GasStation.GroupedTransactionCard';
+const displayName = 'frame.GasStation.GroupedTransactionCard';
 
 const MSG = defineMessages({
   hasDependentTx: {
@@ -38,6 +38,7 @@ const MSG = defineMessages({
       RECEIPT {Receipt error}
       SEND {Send error}
       UNSUCCESSFUL {Unsuccessful}
+      other {}
       }: {message}`,
   },
   metaTransactionsAlert: {
