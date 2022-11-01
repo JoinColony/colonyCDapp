@@ -3,9 +3,10 @@ declare namespace WalletCssNamespace {
     connectWalletButton: string;
     connectWalletButtonActive: string;
     connectWalletButtonLoading: string;
+    main: string;
+    readyTransactionsCount: string;
     walletAddress: string;
     walletAddressActive: string;
-    walletAddressTemp: string;
     walletAutoLogin: string;
   }
 }

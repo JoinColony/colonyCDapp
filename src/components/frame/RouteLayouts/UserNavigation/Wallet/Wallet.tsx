@@ -1,11 +1,18 @@
-import React, { useCallback, useState, useLayoutEffect } from 'react';
+import React, { useCallback, useState, useLayoutEffect, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
+import { useSelector } from 'react-redux';
 
 import MaskedAddress from '~shared/MaskedAddress';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import Button from '~shared/Button';
+import { GasStationPopover, GasStationProvider } from '~frame/GasStation';
+import {
+  readyTransactionsCount,
+  TransactionOrMessageGroups,
+} from '~frame/GasStation/transactionGroup';
 
 import { ActionTypes } from '~redux';
+import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { useAppContext, useAsyncFunction } from '~hooks';
 import { getLastWallet } from '~utils/autoLogin';
 
@@ -49,6 +56,16 @@ const Wallet = () => {
     setWalletConnecting(false);
   }, [asyncFunction, updateWallet]);
 
+  const transactionAndMessageGroups = useSelector(
+    groupedTransactionsAndMessages,
+  );
+
+  const readyTransactions = useMemo(
+    // @ts-ignore
+    () => readyTransactionsCount(transactionAndMessageGroups),
+    [transactionAndMessageGroups],
+  );
+
   useLayoutEffect(() => {
     if (!wallet && getLastWallet()) {
       handleConnectWallet();
@@ -57,21 +74,6 @@ const Wallet = () => {
 
   return (
     <>
-      {wallet?.address && (
-        /*
-         * @TODO This will need to be wrapped inside the
-         * gas station popover eventually
-         */
-        <button
-          type="button"
-          className={styles.walletAddressTemp}
-          data-test="gasStationPopover"
-        >
-          <span>
-            <MaskedAddress address={wallet.address as string} />
-          </span>
-        </button>
-      )}
       {walletConnecting && (
         <div className={styles.walletAutoLogin}>
           <MiniSpinnerLoader title={MSG.walletAutologin} />
@@ -88,6 +90,40 @@ const Wallet = () => {
           onClick={handleConnectWallet}
         />
       )}
+      <div className={styles.main}>
+        {wallet?.address && (
+          <GasStationProvider>
+            <GasStationPopover
+              transactionAndMessageGroups={
+                transactionAndMessageGroups as unknown as TransactionOrMessageGroups
+              }
+            >
+              {({ isOpen, toggle, ref }) => (
+                <>
+                  <button
+                    type="button"
+                    className={
+                      isOpen ? styles.walletAddressActive : styles.walletAddress
+                    }
+                    ref={ref}
+                    onClick={toggle}
+                    data-test="gasStationPopover"
+                  >
+                    <span>
+                      <MaskedAddress address={wallet.address as string} />
+                    </span>
+                  </button>
+                  {readyTransactions >= 1 && (
+                    <span className={styles.readyTransactionsCount}>
+                      <span>{readyTransactions}</span>
+                    </span>
+                  )}
+                </>
+              )}
+            </GasStationPopover>
+          </GasStationProvider>
+        )}
+      </div>
     </>
   );
 };
