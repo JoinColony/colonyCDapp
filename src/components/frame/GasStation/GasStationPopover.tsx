@@ -29,10 +29,18 @@ const GasStationPopover = ({
 }: Props) => {
   const [isOpen, setOpen] = useState(false);
   const [txNeedsSigning, setTxNeedsSigning] = useState(false);
+  /*
+   * @NOTE `transactionAndMessageGroups` is actually a immutable record
+   * (hence the need for the .toJS() call) however, TS doesn't infer the type
+   * properly, so it trows an error
+   */
+  // @ts-ignore
+  const transactionsAndMessages = transactionAndMessageGroups.toJS();
   const txCount = useMemo(
-    () => transactionCount(transactionAndMessageGroups),
-    [transactionAndMessageGroups],
+    () => transactionCount(transactionsAndMessages),
+    [transactionsAndMessages],
   );
+
   const prevTxCount: number | void = usePrevious(txCount);
   const isMobile = useMediaQuery({ query: queries.query700 });
 
@@ -65,7 +73,7 @@ const GasStationPopover = ({
       appearance={{ theme: 'grey' }}
       renderContent={({ close }) => (
         <GasStationContent
-          transactionAndMessageGroups={transactionAndMessageGroups}
+          transactionAndMessageGroups={transactionsAndMessages}
           autoOpenTransaction={txNeedsSigning}
           setAutoOpenTransaction={setTxNeedsSigning}
           close={close}
