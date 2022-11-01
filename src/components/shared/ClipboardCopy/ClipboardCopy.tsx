@@ -17,6 +17,7 @@ const MSG = defineMessages({
     defaultMessage: `{valueIsCopied, select,
       true {Copied}
       false {Copy}
+      other {}
     }`,
   },
 });
