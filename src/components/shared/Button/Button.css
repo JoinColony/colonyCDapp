@@ -57,7 +57,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  border: 2px solid var(--grey-5);
+  border: 2px solid var(--text-disabled);
   border-radius: 50%;
   border-right-color: transparent;
   border-top-color: transparent;
@@ -244,13 +244,13 @@
 
 .themeGhost.colorSchemaGrey {
   padding: 3px 16px;
-  border-color: var(--temp-grey-1);
+  border-color: var(--grey-blue);
   border-width: 2px;
   color: var(--text);
 }
 
 .themeGhost.colorSchemaGrey:hover {
-  border-color: var(--temp-grey-1);
+  border-color: var(--grey-blue);
   color: color-mod(var(--text) shade(30%));
 }
 
@@ -281,7 +281,7 @@
   bottom: 0;
   left: 0;
   border-radius: 6px;
-  background-color: var(--temp-grey-1);
+  background-color: var(--grey-blue);
   content: '';
 }
 
@@ -316,11 +316,11 @@
   display: block;
   padding: 31.5px 25px;
   width: 100%;
-  border: 2px dashed var(--grey-5);
+  border: 2px dashed var(--text-disabled);
   border-radius: 5px;
   background-color: transparent;
   text-align: left;
-  color: var(--grey-4);
+  color: var(--grey);
   cursor: pointer;
 }
 
@@ -330,14 +330,14 @@
 
 /*
  * White
- * buttons with white background, --temp-grey-blue-7 border & font color
+ * buttons with white background, --grey-purple border & font color
  */
 
 .themeWhite {
   composes: main;
-  border: 1px solid var(--temp-grey-blue-7);
+  border: 1px solid var(--grey-purple);
   background-color: rgba(255, 255, 255);
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
   opacity: 0.65;
 }
 

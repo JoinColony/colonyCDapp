@@ -22,12 +22,12 @@
 
 .payoutPopover {
   text-align: right;
-  color: var(--grey-4);
+  color: var(--grey);
   cursor: pointer;
 }
 
 .native {
-  color: var(--violet);
+  color: var(--colony-blue);
 }
 
 .tokenInfo {

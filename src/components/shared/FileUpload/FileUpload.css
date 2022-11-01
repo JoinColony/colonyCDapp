@@ -4,15 +4,15 @@
 
 .dropzone {
   padding: 35px;
-  border-top: 1px dashed var(--secondary);
-  border-right: 2px solid var(--grey-blue-0);
-  border-bottom: 1px dashed var(--secondary);
-  border-left: 2px solid var(--grey-blue-0);
-  background-color: var(--grey-blue-1);
+  border-top: 1px dashed var(--primary);
+  border-right: 2px solid var(--light-grey-blue);
+  border-bottom: 1px dashed var(--primary);
+  border-left: 2px solid var(--light-grey-blue);
+  background-color: var(--light-grey-blue);
 }
 
 .dropzoneAccept {
-  background-color: var(--grey-blue-2);
+  background-color: var(--light-grey-blue);
 }
 
 .dropzoneReject {
@@ -43,7 +43,7 @@
 
 .placeholderTextDisabled {
   composes: placeholderText;
-  color: var(--temp-grey-4);
+  color: var(--grey);
 }
 
 .filesContainer {

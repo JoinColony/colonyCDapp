@@ -5,13 +5,13 @@
   height: 64px;
   width: 100%;
   border: none;
-  border-top: 1px solid var(--grey-blue-0);
+  border-top: 1px solid var(--light-grey-blue);
   background: none;
   text-align: left;
   cursor: pointer;
 
   &:last-of-type {
-    border-bottom: 1px solid var(--grey-blue-0);
+    border-bottom: 1px solid var(--light-grey-blue);
   }
 }
 

@@ -22,7 +22,7 @@
   width: 12px;
   position: relative;
   top: -3px; /* because the pseudo-radio is a bit smaller, let's shift it up a couple pixels */
-  border: 2px solid var(--grey-4);
+  border: 2px solid var(--grey);
   border-radius: 50%;
 
   &::after {
@@ -67,7 +67,7 @@
 .themeColorPicker .radio::after {
   height: 16px;
   width: 16px;
-  border: 2px solid var(--grey-1);
+  border: 2px solid var(--dark-grey);
   background-color: transparent;
 }
 
@@ -80,7 +80,7 @@
   position: relative;
   border: 1px solid var(--primary);
   border-radius: 2px;
-  background-color: var(--temp-grey-2);
+  background-color: var(--dark-grey);
 }
 
 .themeFakeCheckbox .radio::after {
@@ -123,7 +123,7 @@
 .themeButtonGroup {
   display: inline-block;
   padding: 6px 15px 0px 15px;
-  border: 1px solid var(--grey-blue-1);
+  border: 1px solid var(--light-grey-blue);
   background-color: var(--colony-white);
   white-space: nowrap;
   cursor: pointer;
@@ -181,7 +181,7 @@
 /* State */
 
 .stateIsDisabled {
-  color: var(--grey-5);
+  color: var(--text-disabled);
   cursor: not-allowed;
 
   & .labelContainer label {

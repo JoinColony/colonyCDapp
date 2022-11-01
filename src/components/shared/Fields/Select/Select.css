@@ -28,13 +28,13 @@
 }
 
 .select[aria-disabled="true"], .select[aria-busy="true"] {
-  background-color: var(--temp-grey-0);
+  background-color: var(--text-disabled);
   opacity: 0.7;
 }
 
 .select svg {
-  fill: var(--grey-4);
-  stroke: var(--grey-4);
+  fill: var(--grey);
+  stroke: var(--grey);
 }
 
 .select[aria-expanded="true"] .selectExpandContainer i {
@@ -75,7 +75,7 @@
 /* themes */
 .themeDefault {
   composes: baseSelect;
-  border: 1px solid var(--temp-grey-5);
+  border: 1px solid var(--light-grey);
   background-color: white;
 }
 

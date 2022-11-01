@@ -9,7 +9,7 @@
 }
 
 .main:hover {
-  background-color: var(--grey-blue-0);
+  background-color: var(--light-grey-blue);
   outline: none;
 }
 
@@ -40,7 +40,7 @@
 }
 
 .stateBordered + .stateBordered {
-  border-top: 1px solid var(--grey-blue-0);
+  border-top: 1px solid var(--light-grey-blue);
 }
 
 .stateIsBasicLabel {

@@ -9,10 +9,10 @@
 
 .header {
   padding: 4px 10px;
-  background-color: var(--grey-1);
+  background-color: var(--dark-grey);
   font-size: var(--size-small);
   font-weight: var(--weight-bold);
-  color: var(--grey-5);
+  color: var(--text-disabled);
 }
 
 .header-top {

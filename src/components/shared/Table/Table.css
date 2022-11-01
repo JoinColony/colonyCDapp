@@ -102,13 +102,13 @@
 
 .main {
   composes: baseStyles;
-  border-color: var(--grey-blue-1);
+  border-color: var(--light-grey-blue);
   background-color: white;
   box-shadow: 0px 2px 11px var(--drop-shadow);
 
   &.separatorsBorders td,
   &.separatorsBorders th {
-    border-color: var(--grey-blue-1);
+    border-color: var(--light-grey-blue);
   }
 
   & tbody tr:hover td {
@@ -118,18 +118,18 @@
 
 .themeDark {
   composes: baseStyles;
-  border-color: color-mod(var(--grey-blue-1) alpha(30%));
-  background-color: var(--grey-3);
+  border-color: color-mod(var(--light-grey-blue) alpha(30%));
+  background-color: var(--dark);
   color: var(--colony-white);
-  box-shadow: 0 0 20px -2px var(--grey-4);
+  box-shadow: 0 0 20px -2px var(--grey);
 
   &.separatorsBorders td,
   &.separatorsBorders th {
-    border-color: color-mod(var(--grey-blue-1) alpha(30%));
+    border-color: color-mod(var(--light-grey-blue) alpha(30%));
   }
 
   & tbody tr:hover td {
-    background-color: var(--grey-4);
+    background-color: var(--grey);
   }
 }
 
@@ -185,10 +185,10 @@
   }
 
   & tr {
-    border-bottom: 1px solid var(--temp-grey-5);
+    border-bottom: 1px solid var(--light-grey);
   }
 
   & tr:first-child {
-    border-top: 1px solid var(--temp-grey-5);
+    border-top: 1px solid var(--light-grey);
   }
 }

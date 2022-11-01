@@ -30,7 +30,7 @@
 .rootText {
   padding-left: 10px;
   font-size: var(--size-tiny);
-  color: var(--grey-5);
+  color: var(--text-disabled);
 }
 
 .description {
@@ -38,7 +38,7 @@
   width: 200px;
   font-size: var(--size-tiny);
   white-space: nowrap;
-  color: var(--grey-4);
+  color: var(--grey);
 }
 
 .editButtonCol {

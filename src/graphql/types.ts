@@ -176,6 +176,12 @@ export enum ColonyType {
 }
 
 
+export type ModelUserConnection = {
+  __typename: "ModelUserConnection",
+  items:  Array<User | null >,
+  nextToken?: string | null,
+};
+
 export type CreateUniqueUserInput = {
   id: string,
   name: string,
@@ -539,12 +545,6 @@ export type ModelUserFilterInput = {
   not?: ModelUserFilterInput | null,
 };
 
-export type ModelUserConnection = {
-  __typename: "ModelUserConnection",
-  items:  Array<User | null >,
-  nextToken?: string | null,
-};
-
 export type ModelDomainFilterInput = {
   id?: ModelIDInput | null,
   nativeId?: ModelIntInput | null,
@@ -783,35 +783,6 @@ export type GetFullColonyByNameQuery = {
   } | null,
 };
 
-export type GetWatchlistQueryVariables = {
-  address: string,
-};
-
-export type GetWatchlistQuery = {
-  listWatchedColonies?:  {
-    __typename: "ModelWatchedColoniesConnection",
-    items:  Array< {
-      __typename: "WatchedColonies",
-      colony:  {
-        __typename: "Colony",
-        colonyAddress: string,
-        name: string,
-        profile?:  {
-          __typename: "Profile",
-          avatar?: string | null,
-          bio?: string | null,
-          displayName?: string | null,
-          email?: string | null,
-          location?: string | null,
-          thumbnail?: string | null,
-          website?: string | null,
-        } | null,
-      },
-      createdAt: string,
-    } | null >,
-  } | null,
-};
-
 export type GetMetacolonyQuery = {
   getColonyByType?:  {
     __typename: "ModelColonyConnection",
@@ -828,6 +799,48 @@ export type GetMetacolonyQuery = {
         location?: string | null,
         thumbnail?: string | null,
         website?: string | null,
+      } | null,
+    } | null >,
+  } | null,
+};
+
+export type GetCurrentUserQueryVariables = {
+  address: string,
+};
+
+export type GetCurrentUserQuery = {
+  getUserByAddress?:  {
+    __typename: "ModelUserConnection",
+    items:  Array< {
+      __typename: "User",
+      profile?:  {
+        __typename: "Profile",
+        avatar?: string | null,
+        bio?: string | null,
+        displayName?: string | null,
+        email?: string | null,
+        location?: string | null,
+        thumbnail?: string | null,
+        website?: string | null,
+      } | null,
+      walletAddress: string,
+      name: string,
+      watchlist?:  {
+        __typename: "ModelWatchedColoniesConnection",
+        items:  Array< {
+          __typename: "WatchedColonies",
+          colony:  {
+            __typename: "Colony",
+            colonyAddress: string,
+            name: string,
+            profile?:  {
+              __typename: "Profile",
+              displayName?: string | null,
+              thumbnail?: string | null,
+            } | null,
+          },
+          createdAt: string,
+        } | null >,
       } | null,
     } | null >,
   } | null,

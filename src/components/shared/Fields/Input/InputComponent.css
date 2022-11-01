@@ -2,7 +2,7 @@
   padding: 0 16px;
   height: 32px;
   width: 100%;
-  border: 1px solid var(--temp-grey-5);
+  border: 1px solid var(--light-grey);
   border-radius: var(--radius-tiny);
   background-color: var(--colony-white);
   font-size: var(--size-normal);
@@ -76,11 +76,11 @@
   width: 100%;
   border: 0;
   border-radius: 0;
-  border-bottom: 1px solid var(--grey-4);
+  border-bottom: 1px solid var(--grey);
   background-color: transparent;
   font-size: var(--size-medium);
   font-weight: var(--weight-bold);
-  color: var(--grey-dark);
+  color: var(--dark);
   outline: none;
 
   &:focus {
@@ -94,7 +94,7 @@
 
 .themeMinimal::placeholder {
   font-style: italic;
-  color: var(--grey-4);
+  color: var(--grey);
 }
 
 .themeMinimal[aria-invalid="true"] {
@@ -106,12 +106,12 @@
   padding: 5px 0;
   border: 0;
   border-radius: 0;
-  border-bottom: 1px solid var(--grey-5);
+  border-bottom: 1px solid var(--text-disabled);
   border-style: dotted;
   background-color: transparent;
   font-size: var(--size-medium);
   font-weight: var(--weight-bold);
-  color: var(--temp-grey-4);
+  color: var(--grey);
   outline: none;
 }
 
@@ -135,28 +135,28 @@
   box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.07);
 
   &:disabled {
-    background-color: var(--temp-grey-0);
+    background-color: var(--text-disabled);
   }
 }
 
 .colorSchemaDark {
-  border: 1px solid var(--grey-4);
-  background-color: var(--temp-grey-2);
-  color: var(--temp-grey-0);
+  border: 1px solid var(--grey);
+  background-color: var(--dark-grey);
+  color: var(--text-disabled);
   box-shadow: inset 0 5px 5px 0 rgba(0, 0, 0, 0.2);
 
   &::placeholder {
-    color: var(--grey-4);
+    color: var(--grey);
   }
 
   & svg {
-    fill: var(--grey-4);
-    stroke: var(--grey-4);
+    fill: var(--grey);
+    stroke: var(--grey);
   }
 }
 
 .colorSchemaTransparent {
-  border: 1px solid var(--grey-5);
+  border: 1px solid var(--text-disabled);
   background-color: transparent;
   color: inherit;
   box-shadow: none;
@@ -185,6 +185,6 @@
   background: none;
   font-size: var(--size-tiny);
   font-weight: var(--weight-bold);
-  color: var(--action-secondary);
+  color: var(--colony-blue);
   cursor: pointer;
 }

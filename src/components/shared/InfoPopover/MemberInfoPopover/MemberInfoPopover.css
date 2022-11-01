@@ -15,7 +15,7 @@
 .section:first-of-type {
   padding-top: 0;
   padding-bottom: 18px;
-  border-bottom: 1px solid color-mod(var(--temp-grey-blue-7) alpha(15%));
+  border-bottom: 1px solid color-mod(var(--grey-purple) alpha(15%));
 }
 
 .section:last-of-type {
@@ -37,7 +37,7 @@
 .sectionContainer h4 {
   margin-bottom: 18px;
   font-size: var(--size-tiny);
-  color: color-mod(var(--temp-grey-blue-7) alpha(85%));
+  color: color-mod(var(--grey-purple) alpha(85%));
 }
 
 .roleList {

@@ -15,7 +15,7 @@
 
 .activeDropdown,
 .actionsButton:hover {
-  border-color: var(--action-secondary);
+  border-color: var(--colony-blue);
 }
 
 .actionsIcon {
@@ -25,7 +25,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  fill: var(--temp-grey-blue-7);
+  fill: var(--grey-purple);
 }
 
 .actionsIcon svg {
@@ -36,5 +36,5 @@
 
 .activeDropdown .actionsIcon,
 .actionsButton:hover .actionsIcon {
-  fill: var(--action-secondary);
+  fill: var(--colony-blue);
 }

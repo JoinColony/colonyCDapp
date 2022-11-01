@@ -85,7 +85,7 @@
     left: 0;
     z-index: var(--z-index-background);
     border-radius: 50%;
-    background-color: var(--temp-grey-5);
+    background-color: var(--light-grey);
     content: '';
   }
 }
@@ -121,7 +121,7 @@
 }
 
 .outside {
-  color: var(--temp-grey-5);
+  color: var(--light-grey);
   cursor: default;
 
   &:hover {

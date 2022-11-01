@@ -9,7 +9,7 @@
 }
 
 .main:not(.stateDisableHover):hover, .main.stateActiveActions:not(.stateDisableHover) {
-  background-color: color-mod(var(--action-secondary) alpha(6%));
+  background-color: color-mod(var(--colony-blue) alpha(6%));
   opacity: 1;
 }
 
@@ -34,7 +34,7 @@
 }
 
 .stateGhosted .text {
-  color: color-mod(var(--temp-grey-blue-7) alpha(80%));
+  color: color-mod(var(--grey-purple) alpha(80%));
 }
 
 .stateHideControls:not(.stateDisableHover):hover {
@@ -79,7 +79,7 @@
 .text {
   font-size: var(--size-normal);
   white-space: pre-wrap;
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
 }
 
 .username {

@@ -17,14 +17,14 @@
   flex-grow: 1;
   align-items: center;
   padding: 15px 0;
-  border-top: 1px solid color-mod(var(--temp-grey-blue-7) alpha(15%));
-  border-bottom: 1px solid color-mod(var(--temp-grey-blue-7) alpha(15%));
+  border-top: 1px solid color-mod(var(--grey-purple) alpha(15%));
+  border-bottom: 1px solid color-mod(var(--grey-purple) alpha(15%));
 }
 
 .sectionLabel {
   font-size: var(--size-smallish);
   font-weight: var(--weight-bold);
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
 }
 
 .labelIcon {
@@ -33,7 +33,7 @@
 }
 
 .labelIcon svg {
-  fill: var(--temp-grey-1);
+  fill: var(--grey-blue);
   stroke: unset;
 }
 

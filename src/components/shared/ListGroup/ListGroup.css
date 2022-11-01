@@ -5,7 +5,7 @@
 }
 
 .main:not(.gapsTrue) > :not(:first-child) {
-  border-top: 1px solid var(--grey-blue-1);
+  border-top: 1px solid var(--light-grey-blue);
 }
 
 .main > li {

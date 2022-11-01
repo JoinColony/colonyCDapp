@@ -20,7 +20,7 @@
   border: 1px solid var(--primary);
   border-radius: 2px;
   background-color: var(--colony-white);
-  box-shadow: 0 0 0 2px color-mod(var(--temp-grey-blue-4) alpha(25%));
+  box-shadow: 0 0 0 2px color-mod(var(--light-purple) alpha(25%));
 }
 
 .stateIsChecked .checkbox {
@@ -44,7 +44,7 @@
 /* Theme */
 
 .themeDark .checkbox {
-  background-color: var(--temp-grey-2);
+  background-color: var(--dark-grey);
 }
 
 /* Direction */
@@ -84,11 +84,11 @@
 }
 
 .stateDisabled .checkbox {
-  border-color: var(--grey-5);
+  border-color: var(--text-disabled);
   box-shadow: 0 0 0 2px color-mod(var(--text-disabled) alpha(25%));
 }
 
 .stateDisabled .checkbox .checkmark::before,
 .stateDisabled .checkbox .checkmark::after {
-  background-color: var(--grey-5);
+  background-color: var(--text-disabled);
 }

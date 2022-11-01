@@ -9,7 +9,7 @@
 .description {
   font-size: var(--size-tiny);
   font-weight: var(--weight-bold);
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
 }
 
 .main {
@@ -34,7 +34,7 @@
   right: 40px;
   bottom: 0;
   left: 40px;
-  background-color: color-mod(var(--grey-2) alpha(15%));
+  background-color: color-mod(var(--dark-grey) alpha(15%));
   content: "";
 }
 
@@ -44,16 +44,16 @@
 }
 
 .main:hover:not(.stateDisabled) {
-  background-color: var(--temp-grey-blue-8);
+  background-color: var(--colony-light-blue);
 }
 
 .main:hover:not(.stateDisabled)::after {
-  background-color: var(--temp-grey-blue-8);
+  background-color: var(--colony-light-blue);
 }
 
 .main:hover:not(.stateDisabled)::before {
   top: -1px;
-  background-color: var(--temp-grey-blue-8);
+  background-color: var(--colony-light-blue);
 }
 
 .main:hover:not(.stateDisabled) .title {
@@ -80,10 +80,10 @@
   padding: 2px 8px 0;
   height: 20px;
   border-radius: var(--radius-normal);
-  background-color: var(--grey-blue-2);
+  background-color: var(--light-grey-blue);
   font-size: var(--size-tiny);
   font-weight: var(--weight-bold);
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
 }
 
 .iconWarning {

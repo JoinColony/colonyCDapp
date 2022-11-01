@@ -10,7 +10,7 @@
   padding: 10px 8px;
   height: auto;
   border-radius: var(--radius-tiny);
-  border: 1px solid var(--temp-grey-blue-4);
+  border: 1px solid var(--light-purple);
   background-color: inputBackground;
   font-size: var(--size-smallish);
   font-weight: var(--weight-normal);
@@ -19,7 +19,7 @@
 }
 
 .commentBox textarea[aria-invalid="true"] {
-  border: 1px solid var(--temp-grey-blue-4);
+  border: 1px solid var(--light-purple);
 }
 
 .commentBox textarea:focus,
@@ -28,8 +28,8 @@
 }
 
 .commentBox textarea:disabled {
-  border: 1px solid color-mod(var(--temp-grey-4) alpha(50%));
-  background-color: color-mod(var(--temp-grey-4) alpha(10%));
+  border: 1px solid color-mod(var(--grey) alpha(50%));
+  background-color: color-mod(var(--grey) alpha(10%));
 }
 
 .sendInstructions {
@@ -37,14 +37,14 @@
   font-size: var(--size-tiny);
   font-weight: var(--weight-bold);
   text-align: right;
-  color: var(--temp-grey-0);
+  color: var(--text-disabled);
   opacity: 0;
   transition: opacity 0.2s linear;
 }
 
 .sendInstructions b {
   font-weight: var(--weight-bold);
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
 }
 
 .sendInstructions b:last-child {

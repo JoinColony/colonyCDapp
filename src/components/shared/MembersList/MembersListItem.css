@@ -20,7 +20,7 @@
 
 .displayName {
   font-weight: var(--weight-bold);
-  color: var(--grey-1);
+  color: var(--dark-grey);
 }
 
 .displayName + .username {

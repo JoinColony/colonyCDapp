@@ -1,8 +1,8 @@
 @value arrowSize: 8px;
 @value arrowBorder: 1px;
 @value backgroundColor: rgb(251, 251, 251); /* --colony-white */
-@value themeDarkBackgroundColor: rgb(58, 58, 58); /* --grey-1 */
-@value themeGreyBackgroundColor: var(--grey-blue-2);
+@value themeDarkBackgroundColor: rgb(58, 58, 58); /* --dark-grey */
+@value themeGreyBackgroundColor: var(--light-grey-blue);
 
 @value arrowHorizontalEnd: calc(var(--radius-small) + arrowBorder);
 @value arrowHorizontalStart: calc(0px - arrowSize + (arrowBorder + var(--radius-small)));
@@ -13,7 +13,7 @@
   z-index: calc(var(--z-index-notification) + 1);
   border-radius: var(--radius-normal);
   background-color: backgroundColor;
-  color: var(--grey-4);
+  color: var(--grey);
   box-shadow: 0 2px 11px 0px var(--drop-shadow);
 }
 

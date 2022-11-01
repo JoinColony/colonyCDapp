@@ -152,7 +152,7 @@ hr {
   margin: 20px 0;
   height: 1px;
   border: none;
-  background-color: var(--temp-grey-5);
+  background-color: var(--light-grey);
 }
 
 img {
@@ -175,7 +175,7 @@ span {
 
 strong {
   font-weight: var(--weight-bold);
-  color: var(--grey-1);
+  color: var(--dark-grey);
 }
 
 pre {

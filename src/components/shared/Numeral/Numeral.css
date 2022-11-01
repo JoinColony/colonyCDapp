@@ -47,10 +47,10 @@
 }
 
 .themeGrey {
-  color: var(--grey-4);
+  color: var(--grey);
 
   &::first-letter {
-    color: var(--grey-5);
+    color: var(--text-disabled);
   }
 }
 

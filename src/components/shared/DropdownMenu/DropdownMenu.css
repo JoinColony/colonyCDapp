@@ -28,13 +28,13 @@
 }
 
 .main a:hover, .main button:hover {
-  background-color: var(--grey-blue-0);
-  color: var(--grey-1);
+  background-color: var(--light-grey-blue);
+  color: var(--dark-grey);
 }
 
 .themeDark {
   composes: baseStyles;
-  background-color: var(--grey-1);
+  background-color: var(--dark-grey);
   color: var(--colony-white);
 }
 
@@ -43,5 +43,5 @@
 }
 
 .themeDark a:hover .themeDark button:hover {
-  color: var(--grey-blue-2);
+  color: var(--light-grey-blue);
 }

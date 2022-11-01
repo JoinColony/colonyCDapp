@@ -13,7 +13,7 @@
   font-weight: var(--weight-bold);
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--grey-dark);
+  color: var(--dark);
 }
 
 .selectedItemDisplay {
@@ -54,7 +54,7 @@
 
 .item:disabled,
 .item:disabled:hover {
-  color: var(--grey-4);
+  color: var(--grey);
   cursor: default;
 }
 
@@ -64,7 +64,7 @@
 }
 
 .itemHeading:hover {
-  color: var(--grey-dark);
+  color: var(--dark);
 }
 
 .selectedItem .item {
@@ -74,6 +74,6 @@
 .controls {
   margin-top: paddingValue;
   padding: paddingValue 0 0 0;
-  border-top: 1px solid var(--grey-blue-0);
+  border-top: 1px solid var(--light-grey-blue);
   text-align: right;
 }

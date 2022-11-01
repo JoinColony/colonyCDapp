@@ -37,12 +37,12 @@
 .themeUppercase {
   composes: main;
   text-transform: uppercase;
-  color: var(--temp-grey-11);
+  color: var(--grey);
 }
 
 .themeGrey {
   composes: main;
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
 }
 
 /*

@@ -15,5 +15,5 @@
 }
 
 .comment > div, .comment:hover > div {
-  background-color: color-mod(var(--temp-grey-blue-7) alpha(15%));
+  background-color: color-mod(var(--grey-purple) alpha(15%));
 }

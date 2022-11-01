@@ -47,8 +47,8 @@
   opacity: 0.5;
 
   & svg {
-    fill: var(--temp-grey-blue-7);
-    stroke: var(--temp-grey-blue-7);
+    fill: var(--grey-purple);
+    stroke: var(--grey-purple);
     stroke-width: 0.5;
   }
 }
