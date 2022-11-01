@@ -1,9 +1,10 @@
 import getObjectFromPath from 'lodash/get';
 
+import { TRANSACTION_STATUSES } from '~types';
+
 import {
   TransactionRecord,
   Transaction,
-  TRANSACTION_STATUSES,
   TransactionRecordProps,
 } from '../immutable';
 import { ActionTypes } from '../actionTypes';

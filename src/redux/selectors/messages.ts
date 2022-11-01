@@ -3,20 +3,18 @@ import { createSelector } from 'reselect';
 import { MessageRecord } from '../immutable/Message';
 import { RootStateRecord } from '../state';
 import { MessagesListMap } from '../state/messages';
-import {
-  CORE_NAMESPACE as ns,
-  CORE_MESSAGES,
-  CORE_MESSAGES_LIST,
-} from '../constants';
+import { CORE_MESSAGES, CORE_MESSAGES_LIST } from '../constants';
 
 export const messageById = (
   state: RootStateRecord,
   id: string,
 ): MessageRecord | undefined =>
-  state.getIn([ns, CORE_MESSAGES, CORE_MESSAGES_LIST, id]);
+  state.getIn([CORE_MESSAGES, CORE_MESSAGES_LIST, id]) as
+    | MessageRecord
+    | undefined;
 
 export const getAllMessages = (state: RootStateRecord): MessagesListMap =>
-  state.getIn([ns, CORE_MESSAGES, CORE_MESSAGES_LIST]);
+  state.getIn([CORE_MESSAGES, CORE_MESSAGES_LIST]) as MessagesListMap;
 
 /*
  * @NOTE This selector just groups all messages by their respective id
