@@ -9,6 +9,7 @@ declare namespace UserNavigationCssNamespace {
     notificationsIconActive: string;
     readyTransactionsCount: string;
     reputation: string;
+    walletWrapper: string;
     wrongNetwork: string;
   }
 }

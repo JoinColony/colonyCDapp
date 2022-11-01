@@ -116,3 +116,7 @@
 .reputation:hover svg {
   stroke: var(--colony-blue);
 }
+
+.walletWrapper {
+  padding: 1px;
+}

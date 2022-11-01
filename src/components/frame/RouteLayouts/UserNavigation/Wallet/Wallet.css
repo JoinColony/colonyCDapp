@@ -62,10 +62,6 @@
   color: var(--colony-blue);
 }
 
-.walletWrapper {
-  padding: 1px;
-}
-
 .walletAutoLogin {
   margin-right: 12px;
   padding: 4px 10px 0;

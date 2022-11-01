@@ -7,7 +7,6 @@ declare namespace WalletCssNamespace {
     walletAddressActive: string;
     walletAddressTemp: string;
     walletAutoLogin: string;
-    walletWrapper: string;
   }
 }
 
