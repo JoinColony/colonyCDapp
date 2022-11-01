@@ -87,7 +87,7 @@
   --light-grey: rgb(213, 213, 213);
 
   /* Remane `--temp-grey-13` to `--light-grey-beige` */
-  --temp-grey-13: rgb(227, 224, 227); /* Used for separator background */
+  --light-grey-beige: rgb(227, 224, 227); /* Used for separator background */
 
 
   /*
