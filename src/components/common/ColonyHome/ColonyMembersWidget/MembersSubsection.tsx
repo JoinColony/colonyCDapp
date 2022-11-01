@@ -21,9 +21,9 @@ import { useAppContext } from '~hooks';
 // import { hasRoot, canAdminister } from '~modules/users/checks';
 import { Colony, User } from '~types';
 
-import styles from './ColonyMembers.css';
+import styles from './ColonyMembersWidget.css';
 
-const displayName = 'common.ColonyHome.ColonyMembers.MembersSubsection';
+const displayName = 'common.ColonyHome.ColonyMembersWidget.MembersSubsection';
 
 const MSG = defineMessages({
   title: {

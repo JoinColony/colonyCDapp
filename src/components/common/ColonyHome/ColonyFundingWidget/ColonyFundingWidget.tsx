@@ -10,9 +10,9 @@ import { Colony, ColonyTokens } from '~types';
 
 import TokenItem from './TokenItem';
 
-import styles from './ColonyFunding.css';
+import styles from './ColonyFundingWidget.css';
 
-const displayName = 'common.ColonyHome.ColonyFunding';
+const displayName = 'common.ColonyHome.ColonyFundingWidget';
 
 const MSG = defineMessages({
   title: {
@@ -23,11 +23,11 @@ const MSG = defineMessages({
 
 interface Props {
   colony: Colony;
-  // currentDomainId: number;
+  currentDomainId: number;
 }
 
-const ColonyFunding = ({
-  // currentDomainId,
+const ColonyFundingWidget = ({
+  currentDomainId,
   colony: {
     name,
     tokens,
@@ -64,7 +64,7 @@ const ColonyFunding = ({
             > */}
             <div className={styles.tokenBalance}>
               <TokenItem
-                // currentDomainId={currentDomainId}
+                currentDomainId={currentDomainId}
                 token={token}
                 isTokenNative={token.tokenAddress === nativeTokenAddress}
                 isNativeTokenLocked={!status?.nativeToken?.unlocked}
@@ -81,6 +81,6 @@ const ColonyFunding = ({
   );
 };
 
-ColonyFunding.displayName = displayName;
+ColonyFundingWidget.displayName = displayName;
 
-export default ColonyFunding;
+export default ColonyFundingWidget;

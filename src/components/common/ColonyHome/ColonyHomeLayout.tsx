@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 // import { useDialog } from '~core/Dialog';
 
-import ColonyHomeActions from '~common/ColonyHomeActions';
+import NewActionButton from '~common/NewActionButton';
 import ColonyTotalFunds from '~common/ColonyTotalFunds';
 // import WrongNetworkDialog from '~dialogs/WrongNetworkDialog';
 
@@ -11,11 +11,11 @@ import ColonyTotalFunds from '~common/ColonyTotalFunds';
 import { Colony } from '~types';
 
 import ColonyDomainSelector from './ColonyDomainSelector';
-import ColonyFunding from './ColonyFunding';
+import ColonyFundingWidget from './ColonyFundingWidget';
 // import ColonyUnclaimedTransfers from './ColonyUnclaimedTransfers';
 import ColonyTitle from './ColonyTitle';
 import ColonyNavigation from './ColonyNavigation';
-import ColonyMembers from './ColonyMembers';
+import ColonyMembersWidget from './ColonyMembersWidget';
 // import ColonyExtensions from './ColonyExtensions';
 import ColonyDomainDescription from './ColonyDomainDescription';
 // import ColonyUpgrade from './ColonyUpgrade';
@@ -37,7 +37,7 @@ type Props = {
   showNavigation?: boolean;
   showSidebar?: boolean;
   showActions?: boolean;
-  // ethDomainId?: number;
+  ethDomainId?: number;
 };
 
 const displayName = 'common.ColonyHome.ColonyHomeLayout';
@@ -46,13 +46,13 @@ const ColonyHomeLayout = ({
   colony,
   filteredDomainId,
   children,
+  ethDomainId,
   showControls = true,
   showNavigation = true,
   showSidebar = true,
   showActions = true,
   onDomainChange = () => null,
-}: // ethDomainId,
-Props) => {
+}: Props) => {
   // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
   // const openWrongNetworkDialog = useDialog(WrongNetworkDialog);
 
@@ -84,11 +84,7 @@ Props) => {
                   />
                 </div>
                 {showActions && (
-                  <ColonyHomeActions
-                  // colony={colony}
-                  // ethDomainId={ethDomainId}
-                  // ethDomainId={0}
-                  />
+                  <NewActionButton colony={colony} ethDomainId={ethDomainId} />
                 )}
               </div>
             </>
@@ -102,14 +98,13 @@ Props) => {
               currentDomainId={filteredDomainId}
             />
             {/* <ColonyUnclaimedTransfers colony={colony} /> */}
-            <ColonyFunding
+            <ColonyFundingWidget
               colony={colony}
-              // currentDomainId={filteredDomainId}
+              currentDomainId={filteredDomainId}
             />
-            <ColonyMembers
+            <ColonyMembersWidget
               colony={colony}
-              // currentDomainId={filteredDomainId}
-              currentDomainId={0}
+              currentDomainId={filteredDomainId}
             />
             {/* <ColonyExtensions colony={colony} /> */}
           </aside>

@@ -7,16 +7,16 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import { Token } from '~types';
 
-import styles from './ColonyFunding.css';
+import styles from './ColonyFundingWidget.css';
 
 interface Props {
-  // currentDomainId: number;
+  currentDomainId: number;
   token: Token;
   isTokenNative?: boolean;
   isNativeTokenLocked?: boolean;
 }
 
-const displayName = 'dashboard.ColonyHome.ColonyFunding.TokenItem';
+const displayName = 'dashboard.ColonyHome.ColonyFundingWidget.TokenItem';
 
 const TokenItem = ({
   // currentDomainId,
