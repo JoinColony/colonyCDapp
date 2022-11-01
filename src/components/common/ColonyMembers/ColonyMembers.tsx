@@ -27,23 +27,23 @@ import { defineMessages } from 'react-intl';
 
 import styles from './ColonyMembers.css';
 
-const displayName = 'dashboard.ColonyMembers';
+const displayName = 'common.ColonyMembers';
 
 const MSG = defineMessages({
   editPermissions: {
-    id: 'dashboard.ColonyMembers.editPermissions',
+    id: `${displayName}.editPermissions`,
     defaultMessage: 'Edit permissions',
   },
   banAddress: {
-    id: 'dashboard.ColonyMembers.banAddress',
+    id: `${displayName}.banAddress`,
     defaultMessage: 'Ban address',
   },
   unbanAddress: {
-    id: 'dashboard.ColonyMembers.unbanAddress',
+    id: `${displayName}.unbanAddress`,
     defaultMessage: 'Unban address',
   },
   loadingText: {
-    id: 'dashboard.ColonyMembers.loadingText',
+    id: `${displayName}.loadingText`,
     defaultMessage: 'Loading Colony',
   },
 });

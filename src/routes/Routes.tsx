@@ -138,7 +138,6 @@ const Routes = () => {
           }
         >
           <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
-          {/* Why? See https://stackoverflow.com/questions/70005601/alternate-way-for-optional-parameters-in-v6 */}
           {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
             (path) => (
               <Route key={path} path={path} element={<ColonyMembers />} />

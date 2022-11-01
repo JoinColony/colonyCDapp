@@ -15,22 +15,22 @@ import Heading from '~shared/Heading';
 
 import styles from './ColonyFunding.css';
 
+const displayName = 'common.ColonyFunding';
+
 const MSG = defineMessages({
   labelSelectDomain: {
-    id: 'dashboard.ColonyFunding.labelSelectDomain',
+    id: `${displayName}.labelSelectDomain`,
     defaultMessage: 'Select a domain',
   },
   title: {
-    id: 'dashboard.ColonyFunding.title',
+    id: `${displayName}.title`,
     defaultMessage: 'Funds',
   },
   loadingText: {
-    id: 'dashboard.ColonyFunding.loadingText',
+    id: `${displayName}.loadingText`,
     defaultMessage: 'Loading Colony',
   },
 });
-
-const displayName = 'dashboard.ColonyFunding';
 
 const ColonyFunding = () => {
   const { formatMessage } = useIntl();

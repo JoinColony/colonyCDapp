@@ -5,9 +5,11 @@ import { useParams } from 'react-router-dom';
 
 import { getFullColonyByName } from '~gql';
 
+const componentDisplayName = 'frame.ColonyBackText';
+
 const MSG = defineMessages({
   backText: {
-    id: 'frame.ColonyBackText.backText',
+    id: `${componentDisplayName}.backText`,
     defaultMessage: `
       {displayName, select,
         undefined {Back to Colony}
@@ -15,8 +17,6 @@ const MSG = defineMessages({
       }`,
   },
 });
-
-const componentDisplayName = 'frame.ColonyBackText';
 
 const ColonyBackText = () => {
   const { colonyName } = useParams<{ colonyName: string }>();
