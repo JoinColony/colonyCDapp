@@ -19,7 +19,8 @@
     "truffle": "truffle",
     "amplify": "amplify",
     "DEPRECATED:webpack:prod": "NODE_OPTIONS=\"--max-old-space-size=4096\" NODE_ENV=production webpack-cli --config webpack.prod.js",
-    "postinstall": "bash scripts/lambda-functions-dependencies.sh"
+    "postinstall": "bash scripts/lambda-functions-dependencies.sh",
+    "voyager": "ts-node temp-voyager/voyager"
   },
   "repository": {
     "type": "git",
