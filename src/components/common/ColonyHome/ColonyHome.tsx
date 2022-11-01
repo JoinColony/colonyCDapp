@@ -54,8 +54,6 @@ const ColonyHome = () => {
 
   const [colony] = data?.getColonyByName?.items || [];
 
-  // console.log(colony);
-
   // const { domainFilter: queryDomainFilterId } = parseQS(location?.search) as {
   //   domainFilter: string | undefined;
   // };

@@ -28,6 +28,7 @@ import {
   Default,
 } from '~frame/RouteLayouts';
 // import { ColonyBackText } from '~pages/BackTexts';
+import ColonyBackText from '~frame/ColonyBackText';
 // import LoadingTemplate from '~root/LoadingTemplate';
 import LandingPage from '~frame/LandingPage';
 // import ActionsPage from '~dashboard/ActionsPage';
@@ -127,7 +128,7 @@ const Routes = () => {
           element={
             <Default
               routeProps={{
-                // backText: ColonyBackText,
+                backText: ColonyBackText,
                 backRoute: ({ colonyName }) => `/colony/${colonyName}`,
                 hasSubscribedColonies: false,
               }}
