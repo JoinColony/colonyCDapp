@@ -1,5 +1,6 @@
 import { ComponentType } from 'react';
 import { MessageDescriptor } from 'react-intl';
+import { Params } from 'react-router-dom';
 
 import { SimpleMessageValues } from '~types/index';
 
@@ -20,7 +21,7 @@ export interface RouteComponentProps {
   /*
    * If set, the the back link will redirect back to a specific route
    */
-  backRoute?: string;
+  backRoute?: string | ((params: Params<string>) => string);
 
   /*
    * If set, it will change the default back link text

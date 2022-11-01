@@ -40,7 +40,7 @@ type Props = {
   // ethDomainId?: number;
 };
 
-const displayName = 'dashboard.ColonyHome.ColonyHomeLayout';
+const displayName = 'common.ColonyHome.ColonyHomeLayout';
 
 const ColonyHomeLayout = ({
   colony,

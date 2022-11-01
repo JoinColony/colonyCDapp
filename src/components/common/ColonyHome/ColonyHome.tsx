@@ -1,21 +1,18 @@
 import React, { useMemo, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import {
-  Navigate,
+  Outlet,
   Route,
-  // RouteChildrenProps,
   Routes as RoutesSwitch,
   useParams,
 } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
 
-// import { parse as parseQS } from 'query-string';
-
 import LoadingTemplate from '~frame/LoadingTemplate';
 // import Extensions, { ExtensionDetails } from '~dashboard/Extensions';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-// import { useColonyFromNameQuery } from '~data/index';
+import { getFullColonyByName } from '~gql';
 // import { allAllowedExtensions } from '~data/staticData/';
 
 // import ColonyActions from '~dashboard/ColonyActions';
@@ -23,18 +20,15 @@ import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 
 import ColonyHomeLayout from './ColonyHomeLayout';
 
-import { getFullColonyByName } from '~gql';
-
 import styles from './ColonyHomeLayout.css';
 
 import {
   COLONY_EVENTS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
-  //   COLONY_EXTENSION_DETAILS_ROUTE,
-  //   COLONY_EXTENSION_SETUP_ROUTE,
-  // COLONY_HOME_ROUTE,
-  NOT_FOUND_ROUTE,
+  COLONY_EXTENSION_DETAILS_ROUTE,
+  COLONY_EXTENSION_SETUP_ROUTE,
 } from '~routes/index';
+import NotFoundRoute from '~routes/NotFoundRoute';
 
 const displayName = 'common.ColonyHome';
 
@@ -45,15 +39,8 @@ const MSG = defineMessages({
   },
 });
 
-// type Props = RouteChildrenProps<{ colonyName: string; extensionId?: string }>;
-
-const ColonyHome = ({ match, location }) => {
-  // if (!match) {
-  //   throw new Error(
-  //     `No match found for route in ${displayName} Please check route setup.`,
-  //   );
-  // }
-
+const ColonyHome = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { colonyName, extensionId } = useParams<{
     colonyName: string;
     extensionId?: string;
@@ -67,8 +54,6 @@ const ColonyHome = ({ match, location }) => {
 
   const [colony] = data?.getColonyByName?.items || [];
 
-  console.log(colony);
-
   // const { domainFilter: queryDomainFilterId } = parseQS(location?.search) as {
   //   domainFilter: string | undefined;
   // };
@@ -76,13 +61,6 @@ const ColonyHome = ({ match, location }) => {
   const [domainIdFilter, setDomainIdFilter] = useState<number>(0);
 
   const filteredDomainId = domainIdFilter || COLONY_TOTAL_BALANCE_DOMAIN_ID;
-
-  // const { data, error, loading } = useColonyFromNameQuery({
-  //   // We have to define an empty address here for type safety, will be replaced by the query
-  //   variables: { name: colonyName, address: '' },
-  //   pollInterval: 5000,
-  // });
-  // if (error) console.error(error);
 
   // const isExtensionIdValid = useMemo(
   //   // if no extensionId is provided, assume it's valid
@@ -95,53 +73,6 @@ const ColonyHome = ({ match, location }) => {
     if (colony) {
       return (
         <RoutesSwitch>
-          <Route
-            path={COLONY_EVENTS_ROUTE}
-            element={
-              <ColonyHomeLayout
-                colony={colony}
-                filteredDomainId={filteredDomainId}
-                onDomainChange={setDomainIdFilter}
-                // showActions={false}
-              >
-                {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> */}
-                <div>Events (Transactions Log)</div>
-              </ColonyHomeLayout>
-            }
-          />
-          <Route
-            path={COLONY_EXTENSIONS_ROUTE}
-            element={
-              <ColonyHomeLayout
-                colony={colony}
-                filteredDomainId={filteredDomainId}
-                onDomainChange={setDomainIdFilter}
-                // showControls={false}
-                // showSidebar={false}
-              >
-                {/* <Extensions {...props} colonyAddress={colonyAddress} /> */}
-                <div>Extensions</div>
-              </ColonyHomeLayout>
-            }
-          />
-          {/* <Route
-            exact
-            path={[
-              COLONY_EXTENSION_DETAILS_ROUTE,
-              COLONY_EXTENSION_SETUP_ROUTE,
-            ]}
-            render={(props) => (
-              <ColonyHomeLayout
-                colony={colony}
-                filteredDomainId={filteredDomainId}
-                onDomainChange={setDomainIdFilter}
-                showControls={false}
-                showSidebar={false}
-              >
-                <ExtensionDetails {...props} colony={colony} />
-              </ColonyHomeLayout>
-            )}
-          /> */}
           <Route
             path="/"
             element={
@@ -156,6 +87,64 @@ const ColonyHome = ({ match, location }) => {
               </ColonyHomeLayout>
             }
           />
+          <Route
+            path={COLONY_EVENTS_ROUTE}
+            element={
+              <ColonyHomeLayout
+                colony={colony}
+                filteredDomainId={filteredDomainId}
+                onDomainChange={setDomainIdFilter}
+                showActions={false}
+              >
+                {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> */}
+                <div>Events (Transactions Log)</div>
+              </ColonyHomeLayout>
+            }
+          />
+
+          <Route
+            element={
+              <ColonyHomeLayout
+                colony={colony}
+                filteredDomainId={filteredDomainId}
+                onDomainChange={setDomainIdFilter}
+                showControls={false}
+                showSidebar={false}
+              >
+                <Outlet />
+              </ColonyHomeLayout>
+            }
+          >
+            <Route
+              path={COLONY_EXTENSIONS_ROUTE}
+              element={
+                <>
+                  {/* <Extensions {...props} colonyAddress={colonyAddress} /> */}
+                  <div>Extensions</div>
+                </>
+              }
+            />
+            <Route
+              path={COLONY_EXTENSION_DETAILS_ROUTE}
+              element={
+                <>
+                  <div>Extension details</div>
+                  {/* <ExtensionDetails {...props} colony={colony} /> */}
+                </>
+              }
+            />
+            <Route
+              path={COLONY_EXTENSION_SETUP_ROUTE}
+              element={
+                <>
+                  <div>Extension setup</div>
+                  {/* <ExtensionDetails {...props} colony={colony} /> */}
+                </>
+              }
+            />
+          </Route>
+
+          <Route path="*" element={<NotFoundRoute />} />
         </RoutesSwitch>
       );
     }
@@ -174,24 +163,13 @@ const ColonyHome = ({ match, location }) => {
     !colonyName ||
     error ||
     !colony ||
-    (colony as any) instanceof Error
+    colony instanceof Error
     // || !isExtensionIdValid
   ) {
-    return <Navigate to={NOT_FOUND_ROUTE} />;
+    return <NotFoundRoute />;
   }
 
   return memoizedSwitch;
-  // return <div>COLONY HOME</div>;
-  // return (
-  //   <ColonyHomeLayout
-  //     colony={colony}
-  //     // filteredDomainId={0}
-  //     // onDomainChange={() => {}}
-  //     // ethDomainId={0}
-  //   >
-  //     <div>Actions & Motions List</div>
-  //   </ColonyHomeLayout>
-  // );
 };
 
 ColonyHome.displayName = displayName;

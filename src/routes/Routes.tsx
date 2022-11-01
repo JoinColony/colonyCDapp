@@ -2,7 +2,12 @@ import React, {
   // useEffect,
   useMemo,
 } from 'react';
-import { Route, Routes as RoutesSwitch, Navigate } from 'react-router-dom';
+import {
+  Route,
+  Routes as RoutesSwitch,
+  Navigate,
+  Outlet,
+} from 'react-router-dom';
 // import { defineMessages } from 'react-intl';
 // import { useDispatch } from 'react-redux';
 
@@ -10,7 +15,8 @@ import { Route, Routes as RoutesSwitch, Navigate } from 'react-router-dom';
 // import CreateColonyWizard from '~dashboard/CreateColonyWizard';
 // import CreateUserWizard from '~dashboard/CreateUserWizard';
 import ColonyHome from '~common/ColonyHome';
-// import ColonyMembers from '~dashboard/ColonyMembers';
+import ColonyFunding from '~common/ColonyFunding';
+import ColonyMembers from '~common/ColonyMembers';
 import FourOFour from '~frame/FourOFour';
 // import Inbox from '~users/Inbox';
 // import Wallet from '~dashboard/Wallet';
@@ -22,23 +28,21 @@ import {
   Default,
 } from '~frame/RouteLayouts';
 // import { ColonyBackText } from '~pages/BackTexts';
+import ColonyBackText from '~frame/ColonyBackText';
 // import LoadingTemplate from '~root/LoadingTemplate';
-import LadingPage from '~frame/LandingPage';
+import LandingPage from '~frame/LandingPage';
 // import ActionsPage from '~dashboard/ActionsPage';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
 // import appLoadingContext from '~context/appLoadingState';
-// import ColonyFunding from '~dashboard/ColonyFunding';
 // import { ActionTypes } from '~redux';
 import { useAppContext } from '~hooks';
 
 import {
-  COLONY_EVENTS_ROUTE,
-  COLONY_EXTENSIONS_ROUTE,
-  COLONY_EXTENSION_DETAILS_ROUTE,
-  COLONY_EXTENSION_SETUP_ROUTE,
-  // COLONY_FUNDING_ROUTE,
+  COLONY_FUNDING_ROUTE,
   COLONY_HOME_ROUTE,
+  COLONY_MEMBERS_ROUTE,
+  COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   // CONNECT_ROUTE,
   // CREATE_COLONY_ROUTE,
   // CREATE_USER_ROUTE,
@@ -48,13 +52,13 @@ import {
   // USER_ROUTE,
   // WALLET_ROUTE,
   LANDING_PAGE_ROUTE,
-  // MEMBERS_ROUTE,
+  NOT_FOUND_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
 } from './routeConstants';
+import NotFoundRoute from './NotFoundRoute';
 
-import AlwaysAccesibleRoute from './AlwaysAccesibleRoute';
 // import WalletRequiredRoute from './WalletRequiredRoute';
 // import useTitle from '~hooks/useTitle';
 
@@ -80,7 +84,10 @@ const Routes = () => {
   //   });
   // }, [dispatch]);
 
+  // disabling rules to silence eslint warnings
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isConnected = wallet?.address;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const didClaimProfile = user?.name;
 
   // useTitle();
@@ -106,37 +113,45 @@ const Routes = () => {
     () => (
       <RoutesSwitch>
         <Route path="/" element={<Navigate to={LANDING_PAGE_ROUTE} />} />
-        <Route path="*" element={<FourOFour />} />
+        <Route path={NOT_FOUND_ROUTE} element={<FourOFour />} />
 
         <Route
           path={LANDING_PAGE_ROUTE}
           element={
-            <AlwaysAccesibleRoute
-              component={LadingPage}
-              layout={Default}
-              routeProps={{ hasBackLink: false }}
-            />
+            <Default routeProps={{ hasBackLink: false }}>
+              <LandingPage />
+            </Default>
           }
         />
 
         <Route
-          // path={[
-          //   COLONY_EXTENSION_DETAILS_ROUTE,
-          //   COLONY_EXTENSIONS_ROUTE,
-          //   COLONY_EXTENSION_SETUP_ROUTE,
-          //   COLONY_HOME_ROUTE,
-          //   COLONY_EVENTS_ROUTE,
-          // ]}
+          element={
+            <Default
+              routeProps={{
+                backText: ColonyBackText,
+                backRoute: ({ colonyName }) => `/colony/${colonyName}`,
+                hasSubscribedColonies: false,
+              }}
+            >
+              <Outlet />
+            </Default>
+          }
+        >
+          <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
+          {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
+            (path) => (
+              <Route key={path} path={path} element={<ColonyMembers />} />
+            ),
+          )}
+        </Route>
+        <Route
           path={COLONY_HOME_ROUTE}
           element={
-            <AlwaysAccesibleRoute
-              component={ColonyHome}
-              layout={Default}
-              routeProps={{ hasBackLink: false }}
-            />
+            <Default routeProps={{ hasBackLink: false }}>
+              <ColonyHome />
+            </Default>
           }
         />
-
         {/* <WalletRequiredRoute
           isConnected={isConnected}
           didClaimProfile={didClaimProfile}
@@ -179,31 +194,6 @@ const Routes = () => {
           }}
         />
 
-
-        <AlwaysAccesibleRoute
-          exact
-          path={[
-            COLONY_EXTENSION_DETAILS_ROUTE,
-            COLONY_EXTENSIONS_ROUTE,
-            COLONY_EXTENSION_SETUP_ROUTE,
-            COLONY_HOME_ROUTE,
-            COLONY_EVENTS_ROUTE,
-          ]}
-          component={ColonyHome}
-          layout={Default}
-          routeProps={{ hasBackLink: false }}
-        />
-        <AlwaysAccesibleRoute
-          exact
-          path={COLONY_FUNDING_ROUTE}
-          component={ColonyFunding}
-          layout={Default}
-          routeProps={({ colonyName }) => ({
-            backText: ColonyBackText,
-            backRoute: `/colony/${colonyName}`,
-            hasSubscribedColonies: false,
-          })}
-        />
         <AlwaysAccesibleRoute
           path={USER_ROUTE}
           component={UserProfile}
@@ -221,17 +211,6 @@ const Routes = () => {
             backText: MSG.userProfileEditBack,
             backRoute: `/user/${username}`,
           }}
-        />
-        <AlwaysAccesibleRoute
-          exact
-          path={MEMBERS_ROUTE}
-          component={ColonyMembers}
-          layout={Default}
-          routeProps={({ colonyName }) => ({
-            backText: ColonyBackText,
-            backRoute: `/colony/${colonyName}`,
-            hasSubscribedColonies: false,
-          })}
         />
         <AlwaysAccesibleRoute
           exact
@@ -265,13 +244,10 @@ const Routes = () => {
         {/*
          * Redirect anything else that's not found to the 404 route
          */}
-        {/* <Navigate to={NOT_FOUND_ROUTE} /> */}
-        {/* <Route render={() => <Navigate to={NOT_FOUND_ROUTE} />} /> */}
+        <Route path="*" element={<NotFoundRoute />} />
       </RoutesSwitch>
     ),
-    [
-      // didClaimProfile, isConnected, username
-    ],
+    [],
   );
 
   // if (isAppLoading) {

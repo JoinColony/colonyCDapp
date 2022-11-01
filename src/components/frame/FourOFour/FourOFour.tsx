@@ -8,23 +8,23 @@ import Heading from '~shared/Heading';
 
 import styles from './FourOFour.css';
 
+const displayName = 'frame.FourOFour';
+
 const MSG = defineMessages({
   message: {
-    id: 'dashboard.FourOFour.message',
+    id: `${displayName}.message`,
     defaultMessage:
       'Something went wrong! Have you tried turning it off and on again?',
   },
   nakedMole: {
-    id: 'dashboard.FourOFour.nakedMole',
+    id: `${displayName}.nakedMole`,
     defaultMessage: 'Naked Mole',
   },
   fourOFour: {
-    id: 'dashboard.FourOFour.fourOFour',
+    id: `${displayName}.fourOFour`,
     defaultMessage: '404!',
   },
 });
-
-const displayName = 'dashboard.FourOFour';
 
 const FourOFour = () => (
   <main className={styles.layoutMain}>

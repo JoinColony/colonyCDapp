@@ -11,10 +11,9 @@ import store from '~redux/createReduxStore';
 Logger.setLogLevel(Logger.levels.ERROR);
 
 const rootNode = document.getElementById('root');
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const root = createRoot(rootNode!);
 
 if (rootNode) {
+  const root = createRoot(rootNode);
   ReactModal.setAppElement(rootNode);
   root.render(createElement(Entry, { store }));
 }
