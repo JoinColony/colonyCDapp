@@ -4,6 +4,7 @@ import {
   Outlet,
   Route,
   Routes as RoutesSwitch,
+  useLocation,
   useParams,
 } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
@@ -54,11 +55,12 @@ const ColonyHome = () => {
 
   const [colony] = data?.getColonyByName?.items || [];
 
-  // const { domainFilter: queryDomainFilterId } = parseQS(location?.search) as {
-  //   domainFilter: string | undefined;
-  // };
-
-  const [domainIdFilter, setDomainIdFilter] = useState<number>(0);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const queryDomainIdFilter = searchParams.get('domainFilter');
+  const [domainIdFilter, setDomainIdFilter] = useState<number>(
+    Number(queryDomainIdFilter),
+  );
 
   const filteredDomainId = domainIdFilter || COLONY_TOTAL_BALANCE_DOMAIN_ID;
 
