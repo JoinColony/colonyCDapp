@@ -1,12 +1,12 @@
 import { BigNumber, BigNumberish } from 'ethers';
-import Decimal from 'decimal.js';
+import { formatUnits } from 'ethers/lib/utils';
 
-import { minimalFormatter } from '~utils/numbers';
-import { TokenWithBalances } from '~data/index';
-import { DEFAULT_TOKEN_DECIMALS, SMALL_TOKEN_AMOUNT_FORMAT } from '~constants';
+// import { TokenWithBalances } from '~data/index';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
 export const getBalanceFromToken = (
-  token: TokenWithBalances | undefined,
+  // token: TokenWithBalances | undefined,
+  token: any,
   tokenDomainId = 0,
 ) => {
   let result;
@@ -53,20 +53,7 @@ export const getFormattedTokenValue = (
   value: BigNumberish,
   decimals: any,
 ): string => {
-  const safeDecimals = BigNumber.from(10)
-    .pow(getTokenDecimalsWithFallback(decimals))
-    .toString();
-  const decimalValue = new Decimal(BigNumber.from(value).toString()).div(
-    safeDecimals,
-  );
+  const tokenDecimals = getTokenDecimalsWithFallback(decimals);
 
-  // Testing Dev: add/remove to catch small numbers here
-  // or let numbro handle it in numberFormatter.
-  if (decimalValue.lt(0.00001) && decimalValue.gt(0)) {
-    return SMALL_TOKEN_AMOUNT_FORMAT;
-  }
-
-  return minimalFormatter({
-    value: decimalValue.toString(),
-  });
+  return formatUnits(value, tokenDecimals);
 };
