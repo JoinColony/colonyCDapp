@@ -31,6 +31,10 @@ export const getToken = /* GraphQL */ `
       users {
         nextToken
       }
+      meta {
+        network
+        chainId
+      }
       createdAt
       updatedAt
     }
@@ -93,6 +97,10 @@ export const getColony = /* GraphQL */ `
         nextToken
       }
       type
+      meta {
+        network
+        chainId
+      }
       createdAt
       updatedAt
       colonyNativeTokenId
