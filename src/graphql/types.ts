@@ -137,7 +137,6 @@ export type ColonyStatus = {
   __typename: "ColonyStatus",
   nativeToken?: NativeTokenStatus | null,
   recovery?: boolean | null,
-  deployed?: boolean | null,
 };
 
 export type NativeTokenStatus = {
@@ -228,7 +227,6 @@ export type CreateUniqueColonyInput = {
 export type ColonyStatusInput = {
   nativeToken?: NativeTokenStatusInput | null,
   recovery?: boolean | null,
-  deployed?: boolean | null,
 };
 
 export type NativeTokenStatusInput = {
@@ -751,7 +749,6 @@ export type GetFullColonyByNameQuery = {
       } | null,
       status?:  {
         __typename: "ColonyStatus",
-        deployed?: boolean | null,
         recovery?: boolean | null,
         nativeToken?:  {
           __typename: "NativeTokenStatus",
@@ -759,6 +756,11 @@ export type GetFullColonyByNameQuery = {
           unlockable?: boolean | null,
           unlocked?: boolean | null,
         } | null,
+      } | null,
+      meta?:  {
+        __typename: "Metadata",
+        chainId?: number | null,
+        network?: Network | null,
       } | null,
       tokens?:  {
         __typename: "ModelColonyTokensConnection",
@@ -865,6 +867,11 @@ export type GetCurrentUserQuery = {
               __typename: "Profile",
               displayName?: string | null,
               thumbnail?: string | null,
+            } | null,
+            meta?:  {
+              __typename: "Metadata",
+              chainId?: number | null,
+              network?: Network | null,
             } | null,
           },
           createdAt: string,
@@ -1099,7 +1106,6 @@ export type CreateColonyMutation = {
     status?:  {
       __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deployed?: boolean | null,
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
@@ -1158,7 +1164,6 @@ export type UpdateColonyMutation = {
     status?:  {
       __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deployed?: boolean | null,
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
@@ -1217,7 +1222,6 @@ export type DeleteColonyMutation = {
     status?:  {
       __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deployed?: boolean | null,
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
@@ -1843,7 +1847,6 @@ export type GetColonyQuery = {
     status?:  {
       __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deployed?: boolean | null,
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
@@ -2447,7 +2450,6 @@ export type OnCreateColonySubscription = {
     status?:  {
       __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deployed?: boolean | null,
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
@@ -2505,7 +2507,6 @@ export type OnUpdateColonySubscription = {
     status?:  {
       __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deployed?: boolean | null,
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
@@ -2563,7 +2564,6 @@ export type OnDeleteColonySubscription = {
     status?:  {
       __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deployed?: boolean | null,
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
