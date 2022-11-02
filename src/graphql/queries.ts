@@ -88,7 +88,6 @@ export const getColony = /* GraphQL */ `
       }
       status {
         recovery
-        deployed
       }
       domains {
         nextToken

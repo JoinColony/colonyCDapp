@@ -187,7 +187,6 @@ export const createColony = /* GraphQL */ `
       }
       status {
         recovery
-        deployed
       }
       domains {
         nextToken
@@ -237,7 +236,6 @@ export const updateColony = /* GraphQL */ `
       }
       status {
         recovery
-        deployed
       }
       domains {
         nextToken
@@ -287,7 +285,6 @@ export const deleteColony = /* GraphQL */ `
       }
       status {
         recovery
-        deployed
       }
       domains {
         nextToken

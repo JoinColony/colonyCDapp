@@ -99,7 +99,6 @@ export const onCreateColony = /* GraphQL */ `
       }
       status {
         recovery
-        deployed
       }
       domains {
         nextToken
@@ -146,7 +145,6 @@ export const onUpdateColony = /* GraphQL */ `
       }
       status {
         recovery
-        deployed
       }
       domains {
         nextToken
@@ -193,7 +191,6 @@ export const onDeleteColony = /* GraphQL */ `
       }
       status {
         recovery
-        deployed
       }
       domains {
         nextToken
