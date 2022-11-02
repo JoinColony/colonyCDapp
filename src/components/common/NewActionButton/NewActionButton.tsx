@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 
 import Button from '~shared/Button';
 import { useAppContext } from '~hooks';
-import { Colony } from '~types';
+// import { Colony } from '~types';
 import { SpinnerLoader } from '~shared/Preloaders';
 
 // import ColonyActionsDialog from '~dialogs/ColonyActionsDialog';
@@ -46,10 +46,10 @@ const MSG = defineMessages({
   },
 });
 
-interface Props {
-  colony: Colony;
-  ethDomainId?: number;
-}
+// interface Props {
+//   colony: Colony;
+//   ethDomainId?: number;
+// }
 
 // interface RootState {
 //   users: {
@@ -59,7 +59,7 @@ interface Props {
 //   };
 // }
 
-const NewActionButton = ({ colony, ethDomainId }: Props) => {
+const NewActionButton = (/* { colony, ethDomainId }: Props */) => {
   const { user } = useAppContext();
   // const { version: networkVersion } = useNetworkContracts();
 

@@ -82,7 +82,7 @@ const ColonyHome = () => {
                 colony={colony}
                 filteredDomainId={filteredDomainId}
                 onDomainChange={setDomainIdFilter}
-                ethDomainId={filteredDomainId}
+                // ethDomainId={filteredDomainId}
               >
                 {/* <ColonyActions colony={colony} ethDomainId={filteredDomainId} /> */}
                 <div>Actions & Motions List</div>

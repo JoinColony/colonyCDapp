@@ -10,13 +10,13 @@ import { Token } from '~types';
 import styles from './ColonyFundingWidget.css';
 
 interface Props {
-  currentDomainId: number;
+  // currentDomainId: number;
   token: Token;
   isTokenNative?: boolean;
   isNativeTokenLocked?: boolean;
 }
 
-const displayName = 'dashboard.ColonyHome.ColonyFundingWidget.TokenItem';
+const displayName = 'common.ColonyHome.ColonyFundingWidget.TokenItem';
 
 const TokenItem = ({
   // currentDomainId,

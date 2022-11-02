@@ -37,7 +37,7 @@ type Props = {
   showNavigation?: boolean;
   showSidebar?: boolean;
   showActions?: boolean;
-  ethDomainId?: number;
+  // ethDomainId?: number;
 };
 
 const displayName = 'common.ColonyHome.ColonyHomeLayout';
@@ -46,7 +46,7 @@ const ColonyHomeLayout = ({
   colony,
   filteredDomainId,
   children,
-  ethDomainId,
+  // ethDomainId,
   showControls = true,
   showNavigation = true,
   showSidebar = true,
@@ -84,7 +84,8 @@ const ColonyHomeLayout = ({
                   />
                 </div>
                 {showActions && (
-                  <NewActionButton colony={colony} ethDomainId={ethDomainId} />
+                  <NewActionButton /* colony={colony} ethDomainId={ethDomainId} */
+                  />
                 )}
               </div>
             </>
@@ -100,7 +101,7 @@ const ColonyHomeLayout = ({
             {/* <ColonyUnclaimedTransfers colony={colony} /> */}
             <ColonyFundingWidget
               colony={colony}
-              currentDomainId={filteredDomainId}
+              // currentDomainId={filteredDomainId}
             />
             <ColonyMembersWidget
               colony={colony}

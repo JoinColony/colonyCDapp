@@ -23,11 +23,11 @@ const MSG = defineMessages({
 
 interface Props {
   colony: Colony;
-  currentDomainId: number;
+  // currentDomainId: number;
 }
 
 const ColonyFundingWidget = ({
-  currentDomainId,
+  // currentDomainId,
   colony: {
     name,
     tokens,
@@ -64,7 +64,7 @@ const ColonyFundingWidget = ({
             > */}
             <div className={styles.tokenBalance}>
               <TokenItem
-                currentDomainId={currentDomainId}
+                // currentDomainId={currentDomainId}
                 token={token}
                 isTokenNative={token.tokenAddress === nativeTokenAddress}
                 isNativeTokenLocked={!status?.nativeToken?.unlocked}
