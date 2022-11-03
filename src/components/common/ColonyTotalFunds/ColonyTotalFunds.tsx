@@ -13,8 +13,8 @@ import IconTooltip from '~shared/IconTooltip';
 // } from '~data/index';
 import { Address } from '~types/index';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { useCanInteractWithColony } from '~hooks';
 // import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-// import { checkIfNetworkIsAllowed } from '~utils/networks';
 
 import { Colony, ColonyTokens } from '~types';
 
@@ -56,7 +56,9 @@ const ColonyTotalFunds = ({
     // version,
     // isNativeTokenLocked,
   },
+  colony,
 }: Props) => {
+  const canInteractWithCurrentColony = useCanInteractWithColony(colony);
   const [currentTokenAddress, setCurrentTokenAddress] =
     useState<Address>(nativeTokenAddress);
 
@@ -86,10 +88,8 @@ const ColonyTotalFunds = ({
 
   // const isSupportedColonyVersion =
   //   parseInt(version, 10) >= ColonyVersion.LightweightSpaceship;
-  // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
 
   const isSupportedColonyVersion = true;
-  const isNetworkAllowed = true;
 
   // if (!data || !currentToken || isLoadingTokenBalances) {
   //   return (
@@ -112,7 +112,11 @@ const ColonyTotalFunds = ({
           data-test="colonyTotalFunds"
         />
         <ColonyTotalFundsPopover
-          tokens={tokens?.items as FullColonyTokens[]}
+          /*
+           * @TODO Plese remove the ignore and fix types, once this gets refactored
+           */
+          // @ts-ignore
+          tokens={tokens?.items}
           onSelectToken={setCurrentTokenAddress}
           currentTokenAddress={currentTokenAddress}
         >
@@ -139,7 +143,7 @@ const ColonyTotalFunds = ({
       </div>
       <div className={styles.totalBalanceCopy}>
         <FormattedMessage {...MSG.totalBalance} />
-        {isSupportedColonyVersion && isNetworkAllowed && (
+        {isSupportedColonyVersion && canInteractWithCurrentColony && (
           <Link
             className={styles.manageFundsLink}
             to={`/colony/${name}/funds`}
