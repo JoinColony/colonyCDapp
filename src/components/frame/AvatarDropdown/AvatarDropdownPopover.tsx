@@ -72,7 +72,7 @@ const AvatarDropdownPopover = ({ closePopover, colony }: Props) => {
    */
   const canInteractWithNetwork = useCanInteractWithNetwork();
 
-  const renderUserSection = useCallback(() => {
+  const renderUserCreateSection = useCallback(() => {
     return (
       <DropdownMenuSection separator>
         {!userHasAccountRegistered && (
@@ -88,29 +88,32 @@ const AvatarDropdownPopover = ({ closePopover, colony }: Props) => {
             />
           </DropdownMenuItem>
         )}
-        {userHasAccountRegistered && (
-          <DropdownMenuItem>
-            <NavLink
-              to={`/user/${user?.name}`}
-              text={MSG.myProfile}
-              data-test="userProfile"
-            />
-          </DropdownMenuItem>
-        )}
-        {userHasAccountRegistered && (
-          <DropdownMenuItem>
-            <NavLink
-              to={USER_EDIT_ROUTE}
-              text={MSG.settings}
-              data-test="userProfileSettings"
-            />
-          </DropdownMenuItem>
-        )}
       </DropdownMenuSection>
     );
-  }, [colony, user, userHasAccountRegistered]);
+  }, [colony, userHasAccountRegistered]);
 
-  const renderColonySection = () => (
+  const renderUserSection = useCallback(() => {
+    return (
+      <DropdownMenuSection separator>
+        <DropdownMenuItem>
+          <NavLink
+            to={`/user/${user?.name}`}
+            text={MSG.myProfile}
+            data-test="userProfile"
+          />
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <NavLink
+            to={USER_EDIT_ROUTE}
+            text={MSG.settings}
+            data-test="userProfileSettings"
+          />
+        </DropdownMenuItem>
+      </DropdownMenuSection>
+    );
+  }, [user]);
+
+  const renderColonyCreateSection = () => (
     <DropdownMenuSection separator>
       <DropdownMenuItem>
         <NavLink to={CREATE_COLONY_ROUTE} text={MSG.createColony} />
@@ -155,8 +158,10 @@ const AvatarDropdownPopover = ({ closePopover, colony }: Props) => {
 
   return (
     <DropdownMenu onClick={closePopover}>
-      {userHasAccountRegistered && renderUserSection()}
-      {canInteractWithNetwork && renderColonySection()}
+      {userHasAccountRegistered
+        ? renderUserSection()
+        : renderUserCreateSection()}
+      {canInteractWithNetwork && renderColonyCreateSection()}
       {renderHelperSection()}
       {renderMetaSection()}
     </DropdownMenu>
