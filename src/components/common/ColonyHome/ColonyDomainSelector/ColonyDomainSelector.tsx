@@ -73,22 +73,6 @@ const ColonyDomainSelector = ({
     [colony, domains],
   );
 
-  /*
-   * @TODO a proper color transformation
-   * This was just quickly thrown together to ensure it works
-   * Maybe even change the gql scalar type ?
-   */
-  const transformColor = useCallback((domainColor) => {
-    const colorMap = {
-      0: 0, // Light Pink
-      LIGHTPINK: 0,
-      5: 5, // Yellow
-      RED: 6,
-      ORANGE: 13,
-    };
-    return colorMap[domainColor];
-  }, []);
-
   const renderActiveOption = useCallback<
     (option: SelectOption | undefined, label: string) => ReactNode
   >(
@@ -97,12 +81,12 @@ const ColonyDomainSelector = ({
       const color = getDomainColor(value);
       return (
         <div className={styles.activeItem}>
-          <ColorTag color={transformColor(color)} />{' '}
+          <ColorTag color={color} />{' '}
           <div className={styles.activeItemLabel}>{label}</div>
         </div>
       );
     },
-    [getDomainColor, transformColor],
+    [getDomainColor],
   );
   // const oneTxPaymentExtension = data?.processedColony?.installedExtensions.find(
   //   ({ details, extensionId: extensionName }) =>
