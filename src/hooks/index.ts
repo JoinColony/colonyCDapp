@@ -36,6 +36,7 @@ export { default as useUserAvatarImageFromIPFS } from './useUserAvatarImageFromI
 export { default as useUserSettings, SlotKey } from './useUserSettings';
 export { default as useWindowSize } from './useWindowSize';
 export { default as useAppContext } from './useAppContext';
+export { default as useCanInteractWithColony } from './useCanInteractWithColony';
 
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously
