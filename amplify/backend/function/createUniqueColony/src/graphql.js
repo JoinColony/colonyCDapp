@@ -28,42 +28,6 @@ module.exports = {
     ) {
       createColony(input: $input, condition: $condition) {
         id
-        name
-        nativeToken {
-          id
-          name
-          symbol
-          decimals
-          type
-          createdAt
-          updatedAt
-        }
-        tokens {
-          nextToken
-        }
-        profile {
-          avatar
-          thumbnail
-          displayName
-          bio
-          location
-          website
-          email
-        }
-        status {
-          recovery
-          deployed
-        }
-        domains {
-          nextToken
-        }
-        watchers {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        colonyNativeTokenId
-        type
       }
     }
   `,
@@ -73,14 +37,12 @@ module.exports = {
       $sortDirection: ModelSortDirection
       $filter: ModelTokenFilterInput
       $limit: Int
-      $nextToken: String
     ) {
       getTokenByAddress(
         id: $id
         sortDirection: $sortDirection
         filter: $filter
         limit: $limit
-        nextToken: $nextToken
       ) {
         items {
           id
@@ -91,7 +53,6 @@ module.exports = {
           createdAt
           updatedAt
         }
-        nextToken
       }
     }
   `,
