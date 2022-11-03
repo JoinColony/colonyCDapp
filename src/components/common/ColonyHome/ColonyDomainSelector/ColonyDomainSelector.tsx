@@ -7,7 +7,7 @@ import DomainDropdown from '~shared/DomainDropdown';
 // import { useDialog } from '~shared/Dialog';
 // import EditDomainDialog from '~dialogs/EditDomainDialog';
 
-// import { useAppContext } from '~hooks';
+import { useCanInteractWithColony } from '~hooks';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
 import { Colony, Color, graphQlDomainColorMap } from '~types';
@@ -34,7 +34,7 @@ const ColonyDomainSelector = ({
   colony: { domains },
   colony,
 }: Props) => {
-  // const { user } = useAppContext();
+  const canInteractWithCurrentColony = useCanInteractWithColony(colony);
   // const { data } = useColonyExtensionsQuery({
   //   variables: { address: colonyAddress },
   // });
@@ -88,25 +88,6 @@ const ColonyDomainSelector = ({
     },
     [getDomainColor],
   );
-  // const oneTxPaymentExtension = data?.processedColony?.installedExtensions.find(
-  //   ({ details, extensionId: extensionName }) =>
-  //     details?.initialized &&
-  //     !details?.missingPermissions.length &&
-  //     extensionName === Extension.OneTxPayment,
-  // );
-  // const mustUpgradeOneTx = oneTxMustBeUpgraded(oneTxPaymentExtension);
-
-  // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
-  // const isSupportedColonyVersion =
-  //   parseInt(colony.version, 10) >= ColonyVersion.LightweightSpaceship;
-  // const hasRegisteredProfile = user?.name;
-  // const canInteract =
-  //   isSupportedColonyVersion &&
-  //   isNetworkAllowed &&
-  //   hasRegisteredProfile &&
-  //   colony?.isDeploymentFinished &&
-  //   !mustUpgradeOneTx;
-  const canInteract = true;
 
   return (
     <Form<FormValues>
@@ -120,9 +101,13 @@ const ColonyDomainSelector = ({
         name="filteredDomainId"
         currentDomainId={filteredDomainId}
         onDomainChange={onDomainChange}
-        onDomainEdit={canInteract ? handleEditDomain : undefined}
+        onDomainEdit={
+          canInteractWithCurrentColony ? handleEditDomain : undefined
+        }
         footerComponent={
-          canInteract ? <CreateDomainButton colony={colony} /> : undefined
+          canInteractWithCurrentColony ? (
+            <CreateDomainButton colony={colony} />
+          ) : undefined
         }
         renderActiveOptionFn={renderActiveOption}
         showAllDomains
