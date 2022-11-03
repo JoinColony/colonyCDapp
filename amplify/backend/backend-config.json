@@ -58,7 +58,7 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "updateExtensionByColonyAndHash": {
+    "fetchTokensBalances": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
