@@ -16,18 +16,6 @@
   line-height: 26px;
 }
 
-.networkInfo {
-  font-weight: var(--weight-bold);
-  color: var(--dark-grey);
-  cursor: default;
-}
-
-.networkInfo:hover {
-  background-color: color-mod(var(--colony-blue) alpha(10%));
-  color: var(--colony-blue);
-  cursor: pointer;
-}
-
 .reputation:hover {
   background-color: color-mod(var(--colony-blue) alpha(10%));
   cursor: pointer;
