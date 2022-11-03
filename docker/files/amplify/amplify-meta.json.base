@@ -51,5 +51,10 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
+    "fetchTokensBalances": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
   }
 }
