@@ -35,10 +35,6 @@
 // import { useColonyFromNameQuery } from '~data/index';
 
 // const MSG = defineMessages({
-//   connect: {
-//     id: 'utils.hooks.useTitle.connect',
-//     defaultMessage: `Connect Wallet | Colony`,
-//   },
 //   createColony: {
 //     id: 'utils.hooks.useTitle.creatColony',
 //     defaultMessage: `Create Colony | Colony`,

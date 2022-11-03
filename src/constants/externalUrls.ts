@@ -27,11 +27,6 @@ export const TOKEN_ACTIVATION_INFO = `https://colony.gitbook.io/colony/key-conce
 export const TOKEN_UNLOCK_INFO = `https://colony.gitbook.io/colony/manage-funds/unlock-token`;
 
 /*
- * Wallet
- */
-export const WALLET_CONNECT_XDAI = `https://colony.gitbook.io/colony/get-started/connect-metamask-to-xdai`;
-
-/*
  * Recovery Mode
  */
 export const RECOVERY_HELP = `https://colony.gitbook.io/colony/advanced-features/recovery-mode`;

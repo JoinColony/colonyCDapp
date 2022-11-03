@@ -19,19 +19,12 @@ import { private_keys as ganachePrivateKeys } from '../../../../amplify/mock-dat
 //   create as createSoftwareWallet,
 //   open as purserOpenSoftwareWallet,
 // } from '@purser/software';
-// import {
-//   open as purserOpenMetaMaskWallet,
-//   accountChangeHook,
-//   chainChangeHook,
-// } from '@purser/metamask';
 // import { addChain } from '@purser/metamask/lib-esm/helpers';
 
 import { setLastWallet, getLastWallet } from '~utils/autoLogin';
 
 // import { ActionTypes } from '../../actionTypes';
-import // Action,
-// AllActions,
-'../../types/actions';
+// import { Action, AllActions } from '../../types/actions';
 import { Network, DevelopmentWallets } from '~types';
 // import { createAddress } from '~utils/web3';
 // import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';
@@ -154,9 +147,7 @@ const onboard = Onboard({
 // }
 
 export function* getWallet() {
-  // yield openMetamaskWallet();
   // yield openGanacheWallet(action);
-  // yield createEtherealWallet();
 
   const lastWalletLabel = getLastWallet();
   const connectOptions = {
