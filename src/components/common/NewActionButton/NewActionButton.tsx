@@ -4,9 +4,7 @@ import { defineMessages } from 'react-intl';
 // import { useSelector } from 'react-redux';
 
 import Button from '~shared/Button';
-import { useAppContext } from '~hooks';
-// import { Colony } from '~types';
-import { SpinnerLoader } from '~shared/Preloaders';
+// import { SpinnerLoader } from '~core/Preloaders';
 
 // import ColonyActionsDialog from '~dialogs/ColonyActionsDialog';
 // import ExpendituresDialog from '~dialogs/ExpendituresDialog';
@@ -31,11 +29,13 @@ import { SpinnerLoader } from '~shared/Preloaders';
 // import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
 
 // import { useNaiveBranchingDialogWizard } from '~utils/hooks';
-// import { checkIfNetworkIsAllowed } from '~utils/networks';
 // import {
 //   colonyMustBeUpgraded,
 //   oneTxMustBeUpgraded,
 // } from '~modules/dashboard/checks';
+
+import { Colony } from '~types';
+import { useCanInteractWithColony } from '~hooks';
 
 const displayName = 'commmon.ColonyHome.NewActionButton';
 
@@ -46,10 +46,10 @@ const MSG = defineMessages({
   },
 });
 
-// interface Props {
-//   colony: Colony;
-//   ethDomainId?: number;
-// }
+interface Props {
+  colony: Colony;
+  // ethDomainId?: number;
+}
 
 // interface RootState {
 //   users: {
@@ -59,8 +59,9 @@ const MSG = defineMessages({
 //   };
 // }
 
-const NewActionButton = (/* { colony, ethDomainId }: Props */) => {
-  const { user } = useAppContext();
+const NewActionButton = ({ colony /* ethDomainId */ }: Props) => {
+  const canInteractWithCurrentColony = useCanInteractWithColony(colony);
+
   // const { version: networkVersion } = useNetworkContracts();
 
   // const [isLoadingUser, setIsLoadingUser] = useState<boolean>(!ethereal);
@@ -257,7 +258,6 @@ const NewActionButton = (/* { colony, ethDomainId }: Props */) => {
   // );
   // const mustUpgradeOneTx = oneTxMustBeUpgraded(oneTxPaymentExtension);
   // const hasRegisteredProfile = !!username && !ethereal;
-  // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
   // const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
   // const isLoadingData = isLoadingExtensions || isLoadingUser;
   const isLoadingData = false;
@@ -272,12 +272,10 @@ const NewActionButton = (/* { colony, ethDomainId }: Props */) => {
           onClick={() => startWizardFlow('dashboard.ColonyActionsDialog')}
           // disabled={
           //   mustUpgrade ||
-          //   !isNetworkAllowed ||
-          //   !user?.name ||
           //   !colony?.isDeploymentFinished ||
           //   mustUpgradeOneTx
           // }
-          disabled={!user?.name}
+          disabled={!canInteractWithCurrentColony}
           data-test="newActionButton"
         />
       )}
