@@ -72,11 +72,13 @@ const UserNavigation = () => {
         </div>
       */}
       <Wallet />
-      <AvatarDropdown preventTransactions={false} colony={{}} />
-      {/* <AvatarDropdown
-        preventTransactions={!isNetworkAllowed}
-        colony={colonyData?.processedColony as Colony}
-      /> */}
+      <AvatarDropdown
+        /*
+         * @TODO Dependency on colony data should be removed from here
+         * Hopefully this will be achieved by #66
+         */
+        colony={{}}
+      />
     </div>
   );
 };
