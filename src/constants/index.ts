@@ -123,6 +123,16 @@ export const TOKEN_DATA = {
   [Network.Mainnet]: ETHER_TOKEN,
 };
 
+/*
+ * Chains on which the network contracts are deployed
+ * Since CDapp is multichain, this tells us which of those "multi" chains
+ * we can actually create colonies on
+ */
+export const NETWORK_AVAILABLE_CHAINS = {
+  [Network.Ganache]: GANACHE_NETWORK,
+  [Network.Gnosis]: GNOSIS_NETWORK,
+};
+
 export const DEFAULT_NETWORK_TOKEN = TOKEN_DATA[DEFAULT_NETWORK];
 
 export const DEFAULT_NETWORK_INFO = NETWORK_DATA[DEFAULT_NETWORK];
