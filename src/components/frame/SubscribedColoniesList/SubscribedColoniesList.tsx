@@ -7,12 +7,11 @@ import NavLink from '~shared/NavLink';
 import ColonyAvatar from '~shared/ColonyAvatar';
 
 import { CREATE_COLONY_ROUTE } from '~routes/index';
-// import { checkIfNetworkIsAllowed } from '~utils/networks';
-import { useAppContext } from '~hooks';
+import { useAppContext, useCanInteractWithNetwork } from '~hooks';
 
 import styles from './SubscribedColoniesList.css';
 
-const displayName = 'root.SubscribedColoniesList';
+const displayName = 'frame.SubscribedColoniesList';
 
 const MSG = defineMessages({
   iconTitleCreateNewColony: {
@@ -23,6 +22,7 @@ const MSG = defineMessages({
 
 const SubscribedColoniesList = () => {
   const { user, userLoading } = useAppContext();
+  const canInteractWithNetwork = useCanInteractWithNetwork();
 
   const { items: watchlist = [] } = user?.watchlist || {};
 
@@ -42,46 +42,43 @@ const SubscribedColoniesList = () => {
             <SpinnerLoader appearance={{ size: 'medium' }} />
           </div>
         )}
-        {
-          // data?.user?.processedColonies.map((colony) => {
-          [...watchlist].sort(sortByDate).map((item) => {
-            const { colonyAddress = '', name } = item?.colony || {};
-            return (
-              <div className={styles.item} key={colonyAddress}>
-                <NavLink
-                  activeClassName={styles.activeColony}
-                  className={styles.itemLink}
-                  title={name}
-                  to={`/colony/${name}`}
-                >
-                  <div className={styles.itemImage}>
-                    <ColonyAvatar
-                      colony={item?.colony}
-                      colonyAddress={colonyAddress}
-                      size="s"
-                    />
-                  </div>
-                </NavLink>
-              </div>
-            );
-          })
-        }
+        {[...watchlist].sort(sortByDate).map((item) => {
+          const { colonyAddress = '', name } = item?.colony || {};
+          return (
+            <div className={styles.item} key={colonyAddress}>
+              <NavLink
+                activeClassName={styles.activeColony}
+                className={styles.itemLink}
+                title={name}
+                to={`/colony/${name}`}
+              >
+                <div className={styles.itemImage}>
+                  <ColonyAvatar
+                    colony={item?.colony}
+                    colonyAddress={colonyAddress}
+                    size="s"
+                  />
+                </div>
+              </NavLink>
+            </div>
+          );
+        })}
       </div>
-      {/* {(ethereal || isNetworkAllowed) && ( */}
-      <div className={`${styles.item} ${styles.newColonyItem}`}>
-        <NavLink
-          className={styles.itemLink}
-          to={CREATE_COLONY_ROUTE}
-          data-test="createColony"
-        >
-          <Icon
-            className={styles.newColonyIcon}
-            name="circle-plus"
-            title={MSG.iconTitleCreateNewColony}
-          />
-        </NavLink>
-      </div>
-      {/* )} */}
+      {canInteractWithNetwork && (
+        <div className={`${styles.item} ${styles.newColonyItem}`}>
+          <NavLink
+            className={styles.itemLink}
+            to={CREATE_COLONY_ROUTE}
+            data-test="createColony"
+          >
+            <Icon
+              className={styles.newColonyIcon}
+              name="circle-plus"
+              title={MSG.iconTitleCreateNewColony}
+            />
+          </NavLink>
+        </div>
+      )}
     </div>
   );
 };
