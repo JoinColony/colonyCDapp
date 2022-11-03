@@ -2,7 +2,9 @@ import React, { useCallback, useMemo, ReactNode, ComponentProps } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Appearance, Select, SelectOption } from '~shared/Fields';
-import ColorTag, { Color } from '~shared/ColorTag';
+import ColorTag from '~shared/ColorTag';
+
+import { Color } from '~types';
 
 import styles from './ColorSelect.css';
 

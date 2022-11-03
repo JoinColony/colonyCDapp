@@ -1,17 +1,16 @@
 import React, { ReactNode, useCallback } from 'react';
 // import { ColonyVersion, ROOT_DOMAIN_ID, Extension } from '@colony/colony-js';
 
-import ColorTag, { Color } from '~shared/ColorTag';
+import ColorTag from '~shared/ColorTag';
 import { Form, SelectOption } from '~shared/Fields';
 import DomainDropdown from '~shared/DomainDropdown';
 // import { useDialog } from '~shared/Dialog';
 // import EditDomainDialog from '~dialogs/EditDomainDialog';
 
-import { useAppContext } from '~hooks';
+// import { useAppContext } from '~hooks';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-// import { checkIfNetworkIsAllowed } from '~utils/networks';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
-import { Colony } from '~types';
+import { Colony, Color, graphQlDomainColorMap } from '~types';
 
 import CreateDomainButton from './CreateDomainButton';
 
@@ -35,7 +34,7 @@ const ColonyDomainSelector = ({
   colony: { domains },
   colony,
 }: Props) => {
-  const { user } = useAppContext();
+  // const { user } = useAppContext();
   // const { data } = useColonyExtensionsQuery({
   //   variables: { address: colonyAddress },
   // });
@@ -65,9 +64,11 @@ const ColonyDomainSelector = ({
         return defaultColor;
       }
       const domain = domains?.items?.find(
-        ({ nativeId }) => Number(domainId) === nativeId,
+        (currentDomain) => Number(domainId) === currentDomain?.nativeId,
       );
-      return domain ? domain.color : defaultColor;
+      return domain
+        ? graphQlDomainColorMap[domain?.color || defaultColor]
+        : defaultColor;
     },
     [colony, domains],
   );
@@ -114,7 +115,7 @@ const ColonyDomainSelector = ({
   // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
   // const isSupportedColonyVersion =
   //   parseInt(colony.version, 10) >= ColonyVersion.LightweightSpaceship;
-  const hasRegisteredProfile = user?.name;
+  // const hasRegisteredProfile = user?.name;
   // const canInteract =
   //   isSupportedColonyVersion &&
   //   isNetworkAllowed &&

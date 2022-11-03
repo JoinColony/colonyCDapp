@@ -1,7 +1,6 @@
 import { constants as ethersContants } from 'ethers';
 
-import { Color } from '~shared/ColorTag';
-import { Network } from '~types';
+import { Network, Color } from '~types';
 
 export * from './externalUrls';
 

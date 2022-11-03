@@ -1,0 +1,57 @@
+import { DomainColor } from '~gql';
+
+export enum Color {
+  LightPink,
+  Pink,
+  Black,
+  EmeraldGreen,
+  Blue,
+  Yellow,
+  Red,
+  Green,
+  Periwinkle,
+  Gold,
+  Aqua,
+  BlueGrey,
+  Purple,
+  Orange,
+  Magenta,
+  PurpleGrey,
+}
+
+export const hexMap: Record<Color, string> = {
+  [Color.Pink]: '#F5416E',
+  [Color.Black]: '#00284B',
+  [Color.LightPink]: '#FFBBDC',
+  [Color.EmeraldGreen]: '#19A582',
+  [Color.Blue]: '#4B9AD6',
+  [Color.Yellow]: '#F3D166',
+  [Color.Red]: '#E2506F',
+  [Color.Green]: '#4DA284',
+  [Color.Periwinkle]: '#4B6AD6',
+  [Color.Gold]: '#F3AA66',
+  [Color.Aqua]: '#50D0E2',
+  [Color.BlueGrey]: '#4D79A2',
+  [Color.Purple]: '#564BD6',
+  [Color.Orange]: '#F37F66',
+  [Color.Magenta]: '#BC50E2',
+  [Color.PurpleGrey]: '#4D5BA2',
+};
+
+export const graphQlDomainColorMap: Record<string, Color> = {
+  [DomainColor.LIGHTPINK]: Color.LightPink,
+  [DomainColor.PINK]: Color.Pink,
+  [DomainColor.BLACK]: Color.Black,
+  [DomainColor.EMERALDGREEN]: Color.EmeraldGreen,
+  [DomainColor.BLUE]: Color.Blue,
+  [DomainColor.YELLOW]: Color.Yellow,
+  [DomainColor.RED]: Color.Red,
+  [DomainColor.GREEN]: Color.Green,
+  [DomainColor.GOLD]: Color.Gold,
+  [DomainColor.AQUA]: Color.Aqua,
+  [DomainColor.BLUEGREY]: Color.BlueGrey,
+  [DomainColor.PURPLE]: Color.Purple,
+  [DomainColor.ORANGE]: Color.Orange,
+  [DomainColor.MAGENTA]: Color.Magenta,
+  [DomainColor.PURPLEGREY]: Color.PurpleGrey,
+};
