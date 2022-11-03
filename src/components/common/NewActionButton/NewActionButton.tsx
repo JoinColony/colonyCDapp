@@ -4,6 +4,7 @@ import { defineMessages } from 'react-intl';
 // import { useSelector } from 'react-redux';
 
 import Button from '~shared/Button';
+import { Tooltip } from '~shared/Popover';
 // import { SpinnerLoader } from '~core/Preloaders';
 
 // import ColonyActionsDialog from '~dialogs/ColonyActionsDialog';
@@ -37,12 +38,18 @@ import Button from '~shared/Button';
 import { Colony } from '~types';
 import { useCanInteractWithColony } from '~hooks';
 
+import styles from './ColonyHomeActions.css';
+
 const displayName = 'commmon.ColonyHome.NewActionButton';
 
 const MSG = defineMessages({
   newAction: {
     id: `${displayName}.newAction`,
     defaultMessage: 'New Action',
+  },
+  walletNotConnectedWarning: {
+    id: `${displayName}.walletNotConnectedWarning`,
+    defaultMessage: `To interact with a Colony you must have your wallet connected, have a user profile registered, and be on the same network as the specific colony.`,
   },
 });
 
@@ -266,18 +273,27 @@ const NewActionButton = ({ colony /* ethDomainId */ }: Props) => {
     <>
       {isLoadingData && <SpinnerLoader appearance={{ size: 'medium' }} />}
       {!isLoadingData && (
-        <Button
-          appearance={{ theme: 'primary', size: 'large' }}
-          text={MSG.newAction}
-          onClick={() => startWizardFlow('dashboard.ColonyActionsDialog')}
-          // disabled={
-          //   mustUpgrade ||
-          //   !colony?.isDeploymentFinished ||
-          //   mustUpgradeOneTx
-          // }
-          disabled={!canInteractWithCurrentColony}
-          data-test="newActionButton"
-        />
+        <Tooltip
+          trigger={!canInteractWithCurrentColony ? 'hover' : null}
+          content={
+            <span className={styles.tooltipWrapper}>
+              <FormattedMessage {...MSG.walletNotConnectedWarning} />
+            </span>
+          }
+        >
+          <Button
+            appearance={{ theme: 'primary', size: 'large' }}
+            text={MSG.newAction}
+            onClick={() => startWizardFlow('dashboard.ColonyActionsDialog')}
+            // disabled={
+            //   mustUpgrade ||
+            //   !colony?.isDeploymentFinished ||
+            //   mustUpgradeOneTx
+            // }
+            disabled={!canInteractWithCurrentColony}
+            data-test="newActionButton"
+          />
+        </Tooltip>
       )}
     </>
   );
