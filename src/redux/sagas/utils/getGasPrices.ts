@@ -34,12 +34,6 @@ interface BlockscoutGasStationAPIResponse {
 const DEFAULT_GAS_PRICE = BigNumber.from('1000000000');
 
 const fetchGasPrices = async (): Promise<GasPricesProps> => {
-  const userWallet = getContext(ContextModule.Wallet);
-
-  if (!userWallet) {
-    throw new Error('User wallet is not connected, aborting gas price update');
-  }
-
   const defaultGasPrices = {
     timestamp: Date.now(),
     network: DEFAULT_GAS_PRICE,
@@ -54,6 +48,19 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
   };
 
   try {
+    let userWallet;
+    try {
+      userWallet = getContext(ContextModule.Wallet);
+    } catch (error) {
+      // user wallet not set yet
+    }
+
+    if (!userWallet) {
+      throw new Error(
+        'User wallet is not connected, aborting gas price update',
+      );
+    }
+
     const rawNetworkGasPrice = await userWallet.provider.request({
       method: RpcMethods.GasPrice,
     });

@@ -72,6 +72,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       if (wallet) {
         // It means that the user logged out
         setWallet(undefined);
+        setUser(undefined);
       }
       // It means that it was not set in context yet
     }
