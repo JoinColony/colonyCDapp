@@ -5,9 +5,11 @@ import Icon from '~shared/Icon';
 
 import styles from './MetaMaskWalletInteraction.css';
 
+const displayName = 'frame.GasStation.MetaMaskWalletInteraction';
+
 const MSG = defineMessages({
   metamaskPromptText: {
-    id: 'users.GasStation.MetaMaskWalletInteraction.metamaskPromptText',
+    id: `{displayName}.metamaskPromptText`,
     defaultMessage: `Please finish this {isMetatransaction, select,
       true {metatransaction}
       false {transaction}
@@ -15,8 +17,6 @@ const MSG = defineMessages({
     } on MetaMask`,
   },
 });
-
-const displayName = 'users.GasStation.MetaMaskWalletInteraction';
 
 interface Props {
   transactionType?: string;

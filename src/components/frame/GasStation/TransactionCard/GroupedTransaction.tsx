@@ -23,7 +23,7 @@ interface Props {
   selectedTransactionIdx: number;
 }
 
-const displayName = 'users.GasStation.GroupedTransaction';
+const displayName = 'frame.GasStation.GroupedTransaction';
 
 const GroupedTransaction = ({
   appearance,
