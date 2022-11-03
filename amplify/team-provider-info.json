@@ -17,7 +17,8 @@
         "createUniqueUser": {},
         "createUniqueColony": {},
         "createUniqueDomain": {},
-        "getUserReputation": {}
+        "getUserReputation": {},
+        "fetchTokensBalances": {}
       }
     }
   }
