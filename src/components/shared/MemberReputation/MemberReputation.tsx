@@ -1,23 +1,26 @@
 import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
+import { gql, useQuery } from '@apollo/client';
 import { Id } from '@colony/colony-js';
-import { AddressZero } from '@ethersproject/constants';
 
-import { useUserReputationQuery } from '~data/index';
 import { Address } from '~types';
 import Numeral from '~shared/Numeral';
 import Icon from '~shared/Icon';
 import { calculatePercentageReputation, ZeroValue } from '~utils/reputation';
+import { getUserReputation } from '~gql';
+import { ADDRESS_ZERO } from '~constants';
 
 import styles from './MemberReputation.css';
 
+const displayName = 'MemberReputation';
+
 const MSG = defineMessages({
   starReputationTitle: {
-    id: 'MemberReputation.starReputationTitle',
+    id: `${displayName}.starReputationTitle`,
     defaultMessage: `User reputation value: {reputation}%`,
   },
   starNoReputationTitle: {
-    id: 'MemberReputation.starNoReputationTitle',
+    id: `${displayName}.starNoReputationTitle`,
     defaultMessage: `User has no reputation`,
   },
 });
@@ -31,8 +34,6 @@ interface Props {
   showIconTitle?: boolean;
 }
 
-const displayName = 'MemberReputation';
-
 const MemberReputation = ({
   walletAddress,
   colonyAddress,
@@ -41,24 +42,35 @@ const MemberReputation = ({
   onReputationLoaded = () => null,
   showIconTitle = true,
 }: Props) => {
-  const { data: userReputationData } = useUserReputationQuery({
-    variables: { address: walletAddress, colonyAddress, domainId, rootHash },
-    fetchPolicy: 'cache-and-network',
-  });
-
-  const { data: totalReputation } = useUserReputationQuery({
+  const { data: userReputationData } = useQuery(gql(getUserReputation), {
     variables: {
-      address: AddressZero,
-      colonyAddress,
-      domainId,
-      rootHash,
+      input: {
+        colonyAddress,
+        walletAddress,
+        domainId,
+        rootHash,
+      },
     },
     fetchPolicy: 'cache-and-network',
   });
+  const userReputation = userReputationData?.getUserReputation;
 
-  const userPercentageReputation = calculatePercentageReputation(
-    userReputationData?.userReputation,
-    totalReputation?.userReputation,
+  const { data: totalReputationData } = useQuery(gql(getUserReputation), {
+    variables: {
+      input: {
+        colonyAddress,
+        walletAddress: ADDRESS_ZERO,
+        domainId,
+        rootHash,
+      },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+  const totalReputation = totalReputationData?.getUserReputation;
+
+  const percentageReputation = calculatePercentageReputation(
+    userReputation,
+    totalReputation,
   );
 
   useEffect(() => {
@@ -70,28 +82,25 @@ const MemberReputation = ({
   if (!showIconTitle) {
     iconTitle = undefined;
   } else {
-    iconTitle = userPercentageReputation
+    iconTitle = percentageReputation
       ? MSG.starReputationTitle
       : MSG.starNoReputationTitle;
   }
 
   return (
     <div className={styles.reputationWrapper}>
-      {!userPercentageReputation && (
-        <div className={styles.reputation}>— %</div>
+      {!percentageReputation && <div className={styles.reputation}>— %</div>}
+      {percentageReputation === ZeroValue.NearZero && (
+        <div className={styles.reputation}>{percentageReputation}</div>
       )}
-      {userPercentageReputation === ZeroValue.NearZero && (
-        <div className={styles.reputation}>{userPercentageReputation}</div>
+      {percentageReputation && percentageReputation !== ZeroValue.NearZero && (
+        <Numeral
+          className={styles.reputation}
+          value={percentageReputation}
+          suffix="%"
+        />
       )}
-      {userPercentageReputation &&
-        userPercentageReputation !== ZeroValue.NearZero && (
-          <Numeral
-            className={styles.reputation}
-            appearance={{ theme: 'primary' }}
-            value={userPercentageReputation}
-            suffix="%"
-          />
-        )}
+
       <Icon
         name="star"
         appearance={{ size: 'extraTiny' }}
@@ -100,7 +109,7 @@ const MemberReputation = ({
         titleValues={
           showIconTitle
             ? {
-                reputation: userPercentageReputation,
+                reputation: percentageReputation,
               }
             : undefined
         }

@@ -1,5 +1,3 @@
-@value reputationColor: rgb(255, 176, 0);
-
 .reputationWrapper {
   display: flex;
   align-items: center;
@@ -11,7 +9,7 @@
 .reputation {
   font-size: var(--size-smallish);
   font-weight: var(--weight-bold);
-  color: reputationColor;
+  color: var(--golden);
 }
 
 .icon {
@@ -29,5 +27,5 @@
   left: 0;
   fill: transparent;
   stroke-width: 3px;
-  stroke: reputationColor;
+  stroke: var(--golden);
 }
