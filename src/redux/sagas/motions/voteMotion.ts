@@ -1,11 +1,15 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, ExtensionClient } from '@colony/colony-js';
-import { soliditySha3, soliditySha3Raw } from 'web3-utils';
+import { utils } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { getContext, ContextModule } from '~context';
-import { putError, takeFrom, updateMotionValues } from '../utils';
+import {
+  putError,
+  takeFrom,
+  updateMotionValues,
+  getColonyManager,
+} from '../utils';
 
 import {
   createTransaction,
@@ -18,12 +22,11 @@ import { signMessage } from '../messages';
 function* voteMotion({
   meta,
   payload: { userAddress, colonyAddress, motionId, vote },
-}: Action<ActionTypes.COLONY_MOTION_VOTE>) {
+}: Action<ActionTypes.MOTION_VOTE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const context = getContext(ContextModule.ColonyManager);
-    const colonyManager = getContext(ContextModule.ColonyManager);
-    const colonyClient = yield context.getClient(
+    const colonyManager = yield getColonyManager();
+    const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
@@ -59,7 +62,10 @@ function* voteMotion({
     } Motion ID: ${motionId.toNumber()}`;
 
     const signature = yield signMessage('motionRevealVote', message);
-    const hash = soliditySha3(soliditySha3Raw(signature), vote);
+    const hash = utils.solidityKeccak256(
+      ['bytes', 'uint256'],
+      [utils.keccak256(signature), vote],
+    );
 
     const { voteMotionTransaction } = yield createTransactionChannels(meta.id, [
       'voteMotionTransaction',
@@ -103,11 +109,11 @@ function* voteMotion({
     yield fork(updateMotionValues, colonyAddress, userAddress, motionId);
 
     yield put<AllActions>({
-      type: ActionTypes.COLONY_MOTION_VOTE_SUCCESS,
+      type: ActionTypes.MOTION_VOTE_SUCCESS,
       meta,
     });
   } catch (error) {
-    return yield putError(ActionTypes.COLONY_MOTION_VOTE_ERROR, error, meta);
+    return yield putError(ActionTypes.MOTION_VOTE_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
@@ -115,5 +121,5 @@ function* voteMotion({
 }
 
 export default function* voteMotionSaga() {
-  yield takeEvery(ActionTypes.COLONY_MOTION_VOTE, voteMotion);
+  yield takeEvery(ActionTypes.MOTION_VOTE, voteMotion);
 }

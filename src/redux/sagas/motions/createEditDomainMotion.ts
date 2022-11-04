@@ -8,7 +8,6 @@ import {
 } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
-import { ContextModule, getContext } from '~context';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
@@ -16,6 +15,7 @@ import {
   takeFrom,
   routeRedirect,
   uploadIfpsAnnotation,
+  getColonyManager,
 } from '../utils';
 
 import {
@@ -45,7 +45,7 @@ function* createEditDomainMotion({
   },
   meta: { id: metaId, history },
   meta,
-}: Action<ActionTypes.COLONY_MOTION_DOMAIN_CREATE_EDIT>) {
+}: Action<ActionTypes.MOTION_DOMAIN_CREATE_EDIT>) {
   let txChannel;
   try {
     /*
@@ -61,7 +61,7 @@ function* createEditDomainMotion({
     /* additional editDomain check is for the TS to not ring alarm in getPermissionProofs */
     const domainId = !isCreateDomain && editDomainId ? editDomainId : parentId;
 
-    const context = getContext(ContextModule.ColonyManager);
+    const context = yield getColonyManager();
     const colonyClient = yield context.getClient(
       ClientType.ColonyClient,
       colonyAddress,
@@ -191,7 +191,7 @@ function* createEditDomainMotion({
       yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
     }
     yield put<AllActions>({
-      type: ActionTypes.COLONY_MOTION_DOMAIN_CREATE_EDIT_SUCCESS,
+      type: ActionTypes.MOTION_DOMAIN_CREATE_EDIT_SUCCESS,
       meta,
     });
 
@@ -199,11 +199,7 @@ function* createEditDomainMotion({
       yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
     }
   } catch (caughtError) {
-    putError(
-      ActionTypes.COLONY_MOTION_DOMAIN_CREATE_EDIT_ERROR,
-      caughtError,
-      meta,
-    );
+    putError(ActionTypes.MOTION_DOMAIN_CREATE_EDIT_ERROR, caughtError, meta);
   } finally {
     txChannel.close();
   }
@@ -211,7 +207,7 @@ function* createEditDomainMotion({
 
 export default function* createEditDomainMotionSaga() {
   yield takeEvery(
-    ActionTypes.COLONY_MOTION_DOMAIN_CREATE_EDIT,
+    ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
     createEditDomainMotion,
   );
 }

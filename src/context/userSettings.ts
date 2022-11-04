@@ -1,5 +1,5 @@
 import { Address } from '~types';
-import { ADDRESS_ZERO } from '~constants';
+import { ADDRESS_ZERO, isDev } from '~constants';
 
 export enum SlotKey {
   Metatransactions = 'metatransactions',
@@ -18,9 +18,9 @@ const defaultSlotValues: UserSettingsSlot = {
    * If on local dev, metatransactions are disabled by default on your user profile
    * In production however, they will be enabled by default
    */
-  metatransactions: process.env.NODE_ENV !== 'development',
+  metatransactions: !isDev,
   decentralizedModeEnabled: false,
-  customRpc: 'http://localhost:8545',
+  customRpc: '',
 };
 
 /**

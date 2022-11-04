@@ -9,7 +9,12 @@ import {
 } from '~data/index';
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
-import { putError, takeFrom, refreshExtension } from '../utils';
+import {
+  putError,
+  takeFrom,
+  refreshExtension,
+  getColonyManager,
+} from '../utils';
 
 import { ContextModule, getContext } from '~context';
 import {
@@ -23,10 +28,10 @@ export function* colonyExtensionUninstall({
   meta: { id: metaId },
   meta,
   payload: { colonyAddress, extensionId },
-}: Action<ActionTypes.COLONY_EXTENSION_UNINSTALL>) {
+}: Action<ActionTypes.EXTENSION_UNINSTALL>) {
   let txChannel;
   try {
-    const colonyManager = getContext(ContextModule.ColonyManager);
+    const colonyManager = yield getColonyManager();
     const apolloClient = getContext(ContextModule.ApolloClient);
     txChannel = yield call(getTxChannel, metaId);
 
@@ -139,11 +144,7 @@ export function* colonyExtensionUninstall({
       fetchPolicy: 'network-only',
     });
   } catch (error) {
-    return yield putError(
-      ActionTypes.COLONY_EXTENSION_UNINSTALL_ERROR,
-      error,
-      meta,
-    );
+    return yield putError(ActionTypes.EXTENSION_UNINSTALL_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
@@ -151,8 +152,5 @@ export function* colonyExtensionUninstall({
 }
 
 export default function* colonyExtensionUninstallSaga() {
-  yield takeEvery(
-    ActionTypes.COLONY_EXTENSION_UNINSTALL,
-    colonyExtensionUninstall,
-  );
+  yield takeEvery(ActionTypes.EXTENSION_UNINSTALL, colonyExtensionUninstall);
 }

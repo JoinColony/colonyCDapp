@@ -16,7 +16,6 @@
 //   UserQueryVariables,
 //   UserDocument,
 // } from '~data/index';
-import { log } from '~utils/debug';
 
 /*
  * @TODO Refactor to remove reliance
@@ -214,7 +213,10 @@ export default function* createUserWithSecondAttempt(
     yield reattempt;
     yield username;
   } catch (error) {
-    log.verbose(`Could not create metadata entry for user ${username}`, error);
+    console.error(
+      `Could not create metadata entry for user ${username}`,
+      error,
+    );
   }
   return undefined;
 }

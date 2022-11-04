@@ -9,17 +9,13 @@ import {
   Outlet,
 } from 'react-router-dom';
 // import { defineMessages } from 'react-intl';
-// import { useDispatch } from 'react-redux';
 
-// import { WalletMethod } from '~immutable/index';
 // import CreateColonyWizard from '~dashboard/CreateColonyWizard';
 // import CreateUserWizard from '~dashboard/CreateUserWizard';
 import ColonyHome from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
 import ColonyMembers from '~common/ColonyMembers';
 import FourOFour from '~frame/FourOFour';
-// import Inbox from '~users/Inbox';
-// import Wallet from '~dashboard/Wallet';
 // import ConnectWalletWizard from '~users/ConnectWalletWizard';
 // import UserProfile from '~users/UserProfile';
 // import UserProfileEdit from '~users/UserProfileEdit';
@@ -35,7 +31,6 @@ import LandingPage from '~frame/LandingPage';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
 // import appLoadingContext from '~context/appLoadingState';
-// import { ActionTypes } from '~redux';
 import { useAppContext } from '~hooks';
 
 import {
@@ -46,11 +41,9 @@ import {
   // CONNECT_ROUTE,
   // CREATE_COLONY_ROUTE,
   // CREATE_USER_ROUTE,
-  // INBOX_ROUTE,
   // NOT_FOUND_ROUTE,
   // USER_EDIT_ROUTE,
   // USER_ROUTE,
-  // WALLET_ROUTE,
   LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
   // ACTIONS_PAGE_ROUTE,
@@ -76,13 +69,6 @@ import NotFoundRoute from './NotFoundRoute';
 const Routes = () => {
   const { user, wallet } = useAppContext();
   // const isAppLoading = appLoadingContext.getIsLoading();
-
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch({
-  //     type: ActionTypes.WALLET_OPEN,
-  //   });
-  // }, [dispatch]);
 
   // disabling rules to silence eslint warnings
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -172,26 +158,6 @@ const Routes = () => {
           path={CREATE_COLONY_ROUTE}
           component={CreateColonyWizard}
           layout={Plain}
-        />
-        <WalletRequiredRoute
-          isConnected={isConnected}
-          didClaimProfile={didClaimProfile}
-          path={WALLET_ROUTE}
-          component={Wallet}
-          layout={SimpleNav}
-          routeProps={{
-            hasBackLink: false,
-          }}
-        />
-        <WalletRequiredRoute
-          isConnected={isConnected}
-          didClaimProfile={didClaimProfile}
-          path={INBOX_ROUTE}
-          component={Inbox}
-          layout={SimpleNav}
-          routeProps={{
-            hasBackLink: false,
-          }}
         />
 
         <AlwaysAccesibleRoute

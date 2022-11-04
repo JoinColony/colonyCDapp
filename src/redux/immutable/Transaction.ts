@@ -2,29 +2,18 @@ import { Record } from 'immutable';
 import { BigNumber, Overrides } from 'ethers';
 import { TransactionReceipt } from '@ethersproject/providers';
 import { ClientType } from '@colony/colony-js';
+import { MessageDescriptor } from 'react-intl';
 
 import {
   AddressOrENSName,
   DefaultValues,
   MethodParams,
   RecordToJS,
+  SimpleMessageValues,
+  ExtendedClientType,
+  TRANSACTION_ERRORS,
+  TRANSACTION_STATUSES,
 } from '~types';
-
-export enum TRANSACTION_ERRORS {
-  ESTIMATE = 'ESTIMATE',
-  EVENT_DATA = 'EVENT_DATA',
-  RECEIPT = 'RECEIPT',
-  SEND = 'SEND',
-  UNSUCCESSFUL = 'UNSUCCESSFUL',
-}
-
-export enum TRANSACTION_STATUSES {
-  CREATED = 'CREATED',
-  READY = 'READY',
-  PENDING = 'PENDING',
-  FAILED = 'FAILED',
-  SUCCEEDED = 'SUCCEEDED',
-}
 
 export interface TransactionError {
   type: TRANSACTION_ERRORS;
@@ -34,7 +23,7 @@ export interface TransactionError {
 export type TransactionId = string;
 
 export interface TransactionRecordProps {
-  context: ClientType;
+  context: ClientType | ExtendedClientType;
   createdAt: Date;
   deployedContractAddress?: string;
   error?: TransactionError;
@@ -46,6 +35,10 @@ export interface TransactionRecordProps {
     key: string;
     id: string | string[];
     index: number;
+    title?: MessageDescriptor;
+    titleValues?: SimpleMessageValues;
+    description?: MessageDescriptor;
+    descriptionValues?: SimpleMessageValues;
   };
   hash?: string;
   id: TransactionId;
@@ -57,6 +50,9 @@ export interface TransactionRecordProps {
   receipt?: TransactionReceipt;
   status: TRANSACTION_STATUSES;
   loadingRelated?: boolean;
+  metatransaction: boolean;
+  title?: MessageDescriptor;
+  titleValues?: SimpleMessageValues;
 }
 
 export type TransactionType = Readonly<TransactionRecordProps>;
@@ -82,6 +78,9 @@ const defaultValues: DefaultValues<TransactionRecordProps> = {
   receipt: undefined,
   status: undefined,
   loadingRelated: false,
+  metatransaction: false,
+  title: undefined,
+  titleValues: undefined,
 };
 
 export class TransactionRecord

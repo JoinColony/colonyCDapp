@@ -24,17 +24,22 @@ import {
   getTxChannel,
 } from '../transactions';
 
-import { updateMotionValues, putError, takeFrom } from '../utils';
+import {
+  updateMotionValues,
+  putError,
+  takeFrom,
+  getColonyManager,
+} from '../utils';
 
 function* claimMotionRewards({
   meta,
   payload: { userAddress, colonyAddress, motionIds },
-}: Action<ActionTypes.COLONY_MOTION_CLAIM>) {
+}: Action<ActionTypes.MOTION_CLAIM>) {
   const txChannel = yield call(getTxChannel, meta.id);
   const apolloClient = getContext(ContextModule.ApolloClient);
 
   try {
-    const colonyManager = getContext(ContextModule.ColonyManager);
+    const colonyManager = yield getColonyManager();
     const votingReputationClient: ExtensionClient =
       yield colonyManager.getClient(
         ClientType.VotingReputationClient,
@@ -193,11 +198,11 @@ function* claimMotionRewards({
     });
 
     yield put<AllActions>({
-      type: ActionTypes.COLONY_MOTION_CLAIM_SUCCESS,
+      type: ActionTypes.MOTION_CLAIM_SUCCESS,
       meta,
     });
   } catch (error) {
-    return yield putError(ActionTypes.COLONY_MOTION_CLAIM_ERROR, error, meta);
+    return yield putError(ActionTypes.MOTION_CLAIM_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
@@ -205,5 +210,5 @@ function* claimMotionRewards({
 }
 
 export default function* claimMotionRewardsSaga() {
-  yield takeEvery(ActionTypes.COLONY_MOTION_CLAIM, claimMotionRewards);
+  yield takeEvery(ActionTypes.MOTION_CLAIM, claimMotionRewards);
 }

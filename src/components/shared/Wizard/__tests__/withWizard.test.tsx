@@ -13,10 +13,9 @@ const Wrapper = ({ children, step }) => (
   </div>
 );
 
-const createStep =
-  (number, customValues) =>
-  ({ nextStep }) =>
-    (
+const createStep = (number, customValues) =>
+  function ({ nextStep }) {
+    return (
       <div>
         <h2>Step number {number}</h2>
         <button type="button" onClick={() => nextStep(customValues)}>
@@ -24,6 +23,7 @@ const createStep =
         </button>
       </div>
     );
+  };
 
 describe('withWizard HoC', () => {
   test('Renders initial step - use with Steps array', () => {

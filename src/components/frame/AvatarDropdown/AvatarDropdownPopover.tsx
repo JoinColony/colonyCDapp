@@ -19,7 +19,6 @@ import {
 } from '~routes/index';
 import { useAppContext } from '~hooks';
 
-
 import styles from './AvatarDropdownPopover.css';
 
 const MSG = defineMessages({

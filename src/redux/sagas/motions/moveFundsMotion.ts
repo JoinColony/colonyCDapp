@@ -2,7 +2,6 @@ import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, getChildIndex, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
-import { ContextModule, getContext } from '~context';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
@@ -10,6 +9,7 @@ import {
   takeFrom,
   routeRedirect,
   uploadIfpsAnnotation,
+  getColonyManager,
 } from '../utils';
 
 import {
@@ -36,7 +36,7 @@ function* moveFundsMotion({
   },
   meta: { id: metaId, history },
   meta,
-}: Action<ActionTypes.COLONY_MOTION_MOVE_FUNDS>) {
+}: Action<ActionTypes.MOTION_MOVE_FUNDS>) {
   let txChannel;
   try {
     /*
@@ -63,7 +63,7 @@ function* moveFundsMotion({
       );
     }
 
-    const context = getContext(ContextModule.ColonyManager);
+    const context = yield getColonyManager();
     const colonyClient = yield context.getClient(
       ClientType.ColonyClient,
       colonyAddress,
@@ -183,7 +183,7 @@ function* moveFundsMotion({
       );
     }
     yield put<AllActions>({
-      type: ActionTypes.COLONY_MOTION_MOVE_FUNDS_SUCCESS,
+      type: ActionTypes.MOTION_MOVE_FUNDS_SUCCESS,
       meta,
     });
 
@@ -191,12 +191,12 @@ function* moveFundsMotion({
       yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
     }
   } catch (caughtError) {
-    putError(ActionTypes.COLONY_MOTION_MOVE_FUNDS_ERROR, caughtError, meta);
+    putError(ActionTypes.MOTION_MOVE_FUNDS_ERROR, caughtError, meta);
   } finally {
     txChannel.close();
   }
 }
 
 export default function* moveFundsMotionSaga() {
-  yield takeEvery(ActionTypes.COLONY_MOTION_MOVE_FUNDS, moveFundsMotion);
+  yield takeEvery(ActionTypes.MOTION_MOVE_FUNDS, moveFundsMotion);
 }

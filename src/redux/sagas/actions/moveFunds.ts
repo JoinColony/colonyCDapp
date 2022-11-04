@@ -14,6 +14,7 @@ import {
   takeFrom,
   routeRedirect,
   uploadIfpsAnnotation,
+  getColonyManager,
 } from '../utils';
 
 import {
@@ -52,11 +53,11 @@ function* createMoveFundsAction({
     history,
   },
   meta,
-}: Action<ActionTypes.COLONY_ACTION_MOVE_FUNDS>) {
+}: Action<ActionTypes.ACTION_MOVE_FUNDS>) {
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
-    const colonyManager = getContext(ContextModule.ColonyManager);
+    const colonyManager = yield getColonyManager();
 
     const colonyClient: AnyColonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
@@ -182,7 +183,7 @@ function* createMoveFundsAction({
     });
 
     yield put<AllActions>({
-      type: ActionTypes.COLONY_ACTION_MOVE_FUNDS_SUCCESS,
+      type: ActionTypes.ACTION_MOVE_FUNDS_SUCCESS,
       meta,
     });
 
@@ -190,12 +191,12 @@ function* createMoveFundsAction({
       yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
     }
   } catch (caughtError) {
-    putError(ActionTypes.COLONY_ACTION_MOVE_FUNDS_ERROR, caughtError, meta);
+    putError(ActionTypes.ACTION_MOVE_FUNDS_ERROR, caughtError, meta);
   } finally {
     txChannel.close();
   }
 }
 
 export default function* moveFundsActionSaga() {
-  yield takeEvery(ActionTypes.COLONY_ACTION_MOVE_FUNDS, createMoveFundsAction);
+  yield takeEvery(ActionTypes.ACTION_MOVE_FUNDS, createMoveFundsAction);
 }

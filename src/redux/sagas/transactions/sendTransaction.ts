@@ -1,104 +1,98 @@
 import { call, put, take } from 'redux-saga/effects';
-import { TransactionResponse } from '@ethersproject/providers';
 import { ClientType } from '@colony/colony-js';
-import { Contract, Overrides, ContractInterface } from 'ethers';
+import { Contract, ContractInterface } from 'ethers';
 // import abis from '@colony/colony-js/lib-esm/abis';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
-import { selectAsJS } from '../utils';
+import { selectAsJS, getColonyManager } from '../utils';
 import { mergePayload } from '~utils/actions';
-import { TRANSACTION_STATUSES, TransactionRecord } from '../../immutable';
-import { ContextModule, getContext } from '~context';
-import { ExtendedClientType } from '~types';
+import { TransactionRecord } from '../../immutable';
+import {
+  TRANSACTION_STATUSES,
+  TRANSACTION_METHODS,
+  ExtendedClientType,
+} from '~types';
 
 import { transactionSendError } from '../../actionCreators';
 import { oneTransaction } from '../../selectors';
 
 import transactionChannel from './transactionChannel';
+import getTransactionPromise from './getTransactionPromise';
+import getMetatransactionPromise from './getMetatransactionPromise';
 
 /*
  * @TODO Refactor to support abis (either added to the app or from colonyJS)
  */
 const abis = {
-  WrappedToken: { default: { abi: {} } },
-  vestingSimple: { default: { abi: {} } },
+  WrappedToken: { default: { abi: {} as ContractInterface } },
+  vestingSimple: { default: { abi: {} as ContractInterface } },
 };
-
-/*
- * Given a method and a transaction record, create a promise for sending the
- * transaction with the method.
- */
-async function getMethodTransactionPromise(
-  // @TODO this is not great but I feel like we will replace this anyways at some point
-  client: Contract,
-  tx: TransactionRecord,
-): Promise<TransactionResponse> {
-  const {
-    methodName,
-    options: {
-      gasLimit: gasLimitOverride,
-      gasPrice: gasPriceOverride,
-      ...restOptions
-    },
-    params,
-    gasLimit,
-    gasPrice,
-  } = tx;
-  const sendOptions: Overrides = {
-    gasLimit: gasLimitOverride || gasLimit,
-    gasPrice: gasPriceOverride || gasPrice,
-    ...restOptions,
-  };
-  return client[methodName](...[...params, sendOptions]);
-}
 
 export default function* sendTransaction({
   meta: { id },
 }: Action<ActionTypes.TRANSACTION_SEND>) {
   const transaction: TransactionRecord = yield selectAsJS(oneTransaction, id);
 
-  const { status, context, identifier } = transaction;
+  const { status, context, identifier, metatransaction, methodName } =
+    transaction;
 
   if (status !== TRANSACTION_STATUSES.READY) {
     throw new Error('Transaction is not ready to send.');
   }
-  const colonyManager = getContext(ContextModule.ColonyManager);
+  const colonyManager = yield getColonyManager();
 
-  let contextClient: Contract;
+  let contextClient: any; // Disregard the `any`. The new ColonyJS messed up all the types
   if (context === ClientType.TokenClient) {
     contextClient = yield colonyManager.getTokenClient(identifier as string);
+  } else if (context === ClientType.TokenLockingClient) {
+    contextClient = yield colonyManager.getTokenLockingClient(
+      identifier as string,
+    );
   } else if (
-    context === (ExtendedClientType.WrappedTokenClient as unknown as ClientType)
+    metatransaction &&
+    methodName === TRANSACTION_METHODS.DeployTokenAuthority
   ) {
-    // @ts-ignore
+    contextClient = colonyManager.networkClient;
+  } else if (context === ExtendedClientType.WrappedTokenClient) {
     const wrappedTokenAbi = abis.WrappedToken.default.abi;
     contextClient = new Contract(
       identifier || '',
-      wrappedTokenAbi as ContractInterface, // @TODO Refactor when refactoring abis
+      wrappedTokenAbi,
       colonyManager.signer,
     );
-  } else if (
-    context ===
-    (ExtendedClientType.VestingSimpleClient as unknown as ClientType)
-  ) {
-    // @ts-ignore
+    contextClient.clientType = ExtendedClientType.WrappedTokenClient;
+  } else if (context === ExtendedClientType.VestingSimpleClient) {
     const vestingSimpleAbi = abis.vestingSimple.default.abi;
     contextClient = new Contract(
       identifier || '',
-      vestingSimpleAbi as ContractInterface, // @TODO Refactor when refactoring abis
+      vestingSimpleAbi,
       colonyManager.signer,
     );
+    contextClient.clientType = ExtendedClientType.VestingSimpleClient;
   } else {
-    contextClient = yield colonyManager.getClient(context, identifier);
+    contextClient = yield colonyManager.getClient(
+      context as ClientType,
+      identifier,
+    );
   }
 
   if (!contextClient) {
     throw new Error('Context client failed to instantiate');
   }
 
-  // Create a promise to send the transaction with the given method.
-  const txPromise = getMethodTransactionPromise(contextClient, transaction);
+  const promiseMethod = metatransaction
+    ? getMetatransactionPromise
+    : getTransactionPromise;
+
+  /*
+   * @NOTE Create a promise to send the transaction with the given method.
+   *
+   * DO NOT! yield this method! Otherwise the error we're throwing inside
+   * `getMetatransactionMethodPromise` based on the broadcaster's response message
+   * will not catch, so the UI will not properly display it in the Gas Station
+   */
+  const txPromise = promiseMethod(contextClient, transaction);
 
   const channel = yield call(
     transactionChannel,

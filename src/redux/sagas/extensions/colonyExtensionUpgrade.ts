@@ -15,7 +15,7 @@ import {
 function* colonyExtensionUpgrade({
   meta,
   payload: { colonyAddress, extensionId, version },
-}: Action<ActionTypes.COLONY_EXTENSION_UPGRADE>) {
+}: Action<ActionTypes.EXTENSION_UPGRADE>) {
   const txChannel = yield call(getTxChannel, meta.id);
 
   try {
@@ -29,18 +29,14 @@ function* colonyExtensionUpgrade({
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
 
     yield put<AllActions>({
-      type: ActionTypes.COLONY_EXTENSION_UPGRADE_SUCCESS,
+      type: ActionTypes.EXTENSION_UPGRADE_SUCCESS,
       payload: {},
       meta,
     });
 
     yield waitForTxResult(txChannel);
   } catch (error) {
-    return yield putError(
-      ActionTypes.COLONY_EXTENSION_UPGRADE_ERROR,
-      error,
-      meta,
-    );
+    return yield putError(ActionTypes.EXTENSION_UPGRADE_ERROR, error, meta);
   } finally {
     yield call(refreshExtension, colonyAddress, extensionId);
 
@@ -50,5 +46,5 @@ function* colonyExtensionUpgrade({
 }
 
 export default function* colonyExtensionUpgradeSaga() {
-  yield takeEvery(ActionTypes.COLONY_EXTENSION_UPGRADE, colonyExtensionUpgrade);
+  yield takeEvery(ActionTypes.EXTENSION_UPGRADE, colonyExtensionUpgrade);
 }

@@ -37,7 +37,7 @@ function* createMintTokensAction({
   },
   meta: { id: metaId, history },
   meta,
-}: Action<ActionTypes.COLONY_ACTION_MINT_TOKENS>) {
+}: Action<ActionTypes.ACTION_MINT_TOKENS>) {
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
@@ -150,7 +150,7 @@ function* createMintTokensAction({
     });
 
     yield put<AllActions>({
-      type: ActionTypes.COLONY_ACTION_MINT_TOKENS_SUCCESS,
+      type: ActionTypes.ACTION_MINT_TOKENS_SUCCESS,
       meta,
     });
 
@@ -158,15 +158,12 @@ function* createMintTokensAction({
       yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
     }
   } catch (caughtError) {
-    putError(ActionTypes.COLONY_ACTION_MINT_TOKENS_ERROR, caughtError, meta);
+    putError(ActionTypes.ACTION_MINT_TOKENS_ERROR, caughtError, meta);
   } finally {
     txChannel.close();
   }
 }
 
 export default function* mintTokensActionSaga() {
-  yield takeEvery(
-    ActionTypes.COLONY_ACTION_MINT_TOKENS,
-    createMintTokensAction,
-  );
+  yield takeEvery(ActionTypes.ACTION_MINT_TOKENS, createMintTokensAction);
 }

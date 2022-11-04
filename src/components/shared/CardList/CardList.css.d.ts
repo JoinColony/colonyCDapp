@@ -1,11 +1,22 @@
-export const main: string;
-export const numColsAuto: string;
-export const numCols1: string;
-export const numCols2: string;
-export const numCols3: string;
-export const numCols4: string;
-export const numCols5: string;
-export const numCols6: string;
-export const numCols7: string;
-export const numCols8: string;
-export const numCols9: string;
+declare namespace CardListCssNamespace {
+  export interface ICardListCss {
+    main: string;
+    numCols1: string;
+    numCols2: string;
+    numCols3: string;
+    numCols4: string;
+    numCols5: string;
+    numCols6: string;
+    numCols7: string;
+    numCols8: string;
+    numCols9: string;
+    numColsAuto: string;
+  }
+}
+
+declare const CardListCssModule: CardListCssNamespace.ICardListCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: CardListCssNamespace.ICardListCss;
+};
+
+export = CardListCssModule;

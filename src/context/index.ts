@@ -2,7 +2,7 @@ import { ApolloClient as ApolloClientClass } from '@apollo/client';
 
 import { Wallet as WalletType } from '~types';
 
-// import ColonyManagerClass from './ColonyManager';
+import ColonyManagerClass from './ColonyManager';
 
 import apolloClient from './apolloClient';
 import UserSettingsClass from './userSettings';
@@ -10,10 +10,11 @@ import UserSettingsClass from './userSettings';
 export { UserSettingsClass as UserSettings };
 
 export { AppContext, AppContextProvider } from './AppContext';
+export { ColonyManagerClass as ColonyManager };
 
 export enum ContextModule {
   Wallet = 'wallet',
-  // ColonyManager = 'colonyManager',
+  ColonyManager = 'colonyManager',
   ApolloClient = 'apolloClient',
   UserSettings = 'userSettings',
 }
@@ -25,14 +26,14 @@ export interface IpfsWithFallbackSkeleton {
 
 export interface Context {
   [ContextModule.Wallet]?: WalletType;
-  // [ContextModule.ColonyManager]?: ColonyManagerClass;
+  [ContextModule.ColonyManager]?: ColonyManagerClass;
   [ContextModule.ApolloClient]?: ApolloClientClass<object>;
   [ContextModule.UserSettings]?: UserSettingsClass;
 }
 
 const context: Context = {
   [ContextModule.ApolloClient]: apolloClient,
-  // [ContextModule.ColonyManager]: undefined,
+  [ContextModule.ColonyManager]: undefined,
   [ContextModule.Wallet]: undefined,
   [ContextModule.UserSettings]: undefined,
 };

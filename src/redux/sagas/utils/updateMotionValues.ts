@@ -44,6 +44,7 @@ import {
   MotionTimeoutPeriodsQueryVariables,
   MotionTimeoutPeriodsDocument,
 } from '~data/index';
+import { getColonyManager } from '../utils';
 
 export function* updateMotionValues(
   colonyAddress: Address,
@@ -51,8 +52,8 @@ export function* updateMotionValues(
   motionId: BigNumber,
 ) {
   const apolloClient = getContext(ContextModule.ApolloClient);
-  const context = getContext(ContextModule.ColonyManager);
-  const colonyClient = yield context.getClient(
+  const colonyManager = yield getColonyManager();
+  const colonyClient = yield colonyManager.getClient(
     ClientType.ColonyClient,
     colonyAddress,
   );

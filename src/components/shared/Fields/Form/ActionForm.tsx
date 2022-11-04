@@ -4,7 +4,6 @@ import { defineMessages } from 'react-intl';
 
 import { ActionTypeString } from '~redux';
 import { ActionTransformFnType } from '~utils/actions';
-import { log } from '~utils/debug';
 import { useAsyncFunction } from '~hooks';
 import Form from './Form';
 
@@ -65,7 +64,7 @@ interface Props extends ExtendedFormikConfig {
 }
 
 const defaultOnError: OnError = (err, { setStatus }) => {
-  log.error(err);
+  console.error(err);
   setStatus({ error: MSG.defaultError });
 };
 

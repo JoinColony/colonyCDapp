@@ -1,6 +1,6 @@
 import BN from 'bn.js';
 import { getAddress, hexlify } from 'ethers/lib.esm/utils';
-import { ClientType, ContractClient, TokenClientType } from '@colony/colony-js';
+import { ClientType, TokenClientType } from '@colony/colony-js';
 
 import { Address, ExtendedClientType } from '~types';
 import { TransactionError } from '~redux/immutable/Transaction';
@@ -60,7 +60,7 @@ export const isTransactionFormat = (
 };
 
 export const generateMetatransactionErrorMessage = (
-  emmitentClient: ContractClient,
+  emmitentClient: any, // Disregard the `any`. The new ColonyJS messed up all the types
 ) =>
   `Contract does not support MetaTransactions. ${emmitentClient.clientType}${
     emmitentClient.clientType === ClientType.TokenClient

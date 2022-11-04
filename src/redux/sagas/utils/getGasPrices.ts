@@ -1,12 +1,11 @@
-import { ColonyNetworkClient, Network } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { call, put, select } from 'redux-saga/effects';
 
 import { GasPricesProps } from '../../immutable';
 import { ContextModule, getContext } from '~context';
-import { log } from '~utils/debug';
 import { DEFAULT_NETWORK } from '~constants';
 import { ETH_GAS_STATION, XDAI_GAS_STATION } from '~constants/externalUrls';
+import { RpcMethods, Network } from '~types';
 
 import { gasPrices as gasPricesSelector } from '../../selectors';
 import { updateGasPrices } from '../../actionCreators';
@@ -34,14 +33,16 @@ interface BlockscoutGasStationAPIResponse {
 
 const DEFAULT_GAS_PRICE = BigNumber.from('1000000000');
 
-const fetchGasPrices = async (
-  networkClient: ColonyNetworkClient,
-): Promise<GasPricesProps> => {
-  let networkGasPrice = DEFAULT_GAS_PRICE;
+const fetchGasPrices = async (): Promise<GasPricesProps> => {
+  const userWallet = getContext(ContextModule.Wallet);
+
+  if (!userWallet) {
+    throw new Error('User wallet is not connected, aborting gas price update');
+  }
 
   const defaultGasPrices = {
     timestamp: Date.now(),
-    network: networkGasPrice,
+    network: DEFAULT_GAS_PRICE,
 
     suggested: DEFAULT_GAS_PRICE,
     cheaper: DEFAULT_GAS_PRICE,
@@ -53,7 +54,10 @@ const fetchGasPrices = async (
   };
 
   try {
-    networkGasPrice = await networkClient.provider.getGasPrice();
+    const rawNetworkGasPrice = await userWallet.provider.request({
+      method: RpcMethods.GasPrice,
+    });
+    defaultGasPrices.network = BigNumber.from(rawNetworkGasPrice);
 
     let response;
 
@@ -61,13 +65,13 @@ const fetchGasPrices = async (
       response = await fetch(ETH_GAS_STATION);
     }
     if (
-      DEFAULT_NETWORK === Network.Xdai ||
-      DEFAULT_NETWORK === Network.XdaiQa
+      DEFAULT_NETWORK === Network.Gnosis ||
+      DEFAULT_NETWORK === Network.GnosisFork
     ) {
       response = await fetch(XDAI_GAS_STATION);
     }
 
-    if (!response.ok) {
+    if (DEFAULT_NETWORK !== Network.Ganache && !response.ok) {
       throw new Error(response.statusText);
     }
 
@@ -90,8 +94,8 @@ const fetchGasPrices = async (
     }
 
     if (
-      DEFAULT_NETWORK === Network.Xdai ||
-      DEFAULT_NETWORK === Network.XdaiQa
+      DEFAULT_NETWORK === Network.Gnosis ||
+      DEFAULT_NETWORK === Network.GnosisFork
     ) {
       const data: BlockscoutGasStationAPIResponse = await response.json();
       // API prices are in Gwei, so they need to be normalised
@@ -127,7 +131,7 @@ const fetchGasPrices = async (
 
     return defaultGasPrices;
   } catch (caughtError) {
-    log.warn(
+    console.info(
       `Could not get ${DEFAULT_NETWORK} network gas prices: ${caughtError.message}`,
     );
     // Default values
@@ -145,9 +149,7 @@ export default function* getGasPrices() {
     return cachedPrices;
   }
 
-  const { networkClient } = getContext(ContextModule.ColonyManager);
-
-  const gasPrices: GasPricesProps = yield call(fetchGasPrices, networkClient);
+  const gasPrices: GasPricesProps = yield call(fetchGasPrices);
 
   yield put(updateGasPrices(gasPrices));
 

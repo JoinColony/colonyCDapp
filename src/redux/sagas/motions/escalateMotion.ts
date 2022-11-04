@@ -4,7 +4,12 @@ import { AddressZero } from '@ethersproject/constants';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, updateMotionValues } from '../utils';
+import {
+  putError,
+  takeFrom,
+  updateMotionValues,
+  getColonyManager,
+} from '../utils';
 
 import {
   createTransaction,
@@ -12,15 +17,14 @@ import {
   getTxChannel,
 } from '../transactions';
 import { transactionReady } from '../../actionCreators';
-import { ContextModule, getContext } from '~context';
 
 function* escalateMotion({
   meta,
   payload: { userAddress, colonyAddress, motionId },
-}: Action<ActionTypes.COLONY_MOTION_ESCALATE>) {
+}: Action<ActionTypes.MOTION_ESCALATE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const context = getContext(ContextModule.ColonyManager);
+    const context = yield getColonyManager();
     const colonyClient = yield context.getClient(
       ClientType.ColonyClient,
       colonyAddress,
@@ -91,15 +95,11 @@ function* escalateMotion({
     yield fork(updateMotionValues, colonyAddress, userAddress, motionId);
 
     yield put<AllActions>({
-      type: ActionTypes.COLONY_MOTION_ESCALATE_SUCCESS,
+      type: ActionTypes.MOTION_ESCALATE_SUCCESS,
       meta,
     });
   } catch (error) {
-    return yield putError(
-      ActionTypes.COLONY_MOTION_ESCALATE_ERROR,
-      error,
-      meta,
-    );
+    return yield putError(ActionTypes.MOTION_ESCALATE_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
@@ -107,5 +107,5 @@ function* escalateMotion({
 }
 
 export default function* escalateMotionSaga() {
-  yield takeEvery(ActionTypes.COLONY_MOTION_ESCALATE, escalateMotion);
+  yield takeEvery(ActionTypes.MOTION_ESCALATE, escalateMotion);
 }

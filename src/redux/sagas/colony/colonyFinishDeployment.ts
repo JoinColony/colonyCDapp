@@ -29,7 +29,7 @@ import {
 } from '~data/index';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom } from '../utils';
+import { putError, takeFrom, getColonyManager } from '../utils';
 import { TxConfig } from '~types';
 
 import {
@@ -48,11 +48,11 @@ interface ChannelDefinition {
 function* colonyRestartDeployment({
   payload: { colonyAddress },
   meta,
-}: Action<ActionTypes.COLONY_DEPLOYMENT_RESTART>) {
+}: Action<ActionTypes.DEPLOYMENT_RESTART>) {
   try {
     const { walletAddress, username } = yield getLoggedInUser();
     const apolloClient = getContext(ContextModule.ApolloClient);
-    const colonyManager = getContext(ContextModule.ColonyManager);
+    const colonyManager = yield getColonyManager();
     const { networkClient } = colonyManager;
 
     let startingIndex = 7;
@@ -414,18 +414,15 @@ function* colonyRestartDeployment({
     });
 
     yield put<AllActions>({
-      type: ActionTypes.COLONY_DEPLOYMENT_RESTART_SUCCESS,
+      type: ActionTypes.DEPLOYMENT_RESTART_SUCCESS,
       meta,
     });
   } catch (error) {
-    yield putError(ActionTypes.COLONY_DEPLOYMENT_RESTART_ERROR, error, meta);
+    yield putError(ActionTypes.DEPLOYMENT_RESTART_ERROR, error, meta);
     console.error('saga err', error);
   }
 }
 
 export default function* colonyFinishDeploymentSaga() {
-  yield takeLatest(
-    ActionTypes.COLONY_DEPLOYMENT_RESTART,
-    colonyRestartDeployment,
-  );
+  yield takeLatest(ActionTypes.DEPLOYMENT_RESTART, colonyRestartDeployment);
 }

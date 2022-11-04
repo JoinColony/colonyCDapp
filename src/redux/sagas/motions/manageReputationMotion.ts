@@ -7,7 +7,6 @@ import {
 } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
-import { ContextModule, getContext } from '~context';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
@@ -15,6 +14,7 @@ import {
   takeFrom,
   routeRedirect,
   updateDomainReputation,
+  getColonyManager,
 } from '../utils';
 
 import {
@@ -42,7 +42,7 @@ function* manageReputationMotion({
   },
   meta: { id: metaId, history },
   meta,
-}: Action<ActionTypes.COLONY_MOTION_MANAGE_REPUTATION>) {
+}: Action<ActionTypes.MOTION_MANAGE_REPUTATION>) {
   let txChannel;
   try {
     /*
@@ -64,7 +64,7 @@ function* manageReputationMotion({
       );
     }
 
-    const context = getContext(ContextModule.ColonyManager);
+    const context = yield getColonyManager();
     const colonyClient = yield context.getClient(
       ClientType.ColonyClient,
       colonyAddress,
@@ -214,7 +214,7 @@ function* manageReputationMotion({
     yield fork(updateDomainReputation, colonyAddress, userAddress, domainId);
 
     yield put<AllActions>({
-      type: ActionTypes.COLONY_MOTION_MANAGE_REPUTATION_SUCCESS,
+      type: ActionTypes.MOTION_MANAGE_REPUTATION_SUCCESS,
       meta,
     });
 
@@ -222,15 +222,12 @@ function* manageReputationMotion({
       yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
     }
   } catch (error) {
-    putError(ActionTypes.COLONY_MOTION_MANAGE_REPUTATION_ERROR, error, meta);
+    putError(ActionTypes.MOTION_MANAGE_REPUTATION_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
 }
 
 export default function* manageReputationMotionSage() {
-  yield takeEvery(
-    ActionTypes.COLONY_MOTION_MANAGE_REPUTATION,
-    manageReputationMotion,
-  );
+  yield takeEvery(ActionTypes.MOTION_MANAGE_REPUTATION, manageReputationMotion);
 }

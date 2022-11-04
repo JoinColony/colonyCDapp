@@ -88,12 +88,11 @@ const AvatarUploader = ({
   }, []);
 
   // FileUpload children are renderProps (functions)
-  const renderOverlay = () => () =>
-    (
-      <div className={styles.overlay}>
-        <FormattedMessage {...MSG.dropNow} />
-      </div>
-    );
+  const renderOverlay = () => (
+    <div className={styles.overlay}>
+      <FormattedMessage {...MSG.dropNow} />
+    </div>
+  );
 
   const noButtonStyles = {
     ...styles,

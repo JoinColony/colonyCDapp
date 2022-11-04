@@ -1,11 +1,15 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, AnyVotingReputationClient } from '@colony/colony-js';
-import { soliditySha3Raw } from 'web3-utils';
+import { utils } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { getContext, ContextModule } from '~context';
-import { putError, takeFrom, updateMotionValues } from '../utils';
+import {
+  putError,
+  takeFrom,
+  updateMotionValues,
+  getColonyManager,
+} from '../utils';
 
 import {
   createTransaction,
@@ -18,12 +22,11 @@ import { signMessage } from '../messages';
 function* revealVoteMotion({
   meta,
   payload: { userAddress, colonyAddress, motionId },
-}: Action<ActionTypes.COLONY_MOTION_REVEAL_VOTE>) {
+}: Action<ActionTypes.MOTION_REVEAL_VOTE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const context = getContext(ContextModule.ColonyManager);
-    const colonyManager = getContext(ContextModule.ColonyManager);
-    const colonyClient = yield context.getClient(
+    const colonyManager = yield getColonyManager();
+    const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
@@ -59,7 +62,7 @@ function* revealVoteMotion({
     } Motion ID: ${motionId.toNumber()}`;
 
     const signature = yield signMessage('motionRevealVote', message);
-    const salt = soliditySha3Raw(signature);
+    const salt = utils.keccak256(signature);
 
     /*
      * Infferr which side the user voted based on the same salt
@@ -159,26 +162,22 @@ function* revealVoteMotion({
       yield fork(updateMotionValues, colonyAddress, userAddress, motionId);
 
       return yield put<AllActions>({
-        type: ActionTypes.COLONY_MOTION_REVEAL_VOTE_SUCCESS,
+        type: ActionTypes.MOTION_REVEAL_VOTE_SUCCESS,
         meta,
       });
     }
     return yield putError(
-      ActionTypes.COLONY_MOTION_REVEAL_VOTE_ERROR,
+      ActionTypes.MOTION_REVEAL_VOTE_ERROR,
       new Error('User did not submit standard vote value'),
       meta,
     );
   } catch (error) {
-    return yield putError(
-      ActionTypes.COLONY_MOTION_REVEAL_VOTE_ERROR,
-      error,
-      meta,
-    );
+    return yield putError(ActionTypes.MOTION_REVEAL_VOTE_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
 }
 
 export default function* revealVoteMotionSaga() {
-  yield takeEvery(ActionTypes.COLONY_MOTION_REVEAL_VOTE, revealVoteMotion);
+  yield takeEvery(ActionTypes.MOTION_REVEAL_VOTE, revealVoteMotion);
 }

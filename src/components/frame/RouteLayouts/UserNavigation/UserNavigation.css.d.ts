@@ -3,13 +3,7 @@ declare namespace UserNavigationCssNamespace {
     elementWrapper: string;
     main: string;
     networkInfo: string;
-    notificationsButton: string;
-    notificationsHighlight: string;
-    notificationsIcon: string;
-    notificationsIconActive: string;
-    readyTransactionsCount: string;
     reputation: string;
-    wrongNetwork: string;
   }
 }
 

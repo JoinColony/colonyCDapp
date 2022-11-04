@@ -1,16 +1,15 @@
 import { createSelector } from 'reselect';
 import { Collection, Map as ImmutableMap, List } from 'immutable';
 
-import { TransactionRecord, TRANSACTION_STATUSES } from '../immutable';
+import { TRANSACTION_STATUSES } from '~types';
+
+import { TransactionRecord } from '../immutable';
 
 import { RootStateRecord } from '../state';
 import { TransactionsListMap } from '../state/transactions';
+import { CORE_TRANSACTIONS, CORE_TRANSACTIONS_LIST } from '../constants';
+
 import { messageGroups } from './messages';
-import {
-  CORE_NAMESPACE as ns,
-  CORE_TRANSACTIONS,
-  CORE_TRANSACTIONS_LIST,
-} from '../constants';
 
 /*
  * Transactions sorting functions.
@@ -27,10 +26,17 @@ export const oneTransaction = (
   state: RootStateRecord,
   id: string,
 ): TransactionRecord | undefined =>
-  state.getIn([ns, CORE_TRANSACTIONS, CORE_TRANSACTIONS_LIST, id]);
+  state.getIn([
+    CORE_TRANSACTIONS,
+    CORE_TRANSACTIONS_LIST,
+    id,
+  ]) as TransactionRecord;
 
 const allTransactions = (state: RootStateRecord): TransactionsListMap =>
-  state.getIn([ns, CORE_TRANSACTIONS, CORE_TRANSACTIONS_LIST]);
+  state.getIn([
+    CORE_TRANSACTIONS,
+    CORE_TRANSACTIONS_LIST,
+  ]) as TransactionsListMap;
 
 export const transactionByHash = (state: RootStateRecord, hash: string) =>
   createSelector(allTransactions, (transactions) =>

@@ -4,9 +4,8 @@ import {
   TransactionResponse,
 } from '@ethersproject/providers';
 import { poll } from 'ethers/lib/utils';
-import { buffers, END, eventChannel } from 'redux-saga';
-import { Contract } from 'ethers';
-
+import { buffers, END, eventChannel, Buffer } from 'redux-saga';
+import { ContractClient } from '@colony/colony-js';
 import { MethodParams, RequireProps } from '~types';
 import { TransactionRecord } from '../../immutable';
 
@@ -30,7 +29,10 @@ type TxSucceededEvent = {
   deployedContractAddress?: string;
 };
 
-const parseEventData = (client: Contract, receipt: TransactionReceipt) => {
+const parseEventData = (
+  client: ContractClient,
+  receipt: TransactionReceipt,
+) => {
   const parsedLogs =
     receipt && receipt.logs
       ? receipt.logs.map((log) => client.interface.parseLog(log))
@@ -57,12 +59,15 @@ const channelSendTransaction = async (
   try {
     emit(transactionSent(id));
     const transaction = await txPromise;
+
     const { hash, blockNumber = 0, blockHash = '' } = transaction;
     if (!hash) {
       emit(transactionSendError(id, new Error('No tx hash found')));
       return null;
     }
+
     emit(transactionHashReceived(id, { hash, blockNumber, blockHash, params }));
+
     return transaction as TransactionResponseWithHash;
   } catch (caughtError) {
     console.error(caughtError);
@@ -81,14 +86,14 @@ const channelGetTransactionReceipt = async (
   try {
     // Sometimes the provider does not return a transaction receipt, so we try again
     // (for a really long time)
-    const receipt = await poll(
+    const receipt = (await poll(
       async () => {
         const res = await provider.getTransactionReceipt(hash);
         if (!res) return undefined;
         return res;
       },
       { timeout: 60 * 60 * 1000 },
-    );
+    )) as TransactionReceipt;
     emit(transactionReceiptReceived(id, { receipt, params }));
     return receipt;
   } catch (caughtError) {
@@ -100,9 +105,9 @@ const channelGetTransactionReceipt = async (
 };
 
 const channelGetEventData = async (
-  { id, params }: TransactionRecord,
+  { id, params, metatransaction }: TransactionRecord,
   receipt: TransactionReceipt,
-  client: Contract,
+  client: ContractClient,
   emit,
 ) => {
   try {
@@ -115,7 +120,7 @@ const channelGetEventData = async (
     if (receipt.contractAddress) {
       txSucceededEvent.deployedContractAddress = receipt.contractAddress;
     }
-    emit(transactionSucceeded(id, txSucceededEvent));
+    emit(transactionSucceeded(id, txSucceededEvent, metatransaction));
     return eventData;
   } catch (caughtError) {
     console.error(caughtError);
@@ -128,7 +133,7 @@ const channelGetEventData = async (
 const channelStart = async (
   tx: TransactionRecord,
   txPromise: Promise<TransactionResponse>,
-  client: Contract,
+  client: ContractClient,
   emit,
 ) => {
   try {
@@ -175,11 +180,11 @@ const channelStart = async (
 const transactionChannel = (
   txPromise: Promise<TransactionResponse>,
   tx: TransactionRecord,
-  client: Contract,
+  client: ContractClient,
 ) =>
   eventChannel((emit) => {
     channelStart(tx, txPromise, client, emit);
     return () => {};
-  }, buffers.fixed());
+  }, <Buffer<null>>buffers.fixed());
 
 export default transactionChannel;

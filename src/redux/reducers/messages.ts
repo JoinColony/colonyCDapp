@@ -1,6 +1,8 @@
 import { fromJS } from 'immutable';
 
-import { Message, TRANSACTION_STATUSES } from '../immutable';
+import { TRANSACTION_STATUSES } from '~types';
+
+import { Message } from '../immutable';
 import { ActionTypes } from '../actionTypes';
 import { ReducerType } from '../types/reducer';
 import { CoreMessages, CoreMessagesRecord } from '../state/messages';

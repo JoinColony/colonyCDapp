@@ -22,7 +22,7 @@ export { default as colonyFinishDeploymentSaga } from './colonyFinishDeployment'
 function* colonyClaimToken({
   payload: { colonyAddress, tokenAddress },
   meta,
-}: Action<ActionTypes.COLONY_CLAIM_TOKEN>) {
+}: Action<ActionTypes.CLAIM_TOKEN>) {
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
@@ -41,7 +41,7 @@ function* colonyClaimToken({
     );
 
     yield put<AllActions>({
-      type: ActionTypes.COLONY_CLAIM_TOKEN_SUCCESS,
+      type: ActionTypes.CLAIM_TOKEN_SUCCESS,
       payload,
       meta,
     });
@@ -64,7 +64,7 @@ function* colonyClaimToken({
       fetchPolicy: 'network-only',
     });
   } catch (error) {
-    return yield putError(ActionTypes.COLONY_CLAIM_TOKEN_ERROR, error, meta);
+    return yield putError(ActionTypes.CLAIM_TOKEN_ERROR, error, meta);
   } finally {
     if (txChannel) txChannel.close();
   }
@@ -72,5 +72,5 @@ function* colonyClaimToken({
 }
 
 export default function* colonySagas() {
-  yield takeEvery(ActionTypes.COLONY_CLAIM_TOKEN, colonyClaimToken);
+  yield takeEvery(ActionTypes.CLAIM_TOKEN, colonyClaimToken);
 }

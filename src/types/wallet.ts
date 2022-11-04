@@ -5,3 +5,7 @@ export interface Wallet extends WalletState {
   balance: Record<string, string>;
   ens?: string | null;
 }
+
+export enum DevelopmentWallets {
+  Ganache = 'Ganache Wallet',
+}

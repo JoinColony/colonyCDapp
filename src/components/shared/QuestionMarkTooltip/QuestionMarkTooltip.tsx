@@ -41,30 +41,28 @@ const QuestionMarkTooltip = ({
   invertedIcon,
 }: Props) => {
   return (
-    <>
-      <Tooltip
-        content={
-          typeof tooltipText === 'string' ? (
-            tooltipText
-          ) : (
-            <div className={tooltipClassName}>
-              <FormattedMessage {...tooltipText} values={tooltipTextValues} />
-            </div>
-          )
-        }
-        trigger="hover"
-        showArrow={showArrow}
-        popperOptions={tooltipPopperOptions}
-      >
-        <div className={className}>
-          <Icon
-            name={invertedIcon ? 'question-mark-inverted' : 'question-mark'}
-            appearance={{ size: 'small' }}
-            title={iconTitle || ''}
-          />
-        </div>
-      </Tooltip>
-    </>
+    <Tooltip
+      content={
+        typeof tooltipText === 'string' ? (
+          tooltipText
+        ) : (
+          <div className={tooltipClassName}>
+            <FormattedMessage {...tooltipText} values={tooltipTextValues} />
+          </div>
+        )
+      }
+      trigger="hover"
+      showArrow={showArrow}
+      popperOptions={tooltipPopperOptions}
+    >
+      <div className={className}>
+        <Icon
+          name={invertedIcon ? 'question-mark-inverted' : 'question-mark'}
+          appearance={{ size: 'small' }}
+          title={iconTitle || ''}
+        />
+      </div>
+    </Tooltip>
   );
 };
 

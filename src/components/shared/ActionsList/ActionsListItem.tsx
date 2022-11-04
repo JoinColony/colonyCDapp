@@ -333,18 +333,16 @@ const ActionsListItem = ({
               />
             </span>
             {(motionState || isVotingExtensionEnabled) && (
-              <>
-                <div className={styles.motionTagWrapper}>
-                  <Tag
-                    text={motionStyles.name}
-                    appearance={{
-                      theme: motionStyles.theme as TagAppearance['theme'],
-                      colorSchema:
-                        motionStyles.colorSchema as TagAppearance['colorSchema'],
-                    }}
-                  />
-                </div>
-              </>
+              <div className={styles.motionTagWrapper}>
+                <Tag
+                  text={motionStyles.name}
+                  appearance={{
+                    theme: motionStyles.theme as TagAppearance['theme'],
+                    colorSchema:
+                      motionStyles.colorSchema as TagAppearance['colorSchema'],
+                  }}
+                />
+              </div>
             )}
           </div>
           <div className={styles.meta}>

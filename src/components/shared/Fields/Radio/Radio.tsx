@@ -74,39 +74,37 @@ const Radio = ({
       })}
       htmlFor={elementOnly ? inputId : undefined}
     >
-      <>
-        {/* eslint-disable-next-line jsx-a11y/role-supports-aria-props */}
-        <input
-          aria-checked={checked}
-          aria-disabled={disabled}
-          aria-invalid={!!error}
-          className={styles.delegate}
-          disabled={disabled}
-          id={inputId}
-          onClick={() => setValue(valueProp)}
-          type="radio"
-          value={valueProp}
-        />
-        <span className={styles.radio} style={radioStyle}>
-          {!!appearance && appearance.theme === 'fakeCheckbox' && (
-            <span className={styles.checkmark} />
-          )}
-        </span>
-        {!elementOnly && !!label ? (
-          <span className={styles.labelContainer}>
-            <InputLabel
-              appearance={{ direction: 'horizontal' }}
-              label={label}
-              labelValues={labelValues}
-              help={help}
-              helpValues={helpValues}
-              inputId={inputId}
-            />
-          </span>
-        ) : (
-          label || children
+      {/* eslint-disable-next-line jsx-a11y/role-supports-aria-props */}
+      <input
+        aria-checked={checked}
+        aria-disabled={disabled}
+        aria-invalid={!!error}
+        className={styles.delegate}
+        disabled={disabled}
+        id={inputId}
+        onClick={() => setValue(valueProp)}
+        type="radio"
+        value={valueProp}
+      />
+      <span className={styles.radio} style={radioStyle}>
+        {!!appearance && appearance.theme === 'fakeCheckbox' && (
+          <span className={styles.checkmark} />
         )}
-      </>
+      </span>
+      {!elementOnly && !!label ? (
+        <span className={styles.labelContainer}>
+          <InputLabel
+            appearance={{ direction: 'horizontal' }}
+            label={label}
+            labelValues={labelValues}
+            help={help}
+            helpValues={helpValues}
+            inputId={inputId}
+          />
+        </span>
+      ) : (
+        label || children
+      )}
     </label>
   );
 };

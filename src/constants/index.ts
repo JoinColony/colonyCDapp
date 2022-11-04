@@ -1,7 +1,7 @@
-import { Network } from '@colony/colony-js';
 import { constants as ethersContants } from 'ethers';
 
 import { Color } from '~shared/ColorTag';
+import { Network } from '~types';
 
 export * from './externalUrls';
 
@@ -36,15 +36,9 @@ export type NetworkInfo = {
   rpcUrl?: string;
 };
 
-export const DEFAULT_NETWORK = process.env.NETWORK || Network.Goerli;
+export const DEFAULT_NETWORK = process.env.NETWORK || Network.Ganache;
 export const COLONY_TOTAL_BALANCE_DOMAIN_ID = 0;
 export const DEFAULT_TOKEN_DECIMALS = 18;
-
-export enum ROLES_COMMUNITY {
-  founder = 'role.founder',
-  admin = 'role.admin',
-  member = 'role.member',
-}
 
 export const XDAI_TOKEN: TokenInfo = {
   /*
@@ -71,9 +65,6 @@ export const GOERLI_TOKEN: TokenInfo = {
 };
 
 export const GNOSIS_NETWORK: NetworkInfo = {
-  /*
-   * Needs to be this exact name, otherwise Metamask marks it as "not valid" when adding it
-   */
   name: 'Gnosis Chain',
   chainId: 100,
   shortName: 'xDai',
@@ -82,61 +73,53 @@ export const GNOSIS_NETWORK: NetworkInfo = {
   blockExplorerUrl: 'https://blockscout.com/poa/xdai',
   tokenExplorerLink: 'https://blockscout.com/poa/xdai/tokens',
   contractAddressLink: 'https://blockscout.com/poa/xdai/address',
-  rpcUrl: 'https://rpc.gnosischain.com',
 };
 
 export const ETHEREUM_NETWORK: NetworkInfo = {
   name: 'Ethereum',
   chainId: 1,
-  shortName: 'ETH',
+  shortName: 'Mainnet',
   blockExplorerName: 'Etherscan',
   blockExplorerUrl: 'https://etherscan.io',
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'https://etherscan.io/tokens',
   contractAddressLink: 'https://etherscan.io/address',
-  rpcUrl: 'https://mainnet.infura.io/v3',
 };
 
 export const GOERLI_NETWORK: NetworkInfo = {
   name: 'Goerli Testnet',
   chainId: 5,
-  shortName: 'GTH',
+  shortName: 'Goerli',
   blockExplorerName: 'Etherscan',
   blockExplorerUrl: 'https://goerli.etherscan.io',
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'https://goerli.etherscan.io/tokens',
   contractAddressLink: 'https://goerli.etherscan.io/address',
-  rpcUrl: 'https://goerli.infura.io/v3',
 };
 
-/*
- * @NOTE Local Network
- * ChainId is manually set by us, since ganache randomizes it on each start
- */
 export const GANACHE_NETWORK: NetworkInfo = {
   name: 'Local Ganache Instance',
-  chainId: 1337,
+  chainId: 2656691,
   shortName: 'Ganache',
   blockExplorerName: 'Noexplorer',
   blockExplorerUrl: 'http://localhost',
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'http://localhost',
   contractAddressLink: 'http://localhost',
-  rpcUrl: 'http://localhost:8545',
 };
 
 export const NETWORK_DATA: { [key: string]: NetworkInfo } = {
-  [Network.Local]: GANACHE_NETWORK,
-  [Network.Xdai]: GNOSIS_NETWORK,
-  [Network.XdaiFork]: GNOSIS_NETWORK,
+  [Network.Ganache]: GANACHE_NETWORK,
+  [Network.Gnosis]: GNOSIS_NETWORK,
+  [Network.GnosisFork]: GNOSIS_NETWORK,
   [Network.Goerli]: GOERLI_NETWORK,
   [Network.Mainnet]: ETHEREUM_NETWORK,
 };
 
 export const TOKEN_DATA = {
-  [Network.Local]: ETHER_TOKEN,
-  [Network.Xdai]: XDAI_TOKEN,
-  [Network.XdaiFork]: XDAI_TOKEN,
+  [Network.Ganache]: ETHER_TOKEN,
+  [Network.Gnosis]: XDAI_TOKEN,
+  [Network.GnosisFork]: XDAI_TOKEN,
   [Network.Goerli]: GOERLI_TOKEN,
   [Network.Mainnet]: ETHER_TOKEN,
 };
@@ -161,6 +144,19 @@ export const ALLDOMAINS_DOMAIN_SELECTION = {
   description: '',
 };
 
+/*
+ * List all networks that curently support metatransactions
+ */
+export const NETWORKS_WITH_METATRANSACTIONS = [
+  Network.Ganache,
+  Network.Gnosis,
+  Network.GnosisFork,
+];
+
 export const SMALL_TOKEN_AMOUNT_FORMAT = '0.00000...';
 
 export const ADDRESS_ZERO = ethersContants.AddressZero;
+
+export const GANACHE_LOCAL_RPC_URL = 'http://localhost:8545';
+
+export const isDev = process.env.NODE_ENV === 'development';

@@ -1,9 +1,10 @@
 import getObjectFromPath from 'lodash/get';
 
+import { TRANSACTION_STATUSES } from '~types';
+
 import {
   TransactionRecord,
   Transaction,
-  TRANSACTION_STATUSES,
   TransactionRecordProps,
 } from '../immutable';
 import { ActionTypes } from '../actionTypes';
@@ -47,6 +48,8 @@ const coreTransactionsReducer: ReducerType<CoreTransactionsRecord> = (
           status,
           gasPrice,
           gasLimit,
+          title,
+          titleValues,
         },
       } = action;
 
@@ -64,6 +67,8 @@ const coreTransactionsReducer: ReducerType<CoreTransactionsRecord> = (
         status,
         gasLimit,
         gasPrice,
+        title,
+        titleValues,
       } as TransactionRecordProps);
 
       return state.setIn(

@@ -2,7 +2,6 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, Id, getChildIndex } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
-import { ContextModule, getContext } from '~context';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
@@ -10,6 +9,7 @@ import {
   takeFrom,
   routeRedirect,
   uploadIfpsAnnotation,
+  getColonyManager,
 } from '../utils';
 
 import {
@@ -33,15 +33,15 @@ function* createRootMotionSaga({
   },
   meta: { id: metaId, history },
   meta,
-}: Action<ActionTypes.COLONY_ROOT_MOTION>) {
+}: Action<ActionTypes.ROOT_MOTION>) {
   let txChannel;
   try {
     if (!motionParams) {
       throw new Error('Parameters not set for rootMotion transaction');
     }
 
-    const context = getContext(ContextModule.ColonyManager);
-    const colonyClient = yield context.getClient(
+    const colonyManager = yield getColonyManager();
+    const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
@@ -153,7 +153,7 @@ function* createRootMotionSaga({
       );
     }
     yield put<AllActions>({
-      type: ActionTypes.COLONY_ROOT_MOTION_SUCCESS,
+      type: ActionTypes.ROOT_MOTION_SUCCESS,
       meta,
     });
 
@@ -161,12 +161,12 @@ function* createRootMotionSaga({
       yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
     }
   } catch (caughtError) {
-    putError(ActionTypes.COLONY_ROOT_MOTION_ERROR, caughtError, meta);
+    putError(ActionTypes.ROOT_MOTION_ERROR, caughtError, meta);
   } finally {
     txChannel.close();
   }
 }
 
 export default function* rootMotionSaga() {
-  yield takeEvery(ActionTypes.COLONY_ROOT_MOTION, createRootMotionSaga);
+  yield takeEvery(ActionTypes.ROOT_MOTION, createRootMotionSaga);
 }

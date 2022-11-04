@@ -1,15 +1,14 @@
 import { call } from 'redux-saga/effects';
 import {
   getColonyNetworkClient,
-  Network,
   ColonyNetworkAddress,
+  Network as ColonyJSNetwork,
 } from '@colony/colony-js';
+import { providers } from 'ethers';
 
-import { Signer } from 'ethers';
 import { DEFAULT_NETWORK } from '~constants';
 import { ContextModule, getContext } from '~context';
-
-import getProvider from './getProvider';
+import { Network, ColonyJSNetworkMapping } from '~types';
 
 /*
  * Return an initialized ColonyNetworkClient instance.
@@ -19,42 +18,30 @@ export default function* getNetworkClient() {
 
   if (!wallet) throw new Error('No wallet in context');
 
-  const network = DEFAULT_NETWORK as Network;
+  const network = DEFAULT_NETWORK;
 
-  const provider = getProvider();
+  const walletProvider = new providers.Web3Provider(wallet.provider);
 
-  /*
-   * @TODO Refactor this to remove the use of Purser/EthersSigner
-   */
-  // const signer = new EthersSigner({ purserWallet: wallet, provider });
-  const signer = { provider };
+  const signer = walletProvider.getSigner();
 
   let reputationOracleUrl = new URL(`/reputation`, window.location.origin);
 
-  if (
-    process.env.NODE_ENV === 'development' &&
-    DEFAULT_NETWORK === Network.Custom
-  ) {
+  if (DEFAULT_NETWORK === Network.Ganache) {
     reputationOracleUrl = new URL(`/reputation`, 'http://localhost:3001');
     const {
       etherRouterAddress: networkAddress,
       // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
     } = require('../../../../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-    return yield call(
-      getColonyNetworkClient,
-      network,
-      signer as unknown as Signer,
-      {
-        networkAddress,
-        reputationOracleEndpoint: reputationOracleUrl.href,
-      },
-    );
+    return yield call(getColonyNetworkClient, ColonyJSNetwork.Custom, signer, {
+      networkAddress,
+      reputationOracleEndpoint: reputationOracleUrl.href,
+    });
   }
 
   return yield call(
     getColonyNetworkClient,
-    network,
-    signer as unknown as Signer,
+    ColonyJSNetworkMapping[network] as ColonyJSNetwork,
+    signer,
     {
       /*
        * Manually set the network address to instantiate the network client
