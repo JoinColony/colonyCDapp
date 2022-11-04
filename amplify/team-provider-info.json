@@ -16,7 +16,8 @@
         "fetchTokenFromChain": {},
         "createUniqueUser": {},
         "createUniqueColony": {},
-        "createUniqueDomain": {}
+        "createUniqueDomain": {},
+        "getUserReputation": {}
       }
     }
   }

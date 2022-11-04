@@ -17,6 +17,11 @@ export const getTokenFromEverywhere = /* GraphQL */ `
     }
   }
 `;
+export const getUserReputation = /* GraphQL */ `
+  query GetUserReputation($input: GetUserReputationInput) {
+    getUserReputation(input: $input)
+  }
+`;
 export const getToken = /* GraphQL */ `
   query GetToken($id: ID!) {
     getToken(id: $id) {
