@@ -25,7 +25,7 @@ const displayName = 'frame.RouteLayouts.UserNavigation';
 
 const MSG = defineMessages({
   // userReputationTooltip: {
-  //   id: 'root.RouteLayouts.UserNavigation.userReputationTooltip',
+  //   id: `${displayName}.userReputationTooltip`,
   //   defaultMessage: 'This is your share of the reputation in this colony',
   // },
   networkNotSupportedName: {
