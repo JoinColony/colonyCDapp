@@ -13,6 +13,7 @@ exports.handler = async (event) => {
   const colonyAddress = input?.colonyAddress;
   const walletAddress = input?.walletAddress;
   const domainId = input?.domainId;
+  const rootHash = input?.rootHash;
 
   const provider = new providers.JsonRpcProvider(RPC_URL);
 
@@ -32,6 +33,7 @@ exports.handler = async (event) => {
   const { reputationAmount } = await colonyClient.getReputationWithoutProofs(
     skillId,
     walletAddress,
+    rootHash,
   );
 
   return reputationAmount.toString();

@@ -61,6 +61,7 @@ input GetUserReputationInput {
   walletAddress: String!
   colonyAddress: String!
   domainId: Int
+  rootHash: String
 }
 
 type TokenFromEverywhereReturn {

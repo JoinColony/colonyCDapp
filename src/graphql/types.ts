@@ -540,6 +540,7 @@ export type GetUserReputationInput = {
   walletAddress: string,
   colonyAddress: string,
   domainId?: number | null,
+  rootHash?: string | null,
 };
 
 export type ModelTokenFilterInput = {
