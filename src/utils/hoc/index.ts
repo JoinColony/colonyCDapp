@@ -6,10 +6,10 @@ export const withHooks =
   <H, P, R>(hookFn: HookFn<H, P, R>) =>
   (Component: ComponentType<P>) =>
   (hookParams: H) =>
-    function (props: P) {
-      const results = hookFn(hookParams, props);
-      return createElement(Component, { ...props, ...results });
-    };
+  (props: P) => {
+    const results = hookFn(hookParams, props);
+    return createElement(Component, { ...props, ...results });
+  };
 
 export interface ForwardedRefProps {
   forwardedRef: Ref<any>;
