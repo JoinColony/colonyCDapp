@@ -5,11 +5,10 @@ import * as yup from 'yup';
 import { IconButton } from '~shared/Button';
 import { ActionForm } from '~shared/Fields';
 
-import { TransactionType } from '~redux/immutable';
 import { getMainClasses } from '~utils/css';
 import { withId } from '~utils/actions';
-import { ActionTypes } from '~redux/index';
-
+import { ActionTypes } from '~redux';
+import { TransactionType } from '~redux/immutable';
 import { transactionEstimateGas, transactionSend } from '~redux/actionCreators';
 
 import { GasStationContext } from '../GasStationProvider';
