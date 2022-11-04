@@ -16,9 +16,9 @@ interface Props {
   isNativeTokenLocked?: boolean;
 }
 
-const displayName = 'common.ColonyHome.ColonyFundingWidget.TokenItem';
+const displayName = 'common.ColonyHome.ColonyFundingWidget.TokenBalanceItem';
 
-const TokenItem = ({
+const TokenBalanceItem = ({
   // currentDomainId,
   token: { decimals, symbol },
   isTokenNative,
@@ -57,6 +57,6 @@ const TokenItem = ({
   );
 };
 
-TokenItem.displayName = displayName;
+TokenBalanceItem.displayName = displayName;
 
-export default TokenItem;
+export default TokenBalanceItem;

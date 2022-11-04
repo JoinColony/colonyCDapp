@@ -8,7 +8,7 @@ import NavLink from '~shared/NavLink';
 // import { Colony, useTokenBalancesForDomainsQuery } from '~data/index';
 import { Colony, ColonyTokens } from '~types';
 
-import TokenItem from './TokenItem';
+import TokenBalanceItem from './TokenBalanceItem';
 
 import styles from './ColonyFundingWidget.css';
 
@@ -63,7 +63,7 @@ const ColonyFundingWidget = ({
               isTokenNative={token.tokenAddress === nativeTokenAddress}
             > */}
             <div className={styles.tokenBalance}>
-              <TokenItem
+              <TokenBalanceItem
                 // currentDomainId={currentDomainId}
                 token={token}
                 isTokenNative={token.tokenAddress === nativeTokenAddress}
