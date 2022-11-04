@@ -3,7 +3,6 @@ import { defineMessages } from 'react-intl';
 
 import { Appearance, Select, SelectOption } from '~shared/Fields';
 import ColorTag from '~shared/ColorTag';
-
 import { Color } from '~types';
 
 import styles from './ColorSelect.css';
