@@ -7,7 +7,7 @@ import Button, { Appearance as ButtonAppearance } from './Button';
 
 import styles from './InviteLinkButton.css';
 
-const displayName = 'shared.Button.InviteLinkButton';
+const displayName = 'Button.InviteLinkButton';
 
 const MSG = defineMessages({
   buttonText: {
