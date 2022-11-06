@@ -9,7 +9,7 @@ import ClickableHeading from '~shared/ClickableHeading';
 import InviteLinkButton from '~shared/Button/InviteLinkButton';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { useAvatarDisplayCounter, useAppContext } from '~hooks';
+import { useAvatarDisplayCounter } from '~hooks';
 import { Colony, User } from '~types';
 import { notNull } from '~utils/arrays';
 
@@ -78,7 +78,9 @@ const MembersSubsection = ({
     () => (watchers?.items || []).filter(notNull),
     [watchers],
   );
-  const { user } = useAppContext();
+  // const { user } = useAppContext();
+  // const userHasAccountRegistered = useUserAccountRegistered();
+
   // const hasRegisteredProfile = user?.name;
   // const canAdministerComments =
   //   userHasAccountRegistered &&
@@ -151,12 +153,13 @@ const MembersSubsection = ({
       <ul className={styles.userAvatars}>
         {(colonyWatchers as { user: User }[])
           .slice(0, avatarsDisplaySplitRules)
-          .map(({ user: { walletAddress } }) => (
-            <li className={styles.userAvatar} key={walletAddress}>
+          .map(({ user }) => (
+            <li className={styles.userAvatar} key={user.walletAddress}>
               <UserAvatar
                 size="xs"
-                address={walletAddress}
+                address={user.walletAddress}
                 // banned={canAdministerComments && banned}
+                banned={false}
                 showInfo
                 notSet={false}
                 colony={colony}

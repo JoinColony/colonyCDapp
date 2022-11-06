@@ -3,8 +3,7 @@ import { PopperOptions } from 'react-popper-tooltip';
 
 import Link from '~shared/Link';
 import InfoPopover, { Props as InfoPopoverProps } from '~shared/InfoPopover';
-
-import { useUserQuery, useUserAddressQuery } from '~data/index';
+// import { useUserQuery, useUserAddressQuery } from '~data/index';
 
 import styles from './UserMention.css';
 
@@ -43,15 +42,15 @@ const UserMention = ({
     showArrow: popperOptions && popperOptions.showArrow,
   };
 
-  const { data: userAddressData } = useUserAddressQuery({
-    variables: {
-      name: username || '',
-    },
-  });
+  // const { data: userAddressData } = useUserAddressQuery({
+  //   variables: {
+  //     name: username || '',
+  //   },
+  // });
 
-  const { data } = useUserQuery({
-    variables: { address: userAddressData?.userAddress || '' },
-  });
+  // const { data } = useUserQuery({
+  //   variables: { address: userAddressData?.userAddress || '' },
+  // });
 
   const renderUserMention = () =>
     hasLink ? (
@@ -72,12 +71,13 @@ const UserMention = ({
     return renderUserMention();
   }
 
-  const { user } = data || {};
+  // const { user } = data || {};
 
   return (
-    <InfoPopover user={user} {...popoverProps}>
-      {renderUserMention()}
-    </InfoPopover>
+    // <InfoPopover user={user} {...popoverProps}>
+    //   {renderUserMention()}
+    // </InfoPopover>
+    <InfoPopover {...popoverProps}>{renderUserMention()}</InfoPopover>
   );
 };
 

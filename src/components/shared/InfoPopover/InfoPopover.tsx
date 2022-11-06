@@ -2,7 +2,8 @@ import React, { ReactNode, useMemo } from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
 
 import Popover from '~shared/Popover';
-import { AnyUser, AnyToken, Colony } from '~data/index';
+import { Token, User, Colony } from '~types';
+// import { AnyUser, AnyToken, Colony } from '~data/index';
 
 import MemberInfoPopover from './MemberInfoPopover';
 import TokenInfoPopover from './TokenInfoPopover';
@@ -10,17 +11,17 @@ import UserInfoPopover from './UserInfoPopover';
 
 interface TokenContentProps {
   isTokenNative?: boolean;
-  token?: AnyToken;
+  token?: Token;
 }
 
 interface BasicUserContentProps {
-  user?: AnyUser;
+  user?: User;
 }
 
 interface MemberContentProps {
   colony?: Colony;
   domainId?: number | undefined;
-  user?: AnyUser;
+  user?: User;
 }
 
 type ContentProps =
@@ -55,15 +56,10 @@ const InfoPopover = ({
       'colony' in contentProps &&
       typeof contentProps.colony !== 'undefined'
     ) {
-      const { colony, domainId, user } = contentProps;
-      return (
-        <MemberInfoPopover
-          colony={colony}
-          domainId={domainId}
-          user={user}
-          banned={banned}
-        />
-      );
+      // const { colony, user } = contentProps;
+      const { user } = contentProps;
+      // return <MemberInfoPopover colony={colony} user={user} banned={banned} />;
+      return <MemberInfoPopover user={user} banned={banned} />;
     }
     if ('token' in contentProps && typeof contentProps.token !== 'undefined') {
       const { isTokenNative, token } = contentProps;
@@ -81,7 +77,7 @@ const InfoPopover = ({
 
   return (
     <Popover
-      content={renderContent}
+      renderContent={renderContent}
       popperOptions={popperOptions}
       trigger={trigger}
       showArrow={showArrow}

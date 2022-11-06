@@ -63,6 +63,7 @@ const PopoverWrapper = ({
   }, [close, content, contentValues, formatMessage]);
   return (
     <div
+      // @ts-ignore
       className={`
         popoverWrapper
         ${getMainClasses(appearance, styles, {
@@ -80,6 +81,7 @@ const PopoverWrapper = ({
       {popoverContent}
       {state && state.placement && (
         <span
+          // @ts-ignore
           className={getPopoverArrowClasses(
             appearance,
             // Use placement derived from popperjs so `auto` isn't used

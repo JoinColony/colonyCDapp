@@ -5,43 +5,29 @@ import Heading from '~shared/Heading';
 import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
 
-import { AnyUser } from '~data/index';
-import useUserAvatarImageFromIPFS from '~utils/hooks/useUserAvatarImageFromIPFS';
+import { User } from '~types';
+// import useUserAvatarImageFromIPFS from '~utils/hooks/useUserAvatarImageFromIPFS';
 
 import styles from './InfoPopover.css';
 
 interface Props {
-  user: AnyUser;
+  user: User;
 }
 
 const displayName = 'InfoPopover.UserInfo';
 
-const UserInfo = ({
-  user: {
-    profile: {
-      displayName: userDisplayName,
-      username,
-      walletAddress,
-      avatarHash,
-    },
-  },
-  user,
-}: Props) => {
-  /*
-   * @NOTE We have to fetch our avatar base64 data from IPFS because if we
-   * use the "normal" HookedUserAvar we cause a circular call which will
-   * exceed the call stack (obviously) and break React
-   */
-  const { image: avatarData } =
-    useUserAvatarImageFromIPFS(avatarHash || '') || {};
+const UserInfo = ({ user }: Props) => {
+  const { displayName: userDisplayName } = user.profile || {};
+  // const { image: avatarData } =
+  //   useUserAvatarImageFromIPFS(avatarHash || '') || {};
   return (
     <div className={styles.container}>
       <UserAvatar
         size="s"
-        address={walletAddress}
+        address={user.walletAddress}
         user={user}
         notSet={false}
-        avatarURL={avatarData}
+        // avatarURL={avatarData}
       />
       <div className={styles.textContainer}>
         {userDisplayName && (
@@ -50,18 +36,18 @@ const UserInfo = ({
             text={userDisplayName}
           />
         )}
-        {username && (
+        {userDisplayName && (
           /*
-           * @NOTE Potential recurrsion loop here.
+           * @NOTE Potential recursion loop here.
            *
            * Never pass `showInfo` to this instance of UserMention, otherwise you'll trigger it
            */
           <p className={styles.userName}>
-            <UserMention username={username} hasLink />
+            <UserMention username={userDisplayName} hasLink />
           </p>
         )}
         <div className={styles.address}>
-          <CopyableAddress full>{walletAddress}</CopyableAddress>
+          <CopyableAddress full>{user.walletAddress}</CopyableAddress>
         </div>
       </div>
     </div>

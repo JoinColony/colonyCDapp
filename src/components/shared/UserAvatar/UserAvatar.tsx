@@ -2,12 +2,11 @@ import React from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
 
 import Avatar from '~shared/Avatar';
-// import InfoPopover, { Props as InfoPopoverProps } from '~shared/InfoPopover';
+import InfoPopover, { Props as InfoPopoverProps } from '~shared/InfoPopover';
 import Link from '~shared/NavLink';
-import { Address } from '~types';
+import { Address, User, Colony } from '~types';
 // import { AnyUser, Colony } from '~data/index';
-// import { getUsername } from '~redux/transformers';
-import { User } from '~types';
+import { getUsername } from '~redux/transformers';
 
 import styles from './UserAvatar.css';
 import { getMainClasses } from '~utils/css';
@@ -47,8 +46,8 @@ interface BaseProps {
 
 /** Used for the infopopover */
 interface PropsForReputation extends BaseProps {
-  // colony?: Colony;
-  colony?: Record<string, unknown>;
+  colony?: Colony;
+  // colony?: Record<string, unknown>;
   domainId?: number;
 }
 
@@ -69,61 +68,49 @@ const UserAvatar = ({
   user,
   ...rest
 }: Props) => {
-  // const username = getUsername(user);
-  // const username = 'tempUser';
-  // let popoverProps: InfoPopoverProps = {
-  //   popperOptions,
-  //   trigger: showInfo ? 'click' : 'disabled',
-  //   user,
-  //   showArrow: popperOptions && popperOptions.showArrow,
-  // };
-  // if ('colony' in rest) {
-  //   const { colony, domainId } = rest;
-  //   popoverProps = {
-  //     ...popoverProps,
-  //     banned,
-  //     colony,
-  //     domainId,
-  //   };
-  // }
-  // const avatar = (
-  //   <InfoPopover {...popoverProps}>
-  //     <div
-  //       // @ts-ignore
-  //       className={getMainClasses({}, styles, {
-  //         showOnClick: popoverProps.trigger === 'click',
-  //       })}
-  //     >
-  //       <Avatar
-  //         avatarURL={avatarURL}
-  //         className={className}
-  //         notSet={typeof notSet === 'undefined' ? true : notSet}
-  //         placeholderIcon="circle-person"
-  //         seed={address && address.toLowerCase()}
-  //         size={size}
-  //         title={showInfo ? '' : username || address}
-  //       />
-  //     </div>
-  //   </InfoPopover>
-  // );
-  // if (showLink && username) {
-  //   // Won't this always be lowercase?
-  //   return <Link to={`/user/${username.toLowerCase()}`}>{avatar}</Link>;
-  // }
-  // return avatar;
-  return (
-    <Avatar
-      avatarURL={avatarURL}
-      className={className}
-      notSet={typeof notSet === 'undefined' ? true : notSet}
-      placeholderIcon="circle-person"
-      seed={address && address.toLowerCase()}
-      size={size}
-      title={
-        showInfo ? '' : user?.profile?.displayName || user?.name || address
-      }
-    />
+  const username = getUsername(user);
+  let popoverProps: InfoPopoverProps = {
+    popperOptions,
+    trigger: showInfo ? 'click' : 'disabled',
+    user,
+    showArrow: popperOptions && popperOptions.showArrow,
+  };
+  if ('colony' in rest) {
+    const { colony, domainId } = rest;
+    popoverProps = {
+      ...popoverProps,
+      banned,
+      colony,
+      domainId,
+    };
+  }
+  const avatar = (
+    <InfoPopover {...popoverProps}>
+      <div
+        // @ts-ignore
+        className={getMainClasses({}, styles, {
+          showOnClick: popoverProps.trigger === 'click',
+        })}
+      >
+        <Avatar
+          avatarURL={avatarURL}
+          className={className}
+          notSet={typeof notSet === 'undefined' ? true : notSet}
+          placeholderIcon="circle-person"
+          seed={address && address.toLowerCase()}
+          size={size}
+          title={
+            showInfo ? '' : user?.profile?.displayName || user?.name || address
+          }
+        />
+      </div>
+    </InfoPopover>
   );
+  if (showLink && username) {
+    // Won't this always be lowercase?
+    return <Link to={`/user/${username.toLowerCase()}`}>{avatar}</Link>;
+  }
+  return avatar;
 };
 
 UserAvatar.displayName = displayName;

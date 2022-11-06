@@ -2,7 +2,7 @@ import React, { HTMLAttributes } from 'react';
 import { FormattedMessage, MessageDescriptor } from 'react-intl';
 
 import Icon from '~shared/Icon';
-import { useMainClasses } from '~utils/hooks';
+import { useMainClasses } from '~hooks';
 
 import styles from './Tag.css';
 
@@ -54,6 +54,7 @@ const Tag = ({
         />
       )}
       {text ? (
+        // eslint-disable-next-line react/jsx-no-useless-fragment
         <>
           {typeof text === 'string' ? (
             text
