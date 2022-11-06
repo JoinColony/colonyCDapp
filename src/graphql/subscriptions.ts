@@ -103,6 +103,9 @@ export const onCreateColony = /* GraphQL */ `
       domains {
         nextToken
       }
+      transactions {
+        nextToken
+      }
       watchers {
         nextToken
       }
@@ -149,6 +152,9 @@ export const onUpdateColony = /* GraphQL */ `
       domains {
         nextToken
       }
+      transactions {
+        nextToken
+      }
       watchers {
         nextToken
       }
@@ -193,6 +199,9 @@ export const onDeleteColony = /* GraphQL */ `
         recovery
       }
       domains {
+        nextToken
+      }
+      transactions {
         nextToken
       }
       watchers {
@@ -359,6 +368,96 @@ export const onDeleteDomain = /* GraphQL */ `
       updatedAt
       colonyDomainsId
       domainParentId
+    }
+  }
+`;
+export const onCreateColonyTransaction = /* GraphQL */ `
+  subscription OnCreateColonyTransaction(
+    $filter: ModelSubscriptionColonyTransactionFilterInput
+  ) {
+    onCreateColonyTransaction(filter: $filter) {
+      id
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      createdAtBlock
+      status {
+        claimed
+      }
+      args {
+        source
+        amount
+      }
+      createdAt
+      updatedAt
+      colonyTransactionsId
+      colonyTransactionTokenId
+    }
+  }
+`;
+export const onUpdateColonyTransaction = /* GraphQL */ `
+  subscription OnUpdateColonyTransaction(
+    $filter: ModelSubscriptionColonyTransactionFilterInput
+  ) {
+    onUpdateColonyTransaction(filter: $filter) {
+      id
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      createdAtBlock
+      status {
+        claimed
+      }
+      args {
+        source
+        amount
+      }
+      createdAt
+      updatedAt
+      colonyTransactionsId
+      colonyTransactionTokenId
+    }
+  }
+`;
+export const onDeleteColonyTransaction = /* GraphQL */ `
+  subscription OnDeleteColonyTransaction(
+    $filter: ModelSubscriptionColonyTransactionFilterInput
+  ) {
+    onDeleteColonyTransaction(filter: $filter) {
+      id
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      createdAtBlock
+      status {
+        claimed
+      }
+      args {
+        source
+        amount
+      }
+      createdAt
+      updatedAt
+      colonyTransactionsId
+      colonyTransactionTokenId
     }
   }
 `;

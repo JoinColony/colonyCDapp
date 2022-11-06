@@ -97,6 +97,9 @@ export const getColony = /* GraphQL */ `
       domains {
         nextToken
       }
+      transactions {
+        nextToken
+      }
       watchers {
         nextToken
       }
@@ -215,6 +218,57 @@ export const listDomains = /* GraphQL */ `
         updatedAt
         colonyDomainsId
         domainParentId
+      }
+      nextToken
+    }
+  }
+`;
+export const getColonyTransaction = /* GraphQL */ `
+  query GetColonyTransaction($id: ID!) {
+    getColonyTransaction(id: $id) {
+      id
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      createdAtBlock
+      status {
+        claimed
+      }
+      args {
+        source
+        amount
+      }
+      createdAt
+      updatedAt
+      colonyTransactionsId
+      colonyTransactionTokenId
+    }
+  }
+`;
+export const listColonyTransactions = /* GraphQL */ `
+  query ListColonyTransactions(
+    $filter: ModelColonyTransactionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listColonyTransactions(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAtBlock
+        createdAt
+        updatedAt
+        colonyTransactionsId
+        colonyTransactionTokenId
       }
       nextToken
     }

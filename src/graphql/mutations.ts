@@ -191,6 +191,9 @@ export const createColony = /* GraphQL */ `
       domains {
         nextToken
       }
+      transactions {
+        nextToken
+      }
       watchers {
         nextToken
       }
@@ -240,6 +243,9 @@ export const updateColony = /* GraphQL */ `
       domains {
         nextToken
       }
+      transactions {
+        nextToken
+      }
       watchers {
         nextToken
       }
@@ -287,6 +293,9 @@ export const deleteColony = /* GraphQL */ `
         recovery
       }
       domains {
+        nextToken
+      }
+      transactions {
         nextToken
       }
       watchers {
@@ -471,6 +480,99 @@ export const deleteDomain = /* GraphQL */ `
       updatedAt
       colonyDomainsId
       domainParentId
+    }
+  }
+`;
+export const createColonyTransaction = /* GraphQL */ `
+  mutation CreateColonyTransaction(
+    $input: CreateColonyTransactionInput!
+    $condition: ModelColonyTransactionConditionInput
+  ) {
+    createColonyTransaction(input: $input, condition: $condition) {
+      id
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      createdAtBlock
+      status {
+        claimed
+      }
+      args {
+        source
+        amount
+      }
+      createdAt
+      updatedAt
+      colonyTransactionsId
+      colonyTransactionTokenId
+    }
+  }
+`;
+export const updateColonyTransaction = /* GraphQL */ `
+  mutation UpdateColonyTransaction(
+    $input: UpdateColonyTransactionInput!
+    $condition: ModelColonyTransactionConditionInput
+  ) {
+    updateColonyTransaction(input: $input, condition: $condition) {
+      id
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      createdAtBlock
+      status {
+        claimed
+      }
+      args {
+        source
+        amount
+      }
+      createdAt
+      updatedAt
+      colonyTransactionsId
+      colonyTransactionTokenId
+    }
+  }
+`;
+export const deleteColonyTransaction = /* GraphQL */ `
+  mutation DeleteColonyTransaction(
+    $input: DeleteColonyTransactionInput!
+    $condition: ModelColonyTransactionConditionInput
+  ) {
+    deleteColonyTransaction(input: $input, condition: $condition) {
+      id
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      createdAtBlock
+      status {
+        claimed
+      }
+      args {
+        source
+        amount
+      }
+      createdAt
+      updatedAt
+      colonyTransactionsId
+      colonyTransactionTokenId
     }
   }
 `;

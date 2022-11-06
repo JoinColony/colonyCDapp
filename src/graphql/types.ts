@@ -17,6 +17,7 @@ export type Colony = {
   profile?: Profile | null,
   status?: ColonyStatus | null,
   domains?: ModelDomainConnection | null,
+  transactions?: ModelColonyTransactionConnection | null,
   watchers?: ModelWatchedColoniesConnection | null,
   type?: ColonyType | null,
   meta?: Metadata | null,
@@ -185,6 +186,36 @@ export enum DomainColor {
   PURPLEGREY = "PURPLEGREY",
 }
 
+
+export type ModelColonyTransactionConnection = {
+  __typename: "ModelColonyTransactionConnection",
+  items:  Array<ColonyTransaction | null >,
+  nextToken?: string | null,
+};
+
+export type ColonyTransaction = {
+  __typename: "ColonyTransaction",
+  id: string,
+  token: Token,
+  createdAtBlock: number,
+  status?: ColonyTransactionStatus | null,
+  args?: TransactionArguments | null,
+  createdAt: string,
+  updatedAt: string,
+  colonyTransactionsId?: string | null,
+  colonyTransactionTokenId: string,
+};
+
+export type ColonyTransactionStatus = {
+  __typename: "ColonyTransactionStatus",
+  claimed?: boolean | null,
+};
+
+export type TransactionArguments = {
+  __typename: "TransactionArguments",
+  source?: string | null,
+  amount?: string | null,
+};
 
 export enum ColonyType {
   COLONY = "COLONY",
@@ -455,6 +486,46 @@ export type DeleteDomainInput = {
   id: string,
 };
 
+export type CreateColonyTransactionInput = {
+  id?: string | null,
+  createdAtBlock: number,
+  status?: ColonyTransactionStatusInput | null,
+  args?: TransactionArgumentsInput | null,
+  colonyTransactionsId?: string | null,
+  colonyTransactionTokenId: string,
+};
+
+export type ColonyTransactionStatusInput = {
+  claimed?: boolean | null,
+};
+
+export type TransactionArgumentsInput = {
+  source?: string | null,
+  amount?: string | null,
+};
+
+export type ModelColonyTransactionConditionInput = {
+  createdAtBlock?: ModelIntInput | null,
+  and?: Array< ModelColonyTransactionConditionInput | null > | null,
+  or?: Array< ModelColonyTransactionConditionInput | null > | null,
+  not?: ModelColonyTransactionConditionInput | null,
+  colonyTransactionsId?: ModelIDInput | null,
+  colonyTransactionTokenId?: ModelIDInput | null,
+};
+
+export type UpdateColonyTransactionInput = {
+  id: string,
+  createdAtBlock?: number | null,
+  status?: ColonyTransactionStatusInput | null,
+  args?: TransactionArgumentsInput | null,
+  colonyTransactionsId?: string | null,
+  colonyTransactionTokenId: string,
+};
+
+export type DeleteColonyTransactionInput = {
+  id: string,
+};
+
 export type CreateColonyTokensInput = {
   id?: string | null,
   tokenID: string,
@@ -591,6 +662,16 @@ export type ModelDomainFilterInput = {
   domainParentId?: ModelIDInput | null,
 };
 
+export type ModelColonyTransactionFilterInput = {
+  id?: ModelIDInput | null,
+  createdAtBlock?: ModelIntInput | null,
+  and?: Array< ModelColonyTransactionFilterInput | null > | null,
+  or?: Array< ModelColonyTransactionFilterInput | null > | null,
+  not?: ModelColonyTransactionFilterInput | null,
+  colonyTransactionsId?: ModelIDInput | null,
+  colonyTransactionTokenId?: ModelIDInput | null,
+};
+
 export type ModelColonyTokensFilterInput = {
   id?: ModelIDInput | null,
   tokenID?: ModelIDInput | null,
@@ -699,6 +780,13 @@ export type ModelSubscriptionDomainFilterInput = {
   color?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionDomainFilterInput | null > | null,
   or?: Array< ModelSubscriptionDomainFilterInput | null > | null,
+};
+
+export type ModelSubscriptionColonyTransactionFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  createdAtBlock?: ModelSubscriptionIntInput | null,
+  and?: Array< ModelSubscriptionColonyTransactionFilterInput | null > | null,
+  or?: Array< ModelSubscriptionColonyTransactionFilterInput | null > | null,
 };
 
 export type ModelSubscriptionColonyTokensFilterInput = {
@@ -1118,6 +1206,10 @@ export type CreateColonyMutation = {
       __typename: "ModelDomainConnection",
       nextToken?: string | null,
     } | null,
+    transactions?:  {
+      __typename: "ModelColonyTransactionConnection",
+      nextToken?: string | null,
+    } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
       nextToken?: string | null,
@@ -1176,6 +1268,10 @@ export type UpdateColonyMutation = {
       __typename: "ModelDomainConnection",
       nextToken?: string | null,
     } | null,
+    transactions?:  {
+      __typename: "ModelColonyTransactionConnection",
+      nextToken?: string | null,
+    } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
       nextToken?: string | null,
@@ -1232,6 +1328,10 @@ export type DeleteColonyMutation = {
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
+      nextToken?: string | null,
+    } | null,
+    transactions?:  {
+      __typename: "ModelColonyTransactionConnection",
       nextToken?: string | null,
     } | null,
     watchers?:  {
@@ -1442,6 +1542,114 @@ export type DeleteDomainMutation = {
     updatedAt: string,
     colonyDomainsId?: string | null,
     domainParentId?: string | null,
+  } | null,
+};
+
+export type CreateColonyTransactionMutationVariables = {
+  input: CreateColonyTransactionInput,
+  condition?: ModelColonyTransactionConditionInput | null,
+};
+
+export type CreateColonyTransactionMutation = {
+  createColonyTransaction?:  {
+    __typename: "ColonyTransaction",
+    id: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAtBlock: number,
+    status?:  {
+      __typename: "ColonyTransactionStatus",
+      claimed?: boolean | null,
+    } | null,
+    args?:  {
+      __typename: "TransactionArguments",
+      source?: string | null,
+      amount?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    colonyTransactionsId?: string | null,
+    colonyTransactionTokenId: string,
+  } | null,
+};
+
+export type UpdateColonyTransactionMutationVariables = {
+  input: UpdateColonyTransactionInput,
+  condition?: ModelColonyTransactionConditionInput | null,
+};
+
+export type UpdateColonyTransactionMutation = {
+  updateColonyTransaction?:  {
+    __typename: "ColonyTransaction",
+    id: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAtBlock: number,
+    status?:  {
+      __typename: "ColonyTransactionStatus",
+      claimed?: boolean | null,
+    } | null,
+    args?:  {
+      __typename: "TransactionArguments",
+      source?: string | null,
+      amount?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    colonyTransactionsId?: string | null,
+    colonyTransactionTokenId: string,
+  } | null,
+};
+
+export type DeleteColonyTransactionMutationVariables = {
+  input: DeleteColonyTransactionInput,
+  condition?: ModelColonyTransactionConditionInput | null,
+};
+
+export type DeleteColonyTransactionMutation = {
+  deleteColonyTransaction?:  {
+    __typename: "ColonyTransaction",
+    id: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAtBlock: number,
+    status?:  {
+      __typename: "ColonyTransactionStatus",
+      claimed?: boolean | null,
+    } | null,
+    args?:  {
+      __typename: "TransactionArguments",
+      source?: string | null,
+      amount?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    colonyTransactionsId?: string | null,
+    colonyTransactionTokenId: string,
   } | null,
 };
 
@@ -1867,6 +2075,10 @@ export type GetColonyQuery = {
       __typename: "ModelDomainConnection",
       nextToken?: string | null,
     } | null,
+    transactions?:  {
+      __typename: "ModelColonyTransactionConnection",
+      nextToken?: string | null,
+    } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
       nextToken?: string | null,
@@ -2008,6 +2220,63 @@ export type ListDomainsQuery = {
       updatedAt: string,
       colonyDomainsId?: string | null,
       domainParentId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetColonyTransactionQueryVariables = {
+  id: string,
+};
+
+export type GetColonyTransactionQuery = {
+  getColonyTransaction?:  {
+    __typename: "ColonyTransaction",
+    id: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAtBlock: number,
+    status?:  {
+      __typename: "ColonyTransactionStatus",
+      claimed?: boolean | null,
+    } | null,
+    args?:  {
+      __typename: "TransactionArguments",
+      source?: string | null,
+      amount?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    colonyTransactionsId?: string | null,
+    colonyTransactionTokenId: string,
+  } | null,
+};
+
+export type ListColonyTransactionsQueryVariables = {
+  filter?: ModelColonyTransactionFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListColonyTransactionsQuery = {
+  listColonyTransactions?:  {
+    __typename: "ModelColonyTransactionConnection",
+    items:  Array< {
+      __typename: "ColonyTransaction",
+      id: string,
+      createdAtBlock: number,
+      createdAt: string,
+      updatedAt: string,
+      colonyTransactionsId?: string | null,
+      colonyTransactionTokenId: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -2470,6 +2739,10 @@ export type OnCreateColonySubscription = {
       __typename: "ModelDomainConnection",
       nextToken?: string | null,
     } | null,
+    transactions?:  {
+      __typename: "ModelColonyTransactionConnection",
+      nextToken?: string | null,
+    } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
       nextToken?: string | null,
@@ -2527,6 +2800,10 @@ export type OnUpdateColonySubscription = {
       __typename: "ModelDomainConnection",
       nextToken?: string | null,
     } | null,
+    transactions?:  {
+      __typename: "ModelColonyTransactionConnection",
+      nextToken?: string | null,
+    } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
       nextToken?: string | null,
@@ -2582,6 +2859,10 @@ export type OnDeleteColonySubscription = {
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
+      nextToken?: string | null,
+    } | null,
+    transactions?:  {
+      __typename: "ModelColonyTransactionConnection",
       nextToken?: string | null,
     } | null,
     watchers?:  {
@@ -2786,6 +3067,111 @@ export type OnDeleteDomainSubscription = {
     updatedAt: string,
     colonyDomainsId?: string | null,
     domainParentId?: string | null,
+  } | null,
+};
+
+export type OnCreateColonyTransactionSubscriptionVariables = {
+  filter?: ModelSubscriptionColonyTransactionFilterInput | null,
+};
+
+export type OnCreateColonyTransactionSubscription = {
+  onCreateColonyTransaction?:  {
+    __typename: "ColonyTransaction",
+    id: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAtBlock: number,
+    status?:  {
+      __typename: "ColonyTransactionStatus",
+      claimed?: boolean | null,
+    } | null,
+    args?:  {
+      __typename: "TransactionArguments",
+      source?: string | null,
+      amount?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    colonyTransactionsId?: string | null,
+    colonyTransactionTokenId: string,
+  } | null,
+};
+
+export type OnUpdateColonyTransactionSubscriptionVariables = {
+  filter?: ModelSubscriptionColonyTransactionFilterInput | null,
+};
+
+export type OnUpdateColonyTransactionSubscription = {
+  onUpdateColonyTransaction?:  {
+    __typename: "ColonyTransaction",
+    id: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAtBlock: number,
+    status?:  {
+      __typename: "ColonyTransactionStatus",
+      claimed?: boolean | null,
+    } | null,
+    args?:  {
+      __typename: "TransactionArguments",
+      source?: string | null,
+      amount?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    colonyTransactionsId?: string | null,
+    colonyTransactionTokenId: string,
+  } | null,
+};
+
+export type OnDeleteColonyTransactionSubscriptionVariables = {
+  filter?: ModelSubscriptionColonyTransactionFilterInput | null,
+};
+
+export type OnDeleteColonyTransactionSubscription = {
+  onDeleteColonyTransaction?:  {
+    __typename: "ColonyTransaction",
+    id: string,
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAtBlock: number,
+    status?:  {
+      __typename: "ColonyTransactionStatus",
+      claimed?: boolean | null,
+    } | null,
+    args?:  {
+      __typename: "TransactionArguments",
+      source?: string | null,
+      amount?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    colonyTransactionsId?: string | null,
+    colonyTransactionTokenId: string,
   } | null,
 };
 
