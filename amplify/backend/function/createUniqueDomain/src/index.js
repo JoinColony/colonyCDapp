@@ -36,7 +36,9 @@ exports.handler = async (event) => {
   /*
    * Set up the new domain
    */
-  const computedParentId = !existingDomains?.length ? null : parentId;
+  const computedParentId = `${colonyAddress}_${
+    !existingDomains?.length ? null : parentId
+  }`;
   // eslint-disable-next-line no-unsafe-optional-chaining
   const nextNativeDomainId = existingDomains?.length + 1;
   const nextDomainId = `${colonyAddress}_${nextNativeDomainId}`;
