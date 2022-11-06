@@ -251,6 +251,7 @@ type Colony @model {
   profile: Profile @hasOne(fields: ["profileId"])
   status: ColonyStatus
   domains: [Domain] @hasMany
+  transactions: [ColonyTransaction] @hasMany
   watchers: [User] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
   # NOTE: Could not merge these two fields properly
   # Ideally we would merge data from these two into one field, but I couldn't do that
@@ -377,4 +378,21 @@ type CurrentVersion @model {
   id: ID!
   key: String! @index(name: "byKey", queryField: "getCurrentVersionByKey")
   version: Int!
+}
+
+type ColonyTransactionStatus {
+  claimed: Boolean
+}
+
+type TransactionArguments {
+  source: String
+  amount: String
+}
+
+type ColonyTransaction @model {
+  id: ID! # transactionHash_logIndex
+  token: Token! @hasOne
+  createdAtBlock: Int!
+  status: ColonyTransactionStatus
+  args: TransactionArguments
 }
