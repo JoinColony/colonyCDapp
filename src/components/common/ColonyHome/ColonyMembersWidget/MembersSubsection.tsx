@@ -6,9 +6,8 @@ import Heading from '~shared/Heading';
 import { Tooltip } from '~shared/Popover';
 import UserAvatar from '~shared/UserAvatar';
 // import Icon from '~shared/Icon';
-// import InviteLinkButton from '~dashboard/InviteLinkButton';
+import InviteLinkButton from '~shared/Button/InviteLinkButton';
 
-// import HookedUserAvatar from '~users/HookedUserAvatar';
 // import { useAvatarDisplayCounter, useTransformer } from '~hooks';
 // import {
 //   Colony,
@@ -16,9 +15,7 @@ import UserAvatar from '~shared/UserAvatar';
 //   ColonyWatcher,
 // } from '~data/index';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-// import { useUserAccountRegistered } from '~hooks';
-// import { getAllUserRoles } from '~modules/transformers';
-// import { hasRoot, canAdminister } from '~modules/users/checks';
+import { useAppContext } from '~hooks';
 import { Colony, User } from '~types';
 
 import styles from './ColonyMembersWidget.css';
@@ -72,8 +69,6 @@ interface Props {
   isContributorsSubsection: boolean;
 }
 
-// const UserAvatar = HookedUserAvatar({ fetchUser: true });
-
 // const MAX_AVATARS = 12;
 
 const MembersSubsection = ({
@@ -85,12 +80,8 @@ const MembersSubsection = ({
 }: // maxAvatars = MAX_AVATARS,
 Props) => {
   const colonyWatchers = useMemo(() => watchers?.items || [], [watchers]);
-  // const userHasAccountRegistered = useUserAccountRegistered();
-
-  // const allUserRoles = useTransformer(getAllUserRoles, [
-  //   colony,
-  //   currentUserWalletAddress,
-  // ]);
+  const { user } = useAppContext();
+  // const hasRegisteredProfile = user?.name;
   // const canAdministerComments =
   //   userHasAccountRegistered &&
   //   (hasRoot(allUserRoles) || canAdminister(allUserRoles));
@@ -131,16 +122,15 @@ Props) => {
             />
           </NavLink>
         </Tooltip>
-        {/* {!isContributorsSubsection && (
+        {!isContributorsSubsection && (
           <InviteLinkButton
-            colonyName={colonyName}
-            buttonAppearance={{ theme: 'blueWithBackground' }}
+            colonyName={name}
+            buttonAppearance={{ theme: 'blue' }}
           />
-        )} */}
+        )}
       </div>
     ),
-    // [members, membersPageRoute, isContributorsSubsection, colonyName],
-    [isContributorsSubsection, membersPageRoute, colonyWatchers],
+    [isContributorsSubsection, membersPageRoute, colonyWatchers, name],
   );
 
   if (!colonyWatchers) {
@@ -163,41 +153,37 @@ Props) => {
       <ul className={styles.userAvatars}>
         {(colonyWatchers as { user: User }[])
           // .slice(0, avatarsDisplaySplitRules)
-          .map(
-            (
-              // { profile: { walletAddress }, banned }
-              { user },
-            ) => (
-              <li className={styles.userAvatar} key={user.walletAddress}>
-                <UserAvatar
-                  size="xs"
-                  address={user.walletAddress}
-                  // banned={canAdministerComments && banned}
-                  // showInfo
-                  notSet={false}
-                  colony={colony}
-                  user={user}
-                  // popperOptions={{
-                  //   placement: 'bottom',
-                  //   showArrow: false,
-                  //   modifiers: [
-                  //     {
-                  //       name: 'offset',
-                  //       options: {
-                  //         /*
-                  //          * @NOTE Values are set manual, exactly as the ones provided in the figma spec.
-                  //          *
-                  //          * There's no logic to how they are calculated, so next time you need
-                  //          * to change them you'll either have to go by exact specs, or change
-                  //          * them until it "feels right" :)
-                  //          */
-                  //         offset: [-208, -12],
-                  //       },
-                  //     },
-                  //   ],
-                  // }}
-                />
-                {/* {canAdministerComments && banned && (
+          .map(({ user: { walletAddress } }) => (
+            <li className={styles.userAvatar} key={walletAddress}>
+              <UserAvatar
+                size="xs"
+                address={walletAddress}
+                // banned={canAdministerComments && banned}
+                showInfo
+                notSet={false}
+                colony={colony}
+                user={user}
+                popperOptions={{
+                  placement: 'bottom',
+                  showArrow: false,
+                  modifiers: [
+                    {
+                      name: 'offset',
+                      options: {
+                        /*
+                         * @NOTE Values are set manual, exactly as the ones provided in the figma spec.
+                         *
+                         * There's no logic to how they are calculated, so next time you need
+                         * to change them you'll either have to go by exact specs, or change
+                         * them until it "feels right" :)
+                         */
+                        offset: [-208, -12],
+                      },
+                    },
+                  ],
+                }}
+              />
+              {/* {canAdministerComments && banned && (
                   <div className={styles.userBanned}>
                     <Icon
                       appearance={{ size: 'extraTiny' }}
@@ -206,9 +192,8 @@ Props) => {
                     />
                   </div>
                 )} */}
-              </li>
-            ),
-          )}
+            </li>
+          ))}
         {/* {!!remainingAvatarsCount && (
           <li className={styles.remaningAvatars}>
             <NavLink to={membersPageRoute} title={MSG.viewMore}>
