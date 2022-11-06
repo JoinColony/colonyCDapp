@@ -237,9 +237,7 @@ export const getColonyTransaction = /* GraphQL */ `
         updatedAt
       }
       createdAtBlock
-      status {
-        claimed
-      }
+      claimed
       args {
         source
         amount
@@ -265,6 +263,7 @@ export const listColonyTransactions = /* GraphQL */ `
       items {
         id
         createdAtBlock
+        claimed
         createdAt
         updatedAt
         colonyTransactionsId

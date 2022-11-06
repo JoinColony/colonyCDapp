@@ -198,17 +198,12 @@ export type ColonyTransaction = {
   id: string,
   token: Token,
   createdAtBlock: number,
-  status?: ColonyTransactionStatus | null,
+  claimed?: string | null,
   args?: TransactionArguments | null,
   createdAt: string,
   updatedAt: string,
   colonyTransactionsId?: string | null,
   colonyTransactionTokenId: string,
-};
-
-export type ColonyTransactionStatus = {
-  __typename: "ColonyTransactionStatus",
-  claimed?: boolean | null,
 };
 
 export type TransactionArguments = {
@@ -489,14 +484,11 @@ export type DeleteDomainInput = {
 export type CreateColonyTransactionInput = {
   id?: string | null,
   createdAtBlock: number,
-  status?: ColonyTransactionStatusInput | null,
+  claimed?: string | null,
   args?: TransactionArgumentsInput | null,
+  createdAt?: string | null,
   colonyTransactionsId?: string | null,
   colonyTransactionTokenId: string,
-};
-
-export type ColonyTransactionStatusInput = {
-  claimed?: boolean | null,
 };
 
 export type TransactionArgumentsInput = {
@@ -506,6 +498,8 @@ export type TransactionArgumentsInput = {
 
 export type ModelColonyTransactionConditionInput = {
   createdAtBlock?: ModelIntInput | null,
+  claimed?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
   and?: Array< ModelColonyTransactionConditionInput | null > | null,
   or?: Array< ModelColonyTransactionConditionInput | null > | null,
   not?: ModelColonyTransactionConditionInput | null,
@@ -516,8 +510,9 @@ export type ModelColonyTransactionConditionInput = {
 export type UpdateColonyTransactionInput = {
   id: string,
   createdAtBlock?: number | null,
-  status?: ColonyTransactionStatusInput | null,
+  claimed?: string | null,
   args?: TransactionArgumentsInput | null,
+  createdAt?: string | null,
   colonyTransactionsId?: string | null,
   colonyTransactionTokenId: string,
 };
@@ -665,6 +660,8 @@ export type ModelDomainFilterInput = {
 export type ModelColonyTransactionFilterInput = {
   id?: ModelIDInput | null,
   createdAtBlock?: ModelIntInput | null,
+  claimed?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
   and?: Array< ModelColonyTransactionFilterInput | null > | null,
   or?: Array< ModelColonyTransactionFilterInput | null > | null,
   not?: ModelColonyTransactionFilterInput | null,
@@ -785,6 +782,8 @@ export type ModelSubscriptionDomainFilterInput = {
 export type ModelSubscriptionColonyTransactionFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   createdAtBlock?: ModelSubscriptionIntInput | null,
+  claimed?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionColonyTransactionFilterInput | null > | null,
   or?: Array< ModelSubscriptionColonyTransactionFilterInput | null > | null,
 };
@@ -1565,10 +1564,7 @@ export type CreateColonyTransactionMutation = {
       updatedAt: string,
     },
     createdAtBlock: number,
-    status?:  {
-      __typename: "ColonyTransactionStatus",
-      claimed?: boolean | null,
-    } | null,
+    claimed?: string | null,
     args?:  {
       __typename: "TransactionArguments",
       source?: string | null,
@@ -1601,10 +1597,7 @@ export type UpdateColonyTransactionMutation = {
       updatedAt: string,
     },
     createdAtBlock: number,
-    status?:  {
-      __typename: "ColonyTransactionStatus",
-      claimed?: boolean | null,
-    } | null,
+    claimed?: string | null,
     args?:  {
       __typename: "TransactionArguments",
       source?: string | null,
@@ -1637,10 +1630,7 @@ export type DeleteColonyTransactionMutation = {
       updatedAt: string,
     },
     createdAtBlock: number,
-    status?:  {
-      __typename: "ColonyTransactionStatus",
-      claimed?: boolean | null,
-    } | null,
+    claimed?: string | null,
     args?:  {
       __typename: "TransactionArguments",
       source?: string | null,
@@ -2244,10 +2234,7 @@ export type GetColonyTransactionQuery = {
       updatedAt: string,
     },
     createdAtBlock: number,
-    status?:  {
-      __typename: "ColonyTransactionStatus",
-      claimed?: boolean | null,
-    } | null,
+    claimed?: string | null,
     args?:  {
       __typename: "TransactionArguments",
       source?: string | null,
@@ -2273,6 +2260,7 @@ export type ListColonyTransactionsQuery = {
       __typename: "ColonyTransaction",
       id: string,
       createdAtBlock: number,
+      claimed?: string | null,
       createdAt: string,
       updatedAt: string,
       colonyTransactionsId?: string | null,
@@ -3089,10 +3077,7 @@ export type OnCreateColonyTransactionSubscription = {
       updatedAt: string,
     },
     createdAtBlock: number,
-    status?:  {
-      __typename: "ColonyTransactionStatus",
-      claimed?: boolean | null,
-    } | null,
+    claimed?: string | null,
     args?:  {
       __typename: "TransactionArguments",
       source?: string | null,
@@ -3124,10 +3109,7 @@ export type OnUpdateColonyTransactionSubscription = {
       updatedAt: string,
     },
     createdAtBlock: number,
-    status?:  {
-      __typename: "ColonyTransactionStatus",
-      claimed?: boolean | null,
-    } | null,
+    claimed?: string | null,
     args?:  {
       __typename: "TransactionArguments",
       source?: string | null,
@@ -3159,10 +3141,7 @@ export type OnDeleteColonyTransactionSubscription = {
       updatedAt: string,
     },
     createdAtBlock: number,
-    status?:  {
-      __typename: "ColonyTransactionStatus",
-      claimed?: boolean | null,
-    } | null,
+    claimed?: string | null,
     args?:  {
       __typename: "TransactionArguments",
       source?: string | null,

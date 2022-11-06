@@ -387,9 +387,7 @@ export const onCreateColonyTransaction = /* GraphQL */ `
         updatedAt
       }
       createdAtBlock
-      status {
-        claimed
-      }
+      claimed
       args {
         source
         amount
@@ -417,9 +415,7 @@ export const onUpdateColonyTransaction = /* GraphQL */ `
         updatedAt
       }
       createdAtBlock
-      status {
-        claimed
-      }
+      claimed
       args {
         source
         amount
@@ -447,9 +443,7 @@ export const onDeleteColonyTransaction = /* GraphQL */ `
         updatedAt
       }
       createdAtBlock
-      status {
-        claimed
-      }
+      claimed
       args {
         source
         amount
