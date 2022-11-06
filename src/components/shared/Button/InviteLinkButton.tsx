@@ -19,6 +19,7 @@ const MSG = defineMessages({
     defaultMessage: `{copied, select,
       true {Invitation link copied!}
       false {Click to copy your shareable colony URL}
+      other {}
     }`,
   },
 });
