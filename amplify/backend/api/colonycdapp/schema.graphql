@@ -241,19 +241,27 @@ type Domain @model {
   parent: Domain @hasOne
 }
 
-type ColonyTransactionStatus {
-  claimed: Boolean
-}
-
 type TransactionArguments {
   source: String
   amount: String
 }
 
 type ColonyTransaction @model {
-  id: ID! # transactionHash_logIndex
+  # Needed a manual index on the id field so that we can delcare the sort fields
+  # This allows us to sort by the creation date, between date ranges,
+  # and a whole lot of other combinations of that
+  id: ID! @index(sortKeyFields: ["createdAt"]) # transactionHash_logIndex
   token: Token! @hasOne
   createdAtBlock: Int!
-  status: ColonyTransactionStatus
+  # DynamoDB is stupid!!
+  # For future reference do be aware that you can't index non-scalar types,
+  # and from those scalar types, you can't index Booleans (for some reason)
+  # Meaning that if you have a true/false check that you whish to filter by
+  # in your query, make sure to make it a string :(
+  claimed: String @index @default(value: "false")
   args: TransactionArguments
+  # This is a native field that gets added automatically behind the scenes
+  # to all model types
+  # However, we need it for sorting, so need to explicitly declare it
+  createdAt: AWSDateTime!
 }
