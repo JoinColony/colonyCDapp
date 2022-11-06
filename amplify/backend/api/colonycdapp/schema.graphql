@@ -217,6 +217,7 @@ type Colony @model {
   profile: Profile @hasOne(fields: ["profileId"])
   status: ColonyStatus
   domains: [Domain] @hasMany
+  transactions: [ColonyTransaction] @hasMany
   watchers: [User] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
   type: ColonyType @index(name: "byType", queryField: "getColonyByType")
   meta: Metadata
@@ -232,10 +233,27 @@ type User @model {
 }
 
 type Domain @model {
-  id: ID!
+  id: ID! # colonyAddress_nativeChainId
   nativeId: Int!
   name: String
   description: String
   color: DomainColor
   parent: Domain @hasOne
+}
+
+type ColonyTransactionStatus {
+  claimed: Boolean
+}
+
+type TransactionArguments {
+  source: String
+  amount: String
+}
+
+type ColonyTransaction @model {
+  id: ID! # transactionHash_logIndex
+  token: Token! @hasOne
+  createdAtBlock: Int!
+  status: ColonyTransactionStatus
+  args: TransactionArguments
 }
