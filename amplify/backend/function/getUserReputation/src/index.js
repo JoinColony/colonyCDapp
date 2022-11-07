@@ -23,7 +23,6 @@ exports.handler = async (event) => {
 
   const {
     etherRouterAddress: networkAddress,
-    // eslint-disable-next-line global-require
   } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
 
   const networkClient = getColonyNetworkClient(Network.Custom, provider, {
@@ -42,8 +41,7 @@ exports.handler = async (event) => {
     );
 
     return reputationAmount.toString();
-    // eslint-disable-next-line no-empty
-  } catch {}
-
-  return null;
+  } catch (error) {
+    return null;
+  }
 };
