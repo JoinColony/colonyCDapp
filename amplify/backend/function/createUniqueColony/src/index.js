@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const { utils } = require('ethers');
 
 const { graphqlRequest } = require('./utils');

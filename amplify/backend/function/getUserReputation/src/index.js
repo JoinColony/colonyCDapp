@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const { getColonyNetworkClient, Network } = require('@colony/colony-js');
 const {
   providers,
@@ -14,7 +13,7 @@ const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be exte
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  const input = event?.arguments?.input;
+  const input = event.arguments?.input;
   const colonyAddress = input?.colonyAddress;
   const walletAddress = input?.walletAddress;
   const domainId = input?.domainId;

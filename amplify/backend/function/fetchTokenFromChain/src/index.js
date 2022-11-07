@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const { constants, utils, providers, Contract } = require('ethers');
 
 const basicTokenAbi = require('./basicTokenAbi.json');
