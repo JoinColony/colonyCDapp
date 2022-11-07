@@ -221,6 +221,7 @@ type Colony @model {
   watchers: [User] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
   type: ColonyType @index(name: "byType", queryField: "getColonyByType")
   meta: Metadata
+  balances: [ColonyBalance] @hasMany
 }
 
 type User @model {
@@ -233,7 +234,7 @@ type User @model {
 }
 
 type Domain @model {
-  id: ID! # colonyAddress_nativeChainId
+  id: ID! @index(name: "byNativeId", sortKeyFields: ["nativeId"]) # colonyAddress_nativeId
   nativeId: Int!
   name: String
   description: String
@@ -250,7 +251,7 @@ type ColonyTransaction @model {
   # Needed a manual index on the id field so that we can delcare the sort fields
   # This allows us to sort by the creation date, between date ranges,
   # and a whole lot of other combinations of that
-  id: ID! @index(sortKeyFields: ["createdAt"]) # transactionHash_logIndex
+  id: ID! @index(sortKeyFields: ["createdAt"]) # chainId_transactionHash_logIndex
   token: Token! @hasOne
   createdAtBlock: Int!
   # DynamoDB is stupid!!
@@ -265,3 +266,25 @@ type ColonyTransaction @model {
   # However, we need it for sorting, so need to explicitly declare it
   createdAt: AWSDateTime!
 }
+
+type ColonyBalance @model (queries: null) {
+  id: ID!
+  domain: Domain! @hasOne
+  token: Token! @hasOne
+  balance: String! @default(value: "0")
+}
+
+
+# mutation MyMutation {
+#   createColonyBalance(
+#     input: {
+#       domainNativeId: 2,
+#       balance: "99999999",
+#       colonyBalanceDomainId: "0x3a157280ca91bB49dAe3D1619C55Da7F9D4438c3_2", -- domain id
+#       colonyBalanceTokenId: "0xD1518B721A797b860Ba61bF7cDB4B8A4C4720ef3", -- token address
+#       colonyBalancesId: "0x3a157280ca91bB49dAe3D1619C55Da7F9D4438c3"  -- colony address
+#     }
+#   ) {
+#     id
+#   }
+# }
