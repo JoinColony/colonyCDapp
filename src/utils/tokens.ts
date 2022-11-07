@@ -1,5 +1,5 @@
+import Decimal from 'decimal.js';
 import { BigNumber, BigNumberish } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
 
 // import { TokenWithBalances } from '~data/index';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
@@ -49,11 +49,16 @@ export const getTokenDecimalsWithFallback = (
   return DEFAULT_TOKEN_DECIMALS;
 };
 
+/**
+ * Get value with its decimal point shifted by @param decimals places
+ */
 export const getFormattedTokenValue = (
   value: BigNumberish,
   decimals: any,
 ): string => {
-  const tokenDecimals = getTokenDecimalsWithFallback(decimals);
+  const tokenDecimals = new Decimal(getTokenDecimalsWithFallback(decimals));
 
-  return formatUnits(value, tokenDecimals);
+  return new Decimal(value.toString())
+    .div(new Decimal(10).pow(tokenDecimals))
+    .toString();
 };

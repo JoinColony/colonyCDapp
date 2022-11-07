@@ -37,7 +37,7 @@ const TokenBalanceItem = ({
         data-test={isTokenNative ? 'colonyFundingNativeTokenValue' : null}
       >
         <Numeral
-          unit={getTokenDecimalsWithFallback(decimals)}
+          decimals={getTokenDecimalsWithFallback(decimals)}
           value={balance}
         />
       </span>

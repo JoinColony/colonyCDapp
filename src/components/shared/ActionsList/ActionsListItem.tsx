@@ -316,7 +316,7 @@ const ActionsListItem = ({
                           ? paymentReceivedFn(amount)
                           : amount
                       }
-                      unit={getTokenDecimalsWithFallback(decimals)}
+                      decimals={getTokenDecimalsWithFallback(decimals)}
                     />
                   ),
                   tokenSymbol: symbol,

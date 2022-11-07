@@ -9,22 +9,16 @@ import { getEthToUsd } from '~utils/external';
 import { DEFAULT_NETWORK, DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { Network } from '~types';
 
+const displayName = 'EthUsd';
+
 const MSG = defineMessages({
   usdAbbreviation: {
-    id: 'EthUsd.usdAbbreviation',
+    id: `${displayName}.usdAbbreviation`,
     defaultMessage: 'USD',
   },
 });
 
-interface Appearance {
-  theme: 'primary' | 'grey' | 'dark';
-  size?: 'medium' | 'large' | 'small';
-}
-
 interface Props extends NumeralProps {
-  /** Appearance object for numeral */
-  appearance?: Appearance;
-
   /** Should the prefix be visible? */
   showPrefix?: boolean;
 
@@ -38,10 +32,7 @@ interface Props extends NumeralProps {
   value: number | string | BigNumber;
 }
 
-const displayName = 'EthUsd';
-
 const EthUsd = ({
-  appearance,
   showPrefix = true,
   showSuffix = true,
   unit = 'ether',
@@ -95,7 +86,6 @@ const EthUsd = ({
 
   return (
     <Numeral
-      appearance={appearance}
       prefix={showPrefix && valueUsd ? '~ ' : ''}
       suffix={showSuffix ? ` ${suffixText}` : ''}
       value={valueUsd || '-'}
