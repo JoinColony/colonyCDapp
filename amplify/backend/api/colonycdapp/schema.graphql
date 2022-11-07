@@ -1,9 +1,19 @@
 ﻿# This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
-
+input AMPLIFY {
+  globalAuthRule: AuthRule = { allow: public }
+} # FOR TESTING ONLY!
 input TokenFromEverywhereArguments {
   tokenAddress: String!
+}
+
+input ReputationForColonyArguments {
+  colonyAddress: String!
+}
+
+input ColonyMembersWithReputationArguments {
+  colonyAddress: String!
+  domainId: Int
 }
 
 input CreateUniqueUserInput {
@@ -136,22 +146,19 @@ type Query {
   ): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain")
   getReputationForTopDomains(
     input: GetReputationForTopDomainsInput
-  ): GetReputationForTopDomainsReturn @function(name: "getReputationForTopDomains")
-  getUserReputation(
-    input: GetUserReputationInput
-  ): String @function(name: "getUserReputation")
+  ): GetReputationForTopDomainsReturn
+    @function(name: "getReputationForTopDomains")
+  getUserReputation(input: GetUserReputationInput): String
+    @function(name: "getUserReputation")
 }
 
 type Mutation {
-  createUniqueUser(
-    input: CreateUniqueUserInput
-  ): User @function(name: "createUniqueUser")
-  createUniqueColony(
-    input: CreateUniqueColonyInput
-  ): ColonyID @function(name: "createUniqueColony")
-  createUniqueDomain(
-    input: CreateUniqueDomainInput
-  ): Domain @function(name: "createUniqueDomain")
+  createUniqueUser(input: CreateUniqueUserInput): User
+    @function(name: "createUniqueUser")
+  createUniqueColony(input: CreateUniqueColonyInput): ColonyID
+    @function(name: "createUniqueColony")
+  createUniqueDomain(input: CreateUniqueDomainInput): Domain
+    @function(name: "createUniqueDomain")
 }
 
 # Applies to both Users and Colonies
@@ -166,7 +173,6 @@ type Profile @model {
   website: AWSURL
   email: AWSEmail @index(name: "byEmail", queryField: "getProfileByEmail")
   meta: ProfileMetadata
-
 }
 
 type NativeTokenStatus {
