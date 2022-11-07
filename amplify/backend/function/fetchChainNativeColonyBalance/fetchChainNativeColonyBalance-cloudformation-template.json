@@ -49,13 +49,13 @@
             "FunctionName": {
                 "Fn::If": [
                     "ShouldNotCreateEnvResources",
-                    "fetchTokensBalances",
+                    "fetchChainNativeColonyBalance",
                     {
 
                         "Fn::Join": [
                             "",
                             [
-                                "fetchTokensBalances",
+                                "fetchChainNativeColonyBalance",
                                 "-",
                                 {
                                     "Ref": "env"
@@ -80,13 +80,13 @@
                 "RoleName": {
                     "Fn::If": [
                         "ShouldNotCreateEnvResources",
-                        "colonycdappLambdaRole3fb063b5",
+                        "colonycdappLambdaRole91bf2fc4",
                         {
 
                             "Fn::Join": [
                                 "",
                                 [
-                                    "colonycdappLambdaRole3fb063b5",
+                                    "colonycdappLambdaRole91bf2fc4",
                                     "-",
                                     {
                                         "Ref": "env"
