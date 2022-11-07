@@ -1,14 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
-import { gql, useQuery } from '@apollo/client';
-import { Id } from '@colony/colony-js';
 
-import { Address } from '~types';
 import Numeral from '~shared/Numeral';
 import Icon from '~shared/Icon';
 import { calculatePercentageReputation, ZeroValue } from '~utils/reputation';
-import { getUserReputation } from '~gql';
-import { ADDRESS_ZERO } from '~constants';
 
 import styles from './MemberReputation.css';
 
@@ -26,56 +21,20 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  walletAddress: Address;
-  colonyAddress: Address;
-  domainId?: number;
-  rootHash?: string;
-  onReputationLoaded?: (reputationLoaded: boolean) => void;
+  userReputation?: string;
+  totalReputation?: string;
   showIconTitle?: boolean;
 }
 
 const MemberReputation = ({
-  walletAddress,
-  colonyAddress,
-  domainId = Id.RootDomain,
-  rootHash,
-  onReputationLoaded = () => null,
+  userReputation,
+  totalReputation,
   showIconTitle = true,
 }: Props) => {
-  const { data: userReputationData } = useQuery(gql(getUserReputation), {
-    variables: {
-      input: {
-        colonyAddress,
-        walletAddress,
-        domainId,
-        rootHash,
-      },
-    },
-    fetchPolicy: 'cache-and-network',
-  });
-  const userReputation = userReputationData?.getUserReputation;
-
-  const { data: totalReputationData } = useQuery(gql(getUserReputation), {
-    variables: {
-      input: {
-        colonyAddress,
-        walletAddress: ADDRESS_ZERO,
-        domainId,
-        rootHash,
-      },
-    },
-    fetchPolicy: 'cache-and-network',
-  });
-  const totalReputation = totalReputationData?.getUserReputation;
-
   const percentageReputation = calculatePercentageReputation(
     userReputation,
     totalReputation,
   );
-
-  useEffect(() => {
-    onReputationLoaded(!!userReputationData);
-  }, [userReputationData, onReputationLoaded]);
 
   /* Doing this cause Eslint yells at me if I use nested ternary */
   let iconTitle;

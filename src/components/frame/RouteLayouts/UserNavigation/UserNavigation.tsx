@@ -9,7 +9,10 @@ import { Tooltip } from '~shared/Popover';
 
 // import UserTokenActivationButton from '~users/UserTokenActivationButton';
 import AvatarDropdown from '~frame/AvatarDropdown';
-import { useAppContext } from '~hooks';
+// import {
+//   useUserBalanceWithLockQuery,
+// } from '~data/index';
+import { useAppContext, useUserReputation } from '~hooks';
 import { getFullColonyByName } from '~gql';
 // import { groupedTransactionsAndMessages } from '~redux/selectors';
 
@@ -42,6 +45,11 @@ const UserNavigation = () => {
   // const userLock = userData?.user.userLock;
   // const nativeToken = userLock?.nativeToken;
 
+  const { userReputation, totalReputation } = useUserReputation(
+    colony?.colonyAddress,
+    wallet?.address,
+  );
+
   return (
     <div className={styles.main}>
       {colony?.colonyAddress && wallet && (
@@ -61,8 +69,8 @@ const UserNavigation = () => {
         >
           <div className={`${styles.elementWrapper} ${styles.reputation}`}>
             <MemberReputation
-              walletAddress={wallet.address}
-              colonyAddress={colony.colonyAddress}
+              userReputation={userReputation}
+              totalReputation={totalReputation}
               showIconTitle={false}
             />
           </div>
