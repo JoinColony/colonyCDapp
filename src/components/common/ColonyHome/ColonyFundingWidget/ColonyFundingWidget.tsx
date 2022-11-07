@@ -8,11 +8,11 @@ import NavLink from '~shared/NavLink';
 // import { Colony, useTokenBalancesForDomainsQuery } from '~data/index';
 import { Colony, ColonyTokens } from '~types';
 
-import TokenItem from './TokenItem';
+import TokenBalanceItem from './TokenBalanceItem';
 
-import styles from './ColonyFunding.css';
+import styles from './ColonyFundingWidget.css';
 
-const displayName = 'common.ColonyHome.ColonyFunding';
+const displayName = 'common.ColonyHome.ColonyFundingWidget';
 
 const MSG = defineMessages({
   title: {
@@ -26,7 +26,7 @@ interface Props {
   // currentDomainId: number;
 }
 
-const ColonyFunding = ({
+const ColonyFundingWidget = ({
   // currentDomainId,
   colony: {
     name,
@@ -63,7 +63,7 @@ const ColonyFunding = ({
               isTokenNative={token.tokenAddress === nativeTokenAddress}
             > */}
             <div className={styles.tokenBalance}>
-              <TokenItem
+              <TokenBalanceItem
                 // currentDomainId={currentDomainId}
                 token={token}
                 isTokenNative={token.tokenAddress === nativeTokenAddress}
@@ -81,6 +81,6 @@ const ColonyFunding = ({
   );
 };
 
-ColonyFunding.displayName = displayName;
+ColonyFundingWidget.displayName = displayName;
 
-export default ColonyFunding;
+export default ColonyFundingWidget;

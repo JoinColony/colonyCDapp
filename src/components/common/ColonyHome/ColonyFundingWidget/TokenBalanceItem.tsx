@@ -7,7 +7,7 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import { Token } from '~types';
 
-import styles from './ColonyFunding.css';
+import styles from './ColonyFundingWidget.css';
 
 interface Props {
   // currentDomainId: number;
@@ -16,9 +16,9 @@ interface Props {
   isNativeTokenLocked?: boolean;
 }
 
-const displayName = 'dashboard.ColonyHome.ColonyFunding.TokenItem';
+const displayName = 'common.ColonyHome.ColonyFundingWidget.TokenBalanceItem';
 
-const TokenItem = ({
+const TokenBalanceItem = ({
   // currentDomainId,
   token: { decimals, symbol },
   isTokenNative,
@@ -57,6 +57,6 @@ const TokenItem = ({
   );
 };
 
-TokenItem.displayName = displayName;
+TokenBalanceItem.displayName = displayName;
 
-export default TokenItem;
+export default TokenBalanceItem;

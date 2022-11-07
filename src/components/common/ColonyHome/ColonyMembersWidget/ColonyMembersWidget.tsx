@@ -7,10 +7,10 @@ import React from 'react';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { Colony } from '~types';
 
-// import styles from './ColonyMembers.css';
+// import styles from './ColonyMembersWidget.css';
 import MembersSubsection from './MembersSubsection';
 
-const displayName = 'common.ColonyHome.ColonyMembers';
+const displayName = 'common.ColonyHome.ColonyMembersWidget';
 
 // const MSG = defineMessages({
 //   title: {
@@ -29,7 +29,7 @@ interface Props {
   maxAvatars?: number;
 }
 
-const ColonyMembers = ({
+const ColonyMembersWidget = ({
   // colony: { colonyAddress, name },
   colony,
   currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
@@ -78,6 +78,6 @@ const ColonyMembers = ({
   );
 };
 
-ColonyMembers.displayName = displayName;
+ColonyMembersWidget.displayName = displayName;
 
-export default ColonyMembers;
+export default ColonyMembersWidget;

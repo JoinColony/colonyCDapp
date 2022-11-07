@@ -4,7 +4,9 @@ import { defineMessages } from 'react-intl';
 // import { useSelector } from 'react-redux';
 
 import Button from '~shared/Button';
-// import { SpinnerLoader } from '~core/Preloaders';
+import { useAppContext } from '~hooks';
+// import { Colony } from '~types';
+import { SpinnerLoader } from '~shared/Preloaders';
 
 // import ColonyActionsDialog from '~dialogs/ColonyActionsDialog';
 // import ExpendituresDialog from '~dialogs/ExpendituresDialog';
@@ -35,9 +37,7 @@ import Button from '~shared/Button';
 //   oneTxMustBeUpgraded,
 // } from '~modules/dashboard/checks';
 
-import { useAppContext } from '~hooks';
-
-const displayName = 'commmon.ColonyHomeCreateActionsButton';
+const displayName = 'commmon.ColonyHome.NewActionButton';
 
 const MSG = defineMessages({
   newAction: {
@@ -47,7 +47,7 @@ const MSG = defineMessages({
 });
 
 // interface Props {
-//   colony: FullColony;
+//   colony: Colony;
 //   ethDomainId?: number;
 // }
 
@@ -59,7 +59,7 @@ const MSG = defineMessages({
 //   };
 // }
 
-const ColonyHomeActions = (/* { colony, ethDomainId}: Props */) => {
+const NewActionButton = (/* { colony, ethDomainId }: Props */) => {
   const { user } = useAppContext();
   // const { version: networkVersion } = useNetworkContracts();
 
@@ -264,7 +264,7 @@ const ColonyHomeActions = (/* { colony, ethDomainId}: Props */) => {
 
   return (
     <>
-      {/* {isLoadingData && <SpinnerLoader appearance={{ size: 'medium' }} />} */}
+      {isLoadingData && <SpinnerLoader appearance={{ size: 'medium' }} />}
       {!isLoadingData && (
         <Button
           appearance={{ theme: 'primary', size: 'large' }}
@@ -285,6 +285,6 @@ const ColonyHomeActions = (/* { colony, ethDomainId}: Props */) => {
   );
 };
 
-export default ColonyHomeActions;
+export default NewActionButton;
 
-ColonyHomeActions.displayName = displayName;
+NewActionButton.displayName = displayName;

@@ -1,5 +1,5 @@
-declare namespace ColonyMembersCssNamespace {
-  export interface IColonyMembersCss {
+declare namespace ColonyMembersWidgetCssNamespace {
+  export interface IColonyMembersWidgetCss {
     heading: string;
     loadingText: string;
     main: string;
@@ -11,9 +11,9 @@ declare namespace ColonyMembersCssNamespace {
   }
 }
 
-declare const ColonyMembersCssModule: ColonyMembersCssNamespace.IColonyMembersCss & {
+declare const ColonyMembersWidgetCssModule: ColonyMembersWidgetCssNamespace.IColonyMembersWidgetCss & {
   /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
-  locals: ColonyMembersCssNamespace.IColonyMembersCss;
+  locals: ColonyMembersWidgetCssNamespace.IColonyMembersWidgetCss;
 };
 
-export = ColonyMembersCssModule;
+export = ColonyMembersWidgetCssModule;
