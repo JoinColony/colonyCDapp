@@ -23,7 +23,8 @@
         "fetchColonyBalances": {},
         "updateExtensionByColonyAndHash": {},
         "setCurrentVersion": {},
-        "fetchTokensBalances": {}
+        "fetchTokensBalances": {},
+        "fetchChainNativeColonyBalance": {}
       }
     }
   }
