@@ -8,14 +8,8 @@ import UserAvatar from '~shared/UserAvatar';
 // import Icon from '~shared/Icon';
 import InviteLinkButton from '~shared/Button/InviteLinkButton';
 
-// import { useAvatarDisplayCounter, useTransformer } from '~hooks';
-// import {
-//   Colony,
-//   ColonyContributor,
-//   ColonyWatcher,
-// } from '~data/index';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { useAppContext } from '~hooks';
+import { useAvatarDisplayCounter, useAppContext } from '~hooks';
 import { Colony, User } from '~types';
 
 import styles from './ColonyMembersWidget.css';
@@ -69,7 +63,7 @@ interface Props {
   isContributorsSubsection: boolean;
 }
 
-// const MAX_AVATARS = 12;
+const MAX_AVATARS = 12;
 
 const MembersSubsection = ({
   colony: { name, watchers },
@@ -77,8 +71,8 @@ const MembersSubsection = ({
   isContributorsSubsection,
   colony,
   currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
-}: // maxAvatars = MAX_AVATARS,
-Props) => {
+  maxAvatars = MAX_AVATARS,
+}: Props) => {
   const colonyWatchers = useMemo(() => watchers?.items || [], [watchers]);
   const { user } = useAppContext();
   // const hasRegisteredProfile = user?.name;
@@ -86,10 +80,8 @@ Props) => {
   //   userHasAccountRegistered &&
   //   (hasRoot(allUserRoles) || canAdminister(allUserRoles));
 
-  // const {
-  //   avatarsDisplaySplitRules,
-  //   remainingAvatarsCount,
-  // } = useAvatarDisplayCounter(maxAvatars, members || [], false);
+  const { avatarsDisplaySplitRules, remainingAvatarsCount } =
+    useAvatarDisplayCounter(maxAvatars, colonyWatchers, false);
 
   const BASE_MEMBERS_ROUTE = `/colony/${name}/members`;
   const membersPageRoute =
@@ -152,7 +144,7 @@ Props) => {
       {setHeading(true)}
       <ul className={styles.userAvatars}>
         {(colonyWatchers as { user: User }[])
-          // .slice(0, avatarsDisplaySplitRules)
+          .slice(0, avatarsDisplaySplitRules)
           .map(({ user: { walletAddress } }) => (
             <li className={styles.userAvatar} key={walletAddress}>
               <UserAvatar
@@ -194,13 +186,13 @@ Props) => {
                 )} */}
             </li>
           ))}
-        {/* {!!remainingAvatarsCount && (
+        {!!remainingAvatarsCount && (
           <li className={styles.remaningAvatars}>
             <NavLink to={membersPageRoute} title={MSG.viewMore}>
               {remainingAvatarsCount < 99 ? remainingAvatarsCount : `>99`}
             </NavLink>
           </li>
-        )} */}
+        )}
       </ul>
     </div>
   );
