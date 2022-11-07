@@ -12,6 +12,15 @@ input TokenFromEverywhereArguments {
   tokenAddress: String!
 }
 
+input ReputationForColonyArguments {
+  colonyAddress: String!
+}
+
+input ColonyMembersWithReputationArguments {
+  colonyAddress: String!
+  domainId: Int
+}
+
 input CreateUniqueUserInput {
   id: ID!
   name: String!
