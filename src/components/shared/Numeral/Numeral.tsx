@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { HTMLAttributes, ReactNode, useMemo } from 'react';
 import { BigNumber } from 'ethers';
 import numbro from 'numbro';
 import Decimal from 'decimal.js';
@@ -23,7 +23,7 @@ export interface Appearance {
   theme?: 'dark';
 }
 
-export interface Props {
+export interface Props extends HTMLAttributes<HTMLSpanElement> {
   value: NumeralValue;
   prefix?: string;
   suffix?: string;
@@ -68,6 +68,7 @@ const Numeral = ({
   suffix,
   className,
   appearance,
+  ...rest
 }: Props) => {
   let convertedValue = convertToDecimalOrNull(value);
 
@@ -105,7 +106,10 @@ const Numeral = ({
   }, [convertedValue, value]);
 
   return (
-    <span className={classNames(getMainClasses(appearance, styles), className)}>
+    <span
+      className={classNames(getMainClasses(appearance, styles), className)}
+      {...rest}
+    >
       {prefix && `${prefix} `}
       {formattedValue}
       {suffix && ` ${suffix}`}
