@@ -66,7 +66,7 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
-    "fetchTokensBalances": {
+    "fetchChainNativeColonyBalance": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
