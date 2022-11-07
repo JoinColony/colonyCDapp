@@ -119,7 +119,7 @@ type Mutation {
   ): User @function(name: "createUniqueUser")
   createUniqueColony(
     input: CreateUniqueColonyInput
-  ): User  @function(name: "createUniqueColony")
+  ): User @function(name: "createUniqueColony")
   createUniqueDomain(
     input: CreateUniqueDomainInput
   ): Domain @function(name: "createUniqueDomain")

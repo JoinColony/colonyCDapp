@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { getColonyNetworkClient, Network } = require('@colony/colony-js');
-const { providers } = require('ethers');
+const {
+  providers,
+  utils: { Logger },
+} = require('ethers');
+
+Logger.setLogLevel(Logger.levels.ERROR);
 
 const ROOT_DOMAIN_ID = 1; // this used to be exported from @colony/colony-js but isn't anymore
 const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
@@ -30,11 +35,16 @@ exports.handler = async (event) => {
 
   const { skillId } = await colonyClient.getDomain(domainId ?? ROOT_DOMAIN_ID);
 
-  const { reputationAmount } = await colonyClient.getReputationWithoutProofs(
-    skillId,
-    walletAddress,
-    rootHash,
-  );
+  try {
+    const { reputationAmount } = await colonyClient.getReputationWithoutProofs(
+      skillId,
+      walletAddress,
+      rootHash,
+    );
 
-  return reputationAmount.toString();
+    return reputationAmount.toString();
+    // eslint-disable-next-line no-empty
+  } catch {}
+
+  return null;
 };
