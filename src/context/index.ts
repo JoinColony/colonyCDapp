@@ -11,6 +11,7 @@ export { UserSettingsClass as UserSettings };
 
 export { AppContext, AppContextProvider } from './AppContext';
 export { ColonyManagerClass as ColonyManager };
+export { ColonyContext, ColonyContextProvider } from './ColonyContext';
 
 export enum ContextModule {
   Wallet = 'wallet',

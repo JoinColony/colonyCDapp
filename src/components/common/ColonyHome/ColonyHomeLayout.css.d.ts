@@ -4,7 +4,6 @@ declare namespace ColonyHomeLayoutCssNamespace {
     domainsDropdownContainer: string;
     events: string;
     leftAside: string;
-    loadingWrapper: string;
     main: string;
     mainContent: string;
     mainContentGrid: string;

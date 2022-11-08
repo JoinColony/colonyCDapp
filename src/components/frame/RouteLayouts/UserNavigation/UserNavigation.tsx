@@ -1,19 +1,15 @@
 import React from 'react'; // useEffect // useMemo,
 import { defineMessages, useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
-import { gql, useQuery } from '@apollo/client';
 
 // import Icon from '~shared/Icon';
 import MemberReputation from '~shared/MemberReputation';
 import { Tooltip } from '~shared/Popover';
-
 // import UserTokenActivationButton from '~users/UserTokenActivationButton';
 import AvatarDropdown from '~frame/AvatarDropdown';
 // import {
 //   useUserBalanceWithLockQuery,
 // } from '~data/index';
-import { useAppContext, useUserReputation } from '~hooks';
-import { getFullColonyByName } from '~gql';
+import { useAppContext, useColonyContext, useUserReputation } from '~hooks';
 // import { groupedTransactionsAndMessages } from '~redux/selectors';
 
 import Wallet from './Wallet';
@@ -30,14 +26,7 @@ const MSG = defineMessages({
 });
 
 const UserNavigation = () => {
-  /**
-   * TODO: Refactor after #67 is done
-   */
-  const { colonyName } = useParams<{ colonyName: string }>();
-  const { data } = useQuery(gql(getFullColonyByName), {
-    variables: { name: colonyName },
-  });
-  const [colony] = data?.getColonyByName?.items || [];
+  const { colony } = useColonyContext();
 
   const { wallet } = useAppContext();
   const { formatMessage } = useIntl();

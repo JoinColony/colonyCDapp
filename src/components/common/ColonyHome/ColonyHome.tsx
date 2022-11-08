@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { defineMessages } from 'react-intl';
 import {
   Outlet,
   Route,
@@ -7,21 +6,16 @@ import {
   useLocation,
   useParams,
 } from 'react-router-dom';
-import { useQuery, gql } from '@apollo/client';
 
-import LoadingTemplate from '~frame/LoadingTemplate';
 // import Extensions, { ExtensionDetails } from '~dashboard/Extensions';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { getFullColonyByName } from '~gql';
 // import { allAllowedExtensions } from '~data/staticData/';
 
 // import ColonyActions from '~dashboard/ColonyActions';
 // import ColonyEvents from '~dashboard/ColonyEvents';
 
 import ColonyHomeLayout from './ColonyHomeLayout';
-
-import styles from './ColonyHomeLayout.css';
 
 import {
   COLONY_EVENTS_ROUTE,
@@ -30,30 +24,17 @@ import {
   COLONY_EXTENSION_SETUP_ROUTE,
 } from '~routes/index';
 import NotFoundRoute from '~routes/NotFoundRoute';
+import { useColonyContext } from '~hooks';
 
 const displayName = 'common.ColonyHome';
 
-const MSG = defineMessages({
-  loadingText: {
-    id: `${displayName}.loadingText`,
-    defaultMessage: 'Loading Colony',
-  },
-});
-
 const ColonyHome = () => {
+  const { colony } = useColonyContext();
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { colonyName, extensionId } = useParams<{
-    colonyName: string;
+  const { extensionId } = useParams<{
     extensionId?: string;
   }>();
-
-  const { data, loading, error } = useQuery(gql(getFullColonyByName), {
-    variables: {
-      name: colonyName,
-    },
-  });
-
-  const [colony] = data?.getColonyByName?.items || [];
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -153,23 +134,9 @@ const ColonyHome = () => {
     return null;
   }, [colony, filteredDomainId]);
 
-  if (loading || (colony && colony.name !== colonyName)) {
-    return (
-      <div className={styles.loadingWrapper}>
-        <LoadingTemplate loadingText={MSG.loadingText} />
-      </div>
-    );
-  }
-
-  if (
-    !colonyName ||
-    error ||
-    !colony ||
-    colony instanceof Error
-    // || !isExtensionIdValid
-  ) {
-    return <NotFoundRoute />;
-  }
+  // if (!isExtensionIdValid) {
+  //   return <NotFoundRoute />;
+  // }
 
   return memoizedSwitch;
 };
