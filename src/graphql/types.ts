@@ -21,6 +21,7 @@ export type Colony = {
   watchers?: ModelWatchedColoniesConnection | null,
   type?: ColonyType | null,
   meta?: Metadata | null,
+  balances?: ModelColonyBalanceConnection | null,
   createdAt: string,
   updatedAt: string,
   colonyNativeTokenId: string,
@@ -217,6 +218,25 @@ export enum ColonyType {
   METACOLONY = "METACOLONY",
 }
 
+
+export type ModelColonyBalanceConnection = {
+  __typename: "ModelColonyBalanceConnection",
+  items:  Array<ColonyBalance | null >,
+  nextToken?: string | null,
+};
+
+export type ColonyBalance = {
+  __typename: "ColonyBalance",
+  id: string,
+  domain: Domain,
+  token: Token,
+  balance: string,
+  createdAt: string,
+  updatedAt: string,
+  colonyBalancesId?: string | null,
+  colonyBalanceDomainId: string,
+  colonyBalanceTokenId: string,
+};
 
 export type ModelUserConnection = {
   __typename: "ModelUserConnection",
@@ -521,6 +541,36 @@ export type DeleteColonyTransactionInput = {
   id: string,
 };
 
+export type CreateColonyBalanceInput = {
+  id?: string | null,
+  balance: string,
+  colonyBalancesId?: string | null,
+  colonyBalanceDomainId: string,
+  colonyBalanceTokenId: string,
+};
+
+export type ModelColonyBalanceConditionInput = {
+  balance?: ModelStringInput | null,
+  and?: Array< ModelColonyBalanceConditionInput | null > | null,
+  or?: Array< ModelColonyBalanceConditionInput | null > | null,
+  not?: ModelColonyBalanceConditionInput | null,
+  colonyBalancesId?: ModelIDInput | null,
+  colonyBalanceDomainId?: ModelIDInput | null,
+  colonyBalanceTokenId?: ModelIDInput | null,
+};
+
+export type UpdateColonyBalanceInput = {
+  id: string,
+  balance?: string | null,
+  colonyBalancesId?: string | null,
+  colonyBalanceDomainId: string,
+  colonyBalanceTokenId: string,
+};
+
+export type DeleteColonyBalanceInput = {
+  id: string,
+};
+
 export type CreateColonyTokensInput = {
   id?: string | null,
   tokenID: string,
@@ -786,6 +836,13 @@ export type ModelSubscriptionColonyTransactionFilterInput = {
   createdAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionColonyTransactionFilterInput | null > | null,
   or?: Array< ModelSubscriptionColonyTransactionFilterInput | null > | null,
+};
+
+export type ModelSubscriptionColonyBalanceFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  balance?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionColonyBalanceFilterInput | null > | null,
+  or?: Array< ModelSubscriptionColonyBalanceFilterInput | null > | null,
 };
 
 export type ModelSubscriptionColonyTokensFilterInput = {
@@ -1219,6 +1276,10 @@ export type CreateColonyMutation = {
       network?: Network | null,
       chainId?: number | null,
     } | null,
+    balances?:  {
+      __typename: "ModelColonyBalanceConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -1281,6 +1342,10 @@ export type UpdateColonyMutation = {
       network?: Network | null,
       chainId?: number | null,
     } | null,
+    balances?:  {
+      __typename: "ModelColonyBalanceConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -1342,6 +1407,10 @@ export type DeleteColonyMutation = {
       __typename: "Metadata",
       network?: Network | null,
       chainId?: number | null,
+    } | null,
+    balances?:  {
+      __typename: "ModelColonyBalanceConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1640,6 +1709,126 @@ export type DeleteColonyTransactionMutation = {
     updatedAt: string,
     colonyTransactionsId?: string | null,
     colonyTransactionTokenId: string,
+  } | null,
+};
+
+export type CreateColonyBalanceMutationVariables = {
+  input: CreateColonyBalanceInput,
+  condition?: ModelColonyBalanceConditionInput | null,
+};
+
+export type CreateColonyBalanceMutation = {
+  createColonyBalance?:  {
+    __typename: "ColonyBalance",
+    id: string,
+    domain:  {
+      __typename: "Domain",
+      id: string,
+      nativeId: number,
+      name?: string | null,
+      description?: string | null,
+      color?: DomainColor | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyDomainsId?: string | null,
+      domainParentId?: string | null,
+    },
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    balance: string,
+    createdAt: string,
+    updatedAt: string,
+    colonyBalancesId?: string | null,
+    colonyBalanceDomainId: string,
+    colonyBalanceTokenId: string,
+  } | null,
+};
+
+export type UpdateColonyBalanceMutationVariables = {
+  input: UpdateColonyBalanceInput,
+  condition?: ModelColonyBalanceConditionInput | null,
+};
+
+export type UpdateColonyBalanceMutation = {
+  updateColonyBalance?:  {
+    __typename: "ColonyBalance",
+    id: string,
+    domain:  {
+      __typename: "Domain",
+      id: string,
+      nativeId: number,
+      name?: string | null,
+      description?: string | null,
+      color?: DomainColor | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyDomainsId?: string | null,
+      domainParentId?: string | null,
+    },
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    balance: string,
+    createdAt: string,
+    updatedAt: string,
+    colonyBalancesId?: string | null,
+    colonyBalanceDomainId: string,
+    colonyBalanceTokenId: string,
+  } | null,
+};
+
+export type DeleteColonyBalanceMutationVariables = {
+  input: DeleteColonyBalanceInput,
+  condition?: ModelColonyBalanceConditionInput | null,
+};
+
+export type DeleteColonyBalanceMutation = {
+  deleteColonyBalance?:  {
+    __typename: "ColonyBalance",
+    id: string,
+    domain:  {
+      __typename: "Domain",
+      id: string,
+      nativeId: number,
+      name?: string | null,
+      description?: string | null,
+      color?: DomainColor | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyDomainsId?: string | null,
+      domainParentId?: string | null,
+    },
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    balance: string,
+    createdAt: string,
+    updatedAt: string,
+    colonyBalancesId?: string | null,
+    colonyBalanceDomainId: string,
+    colonyBalanceTokenId: string,
   } | null,
 };
 
@@ -2078,6 +2267,10 @@ export type GetColonyQuery = {
       __typename: "Metadata",
       network?: Network | null,
       chainId?: number | null,
+    } | null,
+    balances?:  {
+      __typename: "ModelColonyBalanceConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -2741,6 +2934,10 @@ export type OnCreateColonySubscription = {
       network?: Network | null,
       chainId?: number | null,
     } | null,
+    balances?:  {
+      __typename: "ModelColonyBalanceConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -2802,6 +2999,10 @@ export type OnUpdateColonySubscription = {
       network?: Network | null,
       chainId?: number | null,
     } | null,
+    balances?:  {
+      __typename: "ModelColonyBalanceConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -2862,6 +3063,10 @@ export type OnDeleteColonySubscription = {
       __typename: "Metadata",
       network?: Network | null,
       chainId?: number | null,
+    } | null,
+    balances?:  {
+      __typename: "ModelColonyBalanceConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -3151,6 +3356,123 @@ export type OnDeleteColonyTransactionSubscription = {
     updatedAt: string,
     colonyTransactionsId?: string | null,
     colonyTransactionTokenId: string,
+  } | null,
+};
+
+export type OnCreateColonyBalanceSubscriptionVariables = {
+  filter?: ModelSubscriptionColonyBalanceFilterInput | null,
+};
+
+export type OnCreateColonyBalanceSubscription = {
+  onCreateColonyBalance?:  {
+    __typename: "ColonyBalance",
+    id: string,
+    domain:  {
+      __typename: "Domain",
+      id: string,
+      nativeId: number,
+      name?: string | null,
+      description?: string | null,
+      color?: DomainColor | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyDomainsId?: string | null,
+      domainParentId?: string | null,
+    },
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    balance: string,
+    createdAt: string,
+    updatedAt: string,
+    colonyBalancesId?: string | null,
+    colonyBalanceDomainId: string,
+    colonyBalanceTokenId: string,
+  } | null,
+};
+
+export type OnUpdateColonyBalanceSubscriptionVariables = {
+  filter?: ModelSubscriptionColonyBalanceFilterInput | null,
+};
+
+export type OnUpdateColonyBalanceSubscription = {
+  onUpdateColonyBalance?:  {
+    __typename: "ColonyBalance",
+    id: string,
+    domain:  {
+      __typename: "Domain",
+      id: string,
+      nativeId: number,
+      name?: string | null,
+      description?: string | null,
+      color?: DomainColor | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyDomainsId?: string | null,
+      domainParentId?: string | null,
+    },
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    balance: string,
+    createdAt: string,
+    updatedAt: string,
+    colonyBalancesId?: string | null,
+    colonyBalanceDomainId: string,
+    colonyBalanceTokenId: string,
+  } | null,
+};
+
+export type OnDeleteColonyBalanceSubscriptionVariables = {
+  filter?: ModelSubscriptionColonyBalanceFilterInput | null,
+};
+
+export type OnDeleteColonyBalanceSubscription = {
+  onDeleteColonyBalance?:  {
+    __typename: "ColonyBalance",
+    id: string,
+    domain:  {
+      __typename: "Domain",
+      id: string,
+      nativeId: number,
+      name?: string | null,
+      description?: string | null,
+      color?: DomainColor | null,
+      createdAt: string,
+      updatedAt: string,
+      colonyDomainsId?: string | null,
+      domainParentId?: string | null,
+    },
+    token:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    balance: string,
+    createdAt: string,
+    updatedAt: string,
+    colonyBalancesId?: string | null,
+    colonyBalanceDomainId: string,
+    colonyBalanceTokenId: string,
   } | null,
 };
 

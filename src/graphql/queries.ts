@@ -108,6 +108,9 @@ export const getColony = /* GraphQL */ `
         network
         chainId
       }
+      balances {
+        nextToken
+      }
       createdAt
       updatedAt
       colonyNativeTokenId

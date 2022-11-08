@@ -114,6 +114,9 @@ export const onCreateColony = /* GraphQL */ `
         network
         chainId
       }
+      balances {
+        nextToken
+      }
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -163,6 +166,9 @@ export const onUpdateColony = /* GraphQL */ `
         network
         chainId
       }
+      balances {
+        nextToken
+      }
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -211,6 +217,9 @@ export const onDeleteColony = /* GraphQL */ `
       meta {
         network
         chainId
+      }
+      balances {
+        nextToken
       }
       createdAt
       updatedAt
@@ -452,6 +461,111 @@ export const onDeleteColonyTransaction = /* GraphQL */ `
       updatedAt
       colonyTransactionsId
       colonyTransactionTokenId
+    }
+  }
+`;
+export const onCreateColonyBalance = /* GraphQL */ `
+  subscription OnCreateColonyBalance(
+    $filter: ModelSubscriptionColonyBalanceFilterInput
+  ) {
+    onCreateColonyBalance(filter: $filter) {
+      id
+      domain {
+        id
+        nativeId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      balance
+      createdAt
+      updatedAt
+      colonyBalancesId
+      colonyBalanceDomainId
+      colonyBalanceTokenId
+    }
+  }
+`;
+export const onUpdateColonyBalance = /* GraphQL */ `
+  subscription OnUpdateColonyBalance(
+    $filter: ModelSubscriptionColonyBalanceFilterInput
+  ) {
+    onUpdateColonyBalance(filter: $filter) {
+      id
+      domain {
+        id
+        nativeId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      balance
+      createdAt
+      updatedAt
+      colonyBalancesId
+      colonyBalanceDomainId
+      colonyBalanceTokenId
+    }
+  }
+`;
+export const onDeleteColonyBalance = /* GraphQL */ `
+  subscription OnDeleteColonyBalance(
+    $filter: ModelSubscriptionColonyBalanceFilterInput
+  ) {
+    onDeleteColonyBalance(filter: $filter) {
+      id
+      domain {
+        id
+        nativeId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      balance
+      createdAt
+      updatedAt
+      colonyBalancesId
+      colonyBalanceDomainId
+      colonyBalanceTokenId
     }
   }
 `;
