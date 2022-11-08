@@ -19,7 +19,7 @@
         "createUniqueDomain": {},
         "getUserReputation": {},
         "getReputationForTopDomains": {},
-        "fetchChainNativeColonyBalance": {}
+        "fetchColonyNativeFundsClaim": {}
       }
     }
   }

@@ -96,6 +96,7 @@ type GetReputationForTopDomainsReturn {
 enum TokenType {
   COLONY
   ERC20
+  CHAIN_NATIVE
 }
 
 enum Network {
@@ -218,7 +219,14 @@ type Colony @model {
   status: ColonyStatus
   domains: [Domain] @hasMany
   watchers: [User] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
-  fundsClaims: [ColonyFundsClaim] @hasMany
+  # NOTE: Could not merge these two fields properly
+  # Ideally we would merge data from these two into one field, but I couldn't do that
+  # meaning we'll have to merge this data in-app (or not at all, works either way)
+  # If you have a better idea, on how to merged them, I'll all ears...
+  fundsClaims: [ColonyFundsClaim] @hasMany # All ERC20 token claims
+  # Native chain token claims (eg: Token 0x0000...0000)
+  # This is not an array since only a single token type can be returned
+  chainFundsClaim: ColonyChainFundsClaim @function(name: "fetchColonyNativeFundsClaim")
   type: ColonyType @index(name: "byType", queryField: "getColonyByType")
   meta: Metadata
 }
@@ -246,5 +254,17 @@ type ColonyFundsClaim @model {
   token: Token! @hasOne
   createdAtBlock: Int!
   createdAt: AWSDateTime!
+  amount: String!
+}
+
+# This is really not elegant, but there's no other proper solution, as you can't
+# return the Token @hadOne relationship from the lambda function
+# Note that we don't need token details for the values that we're fetching (since
+# it's implied), but it would have been nice not to have to basically repeat the type
+type ColonyChainFundsClaim {
+  id: ID!
+  createdAtBlock: Int!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
   amount: String!
 }
