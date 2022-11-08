@@ -17,8 +17,7 @@
         "createUniqueUser": {},
         "createUniqueColony": {},
         "createUniqueDomain": {},
-        "getUserReputation": {},
-        "fetchChainNativeColonyBalance": {}
+        "getUserReputation": {}
       }
     }
   }
