@@ -1,11 +1,10 @@
 import Decimal from 'decimal.js';
 import { BigNumber, BigNumberish } from 'ethers';
 
-// import { TokenWithBalances } from '~data/index';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
 export const getBalanceFromToken = (
-  // token: TokenWithBalances | undefined,
+  /** @TODO: add proper type */
   token: any,
   tokenDomainId = 0,
 ) => {
