@@ -1,11 +1,11 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 // import { Extension } from '@colony/colony-js';
 // import { useSelector } from 'react-redux';
 
 import Button from '~shared/Button';
 import { Tooltip } from '~shared/Popover';
-// import { SpinnerLoader } from '~core/Preloaders';
+import { SpinnerLoader } from '~shared/Preloaders';
 
 // import ColonyActionsDialog from '~dialogs/ColonyActionsDialog';
 // import ExpendituresDialog from '~dialogs/ExpendituresDialog';
@@ -38,7 +38,7 @@ import { Tooltip } from '~shared/Popover';
 import { Colony } from '~types';
 import { useCanInteractWithColony } from '~hooks';
 
-import styles from './ColonyHomeActions.css';
+import styles from './NewActionButton.css';
 
 const displayName = 'commmon.ColonyHome.NewActionButton';
 
