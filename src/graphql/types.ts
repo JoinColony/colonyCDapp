@@ -19,6 +19,7 @@ export type Colony = {
   domains?: ModelDomainConnection | null,
   watchers?: ModelWatchedColoniesConnection | null,
   fundsClaims?: ModelColonyFundsClaimConnection | null,
+  chainFundsClaim?: ColonyChainFundsClaim | null,
   type?: ColonyType | null,
   meta?: Metadata | null,
   createdAt: string,
@@ -43,6 +44,7 @@ export type Token = {
 export enum TokenType {
   COLONY = "COLONY",
   ERC20 = "ERC20",
+  CHAIN_NATIVE = "CHAIN_NATIVE",
 }
 
 
@@ -205,6 +207,15 @@ export type ColonyFundsClaim = {
   colonyFundsClaimTokenId: string,
 };
 
+export type ColonyChainFundsClaim = {
+  __typename: "ColonyChainFundsClaim",
+  id: string,
+  createdAtBlock: number,
+  createdAt: string,
+  updatedAt: string,
+  amount: string,
+};
+
 export enum ColonyType {
   COLONY = "COLONY",
   METACOLONY = "METACOLONY",
@@ -361,9 +372,18 @@ export type CreateColonyInput = {
   name: string,
   profile?: ProfileInput | null,
   status?: ColonyStatusInput | null,
+  chainFundsClaim?: ColonyChainFundsClaimInput | null,
   type?: ColonyType | null,
   meta?: MetadataInput | null,
   colonyNativeTokenId: string,
+};
+
+export type ColonyChainFundsClaimInput = {
+  id?: string | null,
+  createdAtBlock: number,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+  amount: string,
 };
 
 export type ModelColonyConditionInput = {
@@ -401,6 +421,7 @@ export type UpdateColonyInput = {
   name?: string | null,
   profile?: ProfileInput | null,
   status?: ColonyStatusInput | null,
+  chainFundsClaim?: ColonyChainFundsClaimInput | null,
   type?: ColonyType | null,
   meta?: MetadataInput | null,
   colonyNativeTokenId: string,
@@ -1199,6 +1220,14 @@ export type CreateColonyMutation = {
       __typename: "ModelColonyFundsClaimConnection",
       nextToken?: string | null,
     } | null,
+    chainFundsClaim?:  {
+      __typename: "ColonyChainFundsClaim",
+      id: string,
+      createdAtBlock: number,
+      createdAt: string,
+      updatedAt: string,
+      amount: string,
+    } | null,
     type?: ColonyType | null,
     meta?:  {
       __typename: "Metadata",
@@ -1261,6 +1290,14 @@ export type UpdateColonyMutation = {
       __typename: "ModelColonyFundsClaimConnection",
       nextToken?: string | null,
     } | null,
+    chainFundsClaim?:  {
+      __typename: "ColonyChainFundsClaim",
+      id: string,
+      createdAtBlock: number,
+      createdAt: string,
+      updatedAt: string,
+      amount: string,
+    } | null,
     type?: ColonyType | null,
     meta?:  {
       __typename: "Metadata",
@@ -1322,6 +1359,14 @@ export type DeleteColonyMutation = {
     fundsClaims?:  {
       __typename: "ModelColonyFundsClaimConnection",
       nextToken?: string | null,
+    } | null,
+    chainFundsClaim?:  {
+      __typename: "ColonyChainFundsClaim",
+      id: string,
+      createdAtBlock: number,
+      createdAt: string,
+      updatedAt: string,
+      amount: string,
     } | null,
     type?: ColonyType | null,
     meta?:  {
@@ -2044,6 +2089,14 @@ export type GetColonyQuery = {
       __typename: "ModelColonyFundsClaimConnection",
       nextToken?: string | null,
     } | null,
+    chainFundsClaim?:  {
+      __typename: "ColonyChainFundsClaim",
+      id: string,
+      createdAtBlock: number,
+      createdAt: string,
+      updatedAt: string,
+      amount: string,
+    } | null,
     type?: ColonyType | null,
     meta?:  {
       __typename: "Metadata",
@@ -2701,6 +2754,14 @@ export type OnCreateColonySubscription = {
       __typename: "ModelColonyFundsClaimConnection",
       nextToken?: string | null,
     } | null,
+    chainFundsClaim?:  {
+      __typename: "ColonyChainFundsClaim",
+      id: string,
+      createdAtBlock: number,
+      createdAt: string,
+      updatedAt: string,
+      amount: string,
+    } | null,
     type?: ColonyType | null,
     meta?:  {
       __typename: "Metadata",
@@ -2762,6 +2823,14 @@ export type OnUpdateColonySubscription = {
       __typename: "ModelColonyFundsClaimConnection",
       nextToken?: string | null,
     } | null,
+    chainFundsClaim?:  {
+      __typename: "ColonyChainFundsClaim",
+      id: string,
+      createdAtBlock: number,
+      createdAt: string,
+      updatedAt: string,
+      amount: string,
+    } | null,
     type?: ColonyType | null,
     meta?:  {
       __typename: "Metadata",
@@ -2822,6 +2891,14 @@ export type OnDeleteColonySubscription = {
     fundsClaims?:  {
       __typename: "ModelColonyFundsClaimConnection",
       nextToken?: string | null,
+    } | null,
+    chainFundsClaim?:  {
+      __typename: "ColonyChainFundsClaim",
+      id: string,
+      createdAtBlock: number,
+      createdAt: string,
+      updatedAt: string,
+      amount: string,
     } | null,
     type?: ColonyType | null,
     meta?:  {

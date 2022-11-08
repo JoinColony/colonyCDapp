@@ -197,6 +197,13 @@ export const createColony = /* GraphQL */ `
       fundsClaims {
         nextToken
       }
+      chainFundsClaim {
+        id
+        createdAtBlock
+        createdAt
+        updatedAt
+        amount
+      }
       type
       meta {
         network
@@ -249,6 +256,13 @@ export const updateColony = /* GraphQL */ `
       fundsClaims {
         nextToken
       }
+      chainFundsClaim {
+        id
+        createdAtBlock
+        createdAt
+        updatedAt
+        amount
+      }
       type
       meta {
         network
@@ -300,6 +314,13 @@ export const deleteColony = /* GraphQL */ `
       }
       fundsClaims {
         nextToken
+      }
+      chainFundsClaim {
+        id
+        createdAtBlock
+        createdAt
+        updatedAt
+        amount
       }
       type
       meta {

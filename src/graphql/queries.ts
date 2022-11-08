@@ -103,6 +103,13 @@ export const getColony = /* GraphQL */ `
       fundsClaims {
         nextToken
       }
+      chainFundsClaim {
+        id
+        createdAtBlock
+        createdAt
+        updatedAt
+        amount
+      }
       type
       meta {
         network
