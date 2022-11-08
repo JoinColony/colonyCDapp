@@ -22,8 +22,7 @@ import React from 'react';
 // import { getAllUserRoles } from '~modules/transformers';
 // import { hasRoot, canAdminister } from '~modules/users/checks';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
-
-// import { useColonyContext } from '~hooks';
+import { useColonyContext } from '~hooks';
 
 import styles from './ColonyMembers.css';
 
@@ -49,10 +48,7 @@ const ColonyMembers = () => {
   //   extensionId?: string;
   // }>();
 
-  // const { colony } = useColonyContext();
-
-  // const canInteractWithCurrentColony = useCanInteractWithColony(colony);
-  const canInteractWithCurrentColony = false;
+  const { canInteractWithColony } = useColonyContext();
 
   // if (!isExtensionIdValid) {
   //   return <NotFoundRoute />;
@@ -63,7 +59,7 @@ const ColonyMembers = () => {
       <div className={styles.mainContentGrid}>
         <div className={styles.mainContent}>
           Colony Members
-          {canInteractWithCurrentColony && <p>Colony can be interacted with</p>}
+          {canInteractWithColony && <p>Colony can be interacted with</p>}
         </div>
         <aside className={styles.rightAside} />
       </div>

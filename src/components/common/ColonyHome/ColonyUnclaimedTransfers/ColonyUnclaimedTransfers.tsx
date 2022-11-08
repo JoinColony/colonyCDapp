@@ -11,9 +11,9 @@ import { Tooltip } from '~shared/Popover';
 import Link from '~shared/Link';
 
 import { ActionTypes } from '~redux';
-import { useCanInteractWithColony } from '~hooks';
 import { mergePayload } from '~utils/actions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { useColonyContext } from '~hooks';
 
 import styles from './ColonyUnclaimedTransfers.css';
 
@@ -25,23 +25,23 @@ interface Props {
 
 const MSG = defineMessages({
   title: {
-    id: 'dashboard.ColonyHome.ColonyUnclaimedTransfers.title',
+    id: `${displayName}.title`,
     defaultMessage: 'Incoming funds',
   },
   claimButton: {
-    id: 'dashboard.ColonyHome.ColonyUnclaimedTransfers.claimButton',
+    id: `${displayName}.claimButton`,
     defaultMessage: 'Claim',
   },
   tooltip: {
-    id: 'dashboard.ColonyHome.ColonyUnclaimedTransfers.tooltip',
+    id: `${displayName}.tooltip`,
     defaultMessage: 'Click to claim incoming funds for this colony.',
   },
   more: {
-    id: 'dashboard.ColonyHome.ColonyUnclaimedTransfers.more',
+    id: `${displayName}.more`,
     defaultMessage: '+ {extraClaims} more',
   },
   unknownToken: {
-    id: 'dashboard.ColonyHome.ColonyUnclaimedTransfers.unknownToken',
+    id: `${displayName}.unknownToken`,
     defaultMessage: 'Unknown Token',
   },
 });
@@ -53,7 +53,7 @@ const ColonyUnclaimedTransfers = ({
   const { data, error } = useColonyTransfersQuery({
     variables: { address: colony.colonyAddress },
   });
-  const canInteractWithCurrentColony = useCanInteractWithColony(colony);
+  const { canInteractWithColony } = useColonyContext();
 
   const firstItem = data?.processedColony.unclaimedTransfers[0];
 
@@ -123,7 +123,7 @@ const ColonyUnclaimedTransfers = ({
               error={ActionTypes.CLAIM_TOKEN_ERROR}
               success={ActionTypes.CLAIM_TOKEN_SUCCESS}
               transform={transform}
-              disabled={!canInteractWithCurrentColony}
+              disabled={!canInteractWithColony}
             />
           </Tooltip>
         </li>

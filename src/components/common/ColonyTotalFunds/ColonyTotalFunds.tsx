@@ -13,30 +13,31 @@ import IconTooltip from '~shared/IconTooltip';
 // } from '~data/index';
 import { Address } from '~types/index';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { useCanInteractWithColony } from '~hooks';
 // import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-
 import { Colony, ColonyTokens } from '~types';
+import { useColonyContext } from '~hooks';
 
 import ColonyTotalFundsPopover from './ColonyTotalFundsPopover';
 
 import styles from './ColonyTotalFunds.css';
 
+const displayName = 'dashboard.ColonyTotalFunds';
+
 const MSG = defineMessages({
   totalBalance: {
-    id: 'dashboard.ColonyTotalFunds.totalBalance',
+    id: `${displayName}.totalBalance`,
     defaultMessage: 'Colony total balance',
   },
   manageFundsLink: {
-    id: 'dashboard.ColonyTotalFunds.manageFundsLink',
+    id: `${displayName}.manageFundsLink`,
     defaultMessage: 'Manage Funds',
   },
   loadingData: {
-    id: 'dashboard.ColonyTotalFunds.loadingData',
+    id: `${displayName}.loadingData`,
     defaultMessage: 'Loading token information...',
   },
   tokenSelect: {
-    id: 'dashboard.ColonyTotalFunds.tokenSelect',
+    id: `${displayName}.tokenSelect`,
     defaultMessage: 'Select Tokens',
   },
 });
@@ -44,8 +45,6 @@ const MSG = defineMessages({
 type Props = {
   colony: Colony;
 };
-
-const displayName = 'dashboard.ColonyTotalFunds';
 
 const ColonyTotalFunds = ({
   colony: {
@@ -56,9 +55,8 @@ const ColonyTotalFunds = ({
     // version,
     // isNativeTokenLocked,
   },
-  colony,
 }: Props) => {
-  const canInteractWithCurrentColony = useCanInteractWithColony(colony);
+  const { canInteractWithColony } = useColonyContext();
   const [currentTokenAddress, setCurrentTokenAddress] =
     useState<Address>(nativeTokenAddress);
 
@@ -143,7 +141,7 @@ const ColonyTotalFunds = ({
       </div>
       <div className={styles.totalBalanceCopy}>
         <FormattedMessage {...MSG.totalBalance} />
-        {isSupportedColonyVersion && canInteractWithCurrentColony && (
+        {isSupportedColonyVersion && canInteractWithColony && (
           <Link
             className={styles.manageFundsLink}
             to={`/colony/${name}/funds`}

@@ -7,7 +7,7 @@ import DomainDropdown from '~shared/DomainDropdown';
 // import { useDialog } from '~shared/Dialog';
 // import EditDomainDialog from '~dialogs/EditDomainDialog';
 
-import { useCanInteractWithColony } from '~hooks';
+import { useColonyContext } from '~hooks';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
 import { Colony, Color, graphQlDomainColorMap } from '~types';
@@ -34,7 +34,7 @@ const ColonyDomainSelector = ({
   colony: { domains },
   colony,
 }: Props) => {
-  const canInteractWithCurrentColony = useCanInteractWithColony(colony);
+  const { canInteractWithColony } = useColonyContext();
   // const { data } = useColonyExtensionsQuery({
   //   variables: { address: colonyAddress },
   // });
@@ -101,11 +101,9 @@ const ColonyDomainSelector = ({
         name="filteredDomainId"
         currentDomainId={filteredDomainId}
         onDomainChange={onDomainChange}
-        onDomainEdit={
-          canInteractWithCurrentColony ? handleEditDomain : undefined
-        }
+        onDomainEdit={canInteractWithColony ? handleEditDomain : undefined}
         footerComponent={
-          canInteractWithCurrentColony ? (
+          canInteractWithColony ? (
             <CreateDomainButton colony={colony} />
           ) : undefined
         }

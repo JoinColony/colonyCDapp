@@ -7,14 +7,17 @@ import { getFullColonyByName } from '~gql';
 import { Colony } from '~types';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import NotFoundRoute from '~routes/NotFoundRoute';
+import { useCanInteractWithColony } from '~hooks';
 
 interface ColonyContextValue {
   colony?: Colony;
   loading: boolean;
+  canInteractWithColony: boolean;
 }
 
 const ColonyContext = createContext<ColonyContextValue>({
   loading: false,
+  canInteractWithColony: false,
 });
 
 const displayName = 'ColonyContextProvider';
@@ -43,9 +46,11 @@ export const ColonyContextProvider = ({
 
   const [colony] = data?.getColonyByName?.items || [];
 
+  const canInteractWithColony = useCanInteractWithColony(colony);
+
   const colonyContext = useMemo<ColonyContextValue>(
-    () => ({ colony, loading }),
-    [colony, loading],
+    () => ({ colony, loading, canInteractWithColony }),
+    [colony, loading, canInteractWithColony],
   );
 
   if (!colonyName) {
