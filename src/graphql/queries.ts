@@ -97,19 +97,16 @@ export const getColony = /* GraphQL */ `
       domains {
         nextToken
       }
-      transactions {
+      watchers {
         nextToken
       }
-      watchers {
+      fundsClaims {
         nextToken
       }
       type
       meta {
         network
         chainId
-      }
-      balances {
-        nextToken
       }
       createdAt
       updatedAt
@@ -226,9 +223,9 @@ export const listDomains = /* GraphQL */ `
     }
   }
 `;
-export const getColonyTransaction = /* GraphQL */ `
-  query GetColonyTransaction($id: ID!) {
-    getColonyTransaction(id: $id) {
+export const getColonyFundsClaim = /* GraphQL */ `
+  query GetColonyFundsClaim($id: ID!) {
+    getColonyFundsClaim(id: $id) {
       id
       token {
         id
@@ -240,25 +237,21 @@ export const getColonyTransaction = /* GraphQL */ `
         updatedAt
       }
       createdAtBlock
-      claimed
-      args {
-        source
-        amount
-      }
       createdAt
+      amount
       updatedAt
-      colonyTransactionsId
-      colonyTransactionTokenId
+      colonyFundsClaimsId
+      colonyFundsClaimTokenId
     }
   }
 `;
-export const listColonyTransactions = /* GraphQL */ `
-  query ListColonyTransactions(
-    $filter: ModelColonyTransactionFilterInput
+export const listColonyFundsClaims = /* GraphQL */ `
+  query ListColonyFundsClaims(
+    $filter: ModelColonyFundsClaimFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listColonyTransactions(
+    listColonyFundsClaims(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -266,11 +259,11 @@ export const listColonyTransactions = /* GraphQL */ `
       items {
         id
         createdAtBlock
-        claimed
         createdAt
+        amount
         updatedAt
-        colonyTransactionsId
-        colonyTransactionTokenId
+        colonyFundsClaimsId
+        colonyFundsClaimTokenId
       }
       nextToken
     }

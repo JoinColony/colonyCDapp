@@ -103,19 +103,16 @@ export const onCreateColony = /* GraphQL */ `
       domains {
         nextToken
       }
-      transactions {
+      watchers {
         nextToken
       }
-      watchers {
+      fundsClaims {
         nextToken
       }
       type
       meta {
         network
         chainId
-      }
-      balances {
-        nextToken
       }
       createdAt
       updatedAt
@@ -155,19 +152,16 @@ export const onUpdateColony = /* GraphQL */ `
       domains {
         nextToken
       }
-      transactions {
+      watchers {
         nextToken
       }
-      watchers {
+      fundsClaims {
         nextToken
       }
       type
       meta {
         network
         chainId
-      }
-      balances {
-        nextToken
       }
       createdAt
       updatedAt
@@ -207,19 +201,16 @@ export const onDeleteColony = /* GraphQL */ `
       domains {
         nextToken
       }
-      transactions {
+      watchers {
         nextToken
       }
-      watchers {
+      fundsClaims {
         nextToken
       }
       type
       meta {
         network
         chainId
-      }
-      balances {
-        nextToken
       }
       createdAt
       updatedAt
@@ -380,11 +371,11 @@ export const onDeleteDomain = /* GraphQL */ `
     }
   }
 `;
-export const onCreateColonyTransaction = /* GraphQL */ `
-  subscription OnCreateColonyTransaction(
-    $filter: ModelSubscriptionColonyTransactionFilterInput
+export const onCreateColonyFundsClaim = /* GraphQL */ `
+  subscription OnCreateColonyFundsClaim(
+    $filter: ModelSubscriptionColonyFundsClaimFilterInput
   ) {
-    onCreateColonyTransaction(filter: $filter) {
+    onCreateColonyFundsClaim(filter: $filter) {
       id
       token {
         id
@@ -396,23 +387,19 @@ export const onCreateColonyTransaction = /* GraphQL */ `
         updatedAt
       }
       createdAtBlock
-      claimed
-      args {
-        source
-        amount
-      }
       createdAt
+      amount
       updatedAt
-      colonyTransactionsId
-      colonyTransactionTokenId
+      colonyFundsClaimsId
+      colonyFundsClaimTokenId
     }
   }
 `;
-export const onUpdateColonyTransaction = /* GraphQL */ `
-  subscription OnUpdateColonyTransaction(
-    $filter: ModelSubscriptionColonyTransactionFilterInput
+export const onUpdateColonyFundsClaim = /* GraphQL */ `
+  subscription OnUpdateColonyFundsClaim(
+    $filter: ModelSubscriptionColonyFundsClaimFilterInput
   ) {
-    onUpdateColonyTransaction(filter: $filter) {
+    onUpdateColonyFundsClaim(filter: $filter) {
       id
       token {
         id
@@ -424,23 +411,19 @@ export const onUpdateColonyTransaction = /* GraphQL */ `
         updatedAt
       }
       createdAtBlock
-      claimed
-      args {
-        source
-        amount
-      }
       createdAt
+      amount
       updatedAt
-      colonyTransactionsId
-      colonyTransactionTokenId
+      colonyFundsClaimsId
+      colonyFundsClaimTokenId
     }
   }
 `;
-export const onDeleteColonyTransaction = /* GraphQL */ `
-  subscription OnDeleteColonyTransaction(
-    $filter: ModelSubscriptionColonyTransactionFilterInput
+export const onDeleteColonyFundsClaim = /* GraphQL */ `
+  subscription OnDeleteColonyFundsClaim(
+    $filter: ModelSubscriptionColonyFundsClaimFilterInput
   ) {
-    onDeleteColonyTransaction(filter: $filter) {
+    onDeleteColonyFundsClaim(filter: $filter) {
       id
       token {
         id
@@ -452,120 +435,11 @@ export const onDeleteColonyTransaction = /* GraphQL */ `
         updatedAt
       }
       createdAtBlock
-      claimed
-      args {
-        source
-        amount
-      }
       createdAt
+      amount
       updatedAt
-      colonyTransactionsId
-      colonyTransactionTokenId
-    }
-  }
-`;
-export const onCreateColonyBalance = /* GraphQL */ `
-  subscription OnCreateColonyBalance(
-    $filter: ModelSubscriptionColonyBalanceFilterInput
-  ) {
-    onCreateColonyBalance(filter: $filter) {
-      id
-      domain {
-        id
-        nativeId
-        name
-        description
-        color
-        createdAt
-        updatedAt
-        colonyDomainsId
-        domainParentId
-      }
-      token {
-        id
-        name
-        symbol
-        decimals
-        type
-        createdAt
-        updatedAt
-      }
-      balance
-      createdAt
-      updatedAt
-      colonyBalancesId
-      colonyBalanceDomainId
-      colonyBalanceTokenId
-    }
-  }
-`;
-export const onUpdateColonyBalance = /* GraphQL */ `
-  subscription OnUpdateColonyBalance(
-    $filter: ModelSubscriptionColonyBalanceFilterInput
-  ) {
-    onUpdateColonyBalance(filter: $filter) {
-      id
-      domain {
-        id
-        nativeId
-        name
-        description
-        color
-        createdAt
-        updatedAt
-        colonyDomainsId
-        domainParentId
-      }
-      token {
-        id
-        name
-        symbol
-        decimals
-        type
-        createdAt
-        updatedAt
-      }
-      balance
-      createdAt
-      updatedAt
-      colonyBalancesId
-      colonyBalanceDomainId
-      colonyBalanceTokenId
-    }
-  }
-`;
-export const onDeleteColonyBalance = /* GraphQL */ `
-  subscription OnDeleteColonyBalance(
-    $filter: ModelSubscriptionColonyBalanceFilterInput
-  ) {
-    onDeleteColonyBalance(filter: $filter) {
-      id
-      domain {
-        id
-        nativeId
-        name
-        description
-        color
-        createdAt
-        updatedAt
-        colonyDomainsId
-        domainParentId
-      }
-      token {
-        id
-        name
-        symbol
-        decimals
-        type
-        createdAt
-        updatedAt
-      }
-      balance
-      createdAt
-      updatedAt
-      colonyBalancesId
-      colonyBalanceDomainId
-      colonyBalanceTokenId
+      colonyFundsClaimsId
+      colonyFundsClaimTokenId
     }
   }
 `;

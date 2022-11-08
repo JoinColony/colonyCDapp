@@ -17,11 +17,10 @@ export type Colony = {
   profile?: Profile | null,
   status?: ColonyStatus | null,
   domains?: ModelDomainConnection | null,
-  transactions?: ModelColonyTransactionConnection | null,
   watchers?: ModelWatchedColoniesConnection | null,
+  fundsClaims?: ModelColonyFundsClaimConnection | null,
   type?: ColonyType | null,
   meta?: Metadata | null,
-  balances?: ModelColonyBalanceConnection | null,
   createdAt: string,
   updatedAt: string,
   colonyNativeTokenId: string,
@@ -188,29 +187,22 @@ export enum DomainColor {
 }
 
 
-export type ModelColonyTransactionConnection = {
-  __typename: "ModelColonyTransactionConnection",
-  items:  Array<ColonyTransaction | null >,
+export type ModelColonyFundsClaimConnection = {
+  __typename: "ModelColonyFundsClaimConnection",
+  items:  Array<ColonyFundsClaim | null >,
   nextToken?: string | null,
 };
 
-export type ColonyTransaction = {
-  __typename: "ColonyTransaction",
+export type ColonyFundsClaim = {
+  __typename: "ColonyFundsClaim",
   id: string,
   token: Token,
   createdAtBlock: number,
-  claimed?: string | null,
-  args?: TransactionArguments | null,
   createdAt: string,
+  amount: string,
   updatedAt: string,
-  colonyTransactionsId?: string | null,
-  colonyTransactionTokenId: string,
-};
-
-export type TransactionArguments = {
-  __typename: "TransactionArguments",
-  source?: string | null,
-  amount?: string | null,
+  colonyFundsClaimsId?: string | null,
+  colonyFundsClaimTokenId: string,
 };
 
 export enum ColonyType {
@@ -218,25 +210,6 @@ export enum ColonyType {
   METACOLONY = "METACOLONY",
 }
 
-
-export type ModelColonyBalanceConnection = {
-  __typename: "ModelColonyBalanceConnection",
-  items:  Array<ColonyBalance | null >,
-  nextToken?: string | null,
-};
-
-export type ColonyBalance = {
-  __typename: "ColonyBalance",
-  id: string,
-  domain: Domain,
-  token: Token,
-  balance: string,
-  createdAt: string,
-  updatedAt: string,
-  colonyBalancesId?: string | null,
-  colonyBalanceDomainId: string,
-  colonyBalanceTokenId: string,
-};
 
 export type ModelUserConnection = {
   __typename: "ModelUserConnection",
@@ -501,73 +474,36 @@ export type DeleteDomainInput = {
   id: string,
 };
 
-export type CreateColonyTransactionInput = {
+export type CreateColonyFundsClaimInput = {
   id?: string | null,
   createdAtBlock: number,
-  claimed?: string | null,
-  args?: TransactionArgumentsInput | null,
   createdAt?: string | null,
-  colonyTransactionsId?: string | null,
-  colonyTransactionTokenId: string,
+  amount: string,
+  colonyFundsClaimsId?: string | null,
+  colonyFundsClaimTokenId: string,
 };
 
-export type TransactionArgumentsInput = {
-  source?: string | null,
-  amount?: string | null,
-};
-
-export type ModelColonyTransactionConditionInput = {
+export type ModelColonyFundsClaimConditionInput = {
   createdAtBlock?: ModelIntInput | null,
-  claimed?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
-  and?: Array< ModelColonyTransactionConditionInput | null > | null,
-  or?: Array< ModelColonyTransactionConditionInput | null > | null,
-  not?: ModelColonyTransactionConditionInput | null,
-  colonyTransactionsId?: ModelIDInput | null,
-  colonyTransactionTokenId?: ModelIDInput | null,
+  amount?: ModelStringInput | null,
+  and?: Array< ModelColonyFundsClaimConditionInput | null > | null,
+  or?: Array< ModelColonyFundsClaimConditionInput | null > | null,
+  not?: ModelColonyFundsClaimConditionInput | null,
+  colonyFundsClaimsId?: ModelIDInput | null,
+  colonyFundsClaimTokenId?: ModelIDInput | null,
 };
 
-export type UpdateColonyTransactionInput = {
+export type UpdateColonyFundsClaimInput = {
   id: string,
   createdAtBlock?: number | null,
-  claimed?: string | null,
-  args?: TransactionArgumentsInput | null,
   createdAt?: string | null,
-  colonyTransactionsId?: string | null,
-  colonyTransactionTokenId: string,
+  amount?: string | null,
+  colonyFundsClaimsId?: string | null,
+  colonyFundsClaimTokenId: string,
 };
 
-export type DeleteColonyTransactionInput = {
-  id: string,
-};
-
-export type CreateColonyBalanceInput = {
-  id?: string | null,
-  balance: string,
-  colonyBalancesId?: string | null,
-  colonyBalanceDomainId: string,
-  colonyBalanceTokenId: string,
-};
-
-export type ModelColonyBalanceConditionInput = {
-  balance?: ModelStringInput | null,
-  and?: Array< ModelColonyBalanceConditionInput | null > | null,
-  or?: Array< ModelColonyBalanceConditionInput | null > | null,
-  not?: ModelColonyBalanceConditionInput | null,
-  colonyBalancesId?: ModelIDInput | null,
-  colonyBalanceDomainId?: ModelIDInput | null,
-  colonyBalanceTokenId?: ModelIDInput | null,
-};
-
-export type UpdateColonyBalanceInput = {
-  id: string,
-  balance?: string | null,
-  colonyBalancesId?: string | null,
-  colonyBalanceDomainId: string,
-  colonyBalanceTokenId: string,
-};
-
-export type DeleteColonyBalanceInput = {
+export type DeleteColonyFundsClaimInput = {
   id: string,
 };
 
@@ -707,16 +643,16 @@ export type ModelDomainFilterInput = {
   domainParentId?: ModelIDInput | null,
 };
 
-export type ModelColonyTransactionFilterInput = {
+export type ModelColonyFundsClaimFilterInput = {
   id?: ModelIDInput | null,
   createdAtBlock?: ModelIntInput | null,
-  claimed?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
-  and?: Array< ModelColonyTransactionFilterInput | null > | null,
-  or?: Array< ModelColonyTransactionFilterInput | null > | null,
-  not?: ModelColonyTransactionFilterInput | null,
-  colonyTransactionsId?: ModelIDInput | null,
-  colonyTransactionTokenId?: ModelIDInput | null,
+  amount?: ModelStringInput | null,
+  and?: Array< ModelColonyFundsClaimFilterInput | null > | null,
+  or?: Array< ModelColonyFundsClaimFilterInput | null > | null,
+  not?: ModelColonyFundsClaimFilterInput | null,
+  colonyFundsClaimsId?: ModelIDInput | null,
+  colonyFundsClaimTokenId?: ModelIDInput | null,
 };
 
 export type ModelColonyTokensFilterInput = {
@@ -829,20 +765,13 @@ export type ModelSubscriptionDomainFilterInput = {
   or?: Array< ModelSubscriptionDomainFilterInput | null > | null,
 };
 
-export type ModelSubscriptionColonyTransactionFilterInput = {
+export type ModelSubscriptionColonyFundsClaimFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   createdAtBlock?: ModelSubscriptionIntInput | null,
-  claimed?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionColonyTransactionFilterInput | null > | null,
-  or?: Array< ModelSubscriptionColonyTransactionFilterInput | null > | null,
-};
-
-export type ModelSubscriptionColonyBalanceFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  balance?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionColonyBalanceFilterInput | null > | null,
-  or?: Array< ModelSubscriptionColonyBalanceFilterInput | null > | null,
+  amount?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionColonyFundsClaimFilterInput | null > | null,
+  or?: Array< ModelSubscriptionColonyFundsClaimFilterInput | null > | null,
 };
 
 export type ModelSubscriptionColonyTokensFilterInput = {
@@ -1262,12 +1191,12 @@ export type CreateColonyMutation = {
       __typename: "ModelDomainConnection",
       nextToken?: string | null,
     } | null,
-    transactions?:  {
-      __typename: "ModelColonyTransactionConnection",
-      nextToken?: string | null,
-    } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
+    } | null,
+    fundsClaims?:  {
+      __typename: "ModelColonyFundsClaimConnection",
       nextToken?: string | null,
     } | null,
     type?: ColonyType | null,
@@ -1275,10 +1204,6 @@ export type CreateColonyMutation = {
       __typename: "Metadata",
       network?: Network | null,
       chainId?: number | null,
-    } | null,
-    balances?:  {
-      __typename: "ModelColonyBalanceConnection",
-      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1328,12 +1253,12 @@ export type UpdateColonyMutation = {
       __typename: "ModelDomainConnection",
       nextToken?: string | null,
     } | null,
-    transactions?:  {
-      __typename: "ModelColonyTransactionConnection",
-      nextToken?: string | null,
-    } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
+    } | null,
+    fundsClaims?:  {
+      __typename: "ModelColonyFundsClaimConnection",
       nextToken?: string | null,
     } | null,
     type?: ColonyType | null,
@@ -1341,10 +1266,6 @@ export type UpdateColonyMutation = {
       __typename: "Metadata",
       network?: Network | null,
       chainId?: number | null,
-    } | null,
-    balances?:  {
-      __typename: "ModelColonyBalanceConnection",
-      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1394,12 +1315,12 @@ export type DeleteColonyMutation = {
       __typename: "ModelDomainConnection",
       nextToken?: string | null,
     } | null,
-    transactions?:  {
-      __typename: "ModelColonyTransactionConnection",
-      nextToken?: string | null,
-    } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
+    } | null,
+    fundsClaims?:  {
+      __typename: "ModelColonyFundsClaimConnection",
       nextToken?: string | null,
     } | null,
     type?: ColonyType | null,
@@ -1407,10 +1328,6 @@ export type DeleteColonyMutation = {
       __typename: "Metadata",
       network?: Network | null,
       chainId?: number | null,
-    } | null,
-    balances?:  {
-      __typename: "ModelColonyBalanceConnection",
-      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1613,14 +1530,14 @@ export type DeleteDomainMutation = {
   } | null,
 };
 
-export type CreateColonyTransactionMutationVariables = {
-  input: CreateColonyTransactionInput,
-  condition?: ModelColonyTransactionConditionInput | null,
+export type CreateColonyFundsClaimMutationVariables = {
+  input: CreateColonyFundsClaimInput,
+  condition?: ModelColonyFundsClaimConditionInput | null,
 };
 
-export type CreateColonyTransactionMutation = {
-  createColonyTransaction?:  {
-    __typename: "ColonyTransaction",
+export type CreateColonyFundsClaimMutation = {
+  createColonyFundsClaim?:  {
+    __typename: "ColonyFundsClaim",
     id: string,
     token:  {
       __typename: "Token",
@@ -1633,27 +1550,22 @@ export type CreateColonyTransactionMutation = {
       updatedAt: string,
     },
     createdAtBlock: number,
-    claimed?: string | null,
-    args?:  {
-      __typename: "TransactionArguments",
-      source?: string | null,
-      amount?: string | null,
-    } | null,
     createdAt: string,
+    amount: string,
     updatedAt: string,
-    colonyTransactionsId?: string | null,
-    colonyTransactionTokenId: string,
+    colonyFundsClaimsId?: string | null,
+    colonyFundsClaimTokenId: string,
   } | null,
 };
 
-export type UpdateColonyTransactionMutationVariables = {
-  input: UpdateColonyTransactionInput,
-  condition?: ModelColonyTransactionConditionInput | null,
+export type UpdateColonyFundsClaimMutationVariables = {
+  input: UpdateColonyFundsClaimInput,
+  condition?: ModelColonyFundsClaimConditionInput | null,
 };
 
-export type UpdateColonyTransactionMutation = {
-  updateColonyTransaction?:  {
-    __typename: "ColonyTransaction",
+export type UpdateColonyFundsClaimMutation = {
+  updateColonyFundsClaim?:  {
+    __typename: "ColonyFundsClaim",
     id: string,
     token:  {
       __typename: "Token",
@@ -1666,27 +1578,22 @@ export type UpdateColonyTransactionMutation = {
       updatedAt: string,
     },
     createdAtBlock: number,
-    claimed?: string | null,
-    args?:  {
-      __typename: "TransactionArguments",
-      source?: string | null,
-      amount?: string | null,
-    } | null,
     createdAt: string,
+    amount: string,
     updatedAt: string,
-    colonyTransactionsId?: string | null,
-    colonyTransactionTokenId: string,
+    colonyFundsClaimsId?: string | null,
+    colonyFundsClaimTokenId: string,
   } | null,
 };
 
-export type DeleteColonyTransactionMutationVariables = {
-  input: DeleteColonyTransactionInput,
-  condition?: ModelColonyTransactionConditionInput | null,
+export type DeleteColonyFundsClaimMutationVariables = {
+  input: DeleteColonyFundsClaimInput,
+  condition?: ModelColonyFundsClaimConditionInput | null,
 };
 
-export type DeleteColonyTransactionMutation = {
-  deleteColonyTransaction?:  {
-    __typename: "ColonyTransaction",
+export type DeleteColonyFundsClaimMutation = {
+  deleteColonyFundsClaim?:  {
+    __typename: "ColonyFundsClaim",
     id: string,
     token:  {
       __typename: "Token",
@@ -1699,136 +1606,11 @@ export type DeleteColonyTransactionMutation = {
       updatedAt: string,
     },
     createdAtBlock: number,
-    claimed?: string | null,
-    args?:  {
-      __typename: "TransactionArguments",
-      source?: string | null,
-      amount?: string | null,
-    } | null,
     createdAt: string,
+    amount: string,
     updatedAt: string,
-    colonyTransactionsId?: string | null,
-    colonyTransactionTokenId: string,
-  } | null,
-};
-
-export type CreateColonyBalanceMutationVariables = {
-  input: CreateColonyBalanceInput,
-  condition?: ModelColonyBalanceConditionInput | null,
-};
-
-export type CreateColonyBalanceMutation = {
-  createColonyBalance?:  {
-    __typename: "ColonyBalance",
-    id: string,
-    domain:  {
-      __typename: "Domain",
-      id: string,
-      nativeId: number,
-      name?: string | null,
-      description?: string | null,
-      color?: DomainColor | null,
-      createdAt: string,
-      updatedAt: string,
-      colonyDomainsId?: string | null,
-      domainParentId?: string | null,
-    },
-    token:  {
-      __typename: "Token",
-      id: string,
-      name: string,
-      symbol: string,
-      decimals: number,
-      type?: TokenType | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    balance: string,
-    createdAt: string,
-    updatedAt: string,
-    colonyBalancesId?: string | null,
-    colonyBalanceDomainId: string,
-    colonyBalanceTokenId: string,
-  } | null,
-};
-
-export type UpdateColonyBalanceMutationVariables = {
-  input: UpdateColonyBalanceInput,
-  condition?: ModelColonyBalanceConditionInput | null,
-};
-
-export type UpdateColonyBalanceMutation = {
-  updateColonyBalance?:  {
-    __typename: "ColonyBalance",
-    id: string,
-    domain:  {
-      __typename: "Domain",
-      id: string,
-      nativeId: number,
-      name?: string | null,
-      description?: string | null,
-      color?: DomainColor | null,
-      createdAt: string,
-      updatedAt: string,
-      colonyDomainsId?: string | null,
-      domainParentId?: string | null,
-    },
-    token:  {
-      __typename: "Token",
-      id: string,
-      name: string,
-      symbol: string,
-      decimals: number,
-      type?: TokenType | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    balance: string,
-    createdAt: string,
-    updatedAt: string,
-    colonyBalancesId?: string | null,
-    colonyBalanceDomainId: string,
-    colonyBalanceTokenId: string,
-  } | null,
-};
-
-export type DeleteColonyBalanceMutationVariables = {
-  input: DeleteColonyBalanceInput,
-  condition?: ModelColonyBalanceConditionInput | null,
-};
-
-export type DeleteColonyBalanceMutation = {
-  deleteColonyBalance?:  {
-    __typename: "ColonyBalance",
-    id: string,
-    domain:  {
-      __typename: "Domain",
-      id: string,
-      nativeId: number,
-      name?: string | null,
-      description?: string | null,
-      color?: DomainColor | null,
-      createdAt: string,
-      updatedAt: string,
-      colonyDomainsId?: string | null,
-      domainParentId?: string | null,
-    },
-    token:  {
-      __typename: "Token",
-      id: string,
-      name: string,
-      symbol: string,
-      decimals: number,
-      type?: TokenType | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    balance: string,
-    createdAt: string,
-    updatedAt: string,
-    colonyBalancesId?: string | null,
-    colonyBalanceDomainId: string,
-    colonyBalanceTokenId: string,
+    colonyFundsClaimsId?: string | null,
+    colonyFundsClaimTokenId: string,
   } | null,
 };
 
@@ -2254,12 +2036,12 @@ export type GetColonyQuery = {
       __typename: "ModelDomainConnection",
       nextToken?: string | null,
     } | null,
-    transactions?:  {
-      __typename: "ModelColonyTransactionConnection",
-      nextToken?: string | null,
-    } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
+    } | null,
+    fundsClaims?:  {
+      __typename: "ModelColonyFundsClaimConnection",
       nextToken?: string | null,
     } | null,
     type?: ColonyType | null,
@@ -2267,10 +2049,6 @@ export type GetColonyQuery = {
       __typename: "Metadata",
       network?: Network | null,
       chainId?: number | null,
-    } | null,
-    balances?:  {
-      __typename: "ModelColonyBalanceConnection",
-      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -2408,13 +2186,13 @@ export type ListDomainsQuery = {
   } | null,
 };
 
-export type GetColonyTransactionQueryVariables = {
+export type GetColonyFundsClaimQueryVariables = {
   id: string,
 };
 
-export type GetColonyTransactionQuery = {
-  getColonyTransaction?:  {
-    __typename: "ColonyTransaction",
+export type GetColonyFundsClaimQuery = {
+  getColonyFundsClaim?:  {
+    __typename: "ColonyFundsClaim",
     id: string,
     token:  {
       __typename: "Token",
@@ -2427,37 +2205,32 @@ export type GetColonyTransactionQuery = {
       updatedAt: string,
     },
     createdAtBlock: number,
-    claimed?: string | null,
-    args?:  {
-      __typename: "TransactionArguments",
-      source?: string | null,
-      amount?: string | null,
-    } | null,
     createdAt: string,
+    amount: string,
     updatedAt: string,
-    colonyTransactionsId?: string | null,
-    colonyTransactionTokenId: string,
+    colonyFundsClaimsId?: string | null,
+    colonyFundsClaimTokenId: string,
   } | null,
 };
 
-export type ListColonyTransactionsQueryVariables = {
-  filter?: ModelColonyTransactionFilterInput | null,
+export type ListColonyFundsClaimsQueryVariables = {
+  filter?: ModelColonyFundsClaimFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListColonyTransactionsQuery = {
-  listColonyTransactions?:  {
-    __typename: "ModelColonyTransactionConnection",
+export type ListColonyFundsClaimsQuery = {
+  listColonyFundsClaims?:  {
+    __typename: "ModelColonyFundsClaimConnection",
     items:  Array< {
-      __typename: "ColonyTransaction",
+      __typename: "ColonyFundsClaim",
       id: string,
       createdAtBlock: number,
-      claimed?: string | null,
       createdAt: string,
+      amount: string,
       updatedAt: string,
-      colonyTransactionsId?: string | null,
-      colonyTransactionTokenId: string,
+      colonyFundsClaimsId?: string | null,
+      colonyFundsClaimTokenId: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -2920,12 +2693,12 @@ export type OnCreateColonySubscription = {
       __typename: "ModelDomainConnection",
       nextToken?: string | null,
     } | null,
-    transactions?:  {
-      __typename: "ModelColonyTransactionConnection",
-      nextToken?: string | null,
-    } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
+    } | null,
+    fundsClaims?:  {
+      __typename: "ModelColonyFundsClaimConnection",
       nextToken?: string | null,
     } | null,
     type?: ColonyType | null,
@@ -2933,10 +2706,6 @@ export type OnCreateColonySubscription = {
       __typename: "Metadata",
       network?: Network | null,
       chainId?: number | null,
-    } | null,
-    balances?:  {
-      __typename: "ModelColonyBalanceConnection",
-      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -2985,12 +2754,12 @@ export type OnUpdateColonySubscription = {
       __typename: "ModelDomainConnection",
       nextToken?: string | null,
     } | null,
-    transactions?:  {
-      __typename: "ModelColonyTransactionConnection",
-      nextToken?: string | null,
-    } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
+    } | null,
+    fundsClaims?:  {
+      __typename: "ModelColonyFundsClaimConnection",
       nextToken?: string | null,
     } | null,
     type?: ColonyType | null,
@@ -2998,10 +2767,6 @@ export type OnUpdateColonySubscription = {
       __typename: "Metadata",
       network?: Network | null,
       chainId?: number | null,
-    } | null,
-    balances?:  {
-      __typename: "ModelColonyBalanceConnection",
-      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -3050,12 +2815,12 @@ export type OnDeleteColonySubscription = {
       __typename: "ModelDomainConnection",
       nextToken?: string | null,
     } | null,
-    transactions?:  {
-      __typename: "ModelColonyTransactionConnection",
-      nextToken?: string | null,
-    } | null,
     watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
+      nextToken?: string | null,
+    } | null,
+    fundsClaims?:  {
+      __typename: "ModelColonyFundsClaimConnection",
       nextToken?: string | null,
     } | null,
     type?: ColonyType | null,
@@ -3063,10 +2828,6 @@ export type OnDeleteColonySubscription = {
       __typename: "Metadata",
       network?: Network | null,
       chainId?: number | null,
-    } | null,
-    balances?:  {
-      __typename: "ModelColonyBalanceConnection",
-      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -3263,13 +3024,13 @@ export type OnDeleteDomainSubscription = {
   } | null,
 };
 
-export type OnCreateColonyTransactionSubscriptionVariables = {
-  filter?: ModelSubscriptionColonyTransactionFilterInput | null,
+export type OnCreateColonyFundsClaimSubscriptionVariables = {
+  filter?: ModelSubscriptionColonyFundsClaimFilterInput | null,
 };
 
-export type OnCreateColonyTransactionSubscription = {
-  onCreateColonyTransaction?:  {
-    __typename: "ColonyTransaction",
+export type OnCreateColonyFundsClaimSubscription = {
+  onCreateColonyFundsClaim?:  {
+    __typename: "ColonyFundsClaim",
     id: string,
     token:  {
       __typename: "Token",
@@ -3282,26 +3043,21 @@ export type OnCreateColonyTransactionSubscription = {
       updatedAt: string,
     },
     createdAtBlock: number,
-    claimed?: string | null,
-    args?:  {
-      __typename: "TransactionArguments",
-      source?: string | null,
-      amount?: string | null,
-    } | null,
     createdAt: string,
+    amount: string,
     updatedAt: string,
-    colonyTransactionsId?: string | null,
-    colonyTransactionTokenId: string,
+    colonyFundsClaimsId?: string | null,
+    colonyFundsClaimTokenId: string,
   } | null,
 };
 
-export type OnUpdateColonyTransactionSubscriptionVariables = {
-  filter?: ModelSubscriptionColonyTransactionFilterInput | null,
+export type OnUpdateColonyFundsClaimSubscriptionVariables = {
+  filter?: ModelSubscriptionColonyFundsClaimFilterInput | null,
 };
 
-export type OnUpdateColonyTransactionSubscription = {
-  onUpdateColonyTransaction?:  {
-    __typename: "ColonyTransaction",
+export type OnUpdateColonyFundsClaimSubscription = {
+  onUpdateColonyFundsClaim?:  {
+    __typename: "ColonyFundsClaim",
     id: string,
     token:  {
       __typename: "Token",
@@ -3314,26 +3070,21 @@ export type OnUpdateColonyTransactionSubscription = {
       updatedAt: string,
     },
     createdAtBlock: number,
-    claimed?: string | null,
-    args?:  {
-      __typename: "TransactionArguments",
-      source?: string | null,
-      amount?: string | null,
-    } | null,
     createdAt: string,
+    amount: string,
     updatedAt: string,
-    colonyTransactionsId?: string | null,
-    colonyTransactionTokenId: string,
+    colonyFundsClaimsId?: string | null,
+    colonyFundsClaimTokenId: string,
   } | null,
 };
 
-export type OnDeleteColonyTransactionSubscriptionVariables = {
-  filter?: ModelSubscriptionColonyTransactionFilterInput | null,
+export type OnDeleteColonyFundsClaimSubscriptionVariables = {
+  filter?: ModelSubscriptionColonyFundsClaimFilterInput | null,
 };
 
-export type OnDeleteColonyTransactionSubscription = {
-  onDeleteColonyTransaction?:  {
-    __typename: "ColonyTransaction",
+export type OnDeleteColonyFundsClaimSubscription = {
+  onDeleteColonyFundsClaim?:  {
+    __typename: "ColonyFundsClaim",
     id: string,
     token:  {
       __typename: "Token",
@@ -3346,133 +3097,11 @@ export type OnDeleteColonyTransactionSubscription = {
       updatedAt: string,
     },
     createdAtBlock: number,
-    claimed?: string | null,
-    args?:  {
-      __typename: "TransactionArguments",
-      source?: string | null,
-      amount?: string | null,
-    } | null,
     createdAt: string,
+    amount: string,
     updatedAt: string,
-    colonyTransactionsId?: string | null,
-    colonyTransactionTokenId: string,
-  } | null,
-};
-
-export type OnCreateColonyBalanceSubscriptionVariables = {
-  filter?: ModelSubscriptionColonyBalanceFilterInput | null,
-};
-
-export type OnCreateColonyBalanceSubscription = {
-  onCreateColonyBalance?:  {
-    __typename: "ColonyBalance",
-    id: string,
-    domain:  {
-      __typename: "Domain",
-      id: string,
-      nativeId: number,
-      name?: string | null,
-      description?: string | null,
-      color?: DomainColor | null,
-      createdAt: string,
-      updatedAt: string,
-      colonyDomainsId?: string | null,
-      domainParentId?: string | null,
-    },
-    token:  {
-      __typename: "Token",
-      id: string,
-      name: string,
-      symbol: string,
-      decimals: number,
-      type?: TokenType | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    balance: string,
-    createdAt: string,
-    updatedAt: string,
-    colonyBalancesId?: string | null,
-    colonyBalanceDomainId: string,
-    colonyBalanceTokenId: string,
-  } | null,
-};
-
-export type OnUpdateColonyBalanceSubscriptionVariables = {
-  filter?: ModelSubscriptionColonyBalanceFilterInput | null,
-};
-
-export type OnUpdateColonyBalanceSubscription = {
-  onUpdateColonyBalance?:  {
-    __typename: "ColonyBalance",
-    id: string,
-    domain:  {
-      __typename: "Domain",
-      id: string,
-      nativeId: number,
-      name?: string | null,
-      description?: string | null,
-      color?: DomainColor | null,
-      createdAt: string,
-      updatedAt: string,
-      colonyDomainsId?: string | null,
-      domainParentId?: string | null,
-    },
-    token:  {
-      __typename: "Token",
-      id: string,
-      name: string,
-      symbol: string,
-      decimals: number,
-      type?: TokenType | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    balance: string,
-    createdAt: string,
-    updatedAt: string,
-    colonyBalancesId?: string | null,
-    colonyBalanceDomainId: string,
-    colonyBalanceTokenId: string,
-  } | null,
-};
-
-export type OnDeleteColonyBalanceSubscriptionVariables = {
-  filter?: ModelSubscriptionColonyBalanceFilterInput | null,
-};
-
-export type OnDeleteColonyBalanceSubscription = {
-  onDeleteColonyBalance?:  {
-    __typename: "ColonyBalance",
-    id: string,
-    domain:  {
-      __typename: "Domain",
-      id: string,
-      nativeId: number,
-      name?: string | null,
-      description?: string | null,
-      color?: DomainColor | null,
-      createdAt: string,
-      updatedAt: string,
-      colonyDomainsId?: string | null,
-      domainParentId?: string | null,
-    },
-    token:  {
-      __typename: "Token",
-      id: string,
-      name: string,
-      symbol: string,
-      decimals: number,
-      type?: TokenType | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    balance: string,
-    createdAt: string,
-    updatedAt: string,
-    colonyBalancesId?: string | null,
-    colonyBalanceDomainId: string,
-    colonyBalanceTokenId: string,
+    colonyFundsClaimsId?: string | null,
+    colonyFundsClaimTokenId: string,
   } | null,
 };
 

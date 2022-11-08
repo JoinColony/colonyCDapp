@@ -191,19 +191,16 @@ export const createColony = /* GraphQL */ `
       domains {
         nextToken
       }
-      transactions {
+      watchers {
         nextToken
       }
-      watchers {
+      fundsClaims {
         nextToken
       }
       type
       meta {
         network
         chainId
-      }
-      balances {
-        nextToken
       }
       createdAt
       updatedAt
@@ -246,19 +243,16 @@ export const updateColony = /* GraphQL */ `
       domains {
         nextToken
       }
-      transactions {
+      watchers {
         nextToken
       }
-      watchers {
+      fundsClaims {
         nextToken
       }
       type
       meta {
         network
         chainId
-      }
-      balances {
-        nextToken
       }
       createdAt
       updatedAt
@@ -301,19 +295,16 @@ export const deleteColony = /* GraphQL */ `
       domains {
         nextToken
       }
-      transactions {
+      watchers {
         nextToken
       }
-      watchers {
+      fundsClaims {
         nextToken
       }
       type
       meta {
         network
         chainId
-      }
-      balances {
-        nextToken
       }
       createdAt
       updatedAt
@@ -492,12 +483,12 @@ export const deleteDomain = /* GraphQL */ `
     }
   }
 `;
-export const createColonyTransaction = /* GraphQL */ `
-  mutation CreateColonyTransaction(
-    $input: CreateColonyTransactionInput!
-    $condition: ModelColonyTransactionConditionInput
+export const createColonyFundsClaim = /* GraphQL */ `
+  mutation CreateColonyFundsClaim(
+    $input: CreateColonyFundsClaimInput!
+    $condition: ModelColonyFundsClaimConditionInput
   ) {
-    createColonyTransaction(input: $input, condition: $condition) {
+    createColonyFundsClaim(input: $input, condition: $condition) {
       id
       token {
         id
@@ -509,24 +500,20 @@ export const createColonyTransaction = /* GraphQL */ `
         updatedAt
       }
       createdAtBlock
-      claimed
-      args {
-        source
-        amount
-      }
       createdAt
+      amount
       updatedAt
-      colonyTransactionsId
-      colonyTransactionTokenId
+      colonyFundsClaimsId
+      colonyFundsClaimTokenId
     }
   }
 `;
-export const updateColonyTransaction = /* GraphQL */ `
-  mutation UpdateColonyTransaction(
-    $input: UpdateColonyTransactionInput!
-    $condition: ModelColonyTransactionConditionInput
+export const updateColonyFundsClaim = /* GraphQL */ `
+  mutation UpdateColonyFundsClaim(
+    $input: UpdateColonyFundsClaimInput!
+    $condition: ModelColonyFundsClaimConditionInput
   ) {
-    updateColonyTransaction(input: $input, condition: $condition) {
+    updateColonyFundsClaim(input: $input, condition: $condition) {
       id
       token {
         id
@@ -538,24 +525,20 @@ export const updateColonyTransaction = /* GraphQL */ `
         updatedAt
       }
       createdAtBlock
-      claimed
-      args {
-        source
-        amount
-      }
       createdAt
+      amount
       updatedAt
-      colonyTransactionsId
-      colonyTransactionTokenId
+      colonyFundsClaimsId
+      colonyFundsClaimTokenId
     }
   }
 `;
-export const deleteColonyTransaction = /* GraphQL */ `
-  mutation DeleteColonyTransaction(
-    $input: DeleteColonyTransactionInput!
-    $condition: ModelColonyTransactionConditionInput
+export const deleteColonyFundsClaim = /* GraphQL */ `
+  mutation DeleteColonyFundsClaim(
+    $input: DeleteColonyFundsClaimInput!
+    $condition: ModelColonyFundsClaimConditionInput
   ) {
-    deleteColonyTransaction(input: $input, condition: $condition) {
+    deleteColonyFundsClaim(input: $input, condition: $condition) {
       id
       token {
         id
@@ -567,123 +550,11 @@ export const deleteColonyTransaction = /* GraphQL */ `
         updatedAt
       }
       createdAtBlock
-      claimed
-      args {
-        source
-        amount
-      }
       createdAt
+      amount
       updatedAt
-      colonyTransactionsId
-      colonyTransactionTokenId
-    }
-  }
-`;
-export const createColonyBalance = /* GraphQL */ `
-  mutation CreateColonyBalance(
-    $input: CreateColonyBalanceInput!
-    $condition: ModelColonyBalanceConditionInput
-  ) {
-    createColonyBalance(input: $input, condition: $condition) {
-      id
-      domain {
-        id
-        nativeId
-        name
-        description
-        color
-        createdAt
-        updatedAt
-        colonyDomainsId
-        domainParentId
-      }
-      token {
-        id
-        name
-        symbol
-        decimals
-        type
-        createdAt
-        updatedAt
-      }
-      balance
-      createdAt
-      updatedAt
-      colonyBalancesId
-      colonyBalanceDomainId
-      colonyBalanceTokenId
-    }
-  }
-`;
-export const updateColonyBalance = /* GraphQL */ `
-  mutation UpdateColonyBalance(
-    $input: UpdateColonyBalanceInput!
-    $condition: ModelColonyBalanceConditionInput
-  ) {
-    updateColonyBalance(input: $input, condition: $condition) {
-      id
-      domain {
-        id
-        nativeId
-        name
-        description
-        color
-        createdAt
-        updatedAt
-        colonyDomainsId
-        domainParentId
-      }
-      token {
-        id
-        name
-        symbol
-        decimals
-        type
-        createdAt
-        updatedAt
-      }
-      balance
-      createdAt
-      updatedAt
-      colonyBalancesId
-      colonyBalanceDomainId
-      colonyBalanceTokenId
-    }
-  }
-`;
-export const deleteColonyBalance = /* GraphQL */ `
-  mutation DeleteColonyBalance(
-    $input: DeleteColonyBalanceInput!
-    $condition: ModelColonyBalanceConditionInput
-  ) {
-    deleteColonyBalance(input: $input, condition: $condition) {
-      id
-      domain {
-        id
-        nativeId
-        name
-        description
-        color
-        createdAt
-        updatedAt
-        colonyDomainsId
-        domainParentId
-      }
-      token {
-        id
-        name
-        symbol
-        decimals
-        type
-        createdAt
-        updatedAt
-      }
-      balance
-      createdAt
-      updatedAt
-      colonyBalancesId
-      colonyBalanceDomainId
-      colonyBalanceTokenId
+      colonyFundsClaimsId
+      colonyFundsClaimTokenId
     }
   }
 `;
