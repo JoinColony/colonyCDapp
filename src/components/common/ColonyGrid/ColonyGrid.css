@@ -1,0 +1,34 @@
+@value containerMarginLeft: 20px;
+
+.main {
+  padding: 20px 0;
+  border-radius: var(--radius-large);
+  background-color: white;
+  box-shadow: var(--box-shadow-grey-blue-large);
+}
+
+.sectionTitle {
+  margin-left: containerMarginLeft;
+}
+
+.colonyGrid {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  overflow: auto;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+}
+
+.emptyText {
+  font-size: var(--size-medium-l);
+  line-height: 2em;
+}
+
+.createColonyLink {
+  color: var(--sky-blue);
+}

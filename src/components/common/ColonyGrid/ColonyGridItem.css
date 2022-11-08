@@ -1,0 +1,22 @@
+@value horizontalMargin: 45px;
+
+.main {
+  composes: alignCenter from '~styles/text.css';
+  margin: 0 horizontalMargin;
+  width: 66px;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 horizontalMargin 20px horizontalMargin;
+  min-height: 65px;
+  width: 66px;
+}
+
+.displayName {
+  composes: multiLineEllipsis from '~styles/text.css';
+  max-width: 200px;
+  overflow-wrap: break-word;
+}
