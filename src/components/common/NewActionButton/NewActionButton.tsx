@@ -1,11 +1,10 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 // import { Extension } from '@colony/colony-js';
 // import { useSelector } from 'react-redux';
 
 import Button from '~shared/Button';
-import { useAppContext } from '~hooks';
-// import { Colony } from '~types';
+import { Tooltip } from '~shared/Popover';
 import { SpinnerLoader } from '~shared/Preloaders';
 
 // import ColonyActionsDialog from '~dialogs/ColonyActionsDialog';
@@ -31,11 +30,15 @@ import { SpinnerLoader } from '~shared/Preloaders';
 // import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
 
 // import { useNaiveBranchingDialogWizard } from '~utils/hooks';
-// import { checkIfNetworkIsAllowed } from '~utils/networks';
 // import {
 //   colonyMustBeUpgraded,
 //   oneTxMustBeUpgraded,
 // } from '~modules/dashboard/checks';
+
+import { Colony } from '~types';
+import { useCanInteractWithColony } from '~hooks';
+
+import styles from './NewActionButton.css';
 
 const displayName = 'commmon.ColonyHome.NewActionButton';
 
@@ -44,12 +47,16 @@ const MSG = defineMessages({
     id: `${displayName}.newAction`,
     defaultMessage: 'New Action',
   },
+  walletNotConnectedWarning: {
+    id: `${displayName}.walletNotConnectedWarning`,
+    defaultMessage: `To interact with a Colony you must have your wallet connected, have a user profile registered, and be on the same network as the specific colony.`,
+  },
 });
 
-// interface Props {
-//   colony: Colony;
-//   ethDomainId?: number;
-// }
+interface Props {
+  colony: Colony;
+  // ethDomainId?: number;
+}
 
 // interface RootState {
 //   users: {
@@ -59,8 +66,9 @@ const MSG = defineMessages({
 //   };
 // }
 
-const NewActionButton = (/* { colony, ethDomainId }: Props */) => {
-  const { user } = useAppContext();
+const NewActionButton = ({ colony /* ethDomainId */ }: Props) => {
+  const canInteractWithCurrentColony = useCanInteractWithColony(colony);
+
   // const { version: networkVersion } = useNetworkContracts();
 
   // const [isLoadingUser, setIsLoadingUser] = useState<boolean>(!ethereal);
@@ -257,7 +265,6 @@ const NewActionButton = (/* { colony, ethDomainId }: Props */) => {
   // );
   // const mustUpgradeOneTx = oneTxMustBeUpgraded(oneTxPaymentExtension);
   // const hasRegisteredProfile = !!username && !ethereal;
-  // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
   // const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
   // const isLoadingData = isLoadingExtensions || isLoadingUser;
   const isLoadingData = false;
@@ -266,20 +273,27 @@ const NewActionButton = (/* { colony, ethDomainId }: Props */) => {
     <>
       {isLoadingData && <SpinnerLoader appearance={{ size: 'medium' }} />}
       {!isLoadingData && (
-        <Button
-          appearance={{ theme: 'primary', size: 'large' }}
-          text={MSG.newAction}
-          onClick={() => startWizardFlow('dashboard.ColonyActionsDialog')}
-          // disabled={
-          //   mustUpgrade ||
-          //   !isNetworkAllowed ||
-          //   !user?.name ||
-          //   !colony?.isDeploymentFinished ||
-          //   mustUpgradeOneTx
-          // }
-          disabled={!user?.name}
-          data-test="newActionButton"
-        />
+        <Tooltip
+          trigger={!canInteractWithCurrentColony ? 'hover' : null}
+          content={
+            <span className={styles.tooltipWrapper}>
+              <FormattedMessage {...MSG.walletNotConnectedWarning} />
+            </span>
+          }
+        >
+          <Button
+            appearance={{ theme: 'primary', size: 'large' }}
+            text={MSG.newAction}
+            onClick={() => startWizardFlow('dashboard.ColonyActionsDialog')}
+            // disabled={
+            //   mustUpgrade ||
+            //   !colony?.isDeploymentFinished ||
+            //   mustUpgradeOneTx
+            // }
+            disabled={!canInteractWithCurrentColony}
+            data-test="newActionButton"
+          />
+        </Tooltip>
       )}
     </>
   );

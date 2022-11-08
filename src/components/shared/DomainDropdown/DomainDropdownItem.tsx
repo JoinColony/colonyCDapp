@@ -8,17 +8,14 @@ import classnames from 'classnames';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import Button from '~shared/Button';
-import ColorTag, { Color } from '~shared/ColorTag';
+import ColorTag from '~shared/ColorTag';
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import Paragraph from '~shared/Paragraph';
 // import { OneDomain } from '~data/index';
-import { ENTER } from '~types';
+import { ENTER, Color } from '~types';
 
-import {
-  ALLDOMAINS_DOMAIN_SELECTION,
-  COLONY_TOTAL_BALANCE_DOMAIN_ID,
-} from '~constants';
+import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 
 import styles from './DomainDropdownItem.css';
 
@@ -31,7 +28,7 @@ const MSG = defineMessages({
 
 interface Props {
   /** Domain to render the entry for */
-  domain: any; // todo proper types
+  domain: any; // fix proper types
 
   /** Toggle if mark the current domain with the "selected" highlight */
   isSelected: boolean;

@@ -19,6 +19,7 @@ export type Colony = {
   domains?: ModelDomainConnection | null,
   watchers?: ModelWatchedColoniesConnection | null,
   type?: ColonyType | null,
+  meta?: Metadata | null,
   createdAt: string,
   updatedAt: string,
   colonyNativeTokenId: string,
@@ -33,6 +34,7 @@ export type Token = {
   type?: TokenType | null,
   colonies?: ModelColonyTokensConnection | null,
   users?: ModelUserTokensConnection | null,
+  meta?: Metadata | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -116,11 +118,25 @@ export type WatchedColonies = {
   updatedAt: string,
 };
 
+export type Metadata = {
+  __typename: "Metadata",
+  network?: Network | null,
+  chainId?: number | null,
+};
+
+export enum Network {
+  GANACHE = "GANACHE",
+  MAINNET = "MAINNET",
+  GOERLI = "GOERLI",
+  GNOSIS = "GNOSIS",
+  GNOSISFORK = "GNOSISFORK",
+}
+
+
 export type ColonyStatus = {
   __typename: "ColonyStatus",
   nativeToken?: NativeTokenStatus | null,
   recovery?: boolean | null,
-  deployed?: boolean | null,
 };
 
 export type NativeTokenStatus = {
@@ -204,6 +220,24 @@ export type CreateUniqueColonyInput = {
   colonyNativeTokenId: string,
   profile?: ProfileInput | null,
   type?: ColonyType | null,
+  status?: ColonyStatusInput | null,
+  meta?: MetadataInput | null,
+};
+
+export type ColonyStatusInput = {
+  nativeToken?: NativeTokenStatusInput | null,
+  recovery?: boolean | null,
+};
+
+export type NativeTokenStatusInput = {
+  unlocked?: boolean | null,
+  mintable?: boolean | null,
+  unlockable?: boolean | null,
+};
+
+export type MetadataInput = {
+  network?: Network | null,
+  chainId?: number | null,
 };
 
 export type CreateUniqueDomainInput = {
@@ -220,6 +254,7 @@ export type CreateTokenInput = {
   symbol: string,
   decimals: number,
   type?: TokenType | null,
+  meta?: MetadataInput | null,
 };
 
 export type ModelTokenConditionInput = {
@@ -295,6 +330,7 @@ export type UpdateTokenInput = {
   symbol?: string | null,
   decimals?: number | null,
   type?: TokenType | null,
+  meta?: MetadataInput | null,
 };
 
 export type DeleteTokenInput = {
@@ -307,19 +343,8 @@ export type CreateColonyInput = {
   profile?: ProfileInput | null,
   status?: ColonyStatusInput | null,
   type?: ColonyType | null,
+  meta?: MetadataInput | null,
   colonyNativeTokenId: string,
-};
-
-export type ColonyStatusInput = {
-  nativeToken?: NativeTokenStatusInput | null,
-  recovery?: boolean | null,
-  deployed?: boolean | null,
-};
-
-export type NativeTokenStatusInput = {
-  unlocked?: boolean | null,
-  mintable?: boolean | null,
-  unlockable?: boolean | null,
 };
 
 export type ModelColonyConditionInput = {
@@ -358,6 +383,7 @@ export type UpdateColonyInput = {
   profile?: ProfileInput | null,
   status?: ColonyStatusInput | null,
   type?: ColonyType | null,
+  meta?: MetadataInput | null,
   colonyNativeTokenId: string,
 };
 
@@ -723,7 +749,6 @@ export type GetFullColonyByNameQuery = {
       } | null,
       status?:  {
         __typename: "ColonyStatus",
-        deployed?: boolean | null,
         recovery?: boolean | null,
         nativeToken?:  {
           __typename: "NativeTokenStatus",
@@ -731,6 +756,11 @@ export type GetFullColonyByNameQuery = {
           unlockable?: boolean | null,
           unlocked?: boolean | null,
         } | null,
+      } | null,
+      meta?:  {
+        __typename: "Metadata",
+        chainId?: number | null,
+        network?: Network | null,
       } | null,
       tokens?:  {
         __typename: "ModelColonyTokensConnection",
@@ -837,6 +867,11 @@ export type GetCurrentUserQuery = {
               __typename: "Profile",
               displayName?: string | null,
               thumbnail?: string | null,
+            } | null,
+            meta?:  {
+              __typename: "Metadata",
+              chainId?: number | null,
+              network?: Network | null,
             } | null,
           },
           createdAt: string,
@@ -962,6 +997,11 @@ export type CreateTokenMutation = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
+    meta?:  {
+      __typename: "Metadata",
+      network?: Network | null,
+      chainId?: number | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -988,6 +1028,11 @@ export type UpdateTokenMutation = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
+    meta?:  {
+      __typename: "Metadata",
+      network?: Network | null,
+      chainId?: number | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1013,6 +1058,11 @@ export type DeleteTokenMutation = {
     users?:  {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
+    } | null,
+    meta?:  {
+      __typename: "Metadata",
+      network?: Network | null,
+      chainId?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1056,7 +1106,6 @@ export type CreateColonyMutation = {
     status?:  {
       __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deployed?: boolean | null,
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
@@ -1067,6 +1116,11 @@ export type CreateColonyMutation = {
       nextToken?: string | null,
     } | null,
     type?: ColonyType | null,
+    meta?:  {
+      __typename: "Metadata",
+      network?: Network | null,
+      chainId?: number | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -1110,7 +1164,6 @@ export type UpdateColonyMutation = {
     status?:  {
       __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deployed?: boolean | null,
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
@@ -1121,6 +1174,11 @@ export type UpdateColonyMutation = {
       nextToken?: string | null,
     } | null,
     type?: ColonyType | null,
+    meta?:  {
+      __typename: "Metadata",
+      network?: Network | null,
+      chainId?: number | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -1164,7 +1222,6 @@ export type DeleteColonyMutation = {
     status?:  {
       __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deployed?: boolean | null,
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
@@ -1175,6 +1232,11 @@ export type DeleteColonyMutation = {
       nextToken?: string | null,
     } | null,
     type?: ColonyType | null,
+    meta?:  {
+      __typename: "Metadata",
+      network?: Network | null,
+      chainId?: number | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -1716,6 +1778,11 @@ export type GetTokenQuery = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
+    meta?:  {
+      __typename: "Metadata",
+      network?: Network | null,
+      chainId?: number | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1780,7 +1847,6 @@ export type GetColonyQuery = {
     status?:  {
       __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deployed?: boolean | null,
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
@@ -1791,6 +1857,11 @@ export type GetColonyQuery = {
       nextToken?: string | null,
     } | null,
     type?: ColonyType | null,
+    meta?:  {
+      __typename: "Metadata",
+      network?: Network | null,
+      chainId?: number | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -2273,6 +2344,11 @@ export type OnCreateTokenSubscription = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
+    meta?:  {
+      __typename: "Metadata",
+      network?: Network | null,
+      chainId?: number | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2298,6 +2374,11 @@ export type OnUpdateTokenSubscription = {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
     } | null,
+    meta?:  {
+      __typename: "Metadata",
+      network?: Network | null,
+      chainId?: number | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2322,6 +2403,11 @@ export type OnDeleteTokenSubscription = {
     users?:  {
       __typename: "ModelUserTokensConnection",
       nextToken?: string | null,
+    } | null,
+    meta?:  {
+      __typename: "Metadata",
+      network?: Network | null,
+      chainId?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -2364,7 +2450,6 @@ export type OnCreateColonySubscription = {
     status?:  {
       __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deployed?: boolean | null,
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
@@ -2375,6 +2460,11 @@ export type OnCreateColonySubscription = {
       nextToken?: string | null,
     } | null,
     type?: ColonyType | null,
+    meta?:  {
+      __typename: "Metadata",
+      network?: Network | null,
+      chainId?: number | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -2417,7 +2507,6 @@ export type OnUpdateColonySubscription = {
     status?:  {
       __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deployed?: boolean | null,
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
@@ -2428,6 +2517,11 @@ export type OnUpdateColonySubscription = {
       nextToken?: string | null,
     } | null,
     type?: ColonyType | null,
+    meta?:  {
+      __typename: "Metadata",
+      network?: Network | null,
+      chainId?: number | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,
@@ -2470,7 +2564,6 @@ export type OnDeleteColonySubscription = {
     status?:  {
       __typename: "ColonyStatus",
       recovery?: boolean | null,
-      deployed?: boolean | null,
     } | null,
     domains?:  {
       __typename: "ModelDomainConnection",
@@ -2481,6 +2574,11 @@ export type OnDeleteColonySubscription = {
       nextToken?: string | null,
     } | null,
     type?: ColonyType | null,
+    meta?:  {
+      __typename: "Metadata",
+      network?: Network | null,
+      chainId?: number | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     colonyNativeTokenId: string,

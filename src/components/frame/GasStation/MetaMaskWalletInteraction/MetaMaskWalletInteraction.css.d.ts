@@ -6,7 +6,6 @@ declare namespace MetaMaskWalletInteractionCssNamespace {
   }
 }
 
-// eslint-disable-next-line max-len
 declare const MetaMaskWalletInteractionCssModule: MetaMaskWalletInteractionCssNamespace.IMetaMaskWalletInteractionCss & {
   /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
   locals: MetaMaskWalletInteractionCssNamespace.IMetaMaskWalletInteractionCss;

@@ -16,6 +16,10 @@ export const onCreateToken = /* GraphQL */ `
       users {
         nextToken
       }
+      meta {
+        network
+        chainId
+      }
       createdAt
       updatedAt
     }
@@ -35,6 +39,10 @@ export const onUpdateToken = /* GraphQL */ `
       users {
         nextToken
       }
+      meta {
+        network
+        chainId
+      }
       createdAt
       updatedAt
     }
@@ -53,6 +61,10 @@ export const onDeleteToken = /* GraphQL */ `
       }
       users {
         nextToken
+      }
+      meta {
+        network
+        chainId
       }
       createdAt
       updatedAt
@@ -87,7 +99,6 @@ export const onCreateColony = /* GraphQL */ `
       }
       status {
         recovery
-        deployed
       }
       domains {
         nextToken
@@ -96,6 +107,10 @@ export const onCreateColony = /* GraphQL */ `
         nextToken
       }
       type
+      meta {
+        network
+        chainId
+      }
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -130,7 +145,6 @@ export const onUpdateColony = /* GraphQL */ `
       }
       status {
         recovery
-        deployed
       }
       domains {
         nextToken
@@ -139,6 +153,10 @@ export const onUpdateColony = /* GraphQL */ `
         nextToken
       }
       type
+      meta {
+        network
+        chainId
+      }
       createdAt
       updatedAt
       colonyNativeTokenId
@@ -173,7 +191,6 @@ export const onDeleteColony = /* GraphQL */ `
       }
       status {
         recovery
-        deployed
       }
       domains {
         nextToken
@@ -182,6 +199,10 @@ export const onDeleteColony = /* GraphQL */ `
         nextToken
       }
       type
+      meta {
+        network
+        chainId
+      }
       createdAt
       updatedAt
       colonyNativeTokenId

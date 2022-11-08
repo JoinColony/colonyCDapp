@@ -1,12 +1,7 @@
 import React, { ReactNode } from 'react';
 
-// import { useDialog } from '~core/Dialog';
-
 import NewActionButton from '~common/NewActionButton';
 import ColonyTotalFunds from '~common/ColonyTotalFunds';
-// import WrongNetworkDialog from '~dialogs/WrongNetworkDialog';
-
-// import { checkIfNetworkIsAllowed } from '~utils/networks';
 
 import { Colony } from '~types';
 
@@ -53,15 +48,6 @@ const ColonyHomeLayout = ({
   showActions = true,
   onDomainChange = () => null,
 }: Props) => {
-  // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
-  // const openWrongNetworkDialog = useDialog(WrongNetworkDialog);
-
-  // useEffect(() => {
-  //   if (!ethereal && !isNetworkAllowed) {
-  //     openWrongNetworkDialog();
-  //   }
-  // }, [ethereal, isNetworkAllowed, openWrongNetworkDialog]);
-
   return (
     <div className={styles.main}>
       <div

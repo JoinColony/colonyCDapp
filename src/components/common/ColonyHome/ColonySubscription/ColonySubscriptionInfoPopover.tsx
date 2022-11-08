@@ -6,7 +6,7 @@ import Button from '~shared/Button';
 import MaskedAddress from '~shared/MaskedAddress';
 import ColonyAvatar from '~shared/ColonyAvatar';
 
-import { olony } from '~types';
+import { Colony } from '~types';
 
 import styles from './ColonySubscriptionInfoPopover.css';
 
@@ -55,7 +55,7 @@ const ColonySubscriptionInfoPopover = ({
             <span className={styles.colonyInfoTitle}>
               {profile?.displayName || name}
             </span>
-            <span className={styles.colonyInfoENS}>@{name}</span>
+            <span className={styles.colonyInfoEns}>@{name}</span>
             <span className={styles.colonyInfoAddress}>
               <MaskedAddress address={colonyAddress} full />
             </span>

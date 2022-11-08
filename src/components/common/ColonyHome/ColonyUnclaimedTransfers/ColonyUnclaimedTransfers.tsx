@@ -10,11 +10,10 @@ import Numeral from '~shared/Numeral';
 import { Tooltip } from '~shared/Popover';
 import Link from '~shared/Link';
 
-import { ActionTypes } from '~redux/index';
+import { ActionTypes } from '~redux';
+import { useCanInteractWithColony } from '~hooks';
 import { mergePayload } from '~utils/actions';
-// import { checkIfNetworkIsAllowed } from '~utils/networks';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { useAppContext } from '~hooks';
 
 import styles from './ColonyUnclaimedTransfers.css';
 
@@ -54,10 +53,7 @@ const ColonyUnclaimedTransfers = ({
   const { data, error } = useColonyTransfersQuery({
     variables: { address: colony.colonyAddress },
   });
-
-  const { user } = useAppContext();
-  // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
-  const isNetworkAllowed = true;
+  const canInteractWithCurrentColony = useCanInteractWithColony(colony);
 
   const firstItem = data?.processedColony.unclaimedTransfers[0];
 
@@ -73,7 +69,7 @@ const ColonyUnclaimedTransfers = ({
   const claimsLength = data?.processedColony?.unclaimedTransfers?.length;
   const extraClaims = (claimsLength || 0) - 1;
 
-  if (error) console.warn(error);
+  // if (error) console.warn(error);
 
   const token = tokenData?.token;
 
@@ -127,7 +123,7 @@ const ColonyUnclaimedTransfers = ({
               error={ActionTypes.CLAIM_TOKEN_ERROR}
               success={ActionTypes.CLAIM_TOKEN_SUCCESS}
               transform={transform}
-              disabled={!isNetworkAllowed || !user?.name}
+              disabled={!canInteractWithCurrentColony}
             />
           </Tooltip>
         </li>

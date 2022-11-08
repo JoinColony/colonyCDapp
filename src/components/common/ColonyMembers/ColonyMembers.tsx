@@ -1,12 +1,14 @@
-import React, { useCallback, useEffect } from 'react';
-// import { useParams, Redirect } from 'react-router-dom';
+import React from 'react';
+import { useParams } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
+import { useQuery, gql } from '@apollo/client';
+
 // import { ColonyVersion, Extension } from '@colony/colony-js';
 
 // import Button from '~core/Button';
 // import { useDialog } from '~core/Dialog';
 // import { BanUserDialog } from '~core/Comment';
-// import LoadingTemplate from '~pages/LoadingTemplate';
+import LoadingTemplate from '~frame/LoadingTemplate';
 // import Members from '~dashboard/Members';
 // import PermissionManagementDialog from '~dialogs/PermissionManagementDialog';
 // import WrongNetworkDialog from '~dashboard/ColonyHome/WrongNetworkDialog';
@@ -15,7 +17,6 @@ import { defineMessages } from 'react-intl';
 //   Colony,
 //   useColonyExtensionsQuery,
 //   useBannedUsersQuery,
-//   useLoggedInUser,
 // } from '~data/index';
 // import { useTransformer } from '~utils/hooks';
 // import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
@@ -24,6 +25,10 @@ import { defineMessages } from 'react-intl';
 // import { getAllUserRoles } from '~modules/transformers';
 // import { hasRoot, canAdminister } from '~modules/users/checks';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
+import NotFoundRoute from '~routes/NotFoundRoute';
+
+import { getFullColonyByName } from '~gql';
+import { useCanInteractWithColony } from '~hooks';
 
 import styles from './ColonyMembers.css';
 
@@ -49,15 +54,51 @@ const MSG = defineMessages({
 });
 
 const ColonyMembers = () => {
-  return <div>Colony Members</div>;
+  const { colonyName } = useParams<{
+    colonyName: string;
+    extensionId?: string;
+  }>();
 
-  // const {
-  //   networkId,
-  //   username,
-  //   ethereal,
-  //   walletAddress: currentUserWalletAddress,
-  // } = useLoggedInUser();
-  // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
+  const { data, loading, error } = useQuery(gql(getFullColonyByName), {
+    variables: {
+      name: colonyName,
+    },
+  });
+
+  const [colony] = data?.getColonyByName?.items || [];
+
+  const canInteractWithCurrentColony = useCanInteractWithColony(colony);
+
+  if (loading || (colony && colony.name !== colonyName)) {
+    return (
+      <div className={styles.loadingWrapper}>
+        <LoadingTemplate loadingText={MSG.loadingText} />
+      </div>
+    );
+  }
+
+  if (
+    !colonyName ||
+    error ||
+    !colony ||
+    colony instanceof Error
+    // || !isExtensionIdValid
+  ) {
+    return <NotFoundRoute />;
+  }
+
+  return (
+    <div className={styles.main}>
+      <div className={styles.mainContentGrid}>
+        <div className={styles.mainContent}>
+          Colony Members
+          {canInteractWithCurrentColony && <p>Colony can be interacted with</p>}
+        </div>
+        <aside className={styles.rightAside} />
+      </div>
+    </div>
+  );
+
   // const hasRegisteredProfile = !!username && !ethereal;
 
   // const openWrongNetworkDialog = useDialog(WrongNetworkDialog);
@@ -80,12 +121,6 @@ const ColonyMembers = () => {
   // const { isVotingExtensionEnabled } = useEnabledExtensions({
   //   colonyAddress,
   // });
-
-  // useEffect(() => {
-  //   if (!ethereal && !isNetworkAllowed) {
-  //     openWrongNetworkDialog();
-  //   }
-  // }, [ethereal, isNetworkAllowed, openWrongNetworkDialog]);
 
   // const { data: colonyExtensions, loading: colonyExtensionLoading } =
   //   useColonyExtensionsQuery({
@@ -132,8 +167,6 @@ const ColonyMembers = () => {
 
   // const controlsDisabled =
   //   !isSupportedColonyVersion ||
-  //   !isNetworkAllowed ||
-  //   !hasRegisteredProfile ||
   //   !colonyData?.processedColony?.isDeploymentFinished ||
   //   mustUpgradeOneTx;
 
@@ -178,8 +211,6 @@ const ColonyMembers = () => {
   //                 onClick={handlePermissionManagementDialog}
   //                 disabled={
   //                   !isSupportedColonyVersion ||
-  //                   !isNetworkAllowed ||
-  //                   !hasRegisteredProfile ||
   //                   !colonyData?.processedColony?.isDeploymentFinished ||
   //                   mustUpgradeOneTx
   //                 }

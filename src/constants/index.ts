@@ -1,7 +1,6 @@
 import { constants as ethersContants } from 'ethers';
 
-import { Color } from '~shared/ColorTag';
-import { Network } from '~types';
+import { Network, Color } from '~types';
 
 export * from './externalUrls';
 
@@ -124,11 +123,14 @@ export const TOKEN_DATA = {
   [Network.Mainnet]: ETHER_TOKEN,
 };
 
-export const SUPPORTED_NETWORKS = {
-  [GNOSIS_NETWORK.chainId]: GNOSIS_NETWORK,
-  [ETHEREUM_NETWORK.chainId]: ETHEREUM_NETWORK,
-  [GOERLI_NETWORK.chainId]: GOERLI_NETWORK,
-  [GANACHE_NETWORK.chainId]: GANACHE_NETWORK,
+/*
+ * Chains on which the network contracts are deployed
+ * Since CDapp is multichain, this tells us which of those "multi" chains
+ * we can actually create colonies on
+ */
+export const NETWORK_AVAILABLE_CHAINS = {
+  [Network.Ganache]: GANACHE_NETWORK,
+  [Network.Gnosis]: GNOSIS_NETWORK,
 };
 
 export const DEFAULT_NETWORK_TOKEN = TOKEN_DATA[DEFAULT_NETWORK];

@@ -1,17 +1,16 @@
 import React, { ReactNode, useCallback } from 'react';
 // import { ColonyVersion, ROOT_DOMAIN_ID, Extension } from '@colony/colony-js';
 
-import ColorTag, { Color } from '~shared/ColorTag';
+import ColorTag from '~shared/ColorTag';
 import { Form, SelectOption } from '~shared/Fields';
 import DomainDropdown from '~shared/DomainDropdown';
 // import { useDialog } from '~shared/Dialog';
 // import EditDomainDialog from '~dialogs/EditDomainDialog';
 
-import { useAppContext } from '~hooks';
+import { useCanInteractWithColony } from '~hooks';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-// import { checkIfNetworkIsAllowed } from '~utils/networks';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
-import { Colony } from '~types';
+import { Colony, Color, graphQlDomainColorMap } from '~types';
 
 import CreateDomainButton from './CreateDomainButton';
 
@@ -35,7 +34,7 @@ const ColonyDomainSelector = ({
   colony: { domains },
   colony,
 }: Props) => {
-  const { user } = useAppContext();
+  const canInteractWithCurrentColony = useCanInteractWithColony(colony);
   // const { data } = useColonyExtensionsQuery({
   //   variables: { address: colonyAddress },
   // });
@@ -65,28 +64,14 @@ const ColonyDomainSelector = ({
         return defaultColor;
       }
       const domain = domains?.items?.find(
-        ({ nativeId }) => Number(domainId) === nativeId,
+        (currentDomain) => Number(domainId) === currentDomain?.nativeId,
       );
-      return domain ? domain.color : defaultColor;
+      return domain
+        ? graphQlDomainColorMap[domain?.color || defaultColor]
+        : defaultColor;
     },
     [colony, domains],
   );
-
-  /*
-   * @TODO a proper color transformation
-   * This was just quickly thrown together to ensure it works
-   * Maybe even change the gql scalar type ?
-   */
-  const transformColor = useCallback((domainColor) => {
-    const colorMap = {
-      0: 0, // Light Pink
-      LIGHTPINK: 0,
-      5: 5, // Yellow
-      RED: 6,
-      ORANGE: 13,
-    };
-    return colorMap[domainColor];
-  }, []);
 
   const renderActiveOption = useCallback<
     (option: SelectOption | undefined, label: string) => ReactNode
@@ -96,32 +81,13 @@ const ColonyDomainSelector = ({
       const color = getDomainColor(value);
       return (
         <div className={styles.activeItem}>
-          <ColorTag color={transformColor(color)} />{' '}
+          <ColorTag color={color} />{' '}
           <div className={styles.activeItemLabel}>{label}</div>
         </div>
       );
     },
-    [getDomainColor, transformColor],
+    [getDomainColor],
   );
-  // const oneTxPaymentExtension = data?.processedColony?.installedExtensions.find(
-  //   ({ details, extensionId: extensionName }) =>
-  //     details?.initialized &&
-  //     !details?.missingPermissions.length &&
-  //     extensionName === Extension.OneTxPayment,
-  // );
-  // const mustUpgradeOneTx = oneTxMustBeUpgraded(oneTxPaymentExtension);
-
-  // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
-  // const isSupportedColonyVersion =
-  //   parseInt(colony.version, 10) >= ColonyVersion.LightweightSpaceship;
-  const hasRegisteredProfile = user?.name;
-  // const canInteract =
-  //   isSupportedColonyVersion &&
-  //   isNetworkAllowed &&
-  //   hasRegisteredProfile &&
-  //   colony?.isDeploymentFinished &&
-  //   !mustUpgradeOneTx;
-  const canInteract = true;
 
   return (
     <Form<FormValues>
@@ -135,9 +101,13 @@ const ColonyDomainSelector = ({
         name="filteredDomainId"
         currentDomainId={filteredDomainId}
         onDomainChange={onDomainChange}
-        onDomainEdit={canInteract ? handleEditDomain : undefined}
+        onDomainEdit={
+          canInteractWithCurrentColony ? handleEditDomain : undefined
+        }
         footerComponent={
-          canInteract ? <CreateDomainButton colony={colony} /> : undefined
+          canInteractWithCurrentColony ? (
+            <CreateDomainButton colony={colony} />
+          ) : undefined
         }
         renderActiveOptionFn={renderActiveOption}
         showAllDomains

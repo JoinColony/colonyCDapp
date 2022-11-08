@@ -71,8 +71,10 @@ export default function* setupUserContext() {
      * the local storage namespace.
      * This way it will save, and override all settings in the 000000... slot key
      */
-    const userSettings = new UserSettings(wallet.address);
-    setContext(ContextModule.UserSettings, userSettings);
+    if (wallet?.address) {
+      const userSettings = new UserSettings(wallet.address);
+      setContext(ContextModule.UserSettings, userSettings);
+    }
 
     yield call(getGasPrices);
 

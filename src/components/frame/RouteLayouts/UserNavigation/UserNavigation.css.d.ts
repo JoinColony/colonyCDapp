@@ -2,7 +2,6 @@ declare namespace UserNavigationCssNamespace {
   export interface IUserNavigationCss {
     elementWrapper: string;
     main: string;
-    networkInfo: string;
     reputation: string;
   }
 }

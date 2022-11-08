@@ -24,13 +24,16 @@ export const getFullColonyByName = /* GraphQL */ `
           website
         }
         status {
-          deployed
           recovery
           nativeToken {
             mintable
             unlockable
             unlocked
           }
+        }
+        meta {
+          chainId
+          network
         }
         tokens {
           items {
@@ -118,6 +121,10 @@ export const getCurrentUser = /* GraphQL */ `
               profile {
                 displayName
                 thumbnail
+              }
+              meta {
+                chainId
+                network
               }
             }
             createdAt

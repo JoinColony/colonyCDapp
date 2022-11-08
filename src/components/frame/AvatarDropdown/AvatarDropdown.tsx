@@ -12,18 +12,14 @@ import AvatarDropdownPopover from './AvatarDropdownPopover';
 import styles from './AvatarDropdown.css';
 
 interface Props {
-  preventTransactions?: boolean;
   // colony: Colony;
   colony: Record<string, unknown>;
 }
 
-const displayName = 'users.AvatarDropdown';
+const displayName = 'frame.AvatarDropdown';
 
-const AvatarDropdown = ({
-  preventTransactions = false,
-  colony = {},
-}: Props) => {
-  const { wallet, user } = useAppContext();
+const AvatarDropdown = ({ colony = {} }: Props) => {
+  const { wallet } = useAppContext();
 
   const { refWidth, horizontalOffset, verticalOffset } = styles;
 
@@ -49,13 +45,7 @@ const AvatarDropdown = ({
   return (
     <Popover
       renderContent={({ close }) => (
-        <AvatarDropdownPopover
-          closePopover={close}
-          username={user?.name}
-          walletConnected={!!wallet?.address}
-          preventTransactions={preventTransactions}
-          colony={colony}
-        />
+        <AvatarDropdownPopover closePopover={close} colony={colony} />
       )}
       trigger="click"
       showArrow={false}

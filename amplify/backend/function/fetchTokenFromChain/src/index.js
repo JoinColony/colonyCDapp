@@ -84,6 +84,14 @@ exports.handler = async (event) => {
             name,
             symbol,
             type,
+            /*
+             * @TODO These need to be properly added once Lambda Functions
+             * have the concept of chains
+             */
+            meta: {
+              chainId: 2656691,
+              network: 'GANACHE',
+            },
           },
         },
         GRAPHQL_URI,

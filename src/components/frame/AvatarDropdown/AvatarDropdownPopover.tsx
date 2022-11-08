@@ -6,7 +6,6 @@ import NavLink from '~shared/NavLink';
 import ExternalLink from '~shared/ExternalLink';
 import { FEEDBACK, HELP } from '~constants/externalUrls';
 
-// import { Colony } from '~data/index';
 import DropdownMenu, {
   DropdownMenuSection,
   DropdownMenuItem,
@@ -17,7 +16,11 @@ import {
   CREATE_COLONY_ROUTE,
   CREATE_USER_ROUTE,
 } from '~routes/index';
-import { useAppContext } from '~hooks';
+import {
+  useAppContext,
+  useUserAccountRegistered,
+  useCanInteractWithNetwork,
+} from '~hooks';
 
 import styles from './AvatarDropdownPopover.css';
 
@@ -54,35 +57,25 @@ const MSG = defineMessages({
 
 interface Props {
   closePopover: () => void;
-  username?: string | null;
-  walletConnected?: boolean;
-  preventTransactions?: boolean;
   // colony: Colony;
   colony: Record<string, unknown>;
 }
 
-const displayName = 'users.AvatarDropdown.AvatarDropdownPopover';
+const displayName = 'frame.AvatarDropdown.AvatarDropdownPopover';
 
-const AvatarDropdownPopover = ({
-  closePopover,
-  username,
-  walletConnected = false,
-  preventTransactions = false,
-  colony,
-}: Props) => {
-  const { updateWallet } = useAppContext();
+const AvatarDropdownPopover = ({ closePopover, colony }: Props) => {
+  const { updateWallet, user, wallet } = useAppContext();
+  const userHasAccountRegistered = useUserAccountRegistered();
+  /*
+   * Are the network contract deployed to the chain the user is connected
+   * so that they can create a new colony on it
+   */
+  const canInteractWithNetwork = useCanInteractWithNetwork();
 
-  // const handleLogout = useCallback(() => {
-  //   if (updateWallet) {
-  //     console.log('called?')
-  //     updateWallet();
-  //   }
-  // }, [updateWallet]);
-
-  const renderUserSection = useCallback(() => {
+  const renderUserCreateSection = useCallback(() => {
     return (
       <DropdownMenuSection separator>
-        {!username && (
+        {!userHasAccountRegistered && (
           <DropdownMenuItem>
             <NavLink
               to={{
@@ -95,29 +88,32 @@ const AvatarDropdownPopover = ({
             />
           </DropdownMenuItem>
         )}
-        {username && (
-          <DropdownMenuItem>
-            <NavLink
-              to={`/user/${username}`}
-              text={MSG.myProfile}
-              data-test="userProfile"
-            />
-          </DropdownMenuItem>
-        )}
-        {username && (
-          <DropdownMenuItem>
-            <NavLink
-              to={USER_EDIT_ROUTE}
-              text={MSG.settings}
-              data-test="userProfileSettings"
-            />
-          </DropdownMenuItem>
-        )}
       </DropdownMenuSection>
     );
-  }, [colony, username]);
+  }, [colony, userHasAccountRegistered]);
 
-  const renderColonySection = () => (
+  const renderUserSection = useCallback(() => {
+    return (
+      <DropdownMenuSection separator>
+        <DropdownMenuItem>
+          <NavLink
+            to={`/user/${user?.name}`}
+            text={MSG.myProfile}
+            data-test="userProfile"
+          />
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <NavLink
+            to={USER_EDIT_ROUTE}
+            text={MSG.settings}
+            data-test="userProfileSettings"
+          />
+        </DropdownMenuItem>
+      </DropdownMenuSection>
+    );
+  }, [user]);
+
+  const renderColonyCreateSection = () => (
     <DropdownMenuSection separator>
       <DropdownMenuItem>
         <NavLink to={CREATE_COLONY_ROUTE} text={MSG.createColony} />
@@ -145,7 +141,7 @@ const AvatarDropdownPopover = ({
   );
 
   const renderMetaSection = () =>
-    walletConnected && (
+    wallet?.address && (
       <DropdownMenuSection separator>
         <DropdownMenuItem>
           <ActionButton
@@ -162,20 +158,12 @@ const AvatarDropdownPopover = ({
 
   return (
     <DropdownMenu onClick={closePopover}>
-      {!preventTransactions ? (
-        <>
-          {/* {renderUserSection()} */}
-          {/* {renderColonySection()} */}
-          {renderHelperSection()}
-          {renderMetaSection()}
-        </>
-      ) : (
-        <>
-          {/* {renderUserSection()} */}
-          {renderHelperSection()}
-          {renderMetaSection()}
-        </>
-      )}
+      {userHasAccountRegistered
+        ? renderUserSection()
+        : renderUserCreateSection()}
+      {canInteractWithNetwork && renderColonyCreateSection()}
+      {renderHelperSection()}
+      {renderMetaSection()}
     </DropdownMenu>
   );
 };

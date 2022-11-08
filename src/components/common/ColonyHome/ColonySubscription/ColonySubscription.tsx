@@ -10,24 +10,25 @@ import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 import { Colony } from '~types';
 import { useAppContext } from '~hooks';
 
-// import { checkIfNetworkIsAllowed } from '~utils/networks';
 import { CREATE_USER_ROUTE } from '~routes/index';
 
 import ColonySubscriptionInfoPopover from './ColonySubscriptionInfoPopover';
 
 import styles from './ColonySubscription.css';
 
+const displayName = 'commmon.ColonyHome.ColonySubscription';
+
 const MSG = defineMessages({
   copyMessage: {
-    id: 'dashboard.ColonyHome.ColonySubscription.copyMessage',
+    id: `${displayName}.copyMessage`,
     defaultMessage: 'Click to copy colony address',
   },
   joinColony: {
-    id: 'dashboard.ColonyHome.ColonySubscription.joinColony',
+    id: `${displayName}.joinColony`,
     defaultMessage: 'Join this colony',
   },
   colonyMenuTitle: {
-    id: 'dashboard.ColonyHome.ColonySubscription.colonyMenuTitle',
+    id: `${displayName}.colonyMenuTitle`,
     defaultMessage: 'Colony Menu',
   },
 });
@@ -39,27 +40,9 @@ interface Props {
 const ColonySubscription = ({ colony: { colonyAddress }, colony }: Props) => {
   const { user } = useAppContext();
 
-  // const [
-  //   subscribe,
-  //   { loading: loadingSubscribe },
-  // ] = useSubscribeToColonyMutation({
-  //   variables: { input: { colonyAddress } },
-  //   update: cacheUpdates.subscribeToColony(colonyAddress),
-  // });
-  // const [
-  //   unsubscribe,
-  //   { loading: loadingUnsubscribe },
-  // ] = useUnsubscribeFromColonyMutation({
-  //   variables: { input: { colonyAddress } },
-  //   update: cacheUpdates.unsubscribeFromColony(colonyAddress),
-  // });
-
   const isSubscribed = !!(user?.watchlist?.items || []).find(
     (item) => (item?.colony as Colony)?.colonyAddress === colonyAddress,
   );
-
-  // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
-  const isNetworkAllowed = true;
 
   return (
     <div className={styles.main}>
@@ -83,8 +66,11 @@ const ColonySubscription = ({ colony: { colonyAddress }, colony }: Props) => {
         {isSubscribed && (
           <ColonySubscriptionInfoPopover
             colony={colony}
-            // onUnsubscribe={() => unsubscribe()}
-            canUnsubscribe={isNetworkAllowed}
+            onUnsubscribe={() => {
+              // eslint-disable-next-line no-console
+              console.log('Implement unsubscribe logic');
+            }}
+            canUnsubscribe
           >
             {/* {({ isOpen, toggle, ref, id }) => (
               <ThreeDotsButton
@@ -107,7 +93,8 @@ const ColonySubscription = ({ colony: { colonyAddress }, colony }: Props) => {
             {user?.name && (
               <Button
                 onClick={() => {
-                  /* subscribe() */
+                  // eslint-disable-next-line no-console
+                  console.log('Implement subscribe logic');
                 }}
                 appearance={{ theme: 'blue', size: 'small' }}
                 data-test="joinColonyButton"
@@ -133,6 +120,6 @@ const ColonySubscription = ({ colony: { colonyAddress }, colony }: Props) => {
   );
 };
 
-ColonySubscription.displayName = 'dashboard.ColonyHome.ColonySubscription';
+ColonySubscription.displayName = displayName;
 
 export default ColonySubscription;

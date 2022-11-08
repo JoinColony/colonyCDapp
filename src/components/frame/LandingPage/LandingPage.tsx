@@ -3,47 +3,40 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { useQuery, gql } from '@apollo/client';
 
 import NavLink from '~shared/NavLink';
-// import Icon from '~shared/Icon';
-// import HookedColonyAvatar from '~dashboard/HookedColonyAvatar';
-// import Heading from '~shared/Heading';
+import Icon from '~shared/Icon';
+import Heading from '~shared/Heading';
 import { SpinnerLoader } from '~shared/Preloaders';
 import ColonyAvatar from '~shared/ColonyAvatar';
 
-// import { CREATE_COLONY_ROUTE } from '~routes/index';
-// import { checkIfNetworkIsAllowed } from '~utils/networks';
-
+import { CREATE_COLONY_ROUTE } from '~routes';
 import { getMetacolony } from '~gql';
+import { useCanInteractWithNetwork } from '~hooks';
 
 import styles from './LandingPage.css';
 
-const displayName = 'root.LandingPage';
+const displayName = 'frame.LandingPage';
 
 const MSG = defineMessages({
-  // callToAction: {
-  //   id: 'pages.LandingPage.callToAction',
-  //   defaultMessage: 'Welcome, what would you like to do?',
-  // },
-  // wrongNetwork: {
-  //   id: 'pages.LandingPage.wrongNetwork',
-  //   defaultMessage: `You're connected to the wrong network. Please connect to the appriopriate Ethereum network.`,
-  // },
-  // createColony: {
-  //   id: 'pages.LandingPage.createColony',
-  //   defaultMessage: 'Create a colony',
-  // },
+  callToAction: {
+    id: `${displayName}.callToAction`,
+    defaultMessage: 'Welcome, what would you like to do?',
+  },
+  createColony: {
+    id: `${displayName}.createColony`,
+    defaultMessage: 'Create a colony',
+  },
   exploreColony: {
     id: `${displayName}.exploreColony`,
     defaultMessage: 'Explore the {colonyName}',
   },
 });
 
-// const ColonyAvatar = HookedColonyAvatar({ fetchColony: false });
-
 const LandingPage = () => {
-  // const { data, loading } = useMetaColonyQuery();
-
-  // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
-
+  /*
+   * Are the network contract deployed to the chain the user is connected
+   * so that they can create a new colony on it
+   */
+  const canInteractWithNetwork = useCanInteractWithNetwork();
   const { data, loading } = useQuery(gql(getMetacolony));
 
   const [metacolony] = data?.getColonyByType?.items || [];
@@ -52,21 +45,13 @@ const LandingPage = () => {
     <div className={styles.main}>
       <div>
         <div className={styles.title}>
-          {/* {(ethereal || isNetworkAllowed) && (
-            <Heading
-              text={MSG.callToAction}
-              appearance={{ size: 'medium', margin: 'none', theme: 'dark' }}
-            />
-          )} */}
-          {/* {!ethereal && !isNetworkAllowed && (
-            <Heading
-              text={MSG.wrongNetwork}
-              appearance={{ size: 'medium', margin: 'none', theme: 'dark' }}
-            />
-          )} */}
+          <Heading
+            text={MSG.callToAction}
+            appearance={{ size: 'medium', margin: 'none', theme: 'dark' }}
+          />
         </div>
         <ul>
-          {/* {(ethereal || isNetworkAllowed) && (
+          {canInteractWithNetwork && (
             <li className={styles.item}>
               <NavLink to={CREATE_COLONY_ROUTE} className={styles.itemLink}>
                 <Icon
@@ -79,7 +64,7 @@ const LandingPage = () => {
                 </span>
               </NavLink>
             </li>
-          )} */}
+          )}
           {loading && (
             <li className={styles.itemLoading}>
               <SpinnerLoader appearance={{ size: 'medium' }} />
