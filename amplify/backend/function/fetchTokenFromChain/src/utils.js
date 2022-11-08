@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const { default: fetch, Request } = require('node-fetch');
 
 const TokenType = {

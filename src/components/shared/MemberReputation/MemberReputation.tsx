@@ -1,97 +1,65 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
-import { Id } from '@colony/colony-js';
-import { AddressZero } from '@ethersproject/constants';
 
-import { useUserReputationQuery } from '~data/index';
-import { Address } from '~types';
 import Numeral from '~shared/Numeral';
 import Icon from '~shared/Icon';
 import { calculatePercentageReputation, ZeroValue } from '~utils/reputation';
 
 import styles from './MemberReputation.css';
 
+const displayName = 'MemberReputation';
+
 const MSG = defineMessages({
   starReputationTitle: {
-    id: 'MemberReputation.starReputationTitle',
+    id: `${displayName}.starReputationTitle`,
     defaultMessage: `User reputation value: {reputation}%`,
   },
   starNoReputationTitle: {
-    id: 'MemberReputation.starNoReputationTitle',
+    id: `${displayName}.starNoReputationTitle`,
     defaultMessage: `User has no reputation`,
   },
 });
 
 interface Props {
-  walletAddress: Address;
-  colonyAddress: Address;
-  domainId?: number;
-  rootHash?: string;
-  onReputationLoaded?: (reputationLoaded: boolean) => void;
+  userReputation?: string;
+  totalReputation?: string;
   showIconTitle?: boolean;
 }
 
-const displayName = 'MemberReputation';
-
 const MemberReputation = ({
-  walletAddress,
-  colonyAddress,
-  domainId = Id.RootDomain,
-  rootHash,
-  onReputationLoaded = () => null,
+  userReputation,
+  totalReputation,
   showIconTitle = true,
 }: Props) => {
-  const { data: userReputationData } = useUserReputationQuery({
-    variables: { address: walletAddress, colonyAddress, domainId, rootHash },
-    fetchPolicy: 'cache-and-network',
-  });
-
-  const { data: totalReputation } = useUserReputationQuery({
-    variables: {
-      address: AddressZero,
-      colonyAddress,
-      domainId,
-      rootHash,
-    },
-    fetchPolicy: 'cache-and-network',
-  });
-
-  const userPercentageReputation = calculatePercentageReputation(
-    userReputationData?.userReputation,
-    totalReputation?.userReputation,
+  const percentageReputation = calculatePercentageReputation(
+    userReputation,
+    totalReputation,
   );
-
-  useEffect(() => {
-    onReputationLoaded(!!userReputationData);
-  }, [userReputationData, onReputationLoaded]);
 
   /* Doing this cause Eslint yells at me if I use nested ternary */
   let iconTitle;
   if (!showIconTitle) {
     iconTitle = undefined;
   } else {
-    iconTitle = userPercentageReputation
+    iconTitle = percentageReputation
       ? MSG.starReputationTitle
       : MSG.starNoReputationTitle;
   }
 
   return (
     <div className={styles.reputationWrapper}>
-      {!userPercentageReputation && (
-        <div className={styles.reputation}>— %</div>
+      {!percentageReputation && <div className={styles.reputation}>— %</div>}
+      {percentageReputation === ZeroValue.NearZero && (
+        <div className={styles.reputation}>{percentageReputation}</div>
       )}
-      {userPercentageReputation === ZeroValue.NearZero && (
-        <div className={styles.reputation}>{userPercentageReputation}</div>
+      {percentageReputation && percentageReputation !== ZeroValue.NearZero && (
+        <Numeral
+          className={styles.reputation}
+          value={percentageReputation}
+          suffix="%"
+        />
       )}
-      {userPercentageReputation &&
-        userPercentageReputation !== ZeroValue.NearZero && (
-          <Numeral
-            className={styles.reputation}
-            appearance={{ theme: 'primary' }}
-            value={userPercentageReputation}
-            suffix="%"
-          />
-        )}
+
       <Icon
         name="star"
         appearance={{ size: 'extraTiny' }}
@@ -100,7 +68,7 @@ const MemberReputation = ({
         titleValues={
           showIconTitle
             ? {
-                reputation: userPercentageReputation,
+                reputation: percentageReputation,
               }
             : undefined
         }

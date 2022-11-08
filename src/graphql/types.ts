@@ -536,6 +536,13 @@ export type TokenFromEverywhereReturn = {
   items?:  Array<Token | null > | null,
 };
 
+export type GetUserReputationInput = {
+  walletAddress: string,
+  colonyAddress: string,
+  domainId?: number | null,
+  rootHash?: string | null,
+};
+
 export type ModelTokenFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -1756,6 +1763,14 @@ export type GetTokenFromEverywhereQuery = {
       updatedAt: string,
     } | null > | null,
   } | null,
+};
+
+export type GetUserReputationQueryVariables = {
+  input?: GetUserReputationInput | null,
+};
+
+export type GetUserReputationQuery = {
+  getUserReputation?: string | null,
 };
 
 export type GetTokenQueryVariables = {

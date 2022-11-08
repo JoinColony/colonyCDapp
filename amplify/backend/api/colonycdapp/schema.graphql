@@ -56,6 +56,13 @@ input CreateUniqueDomainInput {
   color: DomainColor
 }
 
+input GetUserReputationInput {
+  walletAddress: String!
+  colonyAddress: String!
+  domainId: Int
+  rootHash: String
+}
+
 type TokenFromEverywhereReturn {
   items: [Token]
 }
@@ -101,6 +108,9 @@ type Query {
   getTokenFromEverywhere(
     input: TokenFromEverywhereArguments
   ): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain")
+  getUserReputation(
+    input: GetUserReputationInput
+  ): String @function(name: "getUserReputation")
 }
 
 type Mutation {

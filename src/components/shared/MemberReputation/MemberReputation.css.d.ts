@@ -2,7 +2,6 @@ declare namespace MemberReputationCssNamespace {
   export interface IMemberReputationCss {
     icon: string;
     reputation: string;
-    reputationColor: string;
     reputationWrapper: string;
   }
 }
