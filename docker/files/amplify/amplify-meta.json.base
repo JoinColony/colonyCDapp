@@ -66,10 +66,5 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
-    "fetchChainNativeColonyBalance": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
   }
 }
