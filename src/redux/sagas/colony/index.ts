@@ -17,7 +17,6 @@ import { ContextModule, getContext } from '~context';
 import { createTransaction, getTxChannel } from '../transactions';
 
 export { default as colonyCreateSaga } from './colonyCreate';
-export { default as colonyFinishDeploymentSaga } from './colonyFinishDeployment';
 
 function* colonyClaimToken({
   payload: { colonyAddress, tokenAddress },

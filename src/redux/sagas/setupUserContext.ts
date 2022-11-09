@@ -4,7 +4,6 @@ import { all, call, fork, put } from 'redux-saga/effects';
 // import actionsSagas from './actions';
 // import colonySagas, {
 //   colonyCreateSaga,
-//   colonyFinishDeploymentSaga,
 // } from './colony';
 // import colonyExtensionSagas from './extensions';
 // import motionSagas from './motions';
@@ -31,7 +30,6 @@ function* setupContextDependentSagas() {
     // call(actionsSagas),
     // call(colonySagas),
     // call(colonyCreateSaga),
-    // call(colonyFinishDeploymentSaga),
     // call(colonyExtensionSagas),
     // call(motionSagas),
     // call(whitelistSagas),

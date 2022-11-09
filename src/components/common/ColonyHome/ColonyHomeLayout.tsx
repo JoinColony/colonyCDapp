@@ -13,7 +13,6 @@ import ColonyMembersWidget from './ColonyMembersWidget';
 // import ColonyExtensions from './ColonyExtensions';
 import ColonyDomainDescription from './ColonyDomainDescription';
 // import ColonyUpgrade from './ColonyUpgrade';
-// import ColonyFinishDeployment from './ColonyFinishDeployment';
 // import ExtensionUpgrade from './ExtensionUpgrade';
 
 import styles from './ColonyHomeLayout.css';
@@ -91,9 +90,8 @@ const ColonyHomeLayout = ({
           </aside>
         )}
       </div>
-      {/* <ColonyUpgrade />
-      <ExtensionUpgrade />
-      <ColonyFinishDeployment /> */}
+      {/* <ColonyUpgrade colony={colony} />
+      <ExtensionUpgrade colony={colony} /> */}
     </div>
   );
 };

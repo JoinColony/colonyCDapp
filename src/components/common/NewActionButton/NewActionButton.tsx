@@ -284,7 +284,6 @@ const NewActionButton = (/* { colony, ethDomainId }: Props */) => {
             onClick={() => startWizardFlow('dashboard.ColonyActionsDialog')}
             // disabled={
             //   mustUpgrade ||
-            //   !colony?.isDeploymentFinished ||
             //   mustUpgradeOneTx
             // }
             disabled={!canInteractWithColony}
