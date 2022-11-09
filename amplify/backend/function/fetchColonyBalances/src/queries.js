@@ -16,6 +16,8 @@ module.exports = {
             id
             name
             nativeId
+            nativeFundingPotId
+            nativeSkillId
             updatedAt
             parent {
               colonyDomainsId
