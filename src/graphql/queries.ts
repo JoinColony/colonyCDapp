@@ -187,12 +187,16 @@ export const getDomain = /* GraphQL */ `
     getDomain(id: $id) {
       id
       nativeId
+      nativeFundingPotId
+      nativeSkillId
       name
       description
       color
       parent {
         id
         nativeId
+        nativeFundingPotId
+        nativeSkillId
         name
         description
         color
@@ -218,6 +222,8 @@ export const listDomains = /* GraphQL */ `
       items {
         id
         nativeId
+        nativeFundingPotId
+        nativeSkillId
         name
         description
         color

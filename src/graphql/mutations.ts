@@ -57,12 +57,16 @@ export const createUniqueDomain = /* GraphQL */ `
     createUniqueDomain(input: $input) {
       id
       nativeId
+      nativeFundingPotId
+      nativeSkillId
       name
       description
       color
       parent {
         id
         nativeId
+        nativeFundingPotId
+        nativeSkillId
         name
         description
         color
@@ -425,12 +429,16 @@ export const createDomain = /* GraphQL */ `
     createDomain(input: $input, condition: $condition) {
       id
       nativeId
+      nativeFundingPotId
+      nativeSkillId
       name
       description
       color
       parent {
         id
         nativeId
+        nativeFundingPotId
+        nativeSkillId
         name
         description
         color
@@ -454,12 +462,16 @@ export const updateDomain = /* GraphQL */ `
     updateDomain(input: $input, condition: $condition) {
       id
       nativeId
+      nativeFundingPotId
+      nativeSkillId
       name
       description
       color
       parent {
         id
         nativeId
+        nativeFundingPotId
+        nativeSkillId
         name
         description
         color
@@ -483,12 +495,16 @@ export const deleteDomain = /* GraphQL */ `
     deleteDomain(input: $input, condition: $condition) {
       id
       nativeId
+      nativeFundingPotId
+      nativeSkillId
       name
       description
       color
       parent {
         id
         nativeId
+        nativeFundingPotId
+        nativeSkillId
         name
         description
         color

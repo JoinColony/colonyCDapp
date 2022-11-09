@@ -319,12 +319,16 @@ export const onCreateDomain = /* GraphQL */ `
     onCreateDomain(filter: $filter) {
       id
       nativeId
+      nativeFundingPotId
+      nativeSkillId
       name
       description
       color
       parent {
         id
         nativeId
+        nativeFundingPotId
+        nativeSkillId
         name
         description
         color
@@ -345,12 +349,16 @@ export const onUpdateDomain = /* GraphQL */ `
     onUpdateDomain(filter: $filter) {
       id
       nativeId
+      nativeFundingPotId
+      nativeSkillId
       name
       description
       color
       parent {
         id
         nativeId
+        nativeFundingPotId
+        nativeSkillId
         name
         description
         color
@@ -371,12 +379,16 @@ export const onDeleteDomain = /* GraphQL */ `
     onDeleteDomain(filter: $filter) {
       id
       nativeId
+      nativeFundingPotId
+      nativeSkillId
       name
       description
       color
       parent {
         id
         nativeId
+        nativeFundingPotId
+        nativeSkillId
         name
         description
         color

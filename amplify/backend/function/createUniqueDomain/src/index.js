@@ -1,3 +1,10 @@
+const { providers } = require('ethers');
+const {
+  getColonyNetworkClient,
+  Network,
+  utils: { Logger },
+} = require('@colony/colony-js');
+
 const { graphqlRequest } = require('./utils');
 
 /*
@@ -7,11 +14,17 @@ const { graphqlRequest } = require('./utils');
  */
 const { listDomains, createDomain } = require('./graphql');
 
+Logger.setLogLevel(Logger.levels.ERROR);
+
 /*
  * @TODO These values need to be imported properly, and differentiate based on environment
  */
 const API_KEY = 'da2-fakeApiId123456';
 const GRAPHQL_URI = 'http://localhost:20002/graphql';
+const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+const NETWORK_CONTRACT_ADDRESS = '0x5CC4a96B08e8C88f2c6FC5772496FeD9666e4D1F'; // this needs to be extended to all supported networks
+
+const provider = new providers.JsonRpcProvider(RPC_URL);
 
 exports.handler = async (event) => {
   const {
@@ -24,6 +37,13 @@ exports.handler = async (event) => {
     parentId = 1,
     colonyAddress,
   } = event.arguments?.input || {};
+
+  const networkClient = await getColonyNetworkClient(Network.Custom, provider, {
+    networkAddress: NETWORK_CONTRACT_ADDRESS,
+  });
+
+  const colonyClient = await networkClient.getColonyClient(colonyAddress);
+
   const existingDomainsQuery = await graphqlRequest(
     listDomains,
     { colonyAddress },
@@ -44,6 +64,10 @@ exports.handler = async (event) => {
   const nextDomainId = `${colonyAddress}_${nextNativeDomainId}`;
   const nextDomainName = nextNativeDomainId === 1 ? 'Root' : name;
 
+  const { skillId, fundingPotId } = await colonyClient.getDomain(
+    nextNativeDomainId,
+  );
+
   /*
    * @TODO Confirm the domain actually exists on chain before creating it,
    * maybe even use the id returned by getDomain as a sanity check for `nextNativeDomainId`
@@ -61,6 +85,8 @@ exports.handler = async (event) => {
       input: {
         id: nextDomainId,
         nativeId: nextNativeDomainId,
+        nativeFundingPotId: fundingPotId.toNumber(),
+        nativeSkillId: skillId.toNumber(),
         name: nextDomainName,
         description,
         color,
