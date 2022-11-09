@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import {
   defineMessages,
   FormattedMessage,
   MessageDescriptor,
 } from 'react-intl';
 
-import { Address } from '~types/index';
 import Heading from '~shared/Heading';
 import Link from '~shared/Link';
-import ColonyGridItem from './ColonyGridItem';
+
 import { CREATE_COLONY_ROUTE } from '~routes/index';
+import { WatchedColonies } from '~types/index';
+
+import ColonyGridItem from './ColonyGridItem';
+
 import styles from './ColonyGrid.css';
 
 const MSG = defineMessages({
@@ -28,18 +31,15 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  /** List of Colony addresses */
-  colonyAddresses?: Address[];
+  colonies: (WatchedColonies | null)[];
   emptyStateDescription?: MessageDescriptor;
-
-  /** Object is added as a type, since MessageValues apparently don't include React Elements */
-  emptyStateDescriptionValues?: object;
+  emptyStateDescriptionValues?: { [key: string]: ReactElement };
 }
 
 const displayName = 'ColonyGrid';
 
 const ColonyGrid = ({
-  colonyAddresses = [],
+  colonies = [],
   emptyStateDescription = MSG.emptyText,
   emptyStateDescriptionValues = {
     link: (
@@ -51,7 +51,7 @@ const ColonyGrid = ({
     ),
   },
 }: Props) =>
-  colonyAddresses.length === 0 ? (
+  colonies.length === 0 ? (
     <p className={styles.emptyText}>
       <FormattedMessage
         {...emptyStateDescription}
@@ -64,9 +64,14 @@ const ColonyGrid = ({
         <Heading text={MSG.title} appearance={{ size: 'medium' }} />
       </div>
       <div className={styles.colonyGrid}>
-        {colonyAddresses.map((colonyAddress) => (
-          <ColonyGridItem colonyAddress={colonyAddress} key={colonyAddress} />
-        ))}
+        {colonies.map((colony) =>
+          colony ? (
+            <ColonyGridItem
+              colony={colony?.colony}
+              key={colony?.colony.colonyAddress}
+            />
+          ) : null,
+        )}
       </div>
     </div>
   );

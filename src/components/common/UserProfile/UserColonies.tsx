@@ -3,15 +3,10 @@ import { defineMessages } from 'react-intl';
 
 import ColonyGrid from '~common/ColonyGrid';
 import Link from '~shared/Link';
-import { CREATE_COLONY_ROUTE } from '~routes/index';
 
+import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { User } from '~types';
 import { useAppContext } from '~hooks';
-// import {
-//   AnyUser,
-//   useLoggedInUser,
-//   useUserColonyAddressesQuery,
-// } from '~data/index';
 // import { getFriendlyName } from '~modules/users/transformers';
 
 import styles from './UserColonies.css';
@@ -37,8 +32,9 @@ const MSG = defineMessages({
 
 const displayName = 'users.UserProfile.UserColonies';
 
-const UserColonies = ({ user }: Props) => {
-  const { user: loggedInUser } = useAppContext();
+const UserColonies = ({ user: { walletAddress, watchlist, name } }: Props) => {
+  const { user: currentUser } = useAppContext();
+  // const colonyAddresses = useMemo(() => watchlist.)
   // const friendlyName = getFriendlyName(user);
   // @TODO we should probably get the full colonies and pass them down to colonyGrid
   // const { data } = useUserColonyAddressesQuery({
@@ -50,11 +46,11 @@ const UserColonies = ({ user }: Props) => {
   // const {
   //   user: { colonyAddresses },
   // } = data;
-  const isCurrentUser = loggedInUser?.walletAddress === user?.walletAddress;
+  const isCurrentUser = currentUser?.walletAddress === walletAddress;
   return (
     <ColonyGrid
-      // colonyAddresses={colonyAddresses || []}
-      colonyAddresses={[]}
+      colonies={watchlist?.items || []}
+      // colonyAddresses={[]}
       emptyStateDescription={
         isCurrentUser ? MSG.currentUserNoColonies : MSG.otherUserNoColonies
       }
@@ -76,7 +72,7 @@ const UserColonies = ({ user }: Props) => {
                   className={styles.userHighlight}
                 >
                   {/* {friendlyName} */}
-                  {user.name}
+                  {name}
                 </span>
               ),
             }

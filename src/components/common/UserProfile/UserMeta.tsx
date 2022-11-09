@@ -2,19 +2,17 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { useMediaQuery } from 'react-responsive';
 
-// import { AnyUser, useLoggedInUser } from '~data/index';
-import { User } from '~types';
-
 import CopyableAddress from '~shared/CopyableAddress';
 import ExternalLink from '~shared/ExternalLink';
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import Link from '~shared/Link';
 import UserMention from '~shared/UserMention';
-// import HookedUserAvatar from '~common/HookedUserAvatar';
 import UserAvatar from '~shared/UserAvatar';
+
 import { stripProtocol } from '~utils/strings';
 import { useAppContext } from '~hooks';
+import { User } from '~types';
 
 import query from '~styles/queries.css';
 import styles from './UserMeta.css';
@@ -30,7 +28,6 @@ const MSG = defineMessages({
 
 interface Props {
   user: User;
-  // user: any;
 }
 
 const componentDisplayName = 'users.UserProfile.UserMeta';
@@ -38,6 +35,7 @@ const componentDisplayName = 'users.UserProfile.UserMeta';
 const UserMeta = ({ user: { walletAddress, name, profile }, user }: Props) => {
   const { displayName, bio, website, location } = profile || {};
   const { user: currentUser } = useAppContext();
+
   const isMobile = useMediaQuery({ query: query.query700 });
   return (
     <div className={styles.main}>

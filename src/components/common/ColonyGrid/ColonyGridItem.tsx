@@ -2,50 +2,27 @@ import React from 'react';
 
 import Heading from '~shared/Heading';
 import Link from '~shared/Link';
-import { SpinnerLoader } from '~shared/Preloaders';
 import ColonyAvatar from '~shared/ColonyAvatar';
-// import { useColonyProfileQuery } from '~data/index';
+
+import { Colony } from '~types';
 
 import styles from './ColonyGridItem.css';
 
 interface Props {
-  colonyAddress: string;
+  colony: Colony;
 }
 
-const ColonyGridItem = ({ colonyAddress }: Props) => {
-  // const { data, loading } = useColonyProfileQuery({
-  //   variables: { address: colonyAddress },
-  // });
-
-  const data = {};
-  const loading = true;
-
-  if (loading || !data) {
-    return (
-      <div className={styles.loader}>
-        <SpinnerLoader appearance={{ size: 'medium' }} />
-      </div>
-    );
-  }
-
-  // const {
-  //   processedColony: { colonyName, displayName },
-  //   processedColony: colony,
-  // } = data;
-  const colonyName = '';
-  const colony = {};
-  const displayName = '';
-
+const ColonyGridItem = ({ colony, colony: { name, profile } }: Props) => {
   return (
     <div className={styles.main}>
-      <Link to={`/colony/${colonyName}`}>
-        <ColonyAvatar colonyAddress={colonyAddress} colony={colony} />
+      <Link to={`/colony/${name}`}>
+        <ColonyAvatar colonyAddress={colony.colonyAddress} colony={colony} />
         <Heading appearance={{ size: 'small' }}>
           <span
-            title={displayName || colonyName}
+            title={profile?.displayName || name}
             className={styles.displayName}
           >
-            {displayName || colonyName}
+            {profile?.displayName || name}
           </span>
         </Heading>
       </Link>
