@@ -21,6 +21,7 @@ export type Colony = {
   fundsClaims?: ModelColonyFundsClaimConnection | null,
   chainFundsClaim?: ColonyChainFundsClaim | null,
   type?: ColonyType | null,
+  balances?: ColonyBalances | null,
   meta?: Metadata | null,
   createdAt: string,
   updatedAt: string,
@@ -224,6 +225,19 @@ export enum ColonyType {
 }
 
 
+export type ColonyBalances = {
+  __typename: "ColonyBalances",
+  items?:  Array<ColonyBalance | null > | null,
+};
+
+export type ColonyBalance = {
+  __typename: "ColonyBalance",
+  id: string,
+  balance: string,
+  domain: Domain,
+  token: Token,
+};
+
 export type ModelUserConnection = {
   __typename: "ModelUserConnection",
   items:  Array<User | null >,
@@ -287,6 +301,7 @@ export type CreateTokenInput = {
   decimals: number,
   type?: TokenType | null,
   meta?: MetadataInput | null,
+  createdAt?: string | null,
 };
 
 export type ModelTokenConditionInput = {
@@ -294,6 +309,7 @@ export type ModelTokenConditionInput = {
   symbol?: ModelStringInput | null,
   decimals?: ModelIntInput | null,
   type?: ModelTokenTypeInput | null,
+  createdAt?: ModelStringInput | null,
   and?: Array< ModelTokenConditionInput | null > | null,
   or?: Array< ModelTokenConditionInput | null > | null,
   not?: ModelTokenConditionInput | null,
@@ -363,6 +379,7 @@ export type UpdateTokenInput = {
   decimals?: number | null,
   type?: TokenType | null,
   meta?: MetadataInput | null,
+  createdAt?: string | null,
 };
 
 export type DeleteTokenInput = {
@@ -376,6 +393,7 @@ export type CreateColonyInput = {
   status?: ColonyStatusInput | null,
   chainFundsClaim?: ColonyChainFundsClaimInput | null,
   type?: ColonyType | null,
+  balances?: ColonyBalancesInput | null,
   meta?: MetadataInput | null,
   colonyNativeTokenId: string,
 };
@@ -386,6 +404,25 @@ export type ColonyChainFundsClaimInput = {
   createdAt?: string | null,
   updatedAt?: string | null,
   amount: string,
+};
+
+export type ColonyBalancesInput = {
+  items?: Array< ColonyBalanceInput | null > | null,
+};
+
+export type ColonyBalanceInput = {
+  id?: string | null,
+  balance: string,
+  domain: DomainInput,
+  token: TokenInput,
+};
+
+export type DomainInput = {
+  id: string,
+};
+
+export type TokenInput = {
+  id: string,
 };
 
 export type ModelColonyConditionInput = {
@@ -425,6 +462,7 @@ export type UpdateColonyInput = {
   status?: ColonyStatusInput | null,
   chainFundsClaim?: ColonyChainFundsClaimInput | null,
   type?: ColonyType | null,
+  balances?: ColonyBalancesInput | null,
   meta?: MetadataInput | null,
   colonyNativeTokenId: string,
 };
@@ -630,6 +668,7 @@ export type ModelTokenFilterInput = {
   symbol?: ModelStringInput | null,
   decimals?: ModelIntInput | null,
   type?: ModelTokenTypeInput | null,
+  createdAt?: ModelStringInput | null,
   and?: Array< ModelTokenFilterInput | null > | null,
   or?: Array< ModelTokenFilterInput | null > | null,
   not?: ModelTokenFilterInput | null,
@@ -725,6 +764,7 @@ export type ModelSubscriptionTokenFilterInput = {
   symbol?: ModelSubscriptionStringInput | null,
   decimals?: ModelSubscriptionIntInput | null,
   type?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionTokenFilterInput | null > | null,
   or?: Array< ModelSubscriptionTokenFilterInput | null > | null,
 };
@@ -1032,11 +1072,21 @@ export type CreateUniqueColonyMutationVariables = {
 
 export type CreateUniqueColonyMutation = {
   createUniqueColony?:  {
-    __typename: "User",
+    __typename: "Colony",
     id: string,
     name: string,
+    nativeToken:  {
+      __typename: "Token",
+      id: string,
+      name: string,
+      symbol: string,
+      decimals: number,
+      type?: TokenType | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     tokens?:  {
-      __typename: "ModelUserTokensConnection",
+      __typename: "ModelColonyTokensConnection",
       nextToken?: string | null,
     } | null,
     profile?:  {
@@ -1049,12 +1099,39 @@ export type CreateUniqueColonyMutation = {
       website?: string | null,
       email?: string | null,
     } | null,
-    watchlist?:  {
+    status?:  {
+      __typename: "ColonyStatus",
+      recovery?: boolean | null,
+    } | null,
+    domains?:  {
+      __typename: "ModelDomainConnection",
+      nextToken?: string | null,
+    } | null,
+    watchers?:  {
       __typename: "ModelWatchedColoniesConnection",
       nextToken?: string | null,
     } | null,
+    fundsClaims?:  {
+      __typename: "ModelColonyFundsClaimConnection",
+      nextToken?: string | null,
+    } | null,
+    chainFundsClaim?:  {
+      __typename: "ColonyChainFundsClaim",
+      id: string,
+      createdAtBlock: number,
+      createdAt: string,
+      updatedAt: string,
+      amount: string,
+    } | null,
+    type?: ColonyType | null,
+    meta?:  {
+      __typename: "Metadata",
+      network?: Network | null,
+      chainId?: number | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    colonyNativeTokenId: string,
   } | null,
 };
 

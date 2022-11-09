@@ -32,6 +32,15 @@ export const createUniqueColony = /* GraphQL */ `
     createUniqueColony(input: $input) {
       id
       name
+      nativeToken {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
       tokens {
         nextToken
       }
@@ -44,11 +53,33 @@ export const createUniqueColony = /* GraphQL */ `
         website
         email
       }
-      watchlist {
+      status {
+        recovery
+      }
+      domains {
         nextToken
+      }
+      watchers {
+        nextToken
+      }
+      fundsClaims {
+        nextToken
+      }
+      chainFundsClaim {
+        id
+        createdAtBlock
+        createdAt
+        updatedAt
+        amount
+      }
+      type
+      meta {
+        network
+        chainId
       }
       createdAt
       updatedAt
+      colonyNativeTokenId
     }
   }
 `;
