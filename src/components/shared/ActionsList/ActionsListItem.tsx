@@ -11,7 +11,7 @@ import { ColonyRoles } from '@colony/colony-js';
 import Decimal from 'decimal.js';
 
 import HookedUserAvatar from '~users/HookedUserAvatar';
-import Numeral, { AbbreviatedNumeral } from '~shared/Numeral';
+import Numeral from '~shared/Numeral';
 import Icon from '~shared/Icon';
 import FriendlyName from '~shared/FriendlyName';
 import Tag, { Appearance as TagAppearance } from '~shared/Tag';
@@ -316,7 +316,7 @@ const ActionsListItem = ({
                           ? paymentReceivedFn(amount)
                           : amount
                       }
-                      unit={getTokenDecimalsWithFallback(decimals)}
+                      decimals={getTokenDecimalsWithFallback(decimals)}
                     />
                   ),
                   tokenSymbol: symbol,
@@ -377,10 +377,7 @@ const ActionsListItem = ({
                     formattedCommentCount: formatNumber(commentCount),
                   })}
                 />
-                <AbbreviatedNumeral
-                  formatOptions={{
-                    notation: 'compact',
-                  }}
+                <Numeral
                   value={commentCount}
                   title={formatMessage(MSG.titleCommentCount, {
                     commentCount,

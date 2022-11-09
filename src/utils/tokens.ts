@@ -1,12 +1,11 @@
-import { BigNumber, BigNumberish } from 'ethers';
 import Decimal from 'decimal.js';
+import { BigNumber, BigNumberish } from 'ethers';
 
-import { minimalFormatter } from '~utils/numbers';
-import { TokenWithBalances } from '~data/index';
-import { DEFAULT_TOKEN_DECIMALS, SMALL_TOKEN_AMOUNT_FORMAT } from '~constants';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
 export const getBalanceFromToken = (
-  token: TokenWithBalances | undefined,
+  /** @TODO: add proper type */
+  token: any,
   tokenDomainId = 0,
 ) => {
   let result;
@@ -49,24 +48,16 @@ export const getTokenDecimalsWithFallback = (
   return DEFAULT_TOKEN_DECIMALS;
 };
 
+/**
+ * Get value with its decimal point shifted by @param decimals places
+ */
 export const getFormattedTokenValue = (
   value: BigNumberish,
   decimals: any,
 ): string => {
-  const safeDecimals = BigNumber.from(10)
-    .pow(getTokenDecimalsWithFallback(decimals))
+  const tokenDecimals = new Decimal(getTokenDecimalsWithFallback(decimals));
+
+  return new Decimal(value.toString())
+    .div(new Decimal(10).pow(tokenDecimals))
     .toString();
-  const decimalValue = new Decimal(BigNumber.from(value).toString()).div(
-    safeDecimals,
-  );
-
-  // Testing Dev: add/remove to catch small numbers here
-  // or let numbro handle it in numberFormatter.
-  if (decimalValue.lt(0.00001) && decimalValue.gt(0)) {
-    return SMALL_TOKEN_AMOUNT_FORMAT;
-  }
-
-  return minimalFormatter({
-    value: decimalValue.toString(),
-  });
 };

@@ -1,4 +1,6 @@
-export const numbroCustomLanguage = {
+import numbro from 'numbro';
+
+const numbroLanguage: numbro.NumbroLanguage = {
   languageTag: 'en-GB',
   delimiters: {
     thousands: ',',
@@ -60,3 +62,5 @@ export const numbroCustomLanguage = {
     },
   },
 };
+
+export default numbroLanguage;

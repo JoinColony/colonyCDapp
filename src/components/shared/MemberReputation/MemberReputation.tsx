@@ -59,7 +59,6 @@ const MemberReputation = ({
           suffix="%"
         />
       )}
-
       <Icon
         name="star"
         appearance={{ size: 'extraTiny' }}
