@@ -2,9 +2,9 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import Heading from '~shared/Heading';
-import ColonySubscription from '../ColonySubscription';
+import { useColonyContext } from '~hooks';
 
-import { Colony } from '~types';
+import ColonySubscription from '../ColonySubscription';
 
 import styles from './ColonyTitle.css';
 
@@ -17,11 +17,15 @@ const MSG = defineMessages({
   },
 });
 
-type Props = {
-  colony: Colony;
-};
+const ColonyTitle = () => {
+  const { colony } = useColonyContext();
 
-const ColonyTitle = ({ colony: { name, profile }, colony }: Props) => {
+  if (!colony) {
+    return null;
+  }
+
+  const { profile, name } = colony;
+
   return (
     <div className={styles.main}>
       <div className={styles.wrapper}>
@@ -37,7 +41,7 @@ const ColonyTitle = ({ colony: { name, profile }, colony }: Props) => {
           />
         </div>
         <div>
-          <ColonySubscription colony={colony} />
+          <ColonySubscription />
         </div>
       </div>
     </div>

@@ -4,11 +4,12 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import Alert from '~core/Alert';
 import { ActionButton } from '~core/Button';
 
-import { Colony, useNetworkContracts } from '~data/index';
+import { useNetworkContracts } from '~data/index';
 import {
   useTransformer,
   useAppContext,
   useUserAccountRegistered,
+  useColonyContext,
 } from '~hooks';
 import { ActionTypes } from '~redux/index';
 import { mapPayload } from '~utils/actions';
@@ -18,30 +19,28 @@ import { getAllUserRoles } from '~modules/transformers';
 
 import styles from './ColonyFinishDeployment.css';
 
+const displayName = 'common.ColonyHome.ColonyFinishDeployment';
+
 const MSG = defineMessages({
   deploymentNotFinished: {
-    id: `dashboard.ColonyHome.ColonyFinishDeployment.deploymentNotFinished`,
+    id: `${displayName}.deploymentNotFinished`,
     defaultMessage: `Colony creation incomplete. Click to continue 👉`,
   },
   buttonFinishDeployment: {
-    id: `dashboard.ColonyHome.ColonyFinishDeployment.buttonFinishDeployment`,
+    id: `${displayName}.buttonFinishDeployment`,
     defaultMessage: `Finish Deployment`,
   },
 });
 
-type Props = {
-  colony: Colony;
-};
-
-const displayName = 'dashboard.ColonyHome.ColonyFinishDeployment';
-
-const ColonyFinishDeployment = ({
-  colony,
-  colony: { isDeploymentFinished, colonyAddress },
-}: Props) => {
+const ColonyFinishDeployment = () => {
   const { version: networkVersion } = useNetworkContracts();
   const { wallet } = useAppContext();
   const userHasAccountRegistered = useUserAccountRegistered();
+
+  const { colony } = useColonyContext();
+  const { colonyAddress } = colony || {};
+  /** @TODO: This should be a property of colony */
+  const isDeploymentFinished = false;
 
   const transform = useCallback(
     mapPayload(() => ({

@@ -6,9 +6,8 @@ import NetworkContractUpgradeDialog from '~dialogs/NetworkContractUpgradeDialog'
 import Alert from '~shared/Alert';
 import Button from '~shared/Button';
 import ExternalLink from '~shared/ExternalLink';
-
-import { Colony, useNetworkContracts } from '~data/index';
-import { useTransformer, useAppContext } from '~hooks';
+import { useNetworkContracts } from '~data/index';
+import { useTransformer, useAppContext, useColonyContext } from '~hooks';
 import { getNetworkRelaseLink } from '~utils/external';
 import {
   colonyMustBeUpgraded,
@@ -19,25 +18,23 @@ import { getAllUserRoles } from '~modules/transformers';
 
 import styles from './ColonyUpgrade.css';
 
+const displayName = 'common.ColonyHome.ColonyUpgrade';
+
 const MSG = defineMessages({
   upgradeRequired: {
-    id: `dashboard.ColonyHome.ColonyUpgrade.upgradeRequired`,
+    id: `${displayName}.upgradeRequired`,
     defaultMessage: `This colony uses a version of the network that is no
       longer supported. You must upgrade to continue using this application.`,
   },
   upgradeSuggested: {
-    id: `dashboard.ColonyHome.ColonyUpgrade.upgradeSuggested`,
+    id: `${displayName}.upgradeSuggested`,
     defaultMessage: `A new version of the Colony Network is available! {linkToRelease}`,
   },
 });
 
-type Props = {
-  colony: Colony;
-};
+const ColonyUpgrade = () => {
+  const { colony } = useColonyContext();
 
-const displayName = 'dashboard.ColonyHome.ColonyUpgrade';
-
-const ColonyUpgrade = ({ colony }: Props) => {
   const openUpgradeVersionDialog = useDialog(NetworkContractUpgradeDialog);
   const { version: networkVersion } = useNetworkContracts();
   const { user, wallet } = useAppContext();
@@ -109,7 +106,8 @@ const ColonyUpgrade = ({ colony }: Props) => {
                       <ExternalLink
                         text={{ id: 'text.learnMore' }}
                         href={getNetworkRelaseLink(
-                          parseInt(colony.version, 10) + 1,
+                          // parseInt(colony.version, 10) + 1,
+                          10,
                         )}
                       />
                     ),

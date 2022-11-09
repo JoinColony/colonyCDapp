@@ -41,7 +41,7 @@ export const ColonyContextProvider = ({
     variables: {
       name: colonyName ?? '',
     },
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
   });
 
   const [colony] = data?.getColonyByName?.items || [];

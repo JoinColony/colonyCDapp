@@ -5,8 +5,9 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import Heading from '~shared/Heading';
 // import InfoPopover from '~shared/InfoPopover';
 import NavLink from '~shared/NavLink';
-// import { Colony, useTokenBalancesForDomainsQuery } from '~data/index';
-import { Colony, ColonyTokens } from '~types';
+// import { useTokenBalancesForDomainsQuery } from '~data/index';
+import { ColonyTokens } from '~types';
+import { useColonyContext } from '~hooks';
 
 import TokenBalanceItem from './TokenBalanceItem';
 
@@ -21,20 +22,24 @@ const MSG = defineMessages({
   },
 });
 
-interface Props {
-  colony: Colony;
-  // currentDomainId: number;
-}
+// interface Props {
+//   currentDomainId: number;
+// }
 
-const ColonyFundingWidget = ({
-  // currentDomainId,
-  colony: {
+const ColonyFundingWidget = (/* { currentDomainId }: Props */) => {
+  const { colony } = useColonyContext();
+
+  if (!colony) {
+    return null;
+  }
+
+  const {
     name,
     tokens,
     nativeToken: { tokenAddress: nativeTokenAddress },
     status,
-  },
-}: Props) => {
+  } = colony;
+
   // const {
   //   data,
   //   loading: isLoadingTokenBalances,

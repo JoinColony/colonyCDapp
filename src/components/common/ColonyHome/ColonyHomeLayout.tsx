@@ -2,8 +2,7 @@ import React, { ReactNode } from 'react';
 
 import NewActionButton from '~common/NewActionButton';
 import ColonyTotalFunds from '~common/ColonyTotalFunds';
-
-import { Colony } from '~types';
+import { useColonyContext } from '~hooks';
 
 import ColonyDomainSelector from './ColonyDomainSelector';
 import ColonyFundingWidget from './ColonyFundingWidget';
@@ -20,7 +19,6 @@ import ColonyDomainDescription from './ColonyDomainDescription';
 import styles from './ColonyHomeLayout.css';
 
 type Props = {
-  colony: Colony;
   filteredDomainId: number;
   onDomainChange?: (domainId: number) => void;
   /*
@@ -38,7 +36,6 @@ type Props = {
 const displayName = 'common.ColonyHome.ColonyHomeLayout';
 
 const ColonyHomeLayout = ({
-  colony,
   filteredDomainId,
   children,
   // ethDomainId,
@@ -48,30 +45,34 @@ const ColonyHomeLayout = ({
   showActions = true,
   onDomainChange = () => null,
 }: Props) => {
+  const { colony } = useColonyContext();
+
+  if (!colony) {
+    return null;
+  }
+
   return (
     <div className={styles.main}>
       <div
         className={showSidebar ? styles.mainContentGrid : styles.minimalGrid}
       >
         <aside className={styles.leftAside}>
-          <ColonyTitle colony={colony} />
-          {showNavigation && <ColonyNavigation colony={colony} />}
+          <ColonyTitle />
+          {showNavigation && <ColonyNavigation />}
         </aside>
         <div className={styles.mainContent}>
           {showControls && (
             <>
-              <ColonyTotalFunds colony={colony} />
+              <ColonyTotalFunds />
               <div className={styles.contentActionsPanel}>
                 <div className={styles.domainsDropdownContainer}>
                   <ColonyDomainSelector
                     filteredDomainId={filteredDomainId}
                     onDomainChange={onDomainChange}
-                    colony={colony}
                   />
                 </div>
                 {showActions && (
-                  <NewActionButton /* colony={colony} ethDomainId={ethDomainId} */
-                  />
+                  <NewActionButton /* ethDomainId={ethDomainId} */ />
                 )}
               </div>
             </>
@@ -80,26 +81,19 @@ const ColonyHomeLayout = ({
         </div>
         {showSidebar && (
           <aside className={styles.rightAside}>
-            <ColonyDomainDescription
-              colony={colony}
-              currentDomainId={filteredDomainId}
-            />
-            {/* <ColonyUnclaimedTransfers colony={colony} /> */}
+            <ColonyDomainDescription currentDomainId={filteredDomainId} />
+            {/* <ColonyUnclaimedTransfers /> */}
             <ColonyFundingWidget
-              colony={colony}
-              // currentDomainId={filteredDomainId}
+            // currentDomainId={filteredDomainId}
             />
-            <ColonyMembersWidget
-              colony={colony}
-              currentDomainId={filteredDomainId}
-            />
-            {/* <ColonyExtensions colony={colony} /> */}
+            <ColonyMembersWidget currentDomainId={filteredDomainId} />
+            {/* <ColonyExtensions /> */}
           </aside>
         )}
       </div>
-      {/* <ColonyUpgrade colony={colony} />
-      <ExtensionUpgrade colony={colony} />
-      <ColonyFinishDeployment colony={colony} /> */}
+      {/* <ColonyUpgrade />
+      <ExtensionUpgrade />
+      <ColonyFinishDeployment /> */}
     </div>
   );
 };

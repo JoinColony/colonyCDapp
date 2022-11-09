@@ -36,8 +36,6 @@ import { SpinnerLoader } from '~shared/Preloaders';
 //   oneTxMustBeUpgraded,
 // } from '~modules/dashboard/checks';
 
-// import { Colony } from '~types';
-
 import styles from './NewActionButton.css';
 
 const displayName = 'commmon.ColonyHome.NewActionButton';
@@ -54,7 +52,6 @@ const MSG = defineMessages({
 });
 
 // interface Props {
-//   colony: Colony;
 //   ethDomainId?: number;
 // }
 

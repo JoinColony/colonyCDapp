@@ -8,15 +8,14 @@ import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 
 import { Colony } from '~types';
-import { useAppContext } from '~hooks';
-
+import { useAppContext, useColonyContext } from '~hooks';
 import { CREATE_USER_ROUTE } from '~routes/index';
 
 import ColonySubscriptionInfoPopover from './ColonySubscriptionInfoPopover';
 
 import styles from './ColonySubscription.css';
 
-const displayName = 'commmon.ColonyHome.ColonySubscription';
+const displayName = 'common.ColonyHome.ColonySubscription';
 
 const MSG = defineMessages({
   copyMessage: {
@@ -33,11 +32,10 @@ const MSG = defineMessages({
   },
 });
 
-interface Props {
-  colony: Colony;
-}
+const ColonySubscription = () => {
+  const { colony } = useColonyContext();
+  const { colonyAddress } = colony || {};
 
-const ColonySubscription = ({ colony: { colonyAddress }, colony }: Props) => {
   const { user } = useAppContext();
 
   const isSubscribed = !!(user?.watchlist?.items || []).find(
@@ -65,7 +63,6 @@ const ColonySubscription = ({ colony: { colonyAddress }, colony }: Props) => {
         )}
         {isSubscribed && (
           <ColonySubscriptionInfoPopover
-            colony={colony}
             onUnsubscribe={() => {
               // eslint-disable-next-line no-console
               console.log('Implement unsubscribe logic');

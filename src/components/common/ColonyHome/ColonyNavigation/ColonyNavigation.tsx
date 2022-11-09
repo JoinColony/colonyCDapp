@@ -1,46 +1,45 @@
 import React, { ComponentProps, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { Colony } from '~types';
+import { useColonyContext } from '~hooks';
 
 import NavItem from './NavItem';
 
 import styles from './ColonyNavigation.css';
 
+const displayName = 'common.ColonyHome.ColonyNavigation';
+
 const MSG = defineMessages({
   linkTextActions: {
-    id: 'dashboard.ColonyHome.ColonyNavigation.linkTextActions',
+    id: `${displayName}.linkTextActions`,
     defaultMessage: 'Actions',
   },
   linkTextEvents: {
-    id: 'dashboard.ColonyHome.ColonyNavigation.linkTextEvents',
+    id: `${displayName}.linkTextEvents`,
     defaultMessage: 'Events',
   },
   linkTextExtensions: {
-    id: 'dashboard.ColonyHome.ColonyNavigation.linkTextExtensions',
+    id: `${displayName}.linkTextExtensions`,
     defaultMessage: 'Extensions',
   },
   linkTextUnwrapTokens: {
-    id: 'dashboard.ColonyHome.ColonyNavigation.linkTextUnwrapTokens',
+    id: `${displayName}.linkTextUnwrapTokens`,
     defaultMessage: 'Unwrap Tokens',
   },
   linkTextClaimTokens: {
-    id: 'dashboard.ColonyHome.ColonyNavigation.linkTextClaimTokens',
+    id: `${displayName}.linkTextClaimTokens`,
     defaultMessage: 'Claim Tokens',
   },
   comingSoonMessage: {
-    id: 'dashboard.ColonyNavigation.comingSoonMessage',
+    id: `${displayName}.comingSoonMessage`,
     defaultMessage: 'Coming Soon',
   },
 });
 
-type Props = {
-  colony: Colony;
-};
+const ColonyNavigation = () => {
+  const { colony } = useColonyContext();
+  const { name } = colony || {};
 
-const displayName = 'dashboard.ColonyHome.ColonyNavigation';
-
-const ColonyNavigation = ({ colony: { name } }: Props) => {
   /*
    * @TODO actually determine these
    * This can be easily inferred from the subgraph queries
@@ -54,7 +53,11 @@ const ColonyNavigation = ({ colony: { name } }: Props) => {
   const hasNewExtensions = false;
 
   const items = useMemo<ComponentProps<typeof NavItem>[]>(() => {
-    const navigationItems: ComponentProps<typeof NavItem>[] = [
+    if (!name) {
+      return [];
+    }
+
+    const navigationItems = [
       {
         linkTo: `/colony/${name}`,
         showDot: hasNewActions,

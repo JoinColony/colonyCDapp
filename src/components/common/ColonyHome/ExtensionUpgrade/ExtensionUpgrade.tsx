@@ -5,31 +5,30 @@ import { useParams } from 'react-router';
 
 import Alert from '~core/Alert';
 import Button from '~core/Button';
-import { Colony, useColonyExtensionsQuery } from '~data/index';
+import { useColonyExtensionsQuery } from '~data/index';
 import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
+import { useColonyContext } from '~hooks';
 
 import styles from './ExtensionUpgrade.css';
 
+const displayName = 'common.ColonyHome.ExtensionUpgrade';
+
 const MSG = defineMessages({
   upgradeMessage: {
-    id: `dashboard.ColonyHome.ExtensionUpgrade.upgradeMessage`,
+    id: `${displayName}.upgradeMessage`,
     defaultMessage: `This colony uses a version of the OneTx Payment Extension that is no longer supported. You must upgrade to continue using this application.`,
   },
   goToExtensionButton: {
-    id: `dashboard.ColonyHome.ExtensionUpgrade.goToExtensionButton`,
+    id: `${displayName}.goToExtensionButton`,
     defaultMessage: `Go to Extension`,
   },
 });
 
-type Props = {
-  colony: Colony;
-};
+const ExtensionUpgrade = () => {
+  const { colony } = useColonyContext();
+  const { colonyAddress, name } = colony || {};
 
-const displayName = 'dashboard.ColonyHome.ExtensionUpgrade';
-
-const ExtensionUpgrade = ({ colony: { colonyName, colonyAddress } }: Props) => {
-  const { colonyName: colonyNameEntry, extensionId } = useParams<{
-    colonyName: string;
+  const { extensionId } = useParams<{
     extensionId: string;
   }>();
 
@@ -37,8 +36,7 @@ const ExtensionUpgrade = ({ colony: { colonyName, colonyAddress } }: Props) => {
     variables: { address: colonyAddress },
   });
 
-  const isExtensionDetailsRoute =
-    colonyNameEntry === colonyName && extensionId === Extension.OneTxPayment;
+  const isExtensionDetailsRoute = extensionId === Extension.OneTxPayment;
 
   const oneTxPaymentExtension = data?.processedColony?.installedExtensions.find(
     ({ details, extensionId: extensionName }) =>
@@ -66,8 +64,7 @@ const ExtensionUpgrade = ({ colony: { colonyName, colonyAddress } }: Props) => {
               <Button
                 appearance={{ theme: 'primary', size: 'medium' }}
                 text={MSG.goToExtensionButton}
-                // eslint-disable-next-line max-len
-                linkTo={`/colony/${colonyName}/extensions/${Extension.OneTxPayment}`}
+                linkTo={`/colony/${name}/extensions/${Extension.OneTxPayment}`}
               />
             </div>
           )}

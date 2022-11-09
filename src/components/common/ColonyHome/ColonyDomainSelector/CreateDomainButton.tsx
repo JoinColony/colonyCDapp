@@ -3,15 +3,12 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import Icon from '~shared/Icon';
 // import { useDialog } from '~core/Dialog';
-
 // import CreateDomainDialog from '~dialogs/CreateDomainDialog';
-
-// import { Colony } from '~data/index';
-import { Colony } from '~types';
+import { useColonyContext } from '~hooks';
 
 import styles from './CreateDomainButton.css';
 
-const displayName = 'common.ColonuHome.ColonyDomainSelector.CreateDomainButton';
+const displayName = 'common.ColonyHome.ColonyDomainSelector.CreateDomainButton';
 
 const MSG = defineMessages({
   buttonCreateNewDomain: {
@@ -20,12 +17,11 @@ const MSG = defineMessages({
   },
 });
 
-interface Props {
-  colony: Colony;
-}
-
-const CreateDomainButton = ({ colony }: Props) => {
+const CreateDomainButton = () => {
   const { formatMessage } = useIntl();
+
+  const { colony } = useColonyContext();
+
   // const openCreateDomainDialog = useDialog(CreateDomainDialog);
 
   // const handleClick = useCallback<MouseEventHandler<HTMLButtonElement>>(

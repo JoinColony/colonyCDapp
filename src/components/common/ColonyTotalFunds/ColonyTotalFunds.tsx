@@ -8,20 +8,19 @@ import Numeral from '~shared/Numeral';
 // import { MiniSpinnerLoader } from '~shared/Preloaders';
 import IconTooltip from '~shared/IconTooltip';
 // import {
-//   Colony,
 //   useTokenBalancesForDomainsQuery,
 // } from '~data/index';
 import { Address } from '~types/index';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 // import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { Colony, ColonyTokens } from '~types';
+import { ColonyTokens } from '~types';
 import { useColonyContext } from '~hooks';
 
 import ColonyTotalFundsPopover from './ColonyTotalFundsPopover';
 
 import styles from './ColonyTotalFunds.css';
 
-const displayName = 'dashboard.ColonyTotalFunds';
+const displayName = 'common.ColonyTotalFunds';
 
 const MSG = defineMessages({
   totalBalance: {
@@ -42,23 +41,10 @@ const MSG = defineMessages({
   },
 });
 
-type Props = {
-  colony: Colony;
-};
-
-const ColonyTotalFunds = ({
-  colony: {
-    name,
-    tokens,
-    nativeToken: { tokenAddress: nativeTokenAddress },
-    status,
-    // version,
-    // isNativeTokenLocked,
-  },
-}: Props) => {
-  const { canInteractWithColony } = useColonyContext();
-  const [currentTokenAddress, setCurrentTokenAddress] =
-    useState<Address>(nativeTokenAddress);
+const ColonyTotalFunds = () => {
+  const { colony, canInteractWithColony } = useColonyContext();
+  const { name, tokens, nativeToken, status } = colony || {};
+  const { tokenAddress: nativeTokenAddress } = nativeToken || {};
 
   // const {
   //   data,
@@ -71,7 +57,13 @@ const ColonyTotalFunds = ({
   //   },
   // });
 
+  const [currentTokenAddress, setCurrentTokenAddress] = useState<Address>();
+
   useEffect(() => {
+    if (!nativeTokenAddress) {
+      return;
+    }
+
     setCurrentTokenAddress(nativeTokenAddress);
   }, [nativeTokenAddress]);
 
