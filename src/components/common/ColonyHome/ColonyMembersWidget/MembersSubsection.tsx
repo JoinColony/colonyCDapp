@@ -2,10 +2,10 @@ import React, { useCallback, useMemo } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import NavLink from '~shared/NavLink';
-import Heading from '~shared/Heading';
 import { Tooltip } from '~shared/Popover';
 import UserAvatar from '~shared/UserAvatar';
 // import Icon from '~shared/Icon';
+import ClickableHeading from '~shared/ClickableHeading';
 import InviteLinkButton from '~shared/Button/InviteLinkButton';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
@@ -102,22 +102,24 @@ const MembersSubsection = ({
             </div>
           }
         >
-          <NavLink to={membersPageRoute}>
-            <Heading
-              appearance={{ size: 'normal', weight: 'bold' }}
-              text={MSG.title}
-              textValues={{
+          <ClickableHeading
+            linkTo={membersPageRoute}
+            appearance={{ margin: 'none' }}
+          >
+            <FormattedMessage
+              {...MSG.title}
+              values={{
                 count: colonyWatchers?.length,
                 hasCounter,
                 isContributorsSubsection,
               }}
             />
-          </NavLink>
+          </ClickableHeading>
         </Tooltip>
         {!isContributorsSubsection && (
           <InviteLinkButton
             colonyName={name}
-            buttonAppearance={{ theme: 'blue' }}
+            buttonAppearance={{ theme: 'blueWithBackground' }}
           />
         )}
       </div>

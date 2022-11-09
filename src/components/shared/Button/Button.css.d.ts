@@ -10,6 +10,7 @@ declare namespace ButtonCssNamespace {
     sizeMedium: string;
     sizeSmall: string;
     themeBlue: string;
+    themeBlueWithBackground: string;
     themeDanger: string;
     themeDangerLink: string;
     themeDottedArea: string;
