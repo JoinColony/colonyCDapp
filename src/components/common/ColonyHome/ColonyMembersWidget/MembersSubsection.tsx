@@ -127,7 +127,7 @@ const MembersSubsection = ({
     [isContributorsSubsection, membersPageRoute, colonyWatchers, name],
   );
 
-  if (!colonyWatchers) {
+  if (!colonyWatchers.length) {
     return (
       <div className={styles.main}>
         {setHeading(false)}
