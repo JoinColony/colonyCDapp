@@ -16,7 +16,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const displayName = 'frames.RouteLayouts.UserLayout';
+const displayName = 'frame.RouteLayouts.UserLayout';
 
 const UserLayout = ({
   children,

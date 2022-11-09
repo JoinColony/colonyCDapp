@@ -15,17 +15,19 @@ import ColonyGridItem from './ColonyGridItem';
 
 import styles from './ColonyGrid.css';
 
+const displayName = 'common.ColonyGrid';
+
 const MSG = defineMessages({
   title: {
-    id: 'ColonyGrid.title',
+    id: `${displayName}.title`,
     defaultMessage: 'Colonies',
   },
   emptyText: {
-    id: 'dashboard.Dashboard.TabMyColonies.emptyText',
+    id: `${displayName}.emptyText`,
     defaultMessage: `It looks like you don't have any colonies. You’ll need an invite link to join a colony. Ask your community for a link or {link}.`,
   },
   createColonyLink: {
-    id: 'dashboard.Dashboard.TabMyColonies.createColonyLink',
+    id: `${displayName}.createColonyLink`,
     defaultMessage: `create a new colony`,
   },
 });
@@ -35,8 +37,6 @@ interface Props {
   emptyStateDescription?: MessageDescriptor;
   emptyStateDescriptionValues?: { [key: string]: ReactElement };
 }
-
-const displayName = 'ColonyGrid';
 
 const ColonyGrid = ({
   colonies = [],

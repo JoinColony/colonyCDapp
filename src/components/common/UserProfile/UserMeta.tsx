@@ -17,20 +17,18 @@ import { User } from '~types';
 import query from '~styles/queries.css';
 import styles from './UserMeta.css';
 
+const componentDisplayName = 'common.UserProfile.UserMeta';
+
 const MSG = defineMessages({
   editProfileTitle: {
-    id: 'users.UserProfile.UserMeta.editProfileTitle',
+    id: `${componentDisplayName}.editProfileTitle`,
     defaultMessage: 'Edit Profile',
   },
 });
 
-// const UserAvatar = HookedUserAvatar({ fetchUser: false });
-
 interface Props {
   user: User;
 }
-
-const componentDisplayName = 'users.UserProfile.UserMeta';
 
 const UserMeta = ({ user: { walletAddress, name, profile }, user }: Props) => {
   const { displayName, bio, website, location } = profile || {};

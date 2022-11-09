@@ -12,6 +12,8 @@ interface Props {
   colony: Colony;
 }
 
+const displayName = 'common.ColonyGrid.ColonyGridItem';
+
 const ColonyGridItem = ({ colony, colony: { name, profile } }: Props) => {
   return (
     <div className={styles.main}>
@@ -29,5 +31,7 @@ const ColonyGridItem = ({ colony, colony: { name, profile } }: Props) => {
     </div>
   );
 };
+
+ColonyGridItem.displayName = displayName;
 
 export default ColonyGridItem;

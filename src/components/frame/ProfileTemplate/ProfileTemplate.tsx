@@ -14,7 +14,7 @@ interface Props {
   asideContent: ReactNode;
 }
 
-const displayName = 'pages.ProfileTemplate';
+const displayName = 'frame.ProfileTemplate';
 
 const ProfileTemplate = ({ appearance, children, asideContent }: Props) => (
   <div className={getMainClasses(appearance, styles)}>

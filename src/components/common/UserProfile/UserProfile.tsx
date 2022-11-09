@@ -11,6 +11,8 @@ import UserColonies from './UserColonies';
 
 import styles from './UserProfile.css';
 
+const displayName = 'common.UserProfile';
+
 const UserProfile = () => {
   const { username } = useParams();
   const { user, loading, error } = useUserByNameOrAddress(username || '');
@@ -31,5 +33,7 @@ const UserProfile = () => {
     </ProfileTemplate>
   );
 };
+
+UserProfile.displayName = displayName;
 
 export default UserProfile;
