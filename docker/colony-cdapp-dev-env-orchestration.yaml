@@ -28,16 +28,19 @@ services:
     links:
     - "network-contracts:network-contracts.docker"
 
-  # block-ingestor:
-  #   container_name: 'ingestor'
-  #   image: colony-cdapp-dev-env/block-ingestor:latest
-  #   volumes:
-  #     - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
-  #   depends_on:
-  #     network-contracts:
-  #       condition: service_healthy
-  #   links:
-  #     - "network-contracts:network-contracts.docker"
+  block-ingestor:
+    container_name: 'ingestor'
+    image: colony-cdapp-dev-env/block-ingestor:latest
+    volumes:
+      - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
+    ports:
+      - '10001:10001'
+    depends_on:
+      network-contracts:
+        condition: service_healthy
+    links:
+      - "network-contracts:network-contracts.docker"
+      - "amplify:amplify.docker"
 
   amplify:
     container_name: 'amplify'
