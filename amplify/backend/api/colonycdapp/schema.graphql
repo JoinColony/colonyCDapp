@@ -20,6 +20,9 @@ input CreateUniqueUserInput {
 input MetadataInput {
   network: Network
   chainId: Int
+  transactionHash: String
+  logIndex: Int
+  blockNumber: Int
 }
 
 input NativeTokenStatusInput {
@@ -154,11 +157,14 @@ type ColonyStatus {
   recovery: Boolean # if it's in recovery mode
 }
 
-# Applies to both Colonies and Tokens
+# Applies to both Colonies Tokens and Events, but not all fields are revlant to all
 # It does not apply to user accounts as they can live on all networks
 type Metadata {
   network: Network
   chainId: Int
+  transactionHash: String
+  logIndex: Int
+  blockNumber: Int
 }
 
 type Token @model {
@@ -256,4 +262,28 @@ input DomainInput {
   }
 input TokenInput {
   id: ID!
+}
+
+
+# This will store the relevant events we care about for a particular colony
+# Altough it might also hold events emmited by other clients (eg: network or token)
+# but are event pertaining to a colony
+# Generally you'd want to use this from a block ingenstor, after you've processed
+# data from an event, also save that even for future use
+type ContractEvent @model {
+  id: ID! #chainID_transactionHash_logIndex
+  # i'm debating if this should be a enum or not, but this was you don't have to
+  # update this schema every time you want to start tracking a new event
+  name: String!
+  signature: String!
+  meta: Metadata!
+  # Note that they are not required, meaning that at any point, one or more, even
+  # all of them might not be set
+  colony: Colony @hasOne
+  token: Token @hasOne
+  domain: Domain @hasOne
+  user: User @hasOne
+  agent: String! # who initiated the event
+  target: String! # who was on the receiving end of it
+  encodedArguments: String # basically a JSON string
 }

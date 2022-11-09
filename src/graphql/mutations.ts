@@ -76,6 +76,9 @@ export const createUniqueColony = /* GraphQL */ `
       meta {
         network
         chainId
+        transactionHash
+        logIndex
+        blockNumber
       }
       createdAt
       updatedAt
@@ -133,6 +136,9 @@ export const createToken = /* GraphQL */ `
       meta {
         network
         chainId
+        transactionHash
+        logIndex
+        blockNumber
       }
       createdAt
       updatedAt
@@ -159,6 +165,9 @@ export const updateToken = /* GraphQL */ `
       meta {
         network
         chainId
+        transactionHash
+        logIndex
+        blockNumber
       }
       createdAt
       updatedAt
@@ -185,6 +194,9 @@ export const deleteToken = /* GraphQL */ `
       meta {
         network
         chainId
+        transactionHash
+        logIndex
+        blockNumber
       }
       createdAt
       updatedAt
@@ -243,6 +255,9 @@ export const createColony = /* GraphQL */ `
       meta {
         network
         chainId
+        transactionHash
+        logIndex
+        blockNumber
       }
       createdAt
       updatedAt
@@ -302,6 +317,9 @@ export const updateColony = /* GraphQL */ `
       meta {
         network
         chainId
+        transactionHash
+        logIndex
+        blockNumber
       }
       createdAt
       updatedAt
@@ -361,6 +379,9 @@ export const deleteColony = /* GraphQL */ `
       meta {
         network
         chainId
+        transactionHash
+        logIndex
+        blockNumber
       }
       createdAt
       updatedAt
@@ -623,6 +644,198 @@ export const deleteColonyFundsClaim = /* GraphQL */ `
       updatedAt
       colonyFundsClaimsId
       colonyFundsClaimTokenId
+    }
+  }
+`;
+export const createContractEvent = /* GraphQL */ `
+  mutation CreateContractEvent(
+    $input: CreateContractEventInput!
+    $condition: ModelContractEventConditionInput
+  ) {
+    createContractEvent(input: $input, condition: $condition) {
+      id
+      name
+      signature
+      meta {
+        network
+        chainId
+        transactionHash
+        logIndex
+        blockNumber
+      }
+      colony {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+        colonyNativeTokenId
+      }
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      domain {
+        id
+        nativeId
+        nativeFundingPotId
+        nativeSkillId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      agent
+      target
+      encodedArguments
+      createdAt
+      updatedAt
+      contractEventColonyId
+      contractEventTokenId
+      contractEventDomainId
+      contractEventUserId
+    }
+  }
+`;
+export const updateContractEvent = /* GraphQL */ `
+  mutation UpdateContractEvent(
+    $input: UpdateContractEventInput!
+    $condition: ModelContractEventConditionInput
+  ) {
+    updateContractEvent(input: $input, condition: $condition) {
+      id
+      name
+      signature
+      meta {
+        network
+        chainId
+        transactionHash
+        logIndex
+        blockNumber
+      }
+      colony {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+        colonyNativeTokenId
+      }
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      domain {
+        id
+        nativeId
+        nativeFundingPotId
+        nativeSkillId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      agent
+      target
+      encodedArguments
+      createdAt
+      updatedAt
+      contractEventColonyId
+      contractEventTokenId
+      contractEventDomainId
+      contractEventUserId
+    }
+  }
+`;
+export const deleteContractEvent = /* GraphQL */ `
+  mutation DeleteContractEvent(
+    $input: DeleteContractEventInput!
+    $condition: ModelContractEventConditionInput
+  ) {
+    deleteContractEvent(input: $input, condition: $condition) {
+      id
+      name
+      signature
+      meta {
+        network
+        chainId
+        transactionHash
+        logIndex
+        blockNumber
+      }
+      colony {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+        colonyNativeTokenId
+      }
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      domain {
+        id
+        nativeId
+        nativeFundingPotId
+        nativeSkillId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      agent
+      target
+      encodedArguments
+      createdAt
+      updatedAt
+      contractEventColonyId
+      contractEventTokenId
+      contractEventDomainId
+      contractEventUserId
     }
   }
 `;

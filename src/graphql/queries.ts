@@ -39,6 +39,9 @@ export const getToken = /* GraphQL */ `
       meta {
         network
         chainId
+        transactionHash
+        logIndex
+        blockNumber
       }
       createdAt
       updatedAt
@@ -114,6 +117,9 @@ export const getColony = /* GraphQL */ `
       meta {
         network
         chainId
+        transactionHash
+        logIndex
+        blockNumber
       }
       createdAt
       updatedAt
@@ -277,6 +283,92 @@ export const listColonyFundsClaims = /* GraphQL */ `
         updatedAt
         colonyFundsClaimsId
         colonyFundsClaimTokenId
+      }
+      nextToken
+    }
+  }
+`;
+export const getContractEvent = /* GraphQL */ `
+  query GetContractEvent($id: ID!) {
+    getContractEvent(id: $id) {
+      id
+      name
+      signature
+      meta {
+        network
+        chainId
+        transactionHash
+        logIndex
+        blockNumber
+      }
+      colony {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+        colonyNativeTokenId
+      }
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      domain {
+        id
+        nativeId
+        nativeFundingPotId
+        nativeSkillId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      agent
+      target
+      encodedArguments
+      createdAt
+      updatedAt
+      contractEventColonyId
+      contractEventTokenId
+      contractEventDomainId
+      contractEventUserId
+    }
+  }
+`;
+export const listContractEvents = /* GraphQL */ `
+  query ListContractEvents(
+    $filter: ModelContractEventFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listContractEvents(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        signature
+        agent
+        target
+        encodedArguments
+        createdAt
+        updatedAt
+        contractEventColonyId
+        contractEventTokenId
+        contractEventDomainId
+        contractEventUserId
       }
       nextToken
     }

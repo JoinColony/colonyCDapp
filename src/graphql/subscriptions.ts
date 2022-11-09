@@ -19,6 +19,9 @@ export const onCreateToken = /* GraphQL */ `
       meta {
         network
         chainId
+        transactionHash
+        logIndex
+        blockNumber
       }
       createdAt
       updatedAt
@@ -42,6 +45,9 @@ export const onUpdateToken = /* GraphQL */ `
       meta {
         network
         chainId
+        transactionHash
+        logIndex
+        blockNumber
       }
       createdAt
       updatedAt
@@ -65,6 +71,9 @@ export const onDeleteToken = /* GraphQL */ `
       meta {
         network
         chainId
+        transactionHash
+        logIndex
+        blockNumber
       }
       createdAt
       updatedAt
@@ -120,6 +129,9 @@ export const onCreateColony = /* GraphQL */ `
       meta {
         network
         chainId
+        transactionHash
+        logIndex
+        blockNumber
       }
       createdAt
       updatedAt
@@ -176,6 +188,9 @@ export const onUpdateColony = /* GraphQL */ `
       meta {
         network
         chainId
+        transactionHash
+        logIndex
+        blockNumber
       }
       createdAt
       updatedAt
@@ -232,6 +247,9 @@ export const onDeleteColony = /* GraphQL */ `
       meta {
         network
         chainId
+        transactionHash
+        logIndex
+        blockNumber
       }
       createdAt
       updatedAt
@@ -473,6 +491,195 @@ export const onDeleteColonyFundsClaim = /* GraphQL */ `
       updatedAt
       colonyFundsClaimsId
       colonyFundsClaimTokenId
+    }
+  }
+`;
+export const onCreateContractEvent = /* GraphQL */ `
+  subscription OnCreateContractEvent(
+    $filter: ModelSubscriptionContractEventFilterInput
+  ) {
+    onCreateContractEvent(filter: $filter) {
+      id
+      name
+      signature
+      meta {
+        network
+        chainId
+        transactionHash
+        logIndex
+        blockNumber
+      }
+      colony {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+        colonyNativeTokenId
+      }
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      domain {
+        id
+        nativeId
+        nativeFundingPotId
+        nativeSkillId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      agent
+      target
+      encodedArguments
+      createdAt
+      updatedAt
+      contractEventColonyId
+      contractEventTokenId
+      contractEventDomainId
+      contractEventUserId
+    }
+  }
+`;
+export const onUpdateContractEvent = /* GraphQL */ `
+  subscription OnUpdateContractEvent(
+    $filter: ModelSubscriptionContractEventFilterInput
+  ) {
+    onUpdateContractEvent(filter: $filter) {
+      id
+      name
+      signature
+      meta {
+        network
+        chainId
+        transactionHash
+        logIndex
+        blockNumber
+      }
+      colony {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+        colonyNativeTokenId
+      }
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      domain {
+        id
+        nativeId
+        nativeFundingPotId
+        nativeSkillId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      agent
+      target
+      encodedArguments
+      createdAt
+      updatedAt
+      contractEventColonyId
+      contractEventTokenId
+      contractEventDomainId
+      contractEventUserId
+    }
+  }
+`;
+export const onDeleteContractEvent = /* GraphQL */ `
+  subscription OnDeleteContractEvent(
+    $filter: ModelSubscriptionContractEventFilterInput
+  ) {
+    onDeleteContractEvent(filter: $filter) {
+      id
+      name
+      signature
+      meta {
+        network
+        chainId
+        transactionHash
+        logIndex
+        blockNumber
+      }
+      colony {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+        colonyNativeTokenId
+      }
+      token {
+        id
+        name
+        symbol
+        decimals
+        type
+        createdAt
+        updatedAt
+      }
+      domain {
+        id
+        nativeId
+        nativeFundingPotId
+        nativeSkillId
+        name
+        description
+        color
+        createdAt
+        updatedAt
+        colonyDomainsId
+        domainParentId
+      }
+      user {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      agent
+      target
+      encodedArguments
+      createdAt
+      updatedAt
+      contractEventColonyId
+      contractEventTokenId
+      contractEventDomainId
+      contractEventUserId
     }
   }
 `;
