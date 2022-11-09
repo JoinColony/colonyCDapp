@@ -1,9 +1,10 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
+import { isAddress } from 'ethers/lib/utils';
 
 import ProfileTemplate from '~frame/ProfileTemplate';
-import { getUserFromName } from '~gql';
+import { getUserFromName, getCurrentUser } from '~gql';
 import NotFoundRoute from '~routes/NotFoundRoute';
 
 import UserMeta from './UserMeta';
@@ -16,8 +17,8 @@ const UserProfile = () => {
   const { username } = useParams();
   const {
     data: dataByName,
-    loading: byNameLoading,
-    error: byNameError,
+    loading: loadingName,
+    error: errorName,
   } = useQuery(gql(getUserFromName), {
     variables: {
       name: username,
@@ -25,13 +26,23 @@ const UserProfile = () => {
     fetchPolicy: 'network-only',
   });
 
-  const user = dataByName?.getUserByName?.items[0];
+  const {
+    data: dataAddress,
+    loading: loadingAddress,
+    error: errorAddress,
+  } = useQuery(gql(getCurrentUser), {
+    variables: { address: username },
+  });
 
-  if (!user || byNameLoading) {
+  const user = isAddress(username || '')
+    ? dataAddress?.getUserByAddress?.items[0]
+    : dataByName?.getUserByName?.items[0];
+
+  if (loadingName || loadingAddress) {
     return <UserProfileSpinner />;
   }
 
-  if (byNameError || !dataByName?.getUserByName?.items?.length) {
+  if (errorName || errorAddress || !user) {
     return <NotFoundRoute />;
   }
 
