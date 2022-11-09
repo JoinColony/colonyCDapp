@@ -2,6 +2,11 @@
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
+# NOTE: This file is getting out hand in terms of size
+# There is an official way of splitting the schema into multiple files
+# https://docs.amplify.aws/cli-legacy/graphql-transformer/overview/#api-category-project-structure
+# but I never could get it to work
+
 input TokenFromEverywhereArguments {
   tokenAddress: String!
 }
@@ -193,7 +198,7 @@ type ProfileMetadata {
 }
 
 type Token @model {
-  id: ID! @index(name: "byAddress", queryField: "getTokenByAddress") # contract address
+  id: ID! @index(name: "byAddress", queryField: "getTokenByAddress") @index(sortKeyFields: ["createdAt"]) # contract address
   name: String!
   symbol: String!
   decimals: Int!
@@ -203,6 +208,7 @@ type Token @model {
   avatar: String
   thumbnail: String
   meta: Metadata
+  createdAt: AWSDateTime!
 }
 
 type ColonyID {
@@ -228,6 +234,8 @@ type Colony @model {
   # This is not an array since only a single token type can be returned
   chainFundsClaim: ColonyChainFundsClaim @function(name: "fetchColonyNativeFundsClaim")
   type: ColonyType @index(name: "byType", queryField: "getColonyByType")
+  # Returns a list token balances for each domain and each token that the colony has
+  balances: ColonyBalances @function(name: "fetchColonyBalances")
   meta: Metadata
 }
 
@@ -269,4 +277,27 @@ type ColonyChainFundsClaim {
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   amount: String!
+}
+
+# This is not a @model since it will only be returned by a lambda function
+# so don't need to create tables for them
+# Note that we also need input types since it treats the `balances` as available
+# to "write" to at creation time, even though, even if you were to write to
+# you'd never actually be able to read that data since the return is overwritten
+# by the lambda function
+type ColonyBalance {
+  id: ID!
+  balance: String!
+  domain: Domain!
+  # Note that for the chain native token, name and symbol are empty
+  token: Token!
+}
+type ColonyBalances {
+  items: [ColonyBalance]
+}
+input DomainInput {
+  id: ID!
+  }
+input TokenInput {
+  id: ID!
 }

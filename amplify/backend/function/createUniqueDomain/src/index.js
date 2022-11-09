@@ -1,11 +1,14 @@
-const { providers } = require('ethers');
 const {
-  getColonyNetworkClient,
-  Network,
+  providers,
   utils: { Logger },
-} = require('@colony/colony-js');
+} = require('ethers');
+const { getColonyNetworkClient, Network } = require('@colony/colony-js');
 
 const { graphqlRequest } = require('./utils');
+
+const {
+  etherRouterAddress: networkAddress,
+} = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
 
 /*
  * @TODO This needs to be imported properly into the project (maybe?)
@@ -22,7 +25,6 @@ Logger.setLogLevel(Logger.levels.ERROR);
 const API_KEY = 'da2-fakeApiId123456';
 const GRAPHQL_URI = 'http://localhost:20002/graphql';
 const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
-const NETWORK_CONTRACT_ADDRESS = '0x5CC4a96B08e8C88f2c6FC5772496FeD9666e4D1F'; // this needs to be extended to all supported networks
 
 const provider = new providers.JsonRpcProvider(RPC_URL);
 
@@ -39,7 +41,7 @@ exports.handler = async (event) => {
   } = event.arguments?.input || {};
 
   const networkClient = await getColonyNetworkClient(Network.Custom, provider, {
-    networkAddress: NETWORK_CONTRACT_ADDRESS,
+    networkAddress,
   });
 
   const colonyClient = await networkClient.getColonyClient(colonyAddress);

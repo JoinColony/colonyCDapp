@@ -19,7 +19,8 @@
         "createUniqueDomain": {},
         "getUserReputation": {},
         "getReputationForTopDomains": {},
-        "fetchColonyNativeFundsClaim": {}
+        "fetchColonyNativeFundsClaim": {},
+        "fetchColonyBalances": {}
       }
     }
   }

@@ -1,8 +1,18 @@
-/* eslint-disable camelcase */
 const { Amplify, API, graphqlOperation } = require('aws-amplify');
+const { getColonyNetworkClient, Network } = require('@colony/colony-js');
+const {
+  providers,
+  utils: { Logger },
+  constants: { AddressZero },
+} = require('ethers');
 
 const { getColony } = require('./queries');
-const { sortDomainsByNativeId, sortTokensByCreationDate } = require('./utils');
+
+const {
+  etherRouterAddress: networkAddress,
+} = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+
+Logger.setLogLevel(Logger.levels.ERROR);
 
 /*
  * @TODO These values need to be imported properly, and differentiate based on environment
@@ -17,6 +27,8 @@ Amplify.configure({
   aws_appsync_apiKey: API_KEY,
 });
 
+const provider = new providers.JsonRpcProvider(RPC_URL);
+
 exports.handler = async ({ source: { id: colonyAddress } }) => {
   const balances = [];
 
@@ -26,30 +38,71 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
     graphqlOperation(getColony, { address: colonyAddress }),
   );
 
-  // console.log(colony);
-
   if (colony) {
+    const networkClient = await getColonyNetworkClient(
+      Network.Custom,
+      provider,
+      { networkAddress },
+    );
+
+    const colonyClient = await networkClient.getColonyClient(colonyAddress);
+
     const { chainId } = colony?.meta || {};
     const { items: domains = [] } = colony.domains || {};
     const { items: tokens = [] } = colony.tokens || {};
 
-    await Promise.all(
-      domains.sort(sortDomainsByNativeId).map(async (domain) => {
-        const { nativeId } = domain;
-        // do native chain token here
-        tokens.sort(sortTokensByCreationDate).map(async ({ token }) => {
-          const { id: tokenAddress } = token;
-          balances.push({
+    domains.map(async (domain) => {
+      const { nativeId, nativeFundingPotId } = domain;
+
+      // Native chain token. Ie: address 0x0000...0000
+      balances.push(async () => {
+        const rewardsPotTotal = await colonyClient.getFundingPotBalance(
+          nativeFundingPotId,
+          AddressZero,
+        );
+        /*
+         * We're using this patters so that we could parallelize all calls at once
+         * since this is in essence a multi dimensional array (of async data)
+         */
+        return {
+          id: `${chainId}_${colonyAddress}_${nativeId}_${AddressZero}_balance`,
+          domain,
+          token: {
+            ...tokens[0].token,
+            id: AddressZero,
+            name: '',
+            symbol: '',
+            decimals: 18,
+            type: 'CHAIN_NATIVE',
+          },
+          balance: rewardsPotTotal.toString(),
+        };
+      });
+
+      tokens.map(async ({ token }) => {
+        const { id: tokenAddress } = token;
+
+        balances.push(async () => {
+          const rewardsPotTotal = await colonyClient.getFundingPotBalance(
+            nativeFundingPotId,
+            tokenAddress,
+          );
+          /*
+           * We're using this patters so that we could parallelize all calls at once
+           * since this is in essence a multi dimensional array (of async data)
+           */
+          return {
             id: `${chainId}_${colonyAddress}_${nativeId}_${tokenAddress}_balance`,
             domain,
             token,
-            balance: '0',
-          });
+            balance: rewardsPotTotal.toString(),
+          };
         });
-      }),
-    );
+      });
+    });
+
     return {
-      items: balances,
+      items: await Promise.all(balances.map(async (resolve) => resolve())),
     };
   }
   return null;
