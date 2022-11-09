@@ -243,6 +243,8 @@ type User @model {
 type Domain @model {
   id: ID! @index(name: "byNativeId", sortKeyFields: ["nativeId"]) # colonyAddress_nativeId
   nativeId: Int!
+  nativeFundingPotId: Int!
+  nativeSkillId: Int!
   name: String
   description: String
   color: DomainColor
