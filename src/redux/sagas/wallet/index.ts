@@ -93,58 +93,6 @@ const onboard = Onboard({
 // //   });
 // //   return () => null;
 // });
-/*
- * @TODO Make this smart at some point by allowing the chain to change
- * w/o needing to refresh the page
- */
-// chainChangeHook((): void => {
-//   return window.location.reload();
-// });
-// let previousAddress = walletAddress;
-// while (true) {
-//   const selectedAddress: Address = yield take(channel);
-//   if (previousAddress !== selectedAddress) {
-//     previousAddress = selectedAddress;
-//     yield put<AllActions>({
-//       type: ActionTypes.USER_LOGOUT,
-//     });
-//   }
-// }
-// yield walletAddress;
-// }
-
-/*
- * @TODO Refactor to remove the use of purser
- */
-// function* metamaskSwitchNetwork() {
-// if (DEFAULT_NETWORK === Network.Xdai || DEFAULT_NETWORK === Network.XdaiQa) {
-//   const {
-//     name: chainName,
-//     chainId,
-//     blockExplorerUrl = '',
-//     rpcUrl = '',
-//   } = NETWORK_DATA[Network.Xdai];
-//   const { name, symbol, decimals } = TOKEN_DATA[Network.Xdai];
-//   /*
-//    * @NOTE This method adds a new network to metamask and then switches to it
-//    * (or tries to anyway)
-//    *
-//    * If it exists already (it matches the chainId), then it will just
-//    * attempt to switch to it
-//    */
-//   yield addChain({
-//     chainId,
-//     chainName,
-//     nativeCurrency: {
-//       name,
-//       symbol,
-//       decimals,
-//     },
-//     blockExplorerUrls: [blockExplorerUrl],
-//     rpcUrls: [rpcUrl],
-//   });
-// }
-// }
 
 export function* getWallet() {
   // yield openGanacheWallet(action);
