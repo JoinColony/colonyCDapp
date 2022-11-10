@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AnyUser } from '~data/index';
+import { User } from '~types';
 
 import UserInfo from './UserInfo';
 import NotAvailableMessage from './NotAvailableMessage';
@@ -8,7 +8,7 @@ import NotAvailableMessage from './NotAvailableMessage';
 import styles from './InfoPopover.css';
 
 interface Props {
-  user?: AnyUser;
+  user?: User;
   userNotAvailable?: boolean;
 }
 

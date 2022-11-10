@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 // import { SpinnerLoader } from '~shared/Preloaders';
 import Heading from '~shared/Heading';
-// import InfoPopover from '~shared/InfoPopover';
+// import TokenInfoPopoverWrapper from '~shared/InfoPopover/TokenInfoPopoverWrapper';
 import NavLink from '~shared/NavLink';
 // import { useTokenBalancesForDomainsQuery } from '~data/index';
 import { useColonyContext } from '~hooks';
@@ -67,7 +67,7 @@ const ColonyFundingWidget = (/* { currentDomainId }: Props */) => {
       <ul data-test="availableFunds">
         {tokens?.map((token) => (
           <li key={token.tokenAddress}>
-            {/* <InfoPopover
+            {/* <TokenInfoPopoverWrapper
               token={token}
               isTokenNative={token.tokenAddress === nativeTokenAddress}
             > */}
@@ -79,7 +79,7 @@ const ColonyFundingWidget = (/* { currentDomainId }: Props */) => {
                 isNativeTokenLocked={!status?.nativeToken?.unlocked}
               />
             </div>
-            {/* </InfoPopover> */}
+            {/* </TokenInfoPopoverWrapper> */}
           </li>
         ))}
       </ul>

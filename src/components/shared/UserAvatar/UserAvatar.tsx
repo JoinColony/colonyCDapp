@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
 
+import Popover from '~shared/Popover';
 import Avatar from '~shared/Avatar';
-import InfoPopover, { Props as InfoPopoverProps } from '~shared/InfoPopover';
+import MemberInfoPopover from '../InfoPopover/MemberInfoPopover';
+import UserInfoPopover from '../InfoPopover/UserInfoPopover';
 import Link from '~shared/NavLink';
 import { Address, User, Colony } from '~types';
-// import { AnyUser, Colony } from '~data/index';
 import { getUsername } from '~redux/transformers';
 
 import styles from './UserAvatar.css';
@@ -18,6 +19,9 @@ interface BaseProps {
   /** Avatar image URL (can be a base64 encoded url string) */
   avatarURL?: string;
 
+  /** Banned comment status */
+  banned?: boolean;
+
   /** Is passed through to Avatar */
   className?: string;
 
@@ -27,28 +31,22 @@ interface BaseProps {
   /** Passed on to the `Popper` component */
   popperOptions?: PopperOptions & { showArrow?: boolean };
 
-  /** If true the UserAvatar links to the user's profile */
-  showLink?: boolean;
-
   /** Whether to show or not show the InfoPopover tooltip over the avatar */
   showInfo?: boolean;
+
+  /** If true the UserAvatar links to the user's profile */
+  showLink?: boolean;
 
   /** Avatar size (default is between `s` and `m`) */
   size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
 
   /** The corresponding user object if available */
-  // user?: AnyUser;
   user?: User;
-
-  /** Banned comment status */
-  banned?: boolean;
 }
 
 /** Used for the infopopover */
 interface PropsForReputation extends BaseProps {
   colony?: Colony;
-  // colony?: Record<string, unknown>;
-  domainId?: number;
 }
 
 export type Props = BaseProps | PropsForReputation;
@@ -58,38 +56,50 @@ const displayName = 'UserAvatar';
 const UserAvatar = ({
   address,
   avatarURL,
+  banned = false,
   className,
-  showInfo,
-  showLink,
   notSet,
   popperOptions,
+  showInfo,
+  showLink,
   size,
-  banned = false,
   user,
-  ...rest
+  ...reputationProps
 }: Props) => {
   const username = getUsername(user);
-  let popoverProps: InfoPopoverProps = {
-    popperOptions,
-    trigger: showInfo ? 'click' : 'disabled',
-    user,
-    showArrow: popperOptions && popperOptions.showArrow,
-  };
-  if ('colony' in rest) {
-    const { colony, domainId } = rest;
-    popoverProps = {
-      ...popoverProps,
-      banned,
-      colony,
-      domainId,
-    };
-  }
+  const trigger = showInfo ? 'click' : 'disabled';
+  const showArrow = popperOptions && popperOptions.showArrow;
+
+  const renderContent = useMemo(() => {
+    if ('colony' in reputationProps) {
+      const { colony } = reputationProps;
+      if (typeof colony !== 'undefined') {
+        return (
+          <MemberInfoPopover
+            // colony={colony}
+            user={user}
+            banned={banned}
+          />
+        );
+      }
+    }
+    if (typeof user !== 'undefined') {
+      return <UserInfoPopover user={user} />;
+    }
+    return <UserInfoPopover userNotAvailable />;
+  }, [user, banned, reputationProps]);
+
   const avatar = (
-    <InfoPopover {...popoverProps}>
+    <Popover
+      renderContent={renderContent}
+      popperOptions={popperOptions}
+      trigger={trigger}
+      showArrow={showArrow}
+    >
       <div
         // @ts-ignore
         className={getMainClasses({}, styles, {
-          showOnClick: popoverProps.trigger === 'click',
+          showOnClick: trigger === 'click',
         })}
       >
         <Avatar
@@ -104,7 +114,7 @@ const UserAvatar = ({
           }
         />
       </div>
-    </InfoPopover>
+    </Popover>
   );
   if (showLink && username) {
     // Won't this always be lowercase?

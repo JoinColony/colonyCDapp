@@ -2,7 +2,8 @@ import React from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
 
 import Link from '~shared/Link';
-import InfoPopover, { Props as InfoPopoverProps } from '~shared/InfoPopover';
+import Popover from '~shared/Popover';
+// import UserInfoPopover from '../InfoPopover/UserInfoPopover';
 // import { useUserQuery, useUserAddressQuery } from '~data/index';
 
 import styles from './UserMention.css';
@@ -27,6 +28,8 @@ interface Props {
   popperOptions?: PopperOptions & { showArrow?: boolean };
 }
 
+const displayName = 'UserMention';
+
 const UserMention = ({
   username,
   to,
@@ -36,11 +39,8 @@ const UserMention = ({
   ...props
 }: Props) => {
   const fallbackTo = to || `/user/${username}`;
-  const popoverProps: Partial<InfoPopoverProps> = {
-    popperOptions,
-    trigger: showInfo ? 'click' : 'disabled',
-    showArrow: popperOptions && popperOptions.showArrow,
-  };
+  const trigger = showInfo ? 'click' : 'disabled';
+  const showArrow = popperOptions && popperOptions.showArrow;
 
   // const { data: userAddressData } = useUserAddressQuery({
   //   variables: {
@@ -73,12 +73,26 @@ const UserMention = ({
 
   // const { user } = data || {};
 
+  // const renderContent = useMemo(() => {
+  //   if (typeof user !== 'undefined') {
+  //     return <UserInfoPopover user={user} />;
+  //   }
+  //   return <UserInfoPopover userNotAvailable />;
+  // }, [user]);
+  const renderContent = null;
+
   return (
-    // <InfoPopover user={user} {...popoverProps}>
-    //   {renderUserMention()}
-    // </InfoPopover>
-    <InfoPopover {...popoverProps}>{renderUserMention()}</InfoPopover>
+    <Popover
+      renderContent={renderContent}
+      popperOptions={popperOptions}
+      trigger={trigger}
+      showArrow={showArrow}
+    >
+      {renderUserMention()}
+    </Popover>
   );
 };
+
+UserMention.displayName = displayName;
 
 export default UserMention;

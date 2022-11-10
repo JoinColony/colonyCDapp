@@ -1,1 +1,1 @@
-export { default, Props } from './InfoPopover';
+export { default, Props } from './TokenInfoPopoverWrapper';
