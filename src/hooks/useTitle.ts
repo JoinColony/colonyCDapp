@@ -15,7 +15,6 @@
 // import { defineMessages, useIntl, MessageDescriptor } from 'react-intl';
 // import {
 //   CREATE_COLONY_ROUTE,
-//   CONNECT_ROUTE,
 //   CREATE_USER_ROUTE,
 //   INBOX_ROUTE,
 //   USER_EDIT_ROUTE,
@@ -36,10 +35,6 @@
 // import { useColonyFromNameQuery } from '~data/index';
 
 // const MSG = defineMessages({
-//   connect: {
-//     id: 'utils.hooks.useTitle.connect',
-//     defaultMessage: `Connect Wallet | Colony`,
-//   },
 //   createColony: {
 //     id: 'utils.hooks.useTitle.creatColony',
 //     defaultMessage: `Create Colony | Colony`,
@@ -143,7 +138,6 @@
 // }
 
 // const routeMessages: Record<string, MessageDescriptor> = {
-//   [CONNECT_ROUTE]: MSG.connect,
 //   [CREATE_COLONY_ROUTE]: MSG.createColony,
 //   [CREATE_USER_ROUTE]: MSG.createUser,
 //   [INBOX_ROUTE]: MSG.inbox,

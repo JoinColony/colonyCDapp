@@ -1,7 +1,4 @@
-import React, {
-  // useEffect,
-  useMemo,
-} from 'react';
+import React, { useMemo } from 'react';
 import {
   Route,
   Routes as RoutesSwitch,
@@ -16,14 +13,12 @@ import ColonyHome from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
 import ColonyMembers from '~common/ColonyMembers';
 import FourOFour from '~frame/FourOFour';
-// import ConnectWalletWizard from '~users/ConnectWalletWizard';
 // import UserProfile from '~users/UserProfile';
 // import UserProfileEdit from '~users/UserProfileEdit';
 import {
   // NavBar, Plain, SimpleNav,
   Default,
 } from '~frame/RouteLayouts';
-// import { ColonyBackText } from '~pages/BackTexts';
 import ColonyBackText from '~frame/ColonyBackText';
 // import LoadingTemplate from '~root/LoadingTemplate';
 import LandingPage from '~frame/LandingPage';
@@ -38,10 +33,8 @@ import {
   COLONY_HOME_ROUTE,
   COLONY_MEMBERS_ROUTE,
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
-  // CONNECT_ROUTE,
   // CREATE_COLONY_ROUTE,
   // CREATE_USER_ROUTE,
-  // NOT_FOUND_ROUTE,
   // USER_EDIT_ROUTE,
   // USER_ROUTE,
   LANDING_PAGE_ROUTE,
@@ -52,7 +45,6 @@ import {
 } from './routeConstants';
 import NotFoundRoute from './NotFoundRoute';
 
-// import WalletRequiredRoute from './WalletRequiredRoute';
 // import useTitle from '~hooks/useTitle';
 
 // const MSG = defineMessages({
@@ -139,13 +131,6 @@ const Routes = () => {
           }
         />
         {/* <WalletRequiredRoute
-          isConnected={isConnected}
-          didClaimProfile={didClaimProfile}
-          path={CONNECT_ROUTE}
-          component={ConnectWalletWizard}
-          layout={Plain}
-        />
-        <WalletRequiredRoute
           isConnected={isConnected}
           didClaimProfile={didClaimProfile}
           path={CREATE_USER_ROUTE}
