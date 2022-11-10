@@ -21,3 +21,12 @@ export const withForwardingRef = <Props extends Record<string, any>>(
   forwardRef<ForwardedRefProps, Props>((props, ref) =>
     createElement(BaseComponent, { ...props, forwardedRef: ref }),
   );
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const compose = (...funcs: Function[]) =>
+  funcs.reduce(
+    (a, b) =>
+      (...args) =>
+        a(b(...args)),
+    (arg) => arg,
+  );
