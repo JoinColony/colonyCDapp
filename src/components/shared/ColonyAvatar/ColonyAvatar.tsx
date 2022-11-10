@@ -1,33 +1,21 @@
 import React from 'react';
 
 import { Address, Colony } from '~types';
-
-import Avatar from '~shared/Avatar';
+import Avatar, { Props as AvatarProps } from '~shared/Avatar';
 import NavLink from '~shared/NavLink';
 
-export interface Props {
+export interface Props
+  extends Pick<AvatarProps, 'avatarURL' | 'className' | 'notSet' | 'size'> {
   /** Address of the colony for identicon fallback */
   colonyAddress: Address;
-
-  /** Avatar image URL (can be a base64 encoded url string) */
-  avatarURL?: string;
-
-  /** Is passed through to Avatar */
-  className?: string;
-
-  /** Avatars that are not set have a different placeholder */
-  notSet?: boolean;
 
   /** If true the UserAvatar links to the user's profile */
   showLink?: boolean;
 
-  /** Avatar size (default is between `s` and `m`) */
-  size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
-
   /** The corresponding user object if available */
   colony?: Colony;
 
-  prefferThumbnail?: boolean;
+  preferThumbnail?: boolean;
 }
 
 const displayName = 'ColonyAvatar';
@@ -36,21 +24,17 @@ const ColonyAvatar = ({
   colonyAddress,
   avatarURL,
   className,
-  colony: {
-    // @ts-ignore
-    name,
-    // @ts-ignore
-    profile,
-  },
+  colony,
   notSet,
   size,
   showLink,
-  prefferThumbnail = true,
+  preferThumbnail = true,
 }: Props) => {
-  const imageString = prefferThumbnail ? profile?.thumbnail : profile?.avatar;
+  const { profile, name } = colony || {};
+  const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
   const colonyAvatar = (
     <Avatar
-      avatarURL={avatarURL || imageString}
+      avatarURL={avatarURL || imageString || undefined}
       className={className}
       notSet={notSet}
       placeholderIcon="at-sign-circle"
