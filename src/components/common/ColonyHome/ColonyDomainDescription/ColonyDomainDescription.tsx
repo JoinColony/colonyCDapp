@@ -2,20 +2,20 @@ import React, { useCallback } from 'react';
 
 import ColorTag from '~shared/ColorTag';
 
-// import { Colony } from '~data/index';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { Colony } from '~types';
+import { useColonyContext } from '~hooks';
 
 import styles from './ColonyDomainDescription.css';
 
 interface Props {
-  colony: Colony;
   currentDomainId: number;
 }
 
-const displayName = 'commin.ColonyHome.ColonyDomainDescription';
+const displayName = 'common.ColonyHome.ColonyDomainDescription';
 
-const ColonyDomainDescription = ({ colony, currentDomainId }: Props) => {
+const ColonyDomainDescription = ({ currentDomainId }: Props) => {
+  const { colony } = useColonyContext();
+
   /*
    * @TODO a proper color transformation
    * This was just quickly thrown together to ensure it works
@@ -32,13 +32,15 @@ const ColonyDomainDescription = ({ colony, currentDomainId }: Props) => {
     return colorMap[domainColor];
   }, []);
 
-  if (currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID) {
+  if (!colony || currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID) {
     return null;
   }
+
   const { name, color, description } =
-    colony.domains.items.find(
-      ({ nativeId }) => Number(nativeId) === currentDomainId,
+    colony.domains?.items.find(
+      (domain) => Number(domain?.nativeId) === currentDomainId,
     ) || {};
+
   return (
     <div className={styles.main}>
       <div className={styles.name}>

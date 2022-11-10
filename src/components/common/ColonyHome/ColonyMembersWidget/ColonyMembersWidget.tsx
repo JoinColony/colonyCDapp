@@ -5,7 +5,7 @@ import React from 'react';
 // import { MiniSpinnerLoader } from '~shared/Preloaders';
 // import { Colony, useContributorsAndWatchersQuery } from '~data/index';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { Colony } from '~types';
+import { useColonyContext } from '~hooks';
 
 // import styles from './ColonyMembersWidget.css';
 import MembersSubsection from './MembersSubsection';
@@ -24,17 +24,20 @@ const displayName = 'common.ColonyHome.ColonyMembersWidget';
 // });
 
 interface Props {
-  colony: Colony;
   currentDomainId?: number;
   maxAvatars?: number;
 }
 
 const ColonyMembersWidget = ({
-  // colony: { colonyAddress, name },
-  colony,
   currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
   maxAvatars,
 }: Props) => {
+  const { colony } = useColonyContext();
+
+  if (!colony) {
+    return null;
+  }
+
   // const {
   //   data: members,
   //   loading: loadingMembers,

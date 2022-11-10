@@ -1,5 +1,6 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
+import { useColonyContext } from '~hooks';
 // import { Extension } from '@colony/colony-js';
 // import { useSelector } from 'react-redux';
 
@@ -35,9 +36,6 @@ import { SpinnerLoader } from '~shared/Preloaders';
 //   oneTxMustBeUpgraded,
 // } from '~modules/dashboard/checks';
 
-import { Colony } from '~types';
-import { useCanInteractWithColony } from '~hooks';
-
 import styles from './NewActionButton.css';
 
 const displayName = 'commmon.ColonyHome.NewActionButton';
@@ -53,10 +51,9 @@ const MSG = defineMessages({
   },
 });
 
-interface Props {
-  colony: Colony;
-  // ethDomainId?: number;
-}
+// interface Props {
+//   ethDomainId?: number;
+// }
 
 // interface RootState {
 //   users: {
@@ -66,8 +63,8 @@ interface Props {
 //   };
 // }
 
-const NewActionButton = ({ colony /* ethDomainId */ }: Props) => {
-  const canInteractWithCurrentColony = useCanInteractWithColony(colony);
+const NewActionButton = (/* { colony, ethDomainId }: Props */) => {
+  const canInteractWithColony = useColonyContext();
 
   // const { version: networkVersion } = useNetworkContracts();
 
@@ -274,7 +271,7 @@ const NewActionButton = ({ colony /* ethDomainId */ }: Props) => {
       {isLoadingData && <SpinnerLoader appearance={{ size: 'medium' }} />}
       {!isLoadingData && (
         <Tooltip
-          trigger={!canInteractWithCurrentColony ? 'hover' : null}
+          trigger={!canInteractWithColony ? 'hover' : null}
           content={
             <span className={styles.tooltipWrapper}>
               <FormattedMessage {...MSG.walletNotConnectedWarning} />
@@ -290,7 +287,7 @@ const NewActionButton = ({ colony /* ethDomainId */ }: Props) => {
             //   !colony?.isDeploymentFinished ||
             //   mustUpgradeOneTx
             // }
-            disabled={!canInteractWithCurrentColony}
+            disabled={!canInteractWithColony}
             data-test="newActionButton"
           />
         </Tooltip>

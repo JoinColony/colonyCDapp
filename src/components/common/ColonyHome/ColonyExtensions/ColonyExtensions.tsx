@@ -2,34 +2,33 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Heading from '~core/Heading';
-import { Colony, useColonyExtensionsQuery } from '~data/index';
+import { useColonyExtensionsQuery } from '~data/index';
 import { MiniSpinnerLoader } from '~core/Preloaders';
 import extensionData from '~data/staticData/extensionData';
-
-import styles from './ColonyExtensions.css';
 import NavLink from '~core/NavLink';
 import ExtensionStatus from '~dashboard/Extensions/ExtensionStatus';
+import { useColonyContext } from '~hooks';
+
+import styles from './ColonyExtensions.css';
+
+const displayName = 'dashboard.ColonyHome.ColonyExtensions';
 
 const MSG = defineMessages({
   title: {
-    id: 'dashboard.ColonyHome.ColonyExtensions.title',
+    id: `${displayName}.title`,
     defaultMessage: 'Enabled extensions',
   },
   loadingData: {
-    id: 'dashboard.ColonyHome.ColonyMembers.loadingData',
+    id: `${displayName}.loadingData`,
     defaultMessage: 'Loading extensions data ...',
   },
 });
 
-interface Props {
-  colony: Colony;
-}
+const ColonyExtensions = () => {
+  const { colony } = useColonyContext();
 
-const displayName = 'dashboard.ColonyHome.ColonyExtensions';
-
-const ColonyExtensions = ({ colony: { colonyName, colonyAddress } }: Props) => {
   const { data, loading } = useColonyExtensionsQuery({
-    variables: { address: colonyAddress },
+    variables: { address: colony?.colonyAddress },
   });
 
   if (loading) {
@@ -60,7 +59,7 @@ const ColonyExtensions = ({ colony: { colonyName, colonyAddress } }: Props) => {
               <li key={address} className={styles.extension}>
                 <NavLink
                   className={styles.invisibleLink}
-                  to={`/colony/${colonyName}/extensions/${extensionId}`}
+                  to={`/colony/${colony?.name}/extensions/${extensionId}`}
                   text={extensionData[extensionId].name}
                 />
                 <ExtensionStatus

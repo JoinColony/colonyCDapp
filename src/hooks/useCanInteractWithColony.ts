@@ -35,11 +35,10 @@ export const useCanInteractWithNetwork = (): boolean => {
 };
 
 /*
- * @TODO Eventually, this should be
- * - Encapsulated in `ColonyProvider`, once that gets added via #67
+ * @TODO Eventually, this should
  * - Include roles / permissions into the check
  */
-export const useCanInteractWithColony = (colony: Colony): boolean => {
+export const useCanInteractWithColony = (colony?: Colony): boolean => {
   const { wallet } = useAppContext();
   const canInteractWithNetwork = useCanInteractWithNetwork();
 

@@ -7,10 +7,10 @@ import DomainDropdown from '~shared/DomainDropdown';
 // import { useDialog } from '~shared/Dialog';
 // import EditDomainDialog from '~dialogs/EditDomainDialog';
 
-import { useCanInteractWithColony } from '~hooks';
+import { useColonyContext } from '~hooks';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
-import { Colony, Color, graphQlDomainColorMap } from '~types';
+import { Color, graphQlDomainColorMap } from '~types';
 
 import CreateDomainButton from './CreateDomainButton';
 
@@ -23,7 +23,6 @@ interface FormValues {
 interface Props {
   filteredDomainId?: number;
   onDomainChange?: (domainId: number) => any;
-  colony: Colony;
 }
 
 const displayName = 'common.ColonyHome.ColonyDomainSelector';
@@ -31,10 +30,10 @@ const displayName = 'common.ColonyHome.ColonyDomainSelector';
 const ColonyDomainSelector = ({
   filteredDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
   onDomainChange,
-  colony: { domains },
-  colony,
 }: Props) => {
-  const canInteractWithCurrentColony = useCanInteractWithColony(colony);
+  const { colony, canInteractWithColony } = useColonyContext();
+  const { domains } = colony || {};
+
   // const { data } = useColonyExtensionsQuery({
   //   variables: { address: colonyAddress },
   // });
@@ -89,6 +88,10 @@ const ColonyDomainSelector = ({
     [getDomainColor],
   );
 
+  if (!colony) {
+    return null;
+  }
+
   return (
     <Form<FormValues>
       initialValues={{
@@ -101,13 +104,9 @@ const ColonyDomainSelector = ({
         name="filteredDomainId"
         currentDomainId={filteredDomainId}
         onDomainChange={onDomainChange}
-        onDomainEdit={
-          canInteractWithCurrentColony ? handleEditDomain : undefined
-        }
+        onDomainEdit={canInteractWithColony ? handleEditDomain : undefined}
         footerComponent={
-          canInteractWithCurrentColony ? (
-            <CreateDomainButton colony={colony} />
-          ) : undefined
+          canInteractWithColony ? <CreateDomainButton /> : undefined
         }
         renderActiveOptionFn={renderActiveOption}
         showAllDomains

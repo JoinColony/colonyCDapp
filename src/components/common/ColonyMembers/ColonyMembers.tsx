@@ -1,14 +1,11 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { defineMessages } from 'react-intl';
-import { useQuery, gql } from '@apollo/client';
+// import { defineMessages } from 'react-intl';
 
 // import { ColonyVersion, Extension } from '@colony/colony-js';
 
 // import Button from '~core/Button';
 // import { useDialog } from '~core/Dialog';
 // import { BanUserDialog } from '~core/Comment';
-import LoadingTemplate from '~frame/LoadingTemplate';
 // import Members from '~dashboard/Members';
 // import PermissionManagementDialog from '~dialogs/PermissionManagementDialog';
 // import WrongNetworkDialog from '~dashboard/ColonyHome/WrongNetworkDialog';
@@ -25,74 +22,44 @@ import LoadingTemplate from '~frame/LoadingTemplate';
 // import { getAllUserRoles } from '~modules/transformers';
 // import { hasRoot, canAdminister } from '~modules/users/checks';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
-import NotFoundRoute from '~routes/NotFoundRoute';
-
-import { getFullColonyByName } from '~gql';
-import { useCanInteractWithColony } from '~hooks';
+import { useColonyContext } from '~hooks';
 
 import styles from './ColonyMembers.css';
 
 const displayName = 'common.ColonyMembers';
 
-const MSG = defineMessages({
-  editPermissions: {
-    id: `${displayName}.editPermissions`,
-    defaultMessage: 'Edit permissions',
-  },
-  banAddress: {
-    id: `${displayName}.banAddress`,
-    defaultMessage: 'Ban address',
-  },
-  unbanAddress: {
-    id: `${displayName}.unbanAddress`,
-    defaultMessage: 'Unban address',
-  },
-  loadingText: {
-    id: `${displayName}.loadingText`,
-    defaultMessage: 'Loading Colony',
-  },
-});
+// const MSG = defineMessages({
+//   editPermissions: {
+//     id: `${displayName}.editPermissions`,
+//     defaultMessage: 'Edit permissions',
+//   },
+//   banAddress: {
+//     id: `${displayName}.banAddress`,
+//     defaultMessage: 'Ban address',
+//   },
+//   unbanAddress: {
+//     id: `${displayName}.unbanAddress`,
+//     defaultMessage: 'Unban address',
+//   },
+// });
 
 const ColonyMembers = () => {
-  const { colonyName } = useParams<{
-    colonyName: string;
-    extensionId?: string;
-  }>();
+  // const { extensionId } = useParams<{
+  //   extensionId?: string;
+  // }>();
 
-  const { data, loading, error } = useQuery(gql(getFullColonyByName), {
-    variables: {
-      name: colonyName,
-    },
-  });
+  const { canInteractWithColony } = useColonyContext();
 
-  const [colony] = data?.getColonyByName?.items || [];
-
-  const canInteractWithCurrentColony = useCanInteractWithColony(colony);
-
-  if (loading || (colony && colony.name !== colonyName)) {
-    return (
-      <div className={styles.loadingWrapper}>
-        <LoadingTemplate loadingText={MSG.loadingText} />
-      </div>
-    );
-  }
-
-  if (
-    !colonyName ||
-    error ||
-    !colony ||
-    colony instanceof Error
-    // || !isExtensionIdValid
-  ) {
-    return <NotFoundRoute />;
-  }
+  // if (!isExtensionIdValid) {
+  //   return <NotFoundRoute />;
+  // }
 
   return (
     <div className={styles.main}>
       <div className={styles.mainContentGrid}>
         <div className={styles.mainContent}>
           Colony Members
-          {canInteractWithCurrentColony && <p>Colony can be interacted with</p>}
+          {canInteractWithColony && <p>Colony can be interacted with</p>}
         </div>
         <aside className={styles.rightAside} />
       </div>

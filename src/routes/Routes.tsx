@@ -44,6 +44,7 @@ import {
   // CLAIM_TOKEN_ROUTE,
 } from './routeConstants';
 import NotFoundRoute from './NotFoundRoute';
+import { ColonyContextProvider } from '~context/ColonyContext';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -104,15 +105,17 @@ const Routes = () => {
 
         <Route
           element={
-            <Default
-              routeProps={{
-                backText: ColonyBackText,
-                backRoute: ({ colonyName }) => `/colony/${colonyName}`,
-                hasSubscribedColonies: false,
-              }}
-            >
-              <Outlet />
-            </Default>
+            <ColonyContextProvider>
+              <Default
+                routeProps={{
+                  backText: ColonyBackText,
+                  backRoute: ({ colonyName }) => `/colony/${colonyName}`,
+                  hasSubscribedColonies: false,
+                }}
+              >
+                <Outlet />
+              </Default>
+            </ColonyContextProvider>
           }
         >
           <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
@@ -125,9 +128,11 @@ const Routes = () => {
         <Route
           path={COLONY_HOME_ROUTE}
           element={
-            <Default routeProps={{ hasBackLink: false }}>
-              <ColonyHome />
-            </Default>
+            <ColonyContextProvider>
+              <Default routeProps={{ hasBackLink: false }}>
+                <ColonyHome />
+              </Default>
+            </ColonyContextProvider>
           }
         />
         {/* <WalletRequiredRoute

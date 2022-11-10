@@ -1,9 +1,7 @@
 import React from 'react';
-import { gql, useQuery } from '@apollo/client';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { useParams } from 'react-router-dom';
 
-import { getFullColonyByName } from '~gql';
+import { useColonyContext } from '~hooks';
 
 const componentDisplayName = 'frame.ColonyBackText';
 
@@ -19,22 +17,13 @@ const MSG = defineMessages({
 });
 
 const ColonyBackText = () => {
-  const { colonyName } = useParams<{ colonyName: string }>();
-  const { data } = useQuery(gql(getFullColonyByName), {
-    variables: {
-      name: colonyName,
-    },
-  });
-
-  const [colony] = data?.getColonyByName?.items || [];
+  const { colony } = useColonyContext();
 
   if (!colony) {
     return null;
   }
 
-  const {
-    profile: { displayName },
-  } = colony;
+  const { displayName } = colony.profile || {};
 
   return <FormattedMessage {...MSG.backText} values={{ displayName }} />;
 };
