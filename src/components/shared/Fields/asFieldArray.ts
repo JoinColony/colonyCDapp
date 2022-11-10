@@ -11,8 +11,9 @@ interface Props {
 }
 
 const asFieldArray =
-  <P>(Component: any) =>
-  ({ name, ...props }: P & Props) => {
+  () =>
+  (Component: any) =>
+  ({ name, ...props }: Props) => {
     return createElement(FieldArray, {
       name,
       render: (formikProps) =>
