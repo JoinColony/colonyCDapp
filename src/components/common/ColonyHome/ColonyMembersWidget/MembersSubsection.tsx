@@ -80,7 +80,6 @@ const MembersSubsection = ({
   );
   // const { user } = useAppContext();
   // const userHasAccountRegistered = useUserAccountRegistered();
-
   // const hasRegisteredProfile = user?.name;
   // const canAdministerComments =
   //   userHasAccountRegistered &&
