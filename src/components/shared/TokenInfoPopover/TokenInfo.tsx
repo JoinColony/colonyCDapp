@@ -12,27 +12,27 @@ import { DEFAULT_NETWORK_INFO } from '~constants';
 
 import styles from './InfoPopover.css';
 
-const MSG = defineMessages({
-  nativeTokenMessage: {
-    id: 'InfoPopover.TokenInfoPopover.TokenInfo.nativeTokenMessage',
-    defaultMessage: "*This is the colony's native token",
-  },
-  viewOnEtherscan: {
-    id: 'InfoPopover.TokenInfoPopover.TokenInfo.viewOnEtherscan',
-    defaultMessage: 'View on {blockExplorerName}',
-  },
-  addToWallet: {
-    id: 'InfoPopover.TokenInfoPopover.TokenInfo.addToWallet',
-    defaultMessage: 'Add token to Metamask',
-  },
-});
+const displayName = 'TokenInfoPopover.TokenInfo';
 
 interface Props {
   token: Token;
   isTokenNative: boolean;
 }
 
-const displayName = 'InfoPopover.TokenInfoPopover.TokenInfo';
+const MSG = defineMessages({
+  nativeTokenMessage: {
+    id: `${displayName}.nativeTokenMessage`,
+    defaultMessage: "*This is the colony's native token",
+  },
+  viewOnEtherscan: {
+    id: `${displayName}.viewOnEtherscan`,
+    defaultMessage: 'View on {blockExplorerName}',
+  },
+  addToWallet: {
+    id: `${displayName}.addToWallet`,
+    defaultMessage: 'Add token to Metamask',
+  },
+});
 
 const TokenInfo = ({ token, isTokenNative }: Props) => {
   const {

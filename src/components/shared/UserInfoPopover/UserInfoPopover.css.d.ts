@@ -1,5 +1,5 @@
-declare namespace MemberInfoPopoverCssNamespace {
-  export interface IMemberInfoPopoverCss {
+declare namespace UserInfoPopoverCssNamespace {
+  export interface IUserInfoPopoverCss {
     bannedTag: string;
     domainName: string;
     domainReputationItem: string;
@@ -17,9 +17,9 @@ declare namespace MemberInfoPopoverCssNamespace {
   }
 }
 
-declare const MemberInfoPopoverCssModule: MemberInfoPopoverCssNamespace.IMemberInfoPopoverCss & {
+declare const UserInfoPopoverCssModule: UserInfoPopoverCssNamespace.IUserInfoPopoverCss & {
   /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
-  locals: MemberInfoPopoverCssNamespace.IMemberInfoPopoverCss;
+  locals: UserInfoPopoverCssNamespace.IUserInfoPopoverCss;
 };
 
-export = MemberInfoPopoverCssModule;
+export = UserInfoPopoverCssModule;

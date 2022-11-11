@@ -10,9 +10,9 @@ import Numeral from '~shared/Numeral';
 // import { UserToken } from '~data/generated';
 // import TokenIcon from '~dashboard/HookedTokenIcon';
 
-import styles from './MemberInfoPopover.css';
+import styles from './UserInfoPopover.css';
 
-const displayName = `InfoPopover.MemberInfoPopover.UserTokens`;
+const displayName = `UserInfoPopover.UserTokens`;
 
 interface Props {
   totalBalance: BigNumberish;
@@ -21,7 +21,7 @@ interface Props {
 
 const MSG = defineMessages({
   labelText: {
-    id: 'InfoPopover.MemberInfoPopover.UserTokens.labelText',
+    id: `${displayName}.labelText`,
     defaultMessage: 'Tokens',
   },
 });

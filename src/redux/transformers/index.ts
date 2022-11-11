@@ -1,6 +1,6 @@
 import { ColonyRole, ColonyRoles, Id } from '@colony/colony-js';
 
-import { Address, User } from '~types';
+import { Address } from '~types';
 
 export const getRolesForUserAndDomain = (
   roles: ColonyRoles,
@@ -124,9 +124,4 @@ export const getAllUserRoles = (colony, userAddress: Address): ColonyRole[] => {
       return allUserRoles;
     }, new Set<ColonyRole>()),
   );
-};
-
-export const getUsername = (user?: User) => {
-  if (!user) return '';
-  return user.name;
 };

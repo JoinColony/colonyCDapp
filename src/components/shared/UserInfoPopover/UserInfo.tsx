@@ -14,7 +14,7 @@ interface Props {
   user: User;
 }
 
-const displayName = 'InfoPopover.UserInfo';
+const displayName = 'UserInfoPopover.UserInfo';
 
 const UserInfo = ({ user }: Props) => {
   const { displayName: userDisplayName } = user.profile || {};

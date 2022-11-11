@@ -74,10 +74,7 @@ const UserMention = ({
   // const { user } = data || {};
 
   // const renderContent = useMemo(() => {
-  //   if (typeof user !== 'undefined') {
-  //     return <UserInfoPopover user={user} />;
-  //   }
-  //   return <UserInfoPopover userNotAvailable />;
+  //   return <UserInfoPopover user={user} />;
   // }, [user]);
   const renderContent = null;
 

@@ -24,7 +24,7 @@ export type Props = ContentProps & {
   showArrow?: boolean;
 };
 
-const displayName = 'InfoPopover.TokenInfoPopoverWrapper';
+const displayName = 'TokenInfoPopover.TokenInfoPopoverWrapper';
 
 const TokenInfoPopoverWrapper = ({
   children,

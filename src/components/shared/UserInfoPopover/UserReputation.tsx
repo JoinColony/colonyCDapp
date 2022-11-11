@@ -4,14 +4,14 @@ import isEmpty from 'lodash/isEmpty';
 
 import Heading from '~shared/Heading';
 import { UserReputationForTopDomainsQuery } from '~data/generated';
-import { Colony } from '~data/index';
+import { Colony } from '~types';
 import { ZeroValue } from '~utils/reputation';
 
-import styles from './MemberInfoPopover.css';
+import styles from './UserInfoPopover.css';
 import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
 
-const displayName = `InfoPopover.MemberInfoPopover.UserReputation`;
+const displayName = `UserInfoPopover.UserReputation`;
 
 interface Props {
   colony: Colony;
@@ -22,11 +22,11 @@ interface Props {
 
 const MSG = defineMessages({
   labelText: {
-    id: 'InfoPopover.MemberInfoPopover.UserReputation.labelText',
+    id: `${displayName}.labelText`,
     defaultMessage: 'Reputation',
   },
   noReputationDescription: {
-    id: 'InfoPopover.MemberInfoPopover.UserReputation.noReputationDescription',
+    id: `${displayName}.noReputationDescription`,
     defaultMessage: `{isCurrentUserReputation, select,
       true {You don’t have any reputation yet.\nTo earn reputation you}
       other {This user doesn’t have any reputation yet.
@@ -34,7 +34,7 @@ const MSG = defineMessages({
     } need to contribute to the colony`,
   },
   starReputationTitle: {
-    id: 'InfoPopover.MemberInfoPopover.UserReputation.starReputationTitle',
+    id: `${displayName}.starReputationTitle`,
     defaultMessage: `User reputation on {domainName}: {reputation}%`,
   },
 });

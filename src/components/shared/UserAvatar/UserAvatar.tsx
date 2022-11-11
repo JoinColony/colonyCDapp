@@ -3,16 +3,14 @@ import { PopperOptions } from 'react-popper-tooltip';
 
 import Popover from '~shared/Popover';
 import Avatar from '~shared/Avatar';
-import MemberInfoPopover from '../InfoPopover/MemberInfoPopover';
-import UserInfoPopover from '../InfoPopover/UserInfoPopover';
+import UserInfoPopover from '../UserInfoPopover';
 import Link from '~shared/NavLink';
 import { Address, User, Colony } from '~types';
-import { getUsername } from '~redux/transformers';
 
 import styles from './UserAvatar.css';
 import { getMainClasses } from '~utils/css';
 
-interface BaseProps {
+interface Props {
   /** Address of the current user for identicon fallback */
   address: Address;
 
@@ -24,6 +22,8 @@ interface BaseProps {
 
   /** Is passed through to Avatar */
   className?: string;
+
+  colony?: Colony;
 
   /** Avatars that are not set have a different placeholder */
   notSet?: boolean;
@@ -44,13 +44,6 @@ interface BaseProps {
   user?: User;
 }
 
-/** Used for the infopopover */
-interface PropsForReputation extends BaseProps {
-  colony?: Colony;
-}
-
-export type Props = BaseProps | PropsForReputation;
-
 const displayName = 'UserAvatar';
 
 const UserAvatar = ({
@@ -58,36 +51,20 @@ const UserAvatar = ({
   avatarURL,
   banned = false,
   className,
+  colony,
   notSet,
   popperOptions,
   showInfo,
   showLink,
   size,
   user,
-  ...reputationProps
 }: Props) => {
-  const username = getUsername(user);
   const trigger = showInfo ? 'click' : 'disabled';
   const showArrow = popperOptions && popperOptions.showArrow;
 
   const renderContent = useMemo(() => {
-    if ('colony' in reputationProps) {
-      const { colony } = reputationProps;
-      if (typeof colony !== 'undefined') {
-        return (
-          <MemberInfoPopover
-            // colony={colony}
-            user={user}
-            banned={banned}
-          />
-        );
-      }
-    }
-    if (typeof user !== 'undefined') {
-      return <UserInfoPopover user={user} />;
-    }
-    return <UserInfoPopover userNotAvailable />;
-  }, [user, banned, reputationProps]);
+    return <UserInfoPopover colony={colony} user={user} banned={banned} />;
+  }, [user, banned, colony]);
 
   const avatar = (
     <Popover
@@ -116,9 +93,9 @@ const UserAvatar = ({
       </div>
     </Popover>
   );
-  if (showLink && username) {
+  if (showLink && user) {
     // Won't this always be lowercase?
-    return <Link to={`/user/${username.toLowerCase()}`}>{avatar}</Link>;
+    return <Link to={`/user/${user.name.toLowerCase()}`}>{avatar}</Link>;
   }
   return avatar;
 };

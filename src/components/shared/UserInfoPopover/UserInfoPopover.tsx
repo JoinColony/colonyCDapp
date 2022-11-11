@@ -5,44 +5,47 @@ import React from 'react';
 // import { SpinnerLoader } from '~shared/Preloaders';
 import Tag from '~shared/Tag';
 // import {
-//   AnyUser,
 //   useColonyNativeTokenQuery,
-//   Colony,
 //   useUserBalanceWithLockQuery,
-//   useUserReputationForTopDomainsQuery,
 // } from '~data/index';
-// import { useAppContext } from '~hooks';
 // import { getAllUserRoles } from '~redux/transformers';
-import UserInfo from '../UserInfo';
-import { User } from '~types';
+import UserInfo from './UserInfo';
+import NotAvailableMessage from '../NotAvailableMessage/NotAvailableMessage';
+import { User, Colony } from '~types';
+import { useAppContext, useUserReputation } from '~hooks';
 
 // import UserPermissions from './UserPermissions';
 // import UserTokens from './UserTokens';
-// import UserReputation from './UserReputation';
+import UserReputation from './UserReputation';
 
-import styles from './MemberInfoPopover.css';
+import styles from './UserInfoPopover.css';
 
 interface Props {
-  // colony: Colony;
+  colony?: Colony;
   user?: User;
   banned?: boolean;
 }
 
-const displayName = 'InfoPopover.MemberInfoPopover';
+const displayName = 'UserInfoPopover';
 
-const MemberInfoPopover = ({
+const UserInfoPopover = ({
   // colony: { colonyAddress },
-  // colony,
+  colony,
   user,
-  banned = false,
+  banned = true,
 }: Props) => {
-  // const { wallet } = useAppContext();
-  // const { walletAddress } = user || {};
+  const { wallet } = useAppContext();
+  const { walletAddress } = user || {};
 
   // const { data: nativeTokenAddressData, loading: loadingNativeTokenAddress } =
   //   useColonyNativeTokenQuery({
   //     variables: { address: colonyAddress },
   //   });
+
+  const { userReputation } = useUserReputation(
+    colony?.colonyAddress,
+    wallet?.address,
+  );
 
   // const { data: userReputationData, loading: loadingUserReputation } =
   //   useUserReputationForTopDomainsQuery({
@@ -94,7 +97,6 @@ const MemberInfoPopover = ({
   // const inactiveBalance = BigNumber.from(userLock?.nativeToken?.balance || 0);
   // const lockedBalance = BigNumber.from(userLock?.totalObligation || 0);
   // const activeBalance = BigNumber.from(userLock?.activeTokens || 0);
-
   // const totalBalance = inactiveBalance.add(activeBalance).add(lockedBalance);
 
   return (
@@ -107,20 +109,22 @@ const MemberInfoPopover = ({
       <div className={styles.main}>
         {user?.walletAddress && (
           <div className={styles.section}>
-            <UserInfo user={user} />
+            {typeof user !== 'undefined' ? (
+              <UserInfo user={user} />
+            ) : (
+              <NotAvailableMessage notAvailableDataName="User" />
+            )}
           </div>
         )}
-        {/* {userReputationData && (
+        {colony && userReputation && (
           <div className={styles.section}>
             <UserReputation
               colony={colony}
-              userReputationForTopDomains={
-                userReputationData?.userReputationForTopDomains || []
-              }
+              userReputationForTopDomains={userReputation || []}
               isCurrentUserReputation={wallet?.address === walletAddress}
             />
           </div>
-        )} */}
+        )}
         {/* {!totalBalance.isZero() && nativeToken && (
           <div className={styles.section}>
             <UserTokens totalBalance={totalBalance} nativeToken={nativeToken} />
@@ -136,6 +140,6 @@ const MemberInfoPopover = ({
   );
 };
 
-MemberInfoPopover.displayName = displayName;
+UserInfoPopover.displayName = displayName;
 
-export default MemberInfoPopover;
+export default UserInfoPopover;

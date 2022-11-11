@@ -7,7 +7,7 @@ import PermissionsLabel from '~shared/PermissionsLabel';
 import styles from './MemberInfoPopover.css';
 import Heading from '~shared/Heading';
 
-const displayName = `InfoPopover.MemberInfoPopover.UserPermissions`;
+const displayName = `UserInfoPopover.UserPermissions`;
 
 interface Props {
   roles: ColonyRole[];
@@ -15,7 +15,7 @@ interface Props {
 
 const MSG = defineMessages({
   labelText: {
-    id: 'InfoPopover.MemberInfoPopover.UserPermissions.labelText',
+    id: `${displayName}.labelText`,
     defaultMessage: 'Permissions',
   },
 });
