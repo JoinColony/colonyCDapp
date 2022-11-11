@@ -12,7 +12,7 @@ import Tag from '~shared/Tag';
 import UserInfo from './UserInfo';
 import NotAvailableMessage from '../NotAvailableMessage/NotAvailableMessage';
 import { User, Colony } from '~types';
-import { useAppContext, useUserReputation } from '~hooks';
+import { useAppContext, useUserReputationForTopDomains } from '~hooks';
 
 // import UserPermissions from './UserPermissions';
 // import UserTokens from './UserTokens';
@@ -42,7 +42,7 @@ const UserInfoPopover = ({
   //     variables: { address: colonyAddress },
   //   });
 
-  const { userReputation } = useUserReputation(
+  const { userReputation } = useUserReputationForTopDomains(
     colony?.colonyAddress,
     wallet?.address,
   );

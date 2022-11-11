@@ -63,8 +63,10 @@ input GetUserReputationInput {
   rootHash: String
 }
 
-type TokenFromEverywhereReturn {
-  items: [Token]
+input GetUserReputationForTopDomainsInput {
+  walletAddress: String!
+  colonyAddress: String!
+  rootHash: String
 }
 
 enum TokenType {
@@ -111,6 +113,9 @@ type Query {
   getUserReputation(
     input: GetUserReputationInput
   ): String @function(name: "getUserReputation")
+  getUserReputationForTopDomains(
+    input: GetUserReputationForTopDomainsInput
+  ): GetUserReputationForTopDomainsReturn @function(name: "getUserReputationForTopDomains")
 }
 
 type Mutation {

@@ -3,20 +3,19 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import isEmpty from 'lodash/isEmpty';
 
 import Heading from '~shared/Heading';
-import { UserReputationForTopDomainsQuery } from '~data/generated';
 import { Colony } from '~types';
 import { ZeroValue } from '~utils/reputation';
 
 import styles from './UserInfoPopover.css';
 import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
+import { UserReputationForTopsDomains } from '~hooks';
 
 const displayName = `UserInfoPopover.UserReputation`;
 
 interface Props {
   colony: Colony;
-  // eslint-disable-next-line max-len
-  userReputationForTopDomains: UserReputationForTopDomainsQuery['userReputationForTopDomains'];
+  userReputationForTopDomains: UserReputationForTopsDomains[];
   isCurrentUserReputation: boolean;
 }
 
@@ -40,21 +39,21 @@ const MSG = defineMessages({
 });
 
 const UserReputation = ({
-  colony,
+  // colony,
   userReputationForTopDomains,
   isCurrentUserReputation,
 }: Props) => {
-  const formattedUserReputations = userReputationForTopDomains?.map(
-    ({ domainId, ...rest }) => {
-      const reputationDomain = colony.domains.find(
-        (domain) => domain.ethDomainId === domainId,
-      );
-      return {
-        ...rest,
-        reputationDomain,
-      };
-    },
-  );
+  // const formattedUserReputations = userReputationForTopDomains?.map(
+  //   ({ domainId, ...rest }) => {
+  //     const reputationDomain = colony?.domains?.items.find(
+  //       (domain) => domain?.ethDomainId === domainId,
+  //     );
+  //     return {
+  //       ...rest,
+  //       reputationDomain,
+  //     };
+  //   },
+  // );
 
   return (
     <div className={styles.sectionContainer}>
@@ -66,7 +65,7 @@ const UserReputation = ({
         }}
         text={MSG.labelText}
       />
-      {isEmpty(formattedUserReputations) ? (
+      {isEmpty(userReputationForTopDomains) ? (
         <p className={styles.noReputationDescription}>
           <FormattedMessage
             {...MSG.noReputationDescription}
@@ -75,26 +74,27 @@ const UserReputation = ({
         </p>
       ) : (
         <ul>
-          {formattedUserReputations.map(
-            ({ reputationDomain, reputationPercentage }) => (
+          {userReputationForTopDomains.map(
+            ({ domainId, reputationPercentage }) => (
               <li
-                key={`${reputationDomain?.name}-${reputationPercentage}`}
+                key={`${domainId}-${reputationPercentage}`}
                 className={styles.domainReputationItem}
               >
-                <p className={styles.domainName}>{reputationDomain?.name}</p>
+                <p className={styles.domainName}>{domainId}</p>
                 <div className={styles.reputationContainer}>
                   {reputationPercentage === ZeroValue.NearZero && (
                     <div className={styles.reputation}>
                       {reputationPercentage}
                     </div>
                   )}
-                  {reputationPercentage !== ZeroValue.NearZero && (
-                    <Numeral
-                      className={styles.reputation}
-                      value={reputationPercentage}
-                      suffix="%"
-                    />
-                  )}
+                  {reputationPercentage &&
+                    reputationPercentage !== ZeroValue.NearZero && (
+                      <Numeral
+                        className={styles.reputation}
+                        value={reputationPercentage}
+                        suffix="%"
+                      />
+                    )}
                   <Icon
                     name="star"
                     appearance={{ size: 'extraTiny' }}
@@ -102,7 +102,7 @@ const UserReputation = ({
                     title={MSG.starReputationTitle}
                     titleValues={{
                       reputation: reputationPercentage,
-                      domainName: reputationDomain?.name,
+                      domainName: domainId /* reputationDomain?.name */,
                     }}
                   />
                 </div>
