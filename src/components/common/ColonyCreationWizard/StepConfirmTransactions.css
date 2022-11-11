@@ -1,0 +1,45 @@
+@value query700 from '~styles/queries.css';
+
+.main {
+  padding-top: 100px;
+  width: 500px;
+}
+
+.main div {
+  max-height: none;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  padding: 22px 15px 18px 15px;
+  border-radius: 5px;
+  border: 1px solid var(--temp-grey-blue-2);
+  background-color: var(--temp-grey-blue-6);
+}
+
+.containerGasPrice {
+  padding: 0px 15px 12px 15px;
+  border: 1px solid var(--temp-grey-blue-2);
+  background-color: var(--temp-grey-blue-6);
+}
+
+.deploymentError {
+  padding: 15px;
+  border-radius: var(--radius-small);
+  background-color: var(--danger);
+  text-align: center;
+  color: var(--colony-white);
+}
+
+.linkToColony {
+  font-weight: var(--weight-bold);
+  text-decoration: underline;
+}
+
+@media screen and query700 {
+  .container {
+    padding: 22px 0px 18px 0px;
+  }
+}

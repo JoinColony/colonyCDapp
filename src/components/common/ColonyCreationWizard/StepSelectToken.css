@@ -1,0 +1,58 @@
+@value query700 from '~styles/queries.css';
+
+.main {
+  width: 100%;
+  max-width: 460px;
+}
+
+.header {
+  margin-bottom: 40px;
+}
+
+.labelContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  margin-top: 180px;
+  margin-bottom: 45px;
+  font-weight: var(--weight-bold);
+}
+
+.title span {
+  word-break: break-word;
+}
+
+.tokenDetails {
+  margin-top: 50px;
+}
+
+.input {
+  width: 100%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 48px;
+}
+
+.linkToOtherStep {
+  border: none;
+  background-color: transparent;
+  font-size: var(--size-small);
+  font-weight: var(--weight-bold);
+  color: var(--sky-blue);
+  cursor: pointer;
+}
+
+@media screen and query700 {
+  .tokenDetails, .buttons {
+    margin-top: 25px;
+  }
+
+  .main form {
+    padding-bottom: 40px;
+  }
+}

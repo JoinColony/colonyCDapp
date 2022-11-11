@@ -1,0 +1,231 @@
+import { $PropertyType } from 'utility-types';
+import { FormikBag } from 'formik';
+import React, { useCallback, useState } from 'react';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import * as yup from 'yup';
+
+import { ADDRESS_ZERO, DEFAULT_NETWORK_TOKEN } from '~constants';
+import { WizardProps } from '~shared/Wizard';
+import { Form, Input } from '~shared/Fields';
+import Heading from '~shared/Heading';
+import Button from '~shared/Button';
+import { multiLineTextEllipsis } from '~utils/strings';
+
+import TokenSelector from './TokenSelector';
+
+import styles from './StepSelectToken.css';
+
+interface FormValues {
+  tokenAddress: string;
+  tokenChoice: 'create' | 'select';
+  tokenSymbol?: string;
+  tokenName?: string;
+  tokenIcon?: string;
+  tokenData: OneToken | null;
+  colonyName: string;
+  displayName: string;
+}
+
+type Bag = FormikBag<object, FormValues>;
+type SetFieldValue = $PropertyType<Bag, 'setFieldValue'>;
+
+type Props = WizardProps<FormValues>;
+
+const displayName = 'common.ColonyCreationWizard.StepSelectToken';
+
+const MSG = defineMessages({
+  heading: {
+    id: `${displayName}.heading`,
+    defaultMessage: 'Which ERC20 token would you like to use for {colony}',
+  },
+  symbolHint: {
+    id: `${displayName}.symbolHint`,
+    defaultMessage: 'Max of 5 characters',
+  },
+  tokenName: {
+    id: `${displayName}.tokenName`,
+    defaultMessage: 'Token Name',
+  },
+  tokenSymbol: {
+    id: `${displayName}.tokenSymbol`,
+    defaultMessage: 'Token Symbol',
+  },
+  continue: {
+    id: `${displayName}.continue`,
+    defaultMessage: 'Continue',
+  },
+  invalidAddress: {
+    id: `${displayName}.invalidAddress`,
+    defaultMessage:
+      'Not a valid token. Only ERC20 tokens with 18 decimals are supported.',
+  },
+  addressZeroError: {
+    id: `${displayName}.addressZeroError`,
+    defaultMessage:
+      'You cannot use {symbol} token as a native token for colony.',
+  },
+  link: {
+    id: `${displayName}.link`,
+    defaultMessage: 'I want to create a New Token',
+  },
+  fileUploadTitle: {
+    id: `${displayName}.fileUpload`,
+    defaultMessage: 'Token Icon (optional)',
+  },
+  fileUploadHint: {
+    id: `${displayName}.fileUploadHint`,
+    defaultMessage: 'Recommended format: .png or .svg',
+  },
+});
+
+export const validationSchema = (addressZeroErrorMessage) =>
+  yup.object({
+    tokenAddress: yup
+      .string()
+      //.address(() => MSG.invalidAddress)
+      .test(
+        'is-not-addressZero',
+        addressZeroErrorMessage,
+        (value) => value !== ADDRESS_ZERO,
+      ),
+    tokenSymbol: yup.string().max(10),
+    tokenName: yup.string().max(256),
+  });
+
+const StepSelectToken = ({
+  nextStep,
+  previousStep,
+  stepCompleted,
+  wizardForm: { initialValues },
+  wizardValues,
+}: Props) => {
+  const [tokenData, setTokenData] = useState<OneToken | undefined>();
+  const { formatMessage } = useIntl();
+  const [isLoadingAddress, setisLoadingAddress] = useState<boolean>(false);
+  const [tokenSelectorHasError, setTokenSelectorHasError] =
+    useState<boolean>(false);
+
+  const handleTokenSelect = (
+    checkingAddress: boolean,
+    token: OneToken,
+    setFieldValue: SetFieldValue,
+  ) => {
+    setTokenData(token);
+    setisLoadingAddress(checkingAddress);
+
+    setFieldValue('tokenName', token?.name || '');
+    setFieldValue('tokenSymbol', token?.symbol || '');
+  };
+
+  const handleTokenSelectError = (hasError: boolean) => {
+    setTokenSelectorHasError(hasError);
+  };
+
+  const goToTokenCreate = useCallback(() => {
+    /* This is a custom link since it goes to a sibling step that appears
+      to be parallel to this one after the wizard steps diverge,
+      while making sure that the data form the previous wizard steps doesn't get lost
+    */
+    const wizardValuesCopy: FormValues = { ...wizardValues };
+    previousStep();
+    wizardValuesCopy.tokenChoice = 'create';
+    nextStep(wizardValuesCopy);
+  }, [wizardValues, nextStep, previousStep]);
+
+  return (
+    <section className={styles.main}>
+      <div className={styles.title}>
+        <Heading appearance={{ size: 'medium', weight: 'bold' }}>
+          <FormattedMessage
+            {...MSG.heading}
+            values={{
+              /*
+               * @NOTE We need to use a JS string truncate here, rather then CSS,
+               * since we're dealing with a string that needs to be truncated,
+               * inside a sentence that does not
+               */
+              colony: (
+                <span title={wizardValues.displayName}>
+                  {multiLineTextEllipsis(wizardValues.displayName, 120)}
+                </span>
+              ),
+            }}
+          />
+        </Heading>
+      </div>
+      <Form
+        onSubmit={nextStep}
+        validationSchema={validationSchema(
+          formatMessage(MSG.addressZeroError, {
+            symbol: DEFAULT_NETWORK_TOKEN.symbol,
+          }),
+        )}
+        initialValues={initialValues}
+      >
+        {({ dirty, isValid, setFieldValue, values }) => (
+          <div>
+            <TokenSelector
+              tokenAddress={values.tokenAddress}
+              onTokenSelect={(checkingAddress: boolean, token: OneToken) => {
+                handleTokenSelect(checkingAddress, token, setFieldValue);
+              }}
+              onTokenSelectError={handleTokenSelectError}
+              tokenSelectorHasError={tokenSelectorHasError}
+              isLoadingAddress={isLoadingAddress}
+              tokenData={tokenData}
+              extra={
+                <button
+                  type="button"
+                  className={styles.linkToOtherStep}
+                  tabIndex={-2}
+                  onClick={goToTokenCreate}
+                >
+                  <FormattedMessage {...MSG.link} />
+                </button>
+              }
+              appearance={{ theme: 'fat' }}
+            />
+            {values.tokenAddress && !tokenData && (
+              <>
+                <div className={styles.tokenDetails}>
+                  <Input
+                    name="tokenName"
+                    label={MSG.tokenName}
+                    appearance={{ theme: 'fat' }}
+                  />
+                </div>
+                <div className={styles.tokenDetails}>
+                  <Input
+                    name="tokenSymbol"
+                    label={MSG.tokenSymbol}
+                    help={MSG.symbolHint}
+                    formattingOptions={{ uppercase: true, blocks: [5] }}
+                    appearance={{ theme: 'fat' }}
+                  />
+                </div>
+              </>
+            )}
+            <div className={styles.buttons}>
+              <Button
+                appearance={{ theme: 'primary', size: 'large' }}
+                type="submit"
+                text={MSG.continue}
+                disabled={
+                  tokenSelectorHasError ||
+                  !isValid ||
+                  (!dirty && !stepCompleted) ||
+                  isLoadingAddress
+                }
+                data-test="definedTokenConfirm"
+              />
+            </div>
+          </div>
+        )}
+      </Form>
+    </section>
+  );
+};
+
+StepSelectToken.displayName = displayName;
+
+export default StepSelectToken;

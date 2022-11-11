@@ -25,6 +25,7 @@ export const MD_REPUTATION_INFO = `https://colony.gitbook.io/colony/key-concepts
  */
 export const TOKEN_ACTIVATION_INFO = `https://colony.gitbook.io/colony/key-concepts/token-activation`;
 export const TOKEN_UNLOCK_INFO = `https://colony.gitbook.io/colony/manage-funds/unlock-token`;
+export const SELECT_NATIVE_TOKEN_INFO = `https://colony.gitbook.io/colony/create-a-colony/select-native-token`;
 
 /*
  * Recovery Mode

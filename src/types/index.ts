@@ -16,6 +16,7 @@ export type WithKey = {
   key: any;
 };
 
+export type Values<T> = T[keyof T];
 export type ExcludesNull = <T>(x: T | null) => x is T;
 export type RequireProps<T, K extends keyof T> = Omit<T, K> &
   Required<Pick<T, K>>;
