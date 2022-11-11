@@ -10,7 +10,7 @@ import { Token } from '~types';
 // import TokenIcon from '~dashboard/HookedTokenIcon';
 import { DEFAULT_NETWORK_INFO } from '~constants';
 
-import styles from './InfoPopover.css';
+import styles from './TokenInfoPopover.css';
 
 const displayName = 'TokenInfoPopover.TokenInfo';
 

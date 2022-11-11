@@ -8,7 +8,7 @@ import UserAvatar from '~shared/UserAvatar';
 import { User } from '~types';
 // import useUserAvatarImageFromIPFS from '~utils/hooks/useUserAvatarImageFromIPFS';
 
-import styles from './InfoPopover.css';
+import styles from './UserInfo.css';
 
 interface Props {
   user: User;

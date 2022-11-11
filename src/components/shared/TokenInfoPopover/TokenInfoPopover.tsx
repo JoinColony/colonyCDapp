@@ -6,7 +6,7 @@ import { Token } from '~types';
 import TokenInfo from './TokenInfo';
 import NotAvailableMessage from '../NotAvailableMessage/NotAvailableMessage';
 
-import styles from './InfoPopover.css';
+import styles from './TokenInfoPopover.css';
 
 interface Props {
   token?: Token;

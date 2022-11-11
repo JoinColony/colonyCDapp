@@ -1,0 +1,34 @@
+.container {
+  composes: flexContainerRow flexAlignCenter from '~styles/layout.css';
+  display: flex;
+}
+
+.textContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-left: 12px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.userName {
+  composes: inlineEllipsis from "~styles/text.css";
+  margin-bottom: 2px;
+  width: 100%;
+}
+
+.userName a {
+  font-size: var(--size-smallish);
+  font-weight: var(--weight-bold);
+  color: var(--pink);
+}
+
+.address span {
+  font-size: var(--size-smallish);
+}
+
+.address button {
+  height: auto;
+}

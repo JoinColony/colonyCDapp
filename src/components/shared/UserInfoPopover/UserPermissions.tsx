@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 
 import PermissionsLabel from '~shared/PermissionsLabel';
 
-import styles from './MemberInfoPopover.css';
+import styles from './UserInfoPopover.css';
 import Heading from '~shared/Heading';
 
 const displayName = `UserInfoPopover.UserPermissions`;
