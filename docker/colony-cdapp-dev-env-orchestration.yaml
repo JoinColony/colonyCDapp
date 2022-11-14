@@ -20,6 +20,8 @@ services:
     image: colony-cdapp-dev-env/reputation-monitor:latest
     volumes:
       - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
+    ports:
+      - '3001:3001'
     depends_on:
       network-contracts:
         condition: service_healthy

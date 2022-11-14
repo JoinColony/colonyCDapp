@@ -56,9 +56,9 @@ You can access the Amplify / Mock Appsync GraphQL api playground at `http://loca
 
 In order for reputation to function within your dev environment, you will need to toggle it on first.
 
-Access the following URL to toggle the reputation monitor auto-mining on or off: `http://127.0.01:3001/reputation/monitor/toggle`
+Access the following URL to toggle the reputation monitor auto-mining on or off: `http://127.0.0.1:3001/reputation/monitor/toggle`
 
-You can also view the status of the reputation monitor using the following URL: `http://127.0.01:3001/reputation/monitor/status`
+You can also view the status of the reputation monitor using the following URL: `http://127.0.0.1:3001/reputation/monitor/status`
 
 ### Truffle
 
