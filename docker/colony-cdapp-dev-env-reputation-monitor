@@ -31,7 +31,7 @@ WORKDIR /colonyCDappBackend
 
 # Open up ports to the docker image
 # Reputation Oracle
-EXPOSE 3002
+EXPOSE 3001
 
 # Make the run script executable
 RUN chmod +x ./run.sh
