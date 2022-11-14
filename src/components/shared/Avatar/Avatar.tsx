@@ -41,6 +41,7 @@ const Avatar = ({
   placeholderIcon,
   size,
   title,
+  data,
 }: Props) => {
   const avatar = notSet ? null : avatarURL || getIcon(seed || title);
   const mainClass = size ? styles[size] : styles.main;
@@ -68,8 +69,9 @@ const Avatar = ({
       title={title}
     >
       {avatar ? (
-        <div className={styles.image} style={imageStyle} />
+        <img src={data} className={styles.image} style={imageStyle} alt="boo" />
       ) : (
+        // <div className={styles.image} style={imageStyle} />
         <Icon
           className={
             notSet ? styles.placeholderIconNotSet : styles.placeholderIcon

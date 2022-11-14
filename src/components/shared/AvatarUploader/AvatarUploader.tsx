@@ -7,11 +7,10 @@ import {
 
 import { Formik } from 'formik';
 
+import FileUpload, { FileReaderFile } from '~shared/FileUpload';
 import { Appearance } from '~shared/Fields/Input/InputComponent';
 
 import styles from './AvatarUploader.css';
-
-import FileUpload, { FileReaderFile } from '../FileUpload';
 
 import Button from '../Button';
 
@@ -29,7 +28,8 @@ const MSG = defineMessages({
 });
 
 export const ACCEPTED_MIME_TYPES = {
-  'image/*': ['.png', 'svg+xml'],
+  'image/svg+xml': [],
+  'image/png': [],
 };
 
 export const ACCEPTED_MAX_FILE_SIZE = 1048576; // 1 Mb

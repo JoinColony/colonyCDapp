@@ -9,7 +9,7 @@ import Icon from '../Icon';
 import { Tooltip } from '../Popover';
 import ProgressBar from '../ProgressBar';
 
-import fileReader from '../../../../lib/fileReader';
+import fileReader from '~utils/fileReader';
 
 import styles from './UploadItem.css';
 

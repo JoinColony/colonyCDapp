@@ -13,7 +13,7 @@ import ColonyFunding from '~common/ColonyFunding';
 import ColonyMembers from '~common/ColonyMembers';
 import FourOFour from '~frame/FourOFour';
 import UserProfile from '~common/UserProfile';
-// import UserProfileEdit from '~users/UserProfileEdit';
+import UserProfileEdit from '~common/UserProfileEdit';
 import {
   // NavBar, Plain, SimpleNav,
   Default,
@@ -35,7 +35,8 @@ import {
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   CREATE_COLONY_ROUTE,
   CREATE_USER_ROUTE,
-  // USER_EDIT_ROUTE,
+  // CREATE_COLONY_ROUTE,
+  USER_EDIT_ROUTE,
   USER_ROUTE,
   LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
@@ -147,14 +148,14 @@ const Routes = () => {
             </UserLayout>
           }
         />
-        {/* <Route
+        <Route
           path={USER_EDIT_ROUTE}
           element={
-            <Default routeProps={{ hasBackLink: true }}>
+            <UserLayout routeProps={{ hasBackLink: true }}>
               <UserProfileEdit />
-            </Default>
+            </UserLayout>
           }
-        /> */}
+        />
         {/* <WalletRequiredRoute
           isConnected={isConnected}
           didClaimProfile={didClaimProfile}

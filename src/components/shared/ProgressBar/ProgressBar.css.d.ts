@@ -1,13 +1,24 @@
-export const wrapper: string;
-export const main: string;
-export const sizeNormal: string;
-export const sizeSmall: string;
-export const backgroundThemeTransparent: string;
-export const backgroundThemeDefault: string;
-export const backgroundThemeDark: string;
-export const barThemePrimary: string;
-export const barThemeDanger: string;
-export const threshold: string;
-export const thresholdPercentage: string;
-export const thresholdSeparator: string;
-export const borderRadiusSmall: string;
+declare namespace ProgressBarCssNamespace {
+  export interface IProgressBarCss {
+    backgroundThemeDark: string;
+    backgroundThemeDefault: string;
+    backgroundThemeTransparent: string;
+    barThemeDanger: string;
+    barThemePrimary: string;
+    borderRadiusSmall: string;
+    main: string;
+    sizeNormal: string;
+    sizeSmall: string;
+    threshold: string;
+    thresholdPercentage: string;
+    thresholdSeparator: string;
+    wrapper: string;
+  }
+}
+
+declare const ProgressBarCssModule: ProgressBarCssNamespace.IProgressBarCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: ProgressBarCssNamespace.IProgressBarCss;
+};
+
+export = ProgressBarCssModule;

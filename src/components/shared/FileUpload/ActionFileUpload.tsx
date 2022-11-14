@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useAsyncFunction } from '~utils/hooks';
+import { useAsyncFunction } from '~hooks';
 
 import FileUpload from './FileUpload';
 
