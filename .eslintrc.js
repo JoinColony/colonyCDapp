@@ -38,8 +38,9 @@ module.exports = {
     },
   ],
   rules: {
-    // Using the typescript-eslint version for that
+    // Using the typescript-eslint version for these
     'no-unused-vars': 'off',
+    'no-undef': 'off',
     // TypeScript overloads
     'no-dupe-class-members': 'off',
     camelcase: ['error', { allow: ['^TEMP_'] }],
