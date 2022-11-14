@@ -39,7 +39,7 @@ export { default as useAppContext } from './useAppContext';
 export { default as useUserReputation } from './useUserReputation';
 export {
   default as useUserReputationForTopDomains,
-  UserReputationForTopsDomains,
+  UserDomainReputation,
 } from './useUserReputationForTopDomains';
 export { default as useColonyContext } from './useColonyContext';
 export * from './useCanInteractWithColony';

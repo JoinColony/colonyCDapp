@@ -63,10 +63,23 @@ input GetUserReputationInput {
   rootHash: String
 }
 
+type TokenFromEverywhereReturn {
+  items: [Token]
+}
+
 input GetUserReputationForTopDomainsInput {
   walletAddress: String!
   colonyAddress: String!
   rootHash: String
+}
+
+type UserDomainReputation {
+  domainId: Int!
+  reputationPercentage: String!
+}
+
+type GetUserReputationForTopDomainsReturn {
+  items: [UserDomainReputation]
 }
 
 enum TokenType {

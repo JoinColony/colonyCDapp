@@ -4,9 +4,9 @@ import { Address } from '~types';
 import { getUserReputationForTopDomains } from '~gql';
 import { PercentageReputationType } from '~utils/reputation';
 
-export type UserReputationForTopsDomains = {
-  reputationPercentage?: PercentageReputationType;
+export type UserDomainReputation = {
   domainId?: number;
+  reputationPercentage?: PercentageReputationType;
 };
 
 const useUserReputationForTopDomains = (
@@ -29,7 +29,7 @@ const useUserReputationForTopDomains = (
     },
   );
 
-  const userReputation: UserReputationForTopsDomains[] = userReputationData;
+  const userReputation: UserDomainReputation[] = userReputationData;
 
   return {
     userReputation,
