@@ -12,12 +12,14 @@ import { getCurrentUser } from '~gql';
 
 import { getContext, ContextModule } from './index';
 
-export const AppContext = createContext<{
+export interface AppContext {
   wallet?: Wallet;
   user?: User;
   userLoading?: boolean;
   updateWallet?: () => void;
-}>({});
+  updateUser?: (address?: string) => void;
+}
+export const AppContext = createContext<AppContext>({});
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   let initialWallet;
@@ -37,7 +39,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState(initialUser);
   const [userLoading, setUserLoading] = useState(false);
 
-  const updateUser = useCallback((address) => {
+  const updateUser = useCallback((address?: string) => {
     if (address) {
       try {
         setUserLoading(true);
@@ -45,6 +47,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
         const query = apolloClient.query({
           query: gql(getCurrentUser),
           variables: { address },
+          fetchPolicy: 'network-only',
         });
         query.then(({ data }) => {
           const [currentUser] = data?.getUserByAddress.items || [];
@@ -78,13 +81,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [updateUser, wallet]);
 
-  const appContext = useMemo<{
-    wallet?: Wallet;
-    user?: User;
-    userLoading?: boolean;
-    updateWallet: () => void;
-  }>(
-    () => ({ wallet, user, userLoading, updateWallet }),
+  const appContext = useMemo<AppContext>(
+    () => ({ wallet, user, userLoading, updateWallet, updateUser }),
     [updateWallet, user, userLoading, wallet],
   );
 
