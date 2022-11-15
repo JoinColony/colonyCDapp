@@ -12,14 +12,15 @@ import { getCurrentUser } from '~gql';
 
 import { getContext, ContextModule } from './index';
 
-export interface AppContext {
+interface AppContextValues {
   wallet?: Wallet;
   user?: User;
   userLoading?: boolean;
   updateWallet?: () => void;
   updateUser?: (address?: string) => void;
 }
-export const AppContext = createContext<AppContext>({});
+
+export const AppContext = createContext<AppContextValues>({});
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   let initialWallet;
@@ -81,9 +82,9 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [updateUser, wallet]);
 
-  const appContext = useMemo<AppContext>(
+  const appContext = useMemo<AppContextValues>(
     () => ({ wallet, user, userLoading, updateWallet, updateUser }),
-    [updateWallet, user, userLoading, wallet],
+    [updateWallet, user, userLoading, wallet, updateUser],
   );
 
   return (

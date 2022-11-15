@@ -1,35 +1,22 @@
-import { $PropertyType } from 'utility-types';
-import { FormikBag } from 'formik';
-import React, { useCallback, useState } from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import * as yup from 'yup';
+import { FormikHelpers } from 'formik';
+import React, { useState } from 'react';
+import { defineMessages, FormattedMessage } from 'react-intl';
+import { string, object } from 'yup';
 
-import { ADDRESS_ZERO, DEFAULT_NETWORK_TOKEN } from '~constants';
 import { WizardProps } from '~shared/Wizard';
-import { Form, Input } from '~shared/Fields';
+import { Form } from '~shared/Fields';
 import Heading from '~shared/Heading';
 import Button from '~shared/Button';
+
+import { ADDRESS_ZERO, DEFAULT_NETWORK_TOKEN } from '~constants';
 import { multiLineTextEllipsis } from '~utils/strings';
+import { intl } from '~utils/intl';
+import { Token } from '~gql';
 
 import TokenSelector from './TokenSelector';
+import { FormValues } from './ColonyCreationWizard';
 
 import styles from './StepSelectToken.css';
-
-interface FormValues {
-  tokenAddress: string;
-  tokenChoice: 'create' | 'select';
-  tokenSymbol?: string;
-  tokenName?: string;
-  tokenIcon?: string;
-  tokenData: OneToken | null;
-  colonyName: string;
-  displayName: string;
-}
-
-type Bag = FormikBag<object, FormValues>;
-type SetFieldValue = $PropertyType<Bag, 'setFieldValue'>;
-
-type Props = WizardProps<FormValues>;
 
 const displayName = 'common.ColonyCreationWizard.StepSelectToken';
 
@@ -68,29 +55,47 @@ const MSG = defineMessages({
     id: `${displayName}.link`,
     defaultMessage: 'I want to create a New Token',
   },
-  fileUploadTitle: {
-    id: `${displayName}.fileUpload`,
-    defaultMessage: 'Token Icon (optional)',
-  },
-  fileUploadHint: {
-    id: `${displayName}.fileUploadHint`,
-    defaultMessage: 'Recommended format: .png or .svg',
-  },
 });
 
-export const validationSchema = (addressZeroErrorMessage) =>
-  yup.object({
-    tokenAddress: yup
-      .string()
-      //.address(() => MSG.invalidAddress)
+const validationSchema = () => {
+  const { formatMessage } = intl;
+
+  return object({
+    tokenAddress: string()
+      .address(() => MSG.invalidAddress)
       .test(
         'is-not-addressZero',
-        addressZeroErrorMessage,
+        formatMessage(MSG.addressZeroError, {
+          symbol: DEFAULT_NETWORK_TOKEN.symbol,
+        }),
         (value) => value !== ADDRESS_ZERO,
       ),
-    tokenSymbol: yup.string().max(10),
-    tokenName: yup.string().max(256),
+    tokenSymbol: string().max(10),
+    tokenName: string().max(256),
   });
+};
+
+type Props = Pick<
+  WizardProps<FormValues>,
+  'nextStep' | 'previousStep' | 'stepCompleted' | 'wizardForm' | 'wizardValues'
+>;
+
+export const switchTokenInputType = (
+  type: FormValues['tokenChoice'],
+  previousStep: Props['previousStep'],
+  nextStep: Props['nextStep'],
+  wizardValues: FormValues,
+) => {
+  /*
+   * This is a custom link since it goes to a sibling step that appears
+   * to be parallel to this one after the wizard steps diverge,
+   * while making sure that the data form the previous wizard steps doesn't get lost
+   */
+  const wizardValuesCopy = { ...wizardValues };
+  previousStep();
+  wizardValuesCopy.tokenChoice = type;
+  nextStep(wizardValuesCopy);
+};
 
 const StepSelectToken = ({
   nextStep,
@@ -99,16 +104,18 @@ const StepSelectToken = ({
   wizardForm: { initialValues },
   wizardValues,
 }: Props) => {
-  const [tokenData, setTokenData] = useState<OneToken | undefined>();
-  const { formatMessage } = useIntl();
+  const goToCreateToken = () =>
+    switchTokenInputType('create', previousStep, nextStep, wizardValues);
+
+  const [tokenData, setTokenData] = useState<Token | undefined>();
   const [isLoadingAddress, setisLoadingAddress] = useState<boolean>(false);
   const [tokenSelectorHasError, setTokenSelectorHasError] =
     useState<boolean>(false);
 
   const handleTokenSelect = (
     checkingAddress: boolean,
-    token: OneToken,
-    setFieldValue: SetFieldValue,
+    token: Token,
+    setFieldValue: FormikHelpers<FormValues>['setFieldValue'],
   ) => {
     setTokenData(token);
     setisLoadingAddress(checkingAddress);
@@ -120,17 +127,6 @@ const StepSelectToken = ({
   const handleTokenSelectError = (hasError: boolean) => {
     setTokenSelectorHasError(hasError);
   };
-
-  const goToTokenCreate = useCallback(() => {
-    /* This is a custom link since it goes to a sibling step that appears
-      to be parallel to this one after the wizard steps diverge,
-      while making sure that the data form the previous wizard steps doesn't get lost
-    */
-    const wizardValuesCopy: FormValues = { ...wizardValues };
-    previousStep();
-    wizardValuesCopy.tokenChoice = 'create';
-    nextStep(wizardValuesCopy);
-  }, [wizardValues, nextStep, previousStep]);
 
   return (
     <section className={styles.main}>
@@ -155,18 +151,14 @@ const StepSelectToken = ({
       </div>
       <Form
         onSubmit={nextStep}
-        validationSchema={validationSchema(
-          formatMessage(MSG.addressZeroError, {
-            symbol: DEFAULT_NETWORK_TOKEN.symbol,
-          }),
-        )}
+        validationSchema={validationSchema}
         initialValues={initialValues}
       >
         {({ dirty, isValid, setFieldValue, values }) => (
           <div>
             <TokenSelector
               tokenAddress={values.tokenAddress}
-              onTokenSelect={(checkingAddress: boolean, token: OneToken) => {
+              onTokenSelect={(checkingAddress: boolean, token: Token) => {
                 handleTokenSelect(checkingAddress, token, setFieldValue);
               }}
               onTokenSelectError={handleTokenSelectError}
@@ -178,33 +170,13 @@ const StepSelectToken = ({
                   type="button"
                   className={styles.linkToOtherStep}
                   tabIndex={-2}
-                  onClick={goToTokenCreate}
+                  onClick={goToCreateToken}
                 >
                   <FormattedMessage {...MSG.link} />
                 </button>
               }
               appearance={{ theme: 'fat' }}
             />
-            {values.tokenAddress && !tokenData && (
-              <>
-                <div className={styles.tokenDetails}>
-                  <Input
-                    name="tokenName"
-                    label={MSG.tokenName}
-                    appearance={{ theme: 'fat' }}
-                  />
-                </div>
-                <div className={styles.tokenDetails}>
-                  <Input
-                    name="tokenSymbol"
-                    label={MSG.tokenSymbol}
-                    help={MSG.symbolHint}
-                    formattingOptions={{ uppercase: true, blocks: [5] }}
-                    appearance={{ theme: 'fat' }}
-                  />
-                </div>
-              </>
-            )}
             <div className={styles.buttons}>
               <Button
                 appearance={{ theme: 'primary', size: 'large' }}

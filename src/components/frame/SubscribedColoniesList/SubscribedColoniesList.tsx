@@ -7,7 +7,6 @@ import NavLink from '~shared/NavLink';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { useAppContext, useCanInteractWithNetwork } from '~hooks';
-import { AppContext } from '~context';
 
 import styles from './SubscribedColoniesList.css';
 
@@ -21,7 +20,7 @@ const MSG = defineMessages({
 });
 
 const SubscribedColoniesList = () => {
-  const { user, userLoading, updateUser }: AppContext = useAppContext();
+  const { user, userLoading, updateUser } = useAppContext();
   const canInteractWithNetwork = useCanInteractWithNetwork();
 
   /* Ensures colony list is up-to-date post create colony flow. */

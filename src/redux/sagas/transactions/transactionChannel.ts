@@ -41,9 +41,7 @@ const parseEventData = (
       } catch {
         /*
          * `parseLog` will throw if the event the log refers to is not among the set of events
-         *  contained in the client interface. In ethers v4, it returned null, hence the need to add a try / catch.
-         *  @TODO: Investigate the reason for which there are logs being generated for events not contained on the client interface,
-         *  and how to resolve. https://github.com/JoinColony/colonyJS/issues/537
+         *  contained in the client interface. In this event, we just return null.
          */
         return null;
       }
@@ -51,7 +49,9 @@ const parseEventData = (
   }
 
   return parsedLogs.reduce((events, log) => {
-    if (!log) return events;
+    if (!log) {
+      return events;
+    }
     // eslint-disable-next-line no-param-reassign
     events[log.name] = log.args;
     return events;

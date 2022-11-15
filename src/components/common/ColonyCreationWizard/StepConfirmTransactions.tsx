@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useSelector, useDispatch } from 'react-redux';
-import { normalize as ensNormalize } from 'eth-ens-namehash-ms';
 import { Navigate } from 'react-router-dom';
 
 import { WizardProps } from '~shared/Wizard';
@@ -92,21 +91,12 @@ const StepConfirmTransactions = ({
     [dispatch],
   );
 
-  const normalizedColonyName = ensNormalize(chosenColonyName);
-  // This should never happen
-  if (!normalizedColonyName)
-    console.error(
-      `The colonyName '${normalizedColonyName}' could not be normalized`,
-    );
-
-  const colonyName = normalizedColonyName || chosenColonyName;
-
   // Redirect to the colony if a successful creteColony tx group is found
   if (
     getGroupStatus(newestGroup) === TRANSACTION_STATUSES.SUCCEEDED &&
     getGroupKey(newestGroup) === 'group.createColony'
   ) {
-    return <Navigate to={`/colony/${colonyName}`} />;
+    return <Navigate to={`/colony/${chosenColonyName}`} />;
   }
 
   const createColonyTxGroup = findTransactionGroupByKey(
@@ -136,7 +126,7 @@ const StepConfirmTransactions = ({
               linkToColony: (
                 <NavLink
                   className={styles.linkToColony}
-                  to={`/colony/${colonyName}`}
+                  to={`/colony/${chosenColonyName}`}
                 >
                   <FormattedMessage {...MSG.keywordHere} />
                 </NavLink>

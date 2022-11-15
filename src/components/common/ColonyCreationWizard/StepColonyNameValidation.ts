@@ -75,10 +75,7 @@ export const validationSchema = object({
             },
           });
           // If query returns no items, colony name not in db. Therefore, not taken.
-          if (!data.getColonyByName?.items.length) {
-            return true;
-          }
-          return false;
+          return !data.getColonyByName?.items.length;
         } catch {
           return this.createError({ message: formatMessage(MSG.networkError) });
         }

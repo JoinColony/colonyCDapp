@@ -4,14 +4,7 @@ import { ClientType } from '@colony/colony-js';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import { putError, takeFrom } from '../utils';
-// import {
-//   ColonyTransfersDocument,
-//   ColonyTransfersQueryVariables,
-//   ColonyTransfersQuery,
-//   TokenBalancesForDomainsQuery,
-//   TokenBalancesForDomainsQueryVariables,
-//   TokenBalancesForDomainsDocument,
-// } from '~data/index';
+
 import { ContextModule, getContext } from '~context';
 
 import { createTransaction, getTxChannel } from '../transactions';

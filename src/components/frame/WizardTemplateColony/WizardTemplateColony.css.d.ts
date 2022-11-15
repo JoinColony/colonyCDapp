@@ -8,9 +8,7 @@ declare namespace WizardTemplateColonyCssNamespace {
     hello: string;
     layoutMain: string;
     mappings: string;
-    moneyContainer: string;
     names: string;
-    noMoney: string;
     query700: string;
     sourceRoot: string;
     sources: string;
@@ -18,7 +16,6 @@ declare namespace WizardTemplateColonyCssNamespace {
     steps: string;
     version: string;
     wallet: string;
-    yeihMoney: string;
   }
 }
 

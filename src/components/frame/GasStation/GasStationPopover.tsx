@@ -23,6 +23,8 @@ interface Props {
 
 const displayName = 'frame.GasStation.GasStationPopover';
 
+const { query700: query } = queries;
+
 const GasStationPopover = ({
   children,
   transactionAndMessageGroups,
@@ -42,7 +44,7 @@ const GasStationPopover = ({
   );
 
   const prevTxCount: number | void = usePrevious(txCount);
-  const isMobile = useMediaQuery({ query: queries.query700 });
+  const isMobile = useMediaQuery({ query });
 
   useEffect(() => {
     if (prevTxCount != null && txCount > prevTxCount) {

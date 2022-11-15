@@ -1,6 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
 import React from 'react';
-import { normalize as ensNormalize } from 'eth-ens-namehash-ms';
 
 import Heading from '~shared/Heading';
 import { useAppContext } from '~hooks';
@@ -34,17 +33,16 @@ const formatUsername = (username: string) => {
 };
 
 const formatColonyName = (values: FormValues, { valueKey }: GenericRow) => {
-  const normalized = ensNormalize(values[valueKey]);
   return (
     <>
       <span title={values.displayName} className={styles.firstValue}>
         {values.displayName}
       </span>
       <span
-        title={`(colony.io/colony/${normalized})`}
+        title={`(colony.io/colony/${values[valueKey]})`}
         className={styles.secondValue}
       >
-        {`(colony.io/colony/${normalized})`}
+        {`(colony.io/colony/${values[valueKey]})`}
       </span>
     </>
   );

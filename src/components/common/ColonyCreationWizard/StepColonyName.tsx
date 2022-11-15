@@ -1,9 +1,8 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useMediaQuery } from 'react-responsive';
-import { normalize as ensNormalize } from 'eth-ens-namehash-ms';
 
-import { WizardProps } from '~shared/Wizard';
+import { WizardStepProps } from '~shared/Wizard';
 import { Form, Input } from '~shared/Fields';
 import Heading from '~shared/Heading';
 import Button from '~shared/Button';
@@ -16,7 +15,7 @@ import { useAppContext } from '~hooks';
 import { validationSchema } from './StepColonyNameValidation';
 import { FormValues } from './ColonyCreationWizard';
 
-import { query700 as query } from '~styles/queries';
+import queries from '~styles/queries.css';
 import styles from './StepColonyName.css';
 
 const displayName = 'common.CreateColonyWizard.StepColonyName';
@@ -26,8 +25,8 @@ const MSG = defineMessages({
     id: `${displayName}.heading`,
     defaultMessage: `Welcome @{username}, let's begin creating your colony.`,
   },
-  descriptionOne: {
-    id: `${displayName}.descriptionOne`,
+  description: {
+    id: `${displayName}.description`,
     defaultMessage: `What would you like to name your colony? Note, it is not possible to change it later.`,
   },
   colonyUniqueURL: {
@@ -37,14 +36,6 @@ const MSG = defineMessages({
   colonyName: {
     id: `${displayName}.colonyName`,
     defaultMessage: 'Colony Name',
-  },
-  continue: {
-    id: `${displayName}.Continue`,
-    defaultMessage: 'Continue',
-  },
-  statusText: {
-    id: `${displayName}.statusText`,
-    defaultMessage: 'Actual Colony Name: {normalized}',
   },
   tooltip: {
     id: `${displayName}.tooltip`,
@@ -57,11 +48,13 @@ const MSG = defineMessages({
 });
 
 type Props = Pick<
-  WizardProps<FormValues>,
-  'wizardForm' | 'nextStep' | 'stepCompleted'
+  WizardStepProps<FormValues>,
+  'wizardForm' | 'nextStep' | 'wizardValues'
 >;
 
-const StepColonyName = ({ wizardForm, nextStep, stepCompleted }: Props) => {
+const { query700: query } = queries;
+
+const StepColonyName = ({ wizardForm, nextStep, wizardValues }: Props) => {
   const { user } = useAppContext();
   const username = user?.profile?.displayName || user?.name || '';
   const isMobile = useMediaQuery({ query });
@@ -72,14 +65,7 @@ const StepColonyName = ({ wizardForm, nextStep, stepCompleted }: Props) => {
       validationSchema={validationSchema}
       {...wizardForm}
     >
-      {({ isValid, isSubmitting, dirty, values: { colonyName } }) => {
-        let normalized = colonyName;
-        try {
-          normalized = ensNormalize(colonyName);
-        } catch {
-          // silent. Validation will show error if not valid ens name.
-        }
-
+      {({ isValid, isSubmitting, dirty }) => {
         return (
           <section className={styles.main}>
             <Heading appearance={{ size: 'medium', weight: 'medium' }}>
@@ -106,7 +92,7 @@ const StepColonyName = ({ wizardForm, nextStep, stepCompleted }: Props) => {
               />
             </Heading>
             <p className={styles.paragraph}>
-              <FormattedMessage {...MSG.descriptionOne} />
+              <FormattedMessage {...MSG.description} />
             </p>
             <div className={styles.nameForm}>
               <Input
@@ -123,9 +109,7 @@ const StepColonyName = ({ wizardForm, nextStep, stepCompleted }: Props) => {
                 // eslint-disable-next-line max-len
                 extensionString={`.colony.${DEFAULT_NETWORK_INFO.displayENSDomain}`}
                 label={MSG.colonyUniqueURL}
-                status={normalized !== colonyName ? MSG.statusText : undefined}
                 formattingOptions={{ lowercase: true, blocks: [256] }}
-                statusValues={{ normalized }}
                 disabled={isSubmitting}
                 extra={
                   <QuestionMarkTooltip
@@ -151,10 +135,12 @@ const StepColonyName = ({ wizardForm, nextStep, stepCompleted }: Props) => {
                   type="submit"
                   data-test="claimColonyNameConfirm"
                   disabled={
-                    !isValid || (!dirty && !stepCompleted) || isSubmitting
+                    !isValid ||
+                    (!dirty && !wizardValues.colonyName) ||
+                    isSubmitting
                   }
                   loading={isSubmitting}
-                  text={MSG.continue}
+                  text={{ id: 'button.continue' }}
                 />
               </div>
             </div>

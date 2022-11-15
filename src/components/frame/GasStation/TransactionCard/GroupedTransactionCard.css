@@ -8,7 +8,7 @@
   border-top: 1px solid var(--grey-blue-1);
   font-size: var(--size-small);
   font-weight: var(--weight-bold);
-  color: var(--grey-dark);
+  color: var(--dark-grey);
 
   &:hover .cancelButton {
     display: inline;

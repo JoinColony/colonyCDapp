@@ -3,7 +3,6 @@ import { all, call, fork, put } from 'redux-saga/effects';
 import { getExtensionHash, Extension, ClientType, Id } from '@colony/colony-js';
 import gql from 'graphql-tag';
 import { poll } from 'ethers/lib/utils';
-import { normalize as ensNormalize } from 'eth-ens-namehash-ms';
 
 import {
   createColonyTokens,
@@ -36,7 +35,6 @@ import {
   getColonyManager,
 } from '../utils';
 import { createTransaction, createTransactionChannels } from '../transactions';
-import { getWallet } from '../wallet';
 
 interface ChannelDefinition {
   channel: Channel<any>;
@@ -55,10 +53,9 @@ function* colonyCreate({
     tokenSymbol,
   },
 }: Action<ActionTypes.CREATE>) {
-  const wallet = yield call(getWallet);
-  const walletAddress = wallet?.address;
-
   const apolloClient = getContext(ContextModule.ApolloClient);
+  const wallet = getContext(ContextModule.Wallet);
+  const walletAddress = wallet?.address;
   const colonyManager: ColonyManager = yield getColonyManager();
   const { networkClient } = colonyManager;
   const channelNames: string[] = [];
@@ -120,8 +117,6 @@ function* colonyCreate({
    * Create all transactions for the group.
    */
   try {
-    const colonyName = ensNormalize(givenColonyName);
-
     if (createToken) {
       yield createGroupedTransaction(createToken, {
         context: ClientType.NetworkClient,
@@ -253,13 +248,14 @@ function* colonyCreate({
 
     let colonyAddress;
     if (createColony) {
-      const version = yield networkClient.getCurrentColonyVersion();
+      const currentColonyVersion =
+        yield networkClient.getCurrentColonyVersion();
 
       yield put(
         transactionAddParams(createColony.id, [
           tokenAddress,
-          version,
-          colonyName,
+          currentColonyVersion,
+          givenColonyName,
           '', // we aren't using ipfs to store metadata in the CDapp
         ]),
       );
@@ -280,22 +276,17 @@ function* colonyCreate({
       /*
        * Create colony in db
        */
-      try {
-        yield apolloClient.mutate({
-          mutation: gql(createUniqueColony),
-          variables: {
-            input: {
-              id: colonyAddress,
-              name: colonyName,
-              colonyNativeTokenId: tokenAddress,
-              profile: { displayName },
-            },
+      yield apolloClient.mutate({
+        mutation: gql(createUniqueColony),
+        variables: {
+          input: {
+            id: colonyAddress,
+            name: givenColonyName,
+            colonyNativeTokenId: tokenAddress,
+            profile: { displayName },
           },
-        });
-      } catch {
-        // @TODO: Fix this error inside the lambda function:
-        // User cannot return null for non-nullable field User.name
-      }
+        },
+      });
 
       /*
        * Add token to colony's token list

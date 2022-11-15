@@ -1,4 +1,3 @@
-import { normalize as ensNormalize } from 'eth-ens-namehash-ms';
 import { addMethod, string } from 'yup';
 
 import { isAddress } from '~utils/web3';
@@ -6,30 +5,25 @@ import { isAddress } from '~utils/web3';
 import en from '../../i18n/en-validation.json';
 
 /*
- * The ens domain regex is composed of
+ * The colony domain regex is composed of
  * ^ start match
- * [A-Za-z0-9] allow upper case, lower case, numerals
- * [^.] negate to not allow dots / periods
+ * [A-Za-z0-9] starts with upper case, lower case or numerals
+ * [A-Za-z0-9_] can include upper case, lower case, numerals or underscore
  * {0,255} match at least 1 and at most 255 chars
  * $ end match
  */
-export const ENS_DOMAIN_REGEX = '^[A-Za-z0-9][^.]{0,255}$';
+export const COLONY_NAME_REGEX = `^[A-Za-z0-9][A-Za-z0-9_]{0,255}$`;
 /*
  * Hex String Regex Test
  */
 export const HEX_STRING_REGEX = '^(0x|0X)?[a-fA-F0-9]+$';
 
-function ensAddress(msg) {
+function colonyName(msg) {
   return this.test({
-    name: 'ensAddress',
-    message: msg || en.string.ensAddress,
+    name: 'colonyName',
+    message: msg || en.string.colonyName,
     test(value) {
-      try {
-        ensNormalize(value);
-      } catch (e) {
-        return false;
-      }
-      return value ? !!value.match(new RegExp(ENS_DOMAIN_REGEX)) : true;
+      return value ? new RegExp(COLONY_NAME_REGEX).test(value) : true;
     },
   });
 }
@@ -64,7 +58,7 @@ function hasHexPrefix(msg) {
   });
 }
 
-addMethod(string, 'ensAddress', ensAddress);
+addMethod(string, 'colonyName', colonyName);
 addMethod(string, 'address', address);
 addMethod(string, 'hexString', hexString);
 addMethod(string, 'hasHexPrefix', hasHexPrefix);

@@ -1,21 +1,21 @@
 import React, { useCallback, useEffect, ReactNode } from 'react';
 import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
-import { gql, useApolloClient, useQuery } from '@apollo/client';
+import { gql, useLazyQuery } from '@apollo/client';
 
 import { Input } from '~shared/Fields';
 import { Appearance } from '~shared/Fields/Input/Input';
+
 import { usePrevious } from '~hooks';
 import { isAddress } from '~utils/web3';
-// import {
-//   TokenDocument,
-//   TokenQuery,
-//   TokenQueryVariables,
-// } from '~data/index';
+import {
+  getTokenByAddress as getTokenByAddressDocument,
+  GetTokenByAddressQuery,
+  GetTokenByAddressQueryVariables,
+  Token,
+} from '~gql';
 import { DEFAULT_NETWORK_INFO } from '~constants';
 
 import styles from './TokenSelector.css';
-import { OneToken } from '~types';
-import { getTokenByAddress } from '~gql';
 
 const displayName = 'common.CreateColonyWizard.TokenSelector';
 
@@ -45,11 +45,11 @@ const MSG = defineMessages({
 
 interface Props {
   tokenAddress: string;
-  onTokenSelect: (checkingAddress: boolean, token?: OneToken | null) => void;
+  onTokenSelect: (checkingAddress: boolean, token?: Token | null) => void;
   onTokenSelectError: (arg: boolean) => void;
   tokenSelectorHasError: boolean;
   isLoadingAddress: boolean;
-  tokenData?: OneToken;
+  tokenData?: Token;
   label?: string | MessageDescriptor;
   appearance?: Appearance;
 
@@ -61,7 +61,7 @@ interface Props {
 const getStatusText = (
   hasError: boolean,
   isLoadingAddress: boolean,
-  tokenData?: OneToken,
+  tokenData?: Token,
 ) => {
   if (hasError) {
     return {};
@@ -73,7 +73,10 @@ const getStatusText = (
     return { status: MSG.statusNotFound };
   }
   return tokenData
-    ? { status: MSG.preview, statusValues: tokenData }
+    ? {
+        status: MSG.preview,
+        statusValues: { name: tokenData?.name, symbol: tokenData?.symbol },
+      }
     : {
         status: MSG.hint,
         statusValues: {
@@ -94,18 +97,11 @@ const TokenSelector = ({
   appearance,
   disabled = false,
 }: Props) => {
-  const apolloClient = useApolloClient();
   const { formatMessage } = useIntl();
-  const getToken = useCallback(async () => {
-    const { data } = useQuery(
-      gql(getTokenByAddress, { address: tokenAddress }),
-    );
-
-    return data && data.token;
-  }, [apolloClient, tokenAddress]);
 
   const handleGetTokenSuccess = useCallback(
-    (token: OneToken) => {
+    ({ getTokenByAddress }: GetTokenByAddressQuery) => {
+      const token = getTokenByAddress?.items[0];
       const { name, symbol } = token || {};
       if (!name || !symbol) {
         onTokenSelect(false, null);
@@ -117,35 +113,43 @@ const TokenSelector = ({
     [onTokenSelect, onTokenSelectError],
   );
 
-  const handleGetTokenError = useCallback(
-    (error: Error) => {
-      onTokenSelect(false, null);
-      onTokenSelectError(true);
-      console.error(error);
+  const handleGetTokenError = useCallback(() => {
+    onTokenSelect(false, null);
+    onTokenSelectError(true);
+  }, [onTokenSelect, onTokenSelectError]);
+
+  const [getToken] = useLazyQuery<
+    GetTokenByAddressQuery,
+    GetTokenByAddressQueryVariables
+  >(gql(getTokenByAddressDocument), {
+    variables: {
+      id: tokenAddress,
     },
-    [onTokenSelect, onTokenSelectError],
-  );
+    onCompleted: handleGetTokenSuccess,
+    onError: handleGetTokenError,
+  });
 
   const prevTokenAddress = usePrevious(tokenAddress);
 
   useEffect(() => {
-    // Guard against updates that don't include a new, valid `tokenAddress`,
-    // or if the form is submitting or loading.
+    /*
+     * Guard against updates that don't include a new, valid `tokenAddress`,
+     * or if the form is submitting or loading.
+     */
     if (tokenAddress === prevTokenAddress || isLoadingAddress) return;
     if (!tokenAddress || !tokenAddress.length || !isAddress(tokenAddress)) {
       onTokenSelect(false);
       return;
     }
-    // For a valid address, attempt to load token info.
-    // This is setting state during `componentDidUpdate`, which is
-    // generally a bad idea, but we are guarding against it by checking the
-    // state first.
+    /*
+     * For a valid address, attempt to load token info.
+     * This is setting state during `componentDidUpdate`, which is
+     * generally a bad idea, but we are guarding against it by checking the state first.
+     */
     onTokenSelectError(false);
     onTokenSelect(true);
-    // Get the token address and handle success/error
-    getToken()
-      .then((token: OneToken) => handleGetTokenSuccess(token))
-      .catch((error) => handleGetTokenError(error));
+    // Get the token address
+    getToken();
   }, [
     tokenAddress,
     getToken,

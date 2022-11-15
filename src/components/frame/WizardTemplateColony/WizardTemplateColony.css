@@ -26,7 +26,8 @@
 
 .wallet {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  flex-direction: row;
   margin: 10px 19px 0px 0px;
 }
 
@@ -39,35 +40,6 @@
 .headerWallet {
   display: flex;
   margin: 7px 14px 0px 0px;
-}
-
-.noMoney {
-  display: flex;
-  justify-content: flex-end;
-  color: var(--danger);
-}
-
-.noMoney::after {
-  display: inline-block;
-  margin-bottom: 1px;
-  margin-left: 3px;
-  height: 8px;
-  width: 8px;
-  position: relative;
-  top: 6px;
-  border-radius: 50%;
-  background-color: var(--danger);
-  content: '';
-}
-
-.yeihMoney {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.moneyContainer {
-  display: flex;
-  justify-content: flex-end;
 }
 
 .hello {

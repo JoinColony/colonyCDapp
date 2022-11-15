@@ -240,6 +240,11 @@ export type MetadataInput = {
   chainId?: number | null,
 };
 
+export type ColonyID = {
+  __typename: "ColonyID",
+  id: string,
+};
+
 export type CreateUniqueDomainInput = {
   colonyAddress: string,
   parentId?: string | null,
@@ -926,29 +931,8 @@ export type CreateUniqueColonyMutationVariables = {
 
 export type CreateUniqueColonyMutation = {
   createUniqueColony?:  {
-    __typename: "User",
+    __typename: "ColonyID",
     id: string,
-    name: string,
-    tokens?:  {
-      __typename: "ModelUserTokensConnection",
-      nextToken?: string | null,
-    } | null,
-    profile?:  {
-      __typename: "Profile",
-      avatar?: string | null,
-      thumbnail?: string | null,
-      displayName?: string | null,
-      bio?: string | null,
-      location?: string | null,
-      website?: string | null,
-      email?: string | null,
-    } | null,
-    watchlist?:  {
-      __typename: "ModelWatchedColoniesConnection",
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
