@@ -16,7 +16,7 @@ DISABLE_DOCKER=true yarn truffle migrate
 # Export deployed addresses
 
 ETHER_ROUTER_ADDRESS=$(jq -r .etherRouterAddress etherrouter-address.json)
-MINER_ACCOUNT_ADDRESS=$(jq -r '.addresses | to_entries | .[16] | .value' ganache-accounts.json)
+MINER_ACCOUNT_ADDRESS=$(jq -r '.addresses | to_entries | .[5] | .value' ganache-accounts.json)
 BROADCASTER_ACCOUNT_PRIVKEY=$(jq -r '.private_keys | to_entries | .[17] | .value' ganache-accounts.json)
 
 # Copy over colony network build artifacts to aid in development
