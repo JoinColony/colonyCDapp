@@ -1,3 +1,5 @@
+@value query700 from '~styles/queries.css';
+
 .main {
   display: flex;
   align-items: center;
@@ -57,14 +59,14 @@
     display: flex;
     align-items: center;
     border: none;
-    border-top: 1px solid var(--grey-blue-0);
+    border-top: 1px solid var(--light-grey-beige);
 
     &:only-of-type {
       border-bottom-color: transparent;
     }
 
     &:last-of-type:not(.themeAlt) {
-      border-bottom: 1px solid var(--grey-blue-0);
+      border-bottom: 1px solid var(--light-grey-beige);
     }
   }
 }

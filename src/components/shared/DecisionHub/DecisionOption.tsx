@@ -5,13 +5,15 @@ import {
   FormattedMessage,
 } from 'react-intl';
 import { useField } from 'formik';
-
 import { LinkProps } from 'react-router-dom';
+
 import { getMainClasses } from '~utils/css';
+
 import Icon from '../Icon';
 import Link from '../Link';
 import { Tooltip } from '../Popover';
 import Heading from '../Heading';
+
 import styles from './DecisionOption.css';
 
 const displayName = 'DecisionHub.DecisionOption';

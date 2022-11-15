@@ -15,14 +15,14 @@
   margin-bottom: 30px;
   padding: 22px 15px 18px 15px;
   border-radius: 5px;
-  border: 1px solid var(--temp-grey-blue-2);
-  background-color: var(--temp-grey-blue-6);
+  border: 1px solid var(--light-grey);
+  background-color: var(--light-ash);
 }
 
 .containerGasPrice {
   padding: 0px 15px 12px 15px;
-  border: 1px solid var(--temp-grey-blue-2);
-  background-color: var(--temp-grey-blue-6);
+  border: 1px solid var(--light-grey);
+  background-color: var(--light-ash);
 }
 
 .deploymentError {

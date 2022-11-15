@@ -1,4 +1,13 @@
+@value query700 from '~styles/queries.css';
+
 .inputWrapper > div > div > input {
   font-family: var(--family-techie);
   font-weight: var(--weight-medium);
+}
+
+@media screen and query700 {
+  /* Input status */
+  .inputWrapper p {
+    white-space: normal;
+  }
 }

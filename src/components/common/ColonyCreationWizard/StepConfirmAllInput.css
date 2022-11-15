@@ -24,7 +24,7 @@
   justify-content: space-between;
   flex-direction: column;
   padding: 24px 20px;
-  border-bottom: 1px solid var(--temp-grey-blue-4);
+  border-bottom: 1px solid var(--light-purple);
 }
 
 .cardRow:last-child {

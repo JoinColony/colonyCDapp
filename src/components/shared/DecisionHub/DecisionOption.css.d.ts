@@ -1,11 +1,18 @@
 declare namespace DecisionOptionCssNamespace {
   export interface IDecisionOptionCss {
     main: string;
+    mappings: string;
+    names: string;
+    query700: string;
     rowContent: string;
     rowIcon: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
     stateDisabled: string;
     themeAlt: string;
     tooltip: string;
+    version: string;
     wrapper: string;
   }
 }
