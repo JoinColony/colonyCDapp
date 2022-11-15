@@ -15,7 +15,7 @@ interface Props {
   address: Address;
 
   /** Avatar image URL (can be a base64 encoded url string) */
-  avatarURL?: string;
+  avatarString?: string;
 
   /** Banned comment status */
   banned?: boolean;
