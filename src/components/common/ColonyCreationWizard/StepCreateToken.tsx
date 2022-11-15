@@ -11,7 +11,6 @@ import { multiLineTextEllipsis } from '~utils/strings';
 import { intl } from '~utils/intl';
 
 import { FormValues, Step3 } from './ColonyCreationWizard';
-import { keyRequired } from './StepColonyNameValidation';
 import { switchTokenInputType } from './StepSelectToken';
 
 import styles from './StepCreateToken.css';
@@ -56,19 +55,27 @@ const MSG = defineMessages({
     defaultMessage: `The token symbol can only contain letters and numbers, and
       can only have a length of 5`,
   },
+  keyRequired: {
+    id: `${displayName}.keyRequired`,
+    defaultMessage: `{key} is a required field`,
+  },
 });
 
-const { formatMessage } = intl;
+const { formatMessage } = intl();
 
 const validationSchema = object({
   tokenName: string()
     .max(256)
     .required(
-      formatMessage(keyRequired, { key: formatMessage(MSG.labelTokenName) }),
+      formatMessage(MSG.keyRequired, {
+        key: formatMessage(MSG.labelTokenName),
+      }),
     ),
   tokenSymbol: string()
     .required(
-      formatMessage(keyRequired, { key: formatMessage(MSG.labelTokenSymbol) }),
+      formatMessage(MSG.keyRequired, {
+        key: formatMessage(MSG.labelTokenSymbol),
+      }),
     )
     .max(5, () => MSG.errorTokenSymbol),
 });

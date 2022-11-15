@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-import { WizardProps } from '~shared/Wizard';
+import { WizardStepProps } from '~shared/Wizard';
 import Heading from '~shared/Heading';
 import NavLink from '~shared/NavLink';
 
@@ -41,7 +41,7 @@ const MSG = defineMessages({
   },
 });
 
-type Props = Pick<WizardProps<FormValues>, 'wizardValues'>;
+type Props = Pick<WizardStepProps<FormValues>, 'wizardValues'>;
 
 const StepConfirmTransactions = ({
   wizardValues: { colonyName: chosenColonyName },

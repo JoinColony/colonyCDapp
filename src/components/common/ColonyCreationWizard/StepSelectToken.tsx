@@ -1,9 +1,9 @@
-import { FormikHelpers } from 'formik';
 import React, { useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { string, object } from 'yup';
+import { FormikHelpers } from 'formik';
 
-import { WizardProps } from '~shared/Wizard';
+import { WizardStepProps } from '~shared/Wizard';
 import { Form } from '~shared/Fields';
 import Heading from '~shared/Heading';
 import Button from '~shared/Button';
@@ -11,7 +11,7 @@ import Button from '~shared/Button';
 import { ADDRESS_ZERO, DEFAULT_NETWORK_TOKEN } from '~constants';
 import { multiLineTextEllipsis } from '~utils/strings';
 import { intl } from '~utils/intl';
-import { Token } from '~gql';
+import { GetTokenByAddressQuery } from '~gql';
 
 import TokenSelector from './TokenSelector';
 import { FormValues } from './ColonyCreationWizard';
@@ -23,7 +23,7 @@ const displayName = 'common.ColonyCreationWizard.StepSelectToken';
 const MSG = defineMessages({
   heading: {
     id: `${displayName}.heading`,
-    defaultMessage: 'Which ERC20 token would you like to use for {colony}',
+    defaultMessage: 'Which ERC20 token would you like to use for {colony}?',
   },
   symbolHint: {
     id: `${displayName}.symbolHint`,
@@ -55,20 +55,24 @@ const MSG = defineMessages({
     id: `${displayName}.link`,
     defaultMessage: 'I want to create a New Token',
   },
+  requiredError: {
+    id: `${displayName}.requiredError`,
+    defaultMessage: 'Token Address is a required field',
+  },
 });
 
 const validationSchema = () => {
-  const { formatMessage } = intl;
+  const { formatMessage } = intl();
 
   return object({
     tokenAddress: string()
+      .required(() => MSG.requiredError)
       .address(() => MSG.invalidAddress)
-      .test(
-        'is-not-addressZero',
+      .notOneOf(
+        [ADDRESS_ZERO],
         formatMessage(MSG.addressZeroError, {
           symbol: DEFAULT_NETWORK_TOKEN.symbol,
         }),
-        (value) => value !== ADDRESS_ZERO,
       ),
     tokenSymbol: string().max(10),
     tokenName: string().max(256),
@@ -76,57 +80,70 @@ const validationSchema = () => {
 };
 
 type Props = Pick<
-  WizardProps<FormValues>,
-  'nextStep' | 'previousStep' | 'stepCompleted' | 'wizardForm' | 'wizardValues'
+  WizardStepProps<FormValues>,
+  'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'
 >;
 
+/*
+ * This is a custom link since it goes to a sibling step that appears
+ * to be parallel to this one after the wizard steps diverge,
+ * while making sure that the data form the previous wizard steps doesn't get lost
+ */
 export const switchTokenInputType = (
   type: FormValues['tokenChoice'],
-  previousStep: Props['previousStep'],
-  nextStep: Props['nextStep'],
-  wizardValues: FormValues,
+  setStepsValues: Props['setStepsValues'],
 ) => {
-  /*
-   * This is a custom link since it goes to a sibling step that appears
-   * to be parallel to this one after the wizard steps diverge,
-   * while making sure that the data form the previous wizard steps doesn't get lost
-   */
-  const wizardValuesCopy = { ...wizardValues };
-  previousStep();
-  wizardValuesCopy.tokenChoice = type;
-  nextStep(wizardValuesCopy);
+  setStepsValues((stepsValues) => {
+    const steps = [...stepsValues];
+    steps[1] = { tokenChoice: type };
+    /*
+     * Clear state of Create Token when coming back from Select Token
+     */
+    if (steps[2] && type === 'create' && steps[2].tokenAddress !== '') {
+      steps[2] = {};
+    }
+    return steps;
+  });
 };
+
+const handleFetchSuccess = (
+  { getTokenByAddress }: GetTokenByAddressQuery,
+  setFieldValue: FormikHelpers<FormValues>['setFieldValue'],
+) => {
+  const token = getTokenByAddress?.items[0];
+  const { name: tokenName, symbol: tokenSymbol } = token || {};
+  setFieldValue('tokenName', tokenName || '');
+  setFieldValue('tokenSymbol', tokenSymbol || '');
+};
+
+interface GoToCreateTokenButtonProps {
+  goToCreateToken: () => void;
+}
+
+const GoToCreateTokenButton = ({
+  goToCreateToken,
+}: GoToCreateTokenButtonProps) => (
+  <button
+    type="button"
+    className={styles.linkToOtherStep}
+    tabIndex={-2}
+    onClick={goToCreateToken}
+  >
+    <FormattedMessage {...MSG.link} />
+  </button>
+);
 
 const StepSelectToken = ({
   nextStep,
-  previousStep,
-  stepCompleted,
-  wizardForm: { initialValues },
+  setStepsValues,
+  wizardForm,
   wizardValues,
 }: Props) => {
-  const goToCreateToken = () =>
-    switchTokenInputType('create', previousStep, nextStep, wizardValues);
-
-  const [tokenData, setTokenData] = useState<Token | undefined>();
-  const [isLoadingAddress, setisLoadingAddress] = useState<boolean>(false);
+  const [isFetchingToken, setIsFetchingToken] = useState<boolean>(false);
   const [tokenSelectorHasError, setTokenSelectorHasError] =
     useState<boolean>(false);
 
-  const handleTokenSelect = (
-    checkingAddress: boolean,
-    token: Token,
-    setFieldValue: FormikHelpers<FormValues>['setFieldValue'],
-  ) => {
-    setTokenData(token);
-    setisLoadingAddress(checkingAddress);
-
-    setFieldValue('tokenName', token?.name || '');
-    setFieldValue('tokenSymbol', token?.symbol || '');
-  };
-
-  const handleTokenSelectError = (hasError: boolean) => {
-    setTokenSelectorHasError(hasError);
-  };
+  const goToCreateToken = () => switchTokenInputType('create', setStepsValues);
 
   return (
     <section className={styles.main}>
@@ -152,29 +169,17 @@ const StepSelectToken = ({
       <Form
         onSubmit={nextStep}
         validationSchema={validationSchema}
-        initialValues={initialValues}
+        {...wizardForm}
       >
-        {({ dirty, isValid, setFieldValue, values }) => (
+        {({ dirty, isValid, setFieldValue }) => (
           <div>
             <TokenSelector
-              tokenAddress={values.tokenAddress}
-              onTokenSelect={(checkingAddress: boolean, token: Token) => {
-                handleTokenSelect(checkingAddress, token, setFieldValue);
-              }}
-              onTokenSelectError={handleTokenSelectError}
-              tokenSelectorHasError={tokenSelectorHasError}
-              isLoadingAddress={isLoadingAddress}
-              tokenData={tokenData}
-              extra={
-                <button
-                  type="button"
-                  className={styles.linkToOtherStep}
-                  tabIndex={-2}
-                  onClick={goToCreateToken}
-                >
-                  <FormattedMessage {...MSG.link} />
-                </button>
+              handleComplete={(data: GetTokenByAddressQuery) =>
+                handleFetchSuccess(data, setFieldValue)
               }
+              setLoading={setIsFetchingToken}
+              setError={setTokenSelectorHasError}
+              extra={<GoToCreateTokenButton {...{ goToCreateToken }} />}
               appearance={{ theme: 'fat' }}
             />
             <div className={styles.buttons}>
@@ -185,8 +190,8 @@ const StepSelectToken = ({
                 disabled={
                   tokenSelectorHasError ||
                   !isValid ||
-                  (!dirty && !stepCompleted) ||
-                  isLoadingAddress
+                  (!dirty && !wizardValues.tokenAddress) ||
+                  isFetchingToken
                 }
                 data-test="definedTokenConfirm"
               />

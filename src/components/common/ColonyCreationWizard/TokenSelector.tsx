@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, ReactNode } from 'react';
+import React, { useEffect, ReactNode } from 'react';
 import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
 import { gql, useLazyQuery } from '@apollo/client';
+import { useField, useFormikContext } from 'formik';
 
 import { Input } from '~shared/Fields';
 import { Appearance } from '~shared/Fields/Input/Input';
@@ -20,7 +21,7 @@ import styles from './TokenSelector.css';
 const displayName = 'common.CreateColonyWizard.TokenSelector';
 
 const MSG = defineMessages({
-  inputLabel: {
+  label: {
     id: `${displayName}.label`,
     defaultMessage: 'Token Address',
   },
@@ -36,133 +37,146 @@ const MSG = defineMessages({
     id: `${displayName}.statusLoading`,
     defaultMessage: 'Loading token data...',
   },
-  statusNotFound: {
-    id: `${displayName}.statusNotFound`,
+  notFoundError: {
+    id: `${displayName}.notFoundError`,
     defaultMessage:
       'Token data not found. Please check the token contract address.',
   },
 });
 
 interface Props {
-  tokenAddress: string;
-  onTokenSelect: (checkingAddress: boolean, token?: Token | null) => void;
-  onTokenSelectError: (arg: boolean) => void;
-  tokenSelectorHasError: boolean;
-  isLoadingAddress: boolean;
-  tokenData?: Token;
+  /** Name of token address input */
+  addressField?: string;
+  /** Function called when query completes successfully without an error */
+  handleComplete?: (data: any) => void;
+  /** SetState function that gives parent access to query's error */
+  setError?: React.Dispatch<React.SetStateAction<boolean>>;
+  /** SetState function that gives parent access to query's loading state */
+  setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
   label?: string | MessageDescriptor;
   appearance?: Appearance;
-
   /** Extra node to render on the top right in the label */
   extra?: ReactNode;
   disabled?: boolean;
 }
 
-const getStatusText = (
-  hasError: boolean,
-  isLoadingAddress: boolean,
-  tokenData?: Token,
-) => {
-  if (hasError) {
+type TokenData = Partial<Pick<Token, 'name' | 'symbol'>>;
+
+interface StatusTextProps {
+  hasError: boolean;
+  isFetchingAddress: boolean;
+  addressFieldInput: string;
+  tokenData: TokenData;
+}
+const getStatusText = ({
+  hasError,
+  isFetchingAddress,
+  tokenData: { name, symbol },
+  addressFieldInput,
+}: StatusTextProps) => {
+  if (hasError || (!name && !symbol)) {
     return {};
   }
-  if (isLoadingAddress) {
+  if (isFetchingAddress) {
     return { status: MSG.statusLoading };
   }
-  if (tokenData === null) {
-    return { status: MSG.statusNotFound };
+  if (!addressFieldInput) {
+    return {
+      status: MSG.hint,
+      statusValues: {
+        tokenExplorerLink: DEFAULT_NETWORK_INFO.tokenExplorerLink,
+      },
+    };
   }
-  return tokenData
-    ? {
-        status: MSG.preview,
-        statusValues: { name: tokenData?.name, symbol: tokenData?.symbol },
-      }
-    : {
-        status: MSG.hint,
-        statusValues: {
-          tokenExplorerLink: DEFAULT_NETWORK_INFO.tokenExplorerLink,
-        },
-      };
+
+  return {
+    status: MSG.preview,
+    statusValues: { name, symbol },
+  };
 };
 
 const TokenSelector = ({
-  tokenAddress,
-  onTokenSelect,
-  onTokenSelectError,
-  tokenSelectorHasError,
-  isLoadingAddress,
-  tokenData,
+  handleComplete,
+  setLoading,
+  setError,
   extra,
   label,
   appearance,
+  addressField = 'tokenAddress',
   disabled = false,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { validateField } = useFormikContext();
 
-  const handleGetTokenSuccess = useCallback(
-    ({ getTokenByAddress }: GetTokenByAddressQuery) => {
-      const token = getTokenByAddress?.items[0];
-      const { name, symbol } = token || {};
-      if (!name || !symbol) {
-        onTokenSelect(false, null);
-        onTokenSelectError(true);
-        return;
-      }
-      onTokenSelect(false, token);
+  const labelText =
+    label && typeof label === 'object' ? formatMessage(label) : label;
+
+  const [{ value: tokenAddress }] = useField<string>(addressField);
+
+  const [
+    getToken,
+    {
+      data: tokenQuery,
+      loading: isFetchingAddress,
+      error: fetchingTokenError,
+      called: wasQueryCalled,
     },
-    [onTokenSelect, onTokenSelectError],
+  ] = useLazyQuery<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>(
+    gql(getTokenByAddressDocument),
   );
 
-  const handleGetTokenError = useCallback(() => {
-    onTokenSelect(false, null);
-    onTokenSelectError(true);
-  }, [onTokenSelect, onTokenSelectError]);
-
-  const [getToken] = useLazyQuery<
-    GetTokenByAddressQuery,
-    GetTokenByAddressQueryVariables
-  >(gql(getTokenByAddressDocument), {
-    variables: {
-      id: tokenAddress,
-    },
-    onCompleted: handleGetTokenSuccess,
-    onError: handleGetTokenError,
-  });
-
+  const tokenData = tokenQuery?.getTokenByAddress?.items;
+  const { name, symbol } = tokenData?.[0] || {};
   const prevTokenAddress = usePrevious(tokenAddress);
 
-  useEffect(() => {
+  const fetchToken = (event: React.ChangeEvent<any>) => {
+    const inputtedAddress = event.target.value;
     /*
      * Guard against updates that don't include a new, valid `tokenAddress`,
      * or if the form is submitting or loading.
      */
-    if (tokenAddress === prevTokenAddress || isLoadingAddress) return;
-    if (!tokenAddress || !tokenAddress.length || !isAddress(tokenAddress)) {
-      onTokenSelect(false);
+    const isTokenAddressValid =
+      inputtedAddress !== prevTokenAddress &&
+      !isFetchingAddress &&
+      inputtedAddress &&
+      isAddress(inputtedAddress);
+
+    if (!isTokenAddressValid) {
       return;
     }
-    /*
-     * For a valid address, attempt to load token info.
-     * This is setting state during `componentDidUpdate`, which is
-     * generally a bad idea, but we are guarding against it by checking the state first.
-     */
-    onTokenSelectError(false);
-    onTokenSelect(true);
-    // Get the token address
-    getToken();
-  }, [
-    tokenAddress,
-    getToken,
-    isLoadingAddress,
-    onTokenSelect,
-    onTokenSelectError,
-    prevTokenAddress,
-    handleGetTokenSuccess,
-    handleGetTokenError,
-  ]);
+    setError?.(false);
+    getToken({
+      variables: {
+        id: inputtedAddress,
+      },
+    });
+  };
 
-  const labelText =
-    label && typeof label === 'object' ? formatMessage(label) : label;
+  const isFetchingError = !!fetchingTokenError;
+  const isInputError =
+    !isFetchingAddress &&
+    isAddress(tokenAddress) &&
+    !tokenData?.length &&
+    wasQueryCalled;
+
+  const hasError = isInputError || isFetchingError;
+
+  /*
+   * Use effect required here to keep parent in sync with TokenSelector
+   * and to avoid setting parent state while rendering TokenSelector
+   */
+  useEffect(() => {
+    setLoading?.(isFetchingAddress);
+    setError?.(hasError);
+    if (tokenQuery) {
+      handleComplete?.(tokenQuery);
+    }
+    /*
+     * If handleComplete includes some dependency on the FormikHelpers (e.g. setFieldValue),
+     * it will be recreated on each render, resulting in an infinite loop.
+     */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFetchingAddress, hasError, tokenQuery, setError, setLoading]);
 
   return (
     /**
@@ -170,15 +184,23 @@ const TokenSelector = ({
      */
     <div className={styles.inputWrapper}>
       <Input
-        name="tokenAddress"
-        label={labelText || MSG.inputLabel}
+        name={addressField}
+        label={labelText || MSG.label}
         extra={extra}
-        {...getStatusText(tokenSelectorHasError, isLoadingAddress, tokenData)}
+        {...getStatusText({
+          addressFieldInput: tokenAddress,
+          isFetchingAddress,
+          hasError,
+          tokenData: { name, symbol },
+        })}
+        onChange={(e) => {
+          fetchToken(e);
+          // Timeout ensures pesky formik validates with correct state
+          setTimeout(() => validateField(addressField), 0);
+        }}
         appearance={appearance}
         disabled={disabled}
-        forcedFieldError={
-          tokenSelectorHasError ? MSG.statusNotFound : undefined
-        }
+        forcedFieldError={hasError ? MSG.notFoundError : undefined}
         dataTest="tokenSelectorInput"
       />
     </div>

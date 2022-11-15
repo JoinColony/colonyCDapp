@@ -2,20 +2,18 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useMediaQuery } from 'react-responsive';
 
-import { WizardProps } from '~shared/Wizard';
+import { WizardStepProps } from '~shared/Wizard';
 import Heading from '~shared/Heading';
 import ExternalLink from '~shared/ExternalLink';
 import DecisionHub from '~shared/DecisionHub';
 import { Form } from '~shared/Fields';
 import { multiLineTextEllipsis } from '~utils/strings';
-import { SELECT_NATIVE_TOKEN_INFO } from '~constants';
+import { SELECT_NATIVE_TOKEN_INFO as LEARN_MORE_URL } from '~constants';
 
-import { FormValues } from './ColonyCreationWizard';
+import { FormValues, Step2 } from './ColonyCreationWizard';
 
-import { query700 as query } from '~styles/queries';
+import queries from '~styles/queries.css';
 import styles from './StepTokenChoice.css';
-
-const LEARN_MORE_URL = SELECT_NATIVE_TOKEN_INFO;
 
 const displayName = 'common.ColonyCreationWizard.StepTokenChoice';
 
@@ -89,14 +87,39 @@ const options = [
 ];
 
 type Props = Pick<
-  WizardProps<FormValues>,
-  'nextStep' | 'wizardForm' | 'wizardValues'
+  WizardStepProps<FormValues>,
+  'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'
 >;
-const StepTokenChoice = ({ nextStep, wizardForm, wizardValues }: Props) => {
+
+const { query700: query } = queries;
+
+const StepTokenChoice = ({
+  nextStep,
+  wizardForm,
+  wizardValues,
+  setStepsValues,
+}: Props) => {
   const isMobile = useMediaQuery({ query });
 
+  const handleSubmit = (values: Step2) => {
+    setStepsValues((stepsValues) => {
+      const oldStep2: Partial<Step2> = stepsValues[1];
+      /*
+       * If we change choice, reset step 3 (index 2) form state.
+       * This is so the state from Select / Create token doesn't spill over into the other.
+       */
+      if (oldStep2 && oldStep2.tokenChoice !== values.tokenChoice) {
+        const steps = [...stepsValues];
+        steps[2] = {};
+        return steps;
+      }
+      return stepsValues;
+    });
+    nextStep(values);
+  };
+
   return (
-    <Form onSubmit={nextStep} {...wizardForm}>
+    <Form onSubmit={handleSubmit} {...wizardForm}>
       <section className={styles.content}>
         <div className={styles.title}>
           <Heading appearance={{ size: 'medium', weight: 'bold' }}>
