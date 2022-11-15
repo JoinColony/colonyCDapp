@@ -32,18 +32,6 @@ interface Props {
   user: User;
 }
 
-const uploadActions = {
-  submit: ActionTypes.USER_AVATAR_UPLOAD,
-  success: ActionTypes.USER_AVATAR_UPLOAD_SUCCESS,
-  error: ActionTypes.USER_AVATAR_UPLOAD_ERROR,
-};
-
-const removeActions = {
-  submit: ActionTypes.USER_AVATAR_REMOVE,
-  success: ActionTypes.USER_AVATAR_REMOVE_SUCCESS,
-  error: ActionTypes.USER_AVATAR_UPLOAD_ERROR,
-};
-
 const UserAvatarUploader = ({ user, user: { walletAddress } }: Props) => {
   const { updateWallet } = useAppContext();
 
@@ -54,10 +42,6 @@ const UserAvatarUploader = ({ user, user: { walletAddress } }: Props) => {
   const [avatarFileError, setAvatarFileError] = useState(false);
 
   const handleUpload = (fileData: FileReaderFile) => {
-    console.log(
-      '🚀 ~ file: UserAvatarUploader.tsx ~ line 55 ~ handleUpload ~ fileData',
-      fileData,
-    );
     setAvatarFileError(false);
     return updateAvatar({
       variables: {
