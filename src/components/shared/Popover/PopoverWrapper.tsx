@@ -10,14 +10,13 @@ import { MessageDescriptor, useIntl } from 'react-intl';
 import { State as PopperJsState } from '@popperjs/core';
 
 import { SimpleMessageValues } from '~types';
-import { getMainClasses } from '~utils/css';
-
-import getPopoverArrowClasses from './getPopoverArrowClasses';
 import {
   PopoverAppearanceType,
   PopoverContent as PopoverContentType,
 } from './types';
 
+import getPopoverArrowClasses from './getPopoverArrowClasses';
+import { getMainClasses } from '~utils/css';
 import styles from './PopoverWrapper.css';
 
 interface Props {
@@ -63,13 +62,16 @@ const PopoverWrapper = ({
   }, [close, content, contentValues, formatMessage]);
   return (
     <div
-      // @ts-ignore
       className={`
         popoverWrapper
-        ${getMainClasses(appearance, styles, {
-          hideArrow: !showArrow,
-          showArrow,
-        })}
+        ${getMainClasses(
+          appearance,
+          styles as unknown as { [k: string]: string },
+          {
+            hideArrow: !showArrow,
+            showArrow,
+          },
+        )}
       `}
       onFocus={onFocus}
       ref={contentRef}
@@ -81,12 +83,11 @@ const PopoverWrapper = ({
       {popoverContent}
       {state && state.placement && (
         <span
-          // @ts-ignore
           className={getPopoverArrowClasses(
             appearance,
             // Use placement derived from popperjs so `auto` isn't used
             state.placement,
-            styles,
+            styles as unknown as { [k: string]: string },
           )}
           ref={arrowRef}
           style={popperStyles.arrow}

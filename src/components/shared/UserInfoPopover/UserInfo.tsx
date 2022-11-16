@@ -4,9 +4,7 @@ import CopyableAddress from '~shared/CopyableAddress';
 import Heading from '~shared/Heading';
 import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
-
 import { User } from '~types';
-// import useUserAvatarImageFromIPFS from '~utils/hooks/useUserAvatarImageFromIPFS';
 
 import styles from './UserInfo.css';
 
@@ -18,8 +16,7 @@ const displayName = 'UserInfoPopover.UserInfo';
 
 const UserInfo = ({ user }: Props) => {
   const { displayName: userDisplayName } = user.profile || {};
-  // const { image: avatarData } =
-  //   useUserAvatarImageFromIPFS(avatarHash || '') || {};
+
   return (
     <div className={styles.container}>
       <UserAvatar
@@ -27,7 +24,6 @@ const UserInfo = ({ user }: Props) => {
         address={user.walletAddress}
         user={user}
         notSet={false}
-        // avatarURL={avatarData}
       />
       <div className={styles.textContainer}>
         {userDisplayName && (

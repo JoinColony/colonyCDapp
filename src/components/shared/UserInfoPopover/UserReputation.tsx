@@ -9,13 +9,13 @@ import { ZeroValue } from '~utils/reputation';
 import styles from './UserInfoPopover.css';
 import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
-import { UserReputationForTopsDomains } from '~hooks';
+import { UserDomainReputation } from '~hooks';
 
 const displayName = `UserInfoPopover.UserReputation`;
 
 interface Props {
   colony: Colony;
-  userReputationForTopDomains: UserReputationForTopsDomains[];
+  userReputationForTopDomains: UserDomainReputation[];
   isCurrentUserReputation: boolean;
 }
 
