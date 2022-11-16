@@ -3,12 +3,12 @@ import { PopperOptions } from 'react-popper-tooltip';
 
 import Popover from '~shared/Popover';
 import Avatar from '~shared/Avatar';
-import UserInfoPopover from '../UserInfoPopover';
 import Link from '~shared/NavLink';
+import UserInfoPopover from '~shared/UserInfoPopover';
 import { Address, User, Colony } from '~types';
 
-import styles from './UserAvatar.css';
 import { getMainClasses } from '~utils/css';
+import styles from './UserAvatar.css';
 
 interface Props {
   /** Address of the current user for identicon fallback */
@@ -42,6 +42,8 @@ interface Props {
 
   /** The corresponding user object if available */
   user?: User;
+
+  preferThumbnail?: boolean;
 }
 
 const displayName = 'UserAvatar';
@@ -58,9 +60,12 @@ const UserAvatar = ({
   showLink,
   size,
   user,
+  preferThumbnail = true,
 }: Props) => {
   const trigger = showInfo ? 'click' : 'disabled';
   const showArrow = popperOptions && popperOptions.showArrow;
+  const { profile } = user || {};
+  const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
 
   const renderContent = useMemo(() => {
     return <UserInfoPopover colony={colony} user={user} banned={banned} />;
@@ -74,13 +79,16 @@ const UserAvatar = ({
       showArrow={showArrow}
     >
       <div
-        // @ts-ignore
-        className={getMainClasses({}, styles, {
-          showOnClick: trigger === 'click',
-        })}
+        className={getMainClasses(
+          {},
+          styles as unknown as { [k: string]: string },
+          {
+            showOnClick: trigger === 'click',
+          },
+        )}
       >
         <Avatar
-          avatarURL={avatarURL}
+          avatarURL={avatarURL || imageString || undefined}
           className={className}
           notSet={typeof notSet === 'undefined' ? true : notSet}
           placeholderIcon="circle-person"
