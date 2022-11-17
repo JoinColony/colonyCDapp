@@ -48,6 +48,7 @@ const withWizard =
   }: WizardArgs<T>) =>
   (
     OuterComponent: ComponentType<WizardOuterProps<T>>,
+    outerProps?: Pick<WizardOuterProps<T>, 'hideQR'>,
     stepsProps?: WizardStepProps<T>,
   ): (() => JSX.Element) => {
     const Wizard = () => {
@@ -102,6 +103,7 @@ const withWizard =
           resetWizard={reset}
           wizardValues={mergedValues}
           loggedInUser={user}
+          {...outerProps}
         >
           <Step
             step={displayedStep}

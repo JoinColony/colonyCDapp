@@ -1,7 +1,6 @@
 export { default as getColonyManager } from './getColonyManager';
 export { default as getNetworkClient } from './getNetworkClient';
 export { default as getGasPrices } from './getGasPrices';
-export { default as createUserWithSecondAttempt } from './createUserWithSecondAttempt';
 
 export * from './getCanUserSendMetatransactions';
 export * from './metatransactions';

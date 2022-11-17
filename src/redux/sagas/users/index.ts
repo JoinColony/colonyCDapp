@@ -1,25 +1,28 @@
-import {
-  // call,
-  // fork,
-  put,
-  takeLatest,
-} from 'redux-saga/effects';
-// import { ClientType, TokenLockingClient } from '@colony/colony-js';
+import { call, fork, put, takeLatest } from 'redux-saga/effects';
+import { normalize as ensNormalize } from 'eth-ens-namehash-ms';
+
+import { ClientType } from '@colony/colony-js';
 // import { BigNumber } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
+import { Action, AllActions } from '../../types/actions';
+import { ContextModule, getContext, removeContext } from '~context';
 import {
-  // Action,
-  AllActions,
-} from '../../types/actions';
-import { ContextModule, removeContext } from '~context';
-import {
+  createUserWithSecondAttempt,
   putError,
-  // takeFrom,
-  // createUserWithSecondAttempt,
+  takeFrom,
   // getColonyManager
 } from '../utils';
 import { clearLastWallet } from '~utils/autoLogin';
+import { getWallet } from '../wallet';
+import { createTransaction, getTxChannel } from '../transactions';
+import { transactionLoadRelated } from '~redux/actionCreators';
+import gql from 'graphql-tag';
+import { createUniqueDomain, createUniqueUser } from '~gql';
+import { utils } from 'ethers';
+import { routeRedirect } from '~utils/saga/effects';
+import { LANDING_PAGE_ROUTE } from '~routes';
+import LandingPage from '~frame/LandingPage';
 
 // import { transactionLoadRelated, transactionReady } from '../../actionCreators';
 // import {
@@ -88,69 +91,72 @@ import { clearLastWallet } from '~utils/autoLogin';
 //   return null;
 // }
 
-// function* usernameCreate({
-//   meta: { id },
-//   meta,
-//   payload: { username: givenUsername },
-// }: Action<ActionTypes.USERNAME_CREATE>) {
-//   const { walletAddress } = yield getLoggedInUser();
-//   const txChannel = yield call(getTxChannel, id);
-//   const apolloClient = getContext(ContextModule.ApolloClient);
-//   try {
-//     // Normalize again, just to be sure
-//     const username = ENS.normalize(givenUsername);
+function* usernameCreate({
+  meta: { id, navigate },
+  meta,
+  payload: { username: givenUsername },
+}: Action<ActionTypes.USERNAME_CREATE>) {
+  const wallet = yield call(getWallet);
+  const walletAddress = utils.getAddress(wallet?.address);
 
-//     yield fork(createTransaction, id, {
-//       context: ClientType.NetworkClient,
-//       methodName: 'registerUserLabel',
-//       ready: true,
-//       params: [username, ''],
-//       group: {
-//         key: 'transaction.batch.createUser',
-//         id,
-//         index: 0,
-//       },
-//     });
+  const txChannel = yield call(getTxChannel, id);
+  const apolloClient = getContext(ContextModule.ApolloClient);
+  try {
+    // Normalize again, just to be sure
+    const username = ensNormalize(givenUsername);
 
-//     yield takeFrom(txChannel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield fork(createTransaction, id, {
+      context: ClientType.NetworkClient,
+      methodName: 'registerUserLabel',
+      ready: true,
+      params: [username, ''],
+      group: {
+        key: 'transaction.batch.createUser',
+        id,
+        index: 0,
+      },
+    });
 
-//     yield put(transactionLoadRelated(id, true));
+    yield takeFrom(txChannel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-//     yield createUserWithSecondAttempt(username);
+    //yield put(transactionLoadRelated(id, true));
 
-//     yield put(transactionLoadRelated(id, false));
+    // yield createUserWithSecondAttempt(username);
 
-//     yield refetchUserNotifications(walletAddress);
+    //yield put(transactionLoadRelated(id, false));
 
-//     yield put<AllActions>({
-//       type: ActionTypes.USERNAME_CREATE_SUCCESS,
-//       payload: {
-//         username,
-//       },
-//       meta,
-//     });
+    // yield refetchUserNotifications(walletAddress);
 
-//     /*
-//      * Set the logged in user and freshly created one
-//      */
-//     yield apolloClient.mutate<
-//       SetLoggedInUserMutation,
-//       SetLoggedInUserMutationVariables
-//     >({
-//       mutation: SetLoggedInUserDocument,
-//       variables: {
-//         input: {
-//           username,
-//         },
-//       },
-//     });
-//   } catch (error) {
-//     return yield putError(ActionTypes.USERNAME_CREATE_ERROR, error, meta);
-//   } finally {
-//     txChannel.close();
-//   }
-//   return null;
-// }
+    yield put<AllActions>({
+      type: ActionTypes.USERNAME_CREATE_SUCCESS,
+      payload: {
+        username,
+      },
+      meta,
+    });
+
+    /*
+     * Write user to db
+     */
+    yield apolloClient.mutate({
+      mutation: gql(createUniqueUser),
+      variables: {
+        input: {
+          id: walletAddress,
+          name: username,
+          profile: { displayName: username },
+        },
+      },
+    });
+
+    yield routeRedirect(LANDING_PAGE_ROUTE, navigate);
+  } catch (error) {
+    return yield putError(ActionTypes.USERNAME_CREATE_ERROR, error, meta);
+  } finally {
+    txChannel.close();
+  }
+  return null;
+}
 
 function* userLogout() {
   try {
@@ -315,7 +321,7 @@ export function* setupUsersSagas() {
   // yield takeLatest(ActionTypes.USER_AVATAR_REMOVE, userAvatarRemove);
   // yield takeLatest(ActionTypes.USER_AVATAR_UPLOAD, userAvatarUpload);
   yield takeLatest(ActionTypes.USER_LOGOUT, userLogout);
-  // yield takeLatest(ActionTypes.USERNAME_CREATE, usernameCreate);
+  yield takeLatest(ActionTypes.USERNAME_CREATE, usernameCreate);
   // yield takeLatest(ActionTypes.USER_DEPOSIT_TOKEN, userDepositToken);
   // yield takeLatest(ActionTypes.USER_WITHDRAW_TOKEN, userWithdrawToken);
 }

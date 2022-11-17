@@ -1,17 +1,21 @@
+import { NavigateFunction } from 'react-router-dom';
 import { Address } from '~types';
 
 import { ActionType, ErrorActionType, UniqueActionType } from './index';
 
 import { ActionTypes } from '../../actionTypes';
+import { FormValues as CreateUserWizardFormValues } from '~common/CreateUserWizard/CreateUserWizard';
 
 export type UserActionTypes =
-  | UniqueActionType<ActionTypes.USERNAME_CREATE, { username: string }, object>
+  | UniqueActionType<
+      ActionTypes.USERNAME_CREATE,
+      CreateUserWizardFormValues,
+      { navigate: NavigateFunction }
+    >
   | ErrorActionType<ActionTypes.USERNAME_CREATE_ERROR, object>
   | UniqueActionType<
       ActionTypes.USERNAME_CREATE_SUCCESS,
-      {
-        username: string;
-      },
+      CreateUserWizardFormValues,
       object
     >
   | UniqueActionType<ActionTypes.USER_AVATAR_REMOVE, object, object>

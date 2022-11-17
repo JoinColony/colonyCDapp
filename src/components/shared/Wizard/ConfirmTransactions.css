@@ -1,0 +1,17 @@
+@value query700 from '~styles/queries.css';
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  padding: 22px 15px 18px 15px;
+  border-radius: 5px;
+  border: 1px solid var(--light-grey);
+  background-color: var(--light-ash);
+}
+
+@media screen and query700 {
+  .container {
+    padding: 22px 0px 18px 0px;
+  }
+}

@@ -1,4 +1,5 @@
 import { ActionPattern } from '@redux-saga/types';
+import { NavigateFunction } from 'react-router-dom';
 import { Channel } from 'redux-saga';
 import {
   all,
@@ -107,9 +108,9 @@ export const takeLatestCancellable = (
 
 export function* routeRedirect(
   route: string,
-  historyObject, // Apparently react-router doesn't export proper types for this :(
+  navigateFunction: NavigateFunction,
 ) {
-  if (route && historyObject) {
-    yield call(historyObject.push, route);
+  if (route && navigateFunction) {
+    yield call<NavigateFunction>(navigateFunction, route, undefined);
   }
 }

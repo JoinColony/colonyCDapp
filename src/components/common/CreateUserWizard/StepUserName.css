@@ -1,0 +1,33 @@
+.main {
+  padding-top: 155px;
+  width: 100%;
+  width: 460px;
+}
+
+.paragraph {
+  margin-top: 1.5em;
+  font-size: var(--size-medium);
+  white-space: pre-wrap;
+}
+
+.nameForm {
+  margin-top: 40px;
+}
+
+.nameForm > div:first-of-type {
+  margin-bottom: 0px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 13px;
+}
+
+.reminder {
+  margin-left: 50%;
+  max-width: 215px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  line-height: 18px;
+}
