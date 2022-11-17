@@ -79,10 +79,6 @@
 
     "transaction.group.createColony.title": "Create Colony",
     "transaction.group.createColony.description": "Create Colony",
-    "transaction.group.restartColonyDeployment.title": "Restart Colony Deployment",
-    "transaction.group.restartColonyDeployment.description": "Restart Colony Deployment",
-    "transaction.group.restartColonyDeployment.setOneTxRoles.title": "Set OneTxPayment Extension Roles",
-    "transaction.group.restartColonyDeployment.setOneTxRoles.description": "Set OneTxPayment Extension Roles",
     "transaction.NetworkClient.deployToken.title": "Create Token",
     "transaction.NetworkClient.deployToken.description": "Create Token",
     "transaction.NetworkClient.deployTokenViaNetwork.title": "Create Token",
@@ -251,10 +247,6 @@
     "metatransaction.NetworkClient.registerUserLabel.description": "Confirm Your Username \"{0}\"",
     "metatransaction.group.createColony.title": "Create Colony",
     "metatransaction.group.createColony.description": "Create Colony",
-    "metatransaction.group.restartColonyDeployment.title": "Restart Colony Deployment",
-    "metatransaction.group.restartColonyDeployment.description": "Restart Colony Deployment",
-    "metatransaction.group.restartColonyDeployment.setOneTxRoles.title": "Set OneTxPayment Extension Roles",
-    "metatransaction.group.restartColonyDeployment.setOneTxRoles.description": "Set OneTxPayment Extension Roles",
     "metatransaction.NetworkClient.deployToken.title": "Create Token",
     "metatransaction.NetworkClient.deployToken.description": "Create Token",
     "metatransaction.NetworkClient.deployTokenViaNetwork.title": "Create Token",
@@ -410,5 +402,5 @@
     "permission.1": "Root",
 
     "tooltip.lockedToken": "This token is locked. Colony native tokens are locked and non-transferrable by default to avoid unwanted project token transfer outside of the colony.",
-    "tooltip.forceToggle" : "Toggle \"Force\" to bypass governance and perform this action immediately. This is only possible with the right permissions."
-  }
+    "tooltip.forceToggle": "Toggle \"Force\" to bypass governance and perform this action immediately. This is only possible with the right permissions."
+}

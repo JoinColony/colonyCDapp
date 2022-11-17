@@ -134,7 +134,6 @@ const ColonyMembers = () => {
 
   // const controlsDisabled =
   //   !isSupportedColonyVersion ||
-  //   !colonyData?.processedColony?.isDeploymentFinished ||
   //   mustUpgradeOneTx;
 
   // if (
@@ -178,7 +177,6 @@ const ColonyMembers = () => {
   //                 onClick={handlePermissionManagementDialog}
   //                 disabled={
   //                   !isSupportedColonyVersion ||
-  //                   !colonyData?.processedColony?.isDeploymentFinished ||
   //                   mustUpgradeOneTx
   //                 }
   //               />

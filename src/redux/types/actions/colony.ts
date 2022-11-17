@@ -1,11 +1,6 @@
 import { ActionTypes } from '~redux';
 import { Address, WithKey } from '~types';
-import {
-  ActionType,
-  ErrorActionType,
-  UniqueActionType,
-  UniqueActionTypeWithoutPayload,
-} from './index';
+import { ActionType, ErrorActionType, UniqueActionType } from './index';
 
 export type ColonyActionTypes =
   | UniqueActionType<
@@ -37,18 +32,6 @@ export type ColonyActionTypes =
   | ActionType<typeof ActionTypes.CREATE_CANCEL>
   | ErrorActionType<ActionTypes.CREATE_ERROR, object>
   | UniqueActionType<ActionTypes.CREATE_SUCCESS, void, object>
-  | UniqueActionType<
-      ActionTypes.DEPLOYMENT_RESTART,
-      {
-        colonyAddress: Address;
-      },
-      object
-    >
-  | ErrorActionType<ActionTypes.DEPLOYMENT_RESTART_ERROR, object>
-  | UniqueActionTypeWithoutPayload<
-      ActionTypes.DEPLOYMENT_RESTART_SUCCESS,
-      object
-    >
   | ErrorActionType<ActionTypes.RECOVERY_MODE_ENTER_ERROR, object>
   | UniqueActionType<ActionTypes.RECOVERY_MODE_ENTER_SUCCESS, object, object>
   | UniqueActionType<
