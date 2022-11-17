@@ -39,21 +39,21 @@ const MSG = defineMessages({
 });
 
 const UserReputation = ({
-  // colony,
+  colony,
   userReputationForTopDomains,
   isCurrentUserReputation,
 }: Props) => {
-  // const formattedUserReputations = userReputationForTopDomains?.map(
-  //   ({ domainId, ...rest }) => {
-  //     const reputationDomain = colony?.domains?.items.find(
-  //       (domain) => domain?.ethDomainId === domainId,
-  //     );
-  //     return {
-  //       ...rest,
-  //       reputationDomain,
-  //     };
-  //   },
-  // );
+  const formattedUserReputations = userReputationForTopDomains?.map(
+    ({ domainId, ...rest }) => {
+      const reputationDomain = colony?.domains?.items.find(
+        (domain) => domain?.nativeId === domainId,
+      );
+      return {
+        ...rest,
+        reputationDomain,
+      };
+    },
+  );
 
   return (
     <div className={styles.sectionContainer}>
@@ -65,7 +65,7 @@ const UserReputation = ({
         }}
         text={MSG.labelText}
       />
-      {isEmpty(userReputationForTopDomains) ? (
+      {isEmpty(formattedUserReputations) ? (
         <p className={styles.noReputationDescription}>
           <FormattedMessage
             {...MSG.noReputationDescription}
@@ -74,13 +74,13 @@ const UserReputation = ({
         </p>
       ) : (
         <ul>
-          {userReputationForTopDomains.map(
-            ({ domainId, reputationPercentage }) => (
+          {formattedUserReputations.map(
+            ({ reputationDomain, reputationPercentage }) => (
               <li
-                key={`${domainId}-${reputationPercentage}`}
+                key={`${reputationDomain?.id}-${reputationPercentage}`}
                 className={styles.domainReputationItem}
               >
-                <p className={styles.domainName}>{domainId}</p>
+                <p className={styles.domainName}>{reputationDomain?.id}</p>
                 <div className={styles.reputationContainer}>
                   {reputationPercentage === ZeroValue.NearZero && (
                     <div className={styles.reputation}>
@@ -102,7 +102,7 @@ const UserReputation = ({
                     title={MSG.starReputationTitle}
                     titleValues={{
                       reputation: reputationPercentage,
-                      domainName: domainId /* reputationDomain?.name */,
+                      domainName: reputationDomain?.name,
                     }}
                   />
                 </div>
