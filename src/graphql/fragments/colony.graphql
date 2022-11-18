@@ -1,0 +1,66 @@
+fragment Colony on Colony {
+  colonyAddress: id
+  name
+  nativeToken {
+    ...Token
+  }
+  profile {
+    avatar
+    bio
+    displayName
+    email
+    location
+    thumbnail
+    website
+  }
+  status {
+    recovery
+    nativeToken {
+      mintable
+      unlockable
+      unlocked
+    }
+  }
+  meta {
+    chainId
+    network
+  }
+  tokens {
+    items {
+      token {
+        ...Token
+      }
+    }
+  }
+  domains {
+    items {
+      color
+      description
+      id
+      name
+      nativeId
+      parentId: domainParentId
+    }
+  }
+  watchers {
+    items {
+      ...Watcher
+    }
+  }
+}
+
+fragment Watcher on WatchedColonies {
+  user {
+    walletAddress: id
+    name
+    profile {
+      avatar
+      bio
+      displayName
+      email
+      location
+      website
+      thumbnail
+    }
+  }
+}

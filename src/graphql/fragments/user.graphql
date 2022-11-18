@@ -1,0 +1,30 @@
+fragment User on User {
+  profile {
+    avatar
+    bio
+    displayName
+    email
+    location
+    thumbnail
+    website
+  }
+  walletAddress: id
+  name
+  watchlist {
+    items {
+      colony {
+        colonyAddress: id
+        name
+        profile {
+          displayName
+          thumbnail
+        }
+        meta {
+          chainId
+          network
+        }
+      }
+      createdAt
+    }
+  }
+}

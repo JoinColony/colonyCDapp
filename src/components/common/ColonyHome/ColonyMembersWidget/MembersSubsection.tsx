@@ -11,6 +11,7 @@ import InviteLinkButton from '~shared/Button/InviteLinkButton';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useAvatarDisplayCounter, useAppContext } from '~hooks';
 import { Colony, User } from '~types';
+import { notNull } from '~utils/arrays';
 
 import styles from './ColonyMembersWidget.css';
 
@@ -73,7 +74,10 @@ const MembersSubsection = ({
   currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
   maxAvatars = MAX_AVATARS,
 }: Props) => {
-  const colonyWatchers = useMemo(() => watchers?.items || [], [watchers]);
+  const colonyWatchers = useMemo(
+    () => (watchers?.items || []).filter(notNull),
+    [watchers],
+  );
   const { user } = useAppContext();
   // const hasRegisteredProfile = user?.name;
   // const canAdministerComments =

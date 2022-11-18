@@ -1,9 +1,8 @@
-import { gql, useQuery } from '@apollo/client';
 import { Id } from '@colony/colony-js';
 
 import { Address } from '~types';
 import { ADDRESS_ZERO } from '~constants';
-import { getUserReputation } from '~gql';
+import { useGetUserReputationQuery } from '~gql';
 
 interface UseUserReputationHook {
   userReputation?: string;
@@ -16,7 +15,7 @@ const useUserReputation = (
   domainId = Id.RootDomain,
   rootHash?: string,
 ): UseUserReputationHook => {
-  const { data: userReputationData } = useQuery(gql(getUserReputation), {
+  const { data: userReputationData } = useGetUserReputationQuery({
     variables: {
       input: {
         colonyAddress: colonyAddress ?? '',
@@ -28,9 +27,9 @@ const useUserReputation = (
     fetchPolicy: 'cache-and-network',
     skip: !colonyAddress || !walletAddress,
   });
-  const userReputation = userReputationData?.getUserReputation;
+  const userReputation = userReputationData?.getUserReputation ?? undefined;
 
-  const { data: totalReputationData } = useQuery(gql(getUserReputation), {
+  const { data: totalReputationData } = useGetUserReputationQuery({
     variables: {
       input: {
         colonyAddress: colonyAddress ?? '',
@@ -42,7 +41,7 @@ const useUserReputation = (
     fetchPolicy: 'cache-and-network',
     skip: !colonyAddress,
   });
-  const totalReputation = totalReputationData?.getUserReputation;
+  const totalReputation = totalReputationData?.getUserReputation ?? undefined;
 
   return {
     userReputation,

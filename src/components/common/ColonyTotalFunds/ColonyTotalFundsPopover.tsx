@@ -5,20 +5,20 @@ import Popover from '~shared/Popover';
 import Numeral from '~shared/Numeral';
 // import { TokenBalancesForDomainsQuery } from '~data/index';
 import Avatar from '~shared/Avatar';
-import { Address } from '~types/index';
+import { Address, Token } from '~types';
 // import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-
-import { ColonyTokens } from '~types';
 
 import styles from './ColonyTotalFundsPopover.css';
 
 interface Props {
   onSelectToken?: Dispatch<SetStateAction<Address>>;
-  tokens?: ColonyTokens[];
+  tokens?: Token[];
   children?: ReactNode;
   currentTokenAddress?: Address;
 }
+
+const displayName = 'common.ColonyTotalFunds.ColonyTotalFundsPopover';
 
 const ColonyTotalFundsPopover = ({
   children,
@@ -30,7 +30,7 @@ const ColonyTotalFundsPopover = ({
     <Popover
       renderContent={({ close }) => (
         <ul className={styles.main}>
-          {tokens.map(({ token }) => (
+          {tokens.map((token) => (
             <li key={token.tokenAddress}>
               <button
                 type="button"
@@ -66,7 +66,7 @@ const ColonyTotalFundsPopover = ({
                     </span>
                     <span className={styles.tokenBalance}>
                       <Numeral
-                        unit={getTokenDecimalsWithFallback(token.decimals)}
+                        decimals={getTokenDecimalsWithFallback(token.decimals)}
                         // value={
                         //   token.balances[COLONY_TOTAL_BALANCE_DOMAIN_ID].amount
                         // }
@@ -106,7 +106,6 @@ const ColonyTotalFundsPopover = ({
   ) : null;
 };
 
-ColonyTotalFundsPopover.displayName =
-  'dashboard.ColonyTotalFunds.ColonyTotalFundsPopover';
+ColonyTotalFundsPopover.displayName = displayName;
 
 export default ColonyTotalFundsPopover;

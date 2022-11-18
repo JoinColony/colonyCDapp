@@ -1,9 +1,8 @@
 import React, { createContext, useMemo, ReactNode } from 'react';
-import { gql, useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 
-import { getFullColonyByName } from '~gql';
+import { useGetFullColonyByNameQuery } from '~gql';
 import { Colony } from '~types';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import NotFoundRoute from '~routes/NotFoundRoute';
@@ -36,7 +35,7 @@ export const ColonyContextProvider = ({
 }) => {
   const { colonyName } = useParams<{ colonyName: string }>();
 
-  const { data, loading, error } = useQuery(gql(getFullColonyByName), {
+  const { data, loading, error } = useGetFullColonyByNameQuery({
     skip: !colonyName,
     variables: {
       name: colonyName ?? '',
@@ -44,7 +43,7 @@ export const ColonyContextProvider = ({
     fetchPolicy: 'cache-and-network',
   });
 
-  const [colony] = data?.getColonyByName?.items || [];
+  const colony = data?.getColonyByName?.items?.[0] ?? undefined;
 
   const canInteractWithColony = useCanInteractWithColony(colony);
 

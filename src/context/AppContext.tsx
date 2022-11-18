@@ -5,10 +5,13 @@ import React, {
   ReactNode,
   useCallback,
 } from 'react';
-import { gql } from '@apollo/client';
 
+import {
+  GetCurrentUserDocument,
+  GetCurrentUserQuery,
+  GetCurrentUserQueryVariables,
+} from '~gql';
 import { Wallet, User } from '~types';
-import { getCurrentUser } from '~gql';
 
 import { getContext, ContextModule } from './index';
 
@@ -45,13 +48,16 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       try {
         setUserLoading(true);
         const apolloClient = getContext(ContextModule.ApolloClient);
-        const query = apolloClient.query({
-          query: gql(getCurrentUser),
+        const query = apolloClient.query<
+          GetCurrentUserQuery,
+          GetCurrentUserQueryVariables
+        >({
+          query: GetCurrentUserDocument,
           variables: { address },
           fetchPolicy: 'network-only',
         });
         query.then(({ data }) => {
-          const [currentUser] = data?.getUserByAddress.items || [];
+          const [currentUser] = data?.getUserByAddress?.items || [];
           if (currentUser) {
             setUser(currentUser);
           }

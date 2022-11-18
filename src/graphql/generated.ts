@@ -1316,6 +1316,14 @@ export type WatchedColonies = {
   userID: Scalars['ID'];
 };
 
+export type ColonyFragment = { __typename?: 'Colony', name: string, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null };
+
+export type WatcherFragment = { __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } };
+
+export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string };
+
+export type UserFragment = { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null };
+
 export type GetFullColonyByNameQueryVariables = Exact<{
   name: Scalars['String'];
 }>;
@@ -1326,7 +1334,7 @@ export type GetFullColonyByNameQuery = { __typename?: 'Query', getColonyByName?:
 export type GetMetacolonyQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMetacolonyQuery = { __typename?: 'Query', getColonyByType?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null } | null> } | null };
+export type GetMetacolonyQuery = { __typename?: 'Query', getColonyByType?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
 
 export type GetCurrentUserQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -1335,83 +1343,133 @@ export type GetCurrentUserQueryVariables = Exact<{
 
 export type GetCurrentUserQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null };
 
+export type GetUserReputationQueryVariables = Exact<{
+  input: GetUserReputationInput;
+}>;
 
-export const GetFullColonyByNameDocument = gql`
-    query GetFullColonyByName($name: String!) {
-  getColonyByName(name: $name) {
-    items {
-      colonyAddress: id
-      name
-      nativeToken {
-        decimals
-        tokenAddress: id
-        name
-        symbol
-        type
-      }
-      profile {
-        avatar
-        bio
-        displayName
-        email
-        location
-        thumbnail
-        website
-      }
-      status {
-        recovery
-        nativeToken {
-          mintable
-          unlockable
-          unlocked
-        }
-      }
-      meta {
-        chainId
-        network
-      }
-      tokens {
-        items {
-          token {
-            decimals
-            tokenAddress: id
-            name
-            symbol
-            type
-          }
-        }
-      }
-      domains {
-        items {
-          color
-          description
-          id
-          name
-          nativeId
-          parentId: domainParentId
-        }
-      }
-      watchers {
-        items {
-          user {
-            walletAddress: id
-            name
-            profile {
-              avatar
-              bio
-              displayName
-              email
-              location
-              website
-              thumbnail
-            }
-          }
-        }
-      }
+
+export type GetUserReputationQuery = { __typename?: 'Query', getUserReputation?: string | null };
+
+export const TokenFragmentDoc = gql`
+    fragment Token on Token {
+  decimals
+  tokenAddress: id
+  name
+  symbol
+  type
+}
+    `;
+export const WatcherFragmentDoc = gql`
+    fragment Watcher on WatchedColonies {
+  user {
+    walletAddress: id
+    name
+    profile {
+      avatar
+      bio
+      displayName
+      email
+      location
+      website
+      thumbnail
     }
   }
 }
     `;
+export const ColonyFragmentDoc = gql`
+    fragment Colony on Colony {
+  colonyAddress: id
+  name
+  nativeToken {
+    ...Token
+  }
+  profile {
+    avatar
+    bio
+    displayName
+    email
+    location
+    thumbnail
+    website
+  }
+  status {
+    recovery
+    nativeToken {
+      mintable
+      unlockable
+      unlocked
+    }
+  }
+  meta {
+    chainId
+    network
+  }
+  tokens {
+    items {
+      token {
+        ...Token
+      }
+    }
+  }
+  domains {
+    items {
+      color
+      description
+      id
+      name
+      nativeId
+      parentId: domainParentId
+    }
+  }
+  watchers {
+    items {
+      ...Watcher
+    }
+  }
+}
+    ${TokenFragmentDoc}
+${WatcherFragmentDoc}`;
+export const UserFragmentDoc = gql`
+    fragment User on User {
+  profile {
+    avatar
+    bio
+    displayName
+    email
+    location
+    thumbnail
+    website
+  }
+  walletAddress: id
+  name
+  watchlist {
+    items {
+      colony {
+        colonyAddress: id
+        name
+        profile {
+          displayName
+          thumbnail
+        }
+        meta {
+          chainId
+          network
+        }
+      }
+      createdAt
+    }
+  }
+}
+    `;
+export const GetFullColonyByNameDocument = gql`
+    query GetFullColonyByName($name: String!) {
+  getColonyByName(name: $name) {
+    items {
+      ...Colony
+    }
+  }
+}
+    ${ColonyFragmentDoc}`;
 
 /**
  * __useGetFullColonyByNameQuery__
@@ -1444,21 +1502,11 @@ export const GetMetacolonyDocument = gql`
     query GetMetacolony {
   getColonyByType(type: METACOLONY) {
     items {
-      colonyAddress: id
-      name
-      profile {
-        avatar
-        bio
-        displayName
-        email
-        location
-        thumbnail
-        website
-      }
+      ...Colony
     }
   }
 }
-    `;
+    ${ColonyFragmentDoc}`;
 
 /**
  * __useGetMetacolonyQuery__
@@ -1490,38 +1538,11 @@ export const GetCurrentUserDocument = gql`
     query GetCurrentUser($address: ID!) {
   getUserByAddress(id: $address) {
     items {
-      profile {
-        avatar
-        bio
-        displayName
-        email
-        location
-        thumbnail
-        website
-      }
-      walletAddress: id
-      name
-      watchlist {
-        items {
-          colony {
-            colonyAddress: id
-            name
-            profile {
-              displayName
-              thumbnail
-            }
-            meta {
-              chainId
-              network
-            }
-          }
-          createdAt
-        }
-      }
+      ...User
     }
   }
 }
-    `;
+    ${UserFragmentDoc}`;
 
 /**
  * __useGetCurrentUserQuery__
@@ -1550,3 +1571,36 @@ export function useGetCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQuery>;
 export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
 export type GetCurrentUserQueryResult = Apollo.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
+export const GetUserReputationDocument = gql`
+    query GetUserReputation($input: GetUserReputationInput!) {
+  getUserReputation(input: $input)
+}
+    `;
+
+/**
+ * __useGetUserReputationQuery__
+ *
+ * To run a query within a React component, call `useGetUserReputationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserReputationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserReputationQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetUserReputationQuery(baseOptions: Apollo.QueryHookOptions<GetUserReputationQuery, GetUserReputationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserReputationQuery, GetUserReputationQueryVariables>(GetUserReputationDocument, options);
+      }
+export function useGetUserReputationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserReputationQuery, GetUserReputationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserReputationQuery, GetUserReputationQueryVariables>(GetUserReputationDocument, options);
+        }
+export type GetUserReputationQueryHookResult = ReturnType<typeof useGetUserReputationQuery>;
+export type GetUserReputationLazyQueryHookResult = ReturnType<typeof useGetUserReputationLazyQuery>;
+export type GetUserReputationQueryResult = Apollo.QueryResult<GetUserReputationQuery, GetUserReputationQueryVariables>;
