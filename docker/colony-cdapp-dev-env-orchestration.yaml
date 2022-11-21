@@ -25,6 +25,8 @@ services:
     depends_on:
       network-contracts:
         condition: service_healthy
+    links:
+    - "network-contracts:network-contracts.docker"
 
   block-ingestor:
     container_name: 'ingestor'
@@ -54,5 +56,6 @@ services:
       COLORTERM: truecolor
     links:
       - "network-contracts:network-contracts.docker"
+      - "reputation-monitor:reputation-monitor.docker"
     ports:
       - '20002:20002'
