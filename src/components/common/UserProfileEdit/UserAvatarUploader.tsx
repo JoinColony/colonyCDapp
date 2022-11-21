@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { useMutation, gql } from '@apollo/client';
 
 import { FileReaderFile } from '~shared/FileUpload';
-import { useAppContext, useAsyncFunction } from '~hooks';
 import AvatarUploader from '~shared/AvatarUploader';
 import UserAvatar from '~shared/UserAvatar';
 import { InputStatus } from '~shared/Fields';
 
-import { ActionTypes } from '~redux/index';
 import { User } from '~types';
 import { updateUser } from '~gql';
 
@@ -33,11 +31,7 @@ interface Props {
 }
 
 const UserAvatarUploader = ({ user, user: { walletAddress } }: Props) => {
-  const { updateWallet } = useAppContext();
-
-  const [updateAvatar, { error, isSet, loading, reset }] = useMutation(
-    gql(updateUser),
-  );
+  const [updateAvatar, { error }] = useMutation(gql(updateUser));
 
   const [avatarFileError, setAvatarFileError] = useState(false);
 
@@ -61,6 +55,10 @@ const UserAvatarUploader = ({ user, user: { walletAddress } }: Props) => {
     setAvatarFileError(true);
   };
 
+  useEffect(() => {
+    setAvatarFileError(!!error);
+  }, [error]);
+
   return (
     <>
       <AvatarUploader
@@ -76,7 +74,7 @@ const UserAvatarUploader = ({ user, user: { walletAddress } }: Props) => {
         }
         upload={handleUpload}
         remove={remove}
-        isSet={user && user.profile && !!user.profile.avatar}
+        isSet={!!user && !!user.profile && !!user.profile.avatar}
         handleError={handleError}
       />
       {avatarFileError && (

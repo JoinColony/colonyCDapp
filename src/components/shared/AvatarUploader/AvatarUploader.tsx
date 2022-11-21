@@ -4,6 +4,7 @@ import {
   defineMessages,
   FormattedMessage,
 } from 'react-intl';
+import { FetchResult } from '@apollo/client';
 
 import { Formik } from 'formik';
 
@@ -51,7 +52,7 @@ interface Props {
   remove: (...args: any[]) => Promise<any>;
 
   /** Function to handle the actual uploading of the file */
-  upload: (fileData: FileReaderFile) => Promise<string>;
+  upload: (fileData: FileReaderFile) => Promise<FetchResult>;
 
   /** Function to handle an upload error from the outside */
   handleError?: (...args: any[]) => Promise<any>;
