@@ -11,6 +11,7 @@ import { User } from '~types';
 import { updateUser } from '~gql';
 
 import styles from './UserAvatarUploader.css';
+import { useAppContext } from '~hooks';
 
 const displayName = 'common.UserProfileEdit.UserAvatarUploader';
 
@@ -31,7 +32,11 @@ interface Props {
 }
 
 const UserAvatarUploader = ({ user, user: { walletAddress } }: Props) => {
-  const [updateAvatar, { error }] = useMutation(gql(updateUser));
+  const appContext = useAppContext();
+
+  const [updateAvatar, { error, called, loading }] = useMutation(
+    gql(updateUser),
+  );
 
   const [avatarFileError, setAvatarFileError] = useState(false);
 
@@ -58,6 +63,12 @@ const UserAvatarUploader = ({ user, user: { walletAddress } }: Props) => {
   useEffect(() => {
     setAvatarFileError(!!error);
   }, [error]);
+
+  useEffect(() => {
+    if (called && !loading && appContext.updateUser) {
+      appContext.updateUser(user.walletAddress);
+    }
+  }, [appContext, called, loading, user]);
 
   return (
     <>
