@@ -8,7 +8,6 @@ WORKDIR /colonyCDapp
 # Add dependencies from the host
 ADD package.json /colonyCDapp/package.colonyCDapp.json
 ADD amplify /colonyCDapp/amplify
-ADD .graphqlconfig.yml /colonyCDapp/.graphqlconfig.yml
 
 # Note: these are listed individually so that if they change, they won't affect
 # the build of the other images
