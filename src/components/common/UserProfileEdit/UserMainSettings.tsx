@@ -37,9 +37,13 @@ const MSG = defineMessages({
     id: 'users.UserProfileEdit.UserMainSettings.labelUsername',
     defaultMessage: 'Unique Username',
   },
+  labelEmail: {
+    id: 'users.UserProfileEdit.UserMainSettings.labelEmail',
+    defaultMessage: 'Your email',
+  },
   labelName: {
     id: 'users.UserProfileEdit.UserMainSettings.labelName',
-    defaultMessage: 'Name',
+    defaultMessage: 'Your display name',
   },
   labelBio: {
     id: 'users.UserProfileEdit.UserMainSettings.labelBio',
@@ -66,6 +70,7 @@ const MSG = defineMessages({
 const displayName = 'users.UserProfileEdit.UserMainSettings';
 
 interface FormValues {
+  email?: string;
   displayName?: string;
   bio?: string;
   website?: string;
@@ -77,6 +82,7 @@ interface Props {
 }
 
 const validationSchema = yup.object({
+  email: yup.string().email().nullable(),
   bio: yup.string().nullable(),
   displayName: yup.string().nullable(),
   location: yup.string().nullable(),
@@ -113,6 +119,7 @@ const UserMainSettings = ({ user }: Props) => {
       />
       <Form<FormValues>
         initialValues={{
+          email: profile?.email || undefined,
           displayName: profile?.displayName || undefined,
           bio: profile?.bio || undefined,
           website: profile?.website || undefined,
@@ -139,6 +146,11 @@ const UserMainSettings = ({ user }: Props) => {
               />
             </div>
             <FieldSet className={styles.inputFieldSet}>
+              <Input
+                label={MSG.labelEmail}
+                name="email"
+                dataTest="userSettingsEmail"
+              />
               <Input
                 label={MSG.labelName}
                 name="displayName"
