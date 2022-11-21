@@ -6,7 +6,7 @@
 
 .paragraph {
   margin-top: 1.5em;
-  font-size: var(--size-medium);
+  font-size: var(--size-normal);
   white-space: pre-wrap;
 }
 

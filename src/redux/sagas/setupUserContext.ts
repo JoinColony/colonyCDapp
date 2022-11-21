@@ -49,7 +49,6 @@ function* setupContextDependentSagas() {
  * and then any other context that depends on that.
  */
 export default function* setupUserContext() {
-  console.log('SETTING UP THE OLD USER CNT');
   try {
     /*
      * Get the new wallet and set it in context.

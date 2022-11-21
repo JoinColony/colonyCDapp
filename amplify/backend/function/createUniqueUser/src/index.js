@@ -8,7 +8,7 @@ const { graphqlRequest } = require('./utils');
  * So that we can always ensure it follows the latest schema
  * (currently it's just saved statically)
  */
-const { getUser, createUser } = require('./graphql');
+const { getUser, createUser, createProfile } = require('./graphql');
 
 /*
  * @TODO These values need to be imported properly, and differentiate based on environment
@@ -55,13 +55,31 @@ exports.handler = async (event) => {
     );
   }
 
+  /*
+   * Create user profile
+   */
+  await graphqlRequest(
+    createProfile,
+    {
+      input: {
+        id: checksummedWalletAddress,
+        ...profile,
+      },
+    },
+    GRAPHQL_URI,
+    API_KEY,
+  );
+
+  /*
+   * Create user
+   */
   const mutation = await graphqlRequest(
     createUser,
     {
       input: {
         id: checksummedWalletAddress,
         name,
-        profile,
+        profileId: checksummedWalletAddress,
       },
     },
     GRAPHQL_URI,

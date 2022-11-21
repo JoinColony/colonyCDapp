@@ -12,7 +12,9 @@ import { PopperOptions } from 'react-popper-tooltip';
 
 import InputLabel from '~shared/Fields/InputLabel';
 import { Tooltip } from '~shared/Popover';
-import asFieldArray from '~shared/Fields/asFieldArray';
+import asFieldArray, {
+  AsFieldArrayEnhancedProps,
+} from '~shared/Fields/asFieldArray';
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
@@ -52,12 +54,6 @@ interface Props {
   tooltipText?: string;
   /** Options to pass to the underlying PopperJS element. See here for more: https://popper.js.org/docs/v2/constructors/#options. */
   tooltipPopperOptions?: PopperOptions;
-  /** @ignore injected by `asFieldArray` */
-  form: { [s: string]: any };
-  /** @ignore injected by `asFieldArray` */
-  push: (value: string) => void;
-  /** @ignore injected by `asFieldArray` */
-  remove: (value: string) => void;
   dataTest?: string;
 }
 
@@ -82,7 +78,7 @@ const Checkbox = ({
   tooltipText,
   tooltipPopperOptions,
   dataTest,
-}: Props) => {
+}: AsFieldArrayEnhancedProps<Props>) => {
   const [inputId] = useState<string>(nanoid());
 
   const handleOnChange = useCallback(
@@ -107,26 +103,23 @@ const Checkbox = ({
   });
   const classNames = className ? `${mainClasses} ${className}` : mainClasses;
 
-  const checkboxInputContent = useMemo(
-    () => (
-      <>
-        <input
-          id={inputId}
-          className={styles.delegate}
-          name={name}
-          type="checkbox"
-          disabled={disabled}
-          onChange={handleOnChange}
-          aria-disabled={disabled}
-          aria-checked={isChecked}
-          data-test={dataTest}
-        />
-        <span className={styles.checkbox}>
-          <span className={styles.checkmark} />
-        </span>
-      </>
-    ),
-    [disabled, handleOnChange, inputId, isChecked, name, dataTest],
+  const checkboxInputContent = (
+    <>
+      <input
+        id={inputId}
+        className={styles.delegate}
+        name={name}
+        type="checkbox"
+        disabled={disabled}
+        onChange={handleOnChange}
+        aria-disabled={disabled}
+        aria-checked={isChecked}
+        data-test={dataTest}
+      />
+      <span className={styles.checkbox}>
+        <span className={styles.checkmark} />
+      </span>
+    </>
   );
 
   return (
@@ -169,4 +162,4 @@ Checkbox.defaultProps = {
   elementOnly: false,
 };
 
-export default asFieldArray()(Checkbox);
+export default asFieldArray<Props>(Checkbox);

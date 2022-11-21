@@ -1,28 +1,31 @@
 import { call, fork, put, takeLatest } from 'redux-saga/effects';
-import { normalize as ensNormalize } from 'eth-ens-namehash-ms';
-
 import { ClientType } from '@colony/colony-js';
 // import { BigNumber } from 'ethers';
+import gql from 'graphql-tag';
+import { utils } from 'ethers';
+import { QueryOptions } from '@apollo/client';
+
+import { ContextModule, getContext, removeContext } from '~context';
+import {
+  createUniqueUser,
+  CreateUniqueUserMutation,
+  CreateUniqueUserMutationVariables,
+  getProfileByEmail,
+  getUserByName,
+} from '~gql';
+import { routeRedirect } from '~utils/saga/effects';
+import { clearLastWallet } from '~utils/autoLogin';
+import { LANDING_PAGE_ROUTE } from '~routes';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
-import { ContextModule, getContext, removeContext } from '~context';
 import {
-  createUserWithSecondAttempt,
   putError,
   takeFrom,
   // getColonyManager
 } from '../utils';
-import { clearLastWallet } from '~utils/autoLogin';
 import { getWallet } from '../wallet';
 import { createTransaction, getTxChannel } from '../transactions';
-import { transactionLoadRelated } from '~redux/actionCreators';
-import gql from 'graphql-tag';
-import { createUniqueDomain, createUniqueUser } from '~gql';
-import { utils } from 'ethers';
-import { routeRedirect } from '~utils/saga/effects';
-import { LANDING_PAGE_ROUTE } from '~routes';
-import LandingPage from '~frame/LandingPage';
 
 // import { transactionLoadRelated, transactionReady } from '../../actionCreators';
 // import {
@@ -94,17 +97,15 @@ import LandingPage from '~frame/LandingPage';
 function* usernameCreate({
   meta: { id, navigate },
   meta,
-  payload: { username: givenUsername },
+  payload: { username, email, emailPermissions },
 }: Action<ActionTypes.USERNAME_CREATE>) {
   const wallet = yield call(getWallet);
   const walletAddress = utils.getAddress(wallet?.address);
 
   const txChannel = yield call(getTxChannel, id);
   const apolloClient = getContext(ContextModule.ApolloClient);
-  try {
-    // Normalize again, just to be sure
-    const username = ensNormalize(givenUsername);
 
+  try {
     yield fork(createTransaction, id, {
       context: ClientType.NetworkClient,
       methodName: 'registerUserLabel',
@@ -119,34 +120,50 @@ function* usernameCreate({
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    //yield put(transactionLoadRelated(id, true));
-
-    // yield createUserWithSecondAttempt(username);
-
-    //yield put(transactionLoadRelated(id, false));
-
-    // yield refetchUserNotifications(walletAddress);
-
     yield put<AllActions>({
       type: ActionTypes.USERNAME_CREATE_SUCCESS,
       payload: {
+        email,
         username,
+        emailPermissions,
       },
       meta,
     });
 
+    /* Queries will be refetched after the mutation, in order to update the cache. */
+    const refetchQueries: QueryOptions[] = [
+      {
+        query: gql(getUserByName),
+        variables: { name: username },
+      },
+    ];
+
+    if (email) {
+      refetchQueries.push({
+        query: gql(getProfileByEmail),
+        variables: { email },
+      });
+    }
     /*
      * Write user to db
      */
-    yield apolloClient.mutate({
+    yield apolloClient.mutate<
+      CreateUniqueUserMutation,
+      CreateUniqueUserMutationVariables
+    >({
       mutation: gql(createUniqueUser),
       variables: {
         input: {
           id: walletAddress,
           name: username,
-          profile: { displayName: username },
+          profile: {
+            email: email || undefined,
+            displayName: username,
+            meta: { emailPermissions },
+          },
         },
       },
+      refetchQueries,
     });
 
     yield routeRedirect(LANDING_PAGE_ROUTE, navigate);

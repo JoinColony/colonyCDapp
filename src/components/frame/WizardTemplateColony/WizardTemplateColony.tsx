@@ -36,9 +36,8 @@ const WizardTemplateColony = ({
   const walletAddress = wallet?.address || '';
 
   const customHandler = useCallback(() => previousStep(), [previousStep]);
-  const canInteractWithNetwork = useCanInteractWithNetwork();
 
-  if (!canInteractWithNetwork) {
+  if (!wallet) {
     return <Navigate to={LANDING_PAGE_ROUTE} replace />;
   }
 

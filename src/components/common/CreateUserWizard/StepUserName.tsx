@@ -17,12 +17,12 @@ import {
   UserStepTemplate,
 } from '../CreateUserWizard';
 
-
-type Props = WizardStepProps<FormValues>;
+type Props = Pick<
+  WizardStepProps<FormValues>,
+  'nextStep' | 'wizardValues' | 'wizardForm'
+>;
 
 const displayName = 'common.CreateUserWizard.StepUserName';
-
-const NO_EMAIL_PROVIDED = 'NO_EMAIL_PROVIDED';
 
 const MSG = defineMessages({
   heading: {
@@ -38,10 +38,6 @@ const MSG = defineMessages({
     id: `${displayName}.label`,
     defaultMessage: 'Your Unique Username',
   },
-  continue: {
-    id: 'dashboard.CreateUserWizard.StepUserName.continue',
-    defaultMessage: 'Continue',
-  },
   errorDomainTaken: {
     id: `${displayName}.errorDomainTaken`,
     defaultMessage: 'This Username is already taken',
@@ -53,7 +49,7 @@ const MSG = defineMessages({
 });
 
 const validationSchema = yup.object({
-  username: yup.string().required().max(100).ensAddress(),
+  username: yup.string().required().max(100).colonyName(),
 });
 
 interface UsernameInputProps {
@@ -75,6 +71,8 @@ const UsernameInput = ({ username, disabled }: UsernameInputProps) => (
 
 const StepUserName = ({ wizardValues, nextStep, wizardForm }: Props) => {
   const navigate = useNavigate();
+
+  //const { networkId } = useLoggedInUser();
 
   // const checkDomainTaken = useCallback(
   //   async (values: FormValues) => {
@@ -122,20 +120,19 @@ const StepUserName = ({ wizardValues, nextStep, wizardForm }: Props) => {
   const transform = pipe(
     mergePayload({
       ...wizardValues,
-      email: wizardValues.email || NO_EMAIL_PROVIDED,
     }),
     withMeta({ navigate }),
   );
+
   return (
     <ActionForm
-      initialValues={{}}
       onSuccess={() => nextStep(wizardValues)}
       submit={ActionTypes.USERNAME_CREATE}
       success={ActionTypes.TRANSACTION_CREATED}
       error={ActionTypes.USERNAME_CREATE_ERROR}
       transform={transform}
-      //validate={validateDomain}
       validationSchema={validationSchema}
+      {...wizardForm}
     >
       {({ dirty, isValid, isSubmitting, values }) => (
         <UserStepTemplate

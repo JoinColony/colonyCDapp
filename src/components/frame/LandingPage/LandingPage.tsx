@@ -72,6 +72,7 @@ const LandingPage = () => {
       updateUser(wallet?.address);
     }
   }, [wallet, updateUser]);
+
   return (
     <div className={styles.main}>
       <div>

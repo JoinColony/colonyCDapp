@@ -1,10 +1,11 @@
 import { NavigateFunction } from 'react-router-dom';
-import { Address } from '~types';
 
-import { ActionType, ErrorActionType, UniqueActionType } from './index';
+import { Address } from '~types';
+import { FormValues as CreateUserWizardFormValues } from '~common/CreateUserWizard/CreateUserWizard';
 
 import { ActionTypes } from '../../actionTypes';
-import { FormValues as CreateUserWizardFormValues } from '~common/CreateUserWizard/CreateUserWizard';
+
+import { ActionType, ErrorActionType, UniqueActionType } from './index';
 
 export type UserActionTypes =
   | UniqueActionType<

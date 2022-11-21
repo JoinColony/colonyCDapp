@@ -26,7 +26,9 @@ module.exports = {
         tokens {
           nextToken
         }
+        profileId
         profile {
+          id
           avatar
           thumbnail
           displayName
@@ -34,12 +36,25 @@ module.exports = {
           location
           website
           email
+          meta {
+            emailPermissions
+          }
         }
         watchlist {
           nextToken
         }
         createdAt
         updatedAt
+      }
+    }
+  `,
+  createProfile: /* GraphQL */ `
+    mutation CreateProfile(
+      $input: CreateProfileInput!
+      $condition: ModelProfileConditionInput
+    ) {
+      createProfile(input: $input, condition: $condition) {
+        id
       }
     }
   `,
