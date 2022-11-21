@@ -33,6 +33,16 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "colonyMembersWithReputation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getReputationForColony": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "fetchColonyNativeFundsClaim": {
       "build": true,
       "providerPlugin": "awscloudformation",

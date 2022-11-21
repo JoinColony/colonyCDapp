@@ -80,13 +80,13 @@
                 "RoleName": {
                     "Fn::If": [
                         "ShouldNotCreateEnvResources",
-                        "colonycdappLambdaRolef010d7b1",
+                        "colonycdappLambdaRolec66b4fa2",
                         {
 
                             "Fn::Join": [
                                 "",
                                 [
-                                    "colonycdappLambdaRolef010d7b1",
+                                    "colonycdappLambdaRolec66b4fa2",
                                     "-",
                                     {
                                         "Ref": "env"

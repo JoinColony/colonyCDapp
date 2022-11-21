@@ -13,10 +13,7 @@
             }
           },
           "additionalAuthenticationProviders": []
-        },
-        "GraphQLAPIIdOutput": "fake",
-        "GraphQLAPIEndpointOutput": "http://localhost:20002",
-        "GraphQLAPIKeyOutput": "da2-fakeApiId123456"
+        }
       }
     }
   },
@@ -37,6 +34,16 @@
       "service": "Lambda"
     },
     "getUserReputation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "colonyMembersWithReputation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getReputationForColony": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
