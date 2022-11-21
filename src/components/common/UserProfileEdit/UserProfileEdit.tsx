@@ -9,7 +9,7 @@ import LandingPage from '~frame/LandingPage';
 import UserProfileSpinner from '../UserProfile/UserProfileSpinner';
 import Sidebar from './Sidebar';
 import UserMainSettings from './UserMainSettings';
-// import UserAdvanceSettings from './UserAdvanceSettings';
+import UserAdvanceSettings from './UserAdvanceSettings';
 import { useAppContext } from '~hooks';
 
 const displayName = 'common.UserProfileEdit';
@@ -53,7 +53,9 @@ const UserProfileEdit = () => {
         <TabPanel>
           <UserMainSettings user={user} />
         </TabPanel>
-        <TabPanel>{/* <UserAdvanceSettings /> */}</TabPanel>
+        <TabPanel>
+          <UserAdvanceSettings />
+        </TabPanel>
       </Tabs>
     </ProfileTemplate>
   );
