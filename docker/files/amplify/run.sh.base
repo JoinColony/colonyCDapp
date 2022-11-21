@@ -20,5 +20,7 @@ cp /colonyCDappBackend/scripts/amplify-meta.json.base /colonyCDapp/amplify/backe
 cp /colonyCDappBackend/scripts/amplify-meta.json.base /colonyCDapp/amplify/\#current-cloud-backend/amplify-meta.json
 
 # Liftoff!
+npm run amplify mock &
 
-npm run amplify mock
+# Enable codegen
+npx graphql-codegen --watch "/colonyCDapp/src/graphql/**/*.graphql"

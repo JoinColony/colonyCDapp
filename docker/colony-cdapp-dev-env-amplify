@@ -8,6 +8,7 @@ WORKDIR /colonyCDapp
 # Add dependencies from the host
 ADD package.json /colonyCDapp/package.colonyCDapp.json
 ADD amplify /colonyCDapp/amplify
+ADD codegen.ts /colonyCDapp/codegen.ts
 
 # Note: these are listed individually so that if they change, they won't affect
 # the build of the other images
@@ -15,6 +16,7 @@ ADD docker/files/amplify/run.sh.base /colonyCDappBackend/run.sh
 ADD docker/files/amplify/local-env-info.json.base /colonyCDapp/amplify/.config/local-env-info.json
 ADD docker/files/amplify/local-aws-info.json.base /colonyCDapp/amplify/.config/local-aws-info.json
 ADD docker/files/amplify/aws-exports.js.base /colonyCDapp/src/aws-exports.js
+ADD docker/files/amplify/package.json.base /colonyCDapp/package.json.base
 # This still needs to be saved as a "template" since it will only be moved to it's final location at runtime
 ADD docker/files/amplify/amplify-meta.json.base /colonyCDappBackend/scripts/amplify-meta.json.base
 ADD docker/files/amplify/config.base /root/.aws/config
@@ -26,9 +28,9 @@ ADD docker/files/amplify/credentials.base /root/.aws/credentials
 
 # Generate the local "light" version of package json
 # It gets the amplify version from the CDapp's package.json file
-RUN AMPLIFY_VERSION=$(jq '.devDependencies."@aws-amplify/cli"' package.colonyCDapp.json) && echo "{\"scripts\":{\"amplify\":\"amplify\"},\"dependencies\":{\"@aws-amplify/cli\": $AMPLIFY_VERSION}}" > package.json
+RUN export AMPLIFY_VERSION=$(jq '.devDependencies."@aws-amplify/cli"' package.colonyCDapp.json) && echo $(sed "s/AMPLIFY_VERSION/$AMPLIFY_VERSION/" package.json.base) > package.json
 
-# Install amplify as a dependency
+# Install all dependencies
 RUN npm install
 
 # Actually download the amplify tarball (don't ask me, it's how it works)
