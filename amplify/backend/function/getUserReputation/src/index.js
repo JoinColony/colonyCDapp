@@ -27,7 +27,8 @@ exports.handler = async (event) => {
 
   const networkClient = getColonyNetworkClient(Network.Custom, provider, {
     networkAddress,
-    reputationOracleEndpoint: 'http://localhost:3002/reputation',
+    reputationOracleEndpoint:
+      'http://reputation-monitor.docker:3001/reputation/local',
   });
   const colonyClient = await networkClient.getColonyClient(colonyAddress);
 
