@@ -1,8 +1,7 @@
 @value query700 from '~styles/queries.css';
 
 .metaDesc {
-  margin-bottom: 60px;
-  margin-top: 25px;
+  margin-top: 14px;
   max-width: 460px;
 }
 
@@ -24,6 +23,18 @@
 .tooltipContent {
   padding: 10px;
   width: 218px;
+}
+
+.link {
+  margin-left: 10px;
+  font-size: var(--size-small);
+  color: var(--colony-blue);
+}
+
+.descriptions {
+  margin-top: 14px;
+  font-size: var(--size-normal);
+  color: var(--dark);
 }
 
 @media screen and query700 {

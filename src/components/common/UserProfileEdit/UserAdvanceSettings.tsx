@@ -13,11 +13,16 @@ import { canUseMetatransactions } from '~utils/checks';
 
 import styles from './UserProfileEdit.css';
 import stylesAdvance from './UserAdvanceSettings.css';
+import ExternalLink from '~shared/ExternalLink';
 
 const MSG = defineMessages({
   heading: {
     id: 'users.UserProfileEdit.UserAdvanceSettings.heading',
-    defaultMessage: 'Advanced settings',
+    defaultMessage: 'Advanced settings {learnMoreLink}',
+  },
+  metaDescription: {
+    id: 'users.UserProfileEdit.UserAdvanceSettings.metaDescription',
+    defaultMessage: `To connect directly to Gnosis chain and pay for your own transactions, disable this option. `,
   },
   metaDescGlobalOff: {
     id: 'users.UserProfileEdit.UserAdvanceSettings.metaDescGlobalOff',
@@ -26,8 +31,8 @@ const MSG = defineMessages({
   labelMetaTx: {
     id: 'users.UserProfileEdit.UserAdvanceSettings.labelMetaTx',
     defaultMessage: `Metatransactions ({isOn, select,
-      true {on}
-      other {off}
+      true {active}
+      other {inactive}
     })`,
   },
   tooltip: {
@@ -98,6 +103,16 @@ const UserAdvanceSettings = () => {
           <Heading
             appearance={{ theme: 'dark', size: 'medium' }}
             text={MSG.heading}
+            textValues={{
+              // @ts-ignore
+              learnMoreLink: (
+                <ExternalLink
+                  text={{ id: 'text.learnMore' }}
+                  href=""
+                  className={stylesAdvance.link}
+                />
+              ),
+            }}
           />
           <div className={stylesAdvance.toggleContainer}>
             <Toggle
@@ -120,11 +135,15 @@ const UserAdvanceSettings = () => {
               }}
             />
           </div>
-          <div className={stylesAdvance.metaDesc}>
-            {!metatransasctionsToggleAvailable && (
+          <p className={stylesAdvance.descriptions}>
+            <FormattedMessage {...MSG.metaDescription} />
+          </p>
+          {!metatransasctionsToggleAvailable && (
+            <div className={stylesAdvance.metaDesc}>
               <FormattedMessage {...MSG.metaDescGlobalOff} />
-            )}
-          </div>
+            </div>
+          )}
+          <hr />
           {metatransasctionsToggleAvailable && (
             <>
               <Button

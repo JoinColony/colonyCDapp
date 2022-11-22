@@ -1,5 +1,7 @@
 declare namespace UserAdvanceSettingsCssNamespace {
   export interface IUserAdvanceSettingsCss {
+    descriptions: string;
+    link: string;
     mappings: string;
     metaDesc: string;
     names: string;
