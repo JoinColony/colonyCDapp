@@ -7,7 +7,6 @@ import Link from '~shared/Link';
 import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { User } from '~types';
 import { useAppContext } from '~hooks';
-// import { getFriendlyName } from '~modules/users/transformers';
 
 import styles from './UserColonies.css';
 
@@ -32,25 +31,14 @@ const MSG = defineMessages({
   },
 });
 
-const UserColonies = ({ user: { walletAddress, watchlist, name } }: Props) => {
+const UserColonies = ({
+  user: { walletAddress, watchlist, name, profile },
+}: Props) => {
   const { user: currentUser } = useAppContext();
-  // const colonyAddresses = useMemo(() => watchlist.)
-  // const friendlyName = getFriendlyName(user);
-  // @TODO we should probably get the full colonies and pass them down to colonyGrid
-  // const { data } = useUserColonyAddressesQuery({
-  //   variables: { address: user.profile.walletAddress },
-  // });
-
-  // @TODO we want a proper spinner loader here eventually
-  // if (!data) return null;
-  // const {
-  //   user: { colonyAddresses },
-  // } = data;
   const isCurrentUser = currentUser?.walletAddress === walletAddress;
   return (
     <ColonyGrid
       colonies={watchlist?.items || []}
-      // colonyAddresses={[]}
       emptyStateDescription={
         isCurrentUser ? MSG.currentUserNoColonies : MSG.otherUserNoColonies
       }
@@ -68,11 +56,10 @@ const UserColonies = ({ user: { walletAddress, watchlist, name } }: Props) => {
           : {
               friendlyUsername: (
                 <span
-                  /* title={friendlyName} */
+                  title={profile?.displayName || name}
                   className={styles.userHighlight}
                 >
-                  {/* {friendlyName} */}
-                  {name}
+                  {profile?.displayName || name}
                 </span>
               ),
             }
