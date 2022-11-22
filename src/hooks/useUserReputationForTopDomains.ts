@@ -29,7 +29,8 @@ const useUserReputationForTopDomains = (
     },
   );
 
-  const userReputation: UserDomainReputation[] = userReputationData;
+  const userReputation: UserDomainReputation[] =
+    userReputationData?.getReputationForTopDomains?.items;
 
   return {
     userReputation,
