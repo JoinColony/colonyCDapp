@@ -3,3 +3,4 @@
 @graphql-codegen/typescript
 @graphql-codegen/typescript-operations
 @graphql-codegen/typescript-react-apollo
+wait-on

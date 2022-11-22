@@ -23,4 +23,4 @@ cp /colonyCDappBackend/scripts/amplify-meta.json.base /colonyCDapp/amplify/\#cur
 npm run amplify mock &
 
 # Enable codegen
-npx graphql-codegen --watch "/colonyCDapp/src/graphql/**/*.graphql"
+node wait-and-codegen
