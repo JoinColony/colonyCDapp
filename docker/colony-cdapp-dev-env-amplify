@@ -16,7 +16,9 @@ ADD docker/files/amplify/run.sh.base /colonyCDappBackend/run.sh
 ADD docker/files/amplify/local-env-info.json.base /colonyCDapp/amplify/.config/local-env-info.json
 ADD docker/files/amplify/local-aws-info.json.base /colonyCDapp/amplify/.config/local-aws-info.json
 ADD docker/files/amplify/aws-exports.js.base /colonyCDapp/src/aws-exports.js
-ADD docker/files/amplify/package.json.base /colonyCDapp/package.json.base
+ADD docker/files/amplify/package.base.json /colonyCDapp/package.base.json
+ADD docker/files/amplify/dependencies /colonyCDapp/dependencies
+ADD docker/files/amplify/generate-package-json.js /colonyCDapp/generate-package-json.js
 # This still needs to be saved as a "template" since it will only be moved to it's final location at runtime
 ADD docker/files/amplify/amplify-meta.json.base /colonyCDappBackend/scripts/amplify-meta.json.base
 ADD docker/files/amplify/config.base /root/.aws/config
@@ -26,9 +28,9 @@ ADD docker/files/amplify/credentials.base /root/.aws/credentials
 # Amplify
 #
 
-# Generate the local "light" version of package json
-# It gets the amplify version from the CDapp's package.json file
-RUN export AMPLIFY_VERSION=$(jq '.devDependencies."@aws-amplify/cli"' package.colonyCDapp.json) && echo $(sed "s/AMPLIFY_VERSION/$AMPLIFY_VERSION/" package.json.base) > package.json
+# Generate the local "light" version of package json by running node script
+# It dynamically injects the package's version from CDapp's package.json file
+RUN node generate-package-json
 
 # Install all dependencies
 RUN npm install
