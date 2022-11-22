@@ -1,15 +1,12 @@
-import { createIntl } from 'react-intl';
 import { utils } from 'ethers';
 
 import { ContractRevertErrors, TRANSACTION_METHODS } from '~types';
+import { intl } from '~utils/intl';
 
-const intl = createIntl({
-  locale: 'en',
-  messages: {
-    'error.unknown': 'Unknown broadcaster error',
-    'error.tokenLocked': 'Colony Token locked and cannot be activated',
-    'error.invalidSignature': `Invalid Metatransaction signature sent to the broadcaster`,
-  },
+const { formatMessage } = intl({
+  'error.unknown': 'Unknown broadcaster error',
+  'error.tokenLocked': 'Colony Token locked and cannot be activated',
+  'error.invalidSignature': `Invalid Metatransaction signature sent to the broadcaster`,
 });
 
 export const generateBroadcasterHumanReadableError = (
@@ -24,7 +21,7 @@ export const generateBroadcasterHumanReadableError = (
     error?.reason ||
     response?.reason ||
     response?.payload ||
-    intl.formatMessage({ id: 'error.unknown' });
+    formatMessage({ id: 'error.unknown' });
 
   /*
    * @NOTE Account for error reasons encoded as hex strings
@@ -44,7 +41,7 @@ export const generateBroadcasterHumanReadableError = (
       response?.reason?.includes(ContractRevertErrors.TokenUnauthorized)) ||
     hexReasonValue.includes(ContractRevertErrors.TokenUnauthorized)
   ) {
-    errorMessage = intl.formatMessage({ id: 'error.tokenLocked' });
+    errorMessage = formatMessage({ id: 'error.tokenLocked' });
     return errorMessage;
   }
 
@@ -54,7 +51,7 @@ export const generateBroadcasterHumanReadableError = (
     response?.reason?.includes(ContractRevertErrors.TokenInvalidSignature) ||
     hexReasonValue.includes(ContractRevertErrors.TokenInvalidSignature)
   ) {
-    errorMessage = intl.formatMessage({ id: 'error.invalidSignature' });
+    errorMessage = formatMessage({ id: 'error.invalidSignature' });
     return errorMessage;
   }
 
