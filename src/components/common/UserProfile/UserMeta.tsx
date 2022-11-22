@@ -30,7 +30,7 @@ interface Props {
   user: User;
 }
 
-const UserMeta = ({ user: { walletAddress, name, profile }, user }: Props) => {
+const UserMeta = ({ user: { walletAddress, profile }, user }: Props) => {
   const { displayName, bio, website, location } = profile || {};
   const { user: currentUser } = useAppContext();
 
@@ -61,7 +61,7 @@ const UserMeta = ({ user: { walletAddress, name, profile }, user }: Props) => {
         )}
       </div>
       <div className={styles.usernameContainer}>
-        <UserMention username={name || walletAddress} hasLink={false} />
+        <UserMention user={user} hasLink={false} />
       </div>
       <CopyableAddress>{walletAddress}</CopyableAddress>
       {bio && (

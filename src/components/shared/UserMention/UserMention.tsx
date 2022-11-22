@@ -9,8 +9,7 @@ import Popover from '~shared/Popover';
 import styles from './UserMention.css';
 
 interface Props {
-  /** A user's username (ENS) */
-  username: string;
+  user: User;
 
   /** Alternate place to link to. Defaults to user profile */
   to?: string;
@@ -31,7 +30,7 @@ interface Props {
 const displayName = 'UserMention';
 
 const UserMention = ({
-  username,
+  user,
   to,
   hasLink,
   showInfo,
@@ -56,14 +55,14 @@ const UserMention = ({
     hasLink ? (
       <Link
         to={fallbackTo}
-        text={`@${username}`}
+        text={`@${user.name}`}
         className={styles.mention}
         {...props}
       />
     ) : (
       <span className={styles.mention} {...props}>
         {' '}
-        {`@${username}`}
+        {`@${user.name}`}
       </span>
     );
 

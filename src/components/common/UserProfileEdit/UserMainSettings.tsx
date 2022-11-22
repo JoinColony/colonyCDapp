@@ -148,7 +148,7 @@ const UserMainSettings = ({ user }: Props) => {
             <div className={styles.usernameContainer}>
               <InputLabel label={MSG.labelUsername} />
               <UserMention
-                username={user.name || walletAddress}
+                user={user}
                 title={user.name || walletAddress}
                 hasLink={false}
                 data-test="userProfileUsername"

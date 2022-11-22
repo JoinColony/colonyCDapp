@@ -38,7 +38,7 @@ const UserInfo = ({ user: { walletAddress, name, profile }, user }: Props) => {
            * Never pass `showInfo` to this instance of UserMention, otherwise you'll trigger it
            */
           <p className={styles.userName}>
-            <UserMention username={name} hasLink />
+            <UserMention user={user} hasLink />
           </p>
         )}
         <div className={styles.address}>
