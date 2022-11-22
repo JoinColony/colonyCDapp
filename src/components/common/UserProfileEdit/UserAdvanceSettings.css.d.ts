@@ -6,12 +6,14 @@ declare namespace UserAdvanceSettingsCssNamespace {
     metaDesc: string;
     names: string;
     query700: string;
+    sectionTitle: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;
     toggleContainer: string;
     tooltipContainer: string;
     tooltipContent: string;
+    validateButtonContainer: string;
     version: string;
   }
 }

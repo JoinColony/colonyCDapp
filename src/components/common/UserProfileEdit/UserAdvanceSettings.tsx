@@ -4,7 +4,7 @@ import * as yup from 'yup';
 
 import Heading from '~shared/Heading';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
-import { Form, Toggle } from '~shared/Fields';
+import { Form, Input, Toggle } from '~shared/Fields';
 import Snackbar, { SnackbarType } from '~shared/Snackbar';
 import Button from '~shared/Button';
 
@@ -22,7 +22,7 @@ const MSG = defineMessages({
   },
   metaDescription: {
     id: 'users.UserProfileEdit.UserAdvanceSettings.metaDescription',
-    defaultMessage: `To connect directly to Gnosis chain and pay for your own transactions, disable this option. `,
+    defaultMessage: `To connect directly to Gnosis chain and pay for your own transactions, disable this option.`,
   },
   metaDescGlobalOff: {
     id: 'users.UserProfileEdit.UserAdvanceSettings.metaDescGlobalOff',
@@ -35,14 +35,37 @@ const MSG = defineMessages({
       other {inactive}
     })`,
   },
-  tooltip: {
-    id: 'users.UserProfileEdit.UserAdvanceSettings.tooltip',
+  metaTooltip: {
+    id: 'users.UserProfileEdit.UserAdvanceSettings.metaTooltip',
     defaultMessage: `Metatransactions are turned on by default.
     If you would rather connect directly to the chain,
     and pay for your own transactions, you can turn them off
     by switching the toggle at any time. {br}{br} Please note,
     this setting is stored locally in your browser,
     if you clear your cache you will need to turn Metatransactions off again.`,
+  },
+  customEndpoints: {
+    id: 'users.UserProfileEdit.UserAdvanceSettings.customEndpoints',
+    defaultMessage: `Enable custom endpoints ({isOn, select,
+      true {active}
+      other {inactive}
+    })`,
+  },
+  endpointsDescription: {
+    id: 'users.UserProfileEdit.UserAdvanceSettings.metaDescription',
+    defaultMessage: `If you prefer maximum decentralisation, you may use your own custom endpoints for Colony.`,
+  },
+  labelGnosisRPC: {
+    id: 'users.UserProfileEdit.UserAdvanceSettings.labelGnosisRPC',
+    defaultMessage: 'Gnosis Chain RPC',
+  },
+  gnosisRPCTooltip: {
+    id: 'users.UserProfileEdit.UserAdvanceSettings.gnosisRPCTooltip',
+    defaultMessage: `You will be able to toggle the Gnosis Chain RPC on once you have successfully validated that the endpoint works.`,
+  },
+  validate: {
+    id: 'users.UserProfileEdit.UserAdvanceSettings.validate',
+    defaultMessage: 'Validate',
   },
   snackbarSuccess: {
     id: 'users.UserProfileEdit.UserAdvanceSettings.snackbarSuccess',
@@ -51,11 +74,15 @@ const MSG = defineMessages({
 });
 
 interface FormValues {
-  metatransactions: boolean;
+  [SlotKey.Metatransactions]: boolean;
+  [SlotKey.DecentralizedMode]: boolean;
+  [SlotKey.CustomRPC]: string;
 }
 
 const validationSchema = yup.object({
-  metatransactions: yup.bool(),
+  [SlotKey.Metatransactions]: yup.bool(),
+  [SlotKey.DecentralizedMode]: yup.bool(),
+  [SlotKey.CustomRPC]: yup.string().url(),
 });
 
 const displayName = 'users.UserProfileEdit.UserAdvanceSettings';
@@ -73,13 +100,20 @@ const UserAdvanceSettings = () => {
   }, [showSnackbar]);
 
   const {
-    settings: { metatransactions: metatransactionsSetting },
+    settings: {
+      metatransactions: metatransactionsSetting,
+      decentralizedModeEnabled,
+      customRpc,
+    },
     setSettingsKey,
   } = useUserSettings();
 
-  const onChange = useCallback(
-    (oldValue) => {
-      setSettingsKey(SlotKey.Metatransactions, !oldValue);
+  const onSubmit = useCallback(
+    (values) => {
+      Object.entries(values).forEach(
+        ([key, value]: [SlotKey, string | boolean]) =>
+          setSettingsKey(key, value),
+      );
     },
     [setSettingsKey],
   );
@@ -93,12 +127,14 @@ const UserAdvanceSettings = () => {
   return (
     <Form<FormValues>
       initialValues={{
-        metatransactions: metatransasctionsAvailable,
+        [SlotKey.Metatransactions]: metatransasctionsAvailable,
+        [SlotKey.DecentralizedMode]: decentralizedModeEnabled,
+        [SlotKey.CustomRPC]: customRpc,
       }}
       validationSchema={validationSchema}
-      onSubmit={() => {}}
+      onSubmit={onSubmit}
     >
-      {({ isSubmitting }) => (
+      {({ isValid, values, submitForm }) => (
         <div className={styles.main}>
           <Heading
             appearance={{ theme: 'dark', size: 'medium' }}
@@ -118,14 +154,13 @@ const UserAdvanceSettings = () => {
             <Toggle
               label={MSG.labelMetaTx}
               labelValues={{
-                isOn: metatransasctionsAvailable,
+                isOn: values[SlotKey.Metatransactions],
               }}
-              name="metatransactions"
+              name={SlotKey.Metatransactions}
               disabled={!metatransasctionsToggleAvailable}
-              onChange={onChange}
             />
             <QuestionMarkTooltip
-              tooltipText={MSG.tooltip}
+              tooltipText={MSG.metaTooltip}
               /* @ts-ignore */
               tooltipTextValues={{ br: <br /> }}
               className={stylesAdvance.tooltipContainer}
@@ -144,12 +179,49 @@ const UserAdvanceSettings = () => {
             </div>
           )}
           <hr />
+          <div className={stylesAdvance.sectionTitle}>
+            <FormattedMessage
+              {...MSG.customEndpoints}
+              values={{ isOn: values[SlotKey.DecentralizedMode] }}
+            />
+          </div>
+          <p className={stylesAdvance.descriptions}>
+            <FormattedMessage {...MSG.metaDescription} />
+          </p>
+          <div className={stylesAdvance.toggleContainer}>
+            <Toggle
+              label={MSG.labelGnosisRPC}
+              labelValues={{ isOn: decentralizedModeEnabled }}
+              name={SlotKey.DecentralizedMode}
+            />
+            <QuestionMarkTooltip
+              tooltipText={MSG.gnosisRPCTooltip}
+              className={stylesAdvance.tooltipContainer}
+              tooltipClassName={stylesAdvance.tooltipContent}
+              tooltipPopperOptions={{
+                placement: 'right',
+              }}
+            />
+          </div>
+          <Input
+            name={SlotKey.CustomRPC}
+            disabled={!values[SlotKey.DecentralizedMode]}
+          />
+          <div className={stylesAdvance.validateButtonContainer}>
+            <Button
+              text={MSG.validate}
+              disabled={!values[SlotKey.DecentralizedMode] || !isValid}
+            />
+          </div>
+          <hr />
           {metatransasctionsToggleAvailable && (
             <>
               <Button
                 text={{ id: 'button.save' }}
-                loading={isSubmitting}
-                onClick={() => setShowSnackbar(true)}
+                onClick={() => {
+                  submitForm();
+                  setShowSnackbar(true);
+                }}
                 disabled={!metatransasctionsToggleAvailable}
               />
               <Snackbar

@@ -7,12 +7,19 @@
 
 .toggleContainer {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   margin-top: 8px;
+  width: 100%;
 }
 
 .toggleContainer label {
   margin-right: 14px;
+}
+
+.toggleContainer > div {
+  justify-content: space-between;
+  flex-grow: 1;
 }
 
 .tooltipContainer {
@@ -35,6 +42,17 @@
   margin-top: 14px;
   font-size: var(--size-normal);
   color: var(--dark);
+}
+
+.sectionTitle {
+  font-size: var(--size-smallish);
+  font-weight: var(--weight-bold);
+  color: var(--dark);
+}
+
+.validateButtonContainer {
+  display: flex;
+  justify-content: flex-end;
 }
 
 @media screen and query700 {
