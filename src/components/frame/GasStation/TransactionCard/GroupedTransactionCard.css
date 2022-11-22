@@ -4,11 +4,11 @@
   padding: 12px 15px 12px 20px;
   height: auto;
   min-height: 40px;
-  border-left: 3px solid var(--temp-grey-5);
-  border-top: 1px solid var(--grey-blue-1);
+  border-left: 3px solid var(--colony-light-blue);
+  border-top: 1px solid var(--light-grey-blue);
   font-size: var(--size-small);
   font-weight: var(--weight-bold);
-  color: var(--grey-dark);
+  color: var(--dark-grey);
 
   &:hover .cancelButton {
     display: inline;
@@ -17,7 +17,7 @@
 
 .main.stateSelected {
   border-left-color: var(--colony-blue);
-  background-color: var(--temp-grey-blue-6);
+  background-color: var(--colony-light-blue);
 }
 
 .main.stateSucceeded {

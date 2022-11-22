@@ -1,6 +1,6 @@
 {
     "mixed": {
-      "equalTo": "${path} must be the same as ${reference}"
+        "equalTo": "${path} must be the same as ${reference}"
     },
     "number": {
         "lessThanPot": "Not enough funds in the pot"
@@ -10,7 +10,7 @@
         "address": "This is not a valid address",
         "domainName": "This is not a valid domain name",
         "orbitDBAddress": "This is not a valid OrbitDB address",
-        "ensAddress": "This is not a valid ENS address",
+        "colonyName": "This is not a valid colony name",
         "hexString": "The value is not a valid hex string",
         "hasHexPrefix": "A hex string must be prepended with the 0x prefix"
     },

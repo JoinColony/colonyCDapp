@@ -5,18 +5,22 @@ import {
   FormattedMessage,
 } from 'react-intl';
 import { useField } from 'formik';
-
 import { LinkProps } from 'react-router-dom';
+
 import { getMainClasses } from '~utils/css';
+
 import Icon from '../Icon';
 import Link from '../Link';
 import { Tooltip } from '../Popover';
 import Heading from '../Heading';
+
 import styles from './DecisionOption.css';
+
+const displayName = 'DecisionHub.DecisionOption';
 
 const MSG = defineMessages({
   iconTitle: {
-    id: 'DecisionOption.iconTitle',
+    id: `${displayName}.iconTitle`,
     defaultMessage: 'Choose this option',
   },
 });
@@ -40,17 +44,24 @@ interface Props {
   option: DecisionOptionType;
   link?: string;
   name: string;
+  isMobile?: boolean;
 }
 
-const displayName = 'DecisionOption';
-
-const DecisionOptionIcon = ({ icon, tooltip, title }: Props['option']) => {
+type IconProps = Props['option'] & {
+  isMobile?: boolean;
+};
+const DecisionOptionIcon = ({
+  icon,
+  tooltip,
+  title,
+  isMobile = false,
+}: IconProps) => {
   if (icon) {
     // Wrap the icon in a Tooltip wrapper only if the tooltip property exists
     return tooltip ? (
       <Tooltip
-        placement="left"
-        trigger="hover"
+        placement={isMobile ? 'bottom' : 'left'}
+        trigger={isMobile ? 'click' : 'hover'}
         content={
           <span className={styles.tooltip}>
             <FormattedMessage {...tooltip} />
@@ -76,6 +87,7 @@ const DecisionOption = ({
   option: { title, subtitle, disabled, value },
   option,
   link,
+  isMobile = false,
 }: Props) => {
   const [, , { setValue }] = useField(name);
   const makeDecision = useCallback(() => {
@@ -92,24 +104,27 @@ const DecisionOption = ({
       } as ButtonHTMLAttributes<HTMLButtonElement>);
 
   return (
-    <Element
-      className={getMainClasses(appearance, styles, { disabled: !!disabled })}
-      {...(elmProps as any)}
-      data-test={option.dataTest}
-    >
-      <DecisionOptionIcon {...option} />
-      <div className={styles.rowContent}>
-        <Heading
-          appearance={{ size: 'small', weight: 'bold', margin: 'small' }}
-          text={title}
-        />
-        <Heading
-          appearance={{ size: 'tiny', weight: 'thin', margin: 'small' }}
-          text={subtitle}
-        />
-      </div>
-      <Icon name="caret-right" title={MSG.iconTitle} />
-    </Element>
+    <div className={styles.wrapper}>
+      {isMobile && <DecisionOptionIcon {...option} isMobile />}
+      <Element
+        className={getMainClasses(appearance, styles, { disabled: !!disabled })}
+        {...(elmProps as any)}
+        data-test={option.dataTest}
+      >
+        {!isMobile && <DecisionOptionIcon {...option} />}
+        <div className={styles.rowContent}>
+          <Heading
+            appearance={{ size: 'small', weight: 'bold', margin: 'small' }}
+            text={title}
+          />
+          <Heading
+            appearance={{ size: 'tiny', weight: 'thin', margin: 'small' }}
+            text={subtitle}
+          />
+        </div>
+        <Icon name="caret-right" title={MSG.iconTitle} />
+      </Element>
+    </div>
   );
 };
 

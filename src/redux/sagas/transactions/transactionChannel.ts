@@ -3,7 +3,7 @@ import {
   TransactionReceipt,
   TransactionResponse,
 } from '@ethersproject/providers';
-import { poll } from 'ethers/lib/utils';
+import { LogDescription, poll } from 'ethers/lib/utils';
 import { buffers, END, eventChannel, Buffer } from 'redux-saga';
 import { ContractClient } from '@colony/colony-js';
 import { MethodParams, RequireProps } from '~types';
@@ -33,17 +33,29 @@ const parseEventData = (
   client: ContractClient,
   receipt: TransactionReceipt,
 ) => {
-  const parsedLogs =
-    receipt && receipt.logs
-      ? receipt.logs.map((log) => client.interface.parseLog(log))
-      : [];
-  return parsedLogs
-    .filter((log) => !!log)
-    .reduce((events, log) => {
-      // eslint-disable-next-line no-param-reassign
-      events[log.name] = log.values;
+  let parsedLogs: (LogDescription | null)[] = [];
+  if (receipt && receipt.logs) {
+    parsedLogs = receipt.logs.map((log) => {
+      try {
+        return client.interface.parseLog(log);
+      } catch {
+        /*
+         * `parseLog` will throw if the event the log refers to is not among the set of events
+         *  contained in the client interface. In this event, we just return null.
+         */
+        return null;
+      }
+    });
+  }
+
+  return parsedLogs.reduce((events, log) => {
+    if (!log) {
       return events;
-    }, {});
+    }
+    // eslint-disable-next-line no-param-reassign
+    events[log.name] = log.args;
+    return events;
+  }, {});
 };
 
 const channelSendTransaction = async (

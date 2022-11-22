@@ -1,0 +1,42 @@
+.rowArrow {
+  flex: 1;
+}
+
+.content {
+  margin-top: 155px;
+  width: 340px;
+}
+
+.title {
+  margin-bottom: 28px;
+  font-weight: var(--weight-bold);
+}
+
+.title span {
+  word-break: break-word;
+}
+
+.subtitle {
+  margin-bottom: -7px;
+  font-size: 14px;
+}
+
+.subtitleWithExample {
+  flex: 4;
+}
+
+.subtitleWithExampleBox {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.titleAndButton {
+  display: flex;
+  align-items: baseline;
+  margin-top: 15px;
+}
+
+.link {
+  margin-left: 5px;
+  font-size: var(--size-tiny);
+}

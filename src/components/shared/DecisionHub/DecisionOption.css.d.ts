@@ -1,6 +1,25 @@
-export const main: string;
-export const themeAlt: string;
-export const stateDisabled: string;
-export const rowContent: string;
-export const rowIcon: string;
-export const tooltip: string;
+declare namespace DecisionOptionCssNamespace {
+  export interface IDecisionOptionCss {
+    main: string;
+    mappings: string;
+    names: string;
+    query700: string;
+    rowContent: string;
+    rowIcon: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
+    stateDisabled: string;
+    themeAlt: string;
+    tooltip: string;
+    version: string;
+    wrapper: string;
+  }
+}
+
+declare const DecisionOptionCssModule: DecisionOptionCssNamespace.IDecisionOptionCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: DecisionOptionCssNamespace.IDecisionOptionCss;
+};
+
+export = DecisionOptionCssModule;

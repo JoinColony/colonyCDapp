@@ -1,0 +1,69 @@
+@value query700 from '~styles/queries.css';
+
+.layoutMain {
+  composes: stretchVertical stretchHorizontal from '~styles/layout.css';
+  overflow: auto;
+  background-color: var(--colony-light-blue);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 8px;
+  height: 60px;
+  width: 100%;
+}
+
+.steps {
+  flex: 1;
+  margin-top: 5px;
+}
+
+.content {
+  composes: flexContainerColumn flexAlignCenter flexJustifyCenter from '~styles/layout.css';
+  padding-bottom: 20px;
+}
+
+.wallet {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin: 10px 19px 0px 0px;
+}
+
+.address {
+  composes: flexContainerRow flexAlignStart from '~styles/layout.css';
+  position: relative;
+  font-weight: var(--weight-bold);
+}
+
+.headerWallet {
+  display: flex;
+  margin: 7px 14px 0px 0px;
+}
+
+.hello {
+  font-weight: var(--weight-normal);
+  line-height: 17px;
+}
+
+.copy {
+  margin-left: 8px;
+}
+
+@media screen and query700 {
+  .content section {
+    padding-left: 14px;
+    padding-right: 14px;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .content section h3 {
+    white-space: normal;
+  }
+
+  .content form {
+    width: 100%;
+  }
+}

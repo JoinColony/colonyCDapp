@@ -119,7 +119,7 @@ type Mutation {
   ): User @function(name: "createUniqueUser")
   createUniqueColony(
     input: CreateUniqueColonyInput
-  ): User @function(name: "createUniqueColony")
+  ): ColonyID @function(name: "createUniqueColony")
   createUniqueDomain(
     input: CreateUniqueDomainInput
   ): Domain @function(name: "createUniqueDomain")
@@ -164,6 +164,10 @@ type Token @model {
   colonies: [Colony] @manyToMany(relationName: "ColonyTokens")
   users: [User] @manyToMany(relationName: "UserTokens")
   meta: Metadata
+}
+
+type ColonyID {
+  id: ID!
 }
 
 type Colony @model {

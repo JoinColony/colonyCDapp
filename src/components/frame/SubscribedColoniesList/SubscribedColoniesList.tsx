@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 
 import Icon from '~shared/Icon';
 import { SpinnerLoader } from '~shared/Preloaders';
 import NavLink from '~shared/NavLink';
 import ColonyAvatar from '~shared/ColonyAvatar';
-
 import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { useAppContext, useCanInteractWithNetwork } from '~hooks';
 
@@ -21,8 +20,15 @@ const MSG = defineMessages({
 });
 
 const SubscribedColoniesList = () => {
-  const { user, userLoading } = useAppContext();
+  const { user, userLoading, updateUser } = useAppContext();
   const canInteractWithNetwork = useCanInteractWithNetwork();
+
+  /* Ensures colony list is up-to-date post create colony flow. */
+  useEffect(() => {
+    if (updateUser) {
+      updateUser(user?.walletAddress);
+    }
+  }, [user, updateUser]);
 
   const { items: watchlist = [] } = user?.watchlist || {};
 

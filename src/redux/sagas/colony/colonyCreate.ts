@@ -1,38 +1,25 @@
-import { $Values } from 'utility-types';
 import { Channel } from 'redux-saga';
 import { all, call, fork, put } from 'redux-saga/effects';
 import { getExtensionHash, Extension, ClientType, Id } from '@colony/colony-js';
+import gql from 'graphql-tag';
 import { poll } from 'ethers/lib/utils';
 
-import { ContextModule, getContext } from '~context';
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import {
-  getLoggedInUser,
-  refetchUserNotifications,
-  SetLoggedInUserMutation,
-  SetLoggedInUserMutationVariables,
-  SetLoggedInUserDocument,
-  SubscribeToColonyDocument,
-  SubscribeToColonyMutation,
-  SubscribeToColonyMutationVariables,
-  cacheUpdates,
-  NetworkExtensionVersionQuery,
-  NetworkExtensionVersionQueryVariables,
-  NetworkExtensionVersionDocument,
-  getNetworkContracts,
-} from '~data/index';
-import ENS from '~lib/ENS';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
+  createColonyTokens,
+  createUniqueColony,
+  createUserTokens,
+  createWatchedColonies,
+  createUniqueDomain,
+} from '~gql/mutations';
+import { ColonyManager, ContextModule, getContext } from '~context';
+import {
+  DEFAULT_TOKEN_DECIMALS,
+  LATEST_ONE_TX_PAYMENT_VERSION,
+} from '~constants';
+import { ActionTypes, Action, AllActions } from '~redux/index';
 import { createAddress } from '~utils/web3';
-import {
-  putError,
-  takeFrom,
-  takeLatestCancellable,
-  createUserWithSecondAttempt,
-  getColonyManager,
-} from '../utils';
 import { TxConfig } from '~types';
+import { getTokenFromEverywhere } from '~gql';
 
 import {
   transactionAddParams,
@@ -41,8 +28,13 @@ import {
   transactionLoadRelated,
   transactionPending,
 } from '../../actionCreators';
+import {
+  putError,
+  takeFrom,
+  takeLatestCancellable,
+  getColonyManager,
+} from '../utils';
 import { createTransaction, createTransactionChannels } from '../transactions';
-import { ipfsUpload } from '../ipfs';
 
 interface ChannelDefinition {
   channel: Channel<any>;
@@ -57,24 +49,17 @@ function* colonyCreate({
     displayName,
     tokenAddress: givenTokenAddress,
     tokenChoice,
-    tokenName: givenTokenName,
-    tokenSymbol: givenTokenSymbol,
-    username: givenUsername,
+    tokenName,
+    tokenSymbol,
   },
 }: Action<ActionTypes.CREATE>) {
-  const { username: currentUsername, walletAddress } = yield getLoggedInUser();
   const apolloClient = getContext(ContextModule.ApolloClient);
-  const colonyManager = yield getColonyManager();
+  const wallet = getContext(ContextModule.Wallet);
+  const walletAddress = wallet?.address;
+  const colonyManager: ColonyManager = yield getColonyManager();
   const { networkClient } = colonyManager;
-
   const channelNames: string[] = [];
 
-  /*
-   * If the user did not claim a profile yet, define a tx to create the user.
-   */
-  if (!currentUsername) {
-    channelNames.push('createUser');
-  }
   /*
    * If the user opted to create a token, define a tx to create the token.
    */
@@ -83,7 +68,7 @@ function* colonyCreate({
   }
   channelNames.push('createColony');
   /*
-   * If the user opted to create a token,  define txs to manage the token.
+   * If the user opted to create a token, define txs to manage the token.
    */
   if (tokenChoice === 'create') {
     channelNames.push('deployTokenAuthority');
@@ -98,13 +83,15 @@ function* colonyCreate({
   /*
    * Define a manifest of transaction ids and their respective channels.
    */
-  const channels: {
-    [id: string]: ChannelDefinition;
-  } = yield call(createTransactionChannels, meta.id, channelNames);
+
+  const channels: { [id: string]: ChannelDefinition } = yield call(
+    createTransactionChannels,
+    meta.id,
+    channelNames,
+  );
   const {
     createColony,
     createToken,
-    createUser,
     deployOneTx,
     setOneTxRoleAdministration,
     setOneTxRoleFunding,
@@ -114,7 +101,7 @@ function* colonyCreate({
   } = channels;
 
   const createGroupedTransaction = (
-    { id, index }: $Values<typeof channels>,
+    { id, index }: ChannelDefinition,
     config: TxConfig,
   ) =>
     fork(createTransaction, id, {
@@ -130,21 +117,6 @@ function* colonyCreate({
    * Create all transactions for the group.
    */
   try {
-    const colonyName = ENS.normalize(givenColonyName);
-    const username = ENS.normalize(givenUsername);
-
-    const tokenName = givenTokenName;
-    const tokenSymbol = givenTokenSymbol;
-
-    if (createUser) {
-      yield createGroupedTransaction(createUser, {
-        context: ClientType.NetworkClient,
-        methodName: 'registerUserLabel',
-        params: [username, ''],
-        ready: true,
-      });
-    }
-
     if (createToken) {
       yield createGroupedTransaction(createToken, {
         context: ClientType.NetworkClient,
@@ -163,7 +135,7 @@ function* colonyCreate({
 
     if (deployTokenAuthority) {
       yield createGroupedTransaction(deployTokenAuthority, {
-        context: ClientType.ColonyClient,
+        context: ClientType.NetworkClient,
         methodName: 'deployTokenAuthority',
         ready: false,
       });
@@ -230,36 +202,6 @@ function* colonyCreate({
       payload: undefined,
     });
 
-    if (createUser) {
-      /*
-       * If the username is being created, wait for the transaction to succeed
-       * before creating the profile store and dispatching a success action.
-       */
-      yield takeFrom(createUser.channel, ActionTypes.TRANSACTION_SUCCEEDED);
-      yield put<AllActions>(transactionLoadRelated(createUser.id, true));
-
-      yield createUserWithSecondAttempt(username);
-
-      yield put<AllActions>(transactionLoadRelated(createUser.id, false));
-
-      yield refetchUserNotifications(walletAddress);
-
-      /*
-       * Set the logged in user and freshly created one
-       */
-      yield apolloClient.mutate<
-        SetLoggedInUserMutation,
-        SetLoggedInUserMutationVariables
-      >({
-        mutation: SetLoggedInUserDocument,
-        variables: {
-          input: {
-            username,
-          },
-        },
-      });
-    }
-
     /*
      * For transactions that rely on the receipt/event data of previous transactions,
      * wait for these transactions to succeed, collect the data, and apply it to
@@ -280,64 +222,41 @@ function* colonyCreate({
       }
       tokenAddress = createAddress(givenTokenAddress);
     }
+    /*
+     * Add token to db.
+     * The query is resolved by "fetchTokenFromChain", which handles the mutation.
+     */
+    yield apolloClient.query({
+      query: gql(getTokenFromEverywhere),
+      variables: {
+        input: { tokenAddress },
+      },
+    });
 
     /*
-     * This is a bit of a cumbersome solution, but should serve fine currently,
-     * until we find a way to properly stabilize IPFS uploads
+     * Add token to current user's token list.
      */
+    yield apolloClient.mutate({
+      mutation: gql(createUserTokens),
+      variables: {
+        input: {
+          userID: walletAddress,
+          tokenID: tokenAddress,
+        },
+      },
+    });
+
     let colonyAddress;
     if (createColony) {
-      /*
-       * First IPFS upload try
-       */
-      let colonyMetadataIpfsHash;
-      try {
-        colonyMetadataIpfsHash = yield call(
-          ipfsUpload,
-          JSON.stringify({
-            colonyName,
-            colonyDisplayName: displayName,
-            colonyAvatarHash: null,
-            colonyTokens: [],
-          }),
-        );
-      } catch (error) {
-        console.info('Could not upload the colony metadata IPFS. Retrying...');
-        console.info(error);
-        /*
-         * If the first try fails, then attempt to upload again
-         * We assume the first error was due to a connection issue
-         */
-        colonyMetadataIpfsHash = yield call(
-          ipfsUpload,
-          JSON.stringify({
-            colonyName,
-            colonyDisplayName: displayName,
-            colonyAvatarHash: null,
-            colonyTokens: [],
-          }),
-        );
-      }
-
-      const { version: latestVersion } = yield getNetworkContracts();
+      const currentColonyVersion =
+        yield networkClient.getCurrentColonyVersion();
 
       yield put(
         transactionAddParams(createColony.id, [
           tokenAddress,
-          latestVersion,
-          colonyName,
-          /*
-           * If both upload attempts fail, set the value to an empty string
-           * This is needed as the contract method expects a string (doesn't care
-           * if it's empty) othwise the call will fail
-           *
-           * This way, even if we didn't upload the metadata, we can still
-           * go forward with creating the colony, and relying on it's fallback
-           * values to display it
-           */
-          typeof colonyMetadataIpfsHash === 'string'
-            ? colonyMetadataIpfsHash
-            : '',
+          currentColonyVersion,
+          givenColonyName,
+          '', // we aren't using ipfs to store metadata in the CDapp
         ]),
       );
       yield put(transactionReady(createColony.id));
@@ -353,6 +272,60 @@ function* colonyCreate({
         ActionTypes.TRANSACTION_SUCCEEDED,
       );
       colonyAddress = createdColonyAddress;
+
+      /*
+       * Create colony in db
+       */
+      yield apolloClient.mutate({
+        mutation: gql(createUniqueColony),
+        variables: {
+          input: {
+            id: colonyAddress,
+            name: givenColonyName,
+            colonyNativeTokenId: tokenAddress,
+            profile: { displayName },
+          },
+        },
+      });
+
+      /*
+       * Add token to colony's token list
+       */
+      yield apolloClient.mutate({
+        mutation: gql(createColonyTokens),
+        variables: {
+          input: {
+            colonyID: colonyAddress,
+            tokenID: tokenAddress,
+          },
+        },
+      });
+
+      /*
+       * Subscribe user to colony
+       */
+      yield apolloClient.mutate({
+        mutation: gql(createWatchedColonies),
+        variables: {
+          input: {
+            colonyID: colonyAddress,
+            userID: walletAddress,
+          },
+        },
+      });
+
+      /*
+       * Create root domain
+       */
+      yield apolloClient.mutate({
+        mutation: gql(createUniqueDomain),
+        variables: {
+          input: {
+            colonyAddress,
+          },
+        },
+      });
+
       if (!colonyAddress) {
         return yield putError(
           ActionTypes.CREATE_ERROR,
@@ -394,12 +367,19 @@ function* colonyCreate({
       yield put(
         transactionAddParams(deployTokenAuthority.id, [
           tokenAddress,
+          colonyAddress,
           [tokenLockingAddress],
         ]),
       );
       yield put(transactionReady(deployTokenAuthority.id));
       const {
-        payload: { deployedContractAddress },
+        payload: {
+          eventData: {
+            TokenAuthorityDeployed: {
+              tokenAuthorityAddress: deployedContractAddress,
+            },
+          },
+        },
       } = yield takeFrom(
         deployTokenAuthority.channel,
         ActionTypes.TRANSACTION_SUCCEEDED,
@@ -425,26 +405,14 @@ function* colonyCreate({
     }
 
     if (deployOneTx) {
-      const {
-        data: { networkExtensionVersion },
-      } = yield apolloClient.query<
-        NetworkExtensionVersionQuery,
-        NetworkExtensionVersionQueryVariables
-      >({
-        query: NetworkExtensionVersionDocument,
-        variables: {
-          extensionId: Extension.OneTxPayment,
-        },
-        fetchPolicy: 'network-only',
-      });
-      const [latestOneTxDepoyment] = networkExtensionVersion;
       /*
        * Deploy OneTx
        */
       yield put(
         transactionAddParams(deployOneTx.id, [
           getExtensionHash(Extension.OneTxPayment),
-          latestOneTxDepoyment?.version || 0,
+          /* @TODO: get latest version of OneTxPayment extn programatically */
+          LATEST_ONE_TX_PAYMENT_VERSION || 0,
         ]),
       );
       yield put(transactionReady(deployOneTx.id));
@@ -508,43 +476,13 @@ function* colonyCreate({
       );
     }
 
-    /*
-     * Manually subscribe the user to the colony
-     *
-     * @NOTE That this just subscribes the user to a particular address, as we
-     * don't have the capability any more, to check if that address is a valid
-     * colony, on the server side
-     *
-     * However, we do know that his colony actually exists, since we just
-     * created it, but be **WARNED** that his is race condition!!
-     *
-     * We just skirt around it by calling this mutation after the whole batch
-     * of transactions have been sent, assuming that by that time, the subgraph
-     * had time to ingest the new block in which the colony was created.
-     *
-     * However, due to various network conditions, this might not be case, and
-     * the colony might not exist still.
-     *
-     * It's not a super-huge deal breaker, as a page refresh will solve it,
-     * and the colony is still usable, just that it doesn't provide _that_
-     * nice of a user experience.
-     */
-    yield apolloClient.mutate<
-      SubscribeToColonyMutation,
-      SubscribeToColonyMutationVariables
-    >({
-      mutation: SubscribeToColonyDocument,
-      variables: {
-        input: { colonyAddress },
-      },
-      update: cacheUpdates.subscribeToColony(colonyAddress),
-    });
-
     return null;
   } catch (error) {
     yield putError(ActionTypes.CREATE_ERROR, error, meta);
-    // For non-transaction errors (where something is probably irreversibly wrong),
-    // cancel the saga.
+    /*
+     * For non-transaction errors (where something is probably irreversibly wrong),
+     * cancel the saga.
+     */
     return null;
   } finally {
     /*

@@ -12,6 +12,7 @@ import {
 import ColonyHome from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
 import ColonyMembers from '~common/ColonyMembers';
+import CreateColonyWizard from '~common/CreateColonyWizard';
 import FourOFour from '~frame/FourOFour';
 // import UserProfile from '~users/UserProfile';
 // import UserProfileEdit from '~users/UserProfileEdit';
@@ -33,6 +34,7 @@ import {
   COLONY_HOME_ROUTE,
   COLONY_MEMBERS_ROUTE,
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
+  CREATE_COLONY_ROUTE,
   // CREATE_COLONY_ROUTE,
   // CREATE_USER_ROUTE,
   // USER_EDIT_ROUTE,
@@ -44,7 +46,7 @@ import {
   // CLAIM_TOKEN_ROUTE,
 } from './routeConstants';
 import NotFoundRoute from './NotFoundRoute';
-import { ColonyContextProvider } from '~context/ColonyContext';
+import { ColonyContextProvider } from '~context';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -135,6 +137,8 @@ const Routes = () => {
             </ColonyContextProvider>
           }
         />
+
+        <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
         {/* <WalletRequiredRoute
           isConnected={isConnected}
           didClaimProfile={didClaimProfile}
