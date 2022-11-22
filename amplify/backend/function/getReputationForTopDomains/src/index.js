@@ -50,7 +50,6 @@ const calculatePercentageReputation = (
  * @type {import('aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  // return { items: [{ reputationPercentage: '100', domainId: 1 }] };
   const input = event.arguments?.input;
   const colonyAddress = input?.colonyAddress;
   const walletAddress = input?.walletAddress;
@@ -72,7 +71,6 @@ exports.handler = async (event) => {
   try {
     const userReputationForAllDomains =
       await colonyClient.getReputationAcrossDomains(walletAddress, rootHash);
-    console.log('userReputationForAllDomains', userReputationForAllDomains);
 
     // Extract only the relevant data and
     // transform the user reputation amount on each domain to percentage
@@ -86,14 +84,13 @@ exports.handler = async (event) => {
             ? ROOT_DOMAIN_ID
             : userReputation.domainId,
         );
-        console.log('skillId', skillId);
-        const { totalColonyReputation } =
+
+        const { reputationAmount: totalColonyReputation } =
           await colonyClient.getReputationWithoutProofs(
             skillId,
             constants.AddressZero,
             rootHash,
           );
-        console.log('totalColonyReputation', totalColonyReputation);
 
         const reputationPercentage = totalColonyReputation
           ? calculatePercentageReputation(
@@ -110,17 +107,13 @@ exports.handler = async (event) => {
     const formattedUserReputationsResult = await Promise.all(
       formattedUserReputations,
     );
-    console.log(
-      'formattedUserReputationsResult',
-      formattedUserReputationsResult,
-    );
 
     // return { items: formattedUserReputationsResult };
     // Filter out the reputation percentages that are 0
     const filteredUserReputations = formattedUserReputationsResult.filter(
       (userReputation) =>
         userReputation.reputationPercentage &&
-        userReputation.reputationPercentage !== constants.ZeroValue.Zero,
+        userReputation.reputationPercentage !== ZeroValue.Zero,
     );
 
     // Sort out the percentages from highest to lowest
@@ -129,13 +122,13 @@ exports.handler = async (event) => {
       .sort((reputationA, reputationB) => {
         const safeReputationA = new Decimal(
           reputationA?.reputationPercentage &&
-          reputationA?.reputationPercentage !== constants.ZeroValue.NearZero
+          reputationA?.reputationPercentage !== ZeroValue.NearZero
             ? reputationA.reputationPercentage
             : 0,
         );
         const safeReputationB = new Decimal(
           reputationB?.reputationPercentage &&
-          reputationB?.reputationPercentage !== constants.ZeroValue.NearZero
+          reputationB?.reputationPercentage !== ZeroValue.NearZero
             ? reputationB.reputationPercentage
             : 0,
         );

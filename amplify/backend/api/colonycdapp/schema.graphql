@@ -67,7 +67,7 @@ type TokenFromEverywhereReturn {
   items: [Token]
 }
 
-input GetUserReputationForTopDomainsInput {
+input GetReputationForTopDomainsInput {
   walletAddress: String!
   colonyAddress: String!
   rootHash: String
@@ -78,7 +78,7 @@ type UserDomainReputation {
   reputationPercentage: String!
 }
 
-type GetUserReputationForTopDomainsReturn {
+type GetReputationForTopDomainsReturn {
   items: [UserDomainReputation]
 }
 
@@ -124,13 +124,13 @@ type Query {
     input: TokenFromEverywhereArguments
   ): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain")
   getReputationForTopDomains(
-    input: GetUserReputationForTopDomainsInput
-  ): String @function(name: "getReputationForTopDomains")
+    input: GetReputationForTopDomainsInput
+  ): GetReputationForTopDomainsReturn @function(name: "getReputationForTopDomains")
   getUserReputation(
     input: GetUserReputationInput
   ): String @function(name: "getUserReputation")
   getUserReputationForTopDomains(
-    input: GetUserReputationForTopDomainsInput
+    input: GetReputationForTopDomainsInput
   ): String @function(name: "getUserReputationForTopDomains")
 }
 

@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
 
 import { Address } from '~types';
-import { getUserReputationForTopDomains } from '~gql';
+import { getReputationForTopDomains } from '~gql';
 import { PercentageReputationType } from '~utils/reputation';
 
 export type UserDomainReputation = {
@@ -15,7 +15,7 @@ const useUserReputationForTopDomains = (
   rootHash?: string,
 ) => {
   const { data: userReputationData } = useQuery(
-    gql(getUserReputationForTopDomains),
+    gql(getReputationForTopDomains),
     {
       variables: {
         input: {
