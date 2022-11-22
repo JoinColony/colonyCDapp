@@ -12,7 +12,7 @@ import {
 import ColonyHome from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
 import ColonyMembers from '~common/ColonyMembers';
-import ColonyCreationWizard from '~common/ColonyCreationWizard';
+import CreateColonyWizard from '~common/CreateColonyWizard';
 import FourOFour from '~frame/FourOFour';
 // import UserProfile from '~users/UserProfile';
 // import UserProfileEdit from '~users/UserProfileEdit';
@@ -138,7 +138,7 @@ const Routes = () => {
           }
         />
 
-        <Route path={CREATE_COLONY_ROUTE} element={<ColonyCreationWizard />} />
+        <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
         {/* <WalletRequiredRoute
           isConnected={isConnected}
           didClaimProfile={didClaimProfile}

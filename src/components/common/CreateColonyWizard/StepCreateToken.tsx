@@ -10,7 +10,7 @@ import Button from '~shared/Button';
 import { multiLineTextEllipsis } from '~utils/strings';
 import { intl } from '~utils/intl';
 
-import { FormValues, Step3 } from './ColonyCreationWizard';
+import { FormValues, Step3 } from './CreateColonyWizard';
 import { switchTokenInputType } from './StepSelectToken';
 
 import styles from './StepCreateToken.css';

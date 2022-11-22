@@ -14,11 +14,11 @@ import { intl } from '~utils/intl';
 import { GetTokenByAddressQuery } from '~gql';
 
 import TokenSelector from './TokenSelector';
-import { FormValues } from './ColonyCreationWizard';
+import { FormValues } from './CreateColonyWizard';
 
 import styles from './StepSelectToken.css';
 
-const displayName = 'common.ColonyCreationWizard.StepSelectToken';
+const displayName = 'common.CreateColonyWizard.StepSelectToken';
 
 const MSG = defineMessages({
   heading: {

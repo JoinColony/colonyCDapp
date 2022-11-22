@@ -10,12 +10,12 @@ import { Form } from '~shared/Fields';
 import { multiLineTextEllipsis } from '~utils/strings';
 import { SELECT_NATIVE_TOKEN_INFO as LEARN_MORE_URL } from '~constants';
 
-import { FormValues, Step2 } from './ColonyCreationWizard';
+import { FormValues, Step2 } from './CreateColonyWizard';
 
 import queries from '~styles/queries.css';
 import styles from './StepTokenChoice.css';
 
-const displayName = 'common.ColonyCreationWizard.StepTokenChoice';
+const displayName = 'common.CreateColonyWizard.StepTokenChoice';
 
 const MSG = defineMessages({
   heading: {

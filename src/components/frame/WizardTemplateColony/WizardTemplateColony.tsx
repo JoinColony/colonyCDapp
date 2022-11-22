@@ -7,7 +7,7 @@ import { WizardOuterProps } from '~shared/Wizard/types';
 import CopyableAddress from '~shared/CopyableAddress';
 
 import { HistoryNavigation } from '~frame/RouteLayouts';
-import { FormValues } from '~common/ColonyCreationWizard/ColonyCreationWizard';
+import { FormValues } from '~common/CreateColonyWizard/CreateColonyWizard';
 import { LANDING_PAGE_ROUTE } from '~routes/index';
 import { useAppContext, useCanInteractWithNetwork } from '~hooks';
 

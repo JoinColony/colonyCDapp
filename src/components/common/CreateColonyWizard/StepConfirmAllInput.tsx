@@ -9,12 +9,12 @@ import { ActionForm, FormStatus } from '~shared/Fields';
 import { mergePayload } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
 
-import CardRow, { Row } from './ColonyCreationCardRow';
-import { FormValues } from './ColonyCreationWizard';
+import CardRow, { Row } from './CreateColonyCardRow';
+import { FormValues } from './CreateColonyWizard';
 
 import styles from './StepConfirmAllInput.css';
 
-const displayName = 'common.ColonyCreationWizard.StepConfirmAllInput';
+const displayName = 'common.CreateColonyWizard.StepConfirmAllInput';
 
 const MSG = defineMessages({
   title: {

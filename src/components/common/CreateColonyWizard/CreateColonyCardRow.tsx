@@ -4,9 +4,9 @@ import React from 'react';
 import Heading from '~shared/Heading';
 import { useAppContext } from '~hooks';
 
-import { FormValues } from './ColonyCreationWizard';
+import { FormValues } from './CreateColonyWizard';
 
-import styles from './ColonyCreationCardRow.css';
+import styles from './CreateColonyCardRow.css';
 
 export type Row = GenericRow | TokenRow;
 
@@ -73,6 +73,8 @@ const getHeadingPreviewText = (
   return formatToken(values, option as TokenRow);
 };
 
+const displayName = 'common.CreateColonyWizard.CardRow';
+
 const CardRow = ({ cardOptions, values }: CardProps) => {
   const { user } = useAppContext();
   const username = user?.profile?.displayName || user?.name || '';
@@ -95,5 +97,7 @@ const CardRow = ({ cardOptions, values }: CardProps) => {
     </>
   );
 };
+
+CardRow.displayName = displayName;
 
 export default CardRow;

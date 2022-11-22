@@ -13,7 +13,7 @@ import { DEFAULT_NETWORK_INFO } from '~constants';
 import { useAppContext } from '~hooks';
 
 import { validationSchema } from './StepColonyNameValidation';
-import { FormValues } from './ColonyCreationWizard';
+import { FormValues } from './CreateColonyWizard';
 
 import queries from '~styles/queries.css';
 import styles from './StepColonyName.css';

@@ -1,7 +1,7 @@
 import React, { ComponentType, useState } from 'react';
 
 import { useAppContext } from '~hooks';
-import { User, Values } from '~types';
+import { User } from '~types';
 
 import {
   InitialValuesProp,
@@ -45,7 +45,7 @@ const withWizard =
     initialValues: initialValuesProp = [],
     steps,
     stepCount: maxSteps,
-  }: WizardArgs<Values<T>>) =>
+  }: WizardArgs<T>) =>
   (
     OuterComponent: ComponentType<WizardOuterProps<T>>,
     stepsProps?: WizardStepProps<T>,

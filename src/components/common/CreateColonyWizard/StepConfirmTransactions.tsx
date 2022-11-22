@@ -19,7 +19,7 @@ import {
 import { TRANSACTION_STATUSES } from '~types';
 import { ActionTypes } from '~redux/index';
 
-import { FormValues } from './ColonyCreationWizard';
+import { FormValues } from './CreateColonyWizard';
 
 import styles from './StepConfirmTransactions.css';
 
