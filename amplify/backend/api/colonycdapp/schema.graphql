@@ -123,12 +123,15 @@ type Query {
   getTokenFromEverywhere(
     input: TokenFromEverywhereArguments
   ): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain")
+  getReputationForTopDomains(
+    input: GetUserReputationForTopDomainsInput
+  ): String @function(name: "getReputationForTopDomains")
   getUserReputation(
     input: GetUserReputationInput
   ): String @function(name: "getUserReputation")
   getUserReputationForTopDomains(
     input: GetUserReputationForTopDomainsInput
-  ): GetUserReputationForTopDomainsReturn @function(name: "getUserReputationForTopDomains")
+  ): String @function(name: "getUserReputationForTopDomains")
 }
 
 type Mutation {
