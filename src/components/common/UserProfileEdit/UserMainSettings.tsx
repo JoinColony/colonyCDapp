@@ -21,6 +21,7 @@ import ConfusableWarning from '~shared/ConfusableWarning';
 
 import { updateUser } from '~gql';
 import { User } from '~types';
+import { useAppContext } from '~hooks';
 
 import styles from './UserProfileEdit.css';
 
@@ -90,6 +91,8 @@ const validationSchema = yup.object({
 });
 
 const UserMainSettings = ({ user }: Props) => {
+  const appContext = useAppContext();
+
   const { walletAddress, profile } = user;
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   useEffect(() => {
@@ -102,7 +105,7 @@ const UserMainSettings = ({ user }: Props) => {
     return undefined;
   }, [showSnackbar]);
 
-  const [editUser, { error }] = useMutation(gql(updateUser));
+  const [editUser, { error, loading, called }] = useMutation(gql(updateUser));
   const onSubmit = useCallback(
     (updatedProfile: FormValues) =>
       editUser({
@@ -110,6 +113,12 @@ const UserMainSettings = ({ user }: Props) => {
       }),
     [walletAddress, editUser],
   );
+
+  useEffect(() => {
+    if (called && !loading && appContext.updateUser) {
+      appContext.updateUser(user.walletAddress);
+    }
+  }, [appContext, called, loading, user]);
 
   return (
     <>
