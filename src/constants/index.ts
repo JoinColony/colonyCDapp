@@ -3,6 +3,7 @@ import { constants as ethersContants } from 'ethers';
 import { Network, Color } from '~types';
 
 export * from './externalUrls';
+export * from './icons';
 
 export type TokenInfo = {
   name: string;
