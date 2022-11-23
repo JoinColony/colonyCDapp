@@ -20,6 +20,9 @@ ADD docker/files/amplify/package.base.json /colonyCDapp/package.base.json
 ADD docker/files/amplify/dependencies /colonyCDapp/dependencies
 ADD docker/files/amplify/generate-package-json.js /colonyCDapp/generate-package-json.js
 ADD docker/files/amplify/wait-and-codegen.js /colonyCDapp/wait-and-codegen.js
+ADD docker/files/amplify/fakeschema.graphql /colonyCDapp/fakeschema.graphql
+ADD docker/files/amplify/.graphqlconfig.yml /colonyCDapp/.graphqlconfig.yml
+
 # This still needs to be saved as a "template" since it will only be moved to it's final location at runtime
 ADD docker/files/amplify/amplify-meta.json.base /colonyCDappBackend/scripts/amplify-meta.json.base
 ADD docker/files/amplify/config.base /root/.aws/config
