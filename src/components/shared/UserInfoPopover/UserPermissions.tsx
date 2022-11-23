@@ -3,9 +3,9 @@ import { ColonyRole } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 
 import PermissionsLabel from '~shared/PermissionsLabel';
+import Heading from '~shared/Heading';
 
 import styles from './UserInfoPopover.css';
-import Heading from '~shared/Heading';
 
 const displayName = `UserInfoPopover.UserPermissions`;
 

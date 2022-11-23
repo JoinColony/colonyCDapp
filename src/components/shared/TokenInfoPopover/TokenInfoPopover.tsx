@@ -17,8 +17,7 @@ const displayName = 'TokenInfoPopover';
 
 const TokenInfoPopover = ({ token, isTokenNative }: Props) => {
   return (
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    <>
+    <span>
       {!isEmpty(token) && token ? (
         <TokenInfo token={token} isTokenNative={isTokenNative} />
       ) : (
@@ -26,7 +25,7 @@ const TokenInfoPopover = ({ token, isTokenNative }: Props) => {
           <NotAvailableMessage notAvailableDataName="Token" />
         </div>
       )}
-    </>
+    </span>
   );
 };
 

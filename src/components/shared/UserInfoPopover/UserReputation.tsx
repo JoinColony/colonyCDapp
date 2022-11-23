@@ -3,14 +3,14 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import isEmpty from 'lodash/isEmpty';
 
 import Heading from '~shared/Heading';
+import Icon from '~shared/Icon';
+import Numeral from '~shared/Numeral';
+import { SpinnerLoader } from '~shared/Preloaders';
+import { UserDomainReputation } from '~hooks';
 import { Colony } from '~types';
 import { ZeroValue } from '~utils/reputation';
 
 import styles from './UserInfoPopover.css';
-import Icon from '~shared/Icon';
-import Numeral from '~shared/Numeral';
-import { UserDomainReputation } from '~hooks';
-import { SpinnerLoader } from '~shared/Preloaders';
 
 const displayName = `UserInfoPopover.UserReputation`;
 
@@ -76,8 +76,7 @@ const UserReputation = ({
           }}
         />
       ) : (
-        // eslint-disable-next-line react/jsx-no-useless-fragment
-        <>
+        <span>
           {isEmpty(formattedUserReputations) ? (
             <p className={styles.noReputationDescription}>
               <FormattedMessage
@@ -126,7 +125,7 @@ const UserReputation = ({
               )}
             </ul>
           )}
-        </>
+        </span>
       )}
     </div>
   );

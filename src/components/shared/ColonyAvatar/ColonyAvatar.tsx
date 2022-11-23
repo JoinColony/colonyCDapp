@@ -32,7 +32,6 @@ const ColonyAvatar = ({
 }: Props) => {
   const { profile, name } = colony || {};
   const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
-
   const colonyAvatar = (
     <Avatar
       avatarURL={avatarURL || imageString || undefined}

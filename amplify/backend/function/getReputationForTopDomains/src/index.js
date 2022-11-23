@@ -24,7 +24,10 @@ const calculatePercentageReputation = (
   totalReputation,
   decimalPlaces = DECIMAL_PLACES,
 ) => {
-  if (!userReputation || !totalReputation) return null;
+  if (!userReputation || !totalReputation) {
+    return null;
+  }
+
   const userReputationNumber = BigNumber.from(userReputation);
   const totalReputationNumber = BigNumber.from(totalReputation);
 
