@@ -1,7 +1,8 @@
 ﻿# This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
-
+input AMPLIFY {
+  globalAuthRule: AuthRule = { allow: public }
+} # FOR TESTING ONLY!
 # NOTE: This file is getting out hand in terms of size
 # There is an official way of splitting the schema into multiple files
 # https://docs.amplify.aws/cli-legacy/graphql-transformer/overview/#api-category-project-structure
@@ -145,22 +146,19 @@ type Query {
   ): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain")
   getReputationForTopDomains(
     input: GetReputationForTopDomainsInput
-  ): GetReputationForTopDomainsReturn @function(name: "getReputationForTopDomains")
-  getUserReputation(
-    input: GetUserReputationInput
-  ): String @function(name: "getUserReputation")
+  ): GetReputationForTopDomainsReturn
+    @function(name: "getReputationForTopDomains")
+  getUserReputation(input: GetUserReputationInput): String
+    @function(name: "getUserReputation")
 }
 
 type Mutation {
-  createUniqueUser(
-    input: CreateUniqueUserInput
-  ): User @function(name: "createUniqueUser")
-  createUniqueColony(
-    input: CreateUniqueColonyInput
-  ): ColonyID @function(name: "createUniqueColony")
-  createUniqueDomain(
-    input: CreateUniqueDomainInput
-  ): Domain @function(name: "createUniqueDomain")
+  createUniqueUser(input: CreateUniqueUserInput): User
+    @function(name: "createUniqueUser")
+  createUniqueColony(input: CreateUniqueColonyInput): Colony
+    @function(name: "createUniqueColony")
+  createUniqueDomain(input: CreateUniqueDomainInput): Domain
+    @function(name: "createUniqueDomain")
 }
 
 # Applies to both Users and Colonies
@@ -175,7 +173,6 @@ type Profile @model {
   website: AWSURL
   email: AWSEmail @index(name: "byEmail", queryField: "getProfileByEmail")
   meta: ProfileMetadata
-
 }
 
 type NativeTokenStatus {
@@ -204,7 +201,9 @@ type ProfileMetadata {
 }
 
 type Token @model {
-  id: ID! @index(name: "byAddress", queryField: "getTokenByAddress") @index(sortKeyFields: ["createdAt"]) # contract address
+  id: ID!
+    @index(name: "byAddress", queryField: "getTokenByAddress")
+    @index(sortKeyFields: ["createdAt"]) # contract address
   name: String!
   symbol: String!
   decimals: Int!
@@ -238,11 +237,13 @@ type Colony @model {
   fundsClaims: [ColonyFundsClaim] @hasMany # All ERC20 token claims
   # Native chain token claims (eg: Token 0x0000...0000)
   # This is not an array since only a single token type can be returned
-  chainFundsClaim: ColonyChainFundsClaim @function(name: "fetchColonyNativeFundsClaim")
+  chainFundsClaim: ColonyChainFundsClaim
+    @function(name: "fetchColonyNativeFundsClaim")
   type: ColonyType @index(name: "byType", queryField: "getColonyByType")
   # Returns a list token balances for each domain and each token that the colony has
   balances: ColonyBalances @function(name: "fetchColonyBalances")
   meta: Metadata
+  extensions: [ColonyExtension!] @hasMany(indexName: "byColony", fields: ["id"])
 }
 
 type User @model {
@@ -303,11 +304,10 @@ type ColonyBalances {
 }
 input DomainInput {
   id: ID!
-  }
+}
 input TokenInput {
   id: ID!
 }
-
 
 # This will store the relevant events we care about for a particular colony
 # Altough it might also hold events emmited by other clients (eg: network or token)
@@ -330,4 +330,11 @@ type ContractEvent @model {
   agent: String! # who initiated the event
   target: String! # who was on the receiving end of it
   encodedArguments: String # basically a JSON string
+}
+
+type ColonyExtension @model {
+  id: ID!
+  colonyId: ID! @index(name: "byColony")
+  colony: Colony! @belongsTo(fields: ["colonyId"])
+  hash: String!
 }
