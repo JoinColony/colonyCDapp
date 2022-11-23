@@ -1,3 +1,5 @@
+@value query700 from '~styles/queries.css';
+
 .main {
   display: block;
   cursor: pointer;
@@ -91,4 +93,11 @@
 .stateDisabled .checkbox .checkmark::before,
 .stateDisabled .checkbox .checkmark::after {
   background-color: var(--text-disabled);
+}
+
+@media screen and query700 {
+  .main {
+    display: flex;
+    align-items: center;
+  }
 }

@@ -6,9 +6,16 @@ declare namespace CheckboxCssNamespace {
     directionHorizontal: string;
     directionVertical: string;
     main: string;
+    mappings: string;
+    names: string;
+    query700: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
     stateDisabled: string;
     stateIsChecked: string;
     themeDark: string;
+    version: string;
   }
 }
 

@@ -2,9 +2,16 @@ declare namespace CreateUserWizardCssNamespace {
   export interface ICreateUserWizardCss {
     buttons: string;
     main: string;
+    mappings: string;
     nameForm: string;
+    names: string;
     paragraph: string;
+    query700: string;
     reminder: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
+    version: string;
   }
 }
 

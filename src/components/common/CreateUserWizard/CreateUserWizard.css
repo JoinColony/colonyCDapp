@@ -1,3 +1,5 @@
+@value query700 from '~styles/queries.css';
+
 .main {
   padding-top: 155px;
   width: 100%;
@@ -11,17 +13,20 @@
 }
 
 .nameForm {
+  display: flex;
+  flex-direction: column;
   margin-top: 40px;
+  row-gap: 10px;
 }
 
 .nameForm > div:first-of-type {
-  margin-bottom: 0px;
+  margin-bottom: 5px;
 }
 
 .buttons {
   display: flex;
   justify-content: flex-end;
-  margin-top: 13px;
+  margin-top: 20px;
 }
 
 .reminder {
@@ -30,4 +35,10 @@
   font-size: var(--size-tiny);
   font-weight: var(--weight-bold);
   line-height: 18px;
+}
+
+@media screen and query700 {
+  .nameForm > div:first-of-type {
+    margin-bottom: 15px;
+  }
 }
