@@ -102,7 +102,7 @@ module.exports = {
     'jsdoc/check-indentation': 'off',
     'no-restricted-exports': 'off',
     'no-use-before-define': 'off',
-    '@typescript-eslint/no-use-before-define': ['error'],
+    '@typescript-eslint/no-use-before-define': ['error', 'nofunc'],
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
     '@typescript-eslint/ban-ts-comment': 'off',

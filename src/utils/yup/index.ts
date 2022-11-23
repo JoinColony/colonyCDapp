@@ -1,3 +1,4 @@
+import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
 import { Schema, TestContext, ValidateOptions, ValidationError } from 'yup';
 
@@ -58,7 +59,7 @@ export async function runQuery<Q, V>(
 }
 
 interface CustomTestConfig {
-  query: string;
+  query: DocumentNode;
   isOptional?: boolean;
   circuitBreaker?: boolean | ((value) => boolean);
 }
