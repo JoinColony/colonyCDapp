@@ -166,7 +166,8 @@ function* usernameCreate({
       refetchQueries,
     });
 
-    yield routeRedirect(LANDING_PAGE_ROUTE, navigate);
+    /* Replace: true so you can't get back to the User wizard after completion */
+    yield routeRedirect(LANDING_PAGE_ROUTE, navigate, { replace: true });
   } catch (error) {
     return yield putError(ActionTypes.USERNAME_CREATE_ERROR, error, meta);
   } finally {

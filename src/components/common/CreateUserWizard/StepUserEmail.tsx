@@ -9,7 +9,7 @@ import {
   UserStepTemplate,
   ContinueWizard,
 } from '../CreateUserWizard';
-import { stepUserEmailValidationSchema as validationSchema } from '../validationCreateUserWizard';
+import { stepUserEmailValidationSchema as validationSchema } from './validation';
 import ConfirmEmail from './ConfirmEmail';
 
 export const displayName = 'common.CreateUserWizard.StepUserEmail';
@@ -30,7 +30,12 @@ const StepUserEmail = ({
   nextStep,
   wizardForm,
 }: WizardStepProps<FormValues>) => (
-  <Form onSubmit={nextStep} validationSchema={validationSchema} {...wizardForm}>
+  <Form
+    onSubmit={nextStep}
+    validationSchema={validationSchema}
+    {...wizardForm}
+    validateOnChange={false}
+  >
     {({ isValid, isSubmitting, setFieldTouched, validateField }) => {
       return (
         <UserStepTemplate

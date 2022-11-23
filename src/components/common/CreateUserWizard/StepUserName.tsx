@@ -1,7 +1,5 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import * as yup from 'yup';
-// import { useApolloClient } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { isConfusing } from '@colony/unicode-confusables-noascii';
 
@@ -11,6 +9,7 @@ import { WizardStepProps } from '~shared/Wizard';
 import { pipe, mergePayload, withMeta } from '~utils/actions';
 import ConfusableWarning from '~shared/ConfusableWarning';
 
+import { stepUserNameValidationSchema as validationSchema } from './validationCreateUserWizard';
 import {
   FormValues,
   ContinueWizard,
@@ -38,18 +37,6 @@ const MSG = defineMessages({
     id: `${displayName}.label`,
     defaultMessage: 'Your Unique Username',
   },
-  errorDomainTaken: {
-    id: `${displayName}.errorDomainTaken`,
-    defaultMessage: 'This Username is already taken',
-  },
-  errorDomainInvalid: {
-    id: `${displayName}.errorDomainInvalid`,
-    defaultMessage: 'Only characters a-z, 0-9, - and . are allowed',
-  },
-});
-
-const validationSchema = yup.object({
-  username: yup.string().required().max(100).colonyName(),
 });
 
 interface UsernameInputProps {
@@ -71,51 +58,6 @@ const UsernameInput = ({ username, disabled }: UsernameInputProps) => (
 
 const StepUserName = ({ wizardValues, nextStep, wizardForm }: Props) => {
   const navigate = useNavigate();
-
-  //const { networkId } = useLoggedInUser();
-
-  // const checkDomainTaken = useCallback(
-  //   async (values: FormValues) => {
-  //     try {
-  //       // const { data } = await apolloClient.query<
-  //       //   UserAddressQuery,
-  //       //   UserAddressQueryVariables
-  //       // >({
-  //       //   query: UserAddressDocument,
-  //       //   variables: {
-  //       //     name: values.username,
-  //       //   },
-  //       // });
-  //       if (data && data.userAddress) return true;
-  //       return false;
-  //     } catch (e) {
-  //       return false;
-  //     }
-  //   },
-  //   [apolloClient],
-  // );
-
-  // const validateDomain = useCallback(
-  //   async (values: FormValues) => {
-  //     try {
-  //       // Let's check whether this is even valid first
-  //       validationSchema.validateSyncAt('username', values);
-  //     } catch (caughtError) {
-  //       // Just return. The actual validation will be done by the
-  //       // validationSchema
-  //       return {};
-  //     }
-  //     const taken = await checkDomainTaken(values);
-  //     if (taken) {
-  //       const errors = {
-  //         username: MSG.errorDomainTaken,
-  //       };
-  //       return errors;
-  //     }
-  //     return {};
-  //   },
-  //   [checkDomainTaken],
-  // );
 
   const transform = pipe(
     mergePayload({
