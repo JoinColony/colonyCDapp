@@ -42,10 +42,8 @@ const UserInfoPopover = ({
   //     variables: { address: colonyAddress },
   //   });
 
-  const { userReputation } = useUserReputationForTopDomains(
-    colony?.colonyAddress,
-    wallet?.address,
-  );
+  const { userReputation, loadingUserReputation } =
+    useUserReputationForTopDomains(colony?.colonyAddress, wallet?.address);
 
   // const { data: userReputationData, loading: loadingUserReputation } =
   //   useUserReputationForTopDomainsQuery({
@@ -122,6 +120,7 @@ const UserInfoPopover = ({
               colony={colony}
               userReputationForTopDomains={userReputation || []}
               isCurrentUserReputation={wallet?.address === walletAddress}
+              isUserReputationLoading={loadingUserReputation}
             />
           </div>
         )}

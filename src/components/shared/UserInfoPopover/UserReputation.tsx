@@ -10,6 +10,7 @@ import styles from './UserInfoPopover.css';
 import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
 import { UserDomainReputation } from '~hooks';
+import { SpinnerLoader } from '~shared/Preloaders';
 
 const displayName = `UserInfoPopover.UserReputation`;
 
@@ -17,6 +18,7 @@ interface Props {
   colony: Colony;
   userReputationForTopDomains: UserDomainReputation[];
   isCurrentUserReputation: boolean;
+  isUserReputationLoading?: boolean;
 }
 
 const MSG = defineMessages({
@@ -42,6 +44,7 @@ const UserReputation = ({
   colony,
   userReputationForTopDomains,
   isCurrentUserReputation,
+  isUserReputationLoading = false,
 }: Props) => {
   const formattedUserReputations = userReputationForTopDomains?.map(
     ({ domainId, ...rest }) => {
@@ -65,51 +68,65 @@ const UserReputation = ({
         }}
         text={MSG.labelText}
       />
-      {isEmpty(formattedUserReputations) ? (
-        <p className={styles.noReputationDescription}>
-          <FormattedMessage
-            {...MSG.noReputationDescription}
-            values={{ isCurrentUserReputation }}
-          />
-        </p>
+      {isUserReputationLoading ? (
+        <SpinnerLoader
+          appearance={{
+            theme: 'grey',
+            size: 'small',
+          }}
+        />
       ) : (
-        <ul>
-          {formattedUserReputations.map(
-            ({ reputationDomain, reputationPercentage }) => (
-              <li
-                key={`${reputationDomain?.id}-${reputationPercentage}`}
-                className={styles.domainReputationItem}
-              >
-                <p className={styles.domainName}>{reputationDomain?.name}</p>
-                <div className={styles.reputationContainer}>
-                  {reputationPercentage === ZeroValue.NearZero && (
-                    <div className={styles.reputation}>
-                      {reputationPercentage}
-                    </div>
-                  )}
-                  {reputationPercentage &&
-                    reputationPercentage !== ZeroValue.NearZero && (
-                      <Numeral
-                        className={styles.reputation}
-                        value={reputationPercentage}
-                        suffix="%"
+        // eslint-disable-next-line react/jsx-no-useless-fragment
+        <>
+          {isEmpty(formattedUserReputations) ? (
+            <p className={styles.noReputationDescription}>
+              <FormattedMessage
+                {...MSG.noReputationDescription}
+                values={{ isCurrentUserReputation }}
+              />
+            </p>
+          ) : (
+            <ul>
+              {formattedUserReputations.map(
+                ({ reputationDomain, reputationPercentage }) => (
+                  <li
+                    key={`${reputationDomain?.id}-${reputationPercentage}`}
+                    className={styles.domainReputationItem}
+                  >
+                    <p className={styles.domainName}>
+                      {reputationDomain?.name}
+                    </p>
+                    <div className={styles.reputationContainer}>
+                      {reputationPercentage === ZeroValue.NearZero && (
+                        <div className={styles.reputation}>
+                          {reputationPercentage}
+                        </div>
+                      )}
+                      {reputationPercentage &&
+                        reputationPercentage !== ZeroValue.NearZero && (
+                          <Numeral
+                            className={styles.reputation}
+                            value={reputationPercentage}
+                            suffix="%"
+                          />
+                        )}
+                      <Icon
+                        name="star"
+                        appearance={{ size: 'extraTiny' }}
+                        className={styles.icon}
+                        title={MSG.starReputationTitle}
+                        titleValues={{
+                          reputation: reputationPercentage,
+                          domainName: reputationDomain?.name,
+                        }}
                       />
-                    )}
-                  <Icon
-                    name="star"
-                    appearance={{ size: 'extraTiny' }}
-                    className={styles.icon}
-                    title={MSG.starReputationTitle}
-                    titleValues={{
-                      reputation: reputationPercentage,
-                      domainName: reputationDomain?.name,
-                    }}
-                  />
-                </div>
-              </li>
-            ),
+                    </div>
+                  </li>
+                ),
+              )}
+            </ul>
           )}
-        </ul>
+        </>
       )}
     </div>
   );

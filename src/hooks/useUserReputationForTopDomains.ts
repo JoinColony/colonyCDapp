@@ -14,7 +14,7 @@ const useUserReputationForTopDomains = (
   walletAddress?: Address,
   rootHash?: string,
 ) => {
-  const { data: userReputationData } = useQuery(
+  const { data: userReputationData, loading: loadingUserReputation } = useQuery(
     gql(getReputationForTopDomains),
     {
       variables: {
@@ -34,6 +34,7 @@ const useUserReputationForTopDomains = (
 
   return {
     userReputation,
+    loadingUserReputation,
   };
 };
 
