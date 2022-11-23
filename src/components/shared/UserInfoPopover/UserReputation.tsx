@@ -80,7 +80,7 @@ const UserReputation = ({
                 key={`${reputationDomain?.id}-${reputationPercentage}`}
                 className={styles.domainReputationItem}
               >
-                <p className={styles.domainName}>{reputationDomain?.id}</p>
+                <p className={styles.domainName}>{reputationDomain?.name}</p>
                 <div className={styles.reputationContainer}>
                   {reputationPercentage === ZeroValue.NearZero && (
                     <div className={styles.reputation}>

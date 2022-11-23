@@ -116,7 +116,7 @@ const UserInfoPopover = ({
             )}
           </div>
         )}
-        {colony && userReputation && (
+        {colony && (
           <div className={styles.section}>
             <UserReputation
               colony={colony}

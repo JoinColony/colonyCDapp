@@ -85,6 +85,13 @@ exports.handler = async (event) => {
             : userReputation.domainId,
         );
 
+        if (!userReputation.reputationAmount) {
+          return {
+            reputationPercentage: '0',
+            domainId: userReputation.domainId,
+          };
+        }
+
         const { reputationAmount: totalColonyReputation } =
           await colonyClient.getReputationWithoutProofs(
             skillId,
@@ -108,7 +115,6 @@ exports.handler = async (event) => {
       formattedUserReputations,
     );
 
-    // return { items: formattedUserReputationsResult };
     // Filter out the reputation percentages that are 0
     const filteredUserReputations = formattedUserReputationsResult.filter(
       (userReputation) =>
