@@ -8,7 +8,7 @@ WORKDIR /colonyCDapp
 # Add dependencies from the host
 ADD package.json /colonyCDapp/package.colonyCDapp.json
 ADD amplify /colonyCDapp/amplify
-ADD codegen.ts /colonyCDapp/codegen.ts
+ADD codegen.js /colonyCDapp/codegen.js
 
 # Note: these are listed individually so that if they change, they won't affect
 # the build of the other images
@@ -19,7 +19,6 @@ ADD docker/files/amplify/aws-exports.js.base /colonyCDapp/src/aws-exports.js
 ADD docker/files/amplify/package.base.json /colonyCDapp/package.base.json
 ADD docker/files/amplify/dependencies /colonyCDapp/dependencies
 ADD docker/files/amplify/generate-package-json.js /colonyCDapp/generate-package-json.js
-ADD docker/files/amplify/wait-and-codegen.js /colonyCDapp/wait-and-codegen.js
 ADD docker/files/amplify/fakeschema.graphql /colonyCDapp/fakeschema.graphql
 ADD docker/files/amplify/.graphqlconfig.yml /colonyCDapp/.graphqlconfig.yml
 
@@ -33,7 +32,7 @@ ADD docker/files/amplify/credentials.base /root/.aws/credentials
 #
 
 # Generate the local "light" version of package json by running node script
-# It dynamically injects the package's version from CDapp's package.json file
+# It dynamically injects the version of packages defined in "dependencies" from CDapp's package.json file
 RUN node generate-package-json
 
 # Install all dependencies

@@ -22,7 +22,7 @@
     "preinstall": "bash scripts/generate-temp-files.sh",
     "postinstall": "bash scripts/lambda-functions-dependencies.sh",
     "voyager": "ts-node temp-voyager/voyager",
-    "codegen": "graphql-codegen"
+    "codegen": "node codegen"
   },
   "repository": {
     "type": "git",
@@ -39,6 +39,7 @@
     "@babel/preset-env": "^7.13.10",
     "@colony/eslint-config-colony": "^9.0.2",
     "@graphql-codegen/cli": "^2.13.11",
+    "@graphql-codegen/core": "^2.6.6",
     "@graphql-codegen/typescript": "^2.8.1",
     "@graphql-codegen/typescript-operations": "^2.5.6",
     "@graphql-codegen/typescript-react-apollo": "^3.3.6",
@@ -123,7 +124,6 @@
     "typescript": "^4.7.3",
     "util": "^0.12.4",
     "utility-types": "^3.7.0",
-    "wait-on": "^6.0.1",
     "webpack": "^5.74.0",
     "webpack-bundle-analyzer": "^4.6.1",
     "webpack-cli": "^4.10.0",
