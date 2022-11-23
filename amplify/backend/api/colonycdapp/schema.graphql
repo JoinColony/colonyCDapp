@@ -129,9 +129,6 @@ type Query {
   getUserReputation(
     input: GetUserReputationInput
   ): String @function(name: "getUserReputation")
-  getUserReputationForTopDomains(
-    input: GetReputationForTopDomainsInput
-  ): String @function(name: "getUserReputationForTopDomains")
 }
 
 type Mutation {
