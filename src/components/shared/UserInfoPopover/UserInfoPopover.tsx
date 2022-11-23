@@ -43,7 +43,7 @@ const UserInfoPopover = ({
   //   });
 
   const { userReputation, loadingUserReputation } =
-    useUserReputationForTopDomains(colony?.colonyAddress, wallet?.address);
+    useUserReputationForTopDomains(colony?.colonyAddress, walletAddress);
 
   // const { data: userReputationData, loading: loadingUserReputation } =
   //   useUserReputationForTopDomainsQuery({
