@@ -11,16 +11,10 @@ import AvatarDropdownPopover from './AvatarDropdownPopover';
 
 import styles from './AvatarDropdown.css';
 
-interface Props {
-  // colony: Colony;
-  colony: Record<string, unknown>;
-}
-
 const displayName = 'frame.AvatarDropdown';
 
-const AvatarDropdown = ({ colony = {} }: Props) => {
+const AvatarDropdown = () => {
   const { wallet } = useAppContext();
-
   const { refWidth, horizontalOffset, verticalOffset } = styles;
 
   /*
@@ -45,7 +39,7 @@ const AvatarDropdown = ({ colony = {} }: Props) => {
   return (
     <Popover
       renderContent={({ close }) => (
-        <AvatarDropdownPopover closePopover={close} colony={colony} />
+        <AvatarDropdownPopover closePopover={close} />
       )}
       trigger="click"
       showArrow={false}

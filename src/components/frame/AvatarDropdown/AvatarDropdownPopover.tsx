@@ -20,6 +20,7 @@ import {
   useAppContext,
   useUserAccountRegistered,
   useCanInteractWithNetwork,
+  useColonyContext,
 } from '~hooks';
 
 import styles from './AvatarDropdownPopover.css';
@@ -57,15 +58,15 @@ const MSG = defineMessages({
 
 interface Props {
   closePopover: () => void;
-  // colony: Colony;
-  colony: Record<string, unknown>;
 }
 
 const displayName = 'frame.AvatarDropdown.AvatarDropdownPopover';
 
-const AvatarDropdownPopover = ({ closePopover, colony }: Props) => {
+const AvatarDropdownPopover = ({ closePopover }: Props) => {
   const { updateWallet, user, wallet } = useAppContext();
+  const { colony } = useColonyContext();
   const userHasAccountRegistered = useUserAccountRegistered();
+
   /*
    * Are the network contract deployed to the chain the user is connected
    * so that they can create a new colony on it
@@ -80,8 +81,8 @@ const AvatarDropdownPopover = ({ closePopover, colony }: Props) => {
             <NavLink
               to={{
                 pathname: CREATE_USER_ROUTE,
-                state: colony?.colonyName
-                  ? { colonyURL: `/colony/${colony?.colonyName}` }
+                state: colony?.name
+                  ? { colonyURL: `/colony/${colony?.name}` }
                   : {},
               }}
               text={MSG.buttonGetStarted}

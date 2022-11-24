@@ -79,13 +79,7 @@ const UserNavigation = () => {
         </div>
       */}
       <Wallet />
-      <AvatarDropdown
-        /*
-         * @TODO Dependency on colony data should be removed from here
-         * Hopefully this will be achieved by #66
-         */
-        colony={{}}
-      />
+      <AvatarDropdown />
     </div>
   );
 };
