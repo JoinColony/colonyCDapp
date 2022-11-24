@@ -13,8 +13,7 @@ import ColonyAvatar from '~shared/ColonyAvatar';
 
 import { CREATE_COLONY_ROUTE, CREATE_USER_ROUTE } from '~routes';
 import { useGetMetacolonyQuery } from '~gql';
-import { useAppContext, useCanInteractWithNetwork, useUserAccountRegistered } from '~hooks';
-
+import { useAppContext, useCanInteractWithNetwork } from '~hooks';
 
 import styles from './LandingPage.css';
 
@@ -59,10 +58,9 @@ const LandingPage = () => {
    * Are the network contract deployed to the chain the user is connected
    * so that they can create a new colony on it
    */
-  const { wallet, updateUser } = useAppContext();
+  const { wallet, updateUser, user, userLoading } = useAppContext();
   const canInteractWithNetwork = useCanInteractWithNetwork();
   const { data, loading } = useGetMetacolonyQuery();
-  const userAccountRegistered = useUserAccountRegistered();
 
   const [metacolony] = data?.getColonyByType?.items || [];
 
@@ -83,8 +81,7 @@ const LandingPage = () => {
           />
         </div>
         <ul>
-          {/* Resolve flicker when logging in a wallet with an account */}
-          {wallet && !userAccountRegistered && (
+          {wallet && !userLoading && !user && (
             <LandingItem to={CREATE_USER_ROUTE} message={MSG.createUsername} />
           )}
           {canInteractWithNetwork && (
