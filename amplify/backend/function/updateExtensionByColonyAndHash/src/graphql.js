@@ -4,7 +4,7 @@ module.exports = {
       getExtensionByColonyAndHash(
         colonyId: $colonyId
         hash: { eq: $hash }
-        limit: 1
+        filter: { status: { ne: DELETED } }
       ) {
         items {
           id
