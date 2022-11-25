@@ -4,10 +4,6 @@ import React from 'react';
 
 // import { SpinnerLoader } from '~shared/Preloaders';
 import Tag from '~shared/Tag';
-// import {
-//   useColonyNativeTokenQuery,
-//   useUserBalanceWithLockQuery,
-// } from '~data/index';
 // import { getAllUserRoles } from '~redux/transformers';
 import UserInfo from './UserInfo';
 import NotAvailableMessage from '../NotAvailableMessage/NotAvailableMessage';
@@ -32,7 +28,7 @@ const UserInfoPopover = ({
   // colony: { colonyAddress },
   colony,
   user,
-  banned = true,
+  banned = false,
 }: Props) => {
   const { wallet } = useAppContext();
   const { walletAddress } = user || {};

@@ -10,13 +10,14 @@ import { MessageDescriptor, useIntl } from 'react-intl';
 import { State as PopperJsState } from '@popperjs/core';
 
 import { SimpleMessageValues } from '~types';
+import { getMainClasses } from '~utils/css';
+
 import {
   PopoverAppearanceType,
   PopoverContent as PopoverContentType,
 } from './types';
-
 import getPopoverArrowClasses from './getPopoverArrowClasses';
-import { getMainClasses } from '~utils/css';
+
 import styles from './PopoverWrapper.css';
 
 interface Props {

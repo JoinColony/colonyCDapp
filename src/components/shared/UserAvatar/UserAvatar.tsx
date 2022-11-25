@@ -102,7 +102,6 @@ const UserAvatar = ({
     </Popover>
   );
   if (showLink && user) {
-    // Won't this always be lowercase?
     return <Link to={`/user/${user.name.toLowerCase()}`}>{avatar}</Link>;
   }
   return avatar;

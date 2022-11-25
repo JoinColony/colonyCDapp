@@ -53,10 +53,8 @@ const calculatePercentageReputation = (
  * @type {import('aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  const input = event.arguments?.input;
-  const colonyAddress = input?.colonyAddress;
-  const walletAddress = input?.walletAddress;
-  const rootHash = input?.rootHash;
+  const { colonyAddress, walletAddress, rootHash } =
+    event.arguments?.input || {};
 
   const provider = new providers.JsonRpcProvider(RPC_URL);
 
@@ -157,6 +155,7 @@ exports.handler = async (event) => {
 
     return { items: topUserReputations };
   } catch (error) {
-    return error.toString();
+    console.error(error);
+    return null;
   }
 };

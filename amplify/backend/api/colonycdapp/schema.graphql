@@ -79,7 +79,7 @@ type UserDomainReputation {
 }
 
 type GetReputationForTopDomainsReturn {
-  items: [UserDomainReputation]
+  items: [UserDomainReputation!]
 }
 
 enum TokenType {
