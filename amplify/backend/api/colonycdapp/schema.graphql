@@ -9,6 +9,12 @@ input TokenFromEverywhereArguments {
 
 input ReputationForColonyArguments {
   colonyAddress: String!
+  rootHash: String
+}
+
+input MembersForColonyArguments {
+  colonyAddress: String!
+  rootHash: String
 }
 
 input ColonyMembersWithReputationArguments {
@@ -104,11 +110,12 @@ type GetReputationForTopDomainsReturn {
 }
 
 type ReputationForColonyReturn {
-  members: [Member]
+  contributors: [Contributor]
 }
 
-type ColonyMembersWithReputation {
-  members: [User]
+type MembersForColonyReturn {
+  contributors: [Contributor]
+  watchers: [User]
 }
 
 enum TokenType {
@@ -158,6 +165,8 @@ type Query {
     @function(name: "getReputationForTopDomains")
   getUserReputation(input: GetUserReputationInput): String
     @function(name: "getUserReputation")
+  getMembersForColony(input: MembersForColonyArguments): MembersForColonyReturn
+    @function(name: "getMembersForColony")
 }
 
 type Mutation {
@@ -207,8 +216,7 @@ type ProfileMetadata {
 
 type Member {
   user: User
-  reputation: String
-  domain: Domain
+  reputation: [ReputationInDomain]
 }
 
 type Token @model {

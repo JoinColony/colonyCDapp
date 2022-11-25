@@ -1,6 +1,7 @@
 /**
  * @type {import('aws-lambda').APIGatewayProxyHandler}
  */
+
 const { Decimal } = require('decimal.js');
 const { utils } = require('ethers');
 const { getColonyNetworkClient, Network } = require('@colony/colony-js');
@@ -13,7 +14,7 @@ Logger.setLogLevel(Logger.levels.ERROR);
 
 const { calculatePercentageReputation } = require('./reputation');
 const { graphqlRequest } = require('./utils');
-const { getUser } = require('./graphql');
+const { getUser, getWatchersInColony } = require('./graphql');
 
 /*
  * @TODO These values need to be imported properly, and differentiate based on environment
@@ -43,21 +44,56 @@ exports.handler = async (event) => {
 
   const colonyClient = await networkClient.getColonyClient(colonyAddress);
   const { skillId } = await colonyClient.getDomain(domainId ?? ROOT_DOMAIN_ID);
-  const { addresses } = await colonyClient.getMembersReputation(skillId);
-  console.log(`🚀 ~ exports.handler= ~ addresses`, addresses);
+  const { addresses: addressesWithReputation } =
+    await colonyClient.getMembersReputation(skillId);
 
-  // test user addresses (its unknown if they have reputation in the colony)
-  // const addresses = [
-  //   // '0x9dF24e73f40b2a911Eb254A8825103723E13209C',
-  //   // '0x27fF0C145E191C22C75cD123C679C3e1F58a4469',
-  //   '0xb77D57F4959eAfA0339424b83FcFaf9c15407461',
-  // ];
+  /*
+   * Validate Colony addresses
+   */
+  let checksummedAddress;
+  try {
+    checksummedAddress = utils.getAddress(colonyAddress);
+  } catch (error) {
+    throw new Error(
+      `Colony address "${colonyAddress}" is not valid (after checksum)`,
+    );
+  }
+
+  // get list of watchers for colony
+  const colonyQuery = await graphqlRequest(
+    getWatchersInColony,
+    { id: checksummedAddress },
+    GRAPHQL_URI,
+    API_KEY,
+  );
+
+  if (colonyQuery.errors || !colonyQuery.data) {
+    const [error] = colonyQuery.errors;
+    throw new Error(
+      error?.message || 'Could not fetch colony data from DynamoDB',
+    );
+  }
+
+  // Remove members that have reputation (i.e. contributors) to
+  // leave only watchers
+  const watchers =
+    colonyQuery?.data?.getColonyByAddress?.items[0]?.watchers.items.reduce(
+      (acc, item) => {
+        if (
+          addressesWithReputation?.some((address) => {
+            return address.toLowerCase() !== item.user.id.toLowerCase();
+          })
+        ) {
+          acc.push(item.user);
+        }
+        return acc;
+      },
+      [],
+    );
 
   // get reputation for each address
-  const members = await Promise.all(
-    addresses.map(async (address) => {
-      console.log(`🚀 ~ addresses.map ~ address`, address);
-
+  const contributors = await Promise.all(
+    addressesWithReputation.map(async (address) => {
       const { data } = await graphqlRequest(
         getUser,
         {
@@ -80,7 +116,6 @@ exports.handler = async (event) => {
               return {};
             }
 
-            console.log(`🚀 ~ userReputation`, userReputation);
             const totalColonyReputation =
               await colonyClient.getReputationWithoutProofs(
                 skillId,
@@ -92,7 +127,6 @@ exports.handler = async (event) => {
               userReputation.reputationAmount?.toString(),
               totalColonyReputation.reputationAmount?.toString(),
             );
-            console.log(`🚀 ~ reputationPercentage`, reputationPercentage);
             return {
               reputationPercentage,
               domainId: userReputation.domainId,
@@ -140,24 +174,20 @@ exports.handler = async (event) => {
           })
           .slice(0, 3);
 
-        console.log(
-          `🚀 ~ addresses.map ~ topUserReputations`,
-          topUserReputations,
-        );
-
         return {
           user: user || {},
           reputation: topUserReputations,
         };
       } catch (error) {
-        console.log(`🚀catch - error`, error);
-        return null;
+        throw new Error(
+          `Error trying to calculate reputation for user ${address}: ${error.message}`,
+        );
       }
     }),
   );
-  console.log(`🚀 members: `, members);
 
   return {
-    contributors: members,
+    contributors,
+    watchers,
   };
 };

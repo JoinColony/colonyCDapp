@@ -18,7 +18,8 @@
         "createUniqueColony": {},
         "createUniqueDomain": {},
         "getUserReputation": {},
-        "getReputationForTopDomains": {}
+        "getReputationForTopDomains": {},
+        "getMembersForColony": {}
       }
     }
   }
