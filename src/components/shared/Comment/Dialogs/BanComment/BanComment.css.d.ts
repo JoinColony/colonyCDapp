@@ -1,10 +1,21 @@
-export const container: string;
-export const modalHeading: string;
-export const modalContent: string;
-export const userInfoContainer: string;
-export const note: string;
-export const commentContainer: string;
-export const userNameAndWallet: string;
-export const buttonContainer: string;
-export const cancelButtonContainer: string;
-export const confirmButtonContainer: string;
+declare namespace BanCommentCssNamespace {
+  export interface IBanCommentCss {
+    buttonContainer: string;
+    cancelButtonContainer: string;
+    commentContainer: string;
+    confirmButtonContainer: string;
+    container: string;
+    modalContent: string;
+    modalHeading: string;
+    note: string;
+    userInfoContainer: string;
+    userNameAndWallet: string;
+  }
+}
+
+declare const BanCommentCssModule: BanCommentCssNamespace.IBanCommentCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: BanCommentCssNamespace.IBanCommentCss;
+};
+
+export = BanCommentCssModule;
