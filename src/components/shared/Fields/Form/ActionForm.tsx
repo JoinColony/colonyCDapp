@@ -1,4 +1,4 @@
-import { FormikBag, FormikProps, FormikHelpers, FormikErrors } from 'formik';
+import { FormikBag, FormikConfig } from 'formik';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
@@ -28,22 +28,7 @@ export type OnSuccess = (
   values: any,
 ) => void;
 
-interface ExtendedFormikConfig {
-  validateOnChange?: boolean;
-  validateOnBlur?: boolean;
-  enableReinitialize?: boolean;
-  component?: React.ComponentType<FormikProps<any>> | React.ReactNode;
-  render?: (props: FormikProps<any>) => React.ReactNode;
-  children?: ((props: FormikProps<any>) => React.ReactNode) | React.ReactNode;
-  initialValues: any;
-  initialStatus?: any;
-  onReset?: (values: any, formikActions: FormikHelpers<any>) => void;
-  onSubmit?: (values: any, formikActions: FormikHelpers<any>) => void;
-  validationSchema?: any | (() => any);
-  validate?: (values: any) => void | object | Promise<FormikErrors<any>>;
-}
-
-interface Props extends ExtendedFormikConfig {
+interface Props<V> extends Omit<FormikConfig<V>, 'onSubmit'> {
   /** Redux action to dispatch on submit (e.g. CREATE_XXX) */
   submit: ActionTypeString;
 
@@ -72,7 +57,7 @@ const defaultOnSuccess: OnSuccess = (err, { setStatus }) => {
   setStatus({});
 };
 
-const ActionForm = ({
+const ActionForm = <V,>({
   submit,
   success,
   error,
@@ -80,7 +65,7 @@ const ActionForm = ({
   onError = defaultOnError,
   transform,
   ...props
-}: Props) => {
+}: Props<V>) => {
   const asyncFunction = useAsyncFunction({
     submit,
     error,
@@ -105,6 +90,6 @@ const ActionForm = ({
   return <Form {...props} onSubmit={handleSubmit} />;
 };
 
-Form.displayName = displayName;
+ActionForm.displayName = displayName;
 
 export default ActionForm;

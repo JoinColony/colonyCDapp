@@ -80,6 +80,10 @@
   background-color: disabledBackground;
 }
 
+.main:focus-visible {
+  border: 1px var(--grey-purple) solid;
+}
+
 /*
  * Arranging buttons relative to other elements
  */

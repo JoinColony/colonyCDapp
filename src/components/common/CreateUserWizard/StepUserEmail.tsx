@@ -26,10 +26,10 @@ const MSG = defineMessages({
   },
 });
 
-const StepUserEmail = ({
-  nextStep,
-  wizardForm,
-}: WizardStepProps<FormValues>) => (
+type StepValues = Pick<FormValues, 'email' | 'emailPermissions'>;
+type Props = WizardStepProps<FormValues, StepValues>;
+
+const StepUserEmail = ({ nextStep, wizardForm }: Props) => (
   <Form
     onSubmit={nextStep}
     validationSchema={validationSchema}

@@ -13,7 +13,7 @@ import { DEFAULT_NETWORK_INFO } from '~constants';
 import { useAppContext } from '~hooks';
 
 import { validationSchema } from './validation';
-import { FormValues } from './CreateColonyWizard';
+import { FormValues, Step1 } from './CreateColonyWizard';
 
 import queries from '~styles/queries.css';
 import styles from './StepColonyName.css';
@@ -48,7 +48,7 @@ const MSG = defineMessages({
 });
 
 type Props = Pick<
-  WizardStepProps<FormValues>,
+  WizardStepProps<FormValues, Step1>,
   'wizardForm' | 'nextStep' | 'wizardValues'
 >;
 

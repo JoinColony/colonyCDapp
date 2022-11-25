@@ -14,7 +14,7 @@ import { intl } from '~utils/intl';
 import { GetTokenByAddressQuery } from '~gql';
 
 import TokenSelector from './TokenSelector';
-import { FormValues } from './CreateColonyWizard';
+import { FormValues, Step3 } from './CreateColonyWizard';
 
 import styles from './StepSelectToken.css';
 
@@ -80,7 +80,7 @@ const validationSchema = () => {
 };
 
 type Props = Pick<
-  WizardStepProps<FormValues>,
+  WizardStepProps<FormValues, Step3>,
   'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'
 >;
 

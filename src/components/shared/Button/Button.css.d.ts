@@ -4,6 +4,7 @@ declare namespace ButtonCssNamespace {
     colorSchemaInverted: string;
     disabledBackground: string;
     disabledColor: string;
+    focusVisible: string;
     ghostBorder: string;
     main: string;
     sizeLarge: string;

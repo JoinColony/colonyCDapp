@@ -17,6 +17,7 @@ import Button from '~shared/Button';
 
 import { getMainClasses } from '~utils/css';
 
+import { InputComponentAppearance as Appearance } from '../Input';
 import styles from './InputComponent.css';
 
 const MSG = defineMessages({
@@ -25,13 +26,6 @@ const MSG = defineMessages({
     defaultMessage: 'Max',
   },
 });
-
-export type Appearance = {
-  theme?: 'fat' | 'underlined' | 'minimal' | 'dotted';
-  align?: 'right';
-  colorSchema?: 'dark' | 'grey' | 'transparent' | 'info';
-  size?: 'small' | 'medium';
-};
 
 type CleaveHTMLInputElement = HTMLInputElement & { rawValue: string };
 

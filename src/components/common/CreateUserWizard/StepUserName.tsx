@@ -9,17 +9,12 @@ import { WizardStepProps } from '~shared/Wizard';
 import { pipe, mergePayload, withMeta } from '~utils/actions';
 import ConfusableWarning from '~shared/ConfusableWarning';
 
-import { stepUserNameValidationSchema as validationSchema } from './validationCreateUserWizard';
 import {
   FormValues,
   ContinueWizard,
   UserStepTemplate,
 } from '../CreateUserWizard';
-
-type Props = Pick<
-  WizardStepProps<FormValues>,
-  'nextStep' | 'wizardValues' | 'wizardForm'
->;
+import { stepUserNameValidationSchema as validationSchema } from './validation';
 
 const displayName = 'common.CreateUserWizard.StepUserName';
 
@@ -56,6 +51,12 @@ const UsernameInput = ({ username, disabled }: UsernameInputProps) => (
   </>
 );
 
+type StepValues = Pick<FormValues, 'username'>;
+type Props = Pick<
+  WizardStepProps<FormValues, StepValues>,
+  'nextStep' | 'wizardValues' | 'wizardForm'
+>;
+
 const StepUserName = ({ wizardValues, nextStep, wizardForm }: Props) => {
   const navigate = useNavigate();
 
@@ -67,7 +68,7 @@ const StepUserName = ({ wizardValues, nextStep, wizardForm }: Props) => {
   );
 
   return (
-    <ActionForm
+    <ActionForm<StepValues>
       onSuccess={() => nextStep(wizardValues)}
       submit={ActionTypes.USERNAME_CREATE}
       success={ActionTypes.TRANSACTION_CREATED}

@@ -4,17 +4,10 @@ import { MessageDescriptor, useIntl } from 'react-intl';
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
+import { InputComponentAppearance as Appearance } from '../Input';
 import styles from './InputLabel.css';
 
 const displayName = 'InputLabel';
-
-interface Appearance {
-  theme?: 'fat' | 'underlined' | 'minimal' | 'dotted';
-  direction?: 'horizontal';
-  colorSchema?: 'dark' | 'grey' | 'transparent' | 'info';
-  helpAlign?: 'right';
-  size?: 'small' | 'medium';
-}
 
 interface Props {
   /** Appearance object */

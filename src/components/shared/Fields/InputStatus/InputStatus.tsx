@@ -5,16 +5,8 @@ import { isNil } from 'lodash';
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
+import { InputComponentAppearance as Appearance } from '../Input';
 import styles from './InputStatus.css';
-
-export interface Appearance {
-  theme?: 'fat' | 'underlined' | 'minimal' | 'dotted';
-  direction?: 'horizontal';
-  colorSchema?: 'dark' | 'grey' | 'transparent';
-  statusShema?: 'info';
-  size?: 'small' | 'medium';
-  textSpace?: 'wrap';
-}
 
 interface Props {
   /** Appearance object */

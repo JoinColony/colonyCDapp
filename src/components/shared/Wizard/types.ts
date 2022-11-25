@@ -1,13 +1,14 @@
-import { User, Values } from '~types';
+import { AppContextValues } from '~context/AppContext';
+import { Values } from '~types';
 
 type WizardValues<T> = Record<string, Values<T>>;
-export type StepValue<T> = Partial<WizardValues<T>>;
-export type StepValues<T> = StepValue<T>[];
+export type StepValues<T> = Partial<WizardValues<T>>;
+export type StepsValues<T> = StepValues<T>[];
 
-type StepValuesFn<T> = (props?: any) => StepValue<T>[];
-export type InitialValuesProp<T> = StepValues<T> | StepValuesFn<T>;
+type StepsValuesFn<T> = (props?: any) => StepsValues<T>;
+export type InitialValuesProp<T> = StepsValues<T> | StepsValuesFn<T>;
 
-type NextStep<T> = (values?: StepValue<T>) => void;
+type NextStep<T> = (values?: StepValues<T>) => void;
 type PreviousStep = () => boolean;
 type WizardReset = () => void;
 
@@ -23,17 +24,17 @@ interface SharedWizardProps<FormValues> {
 export interface WizardOuterProps<FormValues>
   extends SharedWizardProps<FormValues> {
   children: JSX.Element;
-  loggedInUser?: User;
+  loggedInUser: AppContextValues['user'];
   hideQR?: boolean;
 }
 
-export interface WizardStepProps<FormValues>
+export interface WizardStepProps<FormValues, StepVals = Partial<FormValues>>
   extends SharedWizardProps<FormValues> {
   setStepsValues: React.Dispatch<
-    React.SetStateAction<StepValues<Values<FormValues>>>
+    React.SetStateAction<StepsValues<Values<FormValues>>>
   >;
   wizardForm: {
-    initialValues: StepValue<FormValues>;
+    initialValues: StepVals;
     validateOnMount: boolean;
   };
 }

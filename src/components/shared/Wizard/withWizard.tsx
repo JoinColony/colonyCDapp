@@ -1,11 +1,11 @@
 import React, { ComponentType, useState } from 'react';
 
+import { AppContextValues } from '~context/AppContext';
 import { useAppContext } from '~hooks';
-import { User } from '~types';
 
 import {
   InitialValuesProp,
-  StepValue,
+  StepsValues,
   StepValues,
   WizardOuterProps,
   WizardStepProps,
@@ -27,11 +27,11 @@ const getStep = <T,>(
   steps: Steps,
   step: number,
   values: T,
-  loggedInUser?: User,
+  loggedInUser?: AppContextValues['user'],
 ) =>
   typeof steps === 'function' ? steps(step, values, loggedInUser) : steps[step];
 
-const all = <T,>(values: StepValues<T>) =>
+const all = <T,>(values: StepsValues<T>) =>
   values.reduce(
     (acc, current) => ({
       ...acc,
@@ -49,13 +49,13 @@ const withWizard =
   (
     OuterComponent: ComponentType<WizardOuterProps<T>>,
     outerProps?: Pick<WizardOuterProps<T>, 'hideQR'>,
-    stepsProps?: WizardStepProps<T>,
+    stepsProps?: WizardStepProps<T, Partial<T>>,
   ): (() => JSX.Element) => {
     const Wizard = () => {
       const { user } = useAppContext();
       const [step, setStep] = useState(0);
 
-      const [stepsValues, setStepsValues] = useState<StepValues<T>>([]);
+      const [stepsValues, setStepsValues] = useState<StepsValues<T>>([]);
       const mergedValues = all(stepsValues) as T;
 
       const Step = getStep(steps, step, mergedValues, user);
@@ -64,7 +64,7 @@ const withWizard =
       const displayedStep = step + 1;
       const stepCount = maxSteps || steps.length;
 
-      const next = (vals: StepValue<T> | undefined) => {
+      const next = (vals: StepValues<T> | undefined) => {
         if (vals) {
           setStepsValues((currentVals) => {
             const valsCopy = [...currentVals];

@@ -15,7 +15,7 @@ import { Wallet, User } from '~types';
 
 import { getContext, ContextModule } from './index';
 
-interface AppContextValues {
+export interface AppContextValues {
   wallet?: Wallet;
   user?: User;
   userLoading?: boolean;
