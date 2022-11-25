@@ -5,7 +5,16 @@ declare namespace ColonyMembersCssNamespace {
     main: string;
     mainContent: string;
     mainContentGrid: string;
+    mappings: string;
+    names: string;
+    query700: string;
+    reputationPoints: string;
     rightAside: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
+    teamReputationPointsContainer: string;
+    version: string;
   }
 }
 

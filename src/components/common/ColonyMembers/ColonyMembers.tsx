@@ -1,221 +1,153 @@
-import React from 'react';
-// import { defineMessages } from 'react-intl';
+import React, { useMemo, useState } from 'react';
+import { defineMessages } from 'react-intl';
+import Decimal from 'decimal.js';
+import { useMediaQuery } from 'react-responsive';
 
-// import { ColonyVersion, Extension } from '@colony/colony-js';
+import { SpinnerLoader } from '~shared/Preloaders';
+import Heading from '~shared/Heading';
+import Numeral from '~shared/Numeral';
+import InviteLinkButton from '~shared/Button/InviteLinkButton';
+import Members from '~common/Members';
+import ColonyHomeInfo from '~common/ColonyHome/ColonyHomeInfo';
+import NotFoundRoute from '~routes/NotFoundRoute';
 
-// import Button from '~core/Button';
-// import { useDialog } from '~core/Dialog';
-// import { BanUserDialog } from '~core/Comment';
-// import Members from '~dashboard/Members';
-// import PermissionManagementDialog from '~dialogs/PermissionManagementDialog';
-// import WrongNetworkDialog from '~dashboard/ColonyHome/WrongNetworkDialog';
-// import {
-//   useColonyFromNameQuery,
-//   Colony,
-//   useColonyExtensionsQuery,
-//   useBannedUsersQuery,
-// } from '~data/index';
-// import { useTransformer } from '~utils/hooks';
-// import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
-// import { NOT_FOUND_ROUTE } from '~routes/index';
-// import { checkIfNetworkIsAllowed } from '~utils/networks';
-// import { getAllUserRoles } from '~modules/transformers';
-// import { hasRoot, canAdminister } from '~modules/users/checks';
-// import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
+import {
+  COLONY_TOTAL_BALANCE_DOMAIN_ID,
+  ROOT_DOMAIN_ID,
+  DEFAULT_TOKEN_DECIMALS,
+} from '~constants';
 import { useColonyContext } from '~hooks';
+import { getFormattedTokenValue } from '~utils/tokens';
 
+import MemberControls from './MemberControls';
+import MembersFilter, {
+  BannedStatus,
+  FormValues,
+  MemberType,
+  VerificationType,
+} from './MembersFilter';
+
+import queries from '~styles/queries.css';
 import styles from './ColonyMembers.css';
 
 const displayName = 'common.ColonyMembers';
 
-// const MSG = defineMessages({
-//   editPermissions: {
-//     id: `${displayName}.editPermissions`,
-//     defaultMessage: 'Edit permissions',
-//   },
-//   banAddress: {
-//     id: `${displayName}.banAddress`,
-//     defaultMessage: 'Ban address',
-//   },
-//   unbanAddress: {
-//     id: `${displayName}.unbanAddress`,
-//     defaultMessage: 'Unban address',
-//   },
-// });
+const MSG = defineMessages({
+  loadingText: {
+    id: `${displayName}.loadingText`,
+    defaultMessage: 'Loading Colony',
+  },
+  totalReputationTitle: {
+    id: `${displayName}.totalReputationTitle`,
+    defaultMessage: 'Total reputation in the team',
+  },
+});
 
 const ColonyMembers = () => {
-  // const { extensionId } = useParams<{
-  //   extensionId?: string;
-  // }>();
+  const { colony, loading, error } = useColonyContext();
 
-  const { canInteractWithColony } = useColonyContext();
+  const [filters, setFilters] = useState<FormValues>({
+    memberType: MemberType.ALL,
+    verificationType: VerificationType.ALL,
+    bannedStatus: BannedStatus.ALL,
+  });
 
-  // if (!isExtensionIdValid) {
-  //   return <NotFoundRoute />;
-  // }
+  const [selectedDomainId, setSelectedDomainId] = useState<number>(
+    COLONY_TOTAL_BALANCE_DOMAIN_ID,
+  );
+
+  const isRootDomain = useMemo(
+    () =>
+      selectedDomainId === ROOT_DOMAIN_ID ||
+      selectedDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID,
+    [selectedDomainId],
+  );
+
+  // const { data: totalReputation } = useUserReputationQuery({
+  //   variables: {
+  //     address: AddressZero,
+  //     colonyAddress,
+  //     domainId: selectedDomainId,
+  //   },
+  //   fetchPolicy: 'cache-and-network',
+  // });
+
+  const nativeToken = (colony?.tokens?.items || []).find(
+    (colonyToken) =>
+      colonyToken?.token?.tokenAddress === colony?.nativeToken.tokenAddress,
+  )?.token;
+
+  // temp until there is a query ready
+  const totalReputation = {
+    userReputation: 40000000000000000000,
+  };
+
+  const formattedTotalDomainRep = getFormattedTokenValue(
+    new Decimal(totalReputation?.userReputation || '0').abs().toString(),
+    nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS,
+  );
+
+  const isMobile = useMediaQuery({ query: queries.query700 });
+
+  if (loading) {
+    return (
+      <div className={styles.loadingWrapper}>
+        <SpinnerLoader loadingText={MSG.loadingText} />
+      </div>
+    );
+  }
+
+  if (!colony?.name || error || !colony) {
+    console.error(error);
+    return <NotFoundRoute />;
+  }
 
   return (
     <div className={styles.main}>
       <div className={styles.mainContentGrid}>
+        {isMobile && <ColonyHomeInfo colony={colony} showNavigation isMobile />}
         <div className={styles.mainContent}>
-          Colony Members
-          {canInteractWithColony && <p>Colony can be interacted with</p>}
+          {colony && (
+            <Members
+              selectedDomain={selectedDomainId}
+              handleDomainChange={setSelectedDomainId}
+              filters={filters}
+              colony={colony}
+            />
+          )}
         </div>
-        <aside className={styles.rightAside} />
+        <aside className={styles.rightAside}>
+          <div className={styles.teamReputationPointsContainer}>
+            <Heading
+              text={MSG.totalReputationTitle}
+              appearance={{ size: 'normal', theme: 'dark' }}
+            />
+            <p className={styles.reputationPoints}>
+              <Numeral
+                value={formattedTotalDomainRep}
+                suffix="reputation points"
+              />
+            </p>
+          </div>
+          <ul className={styles.controls}>
+            {isRootDomain && (
+              <li>
+                <InviteLinkButton
+                  colonyName={colony?.name}
+                  buttonAppearance={{ theme: 'blue' }}
+                />
+              </li>
+            )}
+            <MemberControls colony={colony} />
+          </ul>
+          <MembersFilter
+            handleFiltersCallback={setFilters}
+            isRoot={isRootDomain}
+          />
+        </aside>
       </div>
     </div>
   );
-
-  // const hasRegisteredProfile = !!username && !ethereal;
-
-  // const openWrongNetworkDialog = useDialog(WrongNetworkDialog);
-  // const openToggleBanningDialog = useDialog(BanUserDialog);
-
-  // const { colonyName } = useParams<{
-  //   colonyName: string;
-  // }>();
-
-  // const {
-  //   data: colonyData,
-  //   error,
-  //   loading,
-  // } = useColonyFromNameQuery({
-  //   variables: { name: colonyName, address: '' },
-  // });
-
-  // const colonyAddress = colonyData?.processedColony?.colonyAddress || '';
-
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress,
-  // });
-
-  // const { data: colonyExtensions, loading: colonyExtensionLoading } =
-  //   useColonyExtensionsQuery({
-  //     variables: { address: colonyAddress },
-  //   });
-
-  // const { data: bannedMembers, loading: loadingBannedUsers } =
-  //   useBannedUsersQuery({
-  //     variables: {
-  //       colonyAddress,
-  //     },
-  //   });
-
-  // const openPermissionManagementDialog = useDialog(PermissionManagementDialog);
-
-  // const handlePermissionManagementDialog = useCallback(() => {
-  //   openPermissionManagementDialog({
-  //     colony: colonyData?.processedColony as Colony,
-  //     isVotingExtensionEnabled,
-  //   });
-  // }, [openPermissionManagementDialog, colonyData, isVotingExtensionEnabled]);
-
-  // // eslint-disable-next-line max-len
-  // const oneTxPaymentExtension =
-  //   colonyExtensions?.processedColony?.installedExtensions.find(
-  //     ({ details, extensionId: extensionName }) =>
-  //       details?.initialized &&
-  //       !details?.missingPermissions.length &&
-  //       extensionName === Extension.OneTxPayment,
-  //   );
-  // const mustUpgradeOneTx = oneTxMustBeUpgraded(oneTxPaymentExtension);
-
-  // const isSupportedColonyVersion =
-  //   parseInt(colonyData?.processedColony?.version || '1', 10) >=
-  //   ColonyVersion.LightweightSpaceship;
-
-  // const currentUserRoles = useTransformer(getAllUserRoles, [
-  //   colonyData?.processedColony,
-  //   currentUserWalletAddress,
-  // ]);
-  // const canAdministerComments =
-  //   hasRegisteredProfile &&
-  //   (hasRoot(currentUserRoles) || canAdminister(currentUserRoles));
-
-  // const controlsDisabled =
-  //   !isSupportedColonyVersion ||
-  //   mustUpgradeOneTx;
-
-  // if (
-  //   loading ||
-  //   colonyExtensionLoading ||
-  //   loadingBannedUsers ||
-  //   (colonyData?.colonyAddress &&
-  //     !colonyData.processedColony &&
-  //     !((colonyData.colonyAddress as any) instanceof Error))
-  // ) {
-  //   return (
-  //     <div className={styles.loadingWrapper}>
-  //       <LoadingTemplate loadingText={MSG.loadingText} />
-  //     </div>
-  //   );
-  // }
-
-  // if (!colonyName || error || !colonyData?.processedColony) {
-  //   console.error(error);
-  //   return <Redirect to={NOT_FOUND_ROUTE} />;
-  // }
-
-  // return (
-  //   <div className={styles.main}>
-  //     <div className={styles.mainContentGrid}>
-  //       <div className={styles.mainContent}>
-  //         {colonyData && colonyData.processedColony && (
-  //           <Members
-  //             colony={colonyData.processedColony}
-  //             bannedUsers={bannedMembers?.bannedUsers || []}
-  //           />
-  //         )}
-  //       </div>
-  //       <aside className={styles.rightAside}>
-  //         {!controlsDisabled && (
-  //           <ul className={styles.controls}>
-  //             <li>
-  //               <Button
-  //                 appearance={{ theme: 'blue' }}
-  //                 text={MSG.editPermissions}
-  //                 onClick={handlePermissionManagementDialog}
-  //                 disabled={
-  //                   !isSupportedColonyVersion ||
-  //                   mustUpgradeOneTx
-  //                 }
-  //               />
-  //             </li>
-  //             {canAdministerComments && (
-  //               <>
-  //                 <li>
-  //                   <Button
-  //                     appearance={{ theme: 'blue' }}
-  //                     text={MSG.banAddress}
-  //                     onClick={() =>
-  //                       openToggleBanningDialog({
-  //                         colonyAddress:
-  //                           colonyData?.processedColony?.colonyAddress,
-  //                       })
-  //                     }
-  //                   />
-  //                 </li>
-  //                 <li>
-  //                   <Button
-  //                     appearance={{ theme: 'blue' }}
-  //                     text={MSG.unbanAddress}
-  //                     onClick={() =>
-  //                       openToggleBanningDialog({
-  //                         isBanning: false,
-  //                         colonyAddress:
-  //                           colonyData?.processedColony?.colonyAddress,
-  //                       })
-  //                     }
-  //                   />
-  //                 </li>
-  //               </>
-  //             )}
-  //           </ul>
-  //         )}
-  //       </aside>
-  //     </div>
-  //   </div>
-  // );
 };
 
 ColonyMembers.displayName = displayName;

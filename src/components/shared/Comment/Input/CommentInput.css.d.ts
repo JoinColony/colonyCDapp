@@ -1,7 +1,18 @@
-export const inputBackground: string;
-export const shadow: string;
-export const main: string;
-export const commentBox: string;
-export const sendInstructions: string;
-export const sendInstructionsFadeIn: string;
-export const submitting: string;
+declare namespace CommentInputCssNamespace {
+  export interface ICommentInputCss {
+    commentBox: string;
+    inputBackground: string;
+    main: string;
+    sendInstructions: string;
+    sendInstructionsFadeIn: string;
+    shadow: string;
+    submitting: string;
+  }
+}
+
+declare const CommentInputCssModule: CommentInputCssNamespace.ICommentInputCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: CommentInputCssNamespace.ICommentInputCss;
+};
+
+export = CommentInputCssModule;

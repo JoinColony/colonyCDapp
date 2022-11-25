@@ -1,18 +1,29 @@
-export const main: string;
-export const directionHorizontal: string;
-export const widthWide: string;
-export const labelWrap: string;
-export const container: string;
-export const inputContainer: string;
-export const avatarContainer: string;
-export const icon: string;
-export const focusIcon: string;
-export const baseInput: string;
-export const inputInvalid: string;
-export const input: string;
-export const recipientName: string;
-export const omniPickerContainer: string;
-export const errorHorizontal: string;
-export const omniContainer: string;
-export const arrowIcon: string;
-export const arrowIconActive: string;
+declare namespace SingleUserPickerCssNamespace {
+  export interface ISingleUserPickerCss {
+    arrowIcon: string;
+    arrowIconActive: string;
+    avatarContainer: string;
+    baseInput: string;
+    container: string;
+    directionHorizontal: string;
+    errorHorizontal: string;
+    focusIcon: string;
+    icon: string;
+    input: string;
+    inputContainer: string;
+    inputInvalid: string;
+    labelWrap: string;
+    main: string;
+    omniContainer: string;
+    omniPickerContainer: string;
+    recipientName: string;
+    widthWide: string;
+  }
+}
+
+declare const SingleUserPickerCssModule: SingleUserPickerCssNamespace.ISingleUserPickerCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: SingleUserPickerCssNamespace.ISingleUserPickerCss;
+};
+
+export = SingleUserPickerCssModule;
