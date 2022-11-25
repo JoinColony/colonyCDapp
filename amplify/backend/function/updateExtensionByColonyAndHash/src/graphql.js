@@ -19,6 +19,7 @@ module.exports = {
         colonyId
         hash
         status
+        isDeprecated
       }
     }
   `,
