@@ -76,6 +76,7 @@ input UpdateExtensionByColonyAndHashInput {
   colonyId: ID!
   hash: String!
   status: ExtensionStatus
+  isDeprecated: Boolean
 }
 
 type TokenFromEverywhereReturn {
@@ -122,8 +123,6 @@ enum ColonyType {
 
 enum ExtensionStatus {
   INSTALLED
-  ENABLED
-  DEPRECATED
   DELETED
 }
 
@@ -319,4 +318,5 @@ type ColonyExtension @model {
   colony: Colony! @belongsTo(fields: ["colonyId"])
   hash: String!
   status: ExtensionStatus!
+  isDeprecated: Boolean @default(value: "false")
 }
