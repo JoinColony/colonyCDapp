@@ -1,19 +1,18 @@
 module.exports = {
-  getColonyByAddress: /* GraphQL */ `
-    query getColonyByAddress($id: ID!) {
-      getColonyByAddress(id: $id) {
+  getUser: /* GraphQL */ `
+    query GetUser($id: ID!) {
+      getUserByAddress(id: $id) {
         items {
           id
           name
-          domains {
-            items {
-              id
-            }
-          }
-          watchers {
-            items {
-              id
-            }
+          profile {
+            avatar
+            thumbnail
+            displayName
+            bio
+            location
+            website
+            email
           }
         }
       }
