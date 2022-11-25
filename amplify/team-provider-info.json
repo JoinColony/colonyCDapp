@@ -20,7 +20,8 @@
         "getUserReputation": {},
         "getReputationForTopDomains": {},
         "fetchColonyNativeFundsClaim": {},
-        "fetchColonyBalances": {}
+        "fetchColonyBalances": {},
+        "updateExtensionByColonyAndHash": {}
       }
     }
   }
