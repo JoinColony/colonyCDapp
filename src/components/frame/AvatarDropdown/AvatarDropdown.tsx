@@ -1,21 +1,51 @@
-import React, { useMemo } from 'react';
+import React from 'react';
+// import React, { useMemo } from 'react';
 import classnames from 'classnames';
+// import { useMediaQuery } from 'react-responsive';
 
 import Popover from '~shared/Popover';
 import UserAvatar from '~shared/UserAvatar';
-// import HookedUserAvatar from '~users/HookedUserAvatar';
-import { removeValueUnits } from '~utils/css';
-import { useAppContext } from '~hooks';
-
+import { useAppContext, useColonyContext } from '~hooks';
+// import { removeValueUnits } from '~utils/css';
+import { SimpleMessageValues } from '~types/index';
+// import { UserTokenBalanceData } from '~types/tokens';
 import AvatarDropdownPopover from './AvatarDropdownPopover';
+import AvatarDropdownPopoverMobile from './AvatarDropdownPopoverMobile';
 
+// import { query700 as query } from '~styles/queries.css';
+// import styles, {
+//   refWidth,
+//   horizontalOffset,
+//   verticalOffset,
+// } from './AvatarDropdown.css';
 import styles from './AvatarDropdown.css';
+
+export interface AppState {
+  // previousWalletConnected: string | null;
+  attemptingAutoLogin: boolean;
+  // userDataLoading: boolean;
+  // userCanNavigate: boolean;
+}
+
+interface Props {
+  preventTransactions?: boolean;
+  spinnerMsg: SimpleMessageValues;
+  // tokenBalanceData: UserTokenBalanceData;
+  // appState: AppState;
+}
 
 const displayName = 'frame.AvatarDropdown';
 
-const AvatarDropdown = () => {
-  const { wallet } = useAppContext();
-  const { refWidth, horizontalOffset, verticalOffset } = styles;
+const AvatarDropdown = ({
+  preventTransactions = false,
+  spinnerMsg,
+}: // tokenBalanceData,
+// appState,
+Props) => {
+  // const isMobile = useMediaQuery({ query });
+  const isMobile = false;
+  const { wallet, user } = useAppContext();
+  const { colony } = useColonyContext();
 
   /*
    * @NOTE Offset Calculations
@@ -30,26 +60,46 @@ const AvatarDropdown = () => {
    * the bottom of the screen, this will be added to the bottom of the
    * reference element.
    */
-  const popoverOffset = useMemo(() => {
-    const skid =
-      removeValueUnits(refWidth) + removeValueUnits(horizontalOffset);
-    return [-1 * skid, removeValueUnits(verticalOffset)];
-  }, [horizontalOffset, refWidth, verticalOffset]);
+  // const popoverOffset = useMemo(() => {
+  //   const skid =
+  //     removeValueUnits(refWidth) + removeValueUnits(horizontalOffset);
+  //   return isMobile ? [-70, 5] : [-1 * skid, removeValueUnits(verticalOffset)];
+  // }, [isMobile]);
 
+  const popoverContent = isMobile
+    ? () =>
+        user?.name &&
+        wallet?.address &&
+        colony && (
+          <AvatarDropdownPopoverMobile
+            {...{
+              // appState,
+              spinnerMsg,
+              // tokenBalanceData,
+            }}
+          />
+        )
+    : ({ close }) => (
+        <AvatarDropdownPopover
+          closePopover={close}
+          walletConnected={!!wallet?.address}
+          {...{
+            preventTransactions,
+          }}
+        />
+      );
   return (
     <Popover
-      renderContent={({ close }) => (
-        <AvatarDropdownPopover closePopover={close} />
-      )}
+      renderContent={popoverContent}
       trigger="click"
       showArrow={false}
       popperOptions={{
         modifiers: [
           {
             name: 'offset',
-            options: {
-              offset: popoverOffset,
-            },
+            // options: {
+            //   offset: popoverOffset,
+            // },
           },
         ],
       }}
@@ -65,11 +115,13 @@ const AvatarDropdown = () => {
           type="button"
           data-test="avatarDropdown"
         >
-          <UserAvatar
-            address={wallet?.address || ''}
-            notSet={!wallet?.address}
-            size="s"
-          />
+          {wallet?.address && (
+            <UserAvatar
+              address={wallet?.address}
+              size={isMobile ? 'xs' : 's'}
+              user={user}
+            />
+          )}
         </button>
       )}
     </Popover>

@@ -1,16 +1,12 @@
-import React from 'react'; // useEffect // useMemo,
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-// import Icon from '~shared/Icon';
 import MemberReputation from '~shared/MemberReputation';
 import { Tooltip } from '~shared/Popover';
+import { AvatarDropdown } from '~frame/AvatarDropdown';
 // import UserTokenActivationButton from '~users/UserTokenActivationButton';
-import AvatarDropdown from '~frame/AvatarDropdown';
-// import {
-//   useUserBalanceWithLockQuery,
-// } from '~data/index';
+// import { useAutoLogin, getLastWallet } from '~utils/autoLogin';
 import { useAppContext, useColonyContext, useUserReputation } from '~hooks';
-// import { groupedTransactionsAndMessages } from '~redux/selectors';
 
 import Wallet from './Wallet';
 
@@ -22,6 +18,13 @@ const MSG = defineMessages({
   userReputationTooltip: {
     id: `${displayName}.userReputationTooltip`,
     defaultMessage: 'This is your share of the reputation in this colony',
+  },
+  walletAutologin: {
+    id: 'pages.NavigationWrapper.UserNavigation.walletAutologin',
+    defaultMessage: `{isMobile, select,
+      true {Connecting...}
+      other {Connecting wallet...}
+    }`,
   },
 });
 
@@ -38,6 +41,10 @@ const UserNavigation = () => {
     colony?.colonyAddress,
     wallet?.address,
   );
+
+  // const { type: lastWalletType, address: lastWalletAddress } = getLastWallet();
+  // const attemptingAutoLogin = useAutoLogin();
+  // const previousWalletConnected = lastWalletType && lastWalletAddress;
 
   return (
     <div className={styles.main}>
@@ -79,7 +86,17 @@ const UserNavigation = () => {
         </div>
       */}
       <Wallet />
-      <AvatarDropdown />
+      <AvatarDropdown
+        spinnerMsg={MSG.walletAutologin}
+        // appState={
+        //   {
+        //     previousWalletConnected,
+        //     attemptingAutoLogin,
+        //     userDataLoading,
+        //     userCanNavigate,
+        //   }
+        // }
+      />
     </div>
   );
 };
