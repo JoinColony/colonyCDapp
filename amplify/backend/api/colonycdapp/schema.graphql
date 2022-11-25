@@ -72,6 +72,12 @@ input GetUserReputationInput {
   rootHash: String
 }
 
+input UpdateExtensionByColonyAndHashInput {
+  colonyId: ID!
+  hash: String!
+  status: ExtensionStatus
+}
+
 type TokenFromEverywhereReturn {
   items: [Token]
 }
@@ -114,6 +120,13 @@ enum ColonyType {
   METACOLONY
 }
 
+enum ExtensionStatus {
+  INSTALLED
+  ENABLED
+  DEPRECATED
+  DELETED
+}
+
 type Query {
   getTokenFromEverywhere(
     input: TokenFromEverywhereArguments
@@ -129,6 +142,9 @@ type Mutation {
     @function(name: "createUniqueColony")
   createUniqueDomain(input: CreateUniqueDomainInput): Domain
     @function(name: "createUniqueDomain")
+  updateExtensionByColonyAndHash(
+    input: UpdateExtensionByColonyAndHashInput
+  ): ColonyExtension @function(name: "updateExtensionByColonyAndHash")
 }
 
 # Applies to both Users and Colonies
@@ -294,7 +310,13 @@ type ContractEvent @model {
 
 type ColonyExtension @model {
   id: ID!
-  colonyId: ID! @index(name: "byColony")
+  colonyId: ID!
+    @index(
+      name: "byColony"
+      sortKeyFields: ["hash"]
+      queryField: "getExtensionByColonyAndHash"
+    )
   colony: Colony! @belongsTo(fields: ["colonyId"])
   hash: String!
+  status: ExtensionStatus!
 }
