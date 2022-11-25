@@ -18,25 +18,6 @@ module.exports = {
       }
     }
   `,
-  getUserByAddress: /* GraphQL */ `
-    query getUserByAddress($id: ID!) {
-      getUserByAddress(id: $id) {
-        items {
-          id
-          name
-          profile {
-            avatar
-            thumbnail
-            displayName
-            bio
-            location
-            website
-            email
-          }
-        }
-      }
-    }
-  `,
   listWatchedColonies: /* GraphQL */ `
     query ListWatchedColonies(
       $filter: ModelWatchedColoniesFilterInput
