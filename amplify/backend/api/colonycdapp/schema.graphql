@@ -14,6 +14,12 @@ input TokenFromEverywhereArguments {
 
 input ReputationForColonyArguments {
   colonyAddress: String!
+  rootHash: String
+}
+
+input MembersForColonyArguments {
+  colonyAddress: String!
+  rootHash: String
 }
 
 input ColonyMembersWithReputationArguments {
@@ -176,6 +182,8 @@ type Query {
     @function(name: "getReputationForTopDomains")
   getUserReputation(input: GetUserReputationInput): String
     @function(name: "getUserReputation")
+  getMembersForColony(input: MembersForColonyArguments): MembersForColonyReturn
+    @function(name: "getMembersForColony")
 }
 
 type Mutation {
