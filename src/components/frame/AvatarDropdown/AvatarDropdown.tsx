@@ -51,8 +51,6 @@ const AvatarDropdown = ({ preventTransactions = false, spinnerMsg }: Props) => {
 
   const popoverContent = isMobile
     ? () =>
-        user?.name &&
-        wallet?.address &&
         colony && (
           <AvatarDropdownPopoverMobile
             {...{
@@ -97,13 +95,11 @@ const AvatarDropdown = ({ preventTransactions = false, spinnerMsg }: Props) => {
           type="button"
           data-test="avatarDropdown"
         >
-          {wallet?.address && (
-            <UserAvatar
-              address={wallet?.address}
-              size={isMobile ? 'xs' : 's'}
-              user={user}
-            />
-          )}
+          <UserAvatar
+            address={wallet?.address || ''}
+            size={isMobile ? 'xs' : 's'}
+            user={user}
+          />
         </button>
       )}
     </Popover>
