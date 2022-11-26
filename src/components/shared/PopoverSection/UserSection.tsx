@@ -3,12 +3,12 @@ import { defineMessages } from 'react-intl';
 
 import { DropdownMenuItem, DropdownMenuSection } from '~shared/DropdownMenu';
 import NavLink from '~shared/NavLink';
+import { CREATE_USER_ROUTE, USER_EDIT_ROUTE } from '~routes/routeConstants';
 import {
-  CREATE_USER_ROUTE,
-  USER_EDIT_ROUTE,
-  // WALLET_ROUTE,
-} from '~routes/routeConstants';
-import { useAppContext, useColonyContext } from '~hooks';
+  useAppContext,
+  useColonyContext,
+  useUserAccountRegistered,
+} from '~hooks';
 
 const MSG = defineMessages({
   buttonGetStarted: {
@@ -34,23 +34,11 @@ const displayName = 'users.PopoverSection.UserSection';
 const UserSection = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
+  const userHasAccountRegistered = useUserAccountRegistered();
 
   return (
     <DropdownMenuSection separator>
-      {!user?.name && (
-        <DropdownMenuItem>
-          <NavLink
-            to={{
-              pathname: CREATE_USER_ROUTE,
-              state: colony?.name
-                ? { colonyURL: `/colony/${colony?.name}` }
-                : {},
-            }}
-            text={MSG.buttonGetStarted}
-          />
-        </DropdownMenuItem>
-      )}
-      {user?.name && (
+      {userHasAccountRegistered ? (
         <>
           <DropdownMenuItem>
             <NavLink
@@ -66,10 +54,19 @@ const UserSection = () => {
               data-test="userProfileSettings"
             />
           </DropdownMenuItem>
-          {/* <DropdownMenuItem>
-            <NavLink to={WALLET_ROUTE} text={MSG.wallet} />
-          </DropdownMenuItem> */}
         </>
+      ) : (
+        <DropdownMenuItem>
+          <NavLink
+            to={{
+              pathname: CREATE_USER_ROUTE,
+              state: colony?.name
+                ? { colonyURL: `/colony/${colony?.name}` }
+                : {},
+            }}
+            text={MSG.buttonGetStarted}
+          />
+        </DropdownMenuItem>
       )}
     </DropdownMenuSection>
   );

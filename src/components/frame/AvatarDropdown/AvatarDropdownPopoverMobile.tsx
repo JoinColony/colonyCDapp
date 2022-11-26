@@ -8,14 +8,17 @@ import DropdownMenu, {
 } from '~shared/DropdownMenu';
 import MaskedAddress from '~shared/MaskedAddress';
 import MemberReputation from '~shared/MemberReputation';
-import { useAppContext, useColonyContext } from '~hooks';
+import {
+  useAppContext,
+  useColonyContext,
+  // useCanInteractWithNetwork,
+} from '~hooks';
 import { SimpleMessageValues } from '~types/index';
 // import { UserTokenBalanceData } from '~types/tokens';
 
 // import UserTokenActivationDisplay from '../UserTokenActivationButton/UserTokenActivationDisplay';
 // import { TokenActivationPopover } from '../TokenActivation';
 import ItemContainer from './ItemContainer';
-// import { AppState } from './AvatarDropdown';
 
 // import styles from './AvatarDropdownPopoverMobile.css';
 
@@ -41,7 +44,6 @@ const MSG = defineMessages({
 interface Props {
   spinnerMsg: SimpleMessageValues;
   // tokenBalanceData: UserTokenBalanceData;
-  // appState: AppState;
 }
 
 const displayName = 'users.AvatarDropdown.AvatarDropdownPopoverMobile';
@@ -49,7 +51,6 @@ const displayName = 'users.AvatarDropdown.AvatarDropdownPopoverMobile';
 const AvatarDropdownPopoverMobile = ({
   spinnerMsg,
 }: // tokenBalanceData,
-// appState,
 Props) => {
   // const {
   //   nativeToken,
@@ -64,22 +65,19 @@ Props) => {
   const { wallet } = useAppContext();
 
   const colonyAddress = colony?.colonyAddress;
+  // const canInteractWithNetwork = useCanInteractWithNetwork();
 
   return (
     <DropdownMenu>
       <DropdownMenuSection separator>
         <DropdownMenuItem>
-          <ItemContainer
-            message={MSG.address}
-            spinnerMsg={spinnerMsg}
-            // appState={appState}
-          >
+          <ItemContainer message={MSG.address} spinnerMsg={spinnerMsg}>
             {wallet?.address && <MaskedAddress address={wallet.address} />}
           </ItemContainer>
         </DropdownMenuItem>
         {/* <DropdownMenuItem>
           <ItemContainer message={MSG.balance}>
-            {userCanNavigate && nativeToken && (
+            {canInteractWithNetwork && nativeToken && (
               <UserTokenActivationDisplay
                 {...{ nativeToken, inactiveBalance, totalBalance }}
               />
@@ -87,11 +85,7 @@ Props) => {
           </ItemContainer>
         </DropdownMenuItem> */}
         <DropdownMenuItem>
-          <ItemContainer
-            message={MSG.reputation}
-            spinnerMsg={spinnerMsg}
-            // appState={appState}
-          >
+          <ItemContainer message={MSG.reputation} spinnerMsg={spinnerMsg}>
             {colonyAddress && <MemberReputation showIconTitle={false} />}
           </ItemContainer>
         </DropdownMenuItem>

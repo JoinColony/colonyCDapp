@@ -1,49 +1,32 @@
-import React from 'react';
-// import React, { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import classnames from 'classnames';
-// import { useMediaQuery } from 'react-responsive';
+import { useMediaQuery } from 'react-responsive';
 
 import Popover from '~shared/Popover';
 import UserAvatar from '~shared/UserAvatar';
 import { useAppContext, useColonyContext } from '~hooks';
-// import { removeValueUnits } from '~utils/css';
+import { removeValueUnits } from '~utils/css';
 import { SimpleMessageValues } from '~types/index';
 // import { UserTokenBalanceData } from '~types/tokens';
 import AvatarDropdownPopover from './AvatarDropdownPopover';
 import AvatarDropdownPopoverMobile from './AvatarDropdownPopoverMobile';
 
-// import { query700 as query } from '~styles/queries.css';
-// import styles, {
-//   refWidth,
-//   horizontalOffset,
-//   verticalOffset,
-// } from './AvatarDropdown.css';
 import styles from './AvatarDropdown.css';
-
-export interface AppState {
-  // previousWalletConnected: string | null;
-  attemptingAutoLogin: boolean;
-  // userDataLoading: boolean;
-  // userCanNavigate: boolean;
-}
+import queries from '~styles/queries.css';
 
 interface Props {
   preventTransactions?: boolean;
   spinnerMsg: SimpleMessageValues;
   // tokenBalanceData: UserTokenBalanceData;
-  // appState: AppState;
 }
 
 const displayName = 'frame.AvatarDropdown';
 
-const AvatarDropdown = ({
-  preventTransactions = false,
-  spinnerMsg,
-}: // tokenBalanceData,
-// appState,
-Props) => {
-  // const isMobile = useMediaQuery({ query });
-  const isMobile = false;
+const { query700: query } = queries;
+const { refWidth, horizontalOffset, verticalOffset } = styles;
+
+const AvatarDropdown = ({ preventTransactions = false, spinnerMsg }: Props) => {
+  const isMobile = useMediaQuery({ query });
   const { wallet, user } = useAppContext();
   const { colony } = useColonyContext();
 
@@ -60,11 +43,11 @@ Props) => {
    * the bottom of the screen, this will be added to the bottom of the
    * reference element.
    */
-  // const popoverOffset = useMemo(() => {
-  //   const skid =
-  //     removeValueUnits(refWidth) + removeValueUnits(horizontalOffset);
-  //   return isMobile ? [-70, 5] : [-1 * skid, removeValueUnits(verticalOffset)];
-  // }, [isMobile]);
+  const popoverOffset = useMemo(() => {
+    const skid =
+      removeValueUnits(refWidth) + removeValueUnits(horizontalOffset);
+    return isMobile ? [-70, 5] : [-1 * skid, removeValueUnits(verticalOffset)];
+  }, [isMobile]);
 
   const popoverContent = isMobile
     ? () =>
@@ -73,7 +56,6 @@ Props) => {
         colony && (
           <AvatarDropdownPopoverMobile
             {...{
-              // appState,
               spinnerMsg,
               // tokenBalanceData,
             }}
@@ -97,9 +79,9 @@ Props) => {
         modifiers: [
           {
             name: 'offset',
-            // options: {
-            //   offset: popoverOffset,
-            // },
+            options: {
+              offset: popoverOffset,
+            },
           },
         ],
       }}

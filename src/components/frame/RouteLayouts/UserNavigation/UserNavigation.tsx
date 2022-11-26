@@ -5,8 +5,12 @@ import MemberReputation from '~shared/MemberReputation';
 import { Tooltip } from '~shared/Popover';
 import { AvatarDropdown } from '~frame/AvatarDropdown';
 // import UserTokenActivationButton from '~users/UserTokenActivationButton';
-// import { useAutoLogin, getLastWallet } from '~utils/autoLogin';
-import { useAppContext, useColonyContext, useUserReputation } from '~hooks';
+import {
+  useAppContext,
+  useColonyContext,
+  useUserReputation,
+  // useCanInteractWithNetwork,
+} from '~hooks';
 
 import Wallet from './Wallet';
 
@@ -30,21 +34,17 @@ const MSG = defineMessages({
 
 const UserNavigation = () => {
   const { colony } = useColonyContext();
-
   const { wallet } = useAppContext();
   const { formatMessage } = useIntl();
 
   // const userLock = userData?.user.userLock;
   // const nativeToken = userLock?.nativeToken;
+  // const canInteractWithNetwork = useCanInteractWithNetwork();
 
   const { userReputation, totalReputation } = useUserReputation(
     colony?.colonyAddress,
     wallet?.address,
   );
-
-  // const { type: lastWalletType, address: lastWalletAddress } = getLastWallet();
-  // const attemptingAutoLogin = useAutoLogin();
-  // const previousWalletConnected = lastWalletType && lastWalletAddress;
 
   return (
     <div className={styles.main}>
@@ -74,7 +74,7 @@ const UserNavigation = () => {
       )}
       {/*
         <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
-          {userCanNavigate && nativeToken && userLock && (
+          {canInteractWithNetwork && nativeToken && userLock && (
             <UserTokenActivationButton
               nativeToken={nativeToken}
               userLock={userLock}
@@ -86,17 +86,7 @@ const UserNavigation = () => {
         </div>
       */}
       <Wallet />
-      <AvatarDropdown
-        spinnerMsg={MSG.walletAutologin}
-        // appState={
-        //   {
-        //     previousWalletConnected,
-        //     attemptingAutoLogin,
-        //     userDataLoading,
-        //     userCanNavigate,
-        //   }
-        // }
-      />
+      <AvatarDropdown spinnerMsg={MSG.walletAutologin} />
     </div>
   );
 };

@@ -1,10 +1,8 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-// import { MiniSpinnerLoader } from '~shared/Preloaders';
+import { MiniSpinnerLoader } from '~shared/Preloaders';
 import { SimpleMessageValues } from '~types/index';
-
-// import { AppState } from './AvatarDropdown';
 
 import styles from './AvatarDropdownPopoverMobile.css';
 
@@ -12,36 +10,27 @@ const displayName = 'frame.AvatarDropdown.ItemContainer';
 
 const ItemContainer = ({
   message,
-}: // children,
-// spinnerMsg,
-// appState,
-{
+  children,
+  spinnerMsg,
+}: {
   message: SimpleMessageValues;
-  children?: React.ReactChild | false | null;
+  children?: React.ReactNode | false | null;
   spinnerMsg: SimpleMessageValues;
-  // appState: AppState;
 }) => {
-  // const {
-  //   previousWalletConnected,
-  //   attemptingAutoLogin,
-  //   userDataLoading,
-  //   userCanNavigate,
-  // } = appState;
-
   return (
     <div className={styles.itemContainer}>
       <FormattedMessage {...message} />
       <div className={styles.itemChild}>
         {/* {previousWalletConnected && attemptingAutoLogin && userDataLoading ? ( */}
-        {/* {attemptingAutoLogin ? (
+        {true ? (
           <MiniSpinnerLoader
             className={styles.walletAutoLogin}
             title={spinnerMsg}
             titleTextValues={{ isMobile: true }}
           />
-        ) : ( */}
-        children
-        {/* )} */}
+        ) : (
+          children
+        )}
       </div>
     </div>
   );
