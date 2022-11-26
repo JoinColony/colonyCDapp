@@ -1,0 +1,7 @@
+projects:
+  colonycdapp:
+    schemaPath: fakeschema.graphql
+    includes:
+      - src/graphql/**/*.ts
+    excludes:
+      - ./amplify/**

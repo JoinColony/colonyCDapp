@@ -1,0 +1,15 @@
+query GetFullColonyByName($name: String!) {
+  getColonyByName(name: $name) {
+    items {
+      ...Colony
+    }
+  }
+}
+
+query GetMetacolony {
+  getColonyByType(type: METACOLONY) {
+    items {
+      ...Colony
+    }
+  }
+}

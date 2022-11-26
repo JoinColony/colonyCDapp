@@ -1,7 +1,7 @@
-import useAppContext from './useAppContext';
-
 import { Colony } from '~types';
 import { DEFAULT_NETWORK_INFO, NETWORK_AVAILABLE_CHAINS } from '~constants';
+
+import useAppContext from './useAppContext';
 
 export const useUserAccountRegistered = (): boolean => {
   const { user } = useAppContext();

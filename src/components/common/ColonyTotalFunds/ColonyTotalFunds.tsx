@@ -13,8 +13,8 @@ import IconTooltip from '~shared/IconTooltip';
 import { Address } from '~types/index';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 // import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { ColonyTokens } from '~types';
 import { useColonyContext } from '~hooks';
+import { notNull } from '~utils/arrays';
 
 import ColonyTotalFundsPopover from './ColonyTotalFundsPopover';
 
@@ -69,8 +69,9 @@ const ColonyTotalFunds = () => {
 
   const currentToken = useMemo(() => {
     if (tokens) {
-      return (tokens.items as unknown as ColonyTokens[]).find(
-        ({ token }) => token.tokenAddress === currentTokenAddress,
+      return tokens.items.find(
+        (colonyToken) =>
+          colonyToken?.token.tokenAddress === currentTokenAddress,
       );
     }
     return undefined;
@@ -102,11 +103,9 @@ const ColonyTotalFunds = () => {
           data-test="colonyTotalFunds"
         />
         <ColonyTotalFundsPopover
-          /*
-           * @TODO Plese remove the ignore and fix types, once this gets refactored
-           */
-          // @ts-ignore
-          tokens={tokens?.items}
+          tokens={tokens?.items
+            .filter(notNull)
+            .map((colonyToken) => colonyToken.token)}
           onSelectToken={setCurrentTokenAddress}
           currentTokenAddress={currentTokenAddress}
         >

@@ -60,7 +60,6 @@ const ColonyHome = () => {
             path="/"
             element={
               <ColonyHomeLayout
-                colony={colony}
                 filteredDomainId={filteredDomainId}
                 onDomainChange={setDomainIdFilter}
                 // ethDomainId={filteredDomainId}
@@ -74,7 +73,6 @@ const ColonyHome = () => {
             path={COLONY_EVENTS_ROUTE}
             element={
               <ColonyHomeLayout
-                colony={colony}
                 filteredDomainId={filteredDomainId}
                 onDomainChange={setDomainIdFilter}
                 showActions={false}
@@ -88,7 +86,6 @@ const ColonyHome = () => {
           <Route
             element={
               <ColonyHomeLayout
-                colony={colony}
                 filteredDomainId={filteredDomainId}
                 onDomainChange={setDomainIdFilter}
                 showControls={false}

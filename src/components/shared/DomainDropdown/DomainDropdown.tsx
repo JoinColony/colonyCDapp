@@ -3,8 +3,8 @@ import { defineMessages } from 'react-intl';
 
 import { ALLDOMAINS_DOMAIN_SELECTION } from '~constants';
 import { Select, SelectOption } from '~shared/Fields';
-// import { Colony } from '~data/index';
 import { Colony } from '~types';
+import { notNull } from '~utils/arrays';
 
 import DomainDropdownItem from './DomainDropdownItem';
 
@@ -109,15 +109,16 @@ const DomainDropdown = ({
     ) => firstDomainId - secondDomainId;
     const domainOptions = [
       ...showAllDomainsOption,
-      ...(colony?.domains?.items || [])
+      ...(colony.domains?.items || [])
         /*
          * While this looks like an array, it's not a "true" one (this is the result from the subgraph query)
          * So we must first convert it to an array in order to sort it
          */
         .slice(0)
+        .filter(notNull)
         .sort(sortByDomainId)
         .map((domain) => {
-          const { nativeId, name: domainName } = domain;
+          const { nativeId, name: domainName } = domain || {};
           return {
             children: (
               <DomainDropdownItem

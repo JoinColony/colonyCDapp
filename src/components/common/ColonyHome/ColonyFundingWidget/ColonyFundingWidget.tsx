@@ -6,8 +6,8 @@ import Heading from '~shared/Heading';
 // import InfoPopover from '~shared/InfoPopover';
 import NavLink from '~shared/NavLink';
 // import { useTokenBalancesForDomainsQuery } from '~data/index';
-import { ColonyTokens } from '~types';
 import { useColonyContext } from '~hooks';
+import { notNull } from '~utils/arrays';
 
 import TokenBalanceItem from './TokenBalanceItem';
 
@@ -35,10 +35,14 @@ const ColonyFundingWidget = (/* { currentDomainId }: Props */) => {
 
   const {
     name,
-    tokens,
+    tokens: colonyTokenItems,
     nativeToken: { tokenAddress: nativeTokenAddress },
     status,
   } = colony;
+
+  const tokens = (colonyTokenItems?.items || [])
+    .filter(notNull)
+    .map((colonyToken) => colonyToken.token);
 
   // const {
   //   data,
@@ -61,7 +65,7 @@ const ColonyFundingWidget = (/* { currentDomainId }: Props */) => {
       </Heading>
       {/* {data && !isLoadingTokenBalances ? ( */}
       <ul data-test="availableFunds">
-        {(tokens?.items as ColonyTokens[]).map(({ token }) => (
+        {tokens?.map((token) => (
           <li key={token.tokenAddress}>
             {/* <InfoPopover
               token={token}

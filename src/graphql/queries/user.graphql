@@ -1,0 +1,11 @@
+query GetCurrentUser($address: ID!) {
+  getUserByAddress(id: $address) {
+    items {
+      ...User
+    }
+  }
+}
+
+query GetUserReputation($input: GetUserReputationInput!) {
+  getUserReputation(input: $input)
+}

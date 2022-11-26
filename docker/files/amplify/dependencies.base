@@ -1,0 +1,6 @@
+@aws-amplify/cli
+@graphql-codegen/cli
+@graphql-codegen/typescript
+@graphql-codegen/typescript-operations
+@graphql-codegen/typescript-react-apollo
+node-fetch

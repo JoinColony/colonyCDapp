@@ -1,0 +1,2 @@
+# This is a dummy schema file to silence amplify's codegen errors
+scalar Dummy

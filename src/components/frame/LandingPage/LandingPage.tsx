@@ -1,6 +1,5 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { useQuery, gql } from '@apollo/client';
 
 import NavLink from '~shared/NavLink';
 import Icon from '~shared/Icon';
@@ -9,7 +8,7 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import ColonyAvatar from '~shared/ColonyAvatar';
 
 import { CREATE_COLONY_ROUTE } from '~routes';
-import { getMetacolony } from '~gql';
+import { useGetMetacolonyQuery } from '~gql';
 import { useCanInteractWithNetwork } from '~hooks';
 
 import styles from './LandingPage.css';
@@ -37,7 +36,7 @@ const LandingPage = () => {
    * so that they can create a new colony on it
    */
   const canInteractWithNetwork = useCanInteractWithNetwork();
-  const { data, loading } = useQuery(gql(getMetacolony));
+  const { data, loading } = useGetMetacolonyQuery();
 
   const [metacolony] = data?.getColonyByType?.items || [];
 

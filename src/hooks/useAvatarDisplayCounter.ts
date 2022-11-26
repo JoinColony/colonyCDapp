@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 
-import { WatchedColonies } from '~types';
+import { ColonyWatcher } from '~types';
 
 const useAvatarDisplayCounter = (
   maxAvatars: number,
-  members: (WatchedColonies | null)[],
+  members: ColonyWatcher[],
   isLastAvatarIncluded = true,
 ) => {
   const avatarsDisplaySplitRules = useMemo(() => {
