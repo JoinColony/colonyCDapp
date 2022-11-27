@@ -39,7 +39,6 @@ const getUserReputation = async ({
   domainId,
   rootHash,
 }) => {
-  console.log(`🚀 ~ colonyClient`, colonyClient);
   const { skillId } = await colonyClient.getDomain(domainId ?? ROOT_DOMAIN_ID);
 
   let reputationAmount;
