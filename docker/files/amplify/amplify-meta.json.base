@@ -38,7 +38,7 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "colonyMembersWithReputation": {
+    "getMembersForColony": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"

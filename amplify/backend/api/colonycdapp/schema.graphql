@@ -12,19 +12,10 @@ input TokenFromEverywhereArguments {
   tokenAddress: String!
 }
 
-input ReputationForColonyArguments {
-  colonyAddress: String!
-  rootHash: String
-}
-
 input MembersForColonyArguments {
   colonyAddress: String!
-  rootHash: String
-}
-
-input ColonyMembersWithReputationArguments {
-  colonyAddress: String!
-  domainId: Int
+  sortByReputation: Boolean
+  filterByDomain: Int
 }
 
 input CreateUniqueUserInput {
