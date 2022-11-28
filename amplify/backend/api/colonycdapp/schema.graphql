@@ -14,8 +14,9 @@ input TokenFromEverywhereArguments {
 
 input MembersForColonyArguments {
   colonyAddress: String!
-  sortByReputation: Boolean
-  filterByDomain: Int
+  rootHash: String
+  domainId: Int
+  sortingMethod: SORTING_METHODS
 }
 
 input CreateUniqueUserInput {
@@ -161,6 +162,14 @@ enum DomainColor {
 enum ColonyType {
   COLONY
   METACOLONY
+}
+
+enum SORTING_METHODS {
+  BY_HIGHEST_REP
+  BY_LOWEST_REP
+
+  BY_MORE_PERMISSIONS
+  BY_LESS_PERMISSIONS
 }
 
 type Query {
