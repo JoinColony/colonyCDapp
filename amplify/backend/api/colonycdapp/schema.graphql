@@ -9,8 +9,9 @@ input TokenFromEverywhereArguments {
 
 input MembersForColonyArguments {
   colonyAddress: String!
-  sortByReputation: Boolean
-  filterByDomain: Int
+  rootHash: String
+  domainId: Int
+  sortingMethod: SORTING_METHODS
 }
 
 input CreateUniqueUserInput {
@@ -146,6 +147,14 @@ enum ColonyType {
   METACOLONY
 }
 
+enum SORTING_METHODS {
+  BY_HIGHEST_REP
+  BY_LOWEST_REP
+
+  BY_MORE_PERMISSIONS
+  BY_LESS_PERMISSIONS
+}
+
 type Query {
   getTokenFromEverywhere(
     input: TokenFromEverywhereArguments
@@ -207,7 +216,8 @@ type ProfileMetadata {
 
 type Member {
   user: User
-  reputation: [ReputationInDomain]
+  reputationPercentage: String
+  reputationAmount: String
 }
 
 type Token @model {
