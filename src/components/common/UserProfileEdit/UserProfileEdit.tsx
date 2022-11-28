@@ -28,11 +28,11 @@ const MSG = defineMessages({
 const UserProfileEdit = () => {
   const { user, userLoading } = useAppContext();
 
-  if (userLoading) {
+  if (userLoading || user === null) {
     return <UserProfileSpinner />;
   }
 
-  if (!user) {
+  if (user === undefined) {
     return <LandingPage />;
   }
 

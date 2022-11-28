@@ -27,7 +27,7 @@ export const AppContext = createContext<AppContextValues>({});
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   let initialWallet;
-  let initialUser;
+  const initialUser = null;
 
   /*
    * Wallet
