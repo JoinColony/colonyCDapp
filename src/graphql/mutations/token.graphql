@@ -1,0 +1,11 @@
+mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
+  createColonyTokens(input: $input) {
+    id
+  }
+}
+
+mutation CreateUserTokens($input: CreateUserTokensInput!) {
+  createUserTokens(input: $input) {
+    id
+  }
+}

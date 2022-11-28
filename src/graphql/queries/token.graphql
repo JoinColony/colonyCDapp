@@ -1,0 +1,15 @@
+query GetTokenByAddress($address: ID!) {
+  getTokenByAddress(id: $address) {
+    items {
+      ...Token
+    }
+  }
+}
+
+query GetTokenFromEverywhere($input: TokenFromEverywhereArguments!) {
+  getTokenFromEverywhere(input: $input) {
+    items {
+      ...Token
+    }
+  }
+}

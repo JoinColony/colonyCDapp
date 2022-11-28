@@ -1,16 +1,28 @@
 import { Channel } from 'redux-saga';
 import { all, call, fork, put } from 'redux-saga/effects';
 import { getExtensionHash, Extension, ClientType, Id } from '@colony/colony-js';
-import gql from 'graphql-tag';
 import { poll } from 'ethers/lib/utils';
 
 import {
-  createColonyTokens,
-  createUniqueColony,
-  createUserTokens,
-  createWatchedColonies,
-  createUniqueDomain,
-} from '~gql/mutations';
+  CreateColonyTokensDocument,
+  CreateColonyTokensMutation,
+  CreateColonyTokensMutationVariables,
+  CreateUniqueColonyDocument,
+  CreateUniqueColonyMutation,
+  CreateUniqueColonyMutationVariables,
+  CreateUniqueDomainDocument,
+  CreateUniqueDomainMutation,
+  CreateUniqueDomainMutationVariables,
+  CreateUserTokensDocument,
+  CreateUserTokensMutation,
+  CreateUserTokensMutationVariables,
+  CreateWatchedColoniesDocument,
+  CreateWatchedColoniesMutation,
+  CreateWatchedColoniesMutationVariables,
+  GetTokenFromEverywhereDocument,
+  GetTokenFromEverywhereQuery,
+  GetTokenFromEverywhereQueryVariables,
+} from '~gql';
 import { ColonyManager, ContextModule, getContext } from '~context';
 import {
   DEFAULT_TOKEN_DECIMALS,
@@ -19,7 +31,6 @@ import {
 import { ActionTypes, Action, AllActions } from '~redux/index';
 import { createAddress } from '~utils/web3';
 import { TxConfig } from '~types';
-import { getTokenFromEverywhere } from '~gql';
 
 import {
   transactionAddParams,
@@ -226,8 +237,11 @@ function* colonyCreate({
      * Add token to db.
      * The query is resolved by "fetchTokenFromChain", which handles the mutation.
      */
-    yield apolloClient.query({
-      query: gql(getTokenFromEverywhere),
+    yield apolloClient.query<
+      GetTokenFromEverywhereQuery,
+      GetTokenFromEverywhereQueryVariables
+    >({
+      query: GetTokenFromEverywhereDocument,
       variables: {
         input: { tokenAddress },
       },
@@ -236,8 +250,11 @@ function* colonyCreate({
     /*
      * Add token to current user's token list.
      */
-    yield apolloClient.mutate({
-      mutation: gql(createUserTokens),
+    yield apolloClient.mutate<
+      CreateUserTokensMutation,
+      CreateUserTokensMutationVariables
+    >({
+      mutation: CreateUserTokensDocument,
       variables: {
         input: {
           userID: walletAddress,
@@ -276,8 +293,11 @@ function* colonyCreate({
       /*
        * Create colony in db
        */
-      yield apolloClient.mutate({
-        mutation: gql(createUniqueColony),
+      yield apolloClient.mutate<
+        CreateUniqueColonyMutation,
+        CreateUniqueColonyMutationVariables
+      >({
+        mutation: CreateUniqueColonyDocument,
         variables: {
           input: {
             id: colonyAddress,
@@ -291,8 +311,11 @@ function* colonyCreate({
       /*
        * Add token to colony's token list
        */
-      yield apolloClient.mutate({
-        mutation: gql(createColonyTokens),
+      yield apolloClient.mutate<
+        CreateColonyTokensMutation,
+        CreateColonyTokensMutationVariables
+      >({
+        mutation: CreateColonyTokensDocument,
         variables: {
           input: {
             colonyID: colonyAddress,
@@ -304,8 +327,11 @@ function* colonyCreate({
       /*
        * Subscribe user to colony
        */
-      yield apolloClient.mutate({
-        mutation: gql(createWatchedColonies),
+      yield apolloClient.mutate<
+        CreateWatchedColoniesMutation,
+        CreateWatchedColoniesMutationVariables
+      >({
+        mutation: CreateWatchedColoniesDocument,
         variables: {
           input: {
             colonyID: colonyAddress,
@@ -317,8 +343,11 @@ function* colonyCreate({
       /*
        * Create root domain
        */
-      yield apolloClient.mutate({
-        mutation: gql(createUniqueDomain),
+      yield apolloClient.mutate<
+        CreateUniqueDomainMutation,
+        CreateUniqueDomainMutationVariables
+      >({
+        mutation: CreateUniqueDomainDocument,
         variables: {
           input: {
             colonyAddress,

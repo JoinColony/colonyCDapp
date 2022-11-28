@@ -1,11 +1,10 @@
-import gql from 'graphql-tag';
 import { string, object } from 'yup';
 
 import { ContextModule, getContext } from '~context';
 import {
-  getColonyByName,
-  GetColonyByNameQuery,
-  GetColonyByNameQueryVariables,
+  GetFullColonyByNameDocument,
+  GetFullColonyByNameQuery,
+  GetFullColonyByNameQueryVariables,
 } from '~gql';
 import { intl } from '~utils/intl';
 
@@ -50,10 +49,10 @@ export const validationSchema = object({
 
         try {
           const { data } = await apolloClient.query<
-            GetColonyByNameQuery,
-            GetColonyByNameQueryVariables
+            GetFullColonyByNameQuery,
+            GetFullColonyByNameQueryVariables
           >({
-            query: gql(getColonyByName),
+            query: GetFullColonyByNameDocument,
             variables: {
               name,
             },

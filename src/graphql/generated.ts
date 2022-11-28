@@ -74,6 +74,11 @@ export type ColonyWatchersArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
+export type ColonyId = {
+  __typename?: 'ColonyID';
+  id: Scalars['ID'];
+};
+
 export type ColonyStatus = {
   __typename?: 'ColonyStatus';
   nativeToken?: Maybe<NativeTokenStatus>;
@@ -660,7 +665,7 @@ export type Mutation = {
   createColonyTokens?: Maybe<ColonyTokens>;
   createDomain?: Maybe<Domain>;
   createToken?: Maybe<Token>;
-  createUniqueColony?: Maybe<User>;
+  createUniqueColony?: Maybe<ColonyId>;
   createUniqueDomain?: Maybe<Domain>;
   createUniqueUser?: Maybe<User>;
   createUser?: Maybe<User>;
@@ -1333,6 +1338,41 @@ export type TokenFragment = { __typename?: 'Token', decimals: number, name: stri
 
 export type UserFragment = { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null };
 
+export type CreateUniqueColonyMutationVariables = Exact<{
+  input: CreateUniqueColonyInput;
+}>;
+
+
+export type CreateUniqueColonyMutation = { __typename?: 'Mutation', createUniqueColony?: { __typename?: 'ColonyID', id: string } | null };
+
+export type CreateWatchedColoniesMutationVariables = Exact<{
+  input: CreateWatchedColoniesInput;
+}>;
+
+
+export type CreateWatchedColoniesMutation = { __typename?: 'Mutation', createWatchedColonies?: { __typename?: 'WatchedColonies', id: string } | null };
+
+export type CreateUniqueDomainMutationVariables = Exact<{
+  input: CreateUniqueDomainInput;
+}>;
+
+
+export type CreateUniqueDomainMutation = { __typename?: 'Mutation', createUniqueDomain?: { __typename?: 'Domain', id: string } | null };
+
+export type CreateColonyTokensMutationVariables = Exact<{
+  input: CreateColonyTokensInput;
+}>;
+
+
+export type CreateColonyTokensMutation = { __typename?: 'Mutation', createColonyTokens?: { __typename?: 'ColonyTokens', id: string } | null };
+
+export type CreateUserTokensMutationVariables = Exact<{
+  input: CreateUserTokensInput;
+}>;
+
+
+export type CreateUserTokensMutation = { __typename?: 'Mutation', createUserTokens?: { __typename?: 'UserTokens', id: string } | null };
+
 export type GetFullColonyByNameQueryVariables = Exact<{
   name: Scalars['String'];
 }>;
@@ -1344,6 +1384,20 @@ export type GetMetacolonyQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetMetacolonyQuery = { __typename?: 'Query', getColonyByType?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
+
+export type GetTokenByAddressQueryVariables = Exact<{
+  address: Scalars['ID'];
+}>;
+
+
+export type GetTokenByAddressQuery = { __typename?: 'Query', getTokenByAddress?: { __typename?: 'ModelTokenConnection', items: Array<{ __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string } | null> } | null };
+
+export type GetTokenFromEverywhereQueryVariables = Exact<{
+  input: TokenFromEverywhereArguments;
+}>;
+
+
+export type GetTokenFromEverywhereQuery = { __typename?: 'Query', getTokenFromEverywhere?: { __typename?: 'TokenFromEverywhereReturn', items?: Array<{ __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string } | null> | null } | null };
 
 export type GetCurrentUserQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -1470,6 +1524,171 @@ export const UserFragmentDoc = gql`
   }
 }
     `;
+export const CreateUniqueColonyDocument = gql`
+    mutation CreateUniqueColony($input: CreateUniqueColonyInput!) {
+  createUniqueColony(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateUniqueColonyMutationFn = Apollo.MutationFunction<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>;
+
+/**
+ * __useCreateUniqueColonyMutation__
+ *
+ * To run a mutation, you first call `useCreateUniqueColonyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUniqueColonyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUniqueColonyMutation, { data, loading, error }] = useCreateUniqueColonyMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateUniqueColonyMutation(baseOptions?: Apollo.MutationHookOptions<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>(CreateUniqueColonyDocument, options);
+      }
+export type CreateUniqueColonyMutationHookResult = ReturnType<typeof useCreateUniqueColonyMutation>;
+export type CreateUniqueColonyMutationResult = Apollo.MutationResult<CreateUniqueColonyMutation>;
+export type CreateUniqueColonyMutationOptions = Apollo.BaseMutationOptions<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>;
+export const CreateWatchedColoniesDocument = gql`
+    mutation CreateWatchedColonies($input: CreateWatchedColoniesInput!) {
+  createWatchedColonies(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateWatchedColoniesMutationFn = Apollo.MutationFunction<CreateWatchedColoniesMutation, CreateWatchedColoniesMutationVariables>;
+
+/**
+ * __useCreateWatchedColoniesMutation__
+ *
+ * To run a mutation, you first call `useCreateWatchedColoniesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateWatchedColoniesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createWatchedColoniesMutation, { data, loading, error }] = useCreateWatchedColoniesMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateWatchedColoniesMutation(baseOptions?: Apollo.MutationHookOptions<CreateWatchedColoniesMutation, CreateWatchedColoniesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateWatchedColoniesMutation, CreateWatchedColoniesMutationVariables>(CreateWatchedColoniesDocument, options);
+      }
+export type CreateWatchedColoniesMutationHookResult = ReturnType<typeof useCreateWatchedColoniesMutation>;
+export type CreateWatchedColoniesMutationResult = Apollo.MutationResult<CreateWatchedColoniesMutation>;
+export type CreateWatchedColoniesMutationOptions = Apollo.BaseMutationOptions<CreateWatchedColoniesMutation, CreateWatchedColoniesMutationVariables>;
+export const CreateUniqueDomainDocument = gql`
+    mutation CreateUniqueDomain($input: CreateUniqueDomainInput!) {
+  createUniqueDomain(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateUniqueDomainMutationFn = Apollo.MutationFunction<CreateUniqueDomainMutation, CreateUniqueDomainMutationVariables>;
+
+/**
+ * __useCreateUniqueDomainMutation__
+ *
+ * To run a mutation, you first call `useCreateUniqueDomainMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUniqueDomainMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUniqueDomainMutation, { data, loading, error }] = useCreateUniqueDomainMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateUniqueDomainMutation(baseOptions?: Apollo.MutationHookOptions<CreateUniqueDomainMutation, CreateUniqueDomainMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUniqueDomainMutation, CreateUniqueDomainMutationVariables>(CreateUniqueDomainDocument, options);
+      }
+export type CreateUniqueDomainMutationHookResult = ReturnType<typeof useCreateUniqueDomainMutation>;
+export type CreateUniqueDomainMutationResult = Apollo.MutationResult<CreateUniqueDomainMutation>;
+export type CreateUniqueDomainMutationOptions = Apollo.BaseMutationOptions<CreateUniqueDomainMutation, CreateUniqueDomainMutationVariables>;
+export const CreateColonyTokensDocument = gql`
+    mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
+  createColonyTokens(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateColonyTokensMutationFn = Apollo.MutationFunction<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>;
+
+/**
+ * __useCreateColonyTokensMutation__
+ *
+ * To run a mutation, you first call `useCreateColonyTokensMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateColonyTokensMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createColonyTokensMutation, { data, loading, error }] = useCreateColonyTokensMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateColonyTokensMutation(baseOptions?: Apollo.MutationHookOptions<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>(CreateColonyTokensDocument, options);
+      }
+export type CreateColonyTokensMutationHookResult = ReturnType<typeof useCreateColonyTokensMutation>;
+export type CreateColonyTokensMutationResult = Apollo.MutationResult<CreateColonyTokensMutation>;
+export type CreateColonyTokensMutationOptions = Apollo.BaseMutationOptions<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>;
+export const CreateUserTokensDocument = gql`
+    mutation CreateUserTokens($input: CreateUserTokensInput!) {
+  createUserTokens(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateUserTokensMutationFn = Apollo.MutationFunction<CreateUserTokensMutation, CreateUserTokensMutationVariables>;
+
+/**
+ * __useCreateUserTokensMutation__
+ *
+ * To run a mutation, you first call `useCreateUserTokensMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserTokensMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserTokensMutation, { data, loading, error }] = useCreateUserTokensMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateUserTokensMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserTokensMutation, CreateUserTokensMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUserTokensMutation, CreateUserTokensMutationVariables>(CreateUserTokensDocument, options);
+      }
+export type CreateUserTokensMutationHookResult = ReturnType<typeof useCreateUserTokensMutation>;
+export type CreateUserTokensMutationResult = Apollo.MutationResult<CreateUserTokensMutation>;
+export type CreateUserTokensMutationOptions = Apollo.BaseMutationOptions<CreateUserTokensMutation, CreateUserTokensMutationVariables>;
 export const GetFullColonyByNameDocument = gql`
     query GetFullColonyByName($name: String!) {
   getColonyByName(name: $name) {
@@ -1543,6 +1762,80 @@ export function useGetMetacolonyLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetMetacolonyQueryHookResult = ReturnType<typeof useGetMetacolonyQuery>;
 export type GetMetacolonyLazyQueryHookResult = ReturnType<typeof useGetMetacolonyLazyQuery>;
 export type GetMetacolonyQueryResult = Apollo.QueryResult<GetMetacolonyQuery, GetMetacolonyQueryVariables>;
+export const GetTokenByAddressDocument = gql`
+    query GetTokenByAddress($address: ID!) {
+  getTokenByAddress(id: $address) {
+    items {
+      ...Token
+    }
+  }
+}
+    ${TokenFragmentDoc}`;
+
+/**
+ * __useGetTokenByAddressQuery__
+ *
+ * To run a query within a React component, call `useGetTokenByAddressQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTokenByAddressQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTokenByAddressQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *   },
+ * });
+ */
+export function useGetTokenByAddressQuery(baseOptions: Apollo.QueryHookOptions<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>(GetTokenByAddressDocument, options);
+      }
+export function useGetTokenByAddressLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>(GetTokenByAddressDocument, options);
+        }
+export type GetTokenByAddressQueryHookResult = ReturnType<typeof useGetTokenByAddressQuery>;
+export type GetTokenByAddressLazyQueryHookResult = ReturnType<typeof useGetTokenByAddressLazyQuery>;
+export type GetTokenByAddressQueryResult = Apollo.QueryResult<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>;
+export const GetTokenFromEverywhereDocument = gql`
+    query GetTokenFromEverywhere($input: TokenFromEverywhereArguments!) {
+  getTokenFromEverywhere(input: $input) {
+    items {
+      ...Token
+    }
+  }
+}
+    ${TokenFragmentDoc}`;
+
+/**
+ * __useGetTokenFromEverywhereQuery__
+ *
+ * To run a query within a React component, call `useGetTokenFromEverywhereQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTokenFromEverywhereQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTokenFromEverywhereQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetTokenFromEverywhereQuery(baseOptions: Apollo.QueryHookOptions<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>(GetTokenFromEverywhereDocument, options);
+      }
+export function useGetTokenFromEverywhereLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>(GetTokenFromEverywhereDocument, options);
+        }
+export type GetTokenFromEverywhereQueryHookResult = ReturnType<typeof useGetTokenFromEverywhereQuery>;
+export type GetTokenFromEverywhereLazyQueryHookResult = ReturnType<typeof useGetTokenFromEverywhereLazyQuery>;
+export type GetTokenFromEverywhereQueryResult = Apollo.QueryResult<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>;
 export const GetCurrentUserDocument = gql`
     query GetCurrentUser($address: ID!) {
   getUserByAddress(id: $address) {
