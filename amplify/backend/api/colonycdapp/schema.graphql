@@ -14,8 +14,9 @@ input TokenFromEverywhereArguments {
 
 input MembersForColonyArguments {
   colonyAddress: String!
-  sortByReputation: Boolean
-  filterByDomain: Int
+  rootHash: String
+  domainId: Int
+  sortingMethod: SORTING_METHODS
 }
 
 input CreateUniqueUserInput {
@@ -143,7 +144,7 @@ enum Network {
   GNOSISFORK
 }
 
-enum DomainColor {
+enum   {
   LIGHT_PINK
   PINK
   BLACK
@@ -182,6 +183,13 @@ enum ColonyActionType {
   SET_USER_ROLES
   EMIT_DOMAIN_REPUTATION_PENALTY
   EMIT_DOMAIN_REPUTATION_REWARD
+}
+
+enum SORTING_METHODS {
+  BY_HIGHEST_REP
+  BY_LOWEST_REP
+  BY_MORE_PERMISSIONS
+  BY_LESS_PERMISSIONS
 }
 
 type Query {
