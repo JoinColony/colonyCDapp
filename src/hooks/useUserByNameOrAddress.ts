@@ -1,36 +1,23 @@
-import { useQuery, gql } from '@apollo/client';
 import { isAddress } from 'ethers/lib/utils';
 
-import { getUserFromName, getCurrentUser } from '~gql';
+import { useCombinedUserQueryQuery } from '~gql';
 
 const useUserByNameOrAddress = (usernameOrAddress: string) => {
-  const {
-    data: dataByName,
-    loading: loadingName,
-    error: errorName,
-  } = useQuery(gql(getUserFromName), {
+  const { data, error, loading } = useCombinedUserQueryQuery({
     variables: {
       name: usernameOrAddress,
+      address: usernameOrAddress,
     },
-    fetchPolicy: 'network-only',
-  });
-
-  const {
-    data: dataAddress,
-    loading: loadingAddress,
-    error: errorAddress,
-  } = useQuery(gql(getCurrentUser), {
-    variables: { address: usernameOrAddress },
   });
 
   const user = isAddress(usernameOrAddress)
-    ? dataAddress?.getUserByAddress?.items[0]
-    : dataByName?.getUserByName?.items[0];
+    ? data?.getUserByAddress?.items[0]
+    : data?.getUserByName?.items[0];
 
   return {
     user,
-    loading: loadingAddress || loadingName,
-    error: errorAddress || errorName,
+    loading,
+    error,
   };
 };
 
