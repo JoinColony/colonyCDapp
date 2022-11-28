@@ -3,14 +3,14 @@ import { isAddress } from 'ethers/lib/utils';
 
 import { getUserFromName, getCurrentUser } from '~gql';
 
-const useUserByNameOrAddress = (username: string) => {
+const useUserByNameOrAddress = (usernameOrAddress: string) => {
   const {
     data: dataByName,
     loading: loadingName,
     error: errorName,
   } = useQuery(gql(getUserFromName), {
     variables: {
-      name: username,
+      name: usernameOrAddress,
     },
     fetchPolicy: 'network-only',
   });
@@ -20,10 +20,10 @@ const useUserByNameOrAddress = (username: string) => {
     loading: loadingAddress,
     error: errorAddress,
   } = useQuery(gql(getCurrentUser), {
-    variables: { address: username },
+    variables: { address: usernameOrAddress },
   });
 
-  const user = isAddress(username)
+  const user = isAddress(usernameOrAddress)
     ? dataAddress?.getUserByAddress?.items[0]
     : dataByName?.getUserByName?.items[0];
 
