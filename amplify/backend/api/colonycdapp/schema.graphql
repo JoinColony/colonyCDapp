@@ -77,6 +77,7 @@ input UpdateExtensionByColonyAndHashInput {
   hash: String!
   status: ExtensionStatus
   isDeprecated: Boolean
+  version: Int
 }
 
 type TokenFromEverywhereReturn {
@@ -319,4 +320,5 @@ type ColonyExtension @model {
   hash: String!
   status: ExtensionStatus!
   isDeprecated: Boolean @default(value: "false")
+  version: Int!
 }

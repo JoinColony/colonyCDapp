@@ -20,6 +20,7 @@ module.exports = {
         hash
         status
         isDeprecated
+        version
       }
     }
   `,
