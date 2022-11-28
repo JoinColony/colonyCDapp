@@ -1,7 +1,5 @@
-import { gql, useQuery } from '@apollo/client';
-
 import { Address } from '~types';
-import { getReputationForTopDomains } from '~gql';
+import { useGetReputationForTopDomainsQuery } from '~gql';
 import { PercentageReputationType } from '~utils/reputation';
 
 export type UserDomainReputation = {
@@ -14,9 +12,8 @@ const useUserReputationForTopDomains = (
   walletAddress?: Address,
   rootHash?: string,
 ) => {
-  const { data: userReputationData, loading: loadingUserReputation } = useQuery(
-    gql(getReputationForTopDomains),
-    {
+  const { data: userReputationData, loading: loadingUserReputation } =
+    useGetReputationForTopDomainsQuery({
       variables: {
         input: {
           colonyAddress: colonyAddress ?? '',
@@ -26,11 +23,10 @@ const useUserReputationForTopDomains = (
       },
       fetchPolicy: 'cache-and-network',
       skip: !colonyAddress || !walletAddress,
-    },
-  );
+    });
 
-  const userReputation: UserDomainReputation[] =
-    userReputationData?.getReputationForTopDomains?.items;
+  const userReputation =
+    userReputationData?.getReputationForTopDomains?.items ?? undefined;
 
   return {
     userReputation,

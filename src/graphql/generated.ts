@@ -244,6 +244,17 @@ export enum DomainColor {
   Yellow = 'YELLOW'
 }
 
+export type GetReputationForTopDomainsInput = {
+  colonyAddress: Scalars['String'];
+  rootHash?: InputMaybe<Scalars['String']>;
+  walletAddress: Scalars['String'];
+};
+
+export type GetReputationForTopDomainsReturn = {
+  __typename?: 'GetReputationForTopDomainsReturn';
+  items?: Maybe<Array<UserDomainReputation>>;
+};
+
 export type GetUserReputationInput = {
   colonyAddress: Scalars['String'];
   domainId?: InputMaybe<Scalars['Int']>;
@@ -878,6 +889,7 @@ export type Query = {
   getColonyByType?: Maybe<ModelColonyConnection>;
   getColonyTokens?: Maybe<ColonyTokens>;
   getDomain?: Maybe<Domain>;
+  getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
   getToken?: Maybe<Token>;
   getTokenByAddress?: Maybe<ModelTokenConnection>;
   getTokenFromEverywhere?: Maybe<TokenFromEverywhereReturn>;
@@ -937,6 +949,11 @@ export type QueryGetColonyTokensArgs = {
 
 export type QueryGetDomainArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryGetReputationForTopDomainsArgs = {
+  input?: InputMaybe<GetReputationForTopDomainsInput>;
 };
 
 
@@ -1308,6 +1325,12 @@ export type UserWatchlistArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
+export type UserDomainReputation = {
+  __typename?: 'UserDomainReputation';
+  domainId: Scalars['Int'];
+  reputationPercentage: Scalars['String'];
+};
+
 export type UserTokens = {
   __typename?: 'UserTokens';
   createdAt: Scalars['AWSDateTime'];
@@ -1412,6 +1435,13 @@ export type GetUserReputationQueryVariables = Exact<{
 
 
 export type GetUserReputationQuery = { __typename?: 'Query', getUserReputation?: string | null };
+
+export type GetReputationForTopDomainsQueryVariables = Exact<{
+  input: GetReputationForTopDomainsInput;
+}>;
+
+
+export type GetReputationForTopDomainsQuery = { __typename?: 'Query', getReputationForTopDomains?: { __typename?: 'GetReputationForTopDomainsReturn', items?: Array<{ __typename?: 'UserDomainReputation', domainId: number, reputationPercentage: string }> | null } | null };
 
 export const TokenFragmentDoc = gql`
     fragment Token on Token {
@@ -1906,3 +1936,41 @@ export function useGetUserReputationLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetUserReputationQueryHookResult = ReturnType<typeof useGetUserReputationQuery>;
 export type GetUserReputationLazyQueryHookResult = ReturnType<typeof useGetUserReputationLazyQuery>;
 export type GetUserReputationQueryResult = Apollo.QueryResult<GetUserReputationQuery, GetUserReputationQueryVariables>;
+export const GetReputationForTopDomainsDocument = gql`
+    query GetReputationForTopDomains($input: GetReputationForTopDomainsInput!) {
+  getReputationForTopDomains(input: $input) {
+    items {
+      domainId
+      reputationPercentage
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetReputationForTopDomainsQuery__
+ *
+ * To run a query within a React component, call `useGetReputationForTopDomainsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetReputationForTopDomainsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetReputationForTopDomainsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetReputationForTopDomainsQuery(baseOptions: Apollo.QueryHookOptions<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>(GetReputationForTopDomainsDocument, options);
+      }
+export function useGetReputationForTopDomainsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>(GetReputationForTopDomainsDocument, options);
+        }
+export type GetReputationForTopDomainsQueryHookResult = ReturnType<typeof useGetReputationForTopDomainsQuery>;
+export type GetReputationForTopDomainsLazyQueryHookResult = ReturnType<typeof useGetReputationForTopDomainsLazyQuery>;
+export type GetReputationForTopDomainsQueryResult = Apollo.QueryResult<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>;
