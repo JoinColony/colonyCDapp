@@ -160,8 +160,6 @@ export const arrayToObject = (arr: any[]) =>
 export const notUndefined = <T>(x: T | undefined): x is T => x !== undefined;
 export const notNull = <T>(x: T | null): x is T => x !== null;
 
-export const notNull = <T>(x: T | null): x is T => x !== null;
-
 export const immutableSort = <T>(
   arr: T[],
   sortFn?: (a: T, b: T) => number,
