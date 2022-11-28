@@ -119,5 +119,6 @@ module.exports = {
       },
     ],
     'react/function-component-definition': 'off',
+    'react/jsx-no-useless-fragment': ['error', { allowExpressions: true }],
   },
 };
