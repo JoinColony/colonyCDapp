@@ -26,3 +26,16 @@ query GetUserByName($name: String!) {
     }
   }
 }
+
+query CombinedUserQuery($name: String!, $address: ID!) {
+  getUserByAddress(id: $address) {
+    items {
+      ...User
+    }
+  }
+  getUserByName(name: $name) {
+    items {
+      ...User
+    }
+  }
+}
