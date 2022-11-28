@@ -10,6 +10,7 @@ import Link from '~shared/Link';
 
 import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { WatchedColonies } from '~types/index';
+import { notNull } from '~utils/arrays';
 
 import ColonyGridItem from './ColonyGridItem';
 
@@ -64,14 +65,13 @@ const ColonyGrid = ({
         <Heading text={MSG.title} appearance={{ size: 'medium' }} />
       </div>
       <div className={styles.colonyGrid}>
-        {colonies.map((colony) =>
-          colony ? (
-            <ColonyGridItem
-              colony={colony?.colony}
-              key={colony?.colony.colonyAddress}
-            />
-          ) : null,
-        )}
+        {colonies
+          .filter(notNull)
+          .map(({ colony }) =>
+            colony ? (
+              <ColonyGridItem colony={colony} key={colony.colonyAddress} />
+            ) : null,
+          )}
       </div>
     </div>
   );
