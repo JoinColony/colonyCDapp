@@ -17,7 +17,7 @@ import { getContext, ContextModule } from './index';
 
 export interface AppContextValues {
   wallet?: Wallet;
-  user?: User;
+  user?: User | null;
   userLoading?: boolean;
   updateWallet?: () => void;
   updateUser?: (address?: string) => void;

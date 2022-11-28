@@ -1,21 +1,20 @@
 import { call, fork, put, takeLatest } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 // import { BigNumber } from 'ethers';
-import gql from 'graphql-tag';
 import { utils } from 'ethers';
 import { QueryOptions } from '@apollo/client';
 
 import { ContextModule, getContext, removeContext } from '~context';
-import {
-  createUniqueUser,
-  CreateUniqueUserMutation,
-  CreateUniqueUserMutationVariables,
-  getProfileByEmail,
-  getUserByName,
-} from '~gql';
 import { routeRedirect } from '~utils/saga/effects';
 import { clearLastWallet } from '~utils/autoLogin';
 import { LANDING_PAGE_ROUTE } from '~routes';
+import {
+  CreateUniqueUserDocument,
+  CreateUniqueUserMutation,
+  CreateUniqueUserMutationVariables,
+  GetProfileByEmailDocument,
+  GetUserByNameDocument,
+} from '~gql';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
@@ -133,14 +132,14 @@ function* usernameCreate({
     /* Queries will be refetched after the mutation, in order to update the cache. */
     const refetchQueries: QueryOptions[] = [
       {
-        query: gql(getUserByName),
+        query: GetUserByNameDocument,
         variables: { name: username },
       },
     ];
 
     if (email) {
       refetchQueries.push({
-        query: gql(getProfileByEmail),
+        query: GetProfileByEmailDocument,
         variables: { email },
       });
     }
@@ -151,15 +150,16 @@ function* usernameCreate({
       CreateUniqueUserMutation,
       CreateUniqueUserMutationVariables
     >({
-      mutation: gql(createUniqueUser),
+      mutation: CreateUniqueUserDocument,
       variables: {
         input: {
           id: walletAddress,
           name: username,
           profile: {
             email: email || undefined,
-            displayName: username,
-            meta: { emailPermissions },
+            meta: {
+              emailPermissions,
+            },
           },
         },
       },

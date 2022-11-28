@@ -12,8 +12,13 @@ input CreateUniqueUserInput {
   profile: ProfileInput
 }
 
+enum EmailPermissions {
+  sendNotifications
+  isHuman
+}
+
 input ProfileMetadataInput {
-  emailPermissions: [String!]
+  emailPermissions: [String!]!
 }
 
 input MetadataInput {
@@ -183,7 +188,7 @@ type Metadata {
 }
 
 type ProfileMetadata {
-  emailPermissions: [String!]
+  emailPermissions: [String!]!
 }
 
 type Token @model {

@@ -1,6 +1,6 @@
 import { string, object, array } from 'yup';
 
-import { getProfileByEmail, getUserByName } from '~gql';
+import { GetProfileByEmailDocument, GetUserByNameDocument } from '~gql';
 import { intl } from '~utils/intl';
 import { createYupTestFromQuery } from '~utils/yup';
 
@@ -24,11 +24,11 @@ const { formatMessage } = intl({
 });
 
 const isEmailAlreadyRegistered = createYupTestFromQuery({
-  query: getProfileByEmail,
+  query: GetProfileByEmailDocument,
   isOptional: true,
 });
 const isUsernameTaken = createYupTestFromQuery({
-  query: getUserByName,
+  query: GetUserByNameDocument,
   circuitBreaker: isValidUsername,
 });
 

@@ -6,6 +6,7 @@ import Heading from '~shared/Heading';
 import ColonyButton from '~shared/Button';
 import WizardTemplate from '~frame/WizardTemplateColony';
 import { withWizard } from '~shared/Wizard';
+import { EmailPermissions } from '~gql';
 
 import StepUserName from './StepUserName';
 import StepConfirmTransaction from './StepConfirmTransaction';
@@ -17,7 +18,7 @@ export interface FormValues {
   [k: string]: string | string[];
   username: string;
   email: string;
-  emailPermissions: string[];
+  emailPermissions: EmailPermissions[];
 }
 
 const steps = [StepUserEmail, StepUserName, StepConfirmTransaction];

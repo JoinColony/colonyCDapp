@@ -1,15 +1,8 @@
-import { DocumentNode } from 'graphql';
-import gql from 'graphql-tag';
+import { DocumentNode, OperationDefinitionNode } from 'graphql';
 import { Schema, TestContext, ValidateOptions, ValidationError } from 'yup';
 
 import { ContextModule, getContext } from '~context';
 import { intl } from '~utils/intl';
-
-/*
- * Extracts the query name and first variable name from a graphql query.
- */
-const QUERY_NAME_REGEX = /{\s*[a-zA-z]*\(/;
-const QUERY_VARIABLE_NAME_REGEX = /\$[\w]*/;
 
 const apolloClient = getContext(ContextModule.ApolloClient);
 const { formatMessage } = intl({
@@ -35,13 +28,13 @@ export const validateSync =
  * @returns Query Data or network error message
  */
 export async function runQuery<Q, V>(
-  query: string,
+  queryDocument: DocumentNode,
   variables: V,
   createError: TestContext['createError'],
 ): Promise<Q | ValidationError> {
   try {
     const { data } = await apolloClient.query<Q, V>({
-      query: gql(query),
+      query: queryDocument,
       variables,
     });
     return data;
@@ -52,9 +45,7 @@ export async function runQuery<Q, V>(
       });
     }
 
-    return createError({
-      message: formatMessage({ id: 'error.unknown' }),
-    });
+    return createUnknownError(createError);
   }
 }
 
@@ -82,6 +73,8 @@ export function createYupTestFromQuery({
   circuitBreaker = false,
 }: CustomTestConfig) {
   return async function checkIfValueExistsInDB(value) {
+    const { createError } = this as TestContext;
+
     const cancel =
       typeof circuitBreaker === 'boolean'
         ? circuitBreaker
@@ -91,14 +84,21 @@ export function createYupTestFromQuery({
       return isOptional;
     }
 
-    const queryName = query.match(QUERY_NAME_REGEX)?.[0] ?? ''; // Expect to be defined.
-    const variableKey = query.match(QUERY_VARIABLE_NAME_REGEX)?.[0] ?? ''; // Expect to be defined.
+    const queryName = (query.definitions[0] as OperationDefinitionNode).name
+      ?.value;
+    const variableKey = (query.definitions[0] as OperationDefinitionNode)
+      .variableDefinitions?.[0].variable.name.value;
 
-    const { createError } = this as TestContext;
+    if (!queryName || !variableKey) {
+      throw new Error(
+        'Query must be a named query and have exactly one named variable.',
+      );
+    }
+
     const result = await runQuery(
       query,
       {
-        [cleanQueryVariableName(variableKey)]: value,
+        [variableKey]: value,
       },
       createError,
     );
@@ -111,12 +111,27 @@ export function createYupTestFromQuery({
   };
 }
 
-function cleanQueryName(queryNameMatch: string) {
-  /* match prefixed with '{', suffixed with '(' and contains whitespace */
-  return queryNameMatch.substring(1, queryNameMatch.length - 1).trim();
+/* Map custom query names to actual query names */
+const customQueries: Record<string, string> = {
+  GetFullColonyByName: 'getColonyByName',
+};
+
+function cleanQueryName(queryName: string) {
+  const customQueryKey = Object.keys(customQueries).find(
+    (k) => k === queryName,
+  );
+
+  /* If custom query, return actual query name */
+  if (customQueryKey) {
+    return customQueries[customQueryKey];
+  }
+
+  /* Else, convert first letter to lowercase */
+  return queryName.substring(0, 1).toLowerCase() + queryName.substring(1);
 }
 
-function cleanQueryVariableName(variableNameMatch: string) {
-  /* match is prefixed with '$' */
-  return variableNameMatch.substring(1);
+function createUnknownError(createError: TestContext['createError']) {
+  return createError({
+    message: formatMessage({ id: 'error.unknown' }),
+  });
 }

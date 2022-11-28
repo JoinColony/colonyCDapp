@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { EmailPermissions } from '~gql';
 import { Checkbox, Input } from '~shared/Fields';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 
@@ -36,21 +37,20 @@ const MSG = defineMessages({
   },
 });
 
-enum EmailPermissions {
-  isHuman = 'isHuman',
-  sendNotifications = 'sendNotifications',
-}
-
-type Permission = `${EmailPermissions}`;
+type EmailPermission = `${EmailPermissions}`;
 
 class PermissionDescription {
-  permission: Permission;
+  permission: EmailPermission;
 
   label: Message;
 
   tooltipText: Message;
 
-  constructor(permission: Permission, label: Message, tooltipText: Message) {
+  constructor(
+    permission: EmailPermission,
+    label: Message,
+    tooltipText: Message,
+  ) {
     this.permission = permission;
     this.label = label;
     this.tooltipText = tooltipText;
@@ -59,12 +59,12 @@ class PermissionDescription {
 
 const permissions = [
   new PermissionDescription(
-    EmailPermissions.isHuman,
+    EmailPermissions.IsHuman,
     MSG.confirmHumanity,
     MSG.confirmHumanityTooltip,
   ),
   new PermissionDescription(
-    EmailPermissions.sendNotifications,
+    EmailPermissions.SendNotifications,
     MSG.sendNotifications,
     MSG.sendNotificationsTooltip,
   ),
