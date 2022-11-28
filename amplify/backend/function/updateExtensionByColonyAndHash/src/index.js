@@ -11,7 +11,8 @@ const GRAPHQL_URI = 'http://localhost:20002/graphql';
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  const { colonyId, hash, status, isDeprecated } = event.arguments?.input || {};
+  const { colonyId, hash, status, isDeprecated, version } =
+    event.arguments?.input || {};
 
   const getExtensionData = await graphqlRequest(
     getExtension,
@@ -37,6 +38,7 @@ exports.handler = async (event) => {
         id: extension.id,
         status,
         isDeprecated,
+        version,
       },
     },
     GRAPHQL_URI,
