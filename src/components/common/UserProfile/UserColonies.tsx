@@ -7,6 +7,7 @@ import Link from '~shared/Link';
 import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { User } from '~types';
 import { useAppContext } from '~hooks';
+import { notNull } from '~utils/arrays';
 
 import styles from './UserColonies.css';
 
@@ -38,7 +39,7 @@ const UserColonies = ({
   const isCurrentUser = currentUser?.walletAddress === walletAddress;
   return (
     <ColonyGrid
-      colonies={watchlist?.items || []}
+      colonies={watchlist?.items.filter(notNull)}
       emptyStateDescription={
         isCurrentUser ? MSG.currentUserNoColonies : MSG.otherUserNoColonies
       }

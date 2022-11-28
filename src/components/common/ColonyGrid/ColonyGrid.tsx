@@ -9,7 +9,7 @@ import Heading from '~shared/Heading';
 import Link from '~shared/Link';
 
 import { CREATE_COLONY_ROUTE } from '~routes/index';
-import { WatchedColonies } from '~types/index';
+import { WatchedColonies } from '~gql';
 import { notNull } from '~utils/arrays';
 
 import ColonyGridItem from './ColonyGridItem';
@@ -34,7 +34,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  colonies: (WatchedColonies | null)[];
+  colonies?: WatchedColonies[];
   emptyStateDescription?: MessageDescriptor;
   emptyStateDescriptionValues?: { [key: string]: ReactElement };
 }

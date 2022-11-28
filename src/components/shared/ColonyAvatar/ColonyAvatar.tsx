@@ -5,7 +5,7 @@ import Avatar, { Props as AvatarProps } from '~shared/Avatar';
 import NavLink from '~shared/NavLink';
 
 export interface Props
-  extends Pick<AvatarProps, 'avatarURL' | 'className' | 'notSet' | 'size'> {
+  extends Pick<AvatarProps, 'className' | 'notSet' | 'size'> {
   /** Address of the colony for identicon fallback */
   colonyAddress: Address;
 
@@ -14,6 +14,8 @@ export interface Props
 
   /** The corresponding user object if available */
   colony?: Colony;
+
+  avatarURL?: string;
 
   preferThumbnail?: boolean;
 }
@@ -34,7 +36,7 @@ const ColonyAvatar = ({
   const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
   const colonyAvatar = (
     <Avatar
-      avatarURL={avatarURL || imageString || undefined}
+      avatarString={avatarURL || imageString || undefined}
       className={className}
       notSet={notSet}
       placeholderIcon="at-sign-circle"
