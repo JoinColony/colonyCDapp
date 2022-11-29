@@ -11,6 +11,7 @@ import ExternalLink from '~shared/ExternalLink';
 
 import useUserSettings, { SlotKey } from '~hooks/useUserSettings';
 import { canUseMetatransactions } from '~utils/checks';
+import { ADVANCED_SETTINGS } from '~constants';
 
 import styles from './UserProfileEdit.css';
 import stylesAdvance from './UserAdvancedSettings.css';
@@ -144,7 +145,7 @@ const UserAdvancedSettings = () => {
               learnMoreLink: (
                 <ExternalLink
                   text={{ id: 'text.learnMore' }}
-                  href=""
+                  href={ADVANCED_SETTINGS}
                   className={stylesAdvance.link}
                 />
               ),

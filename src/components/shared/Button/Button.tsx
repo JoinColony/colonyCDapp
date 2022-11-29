@@ -103,7 +103,6 @@ const Button = ({
     typeof text == 'string'
       ? text
       : text && <FormattedMessage {...text} values={textValues} />;
-  //  formatMessage(text, textValues);
 
   const classNames = useMainClasses(appearance, styles, className);
 
