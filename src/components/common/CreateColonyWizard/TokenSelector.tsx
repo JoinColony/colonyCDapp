@@ -1,6 +1,5 @@
 import React, { useEffect, ReactNode } from 'react';
 import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
-import { gql, useLazyQuery } from '@apollo/client';
 import { useField, useFormikContext } from 'formik';
 
 import { Input } from '~shared/Fields';
@@ -8,12 +7,7 @@ import { Appearance } from '~shared/Fields/Input/Input';
 
 import { usePrevious } from '~hooks';
 import { isAddress } from '~utils/web3';
-import {
-  getTokenByAddress as getTokenByAddressDocument,
-  GetTokenByAddressQuery,
-  GetTokenByAddressQueryVariables,
-  Token,
-} from '~gql';
+import { Token, useGetTokenByAddressLazyQuery } from '~gql';
 import { DEFAULT_NETWORK_INFO } from '~constants';
 
 import styles from './TokenSelector.css';
@@ -121,9 +115,7 @@ const TokenSelector = ({
       error: fetchingTokenError,
       called: wasQueryCalled,
     },
-  ] = useLazyQuery<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>(
-    gql(getTokenByAddressDocument),
-  );
+  ] = useGetTokenByAddressLazyQuery();
 
   const tokenData = tokenQuery?.getTokenByAddress?.items;
   const { name, symbol } = tokenData?.[0] || {};
@@ -147,7 +139,7 @@ const TokenSelector = ({
     setError?.(false);
     getToken({
       variables: {
-        id: inputtedAddress,
+        address: inputtedAddress,
       },
     });
   };

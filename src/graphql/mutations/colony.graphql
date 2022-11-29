@@ -1,0 +1,17 @@
+mutation CreateUniqueColony($input: CreateUniqueColonyInput!) {
+  createUniqueColony(input: $input) {
+    id
+  }
+}
+
+mutation CreateWatchedColonies($input: CreateWatchedColoniesInput!) {
+  createWatchedColonies(input: $input) {
+    id
+  }
+}
+
+mutation CreateUniqueDomain($input: CreateUniqueDomainInput!) {
+  createUniqueDomain(input: $input) {
+    id
+  }
+}
