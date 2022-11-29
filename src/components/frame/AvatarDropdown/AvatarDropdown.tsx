@@ -97,7 +97,12 @@ const AvatarDropdown = ({ preventTransactions = false, spinnerMsg }: Props) => {
           type="button"
           data-test="avatarDropdown"
         >
-          <UserAvatar address={wallet?.address || ''} size="s" user={user} />
+          <UserAvatar
+            address={wallet?.address || ''}
+            size="s"
+            notSet={false}
+            user={user}
+          />
         </button>
       )}
     </Popover>
