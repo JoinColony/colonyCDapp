@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
-import { useMutation, gql } from '@apollo/client';
 
 import { FileReaderFile } from '~shared/FileUpload';
 import AvatarUploader from '~shared/AvatarUploader';
@@ -8,7 +7,7 @@ import UserAvatar from '~shared/UserAvatar';
 import { InputStatus } from '~shared/Fields';
 
 import { User } from '~types';
-import { updateUser } from '~gql';
+import { useUpdateUserMutation } from '~gql';
 
 import styles from './UserAvatarUploader.css';
 import { useAppContext } from '~hooks';
@@ -31,12 +30,15 @@ interface Props {
   user: User;
 }
 
-const UserAvatarUploader = ({ user, user: { walletAddress } }: Props) => {
+const UserAvatarUploader = ({
+  user,
+  user: { walletAddress, profile },
+}: Props) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { __typename, ...userProfile } = profile || {};
   const appContext = useAppContext();
 
-  const [updateAvatar, { error, called, loading }] = useMutation(
-    gql(updateUser),
-  );
+  const [updateAvatar, { error, called, loading }] = useUpdateUserMutation();
 
   const [avatarFileError, setAvatarFileError] = useState(false);
 
@@ -44,7 +46,10 @@ const UserAvatarUploader = ({ user, user: { walletAddress } }: Props) => {
     setAvatarFileError(false);
     return updateAvatar({
       variables: {
-        input: { id: walletAddress, profile: { avatar: fileData.data } },
+        input: {
+          id: walletAddress,
+          profile: { ...userProfile, avatar: fileData.data },
+        },
       },
     });
   };
@@ -52,7 +57,7 @@ const UserAvatarUploader = ({ user, user: { walletAddress } }: Props) => {
   const remove = () =>
     updateAvatar({
       variables: {
-        input: { id: walletAddress, profile: { avatar: null } },
+        input: { id: walletAddress, profile: { ...userProfile, avatar: null } },
       },
     });
 

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
-import { useMutation, gql } from '@apollo/client';
 import * as yup from 'yup';
 import { isConfusing } from '@colony/unicode-confusables-noascii';
 
@@ -19,7 +18,7 @@ import {
 import Button from '~shared/Button';
 import ConfusableWarning from '~shared/ConfusableWarning';
 
-import { updateUser } from '~gql';
+import { useUpdateUserMutation } from '~gql';
 import { User } from '~types';
 import { useAppContext } from '~hooks';
 
@@ -90,10 +89,15 @@ const validationSchema = yup.object({
   website: yup.string().url().nullable(),
 });
 
-const UserMainSettings = ({ user }: Props) => {
+const UserMainSettings = ({
+  user: { walletAddress, profile },
+  user,
+}: Props) => {
   const appContext = useAppContext();
 
-  const { walletAddress, profile } = user;
+  // const { walletAddress, profile } = user;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { __typename, ...userProfile } = profile || {};
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   useEffect(() => {
     if (showSnackbar) {
@@ -105,20 +109,25 @@ const UserMainSettings = ({ user }: Props) => {
     return undefined;
   }, [showSnackbar]);
 
-  const [editUser, { error, loading, called }] = useMutation(gql(updateUser));
+  const [editUser, { error, loading, called }] = useUpdateUserMutation();
   const onSubmit = useCallback(
     (updatedProfile: FormValues) =>
       editUser({
-        variables: { input: { id: walletAddress, profile: updatedProfile } },
+        variables: {
+          input: {
+            id: walletAddress,
+            profile: { ...userProfile, ...updatedProfile },
+          },
+        },
       }),
-    [walletAddress, editUser],
+    [walletAddress, editUser, userProfile],
   );
 
   useEffect(() => {
     if (called && !loading && appContext.updateUser) {
-      appContext.updateUser(user.walletAddress);
+      appContext.updateUser(walletAddress);
     }
-  }, [appContext, called, loading, user]);
+  }, [appContext, called, loading, walletAddress]);
 
   return (
     <>
