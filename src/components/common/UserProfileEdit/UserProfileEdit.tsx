@@ -6,11 +6,12 @@ import { Tab, TabList, TabPanel, Tabs } from '~shared/Tabs';
 import ProfileTemplate from '~frame/ProfileTemplate';
 import LandingPage from '~frame/LandingPage';
 
+import { useAppContext } from '~hooks';
+
 import UserProfileSpinner from '../UserProfile/UserProfileSpinner';
 import Sidebar from './Sidebar';
 import UserMainSettings from './UserMainSettings';
-import UserAdvanceSettings from './UserAdvanceSettings';
-import { useAppContext } from '~hooks';
+import UserAdvancedSettings from './UserAdvancedSettings';
 
 const displayName = 'common.UserProfileEdit';
 
@@ -54,7 +55,7 @@ const UserProfileEdit = () => {
           <UserMainSettings user={user} />
         </TabPanel>
         <TabPanel>
-          <UserAdvanceSettings />
+          <UserAdvancedSettings />
         </TabPanel>
       </Tabs>
     </ProfileTemplate>

@@ -8,9 +8,9 @@ import { InputStatus } from '~shared/Fields';
 
 import { User } from '~types';
 import { useUpdateUserMutation } from '~gql';
+import { useAppContext } from '~hooks';
 
 import styles from './UserAvatarUploader.css';
-import { useAppContext } from '~hooks';
 
 const displayName = 'common.UserProfileEdit.UserAvatarUploader';
 

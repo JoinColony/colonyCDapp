@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 
 import LoadingTemplate from '~frame/LoadingTemplate';
 
-const displayName = 'common.UserProfile.UserColonies';
+const displayName = 'common.UserProfile.UserProfileSpinner';
 
 const MSG = defineMessages({
   loadingText: {
@@ -16,8 +16,10 @@ const MSG = defineMessages({
   },
 });
 
-const Spinner = () => <LoadingTemplate loadingText={MSG.loadingText} />;
+const UserProfileSpinner = () => (
+  <LoadingTemplate loadingText={MSG.loadingText} />
+);
 
-Spinner.displayName = displayName;
+UserProfileSpinner.displayName = displayName;
 
-export default Spinner;
+export default UserProfileSpinner;

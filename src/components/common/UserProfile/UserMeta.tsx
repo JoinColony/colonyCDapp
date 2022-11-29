@@ -34,6 +34,8 @@ const UserMeta = ({ user: { walletAddress, profile }, user }: Props) => {
   const { displayName, bio, website, location } = profile || {};
   const { user: currentUser } = useAppContext();
 
+  const currentWalletAddress = currentUser?.walletAddress;
+
   const isMobile = useMediaQuery({ query: query.query700 });
   return (
     <div className={styles.main}>
@@ -54,7 +56,7 @@ const UserMeta = ({ user: { walletAddress, profile }, user }: Props) => {
             data-test="userProfileName"
           />
         )}
-        {currentUser?.walletAddress === walletAddress && (
+        {currentWalletAddress === walletAddress && (
           <Link className={styles.profileLink} to="/edit-profile">
             <Icon name="settings" title={MSG.editProfileTitle} />
           </Link>

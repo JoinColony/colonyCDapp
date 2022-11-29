@@ -7,36 +7,38 @@ import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 import { Form, Input, Toggle } from '~shared/Fields';
 import Snackbar, { SnackbarType } from '~shared/Snackbar';
 import Button from '~shared/Button';
+import ExternalLink from '~shared/ExternalLink';
 
 import useUserSettings, { SlotKey } from '~hooks/useUserSettings';
 import { canUseMetatransactions } from '~utils/checks';
 
 import styles from './UserProfileEdit.css';
-import stylesAdvance from './UserAdvanceSettings.css';
-import ExternalLink from '~shared/ExternalLink';
+import stylesAdvance from './UserAdvancedSettings.css';
+
+const displayName = 'common.UserProfileEdit.UserAdvancedSettings';
 
 const MSG = defineMessages({
   heading: {
-    id: 'users.UserProfileEdit.UserAdvanceSettings.heading',
+    id: `${displayName}.heading`,
     defaultMessage: 'Advanced settings {learnMoreLink}',
   },
   metaDescription: {
-    id: 'users.UserProfileEdit.UserAdvanceSettings.metaDescription',
+    id: `${displayName}.metaDescription`,
     defaultMessage: `To connect directly to Gnosis chain and pay for your own transactions, disable this option.`,
   },
   metaDescGlobalOff: {
-    id: 'users.UserProfileEdit.UserAdvanceSettings.metaDescGlobalOff',
+    id: `${displayName}.metaDescGlobalOff`,
     defaultMessage: `Metatransactions are disabled globally.`,
   },
   labelMetaTx: {
-    id: 'users.UserProfileEdit.UserAdvanceSettings.labelMetaTx',
+    id: `${displayName}.labelMetaTx`,
     defaultMessage: `Metatransactions ({isOn, select,
       true {active}
       other {inactive}
     })`,
   },
   metaTooltip: {
-    id: 'users.UserProfileEdit.UserAdvanceSettings.metaTooltip',
+    id: `${displayName}.metaTooltip`,
     defaultMessage: `Metatransactions are turned on by default.
     If you would rather connect directly to the chain,
     and pay for your own transactions, you can turn them off
@@ -45,30 +47,30 @@ const MSG = defineMessages({
     if you clear your cache you will need to turn Metatransactions off again.`,
   },
   customEndpoints: {
-    id: 'users.UserProfileEdit.UserAdvanceSettings.customEndpoints',
+    id: `${displayName}.customEndpoints`,
     defaultMessage: `Enable custom endpoints ({isOn, select,
       true {active}
       other {inactive}
     })`,
   },
   endpointsDescription: {
-    id: 'users.UserProfileEdit.UserAdvanceSettings.metaDescription',
+    id: `${displayName}.metaDescription`,
     defaultMessage: `If you prefer maximum decentralisation, you may use your own custom endpoints for Colony.`,
   },
-  labelGnosisRPC: {
-    id: 'users.UserProfileEdit.UserAdvanceSettings.labelGnosisRPC',
+  labelRPC: {
+    id: `${displayName}.labelRPC`,
     defaultMessage: 'Gnosis Chain RPC',
   },
-  gnosisRPCTooltip: {
-    id: 'users.UserProfileEdit.UserAdvanceSettings.gnosisRPCTooltip',
+  RPCTooltip: {
+    id: `${displayName}.RPCTooltip`,
     defaultMessage: `You will be able to toggle the Gnosis Chain RPC on once you have successfully validated that the endpoint works.`,
   },
   validate: {
-    id: 'users.UserProfileEdit.UserAdvanceSettings.validate',
+    id: `${displayName}.validate`,
     defaultMessage: 'Validate',
   },
   snackbarSuccess: {
-    id: 'users.UserProfileEdit.UserAdvanceSettings.snackbarSuccess',
+    id: `${displayName}.snackbarSuccess`,
     defaultMessage: 'Profile settings have been updated.',
   },
 });
@@ -85,9 +87,7 @@ const validationSchema = yup.object({
   [SlotKey.CustomRPC]: yup.string().url(),
 });
 
-const displayName = 'users.UserProfileEdit.UserAdvanceSettings';
-
-const UserAdvanceSettings = () => {
+const UserAdvancedSettings = () => {
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   useEffect(() => {
     if (showSnackbar) {
@@ -118,9 +118,9 @@ const UserAdvanceSettings = () => {
     [setSettingsKey],
   );
 
-  const metatransasctionsToggleAvailable = canUseMetatransactions();
+  const metatransactionsToggleAvailable = canUseMetatransactions();
 
-  const metatransasctionsAvailable = metatransasctionsToggleAvailable
+  const metatransasctionsAvailable = metatransactionsToggleAvailable
     ? metatransactionsSetting
     : false;
 
@@ -157,7 +157,7 @@ const UserAdvanceSettings = () => {
                 isOn: values[SlotKey.Metatransactions],
               }}
               name={SlotKey.Metatransactions}
-              disabled={!metatransasctionsToggleAvailable}
+              disabled={!metatransactionsToggleAvailable}
             />
             <QuestionMarkTooltip
               tooltipText={MSG.metaTooltip}
@@ -173,7 +173,7 @@ const UserAdvanceSettings = () => {
           <p className={stylesAdvance.descriptions}>
             <FormattedMessage {...MSG.metaDescription} />
           </p>
-          {!metatransasctionsToggleAvailable && (
+          {!metatransactionsToggleAvailable && (
             <div className={stylesAdvance.metaDesc}>
               <FormattedMessage {...MSG.metaDescGlobalOff} />
             </div>
@@ -190,12 +190,12 @@ const UserAdvanceSettings = () => {
           </p>
           <div className={stylesAdvance.toggleContainer}>
             <Toggle
-              label={MSG.labelGnosisRPC}
+              label={MSG.labelRPC}
               labelValues={{ isOn: decentralizedModeEnabled }}
               name={SlotKey.DecentralizedMode}
             />
             <QuestionMarkTooltip
-              tooltipText={MSG.gnosisRPCTooltip}
+              tooltipText={MSG.RPCTooltip}
               className={stylesAdvance.tooltipContainer}
               tooltipClassName={stylesAdvance.tooltipContent}
               tooltipPopperOptions={{
@@ -214,7 +214,7 @@ const UserAdvanceSettings = () => {
             />
           </div>
           <hr />
-          {metatransasctionsToggleAvailable && (
+          {metatransactionsToggleAvailable && (
             <>
               <Button
                 text={{ id: 'button.save' }}
@@ -222,7 +222,7 @@ const UserAdvanceSettings = () => {
                   submitForm();
                   setShowSnackbar(true);
                 }}
-                disabled={!metatransasctionsToggleAvailable}
+                disabled={!metatransactionsToggleAvailable}
               />
               <Snackbar
                 show={showSnackbar}
@@ -238,6 +238,6 @@ const UserAdvanceSettings = () => {
   );
 };
 
-UserAdvanceSettings.displayName = displayName;
+UserAdvancedSettings.displayName = displayName;
 
-export default UserAdvanceSettings;
+export default UserAdvancedSettings;

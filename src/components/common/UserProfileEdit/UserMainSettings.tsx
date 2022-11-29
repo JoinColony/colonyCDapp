@@ -24,50 +24,50 @@ import { useAppContext } from '~hooks';
 
 import styles from './UserProfileEdit.css';
 
+const displayName = 'common.UserProfileEdit.UserMainSettings';
+
 const MSG = defineMessages({
   heading: {
-    id: 'users.UserProfileEdit.UserMainSettings.heading',
+    id: `${displayName}.heading`,
     defaultMessage: 'Profile',
   },
   labelWallet: {
-    id: 'users.UserProfileEdit.UserMainSettings.labelWallet',
+    id: `${displayName}.labelWallet`,
     defaultMessage: 'Your Wallet',
   },
   labelUsername: {
-    id: 'users.UserProfileEdit.UserMainSettings.labelUsername',
+    id: `${displayName}.labelUsername`,
     defaultMessage: 'Unique Username',
   },
   labelEmail: {
-    id: 'users.UserProfileEdit.UserMainSettings.labelEmail',
+    id: `${displayName}.labelEmail`,
     defaultMessage: 'Your email',
   },
   labelName: {
-    id: 'users.UserProfileEdit.UserMainSettings.labelName',
+    id: `${displayName}.labelName`,
     defaultMessage: 'Your display name',
   },
   labelBio: {
-    id: 'users.UserProfileEdit.UserMainSettings.labelBio',
+    id: `${displayName}.labelBio`,
     defaultMessage: 'Bio',
   },
   labelWebsite: {
-    id: 'users.UserProfileEdit.UserMainSettings.labelWebsite',
+    id: `${displayName}.labelWebsite`,
     defaultMessage: 'Website',
   },
   labelLocation: {
-    id: 'users.UserProfileEdit.UserMainSettings.labelLocation',
+    id: `${displayName}.labelLocation`,
     defaultMessage: 'Location',
   },
   snackbarSuccess: {
-    id: 'users.UserProfileEdit.UserMainSettings.snackbarSuccess',
+    id: `${displayName}.snackbarSuccess`,
     defaultMessage: 'Profile settings have been updated.',
   },
   snackbarError: {
-    id: 'users.UserProfileEdit.UserMainSettings.snackbarError',
+    id: `${displayName}.snackbarError`,
     defaultMessage: 'Profile settings were not able to be updated. Try again.',
   },
 });
-
-const displayName = 'users.UserProfileEdit.UserMainSettings';
 
 interface FormValues {
   email?: string;
@@ -93,9 +93,8 @@ const UserMainSettings = ({
   user: { walletAddress, profile },
   user,
 }: Props) => {
-  const appContext = useAppContext();
+  const { updateUser } = useAppContext();
 
-  // const { walletAddress, profile } = user;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { __typename, ...userProfile } = profile || {};
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
@@ -124,10 +123,10 @@ const UserMainSettings = ({
   );
 
   useEffect(() => {
-    if (called && !loading && appContext.updateUser) {
-      appContext.updateUser(walletAddress);
+    if (called && !loading && updateUser) {
+      updateUser(walletAddress);
     }
-  }, [appContext, called, loading, walletAddress]);
+  }, [called, loading, walletAddress, updateUser]);
 
   return (
     <>

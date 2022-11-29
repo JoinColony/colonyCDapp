@@ -30,6 +30,7 @@ interface Props {
 const displayName = 'UserMention';
 
 const UserMention = ({
+  user: { name },
   user,
   to,
   hasLink,
@@ -55,14 +56,14 @@ const UserMention = ({
     hasLink ? (
       <Link
         to={fallbackTo}
-        text={`@${user.name}`}
+        text={`@${name}`}
         className={styles.mention}
         {...props}
       />
     ) : (
       <span className={styles.mention} {...props}>
         {' '}
-        {`@${user.name}`}
+        {`@${name}`}
       </span>
     );
 

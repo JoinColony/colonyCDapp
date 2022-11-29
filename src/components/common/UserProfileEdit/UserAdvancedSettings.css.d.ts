@@ -1,5 +1,5 @@
-declare namespace UserAdvanceSettingsCssNamespace {
-  export interface IUserAdvanceSettingsCss {
+declare namespace UserAdvancedSettingsCssNamespace {
+  export interface IUserAdvancedSettingsCss {
     descriptions: string;
     link: string;
     mappings: string;
@@ -18,9 +18,9 @@ declare namespace UserAdvanceSettingsCssNamespace {
   }
 }
 
-declare const UserAdvanceSettingsCssModule: UserAdvanceSettingsCssNamespace.IUserAdvanceSettingsCss & {
+declare const UserAdvancedSettingsCssModule: UserAdvancedSettingsCssNamespace.IUserAdvancedSettingsCss & {
   /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
-  locals: UserAdvanceSettingsCssNamespace.IUserAdvanceSettingsCss;
+  locals: UserAdvancedSettingsCssNamespace.IUserAdvancedSettingsCss;
 };
 
-export = UserAdvanceSettingsCssModule;
+export = UserAdvancedSettingsCssModule;

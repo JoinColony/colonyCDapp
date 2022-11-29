@@ -6,9 +6,11 @@ import { User } from '~types';
 
 import UserAvatarUploader from './UserAvatarUploader';
 
+const displayName = 'common.UserProfileEdit.Sidebar';
+
 const MSG = defineMessages({
   heading: {
-    id: 'users.UserProfileEdit.Sidebar.heading',
+    id: `${displayName}.heading`,
     defaultMessage: 'Profile Picture',
   },
 });
@@ -16,8 +18,6 @@ const MSG = defineMessages({
 interface Props {
   user: User;
 }
-
-const displayName = 'common.UserProfileEdit.Sidebar';
 
 const Sidebar = ({ user }: Props) => (
   <>
