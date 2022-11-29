@@ -30,6 +30,7 @@ const REPUTATION_ENDPOINT = 'http://network-contracts:3002';
 const SORTING_METHODS = {
   BY_HIGHEST_REP: 'BY_HIGHEST_REP',
   BY_LOWEST_REP: 'BY_LOWEST_REP',
+  // @NOTE - this might be useful in the future
   // BY_MORE_PERMISSIONS,
   // BY_LESS_PERMISSIONS,
 };
@@ -56,6 +57,13 @@ exports.handler = async (event) => {
   const { skillId } = await colonyClient.getDomain(domainId);
   const { addresses: addressesWithReputation } =
     await colonyClient.getMembersReputation(skillId);
+
+  // Get total reputation for colony
+  const totalColonyReputation = await colonyClient.getReputationWithoutProofs(
+    skillId,
+    constants.AddressZero,
+    rootHash,
+  );
 
   /*
    * Validate Colony addresses
@@ -133,13 +141,6 @@ exports.handler = async (event) => {
             if (!userReputation?.reputationAmount) {
               return {};
             }
-
-            const totalColonyReputation =
-              await colonyClient.getReputationWithoutProofs(
-                skillId,
-                constants.AddressZero,
-                rootHash,
-              );
 
             const reputationPercentage = calculatePercentageReputation(
               userReputation.reputationAmount?.toString(),
