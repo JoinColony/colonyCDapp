@@ -13,3 +13,13 @@ query GetMetacolony {
     }
   }
 }
+
+query GetColonyExtensions($colonyAddress: ID!) {
+  getColony(id: $colonyAddress) {
+    extensions(filter: { status: { ne: DELETED } }) {
+      items {
+        ...Extension
+      }
+    }
+  }
+}

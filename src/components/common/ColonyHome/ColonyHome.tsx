@@ -7,16 +7,10 @@ import {
   useParams,
 } from 'react-router-dom';
 
-// import Extensions, { ExtensionDetails } from '~dashboard/Extensions';
-
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 // import { allAllowedExtensions } from '~data/staticData/';
-
 // import ColonyActions from '~dashboard/ColonyActions';
 // import ColonyEvents from '~dashboard/ColonyEvents';
-
-import ColonyHomeLayout from './ColonyHomeLayout';
-
 import {
   COLONY_EVENTS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
@@ -24,7 +18,10 @@ import {
   COLONY_EXTENSION_SETUP_ROUTE,
 } from '~routes/index';
 import NotFoundRoute from '~routes/NotFoundRoute';
+import ColonyExtensions from '~common/ColonyExtensions';
 import { useColonyContext } from '~hooks';
+
+import ColonyHomeLayout from './ColonyHomeLayout';
 
 const displayName = 'common.ColonyHome';
 
@@ -97,12 +94,7 @@ const ColonyHome = () => {
           >
             <Route
               path={COLONY_EXTENSIONS_ROUTE}
-              element={
-                <>
-                  {/* <Extensions {...props} colonyAddress={colonyAddress} /> */}
-                  <div>Extensions</div>
-                </>
-              }
+              element={<ColonyExtensions />}
             />
             <Route
               path={COLONY_EXTENSION_DETAILS_ROUTE}
