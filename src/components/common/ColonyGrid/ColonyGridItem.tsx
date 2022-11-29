@@ -5,11 +5,12 @@ import Link from '~shared/Link';
 import ColonyAvatar from '~shared/ColonyAvatar';
 
 import { Colony } from '~types';
+import { WatchedColonyFragment } from '~gql';
 
 import styles from './ColonyGridItem.css';
 
 interface Props {
-  colony: Colony;
+  colony: WatchedColonyFragment | Colony;
 }
 
 const displayName = 'common.ColonyGrid.ColonyGridItem';

@@ -1,8 +1,10 @@
 import React from 'react';
 
-import { Address, Colony } from '~types';
 import Avatar, { Props as AvatarProps } from '~shared/Avatar';
 import NavLink from '~shared/NavLink';
+
+import { WatchedColonyFragment } from '~gql';
+import { Address, Colony } from '~types';
 
 export interface Props
   extends Pick<AvatarProps, 'className' | 'notSet' | 'size'> {
@@ -13,7 +15,7 @@ export interface Props
   showLink?: boolean;
 
   /** The corresponding user object if available */
-  colony?: Colony;
+  colony?: WatchedColonyFragment | Colony;
 
   avatarURL?: string;
 
