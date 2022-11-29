@@ -1,0 +1,31 @@
+@value lineHeight: 18px;
+
+.heading {
+  font-size: var(--size-medium-l);
+  color: var(--dark);
+}
+
+.description {
+  margin-top: 15px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  line-height: lineHeight;
+  color: var(--grey-purple);
+  letter-spacing: var(--spacing-medium);
+}
+
+.main hr {
+  margin: 15px 0 20px;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
