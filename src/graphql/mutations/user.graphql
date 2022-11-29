@@ -1,5 +1,19 @@
 mutation CreateUniqueUser($input: CreateUniqueUserInput!) {
-    createUniqueUser(input: $input) {
-        id
+  createUniqueUser(input: $input) {
+      id
+  }
+}
+
+mutation UpdateUser ($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    id
+    profile {
+      avatarHash
+      bio
+      displayName
+      location
+      website
+      email
     }
+  }
 }
