@@ -1,4 +1,5 @@
 import React from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { defineMessages, useIntl } from 'react-intl';
 
 import MemberReputation from '~shared/MemberReputation';
@@ -15,6 +16,7 @@ import {
 import Wallet from './Wallet';
 
 import styles from './UserNavigation.css';
+import queries from '~styles/queries.css';
 
 const displayName = 'frame.RouteLayouts.UserNavigation';
 
@@ -32,10 +34,13 @@ const MSG = defineMessages({
   },
 });
 
+const { query700: query } = queries;
+
 const UserNavigation = () => {
   const { colony } = useColonyContext();
   const { wallet } = useAppContext();
   const { formatMessage } = useIntl();
+  const isMobile = useMediaQuery({ query });
 
   // const userLock = userData?.user.userLock;
   // const nativeToken = userLock?.nativeToken;
@@ -48,7 +53,7 @@ const UserNavigation = () => {
 
   return (
     <div className={styles.main}>
-      {colony?.colonyAddress && wallet && (
+      {colony?.colonyAddress && wallet && !isMobile && (
         <Tooltip
           content={formatMessage(MSG.userReputationTooltip)}
           placement="bottom-start"
