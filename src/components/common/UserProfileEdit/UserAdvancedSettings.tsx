@@ -161,7 +161,6 @@ const UserAdvancedSettings = () => {
             />
             <QuestionMarkTooltip
               tooltipText={MSG.metaTooltip}
-              /* @ts-ignore */
               tooltipTextValues={{ br: <br /> }}
               className={stylesAdvance.tooltipContainer}
               tooltipClassName={stylesAdvance.tooltipContent}
