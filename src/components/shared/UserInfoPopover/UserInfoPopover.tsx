@@ -5,7 +5,6 @@ import React from 'react';
 // import { SpinnerLoader } from '~shared/Preloaders';
 import Tag from '~shared/Tag';
 // import { getAllUserRoles } from '~redux/transformers';
-import UserInfo from './UserInfo';
 import NotAvailableMessage from '../NotAvailableMessage/NotAvailableMessage';
 import { User, Colony } from '~types';
 import { useAppContext, useUserReputationForTopDomains } from '~hooks';
@@ -13,6 +12,7 @@ import { useAppContext, useUserReputationForTopDomains } from '~hooks';
 // import UserPermissions from './UserPermissions';
 // import UserTokens from './UserTokens';
 import UserReputation from './UserReputation';
+import UserInfo from './UserInfo';
 
 import styles from './UserInfoPopover.css';
 

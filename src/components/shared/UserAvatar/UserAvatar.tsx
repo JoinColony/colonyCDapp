@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
 
 import Popover from '~shared/Popover';
@@ -67,9 +67,9 @@ const UserAvatar = ({
   const { profile } = user || {};
   const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
 
-  const renderContent = useMemo(() => {
+  const renderContent = () => {
     return <UserInfoPopover colony={colony} user={user} banned={banned} />;
-  }, [user, banned, colony]);
+  };
 
   const avatar = (
     <Popover

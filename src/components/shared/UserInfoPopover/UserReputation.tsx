@@ -3,12 +3,11 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import isEmpty from 'lodash/isEmpty';
 
 import Heading from '~shared/Heading';
-import Icon from '~shared/Icon';
-import Numeral from '~shared/Numeral';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { UserDomainReputation } from '~hooks';
 import { Colony } from '~types';
-import { ZeroValue } from '~utils/reputation';
+
+import UserReputationItem from './UserReputationItem';
 
 import styles from './UserInfoPopover.css';
 
@@ -88,39 +87,11 @@ const UserReputation = ({
             <ul>
               {formattedUserReputations.map(
                 ({ reputationDomain, reputationPercentage }) => (
-                  <li
+                  <UserReputationItem
                     key={`${reputationDomain?.id}-${reputationPercentage}`}
-                    className={styles.domainReputationItem}
-                  >
-                    <p className={styles.domainName}>
-                      {reputationDomain?.name}
-                    </p>
-                    <div className={styles.reputationContainer}>
-                      {reputationPercentage === ZeroValue.NearZero && (
-                        <div className={styles.reputation}>
-                          {reputationPercentage}
-                        </div>
-                      )}
-                      {reputationPercentage &&
-                        reputationPercentage !== ZeroValue.NearZero && (
-                          <Numeral
-                            className={styles.reputation}
-                            value={reputationPercentage}
-                            suffix="%"
-                          />
-                        )}
-                      <Icon
-                        name="star"
-                        appearance={{ size: 'extraTiny' }}
-                        className={styles.icon}
-                        title={MSG.starReputationTitle}
-                        titleValues={{
-                          reputation: reputationPercentage,
-                          domainName: reputationDomain?.name,
-                        }}
-                      />
-                    </div>
-                  </li>
+                    domainName={reputationDomain?.name || ''}
+                    reputationPercentage={reputationPercentage}
+                  />
                 ),
               )}
             </ul>

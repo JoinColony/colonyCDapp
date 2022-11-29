@@ -9,7 +9,7 @@ import NotAvailableMessage from '../NotAvailableMessage/NotAvailableMessage';
 import styles from './TokenInfoPopover.css';
 
 interface Props {
-  token?: Token;
+  token: Token;
   isTokenNative: boolean;
 }
 
@@ -18,7 +18,7 @@ const displayName = 'TokenInfoPopover';
 const TokenInfoPopover = ({ token, isTokenNative }: Props) => {
   return (
     <span>
-      {!isEmpty(token) && token ? (
+      {!isEmpty(token) ? (
         <TokenInfo token={token} isTokenNative={isTokenNative} />
       ) : (
         <div className={styles.section}>

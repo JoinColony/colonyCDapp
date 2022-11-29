@@ -1,10 +1,9 @@
 import { Address } from '~types';
 import { useGetReputationForTopDomainsQuery } from '~gql';
-import { PercentageReputationType } from '~utils/reputation';
 
 export type UserDomainReputation = {
-  domainId?: number;
-  reputationPercentage?: PercentageReputationType;
+  domainId: number;
+  reputationPercentage: string;
 };
 
 const useUserReputationForTopDomains = (
