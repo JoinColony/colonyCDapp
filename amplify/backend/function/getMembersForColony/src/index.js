@@ -59,11 +59,17 @@ exports.handler = async (event) => {
     await colonyClient.getMembersReputation(skillId);
 
   // Get total reputation for colony
-  const totalColonyReputation = await colonyClient.getReputationWithoutProofs(
-    skillId,
-    constants.AddressZero,
-    rootHash,
-  );
+  let totalColonyReputation;
+  try {
+    totalColonyReputation = await colonyClient.getReputationWithoutProofs(
+      skillId,
+      constants.AddressZero,
+      rootHash,
+    );
+  } catch (error) {
+    // Not throwing anything, as its possible that the domain does not have
+    // any reputation, and we don't want to break the whole query
+  }
 
   /*
    * Validate Colony addresses
