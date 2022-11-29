@@ -8,7 +8,7 @@ mutation UpdateUser ($input: UpdateUserInput!) {
   updateUser(input: $input) {
     id
     profile {
-      avatarHash
+      avatar
       bio
       displayName
       location

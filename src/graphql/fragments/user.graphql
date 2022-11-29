@@ -13,16 +13,7 @@ fragment User on User {
   watchlist {
     items {
       colony {
-        colonyAddress: id
-        name
-        profile {
-          displayName
-          thumbnail
-        }
-        meta {
-          chainId
-          network
-        }
+        ...WatchedColony
       }
       createdAt
     }

@@ -64,3 +64,17 @@ fragment Watcher on WatchedColonies {
     }
   }
 }
+
+fragment WatchedColony on Colony {
+  colonyAddress: id
+  name
+  profile {
+    avatar
+    displayName
+    thumbnail
+  }
+  meta {
+    chainId
+    network
+  }
+}
