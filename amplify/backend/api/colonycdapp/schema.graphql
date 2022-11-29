@@ -106,8 +106,8 @@ type ReputationForColonyReturn {
 }
 
 type MembersForColonyReturn {
-  contributors: [Contributor]
-  watchers: [User]
+  contributors: [Contributor!]
+  watchers: [User!]
 }
 
 enum TokenType {
