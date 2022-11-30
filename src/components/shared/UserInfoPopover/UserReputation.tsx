@@ -75,7 +75,7 @@ const UserReputation = ({
           }}
         />
       ) : (
-        <span>
+        <>
           {isEmpty(formattedUserReputations) ? (
             <p className={styles.noReputationDescription}>
               <FormattedMessage
@@ -96,7 +96,7 @@ const UserReputation = ({
               )}
             </ul>
           )}
-        </span>
+        </>
       )}
     </div>
   );

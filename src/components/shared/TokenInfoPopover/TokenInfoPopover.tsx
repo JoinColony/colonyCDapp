@@ -17,7 +17,7 @@ const displayName = 'TokenInfoPopover';
 
 const TokenInfoPopover = ({ token, isTokenNative }: Props) => {
   return (
-    <span>
+    <>
       {!isEmpty(token) ? (
         <TokenInfo token={token} isTokenNative={isTokenNative} />
       ) : (
@@ -25,7 +25,7 @@ const TokenInfoPopover = ({ token, isTokenNative }: Props) => {
           <NotAvailableMessage notAvailableDataName="Token" />
         </div>
       )}
-    </span>
+    </>
   );
 };
 
