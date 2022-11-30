@@ -21,7 +21,8 @@
         "getReputationForTopDomains": {},
         "fetchColonyNativeFundsClaim": {},
         "fetchColonyBalances": {},
-        "updateExtensionByColonyAndHash": {}
+        "updateExtensionByColonyAndHash": {},
+        "setCurrentVersion": {}
       }
     }
   }

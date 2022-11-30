@@ -265,6 +265,12 @@ export type CreateContractEventInput = {
   target: Scalars['String'];
 };
 
+export type CreateCurrentVersionInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  item: CurrentVersionItem;
+  version: Scalars['Int'];
+};
+
 export type CreateDomainInput = {
   colonyDomainsId?: InputMaybe<Scalars['ID']>;
   color?: InputMaybe<DomainColor>;
@@ -342,6 +348,20 @@ export type CreateWatchedColoniesInput = {
   userID: Scalars['ID'];
 };
 
+export type CurrentVersion = {
+  __typename?: 'CurrentVersion';
+  createdAt: Scalars['AWSDateTime'];
+  id: Scalars['ID'];
+  item: CurrentVersionItem;
+  updatedAt: Scalars['AWSDateTime'];
+  version: Scalars['Int'];
+};
+
+export enum CurrentVersionItem {
+  Colony = 'COLONY',
+  OneTxPayment = 'ONE_TX_PAYMENT'
+}
+
 export type DeleteColonyExtensionInput = {
   id: Scalars['ID'];
 };
@@ -359,6 +379,10 @@ export type DeleteColonyTokensInput = {
 };
 
 export type DeleteContractEventInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteCurrentVersionInput = {
   id: Scalars['ID'];
 };
 
@@ -631,6 +655,34 @@ export type ModelContractEventFilterInput = {
   target?: InputMaybe<ModelStringInput>;
 };
 
+export type ModelCurrentVersionConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelCurrentVersionConditionInput>>>;
+  item?: InputMaybe<ModelCurrentVersionItemInput>;
+  not?: InputMaybe<ModelCurrentVersionConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelCurrentVersionConditionInput>>>;
+  version?: InputMaybe<ModelIntInput>;
+};
+
+export type ModelCurrentVersionConnection = {
+  __typename?: 'ModelCurrentVersionConnection';
+  items: Array<Maybe<CurrentVersion>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelCurrentVersionFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelCurrentVersionFilterInput>>>;
+  id?: InputMaybe<ModelIdInput>;
+  item?: InputMaybe<ModelCurrentVersionItemInput>;
+  not?: InputMaybe<ModelCurrentVersionFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelCurrentVersionFilterInput>>>;
+  version?: InputMaybe<ModelIntInput>;
+};
+
+export type ModelCurrentVersionItemInput = {
+  eq?: InputMaybe<CurrentVersionItem>;
+  ne?: InputMaybe<CurrentVersionItem>;
+};
+
 export type ModelDomainColorInput = {
   eq?: InputMaybe<DomainColor>;
   ne?: InputMaybe<DomainColor>;
@@ -841,6 +893,14 @@ export type ModelSubscriptionContractEventFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionContractEventFilterInput>>>;
   signature?: InputMaybe<ModelSubscriptionStringInput>;
   target?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
+export type ModelSubscriptionCurrentVersionFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionCurrentVersionFilterInput>>>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  item?: InputMaybe<ModelSubscriptionStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionCurrentVersionFilterInput>>>;
+  version?: InputMaybe<ModelSubscriptionIntInput>;
 };
 
 export type ModelSubscriptionDomainFilterInput = {
@@ -1070,6 +1130,7 @@ export type Mutation = {
   createColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   createColonyTokens?: Maybe<ColonyTokens>;
   createContractEvent?: Maybe<ContractEvent>;
+  createCurrentVersion?: Maybe<CurrentVersion>;
   createDomain?: Maybe<Domain>;
   createProfile?: Maybe<Profile>;
   createToken?: Maybe<Token>;
@@ -1084,17 +1145,20 @@ export type Mutation = {
   deleteColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   deleteColonyTokens?: Maybe<ColonyTokens>;
   deleteContractEvent?: Maybe<ContractEvent>;
+  deleteCurrentVersion?: Maybe<CurrentVersion>;
   deleteDomain?: Maybe<Domain>;
   deleteProfile?: Maybe<Profile>;
   deleteToken?: Maybe<Token>;
   deleteUser?: Maybe<User>;
   deleteUserTokens?: Maybe<UserTokens>;
   deleteWatchedColonies?: Maybe<WatchedColonies>;
+  setCurrentVersion?: Maybe<Scalars['Boolean']>;
   updateColony?: Maybe<Colony>;
   updateColonyExtension?: Maybe<ColonyExtension>;
   updateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   updateColonyTokens?: Maybe<ColonyTokens>;
   updateContractEvent?: Maybe<ContractEvent>;
+  updateCurrentVersion?: Maybe<CurrentVersion>;
   updateDomain?: Maybe<Domain>;
   updateProfile?: Maybe<Profile>;
   updateToken?: Maybe<Token>;
@@ -1131,6 +1195,12 @@ export type MutationCreateColonyTokensArgs = {
 export type MutationCreateContractEventArgs = {
   condition?: InputMaybe<ModelContractEventConditionInput>;
   input: CreateContractEventInput;
+};
+
+
+export type MutationCreateCurrentVersionArgs = {
+  condition?: InputMaybe<ModelCurrentVersionConditionInput>;
+  input: CreateCurrentVersionInput;
 };
 
 
@@ -1215,6 +1285,12 @@ export type MutationDeleteContractEventArgs = {
 };
 
 
+export type MutationDeleteCurrentVersionArgs = {
+  condition?: InputMaybe<ModelCurrentVersionConditionInput>;
+  input: DeleteCurrentVersionInput;
+};
+
+
 export type MutationDeleteDomainArgs = {
   condition?: InputMaybe<ModelDomainConditionInput>;
   input: DeleteDomainInput;
@@ -1251,6 +1327,11 @@ export type MutationDeleteWatchedColoniesArgs = {
 };
 
 
+export type MutationSetCurrentVersionArgs = {
+  input?: InputMaybe<SetCurrentVersionInput>;
+};
+
+
 export type MutationUpdateColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: UpdateColonyInput;
@@ -1278,6 +1359,12 @@ export type MutationUpdateColonyTokensArgs = {
 export type MutationUpdateContractEventArgs = {
   condition?: InputMaybe<ModelContractEventConditionInput>;
   input: UpdateContractEventInput;
+};
+
+
+export type MutationUpdateCurrentVersionArgs = {
+  condition?: InputMaybe<ModelCurrentVersionConditionInput>;
+  input: UpdateCurrentVersionInput;
 };
 
 
@@ -1383,6 +1470,8 @@ export type Query = {
   getColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   getColonyTokens?: Maybe<ColonyTokens>;
   getContractEvent?: Maybe<ContractEvent>;
+  getCurrentVersion?: Maybe<CurrentVersion>;
+  getCurrentVersionByItem?: Maybe<ModelCurrentVersionConnection>;
   getDomain?: Maybe<Domain>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
@@ -1402,6 +1491,7 @@ export type Query = {
   listColonyFundsClaims?: Maybe<ModelColonyFundsClaimConnection>;
   listColonyTokens?: Maybe<ModelColonyTokensConnection>;
   listContractEvents?: Maybe<ModelContractEventConnection>;
+  listCurrentVersions?: Maybe<ModelCurrentVersionConnection>;
   listDomains?: Maybe<ModelDomainConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
   listTokens?: Maybe<ModelTokenConnection>;
@@ -1460,6 +1550,20 @@ export type QueryGetColonyTokensArgs = {
 
 export type QueryGetContractEventArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryGetCurrentVersionArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGetCurrentVersionByItemArgs = {
+  filter?: InputMaybe<ModelCurrentVersionFilterInput>;
+  item: CurrentVersionItem;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -1588,6 +1692,13 @@ export type QueryListContractEventsArgs = {
 };
 
 
+export type QueryListCurrentVersionsArgs = {
+  filter?: InputMaybe<ModelCurrentVersionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryListDomainsArgs = {
   filter?: InputMaybe<ModelDomainFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1629,6 +1740,11 @@ export type QueryListWatchedColoniesArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
+export type SetCurrentVersionInput = {
+  item: CurrentVersionItem;
+  version: Scalars['Int'];
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   onCreateColony?: Maybe<Colony>;
@@ -1636,6 +1752,7 @@ export type Subscription = {
   onCreateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   onCreateColonyTokens?: Maybe<ColonyTokens>;
   onCreateContractEvent?: Maybe<ContractEvent>;
+  onCreateCurrentVersion?: Maybe<CurrentVersion>;
   onCreateDomain?: Maybe<Domain>;
   onCreateProfile?: Maybe<Profile>;
   onCreateToken?: Maybe<Token>;
@@ -1647,6 +1764,7 @@ export type Subscription = {
   onDeleteColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   onDeleteColonyTokens?: Maybe<ColonyTokens>;
   onDeleteContractEvent?: Maybe<ContractEvent>;
+  onDeleteCurrentVersion?: Maybe<CurrentVersion>;
   onDeleteDomain?: Maybe<Domain>;
   onDeleteProfile?: Maybe<Profile>;
   onDeleteToken?: Maybe<Token>;
@@ -1658,6 +1776,7 @@ export type Subscription = {
   onUpdateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   onUpdateColonyTokens?: Maybe<ColonyTokens>;
   onUpdateContractEvent?: Maybe<ContractEvent>;
+  onUpdateCurrentVersion?: Maybe<CurrentVersion>;
   onUpdateDomain?: Maybe<Domain>;
   onUpdateProfile?: Maybe<Profile>;
   onUpdateToken?: Maybe<Token>;
@@ -1689,6 +1808,11 @@ export type SubscriptionOnCreateColonyTokensArgs = {
 
 export type SubscriptionOnCreateContractEventArgs = {
   filter?: InputMaybe<ModelSubscriptionContractEventFilterInput>;
+};
+
+
+export type SubscriptionOnCreateCurrentVersionArgs = {
+  filter?: InputMaybe<ModelSubscriptionCurrentVersionFilterInput>;
 };
 
 
@@ -1747,6 +1871,11 @@ export type SubscriptionOnDeleteContractEventArgs = {
 };
 
 
+export type SubscriptionOnDeleteCurrentVersionArgs = {
+  filter?: InputMaybe<ModelSubscriptionCurrentVersionFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteDomainArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainFilterInput>;
 };
@@ -1799,6 +1928,11 @@ export type SubscriptionOnUpdateColonyTokensArgs = {
 
 export type SubscriptionOnUpdateContractEventArgs = {
   filter?: InputMaybe<ModelSubscriptionContractEventFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateCurrentVersionArgs = {
+  filter?: InputMaybe<ModelSubscriptionCurrentVersionFilterInput>;
 };
 
 
@@ -1930,6 +2064,12 @@ export type UpdateContractEventInput = {
   name?: InputMaybe<Scalars['String']>;
   signature?: InputMaybe<Scalars['String']>;
   target?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateCurrentVersionInput = {
+  id: Scalars['ID'];
+  item?: InputMaybe<CurrentVersionItem>;
+  version?: InputMaybe<Scalars['Int']>;
 };
 
 export type UpdateDomainInput = {
