@@ -267,7 +267,7 @@ export type CreateContractEventInput = {
 
 export type CreateCurrentVersionInput = {
   id?: InputMaybe<Scalars['ID']>;
-  item: CurrentVersionItem;
+  item: Scalars['String'];
   version: Scalars['Int'];
 };
 
@@ -352,15 +352,10 @@ export type CurrentVersion = {
   __typename?: 'CurrentVersion';
   createdAt: Scalars['AWSDateTime'];
   id: Scalars['ID'];
-  item: CurrentVersionItem;
+  item: Scalars['String'];
   updatedAt: Scalars['AWSDateTime'];
   version: Scalars['Int'];
 };
-
-export enum CurrentVersionItem {
-  Colony = 'COLONY',
-  OneTxPayment = 'ONE_TX_PAYMENT'
-}
 
 export type DeleteColonyExtensionInput = {
   id: Scalars['ID'];
@@ -657,7 +652,7 @@ export type ModelContractEventFilterInput = {
 
 export type ModelCurrentVersionConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelCurrentVersionConditionInput>>>;
-  item?: InputMaybe<ModelCurrentVersionItemInput>;
+  item?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelCurrentVersionConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelCurrentVersionConditionInput>>>;
   version?: InputMaybe<ModelIntInput>;
@@ -672,15 +667,10 @@ export type ModelCurrentVersionConnection = {
 export type ModelCurrentVersionFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelCurrentVersionFilterInput>>>;
   id?: InputMaybe<ModelIdInput>;
-  item?: InputMaybe<ModelCurrentVersionItemInput>;
+  item?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelCurrentVersionFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelCurrentVersionFilterInput>>>;
   version?: InputMaybe<ModelIntInput>;
-};
-
-export type ModelCurrentVersionItemInput = {
-  eq?: InputMaybe<CurrentVersionItem>;
-  ne?: InputMaybe<CurrentVersionItem>;
 };
 
 export type ModelDomainColorInput = {
@@ -1471,7 +1461,6 @@ export type Query = {
   getColonyTokens?: Maybe<ColonyTokens>;
   getContractEvent?: Maybe<ContractEvent>;
   getCurrentVersion?: Maybe<CurrentVersion>;
-  getCurrentVersionByItem?: Maybe<ModelCurrentVersionConnection>;
   getDomain?: Maybe<Domain>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
@@ -1555,15 +1544,6 @@ export type QueryGetContractEventArgs = {
 
 export type QueryGetCurrentVersionArgs = {
   id: Scalars['ID'];
-};
-
-
-export type QueryGetCurrentVersionByItemArgs = {
-  filter?: InputMaybe<ModelCurrentVersionFilterInput>;
-  item: CurrentVersionItem;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -1741,7 +1721,7 @@ export type QueryListWatchedColoniesArgs = {
 };
 
 export type SetCurrentVersionInput = {
-  item: CurrentVersionItem;
+  item: Scalars['String'];
   version: Scalars['Int'];
 };
 
@@ -2068,7 +2048,7 @@ export type UpdateContractEventInput = {
 
 export type UpdateCurrentVersionInput = {
   id: Scalars['ID'];
-  item?: InputMaybe<CurrentVersionItem>;
+  item?: InputMaybe<Scalars['String']>;
   version?: InputMaybe<Scalars['Int']>;
 };
 

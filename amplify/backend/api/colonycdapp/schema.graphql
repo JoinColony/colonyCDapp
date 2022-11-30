@@ -92,7 +92,7 @@ input UpdateExtensionByColonyAndHashInput {
 }
 
 input SetCurrentVersionInput {
-  item: CurrentVersionItem!
+  item: String!
   version: Int!
 }
 
@@ -156,11 +156,6 @@ enum ColonyType {
 enum ExtensionStatus {
   INSTALLED
   DELETED
-}
-
-enum CurrentVersionItem {
-  ONE_TX_PAYMENT
-  COLONY
 }
 
 type Query {
@@ -377,7 +372,6 @@ type ColonyExtension @model {
 
 type CurrentVersion @model {
   id: ID!
-  item: CurrentVersionItem!
-    @index(name: "byItem", queryField: "getCurrentVersionByItem")
+  item: String!
   version: Int!
 }
