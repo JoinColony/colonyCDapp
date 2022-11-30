@@ -53,22 +53,6 @@ fragment Colony on Colony {
   }
 }
 
-fragment Watcher on WatchedColonies {
-  user {
-    walletAddress: id
-    name
-    profile {
-      avatar
-      bio
-      displayName
-      email
-      location
-      website
-      thumbnail
-    }
-  }
-}
-
 fragment WatchedColony on Colony {
   colonyAddress: id
   name
