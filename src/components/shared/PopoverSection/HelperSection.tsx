@@ -7,18 +7,18 @@ import { FEEDBACK, HELP } from '~constants/externalUrls';
 
 import styles from './HelperSection.css';
 
+const displayName = 'PopoverSection.HelperSection';
+
 const MSG = defineMessages({
   reportBugs: {
-    id: 'users.PopoverSection.HelperSection.reportBugs',
+    id: `${displayName}.reportBugs`,
     defaultMessage: 'Report Bugs',
   },
   helpCenter: {
-    id: 'users.PopoverSection.HelperSection.helpCenter',
+    id: `${displayName}.helpCenter`,
     defaultMessage: 'Help Center',
   },
 });
-
-const displayName = 'users.PopoverSection.HelperSection';
 
 const HelperSection = () => (
   <DropdownMenuSection separator>

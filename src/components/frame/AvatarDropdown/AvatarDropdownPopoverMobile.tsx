@@ -22,21 +22,23 @@ import ItemContainer from './ItemContainer';
 
 // import styles from './AvatarDropdownPopoverMobile.css';
 
+const displayName = 'frame.AvatarDropdown.AvatarDropdownPopoverMobile';
+
 const MSG = defineMessages({
   manageTokens: {
-    id: 'users.AvatarDropdown.AvatarDropdownPopoverMobile.manageTokens',
+    id: `${displayName}.manageTokens`,
     defaultMessage: 'Manage Tokens',
   },
   address: {
-    id: 'users.AvatarDropdown.AvatarDropdownPopoverMobile.address',
+    id: `${displayName}.address`,
     defaultMessage: 'Address',
   },
   balance: {
-    id: 'users.AvatarDropdown.AvatarDropdownPopoverMobile.balance',
+    id: `${displayName}.balance`,
     defaultMessage: 'Balance',
   },
   reputation: {
-    id: 'users.AvatarDropdown.AvatarDropdownPopoverMobile.reputation',
+    id: `${displayName}.reputation`,
     defaultMessage: 'Reputation',
   },
 });
@@ -45,8 +47,6 @@ interface Props {
   spinnerMsg: SimpleMessageValues;
   // tokenBalanceData: UserTokenBalanceData;
 }
-
-const displayName = 'users.AvatarDropdown.AvatarDropdownPopoverMobile';
 
 const AvatarDropdownPopoverMobile = ({
   spinnerMsg,

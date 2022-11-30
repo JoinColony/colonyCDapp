@@ -20,18 +20,18 @@ import { getLastWallet } from '~utils/autoLogin';
 import styles from './Wallet.css';
 import queries from '~styles/queries.css';
 
+const displayName = 'frame.RouteLayouts.UserNavigation.Wallet';
+
 const MSG = defineMessages({
   connectWallet: {
-    id: 'pages.NavigationWrapper.UserNavigation.connectWallet',
+    id: `${displayName}.connectWallet`,
     defaultMessage: 'Connect Wallet',
   },
   walletAutologin: {
-    id: 'pages.NavigationWrapper.UserNavigation.walletAutologin',
+    id: `${displayName}.walletAutologin`,
     defaultMessage: 'Connecting wallet...',
   },
 });
-
-const displayName = 'root.RouteLayouts.UserNavigation.Wallet';
 
 const { query700: query } = queries;
 

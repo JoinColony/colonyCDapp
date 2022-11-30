@@ -10,26 +10,26 @@ import {
   useUserAccountRegistered,
 } from '~hooks';
 
+const displayName = 'PopoverSection.UserSection';
+
 const MSG = defineMessages({
   buttonGetStarted: {
-    id: 'users.PopoverSection.UserSection.buttonGetStarted',
+    id: `${displayName}.buttonGetStarted`,
     defaultMessage: 'Get started',
   },
   myProfile: {
-    id: 'users.PopoverSection.UserSection.link.myProfile',
+    id: `${displayName}.myProfile`,
     defaultMessage: 'My Profile',
   },
   settings: {
-    id: 'users.PopoverSection.UserSection.link.settings',
+    id: `${displayName}.settings`,
     defaultMessage: 'Settings',
   },
   wallet: {
-    id: 'users.PopoverSection.UserSection.link.wallet',
+    id: `${displayName}.wallet`,
     defaultMessage: 'Wallet',
   },
 });
-
-const displayName = 'users.PopoverSection.UserSection';
 
 const UserSection = () => {
   const { colony } = useColonyContext();

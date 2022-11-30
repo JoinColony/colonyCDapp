@@ -5,14 +5,14 @@ import { DropdownMenuItem, DropdownMenuSection } from '~shared/DropdownMenu';
 import NavLink from '~shared/NavLink';
 import { CREATE_COLONY_ROUTE } from '~routes/routeConstants';
 
+const displayName = 'PopoverSection.ColonySection';
+
 const MSG = defineMessages({
   createColony: {
-    id: 'users.PopoverSection.ColonySection.link.createColony',
+    id: `${displayName}.createColony`,
     defaultMessage: 'Create a Colony',
   },
 });
-
-const displayName = 'users.PopoverSection.ColonySection';
 
 const ColonySection = () => (
   <DropdownMenuSection separator>

@@ -26,7 +26,7 @@ const MSG = defineMessages({
     defaultMessage: 'This is your share of the reputation in this colony',
   },
   walletAutologin: {
-    id: 'pages.NavigationWrapper.UserNavigation.walletAutologin',
+    id: `${displayName}.walletAutologin`,
     defaultMessage: `{isMobile, select,
       true {Connecting...}
       other {Connecting wallet...}
