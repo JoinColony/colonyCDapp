@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { string, bool, object } from 'yup';
 
@@ -96,15 +96,6 @@ const validationSchema = object().shape({
 
 const UserAdvancedSettings = () => {
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
-  useEffect(() => {
-    if (showSnackbar) {
-      const timeout = setTimeout(() => setShowSnackbar(true), 200000);
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-    return undefined;
-  }, [showSnackbar]);
 
   const {
     settings: {

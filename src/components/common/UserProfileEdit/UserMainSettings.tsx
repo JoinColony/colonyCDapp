@@ -105,15 +105,6 @@ const UserMainSettings = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { __typename, ...userProfile } = profile || {};
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
-  useEffect(() => {
-    if (showSnackbar) {
-      const timeout = setTimeout(() => setShowSnackbar(true), 200000);
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-    return undefined;
-  }, [showSnackbar]);
 
   const [editUser, { error, loading, called }] = useUpdateUserMutation();
   const onSubmit = useCallback(
@@ -132,6 +123,7 @@ const UserMainSettings = ({
   useEffect(() => {
     if (called && !loading && updateUser) {
       updateUser(walletAddress);
+      setShowSnackbar(true);
     }
   }, [called, loading, walletAddress, updateUser]);
 
