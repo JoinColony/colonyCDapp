@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import ColonyGrid from '~common/ColonyGrid';
+import ColonyGrid from '~shared/ColonyGrid';
 import Link from '~shared/Link';
 
 import { CREATE_COLONY_ROUTE } from '~routes/index';
