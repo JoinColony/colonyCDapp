@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import * as yup from 'yup';
+import { string, bool, object } from 'yup';
 
 import Heading from '~shared/Heading';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
@@ -82,10 +82,10 @@ interface FormValues {
   [SlotKey.CustomRPC]: string;
 }
 
-const validationSchema = yup.object({
-  [SlotKey.Metatransactions]: yup.bool(),
-  [SlotKey.DecentralizedMode]: yup.bool(),
-  [SlotKey.CustomRPC]: yup.string().url(),
+const validationSchema = object().shape({
+  [SlotKey.Metatransactions]: bool(),
+  [SlotKey.DecentralizedMode]: bool(),
+  [SlotKey.CustomRPC]: string().trim().url(),
 });
 
 const UserAdvancedSettings = () => {
@@ -135,7 +135,7 @@ const UserAdvancedSettings = () => {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      {({ isValid, values, submitForm }) => (
+      {({ isValid, values, submitForm, setFieldValue }) => (
         <div className={styles.main}>
           <Heading
             appearance={{ theme: 'dark', size: 'medium' }}
@@ -211,6 +211,13 @@ const UserAdvancedSettings = () => {
             <Button
               text={MSG.validate}
               disabled={!values[SlotKey.DecentralizedMode] || !isValid}
+              onClick={() => {
+                setFieldValue(
+                  SlotKey.CustomRPC,
+                  values[SlotKey.CustomRPC].trim(),
+                );
+                // validation to be added later
+              }}
             />
           </div>
           <hr />
@@ -222,7 +229,7 @@ const UserAdvancedSettings = () => {
                   submitForm();
                   setShowSnackbar(true);
                 }}
-                disabled={!metatransactionsToggleAvailable}
+                disabled={!metatransactionsToggleAvailable || !isValid}
               />
               <Snackbar
                 show={showSnackbar}
