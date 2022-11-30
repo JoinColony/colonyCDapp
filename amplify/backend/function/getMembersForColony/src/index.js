@@ -27,6 +27,7 @@ const ROOT_DOMAIN_ID = 1; // this used to be exported from @colony/colony-js but
 const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
 const REPUTATION_ENDPOINT = 'http://network-contracts:3002';
 
+// @TODO want to share this enum with the frontend
 const SORTING_METHODS = {
   BY_HIGHEST_REP: 'BY_HIGHEST_REP',
   BY_LOWEST_REP: 'BY_LOWEST_REP',

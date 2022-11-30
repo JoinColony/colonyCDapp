@@ -107,6 +107,13 @@ export enum ColonyType {
   Metacolony = 'METACOLONY'
 }
 
+export type Contributor = {
+  __typename?: 'Contributor';
+  reputationAmount?: Maybe<Scalars['String']>;
+  reputationPercentage?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+};
+
 export type CreateColonyInput = {
   colonyNativeTokenId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
@@ -282,6 +289,19 @@ export type GetUserReputationInput = {
   domainId?: InputMaybe<Scalars['Int']>;
   rootHash?: InputMaybe<Scalars['String']>;
   walletAddress: Scalars['String'];
+};
+
+export type MembersForColonyInput = {
+  colonyAddress: Scalars['String'];
+  domainId?: InputMaybe<Scalars['Int']>;
+  rootHash?: InputMaybe<Scalars['String']>;
+  sortingMethod?: InputMaybe<SortingMethod>;
+};
+
+export type MembersForColonyReturn = {
+  __typename?: 'MembersForColonyReturn';
+  contributors?: Maybe<Array<Contributor>>;
+  watchers?: Maybe<Array<Watcher>>;
 };
 
 export type Metadata = {
@@ -999,6 +1019,7 @@ export type Query = {
   getColonyByType?: Maybe<ModelColonyConnection>;
   getColonyTokens?: Maybe<ColonyTokens>;
   getDomain?: Maybe<Domain>;
+  getMembersForColony?: Maybe<MembersForColonyReturn>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
@@ -1062,6 +1083,11 @@ export type QueryGetColonyTokensArgs = {
 
 export type QueryGetDomainArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryGetMembersForColonyArgs = {
+  input?: InputMaybe<MembersForColonyInput>;
 };
 
 
@@ -1204,6 +1230,13 @@ export type QueryListWatchedColoniesArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
+
+export enum SortingMethod {
+  ByHighestRep = 'BY_HIGHEST_REP',
+  ByLessPermissions = 'BY_LESS_PERMISSIONS',
+  ByLowestRep = 'BY_LOWEST_REP',
+  ByMorePermissions = 'BY_MORE_PERMISSIONS'
+}
 
 export type Subscription = {
   __typename?: 'Subscription';
@@ -1518,9 +1551,16 @@ export type WatchedColonies = {
   userID: Scalars['ID'];
 };
 
+export type Watcher = {
+  __typename?: 'Watcher';
+  user?: Maybe<User>;
+};
+
 export type ColonyFragment = { __typename?: 'Colony', name: string, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null };
 
 export type WatcherFragment = { __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } };
+
+export type ContributorFragment = { __typename?: 'Contributor', reputationPercentage?: string | null, reputationAmount?: string | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } | null };
 
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string };
 
@@ -1708,6 +1748,25 @@ export const ColonyFragmentDoc = gql`
 }
     ${TokenFragmentDoc}
 ${WatcherFragmentDoc}`;
+export const ContributorFragmentDoc = gql`
+    fragment Contributor on Contributor {
+  user {
+    walletAddress: id
+    name
+    profile {
+      avatar
+      bio
+      displayName
+      email
+      location
+      website
+      thumbnail
+    }
+  }
+  reputationPercentage
+  reputationAmount
+}
+    `;
 export const UserFragmentDoc = gql`
     fragment User on User {
   profile {

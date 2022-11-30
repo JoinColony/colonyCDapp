@@ -64,3 +64,21 @@ fragment Watcher on WatchedColonies {
     }
   }
 }
+
+fragment Contributor on Contributor {
+  user {
+    walletAddress: id
+    name
+    profile {
+      avatar
+      bio
+      displayName
+      email
+      location
+      website
+      thumbnail
+    }
+  }
+  reputationPercentage
+  reputationAmount
+}
