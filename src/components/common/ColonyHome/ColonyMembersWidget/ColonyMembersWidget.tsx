@@ -1,11 +1,14 @@
 import React from 'react';
 // import { defineMessages } from 'react-intl';
+
 // import { ROOT_DOMAIN_ID } from '@colony/colony-js';
 
 // import { MiniSpinnerLoader } from '~shared/Preloaders';
+
 // import { Colony, useContributorsAndWatchersQuery } from '~data/index';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useColonyContext } from '~hooks';
+// import { useGetMembersForColonyQuery } from '~gql';
 
 // import styles from './ColonyMembersWidget.css';
 import MembersSubsection from './MembersSubsection';
@@ -33,10 +36,20 @@ const ColonyMembersWidget = ({
   maxAvatars,
 }: Props) => {
   const { colony } = useColonyContext();
+  if (!colony) return null;
+  // console.log(`🚀 ~ colony`, colony);
 
-  if (!colony) {
-    return null;
-  }
+  // const { data, loading } = useGetMembersForColonyQuery({
+  //   skip: !colony?.colonyAddress,
+  //   variables: {
+  //     input: {
+  //       colonyAddress: colony?.colonyAddress ?? '',
+  //     },
+  //   },
+  //   fetchPolicy: 'cache-and-network',
+  // });
+
+  // console.log(`🚀 ~ data`, data);
 
   // const {
   //   data: members,
@@ -49,15 +62,17 @@ const ColonyMembersWidget = ({
   //   },
   // });
 
-  // if (loadingMembers) {
-  //   return (
-  //     <MiniSpinnerLoader
-  //       className={styles.main}
-  //       title={MSG.title}
-  //       loadingText={MSG.loadingData}
-  //       titleTextValues={{ hasCounter: false }}
-  //     />
-  //   );
+  // if (loading) {
+  //   console.log(`🚀 ~ loadingMembers`, loading);
+
+  // return (
+  //   <MiniSpinnerLoader
+  //     className={styles.main}
+  //     title={MSG.title}
+  //     loadingText={MSG.loadingData}
+  //     titleTextValues={{ hasCounter: false }}
+  //   />
+  // );
   // }
 
   return (

@@ -107,6 +107,13 @@ export enum ColonyType {
   Metacolony = 'METACOLONY'
 }
 
+export type Contributor = {
+  __typename?: 'Contributor';
+  reputationAmount?: Maybe<Scalars['String']>;
+  reputationPercentage?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+};
+
 export type CreateColonyInput = {
   colonyNativeTokenId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
@@ -282,6 +289,19 @@ export type GetUserReputationInput = {
   domainId?: InputMaybe<Scalars['Int']>;
   rootHash?: InputMaybe<Scalars['String']>;
   walletAddress: Scalars['String'];
+};
+
+export type MembersForColonyArguments = {
+  colonyAddress: Scalars['String'];
+  domainId?: InputMaybe<Scalars['Int']>;
+  rootHash?: InputMaybe<Scalars['String']>;
+  sortingMethod?: InputMaybe<Sorting_Methods>;
+};
+
+export type MembersForColonyReturn = {
+  __typename?: 'MembersForColonyReturn';
+  contributors?: Maybe<Array<Contributor>>;
+  watchers?: Maybe<Array<User>>;
 };
 
 export type Metadata = {
@@ -1002,6 +1022,7 @@ export type Query = {
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
+  getMembersForColony?: Maybe<MembersForColonyReturn>;
   getToken?: Maybe<Token>;
   getTokenByAddress?: Maybe<ModelTokenConnection>;
   getTokenFromEverywhere?: Maybe<TokenFromEverywhereReturn>;
@@ -1081,6 +1102,11 @@ export type QueryGetProfileByEmailArgs = {
 
 export type QueryGetReputationForTopDomainsArgs = {
   input?: InputMaybe<GetReputationForTopDomainsInput>;
+};
+
+
+export type QueryGetMembersForColonyArgs = {
+  input?: InputMaybe<MembersForColonyArguments>;
 };
 
 
@@ -1204,6 +1230,13 @@ export type QueryListWatchedColoniesArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
+
+export enum Sorting_Methods {
+  ByHighestRep = 'BY_HIGHEST_REP',
+  ByLessPermissions = 'BY_LESS_PERMISSIONS',
+  ByLowestRep = 'BY_LOWEST_REP',
+  ByMorePermissions = 'BY_MORE_PERMISSIONS'
+}
 
 export type Subscription = {
   __typename?: 'Subscription';
@@ -1522,6 +1555,8 @@ export type ColonyFragment = { __typename?: 'Colony', name: string, colonyAddres
 
 export type WatcherFragment = { __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } };
 
+export type ContributorFragment = { __typename?: 'Contributor', reputationPercentage?: string | null, reputationAmount?: string | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } | null };
+
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string };
 
 export type UserFragment = { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null };
@@ -1629,6 +1664,13 @@ export type GetUserByNameQueryVariables = Exact<{
 
 export type GetUserByNameQuery = { __typename?: 'Query', getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', id: string } | null> } | null };
 
+export type GetMembersForColonyQueryVariables = Exact<{
+  input: MembersForColonyArguments;
+}>;
+
+
+export type GetMembersForColonyQuery = { __typename?: 'Query', getMembersForColony?: { __typename?: 'MembersForColonyReturn', contributors?: Array<{ __typename?: 'Contributor', reputationPercentage?: string | null, reputationAmount?: string | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } | null }> | null, watchers?: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null }> | null } | null };
+
 export const TokenFragmentDoc = gql`
     fragment Token on Token {
   decimals
@@ -1708,6 +1750,25 @@ export const ColonyFragmentDoc = gql`
 }
     ${TokenFragmentDoc}
 ${WatcherFragmentDoc}`;
+export const ContributorFragmentDoc = gql`
+    fragment Contributor on Contributor {
+  user {
+    walletAddress: id
+    name
+    profile {
+      avatar
+      bio
+      displayName
+      email
+      location
+      website
+      thumbnail
+    }
+  }
+  reputationPercentage
+  reputationAmount
+}
+    `;
 export const UserFragmentDoc = gql`
     fragment User on User {
   profile {
@@ -2267,3 +2328,44 @@ export function useGetUserByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetUserByNameQueryHookResult = ReturnType<typeof useGetUserByNameQuery>;
 export type GetUserByNameLazyQueryHookResult = ReturnType<typeof useGetUserByNameLazyQuery>;
 export type GetUserByNameQueryResult = Apollo.QueryResult<GetUserByNameQuery, GetUserByNameQueryVariables>;
+export const GetMembersForColonyDocument = gql`
+    query GetMembersForColony($input: MembersForColonyArguments!) {
+  getMembersForColony(input: $input) {
+    contributors {
+      ...Contributor
+    }
+    watchers {
+      ...User
+    }
+  }
+}
+    ${ContributorFragmentDoc}
+${UserFragmentDoc}`;
+
+/**
+ * __useGetMembersForColonyQuery__
+ *
+ * To run a query within a React component, call `useGetMembersForColonyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMembersForColonyQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMembersForColonyQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetMembersForColonyQuery(baseOptions: Apollo.QueryHookOptions<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>(GetMembersForColonyDocument, options);
+      }
+export function useGetMembersForColonyLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>(GetMembersForColonyDocument, options);
+        }
+export type GetMembersForColonyQueryHookResult = ReturnType<typeof useGetMembersForColonyQuery>;
+export type GetMembersForColonyLazyQueryHookResult = ReturnType<typeof useGetMembersForColonyLazyQuery>;
+export type GetMembersForColonyQueryResult = Apollo.QueryResult<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>;
