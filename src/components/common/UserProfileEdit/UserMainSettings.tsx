@@ -67,6 +67,10 @@ const MSG = defineMessages({
     id: `${displayName}.snackbarError`,
     defaultMessage: 'Profile settings were not able to be updated. Try again.',
   },
+  websiteError: {
+    id: `${displayName}.websiteError`,
+    defaultMessage: 'Enter a valid URL',
+  },
 });
 
 interface FormValues {
@@ -86,7 +90,10 @@ const validationSchema = yup.object({
   bio: yup.string().nullable(),
   displayName: yup.string().nullable(),
   location: yup.string().nullable(),
-  website: yup.string().url().nullable(),
+  website: yup
+    .string()
+    .url(() => MSG.websiteError)
+    .nullable(),
 });
 
 const UserMainSettings = ({

@@ -74,6 +74,10 @@ const MSG = defineMessages({
     id: `${displayName}.snackbarSuccess`,
     defaultMessage: 'Profile settings have been updated.',
   },
+  rpcErrorMessage: {
+    id: `${displayName}.rpcErrorMessage`,
+    defaultMessage: 'Enter a valid URL',
+  },
 });
 
 interface FormValues {
@@ -85,7 +89,9 @@ interface FormValues {
 const validationSchema = object().shape({
   [SlotKey.Metatransactions]: bool(),
   [SlotKey.DecentralizedMode]: bool(),
-  [SlotKey.CustomRPC]: string().trim().url(),
+  [SlotKey.CustomRPC]: string()
+    .trim()
+    .url(() => MSG.rpcErrorMessage),
 });
 
 const UserAdvancedSettings = () => {
