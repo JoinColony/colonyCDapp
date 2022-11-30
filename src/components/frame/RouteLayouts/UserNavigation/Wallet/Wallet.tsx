@@ -1,7 +1,6 @@
 import React, { useCallback, useState, useLayoutEffect, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 import { useSelector } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
 
 import MaskedAddress from '~shared/MaskedAddress';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
@@ -14,11 +13,10 @@ import {
 
 import { ActionTypes } from '~redux';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
-import { useAppContext, useAsyncFunction } from '~hooks';
+import { useAppContext, useAsyncFunction, useMobile } from '~hooks';
 import { getLastWallet } from '~utils/autoLogin';
 
 import styles from './Wallet.css';
-import queries from '~styles/queries.css';
 
 const displayName = 'frame.RouteLayouts.UserNavigation.Wallet';
 
@@ -33,12 +31,10 @@ const MSG = defineMessages({
   },
 });
 
-const { query700: query } = queries;
-
 const Wallet = () => {
   const [walletConnecting, setWalletConnecting] = useState<boolean>(false);
   const { wallet, updateWallet } = useAppContext();
-  const isMobile = useMediaQuery({ query });
+  const isMobile = useMobile();
 
   const asyncFunction = useAsyncFunction({
     submit: ActionTypes.WALLET_OPEN,

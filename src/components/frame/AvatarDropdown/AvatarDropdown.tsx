@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
 import classnames from 'classnames';
-import { useMediaQuery } from 'react-responsive';
 
 import Popover from '~shared/Popover';
 import UserAvatar from '~shared/UserAvatar';
-import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext, useColonyContext, useMobile } from '~hooks';
 import { removeValueUnits } from '~utils/css';
 import { SimpleMessageValues } from '~types/index';
 // import { UserTokenBalanceData } from '~types/tokens';
@@ -12,7 +11,6 @@ import AvatarDropdownPopover from './AvatarDropdownPopover';
 import AvatarDropdownPopoverMobile from './AvatarDropdownPopoverMobile';
 
 import styles from './AvatarDropdown.css';
-import queries from '~styles/queries.css';
 
 interface Props {
   preventTransactions?: boolean;
@@ -22,11 +20,10 @@ interface Props {
 
 const displayName = 'frame.AvatarDropdown';
 
-const { query700: query } = queries;
 const { refWidth, horizontalOffset, verticalOffset } = styles;
 
 const AvatarDropdown = ({ preventTransactions = false, spinnerMsg }: Props) => {
-  const isMobile = useMediaQuery({ query });
+  const isMobile = useMobile();
   const { wallet, user } = useAppContext();
   const { colony } = useColonyContext();
 

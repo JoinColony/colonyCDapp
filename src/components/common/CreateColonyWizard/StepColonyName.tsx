@@ -1,6 +1,5 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { useMediaQuery } from 'react-responsive';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { Form, Input } from '~shared/Fields';
@@ -10,12 +9,11 @@ import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 
 import { multiLineTextEllipsis } from '~utils/strings';
 import { DEFAULT_NETWORK_INFO } from '~constants';
-import { useAppContext } from '~hooks';
+import { useAppContext, useMobile } from '~hooks';
 
 import { validationSchema } from './StepColonyNameValidation';
 import { FormValues } from './CreateColonyWizard';
 
-import queries from '~styles/queries.css';
 import styles from './StepColonyName.css';
 
 const displayName = 'common.CreateColonyWizard.StepColonyName';
@@ -52,12 +50,10 @@ type Props = Pick<
   'wizardForm' | 'nextStep' | 'wizardValues'
 >;
 
-const { query700: query } = queries;
-
 const StepColonyName = ({ wizardForm, nextStep, wizardValues }: Props) => {
   const { user } = useAppContext();
   const username = user?.profile?.displayName || user?.name || '';
-  const isMobile = useMediaQuery({ query });
+  const isMobile = useMobile();
 
   return (
     <Form

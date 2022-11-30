@@ -1,6 +1,5 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { useMediaQuery } from 'react-responsive';
 
 import { WizardStepProps } from '~shared/Wizard';
 import Heading from '~shared/Heading';
@@ -9,10 +8,10 @@ import DecisionHub from '~shared/DecisionHub';
 import { Form } from '~shared/Fields';
 import { multiLineTextEllipsis } from '~utils/strings';
 import { SELECT_NATIVE_TOKEN_INFO as LEARN_MORE_URL } from '~constants';
+import { useMobile } from '~hooks';
 
 import { FormValues, Step2 } from './CreateColonyWizard';
 
-import queries from '~styles/queries.css';
 import styles from './StepTokenChoice.css';
 
 const displayName = 'common.CreateColonyWizard.StepTokenChoice';
@@ -91,15 +90,13 @@ type Props = Pick<
   'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'
 >;
 
-const { query700: query } = queries;
-
 const StepTokenChoice = ({
   nextStep,
   wizardForm,
   wizardValues,
   setStepsValues,
 }: Props) => {
-  const isMobile = useMediaQuery({ query });
+  const isMobile = useMobile();
 
   const handleSubmit = (values: Step2) => {
     setStepsValues((stepsValues) => {
