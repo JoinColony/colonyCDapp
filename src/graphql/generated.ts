@@ -240,6 +240,13 @@ export type CreateColonyFundsClaimInput = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
+export type Contributor = {
+  __typename?: 'Contributor';
+  reputationAmount?: Maybe<Scalars['String']>;
+  reputationPercentage?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+};
+
 export type CreateColonyInput = {
   balances?: InputMaybe<ColonyBalancesInput>;
   chainFundsClaim?: InputMaybe<ColonyChainFundsClaimInput>;
@@ -475,6 +482,19 @@ export type GetUserReputationInput = {
   domainId?: InputMaybe<Scalars['Int']>;
   rootHash?: InputMaybe<Scalars['String']>;
   walletAddress: Scalars['String'];
+};
+
+export type MembersForColonyArguments = {
+  colonyAddress: Scalars['String'];
+  domainId?: InputMaybe<Scalars['Int']>;
+  rootHash?: InputMaybe<Scalars['String']>;
+  sortingMethod?: InputMaybe<Sorting_Methods>;
+};
+
+export type MembersForColonyReturn = {
+  __typename?: 'MembersForColonyReturn';
+  contributors?: Maybe<Array<Contributor>>;
+  watchers?: Maybe<Array<User>>;
 };
 
 export type Metadata = {
@@ -1506,6 +1526,7 @@ export type Query = {
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
+  getMembersForColony?: Maybe<MembersForColonyReturn>;
   getToken?: Maybe<Token>;
   getTokenByAddress?: Maybe<ModelTokenConnection>;
   getTokenFromEverywhere?: Maybe<TokenFromEverywhereReturn>;
@@ -1628,6 +1649,11 @@ export type QueryGetProfileByEmailArgs = {
 
 export type QueryGetReputationForTopDomainsArgs = {
   input?: InputMaybe<GetReputationForTopDomainsInput>;
+};
+
+
+export type QueryGetMembersForColonyArgs = {
+  input?: InputMaybe<MembersForColonyArguments>;
 };
 
 
@@ -1784,6 +1810,12 @@ export type SetCurrentVersionInput = {
   key: Scalars['String'];
   version: Scalars['Int'];
 };
+export enum Sorting_Methods {
+  ByHighestRep = 'BY_HIGHEST_REP',
+  ByLessPermissions = 'BY_LESS_PERMISSIONS',
+  ByLowestRep = 'BY_LOWEST_REP',
+  ByMorePermissions = 'BY_MORE_PERMISSIONS'
+}
 
 export type Subscription = {
   __typename?: 'Subscription';
