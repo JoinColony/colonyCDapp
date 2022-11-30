@@ -80,6 +80,11 @@ input UpdateExtensionByColonyAndHashInput {
   version: Int
 }
 
+input SetCurrentVersionInput {
+  item: CurrentVersionItem!
+  version: Int!
+}
+
 type TokenFromEverywhereReturn {
   items: [Token]
 }
@@ -127,6 +132,11 @@ enum ExtensionStatus {
   DELETED
 }
 
+enum CurrentVersionItem {
+  ONE_TX_PAYMENT
+  COLONY
+}
+
 type Query {
   getTokenFromEverywhere(
     input: TokenFromEverywhereArguments
@@ -142,6 +152,8 @@ type Mutation {
     @function(name: "createUniqueColony")
   createUniqueDomain(input: CreateUniqueDomainInput): Domain
     @function(name: "createUniqueDomain")
+  setCurrentVersion(input: SetCurrentVersionInput): Boolean
+    @function(name: "setCurrentVersion")
   updateExtensionByColonyAndHash(
     input: UpdateExtensionByColonyAndHashInput
   ): ColonyExtension @function(name: "updateExtensionByColonyAndHash")
@@ -320,5 +332,12 @@ type ColonyExtension @model {
   hash: String!
   status: ExtensionStatus!
   isDeprecated: Boolean @default(value: "false")
+  version: Int!
+}
+
+type CurrentVersion @model {
+  id: ID!
+  item: CurrentVersionItem!
+    @index(name: "byItem", queryField: "getCurrentVersionByItem")
   version: Int!
 }
