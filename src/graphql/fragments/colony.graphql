@@ -42,27 +42,6 @@ fragment Colony on Colony {
       parentId: domainParentId
     }
   }
-  watchers {
-    items {
-      ...Watcher
-    }
-  }
-}
-
-fragment Watcher on WatchedColonies {
-  user {
-    walletAddress: id
-    name
-    profile {
-      avatar
-      bio
-      displayName
-      email
-      location
-      website
-      thumbnail
-    }
-  }
 }
 
 fragment WatchedColony on Colony {
