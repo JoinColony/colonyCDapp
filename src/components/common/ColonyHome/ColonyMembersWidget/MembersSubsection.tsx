@@ -59,7 +59,7 @@ interface Props {
   colony: Colony;
   currentDomainId?: number;
   maxAvatars?: number;
-  // members?: ColonyContributor[] | ColonyWatcher[];
+  members?: Contributor[] | Watcher[];
   isContributorsSubsection: boolean;
 }
 
