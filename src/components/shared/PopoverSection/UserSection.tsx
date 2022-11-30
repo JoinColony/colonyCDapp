@@ -4,11 +4,7 @@ import { defineMessages } from 'react-intl';
 import { DropdownMenuItem, DropdownMenuSection } from '~shared/DropdownMenu';
 import NavLink from '~shared/NavLink';
 import { CREATE_USER_ROUTE, USER_EDIT_ROUTE } from '~routes/routeConstants';
-import {
-  useAppContext,
-  useColonyContext,
-  useUserAccountRegistered,
-} from '~hooks';
+import { useAppContext, useUserAccountRegistered } from '~hooks';
 
 const displayName = 'PopoverSection.UserSection';
 
@@ -32,7 +28,6 @@ const MSG = defineMessages({
 });
 
 const UserSection = () => {
-  const { colony } = useColonyContext();
   const { user } = useAppContext();
   const userHasAccountRegistered = useUserAccountRegistered();
 
@@ -57,15 +52,7 @@ const UserSection = () => {
         </>
       ) : (
         <DropdownMenuItem>
-          <NavLink
-            to={{
-              pathname: CREATE_USER_ROUTE,
-              state: colony?.name
-                ? { colonyURL: `/colony/${colony?.name}` }
-                : {},
-            }}
-            text={MSG.buttonGetStarted}
-          />
+          <NavLink to={CREATE_USER_ROUTE} text={MSG.buttonGetStarted} />
         </DropdownMenuItem>
       )}
     </DropdownMenuSection>
