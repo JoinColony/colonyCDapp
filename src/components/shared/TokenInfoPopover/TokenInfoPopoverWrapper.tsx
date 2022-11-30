@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactNode } from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
 
 import Popover from '~shared/Popover';
@@ -6,14 +6,9 @@ import { Token } from '~types';
 
 import TokenInfoPopover from './TokenInfoPopover';
 
-interface TokenContentProps {
-  isTokenNative?: boolean;
-  token?: Token;
-}
-
-type ContentProps = TokenContentProps;
-
-export type Props = ContentProps & {
+export type Props = {
+  token: Token;
+  isTokenNative: boolean;
   /** Children elemnts or components to wrap the tooltip around */
   children?: ReactNode;
   /** Passed onto `Popover` component */
@@ -27,19 +22,16 @@ export type Props = ContentProps & {
 const displayName = 'TokenInfoPopover.TokenInfoPopoverWrapper';
 
 const TokenInfoPopoverWrapper = ({
+  token,
+  isTokenNative,
   children,
   popperOptions,
   trigger = 'click',
   showArrow = true,
-  ...contentProps
 }: Props) => {
-  const renderContent = useMemo(() => {
-    if ('token' in contentProps && typeof contentProps.token !== 'undefined') {
-      const { isTokenNative, token } = contentProps;
-      return <TokenInfoPopover token={token} isTokenNative={!!isTokenNative} />;
-    }
-    return null;
-  }, [contentProps]);
+  const renderContent = () => {
+    return <TokenInfoPopover token={token} isTokenNative={!!isTokenNative} />;
+  };
 
   return (
     <Popover
