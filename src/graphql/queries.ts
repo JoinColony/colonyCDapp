@@ -24,8 +24,6 @@ export const getMembersForColony = /* GraphQL */ `
         reputationPercentage
         reputationAmount
       }
-
-
     }
   }
 `;
