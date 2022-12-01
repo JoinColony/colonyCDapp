@@ -66,6 +66,10 @@ interface Props {
 
 const MAX_AVATARS = 12;
 
+// @NOTE only added to make the linter happy
+// this is all fixed and working in PR#111
+const colonyWatchers = [];
+
 const MembersSubsection = ({
   colony: { name },
   members,
