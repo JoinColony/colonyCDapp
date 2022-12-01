@@ -1527,7 +1527,6 @@ export type Query = {
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
-  getMembersForColony?: Maybe<MembersForColonyReturn>;
   getToken?: Maybe<Token>;
   getTokenByAddress?: Maybe<ModelTokenConnection>;
   getTokenFromEverywhere?: Maybe<TokenFromEverywhereReturn>;
@@ -1655,11 +1654,6 @@ export type QueryGetProfileByEmailArgs = {
 
 export type QueryGetReputationForTopDomainsArgs = {
   input?: InputMaybe<GetReputationForTopDomainsInput>;
-};
-
-
-export type QueryGetMembersForColonyArgs = {
-  input?: InputMaybe<MembersForColonyArguments>;
 };
 
 
