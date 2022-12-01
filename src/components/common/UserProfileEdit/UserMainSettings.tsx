@@ -108,15 +108,20 @@ const UserMainSettings = ({
 
   const [editUser, { error, loading, called }] = useUpdateUserMutation();
   const onSubmit = useCallback(
-    (updatedProfile: FormValues) =>
+    (updatedProfile: FormValues) => {
+      const valuesToSubmit = {
+        email: updatedProfile.email === '' ? null : updatedProfile.email,
+      };
+
       editUser({
         variables: {
           input: {
             id: walletAddress,
-            profile: { ...userProfile, ...updatedProfile },
+            profile: { ...userProfile, ...updatedProfile, ...valuesToSubmit },
           },
         },
-      }),
+      });
+    },
     [walletAddress, editUser, userProfile],
   );
 
@@ -135,11 +140,11 @@ const UserMainSettings = ({
       />
       <Form<FormValues>
         initialValues={{
-          email: profile?.email || undefined,
-          displayName: profile?.displayName || undefined,
-          bio: profile?.bio || undefined,
-          website: profile?.website || undefined,
-          location: profile?.location || undefined,
+          email: profile?.email || '',
+          displayName: profile?.displayName || '',
+          bio: profile?.bio || '',
+          website: profile?.website || '',
+          location: profile?.location || '',
         }}
         onSubmit={onSubmit}
         validationSchema={validationSchema}
