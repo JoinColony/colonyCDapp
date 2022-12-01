@@ -109,7 +109,7 @@ exports.handler = async (event) => {
           addressesWithReputation?.every(
             (address) => address.toLowerCase() !== item.user.id.toLowerCase(),
           )
-            ? [...acc, item.user]
+            ? [...acc, item]
             : acc,
         [],
       );
