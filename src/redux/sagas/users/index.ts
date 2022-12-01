@@ -1,13 +1,10 @@
-import { call, fork, put, takeLatest } from 'redux-saga/effects';
-import { ClientType } from '@colony/colony-js';
+import { call, put, takeLatest } from 'redux-saga/effects';
 // import { BigNumber } from 'ethers';
 import { utils } from 'ethers';
 import { QueryOptions } from '@apollo/client';
 
 import { ContextModule, getContext, removeContext } from '~context';
-import { routeRedirect } from '~utils/saga/effects';
 import { clearLastWallet } from '~utils/autoLogin';
-import { LANDING_PAGE_ROUTE } from '~routes';
 import {
   CreateUniqueUserDocument,
   CreateUniqueUserMutation,
@@ -20,11 +17,9 @@ import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
 import {
   putError,
-  takeFrom,
   // getColonyManager
 } from '../utils';
 import { getWallet } from '../wallet';
-import { createTransaction, getTxChannel } from '../transactions';
 
 // import { transactionLoadRelated, transactionReady } from '../../actionCreators';
 // import {
@@ -94,41 +89,15 @@ import { createTransaction, getTxChannel } from '../transactions';
 // }
 
 function* usernameCreate({
-  meta: { id, navigate },
   meta,
   payload: { username, email, emailPermissions },
 }: Action<ActionTypes.USERNAME_CREATE>) {
   const wallet = yield call(getWallet);
   const walletAddress = utils.getAddress(wallet?.address);
 
-  const txChannel = yield call(getTxChannel, id);
   const apolloClient = getContext(ContextModule.ApolloClient);
 
   try {
-    yield fork(createTransaction, id, {
-      context: ClientType.NetworkClient,
-      methodName: 'registerUserLabel',
-      ready: true,
-      params: [username, ''],
-      group: {
-        key: 'transaction.batch.createUser',
-        id,
-        index: 0,
-      },
-    });
-
-    yield takeFrom(txChannel, ActionTypes.TRANSACTION_SUCCEEDED);
-
-    yield put<AllActions>({
-      type: ActionTypes.USERNAME_CREATE_SUCCESS,
-      payload: {
-        email,
-        username,
-        emailPermissions,
-      },
-      meta,
-    });
-
     /* Queries will be refetched after the mutation, in order to update the cache. */
     const refetchQueries: QueryOptions[] = [
       {
@@ -166,12 +135,17 @@ function* usernameCreate({
       refetchQueries,
     });
 
-    /* Replace: true so you can't get back to the User wizard after completion */
-    yield routeRedirect(LANDING_PAGE_ROUTE, navigate, { replace: true });
+    yield put<AllActions>({
+      type: ActionTypes.USERNAME_CREATE_SUCCESS,
+      payload: {
+        email,
+        username,
+        emailPermissions,
+      },
+      meta,
+    });
   } catch (error) {
     return yield putError(ActionTypes.USERNAME_CREATE_ERROR, error, meta);
-  } finally {
-    txChannel.close();
   }
   return null;
 }

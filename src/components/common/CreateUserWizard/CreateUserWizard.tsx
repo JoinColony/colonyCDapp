@@ -9,7 +9,6 @@ import { withWizard } from '~shared/Wizard';
 import { EmailPermissions } from '~gql';
 
 import StepUserName from './StepUserName';
-import StepConfirmTransaction from './StepConfirmTransaction';
 import StepUserEmail from './StepUserEmail';
 
 import styles from './CreateUserWizard.css';
@@ -21,7 +20,7 @@ export interface FormValues {
   emailPermissions: EmailPermissions[];
 }
 
-const steps = [StepUserEmail, StepUserName, StepConfirmTransaction];
+const steps = [StepUserEmail, StepUserName];
 const initialValues = [{ email: '', emailPermissions: [] }, { username: '' }];
 
 const CreateUserContainer = withWizard<FormValues>({

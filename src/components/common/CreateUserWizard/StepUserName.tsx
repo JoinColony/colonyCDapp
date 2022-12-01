@@ -6,7 +6,7 @@ import { isConfusing } from '@colony/unicode-confusables-noascii';
 import { ActionForm, Input } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { WizardStepProps } from '~shared/Wizard';
-import { pipe, mergePayload, withMeta } from '~utils/actions';
+import { mergePayload } from '~utils/actions';
 import ConfusableWarning from '~shared/ConfusableWarning';
 
 import {
@@ -15,6 +15,7 @@ import {
   UserStepTemplate,
 } from '../CreateUserWizard';
 import { stepUserNameValidationSchema as validationSchema } from './validation';
+import { LANDING_PAGE_ROUTE } from '~routes';
 
 const displayName = 'common.CreateUserWizard.StepUserName';
 
@@ -57,22 +58,18 @@ type Props = Pick<
   'nextStep' | 'wizardValues' | 'wizardForm'
 >;
 
-const StepUserName = ({ wizardValues, nextStep, wizardForm }: Props) => {
+const StepUserName = ({ wizardValues, wizardForm }: Props) => {
   const navigate = useNavigate();
-
-  const transform = pipe(
-    mergePayload({
-      ...wizardValues,
-    }),
-    withMeta({ navigate }),
-  );
+  const transform = mergePayload(wizardValues);
+  /* Replace: true so you can't get back to the User wizard after completion */
+  const handleSuccess = () => navigate(LANDING_PAGE_ROUTE, { replace: true });
 
   return (
     <ActionForm<StepValues>
-      onSuccess={() => nextStep(wizardValues)}
       submit={ActionTypes.USERNAME_CREATE}
-      success={ActionTypes.TRANSACTION_CREATED}
+      success={ActionTypes.USERNAME_CREATE_SUCCESS}
       error={ActionTypes.USERNAME_CREATE_ERROR}
+      onSuccess={handleSuccess}
       transform={transform}
       validationSchema={validationSchema}
       {...wizardForm}

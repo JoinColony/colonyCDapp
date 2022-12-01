@@ -5,7 +5,6 @@ import { Navigate } from 'react-router-dom';
 
 import { WizardStepProps } from '~shared/Wizard';
 import NavLink from '~shared/NavLink';
-import ConfirmTransactions from '~shared/Wizard/ConfirmTransactions';
 
 import { groupedTransactionsAndMessages } from '~redux/selectors';
 import {
@@ -19,6 +18,7 @@ import { TRANSACTION_STATUSES } from '~types';
 import { ActionTypes } from '~redux/index';
 
 import { FormValues } from './CreateColonyWizard';
+import ConfirmTransactions from './ConfirmTransactions';
 
 import styles from './StepConfirmTransactions.css';
 
