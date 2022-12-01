@@ -6,7 +6,7 @@ import {
   GetUserByNameDocument,
 } from '~gql';
 import { intl } from '~utils/intl';
-import { createYupTestFromQuery } from '~utils/yup';
+import { createYupTestFromQuery } from '~utils/yup/tests';
 
 /*
  * The username regex is composed of

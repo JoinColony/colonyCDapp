@@ -83,8 +83,8 @@ const StepUserName = ({
           input={<UsernameInput disabled={isSubmitting || isSubmitted} />}
           button={
             <ContinueWizard
-              disabled={!isValid || !isDirty || isSubmitting}
-              loading={isSubmitting}
+              disabled={!isValid || !isDirty || isSubmitting || isSubmitted}
+              loading={isSubmitting || isSubmitted}
               data-test="claimUsernameConfirm"
             />
           }
