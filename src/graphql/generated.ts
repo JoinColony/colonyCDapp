@@ -2145,19 +2145,6 @@ export function useGetProfileByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetProfileByEmailQueryHookResult = ReturnType<typeof useGetProfileByEmailQuery>;
 export type GetProfileByEmailLazyQueryHookResult = ReturnType<typeof useGetProfileByEmailLazyQuery>;
 export type GetProfileByEmailQueryResult = Apollo.QueryResult<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>;
-export const GetMembersForColonyDocument = gql`
-    query GetMembersForColony($input: MembersForColonyArguments!) {
-  getMembersForColony(input: $input) {
-    contributors {
-      ...Contributor
-    }
-    watchers {
-      ...Watcher
-    }
-  }
-}
-    ${ContributorFragmentDoc}
-${WatcherFragmentDoc}`;
 
 /**
  * __useGetMembersForColonyQuery__
