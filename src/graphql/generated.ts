@@ -649,7 +649,7 @@ export type MembersForColonyArguments = {
 export type MembersForColonyReturn = {
   __typename?: 'MembersForColonyReturn';
   contributors?: Maybe<Array<Contributor>>;
-  watchers?: Maybe<Array<Watcher>>;
+  watchers?: Maybe<Array<User>>;
 };
 
 export type Metadata = {
@@ -3000,6 +3000,23 @@ export const ColonyMetadataFragmentDoc = gql`
   }
 }
     `;
+export const WatcherFragmentDoc = gql`
+    fragment Watcher on WatchedColonies {
+  user {
+    walletAddress: id
+    name
+    profile {
+      avatar
+      bio
+      displayName
+      email
+      location
+      website
+      thumbnail
+    }
+  }
+}
+    `;
 export const ColonyFragmentDoc = gql`
     fragment Colony on Colony {
   colonyAddress: id
@@ -3043,6 +3060,11 @@ export const ColonyFragmentDoc = gql`
       name
       nativeId
       parentId: domainParentId
+    }
+  }
+  watchers {
+    items {
+      ...Watcher
     }
   }
 }
