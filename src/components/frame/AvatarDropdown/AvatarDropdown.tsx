@@ -3,25 +3,29 @@ import classnames from 'classnames';
 
 import Popover from '~shared/Popover';
 import UserAvatar from '~shared/UserAvatar';
-// import HookedUserAvatar from '~users/HookedUserAvatar';
+import { useAppContext, useColonyContext, useMobile } from '~hooks';
 import { removeValueUnits } from '~utils/css';
-import { useAppContext } from '~hooks';
-
+import { SimpleMessageValues } from '~types/index';
+// import { UserTokenBalanceData } from '~types/tokens';
 import AvatarDropdownPopover from './AvatarDropdownPopover';
+import AvatarDropdownPopoverMobile from './AvatarDropdownPopoverMobile';
 
 import styles from './AvatarDropdown.css';
 
 interface Props {
-  // colony: Colony;
-  colony: Record<string, unknown>;
+  preventTransactions?: boolean;
+  spinnerMsg: SimpleMessageValues;
+  // tokenBalanceData: UserTokenBalanceData;
 }
 
 const displayName = 'frame.AvatarDropdown';
 
-const AvatarDropdown = ({ colony = {} }: Props) => {
-  const { wallet } = useAppContext();
+const { refWidth, horizontalOffset, verticalOffset } = styles;
 
-  const { refWidth, horizontalOffset, verticalOffset } = styles;
+const AvatarDropdown = ({ preventTransactions = false, spinnerMsg }: Props) => {
+  const isMobile = useMobile();
+  const { wallet, user } = useAppContext();
+  const { colony } = useColonyContext();
 
   /*
    * @NOTE Offset Calculations
@@ -39,14 +43,33 @@ const AvatarDropdown = ({ colony = {} }: Props) => {
   const popoverOffset = useMemo(() => {
     const skid =
       removeValueUnits(refWidth) + removeValueUnits(horizontalOffset);
-    return [-1 * skid, removeValueUnits(verticalOffset)];
-  }, [horizontalOffset, refWidth, verticalOffset]);
+    return isMobile ? [-70, 5] : [-1 * skid, removeValueUnits(verticalOffset)];
+  }, [isMobile]);
 
+  const popoverContent = isMobile
+    ? () =>
+        user?.name &&
+        wallet?.address &&
+        colony && (
+          <AvatarDropdownPopoverMobile
+            {...{
+              spinnerMsg,
+              // tokenBalanceData,
+            }}
+          />
+        )
+    : ({ close }) => (
+        <AvatarDropdownPopover
+          closePopover={close}
+          walletConnected={!!wallet?.address}
+          {...{
+            preventTransactions,
+          }}
+        />
+      );
   return (
     <Popover
-      renderContent={({ close }) => (
-        <AvatarDropdownPopover closePopover={close} colony={colony} />
-      )}
+      renderContent={popoverContent}
       trigger="click"
       showArrow={false}
       popperOptions={{
@@ -73,8 +96,9 @@ const AvatarDropdown = ({ colony = {} }: Props) => {
         >
           <UserAvatar
             address={wallet?.address || ''}
-            notSet={!wallet?.address}
             size="s"
+            notSet={false}
+            user={user}
           />
         </button>
       )}

@@ -13,27 +13,28 @@ import {
 
 import { ActionTypes } from '~redux';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
-import { useAppContext, useAsyncFunction } from '~hooks';
+import { useAppContext, useAsyncFunction, useMobile } from '~hooks';
 import { getLastWallet } from '~utils/autoLogin';
 
 import styles from './Wallet.css';
 
+const displayName = 'frame.RouteLayouts.UserNavigation.Wallet';
+
 const MSG = defineMessages({
   connectWallet: {
-    id: 'pages.NavigationWrapper.UserNavigation.connectWallet',
+    id: `${displayName}.connectWallet`,
     defaultMessage: 'Connect Wallet',
   },
   walletAutologin: {
-    id: 'pages.NavigationWrapper.UserNavigation.walletAutologin',
+    id: `${displayName}.walletAutologin`,
     defaultMessage: 'Connecting wallet...',
   },
 });
 
-const displayName = 'root.RouteLayouts.UserNavigation.Wallet';
-
 const Wallet = () => {
   const [walletConnecting, setWalletConnecting] = useState<boolean>(false);
   const { wallet, updateWallet } = useAppContext();
+  const isMobile = useMobile();
 
   const asyncFunction = useAsyncFunction({
     submit: ActionTypes.WALLET_OPEN,
@@ -90,40 +91,60 @@ const Wallet = () => {
           onClick={handleConnectWallet}
         />
       )}
-      <div className={styles.main}>
-        {wallet?.address && (
-          <GasStationProvider>
-            <GasStationPopover
-              transactionAndMessageGroups={
-                transactionAndMessageGroups as unknown as TransactionOrMessageGroups
-              }
-            >
-              {({ isOpen, toggle, ref }) => (
-                <>
-                  <button
-                    type="button"
-                    className={
-                      isOpen ? styles.walletAddressActive : styles.walletAddress
-                    }
-                    ref={ref}
-                    onClick={toggle}
-                    data-test="gasStationPopover"
-                  >
-                    <span>
-                      <MaskedAddress address={wallet.address as string} />
-                    </span>
-                  </button>
-                  {readyTransactions >= 1 && (
-                    <span className={styles.readyTransactionsCount}>
-                      <span>{readyTransactions}</span>
-                    </span>
+      <span>
+        {isMobile ? (
+          // Render GasStationPopover outside of div.elementWrapper on mobile
+          // Popover will not be accessible from a button like on Desktop. It will appear when completing an action.
+          wallet?.address && (
+            <GasStationProvider>
+              <GasStationPopover
+                transactionAndMessageGroups={
+                  transactionAndMessageGroups as unknown as TransactionOrMessageGroups
+                }
+              >
+                <div className={styles.gasStationReference} />
+              </GasStationPopover>
+            </GasStationProvider>
+          )
+        ) : (
+          <div className={styles.main}>
+            {wallet?.address && (
+              <GasStationProvider>
+                <GasStationPopover
+                  transactionAndMessageGroups={
+                    transactionAndMessageGroups as unknown as TransactionOrMessageGroups
+                  }
+                >
+                  {({ isOpen, toggle, ref }) => (
+                    <>
+                      <button
+                        type="button"
+                        className={
+                          isOpen
+                            ? styles.walletAddressActive
+                            : styles.walletAddress
+                        }
+                        ref={ref}
+                        onClick={toggle}
+                        data-test="gasStationPopover"
+                      >
+                        <span>
+                          <MaskedAddress address={wallet.address as string} />
+                        </span>
+                      </button>
+                      {readyTransactions >= 1 && (
+                        <span className={styles.readyTransactionsCount}>
+                          <span>{readyTransactions}</span>
+                        </span>
+                      )}
+                    </>
                   )}
-                </>
-              )}
-            </GasStationPopover>
-          </GasStationProvider>
+                </GasStationPopover>
+              </GasStationProvider>
+            )}
+          </div>
         )}
-      </div>
+      </span>
     </>
   );
 };

@@ -1,16 +1,17 @@
-import React from 'react'; // useEffect // useMemo,
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-// import Icon from '~shared/Icon';
 import MemberReputation from '~shared/MemberReputation';
 import { Tooltip } from '~shared/Popover';
+import { AvatarDropdown } from '~frame/AvatarDropdown';
 // import UserTokenActivationButton from '~users/UserTokenActivationButton';
-import AvatarDropdown from '~frame/AvatarDropdown';
-// import {
-//   useUserBalanceWithLockQuery,
-// } from '~data/index';
-import { useAppContext, useColonyContext, useUserReputation } from '~hooks';
-// import { groupedTransactionsAndMessages } from '~redux/selectors';
+import {
+  useAppContext,
+  useColonyContext,
+  useUserReputation,
+  useMobile,
+  // useCanInteractWithNetwork,
+} from '~hooks';
 
 import Wallet from './Wallet';
 
@@ -23,16 +24,24 @@ const MSG = defineMessages({
     id: `${displayName}.userReputationTooltip`,
     defaultMessage: 'This is your share of the reputation in this colony',
   },
+  walletAutologin: {
+    id: `${displayName}.walletAutologin`,
+    defaultMessage: `{isMobile, select,
+      true {Connecting...}
+      other {Connecting wallet...}
+    }`,
+  },
 });
 
 const UserNavigation = () => {
   const { colony } = useColonyContext();
-
   const { wallet } = useAppContext();
   const { formatMessage } = useIntl();
+  const isMobile = useMobile();
 
   // const userLock = userData?.user.userLock;
   // const nativeToken = userLock?.nativeToken;
+  // const canInteractWithNetwork = useCanInteractWithNetwork();
 
   const { userReputation, totalReputation } = useUserReputation(
     colony?.colonyAddress,
@@ -41,7 +50,7 @@ const UserNavigation = () => {
 
   return (
     <div className={styles.main}>
-      {colony?.colonyAddress && wallet && (
+      {colony?.colonyAddress && wallet && !isMobile && (
         <Tooltip
           content={formatMessage(MSG.userReputationTooltip)}
           placement="bottom-start"
@@ -67,7 +76,7 @@ const UserNavigation = () => {
       )}
       {/*
         <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
-          {userCanNavigate && nativeToken && userLock && (
+          {canInteractWithNetwork && nativeToken && userLock && (
             <UserTokenActivationButton
               nativeToken={nativeToken}
               userLock={userLock}
@@ -79,13 +88,7 @@ const UserNavigation = () => {
         </div>
       */}
       <Wallet />
-      <AvatarDropdown
-        /*
-         * @TODO Dependency on colony data should be removed from here
-         * Hopefully this will be achieved by #66
-         */
-        colony={{}}
-      />
+      <AvatarDropdown spinnerMsg={MSG.walletAutologin} />
     </div>
   );
 };

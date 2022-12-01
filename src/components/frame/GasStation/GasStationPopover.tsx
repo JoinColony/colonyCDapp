@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState, ReactElement } from 'react';
-import { useMediaQuery } from 'react-responsive';
 
 import Popover, { PopoverChildFn } from '~shared/Popover';
-import { usePrevious } from '~hooks';
+import { usePrevious, useMobile } from '~hooks';
 
 import { removeValueUnits } from '~utils/css';
 
@@ -13,7 +12,6 @@ import {
 
 import GasStationContent from './GasStationContent';
 
-import queries from '~styles/queries.css';
 import styles from './GasStationPopover.css';
 
 interface Props {
@@ -22,8 +20,6 @@ interface Props {
 }
 
 const displayName = 'frame.GasStation.GasStationPopover';
-
-const { query700: query } = queries;
 
 const GasStationPopover = ({
   children,
@@ -44,7 +40,7 @@ const GasStationPopover = ({
   );
 
   const prevTxCount: number | void = usePrevious(txCount);
-  const isMobile = useMediaQuery({ query });
+  const isMobile = useMobile();
 
   useEffect(() => {
     if (prevTxCount != null && txCount > prevTxCount) {
