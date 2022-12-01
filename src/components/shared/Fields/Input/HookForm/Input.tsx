@@ -1,28 +1,29 @@
 import React, { InputHTMLAttributes, ReactNode, useState } from 'react';
 import classnames from 'classnames';
 import { CleaveOptions } from 'cleave.js/options';
-import { MessageDescriptor, useIntl } from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 import { nanoid } from 'nanoid';
-import { useFormContext, UseFormReturn } from 'react-hook-form';
+import { SetValueConfig, useFormContext } from 'react-hook-form';
+import { isConfusing } from '@colony/unicode-confusables-noascii';
 
 import { Message, SimpleMessageValues } from '~types';
+import { formatText } from '~utils/intl';
+import ConfusableWarning from '~shared/ConfusableWarning';
 
-import InputLabel from '../InputLabel';
-import InputStatus from '../InputStatus';
-import { InputComponentAppearance } from '../Input';
+import InputLabel from '../../InputLabel';
+import InputStatus from '../../InputStatus';
+import { InputComponentAppearance } from '../../Input';
 
-import InputComponentWithoutFormik, {
-  InputComponentProps,
-} from './InputComponentWithoutFormik';
-import styles from './Input.css';
+import InputComponent from './InputComponent';
+import styles from '../Input.css';
 
 interface MaxButtonParams {
-  setValue: UseFormReturn['setValue'];
   maxAmount: string;
-  fieldName: string;
+  options?: SetValueConfig;
+  customOnClickFn?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export interface InputWithoutFormikProps
+export interface HookFormInputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'placeholder'> {
   /** Appearance object */
   appearance?: InputComponentAppearance;
@@ -42,7 +43,7 @@ export interface InputWithoutFormikProps
   /** Extra node to render on the top right in the label */
   extra?: ReactNode;
 
-  /** Options for cleave.js formatting (see [this list](https://github.com/nosir/cleave.js/blob/master/doc/options.md)) */
+  /** Memomized options object for cleave.js formatting (see [this list](https://github.com/nosir/cleave.js/blob/master/doc/options.md)). Be sure to ensure the object is either memoized or defined outside of the component. */
   formattingOptions?: CleaveOptions;
 
   /** Help text */
@@ -78,6 +79,9 @@ export interface InputWithoutFormikProps
   /** Placeholder text values for intl interpolation */
   placeholderValues?: SimpleMessageValues;
 
+  /** Show ConfusableWarning based on user input */
+  showConfusable?: boolean;
+
   /** Status text */
   status?: Message;
 
@@ -85,65 +89,45 @@ export interface InputWithoutFormikProps
   statusValues?: SimpleMessageValues;
 }
 
-const InputWithoutFormik = <T extends Record<string, any>>({
+const displayName = 'HookFormInput';
+
+const HookFormInput = ({
   appearance = {},
-  dataTest,
-  disabled,
   elementOnly,
   extensionString,
   extra,
-  formattingOptions,
   help,
   helpValues,
   id: idProp,
   label,
   labelValues,
-  maxLength,
-  maxButtonParams,
   name,
-  onChange,
-  onBlur,
-  placeholder: placeholderProp,
+  placeholder,
   placeholderValues,
+  showConfusable = false,
   status,
   statusValues,
-}: InputWithoutFormikProps) => {
+  ...restInputProps
+}: HookFormInputProps) => {
   const [id] = useState(idProp || nanoid());
-  const { formatMessage } = useIntl();
   const {
-    formState: { errors, touchedFields },
+    formState: { errors, touchedFields, isValid },
+    watch,
   } = useFormContext();
 
+  const inputValue = watch(name);
   const error = errors[name]?.message as string | undefined;
-  const touched = touchedFields[name];
-  const placeholder =
-    typeof placeholderProp === 'object'
-      ? formatMessage(placeholderProp, placeholderValues)
-      : placeholderProp;
+  const touched = touchedFields[name] as boolean | undefined;
 
-  const inputProps: InputComponentProps<T> = {
-    appearance,
-    'aria-invalid': !!error && touched,
-    formattingOptions,
-    id,
-    name,
-    placeholder,
-    disabled,
-    maxLength,
-    maxButtonParams,
-    dataTest,
-    onBlur,
-    onChange,
-  };
-
-  const extensionStringText: string | undefined =
-    !extensionString || typeof extensionString === 'string'
-      ? extensionString
-      : formatMessage(extensionString);
+  const extensionStringText = formatText(extensionString);
 
   const containerClasses = classnames(styles.container, {
     [styles.containerHorizontal]: appearance.direction === 'horizontal',
   });
+
+  const showConfusableWarning =
+    showConfusable && isConfusing(inputValue) && isValid && touched;
+
   return (
     <div className={containerClasses}>
       {label && (
@@ -159,7 +143,14 @@ const InputWithoutFormik = <T extends Record<string, any>>({
         />
       )}
       <div className={styles.extensionContainer}>
-        <InputComponentWithoutFormik {...inputProps} />
+        <InputComponent
+          appearance={appearance}
+          aria-invalid={!!error && touched}
+          id={id}
+          name={name}
+          placeholder={formatText(placeholder, placeholderValues)}
+          {...restInputProps}
+        />
         {extensionStringText && (
           <div className={styles.extension}>{extensionStringText}</div>
         )}
@@ -173,10 +164,11 @@ const InputWithoutFormik = <T extends Record<string, any>>({
           touched={touched}
         />
       )}
+      {showConfusableWarning && <ConfusableWarning />}
     </div>
   );
 };
 
-InputWithoutFormik.displayName = 'Input';
+HookFormInput.displayName = displayName;
 
-export default InputWithoutFormik;
+export default HookFormInput;

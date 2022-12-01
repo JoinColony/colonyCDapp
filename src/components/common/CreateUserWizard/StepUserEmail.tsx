@@ -1,7 +1,5 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { UseFormProps } from 'react-hook-form';
 
 import { WizardStepProps } from '~shared/Wizard';
 import HookForm from '~shared/Fields/Form/HookForm';
@@ -11,7 +9,10 @@ import {
   UserStepTemplate,
   ContinueWizard,
 } from '../CreateUserWizard';
-import { stepUserEmailValidationSchema as validationSchema } from './validation';
+import {
+  stepUserEmailValidationSchema as validationSchema,
+  UserWizardStep1,
+} from './validation';
 import ConfirmEmail from './ConfirmEmail';
 
 export const displayName = 'common.CreateUserWizard.StepUserEmail';
@@ -28,17 +29,18 @@ const MSG = defineMessages({
   },
 });
 
-type StepValues = Pick<FormValues, 'email' | 'emailPermissions'>;
-type Props = WizardStepProps<FormValues, StepValues>;
+type Props = WizardStepProps<FormValues, UserWizardStep1>;
 
-const StepUserEmail = ({ nextStep, wizardForm }: Props) => {
-  const formOptions: UseFormProps = {
-    defaultValues: wizardForm.initialValues,
-    resolver: yupResolver(validationSchema),
-    mode: 'onTouched',
-  };
+const StepUserEmail = ({
+  nextStep,
+  wizardForm: { initialValues: defaultValues },
+}: Props) => {
   return (
-    <HookForm options={formOptions} onSubmit={nextStep}>
+    <HookForm<UserWizardStep1>
+      validationSchema={validationSchema}
+      defaultValues={defaultValues}
+      onSubmit={nextStep}
+    >
       {({ formState: { isSubmitting, isValid } }) => {
         return (
           <UserStepTemplate

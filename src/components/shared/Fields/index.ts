@@ -3,7 +3,12 @@ export { default as Checkbox, HookFormCheckbox } from './Checkbox';
 export { default as Form, ActionForm, HookForm, ActionHookForm } from './Form';
 export { default as FormStatus } from './FormStatus';
 export { default as FieldSet } from './FieldSet';
-export { default as Input, InputWithoutFormik } from './Input';
+export { default as Input } from './Input';
+export {
+  Input as HookFormInput,
+  InputComponent as HookFormInputComponent,
+  FormattedInput as HookFormFormattedInput,
+} from './Input/HookForm';
 export { default as InputLabel } from './InputLabel';
 export { default as InputStatus } from './InputStatus';
 export { default as Select, Appearance, SelectOption } from './Select';

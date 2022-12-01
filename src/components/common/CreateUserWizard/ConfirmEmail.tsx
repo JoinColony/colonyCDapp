@@ -5,7 +5,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { EmailPermissions } from '~gql';
 import {
   HookFormCheckbox as Checkbox,
-  InputWithoutFormik as Input,
+  HookFormInput as Input,
 } from '~shared/Fields';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 import { Message } from '~types';
