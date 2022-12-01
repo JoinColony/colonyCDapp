@@ -19,3 +19,37 @@ fragment User on User {
     }
   }
 }
+
+fragment Contributor on Contributor {
+  user {
+    walletAddress: id
+    name
+    profile {
+      avatar
+      bio
+      displayName
+      email
+      location
+      website
+      thumbnail
+    }
+  }
+  reputationPercentage
+  reputationAmount
+}
+
+fragment Watcher on Watcher {
+  user {
+    walletAddress: id
+    name
+    profile {
+      avatar
+      bio
+      displayName
+      email
+      location
+      website
+      thumbnail
+    }
+  }
+}
