@@ -67,6 +67,21 @@ type TokenFromEverywhereReturn {
   items: [Token]
 }
 
+input GetReputationForTopDomainsInput {
+  walletAddress: String!
+  colonyAddress: String!
+  rootHash: String
+}
+
+type UserDomainReputation {
+  domainId: Int!
+  reputationPercentage: String!
+}
+
+type GetReputationForTopDomainsReturn {
+  items: [UserDomainReputation!]
+}
+
 enum TokenType {
   COLONY
   ERC20
@@ -108,6 +123,9 @@ type Query {
   getTokenFromEverywhere(
     input: TokenFromEverywhereArguments
   ): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain")
+  getReputationForTopDomains(
+    input: GetReputationForTopDomainsInput
+  ): GetReputationForTopDomainsReturn @function(name: "getReputationForTopDomains")
   getUserReputation(
     input: GetUserReputationInput
   ): String @function(name: "getUserReputation")

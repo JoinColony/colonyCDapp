@@ -2,9 +2,9 @@ import React from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
 
 import Link from '~shared/Link';
-import InfoPopover, { Props as InfoPopoverProps } from '~shared/InfoPopover';
-
-import { useUserQuery, useUserAddressQuery } from '~data/index';
+import Popover from '~shared/Popover';
+// import UserInfoPopover from '../InfoPopover/UserInfoPopover';
+// import { useUserQuery, useUserAddressQuery } from '~data/index';
 
 import styles from './UserMention.css';
 
@@ -28,6 +28,8 @@ interface Props {
   popperOptions?: PopperOptions & { showArrow?: boolean };
 }
 
+const displayName = 'UserMention';
+
 const UserMention = ({
   username,
   to,
@@ -37,21 +39,18 @@ const UserMention = ({
   ...props
 }: Props) => {
   const fallbackTo = to || `/user/${username}`;
-  const popoverProps: Partial<InfoPopoverProps> = {
-    popperOptions,
-    trigger: showInfo ? 'click' : 'disabled',
-    showArrow: popperOptions && popperOptions.showArrow,
-  };
+  const trigger = showInfo ? 'click' : 'disabled';
+  const showArrow = popperOptions && popperOptions.showArrow;
 
-  const { data: userAddressData } = useUserAddressQuery({
-    variables: {
-      name: username || '',
-    },
-  });
+  // const { data: userAddressData } = useUserAddressQuery({
+  //   variables: {
+  //     name: username || '',
+  //   },
+  // });
 
-  const { data } = useUserQuery({
-    variables: { address: userAddressData?.userAddress || '' },
-  });
+  // const { data } = useUserQuery({
+  //   variables: { address: userAddressData?.userAddress || '' },
+  // });
 
   const renderUserMention = () =>
     hasLink ? (
@@ -72,13 +71,25 @@ const UserMention = ({
     return renderUserMention();
   }
 
-  const { user } = data || {};
+  // const { user } = data || {};
+
+  // const renderContent = useMemo(() => {
+  //   return <UserInfoPopover user={user} />;
+  // }, [user]);
+  const renderContent = null;
 
   return (
-    <InfoPopover user={user} {...popoverProps}>
+    <Popover
+      renderContent={renderContent}
+      popperOptions={popperOptions}
+      trigger={trigger}
+      showArrow={showArrow}
+    >
       {renderUserMention()}
-    </InfoPopover>
+    </Popover>
   );
 };
+
+UserMention.displayName = displayName;
 
 export default UserMention;

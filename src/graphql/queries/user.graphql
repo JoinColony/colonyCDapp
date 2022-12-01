@@ -9,3 +9,12 @@ query GetCurrentUser($address: ID!) {
 query GetUserReputation($input: GetUserReputationInput!) {
   getUserReputation(input: $input)
 }
+
+query GetReputationForTopDomains($input: GetReputationForTopDomainsInput!) {
+  getReputationForTopDomains(input: $input) {
+    items {
+      domainId
+      reputationPercentage
+    }
+  }
+}

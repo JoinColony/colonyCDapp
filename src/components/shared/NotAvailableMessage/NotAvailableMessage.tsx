@@ -5,11 +5,11 @@ interface Props {
   notAvailableDataName: string;
 }
 
-const displayName = 'InfoPopover.NotAvailableMessage';
+const displayName = 'NotAvailableMessage';
 
 const MSG = defineMessages({
   notAvailable: {
-    id: 'InfoPopover.NotAvailableMessage.notAvailable',
+    id: `${displayName}.notAvailable`,
     defaultMessage:
       '{notAvailableDataName} data is not available or could not be loaded.',
   },

@@ -17,6 +17,8 @@ const { graphqlRequest } = require('../amplify/backend/function/createUniqueColo
 const { private_keys } = require('../amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json');
 const { etherRouterAddress } = require('../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json')
 
+const userThumbnails = require('./imageData');
+
 const API_KEY = 'da2-fakeApiId123456';
 const GRAPHQL_URI = 'http://localhost:20002/graphql';
 
@@ -111,7 +113,7 @@ const createUser = async (username, accountIndex = 0) => {
       input: {
         id: userAddress,
         name: username,
-        profile: { displayName: `User ${username.toUpperCase()}` },
+        profile: { displayName: `User ${username.toUpperCase()}`, thumbnail: userThumbnails[`thumbnailUser${username.toUpperCase()}`] },
       }
     },
     GRAPHQL_URI,

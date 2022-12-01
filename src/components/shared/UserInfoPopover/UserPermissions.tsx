@@ -3,11 +3,11 @@ import { ColonyRole } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 
 import PermissionsLabel from '~shared/PermissionsLabel';
-
-import styles from './MemberInfoPopover.css';
 import Heading from '~shared/Heading';
 
-const displayName = `InfoPopover.MemberInfoPopover.UserPermissions`;
+import styles from './UserInfoPopover.css';
+
+const displayName = `UserInfoPopover.UserPermissions`;
 
 interface Props {
   roles: ColonyRole[];
@@ -15,7 +15,7 @@ interface Props {
 
 const MSG = defineMessages({
   labelText: {
-    id: 'InfoPopover.MemberInfoPopover.UserPermissions.labelText',
+    id: `${displayName}.labelText`,
     defaultMessage: 'Permissions',
   },
 });

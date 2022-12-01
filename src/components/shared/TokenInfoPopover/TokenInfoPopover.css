@@ -62,20 +62,6 @@
   height: auto;
 }
 
-.reputationHeading h4 {
-  color: var(--grey-purple);
-}
-
-.badges {
-  display: flex;
-  align-items: center;
-  margin-top: 5px;
-}
-
-.badges > figure {
-  margin-right: 5px;
-}
-
 .symbol {
   composes: inlineEllipsis from '~styles/text.css';
   margin: 0 0 6px 0;
@@ -90,11 +76,6 @@
 .etherscanLink {
   font-weight: var(--weight-bold);
   color: var(--colony-blue);
-}
-
-.container {
-  composes: flexContainerRow flexAlignCenter from '~styles/layout.css';
-  display: flex;
 }
 
 .textContainer {
