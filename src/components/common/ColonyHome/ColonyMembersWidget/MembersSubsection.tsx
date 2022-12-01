@@ -9,8 +9,8 @@ import ClickableHeading from '~shared/ClickableHeading';
 import InviteLinkButton from '~shared/Button/InviteLinkButton';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { useAvatarDisplayCounter } from '~hooks';
-import { Colony, User } from '~types';
+import { useAvatarDisplayCounter, useAppContext } from '~hooks';
+import { Colony, Contributor, Watcher } from '~types';
 
 import styles from './ColonyMembersWidget.css';
 
@@ -71,15 +71,11 @@ const colonyWatchers = [];
 
 const MembersSubsection = ({
   colony: { name },
-  // members,
+  members,
   isContributorsSubsection,
   currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
   maxAvatars = MAX_AVATARS,
 }: Props) => {
-  //  = useMemo(
-  //   () => (watchers || []).filter(notNull),
-  //   [watchers],
-  // );
   const { user } = useAppContext();
   // const hasRegisteredProfile = user?.name;
   // const canAdministerComments =
@@ -87,7 +83,7 @@ const MembersSubsection = ({
   //   (hasRoot(allUserRoles) || canAdminister(allUserRoles));
 
   const { avatarsDisplaySplitRules, remainingAvatarsCount } =
-    useAvatarDisplayCounter(maxAvatars, colonyWatchers, false);
+    useAvatarDisplayCounter(maxAvatars, members ?? [], false);
 
   const BASE_MEMBERS_ROUTE = `/colony/${name}/members`;
   const membersPageRoute =
@@ -115,7 +111,7 @@ const MembersSubsection = ({
             <FormattedMessage
               {...MSG.title}
               values={{
-                count: colonyWatchers?.length,
+                count: members?.length,
                 hasCounter,
                 isContributorsSubsection,
               }}
@@ -130,10 +126,10 @@ const MembersSubsection = ({
         )}
       </div>
     ),
-    [isContributorsSubsection, membersPageRoute, name],
+    [isContributorsSubsection, membersPageRoute, members, name],
   );
 
-  if (!colonyWatchers.length) {
+  if (!members?.length) {
     return (
       <div className={styles.main}>
         {setHeading(false)}
@@ -151,37 +147,34 @@ const MembersSubsection = ({
     <div className={styles.main}>
       {setHeading(true)}
       <ul className={styles.userAvatars}>
-        {(colonyWatchers as { user: User }[])
-          .slice(0, avatarsDisplaySplitRules)
-          .map(({ user }) => (
-            <li className={styles.userAvatar} key={user.walletAddress}>
-              <UserAvatar
-                size="xs"
-                // banned={canAdministerComments && banned}
-                banned={false}
-                showInfo
-                user={user}
-                popperOptions={{
-                  placement: 'bottom',
-                  showArrow: false,
-                  modifiers: [
-                    {
-                      name: 'offset',
-                      options: {
-                        /*
-                         * @NOTE Values are set manual, exactly as the ones provided in the figma spec.
-                         *
-                         * There's no logic to how they are calculated, so next time you need
-                         * to change them you'll either have to go by exact specs, or change
-                         * them until it "feels right" :)
-                         */
-                        offset: [-208, -12],
-                      },
+        {members.slice(0, avatarsDisplaySplitRules).map((member) => (
+          <li className={styles.userAvatar} key={member?.user.walletAddress}>
+            <UserAvatar
+              size="xs"
+              // banned={canAdministerComments && banned}
+              showInfo
+              user={member.user}
+              popperOptions={{
+                placement: 'bottom',
+                showArrow: false,
+                modifiers: [
+                  {
+                    name: 'offset',
+                    options: {
+                      /*
+                       * @NOTE Values are set manual, exactly as the ones provided in the figma spec.
+                       *
+                       * There's no logic to how they are calculated, so next time you need
+                       * to change them you'll either have to go by exact specs, or change
+                       * them until it "feels right" :)
+                       */
+                      offset: [-208, -12],
                     },
-                  ],
-                }}
-              />
-              {/* {canAdministerComments && banned && (
+                  },
+                ],
+              }}
+            />
+            {/* {canAdministerComments && banned && (
                   <div className={styles.userBanned}>
                     <Icon
                       appearance={{ size: 'extraTiny' }}
@@ -190,8 +183,8 @@ const MembersSubsection = ({
                     />
                   </div>
                 )} */}
-            </li>
-          ))}
+          </li>
+        ))}
         {!!remainingAvatarsCount && (
           <li className={styles.remaningAvatars}>
             <NavLink to={membersPageRoute} title={MSG.viewMore}>

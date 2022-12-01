@@ -22,6 +22,7 @@ const MSG = defineMessages({
   },
 });
 
+const ROOT_DOMAIN_ID = 0;
 interface Props {
   currentDomainId?: number;
   maxAvatars?: number;
@@ -43,10 +44,10 @@ const ColonyMembersWidget = ({
     fetchPolicy: 'cache-and-network',
   });
 
+  if (!colony) return null;
+
   const contributors = data?.getMembersForColony?.contributors ?? [];
   const watchers = data?.getMembersForColony?.watchers ?? [];
-
-  if (!colony) return null;
 
   if (loadingMembers) {
     return (
@@ -65,8 +66,7 @@ const ColonyMembersWidget = ({
         colony={colony}
         isContributorsSubsection
       />
-      {/* {(currentDomainId === ROOT_DOMAIN_ID || */}
-      {(currentDomainId === 0 ||
+      {(currentDomainId === ROOT_DOMAIN_ID ||
         currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID) && (
         <MembersSubsection
           members={watchers}

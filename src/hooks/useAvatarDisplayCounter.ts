@@ -1,14 +1,10 @@
 import { useMemo } from 'react';
 
-// import { ColonyWatcher } from '~types';
-// @NOTE this is all fixed in PR #111 - just added here to stop the complaints
-type ColonyWatcher = {
-  id: string;
-};
+import { Contributor, Watcher } from '~types';
 
 const useAvatarDisplayCounter = (
   maxAvatars: number,
-  members: ColonyWatcher[],
+  members: Contributor[] | Watcher[],
   isLastAvatarIncluded = true,
 ) => {
   const avatarsDisplaySplitRules = useMemo(() => {
