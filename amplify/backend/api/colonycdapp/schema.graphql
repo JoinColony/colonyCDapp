@@ -107,7 +107,7 @@ type ReputationForColonyReturn {
 
 type MembersForColonyReturn {
   contributors: [Contributor!]
-  watchers: [User!]
+  watchers: [Watcher!]
 }
 
 enum TokenType {
@@ -218,6 +218,10 @@ type Member {
   user: User
   reputationPercentage: String
   reputationAmount: String
+}
+
+type Watcher {
+  user: User
 }
 
 type Token @model {
