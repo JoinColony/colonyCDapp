@@ -2302,6 +2302,7 @@ export function useGetUserReputationLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetUserReputationQueryHookResult = ReturnType<typeof useGetUserReputationQuery>;
 export type GetUserReputationLazyQueryHookResult = ReturnType<typeof useGetUserReputationLazyQuery>;
 <<<<<<< HEAD
+<<<<<<< HEAD
 export type GetUserReputationQueryResult = Apollo.QueryResult<GetUserReputationQuery, GetUserReputationQueryVariables>;
 export const GetReputationForTopDomainsDocument = gql`
     query GetReputationForTopDomains($input: GetReputationForTopDomainsInput!) {
@@ -2381,3 +2382,6 @@ export type GetUserByNameQueryResult = Apollo.QueryResult<GetUserByNameQuery, Ge
 =======
 export type GetUserReputationQueryResult = Apollo.QueryResult<GetUserReputationQuery, GetUserReputationQueryVariables>;
 >>>>>>> 7c16eba (feat:update query & return type for Watchers, add fragments)
+=======
+export type GetUserReputationQueryResult = Apollo.QueryResult<GetUserReputationQuery, GetUserReputationQueryVariables>;
+>>>>>>> b5466c2 (fix:PR comments, and small change to Watcher interface in schema)

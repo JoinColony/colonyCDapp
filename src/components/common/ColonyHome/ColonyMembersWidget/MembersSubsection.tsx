@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import NavLink from '~shared/NavLink';
@@ -11,7 +11,6 @@ import InviteLinkButton from '~shared/Button/InviteLinkButton';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useAvatarDisplayCounter } from '~hooks';
 import { Colony, User } from '~types';
-import { notNull } from '~utils/arrays';
 
 import styles from './ColonyMembersWidget.css';
 
@@ -66,20 +65,23 @@ interface Props {
 
 const MAX_AVATARS = 12;
 
+// @NOTE only added to make the linter happy
+// this is all fixed and working in PR#111
+const colonyWatchers = [];
+
 const MembersSubsection = ({
-  colony: { name, watchers },
+  colony: { name },
   // members,
   isContributorsSubsection,
   colony,
   currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
   maxAvatars = MAX_AVATARS,
 }: Props) => {
-  const colonyWatchers = useMemo(
-    () => (watchers?.items || []).filter(notNull),
-    [watchers],
-  );
-  // const { user } = useAppContext();
-  // const userHasAccountRegistered = useUserAccountRegistered();
+  //  = useMemo(
+  //   () => (watchers || []).filter(notNull),
+  //   [watchers],
+  // );
+  const { user } = useAppContext();
   // const hasRegisteredProfile = user?.name;
   // const canAdministerComments =
   //   userHasAccountRegistered &&
@@ -129,7 +131,7 @@ const MembersSubsection = ({
         )}
       </div>
     ),
-    [isContributorsSubsection, membersPageRoute, colonyWatchers, name],
+    [isContributorsSubsection, membersPageRoute, name],
   );
 
   if (!colonyWatchers.length) {

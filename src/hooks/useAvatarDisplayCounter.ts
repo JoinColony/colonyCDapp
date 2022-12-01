@@ -1,6 +1,10 @@
 import { useMemo } from 'react';
 
-import { ColonyWatcher } from '~types';
+// import { ColonyWatcher } from '~types';
+// @NOTE this is all fixed in PR #111 - just added here to stop the complaints
+type ColonyWatcher = {
+  id: string;
+};
 
 const useAvatarDisplayCounter = (
   maxAvatars: number,
