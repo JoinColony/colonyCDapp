@@ -23,6 +23,7 @@ const MSG = defineMessages({
   },
 });
 
+const ROOT_DOMAIN_ID = 0;
 interface Props {
   currentDomainId?: number;
   maxAvatars?: number;
