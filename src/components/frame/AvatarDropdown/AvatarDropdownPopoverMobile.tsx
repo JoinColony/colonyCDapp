@@ -11,6 +11,7 @@ import MemberReputation from '~shared/MemberReputation';
 import {
   useAppContext,
   useColonyContext,
+  useUserReputation,
   // useCanInteractWithNetwork,
 } from '~hooks';
 import { SimpleMessageValues } from '~types/index';
@@ -63,7 +64,10 @@ Props) => {
 
   const { colony } = useColonyContext();
   const { wallet } = useAppContext();
-
+  const { userReputation, totalReputation } = useUserReputation(
+    colony?.colonyAddress,
+    wallet?.address,
+  );
   const colonyAddress = colony?.colonyAddress;
   // const canInteractWithNetwork = useCanInteractWithNetwork();
 
@@ -86,7 +90,13 @@ Props) => {
         </DropdownMenuItem> */}
         <DropdownMenuItem>
           <ItemContainer message={MSG.reputation} spinnerMsg={spinnerMsg}>
-            {colonyAddress && <MemberReputation showIconTitle={false} />}
+            {colonyAddress && (
+              <MemberReputation
+                userReputation={userReputation}
+                totalReputation={totalReputation}
+                showIconTitle={false}
+              />
+            )}
           </ItemContainer>
         </DropdownMenuItem>
         {/* <DropdownMenuItem>
