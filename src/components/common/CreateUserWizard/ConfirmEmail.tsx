@@ -1,11 +1,17 @@
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { EmailPermissions } from '~gql';
-import { Checkbox, Input } from '~shared/Fields';
+import {
+  HookFormCheckbox as Checkbox,
+  InputWithoutFormik as Input,
+} from '~shared/Fields';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
-
 import { Message } from '~types';
+import { setFieldTouched } from '~utils/hookForm';
+
+import { UserWizardStep1 } from './validation';
 import { displayName } from './StepUserEmail';
 
 import styles from './StepUserEmail.css';
@@ -76,10 +82,12 @@ const PermissionsHeading = () => (
   </p>
 );
 
-interface EmailPermissionsRowProps extends EmailPermissionsProps {
+interface EmailPermissionsRowProps {
+  checkboxDisabled: boolean;
+  label: Message;
+  onCheckboxChange: (e: React.ChangeEvent<HTMLElement>) => void;
   tooltipText: Message;
   value: string;
-  label: Message;
 }
 
 const EmailPermissionsRow = ({
@@ -104,15 +112,20 @@ const EmailPermissionsRow = ({
   </div>
 );
 
-interface EmailPermissionsProps {
-  checkboxDisabled: boolean;
-  onCheckboxChange: (...args: any) => void;
-}
+const EmailPermissionsSection = () => {
+  const {
+    setValue,
+    getValues,
+    trigger,
+    formState: { isSubmitting },
+  } = useFormContext<UserWizardStep1>();
 
-const EmailPermissionsSection = ({
-  checkboxDisabled,
-  onCheckboxChange,
-}: EmailPermissionsProps) => {
+  const handleCheckboxChange = () => {
+    /* Ensures email input displays error if permissions checkbox is selected */
+    setFieldTouched('email', setValue, getValues);
+    trigger('email');
+  };
+
   return (
     <section className={styles.emailPermissions}>
       <PermissionsHeading />
@@ -121,36 +134,30 @@ const EmailPermissionsSection = ({
           key={permission}
           tooltipText={tooltipText}
           label={label}
-          checkboxDisabled={checkboxDisabled}
+          checkboxDisabled={isSubmitting}
           value={permission}
-          onCheckboxChange={onCheckboxChange}
+          onCheckboxChange={handleCheckboxChange}
         />
       ))}
     </section>
   );
 };
 
-interface ConfirmEmailProps extends EmailPermissionsProps {
-  inputDisabled: boolean;
-}
-
-const ConfirmEmail = ({
-  onCheckboxChange,
-  inputDisabled,
-  checkboxDisabled,
-}: ConfirmEmailProps) => (
-  <>
-    <Input
-      appearance={{ theme: 'fat' }}
-      name="email"
-      label={MSG.label}
-      disabled={inputDisabled}
-    />
-    <EmailPermissionsSection
-      checkboxDisabled={checkboxDisabled}
-      onCheckboxChange={onCheckboxChange}
-    />
-  </>
-);
+const ConfirmEmail = () => {
+  const {
+    formState: { isSubmitting },
+  } = useFormContext();
+  return (
+    <>
+      <Input
+        appearance={{ theme: 'fat' }}
+        name="email"
+        label={MSG.label}
+        disabled={isSubmitting}
+      />
+      <EmailPermissionsSection />
+    </>
+  );
+};
 
 export default ConfirmEmail;

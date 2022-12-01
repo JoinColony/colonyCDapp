@@ -13,15 +13,23 @@ import StepUserEmail from './StepUserEmail';
 
 import styles from './CreateUserWizard.css';
 
+type Permissions = `${EmailPermissions}`[];
+
 export interface FormValues {
-  [k: string]: string | string[];
+  [k: string]: string | Permissions;
   username: string;
   email: string;
-  emailPermissions: EmailPermissions[];
+  emailPermissions: Permissions;
 }
 
 const steps = [StepUserEmail, StepUserName];
-const initialValues = [{ email: '', emailPermissions: [] }, { username: '' }];
+const initialValues = [
+  {
+    email: '',
+    emailPermissions: [],
+  },
+  { username: '' },
+];
 
 const CreateUserContainer = withWizard<FormValues>({
   initialValues,
