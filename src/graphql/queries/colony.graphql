@@ -23,3 +23,14 @@ query GetColonyExtensions($colonyAddress: ID!) {
     }
   }
 }
+
+query GetColonyExtension($colonyAddress: ID!, $extensionHash: String!) {
+  getExtensionByColonyAndHash(
+    colonyId: $colonyAddress
+    hash: { eq: $extensionHash }
+  ) {
+    items {
+      ...Extension
+    }
+  }
+}

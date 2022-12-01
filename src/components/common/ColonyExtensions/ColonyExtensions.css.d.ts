@@ -1,11 +1,11 @@
 declare namespace ColonyExtensionsCssNamespace {
   export interface IColonyExtensionsCss {
     cards: string;
+    content: string;
     description: string;
     heading: string;
     lineHeight: string;
     main: string;
-    sections: string;
   }
 }
 

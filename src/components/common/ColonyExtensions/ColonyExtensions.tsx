@@ -2,11 +2,12 @@ import React, { useMemo } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { getExtensionHash } from '@colony/colony-js';
 
-import extensions, {
+import {
+  InstallableExtensionData,
   InstalledExtensionData,
   supportedExtensionsConfig,
 } from '~constants/extensions';
-import { useGetColonyExtensionsQuery } from '~gql';
+import { useGetColonyExtensionsQuery, useGetCurrentVersionsQuery } from '~gql';
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
 
@@ -47,14 +48,16 @@ const MSG = defineMessages({
 
 const ColonyExtensions = () => {
   const { colony } = useColonyContext();
+
   const { data, loading } = useGetColonyExtensionsQuery({
     variables: {
       colonyAddress: colony?.colonyAddress ?? '',
     },
     skip: !colony,
   });
+  const colonyExtensions = data?.getColony?.extensions?.items.filter(notNull);
 
-  const colonyExtensions = data?.getColony?.extensions?.items;
+  const { data: versionsData } = useGetCurrentVersionsQuery();
 
   const installedExtensionsData = useMemo<InstalledExtensionData[]>(() => {
     if (!colonyExtensions) {
@@ -67,7 +70,8 @@ const ColonyExtensions = () => {
           (e) => getExtensionHash(e.extensionId) === extension?.hash,
         );
 
-        if (!extension || !extensionConfig) {
+        if (!extensionConfig) {
+          // Unsupported extension
           return null;
         }
 
@@ -79,51 +83,36 @@ const ColonyExtensions = () => {
       .filter(notNull);
   }, [colonyExtensions]);
 
-  // const { data: networkExtensionData } = useNetworkExtensionVersionQuery();
+  const availableExtensionsData = useMemo<InstallableExtensionData[]>(() => {
+    if (!colonyExtensions) {
+      return [];
+    }
 
-  // const installedExtensionsData = useMemo(() => {
-  //   if (data?.processedColony?.installedExtensions) {
-  //     const { installedExtensions } = data.processedColony;
-  //     return installedExtensions.map(
-  //       ({ extensionId, address, details: { version } }) => ({
-  //         ...extensionData[extensionId],
-  //         address,
-  //         currentVersion: version,
-  //       }),
-  //     );
-  //   }
-  //   return [];
-  // }, [data]);
+    return supportedExtensionsConfig.reduce(
+      (availableExtensions, extensionConfig) => {
+        const extensionHash = getExtensionHash(extensionConfig.extensionId);
+        const isExtensionInstalled = !!colonyExtensions.find(
+          (e) => e.hash === extensionHash,
+        );
+        const availableVersion = versionsData?.listCurrentVersions?.items.find(
+          (i) => i?.item === extensionHash,
+        )?.version;
 
-  // const availableExtensionsData = useMemo(() => {
-  //   if (data?.processedColony?.installedExtensions) {
-  //     const { installedExtensions } = data.processedColony;
-  //     return extensions.reduce((availableExtensions, extensionName) => {
-  //       const installedExtension = installedExtensions.find(
-  //         ({ extensionId }) => extensionName === extensionId,
-  //       );
-  //       if (
-  //         !installedExtension &&
-  //         networkExtensionData?.networkExtensionVersion
-  //       ) {
-  //         const { networkExtensionVersion } = networkExtensionData;
-  //         const networkExtension = networkExtensionVersion?.find(
-  //           (extension) =>
-  //             extension?.extensionHash === getExtensionHash(extensionName),
-  //         );
-  //         return [
-  //           ...availableExtensions,
-  //           {
-  //             ...extensionData[extensionName],
-  //             currentVersion: networkExtension?.version || 0,
-  //           },
-  //         ];
-  //       }
-  //       return availableExtensions;
-  //     }, []);
-  //   }
-  //   return [];
-  // }, [data, networkExtensionData]);
+        if (!isExtensionInstalled && availableVersion) {
+          return [
+            ...availableExtensions,
+            {
+              ...extensionConfig,
+              availableVersion,
+            },
+          ];
+        }
+
+        return availableExtensions;
+      },
+      [],
+    );
+  }, [colonyExtensions, versionsData]);
 
   if (loading) {
     return (
@@ -133,53 +122,6 @@ const ColonyExtensions = () => {
       />
     );
   }
-
-  // return (
-  //   <div className={styles.main}>
-  //     <div className={styles.content}>
-  //       <BreadCrumb elements={[MSG.title]} />
-  //       <p className={styles.description}>
-  //         <FormattedMessage {...MSG.description} />
-  //       </p>
-  //       <hr />
-  //       {installedExtensionsData.length ? (
-  //         <>
-  //           <Heading
-  //             tagName="h3"
-  //             appearance={{ size: 'normal', margin: 'double' }}
-  //             text={MSG.installedExtensions}
-  //           />
-  //           <div className={styles.cards}>
-  //             {installedExtensionsData.map((extension, idx) => (
-  //               <ExtensionCard
-  //                 key={extension.extensionId}
-  //                 extension={extension}
-  //                 installedExtension={installedExtensions[idx]}
-  //               />
-  //             ))}
-  //           </div>
-  //         </>
-  //       ) : null}
-  //       {availableExtensionsData.length ? (
-  //         <div className={styles.availableExtensionsWrapper}>
-  //           <Heading
-  //             tagName="h3"
-  //             appearance={{ size: 'normal', margin: 'double' }}
-  //             text={MSG.availableExtensions}
-  //           />
-  //           <div className={styles.cards}>
-  //             {availableExtensionsData.map((extension) => (
-  //               <ExtensionCard
-  //                 key={extension.extensionId}
-  //                 extension={extension}
-  //               />
-  //             ))}
-  //           </div>
-  //         </div>
-  //       ) : null}
-  //     </div>
-  //   </div>
-  // );
 
   return (
     <div className={styles.main}>
@@ -191,40 +133,44 @@ const ColonyExtensions = () => {
       </div>
       <hr />
 
-      <div className={styles.sections}>
-        <div>
-          <Heading
-            tagName="h3"
-            appearance={{ size: 'normal' }}
-            text={MSG.installedExtensions}
-          />
+      <div className={styles.content}>
+        {installedExtensionsData.length > 0 && (
+          <div>
+            <Heading
+              tagName="h3"
+              appearance={{ size: 'normal' }}
+              text={MSG.installedExtensions}
+            />
 
-          <div className={styles.cards}>
-            {installedExtensionsData.map((extension) => (
-              <ExtensionCard
-                key={extension.extensionId}
-                extension={extension}
-              />
-            ))}
+            <div className={styles.cards}>
+              {installedExtensionsData.map((extension) => (
+                <ExtensionCard
+                  key={extension.extensionId}
+                  extension={extension}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div>
-          <Heading
-            tagName="h3"
-            appearance={{ size: 'normal' }}
-            text={MSG.availableExtensions}
-          />
+        {availableExtensionsData.length > 0 && (
+          <div>
+            <Heading
+              tagName="h3"
+              appearance={{ size: 'normal' }}
+              text={MSG.availableExtensions}
+            />
 
-          <div className={styles.cards}>
-            {extensions.map((extension) => (
-              <ExtensionCard
-                key={extension.extensionId}
-                extension={extension}
-              />
-            ))}
+            <div className={styles.cards}>
+              {availableExtensionsData.map((extension) => (
+                <ExtensionCard
+                  key={extension.extensionId}
+                  extension={extension}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

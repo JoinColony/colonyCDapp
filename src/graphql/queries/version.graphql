@@ -1,0 +1,8 @@
+query GetCurrentVersions {
+  listCurrentVersions {
+    items {
+      item
+      version
+    }
+  }
+}

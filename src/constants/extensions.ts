@@ -26,13 +26,19 @@ export interface ExtensionConfig {
   name: MessageDescriptor;
   descriptionShort: MessageDescriptor;
   descriptionLong: MessageDescriptor;
-  availableVersion: number;
   neededColonyPermissions: ColonyRole[];
 }
 
 export type InstalledExtensionData = ExtensionConfig & ColonyExtension;
 
-export type AnyExtension = ExtensionConfig | InstalledExtensionData;
+export type InstallableExtensionData = ExtensionConfig & {
+  availableVersion: number;
+};
+
+export type AnyExtension =
+  | ExtensionConfig
+  | InstalledExtensionData
+  | InstallableExtensionData;
 
 export const supportedExtensionsConfig: ExtensionConfig[] = [
   {
@@ -40,7 +46,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     name: oneTransactionPaymentMessages.name,
     descriptionShort: oneTransactionPaymentMessages.description,
     descriptionLong: oneTransactionPaymentMessages.descriptionLong,
-    availableVersion: 3,
     neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
   },
 ];

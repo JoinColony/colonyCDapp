@@ -2256,6 +2256,14 @@ export type GetColonyExtensionsQueryVariables = Exact<{
 
 export type GetColonyExtensionsQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, version: number, status: ExtensionStatus, isDeprecated?: boolean | null, address: string } | null> } | null } | null };
 
+export type GetColonyExtensionQueryVariables = Exact<{
+  colonyAddress: Scalars['ID'];
+  extensionHash: Scalars['String'];
+}>;
+
+
+export type GetColonyExtensionQuery = { __typename?: 'Query', getExtensionByColonyAndHash?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, version: number, status: ExtensionStatus, isDeprecated?: boolean | null, address: string } | null> } | null };
+
 export type GetTokenByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;
