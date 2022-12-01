@@ -130,6 +130,15 @@ type GetUserTokenBalanceReturn {
   pendingBalance: String
 }
 
+# Definitions:
+# Member = User watching a Colony, with or without reputation
+# Contributor = User watching a Colony WITH reputation
+# Watcher = User watching a Colony WITHOUT reputation
+type MembersForColonyReturn {
+  contributors: [Contributor!]
+  watchers: [Watcher!]
+}
+
 enum TokenType {
   COLONY
   ERC20
@@ -256,6 +265,10 @@ type ChainMetadata {
 
 type ProfileMetadata {
   emailPermissions: [String!]!
+}
+
+type Watcher {
+  user: User
 }
 
 type Token @model {

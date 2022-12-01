@@ -1,6 +1,7 @@
 import {
   UserFragment,
   ColonyFragment,
+  ContributorFragment,
   WatcherFragment,
   TokenFragment,
   WatchListItemFragment,
@@ -24,7 +25,9 @@ export type Colony = ColonyFragment;
 
 export type ColonyMetadata = ColonyMetadataFragment;
 
-export type ColonyWatcher = WatcherFragment;
+export type Contributor = ContributorFragment;
+
+export type Watcher = WatcherFragment;
 
 export type Domain = DomainFragment;
 
