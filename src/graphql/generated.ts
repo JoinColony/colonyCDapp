@@ -1461,6 +1461,7 @@ export type Query = {
   getColonyTokens?: Maybe<ColonyTokens>;
   getContractEvent?: Maybe<ContractEvent>;
   getCurrentVersion?: Maybe<CurrentVersion>;
+  getCurrentVersionByItem?: Maybe<ModelCurrentVersionConnection>;
   getDomain?: Maybe<Domain>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
@@ -1544,6 +1545,15 @@ export type QueryGetContractEventArgs = {
 
 export type QueryGetCurrentVersionArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryGetCurrentVersionByItemArgs = {
+  filter?: InputMaybe<ModelCurrentVersionFilterInput>;
+  item: Scalars['String'];
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -2292,6 +2302,7 @@ export type GetUserReputationQueryVariables = Exact<{
 
 export type GetUserReputationQuery = { __typename?: 'Query', getUserReputation?: string | null };
 
+<<<<<<< HEAD
 export type GetReputationForTopDomainsQueryVariables = Exact<{
   input: GetReputationForTopDomainsInput;
 }>;
@@ -2313,6 +2324,19 @@ export type CombinedUserQueryVariables = Exact<{
 
 
 export type CombinedUserQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null, getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null };
+=======
+export type GetCurrentExtensionsVersionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCurrentExtensionsVersionsQuery = { __typename?: 'Query', listCurrentVersions?: { __typename?: 'ModelCurrentVersionConnection', items: Array<{ __typename?: 'CurrentVersion', version: number, extensionHash: string } | null> } | null };
+
+export type GetCurrentExtensionVersionQueryVariables = Exact<{
+  extensionHash: Scalars['String'];
+}>;
+
+
+export type GetCurrentExtensionVersionQuery = { __typename?: 'Query', getCurrentVersionByItem?: { __typename?: 'ModelCurrentVersionConnection', items: Array<{ __typename?: 'CurrentVersion', version: number, extensionHash: string } | null> } | null };
+>>>>>>> e17b2531 (Initial porting of `ExtensionDetails` component)
 
 export const TokenFragmentDoc = gql`
     fragment Token on Token {
@@ -2932,33 +2956,54 @@ export function useGetUserReputationLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetUserReputationQueryHookResult = ReturnType<typeof useGetUserReputationQuery>;
 export type GetUserReputationLazyQueryHookResult = ReturnType<typeof useGetUserReputationLazyQuery>;
 export type GetUserReputationQueryResult = Apollo.QueryResult<GetUserReputationQuery, GetUserReputationQueryVariables>;
+<<<<<<< HEAD
 export const GetReputationForTopDomainsDocument = gql`
     query GetReputationForTopDomains($input: GetReputationForTopDomainsInput!) {
   getReputationForTopDomains(input: $input) {
     items {
       domainId
       reputationPercentage
+=======
+export const GetCurrentExtensionsVersionsDocument = gql`
+    query GetCurrentExtensionsVersions {
+  listCurrentVersions {
+    items {
+      extensionHash: item
+      version
+>>>>>>> e17b2531 (Initial porting of `ExtensionDetails` component)
     }
   }
 }
     `;
 
 /**
+<<<<<<< HEAD
  * __useGetReputationForTopDomainsQuery__
  *
  * To run a query within a React component, call `useGetReputationForTopDomainsQuery` and pass it any options that fit your needs.
  * When your component renders, `useGetReputationForTopDomainsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+=======
+ * __useGetCurrentExtensionsVersionsQuery__
+ *
+ * To run a query within a React component, call `useGetCurrentExtensionsVersionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCurrentExtensionsVersionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+>>>>>>> e17b2531 (Initial porting of `ExtensionDetails` component)
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
+<<<<<<< HEAD
  * const { data, loading, error } = useGetReputationForTopDomainsQuery({
+=======
+ * const { data, loading, error } = useGetCurrentExtensionsVersionsQuery({
+>>>>>>> e17b2531 (Initial porting of `ExtensionDetails` component)
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
+<<<<<<< HEAD
 export function useGetReputationForTopDomainsQuery(baseOptions: Apollo.QueryHookOptions<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>(GetReputationForTopDomainsDocument, options);
@@ -2975,21 +3020,48 @@ export const GetUserByNameDocument = gql`
   getUserByName(name: $name) {
     items {
       id
+=======
+export function useGetCurrentExtensionsVersionsQuery(baseOptions?: Apollo.QueryHookOptions<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>(GetCurrentExtensionsVersionsDocument, options);
+      }
+export function useGetCurrentExtensionsVersionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>(GetCurrentExtensionsVersionsDocument, options);
+        }
+export type GetCurrentExtensionsVersionsQueryHookResult = ReturnType<typeof useGetCurrentExtensionsVersionsQuery>;
+export type GetCurrentExtensionsVersionsLazyQueryHookResult = ReturnType<typeof useGetCurrentExtensionsVersionsLazyQuery>;
+export type GetCurrentExtensionsVersionsQueryResult = Apollo.QueryResult<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>;
+export const GetCurrentExtensionVersionDocument = gql`
+    query GetCurrentExtensionVersion($extensionHash: String!) {
+  getCurrentVersionByItem(item: $extensionHash) {
+    items {
+      extensionHash: item
+      version
+>>>>>>> e17b2531 (Initial porting of `ExtensionDetails` component)
     }
   }
 }
     `;
 
 /**
+<<<<<<< HEAD
  * __useGetUserByNameQuery__
  *
  * To run a query within a React component, call `useGetUserByNameQuery` and pass it any options that fit your needs.
  * When your component renders, `useGetUserByNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+=======
+ * __useGetCurrentExtensionVersionQuery__
+ *
+ * To run a query within a React component, call `useGetCurrentExtensionVersionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCurrentExtensionVersionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+>>>>>>> e17b2531 (Initial porting of `ExtensionDetails` component)
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
+<<<<<<< HEAD
  * const { data, loading, error } = useGetUserByNameQuery({
  *   variables: {
  *      name: // value for 'name'
@@ -3050,3 +3122,22 @@ export function useCombinedUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type CombinedUserQueryHookResult = ReturnType<typeof useCombinedUserQuery>;
 export type CombinedUserLazyQueryHookResult = ReturnType<typeof useCombinedUserLazyQuery>;
 export type CombinedUserQueryResult = Apollo.QueryResult<CombinedUserQuery, CombinedUserQueryVariables>;
+=======
+ * const { data, loading, error } = useGetCurrentExtensionVersionQuery({
+ *   variables: {
+ *      extensionHash: // value for 'extensionHash'
+ *   },
+ * });
+ */
+export function useGetCurrentExtensionVersionQuery(baseOptions: Apollo.QueryHookOptions<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>(GetCurrentExtensionVersionDocument, options);
+      }
+export function useGetCurrentExtensionVersionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>(GetCurrentExtensionVersionDocument, options);
+        }
+export type GetCurrentExtensionVersionQueryHookResult = ReturnType<typeof useGetCurrentExtensionVersionQuery>;
+export type GetCurrentExtensionVersionLazyQueryHookResult = ReturnType<typeof useGetCurrentExtensionVersionLazyQuery>;
+export type GetCurrentExtensionVersionQueryResult = Apollo.QueryResult<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>;
+>>>>>>> e17b2531 (Initial porting of `ExtensionDetails` component)

@@ -7,7 +7,10 @@ import {
   InstalledExtensionData,
   supportedExtensionsConfig,
 } from '~constants/extensions';
-import { useGetColonyExtensionsQuery, useGetCurrentVersionsQuery } from '~gql';
+import {
+  useGetColonyExtensionsQuery,
+  useGetCurrentExtensionsVersionsQuery,
+} from '~gql';
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
 
@@ -57,7 +60,7 @@ const ColonyExtensions = () => {
   });
   const colonyExtensions = data?.getColony?.extensions?.items.filter(notNull);
 
-  const { data: versionsData } = useGetCurrentVersionsQuery();
+  const { data: versionsData } = useGetCurrentExtensionsVersionsQuery();
 
   const installedExtensionsData = useMemo<InstalledExtensionData[]>(() => {
     if (!colonyExtensions) {
@@ -95,7 +98,7 @@ const ColonyExtensions = () => {
           (e) => e.hash === extensionHash,
         );
         const availableVersion = versionsData?.listCurrentVersions?.items.find(
-          (i) => i?.item === extensionHash,
+          (i) => i?.extensionHash === extensionHash,
         )?.version;
 
         if (!isExtensionInstalled && availableVersion) {

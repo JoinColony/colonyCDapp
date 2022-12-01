@@ -372,6 +372,6 @@ type ColonyExtension @model {
 
 type CurrentVersion @model {
   id: ID!
-  item: String!
+  item: String! @index(name: "byItem", queryField: "getCurrentVersionByItem")
   version: Int!
 }
