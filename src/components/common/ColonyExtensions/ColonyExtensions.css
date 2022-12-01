@@ -18,7 +18,7 @@
   margin: 15px 0 20px;
 }
 
-.sections {
+.content {
   display: flex;
   flex-direction: column;
   gap: 20px;

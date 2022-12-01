@@ -2073,6 +2073,14 @@ export type GetColonyExtensionsQueryVariables = Exact<{
 
 export type GetColonyExtensionsQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, version: number, status: ExtensionStatus, isDeprecated?: boolean | null, address: string } | null> } | null } | null };
 
+export type GetColonyExtensionQueryVariables = Exact<{
+  colonyAddress: Scalars['ID'];
+  extensionHash: Scalars['String'];
+}>;
+
+
+export type GetColonyExtensionQuery = { __typename?: 'Query', getExtensionByColonyAndHash?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, version: number, status: ExtensionStatus, isDeprecated?: boolean | null, address: string } | null> } | null };
+
 export type GetTokenByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;
@@ -2100,6 +2108,11 @@ export type GetUserReputationQueryVariables = Exact<{
 
 
 export type GetUserReputationQuery = { __typename?: 'Query', getUserReputation?: string | null };
+
+export type GetCurrentVersionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCurrentVersionsQuery = { __typename?: 'Query', listCurrentVersions?: { __typename?: 'ModelCurrentVersionConnection', items: Array<{ __typename?: 'CurrentVersion', item: string, version: number } | null> } | null };
 
 export const TokenFragmentDoc = gql`
     fragment Token on Token {
@@ -2498,6 +2511,47 @@ export function useGetColonyExtensionsLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetColonyExtensionsQueryHookResult = ReturnType<typeof useGetColonyExtensionsQuery>;
 export type GetColonyExtensionsLazyQueryHookResult = ReturnType<typeof useGetColonyExtensionsLazyQuery>;
 export type GetColonyExtensionsQueryResult = Apollo.QueryResult<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>;
+export const GetColonyExtensionDocument = gql`
+    query GetColonyExtension($colonyAddress: ID!, $extensionHash: String!) {
+  getExtensionByColonyAndHash(
+    colonyId: $colonyAddress
+    hash: {eq: $extensionHash}
+  ) {
+    items {
+      ...Extension
+    }
+  }
+}
+    ${ExtensionFragmentDoc}`;
+
+/**
+ * __useGetColonyExtensionQuery__
+ *
+ * To run a query within a React component, call `useGetColonyExtensionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetColonyExtensionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetColonyExtensionQuery({
+ *   variables: {
+ *      colonyAddress: // value for 'colonyAddress'
+ *      extensionHash: // value for 'extensionHash'
+ *   },
+ * });
+ */
+export function useGetColonyExtensionQuery(baseOptions: Apollo.QueryHookOptions<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>(GetColonyExtensionDocument, options);
+      }
+export function useGetColonyExtensionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>(GetColonyExtensionDocument, options);
+        }
+export type GetColonyExtensionQueryHookResult = ReturnType<typeof useGetColonyExtensionQuery>;
+export type GetColonyExtensionLazyQueryHookResult = ReturnType<typeof useGetColonyExtensionLazyQuery>;
+export type GetColonyExtensionQueryResult = Apollo.QueryResult<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>;
 export const GetTokenByAddressDocument = gql`
     query GetTokenByAddress($address: ID!) {
   getTokenByAddress(id: $address) {
@@ -2642,3 +2696,40 @@ export function useGetUserReputationLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetUserReputationQueryHookResult = ReturnType<typeof useGetUserReputationQuery>;
 export type GetUserReputationLazyQueryHookResult = ReturnType<typeof useGetUserReputationLazyQuery>;
 export type GetUserReputationQueryResult = Apollo.QueryResult<GetUserReputationQuery, GetUserReputationQueryVariables>;
+export const GetCurrentVersionsDocument = gql`
+    query GetCurrentVersions {
+  listCurrentVersions {
+    items {
+      item
+      version
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCurrentVersionsQuery__
+ *
+ * To run a query within a React component, call `useGetCurrentVersionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCurrentVersionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCurrentVersionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCurrentVersionsQuery(baseOptions?: Apollo.QueryHookOptions<GetCurrentVersionsQuery, GetCurrentVersionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCurrentVersionsQuery, GetCurrentVersionsQueryVariables>(GetCurrentVersionsDocument, options);
+      }
+export function useGetCurrentVersionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentVersionsQuery, GetCurrentVersionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCurrentVersionsQuery, GetCurrentVersionsQueryVariables>(GetCurrentVersionsDocument, options);
+        }
+export type GetCurrentVersionsQueryHookResult = ReturnType<typeof useGetCurrentVersionsQuery>;
+export type GetCurrentVersionsLazyQueryHookResult = ReturnType<typeof useGetCurrentVersionsLazyQuery>;
+export type GetCurrentVersionsQueryResult = Apollo.QueryResult<GetCurrentVersionsQuery, GetCurrentVersionsQueryVariables>;
