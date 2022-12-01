@@ -11,8 +11,8 @@ import { multiLineTextEllipsis } from '~utils/strings';
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { useAppContext, useMobile } from '~hooks';
 
-import { validationSchema } from './StepColonyNameValidation';
-import { FormValues } from './CreateColonyWizard';
+import { validationSchema } from './validation';
+import { FormValues, Step1 } from './CreateColonyWizard';
 
 import styles from './StepColonyName.css';
 
@@ -46,7 +46,7 @@ const MSG = defineMessages({
 });
 
 type Props = Pick<
-  WizardStepProps<FormValues>,
+  WizardStepProps<FormValues, Step1>,
   'wizardForm' | 'nextStep' | 'wizardValues'
 >;
 

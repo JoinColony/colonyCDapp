@@ -86,7 +86,7 @@ const options = [
 ];
 
 type Props = Pick<
-  WizardStepProps<FormValues>,
+  WizardStepProps<FormValues, Step2>,
   'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'
 >;
 

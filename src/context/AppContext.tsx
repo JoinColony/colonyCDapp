@@ -15,9 +15,9 @@ import { Wallet, User } from '~types';
 
 import { getContext, ContextModule } from './index';
 
-interface AppContextValues {
+export interface AppContextValues {
   wallet?: Wallet;
-  user?: User;
+  user?: User | null;
   userLoading?: boolean;
   updateWallet?: () => void;
   updateUser?: (address?: string) => void;
@@ -40,7 +40,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const [wallet, setWallet] = useState(initialWallet);
-  const [user, setUser] = useState(initialUser);
+  const [user, setUser] = useState<User | null | undefined>(initialUser);
   const [userLoading, setUserLoading] = useState(false);
 
   const updateUser = useCallback((address?: string) => {
@@ -60,6 +60,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
           const [currentUser] = data?.getUserByAddress?.items || [];
           if (currentUser) {
             setUser(currentUser);
+          } else {
+            setUser(null);
           }
           setUserLoading(false);
         });

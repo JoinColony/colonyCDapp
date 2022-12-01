@@ -2,6 +2,12 @@ declare namespace InputStatusCssNamespace {
   export interface IInputStatusCss {
     directionHorizontal: string;
     main: string;
+    mappings: string;
+    names: string;
+    query700: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
     stateError: string;
     stateHidden: string;
     statusSchemaInfo: string;
@@ -9,6 +15,7 @@ declare namespace InputStatusCssNamespace {
     themeFat: string;
     themeMinimal: string;
     themeUnderlined: string;
+    version: string;
   }
 }
 

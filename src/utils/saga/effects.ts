@@ -1,4 +1,5 @@
 import { ActionPattern } from '@redux-saga/types';
+import { NavigateFunction, NavigateOptions } from 'react-router-dom';
 import { Channel } from 'redux-saga';
 import {
   all,
@@ -32,6 +33,7 @@ export const takeFrom = (channel: Channel<any>, type: string | string[]) =>
 /*
  * Effect to create a new class instance of Class (use instead of "new Class")
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export const create = (Class: Function, ...args: any[]) =>
   // @ts-ignore
   call(() => new Class(...args));
@@ -107,9 +109,11 @@ export const takeLatestCancellable = (
 
 export function* routeRedirect(
   route: string,
-  historyObject, // Apparently react-router doesn't export proper types for this :(
+  navigateFunction: NavigateFunction,
+  navigateOptions?: NavigateOptions,
 ) {
-  if (route && historyObject) {
-    yield call(historyObject.push, route);
+  if (route && navigateFunction) {
+    // @ts-ignore TS only considering last overload as correct fn signature
+    yield call<NavigateFunction>(navigateFunction, route, navigateOptions);
   }
 }

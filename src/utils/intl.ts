@@ -1,4 +1,9 @@
 import { createIntl, createIntlCache } from '@formatjs/intl';
+import colonyMessages from '../i18n/en.json';
+import actionMessages from '../i18n/en-actions';
+import eventsMessages from '../i18n/en-events';
+import motionMessages from '../i18n/en-motions';
+import systemMessages from '../i18n/en-system-messages';
 
 // https://formatjs.io/docs/intl
 
@@ -14,7 +19,14 @@ const cache = createIntlCache();
 export const intl = (messages: Record<string, string> = {}, locale = 'en') =>
   createIntl(
     {
-      messages,
+      messages: {
+        ...colonyMessages,
+        ...actionMessages,
+        ...eventsMessages,
+        ...motionMessages,
+        ...systemMessages,
+        ...messages,
+      },
       locale,
     },
     cache,

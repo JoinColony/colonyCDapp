@@ -1,17 +1,8 @@
 declare namespace StepConfirmTransactionsCssNamespace {
   export interface IStepConfirmTransactionsCss {
-    container: string;
-    containerGasPrice: string;
     deploymentError: string;
     linkToColony: string;
     main: string;
-    mappings: string;
-    names: string;
-    query700: string;
-    sourceRoot: string;
-    sources: string;
-    sourcesContent: string;
-    version: string;
   }
 }
 

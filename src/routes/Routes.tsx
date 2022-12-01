@@ -7,12 +7,10 @@ import {
 } from 'react-router-dom';
 // import { defineMessages } from 'react-intl';
 
-// import CreateColonyWizard from '~dashboard/CreateColonyWizard';
-// import CreateUserWizard from '~dashboard/CreateUserWizard';
+import CreateUserWizard from '~common/CreateUserWizard';
 import ColonyHome from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
 import ColonyMembers from '~common/ColonyMembers';
-import CreateColonyWizard from '~common/CreateColonyWizard';
 import FourOFour from '~frame/FourOFour';
 // import UserProfile from '~users/UserProfile';
 // import UserProfileEdit from '~users/UserProfileEdit';
@@ -35,8 +33,7 @@ import {
   COLONY_MEMBERS_ROUTE,
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   CREATE_COLONY_ROUTE,
-  // CREATE_COLONY_ROUTE,
-  // CREATE_USER_ROUTE,
+  CREATE_USER_ROUTE,
   // USER_EDIT_ROUTE,
   // USER_ROUTE,
   LANDING_PAGE_ROUTE,
@@ -46,7 +43,8 @@ import {
   // CLAIM_TOKEN_ROUTE,
 } from './routeConstants';
 import NotFoundRoute from './NotFoundRoute';
-import { ColonyContextProvider } from '~context';
+import { ColonyContextProvider } from '~context/ColonyContext';
+import CreateColonyWizard from '~common/CreateColonyWizard';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -139,13 +137,9 @@ const Routes = () => {
         />
 
         <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
-        {/* <WalletRequiredRoute
-          isConnected={isConnected}
-          didClaimProfile={didClaimProfile}
-          path={CREATE_USER_ROUTE}
-          component={CreateUserWizard}
-          layout={Plain}
-        />
+        <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
+
+        {/* 
         <WalletRequiredRoute
           isConnected={isConnected}
           didClaimProfile={didClaimProfile}

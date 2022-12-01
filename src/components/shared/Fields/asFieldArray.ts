@@ -10,8 +10,9 @@ interface Props {
   disabled?: boolean;
 }
 
-const asFieldArray = () => (Component: any) =>
-  function ({ name, ...props }: Props) {
+const asFieldArray =
+  <P>(Component: any) =>
+  ({ name, ...props }: P & Props) => {
     return createElement(FieldArray, {
       name,
       render: (formikProps) =>

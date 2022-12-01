@@ -81,7 +81,7 @@ const validationSchema = object({
 });
 
 type Props = Pick<
-  WizardStepProps<FormValues>,
+  WizardStepProps<FormValues, Step3>,
   'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'
 >;
 const StepCreateToken = ({

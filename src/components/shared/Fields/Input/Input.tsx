@@ -9,19 +9,13 @@ import { SimpleMessageValues } from '~types';
 
 import InputLabel from '../InputLabel';
 import InputStatus from '../InputStatus';
-import InputComponent, { Props as InputComponentProps } from './InputComponent';
+import {
+  InputComponentAppearance as Appearance,
+  InputComponent,
+  InputComponentProps,
+} from '../Input';
 
 import styles from './Input.css';
-
-export interface Appearance {
-  theme?: 'fat' | 'underlined' | 'minimal' | 'dotted';
-  align?: 'right';
-  direction?: 'horizontal';
-  colorSchema?: 'dark' | 'grey' | 'transparent';
-  helpAlign?: 'right';
-  size?: 'small' | 'medium';
-  statusSchema?: 'info';
-}
 
 export interface Props extends Omit<InputComponentProps, 'placeholder'> {
   /** Appearance object */

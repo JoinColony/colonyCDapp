@@ -4,10 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 import { WizardStepProps } from '~shared/Wizard';
-import Heading from '~shared/Heading';
 import NavLink from '~shared/NavLink';
 
-import GasStationContent from '~frame/GasStation/GasStationContent';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
 import {
   getGroupStatus,
@@ -20,6 +18,7 @@ import { TRANSACTION_STATUSES } from '~types';
 import { ActionTypes } from '~redux/index';
 
 import { FormValues } from './CreateColonyWizard';
+import ConfirmTransactions from './ConfirmTransactions';
 
 import styles from './StepConfirmTransactions.css';
 
@@ -41,13 +40,34 @@ const MSG = defineMessages({
   },
 });
 
+interface RecoverableDeploymentErrorProps {
+  colonyName: string;
+}
+
+const RecoverableDeploymentError = ({
+  colonyName,
+}: RecoverableDeploymentErrorProps) => (
+  <div className={styles.deploymentError}>
+    <FormattedMessage
+      {...MSG.deploymentFailed}
+      values={{
+        linkToColony: (
+          <NavLink className={styles.linkToColony} to={`/colony/${colonyName}`}>
+            <FormattedMessage {...MSG.keywordHere} />
+          </NavLink>
+        ),
+      }}
+    />
+  </div>
+);
+
 type Props = Pick<WizardStepProps<FormValues>, 'wizardValues'>;
 
-const StepConfirmTransactions = ({
-  wizardValues: { colonyName: chosenColonyName },
-}: Props) => {
-  const [createErrorButRecoverable, setCreateErrorButRecoverable] =
-    useState<boolean>(false);
+const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
+  const [
+    existsRecoverableDeploymentError,
+    setExistsRecoverableDeploymentError,
+  ] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const txGroups = useSelector(
@@ -74,14 +94,18 @@ const StepConfirmTransactions = ({
     const deploymentHasErrors =
       getGroupStatus(newestGroup) === TRANSACTION_STATUSES.FAILED;
     if (colonyContractWasDeployed && deploymentHasErrors) {
-      setCreateErrorButRecoverable(true);
-    } else if (createErrorButRecoverable) {
+      setExistsRecoverableDeploymentError(true);
+    } else if (existsRecoverableDeploymentError) {
       /*
        * Hide the error if the user pressed the retry button
        */
-      setCreateErrorButRecoverable(false);
+      setExistsRecoverableDeploymentError(false);
     }
-  }, [newestGroup, createErrorButRecoverable, setCreateErrorButRecoverable]);
+  }, [
+    newestGroup,
+    existsRecoverableDeploymentError,
+    setExistsRecoverableDeploymentError,
+  ]);
 
   // Cancel the saga when the component unmounts
   useEffect(
@@ -96,7 +120,7 @@ const StepConfirmTransactions = ({
     getGroupStatus(newestGroup) === TRANSACTION_STATUSES.SUCCEEDED &&
     getGroupKey(newestGroup) === 'group.createColony'
   ) {
-    return <Navigate to={`/colony/${chosenColonyName}`} />;
+    return <Navigate to={`/colony/${colonyName}`} />;
   }
 
   const createColonyTxGroup = findTransactionGroupByKey(
@@ -106,34 +130,12 @@ const StepConfirmTransactions = ({
 
   return (
     <section className={styles.main}>
-      <Heading
-        appearance={{ size: 'medium', weight: 'medium' }}
-        text={MSG.heading}
+      <ConfirmTransactions
+        transactionGroup={createColonyTxGroup}
+        headingText={MSG.heading}
       />
-      <div className={styles.container}>
-        {createColonyTxGroup && (
-          <GasStationContent
-            appearance={{ interactive: false, required: true }}
-            transactionAndMessageGroups={[createColonyTxGroup]}
-          />
-        )}
-      </div>
-      {createErrorButRecoverable && (
-        <div className={styles.deploymentError}>
-          <FormattedMessage
-            {...MSG.deploymentFailed}
-            values={{
-              linkToColony: (
-                <NavLink
-                  className={styles.linkToColony}
-                  to={`/colony/${chosenColonyName}`}
-                >
-                  <FormattedMessage {...MSG.keywordHere} />
-                </NavLink>
-              ),
-            }}
-          />
-        </div>
+      {existsRecoverableDeploymentError && (
+        <RecoverableDeploymentError colonyName={colonyName} />
       )}
     </section>
   );

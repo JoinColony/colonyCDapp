@@ -43,13 +43,13 @@ const QuestionMarkTooltip = ({
   return (
     <Tooltip
       content={
-        typeof tooltipText === 'string' ? (
-          tooltipText
-        ) : (
-          <div className={tooltipClassName}>
+        <div className={tooltipClassName}>
+          {typeof tooltipText === 'string' ? (
+            tooltipText
+          ) : (
             <FormattedMessage {...tooltipText} values={tooltipTextValues} />
-          </div>
-        )
+          )}
+        </div>
       }
       trigger="hover"
       showArrow={showArrow}

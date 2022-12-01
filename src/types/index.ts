@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { MessageDescriptor } from 'react-intl';
 
 export * from './keyboard';
 export * from './actions';
@@ -60,6 +61,8 @@ export type ComplexMessageValues = Record<string, ReactNode>;
  * For messages that contain both JSX and Primitive values - use with FormattedMessage directly
  */
 export type UniversalMessageValues = Record<string, PrimitiveType | ReactNode>;
+
+export type Message = MessageDescriptor | string;
 
 /*
  Pick all the values from an object and make them `any` (handy for immutable default props)

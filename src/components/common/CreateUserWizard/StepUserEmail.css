@@ -1,0 +1,26 @@
+@value query700 from '~styles/queries.css';
+
+.emailPermissions {
+  display: flex;
+  flex-direction: column;
+  row-gap: 18px;
+}
+
+.emailPermissionsRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.emailPermissionsRow input + span {
+  margin-right: 10px;
+}
+
+.tooltip {
+  width: 218px;
+}
+
+@media screen and query700 {
+  section.emailPermissions {
+    padding: 0px;
+  }
+}

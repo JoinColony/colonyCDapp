@@ -7,7 +7,12 @@ const { graphqlRequest } = require('./utils');
  * So that we can always ensure it follows the latest schema
  * (currently it's just saved statically)
  */
-const { getColony, createColony, getTokenByAddress } = require('./graphql');
+const {
+  getColony,
+  createColony,
+  getTokenByAddress,
+  createProfile,
+} = require('./graphql');
 
 /*
  * @TODO These values need to be imported properly, and differentiate based on environment
@@ -120,9 +125,23 @@ exports.handler = async (event) => {
   }
 
   /*
+   * Create the colony profile
+   */
+  await graphqlRequest(
+    createProfile,
+    {
+      input: {
+        id: checksummedAddress,
+        ...profile,
+      },
+    },
+    GRAPHQL_URI,
+    API_KEY,
+  );
+
+  /*
    * Create the colony
    */
-
   const mutation = await graphqlRequest(
     createColony,
     {
@@ -130,8 +149,8 @@ exports.handler = async (event) => {
         id: checksummedAddress,
         colonyNativeTokenId: checksummedToken,
         name,
-        profile,
         type,
+        profileId: checksummedAddress,
         /*
          * @TODO These need to be properly added once Lambda Functions
          * have the concept of chains

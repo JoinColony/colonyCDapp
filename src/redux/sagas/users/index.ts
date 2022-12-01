@@ -1,25 +1,25 @@
-import {
-  // call,
-  // fork,
-  put,
-  takeLatest,
-} from 'redux-saga/effects';
-// import { ClientType, TokenLockingClient } from '@colony/colony-js';
+import { call, put, takeLatest } from 'redux-saga/effects';
 // import { BigNumber } from 'ethers';
+import { utils } from 'ethers';
+import { QueryOptions } from '@apollo/client';
+
+import { ContextModule, getContext, removeContext } from '~context';
+import { clearLastWallet } from '~utils/autoLogin';
+import {
+  CreateUniqueUserDocument,
+  CreateUniqueUserMutation,
+  CreateUniqueUserMutationVariables,
+  GetProfileByEmailDocument,
+  GetUserByNameDocument,
+} from '~gql';
 
 import { ActionTypes } from '../../actionTypes';
-import {
-  // Action,
-  AllActions,
-} from '../../types/actions';
-import { ContextModule, removeContext } from '~context';
+import { Action, AllActions } from '../../types/actions';
 import {
   putError,
-  // takeFrom,
-  // createUserWithSecondAttempt,
   // getColonyManager
 } from '../utils';
-import { clearLastWallet } from '~utils/autoLogin';
+import { getWallet } from '../wallet';
 
 // import { transactionLoadRelated, transactionReady } from '../../actionCreators';
 // import {
@@ -88,69 +88,67 @@ import { clearLastWallet } from '~utils/autoLogin';
 //   return null;
 // }
 
-// function* usernameCreate({
-//   meta: { id },
-//   meta,
-//   payload: { username: givenUsername },
-// }: Action<ActionTypes.USERNAME_CREATE>) {
-//   const { walletAddress } = yield getLoggedInUser();
-//   const txChannel = yield call(getTxChannel, id);
-//   const apolloClient = getContext(ContextModule.ApolloClient);
-//   try {
-//     // Normalize again, just to be sure
-//     const username = ENS.normalize(givenUsername);
+function* usernameCreate({
+  meta,
+  payload: { username, email, emailPermissions },
+}: Action<ActionTypes.USERNAME_CREATE>) {
+  const wallet = yield call(getWallet);
+  const walletAddress = utils.getAddress(wallet?.address);
 
-//     yield fork(createTransaction, id, {
-//       context: ClientType.NetworkClient,
-//       methodName: 'registerUserLabel',
-//       ready: true,
-//       params: [username, ''],
-//       group: {
-//         key: 'transaction.batch.createUser',
-//         id,
-//         index: 0,
-//       },
-//     });
+  const apolloClient = getContext(ContextModule.ApolloClient);
 
-//     yield takeFrom(txChannel, ActionTypes.TRANSACTION_SUCCEEDED);
+  try {
+    /* Queries will be refetched after the mutation, in order to update the cache. */
+    const refetchQueries: QueryOptions[] = [
+      {
+        query: GetUserByNameDocument,
+        variables: { name: username },
+      },
+    ];
 
-//     yield put(transactionLoadRelated(id, true));
+    if (email) {
+      refetchQueries.push({
+        query: GetProfileByEmailDocument,
+        variables: { email },
+      });
+    }
+    /*
+     * Write user to db
+     */
+    yield apolloClient.mutate<
+      CreateUniqueUserMutation,
+      CreateUniqueUserMutationVariables
+    >({
+      mutation: CreateUniqueUserDocument,
+      variables: {
+        input: {
+          id: walletAddress,
+          name: username,
+          profile: {
+            email: email || undefined,
+            meta: {
+              emailPermissions,
+            },
+          },
+        },
+      },
+      refetchQueries,
+    });
 
-//     yield createUserWithSecondAttempt(username);
-
-//     yield put(transactionLoadRelated(id, false));
-
-//     yield refetchUserNotifications(walletAddress);
-
-//     yield put<AllActions>({
-//       type: ActionTypes.USERNAME_CREATE_SUCCESS,
-//       payload: {
-//         username,
-//       },
-//       meta,
-//     });
-
-//     /*
-//      * Set the logged in user and freshly created one
-//      */
-//     yield apolloClient.mutate<
-//       SetLoggedInUserMutation,
-//       SetLoggedInUserMutationVariables
-//     >({
-//       mutation: SetLoggedInUserDocument,
-//       variables: {
-//         input: {
-//           username,
-//         },
-//       },
-//     });
-//   } catch (error) {
-//     return yield putError(ActionTypes.USERNAME_CREATE_ERROR, error, meta);
-//   } finally {
-//     txChannel.close();
-//   }
-//   return null;
-// }
+    yield put<AllActions>({
+      type: ActionTypes.USERNAME_CREATE_SUCCESS,
+      payload: {
+        email,
+        username,
+        emailPermissions,
+      },
+      meta,
+    });
+  } catch (error) {
+    return yield putError(ActionTypes.USERNAME_CREATE_ERROR, error, meta);
+  }
+  return null;
+}
 
 function* userLogout() {
   try {
@@ -315,7 +313,7 @@ export function* setupUsersSagas() {
   // yield takeLatest(ActionTypes.USER_AVATAR_REMOVE, userAvatarRemove);
   // yield takeLatest(ActionTypes.USER_AVATAR_UPLOAD, userAvatarUpload);
   yield takeLatest(ActionTypes.USER_LOGOUT, userLogout);
-  // yield takeLatest(ActionTypes.USERNAME_CREATE, usernameCreate);
+  yield takeLatest(ActionTypes.USERNAME_CREATE, usernameCreate);
   // yield takeLatest(ActionTypes.USER_DEPOSIT_TOKEN, userDepositToken);
   // yield takeLatest(ActionTypes.USER_WITHDRAW_TOKEN, userWithdrawToken);
 }

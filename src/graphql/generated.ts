@@ -43,6 +43,7 @@ export type Colony = {
   name: Scalars['String'];
   nativeToken: Token;
   profile?: Maybe<Profile>;
+  profileId?: Maybe<Scalars['ID']>;
   status?: Maybe<ColonyStatus>;
   tokens?: Maybe<ModelColonyTokensConnection>;
   type?: Maybe<ColonyType>;
@@ -111,7 +112,7 @@ export type CreateColonyInput = {
   id?: InputMaybe<Scalars['ID']>;
   meta?: InputMaybe<MetadataInput>;
   name: Scalars['String'];
-  profile?: InputMaybe<ProfileInput>;
+  profileId?: InputMaybe<Scalars['ID']>;
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
 };
@@ -130,6 +131,18 @@ export type CreateDomainInput = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
   nativeId: Scalars['Int'];
+};
+
+export type CreateProfileInput = {
+  avatar?: InputMaybe<Scalars['String']>;
+  bio?: InputMaybe<Scalars['String']>;
+  displayName?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['AWSEmail']>;
+  id?: InputMaybe<Scalars['ID']>;
+  location?: InputMaybe<Scalars['String']>;
+  meta?: InputMaybe<ProfileMetadataInput>;
+  thumbnail?: InputMaybe<Scalars['String']>;
+  website?: InputMaybe<Scalars['AWSURL']>;
 };
 
 export type CreateTokenInput = {
@@ -168,7 +181,7 @@ export type CreateUniqueUserInput = {
 export type CreateUserInput = {
   id?: InputMaybe<Scalars['ID']>;
   name: Scalars['String'];
-  profile?: InputMaybe<ProfileInput>;
+  profileId?: InputMaybe<Scalars['ID']>;
 };
 
 export type CreateUserTokensInput = {
@@ -192,6 +205,10 @@ export type DeleteColonyTokensInput = {
 };
 
 export type DeleteDomainInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteProfileInput = {
   id: Scalars['ID'];
 };
 
@@ -242,6 +259,11 @@ export enum DomainColor {
   Purplegrey = 'PURPLEGREY',
   Red = 'RED',
   Yellow = 'YELLOW'
+}
+
+export enum EmailPermissions {
+  IsHuman = 'isHuman',
+  SendNotifications = 'sendNotifications'
 }
 
 export type GetReputationForTopDomainsInput = {
@@ -299,6 +321,7 @@ export type ModelColonyConditionInput = {
   name?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelColonyConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyConditionInput>>>;
+  profileId?: InputMaybe<ModelIdInput>;
   type?: InputMaybe<ModelColonyTypeInput>;
 };
 
@@ -315,6 +338,7 @@ export type ModelColonyFilterInput = {
   name?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelColonyFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyFilterInput>>>;
+  profileId?: InputMaybe<ModelIdInput>;
   type?: InputMaybe<ModelColonyTypeInput>;
 };
 
@@ -422,6 +446,39 @@ export type ModelIntInput = {
   ne?: InputMaybe<Scalars['Int']>;
 };
 
+export type ModelProfileConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelProfileConditionInput>>>;
+  avatar?: InputMaybe<ModelStringInput>;
+  bio?: InputMaybe<ModelStringInput>;
+  displayName?: InputMaybe<ModelStringInput>;
+  email?: InputMaybe<ModelStringInput>;
+  location?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelProfileConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelProfileConditionInput>>>;
+  thumbnail?: InputMaybe<ModelStringInput>;
+  website?: InputMaybe<ModelStringInput>;
+};
+
+export type ModelProfileConnection = {
+  __typename?: 'ModelProfileConnection';
+  items: Array<Maybe<Profile>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelProfileFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelProfileFilterInput>>>;
+  avatar?: InputMaybe<ModelStringInput>;
+  bio?: InputMaybe<ModelStringInput>;
+  displayName?: InputMaybe<ModelStringInput>;
+  email?: InputMaybe<ModelStringInput>;
+  id?: InputMaybe<ModelIdInput>;
+  location?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelProfileFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelProfileFilterInput>>>;
+  thumbnail?: InputMaybe<ModelStringInput>;
+  website?: InputMaybe<ModelStringInput>;
+};
+
 export type ModelSizeInput = {
   between?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   eq?: InputMaybe<Scalars['Int']>;
@@ -463,6 +520,7 @@ export type ModelSubscriptionColonyFilterInput = {
   id?: InputMaybe<ModelSubscriptionIdInput>;
   name?: InputMaybe<ModelSubscriptionStringInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyFilterInput>>>;
+  profileId?: InputMaybe<ModelSubscriptionIdInput>;
   type?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
@@ -523,6 +581,19 @@ export type ModelSubscriptionIntInput = {
   notIn?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
 };
 
+export type ModelSubscriptionProfileFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionProfileFilterInput>>>;
+  avatar?: InputMaybe<ModelSubscriptionStringInput>;
+  bio?: InputMaybe<ModelSubscriptionStringInput>;
+  displayName?: InputMaybe<ModelSubscriptionStringInput>;
+  email?: InputMaybe<ModelSubscriptionStringInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  location?: InputMaybe<ModelSubscriptionStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionProfileFilterInput>>>;
+  thumbnail?: InputMaybe<ModelSubscriptionStringInput>;
+  website?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
 export type ModelSubscriptionStringInput = {
   beginsWith?: InputMaybe<Scalars['String']>;
   between?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -553,6 +624,7 @@ export type ModelSubscriptionUserFilterInput = {
   id?: InputMaybe<ModelSubscriptionIdInput>;
   name?: InputMaybe<ModelSubscriptionStringInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionUserFilterInput>>>;
+  profileId?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
 export type ModelSubscriptionUserTokensFilterInput = {
@@ -608,6 +680,7 @@ export type ModelUserConditionInput = {
   name?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelUserConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelUserConditionInput>>>;
+  profileId?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelUserConnection = {
@@ -622,6 +695,7 @@ export type ModelUserFilterInput = {
   name?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelUserFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelUserFilterInput>>>;
+  profileId?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelUserTokensConditionInput = {
@@ -675,6 +749,7 @@ export type Mutation = {
   createColony?: Maybe<Colony>;
   createColonyTokens?: Maybe<ColonyTokens>;
   createDomain?: Maybe<Domain>;
+  createProfile?: Maybe<Profile>;
   createToken?: Maybe<Token>;
   createUniqueColony?: Maybe<ColonyId>;
   createUniqueDomain?: Maybe<Domain>;
@@ -685,6 +760,7 @@ export type Mutation = {
   deleteColony?: Maybe<Colony>;
   deleteColonyTokens?: Maybe<ColonyTokens>;
   deleteDomain?: Maybe<Domain>;
+  deleteProfile?: Maybe<Profile>;
   deleteToken?: Maybe<Token>;
   deleteUser?: Maybe<User>;
   deleteUserTokens?: Maybe<UserTokens>;
@@ -692,6 +768,7 @@ export type Mutation = {
   updateColony?: Maybe<Colony>;
   updateColonyTokens?: Maybe<ColonyTokens>;
   updateDomain?: Maybe<Domain>;
+  updateProfile?: Maybe<Profile>;
   updateToken?: Maybe<Token>;
   updateUser?: Maybe<User>;
   updateUserTokens?: Maybe<UserTokens>;
@@ -714,6 +791,12 @@ export type MutationCreateColonyTokensArgs = {
 export type MutationCreateDomainArgs = {
   condition?: InputMaybe<ModelDomainConditionInput>;
   input: CreateDomainInput;
+};
+
+
+export type MutationCreateProfileArgs = {
+  condition?: InputMaybe<ModelProfileConditionInput>;
+  input: CreateProfileInput;
 };
 
 
@@ -774,6 +857,12 @@ export type MutationDeleteDomainArgs = {
 };
 
 
+export type MutationDeleteProfileArgs = {
+  condition?: InputMaybe<ModelProfileConditionInput>;
+  input: DeleteProfileInput;
+};
+
+
 export type MutationDeleteTokenArgs = {
   condition?: InputMaybe<ModelTokenConditionInput>;
   input: DeleteTokenInput;
@@ -813,6 +902,12 @@ export type MutationUpdateColonyTokensArgs = {
 export type MutationUpdateDomainArgs = {
   condition?: InputMaybe<ModelDomainConditionInput>;
   input: UpdateDomainInput;
+};
+
+
+export type MutationUpdateProfileArgs = {
+  condition?: InputMaybe<ModelProfileConditionInput>;
+  input: UpdateProfileInput;
 };
 
 
@@ -864,10 +959,14 @@ export type Profile = {
   __typename?: 'Profile';
   avatar?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
+  createdAt: Scalars['AWSDateTime'];
   displayName?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['AWSEmail']>;
+  id: Scalars['ID'];
   location?: Maybe<Scalars['String']>;
+  meta?: Maybe<ProfileMetadata>;
   thumbnail?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['AWSDateTime'];
   website?: Maybe<Scalars['AWSURL']>;
 };
 
@@ -876,9 +975,20 @@ export type ProfileInput = {
   bio?: InputMaybe<Scalars['String']>;
   displayName?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['AWSEmail']>;
+  id?: InputMaybe<Scalars['ID']>;
   location?: InputMaybe<Scalars['String']>;
+  meta?: InputMaybe<ProfileMetadataInput>;
   thumbnail?: InputMaybe<Scalars['String']>;
   website?: InputMaybe<Scalars['AWSURL']>;
+};
+
+export type ProfileMetadata = {
+  __typename?: 'ProfileMetadata';
+  emailPermissions: Array<Scalars['String']>;
+};
+
+export type ProfileMetadataInput = {
+  emailPermissions: Array<Scalars['String']>;
 };
 
 export type Query = {
@@ -889,6 +999,8 @@ export type Query = {
   getColonyByType?: Maybe<ModelColonyConnection>;
   getColonyTokens?: Maybe<ColonyTokens>;
   getDomain?: Maybe<Domain>;
+  getProfile?: Maybe<Profile>;
+  getProfileByEmail?: Maybe<ModelProfileConnection>;
   getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
   getToken?: Maybe<Token>;
   getTokenByAddress?: Maybe<ModelTokenConnection>;
@@ -903,6 +1015,7 @@ export type Query = {
   listColonies?: Maybe<ModelColonyConnection>;
   listColonyTokens?: Maybe<ModelColonyTokensConnection>;
   listDomains?: Maybe<ModelDomainConnection>;
+  listProfiles?: Maybe<ModelProfileConnection>;
   listTokens?: Maybe<ModelTokenConnection>;
   listUserTokens?: Maybe<ModelUserTokensConnection>;
   listUsers?: Maybe<ModelUserConnection>;
@@ -949,6 +1062,20 @@ export type QueryGetColonyTokensArgs = {
 
 export type QueryGetDomainArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryGetProfileArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGetProfileByEmailArgs = {
+  email: Scalars['AWSEmail'];
+  filter?: InputMaybe<ModelProfileFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -1044,6 +1171,13 @@ export type QueryListDomainsArgs = {
 };
 
 
+export type QueryListProfilesArgs = {
+  filter?: InputMaybe<ModelProfileFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryListTokensArgs = {
   filter?: InputMaybe<ModelTokenFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1076,6 +1210,7 @@ export type Subscription = {
   onCreateColony?: Maybe<Colony>;
   onCreateColonyTokens?: Maybe<ColonyTokens>;
   onCreateDomain?: Maybe<Domain>;
+  onCreateProfile?: Maybe<Profile>;
   onCreateToken?: Maybe<Token>;
   onCreateUser?: Maybe<User>;
   onCreateUserTokens?: Maybe<UserTokens>;
@@ -1083,6 +1218,7 @@ export type Subscription = {
   onDeleteColony?: Maybe<Colony>;
   onDeleteColonyTokens?: Maybe<ColonyTokens>;
   onDeleteDomain?: Maybe<Domain>;
+  onDeleteProfile?: Maybe<Profile>;
   onDeleteToken?: Maybe<Token>;
   onDeleteUser?: Maybe<User>;
   onDeleteUserTokens?: Maybe<UserTokens>;
@@ -1090,6 +1226,7 @@ export type Subscription = {
   onUpdateColony?: Maybe<Colony>;
   onUpdateColonyTokens?: Maybe<ColonyTokens>;
   onUpdateDomain?: Maybe<Domain>;
+  onUpdateProfile?: Maybe<Profile>;
   onUpdateToken?: Maybe<Token>;
   onUpdateUser?: Maybe<User>;
   onUpdateUserTokens?: Maybe<UserTokens>;
@@ -1109,6 +1246,11 @@ export type SubscriptionOnCreateColonyTokensArgs = {
 
 export type SubscriptionOnCreateDomainArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainFilterInput>;
+};
+
+
+export type SubscriptionOnCreateProfileArgs = {
+  filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
 };
 
 
@@ -1147,6 +1289,11 @@ export type SubscriptionOnDeleteDomainArgs = {
 };
 
 
+export type SubscriptionOnDeleteProfileArgs = {
+  filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteTokenArgs = {
   filter?: InputMaybe<ModelSubscriptionTokenFilterInput>;
 };
@@ -1179,6 +1326,11 @@ export type SubscriptionOnUpdateColonyTokensArgs = {
 
 export type SubscriptionOnUpdateDomainArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateProfileArgs = {
+  filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
 };
 
 
@@ -1250,7 +1402,7 @@ export type UpdateColonyInput = {
   id: Scalars['ID'];
   meta?: InputMaybe<MetadataInput>;
   name?: InputMaybe<Scalars['String']>;
-  profile?: InputMaybe<ProfileInput>;
+  profileId?: InputMaybe<Scalars['ID']>;
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
 };
@@ -1271,6 +1423,18 @@ export type UpdateDomainInput = {
   nativeId?: InputMaybe<Scalars['Int']>;
 };
 
+export type UpdateProfileInput = {
+  avatar?: InputMaybe<Scalars['String']>;
+  bio?: InputMaybe<Scalars['String']>;
+  displayName?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['AWSEmail']>;
+  id: Scalars['ID'];
+  location?: InputMaybe<Scalars['String']>;
+  meta?: InputMaybe<ProfileMetadataInput>;
+  thumbnail?: InputMaybe<Scalars['String']>;
+  website?: InputMaybe<Scalars['AWSURL']>;
+};
+
 export type UpdateTokenInput = {
   decimals?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
@@ -1283,7 +1447,7 @@ export type UpdateTokenInput = {
 export type UpdateUserInput = {
   id: Scalars['ID'];
   name?: InputMaybe<Scalars['String']>;
-  profile?: InputMaybe<ProfileInput>;
+  profileId?: InputMaybe<Scalars['ID']>;
 };
 
 export type UpdateUserTokensInput = {
@@ -1304,6 +1468,7 @@ export type User = {
   id: Scalars['ID'];
   name: Scalars['String'];
   profile?: Maybe<Profile>;
+  profileId?: Maybe<Scalars['ID']>;
   tokens?: Maybe<ModelUserTokensConnection>;
   updatedAt: Scalars['AWSDateTime'];
   watchlist?: Maybe<ModelWatchedColoniesConnection>;
@@ -1396,6 +1561,13 @@ export type CreateUserTokensMutationVariables = Exact<{
 
 export type CreateUserTokensMutation = { __typename?: 'Mutation', createUserTokens?: { __typename?: 'UserTokens', id: string } | null };
 
+export type CreateUniqueUserMutationVariables = Exact<{
+  input: CreateUniqueUserInput;
+}>;
+
+
+export type CreateUniqueUserMutation = { __typename?: 'Mutation', createUniqueUser?: { __typename?: 'User', id: string } | null };
+
 export type GetFullColonyByNameQueryVariables = Exact<{
   name: Scalars['String'];
 }>;
@@ -1407,6 +1579,13 @@ export type GetMetacolonyQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetMetacolonyQuery = { __typename?: 'Query', getColonyByType?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
+
+export type GetProfileByEmailQueryVariables = Exact<{
+  email: Scalars['AWSEmail'];
+}>;
+
+
+export type GetProfileByEmailQuery = { __typename?: 'Query', getProfileByEmail?: { __typename?: 'ModelProfileConnection', items: Array<{ __typename?: 'Profile', id: string } | null> } | null };
 
 export type GetTokenByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -1442,6 +1621,13 @@ export type GetReputationForTopDomainsQueryVariables = Exact<{
 
 
 export type GetReputationForTopDomainsQuery = { __typename?: 'Query', getReputationForTopDomains?: { __typename?: 'GetReputationForTopDomainsReturn', items?: Array<{ __typename?: 'UserDomainReputation', domainId: number, reputationPercentage: string }> | null } | null };
+
+export type GetUserByNameQueryVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type GetUserByNameQuery = { __typename?: 'Query', getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', id: string } | null> } | null };
 
 export const TokenFragmentDoc = gql`
     fragment Token on Token {
@@ -1719,6 +1905,39 @@ export function useCreateUserTokensMutation(baseOptions?: Apollo.MutationHookOpt
 export type CreateUserTokensMutationHookResult = ReturnType<typeof useCreateUserTokensMutation>;
 export type CreateUserTokensMutationResult = Apollo.MutationResult<CreateUserTokensMutation>;
 export type CreateUserTokensMutationOptions = Apollo.BaseMutationOptions<CreateUserTokensMutation, CreateUserTokensMutationVariables>;
+export const CreateUniqueUserDocument = gql`
+    mutation CreateUniqueUser($input: CreateUniqueUserInput!) {
+  createUniqueUser(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateUniqueUserMutationFn = Apollo.MutationFunction<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>;
+
+/**
+ * __useCreateUniqueUserMutation__
+ *
+ * To run a mutation, you first call `useCreateUniqueUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUniqueUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUniqueUserMutation, { data, loading, error }] = useCreateUniqueUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateUniqueUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>(CreateUniqueUserDocument, options);
+      }
+export type CreateUniqueUserMutationHookResult = ReturnType<typeof useCreateUniqueUserMutation>;
+export type CreateUniqueUserMutationResult = Apollo.MutationResult<CreateUniqueUserMutation>;
+export type CreateUniqueUserMutationOptions = Apollo.BaseMutationOptions<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>;
 export const GetFullColonyByNameDocument = gql`
     query GetFullColonyByName($name: String!) {
   getColonyByName(name: $name) {
@@ -1792,6 +2011,43 @@ export function useGetMetacolonyLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetMetacolonyQueryHookResult = ReturnType<typeof useGetMetacolonyQuery>;
 export type GetMetacolonyLazyQueryHookResult = ReturnType<typeof useGetMetacolonyLazyQuery>;
 export type GetMetacolonyQueryResult = Apollo.QueryResult<GetMetacolonyQuery, GetMetacolonyQueryVariables>;
+export const GetProfileByEmailDocument = gql`
+    query GetProfileByEmail($email: AWSEmail!) {
+  getProfileByEmail(email: $email) {
+    items {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetProfileByEmailQuery__
+ *
+ * To run a query within a React component, call `useGetProfileByEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProfileByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProfileByEmailQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useGetProfileByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>(GetProfileByEmailDocument, options);
+      }
+export function useGetProfileByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>(GetProfileByEmailDocument, options);
+        }
+export type GetProfileByEmailQueryHookResult = ReturnType<typeof useGetProfileByEmailQuery>;
+export type GetProfileByEmailLazyQueryHookResult = ReturnType<typeof useGetProfileByEmailLazyQuery>;
+export type GetProfileByEmailQueryResult = Apollo.QueryResult<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>;
 export const GetTokenByAddressDocument = gql`
     query GetTokenByAddress($address: ID!) {
   getTokenByAddress(id: $address) {
@@ -1974,3 +2230,40 @@ export function useGetReputationForTopDomainsLazyQuery(baseOptions?: Apollo.Lazy
 export type GetReputationForTopDomainsQueryHookResult = ReturnType<typeof useGetReputationForTopDomainsQuery>;
 export type GetReputationForTopDomainsLazyQueryHookResult = ReturnType<typeof useGetReputationForTopDomainsLazyQuery>;
 export type GetReputationForTopDomainsQueryResult = Apollo.QueryResult<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>;
+export const GetUserByNameDocument = gql`
+    query GetUserByName($name: String!) {
+  getUserByName(name: $name) {
+    items {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserByNameQuery__
+ *
+ * To run a query within a React component, call `useGetUserByNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByNameQuery({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useGetUserByNameQuery(baseOptions: Apollo.QueryHookOptions<GetUserByNameQuery, GetUserByNameQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByNameQuery, GetUserByNameQueryVariables>(GetUserByNameDocument, options);
+      }
+export function useGetUserByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByNameQuery, GetUserByNameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByNameQuery, GetUserByNameQueryVariables>(GetUserByNameDocument, options);
+        }
+export type GetUserByNameQueryHookResult = ReturnType<typeof useGetUserByNameQuery>;
+export type GetUserByNameLazyQueryHookResult = ReturnType<typeof useGetUserByNameLazyQuery>;
+export type GetUserByNameQueryResult = Apollo.QueryResult<GetUserByNameQuery, GetUserByNameQueryVariables>;

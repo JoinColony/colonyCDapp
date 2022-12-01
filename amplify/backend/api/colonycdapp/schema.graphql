@@ -12,6 +12,15 @@ input CreateUniqueUserInput {
   profile: ProfileInput
 }
 
+enum EmailPermissions {
+  sendNotifications
+  isHuman
+}
+
+input ProfileMetadataInput {
+  emailPermissions: [String!]!
+}
+
 input MetadataInput {
   network: Network
   chainId: Int
@@ -39,6 +48,7 @@ input CreateUniqueColonyInput {
 }
 
 input ProfileInput {
+  id: ID # nullable since resolver will use User / Colony id by default
   avatar: String
   thumbnail: String
   displayName: String
@@ -46,6 +56,7 @@ input ProfileInput {
   location: String
   website: AWSURL
   email: AWSEmail
+  meta: ProfileMetadataInput
 }
 
 input CreateUniqueDomainInput {
@@ -145,14 +156,17 @@ type Mutation {
 
 # Applies to both Users and Colonies
 # Might need to separate it into two later down the line
-type Profile {
+type Profile @model {
+  id: ID!
   avatar: String
   thumbnail: String
   displayName: String
   bio: String
   location: String
   website: AWSURL
-  email: AWSEmail
+  email: AWSEmail @index(name: "byEmail", queryField: "getProfileByEmail")
+  meta: ProfileMetadata
+
 }
 
 type NativeTokenStatus {
@@ -171,6 +185,10 @@ type ColonyStatus {
 type Metadata {
   network: Network
   chainId: Int
+}
+
+type ProfileMetadata {
+  emailPermissions: [String!]!
 }
 
 type Token @model {
@@ -193,7 +211,8 @@ type Colony @model {
   name: String! @index(name: "byName", queryField: "getColonyByName")
   nativeToken: Token! @hasOne
   tokens: [Token] @manyToMany(relationName: "ColonyTokens")
-  profile: Profile
+  profileId: ID
+  profile: Profile @hasOne(fields: ["profileId"])
   status: ColonyStatus
   domains: [Domain] @hasMany
   watchers: [User] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
@@ -205,7 +224,8 @@ type User @model {
   id: ID! @index(name: "byAddress", queryField: "getUserByAddress") # wallet address
   name: String! @index(name: "byName", queryField: "getUserByName")
   tokens: [Token] @manyToMany(relationName: "UserTokens")
-  profile: Profile
+  profileId: ID
+  profile: Profile @hasOne(fields: ["profileId"])
   watchlist: [Colony] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
 }
 
