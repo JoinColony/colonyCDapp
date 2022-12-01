@@ -27,8 +27,7 @@ const ROOT_DOMAIN_ID = 1; // this used to be exported from @colony/colony-js but
 const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
 const REPUTATION_ENDPOINT = 'http://network-contracts:3002';
 
-// @TODO want to share this enum with the frontend
-const SORTING_METHODS = {
+const SortingMethods = {
   BY_HIGHEST_REP: 'BY_HIGHEST_REP',
   BY_LOWEST_REP: 'BY_LOWEST_REP',
   // @NOTE - this might be useful in the future
@@ -41,7 +40,7 @@ exports.handler = async (event) => {
     colonyAddress,
     rootHash,
     domainId = ROOT_DOMAIN_ID,
-    sortingMethod = SORTING_METHODS.BY_HIGHEST_REP,
+    sortingMethod = SortingMethods.BY_HIGHEST_REP,
   } = event?.arguments?.input || {};
   const provider = new providers.JsonRpcProvider(RPC_URL);
 
@@ -87,15 +86,15 @@ exports.handler = async (event) => {
   // get list of watchers for colony
   let watchers = [];
   if (domainId === ALL_DOMAIN_ID || domainId === ROOT_DOMAIN_ID) {
-    const colonyQuery = await graphqlRequest(
+    const { data, errors } = await graphqlRequest(
       getWatchersInColony,
       { id: checksummedAddress },
       GRAPHQL_URI,
       API_KEY,
     );
 
-    if (colonyQuery.errors || !colonyQuery.data) {
-      const [error] = colonyQuery.errors;
+    if (errors || !data) {
+      const [error] = errors;
       throw new Error(
         error?.message || 'Could not fetch colony data from DynamoDB',
       );
@@ -103,16 +102,12 @@ exports.handler = async (event) => {
 
     // Remove members that have reputation (i.e. contributors) to
     // leave only watchers
-    watchers =
-      colonyQuery?.data?.getColonyByAddress?.items[0]?.watchers.items.reduce(
-        (acc, item) =>
-          addressesWithReputation?.every(
-            (address) => address.toLowerCase() !== item.user.id.toLowerCase(),
-          )
-            ? [...acc, item]
-            : acc,
-        [],
-      );
+    watchers = data?.getColonyByAddress?.items[0]?.watchers.items.filter(
+      (item) =>
+        addressesWithReputation?.every(
+          (address) => address.toLowerCase() !== item.user.id.toLowerCase(),
+        ),
+    );
   }
 
   // get reputation for each address
@@ -144,7 +139,7 @@ exports.handler = async (event) => {
         // Extract only the relevant data and
         // transform the user reputation amount on each domain to percentage
         const formattedUserReputations = filteredReputationForAllDomains.map(
-          async (userReputation) => {
+          (userReputation) => {
             if (!userReputation?.reputationAmount) {
               return {};
             }
@@ -161,14 +156,11 @@ exports.handler = async (event) => {
           },
         );
 
-        const formattedReputationsResult = await Promise.all(
-          formattedUserReputations,
-        );
         return {
           user: user || {},
           reputationPercentage:
-            formattedReputationsResult[0]?.reputationPercentage,
-          reputationAmount: formattedReputationsResult[0]?.reputationAmount,
+            formattedUserReputations[0]?.reputationPercentage,
+          reputationAmount: formattedUserReputations[0]?.reputationAmount,
         };
       } catch (error) {
         throw new Error(
@@ -180,22 +172,22 @@ exports.handler = async (event) => {
 
   const sortedContributors = (() => {
     return contributors.sort((contributor1, contributor2) => {
-      if (sortingMethod === SORTING_METHODS.BY_HIGHEST_REP) {
+      if (sortingMethod === SortingMethods.BY_HIGHEST_REP) {
         return new Decimal(contributor2?.reputationPercentage)
           .sub(contributor1.reputationPercentage)
           .toNumber();
       }
-      if (sortingMethod === SORTING_METHODS.BY_LOWEST_REP) {
+      if (sortingMethod === SortingMethods.BY_LOWEST_REP) {
         return new Decimal(contributor1.reputationPercentage)
           .sub(contributor2.reputationPercentage)
           .toNumber();
       }
 
       // @NOTE - this might be useful in the future
-      // if (sortingMethod === SORTING_METHODS.BY_MORE_PERMISSIONS) {
+      // if (sortingMethod === SortingMethods.BY_MORE_PERMISSIONS) {
       //   return user2.roles.length - user1.roles.length;
       // }
-      // if (sortingMethod === SORTING_METHODS.BY_LESS_PERMISSIONS) {
+      // if (sortingMethod === SortingMethods.BY_LESS_PERMISSIONS) {
       //   return user1.roles.length - user2.roles.length;
       // }
 

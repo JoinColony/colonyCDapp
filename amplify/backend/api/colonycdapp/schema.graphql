@@ -16,7 +16,7 @@ input MembersForColonyArguments {
   colonyAddress: String!
   rootHash: String
   domainId: Int
-  sortingMethod: SORTING_METHODS
+  sortingMethod: SortingMethods
 }
 
 input CreateUniqueUserInput {
@@ -194,7 +194,7 @@ enum ColonyActionType {
   EMIT_DOMAIN_REPUTATION_REWARD
 }
 
-enum SORTING_METHODS {
+enum SortingMethods {
   BY_HIGHEST_REP
   BY_LOWEST_REP
   BY_MORE_PERMISSIONS
