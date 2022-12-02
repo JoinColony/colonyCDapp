@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { MiniSpinnerLoader } from '~shared/Preloaders';
-import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
+import { ROOT_DOMAIN_ID, COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useColonyContext } from '~hooks';
 import { useGetMembersForColonyQuery } from '~gql';
 
@@ -21,8 +21,6 @@ const MSG = defineMessages({
     defaultMessage: 'Loading members information...',
   },
 });
-
-const ROOT_DOMAIN_ID = 0;
 interface Props {
   currentDomainId?: number;
   maxAvatars?: number;

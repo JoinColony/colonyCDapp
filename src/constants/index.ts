@@ -37,6 +37,7 @@ export type NetworkInfo = {
 
 export const DEFAULT_NETWORK = process.env.NETWORK || Network.Ganache;
 export const COLONY_TOTAL_BALANCE_DOMAIN_ID = 0;
+export const ROOT_DOMAIN_ID = 1;
 export const DEFAULT_TOKEN_DECIMALS = 18;
 
 export const XDAI_TOKEN: TokenInfo = {
