@@ -14,7 +14,7 @@ Logger.setLogLevel(Logger.levels.ERROR);
 
 const { calculatePercentageReputation } = require('./reputation');
 const { graphqlRequest } = require('./utils');
-const { getUser, getWatchersInColony } = require('./graphql');
+const { getWatchersInColony } = require('./graphql');
 
 /*
  * @TODO These values need to be imported properly, and differentiate based on environment
@@ -27,7 +27,7 @@ const ROOT_DOMAIN_ID = 1; // this used to be exported from @colony/colony-js but
 const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
 const REPUTATION_ENDPOINT = 'http://network-contracts:3002';
 
-const SortingMethods = {
+const SortingMethod = {
   BY_HIGHEST_REP: 'BY_HIGHEST_REP',
   BY_LOWEST_REP: 'BY_LOWEST_REP',
   // @NOTE - this might be useful in the future
@@ -40,7 +40,7 @@ exports.handler = async (event) => {
     colonyAddress,
     rootHash,
     domainId = ROOT_DOMAIN_ID,
-    sortingMethod = SortingMethods.BY_HIGHEST_REP,
+    sortingMethod = SortingMethod.BY_HIGHEST_REP,
   } = event?.arguments?.input || {};
   const provider = new providers.JsonRpcProvider(RPC_URL);
 
@@ -71,6 +71,9 @@ exports.handler = async (event) => {
     // any reputation, and we don't want to break the whole query
   }
 
+  const watchers = [];
+  const contributors = [];
+
   /*
    * Validate Colony addresses
    */
@@ -84,7 +87,6 @@ exports.handler = async (event) => {
   }
 
   // get list of watchers for colony
-  let watchers = [];
   if (domainId === ALL_DOMAIN_ID || domainId === ROOT_DOMAIN_ID) {
     const { data, errors } = await graphqlRequest(
       getWatchersInColony,
@@ -100,29 +102,42 @@ exports.handler = async (event) => {
       );
     }
 
-    // Remove members that have reputation (i.e. contributors) to
-    // leave only watchers
-    watchers = data?.getColonyByAddress?.items[0]?.watchers.items.filter(
-      (item) =>
+    // Identify watchers & contributors
+    data?.getColonyByAddress?.items[0]?.watchers.items.forEach((item) => {
+      if (
         addressesWithReputation?.every(
           (address) => address.toLowerCase() !== item.user.id.toLowerCase(),
+        )
+      ) {
+        watchers.push(item);
+      } else {
+        contributors.push(item);
+      }
+    });
+
+    // now catch addresses that have reputation but are not in the watchers list
+    // i.e. address that was awarded reputation but has not joined the colony
+    if (addressesWithReputation.length !== contributors.length) {
+      const missingAddresses = addressesWithReputation.filter((address) =>
+        contributors?.every(
+          (item) => item.user.id.toLowerCase() !== address.toLowerCase(),
         ),
-    );
+      );
+
+      missingAddresses.forEach((address) => {
+        contributors.push({
+          user: {
+            id: address,
+          },
+        });
+      });
+    }
   }
 
   // get reputation for each address
-  const contributors = await Promise.all(
-    addressesWithReputation.map(async (address) => {
-      const { data } = await graphqlRequest(
-        getUser,
-        {
-          id: utils.getAddress(address),
-        },
-        GRAPHQL_URI,
-        API_KEY,
-      );
-      const user = data?.getUserByAddress?.items[0] || {};
-
+  const contributorsWithReputation = await Promise.all(
+    contributors.map(async (contributor) => {
+      const address = contributor.user?.id;
       try {
         const userReputationForAllDomains =
           await colonyClient.getReputationAcrossDomains(address, rootHash);
@@ -157,7 +172,7 @@ exports.handler = async (event) => {
         );
 
         return {
-          user: user || {},
+          user: contributor.user,
           reputationPercentage:
             formattedUserReputations[0]?.reputationPercentage,
           reputationAmount: formattedUserReputations[0]?.reputationAmount,
@@ -171,23 +186,23 @@ exports.handler = async (event) => {
   );
 
   const sortedContributors = (() => {
-    return contributors.sort((contributor1, contributor2) => {
-      if (sortingMethod === SortingMethods.BY_HIGHEST_REP) {
+    return contributorsWithReputation.sort((contributor1, contributor2) => {
+      if (sortingMethod === SortingMethod.BY_HIGHEST_REP) {
         return new Decimal(contributor2?.reputationPercentage)
           .sub(contributor1.reputationPercentage)
           .toNumber();
       }
-      if (sortingMethod === SortingMethods.BY_LOWEST_REP) {
+      if (sortingMethod === SortingMethod.BY_LOWEST_REP) {
         return new Decimal(contributor1.reputationPercentage)
           .sub(contributor2.reputationPercentage)
           .toNumber();
       }
 
       // @NOTE - this might be useful in the future
-      // if (sortingMethod === SortingMethods.BY_MORE_PERMISSIONS) {
+      // if (sortingMethod === SortingMethod.BY_MORE_PERMISSIONS) {
       //   return user2.roles.length - user1.roles.length;
       // }
-      // if (sortingMethod === SortingMethods.BY_LESS_PERMISSIONS) {
+      // if (sortingMethod === SortingMethod.BY_LESS_PERMISSIONS) {
       //   return user1.roles.length - user2.roles.length;
       // }
 

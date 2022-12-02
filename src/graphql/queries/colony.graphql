@@ -14,7 +14,7 @@ query GetMetacolony {
   }
 }
 
-query GetMembersForColony($input: MembersForColonyArguments!) {
+query GetMembersForColony($input: MembersForColonyInput!) {
   getMembersForColony(input: $input) {
     contributors {
       ...Contributor
