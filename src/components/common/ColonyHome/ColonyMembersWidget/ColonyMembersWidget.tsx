@@ -22,8 +22,6 @@ const MSG = defineMessages({
     defaultMessage: 'Loading members information...',
   },
 });
-
-const ROOT_DOMAIN_ID = 0;
 interface Props {
   currentDomainId?: number;
   maxAvatars?: number;
