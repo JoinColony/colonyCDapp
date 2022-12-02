@@ -48,6 +48,7 @@ exports.handler = async (event) => {
     etherRouterAddress: networkAddress,
     // eslint-disable-next-line global-require
   } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+
   const networkClient = getColonyNetworkClient(Network.Custom, provider, {
     networkAddress,
     reputationOracleEndpoint: REPUTATION_ENDPOINT,
@@ -57,19 +58,6 @@ exports.handler = async (event) => {
   const { skillId } = await colonyClient.getDomain(domainId);
   const { addresses: addressesWithReputation } =
     await colonyClient.getMembersReputation(skillId);
-
-  // Get total reputation for colony
-  let totalColonyReputation;
-  try {
-    totalColonyReputation = await colonyClient.getReputationWithoutProofs(
-      skillId,
-      constants.AddressZero,
-      rootHash,
-    );
-  } catch (error) {
-    // Not throwing anything, as its possible that the domain does not have
-    // any reputation, and we don't want to break the whole query
-  }
 
   const watchers = [];
   const contributors = [];
@@ -132,6 +120,19 @@ exports.handler = async (event) => {
         });
       });
     }
+  }
+
+  // Get total reputation for colony
+  let totalColonyReputation;
+  try {
+    totalColonyReputation = await colonyClient.getReputationWithoutProofs(
+      skillId,
+      constants.AddressZero,
+      rootHash,
+    );
+  } catch (error) {
+    // Not throwing anything, as its possible that the domain does not have
+    // any reputation, and we don't want to break the whole query
   }
 
   // get reputation for each address
