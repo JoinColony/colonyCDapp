@@ -12,11 +12,11 @@ input TokenFromEverywhereArguments {
   tokenAddress: String!
 }
 
-input MembersForColonyArguments {
+input MembersForColonyInput {
   colonyAddress: String!
   rootHash: String
   domainId: Int
-  sortingMethod: SortingMethods
+  sortingMethod: SortingMethod
 }
 
 input CreateUniqueUserInput {
@@ -173,7 +173,7 @@ enum ColonyType {
   METACOLONY
 }
 
-enum SortingMethods {
+enum SortingMethod {
   BY_HIGHEST_REP
   BY_LOWEST_REP
 

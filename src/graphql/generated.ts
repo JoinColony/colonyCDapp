@@ -484,11 +484,11 @@ export type GetUserReputationInput = {
   walletAddress: Scalars['String'];
 };
 
-export type MembersForColonyArguments = {
+export type MembersForColonyInput = {
   colonyAddress: Scalars['String'];
   domainId?: InputMaybe<Scalars['Int']>;
   rootHash?: InputMaybe<Scalars['String']>;
-  sortingMethod?: InputMaybe<Sorting_Methods>;
+  sortingMethod?: InputMaybe<SortingMethod>;
 };
 
 export type MembersForColonyReturn = {
@@ -1653,7 +1653,7 @@ export type QueryGetReputationForTopDomainsArgs = {
 
 
 export type QueryGetMembersForColonyArgs = {
-  input?: InputMaybe<MembersForColonyArguments>;
+  input?: InputMaybe<MembersForColonyInput>;
 };
 
 
@@ -1810,7 +1810,8 @@ export type SetCurrentVersionInput = {
   key: Scalars['String'];
   version: Scalars['Int'];
 };
-export enum Sorting_Methods {
+
+export enum SortingMethod {
   ByHighestRep = 'BY_HIGHEST_REP',
   ByLessPermissions = 'BY_LESS_PERMISSIONS',
   ByLowestRep = 'BY_LOWEST_REP',

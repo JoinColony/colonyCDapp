@@ -36,7 +36,7 @@ query GetColonyExtension($colonyAddress: ID!, $extensionHash: String!) {
   }
 }
 
-query GetMembersForColony($input: MembersForColonyArguments!) {
+query GetMembersForColony($input: MembersForColonyInput!) {
   getMembersForColony(input: $input) {
     contributors {
       ...Contributor
