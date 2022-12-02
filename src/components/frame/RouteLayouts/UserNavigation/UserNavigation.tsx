@@ -5,6 +5,7 @@ import MemberReputation from '~shared/MemberReputation';
 import { Tooltip } from '~shared/Popover';
 import { AvatarDropdown } from '~frame/AvatarDropdown';
 // import UserTokenActivationButton from '~users/UserTokenActivationButton';
+import HamburgerDropdown from '~frame/HamburgerDropdown';
 import {
   useAppContext,
   useColonyContext,
@@ -89,6 +90,7 @@ const UserNavigation = () => {
       */}
       <Wallet />
       <AvatarDropdown spinnerMsg={MSG.walletAutologin} />
+      <HamburgerDropdown />
     </div>
   );
 };
