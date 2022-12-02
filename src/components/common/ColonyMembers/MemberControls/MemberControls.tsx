@@ -144,7 +144,7 @@ Props) => {
                 appearance={{ theme: 'blue' }}
                 text={MSG.unbanAddress}
                 onClick={
-                  () => () => console.log('Open banning dialog')
+                  () => console.log('Open banning dialog')
                   // openToggleBanningDialog({
                   //   isBanning: false,
                   //   colonyAddress,
