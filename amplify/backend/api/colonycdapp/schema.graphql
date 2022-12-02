@@ -12,11 +12,11 @@ input TokenFromEverywhereArguments {
   tokenAddress: String!
 }
 
-input MembersForColonyArguments {
+input MembersForColonyInput {
   colonyAddress: String!
   rootHash: String
   domainId: Int
-  sortingMethod: SortingMethods
+  sortingMethod: SortingMethod
 }
 
 input CreateUniqueUserInput {
@@ -194,7 +194,7 @@ enum ColonyActionType {
   EMIT_DOMAIN_REPUTATION_REWARD
 }
 
-enum SortingMethods {
+enum SortingMethod {
   BY_HIGHEST_REP
   BY_LOWEST_REP
   BY_MORE_PERMISSIONS
