@@ -1,48 +1,50 @@
 import React, { ReactNode } from 'react';
 
 import ListGroup, { ListGroupAppearance } from '~shared/ListGroup';
-import { AnyUser, Colony } from '~data/index';
+import { User, Colony } from '~gql';
 
 import MembersListItem from './MembersListItem';
 
-interface Props<U> {
+interface Props {
   colony: Colony;
-  extraItemContent?: (user: U) => ReactNode;
-  onRowClick?: (user: U) => void;
+  domainId: number | undefined;
+  users: User[];
+  listGroupAppearance?: ListGroupAppearance;
+  canAdministerComments?: boolean;
+  extraItemContent?: (user: User) => ReactNode;
   showUserInfo?: boolean;
   showUserReputation?: boolean;
-  domainId: number | undefined;
-  users: U[];
-  listGroupAppearance?: ListGroupAppearance;
 }
 
 const displayName = 'MembersList';
 
-const MembersList = <U extends AnyUser = AnyUser>({
+const MembersList = ({
   colony,
   extraItemContent,
-  onRowClick,
   showUserInfo = true,
   showUserReputation = true,
   domainId,
   users,
   listGroupAppearance,
-}: Props<U>) => (
-  <ListGroup appearance={listGroupAppearance}>
-    {users.map((user) => (
-      <MembersListItem<U>
-        colony={colony}
-        extraItemContent={extraItemContent}
-        key={user.id}
-        onRowClick={onRowClick}
-        showUserInfo={showUserInfo}
-        showUserReputation={showUserReputation}
-        domainId={domainId}
-        user={user}
-      />
-    ))}
-  </ListGroup>
-);
+  canAdministerComments,
+}: Props) => {
+  return (
+    <ListGroup appearance={listGroupAppearance}>
+      {users.map((member: User) => (
+        <MembersListItem
+          colony={colony}
+          extraItemContent={extraItemContent}
+          key={member.user?.walletAddress}
+          showUserInfo={showUserInfo}
+          showUserReputation={showUserReputation}
+          domainId={domainId}
+          user={member}
+          canAdministerComments={canAdministerComments}
+        />
+      ))}
+    </ListGroup>
+  );
+};
 
 MembersList.displayName = displayName;
 
