@@ -1,9 +1,13 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
+import Decimal from 'decimal.js';
 
 import Numeral from '~shared/Numeral';
 import Icon from '~shared/Icon';
+
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { calculatePercentageReputation, ZeroValue } from '~utils/reputation';
+import { getFormattedTokenValue } from '~utils/tokens';
 
 import styles from './MemberReputation.css';
 
@@ -24,27 +28,36 @@ interface Props {
   userReputation?: string;
   totalReputation?: string;
   showIconTitle?: boolean;
+  userReputationPercentage?: string;
+  showReputationPoints?: boolean;
+  nativeTokenDecimals?: number;
 }
 
 const MemberReputation = ({
   userReputation,
   totalReputation,
   showIconTitle = true,
+  userReputationPercentage,
+  showReputationPoints = false,
+  nativeTokenDecimals = DEFAULT_TOKEN_DECIMALS,
 }: Props) => {
-  const percentageReputation = calculatePercentageReputation(
-    userReputation,
-    totalReputation,
+  const percentageReputation =
+    userReputationPercentage ||
+    calculatePercentageReputation(userReputation, totalReputation);
+
+  const formattedReputationPoints = getFormattedTokenValue(
+    new Decimal(userReputation || 0).toString(),
+    nativeTokenDecimals,
   );
 
-  /* Doing this cause Eslint yells at me if I use nested ternary */
-  let iconTitle;
-  if (!showIconTitle) {
-    iconTitle = undefined;
-  } else {
-    iconTitle = percentageReputation
+  const getIconTitle = () => {
+    if (!showIconTitle) {
+      return undefined;
+    }
+    return percentageReputation
       ? MSG.starReputationTitle
       : MSG.starNoReputationTitle;
-  }
+  };
 
   return (
     <div className={styles.reputationWrapper}>
@@ -59,18 +72,23 @@ const MemberReputation = ({
           suffix="%"
         />
       )}
+      {showReputationPoints && (
+        <div className={styles.reputationPointsContainer}>
+          <span className={styles.reputationPoints}>(</span>
+          <Numeral
+            className={styles.reputationPoints}
+            // Placeholder
+            value="50"
+            suffix="pts)"
+          />
+        </div>
+      )}
       <Icon
         name="star"
         appearance={{ size: 'extraTiny' }}
         className={styles.icon}
-        title={iconTitle}
-        titleValues={
-          showIconTitle
-            ? {
-                reputation: percentageReputation,
-              }
-            : undefined
-        }
+        title={getIconTitle()}
+        titleValues={{ reputation: percentageReputation }}
       />
     </div>
   );
