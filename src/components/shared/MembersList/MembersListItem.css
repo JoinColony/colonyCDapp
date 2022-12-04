@@ -1,7 +1,10 @@
+@value query700 from '~styles/queries.css';
+
 .main {
   display: flex;
   align-items: center;
-  overflow-y: auto;
+  padding-right: 15px;
+  min-width: 722px;
 }
 
 .section {
@@ -14,36 +17,126 @@
 
 .usernameSection {
   composes: section;
-  composes: inlineEllipsis from '~styles/text.css';
-  flex-grow: 1;
+  flex-grow: 0.5;
+  margin-right: auto;
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .displayName {
   font-weight: var(--weight-bold);
-  color: var(--dark-grey);
+  color: var(--grey-1);
 }
 
 .displayName + .username {
+  display: inline-flex;
   margin-left: 5px;
 }
 
+.address {
+  display: flex;
+  align-items: center;
+  line-height: 13px;
+}
+
 .address span {
+  font-size: var(--size-normal);
   font-weight: 500;
 }
 
 .reputationSection {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-left: 26px;
-  width: 69px;
+  justify-content: flex-end;
+  margin-right: 20px;
+  width: 170px;
 }
 
 .stateHasReputation {
-  opacity: 0;
-  transition: opacity 0.3s ease-out;
+  /* opacity: 0; */
+  /* transition: opacity 0.3s ease-out; */
 }
 
 .stateHasReputation.stateReputationLoaded {
   opacity: 1;
+}
+
+.whitelistedIcon {
+  margin-left: 10px;
+  position: relative;
+}
+
+.whitelistedIcon svg {
+  fill: var(--primary);
+}
+
+.whitelistedIconTooltip {
+  width: 130px;
+}
+
+@media screen and query700 {
+  .main {
+    min-width: 0px;
+    position: relative;
+    overflow: visible;
+    background: white;
+  }
+
+  .section {
+    order: -1;
+  }
+
+  .main button {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+  }
+
+  .main button svg {
+    transform: scale(0.8);
+    fill: var(--temp-grey-blue-7);
+    stroke: none;
+  }
+
+  .main div[role='tooltip'] {
+    display: flex;
+    align-items: center;
+    padding: 7px 14px;
+    transform: translate(-17px, 64px) !important;
+  }
+
+  .main div[role='tooltip'] > div {
+    min-width: 0px;
+  }
+
+  .main div[role='tooltip'] button {
+    padding: 4px 0px;
+  }
+
+  .main div[role='tooltip'] button > * {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .main div[role='tooltip'] > span {
+    transform: translateX(10px) !important;
+  }
+
+  .reputationSection {
+    margin-top: 5px;
+    width: auto;
+  }
+
+  .reputationSection i {
+    display: flex;
+    align-items: center;
+  }
+
+  .usernameSection {
+    width: auto;
+  }
 }

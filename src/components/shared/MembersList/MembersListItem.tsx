@@ -6,34 +6,49 @@ import React, {
   useState,
 } from 'react';
 import { AddressZero } from '@ethersproject/constants';
+import { defineMessages } from 'react-intl';
+import { useMediaQuery } from 'react-responsive';
 
-import { createAddress } from '~utils/web3';
 import UserMention from '~shared/UserMention';
 import { ListGroupItem } from '~shared/ListGroup';
-import CopyableAddress from '~shared/CopyableAddress';
-import { AnyUser, Colony, useUser } from '~data/index';
-import { ENTER } from '~types';
-import HookedUserAvatar from '~users/HookedUserAvatar';
-import { getMainClasses } from '~utils/css';
 import MemberReputation from '~shared/MemberReputation';
+import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
+import MaskedAddress from '~shared/MaskedAddress';
+import IconTooltip from '~shared/IconTooltip';
+import UserAvatar from '~shared/UserAvatar';
+import { Member } from '~common/Members';
 
+import { User, Colony } from '~gql';
+import { ENTER } from '~types/index';
+import { getMainClasses } from '~utils/css';
+
+import MemberActions from './Actions';
+import { createAddress } from '~utils/web3';
+
+import queries from '~styles/queries.css';
 import styles from './MembersListItem.css';
 
-interface Props<U> {
-  extraItemContent?: (user: U) => ReactNode;
+interface Props {
+  extraItemContent?: (user: Member | User) => ReactNode;
   colony: Colony;
-  onRowClick?: (user: U) => void;
+  onRowClick?: (user: Member | User) => void;
   showUserInfo: boolean;
   showUserReputation: boolean;
   domainId: number | undefined;
-  user: U;
+  canAdministerComments?: boolean;
+  user: Member | User;
 }
 
-const UserAvatar = HookedUserAvatar({ fetchUser: false });
+const MSG = defineMessages({
+  whitelistedTooltip: {
+    id: 'shared.MembersList.MembersListItem.whitelistedTooltip',
+    defaultMessage: `Added to address book`,
+  },
+});
 
 const componentDisplayName = 'MembersList.MembersListItem';
 
-const MembersListItem = <U extends AnyUser = AnyUser>(props: Props<U>) => {
+const MembersListItem = (props: Props) => {
   const {
     colony,
     domainId,
@@ -41,14 +56,30 @@ const MembersListItem = <U extends AnyUser = AnyUser>(props: Props<U>) => {
     onRowClick,
     showUserInfo,
     showUserReputation,
-    user,
+    user: { user, reputationAmount, reputationPercentage },
+    canAdministerComments,
   } = props;
+  console.log(
+    '🚀 ~ file: MembersListItem.tsx ~ line 62 ~ MembersListItem ~ reputationPercentage',
+    reputationPercentage,
+  );
   const {
-    profile: { walletAddress },
+    profile,
+    name,
+    walletAddress,
     banned = false,
-  } = user as AnyUser & { banned: boolean };
+    isWhitelisted = false,
+  } = user as User & { banned: boolean; isWhitelisted: boolean };
 
-  const userProfile = useUser(createAddress(walletAddress || AddressZero));
+  const isUserBanned = useMemo(
+    () =>
+      canAdministerComments !== undefined
+        ? canAdministerComments && banned
+        : banned,
+    [banned, canAdministerComments],
+  );
+
+  // const userProfile = useUser(createAddress(walletAddress || AddressZero));
 
   // Determine when reputation has loaded
   const [reputationLoaded, setReputationLoaded] = useState<boolean>(false);
@@ -72,9 +103,13 @@ const MembersListItem = <U extends AnyUser = AnyUser>(props: Props<U>) => {
     [extraItemContent, user],
   );
 
-  const {
-    profile: { displayName, username },
-  } = userProfile;
+  const { displayName } = profile || {};
+
+  const nativeToken = {};
+  // colony.tokens.find(
+  //   (token) => token.address === colony.nativeTokenAddress,
+  // );
+  const isMobile = useMediaQuery({ query: queries.query700 });
 
   return (
     <ListGroupItem>
@@ -93,26 +128,17 @@ const MembersListItem = <U extends AnyUser = AnyUser>(props: Props<U>) => {
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         tabIndex={onRowClick ? 0 : undefined}
       >
-        {showUserReputation && (
-          <div className={styles.reputationSection}>
-            <MemberReputation
-              walletAddress={walletAddress}
-              colonyAddress={colony.colonyAddress}
-              domainId={domainId}
-              onReputationLoaded={setReputationLoaded}
-            />
-          </div>
-        )}
         <div className={styles.section}>
           <UserAvatar
             size="s"
             colony={colony}
             address={walletAddress}
-            user={userProfile}
+            user={user}
             showInfo={!onRowClick || showUserInfo}
             domainId={domainId}
             notSet={false}
-            banned={banned}
+            banned={isUserBanned}
+            popperOptions={isMobile ? { placement: 'bottom' } : undefined}
           />
         </div>
         <div className={styles.usernameSection}>
@@ -121,16 +147,48 @@ const MembersListItem = <U extends AnyUser = AnyUser>(props: Props<U>) => {
               {displayName}
             </span>
           )}
-          {username && (
+          {name && (
             <span className={styles.username}>
-              <UserMention hasLink={false} username={username} />
+              PLACEHOLDER
+              {/* <UserMention hasLink={false} username={name} /> */}
             </span>
           )}
           <div className={styles.address}>
-            <CopyableAddress>{walletAddress}</CopyableAddress>
+            <InvisibleCopyableAddress address={walletAddress}>
+              <MaskedAddress address={walletAddress} />
+            </InvisibleCopyableAddress>
+            {isWhitelisted && (
+              <IconTooltip
+                icon="check-mark"
+                tooltipText={MSG.whitelistedTooltip}
+                tooltipClassName={styles.whitelistedIconTooltip}
+                appearance={{ size: 'medium' }}
+                className={styles.whitelistedIcon}
+              />
+            )}
           </div>
         </div>
-        {renderedExtraItemContent && <div>{renderedExtraItemContent}</div>}
+        {renderedExtraItemContent && !isMobile && (
+          <div>{renderedExtraItemContent}</div>
+        )}
+        {showUserReputation && (
+          <div className={styles.reputationSection}>
+            <MemberReputation
+              onReputationLoaded={setReputationLoaded}
+              showReputationPoints={!isMobile}
+              nativeTokenDecimals={nativeToken?.decimals}
+              reputationAmount={reputationAmount}
+              reputationPercentage={reputationPercentage}
+            />
+          </div>
+        )}
+        <MemberActions
+          canAdministerComments={canAdministerComments}
+          colony={colony}
+          userAddress={walletAddress}
+          isWhitelisted={isWhitelisted}
+          isBanned={isUserBanned}
+        />
       </div>
     </ListGroupItem>
   );

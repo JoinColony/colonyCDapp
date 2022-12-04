@@ -2,11 +2,16 @@ import React, { useState, useCallback, ReactNode } from 'react';
 import classnames from 'classnames';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import MembersList from '~core/MembersList';
-import LoadMoreButton from '~core/LoadMoreButton';
-import SortingRow from '~core/MembersList/SortingRow';
-import { Colony, ColonyWatcher, ColonyContributor } from '~data/index';
-import useColonyMembersSorting from '~modules/dashboard/hooks/useColonyMembersSorting';
+import MembersList from '~shared/MembersList';
+import LoadMoreButton from '~shared/LoadMoreButton';
+import SortingRow from '~shared/MembersList/SortingRow';
+import {
+  Colony,
+  WatcherFragment,
+  ContributorFragment,
+  SortingMethod,
+} from '~gql';
+// import useColonyMembersSorting from '~modules/dashboard/hooks/useColonyMembersSorting';
 
 import styles from './MembersSection.css';
 
@@ -35,13 +40,13 @@ interface Props<U> {
   isContributorsSection: boolean;
   colony: Colony;
   currentDomainId: number;
-  members: ColonyWatcher[] | ColonyContributor[];
+  members: WatcherFragment[] | ContributorFragment[];
   canAdministerComments: boolean;
   extraItemContent: (user: U) => ReactNode;
   itemsPerSection?: number;
 }
 
-const MembersSection = <U extends ColonyWatcher | ColonyContributor>({
+const MembersSection = <U extends WatcherFragment | ContributorFragment>({
   colony,
   currentDomainId,
   members,
@@ -50,18 +55,17 @@ const MembersSection = <U extends ColonyWatcher | ColonyContributor>({
   isContributorsSection,
   itemsPerSection = 10,
 }: Props<U>) => {
+  console.log('🚀 ~ file: MembersSection.tsx ~ line 58 ~ members', members);
   const [dataPage, setDataPage] = useState<number>(1);
+  const [sortingMethod, setSortingMethod] = useState(SortingMethod);
 
   const paginatedMembers = members.slice(0, itemsPerSection * dataPage);
   const handleDataPagination = useCallback(() => {
     setDataPage(dataPage + 1);
   }, [dataPage]);
 
-  const {
-    sortedMembers,
-    sortingMethod,
-    handleSortingMethodChange,
-  } = useColonyMembersSorting(paginatedMembers, isContributorsSection);
+  // const { sortedMembers, sortingMethod, handleSortingMethodChange } =
+  //   useColonyMembersSorting(paginatedMembers, isContributorsSection);
 
   return (
     <>
@@ -76,9 +80,10 @@ const MembersSection = <U extends ColonyWatcher | ColonyContributor>({
               ? MSG.contributorsTitle
               : MSG.watchersTitle)}
           />
-          {isContributorsSection && handleSortingMethodChange && (
+          {isContributorsSection && (
+            // && setSortingMethod
             <SortingRow
-              handleSortingMethodChange={handleSortingMethodChange}
+              handleSortingMethodChange={setSortingMethod}
               sortingMethod={sortingMethod}
             />
           )}
@@ -89,13 +94,13 @@ const MembersSection = <U extends ColonyWatcher | ColonyContributor>({
           </div>
         )}
       </div>
-      {sortedMembers.length ? (
+      {paginatedMembers.length ? (
         <div className={styles.membersList}>
           <MembersList
             colony={colony}
             extraItemContent={extraItemContent}
             domainId={currentDomainId}
-            users={sortedMembers}
+            users={paginatedMembers}
             canAdministerComments={canAdministerComments}
             showUserReputation={isContributorsSection}
           />
