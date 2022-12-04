@@ -9,7 +9,7 @@ import { AddressZero } from '@ethersproject/constants';
 import { defineMessages } from 'react-intl';
 import { useMediaQuery } from 'react-responsive';
 
-import UserMention from '~shared/UserMention';
+// import UserMention from '~shared/UserMention';
 import { ListGroupItem } from '~shared/ListGroup';
 import MemberReputation from '~shared/MemberReputation';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
@@ -59,10 +59,7 @@ const MembersListItem = (props: Props) => {
     user: { user, reputationAmount, reputationPercentage },
     canAdministerComments,
   } = props;
-  console.log(
-    '🚀 ~ file: MembersListItem.tsx ~ line 62 ~ MembersListItem ~ reputationPercentage',
-    reputationPercentage,
-  );
+
   const {
     profile,
     name,
@@ -78,11 +75,6 @@ const MembersListItem = (props: Props) => {
         : banned,
     [banned, canAdministerComments],
   );
-
-  // const userProfile = useUser(createAddress(walletAddress || AddressZero));
-
-  // Determine when reputation has loaded
-  const [reputationLoaded, setReputationLoaded] = useState<boolean>(false);
 
   const handleRowClick = useCallback(() => {
     if (onRowClick) {
@@ -119,7 +111,6 @@ const MembersListItem = (props: Props) => {
         className={getMainClasses({}, styles, {
           hasCallbackFn: !!onRowClick,
           hasReputation: showUserReputation,
-          reputationLoaded,
         })}
         onClick={onRowClick ? handleRowClick : undefined}
         onKeyDown={onRowClick ? handleRowKeydown : undefined}
@@ -174,11 +165,10 @@ const MembersListItem = (props: Props) => {
         {showUserReputation && (
           <div className={styles.reputationSection}>
             <MemberReputation
-              onReputationLoaded={setReputationLoaded}
-              showReputationPoints={!isMobile}
               nativeTokenDecimals={nativeToken?.decimals}
               reputationAmount={reputationAmount}
-              reputationPercentage={reputationPercentage}
+              userReputationPercentage={reputationPercentage}
+              showReputationPoints={!isMobile}
             />
           </div>
         )}

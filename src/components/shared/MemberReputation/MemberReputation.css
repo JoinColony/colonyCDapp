@@ -12,6 +12,16 @@
   color: var(--golden);
 }
 
+.reputationPointsContainer {
+  margin-left: 3px;
+  height: 23px;
+}
+
+.reputationPoints {
+  composes: reputation;
+  font-weight: var(--weight-normal);
+}
+
 .icon {
   height: 11px;
   width: 11px;
@@ -28,4 +38,25 @@
   fill: transparent;
   stroke-width: 3px;
   stroke: var(--golden);
+}
+
+@media screen and query700 {
+  .reputationWrapper {
+    display: flex;
+    align-items: center;
+    padding-top: 2px;
+    padding-right: 0;
+    column-gap: 3px;
+  }
+
+  .reputationWrapper svg {
+    position: static;
+  }
+
+  .reputationWrapper i {
+    display: flex;
+    align-items: center;
+    position: static;
+    transform: none;
+  }
 }
