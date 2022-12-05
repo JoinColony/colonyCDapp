@@ -1,19 +1,20 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { AnyExtension, isInstalledExtension } from '~constants/extensions';
 import Card from '~shared/Card';
 import ExtensionStatusBadge from '~shared/ExtensionStatusBadge';
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import Link from '~shared/Link';
+import { AnyExtensionData } from '~types';
+import { isInstalledExtensionData } from '~utils/extensions';
 
 import styles from './ExtensionCard.css';
 
 const displayName = 'common.ColonyExtensions.ExtensionCard';
 
 interface Props {
-  extension: AnyExtension;
+  extension: AnyExtensionData;
 }
 
 const ExtensionCard = ({ extension }: Props) => {
@@ -40,7 +41,7 @@ const ExtensionCard = ({ extension }: Props) => {
               />
               <span className={styles.version}>
                 v
-                {isInstalledExtension(extension)
+                {isInstalledExtensionData(extension)
                   ? extension.version
                   : extension.availableVersion}
               </span>
@@ -49,7 +50,7 @@ const ExtensionCard = ({ extension }: Props) => {
           <div className={styles.cardDescription}>
             <FormattedMessage {...extension.descriptionShort} />
           </div>
-          {isInstalledExtension(extension) && (
+          {isInstalledExtensionData(extension) && (
             <div className={styles.status}>
               <ExtensionStatusBadge extension={extension} />
             </div>

@@ -2,8 +2,9 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import Tag from '~shared/Tag';
-import { AnyExtension, isInstalledExtension } from '~constants/extensions';
 import { ExtensionStatus } from '~gql';
+import { isInstalledExtensionData } from '~utils/extensions';
+import { AnyExtensionData } from '~types';
 
 import styles from './ExtensionStatusBadge.css';
 
@@ -38,14 +39,14 @@ const MSG = defineMessages({
 
 interface Props {
   deprecatedOnly?: boolean;
-  extension: AnyExtension;
+  extension: AnyExtensionData;
 }
 
 const ExtensionStatusBadge = ({ deprecatedOnly = false, extension }: Props) => {
   let status;
   let theme;
 
-  if (!isInstalledExtension(extension)) {
+  if (!isInstalledExtensionData(extension)) {
     status = MSG.notInstalled;
   } else if (extension?.status === ExtensionStatus.Installed) {
     status = MSG.notEnabled;
@@ -66,7 +67,7 @@ const ExtensionStatusBadge = ({ deprecatedOnly = false, extension }: Props) => {
   return (
     <div className={styles.tagContainer}>
       {!deprecatedOnly ? <Tag appearance={{ theme }} text={status} /> : null}
-      {isInstalledExtension(extension) && extension.isDeprecated ? (
+      {isInstalledExtensionData(extension) && extension.isDeprecated ? (
         <Tag appearance={{ theme: 'danger' }} text={MSG.deprecated} />
       ) : null}
     </div>
