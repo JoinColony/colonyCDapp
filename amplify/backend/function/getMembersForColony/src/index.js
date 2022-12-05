@@ -56,8 +56,14 @@ exports.handler = async (event) => {
 
   const colonyClient = await networkClient.getColonyClient(colonyAddress);
   const { skillId } = await colonyClient.getDomain(domainId);
-  const { addresses: addressesWithReputation } =
-    await colonyClient.getMembersReputation(skillId);
+  let addressesWithReputation;
+  try {
+    const { addresses } = await colonyClient.getMembersReputation(skillId);
+    addressesWithReputation = addresses;
+  } catch (error) {
+    // @NOTE Not throwing an error here, because its possbile that the colony
+    // doesn't have any reputation yet.
+  }
 
   const watchers = [];
   const contributors = [];
@@ -90,6 +96,15 @@ exports.handler = async (event) => {
       );
     }
 
+    // Incase there are members but no reputation on the colony,
+    // we can stop here and return the list of watchers
+    if (!addressesWithReputation?.length) {
+      return {
+        contributors: [],
+        watchers: data?.getColonyByAddress?.items[0]?.watchers.items,
+      };
+    }
+
     // Identify watchers & contributors
     data?.getColonyByAddress?.items[0]?.watchers.items.forEach((item) => {
       if (
@@ -105,15 +120,15 @@ exports.handler = async (event) => {
 
     // now catch addresses that have reputation but are not in the watchers list
     // i.e. address that was awarded reputation but has not joined the colony
-    if (addressesWithReputation.length !== contributors.length) {
-      const missingAddresses = addressesWithReputation.filter((address) =>
+    if (addressesWithReputation?.length !== contributors?.length) {
+      const missingAddresses = addressesWithReputation?.filter((address) =>
         contributors?.every(
           (item) => item.user.id.toLowerCase() !== address.toLowerCase(),
         ),
       );
 
-      missingAddresses.forEach((address) => {
-        contributors.push({
+      missingAddresses?.forEach((address) => {
+        contributors?.push({
           user: {
             id: address,
           },
@@ -179,7 +194,7 @@ exports.handler = async (event) => {
           reputationAmount: formattedUserReputations[0]?.reputationAmount,
         };
       } catch (error) {
-        throw new Error(
+        throw Error(
           `Error trying to calculate reputation for user ${address}: ${error.message}`,
         );
       }
