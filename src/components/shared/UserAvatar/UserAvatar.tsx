@@ -41,7 +41,7 @@ interface Props {
   size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
 
   /** The corresponding user object if available */
-  user?: User;
+  user?: User | null;
 
   preferThumbnail?: boolean;
 }

@@ -139,7 +139,6 @@ const Routes = () => {
         />
         <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
         <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
-        {/*
         <Route
           path={USER_ROUTE}
           element={
@@ -216,7 +215,7 @@ const Routes = () => {
             backText: ColonyBackText,
             backRoute: `/colony/${colonyName}`,
           })}
-        /> */}
+        />
 
         {/*
          * Redirect anything else that's not found to the 404 route
