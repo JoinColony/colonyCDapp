@@ -1570,6 +1570,13 @@ export type CreateUniqueUserMutationVariables = Exact<{
 
 export type CreateUniqueUserMutation = { __typename?: 'Mutation', createUniqueUser?: { __typename?: 'User', id: string } | null };
 
+export type UpdateUserMutationVariables = Exact<{
+  input: UpdateUserInput;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, location?: string | null, website?: any | null, email?: any | null } | null } | null };
+
 export type GetFullColonyByNameQueryVariables = Exact<{
   name: Scalars['String'];
 }>;
@@ -1630,6 +1637,14 @@ export type GetUserByNameQueryVariables = Exact<{
 
 
 export type GetUserByNameQuery = { __typename?: 'Query', getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', id: string } | null> } | null };
+
+export type CombinedUserQueryQueryVariables = Exact<{
+  name: Scalars['String'];
+  address: Scalars['ID'];
+}>;
+
+
+export type CombinedUserQueryQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null, getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null };
 
 export const TokenFragmentDoc = gql`
     fragment Token on Token {
@@ -1917,14 +1932,6 @@ export const CreateUniqueUserDocument = gql`
     mutation CreateUniqueUser($input: CreateUniqueUserInput!) {
   createUniqueUser(input: $input) {
     id
-    profile {
-      avatar
-      bio
-      displayName
-      location
-      website
-      email
-    }
   }
 }
     `;
@@ -1954,6 +1961,47 @@ export function useCreateUniqueUserMutation(baseOptions?: Apollo.MutationHookOpt
 export type CreateUniqueUserMutationHookResult = ReturnType<typeof useCreateUniqueUserMutation>;
 export type CreateUniqueUserMutationResult = Apollo.MutationResult<CreateUniqueUserMutation>;
 export type CreateUniqueUserMutationOptions = Apollo.BaseMutationOptions<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    id
+    profile {
+      avatar
+      bio
+      displayName
+      location
+      website
+      email
+    }
+  }
+}
+    `;
+export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
+      }
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const GetFullColonyByNameDocument = gql`
     query GetFullColonyByName($name: String!) {
   getColonyByName(name: $name) {
@@ -2283,3 +2331,46 @@ export function useGetUserByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetUserByNameQueryHookResult = ReturnType<typeof useGetUserByNameQuery>;
 export type GetUserByNameLazyQueryHookResult = ReturnType<typeof useGetUserByNameLazyQuery>;
 export type GetUserByNameQueryResult = Apollo.QueryResult<GetUserByNameQuery, GetUserByNameQueryVariables>;
+export const CombinedUserQueryDocument = gql`
+    query CombinedUserQuery($name: String!, $address: ID!) {
+  getUserByAddress(id: $address) {
+    items {
+      ...User
+    }
+  }
+  getUserByName(name: $name) {
+    items {
+      ...User
+    }
+  }
+}
+    ${UserFragmentDoc}`;
+
+/**
+ * __useCombinedUserQueryQuery__
+ *
+ * To run a query within a React component, call `useCombinedUserQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCombinedUserQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCombinedUserQueryQuery({
+ *   variables: {
+ *      name: // value for 'name'
+ *      address: // value for 'address'
+ *   },
+ * });
+ */
+export function useCombinedUserQueryQuery(baseOptions: Apollo.QueryHookOptions<CombinedUserQueryQuery, CombinedUserQueryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CombinedUserQueryQuery, CombinedUserQueryQueryVariables>(CombinedUserQueryDocument, options);
+      }
+export function useCombinedUserQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CombinedUserQueryQuery, CombinedUserQueryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CombinedUserQueryQuery, CombinedUserQueryQueryVariables>(CombinedUserQueryDocument, options);
+        }
+export type CombinedUserQueryQueryHookResult = ReturnType<typeof useCombinedUserQueryQuery>;
+export type CombinedUserQueryLazyQueryHookResult = ReturnType<typeof useCombinedUserQueryLazyQuery>;
+export type CombinedUserQueryQueryResult = Apollo.QueryResult<CombinedUserQueryQuery, CombinedUserQueryQueryVariables>;
