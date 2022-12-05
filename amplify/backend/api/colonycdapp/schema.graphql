@@ -214,7 +214,7 @@ type Query {
   getUserTokenBalance(
     input: GetUserTokenBalanceInput
   ): GetUserTokenBalanceReturn @function(name: "getUserTokenBalance")
-  getMembersForColony(input: MembersForColonyArguments): MembersForColonyReturn
+  getMembersForColony(input: MembersForColonyInput): MembersForColonyReturn
     @function(name: "getMembersForColony")
 }
 
@@ -265,6 +265,12 @@ type ChainMetadata {
 
 type ProfileMetadata {
   emailPermissions: [String!]!
+}
+
+type Contributor {
+  user: User
+  reputationPercentage: String
+  reputationAmount: String
 }
 
 type Watcher {

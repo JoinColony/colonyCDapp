@@ -38,16 +38,6 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "getMembersForColony": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "getReputationForColony": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "getReputationForTopDomains": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -82,6 +72,6 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
-    }
+    },
   }
 }
