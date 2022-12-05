@@ -1,6 +1,6 @@
 import { ColonyRole, Extension } from '@colony/colony-js';
-import { defineMessages, MessageDescriptor } from 'react-intl';
-import { ColonyExtension } from '~types';
+import { defineMessages } from 'react-intl';
+import { ExtensionConfig } from '~types';
 
 /**
  * @TODO: Refactor/cleanup this file
@@ -21,25 +21,6 @@ const oneTransactionPaymentMessages = defineMessages({
   },
 });
 
-export interface ExtensionConfig {
-  extensionId: Extension;
-  name: MessageDescriptor;
-  descriptionShort: MessageDescriptor;
-  descriptionLong: MessageDescriptor;
-  neededColonyPermissions: ColonyRole[];
-}
-
-export type InstalledExtensionData = ExtensionConfig & ColonyExtension;
-
-export type InstallableExtensionData = ExtensionConfig & {
-  availableVersion: number;
-};
-
-export type AnyExtension =
-  | ExtensionConfig
-  | InstalledExtensionData
-  | InstallableExtensionData;
-
 export const supportedExtensionsConfig: ExtensionConfig[] = [
   {
     extensionId: Extension.OneTxPayment,
@@ -49,10 +30,3 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
   },
 ];
-
-export const isInstalledExtension = (
-  extension: AnyExtension,
-): extension is InstalledExtensionData =>
-  (extension as InstalledExtensionData).address !== undefined;
-
-export default supportedExtensionsConfig;
