@@ -3,9 +3,17 @@ declare namespace DefaultCssNamespace {
     children: string;
     coloniesList: string;
     content: string;
+    head: string;
     history: string;
     main: string;
+    mappings: string;
+    names: string;
     onlyHistory: string;
+    query700: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
+    version: string;
   }
 }
 

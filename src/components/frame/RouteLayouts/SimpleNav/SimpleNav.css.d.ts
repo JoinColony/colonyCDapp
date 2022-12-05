@@ -1,6 +1,13 @@
 declare namespace SimpleNavCssNamespace {
   export interface ISimpleNavCss {
+    mappings: string;
+    names: string;
     nav: string;
+    query700: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
+    version: string;
     wrapper: string;
   }
 }

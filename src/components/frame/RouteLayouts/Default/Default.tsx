@@ -3,10 +3,14 @@ import { useLocation, useParams } from 'react-router-dom';
 
 import { RouteComponentProps } from '~frame/RouteLayouts';
 import SubscribedColoniesList from '~frame/SubscribedColoniesList';
+import { useMobile } from '~hooks';
+
 import SimpleNav from '../SimpleNav';
 import HistoryNavigation from '../HistoryNavigation';
+import UserNavigation from '../UserNavigation';
 
 import styles from './Default.css';
+import navStyles from '../SimpleNav/SimpleNav.css';
 
 interface Props {
   children: ReactNode;
@@ -34,11 +38,12 @@ const Default = ({
   const params = useParams();
   const resolvedBackRoute =
     typeof backRoute === 'function' ? backRoute(params) : backRoute;
+  const isMobile = useMobile();
 
   return (
     <div className={styles.main}>
       <SimpleNav>
-        {backLinkExists && (
+        {backLinkExists && !isMobile && (
           <HistoryNavigation
             backRoute={resolvedBackRoute}
             backText={backText}
@@ -49,9 +54,27 @@ const Default = ({
           />
         )}
         <div className={styles.content}>
-          {hasSubscribedColonies && (
-            <div className={styles.coloniesList}>
-              <SubscribedColoniesList />
+          {isMobile ? (
+            // Render the UserNavigation and SubscribedColoniesList in shared parent on mobile
+            <div className={styles.head}>
+              <div className={navStyles.nav}>
+                <UserNavigation />
+              </div>
+              <div className={styles.content}>
+                {hasSubscribedColonies && (
+                  <div className={styles.coloniesList}>
+                    <SubscribedColoniesList />
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className={styles.content}>
+              {hasSubscribedColonies && (
+                <div className={styles.coloniesList}>
+                  <SubscribedColoniesList />
+                </div>
+              )}
             </div>
           )}
           <div className={styles.children}>{children}</div>
