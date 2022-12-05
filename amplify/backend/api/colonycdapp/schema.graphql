@@ -165,7 +165,7 @@ type Query {
     @function(name: "getReputationForTopDomains")
   getUserReputation(input: GetUserReputationInput): String
     @function(name: "getUserReputation")
-  getMembersForColony(input: MembersForColonyArguments): MembersForColonyReturn
+  getMembersForColony(input: MembersForColonyInput): MembersForColonyReturn
     @function(name: "getMembersForColony")
 }
 
@@ -192,6 +192,16 @@ type Profile @model {
   meta: ProfileMetadata
 }
 
+type Contributor {
+  user: User
+  reputationPercentage: String
+  reputationAmount: String
+}
+
+type Watcher {
+  user: User
+}
+
 type NativeTokenStatus {
   unlocked: Boolean # If it's already unlocked
   mintable: Boolean # User has permissions to mint new tokens
@@ -212,16 +222,6 @@ type Metadata {
 
 type ProfileMetadata {
   emailPermissions: [String!]!
-}
-
-type Member {
-  user: User
-  reputationPercentage: String
-  reputationAmount: String
-}
-
-type Watcher {
-  user: User
 }
 
 type Token @model {

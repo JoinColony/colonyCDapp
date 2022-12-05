@@ -10,6 +10,7 @@ import InviteLinkButton from '~shared/Button/InviteLinkButton';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useAvatarDisplayCounter } from '~hooks';
+
 import { Colony, User } from '~types';
 
 import styles from './ColonyMembersWidget.css';
@@ -81,7 +82,7 @@ const MembersSubsection = ({
   //   () => (watchers || []).filter(notNull),
   //   [watchers],
   // );
-  const { user } = useAppContext();
+  // const { user } = useAppContext();
   // const hasRegisteredProfile = user?.name;
   // const canAdministerComments =
   //   userHasAccountRegistered &&
