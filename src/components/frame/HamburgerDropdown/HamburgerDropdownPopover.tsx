@@ -9,7 +9,11 @@ import {
   MetaSection,
   UserSection,
 } from '~shared/PopoverSection';
-import { useAppContext, useColonyContext } from '~hooks';
+import {
+  useAppContext,
+  useColonyContext,
+  useCanInteractWithNetwork,
+} from '~hooks';
 
 import styles from './HamburgerDropdownPopover.css';
 
@@ -29,13 +33,14 @@ interface Props {
 const HamburgerDropdownPopover = ({ closePopover }: Props) => {
   const { colony } = useColonyContext();
   const { user, wallet } = useAppContext();
+  const canInteractWithNetwork = useCanInteractWithNetwork();
 
   return (
     <div className={styles.menu}>
       <DropdownMenu onClick={closePopover}>
         {user?.name && colony?.name && <ColonySection />}
         <UserSection />
-        <CreateColonySection />
+        {canInteractWithNetwork && <CreateColonySection />}
         <HelperSection />
         {wallet?.address && <MetaSection />}
       </DropdownMenu>
