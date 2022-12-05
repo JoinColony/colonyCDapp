@@ -1019,10 +1019,10 @@ export type Query = {
   getColonyByType?: Maybe<ModelColonyConnection>;
   getColonyTokens?: Maybe<ColonyTokens>;
   getDomain?: Maybe<Domain>;
+  getMembersForColony?: Maybe<MembersForColonyReturn>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
-  getMembersForColony?: Maybe<MembersForColonyReturn>;
   getToken?: Maybe<Token>;
   getTokenByAddress?: Maybe<ModelTokenConnection>;
   getTokenFromEverywhere?: Maybe<TokenFromEverywhereReturn>;
@@ -1086,6 +1086,11 @@ export type QueryGetDomainArgs = {
 };
 
 
+export type QueryGetMembersForColonyArgs = {
+  input?: InputMaybe<MembersForColonyInput>;
+};
+
+
 export type QueryGetProfileArgs = {
   id: Scalars['ID'];
 };
@@ -1102,11 +1107,6 @@ export type QueryGetProfileByEmailArgs = {
 
 export type QueryGetReputationForTopDomainsArgs = {
   input?: InputMaybe<GetReputationForTopDomainsInput>;
-};
-
-
-export type QueryGetMembersForColonyArgs = {
-  input?: InputMaybe<MembersForColonyInput>;
 };
 
 
@@ -1627,7 +1627,6 @@ export type GetMembersForColonyQueryVariables = Exact<{
 
 export type GetMembersForColonyQuery = { __typename?: 'Query', getMembersForColony?: { __typename?: 'MembersForColonyReturn', contributors?: Array<{ __typename?: 'Contributor', reputationPercentage?: string | null, reputationAmount?: string | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } | null }> | null, watchers?: Array<{ __typename?: 'Watcher', user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } | null }> | null } | null };
 
-
 export type GetProfileByEmailQueryVariables = Exact<{
   email: Scalars['AWSEmail'];
 }>;
@@ -2072,6 +2071,84 @@ export function useGetMetacolonyLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetMetacolonyQueryHookResult = ReturnType<typeof useGetMetacolonyQuery>;
 export type GetMetacolonyLazyQueryHookResult = ReturnType<typeof useGetMetacolonyLazyQuery>;
 export type GetMetacolonyQueryResult = Apollo.QueryResult<GetMetacolonyQuery, GetMetacolonyQueryVariables>;
+export const GetMembersForColonyDocument = gql`
+    query GetMembersForColony($input: MembersForColonyInput!) {
+  getMembersForColony(input: $input) {
+    contributors {
+      ...Contributor
+    }
+    watchers {
+      ...Watcher
+    }
+  }
+}
+    ${ContributorFragmentDoc}
+${WatcherFragmentDoc}`;
+
+/**
+ * __useGetMembersForColonyQuery__
+ *
+ * To run a query within a React component, call `useGetMembersForColonyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMembersForColonyQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMembersForColonyQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetMembersForColonyQuery(baseOptions: Apollo.QueryHookOptions<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>(GetMembersForColonyDocument, options);
+      }
+export function useGetMembersForColonyLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>(GetMembersForColonyDocument, options);
+        }
+export type GetMembersForColonyQueryHookResult = ReturnType<typeof useGetMembersForColonyQuery>;
+export type GetMembersForColonyLazyQueryHookResult = ReturnType<typeof useGetMembersForColonyLazyQuery>;
+export type GetMembersForColonyQueryResult = Apollo.QueryResult<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>;
+export const GetProfileByEmailDocument = gql`
+    query GetProfileByEmail($email: AWSEmail!) {
+  getProfileByEmail(email: $email) {
+    items {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetProfileByEmailQuery__
+ *
+ * To run a query within a React component, call `useGetProfileByEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProfileByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProfileByEmailQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useGetProfileByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>(GetProfileByEmailDocument, options);
+      }
+export function useGetProfileByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>(GetProfileByEmailDocument, options);
+        }
+export type GetProfileByEmailQueryHookResult = ReturnType<typeof useGetProfileByEmailQuery>;
+export type GetProfileByEmailLazyQueryHookResult = ReturnType<typeof useGetProfileByEmailLazyQuery>;
+export type GetProfileByEmailQueryResult = Apollo.QueryResult<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>;
 export const GetTokenByAddressDocument = gql`
     query GetTokenByAddress($address: ID!) {
   getTokenByAddress(id: $address) {
@@ -2216,44 +2293,78 @@ export function useGetUserReputationLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetUserReputationQueryHookResult = ReturnType<typeof useGetUserReputationQuery>;
 export type GetUserReputationLazyQueryHookResult = ReturnType<typeof useGetUserReputationLazyQuery>;
 export type GetUserReputationQueryResult = Apollo.QueryResult<GetUserReputationQuery, GetUserReputationQueryVariables>;
-export const GetMembersForColonyDocument = gql`
-    query GetMembersForColony($input: MembersForColonyArguments!) {
-  getMembersForColony(input: $input) {
-    contributors {
-      ...Contributor
-    }
-    watchers {
-      ...User
+export const GetReputationForTopDomainsDocument = gql`
+    query GetReputationForTopDomains($input: GetReputationForTopDomainsInput!) {
+  getReputationForTopDomains(input: $input) {
+    items {
+      domainId
+      reputationPercentage
     }
   }
 }
-    ${ContributorFragmentDoc}
-${UserFragmentDoc}`;
+    `;
 
 /**
- * __useGetMembersForColonyQuery__
+ * __useGetReputationForTopDomainsQuery__
  *
- * To run a query within a React component, call `useGetMembersForColonyQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMembersForColonyQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetReputationForTopDomainsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetReputationForTopDomainsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetMembersForColonyQuery({
+ * const { data, loading, error } = useGetReputationForTopDomainsQuery({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useGetMembersForColonyQuery(baseOptions: Apollo.QueryHookOptions<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>) {
+export function useGetReputationForTopDomainsQuery(baseOptions: Apollo.QueryHookOptions<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>(GetMembersForColonyDocument, options);
+        return Apollo.useQuery<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>(GetReputationForTopDomainsDocument, options);
       }
-export function useGetMembersForColonyLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>) {
+export function useGetReputationForTopDomainsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>(GetMembersForColonyDocument, options);
+          return Apollo.useLazyQuery<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>(GetReputationForTopDomainsDocument, options);
         }
-export type GetMembersForColonyQueryHookResult = ReturnType<typeof useGetMembersForColonyQuery>;
-export type GetMembersForColonyLazyQueryHookResult = ReturnType<typeof useGetMembersForColonyLazyQuery>;
-export type GetMembersForColonyQueryResult = Apollo.QueryResult<GetMembersForColonyQuery, GetMembersForColonyQueryVariables>;
+export type GetReputationForTopDomainsQueryHookResult = ReturnType<typeof useGetReputationForTopDomainsQuery>;
+export type GetReputationForTopDomainsLazyQueryHookResult = ReturnType<typeof useGetReputationForTopDomainsLazyQuery>;
+export type GetReputationForTopDomainsQueryResult = Apollo.QueryResult<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>;
+export const GetUserByNameDocument = gql`
+    query GetUserByName($name: String!) {
+  getUserByName(name: $name) {
+    items {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserByNameQuery__
+ *
+ * To run a query within a React component, call `useGetUserByNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByNameQuery({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useGetUserByNameQuery(baseOptions: Apollo.QueryHookOptions<GetUserByNameQuery, GetUserByNameQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByNameQuery, GetUserByNameQueryVariables>(GetUserByNameDocument, options);
+      }
+export function useGetUserByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByNameQuery, GetUserByNameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByNameQuery, GetUserByNameQueryVariables>(GetUserByNameDocument, options);
+        }
+export type GetUserByNameQueryHookResult = ReturnType<typeof useGetUserByNameQuery>;
+export type GetUserByNameLazyQueryHookResult = ReturnType<typeof useGetUserByNameLazyQuery>;
+export type GetUserByNameQueryResult = Apollo.QueryResult<GetUserByNameQuery, GetUserByNameQueryVariables>;

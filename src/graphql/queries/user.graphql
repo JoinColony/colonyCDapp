@@ -26,14 +26,3 @@ query GetUserByName($name: String!) {
     }
   }
 }
-
-query GetMembersForColony($input: MembersForColonyArguments!) {
-  getMembersForColony(input: $input) {
-    contributors {
-      ...Contributor
-    }
-    watchers {
-      ...User
-    }
-  }
-}
