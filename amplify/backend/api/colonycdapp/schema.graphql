@@ -165,7 +165,7 @@ type Query {
     @function(name: "getReputationForTopDomains")
   getUserReputation(input: GetUserReputationInput): String
     @function(name: "getUserReputation")
-  getMembersForColony(input: MembersForColonyArguments): MembersForColonyReturn
+  getMembersForColony(input: MembersForColonyInput): MembersForColonyReturn
     @function(name: "getMembersForColony")
 }
 
@@ -212,6 +212,12 @@ type Metadata {
 
 type ProfileMetadata {
   emailPermissions: [String!]!
+}
+
+type Contributor {
+  user: User
+  reputationPercentage: String
+  reputationAmount: String
 }
 
 type Watcher {
