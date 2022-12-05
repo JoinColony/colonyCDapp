@@ -7,13 +7,7 @@ import Tag from '~shared/Tag';
 // import { getAllUserRoles } from '~redux/transformers';
 import NotAvailableMessage from '../NotAvailableMessage/NotAvailableMessage';
 import { User, Colony } from '~types';
-import {
-  useUserReputationForTopDomains,
-  useTransformer,
-  useAppContext,
-} from '~hooks';
-import { getAllUserRoles } from '~redux/transformers';
-import UserInfo from '../UserInfo';
+import { useAppContext, useUserReputationForTopDomains } from '~hooks';
 
 // import UserPermissions from './UserPermissions';
 // import UserTokens from './UserTokens';

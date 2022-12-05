@@ -3,6 +3,8 @@ import { PopperOptions } from 'react-popper-tooltip';
 
 import Link from '~shared/Link';
 import Popover from '~shared/Popover';
+
+import { User } from '~types';
 // import UserInfoPopover from '../InfoPopover/UserInfoPopover';
 // import { useUserQuery, useUserAddressQuery } from '~data/index';
 
@@ -31,14 +33,13 @@ const displayName = 'UserMention';
 
 const UserMention = ({
   user: { name },
-  user,
   to,
   hasLink,
   showInfo,
   popperOptions,
   ...props
 }: Props) => {
-  const fallbackTo = to || `/user/${username}`;
+  const fallbackTo = to || `/user/${name}`;
   const trigger = showInfo ? 'click' : 'disabled';
   const showArrow = popperOptions && popperOptions.showArrow;
 
