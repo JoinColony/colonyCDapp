@@ -71,7 +71,7 @@ const SortingRow = ({ handleSortingMethodChange, sortingMethod }: Props) => {
           })}
           name={
             sortingMethod === SortingMethod.ByHighestRep
-              ? 'caret-up'
+              ? 'caret-up-small'
               : 'caret-down'
           }
           title={MSG.reputation}
