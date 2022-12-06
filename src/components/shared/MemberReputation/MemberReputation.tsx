@@ -77,8 +77,7 @@ const MemberReputation = ({
           <span className={styles.reputationPoints}>(</span>
           <Numeral
             className={styles.reputationPoints}
-            // Placeholder
-            value="50"
+            value={formattedReputationPoints}
             suffix="pts)"
           />
         </div>
