@@ -55,7 +55,7 @@ exports.handler = async (event) => {
   });
 
   const colonyClient = await networkClient.getColonyClient(colonyAddress);
-  const { skillId } = await colonyClient.getDomain(domainId);
+  const { skillId } = await colonyClient.getDomain(domainId || ROOT_DOMAIN_ID);
   let addressesWithReputation;
   try {
     const { addresses } = await colonyClient.getMembersReputation(skillId);
