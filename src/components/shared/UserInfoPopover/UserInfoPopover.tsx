@@ -10,7 +10,7 @@ import { User, Colony } from '~types';
 import { useAppContext, useUserReputationForTopDomains } from '~hooks';
 
 // import UserPermissions from './UserPermissions';
-// import UserTokens from './UserTokens';
+// import Token from './UserTokens';
 import UserReputation from './UserReputation';
 import UserInfo from './UserInfo';
 
