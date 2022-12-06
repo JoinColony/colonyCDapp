@@ -1,4 +1,3 @@
-@value checkmark: "data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' viewBox='0 0 30 30'%3E%3Cg transform='translate(0,-350.38584)' fill='%2368D2DF'%3E%3Cpath d='M 26.558594,355.88672 11.042969,372.00195 3.4414062,364.10547 2,365.49219 11.042969,374.88477 28,357.27344 Z' /%3E%3C/g%3E%3C/svg%3E";
 @value query700 from '~styles/queries.css';
 
 .main {
@@ -27,7 +26,7 @@
   position: absolute;
   right: 1px;
   bottom: 4px;
-  content: url(checkmark);
+  content: url('check-mark-primary');
 }
 
 .checkbox:checked {
