@@ -1,3 +1,5 @@
+@value query700 from "~styles/queries.css";
+
 .main {
   display: inline-flex;
   align-items: center;
@@ -30,4 +32,15 @@
 
 .reputation:hover svg {
   stroke: var(--colony-blue);
+}
+
+@media screen and query700 {
+  .elementWrapper {
+    display: none;
+  }
+
+  .main {
+    height: 100%;
+    gap: 7px;
+  }
 }

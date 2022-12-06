@@ -1,3 +1,6 @@
+@value query700 from '~styles/queries.css';
+@value navHeight from '~frame/RouteLayouts/Default/Default.css';
+
 .main {
   /*
    * @NOTE Center vertically and horizontally
@@ -59,4 +62,15 @@
 .itemLoading {
   composes: itemLink;
   text-align: center;
+}
+
+@media screen and query700 {
+  .main {
+    padding: 0 14px;
+    height: calc(100vh - navHeight);
+  }
+
+  .itemLink {
+    width: auto;
+  }
 }

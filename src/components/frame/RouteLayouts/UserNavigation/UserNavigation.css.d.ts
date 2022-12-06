@@ -2,7 +2,14 @@ declare namespace UserNavigationCssNamespace {
   export interface IUserNavigationCss {
     elementWrapper: string;
     main: string;
+    mappings: string;
+    names: string;
+    query700: string;
     reputation: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
+    version: string;
   }
 }
 

@@ -6,7 +6,7 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import NavLink from '~shared/NavLink';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import { CREATE_COLONY_ROUTE } from '~routes/index';
-import { useAppContext, useCanInteractWithNetwork } from '~hooks';
+import { useAppContext, useCanInteractWithNetwork, useMobile } from '~hooks';
 
 import styles from './SubscribedColoniesList.css';
 
@@ -22,6 +22,7 @@ const MSG = defineMessages({
 const SubscribedColoniesList = () => {
   const { user, userLoading, updateUser } = useAppContext();
   const canInteractWithNetwork = useCanInteractWithNetwork();
+  const isMobile = useMobile();
 
   /* Ensures colony list is up-to-date post create colony flow. */
   useEffect(() => {
@@ -48,29 +49,30 @@ const SubscribedColoniesList = () => {
             <SpinnerLoader appearance={{ size: 'medium' }} />
           </div>
         )}
-        {[...watchlist].sort(sortByDate).map((item) => {
-          const { colonyAddress = '', name } = item?.colony || {};
-          return (
-            <div className={styles.item} key={colonyAddress}>
-              <NavLink
-                activeClassName={styles.activeColony}
-                className={styles.itemLink}
-                title={name}
-                to={`/colony/${name}`}
-              >
-                <div className={styles.itemImage}>
-                  <ColonyAvatar
-                    colony={item?.colony}
-                    colonyAddress={colonyAddress}
-                    size="s"
-                  />
-                </div>
-              </NavLink>
-            </div>
-          );
-        })}
+        {!isMobile &&
+          [...watchlist].sort(sortByDate).map((item) => {
+            const { colonyAddress = '', name } = item?.colony || {};
+            return (
+              <div className={styles.item} key={colonyAddress}>
+                <NavLink
+                  activeClassName={styles.activeColony}
+                  className={styles.itemLink}
+                  title={name}
+                  to={`/colony/${name}`}
+                >
+                  <div className={styles.itemImage}>
+                    <ColonyAvatar
+                      colony={item?.colony}
+                      colonyAddress={colonyAddress}
+                      size="s"
+                    />
+                  </div>
+                </NavLink>
+              </div>
+            );
+          })}
       </div>
-      {canInteractWithNetwork && (
+      {canInteractWithNetwork && !isMobile && (
         <div className={`${styles.item} ${styles.newColonyItem}`}>
           <NavLink
             className={styles.itemLink}

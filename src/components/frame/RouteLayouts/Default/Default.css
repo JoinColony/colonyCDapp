@@ -1,3 +1,6 @@
+@value query700 from "~styles/queries.css";
+@value navHeight: 43px;
+
 .main {
   height: 100%;
 }
@@ -41,4 +44,24 @@
 .onlyHistory {
   composes: history;
   left: 0;
+}
+
+@media screen and query700 {
+  .content {
+    flex-direction: column;
+  }
+
+  .coloniesList {
+    flex-shrink: 1;
+    width: calc(100% - 90px);
+    position: static;
+    border-right: 0;
+  }
+
+  .head {
+    display: flex;
+    justify-content: flex-end;
+    min-height: navHeight; /* Prevents breakage when no colonies present */
+    border-bottom: 1px solid var(--temp-grey-13);
+  }
 }

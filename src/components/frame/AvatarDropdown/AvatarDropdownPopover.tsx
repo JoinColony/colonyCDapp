@@ -2,7 +2,7 @@ import React from 'react';
 
 import DropdownMenu from '~shared/DropdownMenu';
 import UserSection from '~shared/PopoverSection/UserSection';
-import ColonySection from '~shared/PopoverSection/ColonySection';
+import CreateColonySection from '~shared/PopoverSection/CreateColonySection';
 import HelperSection from '~shared/PopoverSection/HelperSection';
 import MetaSection from '~shared/PopoverSection/MetaSection';
 import { useCanInteractWithNetwork } from '~hooks';
@@ -32,7 +32,7 @@ const AvatarDropdownPopover = ({
         <>
           {/* Move into separate components for reuse in HamburgerDropdownPopover */}
           <UserSection />
-          {canInteractWithNetwork && <ColonySection />}
+          {canInteractWithNetwork && <CreateColonySection />}
           <HelperSection />
           {walletConnected && <MetaSection />}
         </>

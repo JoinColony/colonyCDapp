@@ -6,7 +6,15 @@ declare namespace LandingPageCssNamespace {
     itemLoading: string;
     itemTitle: string;
     main: string;
+    mappings: string;
+    names: string;
+    navHeight: string;
+    query700: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
     title: string;
+    version: string;
   }
 }
 
