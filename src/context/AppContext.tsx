@@ -27,7 +27,7 @@ export const AppContext = createContext<AppContextValues>({});
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   let initialWallet;
-  const initialUser = null;
+  let initialUser;
 
   /*
    * Wallet
@@ -83,8 +83,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       if (wallet) {
         // It means that the user logged out
-        setWallet(undefined);
-        setUser(undefined);
+        setWallet(null);
+        setUser(null);
       }
       // It means that it was not set in context yet
     }
