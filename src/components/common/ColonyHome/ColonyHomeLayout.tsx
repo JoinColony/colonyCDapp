@@ -10,7 +10,7 @@ import ColonyFundingWidget from './ColonyFundingWidget';
 import ColonyTitle from './ColonyTitle';
 import ColonyNavigation from './ColonyNavigation';
 import ColonyMembersWidget from './ColonyMembersWidget';
-// import ColonyExtensions from './ColonyExtensions';
+import ColonyExtensions from './ColonyExtensionsWidget';
 import ColonyDomainDescription from './ColonyDomainDescription';
 // import ColonyUpgrade from './ColonyUpgrade';
 // import ExtensionUpgrade from './ExtensionUpgrade';
@@ -86,7 +86,7 @@ const ColonyHomeLayout = ({
             // currentDomainId={filteredDomainId}
             />
             <ColonyMembersWidget currentDomainId={filteredDomainId} />
-            {/* <ColonyExtensions /> */}
+            <ColonyExtensions />
           </aside>
         )}
       </div>
