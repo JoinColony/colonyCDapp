@@ -1,13 +1,13 @@
 import React from 'react';
-import { useMediaQuery } from 'react-responsive';
 
 import { RouteComponentProps } from '~frame/RouteLayouts';
 import SubscribedColoniesList from '~frame/SubscribedColoniesList';
 
+import { useMobile } from '~hooks';
+
 import UserNavigation from '../UserNavigation';
 import SimpleNav from '../SimpleNav';
 
-import query from '~styles/queries.css';
 import styles from './UserLayout.css';
 import navStyles from '../SimpleNav/SimpleNav.css';
 
@@ -22,7 +22,7 @@ const UserLayout = ({
   children,
   routeProps: { hasSubscribedColonies = true } = {},
 }: Props) => {
-  const isMobile = useMediaQuery({ query: query.query700 });
+  const isMobile = useMobile();
 
   return (
     <SimpleNav>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { useMediaQuery } from 'react-responsive';
 
 import CopyableAddress from '~shared/CopyableAddress';
 import ExternalLink from '~shared/ExternalLink';
@@ -11,10 +10,9 @@ import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
 
 import { stripProtocol } from '~utils/strings';
-import { useAppContext } from '~hooks';
+import { useAppContext, useMobile } from '~hooks';
 import { User } from '~types';
 
-import query from '~styles/queries.css';
 import styles from './UserMeta.css';
 
 const componentDisplayName = 'common.UserProfile.UserMeta';
@@ -36,7 +34,7 @@ const UserMeta = ({ user: { walletAddress, profile }, user }: Props) => {
 
   const currentWalletAddress = currentUser?.walletAddress;
 
-  const isMobile = useMediaQuery({ query: query.query700 });
+  const isMobile = useMobile();
   return (
     <div className={styles.main}>
       <div data-test="userProfileAvatar">
