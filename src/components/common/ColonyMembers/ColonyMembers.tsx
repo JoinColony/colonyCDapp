@@ -16,7 +16,7 @@ import {
   ROOT_DOMAIN_ID,
   DEFAULT_TOKEN_DECIMALS,
 } from '~constants';
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useMobile } from '~hooks';
 import { getFormattedTokenValue } from '~utils/tokens';
 
 import MemberControls from './MemberControls';
@@ -27,7 +27,6 @@ import MembersFilter, {
   VerificationType,
 } from './MembersFilter';
 
-import queries from '~styles/queries.css';
 import styles from './ColonyMembers.css';
 
 const displayName = 'common.ColonyMembers';
@@ -87,7 +86,7 @@ const ColonyMembers = () => {
     nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS,
   );
 
-  const isMobile = useMediaQuery({ query: queries.query700 });
+  const isMobile = useMobile();
 
   if (loading) {
     return (
