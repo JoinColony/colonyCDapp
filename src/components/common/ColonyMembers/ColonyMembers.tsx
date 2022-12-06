@@ -14,9 +14,11 @@ import {
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
   ROOT_DOMAIN_ID,
   DEFAULT_TOKEN_DECIMALS,
+  ADDRESS_ZERO,
 } from '~constants';
 import { useColonyContext, useMobile } from '~hooks';
 import { getFormattedTokenValue } from '~utils/tokens';
+import { useGetUserReputationQuery } from '~gql';
 
 import MemberControls from './MemberControls';
 import MembersFilter, {
@@ -42,7 +44,7 @@ const MSG = defineMessages({
 });
 
 const ColonyMembers = () => {
-  const { colony, loading, error } = useColonyContext();
+  const { colony, loading } = useColonyContext();
 
   const [filters, setFilters] = useState<FormValues>({
     memberType: MemberType.ALL,
@@ -61,27 +63,24 @@ const ColonyMembers = () => {
     [selectedDomainId],
   );
 
-  // const { data: totalReputation } = useUserReputationQuery({
-  //   variables: {
-  //     address: AddressZero,
-  //     colonyAddress,
-  //     domainId: selectedDomainId,
-  //   },
-  //   fetchPolicy: 'cache-and-network',
-  // });
+  const { data: totalReputation } = useGetUserReputationQuery({
+    variables: {
+      input: {
+        walletAddress: ADDRESS_ZERO,
+        colonyAddress: colony?.colonyAddress || '',
+        domainId: selectedDomainId || ROOT_DOMAIN_ID,
+      },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
 
   const nativeToken = (colony?.tokens?.items || []).find(
     (colonyToken) =>
       colonyToken?.token?.tokenAddress === colony?.nativeToken.tokenAddress,
   )?.token;
 
-  // temp until there is a query ready
-  const totalReputation = {
-    userReputation: 40000000000000000000,
-  };
-
   const formattedTotalDomainRep = getFormattedTokenValue(
-    new Decimal(totalReputation?.userReputation || '0').abs().toString(),
+    new Decimal(totalReputation?.getUserReputation || '0').abs().toString(),
     nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS,
   );
 
@@ -95,8 +94,7 @@ const ColonyMembers = () => {
     );
   }
 
-  if (!colony?.name || error || !colony) {
-    console.error(error);
+  if (!colony?.name || !colony) {
     return <NotFoundRoute />;
   }
 

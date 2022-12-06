@@ -1,14 +1,13 @@
 import React, { ReactNode } from 'react';
 
 import ListGroup, { ListGroupAppearance } from '~shared/ListGroup';
-import { User, Colony } from '~gql';
+import { User, Colony, WatcherFragment, ContributorFragment } from '~gql';
 
 import MembersListItem from './MembersListItem';
 
 interface Props {
   colony: Colony;
-  domainId: number | undefined;
-  users: User[];
+  users: (WatcherFragment | ContributorFragment)[];
   listGroupAppearance?: ListGroupAppearance;
   canAdministerComments?: boolean;
   extraItemContent?: (user: User) => ReactNode;
@@ -23,21 +22,19 @@ const MembersList = ({
   extraItemContent,
   showUserInfo = true,
   showUserReputation = true,
-  domainId,
   users,
   listGroupAppearance,
   canAdministerComments,
 }: Props) => {
   return (
     <ListGroup appearance={listGroupAppearance}>
-      {users.map((member: User) => (
+      {users.map((member: WatcherFragment | ContributorFragment) => (
         <MembersListItem
           colony={colony}
           extraItemContent={extraItemContent}
           key={member.user?.walletAddress}
           showUserInfo={showUserInfo}
           showUserReputation={showUserReputation}
-          domainId={domainId}
           user={member}
           canAdministerComments={canAdministerComments}
         />

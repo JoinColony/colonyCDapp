@@ -9,7 +9,6 @@ import { useMobile } from '~hooks';
 
 import styles from './MembersTitle.css';
 import ColonyDomainSelector from '~common/ColonyHome/ColonyDomainSelector';
-// import { FullColonyFragment } from '~data/generated';
 
 const MSG = defineMessages({
   title: {
@@ -44,8 +43,6 @@ interface Props {
   searchValue: string;
   setSearchValue: Dispatch<SetStateAction<string>>;
   handleSearch: (e: any) => void;
-  colony: any;
-  // colony: FullColonyFragment;
 }
 
 const displayName = 'dashboard.MembersTitle';
@@ -56,7 +53,6 @@ const MembersTitle = ({
   domainSelectOptions,
   searchValue,
   handleSearch,
-  colony,
 }: Props) => {
   const { formatMessage } = useIntl();
   const searchInput = useRef<HTMLInputElement>(null);
@@ -100,7 +96,6 @@ const MembersTitle = ({
         />
         {isMobile ? (
           <ColonyDomainSelector
-            colony={colony}
             filteredDomainId={currentDomainId}
             onDomainChange={handleDomainChange}
           />

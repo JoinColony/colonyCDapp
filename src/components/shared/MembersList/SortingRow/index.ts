@@ -1,1 +1,1 @@
-export { default } from './SortingRow';
+export { default, Props } from './SortingRow';

@@ -1,15 +1,7 @@
-import React, {
-  KeyboardEvent,
-  ReactNode,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react';
-import { AddressZero } from '@ethersproject/constants';
+import React, { KeyboardEvent, ReactNode, useCallback, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
-import { useMediaQuery } from 'react-responsive';
 
-// import UserMention from '~shared/UserMention';
+import UserMention from '~shared/UserMention';
 import { ListGroupItem } from '~shared/ListGroup';
 import MemberReputation from '~shared/MemberReputation';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
@@ -18,25 +10,23 @@ import IconTooltip from '~shared/IconTooltip';
 import UserAvatar from '~shared/UserAvatar';
 import { Member } from '~common/Members';
 
-import { User, Colony } from '~gql';
+import { Colony, WatcherFragment, ContributorFragment } from '~gql';
 import { ENTER } from '~types/index';
 import { getMainClasses } from '~utils/css';
+import { useMobile } from '~hooks';
 
 import MemberActions from './Actions';
-import { createAddress } from '~utils/web3';
 
-import queries from '~styles/queries.css';
 import styles from './MembersListItem.css';
 
 interface Props {
-  extraItemContent?: (user: Member | User) => ReactNode;
+  extraItemContent?: (user: WatcherFragment | ContributorFragment) => ReactNode;
   colony: Colony;
-  onRowClick?: (user: Member | User) => void;
+  onRowClick?: (user: WatcherFragment | ContributorFragment) => void;
   showUserInfo: boolean;
   showUserReputation: boolean;
-  domainId: number | undefined;
   canAdministerComments?: boolean;
-  user: Member | User;
+  user: WatcherFragment | ContributorFragment;
 }
 
 const MSG = defineMessages({
@@ -51,7 +41,6 @@ const componentDisplayName = 'MembersList.MembersListItem';
 const MembersListItem = (props: Props) => {
   const {
     colony,
-    domainId,
     extraItemContent,
     onRowClick,
     showUserInfo,
@@ -66,7 +55,10 @@ const MembersListItem = (props: Props) => {
     walletAddress,
     banned = false,
     isWhitelisted = false,
-  } = user as User & { banned: boolean; isWhitelisted: boolean };
+  } = user as (WatcherFragment | ContributorFragment) & {
+    banned: boolean;
+    isWhitelisted: boolean;
+  };
 
   const isUserBanned = useMemo(
     () =>
@@ -101,7 +93,7 @@ const MembersListItem = (props: Props) => {
   // colony.tokens.find(
   //   (token) => token.address === colony.nativeTokenAddress,
   // );
-  const isMobile = useMediaQuery({ query: queries.query700 });
+  const isMobile = useMobile();
 
   return (
     <ListGroupItem>
@@ -126,7 +118,6 @@ const MembersListItem = (props: Props) => {
             address={walletAddress}
             user={user}
             showInfo={!onRowClick || showUserInfo}
-            domainId={domainId}
             notSet={false}
             banned={isUserBanned}
             popperOptions={isMobile ? { placement: 'bottom' } : undefined}
@@ -140,8 +131,7 @@ const MembersListItem = (props: Props) => {
           )}
           {name && (
             <span className={styles.username}>
-              PLACEHOLDER
-              {/* <UserMention hasLink={false} username={name} /> */}
+              <UserMention hasLink={false} username={name} />
             </span>
           )}
           <div className={styles.address}>
@@ -166,7 +156,7 @@ const MembersListItem = (props: Props) => {
           <div className={styles.reputationSection}>
             <MemberReputation
               nativeTokenDecimals={nativeToken?.decimals}
-              reputationAmount={reputationAmount}
+              userReputation={reputationAmount}
               userReputationPercentage={reputationPercentage}
               showReputationPoints={!isMobile}
             />

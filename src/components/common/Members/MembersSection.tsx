@@ -4,13 +4,10 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 
 import MembersList from '~shared/MembersList';
 import LoadMoreButton from '~shared/LoadMoreButton';
-import SortingRow from '~shared/MembersList/SortingRow';
-import {
-  Colony,
-  WatcherFragment,
-  ContributorFragment,
-  SortingMethod,
-} from '~gql';
+import SortingRow, {
+  Props as SortingProps,
+} from '~shared/MembersList/SortingRow';
+import { ColonyFragment, WatcherFragment, ContributorFragment } from '~gql';
 // import useColonyMembersSorting from '~modules/dashboard/hooks/useColonyMembersSorting';
 
 import styles from './MembersSection.css';
@@ -38,34 +35,29 @@ const MSG = defineMessages({
 
 interface Props<U> {
   isContributorsSection: boolean;
-  colony: Colony;
-  currentDomainId: number;
+  colony: ColonyFragment;
   members: WatcherFragment[] | ContributorFragment[];
   canAdministerComments: boolean;
-  extraItemContent: (user: U) => ReactNode;
+  extraItemContent?: (user: U) => ReactNode;
   itemsPerSection?: number;
 }
 
 const MembersSection = <U extends WatcherFragment | ContributorFragment>({
   colony,
-  currentDomainId,
   members,
   canAdministerComments,
   extraItemContent,
   isContributorsSection,
   itemsPerSection = 10,
-}: Props<U>) => {
-  console.log('🚀 ~ file: MembersSection.tsx ~ line 58 ~ members', members);
+  handleSortingMethodChange,
+  sortingMethod,
+}: Props<U> & Partial<SortingProps>) => {
   const [dataPage, setDataPage] = useState<number>(1);
-  const [sortingMethod, setSortingMethod] = useState(SortingMethod);
 
   const paginatedMembers = members.slice(0, itemsPerSection * dataPage);
   const handleDataPagination = useCallback(() => {
     setDataPage(dataPage + 1);
   }, [dataPage]);
-
-  // const { sortedMembers, sortingMethod, handleSortingMethodChange } =
-  //   useColonyMembersSorting(paginatedMembers, isContributorsSection);
 
   return (
     <>
@@ -81,9 +73,8 @@ const MembersSection = <U extends WatcherFragment | ContributorFragment>({
               : MSG.watchersTitle)}
           />
           {isContributorsSection && (
-            // && setSortingMethod
             <SortingRow
-              handleSortingMethodChange={setSortingMethod}
+              handleSortingMethodChange={handleSortingMethodChange}
               sortingMethod={sortingMethod}
             />
           )}
@@ -99,7 +90,6 @@ const MembersSection = <U extends WatcherFragment | ContributorFragment>({
           <MembersList
             colony={colony}
             extraItemContent={extraItemContent}
-            domainId={currentDomainId}
             users={paginatedMembers}
             canAdministerComments={canAdministerComments}
             showUserReputation={isContributorsSection}
