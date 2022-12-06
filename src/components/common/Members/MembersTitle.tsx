@@ -6,8 +6,9 @@ import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import { Select, Form } from '~shared/Fields';
 
+import { useMobile } from '~hooks';
+
 import styles from './MembersTitle.css';
-import queries from '~styles/queries.css';
 import ColonyDomainSelector from '~common/ColonyHome/ColonyDomainSelector';
 // import { FullColonyFragment } from '~data/generated';
 
@@ -89,7 +90,7 @@ const MembersTitle = ({
     (e.target as HTMLInputElement).placeholder = '';
   }, []);
 
-  const isMobile = useMediaQuery({ query: queries.query700 });
+  const isMobile = useMobile();
   return (
     <div className={styles.titleContainer}>
       <div className={styles.titleLeft}>
