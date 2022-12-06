@@ -1,17 +1,23 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 import sortBy from 'lodash/sortBy';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 // import UserPermissions from '~dashboard/UserPermissions';
-// import {
-//   FormValues as FiltersFormValues,
-//   MemberType,
-// } from '~dashboard/ColonyMembers/MembersFilter';
+import {
+  // FormValues as FiltersFormValues,
+  MemberType,
+} from '~common/ColonyMembers/MembersFilter';
 
 // import { useTransformer } from '~utils/hooks';
-import { Domain, useGetMembersForColonyQuery } from '~gql';
+import {
+  Domain,
+  useGetMembersForColonyQuery,
+  SortingMethod,
+  ContributorFragment,
+  WatcherFragment,
+} from '~gql';
 import {
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
   ALLDOMAINS_DOMAIN_SELECTION,
@@ -22,7 +28,7 @@ import {
 import { Colony, User } from '~types';
 
 import MembersTitle from './MembersTitle';
-import { filterMembers } from './filterMembers';
+// import { filterMembers } from './filterMembers';
 import MembersSection from './MembersSection';
 
 import styles from './Members.css';
@@ -59,50 +65,44 @@ export type Member = User & {
 };
 
 const Members = ({
-  colony: { colonyAddress, colonyName, domains },
+  colony: { colonyAddress, domains },
   colony,
   selectedDomain,
   handleDomainChange,
   filters,
 }: Props) => {
   const [searchValue, setSearchValue] = useState<string>('');
+  const [sortingMethod, setSortingMethod] = useState(
+    SortingMethod.ByHighestRep,
+  );
+
   // const {
   //   walletAddress: currentUserWalletAddress,
   //   username,
   //   ethereal,
   // } = useLoggedInUser();
   // const hasRegisteredProfile = !!username && !ethereal;
-  // const [contributors, setContributors] = useState<[]>([]);
-  // const [watchers, setWatchers] = useState<[]>([]);
-
-  // temp
-  // const loadingMembers = false;
-
-  // const { data: members, loading: loadingMembers } =
-  //   useContributorsAndWatchersQuery({
-  //     variables: {
-  //       colonyAddress,
-  //       colonyName,
-  //       domainId: selectedDomain,
-  //     },
-  //   });
 
   const { data, loading: loadingMembers } = useGetMembersForColonyQuery({
-    skip: !colony?.colonyAddress,
+    skip: !colonyAddress,
     variables: {
       input: {
-        colonyAddress: colony?.colonyAddress ?? '',
+        colonyAddress: colonyAddress ?? '',
+        // domainId: selectedDomain || COLONY_TOTAL_BALANCE_DOMAIN_ID,
+        sortingMethod,
       },
     },
     fetchPolicy: 'cache-and-network',
   });
-  const contributors = data?.getMembersForColony?.contributors ?? [];
-  const watchers = data?.getMembersForColony?.watchers ?? [];
 
-  // useEffect(() => {
-  //   setContributors(contributors || []);
-  //   setWatchers(watchers || []);
-  // }, [members]);
+  const contributors = useMemo(
+    () => data?.getMembersForColony?.contributors ?? [],
+    [data],
+  );
+  const watchers = useMemo(
+    () => data?.getMembersForColony?.watchers ?? [],
+    [data],
+  );
 
   // const currentUserRoles = useTransformer(getAllUserRoles, [
   //   colony,
@@ -124,30 +124,13 @@ const Members = ({
     ['value'],
   );
 
-  const filterContributorsAndWatchers = useCallback(() => {
-    const filteredContributors = filterMembers(
-      contributors || [],
-      searchValue,
-      filters,
-    );
-    setContributors(filteredContributors);
-
-    const filteredWatchers = filterMembers(
-      watchers || [],
-      searchValue,
-      filters,
-    );
-    setWatchers(filteredWatchers);
-  }, [filters, searchValue]);
-
   // handles search values & close button
   const handleSearch = useCallback(
     (event) => {
       const value = event.target?.value || '';
       setSearchValue(value);
-      filterContributorsAndWatchers();
     },
-    [filterContributorsAndWatchers, setSearchValue],
+    [setSearchValue],
   );
 
   const isRootDomain = useMemo(
@@ -158,13 +141,16 @@ const Members = ({
   );
 
   const membersContent = useMemo(() => {
-    const contributorsContent = (
-      <MembersSection<ColonyContributor>
+    const contributorsContent = (filters.memberType === MemberType.ALL ||
+      filters.memberType === MemberType.CONTRIBUTORS) && (
+      <MembersSection<ContributorFragment>
         isContributorsSection
         colony={colony}
-        currentDomainId={selectedDomain || COLONY_TOTAL_BALANCE_DOMAIN_ID}
-        members={contributors as ColonyContributor[]}
-        // canAdministerComments={canAdministerComments}
+        members={contributors as ContributorFragment[]}
+        sortingMethod={sortingMethod}
+        handleSortingMethodChange={setSortingMethod}
+        // temporary value until permissions are implemented
+        canAdministerComments
         // extraItemContent={({ roles, directRoles, banned }) => {
         //   return (
         //     <UserPermissions
@@ -178,65 +164,39 @@ const Members = ({
       />
     );
 
-    //   const contributorsContent = (!isRootDomain ||
-    //     filters.memberType === MemberType.ALL ||
-    //     filters.memberType === MemberType.CONTRIBUTORS) && (
-    //     <MembersSection<ColonyContributor>
-    //       isContributorsSection
-    //       colony={colony}
-    //       currentDomainId={selectedDomain || COLONY_TOTAL_BALANCE_DOMAIN_ID}
-    //       members={contributors as ColonyContributor[]}
-    //       canAdministerComments={canAdministerComments}
-    //       extraItemContent={({ roles, directRoles, banned }) => {
-    //         return (
-    //           <UserPermissions
-    //             roles={roles}
-    //             directRoles={directRoles}
-    //             banned={banned}
-    //             hideHeadRole
-    //           />
-    //         );
-    //       }}
-    //     />
-    //   );
-
-    //   const watchersContent =
-    //     isRootDomain &&
-    //     (filters.memberType === MemberType.ALL ||
-    //       filters.memberType === MemberType.WATCHERS) ? (
-    //       <MembersSection<ColonyWatcher>
-    //         isContributorsSection={false}
-    //         colony={colony}
-    //         currentDomainId={selectedDomain || COLONY_TOTAL_BALANCE_DOMAIN_ID}
-    //         members={watchers as ColonyWatcher[]}
-    //         canAdministerComments={canAdministerComments}
-    //         extraItemContent={({ banned }) => (
-    //           <UserPermissions roles={[]} directRoles={[]} banned={banned} />
-    //         )}
-    //       />
-    //     ) : null;
+    const watchersContent =
+      isRootDomain &&
+      (filters.memberType === MemberType.ALL ||
+        filters.memberType === MemberType.WATCHERS) ? (
+        <MembersSection<WatcherFragment>
+          isContributorsSection={false}
+          colony={colony}
+          members={watchers as WatcherFragment[]}
+          // temporary value until permissions are implemented
+          canAdministerComments
+          // extraItemContent={({ banned }) => (
+          //   <UserPermissions roles={[]} directRoles={[]} banned={banned} />
+          // )}
+        />
+      ) : null;
 
     return (
       <>
         {contributorsContent}
-        {/* {watchersContent} */}
+        {watchersContent}
       </>
     );
   }, [
     // canAdministerComments,
     colony,
     contributors,
-    selectedDomain,
     watchers,
     filters,
     isRootDomain,
+    sortingMethod,
   ]);
 
-  // useEffect(() => {
-  //   filterContributorsAndWatchers();
-  // }, [filterContributorsAndWatchers, filters, isRootDomain]);
-
-  if (loadingMembers) {
+  if (loadingMembers && !data) {
     return (
       <div className={styles.main}>
         <SpinnerLoader
@@ -247,11 +207,6 @@ const Members = ({
     );
   }
 
-  // const membersContent = <div>members content</div>;
-
-  // const contributors = [];
-  // const watchers = [];
-
   return (
     <div className={styles.main}>
       <MembersTitle
@@ -261,7 +216,6 @@ const Members = ({
         searchValue={searchValue}
         setSearchValue={setSearchValue}
         handleSearch={handleSearch}
-        colony={colony}
       />
       {!contributors?.length && !watchers?.length ? (
         <div className={styles.noResults}>

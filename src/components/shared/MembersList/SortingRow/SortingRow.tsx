@@ -9,7 +9,7 @@ import { SortingMethod } from '~gql';
 
 import styles from './SortingRow.css';
 
-interface Props {
+export interface Props {
   sortingMethod: SortingMethod;
   handleSortingMethodChange: React.Dispatch<
     React.SetStateAction<SortingMethod>
@@ -71,7 +71,7 @@ const SortingRow = ({ handleSortingMethodChange, sortingMethod }: Props) => {
           })}
           name={
             sortingMethod === SortingMethod.ByHighestRep
-              ? 'caret-up-small'
+              ? 'caret-up'
               : 'caret-down'
           }
           title={MSG.reputation}
