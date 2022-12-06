@@ -138,7 +138,6 @@ const UserAdvancedSettings = () => {
             appearance={{ theme: 'dark', size: 'medium' }}
             text={MSG.heading}
             textValues={{
-              // @ts-ignore
               learnMoreLink: (
                 <ExternalLink
                   text={{ id: 'text.learnMore' }}

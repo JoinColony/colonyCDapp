@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
-import * as yup from 'yup';
+import { string, object } from 'yup';
 import { isConfusing } from '@colony/unicode-confusables-noascii';
 
 import Snackbar, { SnackbarType } from '~shared/Snackbar';
@@ -85,13 +85,12 @@ interface Props {
   user: User;
 }
 
-const validationSchema = yup.object({
-  email: yup.string().email().nullable(),
-  bio: yup.string().nullable(),
-  displayName: yup.string().nullable(),
-  location: yup.string().nullable(),
-  website: yup
-    .string()
+const validationSchema = object({
+  email: string().email().nullable(),
+  bio: string().nullable(),
+  displayName: string().nullable(),
+  location: string().nullable(),
+  website: string()
     .url(() => MSG.websiteError)
     .nullable(),
 });
