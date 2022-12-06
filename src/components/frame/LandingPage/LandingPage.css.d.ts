@@ -8,6 +8,7 @@ declare namespace LandingPageCssNamespace {
     main: string;
     mappings: string;
     names: string;
+    navHeight: string;
     query700: string;
     sourceRoot: string;
     sources: string;

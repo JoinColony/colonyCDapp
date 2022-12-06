@@ -8,6 +8,7 @@ declare namespace DefaultCssNamespace {
     main: string;
     mappings: string;
     names: string;
+    navHeight: string;
     onlyHistory: string;
     query700: string;
     sourceRoot: string;

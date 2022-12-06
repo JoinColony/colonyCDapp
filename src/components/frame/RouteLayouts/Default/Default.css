@@ -1,4 +1,5 @@
 @value query700 from "~styles/queries.css";
+@value navHeight: 43px;
 
 .main {
   height: 100%;
@@ -60,7 +61,7 @@
   .head {
     display: flex;
     justify-content: flex-end;
-    min-height: 43px; /* Prevents breakage when no colonies present */
+    min-height: navHeight; /* Prevents breakage when no colonies present */
     border-bottom: 1px solid var(--temp-grey-13);
   }
 }
