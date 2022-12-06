@@ -5,23 +5,15 @@ import { Props as FormattedMessageProps } from 'react-intl/src/components/messag
 import Heading from '~shared/Heading';
 import ColonyButton from '~shared/Button';
 import WizardTemplate from '~frame/WizardTemplateColony';
-import { withWizard } from '~shared/Wizard';
-import { EmailPermissions } from '~gql';
+import withWizard from '~shared/Wizard/withWizard';
 
+import { FormValues, initialValues } from './validation';
 import StepUserName from './StepUserName';
 import StepUserEmail from './StepUserEmail';
 
 import styles from './CreateUserWizard.css';
 
-export interface FormValues {
-  [k: string]: string | string[];
-  username: string;
-  email: string;
-  emailPermissions: EmailPermissions[];
-}
-
 const steps = [StepUserEmail, StepUserName];
-const initialValues = [{ email: '', emailPermissions: [] }, { username: '' }];
 
 const CreateUserContainer = withWizard<FormValues>({
   initialValues,

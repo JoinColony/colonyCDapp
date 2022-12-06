@@ -1,4 +1,8 @@
 import { createIntl, createIntlCache } from '@formatjs/intl';
+import { MessageDescriptor } from 'react-intl';
+
+import { Message, SimpleMessageValues } from '~types';
+
 import colonyMessages from '../i18n/en.json';
 import actionMessages from '../i18n/en-actions';
 import eventsMessages from '../i18n/en-events';
@@ -31,3 +35,17 @@ export const intl = (messages: Record<string, string> = {}, locale = 'en') =>
     },
     cache,
   );
+
+const isMessageDescriptor = (message?: Message): message is MessageDescriptor =>
+  typeof message === 'object' &&
+  ('id' in message || 'description' in message || 'defaultMessage' in message);
+
+const { formatMessage: formatIntlMessage } = intl();
+
+export const formatText = (
+  message?: Message,
+  messageValues?: SimpleMessageValues,
+) =>
+  isMessageDescriptor(message)
+    ? formatIntlMessage(message, messageValues)
+    : message;

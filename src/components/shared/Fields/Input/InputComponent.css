@@ -174,7 +174,11 @@
 }
 
 .paddingRightExtra {
-  padding-right: 45px;
+  padding-right: 55px;
+}
+
+.paddingLeftExtra {
+  padding-left: 40px;
 }
 
 .maxButton {
@@ -187,4 +191,20 @@
   font-weight: var(--weight-bold);
   color: var(--colony-blue);
   cursor: pointer;
+}
+
+.hookFormMaxButton {
+  position: absolute;
+  bottom: 12px;
+  border: none;
+  background: none;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  color: var(--colony-blue);
+  cursor: pointer;
+}
+
+.hookFormMaxButton:disabled {
+  color: var(--grey);
+  cursor: default;
 }

@@ -2,7 +2,7 @@ import { string, object } from 'yup';
 
 import { GetFullColonyByNameDocument } from '~gql';
 import { intl } from '~utils/intl';
-import { createYupTestFromQuery } from '~utils/yup';
+import { createYupTestFromQuery } from '~utils/yup/tests';
 
 /*
  * The colony name regex is composed of

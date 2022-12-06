@@ -1,5 +1,5 @@
 import { Address } from '~types';
-import { FormValues as CreateUserWizardFormValues } from '~common/CreateUserWizard/CreateUserWizard';
+import { FormValues as CreateUserWizardFormValues } from '~common/CreateUserWizard/validation';
 
 import { ActionTypes } from '../../actionTypes';
 

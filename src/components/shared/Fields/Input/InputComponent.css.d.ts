@@ -5,9 +5,11 @@ declare namespace InputComponentCssNamespace {
     colorSchemaDark: string;
     colorSchemaGrey: string;
     colorSchemaTransparent: string;
+    hookFormMaxButton: string;
     inputContainer: string;
     main: string;
     maxButton: string;
+    paddingLeftExtra: string;
     paddingRightExtra: string;
     sizeMedium: string;
     sizeSmall: string;

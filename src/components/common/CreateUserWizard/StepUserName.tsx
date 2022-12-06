@@ -1,21 +1,23 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
-import { isConfusing } from '@colony/unicode-confusables-noascii';
 
-import { ActionForm, Input } from '~shared/Fields';
+import { HookFormInput as Input } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { WizardStepProps } from '~shared/Wizard';
 import { mergePayload } from '~utils/actions';
-import ConfusableWarning from '~shared/ConfusableWarning';
+import ActionHookForm from '~shared/Fields/Form/ActionHookForm';
+import { LANDING_PAGE_ROUTE } from '~routes';
 
 import {
   FormValues,
   ContinueWizard,
   UserStepTemplate,
 } from '../CreateUserWizard';
-import { stepUserNameValidationSchema as validationSchema } from './validation';
-import { LANDING_PAGE_ROUTE } from '~routes';
+import {
+  stepUserNameValidationSchema as validationSchema,
+  UserWizardStep2,
+} from './validation';
 
 const displayName = 'common.CreateUserWizard.StepUserName';
 
@@ -36,62 +38,59 @@ const MSG = defineMessages({
 });
 
 interface UsernameInputProps {
-  username: string;
   disabled: boolean;
 }
-const UsernameInput = ({ username, disabled }: UsernameInputProps) => (
-  <>
-    <Input
-      appearance={{ theme: 'fat' }}
-      name="username"
-      label={MSG.label}
-      formattingOptions={{ blocks: [100] }}
-      disabled={disabled}
-    />
-    {username && isConfusing(username) && <ConfusableWarning />}
-  </>
+
+const formattingOptions = { blocks: [255] };
+
+const UsernameInput = ({ disabled }: UsernameInputProps) => (
+  <Input
+    appearance={{ theme: 'fat' }}
+    name="username"
+    label={MSG.label}
+    formattingOptions={formattingOptions}
+    disabled={disabled}
+    showConfusable
+  />
 );
 
-type StepValues = Pick<FormValues, 'username'>;
-type Props = Pick<
-  WizardStepProps<FormValues, StepValues>,
-  'nextStep' | 'wizardValues' | 'wizardForm'
->;
+type Props = WizardStepProps<FormValues, UserWizardStep2>;
 
-const StepUserName = ({ wizardValues, wizardForm }: Props) => {
+const StepUserName = ({
+  wizardValues,
+  wizardForm: { initialValues: defaultValues },
+}: Props) => {
   const navigate = useNavigate();
   const transform = mergePayload(wizardValues);
   /* Replace: true so you can't get back to the User wizard after completion */
   const handleSuccess = () => navigate(LANDING_PAGE_ROUTE, { replace: true });
 
   return (
-    <ActionForm<StepValues>
+    <ActionHookForm<UserWizardStep2>
       submit={ActionTypes.USERNAME_CREATE}
       success={ActionTypes.USERNAME_CREATE_SUCCESS}
       error={ActionTypes.USERNAME_CREATE_ERROR}
       onSuccess={handleSuccess}
       transform={transform}
       validationSchema={validationSchema}
-      {...wizardForm}
+      defaultValues={defaultValues}
     >
-      {({ dirty, isValid, isSubmitting, values }) => (
+      {({ formState: { isValid, isSubmitting, isSubmitted, isDirty } }) => (
         <UserStepTemplate
           heading={MSG.heading}
           description={MSG.description}
           descriptionValues={{ br: <br /> }}
-          input={
-            <UsernameInput username={values.username} disabled={isSubmitting} />
-          }
+          input={<UsernameInput disabled={isSubmitting || isSubmitted} />}
           button={
             <ContinueWizard
-              disabled={!isValid || !dirty || isSubmitting}
-              loading={isSubmitting}
+              disabled={!isValid || !isDirty || isSubmitting || isSubmitted}
+              loading={isSubmitting || isSubmitted}
               data-test="claimUsernameConfirm"
             />
           }
         />
       )}
-    </ActionForm>
+    </ActionHookForm>
   );
 };
 
