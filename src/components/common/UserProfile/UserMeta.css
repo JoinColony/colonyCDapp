@@ -8,7 +8,7 @@
 .headingContainer {
   composes: multiLineEllipsis from '~styles/text.css';
   display: flex;
-  align-items: center;
+  align-items: baseline;
 }
 
 .profileLink:nth-child(2) {
