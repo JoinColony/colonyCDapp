@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import Decimal from 'decimal.js';
-import { useMediaQuery } from 'react-responsive';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import Heading from '~shared/Heading';

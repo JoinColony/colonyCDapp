@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
-import { useMediaQuery } from 'react-responsive';
 
 // import Popover from '~shared/Popover';
 import { ThreeDotsButton } from '~shared/Button';

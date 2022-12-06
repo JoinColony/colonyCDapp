@@ -1,6 +1,5 @@
 import React, { useCallback, Dispatch, useRef, SetStateAction } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useMediaQuery } from 'react-responsive';
 
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
