@@ -1638,13 +1638,13 @@ export type GetUserByNameQueryVariables = Exact<{
 
 export type GetUserByNameQuery = { __typename?: 'Query', getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', id: string } | null> } | null };
 
-export type CombinedUserQueryQueryVariables = Exact<{
+export type CombinedUserQueryVariables = Exact<{
   name: Scalars['String'];
   address: Scalars['ID'];
 }>;
 
 
-export type CombinedUserQueryQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null, getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null };
+export type CombinedUserQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null, getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null };
 
 export const TokenFragmentDoc = gql`
     fragment Token on Token {
@@ -2331,8 +2331,8 @@ export function useGetUserByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetUserByNameQueryHookResult = ReturnType<typeof useGetUserByNameQuery>;
 export type GetUserByNameLazyQueryHookResult = ReturnType<typeof useGetUserByNameLazyQuery>;
 export type GetUserByNameQueryResult = Apollo.QueryResult<GetUserByNameQuery, GetUserByNameQueryVariables>;
-export const CombinedUserQueryDocument = gql`
-    query CombinedUserQuery($name: String!, $address: ID!) {
+export const CombinedUserDocument = gql`
+    query CombinedUser($name: String!, $address: ID!) {
   getUserByAddress(id: $address) {
     items {
       ...User
@@ -2347,30 +2347,30 @@ export const CombinedUserQueryDocument = gql`
     ${UserFragmentDoc}`;
 
 /**
- * __useCombinedUserQueryQuery__
+ * __useCombinedUserQuery__
  *
- * To run a query within a React component, call `useCombinedUserQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useCombinedUserQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useCombinedUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCombinedUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useCombinedUserQueryQuery({
+ * const { data, loading, error } = useCombinedUserQuery({
  *   variables: {
  *      name: // value for 'name'
  *      address: // value for 'address'
  *   },
  * });
  */
-export function useCombinedUserQueryQuery(baseOptions: Apollo.QueryHookOptions<CombinedUserQueryQuery, CombinedUserQueryQueryVariables>) {
+export function useCombinedUserQuery(baseOptions: Apollo.QueryHookOptions<CombinedUserQuery, CombinedUserQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<CombinedUserQueryQuery, CombinedUserQueryQueryVariables>(CombinedUserQueryDocument, options);
+        return Apollo.useQuery<CombinedUserQuery, CombinedUserQueryVariables>(CombinedUserDocument, options);
       }
-export function useCombinedUserQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CombinedUserQueryQuery, CombinedUserQueryQueryVariables>) {
+export function useCombinedUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CombinedUserQuery, CombinedUserQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<CombinedUserQueryQuery, CombinedUserQueryQueryVariables>(CombinedUserQueryDocument, options);
+          return Apollo.useLazyQuery<CombinedUserQuery, CombinedUserQueryVariables>(CombinedUserDocument, options);
         }
-export type CombinedUserQueryQueryHookResult = ReturnType<typeof useCombinedUserQueryQuery>;
-export type CombinedUserQueryLazyQueryHookResult = ReturnType<typeof useCombinedUserQueryLazyQuery>;
-export type CombinedUserQueryQueryResult = Apollo.QueryResult<CombinedUserQueryQuery, CombinedUserQueryQueryVariables>;
+export type CombinedUserQueryHookResult = ReturnType<typeof useCombinedUserQuery>;
+export type CombinedUserLazyQueryHookResult = ReturnType<typeof useCombinedUserLazyQuery>;
+export type CombinedUserQueryResult = Apollo.QueryResult<CombinedUserQuery, CombinedUserQueryVariables>;

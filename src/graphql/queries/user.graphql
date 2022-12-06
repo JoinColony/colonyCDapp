@@ -27,7 +27,7 @@ query GetUserByName($name: String!) {
   }
 }
 
-query CombinedUserQuery($name: String!, $address: ID!) {
+query CombinedUser($name: String!, $address: ID!) {
   getUserByAddress(id: $address) {
     items {
       ...User

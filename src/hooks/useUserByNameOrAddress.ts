@@ -1,9 +1,9 @@
 import { isAddress } from 'ethers/lib/utils';
 
-import { useCombinedUserQueryQuery } from '~gql';
+import { useCombinedUserQuery } from '~gql';
 
 const useUserByNameOrAddress = (usernameOrAddress: string) => {
-  const { data, error, loading } = useCombinedUserQueryQuery({
+  const { data, error, loading } = useCombinedUserQuery({
     variables: {
       name: usernameOrAddress,
       address: usernameOrAddress,
