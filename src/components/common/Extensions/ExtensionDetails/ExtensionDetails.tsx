@@ -8,6 +8,8 @@ import NotFoundRoute from '~routes/NotFoundRoute';
 import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
 import { isInstalledExtensionData } from '~utils/extensions';
 
+import ExtensionActionButton from '../ExtensionActionButton';
+
 const displayName = 'common.Extensions.ExtensionDetails';
 
 const MSG = defineMessages({
@@ -43,7 +45,14 @@ const ExtensionDetails = () => {
       </div>
       <div>Available version: {extensionData.availableVersion}</div>
       <Routes>
-        <Route path="/" element={<div>Details</div>} />
+        <Route
+          path="/"
+          element={
+            <div>
+              Details <ExtensionActionButton extensionData={extensionData} />
+            </div>
+          }
+        />
         <Route path={COLONY_EXTENSION_SETUP_ROUTE} element={<div>Setup</div>} />
 
         <Route path="*" element={<NotFoundRoute />} />
