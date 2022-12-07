@@ -9,6 +9,7 @@ import { InputStatus } from '~shared/Fields';
 import { User } from '~types';
 import { useUpdateUserProfileMutation } from '~gql';
 import { useAppContext } from '~hooks';
+import { excludeTypenameKey } from '~utils/objects';
 
 import styles from './UserAvatarUploader.css';
 
@@ -34,8 +35,7 @@ const UserAvatarUploader = ({
   user,
   user: { walletAddress, profile },
 }: Props) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { __typename, ...userProfile } = profile || {};
+  const userProfile = excludeTypenameKey(profile);
   const appContext = useAppContext();
 
   const [updateAvatar, { error, called, loading }] =

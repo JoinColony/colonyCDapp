@@ -21,6 +21,7 @@ import ConfusableWarning from '~shared/ConfusableWarning';
 import { useUpdateUserProfileMutation } from '~gql';
 import { User } from '~types';
 import { useAppContext } from '~hooks';
+import { excludeTypenameKey } from '~utils/objects';
 
 import styles from './UserProfileEdit.css';
 
@@ -101,8 +102,7 @@ const UserMainSettings = ({
 }: Props) => {
   const { updateUser } = useAppContext();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { __typename, ...userProfile } = profile || {};
+  const userProfile = excludeTypenameKey(profile);
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
   const [editUser, { error, loading, called }] = useUpdateUserProfileMutation();
