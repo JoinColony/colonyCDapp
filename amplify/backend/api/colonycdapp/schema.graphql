@@ -150,7 +150,6 @@ enum ColonyType {
 enum SortingMethod {
   BY_HIGHEST_REP
   BY_LOWEST_REP
-
   BY_MORE_PERMISSIONS
   BY_LESS_PERMISSIONS
 }
