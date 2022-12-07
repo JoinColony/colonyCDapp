@@ -8,7 +8,7 @@ import {
   useGetCurrentExtensionVersionQuery,
 } from '~gql';
 import { useColonyContext } from '~hooks';
-import supportedExtensionsConfig from '~constants/extensions';
+import { supportedExtensionsConfig } from '~constants';
 import { SpinnerLoader } from '~shared/Preloaders';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
