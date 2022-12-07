@@ -3,12 +3,7 @@ import { call, takeEvery, fork, put } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 
-import {
-  takeFrom,
-  // refreshExtension,
-  // getColonyManager,
-  putError,
-} from '../utils';
+import { takeFrom, refreshExtensions, putError } from '../utils';
 import {
   createTransaction,
   getTxChannel,
@@ -23,7 +18,6 @@ export function* extensionInstall({
   },
 }: Action<ActionTypes.EXTENSION_INSTALL>) {
   const txChannel = yield call(getTxChannel, meta.id);
-  // const { networkClient } = yield getColonyManager();
 
   try {
     yield fork(createTransaction, meta.id, {
@@ -46,12 +40,7 @@ export function* extensionInstall({
     return yield putError(ActionTypes.EXTENSION_INSTALL_ERROR, error, meta);
   }
 
-  // @TODO: Figure out extension refreshing
-  // const extensionAddress = yield networkClient.getExtensionInstallation(
-  //   getExtensionHash(extensionId),
-  //   colonyAddress,
-  // );
-  // yield call(refreshExtension, colonyAddress, extensionId, extensionAddress);
+  yield call(refreshExtensions);
 
   txChannel.close();
 
