@@ -5,12 +5,11 @@ import { WizardStepProps } from '~shared/Wizard';
 import Heading from '~shared/Heading';
 import ExternalLink from '~shared/ExternalLink';
 import DecisionHub from '~shared/DecisionHub';
-import { Form } from '~shared/Fields';
+import { HookForm as Form } from '~shared/Fields';
 import { multiLineTextEllipsis } from '~utils/strings';
 import { SELECT_NATIVE_TOKEN_INFO as LEARN_MORE_URL } from '~constants';
-import { useMobile } from '~hooks';
 
-import { FormValues, Step2 } from './CreateColonyWizard';
+import { FormValues, Step2 } from '../CreateColonyWizard';
 
 import styles from './StepTokenChoice.css';
 
@@ -54,7 +53,7 @@ const MSG = defineMessages({
   },
   selectTokenSubtitle: {
     id: `${displayName}.existingTokenSubtitle`,
-    defaultMessage: 'Add in the list of examples: UNI, SUSHI, & AAVE',
+    defaultMessage: 'For example: UNI, SUSHI, & AAVE',
   },
   tooltipCreate: {
     id: `${displayName}.tooltipCreate`,
@@ -92,12 +91,10 @@ type Props = Pick<
 
 const StepTokenChoice = ({
   nextStep,
-  wizardForm,
-  wizardValues,
+  wizardForm: { initialValues: defaultValues },
+  wizardValues: { displayName: colonyName },
   setStepsValues,
 }: Props) => {
-  const isMobile = useMobile();
-
   const handleSubmit = (values: Step2) => {
     setStepsValues((stepsValues) => {
       const oldStep2: Partial<Step2> = stepsValues[1];
@@ -116,7 +113,7 @@ const StepTokenChoice = ({
   };
 
   return (
-    <Form onSubmit={handleSubmit} {...wizardForm}>
+    <Form<Step2> onSubmit={handleSubmit} defaultValues={defaultValues}>
       <section className={styles.content}>
         <div className={styles.title}>
           <Heading appearance={{ size: 'medium', weight: 'bold' }}>
@@ -129,8 +126,8 @@ const StepTokenChoice = ({
                  * inside a sentence that does not
                  */
                 colony: (
-                  <span title={wizardValues.displayName}>
-                    {multiLineTextEllipsis(wizardValues.displayName, 120)}
+                  <span title={colonyName}>
+                    {multiLineTextEllipsis(colonyName, 120)}
                   </span>
                 ),
               }}
@@ -150,7 +147,7 @@ const StepTokenChoice = ({
             text={MSG.subtitleWithExample}
           />
         </div>
-        <DecisionHub name="tokenChoice" options={options} isMobile={isMobile} />
+        <DecisionHub name="tokenChoice" options={options} />
         <div className={styles.titleAndButton}>
           <Heading
             appearance={{

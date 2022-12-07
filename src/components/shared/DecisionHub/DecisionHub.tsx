@@ -9,19 +9,12 @@ interface Props {
   options: DecisionOptionType[];
   /** Html input `name` attribute */
   name: string;
-  /** Component renders mobile styles if true */
-  isMobile?: boolean;
 }
 
-const DecisionHub = ({ options, name, isMobile = false }: Props) => (
+const DecisionHub = ({ options, name }: Props) => (
   <div data-test="hubOptions">
     {options.map((option) => (
-      <DecisionOption
-        name={name}
-        option={option}
-        key={`row-${option.value}`}
-        isMobile={isMobile}
-      />
+      <DecisionOption name={name} option={option} key={`row-${option.value}`} />
     ))}
   </div>
 );
