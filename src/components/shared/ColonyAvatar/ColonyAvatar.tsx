@@ -1,13 +1,11 @@
 import React from 'react';
 
+import { Address, Colony } from '~types';
 import Avatar, { Props as AvatarProps } from '~shared/Avatar';
 import NavLink from '~shared/NavLink';
 
-import { WatchedColonyFragment } from '~gql';
-import { Address, Colony } from '~types';
-
 export interface Props
-  extends Pick<AvatarProps, 'className' | 'notSet' | 'size'> {
+  extends Pick<AvatarProps, 'avatarURL' | 'className' | 'notSet' | 'size'> {
   /** Address of the colony for identicon fallback */
   colonyAddress: Address;
 
@@ -15,9 +13,7 @@ export interface Props
   showLink?: boolean;
 
   /** The corresponding user object if available */
-  colony?: WatchedColonyFragment | Colony;
-
-  avatarURL?: string;
+  colony?: Colony;
 
   preferThumbnail?: boolean;
 }
@@ -38,7 +34,7 @@ const ColonyAvatar = ({
   const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
   const colonyAvatar = (
     <Avatar
-      avatarString={avatarURL || imageString || undefined}
+      avatarURL={avatarURL || imageString || undefined}
       className={className}
       notSet={notSet}
       placeholderIcon="at-sign-circle"
