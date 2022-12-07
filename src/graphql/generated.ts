@@ -2775,9 +2775,58 @@ export function useGetMetacolonyLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetMetacolonyQueryHookResult = ReturnType<typeof useGetMetacolonyQuery>;
 export type GetMetacolonyLazyQueryHookResult = ReturnType<typeof useGetMetacolonyLazyQuery>;
 export type GetMetacolonyQueryResult = Apollo.QueryResult<GetMetacolonyQuery, GetMetacolonyQueryVariables>;
+<<<<<<< HEAD
 export const GetProfileByEmailDocument = gql`
     query GetProfileByEmail($email: AWSEmail!) {
   getProfileByEmail(email: $email) {
+=======
+export const GetColonyExtensionsDocument = gql`
+    query GetColonyExtensions($colonyAddress: ID!) {
+  getColony(id: $colonyAddress) {
+    extensions(filter: {status: {ne: DELETED}}) {
+      items {
+        ...Extension
+      }
+    }
+  }
+}
+    ${ExtensionFragmentDoc}`;
+
+/**
+ * __useGetColonyExtensionsQuery__
+ *
+ * To run a query within a React component, call `useGetColonyExtensionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetColonyExtensionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetColonyExtensionsQuery({
+ *   variables: {
+ *      colonyAddress: // value for 'colonyAddress'
+ *   },
+ * });
+ */
+export function useGetColonyExtensionsQuery(baseOptions: Apollo.QueryHookOptions<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>(GetColonyExtensionsDocument, options);
+      }
+export function useGetColonyExtensionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>(GetColonyExtensionsDocument, options);
+        }
+export type GetColonyExtensionsQueryHookResult = ReturnType<typeof useGetColonyExtensionsQuery>;
+export type GetColonyExtensionsLazyQueryHookResult = ReturnType<typeof useGetColonyExtensionsLazyQuery>;
+export type GetColonyExtensionsQueryResult = Apollo.QueryResult<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>;
+export const GetColonyExtensionDocument = gql`
+    query GetColonyExtension($colonyAddress: ID!, $extensionHash: String!) {
+  getExtensionByColonyAndHash(
+    colonyId: $colonyAddress
+    hash: {eq: $extensionHash}
+    filter: {status: {ne: DELETED}}
+  ) {
+>>>>>>> ec3f38d6 (Fix: Exclude deleted from `GetColonyExtension` query)
     items {
       id
     }
