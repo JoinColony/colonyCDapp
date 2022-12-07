@@ -8,12 +8,10 @@ import {
   FormValues,
   UserStepTemplate,
   ContinueWizard,
-} from '../CreateUserWizard';
-import {
   stepUserEmailValidationSchema as validationSchema,
   UserWizardStep1,
-} from './validation';
-import ConfirmEmail from './ConfirmEmail';
+  ConfirmEmail,
+} from '../CreateUserWizard';
 
 export const displayName = 'common.CreateUserWizard.StepUserEmail';
 

@@ -7,9 +7,12 @@ import ColonyButton from '~shared/Button';
 import WizardTemplate from '~frame/WizardTemplateColony';
 import withWizard from '~shared/Wizard/withWizard';
 
-import { FormValues, initialValues } from './validation';
-import StepUserName from './StepUserName';
-import StepUserEmail from './StepUserEmail';
+import {
+  FormValues,
+  initialValues,
+  StepUserName,
+  StepUserEmail,
+} from '../CreateUserWizard';
 
 import styles from './CreateUserWizard.css';
 
