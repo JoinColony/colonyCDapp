@@ -9,8 +9,7 @@ import { ActionForm, FormStatus } from '~shared/Fields';
 import { mergePayload } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
 
-import CardRow, { Row } from './CreateColonyCardRow';
-import { FormValues } from './CreateColonyWizard';
+import { FormValues, CardRow, Row } from '../CreateColonyWizard';
 
 import styles from './StepConfirmAllInput.css';
 
