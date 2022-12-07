@@ -3,12 +3,13 @@
  */
 
 const { Decimal } = require('decimal.js');
-const { constants, utils } = require('ethers');
-const { getColonyNetworkClient, Network } = require('@colony/colony-js');
 const {
+  constants,
+  utils,
   providers,
   utils: { Logger },
 } = require('ethers');
+const { getColonyNetworkClient, Network } = require('@colony/colony-js');
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
@@ -108,13 +109,13 @@ exports.handler = async (event) => {
     // Identify watchers & contributors
     data?.getColonyByAddress?.items[0]?.watchers.items.forEach((item) => {
       if (
-        addressesWithReputation?.every(
-          (address) => address.toLowerCase() !== item.user.id.toLowerCase(),
+        addressesWithReputation?.some(
+          (address) => address.toLowerCase() === item.user.id.toLowerCase(),
         )
       ) {
-        watchers.push(item);
-      } else {
         contributors.push(item);
+      } else {
+        watchers.push(item);
       }
     });
 
