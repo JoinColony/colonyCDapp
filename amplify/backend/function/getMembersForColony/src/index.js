@@ -164,8 +164,7 @@ exports.handler = async (event) => {
           userReputationForAllDomains.filter(
             (userReputation) =>
               userReputation.reputationAmount &&
-              !userReputation.reputationAmount.isZero() &&
-              userReputation.domainId === domainId,
+              !userReputation.reputationAmount.isZero(),
           );
 
         // Extract only the relevant data and
