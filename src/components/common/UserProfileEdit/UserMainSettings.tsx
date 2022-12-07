@@ -18,7 +18,7 @@ import {
 import Button from '~shared/Button';
 import ConfusableWarning from '~shared/ConfusableWarning';
 
-import { useUpdateUserMutation } from '~gql';
+import { useUpdateUserProfileMutation } from '~gql';
 import { User } from '~types';
 import { useAppContext } from '~hooks';
 
@@ -105,7 +105,7 @@ const UserMainSettings = ({
   const { __typename, ...userProfile } = profile || {};
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
-  const [editUser, { error, loading, called }] = useUpdateUserMutation();
+  const [editUser, { error, loading, called }] = useUpdateUserProfileMutation();
   const onSubmit = useCallback(
     (updatedProfile: FormValues) => {
       const valuesToSubmit = {
@@ -116,7 +116,9 @@ const UserMainSettings = ({
         variables: {
           input: {
             id: walletAddress,
-            profile: { ...userProfile, ...updatedProfile, ...valuesToSubmit },
+            ...userProfile,
+            ...updatedProfile,
+            ...valuesToSubmit,
           },
         },
       });
@@ -219,7 +221,5 @@ const UserMainSettings = ({
     </>
   );
 };
-
-UserMainSettings.displayName = displayName;
 
 export default UserMainSettings;

@@ -11,7 +11,7 @@ import { User } from '~types';
 import styles from './UserMention.css';
 
 interface Props {
-  user: User;
+  user: User | null;
 
   /** Alternate place to link to. Defaults to user profile */
   to?: string;

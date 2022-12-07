@@ -7,7 +7,7 @@ import UserAvatar from '~shared/UserAvatar';
 import { InputStatus } from '~shared/Fields';
 
 import { User } from '~types';
-import { useUpdateUserMutation } from '~gql';
+import { useUpdateUserProfileMutation } from '~gql';
 import { useAppContext } from '~hooks';
 
 import styles from './UserAvatarUploader.css';
@@ -38,7 +38,8 @@ const UserAvatarUploader = ({
   const { __typename, ...userProfile } = profile || {};
   const appContext = useAppContext();
 
-  const [updateAvatar, { error, called, loading }] = useUpdateUserMutation();
+  const [updateAvatar, { error, called, loading }] =
+    useUpdateUserProfileMutation();
 
   const [avatarFileError, setAvatarFileError] = useState(false);
 
@@ -48,7 +49,8 @@ const UserAvatarUploader = ({
       variables: {
         input: {
           id: walletAddress,
-          profile: { ...userProfile, avatar: fileData.data },
+          ...userProfile,
+          avatar: fileData.data,
         },
       },
     });
@@ -57,7 +59,7 @@ const UserAvatarUploader = ({
   const remove = () =>
     updateAvatar({
       variables: {
-        input: { id: walletAddress, profile: { ...userProfile, avatar: null } },
+        input: { id: walletAddress, ...userProfile, avatar: null },
       },
     });
 
