@@ -28,5 +28,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     descriptionShort: oneTransactionPaymentMessages.description,
     descriptionLong: oneTransactionPaymentMessages.descriptionLong,
     neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
+    // @NOTE: This is for testing only, should be set to false afterwards
+    uninstallable: true,
   },
 ];

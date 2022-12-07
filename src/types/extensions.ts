@@ -14,6 +14,7 @@ export interface ExtensionConfig {
   descriptionShort: MessageDescriptor;
   descriptionLong: MessageDescriptor;
   neededColonyPermissions: ColonyRole[];
+  uninstallable: boolean;
 }
 
 export type InstalledExtensionData = ExtensionConfig & ColonyExtension;
