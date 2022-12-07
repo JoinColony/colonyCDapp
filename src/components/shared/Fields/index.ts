@@ -8,6 +8,7 @@ export {
   Input as HookFormInput,
   InputComponent as HookFormInputComponent,
   FormattedInput as HookFormFormattedInput,
+  HookFormInputProps,
 } from './Input/HookForm';
 export { default as InputLabel } from './InputLabel';
 export { default as InputStatus } from './InputStatus';
