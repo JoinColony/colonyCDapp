@@ -9,7 +9,7 @@ export interface Props {
   seed?: string;
 
   /** Avatar image URL (can be a base64 encoded string) */
-  avatarString?: string | null;
+  avatarURL?: string;
 
   /** If children are present, they will be rendered directly (for svg components) */
   children?: ReactNode;
@@ -34,7 +34,7 @@ const displayName = 'Avatar';
 
 const Avatar = ({
   seed,
-  avatarString,
+  avatarURL,
   children,
   className,
   notSet,
@@ -42,7 +42,7 @@ const Avatar = ({
   size,
   title,
 }: Props) => {
-  const blockieIcon = getIcon(seed || title);
+  const avatar = notSet ? null : avatarURL || getIcon(seed || title);
   const mainClass = size ? styles[size] : styles.main;
   if (children) {
     return (
@@ -55,11 +55,11 @@ const Avatar = ({
     );
   }
 
-  const blockieImageStyle: CSSProperties = blockieIcon
+  const imageStyle: CSSProperties = avatar
     ? {
-        backgroundImage: `url(${blockieIcon})`,
+        backgroundImage: `url(${avatar})`,
         // if using a blockie, do pixelated image scaling
-        imageRendering: avatarString ? undefined : 'pixelated',
+        imageRendering: avatarURL ? undefined : 'pixelated',
       }
     : {};
   return (
@@ -67,7 +67,9 @@ const Avatar = ({
       className={className ? `${mainClass} ${className}` : mainClass}
       title={title}
     >
-      {notSet && (
+      {avatar ? (
+        <div className={styles.image} style={imageStyle} />
+      ) : (
         <Icon
           className={
             notSet ? styles.placeholderIconNotSet : styles.placeholderIcon
@@ -76,11 +78,6 @@ const Avatar = ({
           title={title}
           data-test="avatar"
         />
-      )}
-      {avatarString ? (
-        <img src={avatarString} className={styles.image} alt="avatar" />
-      ) : (
-        <div className={styles.image} style={blockieImageStyle} />
       )}
     </figure>
   );

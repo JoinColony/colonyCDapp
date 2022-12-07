@@ -88,6 +88,7 @@ const UserAvatarUploader = ({
             user={user}
             size="xl"
             notSet={false}
+            preferThumbnail={false}
           />
         }
         upload={handleUpload}

@@ -15,7 +15,7 @@ interface Props {
   address: Address;
 
   /** Avatar image URL (can be a base64 encoded url string) */
-  avatarString?: string;
+  avatarURL?: string;
 
   /** Banned comment status */
   banned?: boolean;
@@ -41,7 +41,7 @@ interface Props {
   size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
 
   /** The corresponding user object if available */
-  user?: User | null;
+  user?: User;
 
   preferThumbnail?: boolean;
 }

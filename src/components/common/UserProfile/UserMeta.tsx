@@ -44,6 +44,7 @@ const UserMeta = ({ user: { walletAddress, profile }, user }: Props) => {
           notSet={!walletAddress}
           size={isMobile ? 'm' : 'xl'}
           user={user}
+          preferThumbnail={false}
         />
       </div>
       <div className={styles.headingContainer}>
