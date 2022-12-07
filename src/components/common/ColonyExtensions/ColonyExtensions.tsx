@@ -2,11 +2,7 @@ import React, { useMemo } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { getExtensionHash } from '@colony/colony-js';
 
-import {
-  InstallableExtensionData,
-  InstalledExtensionData,
-  supportedExtensionsConfig,
-} from '~constants/extensions';
+import { supportedExtensionsConfig } from '~constants';
 import {
   useGetColonyExtensionsQuery,
   useGetCurrentExtensionsVersionsQuery,
@@ -23,6 +19,7 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import ExtensionCard from './ExtensionCard/ExtensionCard';
 
 import styles from './ColonyExtensions.css';
+import { InstallableExtensionData, InstalledExtensionData } from '~types';
 
 const displayName = 'common.ColonyExtensions';
 
