@@ -1,7 +1,7 @@
 /* eslint-disable react/button-has-type */
 
 import React, { ReactNode, ButtonHTMLAttributes } from 'react';
-import { FormattedMessage, MessageDescriptor, useIntl } from 'react-intl';
+import { MessageDescriptor, useIntl } from 'react-intl';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 
 import { SimpleMessageValues } from '~types';
@@ -100,9 +100,7 @@ const Button = ({
   const titleText =
     typeof title == 'string' ? title : title && formatMessage(title);
   const buttonText =
-    typeof text == 'string'
-      ? text
-      : text && <FormattedMessage {...text} values={textValues} />;
+    typeof text == 'string' ? text : text && formatMessage(text, textValues);
 
   const classNames = useMainClasses(appearance, styles, className);
 
