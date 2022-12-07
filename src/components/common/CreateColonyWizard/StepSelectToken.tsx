@@ -1,20 +1,25 @@
-import React, { useState } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
-import { string, object } from 'yup';
-import { FormikHelpers } from 'formik';
+import React from 'react';
+import {
+  defineMessages,
+  FormattedMessage,
+  MessageDescriptor,
+} from 'react-intl';
+import { UseFormSetValue } from 'react-hook-form';
 
 import { WizardStepProps } from '~shared/Wizard';
-import { Form } from '~shared/Fields';
+import { HookForm as Form } from '~shared/Fields';
 import Heading from '~shared/Heading';
 import Button from '~shared/Button';
 
-import { ADDRESS_ZERO, DEFAULT_NETWORK_TOKEN } from '~constants';
 import { multiLineTextEllipsis } from '~utils/strings';
-import { intl } from '~utils/intl';
 import { GetTokenByAddressQuery } from '~gql';
 
-import TokenSelector from './TokenSelector';
-import { FormValues, Step3 } from './CreateColonyWizard';
+import {
+  FormValues,
+  Step3,
+  selectTokenValidationSchema as validationSchema,
+  TokenSelector,
+} from '../CreateColonyWizard';
 
 import styles from './StepSelectToken.css';
 
@@ -37,47 +42,11 @@ const MSG = defineMessages({
     id: `${displayName}.tokenSymbol`,
     defaultMessage: 'Token Symbol',
   },
-  continue: {
-    id: `${displayName}.continue`,
-    defaultMessage: 'Continue',
-  },
-  invalidAddress: {
-    id: `${displayName}.invalidAddress`,
-    defaultMessage:
-      'Not a valid token. Only ERC20 tokens with 18 decimals are supported.',
-  },
-  addressZeroError: {
-    id: `${displayName}.addressZeroError`,
-    defaultMessage:
-      'You cannot use {symbol} token as a native token for colony.',
-  },
   link: {
     id: `${displayName}.link`,
     defaultMessage: 'I want to create a New Token',
   },
-  requiredError: {
-    id: `${displayName}.requiredError`,
-    defaultMessage: 'Token Address is a required field',
-  },
 });
-
-const validationSchema = () => {
-  const { formatMessage } = intl();
-
-  return object({
-    tokenAddress: string()
-      .required(() => MSG.requiredError)
-      .address(() => MSG.invalidAddress)
-      .notOneOf(
-        [ADDRESS_ZERO],
-        formatMessage(MSG.addressZeroError, {
-          symbol: DEFAULT_NETWORK_TOKEN.symbol,
-        }),
-      ),
-    tokenSymbol: string().max(10),
-    tokenName: string().max(256),
-  });
-};
 
 type Props = Pick<
   WizardStepProps<FormValues, Step3>,
@@ -108,41 +77,39 @@ export const switchTokenInputType = (
 
 const handleFetchSuccess = (
   { getTokenByAddress }: GetTokenByAddressQuery,
-  setFieldValue: FormikHelpers<FormValues>['setFieldValue'],
+  setValue: UseFormSetValue<Step3>,
 ) => {
   const token = getTokenByAddress?.items[0];
   const { name: tokenName, symbol: tokenSymbol } = token || {};
-  setFieldValue('tokenName', tokenName || '');
-  setFieldValue('tokenSymbol', tokenSymbol || '');
+  setValue('tokenName', tokenName || '');
+  setValue('tokenSymbol', tokenSymbol || '');
 };
 
-interface GoToCreateTokenButtonProps {
-  goToCreateToken: () => void;
+interface LinkToOtherStepProps {
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  linkText: MessageDescriptor;
 }
 
-const GoToCreateTokenButton = ({
-  goToCreateToken,
-}: GoToCreateTokenButtonProps) => (
+export const LinkToOtherStep = ({
+  onClick,
+  linkText,
+}: LinkToOtherStepProps) => (
   <button
     type="button"
     className={styles.linkToOtherStep}
     tabIndex={-2}
-    onClick={goToCreateToken}
+    onClick={onClick}
   >
-    <FormattedMessage {...MSG.link} />
+    <FormattedMessage {...linkText} />
   </button>
 );
 
 const StepSelectToken = ({
   nextStep,
   setStepsValues,
-  wizardForm,
-  wizardValues,
+  wizardForm: { initialValues: defaultValues },
+  wizardValues: { displayName: colonyName },
 }: Props) => {
-  const [isFetchingToken, setIsFetchingToken] = useState<boolean>(false);
-  const [tokenSelectorHasError, setTokenSelectorHasError] =
-    useState<boolean>(false);
-
   const goToCreateToken = () => switchTokenInputType('create', setStepsValues);
 
   return (
@@ -158,41 +125,39 @@ const StepSelectToken = ({
                * inside a sentence that does not
                */
               colony: (
-                <span title={wizardValues.displayName}>
-                  {multiLineTextEllipsis(wizardValues.displayName, 120)}
+                <span title={colonyName}>
+                  {multiLineTextEllipsis(colonyName, 120)}
                 </span>
               ),
             }}
           />
         </Heading>
       </div>
-      <Form
+      <Form<Step3>
         onSubmit={nextStep}
         validationSchema={validationSchema}
-        {...wizardForm}
+        defaultValues={defaultValues}
       >
-        {({ dirty, isValid, setFieldValue }) => (
+        {({ formState: { isValid, isValidating }, setValue }) => (
           <div>
             <TokenSelector
               handleComplete={(data: GetTokenByAddressQuery) =>
-                handleFetchSuccess(data, setFieldValue)
+                handleFetchSuccess(data, setValue)
               }
-              setLoading={setIsFetchingToken}
-              setError={setTokenSelectorHasError}
-              extra={<GoToCreateTokenButton {...{ goToCreateToken }} />}
+              extra={
+                <LinkToOtherStep
+                  onClick={goToCreateToken}
+                  linkText={MSG.link}
+                />
+              }
               appearance={{ theme: 'fat' }}
             />
             <div className={styles.buttons}>
               <Button
                 appearance={{ theme: 'primary', size: 'large' }}
                 type="submit"
-                text={MSG.continue}
-                disabled={
-                  tokenSelectorHasError ||
-                  !isValid ||
-                  (!dirty && !wizardValues.tokenAddress) ||
-                  isFetchingToken
-                }
+                text={{ id: 'button.continue' }}
+                disabled={!isValid || isValidating}
                 data-test="definedTokenConfirm"
               />
             </div>

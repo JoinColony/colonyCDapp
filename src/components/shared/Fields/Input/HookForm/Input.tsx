@@ -11,7 +11,7 @@ import { formatText } from '~utils/intl';
 import ConfusableWarning from '~shared/ConfusableWarning';
 
 import InputLabel from '../../InputLabel';
-import InputStatus from '../../InputStatus';
+import InputStatus from '../../InputStatus/HookForm';
 import { InputComponentAppearance } from '../../Input';
 
 import InputComponent from './InputComponent';
@@ -55,11 +55,17 @@ export interface HookFormInputProps
   /** Html `id` for label & input */
   id?: string;
 
+  /** Will show a loading status beneath input if true. Takes priority over error and status. */
+  isLoading?: boolean;
+
   /** Label text */
   label?: Message;
 
   /** Label text values for intl interpolation */
   labelValues?: SimpleMessageValues;
+
+  /** Text displayed after the word "Loading", i.e. "Loading{annotation}...". */
+  loadingAnnotation?: Message;
 
   /** Pass params to a max button - implemented only in Cleave options */
   maxButtonParams?: MaxButtonParams;
@@ -99,8 +105,10 @@ const HookFormInput = ({
   help,
   helpValues,
   id: idProp,
+  isLoading,
   label,
   labelValues,
+  loadingAnnotation,
   name,
   placeholder,
   placeholderValues,
@@ -145,10 +153,11 @@ const HookFormInput = ({
       <div className={styles.extensionContainer}>
         <InputComponent
           appearance={appearance}
-          aria-invalid={!!error && touched}
+          aria-invalid={!!error && !isLoading && touched}
           id={id}
           name={name}
           placeholder={formatText(placeholder, placeholderValues)}
+          inputValueLength={inputValue?.length || 0}
           {...restInputProps}
         />
         {extensionStringText && (
@@ -158,9 +167,11 @@ const HookFormInput = ({
       {!elementOnly && (
         <InputStatus
           appearance={appearance}
+          error={error}
+          isLoading={isLoading}
+          loadingAnnotation={loadingAnnotation}
           status={status}
           statusValues={statusValues}
-          error={error}
           touched={touched}
         />
       )}

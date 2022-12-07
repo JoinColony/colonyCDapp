@@ -50,42 +50,53 @@ export async function runQuery<Q, V>(
 }
 
 export interface CustomTestConfig {
+  /** Query to be executed */
   query: DocumentNode;
+  /** Is input field required? False by default */
   isOptional?: boolean;
+  /** A boolean or a function that returns a boolean to indicate whether to cancel the test early.
+   * Intended for use with a test function from a previous test. Tests should assert positively, e.g. isUsernameValid.
+   * The inverse of the result will then be evaluated: If the username is not valid, do not run the test. */
   circuitBreaker?: boolean | ((value) => boolean);
+  /** Should the test fail if the value is present in the db? Should be true if we're testing for uniqueness, e.g. a username. */
+  failIfPresent?: boolean;
+  /** Debounce the input field */
   debounceInput?: boolean;
+  /** The wait period if debounceInput is true. */
   wait?: number;
 }
 
 /**
- * Generate a custom test function for yup .test.
+ * Generate a custom test function for yup .test that checks for the existence of the input value in the DB.
  * Expects query to take exactly one variable, namely, the value of the input field.
- * @param query Query to be executed
- * @param isOptional Is field required? False by default
- * @param circuitBreaker False by default. If true, will not run test. Can take a test function from a previous test. In this case,
- * will not run if the function resolves to false. Previous tests should therefore assert positively, e.g. isUsernameValid. If it
- * is not valid, do not run this test...
- * @returns yup TestFunction, that runs the provided query using the input value
- * as the query's input variable. Function will return true if there are no results (i.e. value doesn't exist in db);
- * false if there are (value does exist in db); and an appropriate error message if the query errors.
+ * @param CustomTestConfig An options object to configure the test
+ * @returns yup TestFunction that runs the provided query using the input value as the query's input
+ * variable. Function will return true if there are results, false if there are not,
+ * and an appropriate error message if the query errors.
  */
 export function createYupTestFromQuery({
   query,
   isOptional = false,
   circuitBreaker = false,
+  failIfPresent = true,
   debounceInput = true,
   wait = 200,
 }: CustomTestConfig) {
   if (debounceInput) {
-    return yupDebounce(checkIfValueExistsInDB, wait, {
+    return yupDebounce(runValueCheckInDB, wait, {
       isOptional,
       circuitBreaker,
     });
   }
 
-  return checkIfValueExistsInDB;
+  return runValueCheckInDB;
 
-  async function checkIfValueExistsInDB(value) {
+  async function runValueCheckInDB(value) {
+    const valueExists = await valueExistsInDB.call(this, value);
+    return failIfPresent ? !valueExists : valueExists;
+  }
+
+  async function valueExistsInDB(value) {
     const { createError } = this as TestContext;
 
     const cancel = cancelEarly(circuitBreaker, value);
@@ -117,7 +128,7 @@ export function createYupTestFromQuery({
       return result;
     }
 
-    return !(result as object)[cleanQueryName(queryName)]?.items.length;
+    return !!(result as object)[cleanQueryName(queryName)]?.items.length;
   }
 }
 

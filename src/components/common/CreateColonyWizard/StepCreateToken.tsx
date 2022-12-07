@@ -1,17 +1,20 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { object, string } from 'yup';
 
 import { WizardStepProps } from '~shared/Wizard';
-import { Form, FormStatus, Input } from '~shared/Fields';
+import { HookForm as Form, HookFormInput as Input } from '~shared/Fields';
 import Heading from '~shared/Heading';
 import Button from '~shared/Button';
 
 import { multiLineTextEllipsis } from '~utils/strings';
-import { intl } from '~utils/intl';
 
-import { FormValues, Step3 } from './CreateColonyWizard';
-import { switchTokenInputType } from './StepSelectToken';
+import {
+  FormValues,
+  Step3,
+  createTokenValidationSchema as validationSchema,
+  switchTokenInputType,
+  LinkToOtherStep,
+} from '../CreateColonyWizard';
 
 import styles from './StepCreateToken.css';
 
@@ -50,45 +53,22 @@ const MSG = defineMessages({
     id: `${displayName}.link`,
     defaultMessage: 'I want to use an existing token',
   },
-  errorTokenSymbol: {
-    id: `${displayName}.errorTokenSymbol`,
-    defaultMessage: `The token symbol can only contain letters and numbers, and
-      can only have a length of 5`,
-  },
-  keyRequired: {
-    id: `${displayName}.keyRequired`,
-    defaultMessage: `{key} is a required field`,
-  },
-});
-
-const { formatMessage } = intl();
-
-const validationSchema = object({
-  tokenName: string()
-    .max(256)
-    .required(
-      formatMessage(MSG.keyRequired, {
-        key: formatMessage(MSG.labelTokenName),
-      }),
-    ),
-  tokenSymbol: string()
-    .required(
-      formatMessage(MSG.keyRequired, {
-        key: formatMessage(MSG.labelTokenSymbol),
-      }),
-    )
-    .max(5, () => MSG.errorTokenSymbol),
 });
 
 type Props = Pick<
   WizardStepProps<FormValues, Step3>,
   'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'
 >;
+
+const formatting = {
+  tokenSymbol: { uppercase: true, blocks: [5] },
+};
+
 const StepCreateToken = ({
   nextStep,
   setStepsValues,
-  wizardForm,
-  wizardValues,
+  wizardForm: { initialValues: defaultValues },
+  wizardValues: { displayName: colonyName },
 }: Props) => {
   const goToSelectToken = () => switchTokenInputType('select', setStepsValues);
 
@@ -97,12 +77,12 @@ const StepCreateToken = ({
   };
 
   return (
-    <Form
+    <Form<Step3>
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
-      {...wizardForm}
+      defaultValues={defaultValues}
     >
-      {({ dirty, isSubmitting, isValid, status }) => (
+      {({ formState: { isSubmitting, isValid } }) => (
         <div className={styles.main}>
           <section className={styles.titleSection}>
             <Heading appearance={{ size: 'medium', weight: 'bold' }}>
@@ -115,8 +95,8 @@ const StepCreateToken = ({
                    * inside a sentence that does not
                    */
                   colony: (
-                    <span title={wizardValues.displayName}>
-                      {multiLineTextEllipsis(wizardValues.displayName, 120)}
+                    <span title={colonyName}>
+                      {multiLineTextEllipsis(colonyName, 120)}
                     </span>
                   ),
                 }}
@@ -133,40 +113,34 @@ const StepCreateToken = ({
                 data-test="defineTokenName"
                 disabled={isSubmitting}
                 extra={
-                  <button
-                    type="button"
-                    className={styles.linkToOtherStep}
-                    tabIndex={-2}
+                  <LinkToOtherStep
                     onClick={goToSelectToken}
-                  >
-                    <FormattedMessage {...MSG.link} />
-                  </button>
+                    linkText={MSG.link}
+                  />
                 }
               />
             </div>
             <div className={styles.inputFieldWrapper}>
               <Input
                 name="tokenSymbol"
+                value={defaultValues.tokenSymbol}
                 appearance={{ theme: 'fat' }}
                 maxLength={5}
                 data-test="defineTokenSymbol"
-                formattingOptions={{ uppercase: true, blocks: [5] }}
+                formattingOptions={formatting.tokenSymbol}
                 label={MSG.labelTokenSymbol}
                 help={MSG.helpTokenSymbol}
                 disabled={isSubmitting}
               />
             </div>
           </section>
-          <FormStatus status={status} />
           <section className={styles.actionsContainer}>
             <Button
               appearance={{ theme: 'primary', size: 'large' }}
               text={MSG.nextButton}
               type="submit"
               data-test="definedTokenConfirm"
-              disabled={
-                !isValid || (!dirty && !wizardValues.tokenName) || isSubmitting
-              }
+              disabled={!isValid || isSubmitting}
               loading={isSubmitting}
             />
           </section>

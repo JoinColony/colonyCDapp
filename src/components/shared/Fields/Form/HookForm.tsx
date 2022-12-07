@@ -6,23 +6,26 @@ import {
   UseFormReturn,
   SubmitHandler,
   SubmitErrorHandler,
+  FieldValues,
 } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Schema } from 'yup';
 
 const displayName = 'HookForm';
 
-export interface HookFormProps<FormData extends Record<string, any>> {
-  children: ((props: UseFormReturn) => React.ReactNode) | React.ReactNode;
+export interface HookFormProps<FormData extends FieldValues> {
+  children:
+    | ((props: UseFormReturn<FormData>) => React.ReactNode)
+    | React.ReactNode;
   onSubmit: SubmitHandler<FormData>;
   onError?: SubmitErrorHandler<FormData>;
   validationSchema?: Schema<FormData>;
-  defaultValues?: UseFormProps['defaultValues'];
-  mode?: UseFormProps['mode'];
-  options?: UseFormProps;
+  defaultValues?: UseFormProps<FormData>['defaultValues'];
+  mode?: UseFormProps<FormData>['mode'];
+  options?: UseFormProps<FormData>;
 }
 
-const HookForm = <FormData extends Record<string, any>>({
+const HookForm = <FormData extends FieldValues>({
   children,
   defaultValues,
   mode = 'onTouched',

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { getMainClasses } from '~utils/css';
@@ -22,6 +22,7 @@ const LengthWidget = ({ length, maxLength }: LengthWidgetProps) => (
 export interface HookFormInputComponentProps
   extends Omit<InputProps, 'placeholder'> {
   placeholder?: string;
+  inputValueLength: number;
 }
 
 const displayName = 'HookFormInputComponent';
@@ -55,6 +56,7 @@ const HookFormInputComponent = ({
   appearance,
   dataTest,
   formattingOptions,
+  inputValueLength: length,
   maxLength,
   maxButtonParams,
   name,
@@ -62,7 +64,6 @@ const HookFormInputComponent = ({
   onBlur,
   ...restInputProps
 }: HookFormInputComponentProps) => {
-  const [length, setLength] = useState<number>(0);
   const { register } = useFormContext();
   const {
     onChange: hookFormOnChange,
@@ -76,9 +77,6 @@ const HookFormInputComponent = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     hookFormOnChange(e);
     onChange?.(e);
-    if (maxLength) {
-      setLength(e.target.value.length);
-    }
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
