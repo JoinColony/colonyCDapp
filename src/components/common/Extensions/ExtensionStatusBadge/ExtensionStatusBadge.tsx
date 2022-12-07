@@ -8,7 +8,7 @@ import { AnyExtensionData } from '~types';
 
 import styles from './ExtensionStatusBadge.css';
 
-const displayName = 'ExtensionStatusBadge';
+const displayName = 'common.Extensions.ExtensionStatusBadge';
 
 const MSG = defineMessages({
   installed: {

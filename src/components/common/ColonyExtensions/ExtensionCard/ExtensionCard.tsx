@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import Card from '~shared/Card';
-import ExtensionStatusBadge from '~shared/ExtensionStatusBadge';
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import Link from '~shared/Link';
