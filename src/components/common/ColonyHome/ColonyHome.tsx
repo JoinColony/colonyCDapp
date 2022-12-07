@@ -4,7 +4,6 @@ import {
   Route,
   Routes as RoutesSwitch,
   useLocation,
-  useParams,
 } from 'react-router-dom';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
@@ -17,7 +16,7 @@ import {
 } from '~routes/index';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import ColonyExtensions from '~common/ColonyExtensions';
-import ExtensionDetails from '~common/ExtensionDetails';
+import ExtensionDetails from '~common/Extensions/ExtensionDetails';
 import { useColonyContext } from '~hooks';
 
 import ColonyHomeLayout from './ColonyHomeLayout';
@@ -26,11 +25,6 @@ const displayName = 'common.ColonyHome';
 
 const ColonyHome = () => {
   const { colony } = useColonyContext();
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { extensionId } = useParams<{
-    extensionId?: string;
-  }>();
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);

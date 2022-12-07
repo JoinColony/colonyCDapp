@@ -13,7 +13,7 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
 
-const displayName = 'common.ExtensionDetails';
+const displayName = 'common.Extensions.ExtensionDetails';
 
 const MSG = defineMessages({
   unsupportedExtension: {
