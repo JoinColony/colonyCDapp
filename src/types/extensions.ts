@@ -35,7 +35,10 @@ export interface ExtensionConfig {
   uninstallable: boolean;
 }
 
-export type InstalledExtensionData = ExtensionConfig & ColonyExtension;
+export type InstalledExtensionData = ExtensionConfig &
+  ColonyExtension & {
+    availableVersion: number;
+  };
 
 export type InstallableExtensionData = ExtensionConfig & {
   availableVersion: number;
