@@ -28,6 +28,7 @@ query GetColonyExtension($colonyAddress: ID!, $extensionHash: String!) {
   getExtensionByColonyAndHash(
     colonyId: $colonyAddress
     hash: { eq: $extensionHash }
+    filter: { status: { ne: DELETED } }
   ) {
     items {
       ...Extension

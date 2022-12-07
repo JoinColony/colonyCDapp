@@ -2533,6 +2533,7 @@ export const GetColonyExtensionDocument = gql`
   getExtensionByColonyAndHash(
     colonyId: $colonyAddress
     hash: {eq: $extensionHash}
+    filter: {status: {ne: DELETED}}
   ) {
     items {
       ...Extension
