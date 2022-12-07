@@ -1,14 +1,12 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { Navigate } from 'react-router-dom';
 
 import { Tab, TabList, TabPanel, Tabs } from '~shared/Tabs';
 
 import ProfileTemplate from '~frame/ProfileTemplate';
-// import LandingPage from '~frame/LandingPage';
+import LandingPage from '~frame/LandingPage';
 
 import { useAppContext } from '~hooks';
-import { LANDING_PAGE_ROUTE } from '~routes';
 
 import UserProfileSpinner from '../UserProfile/UserProfileSpinner';
 import Sidebar from './Sidebar';
@@ -36,8 +34,7 @@ const UserProfileEdit = () => {
   }
 
   if (user === null) {
-    // return <LandingPage />;
-    return <Navigate to={LANDING_PAGE_ROUTE} />;
+    return <LandingPage />;
   }
 
   return (

@@ -35,6 +35,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   try {
     initialWallet = getContext(ContextModule.Wallet);
   } catch (error) {
+    initialUser = null;
     // silent
     // It means that it was not set in context yet
   }
