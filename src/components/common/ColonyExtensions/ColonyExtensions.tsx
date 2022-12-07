@@ -1,14 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { getExtensionHash } from '@colony/colony-js';
 
-import { supportedExtensionsConfig } from '~constants';
-import {
-  useGetColonyExtensionsQuery,
-  useGetCurrentExtensionsVersionsQuery,
-} from '~gql';
-import { useColonyContext } from '~hooks';
-import { notNull } from '~utils/arrays';
+import { useExtensionsData } from '~hooks';
 
 // import BreadCrumb from '~core/BreadCrumb';
 // import { Address } from '~types/index';
@@ -19,7 +12,6 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import ExtensionCard from './ExtensionCard/ExtensionCard';
 
 import styles from './ColonyExtensions.css';
-import { InstallableExtensionData, InstalledExtensionData } from '~types';
 
 const displayName = 'common.ColonyExtensions';
 
@@ -47,72 +39,8 @@ const MSG = defineMessages({
 });
 
 const ColonyExtensions = () => {
-  const { colony } = useColonyContext();
-
-  const { data, loading } = useGetColonyExtensionsQuery({
-    variables: {
-      colonyAddress: colony?.colonyAddress ?? '',
-    },
-    skip: !colony,
-  });
-  const colonyExtensions = data?.getColony?.extensions?.items.filter(notNull);
-
-  const { data: versionsData } = useGetCurrentExtensionsVersionsQuery();
-
-  const installedExtensionsData = useMemo<InstalledExtensionData[]>(() => {
-    if (!colonyExtensions) {
-      return [];
-    }
-
-    return colonyExtensions
-      .map<InstalledExtensionData | null>((extension) => {
-        const extensionConfig = supportedExtensionsConfig.find(
-          (e) => getExtensionHash(e.extensionId) === extension?.hash,
-        );
-
-        if (!extensionConfig) {
-          // Unsupported extension
-          return null;
-        }
-
-        return {
-          ...extensionConfig,
-          ...extension,
-        };
-      })
-      .filter(notNull);
-  }, [colonyExtensions]);
-
-  const availableExtensionsData = useMemo<InstallableExtensionData[]>(() => {
-    if (!colonyExtensions) {
-      return [];
-    }
-
-    return supportedExtensionsConfig.reduce(
-      (availableExtensions, extensionConfig) => {
-        const extensionHash = getExtensionHash(extensionConfig.extensionId);
-        const isExtensionInstalled = !!colonyExtensions.find(
-          (e) => e.hash === extensionHash,
-        );
-        const availableVersion = versionsData?.listCurrentVersions?.items.find(
-          (i) => i?.extensionHash === extensionHash,
-        )?.version;
-
-        if (!isExtensionInstalled && availableVersion) {
-          return [
-            ...availableExtensions,
-            {
-              ...extensionConfig,
-              availableVersion,
-            },
-          ];
-        }
-
-        return availableExtensions;
-      },
-      [],
-    );
-  }, [colonyExtensions, versionsData]);
+  const { installedExtensionsData, availableExtensionsData, loading } =
+    useExtensionsData();
 
   if (loading) {
     return (

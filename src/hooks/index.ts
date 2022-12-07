@@ -38,6 +38,8 @@ export { default as useWindowSize } from './useWindowSize';
 export { default as useAppContext } from './useAppContext';
 export { default as useUserReputation } from './useUserReputation';
 export { default as useColonyContext } from './useColonyContext';
+export { default as useExtensionData } from './useExtensionData';
+export { default as useExtensionsData } from './useExtensionsData';
 export * from './useCanInteractWithColony';
 
 /* Used in cases where we need to memoize the transformed output of any data.
