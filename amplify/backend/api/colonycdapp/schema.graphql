@@ -361,6 +361,8 @@ type ColonyExtension @model {
     )
   colony: Colony! @belongsTo(fields: ["colonyId"])
   hash: String!
+  installedBy: String!
+  installedAt: AWSTimestamp!
   isDeprecated: Boolean @default(value: "false")
   isDeleted: Boolean @default(value: "false")
   isInitialized: Boolean @default(value: "false")
