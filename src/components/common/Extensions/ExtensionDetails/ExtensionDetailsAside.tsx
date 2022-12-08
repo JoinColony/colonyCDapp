@@ -7,6 +7,7 @@ import { ConfirmDialog } from '~shared/Dialog';
 import { Table, TableBody, TableRow, TableCell } from '~shared/Table';
 import { AnyExtensionData } from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
+import { useColonyContext } from '~hooks';
 
 import ExtensionActionButton from '../ExtensionActionButton';
 import ExtensionStatusBadge from '../ExtensionStatusBadge';
@@ -19,6 +20,14 @@ const MSG = defineMessages({
   status: {
     id: `${displayName}.status`,
     defaultMessage: 'Status',
+  },
+  installedBy: {
+    id: 'dashboard.Extensions.ExtensionDetails.installedBy',
+    defaultMessage: 'Installed by',
+  },
+  dateInstalled: {
+    id: 'dashboard.Extensions.ExtensionDetails.dateInstalled',
+    defaultMessage: 'Date installed',
   },
   buttonDeprecate: {
     id: `${displayName}.buttonDeprecate`,
@@ -62,16 +71,21 @@ interface Props {
   extensionData: AnyExtensionData;
   canBeDeprecated: boolean;
   canBeUninstalled: boolean;
-  colonyAddress: string;
 }
 
 const ExtensionDetailsAside = ({
   extensionData,
   canBeDeprecated,
   canBeUninstalled,
-  colonyAddress,
 }: Props) => {
+  const { colony } = useColonyContext();
+
+  if (!colony) {
+    return null;
+  }
+
   const { extensionId } = extensionData;
+  const { colonyAddress } = colony;
 
   // @TODO: Display all available data
   const tableData = isInstalledExtensionData(extensionData)
@@ -79,6 +93,26 @@ const ExtensionDetailsAside = ({
         {
           label: MSG.status,
           value: <ExtensionStatusBadge extensionData={extensionData} />,
+        },
+        {
+          label: MSG.installedBy,
+          value: (
+            // <span className={styles.installedBy}>
+            //   <DetailsWidgetUser
+            //     colony={colony}
+            //     walletAddress={extensionData.instaleldBy}
+            //   />
+            // </span>
+            <span>{extensionData.installedBy}</span>
+          ),
+        },
+        {
+          label: MSG.dateInstalled,
+          value: (
+            <span>
+              {new Date(extensionData.installedAt * 1000).toISOString()}
+            </span>
+          ),
         },
       ]
     : [

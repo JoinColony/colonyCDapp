@@ -53,12 +53,10 @@ const ExtensionDetails = () => {
     );
   }
 
-  const { colonyAddress, name } = colony;
-
   const isSetupRoute = pathname.replace(/\/$/, '').endsWith('setup');
-  const extensionUrl = `/colony/${name}/extensions/${extensionId}`;
+  const extensionUrl = `/colony/${colony.name}/extensions/${extensionId}`;
   const breadCrumbs: Crumb[] = [
-    [MSG.title, `/colony/${name}/extensions`],
+    [MSG.title, `/colony/${colony.name}/extensions`],
     [extensionData.name, isSetupRoute ? extensionUrl : ''],
   ];
   if (isSetupRoute) {
@@ -107,7 +105,10 @@ const ExtensionDetails = () => {
                   <br />
                   {isInstalledExtensionData(extensionData) ? (
                     <>
-                      <div>Status: {extensionData.status}</div>
+                      <div>
+                        Is Initialized:{' '}
+                        {extensionData.isInitialized ? 'yes' : 'no'}
+                      </div>
                       <div>
                         Is Deprecated:{' '}
                         {extensionData.isDeprecated ? 'yes' : 'no'}
@@ -134,7 +135,6 @@ const ExtensionDetails = () => {
         extensionData={extensionData}
         canBeDeprecated={canExtensionBeDeprecated}
         canBeUninstalled={canExtensionBeUninstalled}
-        colonyAddress={colonyAddress}
       />
     </div>
   );
