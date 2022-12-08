@@ -3,7 +3,7 @@ const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 
-const webpackBaseConfig = require('./webpack.base');
+const webpackBaseConfig = require('./webpack.base').config;
 
 module.exports = () => ({
   ...webpackBaseConfig,

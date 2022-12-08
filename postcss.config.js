@@ -1,6 +1,8 @@
 const path = require('path');
 const postCSSImport = require('postcss-import');
 const postCSSPresetEnv = require('postcss-preset-env');
+const postCSSSvg = require('postcss-svg');
+const svgoPlugins = require('./webpack.base').svgoPlugins;
 
 // Aliases for CSS @import rules (relative to this file)
 const aliases = {
@@ -23,6 +25,12 @@ module.exports = {
         'color-mod-function': { unresolved: 'warn' },
       },
       importFrom: './src/styles/variables.css',
+    }),
+    postCSSSvg({
+      dirs: path.resolve(__dirname, 'src/images/icons'),
+      svgo: {
+        plugins: svgoPlugins,
+      },
     }),
   ],
 };

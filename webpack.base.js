@@ -10,6 +10,12 @@ const webpack = require('webpack');
 
 const mode = process.env.NODE_ENV || 'development';
 
+const svgoPlugins = [
+  { removeTitle: true },
+  { convertColors: { shorthex: false } },
+  { convertPathData: false },
+]
+
 const config = {
   mode,
   resolve: {
@@ -119,11 +125,7 @@ const config = {
           {
             loader: 'svgo-loader',
             options: {
-              plugins: [
-                { removeTitle: true },
-                { convertColors: { shorthex: false } },
-                { convertPathData: false },
-              ],
+              plugins: svgoPlugins,
             },
           },
         ],
@@ -179,4 +181,4 @@ const config = {
   },
 };
 
-module.exports = config;
+module.exports = { config, svgoPlugins };

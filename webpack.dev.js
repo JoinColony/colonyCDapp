@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
-const webpackBaseConfig = require('./webpack.base');
+const webpackBaseConfig = require('./webpack.base').config;
 
 module.exports = () => ({
   ...webpackBaseConfig,

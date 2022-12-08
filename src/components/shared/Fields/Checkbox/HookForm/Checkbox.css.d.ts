@@ -1,7 +1,6 @@
 declare namespace CheckboxCssNamespace {
   export interface ICheckboxCss {
     checkbox: string;
-    checkmark: string;
     directionHorizontal: string;
     directionVertical: string;
     focusVisible: string;
