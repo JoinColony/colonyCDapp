@@ -1,15 +1,15 @@
 import React from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
-import Heading from '~shared/Heading';
-import Button from '~shared/Button';
 import { ActionHookForm as ActionForm } from '~shared/Fields';
 
 import { mergePayload } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
 
-import { FormValues, CardRow, Row } from '../CreateColonyWizard';
+import { FormValues } from '../CreateColonyWizard';
+import { HeadingText, SubmitFormButton } from './shared';
+import CardRow, { Row } from './CreateColonyCardRow';
 
 import styles from './StepConfirmAllInput.css';
 
@@ -24,10 +24,6 @@ const MSG = defineMessages({
     id: `${displayName}.subtitle`,
     defaultMessage: `Please double check that these details
       are correct, they cannot be changed later.`,
-  },
-  continue: {
-    id: `${displayName}.continue`,
-    defaultMessage: `Continue`,
   },
   userName: {
     id: `${displayName}.userName`,
@@ -76,26 +72,19 @@ const StepConfirmAllInput = ({ nextStep, wizardValues }: Props) => {
     >
       {({ formState: { isSubmitting } }) => (
         <section className={styles.main}>
-          <Heading
-            appearance={{ size: 'medium', weight: 'bold', margin: 'none' }}
+          <HeadingText
+            appearance={{ margin: 'none' }}
             text={MSG.title}
+            paragraph={MSG.subtitle}
           />
-          <p className={styles.paragraph}>
-            <FormattedMessage {...MSG.subtitle} />
-          </p>
           <div className={styles.finalContainer}>
             <CardRow cardOptions={options} values={wizardValues} />
           </div>
-          <div className={styles.buttons}>
-            <Button
-              appearance={{ theme: 'primary', size: 'large' }}
-              type="submit"
-              data-test="userInputConfirm"
-              text={MSG.continue}
-              loading={isSubmitting}
-              disabled={isSubmitting}
-            />
-          </div>
+          <SubmitFormButton
+            dataTest="userInputConfirm"
+            loading={isSubmitting}
+            disabled={isSubmitting}
+          />
         </section>
       )}
     </ActionForm>

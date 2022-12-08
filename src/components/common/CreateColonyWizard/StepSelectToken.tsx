@@ -8,10 +8,8 @@ import { UseFormSetValue } from 'react-hook-form';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { HookForm as Form } from '~shared/Fields';
-import Heading from '~shared/Heading';
-import Button from '~shared/Button';
+import { Heading3 } from '~shared/Heading';
 
-import { multiLineTextEllipsis } from '~utils/strings';
 import { GetTokenByAddressQuery } from '~gql';
 
 import {
@@ -20,6 +18,7 @@ import {
   selectTokenValidationSchema as validationSchema,
   TokenSelector,
 } from '../CreateColonyWizard';
+import { SubmitFormButton, TruncatedName } from './shared';
 
 import styles from './StepSelectToken.css';
 
@@ -111,34 +110,16 @@ const StepSelectToken = ({
   wizardValues: { displayName: colonyName },
 }: Props) => {
   const goToCreateToken = () => switchTokenInputType('create', setStepsValues);
-
+  const headingText = { colony: TruncatedName(colonyName) };
   return (
     <section className={styles.main}>
-      <div className={styles.title}>
-        <Heading appearance={{ size: 'medium', weight: 'bold' }}>
-          <FormattedMessage
-            {...MSG.heading}
-            values={{
-              /*
-               * @NOTE We need to use a JS string truncate here, rather then CSS,
-               * since we're dealing with a string that needs to be truncated,
-               * inside a sentence that does not
-               */
-              colony: (
-                <span title={colonyName}>
-                  {multiLineTextEllipsis(colonyName, 120)}
-                </span>
-              ),
-            }}
-          />
-        </Heading>
-      </div>
+      <Heading3 text={MSG.heading} textValues={headingText} />
       <Form<Step3>
         onSubmit={nextStep}
         validationSchema={validationSchema}
         defaultValues={defaultValues}
       >
-        {({ formState: { isValid, isValidating }, setValue }) => (
+        {({ formState: { isValid, isValidating, isSubmitting }, setValue }) => (
           <div>
             <TokenSelector
               handleComplete={(data: GetTokenByAddressQuery) =>
@@ -152,15 +133,11 @@ const StepSelectToken = ({
               }
               appearance={{ theme: 'fat' }}
             />
-            <div className={styles.buttons}>
-              <Button
-                appearance={{ theme: 'primary', size: 'large' }}
-                type="submit"
-                text={{ id: 'button.continue' }}
-                disabled={!isValid || isValidating}
-                data-test="definedTokenConfirm"
-              />
-            </div>
+            <SubmitFormButton
+              disabled={!isValid || isValidating}
+              loading={isSubmitting}
+              dataTest="definedTokenConfirm"
+            />
           </div>
         )}
       </Form>

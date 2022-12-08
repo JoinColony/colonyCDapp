@@ -1,6 +1,5 @@
 declare namespace StepCreateTokenCssNamespace {
   export interface IStepCreateTokenCss {
-    actionsContainer: string;
     inputFieldWrapper: string;
     inputFields: string;
     linkToOtherStep: string;
@@ -11,7 +10,6 @@ declare namespace StepCreateTokenCssNamespace {
     sourceRoot: string;
     sources: string;
     sourcesContent: string;
-    titleSection: string;
     version: string;
   }
 }

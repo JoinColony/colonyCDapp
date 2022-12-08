@@ -9,7 +9,7 @@ import CopyableAddress from '~shared/CopyableAddress';
 import { HistoryNavigation } from '~frame/RouteLayouts';
 import { FormValues } from '~common/CreateColonyWizard/CreateColonyWizard';
 import { LANDING_PAGE_ROUTE } from '~routes/index';
-import { useAppContext, useCanInteractWithNetwork } from '~hooks';
+import { useAppContext } from '~hooks';
 
 import styles from './WizardTemplateColony.css';
 

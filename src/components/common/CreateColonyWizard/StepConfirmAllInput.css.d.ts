@@ -1,6 +1,5 @@
 declare namespace StepConfirmAllInputCssNamespace {
   export interface IStepConfirmAllInputCss {
-    buttons: string;
     cardElement: string;
     cardRow: string;
     finalContainer: string;

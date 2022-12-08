@@ -35,12 +35,6 @@
   flex: 1;
 }
 
-.buttons {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 22px;
-}
-
 @media screen and query700 {
   .main {
     padding-bottom: 30px;

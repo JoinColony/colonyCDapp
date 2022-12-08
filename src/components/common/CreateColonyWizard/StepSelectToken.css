@@ -1,41 +1,13 @@
 @value query700 from '~styles/queries.css';
 
 .main {
+  margin-top: 180px;
   width: 100%;
   max-width: 460px;
 }
 
-.header {
-  margin-bottom: 40px;
-}
-
-.labelContainer {
-  display: flex;
-  justify-content: space-between;
-}
-
-.title {
-  margin-top: 180px;
-  margin-bottom: 45px;
-  font-weight: var(--weight-bold);
-}
-
-.title span {
-  word-break: break-word;
-}
-
-.tokenDetails {
-  margin-top: 50px;
-}
-
-.input {
-  width: 100%;
-}
-
-.buttons {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 48px;
+.main form {
+  margin-top: 45px;
 }
 
 .linkToOtherStep {
@@ -48,10 +20,6 @@
 }
 
 @media screen and query700 {
-  .tokenDetails, .buttons {
-    margin-top: 25px;
-  }
-
   .main form {
     padding-bottom: 40px;
   }

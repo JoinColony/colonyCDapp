@@ -1,15 +1,8 @@
 @value query700 from '~styles/queries.css';
 
 .main {
-  width: 460px;
-}
-
-.titleSection {
   margin-top: 180px;
-}
-
-.titleSection span {
-  word-break: break-word;
+  width: 460px;
 }
 
 .inputFields {
@@ -18,12 +11,6 @@
 
 .inputFieldWrapper {
   margin-bottom: 50px;
-}
-
-.actionsContainer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 60px;
 }
 
 .linkToOtherStep {
@@ -37,12 +24,9 @@
 
 @media screen and query700 {
   .main {
+    margin-top: 155px;
     padding-bottom: 40px;
     width: 100%;
-  }
-
-  .titleSection {
-    margin-top: 155px;
   }
 
   .inputFields > div {
@@ -55,9 +39,5 @@
 
   .inputFieldWrapper {
     margin-bottom: 25px;
-  }
-
-  .actionsContainer {
-    margin-top: 25px;
   }
 }

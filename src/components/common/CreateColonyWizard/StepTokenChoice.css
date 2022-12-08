@@ -7,30 +7,15 @@
   width: 340px;
 }
 
-.title {
+.instructions h3 {
   margin-bottom: 28px;
-  font-weight: var(--weight-bold);
-}
-
-.title span {
-  word-break: break-word;
-}
-
-.subtitle {
-  margin-bottom: -7px;
-  font-size: 14px;
 }
 
 .subtitleWithExample {
-  flex: 4;
-}
-
-.subtitleWithExampleBox {
-  display: flex;
   margin-bottom: 20px;
 }
 
-.titleAndButton {
+.learnMore {
   display: flex;
   align-items: baseline;
   margin-top: 15px;

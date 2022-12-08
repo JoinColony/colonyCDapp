@@ -1,13 +1,11 @@
 declare namespace StepTokenChoiceCssNamespace {
   export interface IStepTokenChoiceCss {
     content: string;
+    instructions: string;
+    learnMore: string;
     link: string;
     rowArrow: string;
-    subtitle: string;
     subtitleWithExample: string;
-    subtitleWithExampleBox: string;
-    title: string;
-    titleAndButton: string;
   }
 }
 
