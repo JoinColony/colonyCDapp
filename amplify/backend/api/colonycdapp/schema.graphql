@@ -75,8 +75,9 @@ input GetUserReputationInput {
 input UpdateExtensionByColonyAndHashInput {
   colonyId: ID!
   hash: String!
-  status: ExtensionStatus
   isDeprecated: Boolean
+  isDeleted: Boolean
+  isInitialized: Boolean
   version: Int
 }
 
@@ -125,11 +126,6 @@ enum DomainColor {
 enum ColonyType {
   COLONY
   METACOLONY
-}
-
-enum ExtensionStatus {
-  INSTALLED
-  DELETED
 }
 
 type Query {
@@ -325,8 +321,9 @@ type ColonyExtension @model {
     )
   colony: Colony! @belongsTo(fields: ["colonyId"])
   hash: String!
-  status: ExtensionStatus!
   isDeprecated: Boolean @default(value: "false")
+  isDeleted: Boolean @default(value: "false")
+  isInitialized: Boolean @default(value: "false")
   version: Int!
 }
 
