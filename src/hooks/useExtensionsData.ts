@@ -11,6 +11,12 @@ import { notNull } from '~utils/arrays';
 
 import useColonyContext from './useColonyContext';
 
+export enum ExtensionParamType {
+  Input = 'Input',
+  Radio = 'Radio',
+  Textarea = 'Textarea',
+}
+
 interface UseExtensionsDataReturn {
   installedExtensionsData: InstalledExtensionData[];
   availableExtensionsData: InstallableExtensionData[];
