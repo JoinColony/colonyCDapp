@@ -7,7 +7,7 @@ import { InstalledExtensionData } from '~types';
 import Heading from '~shared/Heading';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import NavLink from '~shared/NavLink';
-import ExtensionStatusBadge from '~shared/ExtensionStatusBadge';
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import { useColonyContext } from '~hooks';
 import { useGetColonyExtensionsQuery } from '~gql';
 import { notNull } from '~utils/arrays';
