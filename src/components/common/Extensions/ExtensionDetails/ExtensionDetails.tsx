@@ -20,18 +20,6 @@ const MSG = defineMessages({
     id: `${displayName}.unsupportedExtension`,
     defaultMessage: 'This extension is not supported.',
   },
-  buttonUninstall: {
-    id: `${displayName}.buttonUninstall`,
-    defaultMessage: 'Uninstall',
-  },
-  headingUninstall: {
-    id: `${displayName}.headingUninstall`,
-    defaultMessage: 'Uninstall extension',
-  },
-  textUninstall: {
-    id: `${displayName}.textUninstall`,
-    defaultMessage: `This extension is currently deprecated, and may be uninstalled. Doing so will remove it from the colony and any processes requiring it will no longer work. Are you sure you wish to proceed?`,
-  },
   buttonDeprecate: {
     id: `${displayName}.buttonDeprecate`,
     defaultMessage: 'Deprecate',
@@ -43,6 +31,30 @@ const MSG = defineMessages({
   textDeprecate: {
     id: `${displayName}.textDeprecate`,
     defaultMessage: `This extension must first be deprecated if you wish to uninstall it. After deprecation, any actions using this extension already ongoing may be completed, but it will no longer be possible to create new actions requiring this extension. Are you sure you wish to proceed?`,
+  },
+  buttonReEnable: {
+    id: `${displayName}.buttonReEnable`,
+    defaultMessage: 'Re-enable',
+  },
+  headingReEnable: {
+    id: `${displayName}.headingReEnable`,
+    defaultMessage: 'Re-enable extension',
+  },
+  textReEnable: {
+    id: `${displayName}.textReEnable`,
+    defaultMessage: `The extension will be re-enabled with the same parameters. Are you sure you wish to proceed?`,
+  },
+  buttonUninstall: {
+    id: `${displayName}.buttonUninstall`,
+    defaultMessage: 'Uninstall',
+  },
+  headingUninstall: {
+    id: `${displayName}.headingUninstall`,
+    defaultMessage: 'Uninstall extension',
+  },
+  textUninstall: {
+    id: `${displayName}.textUninstall`,
+    defaultMessage: `This extension is currently deprecated, and may be uninstalled. Doing so will remove it from the colony and any processes requiring it will no longer work. Are you sure you wish to proceed?`,
   },
 });
 
@@ -66,6 +78,8 @@ const ExtensionDetails = () => {
       </div>
     );
   }
+
+  const { colonyAddress } = colony;
 
   // @TODO: Extend these checks to include permissions, account and network interaction
   const canExtensionBeUninstalled =
@@ -115,26 +129,48 @@ const ExtensionDetails = () => {
                   success={ActionTypes.EXTENSION_DEPRECATE_SUCCESS}
                   text={MSG.buttonDeprecate}
                   values={{
-                    colonyAddress: colony.colonyAddress,
+                    colonyAddress,
                     extensionId,
                     isToDeprecate: true,
                   }}
                 />
               )}
               {canExtensionBeUninstalled && (
-                <DialogActionButton
-                  dialog={ConfirmDialog}
-                  dialogProps={{
-                    heading: MSG.headingUninstall,
-                    children: <FormattedMessage {...MSG.textUninstall} />,
-                  }}
-                  appearance={{ theme: 'blue' }}
-                  submit={ActionTypes.EXTENSION_UNINSTALL}
-                  error={ActionTypes.EXTENSION_UNINSTALL_ERROR}
-                  success={ActionTypes.EXTENSION_UNINSTALL_SUCCESS}
-                  values={{ colonyAddress: colony.colonyAddress, extensionId }}
-                  text={MSG.buttonUninstall}
-                />
+                <>
+                  <DialogActionButton
+                    dialog={ConfirmDialog}
+                    dialogProps={{
+                      heading: MSG.headingReEnable,
+                      children: <FormattedMessage {...MSG.textReEnable} />,
+                    }}
+                    appearance={{ theme: 'blue' }}
+                    submit={ActionTypes.EXTENSION_DEPRECATE}
+                    error={ActionTypes.EXTENSION_DEPRECATE_ERROR}
+                    success={ActionTypes.EXTENSION_DEPRECATE_SUCCESS}
+                    text={MSG.buttonReEnable}
+                    values={{
+                      colonyAddress,
+                      extensionId,
+                      isToDeprecate: false,
+                    }}
+                  />
+                  <DialogActionButton
+                    dialog={ConfirmDialog}
+                    dialogProps={{
+                      heading: MSG.headingUninstall,
+                      children: <FormattedMessage {...MSG.textUninstall} />,
+                    }}
+                    appearance={{ theme: 'blue' }}
+                    submit={ActionTypes.EXTENSION_UNINSTALL}
+                    error={ActionTypes.EXTENSION_UNINSTALL_ERROR}
+                    success={ActionTypes.EXTENSION_UNINSTALL_SUCCESS}
+                    values={{
+                      colonyAddress,
+                      extensionId,
+                    }}
+                    text={MSG.buttonUninstall}
+                  />
+                </>
               )}
             </div>
           }
