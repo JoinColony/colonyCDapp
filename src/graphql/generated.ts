@@ -144,8 +144,9 @@ export type ColonyExtension = {
   createdAt: Scalars['AWSDateTime'];
   hash: Scalars['String'];
   id: Scalars['ID'];
+  isDeleted?: Maybe<Scalars['Boolean']>;
   isDeprecated?: Maybe<Scalars['Boolean']>;
-  status: ExtensionStatus;
+  isInitialized?: Maybe<Scalars['Boolean']>;
   updatedAt: Scalars['AWSDateTime'];
   version: Scalars['Int'];
 };
@@ -219,8 +220,9 @@ export type CreateColonyExtensionInput = {
   colonyId: Scalars['ID'];
   hash: Scalars['String'];
   id?: InputMaybe<Scalars['ID']>;
+  isDeleted?: InputMaybe<Scalars['Boolean']>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  status: ExtensionStatus;
+  isInitialized?: InputMaybe<Scalars['Boolean']>;
   version: Scalars['Int'];
 };
 
@@ -451,11 +453,14 @@ export type GetReputationForTopDomainsInput = {
   walletAddress: Scalars['String'];
 };
 
+<<<<<<< HEAD
 export type GetReputationForTopDomainsReturn = {
   __typename?: 'GetReputationForTopDomainsReturn';
   items?: Maybe<Array<UserDomainReputation>>;
 };
 
+=======
+>>>>>>> 03985ff6 (Refactor: Change ColonyExtension status to set of boolean flags)
 export type GetUserReputationInput = {
   colonyAddress: Scalars['String'];
   domainId?: InputMaybe<Scalars['Int']>;
@@ -520,10 +525,11 @@ export type ModelColonyExtensionConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyExtensionConditionInput>>>;
   colonyId?: InputMaybe<ModelIdInput>;
   hash?: InputMaybe<ModelStringInput>;
+  isDeleted?: InputMaybe<ModelBooleanInput>;
   isDeprecated?: InputMaybe<ModelBooleanInput>;
+  isInitialized?: InputMaybe<ModelBooleanInput>;
   not?: InputMaybe<ModelColonyExtensionConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyExtensionConditionInput>>>;
-  status?: InputMaybe<ModelExtensionStatusInput>;
   version?: InputMaybe<ModelIntInput>;
 };
 
@@ -538,10 +544,11 @@ export type ModelColonyExtensionFilterInput = {
   colonyId?: InputMaybe<ModelIdInput>;
   hash?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
+  isDeleted?: InputMaybe<ModelBooleanInput>;
   isDeprecated?: InputMaybe<ModelBooleanInput>;
+  isInitialized?: InputMaybe<ModelBooleanInput>;
   not?: InputMaybe<ModelColonyExtensionFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyExtensionFilterInput>>>;
-  status?: InputMaybe<ModelExtensionStatusInput>;
   version?: InputMaybe<ModelIntInput>;
 };
 
@@ -713,11 +720,6 @@ export type ModelDomainFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelDomainFilterInput>>>;
 };
 
-export type ModelExtensionStatusInput = {
-  eq?: InputMaybe<ExtensionStatus>;
-  ne?: InputMaybe<ExtensionStatus>;
-};
-
 export type ModelFloatInput = {
   attributeExists?: InputMaybe<Scalars['Boolean']>;
   attributeType?: InputMaybe<ModelAttributeTypes>;
@@ -842,9 +844,10 @@ export type ModelSubscriptionColonyExtensionFilterInput = {
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   hash?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
+  isDeleted?: InputMaybe<ModelSubscriptionBooleanInput>;
   isDeprecated?: InputMaybe<ModelSubscriptionBooleanInput>;
+  isInitialized?: InputMaybe<ModelSubscriptionBooleanInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyExtensionFilterInput>>>;
-  status?: InputMaybe<ModelSubscriptionStringInput>;
   version?: InputMaybe<ModelSubscriptionIntInput>;
 };
 
@@ -2010,8 +2013,9 @@ export type UpdateColonyExtensionInput = {
   colonyId?: InputMaybe<Scalars['ID']>;
   hash?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
+  isDeleted?: InputMaybe<Scalars['Boolean']>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  status?: InputMaybe<ExtensionStatus>;
+  isInitialized?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
 };
 
@@ -2077,8 +2081,9 @@ export type UpdateDomainInput = {
 export type UpdateExtensionByColonyAndHashInput = {
   colonyId: Scalars['ID'];
   hash: Scalars['String'];
+  isDeleted?: InputMaybe<Scalars['Boolean']>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  status?: InputMaybe<ExtensionStatus>;
+  isInitialized?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
 };
 
@@ -2183,7 +2188,11 @@ export type ColonyFragment = { __typename?: 'Colony', name: string, colonyAddres
 
 export type WatcherFragment = { __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } };
 
+<<<<<<< HEAD
 export type WatchedColonyFragment = { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null };
+=======
+export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, version: number, isDeprecated?: boolean | null, isDeleted?: boolean | null, isInitialized?: boolean | null, address: string };
+>>>>>>> 03985ff6 (Refactor: Change ColonyExtension status to set of boolean flags)
 
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
@@ -2264,7 +2273,7 @@ export type GetColonyExtensionsQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyExtensionsQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, version: number, status: ExtensionStatus, isDeprecated?: boolean | null, address: string } | null> } | null } | null };
+export type GetColonyExtensionsQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, version: number, isDeprecated?: boolean | null, isDeleted?: boolean | null, isInitialized?: boolean | null, address: string } | null> } | null } | null };
 
 export type GetColonyExtensionQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -2272,7 +2281,7 @@ export type GetColonyExtensionQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyExtensionQuery = { __typename?: 'Query', getExtensionByColonyAndHash?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, version: number, status: ExtensionStatus, isDeprecated?: boolean | null, address: string } | null> } | null };
+export type GetColonyExtensionQuery = { __typename?: 'Query', getExtensionByColonyAndHash?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, version: number, isDeprecated?: boolean | null, isDeleted?: boolean | null, isInitialized?: boolean | null, address: string } | null> } | null };
 
 export type GetTokenByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -2419,6 +2428,7 @@ export const ColonyFragmentDoc = gql`
 }
     ${TokenFragmentDoc}
 ${WatcherFragmentDoc}`;
+<<<<<<< HEAD
 export const WatchedColonyFragmentDoc = gql`
     fragment WatchedColony on Colony {
   colonyAddress: id
@@ -2432,6 +2442,16 @@ export const WatchedColonyFragmentDoc = gql`
     chainId
     network
   }
+=======
+export const ExtensionFragmentDoc = gql`
+    fragment Extension on ColonyExtension {
+  address: id
+  hash
+  version
+  isDeprecated
+  isDeleted
+  isInitialized
+>>>>>>> 03985ff6 (Refactor: Change ColonyExtension status to set of boolean flags)
 }
     `;
 export const UserFragmentDoc = gql`
@@ -2783,7 +2803,7 @@ export const GetProfileByEmailDocument = gql`
 export const GetColonyExtensionsDocument = gql`
     query GetColonyExtensions($colonyAddress: ID!) {
   getColony(id: $colonyAddress) {
-    extensions(filter: {status: {ne: DELETED}}) {
+    extensions(filter: {isDeleted: {eq: false}}) {
       items {
         ...Extension
       }
@@ -2824,7 +2844,7 @@ export const GetColonyExtensionDocument = gql`
   getExtensionByColonyAndHash(
     colonyId: $colonyAddress
     hash: {eq: $extensionHash}
-    filter: {status: {ne: DELETED}}
+    filter: {isDeleted: {eq: false}}
   ) {
 >>>>>>> ec3f38d6 (Fix: Exclude deleted from `GetColonyExtension` query)
     items {

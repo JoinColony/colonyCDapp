@@ -2,7 +2,6 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import Tag from '~shared/Tag';
-import { ExtensionStatus } from '~gql';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { AnyExtensionData } from '~types';
 
@@ -48,7 +47,7 @@ const ExtensionStatusBadge = ({ deprecatedOnly = false, extension }: Props) => {
 
   if (!isInstalledExtensionData(extension)) {
     status = MSG.notInstalled;
-  } else if (extension?.status === ExtensionStatus.Installed) {
+  } else if (!extension.isInitialized) {
     status = MSG.notEnabled;
     theme = 'golden';
   }

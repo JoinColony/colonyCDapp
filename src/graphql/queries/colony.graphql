@@ -16,7 +16,7 @@ query GetMetacolony {
 
 query GetColonyExtensions($colonyAddress: ID!) {
   getColony(id: $colonyAddress) {
-    extensions(filter: { status: { ne: DELETED } }) {
+    extensions(filter: { isDeleted: { eq: false } }) {
       items {
         ...Extension
       }
@@ -28,7 +28,7 @@ query GetColonyExtension($colonyAddress: ID!, $extensionHash: String!) {
   getExtensionByColonyAndHash(
     colonyId: $colonyAddress
     hash: { eq: $extensionHash }
-    filter: { status: { ne: DELETED } }
+    filter: { isDeleted: { eq: false } }
   ) {
     items {
       ...Extension
