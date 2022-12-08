@@ -23,7 +23,6 @@ const { getWatchersInColony } = require('./graphql');
 const API_KEY = 'da2-fakeApiId123456';
 const GRAPHQL_URI = 'http://localhost:20002/graphql';
 
-const ALL_DOMAIN_ID = 0;
 const ROOT_DOMAIN_ID = 1; // this used to be exported from @colony/colony-js but isn't anymore
 const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
 const REPUTATION_ENDPOINT = 'http://network-contracts:3002';
@@ -82,60 +81,66 @@ exports.handler = async (event) => {
   }
 
   // get list of watchers for colony
-  if (domainId === ALL_DOMAIN_ID || domainId === ROOT_DOMAIN_ID) {
-    const { data, errors } = await graphqlRequest(
-      getWatchersInColony,
-      { id: checksummedAddress },
-      GRAPHQL_URI,
-      API_KEY,
+  const { data, errors } = await graphqlRequest(
+    getWatchersInColony,
+    { id: checksummedAddress },
+    GRAPHQL_URI,
+    API_KEY,
+  );
+
+  if (errors || !data) {
+    const [error] = errors;
+    throw new Error(
+      error?.message || 'Could not fetch colony data from DynamoDB',
+    );
+  }
+
+  // Incase there are members but no reputation on the colony,
+  // we can stop here and return the list of watchers
+  if (!addressesWithReputation?.length) {
+    return {
+      contributors: [],
+      watchers:
+        domainId > ROOT_DOMAIN_ID
+          ? [] // There will be no Watchers outside of the root domain
+          : data?.getColonyByAddress?.items[0]?.watchers.items,
+    };
+  }
+
+  // Identify watchers & contributors
+  data?.getColonyByAddress?.items[0]?.watchers.items.forEach((item) => {
+    if (
+      addressesWithReputation?.some(
+        (address) => address.toLowerCase() === item.user.id.toLowerCase(),
+      )
+    ) {
+      contributors.push(item);
+    } else {
+      watchers.push(item);
+    }
+  });
+
+  // There will be no Watchers outside of the root domain
+  if (domainId > ROOT_DOMAIN_ID) {
+    watchers.length = 0;
+  }
+
+  // now catch addresses that have reputation but are not in the watchers list
+  // i.e. address that was awarded reputation but has not joined the colony
+  if (addressesWithReputation?.length !== contributors?.length) {
+    const missingAddresses = addressesWithReputation?.filter((address) =>
+      contributors?.every(
+        (item) => item.user.id.toLowerCase() !== address.toLowerCase(),
+      ),
     );
 
-    if (errors || !data) {
-      const [error] = errors;
-      throw new Error(
-        error?.message || 'Could not fetch colony data from DynamoDB',
-      );
-    }
-
-    // Incase there are members but no reputation on the colony,
-    // we can stop here and return the list of watchers
-    if (!addressesWithReputation?.length) {
-      return {
-        contributors: [],
-        watchers: data?.getColonyByAddress?.items[0]?.watchers.items,
-      };
-    }
-
-    // Identify watchers & contributors
-    data?.getColonyByAddress?.items[0]?.watchers.items.forEach((item) => {
-      if (
-        addressesWithReputation?.some(
-          (address) => address.toLowerCase() === item.user.id.toLowerCase(),
-        )
-      ) {
-        contributors.push(item);
-      } else {
-        watchers.push(item);
-      }
-    });
-
-    // now catch addresses that have reputation but are not in the watchers list
-    // i.e. address that was awarded reputation but has not joined the colony
-    if (addressesWithReputation?.length !== contributors?.length) {
-      const missingAddresses = addressesWithReputation?.filter((address) =>
-        contributors?.every(
-          (item) => item.user.id.toLowerCase() !== address.toLowerCase(),
-        ),
-      );
-
-      missingAddresses?.forEach((address) => {
-        contributors?.push({
-          user: {
-            id: address,
-          },
-        });
+    missingAddresses?.forEach((address) => {
+      contributors?.push({
+        user: {
+          id: address,
+        },
       });
-    }
+    });
   }
 
   // Get total reputation for colony
