@@ -18,6 +18,8 @@ module.exports = {
         id
         colonyId
         hash
+        installedBy
+        installedAt
         isDeprecated
         isDeleted
         isInitialized

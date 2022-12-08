@@ -2,6 +2,8 @@ fragment Extension on ColonyExtension {
   address: id
   hash
   version
+  installedBy
+  installedAt
   isDeprecated
   isDeleted
   isInitialized
