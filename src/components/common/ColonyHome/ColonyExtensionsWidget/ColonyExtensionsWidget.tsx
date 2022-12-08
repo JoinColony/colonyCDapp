@@ -4,17 +4,18 @@ import { getExtensionHash } from '@colony/colony-js';
 
 import { supportedExtensionsConfig } from '~constants/extensions';
 import { InstalledExtensionData } from '~types';
-import Heading from '~shared/Heading';
-import { MiniSpinnerLoader } from '~shared/Preloaders';
-import NavLink from '~shared/NavLink';
-import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import { useColonyContext } from '~hooks';
 import { useGetColonyExtensionsQuery } from '~gql';
 import { notNull } from '~utils/arrays';
 
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
+import Heading from '~shared/Heading';
+import { MiniSpinnerLoader } from '~shared/Preloaders';
+import NavLink from '~shared/NavLink';
+
 import styles from './ColonyExtensionsWidget.css';
 
-const displayName = 'dashboard.ColonyHome.ColonyExtensionsWidget';
+const displayName = 'common.ColonyHome.ColonyExtensionsWidget';
 
 const MSG = defineMessages({
   title: {
@@ -79,6 +80,7 @@ const ColonyExtensions = () => {
       </Heading>
       <ul>
         {installedExtensionsData
+          // @TODO: Refactor once we have a way to check if the extension is initialized
           // .filter(
           //   (extension) =>
           //     extension.details?.initialized &&
