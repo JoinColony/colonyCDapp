@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, useParams } from 'react-router-dom';
+import { Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { useColonyContext, useExtensionData } from '~hooks';
@@ -7,54 +7,27 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
 import { isInstalledExtensionData } from '~utils/extensions';
-import { DialogActionButton } from '~shared/Button';
-import { ConfirmDialog } from '~shared/Dialog';
-import { ActionTypes } from '~redux';
+import BreadCrumb, { Crumb } from '~shared/BreadCrumb';
 
-import ExtensionActionButton from '../ExtensionActionButton';
+import ExtensionDetailsAside from './ExtensionDetailsAside';
+
+import styles from './ExtensionDetails.css';
+import Heading from '~shared/Heading';
 
 const displayName = 'common.Extensions.ExtensionDetails';
 
 const MSG = defineMessages({
+  title: {
+    id: `${displayName}.title`,
+    defaultMessage: 'Extensions',
+  },
   unsupportedExtension: {
     id: `${displayName}.unsupportedExtension`,
     defaultMessage: 'This extension is not supported.',
   },
-  buttonDeprecate: {
-    id: `${displayName}.buttonDeprecate`,
-    defaultMessage: 'Deprecate',
-  },
-  headingDeprecate: {
-    id: `${displayName}.headingDeprecate`,
-    defaultMessage: 'Deprecate extension',
-  },
-  textDeprecate: {
-    id: `${displayName}.textDeprecate`,
-    defaultMessage: `This extension must first be deprecated if you wish to uninstall it. After deprecation, any actions using this extension already ongoing may be completed, but it will no longer be possible to create new actions requiring this extension. Are you sure you wish to proceed?`,
-  },
-  buttonReEnable: {
-    id: `${displayName}.buttonReEnable`,
-    defaultMessage: 'Re-enable',
-  },
-  headingReEnable: {
-    id: `${displayName}.headingReEnable`,
-    defaultMessage: 'Re-enable extension',
-  },
-  textReEnable: {
-    id: `${displayName}.textReEnable`,
-    defaultMessage: `The extension will be re-enabled with the same parameters. Are you sure you wish to proceed?`,
-  },
-  buttonUninstall: {
-    id: `${displayName}.buttonUninstall`,
-    defaultMessage: 'Uninstall',
-  },
-  headingUninstall: {
-    id: `${displayName}.headingUninstall`,
-    defaultMessage: 'Uninstall extension',
-  },
-  textUninstall: {
-    id: `${displayName}.textUninstall`,
-    defaultMessage: `This extension is currently deprecated, and may be uninstalled. Doing so will remove it from the colony and any processes requiring it will no longer work. Are you sure you wish to proceed?`,
+  setup: {
+    id: `${displayName}.setup`,
+    defaultMessage: 'Setup',
   },
 });
 
@@ -62,6 +35,7 @@ const ExtensionDetails = () => {
   const { extensionId } = useParams();
   const { colony } = useColonyContext();
   const { extensionData, loading } = useExtensionData(extensionId ?? '');
+  const { pathname } = useLocation();
 
   if (loading) {
     return <SpinnerLoader appearance={{ theme: 'primary', size: 'massive' }} />;
@@ -79,106 +53,89 @@ const ExtensionDetails = () => {
     );
   }
 
-  const { colonyAddress } = colony;
+  const { colonyAddress, name } = colony;
+
+  const isSetupRoute = pathname.replace(/\/$/, '').endsWith('setup');
+  const extensionUrl = `/colony/${name}/extensions/${extensionId}`;
+  const breadCrumbs: Crumb[] = [
+    [MSG.title, `/colony/${name}/extensions`],
+    [extensionData.name, isSetupRoute ? extensionUrl : ''],
+  ];
+  if (isSetupRoute) {
+    breadCrumbs.push(MSG.setup);
+  }
 
   // @TODO: Extend these checks to include permissions, account and network interaction
-  const canExtensionBeUninstalled =
+  const canExtensionBeUninstalled = !!(
     isInstalledExtensionData(extensionData) &&
     extensionData.uninstallable &&
-    extensionData.isDeprecated;
+    extensionData.isDeprecated
+  );
   const canExtensionBeDeprecated =
     isInstalledExtensionData(extensionData) &&
     extensionData.uninstallable &&
     !extensionData.isDeprecated;
 
   return (
-    <div>
-      Extension Details{' '}
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              <div>
-                Details of <FormattedMessage {...extensionData.name} />
-                <br />
-                {isInstalledExtensionData(extensionData) ? (
-                  <>
-                    <div>Status: {extensionData.status}</div>
-                    <div>
-                      Is Deprecated: {extensionData.isDeprecated ? 'yes' : 'no'}
-                    </div>
-                    <div>Version: {extensionData.version}</div>
-                  </>
-                ) : (
-                  <div>This extension is not installed</div>
-                )}
-              </div>
+    <div className={styles.main}>
+      <div className={styles.header}>
+        <BreadCrumb elements={breadCrumbs} />
+        <hr className={styles.headerLine} />
+      </div>
 
-              <ExtensionActionButton extensionData={extensionData} />
-              {canExtensionBeDeprecated && (
-                <DialogActionButton
-                  dialog={ConfirmDialog}
-                  dialogProps={{
-                    heading: MSG.headingDeprecate,
-                    children: <FormattedMessage {...MSG.textDeprecate} />,
+      <div>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div className={styles.extensionText}>
+                <Heading
+                  tagName="h3"
+                  appearance={{
+                    size: 'medium',
+                    margin: 'small',
+                    theme: 'dark',
                   }}
-                  appearance={{ theme: 'blue' }}
-                  submit={ActionTypes.EXTENSION_DEPRECATE}
-                  error={ActionTypes.EXTENSION_DEPRECATE_ERROR}
-                  success={ActionTypes.EXTENSION_DEPRECATE_SUCCESS}
-                  text={MSG.buttonDeprecate}
-                  values={{
-                    colonyAddress,
-                    extensionId,
-                    isToDeprecate: true,
-                  }}
+                  text={extensionData.name}
                 />
-              )}
-              {canExtensionBeUninstalled && (
-                <>
-                  <DialogActionButton
-                    dialog={ConfirmDialog}
-                    dialogProps={{
-                      heading: MSG.headingReEnable,
-                      children: <FormattedMessage {...MSG.textReEnable} />,
-                    }}
-                    appearance={{ theme: 'blue' }}
-                    submit={ActionTypes.EXTENSION_DEPRECATE}
-                    error={ActionTypes.EXTENSION_DEPRECATE_ERROR}
-                    success={ActionTypes.EXTENSION_DEPRECATE_SUCCESS}
-                    text={MSG.buttonReEnable}
-                    values={{
-                      colonyAddress,
-                      extensionId,
-                      isToDeprecate: false,
-                    }}
-                  />
-                  <DialogActionButton
-                    dialog={ConfirmDialog}
-                    dialogProps={{
-                      heading: MSG.headingUninstall,
-                      children: <FormattedMessage {...MSG.textUninstall} />,
-                    }}
-                    appearance={{ theme: 'blue' }}
-                    submit={ActionTypes.EXTENSION_UNINSTALL}
-                    error={ActionTypes.EXTENSION_UNINSTALL_ERROR}
-                    success={ActionTypes.EXTENSION_UNINSTALL_SUCCESS}
-                    values={{
-                      colonyAddress,
-                      extensionId,
-                    }}
-                    text={MSG.buttonUninstall}
-                  />
-                </>
-              )}
-            </div>
-          }
-        />
-        <Route path={COLONY_EXTENSION_SETUP_ROUTE} element={<div>Setup</div>} />
 
-        <Route path="*" element={<NotFoundRoute />} />
-      </Routes>
+                {/* @TODO: Handle h4 chunks */}
+                <FormattedMessage {...extensionData.descriptionLong} />
+
+                <div>
+                  Details of <FormattedMessage {...extensionData.name} />
+                  <br />
+                  {isInstalledExtensionData(extensionData) ? (
+                    <>
+                      <div>Status: {extensionData.status}</div>
+                      <div>
+                        Is Deprecated:{' '}
+                        {extensionData.isDeprecated ? 'yes' : 'no'}
+                      </div>
+                      <div>Version: {extensionData.version}</div>
+                    </>
+                  ) : (
+                    <div>This extension is not installed</div>
+                  )}
+                </div>
+              </div>
+            }
+          />
+          <Route
+            path={COLONY_EXTENSION_SETUP_ROUTE}
+            element={<div>Setup</div>}
+          />
+
+          <Route path="*" element={<NotFoundRoute />} />
+        </Routes>
+      </div>
+
+      <ExtensionDetailsAside
+        extensionData={extensionData}
+        canBeDeprecated={canExtensionBeDeprecated}
+        canBeUninstalled={canExtensionBeUninstalled}
+        colonyAddress={colonyAddress}
+      />
     </div>
   );
 };
