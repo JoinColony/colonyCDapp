@@ -43,14 +43,14 @@ interface Props {
 
 const ExtensionStatusBadge = ({
   deprecatedOnly = false,
-  extensionData: extension,
+  extensionData,
 }: Props) => {
   let status;
   let theme;
 
-  if (!isInstalledExtensionData(extension)) {
+  if (!isInstalledExtensionData(extensionData)) {
     status = MSG.notInstalled;
-  } else if (!extension.isInitialized) {
+  } else if (!extensionData.isInitialized) {
     status = MSG.notEnabled;
     theme = 'golden';
   }
@@ -58,20 +58,20 @@ const ExtensionStatusBadge = ({
   //   status = MSG.missingPermissions;
   //   theme = 'danger';
   // }
-  // else if (installedExtension.details?.initialized) {
-  //   status = MSG.enabled;
-  //   theme = 'primary';
-  // }
-  // else {
-  //   status = MSG.installed;
-  // }
+  else if (extensionData.isInitialized) {
+    status = MSG.enabled;
+    theme = 'primary';
+  } else {
+    status = MSG.installed;
+  }
 
   return (
     <div className={styles.tagContainer}>
-      {!deprecatedOnly ? <Tag appearance={{ theme }} text={status} /> : null}
-      {isInstalledExtensionData(extension) && extension.isDeprecated ? (
-        <Tag appearance={{ theme: 'danger' }} text={MSG.deprecated} />
-      ) : null}
+      {!deprecatedOnly && <Tag appearance={{ theme }} text={status} />}
+      {isInstalledExtensionData(extensionData) &&
+        extensionData.isDeprecated && (
+          <Tag appearance={{ theme: 'danger' }} text={MSG.deprecated} />
+        )}
     </div>
   );
 };
