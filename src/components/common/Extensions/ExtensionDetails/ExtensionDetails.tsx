@@ -8,11 +8,11 @@ import NotFoundRoute from '~routes/NotFoundRoute';
 import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
 import { isInstalledExtensionData } from '~utils/extensions';
 import BreadCrumb, { Crumb } from '~shared/BreadCrumb';
+import Heading from '~shared/Heading';
 
 import ExtensionDetailsAside from './ExtensionDetailsAside';
 
 import styles from './ExtensionDetails.css';
-import Heading from '~shared/Heading';
 
 const displayName = 'common.Extensions.ExtensionDetails';
 
@@ -100,6 +100,7 @@ const ExtensionDetails = () => {
                 {/* @TODO: Handle h4 chunks */}
                 <FormattedMessage {...extensionData.descriptionLong} />
 
+                {/* @NOTE: This is some ugly displayed extension info until we have a nice table */}
                 <div>
                   Details of <FormattedMessage {...extensionData.name} />
                   <br />
