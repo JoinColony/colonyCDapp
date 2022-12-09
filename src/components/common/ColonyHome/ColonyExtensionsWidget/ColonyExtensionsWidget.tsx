@@ -80,12 +80,11 @@ const ColonyExtensions = () => {
       </Heading>
       <ul>
         {installedExtensionsData
-          // @TODO: Refactor once we have a way to check if the extension is initialized
-          // .filter(
-          //   (extension) =>
-          //     extension.details?.initialized &&
-          //     !extension.details?.missingPermissions.length,
-          // )
+          // @TODO: Refactor once we have a way to check missingPermissions
+          .filter(
+            (extension) => extension.isInitialized,
+            // && !extension.details?.missingPermissions.length,
+          )
           .map((extension) => {
             const { address, extensionId } = extension;
             return (
