@@ -11,6 +11,7 @@ import BreadCrumb, { Crumb } from '~shared/BreadCrumb';
 import Heading from '~shared/Heading';
 
 import ExtensionDetailsAside from './ExtensionDetailsAside';
+import ExtensionSetup from '../ExtensionSetup';
 
 import styles from './ExtensionDetails.css';
 
@@ -125,7 +126,7 @@ const ExtensionDetails = () => {
           />
           <Route
             path={COLONY_EXTENSION_SETUP_ROUTE}
-            element={<div>Setup</div>}
+            element={<ExtensionSetup extensionData={extensionData} />}
           />
 
           <Route path="*" element={<NotFoundRoute />} />
