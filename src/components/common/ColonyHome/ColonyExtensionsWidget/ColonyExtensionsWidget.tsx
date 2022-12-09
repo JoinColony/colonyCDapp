@@ -2,16 +2,16 @@ import React, { useMemo } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { getExtensionHash } from '@colony/colony-js';
 
-import { supportedExtensionsConfig } from '~constants/extensions';
-import { InstalledExtensionData } from '~types';
+import { MiniSpinnerLoader } from '~shared/Preloaders';
+import Heading from '~shared/Heading';
+import NavLink from '~shared/NavLink';
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
+
 import { useColonyContext } from '~hooks';
 import { useGetColonyExtensionsQuery } from '~gql';
+import { InstalledExtensionData } from '~types';
 import { notNull } from '~utils/arrays';
-
-import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
-import Heading from '~shared/Heading';
-import { MiniSpinnerLoader } from '~shared/Preloaders';
-import NavLink from '~shared/NavLink';
+import { supportedExtensionsConfig } from '~constants/extensions';
 
 import styles from './ColonyExtensionsWidget.css';
 
