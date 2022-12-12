@@ -4,4 +4,6 @@ fragment Token on Token {
   name
   symbol
   type
+  avatar
+  thumbnail
 }
