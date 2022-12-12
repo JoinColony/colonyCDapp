@@ -1,17 +1,15 @@
 import React, { useMemo } from 'react';
 
-// import { AnyToken } from '~data/index';
-
 import Select from '~shared/Fields/Select';
-// import TokenIcon from '~dashboard/HookedTokenIcon';
-import Avatar from '~shared/Avatar';
+import TokenIcon from '~shared/TokenIcon';
+import { Token } from '~types';
 
 import { Props as SelectProps } from '../Select/types';
 
 import styles from './TokenSymbolSelector.css';
 
 interface Props extends Omit<SelectProps, 'options'> {
-  tokens: any[]; // todo proper types
+  tokens: Token[];
 }
 
 const displayName = 'TokenSymbolSelector';
@@ -24,7 +22,7 @@ const TokenSymbolSelector = ({ tokens, ...props }: Props) => {
           elementType: 'labelElement' | 'optionElement',
         ) => (
           <div className={styles[elementType]}>
-            <Avatar token={token} name={token.name || undefined} size="xxs" />
+            <TokenIcon token={token} size="xxs" />
             <span
               className={elementType === 'labelElement' ? styles.symbol : ''}
             >
@@ -34,7 +32,7 @@ const TokenSymbolSelector = ({ tokens, ...props }: Props) => {
         );
 
         return {
-          value: token.address,
+          value: token.tokenAddress,
           label: token.symbol,
           labelElement: labelElement('labelElement'),
           children: labelElement('optionElement'),

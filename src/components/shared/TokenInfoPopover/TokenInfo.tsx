@@ -5,9 +5,9 @@ import { AddressZero } from '@ethersproject/constants';
 import CopyableAddress from '~shared/CopyableAddress';
 import TokenLink from '~shared/TokenLink';
 import Button from '~shared/Button';
+import TokenIcon from '~shared/TokenIcon';
 import { Token } from '~types';
 
-// import TokenIcon from '~dashboard/HookedTokenIcon';
 import { DEFAULT_NETWORK_INFO } from '~constants';
 
 import styles from './TokenInfoPopover.css';
@@ -62,11 +62,7 @@ const TokenInfo = ({ token, isTokenNative }: Props) => {
       <div className={styles.section}>
         {name && (
           <div title={name} className={styles.displayName}>
-            {/* <TokenIcon
-              token={token}
-              name={token.name || undefined}
-              size="xxs"
-            /> */}
+            <TokenIcon token={token} size="xxs" />
             {name}
           </div>
         )}

@@ -3,12 +3,10 @@ import { defineMessages } from 'react-intl';
 import { BigNumberish } from 'ethers';
 
 import Heading from '~shared/Heading';
+import Numeral from '~shared/Numeral';
+import TokenIcon from '~shared/TokenIcon';
 import { getFormattedTokenValue } from '~utils/tokens';
 import { Token } from '~types';
-
-import Numeral from '~shared/Numeral';
-// import { UserToken } from '~data/generated';
-// import TokenIcon from '~dashboard/HookedTokenIcon';
 
 import styles from './UserInfoPopover.css';
 
@@ -43,7 +41,7 @@ const UserTokens = ({ totalBalance, nativeToken }: Props) => {
         text={MSG.labelText}
       />
       <div className={styles.tokenAmount}>
-        {/* <TokenIcon token={nativeToken} name={nativeToken.name} size="xxs" /> */}
+        <TokenIcon token={nativeToken} size="xxs" />
         <Numeral value={formattedTotalBalance} suffix={nativeToken.symbol} />
       </div>
     </div>
