@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 // import { SpinnerLoader } from '~shared/Preloaders';
 import Heading from '~shared/Heading';
-// import TokenInfoPopoverWrapper from '~shared/InfoPopover/TokenInfoPopoverWrapper';
+import TokenInfoPopover from '~shared/TokenInfoPopover';
 import NavLink from '~shared/NavLink';
 // import { useTokenBalancesForDomainsQuery } from '~data/index';
 import { useColonyContext } from '~hooks';
@@ -67,19 +67,19 @@ const ColonyFundingWidget = (/* { currentDomainId }: Props */) => {
       <ul data-test="availableFunds">
         {tokens?.map((token) => (
           <li key={token.tokenAddress}>
-            {/* <TokenInfoPopoverWrapper
+            <TokenInfoPopover
               token={token}
               isTokenNative={token.tokenAddress === nativeTokenAddress}
-            > */}
-            <div className={styles.tokenBalance}>
-              <TokenBalanceItem
-                // currentDomainId={currentDomainId}
-                token={token}
-                isTokenNative={token.tokenAddress === nativeTokenAddress}
-                isNativeTokenLocked={!status?.nativeToken?.unlocked}
-              />
-            </div>
-            {/* </TokenInfoPopoverWrapper> */}
+            >
+              <div className={styles.tokenBalance}>
+                <TokenBalanceItem
+                  // currentDomainId={currentDomainId}
+                  token={token}
+                  isTokenNative={token.tokenAddress === nativeTokenAddress}
+                  isNativeTokenLocked={!status?.nativeToken?.unlocked}
+                />
+              </div>
+            </TokenInfoPopover>
           </li>
         ))}
       </ul>

@@ -1,1 +1,1 @@
-export { default } from './TokenInfoPopoverWrapper';
+export { default } from './TokenInfoPopover';
