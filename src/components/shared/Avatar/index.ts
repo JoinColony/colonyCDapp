@@ -1,1 +1,1 @@
-export { default, Props } from './Avatar';
+export { default, Props as AvatarProps } from './Avatar';

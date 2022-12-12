@@ -1,7 +1,7 @@
 import React from 'react';
 import camelcase from 'camelcase';
 
-import Avatar, { Props as AvatarProps } from '~shared/Avatar';
+import Avatar, { AvatarProps } from '~shared/Avatar';
 
 import styles from './Badge.css';
 
