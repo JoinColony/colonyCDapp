@@ -8,9 +8,8 @@ import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 import MaskedAddress from '~shared/MaskedAddress';
 import IconTooltip from '~shared/IconTooltip';
 import UserAvatar from '~shared/UserAvatar';
-import { Member } from '~common/Members';
 
-import { Colony, WatcherFragment, ContributorFragment } from '~gql';
+import { Watcher, Contributor, Colony } from '~types';
 import { ENTER } from '~types/index';
 import { getMainClasses } from '~utils/css';
 import { useMobile } from '~hooks';
@@ -19,14 +18,16 @@ import MemberActions from './Actions';
 
 import styles from './MembersListItem.css';
 
+type User = (Watcher | Contributor)['user'];
+
 interface Props {
-  extraItemContent?: (user: WatcherFragment | ContributorFragment) => ReactNode;
+  extraItemContent?: (user: User) => ReactNode;
   colony: Colony;
-  onRowClick?: (user: WatcherFragment | ContributorFragment) => void;
+  onRowClick?: (user: User) => void;
   showUserInfo: boolean;
   showUserReputation: boolean;
   canAdministerComments?: boolean;
-  user: WatcherFragment | ContributorFragment;
+  member: Watcher | Contributor;
 }
 
 const MSG = defineMessages({
@@ -38,35 +39,33 @@ const MSG = defineMessages({
 
 const componentDisplayName = 'MembersList.MembersListItem';
 
-const MembersListItem = (props: Props) => {
-  const {
-    colony,
-    extraItemContent,
-    onRowClick,
-    showUserInfo,
-    showUserReputation,
-    user: { user, reputationAmount, reputationPercentage },
-    canAdministerComments,
-  } = props;
-
+const MembersListItem = ({
+  colony,
+  extraItemContent,
+  onRowClick,
+  showUserInfo,
+  showUserReputation,
+  member: { user },
+  member,
+  canAdministerComments,
+}: Props) => {
   const {
     profile,
     name,
     walletAddress,
-    banned = false,
-    isWhitelisted = false,
-  } = user as (WatcherFragment | ContributorFragment) & {
-    banned: boolean;
-    isWhitelisted: boolean;
-  };
+    // banned = false,
+    // isWhitelisted = false,
+  } = user || {};
 
-  const isUserBanned = useMemo(
-    () =>
-      canAdministerComments !== undefined
-        ? canAdministerComments && banned
-        : banned,
-    [banned, canAdministerComments],
-  );
+  const { reputationAmount, reputationPercentage } = member as Contributor;
+
+  // const isUserBanned = useMemo(
+  //   () =>
+  //     canAdministerComments !== undefined
+  //       ? canAdministerComments && banned
+  //       : banned,
+  //   [banned, canAdministerComments],
+  // );
 
   const handleRowClick = useCallback(() => {
     if (onRowClick) {
@@ -94,6 +93,9 @@ const MembersListItem = (props: Props) => {
   //   (token) => token.address === colony.nativeTokenAddress,
   // );
   const isMobile = useMobile();
+  // Temp hardcoded values until the features are implemented
+  const isWhitelisted = true;
+  const banned = false;
 
   return (
     <ListGroupItem>
@@ -115,11 +117,11 @@ const MembersListItem = (props: Props) => {
           <UserAvatar
             size="s"
             colony={colony}
-            address={walletAddress}
+            address={walletAddress || ''}
             user={user}
             showInfo={!onRowClick || showUserInfo}
             notSet={false}
-            banned={isUserBanned}
+            // banned={isUserBanned}
             popperOptions={isMobile ? { placement: 'bottom' } : undefined}
           />
         </div>
@@ -135,8 +137,8 @@ const MembersListItem = (props: Props) => {
             </span>
           )}
           <div className={styles.address}>
-            <InvisibleCopyableAddress address={walletAddress}>
-              <MaskedAddress address={walletAddress} />
+            <InvisibleCopyableAddress address={walletAddress || ''}>
+              <MaskedAddress address={walletAddress || ''} />
             </InvisibleCopyableAddress>
             {isWhitelisted && (
               <IconTooltip
@@ -156,8 +158,8 @@ const MembersListItem = (props: Props) => {
           <div className={styles.reputationSection}>
             <MemberReputation
               nativeTokenDecimals={nativeToken?.decimals}
-              userReputation={reputationAmount}
-              userReputationPercentage={reputationPercentage}
+              userReputation={reputationAmount || ''}
+              userReputationPercentage={reputationPercentage || ''}
               showReputationPoints={!isMobile}
             />
           </div>
@@ -165,9 +167,9 @@ const MembersListItem = (props: Props) => {
         <MemberActions
           canAdministerComments={canAdministerComments}
           colony={colony}
-          userAddress={walletAddress}
+          userAddress={walletAddress || ''}
           isWhitelisted={isWhitelisted}
-          isBanned={isUserBanned}
+          isBanned={banned}
         />
       </div>
     </ListGroupItem>

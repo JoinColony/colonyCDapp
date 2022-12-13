@@ -7,7 +7,7 @@ import LoadMoreButton from '~shared/LoadMoreButton';
 import SortingRow, {
   Props as SortingProps,
 } from '~shared/MembersList/SortingRow';
-import { ColonyFragment, WatcherFragment, ContributorFragment } from '~gql';
+import { Colony, Watcher, Contributor } from '~types';
 // import useColonyMembersSorting from '~modules/dashboard/hooks/useColonyMembersSorting';
 
 import styles from './MembersSection.css';
@@ -33,16 +33,16 @@ const MSG = defineMessages({
   },
 });
 
-interface Props<U> {
+interface Props {
   isContributorsSection: boolean;
-  colony: ColonyFragment;
-  members: WatcherFragment[] | ContributorFragment[];
+  colony: Colony;
+  members: Watcher[] | Contributor[];
   canAdministerComments: boolean;
-  extraItemContent?: (user: U) => ReactNode;
+  extraItemContent?: (user: (Watcher | Contributor)['user']) => ReactNode;
   itemsPerSection?: number;
 }
 
-const MembersSection = <U extends WatcherFragment | ContributorFragment>({
+const MembersSection = ({
   colony,
   members,
   canAdministerComments,
@@ -51,7 +51,7 @@ const MembersSection = <U extends WatcherFragment | ContributorFragment>({
   itemsPerSection = 10,
   handleSortingMethodChange,
   sortingMethod,
-}: Props<U> & Partial<SortingProps>) => {
+}: Props & Partial<SortingProps>) => {
   const [dataPage, setDataPage] = useState<number>(1);
 
   const paginatedMembers = members.slice(0, itemsPerSection * dataPage);
@@ -72,12 +72,14 @@ const MembersSection = <U extends WatcherFragment | ContributorFragment>({
               ? MSG.contributorsTitle
               : MSG.watchersTitle)}
           />
-          {isContributorsSection && (
-            <SortingRow
-              handleSortingMethodChange={handleSortingMethodChange}
-              sortingMethod={sortingMethod}
-            />
-          )}
+          {isContributorsSection &&
+            handleSortingMethodChange &&
+            sortingMethod && (
+              <SortingRow
+                handleSortingMethodChange={handleSortingMethodChange}
+                sortingMethod={sortingMethod}
+              />
+            )}
         </div>
         {!isContributorsSection && (
           <div className={styles.description}>

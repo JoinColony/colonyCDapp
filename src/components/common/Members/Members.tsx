@@ -26,6 +26,7 @@ import {
 // import { getAllUserRoles } from '~modules/transformers';
 // import { hasRoot, canAdminister } from '~modules/users/checks';
 import { Colony, User } from '~types';
+import { notNull } from '~utils/arrays';
 
 import MembersTitle from './MembersTitle';
 // import { filterMembers } from './filterMembers';
@@ -88,7 +89,7 @@ const Members = ({
     variables: {
       input: {
         colonyAddress: colonyAddress ?? '',
-        // domainId: selectedDomain || COLONY_TOTAL_BALANCE_DOMAIN_ID,
+        domainId: selectedDomain || COLONY_TOTAL_BALANCE_DOMAIN_ID,
         sortingMethod,
       },
     },
@@ -96,11 +97,11 @@ const Members = ({
   });
 
   const contributors = useMemo(
-    () => data?.getMembersForColony?.contributors ?? [],
+    () => data?.getMembersForColony?.contributors?.filter(notNull) ?? [],
     [data],
   );
   const watchers = useMemo(
-    () => data?.getMembersForColony?.watchers ?? [],
+    () => data?.getMembersForColony?.watchers?.filter(notNull) ?? [],
     [data],
   );
 
@@ -143,7 +144,7 @@ const Members = ({
   const membersContent = useMemo(() => {
     const contributorsContent = (filters.memberType === MemberType.ALL ||
       filters.memberType === MemberType.CONTRIBUTORS) && (
-      <MembersSection<ContributorFragment>
+      <MembersSection
         isContributorsSection
         colony={colony}
         members={contributors as ContributorFragment[]}
@@ -168,7 +169,7 @@ const Members = ({
       isRootDomain &&
       (filters.memberType === MemberType.ALL ||
         filters.memberType === MemberType.WATCHERS) ? (
-        <MembersSection<WatcherFragment>
+        <MembersSection
           isContributorsSection={false}
           colony={colony}
           members={watchers as WatcherFragment[]}

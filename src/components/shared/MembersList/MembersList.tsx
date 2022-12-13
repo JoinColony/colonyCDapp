@@ -1,16 +1,17 @@
 import React, { ReactNode } from 'react';
 
 import ListGroup, { ListGroupAppearance } from '~shared/ListGroup';
-import { User, Colony, WatcherFragment, ContributorFragment } from '~gql';
+import { Colony, Watcher, Contributor } from '~types';
 
 import MembersListItem from './MembersListItem';
+import { notNull } from '~utils/arrays';
 
 interface Props {
   colony: Colony;
-  users: (WatcherFragment | ContributorFragment)[];
+  users: (Watcher | Contributor)[];
   listGroupAppearance?: ListGroupAppearance;
   canAdministerComments?: boolean;
-  extraItemContent?: (user: User) => ReactNode;
+  extraItemContent?: (user: (Contributor | Watcher)['user']) => ReactNode;
   showUserInfo?: boolean;
   showUserReputation?: boolean;
 }
@@ -28,14 +29,14 @@ const MembersList = ({
 }: Props) => {
   return (
     <ListGroup appearance={listGroupAppearance}>
-      {users.map((member: WatcherFragment | ContributorFragment) => (
+      {users.filter(notNull).map((member: Watcher | Contributor) => (
         <MembersListItem
           colony={colony}
           extraItemContent={extraItemContent}
           key={member.user?.walletAddress}
           showUserInfo={showUserInfo}
           showUserReputation={showUserReputation}
-          user={member}
+          member={member}
           canAdministerComments={canAdministerComments}
         />
       ))}
