@@ -33,3 +33,14 @@
   padding-top: 24px;
   white-space: pre-line;
 }
+
+.installedBy {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.contractAddress {
+  font-size: var(--size-smallish);
+  cursor: pointer;
+}

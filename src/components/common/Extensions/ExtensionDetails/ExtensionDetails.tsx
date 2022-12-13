@@ -21,13 +21,93 @@ const MSG = defineMessages({
     id: `${displayName}.title`,
     defaultMessage: 'Extensions',
   },
-  unsupportedExtension: {
-    id: `${displayName}.unsupportedExtension`,
-    defaultMessage: 'This extension is not supported.',
+  buttonAdd: {
+    id: `${displayName}.buttonAdd`,
+    defaultMessage: 'Add',
+  },
+  status: {
+    id: `${displayName}.status`,
+    defaultMessage: 'Status',
+  },
+  installedBy: {
+    id: `${displayName}.installedBy`,
+    defaultMessage: 'Installed by',
+  },
+  dateCreated: {
+    id: `${displayName}.dateCreated`,
+    defaultMessage: 'Date created',
+  },
+  dateInstalled: {
+    id: `${displayName}.dateInstalled`,
+    defaultMessage: 'Date installed',
+  },
+  latestVersion: {
+    id: `${displayName}.latestVersion`,
+    defaultMessage: 'Latest version',
+  },
+  versionInstalled: {
+    id: `${displayName}.versionInstalled`,
+    defaultMessage: 'Version installed',
+  },
+  contractAddress: {
+    id: `${displayName}.contractAddress`,
+    defaultMessage: 'Contract address',
+  },
+  developer: {
+    id: `${displayName}.developer`,
+    defaultMessage: 'Developer',
+  },
+  permissionsNeeded: {
+    id: `${displayName}.permissionsNeeded`,
+    defaultMessage: 'Permissions the extension needs in the colony:',
+  },
+  buttonUninstall: {
+    id: `${displayName}.buttonUninstall`,
+    defaultMessage: 'Uninstall',
+  },
+  buttonDeprecate: {
+    id: `${displayName}.buttonDeprecate`,
+    defaultMessage: 'Deprecate',
+  },
+  buttonReEnable: {
+    id: `${displayName}.buttonReEnable`,
+    defaultMessage: 'Re-enable',
+  },
+  headingDeprecate: {
+    id: `${displayName}.headingDeprecate`,
+    defaultMessage: 'Deprecate extension',
+  },
+  textDeprecate: {
+    id: `${displayName}.textDeprecate`,
+    defaultMessage: `This extension must first be deprecated if you wish to uninstall it. After deprecation, any actions using this extension already ongoing may be completed, but it will no longer be possible to create new actions requiring this extension. Are you sure you wish to proceed?`,
+  },
+  headingReEnable: {
+    id: `${displayName}.headingReEnable`,
+    defaultMessage: 'Re-enable extension',
+  },
+  textReEnable: {
+    id: `${displayName}.textDeprecate`,
+    defaultMessage: `The extension will be re-enabled with the same parameters. Are you sure you wish to proceed?`,
+  },
+  headingUninstall: {
+    id: `${displayName}.headingUninstall`,
+    defaultMessage: 'Uninstall extension',
+  },
+  textUninstall: {
+    id: `${displayName}.textUninstall`,
+    defaultMessage: `This extension is currently deprecated, and may be uninstalled. Doing so will remove it from the colony and any processes requiring it will no longer work. Are you sure you wish to proceed?`,
   },
   setup: {
     id: `${displayName}.setup`,
     defaultMessage: 'Setup',
+  },
+  warning: {
+    id: `${displayName}.warning`,
+    defaultMessage: `This extension is incompatible with your current colony version. You must upgrade your colony before installing it.`,
+  },
+  unsupportedExtension: {
+    id: `${displayName}.unsupportedExtension`,
+    defaultMessage: 'This extension is not supported.',
   },
 });
 
@@ -74,6 +154,14 @@ const ExtensionDetails = () => {
     extensionData.uninstallable &&
     !extensionData.isDeprecated;
 
+  const makeHeadingInMsg = (chunks: React.ReactNode[]) => (
+    <Heading
+      tagName="h4"
+      appearance={{ size: 'medium', margin: 'small' }}
+      text={chunks.toString()}
+    />
+  );
+
   return (
     <div className={styles.main}>
       <div className={styles.header}>
@@ -97,8 +185,13 @@ const ExtensionDetails = () => {
                   text={extensionData.name}
                 />
 
-                {/* @TODO: Handle h4 chunks */}
-                <FormattedMessage {...extensionData.descriptionLong} />
+                <FormattedMessage
+                  {...extensionData.descriptionLong}
+                  values={{
+                    h4: makeHeadingInMsg,
+                    link0: extensionData.descriptionLinks?.[0],
+                  }}
+                />
 
                 {/* @NOTE: This is some ugly displayed extension info until we have a nice table */}
                 <div>
@@ -142,5 +235,4 @@ const ExtensionDetails = () => {
 };
 
 ExtensionDetails.displayName = displayName;
-
 export default ExtensionDetails;
