@@ -1,34 +1,36 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { getBlockscoutUserURL } from '~externalUrls';
-import { Colony } from '~data/index';
+import { getBlockscoutUserURL } from '~constants';
+import { Colony } from '~types';
 import DropdownMenu, {
   DropdownMenuSection,
   DropdownMenuItem,
-} from '~core/DropdownMenu';
-import Button from '~core/Button';
-import { useDialog } from '~core/Dialog';
-import { BanUserDialog } from '~core/Comment';
-import ExternalLink from '~core/ExternalLink';
-import ManageWhitelistDialog from '~dashboard/Dialogs/ManageWhitelistDialog';
+} from '~shared/DropdownMenu';
+import Button from '~shared/Button';
+// import { useDialog } from '~shared/Dialog';
+// import { BanUserDialog } from '~shared/Comment';
+import ExternalLink from '~shared/ExternalLink';
+// import ManageWhitelistDialog from '~dashboard/Dialogs/ManageWhitelistDialog';
 
 import styles from './MemberActionsPopover.css';
 
+const displayName = 'MembersList.Actions.MemberActionsPopover';
+
 const MSG = defineMessages({
   addToAddressBook: {
-    id: 'core.MembersList.MemberActionsPopover.addToAddressBook',
+    id: `${displayName}.addToAddressBook`,
     defaultMessage: `Add to address book`,
   },
   banUser: {
-    id: 'core.MembersList.MemberActionsPopover.banUser',
+    id: `${displayName}.banUser`,
     defaultMessage: `{unban, select,
       true {Unban}
       other {Ban}
     } user`,
   },
   viewOnBlockscout: {
-    id: 'core.MembersList.MemberActionsPopover.viewOnBlockscout',
+    id: `${displayName}.viewOnBlockscout`,
     defaultMessage: 'View on Blockscout',
   },
 });
@@ -42,31 +44,33 @@ interface Props {
   canAdministerComments?: boolean;
 }
 
-const displayName = 'core.MembersList.MemberActionsPopover';
-
 const MemberActionsPopover = ({
   closePopover,
   canAdministerComments,
-  colony,
+  // colony,
   userAddress,
   isWhitelisted,
   isBanned,
 }: Props) => {
-  const openBanUserDialog = useDialog(BanUserDialog);
-  const handleBanUser = useCallback(
-    () =>
-      openBanUserDialog({
-        colonyAddress: colony.colonyAddress,
-        isBanning: !isBanned,
-        addressToBan: userAddress,
-      }),
-    [openBanUserDialog, colony, userAddress, isBanned],
-  );
-  const openManageWhitelistDialog = useDialog(ManageWhitelistDialog);
-  const handleManageWhitelist = useCallback(
-    () => openManageWhitelistDialog({ userAddress, colony }),
-    [openManageWhitelistDialog, userAddress, colony],
-  );
+  // const openBanUserDialog = useDialog(BanUserDialog);
+
+  // const handleBanUser = useCallback(
+  //   () =>
+  //     openBanUserDialog({
+  //       colonyAddress: colony.colonyAddress,
+  //       isBanning: !isBanned,
+  //       addressToBan: userAddress,
+  //     }),
+  //   [openBanUserDialog, colony, userAddress, isBanned],
+  // );
+  const handleBanUser = () => console.log('Ban user dialog');
+
+  // const openManageWhitelistDialog = useDialog(ManageWhitelistDialog);
+  // const handleManageWhitelist = useCallback(
+  //   () => openManageWhitelistDialog({ userAddress, colony }),
+  //   [openManageWhitelistDialog, userAddress, colony],
+  // );
+  const handleManageWhitelist = () => console.log('Whitelist dialog');
 
   const renderUserActions = () => (
     <DropdownMenuItem>
