@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { InputHTMLAttributes, useState } from 'react';
 import { nanoid } from 'nanoid';
 import { PopperOptions } from 'react-popper-tooltip';
 import { useFormContext } from 'react-hook-form';
@@ -6,14 +6,26 @@ import { useFormContext } from 'react-hook-form';
 import InputLabel from '~shared/Fields/InputLabel';
 import { Tooltip } from '~shared/Popover';
 import { getMainClasses } from '~utils/css';
+import { SimpleMessageValues } from '~types';
+import { formatText } from '~utils/intl';
 
-import { HookFormInputProps as InputProps } from '../../Input/HookForm';
+import { CoreInputProps } from '../../Input/HookForm';
 
 import styles from './Checkbox.css';
 
-interface Props extends InputProps {
+interface Appearance {
+  theme?: 'dark';
+  direction?: 'horizontal' | 'vertical';
+}
+
+export interface Props
+  extends Omit<CoreInputProps, 'placeholder' | 'placeholderValues'>,
+    Omit<InputHTMLAttributes<HTMLInputElement>, 'name' | 'placeholder'> {
+  appearance: Appearance;
   /**  Text for the checkbox tooltip */
   tooltipText?: string;
+  /** Text values for tooltip */
+  tooltipTextValues?: SimpleMessageValues;
   /** Options to pass to the underlying PopperJS element. See here for more: https://popper.js.org/docs/v2/constructors/#options. */
   tooltipPopperOptions?: PopperOptions;
 }
@@ -34,8 +46,10 @@ const HookFormCheckbox = ({
   onChange,
   value,
   tooltipText,
+  tooltipTextValues,
   tooltipPopperOptions,
   dataTest,
+  ...checkboxProps
 }: Props) => {
   const [inputId] = useState(nanoid());
   const { getValues, register } = useFormContext();
@@ -43,6 +57,7 @@ const HookFormCheckbox = ({
   const mainClasses = getMainClasses(appearance, styles);
   const classNames = className ? `${mainClasses} ${className}` : mainClasses;
 
+  const toolTipContent = formatText(tooltipText, tooltipTextValues);
   const showTooltip = disabled && tooltipText;
   const showLabel = !elementOnly && label;
 
@@ -64,6 +79,7 @@ const HookFormCheckbox = ({
       aria-disabled={disabled}
       aria-checked={isChecked}
       data-test={dataTest}
+      {...checkboxProps}
     />
   );
 
@@ -71,7 +87,7 @@ const HookFormCheckbox = ({
     <div className={classNames}>
       {showTooltip ? (
         <Tooltip
-          content={tooltipText}
+          content={toolTipContent}
           placement="bottom"
           popperOptions={tooltipPopperOptions}
         >
