@@ -215,7 +215,6 @@ const Members = ({
         handleDomainChange={handleDomainChange}
         domainSelectOptions={domainSelectOptions}
         searchValue={searchValue}
-        setSearchValue={setSearchValue}
         handleSearch={handleSearch}
       />
       {!contributors?.length && !watchers?.length ? (
