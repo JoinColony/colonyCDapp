@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
-// import Popover from '~shared/Popover';
+import Popover from '~shared/Popover';
 import { ThreeDotsButton } from '~shared/Button';
 
 import { Colony } from '~types';
 import { useMobile } from '~hooks';
 
-// import MemberActionsPopover from './MemberActionsPopover';
+import MemberActionsPopover from './MemberActionsPopover';
 
 const MSG = defineMessages({
   memberActionsTitle: {
@@ -38,43 +38,43 @@ const MemberActions = ({
   const offset = isMobile ? [0, 0] : [40, 15];
 
   return (
-    // <Popover
-    //   content={({ close }) => (
-    //     <MemberActionsPopover
-    //       closePopover={close}
-    //       canAdministerComments={canAdministerComments}
-    //       colony={colony}
-    //       isWhitelisted={isWhitelisted}
-    //       isBanned={isBanned}
-    //       userAddress={userAddress}
-    //     />
-    //   )}
-    //   trigger="click"
-    //   showArrow={false}
-    //   placement="right"
-    //   isOpen={isOpen}
-    //   onClose={() => setOpen(false)}
-    //   popperOptions={{
-    //     modifiers: [
-    //       {
-    //         name: 'offset',
-    //         options: {
-    //           offset,
-    //         },
-    //       },
-    //     ],
-    //   }}
-    // >
-    //   {({ ref, id }) => (
-    <ThreeDotsButton
-      // id={id}
-      // innerRef={ref}
+    <Popover
+      renderContent={({ close }) => (
+        <MemberActionsPopover
+          closePopover={close}
+          canAdministerComments={canAdministerComments}
+          colony={colony}
+          isWhitelisted={isWhitelisted}
+          isBanned={isBanned}
+          userAddress={userAddress}
+        />
+      )}
+      trigger="click"
+      showArrow={false}
+      placement="right"
       isOpen={isOpen}
-      onClick={() => setOpen(true)}
-      title={MSG.memberActionsTitle}
-    />
-    //   )}
-    // </Popover>
+      onClose={() => setOpen(false)}
+      popperOptions={{
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset,
+            },
+          },
+        ],
+      }}
+    >
+      {({ ref, id }) => (
+        <ThreeDotsButton
+          id={id}
+          innerRef={ref}
+          isOpen={isOpen}
+          onClick={() => setOpen(true)}
+          title={MSG.memberActionsTitle}
+        />
+      )}
+    </Popover>
   );
 };
 
