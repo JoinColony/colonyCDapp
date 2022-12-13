@@ -37,6 +37,7 @@ export { default as useUserSettings, SlotKey } from './useUserSettings';
 export { default as useWindowSize } from './useWindowSize';
 export { default as useAppContext } from './useAppContext';
 export { default as useUserReputation } from './useUserReputation';
+export { default as useMobile } from './useMobile';
 export { default as useColonyContext } from './useColonyContext';
 export { default as useExtensionData } from './useExtensionData';
 export { default as useExtensionsData } from './useExtensionsData';

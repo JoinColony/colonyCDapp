@@ -10,6 +10,7 @@ import { isInstalledExtensionData } from '~utils/extensions';
 import { useColonyContext } from '~hooks';
 
 import ExtensionActionButton from '../ExtensionActionButton';
+import ExtensionUpgradeButton from '../ExtensionUpgradeButton';
 import ExtensionStatusBadge from '../ExtensionStatusBadge';
 
 import styles from './ExtensionDetails.css';
@@ -71,12 +72,14 @@ interface Props {
   extensionData: AnyExtensionData;
   canBeDeprecated: boolean;
   canBeUninstalled: boolean;
+  canExtensionBeUpgraded: boolean;
 }
 
 const ExtensionDetailsAside = ({
   extensionData,
   canBeDeprecated,
   canBeUninstalled,
+  canExtensionBeUpgraded,
 }: Props) => {
   const { colony } = useColonyContext();
 
@@ -125,7 +128,10 @@ const ExtensionDetailsAside = ({
   return (
     <aside>
       <div className={styles.buttonWrapper}>
-        <ExtensionActionButton extensionData={extensionData} />
+        <ExtensionActionButton extensionData={extensionData} />{' '}
+        {canExtensionBeUpgraded && (
+          <ExtensionUpgradeButton extensionData={extensionData} />
+        )}
       </div>
 
       <Table appearance={{ theme: 'lined' }}>
