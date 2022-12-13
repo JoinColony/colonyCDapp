@@ -13,6 +13,8 @@ import { Watcher, Contributor, Colony } from '~types';
 import { ENTER } from '~types/index';
 import { getMainClasses } from '~utils/css';
 import { useMobile } from '~hooks';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { notNull } from '~utils/arrays';
 
 import MemberActions from './Actions';
 
@@ -88,10 +90,11 @@ const MembersListItem = ({
 
   const { displayName } = profile || {};
 
-  const nativeToken = {};
-  // colony.tokens.find(
-  //   (token) => token.address === colony.nativeTokenAddress,
-  // );
+  const nativeToken = colony?.tokens?.items
+    .filter(notNull)
+    .find(
+      ({ token }) => token?.tokenAddress === colony.nativeToken.tokenAddress,
+    );
   const isMobile = useMobile();
   // Temp hardcoded values until the features are implemented
   const isWhitelisted = true;
@@ -157,7 +160,9 @@ const MembersListItem = ({
         {showUserReputation && (
           <div className={styles.reputationSection}>
             <MemberReputation
-              nativeTokenDecimals={nativeToken?.decimals}
+              nativeTokenDecimals={
+                nativeToken?.token.decimals || DEFAULT_TOKEN_DECIMALS
+              }
               userReputation={reputationAmount || ''}
               userReputationPercentage={reputationPercentage || ''}
               showReputationPoints={!isMobile}
