@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 // import Popover from '~shared/Popover';
 import { ThreeDotsButton } from '~shared/Button';
 
-import { Colony } from '~gql';
+import { Colony } from '~types';
 import { useMobile } from '~hooks';
 
 // import MemberActionsPopover from './MemberActionsPopover';
