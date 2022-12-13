@@ -12,11 +12,12 @@ import ColonyHome from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
 import ColonyMembers from '~common/ColonyMembers';
 import FourOFour from '~frame/FourOFour';
-// import UserProfile from '~users/UserProfile';
-// import UserProfileEdit from '~users/UserProfileEdit';
+import UserProfile from '~common/UserProfile';
+import UserProfileEdit from '~common/UserProfileEdit';
 import {
   // NavBar, Plain, SimpleNav,
   Default,
+  UserLayout,
 } from '~frame/RouteLayouts';
 import ColonyBackText from '~frame/ColonyBackText';
 // import LoadingTemplate from '~root/LoadingTemplate';
@@ -34,8 +35,9 @@ import {
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   CREATE_COLONY_ROUTE,
   CREATE_USER_ROUTE,
-  // USER_EDIT_ROUTE,
-  // USER_ROUTE,
+  // CREATE_COLONY_ROUTE,
+  USER_EDIT_ROUTE,
+  USER_ROUTE,
   LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
   // ACTIONS_PAGE_ROUTE,
@@ -135,11 +137,31 @@ const Routes = () => {
             </ColonyContextProvider>
           }
         />
-
         <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
         <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
-
-        {/* 
+        <Route
+          path={USER_ROUTE}
+          element={
+            <UserLayout routeProps={{ hasBackLink: false }}>
+              <UserProfile />
+            </UserLayout>
+          }
+        />
+        <Route
+          path={USER_EDIT_ROUTE}
+          element={
+            <UserLayout routeProps={{ hasBackLink: true }}>
+              <UserProfileEdit />
+            </UserLayout>
+          }
+        />
+        {/* <WalletRequiredRoute
+          isConnected={isConnected}
+          didClaimProfile={didClaimProfile}
+          path={CREATE_USER_ROUTE}
+          component={CreateUserWizard}
+          layout={Plain}
+        />
         <WalletRequiredRoute
           isConnected={isConnected}
           didClaimProfile={didClaimProfile}
@@ -193,7 +215,7 @@ const Routes = () => {
             backText: ColonyBackText,
             backRoute: `/colony/${colonyName}`,
           })}
-        /> */}
+        />
 
         {/*
          * Redirect anything else that's not found to the 404 route

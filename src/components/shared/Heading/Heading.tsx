@@ -1,7 +1,7 @@
 import React, { HTMLAttributes, ReactNode, useMemo } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
-import { SimpleMessageValues } from '~types';
+import { ComplexMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import styles from './Heading.css';
@@ -29,7 +29,7 @@ interface Props extends HTMLAttributes<HTMLHeadingElement> {
   text?: MessageDescriptor | string;
 
   /** Values for text (react-intl interpolation) */
-  textValues?: SimpleMessageValues;
+  textValues?: ComplexMessageValues;
 }
 
 const Heading = ({

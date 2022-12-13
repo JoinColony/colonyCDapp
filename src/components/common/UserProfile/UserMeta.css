@@ -1,0 +1,46 @@
+@value contentMargin: 12px;
+
+.main {
+  width: 240px;
+  word-wrap: break-word;
+}
+
+.headingContainer {
+  composes: multiLineEllipsis from '~styles/text.css';
+  display: flex;
+  align-items: baseline;
+}
+
+.profileLink:nth-child(2) {
+  /* Only add the margin if the link is the second child (adjacent to the user's display name) */
+  margin-left: 10px;
+}
+
+.usernameContainer {
+  composes: inlineEllipsis from '~styles/text.css';
+  display: flex;
+}
+
+.bioContainer {
+  margin-top: contentMargin;
+}
+
+.websiteContainer {
+  composes: multiLineEllipsis from '~styles/text.css';
+  margin-top: contentMargin;
+}
+
+.websiteContainer a {
+  font-weight: var(--weight-normal);
+  color: var(--text);
+}
+
+.locationContainer {
+  composes: multiLineEllipsis from '~styles/text.css';
+  margin-top: contentMargin;
+}
+
+.avatar {
+  border-radius: 50%;
+  box-shadow: 0 0 20px var(--temp-grey-blue-2);
+}

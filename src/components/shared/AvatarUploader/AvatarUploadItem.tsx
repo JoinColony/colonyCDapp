@@ -5,7 +5,7 @@ import { UploadItemComponentProps } from '~shared/FileUpload/types';
 
 import styles from './AvatarUploadItem.css';
 
-import fileReader from '../../../../lib/fileReader';
+import fileReader from '~utils/fileReader';
 import { UploadFile } from '../FileUpload';
 import Icon from '../Icon';
 

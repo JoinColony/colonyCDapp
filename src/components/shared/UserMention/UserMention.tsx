@@ -3,14 +3,15 @@ import { PopperOptions } from 'react-popper-tooltip';
 
 import Link from '~shared/Link';
 import Popover from '~shared/Popover';
+
+import { User } from '~types';
 // import UserInfoPopover from '../InfoPopover/UserInfoPopover';
 // import { useUserQuery, useUserAddressQuery } from '~data/index';
 
 import styles from './UserMention.css';
 
 interface Props {
-  /** A user's username (ENS) */
-  username: string;
+  user: User | null;
 
   /** Alternate place to link to. Defaults to user profile */
   to?: string;
@@ -31,14 +32,14 @@ interface Props {
 const displayName = 'UserMention';
 
 const UserMention = ({
-  username,
+  user: { name },
   to,
   hasLink,
   showInfo,
   popperOptions,
   ...props
 }: Props) => {
-  const fallbackTo = to || `/user/${username}`;
+  const fallbackTo = to || `/user/${name}`;
   const trigger = showInfo ? 'click' : 'disabled';
   const showArrow = popperOptions && popperOptions.showArrow;
 
@@ -56,14 +57,14 @@ const UserMention = ({
     hasLink ? (
       <Link
         to={fallbackTo}
-        text={`@${username}`}
+        text={`@${name}`}
         className={styles.mention}
         {...props}
       />
     ) : (
       <span className={styles.mention} {...props}>
         {' '}
-        {`@${username}`}
+        {`@${name}`}
       </span>
     );
 

@@ -18,7 +18,7 @@ import styles from './UserInfoPopover.css';
 
 interface Props {
   colony?: Colony;
-  user?: User;
+  user?: User | null;
   banned?: boolean;
 }
 

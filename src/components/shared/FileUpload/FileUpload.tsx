@@ -9,12 +9,12 @@ import React, {
 import { MessageDescriptor, defineMessages } from 'react-intl';
 import { DropzoneOptions, DropzoneState, useDropzone } from 'react-dropzone';
 import { getIn } from 'formik';
-import { compose } from 'recompose';
 
 import { AsFieldArrayEnhancedProps } from '~shared/Fields/asFieldArray';
 import { Appearance } from '~shared/Fields/Input/InputComponent';
+
 import { SimpleMessageValues } from '~types';
-import { withForwardingRef, ForwardedRefProps } from '~utils/hoc';
+import { compose, withForwardingRef, ForwardedRefProps } from '~utils/hoc';
 
 import DefaultPlaceholder from './DefaultPlaceholder';
 import { DEFAULT_MIME_TYPES, DEFAULT_MAX_FILE_SIZE } from './limits';
@@ -27,17 +27,19 @@ import InputStatus, { InputStatusAppearance } from '../Fields/InputStatus';
 
 import styles from './FileUpload.css';
 
+const displayName = 'FileUpload';
+
 const MSG = defineMessages({
   labelError: {
-    id: 'FileUpload.labelError',
+    id: `${displayName}.labelError`,
     defaultMessage: 'There was an error processing your file. Try again.',
   },
   uploadError: {
-    id: 'FileUpload.uploadError',
+    id: `${displayName}.uploadError`,
     defaultMessage: 'There was an error uploading your file',
   },
   filetypeError: {
-    id: 'FileUpload.filetypeError',
+    id: `${displayName}.filetypeError`,
     defaultMessage: 'This filetype is not allowed or file is too big',
   },
 });
@@ -55,7 +57,7 @@ interface Props {
     disabled?: string;
   };
   /** Options for the dropzone provider */
-  dropzoneOptions?: DropzoneOptions;
+  dropzoneOptions: DropzoneOptions;
   /** Whether to display the element all by itself, or with labels & whatnot */
   elementOnly?: boolean;
   /** Extra node to render on the top right in the label */
@@ -135,18 +137,15 @@ const FileUpload = ({
   dataTest,
   handleProcessingData,
 }: AsFieldArrayEnhancedProps<Props> & ForwardedRefProps) => {
-  const files = useMemo(() => getIn(values, name) || [], [name, values]);
-  const fileErrors = useMemo(() => getIn(errors, name) || [], [errors, name]);
+  const files = useMemo(() => getIn(values, name) || [], [values, name]);
+  const fileErrors = useMemo(() => getIn(errors, name) || [], [name, errors]);
 
   const maxFileLimitNotMet = files.length < maxFilesLimit;
-  const hasError = !!fileErrors.length;
+  const hasError = !!fileErrors?.length;
 
-  const accept = useMemo<string[]>(() => {
+  const accept = useMemo(() => {
     if (!acceptProp) {
       return DEFAULT_MIME_TYPES;
-    }
-    if (!Array.isArray(acceptProp)) {
-      return [acceptProp];
     }
     return acceptProp;
   }, [acceptProp]);
@@ -269,10 +268,9 @@ const FileUpload = ({
   );
 };
 
-const enhance = compose<
-  AsFieldArrayEnhancedProps<Props> & ForwardedRefProps,
-  Props
->(
+FileUpload.displayName = displayName;
+
+const enhance = compose(
   // @NOTE ordering matters here - refs first!
   withForwardingRef,
   asFieldArray(),

@@ -1,7 +1,18 @@
-export const dropzone: string;
-export const dropzoneNoButtonsVariant: string;
-export const disabled: string;
-export const filesContainer: string;
-export const overlay: string;
-export const dropzoneAccept: string;
-export const buttonContainer: string;
+declare namespace AvatarUploaderCssNamespace {
+  export interface IAvatarUploaderCss {
+    buttonContainer: string;
+    disabled: string;
+    dropzone: string;
+    dropzoneAccept: string;
+    dropzoneNoButtonsVariant: string;
+    filesContainer: string;
+    overlay: string;
+  }
+}
+
+declare const AvatarUploaderCssModule: AvatarUploaderCssNamespace.IAvatarUploaderCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: AvatarUploaderCssNamespace.IAvatarUploaderCss;
+};
+
+export = AvatarUploaderCssModule;

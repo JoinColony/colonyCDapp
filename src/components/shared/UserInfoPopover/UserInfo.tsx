@@ -4,6 +4,7 @@ import CopyableAddress from '~shared/CopyableAddress';
 import Heading from '~shared/Heading';
 import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
+
 import { User } from '~types';
 
 import styles from './UserInfo.css';
@@ -39,7 +40,7 @@ const UserInfo = ({ user }: Props) => {
            * Never pass `showInfo` to this instance of UserMention, otherwise you'll trigger it
            */
           <p className={styles.userName}>
-            <UserMention username={userDisplayName} hasLink />
+            <UserMention user={user} hasLink />
           </p>
         )}
         <div className={styles.address}>

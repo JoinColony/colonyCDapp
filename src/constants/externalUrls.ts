@@ -2,6 +2,7 @@ export const FEEDBACK = `https://portal.productboard.com/colony/1-colony-portal/
 export const HELP = `https://colony.gitbook.io/colony`;
 export const BETA_DISCLAIMER = `https://colony.gitbook.io/colony/disclaimers/beta`;
 export const TERMS_AND_CONDITIONS = `https://colony.io/pdf/terms.pdf`;
+export const ADVANCED_SETTINGS = `https://colony.gitbook.io/colony/advanced-features/metatransactions`;
 
 /*
  * Utils

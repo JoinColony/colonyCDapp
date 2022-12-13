@@ -18,7 +18,7 @@ export interface UploadFile {
 }
 
 export interface UploadItemComponentProps {
-  accept: string[];
+  accept: { [key: string]: string[] };
   error?: string;
   key: string;
   idx: number;
