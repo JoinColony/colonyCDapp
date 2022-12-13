@@ -1,4 +1,4 @@
-import React, { useCallback, Dispatch, useRef, SetStateAction } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Heading from '~shared/Heading';
@@ -41,7 +41,6 @@ interface Props {
   }[];
   handleDomainChange: (domainId: number) => void;
   searchValue: string;
-  setSearchValue: Dispatch<SetStateAction<string>>;
   handleSearch: (e: any) => void;
 }
 
