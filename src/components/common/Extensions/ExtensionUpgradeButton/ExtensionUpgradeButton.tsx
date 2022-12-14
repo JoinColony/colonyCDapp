@@ -1,6 +1,10 @@
 import React, { useCallback } from 'react';
-// import { ColonyVersion, extensionsIncompatibilityMap } from '@colony/colony-js';
 
+import {
+  Extension,
+  ExtensionVersion,
+  isExtensionCompatible,
+} from '@colony/colony-js';
 import { ActionButton } from '~shared/Button';
 import { AnyExtensionData } from '~types';
 import { ActionTypes } from '~redux/index';
@@ -16,7 +20,6 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
 
-  // const hasRegisteredProfile = !!username && !ethereal;
   const transform = useCallback(
     mapPayload(() => ({
       colonyAddress: colony?.colonyAddress,
@@ -30,24 +33,17 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
   //   parseInt(colonyVersion || '1', 10) >= ColonyVersion.LightweightSpaceship;
   const isSupportedColonyVersion = true;
 
-  // const nextVersionIncompatibilityMappingExists =
-  //   extensionsIncompatibilityMap[extensionData.extensionId] &&
-  //   extensionsIncompatibilityMap[extensionData.extensionId][
-  //     extensionData.availableVersion + 1
-  //   ];
-  // const extensionCompatible =
-  //   extensionData?.availableVersion && nextVersionIncompatibilityMappingExists
-  //     ? !extensionsIncompatibilityMap[extensionData.extensionId][
-  //         extensionData.availableVersion + 1
-  //       ].find((version: number) => version === parseInt(colonyVersion, 10))
-  //     : false;
-  const extensionCompatible = true;
+  const extensionCompatible = isExtensionCompatible(
+    Extension[extensionData.extensionId],
+    extensionData.availableVersion as ExtensionVersion,
+    10,
+  );
 
   if (!user?.profile) {
     return null;
   }
 
-  const canUpgrade = isInstalledExtensionData(extensionData);
+  const canInstall = !isInstalledExtensionData(extensionData);
 
   return (
     <ActionButton
@@ -58,7 +54,7 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
       transform={transform}
       text={{ id: 'button.upgrade' }}
       disabled={
-        !isSupportedColonyVersion || !extensionCompatible || !canUpgrade
+        !isSupportedColonyVersion || !extensionCompatible || !canInstall
       }
     />
   );
