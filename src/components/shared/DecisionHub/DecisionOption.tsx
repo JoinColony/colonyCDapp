@@ -1,13 +1,14 @@
-import React, { ButtonHTMLAttributes, useCallback } from 'react';
+import React, { ButtonHTMLAttributes } from 'react';
 import {
   MessageDescriptor,
   defineMessages,
   FormattedMessage,
 } from 'react-intl';
-import { useField } from 'formik';
+import { useFormContext } from 'react-hook-form';
 import { LinkProps } from 'react-router-dom';
 
 import { getMainClasses } from '~utils/css';
+import { useMobile } from '~hooks';
 
 import Icon from '../Icon';
 import Link from '../Link';
@@ -87,12 +88,15 @@ const DecisionOption = ({
   option: { title, subtitle, disabled, value },
   option,
   link,
-  isMobile = false,
 }: Props) => {
-  const [, , { setValue }] = useField(name);
-  const makeDecision = useCallback(() => {
-    if (!disabled && value && setValue) setValue(value);
-  }, [setValue, value, disabled]);
+  const { setValue } = useFormContext();
+  const isMobile = useMobile();
+
+  const makeDecision = () => {
+    if (!disabled && value) {
+      setValue(name, value);
+    }
+  };
 
   const Element = link ? Link : 'button';
   const elmProps = link

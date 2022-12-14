@@ -7,7 +7,7 @@ import { Message } from '~types';
 
 import styles from './ConfirmTransactions.css';
 
-const displayName = 'Wizard.ConfirmTransactions';
+const displayName = 'common.CreateColonyWizard.ConfirmTransactions';
 
 interface ConfirmTransactionsProps {
   transactionGroup?: TransactionOrMessageGroup;

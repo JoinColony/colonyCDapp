@@ -2,22 +2,19 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { HookFormInput as Input } from '~shared/Fields';
+import { HookFormInput as Input, ActionHookForm } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { WizardStepProps } from '~shared/Wizard';
 import { mergePayload } from '~utils/actions';
-import ActionHookForm from '~shared/Fields/Form/ActionHookForm';
 import { LANDING_PAGE_ROUTE } from '~routes';
 
 import {
   FormValues,
   ContinueWizard,
   UserStepTemplate,
-} from '../CreateUserWizard';
-import {
   stepUserNameValidationSchema as validationSchema,
   UserWizardStep2,
-} from './validation';
+} from '../CreateUserWizard';
 
 const displayName = 'common.CreateUserWizard.StepUserName';
 

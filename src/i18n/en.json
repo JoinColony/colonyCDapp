@@ -404,5 +404,7 @@
     "tooltip.lockedToken": "This token is locked. Colony native tokens are locked and non-transferrable by default to avoid unwanted project token transfer outside of the colony.",
     "tooltip.forceToggle": "Toggle \"Force\" to bypass governance and perform this action immediately. This is only possible with the right permissions.",
 
-    "error.network": "There was a problem with the connection. Please try again"
+    "error.network": "There was a problem with the connection. Please try again",
+
+    "status.loading": "Loading{optionalText}..."
 }

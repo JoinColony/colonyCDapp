@@ -4,13 +4,12 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { WizardStepProps } from '~shared/Wizard';
 import Heading from '~shared/Heading';
 import Button from '~shared/Button';
-import { ActionForm, FormStatus } from '~shared/Fields';
+import { ActionHookForm as ActionForm } from '~shared/Fields';
 
 import { mergePayload } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
 
-import CardRow, { Row } from './CreateColonyCardRow';
-import { FormValues } from './CreateColonyWizard';
+import { FormValues, CardRow, Row } from '../CreateColonyWizard';
 
 import styles from './StepConfirmAllInput.css';
 
@@ -68,14 +67,14 @@ const StepConfirmAllInput = ({ nextStep, wizardValues }: Props) => {
 
   return (
     <ActionForm
-      initialValues={{}}
+      defaultValues={{}}
       submit={ActionTypes.CREATE}
       success={ActionTypes.CREATE_SUCCESS}
       error={ActionTypes.CREATE_ERROR}
       transform={transform}
       onSuccess={() => nextStep(wizardValues)}
     >
-      {({ isSubmitting, status }) => (
+      {({ formState: { isSubmitting } }) => (
         <section className={styles.main}>
           <Heading
             appearance={{ size: 'medium', weight: 'bold', margin: 'none' }}
@@ -87,7 +86,6 @@ const StepConfirmAllInput = ({ nextStep, wizardValues }: Props) => {
           <div className={styles.finalContainer}>
             <CardRow cardOptions={options} values={wizardValues} />
           </div>
-          <FormStatus status={status} />
           <div className={styles.buttons}>
             <Button
               appearance={{ theme: 'primary', size: 'large' }}

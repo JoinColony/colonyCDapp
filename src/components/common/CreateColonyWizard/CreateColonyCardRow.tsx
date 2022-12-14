@@ -4,7 +4,7 @@ import React from 'react';
 import Heading from '~shared/Heading';
 import { useAppContext } from '~hooks';
 
-import { FormValues } from './CreateColonyWizard';
+import { FormValues } from '../CreateColonyWizard';
 
 import styles from './CreateColonyCardRow.css';
 

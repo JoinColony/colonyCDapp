@@ -6,7 +6,6 @@ import { Navigate } from 'react-router-dom';
 import { WizardStepProps } from '~shared/Wizard';
 import NavLink from '~shared/NavLink';
 
-import { groupedTransactionsAndMessages } from '~redux/selectors';
 import {
   getGroupStatus,
   findTransactionGroupByKey,
@@ -15,10 +14,10 @@ import {
   TransactionOrMessageGroups,
 } from '~frame/GasStation/transactionGroup';
 import { TRANSACTION_STATUSES } from '~types';
+import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { ActionTypes } from '~redux/index';
 
-import { FormValues } from './CreateColonyWizard';
-import ConfirmTransactions from './ConfirmTransactions';
+import { FormValues, ConfirmTransactions } from '../CreateColonyWizard';
 
 import styles from './StepConfirmTransactions.css';
 
