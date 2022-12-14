@@ -76,7 +76,7 @@ const ExtensionDetails = () => {
     !extensionData.isDeprecated;
   // @TODO: Check if the latest network extension version is greater than the current version
   const canExtensionBeUpgraded =
-    !!user?.profile && !isInstalledExtensionData(extensionData);
+    !!user?.profile && isInstalledExtensionData(extensionData);
 
   return (
     <div className={styles.main}>
