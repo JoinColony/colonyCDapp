@@ -74,6 +74,7 @@ const ExtensionDetails = () => {
     isInstalledExtensionData(extensionData) &&
     extensionData.uninstallable &&
     !extensionData.isDeprecated;
+  // @TODO: Check if the latest network extension version is greater than the current version
   const canExtensionBeUpgraded =
     !!user?.profile && !isInstalledExtensionData(extensionData);
 
