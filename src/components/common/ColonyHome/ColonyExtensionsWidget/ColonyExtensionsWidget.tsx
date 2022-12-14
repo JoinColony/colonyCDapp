@@ -1,17 +1,12 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { getExtensionHash } from '@colony/colony-js';
 
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import Heading from '~shared/Heading';
 import NavLink from '~shared/NavLink';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 
-import { useColonyContext } from '~hooks';
-import { useGetColonyExtensionsQuery } from '~gql';
-import { InstalledExtensionData } from '~types';
-import { notNull } from '~utils/arrays';
-import { supportedExtensionsConfig } from '~constants/extensions';
+import { useColonyContext, useExtensionsData } from '~hooks';
 
 import styles from './ColonyExtensionsWidget.css';
 
@@ -31,37 +26,7 @@ const MSG = defineMessages({
 const ColonyExtensions = () => {
   const { colony } = useColonyContext();
 
-  const { data, loading } = useGetColonyExtensionsQuery({
-    variables: {
-      colonyAddress: colony?.colonyAddress ?? '',
-    },
-    skip: !colony,
-  });
-  const colonyExtensions = data?.getColony?.extensions?.items.filter(notNull);
-
-  const installedExtensionsData = useMemo<InstalledExtensionData[]>(() => {
-    if (!colonyExtensions) {
-      return [];
-    }
-
-    return colonyExtensions
-      .map<InstalledExtensionData | null>((extension) => {
-        const extensionConfig = supportedExtensionsConfig.find(
-          (e) => getExtensionHash(e.extensionId) === extension?.hash,
-        );
-
-        if (!extensionConfig) {
-          // Unsupported extension
-          return null;
-        }
-
-        return {
-          ...extensionConfig,
-          ...extension,
-        };
-      })
-      .filter(notNull);
-  }, [colonyExtensions]);
+  const { installedExtensionsData, loading } = useExtensionsData();
 
   if (loading) {
     return (
