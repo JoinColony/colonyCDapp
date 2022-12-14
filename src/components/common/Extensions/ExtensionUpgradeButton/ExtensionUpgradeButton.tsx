@@ -9,7 +9,6 @@ import { ActionButton } from '~shared/Button';
 import { AnyExtensionData } from '~types';
 import { ActionTypes } from '~redux/index';
 import { mapPayload } from '~utils/actions';
-import { isInstalledExtensionData } from '~utils/extensions';
 import { useAppContext, useColonyContext } from '~hooks';
 
 interface Props {
@@ -42,8 +41,8 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
   if (!user?.profile) {
     return null;
   }
-
-  const canInstall = !isInstalledExtensionData(extensionData);
+  // @TODO check user permissions for canUpgrade - hasRoot(allUserRoles)
+  const canUpgrade = true;
 
   return (
     <ActionButton
@@ -54,7 +53,7 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
       transform={transform}
       text={{ id: 'button.upgrade' }}
       disabled={
-        !isSupportedColonyVersion || !extensionCompatible || !canInstall
+        !isSupportedColonyVersion || !extensionCompatible || !canUpgrade
       }
     />
   );
