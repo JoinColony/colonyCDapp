@@ -1,4 +1,4 @@
-import React, { ComponentType, createElement, forwardRef, Ref } from 'react';
+import { ComponentType, createElement, forwardRef, Ref } from 'react';
 
 type HookFn<H, P, R> = (hookParams: H, props: P) => R;
 
@@ -16,17 +16,8 @@ export interface ForwardedRefProps {
 }
 
 export const withForwardingRef = <Props extends Record<string, any>>(
-  BaseComponent: React.ComponentClass<Props>,
+  BaseComponent: ComponentType<Props>,
 ) =>
   forwardRef<ForwardedRefProps, Props>((props, ref) =>
     createElement(BaseComponent, { ...props, forwardedRef: ref }),
-  );
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const compose = (...funcs: Function[]) =>
-  funcs.reduce(
-    (a, b) =>
-      (...args) =>
-        a(b(...args)),
-    (arg) => arg,
   );

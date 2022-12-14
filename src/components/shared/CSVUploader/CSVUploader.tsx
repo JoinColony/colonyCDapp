@@ -75,7 +75,7 @@ const CSVUploader = ({
         accept: MIME_TYPES,
       }}
       customErrorMessage={error}
-      inputStatusAppearance={{ theme: 'minimal', textSpace: 'wrap' }}
+      appearance={{ theme: 'minimal', textSpace: 'wrap' }}
       itemComponent={CSVUploaderItem}
       handleError={handleUploadError}
       processingData={processingData}

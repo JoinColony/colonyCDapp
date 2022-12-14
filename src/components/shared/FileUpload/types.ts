@@ -1,5 +1,10 @@
 import { FieldArrayRenderProps } from 'formik';
-import { DropzoneOptions, DropzoneState, FileRejection } from 'react-dropzone';
+import {
+  Accept,
+  DropzoneOptions,
+  DropzoneState,
+  FileRejection,
+} from 'react-dropzone';
 import { ComponentType, ReactNode, Ref } from 'react';
 import {
   CoreInputProps,
@@ -34,7 +39,19 @@ export interface UploadItemComponentProps {
   remove: FieldArrayRenderProps['remove'];
   reset: FieldArrayRenderProps['form']['resetForm'];
   upload: UploadFn;
-  validate: ValidateFileFn;
+  handleError?: (...args: any[]) => Promise<any>;
+  processingData?: boolean;
+  handleProcessingData?: (...args: any) => void;
+}
+
+export interface HookFormUploadItemComponentProps {
+  accept: Accept;
+  error?: string;
+  key: string;
+  idx: number;
+  maxFileSize: number;
+  name: string;
+  upload: UploadFn;
   handleError?: (...args: any[]) => Promise<any>;
   processingData?: boolean;
   handleProcessingData?: (...args: any) => void;
@@ -79,7 +96,7 @@ export interface FileUploadProps extends CoreInputProps {
   /** Hide the status component beneath the file uploader. Useful if you wish to display the status elsewhere, e.g. outside the component. */
   hideStatus?: boolean;
   /** The component to render each item to be uploaded */
-  itemComponent?: ComponentType<UploadItemComponentProps>;
+  itemComponent?: ComponentType<HookFormUploadItemComponentProps>;
   /** Maximum number of files to accept */
   maxFilesLimit?: number;
   /** Max file size */

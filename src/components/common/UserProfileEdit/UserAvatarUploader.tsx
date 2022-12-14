@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { FileReaderFile } from '~shared/FileUpload';
 import AvatarUploader from '~shared/AvatarUploader';
 import UserAvatar from '~shared/UserAvatar';
-import { InputStatus } from '~shared/Fields';
 
 import { User } from '~types';
 import { useUpdateUserProfileMutation } from '~gql';
 import { useAppContext } from '~hooks';
 import { excludeTypenameKey } from '~utils/objects';
-
-import styles from './UserAvatarUploader.css';
 
 const displayName = 'common.UserProfileEdit.UserAvatarUploader';
 
@@ -19,10 +16,6 @@ const MSG = defineMessages({
   uploaderLabel: {
     id: `${displayName}.uploaderLabel`,
     defaultMessage: 'At least 250x250px, up to 1MB, .png or .svg',
-  },
-  avatarFileError: {
-    id: `${displayName}.avatarFileError`,
-    defaultMessage: 'This filetype is not allowed or file is too big',
   },
 });
 
@@ -36,16 +29,11 @@ const UserAvatarUploader = ({
   user: { walletAddress, profile },
 }: Props) => {
   const userProfile = excludeTypenameKey(profile);
-  const appContext = useAppContext();
+  const { updateUser } = useAppContext();
+  const [updateAvatar, { error }] = useUpdateUserProfileMutation();
 
-  const [updateAvatar, { error, called, loading }] =
-    useUpdateUserProfileMutation();
-
-  const [avatarFileError, setAvatarFileError] = useState(false);
-
-  const handleUpload = (fileData: FileReaderFile) => {
-    setAvatarFileError(false);
-    return updateAvatar({
+  const handleUpload = async (fileData: FileReaderFile) => {
+    const file = await updateAvatar({
       variables: {
         input: {
           id: walletAddress,
@@ -54,54 +42,37 @@ const UserAvatarUploader = ({
         },
       },
     });
+    updateUser?.(user.walletAddress);
+    return file;
   };
 
-  const remove = () =>
-    updateAvatar({
+  const remove = async () => {
+    await updateAvatar({
       variables: {
         input: { id: walletAddress, ...userProfile, avatar: null },
       },
     });
-
-  const handleError = async () => {
-    setAvatarFileError(true);
+    updateUser?.(user.walletAddress);
   };
 
-  useEffect(() => {
-    setAvatarFileError(!!error);
-  }, [error]);
-
-  useEffect(() => {
-    if (called && !loading && appContext.updateUser) {
-      appContext.updateUser(user.walletAddress);
-    }
-  }, [appContext, called, loading, user]);
-
   return (
-    <>
-      <AvatarUploader
-        label={MSG.uploaderLabel}
-        hasButtons
-        placeholder={
-          <UserAvatar
-            address={user.walletAddress}
-            user={user}
-            size="xl"
-            notSet={false}
-            preferThumbnail={false}
-          />
-        }
-        upload={handleUpload}
-        remove={remove}
-        isSet={!!user && !!user.profile && !!user.profile.avatar}
-        handleError={handleError}
-      />
-      {avatarFileError && (
-        <div className={styles.inputStatus}>
-          <InputStatus error={MSG.avatarFileError} />
-        </div>
-      )}
-    </>
+    <AvatarUploader
+      label={MSG.uploaderLabel}
+      hasButtons
+      renderPlaceholder={
+        <UserAvatar
+          address={user.walletAddress}
+          user={user}
+          size="xl"
+          notSet={false}
+          preferThumbnail={false}
+        />
+      }
+      upload={handleUpload}
+      remove={remove}
+      isSet={!!user.profile?.avatar}
+      uploadError={error}
+    />
   );
 };
 
