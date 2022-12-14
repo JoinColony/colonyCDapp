@@ -4,3 +4,4 @@ export {
   default as InputComponent,
   HookFormInputComponentProps,
 } from './InputComponent';
+export * from './types';

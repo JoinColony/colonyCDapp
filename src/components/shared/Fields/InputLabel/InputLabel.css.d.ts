@@ -1,12 +1,12 @@
 declare namespace InputLabelCssNamespace {
   export interface IInputLabelCss {
+    alignRight: string;
     colorSchemaDark: string;
     colorSchemaGrey: string;
     directionHorizontal: string;
     error: string;
     extra: string;
     help: string;
-    helpAlignRight: string;
     labelText: string;
     main: string;
     sizeMedium: string;

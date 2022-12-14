@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
-import { string, object } from 'yup';
-import { isConfusing } from '@colony/unicode-confusables-noascii';
+import { string, object, InferType } from 'yup';
 
 import Snackbar, { SnackbarType } from '~shared/Snackbar';
 import CopyableAddress from '~shared/CopyableAddress';
@@ -9,19 +8,18 @@ import UserMention from '~shared/UserMention';
 import Heading from '~shared/Heading';
 import {
   FieldSet,
-  Form,
-  FormStatus,
-  Input,
+  HookForm as Form,
+  HookFormInput as Input,
   InputLabel,
-  Textarea,
+  HookFormTextArea as Textarea,
 } from '~shared/Fields';
 import Button from '~shared/Button';
-import ConfusableWarning from '~shared/ConfusableWarning';
 
 import { useUpdateUserProfileMutation } from '~gql';
 import { User } from '~types';
 import { useAppContext } from '~hooks';
 import { excludeTypenameKey } from '~utils/objects';
+import { noSpaces } from '~utils/cleave';
 
 import styles from './UserProfileEdit.css';
 
@@ -72,29 +70,29 @@ const MSG = defineMessages({
     id: `${displayName}.websiteError`,
     defaultMessage: 'Enter a valid URL',
   },
+  emailError: {
+    id: `${displayName}.emailError`,
+    defaultMessage: 'Enter a valid email address',
+  },
 });
-
-interface FormValues {
-  email?: string;
-  displayName?: string;
-  bio?: string;
-  website?: string;
-  location?: string;
-}
 
 interface Props {
   user: User;
 }
 
 const validationSchema = object({
-  email: string().email().nullable(),
-  bio: string().nullable(),
-  displayName: string().nullable(),
-  location: string().nullable(),
+  email: string()
+    .default('')
+    .email(() => MSG.emailError),
+  bio: string().default(''),
+  displayName: string().default(''),
+  location: string().default(''),
   website: string()
-    .url(() => MSG.websiteError)
-    .nullable(),
-});
+    .default('')
+    .url(() => MSG.websiteError),
+}).defined();
+
+type FormValues = InferType<typeof validationSchema>;
 
 const UserMainSettings = ({
   user: { walletAddress, profile },
@@ -106,25 +104,30 @@ const UserMainSettings = ({
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
   const [editUser, { error, loading, called }] = useUpdateUserProfileMutation();
-  const onSubmit = useCallback(
-    (updatedProfile: FormValues) => {
-      const valuesToSubmit = {
-        email: updatedProfile.email === '' ? null : updatedProfile.email,
-      };
+  const defaultValues = {
+    email: profile?.email || '',
+    displayName: profile?.displayName || '',
+    bio: profile?.bio || '',
+    website: profile?.website || '',
+    location: profile?.location || '',
+  };
 
-      editUser({
-        variables: {
-          input: {
-            id: walletAddress,
-            ...userProfile,
-            ...updatedProfile,
-            ...valuesToSubmit,
-          },
+  const handleSubmit = (updatedProfile: FormValues) => {
+    const valuesToSubmit = {
+      email: updatedProfile.email === '' ? null : updatedProfile.email,
+    };
+
+    editUser({
+      variables: {
+        input: {
+          id: walletAddress,
+          ...userProfile,
+          ...updatedProfile,
+          ...valuesToSubmit,
         },
-      });
-    },
-    [walletAddress, editUser, userProfile],
-  );
+      },
+    });
+  };
 
   useEffect(() => {
     if (called && !loading && updateUser) {
@@ -140,17 +143,11 @@ const UserMainSettings = ({
         text={MSG.heading}
       />
       <Form<FormValues>
-        initialValues={{
-          email: profile?.email || '',
-          displayName: profile?.displayName || '',
-          bio: profile?.bio || '',
-          website: profile?.website || '',
-          location: profile?.location || '',
-        }}
-        onSubmit={onSubmit}
+        defaultValues={defaultValues}
+        onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ status, isSubmitting, dirty, isValid, values }) => (
+        {({ formState: { isSubmitting, isDirty, isValid } }) => (
           <div className={styles.main}>
             <FieldSet>
               <InputLabel label={MSG.labelWallet} />
@@ -172,15 +169,15 @@ const UserMainSettings = ({
                 label={MSG.labelEmail}
                 name="email"
                 dataTest="userSettingsEmail"
+                formattingOptions={noSpaces}
+                value={defaultValues.email}
               />
               <Input
                 label={MSG.labelName}
                 name="displayName"
                 dataTest="userSettingsName"
+                showConfusable
               />
-              {values.displayName && isConfusing(values.displayName) && (
-                <ConfusableWarning />
-              )}
               <Textarea
                 label={MSG.labelBio}
                 name="bio"
@@ -191,6 +188,8 @@ const UserMainSettings = ({
                 label={MSG.labelWebsite}
                 name="website"
                 dataTest="userSettingsWebsite"
+                formattingOptions={noSpaces}
+                value={defaultValues.website}
               />
               <Input
                 label={MSG.labelLocation}
@@ -205,10 +204,9 @@ const UserMainSettings = ({
                 loading={isSubmitting}
                 dataTest="userSettingsSubmit"
                 onClick={() => setShowSnackbar(true)}
-                disabled={!dirty || !isValid}
+                disabled={!isDirty || !isValid}
               />
             </FieldSet>
-            <FormStatus status={status} />
             <Snackbar
               show={showSnackbar}
               setShow={setShowSnackbar}

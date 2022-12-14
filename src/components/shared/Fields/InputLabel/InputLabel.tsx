@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
-import { SimpleMessageValues } from '~types';
+import { Message, SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import { InputComponentAppearance as Appearance } from '../Input';
@@ -26,7 +26,7 @@ interface Props {
   inputId?: string;
 
   /** Label text */
-  label: string | MessageDescriptor;
+  label: Message;
 
   /** Values for label text (react-intl interpolation) */
   labelValues?: SimpleMessageValues;

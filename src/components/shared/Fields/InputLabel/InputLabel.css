@@ -56,7 +56,7 @@
   color: var(--text);
 }
 
-.helpAlignRight {
+.alignRight {
   display: flex;
   justify-content: space-between;
   align-items: baseline;

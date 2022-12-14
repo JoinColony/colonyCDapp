@@ -1,1 +1,1 @@
-export { default, Appearance as InputStatusAppearance } from './InputStatus';
+export { default } from './InputStatus';
