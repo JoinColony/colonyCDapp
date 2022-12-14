@@ -3,46 +3,52 @@ import { defineMessages } from 'react-intl';
 
 import Heading from '~shared/Heading';
 import { Checkbox } from '~shared/Fields';
-import TokenIcon from '~dashboard/HookedTokenIcon';
-import { AnyToken } from '~data/index';
+import TokenIcon from '~shared/TokenIcon';
+import { Token } from '~types';
 
 import styles from './TokenItem.css';
 
+const displayName = 'TokenEditDialog.TokenItem';
+
 const MSG = defineMessages({
   unknownToken: {
-    id: 'core.TokenEditDialog.unknownToken',
+    id: `${displayName}.unknownToken`,
     defaultMessage: 'Unknown Token',
   },
 });
 
 interface Props {
-  token: AnyToken;
+  token: Token;
   disabled?: boolean;
 }
 
-const TokenItem = ({ token, disabled = false }: Props) => {
+const TokenItem = ({
+  token: { symbol, name, tokenAddress: address },
+  token,
+  disabled = false,
+}: Props) => {
   return (
     <div className={styles.main} data-test="tokenEditItem">
       <div className={styles.tokenChoice}>
         <Checkbox
           name="selectedTokenAddresses"
-          value={token.address}
+          value={address}
           className={styles.checkbox}
           disabled={disabled}
         />
-        <TokenIcon token={token} name={token.name || undefined} size="xs" />
+        <TokenIcon token={token} size="xs" />
         <span className={styles.tokenChoiceSymbol}>
           <Heading
-            text={token.symbol || token.name || MSG.unknownToken}
+            text={symbol || name || MSG.unknownToken}
             appearance={{ size: 'normal', margin: 'none', theme: 'dark' }}
           />
-          {(!!token.symbol && token.name) || token.address}
+          {(!!symbol && name) || address}
         </span>
       </div>
     </div>
   );
 };
 
-TokenItem.displayName = 'core.TokenEditDialog.TokenItem';
+TokenItem.displayName = displayName;
 
 export default TokenItem;

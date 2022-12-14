@@ -199,6 +199,8 @@ type Token @model {
   type: TokenType @index(name: "byType", queryField: "getTokensByType")
   colonies: [Colony] @manyToMany(relationName: "ColonyTokens")
   users: [User] @manyToMany(relationName: "UserTokens")
+  avatar: String
+  thumbnail: String
   meta: Metadata
 }
 

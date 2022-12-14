@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { Address, Colony } from '~types';
-import Avatar, { Props as AvatarProps } from '~shared/Avatar';
+import Avatar, { AvatarProps } from '~shared/Avatar';
 import NavLink from '~shared/NavLink';
 
 export interface Props
-  extends Pick<AvatarProps, 'avatarURL' | 'className' | 'notSet' | 'size'> {
+  extends Pick<AvatarProps, 'className' | 'notSet' | 'size'> {
   /** Address of the colony for identicon fallback */
   colonyAddress: Address;
 
@@ -22,25 +22,20 @@ const displayName = 'ColonyAvatar';
 
 const ColonyAvatar = ({
   colonyAddress,
-  avatarURL,
-  className,
   colony,
-  notSet,
-  size,
   showLink,
   preferThumbnail = true,
+  ...avatarProps
 }: Props) => {
   const { profile, name } = colony || {};
   const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
   const colonyAvatar = (
     <Avatar
-      avatarURL={avatarURL || imageString || undefined}
-      className={className}
-      notSet={notSet}
+      avatar={imageString}
       placeholderIcon="at-sign-circle"
       seed={colonyAddress && colonyAddress.toLowerCase()}
-      size={size}
       title={profile?.displayName || name || colonyAddress}
+      {...avatarProps}
     />
   );
   if (showLink && name) {

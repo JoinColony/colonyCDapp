@@ -1,10 +1,9 @@
 import React, { ReactNode, Dispatch, SetStateAction } from 'react';
 
 import Popover from '~shared/Popover';
-// import TokenIcon from '~dashboard/HookedTokenIcon';
+import TokenIcon from '~shared/TokenIcon';
 import Numeral from '~shared/Numeral';
 // import { TokenBalancesForDomainsQuery } from '~data/index';
-import Avatar from '~shared/Avatar';
 import { Address, Token } from '~types';
 // import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
@@ -43,16 +42,7 @@ const ColonyTotalFundsPopover = ({
               >
                 <div className={styles.token}>
                   <div className={styles.tokenIconContainer}>
-                    {/* <TokenIcon
-                      className={styles.tokenIcon}
-                      token={token}
-                      name={token.name || token.tokenAddress}
-                    /> */}
-                    <Avatar
-                      seed={token.tokenAddress}
-                      title={token.name || token.tokenAddress}
-                      placeholderIcon="circle-close"
-                    />
+                    <TokenIcon className={styles.tokenIcon} token={token} />
                   </div>
                   <div
                     className={

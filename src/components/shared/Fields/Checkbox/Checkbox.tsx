@@ -1,13 +1,6 @@
-import React, {
-  ReactNode,
-  SyntheticEvent,
-  useState,
-  useCallback,
-  useMemo,
-} from 'react';
+import React, { ReactNode, SyntheticEvent, useState, useCallback } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { nanoid } from 'nanoid';
-
 import { PopperOptions } from 'react-popper-tooltip';
 
 import InputLabel from '~shared/Fields/InputLabel';
@@ -41,7 +34,7 @@ interface Props {
   /** Values for help text (react-intl interpolation) */
   helpValues?: SimpleMessageValues;
   /** Label text */
-  label: string | MessageDescriptor;
+  label?: string | MessageDescriptor;
   /** Values for label text (react-intl interpolation) */
   labelValues?: SimpleMessageValues;
   /** Input field name (form variable) */
