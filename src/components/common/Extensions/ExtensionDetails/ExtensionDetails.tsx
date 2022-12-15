@@ -75,7 +75,7 @@ const ExtensionDetails = () => {
     extensionData.uninstallable &&
     !extensionData.isDeprecated;
   // @TODO: Check if the latest network extension version is greater than the current version
-  const canExtensionBeUpgraded =
+  const canBeUpgraded =
     !!user?.profile && isInstalledExtensionData(extensionData);
 
   return (
@@ -140,7 +140,7 @@ const ExtensionDetails = () => {
         extensionData={extensionData}
         canBeDeprecated={canExtensionBeDeprecated}
         canBeUninstalled={canExtensionBeUninstalled}
-        canExtensionBeUpgraded={canExtensionBeUpgraded}
+        canBeUpgraded={canBeUpgraded}
       />
     </div>
   );
