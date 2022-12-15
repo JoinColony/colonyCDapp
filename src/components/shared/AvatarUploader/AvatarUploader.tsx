@@ -3,8 +3,9 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { ApolloError, FetchResult } from '@apollo/client';
 
 import { HookForm as Form, InputStatus } from '~shared/Fields';
-import FileUpload, { FileReaderFile } from '~shared/FileUpload';
 import { FileUploadProps } from '~shared/FileUpload/types';
+import FileUpload from '~shared/FileUpload';
+import { FileReaderFile } from '~utils/fileReader/types';
 
 import Button from '../Button';
 import AvatarUploadItem from './AvatarUploadItem';

@@ -1,25 +1,27 @@
-const fileReaderFactory = (options: any) => {
-  function defaultFileReadingFunction(reader, file) {
+import { FileReaderFile, FileReaderOptions } from './types';
+
+const fileReaderFactory = (options: Partial<FileReaderOptions>) => {
+  function defaultFileReadingFunction(reader: FileReader, file: File) {
     reader.readAsDataURL(file);
   }
 
-  const config = {
+  const config: FileReaderOptions = {
     maxFileSize: 1024 * 1024, // that's about 1MB
     maxFilesLimit: 10,
-    allowedTypes: [],
+    allowedTypes: {},
     fileReadingFn: defaultFileReadingFunction,
     ...options,
   };
 
-  function hasValidType(file) {
+  function hasValidType(file: File) {
     return !Object.keys(config.allowedTypes).includes(file.type);
   }
 
-  function hasInvalidFileSize(file) {
+  function hasInvalidFileSize(file: File) {
     return file && config.maxFileSize && file.size > config.maxFileSize;
   }
 
-  function readFilePromise(file): Promise<any> {
+  function readFilePromise(file: File): Promise<FileReaderFile | Error> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (evt: any) => {
@@ -40,14 +42,14 @@ const fileReaderFactory = (options: any) => {
           lastModified,
           uploadDate: Date.now(),
           data: evt.target.result,
-        });
+        } as FileReaderFile);
       };
 
       config.fileReadingFn(reader, file);
     });
   }
 
-  return async function fileReader(files: any[]) {
+  return async function fileReader(files: File[]) {
     if (!files) {
       throw new Error(
         'An unexpected input was given, should receive files to upload.',
@@ -70,7 +72,7 @@ const fileReaderFactory = (options: any) => {
 
     const allowedTypesValidationErrors = files.filter(hasValidType);
     if (allowedTypesValidationErrors && allowedTypesValidationErrors.length) {
-      const allowedTypes = config.allowedTypes.join(', ');
+      const allowedTypes = Object.keys(config.allowedTypes).join(', ');
       throw new Error(
         `Only types: ${allowedTypes} are allowed to be uploaded.`,
       );

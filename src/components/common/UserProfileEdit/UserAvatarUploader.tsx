@@ -1,7 +1,6 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { FileReaderFile } from '~shared/FileUpload';
 import AvatarUploader from '~shared/AvatarUploader';
 import UserAvatar from '~shared/UserAvatar';
 
@@ -9,6 +8,7 @@ import { User } from '~types';
 import { useUpdateUserProfileMutation } from '~gql';
 import { useAppContext } from '~hooks';
 import { excludeTypenameKey } from '~utils/objects';
+import { FileReaderFile } from '~utils/fileReader/types';
 
 const displayName = 'common.UserProfileEdit.UserAvatarUploader';
 

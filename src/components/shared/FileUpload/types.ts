@@ -11,15 +11,7 @@ import {
   InputComponentAppearance as Appearance,
 } from '~shared/Fields';
 import { Message } from '~types';
-
-export interface FileReaderFile {
-  name: string;
-  type: string;
-  size: number;
-  lastModified: string;
-  uploadDate: Date;
-  data: string;
-}
+import { FileReaderFile } from '~utils/fileReader/types';
 
 export interface UploadFile {
   file: File;
