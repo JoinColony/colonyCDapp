@@ -22,11 +22,11 @@ const MSG = defineMessages({
     defaultMessage: 'Status',
   },
   installedBy: {
-    id: 'dashboard.Extensions.ExtensionDetails.installedBy',
+    id: `${displayName}.ExtensionDetails.installedBy`,
     defaultMessage: 'Installed by',
   },
   dateInstalled: {
-    id: 'dashboard.Extensions.ExtensionDetails.dateInstalled',
+    id: `${displayName}.dateInstalled`,
     defaultMessage: 'Date installed',
   },
   buttonDeprecate: {
