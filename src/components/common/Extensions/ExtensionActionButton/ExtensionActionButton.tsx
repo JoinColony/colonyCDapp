@@ -1,19 +1,15 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
+import { useColonyContext } from '~hooks';
 
 import { ActionTypes } from '~redux';
 import { ActionButton, IconButton } from '~shared/Button';
 import { AnyExtensionData } from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
-import { useColonyContext } from '~hooks';
 
 const displayName = 'common.Extensions.ExtensionActionButton';
 
 const MSG = defineMessages({
-  enable: {
-    id: `${displayName}.enable`,
-    defaultMessage: 'Enable',
-  },
   install: {
     id: `${displayName}.install`,
     defaultMessage: 'Install',
