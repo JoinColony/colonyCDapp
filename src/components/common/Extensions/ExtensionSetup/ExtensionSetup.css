@@ -1,0 +1,172 @@
+@value query700 from '~styles/queries.css';
+
+.main {
+  max-width: 600px;
+}
+
+.main a {
+  font-weight: var(--weight-normal);
+  color: var(--colony-blue);
+}
+
+.main label {
+  color: var(--dark);
+}
+
+.extensionDescription {
+  margin-top: 30px;
+}
+
+.descriptionExtended {
+  white-space: pre-line;
+}
+
+.input {
+  margin-top: 40px;
+  max-width: 340px;
+  position: relative;
+  white-space: pre-line;
+}
+
+.input label {
+  font-size: var(--size-smallish);
+}
+
+.input input {
+  font-size: 14px;
+  font-weight: var(--weight-normal);
+  text-align: right;
+  color: var(--grey-2);
+}
+
+.addressInput input {
+  font-size: 13px;
+}
+
+.inputsDescription {
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  line-height: 18px;
+  color: var(--temp-grey-blue-7);
+}
+
+.inputContainer {
+  margin-bottom: 40px;
+}
+
+.inputContainer > div > div > :nth-child(1) {
+  margin-bottom: 0;
+}
+
+.complementaryLabel {
+  position: absolute;
+  top: 26px;
+  left: 360px;
+  color: var(--grey-2);
+}
+
+.descriptionExample {
+  font-style: italic;
+}
+
+.textArea {
+  margin-top: 43px;
+}
+
+.textArea textarea {
+  resize: vertical;
+}
+
+.textAreaDescription {
+  composes: inputsDescription;
+  margin: -1px -8px 0 0;
+}
+
+.tokenSelectorContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  height: 42px;
+  line-height: 18px;
+  color: var(--dark);
+}
+
+.tokenSelectorContainer > p {
+  max-width: 280px;
+}
+
+.tokenAddessLink {
+  font-size: var(--size-smallish);
+  font-weight: var(--weight-bold);
+  line-height: 18px;
+  color: var(--dark);
+}
+
+.tokenAddessLink > a {
+  margin-left: 5px;
+}
+
+.tokenAddessLink > div {
+  margin-bottom: 20px;
+}
+
+.extraParams {
+  margin-bottom: 25px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid color-mod(var(--temp-grey-blue-7) alpha(15%));
+}
+
+.divider {
+  margin-bottom: 30px;
+  border-bottom: 1px solid color-mod(var(--temp-grey-blue-7) alpha(15%));
+}
+
+.tokenErrors {
+  margin-top: 10px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  color: var(--danger);
+}
+
+@media screen and query700 {
+  .main {
+    padding: 0 14px;
+  }
+
+  .main h3 {
+    padding: 0;
+  }
+
+  .tokenSelectorContainer {
+    height: auto;
+  }
+
+  .input {
+    max-width: none;
+  }
+
+  /* For Coin Machine Setup */
+  .inputContainer .extraParams:nth-child(3) .tokenSelectorContainer {
+    margin-top: 10px;
+  }
+
+  .inputWrapper {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+  }
+
+  .inputWrapper > div {
+    width: 100%;
+  }
+
+  .complementaryLabel {
+    position: static;
+  }
+
+  .textArea label {
+    column-gap: 10px;
+  }
+}

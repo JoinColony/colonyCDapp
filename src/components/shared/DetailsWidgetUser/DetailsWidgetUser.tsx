@@ -1,9 +1,9 @@
 import React from 'react';
 
-import HookedUserAvatar from '~users/HookedUserAvatar';
+import HookedUserAvatar from '~shared/HookedUserAvatar';
 import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
-import { useUser, Colony } from '~data/index';
+import { useUser, Colony } from '~shared/index';
 import { Address } from '~types';
 
 import styles from './DetailsWidgetUser.css';

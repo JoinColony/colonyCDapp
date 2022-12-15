@@ -130,6 +130,8 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     descriptionShort: MSG.oneTxPaymentDescriptionShort,
     descriptionLong: MSG.oneTxPaymentDescriptionLong,
     neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
+    currentVersion: 3,
+    createdAt: 1557698400000, // @NOTE: This is for testing only, value should be checked
     // @NOTE: This is for testing only, should be set to false afterwards
     uninstallable: true,
   },
@@ -138,6 +140,8 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     name: MSG.votingReputationName,
     descriptionShort: MSG.votingReputationDescriptionShort,
     descriptionLong: MSG.votingReputationDescriptionLong,
+    currentVersion: 7,
+    createdAt: 1603915271852, // @NOTE: This is for testing only, value should be checked
     neededColonyPermissions: [
       ColonyRole.Root,
       ColonyRole.Administration,

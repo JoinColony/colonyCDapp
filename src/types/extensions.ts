@@ -30,6 +30,8 @@ export interface ExtensionConfig {
   name: MessageDescriptor;
   descriptionShort: MessageDescriptor;
   descriptionLong: MessageDescriptor;
+  currentVersion: number;
+  createdAt: number;
   neededColonyPermissions: ColonyRole[];
   initializationParams?: ExtensionInitParams[];
   uninstallable: boolean;
