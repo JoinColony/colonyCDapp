@@ -9,7 +9,7 @@ import ClickableHeading from '~shared/ClickableHeading';
 import InviteLinkButton from '~shared/Button/InviteLinkButton';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { useAvatarDisplayCounter, useAppContext } from '~hooks';
+import { useAvatarDisplayCounter } from '~hooks';
 import { Colony, Contributor, Watcher } from '~types';
 
 import styles from './ColonyMembersWidget.css';
@@ -72,7 +72,7 @@ const MembersSubsection = ({
   currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
   maxAvatars = MAX_AVATARS,
 }: Props) => {
-  const { user } = useAppContext();
+  // const { user } = useAppContext();
   // const hasRegisteredProfile = user?.name;
   // const canAdministerComments =
   //   userHasAccountRegistered &&
@@ -125,7 +125,7 @@ const MembersSubsection = ({
     [isContributorsSubsection, membersPageRoute, members, name],
   );
 
-  if (!members?.length) {
+  if (!members) {
     return (
       <div className={styles.main}>
         {setHeading(false)}
@@ -149,7 +149,7 @@ const MembersSubsection = ({
               size="xs"
               // banned={canAdministerComments && banned}
               showInfo
-              user={member.user}
+              user={member?.user}
               popperOptions={{
                 placement: 'bottom',
                 showArrow: false,
