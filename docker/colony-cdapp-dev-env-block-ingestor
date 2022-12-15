@@ -16,14 +16,19 @@ WORKDIR /colonyCDappBackend
 # Block Ingestor
 #
 
-# Clone block ingestor repo
-RUN git clone https://github.com/JoinColony/block-ingestor.git --depth 1
-WORKDIR /colonyCDappBackend/block-ingestor
+# # Clone block ingestor repo
+# RUN git clone https://github.com/JoinColony/block-ingestor.git --depth 1
+# WORKDIR /colonyCDappBackend/block-ingestor
 
-RUN echo $BLOCK_INGESTOR_HASH
-# Fetch the correct network repo commit/branch/tag
-RUN git fetch origin $BLOCK_INGESTOR_HASH --depth 1
-RUN git checkout $BLOCK_INGESTOR_HASH
+# RUN echo $BLOCK_INGESTOR_HASH
+# # Fetch the correct network repo commit/branch/tag
+# RUN git fetch origin $BLOCK_INGESTOR_HASH --depth 1
+# RUN git checkout $BLOCK_INGESTOR_HASH
+
+# TEMP: Checkout extension porting branch
+RUN git clone https://github.com/JoinColony/block-ingestor.git
+WORKDIR /colonyCDappBackend/block-ingestor
+RUN git checkout origin/port/extensions
 
 # Add env file here (as opposed to at the start of the script), since we
 # need to add it after the repo has been cloned, otherwise cloning will fail
