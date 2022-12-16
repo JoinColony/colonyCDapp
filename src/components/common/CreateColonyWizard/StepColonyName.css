@@ -6,20 +6,8 @@
   width: 460px;
 }
 
-.paragraph {
-  margin-top: 1.5em;
-  font-size: var(--size-medium);
-}
-
 .nameForm {
   margin-top: 40px;
-}
-
-.buttons {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: 13px;
 }
 
 .reminder {
@@ -35,6 +23,10 @@
 
 .tooltipContent {
   min-width: 280px;
+}
+
+.submitButton {
+  margin-top: 13px;
 }
 
 @media screen and query700 {

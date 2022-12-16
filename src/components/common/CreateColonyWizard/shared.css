@@ -1,0 +1,22 @@
+@value query700 from '~styles/queries.css';
+
+.submitButton {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 48px;
+}
+
+.paragraph {
+  margin-top: 1.5em;
+  font-size: var(--size-medium);
+}
+
+.truncated {
+  word-break: break-word;
+}
+
+@media screen and query700 {
+  .submitButton {
+    margin-top: 25px;
+  }
+}

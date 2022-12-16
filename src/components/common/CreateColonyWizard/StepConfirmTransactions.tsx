@@ -17,7 +17,8 @@ import { TRANSACTION_STATUSES } from '~types';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { ActionTypes } from '~redux/index';
 
-import { FormValues, ConfirmTransactions } from '../CreateColonyWizard';
+import { FormValues } from '../CreateColonyWizard';
+import ConfirmTransactions from './ConfirmTransactions';
 
 import styles from './StepConfirmTransactions.css';
 
@@ -62,6 +63,18 @@ const RecoverableDeploymentError = ({
 
 type Props = Pick<WizardStepProps<FormValues>, 'wizardValues'>;
 
+type NewestGroup = Array<{
+  methodName: string;
+  status: typeof TRANSACTION_STATUSES;
+}>;
+
+const getContractDeploymentStatus = (newestGroup: NewestGroup) =>
+  !!newestGroup.find(
+    ({ methodName = '', status = '' }) =>
+      methodName.includes('createColony') &&
+      status === TRANSACTION_STATUSES.SUCCEEDED,
+  );
+
 const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
   const [
     existsRecoverableDeploymentError,
@@ -80,24 +93,15 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
      * Find out if the deployment failed, and we can actually recover it
      * Show an error message based on that
      */
-    const colonyContractWasDeployed = (
-      newestGroup as unknown as Array<{
-        methodName: string;
-        status: typeof TRANSACTION_STATUSES;
-      }>
-    ).find(
-      ({ methodName = '', status = '' }) =>
-        methodName.includes('createColony') &&
-        status === TRANSACTION_STATUSES.SUCCEEDED,
+    const colonyContractWasDeployed = getContractDeploymentStatus(
+      newestGroup as unknown as NewestGroup,
     );
     const deploymentHasErrors =
       getGroupStatus(newestGroup) === TRANSACTION_STATUSES.FAILED;
     if (colonyContractWasDeployed && deploymentHasErrors) {
       setExistsRecoverableDeploymentError(true);
     } else if (existsRecoverableDeploymentError) {
-      /*
-       * Hide the error if the user pressed the retry button
-       */
+      // Hide the error if the user pressed the retry button
       setExistsRecoverableDeploymentError(false);
     }
   }, [

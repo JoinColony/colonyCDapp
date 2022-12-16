@@ -1,17 +1,16 @@
 declare namespace StepColonyNameCssNamespace {
   export interface IStepColonyNameCss {
-    buttons: string;
     iconContainer: string;
     main: string;
     mappings: string;
     nameForm: string;
     names: string;
-    paragraph: string;
     query700: string;
     reminder: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;
+    submitButton: string;
     tooltipContent: string;
     version: string;
   }

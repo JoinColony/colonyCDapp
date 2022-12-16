@@ -48,19 +48,19 @@ export type AddressOrENSName = Address | ENSName;
 type PrimitiveType = string | number | boolean | null | undefined | Date;
 
 /**
- * For messages that cannot contain JSX - use with `Intl.formatMessage()`;
+ * For messages that cannot contain JSX
  */
 export type SimpleMessageValues = Record<string, PrimitiveType>;
 
 /**
- * For messages that contain JSX - use with FormattedMessage
+ * For messages that contain JSX
  */
 export type ComplexMessageValues = Record<string, ReactNode>;
 
 /**
- * For messages that contain both JSX and Primitive values - use with FormattedMessage directly
+ * For messages that contain both JSX and Primitive values
  */
-export type UniversalMessageValues = Record<string, PrimitiveType | ReactNode>;
+export type UniversalMessageValues = SimpleMessageValues | ComplexMessageValues;
 
 export type Message = MessageDescriptor | string;
 

@@ -1,23 +1,23 @@
-import React, { HTMLAttributes, ReactNode, useMemo } from 'react';
-import { MessageDescriptor, useIntl } from 'react-intl';
+import React, { HTMLAttributes, ReactNode } from 'react';
 
-import { ComplexMessageValues } from '~types';
+import { Message, UniversalMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
+import { formatText } from '~utils/intl';
 
 import styles from './Heading.css';
 
 const displayName = 'Heading';
 
-export type Appearance = {
+export type HeadingAppearance = {
   theme?: 'primary' | 'dark' | 'invert' | 'uppercase' | 'grey';
   margin?: 'none' | 'small' | 'double';
   size: 'tiny' | 'small' | 'normal' | 'medium' | 'large' | 'huge';
   weight?: 'thin' | 'medium' | 'bold';
 };
 
-interface Props extends HTMLAttributes<HTMLHeadingElement> {
+export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
   /** Appearance object */
-  appearance?: Appearance;
+  appearance?: HeadingAppearance;
 
   /** String that will hard set the heading element to render */
   tagName?: string;
@@ -26,10 +26,10 @@ interface Props extends HTMLAttributes<HTMLHeadingElement> {
   children?: ReactNode;
 
   /** A string or a `MessageDescriptor` that make up the headings's text */
-  text?: MessageDescriptor | string;
+  text?: Message;
 
   /** Values for text (react-intl interpolation) */
-  textValues?: ComplexMessageValues;
+  textValues?: UniversalMessageValues;
 }
 
 const Heading = ({
@@ -39,8 +39,7 @@ const Heading = ({
   text,
   textValues,
   ...props
-}: Props) => {
-  const { formatMessage } = useIntl();
+}: HeadingProps) => {
   const { size } = appearance;
   const HeadingElement: any =
     tagName ||
@@ -52,25 +51,15 @@ const Heading = ({
       small: 'h5',
       tiny: 'h6',
     }[size || 'huge'];
-  const value = useMemo(() => {
-    if (children) {
-      return children;
-    }
-    if (!text) {
-      return '';
-    }
-    if (typeof text === 'string') {
-      return text;
-    }
-    return formatMessage(text, textValues);
-  }, [children, formatMessage, text, textValues]);
+
+  const value = formatText(text, textValues) || '';
   return (
     <HeadingElement // If `value` is of type `Node` (i.e. children prop), don't add broken title.
       title={typeof value === 'string' ? value : null}
       className={getMainClasses(appearance, styles)}
       {...props}
     >
-      {value}
+      {children || value}
     </HeadingElement>
   );
 };

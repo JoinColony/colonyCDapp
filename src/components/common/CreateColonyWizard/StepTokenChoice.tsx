@@ -1,15 +1,15 @@
 import React from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
-import Heading from '~shared/Heading';
-import ExternalLink from '~shared/ExternalLink';
 import DecisionHub from '~shared/DecisionHub';
 import { HookForm as Form } from '~shared/Fields';
-import { multiLineTextEllipsis } from '~utils/strings';
+import { Heading3, Heading4, Heading6 } from '~shared/Heading';
 import { SELECT_NATIVE_TOKEN_INFO as LEARN_MORE_URL } from '~constants';
+import ExternalLink from '~shared/ExternalLink';
 
 import { FormValues, Step2 } from '../CreateColonyWizard';
+import { TruncatedName } from './shared';
 
 import styles from './StepTokenChoice.css';
 
@@ -22,18 +22,13 @@ const MSG = defineMessages({
   },
   subtitle: {
     id: `${displayName}.subtitle`,
-    defaultMessage: `You earn reputation in a colony when it pays you in its\
-      native token.`,
+    defaultMessage: `You earn reputation in a colony when it pays you in its native token.`,
   },
   subtitleWithExample: {
     id: `${displayName}.subtitleWithExample`,
     defaultMessage: `Leia completes a task for 5 FOX in the ShapeShift colony.
-    Because FOX is the native token of the ShapeShift colony,
-    she also earns 5 reputation in that colony.`,
-  },
-  button: {
-    id: `${displayName}.button`,
-    defaultMessage: 'Back',
+      Because FOX is the native token of the ShapeShift colony,
+      she also earns 5 reputation in that colony.`,
   },
   notSure: {
     id: `${displayName}.notSure`,
@@ -84,10 +79,65 @@ const options = [
   },
 ];
 
+interface InstructionsProps {
+  colonyDisplayName: string;
+}
+
+const Instructions = ({ colonyDisplayName }: InstructionsProps) => {
+  const headingText = { colony: TruncatedName(colonyDisplayName) };
+  return (
+    <div className={styles.instructions}>
+      <Heading3 text={MSG.heading} textValues={headingText} />
+      <Heading4 text={MSG.subtitle} />
+      <Heading4
+        text={MSG.subtitleWithExample}
+        className={styles.subtitleWithExample}
+      />
+    </div>
+  );
+};
+
+const LearnMore = () => (
+  <div className={styles.learnMore}>
+    <Heading6
+      appearance={{
+        margin: 'none',
+      }}
+      text={MSG.notSure}
+    />
+    <ExternalLink
+      className={styles.link}
+      text={{ id: 'text.learnMore' }}
+      href={LEARN_MORE_URL}
+    />
+  </div>
+);
+
 type Props = Pick<
   WizardStepProps<FormValues, Step2>,
   'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'
 >;
+
+const handleSubmit = (
+  values: Step2,
+  setStepsValues: Props['setStepsValues'],
+  nextStep: Props['nextStep'],
+) => {
+  setStepsValues((stepsValues) => {
+    const oldStep2: Partial<Step2> = stepsValues[1];
+    /*
+     * If we change choice, reset step 3 (index 2) form state.
+     * This is so the state from Select / Create token doesn't spill over into the other.
+     */
+    if (oldStep2 && oldStep2.tokenChoice !== values.tokenChoice) {
+      const steps = [...stepsValues];
+      steps[2] = {};
+      return steps;
+    }
+    return stepsValues;
+  });
+  nextStep(values);
+};
 
 const StepTokenChoice = ({
   nextStep,
@@ -95,74 +145,15 @@ const StepTokenChoice = ({
   wizardValues: { displayName: colonyName },
   setStepsValues,
 }: Props) => {
-  const handleSubmit = (values: Step2) => {
-    setStepsValues((stepsValues) => {
-      const oldStep2: Partial<Step2> = stepsValues[1];
-      /*
-       * If we change choice, reset step 3 (index 2) form state.
-       * This is so the state from Select / Create token doesn't spill over into the other.
-       */
-      if (oldStep2 && oldStep2.tokenChoice !== values.tokenChoice) {
-        const steps = [...stepsValues];
-        steps[2] = {};
-        return steps;
-      }
-      return stepsValues;
-    });
-    nextStep(values);
-  };
-
   return (
-    <Form<Step2> onSubmit={handleSubmit} defaultValues={defaultValues}>
+    <Form<Step2>
+      onSubmit={(values) => handleSubmit(values, setStepsValues, nextStep)}
+      defaultValues={defaultValues}
+    >
       <section className={styles.content}>
-        <div className={styles.title}>
-          <Heading appearance={{ size: 'medium', weight: 'bold' }}>
-            <FormattedMessage
-              {...MSG.heading}
-              values={{
-                /*
-                 * @NOTE We need to use a JS string truncate here, rather then CSS,
-                 * since we're dealing with a string that needs to be truncated,
-                 * inside a sentence that does not
-                 */
-                colony: (
-                  <span title={colonyName}>
-                    {multiLineTextEllipsis(colonyName, 120)}
-                  </span>
-                ),
-              }}
-            />
-          </Heading>
-        </div>
-        <div className={styles.subtitle}>
-          <Heading
-            appearance={{ size: 'normal', weight: 'thin' }}
-            text={MSG.subtitle}
-          />
-        </div>
-        <div className={styles.subtitleWithExampleBox}>
-          <Heading
-            className={styles.subtitleWithExample}
-            appearance={{ size: 'normal', weight: 'thin' }}
-            text={MSG.subtitleWithExample}
-          />
-        </div>
+        <Instructions colonyDisplayName={colonyName} />
         <DecisionHub name="tokenChoice" options={options} />
-        <div className={styles.titleAndButton}>
-          <Heading
-            appearance={{
-              size: 'tiny',
-              weight: 'bold',
-              margin: 'none',
-            }}
-            text={MSG.notSure}
-          />
-          <ExternalLink
-            className={styles.link}
-            text={{ id: 'text.learnMore' }}
-            href={LEARN_MORE_URL}
-          />
-        </div>
+        <LearnMore />
       </section>
     </Form>
   );

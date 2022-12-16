@@ -43,6 +43,8 @@ module.exports = {
     'no-undef': 'off',
     // TypeScript overloads
     'no-dupe-class-members': 'off',
+    'no-redeclare': 'off',
+    '@typescript-eslint/no-redeclare': 'warn',
     camelcase: ['error', { allow: ['^TEMP_'] }],
     'eslint-comments/disable-enable-pair': ['error', { allowWholeFile: true }],
 
