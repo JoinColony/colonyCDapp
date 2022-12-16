@@ -60,13 +60,11 @@ const Default = ({
               <div className={navStyles.nav}>
                 <UserNavigation />
               </div>
-              <div className={styles.content}>
-                {hasSubscribedColonies && (
-                  <div className={styles.coloniesList}>
-                    <SubscribedColoniesList />
-                  </div>
-                )}
-              </div>
+              {hasSubscribedColonies && (
+                <div className={styles.coloniesList}>
+                  <SubscribedColoniesList />
+                </div>
+              )}
             </div>
           ) : (
             <div className={styles.content}>
