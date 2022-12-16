@@ -5,6 +5,7 @@ module.exports = {
         items {
           id
           name
+          profileId
           profile {
             avatar
             thumbnail
@@ -28,6 +29,7 @@ module.exports = {
                 id
                 name
                 createdAt
+                profileId
                 profile {
                   avatar
                   bio
