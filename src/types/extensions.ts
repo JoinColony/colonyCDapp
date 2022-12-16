@@ -15,8 +15,8 @@ export enum ExtensionParamType {
 }
 
 export interface ExtensionInitParams {
-  title: string | MessageDescriptor;
-  description?: string | MessageDescriptor;
+  title: MessageDescriptor;
+  description?: MessageDescriptor;
   defaultValue?: string | number;
   paramName: string;
   // @TODO made optional for dev purposes, we are moving away from Yup validation schema
