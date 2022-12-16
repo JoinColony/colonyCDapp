@@ -124,10 +124,12 @@ const ExtensionDetails = () => {
               </div>
             }
           />
-          <Route
-            path={COLONY_EXTENSION_SETUP_ROUTE}
-            element={<ExtensionSetup extensionData={extensionData} />}
-          />
+          {isInstalledExtensionData(extensionData) && (
+            <Route
+              path={COLONY_EXTENSION_SETUP_ROUTE}
+              element={<ExtensionSetup extensionData={extensionData} />}
+            />
+          )}
 
           <Route path="*" element={<NotFoundRoute />} />
         </Routes>

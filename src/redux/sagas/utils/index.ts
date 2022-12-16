@@ -8,6 +8,7 @@ export * from './metatransactions';
 export * from './errorMessages';
 export * from './effects';
 export * from './refreshExtensions';
+export * from './enableExtensionHelpers';
 
 // export * from './updateColonyDisplayCache';
 // export { updateMotionValues } from './updateMotionValues';
