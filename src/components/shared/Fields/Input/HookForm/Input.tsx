@@ -134,7 +134,7 @@ const HookFormInput = ({
   });
 
   const showConfusableWarning =
-    showConfusable && isConfusing(inputValue) && isValid && touched;
+    showConfusable && isConfusing(inputValue || '') && isValid && touched;
 
   return (
     <div className={containerClasses}>
