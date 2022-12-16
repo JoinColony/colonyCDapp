@@ -11,7 +11,7 @@ import { AnyExtensionData } from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { useColonyContext } from '~hooks';
 
-// import DetailsWidgetUser from '~shared/DetailsWidgetUser';
+import DetailsWidgetUser from '~shared/DetailsWidgetUser';
 
 import ExtensionActionButton from '../ExtensionActionButton';
 import ExtensionStatusBadge from '../ExtensionStatusBadge';
@@ -141,22 +141,18 @@ const ExtensionDetailsAside = ({
         {
           label: MSG.installedBy,
           value: (
-            // <span className={styles.installedBy}>
-            //   <DetailsWidgetUser
-            //     colony={colony}
-            //     walletAddress={extensionData.installedBy}
-            //   />
-            // </span>
-            <span>{extensionData.installedBy}</span>
+            <span className={styles.installedBy}>
+              <DetailsWidgetUser
+                colony={colony}
+                walletAddress={extensionData.installedBy}
+              />
+            </span>
+            // <span>{extensionData.installedBy}</span>
           ),
         },
         {
           label: MSG.dateInstalled,
-          value: (
-            <span>
-              {new Date(extensionData.installedAt * 1000).toISOString()}
-            </span>
-          ),
+          value: <FormattedDate value={extensionData.installedAt} />,
         },
         {
           label: MSG.versionInstalled,

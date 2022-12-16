@@ -1,9 +1,12 @@
 import React from 'react';
+// import { AddressZero } from '@ethersproject/constants';
 
-import HookedUserAvatar from '~shared/HookedUserAvatar';
+// import { createAddress } from '~utils/web3';
+// import HookedUserAvatar from '~shared/HookedUserAvatar';
 import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
-import { useUser, Colony } from '~shared/index';
+// import { useUser } from '~data/index';
+// import { useColonyContext } from '~hooks';
 import { Address } from '~types';
 
 import styles from './DetailsWidgetUser.css';
@@ -11,19 +14,21 @@ import styles from './DetailsWidgetUser.css';
 const displayName = 'DetailsWidgetUser';
 
 interface Props {
-  colony?: Colony;
   walletAddress: Address;
 }
 
-const DetailsWidgetUser = ({ colony, walletAddress }: Props) => {
-  const UserAvatar = HookedUserAvatar({ fetchUser: false });
-  const userProfile = useUser(walletAddress);
-  const userDisplayName = userProfile?.profile?.displayName;
-  const username = userProfile?.profile?.username;
+// @NOTE once `useUser` or equvalent is available, this component can be
+// refactored to use it
+const DetailsWidgetUser = ({ walletAddress }: Props) => {
+  // const { colony } = useColonyContext();
+  // const UserAvatar = HookedUserAvatar({ fetchUser: false });
+  // const userProfile = useUser(createAddress(walletAddress || AddressZero));
+  // const userDisplayName = userProfile?.profile?.displayName;
+  // const username = userProfile?.profile?.username;
 
   return (
     <div className={styles.main}>
-      <UserAvatar
+      {/* <UserAvatar
         colony={colony}
         size="s"
         notSet={false}
@@ -42,13 +47,13 @@ const DetailsWidgetUser = ({ colony, walletAddress }: Props) => {
             },
           ],
         }}
-      />
+      /> */}
       <div className={styles.textContainer}>
-        {(userDisplayName || username) && (
+        {/* {(userDisplayName || username) && (
           <div className={styles.username}>
             {userDisplayName || `@${username}`}
           </div>
-        )}
+        )} */}
         <InvisibleCopyableAddress address={walletAddress}>
           <div className={styles.address}>
             <MaskedAddress address={walletAddress} />
