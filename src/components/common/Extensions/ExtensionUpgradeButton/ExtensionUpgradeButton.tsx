@@ -6,13 +6,13 @@ import {
   isExtensionCompatible,
 } from '@colony/colony-js';
 import { ActionButton } from '~shared/Button';
-import { AnyExtensionData } from '~types';
+import { InstalledExtensionData } from '~types';
 import { ActionTypes } from '~redux/index';
 import { mapPayload } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
 
 interface Props {
-  extensionData: AnyExtensionData;
+  extensionData: InstalledExtensionData;
 }
 
 const ExtensionUpgradeButton = ({ extensionData }: Props) => {
@@ -23,7 +23,7 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
     mapPayload(() => ({
       colonyAddress: colony?.colonyAddress,
       extensionId: extensionData.extensionId,
-      version: extensionData.availableVersion + 1,
+      version: extensionData.currentVersion + 1,
     })),
     [],
   );

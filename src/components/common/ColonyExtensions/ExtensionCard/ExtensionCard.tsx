@@ -42,7 +42,7 @@ const ExtensionCard = ({ extension }: Props) => {
               <span className={styles.version}>
                 v
                 {isInstalledExtensionData(extension)
-                  ? extension.version
+                  ? extension.currentVersion
                   : extension.availableVersion}
               </span>
             </div>

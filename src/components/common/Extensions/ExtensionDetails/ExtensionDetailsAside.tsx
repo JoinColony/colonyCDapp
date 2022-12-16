@@ -5,7 +5,7 @@ import { ActionTypes } from '~redux';
 import { DialogActionButton } from '~shared/Button';
 import { ConfirmDialog } from '~shared/Dialog';
 import { Table, TableBody, TableRow, TableCell } from '~shared/Table';
-import { AnyExtensionData } from '~types';
+import { AnyExtensionData, InstalledExtensionData } from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { useColonyContext } from '~hooks';
 
@@ -128,9 +128,11 @@ const ExtensionDetailsAside = ({
   return (
     <aside>
       <div className={styles.buttonWrapper}>
-        <ExtensionActionButton extensionData={extensionData} />{' '}
+        <ExtensionActionButton extensionData={extensionData} />
         {canBeUpgraded && (
-          <ExtensionUpgradeButton extensionData={extensionData} />
+          <ExtensionUpgradeButton
+            extensionData={extensionData as InstalledExtensionData}
+          />
         )}
       </div>
 
