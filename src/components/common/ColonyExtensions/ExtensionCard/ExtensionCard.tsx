@@ -52,7 +52,7 @@ const ExtensionCard = ({ extension }: Props) => {
           </div>
           {isInstalledExtensionData(extension) && (
             <div className={styles.status}>
-              <ExtensionStatusBadge extension={extension} />
+              <ExtensionStatusBadge extensionData={extension} />
             </div>
           )}
         </Card>

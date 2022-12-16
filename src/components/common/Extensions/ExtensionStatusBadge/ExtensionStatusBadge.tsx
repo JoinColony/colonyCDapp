@@ -38,10 +38,13 @@ const MSG = defineMessages({
 
 interface Props {
   deprecatedOnly?: boolean;
-  extension: AnyExtensionData;
+  extensionData: AnyExtensionData;
 }
 
-const ExtensionStatusBadge = ({ deprecatedOnly = false, extension }: Props) => {
+const ExtensionStatusBadge = ({
+  deprecatedOnly = false,
+  extensionData: extension,
+}: Props) => {
   let status;
   let theme;
 

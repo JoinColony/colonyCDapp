@@ -1,0 +1,35 @@
+.main {
+  display: grid;
+  grid-template-columns: minmax(460px, 1fr) 340px;
+  column-gap: 80px;
+}
+
+.header {
+  grid-column: span 2;
+}
+
+.headerLine {
+  margin: 20px 0 12px 0;
+}
+
+.buttonWrapper {
+  padding: 8px 0;
+  text-align: right;
+}
+
+.cellLabel {
+  font-weight: var(--weight-bold);
+
+  /* was temp-grey-4 in the dapp, not porting due to UI refresh */
+  color: var(--text);
+}
+
+.cellData {
+  font-weight: var(--weight-bold);
+  text-align: right;
+}
+
+.extensionText {
+  padding-top: 24px;
+  white-space: pre-line;
+}
