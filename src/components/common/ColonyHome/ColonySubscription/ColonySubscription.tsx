@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 // import { SpinnerLoader } from '~core/Preloaders';
-import Button /* ThreeDotsButton */ from '~shared/Button';
+import Button, { ThreeDotsButton } from '~shared/Button';
 import Link from '~shared/Link';
 
 import { Colony } from '~types';
@@ -65,7 +65,7 @@ const ColonySubscription = () => {
             }}
             canUnsubscribe
           >
-            {/* {({ isOpen, toggle, ref, id }) => (
+            {({ isOpen, toggle, ref, id }) => (
               <ThreeDotsButton
                 id={id}
                 innerRef={ref}
@@ -77,8 +77,7 @@ const ColonySubscription = () => {
                 data-test="colonyMenuPopover"
                 title={MSG.colonyMenuTitle}
               />
-            )} */}
-            <div>***</div>
+            )}
           </ColonySubscriptionInfoPopover>
         )}
         {!isSubscribed && (
