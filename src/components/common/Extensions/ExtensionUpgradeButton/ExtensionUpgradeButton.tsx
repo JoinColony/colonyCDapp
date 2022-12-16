@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
-
 import {
   Extension,
   ExtensionVersion,
   isExtensionCompatible,
 } from '@colony/colony-js';
+
 import { ActionButton } from '~shared/Button';
 import { InstalledExtensionData } from '~types';
 import { ActionTypes } from '~redux/index';
