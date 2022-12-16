@@ -28,7 +28,7 @@ const MSG = defineMessages({
   },
   tooltip: {
     id: `${displayName}.tooltip`,
-    defaultMessage: `We use ENS to create a .{displayENSDomain} subdomain for your colony. You can use this to create a custom URL and invite people to join your colony.`,
+    defaultMessage: `You can use this to create a custom URL and invite people to join your colony.`,
   },
 });
 
