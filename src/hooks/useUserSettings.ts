@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ContextModule, getContext } from '~context';
 import { SlotKey, UserSettingsSlot } from '~context/userSettings';
 
-interface UserSettingsHook {
+export interface UserSettingsHook {
   settings: UserSettingsSlot;
   setSettingsKey: <K extends SlotKey>(
     key: K,

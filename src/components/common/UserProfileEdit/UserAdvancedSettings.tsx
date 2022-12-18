@@ -1,25 +1,23 @@
 import React, { useState } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
+import { defineMessages } from 'react-intl';
 import { string, bool, object, InferType } from 'yup';
 
-import Heading from '~shared/Heading';
-import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
-import {
-  HookForm as Form,
-  HookFormInput as Input,
-  HookFormToggle as Toggle,
-} from '~shared/Fields';
-import Snackbar, { SnackbarType } from '~shared/Snackbar';
-import Button from '~shared/Button';
+import { HookForm as Form } from '~shared/Fields';
+import { Heading3 } from '~shared/Heading';
 import ExternalLink from '~shared/ExternalLink';
-
-import useUserSettings, { SlotKey } from '~hooks/useUserSettings';
-import { canUseMetatransactions } from '~utils/checks';
 import { ADVANCED_SETTINGS } from '~constants';
-import { noSpaces } from '~utils/cleave';
+import useUserSettings, {
+  SlotKey,
+  UserSettingsHook,
+} from '~hooks/useUserSettings';
+import { canUseMetatransactions } from '~utils/checks';
 
-import styles from './UserProfileEdit.css';
-import stylesAdvance from './UserAdvancedSettings.css';
+import AdvancedSettingsRow, {
+  getAdvancedSettingsRows,
+} from './AdvancedSettingsRow';
+import SaveForm from './SaveForm';
+
+import styles from './UserAdvancedSettings.css';
 
 const displayName = 'common.UserProfileEdit.UserAdvancedSettings';
 
@@ -28,78 +26,49 @@ const MSG = defineMessages({
     id: `${displayName}.heading`,
     defaultMessage: 'Advanced settings {learnMoreLink}',
   },
-  metaDescription: {
-    id: `${displayName}.metaDescription`,
-    defaultMessage: `To connect directly to Gnosis chain and pay for your own transactions, disable this option.`,
-  },
-  metaDescGlobalOff: {
-    id: `${displayName}.metaDescGlobalOff`,
-    defaultMessage: `Metatransactions are disabled globally.`,
-  },
-  labelMetaTx: {
-    id: `${displayName}.labelMetaTx`,
-    defaultMessage: `Metatransactions ({isOn, select,
-      true {active}
-      other {inactive}
-    })`,
-  },
-  metaTooltip: {
-    id: `${displayName}.metaTooltip`,
-    defaultMessage: `Metatransactions are turned on by default.
-    If you would rather connect directly to the chain,
-    and pay for your own transactions, you can turn them off
-    by switching the toggle at any time. {br}{br} Please note,
-    this setting is stored locally in your browser,
-    if you clear your cache you will need to turn Metatransactions off again.`,
-  },
-  customEndpoints: {
-    id: `${displayName}.customEndpoints`,
-    defaultMessage: `Enable custom endpoints ({isOn, select,
-      true {active}
-      other {inactive}
-    })`,
-  },
-  endpointsDescription: {
-    id: `${displayName}.metaDescription`,
-    defaultMessage: `If you prefer maximum decentralisation, you may use your own custom endpoints for Colony.`,
-  },
-  labelRPC: {
-    id: `${displayName}.labelRPC`,
-    defaultMessage: 'Gnosis Chain RPC',
-  },
-  RPCTooltip: {
-    id: `${displayName}.RPCTooltip`,
-    defaultMessage: `You will be able to toggle the Gnosis Chain RPC on once you have successfully validated that the endpoint works.`,
-  },
-  validate: {
-    id: `${displayName}.validate`,
-    defaultMessage: 'Validate',
-  },
-  snackbarSuccess: {
-    id: `${displayName}.snackbarSuccess`,
-    defaultMessage: 'Profile settings have been updated.',
-  },
   rpcErrorMessage: {
     id: `${displayName}.rpcErrorMessage`,
     defaultMessage: 'Enter a valid URL',
   },
 });
 
-const validationSchema = object()
-  .shape({
-    [SlotKey.Metatransactions]: bool<boolean>(),
-    [SlotKey.DecentralizedMode]: bool<boolean>(),
-    [SlotKey.CustomRPC]: string()
-      .url(() => MSG.rpcErrorMessage)
-      .defined(),
-  })
-  .defined();
+const validationSchema = object({
+  [SlotKey.Metatransactions]: bool<boolean>(),
+  [SlotKey.DecentralizedMode]: bool<boolean>(),
+  [SlotKey.CustomRPC]: string()
+    .defined()
+    .when(`${[SlotKey.DecentralizedMode]}`, {
+      is: true,
+      then: string().url(() => MSG.rpcErrorMessage),
+    }),
+}).defined();
 
-type FormValues = InferType<typeof validationSchema>;
+export type FormValues = InferType<typeof validationSchema>;
+
+const setFormValuesToLocalStorage = (
+  values: FormValues,
+  setSettingsKey: UserSettingsHook['setSettingsKey'],
+) => {
+  Object.entries(values).forEach(([key, value]: [SlotKey, string | boolean]) =>
+    setSettingsKey(key, value),
+  );
+};
+
+const metatransactionsAvailable = canUseMetatransactions();
+const advancedSettingsRows = getAdvancedSettingsRows(metatransactionsAvailable);
+const headingTextValues = {
+  learnMoreLink: (
+    <ExternalLink
+      text={{ id: 'text.learnMore' }}
+      href={ADVANCED_SETTINGS}
+      className={styles.learnMoreLink}
+      key="learnMore"
+    />
+  ),
+};
 
 const UserAdvancedSettings = () => {
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
-
   const {
     settings: {
       metatransactions: metatransactionsSetting,
@@ -109,134 +78,54 @@ const UserAdvancedSettings = () => {
     setSettingsKey,
   } = useUserSettings();
 
-  const handleSubmit = (values: FormValues) => {
-    Object.entries(values).forEach(
-      ([key, value]: [SlotKey, string | boolean]) => setSettingsKey(key, value),
-    );
-  };
-  const metatransactionsToggleAvailable = canUseMetatransactions();
-
-  const metatransasctionsAvailable = metatransactionsToggleAvailable
+  const metatransasctionsDefault = metatransactionsAvailable
     ? metatransactionsSetting
     : false;
 
+  const handleSubmit = (values: FormValues) => {
+    setFormValuesToLocalStorage(values, setSettingsKey);
+  };
+
   return (
-    <Form<FormValues>
-      defaultValues={{
-        [SlotKey.Metatransactions]: metatransasctionsAvailable,
-        [SlotKey.DecentralizedMode]: decentralizedModeEnabled,
-        [SlotKey.CustomRPC]: customRpc,
-      }}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      {({ formState: { isValid, isDirty }, getValues }) => {
-        const values = getValues();
-        return (
+    <>
+      <Heading3
+        appearance={{ theme: 'dark' }}
+        text={MSG.heading}
+        textValues={headingTextValues}
+      />
+      <Form<FormValues>
+        defaultValues={{
+          [SlotKey.Metatransactions]: metatransasctionsDefault,
+          [SlotKey.DecentralizedMode]: decentralizedModeEnabled,
+          [SlotKey.CustomRPC]: customRpc,
+        }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+        resetOnSubmit
+      >
+        {({ formState: { isValid, isDirty } }) => (
           <div className={styles.main}>
-            <Heading
-              appearance={{ theme: 'dark', size: 'medium' }}
-              text={MSG.heading}
-              textValues={{
-                learnMoreLink: (
-                  <ExternalLink
-                    text={{ id: 'text.learnMore' }}
-                    href={ADVANCED_SETTINGS}
-                    className={stylesAdvance.link}
-                  />
-                ),
-              }}
+            {advancedSettingsRows.map((row) => (
+              <AdvancedSettingsRow
+                name={row.name}
+                paragraphText={row.paragraphText}
+                toggleDisabled={!metatransactionsAvailable}
+                toggleLabel={row.toggleLabel}
+                tooltipText={row.tooltipText}
+                tooltipTextValues={row.tooltipTextValues}
+                extra={row.extra}
+                key={row.name}
+              />
+            ))}
+            <SaveForm
+              disabled={!metatransactionsAvailable || !isValid || !isDirty}
+              setShowSnackbar={setShowSnackbar}
+              showSnackbar={showSnackbar}
             />
-            <div className={stylesAdvance.toggleContainer}>
-              <Toggle
-                label={MSG.labelMetaTx}
-                labelValues={{
-                  isOn: values[SlotKey.Metatransactions],
-                }}
-                name={SlotKey.Metatransactions}
-                disabled={!metatransactionsToggleAvailable}
-              />
-              <QuestionMarkTooltip
-                tooltipText={MSG.metaTooltip}
-                tooltipTextValues={{ br: <br /> }}
-                className={stylesAdvance.tooltipContainer}
-                tooltipClassName={stylesAdvance.tooltipContent}
-                tooltipPopperOptions={{
-                  placement: 'right',
-                }}
-              />
-            </div>
-            <p className={stylesAdvance.descriptions}>
-              <FormattedMessage {...MSG.metaDescription} />
-            </p>
-            {!metatransactionsToggleAvailable && (
-              <div className={stylesAdvance.metaDesc}>
-                <FormattedMessage {...MSG.metaDescGlobalOff} />
-              </div>
-            )}
-            <hr />
-            <div className={stylesAdvance.sectionTitle}>
-              <FormattedMessage
-                {...MSG.customEndpoints}
-                values={{ isOn: values[SlotKey.DecentralizedMode] }}
-              />
-            </div>
-            <p className={stylesAdvance.descriptions}>
-              <FormattedMessage {...MSG.metaDescription} />
-            </p>
-            <div className={stylesAdvance.toggleContainer}>
-              <Toggle
-                label={MSG.labelRPC}
-                labelValues={{ isOn: decentralizedModeEnabled }}
-                name={SlotKey.DecentralizedMode}
-              />
-              <QuestionMarkTooltip
-                tooltipText={MSG.RPCTooltip}
-                className={stylesAdvance.tooltipContainer}
-                tooltipClassName={stylesAdvance.tooltipContent}
-                tooltipPopperOptions={{
-                  placement: 'right',
-                }}
-              />
-            </div>
-            <Input
-              name={SlotKey.CustomRPC}
-              disabled={!values[SlotKey.DecentralizedMode]}
-              formattingOptions={noSpaces}
-              value={customRpc}
-            />
-            <div className={stylesAdvance.validateButtonContainer}>
-              <Button
-                text={MSG.validate}
-                disabled={!values[SlotKey.DecentralizedMode] || !isValid}
-                // @TODO: validation to be added later
-              />
-            </div>
-            <hr />
-            {metatransactionsToggleAvailable && (
-              <>
-                <Button
-                  text={{ id: 'button.save' }}
-                  type="submit"
-                  onClick={() => {
-                    setShowSnackbar(true);
-                  }}
-                  disabled={
-                    !metatransactionsToggleAvailable || !isValid || !isDirty
-                  }
-                />
-                <Snackbar
-                  show={showSnackbar}
-                  setShow={setShowSnackbar}
-                  msg={MSG.snackbarSuccess}
-                  type={SnackbarType.Success}
-                />
-              </>
-            )}
           </div>
-        );
-      }}
-    </Form>
+        )}
+      </Form>
+    </>
   );
 };
 

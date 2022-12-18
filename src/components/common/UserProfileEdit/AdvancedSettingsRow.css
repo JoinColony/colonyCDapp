@@ -1,0 +1,59 @@
+@value query700 from '~styles/queries.css';
+
+.main {
+  padding-bottom: 20px;
+  border-bottom: 1px var(--light-grey) solid;
+}
+
+.metaDesc {
+  margin-top: 14px;
+  max-width: 460px;
+}
+
+.toggleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.toggleContainer label {
+  margin-right: 14px;
+}
+
+.toggleContainer > div {
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.tooltipContainer {
+  margin-left: 13px;
+  cursor: pointer;
+}
+
+.tooltipContent {
+  padding: 10px;
+  width: 218px;
+}
+
+.descriptions {
+  margin-top: 14px;
+  font-size: var(--size-normal);
+  color: var(--dark);
+}
+
+.validateButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.settingsRowExtra {
+  margin-top: 8px;
+}
+
+@media screen and query700 {
+  .toggleContainer {
+    justify-content: space-between;
+  }
+}
