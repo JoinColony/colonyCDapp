@@ -25,6 +25,7 @@
 }
 
 .emptyText {
+  margin-top: 45px;
   font-size: var(--size-medium-l);
   line-height: 2em;
 }

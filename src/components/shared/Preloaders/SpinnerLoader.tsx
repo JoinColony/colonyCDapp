@@ -1,8 +1,8 @@
 import React from 'react';
-import { MessageDescriptor, useIntl } from 'react-intl';
 
-import { SimpleMessageValues } from '~types';
+import { Message, UniversalMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
+import { formatText } from '~utils/intl';
 
 import styles from './SpinnerLoader.css';
 
@@ -17,10 +17,10 @@ interface Props {
   appearance?: Appearance;
 
   /** Text to display while loading */
-  loadingText?: MessageDescriptor | string;
+  loadingText?: Message;
 
   /** Values for loading text (react-intl interpolation) */
-  textValues?: SimpleMessageValues;
+  textValues?: UniversalMessageValues;
 }
 
 const SpinnerLoader = ({
@@ -28,17 +28,12 @@ const SpinnerLoader = ({
   loadingText,
   textValues,
 }: Props) => {
-  const { formatMessage } = useIntl();
   return (
     <div className={getMainClasses(appearance, styles)}>
       <div className={styles.loader} />
       {loadingText && (
         <div className={styles.loadingTextContainer}>
-          <div>
-            {typeof loadingText === 'string'
-              ? loadingText
-              : formatMessage(loadingText, textValues)}
-          </div>
+          <div>{formatText(loadingText, textValues)}</div>
         </div>
       )}
     </div>

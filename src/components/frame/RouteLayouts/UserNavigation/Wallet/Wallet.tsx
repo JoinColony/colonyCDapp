@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useLayoutEffect, useMemo } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 import { useSelector } from 'react-redux';
 
@@ -32,8 +32,8 @@ const MSG = defineMessages({
 });
 
 const Wallet = () => {
-  const [walletConnecting, setWalletConnecting] = useState<boolean>(false);
-  const { wallet, updateWallet } = useAppContext();
+  const { wallet, updateWallet, walletConnecting, setWalletConnecting } =
+    useAppContext();
   const isMobile = useMobile();
 
   const asyncFunction = useAsyncFunction({
@@ -43,7 +43,7 @@ const Wallet = () => {
   });
 
   const handleConnectWallet = useCallback(async () => {
-    setWalletConnecting(true);
+    setWalletConnecting?.(true);
     let walletConnectSuccess = false;
     try {
       await asyncFunction(undefined);
@@ -54,8 +54,8 @@ const Wallet = () => {
     if (updateWallet && walletConnectSuccess) {
       updateWallet();
     }
-    setWalletConnecting(false);
-  }, [asyncFunction, updateWallet]);
+    setWalletConnecting?.(false);
+  }, [asyncFunction, updateWallet, setWalletConnecting]);
 
   const transactionAndMessageGroups = useSelector(
     groupedTransactionsAndMessages,

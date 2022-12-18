@@ -3,6 +3,7 @@ import { defineMessages } from 'react-intl';
 
 import ColonyGrid from '~shared/ColonyGrid';
 import Link from '~shared/Link';
+import { SpinnerLoader } from '~shared/Preloaders';
 
 import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { User } from '~types';
@@ -20,23 +21,39 @@ const displayName = 'common.UserProfile.UserColonies';
 const MSG = defineMessages({
   currentUserNoColonies: {
     id: `${displayName}.currentUserNoColonies`,
-    defaultMessage: `It looks like you have not joined any Colonies yet. You’ll need an invite link to join one. Ask your community for a link or {createColonyLink}.`,
+    defaultMessage: `It looks like you have not joined any Colonies yet. You'll need an invite link to join one. Ask your community for a link or {createColonyLink}.`,
   },
   otherUserNoColonies: {
     id: `${displayName}.otherUserNoColonies`,
-    defaultMessage: `It looks like {friendlyUsername} hasn't joined any Colonies yet. You’ll might want to send them an invite link from a Colony you're part of.`,
+    defaultMessage: `It looks like {friendlyUsername} hasn't joined any Colonies yet. You might want to send them an invite link from a Colony you're part of.`,
   },
   createColonyLink: {
     id: `${displayName}.createColonyLink`,
     defaultMessage: `create a new colony`,
+  },
+  loadingColonies: {
+    id: `${displayName}.loadingColonies`,
+    defaultMessage: 'Loading colonies...',
   },
 });
 
 const UserColonies = ({
   user: { walletAddress, watchlist, name, profile },
 }: Props) => {
-  const { user: currentUser } = useAppContext();
+  const { user: currentUser, walletConnecting } = useAppContext();
   const isCurrentUser = currentUser?.walletAddress === walletAddress;
+
+  if (walletConnecting) {
+    return (
+      <div className={styles.loader}>
+        <SpinnerLoader
+          appearance={{ theme: 'primary', size: 'huge' }}
+          loadingText={MSG.loadingColonies}
+        />
+      </div>
+    );
+  }
+
   return (
     <ColonyGrid
       colonies={watchlist?.items.filter(notNull)}

@@ -42,6 +42,10 @@
   width: 42px;
 }
 
+.sizeHuge {
+  composes: main;
+}
+
 .sizeHuge .loader {
   height: 54px;
   width: 54px;
