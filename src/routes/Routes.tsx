@@ -5,7 +5,7 @@ import {
   Navigate,
   Outlet,
 } from 'react-router-dom';
-// import { defineMessages } from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 import CreateUserWizard from '~common/CreateUserWizard';
 import ColonyHome from '~common/ColonyHome';
@@ -26,7 +26,7 @@ import LandingPage from '~frame/LandingPage';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
 // import appLoadingContext from '~context/appLoadingState';
-import { useAppContext } from '~hooks';
+import { useAppContext, useMobile } from '~hooks';
 
 import {
   COLONY_FUNDING_ROUTE,
@@ -49,19 +49,20 @@ import CreateColonyWizard from '~common/CreateColonyWizard';
 
 // import useTitle from '~hooks/useTitle';
 
-// const MSG = defineMessages({
-//   userProfileEditBack: {
-//     id: 'routes.Routes.userProfileEditBack',
-//     defaultMessage: 'Go to profile',
-//   },
-//   loadingAppMessage: {
-//     id: 'routes.Routes.loadingAppMessage',
-//     defaultMessage: 'Loading App',
-//   },
-// });
+const MSG = defineMessages({
+  userProfileEditBack: {
+    id: 'routes.Routes.userProfileEditBack',
+    defaultMessage: 'Go to profile',
+  },
+  // loadingAppMessage: {
+  //   id: 'routes.Routes.loadingAppMessage',
+  //   defaultMessage: 'Loading App',
+  // },
+});
 
 const Routes = () => {
   const { user, wallet } = useAppContext();
+  const isMobile = useMobile();
   // const isAppLoading = appLoadingContext.getIsLoading();
 
   // disabling rules to silence eslint warnings
@@ -149,9 +150,16 @@ const Routes = () => {
         <Route
           path={USER_EDIT_ROUTE}
           element={
-            <UserLayout routeProps={{ hasBackLink: true }}>
+            <Default
+              routeProps={{
+                hasBackLink: true,
+                hasSubscribedColonies: isMobile,
+                backText: MSG.userProfileEditBack,
+                backRoute: `/user/${user?.name}`,
+              }}
+            >
               <UserProfileEdit />
-            </UserLayout>
+            </Default>
           }
         />
         {/* <WalletRequiredRoute
@@ -222,7 +230,7 @@ const Routes = () => {
         <Route path="*" element={<NotFoundRoute />} />
       </RoutesSwitch>
     ),
-    [],
+    [user],
   );
 
   // if (isAppLoading) {
