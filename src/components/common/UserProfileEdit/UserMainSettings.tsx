@@ -2,42 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { string, object, InferType } from 'yup';
 
-import Snackbar, { SnackbarType } from '~shared/Snackbar';
-import CopyableAddress from '~shared/CopyableAddress';
-import UserMention from '~shared/UserMention';
-import Heading from '~shared/Heading';
 import {
   FieldSet,
   HookForm as Form,
   HookFormInput as Input,
-  InputLabel,
   HookFormTextArea as Textarea,
 } from '~shared/Fields';
-import Button from '~shared/Button';
 
 import { useUpdateUserProfileMutation } from '~gql';
 import { User } from '~types';
-import { useAppContext } from '~hooks';
-import { excludeTypenameKey } from '~utils/objects';
 import { noSpaces } from '~utils/cleave';
+import { useAppContext } from '~hooks';
 
-import styles from './UserProfileEdit.css';
+import { UserInfo, SaveForm } from '../UserProfileEdit';
+
+import styles from './UserMainSettings.css';
 
 const displayName = 'common.UserProfileEdit.UserMainSettings';
 
 const MSG = defineMessages({
-  heading: {
-    id: `${displayName}.heading`,
-    defaultMessage: 'Profile',
-  },
-  labelWallet: {
-    id: `${displayName}.labelWallet`,
-    defaultMessage: 'Your Wallet',
-  },
-  labelUsername: {
-    id: `${displayName}.labelUsername`,
-    defaultMessage: 'Unique Username',
-  },
   labelEmail: {
     id: `${displayName}.labelEmail`,
     defaultMessage: 'Your email',
@@ -57,14 +40,6 @@ const MSG = defineMessages({
   labelLocation: {
     id: `${displayName}.labelLocation`,
     defaultMessage: 'Location',
-  },
-  snackbarSuccess: {
-    id: `${displayName}.snackbarSuccess`,
-    defaultMessage: 'Profile settings have been updated.',
-  },
-  snackbarError: {
-    id: `${displayName}.snackbarError`,
-    defaultMessage: 'Profile settings were not able to be updated. Try again.',
   },
   websiteError: {
     id: `${displayName}.websiteError`,
@@ -98,12 +73,9 @@ const UserMainSettings = ({
   user: { walletAddress, profile },
   user,
 }: Props) => {
-  const { updateUser } = useAppContext();
-
-  const userProfile = excludeTypenameKey(profile);
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
-
-  const [editUser, { error, loading, called }] = useUpdateUserProfileMutation();
+  const { updateUser } = useAppContext();
+  const [editUser, { error }] = useUpdateUserProfileMutation();
   const defaultValues = {
     email: profile?.email || '',
     displayName: profile?.displayName || '',
@@ -113,57 +85,35 @@ const UserMainSettings = ({
   };
 
   const handleSubmit = (updatedProfile: FormValues) => {
-    const valuesToSubmit = {
-      email: updatedProfile.email === '' ? null : updatedProfile.email,
-    };
-
     editUser({
       variables: {
         input: {
           id: walletAddress,
-          ...userProfile,
           ...updatedProfile,
-          ...valuesToSubmit,
+          email: updatedProfile.email || null,
         },
       },
     });
   };
 
-  useEffect(() => {
-    if (called && !loading && updateUser) {
-      updateUser(walletAddress);
-      setShowSnackbar(true);
-    }
-  }, [called, loading, walletAddress, updateUser]);
-
+  useEffect(
+    // update user on dismount
+    () => () => {
+      updateUser?.(walletAddress);
+    },
+    [walletAddress],
+  );
   return (
     <>
-      <Heading
-        appearance={{ theme: 'dark', size: 'medium' }}
-        text={MSG.heading}
-      />
+      <UserInfo user={user} />
       <Form<FormValues>
         defaultValues={defaultValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
+        resetOnSubmit
       >
-        {({ formState: { isSubmitting, isDirty, isValid } }) => (
+        {({ formState: { isDirty, isValid } }) => (
           <div className={styles.main}>
-            <FieldSet>
-              <InputLabel label={MSG.labelWallet} />
-              <CopyableAddress appearance={{ theme: 'big' }} full>
-                {walletAddress}
-              </CopyableAddress>
-            </FieldSet>
-            <div className={styles.usernameContainer}>
-              <InputLabel label={MSG.labelUsername} />
-              <UserMention
-                user={user}
-                title={user.name || walletAddress}
-                hasLink={false}
-                data-test="userProfileUsername"
-              />
-            </div>
             <FieldSet className={styles.inputFieldSet}>
               <Input
                 label={MSG.labelEmail}
@@ -197,21 +147,12 @@ const UserMainSettings = ({
                 dataTest="userSettingsLocation"
               />
             </FieldSet>
-            <FieldSet>
-              <Button
-                type="submit"
-                text={{ id: 'button.save' }}
-                loading={isSubmitting}
-                dataTest="userSettingsSubmit"
-                onClick={() => setShowSnackbar(true)}
-                disabled={!isDirty || !isValid}
-              />
-            </FieldSet>
-            <Snackbar
-              show={showSnackbar}
-              setShow={setShowSnackbar}
-              msg={error ? MSG.snackbarError : MSG.snackbarSuccess}
-              type={error ? SnackbarType.Error : SnackbarType.Success}
+            <SaveForm
+              dataTest="userSettingsSubmit"
+              disabled={!isDirty || !isValid}
+              error={error}
+              showSnackbar={showSnackbar}
+              setShowSnackbar={setShowSnackbar}
             />
           </div>
         )}
@@ -219,5 +160,7 @@ const UserMainSettings = ({
     </>
   );
 };
+
+UserMainSettings.displayName = displayName;
 
 export default UserMainSettings;

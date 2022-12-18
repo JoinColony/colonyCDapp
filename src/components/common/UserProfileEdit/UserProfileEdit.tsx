@@ -9,9 +9,11 @@ import LandingPage from '~frame/LandingPage';
 import { useAppContext } from '~hooks';
 
 import UserProfileSpinner from '../UserProfile/UserProfileSpinner';
-import Sidebar from './Sidebar';
-import UserMainSettings from './UserMainSettings';
-import UserAdvancedSettings from './UserAdvancedSettings';
+import {
+  Sidebar,
+  UserMainSettings,
+  UserAdvancedSettings,
+} from '../UserProfileEdit';
 
 const displayName = 'common.UserProfileEdit';
 
@@ -44,10 +46,10 @@ const UserProfileEdit = () => {
     >
       <Tabs>
         <TabList>
-          <Tab>
+          <Tab tabIndex={0}>
             <FormattedMessage {...MSG.headingMain} />
           </Tab>
-          <Tab>
+          <Tab tabIndex={0}>
             <FormattedMessage {...MSG.headingAdvance} />
           </Tab>
         </TabList>

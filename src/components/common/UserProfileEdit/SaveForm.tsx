@@ -5,6 +5,8 @@ import { defineMessages } from 'react-intl';
 import Button from '~shared/Button';
 import Snackbar, { SnackbarType } from '~shared/Snackbar';
 
+import styles from './UserMainSettings.css';
+
 const displayName = 'common.UserProfileEdit.SaveForm';
 
 const MSG = defineMessages({
@@ -35,7 +37,7 @@ const SaveForm = ({
   loading,
   dataTest,
 }: SaveFormProps) => (
-  <>
+  <div className={styles.save}>
     <Button
       text={{ id: 'button.save' }}
       type="submit"
@@ -52,8 +54,9 @@ const SaveForm = ({
       msg={error ? MSG.snackbarError : MSG.snackbarSuccess}
       type={error ? SnackbarType.Error : SnackbarType.Success}
     />
-  </>
+  </div>
 );
 
 SaveForm.displayName = displayName;
+
 export default SaveForm;
