@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import AvatarUploader from '~shared/AvatarUploader';
@@ -7,7 +7,6 @@ import UserAvatar from '~shared/UserAvatar';
 import { User } from '~types';
 import { useUpdateUserProfileMutation } from '~gql';
 import { useAppContext } from '~hooks';
-import { excludeTypenameKey } from '~utils/objects';
 import { FileReaderFile } from '~utils/fileReader/types';
 
 const displayName = 'common.UserProfileEdit.UserAvatarUploader';
@@ -28,32 +27,42 @@ const UserAvatarUploader = ({
   user,
   user: { walletAddress, profile },
 }: Props) => {
-  const userProfile = excludeTypenameKey(profile);
   const { updateUser } = useAppContext();
+  const [avatar, setAvatar] = useState<string | null>(profile?.avatar || null);
   const [updateAvatar, { error }] = useUpdateUserProfileMutation();
+  const updatedUser = {
+    ...user,
+    // use avatar held in component state
+    profile: { ...user.profile, avatar },
+  };
 
   const handleUpload = async (fileData: FileReaderFile) => {
     const file = await updateAvatar({
       variables: {
         input: {
           id: walletAddress,
-          ...userProfile,
           avatar: fileData.data,
         },
       },
     });
-    updateUser?.(user.walletAddress);
+    setAvatar(fileData.data);
     return file;
   };
 
   const remove = async () => {
     await updateAvatar({
       variables: {
-        input: { id: walletAddress, ...userProfile, avatar: null },
+        input: { id: walletAddress, avatar: null },
       },
     });
-    updateUser?.(user.walletAddress);
+    setAvatar(null);
   };
+
+  // on dismount
+  useEffect(
+    () => () => updateUser?.(user.walletAddress),
+    [updateUser, user.walletAddress],
+  );
 
   return (
     <AvatarUploader
@@ -62,7 +71,7 @@ const UserAvatarUploader = ({
       renderPlaceholder={
         <UserAvatar
           address={user.walletAddress}
-          user={user}
+          user={updatedUser}
           size="xl"
           notSet={false}
           preferThumbnail={false}
@@ -70,7 +79,7 @@ const UserAvatarUploader = ({
       }
       upload={handleUpload}
       remove={remove}
-      isSet={!!user.profile?.avatar}
+      isSet={!!avatar}
       uploadError={error}
     />
   );
