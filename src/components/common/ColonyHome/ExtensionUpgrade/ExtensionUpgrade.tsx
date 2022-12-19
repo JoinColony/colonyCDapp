@@ -3,13 +3,13 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { Extension } from '@colony/colony-js';
 import { useParams } from 'react-router';
 
-import Alert from '~core/Alert';
-import Button from '~core/Button';
-import { useColonyExtensionsQuery } from '~data/index';
-import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
-import { useColonyContext } from '~hooks';
+import Alert from '~shared/Alert';
+import Button from '~shared/Button';
+import { oneTxMustBeUpgraded } from '~utils/checks';
+import { useColonyContext, useExtensionData } from '~hooks';
 
 import styles from './ExtensionUpgrade.css';
+import { InstalledExtensionData } from '~types';
 
 const displayName = 'common.ColonyHome.ExtensionUpgrade';
 
@@ -26,25 +26,19 @@ const MSG = defineMessages({
 
 const ExtensionUpgrade = () => {
   const { colony } = useColonyContext();
-  const { colonyAddress, name } = colony || {};
+  const { name } = colony || {};
 
   const { extensionId } = useParams<{
     extensionId: string;
   }>();
 
-  const { data } = useColonyExtensionsQuery({
-    variables: { address: colonyAddress },
-  });
+  const { extensionData } = useExtensionData(Extension.OneTxPayment);
 
   const isExtensionDetailsRoute = extensionId === Extension.OneTxPayment;
 
-  const oneTxPaymentExtension = data?.processedColony?.installedExtensions.find(
-    ({ details, extensionId: extensionName }) =>
-      details?.initialized &&
-      !details?.missingPermissions.length &&
-      extensionName === Extension.OneTxPayment,
+  const mustUpgrade = oneTxMustBeUpgraded(
+    extensionData as InstalledExtensionData,
   );
-  const mustUpgrade = oneTxMustBeUpgraded(oneTxPaymentExtension);
 
   if (mustUpgrade) {
     return (
