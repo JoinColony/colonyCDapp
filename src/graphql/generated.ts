@@ -146,9 +146,9 @@ export type ColonyExtension = {
   id: Scalars['ID'];
   installedAt: Scalars['AWSTimestamp'];
   installedBy: Scalars['String'];
-  isDeleted?: Maybe<Scalars['Boolean']>;
-  isDeprecated?: Maybe<Scalars['Boolean']>;
-  isInitialized?: Maybe<Scalars['Boolean']>;
+  isDeleted: Scalars['Boolean'];
+  isDeprecated: Scalars['Boolean'];
+  isInitialized: Scalars['Boolean'];
   updatedAt: Scalars['AWSDateTime'];
   version: Scalars['Int'];
 };
@@ -224,9 +224,9 @@ export type CreateColonyExtensionInput = {
   id?: InputMaybe<Scalars['ID']>;
   installedAt: Scalars['AWSTimestamp'];
   installedBy: Scalars['String'];
-  isDeleted?: InputMaybe<Scalars['Boolean']>;
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  isInitialized?: InputMaybe<Scalars['Boolean']>;
+  isDeleted: Scalars['Boolean'];
+  isDeprecated: Scalars['Boolean'];
+  isInitialized: Scalars['Boolean'];
   version: Scalars['Int'];
 };
 
@@ -2203,6 +2203,7 @@ export type WatcherFragment = { __typename?: 'WatchedColonies', user: { __typena
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export type WatchedColonyFragment = { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null };
 =======
 export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, version: number, isDeprecated?: boolean | null, isDeleted?: boolean | null, isInitialized?: boolean | null, address: string };
@@ -2213,6 +2214,9 @@ export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, 
 =======
 export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated?: boolean | null, isDeleted?: boolean | null, isInitialized?: boolean | null, address: string, currentVersion: number };
 >>>>>>> a43a4693 (Update generated GraphQL types)
+=======
+export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number };
+>>>>>>> 86a77c20 (Add util functions to refresh extension locally)
 
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
@@ -2293,7 +2297,7 @@ export type GetColonyExtensionsQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyExtensionsQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated?: boolean | null, isDeleted?: boolean | null, isInitialized?: boolean | null, address: string, currentVersion: number } | null> } | null } | null };
+export type GetColonyExtensionsQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number } | null> } | null } | null };
 
 export type GetColonyExtensionQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -2301,7 +2305,7 @@ export type GetColonyExtensionQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyExtensionQuery = { __typename?: 'Query', getExtensionByColonyAndHash?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated?: boolean | null, isDeleted?: boolean | null, isInitialized?: boolean | null, address: string, currentVersion: number } | null> } | null };
+export type GetColonyExtensionQuery = { __typename?: 'Query', getExtensionByColonyAndHash?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number } | null> } | null };
 
 export type GetTokenByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -2466,6 +2470,7 @@ export const WatchedColonyFragmentDoc = gql`
 export const ExtensionFragmentDoc = gql`
     fragment Extension on ColonyExtension {
   address: id
+  colonyAddress: colonyId
   hash
   currentVersion: version
   installedBy

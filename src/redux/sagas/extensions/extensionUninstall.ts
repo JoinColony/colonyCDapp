@@ -8,7 +8,7 @@ import {
   getTxChannel,
   waitForTxResult,
 } from '../transactions';
-import { putError, refreshExtensions, takeFrom } from '../utils';
+import { putError, refreshUninstalledExtension, takeFrom } from '../utils';
 
 export function* extensionUninstall({
   meta,
@@ -37,7 +37,7 @@ export function* extensionUninstall({
     return yield putError(ActionTypes.EXTENSION_UNINSTALL_ERROR, error, meta);
   }
 
-  yield call(refreshExtensions);
+  refreshUninstalledExtension(colonyAddress, extensionId);
 
   txChannel.close();
 
