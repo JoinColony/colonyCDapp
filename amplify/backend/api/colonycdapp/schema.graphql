@@ -323,9 +323,9 @@ type ColonyExtension @model {
   hash: String!
   installedBy: String!
   installedAt: AWSTimestamp!
-  isDeprecated: Boolean! @default(value: "false")
-  isDeleted: Boolean! @default(value: "false")
-  isInitialized: Boolean! @default(value: "false")
+  isDeprecated: Boolean!
+  isDeleted: Boolean!
+  isInitialized: Boolean!
   version: Int!
 }
 

@@ -3,7 +3,7 @@ import { ClientType, getExtensionHash } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, refreshExtensions } from '../utils';
+import { putError, takeFrom, refreshDeprecatedExtension } from '../utils';
 
 import {
   createTransaction,
@@ -38,7 +38,7 @@ function* extensionDeprecate({
     return yield putError(ActionTypes.EXTENSION_DEPRECATE_ERROR, error, meta);
   }
 
-  yield call(refreshExtensions);
+  refreshDeprecatedExtension(colonyAddress, extensionId, isToDeprecate);
 
   txChannel.close();
 

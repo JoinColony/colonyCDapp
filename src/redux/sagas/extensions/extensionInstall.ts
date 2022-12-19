@@ -3,7 +3,7 @@ import { call, takeEvery, fork, put } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 
-import { takeFrom, refreshExtensions, putError } from '../utils';
+import { takeFrom, putError, refreshInstalledExtension } from '../utils';
 import {
   createTransaction,
   getTxChannel,
@@ -15,6 +15,7 @@ export function* extensionInstall({
   payload: {
     colonyAddress,
     extensionData: { extensionId, availableVersion },
+    extensionData,
   },
 }: Action<ActionTypes.EXTENSION_INSTALL>) {
   const txChannel = yield call(getTxChannel, meta.id);
@@ -40,7 +41,7 @@ export function* extensionInstall({
     return yield putError(ActionTypes.EXTENSION_INSTALL_ERROR, error, meta);
   }
 
-  yield call(refreshExtensions);
+  refreshInstalledExtension(colonyAddress, extensionData);
 
   txChannel.close();
 
