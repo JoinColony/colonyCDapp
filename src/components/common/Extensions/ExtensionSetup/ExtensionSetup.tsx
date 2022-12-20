@@ -12,7 +12,11 @@ import { ExtensionParamType, InstalledExtensionData } from '~types';
 import { mapPayload, mergePayload, pipe } from '~utils/actions';
 import { IconButton } from '~shared/Button';
 
-import { createExtensionInitialValues, getButtonAction } from './utils';
+import {
+  createExtensionSetupInitialValues,
+  createExtensionSetupValidationSchema,
+  getButtonAction,
+} from './utils';
 
 import styles from './ExtensionSetup.css';
 
@@ -98,14 +102,14 @@ const ExtensionSetup = ({
     if (!initializationParams) {
       return {};
     }
-    return createExtensionInitialValues(initializationParams);
+    return createExtensionSetupInitialValues(initializationParams);
   }, [initializationParams]);
 
-  if (!colony || !initializationParams) {
+  if (!colony) {
     return null;
   }
 
-  if (isInitialized || isDeprecated) {
+  if (isInitialized || isDeprecated || !initializationParams) {
     return <Navigate to={`/colony/${colony.name}/extensions/${extensionId}`} />;
   }
 
@@ -146,6 +150,9 @@ const ExtensionSetup = ({
   return (
     <ActionForm
       initialValues={initialValues}
+      validationSchema={createExtensionSetupValidationSchema(
+        initializationParams,
+      )}
       submit={getButtonAction('SUBMIT', extensionId)}
       error={getButtonAction('ERROR', extensionId)}
       success={getButtonAction('SUCCESS', extensionId)}
