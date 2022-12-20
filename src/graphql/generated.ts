@@ -2032,7 +2032,7 @@ export type ColonyFragment = { __typename?: 'Colony', name: string, colonyAddres
 
 export type WatcherFragment = { __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } };
 
-export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, version: number, installedBy: string, installedAt: any, isDeprecated?: boolean | null, isDeleted?: boolean | null, isInitialized?: boolean | null, address: string };
+export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated?: boolean | null, isDeleted?: boolean | null, isInitialized?: boolean | null, address: string, currentVersion: number };
 
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, tokenAddress: string };
 
@@ -2090,7 +2090,7 @@ export type GetColonyExtensionsQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyExtensionsQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, version: number, installedBy: string, installedAt: any, isDeprecated?: boolean | null, isDeleted?: boolean | null, isInitialized?: boolean | null, address: string } | null> } | null } | null };
+export type GetColonyExtensionsQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated?: boolean | null, isDeleted?: boolean | null, isInitialized?: boolean | null, address: string, currentVersion: number } | null> } | null } | null };
 
 export type GetColonyExtensionQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -2098,7 +2098,7 @@ export type GetColonyExtensionQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyExtensionQuery = { __typename?: 'Query', getExtensionByColonyAndHash?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, version: number, installedBy: string, installedAt: any, isDeprecated?: boolean | null, isDeleted?: boolean | null, isInitialized?: boolean | null, address: string } | null> } | null };
+export type GetColonyExtensionQuery = { __typename?: 'Query', getExtensionByColonyAndHash?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated?: boolean | null, isDeleted?: boolean | null, isInitialized?: boolean | null, address: string, currentVersion: number } | null> } | null };
 
 export type GetTokenByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -2223,7 +2223,7 @@ export const ExtensionFragmentDoc = gql`
     fragment Extension on ColonyExtension {
   address: id
   hash
-  version
+  currentVersion: version
   installedBy
   installedAt
   isDeprecated
