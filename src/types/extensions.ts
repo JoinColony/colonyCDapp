@@ -1,5 +1,7 @@
 import { ColonyRole, Extension } from '@colony/colony-js';
 import { MessageDescriptor } from 'react-intl';
+import { Schema } from 'yup';
+
 import { ColonyExtension } from '~types';
 
 export enum WhitelistPolicy {
@@ -19,8 +21,7 @@ export interface ExtensionInitParams {
   description?: MessageDescriptor;
   defaultValue?: string | number;
   paramName: string;
-  // @TODO made optional for dev purposes, we are moving away from Yup validation schema
-  validation?: object;
+  validation: Schema<any>;
   type: ExtensionParamType;
   complementaryLabel?: 'hours' | 'periods' | 'percent';
 }

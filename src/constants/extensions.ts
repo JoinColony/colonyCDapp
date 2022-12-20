@@ -1,10 +1,10 @@
 import { ColonyRole, Extension } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
+import * as yup from 'yup';
+import toFinite from 'lodash/toFinite';
+
 import { ExtensionConfig, ExtensionParamType } from '~types';
 
-/**
- * @TODO: Refactor/cleanup this file
- */
 const oneTransactionPaymentName = 'extensions.OneTxPayment';
 const votingReputationName = 'extensions.votingReputation';
 
@@ -148,12 +148,12 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     initializationParams: [
       {
         paramName: 'totalStakeFraction',
-        // validation: yup
-        //   .number()
-        //   .transform((value) => toFinite(value))
-        //   .positive()
-        //   .required(() => MSG.votingReputationRequiredError)
-        //   .max(50, () => MSG.votingReputationLessThan50Error),
+        validation: yup
+          .number()
+          .transform((value) => toFinite(value))
+          .positive()
+          .required(() => MSG.votingReputationRequiredError)
+          .max(50, () => MSG.votingReputationLessThan50Error),
         defaultValue: 1,
         title: MSG.votingReputationTotalStakeFractionTitle,
         description: MSG.votingReputationTotalStakeFractionDescription,
@@ -162,12 +162,12 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
       {
         paramName: 'voterRewardFraction',
-        // validation: yup
-        //   .number()
-        //   .transform((value) => toFinite(value))
-        //   .positive()
-        //   .required(() => MSG.votingReputationRequiredError)
-        //   .max(50, () => MSG.votingReputationLessThan50Error),
+        validation: yup
+          .number()
+          .transform((value) => toFinite(value))
+          .positive()
+          .required(() => MSG.votingReputationRequiredError)
+          .max(50, () => MSG.votingReputationLessThan50Error),
         defaultValue: 20,
         title: MSG.votingReputationVoterRewardFractionTitle,
         description: MSG.votingReputationVoterRewardFractionDescription,
@@ -176,12 +176,12 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
       {
         paramName: 'userMinStakeFraction',
-        // validation: yup
-        //   .number()
-        //   .transform((value) => toFinite(value))
-        //   .positive()
-        //   .required(() => MSG.votingReputationRequiredError)
-        //   .max(100, () => MSG.votingReputationLessThan100Error),
+        validation: yup
+          .number()
+          .transform((value) => toFinite(value))
+          .positive()
+          .required(() => MSG.votingReputationRequiredError)
+          .max(100, () => MSG.votingReputationLessThan100Error),
         defaultValue: 1,
         title: MSG.votingReputationUserMinStakeFractionTitle,
         description: MSG.votingReputationUserMinStakeFractionDescription,
@@ -190,12 +190,12 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
       {
         paramName: 'maxVoteFraction',
-        // validation: yup
-        //   .number()
-        //   .transform((value) => toFinite(value))
-        //   .positive()
-        //   .required(() => MSG.votingReputationRequiredError)
-        //   .max(100, () => MSG.votingReputationLessThan100Error),
+        validation: yup
+          .number()
+          .transform((value) => toFinite(value))
+          .positive()
+          .required(() => MSG.votingReputationRequiredError)
+          .max(100, () => MSG.votingReputationLessThan100Error),
         defaultValue: 70,
         title: MSG.votingReputationMaxVoteFractionTitle,
         description: MSG.votingReputationMaxVoteFractionDescription,
@@ -204,12 +204,12 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
       {
         paramName: 'stakePeriod',
-        // validation: yup
-        //   .number()
-        //   .transform((value) => toFinite(value))
-        //   .positive()
-        //   .required(() => MSG.votingReputationRequiredError)
-        //   .max(8760, () => MSG.votingReputationLessThan1YearError),
+        validation: yup
+          .number()
+          .transform((value) => toFinite(value))
+          .positive()
+          .required(() => MSG.votingReputationRequiredError)
+          .max(8760, () => MSG.votingReputationLessThan1YearError),
         defaultValue: 72, // 3 days in hours
         title: MSG.votingReputationStakePeriodTitle,
         description: MSG.votingReputationStakePeriodDescription,
@@ -218,12 +218,12 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
       {
         paramName: 'submitPeriod',
-        // validation: yup
-        //   .number()
-        //   .transform((value) => toFinite(value))
-        //   .positive()
-        //   .required(() => MSG.votingReputationRequiredError)
-        //   .max(8760, () => MSG.votingReputationLessThan1YearError),
+        validation: yup
+          .number()
+          .transform((value) => toFinite(value))
+          .positive()
+          .required(() => MSG.votingReputationRequiredError)
+          .max(8760, () => MSG.votingReputationLessThan1YearError),
         defaultValue: 72, // 3 days in hours
         title: MSG.votingReputationSubmitPeriodTitle,
         description: MSG.votingReputationSubmitPeriodDescription,
@@ -232,12 +232,12 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
       {
         paramName: 'revealPeriod',
-        // validation: yup
-        //   .number()
-        //   .transform((value) => toFinite(value))
-        //   .positive()
-        //   .required(() => MSG.votingReputationRequiredError)
-        //   .max(8760, () => MSG.votingReputationLessThan1YearError),
+        validation: yup
+          .number()
+          .transform((value) => toFinite(value))
+          .positive()
+          .required(() => MSG.votingReputationRequiredError)
+          .max(8760, () => MSG.votingReputationLessThan1YearError),
         defaultValue: 72, // 3 days in hours
         title: MSG.votingReputationRevealPeriodTitle,
         description: MSG.votingReputationRevealPeriodDescription,
@@ -246,12 +246,12 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
       {
         paramName: 'escalationPeriod',
-        // validation: yup
-        //   .number()
-        //   .transform((value) => toFinite(value))
-        //   .positive()
-        //   .required(() => MSG.votingReputationRequiredError)
-        //   .max(8760, () => MSG.votingReputationLessThan1YearError),
+        validation: yup
+          .number()
+          .transform((value) => toFinite(value))
+          .positive()
+          .required(() => MSG.votingReputationRequiredError)
+          .max(8760, () => MSG.votingReputationLessThan1YearError),
         defaultValue: 72, // 3 days in hours
         title: MSG.votingReputationEscalationPeriodTitle,
         description: MSG.votingReputationEscalationPeriodDescription,

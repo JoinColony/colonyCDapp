@@ -1,7 +1,9 @@
+import * as yup from 'yup';
+
 import { ActionTypes } from '~redux';
 import { ExtensionInitParams } from '~types';
 
-export const createExtensionInitialValues = (
+export const createExtensionSetupInitialValues = (
   initializationParams: ExtensionInitParams[],
 ) => {
   return initializationParams.reduce((initialValues, param) => {
@@ -25,4 +27,16 @@ export const getButtonAction = (
   }
 
   return ActionTypes[`${actionBeginning}_ENABLE${actionEnd}`];
+};
+
+export const createExtensionSetupValidationSchema = (
+  initializationParams: ExtensionInitParams[],
+) => {
+  const validationFields = initializationParams.reduce((fields, param) => {
+    return {
+      ...fields,
+      [param.paramName]: param.validation,
+    };
+  }, {});
+  return yup.object().shape(validationFields);
 };
