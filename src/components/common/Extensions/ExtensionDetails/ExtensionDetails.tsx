@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { useColonyContext, useExtensionData } from '~hooks';
+import { useColonyContext, useExtensionData, useAppContext } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
@@ -34,6 +34,7 @@ const MSG = defineMessages({
 const ExtensionDetails = () => {
   const { extensionId } = useParams();
   const { colony } = useColonyContext();
+  const { user } = useAppContext();
   const { extensionData, loading } = useExtensionData(extensionId ?? '');
   const { pathname } = useLocation();
 
@@ -73,6 +74,9 @@ const ExtensionDetails = () => {
     isInstalledExtensionData(extensionData) &&
     extensionData.uninstallable &&
     !extensionData.isDeprecated;
+  // @TODO: Check if the latest network extension version is greater than the current version
+  const canExtensionBeUpgraded =
+    !!user?.profile && isInstalledExtensionData(extensionData);
 
   return (
     <div className={styles.main}>
@@ -114,7 +118,7 @@ const ExtensionDetails = () => {
                         Is Deprecated:{' '}
                         {extensionData.isDeprecated ? 'yes' : 'no'}
                       </div>
-                      <div>Version: {extensionData.version}</div>
+                      <div>Version: {extensionData.currentVersion}</div>
                     </>
                   ) : (
                     <div>This extension is not installed</div>
@@ -136,6 +140,7 @@ const ExtensionDetails = () => {
         extensionData={extensionData}
         canBeDeprecated={canExtensionBeDeprecated}
         canBeUninstalled={canExtensionBeUninstalled}
+        canBeUpgraded={canExtensionBeUpgraded}
       />
     </div>
   );

@@ -4,11 +4,11 @@ import extensionInstallSaga from './extensionInstall';
 // import colonyExtensionEnableSaga from './colonyExtensionEnable';
 import extensionDeprecateSaga from './extensionDeprecate';
 import extensionUninstallSaga from './extensionUninstall';
-// import colonyExtensionUpgradeSaga from './colonyExtensionUpgrade';
+import extensionUpgradeSaga from './extensionUpgrade';
 
 export default function* extensionsSagas() {
   yield all([
-    // call(colonyExtensionUpgradeSaga),
+    call(extensionUpgradeSaga),
     call(extensionUninstallSaga),
     call(extensionInstallSaga),
     // call(colonyExtensionEnableSaga),

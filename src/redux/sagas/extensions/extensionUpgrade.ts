@@ -4,7 +4,7 @@ import { ClientType, getExtensionHash } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, refreshExtension } from '../utils';
+import { putError, takeFrom, refreshExtensions } from '../utils';
 
 import {
   createTransaction,
@@ -12,7 +12,7 @@ import {
   waitForTxResult,
 } from '../transactions';
 
-function* colonyExtensionUpgrade({
+function* extensionUpgrade({
   meta,
   payload: { colonyAddress, extensionId, version },
 }: Action<ActionTypes.EXTENSION_UPGRADE>) {
@@ -37,14 +37,15 @@ function* colonyExtensionUpgrade({
     yield waitForTxResult(txChannel);
   } catch (error) {
     return yield putError(ActionTypes.EXTENSION_UPGRADE_ERROR, error, meta);
-  } finally {
-    yield call(refreshExtension, colonyAddress, extensionId);
-
-    txChannel.close();
   }
+
+  yield call(refreshExtensions);
+
+  txChannel.close();
+
   return null;
 }
 
-export default function* colonyExtensionUpgradeSaga() {
-  yield takeEvery(ActionTypes.EXTENSION_UPGRADE, colonyExtensionUpgrade);
+export default function* extensionUpgradeSaga() {
+  yield takeEvery(ActionTypes.EXTENSION_UPGRADE, extensionUpgrade);
 }
