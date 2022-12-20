@@ -6,6 +6,7 @@ declare namespace AvatarUploaderCssNamespace {
     dropzoneAccept: string;
     dropzoneNoButtonsVariant: string;
     filesContainer: string;
+    inputStatus: string;
     overlay: string;
   }
 }

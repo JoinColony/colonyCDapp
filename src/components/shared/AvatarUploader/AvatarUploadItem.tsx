@@ -1,13 +1,16 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 
-import { useField } from 'formik';
-import { UploadItemComponentProps } from '~shared/FileUpload/types';
-
-import styles from './AvatarUploadItem.css';
+import {
+  FileUploadFormValues,
+  HookFormUploadItemComponentProps,
+  UploadedFile,
+} from '~shared/FileUpload/types';
 
 import fileReader from '~utils/fileReader';
-import { UploadFile } from '../FileUpload';
 import Icon from '../Icon';
+
+import styles from './AvatarUploadItem.css';
 
 const displayName = 'AvatarUploadItem';
 
@@ -16,49 +19,46 @@ const AvatarUploadItem = ({
   error,
   maxFileSize,
   name,
-  reset,
+  idx,
   upload,
   handleError,
-}: UploadItemComponentProps) => {
-  const [
-    ,
-    {
-      value: { file, preview, uploaded },
-      value,
-    },
-    { setValue },
-  ] = useField<UploadFile>(name);
-  const readFiles = useMemo(
-    () =>
-      fileReader({
-        maxFilesLimit: 1,
-        maxFileSize,
-        allowedTypes: accept,
-      }),
-    [accept, maxFileSize],
-  );
+}: HookFormUploadItemComponentProps) => {
+  const { reset, setError } = useFormContext();
+  const { fields, update } = useFieldArray<FileUploadFormValues>({
+    name,
+  });
+  const value = fields[idx];
+  const { file, preview, uploaded } = value as UploadedFile;
 
-  const read = useCallback(async () => {
+  const readFiles = fileReader({
+    maxFilesLimit: 1,
+    maxFileSize,
+    allowedTypes: accept,
+  });
+
+  const read = async () => {
     const [contents] = await readFiles([file]);
     return contents;
-  }, [file, readFiles]);
+  };
 
-  const uploadFile = useCallback(async () => {
+  const uploadFile = async () => {
     let readFile;
     try {
       readFile = await read();
       const uploadedFile = await upload(readFile);
-      setValue({ ...value, preview: readFile.data, uploaded: uploadedFile });
+      update(idx, {
+        ...value,
+        preview: readFile.data,
+        uploaded: uploadedFile,
+      });
     } catch (e) {
       console.error(e);
-      /**
-       * @todo Improve error modes for uploading avatars.
-       */
-      setValue({ ...value, error: 'uploadError' });
+      update(idx, { ...value, errors: [{ message: e, code: 'uploadError' }] });
+      setError(name, { message: e });
     }
     // After successfully uploading the file we'd like to immediately remove it again.
     reset();
-  }, [value, read, reset, setValue, upload]);
+  };
 
   useEffect(() => {
     if (file && !error && !uploaded) {
@@ -67,7 +67,6 @@ const AvatarUploadItem = ({
     if (error && handleError) {
       handleError({ ...value, file });
     }
-    // Only on first render
   }, [handleError, file, error, uploadFile, uploaded, value]);
 
   return (

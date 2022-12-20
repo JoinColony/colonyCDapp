@@ -4,13 +4,13 @@ import { MessageDescriptor, FormattedMessage } from 'react-intl';
 
 import Icon from '~shared/Icon';
 import { Tooltip } from '~shared/Popover';
-import { ComplexMessageValues } from '~types';
+import { ComplexMessageValues, SimpleMessageValues } from '~types';
 
 const displayName = 'QuestionMarkTooltip';
 
 interface Props {
   tooltipText: string | MessageDescriptor;
-  tooltipTextValues?: ComplexMessageValues;
+  tooltipTextValues?: SimpleMessageValues | ComplexMessageValues;
   /** Options to pass to the underlying PopperJS element. See here for more: https://popper.js.org/docs/v2/constructors/#options. */
   tooltipPopperOptions?: PopperOptions;
   className?: string;
