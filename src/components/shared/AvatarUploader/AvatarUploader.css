@@ -1,3 +1,5 @@
+@value query700 from '~styles/queries.css';
+
 .dropzone {
   height: 160px;
   width: 160px;
@@ -48,24 +50,32 @@
   width: 100%;
 }
 
-.overlay {
+.dropNowOverlay {
   display: none;
-  justify-content: center;
-  align-items: center;
   height: 100%;
   width: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  background-color: var(--primary);
+  background-color: color-mod(var(--primary) alpha(70%));
   font-size: var(--size-medium);
   font-weight: var(--weight-bold);
   color: white;
-  opacity: 0.7;
 }
 
-.dropzoneAccept .overlay {
+.dropzoneAccept .dropNowOverlay {
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: var(--danger);
+  opacity: 0.7;
 }
 
 .buttonContainer {
@@ -74,4 +84,11 @@
 
 .inputStatus {
   margin-top: 10px;
+}
+
+@media screen and query700 {
+  .buttonContainer {
+    display: flex;
+    justify-content: center;
+  }
 }
