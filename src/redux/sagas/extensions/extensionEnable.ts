@@ -1,4 +1,4 @@
-import { all, call, takeEvery } from 'redux-saga/effects';
+import { all, call, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
@@ -61,6 +61,12 @@ function* extensionEnable({
       );
 
       yield takeFrom(initialise.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+      yield put({
+        type: ActionTypes.EXTENSION_ENABLE_SUCCESS,
+        payload: {},
+        meta,
+      });
     }
   } catch (error) {
     return yield putError(ActionTypes.EXTENSION_ENABLE_ERROR, error, meta);
