@@ -97,8 +97,8 @@ const AvatarDropdown = ({ preventTransactions = false, spinnerMsg }: Props) => {
           <UserAvatar
             address={wallet?.address || ''}
             size="s"
-            notSet={false}
             user={user}
+            notSet={!wallet}
           />
         </button>
       )}
