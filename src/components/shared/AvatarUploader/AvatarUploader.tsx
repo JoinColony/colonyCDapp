@@ -49,7 +49,7 @@ interface Props
   /** Display choose / remove buttons beneath Avatar */
   hasButtons?: boolean;
   /** Function to handle removal of the avatar (should set avatarURL to null from outside) */
-  remove: (...args: any[]) => Promise<any>;
+  handleFileRemove: (...args: any[]) => Promise<any>;
   /** Present if there was an error calling the mutation */
   uploadError?: ApolloError;
 }
@@ -77,13 +77,13 @@ const AvatarUploader = ({
   elementOnly,
   extra,
   handleFileAccept,
+  handleFileRemove,
   hasButtons = true,
   help,
   helpValues,
   isSet = true,
   label,
   labelValues,
-  remove,
   status,
   statusValues,
   uploadError,
@@ -137,7 +137,7 @@ const AvatarUploader = ({
           <Button
             appearance={{ theme: 'danger' }}
             text={{ id: 'button.remove' }}
-            onClick={remove}
+            onClick={handleFileRemove}
             disabled={!isSet}
             dataTest="avatarUploaderRemove"
           />

@@ -1,14 +1,19 @@
+import {
+  DEFAULT_MAX_FILE_LIMIT,
+  DEFAULT_MAX_FILE_SIZE,
+  DEFAULT_MIME_TYPES,
+} from '~shared/FileUpload/limits';
 import { FileReaderFile, FileReaderOptions } from './types';
 
-const fileReaderFactory = (options: Partial<FileReaderOptions>) => {
-  function defaultFileReadingFunction(reader: FileReader, file: File) {
+const fileReaderFactory = (options?: Partial<FileReaderOptions>) => {
+  function defaultFileReadingFunction(reader: FileReader, file: File | Blob) {
     reader.readAsDataURL(file);
   }
 
   const config: FileReaderOptions = {
-    maxFileSize: 1024 * 1024, // that's about 1MB
-    maxFilesLimit: 10,
-    allowedTypes: {},
+    maxFileSize: DEFAULT_MAX_FILE_SIZE,
+    maxFilesLimit: DEFAULT_MAX_FILE_LIMIT,
+    allowedTypes: DEFAULT_MIME_TYPES,
     fileReadingFn: defaultFileReadingFunction,
     ...options,
   };
@@ -21,7 +26,7 @@ const fileReaderFactory = (options: Partial<FileReaderOptions>) => {
     return file && config.maxFileSize && file.size > config.maxFileSize;
   }
 
-  function readFilePromise(file: File): Promise<FileReaderFile | Error> {
+  function readFile(file: File | Blob): Promise<FileReaderFile> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (evt: any) => {
@@ -34,7 +39,15 @@ const fileReaderFactory = (options: Partial<FileReaderOptions>) => {
           );
         }
 
-        const { name, type, size, lastModified } = file;
+        const { type, size } = file;
+        let name: File['name'] | undefined;
+        let lastModified: File['lastModified'] | undefined;
+
+        if (file instanceof File) {
+          name = file.name;
+          lastModified = file.lastModified;
+        }
+
         resolve({
           name,
           type,
@@ -42,6 +55,7 @@ const fileReaderFactory = (options: Partial<FileReaderOptions>) => {
           lastModified,
           uploadDate: Date.now(),
           data: evt.target.result,
+          file,
         } as FileReaderFile);
       };
 
@@ -49,7 +63,7 @@ const fileReaderFactory = (options: Partial<FileReaderOptions>) => {
     });
   }
 
-  return async function fileReader(files: File[]) {
+  return async function fileReader(files: (File | Blob)[]) {
     if (!files) {
       throw new Error(
         'An unexpected input was given, should receive files to upload.',
@@ -78,8 +92,8 @@ const fileReaderFactory = (options: Partial<FileReaderOptions>) => {
       );
     }
 
-    const fileReadingPromises = files.map(readFilePromise);
-    return Promise.all(fileReadingPromises);
+    const fileReaderFiles = files.map(readFile);
+    return Promise.all(fileReaderFiles);
   };
 };
 

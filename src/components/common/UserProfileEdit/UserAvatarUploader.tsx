@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { useUpdateUserProfileMutation } from '~gql';
+import { useAppContext } from '~hooks';
+import { getThumbnail } from '~images/optimisation';
 import AvatarUploader from '~shared/AvatarUploader';
 import UserAvatar from '~shared/UserAvatar';
-
 import { User } from '~types';
-import { useUpdateUserProfileMutation } from '~gql';
 import { FileReaderFile } from '~utils/fileReader/types';
 
 const displayName = 'common.UserProfileEdit.UserAvatarUploader';
@@ -26,54 +27,46 @@ const UserAvatarUploader = ({
   user,
   user: { walletAddress, profile },
 }: Props) => {
-  const [avatar, setAvatar] = useState<string | null>(profile?.avatar || null);
-  const [updateAvatar, { error }] = useUpdateUserProfileMutation();
-  const updatedUser = {
-    ...user,
-    // use avatar held in component state
-    profile: { ...user.profile, avatar },
-  };
+  const { updateUser } = useAppContext();
+  const [updateAvatar, { error: uploadError }] = useUpdateUserProfileMutation();
 
-  const handleUpload = async (fileData: FileReaderFile) => {
-    const file = await updateAvatar({
+  const handleFileUpload = async (avatarFile: FileReaderFile | null) => {
+    const updatedAvatar = avatarFile?.data ?? null;
+    const thumbnail = await getThumbnail(avatarFile?.file);
+
+    await updateAvatar({
       variables: {
         input: {
           id: walletAddress,
-          avatar: fileData.data,
+          avatar: updatedAvatar,
+          thumbnail,
         },
       },
     });
-    setAvatar(fileData.data);
-    return file;
+
+    updateUser?.(user.walletAddress);
   };
 
-  const remove = async () => {
-    await updateAvatar({
-      variables: {
-        input: { id: walletAddress, avatar: null },
-      },
-    });
-    setAvatar(null);
-  };
+  const handleFileRemove = () => handleFileUpload(null);
 
   return (
-    <AvatarUploader
-      label={MSG.uploaderLabel}
-      hasButtons
-      renderPlaceholder={
-        <UserAvatar
-          address={user.walletAddress}
-          user={updatedUser}
-          size="xl"
-          notSet={false}
-          preferThumbnail={false}
-        />
-      }
-      upload={handleUpload}
-      remove={remove}
-      isSet={!!avatar}
-      uploadError={error}
-    />
+    <div>
+      <AvatarUploader
+        label={MSG.uploaderLabel}
+        avatar={
+          <UserAvatar
+            address={walletAddress}
+            user={user}
+            size="xl"
+            preferThumbnail={false}
+          />
+        }
+        handleFileAccept={handleFileUpload}
+        handleFileRemove={handleFileRemove}
+        isSet={!!profile?.avatar}
+        uploadError={uploadError}
+      />
+    </div>
   );
 };
 
