@@ -101,14 +101,13 @@ const ColonyMembers = () => {
   return (
     <div className={styles.main}>
       <div className={styles.mainContentGrid}>
-        {isMobile && <ColonyHomeInfo colony={colony} showNavigation isMobile />}
+        {isMobile && <ColonyHomeInfo showNavigation isMobile />}
         <div className={styles.mainContent}>
           {colony && (
             <Members
               selectedDomain={selectedDomainId}
               handleDomainChange={setSelectedDomainId}
               filters={filters}
-              colony={colony}
             />
           )}
         </div>
@@ -134,7 +133,7 @@ const ColonyMembers = () => {
                 />
               </li>
             )}
-            <MemberControls colony={colony} />
+            <MemberControls />
           </ul>
           <MembersFilter
             handleFiltersCallback={setFilters}

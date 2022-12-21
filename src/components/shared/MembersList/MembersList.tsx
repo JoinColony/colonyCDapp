@@ -1,13 +1,12 @@
 import React, { ReactNode } from 'react';
 
 import ListGroup, { ListGroupAppearance } from '~shared/ListGroup';
-import { Colony, Watcher, Contributor } from '~types';
+import { Watcher, Contributor } from '~types';
 
 import MembersListItem from './MembersListItem';
 import { notNull } from '~utils/arrays';
 
 interface Props {
-  colony: Colony;
   users: (Watcher | Contributor)[];
   listGroupAppearance?: ListGroupAppearance;
   canAdministerComments?: boolean;
@@ -19,7 +18,6 @@ interface Props {
 const displayName = 'MembersList';
 
 const MembersList = ({
-  colony,
   extraItemContent,
   showUserInfo = true,
   showUserReputation = true,
@@ -31,7 +29,6 @@ const MembersList = ({
     <ListGroup appearance={listGroupAppearance}>
       {users.filter(notNull).map((member: Watcher | Contributor) => (
         <MembersListItem
-          colony={colony}
           extraItemContent={extraItemContent}
           key={member.user?.walletAddress}
           showUserInfo={showUserInfo}

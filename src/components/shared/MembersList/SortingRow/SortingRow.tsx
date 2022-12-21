@@ -16,15 +16,15 @@ export interface Props {
   >;
 }
 
-const displayName = 'dashboard.MembersList.SortingRow';
+const displayName = 'MembersList.SortingRow';
 
 const MSG = defineMessages({
   permissions: {
-    id: 'dashboard.MembersList.SortingRow.permissions',
+    id: `${displayName}.permissions`,
     defaultMessage: 'Permissions',
   },
   reputation: {
-    id: 'dashboard.MembersList.SortingRow.reputation',
+    id: `${displayName}.reputation`,
     defaultMessage: 'Reputation',
   },
 });

@@ -10,9 +10,11 @@ import { useMobile } from '~hooks';
 import styles from './MembersTitle.css';
 import ColonyDomainSelector from '~common/ColonyHome/ColonyDomainSelector';
 
+const displayName = 'common.Members.MembersTitle';
+
 const MSG = defineMessages({
   title: {
-    id: 'dashboard.Members.MembersTitle.title',
+    id: `${displayName}.title`,
     defaultMessage: `{isMobile, select,
       true {Members}
       other {Members: }
@@ -43,8 +45,6 @@ interface Props {
   searchValue: string;
   handleSearch: (e: any) => void;
 }
-
-const displayName = 'dashboard.MembersTitle';
 
 const MembersTitle = ({
   currentDomainId,
@@ -109,7 +109,7 @@ const MembersTitle = ({
                   alignOptions: 'right',
                   size: 'mediumLarge',
                   theme: 'alt',
-                  unrestrictedOptionsWidth: 'true',
+                  // unrestrictedOptionsWidth: 'true',
                 }}
                 elementOnly
                 label={MSG.labelFilter}
