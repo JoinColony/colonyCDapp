@@ -11,11 +11,11 @@ import Heading from '~shared/Heading';
 import { ExtensionParamType, InstalledExtensionData } from '~types';
 import { mapPayload, mergePayload, pipe } from '~utils/actions';
 import { IconButton } from '~shared/Button';
+import { ActionTypes } from '~redux';
 
 import {
   createExtensionSetupInitialValues,
   createExtensionSetupValidationSchema,
-  getButtonAction,
 } from './utils';
 
 import styles from './ExtensionSetup.css';
@@ -153,9 +153,9 @@ const ExtensionSetup = ({
       validationSchema={createExtensionSetupValidationSchema(
         initializationParams,
       )}
-      submit={getButtonAction('SUBMIT', extensionId)}
-      error={getButtonAction('ERROR', extensionId)}
-      success={getButtonAction('SUCCESS', extensionId)}
+      submit={ActionTypes.EXTENSION_ENABLE}
+      error={ActionTypes.EXTENSION_ENABLE_ERROR}
+      success={ActionTypes.EXTENSION_ENABLE_SUCCESS}
       onSuccess={handleFormSuccess}
       transform={transform}
     >
