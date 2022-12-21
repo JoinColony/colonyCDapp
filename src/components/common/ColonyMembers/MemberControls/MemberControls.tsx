@@ -12,7 +12,6 @@ import Button from '~shared/Button';
 // import { Colony, useColonyExtensionsQuery, useLoggedInUser } from '~data/index';
 // import { useAppContext, useTransformer } from '~hooks';
 // import { getAllUserRoles } from '~redux/transformers';
-import { Colony } from '~types';
 // import { hasRoot, canAdminister, canArchitect } from '~modules/users/checks';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
 
@@ -37,14 +36,7 @@ const MSG = defineMessages({
   },
 });
 
-interface Props {
-  colony: Colony;
-}
-
-const MemberControls = ({
-  colony,
-}: // colony: { colonyAddress, version, isDeploymentFinished },
-Props) => {
+const MemberControls = () => {
   // const {
   //   networkId,
   //   username,
@@ -65,6 +57,7 @@ Props) => {
   // const openPermissionManagementDialog =  useDialog(PermissionManagementDialog);
 
   const handlePermissionManagementDialog = useCallback(() => {
+    // eslint-disable-next-line no-console
     console.log('Open permissions dialog');
     // openPermissionManagementDialog({
     //   colony,
@@ -74,6 +67,7 @@ Props) => {
   // const openToggleManageWhitelistDialog = useDialog(ManageWhitelistDialog);
 
   const handleToggleWhitelistDialog = useCallback(() => {
+    // eslint-disable-next-line no-console
     console.log('Open whitelist dialog');
     // return openToggleManageWhitelistDialog({
     //   colony,
@@ -132,6 +126,7 @@ Props) => {
                 appearance={{ theme: 'blue' }}
                 text={MSG.banAddress}
                 onClick={
+                  // eslint-disable-next-line no-console
                   () => console.log('Open banning dialog')
                   // openToggleBanningDialog({
                   //   colonyAddress,
@@ -144,6 +139,7 @@ Props) => {
                 appearance={{ theme: 'blue' }}
                 text={MSG.unbanAddress}
                 onClick={
+                  // eslint-disable-next-line no-console
                   () => console.log('Open banning dialog')
                   // openToggleBanningDialog({
                   //   isBanning: false,

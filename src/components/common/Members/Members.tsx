@@ -11,6 +11,7 @@ import {
 } from '~common/ColonyMembers/MembersFilter';
 
 // import { useTransformer } from '~utils/hooks';
+import { useColonyContext } from '~hooks';
 import {
   Domain,
   useGetMembersForColonyQuery,
@@ -25,7 +26,7 @@ import {
 } from '~constants';
 // import { getAllUserRoles } from '~modules/transformers';
 // import { hasRoot, canAdminister } from '~modules/users/checks';
-import { Colony, User } from '~types';
+import { User } from '~types';
 import { notNull } from '~utils/arrays';
 
 import MembersTitle from './MembersTitle';
@@ -52,7 +53,6 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  colony: Colony;
   selectedDomain: number | undefined;
   handleDomainChange: React.Dispatch<React.SetStateAction<number>>;
   filters: any;
@@ -65,13 +65,8 @@ export type Member = User & {
   banned: boolean;
 };
 
-const Members = ({
-  colony: { colonyAddress, domains },
-  colony,
-  selectedDomain,
-  handleDomainChange,
-  filters,
-}: Props) => {
+const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
+  const { colony } = useColonyContext();
   const [searchValue, setSearchValue] = useState<string>('');
   const [sortingMethod, setSortingMethod] = useState(
     SortingMethod.ByHighestRep,
@@ -85,10 +80,10 @@ const Members = ({
   // const hasRegisteredProfile = !!username && !ethereal;
 
   const { data, loading: loadingMembers } = useGetMembersForColonyQuery({
-    skip: !colonyAddress,
+    skip: !colony?.colonyAddress,
     variables: {
       input: {
-        colonyAddress: colonyAddress ?? '',
+        colonyAddress: colony?.colonyAddress ?? '',
         domainId: selectedDomain || COLONY_TOTAL_BALANCE_DOMAIN_ID,
         sortingMethod,
       },
@@ -114,7 +109,7 @@ const Members = ({
   //   (hasRoot(currentUserRoles) || canAdminister(currentUserRoles));
 
   const domainSelectOptions = sortBy(
-    [...(domains?.items || []), ALLDOMAINS_DOMAIN_SELECTION].map(
+    [...(colony?.domains?.items || []), ALLDOMAINS_DOMAIN_SELECTION].map(
       ({ nativeId, name }: Domain) => {
         return {
           value: nativeId?.toString(),
@@ -146,7 +141,6 @@ const Members = ({
       filters.memberType === MemberType.CONTRIBUTORS) && (
       <MembersSection
         isContributorsSection
-        colony={colony}
         members={contributors as ContributorFragment[]}
         sortingMethod={sortingMethod}
         handleSortingMethodChange={setSortingMethod}
@@ -171,7 +165,6 @@ const Members = ({
         filters.memberType === MemberType.WATCHERS) ? (
         <MembersSection
           isContributorsSection={false}
-          colony={colony}
           members={watchers as WatcherFragment[]}
           // temporary value until permissions are implemented
           canAdministerComments
@@ -189,7 +182,6 @@ const Members = ({
     );
   }, [
     // canAdministerComments,
-    colony,
     contributors,
     watchers,
     filters,

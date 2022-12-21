@@ -2,7 +2,6 @@ import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { getBlockscoutUserURL } from '~constants';
-import { Colony } from '~types';
 import DropdownMenu, {
   DropdownMenuSection,
   DropdownMenuItem,
@@ -37,7 +36,6 @@ const MSG = defineMessages({
 
 interface Props {
   closePopover: () => void;
-  colony: Colony;
   userAddress: string;
   isWhitelisted: boolean;
   isBanned: boolean;
@@ -47,7 +45,6 @@ interface Props {
 const MemberActionsPopover = ({
   closePopover,
   canAdministerComments,
-  // colony,
   userAddress,
   isWhitelisted,
   isBanned,

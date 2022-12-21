@@ -4,31 +4,28 @@ import { defineMessages } from 'react-intl';
 import Popover from '~shared/Popover';
 import { ThreeDotsButton } from '~shared/Button';
 
-import { Colony } from '~types';
 import { useMobile } from '~hooks';
 
 import MemberActionsPopover from './MemberActionsPopover';
 
+const displayName = 'MemberList.MemberActions';
+
 const MSG = defineMessages({
   memberActionsTitle: {
-    id: 'shared.MemberList.MemberActions.MemberActionTitle',
+    id: `${displayName}.memberActionsTitle`,
     defaultMessage: 'Member Actions',
   },
 });
 
 interface Props {
   userAddress: string;
-  colony: Colony;
   isWhitelisted: boolean;
   isBanned: boolean;
   canAdministerComments?: boolean;
 }
 
-const displayName = 'shared.MemberList.MemberActions';
-
 const MemberActions = ({
   canAdministerComments,
-  colony,
   userAddress,
   isWhitelisted,
   isBanned,
@@ -43,7 +40,6 @@ const MemberActions = ({
         <MemberActionsPopover
           closePopover={close}
           canAdministerComments={canAdministerComments}
-          colony={colony}
           isWhitelisted={isWhitelisted}
           isBanned={isBanned}
           userAddress={userAddress}
