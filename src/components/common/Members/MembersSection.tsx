@@ -7,7 +7,7 @@ import LoadMoreButton from '~shared/LoadMoreButton';
 import SortingRow, {
   Props as SortingProps,
 } from '~shared/MembersList/SortingRow';
-import { Colony, Watcher, Contributor } from '~types';
+import { Watcher, Contributor } from '~types';
 // import useColonyMembersSorting from '~modules/dashboard/hooks/useColonyMembersSorting';
 
 import styles from './MembersSection.css';
@@ -35,7 +35,6 @@ const MSG = defineMessages({
 
 interface Props {
   isContributorsSection: boolean;
-  colony: Colony;
   members: Watcher[] | Contributor[];
   canAdministerComments: boolean;
   extraItemContent?: (user: (Watcher | Contributor)['user']) => ReactNode;
@@ -43,7 +42,6 @@ interface Props {
 }
 
 const MembersSection = ({
-  colony,
   members,
   canAdministerComments,
   extraItemContent,
@@ -90,7 +88,6 @@ const MembersSection = ({
       {paginatedMembers.length ? (
         <div className={styles.membersList}>
           <MembersList
-            colony={colony}
             extraItemContent={extraItemContent}
             users={paginatedMembers}
             canAdministerComments={canAdministerComments}

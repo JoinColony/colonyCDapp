@@ -9,10 +9,10 @@ import MaskedAddress from '~shared/MaskedAddress';
 import IconTooltip from '~shared/IconTooltip';
 import UserAvatar from '~shared/UserAvatar';
 
-import { Watcher, Contributor, Colony } from '~types';
+import { Watcher, Contributor } from '~types';
 import { ENTER } from '~types/index';
 import { getMainClasses } from '~utils/css';
-import { useMobile } from '~hooks';
+import { useColonyContext, useMobile } from '~hooks';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { notNull } from '~utils/arrays';
 
@@ -24,7 +24,6 @@ type User = (Watcher | Contributor)['user'];
 
 interface Props {
   extraItemContent?: (user: User) => ReactNode;
-  colony: Colony;
   onRowClick?: (user: User) => void;
   showUserInfo: boolean;
   showUserReputation: boolean;
@@ -32,17 +31,16 @@ interface Props {
   member: Watcher | Contributor;
 }
 
+const componentDisplayName = 'MembersList.MembersListItem';
+
 const MSG = defineMessages({
   whitelistedTooltip: {
-    id: 'shared.MembersList.MembersListItem.whitelistedTooltip',
+    id: `${componentDisplayName}.whitelistedTooltip`,
     defaultMessage: `Added to address book`,
   },
 });
 
-const componentDisplayName = 'MembersList.MembersListItem';
-
 const MembersListItem = ({
-  colony,
   extraItemContent,
   onRowClick,
   showUserInfo,
@@ -58,7 +56,7 @@ const MembersListItem = ({
     // banned = false,
     // isWhitelisted = false,
   } = user || {};
-
+  const { colony } = useColonyContext();
   const { reputationAmount, reputationPercentage } = member as Contributor;
 
   // const isUserBanned = useMemo(
@@ -171,7 +169,6 @@ const MembersListItem = ({
         )}
         <MemberActions
           canAdministerComments={canAdministerComments}
-          colony={colony}
           userAddress={walletAddress || ''}
           isWhitelisted={isWhitelisted}
           isBanned={banned}
