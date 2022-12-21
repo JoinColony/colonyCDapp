@@ -5,3 +5,7 @@
 .userHighlight {
   font-weight: var(--weight-bold);
 }
+
+.loader {
+  margin-top: 45px;
+}

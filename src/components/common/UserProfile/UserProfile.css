@@ -1,3 +1,5 @@
 .sectionContainer {
   composes: marginBottomLarge from '~styles/layout.css';
+  display: flex;
+  justify-content: center;
 }

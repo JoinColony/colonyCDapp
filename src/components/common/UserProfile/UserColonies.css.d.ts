@@ -1,6 +1,7 @@
 declare namespace UserColoniesCssNamespace {
   export interface IUserColoniesCss {
     createColonyLink: string;
+    loader: string;
     userHighlight: string;
   }
 }

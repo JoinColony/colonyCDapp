@@ -8,11 +8,7 @@ const displayName = 'common.UserProfile.UserProfileSpinner';
 const MSG = defineMessages({
   loadingText: {
     id: `${displayName}.loadingText`,
-    defaultMessage: 'Fetching a user profile',
-  },
-  loaderDescription: {
-    id: `${displayName}.loaderDescription`,
-    defaultMessage: 'Please wait while this user profile is being fetched.',
+    defaultMessage: 'Fetching user profile',
   },
 });
 

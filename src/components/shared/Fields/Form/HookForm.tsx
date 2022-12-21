@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   useForm,
   UseFormProps,
@@ -23,6 +23,8 @@ export interface HookFormProps<FormData extends FieldValues> {
   defaultValues?: UseFormProps<FormData>['defaultValues'];
   mode?: UseFormProps<FormData>['mode'];
   options?: UseFormProps<FormData>;
+  /** Pass true to reset the default values to latest values on form submission. This will reset the isDirty prop. */
+  resetOnSubmit?: boolean;
 }
 
 const HookForm = <FormData extends FieldValues>({
@@ -32,6 +34,7 @@ const HookForm = <FormData extends FieldValues>({
   onSubmit,
   onError,
   options,
+  resetOnSubmit = false,
   validationSchema,
 }: HookFormProps<FormData>) => {
   const formHelpers = useForm({
@@ -40,7 +43,25 @@ const HookForm = <FormData extends FieldValues>({
     mode,
     ...options,
   });
-  const { handleSubmit } = formHelpers;
+
+  const {
+    handleSubmit,
+    watch,
+    reset,
+    formState: { isSubmitting },
+  } = formHelpers;
+  const values = watch();
+
+  /*
+   * Effect resets default values to latest values, which resets the isDirty prop.
+   * Useful in user settings.
+   */
+  useEffect(() => {
+    if (isSubmitting && resetOnSubmit) {
+      reset(values);
+    }
+  }, [isSubmitting, values]);
+
   return (
     <FormProvider {...formHelpers}>
       <form onSubmit={handleSubmit(onSubmit, onError)}>

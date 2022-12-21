@@ -90,7 +90,7 @@ const HookFormFormattedInputComponent = ({
   };
 
   return (
-    <div className={styles.inputContainer}>
+    <>
       {maxButtonParams && (
         <MaxButton
           handleClick={(e) => handleMaxButtonClick(e, maxButtonParams)}
@@ -108,7 +108,7 @@ const HookFormFormattedInputComponent = ({
         options={formattingOptions}
         onInit={(cleaveInstance) => setCleave(cleaveInstance)}
       />
-    </div>
+    </>
   );
 };
 

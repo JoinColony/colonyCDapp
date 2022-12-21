@@ -17,6 +17,8 @@ import { getContext, ContextModule } from './index';
 
 export interface AppContextValues {
   wallet?: Wallet;
+  walletConnecting?: boolean;
+  setWalletConnecting?: React.Dispatch<React.SetStateAction<boolean>>;
   user?: User | null;
   userLoading?: boolean;
   updateWallet?: () => void;
@@ -43,6 +45,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [wallet, setWallet] = useState(initialWallet);
   const [user, setUser] = useState<User | null | undefined>(initialUser);
   const [userLoading, setUserLoading] = useState(false);
+  const [walletConnecting, setWalletConnecting] = useState(false);
 
   const updateUser = useCallback((address?: string) => {
     if (address) {
@@ -64,10 +67,10 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
           } else {
             setUser(null);
           }
-          setUserLoading(false);
         });
       } catch (error) {
         console.error(error);
+      } finally {
         setUserLoading(false);
       }
     }
@@ -92,8 +95,24 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   }, [updateUser, wallet]);
 
   const appContext = useMemo<AppContextValues>(
-    () => ({ wallet, user, userLoading, updateWallet, updateUser }),
-    [updateWallet, user, userLoading, wallet, updateUser],
+    () => ({
+      wallet,
+      walletConnecting,
+      setWalletConnecting,
+      user,
+      userLoading,
+      updateWallet,
+      updateUser,
+    }),
+    [
+      updateWallet,
+      user,
+      userLoading,
+      wallet,
+      walletConnecting,
+      setWalletConnecting,
+      updateUser,
+    ],
   );
 
   return (

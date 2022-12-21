@@ -1,20 +1,7 @@
 declare namespace UserAdvancedSettingsCssNamespace {
   export interface IUserAdvancedSettingsCss {
-    descriptions: string;
-    link: string;
-    mappings: string;
-    metaDesc: string;
-    names: string;
-    query700: string;
-    sectionTitle: string;
-    sourceRoot: string;
-    sources: string;
-    sourcesContent: string;
-    toggleContainer: string;
-    tooltipContainer: string;
-    tooltipContent: string;
-    validateButtonContainer: string;
-    version: string;
+    learnMoreLink: string;
+    main: string;
   }
 }
 

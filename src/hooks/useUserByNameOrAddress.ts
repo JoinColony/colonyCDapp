@@ -8,6 +8,7 @@ const useUserByNameOrAddress = (usernameOrAddress: string) => {
       name: usernameOrAddress,
       address: usernameOrAddress,
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   const user = isAddress(usernameOrAddress)
