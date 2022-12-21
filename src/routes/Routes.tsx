@@ -49,9 +49,11 @@ import CreateColonyWizard from '~common/CreateColonyWizard';
 
 // import useTitle from '~hooks/useTitle';
 
+const displayName = 'routes.Routes';
+
 const MSG = defineMessages({
   userProfileEditBack: {
-    id: 'routes.Routes.userProfileEditBack',
+    id: `${displayName}.userProfileEditBack`,
     defaultMessage: 'Go to profile',
   },
   // loadingAppMessage: {
@@ -238,5 +240,7 @@ const Routes = () => {
   // }
   return MemoizedSwitch;
 };
+
+Routes.displayName = displayName;
 
 export default Routes;
