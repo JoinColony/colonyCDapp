@@ -7,7 +7,6 @@ import NavLink from '~shared/NavLink';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { useAppContext, useCanInteractWithNetwork, useMobile } from '~hooks';
-// import { ColonyFragment } from '~gql';
 
 import SubscribedColoniesDropdown from './SubscribedColoniesDropdown';
 

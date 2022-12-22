@@ -1,6 +1,6 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
-import NavLink from '~shared/NavLink';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import DropdownMenu, {
   DropdownMenuSection,
@@ -23,7 +23,7 @@ const SubscribedColoniesDropdown = ({ coloniesList }: Props) => {
   const { colony: activeColony } = useColonyContext();
   const colonyToDisplay = activeColony || coloniesList[0].colony;
   const colonyToDisplayAddress =
-    activeColony?.colonyAddress || coloniesList[0].colony.id;
+    activeColony?.colonyAddress || coloniesList[0].colony.colonyAddress;
 
   return (
     <Popover
@@ -31,9 +31,11 @@ const SubscribedColoniesDropdown = ({ coloniesList }: Props) => {
         <DropdownMenu>
           <DropdownMenuSection>
             {coloniesList.map(({ colony }) => (
-              <DropdownMenuItem key={colony.id}>
+              <DropdownMenuItem key={colony.colonyAddress}>
                 <NavLink
-                  activeClassName={styles.activeColony}
+                  className={({ isActive }) =>
+                    isActive ? styles.activeColony : undefined
+                  }
                   title={colony.name}
                   to={`/colony/${colony.name}`}
                 >
@@ -41,7 +43,7 @@ const SubscribedColoniesDropdown = ({ coloniesList }: Props) => {
                     <div className={styles.itemImage}>
                       <ColonyAvatar
                         colony={colony}
-                        colonyAddress={colony.id}
+                        colonyAddress={colony.colonyAddress}
                         size="xs"
                       />
                     </div>
@@ -68,8 +70,9 @@ const SubscribedColoniesDropdown = ({ coloniesList }: Props) => {
       }}
     >
       <NavLink
-        activeClassName={styles.activeColony}
-        className={styles.itemLink}
+        className={({ isActive }) =>
+          isActive ? styles.activeColony : styles.itemLink
+        }
         title={colonyToDisplay.name}
         to={`/colony/${colonyToDisplay.name}`}
       >
