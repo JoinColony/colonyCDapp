@@ -1,9 +1,9 @@
 import * as yup from 'yup';
 
-import { ExtensionInitParams } from '~types';
+import { ExtensionInitParam } from '~types';
 
 export const createExtensionSetupInitialValues = (
-  initializationParams: ExtensionInitParams[],
+  initializationParams: ExtensionInitParam[],
 ) => {
   return initializationParams.reduce((initialValues, param) => {
     return {
@@ -14,7 +14,7 @@ export const createExtensionSetupInitialValues = (
 };
 
 export const createExtensionSetupValidationSchema = (
-  initializationParams: ExtensionInitParams[],
+  initializationParams: ExtensionInitParam[],
 ) => {
   const validationFields = initializationParams.reduce((fields, param) => {
     return {
