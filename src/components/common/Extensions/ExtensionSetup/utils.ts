@@ -1,6 +1,6 @@
 import { Extension } from '@colony/colony-js';
 import Decimal from 'decimal.js';
-import * as yup from 'yup';
+import { object } from 'yup';
 
 import { ExtensionInitParam } from '~types';
 
@@ -24,7 +24,7 @@ export const createExtensionSetupValidationSchema = (
       [param.paramName]: param.validation,
     };
   }, {});
-  return yup.object().shape(validationFields);
+  return object().shape(validationFields);
 };
 
 export const mapExtensionActionPayload = (

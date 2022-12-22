@@ -1,6 +1,7 @@
 import { ColonyRole, Extension } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
-import * as yup from 'yup';
+import { number } from 'yup';
+// @TODO: Change the import to use ~utils/lodash
 import toFinite from 'lodash/toFinite';
 
 import { ExtensionConfig, ExtensionParamType } from '~types';
@@ -116,6 +117,10 @@ const votingReputationMessages = {
     id: `${votingReputationName}.param.validation.lessThan50Error`,
     defaultMessage: 'Please enter hours less than or equal to 1 year.',
   },
+  votingReputationPositiveError: {
+    id: `${votingReputationName}.param.validation.positiveError`,
+    defaultMessage: 'Please enter a positive number',
+  },
 };
 
 const MSG = defineMessages({
@@ -148,10 +153,9 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     initializationParams: [
       {
         paramName: 'totalStakeFraction',
-        validation: yup
-          .number()
+        validation: number()
           .transform((value) => toFinite(value))
-          .positive()
+          .positive(() => MSG.votingReputationPositiveError)
           .required(() => MSG.votingReputationRequiredError)
           .max(50, () => MSG.votingReputationLessThan50Error),
         defaultValue: 1,
@@ -162,10 +166,9 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
       {
         paramName: 'voterRewardFraction',
-        validation: yup
-          .number()
+        validation: number()
           .transform((value) => toFinite(value))
-          .positive()
+          .positive(() => MSG.votingReputationPositiveError)
           .required(() => MSG.votingReputationRequiredError)
           .max(50, () => MSG.votingReputationLessThan50Error),
         defaultValue: 20,
@@ -176,10 +179,9 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
       {
         paramName: 'userMinStakeFraction',
-        validation: yup
-          .number()
+        validation: number()
           .transform((value) => toFinite(value))
-          .positive()
+          .positive(() => MSG.votingReputationPositiveError)
           .required(() => MSG.votingReputationRequiredError)
           .max(100, () => MSG.votingReputationLessThan100Error),
         defaultValue: 1,
@@ -190,10 +192,9 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
       {
         paramName: 'maxVoteFraction',
-        validation: yup
-          .number()
+        validation: number()
           .transform((value) => toFinite(value))
-          .positive()
+          .positive(() => MSG.votingReputationPositiveError)
           .required(() => MSG.votingReputationRequiredError)
           .max(100, () => MSG.votingReputationLessThan100Error),
         defaultValue: 70,
@@ -204,10 +205,9 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
       {
         paramName: 'stakePeriod',
-        validation: yup
-          .number()
+        validation: number()
           .transform((value) => toFinite(value))
-          .positive()
+          .positive(() => MSG.votingReputationPositiveError)
           .required(() => MSG.votingReputationRequiredError)
           .max(8760, () => MSG.votingReputationLessThan1YearError),
         defaultValue: 72, // 3 days in hours
@@ -218,10 +218,9 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
       {
         paramName: 'submitPeriod',
-        validation: yup
-          .number()
+        validation: number()
           .transform((value) => toFinite(value))
-          .positive()
+          .positive(() => MSG.votingReputationPositiveError)
           .required(() => MSG.votingReputationRequiredError)
           .max(8760, () => MSG.votingReputationLessThan1YearError),
         defaultValue: 72, // 3 days in hours
@@ -232,10 +231,9 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
       {
         paramName: 'revealPeriod',
-        validation: yup
-          .number()
+        validation: number()
           .transform((value) => toFinite(value))
-          .positive()
+          .positive(() => MSG.votingReputationPositiveError)
           .required(() => MSG.votingReputationRequiredError)
           .max(8760, () => MSG.votingReputationLessThan1YearError),
         defaultValue: 72, // 3 days in hours
@@ -246,10 +244,9 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
       {
         paramName: 'escalationPeriod',
-        validation: yup
-          .number()
+        validation: number()
           .transform((value) => toFinite(value))
-          .positive()
+          .positive(() => MSG.votingReputationPositiveError)
           .required(() => MSG.votingReputationRequiredError)
           .max(8760, () => MSG.votingReputationLessThan1YearError),
         defaultValue: 72, // 3 days in hours
