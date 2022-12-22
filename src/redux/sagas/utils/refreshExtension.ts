@@ -37,6 +37,7 @@ const saveExtensionInCache = (extension: ColonyExtension) => {
     },
     data: {
       getExtensionByColonyAndHash: {
+        __typename: 'ModelColonyExtensionConnection',
         items: [extension],
       },
     },
@@ -100,6 +101,7 @@ export const refreshUninstalledExtension = (
     },
     data: {
       getExtensionByColonyAndHash: {
+        __typename: 'ModelColonyExtensionConnection',
         items: [],
       },
     },
