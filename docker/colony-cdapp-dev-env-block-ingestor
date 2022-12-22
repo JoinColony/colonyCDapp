@@ -28,7 +28,8 @@ WORKDIR /colonyCDappBackend
 # TEMP: Checkout extension porting branch
 RUN git clone https://github.com/JoinColony/block-ingestor.git
 WORKDIR /colonyCDappBackend/block-ingestor
-RUN git checkout origin/port/extensions
+RUN git fetch origin port/extensions
+RUN git checkout port/extensions
 
 # Add env file here (as opposed to at the start of the script), since we
 # need to add it after the repo has been cloned, otherwise cloning will fail
