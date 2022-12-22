@@ -1,3 +1,5 @@
+import { Extension } from '@colony/colony-js';
+import Decimal from 'decimal.js';
 import * as yup from 'yup';
 
 import { ExtensionInitParam } from '~types';
@@ -23,4 +25,31 @@ export const createExtensionSetupValidationSchema = (
     };
   }, {});
   return yup.object().shape(validationFields);
+};
+
+export const mapExtensionActionPayload = (
+  extensionId: Extension,
+  payload: any,
+  initializationParams?: ExtensionInitParam[],
+) => {
+  if (extensionId === Extension.VotingReputation) {
+    return initializationParams?.reduce((formattedPayload, { paramName }) => {
+      if (paramName.endsWith('Period')) {
+        return {
+          ...formattedPayload,
+          [paramName]: new Decimal(payload[paramName])
+            .mul(3600)
+            .toFixed(0, Decimal.ROUND_HALF_UP),
+        };
+      }
+      return {
+        ...formattedPayload,
+        [paramName]: new Decimal(payload[paramName])
+          .mul(new Decimal(10).pow(16))
+          .toString(),
+      };
+    }, {});
+  }
+
+  return payload;
 };
