@@ -1,14 +1,13 @@
 import React, { useCallback, useMemo } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { FormikProps } from 'formik';
 import { Extension } from '@colony/colony-js';
 import Decimal from 'decimal.js';
 
 import { useColonyContext } from '~hooks';
-import { ActionForm, Input } from '~shared/Fields';
+import { ActionForm } from '~shared/Fields';
 import Heading from '~shared/Heading';
-import { ExtensionParamType, InstalledExtensionData } from '~types';
+import { InstalledExtensionData } from '~types';
 import { mapPayload, mergePayload, pipe } from '~utils/actions';
 import { IconButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
@@ -17,6 +16,7 @@ import {
   createExtensionSetupInitialValues,
   createExtensionSetupValidationSchema,
 } from './utils';
+import InitParamField from './InitParamField';
 
 import styles from './ExtensionSetup.css';
 
@@ -31,23 +31,7 @@ const MSG = defineMessages({
     id: `${displayName}.description`,
     defaultMessage: `Enabling this extension requires additional parameters. These parameters cannot be changed after enabling it. To do so, you must uninstall the extension, and then install and enable it again with new parameters.`,
   },
-  hours: {
-    id: `${displayName}.hours`,
-    defaultMessage: 'hours',
-  },
-  periods: {
-    id: `${displayName}.periods`,
-    defaultMessage: 'periods',
-  },
-  percent: {
-    id: `${displayName}.percent`,
-    defaultMessage: '%',
-  },
 });
-
-const DescriptionChunks = (chunks: React.ReactNode[]) => (
-  <span className={styles.descriptionExample}>{chunks}</span>
-);
 
 interface Props {
   extensionData: InstalledExtensionData;
@@ -113,40 +97,6 @@ const ExtensionSetup = ({
     return <Navigate to={`/colony/${colony.name}/extensions/${extensionId}`} />;
   }
 
-  const renderParams = (
-    // using any since this will be refactored into react-hook-form anyway
-    formikProps: FormikProps<any>,
-  ) =>
-    initializationParams.map(
-      ({ paramName, type, title, description, complementaryLabel }) => (
-        <div key={paramName}>
-          {type === ExtensionParamType.Input && (
-            <div className={styles.input}>
-              <Input
-                appearance={{ size: 'medium', theme: 'minimal' }}
-                label={title}
-                name={paramName}
-                disabled={formikProps.isSubmitting}
-              />
-              <p className={styles.inputsDescription}>
-                <FormattedMessage
-                  {...description}
-                  values={{
-                    span: DescriptionChunks,
-                  }}
-                />
-              </p>
-              {complementaryLabel && (
-                <span className={styles.complementaryLabel}>
-                  <FormattedMessage {...MSG[complementaryLabel]} />
-                </span>
-              )}
-            </div>
-          )}
-        </div>
-      ),
-    );
-
   return (
     <ActionForm
       initialValues={initialValues}
@@ -171,7 +121,9 @@ const ExtensionSetup = ({
             <FormattedMessage {...MSG.description} />
 
             <div className={styles.inputContainer}>
-              {renderParams(formikProps)}
+              {initializationParams.map((param) => (
+                <InitParamField key={param.paramName} param={param} />
+              ))}
             </div>
 
             <IconButton

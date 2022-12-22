@@ -16,7 +16,7 @@ export enum ExtensionParamType {
   Textarea = 'Textarea',
 }
 
-export interface ExtensionInitParams {
+export interface ExtensionInitParam {
   title: MessageDescriptor;
   description?: MessageDescriptor;
   defaultValue?: string | number;
@@ -32,7 +32,7 @@ export interface ExtensionConfig {
   descriptionShort: MessageDescriptor;
   descriptionLong: MessageDescriptor;
   neededColonyPermissions: ColonyRole[];
-  initializationParams?: ExtensionInitParams[];
+  initializationParams?: ExtensionInitParam[];
   uninstallable: boolean;
 }
 
