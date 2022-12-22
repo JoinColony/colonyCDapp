@@ -86,23 +86,19 @@ const ExtensionSetup = ({
       onSuccess={handleFormSuccess}
       transform={transform}
     >
-      {(formikProps) => {
-        const { isSubmitting, isValid, status } = formikProps;
+      {({ isSubmitting, isValid, status }) => {
         return (
           <div>
             <Heading
               appearance={{ size: 'medium', margin: 'none' }}
               text={MSG.title}
             />
-
             <FormattedMessage {...MSG.description} />
-
             <div className={styles.inputContainer}>
               {initializationParams.map((param) => (
                 <InitParamField key={param.paramName} param={param} />
               ))}
             </div>
-
             <IconButton
               type="submit"
               appearance={{ theme: 'primary', size: 'large' }}
