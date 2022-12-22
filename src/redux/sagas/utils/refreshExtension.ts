@@ -56,7 +56,7 @@ export const refreshInstalledExtension = (
     hash: getExtensionHash(extensionId),
     installedAt: Math.floor(Date.now() / 1000),
     installedBy: wallet.address,
-    version: availableVersion,
+    currentVersion: availableVersion,
     isDeleted: false,
     isDeprecated: false,
     isInitialized: false,
