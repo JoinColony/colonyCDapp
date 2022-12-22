@@ -17,12 +17,7 @@ interface Props {
 const displayName = 'frame.ProfileTemplate';
 
 const ProfileTemplate = ({ appearance, children, asideContent }: Props) => (
-  <div
-    className={getMainClasses(
-      appearance,
-      styles as unknown as { [k: string]: string },
-    )}
-  >
+  <div className={getMainClasses(appearance, styles)}>
     <aside className={styles.sidebar}>
       <div>{asideContent}</div>
     </aside>

@@ -1,5 +1,4 @@
 import React from 'react';
-// import { NavLink } from 'react-router-dom';
 
 import NavLink from '~shared/NavLink';
 import ColonyAvatar from '~shared/ColonyAvatar';
@@ -16,16 +15,6 @@ import styles from './SubscribedColoniesList.css';
 
 const displayName = 'frame.SubscribedColoniesList.SubscribedColoniesDropdown';
 
-// export type Colony = Pick<
-//   ProcessedColony,
-//   | 'colonyName'
-//   | 'colonyAddress'
-//   | 'id'
-//   | 'displayName'
-//   | 'avatarHash'
-//   | 'avatarURL'
-// >;
-
 interface Props {
   coloniesList: WatchedColonies[];
 }
@@ -33,6 +22,8 @@ interface Props {
 const SubscribedColoniesDropdown = ({ coloniesList }: Props) => {
   const { colony: activeColony } = useColonyContext();
   const colonyToDisplay = activeColony || coloniesList[0].colony;
+  const colonyToDisplayAddress =
+    activeColony?.colonyAddress || coloniesList[0].colony.id;
 
   return (
     <Popover
@@ -85,7 +76,7 @@ const SubscribedColoniesDropdown = ({ coloniesList }: Props) => {
         <div className={styles.itemImage}>
           <ColonyAvatar
             colony={colonyToDisplay as Colony}
-            colonyAddress={colonyToDisplay.id}
+            colonyAddress={colonyToDisplayAddress}
             size="xs"
           />
         </div>

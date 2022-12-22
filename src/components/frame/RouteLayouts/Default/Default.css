@@ -7,7 +7,6 @@
 
 .content {
   display: flex;
-  height: fit-content;
   min-height: 100%;
 }
 
