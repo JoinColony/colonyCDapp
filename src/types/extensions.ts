@@ -39,6 +39,7 @@ export interface ExtensionConfig {
 export type InstalledExtensionData = ExtensionConfig &
   ColonyExtension & {
     availableVersion: number;
+    isEnabled: boolean;
   };
 
 export type InstallableExtensionData = ExtensionConfig & {

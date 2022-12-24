@@ -32,11 +32,13 @@ export const mapToInstalledExtensionData = (
   // extension is also considered initialized if it has no initialization params
   const isInitialized =
     colonyExtension?.isInitialized || !extensionConfig.initializationParams;
+  const isEnabled = isInitialized && !colonyExtension.isDeprecated;
 
   return {
     ...extensionConfig,
     ...colonyExtension,
     availableVersion: version,
     isInitialized,
+    isEnabled,
   };
 };
