@@ -51,7 +51,7 @@ const SubscribedColoniesList = () => {
             <SpinnerLoader appearance={{ size: 'medium' }} />
           </div>
         )}
-        {!userLoading && isMobile ? (
+        {!userLoading && isMobile && (
           <>
             {watchlist.length ? (
               <SubscribedColoniesDropdown
@@ -73,7 +73,9 @@ const SubscribedColoniesList = () => {
               </div>
             )}
           </>
-        ) : (
+        )}
+        {!userLoading &&
+          !isMobile &&
           [...watchlist].sort(sortByDate).map((item) => {
             const { colonyAddress = '', name } = item?.colony || {};
             return (
@@ -94,8 +96,7 @@ const SubscribedColoniesList = () => {
                 </NavLink>
               </div>
             );
-          })
-        )}
+          })}
       </div>
       {canInteractWithNetwork && !isMobile && (
         <div className={`${styles.item} ${styles.newColonyItem}`}>
