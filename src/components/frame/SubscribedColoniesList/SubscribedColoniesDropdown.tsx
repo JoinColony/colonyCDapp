@@ -16,12 +16,12 @@ import styles from './SubscribedColoniesList.css';
 const displayName = 'frame.SubscribedColoniesList.SubscribedColoniesDropdown';
 
 interface Props {
-  watchlist?: WatchListItemFragment[];
+  watchlist: WatchListItemFragment[];
 }
 
 const SubscribedColoniesDropdown = ({ watchlist }: Props) => {
   const { colony: activeColony } = useColonyContext();
-  const colonyToDisplay = activeColony || (watchlist && watchlist[0]?.colony);
+  const colonyToDisplay = activeColony || watchlist[0]?.colony;
   const colonyToDisplayAddress = colonyToDisplay?.colonyAddress;
 
   return (
@@ -29,7 +29,7 @@ const SubscribedColoniesDropdown = ({ watchlist }: Props) => {
       renderContent={
         <DropdownMenu>
           <DropdownMenuSection>
-            {watchlist?.map(({ colony }) => (
+            {watchlist.map(({ colony }) => (
               <DropdownMenuItem key={colony.colonyAddress}>
                 <NavLink
                   className={({ isActive }) =>

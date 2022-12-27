@@ -54,7 +54,9 @@ const SubscribedColoniesList = () => {
         {!userLoading && isMobile ? (
           <>
             {watchlist.length ? (
-              <SubscribedColoniesDropdown watchlist={watchlist} />
+              <SubscribedColoniesDropdown
+                watchlist={[...watchlist].sort(sortByDate)}
+              />
             ) : (
               <div className={styles.item}>
                 <NavLink
