@@ -2,13 +2,10 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import ColonyAvatar from '~shared/ColonyAvatar';
-import DropdownMenu, {
-  DropdownMenuSection,
-  DropdownMenuItem,
-} from '~shared/DropdownMenu';
+import DropdownMenu, { DropdownMenuSection } from '~shared/DropdownMenu';
+import ColonyListItem from './ColonyListItem';
 import Popover from '~shared/Popover';
-import { Colony } from '~types';
-import { WatchListItemFragment } from '~gql';
+import { Colony, WatchListItem } from '~types';
 import { useColonyContext } from '~hooks';
 
 import styles from './SubscribedColoniesList.css';
@@ -16,7 +13,7 @@ import styles from './SubscribedColoniesList.css';
 const displayName = 'frame.SubscribedColoniesList.SubscribedColoniesDropdown';
 
 interface Props {
-  watchlist: WatchListItemFragment[];
+  watchlist: WatchListItem[];
 }
 
 const SubscribedColoniesDropdown = ({ watchlist }: Props) => {
@@ -30,26 +27,7 @@ const SubscribedColoniesDropdown = ({ watchlist }: Props) => {
         <DropdownMenu>
           <DropdownMenuSection>
             {watchlist.map(({ colony }) => (
-              <DropdownMenuItem key={colony.colonyAddress}>
-                <NavLink
-                  className={({ isActive }) =>
-                    isActive ? styles.activeColony : undefined
-                  }
-                  title={colony.name}
-                  to={`/colony/${colony.name}`}
-                >
-                  <div className={styles.dropdownItem}>
-                    <div className={styles.itemImage}>
-                      <ColonyAvatar
-                        colony={colony}
-                        colonyAddress={colony.colonyAddress}
-                        size="xs"
-                      />
-                    </div>
-                    <div>{colony.profile?.displayName || colony.name}</div>
-                  </div>
-                </NavLink>
-              </DropdownMenuItem>
+              <ColonyListItem colony={colony} />
             ))}
           </DropdownMenuSection>
         </DropdownMenu>
