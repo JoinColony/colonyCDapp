@@ -5,8 +5,6 @@ import {
 } from '~common/ColonyMembers/MembersFilter';
 import { User } from '~types';
 
-// import { ColonyContributor, ColonyWatcher } from '~data/index';
-
 export const filterMembers = <M extends User>(
   data: M[],
   searchValue?: string,
@@ -28,27 +26,25 @@ export const filterMembers = <M extends User>(
     filters?.verificationType === VerificationType.ALL
   ) {
     return data.filter(
-      ({ profile, id }) =>
-        profile?.username?.toLowerCase().includes(searchValue.toLowerCase()) ||
-        profile?.walletAddress
+      ({ profile, walletAddress }) =>
+        profile?.displayName
           ?.toLowerCase()
           .includes(searchValue.toLowerCase()) ||
-        id?.toLowerCase().includes(searchValue.toLowerCase()),
+        profile?.email?.toLowerCase().includes(searchValue.toLowerCase()) ||
+        walletAddress?.toLowerCase().includes(searchValue.toLowerCase()),
     );
   }
 
   /* All other combinations */
-  return data.filter(({ banned, isWhitelisted, profile, id }) => {
+  return data.filter(({ banned, isWhitelisted, profile, walletAddress }) => {
     const textFilter =
       searchValue === undefined || searchValue === ''
         ? true
-        : profile?.username
+        : profile?.displayName
             ?.toLowerCase()
             .includes(searchValue.toLowerCase()) ||
-          profile?.walletAddress
-            ?.toLowerCase()
-            .includes(searchValue.toLowerCase()) ||
-          id?.toLowerCase().includes(searchValue.toLowerCase());
+          profile?.email?.toLowerCase().includes(searchValue.toLowerCase()) ||
+          walletAddress?.toLowerCase().includes(searchValue.toLowerCase());
 
     if (filters?.verificationType === VerificationType.ALL) {
       if (filters?.bannedStatus === BannedStatus.BANNED) {

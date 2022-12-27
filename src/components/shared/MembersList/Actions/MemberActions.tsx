@@ -8,7 +8,7 @@ import { useMobile } from '~hooks';
 
 import MemberActionsPopover from './MemberActionsPopover';
 
-const displayName = 'MemberList.MemberActions';
+const displayName = 'MemberList.Actions.MemberActions';
 
 const MSG = defineMessages({
   memberActionsTitle: {

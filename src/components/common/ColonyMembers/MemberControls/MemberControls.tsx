@@ -15,7 +15,7 @@ import Button from '~shared/Button';
 // import { hasRoot, canAdminister, canArchitect } from '~modules/users/checks';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
 
-const displayName = 'dashboard.MemberControls';
+const displayName = 'common.ColonyMembers.MemberControls';
 
 const MSG = defineMessages({
   editPermissions: {
