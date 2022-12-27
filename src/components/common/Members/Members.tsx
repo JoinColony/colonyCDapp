@@ -4,28 +4,18 @@ import { ColonyRole } from '@colony/colony-js';
 import sortBy from 'lodash/sortBy';
 
 import { SpinnerLoader } from '~shared/Preloaders';
-// import UserPermissions from '~dashboard/UserPermissions';
 import {
   // FormValues as FiltersFormValues,
   MemberType,
 } from '~common/ColonyMembers/MembersFilter';
 
-// import { useTransformer } from '~utils/hooks';
 import { useColonyContext } from '~hooks';
-import {
-  Domain,
-  useGetMembersForColonyQuery,
-  SortingMethod,
-  ContributorFragment,
-  WatcherFragment,
-} from '~gql';
+import { Domain, useGetMembersForColonyQuery, SortingMethod } from '~gql';
 import {
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
   ALLDOMAINS_DOMAIN_SELECTION,
   ROOT_DOMAIN_ID,
 } from '~constants';
-// import { getAllUserRoles } from '~modules/transformers';
-// import { hasRoot, canAdminister } from '~modules/users/checks';
 import { User } from '~types';
 import { notNull } from '~utils/arrays';
 
@@ -46,8 +36,8 @@ const MSG = defineMessages({
     id: `${displayName}.failedToFetch`,
     defaultMessage: "Could not fetch the colony's members",
   },
-  noMemebersFound: {
-    id: `${displayName}.noResultsFound`,
+  noMembersFound: {
+    id: `${displayName}.noMembersFound`,
     defaultMessage: 'No members found',
   },
 });
@@ -72,13 +62,6 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
     SortingMethod.ByHighestRep,
   );
 
-  // const {
-  //   walletAddress: currentUserWalletAddress,
-  //   username,
-  //   ethereal,
-  // } = useLoggedInUser();
-  // const hasRegisteredProfile = !!username && !ethereal;
-
   const { data, loading: loadingMembers } = useGetMembersForColonyQuery({
     skip: !colony?.colonyAddress,
     variables: {
@@ -100,10 +83,6 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
     [data],
   );
 
-  // const currentUserRoles = useTransformer(getAllUserRoles, [
-  //   colony,
-  //   currentUserWalletAddress,
-  // ]);
   // const canAdministerComments =
   //   hasRegisteredProfile &&
   //   (hasRoot(currentUserRoles) || canAdminister(currentUserRoles));
@@ -141,7 +120,7 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
       filters.memberType === MemberType.CONTRIBUTORS) && (
       <MembersSection
         isContributorsSection
-        members={contributors as ContributorFragment[]}
+        members={contributors}
         sortingMethod={sortingMethod}
         handleSortingMethodChange={setSortingMethod}
         // temporary value until permissions are implemented
@@ -165,7 +144,7 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
         filters.memberType === MemberType.WATCHERS) ? (
         <MembersSection
           isContributorsSection={false}
-          members={watchers as WatcherFragment[]}
+          members={watchers}
           // temporary value until permissions are implemented
           canAdministerComments
           // extraItemContent={({ banned }) => (
@@ -211,7 +190,7 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
       />
       {!contributors?.length && !watchers?.length ? (
         <div className={styles.noResults}>
-          <FormattedMessage {...MSG.noMemebersFound} />
+          <FormattedMessage {...MSG.noMembersFound} />
         </div>
       ) : (
         membersContent

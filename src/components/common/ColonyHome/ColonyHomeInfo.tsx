@@ -5,7 +5,7 @@ import ColonyNavigation from './ColonyNavigation';
 
 import styles from './ColonyHomeLayout.css';
 
-const displayName = 'dashboard.ColonyHome.ColonyHomeInfo';
+const displayName = 'common.ColonyHome.ColonyHomeInfo';
 
 interface Props {
   isMobile: boolean;
