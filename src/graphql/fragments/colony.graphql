@@ -68,6 +68,9 @@ fragment Watcher on WatchedColonies {
 fragment WatchedColony on Colony {
   colonyAddress: id
   name
+  nativeToken {
+    ...Token
+  }
   profile {
     avatar
     displayName

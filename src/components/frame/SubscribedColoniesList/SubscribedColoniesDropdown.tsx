@@ -8,7 +8,7 @@ import DropdownMenu, {
 } from '~shared/DropdownMenu';
 import Popover from '~shared/Popover';
 import { Colony } from '~types';
-import { WatchedColonies } from '~gql';
+import { WatchListItemFragment } from '~gql';
 import { useColonyContext } from '~hooks';
 
 import styles from './SubscribedColoniesList.css';
@@ -16,21 +16,20 @@ import styles from './SubscribedColoniesList.css';
 const displayName = 'frame.SubscribedColoniesList.SubscribedColoniesDropdown';
 
 interface Props {
-  coloniesList: WatchedColonies[];
+  watchlist?: WatchListItemFragment[];
 }
 
-const SubscribedColoniesDropdown = ({ coloniesList }: Props) => {
+const SubscribedColoniesDropdown = ({ watchlist }: Props) => {
   const { colony: activeColony } = useColonyContext();
-  const colonyToDisplay = activeColony || coloniesList[0].colony;
-  const colonyToDisplayAddress =
-    activeColony?.colonyAddress || coloniesList[0].colony.colonyAddress;
+  const colonyToDisplay = activeColony || (watchlist && watchlist[0]?.colony);
+  const colonyToDisplayAddress = colonyToDisplay?.colonyAddress;
 
   return (
     <Popover
       renderContent={
         <DropdownMenu>
           <DropdownMenuSection>
-            {coloniesList.map(({ colony }) => (
+            {watchlist?.map(({ colony }) => (
               <DropdownMenuItem key={colony.colonyAddress}>
                 <NavLink
                   className={({ isActive }) =>
@@ -73,13 +72,13 @@ const SubscribedColoniesDropdown = ({ coloniesList }: Props) => {
         className={({ isActive }) =>
           isActive ? styles.activeColony : styles.itemLink
         }
-        title={colonyToDisplay.name}
-        to={`/colony/${colonyToDisplay.name}`}
+        title={colonyToDisplay?.name}
+        to={`/colony/${colonyToDisplay?.name}`}
       >
         <div className={styles.itemImage}>
           <ColonyAvatar
             colony={colonyToDisplay as Colony}
-            colonyAddress={colonyToDisplayAddress}
+            colonyAddress={colonyToDisplayAddress || ''}
             size="xs"
           />
         </div>

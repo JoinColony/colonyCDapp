@@ -54,7 +54,7 @@ const SubscribedColoniesList = () => {
         {!userLoading && isMobile ? (
           <>
             {watchlist.length ? (
-              <SubscribedColoniesDropdown coloniesList={watchlist} />
+              <SubscribedColoniesDropdown watchlist={watchlist} />
             ) : (
               <div className={styles.item}>
                 <NavLink
