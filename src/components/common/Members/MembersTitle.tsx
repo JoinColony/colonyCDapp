@@ -22,15 +22,15 @@ const MSG = defineMessages({
   `,
   },
   search: {
-    id: 'dashboard.Members.MembersTitle.search',
+    id: `${displayName}.search`,
     defaultMessage: 'Search',
   },
   searchPlaceholder: {
-    id: 'dashboard.Members.MembersTitle.searchPlaceholder',
+    id: `${displayName}.searchPlaceholder`,
     defaultMessage: 'Search...',
   },
   labelFilter: {
-    id: 'dashboard.Members.MembersTitle.labelFilter',
+    id: `${displayName}.labelFilter`,
     defaultMessage: 'Filter',
   },
 });
@@ -85,6 +85,7 @@ const MembersTitle = ({
   }, []);
 
   const isMobile = useMobile();
+
   return (
     <div className={styles.titleContainer}>
       <div className={styles.titleLeft}>
@@ -161,6 +162,7 @@ const MembersTitle = ({
     </div>
   );
 };
+
 MembersTitle.displayName = displayName;
 
 export default MembersTitle;

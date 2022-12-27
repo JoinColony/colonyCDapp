@@ -12,23 +12,23 @@ import { Watcher, Contributor } from '~types';
 
 import styles from './MembersSection.css';
 
-const displayName = 'dashboard.MembersSection';
+const displayName = 'common.Members.MembersSection';
 
 const MSG = defineMessages({
   contributorsTitle: {
-    id: 'dashboard.Members.MembersSection.contributorsTitle',
+    id: `${displayName}.contributorsTitle`,
     defaultMessage: 'Contributors',
   },
   watchersTitle: {
-    id: 'dashboard.Members.MembersSection.watchersTitle',
+    id: `${displayName}.watchersTitle`,
     defaultMessage: 'Watchers',
   },
   watchersDescription: {
-    id: 'dashboard.Members.MembersSection.watchersDescription',
+    id: `${displayName}.watchersDescription`,
     defaultMessage: "Members who don't currently have any reputation",
   },
-  noMemebersFound: {
-    id: 'dashboard.Members.MembersSection.noResultsFound',
+  noMembersFound: {
+    id: `${displayName}.noMembersFound`,
     defaultMessage: 'No members found',
   },
 });
@@ -96,7 +96,7 @@ const MembersSection = ({
         </div>
       ) : (
         <div className={styles.noResults}>
-          <FormattedMessage {...MSG.noMemebersFound} />
+          <FormattedMessage {...MSG.noMembersFound} />
         </div>
       )}
       {itemsPerSection * dataPage < members.length && (
