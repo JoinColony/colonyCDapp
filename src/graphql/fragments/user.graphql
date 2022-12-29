@@ -6,6 +6,7 @@ fragment User on User {
   name
   watchlist {
     items {
+      id
       colony {
         ...WatchedColony
       }

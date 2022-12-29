@@ -1,13 +1,16 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-// import { SpinnerLoader } from '~core/Preloaders';
-import Button, { ThreeDotsButton } from '~shared/Button';
-import Link from '~shared/Link';
-
+import {
+  useCreateWatchedColoniesMutation,
+  useDeleteWatchedColoniesMutation,
+} from '~gql';
 import { Colony } from '~types';
 import { useAppContext, useColonyContext } from '~hooks';
 import { CREATE_USER_ROUTE } from '~routes/index';
+import { SpinnerLoader } from '~shared/Preloaders';
+import Button, { ThreeDotsButton } from '~shared/Button';
+import Link from '~shared/Link';
 import Address from '~shared/Address';
 
 import ColonySubscriptionInfoPopover from './ColonySubscriptionInfoPopover';
@@ -37,19 +40,34 @@ const ColonySubscription = () => {
 
   const { user } = useAppContext();
 
-  const isSubscribed = !!(user?.watchlist?.items || []).find(
+  const isWatching = (user?.watchlist?.items || []).find(
     (item) => (item?.colony as Colony)?.colonyAddress === colonyAddress,
   );
 
+  const [watched, { loading: loadingWatched }] =
+    useCreateWatchedColoniesMutation({
+      variables: {
+        input: {
+          colonyID: colonyAddress || '',
+          userID: user?.walletAddress || '',
+        },
+      },
+    });
+
+  const [unwatch, { loading: loadingUnwatch }] =
+    useDeleteWatchedColoniesMutation({
+      variables: { input: { id: isWatching?.id || '' } },
+    });
+
   return (
     <div className={styles.main}>
-      {/* {loadingSubscribe ||
-        (loadingUnsubscribe && (
+      {loadingWatched ||
+        (loadingUnwatch && (
           <div className={styles.spinnerContainer}>
             <SpinnerLoader appearance={{ theme: 'primary', size: 'small' }} />
           </div>
-        ))} */}
-      <div className={isSubscribed ? styles.colonySubscribed : ''}>
+        ))}
+      <div className={isWatching ? styles.colonySubscribed : ''}>
         {colonyAddress && (
           <Address
             address={colonyAddress}
@@ -57,12 +75,9 @@ const ColonySubscription = () => {
             copyMessage={MSG.copyMessage}
           />
         )}
-        {isSubscribed && (
+        {isWatching && (
           <ColonySubscriptionInfoPopover
-            onUnsubscribe={() => {
-              // eslint-disable-next-line no-console
-              console.log('Implement unsubscribe logic');
-            }}
+            onUnsubscribe={() => unwatch()}
             canUnsubscribe
           >
             {({ isOpen, toggle, ref, id }) => (
@@ -80,14 +95,11 @@ const ColonySubscription = () => {
             )}
           </ColonySubscriptionInfoPopover>
         )}
-        {!isSubscribed && (
+        {!isWatching && (
           <div className={styles.colonyJoin}>
             {user?.name && (
               <Button
-                onClick={() => {
-                  // eslint-disable-next-line no-console
-                  console.log('Implement subscribe logic');
-                }}
+                onClick={() => watched()}
                 appearance={{ theme: 'blue', size: 'small' }}
                 data-test="joinColonyButton"
                 className={styles.colonyJoinBtn}
@@ -98,10 +110,8 @@ const ColonySubscription = () => {
             {!user?.name && (
               <Link
                 className={styles.colonyJoinBtn}
-                to={{
-                  pathname: CREATE_USER_ROUTE,
-                  // state: { colonyURL: `/colony/${colonyName}` },
-                }}
+                to={{ pathname: CREATE_USER_ROUTE }}
+                state={{ colonyURL: `/colony/${colony?.name}` }}
                 text={MSG.joinColony}
               />
             )}

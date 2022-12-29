@@ -23,9 +23,11 @@ const MSG = defineMessages({
 });
 
 interface Props {
+  /** Handle method on unsubscribing */
   onUnsubscribe?: () => void;
   /** Children elements or components to wrap the tooltip around */
   children?: ReactElement | PopoverChildFn;
+  /** Passes in the state of the users subscription and if they can unsubscribe */
   canUnsubscribe?: boolean;
 }
 
