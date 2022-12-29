@@ -13,7 +13,7 @@ import styles from './SubscribedColoniesList.css';
 const displayName = 'frame.SubscribedColoniesList.SubscribedColoniesDropdown';
 
 interface Props {
-  watchlist: WatchListItem[];
+  watchlist: (WatchListItem | null)[];
 }
 
 const SubscribedColoniesDropdown = ({ watchlist }: Props) => {
@@ -26,9 +26,9 @@ const SubscribedColoniesDropdown = ({ watchlist }: Props) => {
       renderContent={
         <DropdownMenu>
           <DropdownMenuSection>
-            {watchlist.map(({ colony }) => (
-              <ColonyListItem colony={colony} />
-            ))}
+            {watchlist.map((item) => {
+              return item && <ColonyListItem colony={item.colony} />;
+            })}
           </DropdownMenuSection>
         </DropdownMenu>
       }
