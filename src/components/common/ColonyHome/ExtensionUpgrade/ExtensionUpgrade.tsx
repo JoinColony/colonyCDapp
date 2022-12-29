@@ -5,11 +5,11 @@ import { useParams } from 'react-router';
 
 import Alert from '~shared/Alert';
 import Button from '~shared/Button';
-import { oneTxMustBeUpgraded } from '~utils/checks';
+import { oneTxMustBeUpgraded } from '~utils/extensions';
 import { useColonyContext, useExtensionData } from '~hooks';
+import { InstalledExtensionData } from '~types';
 
 import styles from './ExtensionUpgrade.css';
-import { InstalledExtensionData } from '~types';
 
 const displayName = 'common.ColonyHome.ExtensionUpgrade';
 
