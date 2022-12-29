@@ -1,3 +1,4 @@
+import { Extension, ONE_TX_PAYMENT_VERSION_LATEST } from '@colony/colony-js';
 import {
   AnyExtensionData,
   ExtensionConfig,
@@ -41,4 +42,15 @@ export const mapToInstalledExtensionData = (
     isInitialized,
     isEnabled,
   };
+};
+
+export const oneTxMustBeUpgraded = (extensionData?: InstalledExtensionData) => {
+  if (extensionData) {
+    const { extensionId: extensionName, currentVersion } = extensionData;
+    return (
+      extensionName === Extension.OneTxPayment &&
+      currentVersion < ONE_TX_PAYMENT_VERSION_LATEST
+    );
+  }
+  return false;
 };
