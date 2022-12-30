@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { CREATE_USER_ROUTE } from '~routes/index';
 import { SpinnerLoader } from '~shared/Preloaders';
 import Button, { ThreeDotsButton } from '~shared/Button';
-import Link from '~shared/Link';
 import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 
@@ -38,7 +36,7 @@ const MSG = defineMessages({
 
 const ColonySubscription = () => {
   const { colony, canInteractWithColony } = useColonyContext();
-  const { user, updateUser, walletConnecting } = useAppContext();
+  const { user, updateUser, walletConnecting, connectWallet } = useAppContext();
 
   const watchedItem = (user?.watchlist?.items || []).find(
     (item) => (item?.colony as Colony)?.colonyAddress === colony?.colonyAddress,
@@ -120,12 +118,14 @@ const ColonySubscription = () => {
               </Button>
             )}
             {!user?.name && (
-              <Link
+              <Button
+                onClick={connectWallet}
+                appearance={{ theme: 'blue', size: 'small' }}
+                data-test="joinColonyButton"
                 className={styles.colonyJoinBtn}
-                to={{ pathname: CREATE_USER_ROUTE }}
-                state={{ colonyURL: `/colony/${colony?.name}` }}
-                text={MSG.joinColony}
-              />
+              >
+                <FormattedMessage {...MSG.joinColony} />
+              </Button>
             )}
           </div>
         )}

@@ -6,12 +6,14 @@ import React, {
   useCallback,
 } from 'react';
 
+import { ActionTypes } from '~redux';
 import {
   GetCurrentUserDocument,
   GetCurrentUserQuery,
   GetCurrentUserQueryVariables,
 } from '~gql';
 import { Wallet, User } from '~types';
+import { useAsyncFunction } from '~hooks';
 
 import { getContext, ContextModule } from './index';
 
@@ -21,6 +23,7 @@ export interface AppContextValues {
   setWalletConnecting?: React.Dispatch<React.SetStateAction<boolean>>;
   user?: User | null;
   userLoading?: boolean;
+  connectWallet?: () => void;
   updateWallet?: () => void;
   updateUser?: (
     address?: string,
@@ -98,6 +101,27 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [updateUser, wallet]);
 
+  const asyncFunction = useAsyncFunction({
+    submit: ActionTypes.WALLET_OPEN,
+    error: ActionTypes.WALLET_OPEN_ERROR,
+    success: ActionTypes.WALLET_OPEN_SUCCESS,
+  });
+
+  const connectWallet = useCallback(async () => {
+    setWalletConnecting?.(true);
+    let walletConnectSuccess = false;
+    try {
+      await asyncFunction(undefined);
+      walletConnectSuccess = true;
+    } catch (error) {
+      console.error('Could not connect wallet', error);
+    }
+    if (updateWallet && walletConnectSuccess) {
+      updateWallet();
+    }
+    setWalletConnecting?.(false);
+  }, [asyncFunction, updateWallet, setWalletConnecting]);
+
   const appContext = useMemo<AppContextValues>(
     () => ({
       wallet,
@@ -105,16 +129,18 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       setWalletConnecting,
       user,
       userLoading,
+      connectWallet,
       updateWallet,
       updateUser,
     }),
     [
-      updateWallet,
-      user,
-      userLoading,
       wallet,
       walletConnecting,
       setWalletConnecting,
+      user,
+      userLoading,
+      connectWallet,
+      updateWallet,
       updateUser,
     ],
   );
