@@ -6,7 +6,7 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import NavLink from '~shared/NavLink';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import { CREATE_COLONY_ROUTE } from '~routes/index';
-import { useAppContext, useCanInteractWithNetwork, useMobile } from '~hooks';
+import { useAppContext, useMobile } from '~hooks';
 
 import SubscribedColoniesDropdown from './SubscribedColoniesDropdown';
 
@@ -23,7 +23,6 @@ const MSG = defineMessages({
 
 const SubscribedColoniesList = () => {
   const { user, userLoading } = useAppContext();
-  const canInteractWithNetwork = useCanInteractWithNetwork();
   const isMobile = useMobile();
 
   const { items: watchlist = [] } = user?.watchlist || {};
@@ -91,7 +90,7 @@ const SubscribedColoniesList = () => {
             );
           })}
       </div>
-      {canInteractWithNetwork && !isMobile && (
+      {!isMobile && (
         <div className={`${styles.item} ${styles.newColonyItem}`}>
           <NavLink
             className={styles.itemLink}
