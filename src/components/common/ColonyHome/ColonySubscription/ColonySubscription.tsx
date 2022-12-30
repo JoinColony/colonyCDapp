@@ -38,7 +38,7 @@ const MSG = defineMessages({
 
 const ColonySubscription = () => {
   const { colony, canInteractWithColony } = useColonyContext();
-  const { user, updateUser } = useAppContext();
+  const { user, updateUser, walletConnecting } = useAppContext();
 
   const watchedItem = (user?.watchlist?.items || []).find(
     (item) => (item?.colony as Colony)?.colonyAddress === colony?.colonyAddress,
@@ -107,7 +107,7 @@ const ColonySubscription = () => {
             )}
           </ColonySubscriptionInfoPopover>
         )}
-        {!canInteractWithColony && user && (
+        {!canInteractWithColony && !walletConnecting && (
           <div className={styles.colonyJoin}>
             {user?.name && (
               <Button
