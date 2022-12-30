@@ -39,7 +39,7 @@ export const useCanInteractWithNetwork = (): boolean => {
  * - Include roles / permissions into the check
  */
 export const useCanInteractWithColony = (colony?: Colony): boolean => {
-  const { wallet } = useAppContext();
+  const { wallet, user } = useAppContext();
   const canInteractWithNetwork = useCanInteractWithNetwork();
 
   /*
@@ -48,10 +48,24 @@ export const useCanInteractWithColony = (colony?: Colony): boolean => {
   if (!wallet || !colony) {
     return false;
   }
+
+  /*
+   * Check if connected to the same chain
+   */
   const [{ id: walletHexChainId }] = wallet.chains;
   const colonyChain = colony?.meta?.chainId || DEFAULT_NETWORK_INFO.chainId;
   const userWalletChain = parseInt(walletHexChainId.slice(2), 16);
-  return colonyChain === userWalletChain && canInteractWithNetwork;
+
+  /*
+   * Checking if watching (following) or not
+   */
+  const isWatching = !!(user?.watchlist?.items || []).find(
+    (item) => (item?.colony as Colony)?.colonyAddress === colony?.colonyAddress,
+  );
+
+  return (
+    colonyChain === userWalletChain && canInteractWithNetwork && isWatching
+  );
 };
 
 export default useCanInteractWithColony;

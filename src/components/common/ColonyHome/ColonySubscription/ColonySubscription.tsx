@@ -1,5 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
+
+import { CREATE_USER_ROUTE } from '~routes/index';
+import { SpinnerLoader } from '~shared/Preloaders';
+import Button, { ThreeDotsButton } from '~shared/Button';
+import Link from '~shared/Link';
+import MaskedAddress from '~shared/MaskedAddress';
+import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 
 import {
   useCreateWatchedColoniesMutation,
@@ -7,11 +14,6 @@ import {
 } from '~gql';
 import { Colony } from '~types';
 import { useAppContext, useColonyContext } from '~hooks';
-import { CREATE_USER_ROUTE } from '~routes/index';
-import { SpinnerLoader } from '~shared/Preloaders';
-import Button, { ThreeDotsButton } from '~shared/Button';
-import Link from '~shared/Link';
-import Address from '~shared/Address';
 
 import ColonySubscriptionInfoPopover from './ColonySubscriptionInfoPopover';
 
@@ -35,50 +37,60 @@ const MSG = defineMessages({
 });
 
 const ColonySubscription = () => {
-  const { colony } = useColonyContext();
-  const { colonyAddress } = colony || {};
+  const { colony, canInteractWithColony } = useColonyContext();
+  const { user, updateUser } = useAppContext();
 
-  const { user } = useAppContext();
-
-  const isWatching = (user?.watchlist?.items || []).find(
-    (item) => (item?.colony as Colony)?.colonyAddress === colonyAddress,
+  const watchedItem = (user?.watchlist?.items || []).find(
+    (item) => (item?.colony as Colony)?.colonyAddress === colony?.colonyAddress,
   );
 
-  const [watched, { loading: loadingWatched }] =
+  /* Watch (follow) a colony */
+  const [watched, { data: watchState, loading: loadingWatched }] =
     useCreateWatchedColoniesMutation({
       variables: {
         input: {
-          colonyID: colonyAddress || '',
+          colonyID: colony?.colonyAddress || '',
           userID: user?.walletAddress || '',
         },
       },
     });
 
-  const [unwatch, { loading: loadingUnwatch }] =
+  /* Unwatch (unfollow) a colony */
+  const [unwatch, { data: unWatchState, loading: loadingUnwatch }] =
     useDeleteWatchedColoniesMutation({
-      variables: { input: { id: isWatching?.id || '' } },
+      variables: { input: { id: watchedItem?.id || '' } },
     });
+
+  /* Update user on watch/unwatch */
+  useEffect(() => {
+    if (updateUser) {
+      updateUser(user?.walletAddress);
+    }
+  }, [user, updateUser, watchState, unWatchState]);
 
   return (
     <div className={styles.main}>
-      {loadingWatched ||
-        (loadingUnwatch && (
-          <div className={styles.spinnerContainer}>
-            <SpinnerLoader appearance={{ theme: 'primary', size: 'small' }} />
-          </div>
-        ))}
-      <div className={isWatching ? styles.colonySubscribed : ''}>
-        {colonyAddress && (
-          <Address
-            address={colonyAddress}
-            maskedAddressStyles={styles.colonyAddress}
+      <div className={canInteractWithColony ? styles.colonySubscribed : ''}>
+        {colony?.colonyAddress && (
+          <InvisibleCopyableAddress
+            address={colony?.colonyAddress}
             copyMessage={MSG.copyMessage}
-          />
+          >
+            <div className={styles.colonyAddress}>
+              <MaskedAddress address={colony?.colonyAddress} />
+            </div>
+          </InvisibleCopyableAddress>
         )}
-        {isWatching && (
+        {loadingWatched ||
+          (loadingUnwatch && (
+            <SpinnerLoader appearance={{ theme: 'primary', size: 'small' }} />
+          ))}
+        {canInteractWithColony && !loadingWatched && !loadingUnwatch && (
           <ColonySubscriptionInfoPopover
             onUnsubscribe={() => unwatch()}
             canUnsubscribe
+            // loadingWatched
+            // loadingUnwatch
           >
             {({ isOpen, toggle, ref, id }) => (
               <ThreeDotsButton
@@ -95,7 +107,7 @@ const ColonySubscription = () => {
             )}
           </ColonySubscriptionInfoPopover>
         )}
-        {!isWatching && (
+        {!canInteractWithColony && user && (
           <div className={styles.colonyJoin}>
             {user?.name && (
               <Button

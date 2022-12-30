@@ -2,11 +2,6 @@
   composes: flexContainerRow flexAlignCenter from '~styles/layout.css';
 }
 
-.spinnerContainer {
-  margin: 5px 0 0px 2px;
-  position: absolute;
-}
-
 .colonySubscribed {
   composes: flexContainerRow flexAlignCenter from '~styles/layout.css';
 }
