@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { string, object, InferType } from 'yup';
 
@@ -84,8 +84,8 @@ const UserMainSettings = ({
     location: profile?.location || '',
   };
 
-  const handleSubmit = (updatedProfile: FormValues) => {
-    editUser({
+  const handleSubmit = async (updatedProfile: FormValues) => {
+    await editUser({
       variables: {
         input: {
           id: walletAddress,
@@ -94,15 +94,10 @@ const UserMainSettings = ({
         },
       },
     });
+
+    updateUser?.(walletAddress, true);
   };
 
-  useEffect(
-    // update user on dismount
-    () => () => {
-      updateUser?.(walletAddress);
-    },
-    [walletAddress],
-  );
   return (
     <>
       <UserInfo user={user} />

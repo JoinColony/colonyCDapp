@@ -34,6 +34,7 @@ export { default as useTitle } from './useTitle';
 export { default as useTokenInfo, TokenInfoProvider } from './useTokenInfo';
 export { default as useUserAvatarImageFromIPFS } from './useUserAvatarImageFromIPFS';
 export { default as useUserSettings, SlotKey } from './useUserSettings';
+export { default as useCanEditProfile } from './useCanEditProfile';
 export { default as useWindowSize } from './useWindowSize';
 export { default as useAppContext } from './useAppContext';
 export { default as useUserReputation } from './useUserReputation';
