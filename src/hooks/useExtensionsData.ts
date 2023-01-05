@@ -8,14 +8,12 @@ import {
 } from '~gql';
 import { InstallableExtensionData, InstalledExtensionData } from '~types';
 import { notNull } from '~utils/arrays';
+import {
+  mapToInstallableExtensionData,
+  mapToInstalledExtensionData,
+} from '~utils/extensions';
 
 import useColonyContext from './useColonyContext';
-
-export enum ExtensionParamType {
-  Input = 'Input',
-  Radio = 'Radio',
-  Textarea = 'Textarea',
-}
 
 interface UseExtensionsDataReturn {
   installedExtensionsData: InstalledExtensionData[];
@@ -57,20 +55,16 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
           (e) => getExtensionHash(e.extensionId) === extension?.hash,
         );
 
-        // Unsupported extension
-        if (!extensionConfig) {
-          return null;
-        }
-
         const { version } =
           extensionVersions?.find((e) => e?.extensionHash === extension.hash) ||
           {};
 
-        return {
-          ...extensionConfig,
-          ...extension,
-          availableVersion: version ?? 1,
-        };
+        // Unsupported extension
+        if (!extensionConfig || !version) {
+          return null;
+        }
+
+        return mapToInstalledExtensionData(extensionConfig, extension, version);
       })
       .filter(notNull);
   }, [colonyExtensions, extensionVersions]);
@@ -97,10 +91,7 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
 
         return [
           ...availableExtensions,
-          {
-            ...extensionConfig,
-            availableVersion: version,
-          },
+          mapToInstallableExtensionData(extensionConfig, version),
         ];
       },
       [],

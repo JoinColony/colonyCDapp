@@ -1,5 +1,7 @@
 import { ColonyRole, Extension } from '@colony/colony-js';
 import { MessageDescriptor } from 'react-intl';
+import { Schema } from 'yup';
+
 import { ColonyExtension } from '~types';
 
 export enum WhitelistPolicy {
@@ -14,13 +16,12 @@ export enum ExtensionParamType {
   Textarea = 'Textarea',
 }
 
-export interface ExtensionInitParams {
-  title: string | MessageDescriptor;
-  description?: string | MessageDescriptor;
+export interface ExtensionInitParam {
+  title: MessageDescriptor;
+  description?: MessageDescriptor;
   defaultValue?: string | number;
   paramName: string;
-  // @TODO made optional for dev purposes, we are moving away from Yup validation schema
-  validation?: object;
+  validation: Schema<any>;
   type: ExtensionParamType;
   complementaryLabel?: 'hours' | 'periods' | 'percent';
 }
@@ -31,7 +32,7 @@ export interface ExtensionConfig {
   descriptionShort: MessageDescriptor;
   descriptionLong: MessageDescriptor;
   neededColonyPermissions: ColonyRole[];
-  initializationParams?: ExtensionInitParams[];
+  initializationParams?: ExtensionInitParam[];
   uninstallable: boolean;
 }
 

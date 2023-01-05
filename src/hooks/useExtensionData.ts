@@ -7,6 +7,10 @@ import {
   useGetCurrentExtensionVersionQuery,
 } from '~gql';
 import { AnyExtensionData } from '~types';
+import {
+  mapToInstallableExtensionData,
+  mapToInstalledExtensionData,
+} from '~utils/extensions';
 
 import useColonyContext from './useColonyContext';
 
@@ -52,11 +56,15 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
       return null;
     }
 
-    return {
-      ...colonyExtension,
-      ...extensionConfig,
-      availableVersion: version,
-    };
+    if (colonyExtension) {
+      return mapToInstalledExtensionData(
+        extensionConfig,
+        colonyExtension,
+        version,
+      );
+    }
+
+    return mapToInstallableExtensionData(extensionConfig, version);
   }, [colonyExtension, extensionConfig, version]);
 
   return {

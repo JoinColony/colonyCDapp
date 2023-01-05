@@ -1,9 +1,10 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { useColonyContext } from '~hooks';
+import { useNavigate } from 'react-router-dom';
 
+import { useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
-import { ActionButton, IconButton } from '~shared/Button';
+import Button, { ActionButton, IconButton } from '~shared/Button';
 import { AnyExtensionData } from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
 
@@ -14,6 +15,10 @@ const MSG = defineMessages({
     id: `${displayName}.install`,
     defaultMessage: 'Install',
   },
+  enable: {
+    id: `${displayName}.enable`,
+    defaultMessage: 'Enable',
+  },
 });
 
 interface Props {
@@ -21,11 +26,18 @@ interface Props {
 }
 
 const ExtensionActionButton = ({ extensionData }: Props) => {
+  const navigate = useNavigate();
   const { colony } = useColonyContext();
 
   if (!colony) {
     return null;
   }
+
+  const handleEnableButtonClick = () => {
+    navigate(
+      `/colony/${colony.name}/extensions/${extensionData.extensionId}/setup`,
+    );
+  };
 
   if (!isInstalledExtensionData(extensionData)) {
     return (
@@ -43,7 +55,24 @@ const ExtensionActionButton = ({ extensionData }: Props) => {
     );
   }
 
-  return <div>WIP...</div>;
+  if (extensionData.isDeprecated) {
+    return null;
+  }
+
+  if (!extensionData.isInitialized) {
+    return (
+      <Button
+        appearance={{ theme: 'primary', size: 'medium' }}
+        onClick={handleEnableButtonClick}
+        text={MSG.enable}
+        // disabled={!isSupportedColonyVersion}
+      />
+    );
+  }
+
+  // @TODO: Handle missing permissions
+
+  return null;
 };
 
 ExtensionActionButton.displayName = displayName;
