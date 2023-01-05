@@ -32,6 +32,12 @@ const MSG = defineMessages({
   },
 });
 
+const HeadingChunks = (chunks: React.ReactNode[]) => (
+  <Heading tagName="h4" appearance={{ size: 'medium', margin: 'small' }}>
+    {chunks}
+  </Heading>
+);
+
 const ExtensionDetails = () => {
   const { extensionId } = useParams();
   const { colony } = useColonyContext();
@@ -102,8 +108,12 @@ const ExtensionDetails = () => {
                   text={extensionData.name}
                 />
 
-                {/* @TODO: Handle h4 chunks */}
-                <FormattedMessage {...extensionData.descriptionLong} />
+                <FormattedMessage
+                  {...extensionData.descriptionLong}
+                  values={{
+                    h4: HeadingChunks,
+                  }}
+                />
 
                 {/* @NOTE: This is some ugly displayed extension info until we have a nice table */}
                 <div>
