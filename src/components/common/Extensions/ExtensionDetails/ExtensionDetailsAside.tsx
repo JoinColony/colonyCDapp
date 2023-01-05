@@ -1,5 +1,5 @@
 import React from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedDate, FormattedMessage } from 'react-intl';
 
 import { ActionTypes } from '~redux';
 import { DialogActionButton } from '~shared/Button';
@@ -29,6 +29,18 @@ const MSG = defineMessages({
   dateInstalled: {
     id: `${displayName}.dateInstalled`,
     defaultMessage: 'Date installed',
+  },
+  dateCreated: {
+    id: `${displayName}.dateCreated`,
+    defaultMessage: 'Date created',
+  },
+  latestVersion: {
+    id: `${displayName}.latestVersion`,
+    defaultMessage: 'Latest version',
+  },
+  developer: {
+    id: `${displayName}.developer`,
+    defaultMessage: 'Developer',
   },
   buttonDeprecate: {
     id: `${displayName}.buttonDeprecate`,
@@ -122,6 +134,22 @@ const ExtensionDetailsAside = ({
         {
           label: MSG.status,
           value: <ExtensionStatusBadge extensionData={extensionData} />,
+        },
+        {
+          label: MSG.dateCreated,
+          value: <FormattedDate value={extensionData.createdAt} />,
+        },
+        {
+          label: MSG.latestVersion,
+          value: `v${extensionData.availableVersion}`,
+          // @TODO: Add extension compatibility map
+          // icon: !extensionCompatible && (
+          //   <Icon name="triangle-warning" title={MSG.warning} />
+          // ),
+        },
+        {
+          label: MSG.developer,
+          value: 'Colony',
         },
       ];
 
