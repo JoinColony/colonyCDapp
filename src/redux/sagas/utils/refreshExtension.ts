@@ -44,6 +44,29 @@ const saveExtensionInCache = (extension: ColonyExtension) => {
   });
 };
 
+const removeExtensionFromCache = (
+  colonyAddress: string,
+  extensionId: string,
+) => {
+  const apolloClient = getContext(ContextModule.ApolloClient);
+  apolloClient.writeQuery<
+    GetColonyExtensionQuery,
+    GetColonyExtensionQueryVariables
+  >({
+    query: GetColonyExtensionDocument,
+    variables: {
+      colonyAddress,
+      extensionHash: getExtensionHash(extensionId),
+    },
+    data: {
+      getExtensionByColonyAndHash: {
+        __typename: 'ModelColonyExtensionConnection',
+        items: [],
+      },
+    },
+  });
+};
+
 export const refreshInstalledExtension = (
   colonyAddress: string,
   { extensionId, availableVersion }: InstallableExtensionData,
@@ -89,21 +112,5 @@ export const refreshUninstalledExtension = (
   colonyAddress: string,
   extensionId: string,
 ) => {
-  const apolloClient = getContext(ContextModule.ApolloClient);
-  apolloClient.writeQuery<
-    GetColonyExtensionQuery,
-    GetColonyExtensionQueryVariables
-  >({
-    query: GetColonyExtensionDocument,
-    variables: {
-      colonyAddress,
-      extensionHash: getExtensionHash(extensionId),
-    },
-    data: {
-      getExtensionByColonyAndHash: {
-        __typename: 'ModelColonyExtensionConnection',
-        items: [],
-      },
-    },
-  });
+  removeExtensionFromCache(colonyAddress, extensionId);
 };
