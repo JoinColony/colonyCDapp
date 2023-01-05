@@ -6,8 +6,15 @@ declare namespace UserMetaCssNamespace {
     headingContainer: string;
     locationContainer: string;
     main: string;
+    mappings: string;
+    names: string;
     profileLink: string;
+    query700: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
     usernameContainer: string;
+    version: string;
     websiteContainer: string;
   }
 }

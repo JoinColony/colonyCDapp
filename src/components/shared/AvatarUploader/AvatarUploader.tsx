@@ -1,6 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { ApolloError } from '@apollo/client';
 
 import {
   CoreInputProps,
@@ -11,8 +10,9 @@ import {
 import { SingleFileUpload, SingleFileUploadProps } from '~shared/FileUpload';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
+import { AvatarProps } from '~shared/Avatar';
 
-import Button from '../Button';
+import UploadControls from './UploadControls';
 
 import styles from './AvatarUploader.css';
 
@@ -34,24 +34,26 @@ const ACCEPTED_MIME_TYPES = {
   'image/png': [],
 };
 
-interface Props
-  extends Pick<SingleFileUploadProps, 'handleFileAccept'>,
+export interface Props
+  extends Pick<SingleFileUploadProps, 'handleFileAccept' | 'handleFileReject'>,
     Omit<
       CoreInputProps,
       'name' | 'placeholder' | 'placeholderValues' | 'dataTest'
     > {
   /** Appearance object for both label and status */
   appearance?: Appearance;
+  /** Avatar image string */
+  avatar: AvatarProps['avatar'];
   /** Avatar to be wrapped by File uploader */
-  avatar: React.ReactElement;
-  /** Used to control the state of the remove button (don't fire the remove action if not avatar is set) */
-  isSet?: boolean;
+  avatarPlaceholder: React.ReactElement;
+  /** Function to handle the removal of the avatar */
+  handleFileRemove?: (...args: any[]) => Promise<any>;
+  /** A boolean to represent if there's an error with the file upload */
+  hasError?: boolean;
+  /** If true, will display loading spinner */
+  isLoading?: boolean;
   /** Display choose / remove buttons beneath Avatar */
-  hasButtons?: boolean;
-  /** Function to handle removal of the avatar (should set avatarURL to null from outside) */
-  handleFileRemove: (...args: any[]) => Promise<any>;
-  /** Present if there was an error calling the mutation */
-  uploadError?: ApolloError;
+  showButtons?: boolean;
 }
 
 const DropNowOverlay = () => (
@@ -70,26 +72,49 @@ const FileError = () => (
   </div>
 );
 
+const LoadingOverlay = () => (
+  <div className={styles.loadingOverlay}>
+    <div className={styles.loader} />
+  </div>
+);
+
+const getPlaceholder = (
+  isLoading: boolean,
+  hasError: boolean,
+  avatarPlaceholder: Props['avatarPlaceholder'],
+) => {
+  if (hasError) {
+    return <FileError />;
+  }
+
+  if (isLoading) {
+    return <LoadingOverlay />;
+  }
+
+  return avatarPlaceholder;
+};
+
 const AvatarUploader = ({
   appearance,
   avatar,
+  avatarPlaceholder,
   disabled,
   elementOnly,
   extra,
   handleFileAccept,
+  handleFileReject,
   handleFileRemove,
-  hasButtons = true,
+  hasError = false,
   help,
   helpValues,
-  isSet = true,
+  isLoading = false,
   label,
   labelValues,
+  showButtons = true,
   status,
   statusValues,
-  uploadError,
 }: Props) => {
   const dropzoneRef = useRef<{ open: () => void }>();
-  const [error, setError] = useState<boolean>(false);
   const open = () => {
     // will be null if dropzone is disabled
     if (typeof dropzoneRef.current?.open === 'function') {
@@ -101,8 +126,6 @@ const AvatarUploader = ({
     ...styles,
     dropzone: styles.dropzoneNoButtonsVariant,
   };
-
-  const hasError = !!uploadError || !!error;
 
   return (
     <>
@@ -117,39 +140,25 @@ const AvatarUploader = ({
         />
       )}
       <SingleFileUpload
-        dropzoneRootStyles={hasButtons ? styles : noButtonStyles}
+        dropzoneRootStyles={showButtons ? styles : noButtonStyles}
         dropzoneOptions={{
           accept: ACCEPTED_MIME_TYPES,
           disabled,
         }}
         handleFileAccept={handleFileAccept}
-        handleFileReject={() => {
-          setError(true);
-        }}
-        placeholder={hasError ? <FileError /> : avatar}
+        handleFileReject={handleFileReject}
+        placeholder={getPlaceholder(isLoading, hasError, avatarPlaceholder)}
         ref={dropzoneRef}
         dataTest="avatarUploaderDrop"
       >
         <DropNowOverlay />
       </SingleFileUpload>
-      {hasButtons && (
-        <div className={styles.buttonContainer}>
-          <Button
-            appearance={{ theme: 'danger' }}
-            text={{ id: 'button.remove' }}
-            onClick={handleFileRemove}
-            disabled={!isSet}
-            dataTest="avatarUploaderRemove"
-          />
-          <Button
-            text={{ id: 'button.choose' }}
-            onClick={() => {
-              setError(false);
-              open();
-            }}
-            dataTest="avatarUploaderChoose"
-          />
-        </div>
+      {showButtons && (
+        <UploadControls
+          handleFileRemove={handleFileRemove}
+          disableRemove={!avatar}
+          open={open}
+        />
       )}
       {hasError && (
         <div className={styles.inputStatus}>
@@ -166,4 +175,5 @@ const AvatarUploader = ({
 };
 
 AvatarUploader.displayName = displayName;
+
 export default AvatarUploader;

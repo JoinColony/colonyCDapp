@@ -18,9 +18,7 @@ const displayName = 'frame.ProfileTemplate';
 
 const ProfileTemplate = ({ appearance, children, asideContent }: Props) => (
   <div className={getMainClasses(appearance, styles)}>
-    <aside className={styles.sidebar}>
-      <div>{asideContent}</div>
-    </aside>
+    <aside className={styles.sidebar}>{asideContent}</aside>
     <div className={styles.mainContainer}>
       <main className={styles.mainContent}>{children}</main>
     </div>

@@ -9,13 +9,8 @@ declare namespace AvatarUploaderCssNamespace {
     error: string;
     filesContainer: string;
     inputStatus: string;
-    mappings: string;
-    names: string;
-    query700: string;
-    sourceRoot: string;
-    sources: string;
-    sourcesContent: string;
-    version: string;
+    loader: string;
+    loadingOverlay: string;
   }
 }
 

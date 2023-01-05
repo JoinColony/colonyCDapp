@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useUpdateUserProfileMutation } from '~gql';
@@ -6,15 +6,22 @@ import { useAppContext } from '~hooks';
 import { getThumbnail } from '~images/optimisation';
 import AvatarUploader from '~shared/AvatarUploader';
 import UserAvatar from '~shared/UserAvatar';
+import { Heading3 } from '~shared/Heading';
 import { User } from '~types';
 import { FileReaderFile } from '~utils/fileReader/types';
+
+import styles from './UserAvatarUploader.css';
 
 const displayName = 'common.UserProfileEdit.UserAvatarUploader';
 
 const MSG = defineMessages({
+  heading: {
+    id: `${displayName}.heading`,
+    defaultMessage: 'Profile Picture',
+  },
   uploaderLabel: {
     id: `${displayName}.uploaderLabel`,
-    defaultMessage: 'At least 250x250px, up to 1MB, .png or .svg',
+    defaultMessage: 'At least 250x250px, up to 280KB, .png or .svg',
   },
 });
 
@@ -28,9 +35,19 @@ const UserAvatarUploader = ({
   user: { walletAddress, profile },
 }: Props) => {
   const { updateUser } = useAppContext();
-  const [updateAvatar, { error: uploadError }] = useUpdateUserProfileMutation();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<boolean>(false);
+  const [updateAvatar] = useUpdateUserProfileMutation({
+    onError: () => {
+      setHasError(true);
+    },
+  });
 
   const handleFileUpload = async (avatarFile: FileReaderFile | null) => {
+    if (avatarFile) {
+      setHasError(false);
+      setLoading(true);
+    }
     const updatedAvatar = avatarFile?.data ?? null;
     const thumbnail = await getThumbnail(avatarFile?.file);
 
@@ -44,16 +61,26 @@ const UserAvatarUploader = ({
       },
     });
 
-    updateUser?.(user.walletAddress);
+    await updateUser?.(user.walletAddress, true);
+    setLoading(false);
   };
 
-  const handleFileRemove = () => handleFileUpload(null);
+  const handleFileRemove = async () => {
+    await handleFileUpload(null);
+    setHasError(false);
+  };
+
+  const handleFileReject = () => {
+    setHasError(true);
+  };
 
   return (
-    <div>
+    <div className={styles.main}>
+      <Heading3 appearance={{ theme: 'dark' }} text={MSG.heading} />
       <AvatarUploader
         label={MSG.uploaderLabel}
-        avatar={
+        avatar={profile?.avatar}
+        avatarPlaceholder={
           <UserAvatar
             address={walletAddress}
             user={user}
@@ -63,8 +90,9 @@ const UserAvatarUploader = ({
         }
         handleFileAccept={handleFileUpload}
         handleFileRemove={handleFileRemove}
-        isSet={!!profile?.avatar}
-        uploadError={uploadError}
+        handleFileReject={handleFileReject}
+        isLoading={loading}
+        hasError={hasError}
       />
     </div>
   );

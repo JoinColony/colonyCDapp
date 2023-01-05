@@ -9,7 +9,7 @@ import { useCanEditProfile } from '~hooks';
 
 import UserProfileSpinner from '../UserProfile/UserProfileSpinner';
 import {
-  Sidebar,
+  UserAvatarUploader,
   UserMainSettings,
   UserAdvancedSettings,
 } from '../UserProfileEdit';
@@ -42,7 +42,7 @@ const UserProfileEdit = () => {
   return (
     <ProfileTemplate
       appearance={{ theme: 'alt' }}
-      asideContent={<Sidebar user={user} />}
+      asideContent={<UserAvatarUploader user={user} />}
     >
       <Tabs>
         <TabList>
