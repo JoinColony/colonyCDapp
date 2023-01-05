@@ -34,6 +34,7 @@ export interface ExtensionConfig {
   neededColonyPermissions: ColonyRole[];
   initializationParams?: ExtensionInitParam[];
   uninstallable: boolean;
+  createdAt: number;
 }
 
 export type InstalledExtensionData = ExtensionConfig &
