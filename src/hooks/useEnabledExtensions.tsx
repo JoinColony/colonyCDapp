@@ -2,23 +2,23 @@ import { Extension } from '@colony/colony-js';
 
 import useExtensionsData from './useExtensionsData';
 
+type EnabledExtensionKey = `is${Extension}Enabled`;
+type EnabledExtensions = Partial<Record<EnabledExtensionKey, boolean>>;
+
 const useEnabledExtensions = () => {
   const { installedExtensionsData, loading } = useExtensionsData();
 
-  const oneTxPaymentData = installedExtensionsData.find(
-    (extensionData) => extensionData.extensionId === Extension.OneTxPayment,
+  const enabledExtensions = installedExtensionsData.reduce<EnabledExtensions>(
+    (extensions, extension) => ({
+      ...extensions,
+      [`is${extension.extensionId}Enabled`]: extension.isEnabled,
+    }),
+    {},
   );
-  const isOneTxPaymentEnabled = !!oneTxPaymentData?.isEnabled;
-
-  const votingReputationData = installedExtensionsData.find(
-    (extensionData) => extensionData.extensionId === Extension.VotingReputation,
-  );
-  const isVotingReputationEnabled = !!votingReputationData?.isEnabled;
 
   return {
     loading,
-    isOneTxPaymentEnabled,
-    isVotingReputationEnabled,
+    enabledExtensions,
   };
 };
 
