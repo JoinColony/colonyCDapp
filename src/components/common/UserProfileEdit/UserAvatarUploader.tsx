@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import AvatarUploader from '~shared/AvatarUploader';
@@ -6,7 +6,6 @@ import UserAvatar from '~shared/UserAvatar';
 
 import { User } from '~types';
 import { useUpdateUserProfileMutation } from '~gql';
-import { useAppContext } from '~hooks';
 import { FileReaderFile } from '~utils/fileReader/types';
 
 const displayName = 'common.UserProfileEdit.UserAvatarUploader';
@@ -27,7 +26,6 @@ const UserAvatarUploader = ({
   user,
   user: { walletAddress, profile },
 }: Props) => {
-  const { updateUser } = useAppContext();
   const [avatar, setAvatar] = useState<string | null>(profile?.avatar || null);
   const [updateAvatar, { error }] = useUpdateUserProfileMutation();
   const updatedUser = {
@@ -57,12 +55,6 @@ const UserAvatarUploader = ({
     });
     setAvatar(null);
   };
-
-  // on dismount
-  useEffect(
-    () => () => updateUser?.(user.walletAddress),
-    [updateUser, user.walletAddress],
-  );
 
   return (
     <AvatarUploader
