@@ -10,10 +10,6 @@ import styles from './ExtensionStatusBadge.css';
 const displayName = 'common.Extensions.ExtensionStatusBadge';
 
 const MSG = defineMessages({
-  installed: {
-    id: `${displayName}.installed`,
-    defaultMessage: 'Installed',
-  },
   notInstalled: {
     id: `${displayName}.notInstalled`,
     defaultMessage: 'Not installed',
@@ -30,8 +26,8 @@ const MSG = defineMessages({
     id: `${displayName}.enabled`,
     defaultMessage: 'Enabled',
   },
-  notEnabled: {
-    id: `${displayName}.notEnabled`,
+  disabled: {
+    id: `${displayName}.disabled`,
     defaultMessage: 'Disabled',
   },
 });
@@ -62,7 +58,8 @@ const ExtensionStatusBadge = ({
     status = MSG.enabled;
     theme = 'primary';
   } else {
-    status = MSG.installed;
+    status = MSG.disabled;
+    theme = 'golden';
   }
 
   const isDeprecated =
