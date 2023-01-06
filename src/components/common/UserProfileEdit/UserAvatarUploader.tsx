@@ -3,7 +3,10 @@ import { defineMessages } from 'react-intl';
 
 import { useUpdateUserProfileMutation } from '~gql';
 import { useAppContext } from '~hooks';
-import { getThumbnail } from '~images/optimisation';
+import {
+  getOptimisedAvatar,
+  getOptimisedThumbnail,
+} from '~images/optimisation';
 import AvatarUploader from '~shared/AvatarUploader';
 import UserAvatar from '~shared/UserAvatar';
 import { Heading3 } from '~shared/Heading';
@@ -18,10 +21,6 @@ const MSG = defineMessages({
   heading: {
     id: `${displayName}.heading`,
     defaultMessage: 'Profile Picture',
-  },
-  uploaderLabel: {
-    id: `${displayName}.uploaderLabel`,
-    defaultMessage: 'At least 250x250px, up to 280KB, .png or .svg',
   },
 });
 
@@ -48,8 +47,8 @@ const UserAvatarUploader = ({
       setHasError(false);
       setLoading(true);
     }
-    const updatedAvatar = avatarFile?.data ?? null;
-    const thumbnail = await getThumbnail(avatarFile?.file);
+    const updatedAvatar = await getOptimisedAvatar(avatarFile?.file);
+    const thumbnail = await getOptimisedThumbnail(avatarFile?.file);
 
     await updateAvatar({
       variables: {
@@ -78,7 +77,6 @@ const UserAvatarUploader = ({
     <div className={styles.main}>
       <Heading3 appearance={{ theme: 'dark' }} text={MSG.heading} />
       <AvatarUploader
-        label={MSG.uploaderLabel}
         avatar={profile?.avatar}
         avatarPlaceholder={
           <UserAvatar

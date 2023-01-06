@@ -11,6 +11,7 @@ import { SingleFileUpload, SingleFileUploadProps } from '~shared/FileUpload';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
 import { AvatarProps } from '~shared/Avatar';
+import { NO_MAX } from '~shared/FileUpload/limits';
 
 import UploadControls from './UploadControls';
 
@@ -25,14 +26,9 @@ const MSG = defineMessages({
   },
   avatarFileError: {
     id: `${displayName}.avatarFileError`,
-    defaultMessage: 'This filetype is not allowed or file is too big',
+    defaultMessage: 'Accepted file types are: svg, jpg, png and webp',
   },
 });
-
-const ACCEPTED_MIME_TYPES = {
-  'image/svg+xml': [],
-  'image/png': [],
-};
 
 export interface Props
   extends Pick<SingleFileUploadProps, 'handleFileAccept' | 'handleFileReject'>,
@@ -142,7 +138,7 @@ const AvatarUploader = ({
       <SingleFileUpload
         dropzoneRootStyles={showButtons ? styles : noButtonStyles}
         dropzoneOptions={{
-          accept: ACCEPTED_MIME_TYPES,
+          maxSize: NO_MAX,
           disabled,
         }}
         handleFileAccept={handleFileAccept}
