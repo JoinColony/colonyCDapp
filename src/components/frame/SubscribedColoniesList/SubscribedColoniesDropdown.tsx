@@ -27,7 +27,14 @@ const SubscribedColoniesDropdown = ({ watchlist }: Props) => {
         <DropdownMenu>
           <DropdownMenuSection>
             {watchlist.map((item) => {
-              return item && <ColonyListItem colony={item.colony as Colony} />;
+              return (
+                item && (
+                  <ColonyListItem
+                    colony={item.colony as Colony}
+                    key={item.colony.colonyAddress}
+                  />
+                )
+              );
             })}
           </DropdownMenuSection>
         </DropdownMenu>

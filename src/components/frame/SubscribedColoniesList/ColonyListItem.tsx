@@ -15,7 +15,7 @@ interface Props {
 
 const ColonyListItem = ({ colony }: Props) => {
   return (
-    <DropdownMenuItem key={colony.colonyAddress}>
+    <DropdownMenuItem>
       <NavLink
         className={({ isActive }) =>
           isActive ? styles.activeColony : undefined
