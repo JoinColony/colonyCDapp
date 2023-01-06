@@ -4,6 +4,7 @@ import {
   WatcherFragment,
   TokenFragment,
   WatchListItemFragment,
+  WatchedColonyFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -15,3 +16,5 @@ export type ColonyWatcher = WatcherFragment;
 export type Token = TokenFragment;
 
 export type WatchListItem = WatchListItemFragment;
+
+export type WatchedColony = WatchedColonyFragment;

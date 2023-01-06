@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Address, Colony } from '~types';
+import { Address, Colony, WatchedColony } from '~types';
 import Avatar, { AvatarProps } from '~shared/Avatar';
 import NavLink from '~shared/NavLink';
 
@@ -13,7 +13,7 @@ export interface Props
   showLink?: boolean;
 
   /** The corresponding user object if available */
-  colony?: Colony;
+  colony?: WatchedColony | Colony;
 
   preferThumbnail?: boolean;
 }
