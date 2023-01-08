@@ -1,25 +1,29 @@
 import React from 'react';
 
-import HookedUserAvatar from '~users/HookedUserAvatar';
 import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
-import { useUser, Colony } from '~data/index';
-import { Address } from '~types';
+import { Address, Colony } from '~types';
+import UserAvatar from '~shared/UserAvatar';
+import { useGetCurrentUserQuery } from '~gql';
 
 import styles from './DetailsWidgetUser.css';
 
 const displayName = 'DetailsWidgetUser';
 
 interface Props {
-  colony?: Colony;
+  colony: Colony;
   walletAddress: Address;
 }
 
 const DetailsWidgetUser = ({ colony, walletAddress }: Props) => {
-  const UserAvatar = HookedUserAvatar({ fetchUser: false });
-  const userProfile = useUser(walletAddress);
-  const userDisplayName = userProfile?.profile?.displayName;
-  const username = userProfile?.profile?.username;
+  const { data } = useGetCurrentUserQuery({
+    variables: {
+      address: walletAddress,
+    },
+  });
+  const user = data?.getUserByAddress?.items?.[0];
+  const userDisplayName = user?.profile?.displayName;
+  const username = user?.name;
 
   return (
     <div className={styles.main}>
@@ -27,7 +31,7 @@ const DetailsWidgetUser = ({ colony, walletAddress }: Props) => {
         colony={colony}
         size="s"
         notSet={false}
-        user={userProfile}
+        user={user || undefined}
         address={walletAddress || ''}
         showInfo
         popperOptions={{

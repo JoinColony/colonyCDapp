@@ -3,14 +3,11 @@ import { PopperOptions } from 'react-popper-tooltip';
 
 import Avatar from '~shared/Avatar';
 // import InfoPopover, { Props as InfoPopoverProps } from '~shared/InfoPopover';
-import Link from '~shared/NavLink';
-import { Address } from '~types';
-// import { AnyUser, Colony } from '~data/index';
+// import Link from '~shared/NavLink';
+import { Address, User } from '~types';
 // import { getUsername } from '~redux/transformers';
-import { User } from '~types';
 
 import styles from './UserAvatar.css';
-import { getMainClasses } from '~utils/css';
 
 interface BaseProps {
   /** Address of the current user for identicon fallback */
@@ -38,7 +35,6 @@ interface BaseProps {
   size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
 
   /** The corresponding user object if available */
-  // user?: AnyUser;
   user?: User;
 
   /** Banned comment status */
@@ -61,14 +57,14 @@ const UserAvatar = ({
   avatarURL,
   className,
   showInfo,
-  showLink,
+  // showLink,
   notSet,
-  popperOptions,
+  // popperOptions,
   size,
-  banned = false,
+  // banned = false,
   user,
-  ...rest
-}: Props) => {
+}: // ...rest
+Props) => {
   // const username = getUsername(user);
   // const username = 'tempUser';
   // let popoverProps: InfoPopoverProps = {
@@ -112,17 +108,19 @@ const UserAvatar = ({
   // }
   // return avatar;
   return (
-    <Avatar
-      avatarURL={avatarURL}
-      className={className}
-      notSet={typeof notSet === 'undefined' ? true : notSet}
-      placeholderIcon="circle-person"
-      seed={address && address.toLowerCase()}
-      size={size}
-      title={
-        showInfo ? '' : user?.profile?.displayName || user?.name || address
-      }
-    />
+    <div className={styles.main}>
+      <Avatar
+        avatarURL={avatarURL}
+        className={className}
+        notSet={typeof notSet === 'undefined' ? true : notSet}
+        placeholderIcon="circle-person"
+        seed={address && address.toLowerCase()}
+        size={size}
+        title={
+          showInfo ? '' : user?.profile?.displayName || user?.name || address
+        }
+      />
+    </div>
   );
 };
 
