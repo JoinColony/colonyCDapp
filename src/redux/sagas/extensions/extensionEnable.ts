@@ -6,7 +6,6 @@ import { getTxChannel } from '../transactions';
 import {
   modifyParams,
   putError,
-  refreshExtensions,
   removeOldExtensionClients,
   setupEnablingGroupTransactions,
   takeFrom,
@@ -72,7 +71,7 @@ function* extensionEnable({
     return yield putError(ActionTypes.EXTENSION_ENABLE_ERROR, error, meta);
   }
 
-  yield call(refreshExtensions);
+  // yield call(refreshExtensions);
 
   initChannel.close();
 

@@ -4,7 +4,7 @@ import { ClientType, getExtensionHash } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, refreshExtensions } from '../utils';
+import { putError, takeFrom } from '../utils';
 
 import {
   createTransaction,
@@ -39,7 +39,7 @@ function* extensionUpgrade({
     return yield putError(ActionTypes.EXTENSION_UPGRADE_ERROR, error, meta);
   }
 
-  yield call(refreshExtensions);
+  // yield call(refreshExtensions);
 
   txChannel.close();
 
