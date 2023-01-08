@@ -95,14 +95,12 @@ interface Props {
   extensionData: AnyExtensionData;
   canBeDeprecated: boolean;
   canBeUninstalled: boolean;
-  canBeUpgraded: boolean;
 }
 
 const ExtensionDetailsAside = ({
   extensionData,
   canBeDeprecated,
   canBeUninstalled,
-  canBeUpgraded,
 }: Props) => {
   const { colony } = useColonyContext();
 
@@ -181,11 +179,9 @@ const ExtensionDetailsAside = ({
     <aside>
       <div className={styles.buttonWrapper}>
         <ExtensionActionButton extensionData={extensionData} />
-        {canBeUpgraded && (
-          <ExtensionUpgradeButton
-            extensionData={extensionData as InstalledExtensionData}
-          />
-        )}
+        <ExtensionUpgradeButton
+          extensionData={extensionData as InstalledExtensionData}
+        />
       </div>
 
       <Table appearance={{ theme: 'lined' }}>

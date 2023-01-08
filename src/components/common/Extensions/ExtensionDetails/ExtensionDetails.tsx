@@ -71,19 +71,19 @@ const ExtensionDetails = () => {
     breadCrumbs.push(MSG.setup);
   }
 
+  const hasRegisteredProfile = !!user;
   // @TODO: Extend these checks to include permissions, account and network interaction
   const canExtensionBeUninstalled = !!(
+    hasRegisteredProfile &&
     isInstalledExtensionData(extensionData) &&
     extensionData.uninstallable &&
     extensionData.isDeprecated
   );
   const canExtensionBeDeprecated =
+    hasRegisteredProfile &&
     isInstalledExtensionData(extensionData) &&
     extensionData.uninstallable &&
     !extensionData.isDeprecated;
-  // @TODO: Check if the latest network extension version is greater than the current version
-  const canExtensionBeUpgraded =
-    !!user?.profile && isInstalledExtensionData(extensionData);
 
   return (
     <div className={styles.main}>
@@ -132,7 +132,6 @@ const ExtensionDetails = () => {
         extensionData={extensionData}
         canBeDeprecated={canExtensionBeDeprecated}
         canBeUninstalled={canExtensionBeUninstalled}
-        canBeUpgraded={canExtensionBeUpgraded}
       />
     </div>
   );
