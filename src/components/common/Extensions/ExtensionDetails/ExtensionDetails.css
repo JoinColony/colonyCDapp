@@ -33,3 +33,13 @@
   padding-top: 24px;
   white-space: pre-line;
 }
+
+.installedBy {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.contractAddress {
+  cursor: pointer;
+}
