@@ -114,3 +114,21 @@ export const refreshUninstalledExtension = (
 ) => {
   removeExtensionFromCache(colonyAddress, extensionId);
 };
+
+export const refreshEnabledExtension = (
+  colonyAddress: string,
+  extensionId: string,
+) => {
+  const existingExtension = getExistingExtension(colonyAddress, extensionId);
+
+  if (!existingExtension) {
+    return;
+  }
+
+  const modifiedExtension: ColonyExtension = {
+    ...existingExtension,
+    isInitialized: true,
+  };
+
+  saveExtensionInCache(modifiedExtension);
+};
