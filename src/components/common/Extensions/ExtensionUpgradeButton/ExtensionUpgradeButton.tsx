@@ -40,6 +40,13 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
     colony.version as ColonyVersion,
   );
 
+  if (
+    !user?.profile ||
+    extensionData.isDeprecated ||
+    !extensionData.isInitialized
+  ) {
+    return null;
+  }
   // @TODO check user permissions for canUpgrade - hasRoot(allUserRoles)
   const canUpgrade = true;
 
