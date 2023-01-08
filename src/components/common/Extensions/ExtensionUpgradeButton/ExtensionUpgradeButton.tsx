@@ -7,20 +7,26 @@ import {
 } from '@colony/colony-js';
 
 import { ActionButton } from '~shared/Button';
-import { InstalledExtensionData } from '~types';
+import { AnyExtensionData } from '~types';
 import { ActionTypes } from '~redux/index';
 import { mapPayload } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
 import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
+import { isInstalledExtensionData } from '~utils/extensions';
 
 interface Props {
-  extensionData: InstalledExtensionData;
+  extensionData: AnyExtensionData;
 }
 
 const ExtensionUpgradeButton = ({ extensionData }: Props) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
 
+  if (!isInstalledExtensionData(extensionData)) {
+    return null;
+  }
+
+  // @TODO: Check if the latest network extension version is greater than the current version
   const transform = mapPayload(() => ({
     colonyAddress: colony?.colonyAddress,
     extensionId: extensionData.extensionId,
@@ -40,11 +46,7 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
     colony.version as ColonyVersion,
   );
 
-  if (
-    !user?.profile ||
-    extensionData.isDeprecated ||
-    !extensionData.isInitialized
-  ) {
+  if (!user || extensionData.isDeprecated || !extensionData.isInitialized) {
     return null;
   }
   // @TODO check user permissions for canUpgrade - hasRoot(allUserRoles)
