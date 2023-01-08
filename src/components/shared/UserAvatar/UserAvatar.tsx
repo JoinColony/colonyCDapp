@@ -6,8 +6,8 @@ import Avatar, { AvatarProps } from '~shared/Avatar';
 import Link from '~shared/NavLink';
 import UserInfoPopover from '~shared/UserInfoPopover';
 import { Address, User, Colony } from '~types';
-
 import { getMainClasses } from '~utils/css';
+
 import styles from './UserAvatar.css';
 
 interface Props extends Pick<AvatarProps, 'size' | 'className' | 'notSet'> {
