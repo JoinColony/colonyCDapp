@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { useColonyContext } from '~hooks';
+import { useAppContext, useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import Button, { ActionButton, IconButton } from '~shared/Button';
 import { AnyExtensionData } from '~types';
@@ -29,8 +29,9 @@ interface Props {
 const ExtensionActionButton = ({ extensionData }: Props) => {
   const navigate = useNavigate();
   const { colony } = useColonyContext();
+  const { user } = useAppContext();
 
-  if (!colony) {
+  if (!colony || !user) {
     return null;
   }
 
