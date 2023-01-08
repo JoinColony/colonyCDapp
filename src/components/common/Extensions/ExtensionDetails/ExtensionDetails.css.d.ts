@@ -3,9 +3,11 @@ declare namespace ExtensionDetailsCssNamespace {
     buttonWrapper: string;
     cellData: string;
     cellLabel: string;
+    contractAddress: string;
     extensionText: string;
     header: string;
     headerLine: string;
+    installedBy: string;
     main: string;
   }
 }

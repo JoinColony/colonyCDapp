@@ -8,6 +8,9 @@ import { Table, TableBody, TableRow, TableCell } from '~shared/Table';
 import { AnyExtensionData, InstalledExtensionData } from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { useColonyContext } from '~hooks';
+import DetailsWidgetUser from '~shared/DetailsWidgetUser';
+import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
+import MaskedAddress from '~shared/MaskedAddress';
 
 import ExtensionActionButton from '../ExtensionActionButton';
 import ExtensionUpgradeButton from '../ExtensionUpgradeButton';
@@ -41,6 +44,14 @@ const MSG = defineMessages({
   developer: {
     id: `${displayName}.developer`,
     defaultMessage: 'Developer',
+  },
+  versionInstalled: {
+    id: `${displayName}.versionInstalled`,
+    defaultMessage: 'Version installed',
+  },
+  contractAddress: {
+    id: `${displayName}.contractAddress`,
+    defaultMessage: 'Contract address',
   },
   buttonDeprecate: {
     id: `${displayName}.buttonDeprecate`,
@@ -112,22 +123,35 @@ const ExtensionDetailsAside = ({
         {
           label: MSG.installedBy,
           value: (
-            // <span className={styles.installedBy}>
-            //   <DetailsWidgetUser
-            //     colony={colony}
-            //     walletAddress={extensionData.instaleldBy}
-            //   />
-            // </span>
-            <span>{extensionData.installedBy}</span>
+            <span className={styles.installedBy}>
+              <DetailsWidgetUser
+                colony={colony}
+                walletAddress={extensionData.installedBy}
+              />
+            </span>
           ),
         },
         {
           label: MSG.dateInstalled,
+          value: <FormattedDate value={extensionData.installedAt * 1000} />,
+        },
+        {
+          label: MSG.versionInstalled,
+          value: `v${extensionData.currentVersion}`,
+        },
+        {
+          label: MSG.contractAddress,
           value: (
-            <span>
-              {new Date(extensionData.installedAt * 1000).toISOString()}
-            </span>
+            <InvisibleCopyableAddress address={extensionData.address}>
+              <span className={styles.contractAddress}>
+                <MaskedAddress address={extensionData.address} />
+              </span>
+            </InvisibleCopyableAddress>
           ),
+        },
+        {
+          label: MSG.developer,
+          value: 'Colony',
         },
       ]
     : [
