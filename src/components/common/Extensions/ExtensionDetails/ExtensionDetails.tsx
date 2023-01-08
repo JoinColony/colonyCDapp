@@ -114,27 +114,6 @@ const ExtensionDetails = () => {
                     h4: HeadingChunks,
                   }}
                 />
-
-                {/* @NOTE: This is some ugly displayed extension info until we have a nice table */}
-                <div>
-                  Details of <FormattedMessage {...extensionData.name} />
-                  <br />
-                  {isInstalledExtensionData(extensionData) ? (
-                    <>
-                      <div>
-                        Is Initialized:{' '}
-                        {extensionData.isInitialized ? 'yes' : 'no'}
-                      </div>
-                      <div>
-                        Is Deprecated:{' '}
-                        {extensionData.isDeprecated ? 'yes' : 'no'}
-                      </div>
-                      <div>Version: {extensionData.currentVersion}</div>
-                    </>
-                  ) : (
-                    <div>This extension is not installed</div>
-                  )}
-                </div>
               </div>
             }
           />
