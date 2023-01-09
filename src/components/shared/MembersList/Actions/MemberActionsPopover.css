@@ -12,6 +12,6 @@
 }
 
 .actionButton i svg {
-  fill: var(--temp-grey-blue-7);
+  fill: var(--grey-purple);
   stroke: none;
 }
