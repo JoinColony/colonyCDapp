@@ -10,8 +10,8 @@ import {
   useCreateWatchedColoniesMutation,
   useDeleteWatchedColoniesMutation,
 } from '~gql';
-import { Colony } from '~types';
 import { useAppContext, useColonyContext } from '~hooks';
+import { watchingColony } from '~utils/watching';
 
 import ColonySubscriptionInfoPopover from './ColonySubscriptionInfoPopover';
 
@@ -22,11 +22,11 @@ const displayName = 'common.ColonyHome.ColonySubscription';
 const MSG = defineMessages({
   copyMessage: {
     id: `${displayName}.copyMessage`,
-    defaultMessage: 'Click to copy colony address',
+    defaultMessage: 'Click to copy Colony address',
   },
   joinColony: {
     id: `${displayName}.joinColony`,
-    defaultMessage: 'Join this colony',
+    defaultMessage: 'Join this Colony',
   },
   colonyMenuTitle: {
     id: `${displayName}.colonyMenuTitle`,
@@ -38,12 +38,10 @@ const ColonySubscription = () => {
   const { colony, canInteractWithColony } = useColonyContext();
   const { user, updateUser, walletConnecting, connectWallet } = useAppContext();
 
-  const watchedItem = (user?.watchlist?.items || []).find(
-    (item) => (item?.colony as Colony)?.colonyAddress === colony?.colonyAddress,
-  );
+  const watchedItem = watchingColony(colony, user);
 
   /* Watch (follow) a colony */
-  const [watched, { data: watchState, loading: loadingWatched }] =
+  const [watch, { data: watchState, loading: loadingWatch }] =
     useCreateWatchedColoniesMutation({
       variables: {
         input: {
@@ -54,7 +52,7 @@ const ColonySubscription = () => {
     });
 
   /* Unwatch (unfollow) a colony */
-  const [unwatch, { data: unWatchState, loading: loadingUnwatch }] =
+  const [unwatch, { data: unwatchState, loading: loadingUnwatch }] =
     useDeleteWatchedColoniesMutation({
       variables: { input: { id: watchedItem?.id || '' } },
     });
@@ -64,7 +62,7 @@ const ColonySubscription = () => {
     if (updateUser) {
       updateUser(user?.walletAddress);
     }
-  }, [user, updateUser, watchState, unWatchState]);
+  }, [user, updateUser, watchState, unwatchState]);
 
   return (
     <div className={styles.main}>
@@ -79,17 +77,12 @@ const ColonySubscription = () => {
             </div>
           </InvisibleCopyableAddress>
         )}
-        {loadingWatched ||
+        {loadingWatch ||
           (loadingUnwatch && (
             <SpinnerLoader appearance={{ theme: 'primary', size: 'small' }} />
           ))}
-        {canInteractWithColony && !loadingWatched && !loadingUnwatch && (
-          <ColonySubscriptionInfoPopover
-            onUnsubscribe={() => unwatch()}
-            canUnsubscribe
-            // loadingWatched
-            // loadingUnwatch
-          >
+        {canInteractWithColony && !loadingWatch && !loadingUnwatch && (
+          <ColonySubscriptionInfoPopover onUnsubscribe={unwatch} canUnsubscribe>
             {({ isOpen, toggle, ref, id }) => (
               <ThreeDotsButton
                 id={id}
@@ -107,26 +100,16 @@ const ColonySubscription = () => {
         )}
         {!canInteractWithColony && !walletConnecting && (
           <div className={styles.colonyJoin}>
-            {user?.name && (
-              <Button
-                onClick={() => watched()}
-                appearance={{ theme: 'blue', size: 'small' }}
-                data-test="joinColonyButton"
-                className={styles.colonyJoinBtn}
-              >
-                <FormattedMessage {...MSG.joinColony} />
-              </Button>
-            )}
-            {!user?.name && (
-              <Button
-                onClick={connectWallet}
-                appearance={{ theme: 'blue', size: 'small' }}
-                data-test="joinColonyButton"
-                className={styles.colonyJoinBtn}
-              >
-                <FormattedMessage {...MSG.joinColony} />
-              </Button>
-            )}
+            <Button
+              onClick={() =>
+                user ? watch() : connectWallet && connectWallet()
+              }
+              appearance={{ theme: 'blue', size: 'small' }}
+              data-test="joinColonyButton"
+              className={styles.colonyJoinBtn}
+            >
+              <FormattedMessage {...MSG.joinColony} />
+            </Button>
           </div>
         )}
       </div>
