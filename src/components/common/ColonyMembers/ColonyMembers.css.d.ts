@@ -1,6 +1,5 @@
 declare namespace ColonyMembersCssNamespace {
   export interface IColonyMembersCss {
-    controls: string;
     loadingWrapper: string;
     main: string;
     mainContent: string;
@@ -8,12 +7,10 @@ declare namespace ColonyMembersCssNamespace {
     mappings: string;
     names: string;
     query700: string;
-    reputationPoints: string;
     rightAside: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;
-    teamReputationPointsContainer: string;
     version: string;
   }
 }

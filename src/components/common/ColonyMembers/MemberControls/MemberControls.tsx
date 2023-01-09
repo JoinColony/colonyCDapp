@@ -3,6 +3,7 @@ import { defineMessages } from 'react-intl';
 // import { ColonyVersion, Extension } from '@colony/colony-js';
 
 import Button from '~shared/Button';
+import InviteLinkButton from '~shared/Button/InviteLinkButton';
 // import { useDialog } from '~shared/Dialog';
 // import { BanUserDialog } from '~shared/Comment';
 // import PermissionManagementDialog from '~dialogs/PermissionManagementDialog';
@@ -11,9 +12,12 @@ import Button from '~shared/Button';
 
 // import { Colony, useColonyExtensionsQuery, useLoggedInUser } from '~data/index';
 // import { useAppContext, useTransformer } from '~hooks';
+import { useColonyContext } from '~hooks';
 // import { getAllUserRoles } from '~redux/transformers';
 // import { hasRoot, canAdminister, canArchitect } from '~modules/users/checks';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
+
+import styles from './MemberControls.css';
 
 const displayName = 'common.ColonyMembers.MemberControls';
 
@@ -36,7 +40,12 @@ const MSG = defineMessages({
   },
 });
 
-const MemberControls = () => {
+type Props = {
+  isRootDomain: boolean;
+};
+
+const MemberControls = ({ isRootDomain }: Props) => {
+  const { colony } = useColonyContext();
   // const {
   //   networkId,
   //   username,
@@ -109,7 +118,15 @@ const MemberControls = () => {
 
   return (
     !controlsDisabled && (
-      <>
+      <ul className={styles.controls}>
+        {isRootDomain && (
+          <li>
+            <InviteLinkButton
+              colonyName={colony?.name || ''}
+              buttonAppearance={{ theme: 'blue' }}
+            />
+          </li>
+        )}
         {canMamangePermissions && (
           <li>
             <Button
@@ -159,7 +176,7 @@ const MemberControls = () => {
             />
           </li>
         )}
-      </>
+      </ul>
     )
   );
 };
