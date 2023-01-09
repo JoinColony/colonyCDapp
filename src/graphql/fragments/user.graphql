@@ -19,10 +19,3 @@ fragment User on User {
     }
   }
 }
-
-fragment WatchListItem on WatchedColonies {
-  colony {
-    ...WatchedColony
-  }
-  createdAt
-}

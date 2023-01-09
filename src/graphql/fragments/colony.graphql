@@ -78,3 +78,10 @@ fragment WatchedColony on Colony {
     network
   }
 }
+
+fragment WatchListItem on WatchedColonies {
+  colony {
+    ...WatchedColony
+  }
+  createdAt
+}
