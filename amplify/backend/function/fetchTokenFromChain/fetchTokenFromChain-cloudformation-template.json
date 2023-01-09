@@ -4,8 +4,8 @@
     "Parameters": {
         "CloudWatchRule": {
             "Type": "String",
-            "Default": "NONE",
-            "Description": " Schedule Expression"
+            "Default" : "NONE",
+            "Description" : " Schedule Expression"
         },
         "deploymentBucketName": {
             "Type": "String"
@@ -16,6 +16,8 @@
         "s3Key": {
             "Type": "String"
         }
+        
+    
     },
     "Conditions": {
         "ShouldNotCreateEnvResources": {
@@ -29,50 +31,48 @@
     },
     "Resources": {
         "LambdaFunction": {
-            "Type": "AWS::Lambda::Function",
-            "Metadata": {
-                "aws:asset:path": "./src",
-                "aws:asset:property": "Code"
+          "Type": "AWS::Lambda::Function",
+          "Metadata": {
+            "aws:asset:path": "./src",
+            "aws:asset:property": "Code"
+          },
+          "Properties": {
+            "Code": {
+                "S3Bucket": {
+                    "Ref": "deploymentBucketName"
+                },
+                "S3Key": {
+                    "Ref": "s3Key"
+                }
             },
-            "Properties": {
-                "Code": {
-                    "S3Bucket": {
-                        "Ref": "deploymentBucketName"
-                    },
-                    "S3Key": {
-                        "Ref": "s3Key"
-                    }
-                },
-                "Handler": "index.handler",
-                "FunctionName": {
-                    "Fn::If": [
-                        "ShouldNotCreateEnvResources",
-                        "fetchTokenFromChain",
-                        {
-                            "Fn::Join": [
-                                "",
-                                [
-                                    "fetchTokenFromChain",
-                                    "-",
-                                    {
-                                        "Ref": "env"
-                                    }
-                                ]
+            "Handler": "index.handler",
+            "FunctionName": {
+                "Fn::If": [
+                    "ShouldNotCreateEnvResources",
+                    "fetchTokenFromChain",
+                    {
+
+                        "Fn::Join": [
+                            "",
+                            [
+                                "fetchTokenFromChain",
+                                "-",
+                                {
+                                    "Ref": "env"
+                                }
                             ]
-                        }
-                    ]
-                },
-                "Environment": {
-                    "Variables": {
-                        "ENV": { "Ref": "env" },
-                        "REGION": { "Ref": "AWS::Region" }
+                        ]
                     }
-                },
-                "Role": { "Fn::GetAtt": ["LambdaExecutionRole", "Arn"] },
-                "Runtime": "nodejs14.x",
-                "Layers": [],
-                "Timeout": 25
-            }
+                ]
+            },
+            "Environment": {
+                "Variables" : {"ENV":{"Ref":"env"},"REGION":{"Ref":"AWS::Region"}}
+            },
+            "Role": { "Fn::GetAtt": ["LambdaExecutionRole", "Arn"] },
+            "Runtime": "nodejs14.x",
+            "Layers": [],
+            "Timeout": 25
+          }
         },
         "LambdaExecutionRole": {
             "Type": "AWS::IAM::Role",
@@ -82,6 +82,7 @@
                         "ShouldNotCreateEnvResources",
                         "colonycdappLambdaRoledcbaad49",
                         {
+
                             "Fn::Join": [
                                 "",
                                 [
@@ -101,15 +102,19 @@
                         {
                             "Effect": "Allow",
                             "Principal": {
-                                "Service": ["lambda.amazonaws.com"]
+                                "Service": [
+                                    "lambda.amazonaws.com"
+                                ]
                             },
-                            "Action": ["sts:AssumeRole"]
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
                         }
                     ]
                 }
             }
-        },
-        "lambdaexecutionpolicy": {
+        }
+        ,"lambdaexecutionpolicy": {
             "DependsOn": ["LambdaExecutionRole"],
             "Type": "AWS::IAM::Policy",
             "Properties": {
@@ -120,26 +125,17 @@
                     "Statement": [
                         {
                             "Effect": "Allow",
-                            "Action": [
-                                "logs:CreateLogGroup",
-                                "logs:CreateLogStream",
-                                "logs:PutLogEvents"
-                            ],
-                            "Resource": {
-                                "Fn::Sub": [
-                                    "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*",
-                                    {
-                                        "region": { "Ref": "AWS::Region" },
-                                        "account": { "Ref": "AWS::AccountId" },
-                                        "lambda": { "Ref": "LambdaFunction" }
-                                    }
-                                ]
-                            }
+                            "Action": ["logs:CreateLogGroup",
+                            "logs:CreateLogStream",
+                            "logs:PutLogEvents"],
+                            "Resource": { "Fn::Sub": [ "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*", { "region": {"Ref": "AWS::Region"}, "account": {"Ref": "AWS::AccountId"}, "lambda": {"Ref": "LambdaFunction"}} ]}
                         }
                     ]
                 }
             }
         }
+        
+        
     },
     "Outputs": {
         "Name": {
@@ -148,7 +144,7 @@
             }
         },
         "Arn": {
-            "Value": { "Fn::GetAtt": ["LambdaFunction", "Arn"] }
+            "Value": {"Fn::GetAtt": ["LambdaFunction", "Arn"]}
         },
         "Region": {
             "Value": {
@@ -160,5 +156,6 @@
                 "Ref": "LambdaExecutionRole"
             }
         }
+        
     }
 }

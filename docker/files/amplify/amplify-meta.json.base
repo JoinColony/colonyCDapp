@@ -38,6 +38,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getUserReputation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
     "getReputationForTopDomains": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -68,10 +73,5 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "getUserReputation": {
-    "build": true,
-    "providerPlugin": "awscloudformation",
-    "service": "Lambda"
-  }
   }
 }
