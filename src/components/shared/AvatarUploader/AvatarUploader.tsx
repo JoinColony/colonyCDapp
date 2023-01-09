@@ -24,11 +24,33 @@ const MSG = defineMessages({
     id: `${displayName}.dropNow`,
     defaultMessage: 'Drop now!',
   },
-  avatarFileError: {
-    id: `${displayName}.avatarFileError`,
-    defaultMessage: 'Accepted file types are: svg, jpg, png and webp',
+  fileCompressionError: {
+    id: `${displayName}.fileCompressionError`,
+    defaultMessage:
+      'File could not be uploaded and may be corrupted. Try again with a different file.',
+  },
+  fileSizeError: {
+    id: `${displayName}.fileSizeError`,
+    defaultMessage: 'File is too large. Try again with a smaller image',
+  },
+  fileTypeError: {
+    id: `${displayName}.fileTypeError`,
+    defaultMessage:
+      'Unsupported file type. Accepted file types are: svg, jpg, png and webp',
   },
 });
+
+const getErrorMessage = (errorMessage: string) => {
+  if (errorMessage.includes('file-invalid-type')) {
+    return MSG.fileTypeError;
+  }
+
+  if (errorMessage.includes('exceeded the maximum')) {
+    return MSG.fileSizeError;
+  }
+
+  return MSG.fileCompressionError;
+};
 
 export interface Props
   extends Pick<SingleFileUploadProps, 'handleFileAccept' | 'handleFileReject'>,
@@ -42,10 +64,10 @@ export interface Props
   avatar: AvatarProps['avatar'];
   /** Avatar to be wrapped by File uploader */
   avatarPlaceholder: React.ReactElement;
+  /** An error message */
+  error?: string;
   /** Function to handle the removal of the avatar */
   handleFileRemove?: (...args: any[]) => Promise<any>;
-  /** A boolean to represent if there's an error with the file upload */
-  hasError?: boolean;
   /** If true, will display loading spinner */
   isLoading?: boolean;
   /** Display choose / remove buttons beneath Avatar */
@@ -58,12 +80,16 @@ const DropNowOverlay = () => (
   </div>
 );
 
-const FileError = () => (
+interface FileErrorProps {
+  error: string;
+}
+
+const FileError = ({ error }: FileErrorProps) => (
   <div className={styles.error}>
     <Icon
       name="file"
       appearance={{ size: 'large' }}
-      title={formatText(MSG.avatarFileError)}
+      title={formatText(error)}
     />
   </div>
 );
@@ -76,11 +102,11 @@ const LoadingOverlay = () => (
 
 const getPlaceholder = (
   isLoading: boolean,
-  hasError: boolean,
   avatarPlaceholder: Props['avatarPlaceholder'],
+  error?: string,
 ) => {
-  if (hasError) {
-    return <FileError />;
+  if (error) {
+    return <FileError error={error} />;
   }
 
   if (isLoading) {
@@ -100,7 +126,7 @@ const AvatarUploader = ({
   handleFileAccept,
   handleFileReject,
   handleFileRemove,
-  hasError = false,
+  error,
   help,
   helpValues,
   isLoading = false,
@@ -143,7 +169,7 @@ const AvatarUploader = ({
         }}
         handleFileAccept={handleFileAccept}
         handleFileReject={handleFileReject}
-        placeholder={getPlaceholder(isLoading, hasError, avatarPlaceholder)}
+        placeholder={getPlaceholder(isLoading, avatarPlaceholder, error)}
         ref={dropzoneRef}
         dataTest="avatarUploaderDrop"
       >
@@ -156,13 +182,13 @@ const AvatarUploader = ({
           open={open}
         />
       )}
-      {hasError && (
+      {error && (
         <div className={styles.inputStatus}>
           <InputStatus
             appearance={appearance}
             status={status}
             statusValues={statusValues}
-            error={MSG.avatarFileError}
+            error={getErrorMessage(error)}
           />
         </div>
       )}

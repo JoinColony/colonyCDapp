@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
+import { FileRejection } from 'react-dropzone';
 
 import { useUpdateUserProfileMutation } from '~gql';
 import { useAppContext } from '~hooks';
@@ -12,6 +13,7 @@ import UserAvatar from '~shared/UserAvatar';
 import { Heading3 } from '~shared/Heading';
 import { User } from '~types';
 import { FileReaderFile } from '~utils/fileReader/types';
+import { getFileRejectionErrors } from '~shared/FileUpload/utils';
 
 import styles from './UserAvatarUploader.css';
 
@@ -35,42 +37,46 @@ const UserAvatarUploader = ({
 }: Props) => {
   const { updateUser } = useAppContext();
   const [loading, setLoading] = useState<boolean>(false);
-  const [hasError, setHasError] = useState<boolean>(false);
-  const [updateAvatar] = useUpdateUserProfileMutation({
-    onError: () => {
-      setHasError(true);
-    },
-  });
+  const [error, setError] = useState<string>();
+  const [updateAvatar] = useUpdateUserProfileMutation();
 
   const handleFileUpload = async (avatarFile: FileReaderFile | null) => {
     if (avatarFile) {
-      setHasError(false);
+      setError(undefined);
       setLoading(true);
     }
-    const updatedAvatar = await getOptimisedAvatar(avatarFile?.file);
-    const thumbnail = await getOptimisedThumbnail(avatarFile?.file);
 
-    await updateAvatar({
-      variables: {
-        input: {
-          id: walletAddress,
-          avatar: updatedAvatar,
-          thumbnail,
+    try {
+      const updatedAvatar = await getOptimisedAvatar(avatarFile?.file);
+      const thumbnail = await getOptimisedThumbnail(avatarFile?.file);
+
+      await updateAvatar({
+        variables: {
+          input: {
+            id: walletAddress,
+            avatar: updatedAvatar,
+            thumbnail,
+          },
         },
-      },
-    });
+      });
 
-    await updateUser?.(user.walletAddress, true);
-    setLoading(false);
+      await updateUser?.(user.walletAddress, true);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleFileRemove = async () => {
     await handleFileUpload(null);
-    setHasError(false);
+    setError(undefined);
   };
 
-  const handleFileReject = () => {
-    setHasError(true);
+  const handleFileReject = (rejectedFiles: FileRejection[]) => {
+    // Only care about first error
+    const fileError = getFileRejectionErrors(rejectedFiles)[0][0];
+    setError(fileError.code);
   };
 
   return (
@@ -90,7 +96,7 @@ const UserAvatarUploader = ({
         handleFileRemove={handleFileRemove}
         handleFileReject={handleFileReject}
         isLoading={loading}
-        hasError={hasError}
+        error={error}
       />
     </div>
   );
