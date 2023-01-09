@@ -12,9 +12,10 @@ export interface Props
   /** If true the UserAvatar links to the user's profile */
   showLink?: boolean;
 
-  /** The corresponding user object if available */
+  /** The colony this avatar is for */
   colony?: WatchedColony | Colony;
 
+  /** Use the thumbnail instead of the avatar image */
   preferThumbnail?: boolean;
 }
 
