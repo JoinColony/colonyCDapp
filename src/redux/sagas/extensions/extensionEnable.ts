@@ -72,7 +72,7 @@ function* extensionEnable({
     return yield putError(ActionTypes.EXTENSION_ENABLE_ERROR, error, meta);
   }
 
-  yield call(refreshEnabledExtension, colonyAddress, extensionId);
+  refreshEnabledExtension(colonyAddress, extensionId);
 
   initChannel.close();
 
