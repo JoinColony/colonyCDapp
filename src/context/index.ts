@@ -1,6 +1,6 @@
 import { ApolloClient as ApolloClientClass } from '@apollo/client';
 
-import { Wallet as WalletType } from '~types';
+import { ColonyWallet } from '~types';
 
 import ColonyManagerClass from './ColonyManager';
 
@@ -20,13 +20,8 @@ export enum ContextModule {
   UserSettings = 'userSettings',
 }
 
-export interface IpfsWithFallbackSkeleton {
-  getString: (hash: string) => Promise<any>;
-  addString: (hash: string) => Promise<any>;
-}
-
 export interface Context {
-  [ContextModule.Wallet]?: WalletType;
+  [ContextModule.Wallet]?: ColonyWallet;
   [ContextModule.ColonyManager]?: ColonyManagerClass;
   [ContextModule.ApolloClient]?: ApolloClientClass<object>;
   [ContextModule.UserSettings]?: UserSettingsClass;
@@ -46,14 +41,11 @@ export const setContext = <K extends keyof Context>(
   context[contextKey] = contextValue;
 };
 
-export const getContext = <K extends keyof Context>(
-  contextKey: K,
-): NonNullable<Context[K]> => {
+export const getContext = <K extends keyof Context>(contextKey: K) => {
   const ctx = context[contextKey];
   if (!ctx) throw new Error(`Could not get context: ${contextKey}`);
-  // ctx is always defined from here on
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return ctx!;
+
+  return ctx;
 };
 
 export const removeContext = <K extends keyof Context>(contextKey: K) => {

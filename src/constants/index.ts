@@ -1,5 +1,7 @@
 import { constants as ethersContants } from 'ethers';
 
+import { version } from '../../package.json';
+
 import { Network } from '~types';
 
 export * from './externalUrls';
@@ -151,6 +153,8 @@ export const ADDRESS_ZERO = ethersContants.AddressZero;
 
 export const GANACHE_LOCAL_RPC_URL = 'http://localhost:8545';
 
-export const isDev = process.env.NETWORK === 'ganache';
+export const isDev = process.env.NODE_ENV === 'development';
+
+export const CDAPP_VERSION = version;
 
 export const STAKING_THRESHOLD = 10;
