@@ -54,6 +54,7 @@ input CreateUniqueColonyInput {
   type: ColonyType
   status: ColonyStatusInput
   meta: MetadataInput
+  version: Int!
 }
 
 input ProfileInput {
