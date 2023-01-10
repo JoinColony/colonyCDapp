@@ -308,6 +308,7 @@ export type CreateUniqueColonyInput = {
   profile?: InputMaybe<ProfileInput>;
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
+  version: Scalars['Int'];
 };
 
 export type CreateUniqueDomainInput = {
