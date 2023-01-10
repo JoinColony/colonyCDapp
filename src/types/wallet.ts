@@ -1,11 +1,21 @@
 import { WalletState } from '@web3-onboard/core';
 
-export interface Wallet extends WalletState {
+export type ColonyWallet = BasicWallet | Wallet;
+
+interface Wallet extends WalletState {
   address: string;
   balance: Record<string, string>;
   ens?: string | null;
 }
 
-export enum DevelopmentWallets {
-  Ganache = 'Ganache Wallet',
-}
+export type BasicWallet = Pick<Wallet, 'address' | 'label' | 'chains'>;
+
+export const isBasicWallet = (
+  wallet?: ColonyWallet | null,
+): wallet is BasicWallet => {
+  if (!wallet || 'balance' in wallet) {
+    return false;
+  }
+
+  return true;
+};
