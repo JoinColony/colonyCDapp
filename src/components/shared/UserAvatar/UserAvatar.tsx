@@ -35,7 +35,6 @@ const UserAvatar = ({
   address,
   banned = false,
   colony,
-  notSet = true,
   popperOptions,
   showInfo,
   showLink,
@@ -68,7 +67,6 @@ const UserAvatar = ({
       >
         <Avatar
           avatar={imageString}
-          notSet={notSet}
           placeholderIcon="circle-person"
           seed={address && address.toLowerCase()}
           title={

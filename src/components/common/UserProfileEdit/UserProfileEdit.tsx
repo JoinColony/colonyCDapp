@@ -4,9 +4,8 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { Tab, TabList, TabPanel, Tabs } from '~shared/Tabs';
 
 import ProfileTemplate from '~frame/ProfileTemplate';
-import LandingPage from '~frame/LandingPage';
 
-import { useAppContext } from '~hooks';
+import { useCanEditProfile } from '~hooks';
 
 import UserProfileSpinner from '../UserProfile/UserProfileSpinner';
 import {
@@ -29,14 +28,15 @@ const MSG = defineMessages({
 });
 
 const UserProfileEdit = () => {
-  const { user, userLoading } = useAppContext();
+  const { loadingProfile, user } = useCanEditProfile();
 
-  if (userLoading || user === undefined) {
+  if (loadingProfile) {
     return <UserProfileSpinner />;
   }
 
-  if (user === null) {
-    return <LandingPage />;
+  // By this point, if user is null or undefined, we'll be redirected to /landing by useCanEditProfile.
+  if (!user) {
+    return null;
   }
 
   return (

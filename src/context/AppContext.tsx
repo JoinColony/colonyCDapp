@@ -22,14 +22,16 @@ export interface AppContextValues {
   user?: User | null;
   userLoading?: boolean;
   updateWallet?: () => void;
-  updateUser?: (address?: string) => void;
+  updateUser?: (
+    address?: string,
+    shouldBackgroundUpdate?: boolean,
+  ) => Promise<void>;
 }
 
 export const AppContext = createContext<AppContextValues>({});
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   let initialWallet;
-  let initialUser;
 
   /*
    * Wallet
@@ -37,44 +39,46 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   try {
     initialWallet = getContext(ContextModule.Wallet);
   } catch (error) {
-    initialUser = null;
     // silent
     // It means that it was not set in context yet
   }
 
   const [wallet, setWallet] = useState(initialWallet);
-  const [user, setUser] = useState<User | null | undefined>(initialUser);
+  const [user, setUser] = useState<User | null | undefined>();
   const [userLoading, setUserLoading] = useState(false);
   const [walletConnecting, setWalletConnecting] = useState(false);
 
-  const updateUser = useCallback((address?: string) => {
-    if (address) {
-      try {
-        setUserLoading(true);
-        const apolloClient = getContext(ContextModule.ApolloClient);
-        const query = apolloClient.query<
-          GetCurrentUserQuery,
-          GetCurrentUserQueryVariables
-        >({
-          query: GetCurrentUserDocument,
-          variables: { address },
-          fetchPolicy: 'network-only',
-        });
-        query.then(({ data }) => {
+  const updateUser = useCallback(
+    async (address?: string, shouldBackgroundUpdate = false) => {
+      if (address) {
+        try {
+          if (!shouldBackgroundUpdate) {
+            setUserLoading(true);
+          }
+          const apolloClient = getContext(ContextModule.ApolloClient);
+          const { data } = await apolloClient.query<
+            GetCurrentUserQuery,
+            GetCurrentUserQueryVariables
+          >({
+            query: GetCurrentUserDocument,
+            variables: { address },
+            fetchPolicy: 'network-only',
+          });
           const [currentUser] = data?.getUserByAddress?.items || [];
           if (currentUser) {
             setUser(currentUser);
           } else {
             setUser(null);
           }
-        });
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setUserLoading(false);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setUserLoading(false);
+        }
       }
-    }
-  }, []);
+    },
+    [],
+  );
 
   const updateWallet = useCallback((): void => {
     try {

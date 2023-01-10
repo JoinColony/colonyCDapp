@@ -160,7 +160,6 @@ const MembersSubsection = ({
                 // banned={canAdministerComments && banned}
                 banned={false}
                 showInfo
-                notSet={false}
                 colony={colony}
                 user={user}
                 popperOptions={{
