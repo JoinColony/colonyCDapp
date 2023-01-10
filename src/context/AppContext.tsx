@@ -1,3 +1,4 @@
+import { utils } from 'ethers';
 import React, {
   createContext,
   useState,
@@ -5,7 +6,6 @@ import React, {
   ReactNode,
   useCallback,
 } from 'react';
-import { utils } from 'ethers';
 
 import { ActionTypes } from '~redux';
 import {
@@ -13,13 +13,13 @@ import {
   GetUserByAddressQuery,
   GetUserByAddressQueryVariables,
 } from '~gql';
-import { Wallet, User } from '~types';
+import { ColonyWallet, User } from '~types';
 import { useAsyncFunction } from '~hooks';
 
 import { getContext, ContextModule } from './index';
 
 export interface AppContextValues {
-  wallet?: Wallet;
+  wallet?: ColonyWallet | null;
   walletConnecting?: boolean;
   setWalletConnecting?: React.Dispatch<React.SetStateAction<boolean>>;
   user?: User | null;
@@ -35,7 +35,7 @@ export interface AppContextValues {
 export const AppContext = createContext<AppContextValues>({});
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
-  let initialWallet;
+  let initialWallet: ColonyWallet | undefined;
 
   /*
    * Wallet
@@ -47,7 +47,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     // It means that it was not set in context yet
   }
 
-  const [wallet, setWallet] = useState(initialWallet);
+  const [wallet, setWallet] =
+    useState<AppContextValues['wallet']>(initialWallet);
   const [user, setUser] = useState<User | null | undefined>();
   const [userLoading, setUserLoading] = useState(false);
   const [walletConnecting, setWalletConnecting] = useState(false);
@@ -65,7 +66,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
             GetUserByAddressQueryVariables
           >({
             query: GetUserByAddressDocument,
-            variables: { address },
+            variables: { address: utils.getAddress(address) },
             fetchPolicy: 'network-only',
           });
           const [currentUser] = data?.getUserByAddress?.items || [];
@@ -90,8 +91,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       updatedWallet.address = utils.getAddress(updatedWallet.address);
       setWallet(updatedWallet);
       // Update the user as soon as the wallet address changes
-      if (updatedWallet?.address !== wallet?.address) {
-        updateUser(updatedWallet?.address);
+      if (updatedWallet.address !== wallet?.address) {
+        updateUser(updatedWallet.address);
       }
     } catch (error) {
       if (wallet) {

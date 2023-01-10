@@ -1,6 +1,7 @@
 import { Colony } from '~types';
-import { DEFAULT_NETWORK_INFO, NETWORK_AVAILABLE_CHAINS } from '~constants';
+import { DEFAULT_NETWORK_INFO } from '~constants';
 import { getWatchedColony } from '~utils/watching';
+import { isChainSupported } from '~utils/autoLogin';
 
 import useAppContext from './useAppContext';
 
@@ -18,21 +19,17 @@ export const useUserAccountRegistered = (): boolean => {
 export const useCanInteractWithNetwork = (): boolean => {
   const { wallet } = useAppContext();
   const userAccountRegistered = useUserAccountRegistered();
-
   /*
    * Short circuit early
    */
   if (!wallet) {
     return false;
   }
-  const [{ id: walletHexChainId }] = wallet.chains;
-  const userWalletChain = parseInt(walletHexChainId.slice(2), 16);
+  const [{ id: hexChainId }] = wallet.chains;
 
-  const networkContractsAvailable = Object.keys(NETWORK_AVAILABLE_CHAINS).find(
-    (networkName) =>
-      NETWORK_AVAILABLE_CHAINS[networkName].chainId === userWalletChain,
-  );
-  return userAccountRegistered && !!networkContractsAvailable;
+  const networkContractsAvailable = isChainSupported(hexChainId);
+
+  return userAccountRegistered && networkContractsAvailable;
 };
 
 /*

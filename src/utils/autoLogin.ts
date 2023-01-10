@@ -2,6 +2,8 @@
 // import { open as purserOpenMetaMaskWallet } from '@purser/metamask';
 // import { open as purserOpenSoftwareWallet } from '@purser/software';
 
+import { NETWORK_AVAILABLE_CHAINS } from '~constants';
+
 // import { getAccounts } from '~users/ConnectWalletWizard/StepGanache';
 // import { WalletMethod } from '~redux/immutable';
 // import { Address } from '~types';
@@ -11,24 +13,54 @@
 // import { useAsyncFunction } from '~hooks';
 // import { log } from './debug';
 
-export const LAST_WALLET_KEY = 'colony-last-wallet-type';
-// export const LAST_ADDRESS_KEY = 'colony-last-wallet-address';
+export interface LastWallet {
+  type: string;
+  address: string;
+}
 
-export const getLastWallet = () => localStorage.getItem(LAST_WALLET_KEY);
+const LAST_WALLET_KEY = 'autologin';
 
-export const setLastWallet = (label: string) => {
-  /*
-   * @NOTE "Ganache" is manual label we set to dev wallets, and it's not something
-   * That occurs naturally.
-   * If this would be acidentally set, web3-onboard would not be able to autologin
-   * again since it woundn't be able to find the label
-   */
-  if (label !== 'Ganache') {
-    localStorage.setItem(LAST_WALLET_KEY, label);
+export const clearLastWallet = () => localStorage.removeItem(LAST_WALLET_KEY);
+
+export const getLastWallet = () => {
+  const lastWallet = localStorage.getItem(LAST_WALLET_KEY);
+  if (!lastWallet) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(lastWallet) as LastWallet;
+  } catch {
+    // If parsing fails, wallet is in old format
+    clearLastWallet();
+    return null;
   }
 };
 
-export const clearLastWallet = () => localStorage.removeItem(LAST_WALLET_KEY);
+export const setLastWallet = (lastWallet: LastWallet) =>
+  localStorage.setItem(LAST_WALLET_KEY, JSON.stringify(lastWallet));
+
+/**
+ * web3-onboard stores chainId as hex strings. E.g. ganache id of 2656691 is stored as "0x2889b3".
+ * This utility converts the chain id to its hex equivalent.
+ * @param chainId chain id
+ * @returns Hex string.
+ */
+export const getChainIdAsHex = (chainId: number) => `0x${chainId.toString(16)}`;
+
+/**
+ * web3-onboard stores chainId as hex strings. E.g. ganache id of 2656691 is stored as "0x2889b3".
+ * This utility converts the hex string back to its original number form.
+ * @param hex Hex string
+ * @returns Chain id.
+ */
+export const getChainIdFromHex = (hex: string) =>
+  parseInt(hex.substring(2), 16);
+
+export const isChainSupported = (hexChainId: string) =>
+  Object.values(NETWORK_AVAILABLE_CHAINS).some(
+    (network) => network.chainId === getChainIdFromHex(hexChainId),
+  );
 
 // export const useWalletAutoLogin = (
 //   lastWalletType: string,
