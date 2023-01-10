@@ -224,6 +224,7 @@ type Colony @model {
   balances: ColonyBalances @function(name: "fetchColonyBalances")
   meta: Metadata
   extensions: [ColonyExtension!] @hasMany(indexName: "byColony", fields: ["id"])
+  version: Int!
 }
 
 type User @model {

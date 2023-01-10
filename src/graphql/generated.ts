@@ -51,6 +51,7 @@ export type Colony = {
   tokens?: Maybe<ModelColonyTokensConnection>;
   type?: Maybe<ColonyType>;
   updatedAt: Scalars['AWSDateTime'];
+  version: Scalars['Int'];
   watchers?: Maybe<ModelWatchedColoniesConnection>;
 };
 
@@ -248,6 +249,7 @@ export type CreateColonyInput = {
   profile?: InputMaybe<ProfileInput>;
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
+  version: Scalars['Int'];
 };
 
 export type CreateColonyTokensInput = {
@@ -483,6 +485,7 @@ export type ModelColonyConditionInput = {
   not?: InputMaybe<ModelColonyConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyConditionInput>>>;
   type?: InputMaybe<ModelColonyTypeInput>;
+  version?: InputMaybe<ModelIntInput>;
 };
 
 export type ModelColonyConnection = {
@@ -534,6 +537,7 @@ export type ModelColonyFilterInput = {
   not?: InputMaybe<ModelColonyFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyFilterInput>>>;
   type?: InputMaybe<ModelColonyTypeInput>;
+  version?: InputMaybe<ModelIntInput>;
 };
 
 export type ModelColonyFundsClaimConditionInput = {
@@ -808,6 +812,7 @@ export type ModelSubscriptionColonyFilterInput = {
   name?: InputMaybe<ModelSubscriptionStringInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyFilterInput>>>;
   type?: InputMaybe<ModelSubscriptionStringInput>;
+  version?: InputMaybe<ModelSubscriptionIntInput>;
 };
 
 export type ModelSubscriptionColonyFundsClaimFilterInput = {
@@ -1902,6 +1907,7 @@ export type UpdateColonyInput = {
   profile?: InputMaybe<ProfileInput>;
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
+  version?: InputMaybe<Scalars['Int']>;
 };
 
 export type UpdateColonyTokensInput = {
