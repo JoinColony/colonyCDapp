@@ -2,12 +2,15 @@ declare namespace AvatarUploaderCssNamespace {
   export interface IAvatarUploaderCss {
     buttonContainer: string;
     disabled: string;
+    dropNowOverlay: string;
     dropzone: string;
     dropzoneAccept: string;
     dropzoneNoButtonsVariant: string;
+    error: string;
     filesContainer: string;
     inputStatus: string;
-    overlay: string;
+    loader: string;
+    loadingOverlay: string;
   }
 }
 

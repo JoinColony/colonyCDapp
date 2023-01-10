@@ -2,6 +2,7 @@ import { FieldArrayRenderProps } from 'formik';
 import {
   Accept,
   DropzoneOptions,
+  DropzoneProps,
   DropzoneState,
   FileRejection,
 } from 'react-dropzone';
@@ -107,4 +108,29 @@ export interface FileUploadProps extends CoreInputProps {
   processingData?: boolean;
 
   handleProcessingData?: (...args: any) => void;
+}
+
+export type HandleFileAccept = (file: FileReaderFile) => void;
+
+export interface SingleFileUploadProps {
+  /** A child element to be displayed when dragging a file into the loader, e.g. an overlay */
+  children?: React.ReactNode;
+  /** Label for automated tests */
+  dataTest?: CoreInputProps['dataTest'];
+  /** Custom classNames for different states of the dropzone */
+  dropzoneRootStyles?: {
+    dropzone: string;
+    dropzoneAccept?: string;
+    dropzoneReject?: string;
+  };
+  /** Options for the dropzone provider */
+  dropzoneOptions: DropzoneOptions;
+  /** The component around which the file uploader is wrapped. The component the user will see. */
+  placeholder: ReactNode;
+  /** Ref for programmatic opening */
+  ref?: Ref<any>;
+  /** Called when user's input validates successfully */
+  handleFileAccept: HandleFileAccept;
+  /** Called when user's input validates unsuccessfully */
+  handleFileReject?: DropzoneProps['onDropRejected'];
 }

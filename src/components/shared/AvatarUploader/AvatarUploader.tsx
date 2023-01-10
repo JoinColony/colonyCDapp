@@ -1,14 +1,19 @@
 import React, { useRef } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { ApolloError, FetchResult } from '@apollo/client';
 
-import { HookForm as Form, InputStatus } from '~shared/Fields';
-import { FileUploadProps } from '~shared/FileUpload/types';
-import FileUpload from '~shared/FileUpload';
-import { FileReaderFile } from '~utils/fileReader/types';
+import {
+  CoreInputProps,
+  InputLabel,
+  InputStatus,
+  InputComponentAppearance as Appearance,
+} from '~shared/Fields';
+import { SingleFileUpload, SingleFileUploadProps } from '~shared/FileUpload';
+import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
+import { AvatarProps } from '~shared/Avatar';
+import { NO_MAX } from '~shared/FileUpload/limits';
 
-import Button from '../Button';
-import AvatarUploadItem from './AvatarUploadItem';
+import UploadControls from './UploadControls';
 
 import styles from './AvatarUploader.css';
 
@@ -19,130 +24,178 @@ const MSG = defineMessages({
     id: `${displayName}.dropNow`,
     defaultMessage: 'Drop now!',
   },
-  notAllowed: {
-    id: `${displayName}.notAllowed`,
-    defaultMessage: 'Not allowed',
+  fileCompressionError: {
+    id: `${displayName}.fileCompressionError`,
+    defaultMessage:
+      'File could not be uploaded and may be corrupted. Try again with a different file.',
   },
-  avatarFileError: {
-    id: `${displayName}.avatarFileError`,
-    defaultMessage: 'This filetype is not allowed or file is too big',
+  fileSizeError: {
+    id: `${displayName}.fileSizeError`,
+    defaultMessage: 'File is too large. Try again with a smaller image',
+  },
+  fileTypeError: {
+    id: `${displayName}.fileTypeError`,
+    defaultMessage:
+      'Unsupported file type. Accepted file types are: svg, jpg, png and webp',
   },
 });
 
-const ACCEPTED_MIME_TYPES = {
-  'image/svg+xml': [],
-  'image/png': [],
+const getErrorMessage = (errorMessage: string) => {
+  if (errorMessage.includes('file-invalid-type')) {
+    return MSG.fileTypeError;
+  }
+
+  if (errorMessage.includes('exceeded the maximum')) {
+    return MSG.fileSizeError;
+  }
+
+  return MSG.fileCompressionError;
 };
 
-const ACCEPTED_MAX_FILE_SIZE = 1048576; // 1 Mb
-
-interface Props extends Partial<FileUploadProps> {
-  /** Used to control the state of the remove button (don't fire the remove action if not avatar is set) */
-  isSet?: boolean;
-  /** Function to handle an upload error from the outside */
-  handleError?: (...args: any[]) => Promise<any>;
+export interface Props
+  extends Pick<SingleFileUploadProps, 'handleFileAccept' | 'handleFileReject'>,
+    Omit<
+      CoreInputProps,
+      'name' | 'placeholder' | 'placeholderValues' | 'dataTest'
+    > {
+  /** Appearance object for both label and status */
+  appearance?: Appearance;
+  /** Avatar image string */
+  avatar: AvatarProps['avatar'];
+  /** Avatar to be wrapped by File uploader */
+  avatarPlaceholder: React.ReactElement;
+  /** An error message */
+  error?: string;
+  /** Function to handle the removal of the avatar */
+  handleFileRemove?: (...args: any[]) => Promise<any>;
+  /** If true, will display loading spinner */
+  isLoading?: boolean;
   /** Display choose / remove buttons beneath Avatar */
-  hasButtons: boolean;
-  /** Function to handle removal of the avatar (should set avatarURL to null from outside) */
-  remove: (...args: any[]) => Promise<any>;
-  /** Function to handle the actual uploading of the file */
-  upload: (fileData: FileReaderFile) => Promise<FetchResult>;
-  /** Present if there was an error calling the mutation */
-  uploadError?: ApolloError;
+  showButtons?: boolean;
 }
+
+const DropNowOverlay = () => (
+  <div className={styles.dropNowOverlay}>
+    <FormattedMessage {...MSG.dropNow} />
+  </div>
+);
+
+interface FileErrorProps {
+  error: string;
+}
+
+const FileError = ({ error }: FileErrorProps) => (
+  <div className={styles.error}>
+    <Icon
+      name="file"
+      appearance={{ size: 'large' }}
+      title={formatText(error)}
+    />
+  </div>
+);
+
+const LoadingOverlay = () => (
+  <div className={styles.loadingOverlay}>
+    <div className={styles.loader} />
+  </div>
+);
+
+const getPlaceholder = (
+  isLoading: boolean,
+  avatarPlaceholder: Props['avatarPlaceholder'],
+  error?: string,
+) => {
+  if (error) {
+    return <FileError error={error} />;
+  }
+
+  if (isLoading) {
+    return <LoadingOverlay />;
+  }
+
+  return avatarPlaceholder;
+};
 
 const AvatarUploader = ({
   appearance,
-  remove,
-  hasButtons,
+  avatar,
+  avatarPlaceholder,
   disabled,
-  isSet = true,
-  uploadError,
-  ...uploaderProps
+  elementOnly,
+  extra,
+  handleFileAccept,
+  handleFileReject,
+  handleFileRemove,
+  error,
+  help,
+  helpValues,
+  isLoading = false,
+  label,
+  labelValues,
+  showButtons = true,
+  status,
+  statusValues,
 }: Props) => {
   const dropzoneRef = useRef<{ open: () => void }>();
-
   const open = () => {
-    // will be null if disabled
+    // will be null if dropzone is disabled
     if (typeof dropzoneRef.current?.open === 'function') {
       dropzoneRef.current.open();
     }
   };
-
-  // FileUpload children are renderProps (functions)
-  const renderOverlay = () => (
-    <div className={styles.overlay}>
-      <FormattedMessage {...MSG.dropNow} />
-    </div>
-  );
 
   const noButtonStyles = {
     ...styles,
     dropzone: styles.dropzoneNoButtonsVariant,
   };
 
-  // Form is used for state and error handling through FileUpload, nothing else
   return (
-    <Form onSubmit={() => {}} defaultValues={{ avatarUploader: [] }}>
-      {({ formState: { errors }, reset }) => {
-        const name = 'avatarUploader';
-        const error = errors[name];
-        const hasError = !!uploadError || !!error;
-        const choose = () => {
-          reset();
-          // waits for form state to reset, which clears 'disabled'-ness in the event previous upload errored
-          setTimeout(open, 0);
-        };
-
-        return (
-          <>
-            <FileUpload
-              {...uploaderProps}
-              classNames={hasButtons ? styles : noButtonStyles}
-              dropzoneOptions={{
-                accept: ACCEPTED_MIME_TYPES,
-                maxSize: ACCEPTED_MAX_FILE_SIZE,
-                disabled,
-              }}
-              appearance={appearance}
-              maxFilesLimit={1}
-              name={name}
-              ref={dropzoneRef}
-              itemComponent={AvatarUploadItem}
-              dataTest="avatarUploaderDrop"
-            >
-              {renderOverlay()}
-            </FileUpload>
-            {hasButtons && (
-              <div className={styles.buttonContainer}>
-                <Button
-                  appearance={{ theme: 'danger' }}
-                  text={{ id: 'button.remove' }}
-                  onClick={remove}
-                  disabled={!isSet}
-                  dataTest="avatarUploaderRemove"
-                />
-                <Button
-                  text={{ id: 'button.choose' }}
-                  onClick={choose}
-                  dataTest="avatarUploaderChoose"
-                />
-              </div>
-            )}
-            {hasError && (
-              <div className={styles.inputStatus}>
-                <InputStatus
-                  appearance={appearance}
-                  error={MSG.avatarFileError}
-                />
-              </div>
-            )}
-          </>
-        );
-      }}
-    </Form>
+    <>
+      {!elementOnly && label && (
+        <InputLabel
+          appearance={appearance}
+          label={label}
+          labelValues={labelValues}
+          help={help}
+          helpValues={helpValues}
+          extra={extra}
+        />
+      )}
+      <SingleFileUpload
+        dropzoneRootStyles={showButtons ? styles : noButtonStyles}
+        dropzoneOptions={{
+          maxSize: NO_MAX,
+          disabled,
+        }}
+        handleFileAccept={handleFileAccept}
+        handleFileReject={handleFileReject}
+        placeholder={getPlaceholder(isLoading, avatarPlaceholder, error)}
+        ref={dropzoneRef}
+        dataTest="avatarUploaderDrop"
+      >
+        <DropNowOverlay />
+      </SingleFileUpload>
+      {showButtons && (
+        <UploadControls
+          handleFileRemove={handleFileRemove}
+          disableRemove={!avatar}
+          open={open}
+        />
+      )}
+      {error && (
+        <div className={styles.inputStatus}>
+          <InputStatus
+            appearance={appearance}
+            status={status}
+            statusValues={statusValues}
+            error={getErrorMessage(error)}
+          />
+        </div>
+      )}
+    </>
   );
 };
 
 AvatarUploader.displayName = displayName;
+
 export default AvatarUploader;

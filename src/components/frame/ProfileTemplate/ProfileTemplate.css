@@ -61,30 +61,10 @@
     width: 100%;
   }
 
-  .sidebar > div > div {
+  .sidebar > div {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-  }
-
-  .sidebar h3 {
-    text-align: center;
-  }
-
-  .sidebar form > div:first-child {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .sidebar form > div:last-child {
-    display: flex;
-    justify-content: center;
-  }
-
-  .sidebar form label {
-    margin-bottom: 20px;
   }
 
   .mainContent {

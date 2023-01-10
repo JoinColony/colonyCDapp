@@ -1,6 +1,13 @@
 declare namespace UserAvatarUploaderCssNamespace {
   export interface IUserAvatarUploaderCss {
-    inputStatus: string;
+    main: string;
+    mappings: string;
+    names: string;
+    query700: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
+    version: string;
   }
 }
 

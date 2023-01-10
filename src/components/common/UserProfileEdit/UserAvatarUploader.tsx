@@ -1,19 +1,28 @@
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
+import { FileRejection } from 'react-dropzone';
 
+import { useUpdateUserProfileMutation } from '~gql';
+import { useAppContext } from '~hooks';
+import {
+  getOptimisedAvatar,
+  getOptimisedThumbnail,
+} from '~images/optimisation';
 import AvatarUploader from '~shared/AvatarUploader';
 import UserAvatar from '~shared/UserAvatar';
-
+import { Heading3 } from '~shared/Heading';
 import { User } from '~types';
-import { useUpdateUserProfileMutation } from '~gql';
 import { FileReaderFile } from '~utils/fileReader/types';
+import { getFileRejectionErrors } from '~shared/FileUpload/utils';
+
+import styles from './UserAvatarUploader.css';
 
 const displayName = 'common.UserProfileEdit.UserAvatarUploader';
 
 const MSG = defineMessages({
-  uploaderLabel: {
-    id: `${displayName}.uploaderLabel`,
-    defaultMessage: 'At least 250x250px, up to 1MB, .png or .svg',
+  heading: {
+    id: `${displayName}.heading`,
+    defaultMessage: 'Profile Picture',
   },
 });
 
@@ -26,54 +35,70 @@ const UserAvatarUploader = ({
   user,
   user: { walletAddress, profile },
 }: Props) => {
-  const [avatar, setAvatar] = useState<string | null>(profile?.avatar || null);
-  const [updateAvatar, { error }] = useUpdateUserProfileMutation();
-  const updatedUser = {
-    ...user,
-    // use avatar held in component state
-    profile: { ...user.profile, avatar },
-  };
+  const { updateUser } = useAppContext();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
+  const [updateAvatar] = useUpdateUserProfileMutation();
 
-  const handleUpload = async (fileData: FileReaderFile) => {
-    const file = await updateAvatar({
-      variables: {
-        input: {
-          id: walletAddress,
-          avatar: fileData.data,
+  const handleFileUpload = async (avatarFile: FileReaderFile | null) => {
+    if (avatarFile) {
+      setError(undefined);
+      setLoading(true);
+    }
+
+    try {
+      const updatedAvatar = await getOptimisedAvatar(avatarFile?.file);
+      const thumbnail = await getOptimisedThumbnail(avatarFile?.file);
+
+      await updateAvatar({
+        variables: {
+          input: {
+            id: walletAddress,
+            avatar: updatedAvatar,
+            thumbnail,
+          },
         },
-      },
-    });
-    setAvatar(fileData.data);
-    return file;
+      });
+
+      await updateUser?.(user.walletAddress, true);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const remove = async () => {
-    await updateAvatar({
-      variables: {
-        input: { id: walletAddress, avatar: null },
-      },
-    });
-    setAvatar(null);
+  const handleFileRemove = async () => {
+    await handleFileUpload(null);
+    setError(undefined);
+  };
+
+  const handleFileReject = (rejectedFiles: FileRejection[]) => {
+    // Only care about first error
+    const fileError = getFileRejectionErrors(rejectedFiles)[0][0];
+    setError(fileError.code);
   };
 
   return (
-    <AvatarUploader
-      label={MSG.uploaderLabel}
-      hasButtons
-      renderPlaceholder={
-        <UserAvatar
-          address={user.walletAddress}
-          user={updatedUser}
-          size="xl"
-          notSet={false}
-          preferThumbnail={false}
-        />
-      }
-      upload={handleUpload}
-      remove={remove}
-      isSet={!!avatar}
-      uploadError={error}
-    />
+    <div className={styles.main}>
+      <Heading3 appearance={{ theme: 'dark' }} text={MSG.heading} />
+      <AvatarUploader
+        avatar={profile?.avatar}
+        avatarPlaceholder={
+          <UserAvatar
+            address={walletAddress}
+            user={user}
+            size="xl"
+            preferThumbnail={false}
+          />
+        }
+        handleFileAccept={handleFileUpload}
+        handleFileRemove={handleFileRemove}
+        handleFileReject={handleFileReject}
+        isLoading={loading}
+        error={error}
+      />
+    </div>
   );
 };
 
