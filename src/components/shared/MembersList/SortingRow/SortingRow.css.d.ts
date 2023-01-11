@@ -4,12 +4,9 @@ declare namespace SortingRowCssNamespace {
     mappings: string;
     names: string;
     query700: string;
-    sortingButton: string;
-    sortingIcon: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;
-    toggledIcon: string;
     version: string;
   }
 }
