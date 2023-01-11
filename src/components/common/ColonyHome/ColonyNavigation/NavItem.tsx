@@ -1,61 +1,72 @@
-import React, { KeyboardEvent, useCallback } from 'react';
-import { MessageDescriptor, useIntl } from 'react-intl';
+import React, { KeyboardEvent } from 'react';
+import { MessageDescriptor } from 'react-intl';
+import { useLocation } from 'react-router-dom';
 
 import NavLink from '~shared/NavLink';
 import { ENTER } from '~types/index';
+import { formatText } from '~utils/intl';
 
 import styles from './NavItem.css';
 
-export interface Props {
+export interface NavItemProps {
   disabled?: boolean;
   // exact?: boolean;
-  extra?: MessageDescriptor;
   linkTo: string;
   showDot?: boolean;
   text: MessageDescriptor;
   dataTest?: string;
 }
 
-const displayName = 'dashboard.ColonyHome.ColonyNavigation.NavItem';
+const displayName = 'common.ColonyHome.ColonyNavigation.NavItem';
+
+const handleLinkKeyDown = (
+  evt: KeyboardEvent<HTMLAnchorElement>,
+  disabled: boolean,
+) => {
+  if (disabled && evt.key === ENTER) {
+    evt.preventDefault();
+  }
+};
+
+const getClassNames = (
+  showDot: boolean,
+  linkTo: string,
+  currentLocation: string,
+) => {
+  const classNames = [styles.main];
+
+  if (showDot) {
+    classNames.push(styles.showDot);
+  }
+
+  if (linkTo === currentLocation) {
+    classNames.push(styles.active);
+  }
+
+  return classNames;
+};
 
 const NavItem = ({
   disabled = false,
-  // exact = true,
-  extra: extraProp,
   linkTo,
   showDot = false,
   text: textProp,
   dataTest,
-}: Props) => {
-  const { formatMessage } = useIntl();
+}: NavItemProps) => {
+  const text = formatText(textProp);
+  const { pathname } = useLocation();
+  const classNames = getClassNames(showDot, linkTo, pathname);
 
-  const handleLinkKeyDown = useCallback(
-    (evt: KeyboardEvent<HTMLAnchorElement>) => {
-      if (disabled && evt.key === ENTER) {
-        evt.preventDefault();
-      }
-    },
-    [disabled],
-  );
-
-  const text = formatMessage(textProp);
-  const extra = extraProp ? formatMessage(extraProp) : undefined;
-  const classNames = [styles.main];
-  if (showDot) {
-    classNames.push(styles.showDot);
-  }
   return (
     <NavLink
       activeClassName={styles.active}
       aria-disabled={disabled}
       className={classNames.join(' ')}
-      // exact={exact}
-      onKeyDown={handleLinkKeyDown}
+      onKeyDown={(e) => handleLinkKeyDown(e, disabled)}
       to={linkTo}
       data-test={dataTest}
     >
       <span className={styles.text}>{text}</span>
-      {extra && <span className={styles.extra}>{extra}</span>}
     </NavLink>
   );
 };

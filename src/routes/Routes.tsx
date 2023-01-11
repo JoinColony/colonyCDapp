@@ -232,7 +232,7 @@ const Routes = () => {
         <Route path="*" element={<NotFoundRoute />} />
       </RoutesSwitch>
     ),
-    [user],
+    [user, isMobile],
   );
 
   // if (isAppLoading) {
