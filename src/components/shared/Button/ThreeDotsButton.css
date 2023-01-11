@@ -10,11 +10,11 @@
 }
 
 .menuActive, .main:hover {
-  border-color: var(--action-secondary);
+  border-color: var(--colony-blue);
 }
 
 .menuActive .icon, .main:hover .icon {
-  fill: var(--action-secondary);
+  fill: var(--colony-blue);
 }
 
 .main:focus {
@@ -38,5 +38,5 @@
 }
 
 .icon:hover {
-  fill: var(--action-secondary);
+  fill: var(--colony-blue);
 }
