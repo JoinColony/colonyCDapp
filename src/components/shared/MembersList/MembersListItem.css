@@ -15,37 +15,6 @@
   padding-left: 0;
 }
 
-.usernameSection {
-  composes: section;
-  flex-grow: 0.5;
-  margin-right: auto;
-  width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.displayName {
-  font-weight: var(--weight-bold);
-  color: var(--grey-1);
-}
-
-.displayName + .username {
-  display: inline-flex;
-  margin-left: 5px;
-}
-
-.address {
-  display: flex;
-  align-items: center;
-  line-height: 13px;
-}
-
-.address span {
-  font-size: var(--size-normal);
-  font-weight: 500;
-}
-
 .reputationSection {
   display: flex;
   align-items: center;
@@ -62,19 +31,6 @@
 
 .stateHasReputation.stateReputationLoaded {
   opacity: 1;
-}
-
-.whitelistedIcon {
-  margin-left: 10px;
-  position: relative;
-}
-
-.whitelistedIcon svg {
-  fill: var(--primary);
-}
-
-.whitelistedIconTooltip {
-  width: 130px;
 }
 
 @media screen and query700 {
@@ -135,9 +91,5 @@
   .reputationSection i {
     display: flex;
     align-items: center;
-  }
-
-  .usernameSection {
-    width: auto;
   }
 }
