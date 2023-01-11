@@ -1,16 +1,16 @@
 query GetCurrentExtensionsVersions {
   listCurrentVersions {
     items {
-      extensionHash: item
+      extensionHash: key
       version
     }
   }
 }
 
 query GetCurrentExtensionVersion($extensionHash: String!) {
-  getCurrentVersionByItem(item: $extensionHash) {
+  getCurrentVersionByKey(key: $extensionHash) {
     items {
-      extensionHash: item
+      extensionHash: key
       version
     }
   }

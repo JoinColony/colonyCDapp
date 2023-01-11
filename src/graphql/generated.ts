@@ -274,7 +274,7 @@ export type CreateContractEventInput = {
 
 export type CreateCurrentVersionInput = {
   id?: InputMaybe<Scalars['ID']>;
-  item: Scalars['String'];
+  key: Scalars['String'];
   version: Scalars['Int'];
 };
 
@@ -347,7 +347,7 @@ export type CurrentVersion = {
   __typename?: 'CurrentVersion';
   createdAt: Scalars['AWSDateTime'];
   id: Scalars['ID'];
-  item: Scalars['String'];
+  key: Scalars['String'];
   updatedAt: Scalars['AWSDateTime'];
   version: Scalars['Int'];
 };
@@ -637,7 +637,7 @@ export type ModelContractEventFilterInput = {
 
 export type ModelCurrentVersionConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelCurrentVersionConditionInput>>>;
-  item?: InputMaybe<ModelStringInput>;
+  key?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelCurrentVersionConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelCurrentVersionConditionInput>>>;
   version?: InputMaybe<ModelIntInput>;
@@ -652,7 +652,7 @@ export type ModelCurrentVersionConnection = {
 export type ModelCurrentVersionFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelCurrentVersionFilterInput>>>;
   id?: InputMaybe<ModelIdInput>;
-  item?: InputMaybe<ModelStringInput>;
+  key?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelCurrentVersionFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelCurrentVersionFilterInput>>>;
   version?: InputMaybe<ModelIntInput>;
@@ -847,7 +847,7 @@ export type ModelSubscriptionContractEventFilterInput = {
 export type ModelSubscriptionCurrentVersionFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionCurrentVersionFilterInput>>>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
-  item?: InputMaybe<ModelSubscriptionStringInput>;
+  key?: InputMaybe<ModelSubscriptionStringInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionCurrentVersionFilterInput>>>;
   version?: InputMaybe<ModelSubscriptionIntInput>;
 };
@@ -1371,7 +1371,7 @@ export type Query = {
   getColonyTokens?: Maybe<ColonyTokens>;
   getContractEvent?: Maybe<ContractEvent>;
   getCurrentVersion?: Maybe<CurrentVersion>;
-  getCurrentVersionByItem?: Maybe<ModelCurrentVersionConnection>;
+  getCurrentVersionByKey?: Maybe<ModelCurrentVersionConnection>;
   getDomain?: Maybe<Domain>;
   getExtensionByColonyAndHash?: Maybe<ModelColonyExtensionConnection>;
   getToken?: Maybe<Token>;
@@ -1455,9 +1455,9 @@ export type QueryGetCurrentVersionArgs = {
 };
 
 
-export type QueryGetCurrentVersionByItemArgs = {
+export type QueryGetCurrentVersionByKeyArgs = {
   filter?: InputMaybe<ModelCurrentVersionFilterInput>;
-  item: Scalars['String'];
+  key: Scalars['String'];
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
@@ -1622,7 +1622,7 @@ export type QueryListWatchedColoniesArgs = {
 };
 
 export type SetCurrentVersionInput = {
-  item: Scalars['String'];
+  key: Scalars['String'];
   version: Scalars['Int'];
 };
 
@@ -1933,7 +1933,7 @@ export type UpdateContractEventInput = {
 
 export type UpdateCurrentVersionInput = {
   id: Scalars['ID'];
-  item?: InputMaybe<Scalars['String']>;
+  key?: InputMaybe<Scalars['String']>;
   version?: InputMaybe<Scalars['Int']>;
 };
 
@@ -2145,7 +2145,7 @@ export type GetCurrentExtensionVersionQueryVariables = Exact<{
 }>;
 
 
-export type GetCurrentExtensionVersionQuery = { __typename?: 'Query', getCurrentVersionByItem?: { __typename?: 'ModelCurrentVersionConnection', items: Array<{ __typename?: 'CurrentVersion', version: number, extensionHash: string } | null> } | null };
+export type GetCurrentExtensionVersionQuery = { __typename?: 'Query', getCurrentVersionByKey?: { __typename?: 'ModelCurrentVersionConnection', items: Array<{ __typename?: 'CurrentVersion', version: number, extensionHash: string } | null> } | null };
 
 export const TokenFragmentDoc = gql`
     fragment Token on Token {
@@ -2738,7 +2738,7 @@ export const GetCurrentExtensionsVersionsDocument = gql`
     query GetCurrentExtensionsVersions {
   listCurrentVersions {
     items {
-      extensionHash: item
+      extensionHash: key
       version
     }
   }
@@ -2773,9 +2773,9 @@ export type GetCurrentExtensionsVersionsLazyQueryHookResult = ReturnType<typeof 
 export type GetCurrentExtensionsVersionsQueryResult = Apollo.QueryResult<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>;
 export const GetCurrentExtensionVersionDocument = gql`
     query GetCurrentExtensionVersion($extensionHash: String!) {
-  getCurrentVersionByItem(item: $extensionHash) {
+  getCurrentVersionByKey(key: $extensionHash) {
     items {
-      extensionHash: item
+      extensionHash: key
       version
     }
   }
