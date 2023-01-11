@@ -97,6 +97,9 @@ fragment ColonyAction on ColonyAction {
   annotation {
     ...Annotation
   }
+  decisionData {
+    ...ColonyDecision
+  }
 }
 
 fragment Annotation on Annotation {
@@ -174,6 +177,7 @@ fragment ColonyMotion on ColonyMotion {
   objectionAnnotation {
     ...Annotation
   }
+  isDecision
 }
 
 fragment MotionMessage on MotionMessage {
@@ -200,4 +204,14 @@ fragment MotionStakes on MotionStakes {
   percentage {
     ...MotionStakeValues
   }
+}
+
+fragment ColonyDecision on ColonyDecision {
+  title
+  description
+  motionDomainId
+  walletAddress
+  createdAt
+  actionId
+  colonyAddress
 }

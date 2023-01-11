@@ -1,0 +1,12 @@
+.main {
+  font-size: var(--size-normal);
+  color: var(--grey-purple);
+}
+
+.main h3, .main div {
+  margin: 15px 0 20px 0;
+}
+
+.main button {
+  min-width: 160px;
+}

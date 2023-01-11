@@ -1,5 +1,5 @@
 import { getExtensionHash } from '@colony/colony-js';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { supportedExtensionsConfig } from '~constants';
 import {
@@ -19,6 +19,7 @@ interface UseExtensionsDataReturn {
   installedExtensionsData: InstalledExtensionData[];
   availableExtensionsData: InstallableExtensionData[];
   loading: boolean;
+  shortPollExtensions: () => void;
 }
 
 /**
@@ -27,7 +28,11 @@ interface UseExtensionsDataReturn {
  */
 const useExtensionsData = (): UseExtensionsDataReturn => {
   const { colony } = useColonyContext();
-  const { data, loading: extensionsLoading } = useGetColonyExtensionsQuery({
+  const {
+    data,
+    loading: extensionsLoading,
+    refetch: refetchExtensions,
+  } = useGetColonyExtensionsQuery({
     variables: {
       colonyAddress: colony?.colonyAddress ?? '',
     },
@@ -97,10 +102,18 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
     );
   }, [colonyExtensions, extensionVersions]);
 
+  // Custom polling prevents start / stop poll clashing with one another in the event
+  // Extensions are deprecated / reenabled in quick succession
+  const shortPollExtensions = useCallback(() => {
+    const interval = setInterval(refetchExtensions, 2_000);
+    setTimeout(() => clearInterval(interval), 10_000);
+  }, [refetchExtensions]);
+
   return {
     installedExtensionsData,
     availableExtensionsData,
     loading: extensionsLoading || versionsLoading,
+    shortPollExtensions,
   };
 };
 

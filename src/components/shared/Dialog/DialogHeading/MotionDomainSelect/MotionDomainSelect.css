@@ -6,7 +6,7 @@
   padding: 0;
 }
 
-.main button[aria-disabled="true"] {
+.main button[aria-disabled='true'] {
   background-color: transparent;
   opacity: 0.4;
   cursor: not-allowed;

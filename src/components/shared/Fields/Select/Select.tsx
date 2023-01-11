@@ -31,7 +31,7 @@ const MSG = defineMessages({
   },
 });
 
-const Select = ({
+const Select = <V,>({
   appearance,
   disabled,
   elementOnly,
@@ -50,7 +50,7 @@ const Select = ({
   statusValues,
   dataTest,
   itemDataTest,
-}: SelectProps) => {
+}: SelectProps<V>) => {
   const [id] = useState<string>(idProp || nanoid());
   const {
     formState: { errors, touchedFields },

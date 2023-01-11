@@ -15,7 +15,6 @@ interface Props {
 
 const DetailsWidget = ({ colony, actionData }: Props) => {
   const detailItems = getDetailItems(actionData, colony);
-
   return (
     <div>
       {detailItems.map(({ label, labelValues, item }) => (
