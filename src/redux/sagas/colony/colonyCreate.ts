@@ -2,6 +2,7 @@ import { Channel } from 'redux-saga';
 import { all, call, fork, put } from 'redux-saga/effects';
 import { getExtensionHash, Extension, ClientType, Id } from '@colony/colony-js';
 import { poll } from 'ethers/lib/utils';
+import { BigNumber } from 'ethers';
 
 import {
   CreateColonyTokensDocument,
@@ -304,6 +305,7 @@ function* colonyCreate({
             name: givenColonyName,
             colonyNativeTokenId: tokenAddress,
             profile: { displayName },
+            version: BigNumber.from(currentColonyVersion).toNumber(),
           },
         },
       });
