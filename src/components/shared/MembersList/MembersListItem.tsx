@@ -1,12 +1,8 @@
 import React, { KeyboardEvent, ReactNode, useCallback, useMemo } from 'react';
-import { defineMessages } from 'react-intl';
 
-import UserMention from '~shared/UserMention';
+// import UserMention from '~shared/UserMention';
 import { ListGroupItem } from '~shared/ListGroup';
 import MemberReputation from '~shared/MemberReputation';
-import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
-import MaskedAddress from '~shared/MaskedAddress';
-import IconTooltip from '~shared/IconTooltip';
 import UserAvatar from '~shared/UserAvatar';
 
 import { Watcher, Contributor } from '~types';
@@ -17,6 +13,7 @@ import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { notNull } from '~utils/arrays';
 
 import MemberActions from './Actions';
+import MemberInfo from './MemberInfo';
 
 import styles from './MembersListItem.css';
 
@@ -31,14 +28,7 @@ interface Props {
   member: Watcher | Contributor;
 }
 
-const componentDisplayName = 'MembersList.MembersListItem';
-
-const MSG = defineMessages({
-  whitelistedTooltip: {
-    id: `${componentDisplayName}.whitelistedTooltip`,
-    defaultMessage: `Added to address book`,
-  },
-});
+const displayName = 'MembersList.MembersListItem';
 
 const MembersListItem = ({
   extraItemContent,
@@ -50,8 +40,6 @@ const MembersListItem = ({
   canAdministerComments,
 }: Props) => {
   const {
-    profile,
-    name,
     walletAddress,
     // banned = false,
     // isWhitelisted = false,
@@ -85,8 +73,6 @@ const MembersListItem = ({
     () => (extraItemContent ? extraItemContent(user) : null),
     [extraItemContent, user],
   );
-
-  const { displayName } = profile || {};
 
   const nativeToken = colony?.tokens?.items
     .filter(notNull)
@@ -126,32 +112,7 @@ const MembersListItem = ({
             popperOptions={isMobile ? { placement: 'bottom' } : undefined}
           />
         </div>
-        <div className={styles.usernameSection}>
-          {displayName && (
-            <span className={styles.displayName} title={displayName}>
-              {displayName}
-            </span>
-          )}
-          {name && (
-            <span className={styles.username}>
-              <UserMention hasLink={false} username={name} />
-            </span>
-          )}
-          <div className={styles.address}>
-            <InvisibleCopyableAddress address={walletAddress || ''}>
-              <MaskedAddress address={walletAddress || ''} />
-            </InvisibleCopyableAddress>
-            {isWhitelisted && (
-              <IconTooltip
-                icon="check-mark"
-                tooltipText={MSG.whitelistedTooltip}
-                tooltipClassName={styles.whitelistedIconTooltip}
-                appearance={{ size: 'medium' }}
-                className={styles.whitelistedIcon}
-              />
-            )}
-          </div>
-        </div>
+        <MemberInfo isWhitelisted={isWhitelisted} user={user} />
         {renderedExtraItemContent && !isMobile && (
           <div>{renderedExtraItemContent}</div>
         )}
@@ -178,6 +139,6 @@ const MembersListItem = ({
   );
 };
 
-MembersListItem.displayName = componentDisplayName;
+MembersListItem.displayName = displayName;
 
 export default MembersListItem;
