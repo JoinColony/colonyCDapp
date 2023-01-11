@@ -47,6 +47,7 @@ fragment Colony on Colony {
       ...Watcher
     }
   }
+  version
 }
 
 fragment Watcher on WatchedColonies {

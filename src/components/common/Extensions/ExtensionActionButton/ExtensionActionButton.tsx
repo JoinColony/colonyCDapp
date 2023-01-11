@@ -39,6 +39,8 @@ const ExtensionActionButton = ({ extensionData }: Props) => {
     );
   };
 
+  const isSupportedColonyVersion = colony.version >= 5;
+
   if (!isInstalledExtensionData(extensionData)) {
     return (
       <ActionButton
@@ -51,6 +53,7 @@ const ExtensionActionButton = ({ extensionData }: Props) => {
           extensionData,
         }}
         text={MSG.install}
+        disabled={!isSupportedColonyVersion}
       />
     );
   }
@@ -65,7 +68,7 @@ const ExtensionActionButton = ({ extensionData }: Props) => {
         appearance={{ theme: 'primary', size: 'medium' }}
         onClick={handleEnableButtonClick}
         text={MSG.enable}
-        // disabled={!isSupportedColonyVersion}
+        disabled={!isSupportedColonyVersion}
       />
     );
   }
