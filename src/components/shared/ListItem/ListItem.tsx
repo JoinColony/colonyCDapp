@@ -35,7 +35,7 @@ const FormattedDate = ({ parts }: FormattedDateProps) => (
   </>
 );
 
-interface ListItemProps {
+export interface ListItemProps {
   /** Avatar to be displayed */
   avatar?: ReactNode;
   /** The date the corresponding event was created */
@@ -55,7 +55,7 @@ interface ListItemProps {
   /** A title */
   title: Message;
   /** Values for the react-intl interpolation */
-  titleValues: UniversalMessageValues;
+  titleValues?: UniversalMessageValues;
 }
 
 const ListItem = ({
@@ -69,7 +69,7 @@ const ListItem = ({
   titleValues,
   tag,
 }: ListItemProps) => (
-  <li>
+  <li className={styles.list}>
     <div
       className={getMainClasses({}, styles, {
         [ListItemStatus[status]]: !!status,

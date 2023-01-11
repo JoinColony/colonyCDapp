@@ -31,7 +31,11 @@ export const usePaginatedActions = (): UsePaginatedActionsReturn => {
       colonyAddress: colony?.colonyAddress ?? '',
       limit: ITEMS_PER_PAGE,
       sortDirection,
-      filter: { showInActionsList: { eq: true } },
+      filter: {
+        showInActionsList: { eq: true },
+        // Don't show decisions in the actions list
+        not: { colonyDecisionId: { beginsWith: '0x' } },
+      },
     },
     skip: !colony,
     fetchPolicy: 'network-only',

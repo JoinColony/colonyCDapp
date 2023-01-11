@@ -23,6 +23,7 @@ const useObjectButton = () => {
     remainingStakes: [nayRemaining],
     userMinStake,
     motionId,
+    isDecision,
     setIsSummary,
     setIsRefetching,
     startPollingAction,
@@ -50,6 +51,7 @@ const useObjectButton = () => {
       handleStakeSuccess,
       setIsSummary,
       amount: getValues(SLIDER_AMOUNT_KEY),
+      isDecision,
     });
 
   return { handleObjection };

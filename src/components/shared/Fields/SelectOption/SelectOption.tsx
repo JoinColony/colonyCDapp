@@ -14,12 +14,12 @@ const MSG = defineMessages({
   },
 });
 
-interface Props {
+interface Props<V = string | number> {
   bordered?: boolean;
   checked: boolean;
   id: string;
   idx: number;
-  option: SelectOptionType;
+  option: SelectOptionType<V>;
   selected: boolean;
   onSelect: (idx: number) => void;
   onClick: () => void;
@@ -28,7 +28,7 @@ interface Props {
 
 const displayName = 'SelectOption';
 
-const SelectOption = ({
+const SelectOption = <V,>({
   bordered,
   checked,
   id,
@@ -38,7 +38,7 @@ const SelectOption = ({
   option,
   selected,
   dataTest,
-}: Props) => {
+}: Props<V>) => {
   const { formatMessage } = useIntl();
 
   const handleItemClick = useCallback(

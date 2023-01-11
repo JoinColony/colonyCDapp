@@ -116,6 +116,7 @@ const getDetailItemsMap = (
     toDomain,
     amount,
     recipientAddress,
+    initiatorAddress,
     token,
     roles,
     motionData,
@@ -189,7 +190,7 @@ const getDetailItemsMap = (
     [ActionPageDetails.Author]: {
       label: MSG.author,
       labelValues: undefined,
-      item: recipientAddress && <UserDetail walletAddress={recipientAddress} />,
+      item: initiatorAddress && <UserDetail walletAddress={initiatorAddress} />,
     },
     [ActionPageDetails.ReputationChange]: {
       label: MSG.reputationChange,

@@ -16,7 +16,7 @@
   justify-content: center;
   padding: 9px 0;
   grid-template:
-    "left text shareButton" 100%
+    'left text shareButton' 100%
     / 1fr 6fr 1fr;
   justify-items: center;
   column-gap: 10px;
