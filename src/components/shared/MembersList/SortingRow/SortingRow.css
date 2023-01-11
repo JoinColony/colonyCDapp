@@ -7,31 +7,6 @@
   gap: 105px;
 }
 
-.sortingButton {
-  display: flex;
-  padding: 0;
-  border: none;
-  background-color: transparent;
-  font-weight: var(--weight-bold);
-  color: var(--grey-purple);
-  cursor: pointer;
-}
-
-.sortingIcon {
-  display: flex;
-  margin-left: 8px;
-  height: 100%;
-  width: 10px;
-  position: relative;
-  top: 2px;
-  fill: var(--grey-purple);
-}
-
-.sortingButton:hover .sortingIcon,
-.toggledIcon {
-  fill: var(--colony-blue);
-}
-
 @media screen and query700 {
   .container {
     padding-right: 0;
