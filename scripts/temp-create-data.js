@@ -59,7 +59,7 @@ const createUniqueDomain = /* GraphQL */ `
 const setCurrentVersion = /* GraphQL */`
   mutation SetCurrentVersion($extensionHash: String!, $version: Int!) {
     setCurrentVersion(input: {
-      item: $extensionHash,
+      key: $extensionHash,
       version: $version
     })
   }

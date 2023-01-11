@@ -94,7 +94,7 @@ input UpdateExtensionByColonyAndHashInput {
 }
 
 input SetCurrentVersionInput {
-  item: String!
+  key: String!
   version: Int!
 }
 
@@ -373,6 +373,6 @@ type ColonyExtension @model {
 
 type CurrentVersion @model {
   id: ID!
-  item: String! @index(name: "byItem", queryField: "getCurrentVersionByItem")
+  key: String! @index(name: "byKey", queryField: "getCurrentVersionByKey")
   version: Int!
 }
