@@ -6,7 +6,7 @@ import { ENTER } from '~types/index';
 
 import styles from './NavItem.css';
 
-interface Props {
+export interface Props {
   disabled?: boolean;
   // exact?: boolean;
   extra?: MessageDescriptor;
