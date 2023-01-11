@@ -28,9 +28,7 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
     [],
   );
 
-  // const isSupportedColonyVersion =
-  //   parseInt(colonyVersion || '1', 10) >= ColonyVersion.LightweightSpaceship;
-  const isSupportedColonyVersion = true;
+  const isSupportedColonyVersion = (colony?.version || 1) >= 5;
 
   const extensionCompatible = isExtensionCompatible(
     Extension[extensionData.extensionId],
