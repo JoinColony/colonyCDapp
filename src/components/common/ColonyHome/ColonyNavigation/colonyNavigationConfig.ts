@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-import { Props as NavigationItem } from './NavItem';
+import { NavItemProps as NavigationItem } from './NavItem';
 
 export const displayName = 'common.ColonyHome.ColonyNavigation';
 
