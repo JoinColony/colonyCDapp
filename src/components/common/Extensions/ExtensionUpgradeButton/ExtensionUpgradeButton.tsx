@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import {
+  ColonyVersion,
   Extension,
   ExtensionVersion,
   isExtensionCompatible,
@@ -28,17 +29,18 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
     [],
   );
 
-  const isSupportedColonyVersion = (colony?.version || 1) >= 5;
+  if (!user?.profile || !colony) {
+    return null;
+  }
+
+  const isSupportedColonyVersion = colony.version >= 5;
 
   const extensionCompatible = isExtensionCompatible(
     Extension[extensionData.extensionId],
-    extensionData.availableVersion as ExtensionVersion,
-    10,
+    (extensionData.availableVersion + 1) as ExtensionVersion,
+    colony.version as ColonyVersion,
   );
 
-  if (!user?.profile) {
-    return null;
-  }
   // @TODO check user permissions for canUpgrade - hasRoot(allUserRoles)
   const canUpgrade = true;
 
