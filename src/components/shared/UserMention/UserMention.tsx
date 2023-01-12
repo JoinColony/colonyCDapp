@@ -10,7 +10,7 @@ import { User } from '~types';
 import styles from './UserMention.css';
 
 interface Props {
-  user: User | null;
+  user: User;
 
   /** Alternate place to link to. Defaults to user profile */
   to?: string;

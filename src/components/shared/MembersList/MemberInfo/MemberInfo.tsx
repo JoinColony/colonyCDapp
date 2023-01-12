@@ -25,7 +25,7 @@ const MSG = defineMessages({
 });
 
 const MemberInfo = ({ isWhitelisted, user }: Props) => {
-  const { profile, name, walletAddress } = user || {};
+  const { profile, walletAddress } = user || {};
   const { displayName } = profile || {};
 
   return (
@@ -35,9 +35,9 @@ const MemberInfo = ({ isWhitelisted, user }: Props) => {
           {displayName}
         </span>
       )}
-      {name && (
+      {user && (
         <span className={styles.username}>
-          <UserMention hasLink={false} username={name} />
+          <UserMention hasLink={false} user={user} />
         </span>
       )}
       <div className={styles.address}>
