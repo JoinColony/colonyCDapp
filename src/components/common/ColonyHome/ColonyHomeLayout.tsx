@@ -6,13 +6,14 @@ import { useColonyContext } from '~hooks';
 
 import ColonyDomainSelector from './ColonyDomainSelector';
 import ColonyFundingWidget from './ColonyFundingWidget';
-import ColonyHomeInfo from '~common/ColonyHome/ColonyHomeInfo';
 // import ColonyUnclaimedTransfers from './ColonyUnclaimedTransfers';
 import ColonyMembersWidget from './ColonyMembersWidget';
 import ColonyExtensions from './ColonyExtensionsWidget';
 import ColonyDomainDescription from './ColonyDomainDescription';
 // import ColonyUpgrade from './ColonyUpgrade';
 import OneTxPaymentUpgrade from './OneTxPaymentUpgrade';
+// import ExtensionUpgrade from './ExtensionUpgrade';
+import ColonyHomeInfo from './ColonyHomeInfo';
 
 import styles from './ColonyHomeLayout.css';
 

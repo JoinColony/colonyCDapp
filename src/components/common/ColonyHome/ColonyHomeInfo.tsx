@@ -1,8 +1,9 @@
 import React from 'react';
 
+import { useMobile } from '~hooks';
+
 import ColonyTitle from './ColonyTitle';
 import ColonyNavigation from './ColonyNavigation';
-import { useMobile } from '~hooks';
 
 import styles from './ColonyHomeLayout.css';
 
