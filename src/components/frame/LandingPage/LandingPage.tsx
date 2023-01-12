@@ -69,7 +69,7 @@ const LandingPage = () => {
   /* Ensures username is up-to-date post create user flow. */
   useEffect(() => {
     if (updateUser) {
-      updateUser(wallet?.address);
+      updateUser(wallet?.address, true);
     }
   }, [wallet, updateUser]);
 

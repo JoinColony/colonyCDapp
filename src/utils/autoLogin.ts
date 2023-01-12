@@ -24,17 +24,7 @@ export const clearLastWallet = () => localStorage.removeItem(LAST_WALLET_KEY);
 
 export const getLastWallet = () => {
   const lastWallet = localStorage.getItem(LAST_WALLET_KEY);
-  if (!lastWallet) {
-    return null;
-  }
-
-  try {
-    return JSON.parse(lastWallet) as LastWallet;
-  } catch {
-    // If parsing fails, wallet is in old format
-    clearLastWallet();
-    return null;
-  }
+  return lastWallet ? (JSON.parse(lastWallet) as LastWallet) : null;
 };
 
 export const setLastWallet = (lastWallet: LastWallet) =>
