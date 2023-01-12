@@ -2295,10 +2295,6 @@ export type ContributorFragment = { __typename?: 'Contributor', reputationPercen
 
 export type WatcherFragment = { __typename?: 'Watcher', user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null } | null };
 
-export type ContributorFragment = { __typename?: 'Contributor', reputationPercentage?: string | null, reputationAmount?: string | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } | null };
-
-export type WatcherFragment = { __typename?: 'Watcher', user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } | null };
-
 export type CreateUniqueColonyMutationVariables = Exact<{
   input: CreateUniqueColonyInput;
 }>;
@@ -2505,11 +2501,6 @@ export const ColonyFragmentDoc = gql`
       name
       nativeId
       parentId: domainParentId
-    }
-  }
-  watchers {
-    items {
-      ...Watcher
     }
   }
 }
