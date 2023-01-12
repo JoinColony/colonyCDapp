@@ -112,4 +112,10 @@
   .mainContent form > div > div:last-child > div {
     width: 100%;
   }
+
+  .themeAlt {
+    & .mainContainer {
+      border-left: none;
+    }
+  }
 }
