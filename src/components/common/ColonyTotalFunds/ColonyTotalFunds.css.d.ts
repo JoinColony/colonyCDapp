@@ -3,14 +3,21 @@ declare namespace ColonyTotalFundsCssNamespace {
     caretIcon: string;
     main: string;
     manageFundsLink: string;
+    mappings: string;
+    names: string;
+    query700: string;
     rightArrowDisplay: string;
     selectedToken: string;
     selectedTokenAmount: string;
     selectedTokenSymbol: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
     tokenDisplayFontWeight: string;
     tokenDisplaySymbolFontSize: string;
     tokenLockWrapper: string;
     totalBalanceCopy: string;
+    version: string;
   }
 }
 
