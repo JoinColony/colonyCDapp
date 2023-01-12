@@ -58,9 +58,7 @@ export type Member = User & {
 const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
   const { colony } = useColonyContext();
   const [searchValue, setSearchValue] = useState<string>('');
-  const [sortingMethod, setSortingMethod] = useState(
-    SortingMethod.ByHighestRep,
-  );
+  const sortingMethod = SortingMethod.ByHighestRep;
 
   const { data, loading: loadingMembers } = useGetMembersForColonyQuery({
     skip: !colony?.colonyAddress,
@@ -121,8 +119,6 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
       <MembersSection
         isContributorsSection
         members={contributors}
-        sortingMethod={sortingMethod}
-        handleSortingMethodChange={setSortingMethod}
         // temporary value until permissions are implemented
         canAdministerComments
         // extraItemContent={({ roles, directRoles, banned }) => {
@@ -165,7 +161,6 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
     watchers,
     filters,
     isRootDomain,
-    sortingMethod,
   ]);
 
   if (loadingMembers && !data) {

@@ -8,7 +8,7 @@ import SortingRow, {
   Props as SortingProps,
 } from '~shared/MembersList/SortingRow';
 import { Watcher, Contributor } from '~types';
-// import useColonyMembersSorting from '~modules/dashboard/hooks/useColonyMembersSorting';
+import { useColonyMembersSorting } from '~hooks';
 
 import styles from './MembersSection.css';
 
@@ -47,8 +47,6 @@ const MembersSection = ({
   extraItemContent,
   isContributorsSection,
   itemsPerSection = 10,
-  handleSortingMethodChange,
-  sortingMethod,
 }: Props & Partial<SortingProps>) => {
   const [dataPage, setDataPage] = useState<number>(1);
 
@@ -56,6 +54,9 @@ const MembersSection = ({
   const handleDataPagination = useCallback(() => {
     setDataPage(dataPage + 1);
   }, [dataPage]);
+
+  const { sortedMembers, sortingMethod, handleSortingMethodChange } =
+    useColonyMembersSorting(paginatedMembers, isContributorsSection);
 
   return (
     <>
@@ -89,7 +90,7 @@ const MembersSection = ({
         <div className={styles.membersList}>
           <MembersList
             extraItemContent={extraItemContent}
-            users={paginatedMembers}
+            users={sortedMembers}
             canAdministerComments={canAdministerComments}
             showUserReputation={isContributorsSection}
           />
