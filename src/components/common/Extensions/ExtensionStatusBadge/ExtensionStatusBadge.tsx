@@ -10,10 +10,6 @@ import styles from './ExtensionStatusBadge.css';
 const displayName = 'common.Extensions.ExtensionStatusBadge';
 
 const MSG = defineMessages({
-  installed: {
-    id: `${displayName}.installed`,
-    defaultMessage: 'Installed',
-  },
   notInstalled: {
     id: `${displayName}.notInstalled`,
     defaultMessage: 'Not installed',
@@ -30,8 +26,8 @@ const MSG = defineMessages({
     id: `${displayName}.enabled`,
     defaultMessage: 'Enabled',
   },
-  notEnabled: {
-    id: `${displayName}.notEnabled`,
+  disabled: {
+    id: `${displayName}.disabled`,
     defaultMessage: 'Disabled',
   },
 });
@@ -50,28 +46,30 @@ const ExtensionStatusBadge = ({
 
   if (!isInstalledExtensionData(extensionData)) {
     status = MSG.notInstalled;
-  } else if (!extensionData.isInitialized) {
-    status = MSG.notEnabled;
-    theme = 'golden';
+  } else if (extensionData.isDeprecated) {
+    status = MSG.deprecated;
+    theme = 'danger';
   }
   // else if (installedExtension.details?.missingPermissions.length) {
   //   status = MSG.missingPermissions;
   //   theme = 'danger';
   // }
-  else if (extensionData.isInitialized) {
+  else if (extensionData.isEnabled) {
     status = MSG.enabled;
     theme = 'primary';
   } else {
-    status = MSG.installed;
+    status = MSG.disabled;
+    theme = 'golden';
   }
+
+  const isDeprecated =
+    isInstalledExtensionData(extensionData) && extensionData.isDeprecated;
 
   return (
     <div className={styles.tagContainer}>
-      {!deprecatedOnly && <Tag appearance={{ theme }} text={status} />}
-      {isInstalledExtensionData(extensionData) &&
-        extensionData.isDeprecated && (
-          <Tag appearance={{ theme: 'danger' }} text={MSG.deprecated} />
-        )}
+      {(isDeprecated || !deprecatedOnly) && (
+        <Tag appearance={{ theme }} text={status} />
+      )}
     </div>
   );
 };
