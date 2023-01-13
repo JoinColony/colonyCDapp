@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import Button, { ThreeDotsButton } from '~shared/Button';
@@ -10,8 +11,10 @@ import {
   useCreateWatchedColoniesMutation,
   useDeleteWatchedColoniesMutation,
 } from '~gql';
+import { CREATE_USER_ROUTE } from '~routes';
 import { useAppContext, useColonyContext } from '~hooks';
 import { watchingColony } from '~utils/watching';
+import { newUser } from '~utils/newUser';
 
 import ColonySubscriptionInfoPopover from './ColonySubscriptionInfoPopover';
 
@@ -35,8 +38,16 @@ const MSG = defineMessages({
 });
 
 const ColonySubscription = () => {
-  const { colony, canInteractWithColony } = useColonyContext();
-  const { user, updateUser, walletConnecting, connectWallet } = useAppContext();
+  const { colony, canInteractWithColony, updateColony } = useColonyContext();
+  const {
+    user,
+    updateUser,
+    wallet,
+    walletConnecting,
+    connectWallet,
+    initConnect,
+  } = useAppContext();
+  const navigate = useNavigate();
 
   const watchedItem = watchingColony(colony, user);
 
@@ -59,10 +70,23 @@ const ColonySubscription = () => {
 
   /* Update user on watch/unwatch */
   useEffect(() => {
-    if (updateUser) {
+    if (updateUser && updateColony) {
       updateUser(user?.walletAddress);
+      updateColony();
     }
-  }, [user, updateUser, watchState, unwatchState]);
+  }, [user, updateUser, watchState, unwatchState, updateColony]);
+
+  const handleJoinClick = () => {
+    if (user) {
+      watch();
+    } else if (wallet && !user) {
+      newUser();
+      // TO Do: update to new user modal
+      navigate(CREATE_USER_ROUTE, { replace: true });
+    } else {
+      connectWallet?.();
+    }
+  };
 
   return (
     <div className={styles.main}>
@@ -98,12 +122,10 @@ const ColonySubscription = () => {
             )}
           </ColonySubscriptionInfoPopover>
         )}
-        {!canInteractWithColony && !walletConnecting && (
+        {!canInteractWithColony && !walletConnecting && !initConnect && (
           <div className={styles.colonyJoin}>
             <Button
-              onClick={() =>
-                user ? watch() : connectWallet && connectWallet()
-              }
+              onClick={handleJoinClick}
               appearance={{ theme: 'blue', size: 'small' }}
               data-test="joinColonyButton"
               className={styles.colonyJoinBtn}
