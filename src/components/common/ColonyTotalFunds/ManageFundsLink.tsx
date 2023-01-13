@@ -7,16 +7,16 @@ import { useColonyContext } from '~hooks';
 
 import styles from './ColonyTotalFunds.css';
 
+const displayName = 'common.ColonyTotalFunds.ManageFundsLink';
+
 const MSG = defineMessages({
   manageFundsLink: {
-    id: 'dashboard.ColonyTotalFundsManageFunds.manageFundsLink',
+    id: `${displayName}.manageFundsLink`,
     defaultMessage: 'Manage Funds',
   },
 });
 
-const displayName = 'common.ColonyTotalFunds.ColonyTotalFundsManageFunds';
-
-const ColonyTotalFundsManageFunds = () => {
+const ManageFundsLink = () => {
   const { colony } = useColonyContext();
 
   return (
@@ -36,6 +36,6 @@ const ColonyTotalFundsManageFunds = () => {
   );
 };
 
-ColonyTotalFundsManageFunds.displayName = displayName;
+ManageFundsLink.displayName = displayName;
 
-export default ColonyTotalFundsManageFunds;
+export default ManageFundsLink;

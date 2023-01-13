@@ -3,8 +3,8 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { useColonyContext, useMobile } from '~hooks';
 
-import ColonyTotalFundsSelectedToken from './ColonyTotalFundsSelectedToken';
-import ColonyTotalFundsManageFunds from './ColonyTotalFundsManageFunds';
+import SelectedToken from './SelectedToken';
+import ManageFundsLink from './ManageFundsLink';
 
 import styles from './ColonyTotalFunds.css';
 
@@ -30,22 +30,22 @@ const ColonyTotalFunds = () => {
     <div className={styles.main}>
       {isMobile ? (
         <>
-          <ColonyTotalFundsSelectedToken>
+          <SelectedToken>
             <div className={styles.totalBalanceCopy}>
               <FormattedMessage {...MSG.totalBalance} />
             </div>
-          </ColonyTotalFundsSelectedToken>
+          </SelectedToken>
           {isSupportedColonyVersion && canInteractWithColony && (
-            <ColonyTotalFundsManageFunds />
+            <ManageFundsLink />
           )}
         </>
       ) : (
         <>
-          <ColonyTotalFundsSelectedToken />
+          <SelectedToken />
           <div className={styles.totalBalanceCopy}>
             <FormattedMessage {...MSG.totalBalance} />
             {isSupportedColonyVersion && canInteractWithColony && (
-              <ColonyTotalFundsManageFunds />
+              <ManageFundsLink />
             )}
           </div>
         </>
