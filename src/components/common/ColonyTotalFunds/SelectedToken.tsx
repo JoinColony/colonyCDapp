@@ -1,7 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { defineMessages } from 'react-intl';
 
-import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
 // import { MiniSpinnerLoader } from '~shared/Preloaders';
 // import { Colony, useTokenBalancesForDomainsQuery } from '~data/index';
@@ -12,30 +10,19 @@ import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
 
 import ColonyTotalFundsPopover from './ColonyTotalFundsPopover';
+import TokenSymbol from './TokenSymbol';
 
 import styles from './ColonyTotalFunds.css';
-import IconTooltip from '~shared/IconTooltip';
 
-const MSG = defineMessages({
-  loadingData: {
-    id: 'dashboard.ColonyTotalFundsSelectedToken.loadingData',
-    defaultMessage: 'Loading token information...',
-  },
-  tokenSelect: {
-    id: 'dashboard.ColonyTotalFundsSelectedToken.tokenSelect',
-    defaultMessage: 'Select Tokens',
-  },
-});
+const displayName = 'common.ColonyTotalFunds.SelectedToken';
 
 type Props = {
   children?: React.ReactChild;
 };
 
-const displayName = 'dashboard.ColonyTotalFundsSelectedToken';
-
-const ColonyTotalFundsSelectedToken = ({ children }: Props) => {
+const SelectedToken = ({ children }: Props) => {
   const { colony } = useColonyContext();
-  const { tokens, nativeToken, status } = colony || {};
+  const { tokens, nativeToken } = colony || {};
   const { tokenAddress: nativeTokenAddress } = nativeToken || {};
 
   // const { data, loading: isLoadingTokenBalances } =
@@ -98,22 +85,9 @@ const ColonyTotalFundsSelectedToken = ({ children }: Props) => {
         currentTokenAddress={currentTokenAddress}
       >
         <button className={styles.selectedTokenSymbol} type="button">
-          <span data-test="colonyTokenSymbol">
-            {currentToken?.token?.symbol}
-          </span>
-          {currentTokenAddress === nativeTokenAddress &&
-            !status?.nativeToken?.unlocked && (
-              <IconTooltip
-                icon="lock"
-                tooltipText={{ id: 'tooltip.lockedToken' }}
-                className={styles.tokenLockWrapper}
-                appearance={{ size: 'large' }}
-              />
-            )}
-          <Icon
-            className={styles.caretIcon}
-            name="caret-down-small"
-            title={MSG.tokenSelect}
+          <TokenSymbol
+            token={currentToken?.token}
+            tokenAddress={currentTokenAddress}
           />
         </button>
       </ColonyTotalFundsPopover>
@@ -122,6 +96,6 @@ const ColonyTotalFundsSelectedToken = ({ children }: Props) => {
   );
 };
 
-ColonyTotalFundsSelectedToken.displayName = displayName;
+SelectedToken.displayName = displayName;
 
-export default ColonyTotalFundsSelectedToken;
+export default SelectedToken;
