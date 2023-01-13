@@ -48,6 +48,8 @@ export const oneTxMustBeUpgraded = (extensionData?: InstalledExtensionData) => {
   if (extensionData) {
     const { extensionId: extensionName, currentVersion } = extensionData;
     return (
+      // @TODO temporarily using the extension version from colony-js
+      // this should be replaced with the version from the DB once #163 is merged
       extensionName === Extension.OneTxPayment &&
       currentVersion < ONE_TX_PAYMENT_VERSION_LATEST
     );
