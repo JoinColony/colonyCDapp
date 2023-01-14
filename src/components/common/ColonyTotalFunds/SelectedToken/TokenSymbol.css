@@ -1,0 +1,19 @@
+.caretIcon {
+  margin-left: 10px;
+  width: 9px;
+}
+
+.tokenLockWrapper {
+  display: block;
+  margin-left: 5px;
+  margin-top: 1px;
+  position: relative;
+}
+
+.tokenLockWrapper svg {
+  fill: var(--dark);
+}
+
+.tokenLockWrapper:hover svg {
+  fill: var(--colony-blue);
+}
