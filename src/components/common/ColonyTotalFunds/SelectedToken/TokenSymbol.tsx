@@ -6,7 +6,7 @@ import IconTooltip from '~shared/IconTooltip';
 import { Token } from '~types/index';
 import { useColonyContext } from '~hooks';
 
-import styles from './ColonyTotalFunds.css';
+import styles from './TokenSymbol.css';
 
 const displayName = 'common.ColonyTotalFunds.TokenSymbol';
 
