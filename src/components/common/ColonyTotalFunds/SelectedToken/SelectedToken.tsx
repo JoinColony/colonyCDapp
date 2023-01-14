@@ -12,7 +12,7 @@ import { notNull } from '~utils/arrays';
 import ColonyTotalFundsPopover from './ColonyTotalFundsPopover';
 import TokenSymbol from './TokenSymbol';
 
-import styles from './ColonyTotalFunds.css';
+import styles from './SelectedToken.css';
 
 const displayName = 'common.ColonyTotalFunds.SelectedToken';
 

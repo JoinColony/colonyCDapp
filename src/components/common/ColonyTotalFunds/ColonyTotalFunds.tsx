@@ -3,8 +3,8 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { useColonyContext, useMobile } from '~hooks';
 
-import SelectedToken from './SelectedToken';
-import ManageFundsLink from './ManageFundsLink';
+import SelectedToken from './SelectedToken/SelectedToken';
+import ManageFundsLink from './ManageFundsLink/ManageFundsLink';
 
 import styles from './ColonyTotalFunds.css';
 

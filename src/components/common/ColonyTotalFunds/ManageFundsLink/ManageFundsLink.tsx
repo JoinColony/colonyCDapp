@@ -5,7 +5,7 @@ import Icon from '~shared/Icon';
 import Link from '~shared/Link';
 import { useColonyContext } from '~hooks';
 
-import styles from './ColonyTotalFunds.css';
+import styles from './ManageFundsLink.css';
 
 const displayName = 'common.ColonyTotalFunds.ManageFundsLink';
 
