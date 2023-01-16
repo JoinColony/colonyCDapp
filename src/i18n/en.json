@@ -35,6 +35,8 @@
     "button.confirm": "Confirm",
     "button.continue": "Continue",
     "button.createMotion": "Create Motion",
+    "button.newDecision": "New Decision",
+    "button.newAction": "New Action",
     "button.next": "Next",
     "button.save": "Save",
     "button.modify": "Modify",

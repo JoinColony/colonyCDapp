@@ -15,9 +15,10 @@ import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 // import ColonyActions from '~dashboard/ColonyActions';
 // import ColonyEvents from '~dashboard/ColonyEvents';
 
-import ColonyHomeLayout from './ColonyHomeLayout';
+import ColonyDecisions from '~common/ColonyDecisions/ColonyDecisions';
 
 import {
+  COLONY_DECISIONS_ROUTE,
   COLONY_EVENTS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
   COLONY_EXTENSION_DETAILS_ROUTE,
@@ -25,6 +26,8 @@ import {
 } from '~routes/index';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import { useColonyContext } from '~hooks';
+
+import ColonyHomeLayout from './ColonyHomeLayout';
 
 const displayName = 'common.ColonyHome';
 
@@ -75,7 +78,6 @@ const ColonyHome = () => {
               <ColonyHomeLayout
                 filteredDomainId={filteredDomainId}
                 onDomainChange={setDomainIdFilter}
-                showActions={false}
               >
                 {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> */}
                 <div>Events (Transactions Log)</div>
@@ -88,8 +90,6 @@ const ColonyHome = () => {
               <ColonyHomeLayout
                 filteredDomainId={filteredDomainId}
                 onDomainChange={setDomainIdFilter}
-                showControls={false}
-                showSidebar={false}
               >
                 <Outlet />
               </ColonyHomeLayout>
@@ -121,6 +121,10 @@ const ColonyHome = () => {
                   {/* <ExtensionDetails {...props} colony={colony} /> */}
                 </>
               }
+            />
+            <Route
+              path={COLONY_DECISIONS_ROUTE}
+              element={<ColonyDecisions ethDomainId={filteredDomainId} />}
             />
           </Route>
 
