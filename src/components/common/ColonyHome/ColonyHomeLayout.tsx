@@ -1,7 +1,9 @@
 import React, { ReactNode } from 'react';
+import { useParams } from 'react-router-dom';
 
-import NewActionButton from '~common/NewActionButton';
 import ColonyTotalFunds from '~common/ColonyTotalFunds';
+import NewDecisionButton from '~common/NewDecisionButton';
+import NewActionButton from '~common/NewActionButton';
 import { useColonyContext } from '~hooks';
 
 import ColonyDomainSelector from './ColonyDomainSelector';
@@ -17,6 +19,7 @@ import ColonyDomainDescription from './ColonyDomainDescription';
 
 import styles from './ColonyHomeLayout.css';
 
+type Params = ReturnType<typeof useParams>;
 type Props = {
   filteredDomainId: number;
   onDomainChange?: (domainId: number) => void;
@@ -25,42 +28,46 @@ type Props = {
    * otherwise it has no point
    */
   children: ReactNode;
-  showControls?: boolean;
-  showNavigation?: boolean;
-  showSidebar?: boolean;
-  showActions?: boolean;
-  // ethDomainId?: number;
 };
 
 const displayName = 'common.ColonyHome.ColonyHomeLayout';
 
+const isDecisionsRoute = (params: Params) => {
+  return params['*'] === 'decisions';
+};
+
+const isExtensionsRoute = (params: Params) => {
+  return params['*'] === 'extensions';
+};
+
 const ColonyHomeLayout = ({
   filteredDomainId,
   children,
-  // ethDomainId,
-  showControls = true,
-  showNavigation = true,
-  showSidebar = true,
-  showActions = true,
   onDomainChange = () => null,
 }: Props) => {
   const { colony } = useColonyContext();
+  const params = useParams();
 
   if (!colony) {
     return null;
   }
 
+  const isExtensions = isExtensionsRoute(params);
+  const NewItemButton = isDecisionsRoute(params)
+    ? NewDecisionButton
+    : NewActionButton;
+
   return (
     <div className={styles.main}>
       <div
-        className={showSidebar ? styles.mainContentGrid : styles.minimalGrid}
+        className={!isExtensions ? styles.mainContentGrid : styles.minimalGrid}
       >
         <aside className={styles.leftAside}>
           <ColonyTitle />
-          {showNavigation && <ColonyNavigation />}
+          <ColonyNavigation />
         </aside>
         <div className={styles.mainContent}>
-          {showControls && (
+          {!isExtensions && (
             <>
               <ColonyTotalFunds />
               <div className={styles.contentActionsPanel}>
@@ -70,15 +77,13 @@ const ColonyHomeLayout = ({
                     onDomainChange={onDomainChange}
                   />
                 </div>
-                {showActions && (
-                  <NewActionButton /* ethDomainId={ethDomainId} */ />
-                )}
+                <NewItemButton ethDomainId={filteredDomainId} />
               </div>
             </>
           )}
           {children}
         </div>
-        {showSidebar && (
+        {!isExtensions && (
           <aside className={styles.rightAside}>
             <ColonyDomainDescription currentDomainId={filteredDomainId} />
             {/* <ColonyUnclaimedTransfers /> */}
