@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import {
   ColonyVersion,
   Extension,
@@ -21,14 +21,11 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
 
-  const transform = useCallback(
-    mapPayload(() => ({
-      colonyAddress: colony?.colonyAddress,
-      extensionId: extensionData.extensionId,
-      version: extensionData.currentVersion + 1,
-    })),
-    [],
-  );
+  const transform = mapPayload(() => ({
+    colonyAddress: colony?.colonyAddress,
+    extensionId: extensionData.extensionId,
+    version: extensionData.currentVersion + 1,
+  }));
 
   if (!user?.profile || !colony) {
     return null;
@@ -39,7 +36,7 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
 
   const extensionCompatible = isExtensionCompatible(
     Extension[extensionData.extensionId],
-    (extensionData.availableVersion + 1) as ExtensionVersion,
+    extensionData.availableVersion as ExtensionVersion,
     colony.version as ColonyVersion,
   );
 
