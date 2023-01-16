@@ -11,6 +11,7 @@ import { InstalledExtensionData } from '~types';
 import { ActionTypes } from '~redux/index';
 import { mapPayload } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
+import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 
 interface Props {
   extensionData: InstalledExtensionData;
@@ -33,7 +34,8 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
     return null;
   }
 
-  const isSupportedColonyVersion = colony.version >= 5;
+  const isSupportedColonyVersion =
+    colony.version >= MIN_SUPPORTED_COLONY_VERSION;
 
   const extensionCompatible = isExtensionCompatible(
     Extension[extensionData.extensionId],

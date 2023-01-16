@@ -6,6 +6,8 @@ import toFinite from 'lodash/toFinite';
 
 import { ExtensionConfig, ExtensionParamType } from '~types';
 
+export const MIN_SUPPORTED_COLONY_VERSION = 5;
+
 const oneTransactionPaymentName = 'extensions.OneTxPayment';
 const votingReputationName = 'extensions.votingReputation';
 
