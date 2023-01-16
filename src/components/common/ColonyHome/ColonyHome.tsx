@@ -15,7 +15,7 @@ import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 // import ColonyActions from '~dashboard/ColonyActions';
 // import ColonyEvents from '~dashboard/ColonyEvents';
 
-import ColonyDecisions from '~common/ColonyDecisions/ColonyDecisions';
+import ColonyDecisions from '~common/ColonyDecisions';
 
 import {
   COLONY_DECISIONS_ROUTE,

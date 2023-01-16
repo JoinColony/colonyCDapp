@@ -1,26 +1,24 @@
 import React, { ReactNode } from 'react';
-import { useParams } from 'react-router-dom';
+import { Params, useParams } from 'react-router-dom';
 
 import ColonyTotalFunds from '~common/ColonyTotalFunds';
-import NewDecisionButton from '~common/NewDecisionButton';
-import NewActionButton from '~common/NewActionButton';
 import { useColonyContext } from '~hooks';
 
-import ColonyDomainSelector from './ColonyDomainSelector';
-import ColonyFundingWidget from './ColonyFundingWidget';
+import ColonyFundingWidget from '../ColonyFundingWidget';
 // import ColonyUnclaimedTransfers from './ColonyUnclaimedTransfers';
-import ColonyTitle from './ColonyTitle';
-import ColonyNavigation from './ColonyNavigation';
-import ColonyMembersWidget from './ColonyMembersWidget';
-// import ColonyExtensions from './ColonyExtensions';
-import ColonyDomainDescription from './ColonyDomainDescription';
-// import ColonyUpgrade from './ColonyUpgrade';
-// import ExtensionUpgrade from './ExtensionUpgrade';
+import ColonyTitle from '../ColonyTitle';
+import ColonyNavigation from '../ColonyNavigation';
+import ColonyMembersWidget from '../ColonyMembersWidget';
+// import ColonyExtensions from '../ColonyExtensions';
+import ColonyDomainDescription from '../ColonyDomainDescription';
+// import ColonyUpgrade from '../ColonyUpgrade';
+// import ExtensionUpgrade from '../ExtensionUpgrade';
+
+import ActionsPanel from './ActionsPanel';
 
 import styles from './ColonyHomeLayout.css';
 
-type Params = ReturnType<typeof useParams>;
-type Props = {
+export type ColonyHomeLayoutProps = {
   filteredDomainId: number;
   onDomainChange?: (domainId: number) => void;
   /*
@@ -32,10 +30,6 @@ type Props = {
 
 const displayName = 'common.ColonyHome.ColonyHomeLayout';
 
-const isDecisionsRoute = (params: Params) => {
-  return params['*'] === 'decisions';
-};
-
 const isExtensionsRoute = (params: Params) => {
   return params['*'] === 'extensions';
 };
@@ -44,7 +38,7 @@ const ColonyHomeLayout = ({
   filteredDomainId,
   children,
   onDomainChange = () => null,
-}: Props) => {
+}: ColonyHomeLayoutProps) => {
   const { colony } = useColonyContext();
   const params = useParams();
 
@@ -53,9 +47,6 @@ const ColonyHomeLayout = ({
   }
 
   const isExtensions = isExtensionsRoute(params);
-  const NewItemButton = isDecisionsRoute(params)
-    ? NewDecisionButton
-    : NewActionButton;
 
   return (
     <div className={styles.main}>
@@ -70,15 +61,10 @@ const ColonyHomeLayout = ({
           {!isExtensions && (
             <>
               <ColonyTotalFunds />
-              <div className={styles.contentActionsPanel}>
-                <div className={styles.domainsDropdownContainer}>
-                  <ColonyDomainSelector
-                    filteredDomainId={filteredDomainId}
-                    onDomainChange={onDomainChange}
-                  />
-                </div>
-                <NewItemButton ethDomainId={filteredDomainId} />
-              </div>
+              <ActionsPanel
+                onDomainChange={onDomainChange}
+                filteredDomainId={filteredDomainId}
+              />
             </>
           )}
           {children}
