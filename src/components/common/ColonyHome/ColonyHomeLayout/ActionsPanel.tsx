@@ -2,7 +2,7 @@ import React from 'react';
 import { Params, useParams } from 'react-router-dom';
 
 import NewActionButton from '~common/NewActionButton';
-import NewDecisionButton from '~common/NewDecisionButton';
+import NewDecisionButton from '~common/ColonyDecisions/NewDecisionButton';
 
 import ColonyDomainSelector from '../ColonyDomainSelector';
 import { ColonyHomeLayoutProps } from './ColonyHomeLayout';
