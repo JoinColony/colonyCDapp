@@ -114,8 +114,8 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
   );
 
   const membersContent = useMemo(() => {
-    const contributorsContent = (filters.memberType === MemberType.ALL ||
-      filters.memberType === MemberType.CONTRIBUTORS) && (
+    const contributorsContent = (filters.memberType === MemberType.All ||
+      filters.memberType === MemberType.Contributers) && (
       <MembersSection
         isContributorsSection
         members={contributors}
@@ -136,8 +136,8 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
 
     const watchersContent =
       isRootDomain &&
-      (filters.memberType === MemberType.ALL ||
-        filters.memberType === MemberType.WATCHERS) ? (
+      (filters.memberType === MemberType.All ||
+        filters.memberType === MemberType.Watchers) ? (
         <MembersSection
           isContributorsSection={false}
           members={watchers}

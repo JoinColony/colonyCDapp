@@ -13,8 +13,8 @@ export const filterMembers = <M extends User>(
   /* No filters */
   if (
     !searchValue &&
-    filters?.bannedStatus === BannedStatus.ALL &&
-    filters?.verificationType === VerificationType.ALL
+    filters?.bannedStatus === BannedStatus.All &&
+    filters?.verificationType === VerificationType.All
   ) {
     return data;
   }
@@ -22,8 +22,8 @@ export const filterMembers = <M extends User>(
   /* Only text filter */
   if (
     searchValue &&
-    filters?.bannedStatus === BannedStatus.ALL &&
-    filters?.verificationType === VerificationType.ALL
+    filters?.bannedStatus === BannedStatus.All &&
+    filters?.verificationType === VerificationType.All
   ) {
     return data.filter(
       ({ profile, walletAddress }) =>
@@ -46,43 +46,43 @@ export const filterMembers = <M extends User>(
           profile?.email?.toLowerCase().includes(searchValue.toLowerCase()) ||
           walletAddress?.toLowerCase().includes(searchValue.toLowerCase());
 
-    if (filters?.verificationType === VerificationType.ALL) {
-      if (filters?.bannedStatus === BannedStatus.BANNED) {
+    if (filters?.verificationType === VerificationType.All) {
+      if (filters?.bannedStatus === BannedStatus.Banned) {
         return banned && textFilter;
       }
 
-      if (filters?.bannedStatus === BannedStatus.NOT_BANNED) {
+      if (filters?.bannedStatus === BannedStatus.Not_Banned) {
         return !banned && textFilter;
       }
     }
 
-    if (filters?.bannedStatus === BannedStatus.ALL) {
-      if (filters.verificationType === VerificationType.VERIFIED) {
+    if (filters?.bannedStatus === BannedStatus.All) {
+      if (filters.verificationType === VerificationType.Verified) {
         return isWhitelisted && textFilter;
       }
 
-      if (filters.verificationType === VerificationType.UNVERIFIED) {
+      if (filters.verificationType === VerificationType.Unverified) {
         return !isWhitelisted && textFilter;
       }
     }
 
     if (
-      filters?.verificationType === VerificationType.VERIFIED &&
-      filters?.bannedStatus === BannedStatus.BANNED
+      filters?.verificationType === VerificationType.Verified &&
+      filters?.bannedStatus === BannedStatus.Banned
     ) {
       return isWhitelisted && banned && textFilter;
     }
 
     if (
-      filters?.verificationType === VerificationType.UNVERIFIED &&
-      filters?.bannedStatus === BannedStatus.BANNED
+      filters?.verificationType === VerificationType.Unverified &&
+      filters?.bannedStatus === BannedStatus.Banned
     ) {
       return !isWhitelisted && banned && textFilter;
     }
 
     if (
-      filters?.verificationType === VerificationType.VERIFIED &&
-      filters?.bannedStatus === BannedStatus.NOT_BANNED
+      filters?.verificationType === VerificationType.Verified &&
+      filters?.bannedStatus === BannedStatus.Not_Banned
     ) {
       return isWhitelisted && !banned && textFilter;
     }

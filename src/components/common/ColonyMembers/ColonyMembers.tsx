@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { SpinnerLoader } from '~shared/Preloaders';
-import Members from '~common/Members';
 import ColonyHomeInfo from '~common/ColonyHome/ColonyHomeInfo';
-import NotFoundRoute from '~routes/NotFoundRoute';
-import TotalReputation from './TotalReputation/TotalReputation';
-
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID, ROOT_DOMAIN_ID } from '~constants';
+import Members from '~common/Members';
+import NotFoundRoute from '~routes/NotFoundRoute';
 import { useColonyContext, useMobile } from '~hooks';
+import { SpinnerLoader } from '~shared/Preloaders';
 
 import MemberControls from './MemberControls';
 import MembersFilter, {
@@ -17,6 +15,7 @@ import MembersFilter, {
   MemberType,
   VerificationType,
 } from './MembersFilter';
+import TotalReputation from './TotalReputation';
 
 import styles from './ColonyMembers.css';
 
@@ -33,9 +32,9 @@ const ColonyMembers = () => {
   const { colony, loading } = useColonyContext();
 
   const [filters, setFilters] = useState<FormValues>({
-    memberType: MemberType.ALL,
-    verificationType: VerificationType.ALL,
-    bannedStatus: BannedStatus.ALL,
+    memberType: MemberType.All,
+    verificationType: VerificationType.All,
+    bannedStatus: BannedStatus.All,
   });
 
   const [selectedDomainId, setSelectedDomainId] = useState<number>(
@@ -56,7 +55,7 @@ const ColonyMembers = () => {
     );
   }
 
-  if (!colony?.name || !colony) {
+  if (!colony) {
     return <NotFoundRoute />;
   }
 
