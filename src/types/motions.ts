@@ -14,6 +14,8 @@ export enum ColonyMotions {
   VersionUpgradeMotion = 'VersionUpgradeMotion',
   EmitDomainReputationPenaltyMotion = 'EmitDomainReputationPenaltyMotion',
   EmitDomainReputationRewardMotion = 'EmitDomainReputationRewardMotion',
+  CreateDecisionMotion = 'CreateDecisionMotion',
+  NullMotion = 'NullMotion',
 }
 
 export const motionNameMapping = {

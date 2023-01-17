@@ -1,0 +1,21 @@
+.layout {
+  display: grid;
+  padding: 90px 0;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  grid-template:
+    "left main right" 100%
+    / 2.2fr 900px 1fr;
+}
+
+.main {
+  display: grid;
+  grid-area: main;
+  column-gap: 100px;
+  row-gap: 17px;
+  grid-template:
+    "banner banner" 34px
+    "data details" 1fr
+    / 460px 340px;
+}

@@ -1,0 +1,23 @@
+.banner {
+  height: 100%;
+  border-bottom: 1px solid rgba(var(--grey-purple-1), 0.15);
+  grid-area: banner;
+}
+
+.main > div:nth-of-type(2) {
+  grid-area: data;
+}
+
+.rightContent {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  grid-area: details;
+}
+
+.loadingWrapper {
+  margin-left: 60px;
+  height: 100%;
+  width: calc(100% - 60px);
+  position: relative;
+}
