@@ -7,6 +7,8 @@ import { Tooltip } from '~shared/Popover';
 import { SpinnerLoader } from '~shared/Preloaders';
 import Icon from '~shared/Icon';
 
+import { Icons } from '~constants';
+
 import styles from '../TransactionCard/TransactionStatus.css';
 
 const displayName = 'frame.GasStation.MessageCard.MessageCardStatus';
@@ -63,7 +65,7 @@ const MessageCardStatus = ({ status }: Props) => (
           >
             <Icon
               appearance={{ size: 'tiny' }}
-              name="check-mark"
+              name={Icons.CheckMark}
               /*
                * @NOTE We disable the title since we already
                * have a tooltip around it

@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import { Icons } from '~constants';
+
 import Icon from '~shared/Icon';
 import styles from './FullscreenDialog.css';
 import Modal from '../Modal';
@@ -36,7 +38,7 @@ const FullscreenDialog = ({
           className={styles.closeIconButton}
           onClick={cancel}
         >
-          <Icon name="circle-close" title={{ id: 'button.cancel' }} />
+          <Icon name={Icons.CircleClose} title={{ id: 'button.cancel' }} />
         </button>
       </div>
     )}

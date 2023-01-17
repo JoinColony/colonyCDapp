@@ -3,11 +3,13 @@ import { MessageDescriptor, useIntl } from 'react-intl';
 
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
+import { Icons } from '~constants';
 
 import {
   icons as iconNames,
   multiColorIcons as multiColorIconNames,
 } from '~images/icons.json';
+
 import styles from './Icon.css';
 
 const displayName = 'Icon';
@@ -35,7 +37,7 @@ interface Props extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   className?: string;
 
   /** Name of icon sprite */
-  name: string;
+  name: Icons;
 
   /** Html title for the icon element */
   title?: string | MessageDescriptor;

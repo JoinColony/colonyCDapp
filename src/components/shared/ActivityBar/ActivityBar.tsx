@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import { Icons } from '~constants';
+
 import { DialogProps } from '../Dialog';
 import Modal from '../Modal';
 import Icon from '../Icon';
@@ -49,8 +51,8 @@ const ActivityBar = ({
           {isDismissable && (
             <Icon
               role="button"
-              name="circle-close"
-              title="close"
+              name={Icons.CircleClose}
+              title={Icons.Close}
               onClick={cancel}
               appearance={{ size: 'medium', theme: 'invert' }}
             />

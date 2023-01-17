@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Icon from '~shared/Icon';
 import NavLink from '~shared/NavLink';
 import { SimpleMessageValues } from '~types/index';
+import { Icons } from '~constants';
 
 import styles from './HistoryNavigation.css';
 
@@ -83,7 +84,7 @@ const HistoryNavigation = ({
       {backRoute ? (
         <NavLink to={backRoute} className={styles.back}>
           <Icon
-            name="circle-back"
+            name={Icons.CircleBack}
             title={iconText}
             appearance={{ size: 'medium' }}
           />
@@ -98,7 +99,7 @@ const HistoryNavigation = ({
           }
         >
           <Icon
-            name="circle-back"
+            name={Icons.CircleBack}
             title={iconText}
             appearance={{ size: 'medium' }}
           />

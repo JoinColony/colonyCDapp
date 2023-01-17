@@ -3,6 +3,8 @@ import { defineMessages } from 'react-intl';
 
 import Icon from '~shared/Icon';
 
+import { Icons } from '~constants';
+
 import styles from './Dialog.css';
 
 import Modal from '../Modal';
@@ -47,7 +49,7 @@ const Dialog = ({
         >
           <Icon
             appearance={{ size: 'medium' }}
-            name="circle-close"
+            name={Icons.CircleClose}
             title={MSG.buttonCancel}
           />
         </button>

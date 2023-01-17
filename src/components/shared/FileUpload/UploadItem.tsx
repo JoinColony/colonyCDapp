@@ -3,6 +3,7 @@ import { defineMessages } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import fileReader from '~utils/fileReader';
+import { Icons } from '~constants';
 
 import Button from '../Button';
 import Icon from '../Icon';
@@ -95,7 +96,7 @@ const UploadItem = ({
           trigger={error ? 'hover' : null}
         >
           <span className={styles.itemIcon}>
-            <Icon name="file" title={file.name} />
+            <Icon name={Icons.File} title={file.name} />
           </span>
         </Tooltip>
         {uploaded || error ? (

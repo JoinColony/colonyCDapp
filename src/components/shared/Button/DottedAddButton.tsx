@@ -1,6 +1,8 @@
 import React from 'react';
 import { FormattedMessage, MessageDescriptor } from 'react-intl';
 
+import { Icons } from '~constants';
+
 import Button, { Props as ButtonProps } from './Button';
 import Icon from '../Icon';
 
@@ -19,7 +21,7 @@ const DottedAddButton = ({ text, textValues, ...rest }: Props) => (
       <div className={styles.buttonIcon}>
         <Icon
           appearance={{ size: 'medium' }}
-          name="circle-plus"
+          name={Icons.CirclePlus}
           title={text}
           titleValues={textValues}
         />

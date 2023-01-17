@@ -7,6 +7,7 @@ import Icon from '~shared/Icon';
 import { Tooltip } from '~shared/Popover';
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
+import { Icons } from '~constants';
 
 import styles from './IconTooltip.css';
 
@@ -16,7 +17,7 @@ export interface Appearance {
 }
 
 interface Props {
-  icon: string;
+  icon: Icons;
   /** Appearance object */
   appearance?: Appearance;
   iconClassName?: string;

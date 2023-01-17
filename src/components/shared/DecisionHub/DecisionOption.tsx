@@ -9,6 +9,7 @@ import { LinkProps } from 'react-router-dom';
 
 import { getMainClasses } from '~utils/css';
 import { useMobile } from '~hooks';
+import { Icons } from '~constants';
 
 import Icon from '../Icon';
 import Link from '../Link';
@@ -30,7 +31,7 @@ export interface DecisionOptionType {
   value: string | null;
   title: MessageDescriptor | string;
   subtitle: MessageDescriptor | string;
-  icon?: string;
+  icon?: Icons;
   tooltip?: MessageDescriptor;
   disabled?: boolean;
   dataTest?: string;
@@ -51,6 +52,7 @@ interface Props {
 type IconProps = Props['option'] & {
   isMobile?: boolean;
 };
+
 const DecisionOptionIcon = ({
   icon,
   tooltip,
@@ -126,7 +128,7 @@ const DecisionOption = ({
             text={subtitle}
           />
         </div>
-        <Icon name="caret-right" title={MSG.iconTitle} />
+        <Icon name={Icons.CaretRight} title={MSG.iconTitle} />
       </Element>
     </div>
   );

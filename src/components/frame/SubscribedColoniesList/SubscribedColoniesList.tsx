@@ -7,6 +7,7 @@ import NavLink from '~shared/NavLink';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { useAppContext, useCanInteractWithNetwork, useMobile } from '~hooks';
+import { Icons } from '~constants';
 
 import styles from './SubscribedColoniesList.css';
 
@@ -81,7 +82,7 @@ const SubscribedColoniesList = () => {
           >
             <Icon
               className={styles.newColonyIcon}
-              name="circle-plus"
+              name={Icons.CirclePlus}
               title={MSG.iconTitleCreateNewColony}
             />
           </NavLink>

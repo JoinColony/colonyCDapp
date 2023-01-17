@@ -1,6 +1,9 @@
 import React, { ReactNode, useState, useCallback } from 'react';
 
 import Icon from '~shared/Icon';
+
+import { Icons } from '~constants';
+
 import styles from './Card.css';
 
 interface Props {
@@ -50,7 +53,7 @@ const Card = ({
         >
           <Icon
             appearance={{ size: 'normal' }}
-            name="close"
+            name={Icons.Close}
             title={{ id: 'button.close' }}
           />
         </button>

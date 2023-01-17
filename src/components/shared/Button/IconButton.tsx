@@ -1,10 +1,12 @@
 import React from 'react';
 import { MessageDescriptor, FormattedMessage } from 'react-intl';
 
-import Button, { Props as DefaultButtonProps } from './Button';
 import Icon from '~shared/Icon';
 import { SimpleMessageValues } from '~types';
 import { useMainClasses } from '~hooks';
+import { Icons } from '~constants';
+
+import Button, { Props as DefaultButtonProps } from './Button';
 
 import styles from './IconButton.css';
 
@@ -12,7 +14,7 @@ const displayName = 'IconButton';
 
 interface Props extends DefaultButtonProps {
   /** Name of the icon to display */
-  icon?: string;
+  icon?: Icons;
   /** A string or a `messageDescriptor` that make up the button's text label */
   text: MessageDescriptor;
   /** Values for message descriptors */
@@ -21,7 +23,7 @@ interface Props extends DefaultButtonProps {
 
 const IconButton = ({
   appearance = { theme: 'primary', size: 'medium' },
-  icon = 'wallet',
+  icon = Icons.Wallet,
   text,
   textValues,
   /*

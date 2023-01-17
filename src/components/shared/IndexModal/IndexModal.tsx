@@ -9,6 +9,7 @@ import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 
 import { UniversalMessageValues } from '~types';
+import { Icons } from '~constants';
 
 import styles from './IndexModal.css';
 
@@ -17,7 +18,7 @@ const displayName = 'IndexModal';
 export interface ItemShape {
   title: MessageDescriptor;
   description: MessageDescriptor;
-  icon: string;
+  icon: Icons;
   comingSoon?: boolean;
   disabled?: boolean;
   onClick?: () => void;
@@ -66,7 +67,7 @@ const IndexModal = ({ title, cancel, items, back }: Props) => {
           >
             <Icon
               appearance={{ size: 'normal' }}
-              name="caret-left"
+              name={Icons.CaretLeft}
               title={{ id: 'button.back' }}
             />
             <FormattedMessage id="button.back" />

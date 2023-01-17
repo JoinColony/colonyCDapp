@@ -7,6 +7,7 @@ import { useField } from 'formik';
 import { AnyUser } from '~data/index';
 import { Address, SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
+import { Icons } from '~constants';
 
 import {
   ItemDataType,
@@ -204,7 +205,7 @@ const SingleUserPicker = ({
           ) : (
             <Icon
               className={omniPickerIsOpen ? styles.focusIcon : styles.icon}
-              name="filled-circle-person"
+              name={Icons.FilledCircleperson}
               title={MSG.selectMember}
             />
           )}
@@ -249,7 +250,7 @@ const SingleUserPicker = ({
                 className={classnames(styles.arrowIcon, {
                   [styles.arrowIconActive]: omniPickerIsOpen,
                 })}
-                name="caret-down-small"
+                name={Icons.CaretDownSmall}
                 title={omniPickerIsOpen ? MSG.openedCaret : MSG.closedCaret}
               />
             )}

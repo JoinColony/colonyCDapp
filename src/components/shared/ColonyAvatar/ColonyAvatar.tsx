@@ -4,6 +4,8 @@ import { Address, Colony } from '~types';
 import Avatar, { AvatarProps } from '~shared/Avatar';
 import NavLink from '~shared/NavLink';
 
+import { Icons } from '~constants';
+
 export interface Props
   extends Pick<AvatarProps, 'className' | 'notSet' | 'size'> {
   /** Address of the colony for identicon fallback */
@@ -32,7 +34,7 @@ const ColonyAvatar = ({
   const colonyAvatar = (
     <Avatar
       avatar={imageString}
-      placeholderIcon="at-sign-circle"
+      placeholderIcon={Icons.AtSignCircle}
       seed={colonyAddress && colonyAddress.toLowerCase()}
       title={profile?.displayName || name || colonyAddress}
       {...avatarProps}

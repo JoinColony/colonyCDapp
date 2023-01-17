@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { Icons } from '~constants';
 import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
 import { ZeroValue } from '~utils/reputation';
@@ -38,7 +39,7 @@ const UserReputationItem = ({ domainName, reputationPercentage }: Props) => {
             />
           )}
         <Icon
-          name="star"
+          name={Icons.Star}
           appearance={{ size: 'extraTiny' }}
           className={styles.icon}
           title={MSG.starReputationTitle}

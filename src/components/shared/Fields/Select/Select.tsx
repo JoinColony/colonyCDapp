@@ -13,6 +13,7 @@ import { nanoid } from 'nanoid';
 
 import { getMainClasses } from '~utils/css';
 import { DOWN, ENTER, ESC, SimpleMessageValues, SPACE, UP } from '~types';
+import { Icons } from '~constants';
 
 import SelectListBox from './SelectListBox';
 import { Appearance, SelectOption } from './types';
@@ -316,7 +317,10 @@ const Select = ({
           <div className={styles.selectInner}>
             <div className={styles.activeOption}>{activeOptionDisplay}</div>
             <span className={styles.selectExpandContainer}>
-              <Icon name="caret-down-small" title={MSG.expandIconHTMLTitle} />
+              <Icon
+                name={Icons.CaretDownSmall}
+                title={MSG.expandIconHTMLTitle}
+              />
             </span>
           </div>
         </button>

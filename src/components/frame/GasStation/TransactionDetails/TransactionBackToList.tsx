@@ -3,6 +3,8 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Icon from '~shared/Icon';
 
+import { Icons } from '~constants';
+
 import styles from './TransactionBackToList.css';
 
 const displayName = 'frame.GasStation.TransactionBackToList';
@@ -22,7 +24,7 @@ const TransactionBackToList = ({ onClose }: Props) => (
   <button type="button" className={styles.returnToSummary} onClick={onClose}>
     <Icon
       appearance={{ size: 'normal' }}
-      name="caret-left"
+      name={Icons.CaretLeft}
       title={MSG.returnToSummary}
     />
     <FormattedMessage {...MSG.returnToSummary} />

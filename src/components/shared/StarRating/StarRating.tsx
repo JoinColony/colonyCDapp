@@ -1,7 +1,9 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { Icons } from '~constants';
 import Icon from '~shared/Icon';
+
 import styles from './StarRating.css';
 
 const MSG = defineMessages({
@@ -35,7 +37,7 @@ const StarRating = ({ highestPossible = 3, rating }: Props) => (
       .map((possibleValue) => (
         <Icon
           key={`star-rating-${possibleValue}`}
-          name="star"
+          name={Icons.Star}
           title={MSG.starCountTitle}
           titleValues={{
             rating,

@@ -10,6 +10,8 @@ import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 import { useDialog } from '~shared/Dialog';
 
+import { Icons } from '~constants';
+
 import { BanCommentDialog, DeleteCommentDialog } from '../Dialogs';
 import { Props as CommentProps } from '../Comment';
 
@@ -80,7 +82,7 @@ const CommentActionsPopover = ({
           onClick={() => closePopover()}
         >
           <div className={styles.actionButton}>
-            <Icon name="trash" title={MSG.deleteComment} />
+            <Icon name={Icons.Trash} title={MSG.deleteComment} />
             <FormattedMessage {...MSG.deleteComment} />
           </div>
         </Button>
@@ -101,7 +103,7 @@ const CommentActionsPopover = ({
           >
             <div className={styles.actionButton}>
               <Icon
-                name={commentDeleted ? 'arrow-rotate-ccw' : 'trash'}
+                name={commentDeleted ? Icons.ArrowRotateCCW : Icons.Trash}
                 title={MSG.deleteComment}
                 titleValues={{ undelete: commentDeleted }}
               />
@@ -120,7 +122,7 @@ const CommentActionsPopover = ({
           >
             <div className={styles.actionButton}>
               <Icon
-                name={userBanned ? 'user-plus' : 'circle-minus'}
+                name={userBanned ? Icons.UserPlus : Icons.CircleMinus}
                 title={MSG.banFromChat}
                 titleValues={{ unban: userBanned }}
               />

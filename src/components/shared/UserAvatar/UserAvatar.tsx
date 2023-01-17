@@ -6,8 +6,9 @@ import Avatar, { AvatarProps } from '~shared/Avatar';
 import Link from '~shared/NavLink';
 import UserInfoPopover from '~shared/UserInfoPopover';
 import { Address, User, Colony } from '~types';
-
+import { Icons } from '~constants';
 import { getMainClasses } from '~utils/css';
+
 import styles from './UserAvatar.css';
 
 interface Props extends Pick<AvatarProps, 'size' | 'className' | 'notSet'> {
@@ -67,7 +68,7 @@ const UserAvatar = ({
       >
         <Avatar
           avatar={imageString}
-          placeholderIcon="circle-person"
+          placeholderIcon={Icons.CirclePerson}
           seed={address && address.toLowerCase()}
           title={
             showInfo ? '' : user?.profile?.displayName || user?.name || address

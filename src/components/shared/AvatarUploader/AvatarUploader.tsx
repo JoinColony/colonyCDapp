@@ -12,6 +12,7 @@ import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
 import { AvatarProps } from '~shared/Avatar';
 import { NO_MAX } from '~shared/FileUpload/limits';
+import { Icons } from '~constants';
 
 import UploadControls from './UploadControls';
 
@@ -87,7 +88,7 @@ interface FileErrorProps {
 const FileError = ({ error }: FileErrorProps) => (
   <div className={styles.error}>
     <Icon
-      name="file"
+      name={Icons.File}
       appearance={{ size: 'large' }}
       title={formatText(error)}
     />

@@ -15,7 +15,7 @@ import Paragraph from '~shared/Paragraph';
 // import { OneDomain } from '~data/index';
 import { ENTER, Color } from '~types';
 
-import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
+import { COLONY_TOTAL_BALANCE_DOMAIN_ID, Icons } from '~constants';
 
 import styles from './DomainDropdownItem.css';
 
@@ -93,7 +93,7 @@ const DomainDropdownItem = ({
       {/* {typeof parseInt(parentId) === 'number' && ( */}
       {!!parentId && (
         <div className={styles.childDomainIcon}>
-          <Icon name="return-arrow" title="Child Domain" />
+          <Icon name={Icons.ReturnArrow} title="Child Domain" />
         </div>
       )}
       <div className={styles.mainContent}>

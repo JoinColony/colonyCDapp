@@ -8,6 +8,7 @@ import { permissionsObject } from './permissions';
 
 import { UniversalMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
+import { Icons } from '~constants';
 
 import styles from './PermissionsLabel.css';
 
@@ -23,7 +24,7 @@ interface Props {
   permission: ColonyRole;
 
   /** Icon name for permission label. If empy, default will be taken from permission object */
-  icon?: string;
+  icon?: Icons;
 
   /** Whether or not the permission is inherited. If `true`, will add * asterisk to permission name. */
   inherited?: boolean;

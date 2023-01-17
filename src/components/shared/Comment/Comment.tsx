@@ -14,6 +14,7 @@ import { AnyUser, Colony } from '~data/index';
 import TextDecorator from '~lib/TextDecorator';
 import { userHasRole } from '~modules/users/checks';
 import { getUserRolesForDomain } from '~redux/transformers';
+import { Icons } from '~constants';
 
 import CommentActions from './Actions';
 
@@ -138,7 +139,7 @@ const Comment = ({
               </div>
             )}
         </div>
-        <div className={styles.text} data-test="comment">
+        <div className={styles.text} data-test={Icons.Comment}>
           <Decorate>{comment}</Decorate>
         </div>
       </div>

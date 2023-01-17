@@ -1,5 +1,7 @@
 import React, { CSSProperties, ReactNode } from 'react';
 
+import { Icons } from '~constants';
+
 import getIcon from './identicon';
 import Icon from '../Icon';
 import styles from './Avatar.css';
@@ -21,7 +23,7 @@ export interface Props {
   notSet?: boolean;
 
   /** Icon name to use for placeholder */
-  placeholderIcon?: string;
+  placeholderIcon?: Icons;
 
   /** Avatar size (default is between `s` and `m`) */
   size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
@@ -38,7 +40,7 @@ const Avatar = ({
   children,
   className,
   notSet,
-  placeholderIcon = 'circle-close',
+  placeholderIcon = Icons.CircleClose,
   size,
   title,
 }: Props) => {

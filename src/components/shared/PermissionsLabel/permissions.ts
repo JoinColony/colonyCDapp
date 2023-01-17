@@ -1,6 +1,7 @@
 import { defineMessages, MessageDescriptor } from 'react-intl';
-
 import { ColonyRole } from '@colony/colony-js';
+
+import { Icons } from '~constants';
 
 const MSG = defineMessages({
   rootLabel: {
@@ -56,8 +57,9 @@ const MSG = defineMessages({
 export type PermissionDefaults = {
   label: MessageDescriptor;
   infoMessage: MessageDescriptor;
-  icon: string;
+  icon: Icons;
 };
+
 export type PermissionsObject = {
   [colonyRole: number]: PermissionDefaults;
 };
@@ -66,31 +68,31 @@ export const permissionsObject: PermissionsObject = {
   [ColonyRole.Root]: {
     label: MSG.rootLabel,
     infoMessage: MSG.rootInfoMessage,
-    icon: 'emoji-yellow-superman',
+    icon: Icons.EmojiYellowSuperman,
   },
   [ColonyRole.Administration]: {
     label: MSG.administrationLabel,
     infoMessage: MSG.administrationInfoMessage,
-    icon: 'emoji-clipboard',
+    icon: Icons.EmojiClipboard,
   },
   [ColonyRole.Architecture]: {
     label: MSG.architectureLabel,
     infoMessage: MSG.architectureInfoMessage,
-    icon: 'emoji-crane',
+    icon: Icons.EmojiCrane,
   },
   [ColonyRole.Funding]: {
     label: MSG.fundingLabel,
     infoMessage: MSG.fundingInfoMessage,
-    icon: 'emoji-bag-money-sign',
+    icon: Icons.EmojiBagMoneySign,
   },
   [ColonyRole.Arbitration]: {
     label: MSG.arbitrationLabel,
     infoMessage: MSG.arbitrationInfoMessage,
-    icon: 'emoji-balance',
+    icon: Icons.EmojiBalance,
   },
   [ColonyRole.Recovery]: {
     label: MSG.recoveryLabel,
     infoMessage: MSG.recoveryInfoMessage,
-    icon: 'emoji-alarm-lamp',
+    icon: Icons.EmojiAlarmLamp,
   },
 };

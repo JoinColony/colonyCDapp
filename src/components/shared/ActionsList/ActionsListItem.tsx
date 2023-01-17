@@ -17,6 +17,7 @@ import FriendlyName from '~shared/FriendlyName';
 import Tag, { Appearance as TagAppearance } from '~shared/Tag';
 import CountDownTimer from '~dashboard/ActionsPage/CountDownTimer';
 
+import { Icons } from '~constants';
 import { getMainClasses, removeValueUnits } from '~utils/css';
 import {
   getFormattedTokenValue,
@@ -371,7 +372,7 @@ const ActionsListItem = ({
                 <Icon
                   appearance={{ size: 'extraTiny' }}
                   className={styles.commentCountIcon}
-                  name="comment"
+                  name={Icons.Comment}
                   title={formatMessage(MSG.titleCommentCount, {
                     commentCount,
                     formattedCommentCount: formatNumber(commentCount),

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
-
 import classnames from 'classnames';
+
 import { COMMENT_MODERATION } from '~redux/immutable';
 import Icon from '~shared/Icon';
 import Popover from '~shared/Popover';
+import { Icons } from '~constants';
 
 import { Props as CommentProps } from '../Comment';
 
@@ -89,7 +90,7 @@ const CommentActions = ({
         >
           <Icon
             className={styles.actionsIcon}
-            name="three-dots-row"
+            name={Icons.ThreeDotsRow}
             title={MSG.commentActionsTitle}
           />
         </button>

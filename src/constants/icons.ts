@@ -6,10 +6,10 @@ export enum Icons {
   CaretLeft = 'caret-left',
   CaretRight = 'caret-right',
   CheckMark = 'check-mark',
-  /* Used in Checkbox.css */
-  CheckMarkPrimary = 'check-mark-primary',
+  CheckMarkPrimary = 'check-mark-primary', // Used in Checkbox.css
   CircleArrowBack = 'circle-arrow-back',
   CircleBack = 'circle-back',
+  CircleCheckPrimary = 'circle-check-primary',
   CircleClose = 'circle-close',
   CircleMinus = 'circle-minus',
   CirclePerson = 'circle-person',
@@ -45,16 +45,11 @@ export enum Icons {
   ReturnArrow = 'return-arrow',
   Search = 'search',
   Settings = 'settings',
+  ShieldPink = 'shield-pink',
   Star = 'star',
   ThreeDotsRow = 'three-dots-row',
   Trash = 'trash',
   TriangleWarning = 'triangle-warning',
   UserPlus = 'user-plus',
   Wallet = 'wallet',
-}
-
-export enum MultiColorIcons {
-  CircleCheckPrimary = 'circle-check-primary',
-  Metamask = 'metamask',
-  ShieldPink = 'shield-pink',
 }

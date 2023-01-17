@@ -7,7 +7,7 @@ import TransactionLink from '~shared/TransactionLink';
 import { SpinnerLoader } from '~shared/Preloaders';
 import Icon from '~shared/Icon';
 
-import { DEFAULT_NETWORK_INFO } from '~constants';
+import { DEFAULT_NETWORK_INFO, Icons } from '~constants';
 import { TRANSACTION_STATUSES } from '~types';
 
 import styles from './TransactionStatus.css';
@@ -98,7 +98,7 @@ const TransactionStatus = ({
           >
             <Icon
               appearance={{ size: 'tiny' }}
-              name="check-mark"
+              name={Icons.CheckMark}
               /*
                * @NOTE We disable the title since we already
                * have a tooltip around it

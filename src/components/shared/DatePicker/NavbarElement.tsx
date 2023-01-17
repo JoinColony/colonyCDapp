@@ -1,6 +1,8 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { Icons } from '~constants';
+
 import styles from './NavbarElement.css';
 
 import Icon from '../Icon';
@@ -29,7 +31,7 @@ const NavbarElement = ({ onPreviousClick, onNextClick }: Props) => (
       onClick={() => onPreviousClick()}
     >
       <Icon
-        name="caret-left"
+        name={Icons.CaretLeft}
         appearance={{ size: 'small' }}
         title={MSG.nextMonth}
       />
@@ -40,7 +42,7 @@ const NavbarElement = ({ onPreviousClick, onNextClick }: Props) => (
       onClick={() => onNextClick()}
     >
       <Icon
-        name="caret-right"
+        name={Icons.CaretRight}
         appearance={{ size: 'small' }}
         title={MSG.prevMonth}
       />

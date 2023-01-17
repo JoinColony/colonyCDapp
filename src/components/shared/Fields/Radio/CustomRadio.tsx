@@ -7,6 +7,7 @@ import classnames from 'classnames';
 import { getMainClasses } from '~utils/css';
 import Icon from '~shared/Icon';
 import { UniversalMessageValues } from '~types';
+import { Icons } from '~constants';
 
 import styles from './CustomRadio.css';
 
@@ -31,7 +32,7 @@ export interface Props {
   /** Description text values for intl interpolation */
   descriptionValues?: UniversalMessageValues;
   /** Button icon */
-  icon?: string;
+  icon?: Icons;
   /** If the input is checked */
   checked: boolean;
   /** Radio button name attribute */

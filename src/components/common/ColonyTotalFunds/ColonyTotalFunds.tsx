@@ -15,6 +15,7 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens';
 // import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
+import { Icons } from '~constants';
 
 import ColonyTotalFundsPopover from './ColonyTotalFundsPopover';
 
@@ -116,7 +117,7 @@ const ColonyTotalFunds = () => {
             {currentTokenAddress === nativeTokenAddress &&
               !status?.nativeToken?.unlocked && (
                 <IconTooltip
-                  icon="lock"
+                  icon={Icons.Lock}
                   tooltipText={{ id: 'tooltip.lockedToken' }}
                   className={styles.tokenLockWrapper}
                   appearance={{ size: 'large' }}
@@ -124,7 +125,7 @@ const ColonyTotalFunds = () => {
               )}
             <Icon
               className={styles.caretIcon}
-              name="caret-down"
+              name={Icons.CaretDownSmall}
               title={MSG.tokenSelect}
             />
           </button>
@@ -140,7 +141,7 @@ const ColonyTotalFunds = () => {
           >
             <Icon
               className={styles.rightArrowDisplay}
-              name="arrow-right"
+              name={Icons.ArrowRight}
               appearance={{ size: 'small' }}
               title={MSG.manageFundsLink}
             />

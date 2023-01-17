@@ -4,6 +4,7 @@ import { defineMessages } from 'react-intl';
 import Numeral from '~shared/Numeral';
 import Icon from '~shared/Icon';
 import { calculatePercentageReputation, ZeroValue } from '~utils/reputation';
+import { Icons } from '~constants';
 
 import styles from './MemberReputation.css';
 
@@ -60,7 +61,7 @@ const MemberReputation = ({
         />
       )}
       <Icon
-        name="star"
+        name={Icons.Star}
         appearance={{ size: 'extraTiny' }}
         className={styles.icon}
         title={iconTitle}

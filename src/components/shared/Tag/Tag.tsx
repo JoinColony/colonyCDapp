@@ -3,6 +3,7 @@ import { FormattedMessage, MessageDescriptor } from 'react-intl';
 
 import Icon from '~shared/Icon';
 import { useMainClasses } from '~hooks';
+import { Icons } from '~constants';
 
 import styles from './Tag.css';
 
@@ -41,7 +42,7 @@ const Tag = ({ appearance, className, text, textValues, ...rest }: Props) => {
       {appearance?.theme === 'banned' && (
         <Icon
           title={text || ''}
-          name="emoji-goblin"
+          name={Icons.EmojiGoblin}
           appearance={{ size: 'normal' }}
           className={styles.icon}
         />

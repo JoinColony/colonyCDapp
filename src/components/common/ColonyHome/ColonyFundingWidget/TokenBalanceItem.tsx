@@ -6,6 +6,7 @@ import IconTooltip from '~shared/IconTooltip';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import { Token } from '~types';
+import { Icons } from '~constants';
 
 import styles from './ColonyFundingWidget.css';
 
@@ -45,7 +46,7 @@ const TokenBalanceItem = ({
         <span>{symbol}</span>
         {isTokenNative && isNativeTokenLocked && (
           <IconTooltip
-            icon="lock"
+            icon={Icons.Lock}
             tooltipText={{ id: 'tooltip.lockedToken' }}
             className={styles.tokenLockWrapper}
             appearance={{ size: 'small' }}

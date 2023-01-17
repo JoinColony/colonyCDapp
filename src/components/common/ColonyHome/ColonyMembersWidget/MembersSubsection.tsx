@@ -4,6 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import NavLink from '~shared/NavLink';
 import { Tooltip } from '~shared/Popover';
 import UserAvatar from '~shared/UserAvatar';
+// import { Icons } from '~constants';
 // import Icon from '~shared/Icon';
 import ClickableHeading from '~shared/ClickableHeading';
 import InviteLinkButton from '~shared/Button/InviteLinkButton';
@@ -186,7 +187,7 @@ const MembersSubsection = ({
                   <div className={styles.userBanned}>
                     <Icon
                       appearance={{ size: 'extraTiny' }}
-                      name="shield-pink"
+                      name={Icons.ShieldPink}
                       title={{ id: 'label.banned' }}
                     />
                   </div>

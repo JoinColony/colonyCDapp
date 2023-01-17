@@ -4,6 +4,8 @@ import CopyableAddress from '~shared/CopyableAddress';
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 
+import { Icons } from '~constants';
+
 import { useAppContext } from '~hooks';
 
 import styles from './GasStationHeader.css';
@@ -40,7 +42,7 @@ const GasStationHeader = ({ close }: Props) => {
           >
             <Icon
               appearance={{ size: 'normal' }}
-              name="close"
+              name={Icons.Close}
               title={{ id: 'button.close' }}
             />
           </button>

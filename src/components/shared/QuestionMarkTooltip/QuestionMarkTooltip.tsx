@@ -5,6 +5,7 @@ import { MessageDescriptor, FormattedMessage } from 'react-intl';
 import Icon from '~shared/Icon';
 import { Tooltip } from '~shared/Popover';
 import { ComplexMessageValues, SimpleMessageValues } from '~types';
+import { Icons } from '~constants';
 
 const displayName = 'QuestionMarkTooltip';
 
@@ -57,7 +58,7 @@ const QuestionMarkTooltip = ({
     >
       <div className={className}>
         <Icon
-          name={invertedIcon ? 'question-mark-inverted' : 'question-mark'}
+          name={invertedIcon ? Icons.QustionMarkInverted : Icons.QuestionMark}
           appearance={{ size: 'small' }}
           title={iconTitle || ''}
         />

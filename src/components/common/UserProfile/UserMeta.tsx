@@ -12,6 +12,7 @@ import UserAvatar from '~shared/UserAvatar';
 import { stripProtocol } from '~utils/strings';
 import { useAppContext, useMobile } from '~hooks';
 import { User } from '~types';
+import { Icons } from '~constants';
 
 import styles from './UserMeta.css';
 
@@ -57,7 +58,7 @@ const UserMeta = ({ user: { walletAddress, profile }, user }: Props) => {
         )}
         {currentWalletAddress === walletAddress && (
           <Link className={styles.profileLink} to="/edit-profile">
-            <Icon name="settings" title={MSG.editProfileTitle} />
+            <Icon name={Icons.Settings} title={MSG.editProfileTitle} />
           </Link>
         )}
       </div>

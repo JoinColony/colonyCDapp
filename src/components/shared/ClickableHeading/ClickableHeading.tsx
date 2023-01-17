@@ -4,6 +4,8 @@ import Heading, { Appearance } from '~shared/Heading';
 import NavLink from '~shared/NavLink';
 import Icon from '~shared/Icon';
 
+import { Icons } from '~constants';
+
 import styles from './ClickableHeading.css';
 
 interface Props {
@@ -22,7 +24,7 @@ const ClickableHeading = ({ linkTo, children, appearance }: Props) => {
           <span className={styles.contents}>
             {children}
             <span className={styles.icon}>
-              <Icon name="caret-right" />
+              <Icon name={Icons.CaretRight} />
             </span>
           </span>
         </NavLink>

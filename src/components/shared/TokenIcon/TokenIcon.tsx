@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Icons } from '~constants';
 import Avatar, { AvatarProps } from '~shared/Avatar';
 import Icon from '~shared/Icon';
 import { Token } from '~types';
@@ -8,7 +9,7 @@ interface Props extends Pick<AvatarProps, 'size'> {
   /** Is passed through to Icon / Avatar */
   className?: string;
   /** Name of svg to be rendered instead of token avatar */
-  iconName?: string;
+  iconName?: Icons;
   /** Optional name for the icon title */
   title?: string;
   /** Token object */

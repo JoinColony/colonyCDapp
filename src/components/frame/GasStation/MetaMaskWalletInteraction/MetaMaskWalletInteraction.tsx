@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { Icons } from '~constants';
 import Icon from '~shared/Icon';
 
 import styles from './MetaMaskWalletInteraction.css';
@@ -27,7 +28,7 @@ const MetaMaskWalletInteraction = ({ transactionType }: Props) => {
     <div className={styles.main}>
       <div className={styles.content}>
         <Icon
-          name="metamask"
+          name={Icons.Metamask}
           title={{ id: 'wallet.metamask' }}
           appearance={{ size: 'medium' }}
         />

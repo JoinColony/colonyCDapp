@@ -14,6 +14,7 @@ import ColonyAvatar from '~shared/ColonyAvatar';
 import { CREATE_COLONY_ROUTE, CREATE_USER_ROUTE } from '~routes';
 import { useGetMetacolonyQuery } from '~gql';
 import { useAppContext, useCanInteractWithNetwork } from '~hooks';
+import { Icons } from '~constants';
 
 import styles from './LandingPage.css';
 
@@ -45,7 +46,11 @@ interface LandingItemProps {
 const LandingItem = ({ to, message }: LandingItemProps) => (
   <li className={styles.item}>
     <NavLink to={to} className={styles.itemLink}>
-      <Icon className={styles.itemIcon} name="circle-plus" title={message} />
+      <Icon
+        className={styles.itemIcon}
+        name={Icons.CirclePlus}
+        title={message}
+      />
       <span className={styles.itemTitle}>
         <FormattedMessage {...message} />
       </span>

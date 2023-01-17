@@ -5,6 +5,8 @@ import Icon from '~shared/Icon';
 import Paragraph from '~shared/Paragraph';
 import { Tooltip } from '~shared/Popover';
 
+import { Icons } from '~constants';
+
 import { getMainClasses } from '~utils/css';
 import { ItemShape } from './IndexModal';
 
@@ -105,7 +107,7 @@ const IndexModalItem = ({
           }
         >
           <div className={styles.iconWarning}>
-            <Icon name="triangle-warning" title={title} />
+            <Icon name={Icons.TriangleWarning} title={title} />
           </div>
         </Tooltip>
       )}
@@ -113,7 +115,7 @@ const IndexModalItem = ({
         <div className={styles.iconCaret}>
           <Icon
             appearance={{ size: 'medium' }}
-            name="caret-right"
+            name={Icons.CaretRight}
             title={title}
           />
         </div>

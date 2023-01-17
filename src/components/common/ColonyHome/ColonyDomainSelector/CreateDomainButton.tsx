@@ -5,6 +5,7 @@ import Icon from '~shared/Icon';
 // import { useDialog } from '~core/Dialog';
 // import CreateDomainDialog from '~dialogs/CreateDomainDialog';
 import { useColonyContext } from '~hooks';
+import { Icons } from '~constants';
 
 import styles from './CreateDomainButton.css';
 
@@ -48,7 +49,7 @@ const CreateDomainButton = () => {
       <button className={styles.main} onClick={handleClick} type="button">
         <div className={styles.buttonIcon}>
           <Icon
-            name="circle-plus"
+            name={Icons.CirclePlus}
             title={text}
             appearance={{ size: 'medium' }}
           />
