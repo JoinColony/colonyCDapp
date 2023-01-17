@@ -5,8 +5,11 @@ import { useParams } from 'react-router';
 
 import Alert from '~shared/Alert';
 import Button from '~shared/Button';
-import { oneTxMustBeUpgraded } from '~utils/extensions';
-import { useColonyContext, useExtensionData } from '~hooks';
+import {
+  useColonyContext,
+  useExtensionData,
+  useOneTxMustBeUpgraded,
+} from '~hooks';
 import { InstalledExtensionData } from '~types';
 
 import styles from './ExtensionUpgrade.css';
@@ -36,7 +39,7 @@ const ExtensionUpgrade = () => {
 
   const isExtensionDetailsRoute = extensionId === Extension.OneTxPayment;
 
-  const mustUpgrade = oneTxMustBeUpgraded(
+  const mustUpgrade = useOneTxMustBeUpgraded(
     extensionData as InstalledExtensionData,
   );
 
