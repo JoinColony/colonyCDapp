@@ -112,7 +112,7 @@ Props) => {
       <Avatar
         avatarURL={avatarURL}
         className={className}
-        notSet={typeof notSet === 'undefined' ? true : notSet}
+        notSet={notSet ?? true}
         placeholderIcon="circle-person"
         seed={address && address.toLowerCase()}
         size={size}

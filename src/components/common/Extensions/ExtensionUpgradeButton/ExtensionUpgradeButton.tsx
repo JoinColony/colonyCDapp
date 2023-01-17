@@ -22,15 +22,17 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
 
-  if (!isInstalledExtensionData(extensionData)) {
+  if (
+    !isInstalledExtensionData(extensionData) ||
+    extensionData.currentVersion >= extensionData.availableVersion
+  ) {
     return null;
   }
 
-  // @TODO: Check if the latest network extension version is greater than the current version
   const transform = mapPayload(() => ({
     colonyAddress: colony?.colonyAddress,
     extensionId: extensionData.extensionId,
-    version: extensionData.currentVersion + 1,
+    version: extensionData.availableVersion,
   }));
 
   if (!user?.profile || !colony) {

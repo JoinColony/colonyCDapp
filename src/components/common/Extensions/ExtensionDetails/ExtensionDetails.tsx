@@ -33,6 +33,7 @@ const MSG = defineMessages({
 });
 
 const HeadingChunks = (chunks: React.ReactNode[]) => (
+  // @TODO: Change to Heading4 component
   <Heading tagName="h4" appearance={{ size: 'medium', margin: 'small' }}>
     {chunks}
   </Heading>
@@ -91,7 +92,6 @@ const ExtensionDetails = () => {
         <BreadCrumb elements={breadCrumbs} />
         <hr className={styles.headerLine} />
       </div>
-
       <div>
         <Routes>
           <Route
@@ -123,7 +123,6 @@ const ExtensionDetails = () => {
               element={<ExtensionSetup extensionData={extensionData} />}
             />
           )}
-
           <Route path="*" element={<NotFoundRoute />} />
         </Routes>
       </div>
