@@ -90,7 +90,7 @@ const MembersSection = ({
         <div className={styles.membersList}>
           <MembersList
             extraItemContent={extraItemContent}
-            users={sortedMembers}
+            members={sortedMembers}
             canAdministerComments={canAdministerComments}
             showUserReputation={isContributorsSection}
           />

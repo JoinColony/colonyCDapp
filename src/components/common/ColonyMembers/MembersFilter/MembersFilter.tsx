@@ -65,21 +65,21 @@ const MSG = defineMessages({
 });
 
 export enum MemberType {
-  ALL = 'all',
-  CONTRIBUTORS = 'contributors',
-  WATCHERS = 'watchers',
+  All = 'all',
+  Contributers = 'contributors',
+  Watchers = 'watchers',
 }
 
 export enum VerificationType {
-  ALL = 'all',
-  VERIFIED = 'verified',
-  UNVERIFIED = 'unverified',
+  All = 'all',
+  Verified = 'verified',
+  Unverified = 'unverified',
 }
 
 export enum BannedStatus {
-  ALL = 'all',
-  BANNED = 'banned',
-  NOT_BANNED = 'not_banned',
+  All = 'all',
+  Banned = 'banned',
+  Not_Banned = 'not_banned',
 }
 
 export interface FormValues {
@@ -89,21 +89,21 @@ export interface FormValues {
 }
 
 const memberTypes = [
-  { label: MSG.allMembers, value: MemberType.ALL },
-  { label: MSG.contributors, value: MemberType.CONTRIBUTORS },
-  { label: MSG.watchers, value: MemberType.WATCHERS },
+  { label: MSG.allMembers, value: MemberType.All },
+  { label: MSG.contributors, value: MemberType.Contributers },
+  { label: MSG.watchers, value: MemberType.Watchers },
 ];
 
 const verificationTypes = [
-  { label: MSG.any, value: VerificationType.ALL },
-  { label: MSG.verified, value: VerificationType.VERIFIED },
-  { label: MSG.unverified, value: VerificationType.UNVERIFIED },
+  { label: MSG.any, value: VerificationType.All },
+  { label: MSG.verified, value: VerificationType.Verified },
+  { label: MSG.unverified, value: VerificationType.Unverified },
 ];
 
 const bannedStatuses = [
-  { label: MSG.any, value: BannedStatus.ALL },
-  { label: MSG.banned, value: BannedStatus.BANNED },
-  { label: MSG.notBanned, value: BannedStatus.NOT_BANNED },
+  { label: MSG.any, value: BannedStatus.All },
+  { label: MSG.banned, value: BannedStatus.Banned },
+  { label: MSG.notBanned, value: BannedStatus.Not_Banned },
 ];
 
 interface Props {
@@ -123,9 +123,9 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
       <hr className={styles.divider} />
       <Form
         initialValues={{
-          memberType: MemberType.ALL,
-          verificationType: VerificationType.ALL,
-          bannedStatus: BannedStatus.ALL,
+          memberType: MemberType.All,
+          verificationType: VerificationType.All,
+          bannedStatus: BannedStatus.All,
         }}
         onSubmit={() => {}}
         enableReinitialize
@@ -138,9 +138,9 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
                 <span className={styles.title}>
                   <FormattedMessage {...MSG.filter} />
                 </span>
-                {(values.bannedStatus !== BannedStatus.ALL ||
-                  values.verificationType !== VerificationType.ALL ||
-                  values.memberType !== MemberType.ALL) && (
+                {(values.bannedStatus !== BannedStatus.All ||
+                  values.verificationType !== VerificationType.All ||
+                  values.memberType !== MemberType.All) && (
                   <Button
                     text={MSG.reset}
                     appearance={{ theme: 'blue' }}
