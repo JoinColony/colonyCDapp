@@ -1,5 +1,4 @@
 import React, { createContext, useMemo, ReactNode } from 'react';
-import { ApolloError } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 
@@ -13,13 +12,11 @@ interface ColonyContextValue {
   colony?: Colony;
   loading: boolean;
   canInteractWithColony: boolean;
-  error?: ApolloError;
 }
 
 const ColonyContext = createContext<ColonyContextValue>({
   loading: false,
   canInteractWithColony: false,
-  error: undefined,
 });
 
 const displayName = 'ColonyContextProvider';
@@ -51,8 +48,8 @@ export const ColonyContextProvider = ({
   const canInteractWithColony = useCanInteractWithColony(colony);
 
   const colonyContext = useMemo<ColonyContextValue>(
-    () => ({ colony, loading, canInteractWithColony, error }),
-    [colony, loading, canInteractWithColony, error],
+    () => ({ colony, loading, canInteractWithColony }),
+    [colony, loading, canInteractWithColony],
   );
 
   if (!colonyName) {

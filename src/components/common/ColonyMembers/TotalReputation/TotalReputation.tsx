@@ -42,14 +42,9 @@ const TotalReputation = ({ selectedDomainId }: Props) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const nativeToken = (colony?.tokens?.items || []).find(
-    (colonyToken) =>
-      colonyToken?.token?.tokenAddress === colony?.nativeToken.tokenAddress,
-  )?.token;
-
   const formattedTotalDomainRep = getFormattedTokenValue(
     new Decimal(totalReputation?.getUserReputation || '0').abs().toString(),
-    nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS,
+    colony?.nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS,
   );
 
   return (
