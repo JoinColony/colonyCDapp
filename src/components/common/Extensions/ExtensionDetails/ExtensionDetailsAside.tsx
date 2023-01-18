@@ -1,58 +1,23 @@
 import React from 'react';
-import { defineMessages, FormattedDate, FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { ActionTypes } from '~redux';
 import { DialogActionButton } from '~shared/Button';
 import { ConfirmDialog } from '~shared/Dialog';
 import { Table, TableBody, TableRow, TableCell } from '~shared/Table';
 import { AnyExtensionData, InstalledExtensionData } from '~types';
-import { isInstalledExtensionData } from '~utils/extensions';
 import { useColonyContext } from '~hooks';
-import DetailsWidgetUser from '~shared/DetailsWidgetUser';
-import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
-import MaskedAddress from '~shared/MaskedAddress';
 
 import ExtensionActionButton from '../ExtensionActionButton';
 import ExtensionUpgradeButton from '../ExtensionUpgradeButton';
-import ExtensionStatusBadge from '../ExtensionStatusBadge';
 
 import styles from './ExtensionDetails.css';
+import { getTableData } from './tableData';
 
-const displayName = 'common.Extensions.ExtensionDetails.ExtensionDetailsAside';
+export const displayName =
+  'common.Extensions.ExtensionDetails.ExtensionDetailsAside';
 
 const MSG = defineMessages({
-  status: {
-    id: `${displayName}.status`,
-    defaultMessage: 'Status',
-  },
-  installedBy: {
-    id: `${displayName}.ExtensionDetails.installedBy`,
-    defaultMessage: 'Installed by',
-  },
-  dateInstalled: {
-    id: `${displayName}.dateInstalled`,
-    defaultMessage: 'Date installed',
-  },
-  dateCreated: {
-    id: `${displayName}.dateCreated`,
-    defaultMessage: 'Date created',
-  },
-  latestVersion: {
-    id: `${displayName}.latestVersion`,
-    defaultMessage: 'Latest version',
-  },
-  developer: {
-    id: `${displayName}.developer`,
-    defaultMessage: 'Developer',
-  },
-  versionInstalled: {
-    id: `${displayName}.versionInstalled`,
-    defaultMessage: 'Version installed',
-  },
-  contractAddress: {
-    id: `${displayName}.contractAddress`,
-    defaultMessage: 'Contract address',
-  },
   buttonDeprecate: {
     id: `${displayName}.buttonDeprecate`,
     defaultMessage: 'Deprecate',
@@ -111,70 +76,6 @@ const ExtensionDetailsAside = ({
   const { extensionId } = extensionData;
   const { colonyAddress } = colony;
 
-  // @TODO: Display all available data
-  const tableData = isInstalledExtensionData(extensionData)
-    ? [
-        {
-          label: MSG.status,
-          value: <ExtensionStatusBadge extensionData={extensionData} />,
-        },
-        {
-          label: MSG.installedBy,
-          value: (
-            <span className={styles.installedBy}>
-              <DetailsWidgetUser
-                colony={colony}
-                walletAddress={extensionData.installedBy}
-              />
-            </span>
-          ),
-        },
-        {
-          label: MSG.dateInstalled,
-          value: <FormattedDate value={extensionData.installedAt * 1000} />,
-        },
-        {
-          label: MSG.versionInstalled,
-          value: `v${extensionData.currentVersion}`,
-        },
-        {
-          label: MSG.contractAddress,
-          value: (
-            <InvisibleCopyableAddress address={extensionData.address}>
-              <span className={styles.contractAddress}>
-                <MaskedAddress address={extensionData.address} />
-              </span>
-            </InvisibleCopyableAddress>
-          ),
-        },
-        {
-          label: MSG.developer,
-          value: 'Colony',
-        },
-      ]
-    : [
-        {
-          label: MSG.status,
-          value: <ExtensionStatusBadge extensionData={extensionData} />,
-        },
-        {
-          label: MSG.dateCreated,
-          value: <FormattedDate value={extensionData.createdAt} />,
-        },
-        {
-          label: MSG.latestVersion,
-          value: `v${extensionData.availableVersion}`,
-          // @TODO: Add extension compatibility map
-          // icon: !extensionCompatible && (
-          //   <Icon name="triangle-warning" title={MSG.warning} />
-          // ),
-        },
-        {
-          label: MSG.developer,
-          value: 'Colony',
-        },
-      ];
-
   return (
     <aside>
       <div className={styles.buttonWrapper}>
@@ -186,7 +87,7 @@ const ExtensionDetailsAside = ({
 
       <Table appearance={{ theme: 'lined' }}>
         <TableBody>
-          {tableData.map(
+          {getTableData(extensionData, colony).map(
             ({
               label,
               value,
