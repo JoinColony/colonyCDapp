@@ -1,4 +1,5 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
+// import { defineMessages } from 'react-intl';
 
 import Numeral from '~shared/Numeral';
 // import { MiniSpinnerLoader } from '~shared/Preloaders';
@@ -16,8 +17,24 @@ import styles from './SelectedToken.css';
 
 const displayName = 'common.ColonyTotalFunds.SelectedToken';
 
+// const MSG = defineMessages({
+//   loadingData: {
+//     id: `${displayName}.loadingData`,
+//     defaultMessage: 'Loading token information...',
+//   },
+// });
+
+const getCurrentToken = (tokens, currentTokenAddress) => {
+  if (tokens) {
+    return tokens.items.find(
+      (colonyToken) => colonyToken?.token.tokenAddress === currentTokenAddress,
+    );
+  }
+  return undefined;
+};
+
 type Props = {
-  children?: React.ReactChild;
+  children?: ReactNode;
 };
 
 const SelectedToken = ({ children }: Props) => {
@@ -36,23 +53,7 @@ const SelectedToken = ({ children }: Props) => {
 
   const [currentTokenAddress, setCurrentTokenAddress] = useState<Address>();
 
-  useEffect(() => {
-    if (!nativeTokenAddress) {
-      return;
-    }
-
-    setCurrentTokenAddress(nativeTokenAddress);
-  }, [nativeTokenAddress]);
-
-  const currentToken = useMemo(() => {
-    if (tokens) {
-      return tokens.items.find(
-        (colonyToken) =>
-          colonyToken?.token.tokenAddress === currentTokenAddress,
-      );
-    }
-    return undefined;
-  }, [tokens, currentTokenAddress]);
+  const currentToken = getCurrentToken(tokens, currentTokenAddress);
 
   useEffect(() => {
     setCurrentTokenAddress(nativeTokenAddress);
