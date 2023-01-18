@@ -5,7 +5,7 @@ import { ListGroupItem } from '~shared/ListGroup';
 import MemberReputation from '~shared/MemberReputation';
 import UserAvatar from '~shared/UserAvatar';
 
-import { Watcher, Contributor } from '~types';
+import { Contributor, Member } from '~types';
 import { ENTER } from '~types/index';
 import { getMainClasses } from '~utils/css';
 import { useColonyContext, useMobile } from '~hooks';
@@ -17,7 +17,7 @@ import MemberInfo from './MemberInfo';
 
 import styles from './MembersListItem.css';
 
-type User = (Watcher | Contributor)['user'];
+type User = Member['user'];
 
 interface Props {
   extraItemContent?: (user: User) => ReactNode;
@@ -25,7 +25,7 @@ interface Props {
   showUserInfo: boolean;
   showUserReputation: boolean;
   canAdministerComments?: boolean;
-  member: Watcher | Contributor;
+  member: Member;
 }
 
 const displayName = 'MembersList.MembersListItem';
