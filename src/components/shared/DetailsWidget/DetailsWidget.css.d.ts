@@ -1,10 +1,12 @@
-export const item: string;
-export const tokenContainer: string;
-export const value: string;
-export const label: string;
-export const descriptionValue: string;
-export const text: string;
-export const transactionHashLink: string;
-export const domainDescriptionItem: string;
-export const domainDescription: string;
-export const roleSettingItem: string;
+declare namespace DetailsWidgetCssNamespace {
+  export interface IDetailsWidgetCss {
+    transactionHashLink: string;
+  }
+}
+
+declare const DetailsWidgetCssModule: DetailsWidgetCssNamespace.IDetailsWidgetCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: DetailsWidgetCssNamespace.IDetailsWidgetCss;
+};
+
+export = DetailsWidgetCssModule;
