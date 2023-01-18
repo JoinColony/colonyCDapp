@@ -62,6 +62,6 @@
     display: flex;
     justify-content: flex-end;
     min-height: navHeight; /* Prevents breakage when no colonies present */
-    border-bottom: 1px solid var(--temp-grey-13);
+    border-bottom: 1px solid var(--light-grey-beige);
   }
 }

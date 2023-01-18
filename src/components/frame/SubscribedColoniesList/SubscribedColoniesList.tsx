@@ -8,6 +8,8 @@ import ColonyAvatar from '~shared/ColonyAvatar';
 import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { useAppContext, useCanInteractWithNetwork, useMobile } from '~hooks';
 
+import SubscribedColoniesDropdown from './SubscribedColoniesDropdown';
+
 import styles from './SubscribedColoniesList.css';
 
 const displayName = 'frame.SubscribedColoniesList';
@@ -49,7 +51,31 @@ const SubscribedColoniesList = () => {
             <SpinnerLoader appearance={{ size: 'medium' }} />
           </div>
         )}
-        {!isMobile &&
+        {!userLoading && isMobile && (
+          <>
+            {watchlist.length ? (
+              <SubscribedColoniesDropdown
+                watchlist={[...watchlist].sort(sortByDate)}
+              />
+            ) : (
+              <div className={styles.item}>
+                <NavLink
+                  className={styles.itemLink}
+                  to={CREATE_COLONY_ROUTE}
+                  data-test="createColony"
+                >
+                  <Icon
+                    className={styles.newColonyIcon}
+                    name="circle-plus"
+                    title={MSG.iconTitleCreateNewColony}
+                  />
+                </NavLink>
+              </div>
+            )}
+          </>
+        )}
+        {!userLoading &&
+          !isMobile &&
           [...watchlist].sort(sortByDate).map((item) => {
             const { colonyAddress = '', name } = item?.colony || {};
             return (

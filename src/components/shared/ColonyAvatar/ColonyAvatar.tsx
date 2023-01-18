@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Address, Colony } from '~types';
+import { Address, Colony, WatchedColony } from '~types';
 import Avatar, { AvatarProps } from '~shared/Avatar';
 import NavLink from '~shared/NavLink';
 
@@ -12,9 +12,10 @@ export interface Props
   /** If true the UserAvatar links to the user's profile */
   showLink?: boolean;
 
-  /** The corresponding user object if available */
-  colony?: Colony;
+  /** The colony this avatar is for */
+  colony?: WatchedColony | Colony;
 
+  /** Use the thumbnail instead of the avatar image */
   preferThumbnail?: boolean;
 }
 

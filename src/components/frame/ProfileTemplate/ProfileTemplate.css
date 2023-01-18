@@ -40,7 +40,7 @@
   }
 
   & .mainContainer {
-    border-left: 2px solid var(--grey-blue-0);
+    border-left: 2px solid var(--light-grey);
     background-color: transparent;
   }
 }
@@ -91,5 +91,11 @@
 
   .mainContent form > div > div:last-child > div {
     width: 100%;
+  }
+
+  .themeAlt {
+    & .mainContainer {
+      border-left: none;
+    }
   }
 }
