@@ -1,6 +1,5 @@
 declare namespace TokenSymbolCssNamespace {
   export interface ITokenSymbolCss {
-    caretIcon: string;
     tokenLockWrapper: string;
   }
 }

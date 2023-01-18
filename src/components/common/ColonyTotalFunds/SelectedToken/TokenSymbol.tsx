@@ -1,7 +1,5 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
 
-import Icon from '~shared/Icon';
 import IconTooltip from '~shared/IconTooltip';
 import { Token } from '~types/index';
 import { useColonyContext } from '~hooks';
@@ -9,17 +7,6 @@ import { useColonyContext } from '~hooks';
 import styles from './TokenSymbol.css';
 
 const displayName = 'common.ColonyTotalFunds.TokenSymbol';
-
-const MSG = defineMessages({
-  loadingData: {
-    id: `${displayName}.loadingData`,
-    defaultMessage: 'Loading token information...',
-  },
-  tokenSelect: {
-    id: `${displayName}.tokenSelect`,
-    defaultMessage: 'Select Tokens',
-  },
-});
 
 type Props = {
   token: Token | null | undefined;
@@ -43,11 +30,6 @@ const TokenSymbol = ({ token, tokenAddress }: Props) => {
             appearance={{ size: 'large' }}
           />
         )}
-      <Icon
-        className={styles.caretIcon}
-        name="caret-down-small"
-        title={MSG.tokenSelect}
-      />
     </>
   );
 };
