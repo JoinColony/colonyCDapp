@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 
-import { Contributor, Watcher } from '~types';
+import { Member } from '~types';
 
 const useAvatarDisplayCounter = (
   maxAvatars: number,
-  members: Contributor[] | Watcher[],
+  members: Member[],
   isLastAvatarIncluded = true,
 ) => {
   const avatarsDisplaySplitRules = useMemo(() => {

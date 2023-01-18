@@ -1,13 +1,5 @@
 fragment User on User {
-  profile {
-    avatar
-    bio
-    displayName
-    email
-    location
-    thumbnail
-    website
-  }
+  ...Profile
   walletAddress: id
   name
   watchlist {
@@ -20,19 +12,23 @@ fragment User on User {
   }
 }
 
+fragment Profile on User {
+  profile {
+    avatar
+    bio
+    displayName
+    email
+    location
+    thumbnail
+    website
+  }
+}
+
 fragment Contributor on Contributor {
   user {
     walletAddress: id
     name
-    profile {
-      avatar
-      bio
-      displayName
-      email
-      location
-      website
-      thumbnail
-    }
+    ...Profile
   }
   reputationPercentage
   reputationAmount
@@ -42,14 +38,6 @@ fragment Watcher on Watcher {
   user {
     walletAddress: id
     name
-    profile {
-      avatar
-      bio
-      displayName
-      email
-      location
-      website
-      thumbnail
-    }
+    ...Profile
   }
 }

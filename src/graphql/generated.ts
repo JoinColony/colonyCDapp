@@ -2900,6 +2900,7 @@ export type GetColonyExtensionQueryVariables = Exact<{
 
 
 export type GetColonyExtensionQuery = { __typename?: 'Query', getExtensionByColonyAndHash?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number } | null> } | null };
+export type GetMembersForColonyQuery = { __typename?: 'Query', getMembersForColony?: { __typename?: 'MembersForColonyReturn', contributors?: Array<{ __typename?: 'Contributor', reputationPercentage?: string | null, reputationAmount?: string | null, user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null } | null }> | null, watchers?: Array<{ __typename?: 'Watcher', user?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null } | null }> | null } | null };
 
 export type GetProfileByEmailQueryVariables = Exact<{
   email: Scalars['AWSEmail'];
@@ -3052,6 +3053,8 @@ export const WatchedColonyFragmentDoc = gql`
     ${ColonyMetadataFragmentDoc}`;
 export const UserFragmentDoc = gql`
     fragment User on User {
+export const ProfileFragmentDoc = gql`
+    fragment Profile on User {
   profile {
     avatar
     bio
@@ -3061,6 +3064,11 @@ export const UserFragmentDoc = gql`
     thumbnail
     website
   }
+}
+    `;
+export const UserFragmentDoc = gql`
+    fragment User on User {
+  ...Profile
   walletAddress: id
   name
   watchlist {

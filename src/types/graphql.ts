@@ -63,3 +63,5 @@ export type ColonyChainClaimWithToken = ChainFundsClaimFragment & {
 };
 
 export type ColonyClaims = ColonyERC20Claims | ColonyChainClaimWithToken;
+
+export type Member = Contributor | Watcher;
