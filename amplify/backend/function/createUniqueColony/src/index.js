@@ -22,6 +22,7 @@ exports.handler = async (event) => {
     profile,
     colonyNativeTokenId,
     type = 'COLONY',
+    version,
   } = event.arguments?.input || {};
 
   /*
@@ -140,6 +141,7 @@ exports.handler = async (event) => {
           chainId: 2656691,
           network: 'GANACHE',
         },
+        version,
       },
     },
     GRAPHQL_URI,

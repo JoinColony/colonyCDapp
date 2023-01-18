@@ -1,7 +1,7 @@
 module.exports = {
   getCurrentVersion: /* GraphQL */ `
-    query GetCurrentVersion($item: CurrentVersionItem!) {
-      getCurrentVersionByItem(item: $item) {
+    query GetCurrentVersion($key: String!) {
+      getCurrentVersionByKey(key: $key) {
         items {
           id
         }

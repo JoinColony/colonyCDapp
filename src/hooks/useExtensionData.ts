@@ -45,7 +45,7 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
       },
       fetchPolicy: 'cache-and-network',
     });
-  const { version } = versionData?.getCurrentVersionByItem?.items?.[0] || {};
+  const { version } = versionData?.getCurrentVersionByKey?.items?.[0] || {};
 
   const extensionConfig = supportedExtensionsConfig.find(
     (e) => e.extensionId === extensionId,

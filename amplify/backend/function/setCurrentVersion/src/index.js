@@ -17,19 +17,19 @@ const GRAPHQL_URI = 'http://localhost:20002/graphql';
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  const { item, version } = event.arguments?.input || {};
+  const { key, version } = event.arguments?.input || {};
 
   const getCurrentVersionData = await graphqlRequest(
     getCurrentVersion,
     {
-      item,
+      key,
     },
     GRAPHQL_URI,
     API_KEY,
   );
 
   const existingEntryId =
-    getCurrentVersionData?.data?.getCurrentVersionByItem?.items?.[0]?.id;
+    getCurrentVersionData?.data?.getCurrentVersionByKey?.items?.[0]?.id;
 
   if (existingEntryId) {
     const updateCurrentVersionData = await graphqlRequest(
@@ -51,7 +51,7 @@ exports.handler = async (event) => {
     createCurrentVersion,
     {
       input: {
-        item,
+        key,
         version,
       },
     },

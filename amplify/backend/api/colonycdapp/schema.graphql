@@ -45,6 +45,7 @@ input CreateUniqueColonyInput {
   type: ColonyType
   status: ColonyStatusInput
   meta: MetadataInput
+  version: Int!
 }
 
 input ProfileInput {
@@ -82,7 +83,7 @@ input UpdateExtensionByColonyAndHashInput {
 }
 
 input SetCurrentVersionInput {
-  item: String!
+  key: String!
   version: Int!
 }
 
@@ -224,6 +225,7 @@ type Colony @model {
   balances: ColonyBalances @function(name: "fetchColonyBalances")
   meta: Metadata
   extensions: [ColonyExtension!] @hasMany(indexName: "byColony", fields: ["id"])
+  version: Int!
 }
 
 type User @model {
@@ -331,6 +333,6 @@ type ColonyExtension @model {
 
 type CurrentVersion @model {
   id: ID!
-  item: String! @index(name: "byItem", queryField: "getCurrentVersionByItem")
+  key: String! @index(name: "byKey", queryField: "getCurrentVersionByKey")
   version: Int!
 }

@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import {
+  ColonyVersion,
   Extension,
   ExtensionVersion,
   isExtensionCompatible,
@@ -10,6 +11,7 @@ import { InstalledExtensionData } from '~types';
 import { ActionTypes } from '~redux/index';
 import { mapPayload } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
+import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 
 interface Props {
   extensionData: InstalledExtensionData;
@@ -19,28 +21,25 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
 
-  const transform = useCallback(
-    mapPayload(() => ({
-      colonyAddress: colony?.colonyAddress,
-      extensionId: extensionData.extensionId,
-      version: extensionData.currentVersion + 1,
-    })),
-    [],
-  );
+  const transform = mapPayload(() => ({
+    colonyAddress: colony?.colonyAddress,
+    extensionId: extensionData.extensionId,
+    version: extensionData.currentVersion + 1,
+  }));
 
-  // const isSupportedColonyVersion =
-  //   parseInt(colonyVersion || '1', 10) >= ColonyVersion.LightweightSpaceship;
-  const isSupportedColonyVersion = true;
+  if (!user?.profile || !colony) {
+    return null;
+  }
+
+  const isSupportedColonyVersion =
+    colony.version >= MIN_SUPPORTED_COLONY_VERSION;
 
   const extensionCompatible = isExtensionCompatible(
     Extension[extensionData.extensionId],
     extensionData.availableVersion as ExtensionVersion,
-    10,
+    colony.version as ColonyVersion,
   );
 
-  if (!user?.profile) {
-    return null;
-  }
   // @TODO check user permissions for canUpgrade - hasRoot(allUserRoles)
   const canUpgrade = true;
 

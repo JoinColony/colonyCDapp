@@ -1,9 +1,9 @@
-const { utils, Wallet, Contract, ContractFactory, providers } = require('ethers');
+const { utils, Wallet, Contract, ContractFactory, providers, BigNumber } = require('ethers');
 
 const colonyJSExtras = require('@colony/colony-js/extras')
 const colonyJSIColony = require('../node_modules/@colony/colony-js/dist/cjs/contracts/IColony/9/factories/IColony__factory.js')
 const { addAugmentsB } = require('../node_modules/@colony/colony-js/dist/cjs/clients/Core/augments/AddDomain.js');
-const { getExtensionHash } =require('@colony/colony-js');
+const { getExtensionHash } = require('@colony/colony-js');
 
 /*
  * @NOTE To preserve time, I just re-used a script I wrote for one of the lambda functions
@@ -57,7 +57,7 @@ const createUniqueDomain = /* GraphQL */ `
 const setCurrentVersion = /* GraphQL */`
   mutation SetCurrentVersion($extensionHash: String!, $version: Int!) {
     setCurrentVersion(input: {
-      item: $extensionHash,
+      key: $extensionHash,
       version: $version
     })
   }
@@ -230,6 +230,7 @@ const createMetacolony = async (singerOrWallet) => {
         name: 'meta',
         profile: { displayName: 'Metacolony' },
         type: 'METACOLONY',
+        version: BigNumber.from(metacolonyVersion).toNumber()
       }
     },
     GRAPHQL_URI,
@@ -300,6 +301,7 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
         colonyNativeTokenId: tokenAddress,
         name: colonyName,
         profile: { displayName: `Colony ${colonyName.toUpperCase()}` },
+        version: BigNumber.from(currentNetworkVersion).toNumber()
       }
     },
     GRAPHQL_URI,
