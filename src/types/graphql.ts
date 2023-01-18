@@ -24,3 +24,5 @@ export type WatchListItem = WatchListItemFragment;
 export type WatchedColony = WatchedColonyFragment;
 
 export type ColonyExtension = ExtensionFragment;
+
+export type Member = Contributor | Watcher;
