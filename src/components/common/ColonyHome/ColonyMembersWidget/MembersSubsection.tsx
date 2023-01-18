@@ -10,7 +10,7 @@ import InviteLinkButton from '~shared/Button/InviteLinkButton';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useAvatarDisplayCounter } from '~hooks';
-import { Colony, Contributor, Watcher } from '~types';
+import { Colony, Member } from '~types';
 
 import styles from './ColonyMembersWidget.css';
 
@@ -59,7 +59,7 @@ interface Props {
   colony: Colony;
   currentDomainId?: number;
   maxAvatars?: number;
-  members?: Contributor[] | Watcher[];
+  members: Member[];
   isContributorsSubsection: boolean;
 }
 
@@ -126,7 +126,7 @@ const MembersSubsection = ({
     [isContributorsSubsection, membersPageRoute, members, name],
   );
 
-  if (!members) {
+  if (!members.length) {
     return (
       <div className={styles.main}>
         {setHeading(false)}
@@ -145,10 +145,10 @@ const MembersSubsection = ({
       {setHeading(true)}
       <ul className={styles.userAvatars}>
         {members.slice(0, avatarsDisplaySplitRules).map((member) => (
-          <li className={styles.userAvatar} key={member?.user.walletAddress}>
+          <li className={styles.userAvatar} key={member?.user?.walletAddress}>
             <UserAvatar
               size="xs"
-              address={member?.user.walletAddress}
+              address={member?.user?.walletAddress || ''}
               // banned={canAdministerComments && banned}
               showInfo
               colony={colony}

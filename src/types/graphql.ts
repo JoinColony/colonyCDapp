@@ -21,3 +21,5 @@ export type Token = TokenFragment;
 export type WatchListItem = WatchListItemFragment;
 
 export type WatchedColony = WatchedColonyFragment;
+
+export type Member = Contributor | Watcher;

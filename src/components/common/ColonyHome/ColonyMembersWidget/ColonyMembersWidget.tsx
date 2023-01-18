@@ -6,8 +6,9 @@ import { ROOT_DOMAIN_ID, COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useColonyContext } from '~hooks';
 import { useGetMembersForColonyQuery } from '~gql';
 
-import styles from './ColonyMembersWidget.css';
 import MembersSubsection from './MembersSubsection';
+
+import styles from './ColonyMembersWidget.css';
 
 const displayName = 'common.ColonyHome.ColonyMembersWidget';
 
