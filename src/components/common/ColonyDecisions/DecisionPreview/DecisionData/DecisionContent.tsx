@@ -13,8 +13,9 @@ import styles from './DecisionContent.css';
 
 const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionContent';
 
+type SelectedProps = Omit<DecisionDataProps, 'setDecision'>;
 type DecisionContentProps = {
-  [k in keyof DecisionDataProps]-?: DecisionDataProps[k];
+  [k in keyof SelectedProps]-?: SelectedProps[k];
 };
 
 const DecisionContent = ({ decision, user }: DecisionContentProps) => {

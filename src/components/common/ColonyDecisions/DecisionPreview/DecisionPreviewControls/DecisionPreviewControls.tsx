@@ -7,7 +7,7 @@ import Button, { ActionButton } from '~shared/Button';
 import { useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 
-import { DecisionDataProps } from '../DecisionData/DecisionData';
+import { DecisionDataProps } from '../DecisionData';
 
 import styles from './DecisionPreviewControls.css';
 

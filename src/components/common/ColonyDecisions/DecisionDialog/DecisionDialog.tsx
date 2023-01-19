@@ -11,6 +11,7 @@ import {
   getDecisionFromLocalStorage,
   setDecisionToLocalStorage,
 } from '~utils/decisions';
+import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
 
 import {
   DecisionTitle,
@@ -20,8 +21,6 @@ import {
 } from '../DecisionDialog';
 
 import styles from './DecisionDialog.css';
-
-export const PREVIEW_ROUTE_SUFFIX = '/preview';
 
 const displayName = 'common.ColonyDecisions.DecisionDialog';
 
@@ -72,8 +71,8 @@ const DecisionDialog = ({
   const handleSubmitDialog = (values: DecisionDialogValues) => {
     handleSubmit?.(values);
     setDecisionToLocalStorage(values, walletAddress);
-    if (!pathname.includes(PREVIEW_ROUTE_SUFFIX)) {
-      navigate(`${pathname}${PREVIEW_ROUTE_SUFFIX}`);
+    if (!pathname.includes(DECISIONS_PREVIEW)) {
+      navigate(`${pathname}${DECISIONS_PREVIEW}`);
     }
     close();
   };

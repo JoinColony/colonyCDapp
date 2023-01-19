@@ -1,10 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import Tag from '~shared/Tag';
 import { getDecisionFromLocalStorage } from '~utils/decisions';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import { useAppContext } from '~hooks';
+import { Decision } from '~types';
 
 import {
   DecisionData,
@@ -32,18 +33,12 @@ const DecisionPreview = () => {
   const { user, walletConnecting, userLoading } = useAppContext();
   const walletAddress = user?.walletAddress || '';
 
-  // Referential equality needed here to avoid infinite loop in effect.
-  const decision = useMemo(
-    () => getDecisionFromLocalStorage(walletAddress),
-    [walletAddress],
-  );
+  const [decisionPreview, setDecisionPreview] = useState<Decision>();
+  const decision = getDecisionFromLocalStorage(walletAddress);
 
-  const [decisionPreview, setDecisionPreview] = useState(decision);
-
-  useEffect(() => {
-    // Sync component state with local storage
+  if (!decisionPreview && decision) {
     setDecisionPreview(decision);
-  }, [decision]);
+  }
 
   if (walletConnecting || userLoading) {
     return (

@@ -6,9 +6,8 @@ import Button from '~shared/Button';
 import Dialog, { DialogSection } from '~shared/Dialog';
 import { Heading3 } from '~shared/Heading';
 import { Decision } from '~types';
+import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
 import { removeDecisionFromLocalStorage } from '~utils/decisions';
-
-import { PREVIEW_ROUTE_SUFFIX } from '../DecisionDialog';
 
 import styles from './DeleteDecisionDialog.css';
 
@@ -41,7 +40,7 @@ const DeleteDecisionDialog = ({
   const deleteDecision = () => {
     removeDecisionFromLocalStorage(decision.walletAddress);
     close();
-    navigate(pathname.slice(0, -PREVIEW_ROUTE_SUFFIX.length));
+    navigate(pathname.slice(0, -DECISIONS_PREVIEW.length));
   };
 
   return (
