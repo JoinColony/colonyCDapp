@@ -12,7 +12,7 @@ type Props = {
   token: Token | null | undefined;
   tokenAddress: string | undefined;
   innerRef?: (ref: HTMLElement | null) => void;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 const TokenSymbol = ({ token, tokenAddress, innerRef, onClick }: Props) => {
