@@ -5,7 +5,6 @@ declare namespace SelectedTokenCssNamespace {
     query700: string;
     selectedToken: string;
     selectedTokenAmount: string;
-    selectedTokenSymbol: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;
