@@ -7,7 +7,7 @@ import LoadMoreButton from '~shared/LoadMoreButton';
 import SortingRow, {
   Props as SortingProps,
 } from '~shared/MembersList/SortingRow';
-import { Watcher, Contributor, Member } from '~types';
+import { Watcher, Contributor, MemberUser } from '~types';
 import { useColonyMembersSorting } from '~hooks';
 
 import styles from './MembersSection.css';
@@ -37,7 +37,7 @@ interface Props {
   isContributorsSection: boolean;
   members: Watcher[] | Contributor[];
   canAdministerComments: boolean;
-  extraItemContent?: (user: Member['user']) => ReactNode;
+  extraItemContent?: (user: MemberUser) => ReactNode;
   itemsPerSection?: number;
 }
 
