@@ -21,6 +21,8 @@ import {
 
 import styles from './DecisionDialog.css';
 
+export const PREVIEW_ROUTE_SUFFIX = '/preview';
+
 const displayName = 'common.ColonyDecisions.DecisionDialog';
 
 const MSG = defineMessages({
@@ -66,7 +68,7 @@ const DecisionDialog = ({
 
   const handleSubmit = (values: DecisionDialogValues) => {
     setDecisionToLocalStorage(values, walletAddress);
-    navigate(`${pathname}/preview`);
+    navigate(`${pathname}${PREVIEW_ROUTE_SUFFIX}`);
     close();
   };
 

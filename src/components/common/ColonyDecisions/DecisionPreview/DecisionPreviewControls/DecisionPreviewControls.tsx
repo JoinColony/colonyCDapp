@@ -1,12 +1,12 @@
 import React from 'react';
 // import { defineMessages } from 'react-intl';
 
+import { DeleteDecisionDialog } from '~common/ColonyDecisions';
+import { useDialog } from '~shared/Dialog';
+import Button, { ActionButton } from '~shared/Button';
 import { useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
-
-import Button, { ActionButton } from '~shared/Button';
 import { Decision } from '~types';
-// import { removeDecisionFromLocalStorage } from '~utils/decisions';
 
 import styles from './DecisionPreviewControls.css';
 
@@ -31,13 +31,8 @@ const DecisionPreviewControls = ({
   const { colony } = useColonyContext();
   const colonyAddress = colony?.colonyAddress;
 
-  //const openConfirmDeleteDialog = useDialog(ConfirmDeleteDialog);
-  //  const openDecisionDialog = useDialog(DecisionDialog);
-
-  // const deleteDecision = (walletAddress: Address) => {
-  //   removeDecisionFromLocalStorage(walletAddress);
-  //   navigate(`/colony/${colonyName}/decisions`);
-  // };
+  const openConfirmDeleteDialog = useDialog(DeleteDecisionDialog);
+  // const openDecisionDialog = useDialog(DecisionDialog);
 
   return (
     <div className={styles.buttonContainer}>
@@ -45,14 +40,10 @@ const DecisionPreviewControls = ({
         <>
           <Button
             appearance={{ theme: 'blue', size: 'large' }}
-            onClick={
-              () => console.log('Implement delete decision...')
-              // openConfirmDeleteDialog({
-              //   itemName: (
-              //     <FormattedMessage {...MSG.decision} key={nanoid()} />
-              //   ),
-              //   deleteCallback: deleteDecision,
-              // })
+            onClick={() =>
+              openConfirmDeleteDialog({
+                decision,
+              })
             }
             text={{ id: 'button.delete' }}
           />

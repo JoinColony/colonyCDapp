@@ -20,3 +20,7 @@ export const setDecisionToLocalStorage = (
     JSON.stringify({ ...values, walletAddress }),
   );
 };
+
+export const removeDecisionFromLocalStorage = (walletAddress: Address) => {
+  localStorage.removeItem(getLocalStorageDecisionKey(walletAddress));
+};
