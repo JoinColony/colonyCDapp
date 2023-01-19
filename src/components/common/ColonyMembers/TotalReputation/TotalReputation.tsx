@@ -5,7 +5,6 @@ import Decimal from 'decimal.js';
 import Heading from '~shared/Heading';
 import Numeral from '~shared/Numeral';
 
-import { getFormattedTokenValue } from '~utils/tokens';
 import {
   ROOT_DOMAIN_ID,
   DEFAULT_TOKEN_DECIMALS,
@@ -42,11 +41,6 @@ const TotalReputation = ({ selectedDomainId }: Props) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const formattedTotalDomainRep = getFormattedTokenValue(
-    new Decimal(totalReputation?.getUserReputation || '0').abs().toString(),
-    colony?.nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS,
-  );
-
   return (
     <div className={styles.teamReputationPointsContainer}>
       <Heading
@@ -54,7 +48,13 @@ const TotalReputation = ({ selectedDomainId }: Props) => {
         appearance={{ size: 'normal', theme: 'dark' }}
       />
       <p className={styles.reputationPoints}>
-        <Numeral value={formattedTotalDomainRep} suffix="reputation points" />
+        <Numeral
+          value={new Decimal(totalReputation?.getUserReputation || '0')
+            .abs()
+            .toString()}
+          decimals={colony?.nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS}
+          suffix="reputation points"
+        />
       </p>
     </div>
   );
