@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import ListGroup, { ListGroupAppearance } from '~shared/ListGroup';
-import { Member } from '~types';
+import { Member, MemberUser } from '~types';
 import { notNull } from '~utils/arrays';
 
 import MembersListItem from './MembersListItem';
@@ -10,7 +10,7 @@ interface Props {
   members: Member[];
   listGroupAppearance?: ListGroupAppearance;
   canAdministerComments?: boolean;
-  extraItemContent?: (user: Member['user']) => ReactNode;
+  extraItemContent?: (user: MemberUser) => ReactNode;
   showUserInfo?: boolean;
   showUserReputation?: boolean;
 }
