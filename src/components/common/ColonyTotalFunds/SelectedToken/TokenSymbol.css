@@ -12,3 +12,21 @@
 .tokenLockWrapper:hover svg {
   fill: var(--colony-blue);
 }
+
+.selectedTokenSymbol {
+  composes: button from '~styles/reset.css';
+  display: inline-flex;
+  align-items: center;
+  margin-left: 13px;
+  font-size: tokenDisplaySymbolFontSize;
+  font-weight: var(--weight-normal);
+  line-height: tokenDisplaySymbolFontSize;
+  letter-spacing: 0.25px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.selectedTokenSymbol:hover {
+  color: var(--colony-blue);
+  fill: var(--colony-blue);
+}
