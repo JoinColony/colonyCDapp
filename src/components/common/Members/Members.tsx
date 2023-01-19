@@ -1,7 +1,7 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
-import sortBy from 'lodash/sortBy';
+import { sortBy } from '~utils/lodash';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import {
@@ -196,4 +196,4 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
 
 Members.displayName = displayName;
 
-export default Members as FC<Props>;
+export default Members;

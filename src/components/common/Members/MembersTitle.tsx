@@ -1,14 +1,13 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useRef, MouseEvent } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import { Select, Form } from '~shared/Fields';
-
 import { useMobile } from '~hooks';
+import ColonyDomainSelector from '~common/ColonyHome/ColonyDomainSelector';
 
 import styles from './MembersTitle.css';
-import ColonyDomainSelector from '~common/ColonyHome/ColonyDomainSelector';
 
 const displayName = 'common.Members.MembersTitle';
 
@@ -55,34 +54,29 @@ const MembersTitle = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const searchInput = useRef<HTMLInputElement>(null);
-  const handleFocusRef = useCallback(() => {
+  const handleFocusRef = () => {
     searchInput?.current?.focus();
-  }, [searchInput]);
+  };
 
-  const handleMouseEnterRef = useCallback(() => {
+  const handleMouseEnterRef = () => {
     if (searchInput.current !== null) {
       searchInput.current.placeholder = formatMessage(MSG.searchPlaceholder);
     }
-  }, [formatMessage]);
+  };
 
-  const handleMouseLeaveRef = useCallback(() => {
+  const handleMouseLeaveRef = () => {
     if (searchInput.current !== null) {
       searchInput.current.placeholder = '';
     }
-  }, []);
+  };
 
-  const handleMouseEnter = useCallback(
-    (e) => {
-      (e.target as HTMLInputElement).placeholder = formatMessage(
-        MSG.searchPlaceholder,
-      );
-    },
-    [formatMessage],
-  );
+  const handleMouseEnter = (e: MouseEvent<HTMLInputElement>) => {
+    e.currentTarget.placeholder = formatMessage(MSG.searchPlaceholder);
+  };
 
-  const handleMouseLeave = useCallback((e) => {
-    (e.target as HTMLInputElement).placeholder = '';
-  }, []);
+  const handleMouseLeave = (e: MouseEvent<HTMLInputElement>) => {
+    e.currentTarget.placeholder = '';
+  };
 
   const isMobile = useMobile();
 
