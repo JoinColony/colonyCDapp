@@ -37,7 +37,8 @@ const DeleteDecisionDialog = ({
 }: DeleteDecisionDialogProps) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const deleteDecision = () => {
+
+  const handleDeleteDecision = () => {
     removeDecisionFromLocalStorage(decision.walletAddress);
     close();
     navigate(pathname.slice(0, -DECISIONS_PREVIEW.length));
@@ -56,7 +57,7 @@ const DeleteDecisionDialog = ({
           <Button
             text={{ id: 'button.delete' }}
             appearance={{ theme: 'pink', size: 'large' }}
-            onClick={deleteDecision}
+            onClick={handleDeleteDecision}
           />
         </DialogSection>
       </div>
