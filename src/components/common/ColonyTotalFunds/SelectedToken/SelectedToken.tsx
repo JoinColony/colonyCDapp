@@ -85,14 +85,10 @@ const SelectedToken = ({ children }: Props) => {
         onSelectToken={setCurrentTokenAddress}
         currentTokenAddress={currentTokenAddress}
       >
-        {({ toggle, ref }) => (
-          <TokenSymbol
-            token={currentToken?.token}
-            tokenAddress={currentTokenAddress}
-            innerRef={ref}
-            onClick={toggle}
-          />
-        )}
+        <TokenSymbol
+          token={currentToken?.token}
+          tokenAddress={currentTokenAddress}
+        />
       </ColonyTotalFundsPopover>
       {children}
     </div>
