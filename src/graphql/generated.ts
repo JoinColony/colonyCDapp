@@ -3054,21 +3054,21 @@ export const WatchedColonyFragmentDoc = gql`
 export const UserFragmentDoc = gql`
     fragment User on User {
 export const ProfileFragmentDoc = gql`
-    fragment Profile on User {
-  profile {
-    avatar
-    bio
-    displayName
-    email
-    location
-    thumbnail
-    website
-  }
+    fragment Profile on Profile {
+  avatar
+  bio
+  displayName
+  email
+  location
+  thumbnail
+  website
 }
     `;
 export const UserFragmentDoc = gql`
     fragment User on User {
-  ...Profile
+  profile {
+    ...Profile
+  }
   walletAddress: id
   name
   watchlist {
