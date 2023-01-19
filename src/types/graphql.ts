@@ -17,6 +17,7 @@ import {
   DomainMetadataFragment,
   ColonyMetadataFragment,
   UserTokenBalanceDataFragment,
+  MemberUserFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -65,3 +66,5 @@ export type ColonyChainClaimWithToken = ChainFundsClaimFragment & {
 export type ColonyClaims = ColonyERC20Claims | ColonyChainClaimWithToken;
 
 export type Member = Contributor | Watcher;
+
+export type MemberUser = MemberUserFragment;
