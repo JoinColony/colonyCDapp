@@ -1,11 +1,9 @@
 import { takeEvery, call, fork, put } from 'redux-saga/effects';
-
 import { ClientType, getExtensionHash } from '@colony/colony-js';
 
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom } from '../utils';
+import { AllActions, Action, ActionTypes } from '~redux';
 
+import { putError, refreshUpgradedExtension, takeFrom } from '../utils';
 import {
   createTransaction,
   getTxChannel,
@@ -39,7 +37,7 @@ function* extensionUpgrade({
     return yield putError(ActionTypes.EXTENSION_UPGRADE_ERROR, error, meta);
   }
 
-  // yield call(refreshExtensions);
+  refreshUpgradedExtension(colonyAddress, extensionId, version);
 
   txChannel.close();
 
