@@ -43,6 +43,7 @@ const validationSchema = object()
       .required(() => MSG.titleRequired),
     motionDomainId: number(),
     description: string().notOneOf(['<p></p>'], () => MSG.descriptionRequired),
+    walletAddress: string().address().required(),
   })
   .defined();
 
@@ -50,12 +51,14 @@ export type DecisionDialogValues = InferType<typeof validationSchema>;
 
 export interface DecisionDialogProps extends DialogProps {
   ethDomainId?: number;
+  handleSubmit?: (values: DecisionDialogValues) => void;
 }
 
 const DecisionDialog = ({
   cancel,
   close,
   ethDomainId,
+  handleSubmit,
 }: DecisionDialogProps) => {
   const { user } = useAppContext();
   const { pathname } = useLocation();
@@ -66,9 +69,12 @@ const DecisionDialog = ({
   const draftDecision = getDecisionFromLocalStorage(walletAddress);
   const content = draftDecision?.description;
 
-  const handleSubmit = (values: DecisionDialogValues) => {
+  const handleSubmitDialog = (values: DecisionDialogValues) => {
+    handleSubmit?.(values);
     setDecisionToLocalStorage(values, walletAddress);
-    navigate(`${pathname}${PREVIEW_ROUTE_SUFFIX}`);
+    if (!pathname.includes(PREVIEW_ROUTE_SUFFIX)) {
+      navigate(`${pathname}${PREVIEW_ROUTE_SUFFIX}`);
+    }
     close();
   };
 
@@ -83,8 +89,9 @@ const DecisionDialog = ({
           motionDomainId: draftDecision?.motionDomainId ?? domainId,
           title: draftDecision?.title,
           description: draftDecision?.description || '<p></p>',
+          walletAddress,
         }}
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmitDialog}
         validationSchema={validationSchema}
       >
         <div className={styles.main}>

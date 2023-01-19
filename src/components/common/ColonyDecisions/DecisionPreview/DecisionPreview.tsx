@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import Tag from '~shared/Tag';
@@ -32,7 +32,18 @@ const DecisionPreview = () => {
   const { user, walletConnecting, userLoading } = useAppContext();
   const walletAddress = user?.walletAddress || '';
 
-  const decision = getDecisionFromLocalStorage(walletAddress);
+  // Referential equality needed here to avoid infinite loop in effect.
+  const decision = useMemo(
+    () => getDecisionFromLocalStorage(walletAddress),
+    [walletAddress],
+  );
+
+  const [decisionPreview, setDecisionPreview] = useState(decision);
+
+  useEffect(() => {
+    // Sync component state with local storage
+    setDecisionPreview(decision);
+  }, [decision]);
 
   if (walletConnecting || userLoading) {
     return (
@@ -47,10 +58,17 @@ const DecisionPreview = () => {
       <div className={styles.banner}>
         <Tag text={MSG.preview} appearance={{ theme: 'light' }} />
       </div>
-      <DecisionData decision={decision} user={user} />
+      <DecisionData
+        decision={decisionPreview}
+        setDecision={setDecisionPreview}
+        user={user}
+      />
       <div className={styles.rightContent}>
-        <DecisionPreviewControls decision={decision} />
-        {decision && <DecisionDetails decision={decision} />}
+        <DecisionPreviewControls
+          decision={decisionPreview}
+          setDecision={setDecisionPreview}
+        />
+        {decisionPreview && <DecisionDetails decision={decisionPreview} />}
       </div>
     </DecisionPreviewLayout>
   );
