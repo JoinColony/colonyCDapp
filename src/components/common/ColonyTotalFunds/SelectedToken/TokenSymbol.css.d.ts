@@ -1,5 +1,6 @@
 declare namespace TokenSymbolCssNamespace {
   export interface ITokenSymbolCss {
+    selectedTokenSymbol: string;
     tokenLockWrapper: string;
   }
 }

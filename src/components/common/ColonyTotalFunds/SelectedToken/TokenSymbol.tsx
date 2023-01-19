@@ -11,15 +11,22 @@ const displayName = 'common.ColonyTotalFunds.TokenSymbol';
 type Props = {
   token: Token | null | undefined;
   tokenAddress: string | undefined;
+  innerRef?: (ref: HTMLElement | null) => void;
+  onClick: () => void;
 };
 
-const TokenSymbol = ({ token, tokenAddress }: Props) => {
+const TokenSymbol = ({ token, tokenAddress, innerRef, onClick }: Props) => {
   const { colony } = useColonyContext();
   const { nativeToken, status } = colony || {};
   const { tokenAddress: nativeTokenAddress } = nativeToken || {};
 
   return (
-    <>
+    <button
+      className={styles.selectedTokenSymbol}
+      ref={innerRef}
+      onClick={onClick}
+      type="button"
+    >
       <span data-test="colonyTokenSymbol">{token?.symbol}</span>
       {tokenAddress === nativeTokenAddress &&
         !status?.nativeToken?.unlocked && (
@@ -30,7 +37,7 @@ const TokenSymbol = ({ token, tokenAddress }: Props) => {
             appearance={{ size: 'large' }}
           />
         )}
-    </>
+    </button>
   );
 };
 
