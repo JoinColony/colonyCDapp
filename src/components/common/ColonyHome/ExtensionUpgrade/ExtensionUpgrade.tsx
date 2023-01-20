@@ -5,12 +5,8 @@ import { useParams } from 'react-router';
 
 import Alert from '~shared/Alert';
 import Button from '~shared/Button';
-import {
-  useColonyContext,
-  useExtensionData,
-  useOneTxMustBeUpgraded,
-} from '~hooks';
-import { InstalledExtensionData } from '~types';
+import { useColonyContext, useExtensionData } from '~hooks';
+import { isInstalledExtensionData } from '~utils/extensions';
 
 import styles from './ExtensionUpgrade.css';
 
@@ -30,18 +26,24 @@ const MSG = defineMessages({
 const ExtensionUpgrade = () => {
   const { colony } = useColonyContext();
   const { name } = colony || {};
-
   const { extensionId } = useParams<{
     extensionId: string;
   }>();
 
   const { extensionData } = useExtensionData(Extension.OneTxPayment);
 
-  const isExtensionDetailsRoute = extensionId === Extension.OneTxPayment;
+  if (!colony || !extensionData) {
+    return null;
+  }
 
-  const mustUpgrade = useOneTxMustBeUpgraded(
-    extensionData as InstalledExtensionData,
-  );
+  if (!isInstalledExtensionData(extensionData)) {
+    return null;
+  }
+
+  const isOneTxPaymentDetailsRoute = extensionId === Extension.OneTxPayment;
+
+  const mustUpgrade =
+    extensionData.currentVersion < extensionData.availableVersion;
 
   if (mustUpgrade) {
     return (
@@ -56,7 +58,7 @@ const ExtensionUpgrade = () => {
           <div className={styles.upgradeBanner}>
             <FormattedMessage {...MSG.upgradeMessage} />
           </div>
-          {!isExtensionDetailsRoute && (
+          {!isOneTxPaymentDetailsRoute && (
             <div className={styles.controls}>
               <Button
                 appearance={{ theme: 'primary', size: 'medium' }}
