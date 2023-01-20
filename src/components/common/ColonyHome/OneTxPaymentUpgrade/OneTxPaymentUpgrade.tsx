@@ -8,9 +8,9 @@ import Button from '~shared/Button';
 import { useColonyContext, useExtensionData } from '~hooks';
 import { isInstalledExtensionData } from '~utils/extensions';
 
-import styles from './ExtensionUpgrade.css';
+import styles from './OneTxPaymentUpgrade.css';
 
-const displayName = 'common.ColonyHome.ExtensionUpgrade';
+const displayName = 'common.ColonyHome.OneTxPaymentUpgrade';
 
 const MSG = defineMessages({
   upgradeMessage: {
@@ -23,7 +23,7 @@ const MSG = defineMessages({
   },
 });
 
-const ExtensionUpgrade = () => {
+const OneTxPaymentUpgrade = () => {
   const { colony } = useColonyContext();
   const { name } = colony || {};
   const { extensionId } = useParams<{
@@ -75,6 +75,6 @@ const ExtensionUpgrade = () => {
   return null;
 };
 
-ExtensionUpgrade.displayName = displayName;
+OneTxPaymentUpgrade.displayName = displayName;
 
-export default ExtensionUpgrade;
+export default OneTxPaymentUpgrade;
