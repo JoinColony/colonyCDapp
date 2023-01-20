@@ -13,7 +13,7 @@ import ColonyMembersWidget from './ColonyMembersWidget';
 import ColonyExtensions from './ColonyExtensionsWidget';
 import ColonyDomainDescription from './ColonyDomainDescription';
 // import ColonyUpgrade from './ColonyUpgrade';
-import ExtensionUpgrade from './ExtensionUpgrade';
+import OneTxPaymentUpgrade from './OneTxPaymentUpgrade';
 
 import styles from './ColonyHomeLayout.css';
 
@@ -91,7 +91,7 @@ const ColonyHomeLayout = ({
         )}
       </div>
       {/* <ColonyUpgrade colony={colony} /> */}
-      <ExtensionUpgrade />
+      <OneTxPaymentUpgrade />
     </div>
   );
 };
