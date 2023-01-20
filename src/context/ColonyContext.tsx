@@ -1,31 +1,17 @@
-import React, {
-  createContext,
-  useMemo,
-  ReactNode,
-  useCallback,
-  useState,
-} from 'react';
+import React, { createContext, useMemo, ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 
-import {
-  useGetFullColonyByNameQuery,
-  GetFullColonyByNameQuery,
-  GetFullColonyByNameQueryVariables,
-  GetFullColonyByNameDocument,
-} from '~gql';
+import { useGetFullColonyByNameQuery } from '~gql';
 import { Colony } from '~types';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import { useCanInteractWithColony } from '~hooks';
 
-import { getContext, ContextModule } from './index';
-
 interface ColonyContextValue {
   colony?: Colony;
   loading: boolean;
   canInteractWithColony: boolean;
-  updateColony?: () => void;
 }
 
 const ColonyContext = createContext<ColonyContextValue>({
@@ -48,9 +34,6 @@ export const ColonyContextProvider = ({
   children: ReactNode;
 }) => {
   const { colonyName } = useParams<{ colonyName: string }>();
-  const [latestColony, setLatestColony] = useState<Colony>();
-  const [updateLoading, setUpdateLoading] = useState(false);
-  const [colonyError, setColonyError] = useState(false);
 
   const { data, loading, error } = useGetFullColonyByNameQuery({
     skip: !colonyName,
@@ -60,50 +43,13 @@ export const ColonyContextProvider = ({
     fetchPolicy: 'cache-and-network',
   });
 
-  const updateColony = useCallback(() => {
-    if (colonyName) {
-      try {
-        setUpdateLoading(true);
-        const apolloClient = getContext(ContextModule.ApolloClient);
-        const query = apolloClient.query<
-          GetFullColonyByNameQuery,
-          GetFullColonyByNameQueryVariables
-        >({
-          query: GetFullColonyByNameDocument,
-          variables: { name: colonyName ?? '' },
-          fetchPolicy: 'network-only',
-        });
-        query.then(({ data: result }) => {
-          const currentColony =
-            result?.getColonyByName?.items?.[0] ?? undefined;
-          if (currentColony) {
-            setLatestColony(currentColony);
-          } else {
-            setLatestColony(undefined);
-          }
-        });
-      } catch (e) {
-        console.error(e);
-        setColonyError(e);
-      } finally {
-        setUpdateLoading(false);
-      }
-    }
-  }, [colonyName]);
-
-  const colony = latestColony ?? data?.getColonyByName?.items?.[0] ?? undefined;
+  const colony = data?.getColonyByName?.items?.[0] ?? undefined;
 
   const canInteractWithColony = useCanInteractWithColony(colony);
 
   const colonyContext = useMemo<ColonyContextValue>(
-    () => ({
-      colony,
-      loading,
-      canInteractWithColony,
-      updateLoading,
-      updateColony,
-    }),
-    [colony, loading, canInteractWithColony, updateLoading, updateColony],
+    () => ({ colony, loading, canInteractWithColony }),
+    [colony, loading, canInteractWithColony],
   );
 
   if (!colonyName) {
@@ -114,7 +60,7 @@ export const ColonyContextProvider = ({
     return <LoadingTemplate loadingText={MSG.loadingText} />;
   }
 
-  if (!colony || colonyError || error) {
+  if (!colony || error) {
     return <NotFoundRoute />;
   }
 

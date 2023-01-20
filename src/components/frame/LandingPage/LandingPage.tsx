@@ -41,10 +41,21 @@ const MSG = defineMessages({
 interface LandingItemProps {
   to: string;
   message: MessageDescriptor;
+  customHandler?: (() => void) | boolean;
 }
-const LandingItem = ({ to, message }: LandingItemProps) => (
+
+const handleClick = (e, customHandler) => {
+  e.preventDefault();
+  customHandler();
+};
+
+const LandingItem = ({ to, message, customHandler }: LandingItemProps) => (
   <li className={styles.item}>
-    <NavLink to={to} className={styles.itemLink}>
+    <NavLink
+      to={to}
+      onClick={(e) => customHandler && handleClick(e, customHandler)}
+      className={styles.itemLink}
+    >
       <Icon className={styles.itemIcon} name="circle-plus" title={message} />
       <span className={styles.itemTitle}>
         <FormattedMessage {...message} />
@@ -58,7 +69,8 @@ const LandingPage = () => {
    * Are the network contract deployed to the chain the user is connected
    * so that they can create a new colony on it
    */
-  const { wallet, updateUser, user, userLoading } = useAppContext();
+  const { wallet, updateUser, user, userLoading, connectWallet } =
+    useAppContext();
   const canInteractWithNetwork = useCanInteractWithNetwork();
   const { data, loading } = useGetMetacolonyQuery();
 
@@ -84,9 +96,11 @@ const LandingPage = () => {
           {wallet && !userLoading && !user && (
             <LandingItem to={CREATE_USER_ROUTE} message={MSG.createUsername} />
           )}
-          {canInteractWithNetwork && (
-            <LandingItem to={CREATE_COLONY_ROUTE} message={MSG.createColony} />
-          )}
+          <LandingItem
+            to={CREATE_COLONY_ROUTE}
+            message={MSG.createColony}
+            customHandler={!canInteractWithNetwork && !wallet && connectWallet}
+          />
           {loading && (
             <li className={styles.itemLoading}>
               <SpinnerLoader appearance={{ size: 'medium' }} />

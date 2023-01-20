@@ -8,12 +8,13 @@ import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 
 import {
+  GetFullColonyByNameDocument,
   useCreateWatchedColoniesMutation,
   useDeleteWatchedColoniesMutation,
 } from '~gql';
 import { CREATE_USER_ROUTE } from '~routes';
 import { useAppContext, useColonyContext } from '~hooks';
-import { watchingColony } from '~utils/watching';
+import { getWatchedColony } from '~utils/watching';
 import { newUser } from '~utils/newUser';
 
 import ColonySubscriptionInfoPopover from './ColonySubscriptionInfoPopover';
@@ -38,7 +39,7 @@ const MSG = defineMessages({
 });
 
 const ColonySubscription = () => {
-  const { colony, canInteractWithColony, updateColony } = useColonyContext();
+  const { colony, canInteractWithColony } = useColonyContext();
   const {
     user,
     updateUser,
@@ -49,10 +50,10 @@ const ColonySubscription = () => {
   } = useAppContext();
   const navigate = useNavigate();
 
-  const watchedItem = watchingColony(colony, user);
+  const watchedItem = getWatchedColony(colony, user?.watchlist?.items);
 
   /* Watch (follow) a colony */
-  const [watch, { data: watchState, loading: loadingWatch }] =
+  const [watch, { data: watchData, loading: loadingWatch }] =
     useCreateWatchedColoniesMutation({
       variables: {
         input: {
@@ -60,23 +61,34 @@ const ColonySubscription = () => {
           userID: user?.walletAddress || '',
         },
       },
+      refetchQueries: [
+        {
+          query: GetFullColonyByNameDocument,
+          variables: { name: colony?.name },
+        },
+      ],
     });
 
   /* Unwatch (unfollow) a colony */
-  const [unwatch, { data: unwatchState, loading: loadingUnwatch }] =
+  const [unwatch, { data: unwatchData, loading: loadingUnwatch }] =
     useDeleteWatchedColoniesMutation({
       variables: { input: { id: watchedItem?.id || '' } },
+      refetchQueries: [
+        {
+          query: GetFullColonyByNameDocument,
+          variables: { name: colony?.name },
+        },
+      ],
     });
 
   /* Update user on watch/unwatch */
   useEffect(() => {
-    if (updateUser && updateColony) {
+    if (updateUser) {
       updateUser(user?.walletAddress);
-      updateColony();
     }
-  }, [user, updateUser, watchState, unwatchState, updateColony]);
+  }, [user, updateUser, watchData, unwatchData]);
 
-  const handleJoinClick = () => {
+  const handleSubscribe = () => {
     if (user) {
       watch();
     } else if (wallet && !user) {
@@ -125,7 +137,7 @@ const ColonySubscription = () => {
         {!canInteractWithColony && !walletConnecting && !initConnect && (
           <div className={styles.colonyJoin}>
             <Button
-              onClick={handleJoinClick}
+              onClick={handleSubscribe}
               appearance={{ theme: 'blue', size: 'small' }}
               data-test="joinColonyButton"
               className={styles.colonyJoinBtn}

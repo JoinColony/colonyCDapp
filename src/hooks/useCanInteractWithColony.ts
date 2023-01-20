@@ -1,6 +1,6 @@
 import { Colony } from '~types';
 import { DEFAULT_NETWORK_INFO, NETWORK_AVAILABLE_CHAINS } from '~constants';
-import { watchingColony } from '~utils/watching';
+import { getWatchedColony } from '~utils/watching';
 
 import useAppContext from './useAppContext';
 
@@ -60,7 +60,7 @@ export const useCanInteractWithColony = (colony?: Colony): boolean => {
   /*
    * Checking if watching (following) or not
    */
-  const isWatching = !!watchingColony(colony, user);
+  const isWatching = !!getWatchedColony(colony, user?.watchlist?.items);
 
   return (
     colonyChain === userWalletChain && canInteractWithNetwork && isWatching
