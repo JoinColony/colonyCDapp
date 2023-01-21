@@ -51,7 +51,7 @@ export const filterMembers = <M extends User>(
         return banned && textFilter;
       }
 
-      if (filters?.bannedStatus === BannedStatus.Not_Banned) {
+      if (filters?.bannedStatus === BannedStatus.NotBanned) {
         return !banned && textFilter;
       }
     }
@@ -82,7 +82,7 @@ export const filterMembers = <M extends User>(
 
     if (
       filters?.verificationType === VerificationType.Verified &&
-      filters?.bannedStatus === BannedStatus.Not_Banned
+      filters?.bannedStatus === BannedStatus.NotBanned
     ) {
       return isWhitelisted && !banned && textFilter;
     }

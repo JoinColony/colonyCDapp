@@ -79,7 +79,7 @@ export enum VerificationType {
 export enum BannedStatus {
   All = 'all',
   Banned = 'banned',
-  Not_Banned = 'not_banned',
+  NotBanned = 'notBanned',
 }
 
 export interface FormValues {
@@ -103,7 +103,7 @@ const verificationTypes = [
 const bannedStatuses = [
   { label: MSG.any, value: BannedStatus.All },
   { label: MSG.banned, value: BannedStatus.Banned },
-  { label: MSG.notBanned, value: BannedStatus.Not_Banned },
+  { label: MSG.notBanned, value: BannedStatus.NotBanned },
 ];
 
 interface Props {
