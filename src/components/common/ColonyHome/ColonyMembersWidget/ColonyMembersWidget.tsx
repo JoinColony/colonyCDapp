@@ -45,8 +45,8 @@ const ColonyMembersWidget = ({
 
   if (!colony) return null;
 
-  const contributors = data?.getMembersForColony?.contributors ?? [];
-  const watchers = data?.getMembersForColony?.watchers ?? [];
+  const contributors = data?.getMembersForColony?.contributors;
+  const watchers = data?.getMembersForColony?.watchers;
 
   if (loadingMembers) {
     return (

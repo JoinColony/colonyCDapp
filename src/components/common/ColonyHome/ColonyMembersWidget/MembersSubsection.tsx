@@ -13,6 +13,7 @@ import { useAvatarDisplayCounter } from '~hooks';
 import { Colony, Member } from '~types';
 
 import styles from './ColonyMembersWidget.css';
+import { notNull } from '~utils/arrays';
 
 const displayName = 'common.ColonyHome.ColonyMembersWidget.MembersSubsection';
 
@@ -59,7 +60,7 @@ interface Props {
   colony: Colony;
   currentDomainId?: number;
   maxAvatars?: number;
-  members: Member[];
+  members?: Member[] | null;
   isContributorsSubsection: boolean;
 }
 
@@ -125,7 +126,7 @@ const MembersSubsection = ({
     [isContributorsSubsection, membersPageRoute, members, name],
   );
 
-  if (!members.length) {
+  if (members == null) {
     return (
       <div className={styles.main}>
         {setHeading(false)}
@@ -166,11 +167,10 @@ const MembersSubsection = ({
                        */
                       offset: [-208, -12],
                     },
-                  },
-                ],
-              }}
-            />
-            {/* {canAdministerComments && banned && (
+                  ],
+                }}
+              />
+              {/* {canAdministerComments && banned && (
                   <div className={styles.userBanned}>
                     <Icon
                       appearance={{ size: 'extraTiny' }}
@@ -179,8 +179,8 @@ const MembersSubsection = ({
                     />
                   </div>
                 )} */}
-          </li>
-        ))}
+            </li>
+          ))}
         {!!remainingAvatarsCount && (
           <li className={styles.remaningAvatars}>
             <NavLink to={membersPageRoute} title={MSG.viewMore}>
