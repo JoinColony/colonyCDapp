@@ -3,11 +3,14 @@ import { defineMessages } from 'react-intl';
 
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 import MaskedAddress from '~shared/MaskedAddress';
+
 import styles from './ColonyAddress.css';
+
+const displayName = 'common.ColonyHome.ColonyTitle.ColonyAddress';
 
 const MSG = defineMessages({
   copyMessage: {
-    id: 'dashboard.ColonyHome.ColonyTitle.ColonyAddress.copyMessage',
+    id: `${displayName}.copyMessage`,
     defaultMessage: 'Click to copy colony address',
   },
 });
@@ -15,8 +18,6 @@ const MSG = defineMessages({
 interface Props {
   colonyAddress: string;
 }
-
-const displayName = 'dashboard.ColonyHome.ColonyTitle.ColonyAddress';
 
 const ColonyAddress = ({ colonyAddress }: Props) => (
   <InvisibleCopyableAddress
