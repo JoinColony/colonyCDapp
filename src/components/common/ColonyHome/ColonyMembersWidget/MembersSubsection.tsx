@@ -13,6 +13,7 @@ import { useAvatarDisplayCounter } from '~hooks';
 import { Colony, Member } from '~types';
 
 import styles from './ColonyMembersWidget.css';
+import { notNull } from '~utils/arrays';
 
 const displayName = 'common.ColonyHome.ColonyMembersWidget.MembersSubsection';
 
@@ -59,7 +60,7 @@ interface Props {
   colony: Colony;
   currentDomainId?: number;
   maxAvatars?: number;
-  members: Member[];
+  members?: Member[] | null;
   isContributorsSubsection: boolean;
 }
 
@@ -126,7 +127,7 @@ const MembersSubsection = ({
     [isContributorsSubsection, membersPageRoute, members, name],
   );
 
-  if (!members.length) {
+  if (members == null) {
     return (
       <div className={styles.main}>
         {setHeading(false)}
@@ -144,36 +145,39 @@ const MembersSubsection = ({
     <div className={styles.main}>
       {setHeading(true)}
       <ul className={styles.userAvatars}>
-        {members.slice(0, avatarsDisplaySplitRules).map((member) => (
-          <li className={styles.userAvatar} key={member?.user?.walletAddress}>
-            <UserAvatar
-              size="xs"
-              address={member?.user?.walletAddress || ''}
-              // banned={canAdministerComments && banned}
-              showInfo
-              colony={colony}
-              user={member?.user}
-              popperOptions={{
-                placement: 'bottom',
-                showArrow: false,
-                modifiers: [
-                  {
-                    name: 'offset',
-                    options: {
-                      /*
-                       * @NOTE Values are set manual, exactly as the ones provided in the figma spec.
-                       *
-                       * There's no logic to how they are calculated, so next time you need
-                       * to change them you'll either have to go by exact specs, or change
-                       * them until it "feels right" :)
-                       */
-                      offset: [-208, -12],
+        {members
+          .slice(0, avatarsDisplaySplitRules)
+          .filter(notNull)
+          .map((member) => (
+            <li className={styles.userAvatar} key={member.user?.walletAddress}>
+              <UserAvatar
+                size="xs"
+                address={member?.user?.walletAddress || ''}
+                // banned={canAdministerComments && banned}
+                showInfo
+                colony={colony}
+                user={member.user}
+                popperOptions={{
+                  placement: 'bottom',
+                  showArrow: false,
+                  modifiers: [
+                    {
+                      name: 'offset',
+                      options: {
+                        /*
+                         * @NOTE Values are set manual, exactly as the ones provided in the figma spec.
+                         *
+                         * There's no logic to how they are calculated, so next time you need
+                         * to change them you'll either have to go by exact specs, or change
+                         * them until it "feels right" :)
+                         */
+                        offset: [-208, -12],
+                      },
                     },
-                  },
-                ],
-              }}
-            />
-            {/* {canAdministerComments && banned && (
+                  ],
+                }}
+              />
+              {/* {canAdministerComments && banned && (
                   <div className={styles.userBanned}>
                     <Icon
                       appearance={{ size: 'extraTiny' }}
@@ -182,8 +186,8 @@ const MembersSubsection = ({
                     />
                   </div>
                 )} */}
-          </li>
-        ))}
+            </li>
+          ))}
         {!!remainingAvatarsCount && (
           <li className={styles.remaningAvatars}>
             <NavLink to={membersPageRoute} title={MSG.viewMore}>
