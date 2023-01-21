@@ -2,22 +2,22 @@ import React from 'react';
 
 import ColonyTitle from './ColonyTitle';
 import ColonyNavigation from './ColonyNavigation';
+import { useMobile } from '~hooks';
 
 import styles from './ColonyHomeLayout.css';
 
 const displayName = 'common.ColonyHome.ColonyHomeInfo';
 
-interface Props {
-  isMobile: boolean;
-  showNavigation: boolean;
-}
+const ColonyHomeInfo = () => {
+  const isMobile = useMobile();
 
-const ColonyHomeInfo = ({ isMobile, showNavigation }: Props) => (
-  <aside className={styles.leftAside}>
-    <ColonyTitle />
-    {!isMobile && showNavigation && <ColonyNavigation />}
-  </aside>
-);
+  return (
+    <aside className={styles.leftAside}>
+      <ColonyTitle />
+      {!isMobile && <ColonyNavigation />}
+    </aside>
+  );
+};
 
 ColonyHomeInfo.displayName = displayName;
 
