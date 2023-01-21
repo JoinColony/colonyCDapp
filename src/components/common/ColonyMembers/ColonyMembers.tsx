@@ -62,15 +62,13 @@ const ColonyMembers = () => {
   return (
     <div className={styles.main}>
       <div className={styles.mainContentGrid}>
-        {isMobile && <ColonyHomeInfo showNavigation isMobile />}
+        {isMobile && <ColonyHomeInfo />}
         <div className={styles.mainContent}>
-          {colony && (
-            <Members
-              selectedDomain={selectedDomainId}
-              handleDomainChange={setSelectedDomainId}
-              filters={filters}
-            />
-          )}
+          <Members
+            selectedDomain={selectedDomainId}
+            handleDomainChange={setSelectedDomainId}
+            filters={filters}
+          />
         </div>
         <aside className={styles.rightAside}>
           <TotalReputation selectedDomainId={selectedDomainId} />
