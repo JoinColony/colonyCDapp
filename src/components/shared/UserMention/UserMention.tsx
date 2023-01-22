@@ -2,9 +2,7 @@ import React from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
 
 import Link from '~shared/Link';
-import InfoPopover, { Props as InfoPopoverProps } from '~shared/InfoPopover';
-
-import { useUserQuery, useUserAddressQuery } from '~data/index';
+// import InfoPopover, { Props as InfoPopoverProps } from '~shared/InfoPopover';
 
 import styles from './UserMention.css';
 
@@ -33,25 +31,25 @@ const UserMention = ({
   to,
   hasLink,
   showInfo,
-  popperOptions,
+  // popperOptions,
   ...props
 }: Props) => {
   const fallbackTo = to || `/user/${username}`;
-  const popoverProps: Partial<InfoPopoverProps> = {
-    popperOptions,
-    trigger: showInfo ? 'click' : 'disabled',
-    showArrow: popperOptions && popperOptions.showArrow,
-  };
+  // const popoverProps: Partial<InfoPopoverProps> = {
+  //   popperOptions,
+  //   trigger: showInfo ? 'click' : 'disabled',
+  //   showArrow: popperOptions && popperOptions.showArrow,
+  // };
 
-  const { data: userAddressData } = useUserAddressQuery({
-    variables: {
-      name: username || '',
-    },
-  });
+  // const { data: userAddressData } = useUserAddressQuery({
+  //   variables: {
+  //     name: username || '',
+  //   },
+  // });
 
-  const { data } = useUserQuery({
-    variables: { address: userAddressData?.userAddress || '' },
-  });
+  // const { data } = useUserQuery({
+  //   variables: { address: userAddressData?.userAddress || '' },
+  // });
 
   const renderUserMention = () =>
     hasLink ? (
@@ -72,13 +70,15 @@ const UserMention = ({
     return renderUserMention();
   }
 
-  const { user } = data || {};
+  return null;
 
-  return (
-    <InfoPopover user={user} {...popoverProps}>
-      {renderUserMention()}
-    </InfoPopover>
-  );
+  // const { user } = data || {};
+
+  // return (
+  //   <InfoPopover user={user} {...popoverProps}>
+  //     {renderUserMention()}
+  //   </InfoPopover>
+  // );
 };
 
 export default UserMention;
