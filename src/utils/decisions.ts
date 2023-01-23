@@ -1,4 +1,5 @@
-import { DecisionDialogValues } from '~common/ColonyDecisions/DecisionDialog';
+import { CORE_DECISIONS, CORE_DECISIONS_LIST } from '~redux/constants';
+import { CoreDecisionsRecord } from '~redux/state/decisions';
 import { Address, Decision } from '~types';
 
 const getLocalStorageDecisionKey = (walletAddress: Address) =>
@@ -12,7 +13,7 @@ export const getDecisionFromLocalStorage = (walletAddress: Address) => {
 };
 
 export const setDecisionToLocalStorage = (
-  values: DecisionDialogValues,
+  values: Decision,
   walletAddress: Address,
 ) => {
   localStorage.setItem(
@@ -24,3 +25,9 @@ export const setDecisionToLocalStorage = (
 export const removeDecisionFromLocalStorage = (walletAddress: Address) => {
   localStorage.removeItem(getLocalStorageDecisionKey(walletAddress));
 };
+
+export const getDecisionFromStore =
+  (walletAddress: string) => (state: CoreDecisionsRecord) =>
+    state.getIn([CORE_DECISIONS, CORE_DECISIONS_LIST, walletAddress]) as
+      | Decision
+      | undefined;

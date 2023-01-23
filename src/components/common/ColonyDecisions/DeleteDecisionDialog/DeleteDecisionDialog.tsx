@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { defineMessage, FormattedMessage } from 'react-intl';
+import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import Button from '~shared/Button';
@@ -7,7 +8,7 @@ import Dialog, { DialogSection } from '~shared/Dialog';
 import { Heading3 } from '~shared/Heading';
 import { Decision } from '~types';
 import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
-import { removeDecisionFromLocalStorage } from '~utils/decisions';
+import { removeDecisionAction } from '~redux/actionCreators';
 
 import styles from './DeleteDecisionDialog.css';
 
@@ -28,20 +29,19 @@ interface DeleteDecisionDialogProps {
   cancel: () => void;
   close: () => void;
   decision: Decision;
-  setDecision?: ReturnType<typeof useState<Decision>>[1];
 }
 
 const DeleteDecisionDialog = ({
   cancel,
   close,
-  decision,
-  setDecision,
+  decision: { walletAddress },
 }: DeleteDecisionDialogProps) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
+
   const handleDeleteDecision = () => {
-    removeDecisionFromLocalStorage(decision.walletAddress);
-    setDecision?.(undefined);
+    dispatch(removeDecisionAction(walletAddress));
     close();
     if (pathname.includes(DECISIONS_PREVIEW)) {
       // navigate to /decisions

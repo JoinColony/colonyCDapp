@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Decision, User } from '~types';
 
@@ -9,15 +9,14 @@ const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionData';
 export interface DecisionDataProps {
   decision?: Decision;
   user: User;
-  setDecision: ReturnType<typeof useState>[1];
 }
 
-const DecisionData = ({ decision, user, setDecision }: DecisionDataProps) => {
+const DecisionData = ({ decision, user }: DecisionDataProps) => {
   const decisionNotFound =
     !decision || decision.walletAddress !== user?.walletAddress;
 
   if (decisionNotFound) {
-    return <DecisionNotFound setDecision={setDecision} />;
+    return <DecisionNotFound />;
   }
 
   return <DecisionContent decision={decision} user={user} />;

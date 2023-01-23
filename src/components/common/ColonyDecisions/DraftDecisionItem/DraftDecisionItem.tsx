@@ -1,6 +1,6 @@
-import { Placement } from '@popperjs/core';
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Placement } from '@popperjs/core';
 
 import ListItem, { ListItemStatus } from '~shared/ListItem';
 import UserAvatar from '~shared/UserAvatar';
@@ -30,13 +30,9 @@ const avatarPopoverOptions = {
 
 export interface DraftDecisionItemProps {
   decision: Decision;
-  setDecision: ReturnType<typeof useState>[1];
 }
 
-const DraftDecisionItem = ({
-  decision,
-  setDecision,
-}: DraftDecisionItemProps) => {
+const DraftDecisionItem = ({ decision }: DraftDecisionItemProps) => {
   const navigate = useNavigate();
   const { colony } = useColonyContext();
   const { pathname } = useLocation();
@@ -52,9 +48,7 @@ const DraftDecisionItem = ({
   return (
     <div className={styles.draftDecision}>
       <ListItem
-        actions={
-          <DraftDecisionActions decision={decision} setDecision={setDecision} />
-        }
+        actions={<DraftDecisionActions decision={decision} />}
         avatar={
           <UserAvatar
             colony={colony}

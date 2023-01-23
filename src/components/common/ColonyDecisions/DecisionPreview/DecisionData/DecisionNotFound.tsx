@@ -6,8 +6,6 @@ import Button from '~shared/Button';
 import { useDialog } from '~shared/Dialog';
 import { DecisionDialog } from '~common/ColonyDecisions';
 
-import { DecisionDataProps } from './DecisionData';
-
 import styles from './DecisionNotFound.css';
 
 const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionNotFound';
@@ -23,9 +21,7 @@ const MSG = defineMessages({
   },
 });
 
-type DecisionNotFoundProps = Pick<DecisionDataProps, 'setDecision'>;
-
-const DecisionNotFound = ({ setDecision }: DecisionNotFoundProps) => {
+const DecisionNotFound = () => {
   const openDecisionDialog = useDialog(DecisionDialog);
 
   return (
@@ -37,7 +33,6 @@ const DecisionNotFound = ({ setDecision }: DecisionNotFoundProps) => {
         onClick={() => {
           openDecisionDialog({
             ethDomainId: Id.RootDomain,
-            handleSubmit: setDecision,
           });
         }}
       />

@@ -1,1 +1,1 @@
-export { default } from './ColonyHomeLayout';
+export { default, ColonyHomeLayoutProps } from './ColonyHomeLayout';

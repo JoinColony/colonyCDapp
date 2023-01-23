@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import { useAppContext } from '~hooks';
-import { getDecisionFromLocalStorage } from '~utils/decisions';
-import { Decision } from '~types';
+import { getDecisionFromStore } from '~utils/decisions';
 
 // import { SortOptions } from './constants';
 import DraftDecisionItem from './DraftDecisionItem';
@@ -41,21 +41,17 @@ const MSG = defineMessages({
 });
 
 // type Props = {
-//   ethDomainId: number;
+//   //ethDomainId: number;
 // };
 
 // const ITEMS_PER_PAGE = 10;
 
-const ColonyDecisions = (/* {}: ethDomainId Props */) => {
+const ColonyDecisions = () => {
   // const { colonyName } = useParams();
   // const [dataPage, setDataPage] = useState<number>(1);
   const { walletConnecting, userLoading, user } = useAppContext();
-  const walletAddress = user?.walletAddress || '';
-  const [decisionDraft, setDecisionDraft] = useState<Decision>();
-  const decision = getDecisionFromLocalStorage(walletAddress);
-  if (!decisionDraft && decision) {
-    setDecisionDraft(decision);
-  }
+  const decision = useSelector(getDecisionFromStore(user?.walletAddress || ''));
+
   // const navigate = useNavigate();
   // const handleActionRedirect = ({ transactionHash }: RedirectHandlerProps) =>
   //   navigate(`/colony/${colonyName}/decisions/tx/${transactionHash}`);
@@ -192,15 +188,9 @@ const ColonyDecisions = (/* {}: ethDomainId Props */) => {
         </> }
       ) : ( */
         !decisionsLoading && (
-          /* isVotingExtensionEnabled && */ <div
-            className={styles.draftDecisionContainer}
-          >
-            {decisionDraft && (
-              <DraftDecisionItem
-                decision={decisionDraft}
-                setDecision={setDecisionDraft}
-              />
-            )}
+          /* isVotingExtensionEnabled && */
+          <div className={styles.draftDecisionContainer}>
+            {decision && <DraftDecisionItem decision={decision} />}
             <div className={styles.emptyState}>
               <FormattedMessage {...MSG.noDecisionsFound} />
             </div>

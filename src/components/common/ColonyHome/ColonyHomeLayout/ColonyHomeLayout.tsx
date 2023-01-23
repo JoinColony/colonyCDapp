@@ -35,8 +35,8 @@ const isExtensionsRoute = (params: Params) => {
 };
 
 const ColonyHomeLayout = ({
-  filteredDomainId,
   children,
+  filteredDomainId,
   onDomainChange = () => null,
 }: ColonyHomeLayoutProps) => {
   const { colony } = useColonyContext();
