@@ -1,4 +1,3 @@
-import { defineMessage } from 'react-intl';
 import { BigNumber } from 'ethers';
 import { Decimal } from 'decimal.js';
 import { isNil } from 'lodash';
@@ -7,6 +6,8 @@ import { ColonyRoles } from '@colony/colony-js';
 import { getRolesForUserAndDomain } from '~redux/transformers';
 import { AnyUser } from '~data/index';
 import { ActionUserRoles } from '~types';
+
+import { intl } from './intl';
 
 export enum MotionState {
   Staked = 'Staked',
@@ -21,132 +22,106 @@ export enum MotionState {
   Invalid = 'Invalid',
   Escalation = 'Escalation',
   Forced = 'Forced',
+  Draft = 'Draft',
 }
-
 export enum MotionVote {
   Yay = 1,
   Nay = 0,
 }
 
-const MSG = defineMessage({
-  stakedTag: {
-    id: 'dashboard.ActionsPage.stakedTag',
-    defaultMessage: 'Staked',
-  },
-  stakingTag: {
-    id: 'dashboard.ActionsPage.stakingTag',
-    defaultMessage: 'Staking',
-  },
-  votingTag: {
-    id: 'dashboard.ActionsPage.votingTag',
-    defaultMessage: 'Voting',
-  },
-  revealTag: {
-    id: 'dashboard.ActionsPage.revealTag',
-    defaultMessage: 'Reveal',
-  },
-  objectionTag: {
-    id: 'dashboard.ActionsPage.objectionTag',
-    defaultMessage: 'Objection',
-  },
-  motionTag: {
-    id: 'dashboard.ActionsPage.motionTag',
-    defaultMessage: 'Motion',
-  },
-  failedTag: {
-    id: 'dashboard.ActionsPage.failedTag',
-    defaultMessage: 'Failed',
-  },
-  passedTag: {
-    id: 'dashboard.ActionsPage.passedTag',
-    defaultMessage: 'Passed',
-  },
-  invalidTag: {
-    id: 'dashboard.ActionsPage.invalidTag',
-    defaultMessage: 'Invalid',
-  },
-  escalateTag: {
-    id: 'dashboard.ActionsPage.escalateTag',
-    defaultMessage: 'Escalate',
-  },
-  forcedTag: {
-    id: 'dashboard.ActionsPage.forcedTag',
-    defaultMessage: 'Forced',
-  },
+const { formatMessage } = intl({
+  'tag.staked': 'Staked',
+  'tag.staking': 'Staking',
+  'tag.voting': 'Voting',
+  'tag.reveal': 'Reveal',
+  'tag.objection': 'Objection',
+  'tag.motion': 'Motion',
+  'tag.failed': 'Failed',
+  'tag.passed': 'Passed',
+  'tag.invalid': 'Invalid',
+  'tag.escalate': 'Escalate',
+  'tag.forced': 'Forced',
+  'tag.draft': 'Draft',
 });
 
 export const MOTION_TAG_MAP = {
   [MotionState.Staked]: {
     theme: 'primary',
     colorSchema: 'fullColor',
-    name: MSG.stakedTag,
+    name: formatMessage({ id: 'tag.staked' }),
     tagName: 'motionTag',
   },
   [MotionState.Staking]: {
     theme: 'pink',
     colorSchema: 'inverted',
-    name: MSG.stakingTag,
+    name: formatMessage({ id: 'tag.staking' }),
     tagName: 'stakingTag',
   },
   [MotionState.Voting]: {
     theme: 'golden',
     colorSchema: 'fullColor',
-    name: MSG.votingTag,
+    name: formatMessage({ id: 'tag.voting' }),
     tagName: 'votingTag',
   },
   [MotionState.Reveal]: {
     theme: 'blue',
     colorSchema: 'fullColor',
-    name: MSG.revealTag,
+    name: formatMessage({ id: 'tag.reveal' }),
     tagName: 'revealTag',
   },
   [MotionState.Objection]: {
     theme: 'pink',
     colorSchema: 'fullColor',
-    name: MSG.objectionTag,
+    name: formatMessage({ id: 'tag.objection' }),
     tagName: 'objectionTag',
   },
   [MotionState.Motion]: {
     theme: 'primary',
     colorSchema: 'fullColor',
-    name: MSG.motionTag,
+    name: formatMessage({ id: 'tag.motion' }),
     tagName: 'motionTag',
   },
   [MotionState.Failed]: {
     theme: 'pink',
     colorSchema: 'plain',
-    name: MSG.failedTag,
+    name: formatMessage({ id: 'tag.failed' }),
     tagName: 'failedTag',
   },
   [MotionState.FailedNoFinalizable]: {
     theme: 'pink',
     colorSchema: 'plain',
-    name: MSG.failedTag,
+    name: formatMessage({ id: 'tag.failed' }),
     tagName: 'failedTag',
   },
   [MotionState.Passed]: {
     theme: 'primary',
     colorSchema: 'plain',
-    name: MSG.passedTag,
+    name: formatMessage({ id: 'tag.passed' }),
     tagName: 'passedTag',
   },
   [MotionState.Invalid]: {
     theme: 'pink',
     colorSchema: 'plain',
-    name: MSG.invalidTag,
+    name: formatMessage({ id: 'tag.invalid' }),
     tagName: 'invalidTag',
   },
   [MotionState.Escalation]: {
     theme: 'dangerGhost',
     colorSchema: 'plain',
-    name: MSG.escalateTag,
+    name: formatMessage({ id: 'tag.escalate' }),
     tagName: 'escalateTag',
   },
   [MotionState.Forced]: {
     theme: 'blue',
     colorSchema: 'inverted',
-    name: MSG.forcedTag,
+    name: formatMessage({ id: 'tag.forced' }),
     tagName: 'forcedTag',
+  },
+  [MotionState.Draft]: {
+    theme: 'golden',
+    colorSchema: 'fullColor',
+    name: formatMessage({ id: 'tag.draft' }),
+    tagName: 'draftTag',
   },
 };
 

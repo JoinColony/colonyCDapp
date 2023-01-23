@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessage, FormattedMessage } from 'react-intl';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -28,20 +28,25 @@ interface DeleteDecisionDialogProps {
   cancel: () => void;
   close: () => void;
   decision: Decision;
+  setDecision?: ReturnType<typeof useState<Decision>>[1];
 }
 
 const DeleteDecisionDialog = ({
   cancel,
   close,
   decision,
+  setDecision,
 }: DeleteDecisionDialogProps) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-
   const handleDeleteDecision = () => {
     removeDecisionFromLocalStorage(decision.walletAddress);
+    setDecision?.(undefined);
     close();
-    navigate(pathname.slice(0, -DECISIONS_PREVIEW.length));
+    if (pathname.includes(DECISIONS_PREVIEW)) {
+      // navigate to /decisions
+      navigate(pathname.slice(0, -DECISIONS_PREVIEW.length));
+    }
   };
 
   return (

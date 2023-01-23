@@ -32,7 +32,6 @@ const MSG = defineMessages({
 const DecisionPreview = () => {
   const { user, walletConnecting, userLoading } = useAppContext();
   const walletAddress = user?.walletAddress || '';
-
   const [decisionPreview, setDecisionPreview] = useState<Decision>();
   const decision = getDecisionFromLocalStorage(walletAddress);
 

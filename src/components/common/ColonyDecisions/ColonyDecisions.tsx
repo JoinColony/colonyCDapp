@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { useNavigate, useParams } from 'react-router-dom';
 
-import { ClickHandlerProps as RedirectHandlerProps } from '~shared/ActionsList';
 import { SpinnerLoader } from '~shared/Preloaders';
+import { useAppContext } from '~hooks';
+import { getDecisionFromLocalStorage } from '~utils/decisions';
+import { Decision } from '~types';
 
 // import { SortOptions } from './constants';
+import DraftDecisionItem from './DraftDecisionItem';
 
 import styles from './ColonyDecisions.css';
 
@@ -38,19 +40,25 @@ const MSG = defineMessages({
   },
 });
 
-type Props = {
-  ethDomainId: number;
-};
+// type Props = {
+//   ethDomainId: number;
+// };
 
-const ITEMS_PER_PAGE = 10;
+// const ITEMS_PER_PAGE = 10;
 
-const ColonyDecisions = ({ ethDomainId }: Props) => {
-  const { colonyName } = useParams();
-  const [dataPage, setDataPage] = useState<number>(1);
-
-  const navigate = useNavigate();
-  const handleActionRedirect = ({ transactionHash }: RedirectHandlerProps) =>
-    navigate(`/colony/${colonyName}/decisions/tx/${transactionHash}`);
+const ColonyDecisions = (/* {}: ethDomainId Props */) => {
+  // const { colonyName } = useParams();
+  // const [dataPage, setDataPage] = useState<number>(1);
+  const { walletConnecting, userLoading, user } = useAppContext();
+  const walletAddress = user?.walletAddress || '';
+  const [decisionDraft, setDecisionDraft] = useState<Decision>();
+  const decision = getDecisionFromLocalStorage(walletAddress);
+  if (!decisionDraft && decision) {
+    setDecisionDraft(decision);
+  }
+  // const navigate = useNavigate();
+  // const handleActionRedirect = ({ transactionHash }: RedirectHandlerProps) =>
+  //   navigate(`/colony/${colonyName}/decisions/tx/${transactionHash}`);
 
   //   const [sortOption, setSortOption] = useState<string>(
   //     SortOptions.ENDING_SOONEST,
@@ -120,7 +128,7 @@ const ColonyDecisions = ({ ethDomainId }: Props) => {
   //   );
 
   // @TODO: Replace with query loading state.
-  const decisionsLoading = false;
+  const decisionsLoading = walletConnecting || userLoading;
   if (decisionsLoading) {
     return (
       <div className={styles.loadingSpinner}>
@@ -170,7 +178,6 @@ const ColonyDecisions = ({ ethDomainId }: Props) => {
               </div>
             </Form>
           </div>
-          <DraftDecisionItem colony={colony} {...props} />
           <ActionsList
             items={paginatedDecisions}
             handleItemClick={handleActionRedirect}
@@ -183,12 +190,17 @@ const ColonyDecisions = ({ ethDomainId }: Props) => {
             />
           )}
         </> }
-      ) : (*/
+      ) : ( */
         !decisionsLoading && (
-          /*isVotingExtensionEnabled &&*/ <div
+          /* isVotingExtensionEnabled && */ <div
             className={styles.draftDecisionContainer}
           >
-            {/* <DraftDecisionItem colony={colony} {...props} /> */}
+            {decisionDraft && (
+              <DraftDecisionItem
+                decision={decisionDraft}
+                setDecision={setDecisionDraft}
+              />
+            )}
             <div className={styles.emptyState}>
               <FormattedMessage {...MSG.noDecisionsFound} />
             </div>
