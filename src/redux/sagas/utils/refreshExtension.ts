@@ -1,4 +1,5 @@
 import { getExtensionHash } from '@colony/colony-js';
+
 import { ADDRESS_ZERO } from '~constants';
 import { ContextModule, getContext } from '~context';
 import {
@@ -128,6 +129,25 @@ export const refreshEnabledExtension = (
   const modifiedExtension: ColonyExtension = {
     ...existingExtension,
     isInitialized: true,
+  };
+
+  saveExtensionInCache(modifiedExtension);
+};
+
+export const refreshUpgradedExtension = (
+  colonyAddress: string,
+  extensionId: string,
+  version: number,
+) => {
+  const existingExtension = getExistingExtension(colonyAddress, extensionId);
+
+  if (!existingExtension) {
+    return;
+  }
+
+  const modifiedExtension: ColonyExtension = {
+    ...existingExtension,
+    currentVersion: version,
   };
 
   saveExtensionInCache(modifiedExtension);
