@@ -44,10 +44,6 @@ const ExtensionStatusBadge = ({
   let status;
   let theme;
 
-  if (!extensionData) {
-    return null;
-  }
-
   if (!isInstalledExtensionData(extensionData)) {
     status = MSG.notInstalled;
   } else if (extensionData.isDeprecated) {
