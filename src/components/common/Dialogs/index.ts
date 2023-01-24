@@ -9,7 +9,7 @@ export { default as UnlockTokenDialog } from './UnlockTokenDialog';
 export { default as TransferFundsDialog } from './TransferFundsDialog';
 // export { default as AdvancedDialog } from './AdvancedDialog';
 // export { default as PermissionManagementDialog } from './PermissionManagementDialog';
-// export { default as ManageWhitelistDialog } from './ManageWhitelistDialog';
+export { default as ManageWhitelistDialog } from './ManageWhitelistDialog';
 export { default as MintTokenDialog } from './MintTokenDialog';
 // export { default as NetworkContractUpgradeDialog } from './NetworkContractUpgradeDialog';
 // export { default as EditColonyDetailsDialog } from './EditColonyDetailsDialog';
