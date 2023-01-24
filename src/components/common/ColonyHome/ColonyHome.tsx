@@ -10,7 +10,6 @@ import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 // import { allAllowedExtensions } from '~data/staticData/';
 
 import ColonyActions from '~common/ColonyActions';
-// import ColonyActions from '~dashboard/ColonyActions';
 // import ColonyEvents from '~dashboard/ColonyEvents';
 
 import {
