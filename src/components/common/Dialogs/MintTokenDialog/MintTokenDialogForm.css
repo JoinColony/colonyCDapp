@@ -1,0 +1,65 @@
+@value wideButton: 160px;
+@value query700 from '~styles/queries.css';
+
+.modalHeading {
+  padding: 32px 0 20px;
+}
+
+.headingContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.inputComponent {
+  flex-grow: 1;
+}
+
+.inputComponent input {
+  text-align: right;
+}
+
+.inputComponent label {
+  color: var(--dark);
+}
+
+.nativeToken {
+  padding: 0 50px 0 20px;
+}
+
+.annotation {
+  margin-top: 30px;
+}
+
+.noPermissionMessage {
+  margin-bottom: 20px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  line-height: 18px;
+  color: var(--danger);
+}
+
+.noPermissionMessage > div {
+  vertical-align: bottom;
+}
+
+.motionVoteDomain {
+  margin: 6px 0;
+}
+
+@media screen and query700 {
+  .inputContainer > div {
+    min-height: 75px;
+  }
+
+  .nativeToken {
+    padding: 15px 10px 10px;
+  }
+}

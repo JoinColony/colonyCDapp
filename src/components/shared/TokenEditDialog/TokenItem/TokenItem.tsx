@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import Heading from '~shared/Heading';
-import { Checkbox } from '~shared/Fields';
+import { HookFormCheckbox as Checkbox } from '~shared/Fields';
 import TokenIcon from '~shared/TokenIcon';
 import { Token } from '~types';
 
