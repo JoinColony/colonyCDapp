@@ -1,7 +1,12 @@
 import React from 'react';
 import { MessageDescriptor, defineMessages, FormattedDate } from 'react-intl';
 
-import { AnyExtensionData, Colony } from '~types';
+import {
+  AnyExtensionData,
+  Colony,
+  InstallableExtensionData,
+  InstalledExtensionData,
+} from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
 import DetailsWidgetUser from '~shared/DetailsWidgetUser';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
@@ -52,57 +57,59 @@ export type TableRowData = {
   value: string | JSX.Element;
 };
 
-export const getTableData = (
-  extensionData: AnyExtensionData,
+const getInstalledExtensionTableData = (
+  extensionData: InstalledExtensionData,
   colony: Colony,
-): TableRowData[] => {
-  const statusRow = {
-    label: MSG.status,
-    value: <ExtensionStatusBadge extensionData={extensionData} />,
-  };
-  const developerRow = {
-    label: MSG.developer,
-    value: 'Colony',
-  };
-
-  if (isInstalledExtensionData(extensionData)) {
-    return [
-      statusRow,
-      {
-        label: MSG.installedBy,
-        value: (
-          <span className={styles.installedBy}>
-            <DetailsWidgetUser
-              colony={colony}
-              walletAddress={extensionData.installedBy}
-            />
-          </span>
-        ),
-      },
-      {
-        label: MSG.dateInstalled,
-        value: <FormattedDate value={extensionData.installedAt * 1000} />,
-      },
-      {
-        label: MSG.versionInstalled,
-        value: `v${extensionData.currentVersion}`,
-      },
-      {
-        label: MSG.contractAddress,
-        value: (
-          <InvisibleCopyableAddress address={extensionData.address}>
-            <span className={styles.contractAddress}>
-              <MaskedAddress address={extensionData.address} />
-            </span>
-          </InvisibleCopyableAddress>
-        ),
-      },
-      developerRow,
-    ];
-  }
-
+) => {
   return [
-    statusRow,
+    {
+      label: MSG.status,
+      value: <ExtensionStatusBadge extensionData={extensionData} />,
+    },
+    {
+      label: MSG.installedBy,
+      value: (
+        <span className={styles.installedBy}>
+          <DetailsWidgetUser
+            colony={colony}
+            walletAddress={extensionData.installedBy}
+          />
+        </span>
+      ),
+    },
+    {
+      label: MSG.dateInstalled,
+      value: <FormattedDate value={extensionData.installedAt * 1000} />,
+    },
+    {
+      label: MSG.versionInstalled,
+      value: `v${extensionData.currentVersion}`,
+    },
+    {
+      label: MSG.contractAddress,
+      value: (
+        <InvisibleCopyableAddress address={extensionData.address}>
+          <span className={styles.contractAddress}>
+            <MaskedAddress address={extensionData.address} />
+          </span>
+        </InvisibleCopyableAddress>
+      ),
+    },
+    {
+      label: MSG.developer,
+      value: 'Colony',
+    },
+  ];
+};
+
+const getInstallableExtensionData = (
+  extensionData: InstallableExtensionData,
+) => {
+  return [
+    {
+      label: MSG.status,
+      value: <ExtensionStatusBadge extensionData={extensionData} />,
+    },
     {
       label: MSG.dateCreated,
       value: <FormattedDate value={extensionData.createdAt} />,
@@ -115,6 +122,18 @@ export const getTableData = (
       //   <Icon name="triangle-warning" title={MSG.warning} />
       // ),
     },
-    developerRow,
+    {
+      label: MSG.developer,
+      value: 'Colony',
+    },
   ];
+};
+
+export const getTableData = (
+  extensionData: AnyExtensionData,
+  colony: Colony,
+): TableRowData[] => {
+  return isInstalledExtensionData(extensionData)
+    ? getInstalledExtensionTableData(extensionData, colony)
+    : getInstallableExtensionData(extensionData);
 };

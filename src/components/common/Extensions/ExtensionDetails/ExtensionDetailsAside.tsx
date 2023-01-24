@@ -10,9 +10,9 @@ import { useColonyContext } from '~hooks';
 
 import ExtensionActionButton from '../ExtensionActionButton';
 import ExtensionUpgradeButton from '../ExtensionUpgradeButton';
+import { getTableData } from './tableData';
 
 import styles from './ExtensionDetails.css';
-import { getTableData } from './tableData';
 
 export const displayName =
   'common.Extensions.ExtensionDetails.ExtensionDetailsAside';
