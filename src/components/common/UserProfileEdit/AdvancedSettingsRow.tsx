@@ -101,7 +101,6 @@ export const getAdvancedSettingsRows = (
         label={MSG.labelRPC}
         inputName={SlotKey.CustomRPC}
         toggleName={SlotKey.DecentralizedMode}
-        handleValidation={undefined} // @TODO validation to be added later.
       />
     ),
   },

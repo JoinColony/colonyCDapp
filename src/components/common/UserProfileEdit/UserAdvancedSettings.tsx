@@ -11,11 +11,13 @@ import useUserSettings, {
   UserSettingsHook,
 } from '~hooks/useUserSettings';
 import { canUseMetatransactions } from '~utils/checks';
+import { yupDebounce } from '~utils/yup/tests';
 
 import AdvancedSettingsRow, {
   getAdvancedSettingsRows,
 } from './AdvancedSettingsRow';
 import SaveForm from './SaveForm';
+import { isValidURL, validateCustomGnosisRPC } from './validation';
 
 import styles from './UserAdvancedSettings.css';
 
@@ -26,9 +28,13 @@ const MSG = defineMessages({
     id: `${displayName}.heading`,
     defaultMessage: 'Advanced settings {learnMoreLink}',
   },
-  rpcErrorMessage: {
-    id: `${displayName}.rpcErrorMessage`,
+  invalidURLError: {
+    id: `${displayName}.invalidURLError`,
     defaultMessage: 'Enter a valid URL',
+  },
+  invalidRPCError: {
+    id: `${displayName}.invalidRPCError`,
+    defaultMessage: 'Unable to validate RPC endpoint',
   },
 });
 
@@ -39,7 +45,17 @@ const validationSchema = object({
     .defined()
     .when(`${[SlotKey.DecentralizedMode]}`, {
       is: true,
-      then: string().url(() => MSG.rpcErrorMessage),
+      then: string()
+        .required(() => MSG.invalidURLError)
+        .url(() => MSG.invalidURLError)
+        .test(
+          'gnosisRpc',
+          () => MSG.invalidRPCError,
+          yupDebounce(validateCustomGnosisRPC, 200, {
+            isOptional: false,
+            circuitBreaker: isValidURL,
+          }),
+        ),
     }),
 }).defined();
 
@@ -103,7 +119,7 @@ const UserAdvancedSettings = () => {
         onSubmit={handleSubmit}
         resetOnSubmit
       >
-        {({ formState: { isValid, isDirty } }) => (
+        {({ formState: { isValid, isDirty, isValidating } }) => (
           <div className={styles.main}>
             {advancedSettingsRows.map((row) => (
               <AdvancedSettingsRow
@@ -118,7 +134,12 @@ const UserAdvancedSettings = () => {
               />
             ))}
             <SaveForm
-              disabled={!metatransactionsAvailable || !isValid || !isDirty}
+              disabled={
+                !metatransactionsAvailable ||
+                !isValid ||
+                !isDirty ||
+                isValidating
+              }
               setShowSnackbar={setShowSnackbar}
               showSnackbar={showSnackbar}
             />
