@@ -2,10 +2,10 @@ import { Colony } from '~types';
 import {
   ColonyActionsDialog,
   ManageExpenditureDialog,
-  // CreateDomainDialog,
-  // EditDomainDialog,
+  CreateDomainDialog,
+  EditDomainDialog,
   CreatePaymentDialog,
-  // ManageDomainsDialog,
+  ManageDomainsDialog,
   ManageFundsDialog,
   UnlockTokenDialog,
   TransferFundsDialog,
@@ -77,28 +77,31 @@ export const getWizardFlowConfig = (
       colony,
     },
   },
-  // {
-  //   component: ManageDomainsDialog,
-  //   props: {
-  //     prevStep: 'common.ColonyActionsDialog',
-  //     nextStep: 'common.CreateDomainDialog',
-  //     nextStepEdit: 'common.EditDomainDialog',
-  //     nextStepManageWhitelist: 'common.ManageWhitelistDialog',
-  //   },
-  // },
-  // {
-  //   component: CreateDomainDialog,
-  //   props: {
-  //     prevStep: 'common.ManageDomainsDialog',
-  //   },
-  // },
-  // {
-  //   component: EditDomainDialog,
-  //   props: {
-  //     prevStep: 'common.ManageDomainsDialog',
-  //     filteredDomainId,
-  //   },
-  // },
+  {
+    component: ManageDomainsDialog,
+    props: {
+      prevStep: 'common.ColonyActionsDialog',
+      nextStep: 'common.CreateDomainDialog',
+      nextStepEdit: 'common.EditDomainDialog',
+      nextStepManageWhitelist: 'common.ManageWhitelistDialog',
+      colony,
+    },
+  },
+  {
+    component: CreateDomainDialog,
+    props: {
+      prevStep: 'common.ManageDomainsDialog',
+      colony,
+    },
+  },
+  {
+    component: EditDomainDialog,
+    props: {
+      prevStep: 'common.ManageDomainsDialog',
+      filteredDomainId,
+      colony,
+    },
+  },
   // {
   //   component: ManageReputationDialog,
   //   props: {
