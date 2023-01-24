@@ -139,6 +139,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
     // @NOTE: This is for testing only, should be set to false afterwards
     uninstallable: true,
+    createdAt: 1557698400000,
   },
   {
     extensionId: Extension.VotingReputation,
@@ -259,5 +260,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
     ],
     uninstallable: true,
+    createdAt: 1603915271852,
   },
 ];

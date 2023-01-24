@@ -1,7 +1,7 @@
 import React from 'react';
 import { isEmpty } from 'lodash';
 
-import { AnyToken } from '~data/index';
+import { Token } from '~types';
 
 import TokenInfo from './TokenInfo';
 import NotAvailableMessage from './NotAvailableMessage';
@@ -9,7 +9,7 @@ import NotAvailableMessage from './NotAvailableMessage';
 import styles from './InfoPopover.css';
 
 interface Props {
-  token?: AnyToken;
+  token?: Token;
   isTokenNative: boolean;
 }
 

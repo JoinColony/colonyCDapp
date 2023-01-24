@@ -2,15 +2,12 @@ import React from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
 
 import Avatar from '~shared/Avatar';
-// import InfoPopover, { Props as InfoPopoverProps } from '~shared/InfoPopover';
+import InfoPopover, { Props as InfoPopoverProps } from '~shared/InfoPopover';
 import Link from '~shared/NavLink';
-import { Address } from '~types';
-// import { AnyUser, Colony } from '~data/index';
-// import { getUsername } from '~redux/transformers';
-import { User } from '~types';
+import { Address, Colony, User } from '~types';
+import { getMainClasses } from '~utils/css';
 
 import styles from './UserAvatar.css';
-import { getMainClasses } from '~utils/css';
 
 interface BaseProps {
   /** Address of the current user for identicon fallback */
@@ -38,7 +35,6 @@ interface BaseProps {
   size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
 
   /** The corresponding user object if available */
-  // user?: AnyUser;
   user?: User;
 
   /** Banned comment status */
@@ -47,9 +43,7 @@ interface BaseProps {
 
 /** Used for the infopopover */
 interface PropsForReputation extends BaseProps {
-  // colony?: Colony;
-  colony?: Record<string, unknown>;
-  domainId?: number;
+  colony?: Colony;
 }
 
 export type Props = BaseProps | PropsForReputation;
@@ -69,61 +63,48 @@ const UserAvatar = ({
   user,
   ...rest
 }: Props) => {
-  // const username = getUsername(user);
-  // const username = 'tempUser';
-  // let popoverProps: InfoPopoverProps = {
-  //   popperOptions,
-  //   trigger: showInfo ? 'click' : 'disabled',
-  //   user,
-  //   showArrow: popperOptions && popperOptions.showArrow,
-  // };
-  // if ('colony' in rest) {
-  //   const { colony, domainId } = rest;
-  //   popoverProps = {
-  //     ...popoverProps,
-  //     banned,
-  //     colony,
-  //     domainId,
-  //   };
-  // }
-  // const avatar = (
-  //   <InfoPopover {...popoverProps}>
-  //     <div
-  //       // @ts-ignore
-  //       className={getMainClasses({}, styles, {
-  //         showOnClick: popoverProps.trigger === 'click',
-  //       })}
-  //     >
-  //       <Avatar
-  //         avatarURL={avatarURL}
-  //         className={className}
-  //         notSet={typeof notSet === 'undefined' ? true : notSet}
-  //         placeholderIcon="circle-person"
-  //         seed={address && address.toLowerCase()}
-  //         size={size}
-  //         title={showInfo ? '' : username || address}
-  //       />
-  //     </div>
-  //   </InfoPopover>
-  // );
-  // if (showLink && username) {
-  //   // Won't this always be lowercase?
-  //   return <Link to={`/user/${username.toLowerCase()}`}>{avatar}</Link>;
-  // }
-  // return avatar;
-  return (
-    <Avatar
-      avatarURL={avatarURL}
-      className={className}
-      notSet={typeof notSet === 'undefined' ? true : notSet}
-      placeholderIcon="circle-person"
-      seed={address && address.toLowerCase()}
-      size={size}
-      title={
-        showInfo ? '' : user?.profile?.displayName || user?.name || address
-      }
-    />
+  let popoverProps: InfoPopoverProps = {
+    popperOptions,
+    trigger: showInfo ? 'click' : 'disabled',
+    user,
+    showArrow: !!popperOptions?.showArrow,
+  };
+  if ('colony' in rest) {
+    const { colony } = rest;
+    popoverProps = {
+      ...popoverProps,
+      banned,
+      colony,
+    };
+  }
+  const avatar = (
+    <InfoPopover {...popoverProps}>
+      <div
+        className={getMainClasses(
+          {},
+          styles as unknown as { [k: string]: string },
+          {
+            showOnClick: popoverProps.trigger === 'click',
+          },
+        )}
+      >
+        <Avatar
+          avatarURL={avatarURL}
+          className={className}
+          notSet={notSet ?? true}
+          placeholderIcon="circle-person"
+          seed={address && address.toLowerCase()}
+          size={size}
+          title={showInfo ? '' : user?.name || address}
+        />
+      </div>
+    </InfoPopover>
   );
+  if (showLink && user?.name) {
+    // Won't this always be lowercase?
+    return <Link to={`/user/${user.name.toLowerCase()}`}>{avatar}</Link>;
+  }
+  return avatar;
 };
 
 UserAvatar.displayName = displayName;

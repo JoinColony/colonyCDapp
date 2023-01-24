@@ -5,9 +5,7 @@ import { AddressZero } from '@ethersproject/constants';
 import CopyableAddress from '~shared/CopyableAddress';
 import TokenLink from '~shared/TokenLink';
 import Button from '~shared/Button';
-
-import TokenIcon from '~dashboard/HookedTokenIcon';
-import { AnyToken } from '~data/index';
+import { Token } from '~types';
 import { DEFAULT_NETWORK_INFO } from '~constants';
 
 import styles from './InfoPopover.css';
@@ -28,7 +26,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  token: AnyToken;
+  token: Token;
   isTokenNative: boolean;
 }
 
@@ -38,7 +36,7 @@ const TokenInfo = ({ token, isTokenNative }: Props) => {
   const {
     name,
     symbol,
-    address,
+    tokenAddress,
     // decimals,
   } = token;
 
@@ -62,11 +60,11 @@ const TokenInfo = ({ token, isTokenNative }: Props) => {
       <div className={styles.section}>
         {name && (
           <div title={name} className={styles.displayName}>
-            <TokenIcon
+            {/* <TokenIcon
               token={token}
               name={token.name || undefined}
               size="xxs"
-            />
+            /> */}
             {name}
           </div>
         )}
@@ -75,8 +73,8 @@ const TokenInfo = ({ token, isTokenNative }: Props) => {
             {symbol}
           </p>
         )}
-        <div title={address} className={styles.address}>
-          <CopyableAddress full>{address}</CopyableAddress>
+        <div title={tokenAddress} className={styles.address}>
+          <CopyableAddress full>{tokenAddress}</CopyableAddress>
         </div>
         {isTokenNative && (
           <p className={styles.nativeTokenMessage}>
@@ -87,13 +85,13 @@ const TokenInfo = ({ token, isTokenNative }: Props) => {
       <div className={styles.section}>
         <TokenLink
           className={styles.etherscanLink}
-          tokenAddress={address}
+          tokenAddress={tokenAddress}
           text={MSG.viewOnEtherscan}
           textValues={{
             blockExplorerName: DEFAULT_NETWORK_INFO.blockExplorerName,
           }}
         />
-        {address !== AddressZero && (
+        {tokenAddress !== AddressZero && (
           <span className={styles.addToWallet}>
             <Button
               appearance={{ theme: 'blue' }}

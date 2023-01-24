@@ -32,6 +32,13 @@ const MSG = defineMessages({
   },
 });
 
+const HeadingChunks = (chunks: React.ReactNode[]) => (
+  // @TODO: Change to Heading4 component
+  <Heading tagName="h4" appearance={{ size: 'medium', margin: 'small' }}>
+    {chunks}
+  </Heading>
+);
+
 const ExtensionDetails = () => {
   const { extensionId } = useParams();
   const { colony } = useColonyContext();
@@ -65,19 +72,19 @@ const ExtensionDetails = () => {
     breadCrumbs.push(MSG.setup);
   }
 
+  const hasRegisteredProfile = !!user;
   // @TODO: Extend these checks to include permissions, account and network interaction
   const canExtensionBeUninstalled = !!(
+    hasRegisteredProfile &&
     isInstalledExtensionData(extensionData) &&
     extensionData.uninstallable &&
     extensionData.isDeprecated
   );
   const canExtensionBeDeprecated =
+    hasRegisteredProfile &&
     isInstalledExtensionData(extensionData) &&
     extensionData.uninstallable &&
     !extensionData.isDeprecated;
-  // @TODO: Check if the latest network extension version is greater than the current version
-  const canExtensionBeUpgraded =
-    !!user?.profile && isInstalledExtensionData(extensionData);
 
   return (
     <div className={styles.main}>
@@ -85,7 +92,6 @@ const ExtensionDetails = () => {
         <BreadCrumb elements={breadCrumbs} />
         <hr className={styles.headerLine} />
       </div>
-
       <div>
         <Routes>
           <Route
@@ -102,29 +108,12 @@ const ExtensionDetails = () => {
                   text={extensionData.name}
                 />
 
-                {/* @TODO: Handle h4 chunks */}
-                <FormattedMessage {...extensionData.descriptionLong} />
-
-                {/* @NOTE: This is some ugly displayed extension info until we have a nice table */}
-                <div>
-                  Details of <FormattedMessage {...extensionData.name} />
-                  <br />
-                  {isInstalledExtensionData(extensionData) ? (
-                    <>
-                      <div>
-                        Is Initialized:{' '}
-                        {extensionData.isInitialized ? 'yes' : 'no'}
-                      </div>
-                      <div>
-                        Is Deprecated:{' '}
-                        {extensionData.isDeprecated ? 'yes' : 'no'}
-                      </div>
-                      <div>Version: {extensionData.currentVersion}</div>
-                    </>
-                  ) : (
-                    <div>This extension is not installed</div>
-                  )}
-                </div>
+                <FormattedMessage
+                  {...extensionData.descriptionLong}
+                  values={{
+                    h4: HeadingChunks,
+                  }}
+                />
               </div>
             }
           />
@@ -134,7 +123,6 @@ const ExtensionDetails = () => {
               element={<ExtensionSetup extensionData={extensionData} />}
             />
           )}
-
           <Route path="*" element={<NotFoundRoute />} />
         </Routes>
       </div>
@@ -143,7 +131,6 @@ const ExtensionDetails = () => {
         extensionData={extensionData}
         canBeDeprecated={canExtensionBeDeprecated}
         canBeUninstalled={canExtensionBeUninstalled}
-        canBeUpgraded={canExtensionBeUpgraded}
       />
     </div>
   );
