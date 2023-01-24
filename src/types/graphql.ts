@@ -1,6 +1,7 @@
 import {
   UserFragment,
   ColonyFragment,
+  DomainFragment,
   WatcherFragment,
   TokenFragment,
   WatchListItemFragment,
@@ -18,3 +19,5 @@ export type Token = TokenFragment;
 export type WatchListItem = WatchListItemFragment;
 
 export type WatchedColony = WatchedColonyFragment;
+
+export type Domain = DomainFragment;

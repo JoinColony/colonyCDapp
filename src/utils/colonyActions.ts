@@ -3,8 +3,13 @@ import { BigNumber } from 'ethers';
 import { ReactNode } from 'react';
 // import { sortBy, isEqual } from '~utils/lodash';
 
-import { ColonyActions, ColonyMotions, Token, Address } from '~types';
-import { Domain as ColonyDomain } from '~gql';
+import {
+  ColonyActions,
+  ColonyMotions,
+  Token,
+  Address,
+  Domain as ColonyDomain,
+} from '~types';
 import { MotionVote } from '~utils/colonyMotions';
 
 // type ValuesForActionTypesMap = Partial<{

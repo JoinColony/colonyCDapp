@@ -1,5 +1,4 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 // import { defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~hooks';
@@ -31,9 +30,6 @@ const DecisionPreviewControls = ({
   // const navigate = useNavigate();
   const { colony } = useColonyContext();
   const colonyAddress = colony?.colonyAddress;
-  const { colonyName } = useParams<{
-    colonyName: string;
-  }>();
 
   //const openConfirmDeleteDialog = useDialog(ConfirmDeleteDialog);
   //  const openDecisionDialog = useDialog(DecisionDialog);
@@ -79,7 +75,7 @@ const DecisionPreviewControls = ({
         success={ActionTypes.MOTION_CREATE_DECISION_SUCCESS}
         values={{
           colonyAddress,
-          colonyName,
+          colonyName: colony?.name,
           decisionTitle: decision?.title,
           decisionDescription: decision?.description,
           motionDomainId: decision?.motionDomainId,
