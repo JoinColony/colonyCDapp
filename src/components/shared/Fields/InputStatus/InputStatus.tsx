@@ -1,11 +1,13 @@
 import { MessageDescriptor, useIntl } from 'react-intl';
 import React from 'react';
+import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 
-import { isNil } from 'lodash';
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
+import { isNil } from '~utils/lodash';
 
 import { InputComponentAppearance as Appearance } from '../Input';
+
 import styles from './InputStatus.css';
 
 interface Props {
@@ -13,7 +15,12 @@ interface Props {
   appearance?: Appearance;
 
   /** Error text (if applicable) */
-  error?: string | MessageDescriptor;
+  error?:
+    | string
+    | MessageDescriptor
+    | FieldError
+    | Merge<FieldError, FieldErrorsImpl<any>>
+    | undefined;
 
   /** Status text (if applicable) */
   status?: string | MessageDescriptor;
@@ -33,7 +40,19 @@ const InputStatus = ({
   touched,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const errorText = typeof error === 'object' ? formatMessage(error) : error;
+  const getErrorText = () => {
+    if (typeof error === 'string' || !error) {
+      return error;
+    }
+    if ('message' in error) {
+      return error.message?.toString();
+    }
+    if ('id' in error) {
+      return formatMessage(error);
+    }
+    return error;
+  };
+  const errorText = getErrorText();
   const statusText =
     typeof status === 'object' ? formatMessage(status, statusValues) : status;
   const text = errorText || statusText;
@@ -45,7 +64,7 @@ const InputStatus = ({
         hidden: !text || (!!error && !isNil(touched) && !touched),
       })}
     >
-      {text}
+      {text as string}
     </Element>
   );
 };

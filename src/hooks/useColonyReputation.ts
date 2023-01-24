@@ -19,6 +19,6 @@
 //   return data?.colonyReputation !== '0' && !error;
 // };
 
-const useColonyReputation = (...args) => args;
+const useColonyReputation = () => true;
 
 export default useColonyReputation;

@@ -1,8 +1,8 @@
-import React, { ReactNode, RefObject, useState } from 'react';
+import React, { ReactNode, useState } from 'react'; // RefObject
 import { MessageDescriptor, useIntl } from 'react-intl';
-import { useField } from 'formik';
 import cx from 'classnames';
 import { nanoid } from 'nanoid';
+import { useFormContext } from 'react-hook-form';
 
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
@@ -33,10 +33,6 @@ export interface Props {
   help?: string | MessageDescriptor;
   /** Help text values for intl interpolation */
   helpValues?: SimpleMessageValues;
-  /** Textarea html `id` attribute */
-  id?: string;
-  /** Pass a ref to the `<textarea>` element */
-  innerRef?: RefObject<HTMLTextAreaElement>;
   /** Input label text */
   label: string | MessageDescriptor;
   /** Input label values for intl interpolation */
@@ -67,8 +63,6 @@ const Textarea = ({
   extra,
   help,
   helpValues,
-  id: idProp,
-  innerRef,
   label,
   labelValues,
   maxLength = undefined,
@@ -81,13 +75,14 @@ const Textarea = ({
   dataTest,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [id] = useState(idProp || nanoid());
-  const [{ value, ...fieldInputProps }, { error }] = useField<string>({
-    name,
-    value: '',
-  });
-
-  const length = value ? value.length : 0;
+  const [inputId] = useState(nanoid());
+  const {
+    register,
+    formState: { errors },
+    watch,
+  } = useFormContext();
+  const textareaValue = watch(name);
+  const length = textareaValue ? textareaValue.length : 0;
   const placeholder =
     typeof placeholderProp === 'object'
       ? formatMessage(placeholderProp, placeholderValues)
@@ -100,21 +95,19 @@ const Textarea = ({
         extra={extra}
         help={help}
         helpValues={helpValues}
-        inputId={id}
+        inputId={inputId}
         label={label}
         labelValues={labelValues}
         screenReaderOnly={elementOnly}
       />
       <div className={styles.textareaWrapper}>
         <textarea
-          {...fieldInputProps}
-          aria-invalid={error ? true : undefined}
+          {...register(name)}
+          aria-invalid={errors[name] ? true : undefined}
           className={getMainClasses(appearance, styles)}
-          id={id}
+          id={inputId}
           maxLength={maxLength}
           placeholder={placeholder}
-          ref={innerRef}
-          value={value}
           aria-disabled={disabled}
           disabled={disabled}
           data-test={dataTest}
@@ -134,7 +127,7 @@ const Textarea = ({
           appearance={appearance}
           status={status}
           statusValues={statusValues}
-          error={error}
+          error={errors[name]}
         />
       )}
     </div>

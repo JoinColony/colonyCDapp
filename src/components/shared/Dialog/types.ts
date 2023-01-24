@@ -22,7 +22,7 @@ export interface DialogType<P> {
 }
 
 export interface ActionDialogProps {
-  colony: Colony;
+  colony: Colony | undefined;
   // isVotingExtensionEnabled: boolean;
   back?: () => void;
 }

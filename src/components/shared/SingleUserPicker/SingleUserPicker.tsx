@@ -1,9 +1,8 @@
 import React, { ReactNode, useCallback } from 'react';
 import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
-import compose from 'recompose/compose';
 import classnames from 'classnames';
+import { useFormContext } from 'react-hook-form';
 
-import { useField } from 'formik';
 import { AnyUser } from '~data/index';
 import { Address, SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
@@ -137,29 +136,32 @@ const SingleUserPicker = ({
   itemDataTest,
   valueDataTest,
 }: EnhancedProps) => {
-  const [, { error, touched, value }, { setValue }] = useField<AnyUser | null>(
-    name,
-  );
+  const {
+    formState: { errors, touchedFields },
+    setValue,
+    watch,
+  } = useFormContext();
+  const value = watch(name);
   const { formatMessage } = useIntl();
 
   const handleActiveUserClick = useCallback(() => {
     if (!disabled) {
-      setValue(null);
+      setValue(name, null);
       openOmniPicker();
     }
-  }, [disabled, openOmniPicker, setValue]);
+  }, [disabled, openOmniPicker, setValue, name]);
   const handlePick = useCallback(
     (user: AnyUser) => {
-      if (setValue) setValue(user);
+      if (setValue) setValue(name, user);
       if (onSelected) onSelected(user);
     },
-    [onSelected, setValue],
+    [onSelected, setValue, name],
   );
   const resetSelection = useCallback(() => {
     if (!disabled && setValue) {
-      setValue(null);
+      setValue(name, null);
     }
-  }, [disabled, setValue]);
+  }, [disabled, setValue, name]);
   // Use custom render prop for item or the default one with the given renderAvatar function
   const renderItem =
     renderItemProp || // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -230,16 +232,24 @@ const SingleUserPicker = ({
             {/* eslint-enable jsx-a11y/click-events-have-key-events */}
             <input
               disabled={disabled}
-              className={touched && error ? styles.inputInvalid : styles.input}
+              className={
+                touchedFields[name] && errors[name]
+                  ? styles.inputInvalid
+                  : styles.input
+              }
               {...inputProps}
               placeholder={placeholderText}
               hidden={!!value}
               ref={registerInputNode}
               data-test={dataTest}
             />
-            {error && appearance && appearance.direction === 'horizontal' && (
-              <span className={styles.errorHorizontal}>{error}</span>
-            )}
+            {errors[name] &&
+              appearance &&
+              appearance.direction === 'horizontal' && (
+                <span className={styles.errorHorizontal}>
+                  {errors[name]?.message?.toString()}
+                </span>
+              )}
             <div className={styles.omniPickerContainer}>
               <OmniPicker renderItem={renderItem} onPick={handlePick} />
             </div>
@@ -269,6 +279,4 @@ const SingleUserPicker = ({
 
 SingleUserPicker.displayName = displayName;
 
-const enhance = compose<EnhancedProps, Props>(withOmniPicker());
-
-export default enhance(SingleUserPicker);
+export default withOmniPicker(SingleUserPicker);
