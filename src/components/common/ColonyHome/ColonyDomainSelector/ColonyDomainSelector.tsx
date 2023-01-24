@@ -2,7 +2,7 @@ import React, { ReactNode, useCallback } from 'react';
 // import { ColonyVersion, ROOT_DOMAIN_ID, Extension } from '@colony/colony-js';
 
 import ColorTag from '~shared/ColorTag';
-import { Form, SelectOption } from '~shared/Fields';
+import { HookForm as Form, SelectOption } from '~shared/Fields';
 import DomainDropdown from '~shared/DomainDropdown';
 // import { useDialog } from '~shared/Dialog';
 // import EditDomainDialog from '~dialogs/EditDomainDialog';
@@ -94,7 +94,7 @@ const ColonyDomainSelector = ({
 
   return (
     <Form<FormValues>
-      initialValues={{
+      defaultValues={{
         filteredDomainId: String(filteredDomainId),
       }}
       onSubmit={() => {}}

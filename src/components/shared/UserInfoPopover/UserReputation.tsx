@@ -1,11 +1,11 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import isEmpty from 'lodash/isEmpty';
 
 import Heading from '~shared/Heading';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { UserDomainReputation } from '~hooks';
 import { Colony } from '~types';
+import { isEmpty } from '~utils/lodash';
 
 import UserReputationItem from './UserReputationItem';
 
