@@ -45,6 +45,7 @@ export {
 } from './useUserReputationForTopDomains';
 export { default as useColonyContext } from './useColonyContext';
 export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
+export { default as useRichTextEditor } from './useRichTextEditor';
 export * from './useCanInteractWithColony';
 
 /* Used in cases where we need to memoize the transformed output of any data.

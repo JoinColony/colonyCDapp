@@ -1,0 +1,12 @@
+.label {
+  display: flex;
+  margin-bottom: 3px;
+}
+
+.tooltipContainer {
+  width: 218px;
+}
+
+.main input::placeholder {
+  opacity: 50%;
+}

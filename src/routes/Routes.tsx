@@ -39,6 +39,7 @@ import {
   USER_ROUTE,
   LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
+  COLONY_DECISIONS_PREVIEW_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -129,6 +130,11 @@ const Routes = () => {
             ),
           )}
         </Route>
+        <Route
+          path={COLONY_DECISIONS_PREVIEW_ROUTE}
+          element={<span>Preview</span>}
+        />
+
         <Route
           path={COLONY_HOME_ROUTE}
           element={

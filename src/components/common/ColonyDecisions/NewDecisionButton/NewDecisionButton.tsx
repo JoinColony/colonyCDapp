@@ -1,28 +1,28 @@
 import React from 'react';
 
 import { useDialog } from '~shared/Dialog';
-// import DecisionDialog from '~dashboard/Dialogs/DecisionDialog';
+import { DecisionDialog } from '~common/ColonyDecisions';
 // import RemoveDraftCreateNewDecision from '~dashboard/Dialogs/RemoveDraftDecisionDialog';
 
 import { DialogButton } from '~shared/Button';
-import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext } from '~hooks';
 
-const displayName = 'common.NewDecisionButton';
+const displayName = 'common.ColonyDecisions.NewDecisionButton';
 
 interface Props {
   ethDomainId: number;
 }
 
 const NewDecisionButton = ({ ethDomainId }: Props) => {
-  const { colony } = useColonyContext();
   const { user } = useAppContext();
+
   //   const { isVotingExtensionEnabled, isLoadingExtensions } =
   //     useEnabledExtensions({
   //       colonyAddress: colony.colonyAddress,
   //     });
 
   // @TODO: This is copied from NewActionButton, extract instead.
-  //const { version: networkVersion } = useNetworkContracts();
+  // const { version: networkVersion } = useNetworkContracts();
   //  const [isLoadingUser, setIsLoadingUser] = useState<boolean>(false);
   //   useSelector((state: RootState) => {
   //     const { isUserConnected } = state.users.wallet;
@@ -33,32 +33,31 @@ const NewDecisionButton = ({ ethDomainId }: Props) => {
   //     }
   //   });
 
-  //const openDecisionDialog = useDialog(DecisionDialog);
-  //const openDeleteDraftDialog = useDialog(RemoveDraftCreateNewDecision);
+  const openDecisionDialog = useDialog(DecisionDialog);
+  // const openDeleteDraftDialog = useDialog(RemoveDraftCreateNewDecision);
 
-  //   const openNewDecisionDialog = () => {
-  //     openDecisionDialog({ colony, ethDomainId });
-  //     removeDraftDecision();
-  //   };
+  const openNewDecisionDialog = () => {
+    openDecisionDialog({ ethDomainId });
+    // removeDraftDecision();
+  };
 
   // @TODO: This is copied from NewActionButton, extract instead.
-  //const hasRegisteredProfile = !!username && !ethereal;
-  //const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
-  //const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
-  //const isLoadingData = isLoadingExtensions || isLoadingUser;
+  // const hasRegisteredProfile = !!username && !ethereal;
+  // const isNetworkAllowed = checkIfNetworkIsAllowed(networkId);
+  // const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
+  // const isLoadingData = isLoadingExtensions || isLoadingUser;
 
-  //   const handleClick = () =>
-  //     draftDecision !== undefined &&
-  //     draftDecision.userAddress === user?.walletAddress
-  //       ? openDeleteDraftDialog({ colony, openNewDecisionDialog })
-  //       : openNewDecisionDialog();
+  const handleClick = () => openNewDecisionDialog();
+  // draftDecision?.userAddress === user?.walletAddress
+  //   ? openDeleteDraftDialog({ colony, openNewDecisionDialog })
+  //   : openNewDecisionDialog();
 
   return (
     <DialogButton
-      loading={false /*isLoadingData*/}
+      loading={false /* isLoadingData */}
       text={{ id: 'button.newDecision' }}
-      handleClick={() => console.log('Wire up New Decision Button')}
-      //   disabled={
+      handleClick={handleClick}
+      disabled={!user}
       //     mustUpgrade ||
       //     !isNetworkAllowed ||
       //     !hasRegisteredProfile ||
