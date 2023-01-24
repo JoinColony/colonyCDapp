@@ -19,3 +19,12 @@
     "data details" 1fr
     / 460px 340px;
 }
+
+/* Centre the layout on wider screens */
+@media (max-resolution: 2dppx) {
+  .layout {
+    grid-template:
+      "left main right" 100%
+      / 1fr 900px 1fr;
+  }
+}

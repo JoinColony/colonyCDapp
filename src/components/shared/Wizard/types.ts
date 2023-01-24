@@ -1,5 +1,4 @@
-import { AppContextValues } from '~context/AppContext';
-import { Values } from '~types';
+import { User, Values } from '~types';
 
 type WizardValues<T> = Record<string, Values<T>>;
 export type StepValues<T> = Partial<WizardValues<T>>;
@@ -24,7 +23,7 @@ interface SharedWizardProps<FormValues> {
 export interface WizardOuterProps<FormValues>
   extends SharedWizardProps<FormValues> {
   children: JSX.Element;
-  loggedInUser: AppContextValues['user'];
+  loggedInUser: User;
   hideQR?: boolean;
 }
 

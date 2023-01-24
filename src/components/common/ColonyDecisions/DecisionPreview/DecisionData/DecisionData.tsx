@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Decision } from '~types';
-import { AppContextValues } from '~context/AppContext';
+import { Decision, User } from '~types';
 
 import { DecisionContent, DecisionNotFound } from '../DecisionData';
 
@@ -9,7 +8,7 @@ const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionData';
 
 export interface DecisionDataProps {
   decision?: Decision;
-  user: AppContextValues['user'];
+  user: User;
 }
 
 const DecisionData = ({ decision, user }: DecisionDataProps) => {
