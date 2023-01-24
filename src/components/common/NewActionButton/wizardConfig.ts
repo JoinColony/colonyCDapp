@@ -6,17 +6,17 @@ import {
   // EditDomainDialog,
   CreatePaymentDialog,
   // ManageDomainsDialog,
-  // ManageFundsDialog,
-  // UnlockTokenDialog,
-  // TransferFundsDialog,
+  ManageFundsDialog,
+  UnlockTokenDialog,
+  TransferFundsDialog,
   // AdvancedDialog,
   // PermissionManagementDialog,
   // ManageWhitelistDialog,
-  // MintTokenDialog,
+  MintTokenDialog,
   // NetworkContractUpgradeDialog,
   // EditColonyDetailsDialog,
   // ManageReputationDialog,
-  // TokenManagementDialog,
+  TokenManagementDialog,
   // SmiteDialog,
   // AwardDialog,
 } from '../Dialogs';
@@ -51,29 +51,32 @@ export const getWizardFlowConfig = (
       colony,
     },
   },
-  // {
-  //   component: ManageFundsDialog,
-  //   props: {
-  //     nextStepTransferFunds: 'common.TransferFundsDialog',
-  //     nextStepMintTokens: 'common.MintTokenDialog',
-  //     nextStepManageTokens: 'common.TokenManagementDialog',
-  //     nextStepUnlockToken: 'common.UnlockTokenDialog',
-  //     prevStep: 'common.ColonyActionsDialog',
-  //   },
-  // },
-  // {
-  //   component: TransferFundsDialog,
-  //   props: {
-  //     prevStep: 'common.ManageFundsDialog',
-  //     filteredDomainId,
-  //   },
-  // },
-  // {
-  //   component: UnlockTokenDialog,
-  //   props: {
-  //     prevStep: 'common.ManageFundsDialog',
-  //   },
-  // },
+  {
+    component: ManageFundsDialog,
+    props: {
+      nextStepTransferFunds: 'common.TransferFundsDialog',
+      nextStepMintTokens: 'common.MintTokenDialog',
+      nextStepManageTokens: 'common.TokenManagementDialog',
+      nextStepUnlockToken: 'common.UnlockTokenDialog',
+      prevStep: 'common.ColonyActionsDialog',
+      colony,
+    },
+  },
+  {
+    component: TransferFundsDialog,
+    props: {
+      prevStep: 'common.ManageFundsDialog',
+      colony,
+      filteredDomainId,
+    },
+  },
+  {
+    component: UnlockTokenDialog,
+    props: {
+      prevStep: 'common.ManageFundsDialog',
+      colony,
+    },
+  },
   // {
   //   component: ManageDomainsDialog,
   //   props: {
@@ -161,16 +164,18 @@ export const getWizardFlowConfig = (
   //     prevStep: 'common.AdvancedDialog',
   //   },
   // },
-  // {
-  //   component: MintTokenDialog,
-  //   props: {
-  //     prevStep: 'common.ManageFundsDialog',
-  //   },
-  // },
-  // {
-  //   component: TokenManagementDialog,
-  //   props: {
-  //     prevStep: 'common.ManageFundsDialog',
-  //   },
-  // },
+  {
+    component: MintTokenDialog,
+    props: {
+      prevStep: 'common.ManageFundsDialog',
+      colony,
+    },
+  },
+  {
+    component: TokenManagementDialog,
+    props: {
+      prevStep: 'common.ManageFundsDialog',
+      colony,
+    },
+  },
 ];
