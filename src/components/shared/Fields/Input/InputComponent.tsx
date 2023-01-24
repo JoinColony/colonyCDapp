@@ -10,12 +10,12 @@ import { defineMessages } from 'react-intl';
 import Cleave from 'cleave.js/react';
 import { CleaveOptions } from 'cleave.js/options';
 import { ChangeEvent } from 'cleave.js/react/props';
-import isNil from 'lodash/isNil';
 import Decimal from 'decimal.js';
 
 import Button from '~shared/Button';
 
 import { getMainClasses } from '~utils/css';
+import { isNil } from '~utils/lodash';
 
 import { InputComponentAppearance as Appearance } from '../Input';
 import styles from './InputComponent.css';

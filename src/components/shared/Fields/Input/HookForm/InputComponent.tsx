@@ -1,7 +1,8 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
 
 import { getMainClasses } from '~utils/css';
+import { toFinite } from '~utils/lodash';
 
 import { HookFormInputProps as InputProps } from './Input';
 import FormattedInput from './FormattedInputComponent';
@@ -62,30 +63,41 @@ const HookFormInputComponent = ({
   name,
   onChange,
   onBlur,
+  valueAsNumber,
+  value,
   ...restInputProps
 }: HookFormInputComponentProps) => {
-  const { register } = useFormContext();
-  const {
-    onChange: hookFormOnChange,
-    onBlur: hookFormOnBlur,
-    ref,
-  } = register(name);
+  const { control } = useFormContext();
+  const { field } = useController({
+    name,
+    control,
+  });
 
   const classes = getAppearanceObject(maxLength, maxButtonParams, appearance);
   const className = getMainClasses(classes, styles);
 
+  const transform = {
+    input: (inputValue) =>
+      Number.isNaN(inputValue) || inputValue === 0 ? '' : inputValue.toString(),
+    output: (e) => {
+      const numberWithouCommas = e.target.value.replace(/,/g, '');
+      return toFinite(numberWithouCommas);
+    },
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    hookFormOnChange(e);
+    field.onChange(valueAsNumber ? transform.output(e) : e);
     onChange?.(e);
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    hookFormOnBlur(e);
+    field.onBlur();
     onBlur?.(e);
   };
 
   const props = {
     ...restInputProps,
+    value: valueAsNumber ? transform.input(value) : value,
     onChange: handleChange,
     onBlur: handleBlur,
     'data-test': dataTest,
@@ -100,12 +112,12 @@ const HookFormInputComponent = ({
       {formattingOptions ? (
         <FormattedInput
           {...props}
-          htmlRef={ref}
+          htmlRef={field.ref}
           maxButtonParams={maxButtonParams}
           options={formattingOptions}
         />
       ) : (
-        <input {...props} className={className} ref={ref} />
+        <input {...props} className={className} ref={field.ref} />
       )}
       {maxLength && <LengthWidget maxLength={maxLength} length={length} />}
     </div>

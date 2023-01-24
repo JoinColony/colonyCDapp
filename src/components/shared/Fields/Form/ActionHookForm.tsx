@@ -1,15 +1,17 @@
 import React from 'react';
-import { SubmitErrorHandler, SubmitHandler } from 'react-hook-form';
 
 import { ActionTypeString } from '~redux';
 import { ActionTransformFnType } from '~utils/actions';
 import { useAsyncFunction } from '~hooks';
 
-import HookForm, { HookFormProps } from './HookForm';
+import HookForm, {
+  CustomSubmitErrorHandler,
+  CustomSubmitHandler,
+  HookFormProps,
+} from './HookForm';
 
 const displayName = 'Form.ActionHookForm';
 
-export type OnError<V> = (error: any, values?: V) => void;
 export type OnSuccess<V> = (result: any, values: V) => void;
 
 interface Props<V extends Record<string, any>>
@@ -27,10 +29,10 @@ interface Props<V extends Record<string, any>>
   onSuccess?: OnSuccess<V>;
 
   /** Function to call after error action was dispatched */
-  onError?: OnError<V>;
+  onError?: CustomSubmitErrorHandler<V>;
 
   /** Function to call in the event that the form submit errors */
-  onSubmitError?: SubmitErrorHandler<V>;
+  onSubmitError?: CustomSubmitErrorHandler<V>;
 
   /** A function to transform the action after the form data was passed in (as payload) */
   transform?: ActionTransformFnType;
@@ -52,13 +54,13 @@ const ActionHookForm = <V extends Record<string, any>>({
     success,
     transform,
   });
-  const handleSubmit: SubmitHandler<V> = async (values) => {
+  const handleSubmit: CustomSubmitHandler<V> = async (values, formHelpers) => {
     try {
       const res = await asyncFunction(values);
       onSuccess?.(res, values);
     } catch (e) {
       console.error(e);
-      onError?.(e, values);
+      onError?.(e, formHelpers);
     }
   };
 

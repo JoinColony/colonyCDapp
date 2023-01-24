@@ -1,11 +1,9 @@
-// import { Colony } from '~types';
-
 import {
   ColonyActionsDialog,
-  // ManageExpenditureDialog,
+  ManageExpenditureDialog,
   // CreateDomainDialog,
   // EditDomainDialog,
-  // CreatePaymentDialog,
+  CreatePaymentDialog,
   // ManageDomainsDialog,
   // ManageFundsDialog,
   // UnlockTokenDialog,
@@ -23,7 +21,7 @@ import {
 } from '../Dialogs';
 
 export const getWizardFlowConfig =
-  (/** colony: Colony, domainId: number */) => [
+  (filteredDomainId: number) => [
     {
       component: ColonyActionsDialog,
       props: {
@@ -34,22 +32,20 @@ export const getWizardFlowConfig =
         nextStepManageReputation: 'common.ColonyHome.ManageReputationDialog',
       },
     },
-    // {
-    //   component: ManageExpenditureDialog,
-    //   props: {
-    //     nextStep: 'common.ColonyHome.CreatePaymentDialog',
-    //     prevStep: 'common.ColonyHome.ColonyActionsDialog',
-    //     colony,
-    //   },
-    // },
-    // {
-    //   component: CreatePaymentDialog,
-    //   props: {
-    //     colony,
-    //     prevStep: 'common.ColonyHome.ManageExpenditureDialog',
-    //     filteredDomainId,
-    //   },
-    // },
+    {
+      component: ManageExpenditureDialog,
+      props: {
+        nextStep: 'common.ColonyHome.CreatePaymentDialog',
+        prevStep: 'common.ColonyHome.ColonyActionsDialog',
+      },
+    },
+    {
+      component: CreatePaymentDialog,
+      props: {
+        prevStep: 'common.ColonyHome.ManageExpenditureDialog',
+        filteredDomainId,
+      },
+    },
     // {
     //   component: ManageFundsDialog,
     //   props: {

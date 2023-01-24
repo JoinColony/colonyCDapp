@@ -2,8 +2,7 @@ import React, { ReactNode } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import cx from 'classnames';
 
-import { AnyUser } from '~data/index';
-import { Address } from '~types';
+import { Address, User } from '~types';
 import { ItemDataType } from '~shared/OmniPicker';
 import MaskedAddress from '~shared/MaskedAddress';
 import UserMention from '~shared/UserMention';
@@ -18,8 +17,8 @@ const MSG = defineMessages({
 
 interface Props {
   walletAddress?: Address;
-  itemData: ItemDataType<AnyUser>;
-  renderAvatar: (address: Address, user: ItemDataType<AnyUser>) => ReactNode;
+  itemData: ItemDataType<User>;
+  renderAvatar: (address: Address, user: ItemDataType<User>) => ReactNode;
   selected?: boolean;
   showAddress?: boolean;
 
@@ -31,17 +30,7 @@ interface Props {
 }
 const ItemDefault = ({
   walletAddress,
-  itemData: {
-    profile: { walletAddress: userAddress, displayName, username } = {
-      /*
-       * @NOTE This is a last resort default!
-       *
-       * If the app ever gets to use this value, the SingleUserPickerItem
-       * compontn will display: _Address format is wrong!_
-       */
-      walletAddress: '',
-    },
-  },
+  itemData: { profile, walletAddress: userAddress, name: username },
   itemData,
   renderAvatar,
   showAddress,
@@ -56,9 +45,9 @@ const ItemDefault = ({
   >
     {renderAvatar(userAddress, itemData)}
     <span className={styles.dataContainer}>
-      {displayName && (
+      {profile?.displayName && (
         <span className={styles.displayName}>
-          {displayName}
+          {profile?.displayName}
           {walletAddress === userAddress && (
             <span className={styles.thatsYou}>
               &nbsp;
@@ -68,7 +57,7 @@ const ItemDefault = ({
           &nbsp;
         </span>
       )}
-      {username && <UserMention username={username} hasLink={false} />}
+      {username && <UserMention user={itemData} hasLink={false} />}
       {showAddress && <span className={styles.address}>{userAddress}</span>}
       {!showAddress && showMaskedAddress && (
         <span className={styles.address}>
