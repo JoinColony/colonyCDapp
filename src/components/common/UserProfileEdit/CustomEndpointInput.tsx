@@ -5,6 +5,8 @@ import { MessageDescriptor } from 'react-intl';
 import { HookFormInput as Input } from '~shared/Fields';
 import { noSpaces } from '~utils/cleave';
 
+import styles from './CustomEndpointInput.css';
+
 const displayName = 'common.UserProfileEdit.CustomEndpointInput';
 
 interface CustomEndpointInputProps {
@@ -24,14 +26,16 @@ const CustomEndpointInput = ({
   const inputValue: string = watch(inputName);
 
   return (
-    <Input
-      label={label}
-      appearance={{ colorSchema: 'grey' }}
-      name={inputName}
-      disabled={!toggleOn}
-      formattingOptions={noSpaces}
-      value={inputValue}
-    />
+    <div className={styles.main}>
+      <Input
+        label={label}
+        appearance={{ colorSchema: 'grey' }}
+        name={inputName}
+        disabled={!toggleOn}
+        formattingOptions={noSpaces}
+        value={inputValue}
+      />
+    </div>
   );
 };
 

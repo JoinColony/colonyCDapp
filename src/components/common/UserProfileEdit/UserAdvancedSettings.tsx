@@ -43,7 +43,7 @@ const validationSchema = object({
   [SlotKey.DecentralizedMode]: bool<boolean>(),
   [SlotKey.CustomRPC]: string()
     .defined()
-    .when(`${[SlotKey.DecentralizedMode]}`, {
+    .when(`${SlotKey.DecentralizedMode}`, {
       is: true,
       then: string()
         .required(() => MSG.invalidURLError)
