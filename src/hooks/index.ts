@@ -21,7 +21,7 @@ export type Given = (
 export {
   default as useNaiveBranchingDialogWizard,
   WizardDialogType,
-} from './naiveBranchingDialogWizardHook';
+} from './useNaiveBranchingDialogWizard';
 
 export { default as useAvatarDisplayCounter } from './useAvatarDisplayCounter';
 export { default as useColonyReputation } from './useColonyReputation';

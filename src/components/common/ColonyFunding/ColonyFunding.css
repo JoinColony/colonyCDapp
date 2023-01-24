@@ -12,7 +12,7 @@
   justify-content: space-between;
   align-items: baseline;
   margin-bottom: 35px;
-  border-bottom: 1px solid var(--temp-grey-5);
+  border-bottom: 1px solid var(--light-grey);
 }
 
 .titleContainer h3 {

@@ -62,7 +62,6 @@ const ColonyHome = () => {
               <ColonyHomeLayout
                 filteredDomainId={filteredDomainId}
                 onDomainChange={setDomainIdFilter}
-                // ethDomainId={filteredDomainId}
               >
                 {/* <ColonyActions colony={colony} ethDomainId={filteredDomainId} /> */}
                 <div>Actions & Motions List</div>
