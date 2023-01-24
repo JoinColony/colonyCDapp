@@ -1,0 +1,98 @@
+@value wideButton: 160px;
+@value query700 from '~styles/queries.css';
+
+.title {
+  font-size: var(--size-medium-l);
+  font-weight: var(--weight-bold);
+  line-height: 24px;
+  color: var(--dark);
+}
+
+.noPermissionMessage {
+  margin-bottom: 20px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  line-height: 18px;
+  color: var(--danger);
+}
+
+.noPermissionMessage > div {
+  vertical-align: bottom;
+}
+
+.contractVersionLine {
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: 15px 80px;
+  font-size: var(--size-smallish);
+  font-weight: var(--weight-bold);
+}
+
+.contractVersionNumber {
+  color: var(--dark);
+}
+
+.divider {
+  margin: 0 80px;
+  background-color: color-mod(var(--grey-purple) alpha(15%));
+}
+
+.permissionsWarning {
+  padding: 20px;
+  border-radius: var(--radius-normal);
+  background-color: color-mod(var(--danger) alpha(5%));
+}
+
+.warningTitle {
+  margin-bottom: 20px;
+  font-size: var(--size-smallish);
+  font-weight: var(--weight-bold);
+  color: var(--danger);
+}
+
+.warningDescription {
+  margin-bottom: 20px;
+}
+
+.warningDescription:last-child {
+  margin-bottom: 0;
+}
+
+.warningTitle > div, .warningDescription > div {
+  vertical-align: top;
+}
+
+.highlightInstruction {
+  font-weight: var(--weight-bold);
+  color: var(--dark);
+}
+
+.loadingInfo {
+  composes: permissionsWarning;
+  background-color: color-mod(var(--primary) alpha(6%));
+}
+
+.modalHeading {
+  padding: 32px 0 20px;
+}
+
+.headingContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.motionVoteDomain {
+  margin: 6px 0;
+}
+
+@media screen and query700 {
+  .contractVersionLine {
+    padding: 15px 0;
+  }
+
+  .divider {
+    margin: 0px;
+  }
+}
