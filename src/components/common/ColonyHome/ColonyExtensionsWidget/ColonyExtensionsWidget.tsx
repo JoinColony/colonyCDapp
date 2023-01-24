@@ -59,7 +59,10 @@ const ColonyExtensions = () => {
                   to={`/colony/${colony?.name}/extensions/${extensionId}`}
                   text={extension.name}
                 />
-                <ExtensionStatusBadge extension={extension} deprecatedOnly />
+                <ExtensionStatusBadge
+                  extensionData={extension}
+                  deprecatedOnly
+                />
               </li>
             );
           })}
