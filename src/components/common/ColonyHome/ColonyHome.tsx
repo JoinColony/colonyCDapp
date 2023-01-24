@@ -18,6 +18,7 @@ import NotFoundRoute from '~routes/NotFoundRoute';
 import ColonyExtensions from '~common/ColonyExtensions';
 import ExtensionDetails from '~common/Extensions/ExtensionDetails';
 import { useColonyContext } from '~hooks';
+import ColonyActions from '~common/ColonyActions';
 
 import ColonyHomeLayout from './ColonyHomeLayout';
 
@@ -46,7 +47,9 @@ const ColonyHome = () => {
                 filteredDomainId={filteredDomainId}
                 onDomainChange={setDomainIdFilter}
               >
-                {/* <ColonyActions colony={colony} ethDomainId={filteredDomainId} /> */}
+                <ColonyActions
+                // ethDomainId={filteredDomainId}
+                />
                 <div>Actions & Motions List</div>
               </ColonyHomeLayout>
             }
