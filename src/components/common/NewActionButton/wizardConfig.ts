@@ -10,8 +10,9 @@ import {
   ManageFundsDialog,
   UnlockTokenDialog,
   TransferFundsDialog,
-  // AdvancedDialog,
-  // PermissionManagementDialog,
+  AdvancedDialog,
+  PermissionManagementDialog,
+  RecoveryModeDialog,
   ManageWhitelistDialog,
   MintTokenDialog,
   // NetworkContractUpgradeDialog,
@@ -140,31 +141,34 @@ export const getWizardFlowConfig = (
       enabledExtensionData,
     },
   },
-  // {
-  //   component: AdvancedDialog,
-  //   props: {
-  //     prevStep: 'common.ColonyActionsDialog',
-  //     nextStepPermissionManagement:
-  //       'common.PermissionManagementDialog',
-  //     nextStepRecovery: 'common.RecoveryModeDialog',
-  //     nextStepEditDetails: 'common.EditColonyDetailsDialog',
-  //     nextStepVersionUpgrade:
-  //       'common.NetworkContractUpgradeDialog',
-  //   },
-  // },
-  // {
-  //   component: PermissionManagementDialog,
-  //   props: {
-  //     prevStep: 'common.AdvancedDialog',
-  //     filteredDomainId,
-  //   },
-  // },
-  // {
-  //   component: RecoveryModeDialog,
-  //   props: {
-  //     prevStep: 'common.AdvancedDialog',
-  //   },
-  // },
+  {
+    component: AdvancedDialog,
+    props: {
+      prevStep: 'common.ColonyActionsDialog',
+      nextStepPermissionManagement:
+        'common.PermissionManagementDialog',
+      nextStepRecovery: 'common.RecoveryModeDialog',
+      nextStepEditDetails: 'common.EditColonyDetailsDialog',
+      nextStepVersionUpgrade:
+        'common.NetworkContractUpgradeDialog',
+      colony,
+    },
+  },
+  {
+    component: PermissionManagementDialog,
+    props: {
+      prevStep: 'common.AdvancedDialog',
+      filteredDomainId,
+      colony,
+    },
+  },
+  {
+    component: RecoveryModeDialog,
+    props: {
+      prevStep: 'common.AdvancedDialog',
+      colony,
+    },
+  },
   {
     component: ManageWhitelistDialog,
     props: {

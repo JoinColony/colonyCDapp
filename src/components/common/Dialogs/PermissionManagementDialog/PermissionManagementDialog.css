@@ -1,0 +1,68 @@
+@value wideButton: 160px;
+
+.dialogContainer h3 {
+  /*
+   * @NOTE We can't compose from `inlineEllipsis` here since we're inside an
+   * element, not a component :(
+   */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.singleUserContainer {
+  margin-top: 20px;
+  margin-bottom: 48px;
+}
+
+.singleUserContainer label {
+  margin-bottom: 15px;
+  color: var(--dark);
+}
+
+.singleUserContainer > div {
+  padding-left: 0;
+}
+
+.domainSelectContainer {
+  margin-bottom: 25px;
+}
+
+.domainSelectContainer label {
+  color: var(--dark);
+}
+
+.domainSelectContainer > div > div > ul {
+  z-index: var(--z-index-positioning);
+}
+
+.permissionChoiceContainer {
+  margin-bottom: 50px;
+  border-top: 1px solid color-mod(var(--dark-grey) alpha(15%));
+}
+
+.dialogFooterSection {
+  text-align: right;
+}
+
+.noPermissionFromMessage {
+  margin-bottom: 20px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  line-height: 18px;
+  color: var(--danger);
+}
+
+.modalHeading {
+  padding: 32px 0 20px;
+}
+
+.headingContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.motionVoteDomain {
+  margin: 6px 0;
+}

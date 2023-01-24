@@ -1,0 +1,21 @@
+.permissionChoice {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid color-mod(var(--dark-grey) alpha(15%));
+  color: var(--grey-purple);
+}
+
+.permissionChoiceDescription {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 15px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  line-height: 18px;
+}
+
+.popoverContent {
+  padding: 10px;
+}
