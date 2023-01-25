@@ -151,7 +151,6 @@ const MintTokenDialogForm = ({
               label={MSG.amountLabel}
               name="mintAmount"
               disabled={inputDisabled}
-              valueAsNumber
             />
           </div>
           <span

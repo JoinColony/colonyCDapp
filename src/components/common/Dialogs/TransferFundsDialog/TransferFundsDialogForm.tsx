@@ -414,7 +414,6 @@ const TransferFundsDialogForm = ({
               disabled={inputDisabled}
               onChange={() => triggerValidation()}
               dataTest="transferAmountInput"
-              valueAsNumber
             />
           </div>
           <div className={styles.tokenAmountContainer}>
