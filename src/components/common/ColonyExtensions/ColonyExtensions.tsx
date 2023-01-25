@@ -6,7 +6,7 @@ import { useExtensionsData } from '~hooks';
 import Heading from '~shared/Heading';
 import { SpinnerLoader } from '~shared/Preloaders';
 
-import ExtensionCard from './ExtensionCard/ExtensionCard';
+import ExtensionCard from './ExtensionCard';
 
 import styles from './ColonyExtensions.css';
 
