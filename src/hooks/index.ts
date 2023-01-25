@@ -38,6 +38,7 @@ export { default as useCanEditProfile } from './useCanEditProfile';
 export { default as useWindowSize } from './useWindowSize';
 export { default as useAppContext } from './useAppContext';
 export { default as useUserReputation } from './useUserReputation';
+export { default as useMobile } from './useMobile';
 export {
   default as useUserReputationForTopDomains,
   UserDomainReputation,
