@@ -12,14 +12,14 @@ import { Schema } from 'yup';
 
 const displayName = 'HookForm';
 
-export type CustomSubmitHandler<FormData> = (
-  data: FormData & FieldValues,
-  formHelpers: UseFormReturn<FormData & FieldValues>,
+export type CustomSubmitHandler<FormData extends FieldValues> = (
+  data: FormData,
+  formHelpers: UseFormReturn<FormData>,
   event?: React.BaseSyntheticEvent,
 ) => any | Promise<any>;
-export type CustomSubmitErrorHandler<FormData> = (
-  errors: FieldErrors<FormData & FieldValues>,
-  formHelpers: UseFormReturn<FormData & FieldValues, any>,
+export type CustomSubmitErrorHandler<FormData extends FieldValues> = (
+  errors: FieldErrors<FormData>,
+  formHelpers: UseFormReturn<FormData, any>,
   event?: React.BaseSyntheticEvent,
 ) => any | Promise<any>;
 
@@ -70,7 +70,7 @@ const HookForm = <FormData extends FieldValues>({
     if (isSubmitting && resetOnSubmit) {
       reset(values);
     }
-  }, [isSubmitting, values]);
+  }, [isSubmitting, values, resetOnSubmit, reset]);
 
   return (
     <FormProvider {...formHelpers}>

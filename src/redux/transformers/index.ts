@@ -117,7 +117,7 @@ export const getAllRootAccounts = (): Address[] => {
 };
 
 export const getAllUserRoles = (
-  colony: Colony,
+  colony: Colony | undefined,
   userAddress: Address | undefined,
 ): ColonyRole[] => {
   if (!colony || !userAddress) return [] as ColonyRole[];

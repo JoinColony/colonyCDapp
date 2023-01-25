@@ -7,7 +7,6 @@ import { string, object, number, boolean, InferType } from 'yup';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
-import { Address } from '~types/index';
 import { ActionTypes } from '~redux/index';
 // import {
 //   useColonyFromNameQuery,
@@ -17,7 +16,7 @@ import { ActionTypes } from '~redux/index';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
-import { useColonyContext, WizardDialogType } from '~hooks';
+import { WizardDialogType } from '~hooks';
 // import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
 import { notNull } from '~utils/arrays';
 
@@ -65,20 +64,21 @@ const validationSchema = object()
   })
   .defined();
 
-type FormValues = InferType<typeof validationSchema>
+export type FormValues = InferType<typeof validationSchema>;
 
 const CreatePaymentDialog = ({
+  colony: { tokens, colonyAddress, nativeToken, watchers, name: colonyName },
+  colony,
   callStep,
   prevStep,
   cancel,
   close,
   filteredDomainId,
 }: Props) => {
-  const { colony } = useColonyContext();
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
-  const colonyWatchers = colony?.watchers?.items.filter(notNull).map((item) => item.user) || [];
-  const colonyTokens = colony?.tokens?.items || [];
+  const colonyWatchers =
+    watchers?.items.filter(notNull).map((item) => item.user) || [];
   // const { isVotingExtensionEnabled } = useEnabledExtensions({
   //   colonyAddress: colony.colonyAddress,
   // });
@@ -141,7 +141,7 @@ const CreatePaymentDialog = ({
             annotation: annotationMessage,
             motionDomainId,
           } = payload;
-
+          const colonyTokens = tokens?.items || [];
           const selectedToken = colonyTokens.find(
             (token) => token?.token.tokenAddress === tokenAddress,
           );
@@ -154,8 +154,8 @@ const CreatePaymentDialog = ({
           //   : amount;
 
           return {
-            colonyName: colony?.name,
-            colonyAddress: colony?.colonyAddress,
+            colonyName,
+            colonyAddress,
             recipientAddress: walletAddress,
             domainId,
             singlePayment: {
@@ -169,7 +169,7 @@ const CreatePaymentDialog = ({
         }),
         withMeta({ navigate }),
       ),
-    [colony, colonyTokens, navigate],
+    [colonyName, colonyAddress, tokens, navigate],
   );
 
   return (
@@ -182,7 +182,7 @@ const CreatePaymentDialog = ({
         ).toString(),
         recipient: undefined,
         amount: 0,
-        tokenAddress: colony?.nativeToken.tokenAddress,
+        tokenAddress: nativeToken.tokenAddress,
         annotation: '',
         motionDomainId:
           filteredDomainId === 0 || filteredDomainId === undefined
