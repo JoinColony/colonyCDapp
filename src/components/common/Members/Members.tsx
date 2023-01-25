@@ -4,25 +4,19 @@ import { ColonyRole } from '@colony/colony-js';
 import { sortBy } from '~utils/lodash';
 
 import { SpinnerLoader } from '~shared/Preloaders';
-import {
-  // FormValues as FiltersFormValues,
-  MemberType,
-} from '~common/ColonyMembers/MembersFilter';
 
 import { useColonyContext } from '~hooks';
 import { Domain, useGetMembersForColonyQuery, SortingMethod } from '~gql';
 import {
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
   ALLDOMAINS_DOMAIN_SELECTION,
-  ROOT_DOMAIN_ID,
 } from '~constants';
 import { User } from '~types';
 import { notNull } from '~utils/arrays';
 
 import MembersTitle from './MembersTitle';
+import MembersContent from './MembersContent';
 // import { filterMembers } from './filterMembers';
-import ContributorsSection from './ContributorsSection';
-import WatchersSection from './WatchersSection';
 
 import styles from './Members.css';
 
@@ -82,10 +76,6 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
     [data],
   );
 
-  // const canAdministerComments =
-  //   hasRegisteredProfile &&
-  //   (hasRoot(currentUserRoles) || canAdminister(currentUserRoles));
-
   const domainSelectOptions = sortBy(
     [...(colony?.domains?.items || []), ALLDOMAINS_DOMAIN_SELECTION].map(
       ({ nativeId, name }: Domain) => {
@@ -106,61 +96,6 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
     },
     [setSearchValue],
   );
-
-  const isRootDomain = useMemo(
-    () =>
-      selectedDomain === ROOT_DOMAIN_ID ||
-      selectedDomain === COLONY_TOTAL_BALANCE_DOMAIN_ID,
-    [selectedDomain],
-  );
-
-  const membersContent = useMemo(() => {
-    const contributorsContent = (filters.memberType === MemberType.All ||
-      filters.memberType === MemberType.Contributers) && (
-      <ContributorsSection
-        members={contributors}
-        // temporary value until permissions are implemented
-        canAdministerComments
-        // extraItemContent={({ roles, directRoles, banned }) => {
-        //   return (
-        //     <UserPermissions
-        //       roles={roles}
-        //       directRoles={directRoles}
-        //       banned={banned}
-        //       hideHeadRole
-        //     />
-        //   );
-        // }}
-      />
-    );
-
-    const watchersContent =
-      isRootDomain &&
-      (filters.memberType === MemberType.All ||
-        filters.memberType === MemberType.Watchers) ? (
-        <WatchersSection
-          members={watchers}
-          // temporary value until permissions are implemented
-          canAdministerComments
-          // extraItemContent={({ banned }) => (
-          //   <UserPermissions roles={[]} directRoles={[]} banned={banned} />
-          // )}
-        />
-      ) : null;
-
-    return (
-      <>
-        {contributorsContent}
-        {watchersContent}
-      </>
-    );
-  }, [
-    // canAdministerComments,
-    contributors,
-    watchers,
-    filters,
-    isRootDomain,
-  ]);
 
   if (loadingMembers && !data) {
     return (
@@ -187,7 +122,12 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
           <FormattedMessage {...MSG.noMembersFound} />
         </div>
       ) : (
-        membersContent
+        <MembersContent
+          selectedDomain={selectedDomain}
+          filters={filters}
+          contributors={contributors}
+          watchers={watchers}
+        />
       )}
     </div>
   );

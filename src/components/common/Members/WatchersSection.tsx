@@ -1,4 +1,4 @@
-import React, { useState, useCallback, ReactNode } from 'react';
+import React, { useState, ReactNode } from 'react';
 import classnames from 'classnames';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
@@ -28,24 +28,24 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  members: Watcher[];
+  watchers: Watcher[];
   canAdministerComments: boolean;
   extraItemContent?: (user: MemberUser) => ReactNode;
   itemsPerSection?: number;
 }
 
 const WatchersSection = ({
-  members,
+  watchers,
   canAdministerComments,
   extraItemContent,
   itemsPerSection = 10,
 }: Props & Partial<SortingProps>) => {
   const [dataPage, setDataPage] = useState<number>(1);
 
-  const paginatedMembers = members.slice(0, itemsPerSection * dataPage);
-  const handleDataPagination = useCallback(() => {
+  const paginatedMembers = watchers.slice(0, itemsPerSection * dataPage);
+  const handleDataPagination = () => {
     setDataPage(dataPage + 1);
-  }, [dataPage]);
+  };
 
   const { sortedMembers } = useColonyMembersSorting(paginatedMembers, false);
 
@@ -73,7 +73,7 @@ const WatchersSection = ({
           <FormattedMessage {...MSG.noMembersFound} />
         </div>
       )}
-      {itemsPerSection * dataPage < members.length && (
+      {itemsPerSection * dataPage < watchers.length && (
         <LoadMoreButton onClick={handleDataPagination} isLoadingData={false} />
       )}
     </>
