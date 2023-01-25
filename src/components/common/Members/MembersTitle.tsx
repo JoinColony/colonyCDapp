@@ -1,11 +1,12 @@
 import React, { useRef, MouseEvent } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import { Select, Form } from '~shared/Fields';
 import { useMobile } from '~hooks';
 import ColonyDomainSelector from '~common/ColonyHome/ColonyDomainSelector';
+import { formatText } from '~utils/intl';
 
 import styles from './MembersTitle.css';
 
@@ -52,7 +53,6 @@ const MembersTitle = ({
   searchValue,
   handleSearch,
 }: Props) => {
-  const { formatMessage } = useIntl();
   const searchInput = useRef<HTMLInputElement>(null);
   const handleFocusRef = () => {
     searchInput?.current?.focus();
@@ -60,7 +60,7 @@ const MembersTitle = ({
 
   const handleMouseEnterRef = () => {
     if (searchInput.current !== null) {
-      searchInput.current.placeholder = formatMessage(MSG.searchPlaceholder);
+      searchInput.current.placeholder = formatText(MSG.searchPlaceholder) ?? '';
     }
   };
 
@@ -71,7 +71,7 @@ const MembersTitle = ({
   };
 
   const handleMouseEnter = (e: MouseEvent<HTMLInputElement>) => {
-    e.currentTarget.placeholder = formatMessage(MSG.searchPlaceholder);
+    e.currentTarget.placeholder = formatText(MSG.searchPlaceholder) ?? '';
   };
 
   const handleMouseLeave = (e: MouseEvent<HTMLInputElement>) => {
