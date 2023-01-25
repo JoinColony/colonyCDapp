@@ -4,17 +4,17 @@ import { BigNumber } from 'ethers';
 import { useNavigate } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 import { Id } from '@colony/colony-js';
-import { string, object, number, boolean } from 'yup';
+import { string, object, number, boolean, InferType } from 'yup';
+import Decimal from 'decimal.js';
 
 import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { Address } from '~types/index';
 import { ActionTypes } from '~redux/index';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 import { WizardDialogType } from '~hooks';
 // import { useEnabledExtensions } from '~hooks/useEnabledExtensions';
-import { sortBy, toFinite } from '~utils/lodash';
+import { sortBy } from '~utils/lodash';
 
 import TransferFundsDialogForm from './TransferFundsDialogForm';
 
@@ -29,15 +29,6 @@ const MSG = defineMessages({
   },
 });
 
-export interface FormValues {
-  forceAction: boolean;
-  annotation: string;
-  amount: number;
-  fromDomain?: number;
-  toDomain?: number;
-  tokenAddress?: Address;
-}
-
 type Props = Required<DialogProps> &
   WizardDialogType<object> &
   ActionDialogProps & {
@@ -51,14 +42,22 @@ const validationSchema = object()
     forceAction: boolean().defined(),
     fromDomain: number().required(),
     toDomain: number().required(),
-    amount: number()
-      .transform((value) => toFinite(value))
+    amount: string()
       .required()
-      .moreThan(0, () => MSG.amountZero),
+      .test(
+        'more-than-zero',
+        () => MSG.amountZero,
+        (value) => {
+          const numberWithouCommas = (value || '0').replace(/,/g, '');
+          return !new Decimal(numberWithouCommas).isZero();
+        },
+      ),
     tokenAddress: string().address().required(),
     annotation: string().max(4000).defined(),
   })
   .defined();
+
+export type FormValues = InferType<typeof validationSchema>;
 
 const TransferFundsDialog = ({
   colony: {
@@ -160,7 +159,7 @@ const TransferFundsDialog = ({
               (domain) => domain.value !== selectedDomainId?.toString(),
             )?.value,
           ) || Id.RootDomain,
-        amount: 0,
+        amount: '',
         tokenAddress: nativeToken.tokenAddress,
         annotation: '',
         /*

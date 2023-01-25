@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { defineMessages } from 'react-intl';
-import * as yup from 'yup';
+import { string, object, bool, InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
+import Decimal from 'decimal.js';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
@@ -13,7 +14,6 @@ import { RootMotionOperationNames } from '~redux/types/actions';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { WizardDialogType } from '~hooks'; // useEnabledExtensions
-import { toFinite } from '~utils/lodash';
 
 import MintTokenDialogForm from './MintTokenDialogForm';
 
@@ -30,28 +30,28 @@ const MSG = defineMessages({
   },
 });
 
-export interface FormValues {
-  forceAction: boolean;
-  annotation: string;
-  mintAmount: number;
-}
-
 type Props = DialogProps &
   Partial<WizardDialogType<object>> &
   ActionDialogProps;
 
-const validationSchema = yup
-  .object()
+const validationSchema = object()
   .shape({
-    forceAction: yup.bool().defined(),
-    annotation: yup.string().max(4000).defined(),
-    mintAmount: yup
-      .number()
-      .transform((value) => toFinite(value))
+    forceAction: bool().defined(),
+    annotation: string().max(4000).defined(),
+    mintAmount: string()
       .required(() => MSG.errorAmountRequired)
-      .moreThan(0, () => MSG.errorAmountMin),
+      .test(
+        'more-than-zero',
+        () => MSG.errorAmountMin,
+        (value) => {
+          const numberWithouCommas = (value || '0').replace(/,/g, '');
+          return !new Decimal(numberWithouCommas).isZero();
+        },
+      ),
   })
   .defined();
+
+export type FormValues = InferType<typeof validationSchema>;
 
 const MintTokenDialog = ({
   colony: { nativeToken, colonyAddress, name: colonyName },
@@ -112,7 +112,7 @@ const MintTokenDialog = ({
       defaultValues={{
         forceAction: false,
         annotation: '',
-        mintAmount: 0,
+        mintAmount: '',
         /*
          * @NOTE That since this a root motion, and we don't actually make use
          * of the motion domain selected (it's disabled), we don't need to actually
