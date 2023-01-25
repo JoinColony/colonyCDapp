@@ -7,25 +7,17 @@ import LoadMoreButton from '~shared/LoadMoreButton';
 import SortingRow, {
   Props as SortingProps,
 } from '~shared/MembersList/SortingRow';
-import { Watcher, Contributor, MemberUser } from '~types';
+import { Contributor, MemberUser } from '~types';
 import { useColonyMembersSorting } from '~hooks';
 
 import styles from './MembersSection.css';
 
-const displayName = 'common.Members.MembersSection';
+const displayName = 'common.Members.ContributorsSection';
 
 const MSG = defineMessages({
   contributorsTitle: {
     id: `${displayName}.contributorsTitle`,
     defaultMessage: 'Contributors',
-  },
-  watchersTitle: {
-    id: `${displayName}.watchersTitle`,
-    defaultMessage: 'Watchers',
-  },
-  watchersDescription: {
-    id: `${displayName}.watchersDescription`,
-    defaultMessage: "Members who don't currently have any reputation",
   },
   noMembersFound: {
     id: `${displayName}.noMembersFound`,
@@ -34,18 +26,16 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  isContributorsSection: boolean;
-  members: Watcher[] | Contributor[];
+  members: Contributor[];
   canAdministerComments: boolean;
   extraItemContent?: (user: MemberUser) => ReactNode;
   itemsPerSection?: number;
 }
 
-const MembersSection = ({
+const ContributorsSection = ({
   members,
   canAdministerComments,
   extraItemContent,
-  isContributorsSection,
   itemsPerSection = 10,
 }: Props & Partial<SortingProps>) => {
   const [dataPage, setDataPage] = useState<number>(1);
@@ -56,35 +46,24 @@ const MembersSection = ({
   }, [dataPage]);
 
   const { sortedMembers, sortingMethod, handleSortingMethodChange } =
-    useColonyMembersSorting(paginatedMembers, isContributorsSection);
+    useColonyMembersSorting(paginatedMembers, true);
 
   return (
     <>
       <div className={styles.bar}>
         <div
           className={classnames(styles.title, {
-            [styles.contributorsTitle]: isContributorsSection,
+            [styles.contributorsTitle]: true,
           })}
         >
-          <FormattedMessage
-            {...(isContributorsSection
-              ? MSG.contributorsTitle
-              : MSG.watchersTitle)}
-          />
-          {isContributorsSection &&
-            handleSortingMethodChange &&
-            sortingMethod && (
-              <SortingRow
-                handleSortingMethodChange={handleSortingMethodChange}
-                sortingMethod={sortingMethod}
-              />
-            )}
+          <FormattedMessage {...MSG.contributorsTitle} />
+          {handleSortingMethodChange && sortingMethod && (
+            <SortingRow
+              handleSortingMethodChange={handleSortingMethodChange}
+              sortingMethod={sortingMethod}
+            />
+          )}
         </div>
-        {!isContributorsSection && (
-          <div className={styles.description}>
-            <FormattedMessage {...MSG.watchersDescription} />
-          </div>
-        )}
       </div>
       {paginatedMembers.length ? (
         <div className={styles.membersList}>
@@ -92,7 +71,7 @@ const MembersSection = ({
             extraItemContent={extraItemContent}
             members={sortedMembers}
             canAdministerComments={canAdministerComments}
-            showUserReputation={isContributorsSection}
+            showUserReputation
           />
         </div>
       ) : (
@@ -107,6 +86,6 @@ const MembersSection = ({
   );
 };
 
-MembersSection.displayName = displayName;
+ContributorsSection.displayName = displayName;
 
-export default MembersSection;
+export default ContributorsSection;
