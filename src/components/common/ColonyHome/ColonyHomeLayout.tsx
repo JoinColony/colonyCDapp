@@ -69,10 +69,7 @@ const ColonyHomeLayout = ({
                   />
                 </div>
                 {showActions && (
-                  <NewActionButton
-                    colony={colony}
-                    filteredDomainId={filteredDomainId}
-                  />
+                  <NewActionButton filteredDomainId={filteredDomainId} />
                 )}
               </div>
             </>
