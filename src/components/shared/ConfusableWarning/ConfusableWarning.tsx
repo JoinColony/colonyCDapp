@@ -25,7 +25,7 @@ const MSG = {
     defaultMessage: `<span>Warning.</span> Your username has confusable characters. This will show a warning when selected by users.`,
   },
   reputationLabel: {
-    id: 'ConfusableWarning.reputationLabel',
+    id: `${displayName}.reputationLabel`,
     defaultMessage: "Recipient's reputation",
   },
 };

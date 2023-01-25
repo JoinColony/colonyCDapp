@@ -1,12 +1,10 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { Colony } from '~types';
-
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import { WizardDialogType, useTransformer, useAppContext, useColonyContext } from '~hooks'; // useEnabledExtensions
+import { WizardDialogType, useTransformer, useAppContext } from '~hooks'; // useEnabledExtensions
 import { getAllUserRoles } from '~redux/transformers';
 import { canAdminister, canFund } from '~utils/checks';
 
@@ -70,10 +68,10 @@ const ManageExpenditureDialog = ({
   close,
   callStep,
   prevStep,
+  colony,
   nextStep,
 }: Props) => {
   const { wallet, user } = useAppContext();
-  const { colony } = useColonyContext();
   // const {
   //   isOneTxPaymentExtensionEnabled,
   //   isVotingExtensionEnabled,

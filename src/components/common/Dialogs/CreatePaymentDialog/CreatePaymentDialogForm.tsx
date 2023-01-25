@@ -140,7 +140,7 @@ interface Props extends ActionDialogProps {
 
 // const UserAvatar = HookedUserAvatar({ fetchUser: false });
 
-const supRenderAvatar = (address: Address, item: ItemDataType<User>) => (
+const renderAvatar = (address: Address, item: ItemDataType<User>) => (
   <UserAvatar address={address} user={item} size="xs" notSet={false} />
 );
 
@@ -199,8 +199,9 @@ Props & FormState<FormValues>) => {
   const { tokenAddress, amount } = values;
   const colonyTokens = useMemo(
     () =>
-      colony?.tokens?.items.filter(notNull).map((colonyToken) => colonyToken.token) ||
-      [],
+      colony?.tokens?.items
+        .filter(notNull)
+        .map((colonyToken) => colonyToken.token) || [],
     [colony?.tokens],
   );
   const selectedToken = useMemo(
@@ -223,7 +224,10 @@ Props & FormState<FormValues>) => {
     domainId,
   ]);
 
-  const colonyDomains = useMemo(() => colony?.domains?.items || [], [colony?.domains]);
+  const colonyDomains = useMemo(
+    () => colony?.domains?.items || [],
+    [colony?.domains],
+  );
   const domainOptions = useMemo(
     () =>
       sortBy(
@@ -485,7 +489,7 @@ Props & FormState<FormValues>) => {
             label={MSG.to}
             name="recipient"
             filter={filterUserSelection}
-            renderAvatar={supRenderAvatar}
+            renderAvatar={renderAvatar}
             disabled={inputDisabled}
             placeholder={MSG.userPickerPlaceholder}
             dataTest="paymentRecipientPicker"
