@@ -59,7 +59,6 @@ const MSG = defineMessages({
 });
 
 // interface Props {
-//   colony: Colony;
 //   filteredDomainId: number;
 // }
 
@@ -71,8 +70,8 @@ const MSG = defineMessages({
 //   };
 // }
 
-const NewActionButton = (/** { colony, filteredDomainId }: Props */) => {
-  const canInteractWithColony = useColonyContext();
+const NewActionButton = (/** { filteredDomainId }: Props */) => {
+  const { canInteractWithColony /** colony */ } = useColonyContext();
   const { user } = useAppContext();
 
   // const { version: networkVersion } = useNetworkContracts();
