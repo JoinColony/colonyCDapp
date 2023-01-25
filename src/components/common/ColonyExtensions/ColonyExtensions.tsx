@@ -3,9 +3,6 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { useExtensionsData } from '~hooks';
 
-// import BreadCrumb from '~core/BreadCrumb';
-// import { Address } from '~types/index';
-// import extensionData from '~data/staticData/extensionData';
 import Heading from '~shared/Heading';
 import { SpinnerLoader } from '~shared/Preloaders';
 
