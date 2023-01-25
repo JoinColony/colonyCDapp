@@ -4,6 +4,7 @@ import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { string, object, number, boolean, InferType } from 'yup';
 
+import Decimal from 'decimal.js';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
@@ -54,9 +55,16 @@ const validationSchema = object()
           .defined(),
       })
       .defined(),
-    amount: number()
+    amount: string()
       .required()
-      .moreThan(0, () => MSG.amountZero),
+      .test(
+        'more-than-zero',
+        () => MSG.amountZero,
+        (value) => {
+          const numberWithouCommas = (value || '').replace(/,/g, '');
+          return !new Decimal(numberWithouCommas).isZero();
+        },
+      ),
     tokenAddress: string().address().required(),
     annotation: string().max(4000).defined(),
     forceAction: boolean().defined(),

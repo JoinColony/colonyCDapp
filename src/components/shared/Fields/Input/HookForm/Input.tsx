@@ -34,8 +34,6 @@ export interface HookFormInputProps
   maxButtonParams?: MaxButtonParams;
   /** Show ConfusableWarning based on user input */
   showConfusable?: boolean;
-  /** Tells input to treat value as a number */
-  valueAsNumber?: boolean;
 }
 
 const displayName = 'HookFormInput';
