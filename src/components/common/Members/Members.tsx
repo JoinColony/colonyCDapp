@@ -99,7 +99,7 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
 
   // handles search values & close button
   const handleSearch = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = event.target?.value || '';
       setSearchValue(value);
     },

@@ -42,7 +42,7 @@ interface Props {
   }[];
   handleDomainChange: (domainId: number) => void;
   searchValue: string;
-  handleSearch: (e: any) => void;
+  handleSearch: (e: React.ChangeEvent | React.MouseEvent) => void;
 }
 
 const MembersTitle = ({
