@@ -535,7 +535,6 @@ Props & FormState<FormValues>) => {
               formattingOptions={formattingOptions}
               disabled={inputDisabled}
               dataTest="paymentAmountInput"
-              valueAsNumber
             />
             {/* {networkFeeInverse &&
               customAmountError === undefined &&
