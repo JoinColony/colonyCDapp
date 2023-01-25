@@ -33,6 +33,22 @@ export type Scalars = {
   AWSURL: any;
 };
 
+export type Action = {
+  __typename?: 'Action';
+  amount?: Maybe<Scalars['String']>;
+  blockNumber: Scalars['Int'];
+  createdAt: Scalars['AWSTimestamp'];
+  decimals?: Maybe<Scalars['Int']>;
+  id: Scalars['ID'];
+  initiator?: Maybe<Scalars['String']>;
+  recipient?: Maybe<Scalars['String']>;
+  symbol?: Maybe<Scalars['String']>;
+  tokenAddress?: Maybe<Scalars['String']>;
+  transactionHash: Scalars['String'];
+  type: Scalars['String'];
+  updatedAt: Scalars['AWSDateTime'];
+};
+
 export type Colony = {
   __typename?: 'Colony';
   balances?: Maybe<ColonyBalances>;
@@ -240,6 +256,20 @@ export type CreateColonyFundsClaimInput = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
+export type CreateActionInput = {
+  amount?: InputMaybe<Scalars['String']>;
+  blockNumber: Scalars['Int'];
+  createdAt: Scalars['AWSTimestamp'];
+  decimals?: InputMaybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['ID']>;
+  initiator?: InputMaybe<Scalars['String']>;
+  recipient?: InputMaybe<Scalars['String']>;
+  symbol?: InputMaybe<Scalars['String']>;
+  tokenAddress?: InputMaybe<Scalars['String']>;
+  transactionHash: Scalars['String'];
+  type: Scalars['String'];
+};
+
 export type CreateColonyInput = {
   balances?: InputMaybe<ColonyBalancesInput>;
   chainFundsClaim?: InputMaybe<ColonyChainFundsClaimInput>;
@@ -358,6 +388,7 @@ export type CreateWatchedColoniesInput = {
   userID: Scalars['ID'];
 };
 
+<<<<<<< HEAD
 export type CurrentVersion = {
   __typename?: 'CurrentVersion';
   createdAt: Scalars['AWSDateTime'];
@@ -372,6 +403,9 @@ export type DeleteColonyExtensionInput = {
 };
 
 export type DeleteColonyFundsClaimInput = {
+=======
+export type DeleteActionInput = {
+>>>>>>> ae564d6f (Add basic action model)
   id: Scalars['ID'];
 };
 
@@ -492,6 +526,45 @@ export type MetadataInput = {
   logIndex?: InputMaybe<Scalars['Int']>;
   network?: InputMaybe<Network>;
   transactionHash?: InputMaybe<Scalars['String']>;
+};
+
+export type ModelActionConditionInput = {
+  amount?: InputMaybe<ModelStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelActionConditionInput>>>;
+  blockNumber?: InputMaybe<ModelIntInput>;
+  createdAt?: InputMaybe<ModelIntInput>;
+  decimals?: InputMaybe<ModelIntInput>;
+  initiator?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelActionConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelActionConditionInput>>>;
+  recipient?: InputMaybe<ModelStringInput>;
+  symbol?: InputMaybe<ModelStringInput>;
+  tokenAddress?: InputMaybe<ModelStringInput>;
+  transactionHash?: InputMaybe<ModelStringInput>;
+  type?: InputMaybe<ModelStringInput>;
+};
+
+export type ModelActionConnection = {
+  __typename?: 'ModelActionConnection';
+  items: Array<Maybe<Action>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelActionFilterInput = {
+  amount?: InputMaybe<ModelStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelActionFilterInput>>>;
+  blockNumber?: InputMaybe<ModelIntInput>;
+  createdAt?: InputMaybe<ModelIntInput>;
+  decimals?: InputMaybe<ModelIntInput>;
+  id?: InputMaybe<ModelIdInput>;
+  initiator?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelActionFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelActionFilterInput>>>;
+  recipient?: InputMaybe<ModelStringInput>;
+  symbol?: InputMaybe<ModelStringInput>;
+  tokenAddress?: InputMaybe<ModelStringInput>;
+  transactionHash?: InputMaybe<ModelStringInput>;
+  type?: InputMaybe<ModelStringInput>;
 };
 
 export enum ModelAttributeTypes {
@@ -848,6 +921,7 @@ export type ModelStringInput = {
   size?: InputMaybe<ModelSizeInput>;
 };
 
+<<<<<<< HEAD
 export type ModelStringKeyConditionInput = {
   beginsWith?: InputMaybe<Scalars['String']>;
   between?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -856,6 +930,22 @@ export type ModelStringKeyConditionInput = {
   gt?: InputMaybe<Scalars['String']>;
   le?: InputMaybe<Scalars['String']>;
   lt?: InputMaybe<Scalars['String']>;
+=======
+export type ModelSubscriptionActionFilterInput = {
+  amount?: InputMaybe<ModelSubscriptionStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionActionFilterInput>>>;
+  blockNumber?: InputMaybe<ModelSubscriptionIntInput>;
+  createdAt?: InputMaybe<ModelSubscriptionIntInput>;
+  decimals?: InputMaybe<ModelSubscriptionIntInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  initiator?: InputMaybe<ModelSubscriptionStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionActionFilterInput>>>;
+  recipient?: InputMaybe<ModelSubscriptionStringInput>;
+  symbol?: InputMaybe<ModelSubscriptionStringInput>;
+  tokenAddress?: InputMaybe<ModelSubscriptionStringInput>;
+  transactionHash?: InputMaybe<ModelSubscriptionStringInput>;
+  type?: InputMaybe<ModelSubscriptionStringInput>;
+>>>>>>> ae564d6f (Add basic action model)
 };
 
 export type ModelSubscriptionBooleanInput = {
@@ -1148,6 +1238,7 @@ export type ModelWatchedColoniesFilterInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createAction?: Maybe<Action>;
   createColony?: Maybe<Colony>;
   createColonyExtension?: Maybe<ColonyExtension>;
   createColonyFundsClaim?: Maybe<ColonyFundsClaim>;
@@ -1163,6 +1254,7 @@ export type Mutation = {
   createUser?: Maybe<User>;
   createUserTokens?: Maybe<UserTokens>;
   createWatchedColonies?: Maybe<WatchedColonies>;
+  deleteAction?: Maybe<Action>;
   deleteColony?: Maybe<Colony>;
   deleteColonyExtension?: Maybe<ColonyExtension>;
   deleteColonyFundsClaim?: Maybe<ColonyFundsClaim>;
@@ -1175,7 +1267,11 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUserTokens?: Maybe<UserTokens>;
   deleteWatchedColonies?: Maybe<WatchedColonies>;
+<<<<<<< HEAD
   setCurrentVersion?: Maybe<Scalars['Boolean']>;
+=======
+  updateAction?: Maybe<Action>;
+>>>>>>> ae564d6f (Add basic action model)
   updateColony?: Maybe<Colony>;
   updateColonyExtension?: Maybe<ColonyExtension>;
   updateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
@@ -1189,6 +1285,12 @@ export type Mutation = {
   updateUser?: Maybe<User>;
   updateUserTokens?: Maybe<UserTokens>;
   updateWatchedColonies?: Maybe<WatchedColonies>;
+};
+
+
+export type MutationCreateActionArgs = {
+  condition?: InputMaybe<ModelActionConditionInput>;
+  input: CreateActionInput;
 };
 
 
@@ -1279,6 +1381,12 @@ export type MutationCreateWatchedColoniesArgs = {
 };
 
 
+export type MutationDeleteActionArgs = {
+  condition?: InputMaybe<ModelActionConditionInput>;
+  input: DeleteActionInput;
+};
+
+
 export type MutationDeleteColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: DeleteColonyInput;
@@ -1351,8 +1459,14 @@ export type MutationDeleteWatchedColoniesArgs = {
 };
 
 
+<<<<<<< HEAD
 export type MutationSetCurrentVersionArgs = {
   input?: InputMaybe<SetCurrentVersionInput>;
+=======
+export type MutationUpdateActionArgs = {
+  condition?: InputMaybe<ModelActionConditionInput>;
+  input: UpdateActionInput;
+>>>>>>> ae564d6f (Add basic action model)
 };
 
 
@@ -1491,6 +1605,7 @@ export type ProfileMetadataInput = {
 
 export type Query = {
   __typename?: 'Query';
+  getAction?: Maybe<Action>;
   getColony?: Maybe<Colony>;
   getColonyByAddress?: Maybe<ModelColonyConnection>;
   getColonyByName?: Maybe<ModelColonyConnection>;
@@ -1516,6 +1631,7 @@ export type Query = {
   getUserReputation?: Maybe<Scalars['String']>;
   getUserTokens?: Maybe<UserTokens>;
   getWatchedColonies?: Maybe<WatchedColonies>;
+  listActions?: Maybe<ModelActionConnection>;
   listColonies?: Maybe<ModelColonyConnection>;
   listColonyExtensions?: Maybe<ModelColonyExtensionConnection>;
   listColonyFundsClaims?: Maybe<ModelColonyFundsClaimConnection>;
@@ -1528,6 +1644,11 @@ export type Query = {
   listUserTokens?: Maybe<ModelUserTokensConnection>;
   listUsers?: Maybe<ModelUserConnection>;
   listWatchedColonies?: Maybe<ModelWatchedColoniesConnection>;
+};
+
+
+export type QueryGetActionArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -1697,6 +1818,13 @@ export type QueryGetWatchedColoniesArgs = {
 };
 
 
+export type QueryListActionsArgs = {
+  filter?: InputMaybe<ModelActionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryListColoniesArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1787,6 +1915,7 @@ export type SetCurrentVersionInput = {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  onCreateAction?: Maybe<Action>;
   onCreateColony?: Maybe<Colony>;
   onCreateColonyExtension?: Maybe<ColonyExtension>;
   onCreateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
@@ -1799,6 +1928,7 @@ export type Subscription = {
   onCreateUser?: Maybe<User>;
   onCreateUserTokens?: Maybe<UserTokens>;
   onCreateWatchedColonies?: Maybe<WatchedColonies>;
+  onDeleteAction?: Maybe<Action>;
   onDeleteColony?: Maybe<Colony>;
   onDeleteColonyExtension?: Maybe<ColonyExtension>;
   onDeleteColonyFundsClaim?: Maybe<ColonyFundsClaim>;
@@ -1811,6 +1941,7 @@ export type Subscription = {
   onDeleteUser?: Maybe<User>;
   onDeleteUserTokens?: Maybe<UserTokens>;
   onDeleteWatchedColonies?: Maybe<WatchedColonies>;
+  onUpdateAction?: Maybe<Action>;
   onUpdateColony?: Maybe<Colony>;
   onUpdateColonyExtension?: Maybe<ColonyExtension>;
   onUpdateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
@@ -1823,6 +1954,11 @@ export type Subscription = {
   onUpdateUser?: Maybe<User>;
   onUpdateUserTokens?: Maybe<UserTokens>;
   onUpdateWatchedColonies?: Maybe<WatchedColonies>;
+};
+
+
+export type SubscriptionOnCreateActionArgs = {
+  filter?: InputMaybe<ModelSubscriptionActionFilterInput>;
 };
 
 
@@ -1886,6 +2022,11 @@ export type SubscriptionOnCreateWatchedColoniesArgs = {
 };
 
 
+export type SubscriptionOnDeleteActionArgs = {
+  filter?: InputMaybe<ModelSubscriptionActionFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteColonyArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
 };
@@ -1943,6 +2084,11 @@ export type SubscriptionOnDeleteUserTokensArgs = {
 
 export type SubscriptionOnDeleteWatchedColoniesArgs = {
   filter?: InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateActionArgs = {
+  filter?: InputMaybe<ModelSubscriptionActionFilterInput>;
 };
 
 
@@ -2056,6 +2202,7 @@ export enum TokenType {
   Erc20 = 'ERC20'
 }
 
+<<<<<<< HEAD
 export type UpdateColonyExtensionInput = {
   colonyId?: InputMaybe<Scalars['ID']>;
   hash?: InputMaybe<Scalars['String']>;
@@ -2080,6 +2227,23 @@ export type UpdateColonyFundsClaimInput = {
 export type UpdateColonyInput = {
   balances?: InputMaybe<ColonyBalancesInput>;
   chainFundsClaim?: InputMaybe<ColonyChainFundsClaimInput>;
+=======
+export type UpdateActionInput = {
+  amount?: InputMaybe<Scalars['String']>;
+  blockNumber?: InputMaybe<Scalars['Int']>;
+  createdAt?: InputMaybe<Scalars['AWSTimestamp']>;
+  decimals?: InputMaybe<Scalars['Int']>;
+  id: Scalars['ID'];
+  initiator?: InputMaybe<Scalars['String']>;
+  recipient?: InputMaybe<Scalars['String']>;
+  symbol?: InputMaybe<Scalars['String']>;
+  tokenAddress?: InputMaybe<Scalars['String']>;
+  transactionHash?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateColonyInput = {
+>>>>>>> ae564d6f (Add basic action model)
   colonyNativeTokenId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
   meta?: InputMaybe<MetadataInput>;
@@ -2245,8 +2409,11 @@ export type WatchedColonyFragment = { __typename?: 'Colony', name: string, colon
 
 export type WatchListItemFragment = { __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } };
 
+<<<<<<< HEAD
 export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number };
 
+=======
+>>>>>>> ae564d6f (Add basic action model)
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
 export type UserFragment = { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null };
@@ -2501,6 +2668,7 @@ export const WatchListItemFragmentDoc = gql`
   createdAt
 }
     ${WatchedColonyFragmentDoc}`;
+<<<<<<< HEAD
 export const ExtensionFragmentDoc = gql`
     fragment Extension on ColonyExtension {
   address: id
@@ -2514,6 +2682,8 @@ export const ExtensionFragmentDoc = gql`
   isInitialized
 }
     `;
+=======
+>>>>>>> ae564d6f (Add basic action model)
 export const UserFragmentDoc = gql`
     fragment User on User {
   profile {
