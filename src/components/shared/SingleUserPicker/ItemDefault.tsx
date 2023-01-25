@@ -7,6 +7,7 @@ import { ItemDataType } from '~shared/OmniPicker';
 import MaskedAddress from '~shared/MaskedAddress';
 import UserMention from '~shared/UserMention';
 import styles from './ItemDefault.css';
+import { isAddress } from '~utils/web3';
 
 const MSG = defineMessages({
   ownName: {
@@ -48,12 +49,14 @@ const ItemDefault = ({
       {profile?.displayName && (
         <span className={styles.displayName}>
           {profile?.displayName}
-          {walletAddress === userAddress && (
-            <span className={styles.thatsYou}>
-              &nbsp;
-              <FormattedMessage {...MSG.ownName} />
-            </span>
-          )}
+          {isAddress(walletAddress || '') &&
+            isAddress(userAddress) &&
+            walletAddress === userAddress && (
+              <span className={styles.thatsYou}>
+                &nbsp;
+                <FormattedMessage {...MSG.ownName} />
+              </span>
+            )}
           &nbsp;
         </span>
       )}
