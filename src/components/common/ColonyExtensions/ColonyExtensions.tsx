@@ -2,8 +2,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { useExtensionsData } from '~hooks';
-
-import Heading from '~shared/Heading';
+import { Heading3 } from '~shared/Heading';
 import { SpinnerLoader } from '~shared/Preloaders';
 
 import ExtensionCard from './ExtensionCard';
@@ -61,17 +60,16 @@ const ColonyExtensions = () => {
       <div className={styles.content}>
         {installedExtensionsData.length > 0 && (
           <div>
-            <Heading
-              tagName="h3"
+            <Heading3
               appearance={{ size: 'normal' }}
               text={MSG.installedExtensions}
             />
 
             <div className={styles.cards}>
-              {installedExtensionsData.map((extension) => (
+              {installedExtensionsData.map((extensionData) => (
                 <ExtensionCard
-                  key={extension.extensionId}
-                  extension={extension}
+                  key={extensionData.extensionId}
+                  extensionData={extensionData}
                 />
               ))}
             </div>
@@ -80,17 +78,16 @@ const ColonyExtensions = () => {
 
         {availableExtensionsData.length > 0 && (
           <div>
-            <Heading
-              tagName="h3"
+            <Heading3
               appearance={{ size: 'normal' }}
               text={MSG.availableExtensions}
             />
 
             <div className={styles.cards}>
-              {availableExtensionsData.map((extension) => (
+              {availableExtensionsData.map((extensionData) => (
                 <ExtensionCard
-                  key={extension.extensionId}
-                  extension={extension}
+                  key={extensionData.extensionId}
+                  extensionData={extensionData}
                 />
               ))}
             </div>

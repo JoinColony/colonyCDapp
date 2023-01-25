@@ -1,9 +1,10 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
+
 import Card from '~shared/Card';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
-import Heading from '~shared/Heading';
+import { Heading4 } from '~shared/Heading';
 import Icon from '~shared/Icon';
 import Link from '~shared/Link';
 import { AnyExtensionData } from '~types';
@@ -14,45 +15,46 @@ import styles from './ExtensionCard.css';
 const displayName = 'common.ColonyExtensions.ExtensionCard';
 
 interface Props {
-  extension: AnyExtensionData;
+  extensionData: AnyExtensionData;
 }
 
-const ExtensionCard = ({ extension }: Props) => {
+const ExtensionCard = ({ extensionData }: Props) => {
   const { colonyName } = useParams<{
     colonyName: string;
   }>();
   return (
     <div className={styles.main}>
-      <Link to={`/colony/${colonyName}/extensions/${extension.extensionId}`}>
+      <Link
+        to={`/colony/${colonyName}/extensions/${extensionData.extensionId}`}
+      >
         <Card className={styles.card}>
           <div className={styles.header}>
             <div className={styles.headerIcon}>
               <Icon
                 name="colony-logo"
-                title={extension.name}
+                title={extensionData.name}
                 appearance={{ size: 'small' }}
               />
             </div>
             <div>
-              <Heading
-                tagName="h4"
+              <Heading4
                 appearance={{ size: 'normal', margin: 'none', theme: 'dark' }}
-                text={extension.name}
+                text={extensionData.name}
               />
               <span className={styles.version}>
                 v
-                {isInstalledExtensionData(extension)
-                  ? extension.currentVersion
-                  : extension.availableVersion}
+                {isInstalledExtensionData(extensionData)
+                  ? extensionData.currentVersion
+                  : extensionData.availableVersion}
               </span>
             </div>
           </div>
           <div className={styles.cardDescription}>
-            <FormattedMessage {...extension.descriptionShort} />
+            <FormattedMessage {...extensionData.descriptionShort} />
           </div>
-          {isInstalledExtensionData(extension) && (
+          {isInstalledExtensionData(extensionData) && (
             <div className={styles.status}>
-              <ExtensionStatusBadge extensionData={extension} />
+              <ExtensionStatusBadge extensionData={extensionData} />
             </div>
           )}
         </Card>

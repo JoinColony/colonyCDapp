@@ -8,7 +8,7 @@ import NotFoundRoute from '~routes/NotFoundRoute';
 import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
 import { isInstalledExtensionData } from '~utils/extensions';
 import BreadCrumb, { Crumb } from '~shared/BreadCrumb';
-import Heading from '~shared/Heading';
+import { Heading3, Heading4 } from '~shared/Heading';
 
 import ExtensionDetailsAside from './ExtensionDetailsAside';
 import ExtensionSetup from '../ExtensionSetup';
@@ -33,10 +33,7 @@ const MSG = defineMessages({
 });
 
 const HeadingChunks = (chunks: React.ReactNode[]) => (
-  // @TODO: Change to Heading4 component
-  <Heading tagName="h4" appearance={{ size: 'medium', margin: 'small' }}>
-    {chunks}
-  </Heading>
+  <Heading4 appearance={{ size: 'medium', margin: 'small' }}>{chunks}</Heading4>
 );
 
 const ExtensionDetails = () => {
@@ -98,8 +95,7 @@ const ExtensionDetails = () => {
             path="/"
             element={
               <div className={styles.extensionText}>
-                <Heading
-                  tagName="h3"
+                <Heading3
                   appearance={{
                     size: 'medium',
                     margin: 'small',
