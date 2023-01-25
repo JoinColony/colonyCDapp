@@ -50,6 +50,22 @@ export type ChainMetadataInput = {
   transactionHash?: InputMaybe<Scalars['String']>;
 };
 
+export type Action = {
+  __typename?: 'Action';
+  amount?: Maybe<Scalars['String']>;
+  blockNumber: Scalars['Int'];
+  createdAt: Scalars['AWSTimestamp'];
+  decimals?: Maybe<Scalars['Int']>;
+  id: Scalars['ID'];
+  initiator?: Maybe<Scalars['String']>;
+  recipient?: Maybe<Scalars['String']>;
+  symbol?: Maybe<Scalars['String']>;
+  tokenAddress?: Maybe<Scalars['String']>;
+  transactionHash: Scalars['String'];
+  type: Scalars['String'];
+  updatedAt: Scalars['AWSDateTime'];
+};
+
 export type Colony = {
   __typename?: 'Colony';
   actions?: Maybe<ModelColonyActionConnection>;
@@ -1085,6 +1101,22 @@ export type ModelStringKeyConditionInput = {
   lt?: InputMaybe<Scalars['String']>;
 };
 
+export type ModelSubscriptionActionFilterInput = {
+  amount?: InputMaybe<ModelSubscriptionStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionActionFilterInput>>>;
+  blockNumber?: InputMaybe<ModelSubscriptionIntInput>;
+  createdAt?: InputMaybe<ModelSubscriptionIntInput>;
+  decimals?: InputMaybe<ModelSubscriptionIntInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  initiator?: InputMaybe<ModelSubscriptionStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionActionFilterInput>>>;
+  recipient?: InputMaybe<ModelSubscriptionStringInput>;
+  symbol?: InputMaybe<ModelSubscriptionStringInput>;
+  tokenAddress?: InputMaybe<ModelSubscriptionStringInput>;
+  transactionHash?: InputMaybe<ModelSubscriptionStringInput>;
+  type?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
 export type ModelSubscriptionBooleanInput = {
   eq?: InputMaybe<Scalars['Boolean']>;
   ne?: InputMaybe<Scalars['Boolean']>;
@@ -1410,6 +1442,7 @@ export type ModelWatchedColoniesFilterInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createAction?: Maybe<Action>;
   createColony?: Maybe<Colony>;
   createColonyAction?: Maybe<ColonyAction>;
   createColonyExtension?: Maybe<ColonyExtension>;
@@ -1427,6 +1460,7 @@ export type Mutation = {
   createUser?: Maybe<User>;
   createUserTokens?: Maybe<UserTokens>;
   createWatchedColonies?: Maybe<WatchedColonies>;
+  deleteAction?: Maybe<Action>;
   deleteColony?: Maybe<Colony>;
   deleteColonyAction?: Maybe<ColonyAction>;
   deleteColonyExtension?: Maybe<ColonyExtension>;
@@ -1443,6 +1477,7 @@ export type Mutation = {
   deleteUserTokens?: Maybe<UserTokens>;
   deleteWatchedColonies?: Maybe<WatchedColonies>;
   setCurrentVersion?: Maybe<Scalars['Boolean']>;
+  updateAction?: Maybe<Action>;
   updateColony?: Maybe<Colony>;
   updateColonyAction?: Maybe<ColonyAction>;
   updateColonyExtension?: Maybe<ColonyExtension>;
@@ -1459,6 +1494,12 @@ export type Mutation = {
   updateUser?: Maybe<User>;
   updateUserTokens?: Maybe<UserTokens>;
   updateWatchedColonies?: Maybe<WatchedColonies>;
+};
+
+
+export type MutationCreateActionArgs = {
+  condition?: InputMaybe<ModelActionConditionInput>;
+  input: CreateActionInput;
 };
 
 
@@ -1562,6 +1603,12 @@ export type MutationCreateWatchedColoniesArgs = {
 };
 
 
+export type MutationDeleteActionArgs = {
+  condition?: InputMaybe<ModelActionConditionInput>;
+  input: DeleteActionInput;
+};
+
+
 export type MutationDeleteColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: DeleteColonyInput;
@@ -1654,6 +1701,12 @@ export type MutationDeleteWatchedColoniesArgs = {
 
 export type MutationSetCurrentVersionArgs = {
   input?: InputMaybe<SetCurrentVersionInput>;
+};
+
+
+export type MutationUpdateActionArgs = {
+  condition?: InputMaybe<ModelActionConditionInput>;
+  input: UpdateActionInput;
 };
 
 
@@ -1839,6 +1892,7 @@ export type Query = {
   getUserReputation?: Maybe<Scalars['String']>;
   getUserTokens?: Maybe<UserTokens>;
   getWatchedColonies?: Maybe<WatchedColonies>;
+  listActions?: Maybe<ModelActionConnection>;
   listColonies?: Maybe<ModelColonyConnection>;
   listColonyActions?: Maybe<ModelColonyActionConnection>;
   listColonyExtensions?: Maybe<ModelColonyExtensionConnection>;
@@ -2048,6 +2102,13 @@ export type QueryGetWatchedColoniesArgs = {
 };
 
 
+export type QueryListActionsArgs = {
+  filter?: InputMaybe<ModelActionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryListColoniesArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -2159,6 +2220,7 @@ export type SetCurrentVersionInput = {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  onCreateAction?: Maybe<Action>;
   onCreateColony?: Maybe<Colony>;
   onCreateColonyAction?: Maybe<ColonyAction>;
   onCreateColonyExtension?: Maybe<ColonyExtension>;
@@ -2174,6 +2236,7 @@ export type Subscription = {
   onCreateUser?: Maybe<User>;
   onCreateUserTokens?: Maybe<UserTokens>;
   onCreateWatchedColonies?: Maybe<WatchedColonies>;
+  onDeleteAction?: Maybe<Action>;
   onDeleteColony?: Maybe<Colony>;
   onDeleteColonyAction?: Maybe<ColonyAction>;
   onDeleteColonyExtension?: Maybe<ColonyExtension>;
@@ -2189,6 +2252,7 @@ export type Subscription = {
   onDeleteUser?: Maybe<User>;
   onDeleteUserTokens?: Maybe<UserTokens>;
   onDeleteWatchedColonies?: Maybe<WatchedColonies>;
+  onUpdateAction?: Maybe<Action>;
   onUpdateColony?: Maybe<Colony>;
   onUpdateColonyAction?: Maybe<ColonyAction>;
   onUpdateColonyExtension?: Maybe<ColonyExtension>;
@@ -2204,6 +2268,11 @@ export type Subscription = {
   onUpdateUser?: Maybe<User>;
   onUpdateUserTokens?: Maybe<UserTokens>;
   onUpdateWatchedColonies?: Maybe<WatchedColonies>;
+};
+
+
+export type SubscriptionOnCreateActionArgs = {
+  filter?: InputMaybe<ModelSubscriptionActionFilterInput>;
 };
 
 
@@ -2282,6 +2351,11 @@ export type SubscriptionOnCreateWatchedColoniesArgs = {
 };
 
 
+export type SubscriptionOnDeleteActionArgs = {
+  filter?: InputMaybe<ModelSubscriptionActionFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteColonyArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
 };
@@ -2354,6 +2428,11 @@ export type SubscriptionOnDeleteUserTokensArgs = {
 
 export type SubscriptionOnDeleteWatchedColoniesArgs = {
   filter?: InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateActionArgs = {
+  filter?: InputMaybe<ModelSubscriptionActionFilterInput>;
 };
 
 
