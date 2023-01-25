@@ -21,7 +21,8 @@ import { notNull } from '~utils/arrays';
 
 import MembersTitle from './MembersTitle';
 // import { filterMembers } from './filterMembers';
-import MembersSection from './MembersSection';
+import ContributorsSection from './ContributorsSection';
+import WatchersSection from './WatchersSection';
 
 import styles from './Members.css';
 
@@ -116,8 +117,7 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
   const membersContent = useMemo(() => {
     const contributorsContent = (filters.memberType === MemberType.All ||
       filters.memberType === MemberType.Contributers) && (
-      <MembersSection
-        isContributorsSection
+      <ContributorsSection
         members={contributors}
         // temporary value until permissions are implemented
         canAdministerComments
@@ -138,8 +138,7 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
       isRootDomain &&
       (filters.memberType === MemberType.All ||
         filters.memberType === MemberType.Watchers) ? (
-        <MembersSection
-          isContributorsSection={false}
+        <WatchersSection
           members={watchers}
           // temporary value until permissions are implemented
           canAdministerComments
