@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
+import { useField } from 'formik';
 import { PopperOptions } from 'react-popper-tooltip';
 import { MessageDescriptor } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
 
 import InputLabel from '~shared/Fields/InputLabel';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 
-import { ComplexMessageValues, SimpleMessageValues } from '~types';
+import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import styles from './Toggle.css';
@@ -23,8 +23,7 @@ interface Props {
   labelValues?: SimpleMessageValues;
   disabled?: boolean;
   tooltipText?: string | MessageDescriptor;
-  tooltipTextValues?: ComplexMessageValues;
-  tooltipClassName?: string;
+  tooltipTextValues?: SimpleMessageValues;
   elementOnly?: boolean;
   /** Options to pass to the underlying PopperJS element. See here for more: https://popper.js.org/docs/v2/constructors/#options. */
   tooltipPopperOptions?: PopperOptions;
@@ -40,7 +39,6 @@ const Toggle = ({
   elementOnly = false,
   tooltipTextValues,
   tooltipText,
-  tooltipClassName,
   tooltipPopperOptions = {
     placement: 'right-start',
     modifiers: [
@@ -54,9 +52,8 @@ const Toggle = ({
   },
   onChange: onChangeCallback,
 }: Props) => {
-  const { register, getValues } = useFormContext();
-  const { onChange } = register(name);
-  const value = getValues(name);
+  const [{ onChange, value }] = useField(name);
+
   const mainClasses = getMainClasses(appearance, styles);
 
   const handleOnChange = useCallback(
@@ -99,7 +96,6 @@ const Toggle = ({
           tooltipText={tooltipText}
           tooltipPopperOptions={tooltipPopperOptions}
           tooltipTextValues={tooltipTextValues}
-          tooltipClassName={tooltipClassName}
         />
       )}
     </div>
