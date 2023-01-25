@@ -1,6 +1,10 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { useColonyContext, useNaiveBranchingDialogWizard } from '~hooks';
+import {
+  useAppContext,
+  useColonyContext,
+  useNaiveBranchingDialogWizard,
+} from '~hooks';
 // import { Extension } from '@colony/colony-js';
 // import { useSelector } from 'react-redux';
 
@@ -69,6 +73,7 @@ const MSG = defineMessages({
 
 const NewActionButton = (/** { colony, filteredDomainId }: Props */) => {
   const canInteractWithColony = useColonyContext();
+  const { user } = useAppContext();
 
   // const { version: networkVersion } = useNetworkContracts();
 
@@ -266,7 +271,7 @@ const NewActionButton = (/** { colony, filteredDomainId }: Props */) => {
   //     extensionName === Extension.OneTxPayment,
   // );
   // const mustUpgradeOneTx = oneTxMustBeUpgraded(oneTxPaymentExtension);
-  // const hasRegisteredProfile = !!username && !ethereal;
+  const hasRegisteredProfile = !!user?.name && !!user.walletAddress;
   // const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
   // const isLoadingData = isLoadingExtensions || isLoadingUser;
   const isLoadingData = false;
@@ -293,7 +298,7 @@ const NewActionButton = (/** { colony, filteredDomainId }: Props */) => {
             //   mustUpgrade ||
             //   mustUpgradeOneTx
             // }
-            disabled={!canInteractWithColony}
+            disabled={!canInteractWithColony || !hasRegisteredProfile}
             data-test="newActionButton"
           />
         </Tooltip>
