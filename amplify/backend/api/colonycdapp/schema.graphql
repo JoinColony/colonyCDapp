@@ -378,3 +378,17 @@ type CurrentVersion @model {
   key: String! @index(name: "byKey", queryField: "getCurrentVersionByKey")
   version: Int!
 }
+
+type Action @model {
+  id: ID!
+  type: String!
+  createdAt: AWSTimestamp!
+  blockNumber: Int!
+  transactionHash: String!
+  initiator: String
+  recipient: String
+  amount: String
+  tokenAddress: String
+  symbol: String
+  decimals: Int
+}
