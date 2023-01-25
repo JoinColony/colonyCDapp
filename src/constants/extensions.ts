@@ -1,8 +1,7 @@
 import { ColonyRole, Extension } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { number } from 'yup';
-// @TODO: Change the import to use ~utils/lodash
-import toFinite from 'lodash/toFinite';
+import { toFinite } from '~utils/lodash';
 
 import { ExtensionConfig, ExtensionParamType } from '~types';
 
