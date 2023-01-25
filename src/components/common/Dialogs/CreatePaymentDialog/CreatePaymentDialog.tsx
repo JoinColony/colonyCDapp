@@ -61,7 +61,7 @@ const validationSchema = object()
         'more-than-zero',
         () => MSG.amountZero,
         (value) => {
-          const numberWithouCommas = (value || '').replace(/,/g, '');
+          const numberWithouCommas = (value || '0').replace(/,/g, '');
           return !new Decimal(numberWithouCommas).isZero();
         },
       ),
@@ -189,7 +189,7 @@ const CreatePaymentDialog = ({
           : filteredDomainId
         ).toString(),
         recipient: undefined,
-        amount: 0,
+        amount: '',
         tokenAddress: nativeToken.tokenAddress,
         annotation: '',
         motionDomainId:
