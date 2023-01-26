@@ -1,6 +1,4 @@
-const {
-  graphqlRequest,
-} = require('../../updateExtensionByColonyAndHash/src/utils');
+const { graphqlRequest } = require('./utils');
 const {
   getCurrentVersion,
   updateCurrentVersion,
