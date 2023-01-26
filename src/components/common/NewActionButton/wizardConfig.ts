@@ -12,7 +12,6 @@ import {
   // TransferFundsDialog,
   // AdvancedDialog,
   // PermissionManagementDialog,
-  // RecoveryModeDialog,
   // ManageWhitelistDialog,
   // MintTokenDialog,
   // NetworkContractUpgradeDialog,
@@ -133,7 +132,6 @@ export const getWizardFlowConfig =
     //     prevStep: 'common.ColonyHome.ColonyActionsDialog',
     //     nextStepPermissionManagement:
     //       'common.ColonyHome.PermissionManagementDialog',
-    //     nextStepRecovery: 'common.ColonyHome.RecoveryModeDialog',
     //     nextStepEditDetails: 'common.ColonyHome.EditColonyDetailsDialog',
     //     nextStepVersionUpgrade:
     //       'common.ColonyHome.NetworkContractUpgradeDialog',
@@ -146,13 +144,6 @@ export const getWizardFlowConfig =
     //     prevStep: 'common.ColonyHome.AdvancedDialog',
     //     colony,
     //     filteredDomainId,
-    //   },
-    // },
-    // {
-    //   component: RecoveryModeDialog,
-    //   props: {
-    //     prevStep: 'common.ColonyHome.AdvancedDialog',
-    //     colony,
     //   },
     // },
     // {
