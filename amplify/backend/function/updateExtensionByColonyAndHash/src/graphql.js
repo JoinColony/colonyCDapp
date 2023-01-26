@@ -27,4 +27,19 @@ module.exports = {
       }
     }
   `,
+  createExtension: /* GraphQL */ `
+    mutation CreateExtension($input: CreateColonyExtensionInput!) {
+      createColonyExtension(input: $input) {
+        id
+        colonyId
+        hash
+        installedBy
+        installedAt
+        isDeprecated
+        isDeleted
+        isInitialized
+        version
+      }
+    }
+  `,
 };

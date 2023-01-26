@@ -91,6 +91,8 @@ input UpdateExtensionByColonyAndHashInput {
   isDeleted: Boolean
   isInitialized: Boolean
   version: Int
+  installedBy: String
+  installedAt: AWSTimestamp
 }
 
 input SetCurrentVersionInput {

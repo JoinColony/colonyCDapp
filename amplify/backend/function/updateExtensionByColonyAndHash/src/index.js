@@ -1,5 +1,11 @@
+/**
+ * This function performs upsert operation, meaning it will create
+ * an extension if one matching the colony and hash doesn't exist,
+ * provided all fields required by CreateColonyExtensionInput are specified
+ */
+
 const { graphqlRequest } = require('./utils');
-const { getExtension, updateExtension } = require('./graphql');
+const { getExtension, updateExtension, createExtension } = require('./graphql');
 
 /*
  * @TODO These values need to be imported properly, and differentiate based on environment
@@ -11,8 +17,16 @@ const GRAPHQL_URI = 'http://localhost:20002/graphql';
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  const { colonyId, hash, isDeprecated, isDeleted, isInitialized, version } =
-    event.arguments?.input || {};
+  const {
+    colonyId,
+    hash,
+    isDeprecated,
+    isDeleted,
+    isInitialized,
+    version,
+    installedAt,
+    installedBy,
+  } = event.arguments?.input || {};
 
   const getExtensionData = await graphqlRequest(
     getExtension,
@@ -27,10 +41,30 @@ exports.handler = async (event) => {
   const extension =
     getExtensionData?.data?.getExtensionByColonyAndHash?.items?.[0];
 
+  // If extension record doesn't exist, try to create one
   if (!extension) {
-    return null;
+    const createExtensionData = await graphqlRequest(
+      createExtension,
+      {
+        input: {
+          colonyId,
+          hash,
+          installedAt,
+          installedBy,
+          isDeleted,
+          isDeprecated,
+          isInitialized,
+          version,
+        },
+      },
+      GRAPHQL_URI,
+      API_KEY,
+    );
+
+    return createExtensionData?.data?.createColonyExtension;
   }
 
+  // Otherwise, update the exising extension
   const updateExtensionData = await graphqlRequest(
     updateExtension,
     {
