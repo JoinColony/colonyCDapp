@@ -1,20 +1,20 @@
 {
   "api": {
     "colonycdapp": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
+            "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 7
-            },
-            "authenticationType": "API_KEY"
-          }
+            }
+          },
+          "additionalAuthenticationProviders": []
         }
-      },
-      "providerPlugin": "awscloudformation",
-      "service": "AppSync"
+      }
     }
   },
   "function": {
@@ -69,16 +69,6 @@
       "service": "Lambda"
     },
     "getMembersForColony": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "getReputationForTopDomains": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "getUserReputation": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
