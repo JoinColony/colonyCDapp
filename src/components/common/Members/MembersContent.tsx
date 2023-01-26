@@ -33,16 +33,11 @@ const MembersContent = ({
     [selectedDomain],
   );
 
-  // const canAdministerComments =
-  //   hasRegisteredProfile &&
-  //   (hasRoot(currentUserRoles) || canAdminister(currentUserRoles));
-
   const contributorsContent = (filters.memberType === MemberType.All ||
     filters.memberType === MemberType.Contributers) && (
     <ContributorsSection
       contributors={contributors}
       // temporary value until permissions are implemented
-      canAdministerComments
       // extraItemContent={({ roles, directRoles, banned }) => {
       //   return (
       //     <UserPermissions
@@ -63,7 +58,6 @@ const MembersContent = ({
       <WatchersSection
         watchers={watchers}
         // temporary value until permissions are implemented
-        canAdministerComments
         // extraItemContent={({ banned }) => (
         //   <UserPermissions roles={[]} directRoles={[]} banned={banned} />
         // )}

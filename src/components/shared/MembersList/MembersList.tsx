@@ -9,7 +9,6 @@ import MembersListItem from './MembersListItem';
 interface Props {
   members: Member[];
   listGroupAppearance?: ListGroupAppearance;
-  canAdministerComments?: boolean;
   extraItemContent?: (user: MemberUser) => ReactNode;
   showUserInfo?: boolean;
   showUserReputation?: boolean;
@@ -23,7 +22,6 @@ const MembersList = ({
   showUserReputation = true,
   members,
   listGroupAppearance,
-  canAdministerComments,
 }: Props) => {
   return (
     <ListGroup appearance={listGroupAppearance}>
@@ -34,7 +32,6 @@ const MembersList = ({
           showUserInfo={showUserInfo}
           showUserReputation={showUserReputation}
           member={member}
-          canAdministerComments={canAdministerComments}
         />
       ))}
     </ListGroup>

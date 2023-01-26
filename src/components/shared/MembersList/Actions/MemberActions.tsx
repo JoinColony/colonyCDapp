@@ -19,17 +19,9 @@ const MSG = defineMessages({
 
 interface Props {
   userAddress: string;
-  isWhitelisted: boolean;
-  isBanned: boolean;
-  canAdministerComments?: boolean;
 }
 
-const MemberActions = ({
-  canAdministerComments,
-  userAddress,
-  isWhitelisted,
-  isBanned,
-}: Props) => {
+const MemberActions = ({ userAddress }: Props) => {
   const [isOpen, setOpen] = useState(false);
   const isMobile = useMobile();
   const offset = isMobile ? [0, 0] : [40, 15];
@@ -37,13 +29,7 @@ const MemberActions = ({
   return (
     <Popover
       renderContent={({ close }) => (
-        <MemberActionsPopover
-          closePopover={close}
-          canAdministerComments={canAdministerComments}
-          isWhitelisted={isWhitelisted}
-          isBanned={isBanned}
-          userAddress={userAddress}
-        />
+        <MemberActionsPopover closePopover={close} userAddress={userAddress} />
       )}
       trigger="click"
       showArrow={false}
