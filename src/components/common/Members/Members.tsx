@@ -25,11 +25,11 @@ const displayName = 'common.Members';
 const MSG = defineMessages({
   loading: {
     id: `${displayName}.loading`,
-    defaultMessage: "Loading Colony's users...",
+    defaultMessage: 'Loading colony members',
   },
   failedToFetch: {
     id: `${displayName}.failedToFetch`,
-    defaultMessage: "Could not fetch the colony's members",
+    defaultMessage: 'Could not fetch colony members',
   },
   noMembersFound: {
     id: `${displayName}.noMembersFound`,
@@ -38,7 +38,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  selectedDomain: number | undefined;
+  selectedDomain?: number;
   handleDomainChange: React.Dispatch<React.SetStateAction<number>>;
   filters: any;
   // filters: FiltersFormValues;
