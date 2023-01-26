@@ -29,14 +29,12 @@ const MSG = defineMessages({
 
 interface Props {
   watchers: Watcher[];
-  canAdministerComments: boolean;
   extraItemContent?: (user: MemberUser) => ReactNode;
   itemsPerSection?: number;
 }
 
 const WatchersSection = ({
   watchers,
-  canAdministerComments,
   extraItemContent,
   itemsPerSection = 10,
 }: Props & Partial<SortingProps>) => {
@@ -64,7 +62,6 @@ const WatchersSection = ({
           <MembersList
             extraItemContent={extraItemContent}
             members={sortedMembers}
-            canAdministerComments={canAdministerComments}
             showUserReputation={false}
           />
         </div>

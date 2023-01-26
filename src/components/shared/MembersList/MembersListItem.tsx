@@ -24,7 +24,6 @@ interface Props {
   onRowClick?: (user: User) => void;
   showUserInfo: boolean;
   showUserReputation: boolean;
-  canAdministerComments?: boolean;
   member: Member;
 }
 
@@ -37,23 +36,10 @@ const MembersListItem = ({
   showUserReputation,
   member: { user },
   member,
-  canAdministerComments,
 }: Props) => {
-  const {
-    walletAddress,
-    // banned = false,
-    // isWhitelisted = false,
-  } = user || {};
+  const { walletAddress } = user || {};
   const { colony } = useColonyContext();
   const { reputationAmount, reputationPercentage } = member as Contributor;
-
-  // const isUserBanned = useMemo(
-  //   () =>
-  //     canAdministerComments !== undefined
-  //       ? canAdministerComments && banned
-  //       : banned,
-  //   [banned, canAdministerComments],
-  // );
 
   const handleRowClick = useCallback(() => {
     if (onRowClick) {
@@ -82,7 +68,6 @@ const MembersListItem = ({
   const isMobile = useMobile();
   // Temp hardcoded values until the features are implemented
   const isWhitelisted = true;
-  const banned = false;
 
   return (
     <ListGroupItem>
@@ -128,12 +113,7 @@ const MembersListItem = ({
             />
           </div>
         )}
-        <MemberActions
-          canAdministerComments={canAdministerComments}
-          userAddress={walletAddress || ''}
-          isWhitelisted={isWhitelisted}
-          isBanned={banned}
-        />
+        <MemberActions userAddress={walletAddress || ''} />
       </div>
     </ListGroupItem>
   );
