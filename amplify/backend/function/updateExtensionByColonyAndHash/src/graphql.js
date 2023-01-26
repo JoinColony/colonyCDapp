@@ -1,3 +1,17 @@
+const extensionFragment = /* GraphQL */ `
+  fragment Extension on ColonyExtension {
+    id
+    colonyId
+    hash
+    installedBy
+    installedAt
+    isDeprecated
+    isDeleted
+    isInitialized
+    version
+  }
+`;
+
 module.exports = {
   getExtension: /* GraphQL */ `
     query GetExtension($colonyId: ID!, $hash: String!) {
@@ -13,32 +27,18 @@ module.exports = {
     }
   `,
   updateExtension: /* GraphQL */ `
+    ${extensionFragment}
     mutation UpdateExtension($input: UpdateColonyExtensionInput!) {
       updateColonyExtension(input: $input) {
-        id
-        colonyId
-        hash
-        installedBy
-        installedAt
-        isDeprecated
-        isDeleted
-        isInitialized
-        version
+        ...Extension
       }
     }
   `,
   createExtension: /* GraphQL */ `
+    ${extensionFragment}
     mutation CreateExtension($input: CreateColonyExtensionInput!) {
       createColonyExtension(input: $input) {
-        id
-        colonyId
-        hash
-        installedBy
-        installedAt
-        isDeprecated
-        isDeleted
-        isInitialized
-        version
+        ...Extension
       }
     }
   `,
