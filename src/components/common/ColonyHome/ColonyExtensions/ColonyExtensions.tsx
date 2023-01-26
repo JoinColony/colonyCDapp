@@ -11,7 +11,7 @@ import { useColonyContext } from '~hooks';
 
 import styles from './ColonyExtensions.css';
 
-const displayName = 'dashboard.ColonyHome.ColonyExtensions';
+const displayName = 'common.ColonyHome.ColonyExtensions';
 
 const MSG = defineMessages({
   title: {

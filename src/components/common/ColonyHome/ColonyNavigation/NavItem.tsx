@@ -16,7 +16,7 @@ interface Props {
   dataTest?: string;
 }
 
-const displayName = 'dashboard.ColonyHome.ColonyNavigation.NavItem';
+const displayName = 'common.ColonyHome.ColonyHome.ColonyNavigation.NavItem';
 
 const NavItem = ({
   disabled = false,
