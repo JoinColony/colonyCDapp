@@ -8,7 +8,7 @@ import { WizardDialogType, useTransformer, useAppContext } from '~hooks'; // use
 import { getAllUserRoles } from '~redux/transformers';
 import { canAdminister, canFund } from '~utils/checks';
 
-const displayName = 'common.ColonyHome.ManageExpenditureDialog';
+const displayName = 'common.ManageExpenditureDialog';
 
 const MSG = defineMessages({
   dialogHeader: {

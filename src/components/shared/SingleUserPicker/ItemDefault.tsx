@@ -6,8 +6,9 @@ import { Address, User } from '~types';
 import { ItemDataType } from '~shared/OmniPicker';
 import MaskedAddress from '~shared/MaskedAddress';
 import UserMention from '~shared/UserMention';
-import styles from './ItemDefault.css';
 import { isAddress } from '~utils/web3';
+
+import styles from './ItemDefault.css';
 
 const MSG = defineMessages({
   ownName: {

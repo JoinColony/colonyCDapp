@@ -3,8 +3,8 @@ import { Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { string, object, number, boolean, InferType } from 'yup';
-
 import Decimal from 'decimal.js';
+
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
@@ -23,7 +23,7 @@ import { notNull } from '~utils/arrays';
 
 import DialogForm from './CreatePaymentDialogForm'; // { calculateFee }
 
-const displayName = 'common.ColonyHome.CreatePaymentDialog';
+const displayName = 'common.CreatePaymentDialog';
 
 const MSG = defineMessages({
   amountZero: {
