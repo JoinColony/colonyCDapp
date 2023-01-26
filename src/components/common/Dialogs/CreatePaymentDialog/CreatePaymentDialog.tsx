@@ -1,9 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Id } from '@colony/colony-js';
-import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
-import { string, object, number, boolean, InferType } from 'yup';
-import Decimal from 'decimal.js';
+import { InferType } from 'yup';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
@@ -21,56 +19,16 @@ import { WizardDialogType } from '~hooks';
 // import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
 import { notNull } from '~utils/arrays';
 
+import validationSchema from './validation';
 import DialogForm from './CreatePaymentDialogForm'; // { calculateFee }
 
 const displayName = 'common.CreatePaymentDialog';
-
-const MSG = defineMessages({
-  amountZero: {
-    id: `${displayName}.amountZero`,
-    defaultMessage: 'Amount must be greater than zero',
-  },
-  noBalance: {
-    id: `${displayName}.noBalance`,
-    defaultMessage: 'Insufficient balance in from domain pot',
-  },
-});
 
 type Props = Required<DialogProps> &
   WizardDialogType<object> &
   ActionDialogProps & {
     filteredDomainId?: number;
   };
-
-const validationSchema = object()
-  .shape({
-    domainId: string().required(),
-    recipient: object()
-      .shape({
-        profile: object()
-          .shape({
-            walletAddress: string().address().required(),
-            displayName: string(),
-          })
-          .defined(),
-      })
-      .defined(),
-    amount: string()
-      .required()
-      .test(
-        'more-than-zero',
-        () => MSG.amountZero,
-        (value) => {
-          const numberWithouCommas = (value || '0').replace(/,/g, '');
-          return !new Decimal(numberWithouCommas).isZero();
-        },
-      ),
-    tokenAddress: string().address().required(),
-    annotation: string().max(4000).defined(),
-    forceAction: boolean().defined(),
-    motionDomainId: number().defined(),
-  })
-  .defined();
 
 export type FormValues = InferType<typeof validationSchema>;
 
