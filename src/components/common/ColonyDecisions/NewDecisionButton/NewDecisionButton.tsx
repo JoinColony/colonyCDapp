@@ -1,11 +1,13 @@
 import React from 'react';
 
 import { useDialog } from '~shared/Dialog';
-import { DecisionDialog } from '~common/ColonyDecisions';
-// import RemoveDraftCreateNewDecision from '~dashboard/Dialogs/RemoveDraftDecisionDialog';
-
 import { DialogButton } from '~shared/Button';
+import {
+  DecisionDialog,
+  RemoveExistingDecisionDialog,
+} from '~common/ColonyDecisions';
 import { useAppContext } from '~hooks';
+import { getDecisionFromLocalStorage } from '~utils/decisions';
 
 const displayName = 'common.ColonyDecisions.NewDecisionButton';
 
@@ -15,6 +17,8 @@ interface Props {
 
 const NewDecisionButton = ({ ethDomainId }: Props) => {
   const { user } = useAppContext();
+  const walletAddress = user?.walletAddress || '';
+  const decision = getDecisionFromLocalStorage(walletAddress);
 
   //   const { isVotingExtensionEnabled, isLoadingExtensions } =
   //     useEnabledExtensions({
@@ -34,12 +38,7 @@ const NewDecisionButton = ({ ethDomainId }: Props) => {
   //   });
 
   const openDecisionDialog = useDialog(DecisionDialog);
-  // const openDeleteDraftDialog = useDialog(RemoveDraftCreateNewDecision);
-
-  const openNewDecisionDialog = () => {
-    openDecisionDialog({ ethDomainId });
-    // removeDraftDecision();
-  };
+  const openDeleteDraftDialog = useDialog(RemoveExistingDecisionDialog);
 
   // @TODO: This is copied from NewActionButton, extract instead.
   // const hasRegisteredProfile = !!username && !ethereal;
@@ -47,10 +46,13 @@ const NewDecisionButton = ({ ethDomainId }: Props) => {
   // const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
   // const isLoadingData = isLoadingExtensions || isLoadingUser;
 
-  const handleClick = () => openNewDecisionDialog();
-  // draftDecision?.userAddress === user?.walletAddress
-  //   ? openDeleteDraftDialog({ colony, openNewDecisionDialog })
-  //   : openNewDecisionDialog();
+  const handleClick = () => {
+    if (decision) {
+      openDeleteDraftDialog({ openDecisionDialog });
+    } else {
+      openDecisionDialog({ ethDomainId });
+    }
+  };
 
   return (
     <DialogButton
