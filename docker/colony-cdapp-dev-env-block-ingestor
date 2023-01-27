@@ -1,6 +1,6 @@
 FROM colony-cdapp-dev-env/base:latest
 
-ENV BLOCK_INGESTOR_HASH=bf70f8f2b64ca4952382e03adb35b1357ff9d01e
+ENV BLOCK_INGESTOR_HASH=82e192baa7aabf22c41990915ba68f28468d1b8b
 
 # Declare volumes to set up metadata
 VOLUME [ "/colonyCDapp/amplify/mock-data" ]

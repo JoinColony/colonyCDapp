@@ -2131,6 +2131,8 @@ export type UpdateDomainInput = {
 export type UpdateExtensionByColonyAndHashInput = {
   colonyId: Scalars['ID'];
   hash: Scalars['String'];
+  installedAt?: InputMaybe<Scalars['AWSTimestamp']>;
+  installedBy?: InputMaybe<Scalars['String']>;
   isDeleted?: InputMaybe<Scalars['Boolean']>;
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   isInitialized?: InputMaybe<Scalars['Boolean']>;
