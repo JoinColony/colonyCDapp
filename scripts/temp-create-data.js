@@ -2,6 +2,7 @@ const { utils, Wallet, Contract, ContractFactory, providers, BigNumber } = requi
 
 const colonyJSExtras = require('@colony/colony-js/extras')
 const colonyJSIColony = require('../node_modules/@colony/colony-js/dist/cjs/contracts/IColony/9/factories/IColony__factory.js')
+const colonyJSMetaTxToken = require('../node_modules/@colony/colony-js/dist/cjs/contracts/factories/latest/MetaTxToken__factory.js')
 const { addAugmentsB } = require('../node_modules/@colony/colony-js/dist/cjs/clients/Core/augments/AddDomain.js');
 const { getExtensionHash } = require('@colony/colony-js');
 
@@ -194,7 +195,7 @@ const addTokenToDB = async (tokenAddress) => {
 };
 
 const createToken = async (symbol, singerOrWallet) => {
-  const { abi: TokenAbi, bytecode: TokenBytecode } = colonyJSExtras.factories.latest.MetaTxToken__factory;
+  const { abi: TokenAbi, bytecode: TokenBytecode } = colonyJSMetaTxToken.MetaTxToken__factory;
   const tokenFactory = new ContractFactory(TokenAbi, TokenBytecode, singerOrWallet);
   const token = await tokenFactory.deploy(`Token ${symbol.toUpperCase()}`, symbol.toUpperCase(), 18);
   await delay();
