@@ -1,9 +1,17 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { FormikProps } from 'formik';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Button from '~shared/Button';
-import { Form, Select } from '~shared/Fields';
+import { Form } from '~shared/Fields';
+
+import Filter from './Filter';
+import {
+  filterItems,
+  MemberType,
+  VerificationType,
+  BannedStatus,
+} from './filtersConfig';
 
 import styles from './MembersFilter.css';
 
@@ -26,61 +34,7 @@ const MSG = defineMessages({
     id: `${displayName}.allMembers`,
     defaultMessage: 'Any',
   },
-  contributors: {
-    id: `${displayName}.contributors`,
-    defaultMessage: 'Contributors',
-  },
-  watchers: {
-    id: `${displayName}.watchers`,
-    defaultMessage: 'Watchers',
-  },
-  verified: {
-    id: `${displayName}.verified`,
-    defaultMessage: 'Verified',
-  },
-  unverified: {
-    id: `${displayName}.unverified`,
-    defaultMessage: 'Unverified',
-  },
-  banned: {
-    id: `${displayName}.banned`,
-    defaultMessage: 'Banned',
-  },
-  notBanned: {
-    id: `${displayName}.notBanned`,
-    defaultMessage: 'Not banned',
-  },
-  memberType: {
-    id: `${displayName}.memberType`,
-    defaultMessage: 'Member type',
-  },
-  bannedStatus: {
-    id: `${displayName}.bannedStatus`,
-    defaultMessage: 'Banned status',
-  },
-  verificationType: {
-    id: `${displayName}.verificationType`,
-    defaultMessage: 'Verification type',
-  },
 });
-
-export enum MemberType {
-  All = 'all',
-  Contributers = 'contributors',
-  Watchers = 'watchers',
-}
-
-export enum VerificationType {
-  All = 'all',
-  Verified = 'verified',
-  Unverified = 'unverified',
-}
-
-export enum BannedStatus {
-  All = 'all',
-  Banned = 'banned',
-  NotBanned = 'notBanned',
-}
 
 export interface FormValues {
   memberType: MemberType;
@@ -88,36 +42,12 @@ export interface FormValues {
   bannedStatus: BannedStatus;
 }
 
-const memberTypes = [
-  { label: MSG.allMembers, value: MemberType.All },
-  { label: MSG.contributors, value: MemberType.Contributers },
-  { label: MSG.watchers, value: MemberType.Watchers },
-];
-
-const verificationTypes = [
-  { label: MSG.any, value: VerificationType.All },
-  { label: MSG.verified, value: VerificationType.Verified },
-  { label: MSG.unverified, value: VerificationType.Unverified },
-];
-
-const bannedStatuses = [
-  { label: MSG.any, value: BannedStatus.All },
-  { label: MSG.banned, value: BannedStatus.Banned },
-  { label: MSG.notBanned, value: BannedStatus.NotBanned },
-];
-
 interface Props {
   handleFiltersCallback: (filters: FormValues) => void;
   isRoot: boolean;
 }
 
 const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
-  const selectRef = useRef<HTMLDivElement>(null);
-
-  const scrollIntoView = () => {
-    selectRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <>
       <hr className={styles.divider} />
@@ -148,37 +78,22 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
                   />
                 )}
               </div>
-              {isRoot && (
-                <Select
-                  appearance={{ theme: 'grey' }}
-                  name="memberType"
-                  options={memberTypes}
-                  label={MSG.memberType}
-                />
+              {filterItems.map(
+                ({ appearance, name, options, label, isRootRequired }) => {
+                  const hideFilter = isRootRequired && !isRoot;
+                  return (
+                    !hideFilter && (
+                      <Filter
+                        key={name}
+                        appearance={appearance}
+                        name={name}
+                        options={options}
+                        label={label}
+                      />
+                    )
+                  );
+                },
               )}
-              <Select
-                appearance={{ theme: 'grey' }}
-                name="verificationType"
-                options={verificationTypes}
-                label={MSG.verificationType}
-              />
-              {/* Have to use `div` and not a button as we use button
-              further down in `Select` componment and it produces
-              a bad html hierarcy warning */}
-              <div
-                onClick={scrollIntoView}
-                ref={selectRef}
-                role="button"
-                tabIndex={0}
-                onKeyUp={scrollIntoView}
-              >
-                <Select
-                  appearance={{ theme: 'grey' }}
-                  name="bannedStatus"
-                  options={bannedStatuses}
-                  label={MSG.bannedStatus}
-                />
-              </div>
             </div>
           );
         }}
