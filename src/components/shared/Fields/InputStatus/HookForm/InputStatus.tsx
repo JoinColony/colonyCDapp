@@ -3,7 +3,6 @@ import React from 'react';
 
 import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
-import { isNil } from '~utils/lodash';
 import { HookFormInputProps } from '~shared/Fields/Input/HookForm';
 import { Message } from '~types';
 
@@ -45,8 +44,7 @@ const HookFormInputStatus = ({
     <Element
       className={getMainClasses(appearance, styles, {
         error: !!error && !isLoading,
-        hidden:
-          (!text && !isLoading) || (!!error && !isNil(touched) && !touched),
+        hidden: (!text && !isLoading) || (!!error && !touched),
       })}
     >
       {isLoading ? loadingText : text}

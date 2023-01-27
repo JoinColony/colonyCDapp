@@ -150,7 +150,7 @@ interface YupDebounceOptions {
  * which can improve performance.
  * @returns Debounced test function.
  */
-function yupDebounce(
+export function yupDebounce(
   fn: TestFunction,
   wait: number,
   options?: YupDebounceOptions,

@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { SetValueConfig } from 'react-hook-form';
 
-import { Message, SimpleMessageValues } from '~types';
+import { Message, SimpleMessageValues, UniversalMessageValues } from '~types';
 
 export interface MaxButtonParams {
   maxAmount: string;
@@ -15,7 +15,7 @@ export interface CoreInputProps {
   /** Label text */
   label?: Message;
   /** Label text values for intl interpolation */
-  labelValues?: SimpleMessageValues;
+  labelValues?: UniversalMessageValues;
   /** Set the input field to a disabled state */
   disabled?: boolean;
   /** Should display the input with the label hidden */
@@ -27,7 +27,7 @@ export interface CoreInputProps {
   /** Help text */
   help?: Message;
   /** Help text values for intl interpolation */
-  helpValues?: SimpleMessageValues;
+  helpValues?: UniversalMessageValues;
   /** Placeholder text */
   placeholder?: Message;
   /** Placeholder text values for intl interpolation */
@@ -35,5 +35,5 @@ export interface CoreInputProps {
   /** Status text */
   status?: Message;
   /** Status text values for intl interpolation */
-  statusValues?: SimpleMessageValues;
+  statusValues?: UniversalMessageValues;
 }
