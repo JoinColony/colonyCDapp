@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 import { sortBy } from '~utils/lodash';
@@ -11,7 +11,7 @@ import {
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
   ALLDOMAINS_DOMAIN_SELECTION,
 } from '~constants';
-import { User } from '~types';
+import { User, Colony } from '~types';
 import { notNull } from '~utils/arrays';
 
 import MembersTitle from './MembersTitle';
@@ -50,6 +50,20 @@ export type Member = User & {
   banned: boolean;
 };
 
+const getDomainSelectOptions = (colony: Colony | undefined) => {
+  return sortBy(
+    [...(colony?.domains?.items || []), ALLDOMAINS_DOMAIN_SELECTION].map(
+      ({ nativeId, name }: Domain) => {
+        return {
+          value: nativeId?.toString(),
+          label: name || '',
+        };
+      },
+    ),
+    ['value'],
+  );
+};
+
 const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
   const { colony } = useColonyContext();
   const [searchValue, setSearchValue] = useState<string>('');
@@ -67,26 +81,9 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const contributors = useMemo(
-    () => data?.getMembersForColony?.contributors?.filter(notNull) ?? [],
-    [data],
-  );
-  const watchers = useMemo(
-    () => data?.getMembersForColony?.watchers?.filter(notNull) ?? [],
-    [data],
-  );
-
-  const domainSelectOptions = sortBy(
-    [...(colony?.domains?.items || []), ALLDOMAINS_DOMAIN_SELECTION].map(
-      ({ nativeId, name }: Domain) => {
-        return {
-          value: nativeId?.toString(),
-          label: name || '',
-        };
-      },
-    ),
-    ['value'],
-  );
+  const contributors =
+    data?.getMembersForColony?.contributors?.filter(notNull) ?? [];
+  const watchers = data?.getMembersForColony?.watchers?.filter(notNull) ?? [];
 
   // handles search values & close button
   const handleSearch = useCallback(
@@ -113,7 +110,7 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
       <MembersTitle
         currentDomainId={selectedDomain || COLONY_TOTAL_BALANCE_DOMAIN_ID}
         handleDomainChange={handleDomainChange}
-        domainSelectOptions={domainSelectOptions}
+        domainSelectOptions={getDomainSelectOptions(colony)}
         searchValue={searchValue}
         handleSearch={handleSearch}
       />
