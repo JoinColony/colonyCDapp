@@ -50,7 +50,7 @@ export type Member = User & {
   banned: boolean;
 };
 
-const getDomainSelectOptions = (colony: Colony | undefined) => {
+const getDomainSelectOptions = (colony?: Colony) => {
   return sortBy(
     [...(colony?.domains?.items || []), ALLDOMAINS_DOMAIN_SELECTION].map(
       ({ nativeId, name }: Domain) => {

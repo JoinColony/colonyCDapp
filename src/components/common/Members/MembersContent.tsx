@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID, ROOT_DOMAIN_ID } from '~constants';
 import {
@@ -26,48 +26,42 @@ const MembersContent = ({
   watchers,
   contributors,
 }: Props) => {
-  const isRootDomain = useMemo(
-    () =>
-      selectedDomain === ROOT_DOMAIN_ID ||
-      selectedDomain === COLONY_TOTAL_BALANCE_DOMAIN_ID,
-    [selectedDomain],
-  );
-
-  const contributorsContent = (filters.memberType === MemberType.All ||
-    filters.memberType === MemberType.Contributers) && (
-    <ContributorsSection
-      contributors={contributors}
-      // temporary value until permissions are implemented
-      // extraItemContent={({ roles, directRoles, banned }) => {
-      //   return (
-      //     <UserPermissions
-      //       roles={roles}
-      //       directRoles={directRoles}
-      //       banned={banned}
-      //       hideHeadRole
-      //     />
-      //   );
-      // }}
-    />
-  );
-
-  const watchersContent =
-    isRootDomain &&
-    (filters.memberType === MemberType.All ||
-      filters.memberType === MemberType.Watchers) ? (
-      <WatchersSection
-        watchers={watchers}
-        // temporary value until permissions are implemented
-        // extraItemContent={({ banned }) => (
-        //   <UserPermissions roles={[]} directRoles={[]} banned={banned} />
-        // )}
-      />
-    ) : null;
-
+  const isRootDomain =
+    selectedDomain === ROOT_DOMAIN_ID ||
+    selectedDomain === COLONY_TOTAL_BALANCE_DOMAIN_ID;
+  const showContributors =
+    filters.memberType === MemberType.All ||
+    filters.memberType === MemberType.Contributers;
+  const showWatchers =
+    filters.memberType === MemberType.All ||
+    filters.memberType === MemberType.Watchers;
   return (
     <>
-      {contributorsContent}
-      {watchersContent}
+      {showContributors && (
+        <ContributorsSection
+          contributors={contributors}
+          // temporary value until permissions are implemented
+          // extraItemContent={({ roles, directRoles, banned }) => {
+          //   return (
+          //     <UserPermissions
+          //       roles={roles}
+          //       directRoles={directRoles}
+          //       banned={banned}
+          //       hideHeadRole
+          //     />
+          //   );
+          // }}
+        />
+      )}
+      {isRootDomain && showWatchers ? (
+        <WatchersSection
+          watchers={watchers}
+          // temporary value until permissions are implemented
+          // extraItemContent={({ banned }) => (
+          //   <UserPermissions roles={[]} directRoles={[]} banned={banned} />
+          // )}
+        />
+      ) : null}
     </>
   );
 };
