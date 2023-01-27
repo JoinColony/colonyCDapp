@@ -9,12 +9,12 @@ import { useColonyContext, useMobile } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
 
 import MemberControls from './MemberControls';
-import MembersFilter, {
+import MembersFilter, { FormValues } from './MembersFilter';
+import {
   BannedStatus,
-  FormValues,
   MemberType,
   VerificationType,
-} from './MembersFilter';
+} from './MembersFilter/filtersConfig';
 import TotalReputation from './TotalReputation';
 
 import styles from './ColonyMembers.css';

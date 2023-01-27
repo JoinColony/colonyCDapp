@@ -4,7 +4,7 @@ import { COLONY_TOTAL_BALANCE_DOMAIN_ID, ROOT_DOMAIN_ID } from '~constants';
 import {
   // FormValues as FiltersFormValues,
   MemberType,
-} from '~common/ColonyMembers/MembersFilter';
+} from '~common/ColonyMembers/MembersFilter/filtersConfig';
 import { Watcher, Contributor } from '~types';
 
 import ContributorsSection from './ContributorsSection';
