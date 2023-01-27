@@ -61,6 +61,10 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
         enableReinitialize
       >
         {({ resetForm, values }: FormikProps<FormValues>) => {
+          const showReset =
+            values.bannedStatus !== BannedStatus.All ||
+            values.verificationType !== VerificationType.All ||
+            values.memberType !== MemberType.All;
           handleFiltersCallback(values);
           return (
             <div className={styles.filters}>
@@ -68,9 +72,7 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
                 <span className={styles.title}>
                   <FormattedMessage {...MSG.filter} />
                 </span>
-                {(values.bannedStatus !== BannedStatus.All ||
-                  values.verificationType !== VerificationType.All ||
-                  values.memberType !== MemberType.All) && (
+                {showReset && (
                   <Button
                     text={MSG.reset}
                     appearance={{ theme: 'blue' }}

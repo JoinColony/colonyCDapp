@@ -71,7 +71,7 @@ const MembersTitle = ({
   };
 
   const handleMouseEnter = (e: MouseEvent<HTMLInputElement>) => {
-    e.currentTarget.placeholder = formatText(MSG.searchPlaceholder) ?? '';
+    e.currentTarget.placeholder = formatText(MSG.searchPlaceholder) as string;
   };
 
   const handleMouseLeave = (e: MouseEvent<HTMLInputElement>) => {

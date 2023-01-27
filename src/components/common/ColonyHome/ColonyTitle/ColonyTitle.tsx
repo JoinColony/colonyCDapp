@@ -41,9 +41,7 @@ const ColonyTitle = () => {
             text={metadata?.displayName || name || MSG.fallbackColonyName}
             data-test="colonyTitle"
           />
-          {colony.colonyAddress && isMobile && (
-            <ColonyAddress colonyAddress={colony.colonyAddress} />
-          )}
+          {isMobile && <ColonyAddress colonyAddress={colony.colonyAddress} />}
         </div>
         <div>
           <ColonySubscription />
