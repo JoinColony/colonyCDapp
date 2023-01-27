@@ -1,7 +1,12 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
+import { Id } from '@colony/colony-js';
 
 import Button from '~shared/Button';
+import { useDialog } from '~shared/Dialog';
+import { DecisionDialog } from '~common/ColonyDecisions';
+
+import { DecisionDataProps } from './DecisionData';
 
 import styles from './DecisionNotFound.css';
 
@@ -18,21 +23,27 @@ const MSG = defineMessages({
   },
 });
 
-const DecisionNotFound = () => (
-  <div className={styles.noContent}>
-    <FormattedMessage {...MSG.noDecisionText} />
-    <Button
-      text={MSG.createDecision}
-      appearance={{ theme: 'blue' }}
-      onClick={
-        () => console.log('Implement create decision...')
-        // openDecisionDialog({
-        //   ethDomainId: Id.RootDomain,
-        // })
-      }
-    />
-  </div>
-);
+type DecisionNotFoundProps = Pick<DecisionDataProps, 'setDecision'>;
+
+const DecisionNotFound = ({ setDecision }: DecisionNotFoundProps) => {
+  const openDecisionDialog = useDialog(DecisionDialog);
+
+  return (
+    <div className={styles.noContent}>
+      <FormattedMessage {...MSG.noDecisionText} />
+      <Button
+        text={MSG.createDecision}
+        appearance={{ theme: 'blue' }}
+        onClick={() => {
+          openDecisionDialog({
+            ethDomainId: Id.RootDomain,
+            handleSubmit: setDecision,
+          });
+        }}
+      />
+    </div>
+  );
+};
 
 DecisionNotFound.displayName = displayName;
 
