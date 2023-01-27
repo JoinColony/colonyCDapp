@@ -25,7 +25,7 @@ interface Props extends Pick<AvatarProps, 'size' | 'className' | 'notSet'> {
   showLink?: boolean;
   /** The corresponding user object if available */
   user?: User | null;
-
+  /** Use the user's thumbnail instead of their full avatar */
   preferThumbnail?: boolean;
 }
 

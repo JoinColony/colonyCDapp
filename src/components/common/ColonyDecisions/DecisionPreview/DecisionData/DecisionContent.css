@@ -1,0 +1,31 @@
+.decisionContent {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+  height: fit-content;
+  border-bottom: 1px solid rgba(var(--grey-purple-1), 0.15);
+  word-break: break-word;
+  row-gap: 15px;
+}
+
+.userName {
+  margin-left: 5px;
+}
+
+.userinfo {
+  composes: inlineEllipsis from '~styles/text.css';
+  display: flex;
+  align-items: center;
+  font-size: var(--size-normal);
+  font-weight: var(--weight-bold);
+  color: var(--pink);
+}
+
+.descriptionContainer > h3 {
+  font-size: var(--size-medium);
+}
+
+.noContent {
+  margin-top: 83px;
+  text-align: center;
+}

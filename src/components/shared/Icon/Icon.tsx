@@ -1,13 +1,15 @@
 import React, { HTMLAttributes } from 'react';
-import { MessageDescriptor, useIntl } from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
+import { formatText } from '~utils/intl';
 
 import {
   icons as iconNames,
   multiColorIcons as multiColorIconNames,
 } from '~images/icons.json';
+
 import styles from './Icon.css';
 
 const displayName = 'Icon';
@@ -66,15 +68,13 @@ const Icon = ({
   titleValues,
   ...props
 }: Props) => {
-  const { formatMessage } = useIntl();
   // Remove the theme if it's a multiColor icon
   const multiColorAppearance = multiColorIcons[name]
     ? { size: appearance.size || 'normal' }
     : null;
   const icon = icons[name] || multiColorIcons[name];
   const iconHref = typeof icon === 'object' ? `#${icon.default.id}` : icon;
-  const iconTitle =
-    typeof title === 'object' ? formatMessage(title, titleValues) : title;
+  const iconTitle = formatText(title, titleValues);
   return (
     <i
       title={title ? iconTitle : undefined}

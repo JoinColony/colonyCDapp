@@ -1,7 +1,7 @@
 import React, { ComponentType, useState } from 'react';
 
-import { AppContextValues } from '~context/AppContext';
 import { useAppContext } from '~hooks';
+import { User } from '~types';
 
 import {
   InitialValuesProp,
@@ -27,7 +27,7 @@ const getStep = <T,>(
   steps: Steps,
   step: number,
   values: T,
-  loggedInUser?: AppContextValues['user'],
+  loggedInUser?: User,
 ) =>
   typeof steps === 'function' ? steps(step, values, loggedInUser) : steps[step];
 

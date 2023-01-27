@@ -56,7 +56,7 @@ export const isTransactionFormat = (
   if (!potentialTransactionHash) {
     return false;
   }
-  return !!potentialTransactionHash.match(hexStringRegex);
+  return hexStringRegex.test(potentialTransactionHash);
 };
 
 export const generateMetatransactionErrorMessage = (
