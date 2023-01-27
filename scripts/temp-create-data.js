@@ -459,7 +459,7 @@ const createUserAndColonyData = async () => {
   await subscribeUserToColony(thirdUser.address, secondColonyAddress);
 
   await setExtensionVersion('OneTxPayment', 3);
-  await setExtensionVersion('VotingReputation', 7);
+  await setExtensionVersion('VotingReputation', 8);
 };
 
 createUserAndColonyData();
