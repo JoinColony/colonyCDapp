@@ -1,0 +1,8 @@
+query GetColonyActions($colonyAddress: ID!, $nextToken: String) {
+  getActionsByColony(colonyId: $colonyAddress, nextToken: $nextToken) {
+    items {
+      ...ColonyAction
+    }
+    nextToken
+  }
+}
