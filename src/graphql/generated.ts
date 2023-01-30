@@ -33,24 +33,9 @@ export type Scalars = {
   AWSURL: any;
 };
 
-export type Action = {
-  __typename?: 'Action';
-  amount?: Maybe<Scalars['String']>;
-  blockNumber: Scalars['Int'];
-  createdAt: Scalars['AWSTimestamp'];
-  decimals?: Maybe<Scalars['Int']>;
-  id: Scalars['ID'];
-  initiator?: Maybe<Scalars['String']>;
-  recipient?: Maybe<Scalars['String']>;
-  symbol?: Maybe<Scalars['String']>;
-  tokenAddress?: Maybe<Scalars['String']>;
-  transactionHash: Scalars['String'];
-  type: Scalars['String'];
-  updatedAt: Scalars['AWSDateTime'];
-};
-
 export type Colony = {
   __typename?: 'Colony';
+  actions?: Maybe<ModelColonyActionConnection>;
   balances?: Maybe<ColonyBalances>;
   chainFundsClaim?: Maybe<ColonyChainFundsClaim>;
   colonyNativeTokenId: Scalars['ID'];
@@ -70,6 +55,14 @@ export type Colony = {
   updatedAt: Scalars['AWSDateTime'];
   version: Scalars['Int'];
   watchers?: Maybe<ModelWatchedColoniesConnection>;
+};
+
+
+export type ColonyActionsArgs = {
+  filter?: InputMaybe<ModelColonyActionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -112,6 +105,29 @@ export type ColonyWatchersArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
+
+export type ColonyAction = {
+  __typename?: 'ColonyAction';
+  amount?: Maybe<Scalars['String']>;
+  blockNumber: Scalars['Int'];
+  colony: Colony;
+  colonyActionsId?: Maybe<Scalars['ID']>;
+  colonyId: Scalars['ID'];
+  createdAt: Scalars['AWSDateTime'];
+  decimals?: Maybe<Scalars['Int']>;
+  id: Scalars['ID'];
+  initiator?: Maybe<Scalars['String']>;
+  recipient?: Maybe<Scalars['String']>;
+  symbol?: Maybe<Scalars['String']>;
+  tokenAddress?: Maybe<Scalars['String']>;
+  transactionHash: Scalars['String'];
+  type: ColonyActionType;
+  updatedAt: Scalars['AWSDateTime'];
+};
+
+export enum ColonyActionType {
+  MintTokens = 'MINT_TOKENS'
+}
 
 export type ColonyBalance = {
   __typename?: 'ColonyBalance';
@@ -235,10 +251,11 @@ export type ContractEvent = {
   user?: Maybe<User>;
 };
 
-export type CreateActionInput = {
+export type CreateColonyActionInput = {
   amount?: InputMaybe<Scalars['String']>;
   blockNumber: Scalars['Int'];
-  createdAt: Scalars['AWSTimestamp'];
+  colonyActionsId?: InputMaybe<Scalars['ID']>;
+  colonyId: Scalars['ID'];
   decimals?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['ID']>;
   initiator?: InputMaybe<Scalars['String']>;
@@ -246,7 +263,7 @@ export type CreateActionInput = {
   symbol?: InputMaybe<Scalars['String']>;
   tokenAddress?: InputMaybe<Scalars['String']>;
   transactionHash: Scalars['String'];
-  type: Scalars['String'];
+  type: ColonyActionType;
 };
 
 export type CreateColonyExtensionInput = {
@@ -397,7 +414,7 @@ export type CurrentVersion = {
   version: Scalars['Int'];
 };
 
-export type DeleteActionInput = {
+export type DeleteColonyActionInput = {
   id: Scalars['ID'];
 };
 
@@ -528,45 +545,6 @@ export type MetadataInput = {
   transactionHash?: InputMaybe<Scalars['String']>;
 };
 
-export type ModelActionConditionInput = {
-  amount?: InputMaybe<ModelStringInput>;
-  and?: InputMaybe<Array<InputMaybe<ModelActionConditionInput>>>;
-  blockNumber?: InputMaybe<ModelIntInput>;
-  createdAt?: InputMaybe<ModelIntInput>;
-  decimals?: InputMaybe<ModelIntInput>;
-  initiator?: InputMaybe<ModelStringInput>;
-  not?: InputMaybe<ModelActionConditionInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelActionConditionInput>>>;
-  recipient?: InputMaybe<ModelStringInput>;
-  symbol?: InputMaybe<ModelStringInput>;
-  tokenAddress?: InputMaybe<ModelStringInput>;
-  transactionHash?: InputMaybe<ModelStringInput>;
-  type?: InputMaybe<ModelStringInput>;
-};
-
-export type ModelActionConnection = {
-  __typename?: 'ModelActionConnection';
-  items: Array<Maybe<Action>>;
-  nextToken?: Maybe<Scalars['String']>;
-};
-
-export type ModelActionFilterInput = {
-  amount?: InputMaybe<ModelStringInput>;
-  and?: InputMaybe<Array<InputMaybe<ModelActionFilterInput>>>;
-  blockNumber?: InputMaybe<ModelIntInput>;
-  createdAt?: InputMaybe<ModelIntInput>;
-  decimals?: InputMaybe<ModelIntInput>;
-  id?: InputMaybe<ModelIdInput>;
-  initiator?: InputMaybe<ModelStringInput>;
-  not?: InputMaybe<ModelActionFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelActionFilterInput>>>;
-  recipient?: InputMaybe<ModelStringInput>;
-  symbol?: InputMaybe<ModelStringInput>;
-  tokenAddress?: InputMaybe<ModelStringInput>;
-  transactionHash?: InputMaybe<ModelStringInput>;
-  type?: InputMaybe<ModelStringInput>;
-};
-
 export enum ModelAttributeTypes {
   Null = '_null',
   Binary = 'binary',
@@ -585,6 +563,52 @@ export type ModelBooleanInput = {
   attributeType?: InputMaybe<ModelAttributeTypes>;
   eq?: InputMaybe<Scalars['Boolean']>;
   ne?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type ModelColonyActionConditionInput = {
+  amount?: InputMaybe<ModelStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelColonyActionConditionInput>>>;
+  blockNumber?: InputMaybe<ModelIntInput>;
+  colonyActionsId?: InputMaybe<ModelIdInput>;
+  colonyId?: InputMaybe<ModelIdInput>;
+  decimals?: InputMaybe<ModelIntInput>;
+  initiator?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelColonyActionConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonyActionConditionInput>>>;
+  recipient?: InputMaybe<ModelStringInput>;
+  symbol?: InputMaybe<ModelStringInput>;
+  tokenAddress?: InputMaybe<ModelStringInput>;
+  transactionHash?: InputMaybe<ModelStringInput>;
+  type?: InputMaybe<ModelColonyActionTypeInput>;
+};
+
+export type ModelColonyActionConnection = {
+  __typename?: 'ModelColonyActionConnection';
+  items: Array<Maybe<ColonyAction>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelColonyActionFilterInput = {
+  amount?: InputMaybe<ModelStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelColonyActionFilterInput>>>;
+  blockNumber?: InputMaybe<ModelIntInput>;
+  colonyActionsId?: InputMaybe<ModelIdInput>;
+  colonyId?: InputMaybe<ModelIdInput>;
+  decimals?: InputMaybe<ModelIntInput>;
+  id?: InputMaybe<ModelIdInput>;
+  initiator?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelColonyActionFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonyActionFilterInput>>>;
+  recipient?: InputMaybe<ModelStringInput>;
+  symbol?: InputMaybe<ModelStringInput>;
+  tokenAddress?: InputMaybe<ModelStringInput>;
+  transactionHash?: InputMaybe<ModelStringInput>;
+  type?: InputMaybe<ModelColonyActionTypeInput>;
+};
+
+export type ModelColonyActionTypeInput = {
+  eq?: InputMaybe<ColonyActionType>;
+  ne?: InputMaybe<ColonyActionType>;
 };
 
 export type ModelColonyConditionInput = {
@@ -931,25 +955,25 @@ export type ModelStringKeyConditionInput = {
   lt?: InputMaybe<Scalars['String']>;
 };
 
-export type ModelSubscriptionActionFilterInput = {
+export type ModelSubscriptionBooleanInput = {
+  eq?: InputMaybe<Scalars['Boolean']>;
+  ne?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type ModelSubscriptionColonyActionFilterInput = {
   amount?: InputMaybe<ModelSubscriptionStringInput>;
-  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionActionFilterInput>>>;
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionFilterInput>>>;
   blockNumber?: InputMaybe<ModelSubscriptionIntInput>;
-  createdAt?: InputMaybe<ModelSubscriptionIntInput>;
+  colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   decimals?: InputMaybe<ModelSubscriptionIntInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   initiator?: InputMaybe<ModelSubscriptionStringInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionActionFilterInput>>>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionFilterInput>>>;
   recipient?: InputMaybe<ModelSubscriptionStringInput>;
   symbol?: InputMaybe<ModelSubscriptionStringInput>;
   tokenAddress?: InputMaybe<ModelSubscriptionStringInput>;
   transactionHash?: InputMaybe<ModelSubscriptionStringInput>;
   type?: InputMaybe<ModelSubscriptionStringInput>;
-};
-
-export type ModelSubscriptionBooleanInput = {
-  eq?: InputMaybe<Scalars['Boolean']>;
-  ne?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ModelSubscriptionColonyExtensionFilterInput = {
@@ -1237,8 +1261,8 @@ export type ModelWatchedColoniesFilterInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createAction?: Maybe<Action>;
   createColony?: Maybe<Colony>;
+  createColonyAction?: Maybe<ColonyAction>;
   createColonyExtension?: Maybe<ColonyExtension>;
   createColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   createColonyTokens?: Maybe<ColonyTokens>;
@@ -1253,8 +1277,8 @@ export type Mutation = {
   createUser?: Maybe<User>;
   createUserTokens?: Maybe<UserTokens>;
   createWatchedColonies?: Maybe<WatchedColonies>;
-  deleteAction?: Maybe<Action>;
   deleteColony?: Maybe<Colony>;
+  deleteColonyAction?: Maybe<ColonyAction>;
   deleteColonyExtension?: Maybe<ColonyExtension>;
   deleteColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   deleteColonyTokens?: Maybe<ColonyTokens>;
@@ -1267,8 +1291,8 @@ export type Mutation = {
   deleteUserTokens?: Maybe<UserTokens>;
   deleteWatchedColonies?: Maybe<WatchedColonies>;
   setCurrentVersion?: Maybe<Scalars['Boolean']>;
-  updateAction?: Maybe<Action>;
   updateColony?: Maybe<Colony>;
+  updateColonyAction?: Maybe<ColonyAction>;
   updateColonyExtension?: Maybe<ColonyExtension>;
   updateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   updateColonyTokens?: Maybe<ColonyTokens>;
@@ -1284,15 +1308,15 @@ export type Mutation = {
 };
 
 
-export type MutationCreateActionArgs = {
-  condition?: InputMaybe<ModelActionConditionInput>;
-  input: CreateActionInput;
-};
-
-
 export type MutationCreateColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: CreateColonyInput;
+};
+
+
+export type MutationCreateColonyActionArgs = {
+  condition?: InputMaybe<ModelColonyActionConditionInput>;
+  input: CreateColonyActionInput;
 };
 
 
@@ -1377,15 +1401,15 @@ export type MutationCreateWatchedColoniesArgs = {
 };
 
 
-export type MutationDeleteActionArgs = {
-  condition?: InputMaybe<ModelActionConditionInput>;
-  input: DeleteActionInput;
-};
-
-
 export type MutationDeleteColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: DeleteColonyInput;
+};
+
+
+export type MutationDeleteColonyActionArgs = {
+  condition?: InputMaybe<ModelColonyActionConditionInput>;
+  input: DeleteColonyActionInput;
 };
 
 
@@ -1460,15 +1484,15 @@ export type MutationSetCurrentVersionArgs = {
 };
 
 
-export type MutationUpdateActionArgs = {
-  condition?: InputMaybe<ModelActionConditionInput>;
-  input: UpdateActionInput;
-};
-
-
 export type MutationUpdateColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: UpdateColonyInput;
+};
+
+
+export type MutationUpdateColonyActionArgs = {
+  condition?: InputMaybe<ModelColonyActionConditionInput>;
+  input: UpdateColonyActionInput;
 };
 
 
@@ -1601,8 +1625,9 @@ export type ProfileMetadataInput = {
 
 export type Query = {
   __typename?: 'Query';
-  getAction?: Maybe<Action>;
+  getActionsByColony?: Maybe<ModelColonyActionConnection>;
   getColony?: Maybe<Colony>;
+  getColonyAction?: Maybe<ColonyAction>;
   getColonyByAddress?: Maybe<ModelColonyConnection>;
   getColonyByName?: Maybe<ModelColonyConnection>;
   getColonyByType?: Maybe<ModelColonyConnection>;
@@ -1627,8 +1652,8 @@ export type Query = {
   getUserReputation?: Maybe<Scalars['String']>;
   getUserTokens?: Maybe<UserTokens>;
   getWatchedColonies?: Maybe<WatchedColonies>;
-  listActions?: Maybe<ModelActionConnection>;
   listColonies?: Maybe<ModelColonyConnection>;
+  listColonyActions?: Maybe<ModelColonyActionConnection>;
   listColonyExtensions?: Maybe<ModelColonyExtensionConnection>;
   listColonyFundsClaims?: Maybe<ModelColonyFundsClaimConnection>;
   listColonyTokens?: Maybe<ModelColonyTokensConnection>;
@@ -1643,12 +1668,21 @@ export type Query = {
 };
 
 
-export type QueryGetActionArgs = {
-  id: Scalars['ID'];
+export type QueryGetActionsByColonyArgs = {
+  colonyId: Scalars['ID'];
+  filter?: InputMaybe<ModelColonyActionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
 export type QueryGetColonyArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGetColonyActionArgs = {
   id: Scalars['ID'];
 };
 
@@ -1814,15 +1848,15 @@ export type QueryGetWatchedColoniesArgs = {
 };
 
 
-export type QueryListActionsArgs = {
-  filter?: InputMaybe<ModelActionFilterInput>;
+export type QueryListColoniesArgs = {
+  filter?: InputMaybe<ModelColonyFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
 
-export type QueryListColoniesArgs = {
-  filter?: InputMaybe<ModelColonyFilterInput>;
+export type QueryListColonyActionsArgs = {
+  filter?: InputMaybe<ModelColonyActionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
@@ -1911,8 +1945,8 @@ export type SetCurrentVersionInput = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  onCreateAction?: Maybe<Action>;
   onCreateColony?: Maybe<Colony>;
+  onCreateColonyAction?: Maybe<ColonyAction>;
   onCreateColonyExtension?: Maybe<ColonyExtension>;
   onCreateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   onCreateColonyTokens?: Maybe<ColonyTokens>;
@@ -1924,8 +1958,8 @@ export type Subscription = {
   onCreateUser?: Maybe<User>;
   onCreateUserTokens?: Maybe<UserTokens>;
   onCreateWatchedColonies?: Maybe<WatchedColonies>;
-  onDeleteAction?: Maybe<Action>;
   onDeleteColony?: Maybe<Colony>;
+  onDeleteColonyAction?: Maybe<ColonyAction>;
   onDeleteColonyExtension?: Maybe<ColonyExtension>;
   onDeleteColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   onDeleteColonyTokens?: Maybe<ColonyTokens>;
@@ -1937,8 +1971,8 @@ export type Subscription = {
   onDeleteUser?: Maybe<User>;
   onDeleteUserTokens?: Maybe<UserTokens>;
   onDeleteWatchedColonies?: Maybe<WatchedColonies>;
-  onUpdateAction?: Maybe<Action>;
   onUpdateColony?: Maybe<Colony>;
+  onUpdateColonyAction?: Maybe<ColonyAction>;
   onUpdateColonyExtension?: Maybe<ColonyExtension>;
   onUpdateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   onUpdateColonyTokens?: Maybe<ColonyTokens>;
@@ -1953,13 +1987,13 @@ export type Subscription = {
 };
 
 
-export type SubscriptionOnCreateActionArgs = {
-  filter?: InputMaybe<ModelSubscriptionActionFilterInput>;
+export type SubscriptionOnCreateColonyArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
 };
 
 
-export type SubscriptionOnCreateColonyArgs = {
-  filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
+export type SubscriptionOnCreateColonyActionArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyActionFilterInput>;
 };
 
 
@@ -2018,13 +2052,13 @@ export type SubscriptionOnCreateWatchedColoniesArgs = {
 };
 
 
-export type SubscriptionOnDeleteActionArgs = {
-  filter?: InputMaybe<ModelSubscriptionActionFilterInput>;
+export type SubscriptionOnDeleteColonyArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
 };
 
 
-export type SubscriptionOnDeleteColonyArgs = {
-  filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
+export type SubscriptionOnDeleteColonyActionArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyActionFilterInput>;
 };
 
 
@@ -2083,13 +2117,13 @@ export type SubscriptionOnDeleteWatchedColoniesArgs = {
 };
 
 
-export type SubscriptionOnUpdateActionArgs = {
-  filter?: InputMaybe<ModelSubscriptionActionFilterInput>;
+export type SubscriptionOnUpdateColonyArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
 };
 
 
-export type SubscriptionOnUpdateColonyArgs = {
-  filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
+export type SubscriptionOnUpdateColonyActionArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyActionFilterInput>;
 };
 
 
@@ -2198,10 +2232,11 @@ export enum TokenType {
   Erc20 = 'ERC20'
 }
 
-export type UpdateActionInput = {
+export type UpdateColonyActionInput = {
   amount?: InputMaybe<Scalars['String']>;
   blockNumber?: InputMaybe<Scalars['Int']>;
-  createdAt?: InputMaybe<Scalars['AWSTimestamp']>;
+  colonyActionsId?: InputMaybe<Scalars['ID']>;
+  colonyId?: InputMaybe<Scalars['ID']>;
   decimals?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
   initiator?: InputMaybe<Scalars['String']>;
@@ -2209,7 +2244,7 @@ export type UpdateActionInput = {
   symbol?: InputMaybe<Scalars['String']>;
   tokenAddress?: InputMaybe<Scalars['String']>;
   transactionHash?: InputMaybe<Scalars['String']>;
-  type?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<ColonyActionType>;
 };
 
 export type UpdateColonyExtensionInput = {
