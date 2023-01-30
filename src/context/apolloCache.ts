@@ -16,6 +16,19 @@ const cache = new InMemoryCache({
     ModelColonyConnection: {
       merge: false,
     },
+    Query: {
+      fields: {
+        getActionsByColony: {
+          keyArgs: false,
+          merge(existing = {}, incoming) {
+            return {
+              ...existing,
+              items: [...(existing.items ?? []), ...incoming.items],
+            };
+          },
+        },
+      },
+    },
     ...cacheUpdates,
   },
 });
