@@ -36,6 +36,7 @@ const ITEMS_PER_PAGE = 10;
 
 const ColonyActions = (/* { ethDomainId }: Props */) => {
   const { colony } = useColonyContext();
+
   const [sortOption, setSortOption] = useState<SortOptions>(SortOptions.NEWEST);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const showMoreItems = () => setPageNumber((dataPage) => dataPage + 1);
