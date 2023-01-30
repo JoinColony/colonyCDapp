@@ -1,0 +1,9 @@
+fragment ColonyAction on ColonyAction {
+  id
+  type
+  blockNumber
+  transactionHash
+  initiator
+  recipient
+  amount
+}
