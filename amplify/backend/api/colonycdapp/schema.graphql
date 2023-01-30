@@ -271,6 +271,7 @@ type Colony @model {
   meta: Metadata
   extensions: [ColonyExtension!] @hasMany(indexName: "byColony", fields: ["id"])
   version: Int!
+  actions: [ColonyAction] @hasMany
 }
 
 type User @model {
@@ -385,6 +386,8 @@ type CurrentVersion @model {
 
 type ColonyAction @model {
   id: ID!
+  colonyId: ID! @index(name: "byColony", queryField: "getActionsByColony")
+  colony: Colony! @belongsTo(fields: ["colonyId"])
   type: ColonyActionType!
   blockNumber: Int!
   transactionHash: String!
