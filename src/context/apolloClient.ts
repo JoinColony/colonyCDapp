@@ -11,6 +11,19 @@ const httpLink = new HttpLink({
 
 const cache = new InMemoryCache({
   typePolicies: {
+    Query: {
+      fields: {
+        getActionsByColony: {
+          keyArgs: false,
+          merge(existing = {}, incoming) {
+            return {
+              ...existing,
+              items: [...(existing.items ?? []), ...incoming.items],
+            };
+          },
+        },
+      },
+    },
     ModelColonyConnection: {
       merge: false,
     },
