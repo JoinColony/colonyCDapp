@@ -157,6 +157,10 @@ enum ColonyType {
   METACOLONY
 }
 
+enum ColonyActionType {
+  MINT_TOKENS
+}
+
 type Query {
   getTokenFromEverywhere(
     input: TokenFromEverywhereArguments
@@ -379,10 +383,9 @@ type CurrentVersion @model {
   version: Int!
 }
 
-type Action @model {
+type ColonyAction @model {
   id: ID!
-  type: String!
-  createdAt: AWSTimestamp!
+  type: ColonyActionType!
   blockNumber: Int!
   transactionHash: String!
   initiator: String
