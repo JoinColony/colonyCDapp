@@ -85,12 +85,7 @@ const UserAvatarUploader = ({
       <AvatarUploader
         avatar={profile?.avatar}
         avatarPlaceholder={
-          <UserAvatar
-            address={walletAddress}
-            user={user}
-            size="xl"
-            preferThumbnail={false}
-          />
+          <UserAvatar user={user} size="xl" preferThumbnail={false} />
         }
         handleFileAccept={handleFileUpload}
         handleFileRemove={handleFileRemove}

@@ -34,12 +34,7 @@ fragment Colony on Colony {
   }
   domains {
     items {
-      color
-      description
-      id
-      name
-      nativeId
-      parentId: domainParentId
+      ...Domain
     }
   }
   watchers {

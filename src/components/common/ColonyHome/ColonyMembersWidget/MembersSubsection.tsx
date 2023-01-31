@@ -70,7 +70,6 @@ const MembersSubsection = ({
   colony: { name, watchers },
   // members,
   isContributorsSubsection,
-  colony,
   currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
   maxAvatars = MAX_AVATARS,
 }: Props) => {
@@ -156,11 +155,9 @@ const MembersSubsection = ({
             <li className={styles.userAvatar} key={user.walletAddress}>
               <UserAvatar
                 size="xs"
-                address={user.walletAddress}
                 // banned={canAdministerComments && banned}
                 banned={false}
                 showInfo
-                colony={colony}
                 user={user}
                 popperOptions={{
                   placement: 'bottom',
