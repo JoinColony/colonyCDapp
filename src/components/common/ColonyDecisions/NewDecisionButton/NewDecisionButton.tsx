@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { useDialog } from '~shared/Dialog';
 import { DialogButton } from '~shared/Button';
@@ -6,19 +7,19 @@ import {
   DecisionDialog,
   RemoveExistingDecisionDialog,
 } from '~common/ColonyDecisions';
+import { ColonyHomeLayoutProps } from '~common/ColonyHome/ColonyHomeLayout';
+import { getDecisionFromStore } from '~utils/decisions';
 import { useAppContext } from '~hooks';
-import { getDecisionFromLocalStorage } from '~utils/decisions';
 
 const displayName = 'common.ColonyDecisions.NewDecisionButton';
 
-interface Props {
-  ethDomainId: number;
-}
+type NewDecisionButtonProps = Pick<ColonyHomeLayoutProps, 'filteredDomainId'>;
 
-const NewDecisionButton = ({ ethDomainId }: Props) => {
+const NewDecisionButton = ({
+  filteredDomainId: ethDomainId,
+}: NewDecisionButtonProps) => {
   const { user } = useAppContext();
-  const walletAddress = user?.walletAddress || '';
-  const decision = getDecisionFromLocalStorage(walletAddress);
+  const decision = useSelector(getDecisionFromStore(user?.walletAddress || ''));
 
   //   const { isVotingExtensionEnabled, isLoadingExtensions } =
   //     useEnabledExtensions({
@@ -48,9 +49,11 @@ const NewDecisionButton = ({ ethDomainId }: Props) => {
 
   const handleClick = () => {
     if (decision) {
-      openDeleteDraftDialog({ openDecisionDialog });
+      openDeleteDraftDialog({
+        openDecisionDialog,
+      });
     } else {
-      openDecisionDialog({ ethDomainId });
+      openDecisionDialog({ ethDomainId, decision });
     }
   };
 

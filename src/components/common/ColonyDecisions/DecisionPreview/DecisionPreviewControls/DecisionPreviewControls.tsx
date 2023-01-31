@@ -18,7 +18,6 @@ const displayName =
 
 const DecisionPreviewControls = ({
   decision,
-  setDecision,
 }: DecisionPreviewControlsProps) => {
   const { colony } = useColonyContext();
   const colonyAddress = colony?.colonyAddress;
@@ -32,11 +31,7 @@ const DecisionPreviewControls = ({
         <>
           <Button
             appearance={{ theme: 'blue', size: 'large' }}
-            onClick={() =>
-              openConfirmDeleteDialog({
-                decision,
-              })
-            }
+            onClick={() => openConfirmDeleteDialog({ decision })}
             text={{ id: 'button.delete' }}
           />
           <Button
@@ -44,7 +39,7 @@ const DecisionPreviewControls = ({
             onClick={() =>
               openDecisionDialog({
                 ethDomainId: decision.motionDomainId,
-                handleSubmit: setDecision,
+                decision,
               })
             }
             text={{ id: 'button.edit' }}

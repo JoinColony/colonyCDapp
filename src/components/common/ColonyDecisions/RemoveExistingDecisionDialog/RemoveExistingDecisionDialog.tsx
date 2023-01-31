@@ -1,12 +1,13 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import Button from '~shared/Button';
 import Dialog, { DialogProps, DialogSection } from '~shared/Dialog';
 import { useAppContext } from '~hooks';
-import { removeDecisionFromLocalStorage } from '~utils/decisions';
 import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
+import { removeDecisionAction } from '~redux/actionCreators';
 
 import RemoveDecisionMessage from './RemoveDecisionMessage';
 
@@ -28,10 +29,10 @@ const RemoveExistingDecisionDialog = ({
   cancel,
   openDecisionDialog,
 }: RemoveExistingDecisionDialogProps) => {
-  const { user } = useAppContext();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useAppContext();
   const { pathname } = useLocation();
-
   const walletAddress = user?.walletAddress || '';
 
   const handleRedirect = () => {
@@ -40,7 +41,7 @@ const RemoveExistingDecisionDialog = ({
   };
 
   const handleRemoveDecision = () => {
-    removeDecisionFromLocalStorage(walletAddress);
+    dispatch(removeDecisionAction(walletAddress));
     openDecisionDialog();
     close();
   };

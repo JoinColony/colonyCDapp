@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
+import { useSelector } from 'react-redux';
 
 import Tag from '~shared/Tag';
-import { getDecisionFromLocalStorage } from '~utils/decisions';
+import { getDecisionFromStore } from '~utils/decisions';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import { useAppContext } from '~hooks';
-import { Decision } from '~types';
 
 import {
   DecisionData,
@@ -31,14 +31,7 @@ const MSG = defineMessages({
 
 const DecisionPreview = () => {
   const { user, walletConnecting, userLoading } = useAppContext();
-  const walletAddress = user?.walletAddress || '';
-
-  const [decisionPreview, setDecisionPreview] = useState<Decision>();
-  const decision = getDecisionFromLocalStorage(walletAddress);
-
-  if (!decisionPreview && decision) {
-    setDecisionPreview(decision);
-  }
+  const decision = useSelector(getDecisionFromStore(user?.walletAddress || ''));
 
   if (walletConnecting || userLoading) {
     return (
@@ -53,17 +46,10 @@ const DecisionPreview = () => {
       <div className={styles.banner}>
         <Tag text={MSG.preview} appearance={{ theme: 'light' }} />
       </div>
-      <DecisionData
-        decision={decisionPreview}
-        setDecision={setDecisionPreview}
-        user={user}
-      />
+      <DecisionData decision={decision} user={user} />
       <div className={styles.rightContent}>
-        <DecisionPreviewControls
-          decision={decisionPreview}
-          setDecision={setDecisionPreview}
-        />
-        {decisionPreview && <DecisionDetails decision={decisionPreview} />}
+        <DecisionPreviewControls decision={decision} />
+        {decision && <DecisionDetails decision={decision} />}
       </div>
     </DecisionPreviewLayout>
   );

@@ -3,6 +3,7 @@ import { all, call, fork, put } from 'redux-saga/effects';
 
 // import actionsSagas from './actions';
 import { colonyCreateSaga } from './colony';
+import decisionsSagas from './decisions';
 // import colonySagas, {
 // } from './colony';
 // import colonyExtensionSagas from './extensions';
@@ -16,6 +17,7 @@ import { ActionTypes } from '../actionTypes';
 import { AllActions } from '../types/actions';
 
 import { setContext, ContextModule, UserSettings } from '~context';
+import { getDecisionFromLocalStorage } from '~utils/decisions';
 
 // import setupResolvers from '~context/setupResolvers';
 // import AppLoadingState from '~context/appLoadingState';
@@ -29,6 +31,7 @@ function* setupContextDependentSagas() {
   yield all([
     // call(actionsSagas),
     // call(colonySagas),
+    call(decisionsSagas),
     call(colonyCreateSaga),
     // call(colonyExtensionSagas),
     // call(motionSagas),
@@ -60,6 +63,19 @@ export default function* setupUserContext() {
     yield put<AllActions>({
       type: ActionTypes.WALLET_OPEN_SUCCESS,
     });
+
+    /*
+     * Get saved decision from local storage and, if it exists, add to the store.
+     */
+
+    const decision = getDecisionFromLocalStorage(wallet?.address || '');
+
+    if (decision) {
+      yield put<AllActions>({
+        type: ActionTypes.DECISION_DRAFT_CREATED,
+        payload: decision,
+      });
+    }
 
     /*
      * Get user settings and hydrate them in the context

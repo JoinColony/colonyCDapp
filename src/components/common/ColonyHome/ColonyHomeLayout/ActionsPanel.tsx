@@ -13,16 +13,16 @@ const isDecisionsRoute = (params: Params) => {
   return params['*'] === 'decisions';
 };
 
-interface ActionsPanelProps {
-  onDomainChange: ColonyHomeLayoutProps['onDomainChange'];
-  filteredDomainId: number;
-}
+type ActionsPanelProps = Pick<
+  ColonyHomeLayoutProps,
+  'filteredDomainId' | 'onDomainChange'
+>;
 
 const displayName = 'common.ColonyHome.ColonyHomeLayout.ActionsPanel';
 
 const ActionsPanel = ({
-  onDomainChange,
   filteredDomainId,
+  onDomainChange,
 }: ActionsPanelProps) => {
   const params = useParams();
 
@@ -38,7 +38,7 @@ const ActionsPanel = ({
           onDomainChange={onDomainChange}
         />
       </div>
-      <NewItemButton ethDomainId={filteredDomainId} />
+      <NewItemButton filteredDomainId={filteredDomainId} />
     </div>
   );
 };

@@ -1,0 +1,111 @@
+@value mainTextSize: 13px;
+
+.main {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1px;
+  padding: 26px 20px;
+  height: 89px;
+  border-radius: var(--radius-large);
+  background-color: var(--colony-white);
+  font-size: mainTextSize;
+  font-weight: var(--weight-bold);
+  color: var(--dark);
+  letter-spacing: var(--spacing-medium);
+  box-shadow: 0px 2px 11px var(--drop-shadow);
+  cursor: pointer;
+  outline: 0;
+}
+
+.main:hover {
+  background-color: var(--colony-light-blue);
+}
+
+.avatar {
+  margin-top: -2px;
+  padding-right: 15px;
+  cursor: pointer;
+}
+
+.avatar > div > figure {
+  height: 42px;
+  width: 42px;
+  border: 2px solid transparent;
+  border-radius: 100%;
+}
+
+.status::before {
+  display: block;
+  margin-left: -17px;
+  height: 82px;
+  width: 4px;
+  position: absolute;
+  border-radius: var(--radius-large);
+  content: '';
+}
+
+.stateNeedAction {
+  composes: status;
+}
+
+.stateNeedAction::before {
+  background-color: var(--pink);
+}
+
+.stateNeedAttention {
+  composes: status;
+}
+
+.stateNeedAttention::before {
+  background-color: var(--colony-blue);
+}
+
+.stateDraft {
+  composes: status;
+}
+
+.stateDraft::before {
+  background-color: var(--golden);
+}
+
+.content {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.title {
+  composes: inlineEllipsis from '~styles/text.css';
+}
+
+.meta {
+  margin-top: 3px;
+  font-size: var(--size-small);
+  font-weight: var(--weight-normal);
+  color: var(--grey-purple);
+  letter-spacing: var(--spacing-normal);
+}
+
+.day {
+  margin-right: 4px;
+}
+
+.stateNoPointer {
+  cursor: default;
+}
+
+.titleDecoration {
+  color: var(--pink);
+}
+
+.motionTagWrapper {
+  display: inline-block;
+  margin: -1px 0 0 12px;
+  padding: 0;
+  vertical-align: middle;
+}

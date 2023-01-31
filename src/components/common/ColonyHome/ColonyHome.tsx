@@ -45,7 +45,6 @@ const ColonyHome = () => {
   const [domainIdFilter, setDomainIdFilter] = useState<number>(
     Number(queryDomainIdFilter),
   );
-
   const filteredDomainId = domainIdFilter || COLONY_TOTAL_BALANCE_DOMAIN_ID;
 
   // const isExtensionIdValid = useMemo(
@@ -124,7 +123,11 @@ const ColonyHome = () => {
             />
             <Route
               path={COLONY_DECISIONS_ROUTE}
-              element={<ColonyDecisions ethDomainId={filteredDomainId} />}
+              element={
+                <ColonyDecisions
+                /* ethDomainId={filteredDomainId} */
+                />
+              }
             />
           </Route>
 

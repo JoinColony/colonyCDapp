@@ -1,17 +1,16 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
+import { useDispatch } from 'react-redux';
 import { string, object, number, InferType } from 'yup';
 
 import Dialog, { DialogProps } from '~shared/Dialog';
 import { HookForm as Form } from '~shared/Fields';
 import { useAppContext, useRichTextEditor } from '~hooks';
 import { getDomainId } from '~utils/domains';
-import {
-  getDecisionFromLocalStorage,
-  setDecisionToLocalStorage,
-} from '~utils/decisions';
+import { Decision } from '~types';
 import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
+import { createDecisionAction } from '~redux/actionCreators';
 
 import {
   DecisionTitle,
@@ -40,8 +39,10 @@ const validationSchema = object()
     title: string()
       .trim()
       .required(() => MSG.titleRequired),
-    motionDomainId: number(),
-    description: string().notOneOf(['<p></p>'], () => MSG.descriptionRequired),
+    motionDomainId: number().defined(),
+    description: string()
+      .notOneOf(['<p></p>'], () => MSG.descriptionRequired)
+      .defined(),
     walletAddress: string().address().required(),
   })
   .defined();
@@ -49,28 +50,27 @@ const validationSchema = object()
 export type DecisionDialogValues = InferType<typeof validationSchema>;
 
 export interface DecisionDialogProps extends DialogProps {
+  decision?: Decision;
   ethDomainId?: number;
-  handleSubmit?: (values: DecisionDialogValues) => void;
 }
 
 const DecisionDialog = ({
   cancel,
   close,
+  decision,
   ethDomainId,
-  handleSubmit,
 }: DecisionDialogProps) => {
   const { user } = useAppContext();
   const { pathname } = useLocation();
   const { editor } = useRichTextEditor();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const domainId = getDomainId(ethDomainId);
   const walletAddress = user?.walletAddress || '';
-  const draftDecision = getDecisionFromLocalStorage(walletAddress);
-  const content = draftDecision?.description;
+  const content = decision?.description;
 
   const handleSubmitDialog = (values: DecisionDialogValues) => {
-    handleSubmit?.(values);
-    setDecisionToLocalStorage(values, walletAddress);
+    dispatch(createDecisionAction(values));
     if (!pathname.includes(DECISIONS_PREVIEW)) {
       navigate(`${pathname}${DECISIONS_PREVIEW}`);
     }
@@ -85,9 +85,9 @@ const DecisionDialog = ({
     <Dialog cancel={cancel}>
       <Form<DecisionDialogValues>
         defaultValues={{
-          motionDomainId: draftDecision?.motionDomainId ?? domainId,
-          title: draftDecision?.title,
-          description: draftDecision?.description || '<p></p>',
+          motionDomainId: decision?.motionDomainId ?? domainId,
+          title: decision?.title,
+          description: decision?.description || '<p></p>',
           walletAddress,
         }}
         onSubmit={handleSubmitDialog}
