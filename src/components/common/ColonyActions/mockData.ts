@@ -39,6 +39,9 @@ const colonyEditValues: {
 const fakeUser: User = {
   walletAddress: '0xCd96D435128415F3265c32f9eaeFaCc6Be53b7D7',
   name: 'Steven',
+  profile: {
+    displayName: 'Steven',
+  },
 };
 
 const coreData = {
@@ -58,7 +61,6 @@ const coreData = {
   colonyAvatarHash: null,
   colonyTokens: [],
   blockNumber: 999,
-  motionState: undefined,
   isWhitelistActivated: false,
   verifiedAddresses: [],
 };

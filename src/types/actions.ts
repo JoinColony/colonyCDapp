@@ -4,7 +4,7 @@ import { ItemStatus } from '~core/ActionsList';
 import { MotionTimeoutPeriods } from '~data/generated';
 import { MotionState } from '~utils/colonyMotions';
 
-import { Address, ActionUserRoles } from './index';
+import { Address, ActionUserRoles, User } from './index';
 import { ColonyMotions } from './motions';
 
 export enum ColonyActions {
@@ -133,12 +133,12 @@ export interface FormattedAction {
   id: string;
   status?: ItemStatus;
   actionType: ColonyActions | ColonyMotions;
-  initiator: Address;
-  recipient: Address;
+  initiator: User;
+  recipient: User;
   amount: string;
   tokenAddress: Address;
   transactionTokenAddress?: Address;
-  symbol: string;
+  tokenSymbol: string;
   decimals: string;
   fromDomain: string;
   toDomain: string;
