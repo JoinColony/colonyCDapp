@@ -6,7 +6,7 @@ import IndexModal from '~shared/IndexModal';
 
 import { WizardDialogType } from '~hooks';
 
-const displayName = 'common.ColonyHome.ColonyActionsDialog';
+const displayName = 'common.ColonyActionsDialog';
 
 const MSG = defineMessages({
   title: {
