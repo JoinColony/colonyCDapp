@@ -8,14 +8,13 @@ import layout from '~styles/layout.css';
 import '~utils/yup/customMethods'; // ensures custom yup methods are available when components load
 import { DialogProvider } from '~shared/Dialog';
 // import { TokenActivationProvider } from '~users/TokenActivationProvider';
+import { AppContextProvider, getContext, ContextModule } from '~context';
 
 import messages from './i18n/en.json';
 import actionMessages from './i18n/en-actions';
 import eventsMessages from './i18n/en-events';
-import motionMessages from './i18n/en-motions';
 import systemMessages from './i18n/en-system-messages';
 import Routes from './routes';
-import { AppContextProvider, getContext, ContextModule } from '~context';
 
 // @ts-ignore
 if (!Intl.RelativeTimeFormat) {
@@ -41,7 +40,6 @@ const Entry = ({ store }: Props) => {
         ...actionMessages,
         ...eventsMessages,
         ...systemMessages,
-        ...motionMessages,
       }}
     >
       <ApolloProvider client={apolloClient}>
