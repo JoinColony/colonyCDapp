@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 
 import Numeral from '~shared/Numeral';
 import { Select } from '~shared/Fields';
-import { useColonyContext } from '~hooks';
+import { Colony } from '~types';
 
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { notNull } from '~utils/arrays';
@@ -32,16 +32,16 @@ const MSG = defineMessages({
 });
 
 interface Props {
+  colony: Colony | undefined;
   filteredDomainId?: number;
 }
 
-const DomainFundSelector = ({ filteredDomainId }: Props) => {
+const DomainFundSelector = ({ colony, filteredDomainId }: Props) => {
   const {
     getValues,
     setValue,
     formState: { isSubmitting },
   } = useFormContext();
-  const { colony } = useColonyContext();
   const values = getValues();
   const selectedDomain =
     filteredDomainId === 0 || filteredDomainId === undefined

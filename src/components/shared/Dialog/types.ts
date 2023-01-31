@@ -1,5 +1,7 @@
 import { ComponentType } from 'react';
 
+import { Colony } from '~types';
+
 type Cancel = () => void;
 
 type Close = (val?: any) => void;
@@ -20,6 +22,7 @@ export interface DialogType<P> {
 }
 
 export interface ActionDialogProps {
+  colony: Colony | undefined;
   // isVotingExtensionEnabled: boolean;
   back?: () => void;
 }
