@@ -1,20 +1,15 @@
 import { ColonyRole } from '@colony/colony-js';
-import sortBy from 'lodash/sortBy';
-import isEqual from 'lodash/isEqual';
 
+import { isEmpty, isEqual, sortBy } from '~utils/lodash';
 import {
   ColonyActions,
   ColonyMotions,
   ColonyAndExtensionsEvents,
   FormattedAction,
   Address,
+  ActionUserRoles,
 } from '~types';
-import { ColonyAction, SugraphEventProcessedValues } from '~data/index';
-
-import {
-  DETAILS_FOR_ACTION,
-  ActionPageDetails,
-} from '~dashboard/ActionsPage/staticMaps';
+import { formatText } from './intl';
 
 type DetailsValuesMap = Partial<{
   [key in ActionPageDetails]: boolean;
@@ -361,4 +356,55 @@ export const getSpecificActionValuesCheck = (
       };
     }
   }
+};
+
+const getFormattedRoleList = (
+  roleGroupA: ActionUserRoles[],
+  roleGroupB: ActionUserRoles[] | null,
+) => {
+  let roleList = '';
+
+  roleGroupA.forEach((role: ActionUserRoles, i: number) => {
+    const roleNameMessage = { id: `role.${role.id}` };
+    const formattedRole = formatText(roleNameMessage) as string;
+    roleList += ` ${formattedRole.toLowerCase()}`;
+
+    if (
+      i < roleGroupA.length - 1 ||
+      (i === roleGroupA.length - 1 && !isEmpty(roleGroupB))
+    ) {
+      roleList += ',';
+    }
+  });
+
+  return roleList;
+};
+
+export const formatRolesTitle = (roles: ActionUserRoles[]) => {
+  let roleTitle = '';
+  let direction = '';
+
+  const assignedRoles = roles.filter((role) => role.setTo);
+  const unassignedRoles = roles.filter((role) => !role.setTo);
+
+  if (!isEmpty(assignedRoles)) {
+    direction = 'to';
+    roleTitle += `Assign the${getFormattedRoleList(
+      assignedRoles,
+      unassignedRoles,
+    )}`;
+  }
+
+  if (!isEmpty(unassignedRoles)) {
+    direction += direction ? '/from' : 'from';
+    roleTitle += roleTitle ? ' and remove the' : 'Remove the';
+    roleTitle += getFormattedRoleList(unassignedRoles, null);
+  }
+
+  roleTitle += roles.length > 1 ? ' permissions' : ' permission';
+
+  return {
+    roleTitle,
+    direction,
+  };
 };
