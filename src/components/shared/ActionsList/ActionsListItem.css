@@ -39,11 +39,6 @@
   border-radius: 100%;
 }
 
-.avatar:hover figure {
-  border-color: var(--primary);
-  background: var(--primary);
-}
-
 .status::before {
   display: block;
   margin-left: -17px;
@@ -140,7 +135,7 @@
 }
 
 .commentCountIcon svg {
-  fill: color-mod(var(--dark) alpha(70%));
+  fill: rgba(var(--dark-1), 0.7);
 }
 
 .userMention {
