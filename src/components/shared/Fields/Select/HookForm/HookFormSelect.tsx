@@ -7,90 +7,31 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
+import { defineMessages } from 'react-intl';
 import { nanoid } from 'nanoid';
 import { useFormContext } from 'react-hook-form';
 
+import { InputLabel, HookFormInputStatus as InputStatus } from '~shared/Fields';
+import Icon from '~shared/Icon';
+import { DOWN, ENTER, ESC, Message, SPACE, UP } from '~types';
 import { getMainClasses } from '~utils/css';
-import { DOWN, ENTER, ESC, SimpleMessageValues, SPACE, UP } from '~types';
+import { formatText } from '~utils/intl';
 
-import SelectListBox from './SelectListBox';
-import { Appearance, SelectOption } from './types';
-import InputLabel from '../InputLabel';
-import InputStatus from '../InputStatus';
-import Icon from '../../Icon';
+import SelectListBox from '../SelectListBox';
+import { Appearance, SelectProps } from '../types';
 
-import styles from './Select.css';
+import styles from '../Select.css';
+
+const displayName = 'Select.HookFormSelect';
 
 const MSG = defineMessages({
   expandIconHTMLTitle: {
-    id: 'Select.expandIconHTMLTitle',
+    id: `${displayName}.expandIconHTMLTitle`,
     defaultMessage: 'expand',
   },
 });
 
-export interface SelectProps {
-  /** Appearance object */
-  appearance?: Appearance;
-
-  /** Should `select` be disabled */
-  disabled?: boolean;
-
-  /** Should render the select without a label */
-  elementOnly?: boolean;
-
-  /** Help text */
-  help?: string | MessageDescriptor;
-
-  /** Help text values for intl interpolation */
-  helpValues?: SimpleMessageValues;
-
-  /** Html id attribute */
-  id?: string;
-
-  /** Label text */
-  label: string | MessageDescriptor;
-
-  /** Label text values for intl interpolation */
-  labelValues?: SimpleMessageValues;
-
-  /** Html name attribute */
-  name: string;
-
-  /** Callback function, called after value is changed */
-  onChange?: (value: SelectOption['value']) => void;
-
-  /** Available `option`s for the select */
-  options: SelectOption[];
-
-  /** Render at the bottom of the select list box */
-  optionsFooter?: ReactNode;
-
-  /** Status text */
-  placeholder?: string | MessageDescriptor;
-
-  /** Render the actively selected option */
-  renderActiveOption?: (
-    activeOption: SelectOption | undefined,
-    activeOptionLabel: string,
-  ) => ReactNode;
-
-  /** Status text */
-  status?: string | MessageDescriptor;
-
-  /** Status text values for intl interpolation */
-  statusValues?: SimpleMessageValues;
-
-  /** Provides value for data-test prop in select button used on cypress testing */
-  dataTest?: string;
-
-  /** Provides value for data-test prop in select items used on cypress testing */
-  itemDataTest?: string;
-}
-
-const displayName = 'Select';
-
-const Select = ({
+const HookFormSelect = ({
   appearance,
   disabled,
   elementOnly,
@@ -116,27 +57,25 @@ const Select = ({
     watch,
     setValue,
   } = useFormContext();
-  const selectValue = watch(name);
+  const error = errors[name] as Message;
+  const value = watch(name);
+
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const { formatMessage } = useIntl();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<number>(-1);
 
-  const checkedOption = useMemo(
-    () => options.findIndex((option) => option.value === selectValue),
-    [selectValue, options],
-  );
+  const checkedOption = options.findIndex((option) => option.value === value);
 
   const open = () => {
     if (disabled) return;
     setIsOpen(true);
   };
 
-  const close = useCallback(() => {
+  const close = () => {
     setIsOpen(false);
     setSelectedOption(-1);
-  }, []);
+  };
 
   const handleOutsideClick = useCallback(
     (evt: MouseEvent) => {
@@ -148,7 +87,7 @@ const Select = ({
         close();
       }
     },
-    [close],
+    [wrapperRef],
   );
 
   const goUp = () => {
@@ -171,9 +110,7 @@ const Select = ({
     }
     const { value: optionValue } = options[selectedOption];
     setValue(name, optionValue);
-    if (onChangeCallback) {
-      onChangeCallback(optionValue);
-    }
+    onChangeCallback?.(optionValue);
     close();
   };
 
@@ -252,6 +189,7 @@ const Select = ({
         document.body.addEventListener('click', handleOutsideClick, true);
       }
     }
+
     return () => {
       if (document.body) {
         document.body.removeEventListener('click', handleOutsideClick, true);
@@ -268,7 +206,7 @@ const Select = ({
     let activeOptionLabel;
     if (activeOption) {
       if (typeof activeOption.label === 'object') {
-        activeOptionLabel = formatMessage(
+        activeOptionLabel = formatText(
           activeOption.label,
           activeOption.labelValues,
         );
@@ -283,7 +221,7 @@ const Select = ({
       return renderActiveOption(activeOption, activeOptionLabelText);
     }
     return <span>{activeOptionLabelText}</span>;
-  }, [checkedOption, formatMessage, options, placeholder, renderActiveOption]);
+  }, [checkedOption, options, placeholder, renderActiveOption]);
 
   const listboxId = `select-listbox-${id}`;
 
@@ -303,11 +241,7 @@ const Select = ({
           aria-haspopup="listbox"
           aria-controls={listboxId}
           aria-expanded={isOpen}
-          aria-label={
-            typeof label === 'object'
-              ? formatMessage(label, labelValues)
-              : label
-          }
+          aria-label={formatText(label, labelValues)}
           aria-disabled={disabled}
           id={id}
           tabIndex={0}
@@ -345,18 +279,18 @@ const Select = ({
           appearance={{ theme: 'minimal' }}
           status={status}
           statusValues={statusValues}
-          error={errors[name]}
+          error={error}
         />
       )}
     </div>
   );
 };
 
-Select.displayName = displayName;
+HookFormSelect.displayName = displayName;
 
-Select.defaultProps = {
+HookFormSelect.defaultProps = {
   appearance: { alignOptions: 'left', theme: 'default' } as Appearance,
   options: [],
 };
 
-export default Select;
+export default HookFormSelect;

@@ -1,23 +1,34 @@
-export const mainTextSize: string;
-export const popoverWidth: string;
-export const popoverDistance: string;
-export const main: string;
-export const avatar: string;
-export const status: string;
-export const stateNeedAction: string;
-export const stateNeedAttention: string;
-export const stateYellow: string;
-export const content: string;
-export const titleWrapper: string;
-export const title: string;
-export const meta: string;
-export const separator: string;
-export const day: string;
-export const domain: string;
-export const commentCount: string;
-export const commentCountIcon: string;
-export const userMention: string;
-export const stateNoPointer: string;
-export const titleDecoration: string;
-export const motionTagWrapper: string;
-export const countdownTimerContainer: string;
+declare namespace ActionsListItemCssNamespace {
+  export interface IActionsListItemCss {
+    avatar: string;
+    commentCount: string;
+    commentCountIcon: string;
+    content: string;
+    countdownTimerContainer: string;
+    day: string;
+    domain: string;
+    main: string;
+    mainTextSize: string;
+    meta: string;
+    motionTagWrapper: string;
+    popoverDistance: string;
+    popoverWidth: string;
+    separator: string;
+    stateNeedAction: string;
+    stateNeedAttention: string;
+    stateNoPointer: string;
+    stateYellow: string;
+    status: string;
+    title: string;
+    titleDecoration: string;
+    titleWrapper: string;
+    userMention: string;
+  }
+}
+
+declare const ActionsListItemCssModule: ActionsListItemCssNamespace.IActionsListItemCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: ActionsListItemCssNamespace.IActionsListItemCss;
+};
+
+export = ActionsListItemCssModule;
