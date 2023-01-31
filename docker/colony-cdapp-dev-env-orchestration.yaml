@@ -39,7 +39,7 @@ services:
       network-contracts:
         condition: service_healthy
       amplify:
-        condition: service_health
+        condition: service_healthy
     links:
       - "network-contracts:network-contracts.docker"
       - "amplify:amplify.docker"
