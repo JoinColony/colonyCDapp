@@ -1,6 +1,6 @@
 import React, { ComponentType } from 'react';
 
-import ActionsListItem from './ActionsListItem';
+import { ActionsListItem } from '~common/ColonyActions';
 
 const displayName = 'ActionsList';
 
