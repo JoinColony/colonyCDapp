@@ -2,15 +2,9 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -62,12 +56,14 @@ export type Colony = {
   watchers?: Maybe<ModelWatchedColoniesConnection>;
 };
 
+
 export type ColonyDomainsArgs = {
   filter?: InputMaybe<ModelDomainFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
+
 
 export type ColonyExtensionsArgs = {
   filter?: InputMaybe<ModelColonyExtensionFilterInput>;
@@ -77,6 +73,7 @@ export type ColonyExtensionsArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
+
 export type ColonyFundsClaimsArgs = {
   filter?: InputMaybe<ModelColonyFundsClaimFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -84,12 +81,14 @@ export type ColonyFundsClaimsArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
+
 export type ColonyTokensArgs = {
   filter?: InputMaybe<ModelColonyTokensFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
+
 
 export type ColonyWatchersArgs = {
   filter?: InputMaybe<ModelWatchedColoniesFilterInput>;
@@ -196,7 +195,7 @@ export type ColonyTokens = {
 
 export enum ColonyType {
   Colony = 'COLONY',
-  Metacolony = 'METACOLONY',
+  Metacolony = 'METACOLONY'
 }
 
 export type ContractEvent = {
@@ -448,7 +447,7 @@ export enum DomainColor {
   Purple = 'PURPLE',
   Purplegrey = 'PURPLEGREY',
   Red = 'RED',
-  Yellow = 'YELLOW',
+  Yellow = 'YELLOW'
 }
 
 export type DomainInput = {
@@ -457,7 +456,7 @@ export type DomainInput = {
 
 export enum EmailPermissions {
   IsHuman = 'isHuman',
-  SendNotifications = 'sendNotifications',
+  SendNotifications = 'sendNotifications'
 }
 
 export type GetReputationForTopDomainsInput = {
@@ -505,7 +504,7 @@ export enum ModelAttributeTypes {
   Number = 'number',
   NumberSet = 'numberSet',
   String = 'string',
-  StringSet = 'stringSet',
+  StringSet = 'stringSet'
 }
 
 export type ModelBooleanInput = {
@@ -830,7 +829,7 @@ export type ModelSizeInput = {
 
 export enum ModelSortDirection {
   Asc = 'ASC',
-  Desc = 'DESC',
+  Desc = 'DESC'
 }
 
 export type ModelStringInput = {
@@ -865,9 +864,7 @@ export type ModelSubscriptionBooleanInput = {
 };
 
 export type ModelSubscriptionColonyExtensionFilterInput = {
-  and?: InputMaybe<
-    Array<InputMaybe<ModelSubscriptionColonyExtensionFilterInput>>
-  >;
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyExtensionFilterInput>>>;
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   hash?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
@@ -876,9 +873,7 @@ export type ModelSubscriptionColonyExtensionFilterInput = {
   isDeleted?: InputMaybe<ModelSubscriptionBooleanInput>;
   isDeprecated?: InputMaybe<ModelSubscriptionBooleanInput>;
   isInitialized?: InputMaybe<ModelSubscriptionBooleanInput>;
-  or?: InputMaybe<
-    Array<InputMaybe<ModelSubscriptionColonyExtensionFilterInput>>
-  >;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyExtensionFilterInput>>>;
   version?: InputMaybe<ModelSubscriptionIntInput>;
 };
 
@@ -894,15 +889,11 @@ export type ModelSubscriptionColonyFilterInput = {
 
 export type ModelSubscriptionColonyFundsClaimFilterInput = {
   amount?: InputMaybe<ModelSubscriptionStringInput>;
-  and?: InputMaybe<
-    Array<InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>>
-  >;
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>>>;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   createdAtBlock?: InputMaybe<ModelSubscriptionIntInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
-  or?: InputMaybe<
-    Array<InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>>
-  >;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>>>;
 };
 
 export type ModelSubscriptionColonyTokensFilterInput = {
@@ -915,9 +906,7 @@ export type ModelSubscriptionColonyTokensFilterInput = {
 
 export type ModelSubscriptionContractEventFilterInput = {
   agent?: InputMaybe<ModelSubscriptionStringInput>;
-  and?: InputMaybe<
-    Array<InputMaybe<ModelSubscriptionContractEventFilterInput>>
-  >;
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionContractEventFilterInput>>>;
   encodedArguments?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   name?: InputMaybe<ModelSubscriptionStringInput>;
@@ -927,14 +916,10 @@ export type ModelSubscriptionContractEventFilterInput = {
 };
 
 export type ModelSubscriptionCurrentVersionFilterInput = {
-  and?: InputMaybe<
-    Array<InputMaybe<ModelSubscriptionCurrentVersionFilterInput>>
-  >;
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionCurrentVersionFilterInput>>>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   key?: InputMaybe<ModelSubscriptionStringInput>;
-  or?: InputMaybe<
-    Array<InputMaybe<ModelSubscriptionCurrentVersionFilterInput>>
-  >;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionCurrentVersionFilterInput>>>;
   version?: InputMaybe<ModelSubscriptionIntInput>;
 };
 
@@ -1047,14 +1032,10 @@ export type ModelSubscriptionUserTokensFilterInput = {
 };
 
 export type ModelSubscriptionWatchedColoniesFilterInput = {
-  and?: InputMaybe<
-    Array<InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>>
-  >;
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>>>;
   colonyID?: InputMaybe<ModelSubscriptionIdInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
-  or?: InputMaybe<
-    Array<InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>>
-  >;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>>>;
   userID?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
@@ -1210,200 +1191,241 @@ export type Mutation = {
   updateWatchedColonies?: Maybe<WatchedColonies>;
 };
 
+
 export type MutationCreateColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: CreateColonyInput;
 };
+
 
 export type MutationCreateColonyExtensionArgs = {
   condition?: InputMaybe<ModelColonyExtensionConditionInput>;
   input: CreateColonyExtensionInput;
 };
 
+
 export type MutationCreateColonyFundsClaimArgs = {
   condition?: InputMaybe<ModelColonyFundsClaimConditionInput>;
   input: CreateColonyFundsClaimInput;
 };
+
 
 export type MutationCreateColonyTokensArgs = {
   condition?: InputMaybe<ModelColonyTokensConditionInput>;
   input: CreateColonyTokensInput;
 };
 
+
 export type MutationCreateContractEventArgs = {
   condition?: InputMaybe<ModelContractEventConditionInput>;
   input: CreateContractEventInput;
 };
+
 
 export type MutationCreateCurrentVersionArgs = {
   condition?: InputMaybe<ModelCurrentVersionConditionInput>;
   input: CreateCurrentVersionInput;
 };
 
+
 export type MutationCreateDomainArgs = {
   condition?: InputMaybe<ModelDomainConditionInput>;
   input: CreateDomainInput;
 };
+
 
 export type MutationCreateProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: CreateProfileInput;
 };
 
+
 export type MutationCreateTokenArgs = {
   condition?: InputMaybe<ModelTokenConditionInput>;
   input: CreateTokenInput;
 };
 
+
 export type MutationCreateUniqueColonyArgs = {
   input?: InputMaybe<CreateUniqueColonyInput>;
 };
+
 
 export type MutationCreateUniqueDomainArgs = {
   input?: InputMaybe<CreateUniqueDomainInput>;
 };
 
+
 export type MutationCreateUniqueUserArgs = {
   input?: InputMaybe<CreateUniqueUserInput>;
 };
+
 
 export type MutationCreateUserArgs = {
   condition?: InputMaybe<ModelUserConditionInput>;
   input: CreateUserInput;
 };
 
+
 export type MutationCreateUserTokensArgs = {
   condition?: InputMaybe<ModelUserTokensConditionInput>;
   input: CreateUserTokensInput;
 };
+
 
 export type MutationCreateWatchedColoniesArgs = {
   condition?: InputMaybe<ModelWatchedColoniesConditionInput>;
   input: CreateWatchedColoniesInput;
 };
 
+
 export type MutationDeleteColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: DeleteColonyInput;
 };
+
 
 export type MutationDeleteColonyExtensionArgs = {
   condition?: InputMaybe<ModelColonyExtensionConditionInput>;
   input: DeleteColonyExtensionInput;
 };
 
+
 export type MutationDeleteColonyFundsClaimArgs = {
   condition?: InputMaybe<ModelColonyFundsClaimConditionInput>;
   input: DeleteColonyFundsClaimInput;
 };
+
 
 export type MutationDeleteColonyTokensArgs = {
   condition?: InputMaybe<ModelColonyTokensConditionInput>;
   input: DeleteColonyTokensInput;
 };
 
+
 export type MutationDeleteContractEventArgs = {
   condition?: InputMaybe<ModelContractEventConditionInput>;
   input: DeleteContractEventInput;
 };
+
 
 export type MutationDeleteCurrentVersionArgs = {
   condition?: InputMaybe<ModelCurrentVersionConditionInput>;
   input: DeleteCurrentVersionInput;
 };
 
+
 export type MutationDeleteDomainArgs = {
   condition?: InputMaybe<ModelDomainConditionInput>;
   input: DeleteDomainInput;
 };
+
 
 export type MutationDeleteProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: DeleteProfileInput;
 };
 
+
 export type MutationDeleteTokenArgs = {
   condition?: InputMaybe<ModelTokenConditionInput>;
   input: DeleteTokenInput;
 };
+
 
 export type MutationDeleteUserArgs = {
   condition?: InputMaybe<ModelUserConditionInput>;
   input: DeleteUserInput;
 };
 
+
 export type MutationDeleteUserTokensArgs = {
   condition?: InputMaybe<ModelUserTokensConditionInput>;
   input: DeleteUserTokensInput;
 };
+
 
 export type MutationDeleteWatchedColoniesArgs = {
   condition?: InputMaybe<ModelWatchedColoniesConditionInput>;
   input: DeleteWatchedColoniesInput;
 };
 
+
 export type MutationSetCurrentVersionArgs = {
   input?: InputMaybe<SetCurrentVersionInput>;
 };
+
 
 export type MutationUpdateColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: UpdateColonyInput;
 };
 
+
 export type MutationUpdateColonyExtensionArgs = {
   condition?: InputMaybe<ModelColonyExtensionConditionInput>;
   input: UpdateColonyExtensionInput;
 };
+
 
 export type MutationUpdateColonyFundsClaimArgs = {
   condition?: InputMaybe<ModelColonyFundsClaimConditionInput>;
   input: UpdateColonyFundsClaimInput;
 };
 
+
 export type MutationUpdateColonyTokensArgs = {
   condition?: InputMaybe<ModelColonyTokensConditionInput>;
   input: UpdateColonyTokensInput;
 };
+
 
 export type MutationUpdateContractEventArgs = {
   condition?: InputMaybe<ModelContractEventConditionInput>;
   input: UpdateContractEventInput;
 };
 
+
 export type MutationUpdateCurrentVersionArgs = {
   condition?: InputMaybe<ModelCurrentVersionConditionInput>;
   input: UpdateCurrentVersionInput;
 };
+
 
 export type MutationUpdateDomainArgs = {
   condition?: InputMaybe<ModelDomainConditionInput>;
   input: UpdateDomainInput;
 };
 
+
 export type MutationUpdateExtensionByColonyAndHashArgs = {
   input?: InputMaybe<UpdateExtensionByColonyAndHashInput>;
 };
+
 
 export type MutationUpdateProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: UpdateProfileInput;
 };
 
+
 export type MutationUpdateTokenArgs = {
   condition?: InputMaybe<ModelTokenConditionInput>;
   input: UpdateTokenInput;
 };
+
 
 export type MutationUpdateUserArgs = {
   condition?: InputMaybe<ModelUserConditionInput>;
   input: UpdateUserInput;
 };
 
+
 export type MutationUpdateUserTokensArgs = {
   condition?: InputMaybe<ModelUserTokensConditionInput>;
   input: UpdateUserTokensInput;
 };
+
 
 export type MutationUpdateWatchedColoniesArgs = {
   condition?: InputMaybe<ModelWatchedColoniesConditionInput>;
@@ -1428,7 +1450,7 @@ export enum Network {
   Gnosis = 'GNOSIS',
   Gnosisfork = 'GNOSISFORK',
   Goerli = 'GOERLI',
-  Mainnet = 'MAINNET',
+  Mainnet = 'MAINNET'
 }
 
 export type Profile = {
@@ -1508,9 +1530,11 @@ export type Query = {
   listWatchedColonies?: Maybe<ModelWatchedColoniesConnection>;
 };
 
+
 export type QueryGetColonyArgs = {
   id: Scalars['ID'];
 };
+
 
 export type QueryGetColonyByAddressArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
@@ -1520,6 +1544,7 @@ export type QueryGetColonyByAddressArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
+
 export type QueryGetColonyByNameArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1527,6 +1552,7 @@ export type QueryGetColonyByNameArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
+
 
 export type QueryGetColonyByTypeArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
@@ -1536,25 +1562,31 @@ export type QueryGetColonyByTypeArgs = {
   type: ColonyType;
 };
 
+
 export type QueryGetColonyExtensionArgs = {
   id: Scalars['ID'];
 };
+
 
 export type QueryGetColonyFundsClaimArgs = {
   id: Scalars['ID'];
 };
 
+
 export type QueryGetColonyTokensArgs = {
   id: Scalars['ID'];
 };
+
 
 export type QueryGetContractEventArgs = {
   id: Scalars['ID'];
 };
 
+
 export type QueryGetCurrentVersionArgs = {
   id: Scalars['ID'];
 };
+
 
 export type QueryGetCurrentVersionByKeyArgs = {
   filter?: InputMaybe<ModelCurrentVersionFilterInput>;
@@ -1564,9 +1596,11 @@ export type QueryGetCurrentVersionByKeyArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
+
 export type QueryGetDomainArgs = {
   id: Scalars['ID'];
 };
+
 
 export type QueryGetExtensionByColonyAndHashArgs = {
   colonyId: Scalars['ID'];
@@ -1577,9 +1611,11 @@ export type QueryGetExtensionByColonyAndHashArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
+
 export type QueryGetProfileArgs = {
   id: Scalars['ID'];
 };
+
 
 export type QueryGetProfileByEmailArgs = {
   email: Scalars['AWSEmail'];
@@ -1589,13 +1625,16 @@ export type QueryGetProfileByEmailArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
+
 export type QueryGetReputationForTopDomainsArgs = {
   input?: InputMaybe<GetReputationForTopDomainsInput>;
 };
 
+
 export type QueryGetTokenArgs = {
   id: Scalars['ID'];
 };
+
 
 export type QueryGetTokenByAddressArgs = {
   filter?: InputMaybe<ModelTokenFilterInput>;
@@ -1605,9 +1644,11 @@ export type QueryGetTokenByAddressArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
+
 export type QueryGetTokenFromEverywhereArgs = {
   input?: InputMaybe<TokenFromEverywhereArguments>;
 };
+
 
 export type QueryGetTokensByTypeArgs = {
   filter?: InputMaybe<ModelTokenFilterInput>;
@@ -1617,9 +1658,11 @@ export type QueryGetTokensByTypeArgs = {
   type: TokenType;
 };
 
+
 export type QueryGetUserArgs = {
   id: Scalars['ID'];
 };
+
 
 export type QueryGetUserByAddressArgs = {
   filter?: InputMaybe<ModelUserFilterInput>;
@@ -1629,6 +1672,7 @@ export type QueryGetUserByAddressArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
+
 export type QueryGetUserByNameArgs = {
   filter?: InputMaybe<ModelUserFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1637,17 +1681,21 @@ export type QueryGetUserByNameArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
+
 export type QueryGetUserReputationArgs = {
   input?: InputMaybe<GetUserReputationInput>;
 };
+
 
 export type QueryGetUserTokensArgs = {
   id: Scalars['ID'];
 };
 
+
 export type QueryGetWatchedColoniesArgs = {
   id: Scalars['ID'];
 };
+
 
 export type QueryListColoniesArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
@@ -1655,11 +1703,13 @@ export type QueryListColoniesArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
+
 export type QueryListColonyExtensionsArgs = {
   filter?: InputMaybe<ModelColonyExtensionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
+
 
 export type QueryListColonyFundsClaimsArgs = {
   filter?: InputMaybe<ModelColonyFundsClaimFilterInput>;
@@ -1667,11 +1717,13 @@ export type QueryListColonyFundsClaimsArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
+
 export type QueryListColonyTokensArgs = {
   filter?: InputMaybe<ModelColonyTokensFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
+
 
 export type QueryListContractEventsArgs = {
   filter?: InputMaybe<ModelContractEventFilterInput>;
@@ -1679,11 +1731,13 @@ export type QueryListContractEventsArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
+
 export type QueryListCurrentVersionsArgs = {
   filter?: InputMaybe<ModelCurrentVersionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
+
 
 export type QueryListDomainsArgs = {
   filter?: InputMaybe<ModelDomainFilterInput>;
@@ -1691,11 +1745,13 @@ export type QueryListDomainsArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
+
 export type QueryListProfilesArgs = {
   filter?: InputMaybe<ModelProfileFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
+
 
 export type QueryListTokensArgs = {
   filter?: InputMaybe<ModelTokenFilterInput>;
@@ -1703,17 +1759,20 @@ export type QueryListTokensArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
+
 export type QueryListUserTokensArgs = {
   filter?: InputMaybe<ModelUserTokensFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
+
 export type QueryListUsersArgs = {
   filter?: InputMaybe<ModelUserFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
+
 
 export type QueryListWatchedColoniesArgs = {
   filter?: InputMaybe<ModelWatchedColoniesFilterInput>;
@@ -1766,145 +1825,181 @@ export type Subscription = {
   onUpdateWatchedColonies?: Maybe<WatchedColonies>;
 };
 
+
 export type SubscriptionOnCreateColonyArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
 };
+
 
 export type SubscriptionOnCreateColonyExtensionArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyExtensionFilterInput>;
 };
 
+
 export type SubscriptionOnCreateColonyFundsClaimArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>;
 };
+
 
 export type SubscriptionOnCreateColonyTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyTokensFilterInput>;
 };
 
+
 export type SubscriptionOnCreateContractEventArgs = {
   filter?: InputMaybe<ModelSubscriptionContractEventFilterInput>;
 };
+
 
 export type SubscriptionOnCreateCurrentVersionArgs = {
   filter?: InputMaybe<ModelSubscriptionCurrentVersionFilterInput>;
 };
 
+
 export type SubscriptionOnCreateDomainArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainFilterInput>;
 };
+
 
 export type SubscriptionOnCreateProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
 };
 
+
 export type SubscriptionOnCreateTokenArgs = {
   filter?: InputMaybe<ModelSubscriptionTokenFilterInput>;
 };
+
 
 export type SubscriptionOnCreateUserArgs = {
   filter?: InputMaybe<ModelSubscriptionUserFilterInput>;
 };
 
+
 export type SubscriptionOnCreateUserTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionUserTokensFilterInput>;
 };
+
 
 export type SubscriptionOnCreateWatchedColoniesArgs = {
   filter?: InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>;
 };
 
+
 export type SubscriptionOnDeleteColonyArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
 };
+
 
 export type SubscriptionOnDeleteColonyExtensionArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyExtensionFilterInput>;
 };
 
+
 export type SubscriptionOnDeleteColonyFundsClaimArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>;
 };
+
 
 export type SubscriptionOnDeleteColonyTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyTokensFilterInput>;
 };
 
+
 export type SubscriptionOnDeleteContractEventArgs = {
   filter?: InputMaybe<ModelSubscriptionContractEventFilterInput>;
 };
+
 
 export type SubscriptionOnDeleteCurrentVersionArgs = {
   filter?: InputMaybe<ModelSubscriptionCurrentVersionFilterInput>;
 };
 
+
 export type SubscriptionOnDeleteDomainArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainFilterInput>;
 };
+
 
 export type SubscriptionOnDeleteProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
 };
 
+
 export type SubscriptionOnDeleteTokenArgs = {
   filter?: InputMaybe<ModelSubscriptionTokenFilterInput>;
 };
+
 
 export type SubscriptionOnDeleteUserArgs = {
   filter?: InputMaybe<ModelSubscriptionUserFilterInput>;
 };
 
+
 export type SubscriptionOnDeleteUserTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionUserTokensFilterInput>;
 };
+
 
 export type SubscriptionOnDeleteWatchedColoniesArgs = {
   filter?: InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>;
 };
 
+
 export type SubscriptionOnUpdateColonyArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
 };
+
 
 export type SubscriptionOnUpdateColonyExtensionArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyExtensionFilterInput>;
 };
 
+
 export type SubscriptionOnUpdateColonyFundsClaimArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>;
 };
+
 
 export type SubscriptionOnUpdateColonyTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyTokensFilterInput>;
 };
 
+
 export type SubscriptionOnUpdateContractEventArgs = {
   filter?: InputMaybe<ModelSubscriptionContractEventFilterInput>;
 };
+
 
 export type SubscriptionOnUpdateCurrentVersionArgs = {
   filter?: InputMaybe<ModelSubscriptionCurrentVersionFilterInput>;
 };
 
+
 export type SubscriptionOnUpdateDomainArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainFilterInput>;
 };
+
 
 export type SubscriptionOnUpdateProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
 };
 
+
 export type SubscriptionOnUpdateTokenArgs = {
   filter?: InputMaybe<ModelSubscriptionTokenFilterInput>;
 };
+
 
 export type SubscriptionOnUpdateUserArgs = {
   filter?: InputMaybe<ModelSubscriptionUserFilterInput>;
 };
 
+
 export type SubscriptionOnUpdateUserTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionUserTokensFilterInput>;
 };
+
 
 export type SubscriptionOnUpdateWatchedColoniesArgs = {
   filter?: InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>;
@@ -1926,12 +2021,14 @@ export type Token = {
   users?: Maybe<ModelUserTokensConnection>;
 };
 
+
 export type TokenColoniesArgs = {
   filter?: InputMaybe<ModelColonyTokensFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
+
 
 export type TokenUsersArgs = {
   filter?: InputMaybe<ModelUserTokensFilterInput>;
@@ -1956,7 +2053,7 @@ export type TokenInput = {
 export enum TokenType {
   ChainNative = 'CHAIN_NATIVE',
   Colony = 'COLONY',
-  Erc20 = 'ERC20',
+  Erc20 = 'ERC20'
 }
 
 export type UpdateColonyExtensionInput = {
@@ -2096,12 +2193,14 @@ export type User = {
   watchlist?: Maybe<ModelWatchedColoniesConnection>;
 };
 
+
 export type UserTokensArgs = {
   filter?: InputMaybe<ModelUserTokensFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
+
 
 export type UserWatchlistArgs = {
   filter?: InputMaybe<ModelWatchedColoniesFilterInput>;
@@ -2138,6 +2237,7 @@ export type WatchedColonies = {
   userID: Scalars['ID'];
 };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export type ColonyFragment = { __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, balances?: { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain: { __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null }, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null } | null, fundsClaims?: { __typename?: 'ModelColonyFundsClaimConnection', items: Array<{ __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: any, amount: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, chainFundsClaim?: { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: any, amount: string } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null };
 =======
@@ -2232,64 +2332,17 @@ export type ColonyFragment = {
   } | null;
 };
 >>>>>>> 20d6a993 (Add: Actions list)
+=======
+export type ColonyFragment = { __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null };
+>>>>>>> 0b115679 (Light refactor: User Avatar component)
 
-export type WatcherFragment = {
-  __typename?: 'WatchedColonies';
-  user: {
-    __typename?: 'User';
-    name: string;
-    walletAddress: string;
-    profile?: {
-      __typename?: 'Profile';
-      avatar?: string | null;
-      bio?: string | null;
-      displayName?: string | null;
-      email?: any | null;
-      location?: string | null;
-      website?: any | null;
-      thumbnail?: string | null;
-    } | null;
-  };
-};
+export type WatcherFragment = { __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } };
 
-export type WatchedColonyFragment = {
-  __typename?: 'Colony';
-  name: string;
-  colonyAddress: string;
-  profile?: {
-    __typename?: 'Profile';
-    avatar?: string | null;
-    displayName?: string | null;
-    thumbnail?: string | null;
-  } | null;
-  meta?: {
-    __typename?: 'Metadata';
-    chainId?: number | null;
-    network?: Network | null;
-  } | null;
-};
+export type WatchedColonyFragment = { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null };
 
-export type WatchListItemFragment = {
-  __typename?: 'WatchedColonies';
-  createdAt: any;
-  colony: {
-    __typename?: 'Colony';
-    name: string;
-    colonyAddress: string;
-    profile?: {
-      __typename?: 'Profile';
-      avatar?: string | null;
-      displayName?: string | null;
-      thumbnail?: string | null;
-    } | null;
-    meta?: {
-      __typename?: 'Metadata';
-      chainId?: number | null;
-      network?: Network | null;
-    } | null;
-  };
-};
+export type WatchListItemFragment = { __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export type ColonyBalanceFragment = { __typename?: 'ColonyBalance', id: string, balance: string, domain: { __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null }, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } };
 
@@ -2314,230 +2367,71 @@ export type ExtensionFragment = {
   currentVersion: number;
 };
 >>>>>>> 20d6a993 (Add: Actions list)
+=======
+export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number };
+>>>>>>> 0b115679 (Light refactor: User Avatar component)
 
-export type TokenFragment = {
-  __typename?: 'Token';
-  decimals: number;
-  name: string;
-  symbol: string;
-  type?: TokenType | null;
-  avatar?: string | null;
-  thumbnail?: string | null;
-  tokenAddress: string;
-};
+export type DomainFragment = { __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null };
 
-export type UserFragment = {
-  __typename?: 'User';
-  name: string;
-  walletAddress: string;
-  profile?: {
-    __typename?: 'Profile';
-    avatar?: string | null;
-    bio?: string | null;
-    displayName?: string | null;
-    email?: any | null;
-    location?: string | null;
-    thumbnail?: string | null;
-    website?: any | null;
-  } | null;
-  watchlist?: {
-    __typename?: 'ModelWatchedColoniesConnection';
-    items: Array<{
-      __typename?: 'WatchedColonies';
-      createdAt: any;
-      colony: {
-        __typename?: 'Colony';
-        name: string;
-        colonyAddress: string;
-        profile?: {
-          __typename?: 'Profile';
-          avatar?: string | null;
-          displayName?: string | null;
-          thumbnail?: string | null;
-        } | null;
-        meta?: {
-          __typename?: 'Metadata';
-          chainId?: number | null;
-          network?: Network | null;
-        } | null;
-      };
-    } | null>;
-  } | null;
-};
+export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
+
+export type UserFragment = { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null };
 
 export type CreateUniqueColonyMutationVariables = Exact<{
   input: CreateUniqueColonyInput;
 }>;
 
-export type CreateUniqueColonyMutation = {
-  __typename?: 'Mutation';
-  createUniqueColony?: { __typename?: 'Colony'; id: string } | null;
-};
+
+export type CreateUniqueColonyMutation = { __typename?: 'Mutation', createUniqueColony?: { __typename?: 'Colony', id: string } | null };
 
 export type CreateWatchedColoniesMutationVariables = Exact<{
   input: CreateWatchedColoniesInput;
 }>;
 
-export type CreateWatchedColoniesMutation = {
-  __typename?: 'Mutation';
-  createWatchedColonies?: { __typename?: 'WatchedColonies'; id: string } | null;
-};
+
+export type CreateWatchedColoniesMutation = { __typename?: 'Mutation', createWatchedColonies?: { __typename?: 'WatchedColonies', id: string } | null };
 
 export type CreateUniqueDomainMutationVariables = Exact<{
   input: CreateUniqueDomainInput;
 }>;
 
-export type CreateUniqueDomainMutation = {
-  __typename?: 'Mutation';
-  createUniqueDomain?: { __typename?: 'Domain'; id: string } | null;
-};
+
+export type CreateUniqueDomainMutation = { __typename?: 'Mutation', createUniqueDomain?: { __typename?: 'Domain', id: string } | null };
 
 export type CreateColonyTokensMutationVariables = Exact<{
   input: CreateColonyTokensInput;
 }>;
 
-export type CreateColonyTokensMutation = {
-  __typename?: 'Mutation';
-  createColonyTokens?: { __typename?: 'ColonyTokens'; id: string } | null;
-};
+
+export type CreateColonyTokensMutation = { __typename?: 'Mutation', createColonyTokens?: { __typename?: 'ColonyTokens', id: string } | null };
 
 export type CreateUserTokensMutationVariables = Exact<{
   input: CreateUserTokensInput;
 }>;
 
-export type CreateUserTokensMutation = {
-  __typename?: 'Mutation';
-  createUserTokens?: { __typename?: 'UserTokens'; id: string } | null;
-};
+
+export type CreateUserTokensMutation = { __typename?: 'Mutation', createUserTokens?: { __typename?: 'UserTokens', id: string } | null };
 
 export type CreateUniqueUserMutationVariables = Exact<{
   input: CreateUniqueUserInput;
 }>;
 
-export type CreateUniqueUserMutation = {
-  __typename?: 'Mutation';
-  createUniqueUser?: { __typename?: 'User'; id: string } | null;
-};
+
+export type CreateUniqueUserMutation = { __typename?: 'Mutation', createUniqueUser?: { __typename?: 'User', id: string } | null };
 
 export type UpdateUserProfileMutationVariables = Exact<{
   input: UpdateProfileInput;
 }>;
 
-export type UpdateUserProfileMutation = {
-  __typename?: 'Mutation';
-  updateProfile?: {
-    __typename?: 'Profile';
-    id: string;
-    avatar?: string | null;
-    bio?: string | null;
-    displayName?: string | null;
-    location?: string | null;
-    website?: any | null;
-    email?: any | null;
-  } | null;
-};
+
+export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, avatar?: string | null, bio?: string | null, displayName?: string | null, location?: string | null, website?: any | null, email?: any | null } | null };
 
 export type GetFullColonyByNameQueryVariables = Exact<{
   name: Scalars['String'];
 }>;
 
-export type GetFullColonyByNameQuery = {
-  __typename?: 'Query';
-  getColonyByName?: {
-    __typename?: 'ModelColonyConnection';
-    items: Array<{
-      __typename?: 'Colony';
-      name: string;
-      version: number;
-      colonyAddress: string;
-      nativeToken: {
-        __typename?: 'Token';
-        decimals: number;
-        name: string;
-        symbol: string;
-        type?: TokenType | null;
-        avatar?: string | null;
-        thumbnail?: string | null;
-        tokenAddress: string;
-      };
-      profile?: {
-        __typename?: 'Profile';
-        avatar?: string | null;
-        bio?: string | null;
-        displayName?: string | null;
-        email?: any | null;
-        location?: string | null;
-        thumbnail?: string | null;
-        website?: any | null;
-      } | null;
-      status?: {
-        __typename?: 'ColonyStatus';
-        recovery?: boolean | null;
-        nativeToken?: {
-          __typename?: 'NativeTokenStatus';
-          mintable?: boolean | null;
-          unlockable?: boolean | null;
-          unlocked?: boolean | null;
-        } | null;
-      } | null;
-      meta?: {
-        __typename?: 'Metadata';
-        chainId?: number | null;
-        network?: Network | null;
-      } | null;
-      tokens?: {
-        __typename?: 'ModelColonyTokensConnection';
-        items: Array<{
-          __typename?: 'ColonyTokens';
-          token: {
-            __typename?: 'Token';
-            decimals: number;
-            name: string;
-            symbol: string;
-            type?: TokenType | null;
-            avatar?: string | null;
-            thumbnail?: string | null;
-            tokenAddress: string;
-          };
-        } | null>;
-      } | null;
-      domains?: {
-        __typename?: 'ModelDomainConnection';
-        items: Array<{
-          __typename?: 'Domain';
-          color?: DomainColor | null;
-          description?: string | null;
-          id: string;
-          name?: string | null;
-          nativeId: number;
-          parentId?: string | null;
-        } | null>;
-      } | null;
-      watchers?: {
-        __typename?: 'ModelWatchedColoniesConnection';
-        items: Array<{
-          __typename?: 'WatchedColonies';
-          user: {
-            __typename?: 'User';
-            name: string;
-            walletAddress: string;
-            profile?: {
-              __typename?: 'Profile';
-              avatar?: string | null;
-              bio?: string | null;
-              displayName?: string | null;
-              email?: any | null;
-              location?: string | null;
-              website?: any | null;
-              thumbnail?: string | null;
-            } | null;
-          };
-        } | null>;
-      } | null;
-    } | null>;
-  } | null;
-};
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export type GetFullColonyByNameQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, balances?: { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain: { __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null }, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null } | null, fundsClaims?: { __typename?: 'ModelColonyFundsClaimConnection', items: Array<{ __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: any, amount: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, chainFundsClaim?: { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: any, amount: string } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
 
@@ -2645,322 +2539,104 @@ export type GetMetacolonyQuery = {
   } | null;
 };
 >>>>>>> 20d6a993 (Add: Actions list)
+=======
+export type GetFullColonyByNameQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
+
+export type GetMetacolonyQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMetacolonyQuery = { __typename?: 'Query', getColonyByType?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
+>>>>>>> 0b115679 (Light refactor: User Avatar component)
 
 export type GetColonyExtensionsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
 }>;
 
-export type GetColonyExtensionsQuery = {
-  __typename?: 'Query';
-  getColony?: {
-    __typename?: 'Colony';
-    extensions?: {
-      __typename?: 'ModelColonyExtensionConnection';
-      items: Array<{
-        __typename?: 'ColonyExtension';
-        hash: string;
-        installedBy: string;
-        installedAt: any;
-        isDeprecated: boolean;
-        isDeleted: boolean;
-        isInitialized: boolean;
-        address: string;
-        colonyAddress: string;
-        currentVersion: number;
-      } | null>;
-    } | null;
-  } | null;
-};
+
+export type GetColonyExtensionsQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number } | null> } | null } | null };
 
 export type GetColonyExtensionQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
   extensionHash: Scalars['String'];
 }>;
 
-export type GetColonyExtensionQuery = {
-  __typename?: 'Query';
-  getExtensionByColonyAndHash?: {
-    __typename?: 'ModelColonyExtensionConnection';
-    items: Array<{
-      __typename?: 'ColonyExtension';
-      hash: string;
-      installedBy: string;
-      installedAt: any;
-      isDeprecated: boolean;
-      isDeleted: boolean;
-      isInitialized: boolean;
-      address: string;
-      colonyAddress: string;
-      currentVersion: number;
-    } | null>;
-  } | null;
-};
+
+export type GetColonyExtensionQuery = { __typename?: 'Query', getExtensionByColonyAndHash?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number } | null> } | null };
 
 export type GetProfileByEmailQueryVariables = Exact<{
   email: Scalars['AWSEmail'];
 }>;
 
-export type GetProfileByEmailQuery = {
-  __typename?: 'Query';
-  getProfileByEmail?: {
-    __typename?: 'ModelProfileConnection';
-    items: Array<{ __typename?: 'Profile'; id: string } | null>;
-  } | null;
-};
+
+export type GetProfileByEmailQuery = { __typename?: 'Query', getProfileByEmail?: { __typename?: 'ModelProfileConnection', items: Array<{ __typename?: 'Profile', id: string } | null> } | null };
 
 export type GetTokenByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;
 
-export type GetTokenByAddressQuery = {
-  __typename?: 'Query';
-  getTokenByAddress?: {
-    __typename?: 'ModelTokenConnection';
-    items: Array<{
-      __typename?: 'Token';
-      decimals: number;
-      name: string;
-      symbol: string;
-      type?: TokenType | null;
-      avatar?: string | null;
-      thumbnail?: string | null;
-      tokenAddress: string;
-    } | null>;
-  } | null;
-};
+
+export type GetTokenByAddressQuery = { __typename?: 'Query', getTokenByAddress?: { __typename?: 'ModelTokenConnection', items: Array<{ __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null> } | null };
 
 export type GetTokenFromEverywhereQueryVariables = Exact<{
   input: TokenFromEverywhereArguments;
 }>;
 
-export type GetTokenFromEverywhereQuery = {
-  __typename?: 'Query';
-  getTokenFromEverywhere?: {
-    __typename?: 'TokenFromEverywhereReturn';
-    items?: Array<{
-      __typename?: 'Token';
-      decimals: number;
-      name: string;
-      symbol: string;
-      type?: TokenType | null;
-      avatar?: string | null;
-      thumbnail?: string | null;
-      tokenAddress: string;
-    } | null> | null;
-  } | null;
-};
+
+export type GetTokenFromEverywhereQuery = { __typename?: 'Query', getTokenFromEverywhere?: { __typename?: 'TokenFromEverywhereReturn', items?: Array<{ __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null> | null } | null };
 
 export type GetCurrentUserQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;
 
-export type GetCurrentUserQuery = {
-  __typename?: 'Query';
-  getUserByAddress?: {
-    __typename?: 'ModelUserConnection';
-    items: Array<{
-      __typename?: 'User';
-      name: string;
-      walletAddress: string;
-      profile?: {
-        __typename?: 'Profile';
-        avatar?: string | null;
-        bio?: string | null;
-        displayName?: string | null;
-        email?: any | null;
-        location?: string | null;
-        thumbnail?: string | null;
-        website?: any | null;
-      } | null;
-      watchlist?: {
-        __typename?: 'ModelWatchedColoniesConnection';
-        items: Array<{
-          __typename?: 'WatchedColonies';
-          createdAt: any;
-          colony: {
-            __typename?: 'Colony';
-            name: string;
-            colonyAddress: string;
-            profile?: {
-              __typename?: 'Profile';
-              avatar?: string | null;
-              displayName?: string | null;
-              thumbnail?: string | null;
-            } | null;
-            meta?: {
-              __typename?: 'Metadata';
-              chainId?: number | null;
-              network?: Network | null;
-            } | null;
-          };
-        } | null>;
-      } | null;
-    } | null>;
-  } | null;
-};
+
+export type GetCurrentUserQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null };
 
 export type GetUserReputationQueryVariables = Exact<{
   input: GetUserReputationInput;
 }>;
 
-export type GetUserReputationQuery = {
-  __typename?: 'Query';
-  getUserReputation?: string | null;
-};
+
+export type GetUserReputationQuery = { __typename?: 'Query', getUserReputation?: string | null };
 
 export type GetReputationForTopDomainsQueryVariables = Exact<{
   input: GetReputationForTopDomainsInput;
 }>;
 
-export type GetReputationForTopDomainsQuery = {
-  __typename?: 'Query';
-  getReputationForTopDomains?: {
-    __typename?: 'GetReputationForTopDomainsReturn';
-    items?: Array<{
-      __typename?: 'UserDomainReputation';
-      domainId: number;
-      reputationPercentage: string;
-    }> | null;
-  } | null;
-};
+
+export type GetReputationForTopDomainsQuery = { __typename?: 'Query', getReputationForTopDomains?: { __typename?: 'GetReputationForTopDomainsReturn', items?: Array<{ __typename?: 'UserDomainReputation', domainId: number, reputationPercentage: string }> | null } | null };
 
 export type GetUserByNameQueryVariables = Exact<{
   name: Scalars['String'];
 }>;
 
-export type GetUserByNameQuery = {
-  __typename?: 'Query';
-  getUserByName?: {
-    __typename?: 'ModelUserConnection';
-    items: Array<{ __typename?: 'User'; id: string } | null>;
-  } | null;
-};
+
+export type GetUserByNameQuery = { __typename?: 'Query', getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', id: string } | null> } | null };
 
 export type CombinedUserQueryVariables = Exact<{
   name: Scalars['String'];
   address: Scalars['ID'];
 }>;
 
-export type CombinedUserQuery = {
-  __typename?: 'Query';
-  getUserByAddress?: {
-    __typename?: 'ModelUserConnection';
-    items: Array<{
-      __typename?: 'User';
-      name: string;
-      walletAddress: string;
-      profile?: {
-        __typename?: 'Profile';
-        avatar?: string | null;
-        bio?: string | null;
-        displayName?: string | null;
-        email?: any | null;
-        location?: string | null;
-        thumbnail?: string | null;
-        website?: any | null;
-      } | null;
-      watchlist?: {
-        __typename?: 'ModelWatchedColoniesConnection';
-        items: Array<{
-          __typename?: 'WatchedColonies';
-          createdAt: any;
-          colony: {
-            __typename?: 'Colony';
-            name: string;
-            colonyAddress: string;
-            profile?: {
-              __typename?: 'Profile';
-              avatar?: string | null;
-              displayName?: string | null;
-              thumbnail?: string | null;
-            } | null;
-            meta?: {
-              __typename?: 'Metadata';
-              chainId?: number | null;
-              network?: Network | null;
-            } | null;
-          };
-        } | null>;
-      } | null;
-    } | null>;
-  } | null;
-  getUserByName?: {
-    __typename?: 'ModelUserConnection';
-    items: Array<{
-      __typename?: 'User';
-      name: string;
-      walletAddress: string;
-      profile?: {
-        __typename?: 'Profile';
-        avatar?: string | null;
-        bio?: string | null;
-        displayName?: string | null;
-        email?: any | null;
-        location?: string | null;
-        thumbnail?: string | null;
-        website?: any | null;
-      } | null;
-      watchlist?: {
-        __typename?: 'ModelWatchedColoniesConnection';
-        items: Array<{
-          __typename?: 'WatchedColonies';
-          createdAt: any;
-          colony: {
-            __typename?: 'Colony';
-            name: string;
-            colonyAddress: string;
-            profile?: {
-              __typename?: 'Profile';
-              avatar?: string | null;
-              displayName?: string | null;
-              thumbnail?: string | null;
-            } | null;
-            meta?: {
-              __typename?: 'Metadata';
-              chainId?: number | null;
-              network?: Network | null;
-            } | null;
-          };
-        } | null>;
-      } | null;
-    } | null>;
-  } | null;
-};
 
-export type GetCurrentExtensionsVersionsQueryVariables = Exact<{
-  [key: string]: never;
-}>;
+export type CombinedUserQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null, getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null };
 
-export type GetCurrentExtensionsVersionsQuery = {
-  __typename?: 'Query';
-  listCurrentVersions?: {
-    __typename?: 'ModelCurrentVersionConnection';
-    items: Array<{
-      __typename?: 'CurrentVersion';
-      version: number;
-      extensionHash: string;
-    } | null>;
-  } | null;
-};
+export type GetCurrentExtensionsVersionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCurrentExtensionsVersionsQuery = { __typename?: 'Query', listCurrentVersions?: { __typename?: 'ModelCurrentVersionConnection', items: Array<{ __typename?: 'CurrentVersion', version: number, extensionHash: string } | null> } | null };
 
 export type GetCurrentExtensionVersionQueryVariables = Exact<{
   extensionHash: Scalars['String'];
 }>;
 
-export type GetCurrentExtensionVersionQuery = {
-  __typename?: 'Query';
-  getCurrentVersionByKey?: {
-    __typename?: 'ModelCurrentVersionConnection';
-    items: Array<{
-      __typename?: 'CurrentVersion';
-      version: number;
-      extensionHash: string;
-    } | null>;
-  } | null;
-};
+
+export type GetCurrentExtensionVersionQuery = { __typename?: 'Query', getCurrentVersionByKey?: { __typename?: 'ModelCurrentVersionConnection', items: Array<{ __typename?: 'CurrentVersion', version: number, extensionHash: string } | null> } | null };
 
 export const TokenFragmentDoc = gql`
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 0b115679 (Light refactor: User Avatar component)
     fragment Token on Token {
   decimals
   tokenAddress: id
@@ -2981,6 +2657,7 @@ export const DomainFragmentDoc = gql`
   parentId: domainParentId
 }
     `;
+<<<<<<< HEAD
 export const ColonyBalanceFragmentDoc = gql`
     fragment ColonyBalance on ColonyBalance {
   id
@@ -3209,30 +2886,142 @@ export const UserFragmentDoc = gql`
       thumbnail
       website
     }
+=======
+export const WatcherFragmentDoc = gql`
+    fragment Watcher on WatchedColonies {
+  user {
+>>>>>>> 0b115679 (Light refactor: User Avatar component)
     walletAddress: id
     name
-    watchlist {
-      items {
-        colony {
-          ...WatchedColony
-        }
-        createdAt
+    profile {
+      avatar
+      bio
+      displayName
+      email
+      location
+      website
+      thumbnail
+    }
+  }
+}
+    `;
+export const ColonyFragmentDoc = gql`
+    fragment Colony on Colony {
+  colonyAddress: id
+  name
+  nativeToken {
+    ...Token
+  }
+  profile {
+    avatar
+    bio
+    displayName
+    email
+    location
+    thumbnail
+    website
+  }
+  status {
+    recovery
+    nativeToken {
+      mintable
+      unlockable
+      unlocked
+    }
+  }
+  meta {
+    chainId
+    network
+  }
+  tokens {
+    items {
+      token {
+        ...Token
       }
     }
   }
-  ${WatchedColonyFragmentDoc}
-`;
-export const CreateUniqueColonyDocument = gql`
-  mutation CreateUniqueColony($input: CreateUniqueColonyInput!) {
-    createUniqueColony(input: $input) {
-      id
+  domains {
+    items {
+      ...Domain
     }
   }
-`;
-export type CreateUniqueColonyMutationFn = Apollo.MutationFunction<
-  CreateUniqueColonyMutation,
-  CreateUniqueColonyMutationVariables
->;
+  watchers {
+    items {
+      ...Watcher
+    }
+  }
+  version
+}
+    ${TokenFragmentDoc}
+${DomainFragmentDoc}
+${WatcherFragmentDoc}`;
+export const WatchedColonyFragmentDoc = gql`
+    fragment WatchedColony on Colony {
+  colonyAddress: id
+  name
+  profile {
+    avatar
+    displayName
+    thumbnail
+  }
+  meta {
+    chainId
+    network
+  }
+}
+    `;
+export const WatchListItemFragmentDoc = gql`
+    fragment WatchListItem on WatchedColonies {
+  colony {
+    ...WatchedColony
+  }
+  createdAt
+}
+    ${WatchedColonyFragmentDoc}`;
+export const ExtensionFragmentDoc = gql`
+    fragment Extension on ColonyExtension {
+  address: id
+  colonyAddress: colonyId
+  hash
+  currentVersion: version
+  installedBy
+  installedAt
+  isDeprecated
+  isDeleted
+  isInitialized
+}
+    `;
+export const UserFragmentDoc = gql`
+    fragment User on User {
+  profile {
+    avatar
+    bio
+    displayName
+    email
+    location
+    thumbnail
+    website
+  }
+  walletAddress: id
+  name
+  watchlist {
+    items {
+      colony {
+        ...WatchedColony
+      }
+      createdAt
+    }
+  }
+}
+    ${WatchedColonyFragmentDoc}`;
+export const CreateUniqueColonyDocument = gql`
+    mutation CreateUniqueColony($input: CreateUniqueColonyInput!) {
+  createUniqueColony(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateUniqueColonyMutationFn = Apollo.MutationFunction<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>;
 
 /**
  * __useCreateUniqueColonyMutation__
@@ -3251,38 +3040,21 @@ export type CreateUniqueColonyMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useCreateUniqueColonyMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateUniqueColonyMutation,
-    CreateUniqueColonyMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    CreateUniqueColonyMutation,
-    CreateUniqueColonyMutationVariables
-  >(CreateUniqueColonyDocument, options);
-}
-export type CreateUniqueColonyMutationHookResult = ReturnType<
-  typeof useCreateUniqueColonyMutation
->;
-export type CreateUniqueColonyMutationResult =
-  Apollo.MutationResult<CreateUniqueColonyMutation>;
-export type CreateUniqueColonyMutationOptions = Apollo.BaseMutationOptions<
-  CreateUniqueColonyMutation,
-  CreateUniqueColonyMutationVariables
->;
+export function useCreateUniqueColonyMutation(baseOptions?: Apollo.MutationHookOptions<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>(CreateUniqueColonyDocument, options);
+      }
+export type CreateUniqueColonyMutationHookResult = ReturnType<typeof useCreateUniqueColonyMutation>;
+export type CreateUniqueColonyMutationResult = Apollo.MutationResult<CreateUniqueColonyMutation>;
+export type CreateUniqueColonyMutationOptions = Apollo.BaseMutationOptions<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>;
 export const CreateWatchedColoniesDocument = gql`
-  mutation CreateWatchedColonies($input: CreateWatchedColoniesInput!) {
-    createWatchedColonies(input: $input) {
-      id
-    }
+    mutation CreateWatchedColonies($input: CreateWatchedColoniesInput!) {
+  createWatchedColonies(input: $input) {
+    id
   }
-`;
-export type CreateWatchedColoniesMutationFn = Apollo.MutationFunction<
-  CreateWatchedColoniesMutation,
-  CreateWatchedColoniesMutationVariables
->;
+}
+    `;
+export type CreateWatchedColoniesMutationFn = Apollo.MutationFunction<CreateWatchedColoniesMutation, CreateWatchedColoniesMutationVariables>;
 
 /**
  * __useCreateWatchedColoniesMutation__
@@ -3301,38 +3073,21 @@ export type CreateWatchedColoniesMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useCreateWatchedColoniesMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateWatchedColoniesMutation,
-    CreateWatchedColoniesMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    CreateWatchedColoniesMutation,
-    CreateWatchedColoniesMutationVariables
-  >(CreateWatchedColoniesDocument, options);
-}
-export type CreateWatchedColoniesMutationHookResult = ReturnType<
-  typeof useCreateWatchedColoniesMutation
->;
-export type CreateWatchedColoniesMutationResult =
-  Apollo.MutationResult<CreateWatchedColoniesMutation>;
-export type CreateWatchedColoniesMutationOptions = Apollo.BaseMutationOptions<
-  CreateWatchedColoniesMutation,
-  CreateWatchedColoniesMutationVariables
->;
+export function useCreateWatchedColoniesMutation(baseOptions?: Apollo.MutationHookOptions<CreateWatchedColoniesMutation, CreateWatchedColoniesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateWatchedColoniesMutation, CreateWatchedColoniesMutationVariables>(CreateWatchedColoniesDocument, options);
+      }
+export type CreateWatchedColoniesMutationHookResult = ReturnType<typeof useCreateWatchedColoniesMutation>;
+export type CreateWatchedColoniesMutationResult = Apollo.MutationResult<CreateWatchedColoniesMutation>;
+export type CreateWatchedColoniesMutationOptions = Apollo.BaseMutationOptions<CreateWatchedColoniesMutation, CreateWatchedColoniesMutationVariables>;
 export const CreateUniqueDomainDocument = gql`
-  mutation CreateUniqueDomain($input: CreateUniqueDomainInput!) {
-    createUniqueDomain(input: $input) {
-      id
-    }
+    mutation CreateUniqueDomain($input: CreateUniqueDomainInput!) {
+  createUniqueDomain(input: $input) {
+    id
   }
-`;
-export type CreateUniqueDomainMutationFn = Apollo.MutationFunction<
-  CreateUniqueDomainMutation,
-  CreateUniqueDomainMutationVariables
->;
+}
+    `;
+export type CreateUniqueDomainMutationFn = Apollo.MutationFunction<CreateUniqueDomainMutation, CreateUniqueDomainMutationVariables>;
 
 /**
  * __useCreateUniqueDomainMutation__
@@ -3351,38 +3106,21 @@ export type CreateUniqueDomainMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useCreateUniqueDomainMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateUniqueDomainMutation,
-    CreateUniqueDomainMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    CreateUniqueDomainMutation,
-    CreateUniqueDomainMutationVariables
-  >(CreateUniqueDomainDocument, options);
-}
-export type CreateUniqueDomainMutationHookResult = ReturnType<
-  typeof useCreateUniqueDomainMutation
->;
-export type CreateUniqueDomainMutationResult =
-  Apollo.MutationResult<CreateUniqueDomainMutation>;
-export type CreateUniqueDomainMutationOptions = Apollo.BaseMutationOptions<
-  CreateUniqueDomainMutation,
-  CreateUniqueDomainMutationVariables
->;
+export function useCreateUniqueDomainMutation(baseOptions?: Apollo.MutationHookOptions<CreateUniqueDomainMutation, CreateUniqueDomainMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUniqueDomainMutation, CreateUniqueDomainMutationVariables>(CreateUniqueDomainDocument, options);
+      }
+export type CreateUniqueDomainMutationHookResult = ReturnType<typeof useCreateUniqueDomainMutation>;
+export type CreateUniqueDomainMutationResult = Apollo.MutationResult<CreateUniqueDomainMutation>;
+export type CreateUniqueDomainMutationOptions = Apollo.BaseMutationOptions<CreateUniqueDomainMutation, CreateUniqueDomainMutationVariables>;
 export const CreateColonyTokensDocument = gql`
-  mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
-    createColonyTokens(input: $input) {
-      id
-    }
+    mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
+  createColonyTokens(input: $input) {
+    id
   }
-`;
-export type CreateColonyTokensMutationFn = Apollo.MutationFunction<
-  CreateColonyTokensMutation,
-  CreateColonyTokensMutationVariables
->;
+}
+    `;
+export type CreateColonyTokensMutationFn = Apollo.MutationFunction<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>;
 
 /**
  * __useCreateColonyTokensMutation__
@@ -3401,38 +3139,21 @@ export type CreateColonyTokensMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useCreateColonyTokensMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateColonyTokensMutation,
-    CreateColonyTokensMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    CreateColonyTokensMutation,
-    CreateColonyTokensMutationVariables
-  >(CreateColonyTokensDocument, options);
-}
-export type CreateColonyTokensMutationHookResult = ReturnType<
-  typeof useCreateColonyTokensMutation
->;
-export type CreateColonyTokensMutationResult =
-  Apollo.MutationResult<CreateColonyTokensMutation>;
-export type CreateColonyTokensMutationOptions = Apollo.BaseMutationOptions<
-  CreateColonyTokensMutation,
-  CreateColonyTokensMutationVariables
->;
+export function useCreateColonyTokensMutation(baseOptions?: Apollo.MutationHookOptions<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>(CreateColonyTokensDocument, options);
+      }
+export type CreateColonyTokensMutationHookResult = ReturnType<typeof useCreateColonyTokensMutation>;
+export type CreateColonyTokensMutationResult = Apollo.MutationResult<CreateColonyTokensMutation>;
+export type CreateColonyTokensMutationOptions = Apollo.BaseMutationOptions<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>;
 export const CreateUserTokensDocument = gql`
-  mutation CreateUserTokens($input: CreateUserTokensInput!) {
-    createUserTokens(input: $input) {
-      id
-    }
+    mutation CreateUserTokens($input: CreateUserTokensInput!) {
+  createUserTokens(input: $input) {
+    id
   }
-`;
-export type CreateUserTokensMutationFn = Apollo.MutationFunction<
-  CreateUserTokensMutation,
-  CreateUserTokensMutationVariables
->;
+}
+    `;
+export type CreateUserTokensMutationFn = Apollo.MutationFunction<CreateUserTokensMutation, CreateUserTokensMutationVariables>;
 
 /**
  * __useCreateUserTokensMutation__
@@ -3451,38 +3172,21 @@ export type CreateUserTokensMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useCreateUserTokensMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateUserTokensMutation,
-    CreateUserTokensMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    CreateUserTokensMutation,
-    CreateUserTokensMutationVariables
-  >(CreateUserTokensDocument, options);
-}
-export type CreateUserTokensMutationHookResult = ReturnType<
-  typeof useCreateUserTokensMutation
->;
-export type CreateUserTokensMutationResult =
-  Apollo.MutationResult<CreateUserTokensMutation>;
-export type CreateUserTokensMutationOptions = Apollo.BaseMutationOptions<
-  CreateUserTokensMutation,
-  CreateUserTokensMutationVariables
->;
+export function useCreateUserTokensMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserTokensMutation, CreateUserTokensMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUserTokensMutation, CreateUserTokensMutationVariables>(CreateUserTokensDocument, options);
+      }
+export type CreateUserTokensMutationHookResult = ReturnType<typeof useCreateUserTokensMutation>;
+export type CreateUserTokensMutationResult = Apollo.MutationResult<CreateUserTokensMutation>;
+export type CreateUserTokensMutationOptions = Apollo.BaseMutationOptions<CreateUserTokensMutation, CreateUserTokensMutationVariables>;
 export const CreateUniqueUserDocument = gql`
-  mutation CreateUniqueUser($input: CreateUniqueUserInput!) {
-    createUniqueUser(input: $input) {
-      id
-    }
+    mutation CreateUniqueUser($input: CreateUniqueUserInput!) {
+  createUniqueUser(input: $input) {
+    id
   }
-`;
-export type CreateUniqueUserMutationFn = Apollo.MutationFunction<
-  CreateUniqueUserMutation,
-  CreateUniqueUserMutationVariables
->;
+}
+    `;
+export type CreateUniqueUserMutationFn = Apollo.MutationFunction<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>;
 
 /**
  * __useCreateUniqueUserMutation__
@@ -3501,44 +3205,27 @@ export type CreateUniqueUserMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useCreateUniqueUserMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateUniqueUserMutation,
-    CreateUniqueUserMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    CreateUniqueUserMutation,
-    CreateUniqueUserMutationVariables
-  >(CreateUniqueUserDocument, options);
-}
-export type CreateUniqueUserMutationHookResult = ReturnType<
-  typeof useCreateUniqueUserMutation
->;
-export type CreateUniqueUserMutationResult =
-  Apollo.MutationResult<CreateUniqueUserMutation>;
-export type CreateUniqueUserMutationOptions = Apollo.BaseMutationOptions<
-  CreateUniqueUserMutation,
-  CreateUniqueUserMutationVariables
->;
+export function useCreateUniqueUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>(CreateUniqueUserDocument, options);
+      }
+export type CreateUniqueUserMutationHookResult = ReturnType<typeof useCreateUniqueUserMutation>;
+export type CreateUniqueUserMutationResult = Apollo.MutationResult<CreateUniqueUserMutation>;
+export type CreateUniqueUserMutationOptions = Apollo.BaseMutationOptions<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>;
 export const UpdateUserProfileDocument = gql`
-  mutation UpdateUserProfile($input: UpdateProfileInput!) {
-    updateProfile(input: $input) {
-      id
-      avatar
-      bio
-      displayName
-      location
-      website
-      email
-    }
+    mutation UpdateUserProfile($input: UpdateProfileInput!) {
+  updateProfile(input: $input) {
+    id
+    avatar
+    bio
+    displayName
+    location
+    website
+    email
   }
-`;
-export type UpdateUserProfileMutationFn = Apollo.MutationFunction<
-  UpdateUserProfileMutation,
-  UpdateUserProfileMutationVariables
->;
+}
+    `;
+export type UpdateUserProfileMutationFn = Apollo.MutationFunction<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
 
 /**
  * __useUpdateUserProfileMutation__
@@ -3557,37 +3244,22 @@ export type UpdateUserProfileMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useUpdateUserProfileMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    UpdateUserProfileMutation,
-    UpdateUserProfileMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    UpdateUserProfileMutation,
-    UpdateUserProfileMutationVariables
-  >(UpdateUserProfileDocument, options);
-}
-export type UpdateUserProfileMutationHookResult = ReturnType<
-  typeof useUpdateUserProfileMutation
->;
-export type UpdateUserProfileMutationResult =
-  Apollo.MutationResult<UpdateUserProfileMutation>;
-export type UpdateUserProfileMutationOptions = Apollo.BaseMutationOptions<
-  UpdateUserProfileMutation,
-  UpdateUserProfileMutationVariables
->;
-export const GetFullColonyByNameDocument = gql`
-  query GetFullColonyByName($name: String!) {
-    getColonyByName(name: $name) {
-      items {
-        ...Colony
+export function useUpdateUserProfileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>(UpdateUserProfileDocument, options);
       }
+export type UpdateUserProfileMutationHookResult = ReturnType<typeof useUpdateUserProfileMutation>;
+export type UpdateUserProfileMutationResult = Apollo.MutationResult<UpdateUserProfileMutation>;
+export type UpdateUserProfileMutationOptions = Apollo.BaseMutationOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
+export const GetFullColonyByNameDocument = gql`
+    query GetFullColonyByName($name: String!) {
+  getColonyByName(name: $name) {
+    items {
+      ...Colony
     }
   }
-  ${ColonyFragmentDoc}
-`;
+}
+    ${ColonyFragmentDoc}`;
 
 /**
  * __useGetFullColonyByNameQuery__
@@ -3605,50 +3277,26 @@ export const GetFullColonyByNameDocument = gql`
  *   },
  * });
  */
-export function useGetFullColonyByNameQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetFullColonyByNameQuery,
-    GetFullColonyByNameQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    GetFullColonyByNameQuery,
-    GetFullColonyByNameQueryVariables
-  >(GetFullColonyByNameDocument, options);
-}
-export function useGetFullColonyByNameLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetFullColonyByNameQuery,
-    GetFullColonyByNameQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetFullColonyByNameQuery,
-    GetFullColonyByNameQueryVariables
-  >(GetFullColonyByNameDocument, options);
-}
-export type GetFullColonyByNameQueryHookResult = ReturnType<
-  typeof useGetFullColonyByNameQuery
->;
-export type GetFullColonyByNameLazyQueryHookResult = ReturnType<
-  typeof useGetFullColonyByNameLazyQuery
->;
-export type GetFullColonyByNameQueryResult = Apollo.QueryResult<
-  GetFullColonyByNameQuery,
-  GetFullColonyByNameQueryVariables
->;
-export const GetMetacolonyDocument = gql`
-  query GetMetacolony {
-    getColonyByType(type: METACOLONY) {
-      items {
-        ...Colony
+export function useGetFullColonyByNameQuery(baseOptions: Apollo.QueryHookOptions<GetFullColonyByNameQuery, GetFullColonyByNameQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFullColonyByNameQuery, GetFullColonyByNameQueryVariables>(GetFullColonyByNameDocument, options);
       }
+export function useGetFullColonyByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFullColonyByNameQuery, GetFullColonyByNameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFullColonyByNameQuery, GetFullColonyByNameQueryVariables>(GetFullColonyByNameDocument, options);
+        }
+export type GetFullColonyByNameQueryHookResult = ReturnType<typeof useGetFullColonyByNameQuery>;
+export type GetFullColonyByNameLazyQueryHookResult = ReturnType<typeof useGetFullColonyByNameLazyQuery>;
+export type GetFullColonyByNameQueryResult = Apollo.QueryResult<GetFullColonyByNameQuery, GetFullColonyByNameQueryVariables>;
+export const GetMetacolonyDocument = gql`
+    query GetMetacolony {
+  getColonyByType(type: METACOLONY) {
+    items {
+      ...Colony
     }
   }
-  ${ColonyFragmentDoc}
-`;
+}
+    ${ColonyFragmentDoc}`;
 
 /**
  * __useGetMetacolonyQuery__
@@ -3665,52 +3313,28 @@ export const GetMetacolonyDocument = gql`
  *   },
  * });
  */
-export function useGetMetacolonyQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    GetMetacolonyQuery,
-    GetMetacolonyQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetMetacolonyQuery, GetMetacolonyQueryVariables>(
-    GetMetacolonyDocument,
-    options,
-  );
-}
-export function useGetMetacolonyLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetMetacolonyQuery,
-    GetMetacolonyQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetMetacolonyQuery, GetMetacolonyQueryVariables>(
-    GetMetacolonyDocument,
-    options,
-  );
-}
-export type GetMetacolonyQueryHookResult = ReturnType<
-  typeof useGetMetacolonyQuery
->;
-export type GetMetacolonyLazyQueryHookResult = ReturnType<
-  typeof useGetMetacolonyLazyQuery
->;
-export type GetMetacolonyQueryResult = Apollo.QueryResult<
-  GetMetacolonyQuery,
-  GetMetacolonyQueryVariables
->;
-export const GetColonyExtensionsDocument = gql`
-  query GetColonyExtensions($colonyAddress: ID!) {
-    getColony(id: $colonyAddress) {
-      extensions(filter: { isDeleted: { eq: false } }) {
-        items {
-          ...Extension
+export function useGetMetacolonyQuery(baseOptions?: Apollo.QueryHookOptions<GetMetacolonyQuery, GetMetacolonyQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMetacolonyQuery, GetMetacolonyQueryVariables>(GetMetacolonyDocument, options);
+      }
+export function useGetMetacolonyLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMetacolonyQuery, GetMetacolonyQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMetacolonyQuery, GetMetacolonyQueryVariables>(GetMetacolonyDocument, options);
         }
+export type GetMetacolonyQueryHookResult = ReturnType<typeof useGetMetacolonyQuery>;
+export type GetMetacolonyLazyQueryHookResult = ReturnType<typeof useGetMetacolonyLazyQuery>;
+export type GetMetacolonyQueryResult = Apollo.QueryResult<GetMetacolonyQuery, GetMetacolonyQueryVariables>;
+export const GetColonyExtensionsDocument = gql`
+    query GetColonyExtensions($colonyAddress: ID!) {
+  getColony(id: $colonyAddress) {
+    extensions(filter: {isDeleted: {eq: false}}) {
+      items {
+        ...Extension
       }
     }
   }
-  ${ExtensionFragmentDoc}
-`;
+}
+    ${ExtensionFragmentDoc}`;
 
 /**
  * __useGetColonyExtensionsQuery__
@@ -3728,54 +3352,30 @@ export const GetColonyExtensionsDocument = gql`
  *   },
  * });
  */
-export function useGetColonyExtensionsQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetColonyExtensionsQuery,
-    GetColonyExtensionsQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    GetColonyExtensionsQuery,
-    GetColonyExtensionsQueryVariables
-  >(GetColonyExtensionsDocument, options);
-}
-export function useGetColonyExtensionsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetColonyExtensionsQuery,
-    GetColonyExtensionsQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetColonyExtensionsQuery,
-    GetColonyExtensionsQueryVariables
-  >(GetColonyExtensionsDocument, options);
-}
-export type GetColonyExtensionsQueryHookResult = ReturnType<
-  typeof useGetColonyExtensionsQuery
->;
-export type GetColonyExtensionsLazyQueryHookResult = ReturnType<
-  typeof useGetColonyExtensionsLazyQuery
->;
-export type GetColonyExtensionsQueryResult = Apollo.QueryResult<
-  GetColonyExtensionsQuery,
-  GetColonyExtensionsQueryVariables
->;
-export const GetColonyExtensionDocument = gql`
-  query GetColonyExtension($colonyAddress: ID!, $extensionHash: String!) {
-    getExtensionByColonyAndHash(
-      colonyId: $colonyAddress
-      hash: { eq: $extensionHash }
-      filter: { isDeleted: { eq: false } }
-    ) {
-      items {
-        ...Extension
+export function useGetColonyExtensionsQuery(baseOptions: Apollo.QueryHookOptions<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>(GetColonyExtensionsDocument, options);
       }
+export function useGetColonyExtensionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>(GetColonyExtensionsDocument, options);
+        }
+export type GetColonyExtensionsQueryHookResult = ReturnType<typeof useGetColonyExtensionsQuery>;
+export type GetColonyExtensionsLazyQueryHookResult = ReturnType<typeof useGetColonyExtensionsLazyQuery>;
+export type GetColonyExtensionsQueryResult = Apollo.QueryResult<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>;
+export const GetColonyExtensionDocument = gql`
+    query GetColonyExtension($colonyAddress: ID!, $extensionHash: String!) {
+  getExtensionByColonyAndHash(
+    colonyId: $colonyAddress
+    hash: {eq: $extensionHash}
+    filter: {isDeleted: {eq: false}}
+  ) {
+    items {
+      ...Extension
     }
   }
-  ${ExtensionFragmentDoc}
-`;
+}
+    ${ExtensionFragmentDoc}`;
 
 /**
  * __useGetColonyExtensionQuery__
@@ -3794,49 +3394,26 @@ export const GetColonyExtensionDocument = gql`
  *   },
  * });
  */
-export function useGetColonyExtensionQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetColonyExtensionQuery,
-    GetColonyExtensionQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    GetColonyExtensionQuery,
-    GetColonyExtensionQueryVariables
-  >(GetColonyExtensionDocument, options);
-}
-export function useGetColonyExtensionLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetColonyExtensionQuery,
-    GetColonyExtensionQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetColonyExtensionQuery,
-    GetColonyExtensionQueryVariables
-  >(GetColonyExtensionDocument, options);
-}
-export type GetColonyExtensionQueryHookResult = ReturnType<
-  typeof useGetColonyExtensionQuery
->;
-export type GetColonyExtensionLazyQueryHookResult = ReturnType<
-  typeof useGetColonyExtensionLazyQuery
->;
-export type GetColonyExtensionQueryResult = Apollo.QueryResult<
-  GetColonyExtensionQuery,
-  GetColonyExtensionQueryVariables
->;
-export const GetProfileByEmailDocument = gql`
-  query GetProfileByEmail($email: AWSEmail!) {
-    getProfileByEmail(email: $email) {
-      items {
-        id
+export function useGetColonyExtensionQuery(baseOptions: Apollo.QueryHookOptions<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>(GetColonyExtensionDocument, options);
       }
+export function useGetColonyExtensionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>(GetColonyExtensionDocument, options);
+        }
+export type GetColonyExtensionQueryHookResult = ReturnType<typeof useGetColonyExtensionQuery>;
+export type GetColonyExtensionLazyQueryHookResult = ReturnType<typeof useGetColonyExtensionLazyQuery>;
+export type GetColonyExtensionQueryResult = Apollo.QueryResult<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>;
+export const GetProfileByEmailDocument = gql`
+    query GetProfileByEmail($email: AWSEmail!) {
+  getProfileByEmail(email: $email) {
+    items {
+      id
     }
   }
-`;
+}
+    `;
 
 /**
  * __useGetProfileByEmailQuery__
@@ -3854,50 +3431,26 @@ export const GetProfileByEmailDocument = gql`
  *   },
  * });
  */
-export function useGetProfileByEmailQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetProfileByEmailQuery,
-    GetProfileByEmailQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    GetProfileByEmailQuery,
-    GetProfileByEmailQueryVariables
-  >(GetProfileByEmailDocument, options);
-}
-export function useGetProfileByEmailLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetProfileByEmailQuery,
-    GetProfileByEmailQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetProfileByEmailQuery,
-    GetProfileByEmailQueryVariables
-  >(GetProfileByEmailDocument, options);
-}
-export type GetProfileByEmailQueryHookResult = ReturnType<
-  typeof useGetProfileByEmailQuery
->;
-export type GetProfileByEmailLazyQueryHookResult = ReturnType<
-  typeof useGetProfileByEmailLazyQuery
->;
-export type GetProfileByEmailQueryResult = Apollo.QueryResult<
-  GetProfileByEmailQuery,
-  GetProfileByEmailQueryVariables
->;
-export const GetTokenByAddressDocument = gql`
-  query GetTokenByAddress($address: ID!) {
-    getTokenByAddress(id: $address) {
-      items {
-        ...Token
+export function useGetProfileByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>(GetProfileByEmailDocument, options);
       }
+export function useGetProfileByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>(GetProfileByEmailDocument, options);
+        }
+export type GetProfileByEmailQueryHookResult = ReturnType<typeof useGetProfileByEmailQuery>;
+export type GetProfileByEmailLazyQueryHookResult = ReturnType<typeof useGetProfileByEmailLazyQuery>;
+export type GetProfileByEmailQueryResult = Apollo.QueryResult<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>;
+export const GetTokenByAddressDocument = gql`
+    query GetTokenByAddress($address: ID!) {
+  getTokenByAddress(id: $address) {
+    items {
+      ...Token
     }
   }
-  ${TokenFragmentDoc}
-`;
+}
+    ${TokenFragmentDoc}`;
 
 /**
  * __useGetTokenByAddressQuery__
@@ -3915,50 +3468,26 @@ export const GetTokenByAddressDocument = gql`
  *   },
  * });
  */
-export function useGetTokenByAddressQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetTokenByAddressQuery,
-    GetTokenByAddressQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    GetTokenByAddressQuery,
-    GetTokenByAddressQueryVariables
-  >(GetTokenByAddressDocument, options);
-}
-export function useGetTokenByAddressLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetTokenByAddressQuery,
-    GetTokenByAddressQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetTokenByAddressQuery,
-    GetTokenByAddressQueryVariables
-  >(GetTokenByAddressDocument, options);
-}
-export type GetTokenByAddressQueryHookResult = ReturnType<
-  typeof useGetTokenByAddressQuery
->;
-export type GetTokenByAddressLazyQueryHookResult = ReturnType<
-  typeof useGetTokenByAddressLazyQuery
->;
-export type GetTokenByAddressQueryResult = Apollo.QueryResult<
-  GetTokenByAddressQuery,
-  GetTokenByAddressQueryVariables
->;
-export const GetTokenFromEverywhereDocument = gql`
-  query GetTokenFromEverywhere($input: TokenFromEverywhereArguments!) {
-    getTokenFromEverywhere(input: $input) {
-      items {
-        ...Token
+export function useGetTokenByAddressQuery(baseOptions: Apollo.QueryHookOptions<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>(GetTokenByAddressDocument, options);
       }
+export function useGetTokenByAddressLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>(GetTokenByAddressDocument, options);
+        }
+export type GetTokenByAddressQueryHookResult = ReturnType<typeof useGetTokenByAddressQuery>;
+export type GetTokenByAddressLazyQueryHookResult = ReturnType<typeof useGetTokenByAddressLazyQuery>;
+export type GetTokenByAddressQueryResult = Apollo.QueryResult<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>;
+export const GetTokenFromEverywhereDocument = gql`
+    query GetTokenFromEverywhere($input: TokenFromEverywhereArguments!) {
+  getTokenFromEverywhere(input: $input) {
+    items {
+      ...Token
     }
   }
-  ${TokenFragmentDoc}
-`;
+}
+    ${TokenFragmentDoc}`;
 
 /**
  * __useGetTokenFromEverywhereQuery__
@@ -3976,50 +3505,26 @@ export const GetTokenFromEverywhereDocument = gql`
  *   },
  * });
  */
-export function useGetTokenFromEverywhereQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetTokenFromEverywhereQuery,
-    GetTokenFromEverywhereQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    GetTokenFromEverywhereQuery,
-    GetTokenFromEverywhereQueryVariables
-  >(GetTokenFromEverywhereDocument, options);
-}
-export function useGetTokenFromEverywhereLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetTokenFromEverywhereQuery,
-    GetTokenFromEverywhereQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetTokenFromEverywhereQuery,
-    GetTokenFromEverywhereQueryVariables
-  >(GetTokenFromEverywhereDocument, options);
-}
-export type GetTokenFromEverywhereQueryHookResult = ReturnType<
-  typeof useGetTokenFromEverywhereQuery
->;
-export type GetTokenFromEverywhereLazyQueryHookResult = ReturnType<
-  typeof useGetTokenFromEverywhereLazyQuery
->;
-export type GetTokenFromEverywhereQueryResult = Apollo.QueryResult<
-  GetTokenFromEverywhereQuery,
-  GetTokenFromEverywhereQueryVariables
->;
-export const GetCurrentUserDocument = gql`
-  query GetCurrentUser($address: ID!) {
-    getUserByAddress(id: $address) {
-      items {
-        ...User
+export function useGetTokenFromEverywhereQuery(baseOptions: Apollo.QueryHookOptions<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>(GetTokenFromEverywhereDocument, options);
       }
+export function useGetTokenFromEverywhereLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>(GetTokenFromEverywhereDocument, options);
+        }
+export type GetTokenFromEverywhereQueryHookResult = ReturnType<typeof useGetTokenFromEverywhereQuery>;
+export type GetTokenFromEverywhereLazyQueryHookResult = ReturnType<typeof useGetTokenFromEverywhereLazyQuery>;
+export type GetTokenFromEverywhereQueryResult = Apollo.QueryResult<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>;
+export const GetCurrentUserDocument = gql`
+    query GetCurrentUser($address: ID!) {
+  getUserByAddress(id: $address) {
+    items {
+      ...User
     }
   }
-  ${UserFragmentDoc}
-`;
+}
+    ${UserFragmentDoc}`;
 
 /**
  * __useGetCurrentUserQuery__
@@ -4037,45 +3542,22 @@ export const GetCurrentUserDocument = gql`
  *   },
  * });
  */
-export function useGetCurrentUserQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetCurrentUserQuery,
-    GetCurrentUserQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(
-    GetCurrentUserDocument,
-    options,
-  );
-}
-export function useGetCurrentUserLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetCurrentUserQuery,
-    GetCurrentUserQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(
-    GetCurrentUserDocument,
-    options,
-  );
-}
-export type GetCurrentUserQueryHookResult = ReturnType<
-  typeof useGetCurrentUserQuery
->;
-export type GetCurrentUserLazyQueryHookResult = ReturnType<
-  typeof useGetCurrentUserLazyQuery
->;
-export type GetCurrentUserQueryResult = Apollo.QueryResult<
-  GetCurrentUserQuery,
-  GetCurrentUserQueryVariables
->;
+export function useGetCurrentUserQuery(baseOptions: Apollo.QueryHookOptions<GetCurrentUserQuery, GetCurrentUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(GetCurrentUserDocument, options);
+      }
+export function useGetCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentUserQuery, GetCurrentUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(GetCurrentUserDocument, options);
+        }
+export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQuery>;
+export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
+export type GetCurrentUserQueryResult = Apollo.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
 export const GetUserReputationDocument = gql`
-  query GetUserReputation($input: GetUserReputationInput!) {
-    getUserReputation(input: $input)
-  }
-`;
+    query GetUserReputation($input: GetUserReputationInput!) {
+  getUserReputation(input: $input)
+}
+    `;
 
 /**
  * __useGetUserReputationQuery__
@@ -4093,50 +3575,27 @@ export const GetUserReputationDocument = gql`
  *   },
  * });
  */
-export function useGetUserReputationQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetUserReputationQuery,
-    GetUserReputationQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    GetUserReputationQuery,
-    GetUserReputationQueryVariables
-  >(GetUserReputationDocument, options);
-}
-export function useGetUserReputationLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetUserReputationQuery,
-    GetUserReputationQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetUserReputationQuery,
-    GetUserReputationQueryVariables
-  >(GetUserReputationDocument, options);
-}
-export type GetUserReputationQueryHookResult = ReturnType<
-  typeof useGetUserReputationQuery
->;
-export type GetUserReputationLazyQueryHookResult = ReturnType<
-  typeof useGetUserReputationLazyQuery
->;
-export type GetUserReputationQueryResult = Apollo.QueryResult<
-  GetUserReputationQuery,
-  GetUserReputationQueryVariables
->;
-export const GetReputationForTopDomainsDocument = gql`
-  query GetReputationForTopDomains($input: GetReputationForTopDomainsInput!) {
-    getReputationForTopDomains(input: $input) {
-      items {
-        domainId
-        reputationPercentage
+export function useGetUserReputationQuery(baseOptions: Apollo.QueryHookOptions<GetUserReputationQuery, GetUserReputationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserReputationQuery, GetUserReputationQueryVariables>(GetUserReputationDocument, options);
       }
+export function useGetUserReputationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserReputationQuery, GetUserReputationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserReputationQuery, GetUserReputationQueryVariables>(GetUserReputationDocument, options);
+        }
+export type GetUserReputationQueryHookResult = ReturnType<typeof useGetUserReputationQuery>;
+export type GetUserReputationLazyQueryHookResult = ReturnType<typeof useGetUserReputationLazyQuery>;
+export type GetUserReputationQueryResult = Apollo.QueryResult<GetUserReputationQuery, GetUserReputationQueryVariables>;
+export const GetReputationForTopDomainsDocument = gql`
+    query GetReputationForTopDomains($input: GetReputationForTopDomainsInput!) {
+  getReputationForTopDomains(input: $input) {
+    items {
+      domainId
+      reputationPercentage
     }
   }
-`;
+}
+    `;
 
 /**
  * __useGetReputationForTopDomainsQuery__
@@ -4154,49 +3613,26 @@ export const GetReputationForTopDomainsDocument = gql`
  *   },
  * });
  */
-export function useGetReputationForTopDomainsQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetReputationForTopDomainsQuery,
-    GetReputationForTopDomainsQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    GetReputationForTopDomainsQuery,
-    GetReputationForTopDomainsQueryVariables
-  >(GetReputationForTopDomainsDocument, options);
-}
-export function useGetReputationForTopDomainsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetReputationForTopDomainsQuery,
-    GetReputationForTopDomainsQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetReputationForTopDomainsQuery,
-    GetReputationForTopDomainsQueryVariables
-  >(GetReputationForTopDomainsDocument, options);
-}
-export type GetReputationForTopDomainsQueryHookResult = ReturnType<
-  typeof useGetReputationForTopDomainsQuery
->;
-export type GetReputationForTopDomainsLazyQueryHookResult = ReturnType<
-  typeof useGetReputationForTopDomainsLazyQuery
->;
-export type GetReputationForTopDomainsQueryResult = Apollo.QueryResult<
-  GetReputationForTopDomainsQuery,
-  GetReputationForTopDomainsQueryVariables
->;
-export const GetUserByNameDocument = gql`
-  query GetUserByName($name: String!) {
-    getUserByName(name: $name) {
-      items {
-        id
+export function useGetReputationForTopDomainsQuery(baseOptions: Apollo.QueryHookOptions<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>(GetReputationForTopDomainsDocument, options);
       }
+export function useGetReputationForTopDomainsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>(GetReputationForTopDomainsDocument, options);
+        }
+export type GetReputationForTopDomainsQueryHookResult = ReturnType<typeof useGetReputationForTopDomainsQuery>;
+export type GetReputationForTopDomainsLazyQueryHookResult = ReturnType<typeof useGetReputationForTopDomainsLazyQuery>;
+export type GetReputationForTopDomainsQueryResult = Apollo.QueryResult<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>;
+export const GetUserByNameDocument = gql`
+    query GetUserByName($name: String!) {
+  getUserByName(name: $name) {
+    items {
+      id
     }
   }
-`;
+}
+    `;
 
 /**
  * __useGetUserByNameQuery__
@@ -4214,55 +3650,31 @@ export const GetUserByNameDocument = gql`
  *   },
  * });
  */
-export function useGetUserByNameQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetUserByNameQuery,
-    GetUserByNameQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetUserByNameQuery, GetUserByNameQueryVariables>(
-    GetUserByNameDocument,
-    options,
-  );
-}
-export function useGetUserByNameLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetUserByNameQuery,
-    GetUserByNameQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetUserByNameQuery, GetUserByNameQueryVariables>(
-    GetUserByNameDocument,
-    options,
-  );
-}
-export type GetUserByNameQueryHookResult = ReturnType<
-  typeof useGetUserByNameQuery
->;
-export type GetUserByNameLazyQueryHookResult = ReturnType<
-  typeof useGetUserByNameLazyQuery
->;
-export type GetUserByNameQueryResult = Apollo.QueryResult<
-  GetUserByNameQuery,
-  GetUserByNameQueryVariables
->;
+export function useGetUserByNameQuery(baseOptions: Apollo.QueryHookOptions<GetUserByNameQuery, GetUserByNameQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByNameQuery, GetUserByNameQueryVariables>(GetUserByNameDocument, options);
+      }
+export function useGetUserByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByNameQuery, GetUserByNameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByNameQuery, GetUserByNameQueryVariables>(GetUserByNameDocument, options);
+        }
+export type GetUserByNameQueryHookResult = ReturnType<typeof useGetUserByNameQuery>;
+export type GetUserByNameLazyQueryHookResult = ReturnType<typeof useGetUserByNameLazyQuery>;
+export type GetUserByNameQueryResult = Apollo.QueryResult<GetUserByNameQuery, GetUserByNameQueryVariables>;
 export const CombinedUserDocument = gql`
-  query CombinedUser($name: String!, $address: ID!) {
-    getUserByAddress(id: $address) {
-      items {
-        ...User
-      }
-    }
-    getUserByName(name: $name) {
-      items {
-        ...User
-      }
+    query CombinedUser($name: String!, $address: ID!) {
+  getUserByAddress(id: $address) {
+    items {
+      ...User
     }
   }
-  ${UserFragmentDoc}
-`;
+  getUserByName(name: $name) {
+    items {
+      ...User
+    }
+  }
+}
+    ${UserFragmentDoc}`;
 
 /**
  * __useCombinedUserQuery__
@@ -4281,50 +3693,27 @@ export const CombinedUserDocument = gql`
  *   },
  * });
  */
-export function useCombinedUserQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    CombinedUserQuery,
-    CombinedUserQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<CombinedUserQuery, CombinedUserQueryVariables>(
-    CombinedUserDocument,
-    options,
-  );
-}
-export function useCombinedUserLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    CombinedUserQuery,
-    CombinedUserQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<CombinedUserQuery, CombinedUserQueryVariables>(
-    CombinedUserDocument,
-    options,
-  );
-}
-export type CombinedUserQueryHookResult = ReturnType<
-  typeof useCombinedUserQuery
->;
-export type CombinedUserLazyQueryHookResult = ReturnType<
-  typeof useCombinedUserLazyQuery
->;
-export type CombinedUserQueryResult = Apollo.QueryResult<
-  CombinedUserQuery,
-  CombinedUserQueryVariables
->;
-export const GetCurrentExtensionsVersionsDocument = gql`
-  query GetCurrentExtensionsVersions {
-    listCurrentVersions {
-      items {
-        extensionHash: key
-        version
+export function useCombinedUserQuery(baseOptions: Apollo.QueryHookOptions<CombinedUserQuery, CombinedUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CombinedUserQuery, CombinedUserQueryVariables>(CombinedUserDocument, options);
       }
+export function useCombinedUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CombinedUserQuery, CombinedUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CombinedUserQuery, CombinedUserQueryVariables>(CombinedUserDocument, options);
+        }
+export type CombinedUserQueryHookResult = ReturnType<typeof useCombinedUserQuery>;
+export type CombinedUserLazyQueryHookResult = ReturnType<typeof useCombinedUserLazyQuery>;
+export type CombinedUserQueryResult = Apollo.QueryResult<CombinedUserQuery, CombinedUserQueryVariables>;
+export const GetCurrentExtensionsVersionsDocument = gql`
+    query GetCurrentExtensionsVersions {
+  listCurrentVersions {
+    items {
+      extensionHash: key
+      version
     }
   }
-`;
+}
+    `;
 
 /**
  * __useGetCurrentExtensionsVersionsQuery__
@@ -4341,50 +3730,27 @@ export const GetCurrentExtensionsVersionsDocument = gql`
  *   },
  * });
  */
-export function useGetCurrentExtensionsVersionsQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    GetCurrentExtensionsVersionsQuery,
-    GetCurrentExtensionsVersionsQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    GetCurrentExtensionsVersionsQuery,
-    GetCurrentExtensionsVersionsQueryVariables
-  >(GetCurrentExtensionsVersionsDocument, options);
-}
-export function useGetCurrentExtensionsVersionsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetCurrentExtensionsVersionsQuery,
-    GetCurrentExtensionsVersionsQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetCurrentExtensionsVersionsQuery,
-    GetCurrentExtensionsVersionsQueryVariables
-  >(GetCurrentExtensionsVersionsDocument, options);
-}
-export type GetCurrentExtensionsVersionsQueryHookResult = ReturnType<
-  typeof useGetCurrentExtensionsVersionsQuery
->;
-export type GetCurrentExtensionsVersionsLazyQueryHookResult = ReturnType<
-  typeof useGetCurrentExtensionsVersionsLazyQuery
->;
-export type GetCurrentExtensionsVersionsQueryResult = Apollo.QueryResult<
-  GetCurrentExtensionsVersionsQuery,
-  GetCurrentExtensionsVersionsQueryVariables
->;
-export const GetCurrentExtensionVersionDocument = gql`
-  query GetCurrentExtensionVersion($extensionHash: String!) {
-    getCurrentVersionByKey(key: $extensionHash) {
-      items {
-        extensionHash: key
-        version
+export function useGetCurrentExtensionsVersionsQuery(baseOptions?: Apollo.QueryHookOptions<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>(GetCurrentExtensionsVersionsDocument, options);
       }
+export function useGetCurrentExtensionsVersionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>(GetCurrentExtensionsVersionsDocument, options);
+        }
+export type GetCurrentExtensionsVersionsQueryHookResult = ReturnType<typeof useGetCurrentExtensionsVersionsQuery>;
+export type GetCurrentExtensionsVersionsLazyQueryHookResult = ReturnType<typeof useGetCurrentExtensionsVersionsLazyQuery>;
+export type GetCurrentExtensionsVersionsQueryResult = Apollo.QueryResult<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>;
+export const GetCurrentExtensionVersionDocument = gql`
+    query GetCurrentExtensionVersion($extensionHash: String!) {
+  getCurrentVersionByKey(key: $extensionHash) {
+    items {
+      extensionHash: key
+      version
     }
   }
-`;
+}
+    `;
 
 /**
  * __useGetCurrentExtensionVersionQuery__
@@ -4402,37 +3768,14 @@ export const GetCurrentExtensionVersionDocument = gql`
  *   },
  * });
  */
-export function useGetCurrentExtensionVersionQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetCurrentExtensionVersionQuery,
-    GetCurrentExtensionVersionQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    GetCurrentExtensionVersionQuery,
-    GetCurrentExtensionVersionQueryVariables
-  >(GetCurrentExtensionVersionDocument, options);
-}
-export function useGetCurrentExtensionVersionLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetCurrentExtensionVersionQuery,
-    GetCurrentExtensionVersionQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetCurrentExtensionVersionQuery,
-    GetCurrentExtensionVersionQueryVariables
-  >(GetCurrentExtensionVersionDocument, options);
-}
-export type GetCurrentExtensionVersionQueryHookResult = ReturnType<
-  typeof useGetCurrentExtensionVersionQuery
->;
-export type GetCurrentExtensionVersionLazyQueryHookResult = ReturnType<
-  typeof useGetCurrentExtensionVersionLazyQuery
->;
-export type GetCurrentExtensionVersionQueryResult = Apollo.QueryResult<
-  GetCurrentExtensionVersionQuery,
-  GetCurrentExtensionVersionQueryVariables
->;
+export function useGetCurrentExtensionVersionQuery(baseOptions: Apollo.QueryHookOptions<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>(GetCurrentExtensionVersionDocument, options);
+      }
+export function useGetCurrentExtensionVersionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>(GetCurrentExtensionVersionDocument, options);
+        }
+export type GetCurrentExtensionVersionQueryHookResult = ReturnType<typeof useGetCurrentExtensionVersionQuery>;
+export type GetCurrentExtensionVersionLazyQueryHookResult = ReturnType<typeof useGetCurrentExtensionVersionLazyQuery>;
+export type GetCurrentExtensionVersionQueryResult = Apollo.QueryResult<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>;
