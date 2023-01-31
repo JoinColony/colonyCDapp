@@ -10,8 +10,7 @@ import Decimal from 'decimal.js';
 import { calculateFee, getTokenDecimalsWithFallback } from '~utils/tokens';
 import { notNull } from '~utils/arrays';
 import Numeral from '~shared/Numeral';
-
-import { useColonyContext } from '~hooks';
+import { Colony } from '~types';
 
 import styles from './NetworkFee.css';
 
@@ -34,12 +33,16 @@ const MSG = defineMessages({
 });
 
 interface Props {
+  colony: Colony | undefined;
   customAmountError: string | MessageDescriptor | undefined;
   networkFeeInverse: string | undefined;
 }
 
-const NetworkFee = ({ networkFeeInverse, customAmountError }: Props) => {
-  const { colony } = useColonyContext();
+const NetworkFee = ({
+  colony,
+  networkFeeInverse,
+  customAmountError,
+}: Props) => {
   const { getValues } = useFormContext();
   const values = getValues();
   const colonyTokens =
@@ -76,12 +79,10 @@ const NetworkFee = ({ networkFeeInverse, customAmountError }: Props) => {
                   getTokenDecimalsWithFallback(selectedToken?.decimals),
                 ).feesInWei
               }
-              decimals={getTokenDecimalsWithFallback(
-                selectedToken && selectedToken.decimals,
-              )}
+              decimals={getTokenDecimalsWithFallback(selectedToken?.decimals)}
             />
           ),
-          symbol: (selectedToken && selectedToken.symbol) || '???',
+          symbol: selectedToken?.symbol || '???',
         }}
       />
     </div>

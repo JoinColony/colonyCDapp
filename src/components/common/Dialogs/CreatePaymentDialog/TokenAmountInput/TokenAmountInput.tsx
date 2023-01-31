@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 import { AddressZero } from '@ethersproject/constants';
 import { useFormContext } from 'react-hook-form';
@@ -7,7 +7,7 @@ import { HookFormInput as Input, TokenSymbolSelector } from '~shared/Fields';
 import EthUsd from '~shared/EthUsd';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { notNull } from '~utils/arrays';
-import { useColonyContext } from '~hooks';
+import { Colony } from '~types';
 
 // import NetworkFee from '../NetworkFee';
 
@@ -32,12 +32,12 @@ const MSG = defineMessages({
 });
 
 interface Props {
+  colony: Colony | undefined;
   disabled: boolean;
 }
 
-const TokenAmountInput = ({ disabled }: Props) => {
+const TokenAmountInput = ({ colony, disabled }: Props) => {
   const { getValues } = useFormContext();
-  const { colony } = useColonyContext();
   const values = getValues();
   const colonyTokens =
     colony?.tokens?.items
@@ -46,13 +46,16 @@ const TokenAmountInput = ({ disabled }: Props) => {
   const selectedToken = colonyTokens.find(
     (token) => token?.tokenAddress === values.tokenAddress,
   );
-  const formattingOptions = {
-    delimiter: ',',
-    numeral: true,
-    numeralDecimalScale: getTokenDecimalsWithFallback(
-      selectedToken && selectedToken.decimals,
-    ),
-  };
+  const formattingOptions = useMemo(
+    () => ({
+      delimiter: ',',
+      numeral: true,
+      numeralDecimalScale: getTokenDecimalsWithFallback(
+        selectedToken && selectedToken.decimals,
+      ),
+    }),
+    [selectedToken],
+  );
 
   return (
     <div className={styles.tokenAmount}>
@@ -68,7 +71,7 @@ const TokenAmountInput = ({ disabled }: Props) => {
           disabled={disabled}
           dataTest="paymentAmountInput"
         />
-        {/* <NetworkFee networkFeeInverse={networkFeeInverse} customAmountError={customAmountError} /> */}
+        {/* <NetworkFee colony={colony} networkFeeInverse={networkFeeInverse} customAmountError={customAmountError} /> */}
       </div>
       <div className={styles.tokenAmountContainer}>
         <div className={styles.tokenAmountSelect}>

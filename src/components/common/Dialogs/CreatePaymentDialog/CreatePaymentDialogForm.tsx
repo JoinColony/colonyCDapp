@@ -30,7 +30,6 @@ import { Address, User, ColonyWatcher } from '~types';
 
 import {
   useAppContext,
-  useColonyContext,
   useDialogActionPermissions,
   useTransformer,
 } from '~hooks';
@@ -97,10 +96,10 @@ const CreatePaymentDialogForm = ({
   back,
   verifiedUsers,
   filteredDomainId: preselectedDomainId,
+  colony,
 }: // showWhitelistWarning,
 Props) => {
   const { wallet } = useAppContext();
-  const { colony } = useColonyContext();
   const {
     getValues,
     formState: { isSubmitting, isValid },
@@ -183,7 +182,10 @@ Props) => {
         </DialogSection>
       )}
       <DialogSection>
-        <DomainFundSelector filteredDomainId={preselectedDomainId} />
+        <DomainFundSelector
+          colony={colony}
+          filteredDomainId={preselectedDomainId}
+        />
       </DialogSection>
       <DialogSection>
         <div className={styles.singleUserContainer}>
@@ -227,7 +229,7 @@ Props) => {
           )}
       </DialogSection>
       <DialogSection>
-        <TokenAmountInput disabled={inputDisabled} />
+        <TokenAmountInput colony={colony} disabled={inputDisabled} />
       </DialogSection>
       <DialogSection>
         <Annotations
