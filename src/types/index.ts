@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
 export * from './keyboard';
@@ -72,3 +72,5 @@ export type DefaultValues<V> = Record<keyof V, any>;
 export interface RecordToJS<T> {
   toJS: (props: T) => void;
 }
+
+export type SetStateFn = ReturnType<typeof useState>[1];

@@ -7,8 +7,12 @@ import {
 } from 'react-router-dom';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
+// import { allAllowedExtensions } from '~data/staticData/';
+
+import ColonyActions from '~common/ColonyActions';
 // import ColonyActions from '~dashboard/ColonyActions';
 // import ColonyEvents from '~dashboard/ColonyEvents';
+
 import {
   COLONY_EVENTS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
@@ -18,7 +22,6 @@ import NotFoundRoute from '~routes/NotFoundRoute';
 import ColonyExtensions from '~common/ColonyExtensions';
 import ExtensionDetails from '~common/Extensions/ExtensionDetails';
 import { useColonyContext } from '~hooks';
-import ColonyActions from '~common/ColonyActions';
 
 import ColonyHomeLayout from './ColonyHomeLayout';
 
@@ -41,45 +44,28 @@ const ColonyHome = () => {
       return (
         <RoutesSwitch>
           <Route
-            path="/"
-            element={
-              <ColonyHomeLayout
-                filteredDomainId={filteredDomainId}
-                onDomainChange={setDomainIdFilter}
-              >
-                <ColonyActions
-                // ethDomainId={filteredDomainId}
-                />
-                <div>Actions & Motions List</div>
-              </ColonyHomeLayout>
-            }
-          />
-          <Route
             path={COLONY_EVENTS_ROUTE}
             element={
               <ColonyHomeLayout
                 filteredDomainId={filteredDomainId}
                 onDomainChange={setDomainIdFilter}
-                showActions={false}
               >
                 {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> */}
                 <div>Events (Transactions Log)</div>
               </ColonyHomeLayout>
             }
           />
-
           <Route
             element={
               <ColonyHomeLayout
                 filteredDomainId={filteredDomainId}
                 onDomainChange={setDomainIdFilter}
-                showControls={false}
-                showSidebar={false}
               >
                 <Outlet />
               </ColonyHomeLayout>
             }
           >
+            <Route path="/" element={<ColonyActions />} />
             <Route
               path={COLONY_EXTENSIONS_ROUTE}
               element={<ColonyExtensions />}
