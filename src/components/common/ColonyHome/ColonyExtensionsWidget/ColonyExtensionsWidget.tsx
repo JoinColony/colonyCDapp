@@ -38,7 +38,11 @@ const ColonyExtensions = () => {
     );
   }
 
-  return installedExtensionsData.length ? (
+  if (!installedExtensionsData.length) {
+    return null;
+  }
+
+  return (
     <div className={styles.main}>
       <Heading appearance={{ size: 'normal', weight: 'bold' }}>
         <FormattedMessage {...MSG.title} />
@@ -68,7 +72,7 @@ const ColonyExtensions = () => {
           })}
       </ul>
     </div>
-  ) : null;
+  );
 };
 
 ColonyExtensions.displayName = displayName;

@@ -8,17 +8,18 @@
   letter-spacing: var(--spacing-medium);
 }
 
-.main a h4:hover, .main a h4:active {
+.main a h4:hover,
+.main a h4:active {
   text-decoration: underline;
   color: var(--colony-blue);
 }
 
 .extension {
+  display: flex;
+  flex-wrap: wrap;
   margin-top: 10px;
-}
-
-.extension * + * {
-  margin-left: 10px;
+  gap: 10px;
+  row-gap: 0px;
 }
 
 .invisibleLink:hover {
