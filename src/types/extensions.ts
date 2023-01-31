@@ -1,4 +1,5 @@
 import { ColonyRole, Extension } from '@colony/colony-js';
+import { CleaveOptions } from 'cleave.js/options';
 import { MessageDescriptor } from 'react-intl';
 import { Schema } from 'yup';
 
@@ -24,6 +25,7 @@ export interface ExtensionInitParam {
   validation: Schema<any>;
   type: ExtensionParamType;
   complementaryLabel?: 'hours' | 'periods' | 'percent';
+  formattingOptions?: CleaveOptions;
 }
 
 export interface ExtensionConfig {

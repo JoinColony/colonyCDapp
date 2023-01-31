@@ -165,6 +165,10 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         description: MSG.votingReputationTotalStakeFractionDescription,
         type: ExtensionParamType.Input,
         complementaryLabel: 'percent',
+        formattingOptions: {
+          numeral: true,
+          numeralPositiveOnly: true,
+        },
       },
       {
         paramName: 'voterRewardFraction',
@@ -178,6 +182,10 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         description: MSG.votingReputationVoterRewardFractionDescription,
         type: ExtensionParamType.Input,
         complementaryLabel: 'percent',
+        formattingOptions: {
+          numeral: true,
+          numeralPositiveOnly: true,
+        },
       },
       {
         paramName: 'userMinStakeFraction',
@@ -191,6 +199,10 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         description: MSG.votingReputationUserMinStakeFractionDescription,
         type: ExtensionParamType.Input,
         complementaryLabel: 'percent',
+        formattingOptions: {
+          numeral: true,
+          numeralPositiveOnly: true,
+        },
       },
       {
         paramName: 'maxVoteFraction',
@@ -204,6 +216,10 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         description: MSG.votingReputationMaxVoteFractionDescription,
         type: ExtensionParamType.Input,
         complementaryLabel: 'percent',
+        formattingOptions: {
+          numeral: true,
+          numeralPositiveOnly: true,
+        },
       },
       {
         paramName: 'stakePeriod',
@@ -217,6 +233,10 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         description: MSG.votingReputationStakePeriodDescription,
         type: ExtensionParamType.Input,
         complementaryLabel: 'hours',
+        formattingOptions: {
+          numeral: true,
+          numeralPositiveOnly: true,
+        },
       },
       {
         paramName: 'submitPeriod',
@@ -230,6 +250,10 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         description: MSG.votingReputationSubmitPeriodDescription,
         type: ExtensionParamType.Input,
         complementaryLabel: 'hours',
+        formattingOptions: {
+          numeral: true,
+          numeralPositiveOnly: true,
+        },
       },
       {
         paramName: 'revealPeriod',
@@ -243,6 +267,10 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         description: MSG.votingReputationRevealPeriodDescription,
         type: ExtensionParamType.Input,
         complementaryLabel: 'hours',
+        formattingOptions: {
+          numeral: true,
+          numeralPositiveOnly: true,
+        },
       },
       {
         paramName: 'escalationPeriod',
@@ -256,6 +284,10 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         description: MSG.votingReputationEscalationPeriodDescription,
         type: ExtensionParamType.Input,
         complementaryLabel: 'hours',
+        formattingOptions: {
+          numeral: true,
+          numeralPositiveOnly: true,
+        },
       },
     ],
     uninstallable: true,

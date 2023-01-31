@@ -33,7 +33,14 @@ interface Props {
 }
 
 const InitParamField = ({
-  param: { title, type, paramName, description, complementaryLabel },
+  param: {
+    title,
+    type,
+    paramName,
+    description,
+    complementaryLabel,
+    formattingOptions,
+  },
 }: Props) => {
   const { isSubmitting } = useFormikContext();
 
@@ -45,6 +52,7 @@ const InitParamField = ({
           label={title}
           name={paramName}
           disabled={isSubmitting}
+          formattingOptions={formattingOptions}
         />
         <p className={styles.inputsDescription}>
           <FormattedMessage
