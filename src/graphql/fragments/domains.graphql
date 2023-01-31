@@ -1,0 +1,8 @@
+fragment Domain on Domain {
+    color
+    description
+    id
+    name
+    nativeId
+    parentId: domainParentId
+}

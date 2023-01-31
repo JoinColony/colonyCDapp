@@ -129,8 +129,8 @@ const SingleUserPicker = ({
   openOmniPicker,
   placeholder,
   registerInputNode,
-  renderAvatar = (address: Address, item?: ItemDataType<AnyUser>) => (
-    <UserAvatar address={address} user={item} size="xs" />
+  renderAvatar = (item?: ItemDataType<AnyUser>) => (
+    <UserAvatar user={item} size="xs" />
   ),
   renderItem: renderItemProp,
   dataTest,

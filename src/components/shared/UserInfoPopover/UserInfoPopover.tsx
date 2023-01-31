@@ -6,8 +6,12 @@ import React from 'react';
 import Tag from '~shared/Tag';
 // import { getAllUserRoles } from '~redux/transformers';
 import NotAvailableMessage from '../NotAvailableMessage/NotAvailableMessage';
-import { User, Colony } from '~types';
-import { useAppContext, useUserReputationForTopDomains } from '~hooks';
+import { User } from '~types';
+import {
+  useAppContext,
+  useColonyContext,
+  useUserReputationForTopDomains,
+} from '~hooks';
 
 // import UserPermissions from './UserPermissions';
 // import UserTokens from './UserTokens';
@@ -17,19 +21,14 @@ import UserInfo from './UserInfo';
 import styles from './UserInfoPopover.css';
 
 interface Props {
-  colony?: Colony;
   user?: User | null;
   banned?: boolean;
 }
 
 const displayName = 'UserInfoPopover';
 
-const UserInfoPopover = ({
-  // colony: { colonyAddress },
-  colony,
-  user,
-  banned = false,
-}: Props) => {
+const UserInfoPopover = ({ user, banned = false }: Props) => {
+  const { colony } = useColonyContext();
   const { wallet } = useAppContext();
   const { walletAddress } = user || {};
 

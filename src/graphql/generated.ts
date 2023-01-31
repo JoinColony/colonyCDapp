@@ -1538,6 +1538,8 @@ export type WatchedColonyFragment = { __typename?: 'Colony', name: string, colon
 
 export type WatchListItemFragment = { __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } };
 
+export type DomainFragment = { __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null };
+
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
 export type UserFragment = { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null };
@@ -1671,6 +1673,16 @@ export const TokenFragmentDoc = gql`
   thumbnail
 }
     `;
+export const DomainFragmentDoc = gql`
+    fragment Domain on Domain {
+  color
+  description
+  id
+  name
+  nativeId
+  parentId: domainParentId
+}
+    `;
 export const WatcherFragmentDoc = gql`
     fragment Watcher on WatchedColonies {
   user {
@@ -1725,12 +1737,7 @@ export const ColonyFragmentDoc = gql`
   }
   domains {
     items {
-      color
-      description
-      id
-      name
-      nativeId
-      parentId: domainParentId
+      ...Domain
     }
   }
   watchers {
@@ -1740,6 +1747,7 @@ export const ColonyFragmentDoc = gql`
   }
 }
     ${TokenFragmentDoc}
+${DomainFragmentDoc}
 ${WatcherFragmentDoc}`;
 export const WatchedColonyFragmentDoc = gql`
     fragment WatchedColony on Colony {
