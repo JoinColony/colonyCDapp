@@ -26,28 +26,35 @@ const actionsMessageDescriptors = {
       ${ColonyMotions.EmitDomainReputationPenaltyMotion} {Smite {recipient} with a {reputationChangeNumeral} {reputationChange, plural, one {pt} other {pts}} reputation penalty}
       ${ColonyActions.EmitDomainReputationReward} {Award {recipient} with a {reputationChangeNumeral} {reputationChange, plural, one {pt} other {pts}} reputation reward}
       ${ColonyMotions.EmitDomainReputationRewardMotion} {Award {recipient} with a {reputationChangeNumeral} {reputationChange, plural, one {pt} other {pts}} reputation reward}
+      ${ColonyActions.SetUserRoles} {{rolesChanged} in {fromDomain} {direction} {recipient}}
+      ${ColonyMotions.SetUserRolesMotion} {{rolesChanged} in {fromDomain} {direction} {recipient}}
       other {Generic action we don't have information about}
     }`,
-  [`action.${ColonyActions.SetUserRoles}.assign`]: `Assign the {roles} in {fromDomain} to {recipient}`,
-  [`action.${ColonyMotions.SetUserRolesMotion}.assign`]: `Assign the {roles} in {fromDomain} to {recipient}`,
-  [`action.${ColonyActions.SetUserRoles}.remove`]: `Remove the {roles} in {fromDomain} from {recipient}`,
-  [`action.${ColonyMotions.SetUserRolesMotion}.remove`]: `Remove the {roles} in {fromDomain} from {recipient}`,
-  [`action.${ColonyActions.SetUserRoles}.assignAndRemove`]: `{roles} in {fromDomain} to/from {recipient}`,
-  [`action.${ColonyMotions.SetUserRolesMotion}.assignAndRemove`]: `{roles} in {fromDomain} to/from {recipient}`,
   'action.type': `{actionType, select,
       ${ColonyActions.WrongColony} {Not part of the Colony}
       ${ColonyActions.Payment} {Payment}
+      ${ColonyMotions.PaymentMotion} {Payment}
       ${ColonyActions.MoveFunds} {Move Funds}
+      ${ColonyMotions.MoveFundsMotion} {Move Funds}
       ${ColonyActions.UnlockToken} {Unlock Token}
+      ${ColonyMotions.UnlockTokenMotion} {Unlock Token}
       ${ColonyActions.MintTokens} {Mint Tokens}
+      ${ColonyMotions.MintTokensMotion} {Mint Tokens}
       ${ColonyActions.CreateDomain} {Create Team}
+      ${ColonyMotions.CreateDomainMotion} {Create Team}
       ${ColonyActions.VersionUpgrade} {Version Upgrade}
+      ${ColonyMotions.VersionUpgradeMotion} {Version Upgrade}
       ${ColonyActions.ColonyEdit} {Colony Edit}
+      ${ColonyMotions.ColonyEditMotion} {Colony Edit}
       ${ColonyActions.EditDomain} {Edit Team}
+      ${ColonyMotions.EditDomainMotion} {Edit Team}
       ${ColonyActions.SetUserRoles} {Permission Management}
+      ${ColonyMotions.SetUserRolesMotion} {Permission Management}
       ${ColonyActions.Recovery} {Recovery}
       ${ColonyActions.EmitDomainReputationPenalty} {Smite}
+      ${ColonyMotions.EmitDomainReputationPenaltyMotion} {Smite}
       ${ColonyActions.EmitDomainReputationReward} {Award}
+      ${ColonyMotions.EmitDomainReputationRewardMotion} {Award}
       other {Generic}
     }`,
 };
