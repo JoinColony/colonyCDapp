@@ -1,10 +1,9 @@
 import { ColonyRole } from '@colony/colony-js';
 
-import { ItemStatus } from '~core/ActionsList';
-import { MotionTimeoutPeriods } from '~data/generated';
+import { ListItemStatus } from '~shared/ListItem';
 import { MotionState } from '~utils/colonyMotions';
 
-import { Address, ActionUserRoles, User } from './index';
+import { Address, User } from './index';
 import { ColonyMotions } from './motions';
 
 export enum ColonyActions {
@@ -136,7 +135,7 @@ export type ActionUserRoles = {
 
 export interface FormattedAction {
   id: string;
-  status?: ItemStatus;
+  status?: ListItemStatus;
   actionType: ColonyActions | ColonyMotions;
   initiator: User;
   recipient: User;
@@ -156,7 +155,7 @@ export interface FormattedAction {
   newVersion?: string;
   motionState?: MotionState;
   motionId?: string;
-  timeoutPeriods: MotionTimeoutPeriods;
+  // timeoutPeriods: MotionTimeoutPeriods;
   blockNumber: number;
   totalNayStake?: string;
   requiredStake?: string;
@@ -165,7 +164,7 @@ export interface FormattedAction {
 
 export interface FormattedEvent {
   id: string;
-  status?: ItemStatus;
+  status?: ListItemStatus;
   eventName: ColonyAndExtensionsEvents;
   colonyAddress: Address;
   agent: Address | null;

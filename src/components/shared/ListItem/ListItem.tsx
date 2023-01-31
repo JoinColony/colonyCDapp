@@ -20,6 +20,10 @@ export enum ListItemStatus {
   Defused = 'Defused',
 }
 
+const stopPropagation = (
+  e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>,
+) => e.stopPropagation();
+
 interface FormattedDateProps {
   parts: {
     value: string;
@@ -81,8 +85,8 @@ const ListItem = ({
       >
         <div
           className={styles.avatar}
-          onClick={(e) => e.stopPropagation()}
-          onKeyDown={(e) => e.stopPropagation()}
+          onClick={stopPropagation}
+          onKeyDown={stopPropagation}
           role="button"
           tabIndex={0}
         >
