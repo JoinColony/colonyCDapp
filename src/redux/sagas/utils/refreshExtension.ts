@@ -1,131 +1,154 @@
-import { Extension } from '@colony/colony-js';
+import { getExtensionHash } from '@colony/colony-js';
 
-import {
-  ColonyExtensionQuery,
-  ColonyExtensionQueryVariables,
-  ColonyExtensionDocument,
-  ColonyExtensionsQuery,
-  ColonyExtensionsQueryVariables,
-  ColonyExtensionsDocument,
-  ProcessedColonyQuery,
-  ProcessedColonyQueryVariables,
-  ProcessedColonyDocument,
-  WhitelistedUsersDocument,
-  WhitelistedUsersQuery,
-  WhitelistedUsersQueryVariables,
-  SubgraphExtensionEventsQuery,
-  SubgraphExtensionEventsQueryVariables,
-  SubgraphExtensionEventsDocument,
-  WhitelistPoliciesQuery,
-  WhitelistPoliciesQueryVariables,
-  WhitelistPoliciesDocument,
-  getLoggedInUser,
-  UserWhitelistStatusQuery,
-  UserWhitelistStatusQueryVariables,
-  UserWhitelistStatusDocument,
-  CoinMachineSalePeriodsQuery,
-  CoinMachineSalePeriodsQueryVariables,
-  CoinMachineSalePeriodsDocument,
-} from '~data/index';
+import { ADDRESS_ZERO } from '~constants';
 import { ContextModule, getContext } from '~context';
-import { PREV_PERIODS_LIMIT } from '~dashboard/CoinMachine/TokenSalesTable/TokenSalesTable';
+import {
+  GetColonyExtensionDocument,
+  GetColonyExtensionQuery,
+  GetColonyExtensionQueryVariables,
+} from '~gql';
+import { ColonyExtension, InstallableExtensionData } from '~types';
 
-export function* refreshExtension(
+const getExistingExtension = (colonyAddress: string, extensionId: string) => {
+  const apolloClient = getContext(ContextModule.ApolloClient);
+  const data = apolloClient.readQuery<
+    GetColonyExtensionQuery,
+    GetColonyExtensionQueryVariables
+  >({
+    query: GetColonyExtensionDocument,
+    variables: {
+      colonyAddress,
+      extensionHash: getExtensionHash(extensionId),
+    },
+  });
+
+  return data?.getExtensionByColonyAndHash?.items?.[0];
+};
+
+const saveExtensionInCache = (extension: ColonyExtension) => {
+  const apolloClient = getContext(ContextModule.ApolloClient);
+  apolloClient.writeQuery<
+    GetColonyExtensionQuery,
+    GetColonyExtensionQueryVariables
+  >({
+    query: GetColonyExtensionDocument,
+    variables: {
+      colonyAddress: extension.colonyAddress,
+      extensionHash: extension.hash,
+    },
+    data: {
+      getExtensionByColonyAndHash: {
+        __typename: 'ModelColonyExtensionConnection',
+        items: [extension],
+      },
+    },
+  });
+};
+
+const removeExtensionFromCache = (
   colonyAddress: string,
   extensionId: string,
-  extensionAddress?: string,
-) {
+) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
+  apolloClient.writeQuery<
+    GetColonyExtensionQuery,
+    GetColonyExtensionQueryVariables
+  >({
+    query: GetColonyExtensionDocument,
+    variables: {
+      colonyAddress,
+      extensionHash: getExtensionHash(extensionId),
+    },
+    data: {
+      getExtensionByColonyAndHash: {
+        __typename: 'ModelColonyExtensionConnection',
+        items: [],
+      },
+    },
+  });
+};
 
-  if (extensionId === Extension.Whitelist) {
-    const { walletAddress } = yield getLoggedInUser();
+export const refreshInstalledExtension = (
+  colonyAddress: string,
+  { extensionId, availableVersion }: InstallableExtensionData,
+) => {
+  const wallet = getContext(ContextModule.Wallet);
 
-    yield apolloClient.query<
-      WhitelistedUsersQuery,
-      WhitelistedUsersQueryVariables
-    >({
-      query: WhitelistedUsersDocument,
-      variables: {
-        colonyAddress,
-      },
-      fetchPolicy: 'network-only',
-    });
-    yield apolloClient.query<
-      WhitelistPoliciesQuery,
-      WhitelistPoliciesQueryVariables
-    >({
-      query: WhitelistPoliciesDocument,
-      variables: {
-        colonyAddress,
-      },
-      fetchPolicy: 'network-only',
-    });
-    yield apolloClient.query<
-      UserWhitelistStatusQuery,
-      UserWhitelistStatusQueryVariables
-    >({
-      query: UserWhitelistStatusDocument,
-      variables: {
-        colonyAddress,
-        userAddress: walletAddress,
-      },
-      fetchPolicy: 'network-only',
-    });
+  const modifiedExtension: ColonyExtension = {
+    __typename: 'ColonyExtension',
+    address: ADDRESS_ZERO,
+    colonyAddress,
+    hash: getExtensionHash(extensionId),
+    installedAt: Math.floor(Date.now() / 1000),
+    installedBy: wallet.address,
+    currentVersion: availableVersion,
+    isDeleted: false,
+    isDeprecated: false,
+    isInitialized: false,
+  };
+
+  saveExtensionInCache(modifiedExtension);
+};
+
+export const refreshDeprecatedExtension = (
+  colonyAddress: string,
+  extensionId: string,
+  isToDeprecate: boolean,
+) => {
+  const existingExtension = getExistingExtension(colonyAddress, extensionId);
+
+  if (!existingExtension) {
+    return;
   }
 
-  if (extensionId === Extension.CoinMachine) {
-    yield apolloClient.query<
-      CoinMachineSalePeriodsQuery,
-      CoinMachineSalePeriodsQueryVariables
-    >({
-      query: CoinMachineSalePeriodsDocument,
-      variables: {
-        colonyAddress,
-        limit: PREV_PERIODS_LIMIT,
-      },
-      fetchPolicy: 'network-only',
-    });
+  const modifiedExtension: ColonyExtension = {
+    ...existingExtension,
+    isDeprecated: isToDeprecate,
+  };
+
+  saveExtensionInCache(modifiedExtension);
+};
+
+export const refreshUninstalledExtension = (
+  colonyAddress: string,
+  extensionId: string,
+) => {
+  removeExtensionFromCache(colonyAddress, extensionId);
+};
+
+export const refreshEnabledExtension = (
+  colonyAddress: string,
+  extensionId: string,
+) => {
+  const existingExtension = getExistingExtension(colonyAddress, extensionId);
+
+  if (!existingExtension) {
+    return;
   }
 
-  yield apolloClient.query<ColonyExtensionQuery, ColonyExtensionQueryVariables>(
-    {
-      query: ColonyExtensionDocument,
-      variables: {
-        colonyAddress,
-        extensionId,
-      },
-      fetchPolicy: 'network-only',
-    },
-  );
-  yield apolloClient.query<
-    ColonyExtensionsQuery,
-    ColonyExtensionsQueryVariables
-  >({
-    query: ColonyExtensionsDocument,
-    variables: {
-      address: colonyAddress,
-    },
-    fetchPolicy: 'network-only',
-  });
-  yield apolloClient.query<ProcessedColonyQuery, ProcessedColonyQueryVariables>(
-    {
-      query: ProcessedColonyDocument,
-      variables: {
-        address: colonyAddress,
-      },
-      fetchPolicy: 'network-only',
-    },
-  );
+  const modifiedExtension: ColonyExtension = {
+    ...existingExtension,
+    isInitialized: true,
+  };
 
-  yield apolloClient.query<
-    SubgraphExtensionEventsQuery,
-    SubgraphExtensionEventsQueryVariables
-  >({
-    query: SubgraphExtensionEventsDocument,
-    variables: {
-      colonyAddress: colonyAddress.toLowerCase(),
-      extensionAddress: extensionAddress?.toLowerCase() || '',
-    },
-    fetchPolicy: 'network-only',
-  });
-}
+  saveExtensionInCache(modifiedExtension);
+};
+
+export const refreshUpgradedExtension = (
+  colonyAddress: string,
+  extensionId: string,
+  version: number,
+) => {
+  const existingExtension = getExistingExtension(colonyAddress, extensionId);
+
+  if (!existingExtension) {
+    return;
+  }
+
+  const modifiedExtension: ColonyExtension = {
+    ...existingExtension,
+    currentVersion: version,
+  };
+
+  saveExtensionInCache(modifiedExtension);
+};

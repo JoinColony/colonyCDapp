@@ -35,9 +35,13 @@ export type Scalars = {
 
 export type Colony = {
   __typename?: 'Colony';
+  balances?: Maybe<ColonyBalances>;
+  chainFundsClaim?: Maybe<ColonyChainFundsClaim>;
   colonyNativeTokenId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   domains?: Maybe<ModelDomainConnection>;
+  extensions?: Maybe<ModelColonyExtensionConnection>;
+  fundsClaims?: Maybe<ModelColonyFundsClaimConnection>;
   id: Scalars['ID'];
   meta?: Maybe<Metadata>;
   name: Scalars['String'];
@@ -48,12 +52,30 @@ export type Colony = {
   tokens?: Maybe<ModelColonyTokensConnection>;
   type?: Maybe<ColonyType>;
   updatedAt: Scalars['AWSDateTime'];
+  version: Scalars['Int'];
   watchers?: Maybe<ModelWatchedColoniesConnection>;
 };
 
 
 export type ColonyDomainsArgs = {
   filter?: InputMaybe<ModelDomainFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+export type ColonyExtensionsArgs = {
+  filter?: InputMaybe<ModelColonyExtensionFilterInput>;
+  hash?: InputMaybe<ModelStringKeyConditionInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+export type ColonyFundsClaimsArgs = {
+  filter?: InputMaybe<ModelColonyFundsClaimFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
@@ -73,6 +95,75 @@ export type ColonyWatchersArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+export type ColonyBalance = {
+  __typename?: 'ColonyBalance';
+  balance: Scalars['String'];
+  domain: Domain;
+  id: Scalars['ID'];
+  token: Token;
+};
+
+export type ColonyBalanceInput = {
+  balance: Scalars['String'];
+  domain: DomainInput;
+  id?: InputMaybe<Scalars['ID']>;
+  token: TokenInput;
+};
+
+export type ColonyBalances = {
+  __typename?: 'ColonyBalances';
+  items?: Maybe<Array<Maybe<ColonyBalance>>>;
+};
+
+export type ColonyBalancesInput = {
+  items?: InputMaybe<Array<InputMaybe<ColonyBalanceInput>>>;
+};
+
+export type ColonyChainFundsClaim = {
+  __typename?: 'ColonyChainFundsClaim';
+  amount: Scalars['String'];
+  createdAt: Scalars['AWSDateTime'];
+  createdAtBlock: Scalars['Int'];
+  id: Scalars['ID'];
+  updatedAt: Scalars['AWSDateTime'];
+};
+
+export type ColonyChainFundsClaimInput = {
+  amount: Scalars['String'];
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  createdAtBlock: Scalars['Int'];
+  id?: InputMaybe<Scalars['ID']>;
+  updatedAt?: InputMaybe<Scalars['AWSDateTime']>;
+};
+
+export type ColonyExtension = {
+  __typename?: 'ColonyExtension';
+  colony: Colony;
+  colonyId: Scalars['ID'];
+  createdAt: Scalars['AWSDateTime'];
+  hash: Scalars['String'];
+  id: Scalars['ID'];
+  installedAt: Scalars['AWSTimestamp'];
+  installedBy: Scalars['String'];
+  isDeleted: Scalars['Boolean'];
+  isDeprecated: Scalars['Boolean'];
+  isInitialized: Scalars['Boolean'];
+  updatedAt: Scalars['AWSDateTime'];
+  version: Scalars['Int'];
+};
+
+export type ColonyFundsClaim = {
+  __typename?: 'ColonyFundsClaim';
+  amount: Scalars['String'];
+  colonyFundsClaimTokenId: Scalars['ID'];
+  colonyFundsClaimsId?: Maybe<Scalars['ID']>;
+  createdAt: Scalars['AWSDateTime'];
+  createdAtBlock: Scalars['Int'];
+  id: Scalars['ID'];
+  token: Token;
+  updatedAt: Scalars['AWSDateTime'];
 };
 
 export type ColonyId = {
@@ -107,7 +198,51 @@ export enum ColonyType {
   Metacolony = 'METACOLONY'
 }
 
+export type ContractEvent = {
+  __typename?: 'ContractEvent';
+  agent: Scalars['String'];
+  colony?: Maybe<Colony>;
+  contractEventColonyId?: Maybe<Scalars['ID']>;
+  contractEventDomainId?: Maybe<Scalars['ID']>;
+  contractEventTokenId?: Maybe<Scalars['ID']>;
+  contractEventUserId?: Maybe<Scalars['ID']>;
+  createdAt: Scalars['AWSDateTime'];
+  domain?: Maybe<Domain>;
+  encodedArguments?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  meta: Metadata;
+  name: Scalars['String'];
+  signature: Scalars['String'];
+  target: Scalars['String'];
+  token?: Maybe<Token>;
+  updatedAt: Scalars['AWSDateTime'];
+  user?: Maybe<User>;
+};
+
+export type CreateColonyExtensionInput = {
+  colonyId: Scalars['ID'];
+  hash: Scalars['String'];
+  id?: InputMaybe<Scalars['ID']>;
+  installedAt: Scalars['AWSTimestamp'];
+  installedBy: Scalars['String'];
+  isDeleted: Scalars['Boolean'];
+  isDeprecated: Scalars['Boolean'];
+  isInitialized: Scalars['Boolean'];
+  version: Scalars['Int'];
+};
+
+export type CreateColonyFundsClaimInput = {
+  amount: Scalars['String'];
+  colonyFundsClaimTokenId: Scalars['ID'];
+  colonyFundsClaimsId?: InputMaybe<Scalars['ID']>;
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  createdAtBlock: Scalars['Int'];
+  id?: InputMaybe<Scalars['ID']>;
+};
+
 export type CreateColonyInput = {
+  balances?: InputMaybe<ColonyBalancesInput>;
+  chainFundsClaim?: InputMaybe<ColonyChainFundsClaimInput>;
   colonyNativeTokenId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
   meta?: InputMaybe<MetadataInput>;
@@ -115,12 +250,33 @@ export type CreateColonyInput = {
   profileId?: InputMaybe<Scalars['ID']>;
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
+  version: Scalars['Int'];
 };
 
 export type CreateColonyTokensInput = {
   colonyID: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
   tokenID: Scalars['ID'];
+};
+
+export type CreateContractEventInput = {
+  agent: Scalars['String'];
+  contractEventColonyId?: InputMaybe<Scalars['ID']>;
+  contractEventDomainId?: InputMaybe<Scalars['ID']>;
+  contractEventTokenId?: InputMaybe<Scalars['ID']>;
+  contractEventUserId?: InputMaybe<Scalars['ID']>;
+  encodedArguments?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  meta: MetadataInput;
+  name: Scalars['String'];
+  signature: Scalars['String'];
+  target: Scalars['String'];
+};
+
+export type CreateCurrentVersionInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  key: Scalars['String'];
+  version: Scalars['Int'];
 };
 
 export type CreateDomainInput = {
@@ -130,7 +286,9 @@ export type CreateDomainInput = {
   domainParentId?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  nativeFundingPotId: Scalars['Int'];
   nativeId: Scalars['Int'];
+  nativeSkillId: Scalars['Int'];
 };
 
 export type CreateProfileInput = {
@@ -147,6 +305,7 @@ export type CreateProfileInput = {
 
 export type CreateTokenInput = {
   avatar?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   decimals: Scalars['Int'];
   id?: InputMaybe<Scalars['ID']>;
   meta?: InputMaybe<MetadataInput>;
@@ -164,6 +323,7 @@ export type CreateUniqueColonyInput = {
   profile?: InputMaybe<ProfileInput>;
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
+  version: Scalars['Int'];
 };
 
 export type CreateUniqueDomainInput = {
@@ -198,11 +358,36 @@ export type CreateWatchedColoniesInput = {
   userID: Scalars['ID'];
 };
 
+export type CurrentVersion = {
+  __typename?: 'CurrentVersion';
+  createdAt: Scalars['AWSDateTime'];
+  id: Scalars['ID'];
+  key: Scalars['String'];
+  updatedAt: Scalars['AWSDateTime'];
+  version: Scalars['Int'];
+};
+
+export type DeleteColonyExtensionInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteColonyFundsClaimInput = {
+  id: Scalars['ID'];
+};
+
 export type DeleteColonyInput = {
   id: Scalars['ID'];
 };
 
 export type DeleteColonyTokensInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteContractEventInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteCurrentVersionInput = {
   id: Scalars['ID'];
 };
 
@@ -239,7 +424,9 @@ export type Domain = {
   domainParentId?: Maybe<Scalars['ID']>;
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
+  nativeFundingPotId: Scalars['Int'];
   nativeId: Scalars['Int'];
+  nativeSkillId: Scalars['Int'];
   parent?: Maybe<Domain>;
   updatedAt: Scalars['AWSDateTime'];
 };
@@ -262,6 +449,10 @@ export enum DomainColor {
   Red = 'RED',
   Yellow = 'YELLOW'
 }
+
+export type DomainInput = {
+  id: Scalars['ID'];
+};
 
 export enum EmailPermissions {
   IsHuman = 'isHuman',
@@ -288,13 +479,19 @@ export type GetUserReputationInput = {
 
 export type Metadata = {
   __typename?: 'Metadata';
+  blockNumber?: Maybe<Scalars['Int']>;
   chainId?: Maybe<Scalars['Int']>;
+  logIndex?: Maybe<Scalars['Int']>;
   network?: Maybe<Network>;
+  transactionHash?: Maybe<Scalars['String']>;
 };
 
 export type MetadataInput = {
+  blockNumber?: InputMaybe<Scalars['Int']>;
   chainId?: InputMaybe<Scalars['Int']>;
+  logIndex?: InputMaybe<Scalars['Int']>;
   network?: InputMaybe<Network>;
+  transactionHash?: InputMaybe<Scalars['String']>;
 };
 
 export enum ModelAttributeTypes {
@@ -325,12 +522,48 @@ export type ModelColonyConditionInput = {
   or?: InputMaybe<Array<InputMaybe<ModelColonyConditionInput>>>;
   profileId?: InputMaybe<ModelIdInput>;
   type?: InputMaybe<ModelColonyTypeInput>;
+  version?: InputMaybe<ModelIntInput>;
 };
 
 export type ModelColonyConnection = {
   __typename?: 'ModelColonyConnection';
   items: Array<Maybe<Colony>>;
   nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelColonyExtensionConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelColonyExtensionConditionInput>>>;
+  colonyId?: InputMaybe<ModelIdInput>;
+  hash?: InputMaybe<ModelStringInput>;
+  installedAt?: InputMaybe<ModelIntInput>;
+  installedBy?: InputMaybe<ModelStringInput>;
+  isDeleted?: InputMaybe<ModelBooleanInput>;
+  isDeprecated?: InputMaybe<ModelBooleanInput>;
+  isInitialized?: InputMaybe<ModelBooleanInput>;
+  not?: InputMaybe<ModelColonyExtensionConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonyExtensionConditionInput>>>;
+  version?: InputMaybe<ModelIntInput>;
+};
+
+export type ModelColonyExtensionConnection = {
+  __typename?: 'ModelColonyExtensionConnection';
+  items: Array<Maybe<ColonyExtension>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelColonyExtensionFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelColonyExtensionFilterInput>>>;
+  colonyId?: InputMaybe<ModelIdInput>;
+  hash?: InputMaybe<ModelStringInput>;
+  id?: InputMaybe<ModelIdInput>;
+  installedAt?: InputMaybe<ModelIntInput>;
+  installedBy?: InputMaybe<ModelStringInput>;
+  isDeleted?: InputMaybe<ModelBooleanInput>;
+  isDeprecated?: InputMaybe<ModelBooleanInput>;
+  isInitialized?: InputMaybe<ModelBooleanInput>;
+  not?: InputMaybe<ModelColonyExtensionFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonyExtensionFilterInput>>>;
+  version?: InputMaybe<ModelIntInput>;
 };
 
 export type ModelColonyFilterInput = {
@@ -342,6 +575,36 @@ export type ModelColonyFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelColonyFilterInput>>>;
   profileId?: InputMaybe<ModelIdInput>;
   type?: InputMaybe<ModelColonyTypeInput>;
+  version?: InputMaybe<ModelIntInput>;
+};
+
+export type ModelColonyFundsClaimConditionInput = {
+  amount?: InputMaybe<ModelStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelColonyFundsClaimConditionInput>>>;
+  colonyFundsClaimTokenId?: InputMaybe<ModelIdInput>;
+  colonyFundsClaimsId?: InputMaybe<ModelIdInput>;
+  createdAt?: InputMaybe<ModelStringInput>;
+  createdAtBlock?: InputMaybe<ModelIntInput>;
+  not?: InputMaybe<ModelColonyFundsClaimConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonyFundsClaimConditionInput>>>;
+};
+
+export type ModelColonyFundsClaimConnection = {
+  __typename?: 'ModelColonyFundsClaimConnection';
+  items: Array<Maybe<ColonyFundsClaim>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelColonyFundsClaimFilterInput = {
+  amount?: InputMaybe<ModelStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelColonyFundsClaimFilterInput>>>;
+  colonyFundsClaimTokenId?: InputMaybe<ModelIdInput>;
+  colonyFundsClaimsId?: InputMaybe<ModelIdInput>;
+  createdAt?: InputMaybe<ModelStringInput>;
+  createdAtBlock?: InputMaybe<ModelIntInput>;
+  id?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelColonyFundsClaimFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonyFundsClaimFilterInput>>>;
 };
 
 export type ModelColonyTokensConditionInput = {
@@ -372,6 +635,66 @@ export type ModelColonyTypeInput = {
   ne?: InputMaybe<ColonyType>;
 };
 
+export type ModelContractEventConditionInput = {
+  agent?: InputMaybe<ModelStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelContractEventConditionInput>>>;
+  contractEventColonyId?: InputMaybe<ModelIdInput>;
+  contractEventDomainId?: InputMaybe<ModelIdInput>;
+  contractEventTokenId?: InputMaybe<ModelIdInput>;
+  contractEventUserId?: InputMaybe<ModelIdInput>;
+  encodedArguments?: InputMaybe<ModelStringInput>;
+  name?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelContractEventConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelContractEventConditionInput>>>;
+  signature?: InputMaybe<ModelStringInput>;
+  target?: InputMaybe<ModelStringInput>;
+};
+
+export type ModelContractEventConnection = {
+  __typename?: 'ModelContractEventConnection';
+  items: Array<Maybe<ContractEvent>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelContractEventFilterInput = {
+  agent?: InputMaybe<ModelStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelContractEventFilterInput>>>;
+  contractEventColonyId?: InputMaybe<ModelIdInput>;
+  contractEventDomainId?: InputMaybe<ModelIdInput>;
+  contractEventTokenId?: InputMaybe<ModelIdInput>;
+  contractEventUserId?: InputMaybe<ModelIdInput>;
+  encodedArguments?: InputMaybe<ModelStringInput>;
+  id?: InputMaybe<ModelIdInput>;
+  name?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelContractEventFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelContractEventFilterInput>>>;
+  signature?: InputMaybe<ModelStringInput>;
+  target?: InputMaybe<ModelStringInput>;
+};
+
+export type ModelCurrentVersionConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelCurrentVersionConditionInput>>>;
+  key?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelCurrentVersionConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelCurrentVersionConditionInput>>>;
+  version?: InputMaybe<ModelIntInput>;
+};
+
+export type ModelCurrentVersionConnection = {
+  __typename?: 'ModelCurrentVersionConnection';
+  items: Array<Maybe<CurrentVersion>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelCurrentVersionFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelCurrentVersionFilterInput>>>;
+  id?: InputMaybe<ModelIdInput>;
+  key?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelCurrentVersionFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelCurrentVersionFilterInput>>>;
+  version?: InputMaybe<ModelIntInput>;
+};
+
 export type ModelDomainColorInput = {
   eq?: InputMaybe<DomainColor>;
   ne?: InputMaybe<DomainColor>;
@@ -384,7 +707,9 @@ export type ModelDomainConditionInput = {
   description?: InputMaybe<ModelStringInput>;
   domainParentId?: InputMaybe<ModelIdInput>;
   name?: InputMaybe<ModelStringInput>;
+  nativeFundingPotId?: InputMaybe<ModelIntInput>;
   nativeId?: InputMaybe<ModelIntInput>;
+  nativeSkillId?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelDomainConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelDomainConditionInput>>>;
 };
@@ -403,7 +728,9 @@ export type ModelDomainFilterInput = {
   domainParentId?: InputMaybe<ModelIdInput>;
   id?: InputMaybe<ModelIdInput>;
   name?: InputMaybe<ModelStringInput>;
+  nativeFundingPotId?: InputMaybe<ModelIntInput>;
   nativeId?: InputMaybe<ModelIntInput>;
+  nativeSkillId?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelDomainFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelDomainFilterInput>>>;
 };
@@ -446,6 +773,15 @@ export type ModelIntInput = {
   le?: InputMaybe<Scalars['Int']>;
   lt?: InputMaybe<Scalars['Int']>;
   ne?: InputMaybe<Scalars['Int']>;
+};
+
+export type ModelIntKeyConditionInput = {
+  between?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  eq?: InputMaybe<Scalars['Int']>;
+  ge?: InputMaybe<Scalars['Int']>;
+  gt?: InputMaybe<Scalars['Int']>;
+  le?: InputMaybe<Scalars['Int']>;
+  lt?: InputMaybe<Scalars['Int']>;
 };
 
 export type ModelProfileConditionInput = {
@@ -512,9 +848,33 @@ export type ModelStringInput = {
   size?: InputMaybe<ModelSizeInput>;
 };
 
+export type ModelStringKeyConditionInput = {
+  beginsWith?: InputMaybe<Scalars['String']>;
+  between?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  eq?: InputMaybe<Scalars['String']>;
+  ge?: InputMaybe<Scalars['String']>;
+  gt?: InputMaybe<Scalars['String']>;
+  le?: InputMaybe<Scalars['String']>;
+  lt?: InputMaybe<Scalars['String']>;
+};
+
 export type ModelSubscriptionBooleanInput = {
   eq?: InputMaybe<Scalars['Boolean']>;
   ne?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type ModelSubscriptionColonyExtensionFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyExtensionFilterInput>>>;
+  colonyId?: InputMaybe<ModelSubscriptionIdInput>;
+  hash?: InputMaybe<ModelSubscriptionStringInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  installedAt?: InputMaybe<ModelSubscriptionIntInput>;
+  installedBy?: InputMaybe<ModelSubscriptionStringInput>;
+  isDeleted?: InputMaybe<ModelSubscriptionBooleanInput>;
+  isDeprecated?: InputMaybe<ModelSubscriptionBooleanInput>;
+  isInitialized?: InputMaybe<ModelSubscriptionBooleanInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyExtensionFilterInput>>>;
+  version?: InputMaybe<ModelSubscriptionIntInput>;
 };
 
 export type ModelSubscriptionColonyFilterInput = {
@@ -524,6 +884,16 @@ export type ModelSubscriptionColonyFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyFilterInput>>>;
   profileId?: InputMaybe<ModelSubscriptionIdInput>;
   type?: InputMaybe<ModelSubscriptionStringInput>;
+  version?: InputMaybe<ModelSubscriptionIntInput>;
+};
+
+export type ModelSubscriptionColonyFundsClaimFilterInput = {
+  amount?: InputMaybe<ModelSubscriptionStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>>>;
+  createdAt?: InputMaybe<ModelSubscriptionStringInput>;
+  createdAtBlock?: InputMaybe<ModelSubscriptionIntInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>>>;
 };
 
 export type ModelSubscriptionColonyTokensFilterInput = {
@@ -534,13 +904,34 @@ export type ModelSubscriptionColonyTokensFilterInput = {
   tokenID?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
+export type ModelSubscriptionContractEventFilterInput = {
+  agent?: InputMaybe<ModelSubscriptionStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionContractEventFilterInput>>>;
+  encodedArguments?: InputMaybe<ModelSubscriptionStringInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  name?: InputMaybe<ModelSubscriptionStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionContractEventFilterInput>>>;
+  signature?: InputMaybe<ModelSubscriptionStringInput>;
+  target?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
+export type ModelSubscriptionCurrentVersionFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionCurrentVersionFilterInput>>>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  key?: InputMaybe<ModelSubscriptionStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionCurrentVersionFilterInput>>>;
+  version?: InputMaybe<ModelSubscriptionIntInput>;
+};
+
 export type ModelSubscriptionDomainFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionDomainFilterInput>>>;
   color?: InputMaybe<ModelSubscriptionStringInput>;
   description?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   name?: InputMaybe<ModelSubscriptionStringInput>;
+  nativeFundingPotId?: InputMaybe<ModelSubscriptionIntInput>;
   nativeId?: InputMaybe<ModelSubscriptionIntInput>;
+  nativeSkillId?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionDomainFilterInput>>>;
 };
 
@@ -614,6 +1005,7 @@ export type ModelSubscriptionStringInput = {
 export type ModelSubscriptionTokenFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionTokenFilterInput>>>;
   avatar?: InputMaybe<ModelSubscriptionStringInput>;
+  createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   decimals?: InputMaybe<ModelSubscriptionIntInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   name?: InputMaybe<ModelSubscriptionStringInput>;
@@ -650,6 +1042,7 @@ export type ModelSubscriptionWatchedColoniesFilterInput = {
 export type ModelTokenConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelTokenConditionInput>>>;
   avatar?: InputMaybe<ModelStringInput>;
+  createdAt?: InputMaybe<ModelStringInput>;
   decimals?: InputMaybe<ModelIntInput>;
   name?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelTokenConditionInput>;
@@ -668,6 +1061,7 @@ export type ModelTokenConnection = {
 export type ModelTokenFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelTokenFilterInput>>>;
   avatar?: InputMaybe<ModelStringInput>;
+  createdAt?: InputMaybe<ModelStringInput>;
   decimals?: InputMaybe<ModelIntInput>;
   id?: InputMaybe<ModelIdInput>;
   name?: InputMaybe<ModelStringInput>;
@@ -755,27 +1149,41 @@ export type ModelWatchedColoniesFilterInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createColony?: Maybe<Colony>;
+  createColonyExtension?: Maybe<ColonyExtension>;
+  createColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   createColonyTokens?: Maybe<ColonyTokens>;
+  createContractEvent?: Maybe<ContractEvent>;
+  createCurrentVersion?: Maybe<CurrentVersion>;
   createDomain?: Maybe<Domain>;
   createProfile?: Maybe<Profile>;
   createToken?: Maybe<Token>;
-  createUniqueColony?: Maybe<ColonyId>;
+  createUniqueColony?: Maybe<Colony>;
   createUniqueDomain?: Maybe<Domain>;
   createUniqueUser?: Maybe<User>;
   createUser?: Maybe<User>;
   createUserTokens?: Maybe<UserTokens>;
   createWatchedColonies?: Maybe<WatchedColonies>;
   deleteColony?: Maybe<Colony>;
+  deleteColonyExtension?: Maybe<ColonyExtension>;
+  deleteColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   deleteColonyTokens?: Maybe<ColonyTokens>;
+  deleteContractEvent?: Maybe<ContractEvent>;
+  deleteCurrentVersion?: Maybe<CurrentVersion>;
   deleteDomain?: Maybe<Domain>;
   deleteProfile?: Maybe<Profile>;
   deleteToken?: Maybe<Token>;
   deleteUser?: Maybe<User>;
   deleteUserTokens?: Maybe<UserTokens>;
   deleteWatchedColonies?: Maybe<WatchedColonies>;
+  setCurrentVersion?: Maybe<Scalars['Boolean']>;
   updateColony?: Maybe<Colony>;
+  updateColonyExtension?: Maybe<ColonyExtension>;
+  updateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   updateColonyTokens?: Maybe<ColonyTokens>;
+  updateContractEvent?: Maybe<ContractEvent>;
+  updateCurrentVersion?: Maybe<CurrentVersion>;
   updateDomain?: Maybe<Domain>;
+  updateExtensionByColonyAndHash?: Maybe<ColonyExtension>;
   updateProfile?: Maybe<Profile>;
   updateToken?: Maybe<Token>;
   updateUser?: Maybe<User>;
@@ -790,9 +1198,33 @@ export type MutationCreateColonyArgs = {
 };
 
 
+export type MutationCreateColonyExtensionArgs = {
+  condition?: InputMaybe<ModelColonyExtensionConditionInput>;
+  input: CreateColonyExtensionInput;
+};
+
+
+export type MutationCreateColonyFundsClaimArgs = {
+  condition?: InputMaybe<ModelColonyFundsClaimConditionInput>;
+  input: CreateColonyFundsClaimInput;
+};
+
+
 export type MutationCreateColonyTokensArgs = {
   condition?: InputMaybe<ModelColonyTokensConditionInput>;
   input: CreateColonyTokensInput;
+};
+
+
+export type MutationCreateContractEventArgs = {
+  condition?: InputMaybe<ModelContractEventConditionInput>;
+  input: CreateContractEventInput;
+};
+
+
+export type MutationCreateCurrentVersionArgs = {
+  condition?: InputMaybe<ModelCurrentVersionConditionInput>;
+  input: CreateCurrentVersionInput;
 };
 
 
@@ -853,9 +1285,33 @@ export type MutationDeleteColonyArgs = {
 };
 
 
+export type MutationDeleteColonyExtensionArgs = {
+  condition?: InputMaybe<ModelColonyExtensionConditionInput>;
+  input: DeleteColonyExtensionInput;
+};
+
+
+export type MutationDeleteColonyFundsClaimArgs = {
+  condition?: InputMaybe<ModelColonyFundsClaimConditionInput>;
+  input: DeleteColonyFundsClaimInput;
+};
+
+
 export type MutationDeleteColonyTokensArgs = {
   condition?: InputMaybe<ModelColonyTokensConditionInput>;
   input: DeleteColonyTokensInput;
+};
+
+
+export type MutationDeleteContractEventArgs = {
+  condition?: InputMaybe<ModelContractEventConditionInput>;
+  input: DeleteContractEventInput;
+};
+
+
+export type MutationDeleteCurrentVersionArgs = {
+  condition?: InputMaybe<ModelCurrentVersionConditionInput>;
+  input: DeleteCurrentVersionInput;
 };
 
 
@@ -895,9 +1351,26 @@ export type MutationDeleteWatchedColoniesArgs = {
 };
 
 
+export type MutationSetCurrentVersionArgs = {
+  input?: InputMaybe<SetCurrentVersionInput>;
+};
+
+
 export type MutationUpdateColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: UpdateColonyInput;
+};
+
+
+export type MutationUpdateColonyExtensionArgs = {
+  condition?: InputMaybe<ModelColonyExtensionConditionInput>;
+  input: UpdateColonyExtensionInput;
+};
+
+
+export type MutationUpdateColonyFundsClaimArgs = {
+  condition?: InputMaybe<ModelColonyFundsClaimConditionInput>;
+  input: UpdateColonyFundsClaimInput;
 };
 
 
@@ -907,9 +1380,26 @@ export type MutationUpdateColonyTokensArgs = {
 };
 
 
+export type MutationUpdateContractEventArgs = {
+  condition?: InputMaybe<ModelContractEventConditionInput>;
+  input: UpdateContractEventInput;
+};
+
+
+export type MutationUpdateCurrentVersionArgs = {
+  condition?: InputMaybe<ModelCurrentVersionConditionInput>;
+  input: UpdateCurrentVersionInput;
+};
+
+
 export type MutationUpdateDomainArgs = {
   condition?: InputMaybe<ModelDomainConditionInput>;
   input: UpdateDomainInput;
+};
+
+
+export type MutationUpdateExtensionByColonyAndHashArgs = {
+  input?: InputMaybe<UpdateExtensionByColonyAndHashInput>;
 };
 
 
@@ -1005,8 +1495,14 @@ export type Query = {
   getColonyByAddress?: Maybe<ModelColonyConnection>;
   getColonyByName?: Maybe<ModelColonyConnection>;
   getColonyByType?: Maybe<ModelColonyConnection>;
+  getColonyExtension?: Maybe<ColonyExtension>;
+  getColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   getColonyTokens?: Maybe<ColonyTokens>;
+  getContractEvent?: Maybe<ContractEvent>;
+  getCurrentVersion?: Maybe<CurrentVersion>;
+  getCurrentVersionByKey?: Maybe<ModelCurrentVersionConnection>;
   getDomain?: Maybe<Domain>;
+  getExtensionByColonyAndHash?: Maybe<ModelColonyExtensionConnection>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
@@ -1021,7 +1517,11 @@ export type Query = {
   getUserTokens?: Maybe<UserTokens>;
   getWatchedColonies?: Maybe<WatchedColonies>;
   listColonies?: Maybe<ModelColonyConnection>;
+  listColonyExtensions?: Maybe<ModelColonyExtensionConnection>;
+  listColonyFundsClaims?: Maybe<ModelColonyFundsClaimConnection>;
   listColonyTokens?: Maybe<ModelColonyTokensConnection>;
+  listContractEvents?: Maybe<ModelContractEventConnection>;
+  listCurrentVersions?: Maybe<ModelCurrentVersionConnection>;
   listDomains?: Maybe<ModelDomainConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
   listTokens?: Maybe<ModelTokenConnection>;
@@ -1063,13 +1563,52 @@ export type QueryGetColonyByTypeArgs = {
 };
 
 
+export type QueryGetColonyExtensionArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGetColonyFundsClaimArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type QueryGetColonyTokensArgs = {
   id: Scalars['ID'];
 };
 
 
+export type QueryGetContractEventArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGetCurrentVersionArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGetCurrentVersionByKeyArgs = {
+  filter?: InputMaybe<ModelCurrentVersionFilterInput>;
+  key: Scalars['String'];
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
 export type QueryGetDomainArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryGetExtensionByColonyAndHashArgs = {
+  colonyId: Scalars['ID'];
+  filter?: InputMaybe<ModelColonyExtensionFilterInput>;
+  hash?: InputMaybe<ModelStringKeyConditionInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -1165,8 +1704,36 @@ export type QueryListColoniesArgs = {
 };
 
 
+export type QueryListColonyExtensionsArgs = {
+  filter?: InputMaybe<ModelColonyExtensionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryListColonyFundsClaimsArgs = {
+  filter?: InputMaybe<ModelColonyFundsClaimFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryListColonyTokensArgs = {
   filter?: InputMaybe<ModelColonyTokensFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryListContractEventsArgs = {
+  filter?: InputMaybe<ModelContractEventFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryListCurrentVersionsArgs = {
+  filter?: InputMaybe<ModelCurrentVersionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
@@ -1213,10 +1780,19 @@ export type QueryListWatchedColoniesArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
+export type SetCurrentVersionInput = {
+  key: Scalars['String'];
+  version: Scalars['Int'];
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   onCreateColony?: Maybe<Colony>;
+  onCreateColonyExtension?: Maybe<ColonyExtension>;
+  onCreateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   onCreateColonyTokens?: Maybe<ColonyTokens>;
+  onCreateContractEvent?: Maybe<ContractEvent>;
+  onCreateCurrentVersion?: Maybe<CurrentVersion>;
   onCreateDomain?: Maybe<Domain>;
   onCreateProfile?: Maybe<Profile>;
   onCreateToken?: Maybe<Token>;
@@ -1224,7 +1800,11 @@ export type Subscription = {
   onCreateUserTokens?: Maybe<UserTokens>;
   onCreateWatchedColonies?: Maybe<WatchedColonies>;
   onDeleteColony?: Maybe<Colony>;
+  onDeleteColonyExtension?: Maybe<ColonyExtension>;
+  onDeleteColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   onDeleteColonyTokens?: Maybe<ColonyTokens>;
+  onDeleteContractEvent?: Maybe<ContractEvent>;
+  onDeleteCurrentVersion?: Maybe<CurrentVersion>;
   onDeleteDomain?: Maybe<Domain>;
   onDeleteProfile?: Maybe<Profile>;
   onDeleteToken?: Maybe<Token>;
@@ -1232,7 +1812,11 @@ export type Subscription = {
   onDeleteUserTokens?: Maybe<UserTokens>;
   onDeleteWatchedColonies?: Maybe<WatchedColonies>;
   onUpdateColony?: Maybe<Colony>;
+  onUpdateColonyExtension?: Maybe<ColonyExtension>;
+  onUpdateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   onUpdateColonyTokens?: Maybe<ColonyTokens>;
+  onUpdateContractEvent?: Maybe<ContractEvent>;
+  onUpdateCurrentVersion?: Maybe<CurrentVersion>;
   onUpdateDomain?: Maybe<Domain>;
   onUpdateProfile?: Maybe<Profile>;
   onUpdateToken?: Maybe<Token>;
@@ -1247,8 +1831,28 @@ export type SubscriptionOnCreateColonyArgs = {
 };
 
 
+export type SubscriptionOnCreateColonyExtensionArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyExtensionFilterInput>;
+};
+
+
+export type SubscriptionOnCreateColonyFundsClaimArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>;
+};
+
+
 export type SubscriptionOnCreateColonyTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyTokensFilterInput>;
+};
+
+
+export type SubscriptionOnCreateContractEventArgs = {
+  filter?: InputMaybe<ModelSubscriptionContractEventFilterInput>;
+};
+
+
+export type SubscriptionOnCreateCurrentVersionArgs = {
+  filter?: InputMaybe<ModelSubscriptionCurrentVersionFilterInput>;
 };
 
 
@@ -1287,8 +1891,28 @@ export type SubscriptionOnDeleteColonyArgs = {
 };
 
 
+export type SubscriptionOnDeleteColonyExtensionArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyExtensionFilterInput>;
+};
+
+
+export type SubscriptionOnDeleteColonyFundsClaimArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteColonyTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyTokensFilterInput>;
+};
+
+
+export type SubscriptionOnDeleteContractEventArgs = {
+  filter?: InputMaybe<ModelSubscriptionContractEventFilterInput>;
+};
+
+
+export type SubscriptionOnDeleteCurrentVersionArgs = {
+  filter?: InputMaybe<ModelSubscriptionCurrentVersionFilterInput>;
 };
 
 
@@ -1327,8 +1951,28 @@ export type SubscriptionOnUpdateColonyArgs = {
 };
 
 
+export type SubscriptionOnUpdateColonyExtensionArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyExtensionFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateColonyFundsClaimArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>;
+};
+
+
 export type SubscriptionOnUpdateColonyTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyTokensFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateContractEventArgs = {
+  filter?: InputMaybe<ModelSubscriptionContractEventFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateCurrentVersionArgs = {
+  filter?: InputMaybe<ModelSubscriptionCurrentVersionFilterInput>;
 };
 
 
@@ -1402,25 +2046,74 @@ export type TokenFromEverywhereReturn = {
   items?: Maybe<Array<Maybe<Token>>>;
 };
 
+export type TokenInput = {
+  id: Scalars['ID'];
+};
+
 export enum TokenType {
+  ChainNative = 'CHAIN_NATIVE',
   Colony = 'COLONY',
   Erc20 = 'ERC20'
 }
 
+export type UpdateColonyExtensionInput = {
+  colonyId?: InputMaybe<Scalars['ID']>;
+  hash?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  installedAt?: InputMaybe<Scalars['AWSTimestamp']>;
+  installedBy?: InputMaybe<Scalars['String']>;
+  isDeleted?: InputMaybe<Scalars['Boolean']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  isInitialized?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+};
+
+export type UpdateColonyFundsClaimInput = {
+  amount?: InputMaybe<Scalars['String']>;
+  colonyFundsClaimTokenId?: InputMaybe<Scalars['ID']>;
+  colonyFundsClaimsId?: InputMaybe<Scalars['ID']>;
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  createdAtBlock?: InputMaybe<Scalars['Int']>;
+  id: Scalars['ID'];
+};
+
 export type UpdateColonyInput = {
-  colonyNativeTokenId: Scalars['ID'];
+  balances?: InputMaybe<ColonyBalancesInput>;
+  chainFundsClaim?: InputMaybe<ColonyChainFundsClaimInput>;
+  colonyNativeTokenId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
   meta?: InputMaybe<MetadataInput>;
   name?: InputMaybe<Scalars['String']>;
   profileId?: InputMaybe<Scalars['ID']>;
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
+  version?: InputMaybe<Scalars['Int']>;
 };
 
 export type UpdateColonyTokensInput = {
   colonyID?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
   tokenID?: InputMaybe<Scalars['ID']>;
+};
+
+export type UpdateContractEventInput = {
+  agent?: InputMaybe<Scalars['String']>;
+  contractEventColonyId?: InputMaybe<Scalars['ID']>;
+  contractEventDomainId?: InputMaybe<Scalars['ID']>;
+  contractEventTokenId?: InputMaybe<Scalars['ID']>;
+  contractEventUserId?: InputMaybe<Scalars['ID']>;
+  encodedArguments?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  meta?: InputMaybe<MetadataInput>;
+  name?: InputMaybe<Scalars['String']>;
+  signature?: InputMaybe<Scalars['String']>;
+  target?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateCurrentVersionInput = {
+  id: Scalars['ID'];
+  key?: InputMaybe<Scalars['String']>;
+  version?: InputMaybe<Scalars['Int']>;
 };
 
 export type UpdateDomainInput = {
@@ -1430,7 +2123,20 @@ export type UpdateDomainInput = {
   domainParentId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
   name?: InputMaybe<Scalars['String']>;
+  nativeFundingPotId?: InputMaybe<Scalars['Int']>;
   nativeId?: InputMaybe<Scalars['Int']>;
+  nativeSkillId?: InputMaybe<Scalars['Int']>;
+};
+
+export type UpdateExtensionByColonyAndHashInput = {
+  colonyId: Scalars['ID'];
+  hash: Scalars['String'];
+  installedAt?: InputMaybe<Scalars['AWSTimestamp']>;
+  installedBy?: InputMaybe<Scalars['String']>;
+  isDeleted?: InputMaybe<Scalars['Boolean']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  isInitialized?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
 };
 
 export type UpdateProfileInput = {
@@ -1447,6 +2153,7 @@ export type UpdateProfileInput = {
 
 export type UpdateTokenInput = {
   avatar?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   decimals?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
   meta?: InputMaybe<MetadataInput>;
@@ -1530,24 +2237,26 @@ export type WatchedColonies = {
   userID: Scalars['ID'];
 };
 
-export type ColonyFragment = { __typename?: 'Colony', name: string, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null };
+export type ColonyFragment = { __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null };
 
 export type WatcherFragment = { __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } };
 
 export type WatchedColonyFragment = { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null };
 
+export type WatchListItemFragment = { __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } };
+
+export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number };
+
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
 export type UserFragment = { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null };
-
-export type WatchListItemFragment = { __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } };
 
 export type CreateUniqueColonyMutationVariables = Exact<{
   input: CreateUniqueColonyInput;
 }>;
 
 
-export type CreateUniqueColonyMutation = { __typename?: 'Mutation', createUniqueColony?: { __typename?: 'ColonyID', id: string } | null };
+export type CreateUniqueColonyMutation = { __typename?: 'Mutation', createUniqueColony?: { __typename?: 'Colony', id: string } | null };
 
 export type CreateWatchedColoniesMutationVariables = Exact<{
   input: CreateWatchedColoniesInput;
@@ -1596,12 +2305,27 @@ export type GetFullColonyByNameQueryVariables = Exact<{
 }>;
 
 
-export type GetFullColonyByNameQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
+export type GetFullColonyByNameQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
 
 export type GetMetacolonyQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMetacolonyQuery = { __typename?: 'Query', getColonyByType?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
+export type GetMetacolonyQuery = { __typename?: 'Query', getColonyByType?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
+
+export type GetColonyExtensionsQueryVariables = Exact<{
+  colonyAddress: Scalars['ID'];
+}>;
+
+
+export type GetColonyExtensionsQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number } | null> } | null } | null };
+
+export type GetColonyExtensionQueryVariables = Exact<{
+  colonyAddress: Scalars['ID'];
+  extensionHash: Scalars['String'];
+}>;
+
+
+export type GetColonyExtensionQuery = { __typename?: 'Query', getExtensionByColonyAndHash?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number } | null> } | null };
 
 export type GetProfileByEmailQueryVariables = Exact<{
   email: Scalars['AWSEmail'];
@@ -1659,6 +2383,18 @@ export type CombinedUserQueryVariables = Exact<{
 
 
 export type CombinedUserQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null, getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null };
+
+export type GetCurrentExtensionsVersionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCurrentExtensionsVersionsQuery = { __typename?: 'Query', listCurrentVersions?: { __typename?: 'ModelCurrentVersionConnection', items: Array<{ __typename?: 'CurrentVersion', version: number, extensionHash: string } | null> } | null };
+
+export type GetCurrentExtensionVersionQueryVariables = Exact<{
+  extensionHash: Scalars['String'];
+}>;
+
+
+export type GetCurrentExtensionVersionQuery = { __typename?: 'Query', getCurrentVersionByKey?: { __typename?: 'ModelCurrentVersionConnection', items: Array<{ __typename?: 'CurrentVersion', version: number, extensionHash: string } | null> } | null };
 
 export const TokenFragmentDoc = gql`
     fragment Token on Token {
@@ -1738,6 +2474,7 @@ export const ColonyFragmentDoc = gql`
       ...Watcher
     }
   }
+  version
 }
     ${TokenFragmentDoc}
 ${WatcherFragmentDoc}`;
@@ -1754,6 +2491,27 @@ export const WatchedColonyFragmentDoc = gql`
     chainId
     network
   }
+}
+    `;
+export const WatchListItemFragmentDoc = gql`
+    fragment WatchListItem on WatchedColonies {
+  colony {
+    ...WatchedColony
+  }
+  createdAt
+}
+    ${WatchedColonyFragmentDoc}`;
+export const ExtensionFragmentDoc = gql`
+    fragment Extension on ColonyExtension {
+  address: id
+  colonyAddress: colonyId
+  hash
+  currentVersion: version
+  installedBy
+  installedAt
+  isDeprecated
+  isDeleted
+  isInitialized
 }
     `;
 export const UserFragmentDoc = gql`
@@ -1777,14 +2535,6 @@ export const UserFragmentDoc = gql`
       createdAt
     }
   }
-}
-    ${WatchedColonyFragmentDoc}`;
-export const WatchListItemFragmentDoc = gql`
-    fragment WatchListItem on WatchedColonies {
-  colony {
-    ...WatchedColony
-  }
-  createdAt
 }
     ${WatchedColonyFragmentDoc}`;
 export const CreateUniqueColonyDocument = gql`
@@ -2097,6 +2847,87 @@ export function useGetMetacolonyLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetMetacolonyQueryHookResult = ReturnType<typeof useGetMetacolonyQuery>;
 export type GetMetacolonyLazyQueryHookResult = ReturnType<typeof useGetMetacolonyLazyQuery>;
 export type GetMetacolonyQueryResult = Apollo.QueryResult<GetMetacolonyQuery, GetMetacolonyQueryVariables>;
+export const GetColonyExtensionsDocument = gql`
+    query GetColonyExtensions($colonyAddress: ID!) {
+  getColony(id: $colonyAddress) {
+    extensions(filter: {isDeleted: {eq: false}}) {
+      items {
+        ...Extension
+      }
+    }
+  }
+}
+    ${ExtensionFragmentDoc}`;
+
+/**
+ * __useGetColonyExtensionsQuery__
+ *
+ * To run a query within a React component, call `useGetColonyExtensionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetColonyExtensionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetColonyExtensionsQuery({
+ *   variables: {
+ *      colonyAddress: // value for 'colonyAddress'
+ *   },
+ * });
+ */
+export function useGetColonyExtensionsQuery(baseOptions: Apollo.QueryHookOptions<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>(GetColonyExtensionsDocument, options);
+      }
+export function useGetColonyExtensionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>(GetColonyExtensionsDocument, options);
+        }
+export type GetColonyExtensionsQueryHookResult = ReturnType<typeof useGetColonyExtensionsQuery>;
+export type GetColonyExtensionsLazyQueryHookResult = ReturnType<typeof useGetColonyExtensionsLazyQuery>;
+export type GetColonyExtensionsQueryResult = Apollo.QueryResult<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>;
+export const GetColonyExtensionDocument = gql`
+    query GetColonyExtension($colonyAddress: ID!, $extensionHash: String!) {
+  getExtensionByColonyAndHash(
+    colonyId: $colonyAddress
+    hash: {eq: $extensionHash}
+    filter: {isDeleted: {eq: false}}
+  ) {
+    items {
+      ...Extension
+    }
+  }
+}
+    ${ExtensionFragmentDoc}`;
+
+/**
+ * __useGetColonyExtensionQuery__
+ *
+ * To run a query within a React component, call `useGetColonyExtensionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetColonyExtensionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetColonyExtensionQuery({
+ *   variables: {
+ *      colonyAddress: // value for 'colonyAddress'
+ *      extensionHash: // value for 'extensionHash'
+ *   },
+ * });
+ */
+export function useGetColonyExtensionQuery(baseOptions: Apollo.QueryHookOptions<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>(GetColonyExtensionDocument, options);
+      }
+export function useGetColonyExtensionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>(GetColonyExtensionDocument, options);
+        }
+export type GetColonyExtensionQueryHookResult = ReturnType<typeof useGetColonyExtensionQuery>;
+export type GetColonyExtensionLazyQueryHookResult = ReturnType<typeof useGetColonyExtensionLazyQuery>;
+export type GetColonyExtensionQueryResult = Apollo.QueryResult<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>;
 export const GetProfileByEmailDocument = gql`
     query GetProfileByEmail($email: AWSEmail!) {
   getProfileByEmail(email: $email) {
@@ -2396,3 +3227,78 @@ export function useCombinedUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type CombinedUserQueryHookResult = ReturnType<typeof useCombinedUserQuery>;
 export type CombinedUserLazyQueryHookResult = ReturnType<typeof useCombinedUserLazyQuery>;
 export type CombinedUserQueryResult = Apollo.QueryResult<CombinedUserQuery, CombinedUserQueryVariables>;
+export const GetCurrentExtensionsVersionsDocument = gql`
+    query GetCurrentExtensionsVersions {
+  listCurrentVersions {
+    items {
+      extensionHash: key
+      version
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCurrentExtensionsVersionsQuery__
+ *
+ * To run a query within a React component, call `useGetCurrentExtensionsVersionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCurrentExtensionsVersionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCurrentExtensionsVersionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCurrentExtensionsVersionsQuery(baseOptions?: Apollo.QueryHookOptions<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>(GetCurrentExtensionsVersionsDocument, options);
+      }
+export function useGetCurrentExtensionsVersionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>(GetCurrentExtensionsVersionsDocument, options);
+        }
+export type GetCurrentExtensionsVersionsQueryHookResult = ReturnType<typeof useGetCurrentExtensionsVersionsQuery>;
+export type GetCurrentExtensionsVersionsLazyQueryHookResult = ReturnType<typeof useGetCurrentExtensionsVersionsLazyQuery>;
+export type GetCurrentExtensionsVersionsQueryResult = Apollo.QueryResult<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>;
+export const GetCurrentExtensionVersionDocument = gql`
+    query GetCurrentExtensionVersion($extensionHash: String!) {
+  getCurrentVersionByKey(key: $extensionHash) {
+    items {
+      extensionHash: key
+      version
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCurrentExtensionVersionQuery__
+ *
+ * To run a query within a React component, call `useGetCurrentExtensionVersionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCurrentExtensionVersionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCurrentExtensionVersionQuery({
+ *   variables: {
+ *      extensionHash: // value for 'extensionHash'
+ *   },
+ * });
+ */
+export function useGetCurrentExtensionVersionQuery(baseOptions: Apollo.QueryHookOptions<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>(GetCurrentExtensionVersionDocument, options);
+      }
+export function useGetCurrentExtensionVersionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>(GetCurrentExtensionVersionDocument, options);
+        }
+export type GetCurrentExtensionVersionQueryHookResult = ReturnType<typeof useGetCurrentExtensionVersionQuery>;
+export type GetCurrentExtensionVersionLazyQueryHookResult = ReturnType<typeof useGetCurrentExtensionVersionLazyQuery>;
+export type GetCurrentExtensionVersionQueryResult = Apollo.QueryResult<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>;

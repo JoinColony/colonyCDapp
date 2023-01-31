@@ -13,3 +13,25 @@ query GetMetacolony {
     }
   }
 }
+
+query GetColonyExtensions($colonyAddress: ID!) {
+  getColony(id: $colonyAddress) {
+    extensions(filter: { isDeleted: { eq: false } }) {
+      items {
+        ...Extension
+      }
+    }
+  }
+}
+
+query GetColonyExtension($colonyAddress: ID!, $extensionHash: String!) {
+  getExtensionByColonyAndHash(
+    colonyId: $colonyAddress
+    hash: { eq: $extensionHash }
+    filter: { isDeleted: { eq: false } }
+  ) {
+    items {
+      ...Extension
+    }
+  }
+}

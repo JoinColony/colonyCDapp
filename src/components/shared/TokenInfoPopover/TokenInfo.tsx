@@ -7,7 +7,6 @@ import TokenLink from '~shared/TokenLink';
 import Button from '~shared/Button';
 import TokenIcon from '~shared/TokenIcon';
 import { Token } from '~types';
-
 import { DEFAULT_NETWORK_INFO } from '~constants';
 
 import styles from './TokenInfoPopover.css';

@@ -1,0 +1,39 @@
+.inputContainer {
+  margin-bottom: 40px;
+}
+
+.input {
+  margin-top: 40px;
+  max-width: 340px;
+  position: relative;
+  white-space: pre-line;
+}
+
+.input label {
+  font-size: var(--size-smallish);
+}
+
+.input input {
+  font-size: 14px;
+  font-weight: var(--weight-normal);
+  text-align: right;
+  color: var(--dark-grey);
+}
+
+.inputsDescription {
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  line-height: 18px;
+  color: var(--grey-purple);
+}
+
+.descriptionExample {
+  font-style: italic;
+}
+
+.complementaryLabel {
+  position: absolute;
+  top: 26px;
+  left: 360px;
+  color: var(--dark-grey);
+}

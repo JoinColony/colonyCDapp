@@ -4,7 +4,7 @@
 export const COLONY_HOME_ROUTE = '/colony/:colonyName/*';
 export const COLONY_EVENTS_ROUTE = `/events`;
 export const COLONY_EXTENSIONS_ROUTE = `/extensions`;
-export const COLONY_EXTENSION_DETAILS_ROUTE = `/extensions/:extensionId`;
+export const COLONY_EXTENSION_DETAILS_ROUTE = `/extensions/:extensionId/*`;
 export const COLONY_EXTENSION_SETUP_ROUTE = `/setup`;
 export const COLONY_FUNDING_ROUTE = `colony/:colonyName/funds`;
 export const COLONY_MEMBERS_ROUTE = `colony/:colonyName/members`;

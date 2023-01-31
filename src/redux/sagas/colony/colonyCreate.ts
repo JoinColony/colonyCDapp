@@ -31,6 +31,7 @@ import {
 import { ActionTypes, Action, AllActions } from '~redux/index';
 import { createAddress } from '~utils/web3';
 import { TxConfig } from '~types';
+import { toNumber } from '~utils/numbers';
 
 import {
   transactionAddParams,
@@ -304,6 +305,7 @@ function* colonyCreate({
             name: givenColonyName,
             colonyNativeTokenId: tokenAddress,
             profile: { displayName },
+            version: toNumber(currentColonyVersion),
           },
         },
       });

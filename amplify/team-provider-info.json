@@ -18,7 +18,11 @@
         "createUniqueColony": {},
         "createUniqueDomain": {},
         "getUserReputation": {},
-        "getReputationForTopDomains": {}
+        "getReputationForTopDomains": {},
+        "fetchColonyNativeFundsClaim": {},
+        "fetchColonyBalances": {},
+        "updateExtensionByColonyAndHash": {},
+        "setCurrentVersion": {}
       }
     }
   }

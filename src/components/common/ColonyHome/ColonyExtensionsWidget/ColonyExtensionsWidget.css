@@ -1,0 +1,27 @@
+.main {
+  margin-top: 25px;
+}
+
+.main h4 {
+  font-size: var(--size-smallish);
+  color: var(--dark);
+  letter-spacing: var(--spacing-medium);
+}
+
+.main a h4:hover,
+.main a h4:active {
+  text-decoration: underline;
+  color: var(--colony-blue);
+}
+
+.extension {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  gap: 10px;
+  row-gap: 0px;
+}
+
+.invisibleLink:hover {
+  color: color-mod(var(--dark) alpha(50%));
+}

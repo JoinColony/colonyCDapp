@@ -6,7 +6,6 @@ import Popover from '~shared/Popover';
 
 import { User } from '~types';
 // import UserInfoPopover from '../InfoPopover/UserInfoPopover';
-// import { useUserQuery, useUserAddressQuery } from '~data/index';
 
 import styles from './UserMention.css';
 
@@ -32,14 +31,14 @@ interface Props {
 const displayName = 'UserMention';
 
 const UserMention = ({
-  user: { name },
+  user,
   to,
   hasLink,
   showInfo,
   popperOptions,
   ...props
 }: Props) => {
-  const fallbackTo = to || `/user/${name}`;
+  const fallbackTo = to || `/user/${user?.name}`;
   const trigger = showInfo ? 'click' : 'disabled';
   const showArrow = popperOptions && popperOptions.showArrow;
 
@@ -57,22 +56,20 @@ const UserMention = ({
     hasLink ? (
       <Link
         to={fallbackTo}
-        text={`@${name}`}
+        text={`@${user?.name}`}
         className={styles.mention}
         {...props}
       />
     ) : (
       <span className={styles.mention} {...props}>
         {' '}
-        {`@${name}`}
+        {`@${user?.name}`}
       </span>
     );
 
   if (!showInfo) {
     return renderUserMention();
   }
-
-  // const { user } = data || {};
 
   // const renderContent = useMemo(() => {
   //   return <UserInfoPopover user={user} />;

@@ -6,10 +6,11 @@ export * from './getCanUserSendMetatransactions';
 export * from './metatransactions';
 export * from './errorMessages';
 export * from './effects';
+export * from './enableExtensionHelpers';
+export * from './refreshExtension';
 
 // export * from './updateColonyDisplayCache';
 // export { updateMotionValues } from './updateMotionValues';
-// export { refreshExtension } from './refreshExtension';
 // export { uploadIfpsAnnotation } from './uploadIfpsAnnotation';
 // export {
 //   modifyParams,

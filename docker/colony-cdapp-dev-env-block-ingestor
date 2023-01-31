@@ -1,6 +1,6 @@
-ARG BLOCK_INGESTOR_HASH=master
-
 FROM colony-cdapp-dev-env/base:latest
+
+ENV BLOCK_INGESTOR_HASH=0de2ae41c14467ec841e680339c95ae2e53ac222
 
 # Declare volumes to set up metadata
 VOLUME [ "/colonyCDapp/amplify/mock-data" ]
@@ -17,17 +17,29 @@ WORKDIR /colonyCDappBackend
 #
 
 # Clone block ingestor repo
-RUN git clone https://github.com/JoinColony/block-ingestor.git --depth 1
+RUN git clone https://github.com/JoinColony/block-ingestor.git
 WORKDIR /colonyCDappBackend/block-ingestor
 
+RUN echo $BLOCK_INGESTOR_HASH
 # Fetch the correct network repo commit/branch/tag
-RUN git fetch origin $BLOCK_INGESTOR_HASH --depth 1
+RUN git fetch origin $BLOCK_INGESTOR_HASH
 RUN git checkout $BLOCK_INGESTOR_HASH
+
+# Add env file here (as opposed to at the start of the script), since we
+# need to add it after the repo has been cloned, otherwise cloning will fail
+ADD docker/files/block-ingestor/env.base /colonyCDappBackend/block-ingestor/.env
 
 # Install block ingestor dependencies
 RUN npm install
 
+# Compile JS files
+RUN npm run build
+
 WORKDIR /colonyCDappBackend
+
+# Open up ports to the docker image
+# Block Ingestor Stats
+EXPOSE 10001
 
 # Make the run script executable
 RUN chmod +x ./run.sh
