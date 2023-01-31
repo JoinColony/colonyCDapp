@@ -88,11 +88,10 @@ const getActionListItemTitleValues = (
   const updatedItem = mapItemToExpectedFormat(item, colony);
   const keys = getMessageDescriptorKeys(item.actionType);
   const titleValues = keys.reduce<UniversalMessageValues>(
-    (values, key) => {
-      // eslint-disable-next-line no-param-reassign
-      values[key] = updatedItem[key];
-      return values;
-    },
+    (values, key) => ({
+      ...values,
+      [key]: updatedItem[key],
+    }),
     { actionType: item.actionType },
   );
 

@@ -1,11 +1,8 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import Icon from '~shared/Icon';
-import Numeral from '~shared/Numeral';
 import { useColonyContext } from '~hooks';
 import { findDomain } from '~utils/domains';
-import { formatText } from '~utils/intl';
 import { Domain } from '~types';
 
 import styles from './ActionsListItemMeta.css';
@@ -17,13 +14,13 @@ const MSG = defineMessages({
     id: `${displayName}.domain`,
     defaultMessage: 'Team {domainId}',
   },
-  titleCommentCount: {
-    id: `${displayName}.titleCommentCount`,
-    defaultMessage: `{formattedCommentCount} {commentCount, plural,
-        one {comment}
-        other {comments}
-      }`,
-  },
+  // titleCommentCount: {
+  //   id: `${displayName}.titleCommentCount`,
+  //   defaultMessage: `{formattedCommentCount} {commentCount, plural,
+  //       one {comment}
+  //       other {comments}
+  //     }`,
+  // },
 });
 
 const getDomainName = (fromDomain: Domain) =>
@@ -33,36 +30,36 @@ const getDomainName = (fromDomain: Domain) =>
     <FormattedMessage {...MSG.domain} values={{ domainId: fromDomain.id }} />
   );
 
-interface CommentCountProps {
-  commentCount: number;
-}
+// interface CommentCountProps {
+//   commentCount: number;
+// }
 
-const CommentCount = ({ commentCount }: CommentCountProps) => {
-  const commentCountTitle = formatText(MSG.titleCommentCount, {
-    commentCount,
-    formattedCommentCount: commentCount.toString(),
-  });
+// const CommentCount = ({ commentCount }: CommentCountProps) => {
+//   const commentCountTitle = formatText(MSG.titleCommentCount, {
+//     commentCount,
+//     formattedCommentCount: commentCount.toString(),
+//   });
 
-  return (
-    <span className={styles.commentCount}>
-      <Icon
-        appearance={{ size: 'extraTiny' }}
-        className={styles.commentCountIcon}
-        name="comment"
-        title={commentCountTitle}
-      />
-      <Numeral value={commentCount} title={commentCountTitle} />
-    </span>
-  );
-};
+//   return (
+//     <span className={styles.commentCount}>
+//       <Icon
+//         appearance={{ size: 'extraTiny' }}
+//         className={styles.commentCountIcon}
+//         name="comment"
+//         title={commentCountTitle}
+//       />
+//       <Numeral value={commentCount} title={commentCountTitle} />
+//     </span>
+//   );
+// };
 
 interface ActionsListItemMetaProps {
-  commentCount: any;
-  fromDomainId: any;
+  // commentCount: number;
+  fromDomainId: string;
 }
 
 const ActionsListItemMeta = ({
-  commentCount,
+  // commentCount,
   fromDomainId,
 }: ActionsListItemMetaProps) => {
   const { colony } = useColonyContext();
@@ -72,7 +69,7 @@ const ActionsListItemMeta = ({
       {fromDomain && (
         <span className={styles.domain}>{getDomainName(fromDomain)}</span>
       )}
-      {!!commentCount && <CommentCount commentCount={commentCount} />}
+      {/* {!!commentCount && <CommentCount commentCount={commentCount} />} */}
     </div>
   );
 };

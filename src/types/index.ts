@@ -60,6 +60,8 @@ export type ComplexMessageValues = Record<string, ReactNode>;
 /**
  * For messages that contain both JSX and Primitive values
  */
+export type AnyMessageValues = Record<string, PrimitiveType | ReactNode>;
+
 export type UniversalMessageValues = SimpleMessageValues | ComplexMessageValues;
 
 export type Message = MessageDescriptor | string;
