@@ -1,55 +1,3 @@
-@value wideButton: 160px;
-@value query700 from '~styles/queries.css';
-
-.tokenAmount {
-  display: flex;
-}
-
-.tokenAmountSelect {
-  align-self: center;
-  margin-left: 20px;
-}
-
-.tokenAmountContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-top: 20px;
-  gap: 5px;
-}
-
-.tokenAmountUsd {
-  width: 100%;
-  font-size: 11px;
-  font-weight: 700;
-  text-align: right;
-}
-
-.domainPotBalance, .networkFee {
-  height: 0px;
-  position: relative;
-  bottom: 14px;
-  font-size: var(--size-tiny);
-  font-weight: var(--weight-bold);
-  text-align: right;
-  color: var(--grey-purple);
-}
-
-.tokenAmount label,
-.domainSelects label {
-  font-size: var(--size-smallish);
-  color: var(--dark);
-}
-
-.tokenAmount input {
-  font-weight: var(--weight-normal);
-  color: var(--dark);
-}
-
-.tokenAmountInputContainer {
-  width: 100%;
-}
-
 .singleUserContainer label {
   margin-bottom: 15px;
   color: var(--dark);
@@ -71,20 +19,6 @@
   vertical-align: bottom;
 }
 
-.modalHeading {
-  padding: 32px 0 20px;
-}
-
-.headingContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.motionVoteDomain {
-  margin: 6px 0;
-}
-
 .warningContainer {
   margin-top: 20px;
   padding: 20px 15px;
@@ -101,24 +35,4 @@
 
 .warningLabel {
   color: var(--danger);
-}
-
-@media screen and query700 {
-  .domainPotBalance {
-    position: static;
-  }
-
-  .tokenAmountContainer {
-    margin-top: 0px;
-    padding-top: 10px;
-  }
-
-  .tokenAmount {
-    display: flex;
-    min-height: 91px;
-  }
-
-  .networkFee {
-    position: static;
-  }
 }

@@ -1,4 +1,3 @@
-import { Colony } from '~types';
 import {
   ColonyActionsDialog,
   ManageExpenditureDialog,
@@ -21,173 +20,151 @@ import {
   // AwardDialog,
 } from '../Dialogs';
 
-export const getWizardFlowConfig = (
-  colony: Colony | undefined,
-  filteredDomainId: number,
-) => [
+export const getWizardFlowConfig = (filteredDomainId: number) => [
   {
     component: ColonyActionsDialog,
     props: {
-      nextStepManageExpenditure: 'common.ColonyHome.ManageExpenditureDialog',
-      nextStepManageFunds: 'common.ColonyHome.ManageFundsDialog',
-      nextStepManageDomains: 'common.ColonyHome.ManageDomainsDialog',
-      nextStepAdvanced: 'common.ColonyHome.AdvancedDialog',
-      nextStepManageReputation: 'common.ColonyHome.ManageReputationDialog',
+      nextStepManageExpenditure: 'common.ManageExpenditureDialog',
+      nextStepManageFunds: 'common.ManageFundsDialog',
+      nextStepManageDomains: 'common.ManageDomainsDialog',
+      nextStepAdvanced: 'common.AdvancedDialog',
+      nextStepManageReputation: 'common.ManageReputationDialog',
     },
   },
   {
     component: ManageExpenditureDialog,
     props: {
-      nextStep: 'common.ColonyHome.CreatePaymentDialog',
-      prevStep: 'common.ColonyHome.ColonyActionsDialog',
-      colony,
+      nextStep: 'common.CreatePaymentDialog',
+      prevStep: 'common.ColonyActionsDialog',
     },
   },
   {
     component: CreatePaymentDialog,
     props: {
-      prevStep: 'common.ColonyHome.ManageExpenditureDialog',
+      prevStep: 'common.ManageExpenditureDialog',
       filteredDomainId,
-      colony,
     },
   },
   // {
   //   component: ManageFundsDialog,
   //   props: {
-  //     nextStepTransferFunds: 'common.ColonyHome.TransferFundsDialog',
-  //     nextStepMintTokens: 'common.ColonyHome.MintTokenDialog',
-  //     nextStepManageTokens: 'common.ColonyHome.TokenManagementDialog',
-  //     nextStepUnlockToken: 'common.ColonyHome.UnlockTokenDialog',
-  //     prevStep: 'common.ColonyHome.ColonyActionsDialog',
-  //     colony,
+  //     nextStepTransferFunds: 'common.TransferFundsDialog',
+  //     nextStepMintTokens: 'common.MintTokenDialog',
+  //     nextStepManageTokens: 'common.TokenManagementDialog',
+  //     nextStepUnlockToken: 'common.UnlockTokenDialog',
+  //     prevStep: 'common.ColonyActionsDialog',
   //   },
   // },
   // {
   //   component: TransferFundsDialog,
   //   props: {
-  //     prevStep: 'common.ColonyHome.ManageFundsDialog',
-  //     colony,
+  //     prevStep: 'common.ManageFundsDialog',
   //     filteredDomainId,
   //   },
   // },
   // {
   //   component: UnlockTokenDialog,
   //   props: {
-  //     prevStep: 'common.ColonyHome.ManageFundsDialog',
-  //     colony,
+  //     prevStep: 'common.ManageFundsDialog',
   //   },
   // },
   // {
   //   component: ManageDomainsDialog,
   //   props: {
-  //     prevStep: 'common.ColonyHome.ColonyActionsDialog',
-  //     nextStep: 'common.ColonyHome.CreateDomainDialog',
-  //     nextStepEdit: 'common.ColonyHome.EditDomainDialog',
-  //     nextStepManageWhitelist: 'common.ColonyHome.ManageWhitelistDialog',
-  //     colony,
+  //     prevStep: 'common.ColonyActionsDialog',
+  //     nextStep: 'common.CreateDomainDialog',
+  //     nextStepEdit: 'common.EditDomainDialog',
+  //     nextStepManageWhitelist: 'common.ManageWhitelistDialog',
   //   },
   // },
   // {
   //   component: CreateDomainDialog,
   //   props: {
-  //     prevStep: 'common.ColonyHome.ManageDomainsDialog',
-  //     colony,
+  //     prevStep: 'common.ManageDomainsDialog',
   //   },
   // },
   // {
   //   component: EditDomainDialog,
   //   props: {
-  //     prevStep: 'common.ColonyHome.ManageDomainsDialog',
-  //     colony,
+  //     prevStep: 'common.ManageDomainsDialog',
   //     filteredDomainId,
   //   },
   // },
   // {
   //   component: ManageReputationDialog,
   //   props: {
-  //     nextStepAwardReputation: 'common.ColonyHome.AwardDialog',
-  //     nextStepSmiteReputation: 'common.ColonyHome.SmiteDialog',
-  //     prevStep: 'common.ColonyHome.ColonyActionsDialog',
-  //     colony,
+  //     nextStepAwardReputation: 'common.AwardDialog',
+  //     nextStepSmiteReputation: 'common.SmiteDialog',
+  //     prevStep: 'common.ColonyActionsDialog',
   //   },
   // },
   // {
   //   component: AwardDialog,
   //   props: {
-  //     prevStep: 'common.ColonyHome.ManageReputationDialog',
-  //     colony,
+  //     prevStep: 'common.ManageReputationDialog',
   //     filteredDomainId,
   //   },
   // },
   // {
   //   component: SmiteDialog,
   //   props: {
-  //     prevStep: 'common.ColonyHome.ManageReputationDialog',
-  //     colony,
+  //     prevStep: 'common.ManageReputationDialog',
   //     filteredDomainId,
   //   },
   // },
   // {
   //   component: AdvancedDialog,
   //   props: {
-  //     prevStep: 'common.ColonyHome.ColonyActionsDialog',
+  //     prevStep: 'common.ColonyActionsDialog',
   //     nextStepPermissionManagement:
-  //       'common.ColonyHome.PermissionManagementDialog',
-  //     nextStepRecovery: 'common.ColonyHome.RecoveryModeDialog',
-  //     nextStepEditDetails: 'common.ColonyHome.EditColonyDetailsDialog',
+  //       'common.PermissionManagementDialog',
+  //     nextStepRecovery: 'common.RecoveryModeDialog',
+  //     nextStepEditDetails: 'common.EditColonyDetailsDialog',
   //     nextStepVersionUpgrade:
-  //       'common.ColonyHome.NetworkContractUpgradeDialog',
-  //     colony,
+  //       'common.NetworkContractUpgradeDialog',
   //   },
   // },
   // {
   //   component: PermissionManagementDialog,
   //   props: {
-  //     prevStep: 'common.ColonyHome.AdvancedDialog',
-  //     colony,
+  //     prevStep: 'common.AdvancedDialog',
   //     filteredDomainId,
   //   },
   // },
   // {
   //   component: RecoveryModeDialog,
   //   props: {
-  //     prevStep: 'common.ColonyHome.AdvancedDialog',
-  //     colony,
+  //     prevStep: 'common.AdvancedDialog',
   //   },
   // },
   // {
   //   component: ManageWhitelistDialog,
   //   props: {
-  //     prevStep: 'common.ColonyHome.ManageDomainsDialog',
-  //     colony,
+  //     prevStep: 'common.ManageDomainsDialog',
   //   },
   // },
   // {
   //   component: NetworkContractUpgradeDialog,
   //   props: {
-  //     prevStep: 'common.ColonyHome.AdvancedDialog',
-  //     colony,
+  //     prevStep: 'common.AdvancedDialog',
   //   },
   // },
   // {
   //   component: EditColonyDetailsDialog,
   //   props: {
-  //     prevStep: 'common.ColonyHome.AdvancedDialog',
-  //     colony,
+  //     prevStep: 'common.AdvancedDialog',
   //   },
   // },
   // {
   //   component: MintTokenDialog,
   //   props: {
-  //     prevStep: 'common.ColonyHome.ManageFundsDialog',
-  //     colony,
+  //     prevStep: 'common.ManageFundsDialog',
   //   },
   // },
   // {
   //   component: TokenManagementDialog,
   //   props: {
-  //     prevStep: 'common.ColonyHome.ManageFundsDialog',
-  //     colony,
+  //     prevStep: 'common.ManageFundsDialog',
   //   },
   // },
 ];

@@ -15,7 +15,7 @@ import { ActionTypes } from '~redux/index';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
-import { WizardDialogType } from '~hooks';
+import { useColonyContext, WizardDialogType } from '~hooks';
 // import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
 import { notNull } from '~utils/arrays';
 
@@ -33,8 +33,6 @@ type Props = Required<DialogProps> &
 export type FormValues = InferType<typeof validationSchema>;
 
 const CreatePaymentDialog = ({
-  colony: { tokens, colonyAddress, nativeToken, watchers, name: colonyName },
-  colony,
   callStep,
   prevStep,
   cancel,
@@ -42,23 +40,21 @@ const CreatePaymentDialog = ({
   filteredDomainId,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
+  const { colony } = useColonyContext();
   const navigate = useNavigate();
   const colonyWatchers =
-    watchers?.items.filter(notNull).map((item) => item.user) || [];
+    colony?.watchers?.items.filter(notNull).map((item) => item.user) || [];
   // const { isVotingExtensionEnabled } = useEnabledExtensions({
   //   colonyAddress: colony.colonyAddress,
   // });
 
-  const getFormAction = useCallback(
-    (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-      const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
+  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
+    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
 
-      return !isForce // && isVotingExtensionEnabled
-        ? ActionTypes[`MOTION_EXPENDITURE_PAYMENT${actionEnd}`]
-        : ActionTypes[`ACTION_EXPENDITURE_PAYMENT${actionEnd}`];
-    },
-    [isForce], // , isVotingExtensionEnabled
-  );
+    return !isForce // && isVotingExtensionEnabled
+      ? ActionTypes[`MOTION_EXPENDITURE_PAYMENT${actionEnd}`]
+      : ActionTypes[`ACTION_EXPENDITURE_PAYMENT${actionEnd}`];
+  };
 
   // const { data: colonyMembers } = useMembersSubscription({
   //   variables: { colonyAddress },
@@ -107,7 +103,7 @@ const CreatePaymentDialog = ({
             annotation: annotationMessage,
             motionDomainId,
           } = payload;
-          const colonyTokens = tokens?.items || [];
+          const colonyTokens = colony?.tokens?.items || [];
           const selectedToken = colonyTokens.find(
             (token) => token?.token.tokenAddress === tokenAddress,
           );
@@ -120,8 +116,8 @@ const CreatePaymentDialog = ({
           //   : amount;
 
           return {
-            colonyName,
-            colonyAddress,
+            colonyName: colony?.name || '',
+            colonyAddress: colony?.colonyAddress || '',
             recipientAddress: walletAddress,
             domainId,
             singlePayment: {
@@ -135,7 +131,7 @@ const CreatePaymentDialog = ({
         }),
         withMeta({ navigate }),
       ),
-    [colonyName, colonyAddress, tokens, navigate],
+    [colony, navigate],
   );
 
   return (
@@ -148,7 +144,7 @@ const CreatePaymentDialog = ({
         ).toString(),
         recipient: undefined,
         amount: '',
-        tokenAddress: nativeToken.tokenAddress,
+        tokenAddress: colony?.nativeToken.tokenAddress,
         annotation: '',
         motionDomainId:
           filteredDomainId === 0 || filteredDomainId === undefined
@@ -162,19 +158,15 @@ const CreatePaymentDialog = ({
       transform={transform}
       onSuccess={close}
     >
-      {({ getValues, formState, setValue }) => {
-        const values = getValues();
-        if (values.forceAction !== isForce) {
-          setIsForce(values.forceAction);
+      {({ getValues }) => {
+        const forceActionvalue = getValues('forceAction');
+        if (forceActionvalue !== isForce) {
+          setIsForce(forceActionvalue);
         }
 
         return (
           <Dialog cancel={cancel}>
             <DialogForm
-              {...formState}
-              values={values}
-              setValue={setValue}
-              colony={colony}
               back={() => callStep(prevStep)}
               verifiedUsers={
                 colonyWatchers // isWhitelistActivated ? verifiedUsers : ...
