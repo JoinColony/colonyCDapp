@@ -11,9 +11,17 @@ export {
   HookFormInputProps,
   CoreInputProps,
 } from './Input/HookForm';
+export { default as HookFormInputStatus } from './InputStatus/HookForm';
 export { default as InputLabel } from './InputLabel';
 export { default as InputStatus } from './InputStatus';
-export { default as Select, Appearance, SelectOption } from './Select';
+export {
+  default as Select,
+  Appearance,
+  SelectOption,
+  SelectProps,
+} from './Select';
+export { default as HookFormSelect } from './Select/HookForm';
+
 export { default as TokenSymbolSelector } from './TokenSymbolSelector';
 export {
   default as Textarea,
