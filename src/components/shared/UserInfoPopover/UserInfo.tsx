@@ -20,7 +20,7 @@ const UserInfo = ({ user }: Props) => {
 
   return (
     <div className={styles.container}>
-      <UserAvatar size="s" address={user.walletAddress} user={user} />
+      <UserAvatar size="s" user={user} />
       <div className={styles.textContainer}>
         {userDisplayName && (
           <Heading

@@ -22,7 +22,7 @@ const UserInfo = ({ user: { walletAddress, name, profile }, user }: Props) => {
    */
   return (
     <div className={styles.container}>
-      <UserAvatar size="s" address={walletAddress} user={user} />
+      <UserAvatar size="s" user={user} />
       <div className={styles.textContainer}>
         {profile?.displayName && (
           <Heading
