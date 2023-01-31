@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { SetValueConfig } from 'react-hook-form';
 
-import { Message, SimpleMessageValues } from '~types';
+import { Message, SimpleMessageValues, UniversalMessageValues } from '~types';
 
 export interface MaxButtonParams {
   maxAmount: string;
@@ -35,5 +35,5 @@ export interface CoreInputProps {
   /** Status text */
   status?: Message;
   /** Status text values for intl interpolation */
-  statusValues?: SimpleMessageValues;
+  statusValues?: UniversalMessageValues;
 }
