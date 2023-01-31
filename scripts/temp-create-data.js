@@ -4,7 +4,6 @@ const colonyJSExtras = require('@colony/colony-js/extras')
 const colonyJSIColony = require('../node_modules/@colony/colony-js/dist/cjs/contracts/IColony/9/factories/IColony__factory.js')
 const colonyJSMetaTxToken = require('../node_modules/@colony/colony-js/dist/cjs/contracts/factories/latest/MetaTxToken__factory.js')
 const { addAugmentsB } = require('../node_modules/@colony/colony-js/dist/cjs/clients/Core/augments/AddDomain.js');
-const { getExtensionHash } = require('@colony/colony-js');
 
 /*
  * @NOTE To preserve time, I just re-used a script I wrote for one of the lambda functions
@@ -57,14 +56,6 @@ const createUniqueDomain = /* GraphQL */ `
     createUniqueDomain(input: $input) { nativeId }
   }
 `;
-const setCurrentVersion = /* GraphQL */`
-  mutation SetCurrentVersion($extensionHash: String!, $version: Int!) {
-    setCurrentVersion(input: {
-      key: $extensionHash,
-      version: $version
-    })
-  }
-`
 
 /*
  * Queries
@@ -418,16 +409,6 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
 };
 
 /*
- * Extensions
- */
-const setExtensionVersion = async (extensionId, version) => {
-  await graphqlRequest(setCurrentVersion, {
-    extensionHash: getExtensionHash(extensionId),
-    version
-  }, GRAPHQL_URI, API_KEY)
-}
-
-/*
  * Orchestration
  */
 const createUserAndColonyData = async () => {
@@ -458,9 +439,6 @@ const createUserAndColonyData = async () => {
   await subscribeUserToColony(secondUser.address, thirdColonyAddress);
   await subscribeUserToColony(thirdUser.address, firstColonyAddress);
   await subscribeUserToColony(thirdUser.address, secondColonyAddress);
-
-  await setExtensionVersion('OneTxPayment', 4);
-  await setExtensionVersion('VotingReputation', 8);
 };
 
 createUserAndColonyData();
