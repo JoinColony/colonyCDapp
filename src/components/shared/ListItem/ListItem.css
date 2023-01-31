@@ -1,9 +1,4 @@
-/*
- * @NOTE Unique values
- */
 @value mainTextSize: 13px;
-@value popoverWidth: 400px;
-@value popoverDistance: 10px;
 
 .main {
   display: flex;
@@ -65,23 +60,16 @@
   background-color: var(--colony-blue);
 }
 
-.stateYellow {
+.stateDraft {
   composes: status;
 }
 
-.stateYellow::before {
+.stateDraft::before {
   background-color: var(--golden);
 }
 
 .content {
   flex: 1 1 100%;
-
-  /*
-   * @NOTE Flex items won't shrink below their minimum content
-   * This forces flex to resize at the correct ration, while still applying our
-   * overflow -- which is all the reasoning why we did this in the first place,
-   * to add text ellipsis to overflowing elements
-   */
   min-width: 0;
 }
 
@@ -96,6 +84,7 @@
 }
 
 .meta {
+  display: flex;
   margin-top: 3px;
   font-size: var(--size-small);
   font-weight: var(--weight-normal);
@@ -103,44 +92,8 @@
   letter-spacing: var(--spacing-normal);
 }
 
-.separator::before {
-  display: inline-block;
-  margin: 0px 10px -2px;
-  height: 12px;
-  width: 1px;
-  background-color: var(--light-grey-beige);
-  content: '';
-}
-
 .day {
   margin-right: 4px;
-}
-
-.domain {
-  composes: separator;
-}
-
-.commentCount {
-  composes: separator;
-  display: inline-block;
-}
-
-.commentCountIcon {
-  display: inline-block;
-  margin: 0 5px 2px 0;
-  height: 13px;
-  width: 13px;
-  vertical-align: bottom;
-  stroke: none;
-}
-
-.commentCountIcon svg {
-  fill: rgba(var(--dark-1), 0.7);
-}
-
-.userMention {
-  display: inline-block;
-  cursor: pointer;
 }
 
 .stateNoPointer {
@@ -156,8 +109,4 @@
   margin: -1px 0 0 12px;
   padding: 0;
   vertical-align: middle;
-}
-
-.countdownTimerContainer {
-  margin-left: 30px;
 }

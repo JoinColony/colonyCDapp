@@ -129,6 +129,11 @@ export enum ColonyAndExtensionsEvents {
   AgreementSigned = 'AgreementSigned',
 }
 
+export type ActionUserRoles = {
+  id: ColonyRole;
+  setTo: boolean;
+};
+
 export interface FormattedAction {
   id: string;
   status?: ItemStatus;
