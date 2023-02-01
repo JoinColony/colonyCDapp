@@ -40,6 +40,11 @@ const codegen = async () => {
           ],
         },
       },
+      config: {
+        scalars: {
+          AWSDateTime: 'string',
+        },
+      },
       watch: graphqlFiles,
     });
   } catch {
