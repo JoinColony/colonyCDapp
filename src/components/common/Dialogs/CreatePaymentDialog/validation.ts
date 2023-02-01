@@ -5,6 +5,10 @@ import { defineMessages } from 'react-intl';
 const displayName = 'common.CreatePaymentDialog';
 
 const MSG = defineMessages({
+  requiredFieldError: {
+    id: `${displayName}.requiredFieldError`,
+    defaultMessage: 'Please enter a value',
+  },
   amountZero: {
     id: `${displayName}.amountZero`,
     defaultMessage: 'Amount must be greater than zero',
@@ -22,14 +26,15 @@ const validationSchema = object()
       .shape({
         profile: object()
           .shape({
-            walletAddress: string().address().required(),
             displayName: string(),
           })
           .defined(),
+        walletAddress: string().address().defined(),
       })
-      .defined(),
+      .default(undefined)
+      .required(() => MSG.requiredFieldError),
     amount: string()
-      .required()
+      .required(() => MSG.requiredFieldError)
       .test(
         'more-than-zero',
         () => MSG.amountZero,

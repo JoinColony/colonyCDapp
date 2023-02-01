@@ -20,7 +20,7 @@ const MSG = defineMessages({
 interface Props {
   walletAddress?: Address;
   itemData: ItemDataType<User>;
-  renderAvatar: (address: Address, user: ItemDataType<User>) => ReactNode;
+  renderAvatar: (user: ItemDataType<User>) => ReactNode;
   selected?: boolean;
   showAddress?: boolean;
 
@@ -45,7 +45,7 @@ const ItemDefault = ({
     })}
     data-test={dataTest}
   >
-    {renderAvatar(userAddress, itemData)}
+    {renderAvatar(itemData)}
     <span className={styles.dataContainer}>
       {profile?.displayName && (
         <span className={styles.displayName}>

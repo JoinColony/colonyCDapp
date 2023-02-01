@@ -91,7 +91,7 @@
 }
 
 .inputInvalid {
-  border-color: var(--danger);
+  border-bottom-color: var(--danger);
 }
 
 .input {
@@ -132,15 +132,6 @@
   z-index: var(--z-index-nav);
 }
 
-.errorHorizontal {
-  margin-top: 5px;
-  position: absolute;
-  top: 100%;
-  right: 15px;
-  font-size: var(--size-tiny);
-  color: var(--danger);
-}
-
 .omniContainer {
   display: flex;
   align-items: center;
@@ -159,4 +150,9 @@
 .arrowIconActive svg {
   fill: var(--primary);
   transform: rotate(180deg);
+}
+
+.inputStatusContainer {
+  margin-left: 10px;
+  position: absolute;
 }

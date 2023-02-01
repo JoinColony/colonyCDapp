@@ -6,12 +6,12 @@ declare namespace SingleUserPickerCssNamespace {
     baseInput: string;
     container: string;
     directionHorizontal: string;
-    errorHorizontal: string;
     focusIcon: string;
     icon: string;
     input: string;
     inputContainer: string;
     inputInvalid: string;
+    inputStatusContainer: string;
     labelWrap: string;
     main: string;
     omniContainer: string;
