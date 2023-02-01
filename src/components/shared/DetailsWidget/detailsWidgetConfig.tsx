@@ -113,7 +113,7 @@ interface DetailItemConfig {
 
 const getDetailItems = (
   {
-    //motionDomain,
+    // motionDomain,
     type,
     fromDomain: fromDomainId,
     toDomain: toDomainId,
@@ -121,7 +121,7 @@ const getDetailItems = (
     recipient,
     decimals,
     transactionHash,
-    //token,
+    // token,
     tokenSymbol,
   }: // reputationChange,
   // roles,
