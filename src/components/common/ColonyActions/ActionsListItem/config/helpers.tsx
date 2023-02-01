@@ -1,43 +1,43 @@
 import React from 'react';
-import Decimal from 'decimal.js';
+// import Decimal from 'decimal.js';
 
 import Numeral from '~shared/Numeral';
-import { Colony, FormattedAction } from '~types';
-import { formatRolesTitle } from '~utils/colonyActions';
+import { Colony, ColonyAction } from '~types';
+// import { formatRolesTitle } from '~utils/colonyActions';
 import { findDomain } from '~utils/domains';
 import {
-  getFormattedTokenValue,
+  // getFormattedTokenValue,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
 import FriendlyName from '~shared/FriendlyName';
 
 import styles from '~shared/ListItem/ListItem.css';
 
-const formatReputationChange = (decimals: string, reputationChange?: string) =>
-  getFormattedTokenValue(
-    new Decimal(reputationChange || '0').abs().toString(),
-    decimals,
-  );
+// const formatReputationChange = (decimals: string, reputationChange?: string) =>
+//   getFormattedTokenValue(
+//     new Decimal(reputationChange || '0').abs().toString(),
+//     decimals,
+//   );
 
 export const mapItemToExpectedFormat = (
-  item: FormattedAction,
+  item: ColonyAction,
   colony?: Colony,
 ) => {
-  const formattedRolesTitle = formatRolesTitle(item.roles); // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
-  const reputationChange = formatReputationChange(
-    item.decimals,
-    item.reputationChange,
-  );
+  // const formattedRolesTitle = formatRolesTitle(item.roles); // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
+  // const reputationChange = formatReputationChange(
+  //   item.decimals,
+  //   item.reputationChange,
+  // );
   return {
     ...item,
     amount: (
       <Numeral
-        value={item.amount} // @TODO: getAmount(item.actionType, item.amount)
+        value={item.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
         decimals={getTokenDecimalsWithFallback(item.decimals)}
       />
     ),
-    direction: formattedRolesTitle.direction,
-    fromDomain: findDomain(item.fromDomain, colony)?.name,
+    // direction: formattedRolesTitle.direction,
+    fromDomain: findDomain(item.fromDomain ?? '', colony)?.name,
     initiator: (
       <span className={styles.titleDecoration}>
         <FriendlyName user={item.initiator} autoShrinkAddress />
@@ -48,10 +48,10 @@ export const mapItemToExpectedFormat = (
         <FriendlyName user={item.recipient} autoShrinkAddress />
       </span>
     ),
-    reputationChangeNumeral: <Numeral value={reputationChange} />,
-    reputationChange,
-    rolesChanged: formattedRolesTitle.roleTitle,
-    toDomain: findDomain(item.toDomain, colony)?.name,
+    // reputationChangeNumeral: <Numeral value={reputationChange} />,
+    // reputationChange,
+    // rolesChanged: formattedRolesTitle.roleTitle,
+    toDomain: findDomain(item.toDomain ?? '', colony)?.name,
   };
 
   /*

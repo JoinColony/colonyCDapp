@@ -1,12 +1,13 @@
 import React, { ComponentType } from 'react';
 
 import { ActionsListItem } from '~common/ColonyActions';
+import { ColonyAction } from '~types';
 
 const displayName = 'ActionsList';
 
 interface Props {
   handleItemClick?: () => void;
-  items: any[]; // actions or events
+  items: ColonyAction[] | any[]; // actions or events
   itemComponent?: ComponentType<{
     handleOnClick?: () => void;
     item: any;
