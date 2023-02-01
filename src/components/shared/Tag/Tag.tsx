@@ -1,8 +1,9 @@
 import React, { HTMLAttributes } from 'react';
-import { FormattedMessage, MessageDescriptor } from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 
 import Icon from '~shared/Icon';
 import { useMainClasses } from '~hooks';
+import { formatText } from '~utils/intl';
 
 import styles from './Tag.css';
 
@@ -40,17 +41,13 @@ const Tag = ({ appearance, className, text, textValues, ...rest }: Props) => {
     <span className={classNames} {...rest}>
       {appearance?.theme === 'banned' && (
         <Icon
-          title={text || ''}
+          title={text}
           name="emoji-goblin"
           appearance={{ size: 'normal' }}
           className={styles.icon}
         />
       )}
-      {typeof text === 'string' ? (
-        text
-      ) : (
-        <FormattedMessage {...text} values={textValues} />
-      )}
+      {formatText(text, textValues)}
     </span>
   );
 };
