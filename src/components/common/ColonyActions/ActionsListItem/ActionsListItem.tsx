@@ -5,7 +5,7 @@ import { Placement } from '@popperjs/core';
 import UserAvatar from '~shared/UserAvatar';
 import ListItem from '~shared/ListItem';
 import { ListItemStatus } from '~shared/ListItem/ListItem';
-import { FormattedAction } from '~types';
+import { ColonyAction } from '~types';
 import { useColonyContext } from '~hooks';
 
 import { getActionListItemTitleValues, ActionsListItemMeta } from '.';
@@ -38,15 +38,15 @@ const userAvatarPopoverOptions = {
 // };
 
 interface Props {
-  item: FormattedAction;
+  item: ColonyAction;
 }
 
 const ActionsListItem = ({
   item: {
     fromDomain,
     transactionHash,
-    commentCount = 0,
-    status = ListItemStatus.Defused,
+    // commentCount = 0,
+    // status = ListItemStatus.Defused,
     createdAt,
   },
   item,
@@ -68,6 +68,9 @@ const ActionsListItem = ({
   //   motionId,
   //   motionState,
   // );
+
+  const status = ListItemStatus.Defused;
+  const commentCount = 1;
 
   return (
     <ListItem

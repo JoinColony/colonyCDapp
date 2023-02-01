@@ -1,14 +1,14 @@
 import { SortOptions } from '~shared/SortControls';
-import { FormattedAction } from '~types';
+import { ColonyAction } from '~types';
 
 export const actionsSort =
   (actionsSortOption: SortOptions) =>
-  (first: FormattedAction, second: FormattedAction) => {
+  (first: ColonyAction, second: ColonyAction) => {
     switch (actionsSortOption) {
       case SortOptions.NEWEST:
-        return second.createdAt.getTime() - first.createdAt.getTime();
+        return second.createdAt - first.createdAt;
       case SortOptions.OLDEST:
-        return first.createdAt.getTime() - second.createdAt.getTime();
+        return first.createdAt - second.createdAt;
       default:
         return 0;
     }

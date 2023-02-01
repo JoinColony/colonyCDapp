@@ -3,25 +3,8 @@ import { ColonyRole } from '@colony/colony-js';
 import { ListItemStatus } from '~shared/ListItem';
 import { MotionState } from '~utils/colonyMotions';
 
-import { Address, User } from './index';
+import { Address, ActionUserRoles, User, ColonyActionType } from './index';
 import { ColonyMotions } from './motions';
-
-export enum ColonyActions {
-  Generic = 'Generic',
-  WrongColony = 'WrongColony',
-  Payment = 'Payment',
-  Recovery = 'Recovery',
-  MoveFunds = 'MoveFunds',
-  UnlockToken = 'UnlockToken',
-  MintTokens = 'MintTokens',
-  CreateDomain = 'CreateDomain',
-  VersionUpgrade = 'VersionUpgrade',
-  ColonyEdit = 'ColonyEdit',
-  EditDomain = 'EditDomain',
-  SetUserRoles = 'SetUserRoles',
-  EmitDomainReputationPenalty = 'EmitDomainReputationPenalty',
-  EmitDomainReputationReward = 'EmitDomainReputationReward',
-}
 
 export enum ColonyAndExtensionsEvents {
   Generic = 'Generic',
@@ -136,7 +119,7 @@ export type ActionUserRoles = {
 export interface FormattedAction {
   id: string;
   status?: ListItemStatus;
-  actionType: ColonyActions | ColonyMotions;
+  actionType: ColonyActionType | ColonyMotions;
   initiator: User;
   recipient: User;
   amount: string;
