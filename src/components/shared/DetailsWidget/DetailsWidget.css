@@ -1,0 +1,9 @@
+.transactionHashLink {
+  font-family: var(--family-techie);
+  color: rgba(var(--dark-1), 0.85);
+}
+
+.transactionHashLink:hover {
+  text-decoration: underline;
+  color: var(--sky-blue);
+}
