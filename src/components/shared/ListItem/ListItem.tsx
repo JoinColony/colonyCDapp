@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid';
 import React, { ReactNode } from 'react';
 import { FormattedDateParts } from 'react-intl';
 
-import Tag, { Appearance as TagAppearance } from '~shared/Tag';
+import { MotionTag } from '~shared/Tag';
 import { Message, UniversalMessageValues } from '~types';
 import { MotionState, MOTION_TAG_MAP } from '~utils/colonyMotions';
 import { getMainClasses } from '~utils/css';
@@ -98,16 +98,7 @@ const ListItem = ({
               {formatText(title, titleValues)}
             </span>
             <div className={styles.motionTagWrapper}>
-              {tagStyles && (
-                <Tag
-                  text={tagStyles.name}
-                  appearance={{
-                    theme: tagStyles.theme as TagAppearance['theme'],
-                    colorSchema:
-                      tagStyles.colorSchema as TagAppearance['colorSchema'],
-                  }}
-                />
-              )}
+              {tagStyles && <MotionTag motionStyles={tagStyles} />}
             </div>
           </div>
           <div className={styles.meta}>

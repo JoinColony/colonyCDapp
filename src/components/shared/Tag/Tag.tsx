@@ -7,20 +7,29 @@ import { formatText } from '~utils/intl';
 
 import styles from './Tag.css';
 
+export enum TagTheme {
+  Primary = 'primary',
+  Light = 'light',
+  Golden = 'golden',
+  Danger = 'danger',
+  Pink = 'pink',
+  Blue = 'blue',
+  DangerGhost = 'dangerGhost',
+  Banned = 'banned',
+}
+
+export enum TagColorSchema {
+  FullColor = 'fullColor',
+  Inverted = 'inverted',
+  Plain = 'plain',
+}
+
 export interface Appearance {
   /* "light" is default */
-  theme:
-    | 'primary'
-    | 'light'
-    | 'golden'
-    | 'danger'
-    | 'pink'
-    | 'blue'
-    | 'dangerGhost'
-    | 'banned';
+  theme: `${TagTheme}`;
   fontSize?: 'tiny' | 'small';
   /* "fullColor" is default */
-  colorSchema?: 'fullColor' | 'inverted' | 'plain';
+  colorSchema?: `${TagColorSchema}`;
   margin?: 'none';
 }
 
