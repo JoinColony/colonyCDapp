@@ -391,8 +391,10 @@ type ColonyAction @model {
   type: ColonyActionType!
   blockNumber: Int!
   transactionHash: String!
-  initiator: String
-  recipient: String
+  initiatorAddress: ID
+  initiator: User @hasOne(fields: ["initiatorAddress"])
+  recipientAddress: ID
+  recipient: User @hasOne(fields: ["recipientAddress"])
   amount: String
   tokenAddress: String
   symbol: String
