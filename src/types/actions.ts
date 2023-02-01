@@ -143,6 +143,7 @@ export interface FormattedAction {
   totalNayStake?: string;
   requiredStake?: string;
   reputationChange?: string;
+  transactionStatus?: number;
 }
 
 export interface FormattedEvent {

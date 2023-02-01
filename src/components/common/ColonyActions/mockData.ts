@@ -57,6 +57,7 @@ const coreData = {
   transactionHash: '0x',
   roles: [],
   timeoutPeriods: 0,
+  transactionStatus: 1,
   colonyAvatarHash: null,
   colonyTokens: [],
   blockNumber: 999,
