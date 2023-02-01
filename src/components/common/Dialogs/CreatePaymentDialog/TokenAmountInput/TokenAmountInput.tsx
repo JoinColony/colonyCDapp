@@ -50,6 +50,7 @@ const TokenAmountInput = ({ colony, disabled }: Props) => {
     () => ({
       delimiter: ',',
       numeral: true,
+      numeralPositiveOnly: true,
       numeralDecimalScale: getTokenDecimalsWithFallback(
         selectedToken && selectedToken.decimals,
       ),
