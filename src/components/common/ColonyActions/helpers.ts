@@ -4,11 +4,13 @@ import { ColonyAction } from '~types';
 export const actionsSort =
   (actionsSortOption: SortOptions) =>
   (first: ColonyAction, second: ColonyAction) => {
+    const firstCreatedAt = new Date(first.createdAt).getTime();
+    const secondCreatedAt = new Date(second.createdAt).getTime();
     switch (actionsSortOption) {
       case SortOptions.NEWEST:
-        return second.createdAt - first.createdAt;
+        return secondCreatedAt - firstCreatedAt;
       case SortOptions.OLDEST:
-        return first.createdAt - second.createdAt;
+        return firstCreatedAt - secondCreatedAt;
       default:
         return 0;
     }
