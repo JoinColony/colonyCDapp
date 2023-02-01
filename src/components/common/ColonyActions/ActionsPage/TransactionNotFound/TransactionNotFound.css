@@ -1,0 +1,30 @@
+.notFoundContainer {
+  width: 340px;
+  text-align: center;
+}
+
+.notFoundContainer svg {
+  margin-bottom: 20px;
+  width: 600px;
+  transform: translateX(-130px);
+}
+
+.notFoundContainer h3 {
+  line-height: 24px;
+}
+
+.divider {
+  margin: 40px 0 30px;
+  height: 1px;
+  width: 100%;
+  background-color: rgba(var(--grey-purple-1), 0.15);
+}
+
+.heading {
+  margin-bottom: 20px;
+  font-size: var(--size-medium-l);
+  font-weight: var(--weight-bold);
+  line-height: 24px;
+  color: var(--dark);
+  letter-spacing: var(--spacing-medium);
+}
