@@ -12,4 +12,6 @@ fragment ColonyAction on ColonyAction {
     ...User
   }
   amount
+  fromDomain
+  toDomain
 }
