@@ -1,27 +1,36 @@
 import React from 'react';
+import { Placement } from '@popperjs/core';
 
 import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
-import { Address, Colony } from '~types';
 import UserAvatar from '~shared/UserAvatar';
-import { useGetCurrentUserQuery } from '~gql';
+import { useAppContext } from '~hooks';
+import { Address, Colony } from '~types';
 
-import styles from './DetailsWidgetUser.css';
+import styles from './UserDetail.css';
 
-const displayName = 'DetailsWidgetUser';
+const displayName = 'DetailsWidget.UserDetail';
+
+export const userDetailPopoverOptions = {
+  showArrow: false,
+  placement: 'left' as Placement,
+  modifiers: [
+    {
+      name: 'offset',
+      options: {
+        offset: [0, 10],
+      },
+    },
+  ],
+};
 
 interface Props {
-  colony: Colony;
+  colony?: Colony;
   walletAddress: Address;
 }
 
-const DetailsWidgetUser = ({ colony, walletAddress }: Props) => {
-  const { data } = useGetCurrentUserQuery({
-    variables: {
-      address: walletAddress,
-    },
-  });
-  const user = data?.getUserByAddress?.items?.[0];
+const UserDetail = ({ colony, walletAddress }: Props) => {
+  const { user } = useAppContext();
   const userDisplayName = user?.profile?.displayName;
   const username = user?.name;
 
@@ -31,21 +40,10 @@ const DetailsWidgetUser = ({ colony, walletAddress }: Props) => {
         colony={colony}
         size="s"
         notSet={false}
-        user={user || undefined}
+        user={user}
         address={walletAddress || ''}
         showInfo
-        popperOptions={{
-          showArrow: false,
-          placement: 'left',
-          modifiers: [
-            {
-              name: 'offset',
-              options: {
-                offset: [0, 10],
-              },
-            },
-          ],
-        }}
+        popperOptions={userDetailPopoverOptions}
       />
       <div className={styles.textContainer}>
         {(userDisplayName || username) && (
@@ -63,6 +61,6 @@ const DetailsWidgetUser = ({ colony, walletAddress }: Props) => {
   );
 };
 
-DetailsWidgetUser.displayName = displayName;
+UserDetail.displayName = displayName;
 
-export default DetailsWidgetUser;
+export default UserDetail;
