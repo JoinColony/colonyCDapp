@@ -3,7 +3,13 @@ fragment ColonyAction on ColonyAction {
   type
   blockNumber
   transactionHash
-  initiator
-  recipient
+  initiatorAddress
+  initiator {
+    ...User
+  }
+  recipientAddress
+  recipient {
+    ...User
+  }
   amount
 }

@@ -116,8 +116,10 @@ export type ColonyAction = {
   createdAt: Scalars['AWSDateTime'];
   decimals?: Maybe<Scalars['Int']>;
   id: Scalars['ID'];
-  initiator?: Maybe<Scalars['String']>;
-  recipient?: Maybe<Scalars['String']>;
+  initiator?: Maybe<User>;
+  initiatorAddress?: Maybe<Scalars['ID']>;
+  recipient?: Maybe<User>;
+  recipientAddress?: Maybe<Scalars['ID']>;
   symbol?: Maybe<Scalars['String']>;
   tokenAddress?: Maybe<Scalars['String']>;
   transactionHash: Scalars['String'];
@@ -258,8 +260,8 @@ export type CreateColonyActionInput = {
   colonyId: Scalars['ID'];
   decimals?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['ID']>;
-  initiator?: InputMaybe<Scalars['String']>;
-  recipient?: InputMaybe<Scalars['String']>;
+  initiatorAddress?: InputMaybe<Scalars['ID']>;
+  recipientAddress?: InputMaybe<Scalars['ID']>;
   symbol?: InputMaybe<Scalars['String']>;
   tokenAddress?: InputMaybe<Scalars['String']>;
   transactionHash: Scalars['String'];
@@ -572,10 +574,10 @@ export type ModelColonyActionConditionInput = {
   colonyActionsId?: InputMaybe<ModelIdInput>;
   colonyId?: InputMaybe<ModelIdInput>;
   decimals?: InputMaybe<ModelIntInput>;
-  initiator?: InputMaybe<ModelStringInput>;
+  initiatorAddress?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelColonyActionConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionConditionInput>>>;
-  recipient?: InputMaybe<ModelStringInput>;
+  recipientAddress?: InputMaybe<ModelIdInput>;
   symbol?: InputMaybe<ModelStringInput>;
   tokenAddress?: InputMaybe<ModelStringInput>;
   transactionHash?: InputMaybe<ModelStringInput>;
@@ -596,10 +598,10 @@ export type ModelColonyActionFilterInput = {
   colonyId?: InputMaybe<ModelIdInput>;
   decimals?: InputMaybe<ModelIntInput>;
   id?: InputMaybe<ModelIdInput>;
-  initiator?: InputMaybe<ModelStringInput>;
+  initiatorAddress?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelColonyActionFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionFilterInput>>>;
-  recipient?: InputMaybe<ModelStringInput>;
+  recipientAddress?: InputMaybe<ModelIdInput>;
   symbol?: InputMaybe<ModelStringInput>;
   tokenAddress?: InputMaybe<ModelStringInput>;
   transactionHash?: InputMaybe<ModelStringInput>;
@@ -967,9 +969,9 @@ export type ModelSubscriptionColonyActionFilterInput = {
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   decimals?: InputMaybe<ModelSubscriptionIntInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
-  initiator?: InputMaybe<ModelSubscriptionStringInput>;
+  initiatorAddress?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionFilterInput>>>;
-  recipient?: InputMaybe<ModelSubscriptionStringInput>;
+  recipientAddress?: InputMaybe<ModelSubscriptionIdInput>;
   symbol?: InputMaybe<ModelSubscriptionStringInput>;
   tokenAddress?: InputMaybe<ModelSubscriptionStringInput>;
   transactionHash?: InputMaybe<ModelSubscriptionStringInput>;
@@ -2239,8 +2241,8 @@ export type UpdateColonyActionInput = {
   colonyId?: InputMaybe<Scalars['ID']>;
   decimals?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
-  initiator?: InputMaybe<Scalars['String']>;
-  recipient?: InputMaybe<Scalars['String']>;
+  initiatorAddress?: InputMaybe<Scalars['ID']>;
+  recipientAddress?: InputMaybe<Scalars['ID']>;
   symbol?: InputMaybe<Scalars['String']>;
   tokenAddress?: InputMaybe<Scalars['String']>;
   transactionHash?: InputMaybe<Scalars['String']>;
@@ -2428,7 +2430,7 @@ export type WatchedColonies = {
   userID: Scalars['ID'];
 };
 
-export type ColonyActionFragment = { __typename?: 'ColonyAction', id: string, type: ColonyActionType, blockNumber: number, transactionHash: string, initiator?: string | null, recipient?: string | null, amount?: string | null };
+export type ColonyActionFragment = { __typename?: 'ColonyAction', id: string, type: ColonyActionType, blockNumber: number, transactionHash: string, initiatorAddress?: string | null, recipientAddress?: string | null, amount?: string | null, initiator?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, recipient?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null };
 
 export type ColonyFragment = { __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, balances?: { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain: { __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null }, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null } | null, fundsClaims?: { __typename?: 'ModelColonyFundsClaimConnection', items: Array<{ __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: any, amount: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, chainFundsClaim?: { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: any, amount: string } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null };
 
@@ -2507,7 +2509,7 @@ export type GetColonyActionsQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyActionsQuery = { __typename?: 'Query', getActionsByColony?: { __typename?: 'ModelColonyActionConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyAction', id: string, type: ColonyActionType, blockNumber: number, transactionHash: string, initiator?: string | null, recipient?: string | null, amount?: string | null } | null> } | null };
+export type GetColonyActionsQuery = { __typename?: 'Query', getActionsByColony?: { __typename?: 'ModelColonyActionConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyAction', id: string, type: ColonyActionType, blockNumber: number, transactionHash: string, initiatorAddress?: string | null, recipientAddress?: string | null, amount?: string | null, initiator?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, recipient?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null } | null> } | null };
 
 export type GetFullColonyByNameQueryVariables = Exact<{
   name: Scalars['String'];
@@ -2605,17 +2607,61 @@ export type GetCurrentExtensionVersionQueryVariables = Exact<{
 
 export type GetCurrentExtensionVersionQuery = { __typename?: 'Query', getCurrentVersionByKey?: { __typename?: 'ModelCurrentVersionConnection', items: Array<{ __typename?: 'CurrentVersion', version: number, extensionHash: string } | null> } | null };
 
+export const WatchedColonyFragmentDoc = gql`
+    fragment WatchedColony on Colony {
+  colonyAddress: id
+  name
+  profile {
+    avatar
+    displayName
+    thumbnail
+  }
+  meta {
+    chainId
+    network
+  }
+}
+    `;
+export const UserFragmentDoc = gql`
+    fragment User on User {
+  profile {
+    avatar
+    bio
+    displayName
+    email
+    location
+    thumbnail
+    website
+  }
+  walletAddress: id
+  name
+  watchlist {
+    items {
+      colony {
+        ...WatchedColony
+      }
+      createdAt
+    }
+  }
+}
+    ${WatchedColonyFragmentDoc}`;
 export const ColonyActionFragmentDoc = gql`
     fragment ColonyAction on ColonyAction {
   id
   type
   blockNumber
   transactionHash
-  initiator
-  recipient
+  initiatorAddress
+  initiator {
+    ...User
+  }
+  recipientAddress
+  recipient {
+    ...User
+  }
   amount
 }
-    `;
+    ${UserFragmentDoc}`;
 export const TokenFragmentDoc = gql`
     fragment Token on Token {
   decimals
@@ -2752,21 +2798,6 @@ ${ColonyBalanceFragmentDoc}
 ${FundsClaimFragmentDoc}
 ${ChainFundsClaimFragmentDoc}
 ${WatcherFragmentDoc}`;
-export const WatchedColonyFragmentDoc = gql`
-    fragment WatchedColony on Colony {
-  colonyAddress: id
-  name
-  profile {
-    avatar
-    displayName
-    thumbnail
-  }
-  meta {
-    chainId
-    network
-  }
-}
-    `;
 export const WatchListItemFragmentDoc = gql`
     fragment WatchListItem on WatchedColonies {
   colony {
@@ -2788,29 +2819,6 @@ export const ExtensionFragmentDoc = gql`
   isInitialized
 }
     `;
-export const UserFragmentDoc = gql`
-    fragment User on User {
-  profile {
-    avatar
-    bio
-    displayName
-    email
-    location
-    thumbnail
-    website
-  }
-  walletAddress: id
-  name
-  watchlist {
-    items {
-      colony {
-        ...WatchedColony
-      }
-      createdAt
-    }
-  }
-}
-    ${WatchedColonyFragmentDoc}`;
 export const CreateUniqueColonyDocument = gql`
     mutation CreateUniqueColony($input: CreateUniqueColonyInput!) {
   createUniqueColony(input: $input) {
