@@ -399,4 +399,6 @@ type ColonyAction @model {
   tokenAddress: String
   symbol: String
   decimals: Int
+  fromDomain: String
+  toDomain: String
 }
