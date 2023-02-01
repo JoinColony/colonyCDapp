@@ -130,7 +130,20 @@ export type ColonyAction = {
 };
 
 export enum ColonyActionType {
-  MintTokens = 'MINT_TOKENS'
+  ColonyEdit = 'COLONY_EDIT',
+  CreateDomain = 'CREATE_DOMAIN',
+  EditDomain = 'EDIT_DOMAIN',
+  EmitDomainReputationPenalty = 'EMIT_DOMAIN_REPUTATION_PENALTY',
+  EmitDomainReputationReward = 'EMIT_DOMAIN_REPUTATION_REWARD',
+  Generic = 'GENERIC',
+  MintTokens = 'MINT_TOKENS',
+  MoveFunds = 'MOVE_FUNDS',
+  Payment = 'PAYMENT',
+  Recovery = 'RECOVERY',
+  SetUserRoles = 'SET_USER_ROLES',
+  UnlockToken = 'UNLOCK_TOKEN',
+  VersionUpgrade = 'VERSION_UPGRADE',
+  WrongColony = 'WRONG_COLONY'
 }
 
 export type ColonyBalance = {
