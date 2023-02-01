@@ -312,7 +312,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
               onClick={loadMoreActions}
               isLoadingData={loadingActions} // oneTxActionsLoading || eventsActionsLoading}
             />
-          )}
+          )} */}
         </>
       ) : (
         <div className={styles.emptyState}>
