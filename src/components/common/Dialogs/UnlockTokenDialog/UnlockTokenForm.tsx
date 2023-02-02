@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormState } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import {
@@ -7,18 +7,19 @@ import {
   // VotingReputationVersion,
 } from '@colony/colony-js';
 
-import Button from '~shared/Button';
 import ExternalLink from '~shared/ExternalLink';
-import { DialogSection, ActionDialogProps } from '~shared/Dialog';
+import {
+  DialogSection,
+  ActionDialogProps,
+  DialogHeading,
+  DialogControls,
+} from '~shared/Dialog';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import { Heading3 } from '~shared/Heading';
 import PermissionsLabel from '~shared/PermissionsLabel';
-// import ForceToggle from '~shared/Fields/ForceToggle';
 import { Annotations } from '~shared/Fields';
 import { getAllUserRoles } from '~redux/transformers';
 import { hasRoot } from '~utils/checks';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-// import MotionDomainSelect from '~dashboard/MotionDomainSelect';
 
 import {
   useTransformer,
@@ -28,11 +29,9 @@ import {
 
 import { TOKEN_UNLOCK_INFO } from '~constants/externalUrls';
 
-import { FormValues } from './UnlockTokenDialog';
-
 import styles from './UnlockTokenForm.css';
 
-const displayName = 'common.ColonyHome.UnlockTokenDialog.UnlockTokenForm';
+const displayName = 'common.UnlockTokenDialog.UnlockTokenForm';
 
 const MSG = defineMessages({
   title: {
@@ -55,10 +54,6 @@ const MSG = defineMessages({
     defaultMessage: `You do not have the {roleRequired} permission required
       to take this action.`,
   },
-  unlockedTitle: {
-    id: `${displayName}.unlockedTitle`,
-    defaultMessage: 'Token Unlocked',
-  },
   unlockedDescription: {
     id: `${displayName}.unlockedDescription`,
     defaultMessage: `Your colony’s native token has already been unlocked.`,
@@ -73,19 +68,17 @@ const MSG = defineMessages({
   },
 });
 
-interface Props extends ActionDialogProps {
-  values: FormValues;
-}
-
 const UnlockTokenForm = ({
   colony: { status, colonyAddress },
   colony,
   back,
-  isSubmitting,
-  isValid,
-  values,
-}: Props & FormState<FormValues>) => {
+}: ActionDialogProps) => {
   const { wallet } = useAppContext();
+  const {
+    getValues,
+    formState: { isValid },
+  } = useFormContext();
+  const values = getValues();
   const allUserRoles = useTransformer(getAllUserRoles, [
     colony,
     wallet?.address,
@@ -119,28 +112,7 @@ const UnlockTokenForm = ({
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <div className={styles.modalHeading}>
-          {/*
-           * @NOTE Always disabled since you can only create this motion in root
-           */}
-          {/* {isVotingExtensionEnabled && (
-            <div className={styles.motionVoteDomain}>
-              <MotionDomainSelect
-                colony={colony}
-                disabled
-              />
-            </div>
-          )} */}
-          <div className={styles.headingContainer}>
-            <Heading3
-              appearance={{ margin: 'none', theme: 'dark' }}
-              text={MSG.title}
-            />
-            {/* {canUserUnlockNativeToken && isVotingExtensionEnabled && (
-              <ForceToggle disabled={isSubmitting} />
-            )} */}
-          </div>
-        </div>
+        <DialogHeading title={MSG.title} />
       </DialogSection>
       {!userHasPermission && isNativeTokenLocked && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -215,22 +187,10 @@ const UnlockTokenForm = ({
         </DialogSection>
       )} */}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
-        <Button
-          appearance={{ theme: 'secondary', size: 'large' }}
-          onClick={back}
-          text={{ id: 'button.back' }}
-        />
-        <Button
-          appearance={{ theme: 'primary', size: 'large' }}
-          text={
-            values.forceAction || true // || !isVotingExtensionEnabled
-              ? { id: 'button.confirm' }
-              : { id: 'button.createMotion' }
-          }
-          loading={isSubmitting}
+        <DialogControls
+          onSecondaryButtonClick={back}
           disabled={!isValid || inputDisabled} // cannotCreateMotion ||
-          style={{ minWidth: styles.wideButton }}
-          data-test="unlockTokenConfirmButton"
+          dataTest="unlockTokenConfirmButton"
         />
       </DialogSection>
     </>
