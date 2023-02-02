@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useFormContext } from 'react-hook-form';
+import { MessageDescriptor } from 'react-intl';
 
 import Button from '~shared/Button';
 
@@ -11,10 +12,16 @@ const displayName = 'DialogControls';
 interface Props {
   disabled: boolean;
   dataTest: string;
-  back?: () => void;
+  onSecondaryButtonClick: (() => void) | ((val: any) => void) | undefined;
+  secondaryButtonText?: MessageDescriptor | string;
 }
 
-const DialogControls = ({ back, disabled, dataTest }: Props) => {
+const DialogControls = ({
+  onSecondaryButtonClick,
+  disabled,
+  dataTest,
+  secondaryButtonText = { id: 'button.back' },
+}: Props) => {
   const {
     getValues,
     formState: { isSubmitting },
@@ -23,12 +30,15 @@ const DialogControls = ({ back, disabled, dataTest }: Props) => {
 
   return (
     <>
+      {onSecondaryButtonClick && (
+        <Button
+          appearance={{ theme: 'secondary', size: 'large' }}
+          onClick={onSecondaryButtonClick}
+          text={secondaryButtonText}
+        />
+      )}
       <Button
-        appearance={{ theme: 'secondary', size: 'large' }}
-        onClick={back}
-        text={{ id: 'button.back' }}
-      />
-      <Button
+        type="submit"
         appearance={{ theme: 'primary', size: 'large' }}
         text={
           values.forceAction || true // || !isVotingExtensionEnabled

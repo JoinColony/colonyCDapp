@@ -170,7 +170,7 @@ const Select = ({
       return;
     }
     const { value: optionValue } = options[selectedOption];
-    setValue(name, optionValue);
+    setValue(name, optionValue, { shouldValidate: true, shouldTouch: true });
     if (onChangeCallback) {
       onChangeCallback(optionValue);
     }
@@ -345,7 +345,7 @@ const Select = ({
           appearance={{ theme: 'minimal' }}
           status={status}
           statusValues={statusValues}
-          error={errors[name]}
+          error={errors[name]?.message}
         />
       )}
     </div>

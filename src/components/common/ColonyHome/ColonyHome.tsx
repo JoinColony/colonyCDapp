@@ -5,9 +5,7 @@ import {
   Routes as RoutesSwitch,
   useLocation,
 } from 'react-router-dom';
-
-import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-// import { allAllowedExtensions } from '~data/staticData/';
+import { Id } from '@colony/colony-js';
 
 import ColonyActions from '~common/ColonyActions';
 // import ColonyEvents from '~dashboard/ColonyEvents';
@@ -36,7 +34,7 @@ const ColonyHome = () => {
     Number(queryDomainIdFilter),
   );
 
-  const filteredDomainId = domainIdFilter || COLONY_TOTAL_BALANCE_DOMAIN_ID;
+  const filteredDomainId = domainIdFilter || Id.RootDomain;
 
   const memoizedSwitch = useMemo(() => {
     if (colony) {
