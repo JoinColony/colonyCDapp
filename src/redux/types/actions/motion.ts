@@ -12,10 +12,10 @@ import {
   MetaWithHistory,
 } from './index';
 
-export enum RootMotionOperationNames {
-  MINT_TOKENS = 'mintTokens',
-  UPGRADE = 'upgrade',
-  UNLOCK_TOKEN = 'unlockToken',
+export enum RootMotionMethodNames {
+  MintTokens = 'mintTokens',
+  Upgrade = 'upgrade',
+  UnlockToken = 'unlockToken',
 }
 
 export type MotionActionTypes =
@@ -177,7 +177,7 @@ export type MotionActionTypes =
   | UniqueActionType<
       ActionTypes.ROOT_MOTION,
       {
-        operationName: RootMotionOperationNames;
+        operationName: RootMotionMethodNames;
         colonyAddress: Address;
         colonyName?: string;
         motionParams: [BigNumber] | [string];

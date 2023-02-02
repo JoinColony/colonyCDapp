@@ -10,7 +10,7 @@ import { UserActionTypes } from './user';
 import { MetacolonyVestingTypes } from './vesting';
 import { WalletActionTypes } from './wallet';
 
-export { RootMotionOperationNames } from './motion';
+export { RootMotionMethodNames } from './motion';
 
 /*
  * Type that represents an action (bare minimum).
