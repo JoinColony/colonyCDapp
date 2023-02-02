@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import moveDecimal from 'move-decimal-point';
 import { BigNumber } from 'ethers';
 import { useNavigate } from 'react-router-dom';
@@ -18,14 +18,20 @@ import { sortBy } from '~utils/lodash';
 
 import TransferFundsDialogForm from './TransferFundsDialogForm';
 
+const displayName = 'common.TransferFundsDialog';
+
 const MSG = defineMessages({
   amountZero: {
-    id: 'common.ColonyHome.TransferFundsDialog.amountZero',
+    id: `${displayName}.amountZero`,
     defaultMessage: 'Amount must be greater than zero',
   },
   noBalance: {
-    id: 'common.ColonyHome.TransferFundsDialog.noBalance',
+    id: `${displayName}.noBalance`,
     defaultMessage: 'Insufficient balance in from domain pot',
+  },
+  samePot: {
+    id: `${displayName}.samePot`,
+    defaultMessage: 'Cannot move to same team pot',
   },
 });
 
@@ -35,13 +41,27 @@ type Props = Required<DialogProps> &
     filteredDomainId?: number;
   };
 
-const displayName = 'common.ColonyHome.TransferFundsDialog';
-
 const validationSchema = object()
   .shape({
     forceAction: boolean().defined(),
-    fromDomain: number().required(),
-    toDomain: number().required(),
+    fromDomain: number()
+      .required()
+      .test(
+        'same-pot',
+        () => MSG.samePot,
+        function (value) {
+          return this.parent.toDomain !== value;
+        },
+      ),
+    toDomain: number()
+      .required()
+      .test(
+        'same-pot',
+        () => MSG.samePot,
+        function (value) {
+          return this.parent.fromDomain !== value;
+        },
+      ),
     amount: string()
       .required()
       .test(
@@ -57,7 +77,7 @@ const validationSchema = object()
   })
   .defined();
 
-export type FormValues = InferType<typeof validationSchema>;
+type FormValues = InferType<typeof validationSchema>;
 
 const TransferFundsDialog = ({
   colony: {
@@ -82,32 +102,23 @@ const TransferFundsDialog = ({
   //   colonyAddress: colony.colonyAddress,
   // });
 
-  const getFormAction = useCallback(
-    (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-      const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
+  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
+    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
 
-      return !isForce // && isVotingExtensionEnabled
-        ? ActionTypes[`MOTION_MOVE_FUNDS${actionEnd}`]
-        : ActionTypes[`ACTION_MOVE_FUNDS${actionEnd}`];
-    },
-    [isForce], // , isVotingExtensionEnabled
+    return !isForce // && isVotingExtensionEnabled
+      ? ActionTypes[`MOTION_MOVE_FUNDS${actionEnd}`]
+      : ActionTypes[`ACTION_MOVE_FUNDS${actionEnd}`];
+  };
+
+  const colonyDomains = domains?.items || [];
+
+  const domainOptions = sortBy(
+    colonyDomains.map((domain) => ({
+      value: domain?.nativeId || '',
+      label: domain?.name || `Domain #${domain?.nativeId}`,
+    })),
+    ['value'],
   );
-
-  const colonyDomains = useMemo(() => domains?.items || [], [domains]);
-  const domainOptions = useMemo(
-    () =>
-      sortBy(
-        colonyDomains.map((domain) => ({
-          value: domain?.nativeId || '',
-          label: domain?.name || `Domain #${domain?.nativeId}`,
-        })),
-        ['value'],
-      ),
-
-    [colonyDomains],
-  );
-
-  const colonyTokens = useMemo(() => tokens?.items || [], [tokens]);
   const transform = useCallback(
     () =>
       pipe(
@@ -119,6 +130,7 @@ const TransferFundsDialog = ({
             toDomain,
             annotation: annotationMessage,
           }) => {
+            const colonyTokens = tokens?.items || [];
             const selectedToken = colonyTokens.find(
               (token) => token?.token.tokenAddress === tokenAddress,
             );
@@ -145,7 +157,7 @@ const TransferFundsDialog = ({
         ),
         withMeta({ navigate }),
       ),
-    [colonyAddress, colonyTokens, colonyName, navigate],
+    [colonyAddress, colonyName, navigate],
   );
 
   return (
@@ -155,9 +167,8 @@ const TransferFundsDialog = ({
         fromDomain: selectedDomainId || Id.RootDomain,
         toDomain:
           Number(
-            domainOptions.find(
-              (domain) => domain.value !== selectedDomainId?.toString(),
-            )?.value,
+            domainOptions.find((domain) => domain.value !== selectedDomainId)
+              ?.value,
           ) || Id.RootDomain,
         amount: '',
         tokenAddress: nativeToken.tokenAddress,
@@ -175,20 +186,15 @@ const TransferFundsDialog = ({
       onSuccess={close}
       transform={transform}
     >
-      {({ formState, getValues, trigger, setError }) => {
-        const values = getValues();
-        if (values.forceAction !== isForce) {
-          setIsForce(values.forceAction);
+      {({ getValues }) => {
+        const forceActionValue = getValues('forceAction');
+        if (forceActionValue !== isForce) {
+          setIsForce(forceActionValue);
         }
         return (
           <Dialog cancel={cancel}>
             <TransferFundsDialogForm
-              {...formState}
-              values={values}
               colony={colony}
-              triggerValidation={trigger}
-              setError={setError}
-              domainOptions={domainOptions}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
             />
           </Dialog>
