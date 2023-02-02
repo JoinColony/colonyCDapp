@@ -55,7 +55,7 @@ const getDomainName = (fromDomain: Domain) =>
 
 interface ActionsListItemMetaProps {
   // commentCount: number;
-  fromDomainId: string;
+  fromDomainId?: string;
 }
 
 const ActionsListItemMeta = ({
