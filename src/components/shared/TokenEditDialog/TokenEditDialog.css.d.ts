@@ -1,10 +1,7 @@
 declare namespace TokenEditDialogCssNamespace {
   export interface ITokenEditDialogCss {
     description: string;
-    headingContainer: string;
     marginSize: string;
-    modalHeading: string;
-    motionVoteDomain: string;
     noPermissionMessage: string;
     textarea: string;
     tokenChoiceContainer: string;
