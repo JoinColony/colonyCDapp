@@ -54,8 +54,8 @@ const NetworkFee = ({
   );
 
   if (
-    !networkFeeInverse &&
-    customAmountError &&
+    !networkFeeInverse ||
+    customAmountError ||
     new Decimal(values.amount).isZero()
   ) {
     return null;
@@ -75,7 +75,7 @@ const NetworkFee = ({
               value={
                 calculateFee(
                   values.amount,
-                  networkFeeInverse!,
+                  networkFeeInverse,
                   getTokenDecimalsWithFallback(selectedToken?.decimals),
                 ).feesInWei
               }
