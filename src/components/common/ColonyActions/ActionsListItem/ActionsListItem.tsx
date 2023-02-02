@@ -70,7 +70,6 @@ const ActionsListItem = ({
   // );
 
   const status = ListItemStatus.Defused;
-  const commentCount = 1;
 
   return (
     <ListItem
@@ -92,12 +91,7 @@ const ActionsListItem = ({
         //   />
         // )
       }
-      meta={
-        <ActionsListItemMeta
-          fromDomainId={fromDomain}
-          commentCount={commentCount}
-        />
-      }
+      meta={<ActionsListItemMeta fromDomainId={fromDomain ?? ''} />}
       onClick={handleActionRedirect}
       status={status}
       // tag={tag}

@@ -89,7 +89,7 @@ const getActionListItemTitleValues = (item: ColonyAction, colony?: Colony) => {
       ...values,
       [key]: updatedItem[key],
     }),
-    { actionType: item.actionType },
+    { actionType: item.type },
   );
 
   return titleValues;
