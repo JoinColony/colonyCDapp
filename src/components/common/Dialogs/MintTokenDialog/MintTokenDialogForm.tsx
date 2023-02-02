@@ -1,22 +1,21 @@
 import React, { useMemo } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { FormState } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import {
   ColonyRole,
   // VotingReputationVersion,
 } from '@colony/colony-js';
 
-// import { Token } from '~gql';
-import Button from '~shared/Button';
-import { ActionDialogProps } from '~shared/Dialog';
-import DialogSection from '~shared/Dialog/DialogSection';
+import {
+  ActionDialogProps,
+  DialogControls,
+  DialogHeading,
+  DialogSection,
+} from '~shared/Dialog';
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
-import { Heading3 } from '~shared/Heading';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import PermissionsLabel from '~shared/PermissionsLabel';
-// import ForceToggle from '~shared/Fields/ForceToggle';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-// import MotionDomainSelect from '~dashboard/MotionDomainSelect';
 
 import {
   // useTransformer,
@@ -27,13 +26,10 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 // import { getAllUserRoles } from '~redux/transformers';
 // import { hasRoot } from '~utils/checks';
-import { Colony } from '~types';
-
-import { FormValues } from './MintTokenDialog';
 
 import styles from './MintTokenDialogForm.css';
 
-const displayName = 'common.ColonyHome.MintTokenDialog.MintTokenDialogForm';
+const displayName = 'common.MintTokenDialog.MintTokenDialogForm';
 
 const MSG = defineMessages({
   title: {
@@ -59,19 +55,16 @@ const MSG = defineMessages({
   },
 });
 
-interface Props extends ActionDialogProps {
-  values: FormValues;
-  nativeToken?: Colony['nativeToken'];
-}
-
 const MintTokenDialogForm = ({
+  colony: { nativeToken },
   colony,
   back,
-  isSubmitting,
-  isValid,
-  nativeToken,
-  values,
-}: Props & FormState<FormValues>) => {
+}: ActionDialogProps) => {
+  const {
+    getValues,
+    formState: { isValid, isSubmitting },
+  } = useFormContext();
+  const values = getValues();
   const requiredRoles: ColonyRole[] = [ColonyRole.Root];
   // const { wallet } = useAppContext();
   // const allUserRoles = useTransformer(getAllUserRoles, [
@@ -114,28 +107,7 @@ const MintTokenDialogForm = ({
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <div className={styles.modalHeading}>
-          {/*
-           * @NOTE Always disabled since you can only create this motion in root
-           */}
-          {/* {isVotingExtensionEnabled && (
-            <div className={styles.motionVoteDomain}>
-              <MotionDomainSelect
-                colony={colony}
-                disabled
-              />
-            </div>
-          )} */}
-          <div className={styles.headingContainer}>
-            <Heading3
-              appearance={{ margin: 'none', theme: 'dark' }}
-              text={MSG.title}
-            />
-            {/* {canUserMintNativeToken && isVotingExtensionEnabled && (
-              <ForceToggle disabled={isSubmitting} />
-            )} */}
-          </div>
-        </div>
+        <DialogHeading title={MSG.title} />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -204,22 +176,10 @@ const MintTokenDialogForm = ({
         </DialogSection>
       )} */}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
-        <Button
-          appearance={{ theme: 'secondary', size: 'large' }}
-          onClick={back}
-          text={{ id: 'button.back' }}
-        />
-        <Button
-          appearance={{ theme: 'primary', size: 'large' }}
-          text={
-            values.forceAction || true // || !isVotingExtensionEnabled
-              ? { id: 'button.confirm' }
-              : { id: 'button.createMotion' }
-          }
-          loading={isSubmitting}
+        <DialogControls
+          onSecondaryButtonClick={back}
           disabled={!isValid || inputDisabled} // cannotCreateMotion ||
-          style={{ minWidth: styles.wideButton }}
-          data-test="mintConfirmButton"
+          dataTest="mintConfirmButton"
         />
       </DialogSection>
     </>

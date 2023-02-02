@@ -1,12 +1,9 @@
 declare namespace MintTokenDialogFormCssNamespace {
   export interface IMintTokenDialogFormCss {
     annotation: string;
-    headingContainer: string;
     inputComponent: string;
     inputContainer: string;
     mappings: string;
-    modalHeading: string;
-    motionVoteDomain: string;
     names: string;
     nativeToken: string;
     noPermissionMessage: string;
@@ -15,7 +12,6 @@ declare namespace MintTokenDialogFormCssNamespace {
     sources: string;
     sourcesContent: string;
     version: string;
-    wideButton: string;
   }
 }
 

@@ -10,14 +10,14 @@ import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
 import { ActionTypes } from '~redux/index';
-import { RootMotionOperationNames } from '~redux/types/actions';
+import { RootMotionMethodNames } from '~redux/types/actions';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { WizardDialogType } from '~hooks'; // useEnabledExtensions
 
 import MintTokenDialogForm from './MintTokenDialogForm';
 
-const displayName = 'common.ColonyHome.MintTokenDialog';
+const displayName = 'common.MintTokenDialog';
 
 const MSG = defineMessages({
   errorAmountMin: {
@@ -51,7 +51,7 @@ const validationSchema = object()
   })
   .defined();
 
-export type FormValues = InferType<typeof validationSchema>;
+type FormValues = InferType<typeof validationSchema>;
 
 const MintTokenDialog = ({
   colony: { nativeToken, colonyAddress, name: colonyName },
@@ -68,16 +68,13 @@ const MintTokenDialog = ({
   //   colonyAddress: colony.colonyAddress,
   // });
 
-  const getFormAction = useCallback(
-    (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-      const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
+  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
+    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
 
-      return !isForce // && isVotingExtensionEnabled
-        ? ActionTypes[`ROOT_MOTION${actionEnd}`]
-        : ActionTypes[`ACTION_MINT_TOKENS${actionEnd}`];
-    },
-    [isForce], // , isVotingExtensionEnabled
-  );
+    return !isForce // && isVotingExtensionEnabled
+      ? ActionTypes[`ROOT_MOTION${actionEnd}`]
+      : ActionTypes[`ACTION_MINT_TOKENS${actionEnd}`];
+  };
 
   const transform = useCallback(
     () =>
@@ -92,7 +89,7 @@ const MintTokenDialog = ({
               ),
             );
             return {
-              operationName: RootMotionOperationNames.MINT_TOKENS,
+              operationName: RootMotionMethodNames.MintTokens,
               colonyAddress,
               colonyName,
               nativeTokenAddress: nativeToken?.tokenAddress,
@@ -126,19 +123,16 @@ const MintTokenDialog = ({
       onSuccess={close}
       transform={transform}
     >
-      {({ formState, getValues }) => {
-        const values = getValues();
-        if (values.forceAction !== isForce) {
-          setIsForce(values.forceAction);
+      {({ getValues }) => {
+        const forceActionValue = getValues('forceAction');
+        if (forceActionValue !== isForce) {
+          setIsForce(forceActionValue);
         }
         return (
           <Dialog cancel={cancel}>
             <MintTokenDialogForm
-              {...formState}
-              values={values}
               colony={colony}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
-              nativeToken={nativeToken}
             />
           </Dialog>
         );
