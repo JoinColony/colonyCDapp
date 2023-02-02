@@ -1,23 +1,20 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { AddressZero } from '@ethersproject/constants';
 import { useNavigate } from 'react-router-dom';
-import { string, object, array, ObjectSchema, boolean } from 'yup';
+import { string, object, array, boolean, InferType } from 'yup';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import TokenEditDialog from '~shared/TokenEditDialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
 import { ActionTypes } from '~redux/index';
-import { Address } from '~types/index';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { WizardDialogType } from '~hooks'; // useEnabledExtensions
 import { createAddress } from '~utils/web3';
 import { formatText } from '~utils/intl';
 
-import getTokenList from './getTokenList';
-
-const displayName = 'common.ColonyHome.TokenManagementDialog';
+const displayName = 'common.TokenManagementDialog';
 
 const MSG = defineMessages({
   errorAddingToken: {
@@ -30,14 +27,7 @@ type Props = DialogProps &
   Partial<WizardDialogType<object>> &
   ActionDialogProps;
 
-export interface FormValues {
-  forceAction: boolean;
-  tokenAddress?: Address;
-  selectedTokenAddresses?: Address[];
-  annotationMessage?: string;
-}
-
-const validationSchema: ObjectSchema<FormValues> = object({
+const validationSchema = object({
   forceAction: boolean().defined(),
   tokenAddress: string().address().notRequired(),
   selectedTokenAddresses: array()
@@ -45,6 +35,8 @@ const validationSchema: ObjectSchema<FormValues> = object({
     .notRequired(),
   annotationMessage: string().max(4000).notRequired(),
 }).defined();
+
+type FormValues = InferType<typeof validationSchema>;
 
 const TokenManagementDialog = ({
   colony: {
@@ -66,22 +58,19 @@ const TokenManagementDialog = ({
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
-  const colonyTokens = useMemo(() => tokens?.items || [], [tokens]);
+  const colonyTokens = tokens?.items || [];
 
   // const { isVotingExtensionEnabled } = useEnabledExtensions({
   //   colonyAddress,
   // });
 
-  const getFormAction = useCallback(
-    (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-      const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
+  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
+    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
 
-      return !isForce // && isVotingExtensionEnabled
-        ? ActionTypes[`MOTION_EDIT_COLONY${actionEnd}`]
-        : ActionTypes[`ACTION_EDIT_COLONY${actionEnd}`];
-    },
-    [isForce], // , isVotingExtensionEnabled
-  );
+    return !isForce // && isVotingExtensionEnabled
+      ? ActionTypes[`MOTION_EDIT_COLONY${actionEnd}`]
+      : ActionTypes[`ACTION_EDIT_COLONY${actionEnd}`];
+  };
 
   const transform = useCallback(
     () =>
@@ -142,11 +131,11 @@ const TokenManagementDialog = ({
       error={getFormAction('ERROR')}
       defaultValues={{
         forceAction: false,
-        tokenAddress: undefined,
+        tokenAddress: '',
         selectedTokenAddresses: colonyTokens.map(
           (token) => token?.token.tokenAddress || '',
         ),
-        annotationMessage: undefined,
+        annotationMessage: '',
         /*
          * @NOTE That since this a root motion, and we don't actually make use
          * of the motion domain selected (it's disabled), we don't need to actually
@@ -158,19 +147,16 @@ const TokenManagementDialog = ({
       onSuccess={handleSuccess}
       onError={handleError}
     >
-      {({ formState, getValues }) => {
-        const values = getValues();
-        if (values.forceAction !== isForce) {
-          setIsForce(values.forceAction);
+      {({ getValues }) => {
+        const forceActionValue = getValues('forceAction');
+        if (forceActionValue !== isForce) {
+          setIsForce(forceActionValue);
         }
         return (
           <Dialog cancel={cancel}>
             <TokenEditDialog
-              {...formState}
-              values={values}
               colony={colony}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
-              tokensList={getTokenList()}
               close={close}
             />
           </Dialog>

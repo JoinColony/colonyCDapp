@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
@@ -9,7 +9,7 @@ import { WizardDialogType, useTransformer, useAppContext } from '~hooks'; // use
 import { getAllUserRoles } from '~redux/transformers';
 import { hasRoot } from '~utils/checks'; // canFund
 
-const displayName = 'common.ColonyHome.ManageFundsDialog';
+const displayName = 'common.ManageFundsDialog';
 
 const MSG = defineMessages({
   dialogHeader: {
@@ -127,90 +127,77 @@ const ManageFundsDialog = ({
 
   const canManageTokens = hasRoot(allUserRoles);
 
-  const items = useMemo(
-    () => [
-      {
-        title: MSG.transferFundsTitle,
-        description: MSG.transferFundsDescription,
-        icon: 'emoji-world-globe',
-        permissionRequired: false, // !canMoveFunds || isVotingExtensionEnabled,
-        permissionInfoText: MSG.permissionsListText,
-        permissionInfoTextValues: {
-          permissionsList: <FormattedMessage {...MSG.paymentPermissionsList} />,
-        },
-        onClick: () => callStep(nextStepTransferFunds),
-        dataTest: 'transferFundsDialogIndexItem',
+  const items = [
+    {
+      title: MSG.transferFundsTitle,
+      description: MSG.transferFundsDescription,
+      icon: 'emoji-world-globe',
+      permissionRequired: false, // !canMoveFunds || isVotingExtensionEnabled,
+      permissionInfoText: MSG.permissionsListText,
+      permissionInfoTextValues: {
+        permissionsList: <FormattedMessage {...MSG.paymentPermissionsList} />,
       },
-      {
-        title: MSG.mintTokensTitle,
-        description: MSG.mintTokensDescription,
-        icon: 'emoji-seed-sprout',
-        permissionRequired: false, // !canUserMintNativeToken,
-        permissionInfoText: MSG.permissionsListText,
-        permissionInfoTextValues: {
-          permissionsList: (
-            <FormattedMessage {...MSG.mintTokensPermissionsList} />
-          ),
-        },
-        onClick: () => callStep(nextStepMintTokens),
-        dataTest: 'mintTokensDialogItem',
+      onClick: () => callStep(nextStepTransferFunds),
+      dataTest: 'transferFundsDialogIndexItem',
+    },
+    {
+      title: MSG.mintTokensTitle,
+      description: MSG.mintTokensDescription,
+      icon: 'emoji-seed-sprout',
+      permissionRequired: false, // !canUserMintNativeToken,
+      permissionInfoText: MSG.permissionsListText,
+      permissionInfoTextValues: {
+        permissionsList: (
+          <FormattedMessage {...MSG.mintTokensPermissionsList} />
+        ),
       },
-      {
-        title: MSG.manageTokensTitle,
-        description: MSG.manageTokensDescription,
-        icon: 'emoji-pen',
-        permissionRequired: !canManageTokens, // || isVotingExtensionEnabled
-        permissionInfoText: MSG.permissionsListText,
-        permissionInfoTextValues: {
-          permissionsList: (
-            <FormattedMessage {...MSG.manageTokensPermissionsList} />
-          ),
-        },
-        onClick: () => callStep(nextStepManageTokens),
-        dataTest: 'manageTokensDialogItem',
+      onClick: () => callStep(nextStepMintTokens),
+      dataTest: 'mintTokensDialogItem',
+    },
+    {
+      title: MSG.manageTokensTitle,
+      description: MSG.manageTokensDescription,
+      icon: 'emoji-pen',
+      permissionRequired: !canManageTokens, // || isVotingExtensionEnabled
+      permissionInfoText: MSG.permissionsListText,
+      permissionInfoTextValues: {
+        permissionsList: (
+          <FormattedMessage {...MSG.manageTokensPermissionsList} />
+        ),
       },
-      {
-        title: MSG.rewardPayoutTitle,
-        description: MSG.rewardPayoutDescription,
-        icon: 'emoji-piggy-bank',
-        comingSoon: true,
+      onClick: () => callStep(nextStepManageTokens),
+      dataTest: 'manageTokensDialogItem',
+    },
+    {
+      title: MSG.rewardPayoutTitle,
+      description: MSG.rewardPayoutDescription,
+      icon: 'emoji-piggy-bank',
+      comingSoon: true,
+    },
+    {
+      title: MSG.rewardsTitle,
+      description: MSG.rewardsDescription,
+      icon: 'emoji-medal',
+      comingSoon: true,
+    },
+    {
+      title: MSG.unlockTokensTitle,
+      description: MSG.unlockTokensDescription,
+      icon: 'emoji-padlock',
+      onClick: () => callStep(nextStepUnlockToken),
+      permissionRequired: false, // !canUserUnlockNativeToken,
+      permissionInfoText: MSG.permissionsListText,
+      permissionInfoTextValues: {
+        permissionsList: (
+          <FormattedMessage {...MSG.manageTokensPermissionsList} />
+        ),
       },
-      {
-        title: MSG.rewardsTitle,
-        description: MSG.rewardsDescription,
-        icon: 'emoji-medal',
-        comingSoon: true,
-      },
-      {
-        title: MSG.unlockTokensTitle,
-        description: MSG.unlockTokensDescription,
-        icon: 'emoji-padlock',
-        onClick: () => callStep(nextStepUnlockToken),
-        permissionRequired: false, // !canUserUnlockNativeToken,
-        permissionInfoText: MSG.permissionsListText,
-        permissionInfoTextValues: {
-          permissionsList: (
-            <FormattedMessage {...MSG.manageTokensPermissionsList} />
-          ),
-        },
-        dataTest: 'unlockTokenDialogIndexItem',
-      },
-    ],
-    [
-      callStep,
-      canManageTokens,
-      // canMoveFunds,
-      // canUserMintNativeToken,
-      // canUserUnlockNativeToken,
-      nextStepManageTokens,
-      nextStepMintTokens,
-      nextStepTransferFunds,
-      nextStepUnlockToken,
-    ],
-  );
-  const filteredItems = useMemo(() => {
-    return colony.status?.nativeToken?.mintable &&
-      colony.status?.nativeToken?.unlockable
+      dataTest: 'unlockTokenDialogIndexItem',
+    },
+  ];
+  const filteredItems =
+    colony.status?.nativeToken?.mintable &&
+    colony.status?.nativeToken?.unlockable
       ? items
       : items.filter(({ icon }) => {
           if (
@@ -224,7 +211,6 @@ const ManageFundsDialog = ({
           //   !colony.status?.nativeToken?.mintable
           // );
         });
-  }, [colony, items]);
   return (
     <IndexModal
       cancel={cancel}
