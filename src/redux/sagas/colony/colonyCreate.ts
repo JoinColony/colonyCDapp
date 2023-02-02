@@ -440,7 +440,7 @@ function* colonyCreate({
       const oneTxHash = getExtensionHash(Extension.OneTxPayment);
       const oneTxVersion = yield call(getOneTxPaymentVersion);
       yield put(
-        transactionAddParams(deployOneTx.id, [oneTxHash, oneTxVersion || 0]),
+        transactionAddParams(deployOneTx.id, [oneTxHash, oneTxVersion]),
       );
       yield put(transactionReady(deployOneTx.id));
 

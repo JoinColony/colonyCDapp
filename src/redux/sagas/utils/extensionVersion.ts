@@ -7,7 +7,7 @@ import {
   GetCurrentExtensionVersionQueryVariables,
 } from '~gql';
 
-export const getOneTxPaymentVersion = async (): Promise<number | null> => {
+export const getOneTxPaymentVersion = async (): Promise<number> => {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
   const { data } = await apolloClient.query<
@@ -20,5 +20,5 @@ export const getOneTxPaymentVersion = async (): Promise<number | null> => {
     },
   });
 
-  return data.getCurrentVersionByKey?.items[0]?.version ?? null;
+  return data.getCurrentVersionByKey?.items[0]?.version ?? 1;
 };
