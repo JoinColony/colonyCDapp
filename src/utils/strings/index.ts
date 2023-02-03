@@ -61,6 +61,18 @@ export const capitalize = (word: string): string =>
   word && word.charAt(0).toUpperCase() + word.slice(1);
 
 /**
+ * Capitalize a word (converts the word to lower case, except for the first letter)
+ *
+ * @method convertToCapitalized
+ *
+ * @param {string} word The word / string to capitalize
+ * @return {string} The capitalized string
+ */
+export const convertToCapitalized = (word: string): string => {
+  const lower = word.toLowerCase();
+  return capitalize(lower);
+};
+/**
  * Strip the normal and secure website protocol from the start of a string.
  * If will only check for the specific 'http' and 'https' strings and strip them out,
  * otherwise it will just return the original string.

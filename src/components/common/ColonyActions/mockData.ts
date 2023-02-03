@@ -1,9 +1,11 @@
 import { BigNumber } from 'ethers';
 import { nanoid } from 'nanoid';
+import { DomainColor } from '~gql';
 
 import {
   Address,
   ColonyActionType,
+  ColonyAndExtensionsEvents,
   ColonyMotions,
   FormattedAction,
   User,
@@ -63,6 +65,11 @@ const coreData = {
   blockNumber: 999,
   isWhitelistActivated: false,
   verifiedAddresses: [],
+  domainMetadata: {
+    color: DomainColor.Emeraldgreen,
+    description: 'Purposeful purpose',
+    name: 'Name name',
+  },
 };
 
 export const mockActionData: FormattedAction[] = [
@@ -174,3 +181,25 @@ export const mockActionData: FormattedAction[] = [
     actionType: ColonyActionType.WrongColony,
   },
 ];
+
+export type MockEvent = typeof mockEventData;
+
+export const mockEventData = {
+  ...coreData,
+  previousDomainMetadata: {
+    color: DomainColor.Aqua,
+    description: 'Old purpose',
+    name: 'Old name',
+  },
+  eventName: ColonyAndExtensionsEvents.DomainMetadata,
+  roles: [
+    { id: 1, setTo: true },
+    { id: 2, setTo: false },
+  ],
+  emittedBy: '0xCd96D435128415F3265c32f9eaeFaCc6Be53b7D7',
+  slot: 'SlotOne',
+  stakeAmount: BigNumber.from(123),
+  isSmiteAction: false,
+  newVersion: 12,
+  reputationChange: '4000000000000000000',
+};

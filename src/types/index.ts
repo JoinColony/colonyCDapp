@@ -76,3 +76,5 @@ export interface RecordToJS<T> {
 }
 
 export type SetStateFn = ReturnType<typeof useState>[1];
+
+export type Falsy = undefined | null | false;

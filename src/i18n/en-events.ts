@@ -5,49 +5,33 @@ import { ColonyAndExtensionsEvents } from '~types';
 const eventsMessageDescriptors = {
   'event.title': `{eventName, select,
       ${ColonyAndExtensionsEvents.OneTxPaymentMade} {{initiator} paid {amount} {tokenSymbol} from {fromDomain} to {recipient}}
-      ${ColonyAndExtensionsEvents.ColonyFundsMovedBetweenFundingPots} {{initiator} transferred {amount} {tokenSymbol} from the {fromDomain} to {toDomain}}
+      ${ColonyAndExtensionsEvents.ColonyFundsMovedBetweenFundingPots} {{initiator} transferred {amount} {tokenSymbol} from the {fromDomain} domain to the {toDomain} domain}
       ${ColonyAndExtensionsEvents.TokenUnlocked} {The native token {tokenSymbol} was unlocked}
       ${ColonyAndExtensionsEvents.TokensMinted} {{initiator} minted {amount} {tokenSymbol} to {recipient}}
       ${ColonyAndExtensionsEvents.DomainAdded} {{initiator} added Team: {fromDomain}}
-      ${ColonyAndExtensionsEvents.ColonyUpgraded} {This colony has upgraded to {newVersion}}
+      ${ColonyAndExtensionsEvents.ColonyUpgraded} {This colony has upgraded to version {newVersion}}
       ${ColonyAndExtensionsEvents.RecoveryModeEntered} {{initiator} activated Recovery Mode}
-      ${ColonyAndExtensionsEvents.RecoveryStorageSlotSet} {{user} submitted new value for slot {storageSlot}}
-      ${ColonyAndExtensionsEvents.RecoveryModeExitApproved} {{user} approved exiting}
-      ${ColonyAndExtensionsEvents.RecoveryModeExited} {{user} exited Recovery Mode}
+      ${ColonyAndExtensionsEvents.RecoveryStorageSlotSet} {{initiator} submitted new value for slot {storageSlot}}
+      ${ColonyAndExtensionsEvents.RecoveryModeExitApproved} {{initiator} approved exiting}
+      ${ColonyAndExtensionsEvents.RecoveryModeExited} {{initiator} exited Recovery Mode}
       ${ColonyAndExtensionsEvents.MotionCreated} {{initiator} created a {motionTag}}
       ${ColonyAndExtensionsEvents.MotionStaked} {{staker} backed the {backedSideTag} by staking {amountTag}}
       ${ColonyAndExtensionsEvents.MotionFinalized} {{motionTag} was finalized. Stakes may be claimed.}
       ${ColonyAndExtensionsEvents.ObjectionRaised} {{staker} raised an {objectionTag}}
       ${ColonyAndExtensionsEvents.MotionRewardClaimed} {{staker} claimed their stake.}
-      other {{eventNameDecorated} emmited by {clientOrExtensionType}}
+      ${ColonyAndExtensionsEvents.ColonyMetadata} {{initiator} {changed} this colony's {colonyMetadata}{colonyMetadataChange}}
+      ${ColonyAndExtensionsEvents.DomainMetadata} {{initiator} changed the team{domainMetadataChanged}{oldDomainMetadata}{newDomainMetadata}}
+      ${ColonyAndExtensionsEvents.ColonyRoleSet} {{initiator} {roleSetAction} the {role} permission in the {fromDomain} team {roleSetDirection} {recipient}}
+      ${ColonyAndExtensionsEvents.ArbitraryReputationUpdate} {{initiator} {isSmiteAction, select,
+        true {smote}
+        other {awarded}
+      } {recipient} with a {reputationChangeNumeral} {reputationChange, plural, one {pt} other {pts}} reputation {isSmiteAction, select,
+        true {penalty}
+        other {reward}
+      }}
+      other {{eventNameDecorated} emitted by {clientOrExtensionType}}
     }`,
-  /*
-   * This needs to be declared separely since we can't nest select declarations
-   */
-  [`event.${ColonyAndExtensionsEvents.ColonyMetadata}.nameLogo`]: `{initiator} changed this colony's name to {colonyName} and its logo`,
-  [`event.${ColonyAndExtensionsEvents.ColonyMetadata}.name`]: `{initiator} changed this colony's name to {colonyName}`,
-  [`event.${ColonyAndExtensionsEvents.ColonyMetadata}.logo`]: `{initiator} changed this colony's logo`,
-  [`event.${ColonyAndExtensionsEvents.ColonyMetadata}.tokens`]: `{initiator} changed this colony's tokens`,
-  [`event.${ColonyAndExtensionsEvents.ColonyMetadata}.fallback`]: `{initiator} changed this colony's metadata, but the values are the same`,
-  [`event.${ColonyAndExtensionsEvents.DomainMetadata}.all`]: `{initiator} changed teams's name, description, color from {oldName}, {oldDescription}, {oldColor} to {domainName}, {domainPurpose}, {domainColor}`,
-  [`event.${ColonyAndExtensionsEvents.DomainMetadata}.nameDescription`]: `{initiator} changed teams's name and description from {oldName}, {oldDescription} to {domainName}, {domainPurpose}`,
-  [`event.${ColonyAndExtensionsEvents.DomainMetadata}.nameColor`]: `{initiator} changed teams's name and color from {oldName}, {oldColor} to {domainName}, {domainColor}`,
-  [`event.${ColonyAndExtensionsEvents.DomainMetadata}.descriptionColor`]: `{initiator} changed teams's description and color from {oldDescription}, {oldColor} to {domainPurpose}, {domainColor}`,
-  [`event.${ColonyAndExtensionsEvents.DomainMetadata}.description`]: `{initiator} changed teams's description from {oldDescription} to {domainPurpose}`,
-  [`event.${ColonyAndExtensionsEvents.DomainMetadata}.name`]: `{initiator} changed teams's name from {oldName} to {domainName}`,
-  [`event.${ColonyAndExtensionsEvents.DomainMetadata}.color`]: `{initiator} changed teams's color from {oldColor} to {domainColor}`,
-  [`event.${ColonyAndExtensionsEvents.DomainMetadata}.fallback`]: `{initiator} changed this team, but values are the same`,
-  [`event.${ColonyAndExtensionsEvents.ColonyRoleSet}.assign`]: `{initiator} assigned the {role} permission in the {fromDomain} team to {recipient}`,
-  [`event.${ColonyAndExtensionsEvents.ColonyRoleSet}.remove`]: `{initiator} removed the {role} permission in the {fromDomain} team from {recipient}`,
-  [`event.${ColonyAndExtensionsEvents.UserApproved}.assign`]: `User {agent} got approved in the whitelist`,
-  [`event.${ColonyAndExtensionsEvents.UserApproved}.remove`]: `User {agent} got removed from the whitelist`,
-  [`event.${ColonyAndExtensionsEvents.ArbitraryReputationUpdate}.title`]: `{initiator} {isSmiteAction, select,
-    true {smote}
-    false {awarded}
-  } {recipient} with a {reputationChangeNumeral} {reputationChange, plural, one {pt} other {pts}} reputation {isSmiteAction, select,
-    true {penalty}
-    false {reward}
-  }`,
+  //
   'eventList.event': `{eventName, select,
       ${ColonyAndExtensionsEvents.DomainAdded} {{agent} added Team: {domain}}
       ${ColonyAndExtensionsEvents.DomainMetadata} {{agent} changed Team {domain} metadata to {metadata}}
