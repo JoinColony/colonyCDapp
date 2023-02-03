@@ -13,7 +13,7 @@ fragment ColonyAction on ColonyAction {
   }
   amount
   decimals
-  symbol
+  tokenSymbol
   fromDomain
   toDomain
   createdAt
