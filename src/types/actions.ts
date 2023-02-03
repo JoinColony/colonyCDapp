@@ -18,6 +18,7 @@ export enum ColonyAndExtensionsEvents {
   TokenUnlocked = 'TokenUnlocked',
   TokensMinted = 'TokensMinted',
   SkillAdded = 'SkillAdded',
+  DecisionCreated = 'DecisionCreated',
   DomainAdded = 'DomainAdded',
   DomainMetadata = 'DomainMetadata',
   PaymentPayoutSet = 'PaymentPayoutSet',
@@ -178,6 +179,8 @@ export interface FormattedEvent {
   activePeriod?: string;
   currentPeriod?: string;
 }
+
+export type ActionItemType = ColonyActions | ColonyMotions;
 
 /*
  * This list will get longer once we add more system events to the dapp
