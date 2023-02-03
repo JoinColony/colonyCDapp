@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TransactionMeta, Status } from '..';
+import { TransactionMeta, Status } from '~common/ColonyActions/ActionsPage';
 
 import Hash from './Hash';
 

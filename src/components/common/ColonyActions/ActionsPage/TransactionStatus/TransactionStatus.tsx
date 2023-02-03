@@ -4,10 +4,11 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { Tooltip } from '~shared/Popover';
 import { getMainClasses } from '~utils/css';
 
+import { Status } from '../staticMaps';
+
 import styles from './TransactionStatus.css';
 
-const displayName =
-  'common.ColonyActions.ActionsPage.TransactionNotFound.TransactionStatus';
+const displayName = 'common.ColonyActions.ActionsPage.TransactionStatus';
 
 const MSG = defineMessages({
   transactionStatus: {
@@ -24,13 +25,6 @@ const MSG = defineMessages({
 interface Props {
   status: Status;
   showTooltip?: boolean;
-}
-
-export enum Status {
-  Failed = 'failed',
-  Pending = 'pending',
-  Succeeded = 'succeeded',
-  SystemMessage = 'systemMessage',
 }
 
 const TransactionStatus = ({ status, showTooltip = true }: Props) => (

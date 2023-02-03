@@ -5,10 +5,11 @@ import TimeRelative from '~shared/TimeRelative';
 import TransactionLink from '~shared/TransactionLink';
 import { DEFAULT_NETWORK_INFO } from '~constants';
 
-import { Status } from '../TransactionStatus';
+import { Status } from '../index';
+
 import styles from './TransactionMeta.css';
 
-const displayName = `common.colonyActions.ActionsPage.TransactionNotFound.TransactionMeta`;
+const displayName = `common.colonyActions.ActionsPage.TransactionMeta`;
 
 const MSG = defineMessages({
   blockExplorer: {

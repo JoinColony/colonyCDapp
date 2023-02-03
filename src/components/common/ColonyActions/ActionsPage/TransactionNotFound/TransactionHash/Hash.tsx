@@ -5,7 +5,7 @@ import {
   MessageDescriptor,
 } from 'react-intl';
 
-import { Status, TransactionStatus } from '..';
+import { Status, TransactionStatus } from '~common/ColonyActions/ActionsPage';
 
 import styles from './TransactionHash.css';
 

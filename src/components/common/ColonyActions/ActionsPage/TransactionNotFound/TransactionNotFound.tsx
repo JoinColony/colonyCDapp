@@ -5,8 +5,8 @@ import { Heading3 } from '~shared/Heading';
 import Button from '~shared/Button';
 import NakedMoleImage from '~images/naked-mole.svg';
 
-import { TransactionHash } from '.';
 import { STATUS_MAP } from '../staticMaps';
+import TransactionHash from './TransactionHash';
 
 import styles from './TransactionNotFound.css';
 
