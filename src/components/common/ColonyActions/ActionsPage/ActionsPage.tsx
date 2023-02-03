@@ -31,7 +31,7 @@ const ActionsPage = () => {
   const dummyAction = mockActionData[0];
   const { createdAt, transactionStatus: status } = dummyAction;
   const isValidTx = isTransactionFormat(transactionHash);
-  const events = []; // to be taken from real data
+  const events = ['events']; // to be taken from real data
 
   if (!colony) {
     return null;
@@ -57,7 +57,7 @@ const ActionsPage = () => {
 
   return (
     <ActionsPageLayout>
-      <DefaultAction />
+      <DefaultAction events={events} item={dummyAction} />
     </ActionsPageLayout>
   );
 };

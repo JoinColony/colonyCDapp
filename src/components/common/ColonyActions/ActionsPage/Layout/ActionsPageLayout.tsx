@@ -9,7 +9,11 @@ interface ActionsPageLayoutProps {
 const displayName = 'common.ColonyActions.ActionsPageLayout';
 
 const ActionsPageLayout = ({ children }: ActionsPageLayoutProps) => {
-  return <div className={styles.main}>{children}</div>;
+  return (
+    <div className={styles.layout}>
+      <div className={styles.main}>{children}</div>
+    </div>
+  );
 };
 
 ActionsPageLayout.displayName = displayName;

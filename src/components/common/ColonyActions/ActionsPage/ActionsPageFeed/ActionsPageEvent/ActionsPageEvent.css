@@ -1,0 +1,47 @@
+.main {
+  padding: 11px 16px 11px 0;
+  width: 100%;
+}
+
+.wrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+.text {
+  font-size: var(--size-normal);
+  color: var(--grey-purple);
+}
+
+.tooltipIcon {
+  margin-bottom: 4px;
+}
+
+.roles {
+  margin-right: 10px;
+  margin-left: -5px;
+}
+
+.details {
+  display: flex;
+}
+
+.highlight {
+  font-weight: var(--weight-bold);
+  color: var(--dark);
+}
+
+.userDecoration {
+  font-weight: var(--weight-bold);
+  color: var(--pink);
+}
+
+.amountTag {
+  display: inline-block;
+}
