@@ -1,12 +1,12 @@
 import {
+  AnyMessageValues,
   Colony,
   ColonyAction,
   ColonyActionType,
   ColonyMotions,
-  UniversalMessageValues,
 } from '~types';
 
-import { mapItemToExpectedFormat } from './helpers';
+import { mapColonyActionToExpectedFormat } from './mapItemToMessageFormat';
 
 enum ActionTitleMessageKeys {
   Amount = 'amount',
@@ -81,10 +81,10 @@ const getMessageDescriptorKeys = (
 };
 
 /* Returns the correct message values according to the action type. */
-const getActionListItemTitleValues = (item: ColonyAction, colony?: Colony) => {
-  const updatedItem = mapItemToExpectedFormat(item, colony);
+const getActionTitleValues = (item: ColonyAction, colony?: Colony) => {
+  const updatedItem = mapColonyActionToExpectedFormat(item, colony);
   const keys = getMessageDescriptorKeys(item.type);
-  const titleValues = keys.reduce<UniversalMessageValues>(
+  const titleValues = keys.reduce<AnyMessageValues>(
     (values, key) => ({
       ...values,
       [key]: updatedItem[key],
@@ -95,4 +95,4 @@ const getActionListItemTitleValues = (item: ColonyAction, colony?: Colony) => {
   return titleValues;
 };
 
-export default getActionListItemTitleValues;
+export default getActionTitleValues;

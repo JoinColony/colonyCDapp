@@ -2,16 +2,28 @@ import React from 'react';
 // import Decimal from 'decimal.js';
 
 import Numeral from '~shared/Numeral';
-import { Colony, ColonyAction } from '~types';
 // import { formatRolesTitle } from '~utils/colonyActions';
+import FriendlyName from '~shared/FriendlyName';
+import ColorTag from '~shared/ColorTag';
+import Tag from '~shared/Tag';
 import { findDomain } from '~utils/domains';
 import {
-  // getFormattedTokenValue,
+  getFormattedTokenValue,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
-import FriendlyName from '~shared/FriendlyName';
+import { Colony, graphQlDomainColorMap, ColonyAction } from '~types';
 
-import styles from '~shared/ListItem/ListItem.css';
+import { MockEvent } from '../mockData';
+
+import actionStyles from '~shared/ListItem/ListItem.css';
+import eventStyles from '~common/ColonyActions/ActionsPage/ActionsPageFeed/ActionsPageEvent/ActionsPageEvent.css';
+import {
+  getColonyMetadataMessageValues,
+  getColonyRoleSetTitleValues,
+  getDomainMetadataTitleValues,
+} from '~utils/events';
+import { formatText } from '~utils/intl';
+import { DomainColor } from '~gql';
 
 // const formatReputationChange = (decimals: string, reputationChange?: string) =>
 //   getFormattedTokenValue(
@@ -19,7 +31,7 @@ import styles from '~shared/ListItem/ListItem.css';
 //     decimals,
 //   );
 
-export const mapItemToExpectedFormat = (
+export const mapColonyActionToExpectedFormat = (
   item: ColonyAction,
   colony?: Colony,
 ) => {
@@ -39,12 +51,12 @@ export const mapItemToExpectedFormat = (
     // direction: formattedRolesTitle.direction,
     fromDomain: findDomain(item.fromDomain ?? '', colony)?.name,
     initiator: (
-      <span className={styles.titleDecoration}>
+      <span className={actionStyles.titleDecoration}>
         <FriendlyName user={item.initiator} autoShrinkAddress />
       </span>
     ),
     recipient: (
-      <span className={styles.titleDecoration}>
+      <span className={actionStyles.titleDecoration}>
         <FriendlyName user={item.recipient} autoShrinkAddress />
       </span>
     ),
@@ -53,8 +65,112 @@ export const mapItemToExpectedFormat = (
     // rolesChanged: formattedRolesTitle.roleTitle,
     toDomain: findDomain(item.toDomain ?? '', colony)?.name,
   };
+};
 
-  /*
+const getNewDomainMetadataValues = (
+  newValues: string,
+  newColor?: DomainColor,
+) => {
+  return formatText(
+    {
+      id: 'domainMetadata.newValues',
+      defaultMessage: `{newValues}{newColor}`,
+    },
+    {
+      newValues,
+      newColor: newColor && (
+        <ColorTag color={graphQlDomainColorMap[newColor]} />
+      ),
+    },
+  );
+};
+
+const getOldDomainMetadataValues = (
+  oldValues: string,
+  oldColor?: DomainColor,
+) =>
+  formatText(
+    {
+      id: 'domainMetadata.oldValues',
+      defaultMessage: `{oldValues}{oldColor}`,
+    },
+    {
+      oldValues,
+      oldColor: oldColor && (
+        <ColorTag color={graphQlDomainColorMap[oldColor]} />
+      ),
+    },
+  );
+
+export const mapColonyEventToExpectedFormat = (
+  item: MockEvent,
+  colony?: Colony,
+) => {
+  const colonyMetadataChanges = { namedChanged: true, logoChanged: true };
+  const role = item.roles[0];
+  const decimalStakeAmount = getFormattedTokenValue(
+    item.stakeAmount || 0,
+    item.decimals,
+  );
+
+  const {
+    domainMetadataChanged,
+    newDomainMetadata: { values: newValues, color: newColor },
+    oldDomainMetadata: { values: oldValues, color: oldColor },
+  } = getDomainMetadataTitleValues(
+    item.previousDomainMetadata,
+    item.domainMetadata,
+  );
+
+  return {
+    ...item,
+    ...getColonyMetadataMessageValues(colonyMetadataChanges, colony?.name),
+    ...getColonyRoleSetTitleValues(role.setTo),
+    domainMetadataChanged,
+    newDomainMetadata: getNewDomainMetadataValues(newValues, newColor),
+    oldDomainMetadata: getOldDomainMetadataValues(oldValues, oldColor),
+    fromDomain: findDomain(item.fromDomain, colony)?.name,
+    toDomain: findDomain(item.toDomain, colony)?.name,
+    eventNameDecorated: <b>{item.eventName}</b>,
+    role: formatText({ id: `role.${role.id}` }),
+    clientOrExtensionType: (
+      <span className={eventStyles.highlight}>{item.emittedBy}</span>
+    ),
+    initiator: (
+      <span className={eventStyles.userDecoration}>
+        <FriendlyName user={item.initiator} autoShrinkAddress />
+      </span>
+    ),
+    recipient: (
+      <span className={eventStyles.userDecoration}>
+        <FriendlyName user={item.recipient} autoShrinkAddress />
+      </span>
+    ),
+    amountTag: (
+      <div className={eventStyles.amountTag}>
+        <Tag
+          appearance={{
+            theme: 'primary',
+            colorSchema: 'inverted',
+            fontSize: 'tiny',
+            margin: 'none',
+          }}
+          text=""
+        >
+          <Numeral value={decimalStakeAmount} suffix={item.tokenSymbol} />
+        </Tag>
+      </div>
+    ),
+    reputationChangeNumeral: (
+      <Numeral value={item.reputationChange} decimals={Number(item.decimals)} />
+    ),
+  };
+};
+
+/*
+
+Actions
+======
 
 Note that the following transformations also exist in the Dapp. Because they are async,
 it would be ideal if they were handled higher up in the CDapp, and passed down. That would
@@ -143,4 +259,3 @@ const symbol = tokenData?.tokenInfo?.symbol || colonyTokenSymbol;
 const decimals =  tokenData?.tokenInfo?.decimals || Number(colonyTokenDecimals);
 
 */
-};
