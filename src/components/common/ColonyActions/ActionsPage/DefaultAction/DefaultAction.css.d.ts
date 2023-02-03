@@ -2,6 +2,7 @@ declare namespace DefaultActionCssNamespace {
   export interface IDefaultActionCss {
     container: string;
     content: string;
+    details: string;
     dividerTop: string;
     heading: string;
     main: string;

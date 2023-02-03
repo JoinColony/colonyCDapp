@@ -17,14 +17,15 @@ import styles from './ActionsPageEvent.css';
 const displayName = 'common.ColonyActions.ActionsPage.ActionsPageEvent';
 
 interface ActionsPageEventProps {
-  eventName?: ColonyAndExtensionsEvents;
+  eventName: ColonyAndExtensionsEvents;
   actionData: FormattedAction;
-  dataTest: string;
+  dataTest?: string;
   children?: ReactNode;
 }
 const ActionsPageEvent = ({
   actionData: { createdAt, transactionHash, actionType },
-  eventName = ColonyAndExtensionsEvents.Generic,
+  actionData,
+  eventName,
   dataTest,
   children,
 }: ActionsPageEventProps) => {
@@ -38,7 +39,11 @@ const ActionsPageEvent = ({
           <div className={styles.text} data-test="actionsEventText">
             <FormattedMessage
               id="event.title"
-              values={getEventTitleValues(mockEventData, colony)}
+              values={getEventTitleValues(
+                { ...mockEventData, eventName },
+                actionData,
+                colony,
+              )}
             />
           </div>
           <div className={styles.details}>

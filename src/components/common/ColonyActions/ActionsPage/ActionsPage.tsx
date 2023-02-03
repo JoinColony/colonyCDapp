@@ -27,15 +27,18 @@ type ActionsPageParams = Record<'colonyName' | 'transactionHash', string>;
 const ActionsPage = () => {
   const { colony } = useColonyContext();
   const { transactionHash } = useParams<ActionsPageParams>();
-  const loading = false;
-  const dummyAction = mockActionData[0];
-  const { createdAt, transactionStatus: status } = dummyAction;
-  const isValidTx = isTransactionFormat(transactionHash);
-  const events = ['events']; // to be taken from real data
 
   if (!colony) {
     return null;
   }
+
+  const loading = false;
+  const action = mockActionData.find(
+    (item) => item.transactionHash === transactionHash,
+  );
+  const { createdAt, transactionStatus: status } = action;
+  const isValidTx = isTransactionFormat(transactionHash);
+  const events = ['events']; // to be taken from real data
 
   if (!isValidTx || !events?.length) {
     return (
@@ -57,7 +60,7 @@ const ActionsPage = () => {
 
   return (
     <ActionsPageLayout>
-      <DefaultAction events={events} item={dummyAction} />
+      <DefaultAction events={events} item={action} />
     </ActionsPageLayout>
   );
 };

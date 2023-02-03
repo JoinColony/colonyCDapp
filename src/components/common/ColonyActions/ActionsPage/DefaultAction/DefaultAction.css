@@ -43,6 +43,10 @@
   margin-bottom: 13px;
 }
 
+.details {
+  width: 340px;
+}
+
 @media screen and query700 {
   .main {
     padding-top: 0px;
@@ -64,5 +68,10 @@
 
   .tagWrapper {
     padding-top: 13px;
+  }
+
+  .details {
+    padding-bottom: 60px;
+    width: 100%;
   }
 }
