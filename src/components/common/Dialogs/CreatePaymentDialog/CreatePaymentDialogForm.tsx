@@ -258,7 +258,7 @@ Props) => {
       )} */}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
-          back={back}
+          onSecondaryButtonClick={back}
           disabled={
             // cannotCreateMotion ||
             !isValid || !!customAmountError || inputDisabled
