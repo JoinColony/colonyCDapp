@@ -29,8 +29,8 @@ const MSG = defineMessages({
     id: `${displayName}.noBalance`,
     defaultMessage: 'Insufficient balance in from domain pot',
   },
-  samePot: {
-    id: `${displayName}.samePot`,
+  sameDomain: {
+    id: `${displayName}.sameDomain`,
     defaultMessage: 'Cannot move to same team pot',
   },
 });
@@ -41,27 +41,21 @@ type Props = Required<DialogProps> &
     filteredDomainId?: number;
   };
 
+function checkIfSameDomain(value: number) {
+  const oppositeDomain =
+    this.parent[this.path === 'fromDomain' ? 'toDomain' : 'fromDomain'];
+  return oppositeDomain !== value;
+}
+
 const validationSchema = object()
   .shape({
     forceAction: boolean().defined(),
     fromDomain: number()
       .required()
-      .test(
-        'same-pot',
-        () => MSG.samePot,
-        function (value) {
-          return this.parent.toDomain !== value;
-        },
-      ),
+      .test('same-domain', () => MSG.sameDomain, checkIfSameDomain),
     toDomain: number()
       .required()
-      .test(
-        'same-pot',
-        () => MSG.samePot,
-        function (value) {
-          return this.parent.fromDomain !== value;
-        },
-      ),
+      .test('same-domain', () => MSG.sameDomain, checkIfSameDomain),
     amount: string()
       .required()
       .test(
