@@ -4,6 +4,7 @@ import {
   ColonyAction,
   ColonyAndExtensionsEvents,
 } from '~types';
+
 import { MockEvent } from '../mockData';
 import { mapColonyEventToExpectedFormat } from './mapItemToMessageFormat';
 
