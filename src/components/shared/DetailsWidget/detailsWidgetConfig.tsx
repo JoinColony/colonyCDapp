@@ -184,7 +184,7 @@ const getDetailItems = (
         <AmountDetail
           amount={adjustedAmount}
           symbol={tokenSymbol}
-          token={undefined} /* TODO: replace with token */
+          token={undefined} /* @TODO: replace with token */
         />
       ),
     },
