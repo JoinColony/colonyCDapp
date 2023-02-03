@@ -1,6 +1,6 @@
 # Colony CDapp
 
-A interation of the Colony Dapp sporting both a fully decentralized operating mode, as well as a mode enhanced by a metadata caching layer
+A iteration of the Colony Dapp sporting both a fully decentralized operating mode, as well as a mode enhanced by a metadata caching layer
 
 ## Prerequisites
 * `node` `v16.16.x` (Best use [nvm](https://github.com/nvm-sh/nvm))
