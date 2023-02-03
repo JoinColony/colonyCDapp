@@ -1,4 +1,9 @@
-import { AnyMessageValues, Colony, ColonyAndExtensionsEvents } from '~types';
+import {
+  AnyMessageValues,
+  Colony,
+  ColonyAndExtensionsEvents,
+  FormattedAction,
+} from '~types';
 import { MockEvent } from '../mockData';
 import { mapColonyEventToExpectedFormat } from './mapItemToMessageFormat';
 
@@ -139,15 +144,23 @@ const getMessageDescriptorKeys = (eventType: ColonyAndExtensionsEvents) => {
 };
 
 /* Returns the correct message values according to the event type. */
-const getEventTitleValues = (item: MockEvent, colony?: Colony) => {
-  const updatedItem = mapColonyEventToExpectedFormat(item, colony);
-  const keys = getMessageDescriptorKeys(item.eventName);
+const getEventTitleValues = (
+  eventData: MockEvent & { eventName: ColonyAndExtensionsEvents },
+  actionItem: FormattedAction,
+  colony?: Colony,
+) => {
+  const updatedItem = mapColonyEventToExpectedFormat(
+    eventData,
+    actionItem,
+    colony,
+  );
+  const keys = getMessageDescriptorKeys(eventData.eventName);
   const titleValues = keys.reduce<AnyMessageValues>(
     (values, key) => ({
       ...values,
       [key]: updatedItem[key],
     }),
-    { eventName: item.eventName },
+    { eventName: eventData.eventName },
   );
   return titleValues;
 };

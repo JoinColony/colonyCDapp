@@ -1,6 +1,10 @@
 import { ColonyRole } from '@colony/colony-js';
 
-import { ColonyAndExtensionsEvents } from '~types';
+import {
+  ColonyActions,
+  ColonyAndExtensionsEvents,
+  ColonyMotions,
+} from '~types';
 
 export enum Status {
   Failed = 'failed',
@@ -20,6 +24,10 @@ export const STATUS_MAP: { [k: number]: Status } = {
 
 type EventRolesMap = Partial<{
   [key in ColonyAndExtensionsEvents]: ColonyRole[];
+}>;
+
+type ActionsEventsMap = Partial<{
+  [key in ColonyActions | ColonyMotions]: ColonyAndExtensionsEvents[];
 }>;
 
 export const EVENT_ROLES_MAP: EventRolesMap = {
@@ -47,4 +55,53 @@ export const EVENT_ROLES_MAP: EventRolesMap = {
     ColonyRole.Arbitration,
   ],
   [ColonyAndExtensionsEvents.Generic]: [],
+};
+
+/*
+ * Which events to display on which action's page
+ */
+
+const MOTION_EVENTS = [
+  ColonyAndExtensionsEvents.MotionCreated,
+  ColonyAndExtensionsEvents.MotionStaked,
+  ColonyAndExtensionsEvents.ObjectionRaised,
+  ColonyAndExtensionsEvents.MotionFinalized,
+  ColonyAndExtensionsEvents.MotionRewardClaimed,
+];
+
+export const ACTIONS_EVENTS: ActionsEventsMap = {
+  [ColonyActions.Payment]: [ColonyAndExtensionsEvents.OneTxPaymentMade],
+  [ColonyActions.MoveFunds]: [
+    ColonyAndExtensionsEvents.ColonyFundsMovedBetweenFundingPots,
+  ],
+  [ColonyActions.UnlockToken]: [ColonyAndExtensionsEvents.TokenUnlocked],
+  [ColonyActions.MintTokens]: [ColonyAndExtensionsEvents.TokensMinted],
+  [ColonyActions.CreateDomain]: [ColonyAndExtensionsEvents.DomainAdded],
+  [ColonyActions.VersionUpgrade]: [ColonyAndExtensionsEvents.ColonyUpgraded],
+  [ColonyActions.ColonyEdit]: [ColonyAndExtensionsEvents.ColonyMetadata],
+  [ColonyActions.EditDomain]: [ColonyAndExtensionsEvents.DomainMetadata],
+  [ColonyActions.SetUserRoles]: [ColonyAndExtensionsEvents.ColonyRoleSet],
+  [ColonyActions.Recovery]: [
+    ColonyAndExtensionsEvents.RecoveryModeEntered,
+    ColonyAndExtensionsEvents.RecoveryStorageSlotSet,
+    ColonyAndExtensionsEvents.RecoveryModeExitApproved,
+    ColonyAndExtensionsEvents.RecoveryModeExited,
+  ],
+  [ColonyActions.EmitDomainReputationPenalty]: [
+    ColonyAndExtensionsEvents.ArbitraryReputationUpdate,
+  ],
+  [ColonyActions.EmitDomainReputationReward]: [
+    ColonyAndExtensionsEvents.ArbitraryReputationUpdate,
+  ],
+  [ColonyMotions.UnlockTokenMotion]: MOTION_EVENTS,
+  [ColonyMotions.MintTokensMotion]: MOTION_EVENTS,
+  [ColonyMotions.CreateDomainMotion]: MOTION_EVENTS,
+  [ColonyMotions.EditDomainMotion]: MOTION_EVENTS,
+  [ColonyMotions.ColonyEditMotion]: MOTION_EVENTS,
+  [ColonyMotions.SetUserRolesMotion]: MOTION_EVENTS,
+  [ColonyMotions.PaymentMotion]: MOTION_EVENTS,
+  [ColonyMotions.MoveFundsMotion]: MOTION_EVENTS,
+  [ColonyMotions.EmitDomainReputationPenaltyMotion]: MOTION_EVENTS,
+  [ColonyMotions.EmitDomainReputationRewardMotion]: MOTION_EVENTS,
+  [ColonyMotions.CreateDecisionMotion]: MOTION_EVENTS,
 };

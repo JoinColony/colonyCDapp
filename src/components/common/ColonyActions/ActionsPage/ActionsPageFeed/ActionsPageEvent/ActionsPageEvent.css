@@ -23,13 +23,9 @@
   margin-bottom: 4px;
 }
 
-.roles {
-  margin-right: 10px;
-  margin-left: -5px;
-}
-
 .details {
   display: flex;
+  column-gap: 10px;
 }
 
 .highlight {

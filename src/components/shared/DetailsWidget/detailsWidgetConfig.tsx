@@ -1,9 +1,18 @@
 import React, { ReactNode } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 
+import { mockEventData } from '~common/ColonyActions/mockData';
 import TransactionLink from '~shared/TransactionLink';
-import { Address, Colony, ColonyActions, UniversalMessageValues } from '~types';
-import { EventValues, getDetailsForAction } from '~utils/colonyActions';
+import {
+  ActionItemType,
+  Address,
+  Colony,
+  ColonyActions,
+  FormattedAction,
+  UniversalMessageValues,
+} from '~types';
+import { getDetailsForAction } from '~utils/colonyActions';
+import { findDomain } from '~utils/domains';
 import { splitTransactionHash } from '~utils/strings';
 
 import {
@@ -92,37 +101,40 @@ interface DetailItemConfig {
 }
 
 const getDetailItems = (
-  actionType: EventValues['actionType'],
+  actionType: ActionItemType,
   {
-    motionDomain,
-    fromDomain,
-    toDomain,
+    //motionDomain,
+    fromDomain: fromDomainId,
+    toDomain: toDomainId,
     amount,
-    token,
+    //token,
     tokenSymbol,
     reputationChange,
-    isSmiteAction,
     roles,
-  }: EventValues,
+  }: typeof mockEventData & FormattedAction,
   colony: Colony,
   recipientWalletAddress: Address | undefined,
   transactionHash: string | undefined,
 ): DetailItemConfig[] => {
   const detailsForAction = getDetailsForAction(actionType);
   const shortenedHash = getShortenedHash(transactionHash || '');
-  const colonyName = colony.name;
+  const fromDomain = findDomain(fromDomainId, colony);
+  const toDomain = findDomain(toDomainId, colony);
+  const isSmiteAction =
+    actionType === ColonyActions.EmitDomainReputationPenalty;
 
+  const colonyName = colony.name;
   return [
     {
       label: MSG.actionType,
       labelValues: undefined,
       item: <ActionTypeDetail actionType={actionType} />,
     },
-    {
-      label: MSG.motionDomain,
-      labelValues: undefined,
-      item: motionDomain && <TeamDetail domain={motionDomain} />,
-    },
+    // {
+    //   label: MSG.motionDomain,
+    //   labelValues: undefined,
+    //   item: motionDomain && <TeamDetail domain={motionDomain} />,
+    // },
     {
       label: MSG.fromDomain,
       labelValues: undefined,
@@ -155,7 +167,11 @@ const getDetailItems = (
       label: MSG.value,
       labelValues: undefined,
       item: detailsForAction.Amount && amount && (
-        <AmountDetail amount={amount} symbol={tokenSymbol} token={token} />
+        <AmountDetail
+          amount={amount}
+          symbol={tokenSymbol}
+          token={undefined} /* TODO: replace with token */
+        />
       ),
     },
     {
@@ -203,7 +219,7 @@ const getDetailItems = (
         />
       ),
     },
-  ];
+  ].filter((detail) => !!detail.item);
 };
 
 export default getDetailItems;

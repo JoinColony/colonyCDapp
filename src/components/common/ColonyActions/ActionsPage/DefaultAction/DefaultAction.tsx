@@ -1,10 +1,13 @@
 import React from 'react';
-import { getActionTitleValues } from '~common/ColonyActions';
-import { useColonyContext } from '~hooks';
 
+import { getActionTitleValues } from '~common/ColonyActions';
+import { mockEventData } from '~common/ColonyActions/mockData';
+import DetailsWidget from '~shared/DetailsWidget';
 import { Heading3 } from '~shared/Heading';
 import { MotionTag } from '~shared/Tag';
-import { FormattedAction, FormattedEvent } from '~types';
+
+import { useColonyContext } from '~hooks';
+import { FormattedAction } from '~types';
 import { MotionState, MOTION_TAG_MAP } from '~utils/colonyMotions';
 
 import ActionsPageFeed from '../ActionsPageFeed';
@@ -15,20 +18,17 @@ const displayName = 'common.ColonyActions.DefaultAction';
 
 interface DefaultActionProps {
   item: FormattedAction;
-  events: FormattedEvent[];
 }
 
-const DefaultAction = ({ events, item }: DefaultActionProps) => {
+const DefaultAction = ({ item }: DefaultActionProps) => {
   const { colony } = useColonyContext();
+
+  if (!colony) {
+    return null;
+  }
+
   const isVotingExtensionEnabled = false;
   const motionStyles = MOTION_TAG_MAP[MotionState.Forced];
-
-  //   const headingText =
-  //     (verifiedAddressesChanged &&
-  //       `action.${ColonyActions.ColonyEdit}.verifiedAddresses`) ||
-  //     (tokensChanged && `action.${ColonyActions.ColonyEdit}.tokens`) ||
-  //     roleMessageDescriptorId ||
-  //     'action.title';
 
   return (
     <div className={styles.main}>
@@ -49,7 +49,7 @@ const DefaultAction = ({ events, item }: DefaultActionProps) => {
             text={{ id: 'action.title' }}
             textValues={getActionTitleValues(item, colony)}
           />
-          <ActionsPageFeed networkEvents={events} actionData={item} />
+          <ActionsPageFeed actionData={item} />
           {/*
            *  @NOTE A user can comment only if he has a wallet connected
            * and a registered user profile
@@ -64,15 +64,15 @@ const DefaultAction = ({ events, item }: DefaultActionProps) => {
           )}
           */}
         </div>
-        {/* <div className={styles.details}>
+        <div className={styles.details}>
           <DetailsWidget
-            actionType={actionType as ColonyActions}
-            recipient={recipient}
-            transactionHash={transactionHash}
-            values={actionAndEventValues}
+            actionType={item.actionType}
+            recipientAddress={item.recipient.walletAddress}
+            transactionHash={item.transactionHash}
+            values={{ ...mockEventData, ...item }}
             colony={colony}
           />
-        </div> */}
+        </div>
       </div>
     </div>
   );
