@@ -10,7 +10,6 @@ import { useFormContext } from 'react-hook-form';
 
 import PermissionsLabel from '~shared/PermissionsLabel';
 import ConfusableWarning from '~shared/ConfusableWarning';
-import { ItemDataType } from '~shared/OmniPicker';
 import {
   ActionDialogProps,
   DialogSection,
@@ -22,11 +21,10 @@ import SingleUserPicker, {
   filterUserSelection,
 } from '~shared/SingleUserPicker';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import UserAvatar from '~shared/UserAvatar';
 
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
-import { Address, User, ColonyWatcher } from '~types';
+import { ColonyWatcher } from '~types';
 
 import {
   useAppContext,
@@ -87,10 +85,6 @@ interface Props extends ActionDialogProps {
   // showWhitelistWarning: boolean;
   filteredDomainId?: number;
 }
-
-const renderAvatar = (address: Address, item: ItemDataType<User>) => (
-  <UserAvatar address={address} user={item} size="xs" notSet={false} />
-);
 
 const CreatePaymentDialogForm = ({
   back,
@@ -195,7 +189,6 @@ Props) => {
             label={MSG.to}
             name="recipient"
             filter={filterUserSelection}
-            renderAvatar={renderAvatar}
             disabled={inputDisabled}
             placeholder={MSG.userPickerPlaceholder}
             dataTest="paymentRecipientPicker"
