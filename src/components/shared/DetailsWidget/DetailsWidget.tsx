@@ -1,8 +1,14 @@
 import React from 'react';
 import { nanoid } from 'nanoid';
 
-import { Colony, ColonyActions, ColonyMotions, User } from '~types';
-import { EventValues } from '~utils/colonyActions';
+import {
+  Colony,
+  ColonyActions,
+  ColonyMotions,
+  FormattedAction,
+  User,
+} from '~types';
+import { mockEventData } from '~common/ColonyActions/mockData';
 
 import DetailItem from './DetailItem';
 import getDetailItems from './detailsWidgetConfig';
@@ -14,15 +20,15 @@ interface Props {
   colony: Colony;
   transactionHash?: string;
   recipientAddress?: User['walletAddress'];
-  values: EventValues;
+  values: typeof mockEventData & FormattedAction;
 }
 
 const DetailsWidget = ({
   actionType,
   colony,
+  recipientAddress,
   transactionHash,
   values,
-  recipientAddress,
 }: Props) => {
   const detailItems = getDetailItems(
     actionType,

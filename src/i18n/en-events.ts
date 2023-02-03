@@ -31,7 +31,6 @@ const eventsMessageDescriptors = {
       }}
       other {{eventNameDecorated} emitted by {clientOrExtensionType}}
     }`,
-  //
   'eventList.event': `{eventName, select,
       ${ColonyAndExtensionsEvents.DomainAdded} {{agent} added Team: {domain}}
       ${ColonyAndExtensionsEvents.DomainMetadata} {{agent} changed Team {domain} metadata to {metadata}}

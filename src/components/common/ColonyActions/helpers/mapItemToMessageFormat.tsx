@@ -1,35 +1,29 @@
 import React from 'react';
-// import Decimal from 'decimal.js';
 
 import Numeral from '~shared/Numeral';
 // import { formatRolesTitle } from '~utils/colonyActions';
 import FriendlyName from '~shared/FriendlyName';
-import ColorTag from '~shared/ColorTag';
-import Tag from '~shared/Tag';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { findDomain } from '~utils/domains';
 import {
-  getFormattedTokenValue,
-  getTokenDecimalsWithFallback,
-} from '~utils/tokens';
-import { Colony, graphQlDomainColorMap, ColonyAction } from '~types';
+  getColonyMetadataMessageValues,
+  getDomainMetadataTitleValues,
+} from '~utils/events';
+import {
+  Colony,
+  ColonyAndExtensionsEvents,
+  ColonyAction,
+  ColonyActionType,
+} from '~types';
 
 import { MockEvent } from '../mockData';
+import {
+  getNewDomainMetadataValues,
+  getOldDomainMetadataValues,
+} from './getDomainValues';
 
 import actionStyles from '~shared/ListItem/ListItem.css';
 import eventStyles from '~common/ColonyActions/ActionsPage/ActionsPageFeed/ActionsPageEvent/ActionsPageEvent.css';
-import {
-  getColonyMetadataMessageValues,
-  getColonyRoleSetTitleValues,
-  getDomainMetadataTitleValues,
-} from '~utils/events';
-import { formatText } from '~utils/intl';
-import { DomainColor } from '~gql';
-
-// const formatReputationChange = (decimals: string, reputationChange?: string) =>
-//   getFormattedTokenValue(
-//     new Decimal(reputationChange || '0').abs().toString(),
-//     decimals,
-//   );
 
 export const mapColonyActionToExpectedFormat = (
   item: ColonyAction,
@@ -40,6 +34,7 @@ export const mapColonyActionToExpectedFormat = (
   //   item.decimals,
   //   item.reputationChange,
   // );
+
   return {
     ...item,
     amount: (
@@ -49,7 +44,7 @@ export const mapColonyActionToExpectedFormat = (
       />
     ),
     // direction: formattedRolesTitle.direction,
-    fromDomain: findDomain(item.fromDomain ?? '', colony)?.name,
+    fromDomain: findDomain(item.fromDomain, colony)?.name,
     initiator: (
       <span className={actionStyles.titleDecoration}>
         <FriendlyName user={item.initiator} autoShrinkAddress />
@@ -60,81 +55,48 @@ export const mapColonyActionToExpectedFormat = (
         <FriendlyName user={item.recipient} autoShrinkAddress />
       </span>
     ),
-    // reputationChangeNumeral: <Numeral value={reputationChange} />,
-    // reputationChange,
-    // rolesChanged: formattedRolesTitle.roleTitle,
-    toDomain: findDomain(item.toDomain ?? '', colony)?.name,
+    toDomain: findDomain(item.toDomain, colony)?.name,
+    // reputationChangeNumeral: item.reputationChange && (
+    //   <Numeral value={item.reputationChange} decimals={Number(item.decimals)} />
+    // ),
+    // reputationChange:
+    //   item.reputationChange &&
+    //   formatReputationChange(item.reputationChange, item.decimals),
+    //rolesChanged: formattedRolesTitle.roleTitle,
   };
 };
 
-const getNewDomainMetadataValues = (
-  newValues: string,
-  newColor?: DomainColor,
-) => {
-  return formatText(
-    {
-      id: 'domainMetadata.newValues',
-      defaultMessage: `{newValues}{newColor}`,
-    },
-    {
-      newValues,
-      newColor: newColor && (
-        <ColorTag color={graphQlDomainColorMap[newColor]} />
-      ),
-    },
-  );
-};
-
-const getOldDomainMetadataValues = (
-  oldValues: string,
-  oldColor?: DomainColor,
-) =>
-  formatText(
-    {
-      id: 'domainMetadata.oldValues',
-      defaultMessage: `{oldValues}{oldColor}`,
-    },
-    {
-      oldValues,
-      oldColor: oldColor && (
-        <ColorTag color={graphQlDomainColorMap[oldColor]} />
-      ),
-    },
-  );
-
 export const mapColonyEventToExpectedFormat = (
-  item: MockEvent,
+  event: MockEvent & { eventName: ColonyAndExtensionsEvents },
+  item: ColonyAction,
   colony?: Colony,
 ) => {
   const colonyMetadataChanges = { namedChanged: true, logoChanged: true };
-  const role = item.roles[0];
-  const decimalStakeAmount = getFormattedTokenValue(
-    item.stakeAmount || 0,
-    item.decimals,
-  );
+  // const role = item.roles[0];
 
   const {
     domainMetadataChanged,
     newDomainMetadata: { values: newValues, color: newColor },
     oldDomainMetadata: { values: oldValues, color: oldColor },
   } = getDomainMetadataTitleValues(
-    item.previousDomainMetadata,
-    item.domainMetadata,
+    event.previousDomainMetadata,
+    event.domainMetadata,
   );
 
   return {
     ...item,
+    ...event,
     ...getColonyMetadataMessageValues(colonyMetadataChanges, colony?.name),
-    ...getColonyRoleSetTitleValues(role.setTo),
+    // ...getColonyRoleSetTitleValues(role?.setTo),
     domainMetadataChanged,
     newDomainMetadata: getNewDomainMetadataValues(newValues, newColor),
     oldDomainMetadata: getOldDomainMetadataValues(oldValues, oldColor),
     fromDomain: findDomain(item.fromDomain, colony)?.name,
     toDomain: findDomain(item.toDomain, colony)?.name,
-    eventNameDecorated: <b>{item.eventName}</b>,
-    role: formatText({ id: `role.${role.id}` }),
+    eventNameDecorated: <b>{event.eventName}</b>,
+    //role: role && formatText({ id: `role.${role.id}` }),
     clientOrExtensionType: (
-      <span className={eventStyles.highlight}>{item.emittedBy}</span>
+      <span className={eventStyles.highlight}>{event.emittedBy}</span>
     ),
     initiator: (
       <span className={eventStyles.userDecoration}>
@@ -146,24 +108,13 @@ export const mapColonyEventToExpectedFormat = (
         <FriendlyName user={item.recipient} autoShrinkAddress />
       </span>
     ),
-    amountTag: (
-      <div className={eventStyles.amountTag}>
-        <Tag
-          appearance={{
-            theme: 'primary',
-            colorSchema: 'inverted',
-            fontSize: 'tiny',
-            margin: 'none',
-          }}
-          text=""
-        >
-          <Numeral value={decimalStakeAmount} suffix={item.tokenSymbol} />
-        </Tag>
-      </div>
-    ),
-    reputationChangeNumeral: (
-      <Numeral value={item.reputationChange} decimals={Number(item.decimals)} />
-    ),
+    isSmiteAction: item.type === ColonyActionType.EmitDomainReputationPenalty,
+    // reputationChange:
+    //   item.reputationChange &&
+    //   formatReputationChange(item.reputationChange, item.decimals),
+    // reputationChangeNumeral: item.reputationChange && (
+    //   <Numeral value={item.reputationChange} decimals={Number(item.decimals)} />
+    // ),
   };
 };
 

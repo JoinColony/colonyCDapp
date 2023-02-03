@@ -5,7 +5,6 @@ declare namespace ActionsPageEventCssNamespace {
     details: string;
     highlight: string;
     main: string;
-    roles: string;
     text: string;
     tooltipIcon: string;
     userDecoration: string;

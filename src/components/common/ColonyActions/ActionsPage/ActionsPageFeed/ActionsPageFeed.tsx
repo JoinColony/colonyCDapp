@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { ColonyAndExtensionsEvents, FormattedAction } from '~types';
+import { FormattedAction } from '~types';
+import { ACTIONS_EVENTS } from '../staticMaps';
 
 import ActionsPageEvent from './ActionsPageEvent';
 
@@ -15,14 +16,17 @@ const ActionsPageFeed = ({
   actionData,
 }: // networkEvents,
 ActionsPageFeedProps) => {
+  const events = ACTIONS_EVENTS[actionData.actionType];
   return (
-    <div>
-      Feed
-      <ActionsPageEvent
-        actionData={actionData}
-        eventName={ColonyAndExtensionsEvents.ColonyUpgraded}
-      />
-    </div>
+    <>
+      {events?.map((event) => (
+        <ActionsPageEvent
+          actionData={actionData}
+          eventName={event}
+          key={event}
+        />
+      ))}
+    </>
   );
 };
 
