@@ -1,9 +1,23 @@
 .main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  grid-area: main;
+}
+
+.layout {
+  display: grid;
   padding: 90px 0;
   height: 100%;
   width: 100%;
   background-color: white;
+  grid-template:
+    "left main right" 100%
+    / 2.2fr 900px 1fr;
+}
+
+/* Centre the layout on wider screens */
+@media (max-resolution: 2dppx) {
+  .layout {
+    grid-template:
+      "left main right" 100%
+      / 1fr 900px 1fr;
+  }
 }

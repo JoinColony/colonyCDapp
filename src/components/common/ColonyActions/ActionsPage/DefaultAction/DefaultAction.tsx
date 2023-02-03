@@ -1,14 +1,25 @@
 import React from 'react';
+import { getActionTitleValues } from '~common/ColonyActions';
+import { useColonyContext } from '~hooks';
 
 import { Heading3 } from '~shared/Heading';
 import { MotionTag } from '~shared/Tag';
+import { FormattedAction, FormattedEvent } from '~types';
 import { MotionState, MOTION_TAG_MAP } from '~utils/colonyMotions';
+
+import ActionsPageFeed from '../ActionsPageFeed';
 
 import styles from './DefaultAction.css';
 
 const displayName = 'common.ColonyActions.DefaultAction';
 
-const DefaultAction = () => {
+interface DefaultActionProps {
+  item: FormattedAction;
+  events: FormattedEvent[];
+}
+
+const DefaultAction = ({ events, item }: DefaultActionProps) => {
+  const { colony } = useColonyContext();
   const isVotingExtensionEnabled = false;
   const motionStyles = MOTION_TAG_MAP[MotionState.Forced];
 
@@ -21,7 +32,7 @@ const DefaultAction = () => {
 
   return (
     <div className={styles.main}>
-      {/*{isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
+      {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
       {isVotingExtensionEnabled && (
         <div className={styles.upperContainer}>
           <p className={styles.tagWrapper}>
@@ -35,22 +46,10 @@ const DefaultAction = () => {
           <Heading3
             className={styles.heading}
             data-test="actionHeading"
-            text={'action.title'}
-            // textValues={{
-            //   ...actionAndEventValues,
-            //   fromDomain: actionAndEventValues.fromDomain?.name,
-            //   toDomain: actionAndEventValues.toDomain?.name,
-            //   roles: roleTitle,
-            // }}
+            text={{ id: 'action.title' }}
+            textValues={getActionTitleValues(item, colony)}
           />
-          {/* <ActionsPageFeed
-            actionType={actionType}
-            transactionHash={transactionHash as string}
-            networkEvents={events}
-            values={actionAndEventValues}
-            actionData={colonyAction}
-            colony={colony}
-          /> */}
+          <ActionsPageFeed networkEvents={events} actionData={item} />
           {/*
            *  @NOTE A user can comment only if he has a wallet connected
            * and a registered user profile

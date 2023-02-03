@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 
 import { nanoid } from 'nanoid';
 import {
+  AnyMessageValues,
   ComplexMessageValues,
   Message,
   SimpleMessageValues,
@@ -82,6 +83,10 @@ export function formatText(
 export function formatText(
   message?: Message,
   messageValues?: UniversalMessageValues,
+): ReactNode;
+export function formatText(
+  message?: Message,
+  messageValues?: AnyMessageValues,
 ): ReactNode;
 // Implementation
 export function formatText(
