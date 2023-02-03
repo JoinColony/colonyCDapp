@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Params, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import NewActionButton from '~common/NewActionButton';
 import ColonyTotalFunds from '~common/ColonyTotalFunds';
@@ -18,8 +18,8 @@ import OneTxPaymentUpgrade from './OneTxPaymentUpgrade';
 
 import styles from './ColonyHomeLayout.css';
 
-const isExtensionsRoute = (params: Params) => {
-  return params['*'] === 'extensions';
+const isExtensionsRoute = (pathname: string) => {
+  return pathname.includes('extensions');
 };
 
 type Props = {
@@ -37,17 +37,16 @@ const displayName = 'common.ColonyHome.ColonyHomeLayout';
 const ColonyHomeLayout = ({
   filteredDomainId,
   children,
-  // ethDomainId,
   onDomainChange = () => null,
 }: Props) => {
   const { colony } = useColonyContext();
-  const params = useParams();
+  const { pathname } = useLocation();
 
   if (!colony) {
     return null;
   }
 
-  const isExtensions = isExtensionsRoute(params);
+  const isExtensions = isExtensionsRoute(pathname);
 
   return (
     <div className={styles.main}>
