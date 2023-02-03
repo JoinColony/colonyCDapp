@@ -1,5 +1,6 @@
 declare namespace ActionsPageLayoutCssNamespace {
   export interface IActionsPageLayoutCss {
+    layout: string;
     main: string;
   }
 }
