@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { BigNumber } from 'ethers';
 
 import { SpinnerLoader } from '~shared/Preloaders';
-// import LoadMoreButton from '~shared/LoadMoreButton';
+import LoadMoreButton from '~shared/LoadMoreButton';
 import ActionsList from '~shared/ActionsList';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
@@ -12,7 +12,7 @@ import { useGetColonyActionsQuery } from '~gql';
 import { notNull } from '~utils/arrays';
 import { SortDirection } from '~types';
 
-import { actionsSort, ActionsListHeading } from '.';
+import { ActionsListHeading } from '.';
 
 import styles from './ColonyActions.css';
 
@@ -33,6 +33,8 @@ const MSG = defineMessages({
 //   ethDomainId?: number;
 // };
 
+const ITEMS_PER_PAGE = 10;
+
 const ColonyActions = (/* { ethDomainId }: Props */) => {
   const { colony } = useColonyContext();
 
@@ -40,14 +42,22 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
     SortDirection.Desc,
   );
 
-  const { data, loading: loadingActions } = useGetColonyActionsQuery({
+  const {
+    data,
+    loading: loadingActions,
+    fetchMore,
+  } = useGetColonyActionsQuery({
     variables: {
       colonyAddress: colony?.colonyAddress ?? '',
+      limit: ITEMS_PER_PAGE,
       sortDirection,
     },
     skip: !colony,
+    fetchPolicy: 'network-only',
   });
-  const actions = data?.getActionsByColony?.items.filter(notNull) ?? [];
+  const { items, nextToken } = data?.getActionsByColony || {};
+  const actions = items?.filter(notNull) || [];
+  const hasMoreItems = !!nextToken;
 
   if (!colony) {
     return null;
@@ -153,8 +163,6 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
   //     return filterActions;
   //   }, [ethDomainId, actions, motions]);
 
-  const sortedActionsData = actions.sort(actionsSort(sortDirection));
-
   //   oneTxActionsLoading ||
   //   eventsActionsLoading ||
   //   commentCountLoading ||
@@ -188,16 +196,22 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         }}
         text="Test Mint Tokens"
       />
-      {sortedActionsData.length ? (
+      {actions.length ? (
         <>
           <ActionsListHeading onSortChange={setSortDirection} />
-          <ActionsList items={sortedActionsData} />
-          {/* {loadMoreItems && (
+          <ActionsList items={actions} />
+          {hasMoreItems && (
             <LoadMoreButton
-              onClick={showMoreItems}
+              onClick={() =>
+                fetchMore({
+                  variables: {
+                    nextToken,
+                  },
+                })
+              }
               isLoadingData={false} // oneTxActionsLoading || eventsActionsLoading}
             />
-          )} */}
+          )}
         </>
       ) : (
         <div className={styles.emptyState}>

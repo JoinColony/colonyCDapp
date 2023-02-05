@@ -19,12 +19,34 @@ const cache = new InMemoryCache({
     Query: {
       fields: {
         getActionsByColony: {
-          keyArgs: false,
-          merge(existing = {}, incoming) {
+          keyArgs: ['$colonyAddress'],
+          /**
+           * The following function takes care of merging already fetched actions
+           * with the next set of paginated actions
+           */
+          merge(existing = {}, incoming, { readField, args }) {
+            const { nextToken } = args || {};
+            const items = existing && nextToken ? { ...existing.items } : {};
+            incoming.items.forEach((item) => {
+              const id = readField('id', item);
+              if (typeof id === 'string') {
+                items[id] = item;
+              }
+            });
             return {
               ...existing,
-              items: [...(existing.items ?? []), ...incoming.items],
+              nextToken: incoming.nextToken,
+              items,
             };
+          },
+          read(existing) {
+            if (existing) {
+              return {
+                ...existing,
+                items: Object.values(existing.items),
+              };
+            }
+            return undefined;
           },
         },
       },
