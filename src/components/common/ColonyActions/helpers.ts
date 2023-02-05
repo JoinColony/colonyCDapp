@@ -1,15 +1,14 @@
-import { SortOptions } from '~shared/SortControls';
-import { ColonyAction } from '~types';
+import { ColonyAction, SortDirection } from '~types';
 
 export const actionsSort =
-  (actionsSortOption: SortOptions) =>
+  (actionsSortOption: SortDirection) =>
   (first: ColonyAction, second: ColonyAction) => {
     const firstCreatedAt = new Date(first.createdAt).getTime();
     const secondCreatedAt = new Date(second.createdAt).getTime();
     switch (actionsSortOption) {
-      case SortOptions.NEWEST:
+      case SortDirection.Desc:
         return secondCreatedAt - firstCreatedAt;
-      case SortOptions.OLDEST:
+      case SortDirection.Asc:
         return firstCreatedAt - secondCreatedAt;
       default:
         return 0;
