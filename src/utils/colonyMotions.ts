@@ -30,47 +30,47 @@ export enum MotionVote {
 
 const MSG = defineMessage({
   stakedTag: {
-    id: 'common.ColonyHome.ActionsPage.stakedTag',
+    id: 'dashboard.ActionsPage.stakedTag',
     defaultMessage: 'Staked',
   },
   stakingTag: {
-    id: 'common.ColonyHome.ActionsPage.stakingTag',
+    id: 'dashboard.ActionsPage.stakingTag',
     defaultMessage: 'Staking',
   },
   votingTag: {
-    id: 'common.ColonyHome.ActionsPage.votingTag',
+    id: 'dashboard.ActionsPage.votingTag',
     defaultMessage: 'Voting',
   },
   revealTag: {
-    id: 'common.ColonyHome.ActionsPage.revealTag',
+    id: 'dashboard.ActionsPage.revealTag',
     defaultMessage: 'Reveal',
   },
   objectionTag: {
-    id: 'common.ColonyHome.ActionsPage.objectionTag',
+    id: 'dashboard.ActionsPage.objectionTag',
     defaultMessage: 'Objection',
   },
   motionTag: {
-    id: 'common.ColonyHome.ActionsPage.motionTag',
+    id: 'dashboard.ActionsPage.motionTag',
     defaultMessage: 'Motion',
   },
   failedTag: {
-    id: 'common.ColonyHome.ActionsPage.failedTag',
+    id: 'dashboard.ActionsPage.failedTag',
     defaultMessage: 'Failed',
   },
   passedTag: {
-    id: 'common.ColonyHome.ActionsPage.passedTag',
+    id: 'dashboard.ActionsPage.passedTag',
     defaultMessage: 'Passed',
   },
   invalidTag: {
-    id: 'common.ColonyHome.ActionsPage.invalidTag',
+    id: 'dashboard.ActionsPage.invalidTag',
     defaultMessage: 'Invalid',
   },
   escalateTag: {
-    id: 'common.ColonyHome.ActionsPage.escalateTag',
+    id: 'dashboard.ActionsPage.escalateTag',
     defaultMessage: 'Escalate',
   },
   forcedTag: {
-    id: 'common.ColonyHome.ActionsPage.forcedTag',
+    id: 'dashboard.ActionsPage.forcedTag',
     defaultMessage: 'Forced',
   },
 });
