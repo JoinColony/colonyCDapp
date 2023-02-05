@@ -1,5 +1,7 @@
 import { defineMessages } from 'react-intl';
 
+import { SortDirection } from '~types';
+
 const SORT_MSG = defineMessages({
   newest: {
     id: 'dashboard.Sort.newest',
@@ -11,18 +13,13 @@ const SORT_MSG = defineMessages({
   },
 });
 
-export enum SortOptions {
-  NEWEST = 'NEWEST',
-  OLDEST = 'OLDEST',
-}
-
 export const SortSelectOptions = [
   {
     label: SORT_MSG.newest,
-    value: SortOptions.NEWEST,
+    value: SortDirection.Desc,
   },
   {
     label: SORT_MSG.oldest,
-    value: SortOptions.OLDEST,
+    value: SortDirection.Asc,
   },
 ];

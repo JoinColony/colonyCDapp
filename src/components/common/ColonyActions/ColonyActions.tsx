@@ -4,13 +4,13 @@ import { BigNumber } from 'ethers';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 // import LoadMoreButton from '~shared/LoadMoreButton';
-import { SortOptions } from '~shared/SortControls';
 import ActionsList from '~shared/ActionsList';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { useColonyContext } from '~hooks';
 import { useGetColonyActionsQuery } from '~gql';
 import { notNull } from '~utils/arrays';
+import { SortDirection } from '~types';
 
 import { actionsSort, ActionsListHeading } from '.';
 
@@ -36,15 +36,18 @@ const MSG = defineMessages({
 const ColonyActions = (/* { ethDomainId }: Props */) => {
   const { colony } = useColonyContext();
 
+  const [sortDirection, setSortDirection] = useState<SortDirection>(
+    SortDirection.Desc,
+  );
+
   const { data, loading: loadingActions } = useGetColonyActionsQuery({
     variables: {
       colonyAddress: colony?.colonyAddress ?? '',
+      sortDirection,
     },
     skip: !colony,
   });
   const actions = data?.getActionsByColony?.items.filter(notNull) ?? [];
-
-  const [sortOption, setSortOption] = useState<SortOptions>(SortOptions.NEWEST);
 
   if (!colony) {
     return null;
@@ -150,7 +153,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
   //     return filterActions;
   //   }, [ethDomainId, actions, motions]);
 
-  const sortedActionsData = actions.sort(actionsSort(sortOption));
+  const sortedActionsData = actions.sort(actionsSort(sortDirection));
 
   //   oneTxActionsLoading ||
   //   eventsActionsLoading ||
@@ -187,7 +190,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
       />
       {sortedActionsData.length ? (
         <>
-          <ActionsListHeading onSortChange={setSortOption} />
+          <ActionsListHeading onSortChange={setSortDirection} />
           <ActionsList items={sortedActionsData} />
           {/* {loadMoreItems && (
             <LoadMoreButton
