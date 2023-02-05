@@ -2,7 +2,9 @@ import { defineMessages } from '@formatjs/intl';
 import React from 'react';
 
 import { HookForm as Form, HookFormSelect as Select } from '~shared/Fields';
-import { SortOptions, SortSelectOptions } from './sortControlsConfig';
+import { SortDirection } from '~types';
+
+import { SortSelectOptions } from './sortControlsConfig';
 
 import styles from './SortControls.css';
 
@@ -19,7 +21,7 @@ type Options = typeof SortSelectOptions;
 
 interface SortControlsProps {
   options?: Options;
-  onChange: (optionValue: SortOptions) => void;
+  onChange: (optionValue: SortDirection) => void;
 }
 
 const SortControls = ({
@@ -27,7 +29,7 @@ const SortControls = ({
   onChange,
 }: SortControlsProps) => {
   return (
-    <Form defaultValues={{ filter: SortOptions.NEWEST }} onSubmit={() => null}>
+    <Form defaultValues={{ filter: SortDirection.Desc }} onSubmit={() => null}>
       <div className={styles.filter}>
         <Select
           appearance={{ theme: 'alt' }}

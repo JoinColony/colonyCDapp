@@ -1,5 +1,15 @@
-query GetColonyActions($colonyAddress: ID!, $nextToken: String) {
-  getActionsByColony(colonyId: $colonyAddress, nextToken: $nextToken) {
+query GetColonyActions(
+  $colonyAddress: ID!
+  $nextToken: String
+  $limit: Int
+  $sortDirection: ModelSortDirection
+) {
+  getActionsByColony(
+    colonyId: $colonyAddress
+    nextToken: $nextToken
+    limit: $limit
+    sortDirection: $sortDirection
+  ) {
     items {
       ...ColonyAction
     }

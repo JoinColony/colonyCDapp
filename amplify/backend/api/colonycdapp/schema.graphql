@@ -399,11 +399,17 @@ type CurrentVersion @model {
 
 type ColonyAction @model {
   id: ID!
-  colonyId: ID! @index(name: "byColony", queryField: "getActionsByColony")
+  colonyId: ID!
+    @index(
+      name: "byColony"
+      queryField: "getActionsByColony"
+      sortKeyFields: ["createdAt"]
+    )
   colony: Colony! @belongsTo(fields: ["colonyId"])
   type: ColonyActionType!
   blockNumber: Int!
   transactionHash: String!
+  createdAt: AWSDateTime!
   initiatorAddress: ID
   initiator: User @hasOne(fields: ["initiatorAddress"])
   recipientAddress: ID
