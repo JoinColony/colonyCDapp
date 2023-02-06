@@ -1,9 +1,7 @@
 import React from 'react';
 
 import Numeral from '~shared/Numeral';
-// import { formatRolesTitle } from '~utils/colonyActions';
 import FriendlyName from '~shared/FriendlyName';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { findDomain } from '~utils/domains';
 import {
   getColonyMetadataMessageValues,
@@ -17,13 +15,9 @@ import {
 } from '~types';
 
 import { MockEvent } from '../mockData';
-import {
-  getNewDomainMetadataValues,
-  getOldDomainMetadataValues,
-} from './getDomainValues';
+import { getDomainMetadataValues } from './getDomainValues';
 
-import actionStyles from '~shared/ListItem/ListItem.css';
-import eventStyles from '~common/ColonyActions/ActionsPage/ActionsPageFeed/ActionsPageEvent/ActionsPageEvent.css';
+import styles from './itemStyles.css';
 
 export const mapColonyActionToExpectedFormat = (
   item: ColonyAction,
@@ -40,18 +34,18 @@ export const mapColonyActionToExpectedFormat = (
     amount: (
       <Numeral
         value={item.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
-        decimals={getTokenDecimalsWithFallback(item.decimals)}
+        decimals={item.decimals ?? undefined}
       />
     ),
     // direction: formattedRolesTitle.direction,
     fromDomain: findDomain(item.fromDomain, colony)?.name,
     initiator: (
-      <span className={actionStyles.titleDecoration}>
+      <span className={styles.titleDecoration}>
         <FriendlyName user={item.initiator} autoShrinkAddress />
       </span>
     ),
     recipient: (
-      <span className={actionStyles.titleDecoration}>
+      <span className={styles.titleDecoration}>
         <FriendlyName user={item.recipient} autoShrinkAddress />
       </span>
     ),
@@ -71,6 +65,10 @@ export const mapColonyEventToExpectedFormat = (
   item: ColonyAction,
   colony?: Colony,
 ) => {
+  /*
+   * TODO: Update the following to account for metadata changes being kept in the model as an array of changes,
+   * with the latest one being the most recent one.
+   */
   const colonyMetadataChanges = { namedChanged: true, logoChanged: true };
   // const role = item.roles[0];
 
@@ -87,24 +85,30 @@ export const mapColonyEventToExpectedFormat = (
     ...item,
     ...event,
     ...getColonyMetadataMessageValues(colonyMetadataChanges, colony?.name),
+    amount: (
+      <Numeral
+        value={item.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
+        decimals={item.decimals ?? undefined}
+      />
+    ),
     // ...getColonyRoleSetTitleValues(role?.setTo),
     domainMetadataChanged,
-    newDomainMetadata: getNewDomainMetadataValues(newValues, newColor),
-    oldDomainMetadata: getOldDomainMetadataValues(oldValues, oldColor),
+    newDomainMetadata: getDomainMetadataValues(newValues, newColor),
+    oldDomainMetadata: getDomainMetadataValues(oldValues, oldColor),
     fromDomain: findDomain(item.fromDomain, colony)?.name,
     toDomain: findDomain(item.toDomain, colony)?.name,
     eventNameDecorated: <b>{event.eventName}</b>,
     //role: role && formatText({ id: `role.${role.id}` }),
     clientOrExtensionType: (
-      <span className={eventStyles.highlight}>{event.emittedBy}</span>
+      <span className={styles.highlight}>{event.emittedBy}</span>
     ),
     initiator: (
-      <span className={eventStyles.userDecoration}>
+      <span className={styles.userDecoration}>
         <FriendlyName user={item.initiator} autoShrinkAddress />
       </span>
     ),
     recipient: (
-      <span className={eventStyles.userDecoration}>
+      <span className={styles.userDecoration}>
         <FriendlyName user={item.recipient} autoShrinkAddress />
       </span>
     ),

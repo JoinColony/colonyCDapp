@@ -3,8 +3,8 @@ import { Placement } from '@popperjs/core';
 
 import Address from '~shared/Address';
 import UserAvatar from '~shared/UserAvatar';
-import { useAppContext } from '~hooks';
 import { Address as AddressType } from '~types';
+import { useUserByNameOrAddress } from '~hooks';
 
 import styles from './UserDetail.css';
 
@@ -28,7 +28,7 @@ interface Props {
 }
 
 const UserDetail = ({ walletAddress }: Props) => {
-  const { user } = useAppContext();
+  const { user } = useUserByNameOrAddress(walletAddress);
   const userDisplayName = user?.profile?.displayName;
   const username = user?.name;
 

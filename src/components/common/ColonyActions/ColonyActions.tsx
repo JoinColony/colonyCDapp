@@ -9,10 +9,11 @@ import ActionsList from '~shared/ActionsList';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { useColonyContext } from '~hooks';
-import { useGetColonyActionsQuery } from '~gql';
-import { notNull } from '~utils/arrays';
+// import { useGetColonyActionsQuery } from '~gql';
+// import { notNull } from '~utils/arrays';
 
 import { actionsSort, ActionsListHeading } from '.';
+import { mockActionData } from './mockData';
 
 import styles from './ColonyActions.css';
 
@@ -36,13 +37,16 @@ const MSG = defineMessages({
 const ColonyActions = (/* { ethDomainId }: Props */) => {
   const { colony } = useColonyContext();
 
-  const { data, loading: loadingActions } = useGetColonyActionsQuery({
-    variables: {
-      colonyAddress: colony?.colonyAddress ?? '',
-    },
-    skip: !colony,
-  });
-  const actions = data?.getActionsByColony?.items.filter(notNull) ?? [];
+  // const { data, loading: loadingActions } = useGetColonyActionsQuery({
+  //   variables: {
+  //     colonyAddress: colony?.colonyAddress ?? '',
+  //   },
+  //   skip: !colony,
+  // });
+
+  /* @NOTE: Testing only. Will be reverted before merging. */
+  const actions = mockActionData; // data?.getActionsByColony?.items.filter(notNull) ?? [];
+  const loadingActions = false;
 
   const [sortOption, setSortOption] = useState<SortOptions>(SortOptions.NEWEST);
 

@@ -57,7 +57,7 @@ export const humanReadableFileSize = (size: number) => {
  * @param {string} word The word / string to capitalize
  * @return {string} The capitalized string
  */
-export const capitalize = (word: string): string =>
+export const capitalizeFirstLetter = (word: string): string =>
   word && word.charAt(0).toUpperCase() + word.slice(1);
 
 /**
@@ -68,9 +68,9 @@ export const capitalize = (word: string): string =>
  * @param {string} word The word / string to capitalize
  * @return {string} The capitalized string
  */
-export const convertToCapitalized = (word: string): string => {
+export const capitalizeWord = (word: string): string => {
   const lower = word.toLowerCase();
-  return capitalize(lower);
+  return capitalizeFirstLetter(lower);
 };
 /**
  * Strip the normal and secure website protocol from the start of a string.

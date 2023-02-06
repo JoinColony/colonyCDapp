@@ -1,14 +1,14 @@
+import Decimal from 'decimal.js';
 import React, { ReactNode } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 
 import { mockEventData } from '~common/ColonyActions/mockData';
+import { adjustConvertedValue } from '~shared/Numeral';
 import TransactionLink from '~shared/TransactionLink';
 import {
-  ActionItemType,
-  Address,
   Colony,
-  ColonyActions,
-  FormattedAction,
+  ColonyAction,
+  ColonyActionType,
   UniversalMessageValues,
 } from '~types';
 import { getDetailsForAction } from '~utils/colonyActions';
@@ -18,11 +18,9 @@ import { splitTransactionHash } from '~utils/strings';
 import {
   UserDetail,
   ActionTypeDetail,
-  RolesDetail,
   TeamDetail,
   AmountDetail,
   DomainDescriptionDetail,
-  ReputationChangeDetail,
 } from '../DetailsWidget';
 
 import styles from './DetailsWidget.css';
@@ -94,6 +92,19 @@ const getShortenedHash = (transactionHash: string) => {
   return undefined;
 };
 
+const getAdjustedAmount = (
+  amount: ColonyAction['amount'],
+  decimals: ColonyAction['decimals'],
+) => {
+  if (amount && decimals) {
+    return adjustConvertedValue(new Decimal(amount), decimals).toString();
+  } else if (amount) {
+    return amount;
+  }
+
+  return undefined;
+};
+
 interface DetailItemConfig {
   label: MessageDescriptor;
   labelValues?: UniversalMessageValues;
@@ -101,34 +112,37 @@ interface DetailItemConfig {
 }
 
 const getDetailItems = (
-  actionType: ActionItemType,
   {
     //motionDomain,
+    type,
     fromDomain: fromDomainId,
     toDomain: toDomainId,
     amount,
+    recipient,
+    decimals,
+    transactionHash,
     //token,
     tokenSymbol,
-    reputationChange,
-    roles,
-  }: typeof mockEventData & FormattedAction,
+  }: // reputationChange,
+  // roles,
+  typeof mockEventData & ColonyAction,
   colony: Colony,
-  recipientWalletAddress: Address | undefined,
-  transactionHash: string | undefined,
 ): DetailItemConfig[] => {
-  const detailsForAction = getDetailsForAction(actionType);
+  const detailsForAction = getDetailsForAction(type);
   const shortenedHash = getShortenedHash(transactionHash || '');
   const fromDomain = findDomain(fromDomainId, colony);
   const toDomain = findDomain(toDomainId, colony);
-  const isSmiteAction =
-    actionType === ColonyActions.EmitDomainReputationPenalty;
+  const adjustedAmount = getAdjustedAmount(amount, decimals);
+
+  // const isSmiteAction =
+  //   actionType === ColonyActions.EmitDomainReputationPenalty;
 
   const colonyName = colony.name;
   return [
     {
       label: MSG.actionType,
       labelValues: undefined,
-      item: <ActionTypeDetail actionType={actionType} />,
+      item: <ActionTypeDetail actionType={type} />,
     },
     // {
     //   label: MSG.motionDomain,
@@ -159,8 +173,8 @@ const getDetailItems = (
     {
       label: MSG.toRecipient,
       labelValues: undefined,
-      item: detailsForAction.ToRecipient && recipientWalletAddress && (
-        <UserDetail colony={colony} walletAddress={recipientWalletAddress} />
+      item: detailsForAction.ToRecipient && recipient?.walletAddress && (
+        <UserDetail walletAddress={recipient.walletAddress} />
       ),
     },
     {
@@ -168,7 +182,7 @@ const getDetailItems = (
       labelValues: undefined,
       item: detailsForAction.Amount && amount && (
         <AmountDetail
-          amount={amount}
+          amount={adjustedAmount}
           symbol={tokenSymbol}
           token={undefined} /* TODO: replace with token */
         />
@@ -177,24 +191,24 @@ const getDetailItems = (
     {
       label: MSG.author,
       labelValues: undefined,
-      item: detailsForAction.Author && recipientWalletAddress && (
-        <UserDetail colony={colony} walletAddress={recipientWalletAddress} />
+      item: detailsForAction.Author && recipient?.walletAddress && (
+        <UserDetail walletAddress={recipient.walletAddress} />
       ),
     },
-    {
-      label: MSG.reputationChange,
-      labelValues: { isSmiteAction },
-      item: detailsForAction.ReputationChange && reputationChange && (
-        <ReputationChangeDetail reputationChange={reputationChange} />
-      ),
-    },
-    {
-      label: MSG.roles,
-      labelValues: undefined,
-      item: detailsForAction.Permissions && roles && (
-        <RolesDetail roles={roles} />
-      ),
-    },
+    // {
+    //   label: MSG.reputationChange,
+    //   labelValues: { isSmiteAction },
+    //   item: detailsForAction.ReputationChange && reputationChange && (
+    //     <ReputationChangeDetail reputationChange={reputationChange} />
+    //   ),
+    // },
+    // {
+    //   label: MSG.roles,
+    //   labelValues: undefined,
+    //   item: detailsForAction.Permissions && roles && (
+    //     <RolesDetail roles={roles} />
+    //   ),
+    // },
     {
       label: MSG.domainDescription,
       labelValues: undefined,
@@ -210,7 +224,7 @@ const getDetailItems = (
     {
       label: MSG.transactionHash,
       labelValues: undefined,
-      item: !!shortenedHash && actionType === ColonyActions.Generic && (
+      item: !!shortenedHash && type === ColonyActionType.Generic && (
         <TransactionLink
           className={styles.transactionHashLink}
           hash={transactionHash as string}

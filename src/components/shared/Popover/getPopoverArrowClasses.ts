@@ -1,7 +1,7 @@
 import camelcase from 'camelcase';
 
 import { Placement as PlacementType } from '@popperjs/core';
-import { capitalize } from '~utils/strings';
+import { capitalizeFirstLetter } from '~utils/strings';
 
 /**
  * This is a stripped down version of the `getMainClasses` method, that is specifically
@@ -35,7 +35,9 @@ const getPopoverArrowClasses = (
      * Arrows have the theme name encoded in the class's name (which also
      * has the position encoded, as above)
      */
-    const themeClass = `theme${capitalize(theme)}${capitalize(placementClass)}`;
+    const themeClass = `theme${capitalizeFirstLetter(
+      theme,
+    )}${capitalizeFirstLetter(placementClass)}`;
     styleArray.push(styleObject[themeClass]);
   }
   return styleArray.join(' ');

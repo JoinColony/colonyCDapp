@@ -1,68 +1,68 @@
-import { Selector } from 'reselect';
-import { useEffect, useMemo, useRef } from 'react';
+import { Selector } from "reselect";
+import { useEffect, useMemo, useRef } from "react";
 
-import { ActionTransformFnType } from '~utils/actions';
-import promiseListener, { AsyncFunction } from '~redux/createPromiseListener';
-import { getMainClasses } from '~utils/css';
+import { ActionTransformFnType } from "~utils/actions";
+import promiseListener, { AsyncFunction } from "~redux/createPromiseListener";
+import { getMainClasses } from "~utils/css";
 
-import { RootStateRecord } from '~redux/state';
+import { RootStateRecord } from "~redux/state";
 
 type DependantSelector = (
   selector: Selector<RootStateRecord, any>,
   reduxState: RootStateRecord,
-  extraArgs?: any[],
+  extraArgs?: any[]
 ) => boolean;
 
 export type Given = (
   potentialSelector: Selector<RootStateRecord, any>,
-  dependantSelector?: DependantSelector,
+  dependantSelector?: DependantSelector
 ) => any | boolean;
 
 export {
   default as useNaiveBranchingDialogWizard,
   WizardDialogType,
-} from './useNaiveBranchingDialogWizard';
+} from "./useNaiveBranchingDialogWizard";
 
-export { default as useAvatarDisplayCounter } from './useAvatarDisplayCounter';
-export { default as useColonyReputation } from './useColonyReputation';
-export { default as useDialogActionPermissions } from './useDialogActionPermissions';
-export { default as useEnabledExtensions } from './useEnabledExtensions';
-export { default as useSelectedUser } from './useSelectedUser';
-export { default as useSplitTime } from './useSplitTime';
-export { default as useTitle } from './useTitle';
-export { default as useTokenInfo, TokenInfoProvider } from './useTokenInfo';
-export { default as useUserAvatarImageFromIPFS } from './useUserAvatarImageFromIPFS';
-export { default as useUserSettings, SlotKey } from './useUserSettings';
-export { default as useCanEditProfile } from './useCanEditProfile';
-export { default as useWindowSize } from './useWindowSize';
-export { default as useAppContext } from './useAppContext';
-export { default as useUserReputation } from './useUserReputation';
-export { default as useMobile } from './useMobile';
+export { default as useAvatarDisplayCounter } from "./useAvatarDisplayCounter";
+export { default as useColonyReputation } from "./useColonyReputation";
+export { default as useDialogActionPermissions } from "./useDialogActionPermissions";
+export { default as useEnabledExtensions } from "./useEnabledExtensions";
+export { default as useSelectedUser } from "./useSelectedUser";
+export { default as useSplitTime } from "./useSplitTime";
+export { default as useTitle } from "./useTitle";
+export { default as useTokenInfo, TokenInfoProvider } from "./useTokenInfo";
+export { default as useUserAvatarImageFromIPFS } from "./useUserAvatarImageFromIPFS";
+export { default as useUserSettings, SlotKey } from "./useUserSettings";
+export { default as useCanEditProfile } from "./useCanEditProfile";
+export { default as useWindowSize } from "./useWindowSize";
+export { default as useAppContext } from "./useAppContext";
+export { default as useUserReputation } from "./useUserReputation";
+export { default as useMobile } from "./useMobile";
 export {
   default as useUserReputationForTopDomains,
   UserDomainReputation,
-} from './useUserReputationForTopDomains';
-export { default as useColonyContext } from './useColonyContext';
-export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
-export { default as useExtensionData } from './useExtensionData';
-export { default as useExtensionsData } from './useExtensionsData';
-export * from './useCanInteractWithColony';
+} from "./useUserReputationForTopDomains";
+export { default as useColonyContext } from "./useColonyContext";
+export { default as useUserByNameOrAddress } from "./useUserByNameOrAddress";
+export { default as useExtensionData } from "./useExtensionData";
+export { default as useExtensionsData } from "./useExtensionsData";
+export * from "./useCanInteractWithColony";
 
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously
  */
 export const useTransformer = <
   T extends (...args: any[]) => any,
-  A extends Parameters<T>,
+  A extends Parameters<T>
 >(
   transform: T,
-  args: A = [] as unknown as A,
+  args: A = [] as unknown as A
 ): ReturnType<T> =>
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useMemo<ReturnType<T>>(
     () => transform(...args),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [transform, ...args],
+    [transform, ...args]
   );
 
 export const usePrevious = <T>(value: T): T | void => {
@@ -83,7 +83,7 @@ export const useAsyncFunction = <P, R>({
   success: string;
   error: string;
   transform?: ActionTransformFnType;
-}): AsyncFunction<P, R>['asyncFunction'] => {
+}): AsyncFunction<P, R>["asyncFunction"] => {
   const asyncFunc = useMemo(() => {
     let setPayload;
     if (transform) {
@@ -119,7 +119,7 @@ export const useMounted = () => {
     () => () => {
       ref.current = false;
     },
-    [],
+    []
   );
   return ref;
 };
@@ -127,9 +127,9 @@ export const useMounted = () => {
 export const useMainClasses = (
   appearance: any,
   styles: any,
-  className?: string,
+  className?: string
 ) =>
   useMemo(
     () => className || getMainClasses(appearance, styles),
-    [appearance, className, styles],
+    [appearance, className, styles]
   );

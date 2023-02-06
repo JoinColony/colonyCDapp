@@ -1,0 +1,15 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+.text {
+  font-size: var(--size-normal);
+  color: var(--grey-purple);
+}
+
+.details {
+  display: flex;
+  column-gap: 10px;
+}

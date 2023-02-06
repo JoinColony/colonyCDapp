@@ -1,0 +1,13 @@
+.titleDecoration {
+  composes: titleDecoration from '~shared/ListItem/ListItem.css';
+}
+
+.highlight {
+  font-weight: var(--weight-bold);
+  color: var(--dark);
+}
+
+.userDecoration {
+  font-weight: var(--weight-bold);
+  color: var(--pink);
+}
