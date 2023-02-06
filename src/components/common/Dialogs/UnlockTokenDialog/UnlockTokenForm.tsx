@@ -68,11 +68,7 @@ const MSG = defineMessages({
   },
 });
 
-const UnlockTokenForm = ({
-  colony: { status, colonyAddress },
-  colony,
-  back,
-}: ActionDialogProps) => {
+const UnlockTokenForm = ({ colony, back }: ActionDialogProps) => {
   const { wallet } = useAppContext();
   const {
     getValues,
@@ -83,7 +79,7 @@ const UnlockTokenForm = ({
     colony,
     wallet?.address,
   ]);
-  const isNativeTokenLocked = !!status?.nativeToken?.unlocked;
+  // const isNativeTokenLocked = !!colony?.nativeToken?.unlocked;
   const hasRootPermission = hasRoot(allUserRoles);
   const canUserUnlockNativeToken = true; // hasRootPermission && status?.nativeToken?.unlockable && isNativeTokenLocked;
 
@@ -95,14 +91,13 @@ const UnlockTokenForm = ({
   // });
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colonyAddress,
+    colony?.colonyAddress || '',
     !!canUserUnlockNativeToken,
     false, // isVotingExtensionEnabled,
     values.forceAction,
   );
 
-  const inputDisabled =
-    !userHasPermission || onlyForceAction || isNativeTokenLocked;
+  const inputDisabled = !userHasPermission || onlyForceAction; // || isNativeTokenLocked;
 
   // const cannotCreateMotion =
   //   votingExtensionVersion ===
@@ -114,7 +109,7 @@ const UnlockTokenForm = ({
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <DialogHeading title={MSG.title} />
       </DialogSection>
-      {!userHasPermission && isNativeTokenLocked && (
+      {!userHasPermission && ( // && isNativeTokenLocked
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <div className={styles.wrapper}>
             <PermissionRequiredInfo requiredRoles={[ColonyRole.Root]} />
@@ -152,26 +147,25 @@ const UnlockTokenForm = ({
           </DialogSection>
         </>
       )}
-      {!hasRootPermission &&
-        isNativeTokenLocked && ( // || isVotingExtensionEnabled
-          <DialogSection appearance={{ theme: 'sidePadding' }}>
-            <div className={styles.noPermissionMessage}>
-              <FormattedMessage
-                {...MSG.noPermission}
-                values={{
-                  roleRequired: (
-                    <PermissionsLabel
-                      permission={ColonyRole.Root}
-                      name={{
-                        id: `role.${ColonyRole.Root}`,
-                      }}
-                    />
-                  ),
-                }}
-              />
-            </div>
-          </DialogSection>
-        )}
+      {!hasRootPermission && ( // || isVotingExtensionEnabled && isNativeTokenLocked &&
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <div className={styles.noPermissionMessage}>
+            <FormattedMessage
+              {...MSG.noPermission}
+              values={{
+                roleRequired: (
+                  <PermissionsLabel
+                    permission={ColonyRole.Root}
+                    name={{
+                      id: `role.${ColonyRole.Root}`,
+                    }}
+                  />
+                ),
+              }}
+            />
+          </div>
+        </DialogSection>
+      )}
       {/* {onlyForceAction && isNativeTokenLocked && <NotEnoughReputation />}
       {cannotCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>

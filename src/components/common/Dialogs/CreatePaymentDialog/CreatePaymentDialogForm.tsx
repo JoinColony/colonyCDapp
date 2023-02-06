@@ -21,6 +21,8 @@ import SingleUserPicker, {
   filterUserSelection,
 } from '~shared/SingleUserPicker';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
+import DomainFundSelectorSection from '~shared/DomainFundSelectorSection';
+import TokenAmountInput from '~shared/TokenAmountInput';
 
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
@@ -28,9 +30,6 @@ import { ColonyWatcher } from '~types';
 
 import { useDialogActionPermissions } from '~hooks';
 // import { useEnabledExtensions } from '~hooks/useEnabledExtensions';
-
-import DomainFundSelector from './DomainFundSelector';
-import TokenAmountInput from './TokenAmountInput';
 
 import styles from './CreatePaymentDialogForm.css';
 
@@ -167,7 +166,7 @@ Props) => {
         </DialogSection>
       )}
       <DialogSection>
-        <DomainFundSelector colony={colony} />
+        <DomainFundSelectorSection colony={colony} />
       </DialogSection>
       <DialogSection>
         <div className={styles.singleUserContainer}>

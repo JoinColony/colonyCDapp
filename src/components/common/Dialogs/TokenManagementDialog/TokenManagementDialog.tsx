@@ -39,17 +39,6 @@ const validationSchema = object({
 type FormValues = InferType<typeof validationSchema>;
 
 const TokenManagementDialog = ({
-  colony: {
-    colonyAddress,
-    nativeToken,
-    name: colonyName,
-    tokens,
-    // displayName: colonyDisplayName,
-    // avatarURL,
-    // avatarHash,
-    // whitelistedAddresses,
-    // isWhitelistActivated,
-  },
   colony,
   cancel,
   close,
@@ -58,7 +47,7 @@ const TokenManagementDialog = ({
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
-  const colonyTokens = tokens?.items || [];
+  const colonyTokens = colony?.tokens?.items || [];
 
   // const { isVotingExtensionEnabled } = useEnabledExtensions({
   //   colonyAddress,
@@ -91,7 +80,7 @@ const TokenManagementDialog = ({
                   .filter((address) => {
                     if (
                       address === AddressZero ||
-                      address === nativeToken.tokenAddress
+                      address === colony?.nativeToken.tokenAddress
                     ) {
                       return false;
                     }
@@ -100,11 +89,11 @@ const TokenManagementDialog = ({
               ),
             ];
             return {
-              colonyAddress,
-              colonyName,
-              colonyDisplayName: colony.profile?.displayName,
-              colonyAvatarImage: colony.profile?.thumbnail,
-              colonyAvatarHash: colony.profile?.avatar,
+              colonyAddress: colony?.colonyAddress,
+              colonyName: colony?.name,
+              colonyDisplayName: colony?.profile?.displayName,
+              colonyAvatarImage: colony?.profile?.thumbnail,
+              colonyAvatarHash: colony?.profile?.avatar,
               hasAvatarChanged: false,
               colonyTokens: addresses,
               // verifiedAddresses: whitelistedAddresses,
@@ -115,7 +104,7 @@ const TokenManagementDialog = ({
         ),
         withMeta({ navigate }),
       ),
-    [colony, colonyAddress, colonyName, navigate, nativeToken],
+    [colony, navigate],
   );
 
   const handleSuccess = () => close();

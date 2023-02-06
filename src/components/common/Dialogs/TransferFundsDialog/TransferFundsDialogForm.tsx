@@ -55,11 +55,7 @@ const MSG = defineMessages({
   },
 });
 
-const TransferFundsDialogForm = ({
-  back,
-  colony,
-  colony: { colonyAddress, domains },
-}: ActionDialogProps) => {
+const TransferFundsDialogForm = ({ back, colony }: ActionDialogProps) => {
   const { wallet } = useAppContext();
   const {
     getValues,
@@ -75,7 +71,7 @@ const TransferFundsDialogForm = ({
   // });
 
   const fromDomainId = values.fromDomain ? values.fromDomain : Id.RootDomain;
-  const colonyDomains = domains?.items || [];
+  const colonyDomains = colony?.domains?.items || [];
   const fromDomain = colonyDomains.find(
     (domain) => domain?.nativeId === fromDomainId,
   );
@@ -102,7 +98,7 @@ const TransferFundsDialogForm = ({
   const requiredRoles: ColonyRole[] = [ColonyRole.Funding];
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colonyAddress,
+    colony?.colonyAddress || '',
     canTransferFunds,
     false, // isVotingExtensionEnabled,
     values.forceAction,

@@ -196,13 +196,13 @@ const ManageFundsDialog = ({
     },
   ];
   const filteredItems =
-    colony.status?.nativeToken?.mintable &&
-    colony.status?.nativeToken?.unlockable
+    colony?.status?.nativeToken?.mintable &&
+    colony?.status?.nativeToken?.unlockable
       ? items
       : items.filter(({ icon }) => {
           if (
             icon === 'emoji-padlock' &&
-            !colony.status?.nativeToken?.unlockable
+            !colony?.status?.nativeToken?.unlockable
           ) {
             return true; // false
           }

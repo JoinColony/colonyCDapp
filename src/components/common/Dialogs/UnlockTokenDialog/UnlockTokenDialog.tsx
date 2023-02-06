@@ -27,7 +27,6 @@ const validationSchema = object()
 type FormValues = InferType<typeof validationSchema>;
 
 const UnlockTokenDialog = ({
-  colony: { colonyAddress, name: colonyName },
   colony,
   cancel,
   close,
@@ -52,17 +51,17 @@ const UnlockTokenDialog = ({
   const transform = useCallback(
     () =>
       pipe(
-        withKey(colonyAddress),
+        withKey(colony?.colonyAddress || ''),
         mapPayload(({ annotationMessage }) => ({
           annotationMessage,
-          colonyAddress,
+          colonyAddress: colony?.colonyAddress,
           operationName: RootMotionMethodNames.UnlockToken,
           motionParams: [],
-          colonyName,
+          colonyName: colony?.name,
         })),
         withMeta({ navigate }),
       ),
-    [colonyAddress, navigate, colonyName],
+    [colony, navigate],
   );
 
   return (

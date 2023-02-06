@@ -74,14 +74,6 @@ const validationSchema = object()
 type FormValues = InferType<typeof validationSchema>;
 
 const TransferFundsDialog = ({
-  colony: {
-    tokens,
-    colonyAddress,
-    name: colonyName,
-    // version,
-    domains,
-    nativeToken,
-  },
   colony,
   filteredDomainId: selectedDomainId,
   callStep,
@@ -104,7 +96,7 @@ const TransferFundsDialog = ({
       : ActionTypes[`ACTION_MOVE_FUNDS${actionEnd}`];
   };
 
-  const colonyDomains = domains?.items || [];
+  const colonyDomains = colony?.domains?.items || [];
 
   const domainOptions = sortBy(
     colonyDomains.map((domain) => ({
@@ -124,7 +116,7 @@ const TransferFundsDialog = ({
             toDomain,
             annotation: annotationMessage,
           }) => {
-            const colonyTokens = tokens?.items || [];
+            const colonyTokens = colony?.tokens?.items || [];
             const selectedToken = colonyTokens.find(
               (token) => token?.token.tokenAddress === tokenAddress,
             );
@@ -138,8 +130,8 @@ const TransferFundsDialog = ({
             );
 
             return {
-              colonyAddress,
-              colonyName,
+              colonyAddress: colony?.colonyAddress,
+              colonyName: colony?.name,
               // version,
               fromDomainId: parseInt(sourceDomain, 10),
               toDomainId: parseInt(toDomain, 10),
@@ -151,7 +143,7 @@ const TransferFundsDialog = ({
         ),
         withMeta({ navigate }),
       ),
-    [colonyAddress, colonyName, navigate],
+    [colony, navigate],
   );
 
   return (
@@ -165,7 +157,7 @@ const TransferFundsDialog = ({
               ?.value,
           ) || Id.RootDomain,
         amount: '',
-        tokenAddress: nativeToken.tokenAddress,
+        tokenAddress: colony?.nativeToken.tokenAddress,
         annotation: '',
         /*
          * @NOTE That since this a root motion, and we don't actually make use
