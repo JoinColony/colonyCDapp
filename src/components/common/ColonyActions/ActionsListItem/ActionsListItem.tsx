@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Placement } from '@popperjs/core';
 
 import UserAvatar from '~shared/UserAvatar';
-import ListItem from '~shared/ListItem';
-import { ListItemStatus } from '~shared/ListItem/ListItem';
+import ListItem, { ListItemStatus } from '~shared/ListItem';
 import { ColonyAction } from '~types';
 import { useColonyContext } from '~hooks';
 
