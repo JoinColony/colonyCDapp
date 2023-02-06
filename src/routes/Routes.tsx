@@ -48,7 +48,7 @@ import {
 import NotFoundRoute from './NotFoundRoute';
 import { ColonyContextProvider } from '~context/ColonyContext';
 import CreateColonyWizard from '~common/CreateColonyWizard';
-import ActionsPage from '~common/ColonyActions/ActionsPage/ActionsPage';
+import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -147,7 +147,7 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <NavBar>
-                <ActionsPage />
+                <ActionDetailsPage />
               </NavBar>
             </ColonyContextProvider>
           }
@@ -245,7 +245,7 @@ const Routes = () => {
         <Route path="*" element={<NotFoundRoute />} />
       </RoutesSwitch>
     ),
-    [user],
+    [user, isMobile],
   );
 
   // if (isAppLoading) {

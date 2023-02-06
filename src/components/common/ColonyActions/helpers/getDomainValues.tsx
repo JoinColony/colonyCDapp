@@ -5,37 +5,18 @@ import { DomainColor } from '~gql';
 import { graphQlDomainColorMap } from '~types';
 import { formatText } from '~utils/intl';
 
-export const getNewDomainMetadataValues = (
-  newValues: string,
-  newColor?: DomainColor,
+export const getDomainMetadataValues = (
+  values: string,
+  color?: DomainColor,
 ) => {
   return formatText(
     {
       id: 'domainMetadata.newValues',
-      defaultMessage: `{newValues}{newColor}`,
+      defaultMessage: `{values}{color}`,
     },
     {
-      newValues,
-      newColor: newColor && (
-        <ColorTag color={graphQlDomainColorMap[newColor]} />
-      ),
+      values,
+      color: color && <ColorTag color={graphQlDomainColorMap[color]} />,
     },
   );
 };
-
-export const getOldDomainMetadataValues = (
-  oldValues: string,
-  oldColor?: DomainColor,
-) =>
-  formatText(
-    {
-      id: 'domainMetadata.oldValues',
-      defaultMessage: `{oldValues}{oldColor}`,
-    },
-    {
-      oldValues,
-      oldColor: oldColor && (
-        <ColorTag color={graphQlDomainColorMap[oldColor]} />
-      ),
-    },
-  );

@@ -91,7 +91,6 @@ const UserInfoPopover = ({ user, banned = false }: Props) => {
   // const lockedBalance = BigNumber.from(userLock?.totalObligation || 0);
   // const activeBalance = BigNumber.from(userLock?.activeTokens || 0);
   // const totalBalance = inactiveBalance.add(activeBalance).add(lockedBalance);
-
   return (
     <div>
       {banned && (
