@@ -157,6 +157,23 @@ enum ColonyType {
   METACOLONY
 }
 
+enum ColonyActionType {
+  GENERIC
+  WRONG_COLONY
+  PAYMENT
+  RECOVERY
+  MOVE_FUNDS
+  UNLOCK_TOKEN
+  MINT_TOKENS
+  CREATE_DOMAIN
+  VERSION_UPGRADE
+  COLONY_EDIT
+  EDIT_DOMAIN
+  SET_USER_ROLES
+  EMIT_DOMAIN_REPUTATION_PENALTY
+  EMIT_DOMAIN_REPUTATION_REWARD
+}
+
 type Query {
   getTokenFromEverywhere(
     input: TokenFromEverywhereArguments
@@ -267,6 +284,7 @@ type Colony @model {
   meta: Metadata
   extensions: [ColonyExtension!] @hasMany(indexName: "byColony", fields: ["id"])
   version: Int!
+  actions: [ColonyAction] @hasMany
 }
 
 type User @model {
@@ -377,4 +395,23 @@ type CurrentVersion @model {
   id: ID!
   key: String! @index(name: "byKey", queryField: "getCurrentVersionByKey")
   version: Int!
+}
+
+type ColonyAction @model {
+  id: ID!
+  colonyId: ID! @index(name: "byColony", queryField: "getActionsByColony")
+  colony: Colony! @belongsTo(fields: ["colonyId"])
+  type: ColonyActionType!
+  blockNumber: Int!
+  transactionHash: String!
+  initiatorAddress: ID
+  initiator: User @hasOne(fields: ["initiatorAddress"])
+  recipientAddress: ID
+  recipient: User @hasOne(fields: ["recipientAddress"])
+  amount: String
+  tokenAddress: String
+  tokenSymbol: String
+  decimals: Int
+  fromDomain: String
+  toDomain: String
 }

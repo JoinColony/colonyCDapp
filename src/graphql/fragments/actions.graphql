@@ -1,0 +1,20 @@
+fragment ColonyAction on ColonyAction {
+  id
+  type
+  blockNumber
+  transactionHash
+  initiatorAddress
+  initiator {
+    ...User
+  }
+  recipientAddress
+  recipient {
+    ...User
+  }
+  amount
+  decimals
+  tokenSymbol
+  fromDomain
+  toDomain
+  createdAt
+}

@@ -3,9 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Placement } from '@popperjs/core';
 
 import UserAvatar from '~shared/UserAvatar';
-import ListItem from '~shared/ListItem';
-import { ListItemStatus } from '~shared/ListItem/ListItem';
-import { FormattedAction } from '~types';
+import ListItem, { ListItemStatus } from '~shared/ListItem';
+import { ColonyAction } from '~types';
 import { useColonyContext } from '~hooks';
 
 import { getActionListItemTitleValues, ActionsListItemMeta } from '.';
@@ -38,15 +37,15 @@ const userAvatarPopoverOptions = {
 // };
 
 interface Props {
-  item: FormattedAction;
+  item: ColonyAction;
 }
 
 const ActionsListItem = ({
   item: {
     fromDomain,
     transactionHash,
-    commentCount = 0,
-    status = ListItemStatus.Defused,
+    // commentCount = 0,
+    // status = ListItemStatus.Defused,
     createdAt,
   },
   item,
@@ -69,6 +68,8 @@ const ActionsListItem = ({
   //   motionState,
   // );
 
+  const status = ListItemStatus.Defused;
+
   return (
     <ListItem
       avatar={
@@ -89,12 +90,7 @@ const ActionsListItem = ({
         //   />
         // )
       }
-      meta={
-        <ActionsListItemMeta
-          fromDomainId={fromDomain}
-          commentCount={commentCount}
-        />
-      }
+      meta={<ActionsListItemMeta fromDomainId={fromDomain ?? ''} />}
       onClick={handleActionRedirect}
       status={status}
       // tag={tag}

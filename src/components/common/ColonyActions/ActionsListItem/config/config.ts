@@ -1,8 +1,8 @@
 import {
   Colony,
-  ColonyActions,
+  ColonyAction,
+  ColonyActionType,
   ColonyMotions,
-  FormattedAction,
   UniversalMessageValues,
 } from '~types';
 
@@ -24,50 +24,50 @@ enum ActionTitleMessageKeys {
 
 /* Maps actionTypes to message values as found in en-actions.ts */
 const getMessageDescriptorKeys = (
-  actionType: ColonyActions | ColonyMotions,
+  actionType: ColonyActionType | ColonyMotions,
 ) => {
   switch (true) {
-    case actionType.includes(ColonyActions.Payment):
+    case actionType.includes(ColonyActionType.Payment):
       return [
         ActionTitleMessageKeys.Recipient,
         ActionTitleMessageKeys.Amount,
         ActionTitleMessageKeys.TokenSymbol,
       ];
-    case actionType.includes(ColonyActions.MoveFunds):
+    case actionType.includes(ColonyActionType.MoveFunds):
       return [
         ActionTitleMessageKeys.Amount,
         ActionTitleMessageKeys.TokenSymbol,
         ActionTitleMessageKeys.FromDomain,
         ActionTitleMessageKeys.ToDomain,
       ];
-    case actionType.includes(ColonyActions.UnlockToken):
+    case actionType.includes(ColonyActionType.UnlockToken):
       return [ActionTitleMessageKeys.TokenSymbol];
-    case actionType.includes(ColonyActions.MintTokens):
+    case actionType.includes(ColonyActionType.MintTokens):
       return [
         ActionTitleMessageKeys.Amount,
         ActionTitleMessageKeys.TokenSymbol,
       ];
-    case actionType.includes(ColonyActions.CreateDomain):
+    case actionType.includes(ColonyActionType.CreateDomain):
       return [ActionTitleMessageKeys.FromDomain];
-    case actionType.includes(ColonyActions.VersionUpgrade):
+    case actionType.includes(ColonyActionType.VersionUpgrade):
       return [ActionTitleMessageKeys.NewVersion];
-    case actionType.includes(ColonyActions.EditDomain):
+    case actionType.includes(ColonyActionType.EditDomain):
       return [ActionTitleMessageKeys.FromDomain];
-    case actionType.includes(ColonyActions.Recovery):
+    case actionType.includes(ColonyActionType.Recovery):
       return [ActionTitleMessageKeys.Initiator];
-    case actionType.includes(ColonyActions.EmitDomainReputationPenalty):
+    case actionType.includes(ColonyActionType.EmitDomainReputationPenalty):
       return [
         ActionTitleMessageKeys.Recipient,
         ActionTitleMessageKeys.ReputationChangeNumeral,
         ActionTitleMessageKeys.ReputationChange,
       ];
-    case actionType.includes(ColonyActions.EmitDomainReputationReward):
+    case actionType.includes(ColonyActionType.EmitDomainReputationReward):
       return [
         ActionTitleMessageKeys.Recipient,
         ActionTitleMessageKeys.ReputationChangeNumeral,
         ActionTitleMessageKeys.ReputationChange,
       ];
-    case actionType.includes(ColonyActions.SetUserRoles):
+    case actionType.includes(ColonyActionType.SetUserRoles):
       return [
         ActionTitleMessageKeys.RolesChanged,
         ActionTitleMessageKeys.Direction,
@@ -81,18 +81,15 @@ const getMessageDescriptorKeys = (
 };
 
 /* Returns the correct message values according to the action type. */
-const getActionListItemTitleValues = (
-  item: FormattedAction,
-  colony?: Colony,
-) => {
+const getActionListItemTitleValues = (item: ColonyAction, colony?: Colony) => {
   const updatedItem = mapItemToExpectedFormat(item, colony);
-  const keys = getMessageDescriptorKeys(item.actionType);
+  const keys = getMessageDescriptorKeys(item.type);
   const titleValues = keys.reduce<UniversalMessageValues>(
     (values, key) => ({
       ...values,
       [key]: updatedItem[key],
     }),
-    { actionType: item.actionType },
+    { actionType: item.type },
   );
 
   return titleValues;

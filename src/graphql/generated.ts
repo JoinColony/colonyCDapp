@@ -16,9 +16,9 @@ export type Scalars = {
   /** A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   AWSDate: any;
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  AWSDateTime: any;
+  AWSDateTime: string;
   /** A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/. */
-  AWSEmail: any;
+  AWSEmail: string;
   /** The AWSIPAddress scalar type represents a valid IPv4 or IPv6 address string. */
   AWSIPAddress: any;
   /** The AWSJSON scalar type represents a valid json object serialized as a string. */
@@ -30,11 +30,12 @@ export type Scalars = {
   /** The AWSTimestamp scalar type represents the number of seconds that have elapsed since 1970-01-01T00:00Z. Timestamps are serialized and deserialized as numbers. Negative values are also accepted and these represent the number of seconds till 1970-01-01T00:00Z. */
   AWSTimestamp: any;
   /** A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt. */
-  AWSURL: any;
+  AWSURL: string;
 };
 
 export type Colony = {
   __typename?: 'Colony';
+  actions?: Maybe<ModelColonyActionConnection>;
   balances?: Maybe<ColonyBalances>;
   chainFundsClaim?: Maybe<ColonyChainFundsClaim>;
   colonyNativeTokenId: Scalars['ID'];
@@ -54,6 +55,14 @@ export type Colony = {
   updatedAt: Scalars['AWSDateTime'];
   version: Scalars['Int'];
   watchers?: Maybe<ModelWatchedColoniesConnection>;
+};
+
+
+export type ColonyActionsArgs = {
+  filter?: InputMaybe<ModelColonyActionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -96,6 +105,46 @@ export type ColonyWatchersArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
+
+export type ColonyAction = {
+  __typename?: 'ColonyAction';
+  amount?: Maybe<Scalars['String']>;
+  blockNumber: Scalars['Int'];
+  colony: Colony;
+  colonyActionsId?: Maybe<Scalars['ID']>;
+  colonyId: Scalars['ID'];
+  createdAt: Scalars['AWSDateTime'];
+  decimals?: Maybe<Scalars['Int']>;
+  fromDomain?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  initiator?: Maybe<User>;
+  initiatorAddress?: Maybe<Scalars['ID']>;
+  recipient?: Maybe<User>;
+  recipientAddress?: Maybe<Scalars['ID']>;
+  toDomain?: Maybe<Scalars['String']>;
+  tokenAddress?: Maybe<Scalars['String']>;
+  tokenSymbol?: Maybe<Scalars['String']>;
+  transactionHash: Scalars['String'];
+  type: ColonyActionType;
+  updatedAt: Scalars['AWSDateTime'];
+};
+
+export enum ColonyActionType {
+  ColonyEdit = 'COLONY_EDIT',
+  CreateDomain = 'CREATE_DOMAIN',
+  EditDomain = 'EDIT_DOMAIN',
+  EmitDomainReputationPenalty = 'EMIT_DOMAIN_REPUTATION_PENALTY',
+  EmitDomainReputationReward = 'EMIT_DOMAIN_REPUTATION_REWARD',
+  Generic = 'GENERIC',
+  MintTokens = 'MINT_TOKENS',
+  MoveFunds = 'MOVE_FUNDS',
+  Payment = 'PAYMENT',
+  Recovery = 'RECOVERY',
+  SetUserRoles = 'SET_USER_ROLES',
+  UnlockToken = 'UNLOCK_TOKEN',
+  VersionUpgrade = 'VERSION_UPGRADE',
+  WrongColony = 'WRONG_COLONY'
+}
 
 export type ColonyBalance = {
   __typename?: 'ColonyBalance';
@@ -217,6 +266,23 @@ export type ContractEvent = {
   token?: Maybe<Token>;
   updatedAt: Scalars['AWSDateTime'];
   user?: Maybe<User>;
+};
+
+export type CreateColonyActionInput = {
+  amount?: InputMaybe<Scalars['String']>;
+  blockNumber: Scalars['Int'];
+  colonyActionsId?: InputMaybe<Scalars['ID']>;
+  colonyId: Scalars['ID'];
+  decimals?: InputMaybe<Scalars['Int']>;
+  fromDomain?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  initiatorAddress?: InputMaybe<Scalars['ID']>;
+  recipientAddress?: InputMaybe<Scalars['ID']>;
+  toDomain?: InputMaybe<Scalars['String']>;
+  tokenAddress?: InputMaybe<Scalars['String']>;
+  tokenSymbol?: InputMaybe<Scalars['String']>;
+  transactionHash: Scalars['String'];
+  type: ColonyActionType;
 };
 
 export type CreateColonyExtensionInput = {
@@ -367,6 +433,10 @@ export type CurrentVersion = {
   version: Scalars['Int'];
 };
 
+export type DeleteColonyActionInput = {
+  id: Scalars['ID'];
+};
+
 export type DeleteColonyExtensionInput = {
   id: Scalars['ID'];
 };
@@ -512,6 +582,56 @@ export type ModelBooleanInput = {
   attributeType?: InputMaybe<ModelAttributeTypes>;
   eq?: InputMaybe<Scalars['Boolean']>;
   ne?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type ModelColonyActionConditionInput = {
+  amount?: InputMaybe<ModelStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelColonyActionConditionInput>>>;
+  blockNumber?: InputMaybe<ModelIntInput>;
+  colonyActionsId?: InputMaybe<ModelIdInput>;
+  colonyId?: InputMaybe<ModelIdInput>;
+  decimals?: InputMaybe<ModelIntInput>;
+  fromDomain?: InputMaybe<ModelStringInput>;
+  initiatorAddress?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelColonyActionConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonyActionConditionInput>>>;
+  recipientAddress?: InputMaybe<ModelIdInput>;
+  toDomain?: InputMaybe<ModelStringInput>;
+  tokenAddress?: InputMaybe<ModelStringInput>;
+  tokenSymbol?: InputMaybe<ModelStringInput>;
+  transactionHash?: InputMaybe<ModelStringInput>;
+  type?: InputMaybe<ModelColonyActionTypeInput>;
+};
+
+export type ModelColonyActionConnection = {
+  __typename?: 'ModelColonyActionConnection';
+  items: Array<Maybe<ColonyAction>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelColonyActionFilterInput = {
+  amount?: InputMaybe<ModelStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelColonyActionFilterInput>>>;
+  blockNumber?: InputMaybe<ModelIntInput>;
+  colonyActionsId?: InputMaybe<ModelIdInput>;
+  colonyId?: InputMaybe<ModelIdInput>;
+  decimals?: InputMaybe<ModelIntInput>;
+  fromDomain?: InputMaybe<ModelStringInput>;
+  id?: InputMaybe<ModelIdInput>;
+  initiatorAddress?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelColonyActionFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonyActionFilterInput>>>;
+  recipientAddress?: InputMaybe<ModelIdInput>;
+  toDomain?: InputMaybe<ModelStringInput>;
+  tokenAddress?: InputMaybe<ModelStringInput>;
+  tokenSymbol?: InputMaybe<ModelStringInput>;
+  transactionHash?: InputMaybe<ModelStringInput>;
+  type?: InputMaybe<ModelColonyActionTypeInput>;
+};
+
+export type ModelColonyActionTypeInput = {
+  eq?: InputMaybe<ColonyActionType>;
+  ne?: InputMaybe<ColonyActionType>;
 };
 
 export type ModelColonyConditionInput = {
@@ -863,6 +983,24 @@ export type ModelSubscriptionBooleanInput = {
   ne?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type ModelSubscriptionColonyActionFilterInput = {
+  amount?: InputMaybe<ModelSubscriptionStringInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionFilterInput>>>;
+  blockNumber?: InputMaybe<ModelSubscriptionIntInput>;
+  colonyId?: InputMaybe<ModelSubscriptionIdInput>;
+  decimals?: InputMaybe<ModelSubscriptionIntInput>;
+  fromDomain?: InputMaybe<ModelSubscriptionStringInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  initiatorAddress?: InputMaybe<ModelSubscriptionIdInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionFilterInput>>>;
+  recipientAddress?: InputMaybe<ModelSubscriptionIdInput>;
+  toDomain?: InputMaybe<ModelSubscriptionStringInput>;
+  tokenAddress?: InputMaybe<ModelSubscriptionStringInput>;
+  tokenSymbol?: InputMaybe<ModelSubscriptionStringInput>;
+  transactionHash?: InputMaybe<ModelSubscriptionStringInput>;
+  type?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
 export type ModelSubscriptionColonyExtensionFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyExtensionFilterInput>>>;
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
@@ -1149,6 +1287,7 @@ export type ModelWatchedColoniesFilterInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createColony?: Maybe<Colony>;
+  createColonyAction?: Maybe<ColonyAction>;
   createColonyExtension?: Maybe<ColonyExtension>;
   createColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   createColonyTokens?: Maybe<ColonyTokens>;
@@ -1164,6 +1303,7 @@ export type Mutation = {
   createUserTokens?: Maybe<UserTokens>;
   createWatchedColonies?: Maybe<WatchedColonies>;
   deleteColony?: Maybe<Colony>;
+  deleteColonyAction?: Maybe<ColonyAction>;
   deleteColonyExtension?: Maybe<ColonyExtension>;
   deleteColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   deleteColonyTokens?: Maybe<ColonyTokens>;
@@ -1177,6 +1317,7 @@ export type Mutation = {
   deleteWatchedColonies?: Maybe<WatchedColonies>;
   setCurrentVersion?: Maybe<Scalars['Boolean']>;
   updateColony?: Maybe<Colony>;
+  updateColonyAction?: Maybe<ColonyAction>;
   updateColonyExtension?: Maybe<ColonyExtension>;
   updateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   updateColonyTokens?: Maybe<ColonyTokens>;
@@ -1195,6 +1336,12 @@ export type Mutation = {
 export type MutationCreateColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: CreateColonyInput;
+};
+
+
+export type MutationCreateColonyActionArgs = {
+  condition?: InputMaybe<ModelColonyActionConditionInput>;
+  input: CreateColonyActionInput;
 };
 
 
@@ -1285,6 +1432,12 @@ export type MutationDeleteColonyArgs = {
 };
 
 
+export type MutationDeleteColonyActionArgs = {
+  condition?: InputMaybe<ModelColonyActionConditionInput>;
+  input: DeleteColonyActionInput;
+};
+
+
 export type MutationDeleteColonyExtensionArgs = {
   condition?: InputMaybe<ModelColonyExtensionConditionInput>;
   input: DeleteColonyExtensionInput;
@@ -1359,6 +1512,12 @@ export type MutationSetCurrentVersionArgs = {
 export type MutationUpdateColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: UpdateColonyInput;
+};
+
+
+export type MutationUpdateColonyActionArgs = {
+  condition?: InputMaybe<ModelColonyActionConditionInput>;
+  input: UpdateColonyActionInput;
 };
 
 
@@ -1491,7 +1650,9 @@ export type ProfileMetadataInput = {
 
 export type Query = {
   __typename?: 'Query';
+  getActionsByColony?: Maybe<ModelColonyActionConnection>;
   getColony?: Maybe<Colony>;
+  getColonyAction?: Maybe<ColonyAction>;
   getColonyByAddress?: Maybe<ModelColonyConnection>;
   getColonyByName?: Maybe<ModelColonyConnection>;
   getColonyByType?: Maybe<ModelColonyConnection>;
@@ -1517,6 +1678,7 @@ export type Query = {
   getUserTokens?: Maybe<UserTokens>;
   getWatchedColonies?: Maybe<WatchedColonies>;
   listColonies?: Maybe<ModelColonyConnection>;
+  listColonyActions?: Maybe<ModelColonyActionConnection>;
   listColonyExtensions?: Maybe<ModelColonyExtensionConnection>;
   listColonyFundsClaims?: Maybe<ModelColonyFundsClaimConnection>;
   listColonyTokens?: Maybe<ModelColonyTokensConnection>;
@@ -1531,7 +1693,21 @@ export type Query = {
 };
 
 
+export type QueryGetActionsByColonyArgs = {
+  colonyId: Scalars['ID'];
+  filter?: InputMaybe<ModelColonyActionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
 export type QueryGetColonyArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGetColonyActionArgs = {
   id: Scalars['ID'];
 };
 
@@ -1704,6 +1880,13 @@ export type QueryListColoniesArgs = {
 };
 
 
+export type QueryListColonyActionsArgs = {
+  filter?: InputMaybe<ModelColonyActionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryListColonyExtensionsArgs = {
   filter?: InputMaybe<ModelColonyExtensionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1788,6 +1971,7 @@ export type SetCurrentVersionInput = {
 export type Subscription = {
   __typename?: 'Subscription';
   onCreateColony?: Maybe<Colony>;
+  onCreateColonyAction?: Maybe<ColonyAction>;
   onCreateColonyExtension?: Maybe<ColonyExtension>;
   onCreateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   onCreateColonyTokens?: Maybe<ColonyTokens>;
@@ -1800,6 +1984,7 @@ export type Subscription = {
   onCreateUserTokens?: Maybe<UserTokens>;
   onCreateWatchedColonies?: Maybe<WatchedColonies>;
   onDeleteColony?: Maybe<Colony>;
+  onDeleteColonyAction?: Maybe<ColonyAction>;
   onDeleteColonyExtension?: Maybe<ColonyExtension>;
   onDeleteColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   onDeleteColonyTokens?: Maybe<ColonyTokens>;
@@ -1812,6 +1997,7 @@ export type Subscription = {
   onDeleteUserTokens?: Maybe<UserTokens>;
   onDeleteWatchedColonies?: Maybe<WatchedColonies>;
   onUpdateColony?: Maybe<Colony>;
+  onUpdateColonyAction?: Maybe<ColonyAction>;
   onUpdateColonyExtension?: Maybe<ColonyExtension>;
   onUpdateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   onUpdateColonyTokens?: Maybe<ColonyTokens>;
@@ -1828,6 +2014,11 @@ export type Subscription = {
 
 export type SubscriptionOnCreateColonyArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
+};
+
+
+export type SubscriptionOnCreateColonyActionArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyActionFilterInput>;
 };
 
 
@@ -1891,6 +2082,11 @@ export type SubscriptionOnDeleteColonyArgs = {
 };
 
 
+export type SubscriptionOnDeleteColonyActionArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyActionFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteColonyExtensionArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyExtensionFilterInput>;
 };
@@ -1948,6 +2144,11 @@ export type SubscriptionOnDeleteWatchedColoniesArgs = {
 
 export type SubscriptionOnUpdateColonyArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateColonyActionArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyActionFilterInput>;
 };
 
 
@@ -2055,6 +2256,23 @@ export enum TokenType {
   Colony = 'COLONY',
   Erc20 = 'ERC20'
 }
+
+export type UpdateColonyActionInput = {
+  amount?: InputMaybe<Scalars['String']>;
+  blockNumber?: InputMaybe<Scalars['Int']>;
+  colonyActionsId?: InputMaybe<Scalars['ID']>;
+  colonyId?: InputMaybe<Scalars['ID']>;
+  decimals?: InputMaybe<Scalars['Int']>;
+  fromDomain?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  initiatorAddress?: InputMaybe<Scalars['ID']>;
+  recipientAddress?: InputMaybe<Scalars['ID']>;
+  toDomain?: InputMaybe<Scalars['String']>;
+  tokenAddress?: InputMaybe<Scalars['String']>;
+  tokenSymbol?: InputMaybe<Scalars['String']>;
+  transactionHash?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<ColonyActionType>;
+};
 
 export type UpdateColonyExtensionInput = {
   colonyId?: InputMaybe<Scalars['ID']>;
@@ -2237,21 +2455,23 @@ export type WatchedColonies = {
   userID: Scalars['ID'];
 };
 
-export type ColonyFragment = { __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null };
+export type ColonyActionFragment = { __typename?: 'ColonyAction', id: string, type: ColonyActionType, blockNumber: number, transactionHash: string, initiatorAddress?: string | null, recipientAddress?: string | null, amount?: string | null, decimals?: number | null, tokenSymbol?: string | null, fromDomain?: string | null, toDomain?: string | null, createdAt: string, initiator?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, recipient?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null };
 
-export type WatcherFragment = { __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } };
+export type ColonyFragment = { __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } } | null> } | null };
+
+export type WatcherFragment = { __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } };
 
 export type WatchedColonyFragment = { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null };
 
-export type WatchListItemFragment = { __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } };
-
-export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number };
+export type WatchListItemFragment = { __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } };
 
 export type DomainFragment = { __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null };
 
+export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number };
+
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
-export type UserFragment = { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null };
+export type UserFragment = { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null };
 
 export type CreateUniqueColonyMutationVariables = Exact<{
   input: CreateUniqueColonyInput;
@@ -2300,19 +2520,27 @@ export type UpdateUserProfileMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, avatar?: string | null, bio?: string | null, displayName?: string | null, location?: string | null, website?: any | null, email?: any | null } | null };
+export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, avatar?: string | null, bio?: string | null, displayName?: string | null, location?: string | null, website?: string | null, email?: string | null } | null };
+
+export type GetColonyActionsQueryVariables = Exact<{
+  colonyAddress: Scalars['ID'];
+  nextToken?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetColonyActionsQuery = { __typename?: 'Query', getActionsByColony?: { __typename?: 'ModelColonyActionConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyAction', id: string, type: ColonyActionType, blockNumber: number, transactionHash: string, initiatorAddress?: string | null, recipientAddress?: string | null, amount?: string | null, decimals?: number | null, tokenSymbol?: string | null, fromDomain?: string | null, toDomain?: string | null, createdAt: string, initiator?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, recipient?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null } | null> } | null };
 
 export type GetFullColonyByNameQueryVariables = Exact<{
   name: Scalars['String'];
 }>;
 
 
-export type GetFullColonyByNameQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
+export type GetFullColonyByNameQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
 
 export type GetMetacolonyQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMetacolonyQuery = { __typename?: 'Query', getColonyByType?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, website?: any | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
+export type GetMetacolonyQuery = { __typename?: 'Query', getColonyByType?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
 
 export type GetColonyExtensionsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -2355,7 +2583,7 @@ export type GetCurrentUserQueryVariables = Exact<{
 }>;
 
 
-export type GetCurrentUserQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null };
+export type GetCurrentUserQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null };
 
 export type GetUserReputationQueryVariables = Exact<{
   input: GetUserReputationInput;
@@ -2384,7 +2612,7 @@ export type CombinedUserQueryVariables = Exact<{
 }>;
 
 
-export type CombinedUserQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null, getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: any | null, location?: string | null, thumbnail?: string | null, website?: any | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: any, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null };
+export type CombinedUserQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null, getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null };
 
 export type GetCurrentExtensionsVersionsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2398,6 +2626,66 @@ export type GetCurrentExtensionVersionQueryVariables = Exact<{
 
 export type GetCurrentExtensionVersionQuery = { __typename?: 'Query', getCurrentVersionByKey?: { __typename?: 'ModelCurrentVersionConnection', items: Array<{ __typename?: 'CurrentVersion', version: number, extensionHash: string } | null> } | null };
 
+export const WatchedColonyFragmentDoc = gql`
+    fragment WatchedColony on Colony {
+  colonyAddress: id
+  name
+  profile {
+    avatar
+    displayName
+    thumbnail
+  }
+  meta {
+    chainId
+    network
+  }
+}
+    `;
+export const UserFragmentDoc = gql`
+    fragment User on User {
+  profile {
+    avatar
+    bio
+    displayName
+    email
+    location
+    thumbnail
+    website
+  }
+  walletAddress: id
+  name
+  watchlist {
+    items {
+      colony {
+        ...WatchedColony
+      }
+      createdAt
+    }
+  }
+}
+    ${WatchedColonyFragmentDoc}`;
+export const ColonyActionFragmentDoc = gql`
+    fragment ColonyAction on ColonyAction {
+  id
+  type
+  blockNumber
+  transactionHash
+  initiatorAddress
+  initiator {
+    ...User
+  }
+  recipientAddress
+  recipient {
+    ...User
+  }
+  amount
+  decimals
+  tokenSymbol
+  fromDomain
+  toDomain
+  createdAt
+}
+    ${UserFragmentDoc}`;
 export const TokenFragmentDoc = gql`
     fragment Token on Token {
   decimals
@@ -2486,21 +2774,6 @@ export const ColonyFragmentDoc = gql`
     ${TokenFragmentDoc}
 ${DomainFragmentDoc}
 ${WatcherFragmentDoc}`;
-export const WatchedColonyFragmentDoc = gql`
-    fragment WatchedColony on Colony {
-  colonyAddress: id
-  name
-  profile {
-    avatar
-    displayName
-    thumbnail
-  }
-  meta {
-    chainId
-    network
-  }
-}
-    `;
 export const WatchListItemFragmentDoc = gql`
     fragment WatchListItem on WatchedColonies {
   colony {
@@ -2522,29 +2795,6 @@ export const ExtensionFragmentDoc = gql`
   isInitialized
 }
     `;
-export const UserFragmentDoc = gql`
-    fragment User on User {
-  profile {
-    avatar
-    bio
-    displayName
-    email
-    location
-    thumbnail
-    website
-  }
-  walletAddress: id
-  name
-  watchlist {
-    items {
-      colony {
-        ...WatchedColony
-      }
-      createdAt
-    }
-  }
-}
-    ${WatchedColonyFragmentDoc}`;
 export const CreateUniqueColonyDocument = gql`
     mutation CreateUniqueColony($input: CreateUniqueColonyInput!) {
   createUniqueColony(input: $input) {
@@ -2782,6 +3032,45 @@ export function useUpdateUserProfileMutation(baseOptions?: Apollo.MutationHookOp
 export type UpdateUserProfileMutationHookResult = ReturnType<typeof useUpdateUserProfileMutation>;
 export type UpdateUserProfileMutationResult = Apollo.MutationResult<UpdateUserProfileMutation>;
 export type UpdateUserProfileMutationOptions = Apollo.BaseMutationOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
+export const GetColonyActionsDocument = gql`
+    query GetColonyActions($colonyAddress: ID!, $nextToken: String) {
+  getActionsByColony(colonyId: $colonyAddress, nextToken: $nextToken) {
+    items {
+      ...ColonyAction
+    }
+    nextToken
+  }
+}
+    ${ColonyActionFragmentDoc}`;
+
+/**
+ * __useGetColonyActionsQuery__
+ *
+ * To run a query within a React component, call `useGetColonyActionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetColonyActionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetColonyActionsQuery({
+ *   variables: {
+ *      colonyAddress: // value for 'colonyAddress'
+ *      nextToken: // value for 'nextToken'
+ *   },
+ * });
+ */
+export function useGetColonyActionsQuery(baseOptions: Apollo.QueryHookOptions<GetColonyActionsQuery, GetColonyActionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetColonyActionsQuery, GetColonyActionsQueryVariables>(GetColonyActionsDocument, options);
+      }
+export function useGetColonyActionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyActionsQuery, GetColonyActionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetColonyActionsQuery, GetColonyActionsQueryVariables>(GetColonyActionsDocument, options);
+        }
+export type GetColonyActionsQueryHookResult = ReturnType<typeof useGetColonyActionsQuery>;
+export type GetColonyActionsLazyQueryHookResult = ReturnType<typeof useGetColonyActionsLazyQuery>;
+export type GetColonyActionsQueryResult = Apollo.QueryResult<GetColonyActionsQuery, GetColonyActionsQueryVariables>;
 export const GetFullColonyByNameDocument = gql`
     query GetFullColonyByName($name: String!) {
   getColonyByName(name: $name) {

@@ -7,6 +7,8 @@ import {
   WatchedColonyFragment,
   ExtensionFragment,
   DomainFragment,
+  ColonyActionFragment,
+  ColonyActionType,
 } from '~gql';
 
 export type User = UserFragment;
@@ -24,3 +26,7 @@ export type WatchListItem = WatchListItemFragment;
 export type WatchedColony = WatchedColonyFragment;
 
 export type ColonyExtension = ExtensionFragment;
+
+export type ColonyAction = ColonyActionFragment;
+
+export { ColonyActionType };
