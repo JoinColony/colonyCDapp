@@ -22,14 +22,16 @@ type Options = typeof SortSelectOptions;
 interface SortControlsProps {
   options?: Options;
   onChange: (optionValue: SortDirection) => void;
+  sortDirection: SortDirection;
 }
 
 const SortControls = ({
   options = SortSelectOptions,
   onChange,
+  sortDirection,
 }: SortControlsProps) => {
   return (
-    <Form defaultValues={{ filter: SortDirection.Desc }} onSubmit={() => null}>
+    <Form defaultValues={{ filter: sortDirection }} onSubmit={() => null}>
       <div className={styles.filter}>
         <Select
           appearance={{ theme: 'alt' }}

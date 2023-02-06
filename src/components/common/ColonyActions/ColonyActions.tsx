@@ -198,7 +198,10 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
       />
       {actions.length ? (
         <>
-          <ActionsListHeading onSortChange={setSortDirection} />
+          <ActionsListHeading
+            sortDirection={sortDirection}
+            onSortChange={setSortDirection}
+          />
           <ActionsList items={actions} />
           {hasMoreItems && (
             <LoadMoreButton
