@@ -24,10 +24,7 @@ import {
   GetTokenFromEverywhereQueryVariables,
 } from '~gql';
 import { ColonyManager, ContextModule, getContext } from '~context';
-import {
-  DEFAULT_TOKEN_DECIMALS,
-  LATEST_ONE_TX_PAYMENT_VERSION,
-} from '~constants';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { ActionTypes, Action, AllActions } from '~redux/index';
 import { createAddress } from '~utils/web3';
 import { TxConfig } from '~types';
@@ -47,6 +44,7 @@ import {
   getColonyManager,
 } from '../utils';
 import { createTransaction, createTransactionChannels } from '../transactions';
+import { getOneTxPaymentVersion } from '../utils/extensionVersion';
 
 interface ChannelDefinition {
   channel: Channel<any>;
@@ -439,12 +437,10 @@ function* colonyCreate({
       /*
        * Deploy OneTx
        */
+      const oneTxHash = getExtensionHash(Extension.OneTxPayment);
+      const oneTxVersion = yield call(getOneTxPaymentVersion);
       yield put(
-        transactionAddParams(deployOneTx.id, [
-          getExtensionHash(Extension.OneTxPayment),
-          /* @TODO: get latest version of OneTxPayment extn programatically */
-          LATEST_ONE_TX_PAYMENT_VERSION || 0,
-        ]),
+        transactionAddParams(deployOneTx.id, [oneTxHash, oneTxVersion]),
       );
       yield put(transactionReady(deployOneTx.id));
 

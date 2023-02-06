@@ -38,6 +38,8 @@ services:
     depends_on:
       network-contracts:
         condition: service_healthy
+      amplify:
+        condition: service_healthy
     links:
       - "network-contracts:network-contracts.docker"
       - "amplify:amplify.docker"
@@ -62,3 +64,7 @@ services:
       - "reputation-monitor:reputation-monitor.docker"
     ports:
       - '20002:20002'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:20002"]
+      interval: 5s
+      retries: 1000
