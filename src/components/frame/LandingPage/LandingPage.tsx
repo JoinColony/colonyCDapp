@@ -41,21 +41,12 @@ const MSG = defineMessages({
 interface LandingItemProps {
   to: string;
   message: MessageDescriptor;
-  customHandler?: (() => void) | boolean;
+  onClick?: () => void;
 }
 
-const handleClick = (e, customHandler) => {
-  e.preventDefault();
-  customHandler();
-};
-
-const LandingItem = ({ to, message, customHandler }: LandingItemProps) => (
+const LandingItem = ({ to, message, onClick }: LandingItemProps) => (
   <li className={styles.item}>
-    <NavLink
-      to={to}
-      onClick={(e) => customHandler && handleClick(e, customHandler)}
-      className={styles.itemLink}
-    >
+    <NavLink to={to} onClick={onClick} className={styles.itemLink}>
       <Icon className={styles.itemIcon} name="circle-plus" title={message} />
       <span className={styles.itemTitle}>
         <FormattedMessage {...message} />
@@ -99,7 +90,9 @@ const LandingPage = () => {
           <LandingItem
             to={CREATE_COLONY_ROUTE}
             message={MSG.createColony}
-            customHandler={!canInteractWithNetwork && !wallet && connectWallet}
+            onClick={
+              !canInteractWithNetwork && !wallet ? connectWallet : undefined
+            }
           />
           {loading && (
             <li className={styles.itemLoading}>

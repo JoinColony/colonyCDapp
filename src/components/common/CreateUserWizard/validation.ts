@@ -56,17 +56,20 @@ export interface FormValues {
 
 export type UserWizardStep1 = Pick<FormValues, 'email' | 'emailPermissions'>;
 export type UserWizardStep2 = Pick<FormValues, 'username'>;
-const step1: UserWizardStep1 = {
+export const userStep1: UserWizardStep1 = {
   email: '',
   emailPermissions: [],
 };
-const step2 = { username: '' };
-export const initialValues: [UserWizardStep1, UserWizardStep2] = [step1, step2];
+export const userStep2 = { username: '' };
+export const initialValues: [UserWizardStep1, UserWizardStep2] = [
+  userStep1,
+  userStep2,
+];
 
 export const stepUserEmailValidationSchema: ObjectSchema<UserWizardStep1> =
   object({
     email: string()
-      .default(step1.email)
+      .default(userStep1.email)
       .email(formatMessage({ id: 'error.validEmail' }))
       .test(
         'isEmailAlreadyRegistered',
@@ -87,13 +90,13 @@ export const stepUserEmailValidationSchema: ObjectSchema<UserWizardStep1> =
             EmailPermissions.SendNotifications,
           ]),
       )
-      .default(step1.emailPermissions),
+      .default(userStep1.emailPermissions),
   }).defined();
 
 export const stepUserNameValidationSchema: ObjectSchema<UserWizardStep2> =
   object({
     username: string()
-      .default(step2.username)
+      .default(userStep2.username)
       .required(formatMessage({ id: 'error.usernameRequired' }))
       .max(255)
       .test(

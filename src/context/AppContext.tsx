@@ -18,7 +18,6 @@ import { useAsyncFunction } from '~hooks';
 import { getContext, ContextModule } from './index';
 
 export interface AppContextValues {
-  initConnect?: boolean;
   wallet?: Wallet;
   walletConnecting?: boolean;
   setWalletConnecting?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -48,7 +47,6 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   }
 
   // initConnect used for smoother handling async processes
-  const [initConnect, setInitConnect] = useState<boolean>(false);
   const [wallet, setWallet] = useState(initialWallet);
   const [user, setUser] = useState<User | null | undefined>();
   const [userLoading, setUserLoading] = useState(false);
@@ -73,10 +71,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
           const [currentUser] = data?.getUserByAddress?.items || [];
           if (currentUser) {
             setUser(currentUser);
-            setInitConnect(false);
           } else {
             setUser(null);
-            setInitConnect(false);
           }
         } catch (error) {
           console.error(error);
@@ -117,24 +113,21 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
    */
   const connectWallet = useCallback(async () => {
     setWalletConnecting?.(true);
-    setInitConnect?.(true);
     let walletConnectSuccess = false;
     try {
       await asyncFunction(undefined);
       walletConnectSuccess = true;
     } catch (error) {
       console.error('Could not connect wallet', error);
-      setInitConnect?.(false);
     }
     if (updateWallet && walletConnectSuccess) {
       updateWallet();
     }
     setWalletConnecting?.(false);
-  }, [asyncFunction, updateWallet, setWalletConnecting, setInitConnect]);
+  }, [asyncFunction, updateWallet, setWalletConnecting]);
 
   const appContext = useMemo<AppContextValues>(
     () => ({
-      initConnect,
       wallet,
       walletConnecting,
       setWalletConnecting,
@@ -145,7 +138,6 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       updateUser,
     }),
     [
-      initConnect,
       wallet,
       walletConnecting,
       setWalletConnecting,

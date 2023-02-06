@@ -1,4 +1,4 @@
 /* Handle new user connecting */
-export const newUser = () => {
+export const handleNewUser = () => {
   // TO DO: Add new user modal
 };

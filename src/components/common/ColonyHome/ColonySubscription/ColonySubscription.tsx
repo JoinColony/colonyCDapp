@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,7 +15,7 @@ import {
 import { CREATE_USER_ROUTE } from '~routes';
 import { useAppContext, useColonyContext } from '~hooks';
 import { getWatchedColony } from '~utils/watching';
-import { newUser } from '~utils/newUser';
+import { handleNewUser } from '~utils/newUser';
 
 import ColonySubscriptionInfoPopover from './ColonySubscriptionInfoPopover';
 
@@ -46,7 +46,7 @@ const ColonySubscription = () => {
     wallet,
     walletConnecting,
     connectWallet,
-    initConnect,
+    userLoading,
   } = useAppContext();
   const navigate = useNavigate();
 
@@ -88,17 +88,17 @@ const ColonySubscription = () => {
     }
   }, [user, updateUser, watchData, unwatchData]);
 
-  const handleSubscribe = () => {
+  const handleSubscribe = useCallback(() => {
     if (user) {
       watch();
     } else if (wallet && !user) {
-      newUser();
+      handleNewUser();
       // TO Do: update to new user modal
       navigate(CREATE_USER_ROUTE, { replace: true });
     } else {
       connectWallet?.();
     }
-  };
+  }, [watch, user, wallet, navigate, connectWallet]);
 
   return (
     <div className={styles.main}>
@@ -113,10 +113,9 @@ const ColonySubscription = () => {
             </div>
           </InvisibleCopyableAddress>
         )}
-        {loadingWatch ||
-          (loadingUnwatch && (
-            <SpinnerLoader appearance={{ theme: 'primary', size: 'small' }} />
-          ))}
+        {(loadingWatch || loadingUnwatch) && (
+          <SpinnerLoader appearance={{ theme: 'primary', size: 'small' }} />
+        )}
         {canInteractWithColony && !loadingWatch && !loadingUnwatch && (
           <ColonySubscriptionInfoPopover onUnsubscribe={unwatch} canUnsubscribe>
             {({ isOpen, toggle, ref, id }) => (
@@ -134,7 +133,7 @@ const ColonySubscription = () => {
             )}
           </ColonySubscriptionInfoPopover>
         )}
-        {!canInteractWithColony && !walletConnecting && !initConnect && (
+        {!canInteractWithColony && !walletConnecting && !userLoading && (
           <div className={styles.colonyJoin}>
             <Button
               onClick={handleSubscribe}
