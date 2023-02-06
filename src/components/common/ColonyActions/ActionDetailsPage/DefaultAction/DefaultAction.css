@@ -1,0 +1,57 @@
+@value query700 from '~styles/queries.css';
+
+.main {
+  height: 100%;
+  width: 100%;
+}
+
+.main > span:first-child {
+  align-items: baseline;
+  margin-bottom: 13px;
+}
+
+.container {
+  display: grid;
+  border-top: 1px solid rgba(var(--grey-purple-1), 0.15);
+  grid-template:
+    "feed details" 100%
+    / 460px 340px;
+  column-gap: 100px;
+}
+
+.heading {
+  margin-bottom: 20px;
+  font-size: var(--size-medium-l);
+  font-weight: var(--weight-bold);
+  line-height: 24px;
+  color: var(--dark);
+  letter-spacing: var(--spacing-medium);
+}
+
+.heading span {
+  font-size: var(--size-medium-l);
+}
+
+.content {
+  margin-top: 17px;
+  word-break: break-word;
+  grid-area: feed;
+}
+
+@media screen and query700 {
+  .main {
+    padding-top: 0px;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0 14px;
+    border-top: 0px transparent;
+  }
+
+  .content {
+    width: 100%;
+  }
+}

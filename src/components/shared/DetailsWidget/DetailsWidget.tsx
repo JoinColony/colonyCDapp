@@ -1,13 +1,7 @@
 import React from 'react';
 import { nanoid } from 'nanoid';
 
-import {
-  Colony,
-  ColonyActions,
-  ColonyMotions,
-  FormattedAction,
-  User,
-} from '~types';
+import { Colony, ColonyAction } from '~types';
 import { mockEventData } from '~common/ColonyActions/mockData';
 
 import DetailItem from './DetailItem';
@@ -16,41 +10,23 @@ import getDetailItems from './detailsWidgetConfig';
 const displayName = 'DetailsWidget';
 
 interface Props {
-  actionType: ColonyActions | ColonyMotions;
   colony: Colony;
-  transactionHash?: string;
-  recipientAddress?: User['walletAddress'];
-  values: typeof mockEventData & FormattedAction;
+  values: typeof mockEventData & ColonyAction;
 }
 
-const DetailsWidget = ({
-  actionType,
-  colony,
-  recipientAddress,
-  transactionHash,
-  values,
-}: Props) => {
-  const detailItems = getDetailItems(
-    actionType,
-    values,
-    colony,
-    recipientAddress,
-    transactionHash,
-  );
+const DetailsWidget = ({ colony, values }: Props) => {
+  const detailItems = getDetailItems(values, colony);
 
   return (
     <div>
-      {detailItems.map(
-        ({ label, labelValues, item }) =>
-          item && (
-            <DetailItem
-              label={label}
-              labelValues={labelValues}
-              item={item}
-              key={nanoid()}
-            />
-          ),
-      )}
+      {detailItems.map(({ label, labelValues, item }) => (
+        <DetailItem
+          label={label}
+          labelValues={labelValues}
+          item={item}
+          key={nanoid()}
+        />
+      ))}
     </div>
   );
 };

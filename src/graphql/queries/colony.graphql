@@ -1,3 +1,11 @@
+query GetFullColonyByAddress($address: ID!) {
+  getColonyByAddress(id: $address) {
+    items {
+      ...Colony
+    }
+  }
+}
+
 query GetFullColonyByName($name: String!) {
   getColonyByName(name: $name) {
     items {

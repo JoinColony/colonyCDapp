@@ -1,6 +1,7 @@
 import { DomainColor } from '~gql';
 import { Domain, Falsy } from '~types';
-import { convertToCapitalized } from './strings';
+
+import { capitalizeWord } from './strings';
 
 interface ColonyMetadataChanges {
   nameChanged: boolean;
@@ -20,9 +21,8 @@ export const getColonyMetadataMessageValues = (
   }
 
   /*
-   * I'm imagining we will either maintain a history of metadata changes in the db so these can be determined on the client,
-   * or keep a "changed" property on the model that gets updated every time metadata changes, so you know exactly what changed.
-   * E.g. { changed: ['name', 'logo'] / ['tokens'] }
+   * TODO: Update the following to account for metadata changes being kept in the model as an array of changes,
+   * with the latest one being the most recent one. Including domain functions below.
    */
   const { nameChanged, logoChanged, tokensChanged, verifiedAddressesChanged } =
     metadataChanges;
@@ -100,9 +100,9 @@ const getDomainMetadataValue = (
 };
 
 const isDomainColor = (color: string): color is DomainColor =>
-  convertToCapitalized(color) in DomainColor;
+  capitalizeWord(color) in DomainColor;
 
-const getDomainMetadataValues = (
+const getDomainMetadataValuesAndColor = (
   values: (string | Falsy)[],
   direction: 'from' | 'to',
 ) => {
@@ -150,7 +150,7 @@ export const getDomainMetadataTitleValues = (
     colorChanged,
   );
 
-  const oldDomainMetadata = getDomainMetadataValues(
+  const oldDomainMetadata = getDomainMetadataValuesAndColor(
     [
       nameChanged && oldName,
       descriptionChanged && oldDescription,
@@ -159,7 +159,7 @@ export const getDomainMetadataTitleValues = (
     'from',
   );
 
-  const newDomainMetadata = getDomainMetadataValues(
+  const newDomainMetadata = getDomainMetadataValuesAndColor(
     [
       nameChanged && newName,
       descriptionChanged && newDescription,
@@ -175,9 +175,7 @@ export const getDomainMetadataTitleValues = (
   };
 };
 
-export const getColonyRoleSetTitleValues = (setTo: boolean) => {
-  return {
-    roleSetAction: setTo ? 'assigned' : 'removed',
-    roleSetDirection: setTo ? 'to' : 'from',
-  };
-};
+export const getColonyRoleSetTitleValues = (setTo: boolean) => ({
+  roleSetAction: setTo ? 'assigned' : 'removed',
+  roleSetDirection: setTo ? 'to' : 'from',
+});

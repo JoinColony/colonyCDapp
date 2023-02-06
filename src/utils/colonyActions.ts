@@ -2,15 +2,16 @@ import { BigNumber } from 'ethers';
 import { ReactNode } from 'react';
 
 import { isEmpty } from '~utils/lodash';
+import { MotionVote } from '~utils/colonyMotions';
 import {
   ColonyActionType,
   ColonyMotions,
   Address,
   Token,
+  Domain as ColonyDomain,
+  ActionItemType,
   ActionUserRoles,
 } from '~types';
-import { Domain as ColonyDomain } from '~gql';
-import { MotionVote } from '~utils/colonyMotions';
 
 import { formatText } from './intl';
 
@@ -39,7 +40,7 @@ type DetailsValuesMap = Partial<{
  * Which details display for which type
  */
 type ActionsDetailsMap = Partial<{
-  [key in ColonyActionType | ColonyMotions]: ActionPageDetails[];
+  [key in ActionItemType]: ActionPageDetails[];
 }>;
 
 export const DETAILS_FOR_ACTION: ActionsDetailsMap = {
@@ -121,7 +122,7 @@ export const DETAILS_FOR_ACTION: ActionsDetailsMap = {
 };
 
 export interface EventValues {
-  actionType: ColonyActionType | ColonyMotions;
+  actionType: ActionItemType;
   amount?: string | ReactNode;
   token?: Token;
   tokenSymbol?: string | ReactNode;
@@ -154,7 +155,7 @@ export interface EventValues {
  * Get colony action details for DetailsWidget based on action type and ActionPageDetails map
  */
 export const getDetailsForAction = (
-  actionType: ColonyActionType | ColonyMotions,
+  actionType: ActionItemType,
 ): DetailsValuesMap => {
   const detailsForActionType = DETAILS_FOR_ACTION[actionType];
   return Object.keys(ActionPageDetails).reduce((detailsMap, detailsKey) => {
