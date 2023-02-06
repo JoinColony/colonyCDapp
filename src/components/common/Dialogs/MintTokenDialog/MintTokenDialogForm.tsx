@@ -55,11 +55,7 @@ const MSG = defineMessages({
   },
 });
 
-const MintTokenDialogForm = ({
-  colony: { nativeToken },
-  colony,
-  back,
-}: ActionDialogProps) => {
+const MintTokenDialogForm = ({ colony, back }: ActionDialogProps) => {
   const {
     getValues,
     formState: { isValid, isSubmitting },
@@ -82,7 +78,7 @@ const MintTokenDialogForm = ({
   // });
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony.colonyAddress,
+    colony?.colonyAddress || '',
     canUserMintNativeToken,
     false, // isVotingExtensionEnabled,
     values.forceAction,
@@ -99,9 +95,11 @@ const MintTokenDialogForm = ({
     () => ({
       numeral: true,
       numeralPositiveOnly: true,
-      numeralDecimalScale: getTokenDecimalsWithFallback(nativeToken?.decimals),
+      numeralDecimalScale: getTokenDecimalsWithFallback(
+        colony?.nativeToken?.decimals,
+      ),
     }),
-    [nativeToken],
+    [colony],
   );
 
   return (
@@ -127,9 +125,9 @@ const MintTokenDialogForm = ({
           </div>
           <span
             className={styles.nativeToken}
-            title={nativeToken?.name || undefined}
+            title={colony?.nativeToken?.name || undefined}
           >
-            {nativeToken?.symbol}
+            {colony?.nativeToken?.symbol}
           </span>
         </div>
       </DialogSection>

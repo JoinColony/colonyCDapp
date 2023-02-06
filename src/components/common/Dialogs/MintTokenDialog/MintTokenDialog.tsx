@@ -54,7 +54,6 @@ const validationSchema = object()
 type FormValues = InferType<typeof validationSchema>;
 
 const MintTokenDialog = ({
-  colony: { nativeToken, colonyAddress, name: colonyName },
   colony,
   cancel,
   close,
@@ -85,14 +84,14 @@ const MintTokenDialog = ({
             const amount = BigNumber.from(
               moveDecimal(
                 inputAmount,
-                getTokenDecimalsWithFallback(nativeToken?.decimals),
+                getTokenDecimalsWithFallback(colony?.nativeToken?.decimals),
               ),
             );
             return {
               operationName: RootMotionMethodNames.MintTokens,
-              colonyAddress,
-              colonyName,
-              nativeTokenAddress: nativeToken?.tokenAddress,
+              colonyAddress: colony?.colonyAddress,
+              colonyName: colony?.name,
+              nativeTokenAddress: colony?.nativeToken?.tokenAddress,
               motionParams: [amount],
               amount,
               annotationMessage,
@@ -101,7 +100,7 @@ const MintTokenDialog = ({
         ),
         withMeta({ navigate }),
       ),
-    [colonyAddress, colonyName, nativeToken, navigate],
+    [colony, navigate],
   );
 
   return (

@@ -1,36 +1,21 @@
 import React from 'react';
 import {
-  defineMessages,
-  FormattedMessage,
   MessageDescriptor,
 } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import Numeral from '~shared/Numeral';
 import { Select } from '~shared/Fields';
 import { Colony } from '~types';
 
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { notNull } from '~utils/arrays';
-import { sortBy } from '~utils/lodash';
 
-import styles from './DomainFundSelector.css';
+import DomainBalance from './DomainBalance';
+import { getDomainOptions } from './helpers';
 
 const displayName = 'DomainFundSelectorSection.DomainFundSelector';
 
-const MSG = defineMessages({
-  domainTokenAmount: {
-    id: `${displayName}.domainTokenAmount`,
-    defaultMessage: 'Available Funds: {amount} {symbol}',
-  },
-  noBalance: {
-    id: `${displayName}.noBalance`,
-    defaultMessage: 'Insufficient balance in from domain pot',
-  },
-});
-
 interface Props {
-  colony: Colony | undefined;
+  colony: Colony;
   name: string;
   label: MessageDescriptor | string;
   onChange?: (val: any) => void;
@@ -45,28 +30,11 @@ const DomainFundSelector = ({
   onChange,
 }: Props) => {
   const {
-    getValues,
     formState: { isSubmitting, errors },
   } = useFormContext();
-  const values = getValues();
-
-  const { tokenAddress } = values;
-  const colonyTokens =
-    colony?.tokens?.items
-      .filter(notNull)
-      .map((colonyToken) => colonyToken.token) || [];
-  const selectedToken = colonyTokens.find(
-    (token) => token?.tokenAddress === values.tokenAddress,
-  );
 
   const colonyDomains = colony?.domains?.items.filter(notNull) || [];
-  const domainOptions = sortBy(
-    colonyDomains.map((domain) => ({
-      value: domain.nativeId,
-      label: domain.name || `Domain #${domain.nativeId}`,
-    })),
-    ['value'],
-  );
+  const domainOptions = getDomainOptions(colonyDomains);
 
   // const [
   //   loadTokenBalances,
@@ -163,23 +131,8 @@ const DomainFundSelector = ({
         dataTest="domainIdSelector"
         itemDataTest="domainIdItem"
       />
-      {!!tokenAddress && !errors[name] && (
-        <div className={styles.domainPotBalance}>
-          <FormattedMessage
-            {...MSG.domainTokenAmount}
-            values={{
-              amount: (
-                <Numeral
-                  value={0} // fromDomainTokenBalance || ...
-                  decimals={getTokenDecimalsWithFallback(
-                    selectedToken && selectedToken.decimals,
-                  )}
-                />
-              ),
-              symbol: (selectedToken && selectedToken.symbol) || '???',
-            }}
-          />
-        </div>
+      {!errors[name] && (
+        <DomainBalance colony={colony} />
       )}
     </div>
   );

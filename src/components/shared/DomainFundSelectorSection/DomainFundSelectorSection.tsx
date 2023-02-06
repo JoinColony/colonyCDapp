@@ -28,7 +28,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  colony: Colony | undefined;
+  colony: Colony;
   disabled?: boolean;
   transferBetweenDomains?: boolean;
 }

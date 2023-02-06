@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { HookFormInput as Input, TokenSymbolSelector } from '~shared/Fields';
 import EthUsd from '~shared/EthUsd';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 import { notNull } from '~utils/arrays';
 import { Colony } from '~types';
 
@@ -31,7 +31,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  colony: Colony | undefined;
+  colony: Colony;
   disabled: boolean;
 }
 
@@ -42,9 +42,7 @@ const TokenAmountInput = ({ colony, disabled }: Props) => {
     colony?.tokens?.items
       .filter(notNull)
       .map((colonyToken) => colonyToken.token) || [];
-  const selectedToken = colonyTokens.find(
-    (token) => token?.tokenAddress === values.tokenAddress,
-  );
+  const selectedToken = getSelectedToken(colony, values.tokenAddress);
   const formattingOptions = useMemo(
     () => ({
       delimiter: ',',
