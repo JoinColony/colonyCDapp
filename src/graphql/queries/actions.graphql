@@ -16,3 +16,9 @@ query GetColonyActions(
     nextToken
   }
 }
+
+query GetColonyAction($transactionHash: ID!) {
+  getColonyAction(id: $transactionHash) {
+    ...ColonyAction
+  }
+}
