@@ -67,13 +67,14 @@ export type ColonyActionsActionTypes =
           decimals: number;
         };
         annotationMessage?: string;
+        walletAddress: Address;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_EDIT_COLONY,
