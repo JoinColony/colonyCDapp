@@ -174,11 +174,6 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         submit={ActionTypes.ACTION_MINT_TOKENS}
         error={ActionTypes.ACTION_MINT_TOKENS_ERROR}
         success={ActionTypes.ACTION_MINT_TOKENS_SUCCESS}
-        values={{
-          meta: {
-            navigate,
-          },
-        }}
         transform={pipe(
           mergePayload({
             colonyAddress: colony.colonyAddress,
