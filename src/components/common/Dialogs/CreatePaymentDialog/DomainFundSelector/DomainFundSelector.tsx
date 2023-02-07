@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
+import { defineMessages } from 'react-intl';
 import { Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import Numeral from '~shared/Numeral';
 import { Select } from '~shared/Fields';
 import { Colony } from '~types';
 
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { notNull } from '~utils/arrays';
-import { sortBy } from '~utils/lodash';
+
+import DomainBalance from './DomainBalance';
+import { getDomainOptions } from './helpers';
 
 import styles from './DomainFundSelector.css';
 
@@ -21,10 +21,6 @@ const MSG = defineMessages({
     id: `${displayName}.from`,
     defaultMessage: 'From',
   },
-  domainTokenAmount: {
-    id: `${displayName}.domainTokenAmount`,
-    defaultMessage: 'Available Funds: {amount} {symbol}',
-  },
   noBalance: {
     id: `${displayName}.noBalance`,
     defaultMessage: 'Insufficient balance in from domain pot',
@@ -32,44 +28,22 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  colony: Colony | undefined;
-  filteredDomainId?: number;
+  colony: Colony;
 }
 
-const DomainFundSelector = ({ colony, filteredDomainId }: Props) => {
+const DomainFundSelector = ({ colony }: Props) => {
   const {
     getValues,
     setValue,
     formState: { isSubmitting },
   } = useFormContext();
   const values = getValues();
-  const selectedDomain =
-    filteredDomainId === 0 || filteredDomainId === undefined
-      ? Id.RootDomain
-      : filteredDomainId;
-
-  const domainId = values.domainId
-    ? parseInt(values.domainId, 10)
-    : selectedDomain;
-
-  const [currentFromDomain, setCurrentFromDomain] = useState<number>(domainId);
-  const { tokenAddress } = values;
-  const colonyTokens =
-    colony?.tokens?.items
-      .filter(notNull)
-      .map((colonyToken) => colonyToken.token) || [];
-  const selectedToken = colonyTokens.find(
-    (token) => token?.tokenAddress === values.tokenAddress,
+  const [currentFromDomain, setCurrentFromDomain] = useState<number>(
+    values.domainId,
   );
 
-  const colonyDomains = colony?.domains?.items || [];
-  const domainOptions = sortBy(
-    colonyDomains.map((domain) => ({
-      value: `${domain?.nativeId}`,
-      label: domain?.name || `Domain #${domain?.nativeId}`,
-    })),
-    ['value'],
-  );
+  const colonyDomains = colony?.domains?.items.filter(notNull) || [];
+  const domainOptions = getDomainOptions(colonyDomains);
 
   const handleFromDomainChange = (fromDomainValue) => {
     const fromDomainId = parseInt(fromDomainValue, 10);
@@ -179,24 +153,7 @@ const DomainFundSelector = ({ colony, filteredDomainId }: Props) => {
           dataTest="domainIdSelector"
           itemDataTest="domainIdItem"
         />
-        {!!tokenAddress && (
-          <div className={styles.domainPotBalance}>
-            <FormattedMessage
-              {...MSG.domainTokenAmount}
-              values={{
-                amount: (
-                  <Numeral
-                    value={0} // fromDomainTokenBalance || ...
-                    decimals={getTokenDecimalsWithFallback(
-                      selectedToken && selectedToken.decimals,
-                    )}
-                  />
-                ),
-                symbol: (selectedToken && selectedToken.symbol) || '???',
-              }}
-            />
-          </div>
-        )}
+        <DomainBalance colony={colony} />
       </div>
     </div>
   );
