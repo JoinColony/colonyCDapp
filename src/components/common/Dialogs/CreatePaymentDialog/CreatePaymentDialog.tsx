@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { Id } from '@colony/colony-js';
 import { useNavigate } from 'react-router-dom';
 import { InferType } from 'yup';
@@ -12,7 +12,6 @@ import { ActionTypes } from '~redux/index';
 //   useMembersSubscription,
 //   useNetworkContracts,
 // } from '~data/index';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
 import { WizardDialogType } from '~hooks';
@@ -20,7 +19,8 @@ import { WizardDialogType } from '~hooks';
 import { notNull } from '~utils/arrays';
 
 import validationSchema from './validation';
-import DialogForm from './CreatePaymentDialogForm'; // { calculateFee }
+import DialogForm from './CreatePaymentDialogForm';
+import { getCreatePaymentDialogPayload } from './helpers';
 
 const displayName = 'common.CreatePaymentDialog';
 
@@ -89,49 +89,9 @@ const CreatePaymentDialog = ({
   //     : false;
   // };
 
-  const transform = useCallback(
-    () =>
-      pipe(
-        mapPayload((payload) => {
-          const {
-            amount,
-            tokenAddress,
-            domainId,
-            recipient: {
-              profile: { walletAddress },
-            },
-            annotation: annotationMessage,
-            motionDomainId,
-          } = payload;
-          const colonyTokens = colony?.tokens?.items || [];
-          const selectedToken = colonyTokens.find(
-            (token) => token?.token.tokenAddress === tokenAddress,
-          );
-          const decimals = getTokenDecimalsWithFallback(
-            selectedToken?.token.decimals,
-          );
-
-          // const amountWithFees = networkFeeInverse
-          //   ? calculateFee(amount, networkFeeInverse, decimals).totalToPay
-          //   : amount;
-
-          return {
-            colonyName: colony?.name || '',
-            colonyAddress: colony?.colonyAddress || '',
-            recipientAddress: walletAddress,
-            domainId,
-            singlePayment: {
-              tokenAddress,
-              amount, // amountWithFees - @NOTE: The contract only sees this amount
-              decimals,
-            },
-            annotationMessage,
-            motionDomainId,
-          };
-        }),
-        withMeta({ navigate }),
-      ),
-    [colony, navigate],
+  const transform = pipe(
+    mapPayload((payload) => getCreatePaymentDialogPayload(colony, payload)),
+    withMeta({ navigate }),
   );
 
   return (
