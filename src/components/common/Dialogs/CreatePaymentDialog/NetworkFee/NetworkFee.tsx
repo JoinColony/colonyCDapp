@@ -7,8 +7,11 @@ import {
 import { useFormContext } from 'react-hook-form';
 import Decimal from 'decimal.js';
 
-import { calculateFee, getTokenDecimalsWithFallback } from '~utils/tokens';
-import { notNull } from '~utils/arrays';
+import {
+  calculateFee,
+  getSelectedToken,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens';
 import Numeral from '~shared/Numeral';
 import { Colony } from '~types';
 
@@ -33,7 +36,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  colony: Colony | undefined;
+  colony: Colony;
   customAmountError: string | MessageDescriptor | undefined;
   networkFeeInverse: string | undefined;
 }
@@ -45,13 +48,7 @@ const NetworkFee = ({
 }: Props) => {
   const { getValues } = useFormContext();
   const values = getValues();
-  const colonyTokens =
-    colony?.tokens?.items
-      .filter(notNull)
-      .map((colonyToken) => colonyToken.token) || [];
-  const selectedToken = colonyTokens.find(
-    (token) => token?.tokenAddress === values.tokenAddress,
-  );
+  const selectedToken = getSelectedToken(colony, values.tokenAddress);
 
   if (
     !networkFeeInverse ||
@@ -88,5 +85,7 @@ const NetworkFee = ({
     </div>
   );
 };
+
+NetworkFee.displayName = displayName;
 
 export default NetworkFee;

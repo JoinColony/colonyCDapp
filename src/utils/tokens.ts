@@ -3,12 +3,13 @@ import { BigNumber, BigNumberish } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
 import { ColonyBalances } from '~gql';
-import { Address } from '~types';
-
+import { Colony, Address } from '~types';
 import {
   DEFAULT_TOKEN_DECIMALS,
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
 } from '~constants';
+
+import { notNull } from './arrays';
 
 export const getBalanceForTokenAndDomain = (
   balances: ColonyBalances,
@@ -80,4 +81,15 @@ export const calculateFee = (
     feesInWei: feesInWei.toString(),
     totalToPay: moveDecimal(totalToPayInWei, -1 * decimals),
   }; // NOTE: seems like moveDecimal does not have strict typing
+};
+
+export const getSelectedToken = (colony: Colony, tokenAddress: string) => {
+  const colonyTokens =
+    colony?.tokens?.items
+      .filter(notNull)
+      .map((colonyToken) => colonyToken.token) || [];
+  const selectedToken = colonyTokens.find(
+    (token) => token?.tokenAddress === tokenAddress,
+  );
+  return selectedToken;
 };
