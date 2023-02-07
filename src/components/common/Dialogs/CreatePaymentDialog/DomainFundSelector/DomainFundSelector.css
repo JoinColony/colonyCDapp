@@ -1,0 +1,14 @@
+.domainPotBalance {
+  height: 0px;
+  position: relative;
+  bottom: 14px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  text-align: right;
+  color: var(--grey-purple);
+}
+
+.domainSelects label {
+  font-size: var(--size-smallish);
+  color: var(--dark);
+}

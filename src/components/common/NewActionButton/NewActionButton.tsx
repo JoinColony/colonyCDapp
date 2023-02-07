@@ -1,13 +1,14 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { useAppContext, useNaiveBranchingDialogWizard } from '~hooks';
 // import { Extension } from '@colony/colony-js';
 // import { useSelector } from 'react-redux';
 
-// import { Colony } from '~types';
-
+import {
+  useAppContext,
+  useNaiveBranchingDialogWizard,
+  useColonyContext,
+} from '~hooks';
 import DialogButton from '~shared/Button/DialogButton';
-import { getWizardFlowConfig } from './wizardConfig';
 
 // import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
 
@@ -15,6 +16,8 @@ import { getWizardFlowConfig } from './wizardConfig';
 //   colonyMustBeUpgraded,
 //   oneTxMustBeUpgraded,
 // } from '~modules/dashboard/checks';
+
+import { getWizardFlowConfig } from './wizardConfig';
 
 const displayName = 'common.ColonyHome.NewActionButton';
 
@@ -29,9 +32,9 @@ const MSG = defineMessages({
   },
 });
 
-// interface Props {
-//   filteredDomainId: number;
-// }
+interface Props {
+  filteredDomainId: number;
+}
 
 // interface RootState {
 //   users: {
@@ -41,8 +44,8 @@ const MSG = defineMessages({
 //   };
 // }
 
-const NewActionButton = (/** { filteredDomainId }: Props */) => {
-  // const { colony } = useColonyContext();
+const NewActionButton = ({ filteredDomainId }: Props) => {
+  const { colony } = useColonyContext();
   const { user } = useAppContext();
 
   // const { version: networkVersion } = useNetworkContracts();
@@ -66,7 +69,9 @@ const NewActionButton = (/** { filteredDomainId }: Props */) => {
   //   }
   // });
 
-  const startWizardFlow = useNaiveBranchingDialogWizard(getWizardFlowConfig()); // colony, filteredDomainId
+  const startWizardFlow = useNaiveBranchingDialogWizard(
+    getWizardFlowConfig(colony, filteredDomainId),
+  );
 
   // const oneTxPaymentExtension = data?.processedColony?.installedExtensions.find(
   //   ({ details, extensionId: extensionName }) =>
@@ -79,13 +84,15 @@ const NewActionButton = (/** { filteredDomainId }: Props */) => {
   // const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
   // const isLoadingData = isLoadingExtensions || isLoadingUser;
 
+  if (!colony) {
+    return null;
+  }
+
   return (
     <DialogButton
       text={MSG.newAction}
       loading={false} // isLoadingData
-      handleClick={() =>
-        startWizardFlow('common.ColonyHome.ColonyActionsDialog')
-      }
+      handleClick={() => startWizardFlow('common.ColonyActionsDialog')}
       disabled={!hasRegisteredProfile}
       data-test="newActionButton"
     />
