@@ -152,6 +152,10 @@ Props) => {
 
   const inputDisabled = !canMakePayment || onlyForceAction || isSubmitting;
 
+  const formattedData = verifiedUsers.map((user) => ({
+    ...user,
+    id: user.walletAddress,
+  }));
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -169,7 +173,7 @@ Props) => {
         <div className={styles.singleUserContainer}>
           <SingleUserPicker
             appearance={{ width: 'wide' }}
-            data={verifiedUsers}
+            data={formattedData}
             label={MSG.to}
             name="recipient"
             filter={filterUserSelection}
