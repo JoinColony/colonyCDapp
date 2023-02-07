@@ -9,6 +9,6 @@
   },
   "dependencies": {
     "ethers": "^5.7.1",
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.6.8"
   }
 }
