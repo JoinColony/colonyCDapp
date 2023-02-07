@@ -84,6 +84,10 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
   // const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
   // const isLoadingData = isLoadingExtensions || isLoadingUser;
 
+  if (!colony) {
+    return null;
+  }
+
   return (
     <DialogButton
       text={MSG.newAction}
