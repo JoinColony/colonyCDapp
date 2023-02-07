@@ -8,7 +8,7 @@ import LoadMoreButton from '~shared/LoadMoreButton';
 import ActionsList from '~shared/ActionsList';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
-import { useColonyContext, usePaginatedActions } from '~hooks';
+import { useAppContext, useColonyContext, usePaginatedActions } from '~hooks';
 import { mergePayload, pipe, withMeta } from '~utils/actions';
 
 import { ActionsListHeading } from '.';
@@ -35,6 +35,7 @@ const MSG = defineMessages({
 const ColonyActions = (/* { ethDomainId }: Props */) => {
   const navigate = useNavigate();
   const { colony } = useColonyContext();
+  const { user } = useAppContext();
 
   const {
     loading: loadingActions,
@@ -184,6 +185,26 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
           withMeta({ navigate }),
         )}
         text="Test Mint Tokens"
+      />
+      <ActionButton
+        submit={ActionTypes.ACTION_EXPENDITURE_PAYMENT}
+        error={ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR}
+        success={ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS}
+        transform={pipe(
+          mergePayload({
+            colonyAddress: colony.colonyAddress,
+            colonyName: colony.name,
+            recipientAddress: user?.walletAddress,
+            domainId: colony.domains?.items[0]?.nativeId,
+            singlePayment: {
+              amount: BigNumber.from(1),
+              tokenAddress: colony.nativeToken.tokenAddress,
+              decimals: 18,
+            },
+          }),
+          withMeta({ navigate }),
+        )}
+        text="Test Create Payment"
       />
       {actions.length ? (
         <>
