@@ -10,6 +10,7 @@ import {
   UniqueActionType,
   ActionTypeWithMeta,
   MetaWithHistory,
+  MetaWithNavigate,
 } from './index';
 
 /*
@@ -123,12 +124,12 @@ export type ColonyActionsActionTypes =
         amount: BigNumber;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_MINT_TOKENS_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_MINT_TOKENS_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_VERSION_UPGRADE,

@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { BigNumber } from 'ethers';
+import { useNavigate } from 'react-router-dom';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import LoadMoreButton from '~shared/LoadMoreButton';
@@ -8,6 +9,7 @@ import ActionsList from '~shared/ActionsList';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { useColonyContext, usePaginatedActions } from '~hooks';
+import { mergePayload, pipe, withMeta } from '~utils/actions';
 
 import { ActionsListHeading } from '.';
 
@@ -31,6 +33,7 @@ const MSG = defineMessages({
 // };
 
 const ColonyActions = (/* { ethDomainId }: Props */) => {
+  const navigate = useNavigate();
   const { colony } = useColonyContext();
 
   const {
@@ -172,11 +175,19 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         error={ActionTypes.ACTION_MINT_TOKENS_ERROR}
         success={ActionTypes.ACTION_MINT_TOKENS_SUCCESS}
         values={{
-          colonyAddress: colony.colonyAddress,
-          colonyName: colony.name,
-          nativeTokenAddress: colony.nativeToken.tokenAddress,
-          amount: BigNumber.from(1),
+          meta: {
+            navigate,
+          },
         }}
+        transform={pipe(
+          mergePayload({
+            colonyAddress: colony.colonyAddress,
+            colonyName: colony.name,
+            nativeTokenAddress: colony.nativeToken.tokenAddress,
+            amount: BigNumber.from(1),
+          }),
+          withMeta({ navigate }),
+        )}
         text="Test Mint Tokens"
       />
       {actions.length ? (
