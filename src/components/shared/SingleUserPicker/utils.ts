@@ -1,34 +1,37 @@
+import { OmniPickerData } from '~shared/OmniPicker';
+import { User } from '~types';
+
 /*
 Extracts the required values to be used in the SingleUserPicker
 on selection
 */
-export const filterUserSelection = (data, filterValue) => {
+
+type OmniPickerUser = User & OmniPickerData;
+
+export const filterUserSelection = (
+  data: OmniPickerUser[],
+  filterValue: string | undefined,
+) => {
   if (!filterValue) {
     return data;
   }
 
-  const filtered = data.filter(
+  const filteredUsers = data.filter(
     (user) =>
-      user &&
-      user.profile &&
-      user.profile.username &&
-      filterValue &&
-      (user.profile.username
-        .toLowerCase()
-        .includes(filterValue.toLowerCase()) ||
-        user.profile.walletAddress
-          .toLowerCase()
-          .includes(filterValue.toLowerCase()) ||
-        user.id.toLowerCase().includes(filterValue.toLowerCase())),
+      user?.name.toLowerCase().includes(filterValue.toLowerCase()) ||
+      user?.walletAddress.toLowerCase().includes(filterValue.toLowerCase()) ||
+      user?.profile?.displayName
+        ?.toLowerCase()
+        .includes(filterValue.toLowerCase()),
   );
 
-  const customValue = {
+  const customUser: Omit<OmniPickerUser, 'name'> = {
     id: 'filterValue',
     profile: {
-      walletAddress: filterValue,
       displayName: filterValue,
     },
+    walletAddress: filterValue,
   };
 
-  return [customValue].concat(filtered);
+  return [customUser].concat(filteredUsers);
 };

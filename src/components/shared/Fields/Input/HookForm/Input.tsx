@@ -99,7 +99,6 @@ const HookFormInput = ({
           name={name}
           placeholder={formatText(placeholder, placeholderValues)}
           inputValueLength={inputValue?.length || 0}
-          value={inputValue}
           {...restInputProps}
         />
         {extensionStringText && (

@@ -3,7 +3,7 @@ import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
 import classnames from 'classnames';
 import { useFormContext } from 'react-hook-form';
 
-import { Address, SimpleMessageValues, User } from '~types';
+import { SimpleMessageValues, User } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import {
@@ -20,9 +20,7 @@ import ItemDefault from './ItemDefault';
 
 import styles from './SingleUserPicker.css';
 
-type AvatarRenderFn = (
-  user?: ItemDataType<User>,
-) => ReactNode;
+type AvatarRenderFn = (user?: ItemDataType<User>) => ReactNode;
 
 const displayName = 'SingleUserPicker';
 
@@ -54,7 +52,7 @@ interface Appearance {
   width?: 'wide';
 }
 
-interface Props extends WithOmnipickerInProps {
+interface Props extends WithOmnipickerInProps, WrappedComponentProps {
   /** Appearance object */
   appearance?: Appearance;
 
@@ -106,8 +104,6 @@ interface Props extends WithOmnipickerInProps {
   valueDataTest?: string;
 }
 
-interface EnhancedProps extends Props, WrappedComponentProps {}
-
 const SingleUserPicker = ({
   appearance,
   disabled,
@@ -133,7 +129,7 @@ const SingleUserPicker = ({
   dataTest,
   itemDataTest,
   valueDataTest,
-}: EnhancedProps) => {
+}: Props) => {
   const {
     formState: { errors, touchedFields },
     setValue,
@@ -198,9 +194,7 @@ const SingleUserPicker = ({
             screenReaderOnly={elementOnly}
           />
           {value ? (
-            <div className={styles.avatarContainer}>
-              {renderAvatar(value)}
-            </div>
+            <div className={styles.avatarContainer}>{renderAvatar(value)}</div>
           ) : (
             <Icon
               className={omniPickerIsOpen ? styles.focusIcon : styles.icon}
