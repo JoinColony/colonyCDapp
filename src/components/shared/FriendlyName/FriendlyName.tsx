@@ -4,7 +4,6 @@ import { AddressZero } from '@ethersproject/constants';
 import MaskedAddress from '~shared/MaskedAddress';
 import { isEmpty } from '~utils/lodash';
 import { removeValueUnits } from '~utils/css';
-import { isEmpty } from '~utils/lodash';
 
 import { User } from '~types';
 import { useColonyContext } from '~hooks';
