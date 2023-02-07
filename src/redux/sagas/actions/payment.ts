@@ -3,25 +3,23 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { ClientType } from '@colony/colony-js';
 
-import { ContextModule, getContext } from '~context';
-import {
-  TokenBalancesForDomainsDocument,
-  TokenBalancesForDomainsQuery,
-  TokenBalancesForDomainsQueryVariables,
-  UserBalanceWithLockQuery,
-  UserBalanceWithLockQueryVariables,
-  UserBalanceWithLockDocument,
-  getLoggedInUser,
-} from '~data/index';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
+import { ActionTypes, Action, AllActions } from '~redux';
+// import { ContextModule, getContext } from '~context';
+// import {
+//   TokenBalancesForDomainsDocument,
+//   TokenBalancesForDomainsQuery,
+//   TokenBalancesForDomainsQueryVariables,
+//   UserBalanceWithLockQuery,
+//   UserBalanceWithLockQueryVariables,
+//   UserBalanceWithLockDocument,
+// } from '~data/index';
 import {
   putError,
   takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
+  // waitForIngestorToHandleAction,
+  //   uploadIfpsAnnotation,
 } from '../utils';
-import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
+// import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 
 import {
   createTransaction,
@@ -30,8 +28,8 @@ import {
 } from '../transactions';
 import {
   transactionReady,
-  transactionPending,
-  transactionAddParams,
+  //   transactionPending,
+  //   transactionAddParams,
 } from '../../actionCreators';
 
 function* createPaymentAction({
@@ -41,28 +39,16 @@ function* createPaymentAction({
     recipientAddress,
     domainId,
     singlePayment,
-    annotationMessage,
+    // annotationMessage,
+    // walletAddress,
   },
-  meta: {
-    id: metaId,
-    /*
-     * @NOTE About the react router history object
-     *
-     * Apparently this is considered a best practice when needing to change
-     * the route from inside a redux saga, to pass in the history object from
-     * the component itself.
-     *
-     * See:
-     * https://reactrouter.com/web/guides/deep-redux-integration
-     */
-    history,
-  },
+  meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ACTION_EXPENDITURE_PAYMENT>) {
+  yield Math.min();
   let txChannel;
   try {
-    const apolloClient = getContext(ContextModule.ApolloClient);
-
+    // const apolloClient = getContext(ContextModule.ApolloClient);
     /*
      * Validate the required values for the payment
      */
@@ -87,23 +73,17 @@ function* createPaymentAction({
         );
       }
     }
-
     const { amount, tokenAddress, decimals = 18 } = singlePayment;
-    const { walletAddress } = yield getLoggedInUser();
-
     txChannel = yield call(getTxChannel, metaId);
-
     /*
      * setup batch ids and channels
      */
     const batchKey = 'paymentAction';
-
-    const { paymentAction, annotatePaymentAction } =
+    const { paymentAction /* annotatePaymentAction */ } =
       yield createTransactionChannels(metaId, [
         'paymentAction',
         'annotatePaymentAction',
       ]);
-
     yield fork(createTransaction, paymentAction.id, {
       context: ClientType.OneTxPaymentClient,
       methodName: 'makePaymentFundedFromDomainWithProofs',
@@ -127,32 +107,28 @@ function* createPaymentAction({
       },
       ready: false,
     });
-
-    if (annotationMessage) {
-      yield fork(createTransaction, annotatePaymentAction.id, {
-        context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
-        identifier: colonyAddress,
-        params: [],
-        group: {
-          key: batchKey,
-          id: metaId,
-          index: 1,
-        },
-        ready: false,
-      });
-    }
-
+    //     if (annotationMessage) {
+    //       yield fork(createTransaction, annotatePaymentAction.id, {
+    //         context: ClientType.ColonyClient,
+    //         methodName: 'annotateTransaction',
+    //         identifier: colonyAddress,
+    //         params: [],
+    //         group: {
+    //           key: batchKey,
+    //           id: metaId,
+    //           index: 1,
+    //         },
+    //         ready: false,
+    //       });
+    //     }
     yield takeFrom(paymentAction.channel, ActionTypes.TRANSACTION_CREATED);
-    if (annotationMessage) {
-      yield takeFrom(
-        annotatePaymentAction.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
-    }
-
+    //     if (annotationMessage) {
+    //       yield takeFrom(
+    //         annotatePaymentAction.channel,
+    //         ActionTypes.TRANSACTION_CREATED,
+    //       );
+    //     }
     yield put(transactionReady(paymentAction.id));
-
     const {
       payload: { hash: txHash },
     } = yield takeFrom(
@@ -160,64 +136,60 @@ function* createPaymentAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
     yield takeFrom(paymentAction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    //     if (annotationMessage) {
+    //       yield put(transactionPending(annotatePaymentAction.id));
+    //       const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
+    //       yield put(
+    //         transactionAddParams(annotatePaymentAction.id, [txHash, ipfsHash]),
+    //       );
+    //       yield put(transactionReady(annotatePaymentAction.id));
+    //       yield takeFrom(
+    //         annotatePaymentAction.channel,
+    //         ActionTypes.TRANSACTION_SUCCEEDED,
+    //       );
+    //     }
+    //     // Refetch token balances for the domains involved
+    //     yield apolloClient.query<
+    //       TokenBalancesForDomainsQuery,
+    //       TokenBalancesForDomainsQueryVariables
+    //     >({
+    //       query: TokenBalancesForDomainsDocument,
+    //       variables: {
+    //         colonyAddress,
+    //         tokenAddresses: [tokenAddress],
+    //         /*
+    //          * @NOTE Also update the value in "All Domains"
+    //          */
+    //         domainIds: [COLONY_TOTAL_BALANCE_DOMAIN_ID, domainId],
+    //       },
+    //       // Force resolvers to update, as query resolvers are only updated on a cache miss
+    //       // See #4: https://www.apollographql.com/docs/link/links/state/#resolvers
+    //       // Also: https://www.apollographql.com/docs/react/api/react-apollo/#optionsfetchpolicy
+    //       fetchPolicy: 'network-only',
+    //     });
+    //     yield apolloClient.query<
+    //       UserBalanceWithLockQuery,
+    //       UserBalanceWithLockQueryVariables
+    //     >({
+    //       query: UserBalanceWithLockDocument,
+    //       variables: {
+    //         address: walletAddress,
+    //         tokenAddress,
+    //         colonyAddress,
+    //       },
+    //       fetchPolicy: 'network-only',
+    //     });
 
-    if (annotationMessage) {
-      yield put(transactionPending(annotatePaymentAction.id));
-
-      const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-
-      yield put(
-        transactionAddParams(annotatePaymentAction.id, [txHash, ipfsHash]),
-      );
-
-      yield put(transactionReady(annotatePaymentAction.id));
-
-      yield takeFrom(
-        annotatePaymentAction.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
-    }
-
-    // Refetch token balances for the domains involved
-    yield apolloClient.query<
-      TokenBalancesForDomainsQuery,
-      TokenBalancesForDomainsQueryVariables
-    >({
-      query: TokenBalancesForDomainsDocument,
-      variables: {
-        colonyAddress,
-        tokenAddresses: [tokenAddress],
-        /*
-         * @NOTE Also update the value in "All Domains"
-         */
-        domainIds: [COLONY_TOTAL_BALANCE_DOMAIN_ID, domainId],
-      },
-      // Force resolvers to update, as query resolvers are only updated on a cache miss
-      // See #4: https://www.apollographql.com/docs/link/links/state/#resolvers
-      // Also: https://www.apollographql.com/docs/react/api/react-apollo/#optionsfetchpolicy
-      fetchPolicy: 'network-only',
-    });
-
-    yield apolloClient.query<
-      UserBalanceWithLockQuery,
-      UserBalanceWithLockQueryVariables
-    >({
-      query: UserBalanceWithLockDocument,
-      variables: {
-        address: walletAddress,
-        tokenAddress,
-        colonyAddress,
-      },
-      fetchPolicy: 'network-only',
-    });
+    // Wait until block ingestor has processed the action
+    // yield call(waitForIngestorToHandleAction, txHash);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS,
       meta,
     });
 
-    if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+    if (colonyName && navigate) {
+      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
     }
   } catch (error) {
     putError(ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR, error, meta);
