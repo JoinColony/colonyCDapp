@@ -5,9 +5,8 @@ import { defineMessages } from 'react-intl';
 import { isTransactionFormat } from '~utils/web3';
 import { useColonyContext } from '~hooks';
 import LoadingTemplate from '~frame/LoadingTemplate';
-import { useGetFullColonyByAddressQuery } from '~gql';
+import { useGetFullColonyByAddressQuery, useGetColonyActionQuery } from '~gql';
 
-import { mockActionData } from '../mockData';
 import {
   TransactionNotFound,
   ActionDetailsPageLayout as Layout,
@@ -33,25 +32,30 @@ const ActionDetailsPage = () => {
   const { colony } = useColonyContext();
   const { transactionHash, colonyName } = useParams<ActionDetailsPageParams>();
 
-  const action = mockActionData.find(
-    (item) => item.transactionHash === transactionHash,
-  );
-
-  const createdAt = action?.createdAt;
+  const { data, loading } = useGetColonyActionQuery({
+    variables: {
+      transactionHash: transactionHash ?? '',
+    },
+    skip: !transactionHash,
+  });
+  const action = data?.getColonyAction;
+  const { createdAt } = action || {};
   // const status = action?.transactionStatus;
 
   const isValidTx = isTransactionFormat(transactionHash);
   const events = ['event']; // to be taken from real data
 
-  // Todo: get colony address from the event and compare with colony in the pathname
+  // @TODO: get colony address from the event and compare with colony in the pathname
   // to ensure this tx was generated in this colony
-  const { data, loading: loadingColony } = useGetFullColonyByAddressQuery({
-    variables: {
-      address: action?.colonyAddress,
-    },
-  });
+  const { data: colonyData, loading: loadingColony } =
+    useGetFullColonyByAddressQuery({
+      variables: {
+        address: action?.colonyAddress ?? '',
+      },
+      skip: !action?.colonyAddress,
+    });
 
-  const txColony = data?.getColonyByAddress?.items[0];
+  const txColony = colonyData?.getColonyByAddress?.items[0];
 
   if (!colony) {
     return null;
@@ -64,7 +68,7 @@ const ActionDetailsPage = () => {
     !txColony ||
     txColony.name !== colonyName;
 
-  if (loadingColony) {
+  if (loading || loadingColony) {
     return <LoadingTemplate loadingText={MSG.loading} />;
   }
 

@@ -1,6 +1,7 @@
 fragment ColonyAction on ColonyAction {
   id
   transactionHash: id
+  colonyAddress: colonyId
   type
   blockNumber
   initiatorAddress
