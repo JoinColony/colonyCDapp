@@ -23,7 +23,7 @@
   margin-top: 20px;
   padding: 20px 15px;
   border-radius: var(--radius-normal);
-  background-color: color-mod(var(--danger) alpha(15%));
+  background-color: rgba(var(--danger), 0.15);
 }
 
 .warningText {

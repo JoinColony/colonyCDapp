@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import {
   defineMessages,
   FormattedMessage,
@@ -26,14 +26,8 @@ import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 
 import { ColonyWatcher } from '~types';
 
-import {
-  useAppContext,
-  useDialogActionPermissions,
-  useTransformer,
-} from '~hooks';
+import { useDialogActionPermissions } from '~hooks';
 // import { useEnabledExtensions } from '~hooks/useEnabledExtensions';
-import { getUserRolesForDomain } from '~redux/transformers';
-import { userHasRole } from '~utils/checks';
 
 import DomainFundSelector from './DomainFundSelector';
 import TokenAmountInput from './TokenAmountInput';
@@ -86,6 +80,21 @@ interface Props extends ActionDialogProps {
   filteredDomainId?: number;
 }
 
+const noPermissionFromMessageValues = {
+  firstRoleRequired: (
+    <PermissionsLabel
+      permission={ColonyRole.Funding}
+      name={{ id: `role.${ColonyRole.Funding}` }}
+    />
+  ),
+  secondRoleRequired: (
+    <PermissionsLabel
+      permission={ColonyRole.Administration}
+      name={{ id: `role.${ColonyRole.Administration}` }}
+    />
+  ),
+};
+
 const CreatePaymentDialogForm = ({
   back,
   verifiedUsers,
@@ -93,7 +102,6 @@ const CreatePaymentDialogForm = ({
   colony,
 }: // showWhitelistWarning,
 Props) => {
-  const { wallet } = useAppContext();
   const {
     getValues,
     formState: { isSubmitting, isValid },
@@ -123,31 +131,15 @@ Props) => {
   //   colonyAddress,
   // });
 
-  const fromDomainRoles = useTransformer(getUserRolesForDomain, [
-    colony,
-    wallet?.address,
-    domainId,
-  ]);
-
-  const userHasFundingPermission = userHasRole(
-    fromDomainRoles,
-    ColonyRole.Funding,
-  );
-  const userHasAdministrationPermission = userHasRole(
-    fromDomainRoles,
-    ColonyRole.Administration,
-  );
-  const hasRoles = userHasFundingPermission && userHasAdministrationPermission;
   const requiredRoles: ColonyRole[] = [
     ColonyRole.Funding,
     ColonyRole.Administration,
   ];
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony?.colonyAddress || '',
-    hasRoles,
+    colony,
     false, // isVotingExtensionEnabled,
-    values.forceAction,
+    requiredRoles,
     domainId,
   );
 
@@ -160,11 +152,6 @@ Props) => {
 
   const inputDisabled = !canMakePayment || onlyForceAction || isSubmitting;
 
-  const formattedData = useMemo(
-    () => verifiedUsers.map((user) => ({ ...user, id: user.walletAddress })),
-    [verifiedUsers],
-  );
-
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -176,16 +163,13 @@ Props) => {
         </DialogSection>
       )}
       <DialogSection>
-        <DomainFundSelector
-          colony={colony}
-          filteredDomainId={preselectedDomainId}
-        />
+        <DomainFundSelector colony={colony} />
       </DialogSection>
       <DialogSection>
         <div className={styles.singleUserContainer}>
           <SingleUserPicker
             appearance={{ width: 'wide' }}
-            data={formattedData}
+            data={verifiedUsers}
             label={MSG.to}
             name="recipient"
             filter={filterUserSelection}
@@ -237,20 +221,7 @@ Props) => {
           <div className={styles.noPermissionFromMessage}>
             <FormattedMessage
               {...MSG.noPermissionFrom}
-              values={{
-                firstRoleRequired: (
-                  <PermissionsLabel
-                    permission={ColonyRole.Funding}
-                    name={{ id: `role.${ColonyRole.Funding}` }}
-                  />
-                ),
-                secondRoleRequired: (
-                  <PermissionsLabel
-                    permission={ColonyRole.Administration}
-                    name={{ id: `role.${ColonyRole.Administration}` }}
-                  />
-                ),
-              }}
+              values={noPermissionFromMessageValues}
             />
           </div>
         </DialogSection>
