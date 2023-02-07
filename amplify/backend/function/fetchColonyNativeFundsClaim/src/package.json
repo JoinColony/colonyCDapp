@@ -8,7 +8,7 @@
     "@types/aws-lambda": "^8.10.92"
   },
   "dependencies": {
-    "aws-amplify": "^4.3.43",
+    "aws-amplify": "^4.3.45",
     "ethers": "^5.7.2"
   }
 }
