@@ -96,13 +96,13 @@ const getAdjustedAmount = (
   amount: ColonyAction['amount'],
   decimals: ColonyAction['decimals'],
 ) => {
-  if (amount && decimals) {
-    return adjustConvertedValue(new Decimal(amount), decimals).toString();
-  } else if (amount) {
-    return amount;
+  if (!amount) {
+    return undefined;
   }
-
-  return undefined;
+  if (decimals) {
+    return adjustConvertedValue(new Decimal(amount), decimals).toString();
+  }
+  return amount;
 };
 
 interface DetailItemConfig {
@@ -121,7 +121,7 @@ const getDetailItems = (
     recipient,
     decimals,
     transactionHash,
-    // token,
+    token,
     tokenSymbol,
   }: // reputationChange,
   // roles,
@@ -184,7 +184,7 @@ const getDetailItems = (
         <AmountDetail
           amount={adjustedAmount}
           symbol={tokenSymbol}
-          token={undefined} /* @TODO: replace with token */
+          token={token ?? undefined}
         />
       ),
     },
