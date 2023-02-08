@@ -131,8 +131,7 @@ export const splitAddress = (address: Address): AddressElements | Error => {
 export const splitTransactionHash = (
   transactionHash: string,
 ): AddressElements | undefined => {
-  try {
-    isTransactionFormat(transactionHash);
+  if (isTransactionFormat(transactionHash)) {
     const HEX_HEADER = '0x';
     const addressStart: string = transactionHash.slice(2, 6);
     const addressMiddle: string = transactionHash.slice(4, -4);
@@ -143,9 +142,8 @@ export const splitTransactionHash = (
       middle: `${addressMiddle}`,
       end: addressEnd,
     };
-  } catch (caughtError) {
-    return undefined;
   }
+  return undefined;
 };
 
 // This should be opaque

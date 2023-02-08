@@ -3,14 +3,12 @@ import { MessageDescriptor, defineMessages, FormattedDate } from 'react-intl';
 
 import {
   AnyExtensionData,
-  Colony,
   InstallableExtensionData,
   InstalledExtensionData,
 } from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
-import DetailsWidgetUser from '~shared/DetailsWidgetUser';
-import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
-import MaskedAddress from '~shared/MaskedAddress';
+import { UserDetail } from '~shared/DetailsWidget';
+import Address from '~shared/Address';
 
 import ExtensionStatusBadge from '../ExtensionStatusBadge';
 import { displayName } from './ExtensionDetailsAside';
@@ -59,7 +57,6 @@ export type TableRowData = {
 
 const getInstalledExtensionTableData = (
   extensionData: InstalledExtensionData,
-  colony: Colony,
 ) => {
   return [
     {
@@ -70,10 +67,7 @@ const getInstalledExtensionTableData = (
       label: MSG.installedBy,
       value: (
         <span className={styles.installedBy}>
-          <DetailsWidgetUser
-            colony={colony}
-            walletAddress={extensionData.installedBy}
-          />
+          <UserDetail walletAddress={extensionData.installedBy} />
         </span>
       ),
     },
@@ -87,13 +81,7 @@ const getInstalledExtensionTableData = (
     },
     {
       label: MSG.contractAddress,
-      value: (
-        <InvisibleCopyableAddress address={extensionData.address}>
-          <span className={styles.contractAddress}>
-            <MaskedAddress address={extensionData.address} />
-          </span>
-        </InvisibleCopyableAddress>
-      ),
+      value: <Address address={extensionData.address} />,
     },
     {
       label: MSG.developer,
@@ -131,9 +119,8 @@ const getInstallableExtensionData = (
 
 export const getTableData = (
   extensionData: AnyExtensionData,
-  colony: Colony,
 ): TableRowData[] => {
   return isInstalledExtensionData(extensionData)
-    ? getInstalledExtensionTableData(extensionData, colony)
+    ? getInstalledExtensionTableData(extensionData)
     : getInstallableExtensionData(extensionData);
 };
