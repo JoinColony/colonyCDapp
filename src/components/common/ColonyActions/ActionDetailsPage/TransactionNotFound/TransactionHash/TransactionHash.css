@@ -19,7 +19,7 @@
   max-width: 340px;
   border-radius: var(--radius-normal);
   border: 1px solid var(--light-purple);
-  background-color: rgba(var(--light-purple-1), 0.33);
+  background-color: color-mod(var(--light-purple) alpha(33%));
   font-family: var(--family-techie);
   font-size: var(--size-tiny);
   font-weight: var(--weight-bold);

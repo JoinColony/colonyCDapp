@@ -12,7 +12,7 @@
 
 .container {
   display: grid;
-  border-top: 1px solid rgba(var(--grey-purple-1), 0.15);
+  border-top: 1px solid color-mod(var(--grey-purple) alpha(15%));
   grid-template:
     "feed details" 100%
     / 460px 340px;
