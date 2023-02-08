@@ -1,6 +1,6 @@
 .transactionHashLink {
   font-family: var(--family-techie);
-  color: rgba(var(--dark-1), 0.85);
+  color: color-mod(var(--dark) alpha(85%));
 }
 
 .transactionHashLink:hover {

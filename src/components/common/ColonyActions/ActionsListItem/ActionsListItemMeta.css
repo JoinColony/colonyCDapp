@@ -26,5 +26,5 @@
 }
 
 .commentCountIcon svg {
-  fill: rgba(var(--dark-1), 0.7);
+  fill: color-mod(var(--dark) alpha(70%));
 }

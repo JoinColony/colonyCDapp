@@ -9,7 +9,7 @@
   align-items: center;
   font-size: var(--size-tiny);
   font-weight: var(--weight-bold);
-  color: rgba(var(--dark-1), 0.5);
+  color: color-mod(var(--dark) alpha(50%));
   letter-spacing: var(--spacing-medium);
 }
 
@@ -19,7 +19,7 @@
   height: 12px;
   width: 1px;
   vertical-align: bottom;
-  background-color: rgba(var(--grey-purple-1), 0.25);
+  background-color: color-mod(var(--grey-purple) alpha(25%));
   content: '';
 }
 
@@ -28,7 +28,7 @@
 }
 
 .blockscoutLink {
-  color: rgba(var(--dark-1), 0.5);
+  color: color-mod(var(--dark) alpha(50%));
 }
 
 .blockscoutLink:hover {
