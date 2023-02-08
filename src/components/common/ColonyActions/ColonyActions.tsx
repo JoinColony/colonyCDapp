@@ -33,8 +33,6 @@ const MSG = defineMessages({
 //   ethDomainId?: number;
 // };
 
-const ITEMS_PER_PAGE = 10;
-
 const ColonyActions = (/* { ethDomainId }: Props */) => {
   const navigate = useNavigate();
   const { colony } = useColonyContext();
