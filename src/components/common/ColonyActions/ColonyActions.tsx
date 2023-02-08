@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { BigNumber } from 'ethers';
 
@@ -7,10 +7,7 @@ import LoadMoreButton from '~shared/LoadMoreButton';
 import ActionsList from '~shared/ActionsList';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
-import { useColonyContext } from '~hooks';
-import { useGetColonyActionsQuery } from '~gql';
-import { notNull } from '~utils/arrays';
-import { SortDirection } from '~types';
+import { useColonyContext, usePaginatedActions } from '~hooks';
 
 import { ActionsListHeading } from '.';
 
@@ -33,31 +30,17 @@ const MSG = defineMessages({
 //   ethDomainId?: number;
 // };
 
-const ITEMS_PER_PAGE = 10;
-
 const ColonyActions = (/* { ethDomainId }: Props */) => {
   const { colony } = useColonyContext();
 
-  const [sortDirection, setSortDirection] = useState<SortDirection>(
-    SortDirection.Desc,
-  );
-
   const {
-    data,
     loading: loadingActions,
-    fetchMore,
-  } = useGetColonyActionsQuery({
-    variables: {
-      colonyAddress: colony?.colonyAddress ?? '',
-      limit: ITEMS_PER_PAGE,
-      sortDirection,
-    },
-    skip: !colony,
-    fetchPolicy: 'network-only',
-  });
-  const { items, nextToken } = data?.getActionsByColony || {};
-  const actions = items?.filter(notNull) || [];
-  const hasMoreItems = !!nextToken;
+    actions,
+    sortDirection,
+    onSortDirectionChange,
+    hasMoreActions,
+    loadMoreActions,
+  } = usePaginatedActions();
 
   if (!colony) {
     return null;
@@ -200,19 +183,13 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         <>
           <ActionsListHeading
             sortDirection={sortDirection}
-            onSortChange={setSortDirection}
+            onSortChange={onSortDirectionChange}
           />
           <ActionsList items={actions} />
-          {hasMoreItems && (
+          {hasMoreActions && (
             <LoadMoreButton
-              onClick={() =>
-                fetchMore({
-                  variables: {
-                    nextToken,
-                  },
-                })
-              }
-              isLoadingData={false} // oneTxActionsLoading || eventsActionsLoading}
+              onClick={loadMoreActions}
+              isLoadingData={loadingActions} // oneTxActionsLoading || eventsActionsLoading}
             />
           )}
         </>
