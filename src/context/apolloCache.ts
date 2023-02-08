@@ -19,7 +19,7 @@ const cache = new InMemoryCache({
     Query: {
       fields: {
         getActionsByColony: {
-          keyArgs: ['$colonyAddress'],
+          keyArgs: ['$colonyAddress', '$sortDirection'],
           /**
            * The following function takes care of merging already fetched actions
            * with the next set of paginated actions
