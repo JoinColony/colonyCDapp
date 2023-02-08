@@ -273,6 +273,7 @@ export type CreateColonyActionInput = {
   blockNumber: Scalars['Int'];
   colonyActionsId?: InputMaybe<Scalars['ID']>;
   colonyId: Scalars['ID'];
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   decimals?: InputMaybe<Scalars['Int']>;
   fromDomain?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
@@ -590,6 +591,7 @@ export type ModelColonyActionConditionInput = {
   blockNumber?: InputMaybe<ModelIntInput>;
   colonyActionsId?: InputMaybe<ModelIdInput>;
   colonyId?: InputMaybe<ModelIdInput>;
+  createdAt?: InputMaybe<ModelStringInput>;
   decimals?: InputMaybe<ModelIntInput>;
   fromDomain?: InputMaybe<ModelStringInput>;
   initiatorAddress?: InputMaybe<ModelIdInput>;
@@ -615,6 +617,7 @@ export type ModelColonyActionFilterInput = {
   blockNumber?: InputMaybe<ModelIntInput>;
   colonyActionsId?: InputMaybe<ModelIdInput>;
   colonyId?: InputMaybe<ModelIdInput>;
+  createdAt?: InputMaybe<ModelStringInput>;
   decimals?: InputMaybe<ModelIntInput>;
   fromDomain?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
@@ -988,6 +991,7 @@ export type ModelSubscriptionColonyActionFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionFilterInput>>>;
   blockNumber?: InputMaybe<ModelSubscriptionIntInput>;
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
+  createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   decimals?: InputMaybe<ModelSubscriptionIntInput>;
   fromDomain?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
@@ -1695,6 +1699,7 @@ export type Query = {
 
 export type QueryGetActionsByColonyArgs = {
   colonyId: Scalars['ID'];
+  createdAt?: InputMaybe<ModelStringKeyConditionInput>;
   filter?: InputMaybe<ModelColonyActionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
@@ -2262,6 +2267,7 @@ export type UpdateColonyActionInput = {
   blockNumber?: InputMaybe<Scalars['Int']>;
   colonyActionsId?: InputMaybe<Scalars['ID']>;
   colonyId?: InputMaybe<Scalars['ID']>;
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   decimals?: InputMaybe<Scalars['Int']>;
   fromDomain?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
@@ -2525,6 +2531,8 @@ export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateProfile
 export type GetColonyActionsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
   nextToken?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 }>;
 
 
@@ -3033,8 +3041,13 @@ export type UpdateUserProfileMutationHookResult = ReturnType<typeof useUpdateUse
 export type UpdateUserProfileMutationResult = Apollo.MutationResult<UpdateUserProfileMutation>;
 export type UpdateUserProfileMutationOptions = Apollo.BaseMutationOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
 export const GetColonyActionsDocument = gql`
-    query GetColonyActions($colonyAddress: ID!, $nextToken: String) {
-  getActionsByColony(colonyId: $colonyAddress, nextToken: $nextToken) {
+    query GetColonyActions($colonyAddress: ID!, $nextToken: String, $limit: Int, $sortDirection: ModelSortDirection) {
+  getActionsByColony(
+    colonyId: $colonyAddress
+    nextToken: $nextToken
+    limit: $limit
+    sortDirection: $sortDirection
+  ) {
     items {
       ...ColonyAction
     }
@@ -3057,6 +3070,8 @@ export const GetColonyActionsDocument = gql`
  *   variables: {
  *      colonyAddress: // value for 'colonyAddress'
  *      nextToken: // value for 'nextToken'
+ *      limit: // value for 'limit'
+ *      sortDirection: // value for 'sortDirection'
  *   },
  * });
  */

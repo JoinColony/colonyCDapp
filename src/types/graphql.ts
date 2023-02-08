@@ -9,6 +9,7 @@ import {
   DomainFragment,
   ColonyActionFragment,
   ColonyActionType,
+  ModelSortDirection,
 } from '~gql';
 
 export type User = UserFragment;
@@ -30,3 +31,5 @@ export type ColonyExtension = ExtensionFragment;
 export type ColonyAction = ColonyActionFragment;
 
 export { ColonyActionType };
+
+export { ModelSortDirection as SortDirection };

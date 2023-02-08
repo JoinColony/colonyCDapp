@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { BigNumber } from 'ethers';
 
 import { SpinnerLoader } from '~shared/Preloaders';
-// import LoadMoreButton from '~shared/LoadMoreButton';
-import { SortOptions } from '~shared/SortControls';
+import LoadMoreButton from '~shared/LoadMoreButton';
 import ActionsList from '~shared/ActionsList';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
-import { useColonyContext } from '~hooks';
-import { useGetColonyActionsQuery } from '~gql';
-import { notNull } from '~utils/arrays';
+import { useColonyContext, usePaginatedActions } from '~hooks';
 
-import { actionsSort, ActionsListHeading } from '.';
+import { ActionsListHeading } from '.';
 
 import styles from './ColonyActions.css';
 
@@ -36,15 +33,14 @@ const MSG = defineMessages({
 const ColonyActions = (/* { ethDomainId }: Props */) => {
   const { colony } = useColonyContext();
 
-  const { data, loading: loadingActions } = useGetColonyActionsQuery({
-    variables: {
-      colonyAddress: colony?.colonyAddress ?? '',
-    },
-    skip: !colony,
-  });
-  const actions = data?.getActionsByColony?.items.filter(notNull) ?? [];
-
-  const [sortOption, setSortOption] = useState<SortOptions>(SortOptions.NEWEST);
+  const {
+    loading: loadingActions,
+    actions,
+    sortDirection,
+    onSortDirectionChange,
+    hasMoreActions,
+    loadMoreActions,
+  } = usePaginatedActions();
 
   if (!colony) {
     return null;
@@ -150,8 +146,6 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
   //     return filterActions;
   //   }, [ethDomainId, actions, motions]);
 
-  const sortedActionsData = actions.sort(actionsSort(sortOption));
-
   //   oneTxActionsLoading ||
   //   eventsActionsLoading ||
   //   commentCountLoading ||
@@ -185,16 +179,19 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         }}
         text="Test Mint Tokens"
       />
-      {sortedActionsData.length ? (
+      {actions.length ? (
         <>
-          <ActionsListHeading onSortChange={setSortOption} />
-          <ActionsList items={sortedActionsData} />
-          {/* {loadMoreItems && (
+          <ActionsListHeading
+            sortDirection={sortDirection}
+            onSortChange={onSortDirectionChange}
+          />
+          <ActionsList items={actions} />
+          {hasMoreActions && (
             <LoadMoreButton
-              onClick={showMoreItems}
-              isLoadingData={false} // oneTxActionsLoading || eventsActionsLoading}
+              onClick={loadMoreActions}
+              isLoadingData={loadingActions} // oneTxActionsLoading || eventsActionsLoading}
             />
-          )} */}
+          )}
         </>
       ) : (
         <div className={styles.emptyState}>
