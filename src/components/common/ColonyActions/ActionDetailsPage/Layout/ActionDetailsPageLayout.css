@@ -1,9 +1,10 @@
-@value centered: "left main right" 100% / 1fr 900px 1fr;
+@value centered: "left main right" 100% / 1fr minmax(62vw, 900px) 1fr;
 @value query700 from "~styles/queries.css";
 
 .main {
   display: flex;
   justify-content: center;
+  padding: 0px 14px;
   grid-area: main;
 }
 
@@ -16,7 +17,7 @@
   background-color: white;
   grid-template:
     'left main right' 100%
-    / 2.2fr 900px 1fr;
+    / 2.2fr minmax(62vw, 900px) 1fr;
 }
 
 .center {
@@ -35,6 +36,10 @@
 }
 
 @media screen and query700 {
+  .main {
+    padding: 0px;
+  }
+
   .layout {
     grid-template:
       'main' 100%

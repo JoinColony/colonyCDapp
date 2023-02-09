@@ -9,6 +9,7 @@ import { MotionState } from '~utils/colonyMotions';
 
 import { DefaultActionContent } from '../DefaultAction';
 import MotionHeading from './MotionHeading';
+import StakeRequiredBanner from './StakeRequiredBanner';
 
 import styles from './DefaultMotion.css';
 
@@ -36,9 +37,12 @@ const DefaultMotion = ({ item }: DefaultMotionProps) => {
   //     motionState === MotionState.Staked ||
   //     motionState === MotionState.Objection;
 
+  const showBanner = true; // !shouldDisplayMotionInActionsList(currentStake, requiredStake);
+
   return (
     <div className={styles.main}>
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
+      {showBanner && <StakeRequiredBanner isDecision={false} />}
       {isVotingReputationEnabled && <MotionHeading motionState={motionState} />}
       <div className={styles.container}>
         <DefaultActionContent colony={colony} item={item} />
