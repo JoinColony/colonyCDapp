@@ -13,6 +13,7 @@ import {
   ColonyAction,
   ColonyActionType,
 } from '~types';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
 import { MockEvent } from '../mockData';
 import { getDomainMetadataValues } from './getDomainValues';
@@ -34,7 +35,7 @@ export const mapColonyActionToExpectedFormat = (
     amount: (
       <Numeral
         value={item.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
-        decimals={item.decimals ?? undefined}
+        decimals={item.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
     // direction: formattedRolesTitle.direction,
@@ -88,7 +89,7 @@ export const mapColonyEventToExpectedFormat = (
     amount: (
       <Numeral
         value={item.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
-        decimals={item.decimals ?? undefined}
+        decimals={item.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
     // ...getColonyRoleSetTitleValues(role?.setTo),

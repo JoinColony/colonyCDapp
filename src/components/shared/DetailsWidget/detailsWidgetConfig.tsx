@@ -1,9 +1,9 @@
-import Decimal from 'decimal.js';
 import React, { ReactNode } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 
 import { mockEventData } from '~common/ColonyActions/mockData';
-import { adjustConvertedValue } from '~shared/Numeral';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import Numeral from '~shared/Numeral';
 import TransactionLink from '~shared/TransactionLink';
 import {
   Colony,
@@ -92,19 +92,6 @@ const getShortenedHash = (transactionHash: string) => {
   return undefined;
 };
 
-const getAdjustedAmount = (
-  amount: ColonyAction['amount'],
-  decimals: ColonyAction['decimals'],
-) => {
-  if (!amount) {
-    return undefined;
-  }
-  if (decimals) {
-    return adjustConvertedValue(new Decimal(amount), decimals).toString();
-  }
-  return amount;
-};
-
 interface DetailItemConfig {
   label: MessageDescriptor;
   labelValues?: UniversalMessageValues;
@@ -132,7 +119,6 @@ const getDetailItems = (
   const shortenedHash = getShortenedHash(transactionHash || '');
   const fromDomain = findDomain(fromDomainId, colony);
   const toDomain = findDomain(toDomainId, colony);
-  const adjustedAmount = getAdjustedAmount(amount, decimals);
 
   // const isSmiteAction =
   //   actionType === ColonyActions.EmitDomainReputationPenalty;
@@ -182,7 +168,12 @@ const getDetailItems = (
       labelValues: undefined,
       item: detailsForAction.Amount && amount && (
         <AmountDetail
-          amount={adjustedAmount}
+          amount={
+            <Numeral
+              value={amount}
+              decimals={decimals ?? DEFAULT_TOKEN_DECIMALS}
+            />
+          }
           symbol={tokenSymbol}
           token={token ?? undefined}
         />
