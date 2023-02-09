@@ -1,6 +1,8 @@
 import { defineMessages, MessageDescriptor } from 'react-intl';
 
-import { Appearance, SelectOption } from './types';
+import { SelectOption } from '~shared/Fields/Select';
+
+import { Appearance } from './types';
 
 const displayName = 'common.ColonyMembers.MembersFilter';
 

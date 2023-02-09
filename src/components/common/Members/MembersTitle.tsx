@@ -7,6 +7,7 @@ import { Select, Form } from '~shared/Fields';
 import { useMobile } from '~hooks';
 import ColonyDomainSelector from '~common/ColonyHome/ColonyDomainSelector';
 import { formatText } from '~utils/intl';
+import { SelectOption } from '~shared/Fields/Select';
 
 import styles from './MembersTitle.css';
 
@@ -37,10 +38,7 @@ const MSG = defineMessages({
 
 interface Props {
   currentDomainId: number;
-  domainSelectOptions: {
-    value: string;
-    label: string;
-  }[];
+  domainSelectOptions: SelectOption[];
   handleDomainChange: (domainId: number) => void;
   searchValue: string;
   handleSearch: (e: React.ChangeEvent | React.MouseEvent) => void;

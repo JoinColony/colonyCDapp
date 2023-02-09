@@ -50,14 +50,10 @@ const MemberReputation = ({
     nativeTokenDecimals,
   );
 
-  const getIconTitle = () => {
-    if (!showIconTitle) {
-      return undefined;
-    }
-    return percentageReputation
-      ? MSG.starReputationTitle
-      : MSG.starNoReputationTitle;
-  };
+  const title = percentageReputation
+    ? MSG.starReputationTitle
+    : MSG.starNoReputationTitle;
+  const iconTitle = showIconTitle ? title : undefined;
 
   return (
     <div className={styles.reputationWrapper}>
@@ -86,7 +82,7 @@ const MemberReputation = ({
         name="star"
         appearance={{ size: 'extraTiny' }}
         className={styles.icon}
-        title={getIconTitle()}
+        title={iconTitle}
         titleValues={{ reputation: percentageReputation }}
       />
     </div>

@@ -6,7 +6,6 @@ import MembersList from '~shared/MembersList';
 import LoadMoreButton from '~shared/LoadMoreButton';
 import { Props as SortingProps } from '~shared/MembersList/SortingRow';
 import { Watcher, MemberUser } from '~types';
-import { useColonyMembersSorting } from '~hooks';
 
 import styles from './MembersSection.css';
 
@@ -45,8 +44,6 @@ const WatchersSection = ({
     setDataPage(dataPage + 1);
   };
 
-  const { sortedMembers } = useColonyMembersSorting(paginatedMembers, false);
-
   return (
     <>
       <div className={styles.bar}>
@@ -61,7 +58,7 @@ const WatchersSection = ({
         <div className={styles.membersList}>
           <MembersList
             extraItemContent={extraItemContent}
-            members={sortedMembers}
+            members={paginatedMembers}
             showUserReputation={false}
           />
         </div>
