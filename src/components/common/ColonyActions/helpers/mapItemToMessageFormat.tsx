@@ -35,7 +35,7 @@ export const mapColonyActionToExpectedFormat = (
     amount: (
       <Numeral
         value={item.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
-        decimals={item.decimals ?? DEFAULT_TOKEN_DECIMALS}
+        decimals={item.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
     // direction: formattedRolesTitle.direction,
@@ -89,7 +89,7 @@ export const mapColonyEventToExpectedFormat = (
     amount: (
       <Numeral
         value={item.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
-        decimals={item.decimals ?? DEFAULT_TOKEN_DECIMALS}
+        decimals={item.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
     // ...getColonyRoleSetTitleValues(role?.setTo),

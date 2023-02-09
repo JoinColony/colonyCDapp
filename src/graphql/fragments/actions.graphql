@@ -13,8 +13,6 @@ fragment ColonyAction on ColonyAction {
     ...User
   }
   amount
-  decimals
-  tokenSymbol
   tokenAddress
   token {
     ...Token

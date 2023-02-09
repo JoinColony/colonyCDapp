@@ -106,10 +106,8 @@ const getDetailItems = (
     toDomain: toDomainId,
     amount,
     recipient,
-    decimals,
     transactionHash,
     token,
-    tokenSymbol,
   }: // reputationChange,
   // roles,
   typeof mockEventData & ColonyAction,
@@ -171,10 +169,10 @@ const getDetailItems = (
           amount={
             <Numeral
               value={amount}
-              decimals={decimals ?? DEFAULT_TOKEN_DECIMALS}
+              decimals={token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
             />
           }
-          symbol={tokenSymbol}
+          symbol={token?.symbol}
           token={token ?? undefined}
         />
       ),
