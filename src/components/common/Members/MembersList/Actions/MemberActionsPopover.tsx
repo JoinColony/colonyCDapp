@@ -26,21 +26,19 @@ interface Props {
 }
 
 const MemberActionsPopover = ({ closePopover, userAddress }: Props) => {
-  const renderUserActions = () => (
-    <DropdownMenuItem>
-      <Button appearance={{ theme: 'no-style' }}>
-        <ExternalLink
-          href={getBlockscoutUserURL(userAddress)}
-          className={styles.actionButton}
-          text={MSG.viewOnBlockscout}
-        />
-      </Button>
-    </DropdownMenuItem>
-  );
-
   return (
     <DropdownMenu onClick={closePopover}>
-      <DropdownMenuSection>{renderUserActions()}</DropdownMenuSection>
+      <DropdownMenuSection>
+        <DropdownMenuItem>
+          <Button appearance={{ theme: 'no-style' }}>
+            <ExternalLink
+              href={getBlockscoutUserURL(userAddress)}
+              className={styles.actionButton}
+              text={MSG.viewOnBlockscout}
+            />
+          </Button>
+        </DropdownMenuItem>
+      </DropdownMenuSection>
     </DropdownMenu>
   );
 };
