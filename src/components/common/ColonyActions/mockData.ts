@@ -2,13 +2,7 @@ import { BigNumber } from 'ethers';
 import { nanoid } from 'nanoid';
 import { DomainColor } from '~gql';
 
-import {
-  Address,
-  ColonyAction,
-  ColonyActionType,
-  ColonyMotions,
-  User,
-} from '~types';
+import { Address, ColonyAction, ColonyActionType, User } from '~types';
 import { MotionVote } from '~utils/colonyMotions';
 
 const paymentActionValues: {
@@ -80,15 +74,6 @@ export const mockActionData: ColonyAction[] = [
     id: nanoid(),
     createdAt: '1995-02-17T03:24:00',
     ...coreData,
-    ...colonyEditValues,
-    type: ColonyMotions.ColonyEditMotion,
-    transactionHash:
-      '0x997c054a4397768e033fb483bfbefee50c4afae170df94ebcc5619c2f57aec1a',
-  },
-  {
-    id: nanoid(),
-    createdAt: '1995-02-17T03:24:00',
-    ...coreData,
     type: ColonyActionType.CreateDomain,
     transactionHash:
       '0x2e5f2597092aa9caaa945e90e684aa85fed3ca6289685ee3bd626ced64e972d8',
@@ -100,6 +85,16 @@ export const mockActionData: ColonyAction[] = [
     type: ColonyActionType.EditDomain,
     transactionHash:
       '0x3352720603ddc6c9b48da70c643c1e2110dc1af6d659350a22ab7b059e6e6df0',
+  },
+  {
+    id: nanoid(),
+    createdAt: '1995-02-17T03:24:00',
+    ...coreData,
+    ...colonyEditValues,
+    type: ColonyActionType.MintTokensMotion,
+    isMotion: true,
+    transactionHash:
+      '0x997c054a4397768e033fb483bfbefee50c4afae170df94ebcc5619c2f57aec1a',
   },
   // {
   //   id: nanoid(),
@@ -154,7 +149,7 @@ export const mockActionData: ColonyAction[] = [
   },
   // {
   //   id: nanoid(),
-  //   createdAt: '1995-12-17T03:24:02'),
+  //   createdAt: '1995-12-17T03:24:02',
   //   ...coreData,
   //   type: ColonyActionType.Recovery,
   //   transactionHash:
@@ -235,5 +230,5 @@ export const mockEventData = {
   stakeAmount: BigNumber.from(123),
   vote: MotionVote.Yay,
   staker: fakeUser,
-  motionDomainId: '1',
+  motionDomainId: '0x3a157280ca91bB49dAe3D1619C55Da7F9D4438c3_1',
 };

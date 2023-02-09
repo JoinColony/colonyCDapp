@@ -13,6 +13,11 @@ import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import {
+  AmountTag,
+  Motion as MotionTag,
+  Objection as ObjectionTag,
+} from '~shared/Tag';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
@@ -106,6 +111,19 @@ export const mapColonyEventToExpectedFormat = (
         decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
+    amountTag: (
+      <AmountTag>
+        <Numeral
+          value={actionData.amount ?? 0}
+          decimals={actionData.token?.decimals ?? undefined}
+          suffix={actionData.token?.symbol ?? ''}
+        />
+      </AmountTag>
+    ),
+    // backedSideTag:
+    //   event.vote === MotionVote.Yay ? <MotionTag /> : <ObjectionTag />,
+    motionTag: <MotionTag />,
+    objectionTag: <ObjectionTag />,
     // ...getColonyRoleSetTitleValues(role?.setTo),
     domainMetadataChanges: getDomainMetadataChangesValue(actionData),
     colonyMetadataChanges: getColonyMetadataChangesValue(actionData, colony),
@@ -141,6 +159,11 @@ export const mapColonyEventToExpectedFormat = (
         actionData.amount,
         getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
       ),
+    // staker: (
+    //   <span className={styles.userDecoration}>
+    //     <FriendlyName user={event.staker} autoShrinkAddress />
+    //   </span>
+    // ),
     newVersion: actionData.newColonyVersion,
     reputationChangeNumeral: actionData.amount && (
       <Numeral

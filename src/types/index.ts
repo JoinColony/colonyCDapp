@@ -2,12 +2,11 @@ import { ReactNode, useState } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
 export * from './keyboard';
-export * from './graphql';
 export * from './actions';
-export * from './motions';
 export * from './extensions';
 export * from './transactions';
 export * from './wallet';
+export * from './graphql';
 export * from './rpcMethods';
 export * from './network';
 export * from './domains';

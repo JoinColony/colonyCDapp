@@ -1,10 +1,8 @@
 import { ColonyRole } from '@colony/colony-js';
 
 import { ListItemStatus } from '~shared/ListItem';
-import { MotionState } from '~utils/colonyMotions';
 
-import { Address, User, ColonyActionType } from './index';
-import { ColonyMotions } from './motions';
+import { Address } from './index';
 
 export enum ColonyAndExtensionsEvents {
   Generic = 'Generic',
@@ -117,36 +115,6 @@ export type ActionUserRoles = {
   setTo: boolean;
 };
 
-export interface FormattedAction {
-  id: string;
-  status?: ListItemStatus;
-  actionType: ColonyActionType | ColonyMotions;
-  initiator: User;
-  recipient: User;
-  amount: string;
-  tokenAddress: Address;
-  transactionTokenAddress?: Address;
-  tokenSymbol: string;
-  decimals: string;
-  fromDomain: string;
-  toDomain: string;
-  transactionHash: string;
-  createdAt: Date;
-  commentCount: number;
-  metadata?: string;
-  roles: ActionUserRoles[];
-  oldVersion?: string;
-  newVersion?: string;
-  motionState?: MotionState;
-  motionId?: string;
-  // timeoutPeriods: MotionTimeoutPeriods;
-  blockNumber: number;
-  totalNayStake?: string;
-  requiredStake?: string;
-  reputationChange?: string;
-  transactionStatus?: number;
-}
-
 export interface FormattedEvent {
   id: string;
   status?: ListItemStatus;
@@ -179,8 +147,6 @@ export interface FormattedEvent {
   activePeriod?: string;
   currentPeriod?: string;
 }
-
-export type ActionItemType = ColonyActionType | ColonyMotions;
 
 /*
  * This list will get longer once we add more system events to the dapp
