@@ -86,7 +86,7 @@ const ActionDetailsPage = () => {
     );
   }
 
-  const isMotion = Object.values(ColonyMotions).includes(action.type);
+  const isMotion = action.isMotion;
 
   if (isMotion) {
     return (
