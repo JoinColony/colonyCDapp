@@ -2,8 +2,7 @@ import { ColonyRole } from '@colony/colony-js';
 
 import { ListItemStatus } from '~shared/ListItem';
 
-import { Address, ColonyActionType } from './index';
-import { ColonyMotions } from './motions';
+import { Address } from './index';
 
 export enum ColonyAndExtensionsEvents {
   Generic = 'Generic',
@@ -148,8 +147,6 @@ export interface FormattedEvent {
   activePeriod?: string;
   currentPeriod?: string;
 }
-
-export type ActionItemType = ColonyActionType | ColonyMotions;
 
 /*
  * This list will get longer once we add more system events to the dapp

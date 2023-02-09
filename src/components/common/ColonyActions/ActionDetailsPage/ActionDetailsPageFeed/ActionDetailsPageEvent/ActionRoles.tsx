@@ -4,11 +4,7 @@ import { defineMessages } from 'react-intl';
 
 import { EVENT_ROLES_MAP } from '~common/ColonyActions/ActionDetailsPage';
 import PermissionsLabel from '~shared/PermissionsLabel';
-import {
-  ActionItemType,
-  ColonyActionType,
-  ColonyAndExtensionsEvents,
-} from '~types';
+import { ColonyActionType, ColonyAndExtensionsEvents } from '~types';
 
 import styles from './ActionRoles.css';
 
@@ -36,7 +32,7 @@ const MSG = defineMessages({
   },
 });
 
-const shouldHideLabel = (actionType: ActionItemType, role: ColonyRole) => {
+const shouldHideLabel = (actionType: ColonyActionType, role: ColonyRole) => {
   const isSmite = actionType === ColonyActionType.EmitDomainReputationPenalty;
   const isAward = actionType === ColonyActionType.EmitDomainReputationReward;
   return (
@@ -60,7 +56,7 @@ const PermissionsLabelTooltipIcon = ({
 );
 
 interface ActionRolesProps {
-  actionType: ActionItemType;
+  actionType: ColonyActionType;
   eventName: ColonyAndExtensionsEvents;
 }
 
