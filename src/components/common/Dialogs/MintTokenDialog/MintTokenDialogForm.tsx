@@ -3,6 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import {
   ColonyRole,
+  Id,
   // VotingReputationVersion,
 } from '@colony/colony-js';
 
@@ -57,10 +58,8 @@ const MSG = defineMessages({
 
 const MintTokenDialogForm = ({ colony, back }: ActionDialogProps) => {
   const {
-    getValues,
     formState: { isValid, isSubmitting },
   } = useFormContext();
-  const values = getValues();
   const requiredRoles: ColonyRole[] = [ColonyRole.Root];
   // const { wallet } = useAppContext();
   // const allUserRoles = useTransformer(getAllUserRoles, [
@@ -68,7 +67,7 @@ const MintTokenDialogForm = ({ colony, back }: ActionDialogProps) => {
   //   wallet?.address,
   // ]);
 
-  const canUserMintNativeToken = true; // hasRoot(allUserRoles) && !!colony.status?.nativeToken?.mintable;
+  // const canUserMintNativeToken = hasRoot(allUserRoles) && !!colony.status?.nativeToken?.mintable;
 
   // const {
   //   votingExtensionVersion,
@@ -78,10 +77,10 @@ const MintTokenDialogForm = ({ colony, back }: ActionDialogProps) => {
   // });
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony?.colonyAddress || '',
-    canUserMintNativeToken,
+    colony,
     false, // isVotingExtensionEnabled,
-    values.forceAction,
+    requiredRoles,
+    [Id.RootDomain],
   );
 
   const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;

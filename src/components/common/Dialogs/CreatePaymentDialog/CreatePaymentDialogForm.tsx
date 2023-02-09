@@ -139,7 +139,7 @@ Props) => {
     colony,
     false, // isVotingExtensionEnabled,
     requiredRoles,
-    domainId,
+    [domainId],
   );
 
   // const cannotCreateMotion =
