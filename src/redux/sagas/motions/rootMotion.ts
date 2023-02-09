@@ -4,24 +4,14 @@ import { AddressZero } from '@ethersproject/constants';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, routeRedirect, getColonyManager } from '../utils';
 
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { transactionReady, transactionPending } from '../../actionCreators';
 
 function* createRootMotionSaga({
   payload: {
@@ -139,11 +129,11 @@ function* createRootMotionSaga({
     if (annotationMessage) {
       yield put(transactionPending(annotateRootMotion.id));
 
-      const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
+      //  const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
 
-      yield put(
-        transactionAddParams(annotateRootMotion.id, [txHash, ipfsHash]),
-      );
+      // yield put(
+      //   transactionAddParams(annotateRootMotion.id, [txHash, ipfsHash]),
+      // );
 
       yield put(transactionReady(annotateRootMotion.id));
 
