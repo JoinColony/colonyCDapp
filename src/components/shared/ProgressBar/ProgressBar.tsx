@@ -5,7 +5,7 @@ import { getMainClasses } from '~utils/css';
 
 import styles from './ProgressBar.css';
 
-interface Appearance {
+export interface Appearance {
   barTheme?: 'primary' | 'danger';
   backgroundTheme?: 'default' | 'dark' | 'transparent';
   size?: 'small' | 'normal';
@@ -44,7 +44,7 @@ const ProgressBar = ({
   const titleText = formatMessage(MSG.titleProgress, { value, max });
   return (
     <div className={`${styles.wrapper} ${getMainClasses(appearance, styles)}`}>
-      {threshold && (
+      {!!threshold && (
         <div
           style={{
             left: `calc(${threshold}% - 12px)`,

@@ -1,10 +1,10 @@
-import { ColonyActionType, ColonyMotions } from '~types';
+import { ActionItemType, ColonyActionType, ColonyMotions } from '~types';
 
 /*
  * Which icons correspond to which action types in the details widget
  */
 export const ACTION_TYPES_ICONS_MAP: {
-  [key in ColonyActionType | ColonyMotions]: string;
+  [key in ActionItemType]?: string;
 } = {
   [ColonyActionType.WrongColony]: 'forbidden-signal',
   [ColonyActionType.Payment]: 'emoji-dollar-stack',
@@ -30,7 +30,7 @@ export const ACTION_TYPES_ICONS_MAP: {
   [ColonyMotions.EmitDomainReputationPenaltyMotion]: 'emoji-firebolt',
   [ColonyMotions.EmitDomainReputationRewardMotion]: 'emoji-shooting-star',
   [ColonyMotions.UnlockTokenMotion]: 'emoji-padlock',
-  [ColonyMotions.CreateDecisionMotion]: 'emoji-decisions',
-  [ColonyMotions.NullMotion]: 'forbidden-signal',
+  // [ColonyMotions.CreateDecisionMotion]: 'emoji-decisions',
+  // [ColonyMotions.NullMotion]: 'forbidden-signal',
   [ColonyActionType.Generic]: 'circle-check-primary',
 };
