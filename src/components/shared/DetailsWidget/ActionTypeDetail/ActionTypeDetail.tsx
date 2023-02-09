@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Icon from '~shared/Icon';
-import { AnyActionType, ColonyMotions } from '~types';
+import { AnyActionType } from '~types';
 
 import { ACTION_TYPES_ICONS_MAP } from '../types';
 
@@ -14,23 +14,19 @@ interface ActionTypeDetailProps {
   actionType: AnyActionType;
 }
 
-const ActionTypeDetail = ({ actionType }: ActionTypeDetailProps) => {
-  const messageId = ColonyMotions[actionType] ? 'motion.type' : 'action.type';
-
-  return (
-    <>
-      <Icon
-        title={{ id: messageId }}
-        titleValues={{ actionType }}
-        appearance={{ size: 'small' }}
-        name={ACTION_TYPES_ICONS_MAP[actionType]}
-      />
-      <div className={styles.text}>
-        <FormattedMessage id={messageId} values={{ actionType }} />
-      </div>
-    </>
-  );
-};
+const ActionTypeDetail = ({ actionType }: ActionTypeDetailProps) => (
+  <>
+    <Icon
+      title={{ id: 'action.type' }}
+      titleValues={{ actionType }}
+      appearance={{ size: 'small' }}
+      name={ACTION_TYPES_ICONS_MAP[actionType] ?? ''}
+    />
+    <div className={styles.text}>
+      <FormattedMessage id="action.type" values={{ actionType }} />
+    </div>
+  </>
+);
 
 ActionTypeDetail.displayName = displayName;
 

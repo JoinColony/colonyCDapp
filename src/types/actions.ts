@@ -3,7 +3,6 @@ import { ColonyRole } from '@colony/colony-js';
 import { ListItemStatus } from '~shared/ListItem';
 
 import { Address, ColonyActionType } from './index';
-import { ColonyMotions } from './motions';
 
 export enum ColonyAndExtensionsEvents {
   Generic = 'Generic',
@@ -157,10 +156,7 @@ export enum ExtendedColonyActionType {
 /**
  * Union covering all contract-recognised and extended actions and motions types
  */
-export type AnyActionType =
-  | ColonyActionType
-  | ColonyMotions
-  | ExtendedColonyActionType;
+export type AnyActionType = ColonyActionType | ExtendedColonyActionType;
 
 /*
  * This list will get longer once we add more system events to the dapp
