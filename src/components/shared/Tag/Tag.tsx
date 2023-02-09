@@ -1,11 +1,11 @@
-import React, { HTMLAttributes } from 'react';
-import { MessageDescriptor } from 'react-intl';
+import React, { HTMLAttributes, ReactNode } from 'react';
 
 import Icon from '~shared/Icon';
 import { useMainClasses } from '~hooks';
 import { formatText } from '~utils/intl';
 
 import styles from './Tag.css';
+import { Message, UniversalMessageValues } from '~types';
 
 export enum TagTheme {
   Primary = 'primary',
@@ -24,27 +24,34 @@ export enum TagColorSchema {
   Plain = 'plain',
 }
 
-export interface Appearance {
-  /* "light" is default */
+export interface TagAppearance {
   theme: `${TagTheme}`;
   fontSize?: 'tiny' | 'small';
-  /* "fullColor" is default */
   colorSchema?: `${TagColorSchema}`;
   margin?: 'none';
 }
 
 interface Props extends HTMLAttributes<HTMLSpanElement> {
   /** Appearance object */
-  appearance?: Appearance;
+  appearance?: TagAppearance;
+  /** Child to render instead of passing text as prop */
+  children?: ReactNode;
   /** Text to display in the tag */
-  text: MessageDescriptor | string;
+  text?: Message;
   /** Text values for intl interpolation */
-  textValues?: { [key: string]: string };
+  textValues?: UniversalMessageValues;
 }
 
 const displayName = 'Tag';
 
-const Tag = ({ appearance, className, text, textValues, ...rest }: Props) => {
+const Tag = ({
+  appearance,
+  children,
+  className,
+  text,
+  textValues,
+  ...rest
+}: Props) => {
   const classNames = useMainClasses(appearance, styles, className);
   return (
     <span className={classNames} {...rest}>
@@ -56,7 +63,7 @@ const Tag = ({ appearance, className, text, textValues, ...rest }: Props) => {
           className={styles.icon}
         />
       )}
-      {formatText(text, textValues)}
+      {text ? formatText(text, textValues) : children}
     </span>
   );
 };
