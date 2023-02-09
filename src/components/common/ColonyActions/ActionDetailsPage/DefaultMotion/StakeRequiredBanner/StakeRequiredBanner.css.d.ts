@@ -1,9 +1,8 @@
 declare namespace StakeRequiredBannerCssNamespace {
   export interface IStakeRequiredBannerCss {
     bannerHeight: string;
-    share: string;
+    bannerText: string;
     stakeRequiredBanner: string;
-    stakeRequiredBannerContainer: string;
   }
 }
 
