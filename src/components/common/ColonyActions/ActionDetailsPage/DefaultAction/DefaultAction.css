@@ -43,6 +43,10 @@
     padding-top: 0px;
   }
 
+  .main > span:first-child {
+    margin-left: 14px;
+  }
+
   .container {
     display: flex;
     flex-direction: column;

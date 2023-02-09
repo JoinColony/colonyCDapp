@@ -6,11 +6,13 @@ import { isTransactionFormat } from '~utils/web3';
 import { useColonyContext } from '~hooks';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import { useGetFullColonyByAddressQuery, useGetColonyActionQuery } from '~gql';
+import { ColonyMotions } from '~types';
 
 import {
   TransactionNotFound,
   ActionDetailsPageLayout as Layout,
   DefaultAction,
+  DefaultMotion,
 } from '.';
 
 const displayName = 'common.ColonyActions.ActionDetailsPage';
@@ -84,7 +86,15 @@ const ActionDetailsPage = () => {
     );
   }
 
-  // Motions go here...
+  const isMotion = Object.values(ColonyMotions).includes(action.type);
+
+  if (isMotion) {
+    return (
+      <Layout isMotion>
+        <DefaultMotion item={action} />
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

@@ -1,6 +1,7 @@
 import { ColonyRole } from '@colony/colony-js';
 
 import {
+  ActionItemType,
   ColonyActionType,
   ColonyAndExtensionsEvents,
   ColonyMotions,
@@ -24,10 +25,6 @@ export const STATUS_MAP: { [k: number]: TransactionStatuses } = {
 
 type EventRolesMap = Partial<{
   [key in ColonyAndExtensionsEvents]: ColonyRole[];
-}>;
-
-type ActionsEventsMap = Partial<{
-  [key in ColonyActionType | ColonyMotions]: ColonyAndExtensionsEvents[];
 }>;
 
 export const EVENT_ROLES_MAP: EventRolesMap = {
@@ -69,6 +66,10 @@ const MOTION_EVENTS = [
   ColonyAndExtensionsEvents.MotionRewardClaimed,
 ];
 
+type ActionsEventsMap = Partial<{
+  [key in ActionItemType]: ColonyAndExtensionsEvents[];
+}>;
+
 export const ACTIONS_EVENTS: ActionsEventsMap = {
   [ColonyActionType.Payment]: [ColonyAndExtensionsEvents.OneTxPaymentMade],
   [ColonyActionType.MoveFunds]: [
@@ -103,5 +104,4 @@ export const ACTIONS_EVENTS: ActionsEventsMap = {
   [ColonyMotions.MoveFundsMotion]: MOTION_EVENTS,
   [ColonyMotions.EmitDomainReputationPenaltyMotion]: MOTION_EVENTS,
   [ColonyMotions.EmitDomainReputationRewardMotion]: MOTION_EVENTS,
-  [ColonyMotions.CreateDecisionMotion]: MOTION_EVENTS,
 };
