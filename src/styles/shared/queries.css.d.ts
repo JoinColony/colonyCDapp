@@ -1,5 +1,6 @@
 declare namespace QueriesCssNamespace {
   export interface IQueriesCss {
+    query400: string;
     query700: string;
   }
 }

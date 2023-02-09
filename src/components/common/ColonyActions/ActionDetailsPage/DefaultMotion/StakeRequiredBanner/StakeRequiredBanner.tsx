@@ -1,9 +1,9 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import Alert from '~shared/Alert';
-import ClipboardCopy from '~shared/ClipboardCopy';
-import { Tooltip } from '~shared/Popover';
+import Alert, { AlertAppearance } from '~shared/Alert';
+
+import ShareUrlButton from './ShareUrlButton';
 
 import styles from './StakeRequiredBanner.css';
 
@@ -21,48 +21,35 @@ const MSG = defineMessages({
         other {actions}
         } list.`,
   },
-  shareUrl: {
-    id: `${displayName}.shareUrl`,
-    defaultMessage: `Share URL`,
-  },
-  copyURLTooltip: {
-    id: `${displayName}.copyURLTooltip`,
-    defaultMessage: `URL copied to clipboard`,
-  },
 });
 
-type Props = {
+const alertAppearance = {
+  theme: 'pinky',
+  margin: 'none',
+  borderRadius: 'none',
+} as AlertAppearance;
+
+interface BannerTextProps {
+  isDecision: boolean;
+}
+
+const BannerText = ({ isDecision }: BannerTextProps) => (
+  <span className={styles.bannerText}>
+    <FormattedMessage {...MSG.stakeRequired} values={{ isDecision }} />
+  </span>
+);
+
+type StakeRequiredBannerProps = {
   isDecision?: boolean;
 };
 
-const StakeRequiredBanner = ({ isDecision = false }: Props) => (
-  <div
-    className={styles.stakeRequiredBannerContainer}
-    data-test="stakeRequiredBanner"
-  >
-    <Alert
-      appearance={{
-        theme: 'pinky',
-        margin: 'none',
-        borderRadius: 'none',
-      }}
-    >
-      <div className={styles.stakeRequiredBanner}>
-        <FormattedMessage {...MSG.stakeRequired} values={{ isDecision }} />
-        <span className={styles.share}>
-          <Tooltip
-            placement="left"
-            trigger="click"
-            content={<FormattedMessage {...MSG.copyURLTooltip} />}
-          >
-            <ClipboardCopy
-              value={window.location.href}
-              appearance={{ theme: 'white' }}
-              text={MSG.shareUrl}
-            />
-          </Tooltip>
-        </span>
-      </div>
+const StakeRequiredBanner = ({
+  isDecision = false,
+}: StakeRequiredBannerProps) => (
+  <div className={styles.stakeRequiredBanner} data-test="stakeRequiredBanner">
+    <Alert appearance={alertAppearance}>
+      <BannerText isDecision={isDecision} />
+      <ShareUrlButton />
     </Alert>
   </div>
 );
