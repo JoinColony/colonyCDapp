@@ -1,22 +1,19 @@
-export enum ColonyMotions {
-  /*
-    I dont like Motion postfitx, but if we would use actionType for
-    both motions and actions we need to have something distinct
-  */
-  MintTokensMotion = 'MintTokensMotion',
-  PaymentMotion = 'PaymentMotion',
-  UnlockTokenMotion = 'UnlockTokenMotion',
-  CreateDomainMotion = 'CreateDomainMotion',
-  EditDomainMotion = 'EditDomainMotion',
-  ColonyEditMotion = 'ColonyEditMotion',
-  SetUserRolesMotion = 'SetUserRolesMotion',
-  MoveFundsMotion = 'MoveFundsMotion',
-  VersionUpgradeMotion = 'VersionUpgradeMotion',
-  EmitDomainReputationPenaltyMotion = 'EmitDomainReputationPenaltyMotion',
-  EmitDomainReputationRewardMotion = 'EmitDomainReputationRewardMotion',
-  CreateDecisionMotion = 'CreateDecisionMotion',
-  NullMotion = 'NullMotion',
-}
+import { ColonyActionType } from './graphql';
+
+type MotionsType = {
+  [Key in keyof typeof ColonyActionType as `${Key}Motion`]: `${typeof ColonyActionType[Key]}_MOTION`;
+};
+
+export const ColonyMotions = Object.keys(ColonyActionType).reduce(
+  (acc, actionTypeKey) => ({
+    ...acc,
+    [`${actionTypeKey}Motion`]: `${ColonyActionType[actionTypeKey]}_MOTION`,
+  }),
+  {} as MotionsType,
+);
+
+export type ColonyMotionsType =
+  typeof ColonyMotions[keyof typeof ColonyMotions];
 
 export const motionNameMapping = {
   mintTokens: ColonyMotions.MintTokensMotion,

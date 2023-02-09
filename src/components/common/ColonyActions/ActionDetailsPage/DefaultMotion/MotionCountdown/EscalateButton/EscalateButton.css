@@ -1,0 +1,16 @@
+.escalation {
+  flex: 1 1 auto;
+  padding-bottom: 1px;
+  text-align: right;
+}
+
+.helpEscalate {
+  display: inline-block;
+  width: 25px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.tooltip {
+  composes: tooltip from '../../MotionHeading/MotionHeading.css';
+}
