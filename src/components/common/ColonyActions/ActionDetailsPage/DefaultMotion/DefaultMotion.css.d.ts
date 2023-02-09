@@ -6,6 +6,8 @@ declare namespace DefaultMotionCssNamespace {
     main: string;
     mappings: string;
     names: string;
+    query400: string;
+    query700: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;

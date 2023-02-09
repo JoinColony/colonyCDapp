@@ -1,5 +1,7 @@
 @value bannerHeight from './StakeRequiredBanner/StakeRequiredBanner.css';
 @value DefaultAction: '../DefaultAction/DefaultAction.css';
+@value query700 from '~styles/queries.css';
+@value query400 from '~styles/queries.css';
 
 .main {
   composes: main from DefaultAction;
@@ -8,4 +10,16 @@
 
 .container {
   composes: container from DefaultAction;
+}
+
+@media screen and query700 {
+  .main {
+    padding-top: 65px;
+  }
+}
+
+@media screen and query400 {
+  .main {
+    padding-top: 85px;
+  }
 }
