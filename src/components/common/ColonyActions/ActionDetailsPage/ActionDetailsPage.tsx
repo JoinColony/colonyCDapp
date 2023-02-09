@@ -45,8 +45,6 @@ const ActionDetailsPage = () => {
   const isValidTx = isTransactionFormat(transactionHash);
   const events = ['event']; // to be taken from real data
 
-  // @TODO: get colony address from the event and compare with colony in the pathname
-  // to ensure this tx was generated in this colony
   const { data: colonyData, loading: loadingColony } =
     useGetFullColonyByAddressQuery({
       variables: {
@@ -54,7 +52,6 @@ const ActionDetailsPage = () => {
       },
       skip: !action?.colonyAddress,
     });
-
   const txColony = colonyData?.getColonyByAddress?.items[0];
 
   if (!colony) {
@@ -63,7 +60,7 @@ const ActionDetailsPage = () => {
 
   const isInvalidTransaction =
     !isValidTx ||
-    !events?.length ||
+    !events.length ||
     !action ||
     !txColony ||
     txColony.name !== colonyName;
