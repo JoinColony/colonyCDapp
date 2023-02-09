@@ -416,8 +416,6 @@ type ColonyAction @model {
   amount: String
   tokenAddress: ID
   token: Token @hasOne(fields: ["tokenAddress"])
-  tokenSymbol: String
-  decimals: Int
   fromDomain: String
   toDomain: String
 }
