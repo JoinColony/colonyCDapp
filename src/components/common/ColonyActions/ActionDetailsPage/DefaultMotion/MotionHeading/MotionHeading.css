@@ -1,5 +1,23 @@
+@value query700 from '~styles/queries.css';
+@value query400 from '~styles/queries.css';
+
 .main {
   display: flex;
   justify-content: space-between;
   padding: 15px 0px;
+}
+
+@media screen and query700 {
+  .main {
+    padding: 15px 14px;
+  }
+}
+
+@media screen and query400 {
+  .main {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    padding-bottom: 0px;
+    row-gap: 10px;
+  }
 }
