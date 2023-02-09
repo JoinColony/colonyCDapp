@@ -12,7 +12,6 @@ declare namespace MembersTitleCssNamespace {
     sourcesContent: string;
     titleContainer: string;
     titleLeft: string;
-    titleSelect: string;
     version: string;
   }
 }
