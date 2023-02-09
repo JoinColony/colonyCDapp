@@ -115,6 +115,7 @@ export type ColonyAction = {
   colonyId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   fromDomain?: Maybe<Scalars['String']>;
+  fundamentalChainId?: Maybe<Scalars['Int']>;
   id: Scalars['ID'];
   initiator?: Maybe<User>;
   initiatorAddress?: Maybe<Scalars['ID']>;
@@ -273,6 +274,7 @@ export type CreateColonyActionInput = {
   colonyId: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   fromDomain?: InputMaybe<Scalars['String']>;
+  fundamentalChainId?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['ID']>;
   initiatorAddress?: InputMaybe<Scalars['ID']>;
   recipientAddress?: InputMaybe<Scalars['ID']>;
@@ -588,6 +590,7 @@ export type ModelColonyActionConditionInput = {
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   fromDomain?: InputMaybe<ModelStringInput>;
+  fundamentalChainId?: InputMaybe<ModelIntInput>;
   initiatorAddress?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelColonyActionConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionConditionInput>>>;
@@ -611,6 +614,7 @@ export type ModelColonyActionFilterInput = {
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   fromDomain?: InputMaybe<ModelStringInput>;
+  fundamentalChainId?: InputMaybe<ModelIntInput>;
   id?: InputMaybe<ModelIdInput>;
   initiatorAddress?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelColonyActionFilterInput>;
@@ -982,6 +986,7 @@ export type ModelSubscriptionColonyActionFilterInput = {
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   fromDomain?: InputMaybe<ModelSubscriptionStringInput>;
+  fundamentalChainId?: InputMaybe<ModelSubscriptionIntInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   initiatorAddress?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionFilterInput>>>;
@@ -2255,6 +2260,7 @@ export type UpdateColonyActionInput = {
   colonyId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   fromDomain?: InputMaybe<Scalars['String']>;
+  fundamentalChainId?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
   initiatorAddress?: InputMaybe<Scalars['ID']>;
   recipientAddress?: InputMaybe<Scalars['ID']>;
