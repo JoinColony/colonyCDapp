@@ -2,11 +2,11 @@ import React, { useState, ReactNode } from 'react';
 import classnames from 'classnames';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import MembersList from '~shared/MembersList';
+import MembersList from '~common/Members/MembersList';
 import LoadMoreButton from '~shared/LoadMoreButton';
 import SortingRow, {
   Props as SortingProps,
-} from '~shared/MembersList/SortingRow';
+} from '~common/Members/MembersList/SortingRow';
 import { Contributor, MemberUser } from '~types';
 import { useSortedContributors } from '~hooks';
 
