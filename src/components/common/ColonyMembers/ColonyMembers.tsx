@@ -10,11 +10,7 @@ import { SpinnerLoader } from '~shared/Preloaders';
 
 import MemberControls from './MemberControls';
 import MembersFilter, { FormValues } from './MembersFilter';
-import {
-  BannedStatus,
-  MemberType,
-  VerificationType,
-} from './MembersFilter/filtersConfig';
+import { MemberType, VerificationType } from './MembersFilter/filtersConfig';
 import TotalReputation from './TotalReputation';
 
 import styles from './ColonyMembers.css';
@@ -34,7 +30,6 @@ const ColonyMembers = () => {
   const [filters, setFilters] = useState<FormValues>({
     memberType: MemberType.All,
     verificationType: VerificationType.All,
-    bannedStatus: BannedStatus.All,
   });
 
   const [selectedDomainId, setSelectedDomainId] = useState<number>(

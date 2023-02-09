@@ -6,12 +6,7 @@ import Button from '~shared/Button';
 import { Form } from '~shared/Fields';
 
 import Filter from './Filter';
-import {
-  filterItems,
-  MemberType,
-  VerificationType,
-  BannedStatus,
-} from './filtersConfig';
+import { filterItems, MemberType, VerificationType } from './filtersConfig';
 
 import styles from './MembersFilter.css';
 
@@ -39,7 +34,6 @@ const MSG = defineMessages({
 export interface FormValues {
   memberType: MemberType;
   verificationType: VerificationType;
-  bannedStatus: BannedStatus;
 }
 
 interface Props {
@@ -55,14 +49,12 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
         initialValues={{
           memberType: MemberType.All,
           verificationType: VerificationType.All,
-          bannedStatus: BannedStatus.All,
         }}
         onSubmit={() => {}}
         enableReinitialize
       >
         {({ resetForm, values }: FormikProps<FormValues>) => {
           const showReset =
-            values.bannedStatus !== BannedStatus.All ||
             values.verificationType !== VerificationType.All ||
             values.memberType !== MemberType.All;
           handleFiltersCallback(values);

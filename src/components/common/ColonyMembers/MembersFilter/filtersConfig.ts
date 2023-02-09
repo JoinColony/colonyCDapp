@@ -43,10 +43,6 @@ const MSG = defineMessages({
     id: `${displayName}.memberType`,
     defaultMessage: 'Member type',
   },
-  bannedStatus: {
-    id: `${displayName}.bannedStatus`,
-    defaultMessage: 'Banned status',
-  },
   verificationType: {
     id: `${displayName}.verificationType`,
     defaultMessage: 'Verification type',
@@ -65,12 +61,6 @@ export enum VerificationType {
   Unverified = 'unverified',
 }
 
-export enum BannedStatus {
-  All = 'all',
-  Banned = 'banned',
-  NotBanned = 'notBanned',
-}
-
 const memberTypes = [
   { label: MSG.allMembers, value: MemberType.All },
   { label: MSG.contributors, value: MemberType.Contributers },
@@ -81,12 +71,6 @@ const verificationTypes = [
   { label: MSG.any, value: VerificationType.All },
   { label: MSG.verified, value: VerificationType.Verified },
   { label: MSG.unverified, value: VerificationType.Unverified },
-];
-
-const bannedStatuses = [
-  { label: MSG.any, value: BannedStatus.All },
-  { label: MSG.banned, value: BannedStatus.Banned },
-  { label: MSG.notBanned, value: BannedStatus.NotBanned },
 ];
 
 export type filterItem = {
@@ -105,18 +89,11 @@ export const filterItems: filterItem[] = [
     label: MSG.memberType,
     isRootRequired: true,
   },
-  {
-    appearance: { theme: 'grey' },
-    name: 'verificationType',
-    options: verificationTypes,
-    label: MSG.verificationType,
-    isRootRequired: false,
-  },
-  {
-    appearance: { theme: 'grey' },
-    name: 'bannedStatus',
-    options: bannedStatuses,
-    label: MSG.bannedStatus,
-    isRootRequired: false,
-  },
+  // {
+  //   appearance: { theme: 'grey' },
+  //   name: 'verificationType',
+  //   options: verificationTypes,
+  //   label: MSG.verificationType,
+  //   isRootRequired: false,
+  // },
 ];
