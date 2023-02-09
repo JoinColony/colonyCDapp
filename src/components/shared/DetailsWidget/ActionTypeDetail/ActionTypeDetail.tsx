@@ -2,8 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Icon from '~shared/Icon';
-import { ColonyMotions } from '~types';
-import { EventValues } from '~utils/colonyActions';
+import { ColonyActionType } from '~types';
 
 import { ACTION_TYPES_ICONS_MAP } from '../types';
 
@@ -12,26 +11,22 @@ import styles from './ActionTypeDetail.css';
 const displayName = 'DetailsWidget.ActionTypeDetail';
 
 interface ActionTypeDetailProps {
-  actionType: EventValues['actionType'];
+  actionType: ColonyActionType;
 }
 
-const ActionTypeDetail = ({ actionType }: ActionTypeDetailProps) => {
-  const messageId = ColonyMotions[actionType] ? 'motion.type' : 'action.type';
-
-  return (
-    <>
-      <Icon
-        title={{ id: messageId }}
-        titleValues={{ actionType }}
-        appearance={{ size: 'small' }}
-        name={ACTION_TYPES_ICONS_MAP[actionType]}
-      />
-      <div className={styles.text}>
-        <FormattedMessage id={messageId} values={{ actionType }} />
-      </div>
-    </>
-  );
-};
+const ActionTypeDetail = ({ actionType }: ActionTypeDetailProps) => (
+  <>
+    <Icon
+      title={{ id: 'action.type' }}
+      titleValues={{ actionType }}
+      appearance={{ size: 'small' }}
+      name={ACTION_TYPES_ICONS_MAP[actionType] ?? ''}
+    />
+    <div className={styles.text}>
+      <FormattedMessage id={'action.type'} values={{ actionType }} />
+    </div>
+  </>
+);
 
 ActionTypeDetail.displayName = displayName;
 

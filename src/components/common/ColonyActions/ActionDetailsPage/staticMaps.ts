@@ -1,11 +1,6 @@
 import { ColonyRole } from '@colony/colony-js';
 
-import {
-  ActionItemType,
-  ColonyActionType,
-  ColonyAndExtensionsEvents,
-  ColonyMotions,
-} from '~types';
+import { ColonyActionType, ColonyAndExtensionsEvents } from '~types';
 
 export enum TransactionStatuses {
   Failed = 'failed',
@@ -67,7 +62,7 @@ const MOTION_EVENTS = [
 ];
 
 type ActionsEventsMap = Partial<{
-  [key in ActionItemType]: ColonyAndExtensionsEvents[];
+  [key in ColonyActionType]: ColonyAndExtensionsEvents[];
 }>;
 
 export const ACTIONS_EVENTS: ActionsEventsMap = {
@@ -94,14 +89,14 @@ export const ACTIONS_EVENTS: ActionsEventsMap = {
   [ColonyActionType.EmitDomainReputationReward]: [
     ColonyAndExtensionsEvents.ArbitraryReputationUpdate,
   ],
-  [ColonyMotions.UnlockTokenMotion]: MOTION_EVENTS,
-  [ColonyMotions.MintTokensMotion]: MOTION_EVENTS,
-  [ColonyMotions.CreateDomainMotion]: MOTION_EVENTS,
-  [ColonyMotions.EditDomainMotion]: MOTION_EVENTS,
-  [ColonyMotions.ColonyEditMotion]: MOTION_EVENTS,
-  [ColonyMotions.SetUserRolesMotion]: MOTION_EVENTS,
-  [ColonyMotions.PaymentMotion]: MOTION_EVENTS,
-  [ColonyMotions.MoveFundsMotion]: MOTION_EVENTS,
-  [ColonyMotions.EmitDomainReputationPenaltyMotion]: MOTION_EVENTS,
-  [ColonyMotions.EmitDomainReputationRewardMotion]: MOTION_EVENTS,
+  [ColonyActionType.UnlockTokenMotion]: MOTION_EVENTS,
+  [ColonyActionType.MintTokensMotion]: MOTION_EVENTS,
+  [ColonyActionType.CreateDomainMotion]: MOTION_EVENTS,
+  [ColonyActionType.EditDomainMotion]: MOTION_EVENTS,
+  [ColonyActionType.ColonyEditMotion]: MOTION_EVENTS,
+  [ColonyActionType.SetUserRolesMotion]: MOTION_EVENTS,
+  [ColonyActionType.PaymentMotion]: MOTION_EVENTS,
+  [ColonyActionType.MoveFundsMotion]: MOTION_EVENTS,
+  [ColonyActionType.EmitDomainReputationPenaltyMotion]: MOTION_EVENTS,
+  [ColonyActionType.EmitDomainReputationRewardMotion]: MOTION_EVENTS,
 };
