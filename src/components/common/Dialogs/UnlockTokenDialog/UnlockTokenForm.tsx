@@ -4,6 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import {
   ColonyRole,
+  Id,
   // VotingReputationVersion,
 } from '@colony/colony-js';
 
@@ -71,17 +72,16 @@ const MSG = defineMessages({
 const UnlockTokenForm = ({ colony, back }: ActionDialogProps) => {
   const { wallet } = useAppContext();
   const {
-    getValues,
     formState: { isValid },
   } = useFormContext();
-  const values = getValues();
   const allUserRoles = useTransformer(getAllUserRoles, [
     colony,
     wallet?.address,
   ]);
   // const isNativeTokenLocked = !!colony?.nativeToken?.unlocked;
   const hasRootPermission = hasRoot(allUserRoles);
-  const canUserUnlockNativeToken = true; // hasRootPermission && status?.nativeToken?.unlockable && isNativeTokenLocked;
+  // const canUserUnlockNativeToken = hasRootPermission && status?.nativeToken?.unlockable && isNativeTokenLocked;
+  const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 
   // const {
   //   votingExtensionVersion,
@@ -91,10 +91,10 @@ const UnlockTokenForm = ({ colony, back }: ActionDialogProps) => {
   // });
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony?.colonyAddress || '',
-    !!canUserUnlockNativeToken,
+    colony,
     false, // isVotingExtensionEnabled,
-    values.forceAction,
+    requiredRoles,
+    [Id.RootDomain],
   );
 
   const inputDisabled = !userHasPermission || onlyForceAction; // || isNativeTokenLocked;

@@ -40,10 +40,6 @@ const MSG = defineMessages({
     id: `${displayName}.annotation`,
     defaultMessage: 'Explain why you’re transferring these funds (optional)',
   },
-  noBalance: {
-    id: `${displayName}.noBalance`,
-    defaultMessage: 'Insufficient balance in from team pot',
-  },
   noPermissionFrom: {
     id: `${displayName}.noPermissionFrom`,
     defaultMessage: `You need the {permissionLabel} permission in {domainName}
@@ -93,15 +89,14 @@ const TransferFundsDialogForm = ({ back, colony }: ActionDialogProps) => {
   ]);
   const hasRoleInFromDomain = userHasRole(fromDomainRoles, ColonyRole.Funding);
   const hasRoleInToDomain = userHasRole(toDomainRoles, ColonyRole.Funding);
-  const canTransferFunds = hasRoleInFromDomain && hasRoleInToDomain;
 
   const requiredRoles: ColonyRole[] = [ColonyRole.Funding];
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony?.colonyAddress || '',
-    canTransferFunds,
+    colony,
     false, // isVotingExtensionEnabled,
-    values.forceAction,
+    requiredRoles,
+    [fromDomainId, toDomainId],
   );
 
   const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;
