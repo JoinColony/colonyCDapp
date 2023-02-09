@@ -47,7 +47,7 @@ const MembersListItem = ({
     );
   const isMobile = useMobile();
   // Temp hardcoded values until the features are implemented
-  const isWhitelisted = true;
+  const isWhitelisted = false;
 
   return (
     <ListGroupItem>
