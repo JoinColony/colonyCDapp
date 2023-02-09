@@ -11,6 +11,12 @@ import {
 } from '~types';
 import { intl } from '~utils/intl';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { MotionVote } from '~utils/colonyMotions';
+import {
+  AmountTag,
+  Motion as MotionTag,
+  Objection as ObjectionTag,
+} from '~shared/Tag';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
@@ -99,6 +105,19 @@ export const mapColonyEventToExpectedFormat = (
         decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
+    amountTag: (
+      <AmountTag>
+        <Numeral
+          value={item.amount ?? 0}
+          decimals={item.decimals ?? undefined}
+          suffix={item.tokenSymbol ?? ''}
+        />
+      </AmountTag>
+    ),
+    backedSideTag:
+      event.vote === MotionVote.Yay ? <MotionTag /> : <ObjectionTag />,
+    motionTag: <MotionTag />,
+    objectionTag: <ObjectionTag />,
     // ...getColonyRoleSetTitleValues(role?.setTo),
     domainMetadataChanges: getDomainMetadataChangesValue(actionData),
     colonyMetadataChanges: getColonyMetadataChangesValue(actionData, colony),
@@ -125,9 +144,12 @@ export const mapColonyEventToExpectedFormat = (
         <FriendlyName user={actionData.recipient} autoShrinkAddress />
       </span>
     ),
-    isSmiteAction:
-      actionData.type === ColonyActionType.EmitDomainReputationPenalty,
-    tokenSymbol: actionData.token?.symbol,
+    staker: (
+      <span className={styles.userDecoration}>
+        <FriendlyName user={event.staker} autoShrinkAddress />
+      </span>
+    ),
+    isSmiteAction: item.type === ColonyActionType.EmitDomainReputationPenalty,
     // reputationChange:
     //   item.reputationChange &&
     //   formatReputationChange(item.reputationChange, item.decimals),
