@@ -2,9 +2,9 @@ import React, { useState, ReactNode } from 'react';
 import classnames from 'classnames';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import MembersList from '~shared/MembersList';
+import MembersList from '~common/Members/MembersList';
 import LoadMoreButton from '~shared/LoadMoreButton';
-import { Props as SortingProps } from '~shared/MembersList/SortingRow';
+import { Props as SortingProps } from '~common/Members/MembersList/SortingRow';
 import { Watcher, MemberUser } from '~types';
 
 import styles from './MembersSection.css';
