@@ -1,6 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
-import { AddressZero } from '@ethersproject/constants';
 import { useNavigate } from 'react-router-dom';
 import { string, object, array, boolean, InferType } from 'yup';
 
@@ -11,8 +10,8 @@ import { ActionHookForm as Form } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { WizardDialogType } from '~hooks'; // useEnabledExtensions
-import { createAddress } from '~utils/web3';
 import { formatText } from '~utils/intl';
+import { getTokenManagementDialogPayload } from './helpers';
 
 const displayName = 'common.TokenManagementDialog';
 
@@ -61,50 +60,9 @@ const TokenManagementDialog = ({
       : ActionTypes[`ACTION_EDIT_COLONY${actionEnd}`];
   };
 
-  const transform = useCallback(
-    () =>
-      pipe(
-        mapPayload(
-          ({ tokenAddress, selectedTokenAddresses, annotationMessage }) => {
-            let addresses = selectedTokenAddresses;
-            if (
-              tokenAddress &&
-              !selectedTokenAddresses.includes(tokenAddress)
-            ) {
-              addresses.push(tokenAddress);
-            }
-            addresses = [
-              ...new Set(
-                addresses
-                  .map((address) => createAddress(address))
-                  .filter((address) => {
-                    if (
-                      address === AddressZero ||
-                      address === colony?.nativeToken.tokenAddress
-                    ) {
-                      return false;
-                    }
-                    return true;
-                  }),
-              ),
-            ];
-            return {
-              colonyAddress: colony?.colonyAddress,
-              colonyName: colony?.name,
-              colonyDisplayName: colony?.profile?.displayName,
-              colonyAvatarImage: colony?.profile?.thumbnail,
-              colonyAvatarHash: colony?.profile?.avatar,
-              hasAvatarChanged: false,
-              colonyTokens: addresses,
-              // verifiedAddresses: whitelistedAddresses,
-              annotationMessage,
-              // isWhitelistActivated,
-            };
-          },
-        ),
-        withMeta({ navigate }),
-      ),
-    [colony, navigate],
+  const transform = pipe(
+    mapPayload((payload) => getTokenManagementDialogPayload(colony, payload)),
+    withMeta({ navigate }),
   );
 
   const handleSuccess = () => close();

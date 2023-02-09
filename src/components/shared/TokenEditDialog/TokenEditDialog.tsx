@@ -1,5 +1,5 @@
 import React from 'react';
-import { ColonyRole } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { AddressZero } from '@ethersproject/constants';
 import { useFormContext } from 'react-hook-form';
@@ -105,10 +105,10 @@ Props) => {
   const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony.colonyAddress,
-    canEditTokens,
+    colony,
     false, // isVotingExtensionEnabled,
-    values.forceAction,
+    requiredRoles,
+    [Id.RootDomain],
   );
 
   const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;

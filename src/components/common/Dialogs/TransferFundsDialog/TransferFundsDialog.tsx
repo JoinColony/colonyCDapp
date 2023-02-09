@@ -1,22 +1,21 @@
-import React, { useCallback, useState } from 'react';
-import moveDecimal from 'move-decimal-point';
-import { BigNumber } from 'ethers';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 import { Id } from '@colony/colony-js';
 import { string, object, number, boolean, InferType } from 'yup';
 import Decimal from 'decimal.js';
 
+import { notNull } from '~utils/arrays';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { ActionTypes } from '~redux/index';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 import { WizardDialogType } from '~hooks';
 // import { useEnabledExtensions } from '~hooks/useEnabledExtensions';
-import { sortBy } from '~utils/lodash';
 
 import TransferFundsDialogForm from './TransferFundsDialogForm';
+import { getDomainOptions } from '~shared/DomainFundSelectorSection/helpers';
+import { getTransferFundsDialogPayload } from './helpers';
 
 const displayName = 'common.TransferFundsDialog';
 
@@ -24,10 +23,6 @@ const MSG = defineMessages({
   amountZero: {
     id: `${displayName}.amountZero`,
     defaultMessage: 'Amount must be greater than zero',
-  },
-  noBalance: {
-    id: `${displayName}.noBalance`,
-    defaultMessage: 'Insufficient balance in from domain pot',
   },
   sameDomain: {
     id: `${displayName}.sameDomain`,
@@ -96,54 +91,12 @@ const TransferFundsDialog = ({
       : ActionTypes[`ACTION_MOVE_FUNDS${actionEnd}`];
   };
 
-  const colonyDomains = colony?.domains?.items || [];
+  const colonyDomains = colony?.domains?.items.filter(notNull) || [];
+  const domainOptions = getDomainOptions(colonyDomains);
 
-  const domainOptions = sortBy(
-    colonyDomains.map((domain) => ({
-      value: domain?.nativeId || '',
-      label: domain?.name || `Domain #${domain?.nativeId}`,
-    })),
-    ['value'],
-  );
-  const transform = useCallback(
-    () =>
-      pipe(
-        mapPayload(
-          ({
-            tokenAddress,
-            amount: transferAmount,
-            fromDomain: sourceDomain,
-            toDomain,
-            annotation: annotationMessage,
-          }) => {
-            const colonyTokens = colony?.tokens?.items || [];
-            const selectedToken = colonyTokens.find(
-              (token) => token?.token.tokenAddress === tokenAddress,
-            );
-            const decimals = getTokenDecimalsWithFallback(
-              selectedToken?.token.decimals,
-            );
-
-            // Convert amount string with decimals to BigInt (eth to wei)
-            const amount = BigNumber.from(
-              moveDecimal(transferAmount, decimals),
-            );
-
-            return {
-              colonyAddress: colony?.colonyAddress,
-              colonyName: colony?.name,
-              // version,
-              fromDomainId: parseInt(sourceDomain, 10),
-              toDomainId: parseInt(toDomain, 10),
-              amount,
-              tokenAddress,
-              annotationMessage,
-            };
-          },
-        ),
-        withMeta({ navigate }),
-      ),
-    [colony, navigate],
+  const transform = pipe(
+    mapPayload((payload) => getTransferFundsDialogPayload(colony, payload)),
+    withMeta({ navigate }),
   );
 
   return (

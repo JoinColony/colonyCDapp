@@ -1,15 +1,15 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { string, object, boolean, InferType } from 'yup';
 
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
-import { RootMotionMethodNames } from '~redux/types/actions';
 import { pipe, withMeta, withKey, mapPayload } from '~utils/actions';
 import { WizardDialogType } from '~hooks'; // useEnabledExtensions
 
 import UnlockTokenForm from './UnlockTokenForm';
+import { getUnlockTokenDialogPayload } from './helpers';
 
 type Props = DialogProps &
   Partial<WizardDialogType<object>> &
@@ -48,20 +48,10 @@ const UnlockTokenDialog = ({
       : ActionTypes[`ACTION_UNLOCK_TOKEN${actionEnd}`];
   };
 
-  const transform = useCallback(
-    () =>
-      pipe(
-        withKey(colony?.colonyAddress || ''),
-        mapPayload(({ annotationMessage }) => ({
-          annotationMessage,
-          colonyAddress: colony?.colonyAddress,
-          operationName: RootMotionMethodNames.UnlockToken,
-          motionParams: [],
-          colonyName: colony?.name,
-        })),
-        withMeta({ navigate }),
-      ),
-    [colony, navigate],
+  const transform = pipe(
+    withKey(colony?.colonyAddress || ''),
+    mapPayload((payload) => getUnlockTokenDialogPayload(colony, payload)),
+    withMeta({ navigate }),
   );
 
   return (

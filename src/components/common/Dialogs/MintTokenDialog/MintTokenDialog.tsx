@@ -1,21 +1,18 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { string, object, bool, InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
-import { BigNumber } from 'ethers';
-import moveDecimal from 'move-decimal-point';
 import Decimal from 'decimal.js';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
 import { ActionTypes } from '~redux/index';
-import { RootMotionMethodNames } from '~redux/types/actions';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { WizardDialogType } from '~hooks'; // useEnabledExtensions
 
 import MintTokenDialogForm from './MintTokenDialogForm';
+import { getMintTokenDialogPayload } from './helpers';
 
 const displayName = 'common.MintTokenDialog';
 
@@ -75,32 +72,9 @@ const MintTokenDialog = ({
       : ActionTypes[`ACTION_MINT_TOKENS${actionEnd}`];
   };
 
-  const transform = useCallback(
-    () =>
-      pipe(
-        mapPayload(
-          ({ mintAmount: inputAmount, annotation: annotationMessage }) => {
-            // Find the selected token's decimals
-            const amount = BigNumber.from(
-              moveDecimal(
-                inputAmount,
-                getTokenDecimalsWithFallback(colony?.nativeToken?.decimals),
-              ),
-            );
-            return {
-              operationName: RootMotionMethodNames.MintTokens,
-              colonyAddress: colony?.colonyAddress,
-              colonyName: colony?.name,
-              nativeTokenAddress: colony?.nativeToken?.tokenAddress,
-              motionParams: [amount],
-              amount,
-              annotationMessage,
-            };
-          },
-        ),
-        withMeta({ navigate }),
-      ),
-    [colony, navigate],
+  const transform = pipe(
+    mapPayload((payload) => getMintTokenDialogPayload(colony, payload)),
+    withMeta({ navigate }),
   );
 
   return (
