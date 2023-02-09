@@ -185,18 +185,29 @@ export type ColonyActionRolesInput = {
 
 export enum ColonyActionType {
   ColonyEdit = 'COLONY_EDIT',
+  ColonyEditMotion = 'COLONY_EDIT_MOTION',
   CreateDomain = 'CREATE_DOMAIN',
+  CreateDomainMotion = 'CREATE_DOMAIN_MOTION',
   EditDomain = 'EDIT_DOMAIN',
+  EditDomainMotion = 'EDIT_DOMAIN_MOTION',
   EmitDomainReputationPenalty = 'EMIT_DOMAIN_REPUTATION_PENALTY',
+  EmitDomainReputationPenaltyMotion = 'EMIT_DOMAIN_REPUTATION_PENALTY_MOTION',
   EmitDomainReputationReward = 'EMIT_DOMAIN_REPUTATION_REWARD',
+  EmitDomainReputationRewardMotion = 'EMIT_DOMAIN_REPUTATION_REWARD_MOTION',
   Generic = 'GENERIC',
   MintTokens = 'MINT_TOKENS',
+  MintTokensMotion = 'MINT_TOKENS_MOTION',
   MoveFunds = 'MOVE_FUNDS',
+  MoveFundsMotion = 'MOVE_FUNDS_MOTION',
   Payment = 'PAYMENT',
+  PaymentMotion = 'PAYMENT_MOTION',
   Recovery = 'RECOVERY',
   SetUserRoles = 'SET_USER_ROLES',
+  SetUserRolesMotion = 'SET_USER_ROLES_MOTION',
   UnlockToken = 'UNLOCK_TOKEN',
+  UnlockTokenMotion = 'UNLOCK_TOKEN_MOTION',
   VersionUpgrade = 'VERSION_UPGRADE',
+  VersionUpgradeMotion = 'VERSION_UPGRADE_MOTION',
   WrongColony = 'WRONG_COLONY'
 }
 
