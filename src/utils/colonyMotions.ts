@@ -1,13 +1,15 @@
-import { defineMessages, MessageDescriptor } from 'react-intl';
 import { BigNumber } from 'ethers';
 import { Decimal } from 'decimal.js';
-import { isNil } from 'lodash';
 import { ColonyRoles } from '@colony/colony-js';
 
+import { isNil } from '~utils/lodash';
 import { getRolesForUserAndDomain } from '~redux/transformers';
-import { AnyUser } from '~data/index';
-import { ActionUserRoles } from '~types';
-import { TagColorSchema, TagTheme } from '~shared/Tag/Tag';
+import { ActionUserRoles, User } from '~types';
+
+export enum MotionVote {
+  Yay = 1,
+  Nay = 0,
+}
 
 export const noMotionsVotingReputationVersion = 4;
 
@@ -20,145 +22,11 @@ export enum MotionState {
   Motion = 'Motion',
   Failed = 'Failed',
   Passed = 'Passed',
-  FailedNoFinalizable = 'FailedNoFinalizable',
+  FailedNotFinalizable = 'FailedNotFinalizable',
   Invalid = 'Invalid',
   Escalation = 'Escalation',
   Forced = 'Forced',
 }
-
-export enum MotionVote {
-  Yay = 1,
-  Nay = 0,
-}
-
-const MSG = defineMessages({
-  stakedTag: {
-    id: 'dashboard.ActionsPage.stakedTag',
-    defaultMessage: 'Staked',
-  },
-  stakingTag: {
-    id: 'dashboard.ActionsPage.stakingTag',
-    defaultMessage: 'Staking',
-  },
-  votingTag: {
-    id: 'dashboard.ActionsPage.votingTag',
-    defaultMessage: 'Voting',
-  },
-  revealTag: {
-    id: 'dashboard.ActionsPage.revealTag',
-    defaultMessage: 'Reveal',
-  },
-  objectionTag: {
-    id: 'dashboard.ActionsPage.objectionTag',
-    defaultMessage: 'Objection',
-  },
-  motionTag: {
-    id: 'dashboard.ActionsPage.motionTag',
-    defaultMessage: 'Motion',
-  },
-  failedTag: {
-    id: 'dashboard.ActionsPage.failedTag',
-    defaultMessage: 'Failed',
-  },
-  passedTag: {
-    id: 'dashboard.ActionsPage.passedTag',
-    defaultMessage: 'Passed',
-  },
-  invalidTag: {
-    id: 'dashboard.ActionsPage.invalidTag',
-    defaultMessage: 'Invalid',
-  },
-  escalateTag: {
-    id: 'dashboard.ActionsPage.escalateTag',
-    defaultMessage: 'Escalate',
-  },
-  forcedTag: {
-    id: 'dashboard.ActionsPage.forcedTag',
-    defaultMessage: 'Forced',
-  },
-});
-
-export interface MotionStyles {
-  theme: TagTheme;
-  colorSchema: TagColorSchema;
-  name: MessageDescriptor;
-  tagName: string;
-}
-
-export const MOTION_TAG_MAP = {
-  [MotionState.Staked]: {
-    theme: TagTheme.Primary,
-    colorSchema: TagColorSchema.FullColor,
-    name: MSG.stakedTag,
-    tagName: 'motionTag',
-  },
-  [MotionState.Staking]: {
-    theme: TagTheme.Pink,
-    colorSchema: TagColorSchema.Inverted,
-    name: MSG.stakingTag,
-    tagName: 'stakingTag',
-  },
-  [MotionState.Voting]: {
-    theme: TagTheme.Golden,
-    colorSchema: TagColorSchema.FullColor,
-    name: MSG.votingTag,
-    tagName: 'votingTag',
-  },
-  [MotionState.Reveal]: {
-    theme: TagTheme.Blue,
-    colorSchema: TagColorSchema.FullColor,
-    name: MSG.revealTag,
-    tagName: 'revealTag',
-  },
-  [MotionState.Objection]: {
-    theme: TagTheme.Pink,
-    colorSchema: TagColorSchema.FullColor,
-    name: MSG.objectionTag,
-    tagName: 'objectionTag',
-  },
-  [MotionState.Motion]: {
-    theme: TagTheme.Primary,
-    colorSchema: TagColorSchema.FullColor,
-    name: MSG.motionTag,
-    tagName: 'motionTag',
-  },
-  [MotionState.Failed]: {
-    theme: TagTheme.Pink,
-    colorSchema: TagColorSchema.Plain,
-    name: MSG.failedTag,
-    tagName: 'failedTag',
-  },
-  [MotionState.FailedNoFinalizable]: {
-    theme: TagTheme.Pink,
-    colorSchema: TagColorSchema.Plain,
-    name: MSG.failedTag,
-    tagName: 'failedTag',
-  },
-  [MotionState.Passed]: {
-    theme: TagTheme.Primary,
-    colorSchema: TagColorSchema.Plain,
-    name: MSG.passedTag,
-    tagName: 'passedTag',
-  },
-  [MotionState.Invalid]: {
-    theme: TagTheme.Pink,
-    colorSchema: TagColorSchema.Plain,
-    name: MSG.invalidTag,
-    tagName: 'invalidTag',
-  },
-  [MotionState.Escalation]: {
-    theme: TagTheme.DangerGhost,
-    colorSchema: TagColorSchema.Plain,
-    name: MSG.escalateTag,
-    tagName: 'escalateTag',
-  },
-  [MotionState.Forced]: {
-    theme: TagTheme.Blue,
-    colorSchema: TagColorSchema.Inverted,
-    name: MSG.forcedTag,
-    tagName: 'forcedTag',
-  },
-};
 
 export const getMotionRequiredStake = (
   skillRep: BigNumber,
@@ -179,7 +47,7 @@ export const getEarlierEventTimestamp = (
   return currentTimestamp - subTime;
 };
 
-export const shouldDisplayMotion = (
+export const shouldDisplayMotionInActionsList = (
   currentStake: string,
   requiredStake: string,
 ): boolean => {
@@ -195,14 +63,14 @@ export interface MotionValue {
 }
 
 export const getUpdatedDecodedMotionRoles = (
-  recipient: AnyUser,
+  recipient: User,
   fromDomain: number,
   currentRoles: ColonyRoles = [],
   setRoles: ActionUserRoles[],
 ) => {
   const currentUserRoles = getRolesForUserAndDomain(
     currentRoles,
-    recipient.id,
+    recipient.walletAddress,
     fromDomain,
   );
   const updatedRoles = setRoles.filter((role) => {

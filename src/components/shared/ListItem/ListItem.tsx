@@ -2,9 +2,7 @@ import { nanoid } from 'nanoid';
 import React, { ReactNode } from 'react';
 import { FormattedDateParts } from 'react-intl';
 
-import { MotionTag } from '~shared/Tag';
 import { Message, UniversalMessageValues } from '~types';
-import { MotionState, MOTION_TAG_MAP } from '~utils/colonyMotions';
 import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
 
@@ -53,7 +51,7 @@ interface ListItemProps {
   /** An ItemStatus. Styles the list item's 'before' psuedo-element. */
   status?: ListItemStatus;
   /** The tag to be displayed next to the title */
-  tag?: MotionState;
+  tag?: ReactNode;
   /** A title */
   title: Message;
   /** Values for the react-intl interpolation */
@@ -70,49 +68,44 @@ const ListItem = ({
   title,
   titleValues,
   tag,
-}: ListItemProps) => {
-  const tagStyles = tag && MOTION_TAG_MAP[tag];
-  return (
-    <li>
+}: ListItemProps) => (
+  <li>
+    <div
+      className={getMainClasses({}, styles, {
+        [ListItemStatus[status]]: !!status,
+      })}
+      onClick={onClick}
+      onKeyDown={onClick}
+      role="button"
+      tabIndex={0}
+    >
       <div
-        className={getMainClasses({}, styles, {
-          [ListItemStatus[status]]: !!status,
-        })}
-        onClick={onClick}
-        onKeyDown={onClick}
+        className={styles.avatar}
+        onClick={stopPropagation}
+        onKeyDown={stopPropagation}
         role="button"
         tabIndex={0}
       >
-        <div
-          className={styles.avatar}
-          onClick={stopPropagation}
-          onKeyDown={stopPropagation}
-          role="button"
-          tabIndex={0}
-        >
-          {avatar}
-        </div>
-        <div className={styles.content}>
-          <div className={styles.titleWrapper}>
-            <span className={styles.title} key={nanoid()}>
-              {formatText(title, titleValues)}
-            </span>
-            <div className={styles.motionTagWrapper}>
-              {tagStyles && <MotionTag motionStyles={tagStyles} />}
-            </div>
-          </div>
-          <div className={styles.meta}>
-            <FormattedDateParts value={createdAt} month="short" day="numeric">
-              {(parts) => <FormattedDate parts={parts} />}
-            </FormattedDateParts>
-            {meta}
-          </div>
-        </div>
-        {extra}
+        {avatar}
       </div>
-    </li>
-  );
-};
+      <div className={styles.content}>
+        <div className={styles.titleWrapper}>
+          <span className={styles.title} key={nanoid()}>
+            {formatText(title, titleValues)}
+          </span>
+          {tag && <div className={styles.motionTagWrapper}>{tag}</div>}
+        </div>
+        <div className={styles.meta}>
+          <FormattedDateParts value={createdAt} month="short" day="numeric">
+            {(parts) => <FormattedDate parts={parts} />}
+          </FormattedDateParts>
+          {meta}
+        </div>
+      </div>
+      {extra}
+    </div>
+  </li>
+);
 
 ListItem.displayName = displayName;
 

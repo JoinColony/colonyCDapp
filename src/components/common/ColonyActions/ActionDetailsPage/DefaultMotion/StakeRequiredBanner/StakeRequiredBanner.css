@@ -1,0 +1,57 @@
+@value bannerHeight: 48px;
+
+.stakeRequiredBannerContainer {
+  height: bannerHeight;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  font-size: var(--size-normal);
+  font-weight: var(--weight-normal);
+  text-align: center;
+}
+
+.stakeRequiredBanner {
+  padding: 9px 0;
+}
+
+.share {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+}
+
+.share button {
+  display: flex;
+  align-items: center;
+  padding-right: 6px;
+  padding-left: 10px;
+  border: 1px solid var(--pink);
+  color: var(--action-secondary);
+  opacity: 1;
+
+  &:hover {
+    border: 1px solid var(--action-secondary);
+    background-color: rgba(255, 255, 255);
+
+    &:disabled {
+      border: 1px solid transparent;
+      background-color: rgba(255, 255, 255);
+      color: var(--action-secondary);
+    }
+  }
+
+  &:disabled {
+    background-color: rgba(255, 255, 255);
+    color: var(--action-secondary);
+  }
+}
+
+.share i {
+  margin-left: 19px;
+}
+
+.share svg {
+  fill: var(--action-secondary);
+  stroke: none;
+}
