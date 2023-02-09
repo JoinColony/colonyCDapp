@@ -15,6 +15,6 @@ export const USER_EDIT_ROUTE = '/edit-profile';
 export const USER_ROUTE = '/user/:usernameOrAddress';
 export const NOT_FOUND_ROUTE = '/404';
 export const LANDING_PAGE_ROUTE = '/landing';
-// export const ACTIONS_PAGE_ROUTE = `${COLONY_HOME_ROUTE}/tx/:transactionHash`;
+export const ACTIONS_PAGE_ROUTE = 'colony/:colonyName/tx/:transactionHash';
 // export const UNWRAP_TOKEN_ROUTE = `${COLONY_HOME_ROUTE}/unwrap-tokens`;
 // export const CLAIM_TOKEN_ROUTE = `${COLONY_HOME_ROUTE}/claim-tokens`;

@@ -3,7 +3,7 @@ import { ColonyRole } from '@colony/colony-js';
 import { ListItemStatus } from '~shared/ListItem';
 import { MotionState } from '~utils/colonyMotions';
 
-import { Address, ActionUserRoles, User, ColonyActionType } from './index';
+import { Address, User, ColonyActionType } from './index';
 import { ColonyMotions } from './motions';
 
 export enum ColonyAndExtensionsEvents {
@@ -18,6 +18,7 @@ export enum ColonyAndExtensionsEvents {
   TokenUnlocked = 'TokenUnlocked',
   TokensMinted = 'TokensMinted',
   SkillAdded = 'SkillAdded',
+  DecisionCreated = 'DecisionCreated',
   DomainAdded = 'DomainAdded',
   DomainMetadata = 'DomainMetadata',
   PaymentPayoutSet = 'PaymentPayoutSet',
@@ -143,6 +144,7 @@ export interface FormattedAction {
   totalNayStake?: string;
   requiredStake?: string;
   reputationChange?: string;
+  transactionStatus?: number;
 }
 
 export interface FormattedEvent {
@@ -177,6 +179,8 @@ export interface FormattedEvent {
   activePeriod?: string;
   currentPeriod?: string;
 }
+
+export type ActionItemType = ColonyActionType | ColonyMotions;
 
 /*
  * This list will get longer once we add more system events to the dapp

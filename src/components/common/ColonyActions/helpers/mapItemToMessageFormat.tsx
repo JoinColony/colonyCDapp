@@ -1,25 +1,25 @@
 import React from 'react';
-// import Decimal from 'decimal.js';
 
 import Numeral from '~shared/Numeral';
-import { Colony, ColonyAction } from '~types';
-// import { formatRolesTitle } from '~utils/colonyActions';
+import FriendlyName from '~shared/FriendlyName';
 import { findDomain } from '~utils/domains';
 import {
-  // getFormattedTokenValue,
-  getTokenDecimalsWithFallback,
-} from '~utils/tokens';
-import FriendlyName from '~shared/FriendlyName';
+  getColonyMetadataMessageValues,
+  getDomainMetadataTitleValues,
+} from '~utils/events';
+import {
+  Colony,
+  ColonyAndExtensionsEvents,
+  ColonyAction,
+  ColonyActionType,
+} from '~types';
 
-import styles from '~shared/ListItem/ListItem.css';
+import { MockEvent } from '../mockData';
+import { getDomainMetadataValues } from './getDomainValues';
 
-// const formatReputationChange = (decimals: string, reputationChange?: string) =>
-//   getFormattedTokenValue(
-//     new Decimal(reputationChange || '0').abs().toString(),
-//     decimals,
-//   );
+import styles from './itemStyles.css';
 
-export const mapItemToExpectedFormat = (
+export const mapColonyActionToExpectedFormat = (
   item: ColonyAction,
   colony?: Colony,
 ) => {
@@ -28,16 +28,17 @@ export const mapItemToExpectedFormat = (
   //   item.decimals,
   //   item.reputationChange,
   // );
+
   return {
     ...item,
     amount: (
       <Numeral
         value={item.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
-        decimals={getTokenDecimalsWithFallback(item.decimals)}
+        decimals={item.decimals ?? undefined}
       />
     ),
     // direction: formattedRolesTitle.direction,
-    fromDomain: findDomain(item.fromDomain ?? '', colony)?.name,
+    fromDomain: findDomain(item.fromDomain, colony)?.name,
     initiator: (
       <span className={styles.titleDecoration}>
         <FriendlyName user={item.initiator} autoShrinkAddress />
@@ -48,13 +49,83 @@ export const mapItemToExpectedFormat = (
         <FriendlyName user={item.recipient} autoShrinkAddress />
       </span>
     ),
-    // reputationChangeNumeral: <Numeral value={reputationChange} />,
-    // reputationChange,
-    // rolesChanged: formattedRolesTitle.roleTitle,
-    toDomain: findDomain(item.toDomain ?? '', colony)?.name,
+    toDomain: findDomain(item.toDomain, colony)?.name,
+    // reputationChangeNumeral: item.reputationChange && (
+    //   <Numeral value={item.reputationChange} decimals={Number(item.decimals)} />
+    // ),
+    // reputationChange:
+    //   item.reputationChange &&
+    //   formatReputationChange(item.reputationChange, item.decimals),
+    //rolesChanged: formattedRolesTitle.roleTitle,
   };
+};
 
+export const mapColonyEventToExpectedFormat = (
+  event: MockEvent & { eventName: ColonyAndExtensionsEvents },
+  item: ColonyAction,
+  colony?: Colony,
+) => {
   /*
+   * TODO: Update the following to account for metadata changes being kept in the model as an array of changes,
+   * with the latest one being the most recent one.
+   */
+  const colonyMetadataChanges = { namedChanged: true, logoChanged: true };
+  // const role = item.roles[0];
+
+  const {
+    domainMetadataChanged,
+    newDomainMetadata: { values: newValues, color: newColor },
+    oldDomainMetadata: { values: oldValues, color: oldColor },
+  } = getDomainMetadataTitleValues(
+    event.previousDomainMetadata,
+    event.domainMetadata,
+  );
+
+  return {
+    ...item,
+    ...event,
+    ...getColonyMetadataMessageValues(colonyMetadataChanges, colony?.name),
+    amount: (
+      <Numeral
+        value={item.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
+        decimals={item.decimals ?? undefined}
+      />
+    ),
+    // ...getColonyRoleSetTitleValues(role?.setTo),
+    domainMetadataChanged,
+    newDomainMetadata: getDomainMetadataValues(newValues, newColor),
+    oldDomainMetadata: getDomainMetadataValues(oldValues, oldColor),
+    fromDomain: findDomain(item.fromDomain, colony)?.name,
+    toDomain: findDomain(item.toDomain, colony)?.name,
+    eventNameDecorated: <b>{event.eventName}</b>,
+    //role: role && formatText({ id: `role.${role.id}` }),
+    clientOrExtensionType: (
+      <span className={styles.highlight}>{event.emittedBy}</span>
+    ),
+    initiator: (
+      <span className={styles.userDecoration}>
+        <FriendlyName user={item.initiator} autoShrinkAddress />
+      </span>
+    ),
+    recipient: (
+      <span className={styles.userDecoration}>
+        <FriendlyName user={item.recipient} autoShrinkAddress />
+      </span>
+    ),
+    isSmiteAction: item.type === ColonyActionType.EmitDomainReputationPenalty,
+    // reputationChange:
+    //   item.reputationChange &&
+    //   formatReputationChange(item.reputationChange, item.decimals),
+    // reputationChangeNumeral: item.reputationChange && (
+    //   <Numeral value={item.reputationChange} decimals={Number(item.decimals)} />
+    // ),
+  };
+};
+
+/*
+
+Actions
+======
 
 Note that the following transformations also exist in the Dapp. Because they are async,
 it would be ideal if they were handled higher up in the CDapp, and passed down. That would
@@ -143,4 +214,3 @@ const symbol = tokenData?.tokenInfo?.symbol || colonyTokenSymbol;
 const decimals =  tokenData?.tokenInfo?.decimals || Number(colonyTokenDecimals);
 
 */
-};

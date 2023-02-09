@@ -7,7 +7,9 @@ import ListItem, { ListItemStatus } from '~shared/ListItem';
 import { ColonyAction } from '~types';
 import { useColonyContext } from '~hooks';
 
-import { getActionListItemTitleValues, ActionsListItemMeta } from '.';
+import { getActionTitleValues } from '../helpers';
+
+import ActionsListItemMeta from './ActionsListItemMeta';
 
 const displayName = 'common.ColonyActions.ActionsListItem';
 
@@ -95,7 +97,7 @@ const ActionsListItem = ({
       status={status}
       // tag={tag}
       title={{ id: 'action.title' }}
-      titleValues={getActionListItemTitleValues(item, colony)}
+      titleValues={getActionTitleValues(item, colony)}
     />
   );
 };

@@ -17,6 +17,7 @@ import UserProfileEdit from '~common/UserProfileEdit';
 import {
   // NavBar, Plain, SimpleNav,
   Default,
+  NavBar,
   UserLayout,
 } from '~frame/RouteLayouts';
 import ColonyBackText from '~frame/ColonyBackText';
@@ -39,6 +40,7 @@ import {
   USER_ROUTE,
   LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
+  ACTIONS_PAGE_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -46,6 +48,7 @@ import {
 import NotFoundRoute from './NotFoundRoute';
 import { ColonyContextProvider } from '~context/ColonyContext';
 import CreateColonyWizard from '~common/CreateColonyWizard';
+import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -136,6 +139,16 @@ const Routes = () => {
               <Default routeProps={{ hasBackLink: false }}>
                 <ColonyHome />
               </Default>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={ACTIONS_PAGE_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <NavBar>
+                <ActionDetailsPage />
+              </NavBar>
             </ColonyContextProvider>
           }
         />
@@ -232,7 +245,7 @@ const Routes = () => {
         <Route path="*" element={<NotFoundRoute />} />
       </RoutesSwitch>
     ),
-    [user],
+    [user, isMobile],
   );
 
   // if (isAppLoading) {

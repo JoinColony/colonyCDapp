@@ -1,25 +1,35 @@
 import React, { HTMLAttributes } from 'react';
-import { FormattedMessage, MessageDescriptor } from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 
 import Icon from '~shared/Icon';
 import { useMainClasses } from '~hooks';
+import { formatText } from '~utils/intl';
 
 import styles from './Tag.css';
 
+export enum TagTheme {
+  Primary = 'primary',
+  Light = 'light',
+  Golden = 'golden',
+  Danger = 'danger',
+  Pink = 'pink',
+  Blue = 'blue',
+  DangerGhost = 'dangerGhost',
+  Banned = 'banned',
+}
+
+export enum TagColorSchema {
+  FullColor = 'fullColor',
+  Inverted = 'inverted',
+  Plain = 'plain',
+}
+
 export interface Appearance {
   /* "light" is default */
-  theme:
-    | 'primary'
-    | 'light'
-    | 'golden'
-    | 'danger'
-    | 'pink'
-    | 'blue'
-    | 'dangerGhost'
-    | 'banned';
+  theme: `${TagTheme}`;
   fontSize?: 'tiny' | 'small';
   /* "fullColor" is default */
-  colorSchema?: 'fullColor' | 'inverted' | 'plain';
+  colorSchema?: `${TagColorSchema}`;
   margin?: 'none';
 }
 
@@ -40,17 +50,13 @@ const Tag = ({ appearance, className, text, textValues, ...rest }: Props) => {
     <span className={classNames} {...rest}>
       {appearance?.theme === 'banned' && (
         <Icon
-          title={text || ''}
+          title={text}
           name="emoji-goblin"
           appearance={{ size: 'normal' }}
           className={styles.icon}
         />
       )}
-      {typeof text === 'string' ? (
-        text
-      ) : (
-        <FormattedMessage {...text} values={textValues} />
-      )}
+      {formatText(text, textValues)}
     </span>
   );
 };
