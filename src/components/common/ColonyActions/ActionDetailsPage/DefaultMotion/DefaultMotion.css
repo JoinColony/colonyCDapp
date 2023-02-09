@@ -1,0 +1,11 @@
+@value bannerHeight from './StakeRequiredBanner/StakeRequiredBanner.css';
+@value DefaultAction: '../DefaultAction/DefaultAction.css';
+
+.main {
+  composes: main from DefaultAction;
+  padding-top: bannerHeight;
+}
+
+.container {
+  composes: container from DefaultAction;
+}

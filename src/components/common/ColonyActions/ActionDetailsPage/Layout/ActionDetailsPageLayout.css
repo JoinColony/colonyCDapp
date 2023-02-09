@@ -9,9 +9,10 @@
 
 .layout {
   display: grid;
-  padding: 90px 0;
+  padding: 90px 0px;
   height: 100%;
   width: 100%;
+  position: relative;
   background-color: white;
   grid-template:
     "left main right" 100%
@@ -20,6 +21,10 @@
 
 .center {
   grid-template: centered;
+}
+
+.noTopPadding {
+  padding-top: 0px;
 }
 
 /* Centre the layout on wider screens */
