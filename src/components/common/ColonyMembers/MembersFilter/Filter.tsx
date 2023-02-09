@@ -2,8 +2,9 @@ import React, { useRef } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
 import { Select } from '~shared/Fields';
+import { SelectOption } from '~shared/Fields/Select';
 
-import { Appearance, SelectOption } from './types';
+import { Appearance } from './types';
 
 const displayName = 'common.ColonyMembers.MembersFilter.Filter';
 

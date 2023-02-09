@@ -39,7 +39,7 @@ export { default as useWindowSize } from './useWindowSize';
 export { default as useAppContext } from './useAppContext';
 export { default as useUserReputation } from './useUserReputation';
 export { default as useMobile } from './useMobile';
-export { default as useColonyMembersSorting } from './useColonyMembersSorting';
+export { default as useSortedContributors } from './useSortedContributors';
 export {
   default as useUserReputationForTopDomains,
   UserDomainReputation,

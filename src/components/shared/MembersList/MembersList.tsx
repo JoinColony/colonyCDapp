@@ -25,7 +25,7 @@ const MembersList = ({
 }: Props) => {
   return (
     <ListGroup appearance={listGroupAppearance}>
-      {members.filter(notNull).map((member: Member) => (
+      {members.filter(notNull).map((member) => (
         <MembersListItem
           extraItemContent={extraItemContent}
           key={member.user?.walletAddress}
