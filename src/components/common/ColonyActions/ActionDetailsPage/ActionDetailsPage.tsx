@@ -6,7 +6,6 @@ import { isTransactionFormat } from '~utils/web3';
 import { useColonyContext } from '~hooks';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import { useGetFullColonyByAddressQuery } from '~gql';
-import { ColonyMotions } from '~types';
 
 import { mockActionData } from '../mockData';
 import {
@@ -66,8 +65,6 @@ const ActionDetailsPage = () => {
     !txColony ||
     txColony.name !== colonyName;
 
-  const isMotion = Object.values(ColonyMotions).includes(action.type);
-
   if (loadingColony) {
     return <LoadingTemplate loadingText={MSG.loading} />;
   }
@@ -85,6 +82,8 @@ const ActionDetailsPage = () => {
       </Layout>
     );
   }
+
+  const isMotion = action.isMotion;
 
   if (isMotion) {
     return (

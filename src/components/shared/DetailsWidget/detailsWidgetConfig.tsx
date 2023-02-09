@@ -5,13 +5,8 @@ import { defineMessages, MessageDescriptor } from 'react-intl';
 import { mockEventData } from '~common/ColonyActions/mockData';
 import { adjustConvertedValue } from '~shared/Numeral';
 import TransactionLink from '~shared/TransactionLink';
-import {
-  Colony,
-  ColonyAction,
-  ColonyActionType,
-  UniversalMessageValues,
-} from '~types';
-import { getDetailsForAction } from '~utils/colonyActions';
+import { Colony, ColonyAction, UniversalMessageValues } from '~types';
+import { ActionPageDetails, getDetailItemsKeys } from '~utils/colonyActions';
 import { findDomain } from '~utils/domains';
 import { splitTransactionHash } from '~utils/strings';
 
@@ -111,76 +106,65 @@ interface DetailItemConfig {
   item: ReactNode;
 }
 
-const getDetailItems = (
+const getMotionDetailItem = (colony: Colony, motionDomainId?: string) => {
+  const motionDomain = findDomain(motionDomainId, colony);
+  return {
+    label: MSG.motionDomain,
+    labelValues: undefined,
+    item: motionDomain && <TeamDetail domain={motionDomain} />,
+  };
+};
+
+const getDetailItemsMap = (
+  colony: Colony,
   {
-    //motionDomain,
     type,
+    transactionHash,
     fromDomain: fromDomainId,
     toDomain: toDomainId,
     amount,
     recipient,
     decimals,
-    transactionHash,
     //token,
+    // roles,
     tokenSymbol,
-  }: // reputationChange,
-  // roles,
+  }: // reputationChange
   typeof mockEventData & ColonyAction,
-  colony: Colony,
-): DetailItemConfig[] => {
-  const detailsForAction = getDetailsForAction(type);
+) => {
   const shortenedHash = getShortenedHash(transactionHash || '');
   const fromDomain = findDomain(fromDomainId, colony);
   const toDomain = findDomain(toDomainId, colony);
   const adjustedAmount = getAdjustedAmount(amount, decimals);
-
+  const recipientWalletAddress = recipient?.walletAddress;
   // const isSmiteAction =
   //   actionType === ColonyActions.EmitDomainReputationPenalty;
-
-  const colonyName = colony.name;
-  return [
-    {
-      label: MSG.actionType,
-      labelValues: undefined,
-      item: <ActionTypeDetail actionType={type} />,
-    },
-    // {
-    //   label: MSG.motionDomain,
-    //   labelValues: undefined,
-    //   item: motionDomain && <TeamDetail domain={motionDomain} />,
-    // },
-    {
+  return {
+    [ActionPageDetails.FromDomain]: {
       label: MSG.fromDomain,
       labelValues: undefined,
-      item: detailsForAction.FromDomain && fromDomain && (
-        <TeamDetail domain={fromDomain} />
-      ),
+      item: fromDomain && <TeamDetail domain={fromDomain} />,
     },
-    {
+    [ActionPageDetails.Domain]: {
       label: MSG.domain,
       labelValues: undefined,
-      item: detailsForAction.Domain && fromDomain && (
-        <TeamDetail domain={fromDomain} />
-      ),
+      item: fromDomain && <TeamDetail domain={fromDomain} />,
     },
-    {
+    [ActionPageDetails.ToDomain]: {
       label: MSG.toRecipient,
       labelValues: undefined,
-      item: detailsForAction.ToDomain && toDomain && (
-        <TeamDetail domain={toDomain} />
-      ),
+      item: toDomain && <TeamDetail domain={toDomain} />,
     },
-    {
+    [ActionPageDetails.ToRecipient]: {
       label: MSG.toRecipient,
       labelValues: undefined,
-      item: detailsForAction.ToRecipient && recipient?.walletAddress && (
-        <UserDetail walletAddress={recipient.walletAddress} />
+      item: recipientWalletAddress && (
+        <UserDetail walletAddress={recipientWalletAddress} />
       ),
     },
-    {
+    [ActionPageDetails.Amount]: {
       label: MSG.value,
       labelValues: undefined,
-      item: detailsForAction.Amount && amount && (
+      item: amount && (
         <AmountDetail
           amount={adjustedAmount}
           symbol={tokenSymbol}
@@ -188,11 +172,11 @@ const getDetailItems = (
         />
       ),
     },
-    {
+    [ActionPageDetails.Author]: {
       label: MSG.author,
       labelValues: undefined,
-      item: detailsForAction.Author && recipient?.walletAddress && (
-        <UserDetail walletAddress={recipient.walletAddress} />
+      item: recipientWalletAddress && (
+        <UserDetail walletAddress={recipientWalletAddress} />
       ),
     },
     // {
@@ -209,22 +193,27 @@ const getDetailItems = (
     //     <RolesDetail roles={roles} />
     //   ),
     // },
-    {
+    [ActionPageDetails.Description]: {
       label: MSG.domainDescription,
       labelValues: undefined,
-      item: detailsForAction.Description && fromDomain?.description && (
+      item: fromDomain?.description && (
         <DomainDescriptionDetail description={fromDomain.description} />
       ),
     },
-    {
+    [ActionPageDetails.Name]: {
       label: MSG.colonyName,
       labelValues: undefined,
-      item: detailsForAction.Name && colonyName,
+      item: colony?.name,
     },
-    {
+    [ActionPageDetails.Type]: {
+      label: MSG.actionType,
+      labelValues: undefined,
+      item: <ActionTypeDetail actionType={type} />,
+    },
+    [ActionPageDetails.Generic]: {
       label: MSG.transactionHash,
       labelValues: undefined,
-      item: !!shortenedHash && type === ColonyActionType.Generic && (
+      item: !!shortenedHash && (
         <TransactionLink
           className={styles.transactionHashLink}
           hash={transactionHash as string}
@@ -233,7 +222,26 @@ const getDetailItems = (
         />
       ),
     },
-  ].filter((detail) => !!detail.item);
+  };
+};
+
+const getDetailItems = (
+  itemData: typeof mockEventData & ColonyAction,
+  colony: Colony,
+): DetailItemConfig[] => {
+  const detailItemsMap = getDetailItemsMap(colony, itemData);
+  const detailItemKeys = getDetailItemsKeys(itemData.type);
+  const motionDetailItem = getMotionDetailItem(colony, itemData.motionDomainId);
+
+  const detailItems = detailItemKeys
+    .map((itemKey) => detailItemsMap[itemKey])
+    .filter((detail) => !!detail.item);
+
+  if (itemData.isMotion) {
+    detailItems.splice(1, 0, motionDetailItem);
+  }
+
+  return detailItems;
 };
 
 export default getDetailItems;

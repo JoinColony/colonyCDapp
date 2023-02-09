@@ -13,6 +13,12 @@ import {
   ColonyAction,
   ColonyActionType,
 } from '~types';
+import { MotionVote } from '~utils/colonyMotions';
+import {
+  AmountTag,
+  Motion as MotionTag,
+  Objection as ObjectionTag,
+} from '~shared/Tag';
 
 import { MockEvent } from '../mockData';
 import { getDomainMetadataValues } from './getDomainValues';
@@ -91,6 +97,19 @@ export const mapColonyEventToExpectedFormat = (
         decimals={item.decimals ?? undefined}
       />
     ),
+    amountTag: (
+      <AmountTag>
+        <Numeral
+          value={item.amount ?? 0}
+          decimals={item.decimals ?? undefined}
+          suffix={item.tokenSymbol ?? ''}
+        />
+      </AmountTag>
+    ),
+    backedSideTag:
+      event.vote === MotionVote.Yay ? <MotionTag /> : <ObjectionTag />,
+    motionTag: <MotionTag />,
+    objectionTag: <ObjectionTag />,
     // ...getColonyRoleSetTitleValues(role?.setTo),
     domainMetadataChanged,
     newDomainMetadata: getDomainMetadataValues(newValues, newColor),
@@ -110,6 +129,11 @@ export const mapColonyEventToExpectedFormat = (
     recipient: (
       <span className={styles.userDecoration}>
         <FriendlyName user={item.recipient} autoShrinkAddress />
+      </span>
+    ),
+    staker: (
+      <span className={styles.userDecoration}>
+        <FriendlyName user={event.staker} autoShrinkAddress />
       </span>
     ),
     isSmiteAction: item.type === ColonyActionType.EmitDomainReputationPenalty,

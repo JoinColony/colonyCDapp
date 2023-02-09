@@ -92,25 +92,25 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
   // [ColonyAndExtensionsEvents.RecoveryModeExited]: [
   //   EventTitleMessageKeys.Initiator,
   // ],
-  // [ColonyAndExtensionsEvents.MotionCreated]: [
-  //   EventTitleMessageKeys.Initiator,
-  //   EventTitleMessageKeys.MotionTag,
-  // ],
-  // [ColonyAndExtensionsEvents.MotionStaked]: [
-  //   EventTitleMessageKeys.Staker,
-  //   EventTitleMessageKeys.BackedSideTag,
-  //   EventTitleMessageKeys.AmountTag,
-  // ],
-  // [ColonyAndExtensionsEvents.MotionFinalized]: [
-  //   EventTitleMessageKeys.MotionTag,
-  // ],
-  // [ColonyAndExtensionsEvents.ObjectionRaised]: [
-  //   EventTitleMessageKeys.Staker,
-  //   EventTitleMessageKeys.ObjectionTag,
-  // ],
-  // [ColonyAndExtensionsEvents.MotionRewardClaimed]: [
-  //   EventTitleMessageKeys.Staker,
-  // ],
+  [ColonyAndExtensionsEvents.MotionCreated]: [
+    EventTitleMessageKeys.Initiator,
+    EventTitleMessageKeys.MotionTag,
+  ],
+  [ColonyAndExtensionsEvents.MotionStaked]: [
+    EventTitleMessageKeys.Staker,
+    EventTitleMessageKeys.BackedSideTag,
+    EventTitleMessageKeys.AmountTag,
+  ],
+  [ColonyAndExtensionsEvents.MotionFinalized]: [
+    EventTitleMessageKeys.MotionTag,
+  ],
+  [ColonyAndExtensionsEvents.ObjectionRaised]: [
+    EventTitleMessageKeys.Staker,
+    EventTitleMessageKeys.ObjectionTag,
+  ],
+  [ColonyAndExtensionsEvents.MotionRewardClaimed]: [
+    EventTitleMessageKeys.Staker,
+  ],
   [ColonyAndExtensionsEvents.ColonyMetadata]: [
     EventTitleMessageKeys.Initiator,
     EventTitleMessageKeys.Changed,
