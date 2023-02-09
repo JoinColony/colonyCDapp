@@ -398,6 +398,7 @@ type CurrentVersion @model {
 }
 
 type ColonyAction @model {
+  # Required fields common for all actions
   id: ID!
   colonyId: ID!
     @index(
@@ -409,6 +410,7 @@ type ColonyAction @model {
   type: ColonyActionType!
   blockNumber: Int!
   createdAt: AWSDateTime!
+  # Action type specific fields which might be null
   initiatorAddress: ID
   initiator: User @hasOne(fields: ["initiatorAddress"])
   recipientAddress: ID
@@ -418,4 +420,5 @@ type ColonyAction @model {
   token: Token @hasOne(fields: ["tokenAddress"])
   fromDomain: String
   toDomain: String
+  fundamentalChainId: Int
 }
