@@ -8,7 +8,6 @@ import { Contributor, Member, MemberUser } from '~types';
 import { getMainClasses } from '~utils/css';
 import { useColonyContext, useMobile } from '~hooks';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
-import { notNull } from '~utils/arrays';
 
 import MemberActions from './Actions';
 import MemberInfo from './MemberInfo';
@@ -40,11 +39,6 @@ const MembersListItem = ({
     [extraItemContent, user],
   );
 
-  const nativeToken = colony?.tokens?.items
-    .filter(notNull)
-    .find(
-      ({ token }) => token?.tokenAddress === colony.nativeToken.tokenAddress,
-    );
   const isMobile = useMobile();
   // Temp hardcoded values until the features are implemented
   const isWhitelisted = false;
@@ -78,7 +72,7 @@ const MembersListItem = ({
           <div className={styles.reputationSection}>
             <MemberReputation
               nativeTokenDecimals={
-                nativeToken?.token.decimals || DEFAULT_TOKEN_DECIMALS
+                colony?.nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS
               }
               userReputation={reputationAmount || ''}
               userReputationPercentage={reputationPercentage || ''}
