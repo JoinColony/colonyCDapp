@@ -6,12 +6,14 @@ import { isTransactionFormat } from '~utils/web3';
 import { useColonyContext } from '~hooks';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import { useGetFullColonyByAddressQuery } from '~gql';
+import { ColonyMotions } from '~types';
 
 import { mockActionData } from '../mockData';
 import {
   TransactionNotFound,
   ActionDetailsPageLayout as Layout,
   DefaultAction,
+  DefaultMotion,
 } from '.';
 
 const displayName = 'common.ColonyActions.ActionDetailsPage';
@@ -64,6 +66,8 @@ const ActionDetailsPage = () => {
     !txColony ||
     txColony.name !== colonyName;
 
+  const isMotion = Object.values(ColonyMotions).includes(action.type);
+
   if (loadingColony) {
     return <LoadingTemplate loadingText={MSG.loading} />;
   }
@@ -82,7 +86,13 @@ const ActionDetailsPage = () => {
     );
   }
 
-  // Motions go here...
+  if (isMotion) {
+    return (
+      <Layout isMotion>
+        <DefaultMotion item={action} />
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

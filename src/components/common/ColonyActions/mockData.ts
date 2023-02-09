@@ -2,7 +2,14 @@ import { BigNumber } from 'ethers';
 import { nanoid } from 'nanoid';
 import { DomainColor } from '~gql';
 
-import { Address, ColonyAction, ColonyActionType, User } from '~types';
+import {
+  Address,
+  ColonyAction,
+  ColonyActionType,
+  ColonyMotions,
+  User,
+} from '~types';
+import { MotionVote } from '~utils/colonyMotions';
 
 const paymentActionValues: {
   tokenAddress: Address;
@@ -68,6 +75,15 @@ export const mockActionData: ColonyAction[] = [
     type: ColonyActionType.ColonyEdit,
     transactionHash:
       '0xb60f6e4719d73a84b3f5b116a807bbbc1fa5170ef1370921d3bad71c2c6b70fd',
+  },
+  {
+    id: nanoid(),
+    createdAt: '1995-02-17T03:24:00',
+    ...coreData,
+    ...colonyEditValues,
+    type: ColonyMotions.ColonyEditMotion,
+    transactionHash:
+      '0x997c054a4397768e033fb483bfbefee50c4afae170df94ebcc5619c2f57aec1a',
   },
   {
     id: nanoid(),
@@ -217,4 +233,7 @@ export const mockEventData = {
   emittedBy: '0xCd96D435128415F3265c32f9eaeFaCc6Be53b7D7',
   slot: 'SlotOne',
   stakeAmount: BigNumber.from(123),
+  vote: MotionVote.Yay,
+  staker: fakeUser,
+  motionDomainId: '1',
 };

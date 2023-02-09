@@ -2,11 +2,10 @@ import React from 'react';
 
 import { mockEventData } from '~common/ColonyActions/mockData';
 import DetailsWidget from '~shared/DetailsWidget';
-import { MotionTag } from '~shared/Tag';
 
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { ColonyAction } from '~types';
-import { MotionState, MOTION_TAG_MAP } from '~utils/colonyMotions';
+import { Forced as ForcedTag } from '~shared/Tag';
 
 import DefaultActionContent from './DefaultActionContent';
 
@@ -21,17 +20,18 @@ interface DefaultActionProps {
 const DefaultAction = ({ item }: DefaultActionProps) => {
   const { colony } = useColonyContext();
 
+  const {
+    enabledExtensions: { isVotingReputationEnabled },
+  } = useEnabledExtensions();
+
   if (!colony) {
     return null;
   }
 
-  const isVotingExtensionEnabled = false;
-  const motionStyles = MOTION_TAG_MAP[MotionState.Forced];
-
   return (
     <div className={styles.main}>
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
-      {isVotingExtensionEnabled && <MotionTag motionStyles={motionStyles} />}
+      {isVotingReputationEnabled && <ForcedTag />}
       <div className={styles.container}>
         <DefaultActionContent item={item} colony={colony} />
         <DetailsWidget values={{ ...mockEventData, ...item }} colony={colony} />
