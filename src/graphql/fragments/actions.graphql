@@ -1,8 +1,7 @@
 fragment ColonyAction on ColonyAction {
-  id
+  transactionHash: id
   type
   blockNumber
-  transactionHash
   initiatorAddress
   initiator {
     ...User
@@ -17,4 +16,8 @@ fragment ColonyAction on ColonyAction {
   fromDomain
   toDomain
   createdAt
+  isMotion
+  colony {
+    colonyName: name
+  }
 }

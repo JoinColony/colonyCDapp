@@ -419,7 +419,7 @@ type ColonyAction @model {
   colony: Colony! @belongsTo(fields: ["colonyId"])
   type: ColonyActionType!
   blockNumber: Int!
-  transactionHash: String!
+  isMotion: Boolean
   createdAt: AWSDateTime!
   initiatorAddress: ID
   initiator: User @hasOne(fields: ["initiatorAddress"])
