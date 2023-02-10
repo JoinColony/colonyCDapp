@@ -5,7 +5,7 @@ import { ContextModule, getContext } from '~context';
 import { GetColonyActionDocument, GetColonyActionQuery } from '~gql';
 import { ActionTypes } from '~redux/actionTypes';
 
-const POLLING_DELAY_IN_MS = 3000;
+const POLLING_INTERVAL_IN_MS = 3000;
 
 /**
  * Util function polling Amplify to check whether an action with a given transaction hash
@@ -14,7 +14,10 @@ const POLLING_DELAY_IN_MS = 3000;
 export function* waitForIngestorToHandleAction(transactionHash: string) {
   yield race({
     task: call(pollAction, transactionHash),
-    cancel: take(ActionTypes.CANCEL_ACTION_POLLING),
+    cancel: take([
+      ActionTypes.POLLING_ACTION_SUCCESS,
+      ActionTypes.POLLING_ACTION_ERROR,
+    ]),
   });
 }
 
@@ -31,12 +34,12 @@ function* pollAction(transactionHash: string) {
       })) as ApolloQueryResult<GetColonyActionQuery>;
 
       if (result.data.getColonyAction) {
-        yield put({ type: ActionTypes.CANCEL_ACTION_POLLING });
+        yield put({ type: ActionTypes.POLLING_ACTION_SUCCESS });
       } else {
-        yield delay(POLLING_DELAY_IN_MS);
+        yield delay(POLLING_INTERVAL_IN_MS);
       }
     } catch {
-      yield put({ type: ActionTypes.CANCEL_ACTION_POLLING });
+      yield put({ type: ActionTypes.POLLING_ACTION_ERROR });
     }
   }
 }
