@@ -1,17 +1,24 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, Id, getChildIndex } from '@colony/colony-js';
+import {
+  ClientType,
+  Id,
+  getChildIndex,
+  AnyColonyClient,
+} from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
+
+import { ColonyManager } from '~context';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom, routeRedirect, getColonyManager } from '../utils';
+import { transactionReady, transactionPending } from '../../actionCreators';
 
+import { putError, takeFrom, getColonyManager } from '../utils';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady, transactionPending } from '../../actionCreators';
 
 function* createRootMotionSaga({
   payload: {
@@ -21,7 +28,7 @@ function* createRootMotionSaga({
     motionParams,
     annotationMessage,
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ROOT_MOTION>) {
   let txChannel;
@@ -30,8 +37,9 @@ function* createRootMotionSaga({
       throw new Error('Parameters not set for rootMotion transaction');
     }
 
-    const colonyManager = yield getColonyManager();
-    const colonyClient = yield colonyManager.getClient(
+    const colonyManager: ColonyManager = yield getColonyManager();
+
+    const colonyClient: AnyColonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
@@ -148,7 +156,7 @@ function* createRootMotionSaga({
     });
 
     if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+      navigate(`/colony/${colonyName}/tx/${txHash}`);
     }
   } catch (caughtError) {
     putError(ActionTypes.ROOT_MOTION_ERROR, caughtError, meta);
