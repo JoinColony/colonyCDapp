@@ -47,6 +47,7 @@ export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
 export { default as useExtensionData } from './useExtensionData';
 export { default as useExtensionsData } from './useExtensionsData';
 export { default as usePaginatedActions } from './usePaginatedActions';
+export { default as useGetColonyAction } from './useGetColonyAction';
 export * from './useCanInteractWithColony';
 
 /* Used in cases where we need to memoize the transformed output of any data.
