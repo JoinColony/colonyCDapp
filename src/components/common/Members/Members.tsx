@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 import { sortBy } from '~utils/lodash';
@@ -11,12 +11,13 @@ import {
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
   ALLDOMAINS_DOMAIN_SELECTION,
 } from '~constants';
-import { User, Colony } from '~types';
+import { User, Colony, Contributor, Watcher } from '~types';
 import { notNull } from '~utils/arrays';
+import { FormValues } from '~common/ColonyMembers/MembersFilter';
 
 import MembersTitle from './MembersTitle';
 import MembersContent from './MembersContent';
-// import { filterMembers } from './filterMembers';
+import { filterMembers } from './filterMembers';
 
 import styles from './Members.css';
 
@@ -40,8 +41,7 @@ const MSG = defineMessages({
 interface Props {
   selectedDomain?: number;
   handleDomainChange: React.Dispatch<React.SetStateAction<number>>;
-  filters: any;
-  // filters: FiltersFormValues;
+  filters: FormValues;
 }
 
 export type Member = User & {
@@ -67,6 +67,8 @@ const getDomainSelectOptions = (colony?: Colony) => {
 const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
   const { colony } = useColonyContext();
   const [searchValue, setSearchValue] = useState<string>('');
+  const [contributors, setContributors] = useState<Contributor[]>([]);
+  const [watchers, setWatchers] = useState<Watcher[]>([]);
   const sortingMethod = SortingMethod.ByHighestRep;
 
   const { data, loading: loadingMembers } = useGetMembersForColonyQuery({
@@ -81,18 +83,41 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const contributors =
-    data?.getMembersForColony?.contributors?.filter(notNull) ?? [];
-  const watchers = data?.getMembersForColony?.watchers?.filter(notNull) ?? [];
+  useEffect(() => {
+    setContributors(
+      data?.getMembersForColony?.contributors?.filter(notNull) ?? [],
+    );
+    setWatchers(data?.getMembersForColony?.watchers?.filter(notNull) ?? []);
+  }, [data]);
+
+  const filterContributorsAndWatchers = useCallback(() => {
+    const filteredContributors = filterMembers<Contributor>(
+      data?.getMembersForColony?.contributors || [],
+      searchValue,
+      filters,
+    );
+    setContributors(filteredContributors);
+    const filteredWatchers = filterMembers<Watcher>(
+      data?.getMembersForColony?.watchers || [],
+      searchValue,
+      filters,
+    );
+    setWatchers(filteredWatchers);
+  }, [data, filters, searchValue]);
 
   // handles search values & close button
   const handleSearch = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = event.target?.value || '';
       setSearchValue(value);
+      filterContributorsAndWatchers();
     },
-    [setSearchValue],
+    [filterContributorsAndWatchers, setSearchValue],
   );
+
+  useEffect(() => {
+    filterContributorsAndWatchers();
+  }, [filterContributorsAndWatchers, filters]);
 
   if (loadingMembers && !data) {
     return (
