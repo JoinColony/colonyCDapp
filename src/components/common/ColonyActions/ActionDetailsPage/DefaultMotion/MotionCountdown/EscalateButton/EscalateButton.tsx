@@ -46,9 +46,7 @@ const EscalateButton = ({ motionId, userAddress }: EscalateButtonProps) => {
     <div className={styles.escalation}>
       <ActionButton
         appearance={{ theme: 'blue', size: 'small' }}
-        submit={ActionTypes.MOTION_ESCALATE}
-        error={ActionTypes.MOTION_ESCALATE_ERROR}
-        success={ActionTypes.MOTION_ESCALATE_SUCCESS}
+        actionType={ActionTypes.MOTION_ESCALATE}
         transform={escalateTransform}
         text={MSG.escalate}
         /*
