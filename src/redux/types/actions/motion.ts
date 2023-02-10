@@ -10,6 +10,7 @@ import {
   UniqueActionTypeWithoutPayload,
   ActionTypeWithMeta,
   MetaWithHistory,
+  MetaWithNavigate,
 } from './index';
 
 export enum RootMotionMethodNames {
@@ -183,7 +184,7 @@ export type MotionActionTypes =
         motionParams: [BigNumber] | [string];
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ROOT_MOTION_ERROR, object>
   | ActionTypeWithMeta<ActionTypes.ROOT_MOTION_SUCCESS, MetaWithHistory<object>>
