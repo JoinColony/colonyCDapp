@@ -7,10 +7,10 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import LoadMoreButton from '~shared/LoadMoreButton';
 import ActionsList from '~shared/ActionsList';
 import { ActionButton } from '~shared/Button';
-import { ActionTypes } from '~redux';
 import { useAppContext, useColonyContext, usePaginatedActions } from '~hooks';
 import { mergePayload, pipe, withMeta } from '~utils/actions';
 import { DomainColor } from '~types';
+import { ActionTypes, RootMotionMethodNames } from '~redux';
 
 import { ActionsListHeading } from '.';
 
@@ -46,6 +46,11 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
     hasMoreActions,
     loadMoreActions,
   } = usePaginatedActions();
+
+  // only to test root motion saga
+  const {
+    enabledExtensions: { isVotingReputationEnabled },
+  } = useEnabledExtensions();
 
   if (!colony) {
     return null;
@@ -170,21 +175,28 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
     );
   }
 
+  const isForce = false;
+  const isMotion = !!isVotingReputationEnabled && !isForce;
+  const actionType = isMotion
+    ? ActionTypes.ROOT_MOTION
+    : ActionTypes.ACTION_MINT_TOKENS;
+
+  const amount = BigNumber.from(1);
+  const transform = withMeta({ navigate });
+
   return (
     <div className={styles.main}>
       <ActionButton
-        submit={ActionTypes.ACTION_MINT_TOKENS}
-        error={ActionTypes.ACTION_MINT_TOKENS_ERROR}
-        success={ActionTypes.ACTION_MINT_TOKENS_SUCCESS}
-        transform={pipe(
-          mergePayload({
-            colonyAddress: colony.colonyAddress,
-            colonyName: colony.name,
-            nativeTokenAddress: colony.nativeToken.tokenAddress,
-            amount: BigNumber.from(5).mul(BigNumber.from(10).pow(18)), // this is in wei
-          }),
-          withMeta({ navigate }),
-        )}
+        actionType={actionType}
+        values={{
+          operationName: RootMotionMethodNames.MINT_TOKENS,
+          colonyAddress: colony.colonyAddress,
+          colonyName: colony.name,
+          nativeTokenAddress: colony.nativeToken.tokenAddress,
+          motionParams: [amount],
+          amount,
+        }}
+        transform={transform}
         text="Test Mint Tokens"
       />
       <ActionButton

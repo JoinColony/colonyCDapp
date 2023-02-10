@@ -1,5 +1,4 @@
 fragment ColonyAction on ColonyAction {
-  id
   transactionHash: id
   colonyAddress: colonyId
   type
@@ -25,4 +24,8 @@ fragment ColonyAction on ColonyAction {
   }
   createdAt
   newColonyVersion
+  isMotion
+  colony {
+    colonyName: name
+  }
 }

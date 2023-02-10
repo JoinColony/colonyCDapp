@@ -47,6 +47,7 @@ export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
 export { default as useExtensionData } from './useExtensionData';
 export { default as useExtensionsData } from './useExtensionsData';
 export { default as usePaginatedActions } from './usePaginatedActions';
+export { default as useGetColonyAction } from './useGetColonyAction';
 export * from './useCanInteractWithColony';
 export { default as useColonyFundsClaims } from './useColonyFundsClaims';
 export { default as useCurrentSelectedToken } from './useCurrentSelectedToken';
