@@ -51,6 +51,7 @@ export const mapColonyActionToExpectedFormat = (
       </span>
     ),
     toDomain: findDomain(item.toDomain, colony)?.name,
+    tokenSymbol: item.token?.symbol,
     // reputationChangeNumeral: item.reputationChange && (
     //   <Numeral value={item.reputationChange} decimals={Number(item.decimals)} />
     // ),
@@ -114,6 +115,7 @@ export const mapColonyEventToExpectedFormat = (
       </span>
     ),
     isSmiteAction: item.type === ColonyActionType.EmitDomainReputationPenalty,
+    tokenSymbol: item.token?.symbol,
     // reputationChange:
     //   item.reputationChange &&
     //   formatReputationChange(item.reputationChange, item.decimals),
