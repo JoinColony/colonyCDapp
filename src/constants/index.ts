@@ -142,9 +142,9 @@ export const DEFAULT_NETWORK_INFO = NETWORK_DATA[DEFAULT_NETWORK];
 export const ALLDOMAINS_DOMAIN_SELECTION = {
   id: String(COLONY_TOTAL_BALANCE_DOMAIN_ID),
   color: Color.Yellow,
-  ethDomainId: COLONY_TOTAL_BALANCE_DOMAIN_ID,
+  nativeId: COLONY_TOTAL_BALANCE_DOMAIN_ID,
   name: 'All Teams',
-  ethParentDomainId: null,
+  parentId: null,
   description: '',
 };
 

@@ -18,16 +18,6 @@
     }
   },
   "function": {
-    "fetchTokenFromChain": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "createUniqueUser": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "createUniqueColony": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -38,12 +28,12 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "getUserReputation": {
+    "createUniqueUser": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "getReputationForTopDomains": {
+    "fetchTokenFromChain": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -64,6 +54,16 @@
       "service": "Lambda"
     },
     "setCurrentVersion": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getUserReputation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getReputationForTopDomains": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"

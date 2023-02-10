@@ -2,7 +2,8 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import Heading from '~shared/Heading';
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useMobile } from '~hooks';
+import ColonyAddress from './ColonyAddress';
 
 import ColonySubscription from '../ColonySubscription';
 
@@ -19,6 +20,7 @@ const MSG = defineMessages({
 
 const ColonyTitle = () => {
   const { colony } = useColonyContext();
+  const isMobile = useMobile();
 
   if (!colony) {
     return null;
@@ -39,6 +41,7 @@ const ColonyTitle = () => {
             text={profile?.displayName || name || MSG.fallbackColonyName}
             data-test="colonyTitle"
           />
+          {isMobile && <ColonyAddress colonyAddress={colony.colonyAddress} />}
         </div>
         <div>
           <ColonySubscription />

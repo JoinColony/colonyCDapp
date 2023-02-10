@@ -1,3 +1,4 @@
+@value query700 from '~styles/queries.css';
 
 .main {
   composes: stretchHorizontal from '~styles/layout.css';
@@ -16,7 +17,8 @@
 
 .rightAside {
   display: flex;
-  padding: 200px 0 20px 100px;
+  flex-direction: column;
+  padding: 153px 0 20px 85px;
   width: 26.5%;
 }
 
@@ -27,6 +29,35 @@
   position: relative;
 }
 
-.controls li + li {
-  margin: 18px 0 0;
+@media screen and query700 {
+  .main {
+    height: 100%;
+    min-height: 715px;
+  }
+
+  .mainContentGrid {
+    display: grid;
+    margin: 0;
+    width: 100%;
+    grid-template:
+      "joinColony" auto
+      "membersSection" auto
+      / 1fr;
+  }
+
+  .mainContent {
+    margin: 0;
+    padding: 0;
+    padding-bottom: 60px;
+    grid-area: membersSection;
+  }
+
+  .loadingWrapper {
+    margin: 0;
+    width: 100%;
+  }
+
+  .rightAside {
+    display: none;
+  }
 }

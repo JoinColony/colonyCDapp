@@ -7,13 +7,13 @@ import { useColonyContext } from '~hooks';
 import ColonyDomainSelector from './ColonyDomainSelector';
 import ColonyFundingWidget from './ColonyFundingWidget';
 // import ColonyUnclaimedTransfers from './ColonyUnclaimedTransfers';
-import ColonyTitle from './ColonyTitle';
-import ColonyNavigation from './ColonyNavigation';
 import ColonyMembersWidget from './ColonyMembersWidget';
 import ColonyExtensions from './ColonyExtensionsWidget';
 import ColonyDomainDescription from './ColonyDomainDescription';
 // import ColonyUpgrade from './ColonyUpgrade';
 import OneTxPaymentUpgrade from './OneTxPaymentUpgrade';
+// import ExtensionUpgrade from './ExtensionUpgrade';
+import ColonyHomeInfo from './ColonyHomeInfo';
 
 import styles from './ColonyHomeLayout.css';
 
@@ -26,7 +26,6 @@ type Props = {
    */
   children: ReactNode;
   showControls?: boolean;
-  showNavigation?: boolean;
   showSidebar?: boolean;
   showActions?: boolean;
   // ethDomainId?: number;
@@ -39,7 +38,6 @@ const ColonyHomeLayout = ({
   children,
   // ethDomainId,
   showControls = true,
-  showNavigation = true,
   showSidebar = true,
   showActions = true,
   onDomainChange = () => null,
@@ -55,10 +53,7 @@ const ColonyHomeLayout = ({
       <div
         className={showSidebar ? styles.mainContentGrid : styles.minimalGrid}
       >
-        <aside className={styles.leftAside}>
-          <ColonyTitle />
-          {showNavigation && <ColonyNavigation />}
-        </aside>
+        <ColonyHomeInfo />
         <div className={styles.mainContent}>
           {showControls && (
             <>

@@ -1,11 +1,17 @@
 declare namespace ColonyMembersCssNamespace {
   export interface IColonyMembersCss {
-    controls: string;
     loadingWrapper: string;
     main: string;
     mainContent: string;
     mainContentGrid: string;
+    mappings: string;
+    names: string;
+    query700: string;
     rightAside: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
+    version: string;
   }
 }
 
