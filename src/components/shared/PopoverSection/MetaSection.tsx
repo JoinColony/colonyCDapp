@@ -24,9 +24,7 @@ const MetaSection = () => {
         <ActionButton
           appearance={{ theme: 'no-style' }}
           text={MSG.signOut}
-          submit={ActionTypes.USER_LOGOUT}
-          error={ActionTypes.USER_LOGOUT_ERROR}
-          success={ActionTypes.USER_LOGOUT_SUCCESS}
+          actionType={ActionTypes.USER_LOGOUT}
           onSuccess={updateWallet}
         />
       </DropdownMenuItem>
