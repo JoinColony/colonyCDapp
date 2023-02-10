@@ -27,7 +27,7 @@ export default function* getNetworkClient() {
   let reputationOracleUrl = new URL(`/reputation`, window.location.origin);
 
   if (DEFAULT_NETWORK === Network.Ganache) {
-    reputationOracleUrl = new URL(`/reputation`, 'http://localhost:3001');
+    reputationOracleUrl = new URL(`/reputation/local`, 'http://localhost:3001');
     const {
       etherRouterAddress: networkAddress,
       // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
