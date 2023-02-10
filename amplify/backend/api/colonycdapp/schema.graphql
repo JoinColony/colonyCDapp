@@ -500,6 +500,7 @@ type ColonyAction @model {
   colony: Colony! @belongsTo(fields: ["colonyId"])
   type: ColonyActionType!
   blockNumber: Int!
+  isMotion: Boolean
   createdAt: AWSDateTime!
   # Action type specific fields which might be null
   initiatorAddress: ID # Amplify will automatically populate one of the following fields with related model if there is an initiator
