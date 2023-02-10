@@ -48,9 +48,7 @@ const ExtensionActionButton = ({ extensionData }: Props) => {
     return (
       <ActionButton
         button={IconButton}
-        submit={ActionTypes.EXTENSION_INSTALL}
-        error={ActionTypes.EXTENSION_INSTALL_ERROR}
-        success={ActionTypes.EXTENSION_INSTALL_SUCCESS}
+        actionType={ActionTypes.EXTENSION_INSTALL}
         values={{
           colonyAddress: colony.colonyAddress,
           extensionData,
