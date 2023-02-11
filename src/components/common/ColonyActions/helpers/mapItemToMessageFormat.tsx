@@ -42,7 +42,7 @@ export const mapColonyActionToExpectedFormat = (
     fromDomain: findDomain(item.fromDomain, colony)?.name,
     initiator: (
       <span className={styles.titleDecoration}>
-        <FriendlyName user={item.initiator} autoShrinkAddress />
+        <FriendlyName user={item.initiatorUser} autoShrinkAddress />
       </span>
     ),
     recipient: (
@@ -106,7 +106,7 @@ export const mapColonyEventToExpectedFormat = (
     ),
     initiator: (
       <span className={styles.userDecoration}>
-        <FriendlyName user={item.initiator} autoShrinkAddress />
+        <FriendlyName user={item.initiatorUser} autoShrinkAddress />
       </span>
     ),
     recipient: (

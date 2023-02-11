@@ -77,7 +77,7 @@ const ActionsListItem = ({
       avatar={
         <UserAvatar
           size="s"
-          user={item.initiator}
+          user={item.initiatorUser}
           showInfo
           popperOptions={userAvatarPopoverOptions}
         />
