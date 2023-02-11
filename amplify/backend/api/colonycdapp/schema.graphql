@@ -411,8 +411,10 @@ type ColonyAction @model {
   blockNumber: Int!
   createdAt: AWSDateTime!
   # Action type specific fields which might be null
-  initiatorAddress: ID
-  initiator: User @hasOne(fields: ["initiatorAddress"])
+  initiatorAddress: ID # Amplify will automatically populate one of the following fields with related model if there is an initiator
+  initiatorUser: User @hasOne(fields: ["initiatorAddress"])
+  initiatorExtension: ColonyExtension @hasOne(fields: ["initiatorAddress"])
+  initiatorColony: Colony @hasOne(fields: ["initiatorAddress"])
   recipientAddress: ID
   recipient: User @hasOne(fields: ["recipientAddress"])
   amount: String
