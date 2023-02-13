@@ -16,7 +16,7 @@ import {
   DialogControls,
 } from '~shared/Dialog';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import PermissionsLabel from '~shared/PermissionsLabel';
+import NoPermissionMessage from '~shared/NoPermissionMessage';
 import { Annotations } from '~shared/Fields';
 import { getAllUserRoles } from '~redux/transformers';
 import { hasRoot } from '~utils/checks';
@@ -149,21 +149,7 @@ const UnlockTokenForm = ({ colony, back }: ActionDialogProps) => {
       )}
       {!hasRootPermission && ( // || isVotingExtensionEnabled && isNativeTokenLocked &&
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionMessage}>
-            <FormattedMessage
-              {...MSG.noPermission}
-              values={{
-                roleRequired: (
-                  <PermissionsLabel
-                    permission={ColonyRole.Root}
-                    name={{
-                      id: `role.${ColonyRole.Root}`,
-                    }}
-                  />
-                ),
-              }}
-            />
-          </div>
+          <NoPermissionMessage requiredPermissions={[ColonyRole.Root]} />
         </DialogSection>
       )}
       {/* {onlyForceAction && isNativeTokenLocked && <NotEnoughReputation />}

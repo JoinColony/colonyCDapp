@@ -1,7 +1,6 @@
 declare namespace UnlockTokenFormCssNamespace {
   export interface IUnlockTokenFormCss {
     learnMoreLink: string;
-    noPermissionMessage: string;
     note: string;
     unlocked: string;
     wrapper: string;
