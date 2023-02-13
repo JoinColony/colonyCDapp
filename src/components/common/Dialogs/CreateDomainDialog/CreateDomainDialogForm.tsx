@@ -38,12 +38,6 @@ const MSG = defineMessages({
     id: `${displayName}.annotation`,
     defaultMessage: 'Explain why you’re creating this team (optional)',
   },
-  noPermission: {
-    id: `${displayName}.noPermission`,
-    defaultMessage:
-      // eslint-disable-next-line max-len
-      'You need the {roleRequired} permission in {domain} to take this action.',
-  },
   cannotCreateMotion: {
     id: `${displayName}.cannotCreateMotion`,
     defaultMessage: `Cannot create motions using the Governance v{version} Extension. Please upgrade to a newer version (when available)`,

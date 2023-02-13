@@ -44,11 +44,6 @@ const MSG = defineMessages({
     id: `${displayName}.annotation`,
     defaultMessage: 'Explain why you’re making this payment (optional)',
   },
-  noPermissionFrom: {
-    id: `${displayName}.noPermissionFrom`,
-    defaultMessage: `You do not have the {firstRoleRequired} and
-    {secondRoleRequired} permissions required to take this action.`,
-  },
   noOneTxExtension: {
     id: `${displayName}.noOneTxExtension`,
     defaultMessage: `The OneTxPayment extension is not installed in this colony.

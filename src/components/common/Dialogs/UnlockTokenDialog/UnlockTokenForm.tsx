@@ -50,11 +50,6 @@ const MSG = defineMessages({
     defaultMessage:
       'Please note: this action is irreversible. Use with caution',
   },
-  noPermission: {
-    id: `${displayName}.noPermission`,
-    defaultMessage: `You do not have the {roleRequired} permission required
-      to take this action.`,
-  },
   unlockedDescription: {
     id: `${displayName}.unlockedDescription`,
     defaultMessage: `Your colony’s native token has already been unlocked.`,

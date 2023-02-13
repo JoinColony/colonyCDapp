@@ -45,11 +45,6 @@ const MSG = defineMessages({
     id: `${displayName}.annotationLabel`,
     defaultMessage: `Explain why you're minting more tokens (optional)`,
   },
-  noPermission: {
-    id: `${displayName}.noPermission`,
-    defaultMessage: `You do not have the {roleRequired} permission required
-      to take this action.`,
-  },
   cannotCreateMotion: {
     id: `${displayName}.cannotCreateMotion`,
     defaultMessage: `Cannot create motions using the Governance v{version} Extension. Please upgrade to a newer version (when available)`,

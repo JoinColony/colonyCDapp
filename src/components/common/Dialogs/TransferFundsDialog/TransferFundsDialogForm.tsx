@@ -40,11 +40,6 @@ const MSG = defineMessages({
     id: `${displayName}.annotation`,
     defaultMessage: 'Explain why you’re transferring these funds (optional)',
   },
-  noPermissionFrom: {
-    id: `${displayName}.noPermissionFrom`,
-    defaultMessage: `You need the {permissionLabel} permission in {domainName}
-      to take this action`,
-  },
   cannotCreateMotion: {
     id: `${displayName}.cannotCreateMotion`,
     defaultMessage: `Cannot create motions using the Governance v{version} Extension. Please upgrade to a newer version (when available)`,
