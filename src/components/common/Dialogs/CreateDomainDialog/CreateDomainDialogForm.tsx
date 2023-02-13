@@ -1,38 +1,25 @@
-import React, { useState } from 'react';
-import {
-  ColonyRole,
-  // VotingReputationVersion,
-} from '@colony/colony-js';
-import { FormattedMessage, defineMessages } from 'react-intl';
-import { FormState } from 'react-hook-form';
+import React from 'react';
+import { ColonyRole, Id } from '@colony/colony-js';
+import { defineMessages } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
 
-import Button from '~shared/Button';
 import ColorSelect from '~shared/ColorSelect';
-import { ActionDialogProps, DialogSection } from '~shared/Dialog';
-import { HookFormInput as Input, Annotations } from '~shared/Fields';
-import { Heading3 } from '~shared/Heading';
-import PermissionsLabel from '~shared/PermissionsLabel';
-import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-// import ForceToggle from '~shared/Fields/ForceToggle';
-// import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-// import MotionDomainSelect from '~dashboard/MotionDomainSelect';
-
-import { Color } from '~types';
-
 import {
-  useTransformer,
-  useDialogActionPermissions,
-  useAppContext,
-} from '~hooks'; // useEnabledExtensions
-import { getAllUserRoles } from '~redux/transformers';
-import { canArchitect } from '~utils/checks';
+  ActionDialogProps,
+  DialogControls,
+  DialogHeading,
+  DialogSection,
+} from '~shared/Dialog';
+import { HookFormInput as Input, Annotations } from '~shared/Fields';
+import NoPermissionMessage from '~shared/NoPermissionMessage';
+import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
+// import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
-import { FormValues } from './CreateDomainDialog';
+import { useDialogActionPermissions } from '~hooks'; // useEnabledExtensions
 
 import styles from './CreateDomainDialogForm.css';
 
-const displayName =
-  'common.ColonyHome.CreateDomainDialog.CreateDomainDialogForm';
+const displayName = 'common.CreateDomainDialog.CreateDomainDialogForm';
 
 const MSG = defineMessages({
   titleCreate: {
@@ -63,29 +50,10 @@ const MSG = defineMessages({
   },
 });
 
-interface Props extends ActionDialogProps {
-  isSubmitting: boolean;
-  isValid: boolean;
-  values: FormValues;
-}
-
-const CreateDomainDialogForm = ({
-  back,
-  colony,
-  isSubmitting,
-  isValid,
-  values,
-}: Props & FormState<FormValues>) => {
-  const [domainColor, setDomainColor] = useState(Color.LightPink);
-  const { wallet, user } = useAppContext();
-
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
-  ]);
-
-  const hasRegisteredProfile = !!user?.name && !!wallet?.address;
-  const canCreateDomain = hasRegisteredProfile && canArchitect(allUserRoles);
+const CreateDomainDialogForm = ({ back, colony }: ActionDialogProps) => {
+  const {
+    formState: { isValid, isSubmitting },
+  } = useFormContext();
 
   // const {
   //   votingExtensionVersion,
@@ -94,11 +62,12 @@ const CreateDomainDialogForm = ({
   //   colonyAddress: colony.colonyAddress,
   // });
 
+  const requiredRoles: ColonyRole[] = [ColonyRole.Architecture];
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony.colonyAddress,
-    canCreateDomain,
+    colony,
     false, // isVotingExtensionEnabled,
-    values.forceAction,
+    requiredRoles,
+    [Id.RootDomain],
   );
 
   const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;
@@ -111,28 +80,7 @@ const CreateDomainDialogForm = ({
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <div className={styles.modalHeading}>
-          {/*
-           * @NOTE Always disabled since you can only create this motion in root
-           */}
-          {/* {isVotingExtensionEnabled && (
-            <div className={styles.motionVoteDomain}>
-              <MotionDomainSelect
-                colony={colony}
-                disabled
-              />
-            </div>
-          )} */}
-          <div className={styles.headingContainer}>
-            <Heading3
-              appearance={{ size: 'medium', margin: 'none', theme: 'dark' }}
-              text={MSG.titleCreate}
-            />
-            {/* {canCreateDomain && isVotingExtensionEnabled && (
-              <ForceToggle disabled={isSubmitting} />
-            )} */}
-          </div>
-        </div>
+        <DialogHeading title={MSG.titleCreate} />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
@@ -152,9 +100,7 @@ const CreateDomainDialogForm = ({
             />
           </div>
           <ColorSelect
-            activeOption={domainColor}
             appearance={{ alignOptions: 'right' }}
-            onColorChange={setDomainColor}
             disabled={inputDisabled}
             name="domainColor"
           />
@@ -180,20 +126,10 @@ const CreateDomainDialogForm = ({
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionFromMessage}>
-            <FormattedMessage
-              {...MSG.noPermission}
-              values={{
-                roleRequired: (
-                  <PermissionsLabel
-                    permission={ColonyRole.Architecture}
-                    name={{ id: `role.${ColonyRole.Architecture}` }}
-                  />
-                ),
-                domain: 'Root',
-              }}
-            />
-          </div>
+          <NoPermissionMessage
+            requiredPermissions={[ColonyRole.Architecture]}
+            domainName="Root"
+          />
         </DialogSection>
       )}
       {/* {onlyForceAction && (
@@ -213,24 +149,10 @@ const CreateDomainDialogForm = ({
         </DialogSection>
       )} */}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
-        {back && (
-          <Button
-            text={{ id: 'button.back' }}
-            onClick={back}
-            appearance={{ theme: 'secondary', size: 'large' }}
-          />
-        )}
-        <Button
-          text={
-            values.forceAction || true // || !isVotingExtensionEnabled
-              ? { id: 'button.confirm' }
-              : { id: 'button.createMotion' }
-          }
-          appearance={{ theme: 'primary', size: 'large' }}
-          loading={isSubmitting}
-          disabled={inputDisabled || !isValid} // cannotCreateMotion ||
-          style={{ minWidth: styles.wideButton }}
-          data-test="createDomainConfirmButton"
+        <DialogControls
+          onSecondaryButtonClick={back}
+          disabled={inputDisabled || !isValid}
+          dataTest="createDomainConfirmButton"
         />
       </DialogSection>
     </>

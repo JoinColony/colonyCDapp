@@ -11,8 +11,8 @@ const displayName = 'NoPermissionMessage';
 const MSG = defineMessages({
   noPermission: {
     id: `${displayName}.noPermission`,
-    defaultMessage: `You need the {requiredRoles} 
-    {requiredRoles, plural, one {permission} other {permissions}}
+    defaultMessage: `You need the {requiredRoleList} 
+    {permissionCount, plural, one {permission} other {permissions}}
     {hasDomain, select,
       true {in {domainName}}
       other {}
@@ -54,7 +54,8 @@ const NoPermissionMessage = ({ requiredPermissions, domainName }: Props) => (
     <FormattedMessage
       {...MSG.noPermission}
       values={{
-        requiredRoles: (
+        permissionCount: requiredPermissions.length,
+        requiredRoleList: (
           <RequiredRoleList requiredPermissions={requiredPermissions} />
         ),
         hasDomain: !!domainName,

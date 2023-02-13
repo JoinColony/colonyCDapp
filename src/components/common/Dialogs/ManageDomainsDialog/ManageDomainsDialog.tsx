@@ -8,7 +8,7 @@ import { WizardDialogType, useTransformer, useAppContext } from '~hooks'; // use
 import { getAllUserRoles } from '~redux/transformers';
 import { canArchitect, hasRoot } from '~utils/checks';
 
-const displayName = 'common.ColonyHome.ManageDomainsDialog';
+const displayName = 'common.ManageDomainsDialog';
 
 const MSG = defineMessages({
   dialogHeader: {
