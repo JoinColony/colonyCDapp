@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
+import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import {
   ColonyRole,
@@ -15,7 +15,6 @@ import {
 } from '~shared/Dialog';
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import PermissionsLabel from '~shared/PermissionsLabel';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import {
@@ -24,6 +23,7 @@ import {
   // useAppContext,
 } from '~hooks'; // useEnabledExtensions
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import NoPermissionMessage from '~shared/NoPermissionMessage';
 
 // import { getAllUserRoles } from '~redux/transformers';
 // import { hasRoot } from '~utils/checks';
@@ -141,21 +141,7 @@ const MintTokenDialogForm = ({ colony, back }: ActionDialogProps) => {
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionMessage}>
-            <FormattedMessage
-              {...MSG.noPermission}
-              values={{
-                roleRequired: (
-                  <PermissionsLabel
-                    permission={ColonyRole.Root}
-                    name={{
-                      id: `role.${ColonyRole.Root}`,
-                    }}
-                  />
-                ),
-              }}
-            />
-          </div>
+          <NoPermissionMessage requiredPermissions={[ColonyRole.Root]} />
         </DialogSection>
       )}
       {/* {onlyForceAction && <NotEnoughReputation />}
