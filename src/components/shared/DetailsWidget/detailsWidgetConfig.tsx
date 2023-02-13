@@ -223,7 +223,7 @@ const getDetailItems = (
 ): DetailItemConfig[] => {
   const detailItemsMap = getDetailItemsMap(colony, itemData);
   const detailItemKeys = getDetailItemsKeys(itemData.type);
-  const motionDetailItem = getMotionDetailItem(colony, itemData.motionDomainId);
+  const motionDetailItem = getMotionDetailItem(colony, itemData.fromDomain);
 
   const detailItems = detailItemKeys
     .map((itemKey) => detailItemsMap[itemKey])
