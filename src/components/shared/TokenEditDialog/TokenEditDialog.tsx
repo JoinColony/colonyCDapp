@@ -14,7 +14,7 @@ import { Annotations } from '~shared/Fields';
 import { Heading4 } from '~shared/Heading';
 import Paragraph from '~shared/Paragraph';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import PermissionsLabel from '~shared/PermissionsLabel';
+import NoPermissionMessage from '~shared/NoPermissionMessage';
 import { TokenSelector } from '~common/CreateColonyWizard';
 import { TokenManagementDialogFormValues } from '~common/Dialogs';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
@@ -156,7 +156,7 @@ Props) => {
           <Heading4 text={MSG.noTokensText} />
         )}
       </DialogSection>
-      <DialogSection>
+      <DialogSection appearance={{ theme: 'sidePadding' }}>
         <Paragraph className={styles.description}>
           <FormattedMessage {...MSG.notListedToken} />
         </Paragraph>
@@ -175,21 +175,7 @@ Props) => {
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionMessage}>
-            <FormattedMessage
-              {...MSG.noPermission}
-              values={{
-                roleRequired: (
-                  <PermissionsLabel
-                    permission={ColonyRole.Root}
-                    name={{
-                      id: `role.${ColonyRole.Root}`,
-                    }}
-                  />
-                ),
-              }}
-            />
-          </div>
+          <NoPermissionMessage requiredPermissions={[ColonyRole.Root]} />
         </DialogSection>
       )}
       {/* {onlyForceAction && (

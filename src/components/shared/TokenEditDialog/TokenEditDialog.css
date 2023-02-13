@@ -9,6 +9,7 @@
 }
 
 .description {
+  margin-top: 20px;
   margin-bottom: marginSize;
   font-size: var(--size-normal);
   color: var(--dark);
@@ -16,16 +17,4 @@
 
 .textarea {
   margin-top: calc(marginSize * 2);
-}
-
-.noPermissionMessage {
-  margin: -20px 0 20px;
-  font-size: var(--size-tiny);
-  font-weight: var(--weight-bold);
-  line-height: 18px;
-  color: var(--danger);
-}
-
-.noPermissionMessage > div {
-  vertical-align: bottom;
 }

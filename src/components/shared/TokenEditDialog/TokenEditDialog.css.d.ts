@@ -2,7 +2,6 @@ declare namespace TokenEditDialogCssNamespace {
   export interface ITokenEditDialogCss {
     description: string;
     marginSize: string;
-    noPermissionMessage: string;
     textarea: string;
     tokenChoiceContainer: string;
     wideButton: string;
