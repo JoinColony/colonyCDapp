@@ -21,7 +21,7 @@ const MSG = defineMessages({
 
 const validationSchema = object()
   .shape({
-    domainId: string().required(),
+    fromDomain: number().required(),
     recipient: object()
       .shape({
         profile: object()

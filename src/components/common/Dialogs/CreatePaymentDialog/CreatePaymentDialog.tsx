@@ -98,18 +98,14 @@ const CreatePaymentDialog = ({
     <Form<FormValues>
       defaultValues={{
         forceAction: false,
-        domainId: (filteredDomainId === 0 || filteredDomainId === undefined
-          ? Id.RootDomain
-          : filteredDomainId
-        ).toString(),
+        fromDomain:
+          filteredDomainId === undefined ? Id.RootDomain : filteredDomainId,
         recipient: undefined,
         amount: '',
         tokenAddress: colony?.nativeToken.tokenAddress,
         annotation: '',
         motionDomainId:
-          filteredDomainId === 0 || filteredDomainId === undefined
-            ? Id.RootDomain
-            : filteredDomainId,
+          filteredDomainId === undefined ? Id.RootDomain : filteredDomainId,
       }}
       validationSchema={validationSchema}
       submit={getFormAction('SUBMIT')}
@@ -131,7 +127,6 @@ const CreatePaymentDialog = ({
               verifiedUsers={
                 colonyWatchers // isWhitelistActivated ? verifiedUsers : ...
               }
-              filteredDomainId={filteredDomainId}
               // showWhitelistWarning={showWarningForAddress(
               //   values?.recipient?.walletAddress,
               // )}

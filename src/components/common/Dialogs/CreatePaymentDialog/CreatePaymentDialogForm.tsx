@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
-import {
-  defineMessages,
-  FormattedMessage,
-  MessageDescriptor,
-} from 'react-intl';
-import { ColonyRole, Id } from '@colony/colony-js';
+import { defineMessages, MessageDescriptor } from 'react-intl';
+import { ColonyRole } from '@colony/colony-js';
 import { isConfusing } from '@colony/unicode-confusables-noascii';
 import { useFormContext } from 'react-hook-form';
 
-import PermissionsLabel from '~shared/PermissionsLabel';
+import NoPermissionMessage from '~shared/NoPermissionMessage';
 import ConfusableWarning from '~shared/ConfusableWarning';
 import {
   ActionDialogProps,
@@ -76,28 +72,11 @@ const MSG = defineMessages({
 interface Props extends ActionDialogProps {
   verifiedUsers: ColonyWatcher['user'][];
   // showWhitelistWarning: boolean;
-  filteredDomainId?: number;
 }
-
-const noPermissionFromMessageValues = {
-  firstRoleRequired: (
-    <PermissionsLabel
-      permission={ColonyRole.Funding}
-      name={{ id: `role.${ColonyRole.Funding}` }}
-    />
-  ),
-  secondRoleRequired: (
-    <PermissionsLabel
-      permission={ColonyRole.Administration}
-      name={{ id: `role.${ColonyRole.Administration}` }}
-    />
-  ),
-};
 
 const CreatePaymentDialogForm = ({
   back,
   verifiedUsers,
-  filteredDomainId: preselectedDomainId,
   colony,
 }: // showWhitelistWarning,
 Props) => {
@@ -106,14 +85,7 @@ Props) => {
     formState: { isSubmitting, isValid },
   } = useFormContext();
   const values = getValues();
-  const selectedDomain =
-    preselectedDomainId === 0 || preselectedDomainId === undefined
-      ? Id.RootDomain
-      : preselectedDomainId;
 
-  const domainId = values.domainId
-    ? parseInt(values.domainId, 10)
-    : selectedDomain;
   /*
    * Custom error state tracking
    */
@@ -139,7 +111,7 @@ Props) => {
     colony,
     false, // isVotingExtensionEnabled,
     requiredRoles,
-    [domainId],
+    [values.fromDomain],
   );
 
   // const cannotCreateMotion =
@@ -221,12 +193,12 @@ Props) => {
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionFromMessage}>
-            <FormattedMessage
-              {...MSG.noPermissionFrom}
-              values={noPermissionFromMessageValues}
-            />
-          </div>
+          <NoPermissionMessage
+            requiredPermissions={[
+              ColonyRole.Administration,
+              ColonyRole.Funding,
+            ]}
+          />
         </DialogSection>
       )}
       {/* {userHasPermission && !isOneTxPaymentExtensionEnabled && (
