@@ -1,4 +1,3 @@
-@value wideButton: 160px;
 @value query700 from '~styles/queries.css';
 
 .nameAndColorContainer {
@@ -9,32 +8,6 @@
 .domainName {
   margin-right: 18px;
   width: 100%;
-}
-
-.noPermissionFromMessage {
-  margin-bottom: 20px;
-  font-size: var(--size-tiny);
-  font-weight: var(--weight-bold);
-  line-height: 18px;
-  color: var(--danger);
-}
-
-.noPermissionFromMessage > div {
-  vertical-align: bottom;
-}
-
-.modalHeading {
-  padding: 32px 0 20px;
-}
-
-.headingContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.motionVoteDomain {
-  margin: 6px 0;
 }
 
 @media screen and query700 {

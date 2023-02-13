@@ -1,7 +1,7 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Id } from '@colony/colony-js';
-import { string, object, number, boolean } from 'yup';
+import { string, object, number, boolean, InferType } from 'yup';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
@@ -9,20 +9,12 @@ import { ActionHookForm as Form } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { WizardDialogType } from '~hooks'; // useEnabledExtensions
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-import { Color, graphQlDomainColorMap } from '~types';
+import { graphQlDomainColorMap } from '~types';
 import { DomainColor } from '~gql';
+import { notNull } from '~utils/arrays';
 
 import EditDomainDialogForm from './EditDomainDialogForm';
-
-export interface FormValues {
-  forceAction: boolean;
-  domainId: string | undefined;
-  domainName: string | null | undefined;
-  motionDomainId: number | undefined;
-  domainColor: Color | null | undefined;
-  domainPurpose: string | null | undefined;
-  annotationMessage?: string;
-}
+import { getEditDomainDialogPayload } from './helpers';
 
 interface CustomWizardDialogProps extends ActionDialogProps {
   filteredDomainId?: number;
@@ -32,13 +24,13 @@ type Props = DialogProps &
   Partial<WizardDialogType<object>> &
   CustomWizardDialogProps;
 
-const displayName = 'common.ColonyHome.EditDomainDialog';
+const displayName = 'common.EditDomainDialog';
 
 const validationSchema = object()
   .shape({
     forceAction: boolean().defined(),
     domainName: string().max(20).required(),
-    domainId: string().required(),
+    domainId: number().required(),
     domainColor: number().defined(),
     domainPurpose: string().max(90),
     annotationMessage: string().max(4000),
@@ -46,26 +38,22 @@ const validationSchema = object()
   })
   .defined();
 
+type FormValues = InferType<typeof validationSchema>;
+
 const EditDomainDialog = ({
   callStep,
   prevStep,
   cancel,
   close,
   colony,
-  colony: { colonyAddress, name: colonyName, domains },
-  filteredDomainId: preselectedDomainId,
+  colony: { domains },
+  filteredDomainId,
 }: Props) => {
-  const colonyDomains = useMemo(() => domains?.items || [], [domains]);
-  const selectedDomain = useMemo(
-    () =>
-      colonyDomains.find((domain) =>
-        preselectedDomainId === 0 ||
-        preselectedDomainId === undefined ||
-        preselectedDomainId === Id.RootDomain
-          ? domain?.nativeId !== Id.RootDomain
-          : domain?.nativeId === preselectedDomainId,
-      ),
-    [preselectedDomainId, colonyDomains],
+  const colonyDomains = domains?.items.filter(notNull) || [];
+  const selectedDomain = colonyDomains.find((domain) =>
+    filteredDomainId === undefined || filteredDomainId === Id.RootDomain
+      ? domain.nativeId !== Id.RootDomain
+      : domain.nativeId === filteredDomainId,
   );
 
   const [isForce, setIsForce] = useState(false);
@@ -75,41 +63,29 @@ const EditDomainDialog = ({
   //   colonyAddress: colony.colonyAddress,
   // });
 
-  const getFormAction = useCallback(
-    (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-      const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
+  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
+    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
 
-      return !isForce // && isVotingExtensionEnabled
-        ? ActionTypes[`MOTION_DOMAIN_CREATE_EDIT${actionEnd}`]
-        : ActionTypes[`ACTION_DOMAIN_EDIT${actionEnd}`];
-    },
-    [isForce], // , isVotingExtensionEnabled
-  );
+    return !isForce // && isVotingExtensionEnabled
+      ? ActionTypes[`MOTION_DOMAIN_CREATE_EDIT${actionEnd}`]
+      : ActionTypes[`ACTION_DOMAIN_EDIT${actionEnd}`];
+  };
 
-  const transform = useCallback(
-    () =>
-      pipe(
-        mapPayload((payload) => ({
-          ...payload,
-          colonyAddress,
-          colonyName,
-          isCreateDomain: false,
-        })),
-        withMeta({ navigate }),
-      ),
-    [colonyAddress, colonyName, navigate],
+  const transform = pipe(
+    mapPayload((payload) => getEditDomainDialogPayload(colony, payload)),
+    withMeta({ navigate }),
   );
 
   return (
     <Form<FormValues>
       defaultValues={{
         forceAction: false,
-        domainName: selectedDomain?.name,
+        domainName: selectedDomain?.name || '',
         domainColor:
           graphQlDomainColorMap[selectedDomain?.color || DomainColor.Lightpink],
-        domainPurpose: selectedDomain?.description,
-        annotationMessage: undefined,
-        domainId: selectedDomain?.nativeId.toString(),
+        domainPurpose: selectedDomain?.description || '',
+        annotationMessage: '',
+        domainId: selectedDomain?.nativeId,
         motionDomainId: selectedDomain?.nativeId,
       }}
       submit={getFormAction('SUBMIT')}
@@ -119,17 +95,14 @@ const EditDomainDialog = ({
       transform={transform}
       onSuccess={close}
     >
-      {({ formState, getValues, setValue }) => {
-        const values = getValues();
-        if (values.forceAction !== isForce) {
-          setIsForce(values.forceAction);
+      {({ getValues }) => {
+        const forceActionValue = getValues('forceAction');
+        if (forceActionValue !== isForce) {
+          setIsForce(forceActionValue);
         }
         return (
           <Dialog cancel={cancel}>
             <EditDomainDialogForm
-              {...formState}
-              values={values}
-              setValue={setValue}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
               colony={colony}
             />

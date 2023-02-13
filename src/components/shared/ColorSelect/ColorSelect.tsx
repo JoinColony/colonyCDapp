@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, ReactNode, ComponentProps } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { useFormContext } from 'react-hook-form';
 import { Appearance, Select, SelectOption } from '~shared/Fields';
 import ColorTag from '~shared/ColorTag';
 import { DomainColor } from '~types';
@@ -36,11 +37,13 @@ const displayName = 'ColorSelect';
 
 const ColorSelect = ({
   disabled,
-  activeOption,
   onColorChange,
   appearance,
   name = 'color',
 }: Props) => {
+  const { getValues } = useFormContext();
+  const activeOption = getValues(name);
+
   const onChange = useCallback(
     (color: DomainColor) => {
       if (onColorChange) {
