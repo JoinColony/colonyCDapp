@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
+import classNames from 'classnames';
 
 import { HookFormCheckbox as Checkbox } from '~shared/Fields';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
@@ -47,7 +48,9 @@ const UserCheckbox = ({
   } = user;
 
   return (
-    <div className={`${styles.main} ${!isChecked && styles.notChecked}`}>
+    <div
+      className={classNames(styles.main, { [styles.notChecked]: !isChecked })}
+    >
       <div className={styles.user}>
         <div ref={setTriggerRef}>
           <Checkbox
@@ -68,7 +71,7 @@ const UserCheckbox = ({
             </div>
           )}
         </div>
-        <UserAvatar size="xs" user={user} notSet={false} />
+        <UserAvatar size="xs" user={user} />
         <div className={styles.usernameSection}>
           {displayName && showDisplayName && (
             <span className={styles.displayName} title={displayName}>
@@ -91,6 +94,6 @@ const UserCheckbox = ({
   );
 };
 
-UserCheckbox.displayName = 'UserCheckbox';
+UserCheckbox.displayName = 'common.ManageWhitelistDialog.UserCheckbox';
 
 export default UserCheckbox;

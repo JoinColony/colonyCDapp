@@ -9,7 +9,7 @@ import { FileReaderFile } from '~utils/fileReader/types';
 
 import styles from './CSVUploaderItem.css';
 
-const displayName = 'common.ColonyHome.Whitelist.CSVUploader.CSVUploaderItem';
+const displayName = 'CSVUploader.CSVUploaderItem';
 
 const MSG = defineMessages({
   removeCSVText: {
