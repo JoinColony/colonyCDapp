@@ -2,8 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 
 import Icon from '~shared/Icon';
-import { filterUserSelection } from '~shared/SingleUserPicker';
-import { Colony, User } from '~types';
+import { filterUserSelection, OmniPickerUser } from '~shared/SingleUserPicker';
+import { User } from '~types';
 import { formatText } from '~utils/intl';
 
 import UserCheckbox from '../UserCheckbox';
@@ -11,12 +11,10 @@ import UserCheckbox from '../UserCheckbox';
 import styles from './WhitelistedAddresses.css';
 
 interface Props {
-  colony: Colony;
   whitelistedUsers: User[];
 }
 
-const displayName =
-  'common.ColonyHome.ManageWhitelistDialog.WhitelistedAddresses';
+const displayName = 'common.ManageWhitelistDialog.WhitelistedAddresses';
 
 const MSG = defineMessages({
   search: {
@@ -33,8 +31,10 @@ const MSG = defineMessages({
   },
 });
 
-const WhitelistedAddresses = ({ colony, whitelistedUsers }: Props) => {
-  const [users, setUsers] = useState<User[]>(whitelistedUsers);
+const WhitelistedAddresses = ({ whitelistedUsers }: Props) => {
+  const [users, setUsers] = useState<User[] | Omit<OmniPickerUser, 'name'>[]>(
+    whitelistedUsers,
+  );
 
   useEffect(() => {
     if (whitelistedUsers?.length) {
@@ -45,8 +45,12 @@ const WhitelistedAddresses = ({ colony, whitelistedUsers }: Props) => {
   const handleOnChange = useCallback(
     (e) => {
       if (e.target?.value) {
+        const formattedWhitelistedUsers = whitelistedUsers.map((user) => ({
+          ...user,
+          id: user.walletAddress,
+        }));
         const [, ...filteredUsers] = filterUserSelection(
-          whitelistedUsers,
+          formattedWhitelistedUsers,
           e.target?.value,
         );
         setUsers(filteredUsers);
@@ -71,7 +75,6 @@ const WhitelistedAddresses = ({ colony, whitelistedUsers }: Props) => {
           return (
             <UserCheckbox
               key={user.walletAddress}
-              colony={colony}
               name="whitelistedAddresses"
               walletAddress={user.walletAddress}
               checkedTooltipText={formatText(MSG.checkedTooltipText)}

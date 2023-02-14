@@ -1,30 +1,29 @@
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
-import { FormState, UseFormReset } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
-import Button from '~shared/Button';
 import DialogSection from '~shared/Dialog/DialogSection';
 import { Annotations } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
-import PermissionsLabel from '~shared/PermissionsLabel';
+import NoPermissionMessage from '~shared/NoPermissionMessage';
+import { ActionDialogProps, DialogControls } from '~shared/Dialog';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import { Tab, Tabs, TabList, TabPanel } from '~shared/Tabs';
 import UploadAddresses from '~shared/UploadAddresses';
 import { useAppContext, useTransformer } from '~hooks';
 import { getAllUserRoles } from '~redux/transformers';
 import { hasRoot } from '~utils/checks';
-import { Colony, User } from '~types';
+import { User } from '~types';
 
-import { FormValues, TABS } from './ManageWhitelistDialog';
 import ManageWhitelistActiveToggle from './ManageWhitelistActiveToggle';
 import WhitelistedAddresses from './WhitelistedAddresses';
 import NoWhitelistedAddressesState from './NoWhitelistedAddressesState';
+import { TABS } from './helpers';
 
 import styles from './ManageWhitelistDialogForm.css';
 
-const displayName =
-  'common.ColonyHome.ManageWhitelistDialog.ManageWhitelistDialogForm';
+const displayName = 'common.ManageWhitelistDialog.ManageWhitelistDialogForm';
 
 const MSG = defineMessages({
   title: {
@@ -34,11 +33,6 @@ const MSG = defineMessages({
   annotation: {
     id: `${displayName}.annotation`,
     defaultMessage: 'Explain why you’re making these changes (optional)',
-  },
-  noPermission: {
-    id: `${displayName}.noPermission`,
-    defaultMessage: `You do not have the {roleRequired} permission required
-      to take this action.`,
   },
   addAddress: {
     id: `${displayName}.addAddress`,
@@ -62,9 +56,7 @@ const MSG = defineMessages({
   },
 });
 
-interface Props {
-  back: () => void;
-  colony: Colony;
+interface Props extends ActionDialogProps {
   whitelistedUsers: User[];
   showInput: boolean;
   toggleShowInput: () => void;
@@ -72,30 +64,28 @@ interface Props {
   setFormSuccess: (isSuccess: boolean) => void;
   tabIndex: TABS;
   setTabIndex: (index: TABS) => void;
-  values: FormValues;
-  resetForm: UseFormReset<any>;
   backButtonText?: string;
 }
 
 const ManageWhitelistDialogForm = ({
   back,
   colony,
-  values,
   whitelistedUsers,
-  errors,
-  isValid,
-  isSubmitting,
   showInput,
   toggleShowInput,
   formSuccess,
   setFormSuccess,
   tabIndex,
   setTabIndex,
-  resetForm,
-  isDirty,
   backButtonText,
-}: Props & FormState<FormValues>) => {
+}: Props) => {
   const { wallet, user } = useAppContext();
+  const {
+    getValues,
+    formState: { errors, isSubmitting, isValid, isDirty },
+    reset: resetForm,
+  } = useFormContext();
+  const values = getValues();
   const allUserRoles = useTransformer(getAllUserRoles, [
     colony,
     wallet?.address,
@@ -160,10 +150,7 @@ const ManageWhitelistDialogForm = ({
                 <ManageWhitelistActiveToggle
                   isWhitelistActivated={values.isWhitelistActivated}
                 />
-                <WhitelistedAddresses
-                  colony={colony}
-                  whitelistedUsers={whitelistedUsers}
-                />
+                <WhitelistedAddresses whitelistedUsers={whitelistedUsers} />
               </>
             )) || <NoWhitelistedAddressesState />}
             <Annotations
@@ -176,44 +163,24 @@ const ManageWhitelistDialogForm = ({
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionMessage}>
-            <FormattedMessage
-              {...MSG.noPermission}
-              values={{
-                roleRequired: (
-                  <PermissionsLabel
-                    permission={ColonyRole.Root}
-                    name={{
-                      id: `role.${ColonyRole.Root}`,
-                    }}
-                  />
-                ),
-              }}
-            />
-          </div>
+          <NoPermissionMessage requiredPermissions={[ColonyRole.Root]} />
         </DialogSection>
       )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
-        <Button
-          appearance={{ theme: 'secondary', size: 'large' }}
-          onClick={back}
-          text={{ id: backButtonText || 'button.back' }}
-        />
-        <Button
-          appearance={{
-            theme: tabIndex === TABS.ADD_ADDRESS ? 'primary' : 'pink',
-            size: 'large',
-          }}
-          text={{ id: 'button.confirm' }}
-          style={{ width: styles.wideButton }}
+        <DialogControls
+          secondaryButtonText={backButtonText}
+          onSecondaryButtonClick={back}
           disabled={
             (tabIndex === 0 ? !values.whitelistAddress : !isDirty) ||
             !userHasPermission ||
             !isValid ||
             isSubmitting
           }
-          type="submit"
-          loading={isSubmitting}
+          dataTest="whitelistConfirmButton"
+          submitButtonAppearance={{
+            theme: tabIndex === TABS.ADD_ADDRESS ? 'primary' : 'pink',
+            size: 'large',
+          }}
         />
       </DialogSection>
     </>

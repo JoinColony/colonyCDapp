@@ -1,14 +1,11 @@
 declare namespace ManageWhitelistDialogFormCssNamespace {
   export interface IManageWhitelistDialogFormCss {
-    noPermissionMessage: string;
     tabsList: string;
     tabsListContainer: string;
     toggleContainer: string;
-    tooltip: string;
     warningContainer: string;
     warningLabel: string;
     warningText: string;
-    wideButton: string;
   }
 }
 

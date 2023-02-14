@@ -163,6 +163,7 @@ export const getWizardFlowConfig = (
     component: ManageWhitelistDialog,
     props: {
       prevStep: 'common.ManageDomainsDialog',
+      colony,
     },
   },
   // {

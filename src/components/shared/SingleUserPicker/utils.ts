@@ -6,7 +6,7 @@ Extracts the required values to be used in the SingleUserPicker
 on selection
 */
 
-type OmniPickerUser = User & OmniPickerData;
+export type OmniPickerUser = User & OmniPickerData;
 
 export const filterUserSelection = (
   data: OmniPickerUser[],

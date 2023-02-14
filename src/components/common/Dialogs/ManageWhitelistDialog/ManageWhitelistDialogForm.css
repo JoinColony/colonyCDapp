@@ -1,14 +1,3 @@
-@value wideButton: 160px;
-
-.noPermissionMessage {
-  margin-bottom: 20px;
-  vertical-align: bottom;
-  font-size: var(--size-tiny);
-  font-weight: var(--weight-bold);
-  line-height: 18px;
-  color: var(--danger);
-}
-
 .tabsListContainer {
   height: 42px;
   border-bottom: 1px solid var(--light-grey-beige);
@@ -26,14 +15,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.tooltip {
-  padding: 5px;
-  width: 200px;
-  font-size: var(--size-tiny);
-  font-weight: var(--weight-bold);
-  line-height: 18px;
 }
 
 .warningContainer {

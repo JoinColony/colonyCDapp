@@ -37,7 +37,7 @@ const validationSchema = object({
   annotationMessage: string().max(4000).notRequired(),
 }).defined();
 
-type FormValues = InferType<typeof validationSchema>;
+export type FormValues = InferType<typeof validationSchema>;
 
 const TokenManagementDialog = ({
   colony,

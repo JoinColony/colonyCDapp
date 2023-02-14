@@ -6,7 +6,7 @@ import { Heading4 } from '~shared/Heading';
 
 import styles from './ManageWhitelistDialogForm.css';
 
-const displayName = `common.ColonyHome.ManageWhitelistDialog.ManageWhitelistDialogForm.ManageWhitelistActiveToggle`;
+const displayName = `common.ManageWhitelistDialog.ManageWhitelistDialogForm.ManageWhitelistActiveToggle`;
 
 const MSG = defineMessages({
   toggleLabel: {
@@ -54,7 +54,6 @@ const ManageWhitelistActiveToggle = ({ isWhitelistActivated }: Props) => (
         labelValues={{ isWhitelistActivated }}
         name="isWhitelistActivated"
         tooltipText={MSG.tooltipText}
-        tooltipClassName={styles.tooltip}
       />
     </div>
     {!isWhitelistActivated && (

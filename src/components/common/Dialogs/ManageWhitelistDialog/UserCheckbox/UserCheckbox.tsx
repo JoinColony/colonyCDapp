@@ -7,12 +7,11 @@ import MaskedAddress from '~shared/MaskedAddress';
 import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
 import { useUserByNameOrAddress } from '~hooks';
-import { Colony, Address } from '~types';
+import { Address } from '~types';
 
 import styles from './UserCheckbox.css';
 
 interface Props {
-  colony: Colony;
   walletAddress: Address;
   name: string;
   checkedTooltipText?: string;
@@ -21,7 +20,6 @@ interface Props {
 }
 
 const UserCheckbox = ({
-  colony,
   walletAddress,
   name,
   checkedTooltipText,
@@ -70,13 +68,7 @@ const UserCheckbox = ({
             </div>
           )}
         </div>
-        <UserAvatar
-          size="xs"
-          colony={colony}
-          address={walletAddress}
-          user={user}
-          notSet={false}
-        />
+        <UserAvatar size="xs" user={user} notSet={false} />
         <div className={styles.usernameSection}>
           {displayName && showDisplayName && (
             <span className={styles.displayName} title={displayName}>

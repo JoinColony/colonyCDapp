@@ -17,6 +17,5 @@ export { default as MintTokenDialog } from './MintTokenDialog';
 export {
   default as TokenManagementDialog,
   FormValues as TokenManagementDialogFormValues,
-  FormattedListToken,
 } from './TokenManagementDialog';
 // export { SmiteDialog, AwardDialog } from './AwardAndSmiteDialogs';

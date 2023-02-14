@@ -3,8 +3,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 
 import styles from './NoWhitelistedAddressesState.css';
 
-const displayName =
-  'common.ColonyHome.ManageWhitelistDialog.NoWhitelistedAddressesState';
+const displayName = 'common.ManageWhitelistDialog.NoWhitelistedAddressesState';
 
 const MSG = defineMessages({
   title: {
