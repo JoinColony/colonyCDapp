@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 import { nanoid } from 'nanoid';
-import { DomainColor } from '~gql';
 
+import { DomainColor } from '~gql';
 import { Address, ColonyAction, ColonyActionType, User } from '~types';
 
 const paymentActionValues: {

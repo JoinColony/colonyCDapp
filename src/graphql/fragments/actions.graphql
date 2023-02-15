@@ -1,8 +1,9 @@
 fragment ColonyAction on ColonyAction {
   id
+  transactionHash: id
+  colonyAddress: colonyId
   type
   blockNumber
-  transactionHash
   initiatorAddress
   initiator {
     ...User
@@ -12,8 +13,10 @@ fragment ColonyAction on ColonyAction {
     ...User
   }
   amount
-  decimals
-  tokenSymbol
+  tokenAddress
+  token {
+    ...Token
+  }
   fromDomain
   toDomain
   createdAt

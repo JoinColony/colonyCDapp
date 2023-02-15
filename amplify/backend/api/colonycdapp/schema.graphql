@@ -408,16 +408,14 @@ type ColonyAction @model {
   colony: Colony! @belongsTo(fields: ["colonyId"])
   type: ColonyActionType!
   blockNumber: Int!
-  transactionHash: String!
   createdAt: AWSDateTime!
   initiatorAddress: ID
   initiator: User @hasOne(fields: ["initiatorAddress"])
   recipientAddress: ID
   recipient: User @hasOne(fields: ["recipientAddress"])
   amount: String
-  tokenAddress: String
-  tokenSymbol: String
-  decimals: Int
+  tokenAddress: ID
+  token: Token @hasOne(fields: ["tokenAddress"])
   fromDomain: String
   toDomain: String
 }

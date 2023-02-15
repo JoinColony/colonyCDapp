@@ -1,9 +1,9 @@
-import Decimal from 'decimal.js';
 import React, { ReactNode } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 
 import { mockEventData } from '~common/ColonyActions/mockData';
-import { adjustConvertedValue } from '~shared/Numeral';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import Numeral from '~shared/Numeral';
 import TransactionLink from '~shared/TransactionLink';
 import {
   Colony,
@@ -92,19 +92,6 @@ const getShortenedHash = (transactionHash: string) => {
   return undefined;
 };
 
-const getAdjustedAmount = (
-  amount: ColonyAction['amount'],
-  decimals: ColonyAction['decimals'],
-) => {
-  if (amount && decimals) {
-    return adjustConvertedValue(new Decimal(amount), decimals).toString();
-  } else if (amount) {
-    return amount;
-  }
-
-  return undefined;
-};
-
 interface DetailItemConfig {
   label: MessageDescriptor;
   labelValues?: UniversalMessageValues;
@@ -113,16 +100,14 @@ interface DetailItemConfig {
 
 const getDetailItems = (
   {
-    //motionDomain,
+    // motionDomain,
     type,
     fromDomain: fromDomainId,
     toDomain: toDomainId,
     amount,
     recipient,
-    decimals,
     transactionHash,
-    //token,
-    tokenSymbol,
+    token,
   }: // reputationChange,
   // roles,
   typeof mockEventData & ColonyAction,
@@ -132,7 +117,6 @@ const getDetailItems = (
   const shortenedHash = getShortenedHash(transactionHash || '');
   const fromDomain = findDomain(fromDomainId, colony);
   const toDomain = findDomain(toDomainId, colony);
-  const adjustedAmount = getAdjustedAmount(amount, decimals);
 
   // const isSmiteAction =
   //   actionType === ColonyActions.EmitDomainReputationPenalty;
@@ -182,9 +166,14 @@ const getDetailItems = (
       labelValues: undefined,
       item: detailsForAction.Amount && amount && (
         <AmountDetail
-          amount={adjustedAmount}
-          symbol={tokenSymbol}
-          token={undefined} /* TODO: replace with token */
+          amount={
+            <Numeral
+              value={amount}
+              decimals={token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
+            />
+          }
+          symbol={token?.symbol}
+          token={token ?? undefined}
         />
       ),
     },
