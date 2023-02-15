@@ -40,28 +40,6 @@ const handleSearchIconFocus = (searchInput: RefObject<HTMLInputElement>) => {
   searchInput?.current?.focus();
 };
 
-const handleSearchIconEnter = (searchInput: RefObject<HTMLInputElement>) => {
-  if (searchInput.current !== null) {
-    const input = searchInput.current;
-    input.placeholder = formatText(MSG.searchPlaceholder) ?? '';
-  }
-};
-
-const handleSearchIconLeave = (searchInput: RefObject<HTMLInputElement>) => {
-  if (searchInput.current !== null) {
-    const input = searchInput.current;
-    input.placeholder = '';
-  }
-};
-
-const handleMouseEnter = (e: MouseEvent<HTMLInputElement>) => {
-  e.currentTarget.placeholder = formatText(MSG.searchPlaceholder) as string;
-};
-
-const handleMouseLeave = (e: MouseEvent<HTMLInputElement>) => {
-  e.currentTarget.placeholder = '';
-};
-
 interface Props {
   currentDomainId: number;
   domainSelectOptions: SelectOption[];
@@ -109,8 +87,7 @@ const MembersTitle = ({
             value={searchValue}
             className={styles.input}
             onChange={handleSearch}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            placeholder={formatText(MSG.searchPlaceholder)}
           />
           {searchValue && (
             <button
@@ -131,8 +108,6 @@ const MembersTitle = ({
             name="search"
             title={MSG.search}
             onClick={() => handleSearchIconFocus(searchInput)}
-            onMouseEnter={() => handleSearchIconEnter(searchInput)}
-            onMouseLeave={() => handleSearchIconLeave(searchInput)}
           />
         </div>
       )}

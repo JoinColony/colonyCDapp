@@ -46,6 +46,10 @@
     border-bottom: 1px solid var(--primary);
   }
 
+  &:hover > input::placeholder {
+    opacity: 1;
+  }
+
   &:hover > i > svg {
     stroke: var(--colony-blue);
   }
@@ -91,8 +95,13 @@
   &::placeholder {
     font-size: var(--size-normal);
     color: var(--grey);
+    opacity: 0;
     letter-spacing: var(--spacing-normal);
   }
+}
+
+.input:hover::placeholder {
+  opacity: 1;
 }
 
 .clearButton {
