@@ -3,53 +3,53 @@ import { VerificationType } from '~common/ColonyMembers/MembersFilter/filtersCon
 
 import { Contributor, Watcher } from '~types';
 
+const filterMemberBySearchTerm = (
+  member: Contributor | Watcher,
+  searchTerm?: string,
+) => {
+  return (
+    searchTerm &&
+    (member?.user?.profile?.displayName
+      ?.toLowerCase()
+      .includes(searchTerm.toLowerCase()) ||
+      member?.user?.walletAddress
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      member?.user?.name.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+};
+
+const filterMemberByVerificationStatus = (
+  member: Contributor | Watcher,
+  verificationType?: VerificationType,
+) => {
+  if (verificationType === VerificationType.Verified) {
+    return true;
+    // return member.isWhitelisted;
+  }
+
+  if (verificationType === VerificationType.Unverified) {
+    return true;
+    // return !member.isWhitelisted;
+  }
+
+  return true;
+  // return !member.isWhitelisted;
+};
+
 export const filterMembers = <M extends Contributor | Watcher>(
-  data: M[],
-  searchValue?: string,
+  members: M[],
+  searchTerm?: string,
   filters?: FormValues,
 ): M[] => {
   /* No filters */
-  if (!searchValue && filters?.verificationType === VerificationType.All) {
-    return data;
+  if (!searchTerm && filters?.verificationType === VerificationType.All) {
+    return members;
   }
 
-  /* Only text filter */
-  if (searchValue && filters?.verificationType === VerificationType.All) {
-    return data.filter(
-      ({ user }) =>
-        user?.profile?.displayName
-          ?.toLowerCase()
-          .includes(searchValue.toLowerCase()) ||
-        user?.walletAddress
-          ?.toLowerCase()
-          .includes(searchValue.toLowerCase()) ||
-        user?.name.toLowerCase().includes(searchValue.toLowerCase()),
-    );
-  }
-
-  /* All other combinations */
-  return data.filter(({ user }) => {
-    const textFilter =
-      searchValue === undefined || searchValue === ''
-        ? true
-        : user?.profile?.displayName
-            ?.toLowerCase()
-            .includes(searchValue.toLowerCase()) ||
-          user?.walletAddress
-            ?.toLowerCase()
-            .includes(searchValue.toLowerCase()) ||
-          user?.name.toLowerCase().includes(searchValue.toLowerCase());
-
-    // if (filters?.verificationType === VerificationType.VERIFIED) {
-    //   return isWhitelisted && textFilter;
-    // }
-
-    // if (filters?.verificationType === VerificationType.UNVERIFIED) {
-    //   return !isWhitelisted && textFilter;
-    // }
-
-    // return !isWhitelisted && textFilter;
-
-    return textFilter;
-  });
+  return members.filter(
+    (member) =>
+      filterMemberBySearchTerm(member, searchTerm) &&
+      filterMemberByVerificationStatus(member, filters?.verificationType),
+  );
 };
