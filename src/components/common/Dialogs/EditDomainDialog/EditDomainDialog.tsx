@@ -63,13 +63,9 @@ const EditDomainDialog = ({
   //   colonyAddress: colony.colonyAddress,
   // });
 
-  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
-
-    return !isForce // && isVotingExtensionEnabled
-      ? ActionTypes[`MOTION_DOMAIN_CREATE_EDIT${actionEnd}`]
-      : ActionTypes[`ACTION_DOMAIN_EDIT${actionEnd}`];
-  };
+  const actionType = !isForce /* && isVotingExtensionEnabled */
+    ? ActionTypes.MOTION_DOMAIN_CREATE_EDIT
+    : ActionTypes.ACTION_DOMAIN_EDIT;
 
   const transform = pipe(
     mapPayload((payload) => getEditDomainDialogPayload(colony, payload)),
@@ -88,9 +84,7 @@ const EditDomainDialog = ({
         domainId: selectedDomain?.nativeId,
         motionDomainId: selectedDomain?.nativeId,
       }}
-      submit={getFormAction('SUBMIT')}
-      error={getFormAction('ERROR')}
-      success={getFormAction('SUCCESS')}
+      actionType={actionType}
       validationSchema={validationSchema}
       transform={transform}
       onSuccess={close}

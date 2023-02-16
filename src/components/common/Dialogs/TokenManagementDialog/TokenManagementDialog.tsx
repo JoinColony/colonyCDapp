@@ -52,13 +52,9 @@ const TokenManagementDialog = ({
   //   colonyAddress,
   // });
 
-  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
-
-    return !isForce // && isVotingExtensionEnabled
-      ? ActionTypes[`MOTION_EDIT_COLONY${actionEnd}`]
-      : ActionTypes[`ACTION_EDIT_COLONY${actionEnd}`];
-  };
+  const actionType = !isForce /* && isVotingExtensionEnabled */
+    ? ActionTypes.MOTION_EDIT_COLONY
+    : ActionTypes.ACTION_EDIT_COLONY;
 
   const transform = pipe(
     mapPayload((payload) => getTokenManagementDialogPayload(colony, payload)),
@@ -73,9 +69,7 @@ const TokenManagementDialog = ({
 
   return (
     <Form<FormValues>
-      submit={getFormAction('SUBMIT')}
-      success={getFormAction('SUCCESS')}
-      error={getFormAction('ERROR')}
+      actionType={actionType}
       defaultValues={{
         forceAction: false,
         tokenAddress: '',

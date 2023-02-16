@@ -40,13 +40,9 @@ const UnlockTokenDialog = ({
   //   colonyAddress: colony.colonyAddress,
   // });
 
-  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
-
-    return !isForce // && isVotingExtensionEnabled
-      ? ActionTypes[`ROOT_MOTION${actionEnd}`]
-      : ActionTypes[`ACTION_UNLOCK_TOKEN${actionEnd}`];
-  };
+  const actionType = !isForce /* && isVotingExtensionEnabled */
+    ? ActionTypes.ROOT_MOTION
+    : ActionTypes.ACTION_UNLOCK_TOKEN;
 
   const transform = pipe(
     withKey(colony?.colonyAddress || ''),
@@ -66,9 +62,7 @@ const UnlockTokenDialog = ({
          */
       }}
       validationSchema={validationSchema}
-      submit={getFormAction('SUBMIT')}
-      error={getFormAction('ERROR')}
-      success={getFormAction('SUCCESS')}
+      actionType={actionType}
       onSuccess={close}
       transform={transform}
     >

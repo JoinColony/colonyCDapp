@@ -64,9 +64,7 @@ const StepConfirmAllInput = ({ nextStep, wizardValues }: Props) => {
   return (
     <ActionForm
       defaultValues={{}}
-      submit={ActionTypes.CREATE}
-      success={ActionTypes.CREATE_SUCCESS}
-      error={ActionTypes.CREATE_ERROR}
+      actionType={ActionTypes.CREATE}
       transform={transform}
       onSuccess={() => nextStep(wizardValues)}
     >

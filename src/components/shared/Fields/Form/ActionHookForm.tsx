@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ActionTypeString } from '~redux';
-import { ActionTransformFnType } from '~utils/actions';
+import { ActionTypes } from '~redux';
+import { ActionTransformFnType, getFormAction } from '~utils/actions';
 import { useAsyncFunction } from '~hooks';
 
 import HookForm, {
@@ -16,14 +16,8 @@ export type OnSuccess<V> = (result: any, values: V) => void;
 
 interface Props<V extends Record<string, any>>
   extends Omit<HookFormProps<V>, 'onError' | 'onSubmit'> {
-  /** Redux action to dispatch on submit (e.g. CREATE_XXX) */
-  submit: ActionTypeString;
-
-  /** Redux action listener for successful action (e.g. CREATE_XXX_SUCCESS) */
-  success: ActionTypeString;
-
-  /** Redux action listener for unsuccessful action (e.g. CREATE_XXX_ERROR) */
-  error: ActionTypeString;
+  /** Redux action type to dispatch on submit (e.g. CREATE_XXX) */
+  actionType: ActionTypes;
 
   /** Function to call after successful action was dispatched */
   onSuccess?: OnSuccess<V>;
@@ -39,19 +33,17 @@ interface Props<V extends Record<string, any>>
 }
 
 const ActionHookForm = <V extends Record<string, any>>({
-  error,
   onSuccess,
   onError,
   onSubmitError,
-  submit,
-  success,
+  actionType,
   transform,
   ...props
 }: Props<V>) => {
   const asyncFunction = useAsyncFunction({
-    submit,
-    error,
-    success,
+    submit: actionType,
+    error: getFormAction(actionType, 'ERROR'),
+    success: getFormAction(actionType, 'SUCCESS'),
     transform,
   });
   const handleSubmit: CustomSubmitHandler<V> = async (values, formHelpers) => {
