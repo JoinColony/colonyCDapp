@@ -16,7 +16,6 @@ import { ActionTypes, Action, AllActions } from '~redux';
 import {
   putError,
   takeFrom,
-  // waitForIngestorToHandleAction,
   //   uploadIfpsAnnotation,
 } from '../utils';
 // import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
@@ -179,9 +178,6 @@ function* createPaymentAction({
     //       },
     //       fetchPolicy: 'network-only',
     //     });
-
-    // Wait until block ingestor has processed the action
-    // yield call(waitForIngestorToHandleAction, txHash);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS,
