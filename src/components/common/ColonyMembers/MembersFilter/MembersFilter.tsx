@@ -56,6 +56,7 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
           const showReset =
             values.verificationType !== VerificationType.All ||
             values.memberType !== MemberType.All;
+          console.log('values', values);
           handleFiltersCallback(values);
 
           return (
@@ -67,6 +68,7 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
                 {showReset && (
                   <Button
                     text={MSG.reset}
+                    type="submit"
                     appearance={{ theme: 'blue' }}
                     onClick={() => reset()}
                   />
@@ -83,6 +85,7 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
                         name={name}
                         options={options}
                         label={label}
+                        // handleFiltersCallback={handleFiltersCallback}
                       />
                     )
                   );
