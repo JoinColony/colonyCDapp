@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Id } from '@colony/colony-js';
 import { string, object, number, boolean, InferType } from 'yup';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
@@ -11,7 +10,7 @@ import { WizardDialogType } from '~hooks'; // useEnabledExtensions
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 import { graphQlDomainColorMap } from '~types';
 import { DomainColor } from '~gql';
-import { notNull } from '~utils/arrays';
+import { findDomainByNativeId } from '~utils/domains';
 
 import EditDomainDialogForm from './EditDomainDialogForm';
 import { getEditDomainDialogPayload } from './helpers';
@@ -46,15 +45,9 @@ const EditDomainDialog = ({
   cancel,
   close,
   colony,
-  colony: { domains },
   filteredDomainId,
 }: Props) => {
-  const colonyDomains = domains?.items.filter(notNull) || [];
-  const selectedDomain = colonyDomains.find((domain) =>
-    filteredDomainId === undefined || filteredDomainId === Id.RootDomain
-      ? domain.nativeId !== Id.RootDomain
-      : domain.nativeId === filteredDomainId,
-  );
+  const selectedDomain = findDomainByNativeId(filteredDomainId, colony, true);
 
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
