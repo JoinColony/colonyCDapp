@@ -1,9 +1,9 @@
 import React from 'react';
-import { FormikProps } from 'formik';
+// import { FormikProps } from 'formik';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Button from '~shared/Button';
-import { Form } from '~shared/Fields';
+import { HookForm as Form } from '~shared/Fields';
 
 import Filter from './Filter';
 import { filterItems, MemberType, VerificationType } from './filtersConfig';
@@ -46,17 +46,19 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
     <>
       <hr className={styles.divider} />
       <Form
-        initialValues={{
+        defaultValues={{
           memberType: MemberType.All,
           verificationType: VerificationType.All,
         }}
         onSubmit={() => {}}
-        enableReinitialize
       >
-        {({ resetForm, values }: FormikProps<FormValues>) => {
+        {/* {({ resetForm, values }: FormikProps<FormValues>) => { */}
+        {({ formState: { isSubmitting, isValid }, getValues }) => {
+          const values = getValues();
           const showReset =
             values.verificationType !== VerificationType.All ||
             values.memberType !== MemberType.All;
+          console.log('values', values);
           handleFiltersCallback(values);
           return (
             <div className={styles.filters}>
@@ -66,9 +68,11 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
                 </span>
                 {showReset && (
                   <Button
+                    disabled={!isValid || isSubmitting}
                     text={MSG.reset}
+                    type="submit"
                     appearance={{ theme: 'blue' }}
-                    onClick={() => resetForm()}
+                    // onClick={() => submit()}
                   />
                 )}
               </div>
@@ -83,6 +87,7 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
                         name={name}
                         options={options}
                         label={label}
+                        // handleFiltersCallback={handleFiltersCallback}
                       />
                     )
                   );

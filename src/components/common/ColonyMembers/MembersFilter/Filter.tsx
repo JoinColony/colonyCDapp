@@ -3,6 +3,7 @@ import { MessageDescriptor } from 'react-intl';
 
 import { Select } from '~shared/Fields';
 import { SelectOption } from '~shared/Fields/Select';
+// import { FormValues } from './MembersFilter';
 
 import { Appearance } from './types';
 
@@ -13,9 +14,16 @@ interface Props {
   name: string;
   options?: SelectOption[];
   label: string | MessageDescriptor;
+  // handleFiltersCallback: (filters: string) => void;
 }
 
-const Filter = ({ appearance, name, options, label }: Props) => {
+const Filter = ({
+  appearance,
+  name,
+  options,
+  label,
+}: // handleFiltersCallback,
+Props) => {
   const selectRef = useRef<HTMLDivElement>(null);
 
   const scrollIntoView = () => {
@@ -35,6 +43,7 @@ const Filter = ({ appearance, name, options, label }: Props) => {
         name={name}
         options={options}
         label={label}
+        // onChange={(val) => handleFiltersCallback(val)}
       />
     </div>
   );

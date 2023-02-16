@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { Select, Form } from '~shared/Fields';
+import { Select, HookForm as Form } from '~shared/Fields';
 
 import { SelectOption } from '~shared/Fields/Select';
 
@@ -16,6 +16,10 @@ const MSG = defineMessages({
   },
 });
 
+interface FormValues {
+  filter: string;
+}
+
 interface Props {
   currentDomainId: number;
   domainSelectOptions: SelectOption[];
@@ -28,8 +32,8 @@ const MembersDomainSelector = ({
   domainSelectOptions,
 }: Props) => {
   return (
-    <Form
-      initialValues={{ filter: currentDomainId.toString() }}
+    <Form<FormValues>
+      defaultValues={{ filter: currentDomainId.toString() }}
       onSubmit={() => {}}
     >
       <div className={styles.titleSelect}>
