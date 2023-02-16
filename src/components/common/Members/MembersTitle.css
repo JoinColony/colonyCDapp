@@ -37,7 +37,6 @@
 
   /* pull down to cover HR */
   margin-bottom: -1px;
-  padding-right: 42px;
   width: 300px;
   position: relative;
   border-bottom: 1px solid var(--light-grey-beige);
@@ -67,6 +66,7 @@
   right: 2px;
   z-index: 1;
   transform: translateY(-50%);
+  pointer-events: none;
 
   & svg {
     stroke: color-mod(var(--grey-purple) alpha(65%));
@@ -79,6 +79,7 @@
 
 .input {
   padding: 4px;
+  padding-right: 20px;
   height: 32px;
   width: 100%;
   position: relative;
