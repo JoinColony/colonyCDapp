@@ -7,7 +7,6 @@ import { AllActions, Action } from '../../types/actions';
 import {
   putError,
   takeFrom,
-  // routeRedirect,
   // uploadIfpsAnnotation,
 } from '../utils';
 
@@ -25,12 +24,12 @@ import {
 function* createMintTokensAction({
   payload: {
     colonyAddress,
-    // colonyName,
+    colonyName,
     nativeTokenAddress,
     amount,
     // annotationMessage,
   },
-  meta: { id: metaId /* history */ },
+  meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ACTION_MINT_TOKENS>) {
   let txChannel;
@@ -105,12 +104,12 @@ function* createMintTokensAction({
 
     yield put(transactionReady(mintTokens.id));
 
-    // const {
-    //   payload: { hash: txHash },
-    // } = yield takeFrom(
-    //   mintTokens.channel,
-    //   ActionTypes.TRANSACTION_HASH_RECEIVED,
-    // );
+    const {
+      payload: { hash: txHash },
+    } = yield takeFrom(
+      mintTokens.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
     yield takeFrom(mintTokens.channel, ActionTypes.TRANSACTION_SUCCEEDED);
     yield put(transactionReady(claimColonyFunds.id));
     yield takeFrom(claimColonyFunds.channel, ActionTypes.TRANSACTION_SUCCEEDED);
@@ -131,16 +130,15 @@ function* createMintTokensAction({
     //   );
     // }
 
-    // Refresh token balance
-
     yield put<AllActions>({
       type: ActionTypes.ACTION_MINT_TOKENS_SUCCESS,
       meta,
     });
 
-    // if (colonyName) {
-    //   yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
-    // }
+    // Redirect to actions page
+    if (colonyName && navigate) {
+      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
+    }
   } catch (caughtError) {
     putError(ActionTypes.ACTION_MINT_TOKENS_ERROR, caughtError, meta);
   } finally {
