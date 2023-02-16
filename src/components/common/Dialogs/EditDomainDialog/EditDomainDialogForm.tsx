@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   ColonyRole,
   // VotingReputationVersion,
@@ -13,18 +13,17 @@ import {
   DialogHeading,
   DialogSection,
 } from '~shared/Dialog';
-import ColorSelect from '~shared/ColorSelect';
-import { HookFormInput as Input, Annotations, Select } from '~shared/Fields';
+import { HookFormInput as Input, Annotations } from '~shared/Fields';
 import { getDomainOptions } from '~shared/DomainFundSelectorSection/helpers';
 import NoPermissionMessage from '~shared/NoPermissionMessage';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
+import DomainNameAndColorInputGroup from '~shared/DomainNameAndColorInputGroup';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import { useDialogActionPermissions } from '~hooks'; // useEnabledExtensions
 import { DomainColor } from '~gql';
 import { notNull } from '~utils/arrays';
-
-import styles from './EditDomainDialogForm.css';
+import { findDomain } from '~utils/domains';
 
 const displayName = 'common.EditDomainDialog.EditDomainDialogForm';
 
@@ -36,10 +35,6 @@ const MSG = defineMessages({
   name: {
     id: `${displayName}.name`,
     defaultMessage: 'Team name',
-  },
-  team: {
-    id: `${displayName}.team`,
-    defaultMessage: 'Select team',
   },
   purpose: {
     id: `${displayName}.purpose`,
@@ -66,9 +61,6 @@ const EditDomainDialogForm = ({
     reset: resetForm,
   } = useFormContext();
   const { domainId, domainName, domainPurpose, forceAction } = getValues();
-  // const [currentFromDomain, setCurrentFromDomain] = useState<number>(
-  //   parseInt(domainId || '', 10),
-  // );
 
   const colonyDomains = domains?.items.filter(notNull) || [];
   const domainOptions = getDomainOptions(colonyDomains, true);
@@ -89,15 +81,14 @@ const EditDomainDialogForm = ({
     domainId,
   );
 
-  const canEditDomain =
-    userHasPermission && Object.keys(domainOptions).length > 0;
+  const inputDisabled =
+    !userHasPermission ||
+    onlyForceAction ||
+    isSubmitting ||
+    domainOptions.length === 0;
 
-  const inputDisabled = !canEditDomain || onlyForceAction || isSubmitting;
-
-  const handleDomainChange = (selectedDomainValue) => {
-    const selectedDomain = colonyDomains.find(
-      (domain) => domain?.nativeId === selectedDomainValue,
-    );
+  const handleDomainChange = (selectedDomainValue: number) => {
+    const selectedDomain = findDomain(selectedDomainValue, colony);
     const selectedDomainColor =
       graphQlDomainColorMap[selectedDomain?.color || DomainColor.Lightpink];
 
@@ -109,7 +100,6 @@ const EditDomainDialogForm = ({
         domainPurpose: selectedDomain.description || '',
         forceAction,
       });
-      // setCurrentFromDomain(selectedDomainId);
       // if (
       //   selectedMotionDomainId !== Id.RootDomain &&
       //   selectedMotionDomainId !== selectedDomainId
@@ -119,33 +109,6 @@ const EditDomainDialogForm = ({
     }
     return null;
   };
-
-  // const handleFilterMotionDomains = useCallback(
-  //   (optionDomain) => {
-  //     const optionDomainId = parseInt(optionDomain.value, 10);
-  //     if (currentFromDomain === Id.RootDomain) {
-  //       return optionDomainId === Id.RootDomain;
-  //     }
-  //     return (
-  //       optionDomainId === currentFromDomain ||
-  //       optionDomainId === Id.RootDomain
-  //     );
-  //   },
-  //   [currentFromDomain],
-  // );
-
-  // const handleMotionDomainChange = useCallback(
-  //   (motionDomainIdValue) =>
-  //     setFieldValue('motionDomainId', motionDomainIdValue),
-  //   [setFieldValue],
-  // );
-
-  useEffect(() => {
-    if (domainId) {
-      handleDomainChange(domainId);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // const cannotCreateMotion =
   //   votingExtensionVersion ===
@@ -167,25 +130,11 @@ const EditDomainDialogForm = ({
         </DialogSection>
       )}
       <DialogSection>
-        <div className={styles.nameAndColorContainer}>
-          <div className={styles.domainName}>
-            <Select
-              options={domainOptions}
-              label={MSG.team}
-              onChange={handleDomainChange}
-              name="domainId"
-              appearance={{ theme: 'grey', width: 'fluid' }}
-              disabled={isSubmitting}
-              dataTest="domainIdSelector"
-              itemDataTest="domainIdItem"
-            />
-          </div>
-          <ColorSelect
-            appearance={{ alignOptions: 'right' }}
-            disabled={inputDisabled}
-            name="domainColor"
-          />
-        </div>
+        <DomainNameAndColorInputGroup
+          disabled={inputDisabled}
+          domainOptions={domainOptions}
+          onSelectDomainChange={handleDomainChange}
+        />
       </DialogSection>
       <DialogSection>
         <Input

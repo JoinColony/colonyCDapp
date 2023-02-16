@@ -3,7 +3,6 @@ import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import ColorSelect from '~shared/ColorSelect';
 import {
   ActionDialogProps,
   DialogControls,
@@ -13,11 +12,10 @@ import {
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
 import NoPermissionMessage from '~shared/NoPermissionMessage';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
+import DomainNameAndColorInputGroup from '~shared/DomainNameAndColorInputGroup';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import { useDialogActionPermissions } from '~hooks'; // useEnabledExtensions
-
-import styles from './CreateDomainDialogForm.css';
 
 const displayName = 'common.CreateDomainDialog.CreateDomainDialogForm';
 
@@ -25,10 +23,6 @@ const MSG = defineMessages({
   titleCreate: {
     id: `${displayName}.titleCreate`,
     defaultMessage: 'Create a new team',
-  },
-  name: {
-    id: `${displayName}.name`,
-    defaultMessage: 'Team name',
   },
   purpose: {
     id: `${displayName}.name`,
@@ -82,23 +76,10 @@ const CreateDomainDialogForm = ({ back, colony }: ActionDialogProps) => {
         </DialogSection>
       )}
       <DialogSection>
-        <div className={styles.nameAndColorContainer}>
-          <div className={styles.domainName}>
-            <Input
-              label={MSG.name}
-              name="teamName"
-              appearance={{ colorSchema: 'grey', theme: 'fat' }}
-              disabled={inputDisabled}
-              maxLength={20}
-              dataTest="domainNameInput"
-            />
-          </div>
-          <ColorSelect
-            appearance={{ alignOptions: 'right' }}
-            disabled={inputDisabled}
-            name="domainColor"
-          />
-        </div>
+        <DomainNameAndColorInputGroup
+          isCreatingDomain
+          disabled={inputDisabled}
+        />
       </DialogSection>
       <DialogSection>
         <Input

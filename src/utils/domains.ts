@@ -1,9 +1,11 @@
+import { Id } from '@colony/colony-js';
 import { Colony } from '~types';
 import { notNull } from './arrays';
 
 export const findDomainByNativeId = (
   domainNativeId?: number | null,
   colony?: Colony,
+  skipRootDomain?: boolean,
 ) => {
   const domains = colony?.domains?.items;
   if (!domains || !domainNativeId) {
@@ -11,7 +13,11 @@ export const findDomainByNativeId = (
   }
   return domains
     .filter(notNull)
-    .find(({ nativeId }) => nativeId === domainNativeId);
+    .find(({ nativeId }) =>
+      skipRootDomain && (domainNativeId === undefined || domainNativeId === Id.RootDomain)
+        ? nativeId !== Id.RootDomain
+        : nativeId === domainNativeId,
+    );
 };
 
 /**
