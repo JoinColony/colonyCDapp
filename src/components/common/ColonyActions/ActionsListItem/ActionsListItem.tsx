@@ -92,7 +92,7 @@ const ActionsListItem = ({
         //   />
         // )
       }
-      meta={<ActionsListItemMeta fromDomainId={fromDomain ?? ''} />}
+      meta={<ActionsListItemMeta fromDomainId={fromDomain ?? undefined} />}
       onClick={handleActionRedirect}
       status={status}
       // tag={tag}

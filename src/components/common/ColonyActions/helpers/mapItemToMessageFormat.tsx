@@ -2,23 +2,22 @@ import React from 'react';
 
 import Numeral from '~shared/Numeral';
 import FriendlyName from '~shared/FriendlyName';
-import { findDomain } from '~utils/domains';
-import {
-  getColonyMetadataMessageValues,
-  getDomainMetadataTitleValues,
-} from '~utils/events';
+import { findDomainByNativeId } from '~utils/domains';
+import { getColonyMetadataMessageValues } from '~utils/events';
 import {
   Colony,
   ColonyAndExtensionsEvents,
   ColonyAction,
   ColonyActionType,
 } from '~types';
+import { intl } from '~utils/intl';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
-import { MockEvent } from '../mockData';
-import { getDomainMetadataValues } from './getDomainValues';
-
 import styles from './itemStyles.css';
+
+const { formatMessage } = intl({
+  unknownDomain: 'UnknownDomain',
+});
 
 export const mapColonyActionToExpectedFormat = (
   item: ColonyAction,
@@ -39,7 +38,7 @@ export const mapColonyActionToExpectedFormat = (
       />
     ),
     // direction: formattedRolesTitle.direction,
-    fromDomain: findDomain(item.fromDomain, colony)?.name,
+    fromDomain: findDomainByNativeId(item.fromDomain, colony)?.name,
     initiator: (
       <span className={styles.titleDecoration}>
         <FriendlyName user={item.initiatorUser} autoShrinkAddress />
@@ -50,7 +49,7 @@ export const mapColonyActionToExpectedFormat = (
         <FriendlyName user={item.recipient} autoShrinkAddress />
       </span>
     ),
-    toDomain: findDomain(item.toDomain, colony)?.name,
+    toDomain: findDomainByNativeId(item.toDomain, colony)?.name,
     tokenSymbol: item.token?.symbol,
     // reputationChangeNumeral: item.reputationChange && (
     //   <Numeral value={item.reputationChange} decimals={Number(item.decimals)} />
@@ -63,8 +62,8 @@ export const mapColonyActionToExpectedFormat = (
 };
 
 export const mapColonyEventToExpectedFormat = (
-  event: MockEvent & { eventName: ColonyAndExtensionsEvents },
-  item: ColonyAction,
+  eventName: ColonyAndExtensionsEvents,
+  actionData: ColonyAction,
   colony?: Colony,
 ) => {
   /*
@@ -74,48 +73,51 @@ export const mapColonyEventToExpectedFormat = (
   const colonyMetadataChanges = { namedChanged: true, logoChanged: true };
   // const role = item.roles[0];
 
-  const {
-    domainMetadataChanged,
-    newDomainMetadata: { values: newValues, color: newColor },
-    oldDomainMetadata: { values: oldValues, color: oldColor },
-  } = getDomainMetadataTitleValues(
-    event.previousDomainMetadata,
-    event.domainMetadata,
-  );
+  // const {
+  //   domainMetadataChanged,
+  //   newDomainMetadata: { values: newValues, color: newColor },
+  //   oldDomainMetadata: { values: oldValues, color: oldColor },
+  // } = getDomainMetadataTitleValues(
+  //   event.previousDomainMetadata,
+  //   event.domainMetadata,
+  // );
 
   return {
-    ...item,
-    ...event,
     ...getColonyMetadataMessageValues(colonyMetadataChanges, colony?.name),
     amount: (
       <Numeral
-        value={item.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
-        decimals={item.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
+        value={actionData.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
+        decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
     // ...getColonyRoleSetTitleValues(role?.setTo),
-    domainMetadataChanged,
-    newDomainMetadata: getDomainMetadataValues(newValues, newColor),
-    oldDomainMetadata: getDomainMetadataValues(oldValues, oldColor),
-    fromDomain: findDomain(item.fromDomain, colony)?.name,
-    toDomain: findDomain(item.toDomain, colony)?.name,
-    eventNameDecorated: <b>{event.eventName}</b>,
+    // domainMetadataChanged,
+    // newDomainMetadata: getDomainMetadataValues(newValues, newColor),
+    // oldDomainMetadata: getDomainMetadataValues(oldValues, oldColor),
+    fromDomain:
+      findDomainByNativeId(actionData.fromDomain, colony)?.name ??
+      formatMessage({ id: 'unknownDomain' }),
+    toDomain:
+      findDomainByNativeId(actionData.toDomain, colony)?.name ??
+      formatMessage({ id: 'unknownDomain' }),
+    eventNameDecorated: <b>{eventName}</b>,
     // role: role && formatText({ id: `role.${role.id}` }),
-    clientOrExtensionType: (
-      <span className={styles.highlight}>{event.emittedBy}</span>
-    ),
+    // clientOrExtensionType: (
+    //   <span className={styles.highlight}>{event.emittedBy}</span>
+    // ),
     initiator: (
       <span className={styles.userDecoration}>
-        <FriendlyName user={item.initiatorUser} autoShrinkAddress />
+        <FriendlyName user={actionData.initiatorUser} autoShrinkAddress />
       </span>
     ),
     recipient: (
       <span className={styles.userDecoration}>
-        <FriendlyName user={item.recipient} autoShrinkAddress />
+        <FriendlyName user={actionData.recipient} autoShrinkAddress />
       </span>
     ),
-    isSmiteAction: item.type === ColonyActionType.EmitDomainReputationPenalty,
-    tokenSymbol: item.token?.symbol,
+    isSmiteAction:
+      actionData.type === ColonyActionType.EmitDomainReputationPenalty,
+    tokenSymbol: actionData.token?.symbol,
     // reputationChange:
     //   item.reputationChange &&
     //   formatReputationChange(item.reputationChange, item.decimals),
