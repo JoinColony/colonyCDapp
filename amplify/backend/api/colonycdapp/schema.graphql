@@ -420,7 +420,7 @@ type ColonyAction @model {
   amount: String
   tokenAddress: ID
   token: Token @hasOne(fields: ["tokenAddress"])
-  fromDomain: String
-  toDomain: String
+  fromDomain: Int
+  toDomain: Int
   fundamentalChainId: Int
 }

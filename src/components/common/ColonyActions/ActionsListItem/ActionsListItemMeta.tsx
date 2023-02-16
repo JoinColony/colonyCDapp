@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { useColonyContext } from '~hooks';
-import { findDomain } from '~utils/domains';
+import { findDomainByNativeId } from '~utils/domains';
 import { Domain } from '~types';
 
 import styles from './ActionsListItemMeta.css';
@@ -55,7 +55,7 @@ const getDomainName = (fromDomain: Domain) =>
 
 interface ActionsListItemMetaProps {
   // commentCount: number;
-  fromDomainId?: string;
+  fromDomainId?: number;
 }
 
 const ActionsListItemMeta = ({
@@ -63,7 +63,7 @@ const ActionsListItemMeta = ({
   fromDomainId,
 }: ActionsListItemMetaProps) => {
   const { colony } = useColonyContext();
-  const fromDomain = findDomain(fromDomainId, colony);
+  const fromDomain = findDomainByNativeId(fromDomainId, colony);
   return (
     <div>
       {fromDomain && (
