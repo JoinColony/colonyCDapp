@@ -180,7 +180,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
             colonyAddress: colony.colonyAddress,
             colonyName: colony.name,
             nativeTokenAddress: colony.nativeToken.tokenAddress,
-            amount: BigNumber.from(1000000000000000),
+            amount: BigNumber.from(5).mul(BigNumber.from(10).pow(18)), // this is in wei
           }),
           withMeta({ navigate }),
         )}
@@ -197,9 +197,9 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
             recipientAddress: user?.walletAddress,
             domainId: colony.domains?.items[0]?.nativeId,
             singlePayment: {
-              amount: BigNumber.from(1),
+              amount: BigNumber.from(2), // this is in ethers
               tokenAddress: colony.nativeToken.tokenAddress,
-              decimals: 1,
+              decimals: 18,
             },
           }),
           withMeta({ navigate }),
