@@ -1,4 +1,4 @@
-import React, { useRef, MouseEvent, RefObject } from 'react';
+import React, { useRef, MouseEvent, ChangeEvent } from 'react';
 import { defineMessages } from 'react-intl';
 
 import Heading from '~shared/Heading';
@@ -36,16 +36,12 @@ const MSG = defineMessages({
   },
 });
 
-const handleSearchIconFocus = (searchInput: RefObject<HTMLInputElement>) => {
-  searchInput?.current?.focus();
-};
-
 interface Props {
   currentDomainId: number;
   domainSelectOptions: SelectOption[];
   handleDomainChange: (domainId: number) => void;
   searchValue: string;
-  handleSearch: (e: React.ChangeEvent | React.MouseEvent) => void;
+  handleSearch: (e: ChangeEvent | MouseEvent) => void;
 }
 
 const MembersTitle = ({
@@ -89,25 +85,12 @@ const MembersTitle = ({
             onChange={handleSearch}
             placeholder={formatText(MSG.searchPlaceholder)}
           />
-          {searchValue && (
-            <button
-              className={styles.clearButton}
-              onClick={handleSearch}
-              type="button"
-            >
-              <Icon
-                appearance={{ size: 'normal' }}
-                name="close"
-                title={{ id: 'button.close' }}
-              />
-            </button>
-          )}
+
           <Icon
             appearance={{ size: 'normal' }}
             className={styles.icon}
             name="search"
             title={MSG.search}
-            onClick={() => handleSearchIconFocus(searchInput)}
           />
         </div>
       )}
