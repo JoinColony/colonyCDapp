@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { SpinnerLoader } from '~shared/Preloaders';
 import Button, { ThreeDotsButton } from '~shared/Button';
 import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
@@ -88,17 +87,17 @@ const ColonySubscription = () => {
     }
   }, [user, updateUser, watchData, unwatchData]);
 
-  const handleSubscribe = useCallback(() => {
+  const handleSubscribe = () => {
     if (user) {
       watch();
     } else if (wallet && !user) {
       handleNewUser();
       // TO Do: update to new user modal
-      navigate(CREATE_USER_ROUTE, { replace: true });
+      navigate(CREATE_USER_ROUTE);
     } else {
       connectWallet?.();
     }
-  }, [watch, user, wallet, navigate, connectWallet]);
+  };
 
   return (
     <div className={styles.main}>
@@ -112,9 +111,6 @@ const ColonySubscription = () => {
               <MaskedAddress address={colony?.colonyAddress} />
             </div>
           </InvisibleCopyableAddress>
-        )}
-        {(loadingWatch || loadingUnwatch) && (
-          <SpinnerLoader appearance={{ theme: 'primary', size: 'small' }} />
         )}
         {canInteractWithColony && !loadingWatch && !loadingUnwatch && (
           <ColonySubscriptionInfoPopover onUnsubscribe={unwatch} canUnsubscribe>

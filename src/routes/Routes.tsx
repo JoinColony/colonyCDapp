@@ -66,9 +66,16 @@ const MSG = defineMessages({
 });
 
 const Routes = () => {
-  const { user } = useAppContext();
+  const { user, wallet } = useAppContext();
   const isMobile = useMobile();
   // const isAppLoading = appLoadingContext.getIsLoading();
+
+  // disabling rules to silence eslint warnings
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const isConnected = wallet?.address;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const didClaimProfile = user?.name;
+
   // useTitle();
 
   /**
@@ -145,10 +152,7 @@ const Routes = () => {
             </ColonyContextProvider>
           }
         />
-        <Route
-          path={CREATE_COLONY_ROUTE}
-          element={<CreateColonyWizard user={user} />}
-        />
+        <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
         <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
         <Route
           path={USER_ROUTE}

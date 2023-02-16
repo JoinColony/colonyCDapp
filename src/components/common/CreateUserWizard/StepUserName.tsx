@@ -1,12 +1,12 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { matchPath, useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { HookFormInput as Input, ActionHookForm } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { WizardStepProps } from '~shared/Wizard';
 import { mergePayload } from '~utils/actions';
-import { CREATE_USER_ROUTE, LANDING_PAGE_ROUTE } from '~routes';
+import { LANDING_PAGE_ROUTE } from '~routes';
 
 import {
   FormValues,
@@ -15,7 +15,6 @@ import {
   stepUserNameValidationSchema as validationSchema,
   UserWizardStep2,
 } from '../CreateUserWizard';
-import { useAppContext } from '~hooks';
 
 const displayName = 'common.CreateUserWizard.StepUserName';
 
@@ -55,25 +54,13 @@ const UsernameInput = ({ disabled }: UsernameInputProps) => (
 type Props = WizardStepProps<FormValues, UserWizardStep2>;
 
 const StepUserName = ({
-  nextStep,
   wizardValues,
   wizardForm: { initialValues: defaultValues },
 }: Props) => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const { wallet, updateUser } = useAppContext();
   const transform = mergePayload(wizardValues);
-  /* Handle if user flow is within Colony create */
   /* Replace: true so you can't get back to the User wizard after completion */
-  const handleSuccess = () => {
-    if (!matchPath(pathname, CREATE_USER_ROUTE)) {
-      if (updateUser && wallet) {
-        updateUser(wallet?.address);
-      }
-      return nextStep(wizardValues);
-    }
-    return navigate(LANDING_PAGE_ROUTE, { replace: true });
-  };
+  const handleSuccess = () => navigate(LANDING_PAGE_ROUTE, { replace: true });
 
   return (
     <ActionHookForm<UserWizardStep2>
