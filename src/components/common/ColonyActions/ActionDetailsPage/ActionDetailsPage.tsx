@@ -85,7 +85,7 @@ const ActionDetailsPage = () => {
 
   return (
     <Layout>
-      <DefaultAction item={action} />
+      <DefaultAction actionData={action} />
     </Layout>
   );
 };
