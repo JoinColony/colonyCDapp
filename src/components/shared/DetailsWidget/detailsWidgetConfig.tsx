@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 
-import { mockEventData } from '~common/ColonyActions/mockData';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import Numeral from '~shared/Numeral';
 import TransactionLink from '~shared/TransactionLink';
@@ -110,7 +109,7 @@ const getDetailItems = (
     token,
   }: // reputationChange,
   // roles,
-  typeof mockEventData & ColonyAction,
+  ColonyAction,
   colony: Colony,
 ): DetailItemConfig[] => {
   const detailsForAction = getDetailsForAction(type);

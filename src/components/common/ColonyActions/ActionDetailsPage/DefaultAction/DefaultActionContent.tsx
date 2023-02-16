@@ -12,18 +12,21 @@ const displayName = 'common.ColonyActions.ActionsPage.DefaultActionContent';
 
 interface DefaultActionContentProps {
   colony: Colony;
-  item: ColonyAction;
+  actionData: ColonyAction;
 }
 
-const DefaultActionContent = ({ colony, item }: DefaultActionContentProps) => (
+const DefaultActionContent = ({
+  colony,
+  actionData,
+}: DefaultActionContentProps) => (
   <div className={styles.content}>
     <Heading3
       className={styles.heading}
       data-test="actionHeading"
       text={{ id: 'action.title' }}
-      textValues={getActionTitleValues(item, colony)}
+      textValues={getActionTitleValues(actionData, colony)}
     />
-    <ActionsPageFeed actionData={item} />
+    <ActionsPageFeed actionData={actionData} />
   </div>
 );
 
