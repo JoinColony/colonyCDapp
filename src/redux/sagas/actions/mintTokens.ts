@@ -8,7 +8,6 @@ import {
   putError,
   takeFrom,
   // uploadIfpsAnnotation,
-  waitForIngestorToHandleAction,
 } from '../utils';
 
 import {
@@ -130,9 +129,6 @@ function* createMintTokensAction({
     //     ActionTypes.TRANSACTION_SUCCEEDED,
     //   );
     // }
-
-    // Wait until block ingestor has processed the action
-    yield call(waitForIngestorToHandleAction, txHash);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_MINT_TOKENS_SUCCESS,
