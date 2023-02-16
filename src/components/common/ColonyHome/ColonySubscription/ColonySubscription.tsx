@@ -1,24 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 
 import Button, { ThreeDotsButton } from '~shared/Button';
 import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 
-import {
-  GetFullColonyByNameDocument,
-  useCreateWatchedColoniesMutation,
-  useDeleteWatchedColoniesMutation,
-} from '~gql';
-import { CREATE_USER_ROUTE } from '~routes';
-import { useAppContext, useColonyContext } from '~hooks';
-import { getWatchedColony } from '~utils/watching';
-import { handleNewUser } from '~utils/newUser';
-
 import ColonySubscriptionInfoPopover from './ColonySubscriptionInfoPopover';
 
 import styles from './ColonySubscription.css';
+import { useColonyContext } from '~hooks';
+import useColonySubscription from '~hooks/useColonySubscription';
 
 const displayName = 'common.ColonyHome.ColonySubscription';
 
@@ -39,65 +30,8 @@ const MSG = defineMessages({
 
 const ColonySubscription = () => {
   const { colony, canInteractWithColony } = useColonyContext();
-  const {
-    user,
-    updateUser,
-    wallet,
-    walletConnecting,
-    connectWallet,
-    userLoading,
-  } = useAppContext();
-  const navigate = useNavigate();
-
-  const watchedItem = getWatchedColony(colony, user?.watchlist?.items);
-
-  /* Watch (follow) a colony */
-  const [watch, { data: watchData, loading: loadingWatch }] =
-    useCreateWatchedColoniesMutation({
-      variables: {
-        input: {
-          colonyID: colony?.colonyAddress || '',
-          userID: user?.walletAddress || '',
-        },
-      },
-      refetchQueries: [
-        {
-          query: GetFullColonyByNameDocument,
-          variables: { name: colony?.name },
-        },
-      ],
-    });
-
-  /* Unwatch (unfollow) a colony */
-  const [unwatch, { data: unwatchData, loading: loadingUnwatch }] =
-    useDeleteWatchedColoniesMutation({
-      variables: { input: { id: watchedItem?.id || '' } },
-      refetchQueries: [
-        {
-          query: GetFullColonyByNameDocument,
-          variables: { name: colony?.name },
-        },
-      ],
-    });
-
-  /* Update user on watch/unwatch */
-  useEffect(() => {
-    if (updateUser) {
-      updateUser(user?.walletAddress);
-    }
-  }, [user, updateUser, watchData, unwatchData]);
-
-  const handleSubscribe = () => {
-    if (user) {
-      watch();
-    } else if (wallet && !user) {
-      handleNewUser();
-      // TO Do: update to new user modal
-      navigate(CREATE_USER_ROUTE);
-    } else {
-      connectWallet?.();
-    }
-  };
+  const { canSubscribe, handleSubscribe, unsubscribe } =
+    useColonySubscription();
 
   return (
     <div className={styles.main}>
@@ -112,8 +46,11 @@ const ColonySubscription = () => {
             </div>
           </InvisibleCopyableAddress>
         )}
-        {canInteractWithColony && !loadingWatch && !loadingUnwatch && (
-          <ColonySubscriptionInfoPopover onUnsubscribe={unwatch} canUnsubscribe>
+        {!canSubscribe && (
+          <ColonySubscriptionInfoPopover
+            onUnsubscribe={unsubscribe}
+            canUnsubscribe
+          >
             {({ isOpen, toggle, ref, id }) => (
               <ThreeDotsButton
                 id={id}
@@ -129,7 +66,7 @@ const ColonySubscription = () => {
             )}
           </ColonySubscriptionInfoPopover>
         )}
-        {!canInteractWithColony && !walletConnecting && !userLoading && (
+        {canSubscribe && (
           <div className={styles.colonyJoin}>
             <Button
               onClick={handleSubscribe}
