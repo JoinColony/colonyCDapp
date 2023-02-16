@@ -8,7 +8,6 @@ export * from './errorMessages';
 export * from './effects';
 export * from './enableExtensionHelpers';
 export * from './refreshExtension';
-export * from './pollAction';
 
 // export * from './updateColonyDisplayCache';
 // export { updateMotionValues } from './updateMotionValues';
