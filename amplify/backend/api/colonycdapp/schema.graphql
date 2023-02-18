@@ -297,7 +297,7 @@ type User @model {
 }
 
 type Domain @model {
-  id: ID! @index(name: "byNativeId", sortKeyFields: ["nativeId"]) # colonyAddress_nativeId
+  id: ID!
   nativeId: Int!
   nativeFundingPotId: Int!
   nativeSkillId: Int!
@@ -420,7 +420,9 @@ type ColonyAction @model {
   amount: String
   tokenAddress: ID
   token: Token @hasOne(fields: ["tokenAddress"])
-  fromDomain: Int
-  toDomain: Int
+  fromDomainId: ID
+  fromDomain: Domain @hasOne(fields: ["fromDomainId"])
+  toDomainId: ID
+  toDomain: Domain @hasOne(fields: ["toDomainId"])
   fundamentalChainId: Int
 }
