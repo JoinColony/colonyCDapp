@@ -13,7 +13,7 @@ import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import Paragraph from '~shared/Paragraph';
 // import { OneDomain } from '~data/index';
-import { ENTER, Color } from '~types';
+import { ENTER, DomainColor } from '~types';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 
@@ -43,7 +43,13 @@ interface Props {
 const displayName = `DomainDropdown.DomainDropdownItem`;
 
 const DomainDropdownItem = ({
-  domain: { color = Color.LightPink, description, nativeId, parentId, name },
+  domain: {
+    color = DomainColor.LightPink,
+    description,
+    nativeId,
+    parentId,
+    name,
+  },
   isSelected,
   onDomainEdit,
   showDescription = true,

@@ -10,7 +10,7 @@ import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { useAppContext, useColonyContext, usePaginatedActions } from '~hooks';
 import { mergePayload, pipe, withMeta } from '~utils/actions';
-import { Color } from '~types';
+import { DomainColor } from '~types';
 
 import { ActionsListHeading } from '.';
 
@@ -216,7 +216,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
             colonyAddress: colony.colonyAddress,
             colonyName: colony.name,
             domainName: 'Test Domain',
-            domainColor: Color.LightPink,
+            domainColor: DomainColor.LightPink,
           }),
           withMeta({ navigate }),
         )}

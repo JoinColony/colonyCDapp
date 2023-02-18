@@ -10,7 +10,7 @@ import DomainDropdown from '~shared/DomainDropdown';
 import { useColonyContext } from '~hooks';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
-import { Color, graphQlDomainColorMap } from '~types';
+import { DomainColor } from '~types';
 
 import CreateDomainButton from './CreateDomainButton';
 
@@ -52,10 +52,12 @@ const ColonyDomainSelector = ({
 
   const handleEditDomain = () => {};
 
-  const getDomainColor = useCallback<(domainId: string | undefined) => Color>(
+  const getDomainColor = useCallback<
+    (domainId: string | undefined) => DomainColor
+  >(
     (domainId) => {
-      const rootDomainColor: Color = Color.LightPink;
-      const defaultColor: Color = Color.Yellow;
+      const rootDomainColor = DomainColor.LightPink;
+      const defaultColor = DomainColor.Yellow;
       if (domainId === String(ROOT_DOMAIN_ID)) {
         return rootDomainColor;
       }
@@ -65,9 +67,7 @@ const ColonyDomainSelector = ({
       const domain = domains?.items?.find(
         (currentDomain) => Number(domainId) === currentDomain?.nativeId,
       );
-      return domain
-        ? graphQlDomainColorMap[domain?.color || defaultColor]
-        : defaultColor;
+      return domain?.color || defaultColor;
     },
     [colony, domains],
   );

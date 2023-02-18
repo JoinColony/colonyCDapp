@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '~redux';
-import { Address, WithKey, Color } from '~types';
+import { Address, WithKey, DomainColor } from '~types';
 
 import {
   ErrorActionType,
@@ -24,7 +24,7 @@ export type ColonyActionsActionTypes =
         colonyAddress: Address;
         colonyName?: string;
         domainName: string;
-        domainColor?: Color;
+        domainColor?: DomainColor;
         domainPurpose?: string;
         annotationMessage?: string;
         parentId?: number;
@@ -42,7 +42,7 @@ export type ColonyActionsActionTypes =
         colonyAddress: Address;
         colonyName?: string;
         domainName: string;
-        domainColor?: Color;
+        domainColor?: DomainColor;
         domainPurpose?: string;
         annotationMessage?: string;
         domainId: number;

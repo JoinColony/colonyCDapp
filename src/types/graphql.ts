@@ -12,6 +12,7 @@ import {
   ColonyActionFragment,
   ColonyActionType,
   ModelSortDirection,
+  DomainColor,
 } from '~gql';
 
 export type User = UserFragment;
@@ -35,6 +36,8 @@ export type ColonyAction = ColonyActionFragment;
 export { ColonyActionType };
 
 export { ModelSortDirection as SortDirection };
+
+export { DomainColor };
 
 /*
  * Funds claims
