@@ -12,14 +12,20 @@ import {
   transactionPending,
   transactionReady,
 } from '~redux/actionCreators';
+import { ContextModule, getContext } from '~context';
+import {
+  CreateUniqueDomainDocument,
+  CreateUniqueDomainMutation,
+  CreateUniqueDomainMutationVariables,
+} from '~gql';
 
 function* createDomainAction({
   payload: {
     colonyAddress,
     colonyName,
     domainName,
-    // domainColor,
-    // domainPurpose,
+    domainColor,
+    domainPurpose,
     annotationMessage,
     parentId = Id.RootDomain,
   },
@@ -28,6 +34,8 @@ function* createDomainAction({
 }: Action<ActionTypes.ACTION_DOMAIN_CREATE>) {
   let txChannel;
   try {
+    const apolloClient = getContext(ContextModule.ApolloClient);
+
     /*
      * Validate the required values
      */
@@ -84,25 +92,7 @@ function* createDomainAction({
 
     yield put(transactionPending(createDomain.id));
 
-    /*
-     * Upload domain metadata to IPFS
-     */
-    // let domainMetadataIpfsHash = null;
-    // domainMetadataIpfsHash = yield call(
-    //   ipfsUpload,
-    //   JSON.stringify({
-    //     domainName,
-    //     domainColor,
-    //     domainPurpose,
-    //   }),
-    // );
-
-    yield put(
-      transactionAddParams(createDomain.id, [
-        parentId,
-        // domainMetadataIpfsHash as unknown as string,
-      ]),
-    );
+    yield put(transactionAddParams(createDomain.id, [parentId]));
 
     yield put(transactionReady(createDomain.id));
 
@@ -113,6 +103,25 @@ function* createDomainAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
     yield takeFrom(createDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    /**
+     * Save domain in the database
+     */
+    yield apolloClient.mutate<
+      CreateUniqueDomainMutation,
+      CreateUniqueDomainMutationVariables
+    >({
+      mutation: CreateUniqueDomainDocument,
+      variables: {
+        input: {
+          colonyAddress,
+          name: domainName,
+          color: domainColor,
+          description: domainPurpose,
+          // parentId, // @TODO: Refactor Domain model to support parent relation with native id
+        },
+      },
+    });
 
     // if (annotationMessage) {
     //   yield put(transactionPending(annotateCreateDomain.id));

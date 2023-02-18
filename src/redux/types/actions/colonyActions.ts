@@ -24,8 +24,8 @@ export type ColonyActionsActionTypes =
         colonyAddress: Address;
         colonyName?: string;
         domainName: string;
-        domainColor?: DomainColor;
-        domainPurpose?: string;
+        domainColor: DomainColor;
+        domainPurpose: string;
         annotationMessage?: string;
         parentId?: number;
       },
