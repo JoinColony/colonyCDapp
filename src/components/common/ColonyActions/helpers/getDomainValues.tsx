@@ -1,8 +1,7 @@
 import React from 'react';
 
 import ColorTag from '~shared/ColorTag';
-import { DomainColor } from '~gql';
-import { graphQlDomainColorMap } from '~types';
+import { DomainColor } from '~types';
 import { formatText } from '~utils/intl';
 
 export const getDomainMetadataValues = (
@@ -16,7 +15,7 @@ export const getDomainMetadataValues = (
     },
     {
       values,
-      color: color && <ColorTag color={graphQlDomainColorMap[color]} />,
+      color: color && <ColorTag color={color} />,
     },
   );
 };

@@ -1,6 +1,6 @@
 import { constants as ethersContants } from 'ethers';
 
-import { Network, Color } from '~types';
+import { Network, DomainColor } from '~types';
 
 export * from './externalUrls';
 export * from './extensions';
@@ -140,7 +140,7 @@ export const DEFAULT_NETWORK_INFO = NETWORK_DATA[DEFAULT_NETWORK];
 
 export const ALLDOMAINS_DOMAIN_SELECTION = {
   id: String(COLONY_TOTAL_BALANCE_DOMAIN_ID),
-  color: Color.Yellow,
+  color: DomainColor.Yellow,
   ethDomainId: COLONY_TOTAL_BALANCE_DOMAIN_ID,
   name: 'All Teams',
   ethParentDomainId: null,

@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 
 import { Appearance, Select, SelectOption } from '~shared/Fields';
 import ColorTag from '~shared/ColorTag';
-import { Color } from '~types';
+import { DomainColor } from '~types';
 
 import styles from './ColorSelect.css';
 
@@ -19,10 +19,10 @@ interface Props {
   disabled?: boolean;
 
   /** Active color */
-  activeOption: Color;
+  activeOption: DomainColor;
 
   /** Callback function, called after value is changed */
-  onColorChange?: (color: Color) => any;
+  onColorChange?: (color: DomainColor) => any;
 
   appearance?: Appearance;
 
@@ -42,7 +42,7 @@ const ColorSelect = ({
   name = 'color',
 }: Props) => {
   const onChange = useCallback(
-    (color: Color) => {
+    (color: DomainColor) => {
       if (onColorChange) {
         return onColorChange(color);
       }
@@ -58,15 +58,15 @@ const ColorSelect = ({
   }, [activeOption]);
 
   const options = useMemo<ComponentProps<typeof Select>['options']>(() => {
-    const colors = Object.keys(Color).filter(
-      (val) => typeof Color[val as any] === 'number',
+    const colors = Object.keys(DomainColor).filter(
+      (val) => typeof DomainColor[val as any] === 'number',
     );
     return [
       ...colors.map((color) => {
         return {
-          children: <ColorTag color={Color[color]} />,
+          children: <ColorTag color={DomainColor[color]} />,
           label: `${color}`,
-          value: `${Color[color]}`,
+          value: `${DomainColor[color]}`,
         };
       }),
     ];
@@ -83,7 +83,7 @@ const ColorSelect = ({
         label={MSG.labelColorSelect}
         name={name}
         onChange={(val) => {
-          onChange(Number(val));
+          onChange(DomainColor[Number(val)]);
         }}
         options={options}
         renderActiveOption={renderActiveOption}

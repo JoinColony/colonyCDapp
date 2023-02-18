@@ -134,10 +134,10 @@ enum Network {
 }
 
 enum DomainColor {
-  LIGHTPINK
+  LIGHT_PINK
   PINK
   BLACK
-  EMERALDGREEN
+  EMERALD_GREEN
   BLUE
   YELLOW
   RED
@@ -145,11 +145,11 @@ enum DomainColor {
   PERIWINKLE
   GOLD
   AQUA
-  BLUEGREY
+  BLUE_GREY
   PURPLE
   ORANGE
   MAGENTA
-  PURPLEGREY
+  PURPLE_GREY
 }
 
 enum ColonyType {
