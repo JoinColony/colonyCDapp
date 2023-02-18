@@ -123,6 +123,25 @@ function* createDomainAction({
       },
     });
 
+    /**
+     * Save domain in the database
+     */
+    yield apolloClient.mutate<
+      CreateUniqueDomainMutation,
+      CreateUniqueDomainMutationVariables
+    >({
+      mutation: CreateUniqueDomainDocument,
+      variables: {
+        input: {
+          colonyAddress,
+          name: domainName,
+          color: domainColor,
+          description: domainPurpose,
+          // parentId, // @TODO: Refactor Domain model to support parent relation with native id
+        },
+      },
+    });
+
     // if (annotationMessage) {
     //   yield put(transactionPending(annotateCreateDomain.id));
 
