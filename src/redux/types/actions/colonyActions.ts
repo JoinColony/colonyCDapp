@@ -29,12 +29,12 @@ export type ColonyActionsActionTypes =
         annotationMessage?: string;
         parentId?: number;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_DOMAIN_CREATE_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_DOMAIN_EDIT,
