@@ -4,7 +4,7 @@ import mintTokensActionSaga from './mintTokens';
 import paymentActionSaga from './payment';
 // import moveFundsActionSaga from './moveFunds';
 // import versionUpgradeActionSaga from './versionUpgrade';
-// import createDomainActionSaga from './createDomain';
+import createDomainActionSaga from './createDomain';
 // import editDomainActionSaga from './editDomain';
 // import editColonyActionSaga from './editColony';
 // import managePermissionsActionSaga from './managePermissions';
@@ -18,7 +18,7 @@ export default function* actionsSagas() {
     call(paymentActionSaga),
     // call(moveFundsActionSaga),
     // call(versionUpgradeActionSaga),
-    // call(createDomainActionSaga),
+    call(createDomainActionSaga),
     // call(editDomainActionSaga),
     // call(editColonyActionSaga),
     // call(managePermissionsActionSaga),

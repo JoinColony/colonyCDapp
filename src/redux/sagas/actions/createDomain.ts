@@ -1,49 +1,33 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, Id } from '@colony/colony-js';
-
-import { ContextModule, getContext } from '~context';
-import {
-  ColonyFromNameDocument,
-  ColonyFromNameQuery,
-  ColonyFromNameQueryVariables,
-} from '~data/index';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-} from '../utils';
-
+import { Action, ActionTypes, AllActions } from '~redux';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { ipfsUpload } from '../ipfs';
+import { putError, takeFrom } from '../utils';
 import {
-  transactionReady,
-  transactionPending,
   transactionAddParams,
-} from '../../actionCreators';
+  transactionPending,
+  transactionReady,
+} from '~redux/actionCreators';
 
 function* createDomainAction({
   payload: {
     colonyAddress,
     colonyName,
     domainName,
-    domainColor,
-    domainPurpose,
+    // domainColor,
+    // domainPurpose,
     annotationMessage,
     parentId = Id.RootDomain,
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ACTION_DOMAIN_CREATE>) {
   let txChannel;
   try {
-    const apolloClient = getContext(ContextModule.ApolloClient);
     /*
      * Validate the required values
      */
@@ -59,7 +43,7 @@ function* createDomainAction({
       annotateCreateDomainAction: annotateCreateDomain,
     } = yield createTransactionChannels(metaId, [
       'createDomainAction',
-      'annotateCreateDomainAction',
+      // 'annotateCreateDomainAction',
     ]);
 
     const createGroupTransaction = ({ id, index }, config) =>
@@ -74,21 +58,21 @@ function* createDomainAction({
 
     yield createGroupTransaction(createDomain, {
       context: ClientType.ColonyClient,
-      methodName: 'addDomainWithProofs',
+      methodName: 'addDomainWithProofs(uint256)',
       identifier: colonyAddress,
       params: [],
       ready: false,
     });
 
-    if (annotationMessage) {
-      yield createGroupTransaction(annotateCreateDomain, {
-        context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
-        identifier: colonyAddress,
-        params: [],
-        ready: false,
-      });
-    }
+    // if (annotationMessage) {
+    //   yield createGroupTransaction(annotateCreateDomain, {
+    //     context: ClientType.ColonyClient,
+    //     methodName: 'annotateTransaction',
+    //     identifier: colonyAddress,
+    //     params: [],
+    //     ready: false,
+    //   });
+    // }
 
     yield takeFrom(createDomain.channel, ActionTypes.TRANSACTION_CREATED);
     if (annotationMessage) {
@@ -103,20 +87,20 @@ function* createDomainAction({
     /*
      * Upload domain metadata to IPFS
      */
-    let domainMetadataIpfsHash = null;
-    domainMetadataIpfsHash = yield call(
-      ipfsUpload,
-      JSON.stringify({
-        domainName,
-        domainColor,
-        domainPurpose,
-      }),
-    );
+    // let domainMetadataIpfsHash = null;
+    // domainMetadataIpfsHash = yield call(
+    //   ipfsUpload,
+    //   JSON.stringify({
+    //     domainName,
+    //     domainColor,
+    //     domainPurpose,
+    //   }),
+    // );
 
     yield put(
       transactionAddParams(createDomain.id, [
         parentId,
-        domainMetadataIpfsHash as unknown as string,
+        // domainMetadataIpfsHash as unknown as string,
       ]),
     );
 
@@ -130,50 +114,50 @@ function* createDomainAction({
     );
     yield takeFrom(createDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    if (annotationMessage) {
-      yield put(transactionPending(annotateCreateDomain.id));
+    // if (annotationMessage) {
+    //   yield put(transactionPending(annotateCreateDomain.id));
 
-      /*
-       * Upload domain metadata to IPFS
-       */
-      const annotationMessageIpfsHash = yield call(
-        uploadIfpsAnnotation,
-        annotationMessage,
-      );
+    //   /*
+    //    * Upload domain metadata to IPFS
+    //    */
+    //   const annotationMessageIpfsHash = yield call(
+    //     uploadIfpsAnnotation,
+    //     annotationMessage,
+    //   );
 
-      yield put(
-        transactionAddParams(annotateCreateDomain.id, [
-          txHash,
-          annotationMessageIpfsHash,
-        ]),
-      );
+    //   yield put(
+    //     transactionAddParams(annotateCreateDomain.id, [
+    //       txHash,
+    //       annotationMessageIpfsHash,
+    //     ]),
+    //   );
 
-      yield put(transactionReady(annotateCreateDomain.id));
+    //   yield put(transactionReady(annotateCreateDomain.id));
 
-      yield takeFrom(
-        annotateCreateDomain.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
-    }
+    //   yield takeFrom(
+    //     annotateCreateDomain.channel,
+    //     ActionTypes.TRANSACTION_SUCCEEDED,
+    //   );
+    // }
 
     /*
      * Update the colony object cache
      */
-    yield apolloClient.query<ColonyFromNameQuery, ColonyFromNameQueryVariables>(
-      {
-        query: ColonyFromNameDocument,
-        variables: { name: colonyName || '', address: colonyAddress },
-        fetchPolicy: 'network-only',
-      },
-    );
+    // yield apolloClient.query<ColonyFromNameQuery, ColonyFromNameQueryVariables>(
+    //   {
+    //     query: ColonyFromNameDocument,
+    //     variables: { name: colonyName || '', address: colonyAddress },
+    //     fetchPolicy: 'network-only',
+    //   },
+    // );
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS,
       meta,
     });
 
-    if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+    if (colonyName && navigate) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`);
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_DOMAIN_CREATE_ERROR, error, meta);
