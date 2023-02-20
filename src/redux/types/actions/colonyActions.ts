@@ -171,11 +171,11 @@ export type ColonyActionsActionTypes =
         colonyName: string;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ActionTypeWithMeta<
       ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_UNLOCK_TOKEN_ERROR, object>
   | UniqueActionType<
