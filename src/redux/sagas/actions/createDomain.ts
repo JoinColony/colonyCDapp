@@ -127,17 +127,18 @@ function* createDomainAction({
      * Save domain in the database
      */
     yield apolloClient.mutate<
-      CreateUniqueDomainMutation,
-      CreateUniqueDomainMutationVariables
+      CreateDomainMutation,
+      CreateDomainMutationVariables
     >({
-      mutation: CreateUniqueDomainDocument,
+      mutation: CreateDomainDocument,
       variables: {
         input: {
-          colonyAddress,
+          id: getDomainDatabaseId(colonyAddress, nativeDomainId),
+          nativeId: nativeDomainId,
           name: domainName,
           color: domainColor,
           description: domainPurpose,
-          // parentId, // @TODO: Refactor Domain model to support parent relation with native id
+          domainParentId: getDomainDatabaseId(colonyAddress, parentId),
         },
       },
     });

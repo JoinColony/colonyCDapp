@@ -406,7 +406,7 @@ export type CreateDomainInput = {
   isRoot: Scalars['Boolean'];
   nativeFundingPotId: Scalars['Int'];
   nativeId: Scalars['Int'];
-  nativeSkillId: Scalars['Int'];
+  nativeSkillId?: InputMaybe<Scalars['Int']>;
 };
 
 export type CreateDomainMetadataInput = {
@@ -2762,6 +2762,13 @@ export type UpdateDomainMetadataMutationVariables = Exact<{
 
 
 export type UpdateDomainMetadataMutation = { __typename?: 'Mutation', updateDomainMetadata?: { __typename?: 'DomainMetadata', id: string } | null };
+
+export type CreateDomainMutationVariables = Exact<{
+  input: CreateDomainInput;
+}>;
+
+
+export type CreateDomainMutation = { __typename?: 'Mutation', createDomain?: { __typename?: 'Domain', id: string } | null };
 
 export type CreateDomainMutationVariables = Exact<{
   input: CreateDomainInput;
