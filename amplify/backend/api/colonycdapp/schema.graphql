@@ -297,10 +297,10 @@ type User @model {
 }
 
 type Domain @model {
-  id: ID!
+  id: ID! # We have to self-manage this and keep it the following format: colonyAddress_nativeId
   nativeId: Int!
-  nativeFundingPotId: Int!
-  nativeSkillId: Int!
+  nativeFundingPotId: Int
+  nativeSkillId: Int
   name: String
   description: String
   color: DomainColor

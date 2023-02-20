@@ -35,7 +35,7 @@ exports.handler = async (event) => {
     /*
      * @TODO This needs to keep up, and/or track the DomainColor type
      */
-    color = 'LIGHTPINK',
+    color = 'LIGHT_PINK',
     parentId = 1,
     colonyAddress,
   } = event.arguments?.input || {};

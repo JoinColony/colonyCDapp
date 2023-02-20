@@ -1,0 +1,5 @@
+mutation CreateDomain($input: CreateDomainInput!) {
+  createDomain(input: $input) {
+    id
+  }
+}
