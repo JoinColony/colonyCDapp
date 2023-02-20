@@ -216,7 +216,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
             colonyAddress: colony.colonyAddress,
             colonyName: colony.name,
             domainName: 'Test Domain',
-            domainColor: DomainColor.LightPink,
+            domainColor: DomainColor.BlueGrey,
             domainPurpose: 'Test Domain Description',
           }),
           withMeta({ navigate }),

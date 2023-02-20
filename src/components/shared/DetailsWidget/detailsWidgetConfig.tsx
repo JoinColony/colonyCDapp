@@ -11,7 +11,6 @@ import {
   UniversalMessageValues,
 } from '~types';
 import { getDetailsForAction } from '~utils/colonyActions';
-import { findDomainByNativeId } from '~utils/domains';
 import { splitTransactionHash } from '~utils/strings';
 
 import {
@@ -101,8 +100,8 @@ const getDetailItems = (
   {
     // motionDomain,
     type,
-    fromDomain: fromDomainId,
-    toDomain: toDomainId,
+    fromDomain,
+    toDomain,
     amount,
     recipient,
     transactionHash,
@@ -114,8 +113,6 @@ const getDetailItems = (
 ): DetailItemConfig[] => {
   const detailsForAction = getDetailsForAction(type);
   const shortenedHash = getShortenedHash(transactionHash || '');
-  const fromDomain = findDomainByNativeId(fromDomainId, colony);
-  const toDomain = findDomainByNativeId(toDomainId, colony);
 
   // const isSmiteAction =
   //   actionType === ColonyActions.EmitDomainReputationPenalty;
