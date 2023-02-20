@@ -14,10 +14,12 @@ import {
 } from '~redux/actionCreators';
 import { ContextModule, getContext } from '~context';
 import {
-  CreateUniqueDomainDocument,
-  CreateUniqueDomainMutation,
-  CreateUniqueDomainMutationVariables,
+  CreateDomainDocument,
+  CreateDomainMutation,
+  CreateDomainMutationVariables,
 } from '~gql';
+import { getDomainDatabaseId } from '~utils/domains';
+import { toNumber } from '~utils/numbers';
 
 function* createDomainAction({
   payload: {
@@ -97,28 +99,30 @@ function* createDomainAction({
     yield put(transactionReady(createDomain.id));
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      createDomain.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
-    yield takeFrom(createDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      payload: {
+        receipt: { transactionHash },
+        eventData,
+      },
+    } = yield takeFrom(createDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    const { domainId } = eventData?.DomainAdded || {};
+    const nativeDomainId = toNumber(domainId);
 
     /**
      * Save domain in the database
      */
     yield apolloClient.mutate<
-      CreateUniqueDomainMutation,
-      CreateUniqueDomainMutationVariables
+      CreateDomainMutation,
+      CreateDomainMutationVariables
     >({
-      mutation: CreateUniqueDomainDocument,
+      mutation: CreateDomainDocument,
       variables: {
         input: {
-          colonyAddress,
+          id: getDomainDatabaseId(colonyAddress, nativeDomainId),
+          nativeId: nativeDomainId,
           name: domainName,
           color: domainColor,
           description: domainPurpose,
-          // parentId, // @TODO: Refactor Domain model to support parent relation with native id
+          domainParentId: getDomainDatabaseId(colonyAddress, parentId),
         },
       },
     });
@@ -166,7 +170,7 @@ function* createDomainAction({
     });
 
     if (colonyName && navigate) {
-      navigate(`/colony/${colonyName}/tx/${txHash}`);
+      navigate(`/colony/${colonyName}/tx/${transactionHash}`);
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_DOMAIN_CREATE_ERROR, error, meta);
