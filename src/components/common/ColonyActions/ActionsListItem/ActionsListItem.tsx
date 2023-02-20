@@ -92,12 +92,12 @@ const ActionsListItem = ({
         //   />
         // )
       }
-      meta={<ActionsListItemMeta fromDomainId={fromDomain ?? undefined} />}
+      meta={<ActionsListItemMeta fromDomain={fromDomain ?? undefined} />}
       onClick={handleActionRedirect}
       status={status}
       // tag={tag}
       title={{ id: 'action.title' }}
-      titleValues={getActionTitleValues(item, colony)}
+      titleValues={getActionTitleValues(item)}
     />
   );
 };

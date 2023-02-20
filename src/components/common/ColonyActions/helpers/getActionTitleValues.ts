@@ -1,4 +1,4 @@
-import { Colony, ColonyAction, ColonyActionType, ColonyMotions } from '~types';
+import { ColonyAction, ColonyActionType, ColonyMotions } from '~types';
 import { generateMessageValues } from './getEventTitleValues';
 
 import { mapColonyActionToExpectedFormat } from './mapItemToMessageFormat';
@@ -76,8 +76,8 @@ const getMessageDescriptorKeys = (
 };
 
 /* Returns the correct message values according to the action type. */
-const getActionTitleValues = (item: ColonyAction, colony?: Colony) => {
-  const updatedItem = mapColonyActionToExpectedFormat(item, colony);
+const getActionTitleValues = (item: ColonyAction) => {
+  const updatedItem = mapColonyActionToExpectedFormat(item);
   const keys = getMessageDescriptorKeys(item.type);
   return generateMessageValues(updatedItem, keys, {
     actionType: item.type,
