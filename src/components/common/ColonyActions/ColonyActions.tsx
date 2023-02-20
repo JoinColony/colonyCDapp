@@ -223,6 +223,19 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         )}
         text="Test Create Domain"
       />
+      <ActionButton
+        submit={ActionTypes.ACTION_UNLOCK_TOKEN}
+        error={ActionTypes.ACTION_UNLOCK_TOKEN_ERROR}
+        success={ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS}
+        transform={pipe(
+          mergePayload({
+            colonyAddress: colony.colonyAddress,
+            colonyName: colony.name,
+          }),
+          withMeta({ navigate }),
+        )}
+        text="Test Unlock Token"
+      />
       {actions.length ? (
         <>
           <ActionsListHeading
