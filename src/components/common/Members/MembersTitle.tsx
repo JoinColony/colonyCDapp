@@ -1,4 +1,4 @@
-import React, { useRef, MouseEvent } from 'react';
+import React, { useRef, MouseEvent, ChangeEvent } from 'react';
 import { defineMessages } from 'react-intl';
 
 import Heading from '~shared/Heading';
@@ -41,7 +41,7 @@ interface Props {
   domainSelectOptions: SelectOption[];
   handleDomainChange: (domainId: number) => void;
   searchValue: string;
-  handleSearch: (e: React.ChangeEvent | React.MouseEvent) => void;
+  handleSearch: (e: ChangeEvent | MouseEvent) => void;
 }
 
 const MembersTitle = ({
@@ -52,30 +52,6 @@ const MembersTitle = ({
   handleSearch,
 }: Props) => {
   const searchInput = useRef<HTMLInputElement>(null);
-  const handleFocusRef = () => {
-    searchInput?.current?.focus();
-  };
-
-  const handleMouseEnterRef = () => {
-    if (searchInput.current !== null) {
-      searchInput.current.placeholder = formatText(MSG.searchPlaceholder) ?? '';
-    }
-  };
-
-  const handleMouseLeaveRef = () => {
-    if (searchInput.current !== null) {
-      searchInput.current.placeholder = '';
-    }
-  };
-
-  const handleMouseEnter = (e: MouseEvent<HTMLInputElement>) => {
-    e.currentTarget.placeholder = formatText(MSG.searchPlaceholder) as string;
-  };
-
-  const handleMouseLeave = (e: MouseEvent<HTMLInputElement>) => {
-    e.currentTarget.placeholder = '';
-  };
-
   const isMobile = useMobile();
 
   return (
@@ -92,33 +68,11 @@ const MembersTitle = ({
             onDomainChange={handleDomainChange}
           />
         ) : (
-          // <Form
           <MembersDomainSelector
             currentDomainId={currentDomainId}
             handleDomainChange={handleDomainChange}
             domainSelectOptions={domainSelectOptions}
           />
-          //   initialValues={{ filter: currentDomainId.toString() }}
-          //   onSubmit={() => {}}
-          // >
-          //   <div className={styles.titleSelect}>
-          //     <Select
-          //       appearance={{
-          //         alignOptions: 'right',
-          //         size: 'mediumLarge',
-          //         theme: 'alt',
-          //         // unrestrictedOptionsWidth: 'true',
-          //       }}
-          //       elementOnly
-          //       label={MSG.labelFilter}
-          //       name="filter"
-          //       onChange={(domainId) =>
-          //         handleDomainChange(parseInt(domainId, 10))
-          //       }
-          //       options={domainSelectOptions}
-          //     />
-          //   </div>
-          // </Form>
         )}
       </div>
       {!isMobile && (
@@ -129,30 +83,14 @@ const MembersTitle = ({
             value={searchValue}
             className={styles.input}
             onChange={handleSearch}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            placeholder={formatText(MSG.searchPlaceholder)}
           />
-          {searchValue && (
-            <button
-              className={styles.clearButton}
-              onClick={handleSearch}
-              type="button"
-            >
-              <Icon
-                appearance={{ size: 'normal' }}
-                name="close"
-                title={{ id: 'button.close' }}
-              />
-            </button>
-          )}
+
           <Icon
             appearance={{ size: 'normal' }}
             className={styles.icon}
             name="search"
             title={MSG.search}
-            onClick={handleFocusRef}
-            onMouseEnter={handleMouseEnterRef}
-            onMouseLeave={handleMouseLeaveRef}
           />
         </div>
       )}

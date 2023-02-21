@@ -37,13 +37,16 @@
 
   /* pull down to cover HR */
   margin-bottom: -1px;
-  padding-right: 42px;
   width: 300px;
   position: relative;
   border-bottom: 1px solid var(--light-grey-beige);
 
   &:hover {
     border-bottom: 1px solid var(--primary);
+  }
+
+  &:hover > input::placeholder {
+    opacity: 1;
   }
 
   &:hover > i > svg {
@@ -63,6 +66,7 @@
   right: 2px;
   z-index: 1;
   transform: translateY(-50%);
+  pointer-events: none;
 
   & svg {
     stroke: color-mod(var(--grey-purple) alpha(65%));
@@ -75,6 +79,7 @@
 
 .input {
   padding: 4px;
+  padding-right: 20px;
   height: 32px;
   width: 100%;
   position: relative;
@@ -91,8 +96,13 @@
   &::placeholder {
     font-size: var(--size-normal);
     color: var(--grey);
+    opacity: 0;
     letter-spacing: var(--spacing-normal);
   }
+}
+
+.input:hover::placeholder {
+  opacity: 1;
 }
 
 .clearButton {
