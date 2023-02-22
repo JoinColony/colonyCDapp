@@ -1,9 +1,8 @@
 import React, { ComponentProps, ReactNode, useCallback, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { ALLDOMAINS_DOMAIN_SELECTION } from '~constants';
 import { Select, SelectOption } from '~shared/Fields';
-import { Colony } from '~types';
+import { Colony, DomainColor } from '~types';
 import { notNull } from '~utils/arrays';
 
 import DomainDropdownItem from './DomainDropdownItem';
@@ -90,7 +89,16 @@ const DomainDropdown = ({
     const allDomainsOption: SelectOption = {
       children: (
         <DomainDropdownItem
-          domain={ALLDOMAINS_DOMAIN_SELECTION}
+          domain={{
+            id: '',
+            isRoot: true,
+            nativeId: 0,
+            metadata: {
+              name: 'All Teams',
+              description: '',
+              color: DomainColor.Yellow,
+            },
+          }}
           isSelected={currentDomainId === 0}
           onDomainEdit={onDomainEdit}
           showDescription={showDescription}
@@ -118,7 +126,8 @@ const DomainDropdown = ({
         .filter(notNull)
         .sort(sortByDomainId)
         .map((domain) => {
-          const { nativeId, name: domainName } = domain || {};
+          const { nativeId, metadata } = domain || {};
+          const { name: domainName } = metadata || {};
           return {
             children: (
               <DomainDropdownItem
