@@ -348,7 +348,6 @@ export type CreateCurrentVersionInput = {
 };
 
 export type CreateDomainInput = {
-  colonyDomainsId?: InputMaybe<Scalars['ID']>;
   colonyId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
   isRoot: Scalars['Boolean'];
@@ -499,7 +498,6 @@ export type DeleteWatchedColoniesInput = {
 export type Domain = {
   __typename?: 'Domain';
   colony: Colony;
-  colonyDomainsId?: Maybe<Scalars['ID']>;
   colonyId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   id: Scalars['ID'];
@@ -840,7 +838,6 @@ export type ModelDomainColorInput = {
 
 export type ModelDomainConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelDomainConditionInput>>>;
-  colonyDomainsId?: InputMaybe<ModelIdInput>;
   colonyId?: InputMaybe<ModelIdInput>;
   isRoot?: InputMaybe<ModelBooleanInput>;
   nativeFundingPotId?: InputMaybe<ModelIntInput>;
@@ -858,7 +855,6 @@ export type ModelDomainConnection = {
 
 export type ModelDomainFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelDomainFilterInput>>>;
-  colonyDomainsId?: InputMaybe<ModelIdInput>;
   colonyId?: InputMaybe<ModelIdInput>;
   id?: InputMaybe<ModelIdInput>;
   isRoot?: InputMaybe<ModelBooleanInput>;
@@ -2425,7 +2421,6 @@ export type UpdateCurrentVersionInput = {
 };
 
 export type UpdateDomainInput = {
-  colonyDomainsId?: InputMaybe<Scalars['ID']>;
   colonyId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
   isRoot?: InputMaybe<Scalars['Boolean']>;
