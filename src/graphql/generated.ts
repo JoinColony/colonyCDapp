@@ -406,7 +406,14 @@ export type CreateDomainInput = {
   isRoot: Scalars['Boolean'];
   nativeFundingPotId: Scalars['Int'];
   nativeId: Scalars['Int'];
-  nativeSkillId?: InputMaybe<Scalars['Int']>;
+  nativeSkillId: Scalars['Int'];
+};
+
+export type CreateDomainMetadataInput = {
+  color: DomainColor;
+  description: Scalars['String'];
+  id?: InputMaybe<Scalars['ID']>;
+  name: Scalars['String'];
 };
 
 export type CreateDomainMetadataInput = {
@@ -2770,12 +2777,12 @@ export type CreateDomainMutationVariables = Exact<{
 
 export type CreateDomainMutation = { __typename?: 'Mutation', createDomain?: { __typename?: 'Domain', id: string } | null };
 
-export type CreateDomainMutationVariables = Exact<{
-  input: CreateDomainInput;
+export type CreateDomainMetadataMutationVariables = Exact<{
+  input: CreateDomainMetadataInput;
 }>;
 
 
-export type CreateDomainMutation = { __typename?: 'Mutation', createDomain?: { __typename?: 'Domain', id: string } | null };
+export type CreateDomainMetadataMutation = { __typename?: 'Mutation', createDomainMetadata?: { __typename?: 'DomainMetadata', id: string } | null };
 
 export type CreateColonyTokensMutationVariables = Exact<{
   input: CreateColonyTokensInput;
@@ -3381,32 +3388,32 @@ export const CreateDomainDocument = gql`
   }
 }
     `;
-export type CreateDomainMutationFn = Apollo.MutationFunction<CreateDomainMutation, CreateDomainMutationVariables>;
+export type CreateDomainMetadataMutationFn = Apollo.MutationFunction<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>;
 
 /**
- * __useCreateDomainMutation__
+ * __useCreateDomainMetadataMutation__
  *
- * To run a mutation, you first call `useCreateDomainMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateDomainMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateDomainMetadataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateDomainMetadataMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createDomainMutation, { data, loading, error }] = useCreateDomainMutation({
+ * const [createDomainMetadataMutation, { data, loading, error }] = useCreateDomainMetadataMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useCreateDomainMutation(baseOptions?: Apollo.MutationHookOptions<CreateDomainMutation, CreateDomainMutationVariables>) {
+export function useCreateDomainMetadataMutation(baseOptions?: Apollo.MutationHookOptions<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateDomainMutation, CreateDomainMutationVariables>(CreateDomainDocument, options);
+        return Apollo.useMutation<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>(CreateDomainMetadataDocument, options);
       }
-export type CreateDomainMutationHookResult = ReturnType<typeof useCreateDomainMutation>;
-export type CreateDomainMutationResult = Apollo.MutationResult<CreateDomainMutation>;
-export type CreateDomainMutationOptions = Apollo.BaseMutationOptions<CreateDomainMutation, CreateDomainMutationVariables>;
+export type CreateDomainMetadataMutationHookResult = ReturnType<typeof useCreateDomainMetadataMutation>;
+export type CreateDomainMetadataMutationResult = Apollo.MutationResult<CreateDomainMetadataMutation>;
+export type CreateDomainMetadataMutationOptions = Apollo.BaseMutationOptions<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>;
 export const CreateColonyTokensDocument = gql`
     mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
   createColonyTokens(input: $input) {
