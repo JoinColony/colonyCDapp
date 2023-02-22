@@ -35,7 +35,8 @@ export const mapColonyActionToExpectedFormat = (actionData: ColonyAction) => {
     ),
     // direction: formattedRolesTitle.direction,
     fromDomain:
-      actionData.fromDomain?.name ?? formatMessage({ id: 'unknownDomain' }),
+      actionData.fromDomain?.metadata?.name ??
+      formatMessage({ id: 'unknownDomain' }),
     initiator: (
       <span className={styles.titleDecoration}>
         <FriendlyName user={actionData.initiatorUser} autoShrinkAddress />
@@ -47,7 +48,8 @@ export const mapColonyActionToExpectedFormat = (actionData: ColonyAction) => {
       </span>
     ),
     toDomain:
-      actionData.toDomain?.name ?? formatMessage({ id: 'unknownDomain' }),
+      actionData.toDomain?.metadata?.name ??
+      formatMessage({ id: 'unknownDomain' }),
     tokenSymbol: actionData.token?.symbol,
     // reputationChangeNumeral: item.reputationChange && (
     //   <Numeral value={item.reputationChange} decimals={Number(item.decimals)} />
@@ -93,9 +95,11 @@ export const mapColonyEventToExpectedFormat = (
     // newDomainMetadata: getDomainMetadataValues(newValues, newColor),
     // oldDomainMetadata: getDomainMetadataValues(oldValues, oldColor),
     fromDomain:
-      actionData.fromDomain?.name ?? formatMessage({ id: 'unknownDomain' }),
+      actionData.fromDomain?.metadata?.name ??
+      formatMessage({ id: 'unknownDomain' }),
     toDomain:
-      actionData.toDomain?.name ?? formatMessage({ id: 'unknownDomain' }),
+      actionData.toDomain?.metadata?.name ??
+      formatMessage({ id: 'unknownDomain' }),
     eventNameDecorated: <b>{eventName}</b>,
     // role: role && formatText({ id: `role.${role.id}` }),
     // clientOrExtensionType: (

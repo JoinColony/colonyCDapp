@@ -349,14 +349,18 @@ export type CreateCurrentVersionInput = {
 
 export type CreateDomainInput = {
   colonyDomainsId?: InputMaybe<Scalars['ID']>;
-  color?: InputMaybe<DomainColor>;
-  description?: InputMaybe<Scalars['String']>;
-  domainParentId?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<Scalars['ID']>;
-  name?: InputMaybe<Scalars['String']>;
-  nativeFundingPotId?: InputMaybe<Scalars['Int']>;
+  isRoot: Scalars['Boolean'];
+  nativeFundingPotId: Scalars['Int'];
   nativeId: Scalars['Int'];
-  nativeSkillId?: InputMaybe<Scalars['Int']>;
+  nativeSkillId: Scalars['Int'];
+};
+
+export type CreateDomainMetadataInput = {
+  color: DomainColor;
+  description: Scalars['String'];
+  id?: InputMaybe<Scalars['ID']>;
+  name: Scalars['String'];
 };
 
 export type CreateProfileInput = {
@@ -467,6 +471,10 @@ export type DeleteDomainInput = {
   id: Scalars['ID'];
 };
 
+export type DeleteDomainMetadataInput = {
+  id: Scalars['ID'];
+};
+
 export type DeleteProfileInput = {
   id: Scalars['ID'];
 };
@@ -490,16 +498,13 @@ export type DeleteWatchedColoniesInput = {
 export type Domain = {
   __typename?: 'Domain';
   colonyDomainsId?: Maybe<Scalars['ID']>;
-  color?: Maybe<DomainColor>;
   createdAt: Scalars['AWSDateTime'];
-  description?: Maybe<Scalars['String']>;
-  domainParentId?: Maybe<Scalars['ID']>;
   id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  nativeFundingPotId?: Maybe<Scalars['Int']>;
+  isRoot: Scalars['Boolean'];
+  metadata?: Maybe<DomainMetadata>;
+  nativeFundingPotId: Scalars['Int'];
   nativeId: Scalars['Int'];
-  nativeSkillId?: Maybe<Scalars['Int']>;
-  parent?: Maybe<Domain>;
+  nativeSkillId: Scalars['Int'];
   updatedAt: Scalars['AWSDateTime'];
 };
 
@@ -524,6 +529,16 @@ export enum DomainColor {
 
 export type DomainInput = {
   id: Scalars['ID'];
+};
+
+export type DomainMetadata = {
+  __typename?: 'DomainMetadata';
+  color: DomainColor;
+  createdAt: Scalars['AWSDateTime'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  updatedAt: Scalars['AWSDateTime'];
 };
 
 export enum EmailPermissions {
@@ -823,10 +838,7 @@ export type ModelDomainColorInput = {
 export type ModelDomainConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelDomainConditionInput>>>;
   colonyDomainsId?: InputMaybe<ModelIdInput>;
-  color?: InputMaybe<ModelDomainColorInput>;
-  description?: InputMaybe<ModelStringInput>;
-  domainParentId?: InputMaybe<ModelIdInput>;
-  name?: InputMaybe<ModelStringInput>;
+  isRoot?: InputMaybe<ModelBooleanInput>;
   nativeFundingPotId?: InputMaybe<ModelIntInput>;
   nativeId?: InputMaybe<ModelIntInput>;
   nativeSkillId?: InputMaybe<ModelIntInput>;
@@ -843,16 +855,38 @@ export type ModelDomainConnection = {
 export type ModelDomainFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelDomainFilterInput>>>;
   colonyDomainsId?: InputMaybe<ModelIdInput>;
-  color?: InputMaybe<ModelDomainColorInput>;
-  description?: InputMaybe<ModelStringInput>;
-  domainParentId?: InputMaybe<ModelIdInput>;
   id?: InputMaybe<ModelIdInput>;
-  name?: InputMaybe<ModelStringInput>;
+  isRoot?: InputMaybe<ModelBooleanInput>;
   nativeFundingPotId?: InputMaybe<ModelIntInput>;
   nativeId?: InputMaybe<ModelIntInput>;
   nativeSkillId?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelDomainFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelDomainFilterInput>>>;
+};
+
+export type ModelDomainMetadataConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelDomainMetadataConditionInput>>>;
+  color?: InputMaybe<ModelDomainColorInput>;
+  description?: InputMaybe<ModelStringInput>;
+  name?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelDomainMetadataConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelDomainMetadataConditionInput>>>;
+};
+
+export type ModelDomainMetadataConnection = {
+  __typename?: 'ModelDomainMetadataConnection';
+  items: Array<Maybe<DomainMetadata>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelDomainMetadataFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelDomainMetadataFilterInput>>>;
+  color?: InputMaybe<ModelDomainColorInput>;
+  description?: InputMaybe<ModelStringInput>;
+  id?: InputMaybe<ModelIdInput>;
+  name?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelDomainMetadataFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelDomainMetadataFilterInput>>>;
 };
 
 export type ModelFloatInput = {
@@ -1053,14 +1087,21 @@ export type ModelSubscriptionCurrentVersionFilterInput = {
 
 export type ModelSubscriptionDomainFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionDomainFilterInput>>>;
-  color?: InputMaybe<ModelSubscriptionStringInput>;
-  description?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
-  name?: InputMaybe<ModelSubscriptionStringInput>;
+  isRoot?: InputMaybe<ModelSubscriptionBooleanInput>;
   nativeFundingPotId?: InputMaybe<ModelSubscriptionIntInput>;
   nativeId?: InputMaybe<ModelSubscriptionIntInput>;
   nativeSkillId?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionDomainFilterInput>>>;
+};
+
+export type ModelSubscriptionDomainMetadataFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionDomainMetadataFilterInput>>>;
+  color?: InputMaybe<ModelSubscriptionStringInput>;
+  description?: InputMaybe<ModelSubscriptionStringInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  name?: InputMaybe<ModelSubscriptionStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionDomainMetadataFilterInput>>>;
 };
 
 export type ModelSubscriptionFloatInput = {
@@ -1284,6 +1325,7 @@ export type Mutation = {
   createContractEvent?: Maybe<ContractEvent>;
   createCurrentVersion?: Maybe<CurrentVersion>;
   createDomain?: Maybe<Domain>;
+  createDomainMetadata?: Maybe<DomainMetadata>;
   createProfile?: Maybe<Profile>;
   createToken?: Maybe<Token>;
   createUniqueColony?: Maybe<Colony>;
@@ -1300,6 +1342,7 @@ export type Mutation = {
   deleteContractEvent?: Maybe<ContractEvent>;
   deleteCurrentVersion?: Maybe<CurrentVersion>;
   deleteDomain?: Maybe<Domain>;
+  deleteDomainMetadata?: Maybe<DomainMetadata>;
   deleteProfile?: Maybe<Profile>;
   deleteToken?: Maybe<Token>;
   deleteUser?: Maybe<User>;
@@ -1314,6 +1357,7 @@ export type Mutation = {
   updateContractEvent?: Maybe<ContractEvent>;
   updateCurrentVersion?: Maybe<CurrentVersion>;
   updateDomain?: Maybe<Domain>;
+  updateDomainMetadata?: Maybe<DomainMetadata>;
   updateExtensionByColonyAndHash?: Maybe<ColonyExtension>;
   updateProfile?: Maybe<Profile>;
   updateToken?: Maybe<Token>;
@@ -1368,6 +1412,12 @@ export type MutationCreateCurrentVersionArgs = {
 export type MutationCreateDomainArgs = {
   condition?: InputMaybe<ModelDomainConditionInput>;
   input: CreateDomainInput;
+};
+
+
+export type MutationCreateDomainMetadataArgs = {
+  condition?: InputMaybe<ModelDomainMetadataConditionInput>;
+  input: CreateDomainMetadataInput;
 };
 
 
@@ -1464,6 +1514,12 @@ export type MutationDeleteDomainArgs = {
 };
 
 
+export type MutationDeleteDomainMetadataArgs = {
+  condition?: InputMaybe<ModelDomainMetadataConditionInput>;
+  input: DeleteDomainMetadataInput;
+};
+
+
 export type MutationDeleteProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: DeleteProfileInput;
@@ -1544,6 +1600,12 @@ export type MutationUpdateCurrentVersionArgs = {
 export type MutationUpdateDomainArgs = {
   condition?: InputMaybe<ModelDomainConditionInput>;
   input: UpdateDomainInput;
+};
+
+
+export type MutationUpdateDomainMetadataArgs = {
+  condition?: InputMaybe<ModelDomainMetadataConditionInput>;
+  input: UpdateDomainMetadataInput;
 };
 
 
@@ -1653,6 +1715,7 @@ export type Query = {
   getCurrentVersion?: Maybe<CurrentVersion>;
   getCurrentVersionByKey?: Maybe<ModelCurrentVersionConnection>;
   getDomain?: Maybe<Domain>;
+  getDomainMetadata?: Maybe<DomainMetadata>;
   getExtensionByColonyAndHash?: Maybe<ModelColonyExtensionConnection>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
@@ -1674,6 +1737,7 @@ export type Query = {
   listColonyTokens?: Maybe<ModelColonyTokensConnection>;
   listContractEvents?: Maybe<ModelContractEventConnection>;
   listCurrentVersions?: Maybe<ModelCurrentVersionConnection>;
+  listDomainMetadata?: Maybe<ModelDomainMetadataConnection>;
   listDomains?: Maybe<ModelDomainConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
   listTokens?: Maybe<ModelTokenConnection>;
@@ -1765,6 +1829,11 @@ export type QueryGetCurrentVersionByKeyArgs = {
 
 
 export type QueryGetDomainArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGetDomainMetadataArgs = {
   id: Scalars['ID'];
 };
 
@@ -1913,6 +1982,13 @@ export type QueryListCurrentVersionsArgs = {
 };
 
 
+export type QueryListDomainMetadataArgs = {
+  filter?: InputMaybe<ModelDomainMetadataFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryListDomainsArgs = {
   filter?: InputMaybe<ModelDomainFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1969,6 +2045,7 @@ export type Subscription = {
   onCreateContractEvent?: Maybe<ContractEvent>;
   onCreateCurrentVersion?: Maybe<CurrentVersion>;
   onCreateDomain?: Maybe<Domain>;
+  onCreateDomainMetadata?: Maybe<DomainMetadata>;
   onCreateProfile?: Maybe<Profile>;
   onCreateToken?: Maybe<Token>;
   onCreateUser?: Maybe<User>;
@@ -1982,6 +2059,7 @@ export type Subscription = {
   onDeleteContractEvent?: Maybe<ContractEvent>;
   onDeleteCurrentVersion?: Maybe<CurrentVersion>;
   onDeleteDomain?: Maybe<Domain>;
+  onDeleteDomainMetadata?: Maybe<DomainMetadata>;
   onDeleteProfile?: Maybe<Profile>;
   onDeleteToken?: Maybe<Token>;
   onDeleteUser?: Maybe<User>;
@@ -1995,6 +2073,7 @@ export type Subscription = {
   onUpdateContractEvent?: Maybe<ContractEvent>;
   onUpdateCurrentVersion?: Maybe<CurrentVersion>;
   onUpdateDomain?: Maybe<Domain>;
+  onUpdateDomainMetadata?: Maybe<DomainMetadata>;
   onUpdateProfile?: Maybe<Profile>;
   onUpdateToken?: Maybe<Token>;
   onUpdateUser?: Maybe<User>;
@@ -2040,6 +2119,11 @@ export type SubscriptionOnCreateCurrentVersionArgs = {
 
 export type SubscriptionOnCreateDomainArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainFilterInput>;
+};
+
+
+export type SubscriptionOnCreateDomainMetadataArgs = {
+  filter?: InputMaybe<ModelSubscriptionDomainMetadataFilterInput>;
 };
 
 
@@ -2108,6 +2192,11 @@ export type SubscriptionOnDeleteDomainArgs = {
 };
 
 
+export type SubscriptionOnDeleteDomainMetadataArgs = {
+  filter?: InputMaybe<ModelSubscriptionDomainMetadataFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
 };
@@ -2170,6 +2259,11 @@ export type SubscriptionOnUpdateCurrentVersionArgs = {
 
 export type SubscriptionOnUpdateDomainArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateDomainMetadataArgs = {
+  filter?: InputMaybe<ModelSubscriptionDomainMetadataFilterInput>;
 };
 
 
@@ -2278,7 +2372,7 @@ export type UpdateColonyExtensionInput = {
 
 export type UpdateColonyFundsClaimInput = {
   amount?: InputMaybe<Scalars['String']>;
-  colonyFundsClaimTokenId?: InputMaybe<Scalars['ID']>;
+  colonyFundsClaimTokenId: Scalars['ID'];
   colonyFundsClaimsId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   createdAtBlock?: InputMaybe<Scalars['Int']>;
@@ -2288,7 +2382,7 @@ export type UpdateColonyFundsClaimInput = {
 export type UpdateColonyInput = {
   balances?: InputMaybe<ColonyBalancesInput>;
   chainFundsClaim?: InputMaybe<ColonyChainFundsClaimInput>;
-  colonyNativeTokenId?: InputMaybe<Scalars['ID']>;
+  colonyNativeTokenId: Scalars['ID'];
   id: Scalars['ID'];
   meta?: InputMaybe<MetadataInput>;
   name?: InputMaybe<Scalars['String']>;
@@ -2326,14 +2420,18 @@ export type UpdateCurrentVersionInput = {
 
 export type UpdateDomainInput = {
   colonyDomainsId?: InputMaybe<Scalars['ID']>;
-  color?: InputMaybe<DomainColor>;
-  description?: InputMaybe<Scalars['String']>;
-  domainParentId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
-  name?: InputMaybe<Scalars['String']>;
+  isRoot?: InputMaybe<Scalars['Boolean']>;
   nativeFundingPotId?: InputMaybe<Scalars['Int']>;
   nativeId?: InputMaybe<Scalars['Int']>;
   nativeSkillId?: InputMaybe<Scalars['Int']>;
+};
+
+export type UpdateDomainMetadataInput = {
+  color?: InputMaybe<DomainColor>;
+  description?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateExtensionByColonyAndHashInput = {
@@ -2445,9 +2543,9 @@ export type WatchedColonies = {
   userID: Scalars['ID'];
 };
 
-export type ColonyActionFragment = { __typename?: 'ColonyAction', id: string, type: ColonyActionType, blockNumber: number, initiatorAddress?: string | null, recipientAddress?: string | null, amount?: string | null, tokenAddress?: string | null, createdAt: string, transactionHash: string, colonyAddress: string, initiatorUser?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, recipient?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, fromDomain?: { __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null, toDomain?: { __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null };
+export type ColonyActionFragment = { __typename?: 'ColonyAction', id: string, type: ColonyActionType, blockNumber: number, initiatorAddress?: string | null, recipientAddress?: string | null, amount?: string | null, tokenAddress?: string | null, createdAt: string, transactionHash: string, colonyAddress: string, initiatorUser?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, recipient?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, fromDomain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string } | null } | null, toDomain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string } | null } | null };
 
-export type ColonyFragment = { __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } } | null> } | null };
+export type ColonyFragment = { __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string } | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } } | null> } | null };
 
 export type WatcherFragment = { __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } };
 
@@ -2455,7 +2553,7 @@ export type WatchedColonyFragment = { __typename?: 'Colony', name: string, colon
 
 export type WatchListItemFragment = { __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } };
 
-export type DomainFragment = { __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null };
+export type DomainFragment = { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string } | null };
 
 export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number };
 
@@ -2484,12 +2582,12 @@ export type CreateUniqueDomainMutationVariables = Exact<{
 
 export type CreateUniqueDomainMutation = { __typename?: 'Mutation', createUniqueDomain?: { __typename?: 'Domain', id: string } | null };
 
-export type CreateDomainMutationVariables = Exact<{
-  input: CreateDomainInput;
+export type CreateDomainMetadataMutationVariables = Exact<{
+  input: CreateDomainMetadataInput;
 }>;
 
 
-export type CreateDomainMutation = { __typename?: 'Mutation', createDomain?: { __typename?: 'Domain', id: string } | null };
+export type CreateDomainMetadataMutation = { __typename?: 'Mutation', createDomainMetadata?: { __typename?: 'DomainMetadata', id: string } | null };
 
 export type CreateColonyTokensMutationVariables = Exact<{
   input: CreateColonyTokensInput;
@@ -2527,33 +2625,33 @@ export type GetColonyActionsQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyActionsQuery = { __typename?: 'Query', getActionsByColony?: { __typename?: 'ModelColonyActionConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyAction', id: string, type: ColonyActionType, blockNumber: number, initiatorAddress?: string | null, recipientAddress?: string | null, amount?: string | null, tokenAddress?: string | null, createdAt: string, transactionHash: string, colonyAddress: string, initiatorUser?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, recipient?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, fromDomain?: { __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null, toDomain?: { __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null } | null> } | null };
+export type GetColonyActionsQuery = { __typename?: 'Query', getActionsByColony?: { __typename?: 'ModelColonyActionConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyAction', id: string, type: ColonyActionType, blockNumber: number, initiatorAddress?: string | null, recipientAddress?: string | null, amount?: string | null, tokenAddress?: string | null, createdAt: string, transactionHash: string, colonyAddress: string, initiatorUser?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, recipient?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, fromDomain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string } | null } | null, toDomain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string } | null } | null } | null> } | null };
 
 export type GetColonyActionQueryVariables = Exact<{
   transactionHash: Scalars['ID'];
 }>;
 
 
-export type GetColonyActionQuery = { __typename?: 'Query', getColonyAction?: { __typename?: 'ColonyAction', id: string, type: ColonyActionType, blockNumber: number, initiatorAddress?: string | null, recipientAddress?: string | null, amount?: string | null, tokenAddress?: string | null, createdAt: string, transactionHash: string, colonyAddress: string, initiatorUser?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, recipient?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, fromDomain?: { __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null, toDomain?: { __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null } | null };
+export type GetColonyActionQuery = { __typename?: 'Query', getColonyAction?: { __typename?: 'ColonyAction', id: string, type: ColonyActionType, blockNumber: number, initiatorAddress?: string | null, recipientAddress?: string | null, amount?: string | null, tokenAddress?: string | null, createdAt: string, transactionHash: string, colonyAddress: string, initiatorUser?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, recipient?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, fromDomain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string } | null } | null, toDomain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string } | null } | null } | null };
 
 export type GetFullColonyByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;
 
 
-export type GetFullColonyByAddressQuery = { __typename?: 'Query', getColonyByAddress?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
+export type GetFullColonyByAddressQuery = { __typename?: 'Query', getColonyByAddress?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string } | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
 
 export type GetFullColonyByNameQueryVariables = Exact<{
   name: Scalars['String'];
 }>;
 
 
-export type GetFullColonyByNameQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
+export type GetFullColonyByNameQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string } | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
 
 export type GetMetacolonyQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMetacolonyQuery = { __typename?: 'Query', getColonyByType?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', color?: DomainColor | null, description?: string | null, id: string, name?: string | null, nativeId: number, parentId?: string | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
+export type GetMetacolonyQuery = { __typename?: 'Query', getColonyByType?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string } | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
 
 export type GetColonyExtensionsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -2690,12 +2788,14 @@ export const TokenFragmentDoc = gql`
     `;
 export const DomainFragmentDoc = gql`
     fragment Domain on Domain {
-  color
-  description
   id
-  name
   nativeId
-  parentId: domainParentId
+  isRoot
+  metadata {
+    name
+    color
+    description
+  }
 }
     `;
 export const ColonyActionFragmentDoc = gql`
@@ -2916,39 +3016,39 @@ export function useCreateUniqueDomainMutation(baseOptions?: Apollo.MutationHookO
 export type CreateUniqueDomainMutationHookResult = ReturnType<typeof useCreateUniqueDomainMutation>;
 export type CreateUniqueDomainMutationResult = Apollo.MutationResult<CreateUniqueDomainMutation>;
 export type CreateUniqueDomainMutationOptions = Apollo.BaseMutationOptions<CreateUniqueDomainMutation, CreateUniqueDomainMutationVariables>;
-export const CreateDomainDocument = gql`
-    mutation CreateDomain($input: CreateDomainInput!) {
-  createDomain(input: $input) {
+export const CreateDomainMetadataDocument = gql`
+    mutation CreateDomainMetadata($input: CreateDomainMetadataInput!) {
+  createDomainMetadata(input: $input) {
     id
   }
 }
     `;
-export type CreateDomainMutationFn = Apollo.MutationFunction<CreateDomainMutation, CreateDomainMutationVariables>;
+export type CreateDomainMetadataMutationFn = Apollo.MutationFunction<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>;
 
 /**
- * __useCreateDomainMutation__
+ * __useCreateDomainMetadataMutation__
  *
- * To run a mutation, you first call `useCreateDomainMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateDomainMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateDomainMetadataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateDomainMetadataMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createDomainMutation, { data, loading, error }] = useCreateDomainMutation({
+ * const [createDomainMetadataMutation, { data, loading, error }] = useCreateDomainMetadataMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useCreateDomainMutation(baseOptions?: Apollo.MutationHookOptions<CreateDomainMutation, CreateDomainMutationVariables>) {
+export function useCreateDomainMetadataMutation(baseOptions?: Apollo.MutationHookOptions<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateDomainMutation, CreateDomainMutationVariables>(CreateDomainDocument, options);
+        return Apollo.useMutation<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>(CreateDomainMetadataDocument, options);
       }
-export type CreateDomainMutationHookResult = ReturnType<typeof useCreateDomainMutation>;
-export type CreateDomainMutationResult = Apollo.MutationResult<CreateDomainMutation>;
-export type CreateDomainMutationOptions = Apollo.BaseMutationOptions<CreateDomainMutation, CreateDomainMutationVariables>;
+export type CreateDomainMetadataMutationHookResult = ReturnType<typeof useCreateDomainMetadataMutation>;
+export type CreateDomainMetadataMutationResult = Apollo.MutationResult<CreateDomainMetadataMutation>;
+export type CreateDomainMetadataMutationOptions = Apollo.BaseMutationOptions<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>;
 export const CreateColonyTokensDocument = gql`
     mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
   createColonyTokens(input: $input) {
