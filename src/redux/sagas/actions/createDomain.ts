@@ -14,9 +14,9 @@ import {
 } from '~redux/actionCreators';
 import { ContextModule, getContext } from '~context';
 import {
-  CreateDomainDocument,
-  CreateDomainMutation,
-  CreateDomainMutationVariables,
+  CreateDomainMetadataDocument,
+  CreateDomainMetadataMutation,
+  CreateDomainMetadataMutationVariables,
 } from '~gql';
 import { getDomainDatabaseId } from '~utils/domains';
 import { toNumber } from '~utils/numbers';
@@ -93,9 +93,7 @@ function* createDomainAction({
     }
 
     yield put(transactionPending(createDomain.id));
-
     yield put(transactionAddParams(createDomain.id, [parentId]));
-
     yield put(transactionReady(createDomain.id));
 
     const {
@@ -108,21 +106,19 @@ function* createDomainAction({
     const nativeDomainId = toNumber(domainId);
 
     /**
-     * Save domain in the database
+     * Save domain metadata in the database
      */
     yield apolloClient.mutate<
-      CreateDomainMutation,
-      CreateDomainMutationVariables
+      CreateDomainMetadataMutation,
+      CreateDomainMetadataMutationVariables
     >({
-      mutation: CreateDomainDocument,
+      mutation: CreateDomainMetadataDocument,
       variables: {
         input: {
           id: getDomainDatabaseId(colonyAddress, nativeDomainId),
-          nativeId: nativeDomainId,
           name: domainName,
           color: domainColor,
           description: domainPurpose,
-          domainParentId: getDomainDatabaseId(colonyAddress, parentId),
         },
       },
     });

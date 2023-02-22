@@ -1,5 +1,5 @@
-mutation CreateDomain($input: CreateDomainInput!) {
-  createDomain(input: $input) {
+mutation CreateDomainMetadata($input: CreateDomainMetadataInput!) {
+  createDomainMetadata(input: $input) {
     id
   }
 }

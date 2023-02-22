@@ -13,8 +13,8 @@ interface TeamDetailProps {
 
 const TeamDetail = ({ domain }: TeamDetailProps) => (
   <div>
-    <ColorTag color={domain?.color ?? DomainColor.LightPink} />
-    <span className={styles.text}>{` ${domain?.name}`}</span>
+    <ColorTag color={domain?.metadata?.color ?? DomainColor.LightPink} />
+    <span className={styles.text}>{` ${domain?.metadata?.name}`}</span>
   </div>
 );
 
