@@ -298,6 +298,8 @@ type User @model {
 
 type Domain @model {
   id: ID! # We have to self-manage this and keep it the following format: colonyAddress_nativeId
+  colonyId: ID!
+  colony: Colony! @belongsTo(fields: ["colonyId"])
   nativeId: Int!
   nativeFundingPotId: Int!
   nativeSkillId: Int!
