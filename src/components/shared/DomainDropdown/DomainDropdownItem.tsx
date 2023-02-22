@@ -13,7 +13,7 @@ import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import Paragraph from '~shared/Paragraph';
 // import { OneDomain } from '~data/index';
-import { ENTER, DomainColor } from '~types';
+import { ENTER, DomainColor, Domain } from '~types';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 
@@ -28,7 +28,7 @@ const MSG = defineMessages({
 
 interface Props {
   /** Domain to render the entry for */
-  domain: any; // fix proper types
+  domain: Domain;
 
   /** Toggle if mark the current domain with the "selected" highlight */
   isSelected: boolean;
@@ -43,13 +43,7 @@ interface Props {
 const displayName = `DomainDropdown.DomainDropdownItem`;
 
 const DomainDropdownItem = ({
-  domain: {
-    color = DomainColor.LightPink,
-    description,
-    nativeId,
-    parentId,
-    name,
-  },
+  domain: { metadata, nativeId, isRoot },
   isSelected,
   onDomainEdit,
   showDescription = true,
@@ -78,26 +72,10 @@ const DomainDropdownItem = ({
     [onDomainEdit, nativeId],
   );
 
-  /*
-   * @TODO a proper color transformation
-   * This was just quickly thrown together to ensure it works
-   * Maybe even change the gql scalar type ?
-   */
-  const transformColor = useCallback((domainColor) => {
-    const colorMap = {
-      0: 0, // Light Pink
-      LIGHTPINK: 0,
-      5: 5, // Yellow
-      RED: 6,
-      ORANGE: 13,
-    };
-    return colorMap[domainColor];
-  }, []);
-
   return (
     <div className={styles.main}>
       {/* {typeof parseInt(parentId) === 'number' && ( */}
-      {!!parentId && (
+      {!isRoot && (
         <div className={styles.childDomainIcon}>
           <Icon name="return-arrow" title="Child Domain" />
         </div>
@@ -109,7 +87,7 @@ const DomainDropdownItem = ({
           })}
         >
           <div className={styles.color}>
-            <ColorTag color={transformColor(color)} />
+            <ColorTag color={metadata?.color ?? DomainColor.LightPink} />
           </div>
           <div
             className={styles.headingWrapper}
@@ -117,7 +95,7 @@ const DomainDropdownItem = ({
           >
             <Heading
               appearance={{ margin: 'none', size: 'normal', theme: 'dark' }}
-              text={name || `Domain #${nativeId}`}
+              text={metadata?.name || `Domain #${nativeId}`}
             />
           </div>
           {nativeId === Id.RootDomain && (
@@ -126,13 +104,13 @@ const DomainDropdownItem = ({
             </div>
           )}
         </div>
-        {description && showDescription && (
+        {metadata?.description && showDescription && (
           <Paragraph
             className={styles.description}
-            title={description}
+            title={metadata.description}
             data-test="domainDropdownItemPurpose"
           >
-            {description}
+            {metadata.description}
           </Paragraph>
         )}
       </div>
