@@ -197,9 +197,12 @@ const getDetailItems = (
     {
       label: MSG.domainDescription,
       labelValues: undefined,
-      item: detailsForAction.Description && fromDomain?.description && (
-        <DomainDescriptionDetail description={fromDomain.description} />
-      ),
+      item: detailsForAction.Description &&
+        fromDomain?.metadata?.description && (
+          <DomainDescriptionDetail
+            description={fromDomain.metadata.description}
+          />
+        ),
     },
     {
       label: MSG.colonyName,

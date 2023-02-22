@@ -1,8 +1,10 @@
 fragment Domain on Domain {
-  color
-  description
   id
-  name
   nativeId
-  parentId: domainParentId
+  isRoot
+  metadata {
+    name
+    color
+    description
+  }
 }

@@ -22,9 +22,7 @@ const MSG = defineMessages({
 });
 
 const getDomainName = (fromDomain: Domain) =>
-  fromDomain.name ? (
-    fromDomain.name
-  ) : (
+  fromDomain.metadata?.name ?? (
     <FormattedMessage {...MSG.domain} values={{ domainId: fromDomain.id }} />
   );
 
