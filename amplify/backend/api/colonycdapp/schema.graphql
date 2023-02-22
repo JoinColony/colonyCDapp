@@ -267,7 +267,7 @@ type Colony @model {
   profileId: ID
   profile: Profile @hasOne(fields: ["profileId"])
   status: ColonyStatus
-  domains: [Domain] @hasMany(indexName: "byColony")
+  domains: [Domain] @hasMany(indexName: "byColony", fields: ["id"])
   watchers: [User] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
   # NOTE: Could not merge these two fields properly
   # Ideally we would merge data from these two into one field, but I couldn't do that
