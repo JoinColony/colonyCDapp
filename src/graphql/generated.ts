@@ -2577,13 +2577,6 @@ export type CreateWatchedColoniesMutationVariables = Exact<{
 
 export type CreateWatchedColoniesMutation = { __typename?: 'Mutation', createWatchedColonies?: { __typename?: 'WatchedColonies', id: string } | null };
 
-export type CreateUniqueDomainMutationVariables = Exact<{
-  input: CreateUniqueDomainInput;
-}>;
-
-
-export type CreateUniqueDomainMutation = { __typename?: 'Mutation', createUniqueDomain?: { __typename?: 'Domain', id: string } | null };
-
 export type CreateDomainMetadataMutationVariables = Exact<{
   input: CreateDomainMetadataInput;
 }>;
@@ -2992,39 +2985,6 @@ export function useCreateWatchedColoniesMutation(baseOptions?: Apollo.MutationHo
 export type CreateWatchedColoniesMutationHookResult = ReturnType<typeof useCreateWatchedColoniesMutation>;
 export type CreateWatchedColoniesMutationResult = Apollo.MutationResult<CreateWatchedColoniesMutation>;
 export type CreateWatchedColoniesMutationOptions = Apollo.BaseMutationOptions<CreateWatchedColoniesMutation, CreateWatchedColoniesMutationVariables>;
-export const CreateUniqueDomainDocument = gql`
-    mutation CreateUniqueDomain($input: CreateUniqueDomainInput!) {
-  createUniqueDomain(input: $input) {
-    id
-  }
-}
-    `;
-export type CreateUniqueDomainMutationFn = Apollo.MutationFunction<CreateUniqueDomainMutation, CreateUniqueDomainMutationVariables>;
-
-/**
- * __useCreateUniqueDomainMutation__
- *
- * To run a mutation, you first call `useCreateUniqueDomainMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateUniqueDomainMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createUniqueDomainMutation, { data, loading, error }] = useCreateUniqueDomainMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useCreateUniqueDomainMutation(baseOptions?: Apollo.MutationHookOptions<CreateUniqueDomainMutation, CreateUniqueDomainMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateUniqueDomainMutation, CreateUniqueDomainMutationVariables>(CreateUniqueDomainDocument, options);
-      }
-export type CreateUniqueDomainMutationHookResult = ReturnType<typeof useCreateUniqueDomainMutation>;
-export type CreateUniqueDomainMutationResult = Apollo.MutationResult<CreateUniqueDomainMutation>;
-export type CreateUniqueDomainMutationOptions = Apollo.BaseMutationOptions<CreateUniqueDomainMutation, CreateUniqueDomainMutationVariables>;
 export const CreateDomainMetadataDocument = gql`
     mutation CreateDomainMetadata($input: CreateDomainMetadataInput!) {
   createDomainMetadata(input: $input) {
