@@ -1,7 +1,7 @@
 import { all, call } from 'redux-saga/effects';
 
 import mintTokensActionSaga from './mintTokens';
-// import paymentActionSaga from './payment';
+import paymentActionSaga from './payment';
 // import moveFundsActionSaga from './moveFunds';
 // import versionUpgradeActionSaga from './versionUpgrade';
 // import createDomainActionSaga from './createDomain';
@@ -15,7 +15,7 @@ import mintTokensActionSaga from './mintTokens';
 export default function* actionsSagas() {
   yield all([
     call(mintTokensActionSaga),
-    // call(paymentActionSaga),
+    call(paymentActionSaga),
     // call(moveFundsActionSaga),
     // call(versionUpgradeActionSaga),
     // call(createDomainActionSaga),

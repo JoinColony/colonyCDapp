@@ -1,15 +1,14 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
+import { ActionTypes, AllActions, Action } from '~redux';
 // import { ContextModule, getContext } from '~context';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
+
 import {
   putError,
   takeFrom,
   // uploadIfpsAnnotation,
 } from '../utils';
-
 import {
   createTransaction,
   createTransactionChannels,

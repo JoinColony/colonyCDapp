@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { mockEventData } from '~common/ColonyActions/mockData';
 import DetailsWidget from '~shared/DetailsWidget';
 import { MotionTag } from '~shared/Tag';
 
@@ -15,10 +14,10 @@ import styles from './DefaultAction.css';
 const displayName = 'common.ColonyActions.DefaultAction';
 
 interface DefaultActionProps {
-  item: ColonyAction;
+  actionData: ColonyAction;
 }
 
-const DefaultAction = ({ item }: DefaultActionProps) => {
+const DefaultAction = ({ actionData }: DefaultActionProps) => {
   const { colony } = useColonyContext();
 
   if (!colony) {
@@ -33,8 +32,8 @@ const DefaultAction = ({ item }: DefaultActionProps) => {
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
       {isVotingExtensionEnabled && <MotionTag motionStyles={motionStyles} />}
       <div className={styles.container}>
-        <DefaultActionContent item={item} colony={colony} />
-        <DetailsWidget values={{ ...mockEventData, ...item }} colony={colony} />
+        <DefaultActionContent actionData={actionData} colony={colony} />
+        <DetailsWidget actionData={actionData} colony={colony} />
       </div>
     </div>
   );

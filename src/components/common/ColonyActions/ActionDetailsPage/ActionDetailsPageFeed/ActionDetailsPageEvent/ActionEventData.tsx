@@ -2,7 +2,6 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { getEventTitleValues, TransactionMeta } from '~common/ColonyActions';
-import { mockEventData } from '~common/ColonyActions/mockData';
 import { useColonyContext } from '~hooks';
 
 import ActionRoles from './ActionRoles';
@@ -24,11 +23,7 @@ const ActionEventData = ({
       <div className={styles.text} data-test="actionsEventText">
         <FormattedMessage
           id="event.title"
-          values={getEventTitleValues(
-            { ...mockEventData, eventName },
-            actionData,
-            colony,
-          )}
+          values={getEventTitleValues(eventName, actionData, colony)}
         />
       </div>
       <div className={styles.details}>

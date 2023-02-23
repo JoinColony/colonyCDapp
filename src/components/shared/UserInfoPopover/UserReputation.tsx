@@ -6,7 +6,7 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import { UserDomainReputation } from '~hooks';
 import { Colony } from '~types';
 import { isEmpty } from '~utils/lodash';
-import { findDomain } from '~utils/domains';
+import { findDomainByNativeId } from '~utils/domains';
 
 import UserReputationItem from './UserReputationItem';
 
@@ -48,7 +48,7 @@ const UserReputation = ({
 }: Props) => {
   const formattedUserReputations = userReputationForTopDomains?.map(
     ({ domainId, ...rest }) => {
-      const reputationDomain = findDomain(domainId.toString(), colony);
+      const reputationDomain = findDomainByNativeId(domainId, colony);
       return {
         ...rest,
         reputationDomain,

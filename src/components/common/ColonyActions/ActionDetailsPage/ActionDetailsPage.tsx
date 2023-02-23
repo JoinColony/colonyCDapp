@@ -37,6 +37,7 @@ const ActionDetailsPage = () => {
       transactionHash: transactionHash ?? '',
     },
     skip: !transactionHash,
+    fetchPolicy: 'cache-and-network',
   });
   const action = data?.getColonyAction;
   const { createdAt } = action || {};
@@ -85,7 +86,7 @@ const ActionDetailsPage = () => {
 
   return (
     <Layout>
-      <DefaultAction item={action} />
+      <DefaultAction actionData={action} />
     </Layout>
   );
 };
