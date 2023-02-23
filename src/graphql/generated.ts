@@ -2591,6 +2591,13 @@ export type CreateDomainMetadataMutationVariables = Exact<{
 
 export type CreateDomainMetadataMutation = { __typename?: 'Mutation', createDomainMetadata?: { __typename?: 'DomainMetadata', id: string } | null };
 
+export type CreateDomainMutationVariables = Exact<{
+  input: CreateDomainInput;
+}>;
+
+
+export type CreateDomainMutation = { __typename?: 'Mutation', createDomain?: { __typename?: 'Domain', id: string } | null };
+
 export type CreateColonyTokensMutationVariables = Exact<{
   input: CreateColonyTokensInput;
 }>;
@@ -3051,6 +3058,39 @@ export function useCreateDomainMetadataMutation(baseOptions?: Apollo.MutationHoo
 export type CreateDomainMetadataMutationHookResult = ReturnType<typeof useCreateDomainMetadataMutation>;
 export type CreateDomainMetadataMutationResult = Apollo.MutationResult<CreateDomainMetadataMutation>;
 export type CreateDomainMetadataMutationOptions = Apollo.BaseMutationOptions<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>;
+export const CreateDomainDocument = gql`
+    mutation CreateDomain($input: CreateDomainInput!) {
+  createDomain(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateDomainMutationFn = Apollo.MutationFunction<CreateDomainMutation, CreateDomainMutationVariables>;
+
+/**
+ * __useCreateDomainMutation__
+ *
+ * To run a mutation, you first call `useCreateDomainMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateDomainMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createDomainMutation, { data, loading, error }] = useCreateDomainMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateDomainMutation(baseOptions?: Apollo.MutationHookOptions<CreateDomainMutation, CreateDomainMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateDomainMutation, CreateDomainMutationVariables>(CreateDomainDocument, options);
+      }
+export type CreateDomainMutationHookResult = ReturnType<typeof useCreateDomainMutation>;
+export type CreateDomainMutationResult = Apollo.MutationResult<CreateDomainMutation>;
+export type CreateDomainMutationOptions = Apollo.BaseMutationOptions<CreateDomainMutation, CreateDomainMutationVariables>;
 export const CreateColonyTokensDocument = gql`
     mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
   createColonyTokens(input: $input) {
