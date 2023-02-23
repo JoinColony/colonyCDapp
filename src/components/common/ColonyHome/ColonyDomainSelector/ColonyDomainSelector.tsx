@@ -67,7 +67,7 @@ const ColonyDomainSelector = ({
       const domain = domains?.items?.find(
         (currentDomain) => Number(domainId) === currentDomain?.nativeId,
       );
-      return domain?.color || defaultColor;
+      return domain?.metadata?.color || defaultColor;
     },
     [colony, domains],
   );
