@@ -7,18 +7,22 @@ import {
   CreateColonyTokensDocument,
   CreateColonyTokensMutation,
   CreateColonyTokensMutationVariables,
+  CreateDomainDocument,
+  CreateDomainMetadataDocument,
+  CreateDomainMetadataMutation,
+  CreateDomainMetadataMutationVariables,
+  CreateDomainMutation,
+  CreateDomainMutationVariables,
   CreateUniqueColonyDocument,
   CreateUniqueColonyMutation,
   CreateUniqueColonyMutationVariables,
-  CreateUniqueDomainDocument,
-  CreateUniqueDomainMutation,
-  CreateUniqueDomainMutationVariables,
   CreateUserTokensDocument,
   CreateUserTokensMutation,
   CreateUserTokensMutationVariables,
   CreateWatchedColoniesDocument,
   CreateWatchedColoniesMutation,
   CreateWatchedColoniesMutationVariables,
+  DomainColor,
   GetTokenFromEverywhereDocument,
   GetTokenFromEverywhereQuery,
   GetTokenFromEverywhereQueryVariables,
@@ -29,6 +33,7 @@ import { ActionTypes, Action, AllActions } from '~redux/index';
 import { createAddress } from '~utils/web3';
 import { TxConfig } from '~types';
 import { toNumber } from '~utils/numbers';
+import { getDomainDatabaseId } from '~utils/domains';
 
 import {
   transactionAddParams,
@@ -289,6 +294,14 @@ function* colonyCreate({
       );
       colonyAddress = createdColonyAddress;
 
+      if (!colonyAddress) {
+        return yield putError(
+          ActionTypes.CREATE_ERROR,
+          new Error('Missing colony address'),
+          meta,
+        );
+      }
+
       /*
        * Create colony in db
        */
@@ -341,27 +354,49 @@ function* colonyCreate({
       });
 
       /*
-       * Create root domain
+       * Save root domain metadata to the database
        */
       yield apolloClient.mutate<
-        CreateUniqueDomainMutation,
-        CreateUniqueDomainMutationVariables
+        CreateDomainMetadataMutation,
+        CreateDomainMetadataMutationVariables
       >({
-        mutation: CreateUniqueDomainDocument,
+        mutation: CreateDomainMetadataDocument,
         variables: {
           input: {
-            colonyAddress,
+            id: getDomainDatabaseId(colonyAddress, Id.RootDomain),
+            color: DomainColor.LightPink,
+            name: 'Root',
+            description: '',
           },
         },
       });
-
-      if (!colonyAddress) {
-        return yield putError(
-          ActionTypes.CREATE_ERROR,
-          new Error('Missing colony address'),
-          meta,
-        );
-      }
+      /**
+       * Create root domain in the database
+       * @NOTE: This is a temporary solution and this mutation should be called by block-ingestor on ColonyAdded event
+       */
+      const colonyClient = yield colonyManager.getClient(
+        ClientType.ColonyClient,
+        colonyAddress,
+      );
+      const [skillId, fundingPotId] = yield colonyClient.getDomain(
+        Id.RootDomain,
+      );
+      yield apolloClient.mutate<
+        CreateDomainMutation,
+        CreateDomainMutationVariables
+      >({
+        mutation: CreateDomainDocument,
+        variables: {
+          input: {
+            id: getDomainDatabaseId(colonyAddress, Id.RootDomain),
+            colonyId: colonyAddress,
+            isRoot: true,
+            nativeId: Id.RootDomain,
+            nativeSkillId: toNumber(skillId),
+            nativeFundingPotId: toNumber(fundingPotId),
+          },
+        },
+      });
 
       yield put(transactionLoadRelated(createColony.id, true));
     }
