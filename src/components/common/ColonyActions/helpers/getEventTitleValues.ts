@@ -5,7 +5,6 @@ import {
   ColonyAndExtensionsEvents,
 } from '~types';
 
-import { MockEvent } from '../mockData';
 import { mapColonyEventToExpectedFormat } from './mapItemToMessageFormat';
 
 enum EventTitleMessageKeys {
@@ -162,18 +161,18 @@ export const generateMessageValues = (
 
 /* Returns the correct message values according to the event type. */
 const getEventTitleValues = (
-  eventData: MockEvent & { eventName: ColonyAndExtensionsEvents },
-  actionItem: ColonyAction,
+  eventName: ColonyAndExtensionsEvents,
+  actionData: ColonyAction,
   colony?: Colony,
 ) => {
   const updatedItem = mapColonyEventToExpectedFormat(
-    eventData,
-    actionItem,
+    eventName,
+    actionData,
     colony,
   );
-  const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventData.eventName] ?? DEFAULT_KEYS;
+  const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
   return generateMessageValues(updatedItem, keys, {
-    eventName: eventData.eventName,
+    eventName,
   });
 };
 

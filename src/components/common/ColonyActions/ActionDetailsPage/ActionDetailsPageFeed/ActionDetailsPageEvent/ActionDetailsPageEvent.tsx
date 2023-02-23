@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 import { ColonyAction, ColonyAndExtensionsEvents } from '~types';
 import { TransactionStatus, TransactionStatuses } from '~common/ColonyActions';
@@ -13,19 +13,16 @@ export interface ActionsPageEventProps {
   eventName: ColonyAndExtensionsEvents;
   actionData: ColonyAction;
   dataTest?: string;
-  children?: ReactNode;
 }
 
 const ActionsPageEvent = ({
   actionData,
   eventName,
   dataTest,
-  children,
 }: ActionsPageEventProps) => (
   <div className={styles.main} data-test={dataTest}>
     <TransactionStatus status={TransactionStatuses.Succeeded} showTooltip />
     <ActionEventData actionData={actionData} eventName={eventName} />
-    {children}
   </div>
 );
 

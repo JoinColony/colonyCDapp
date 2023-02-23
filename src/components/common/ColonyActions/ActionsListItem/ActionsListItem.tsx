@@ -77,7 +77,7 @@ const ActionsListItem = ({
       avatar={
         <UserAvatar
           size="s"
-          user={item.initiator}
+          user={item.initiatorUser}
           showInfo
           popperOptions={userAvatarPopoverOptions}
         />
@@ -92,7 +92,7 @@ const ActionsListItem = ({
         //   />
         // )
       }
-      meta={<ActionsListItemMeta fromDomainId={fromDomain ?? ''} />}
+      meta={<ActionsListItemMeta fromDomainId={fromDomain ?? undefined} />}
       onClick={handleActionRedirect}
       status={status}
       // tag={tag}

@@ -2,7 +2,6 @@ import React from 'react';
 import { nanoid } from 'nanoid';
 
 import { Colony, ColonyAction } from '~types';
-import { mockEventData } from '~common/ColonyActions/mockData';
 
 import DetailItem from './DetailItem';
 import getDetailItems from './detailsWidgetConfig';
@@ -11,11 +10,11 @@ const displayName = 'DetailsWidget';
 
 interface Props {
   colony: Colony;
-  values: typeof mockEventData & ColonyAction;
+  actionData: ColonyAction;
 }
 
-const DetailsWidget = ({ colony, values }: Props) => {
-  const detailItems = getDetailItems(values, colony);
+const DetailsWidget = ({ colony, actionData }: Props) => {
+  const detailItems = getDetailItems(actionData, colony);
 
   return (
     <div>

@@ -1,10 +1,15 @@
 import { Colony } from '~types';
 import { notNull } from './arrays';
 
-export const findDomain = (domainId?: string | null, colony?: Colony) => {
+export const findDomainByNativeId = (
+  domainNativeId?: number | null,
+  colony?: Colony,
+) => {
   const domains = colony?.domains?.items;
-  if (!domains || !domainId) {
+  if (!domains || !domainNativeId) {
     return undefined;
   }
-  return domains.filter(notNull).find(({ id }) => id === domainId);
+  return domains
+    .filter(notNull)
+    .find(({ nativeId }) => nativeId === domainNativeId);
 };

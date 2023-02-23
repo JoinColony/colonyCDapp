@@ -5,7 +5,7 @@ fragment ColonyAction on ColonyAction {
   type
   blockNumber
   initiatorAddress
-  initiator {
+  initiatorUser {
     ...User
   }
   recipientAddress
