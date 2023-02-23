@@ -109,12 +109,12 @@ export type ColonyActionsActionTypes =
         amount: BigNumber;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_MOVE_FUNDS_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_MOVE_FUNDS_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_MINT_TOKENS,
