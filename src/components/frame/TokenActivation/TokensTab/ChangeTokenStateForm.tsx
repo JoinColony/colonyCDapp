@@ -164,7 +164,7 @@ const ChangeTokenStateForm = ({
         </div>
       </div>
       <ActionForm
-        initialValues={{ amount: undefined }}
+        initialValues={{ amount: 0 }}
         validationSchema={validationSchema}
         transform={transform}
         submit={formAction('')}

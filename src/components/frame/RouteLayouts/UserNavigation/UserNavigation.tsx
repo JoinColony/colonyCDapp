@@ -1,4 +1,5 @@
 import React from 'react';
+import { BigNumber } from 'ethers';
 import { defineMessages, useIntl } from 'react-intl';
 
 import MemberReputation from '~shared/MemberReputation';
@@ -49,6 +50,15 @@ const UserNavigation = () => {
     wallet?.address,
   );
 
+  const mockedTokenBalanceData = {
+    nativeToken: colony?.nativeToken,
+    inactiveBalance: BigNumber.from(2),
+    lockedBalance: BigNumber.from(2),
+    activeBalance: BigNumber.from(2),
+    totalBalance: BigNumber.from(2),
+    isPendingBalanceZero: false,
+  };
+
   return (
     <div className={styles.main}>
       {colony?.colonyAddress && wallet && !isMobile && (
@@ -76,12 +86,10 @@ const UserNavigation = () => {
         </Tooltip>
       )}
       <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
-        {canInteractWithNetwork && colony?.nativeToken && userLock && (
+        {/* {canInteractWithNetwork && colony?.nativeToken && userLock && ( */}
+        {canInteractWithNetwork && colony?.nativeToken && (
           <UserTokenActivationButton
-            nativeToken={colony?.nativeToken}
-            userLock={userLock}
-            colony={colonyData?.processedColony}
-            walletAddress={walletAddress}
+            tokenBalanceData={mockedTokenBalanceData}
             dataTest="tokenActivationButton"
           />
         )}

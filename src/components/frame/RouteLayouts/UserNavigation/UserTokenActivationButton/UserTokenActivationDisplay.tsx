@@ -9,7 +9,7 @@ import { Token } from '~types';
 import styles from './UserTokenActivationButton.css';
 
 const displayName =
-  'users.UserTokenActivationButton.UserTokenActivationDisplay';
+  'frame.RouteLayouts.UserNavigation.UserTokenActivationButton.UserTokenActivationDisplay';
 
 interface Props {
   nativeToken?: Token;

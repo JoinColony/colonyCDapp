@@ -4,15 +4,17 @@ import Popover, { PopoverChildFn } from '~shared/Popover';
 
 import { removeValueUnits } from '~utils/css';
 
-import { TokenActivationContent } from './TokenActivationContent';
+import TokenActivationContent from './TokenActivationContent';
 import { TokensTabProps } from './TokensTab';
-import { verticalOffset } from './TokenActivationPopover.css';
+import styles from './TokenActivationPopover.css';
 
 import { TokenActivationContext } from '~shared/TokenActivationProvider';
 
 interface Props extends TokensTabProps {
   children: ReactElement | PopoverChildFn;
 }
+
+const { verticalOffset } = styles;
 
 const TokenActivationPopover = ({ children, ...otherProps }: Props) => {
   const { isOpen, setIsOpen } = useContext(TokenActivationContext);
@@ -41,7 +43,7 @@ const TokenActivationPopover = ({ children, ...otherProps }: Props) => {
       placement="bottom"
       isOpen={isOpen}
       onClose={() => setIsOpen(false)}
-      content={() => (
+      renderContent={() => (
         <TokenActivationContent {...otherProps} setIsPopoverOpen={setIsOpen} />
       )}
       popperOptions={{

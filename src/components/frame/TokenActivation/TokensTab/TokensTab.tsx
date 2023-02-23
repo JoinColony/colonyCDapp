@@ -6,10 +6,10 @@ import { SMALL_TOKEN_AMOUNT_FORMAT } from '~constants';
 import Icon from '~shared/Icon';
 import TokenInfoPopover from '~shared/TokenInfoPopover';
 import TokenIcon from '~shared/TokenIcon';
-import { Colony, Token } from '~types';
 import Numeral from '~shared/Numeral';
+import { Token } from '~types';
+import { useColonyContext } from '~hooks';
 
-import { Address } from '~types/index';
 import {
   getFormattedTokenValue,
   getTokenDecimalsWithFallback,
@@ -20,46 +20,48 @@ import ChangeTokenStateForm from './ChangeTokenStateForm';
 import TokenTooltip from './TokenTooltip';
 import SmallTokenAmountMessage from './SmallTokenAmountMessage';
 
+const displayName = 'frame.TokenActivation.TokensTab';
+
 const MSG = defineMessages({
   active: {
-    id: 'users.TokenActivation.TokensTab.active',
+    id: `${displayName}.active`,
     defaultMessage: 'Active',
   },
   activeLocked: {
-    id: 'users.TokenActivation.TokensTab.activeLocked',
+    id: `${displayName}.activeLocked`,
     defaultMessage: 'Active',
   },
   staked: {
-    id: 'users.TokenActivation.TokensTab.staked',
+    id: `${displayName}.staked`,
     defaultMessage: 'Staked',
   },
   inactive: {
-    id: 'users.TokenActivation.TokensTab.inactive',
+    id: `${displayName}.inactive`,
     defaultMessage: 'Inactive',
   },
   activeTokensTooltip: {
-    id: 'users.TokenActivation.TokensTab.activeTokensTooltip',
+    id: `${displayName}.activeTokensTooltip`,
     defaultMessage: `Tokens are “Active” when they’ve been deposited to a
       contract which lets them get ‘locked’ when you need to stake,
       or claim a share of Rewards. You can withdraw tokens back
       to your wallet any time, you just need to clear any locks first.`,
   },
   inactiveTokensTooltip: {
-    id: 'users.TokenActivation.TokensTab.inactiveTokensTooltip',
+    id: `${displayName}.inactiveTokensTooltip`,
     defaultMessage: `Inactive tokens are contained in your own wallet.
       You need to “Activate” them to stake, or be eligible to receive Rewards.`,
   },
   stakedTokensTooltip: {
-    id: `TokenActivation.TokensTab.stakedTokensTooltip`,
+    id: `${displayName}.stakedTokensTooltip`,
     defaultMessage: `You have tokens staked in processes which must conclude
       before they can be deactivated.`,
   },
   pendingError: {
-    id: 'users.TokenActivation.TokensTab.pendingError',
+    id: `${displayName}.pendingError`,
     defaultMessage: 'Error: balance pending!',
   },
   pendingErrorTooltip: {
-    id: 'users.TokenActivation.TokensTab.pendingErrorTooltip',
+    id: `${displayName}.pendingErrorTooltip`,
     defaultMessage: 'Send any “Activate” transaction to claim pending balance.',
   },
 });
@@ -71,8 +73,6 @@ export interface TokensTabProps {
   lockedTokens: BigNumber;
   isPendingBalanceZero: boolean;
   token: Token;
-  colony?: Colony;
-  walletAddress: Address;
 }
 
 const TokensTab = ({
@@ -81,9 +81,9 @@ const TokensTab = ({
   totalTokens,
   lockedTokens,
   token,
-  colony,
   isPendingBalanceZero,
 }: TokensTabProps) => {
+  const { colony } = useColonyContext();
   const targetRef = useRef<HTMLParagraphElement>(null);
 
   const [totalTokensWidth, setTotalTokensWidth] = useState(0);

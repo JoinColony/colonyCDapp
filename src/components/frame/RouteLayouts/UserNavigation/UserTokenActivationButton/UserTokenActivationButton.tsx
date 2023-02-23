@@ -3,10 +3,8 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { TokenActivationPopover } from '~frame/TokenActivation';
 import { Tooltip } from '~shared/Popover';
-import { Address } from '~types/index';
 import UserTokenActivationDisplay from './UserTokenActivationDisplay';
-import { UserTokenBalanceData } from '~types/tokens';
-import { Colony } from '~types';
+import { UserTokenBalanceData } from '~types';
 
 import styles from './UserTokenActivationButton.css';
 
@@ -14,24 +12,18 @@ const displayName = 'users.UserTokenActivationButton';
 
 const MSG = defineMessages({
   tooltip: {
-    id: 'users.UserTokenActivationButton.tooltip',
+    id: `${displayName}.tooltip`,
     defaultMessage:
       'View and activate tokens for staking or claim any unclaimed stakes.',
   },
 });
+
 interface Props {
-  colony?: Colony;
-  walletAddress: Address;
   dataTest: string;
   tokenBalanceData: UserTokenBalanceData;
 }
 
-const UserTokenActivationButton = ({
-  colony,
-  walletAddress,
-  dataTest,
-  tokenBalanceData,
-}: Props) => {
+const UserTokenActivationButton = ({ dataTest, tokenBalanceData }: Props) => {
   const {
     nativeToken,
     activeBalance,
@@ -48,8 +40,6 @@ const UserTokenActivationButton = ({
       totalTokens={totalBalance}
       lockedTokens={lockedBalance}
       token={nativeToken}
-      colony={colony}
-      walletAddress={walletAddress}
       isPendingBalanceZero={isPendingBalanceZero}
     >
       {({ isOpen, toggle, ref }) => (

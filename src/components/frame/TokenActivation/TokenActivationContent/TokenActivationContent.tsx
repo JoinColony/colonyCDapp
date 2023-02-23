@@ -3,19 +3,22 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { Tab, Tabs, TabList, TabPanel } from '~shared/Tabs';
 // import { useClaimableStakedMotionsQuery } from '~data/generated';
+// import { useAppContext, useColonyContext } from '~hooks';
 
 import TokensTab, { TokensTabProps } from '../TokensTab';
 // import StakesTab from '../StakesTab';
 
 import styles from './TokenActivationContent.css';
 
+const displayName = 'frame.TokenActivation.TokenActivationContent';
+
 const MSG = defineMessages({
   yourTokens: {
-    id: 'users.TokenActivation.TokenActivationContent.yourTokens',
+    id: `${displayName}.yourTokens`,
     defaultMessage: 'Your tokens',
   },
   stakes: {
-    id: 'users.TokenActivation.TokenActivationContent.stakes',
+    id: `${displayName}.stakes`,
     defaultMessage: 'Stakes',
   },
 });
@@ -26,7 +29,8 @@ interface TokenActivationContentProps extends TokensTabProps {
 
 const TokenActivationContent = (props: TokenActivationContentProps) => {
   const [tabIndex, setTabIndex] = useState<number>(0);
-  // const { colony, walletAddress, setIsPopoverOpen } = props;
+  // const { colony } = useColonyContext();
+  // const { wallet } = useAppContext();
   // const { setIsPopoverOpen } = props;
 
   // const { data: unclaimedMotions, loading } = useClaimableStakedMotionsQuery({
