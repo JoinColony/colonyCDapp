@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '~redux';
-import { Address, WithKey, DomainColor } from '~types';
+import { Address, WithKey, DomainColor, Domain } from '~types';
 
 import {
   ErrorActionType,
@@ -104,8 +104,8 @@ export type ColonyActionsActionTypes =
         colonyAddress: Address;
         colonyName?: string;
         tokenAddress: Address;
-        fromDomainId: number;
-        toDomainId: number;
+        fromDomain: Domain;
+        toDomain: Domain;
         amount: BigNumber;
         annotationMessage?: string;
       },

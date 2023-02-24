@@ -244,8 +244,8 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
           mergePayload({
             colonyAddress: colony.colonyAddress,
             colonyName: colony.name,
-            fromDomainId: 1,
-            toDomainId: 2,
+            fromDomain: colony.domains?.items.find((d) => d?.isRoot),
+            toDomain: colony.domains?.items.find((d) => !d?.isRoot),
             amount: 100,
             tokenAddress: colony.nativeToken.tokenAddress,
           }),

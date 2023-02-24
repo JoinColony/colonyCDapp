@@ -1,5 +1,5 @@
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { AnyColonyClient, ClientType } from '@colony/colony-js';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { ClientType } from '@colony/colony-js';
 
 // import { ContextModule, getContext } from '~context';
 import { Action, ActionTypes, AllActions } from '~redux';
@@ -10,14 +10,14 @@ import {
   getTxChannel,
 } from '../transactions';
 import { transactionReady } from '../../actionCreators';
-import { getColonyManager, putError, takeFrom } from '../utils';
+import { putError, takeFrom } from '../utils';
 
 function* createMoveFundsAction({
   payload: {
     colonyAddress,
     colonyName,
-    fromDomainId,
-    toDomainId,
+    fromDomain,
+    toDomain,
     amount,
     tokenAddress,
     // annotationMessage,
@@ -28,22 +28,16 @@ function* createMoveFundsAction({
   let txChannel;
   try {
     // const apolloClient = getContext(ContextModule.ApolloClient);
-    const colonyManager = yield getColonyManager();
-
-    const colonyClient: AnyColonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
 
     /*
      * Validate the required values for the payment
      */
-    if (!fromDomainId) {
+    if (!fromDomain) {
       throw new Error(
         'Source domain not set for oveFundsBetweenPots transaction',
       );
     }
-    if (!toDomainId) {
+    if (!toDomain) {
       throw new Error(
         'Recipient domain not set for MoveFundsBetweenPots transaction',
       );
@@ -59,10 +53,8 @@ function* createMoveFundsAction({
       );
     }
 
-    const [{ fundingPotId: fromPot }, { fundingPotId: toPot }] = yield all([
-      call([colonyClient, colonyClient.getDomain], fromDomainId),
-      call([colonyClient, colonyClient.getDomain], toDomainId),
-    ]);
+    const { nativeFundingPotId: fromPot } = fromDomain;
+    const { nativeFundingPotId: toPot } = toDomain;
 
     txChannel = yield call(getTxChannel, metaId);
 
