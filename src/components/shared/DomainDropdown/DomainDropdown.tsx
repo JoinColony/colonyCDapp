@@ -90,8 +90,12 @@ const DomainDropdown = ({
       children: (
         <DomainDropdownItem
           domain={{
+            /**
+             * This is a dummy domain data that we use to display the "All Teams" option
+             * The isRoot property has to be set to true so that it doesn't show as a subdomain in the dropdown
+             */
             id: '',
-            isRoot: true,
+            isRoot: false,
             nativeId: 0,
             metadata: {
               name: 'All Teams',
