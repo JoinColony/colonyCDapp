@@ -246,7 +246,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
             colonyName: colony.name,
             fromDomain: colony.domains?.items.find((d) => d?.isRoot),
             toDomain: colony.domains?.items.find((d) => !d?.isRoot),
-            amount: 100,
+            amount: BigNumber.from(5).mul(BigNumber.from(10).pow(17)), // this is in wei
             tokenAddress: colony.nativeToken.tokenAddress,
           }),
           withMeta({ navigate }),
