@@ -398,14 +398,6 @@ export type CreateUniqueColonyInput = {
   version: Scalars['Int'];
 };
 
-export type CreateUniqueDomainInput = {
-  colonyAddress: Scalars['ID'];
-  color?: InputMaybe<DomainColor>;
-  description?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  parentId?: InputMaybe<Scalars['ID']>;
-};
-
 export type CreateUniqueUserInput = {
   id: Scalars['ID'];
   name: Scalars['String'];
@@ -1331,7 +1323,6 @@ export type Mutation = {
   createProfile?: Maybe<Profile>;
   createToken?: Maybe<Token>;
   createUniqueColony?: Maybe<Colony>;
-  createUniqueDomain?: Maybe<Domain>;
   createUniqueUser?: Maybe<User>;
   createUser?: Maybe<User>;
   createUserTokens?: Maybe<UserTokens>;
@@ -1437,11 +1428,6 @@ export type MutationCreateTokenArgs = {
 
 export type MutationCreateUniqueColonyArgs = {
   input?: InputMaybe<CreateUniqueColonyInput>;
-};
-
-
-export type MutationCreateUniqueDomainArgs = {
-  input?: InputMaybe<CreateUniqueDomainInput>;
 };
 
 
