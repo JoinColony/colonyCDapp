@@ -69,14 +69,6 @@ input ProfileInput {
   meta: ProfileMetadataInput
 }
 
-input CreateUniqueDomainInput {
-  colonyAddress: ID!
-  parentId: ID
-  name: String
-  description: String
-  color: DomainColor
-}
-
 input GetUserReputationInput {
   walletAddress: String!
   colonyAddress: String!
@@ -191,8 +183,6 @@ type Mutation {
     @function(name: "createUniqueUser")
   createUniqueColony(input: CreateUniqueColonyInput): Colony
     @function(name: "createUniqueColony")
-  createUniqueDomain(input: CreateUniqueDomainInput): Domain
-    @function(name: "createUniqueDomain")
   setCurrentVersion(input: SetCurrentVersionInput): Boolean
     @function(name: "setCurrentVersion")
   updateExtensionByColonyAndHash(
