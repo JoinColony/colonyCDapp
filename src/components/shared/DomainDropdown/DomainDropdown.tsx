@@ -95,7 +95,7 @@ const DomainDropdown = ({
              * The isRoot property has to be set to true so that it doesn't show as a subdomain in the dropdown
              */
             id: '',
-            isRoot: false,
+            isRoot: true,
             nativeId: 0,
             metadata: {
               name: 'All Teams',
