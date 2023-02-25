@@ -1,13 +1,13 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { Address } from '~types/index';
 import { SpinnerLoader } from '~shared/Preloaders';
-// import { ParsedMotionStakedEvent, UserToken } from '~data/generated';
-import { Colony, Token } from '~types';
+import { Token } from '~types';
+import { ParsedMotionStakedEvent } from '~gql';
+import { useAppContext, useColonyContext } from '~hooks';
 
 import { getFormattedTokenValue } from '~utils/tokens';
-// import { FullColonyFragment, useMotionsTxHashesQuery } from '~data/index';
+// import { useMotionsTxHashesQuery } from '~data/index';
 
 import ClaimAllButton from './ClaimAllButton';
 import StakesListItem from './StakesListItem';
@@ -32,8 +32,6 @@ const MSG = defineMessages({
 export interface Props {
   unclaimedMotionStakeEvents?: Array<ParsedMotionStakedEvent>;
   isLoadingMotions: boolean;
-  colony?: Colony;
-  walletAddress: Address;
   token: Token;
   setIsPopoverOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -41,11 +39,11 @@ export interface Props {
 const StakesTab = ({
   unclaimedMotionStakeEvents,
   isLoadingMotions,
-  colony,
-  walletAddress,
   token,
   setIsPopoverOpen,
 }: Props) => {
+  const { colony } = useColonyContext();
+  const { wallet } = useAppContext();
   // extract flat array of motionIds
   // const motionIds = useMemo(
   //   () =>
@@ -79,7 +77,7 @@ const StakesTab = ({
             <FormattedMessage {...MSG.yourStakes} />
             <ClaimAllButton
               unclaimedMotionStakeEvents={unclaimedMotionStakeEvents}
-              userAddress={walletAddress}
+              userAddress={wallet?.address || ''}
               colonyAddress={colony?.colonyAddress || ''}
               setIsPopoverOpen={setIsPopoverOpen}
             />

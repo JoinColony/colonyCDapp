@@ -1,11 +1,11 @@
-import React, { useCallback, Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { BigNumber } from 'ethers';
 import { FormikProps } from 'formik';
 import { defineMessages } from 'react-intl';
 
 import Button from '~shared/Button';
 import { ActionForm } from '~shared/Fields';
-// import { ParsedMotionStakedEvent } from '~data/generated';
+import { ParsedMotionStakedEvent } from '~gql';
 import { ActionTypes } from '~redux/actionTypes';
 import { Address } from '~types/index';
 import { mapPayload } from '~utils/actions';
@@ -39,14 +39,12 @@ const ClaimAllButton = ({
       ),
     ),
   ];
-  const transform = useCallback(
-    mapPayload(() => ({
-      colonyAddress,
-      userAddress,
-      motionIds: uniqueMotionIds.map((motionId) => BigNumber.from(motionId)),
-    })),
-    [],
-  );
+
+  const transform = mapPayload(() => ({
+    colonyAddress,
+    userAddress,
+    motionIds: uniqueMotionIds.map((motionId) => BigNumber.from(motionId)),
+  }));
 
   return (
     <ActionForm
@@ -58,7 +56,7 @@ const ClaimAllButton = ({
       onSuccess={setIsPopoverOpen}
       onError={setIsPopoverOpen}
     >
-      {({ handleSubmit, isSubmitting }: FormikProps<{}>) => (
+      {({ handleSubmit, isSubmitting }: FormikProps<unknown>) => (
         <Button
           appearance={{ theme: 'primary', size: 'medium' }}
           text={MSG.claimAll}

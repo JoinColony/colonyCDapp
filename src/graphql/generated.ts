@@ -1767,6 +1767,28 @@ export enum Network {
   Mainnet = 'MAINNET'
 }
 
+export type ParsedMotionStakedEvent = {
+  __typename?: 'ParsedMotionStakedEvent';
+  address: Scalars['String'];
+  blockNumber: Scalars['Int'];
+  hash: Scalars['String'];
+  index: Scalars['String'];
+  name: Scalars['String'];
+  signature: Scalars['String'];
+  timestamp: Scalars['Int'];
+  topic: Scalars['String'];
+  values: ParsedMotionStakedEventValues;
+};
+
+export type ParsedMotionStakedEventValues = {
+  __typename?: 'ParsedMotionStakedEventValues';
+  amount: Scalars['String'];
+  motionId: Scalars['String'];
+  stakeAmount: Scalars['String'];
+  staker: Scalars['String'];
+  vote: Scalars['Int'];
+};
+
 export type Profile = {
   __typename?: 'Profile';
   avatar?: Maybe<Scalars['String']>;

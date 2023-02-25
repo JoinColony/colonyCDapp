@@ -21,34 +21,36 @@ import { Token } from '~types';
 
 import styles from './TokensTab.css';
 
+const displayName = 'frame.TokenActivation.TokensTab.ChangeTokenStateForm';
+
 const MSG = defineMessages({
   tokenActivation: {
-    id: `TokenActivation.TokensTab.ChangeTokenStateForm.tokenActivation`,
+    id: `${displayName}.tokenActivation`,
     defaultMessage: 'Token activation',
   },
   activate: {
-    id: `TokenActivation.TokensTab.ChangeTokenStateForm.activate`,
+    id: `${displayName}.activate`,
     defaultMessage: 'Activate',
   },
   deactivate: {
-    id: `TokenActivation.TokensTab.ChangeTokenStateForm.deactivate`,
+    id: `${displayName}.deactivate`,
     defaultMessage: 'Deactivate',
   },
   balance: {
-    id: `TokenActivation.TokensTab.ChangeTokenStateForm.balance`,
+    id: `${displayName}.balance`,
     defaultMessage: 'balance: {tokenBalance}',
   },
   locked: {
-    id: `TokenActivation.TokensTab.ChangeTokenStateForm.locked`,
+    id: `${displayName}.locked`,
     defaultMessage: 'Locked: {lockedTokens}',
   },
   lockedTooltip: {
-    id: `TokenActivation.TokensTab.ChangeTokenStateForm.lockedTooltip`,
+    id: `${displayName}.lockedTooltip`,
     defaultMessage: `You have unclaimed transactions which must be claimed
     before these tokens can be withdrawn.`,
   },
   max: {
-    id: `TokenActivation.TokensTab.ChangeTokenStateForm.max`,
+    id: `${displayName}.max`,
     defaultMessage: 'Max',
   },
 });
@@ -118,23 +120,20 @@ const ChangeTokenStateForm = ({
     [isActivate],
   );
 
-  const transform = useCallback(
-    pipe(
-      mapPayload(({ amount }) => {
-        // Convert amount string with decimals to BigInt (eth to wei)
-        const formattedAmount = BigNumber.from(
-          moveDecimal(amount, tokenDecimals),
-        );
+  const transform = pipe(
+    mapPayload(({ amount }) => {
+      // Convert amount string with decimals to BigInt (eth to wei)
+      const formattedAmount = BigNumber.from(
+        moveDecimal(amount, tokenDecimals),
+      );
 
-        return {
-          amount: formattedAmount,
-          userAddress: wallet?.address,
-          colonyAddress,
-          tokenAddress: token.tokenAddress,
-        };
-      }),
-    ),
-    [],
+      return {
+        amount: formattedAmount,
+        userAddress: wallet?.address,
+        colonyAddress,
+        tokenAddress: token.tokenAddress,
+      };
+    }),
   );
 
   const handleSubmitSuccess = useCallback((_, { resetForm }) => {
@@ -248,7 +247,7 @@ const ChangeTokenStateForm = ({
               type="submit"
               disabled={
                 !isValid ||
-                values.amount === undefined ||
+                values.amount === 0 ||
                 new Decimal(unformattedTokenBalance).lt(
                   /* a bit hacky way of doing the check but nothing else seems to be working */
                   values.amount.toString() === '.' ? 0 : values.amount || 0,

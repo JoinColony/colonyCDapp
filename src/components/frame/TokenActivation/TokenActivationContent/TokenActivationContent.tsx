@@ -6,7 +6,7 @@ import { Tab, Tabs, TabList, TabPanel } from '~shared/Tabs';
 // import { useAppContext, useColonyContext } from '~hooks';
 
 import TokensTab, { TokensTabProps } from '../TokensTab';
-// import StakesTab from '../StakesTab';
+import StakesTab from '../StakesTab';
 
 import styles from './TokenActivationContent.css';
 
@@ -31,7 +31,7 @@ const TokenActivationContent = (props: TokenActivationContentProps) => {
   const [tabIndex, setTabIndex] = useState<number>(0);
   // const { colony } = useColonyContext();
   // const { wallet } = useAppContext();
-  // const { setIsPopoverOpen } = props;
+  const { setIsPopoverOpen } = props;
 
   // const { data: unclaimedMotions, loading } = useClaimableStakedMotionsQuery({
   //   variables: {
@@ -40,8 +40,8 @@ const TokenActivationContent = (props: TokenActivationContentProps) => {
   //   },
   //   fetchPolicy: 'network-only',
   // });
-  // const unclaimedMotions = {};
-  // const loading = false;
+
+  const loading = false;
 
   // const claimsCount = unclaimedMotions?.claimableStakedMotions
   //   ? unclaimedMotions?.claimableStakedMotions?.unclaimedMotionStakeEvents
@@ -83,15 +83,12 @@ const TokenActivationContent = (props: TokenActivationContentProps) => {
           <TokensTab {...props} />
         </TabPanel>
         <TabPanel className={styles.tabContainer}>
-          {/* <StakesTab
+          <StakesTab
             {...props}
-            unclaimedMotionStakeEvents={
-              unclaimedMotions?.claimableStakedMotions
-                ?.unclaimedMotionStakeEvents
-            }
+            unclaimedMotionStakeEvents={[]}
             isLoadingMotions={loading}
             setIsPopoverOpen={setIsPopoverOpen}
-          /> */}
+          />
         </TabPanel>
       </Tabs>
     </div>
