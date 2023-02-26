@@ -401,7 +401,7 @@ export type CreateCurrentVersionInput = {
 };
 
 export type CreateDomainInput = {
-  colonyDomainsId?: InputMaybe<Scalars['ID']>;
+  colonyId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
   isRoot: Scalars['Boolean'];
   nativeFundingPotId: Scalars['Int'];
@@ -410,6 +410,7 @@ export type CreateDomainInput = {
 };
 
 export type CreateDomainMetadataInput = {
+  changelog?: InputMaybe<Array<DomainMetadataChangelogInput>>;
   color: DomainColor;
   description: Scalars['String'];
   id?: InputMaybe<Scalars['ID']>;
@@ -456,14 +457,6 @@ export type CreateUniqueColonyInput = {
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
   version: Scalars['Int'];
-};
-
-export type CreateUniqueDomainInput = {
-  colonyAddress: Scalars['ID'];
-  color?: InputMaybe<DomainColor>;
-  description?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  parentId?: InputMaybe<Scalars['ID']>;
 };
 
 export type CreateUniqueUserInput = {
@@ -561,7 +554,8 @@ export type DeleteWatchedColoniesInput = {
 
 export type Domain = {
   __typename?: 'Domain';
-  colonyDomainsId?: Maybe<Scalars['ID']>;
+  colony: Colony;
+  colonyId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   id: Scalars['ID'];
   isRoot: Scalars['Boolean'];
@@ -933,7 +927,7 @@ export type ModelDomainColorInput = {
 
 export type ModelDomainConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelDomainConditionInput>>>;
-  colonyDomainsId?: InputMaybe<ModelIdInput>;
+  colonyId?: InputMaybe<ModelIdInput>;
   isRoot?: InputMaybe<ModelBooleanInput>;
   nativeFundingPotId?: InputMaybe<ModelIntInput>;
   nativeId?: InputMaybe<ModelIntInput>;
@@ -950,7 +944,7 @@ export type ModelDomainConnection = {
 
 export type ModelDomainFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelDomainFilterInput>>>;
-  colonyDomainsId?: InputMaybe<ModelIdInput>;
+  colonyId?: InputMaybe<ModelIdInput>;
   id?: InputMaybe<ModelIdInput>;
   isRoot?: InputMaybe<ModelBooleanInput>;
   nativeFundingPotId?: InputMaybe<ModelIntInput>;
@@ -1193,6 +1187,7 @@ export type ModelSubscriptionCurrentVersionFilterInput = {
 
 export type ModelSubscriptionDomainFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionDomainFilterInput>>>;
+  colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   isRoot?: InputMaybe<ModelSubscriptionBooleanInput>;
   nativeFundingPotId?: InputMaybe<ModelSubscriptionIntInput>;
@@ -1436,7 +1431,6 @@ export type Mutation = {
   createProfile?: Maybe<Profile>;
   createToken?: Maybe<Token>;
   createUniqueColony?: Maybe<Colony>;
-  createUniqueDomain?: Maybe<Domain>;
   createUniqueUser?: Maybe<User>;
   createUser?: Maybe<User>;
   createUserTokens?: Maybe<UserTokens>;
@@ -1550,11 +1544,6 @@ export type MutationCreateTokenArgs = {
 
 export type MutationCreateUniqueColonyArgs = {
   input?: InputMaybe<CreateUniqueColonyInput>;
-};
-
-
-export type MutationCreateUniqueDomainArgs = {
-  input?: InputMaybe<CreateUniqueDomainInput>;
 };
 
 
@@ -2587,7 +2576,7 @@ export type UpdateCurrentVersionInput = {
 };
 
 export type UpdateDomainInput = {
-  colonyDomainsId?: InputMaybe<Scalars['ID']>;
+  colonyId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
   isRoot?: InputMaybe<Scalars['Boolean']>;
   nativeFundingPotId?: InputMaybe<Scalars['Int']>;
