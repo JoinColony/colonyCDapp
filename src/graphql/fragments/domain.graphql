@@ -7,5 +7,14 @@ fragment Domain on Domain {
     name
     color
     description
+    changelog {
+      transactionHash
+      oldName
+      newName
+      oldColor
+      newColor
+      oldDescription
+      newDescription
+    }
   }
 }
