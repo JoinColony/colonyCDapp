@@ -22,9 +22,7 @@
         "fetchColonyNativeFundsClaim": {},
         "fetchColonyBalances": {},
         "updateExtensionByColonyAndHash": {},
-        "setCurrentVersion": {},
-        "fetchTokensBalances": {},
-        "fetchChainNativeColonyBalance": {}
+        "setCurrentVersion": {}
       }
     }
   }

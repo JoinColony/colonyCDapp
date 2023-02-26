@@ -1,33 +1,23 @@
 {
   "api": {
     "colonycdapp": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "output": {
         "authConfig": {
+          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
-            "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 7
-            }
-          },
-          "additionalAuthenticationProviders": []
+            },
+            "authenticationType": "API_KEY"
+          }
         }
-      }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
     }
   },
   "function": {
-    "fetchTokenFromChain": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "createUniqueUser": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "createUniqueColony": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -38,17 +28,7 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "getUserReputation": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "getReputationForTopDomains": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "fetchColonyNativeFundsClaim": {
+    "createUniqueUser": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -58,7 +38,22 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "updateExtensionByColonyAndHash": {
+    "fetchColonyNativeFundsClaim": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "fetchTokenFromChain": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getReputationForTopDomains": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getUserReputation": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -68,12 +63,7 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "fetchTokensBalances": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "fetchChainNativeColonyBalance": {
+    "updateExtensionByColonyAndHash": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
