@@ -20,7 +20,7 @@ import {
   transactionPending,
   transactionAddParams,
 } from '../../actionCreators';
-import { putError, takeFrom } from '../utils';
+import { putError, takeFrom, getDomainMetadataChangelog } from '../utils';
 
 function* editDomainAction({
   payload: {
@@ -29,7 +29,7 @@ function* editDomainAction({
     domainName,
     domainColor,
     domainPurpose,
-    domainId,
+    domain,
   },
   meta: { id: metaId, navigate },
   meta,
@@ -38,8 +38,8 @@ function* editDomainAction({
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
 
-    if (!domainId) {
-      throw new Error('A domain id is required to edit domain');
+    if (!domain) {
+      throw new Error('A domain object is required to edit domain');
     }
 
     txChannel = yield call(getTxChannel, metaId);
@@ -90,7 +90,7 @@ function* editDomainAction({
     // }
 
     yield put(transactionPending(editDomain.id));
-    yield put(transactionAddParams(editDomain.id, [domainId]));
+    yield put(transactionAddParams(editDomain.id, [domain.nativeId]));
     yield put(transactionReady(editDomain.id));
 
     const {
@@ -104,20 +104,29 @@ function* editDomainAction({
     /**
      * Save the updated metadata in the database
      */
-    yield apolloClient.mutate<
-      UpdateDomainMetadataMutation,
-      UpdateDomainMetadataMutationVariables
-    >({
-      mutation: UpdateDomainMetadataDocument,
-      variables: {
-        input: {
-          id: getDomainDatabaseId(colonyAddress, domainId),
-          name: domainName,
-          color: domainColor,
-          description: domainPurpose,
+    if (domain.metadata) {
+      yield apolloClient.mutate<
+        UpdateDomainMetadataMutation,
+        UpdateDomainMetadataMutationVariables
+      >({
+        mutation: UpdateDomainMetadataDocument,
+        variables: {
+          input: {
+            id: getDomainDatabaseId(colonyAddress, domain.nativeId),
+            name: domainName,
+            color: domainColor,
+            description: domainPurpose,
+            changelog: getDomainMetadataChangelog(
+              txHash,
+              domain.metadata,
+              domainName,
+              domainColor,
+              domainPurpose,
+            ),
+          },
         },
-      },
-    });
+      });
+    }
 
     // if (annotationMessage) {
     //   yield put(transactionPending(annotateEditDomain.id));

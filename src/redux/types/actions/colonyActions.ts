@@ -41,11 +41,11 @@ export type ColonyActionsActionTypes =
       {
         colonyAddress: Address;
         colonyName?: string;
+        domain: Domain;
         domainName: string;
         domainColor?: DomainColor;
         domainPurpose?: string;
         annotationMessage?: string;
-        domainId: number;
       },
       MetaWithNavigate<object>
     >

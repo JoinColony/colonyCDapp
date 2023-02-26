@@ -231,10 +231,9 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
           mergePayload({
             colonyAddress: colony.colonyAddress,
             colonyName: colony.name,
-            domainId: colony.domains?.items.find((d) => !d?.isRoot)?.nativeId,
-            domainName: 'Edited Test Domain',
-            domainColor: DomainColor.Green,
-            domainPurpose: 'Edited Test Domain Description',
+            domain: colony.domains?.items.find((d) => !d?.isRoot),
+            domainName: 'New Name',
+            domainColor: DomainColor.Magenta,
           }),
           withMeta({ navigate }),
         )}
