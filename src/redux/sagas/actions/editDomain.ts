@@ -90,7 +90,7 @@ function* editDomainAction({
     // }
 
     yield put(transactionPending(editDomain.id));
-    yield put(transactionAddParams(editDomain.id, [domain.nativeId]));
+    yield put(transactionAddParams(editDomain.id, [domain.nativeId, '.']));
     yield put(transactionReady(editDomain.id));
 
     const {
