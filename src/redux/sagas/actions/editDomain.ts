@@ -2,31 +2,25 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
 import { ContextModule, getContext } from '~context';
+import { Action, ActionTypes, AllActions } from '~redux';
 import {
-  ColonyFromNameDocument,
-  ColonyFromNameQuery,
-  ColonyFromNameQueryVariables,
-} from '~data/index';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-} from '../utils';
+  UpdateDomainMetadataDocument,
+  UpdateDomainMetadataMutation,
+  UpdateDomainMetadataMutationVariables,
+} from '~gql';
+import { getDomainDatabaseId } from '~utils/domains';
 
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { ipfsUpload } from '../ipfs';
 import {
   transactionReady,
   transactionPending,
   transactionAddParams,
 } from '../../actionCreators';
+import { putError, takeFrom } from '../utils';
 
 function* editDomainAction({
   payload: {
@@ -35,10 +29,9 @@ function* editDomainAction({
     domainName,
     domainColor,
     domainPurpose,
-    annotationMessage,
     domainId,
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ACTION_DOMAIN_EDIT>) {
   let txChannel;
@@ -54,10 +47,10 @@ function* editDomainAction({
     const batchKey = 'editDomainAction';
     const {
       editDomainAction: editDomain,
-      annotateEditDomainAction: annotateEditDomain,
+      // annotateEditDomainAction: annotateEditDomain,
     } = yield createTransactionChannels(metaId, [
       'editDomainAction',
-      'annotateEditDomainAction',
+      // 'annotateEditDomainAction',
     ]);
 
     const createGroupTransaction = ({ id, index }, config) =>
@@ -78,46 +71,26 @@ function* editDomainAction({
       ready: false,
     });
 
-    if (annotationMessage) {
-      yield createGroupTransaction(annotateEditDomain, {
-        context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
-        identifier: colonyAddress,
-        params: [],
-        ready: false,
-      });
-    }
+    // if (annotationMessage) {
+    //   yield createGroupTransaction(annotateEditDomain, {
+    //     context: ClientType.ColonyClient,
+    //     methodName: 'annotateTransaction',
+    //     identifier: colonyAddress,
+    //     params: [],
+    //     ready: false,
+    //   });
+    // }
 
     yield takeFrom(editDomain.channel, ActionTypes.TRANSACTION_CREATED);
-    if (annotationMessage) {
-      yield takeFrom(
-        annotateEditDomain.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
-    }
+    // if (annotationMessage) {
+    //   yield takeFrom(
+    //     annotateEditDomain.channel,
+    //     ActionTypes.TRANSACTION_CREATED,
+    //   );
+    // }
 
     yield put(transactionPending(editDomain.id));
-
-    /*
-     * Upload domain metadata to IPFS
-     */
-    let domainMetadataIpfsHash = null;
-    domainMetadataIpfsHash = yield call(
-      ipfsUpload,
-      JSON.stringify({
-        domainName,
-        domainColor,
-        domainPurpose,
-      }),
-    );
-
-    yield put(
-      transactionAddParams(editDomain.id, [
-        domainId,
-        domainMetadataIpfsHash as unknown as string,
-      ]),
-    );
-
+    yield put(transactionAddParams(editDomain.id, [domainId]));
     yield put(transactionReady(editDomain.id));
 
     const {
@@ -128,50 +101,57 @@ function* editDomainAction({
     );
     yield takeFrom(editDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    if (annotationMessage) {
-      yield put(transactionPending(annotateEditDomain.id));
-
-      /*
-       * Upload annotationMessage to IPFS
-       */
-      const annotationMessageIpfsHash = yield call(
-        uploadIfpsAnnotation,
-        annotationMessage,
-      );
-
-      yield put(
-        transactionAddParams(annotateEditDomain.id, [
-          txHash,
-          annotationMessageIpfsHash,
-        ]),
-      );
-
-      yield put(transactionReady(annotateEditDomain.id));
-
-      yield takeFrom(
-        annotateEditDomain.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
-    }
-
-    /*
-     * Update the colony object cache
+    /**
+     * Save the updated metadata in the database
      */
-    yield apolloClient.query<ColonyFromNameQuery, ColonyFromNameQueryVariables>(
-      {
-        query: ColonyFromNameDocument,
-        variables: { name: colonyName || '', address: colonyAddress },
-        fetchPolicy: 'network-only',
+    yield apolloClient.mutate<
+      UpdateDomainMetadataMutation,
+      UpdateDomainMetadataMutationVariables
+    >({
+      mutation: UpdateDomainMetadataDocument,
+      variables: {
+        input: {
+          id: getDomainDatabaseId(colonyAddress, domainId),
+          name: domainName,
+          color: domainColor,
+          description: domainPurpose,
+        },
       },
-    );
+    });
+
+    // if (annotationMessage) {
+    //   yield put(transactionPending(annotateEditDomain.id));
+
+    //   /*
+    //    * Upload annotationMessage to IPFS
+    //    */
+    //   const annotationMessageIpfsHash = yield call(
+    //     uploadIfpsAnnotation,
+    //     annotationMessage,
+    //   );
+
+    //   yield put(
+    //     transactionAddParams(annotateEditDomain.id, [
+    //       txHash,
+    //       annotationMessageIpfsHash,
+    //     ]),
+    //   );
+
+    //   yield put(transactionReady(annotateEditDomain.id));
+
+    //   yield takeFrom(
+    //     annotateEditDomain.channel,
+    //     ActionTypes.TRANSACTION_SUCCEEDED,
+    //   );
+    // }
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_DOMAIN_EDIT_SUCCESS,
       meta,
     });
 
-    if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+    if (colonyName && navigate) {
+      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_DOMAIN_EDIT_ERROR, error, meta);
