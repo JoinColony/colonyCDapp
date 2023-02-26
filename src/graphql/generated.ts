@@ -2573,6 +2573,8 @@ export type ChainFundsClaimFragment = { __typename?: 'ColonyChainFundsClaim', id
 
 export type DomainFragment = { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName?: string | null, newName?: string | null, oldColor?: DomainColor | null, newColor?: DomainColor | null, oldDescription?: string | null, newDescription?: string | null }> | null } | null };
 
+export type DomainMetadataFragment = { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName?: string | null, newName?: string | null, oldColor?: DomainColor | null, newColor?: DomainColor | null, oldDescription?: string | null, newDescription?: string | null }> | null };
+
 export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number };
 
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
@@ -2811,6 +2813,22 @@ export const TokenFragmentDoc = gql`
   thumbnail
 }
     `;
+export const DomainMetadataFragmentDoc = gql`
+    fragment DomainMetadata on DomainMetadata {
+  name
+  color
+  description
+  changelog {
+    transactionHash
+    oldName
+    newName
+    oldColor
+    newColor
+    oldDescription
+    newDescription
+  }
+}
+    `;
 export const DomainFragmentDoc = gql`
     fragment Domain on Domain {
   id
@@ -2818,21 +2836,10 @@ export const DomainFragmentDoc = gql`
   isRoot
   nativeFundingPotId
   metadata {
-    name
-    color
-    description
-    changelog {
-      transactionHash
-      oldName
-      newName
-      oldColor
-      newColor
-      oldDescription
-      newDescription
-    }
+    ...DomainMetadata
   }
 }
-    `;
+    ${DomainMetadataFragmentDoc}`;
 export const ColonyActionFragmentDoc = gql`
     fragment ColonyAction on ColonyAction {
   id
