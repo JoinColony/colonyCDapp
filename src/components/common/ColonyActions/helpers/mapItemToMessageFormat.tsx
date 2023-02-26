@@ -8,6 +8,7 @@ import {
   ColonyAndExtensionsEvents,
   ColonyAction,
   ColonyActionType,
+  Domain,
 } from '~types';
 import { intl } from '~utils/intl';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
@@ -17,6 +18,23 @@ import styles from './itemStyles.css';
 const { formatMessage } = intl({
   unknownDomain: 'UnknownDomain',
 });
+
+const getDomainNameFromChangelog = (
+  transactionHash: string,
+  domain?: Domain | null,
+) => {
+  if (!domain?.metadata) {
+    return null;
+  }
+
+  const changelogItem = domain.metadata.changelog?.find(
+    (item) => item.transactionHash === transactionHash,
+  );
+  if (!changelogItem) {
+    return domain.metadata.name;
+  }
+  return changelogItem.newName;
+};
 
 export const mapColonyActionToExpectedFormat = (actionData: ColonyAction) => {
   // const formattedRolesTitle = formatRolesTitle(item.roles); // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
@@ -35,8 +53,10 @@ export const mapColonyActionToExpectedFormat = (actionData: ColonyAction) => {
     ),
     // direction: formattedRolesTitle.direction,
     fromDomain:
-      actionData.fromDomain?.metadata?.name ??
-      formatMessage({ id: 'unknownDomain' }),
+      getDomainNameFromChangelog(
+        actionData.transactionHash,
+        actionData.fromDomain,
+      ) ?? formatMessage({ id: 'unknownDomain' }),
     initiator: (
       <span className={styles.titleDecoration}>
         <FriendlyName user={actionData.initiatorUser} autoShrinkAddress />
