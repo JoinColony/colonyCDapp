@@ -47,12 +47,12 @@ export type ColonyActionsActionTypes =
         annotationMessage?: string;
         domainId: number;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_DOMAIN_EDIT_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_DOMAIN_EDIT_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_EXPENDITURE_PAYMENT,
