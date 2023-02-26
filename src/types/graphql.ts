@@ -11,6 +11,7 @@ import {
   ColonyActionType,
   ModelSortDirection,
   DomainColor,
+  DomainMetadataFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -20,6 +21,8 @@ export type Colony = ColonyFragment;
 export type ColonyWatcher = WatcherFragment;
 
 export type Domain = DomainFragment;
+
+export type DomainMetadata = DomainMetadataFragment;
 
 export type Token = TokenFragment;
 
