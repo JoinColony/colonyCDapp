@@ -179,6 +179,7 @@ enum ColonyType {
 
 enum ColonyActionType {
   GENERIC
+  NULL_MOTION
   WRONG_COLONY
   PAYMENT
   PAYMENT_MOTION

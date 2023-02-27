@@ -10,7 +10,7 @@ import Hash from './Hash';
 
 import styles from './TransactionHash.css';
 
-const displayName = 'common.ColonyActions.ActionsPage.TransactionHash';
+const displayName = 'common.ColonyActions.ActionDetailsPage.TransactionHash';
 
 interface Props {
   transactionHash?: string;

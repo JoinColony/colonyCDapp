@@ -9,7 +9,7 @@ import { TransactionStatuses } from '../staticMaps';
 
 import styles from './TransactionMeta.css';
 
-const displayName = `common.ColonyActions.ActionsPage.TransactionMeta`;
+const displayName = `common.ColonyActions.ActionDetailsPage.TransactionMeta`;
 
 const MSG = defineMessages({
   blockExplorer: {

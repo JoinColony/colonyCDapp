@@ -31,6 +31,6 @@ export const ACTION_TYPES_ICONS_MAP: {
   [ColonyActionType.EmitDomainReputationRewardMotion]: 'emoji-shooting-star',
   [ColonyActionType.UnlockTokenMotion]: 'emoji-padlock',
   // [ColonyMotions.CreateDecisionMotion]: 'emoji-decisions',
-  // [ColonyMotions.NullMotion]: 'forbidden-signal',
+  [ColonyActionType.NullMotion]: 'forbidden-signal',
   [ColonyActionType.Generic]: 'circle-check-primary',
 };

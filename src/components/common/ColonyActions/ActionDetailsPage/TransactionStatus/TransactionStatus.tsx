@@ -8,7 +8,7 @@ import { TransactionStatuses } from '../staticMaps';
 
 import styles from './TransactionStatus.css';
 
-const displayName = 'common.ColonyActions.ActionsPage.TransactionStatus';
+const displayName = 'common.ColonyActions.ActionDetailsPage.TransactionStatus';
 
 const MSG = defineMessages({
   transactionStatus: {

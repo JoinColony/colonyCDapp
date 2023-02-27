@@ -9,7 +9,8 @@ import { TransactionStatus, TransactionStatuses } from '~common/ColonyActions';
 
 import styles from './TransactionHash.css';
 
-const displayName = 'common.ColonyActions.ActionsPage.TransactionNotFound.Hash';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.TransactionNotFound.Hash';
 
 const MSG = defineMessages({
   fallbackTitle: {
