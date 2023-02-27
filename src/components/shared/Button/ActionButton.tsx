@@ -5,13 +5,14 @@ import { ActionTransformFnType } from '~utils/actions';
 import { useAsyncFunction, useMounted } from '~hooks';
 import DefaultButton from '~shared/Button';
 import { ActionTypes } from '~redux';
+
 import { Props as DefaultButtonProps } from './Button';
 
 const getFormAction = (
   action: ActionTypes,
-  actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS',
+  actionType: 'ERROR' | 'SUCCESS',
 ) => {
-  const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
+  const actionEnd = `_${actionType}`;
   return `${action}${actionEnd}`;
 };
 
@@ -19,8 +20,11 @@ interface Props extends DefaultButtonProps {
   actionType: ActionTypes;
   button?: ElementType;
   confirmText?: any;
+  error?: string;
   onConfirmToggled?: (...args: any[]) => void;
   onSuccess?: (result: any) => void;
+  submit?: string;
+  success?: string;
   text?: MessageDescriptor | string;
   transform?: ActionTransformFnType;
   values?: any | (() => any | Promise<any>);
@@ -29,18 +33,26 @@ interface Props extends DefaultButtonProps {
 const ActionButton = ({
   actionType,
   button,
+  error,
+  submit,
+  success,
   onSuccess,
   // @todo Remove `values` once async transform functions are supported
   values,
   transform,
   ...props
 }: Props) => {
-  const submit = getFormAction(actionType, 'SUBMIT');
-  const error = getFormAction(actionType, 'ERROR');
-  const success = getFormAction(actionType, 'SUCCESS');
+  const submitAction = submit || actionType;
+  const errorAction = error || getFormAction(actionType, 'ERROR');
+  const successAction = success || getFormAction(actionType, 'SUCCESS');
   const isMountedRef = useMounted();
   const [loading, setLoading] = useState(false);
-  const asyncFunction = useAsyncFunction({ submit, error, success, transform });
+  const asyncFunction = useAsyncFunction({
+    submit: submitAction,
+    error: errorAction,
+    success: successAction,
+    transform,
+  });
 
   const handleClick = async () => {
     let result;
