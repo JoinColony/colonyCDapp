@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 
-import { ActionDetailsPageParams } from '~common/ColonyActions/ActionDetailsPage/ActionDetailsPage';
+import { ActionDetailsPageParams } from '~common/ColonyActions/ActionDetailsPage';
+import { failedLoadingDuration as pollingTimeout } from '~frame/LoadingTemplate';
 import { useGetColonyActionQuery } from '~gql';
 import { Colony } from '~types';
 import { isTransactionFormat } from '~utils/web3';
@@ -25,9 +26,18 @@ const useGetColonyAction = (colony?: Colony | null) => {
     pollInterval: 1000,
   });
 
-  const action = actionData?.getColonyAction;
+  useEffect(() => {
+    const cancelPollingTimer = setTimeout(stopPollingForAction, pollingTimeout);
+    return () => clearTimeout(cancelPollingTimer);
+  }, []);
 
-  if (action && isPolling) {
+  const { state: locationState } = useLocation();
+  /* Don't poll if we've not been redirected from the saga */
+  const isRedirect = locationState?.isRedirect;
+  const action = actionData?.getColonyAction;
+  const shouldStopPolling = (!isRedirect && isPolling) || (action && isPolling);
+
+  if (shouldStopPolling) {
     stopPollingForAction();
     setIsPolling(false);
   }
