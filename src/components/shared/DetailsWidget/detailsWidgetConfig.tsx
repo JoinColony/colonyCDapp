@@ -132,22 +132,25 @@ const getDetailItems = (
     {
       label: MSG.fromDomain,
       labelValues: undefined,
-      item: detailsForAction.FromDomain && fromDomain && (
-        <TeamDetail domain={fromDomain} />
+      item: detailsForAction.FromDomain && fromDomain?.metadata && (
+        <TeamDetail domainMetadata={fromDomain.metadata} />
       ),
     },
     {
       label: MSG.domain,
       labelValues: undefined,
-      item: detailsForAction.Domain && fromDomain && (
-        <TeamDetail domain={fromDomain} />
+      item: detailsForAction.Domain && fromDomain?.metadata && (
+        <TeamDetail
+          transactionHash={transactionHash}
+          domainMetadata={fromDomain.metadata}
+        />
       ),
     },
     {
       label: MSG.toRecipient,
       labelValues: undefined,
-      item: detailsForAction.ToDomain && toDomain && (
-        <TeamDetail domain={toDomain} />
+      item: detailsForAction.ToDomain && toDomain?.metadata && (
+        <TeamDetail domainMetadata={toDomain.metadata} />
       ),
     },
     {
