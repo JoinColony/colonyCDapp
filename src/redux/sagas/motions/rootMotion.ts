@@ -11,7 +11,11 @@ import { ColonyManager } from '~context';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { transactionReady, transactionPending } from '../../actionCreators';
+import {
+  transactionAddParams,
+  transactionPending,
+  transactionReady,
+} from '../../actionCreators';
 
 import { putError, takeFrom, getColonyManager } from '../utils';
 import {
@@ -136,12 +140,13 @@ function* createRootMotionSaga({
 
     if (annotationMessage) {
       yield put(transactionPending(annotateRootMotion.id));
-
-      //  const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
-
-      // yield put(
-      //   transactionAddParams(annotateRootMotion.id, [txHash, ipfsHash]),
-      // );
+      // TODO: confirm how we're handling passing the annotationMsg to block ingestor.
+      yield put(
+        transactionAddParams(annotateRootMotion.id, [
+          txHash,
+          annotationMessage,
+        ]),
+      );
 
       yield put(transactionReady(annotateRootMotion.id));
 
