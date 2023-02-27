@@ -20,7 +20,7 @@ const eventsMessageDescriptors = {
       ${ColonyAndExtensionsEvents.ObjectionRaised} {{staker} raised an {objectionTag}}
       ${ColonyAndExtensionsEvents.MotionRewardClaimed} {{staker} claimed their stake.}
       ${ColonyAndExtensionsEvents.ColonyMetadata} {{initiator} {changed} this colony's {colonyMetadata}{colonyMetadataChange}}
-      ${ColonyAndExtensionsEvents.DomainMetadata} {{initiator} changed the team{domainMetadataChanged}{oldDomainMetadata}{newDomainMetadata}}
+      ${ColonyAndExtensionsEvents.DomainMetadata} {{initiator} changed the team's {domainMetadataChanges}}
       ${ColonyAndExtensionsEvents.ColonyRoleSet} {{initiator} {roleSetAction} the {role} permission in the {fromDomain} team {roleSetDirection} {recipient}}
       ${ColonyAndExtensionsEvents.ArbitraryReputationUpdate} {{initiator} {isSmiteAction, select,
         true {smote}
