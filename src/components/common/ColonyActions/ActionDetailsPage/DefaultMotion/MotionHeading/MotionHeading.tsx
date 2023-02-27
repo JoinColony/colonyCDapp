@@ -8,7 +8,7 @@ import MotionCountdown from '../MotionCountdown';
 import styles from './MotionHeading.css';
 
 const displayName =
-  'common.ColonyActions.ActionsPage.DefaultMotion.MotionHeading';
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.MotionHeading';
 
 interface MotionHeadingProps {
   motionState: MotionState;
