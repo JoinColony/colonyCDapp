@@ -11,7 +11,7 @@ import { useColonyContext } from '~hooks';
 import styles from './EscalateButton.css';
 
 const displayName =
-  'common.ColonyActions.ActionsPage.DefaultMotion.EscalateButton';
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.EscalateButton';
 
 const MSG = defineMessages({
   escalate: {
