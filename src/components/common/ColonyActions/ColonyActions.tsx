@@ -234,6 +234,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
             domain: colony.domains?.items.find((d) => !d?.isRoot),
             domainName: 'New Name',
             domainColor: DomainColor.Magenta,
+            description: 'New Description',
           }),
           withMeta({ navigate }),
         )}
