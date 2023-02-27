@@ -199,6 +199,7 @@ export enum ColonyActionType {
   MintTokensMotion = 'MINT_TOKENS_MOTION',
   MoveFunds = 'MOVE_FUNDS',
   MoveFundsMotion = 'MOVE_FUNDS_MOTION',
+  NullMotion = 'NULL_MOTION',
   Payment = 'PAYMENT',
   PaymentMotion = 'PAYMENT_MOTION',
   Recovery = 'RECOVERY',
