@@ -8,7 +8,8 @@ import ActionsPageFeed from '../ActionDetailsPageFeed';
 
 import styles from './DefaultAction.css';
 
-const displayName = 'common.ColonyActions.ActionsPage.DefaultActionContent';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultActionContent';
 
 interface DefaultActionContentProps {
   colony: Colony;
