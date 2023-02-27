@@ -90,6 +90,11 @@ function* editDomainAction({
     // }
 
     yield put(transactionPending(editDomain.id));
+    /**
+     * @NOTE: In order for the DomainMetadata event (which is the only event associated with Edit Domain action) to be emitted,
+     * the second parameter must be non-empty.
+     * It will be replaced with the IPFS hash in due course.
+     */
     yield put(transactionAddParams(editDomain.id, [domain.nativeId, '.']));
     yield put(transactionReady(editDomain.id));
 
