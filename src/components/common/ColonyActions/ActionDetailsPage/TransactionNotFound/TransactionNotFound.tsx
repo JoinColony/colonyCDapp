@@ -11,7 +11,8 @@ import { TransactionMetaProps } from '../TransactionMeta';
 
 import styles from './TransactionNotFound.css';
 
-const displayName = 'common.ColonyActions.ActionsPage.TransactionNotFound';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.TransactionNotFound';
 
 const MSG = defineMessages({
   returnToColony: {
