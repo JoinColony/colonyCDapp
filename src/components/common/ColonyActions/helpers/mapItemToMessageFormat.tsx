@@ -33,7 +33,7 @@ const getDomainNameFromChangelog = (
   const changelogItem = domain.metadata.changelog?.find(
     (item) => item.transactionHash === transactionHash,
   );
-  if (!changelogItem) {
+  if (!changelogItem?.newName) {
     return domain.metadata.name;
   }
   return changelogItem.newName;
