@@ -140,13 +140,8 @@ function* createRootMotionSaga({
 
     if (annotationMessage) {
       yield put(transactionPending(annotateRootMotion.id));
-      // TODO: confirm how we're handling passing the annotationMsg to block ingestor.
-      yield put(
-        transactionAddParams(annotateRootMotion.id, [
-          txHash,
-          annotationMessage,
-        ]),
-      );
+      // TODO: handle uploading annotation msg to db in saga
+      yield put(transactionAddParams(annotateRootMotion.id, [txHash, '']));
 
       yield put(transactionReady(annotateRootMotion.id));
 

@@ -59,6 +59,6 @@ fragment ColonyAction on ColonyAction {
   individualEvents
   isMotion
   colony {
-    colonyName: name
+    colonyAddress: id
   }
 }
