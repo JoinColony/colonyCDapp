@@ -288,6 +288,10 @@ type ColonyMetadataChangelog {
   hasAvatarChanged: Boolean!
 }
 
+type ColonyMetadata @model {
+  id: ID
+}
+
 type User @model {
   id: ID! @index(name: "byAddress", queryField: "getUserByAddress") # wallet address
   name: String! @index(name: "byName", queryField: "getUserByName")
