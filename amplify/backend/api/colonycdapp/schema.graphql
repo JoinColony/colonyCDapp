@@ -217,7 +217,7 @@ type ColonyStatus {
 
 # Applies to both Colonies Tokens and Events, but not all fields are revlant to all
 # It does not apply to user accounts as they can live on all networks
-type Metadata {
+type ChainMetadata {
   network: Network
   chainId: Int
   transactionHash: String
@@ -241,7 +241,7 @@ type Token @model {
   users: [User] @manyToMany(relationName: "UserTokens")
   avatar: String
   thumbnail: String
-  meta: Metadata
+  chainMetadata: ChainMetadata
   createdAt: AWSDateTime!
 }
 
@@ -271,10 +271,14 @@ type Colony @model {
   type: ColonyType @index(name: "byType", queryField: "getColonyByType")
   # Returns a list token balances for each domain and each token that the colony has
   balances: ColonyBalances @function(name: "fetchColonyBalances")
-  meta: Metadata
+  chainMetadata: ChainMetadata
   extensions: [ColonyExtension!] @hasMany(indexName: "byColony", fields: ["id"])
   version: Int!
   actions: [ColonyAction] @hasMany
+}
+
+type ColonyMetadata @model {
+  id: ID
 }
 
 type User @model {
@@ -369,7 +373,7 @@ type ContractEvent @model {
   # update this schema every time you want to start tracking a new event
   name: String!
   signature: String!
-  meta: Metadata!
+  chainMetadata: ChainMetadata!
   # Note that they are not required, meaning that at any point, one or more, even
   # all of them might not be set
   colony: Colony @hasOne

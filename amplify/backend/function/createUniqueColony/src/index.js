@@ -156,7 +156,7 @@ exports.handler = async (event) => {
          * @TODO These need to be properly added once Lambda Functions
          * have the concept of chains
          */
-        meta: {
+        chainMetadata: {
           chainId: 2656691,
           network: 'GANACHE',
         },
