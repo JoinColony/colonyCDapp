@@ -26,6 +26,6 @@ fragment ColonyAction on ColonyAction {
   newColonyVersion
   isMotion
   colony {
-    colonyName: name
+    colonyAddress: id
   }
 }
