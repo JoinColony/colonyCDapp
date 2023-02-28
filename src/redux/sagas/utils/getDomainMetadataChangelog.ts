@@ -18,12 +18,12 @@ export const getDomainMetadataChangelog = (
     ...existingChangelog,
     {
       transactionHash,
-      newName,
-      oldName: newName ? metadata.name : null,
-      newColor,
-      oldColor: newColor ? metadata.color : null,
-      newDescription,
-      oldDescription: newDescription ? metadata.description : null,
+      newName: newName ?? metadata.name,
+      oldName: metadata.name,
+      newColor: newColor ?? metadata.color,
+      oldColor: metadata.color,
+      newDescription: newDescription ?? metadata.description,
+      oldDescription: metadata.description,
     },
   ];
 };
