@@ -44,7 +44,7 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
 
     const colonyClient = await networkClient.getColonyClient(colonyAddress);
 
-    const { chainId } = colony?.meta || {};
+    const { chainId } = colony?.chainMetadata || {};
     const { items: domains = [] } = colony.domains || {};
     const { items: tokens = [] } = colony.tokens || {};
 

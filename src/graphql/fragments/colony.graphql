@@ -21,7 +21,7 @@ fragment Colony on Colony {
       unlocked
     }
   }
-  meta {
+  chainMetadata {
     chainId
     network
   }
@@ -82,7 +82,7 @@ fragment WatchedColony on Colony {
     displayName
     thumbnail
   }
-  meta {
+  chainMetadata {
     chainId
     network
   }
