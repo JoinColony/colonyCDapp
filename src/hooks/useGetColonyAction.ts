@@ -29,7 +29,7 @@ const useGetColonyAction = (colony?: Colony | null) => {
   useEffect(() => {
     const cancelPollingTimer = setTimeout(stopPollingForAction, pollingTimeout);
     return () => clearTimeout(cancelPollingTimer);
-  }, []);
+  }, [stopPollingForAction]);
 
   const { state: locationState } = useLocation();
   /* Don't poll if we've not been redirected from the saga */
@@ -44,7 +44,8 @@ const useGetColonyAction = (colony?: Colony | null) => {
 
   return {
     isInvalidTransactionHash: !isValidTx,
-    isUnknownTransaction: action?.colony?.colonyName !== colony?.name,
+    isUnknownTransaction:
+      isValidTx && action?.colony?.colonyAddress !== colony?.colonyAddress,
     loadingAction: loadingAction || isPolling,
     action,
   };
