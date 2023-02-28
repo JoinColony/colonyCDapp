@@ -307,12 +307,12 @@ type DomainMetadata @model {
 
 type DomainMetadataChangelog {
   transactionHash: String!
-  oldName: String
-  newName: String
-  oldColor: DomainColor
-  newColor: DomainColor
-  oldDescription: String
-  newDescription: String
+  oldName: String!
+  newName: String!
+  oldColor: DomainColor!
+  newColor: DomainColor!
+  oldDescription: String!
+  newDescription: String!
 }
 
 type ColonyFundsClaim @model {
