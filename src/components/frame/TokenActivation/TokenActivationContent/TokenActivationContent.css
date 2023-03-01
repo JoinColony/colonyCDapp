@@ -18,11 +18,11 @@
   padding: 11px 0;
   width: 50%;
   border: none;
-  border-bottom: 1px solid var(--temp-grey-13);
+  border-bottom: 1px solid var(--light-grey-beige);
   background-color: inherit;
   font-weight: var(--weight-bold);
   text-align: center;
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
   outline: none;
   cursor: pointer;
 }
@@ -43,7 +43,7 @@
 }
 
 .mainDivider {
-  border-bottom: 1px solid var(--temp-grey-13);
+  border-bottom: 1px solid var(--light-grey-beige);
 }
 
 .totalTokensContainer {
@@ -98,7 +98,7 @@
   width: fit-content;
   font-size: var(--size-smallish);
   font-weight: var(--weight-bold);
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
 
   &::before {
     display: inline-block;
@@ -256,7 +256,7 @@
 .balanceAmount {
   font-size: var(--size-tiny);
   font-weight: var(--weight-bold);
-  color: var(--temp-grey-blue-7);
+  color: var(--grey-purple);
   overflow-wrap: anywhere;
 }
 
