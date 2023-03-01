@@ -1,7 +1,7 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
-// import Button from '~shared/Button';
+import Button from '~shared/Button';
 import DropdownMenu, {
   DropdownMenuSection,
   DropdownMenuItem,
@@ -15,13 +15,13 @@ import {
   // useCanInteractWithNetwork,
 } from '~hooks';
 import { SimpleMessageValues } from '~types/index';
-// import { UserTokenBalanceData } from '~types/tokens';
+import { UserTokenBalanceData } from '~types';
 
 // import UserTokenActivationDisplay from '../UserTokenActivationButton/UserTokenActivationDisplay';
-// import { TokenActivationPopover } from '../TokenActivation';
+import { TokenActivationPopover } from '../TokenActivation';
 import ItemContainer from './ItemContainer';
 
-// import styles from './AvatarDropdownPopoverMobile.css';
+import styles from './AvatarDropdownPopoverMobile.css';
 
 const displayName = 'frame.AvatarDropdown.AvatarDropdownPopoverMobile';
 
@@ -46,24 +46,25 @@ const MSG = defineMessages({
 
 interface Props {
   spinnerMsg: SimpleMessageValues;
-  // tokenBalanceData: UserTokenBalanceData;
+  tokenBalanceData: UserTokenBalanceData;
 }
 
 const AvatarDropdownPopoverMobile = ({
   spinnerMsg,
-}: // tokenBalanceData,
-Props) => {
-  // const {
-  //   nativeToken,
-  //   activeBalance,
-  //   inactiveBalance,
-  //   totalBalance,
-  //   lockedBalance,
-  //   isPendingBalanceZero,
-  // } = tokenBalanceData;
+  tokenBalanceData,
+}: Props) => {
+  const {
+    nativeToken,
+    activeBalance,
+    inactiveBalance,
+    totalBalance,
+    lockedBalance,
+    isPendingBalanceZero,
+  } = tokenBalanceData;
 
   const { colony } = useColonyContext();
   const { wallet } = useAppContext();
+  const { address: walletAddress } = wallet || {};
   const { userReputation, totalReputation } = useUserReputation(
     colony?.colonyAddress,
     wallet?.address,
@@ -99,7 +100,7 @@ Props) => {
             )}
           </ItemContainer>
         </DropdownMenuItem>
-        {/* <DropdownMenuItem>
+        <DropdownMenuItem>
           <div className={styles.buttonContainer}>
             {nativeToken && (
               <TokenActivationPopover
@@ -123,7 +124,7 @@ Props) => {
               </TokenActivationPopover>
             )}
           </div>
-        </DropdownMenuItem> */}
+        </DropdownMenuItem>
       </DropdownMenuSection>
     </DropdownMenu>
   );

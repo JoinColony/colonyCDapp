@@ -96,7 +96,10 @@ const UserNavigation = () => {
       </div>
 
       <Wallet />
-      <AvatarDropdown spinnerMsg={MSG.walletAutologin} />
+      <AvatarDropdown
+        spinnerMsg={MSG.walletAutologin}
+        tokenBalanceData={mockedTokenBalanceData}
+      />
       <HamburgerDropdown />
     </div>
   );

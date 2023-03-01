@@ -6,7 +6,7 @@ import UserAvatar from '~shared/UserAvatar';
 import { useAppContext, useColonyContext, useMobile } from '~hooks';
 import { removeValueUnits } from '~utils/css';
 import { SimpleMessageValues } from '~types/index';
-// import { UserTokenBalanceData } from '~types/tokens';
+import { UserTokenBalanceData } from '~types';
 import AvatarDropdownPopover from './AvatarDropdownPopover';
 import AvatarDropdownPopoverMobile from './AvatarDropdownPopoverMobile';
 
@@ -15,14 +15,18 @@ import styles from './AvatarDropdown.css';
 interface Props {
   preventTransactions?: boolean;
   spinnerMsg: SimpleMessageValues;
-  // tokenBalanceData: UserTokenBalanceData;
+  tokenBalanceData: UserTokenBalanceData;
 }
 
 const displayName = 'frame.AvatarDropdown';
 
 const { refWidth, horizontalOffset, verticalOffset } = styles;
 
-const AvatarDropdown = ({ preventTransactions = false, spinnerMsg }: Props) => {
+const AvatarDropdown = ({
+  preventTransactions = false,
+  spinnerMsg,
+  tokenBalanceData,
+}: Props) => {
   const isMobile = useMobile();
   const { wallet, user } = useAppContext();
   const { colony } = useColonyContext();
@@ -54,7 +58,7 @@ const AvatarDropdown = ({ preventTransactions = false, spinnerMsg }: Props) => {
           <AvatarDropdownPopoverMobile
             {...{
               spinnerMsg,
-              // tokenBalanceData,
+              tokenBalanceData,
             }}
           />
         )
