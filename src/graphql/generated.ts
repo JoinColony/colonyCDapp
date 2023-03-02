@@ -2,9 +2,15 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -57,7 +63,6 @@ export type Colony = {
   watchers?: Maybe<ModelWatchedColoniesConnection>;
 };
 
-
 export type ColonyActionsArgs = {
   filter?: InputMaybe<ModelColonyActionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -65,14 +70,12 @@ export type ColonyActionsArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-
 export type ColonyDomainsArgs = {
   filter?: InputMaybe<ModelDomainFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
-
 
 export type ColonyExtensionsArgs = {
   filter?: InputMaybe<ModelColonyExtensionFilterInput>;
@@ -82,7 +85,6 @@ export type ColonyExtensionsArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-
 export type ColonyFundsClaimsArgs = {
   filter?: InputMaybe<ModelColonyFundsClaimFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -90,14 +92,12 @@ export type ColonyFundsClaimsArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-
 export type ColonyTokensArgs = {
   filter?: InputMaybe<ModelColonyTokensFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
-
 
 export type ColonyWatchersArgs = {
   filter?: InputMaybe<ModelWatchedColoniesFilterInput>;
@@ -123,6 +123,7 @@ export type ColonyAction = {
   initiatorExtension?: Maybe<ColonyExtension>;
   initiatorUser?: Maybe<User>;
   isMotion?: Maybe<Scalars['Boolean']>;
+  motionData?: Maybe<MotionData>;
   recipient?: Maybe<User>;
   recipientAddress?: Maybe<Scalars['ID']>;
   toDomain?: Maybe<Domain>;
@@ -159,7 +160,7 @@ export enum ColonyActionType {
   UnlockTokenMotion = 'UNLOCK_TOKEN_MOTION',
   VersionUpgrade = 'VERSION_UPGRADE',
   VersionUpgradeMotion = 'VERSION_UPGRADE_MOTION',
-  WrongColony = 'WRONG_COLONY'
+  WrongColony = 'WRONG_COLONY',
 }
 
 export type ColonyBalance = {
@@ -208,6 +209,7 @@ export type ColonyExtension = {
   colony: Colony;
   colonyId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
+  extensionConfig?: Maybe<ExtensionConfiguration>;
   hash: Scalars['String'];
   id: Scalars['ID'];
   installedAt: Scalars['AWSTimestamp'];
@@ -260,7 +262,7 @@ export type ColonyTokens = {
 
 export enum ColonyType {
   Colony = 'COLONY',
-  Metacolony = 'METACOLONY'
+  Metacolony = 'METACOLONY',
 }
 
 export type ContractEvent = {
@@ -295,6 +297,7 @@ export type CreateColonyActionInput = {
   id?: InputMaybe<Scalars['ID']>;
   initiatorAddress?: InputMaybe<Scalars['ID']>;
   isMotion?: InputMaybe<Scalars['Boolean']>;
+  motionData?: InputMaybe<MotionDataInput>;
   recipientAddress?: InputMaybe<Scalars['ID']>;
   toDomainId?: InputMaybe<Scalars['ID']>;
   tokenAddress?: InputMaybe<Scalars['ID']>;
@@ -303,6 +306,7 @@ export type CreateColonyActionInput = {
 
 export type CreateColonyExtensionInput = {
   colonyId: Scalars['ID'];
+  extensionConfig?: InputMaybe<ExtensionConfigurationInput>;
   hash: Scalars['String'];
   id?: InputMaybe<Scalars['ID']>;
   installedAt: Scalars['AWSTimestamp'];
@@ -532,7 +536,7 @@ export enum DomainColor {
   Purple = 'PURPLE',
   PurpleGrey = 'PURPLE_GREY',
   Red = 'RED',
-  Yellow = 'YELLOW'
+  Yellow = 'YELLOW',
 }
 
 export type DomainInput = {
@@ -573,8 +577,19 @@ export type DomainMetadataChangelogInput = {
 
 export enum EmailPermissions {
   IsHuman = 'isHuman',
-  SendNotifications = 'sendNotifications'
+  SendNotifications = 'sendNotifications',
 }
+
+export type ExtensionConfiguration = {
+  __typename?: 'ExtensionConfiguration';
+  minimumStake: Scalars['String'];
+  requiredStake: Scalars['String'];
+};
+
+export type ExtensionConfigurationInput = {
+  minimumStake: Scalars['String'];
+  requiredStake: Scalars['String'];
+};
 
 export type GetReputationForTopDomainsInput = {
   colonyAddress: Scalars['String'];
@@ -621,7 +636,7 @@ export enum ModelAttributeTypes {
   Number = 'number',
   NumberSet = 'numberSet',
   String = 'string',
-  StringSet = 'stringSet'
+  StringSet = 'stringSet',
 }
 
 export type ModelBooleanInput = {
@@ -1006,7 +1021,7 @@ export type ModelSizeInput = {
 
 export enum ModelSortDirection {
   Asc = 'ASC',
-  Desc = 'DESC'
+  Desc = 'DESC',
 }
 
 export type ModelStringInput = {
@@ -1059,7 +1074,9 @@ export type ModelSubscriptionColonyActionFilterInput = {
 };
 
 export type ModelSubscriptionColonyExtensionFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyExtensionFilterInput>>>;
+  and?: InputMaybe<
+    Array<InputMaybe<ModelSubscriptionColonyExtensionFilterInput>>
+  >;
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   hash?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
@@ -1068,7 +1085,9 @@ export type ModelSubscriptionColonyExtensionFilterInput = {
   isDeleted?: InputMaybe<ModelSubscriptionBooleanInput>;
   isDeprecated?: InputMaybe<ModelSubscriptionBooleanInput>;
   isInitialized?: InputMaybe<ModelSubscriptionBooleanInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyExtensionFilterInput>>>;
+  or?: InputMaybe<
+    Array<InputMaybe<ModelSubscriptionColonyExtensionFilterInput>>
+  >;
   version?: InputMaybe<ModelSubscriptionIntInput>;
 };
 
@@ -1084,11 +1103,15 @@ export type ModelSubscriptionColonyFilterInput = {
 
 export type ModelSubscriptionColonyFundsClaimFilterInput = {
   amount?: InputMaybe<ModelSubscriptionStringInput>;
-  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>>>;
+  and?: InputMaybe<
+    Array<InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>>
+  >;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   createdAtBlock?: InputMaybe<ModelSubscriptionIntInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>>>;
+  or?: InputMaybe<
+    Array<InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>>
+  >;
 };
 
 export type ModelSubscriptionColonyTokensFilterInput = {
@@ -1101,7 +1124,9 @@ export type ModelSubscriptionColonyTokensFilterInput = {
 
 export type ModelSubscriptionContractEventFilterInput = {
   agent?: InputMaybe<ModelSubscriptionStringInput>;
-  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionContractEventFilterInput>>>;
+  and?: InputMaybe<
+    Array<InputMaybe<ModelSubscriptionContractEventFilterInput>>
+  >;
   encodedArguments?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   name?: InputMaybe<ModelSubscriptionStringInput>;
@@ -1111,10 +1136,14 @@ export type ModelSubscriptionContractEventFilterInput = {
 };
 
 export type ModelSubscriptionCurrentVersionFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionCurrentVersionFilterInput>>>;
+  and?: InputMaybe<
+    Array<InputMaybe<ModelSubscriptionCurrentVersionFilterInput>>
+  >;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   key?: InputMaybe<ModelSubscriptionStringInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionCurrentVersionFilterInput>>>;
+  or?: InputMaybe<
+    Array<InputMaybe<ModelSubscriptionCurrentVersionFilterInput>>
+  >;
   version?: InputMaybe<ModelSubscriptionIntInput>;
 };
 
@@ -1235,10 +1264,14 @@ export type ModelSubscriptionUserTokensFilterInput = {
 };
 
 export type ModelSubscriptionWatchedColoniesFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>>>;
+  and?: InputMaybe<
+    Array<InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>>
+  >;
   colonyID?: InputMaybe<ModelSubscriptionIdInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>>>;
+  or?: InputMaybe<
+    Array<InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>>
+  >;
   userID?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
@@ -1349,6 +1382,36 @@ export type ModelWatchedColoniesFilterInput = {
   userID?: InputMaybe<ModelIdInput>;
 };
 
+export type MotionData = {
+  __typename?: 'MotionData';
+  motionDomainId: Scalars['String'];
+  motionId: Scalars['String'];
+  motionStakes: MotionStakes;
+  motionState: Scalars['Int'];
+  rootHash: Scalars['String'];
+  skillRep: Scalars['String'];
+};
+
+export type MotionDataInput = {
+  motionDomainId: Scalars['String'];
+  motionId: Scalars['String'];
+  motionStakes: MotionStakesInput;
+  motionState: Scalars['Int'];
+  rootHash: Scalars['String'];
+  skillRep: Scalars['String'];
+};
+
+export type MotionStakes = {
+  __typename?: 'MotionStakes';
+  nay: Scalars['String'];
+  yay: Scalars['String'];
+};
+
+export type MotionStakesInput = {
+  nay: Scalars['String'];
+  yay: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createColony?: Maybe<Colony>;
@@ -1399,54 +1462,47 @@ export type Mutation = {
   updateWatchedColonies?: Maybe<WatchedColonies>;
 };
 
-
 export type MutationCreateColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: CreateColonyInput;
 };
-
 
 export type MutationCreateColonyActionArgs = {
   condition?: InputMaybe<ModelColonyActionConditionInput>;
   input: CreateColonyActionInput;
 };
 
-
 export type MutationCreateColonyExtensionArgs = {
   condition?: InputMaybe<ModelColonyExtensionConditionInput>;
   input: CreateColonyExtensionInput;
 };
-
 
 export type MutationCreateColonyFundsClaimArgs = {
   condition?: InputMaybe<ModelColonyFundsClaimConditionInput>;
   input: CreateColonyFundsClaimInput;
 };
 
-
 export type MutationCreateColonyTokensArgs = {
   condition?: InputMaybe<ModelColonyTokensConditionInput>;
   input: CreateColonyTokensInput;
 };
-
 
 export type MutationCreateContractEventArgs = {
   condition?: InputMaybe<ModelContractEventConditionInput>;
   input: CreateContractEventInput;
 };
 
-
 export type MutationCreateCurrentVersionArgs = {
   condition?: InputMaybe<ModelCurrentVersionConditionInput>;
   input: CreateCurrentVersionInput;
 };
-
 
 export type MutationCreateDomainArgs = {
   condition?: InputMaybe<ModelDomainConditionInput>;
   input: CreateDomainInput;
 };
 
+<<<<<<< HEAD
 
 export type MutationCreateDomainMetadataArgs = {
   condition?: InputMaybe<ModelDomainMetadataConditionInput>;
@@ -1454,93 +1510,89 @@ export type MutationCreateDomainMetadataArgs = {
 };
 
 
+=======
+>>>>>>> fd83d80b... Refactor: core components
 export type MutationCreateProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: CreateProfileInput;
 };
-
 
 export type MutationCreateTokenArgs = {
   condition?: InputMaybe<ModelTokenConditionInput>;
   input: CreateTokenInput;
 };
 
-
 export type MutationCreateUniqueColonyArgs = {
   input?: InputMaybe<CreateUniqueColonyInput>;
 };
 
+<<<<<<< HEAD
+=======
+export type MutationCreateUniqueDomainArgs = {
+  input?: InputMaybe<CreateUniqueDomainInput>;
+};
+>>>>>>> fd83d80b... Refactor: core components
 
 export type MutationCreateUniqueUserArgs = {
   input?: InputMaybe<CreateUniqueUserInput>;
 };
-
 
 export type MutationCreateUserArgs = {
   condition?: InputMaybe<ModelUserConditionInput>;
   input: CreateUserInput;
 };
 
-
 export type MutationCreateUserTokensArgs = {
   condition?: InputMaybe<ModelUserTokensConditionInput>;
   input: CreateUserTokensInput;
 };
-
 
 export type MutationCreateWatchedColoniesArgs = {
   condition?: InputMaybe<ModelWatchedColoniesConditionInput>;
   input: CreateWatchedColoniesInput;
 };
 
-
 export type MutationDeleteColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: DeleteColonyInput;
 };
-
 
 export type MutationDeleteColonyActionArgs = {
   condition?: InputMaybe<ModelColonyActionConditionInput>;
   input: DeleteColonyActionInput;
 };
 
-
 export type MutationDeleteColonyExtensionArgs = {
   condition?: InputMaybe<ModelColonyExtensionConditionInput>;
   input: DeleteColonyExtensionInput;
 };
-
 
 export type MutationDeleteColonyFundsClaimArgs = {
   condition?: InputMaybe<ModelColonyFundsClaimConditionInput>;
   input: DeleteColonyFundsClaimInput;
 };
 
-
 export type MutationDeleteColonyTokensArgs = {
   condition?: InputMaybe<ModelColonyTokensConditionInput>;
   input: DeleteColonyTokensInput;
 };
-
 
 export type MutationDeleteContractEventArgs = {
   condition?: InputMaybe<ModelContractEventConditionInput>;
   input: DeleteContractEventInput;
 };
 
-
 export type MutationDeleteCurrentVersionArgs = {
   condition?: InputMaybe<ModelCurrentVersionConditionInput>;
   input: DeleteCurrentVersionInput;
 };
-
 
 export type MutationDeleteDomainArgs = {
   condition?: InputMaybe<ModelDomainConditionInput>;
   input: DeleteDomainInput;
 };
 
+<<<<<<< HEAD
 
 export type MutationDeleteDomainMetadataArgs = {
   condition?: InputMaybe<ModelDomainMetadataConditionInput>;
@@ -1548,88 +1600,78 @@ export type MutationDeleteDomainMetadataArgs = {
 };
 
 
+=======
+>>>>>>> fd83d80b... Refactor: core components
 export type MutationDeleteProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: DeleteProfileInput;
 };
-
 
 export type MutationDeleteTokenArgs = {
   condition?: InputMaybe<ModelTokenConditionInput>;
   input: DeleteTokenInput;
 };
 
-
 export type MutationDeleteUserArgs = {
   condition?: InputMaybe<ModelUserConditionInput>;
   input: DeleteUserInput;
 };
-
 
 export type MutationDeleteUserTokensArgs = {
   condition?: InputMaybe<ModelUserTokensConditionInput>;
   input: DeleteUserTokensInput;
 };
 
-
 export type MutationDeleteWatchedColoniesArgs = {
   condition?: InputMaybe<ModelWatchedColoniesConditionInput>;
   input: DeleteWatchedColoniesInput;
 };
 
-
 export type MutationSetCurrentVersionArgs = {
   input?: InputMaybe<SetCurrentVersionInput>;
 };
-
 
 export type MutationUpdateColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: UpdateColonyInput;
 };
 
-
 export type MutationUpdateColonyActionArgs = {
   condition?: InputMaybe<ModelColonyActionConditionInput>;
   input: UpdateColonyActionInput;
 };
-
 
 export type MutationUpdateColonyExtensionArgs = {
   condition?: InputMaybe<ModelColonyExtensionConditionInput>;
   input: UpdateColonyExtensionInput;
 };
 
-
 export type MutationUpdateColonyFundsClaimArgs = {
   condition?: InputMaybe<ModelColonyFundsClaimConditionInput>;
   input: UpdateColonyFundsClaimInput;
 };
-
 
 export type MutationUpdateColonyTokensArgs = {
   condition?: InputMaybe<ModelColonyTokensConditionInput>;
   input: UpdateColonyTokensInput;
 };
 
-
 export type MutationUpdateContractEventArgs = {
   condition?: InputMaybe<ModelContractEventConditionInput>;
   input: UpdateContractEventInput;
 };
-
 
 export type MutationUpdateCurrentVersionArgs = {
   condition?: InputMaybe<ModelCurrentVersionConditionInput>;
   input: UpdateCurrentVersionInput;
 };
 
-
 export type MutationUpdateDomainArgs = {
   condition?: InputMaybe<ModelDomainConditionInput>;
   input: UpdateDomainInput;
 };
 
+<<<<<<< HEAD
 
 export type MutationUpdateDomainMetadataArgs = {
   condition?: InputMaybe<ModelDomainMetadataConditionInput>;
@@ -1637,34 +1679,31 @@ export type MutationUpdateDomainMetadataArgs = {
 };
 
 
+=======
+>>>>>>> fd83d80b... Refactor: core components
 export type MutationUpdateExtensionByColonyAndHashArgs = {
   input?: InputMaybe<UpdateExtensionByColonyAndHashInput>;
 };
-
 
 export type MutationUpdateProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: UpdateProfileInput;
 };
 
-
 export type MutationUpdateTokenArgs = {
   condition?: InputMaybe<ModelTokenConditionInput>;
   input: UpdateTokenInput;
 };
-
 
 export type MutationUpdateUserArgs = {
   condition?: InputMaybe<ModelUserConditionInput>;
   input: UpdateUserInput;
 };
 
-
 export type MutationUpdateUserTokensArgs = {
   condition?: InputMaybe<ModelUserTokensConditionInput>;
   input: UpdateUserTokensInput;
 };
-
 
 export type MutationUpdateWatchedColoniesArgs = {
   condition?: InputMaybe<ModelWatchedColoniesConditionInput>;
@@ -1689,7 +1728,7 @@ export enum Network {
   Gnosis = 'GNOSIS',
   Gnosisfork = 'GNOSISFORK',
   Goerli = 'GOERLI',
-  Mainnet = 'MAINNET'
+  Mainnet = 'MAINNET',
 }
 
 export type Profile = {
@@ -1774,7 +1813,6 @@ export type Query = {
   listWatchedColonies?: Maybe<ModelWatchedColoniesConnection>;
 };
 
-
 export type QueryGetActionsByColonyArgs = {
   colonyId: Scalars['ID'];
   createdAt?: InputMaybe<ModelStringKeyConditionInput>;
@@ -1784,16 +1822,13 @@ export type QueryGetActionsByColonyArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-
 export type QueryGetColonyArgs = {
   id: Scalars['ID'];
 };
 
-
 export type QueryGetColonyActionArgs = {
   id: Scalars['ID'];
 };
-
 
 export type QueryGetColonyByAddressArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
@@ -1803,7 +1838,6 @@ export type QueryGetColonyByAddressArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-
 export type QueryGetColonyByNameArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1811,7 +1845,6 @@ export type QueryGetColonyByNameArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
-
 
 export type QueryGetColonyByTypeArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
@@ -1821,31 +1854,25 @@ export type QueryGetColonyByTypeArgs = {
   type: ColonyType;
 };
 
-
 export type QueryGetColonyExtensionArgs = {
   id: Scalars['ID'];
 };
-
 
 export type QueryGetColonyFundsClaimArgs = {
   id: Scalars['ID'];
 };
 
-
 export type QueryGetColonyTokensArgs = {
   id: Scalars['ID'];
 };
-
 
 export type QueryGetContractEventArgs = {
   id: Scalars['ID'];
 };
 
-
 export type QueryGetCurrentVersionArgs = {
   id: Scalars['ID'];
 };
-
 
 export type QueryGetCurrentVersionByKeyArgs = {
   filter?: InputMaybe<ModelCurrentVersionFilterInput>;
@@ -1855,17 +1882,19 @@ export type QueryGetCurrentVersionByKeyArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-
 export type QueryGetDomainArgs = {
   id: Scalars['ID'];
 };
 
+<<<<<<< HEAD
 
 export type QueryGetDomainMetadataArgs = {
   id: Scalars['ID'];
 };
 
 
+=======
+>>>>>>> fd83d80b... Refactor: core components
 export type QueryGetExtensionByColonyAndHashArgs = {
   colonyId: Scalars['ID'];
   filter?: InputMaybe<ModelColonyExtensionFilterInput>;
@@ -1875,11 +1904,9 @@ export type QueryGetExtensionByColonyAndHashArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-
 export type QueryGetProfileArgs = {
   id: Scalars['ID'];
 };
-
 
 export type QueryGetProfileByEmailArgs = {
   email: Scalars['AWSEmail'];
@@ -1889,16 +1916,13 @@ export type QueryGetProfileByEmailArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-
 export type QueryGetReputationForTopDomainsArgs = {
   input?: InputMaybe<GetReputationForTopDomainsInput>;
 };
 
-
 export type QueryGetTokenArgs = {
   id: Scalars['ID'];
 };
-
 
 export type QueryGetTokenByAddressArgs = {
   filter?: InputMaybe<ModelTokenFilterInput>;
@@ -1908,11 +1932,9 @@ export type QueryGetTokenByAddressArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-
 export type QueryGetTokenFromEverywhereArgs = {
   input?: InputMaybe<TokenFromEverywhereArguments>;
 };
-
 
 export type QueryGetTokensByTypeArgs = {
   filter?: InputMaybe<ModelTokenFilterInput>;
@@ -1922,11 +1944,9 @@ export type QueryGetTokensByTypeArgs = {
   type: TokenType;
 };
 
-
 export type QueryGetUserArgs = {
   id: Scalars['ID'];
 };
-
 
 export type QueryGetUserByAddressArgs = {
   filter?: InputMaybe<ModelUserFilterInput>;
@@ -1936,7 +1956,6 @@ export type QueryGetUserByAddressArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-
 export type QueryGetUserByNameArgs = {
   filter?: InputMaybe<ModelUserFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1945,21 +1964,17 @@ export type QueryGetUserByNameArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-
 export type QueryGetUserReputationArgs = {
   input?: InputMaybe<GetUserReputationInput>;
 };
-
 
 export type QueryGetUserTokensArgs = {
   id: Scalars['ID'];
 };
 
-
 export type QueryGetWatchedColoniesArgs = {
   id: Scalars['ID'];
 };
-
 
 export type QueryListColoniesArgs = {
   filter?: InputMaybe<ModelColonyFilterInput>;
@@ -1967,13 +1982,11 @@ export type QueryListColoniesArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
-
 export type QueryListColonyActionsArgs = {
   filter?: InputMaybe<ModelColonyActionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
-
 
 export type QueryListColonyExtensionsArgs = {
   filter?: InputMaybe<ModelColonyExtensionFilterInput>;
@@ -1981,13 +1994,11 @@ export type QueryListColonyExtensionsArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
-
 export type QueryListColonyFundsClaimsArgs = {
   filter?: InputMaybe<ModelColonyFundsClaimFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
-
 
 export type QueryListColonyTokensArgs = {
   filter?: InputMaybe<ModelColonyTokensFilterInput>;
@@ -1995,13 +2006,11 @@ export type QueryListColonyTokensArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
-
 export type QueryListContractEventsArgs = {
   filter?: InputMaybe<ModelContractEventFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
-
 
 export type QueryListCurrentVersionsArgs = {
   filter?: InputMaybe<ModelCurrentVersionFilterInput>;
@@ -2009,6 +2018,7 @@ export type QueryListCurrentVersionsArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
+<<<<<<< HEAD
 
 export type QueryListDomainMetadataArgs = {
   filter?: InputMaybe<ModelDomainMetadataFilterInput>;
@@ -2017,12 +2027,13 @@ export type QueryListDomainMetadataArgs = {
 };
 
 
+=======
+>>>>>>> fd83d80b... Refactor: core components
 export type QueryListDomainsArgs = {
   filter?: InputMaybe<ModelDomainFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
-
 
 export type QueryListProfilesArgs = {
   filter?: InputMaybe<ModelProfileFilterInput>;
@@ -2030,13 +2041,11 @@ export type QueryListProfilesArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
-
 export type QueryListTokensArgs = {
   filter?: InputMaybe<ModelTokenFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
-
 
 export type QueryListUserTokensArgs = {
   filter?: InputMaybe<ModelUserTokensFilterInput>;
@@ -2044,13 +2053,11 @@ export type QueryListUserTokensArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
-
 export type QueryListUsersArgs = {
   filter?: InputMaybe<ModelUserFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
-
 
 export type QueryListWatchedColoniesArgs = {
   filter?: InputMaybe<ModelWatchedColoniesFilterInput>;
@@ -2109,211 +2116,184 @@ export type Subscription = {
   onUpdateWatchedColonies?: Maybe<WatchedColonies>;
 };
 
-
 export type SubscriptionOnCreateColonyArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
 };
-
 
 export type SubscriptionOnCreateColonyActionArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyActionFilterInput>;
 };
 
-
 export type SubscriptionOnCreateColonyExtensionArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyExtensionFilterInput>;
 };
-
 
 export type SubscriptionOnCreateColonyFundsClaimArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>;
 };
 
-
 export type SubscriptionOnCreateColonyTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyTokensFilterInput>;
 };
-
 
 export type SubscriptionOnCreateContractEventArgs = {
   filter?: InputMaybe<ModelSubscriptionContractEventFilterInput>;
 };
 
-
 export type SubscriptionOnCreateCurrentVersionArgs = {
   filter?: InputMaybe<ModelSubscriptionCurrentVersionFilterInput>;
 };
-
 
 export type SubscriptionOnCreateDomainArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainFilterInput>;
 };
 
+<<<<<<< HEAD
 
 export type SubscriptionOnCreateDomainMetadataArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainMetadataFilterInput>;
 };
 
 
+=======
+>>>>>>> fd83d80b... Refactor: core components
 export type SubscriptionOnCreateProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
 };
-
 
 export type SubscriptionOnCreateTokenArgs = {
   filter?: InputMaybe<ModelSubscriptionTokenFilterInput>;
 };
 
-
 export type SubscriptionOnCreateUserArgs = {
   filter?: InputMaybe<ModelSubscriptionUserFilterInput>;
 };
-
 
 export type SubscriptionOnCreateUserTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionUserTokensFilterInput>;
 };
 
-
 export type SubscriptionOnCreateWatchedColoniesArgs = {
   filter?: InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>;
 };
-
 
 export type SubscriptionOnDeleteColonyArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
 };
 
-
 export type SubscriptionOnDeleteColonyActionArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyActionFilterInput>;
 };
-
 
 export type SubscriptionOnDeleteColonyExtensionArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyExtensionFilterInput>;
 };
 
-
 export type SubscriptionOnDeleteColonyFundsClaimArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>;
 };
-
 
 export type SubscriptionOnDeleteColonyTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyTokensFilterInput>;
 };
 
-
 export type SubscriptionOnDeleteContractEventArgs = {
   filter?: InputMaybe<ModelSubscriptionContractEventFilterInput>;
 };
-
 
 export type SubscriptionOnDeleteCurrentVersionArgs = {
   filter?: InputMaybe<ModelSubscriptionCurrentVersionFilterInput>;
 };
 
-
 export type SubscriptionOnDeleteDomainArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainFilterInput>;
 };
 
+<<<<<<< HEAD
 
 export type SubscriptionOnDeleteDomainMetadataArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainMetadataFilterInput>;
 };
 
 
+=======
+>>>>>>> fd83d80b... Refactor: core components
 export type SubscriptionOnDeleteProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
 };
-
 
 export type SubscriptionOnDeleteTokenArgs = {
   filter?: InputMaybe<ModelSubscriptionTokenFilterInput>;
 };
 
-
 export type SubscriptionOnDeleteUserArgs = {
   filter?: InputMaybe<ModelSubscriptionUserFilterInput>;
 };
-
 
 export type SubscriptionOnDeleteUserTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionUserTokensFilterInput>;
 };
 
-
 export type SubscriptionOnDeleteWatchedColoniesArgs = {
   filter?: InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>;
 };
-
 
 export type SubscriptionOnUpdateColonyArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
 };
 
-
 export type SubscriptionOnUpdateColonyActionArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyActionFilterInput>;
 };
-
 
 export type SubscriptionOnUpdateColonyExtensionArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyExtensionFilterInput>;
 };
 
-
 export type SubscriptionOnUpdateColonyFundsClaimArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFundsClaimFilterInput>;
 };
-
 
 export type SubscriptionOnUpdateColonyTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyTokensFilterInput>;
 };
 
-
 export type SubscriptionOnUpdateContractEventArgs = {
   filter?: InputMaybe<ModelSubscriptionContractEventFilterInput>;
 };
-
 
 export type SubscriptionOnUpdateCurrentVersionArgs = {
   filter?: InputMaybe<ModelSubscriptionCurrentVersionFilterInput>;
 };
 
-
 export type SubscriptionOnUpdateDomainArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainFilterInput>;
 };
 
+<<<<<<< HEAD
 
 export type SubscriptionOnUpdateDomainMetadataArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainMetadataFilterInput>;
 };
 
 
+=======
+>>>>>>> fd83d80b... Refactor: core components
 export type SubscriptionOnUpdateProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
 };
-
 
 export type SubscriptionOnUpdateTokenArgs = {
   filter?: InputMaybe<ModelSubscriptionTokenFilterInput>;
 };
 
-
 export type SubscriptionOnUpdateUserArgs = {
   filter?: InputMaybe<ModelSubscriptionUserFilterInput>;
 };
 
-
 export type SubscriptionOnUpdateUserTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionUserTokensFilterInput>;
 };
-
 
 export type SubscriptionOnUpdateWatchedColoniesArgs = {
   filter?: InputMaybe<ModelSubscriptionWatchedColoniesFilterInput>;
@@ -2335,14 +2315,12 @@ export type Token = {
   users?: Maybe<ModelUserTokensConnection>;
 };
 
-
 export type TokenColoniesArgs = {
   filter?: InputMaybe<ModelColonyTokensFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
-
 
 export type TokenUsersArgs = {
   filter?: InputMaybe<ModelUserTokensFilterInput>;
@@ -2367,7 +2345,7 @@ export type TokenInput = {
 export enum TokenType {
   ChainNative = 'CHAIN_NATIVE',
   Colony = 'COLONY',
-  Erc20 = 'ERC20'
+  Erc20 = 'ERC20',
 }
 
 export type UpdateColonyActionInput = {
@@ -2381,6 +2359,7 @@ export type UpdateColonyActionInput = {
   id: Scalars['ID'];
   initiatorAddress?: InputMaybe<Scalars['ID']>;
   isMotion?: InputMaybe<Scalars['Boolean']>;
+  motionData?: InputMaybe<MotionDataInput>;
   recipientAddress?: InputMaybe<Scalars['ID']>;
   toDomainId?: InputMaybe<Scalars['ID']>;
   tokenAddress?: InputMaybe<Scalars['ID']>;
@@ -2389,6 +2368,7 @@ export type UpdateColonyActionInput = {
 
 export type UpdateColonyExtensionInput = {
   colonyId?: InputMaybe<Scalars['ID']>;
+  extensionConfig?: InputMaybe<ExtensionConfigurationInput>;
   hash?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   installedAt?: InputMaybe<Scalars['AWSTimestamp']>;
@@ -2466,6 +2446,7 @@ export type UpdateDomainMetadataInput = {
 
 export type UpdateExtensionByColonyAndHashInput = {
   colonyId: Scalars['ID'];
+  extensionConfig?: InputMaybe<ExtensionConfigurationInput>;
   hash: Scalars['String'];
   installedAt?: InputMaybe<Scalars['AWSTimestamp']>;
   installedBy?: InputMaybe<Scalars['String']>;
@@ -2529,14 +2510,12 @@ export type User = {
   watchlist?: Maybe<ModelWatchedColoniesConnection>;
 };
 
-
 export type UserTokensArgs = {
   filter?: InputMaybe<ModelUserTokensFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
-
 
 export type UserWatchlistArgs = {
   filter?: InputMaybe<ModelWatchedColoniesFilterInput>;
@@ -2573,6 +2552,7 @@ export type WatchedColonies = {
   userID: Scalars['ID'];
 };
 
+<<<<<<< HEAD
 export type ColonyActionFragment = { __typename?: 'ColonyAction', type: ColonyActionType, blockNumber: number, initiatorAddress?: string | null, recipientAddress?: string | null, amount?: string | null, tokenAddress?: string | null, createdAt: string, isMotion?: boolean | null, transactionHash: string, colonyAddress: string, initiatorUser?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, recipient?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, fromDomain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null } | null, toDomain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null } | null, colony: { __typename?: 'Colony', colonyAddress: string } };
 
 export type ColonyFragment = { __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } } | null> } | null };
@@ -2588,29 +2568,350 @@ export type DomainFragment = { __typename?: 'Domain', id: string, nativeId: numb
 export type DomainMetadataFragment = { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null };
 
 export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number };
+=======
+export type ColonyActionFragment = {
+  __typename?: 'ColonyAction';
+  type: ColonyActionType;
+  blockNumber: number;
+  initiatorAddress?: string | null;
+  recipientAddress?: string | null;
+  amount?: string | null;
+  decimals?: number | null;
+  tokenSymbol?: string | null;
+  fromDomain?: string | null;
+  toDomain?: string | null;
+  createdAt: string;
+  isMotion?: boolean | null;
+  transactionHash: string;
+  initiator?: {
+    __typename?: 'User';
+    name: string;
+    walletAddress: string;
+    profile?: {
+      __typename?: 'Profile';
+      avatar?: string | null;
+      bio?: string | null;
+      displayName?: string | null;
+      email?: string | null;
+      location?: string | null;
+      thumbnail?: string | null;
+      website?: string | null;
+    } | null;
+    watchlist?: {
+      __typename?: 'ModelWatchedColoniesConnection';
+      items: Array<{
+        __typename?: 'WatchedColonies';
+        createdAt: string;
+        colony: {
+          __typename?: 'Colony';
+          name: string;
+          colonyAddress: string;
+          profile?: {
+            __typename?: 'Profile';
+            avatar?: string | null;
+            displayName?: string | null;
+            thumbnail?: string | null;
+          } | null;
+          meta?: {
+            __typename?: 'Metadata';
+            chainId?: number | null;
+            network?: Network | null;
+          } | null;
+        };
+      } | null>;
+    } | null;
+  } | null;
+  recipient?: {
+    __typename?: 'User';
+    name: string;
+    walletAddress: string;
+    profile?: {
+      __typename?: 'Profile';
+      avatar?: string | null;
+      bio?: string | null;
+      displayName?: string | null;
+      email?: string | null;
+      location?: string | null;
+      thumbnail?: string | null;
+      website?: string | null;
+    } | null;
+    watchlist?: {
+      __typename?: 'ModelWatchedColoniesConnection';
+      items: Array<{
+        __typename?: 'WatchedColonies';
+        createdAt: string;
+        colony: {
+          __typename?: 'Colony';
+          name: string;
+          colonyAddress: string;
+          profile?: {
+            __typename?: 'Profile';
+            avatar?: string | null;
+            displayName?: string | null;
+            thumbnail?: string | null;
+          } | null;
+          meta?: {
+            __typename?: 'Metadata';
+            chainId?: number | null;
+            network?: Network | null;
+          } | null;
+        };
+      } | null>;
+    } | null;
+  } | null;
+  colony: { __typename?: 'Colony'; colonyName: string };
+};
 
-export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
+export type ColonyFragment = {
+  __typename?: 'Colony';
+  name: string;
+  version: number;
+  colonyAddress: string;
+  nativeToken: {
+    __typename?: 'Token';
+    decimals: number;
+    name: string;
+    symbol: string;
+    type?: TokenType | null;
+    avatar?: string | null;
+    thumbnail?: string | null;
+    tokenAddress: string;
+  };
+  profile?: {
+    __typename?: 'Profile';
+    avatar?: string | null;
+    bio?: string | null;
+    displayName?: string | null;
+    email?: string | null;
+    location?: string | null;
+    thumbnail?: string | null;
+    website?: string | null;
+  } | null;
+  status?: {
+    __typename?: 'ColonyStatus';
+    recovery?: boolean | null;
+    nativeToken?: {
+      __typename?: 'NativeTokenStatus';
+      mintable?: boolean | null;
+      unlockable?: boolean | null;
+      unlocked?: boolean | null;
+    } | null;
+  } | null;
+  meta?: {
+    __typename?: 'Metadata';
+    chainId?: number | null;
+    network?: Network | null;
+  } | null;
+  tokens?: {
+    __typename?: 'ModelColonyTokensConnection';
+    items: Array<{
+      __typename?: 'ColonyTokens';
+      token: {
+        __typename?: 'Token';
+        decimals: number;
+        name: string;
+        symbol: string;
+        type?: TokenType | null;
+        avatar?: string | null;
+        thumbnail?: string | null;
+        tokenAddress: string;
+      };
+    } | null>;
+  } | null;
+  domains?: {
+    __typename?: 'ModelDomainConnection';
+    items: Array<{
+      __typename?: 'Domain';
+      color?: DomainColor | null;
+      description?: string | null;
+      id: string;
+      name?: string | null;
+      nativeId: number;
+      parentId?: string | null;
+    } | null>;
+  } | null;
+  watchers?: {
+    __typename?: 'ModelWatchedColoniesConnection';
+    items: Array<{
+      __typename?: 'WatchedColonies';
+      user: {
+        __typename?: 'User';
+        name: string;
+        walletAddress: string;
+        profile?: {
+          __typename?: 'Profile';
+          avatar?: string | null;
+          bio?: string | null;
+          displayName?: string | null;
+          email?: string | null;
+          location?: string | null;
+          website?: string | null;
+          thumbnail?: string | null;
+        } | null;
+      };
+    } | null>;
+  } | null;
+};
 
-export type UserFragment = { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null };
+export type WatcherFragment = {
+  __typename?: 'WatchedColonies';
+  user: {
+    __typename?: 'User';
+    name: string;
+    walletAddress: string;
+    profile?: {
+      __typename?: 'Profile';
+      avatar?: string | null;
+      bio?: string | null;
+      displayName?: string | null;
+      email?: string | null;
+      location?: string | null;
+      website?: string | null;
+      thumbnail?: string | null;
+    } | null;
+  };
+};
+
+export type WatchedColonyFragment = {
+  __typename?: 'Colony';
+  name: string;
+  colonyAddress: string;
+  profile?: {
+    __typename?: 'Profile';
+    avatar?: string | null;
+    displayName?: string | null;
+    thumbnail?: string | null;
+  } | null;
+  meta?: {
+    __typename?: 'Metadata';
+    chainId?: number | null;
+    network?: Network | null;
+  } | null;
+};
+
+export type WatchListItemFragment = {
+  __typename?: 'WatchedColonies';
+  createdAt: string;
+  colony: {
+    __typename?: 'Colony';
+    name: string;
+    colonyAddress: string;
+    profile?: {
+      __typename?: 'Profile';
+      avatar?: string | null;
+      displayName?: string | null;
+      thumbnail?: string | null;
+    } | null;
+    meta?: {
+      __typename?: 'Metadata';
+      chainId?: number | null;
+      network?: Network | null;
+    } | null;
+  };
+};
+
+export type DomainFragment = {
+  __typename?: 'Domain';
+  color?: DomainColor | null;
+  description?: string | null;
+  id: string;
+  name?: string | null;
+  nativeId: number;
+  parentId?: string | null;
+};
+>>>>>>> fd83d80b... Refactor: core components
+
+export type ExtensionFragment = {
+  __typename?: 'ColonyExtension';
+  hash: string;
+  installedBy: string;
+  installedAt: any;
+  isDeprecated: boolean;
+  isDeleted: boolean;
+  isInitialized: boolean;
+  address: string;
+  colonyAddress: string;
+  currentVersion: number;
+  extensionConfig?: {
+    __typename?: 'ExtensionConfiguration';
+    requiredStake: string;
+    minimumStake: string;
+  } | null;
+};
+
+export type TokenFragment = {
+  __typename?: 'Token';
+  decimals: number;
+  name: string;
+  symbol: string;
+  type?: TokenType | null;
+  avatar?: string | null;
+  thumbnail?: string | null;
+  tokenAddress: string;
+};
+
+export type UserFragment = {
+  __typename?: 'User';
+  name: string;
+  walletAddress: string;
+  profile?: {
+    __typename?: 'Profile';
+    avatar?: string | null;
+    bio?: string | null;
+    displayName?: string | null;
+    email?: string | null;
+    location?: string | null;
+    thumbnail?: string | null;
+    website?: string | null;
+  } | null;
+  watchlist?: {
+    __typename?: 'ModelWatchedColoniesConnection';
+    items: Array<{
+      __typename?: 'WatchedColonies';
+      createdAt: string;
+      colony: {
+        __typename?: 'Colony';
+        name: string;
+        colonyAddress: string;
+        profile?: {
+          __typename?: 'Profile';
+          avatar?: string | null;
+          displayName?: string | null;
+          thumbnail?: string | null;
+        } | null;
+        meta?: {
+          __typename?: 'Metadata';
+          chainId?: number | null;
+          network?: Network | null;
+        } | null;
+      };
+    } | null>;
+  } | null;
+};
 
 export type CreateUniqueColonyMutationVariables = Exact<{
   input: CreateUniqueColonyInput;
 }>;
 
-
-export type CreateUniqueColonyMutation = { __typename?: 'Mutation', createUniqueColony?: { __typename?: 'Colony', id: string } | null };
+export type CreateUniqueColonyMutation = {
+  __typename?: 'Mutation';
+  createUniqueColony?: { __typename?: 'Colony'; id: string } | null;
+};
 
 export type CreateWatchedColoniesMutationVariables = Exact<{
   input: CreateWatchedColoniesInput;
 }>;
 
-
-export type CreateWatchedColoniesMutation = { __typename?: 'Mutation', createWatchedColonies?: { __typename?: 'WatchedColonies', id: string } | null };
+export type CreateWatchedColoniesMutation = {
+  __typename?: 'Mutation';
+  createWatchedColonies?: { __typename?: 'WatchedColonies'; id: string } | null;
+};
 
 export type CreateDomainMetadataMutationVariables = Exact<{
   input: CreateDomainMetadataInput;
 }>;
 
+<<<<<<< HEAD
 
 export type CreateDomainMetadataMutation = { __typename?: 'Mutation', createDomainMetadata?: { __typename?: 'DomainMetadata', id: string } | null };
 
@@ -2627,34 +2928,57 @@ export type CreateDomainMutationVariables = Exact<{
 
 
 export type CreateDomainMutation = { __typename?: 'Mutation', createDomain?: { __typename?: 'Domain', id: string } | null };
+=======
+export type CreateUniqueDomainMutation = {
+  __typename?: 'Mutation';
+  createUniqueDomain?: { __typename?: 'Domain'; id: string } | null;
+};
+>>>>>>> fd83d80b... Refactor: core components
 
 export type CreateColonyTokensMutationVariables = Exact<{
   input: CreateColonyTokensInput;
 }>;
 
-
-export type CreateColonyTokensMutation = { __typename?: 'Mutation', createColonyTokens?: { __typename?: 'ColonyTokens', id: string } | null };
+export type CreateColonyTokensMutation = {
+  __typename?: 'Mutation';
+  createColonyTokens?: { __typename?: 'ColonyTokens'; id: string } | null;
+};
 
 export type CreateUserTokensMutationVariables = Exact<{
   input: CreateUserTokensInput;
 }>;
 
-
-export type CreateUserTokensMutation = { __typename?: 'Mutation', createUserTokens?: { __typename?: 'UserTokens', id: string } | null };
+export type CreateUserTokensMutation = {
+  __typename?: 'Mutation';
+  createUserTokens?: { __typename?: 'UserTokens'; id: string } | null;
+};
 
 export type CreateUniqueUserMutationVariables = Exact<{
   input: CreateUniqueUserInput;
 }>;
 
-
-export type CreateUniqueUserMutation = { __typename?: 'Mutation', createUniqueUser?: { __typename?: 'User', id: string } | null };
+export type CreateUniqueUserMutation = {
+  __typename?: 'Mutation';
+  createUniqueUser?: { __typename?: 'User'; id: string } | null;
+};
 
 export type UpdateUserProfileMutationVariables = Exact<{
   input: UpdateProfileInput;
 }>;
 
-
-export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, avatar?: string | null, bio?: string | null, displayName?: string | null, location?: string | null, website?: string | null, email?: string | null } | null };
+export type UpdateUserProfileMutation = {
+  __typename?: 'Mutation';
+  updateProfile?: {
+    __typename?: 'Profile';
+    id: string;
+    avatar?: string | null;
+    bio?: string | null;
+    displayName?: string | null;
+    location?: string | null;
+    website?: string | null;
+    email?: string | null;
+  } | null;
+};
 
 export type GetColonyActionsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -2663,27 +2987,327 @@ export type GetColonyActionsQueryVariables = Exact<{
   sortDirection?: InputMaybe<ModelSortDirection>;
 }>;
 
+<<<<<<< HEAD
 
 export type GetColonyActionsQuery = { __typename?: 'Query', getActionsByColony?: { __typename?: 'ModelColonyActionConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyAction', type: ColonyActionType, blockNumber: number, initiatorAddress?: string | null, recipientAddress?: string | null, amount?: string | null, tokenAddress?: string | null, createdAt: string, isMotion?: boolean | null, transactionHash: string, colonyAddress: string, initiatorUser?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, recipient?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, fromDomain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null } | null, toDomain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null } | null, colony: { __typename?: 'Colony', colonyAddress: string } } | null> } | null };
+=======
+export type GetColonyActionsQuery = {
+  __typename?: 'Query';
+  getActionsByColony?: {
+    __typename?: 'ModelColonyActionConnection';
+    nextToken?: string | null;
+    items: Array<{
+      __typename?: 'ColonyAction';
+      type: ColonyActionType;
+      blockNumber: number;
+      initiatorAddress?: string | null;
+      recipientAddress?: string | null;
+      amount?: string | null;
+      decimals?: number | null;
+      tokenSymbol?: string | null;
+      fromDomain?: string | null;
+      toDomain?: string | null;
+      createdAt: string;
+      isMotion?: boolean | null;
+      transactionHash: string;
+      initiator?: {
+        __typename?: 'User';
+        name: string;
+        walletAddress: string;
+        profile?: {
+          __typename?: 'Profile';
+          avatar?: string | null;
+          bio?: string | null;
+          displayName?: string | null;
+          email?: string | null;
+          location?: string | null;
+          thumbnail?: string | null;
+          website?: string | null;
+        } | null;
+        watchlist?: {
+          __typename?: 'ModelWatchedColoniesConnection';
+          items: Array<{
+            __typename?: 'WatchedColonies';
+            createdAt: string;
+            colony: {
+              __typename?: 'Colony';
+              name: string;
+              colonyAddress: string;
+              profile?: {
+                __typename?: 'Profile';
+                avatar?: string | null;
+                displayName?: string | null;
+                thumbnail?: string | null;
+              } | null;
+              meta?: {
+                __typename?: 'Metadata';
+                chainId?: number | null;
+                network?: Network | null;
+              } | null;
+            };
+          } | null>;
+        } | null;
+      } | null;
+      recipient?: {
+        __typename?: 'User';
+        name: string;
+        walletAddress: string;
+        profile?: {
+          __typename?: 'Profile';
+          avatar?: string | null;
+          bio?: string | null;
+          displayName?: string | null;
+          email?: string | null;
+          location?: string | null;
+          thumbnail?: string | null;
+          website?: string | null;
+        } | null;
+        watchlist?: {
+          __typename?: 'ModelWatchedColoniesConnection';
+          items: Array<{
+            __typename?: 'WatchedColonies';
+            createdAt: string;
+            colony: {
+              __typename?: 'Colony';
+              name: string;
+              colonyAddress: string;
+              profile?: {
+                __typename?: 'Profile';
+                avatar?: string | null;
+                displayName?: string | null;
+                thumbnail?: string | null;
+              } | null;
+              meta?: {
+                __typename?: 'Metadata';
+                chainId?: number | null;
+                network?: Network | null;
+              } | null;
+            };
+          } | null>;
+        } | null;
+      } | null;
+      colony: { __typename?: 'Colony'; colonyName: string };
+    } | null>;
+  } | null;
+};
+>>>>>>> fd83d80b... Refactor: core components
 
 export type GetColonyActionQueryVariables = Exact<{
   transactionHash: Scalars['ID'];
 }>;
 
+<<<<<<< HEAD
 
 export type GetColonyActionQuery = { __typename?: 'Query', getColonyAction?: { __typename?: 'ColonyAction', type: ColonyActionType, blockNumber: number, initiatorAddress?: string | null, recipientAddress?: string | null, amount?: string | null, tokenAddress?: string | null, createdAt: string, isMotion?: boolean | null, transactionHash: string, colonyAddress: string, initiatorUser?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, recipient?: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, fromDomain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null } | null, toDomain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null } | null, colony: { __typename?: 'Colony', colonyAddress: string } } | null };
+=======
+export type GetColonyActionQuery = {
+  __typename?: 'Query';
+  getColonyAction?: {
+    __typename?: 'ColonyAction';
+    type: ColonyActionType;
+    blockNumber: number;
+    initiatorAddress?: string | null;
+    recipientAddress?: string | null;
+    amount?: string | null;
+    decimals?: number | null;
+    tokenSymbol?: string | null;
+    fromDomain?: string | null;
+    toDomain?: string | null;
+    createdAt: string;
+    isMotion?: boolean | null;
+    transactionHash: string;
+    initiator?: {
+      __typename?: 'User';
+      name: string;
+      walletAddress: string;
+      profile?: {
+        __typename?: 'Profile';
+        avatar?: string | null;
+        bio?: string | null;
+        displayName?: string | null;
+        email?: string | null;
+        location?: string | null;
+        thumbnail?: string | null;
+        website?: string | null;
+      } | null;
+      watchlist?: {
+        __typename?: 'ModelWatchedColoniesConnection';
+        items: Array<{
+          __typename?: 'WatchedColonies';
+          createdAt: string;
+          colony: {
+            __typename?: 'Colony';
+            name: string;
+            colonyAddress: string;
+            profile?: {
+              __typename?: 'Profile';
+              avatar?: string | null;
+              displayName?: string | null;
+              thumbnail?: string | null;
+            } | null;
+            meta?: {
+              __typename?: 'Metadata';
+              chainId?: number | null;
+              network?: Network | null;
+            } | null;
+          };
+        } | null>;
+      } | null;
+    } | null;
+    recipient?: {
+      __typename?: 'User';
+      name: string;
+      walletAddress: string;
+      profile?: {
+        __typename?: 'Profile';
+        avatar?: string | null;
+        bio?: string | null;
+        displayName?: string | null;
+        email?: string | null;
+        location?: string | null;
+        thumbnail?: string | null;
+        website?: string | null;
+      } | null;
+      watchlist?: {
+        __typename?: 'ModelWatchedColoniesConnection';
+        items: Array<{
+          __typename?: 'WatchedColonies';
+          createdAt: string;
+          colony: {
+            __typename?: 'Colony';
+            name: string;
+            colonyAddress: string;
+            profile?: {
+              __typename?: 'Profile';
+              avatar?: string | null;
+              displayName?: string | null;
+              thumbnail?: string | null;
+            } | null;
+            meta?: {
+              __typename?: 'Metadata';
+              chainId?: number | null;
+              network?: Network | null;
+            } | null;
+          };
+        } | null>;
+      } | null;
+    } | null;
+    colony: { __typename?: 'Colony'; colonyName: string };
+  } | null;
+};
+>>>>>>> fd83d80b... Refactor: core components
 
 export type GetFullColonyByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;
 
+<<<<<<< HEAD
 
 export type GetFullColonyByAddressQuery = { __typename?: 'Query', getColonyByAddress?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
+=======
+export type GetFullColonyByAddressQuery = {
+  __typename?: 'Query';
+  getColonyByAddress?: {
+    __typename?: 'ModelColonyConnection';
+    items: Array<{
+      __typename?: 'Colony';
+      name: string;
+      version: number;
+      colonyAddress: string;
+      nativeToken: {
+        __typename?: 'Token';
+        decimals: number;
+        name: string;
+        symbol: string;
+        type?: TokenType | null;
+        avatar?: string | null;
+        thumbnail?: string | null;
+        tokenAddress: string;
+      };
+      profile?: {
+        __typename?: 'Profile';
+        avatar?: string | null;
+        bio?: string | null;
+        displayName?: string | null;
+        email?: string | null;
+        location?: string | null;
+        thumbnail?: string | null;
+        website?: string | null;
+      } | null;
+      status?: {
+        __typename?: 'ColonyStatus';
+        recovery?: boolean | null;
+        nativeToken?: {
+          __typename?: 'NativeTokenStatus';
+          mintable?: boolean | null;
+          unlockable?: boolean | null;
+          unlocked?: boolean | null;
+        } | null;
+      } | null;
+      meta?: {
+        __typename?: 'Metadata';
+        chainId?: number | null;
+        network?: Network | null;
+      } | null;
+      tokens?: {
+        __typename?: 'ModelColonyTokensConnection';
+        items: Array<{
+          __typename?: 'ColonyTokens';
+          token: {
+            __typename?: 'Token';
+            decimals: number;
+            name: string;
+            symbol: string;
+            type?: TokenType | null;
+            avatar?: string | null;
+            thumbnail?: string | null;
+            tokenAddress: string;
+          };
+        } | null>;
+      } | null;
+      domains?: {
+        __typename?: 'ModelDomainConnection';
+        items: Array<{
+          __typename?: 'Domain';
+          color?: DomainColor | null;
+          description?: string | null;
+          id: string;
+          name?: string | null;
+          nativeId: number;
+          parentId?: string | null;
+        } | null>;
+      } | null;
+      watchers?: {
+        __typename?: 'ModelWatchedColoniesConnection';
+        items: Array<{
+          __typename?: 'WatchedColonies';
+          user: {
+            __typename?: 'User';
+            name: string;
+            walletAddress: string;
+            profile?: {
+              __typename?: 'Profile';
+              avatar?: string | null;
+              bio?: string | null;
+              displayName?: string | null;
+              email?: string | null;
+              location?: string | null;
+              website?: string | null;
+              thumbnail?: string | null;
+            } | null;
+          };
+        } | null>;
+      } | null;
+    } | null>;
+  } | null;
+};
+>>>>>>> fd83d80b... Refactor: core components
 
 export type GetFullColonyByNameQueryVariables = Exact<{
   name: Scalars['String'];
 }>;
 
+<<<<<<< HEAD
 
 export type GetFullColonyByNameQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
 
@@ -2691,127 +3315,565 @@ export type GetMetacolonyQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetMetacolonyQuery = { __typename?: 'Query', getColonyByType?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null } | null> } | null, watchers?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', user: { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, website?: string | null, thumbnail?: string | null } | null } } | null> } | null } | null> } | null };
+=======
+export type GetFullColonyByNameQuery = {
+  __typename?: 'Query';
+  getColonyByName?: {
+    __typename?: 'ModelColonyConnection';
+    items: Array<{
+      __typename?: 'Colony';
+      name: string;
+      version: number;
+      colonyAddress: string;
+      nativeToken: {
+        __typename?: 'Token';
+        decimals: number;
+        name: string;
+        symbol: string;
+        type?: TokenType | null;
+        avatar?: string | null;
+        thumbnail?: string | null;
+        tokenAddress: string;
+      };
+      profile?: {
+        __typename?: 'Profile';
+        avatar?: string | null;
+        bio?: string | null;
+        displayName?: string | null;
+        email?: string | null;
+        location?: string | null;
+        thumbnail?: string | null;
+        website?: string | null;
+      } | null;
+      status?: {
+        __typename?: 'ColonyStatus';
+        recovery?: boolean | null;
+        nativeToken?: {
+          __typename?: 'NativeTokenStatus';
+          mintable?: boolean | null;
+          unlockable?: boolean | null;
+          unlocked?: boolean | null;
+        } | null;
+      } | null;
+      meta?: {
+        __typename?: 'Metadata';
+        chainId?: number | null;
+        network?: Network | null;
+      } | null;
+      tokens?: {
+        __typename?: 'ModelColonyTokensConnection';
+        items: Array<{
+          __typename?: 'ColonyTokens';
+          token: {
+            __typename?: 'Token';
+            decimals: number;
+            name: string;
+            symbol: string;
+            type?: TokenType | null;
+            avatar?: string | null;
+            thumbnail?: string | null;
+            tokenAddress: string;
+          };
+        } | null>;
+      } | null;
+      domains?: {
+        __typename?: 'ModelDomainConnection';
+        items: Array<{
+          __typename?: 'Domain';
+          color?: DomainColor | null;
+          description?: string | null;
+          id: string;
+          name?: string | null;
+          nativeId: number;
+          parentId?: string | null;
+        } | null>;
+      } | null;
+      watchers?: {
+        __typename?: 'ModelWatchedColoniesConnection';
+        items: Array<{
+          __typename?: 'WatchedColonies';
+          user: {
+            __typename?: 'User';
+            name: string;
+            walletAddress: string;
+            profile?: {
+              __typename?: 'Profile';
+              avatar?: string | null;
+              bio?: string | null;
+              displayName?: string | null;
+              email?: string | null;
+              location?: string | null;
+              website?: string | null;
+              thumbnail?: string | null;
+            } | null;
+          };
+        } | null>;
+      } | null;
+    } | null>;
+  } | null;
+};
+
+export type GetMetacolonyQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetMetacolonyQuery = {
+  __typename?: 'Query';
+  getColonyByType?: {
+    __typename?: 'ModelColonyConnection';
+    items: Array<{
+      __typename?: 'Colony';
+      name: string;
+      version: number;
+      colonyAddress: string;
+      nativeToken: {
+        __typename?: 'Token';
+        decimals: number;
+        name: string;
+        symbol: string;
+        type?: TokenType | null;
+        avatar?: string | null;
+        thumbnail?: string | null;
+        tokenAddress: string;
+      };
+      profile?: {
+        __typename?: 'Profile';
+        avatar?: string | null;
+        bio?: string | null;
+        displayName?: string | null;
+        email?: string | null;
+        location?: string | null;
+        thumbnail?: string | null;
+        website?: string | null;
+      } | null;
+      status?: {
+        __typename?: 'ColonyStatus';
+        recovery?: boolean | null;
+        nativeToken?: {
+          __typename?: 'NativeTokenStatus';
+          mintable?: boolean | null;
+          unlockable?: boolean | null;
+          unlocked?: boolean | null;
+        } | null;
+      } | null;
+      meta?: {
+        __typename?: 'Metadata';
+        chainId?: number | null;
+        network?: Network | null;
+      } | null;
+      tokens?: {
+        __typename?: 'ModelColonyTokensConnection';
+        items: Array<{
+          __typename?: 'ColonyTokens';
+          token: {
+            __typename?: 'Token';
+            decimals: number;
+            name: string;
+            symbol: string;
+            type?: TokenType | null;
+            avatar?: string | null;
+            thumbnail?: string | null;
+            tokenAddress: string;
+          };
+        } | null>;
+      } | null;
+      domains?: {
+        __typename?: 'ModelDomainConnection';
+        items: Array<{
+          __typename?: 'Domain';
+          color?: DomainColor | null;
+          description?: string | null;
+          id: string;
+          name?: string | null;
+          nativeId: number;
+          parentId?: string | null;
+        } | null>;
+      } | null;
+      watchers?: {
+        __typename?: 'ModelWatchedColoniesConnection';
+        items: Array<{
+          __typename?: 'WatchedColonies';
+          user: {
+            __typename?: 'User';
+            name: string;
+            walletAddress: string;
+            profile?: {
+              __typename?: 'Profile';
+              avatar?: string | null;
+              bio?: string | null;
+              displayName?: string | null;
+              email?: string | null;
+              location?: string | null;
+              website?: string | null;
+              thumbnail?: string | null;
+            } | null;
+          };
+        } | null>;
+      } | null;
+    } | null>;
+  } | null;
+};
+>>>>>>> fd83d80b... Refactor: core components
 
 export type GetColonyExtensionsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
 }>;
 
-
-export type GetColonyExtensionsQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number } | null> } | null } | null };
+export type GetColonyExtensionsQuery = {
+  __typename?: 'Query';
+  getColony?: {
+    __typename?: 'Colony';
+    extensions?: {
+      __typename?: 'ModelColonyExtensionConnection';
+      items: Array<{
+        __typename?: 'ColonyExtension';
+        hash: string;
+        installedBy: string;
+        installedAt: any;
+        isDeprecated: boolean;
+        isDeleted: boolean;
+        isInitialized: boolean;
+        address: string;
+        colonyAddress: string;
+        currentVersion: number;
+        extensionConfig?: {
+          __typename?: 'ExtensionConfiguration';
+          requiredStake: string;
+          minimumStake: string;
+        } | null;
+      } | null>;
+    } | null;
+  } | null;
+};
 
 export type GetColonyExtensionQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
   extensionHash: Scalars['String'];
 }>;
 
-
-export type GetColonyExtensionQuery = { __typename?: 'Query', getExtensionByColonyAndHash?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: any, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number } | null> } | null };
+export type GetColonyExtensionQuery = {
+  __typename?: 'Query';
+  getExtensionByColonyAndHash?: {
+    __typename?: 'ModelColonyExtensionConnection';
+    items: Array<{
+      __typename?: 'ColonyExtension';
+      hash: string;
+      installedBy: string;
+      installedAt: any;
+      isDeprecated: boolean;
+      isDeleted: boolean;
+      isInitialized: boolean;
+      address: string;
+      colonyAddress: string;
+      currentVersion: number;
+      extensionConfig?: {
+        __typename?: 'ExtensionConfiguration';
+        requiredStake: string;
+        minimumStake: string;
+      } | null;
+    } | null>;
+  } | null;
+};
 
 export type GetProfileByEmailQueryVariables = Exact<{
   email: Scalars['AWSEmail'];
 }>;
 
-
-export type GetProfileByEmailQuery = { __typename?: 'Query', getProfileByEmail?: { __typename?: 'ModelProfileConnection', items: Array<{ __typename?: 'Profile', id: string } | null> } | null };
+export type GetProfileByEmailQuery = {
+  __typename?: 'Query';
+  getProfileByEmail?: {
+    __typename?: 'ModelProfileConnection';
+    items: Array<{ __typename?: 'Profile'; id: string } | null>;
+  } | null;
+};
 
 export type GetTokenByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;
 
-
-export type GetTokenByAddressQuery = { __typename?: 'Query', getTokenByAddress?: { __typename?: 'ModelTokenConnection', items: Array<{ __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null> } | null };
+export type GetTokenByAddressQuery = {
+  __typename?: 'Query';
+  getTokenByAddress?: {
+    __typename?: 'ModelTokenConnection';
+    items: Array<{
+      __typename?: 'Token';
+      decimals: number;
+      name: string;
+      symbol: string;
+      type?: TokenType | null;
+      avatar?: string | null;
+      thumbnail?: string | null;
+      tokenAddress: string;
+    } | null>;
+  } | null;
+};
 
 export type GetTokenFromEverywhereQueryVariables = Exact<{
   input: TokenFromEverywhereArguments;
 }>;
 
-
-export type GetTokenFromEverywhereQuery = { __typename?: 'Query', getTokenFromEverywhere?: { __typename?: 'TokenFromEverywhereReturn', items?: Array<{ __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null> | null } | null };
+export type GetTokenFromEverywhereQuery = {
+  __typename?: 'Query';
+  getTokenFromEverywhere?: {
+    __typename?: 'TokenFromEverywhereReturn';
+    items?: Array<{
+      __typename?: 'Token';
+      decimals: number;
+      name: string;
+      symbol: string;
+      type?: TokenType | null;
+      avatar?: string | null;
+      thumbnail?: string | null;
+      tokenAddress: string;
+    } | null> | null;
+  } | null;
+};
 
 export type GetCurrentUserQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;
 
-
-export type GetCurrentUserQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null };
+export type GetCurrentUserQuery = {
+  __typename?: 'Query';
+  getUserByAddress?: {
+    __typename?: 'ModelUserConnection';
+    items: Array<{
+      __typename?: 'User';
+      name: string;
+      walletAddress: string;
+      profile?: {
+        __typename?: 'Profile';
+        avatar?: string | null;
+        bio?: string | null;
+        displayName?: string | null;
+        email?: string | null;
+        location?: string | null;
+        thumbnail?: string | null;
+        website?: string | null;
+      } | null;
+      watchlist?: {
+        __typename?: 'ModelWatchedColoniesConnection';
+        items: Array<{
+          __typename?: 'WatchedColonies';
+          createdAt: string;
+          colony: {
+            __typename?: 'Colony';
+            name: string;
+            colonyAddress: string;
+            profile?: {
+              __typename?: 'Profile';
+              avatar?: string | null;
+              displayName?: string | null;
+              thumbnail?: string | null;
+            } | null;
+            meta?: {
+              __typename?: 'Metadata';
+              chainId?: number | null;
+              network?: Network | null;
+            } | null;
+          };
+        } | null>;
+      } | null;
+    } | null>;
+  } | null;
+};
 
 export type GetUserReputationQueryVariables = Exact<{
   input: GetUserReputationInput;
 }>;
 
-
-export type GetUserReputationQuery = { __typename?: 'Query', getUserReputation?: string | null };
+export type GetUserReputationQuery = {
+  __typename?: 'Query';
+  getUserReputation?: string | null;
+};
 
 export type GetReputationForTopDomainsQueryVariables = Exact<{
   input: GetReputationForTopDomainsInput;
 }>;
 
-
-export type GetReputationForTopDomainsQuery = { __typename?: 'Query', getReputationForTopDomains?: { __typename?: 'GetReputationForTopDomainsReturn', items?: Array<{ __typename?: 'UserDomainReputation', domainId: number, reputationPercentage: string }> | null } | null };
+export type GetReputationForTopDomainsQuery = {
+  __typename?: 'Query';
+  getReputationForTopDomains?: {
+    __typename?: 'GetReputationForTopDomainsReturn';
+    items?: Array<{
+      __typename?: 'UserDomainReputation';
+      domainId: number;
+      reputationPercentage: string;
+    }> | null;
+  } | null;
+};
 
 export type GetUserByNameQueryVariables = Exact<{
   name: Scalars['String'];
 }>;
 
-
-export type GetUserByNameQuery = { __typename?: 'Query', getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', id: string } | null> } | null };
+export type GetUserByNameQuery = {
+  __typename?: 'Query';
+  getUserByName?: {
+    __typename?: 'ModelUserConnection';
+    items: Array<{ __typename?: 'User'; id: string } | null>;
+  } | null;
+};
 
 export type CombinedUserQueryVariables = Exact<{
   name: Scalars['String'];
   address: Scalars['ID'];
 }>;
 
+export type CombinedUserQuery = {
+  __typename?: 'Query';
+  getUserByAddress?: {
+    __typename?: 'ModelUserConnection';
+    items: Array<{
+      __typename?: 'User';
+      name: string;
+      walletAddress: string;
+      profile?: {
+        __typename?: 'Profile';
+        avatar?: string | null;
+        bio?: string | null;
+        displayName?: string | null;
+        email?: string | null;
+        location?: string | null;
+        thumbnail?: string | null;
+        website?: string | null;
+      } | null;
+      watchlist?: {
+        __typename?: 'ModelWatchedColoniesConnection';
+        items: Array<{
+          __typename?: 'WatchedColonies';
+          createdAt: string;
+          colony: {
+            __typename?: 'Colony';
+            name: string;
+            colonyAddress: string;
+            profile?: {
+              __typename?: 'Profile';
+              avatar?: string | null;
+              displayName?: string | null;
+              thumbnail?: string | null;
+            } | null;
+            meta?: {
+              __typename?: 'Metadata';
+              chainId?: number | null;
+              network?: Network | null;
+            } | null;
+          };
+        } | null>;
+      } | null;
+    } | null>;
+  } | null;
+  getUserByName?: {
+    __typename?: 'ModelUserConnection';
+    items: Array<{
+      __typename?: 'User';
+      name: string;
+      walletAddress: string;
+      profile?: {
+        __typename?: 'Profile';
+        avatar?: string | null;
+        bio?: string | null;
+        displayName?: string | null;
+        email?: string | null;
+        location?: string | null;
+        thumbnail?: string | null;
+        website?: string | null;
+      } | null;
+      watchlist?: {
+        __typename?: 'ModelWatchedColoniesConnection';
+        items: Array<{
+          __typename?: 'WatchedColonies';
+          createdAt: string;
+          colony: {
+            __typename?: 'Colony';
+            name: string;
+            colonyAddress: string;
+            profile?: {
+              __typename?: 'Profile';
+              avatar?: string | null;
+              displayName?: string | null;
+              thumbnail?: string | null;
+            } | null;
+            meta?: {
+              __typename?: 'Metadata';
+              chainId?: number | null;
+              network?: Network | null;
+            } | null;
+          };
+        } | null>;
+      } | null;
+    } | null>;
+  } | null;
+};
 
-export type CombinedUserQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null, getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null, thumbnail?: string | null } | null, meta?: { __typename?: 'Metadata', chainId?: number | null, network?: Network | null } | null } } | null> } | null } | null> } | null };
+export type GetCurrentExtensionsVersionsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
 
-export type GetCurrentExtensionsVersionsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetCurrentExtensionsVersionsQuery = { __typename?: 'Query', listCurrentVersions?: { __typename?: 'ModelCurrentVersionConnection', items: Array<{ __typename?: 'CurrentVersion', version: number, extensionHash: string } | null> } | null };
+export type GetCurrentExtensionsVersionsQuery = {
+  __typename?: 'Query';
+  listCurrentVersions?: {
+    __typename?: 'ModelCurrentVersionConnection';
+    items: Array<{
+      __typename?: 'CurrentVersion';
+      version: number;
+      extensionHash: string;
+    } | null>;
+  } | null;
+};
 
 export type GetCurrentExtensionVersionQueryVariables = Exact<{
   extensionHash: Scalars['String'];
 }>;
 
-
-export type GetCurrentExtensionVersionQuery = { __typename?: 'Query', getCurrentVersionByKey?: { __typename?: 'ModelCurrentVersionConnection', items: Array<{ __typename?: 'CurrentVersion', version: number, extensionHash: string } | null> } | null };
+export type GetCurrentExtensionVersionQuery = {
+  __typename?: 'Query';
+  getCurrentVersionByKey?: {
+    __typename?: 'ModelCurrentVersionConnection';
+    items: Array<{
+      __typename?: 'CurrentVersion';
+      version: number;
+      extensionHash: string;
+    } | null>;
+  } | null;
+};
 
 export const WatchedColonyFragmentDoc = gql`
-    fragment WatchedColony on Colony {
-  colonyAddress: id
-  name
-  profile {
-    avatar
-    displayName
-    thumbnail
-  }
-  meta {
-    chainId
-    network
-  }
-}
-    `;
-export const UserFragmentDoc = gql`
-    fragment User on User {
-  profile {
-    avatar
-    bio
-    displayName
-    email
-    location
-    thumbnail
-    website
-  }
-  walletAddress: id
-  name
-  watchlist {
-    items {
-      colony {
-        ...WatchedColony
-      }
-      createdAt
+  fragment WatchedColony on Colony {
+    colonyAddress: id
+    name
+    profile {
+      avatar
+      displayName
+      thumbnail
+    }
+    meta {
+      chainId
+      network
     }
   }
+`;
+export const UserFragmentDoc = gql`
+  fragment User on User {
+    profile {
+      avatar
+      bio
+      displayName
+      email
+      location
+      thumbnail
+      website
+    }
+    walletAddress: id
+    name
+    watchlist {
+      items {
+        colony {
+          ...WatchedColony
+        }
+        createdAt
+      }
+    }
+  }
+<<<<<<< HEAD
 }
     ${WatchedColonyFragmentDoc}`;
 export const TokenFragmentDoc = gql`
@@ -2886,102 +3948,179 @@ export const ColonyActionFragmentDoc = gql`
     ${UserFragmentDoc}
 ${TokenFragmentDoc}
 ${DomainFragmentDoc}`;
-export const WatcherFragmentDoc = gql`
-    fragment Watcher on WatchedColonies {
-  user {
-    walletAddress: id
+=======
+  ${WatchedColonyFragmentDoc}
+`;
+export const MotionDataFragmentDoc = gql`
+  fragment MotionData on MotionData {
+    motionDomainId
+    motionStakes {
+      yay
+      nay
+    }
+    motionState
+    rootHash
+    skillRep
+    motionId
+  }
+`;
+export const ColonyActionFragmentDoc = gql`
+  fragment ColonyAction on ColonyAction {
+    transactionHash: id
+    type
+    blockNumber
+    initiatorAddress
+    initiator {
+      ...User
+    }
+    recipientAddress
+    recipient {
+      ...User
+    }
+    amount
+    decimals
+    tokenSymbol
+    fromDomain
+    toDomain
+    createdAt
+    colony {
+      colonyAddress: id
+    }
+    isMotion
+    motionData {
+      ...MotionData
+    }
+  }
+  ${UserFragmentDoc}
+  ${MotionDataFragmentDoc}
+`;
+export const TokenFragmentDoc = gql`
+  fragment Token on Token {
+    decimals
+    tokenAddress: id
     name
+    symbol
+    type
+    avatar
+    thumbnail
+  }
+`;
+export const DomainFragmentDoc = gql`
+  fragment Domain on Domain {
+    color
+    description
+    id
+    name
+    nativeId
+    parentId: domainParentId
+  }
+`;
+>>>>>>> fd83d80b... Refactor: core components
+export const WatcherFragmentDoc = gql`
+  fragment Watcher on WatchedColonies {
+    user {
+      walletAddress: id
+      name
+      profile {
+        avatar
+        bio
+        displayName
+        email
+        location
+        website
+        thumbnail
+      }
+    }
+  }
+`;
+export const ColonyFragmentDoc = gql`
+  fragment Colony on Colony {
+    colonyAddress: id
+    name
+    nativeToken {
+      ...Token
+    }
     profile {
       avatar
       bio
       displayName
       email
       location
-      website
       thumbnail
+      website
     }
-  }
-}
-    `;
-export const ColonyFragmentDoc = gql`
-    fragment Colony on Colony {
-  colonyAddress: id
-  name
-  nativeToken {
-    ...Token
-  }
-  profile {
-    avatar
-    bio
-    displayName
-    email
-    location
-    thumbnail
-    website
-  }
-  status {
-    recovery
-    nativeToken {
-      mintable
-      unlockable
-      unlocked
-    }
-  }
-  meta {
-    chainId
-    network
-  }
-  tokens {
-    items {
-      token {
-        ...Token
+    status {
+      recovery
+      nativeToken {
+        mintable
+        unlockable
+        unlocked
       }
     }
-  }
-  domains {
-    items {
-      ...Domain
+    meta {
+      chainId
+      network
     }
-  }
-  watchers {
-    items {
-      ...Watcher
+    tokens {
+      items {
+        token {
+          ...Token
+        }
+      }
     }
+    domains {
+      items {
+        ...Domain
+      }
+    }
+    watchers {
+      items {
+        ...Watcher
+      }
+    }
+    version
   }
-  version
-}
-    ${TokenFragmentDoc}
-${DomainFragmentDoc}
-${WatcherFragmentDoc}`;
+  ${TokenFragmentDoc}
+  ${DomainFragmentDoc}
+  ${WatcherFragmentDoc}
+`;
 export const WatchListItemFragmentDoc = gql`
-    fragment WatchListItem on WatchedColonies {
-  colony {
-    ...WatchedColony
+  fragment WatchListItem on WatchedColonies {
+    colony {
+      ...WatchedColony
+    }
+    createdAt
   }
-  createdAt
-}
-    ${WatchedColonyFragmentDoc}`;
+  ${WatchedColonyFragmentDoc}
+`;
 export const ExtensionFragmentDoc = gql`
-    fragment Extension on ColonyExtension {
-  address: id
-  colonyAddress: colonyId
-  hash
-  currentVersion: version
-  installedBy
-  installedAt
-  isDeprecated
-  isDeleted
-  isInitialized
-}
-    `;
-export const CreateUniqueColonyDocument = gql`
-    mutation CreateUniqueColony($input: CreateUniqueColonyInput!) {
-  createUniqueColony(input: $input) {
-    id
+  fragment Extension on ColonyExtension {
+    address: id
+    colonyAddress: colonyId
+    hash
+    currentVersion: version
+    installedBy
+    installedAt
+    isDeprecated
+    isDeleted
+    isInitialized
+    extensionConfig {
+      requiredStake
+      minimumStake
+    }
   }
-}
-    `;
-export type CreateUniqueColonyMutationFn = Apollo.MutationFunction<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>;
+`;
+export const CreateUniqueColonyDocument = gql`
+  mutation CreateUniqueColony($input: CreateUniqueColonyInput!) {
+    createUniqueColony(input: $input) {
+      id
+    }
+  }
+`;
+export type CreateUniqueColonyMutationFn = Apollo.MutationFunction<
+  CreateUniqueColonyMutation,
+  CreateUniqueColonyMutationVariables
+>;
 
 /**
  * __useCreateUniqueColonyMutation__
@@ -3000,21 +4139,38 @@ export type CreateUniqueColonyMutationFn = Apollo.MutationFunction<CreateUniqueC
  *   },
  * });
  */
-export function useCreateUniqueColonyMutation(baseOptions?: Apollo.MutationHookOptions<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>(CreateUniqueColonyDocument, options);
-      }
-export type CreateUniqueColonyMutationHookResult = ReturnType<typeof useCreateUniqueColonyMutation>;
-export type CreateUniqueColonyMutationResult = Apollo.MutationResult<CreateUniqueColonyMutation>;
-export type CreateUniqueColonyMutationOptions = Apollo.BaseMutationOptions<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>;
-export const CreateWatchedColoniesDocument = gql`
-    mutation CreateWatchedColonies($input: CreateWatchedColoniesInput!) {
-  createWatchedColonies(input: $input) {
-    id
-  }
+export function useCreateUniqueColonyMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateUniqueColonyMutation,
+    CreateUniqueColonyMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateUniqueColonyMutation,
+    CreateUniqueColonyMutationVariables
+  >(CreateUniqueColonyDocument, options);
 }
-    `;
-export type CreateWatchedColoniesMutationFn = Apollo.MutationFunction<CreateWatchedColoniesMutation, CreateWatchedColoniesMutationVariables>;
+export type CreateUniqueColonyMutationHookResult = ReturnType<
+  typeof useCreateUniqueColonyMutation
+>;
+export type CreateUniqueColonyMutationResult =
+  Apollo.MutationResult<CreateUniqueColonyMutation>;
+export type CreateUniqueColonyMutationOptions = Apollo.BaseMutationOptions<
+  CreateUniqueColonyMutation,
+  CreateUniqueColonyMutationVariables
+>;
+export const CreateWatchedColoniesDocument = gql`
+  mutation CreateWatchedColonies($input: CreateWatchedColoniesInput!) {
+    createWatchedColonies(input: $input) {
+      id
+    }
+  }
+`;
+export type CreateWatchedColoniesMutationFn = Apollo.MutationFunction<
+  CreateWatchedColoniesMutation,
+  CreateWatchedColoniesMutationVariables
+>;
 
 /**
  * __useCreateWatchedColoniesMutation__
@@ -3033,6 +4189,7 @@ export type CreateWatchedColoniesMutationFn = Apollo.MutationFunction<CreateWatc
  *   },
  * });
  */
+<<<<<<< HEAD
 export function useCreateWatchedColoniesMutation(baseOptions?: Apollo.MutationHookOptions<CreateWatchedColoniesMutation, CreateWatchedColoniesMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateWatchedColoniesMutation, CreateWatchedColoniesMutationVariables>(CreateWatchedColoniesDocument, options);
@@ -3114,6 +4271,40 @@ export const CreateDomainDocument = gql`
 }
     `;
 export type CreateDomainMutationFn = Apollo.MutationFunction<CreateDomainMutation, CreateDomainMutationVariables>;
+=======
+export function useCreateWatchedColoniesMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateWatchedColoniesMutation,
+    CreateWatchedColoniesMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateWatchedColoniesMutation,
+    CreateWatchedColoniesMutationVariables
+  >(CreateWatchedColoniesDocument, options);
+}
+export type CreateWatchedColoniesMutationHookResult = ReturnType<
+  typeof useCreateWatchedColoniesMutation
+>;
+export type CreateWatchedColoniesMutationResult =
+  Apollo.MutationResult<CreateWatchedColoniesMutation>;
+export type CreateWatchedColoniesMutationOptions = Apollo.BaseMutationOptions<
+  CreateWatchedColoniesMutation,
+  CreateWatchedColoniesMutationVariables
+>;
+export const CreateUniqueDomainDocument = gql`
+  mutation CreateUniqueDomain($input: CreateUniqueDomainInput!) {
+    createUniqueDomain(input: $input) {
+      id
+    }
+  }
+`;
+export type CreateUniqueDomainMutationFn = Apollo.MutationFunction<
+  CreateUniqueDomainMutation,
+  CreateUniqueDomainMutationVariables
+>;
+>>>>>>> fd83d80b... Refactor: core components
 
 /**
  * __useCreateDomainMutation__
@@ -3132,6 +4323,7 @@ export type CreateDomainMutationFn = Apollo.MutationFunction<CreateDomainMutatio
  *   },
  * });
  */
+<<<<<<< HEAD
 export function useCreateDomainMutation(baseOptions?: Apollo.MutationHookOptions<CreateDomainMutation, CreateDomainMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateDomainMutation, CreateDomainMutationVariables>(CreateDomainDocument, options);
@@ -3139,14 +4331,40 @@ export function useCreateDomainMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateDomainMutationHookResult = ReturnType<typeof useCreateDomainMutation>;
 export type CreateDomainMutationResult = Apollo.MutationResult<CreateDomainMutation>;
 export type CreateDomainMutationOptions = Apollo.BaseMutationOptions<CreateDomainMutation, CreateDomainMutationVariables>;
-export const CreateColonyTokensDocument = gql`
-    mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
-  createColonyTokens(input: $input) {
-    id
-  }
+=======
+export function useCreateUniqueDomainMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateUniqueDomainMutation,
+    CreateUniqueDomainMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateUniqueDomainMutation,
+    CreateUniqueDomainMutationVariables
+  >(CreateUniqueDomainDocument, options);
 }
-    `;
-export type CreateColonyTokensMutationFn = Apollo.MutationFunction<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>;
+export type CreateUniqueDomainMutationHookResult = ReturnType<
+  typeof useCreateUniqueDomainMutation
+>;
+export type CreateUniqueDomainMutationResult =
+  Apollo.MutationResult<CreateUniqueDomainMutation>;
+export type CreateUniqueDomainMutationOptions = Apollo.BaseMutationOptions<
+  CreateUniqueDomainMutation,
+  CreateUniqueDomainMutationVariables
+>;
+>>>>>>> fd83d80b... Refactor: core components
+export const CreateColonyTokensDocument = gql`
+  mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
+    createColonyTokens(input: $input) {
+      id
+    }
+  }
+`;
+export type CreateColonyTokensMutationFn = Apollo.MutationFunction<
+  CreateColonyTokensMutation,
+  CreateColonyTokensMutationVariables
+>;
 
 /**
  * __useCreateColonyTokensMutation__
@@ -3165,21 +4383,38 @@ export type CreateColonyTokensMutationFn = Apollo.MutationFunction<CreateColonyT
  *   },
  * });
  */
-export function useCreateColonyTokensMutation(baseOptions?: Apollo.MutationHookOptions<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>(CreateColonyTokensDocument, options);
-      }
-export type CreateColonyTokensMutationHookResult = ReturnType<typeof useCreateColonyTokensMutation>;
-export type CreateColonyTokensMutationResult = Apollo.MutationResult<CreateColonyTokensMutation>;
-export type CreateColonyTokensMutationOptions = Apollo.BaseMutationOptions<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>;
-export const CreateUserTokensDocument = gql`
-    mutation CreateUserTokens($input: CreateUserTokensInput!) {
-  createUserTokens(input: $input) {
-    id
-  }
+export function useCreateColonyTokensMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateColonyTokensMutation,
+    CreateColonyTokensMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateColonyTokensMutation,
+    CreateColonyTokensMutationVariables
+  >(CreateColonyTokensDocument, options);
 }
-    `;
-export type CreateUserTokensMutationFn = Apollo.MutationFunction<CreateUserTokensMutation, CreateUserTokensMutationVariables>;
+export type CreateColonyTokensMutationHookResult = ReturnType<
+  typeof useCreateColonyTokensMutation
+>;
+export type CreateColonyTokensMutationResult =
+  Apollo.MutationResult<CreateColonyTokensMutation>;
+export type CreateColonyTokensMutationOptions = Apollo.BaseMutationOptions<
+  CreateColonyTokensMutation,
+  CreateColonyTokensMutationVariables
+>;
+export const CreateUserTokensDocument = gql`
+  mutation CreateUserTokens($input: CreateUserTokensInput!) {
+    createUserTokens(input: $input) {
+      id
+    }
+  }
+`;
+export type CreateUserTokensMutationFn = Apollo.MutationFunction<
+  CreateUserTokensMutation,
+  CreateUserTokensMutationVariables
+>;
 
 /**
  * __useCreateUserTokensMutation__
@@ -3198,21 +4433,38 @@ export type CreateUserTokensMutationFn = Apollo.MutationFunction<CreateUserToken
  *   },
  * });
  */
-export function useCreateUserTokensMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserTokensMutation, CreateUserTokensMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateUserTokensMutation, CreateUserTokensMutationVariables>(CreateUserTokensDocument, options);
-      }
-export type CreateUserTokensMutationHookResult = ReturnType<typeof useCreateUserTokensMutation>;
-export type CreateUserTokensMutationResult = Apollo.MutationResult<CreateUserTokensMutation>;
-export type CreateUserTokensMutationOptions = Apollo.BaseMutationOptions<CreateUserTokensMutation, CreateUserTokensMutationVariables>;
-export const CreateUniqueUserDocument = gql`
-    mutation CreateUniqueUser($input: CreateUniqueUserInput!) {
-  createUniqueUser(input: $input) {
-    id
-  }
+export function useCreateUserTokensMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateUserTokensMutation,
+    CreateUserTokensMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateUserTokensMutation,
+    CreateUserTokensMutationVariables
+  >(CreateUserTokensDocument, options);
 }
-    `;
-export type CreateUniqueUserMutationFn = Apollo.MutationFunction<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>;
+export type CreateUserTokensMutationHookResult = ReturnType<
+  typeof useCreateUserTokensMutation
+>;
+export type CreateUserTokensMutationResult =
+  Apollo.MutationResult<CreateUserTokensMutation>;
+export type CreateUserTokensMutationOptions = Apollo.BaseMutationOptions<
+  CreateUserTokensMutation,
+  CreateUserTokensMutationVariables
+>;
+export const CreateUniqueUserDocument = gql`
+  mutation CreateUniqueUser($input: CreateUniqueUserInput!) {
+    createUniqueUser(input: $input) {
+      id
+    }
+  }
+`;
+export type CreateUniqueUserMutationFn = Apollo.MutationFunction<
+  CreateUniqueUserMutation,
+  CreateUniqueUserMutationVariables
+>;
 
 /**
  * __useCreateUniqueUserMutation__
@@ -3231,27 +4483,44 @@ export type CreateUniqueUserMutationFn = Apollo.MutationFunction<CreateUniqueUse
  *   },
  * });
  */
-export function useCreateUniqueUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>(CreateUniqueUserDocument, options);
-      }
-export type CreateUniqueUserMutationHookResult = ReturnType<typeof useCreateUniqueUserMutation>;
-export type CreateUniqueUserMutationResult = Apollo.MutationResult<CreateUniqueUserMutation>;
-export type CreateUniqueUserMutationOptions = Apollo.BaseMutationOptions<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>;
-export const UpdateUserProfileDocument = gql`
-    mutation UpdateUserProfile($input: UpdateProfileInput!) {
-  updateProfile(input: $input) {
-    id
-    avatar
-    bio
-    displayName
-    location
-    website
-    email
-  }
+export function useCreateUniqueUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateUniqueUserMutation,
+    CreateUniqueUserMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateUniqueUserMutation,
+    CreateUniqueUserMutationVariables
+  >(CreateUniqueUserDocument, options);
 }
-    `;
-export type UpdateUserProfileMutationFn = Apollo.MutationFunction<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
+export type CreateUniqueUserMutationHookResult = ReturnType<
+  typeof useCreateUniqueUserMutation
+>;
+export type CreateUniqueUserMutationResult =
+  Apollo.MutationResult<CreateUniqueUserMutation>;
+export type CreateUniqueUserMutationOptions = Apollo.BaseMutationOptions<
+  CreateUniqueUserMutation,
+  CreateUniqueUserMutationVariables
+>;
+export const UpdateUserProfileDocument = gql`
+  mutation UpdateUserProfile($input: UpdateProfileInput!) {
+    updateProfile(input: $input) {
+      id
+      avatar
+      bio
+      displayName
+      location
+      website
+      email
+    }
+  }
+`;
+export type UpdateUserProfileMutationFn = Apollo.MutationFunction<
+  UpdateUserProfileMutation,
+  UpdateUserProfileMutationVariables
+>;
 
 /**
  * __useUpdateUserProfileMutation__
@@ -3270,28 +4539,48 @@ export type UpdateUserProfileMutationFn = Apollo.MutationFunction<UpdateUserProf
  *   },
  * });
  */
-export function useUpdateUserProfileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>(UpdateUserProfileDocument, options);
-      }
-export type UpdateUserProfileMutationHookResult = ReturnType<typeof useUpdateUserProfileMutation>;
-export type UpdateUserProfileMutationResult = Apollo.MutationResult<UpdateUserProfileMutation>;
-export type UpdateUserProfileMutationOptions = Apollo.BaseMutationOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
-export const GetColonyActionsDocument = gql`
-    query GetColonyActions($colonyAddress: ID!, $nextToken: String, $limit: Int, $sortDirection: ModelSortDirection) {
-  getActionsByColony(
-    colonyId: $colonyAddress
-    nextToken: $nextToken
-    limit: $limit
-    sortDirection: $sortDirection
-  ) {
-    items {
-      ...ColonyAction
-    }
-    nextToken
-  }
+export function useUpdateUserProfileMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateUserProfileMutation,
+    UpdateUserProfileMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateUserProfileMutation,
+    UpdateUserProfileMutationVariables
+  >(UpdateUserProfileDocument, options);
 }
-    ${ColonyActionFragmentDoc}`;
+export type UpdateUserProfileMutationHookResult = ReturnType<
+  typeof useUpdateUserProfileMutation
+>;
+export type UpdateUserProfileMutationResult =
+  Apollo.MutationResult<UpdateUserProfileMutation>;
+export type UpdateUserProfileMutationOptions = Apollo.BaseMutationOptions<
+  UpdateUserProfileMutation,
+  UpdateUserProfileMutationVariables
+>;
+export const GetColonyActionsDocument = gql`
+  query GetColonyActions(
+    $colonyAddress: ID!
+    $nextToken: String
+    $limit: Int
+    $sortDirection: ModelSortDirection
+  ) {
+    getActionsByColony(
+      colonyId: $colonyAddress
+      nextToken: $nextToken
+      limit: $limit
+      sortDirection: $sortDirection
+    ) {
+      items {
+        ...ColonyAction
+      }
+      nextToken
+    }
+  }
+  ${ColonyActionFragmentDoc}
+`;
 
 /**
  * __useGetColonyActionsQuery__
@@ -3312,24 +4601,48 @@ export const GetColonyActionsDocument = gql`
  *   },
  * });
  */
-export function useGetColonyActionsQuery(baseOptions: Apollo.QueryHookOptions<GetColonyActionsQuery, GetColonyActionsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetColonyActionsQuery, GetColonyActionsQueryVariables>(GetColonyActionsDocument, options);
-      }
-export function useGetColonyActionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyActionsQuery, GetColonyActionsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetColonyActionsQuery, GetColonyActionsQueryVariables>(GetColonyActionsDocument, options);
-        }
-export type GetColonyActionsQueryHookResult = ReturnType<typeof useGetColonyActionsQuery>;
-export type GetColonyActionsLazyQueryHookResult = ReturnType<typeof useGetColonyActionsLazyQuery>;
-export type GetColonyActionsQueryResult = Apollo.QueryResult<GetColonyActionsQuery, GetColonyActionsQueryVariables>;
-export const GetColonyActionDocument = gql`
-    query GetColonyAction($transactionHash: ID!) {
-  getColonyAction(id: $transactionHash) {
-    ...ColonyAction
-  }
+export function useGetColonyActionsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetColonyActionsQuery,
+    GetColonyActionsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetColonyActionsQuery, GetColonyActionsQueryVariables>(
+    GetColonyActionsDocument,
+    options,
+  );
 }
-    ${ColonyActionFragmentDoc}`;
+export function useGetColonyActionsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetColonyActionsQuery,
+    GetColonyActionsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetColonyActionsQuery,
+    GetColonyActionsQueryVariables
+  >(GetColonyActionsDocument, options);
+}
+export type GetColonyActionsQueryHookResult = ReturnType<
+  typeof useGetColonyActionsQuery
+>;
+export type GetColonyActionsLazyQueryHookResult = ReturnType<
+  typeof useGetColonyActionsLazyQuery
+>;
+export type GetColonyActionsQueryResult = Apollo.QueryResult<
+  GetColonyActionsQuery,
+  GetColonyActionsQueryVariables
+>;
+export const GetColonyActionDocument = gql`
+  query GetColonyAction($transactionHash: ID!) {
+    getColonyAction(id: $transactionHash) {
+      ...ColonyAction
+    }
+  }
+  ${ColonyActionFragmentDoc}
+`;
 
 /**
  * __useGetColonyActionQuery__
@@ -3347,26 +4660,50 @@ export const GetColonyActionDocument = gql`
  *   },
  * });
  */
-export function useGetColonyActionQuery(baseOptions: Apollo.QueryHookOptions<GetColonyActionQuery, GetColonyActionQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetColonyActionQuery, GetColonyActionQueryVariables>(GetColonyActionDocument, options);
-      }
-export function useGetColonyActionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyActionQuery, GetColonyActionQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetColonyActionQuery, GetColonyActionQueryVariables>(GetColonyActionDocument, options);
-        }
-export type GetColonyActionQueryHookResult = ReturnType<typeof useGetColonyActionQuery>;
-export type GetColonyActionLazyQueryHookResult = ReturnType<typeof useGetColonyActionLazyQuery>;
-export type GetColonyActionQueryResult = Apollo.QueryResult<GetColonyActionQuery, GetColonyActionQueryVariables>;
+export function useGetColonyActionQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetColonyActionQuery,
+    GetColonyActionQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetColonyActionQuery, GetColonyActionQueryVariables>(
+    GetColonyActionDocument,
+    options,
+  );
+}
+export function useGetColonyActionLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetColonyActionQuery,
+    GetColonyActionQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetColonyActionQuery,
+    GetColonyActionQueryVariables
+  >(GetColonyActionDocument, options);
+}
+export type GetColonyActionQueryHookResult = ReturnType<
+  typeof useGetColonyActionQuery
+>;
+export type GetColonyActionLazyQueryHookResult = ReturnType<
+  typeof useGetColonyActionLazyQuery
+>;
+export type GetColonyActionQueryResult = Apollo.QueryResult<
+  GetColonyActionQuery,
+  GetColonyActionQueryVariables
+>;
 export const GetFullColonyByAddressDocument = gql`
-    query GetFullColonyByAddress($address: ID!) {
-  getColonyByAddress(id: $address) {
-    items {
-      ...Colony
+  query GetFullColonyByAddress($address: ID!) {
+    getColonyByAddress(id: $address) {
+      items {
+        ...Colony
+      }
     }
   }
-}
-    ${ColonyFragmentDoc}`;
+  ${ColonyFragmentDoc}
+`;
 
 /**
  * __useGetFullColonyByAddressQuery__
@@ -3384,26 +4721,50 @@ export const GetFullColonyByAddressDocument = gql`
  *   },
  * });
  */
-export function useGetFullColonyByAddressQuery(baseOptions: Apollo.QueryHookOptions<GetFullColonyByAddressQuery, GetFullColonyByAddressQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetFullColonyByAddressQuery, GetFullColonyByAddressQueryVariables>(GetFullColonyByAddressDocument, options);
-      }
-export function useGetFullColonyByAddressLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFullColonyByAddressQuery, GetFullColonyByAddressQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetFullColonyByAddressQuery, GetFullColonyByAddressQueryVariables>(GetFullColonyByAddressDocument, options);
-        }
-export type GetFullColonyByAddressQueryHookResult = ReturnType<typeof useGetFullColonyByAddressQuery>;
-export type GetFullColonyByAddressLazyQueryHookResult = ReturnType<typeof useGetFullColonyByAddressLazyQuery>;
-export type GetFullColonyByAddressQueryResult = Apollo.QueryResult<GetFullColonyByAddressQuery, GetFullColonyByAddressQueryVariables>;
+export function useGetFullColonyByAddressQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetFullColonyByAddressQuery,
+    GetFullColonyByAddressQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetFullColonyByAddressQuery,
+    GetFullColonyByAddressQueryVariables
+  >(GetFullColonyByAddressDocument, options);
+}
+export function useGetFullColonyByAddressLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetFullColonyByAddressQuery,
+    GetFullColonyByAddressQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetFullColonyByAddressQuery,
+    GetFullColonyByAddressQueryVariables
+  >(GetFullColonyByAddressDocument, options);
+}
+export type GetFullColonyByAddressQueryHookResult = ReturnType<
+  typeof useGetFullColonyByAddressQuery
+>;
+export type GetFullColonyByAddressLazyQueryHookResult = ReturnType<
+  typeof useGetFullColonyByAddressLazyQuery
+>;
+export type GetFullColonyByAddressQueryResult = Apollo.QueryResult<
+  GetFullColonyByAddressQuery,
+  GetFullColonyByAddressQueryVariables
+>;
 export const GetFullColonyByNameDocument = gql`
-    query GetFullColonyByName($name: String!) {
-  getColonyByName(name: $name) {
-    items {
-      ...Colony
+  query GetFullColonyByName($name: String!) {
+    getColonyByName(name: $name) {
+      items {
+        ...Colony
+      }
     }
   }
-}
-    ${ColonyFragmentDoc}`;
+  ${ColonyFragmentDoc}
+`;
 
 /**
  * __useGetFullColonyByNameQuery__
@@ -3421,26 +4782,50 @@ export const GetFullColonyByNameDocument = gql`
  *   },
  * });
  */
-export function useGetFullColonyByNameQuery(baseOptions: Apollo.QueryHookOptions<GetFullColonyByNameQuery, GetFullColonyByNameQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetFullColonyByNameQuery, GetFullColonyByNameQueryVariables>(GetFullColonyByNameDocument, options);
-      }
-export function useGetFullColonyByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFullColonyByNameQuery, GetFullColonyByNameQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetFullColonyByNameQuery, GetFullColonyByNameQueryVariables>(GetFullColonyByNameDocument, options);
-        }
-export type GetFullColonyByNameQueryHookResult = ReturnType<typeof useGetFullColonyByNameQuery>;
-export type GetFullColonyByNameLazyQueryHookResult = ReturnType<typeof useGetFullColonyByNameLazyQuery>;
-export type GetFullColonyByNameQueryResult = Apollo.QueryResult<GetFullColonyByNameQuery, GetFullColonyByNameQueryVariables>;
+export function useGetFullColonyByNameQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetFullColonyByNameQuery,
+    GetFullColonyByNameQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetFullColonyByNameQuery,
+    GetFullColonyByNameQueryVariables
+  >(GetFullColonyByNameDocument, options);
+}
+export function useGetFullColonyByNameLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetFullColonyByNameQuery,
+    GetFullColonyByNameQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetFullColonyByNameQuery,
+    GetFullColonyByNameQueryVariables
+  >(GetFullColonyByNameDocument, options);
+}
+export type GetFullColonyByNameQueryHookResult = ReturnType<
+  typeof useGetFullColonyByNameQuery
+>;
+export type GetFullColonyByNameLazyQueryHookResult = ReturnType<
+  typeof useGetFullColonyByNameLazyQuery
+>;
+export type GetFullColonyByNameQueryResult = Apollo.QueryResult<
+  GetFullColonyByNameQuery,
+  GetFullColonyByNameQueryVariables
+>;
 export const GetMetacolonyDocument = gql`
-    query GetMetacolony {
-  getColonyByType(type: METACOLONY) {
-    items {
-      ...Colony
+  query GetMetacolony {
+    getColonyByType(type: METACOLONY) {
+      items {
+        ...Colony
+      }
     }
   }
-}
-    ${ColonyFragmentDoc}`;
+  ${ColonyFragmentDoc}
+`;
 
 /**
  * __useGetMetacolonyQuery__
@@ -3457,28 +4842,52 @@ export const GetMetacolonyDocument = gql`
  *   },
  * });
  */
-export function useGetMetacolonyQuery(baseOptions?: Apollo.QueryHookOptions<GetMetacolonyQuery, GetMetacolonyQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetMetacolonyQuery, GetMetacolonyQueryVariables>(GetMetacolonyDocument, options);
-      }
-export function useGetMetacolonyLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMetacolonyQuery, GetMetacolonyQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetMetacolonyQuery, GetMetacolonyQueryVariables>(GetMetacolonyDocument, options);
-        }
-export type GetMetacolonyQueryHookResult = ReturnType<typeof useGetMetacolonyQuery>;
-export type GetMetacolonyLazyQueryHookResult = ReturnType<typeof useGetMetacolonyLazyQuery>;
-export type GetMetacolonyQueryResult = Apollo.QueryResult<GetMetacolonyQuery, GetMetacolonyQueryVariables>;
+export function useGetMetacolonyQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetMetacolonyQuery,
+    GetMetacolonyQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetMetacolonyQuery, GetMetacolonyQueryVariables>(
+    GetMetacolonyDocument,
+    options,
+  );
+}
+export function useGetMetacolonyLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetMetacolonyQuery,
+    GetMetacolonyQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetMetacolonyQuery, GetMetacolonyQueryVariables>(
+    GetMetacolonyDocument,
+    options,
+  );
+}
+export type GetMetacolonyQueryHookResult = ReturnType<
+  typeof useGetMetacolonyQuery
+>;
+export type GetMetacolonyLazyQueryHookResult = ReturnType<
+  typeof useGetMetacolonyLazyQuery
+>;
+export type GetMetacolonyQueryResult = Apollo.QueryResult<
+  GetMetacolonyQuery,
+  GetMetacolonyQueryVariables
+>;
 export const GetColonyExtensionsDocument = gql`
-    query GetColonyExtensions($colonyAddress: ID!) {
-  getColony(id: $colonyAddress) {
-    extensions(filter: {isDeleted: {eq: false}}) {
-      items {
-        ...Extension
+  query GetColonyExtensions($colonyAddress: ID!) {
+    getColony(id: $colonyAddress) {
+      extensions(filter: { isDeleted: { eq: false } }) {
+        items {
+          ...Extension
+        }
       }
     }
   }
-}
-    ${ExtensionFragmentDoc}`;
+  ${ExtensionFragmentDoc}
+`;
 
 /**
  * __useGetColonyExtensionsQuery__
@@ -3496,30 +4905,54 @@ export const GetColonyExtensionsDocument = gql`
  *   },
  * });
  */
-export function useGetColonyExtensionsQuery(baseOptions: Apollo.QueryHookOptions<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>(GetColonyExtensionsDocument, options);
-      }
-export function useGetColonyExtensionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>(GetColonyExtensionsDocument, options);
-        }
-export type GetColonyExtensionsQueryHookResult = ReturnType<typeof useGetColonyExtensionsQuery>;
-export type GetColonyExtensionsLazyQueryHookResult = ReturnType<typeof useGetColonyExtensionsLazyQuery>;
-export type GetColonyExtensionsQueryResult = Apollo.QueryResult<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>;
+export function useGetColonyExtensionsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetColonyExtensionsQuery,
+    GetColonyExtensionsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetColonyExtensionsQuery,
+    GetColonyExtensionsQueryVariables
+  >(GetColonyExtensionsDocument, options);
+}
+export function useGetColonyExtensionsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetColonyExtensionsQuery,
+    GetColonyExtensionsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetColonyExtensionsQuery,
+    GetColonyExtensionsQueryVariables
+  >(GetColonyExtensionsDocument, options);
+}
+export type GetColonyExtensionsQueryHookResult = ReturnType<
+  typeof useGetColonyExtensionsQuery
+>;
+export type GetColonyExtensionsLazyQueryHookResult = ReturnType<
+  typeof useGetColonyExtensionsLazyQuery
+>;
+export type GetColonyExtensionsQueryResult = Apollo.QueryResult<
+  GetColonyExtensionsQuery,
+  GetColonyExtensionsQueryVariables
+>;
 export const GetColonyExtensionDocument = gql`
-    query GetColonyExtension($colonyAddress: ID!, $extensionHash: String!) {
-  getExtensionByColonyAndHash(
-    colonyId: $colonyAddress
-    hash: {eq: $extensionHash}
-    filter: {isDeleted: {eq: false}}
-  ) {
-    items {
-      ...Extension
+  query GetColonyExtension($colonyAddress: ID!, $extensionHash: String!) {
+    getExtensionByColonyAndHash(
+      colonyId: $colonyAddress
+      hash: { eq: $extensionHash }
+      filter: { isDeleted: { eq: false } }
+    ) {
+      items {
+        ...Extension
+      }
     }
   }
-}
-    ${ExtensionFragmentDoc}`;
+  ${ExtensionFragmentDoc}
+`;
 
 /**
  * __useGetColonyExtensionQuery__
@@ -3538,26 +4971,49 @@ export const GetColonyExtensionDocument = gql`
  *   },
  * });
  */
-export function useGetColonyExtensionQuery(baseOptions: Apollo.QueryHookOptions<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>(GetColonyExtensionDocument, options);
-      }
-export function useGetColonyExtensionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>(GetColonyExtensionDocument, options);
-        }
-export type GetColonyExtensionQueryHookResult = ReturnType<typeof useGetColonyExtensionQuery>;
-export type GetColonyExtensionLazyQueryHookResult = ReturnType<typeof useGetColonyExtensionLazyQuery>;
-export type GetColonyExtensionQueryResult = Apollo.QueryResult<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>;
+export function useGetColonyExtensionQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetColonyExtensionQuery,
+    GetColonyExtensionQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetColonyExtensionQuery,
+    GetColonyExtensionQueryVariables
+  >(GetColonyExtensionDocument, options);
+}
+export function useGetColonyExtensionLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetColonyExtensionQuery,
+    GetColonyExtensionQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetColonyExtensionQuery,
+    GetColonyExtensionQueryVariables
+  >(GetColonyExtensionDocument, options);
+}
+export type GetColonyExtensionQueryHookResult = ReturnType<
+  typeof useGetColonyExtensionQuery
+>;
+export type GetColonyExtensionLazyQueryHookResult = ReturnType<
+  typeof useGetColonyExtensionLazyQuery
+>;
+export type GetColonyExtensionQueryResult = Apollo.QueryResult<
+  GetColonyExtensionQuery,
+  GetColonyExtensionQueryVariables
+>;
 export const GetProfileByEmailDocument = gql`
-    query GetProfileByEmail($email: AWSEmail!) {
-  getProfileByEmail(email: $email) {
-    items {
-      id
+  query GetProfileByEmail($email: AWSEmail!) {
+    getProfileByEmail(email: $email) {
+      items {
+        id
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetProfileByEmailQuery__
@@ -3575,26 +5031,50 @@ export const GetProfileByEmailDocument = gql`
  *   },
  * });
  */
-export function useGetProfileByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>(GetProfileByEmailDocument, options);
-      }
-export function useGetProfileByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>(GetProfileByEmailDocument, options);
-        }
-export type GetProfileByEmailQueryHookResult = ReturnType<typeof useGetProfileByEmailQuery>;
-export type GetProfileByEmailLazyQueryHookResult = ReturnType<typeof useGetProfileByEmailLazyQuery>;
-export type GetProfileByEmailQueryResult = Apollo.QueryResult<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>;
+export function useGetProfileByEmailQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetProfileByEmailQuery,
+    GetProfileByEmailQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetProfileByEmailQuery,
+    GetProfileByEmailQueryVariables
+  >(GetProfileByEmailDocument, options);
+}
+export function useGetProfileByEmailLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetProfileByEmailQuery,
+    GetProfileByEmailQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetProfileByEmailQuery,
+    GetProfileByEmailQueryVariables
+  >(GetProfileByEmailDocument, options);
+}
+export type GetProfileByEmailQueryHookResult = ReturnType<
+  typeof useGetProfileByEmailQuery
+>;
+export type GetProfileByEmailLazyQueryHookResult = ReturnType<
+  typeof useGetProfileByEmailLazyQuery
+>;
+export type GetProfileByEmailQueryResult = Apollo.QueryResult<
+  GetProfileByEmailQuery,
+  GetProfileByEmailQueryVariables
+>;
 export const GetTokenByAddressDocument = gql`
-    query GetTokenByAddress($address: ID!) {
-  getTokenByAddress(id: $address) {
-    items {
-      ...Token
+  query GetTokenByAddress($address: ID!) {
+    getTokenByAddress(id: $address) {
+      items {
+        ...Token
+      }
     }
   }
-}
-    ${TokenFragmentDoc}`;
+  ${TokenFragmentDoc}
+`;
 
 /**
  * __useGetTokenByAddressQuery__
@@ -3612,26 +5092,50 @@ export const GetTokenByAddressDocument = gql`
  *   },
  * });
  */
-export function useGetTokenByAddressQuery(baseOptions: Apollo.QueryHookOptions<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>(GetTokenByAddressDocument, options);
-      }
-export function useGetTokenByAddressLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>(GetTokenByAddressDocument, options);
-        }
-export type GetTokenByAddressQueryHookResult = ReturnType<typeof useGetTokenByAddressQuery>;
-export type GetTokenByAddressLazyQueryHookResult = ReturnType<typeof useGetTokenByAddressLazyQuery>;
-export type GetTokenByAddressQueryResult = Apollo.QueryResult<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>;
+export function useGetTokenByAddressQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetTokenByAddressQuery,
+    GetTokenByAddressQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetTokenByAddressQuery,
+    GetTokenByAddressQueryVariables
+  >(GetTokenByAddressDocument, options);
+}
+export function useGetTokenByAddressLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetTokenByAddressQuery,
+    GetTokenByAddressQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetTokenByAddressQuery,
+    GetTokenByAddressQueryVariables
+  >(GetTokenByAddressDocument, options);
+}
+export type GetTokenByAddressQueryHookResult = ReturnType<
+  typeof useGetTokenByAddressQuery
+>;
+export type GetTokenByAddressLazyQueryHookResult = ReturnType<
+  typeof useGetTokenByAddressLazyQuery
+>;
+export type GetTokenByAddressQueryResult = Apollo.QueryResult<
+  GetTokenByAddressQuery,
+  GetTokenByAddressQueryVariables
+>;
 export const GetTokenFromEverywhereDocument = gql`
-    query GetTokenFromEverywhere($input: TokenFromEverywhereArguments!) {
-  getTokenFromEverywhere(input: $input) {
-    items {
-      ...Token
+  query GetTokenFromEverywhere($input: TokenFromEverywhereArguments!) {
+    getTokenFromEverywhere(input: $input) {
+      items {
+        ...Token
+      }
     }
   }
-}
-    ${TokenFragmentDoc}`;
+  ${TokenFragmentDoc}
+`;
 
 /**
  * __useGetTokenFromEverywhereQuery__
@@ -3649,26 +5153,50 @@ export const GetTokenFromEverywhereDocument = gql`
  *   },
  * });
  */
-export function useGetTokenFromEverywhereQuery(baseOptions: Apollo.QueryHookOptions<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>(GetTokenFromEverywhereDocument, options);
-      }
-export function useGetTokenFromEverywhereLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>(GetTokenFromEverywhereDocument, options);
-        }
-export type GetTokenFromEverywhereQueryHookResult = ReturnType<typeof useGetTokenFromEverywhereQuery>;
-export type GetTokenFromEverywhereLazyQueryHookResult = ReturnType<typeof useGetTokenFromEverywhereLazyQuery>;
-export type GetTokenFromEverywhereQueryResult = Apollo.QueryResult<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>;
+export function useGetTokenFromEverywhereQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetTokenFromEverywhereQuery,
+    GetTokenFromEverywhereQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetTokenFromEverywhereQuery,
+    GetTokenFromEverywhereQueryVariables
+  >(GetTokenFromEverywhereDocument, options);
+}
+export function useGetTokenFromEverywhereLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetTokenFromEverywhereQuery,
+    GetTokenFromEverywhereQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetTokenFromEverywhereQuery,
+    GetTokenFromEverywhereQueryVariables
+  >(GetTokenFromEverywhereDocument, options);
+}
+export type GetTokenFromEverywhereQueryHookResult = ReturnType<
+  typeof useGetTokenFromEverywhereQuery
+>;
+export type GetTokenFromEverywhereLazyQueryHookResult = ReturnType<
+  typeof useGetTokenFromEverywhereLazyQuery
+>;
+export type GetTokenFromEverywhereQueryResult = Apollo.QueryResult<
+  GetTokenFromEverywhereQuery,
+  GetTokenFromEverywhereQueryVariables
+>;
 export const GetCurrentUserDocument = gql`
-    query GetCurrentUser($address: ID!) {
-  getUserByAddress(id: $address) {
-    items {
-      ...User
+  query GetCurrentUser($address: ID!) {
+    getUserByAddress(id: $address) {
+      items {
+        ...User
+      }
     }
   }
-}
-    ${UserFragmentDoc}`;
+  ${UserFragmentDoc}
+`;
 
 /**
  * __useGetCurrentUserQuery__
@@ -3686,22 +5214,45 @@ export const GetCurrentUserDocument = gql`
  *   },
  * });
  */
-export function useGetCurrentUserQuery(baseOptions: Apollo.QueryHookOptions<GetCurrentUserQuery, GetCurrentUserQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(GetCurrentUserDocument, options);
-      }
-export function useGetCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentUserQuery, GetCurrentUserQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(GetCurrentUserDocument, options);
-        }
-export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQuery>;
-export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
-export type GetCurrentUserQueryResult = Apollo.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
-export const GetUserReputationDocument = gql`
-    query GetUserReputation($input: GetUserReputationInput!) {
-  getUserReputation(input: $input)
+export function useGetCurrentUserQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetCurrentUserQuery,
+    GetCurrentUserQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(
+    GetCurrentUserDocument,
+    options,
+  );
 }
-    `;
+export function useGetCurrentUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetCurrentUserQuery,
+    GetCurrentUserQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(
+    GetCurrentUserDocument,
+    options,
+  );
+}
+export type GetCurrentUserQueryHookResult = ReturnType<
+  typeof useGetCurrentUserQuery
+>;
+export type GetCurrentUserLazyQueryHookResult = ReturnType<
+  typeof useGetCurrentUserLazyQuery
+>;
+export type GetCurrentUserQueryResult = Apollo.QueryResult<
+  GetCurrentUserQuery,
+  GetCurrentUserQueryVariables
+>;
+export const GetUserReputationDocument = gql`
+  query GetUserReputation($input: GetUserReputationInput!) {
+    getUserReputation(input: $input)
+  }
+`;
 
 /**
  * __useGetUserReputationQuery__
@@ -3719,27 +5270,50 @@ export const GetUserReputationDocument = gql`
  *   },
  * });
  */
-export function useGetUserReputationQuery(baseOptions: Apollo.QueryHookOptions<GetUserReputationQuery, GetUserReputationQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserReputationQuery, GetUserReputationQueryVariables>(GetUserReputationDocument, options);
-      }
-export function useGetUserReputationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserReputationQuery, GetUserReputationQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserReputationQuery, GetUserReputationQueryVariables>(GetUserReputationDocument, options);
-        }
-export type GetUserReputationQueryHookResult = ReturnType<typeof useGetUserReputationQuery>;
-export type GetUserReputationLazyQueryHookResult = ReturnType<typeof useGetUserReputationLazyQuery>;
-export type GetUserReputationQueryResult = Apollo.QueryResult<GetUserReputationQuery, GetUserReputationQueryVariables>;
+export function useGetUserReputationQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetUserReputationQuery,
+    GetUserReputationQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetUserReputationQuery,
+    GetUserReputationQueryVariables
+  >(GetUserReputationDocument, options);
+}
+export function useGetUserReputationLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetUserReputationQuery,
+    GetUserReputationQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetUserReputationQuery,
+    GetUserReputationQueryVariables
+  >(GetUserReputationDocument, options);
+}
+export type GetUserReputationQueryHookResult = ReturnType<
+  typeof useGetUserReputationQuery
+>;
+export type GetUserReputationLazyQueryHookResult = ReturnType<
+  typeof useGetUserReputationLazyQuery
+>;
+export type GetUserReputationQueryResult = Apollo.QueryResult<
+  GetUserReputationQuery,
+  GetUserReputationQueryVariables
+>;
 export const GetReputationForTopDomainsDocument = gql`
-    query GetReputationForTopDomains($input: GetReputationForTopDomainsInput!) {
-  getReputationForTopDomains(input: $input) {
-    items {
-      domainId
-      reputationPercentage
+  query GetReputationForTopDomains($input: GetReputationForTopDomainsInput!) {
+    getReputationForTopDomains(input: $input) {
+      items {
+        domainId
+        reputationPercentage
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetReputationForTopDomainsQuery__
@@ -3757,26 +5331,49 @@ export const GetReputationForTopDomainsDocument = gql`
  *   },
  * });
  */
-export function useGetReputationForTopDomainsQuery(baseOptions: Apollo.QueryHookOptions<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>(GetReputationForTopDomainsDocument, options);
-      }
-export function useGetReputationForTopDomainsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>(GetReputationForTopDomainsDocument, options);
-        }
-export type GetReputationForTopDomainsQueryHookResult = ReturnType<typeof useGetReputationForTopDomainsQuery>;
-export type GetReputationForTopDomainsLazyQueryHookResult = ReturnType<typeof useGetReputationForTopDomainsLazyQuery>;
-export type GetReputationForTopDomainsQueryResult = Apollo.QueryResult<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>;
+export function useGetReputationForTopDomainsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetReputationForTopDomainsQuery,
+    GetReputationForTopDomainsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetReputationForTopDomainsQuery,
+    GetReputationForTopDomainsQueryVariables
+  >(GetReputationForTopDomainsDocument, options);
+}
+export function useGetReputationForTopDomainsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetReputationForTopDomainsQuery,
+    GetReputationForTopDomainsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetReputationForTopDomainsQuery,
+    GetReputationForTopDomainsQueryVariables
+  >(GetReputationForTopDomainsDocument, options);
+}
+export type GetReputationForTopDomainsQueryHookResult = ReturnType<
+  typeof useGetReputationForTopDomainsQuery
+>;
+export type GetReputationForTopDomainsLazyQueryHookResult = ReturnType<
+  typeof useGetReputationForTopDomainsLazyQuery
+>;
+export type GetReputationForTopDomainsQueryResult = Apollo.QueryResult<
+  GetReputationForTopDomainsQuery,
+  GetReputationForTopDomainsQueryVariables
+>;
 export const GetUserByNameDocument = gql`
-    query GetUserByName($name: String!) {
-  getUserByName(name: $name) {
-    items {
-      id
+  query GetUserByName($name: String!) {
+    getUserByName(name: $name) {
+      items {
+        id
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetUserByNameQuery__
@@ -3794,31 +5391,55 @@ export const GetUserByNameDocument = gql`
  *   },
  * });
  */
-export function useGetUserByNameQuery(baseOptions: Apollo.QueryHookOptions<GetUserByNameQuery, GetUserByNameQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserByNameQuery, GetUserByNameQueryVariables>(GetUserByNameDocument, options);
-      }
-export function useGetUserByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByNameQuery, GetUserByNameQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserByNameQuery, GetUserByNameQueryVariables>(GetUserByNameDocument, options);
-        }
-export type GetUserByNameQueryHookResult = ReturnType<typeof useGetUserByNameQuery>;
-export type GetUserByNameLazyQueryHookResult = ReturnType<typeof useGetUserByNameLazyQuery>;
-export type GetUserByNameQueryResult = Apollo.QueryResult<GetUserByNameQuery, GetUserByNameQueryVariables>;
-export const CombinedUserDocument = gql`
-    query CombinedUser($name: String!, $address: ID!) {
-  getUserByAddress(id: $address) {
-    items {
-      ...User
-    }
-  }
-  getUserByName(name: $name) {
-    items {
-      ...User
-    }
-  }
+export function useGetUserByNameQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetUserByNameQuery,
+    GetUserByNameQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetUserByNameQuery, GetUserByNameQueryVariables>(
+    GetUserByNameDocument,
+    options,
+  );
 }
-    ${UserFragmentDoc}`;
+export function useGetUserByNameLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetUserByNameQuery,
+    GetUserByNameQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetUserByNameQuery, GetUserByNameQueryVariables>(
+    GetUserByNameDocument,
+    options,
+  );
+}
+export type GetUserByNameQueryHookResult = ReturnType<
+  typeof useGetUserByNameQuery
+>;
+export type GetUserByNameLazyQueryHookResult = ReturnType<
+  typeof useGetUserByNameLazyQuery
+>;
+export type GetUserByNameQueryResult = Apollo.QueryResult<
+  GetUserByNameQuery,
+  GetUserByNameQueryVariables
+>;
+export const CombinedUserDocument = gql`
+  query CombinedUser($name: String!, $address: ID!) {
+    getUserByAddress(id: $address) {
+      items {
+        ...User
+      }
+    }
+    getUserByName(name: $name) {
+      items {
+        ...User
+      }
+    }
+  }
+  ${UserFragmentDoc}
+`;
 
 /**
  * __useCombinedUserQuery__
@@ -3837,27 +5458,50 @@ export const CombinedUserDocument = gql`
  *   },
  * });
  */
-export function useCombinedUserQuery(baseOptions: Apollo.QueryHookOptions<CombinedUserQuery, CombinedUserQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<CombinedUserQuery, CombinedUserQueryVariables>(CombinedUserDocument, options);
-      }
-export function useCombinedUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CombinedUserQuery, CombinedUserQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<CombinedUserQuery, CombinedUserQueryVariables>(CombinedUserDocument, options);
-        }
-export type CombinedUserQueryHookResult = ReturnType<typeof useCombinedUserQuery>;
-export type CombinedUserLazyQueryHookResult = ReturnType<typeof useCombinedUserLazyQuery>;
-export type CombinedUserQueryResult = Apollo.QueryResult<CombinedUserQuery, CombinedUserQueryVariables>;
+export function useCombinedUserQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    CombinedUserQuery,
+    CombinedUserQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<CombinedUserQuery, CombinedUserQueryVariables>(
+    CombinedUserDocument,
+    options,
+  );
+}
+export function useCombinedUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    CombinedUserQuery,
+    CombinedUserQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<CombinedUserQuery, CombinedUserQueryVariables>(
+    CombinedUserDocument,
+    options,
+  );
+}
+export type CombinedUserQueryHookResult = ReturnType<
+  typeof useCombinedUserQuery
+>;
+export type CombinedUserLazyQueryHookResult = ReturnType<
+  typeof useCombinedUserLazyQuery
+>;
+export type CombinedUserQueryResult = Apollo.QueryResult<
+  CombinedUserQuery,
+  CombinedUserQueryVariables
+>;
 export const GetCurrentExtensionsVersionsDocument = gql`
-    query GetCurrentExtensionsVersions {
-  listCurrentVersions {
-    items {
-      extensionHash: key
-      version
+  query GetCurrentExtensionsVersions {
+    listCurrentVersions {
+      items {
+        extensionHash: key
+        version
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetCurrentExtensionsVersionsQuery__
@@ -3874,27 +5518,50 @@ export const GetCurrentExtensionsVersionsDocument = gql`
  *   },
  * });
  */
-export function useGetCurrentExtensionsVersionsQuery(baseOptions?: Apollo.QueryHookOptions<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>(GetCurrentExtensionsVersionsDocument, options);
-      }
-export function useGetCurrentExtensionsVersionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>(GetCurrentExtensionsVersionsDocument, options);
-        }
-export type GetCurrentExtensionsVersionsQueryHookResult = ReturnType<typeof useGetCurrentExtensionsVersionsQuery>;
-export type GetCurrentExtensionsVersionsLazyQueryHookResult = ReturnType<typeof useGetCurrentExtensionsVersionsLazyQuery>;
-export type GetCurrentExtensionsVersionsQueryResult = Apollo.QueryResult<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>;
+export function useGetCurrentExtensionsVersionsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetCurrentExtensionsVersionsQuery,
+    GetCurrentExtensionsVersionsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetCurrentExtensionsVersionsQuery,
+    GetCurrentExtensionsVersionsQueryVariables
+  >(GetCurrentExtensionsVersionsDocument, options);
+}
+export function useGetCurrentExtensionsVersionsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetCurrentExtensionsVersionsQuery,
+    GetCurrentExtensionsVersionsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetCurrentExtensionsVersionsQuery,
+    GetCurrentExtensionsVersionsQueryVariables
+  >(GetCurrentExtensionsVersionsDocument, options);
+}
+export type GetCurrentExtensionsVersionsQueryHookResult = ReturnType<
+  typeof useGetCurrentExtensionsVersionsQuery
+>;
+export type GetCurrentExtensionsVersionsLazyQueryHookResult = ReturnType<
+  typeof useGetCurrentExtensionsVersionsLazyQuery
+>;
+export type GetCurrentExtensionsVersionsQueryResult = Apollo.QueryResult<
+  GetCurrentExtensionsVersionsQuery,
+  GetCurrentExtensionsVersionsQueryVariables
+>;
 export const GetCurrentExtensionVersionDocument = gql`
-    query GetCurrentExtensionVersion($extensionHash: String!) {
-  getCurrentVersionByKey(key: $extensionHash) {
-    items {
-      extensionHash: key
-      version
+  query GetCurrentExtensionVersion($extensionHash: String!) {
+    getCurrentVersionByKey(key: $extensionHash) {
+      items {
+        extensionHash: key
+        version
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetCurrentExtensionVersionQuery__
@@ -3912,14 +5579,37 @@ export const GetCurrentExtensionVersionDocument = gql`
  *   },
  * });
  */
-export function useGetCurrentExtensionVersionQuery(baseOptions: Apollo.QueryHookOptions<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>(GetCurrentExtensionVersionDocument, options);
-      }
-export function useGetCurrentExtensionVersionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>(GetCurrentExtensionVersionDocument, options);
-        }
-export type GetCurrentExtensionVersionQueryHookResult = ReturnType<typeof useGetCurrentExtensionVersionQuery>;
-export type GetCurrentExtensionVersionLazyQueryHookResult = ReturnType<typeof useGetCurrentExtensionVersionLazyQuery>;
-export type GetCurrentExtensionVersionQueryResult = Apollo.QueryResult<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>;
+export function useGetCurrentExtensionVersionQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetCurrentExtensionVersionQuery,
+    GetCurrentExtensionVersionQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetCurrentExtensionVersionQuery,
+    GetCurrentExtensionVersionQueryVariables
+  >(GetCurrentExtensionVersionDocument, options);
+}
+export function useGetCurrentExtensionVersionLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetCurrentExtensionVersionQuery,
+    GetCurrentExtensionVersionQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetCurrentExtensionVersionQuery,
+    GetCurrentExtensionVersionQueryVariables
+  >(GetCurrentExtensionVersionDocument, options);
+}
+export type GetCurrentExtensionVersionQueryHookResult = ReturnType<
+  typeof useGetCurrentExtensionVersionQuery
+>;
+export type GetCurrentExtensionVersionLazyQueryHookResult = ReturnType<
+  typeof useGetCurrentExtensionVersionLazyQuery
+>;
+export type GetCurrentExtensionVersionQueryResult = Apollo.QueryResult<
+  GetCurrentExtensionVersionQuery,
+  GetCurrentExtensionVersionQueryVariables
+>;

@@ -8,15 +8,13 @@ import { ActionTypes } from '~redux';
 
 import { Props as DefaultButtonProps } from './Button';
 
-const getFormAction = (
+export const getFormAction = (
   action: ActionTypes,
   actionType: 'ERROR' | 'SUCCESS',
-) => {
-  const actionEnd = `_${actionType}`;
-  return `${action}${actionEnd}`;
-};
+) => `${action}_${actionType}`;
 
 interface Props extends DefaultButtonProps {
+  /** The base (i.e. submit) redux action type */
   actionType: ActionTypes;
   button?: ElementType;
   confirmText?: any;

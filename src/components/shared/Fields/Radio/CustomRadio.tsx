@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { MessageDescriptor, FormattedMessage } from 'react-intl';
 import { nanoid } from 'nanoid';
-import { useField } from 'formik';
 import classnames from 'classnames';
+import { useFormContext } from 'react-hook-form';
 
 import { getMainClasses } from '~utils/css';
 import Icon from '~shared/Icon';
@@ -58,7 +58,8 @@ const CustomRadio = ({
   icon,
   dataTest,
 }: Props) => {
-  const [, { error }, { setValue }] = useField(name);
+  const { setValue, getFieldState } = useFormContext();
+  const { error } = getFieldState(name);
   const inputRef = useRef<string>(inputId || nanoid());
 
   return (
@@ -86,7 +87,13 @@ const CustomRadio = ({
         disabled={disabled}
         type="radio"
         value={value}
-        onClick={() => setValue(value)}
+        onClick={() =>
+          setValue(name, value, {
+            shouldDirty: true,
+            shouldTouch: true,
+            shouldValidate: true,
+          })
+        }
         name={name}
         id={inputRef.current}
         className={styles.input}

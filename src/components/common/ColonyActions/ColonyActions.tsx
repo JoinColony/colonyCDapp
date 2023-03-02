@@ -186,7 +186,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
     ? ActionTypes.ROOT_MOTION
     : ActionTypes.ACTION_MINT_TOKENS;
 
-  const amount = BigNumber.from(1);
+  const amount = BigNumber.from('1000000000000000000');
   const transform = withMeta({ navigate });
 
   return (
