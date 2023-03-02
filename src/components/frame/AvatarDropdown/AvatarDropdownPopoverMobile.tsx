@@ -12,12 +12,12 @@ import {
   useAppContext,
   useColonyContext,
   useUserReputation,
-  // useCanInteractWithNetwork,
+  useCanInteractWithNetwork,
 } from '~hooks';
 import { SimpleMessageValues } from '~types/index';
 import { UserTokenBalanceData } from '~types';
+import UserTokenActivationDisplay from '~frame/UserTokenActivationButton/UserTokenActivationDisplay';
 
-// import UserTokenActivationDisplay from '../UserTokenActivationButton/UserTokenActivationDisplay';
 import { TokenActivationPopover } from '../TokenActivation';
 import ItemContainer from './ItemContainer';
 
@@ -70,7 +70,7 @@ const AvatarDropdownPopoverMobile = ({
     wallet?.address,
   );
   const colonyAddress = colony?.colonyAddress;
-  // const canInteractWithNetwork = useCanInteractWithNetwork();
+  const canInteractWithNetwork = useCanInteractWithNetwork();
 
   return (
     <DropdownMenu>
@@ -80,15 +80,15 @@ const AvatarDropdownPopoverMobile = ({
             {wallet?.address && <MaskedAddress address={wallet.address} />}
           </ItemContainer>
         </DropdownMenuItem>
-        {/* <DropdownMenuItem>
-          <ItemContainer message={MSG.balance}>
+        <DropdownMenuItem>
+          <ItemContainer message={MSG.balance} spinnerMsg={spinnerMsg}>
             {canInteractWithNetwork && nativeToken && (
               <UserTokenActivationDisplay
                 {...{ nativeToken, inactiveBalance, totalBalance }}
               />
             )}
           </ItemContainer>
-        </DropdownMenuItem> */}
+        </DropdownMenuItem>
         <DropdownMenuItem>
           <ItemContainer message={MSG.reputation} spinnerMsg={spinnerMsg}>
             {colonyAddress && (
@@ -113,7 +113,10 @@ const AvatarDropdownPopoverMobile = ({
               >
                 {({ toggle, ref }) => (
                   <Button
-                    appearance={{ theme: 'primary', size: 'medium' }}
+                    appearance={{
+                      theme: 'primary',
+                      size: 'medium',
+                    }}
                     onClick={toggle}
                     innerRef={ref}
                     data-test="manageTokensButton"

@@ -5,7 +5,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import MemberReputation from '~shared/MemberReputation';
 import { Tooltip } from '~shared/Popover';
 import { AvatarDropdown } from '~frame/AvatarDropdown';
-import UserTokenActivationButton from './UserTokenActivationButton';
+import UserTokenActivationButton from '~frame/UserTokenActivationButton';
 import HamburgerDropdown from '~frame/HamburgerDropdown';
 import {
   useAppContext,
