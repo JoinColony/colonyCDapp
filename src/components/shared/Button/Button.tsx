@@ -1,13 +1,13 @@
 /* eslint-disable react/button-has-type */
 
 import React, { ReactNode, ButtonHTMLAttributes } from 'react';
-import { MessageDescriptor, useIntl } from 'react-intl';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 
-import { SimpleMessageValues } from '~types';
+import { Message, UniversalMessageValues } from '~types';
 import { useMainClasses } from '~hooks';
 
 import styles from './Button.css';
+import { formatText } from '~utils/intl';
 
 const displayName = 'Button';
 
@@ -55,16 +55,16 @@ export interface Props
   loading?: boolean;
 
   /** Standard html title attribute. Can be a string or a `messageDescriptor` */
-  title?: MessageDescriptor | string;
+  title?: Message;
 
   /** Button type (button|submit) */
   type?: 'submit' | 'reset' | 'button';
 
   /** A string or a `messageDescriptor` that make up the button's text label */
-  text?: MessageDescriptor | string;
+  text?: Message;
 
   /** Values for loading text (react-intl interpolation) */
-  textValues?: SimpleMessageValues;
+  textValues?: UniversalMessageValues;
   /** Testing */
   dataTest?: string;
 }
@@ -97,12 +97,8 @@ const Button = ({
   dataTest,
   ...props
 }: Props) => {
-  const { formatMessage } = useIntl();
-
-  const titleText =
-    typeof title == 'string' ? title : title && formatMessage(title);
-  const buttonText =
-    typeof text == 'string' ? text : text && formatMessage(text, textValues);
+  const titleText = formatText(title);
+  const buttonText = formatText(text, textValues);
 
   const classNames = useMainClasses(appearance, styles, className);
 
