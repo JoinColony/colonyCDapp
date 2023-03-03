@@ -51,7 +51,7 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
         }}
         onSubmit={() => {}}
       >
-        {({ formState: { isSubmitting, isValid }, getValues }) => {
+        {({ formState: { isSubmitting, isValid }, getValues, reset }) => {
           const values = getValues();
           const showReset =
             values.verificationType !== VerificationType.All ||
@@ -70,7 +70,7 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
                     text={MSG.reset}
                     type="submit"
                     appearance={{ theme: 'blue' }}
-                    // onClick={() => submit()}
+                    onClick={() => reset()}
                   />
                 )}
               </div>
