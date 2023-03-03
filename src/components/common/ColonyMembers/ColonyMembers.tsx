@@ -36,6 +36,16 @@ const ColonyMembers = () => {
     COLONY_TOTAL_BALANCE_DOMAIN_ID,
   );
 
+  const checkFilters = (state: FormValues) => {
+    if (
+      state.memberType === filters.memberType &&
+      state.verificationType === filters.verificationType
+    ) {
+      return null;
+    }
+    return setFilters(state);
+  };
+
   const isRootDomain =
     selectedDomainId === ROOT_DOMAIN_ID ||
     selectedDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID;
@@ -69,7 +79,7 @@ const ColonyMembers = () => {
           <TotalReputation selectedDomainId={selectedDomainId} />
           <MemberControls isRootDomain={isRootDomain} />
           <MembersFilter
-            handleFiltersCallback={setFilters}
+            handleFiltersCallback={checkFilters}
             isRoot={isRootDomain}
           />
         </aside>

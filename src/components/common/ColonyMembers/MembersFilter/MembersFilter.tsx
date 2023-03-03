@@ -1,5 +1,4 @@
 import React from 'react';
-// import { FormikProps } from 'formik';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Button from '~shared/Button';
@@ -52,14 +51,13 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
         }}
         onSubmit={() => {}}
       >
-        {/* {({ resetForm, values }: FormikProps<FormValues>) => { */}
         {({ formState: { isSubmitting, isValid }, getValues }) => {
           const values = getValues();
           const showReset =
             values.verificationType !== VerificationType.All ||
             values.memberType !== MemberType.All;
-          console.log('values', values);
           handleFiltersCallback(values);
+
           return (
             <div className={styles.filters}>
               <div className={styles.titleContainer}>
@@ -87,7 +85,6 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
                         name={name}
                         options={options}
                         label={label}
-                        // handleFiltersCallback={handleFiltersCallback}
                       />
                     )
                   );
