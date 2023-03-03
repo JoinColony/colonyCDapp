@@ -2,14 +2,15 @@ import React from 'react';
 import { object, number, InferType, string } from 'yup';
 
 import {
-  getStakeFromSlider,
   StakingSliderProps,
+  SLIDER_AMOUNT_KEY,
 } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
 
 import Dialog, { DialogProps } from '~shared/Dialog';
 import { ActionHookForm as ActionForm } from '~shared/Fields';
-
+import { useRaiseObjectionDialog } from '~hooks';
 import { ActionTypes } from '~redux';
+import { Address, SetStateFn } from '~types';
 
 import {
   ObjectionHeading,
@@ -31,53 +32,59 @@ const validationSchema = object()
 
 type ObjectionValues = InferType<typeof validationSchema>;
 
+interface RaiseObjectionDialogCoreProps {
+  motionId: string;
+  setIsSummary: SetStateFn;
+  setMotionStakes: SetStateFn;
+  setUsersStakes: SetStateFn;
+  colonyAddress: Address;
+  defaultSliderAmount: number;
+}
+
 interface RaiseObjectionDialogProps extends DialogProps {
   stakingSliderProps: StakingSliderProps;
+  raiseObjectionDialogProps: RaiseObjectionDialogCoreProps;
 }
 
 const RaiseObjectionDialog = ({
   close,
   stakingSliderProps: {
     stakingWidgetSliderProps: {
-      remainingToStake,
-      minUserStake,
       canBeStaked,
-      userActivatedTokens,
+      minUserStake,
+      remainingToStake: remainingToFullyNayStaked,
     },
   },
   stakingSliderProps,
+  raiseObjectionDialogProps,
+  raiseObjectionDialogProps: { defaultSliderAmount },
 }: RaiseObjectionDialogProps) => {
-  // const { transform, handleSuccess } = useRaiseObjectionDialog();
+  const { transform, handleSuccess } = useRaiseObjectionDialog(close, {
+    ...raiseObjectionDialogProps,
+    minUserStake,
+    remainingToFullyNayStaked,
+  });
 
   return (
     <Dialog cancel={close}>
       <ActionForm<ObjectionValues>
         defaultValues={{
-          amount: AMOUNT_DEFAULT,
+          [SLIDER_AMOUNT_KEY]: defaultSliderAmount,
           annotationMessage: undefined,
         }}
         actionType={ActionTypes.MOTION_STAKE}
         validationSchema={validationSchema}
-        // onSuccess={handleSuccess}
-        // transform={transform}
+        onSuccess={handleSuccess}
+        transform={transform}
       >
-        {({ formState: { isSubmitting }, watch }) => {
-          const sliderAmount = watch('amount');
-          const stake = getStakeFromSlider(
-            sliderAmount,
-            remainingToStake,
-            minUserStake,
-          );
+        {({ formState: { isSubmitting } }) => {
           const disabled = !canBeStaked || isSubmitting;
           return (
             <>
               <ObjectionHeading />
               <ObjectionSlider stakingSliderProps={stakingSliderProps} />
               <ObjectionAnnotation disabled={disabled} />
-              <ObjectionControls
-                cancel={close}
-                disabled={disabled || userActivatedTokens.lt(stake)}
-              />
+              <ObjectionControls cancel={close} disabled={disabled} />
             </>
           );
         }}

@@ -12,5 +12,9 @@ export {
   SomeStakingValidationProps,
   SomeStakingWidgetSliderProps,
 } from './StakingSlider';
-export { SLIDER_AMOUNT_KEY } from './StakingInput';
+export {
+  SLIDER_AMOUNT_DEFAULT,
+  SLIDER_AMOUNT_KEY,
+  StakingWidgetValues,
+} from './StakingInput';
 export * from './helpers';

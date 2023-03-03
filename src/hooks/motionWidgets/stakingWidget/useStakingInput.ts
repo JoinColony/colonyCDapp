@@ -1,26 +1,22 @@
-import Decimal from 'decimal.js';
-import { BigNumber } from 'ethers';
 import { useRef } from 'react';
 
 import {
   getFinalStake,
   useStakingWidgetContext,
+  StakingWidgetValues,
 } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
-import { StakingWidgetValues } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget/StakingInput/StakingInput';
 
 import { useAppContext, useColonyContext } from '~hooks';
 import { OnSuccess } from '~shared/Fields/Form/ActionHookForm';
-import { MotionData } from '~types';
-import { mapPayload } from '~utils/actions';
 
 import {
-  getMotionSide,
+  getMotionStakingTransform,
   mapStakingSliderProps,
+  MotionStakes,
+  updateMotionStakes,
   updateUsersStakes,
   UsersStakes,
 } from './helpers';
-
-type MotionStakes = MotionData['motionStakes'];
 
 const useStakingInput = () => {
   const { user } = useAppContext();
@@ -33,6 +29,7 @@ const useStakingInput = () => {
     maxUserStake,
     motionId,
     isObjection,
+    totalNAYStakes,
     remainingToStake,
     enoughTokens,
     canBeStaked,
@@ -44,23 +41,17 @@ const useStakingInput = () => {
     reputationLoading,
     setMotionStakes,
     setUsersStakes,
+    setIsSummary,
   } = useStakingWidgetContext();
 
   const vote = isObjection ? 0 : 1;
-
-  const getFinalStakeFromSliderAmount = (sliderAmount: number) =>
-    getFinalStake(sliderAmount, remainingToStake, minUserStake);
-
-  const transform = mapPayload(({ amount }) => {
-    const finalStake = getFinalStakeFromSliderAmount(amount);
-
-    return {
-      amount: finalStake,
-      userAddress: user?.walletAddress,
-      colonyAddress: colony?.colonyAddress,
-      motionId: BigNumber.from(motionId),
-      vote,
-    };
+  const transform = getMotionStakingTransform({
+    colonyAddress: colony?.colonyAddress ?? '',
+    minUserStake,
+    motionId,
+    remainingToStake,
+    vote,
+    userAddress: user?.walletAddress ?? '',
   });
 
   const handleSuccess: OnSuccess<StakingWidgetValues> = (
@@ -68,17 +59,11 @@ const useStakingInput = () => {
     { amount },
     { reset },
   ) => {
+    const finalStake = getFinalStake(amount, remainingToStake, minUserStake);
     reset();
-    const finalStake = getFinalStakeFromSliderAmount(amount);
-    setMotionStakes((motionStakes: MotionStakes) => {
-      const side = getMotionSide(vote);
-      const updatedStake = new Decimal(motionStakes[side]).add(finalStake);
-
-      return {
-        ...motionStakes,
-        [side]: updatedStake.toString(),
-      };
-    });
+    setMotionStakes((motionStakes: MotionStakes) =>
+      updateMotionStakes(motionStakes, finalStake, vote),
+    );
     setUsersStakes((usersStakes: UsersStakes) =>
       updateUsersStakes(
         usersStakes,
@@ -87,6 +72,12 @@ const useStakingInput = () => {
         vote,
       ),
     );
+
+    const showSummary = isObjection || totalNAYStakes.gt(0);
+
+    if (showSummary) {
+      setIsSummary(true);
+    }
   };
 
   const stakingSliderProps = mapStakingSliderProps({

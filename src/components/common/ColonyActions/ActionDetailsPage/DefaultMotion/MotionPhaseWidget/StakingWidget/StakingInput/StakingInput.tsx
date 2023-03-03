@@ -12,6 +12,7 @@ const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget';
 
 export const SLIDER_AMOUNT_KEY = 'amount';
+export const SLIDER_AMOUNT_DEFAULT = 0;
 
 const validationSchema = object({
   [SLIDER_AMOUNT_KEY]: number().defined(),

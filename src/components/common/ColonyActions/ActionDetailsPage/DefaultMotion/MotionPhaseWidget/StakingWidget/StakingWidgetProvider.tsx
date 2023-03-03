@@ -88,7 +88,9 @@ const StakingWidgetProvider = ({
 }: StakingWidgetProviderProps) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
-  const [isSummary, setIsSummary] = useState(false);
+  const [isSummary, setIsSummary] = useState(
+    new Decimal(rawMotionStakes.nay).gt(0),
+  );
   const [isObjection, setIsObjection] = useState(false);
   // for optimistic ui
   const [usersStakes, setUsersStakes] = useState(usersStakesFromDB);
