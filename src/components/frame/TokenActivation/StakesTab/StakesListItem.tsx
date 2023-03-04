@@ -6,12 +6,15 @@ import Numeral from '~shared/Numeral';
 
 import styles from './StakesTab.css';
 
+const displayName = 'TokenActivation.StakesTab.StakesListItem';
+
 const MSG = defineMessages({
   motionUrl: {
-    id: 'users.TokenActivation.StakesTab.StakesListItem.motionUrl',
+    id: `${displayName}.motionUrl`,
     defaultMessage: 'Go to motion',
   },
 });
+
 interface Props {
   stakedAmount: string;
   tokenSymbol: string;

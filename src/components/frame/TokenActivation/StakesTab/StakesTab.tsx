@@ -14,17 +14,19 @@ import StakesListItem from './StakesListItem';
 
 import styles from './StakesTab.css';
 
+const displayName = 'TokenActivation.StakesTab';
+
 const MSG = defineMessages({
   yourStakes: {
-    id: 'users.TokenActivation.StakesTab.yourStakes',
+    id: `${displayName}.yourStakes`,
     defaultMessage: 'Your stakes',
   },
   noClaims: {
-    id: 'users.TokenActivation.StakesTab.noClaims',
+    id: `${displayName}.noClaims`,
     defaultMessage: 'There are no stakes to claim.',
   },
   buttonText: {
-    id: 'users.TokenActivation.StakesTab.buttonText',
+    id: `${displayName}.buttonText`,
     defaultMessage: 'Claim all',
   },
 });
