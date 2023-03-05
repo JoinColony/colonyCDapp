@@ -34,12 +34,13 @@ fragment Colony on Colony {
   }
   domains {
     items {
-      color
-      description
-      id
-      name
-      nativeId
-      parentId: domainParentId
+      ...Domain
+    }
+  }
+  balances {
+    items {
+      ...ColonyBalance
+      # id
     }
   }
   watchers {
@@ -85,4 +86,15 @@ fragment WatchListItem on WatchedColonies {
     ...WatchedColony
   }
   createdAt
+}
+
+fragment ColonyBalance on ColonyBalance {
+  id
+  balance
+  domain {
+    ...Domain
+  }
+  token {
+    ...Token
+  }
 }
