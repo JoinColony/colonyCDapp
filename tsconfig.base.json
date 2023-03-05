@@ -27,7 +27,10 @@
     //   "~users/*": ["src/modules/users/components/*"],
       "~utils/*": ["src/utils/*"],
       "~routes": ["src/routes"],
-      "~routes/*": ["src/routes/*"]
+      "~routes/*": ["src/routes/*"],
+      "~cache": ["src/cache"],
+      "~cache/*": ["src/cache/*"]
+
     },
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,
