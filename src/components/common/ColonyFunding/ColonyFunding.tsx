@@ -16,22 +16,22 @@ import { notNull } from '~utils/arrays';
 
 import styles from './ColonyFunding.css';
 
-const displayName = 'common.ColonyFunding';
-
 const MSG = defineMessages({
   labelSelectDomain: {
-    id: `${displayName}.labelSelectDomain`,
+    id: 'dashboard.ColonyFunding.labelSelectDomain',
     defaultMessage: 'Select a domain',
   },
   title: {
-    id: `${displayName}.title`,
+    id: 'dashboard.ColonyFunding.title',
     defaultMessage: 'Funds',
   },
   loadingText: {
-    id: `${displayName}.loadingText`,
+    id: 'dashboard.ColonyFunding.loadingText',
     defaultMessage: 'Loading Colony',
   },
 });
+
+const componentDisplayName = 'dashboard.ColonyFunding';
 
 const ColonyFunding = () => {
   const isMobile = useMobile();
@@ -128,6 +128,6 @@ const ColonyFunding = () => {
   );
 };
 
-ColonyFunding.displayName = displayName;
+ColonyFunding.displayName = componentDisplayName;
 
 export default ColonyFunding;
