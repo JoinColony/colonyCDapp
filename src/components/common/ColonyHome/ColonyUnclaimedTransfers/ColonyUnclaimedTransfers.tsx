@@ -108,7 +108,7 @@ const ColonyUnclaimedTransfers = () => {
               submit={ActionTypes.CLAIM_TOKEN}
               error={ActionTypes.CLAIM_TOKEN_ERROR}
               success={ActionTypes.CLAIM_TOKEN_SUCCESS}
-              transform={transform}
+              // transform={transform}
               disabled={!canInteractWithColony}
             />
           </Tooltip>
