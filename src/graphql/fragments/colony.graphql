@@ -44,9 +44,7 @@ fragment Colony on Colony {
   }
   version
   metadata {
-    displayName
-    avatar
-    thumbnail
+    ...ColonyMetadata
   }
 }
 
@@ -78,6 +76,9 @@ fragment WatchedColony on Colony {
     chainId
     network
   }
+  metadata {
+    ...ColonyMetadata
+  }
 }
 
 fragment WatchListItem on WatchedColonies {
@@ -85,4 +86,10 @@ fragment WatchListItem on WatchedColonies {
     ...WatchedColony
   }
   createdAt
+}
+
+fragment ColonyMetadata on ColonyMetadata {
+  displayName
+  avatar
+  thumbnail
 }
