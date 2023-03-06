@@ -276,8 +276,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         success={ActionTypes.ACTION_EDIT_COLONY_SUCCESS}
         transform={pipe(
           mergePayload({
-            colonyAddress: colony.colonyAddress,
-            colonyName: colony.name,
+            colony,
             colonyDisplayName: 'New Colony Name',
           }),
           withMeta({ navigate }),
