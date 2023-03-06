@@ -20,7 +20,7 @@ interface Props {
   tokens: ColonyTokens[];
 }
 
-const displayName = 'dashboard.TokenCardList';
+const displayName = 'common.TokenCardList';
 
 const TokenCardList = ({ appearance, domainId = 1, tokens }: Props) => (
   <div className={styles.tokenCardContainer} data-test="userTokenCards">

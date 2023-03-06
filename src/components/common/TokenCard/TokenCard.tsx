@@ -24,15 +24,15 @@ interface Props {
   token: Token;
 }
 
-const displayName = 'dashboard.TokenCard';
+const displayName = 'common.TokenCard';
 
 const MSG = defineMessages({
   nativeToken: {
-    id: 'dashboard.TokenCard.nativeToken',
+    id: `${displayName}.nativeToken`,
     defaultMessage: ' (Native Token)',
   },
   unknownToken: {
-    id: 'dashboard.TokenCard.unknownToken',
+    id: `${displayName}.unknownToken`,
     defaultMessage: 'Unknown Token',
   },
 });
