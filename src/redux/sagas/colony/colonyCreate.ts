@@ -318,7 +318,6 @@ function* colonyCreate({
             id: colonyAddress,
             name: givenColonyName,
             colonyNativeTokenId: tokenAddress,
-            profile: { displayName },
             version: toNumber(currentColonyVersion),
           },
         },

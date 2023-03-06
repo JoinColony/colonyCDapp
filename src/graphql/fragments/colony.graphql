@@ -4,15 +4,6 @@ fragment Colony on Colony {
   nativeToken {
     ...Token
   }
-  profile {
-    avatar
-    bio
-    displayName
-    email
-    location
-    thumbnail
-    website
-  }
   status {
     recovery
     nativeToken {
@@ -81,11 +72,6 @@ fragment Watcher on WatchedColonies {
 fragment WatchedColony on Colony {
   colonyAddress: id
   name
-  profile {
-    avatar
-    displayName
-    thumbnail
-  }
   chainMetadata {
     chainId
     network
