@@ -6,7 +6,7 @@ import { useColonyContext } from '~hooks';
 
 import ColonyDomainSelector from './ColonyDomainSelector';
 import ColonyFundingWidget from './ColonyFundingWidget';
-// import ColonyUnclaimedTransfers from './ColonyUnclaimedTransfers';
+import ColonyUnclaimedTransfers from './ColonyUnclaimedTransfers';
 import ColonyTitle from './ColonyTitle';
 import ColonyNavigation from './ColonyNavigation';
 import ColonyMembersWidget from './ColonyMembersWidget';
@@ -81,7 +81,7 @@ const ColonyHomeLayout = ({
         {showSidebar && (
           <aside className={styles.rightAside}>
             <ColonyDomainDescription currentDomainId={filteredDomainId} />
-            {/* <ColonyUnclaimedTransfers /> */}
+            <ColonyUnclaimedTransfers />
             <ColonyFundingWidget currentDomainId={filteredDomainId} />
             <ColonyMembersWidget currentDomainId={filteredDomainId} />
             <ColonyExtensions />

@@ -42,6 +42,14 @@ fragment Colony on Colony {
       ...ColonyBalance
     }
   }
+  fundsClaims {
+    items {
+      ...FundsClaim
+    }
+  }
+  chainFundsClaim { # For native chain tokens. Eg: Eth/Xdai
+    ...ChainFundsClaim
+  }
   watchers {
     items {
       ...Watcher
@@ -96,4 +104,21 @@ fragment ColonyBalance on ColonyBalance {
   token {
     ...Token
   }
+}
+
+fragment FundsClaim on ColonyFundsClaim {
+  id
+  token {
+    ...Token
+  }
+  createdAtBlock
+  createdAt
+  amount
+}
+
+fragment ChainFundsClaim on ColonyChainFundsClaim {
+  id
+  createdAtBlock
+  createdAt
+  amount
 }

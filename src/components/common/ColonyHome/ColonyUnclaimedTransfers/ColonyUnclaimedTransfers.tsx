@@ -1,7 +1,5 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-
-import { useColonyTransfersQuery, useTokenQuery } from '~data/index';
 
 import { ActionButton } from '~shared/Button';
 import Heading from '~shared/Heading';
@@ -10,7 +8,7 @@ import Numeral from '~shared/Numeral';
 import { Tooltip } from '~shared/Popover';
 import Link from '~shared/Link';
 import { ActionTypes } from '~redux';
-import { mergePayload } from '~utils/actions';
+// import { mergePayload } from '~utils/actions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { useColonyContext } from '~hooks';
 
@@ -43,30 +41,38 @@ const MSG = defineMessages({
 
 const ColonyUnclaimedTransfers = () => {
   const { colony } = useColonyContext();
-  const { colonyAddress, name } = colony || {};
+  const { name, fundsClaims } = colony || {};
+  const { items: claims = [] } = fundsClaims || {};
 
-  const { data, error } = useColonyTransfersQuery({
-    variables: { address: colonyAddress },
-  });
   const { canInteractWithColony } = useColonyContext();
 
-  const firstItem = data?.processedColony.unclaimedTransfers[0];
-
-  const { data: tokenData } = useTokenQuery({
-    variables: { address: firstItem?.token || '' },
-  });
-
-  const transform = useCallback(
-    mergePayload({ colonyAddress, tokenAddress: firstItem?.token || '' }),
-    [colonyAddress, firstItem],
+  /*
+   * Claims data needs to be merged, both ERC20's and Native Chain Tokens
+   *
+   * Also, we have to sort in-client since Apollo's cache is being a bitch
+   * not allowing more than 3 local field entries without breaking, forcing us
+   * to do the sorting / merging here, rather than at the time we fetch data.
+   * This kinda sucks!
+   */
+  const sortedFundsClaims = [...claims].sort(
+    (first, second) =>
+      (second?.createdAtBlock || 0) - (first?.createdAtBlock || 0),
   );
 
-  const claimsLength = data?.processedColony?.unclaimedTransfers?.length;
+  const firstItem = sortedFundsClaims[0];
+
+  // const transform = useCallback(
+  //   mergePayload({ colonyAddress, tokenAddress: firstItem?.token || '' }),
+  //   [colonyAddress, firstItem],
+  // );
+
+  const claimsLength = sortedFundsClaims?.length;
   const extraClaims = (claimsLength || 0) - 1;
 
-  // if (error) console.warn(error);
-
-  const token = tokenData?.token;
+  /*
+   * Token of the first claim (to be displayed)
+   */
+  const token = firstItem?.token;
 
   return claimsLength ? (
     <div className={styles.main}>
@@ -117,7 +123,7 @@ const ColonyUnclaimedTransfers = () => {
               submit={ActionTypes.CLAIM_TOKEN}
               error={ActionTypes.CLAIM_TOKEN_ERROR}
               success={ActionTypes.CLAIM_TOKEN_SUCCESS}
-              transform={transform}
+              // transform={transform}
               disabled={!canInteractWithColony}
             />
           </Tooltip>
