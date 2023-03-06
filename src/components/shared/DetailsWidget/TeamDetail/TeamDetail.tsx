@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ColorTag from '~shared/ColorTag';
-import { Color, Domain } from '~types';
+import { DomainColor, Domain } from '~types';
 
 import styles from './TeamDetail.css';
 
@@ -13,8 +13,8 @@ interface TeamDetailProps {
 
 const TeamDetail = ({ domain }: TeamDetailProps) => (
   <div>
-    <ColorTag color={domain?.nativeId ?? Color.LightPink} />
-    <span className={styles.text}>{` ${domain?.name}`}</span>
+    <ColorTag color={domain?.metadata?.color ?? DomainColor.LightPink} />
+    <span className={styles.text}>{` ${domain?.metadata?.name}`}</span>
   </div>
 );
 

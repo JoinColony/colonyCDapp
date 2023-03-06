@@ -9,9 +9,3 @@ mutation CreateWatchedColonies($input: CreateWatchedColoniesInput!) {
     id
   }
 }
-
-mutation CreateUniqueDomain($input: CreateUniqueDomainInput!) {
-  createUniqueDomain(input: $input) {
-    id
-  }
-}

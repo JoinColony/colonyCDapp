@@ -1,0 +1,10 @@
+fragment Domain on Domain {
+  id
+  nativeId
+  isRoot
+  metadata {
+    name
+    color
+    description
+  }
+}

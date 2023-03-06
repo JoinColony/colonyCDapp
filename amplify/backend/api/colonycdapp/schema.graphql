@@ -1,4 +1,4 @@
-﻿# This "input" configures a global authorization rule to enable public access to
+# This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 input AMPLIFY {
   globalAuthRule: AuthRule = { allow: public }
@@ -69,14 +69,6 @@ input ProfileInput {
   meta: ProfileMetadataInput
 }
 
-input CreateUniqueDomainInput {
-  colonyAddress: ID!
-  parentId: ID
-  name: String
-  description: String
-  color: DomainColor
-}
-
 input GetUserReputationInput {
   walletAddress: String!
   colonyAddress: String!
@@ -134,10 +126,10 @@ enum Network {
 }
 
 enum DomainColor {
-  LIGHTPINK
+  LIGHT_PINK
   PINK
   BLACK
-  EMERALDGREEN
+  EMERALD_GREEN
   BLUE
   YELLOW
   RED
@@ -145,11 +137,11 @@ enum DomainColor {
   PERIWINKLE
   GOLD
   AQUA
-  BLUEGREY
+  BLUE_GREY
   PURPLE
   ORANGE
   MAGENTA
-  PURPLEGREY
+  PURPLE_GREY
 }
 
 enum ColonyType {
@@ -191,8 +183,6 @@ type Mutation {
     @function(name: "createUniqueUser")
   createUniqueColony(input: CreateUniqueColonyInput): Colony
     @function(name: "createUniqueColony")
-  createUniqueDomain(input: CreateUniqueDomainInput): Domain
-    @function(name: "createUniqueDomain")
   setCurrentVersion(input: SetCurrentVersionInput): Boolean
     @function(name: "setCurrentVersion")
   updateExtensionByColonyAndHash(
@@ -267,7 +257,7 @@ type Colony @model {
   profileId: ID
   profile: Profile @hasOne(fields: ["profileId"])
   status: ColonyStatus
-  domains: [Domain] @hasMany
+  domains: [Domain] @hasMany(indexName: "byColony", fields: ["id"])
   watchers: [User] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
   # NOTE: Could not merge these two fields properly
   # Ideally we would merge data from these two into one field, but I couldn't do that
@@ -297,14 +287,21 @@ type User @model {
 }
 
 type Domain @model {
-  id: ID! @index(name: "byNativeId", sortKeyFields: ["nativeId"]) # colonyAddress_nativeId
+  id: ID! # We have to self-manage this and keep it the following format: colonyAddress_nativeId
+  colonyId: ID! @index(name: "byColony")
+  colony: Colony! @belongsTo(fields: ["colonyId"])
   nativeId: Int!
   nativeFundingPotId: Int!
   nativeSkillId: Int!
-  name: String
-  description: String
-  color: DomainColor
-  parent: Domain @hasOne
+  isRoot: Boolean!
+  metadata: DomainMetadata @hasOne(fields: ["id"])
+}
+
+type DomainMetadata @model {
+  id: ID! # This field is referenced by Domain id, so has to be in the same format: colonyAddress_nativeId
+  name: String!
+  description: String!
+  color: DomainColor!
 }
 
 type ColonyFundsClaim @model {
@@ -420,7 +417,9 @@ type ColonyAction @model {
   amount: String
   tokenAddress: ID
   token: Token @hasOne(fields: ["tokenAddress"])
-  fromDomain: Int
-  toDomain: Int
+  fromDomainId: ID
+  fromDomain: Domain @hasOne(fields: ["fromDomainId"])
+  toDomainId: ID
+  toDomain: Domain @hasOne(fields: ["toDomainId"])
   fundamentalChainId: Int
 }

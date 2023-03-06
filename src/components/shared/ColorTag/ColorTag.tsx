@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Color, hexMap } from '~types';
+import { DomainColor, hexMap } from '~types';
 
 import styles from './ColorTag.css';
 
 interface Props {
-  color: Color;
+  color: DomainColor;
 }
 
 const displayName = 'ColorTag';

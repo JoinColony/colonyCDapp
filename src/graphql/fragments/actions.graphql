@@ -17,7 +17,11 @@ fragment ColonyAction on ColonyAction {
   token {
     ...Token
   }
-  fromDomain
-  toDomain
+  fromDomain {
+    ...Domain
+  }
+  toDomain {
+    ...Domain
+  }
   createdAt
 }

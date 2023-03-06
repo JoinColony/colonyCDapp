@@ -1,0 +1,12 @@
+mutation CreateDomainMetadata($input: CreateDomainMetadataInput!) {
+  createDomainMetadata(input: $input) {
+    id
+  }
+}
+
+# NOTE: This is added here temporarily until we can get block-ingestor to call it on ColonyAdded event
+mutation CreateDomain($input: CreateDomainInput!) {
+  createDomain(input: $input) {
+    id
+  }
+}
