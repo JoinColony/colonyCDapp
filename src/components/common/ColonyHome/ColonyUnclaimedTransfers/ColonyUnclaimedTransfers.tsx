@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { ActionButton } from '~shared/Button';
@@ -11,6 +11,7 @@ import { ActionTypes } from '~redux';
 import { mergePayload } from '~utils/actions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { useColonyContext } from '~hooks';
+import { ADDRESS_ZERO } from '~constants';
 
 import styles from './ColonyUnclaimedTransfers.css';
 
@@ -40,11 +41,28 @@ const MSG = defineMessages({
 });
 
 const ColonyUnclaimedTransfers = () => {
-  const { colony } = useColonyContext();
-  const { colonyAddress, name, fundsClaims } = colony || {};
+  const { colony, canInteractWithColony } = useColonyContext();
+  const { colonyAddress, name, fundsClaims, chainFundsClaim, tokens } =
+    colony || {};
   const { items: claims = [] } = fundsClaims || {};
 
-  const { canInteractWithColony } = useColonyContext();
+  /*
+   * @NOTE We have to do some very heavy lifting (more or less) here due to us
+   * not being able to use Apollo's cache, so we want to short-circuit early
+   * in order to not waste any computing resources unecesarily
+   */
+  if (!chainFundsClaim && !fundsClaims) {
+    return null;
+  }
+
+  const chainClaimWithToken = chainFundsClaim
+    ? {
+        ...chainFundsClaim,
+        token: tokens?.items?.find(
+          (token) => token?.token?.tokenAddress === ADDRESS_ZERO,
+        )?.token,
+      }
+    : null;
 
   /*
    * Claims data needs to be merged, both ERC20's and Native Chain Tokens
@@ -54,21 +72,19 @@ const ColonyUnclaimedTransfers = () => {
    * to do the sorting / merging here, rather than at the time we fetch data.
    * This kinda sucks!
    */
-  const sortedFundsClaims = [...claims].sort(
-    (first, second) =>
-      (second?.createdAtBlock || 0) - (first?.createdAtBlock || 0),
-  );
+  const sortedFundsClaims = [...claims, chainClaimWithToken]
+    .filter((claim) => !!claim)
+    .sort(
+      (first, second) =>
+        (second?.createdAtBlock || 0) - (first?.createdAtBlock || 0),
+    );
 
   const firstItem = sortedFundsClaims[0];
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const transform = useCallback(
-    mergePayload({
-      colonyAddress,
-      tokenAddress: firstItem?.token?.tokenAddress || '',
-    }),
-    [colonyAddress, firstItem],
-  );
+  const transform = mergePayload({
+    colonyAddress,
+    tokenAddress: firstItem?.token?.tokenAddress || '',
+  });
 
   const claimsLength = sortedFundsClaims?.length;
   const extraClaims = (claimsLength || 0) - 1;
