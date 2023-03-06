@@ -122,15 +122,10 @@ const DomainDropdown = ({
     const domainOptions = [
       ...showAllDomainsOption,
       ...(colony.domains?.items || [])
-        /*
-         * While this looks like an array, it's not a "true" one (this is the result from the subgraph query)
-         * So we must first convert it to an array in order to sort it
-         */
-        .slice(0)
         .filter(notNull)
         .sort(sortByDomainId)
         .map((domain) => {
-          const { nativeId, metadata } = domain || {};
+          const { nativeId, metadata } = domain;
           const { name: domainName } = metadata || {};
           return {
             children: (
