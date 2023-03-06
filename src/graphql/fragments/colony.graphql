@@ -59,6 +59,7 @@ fragment Colony on Colony {
   metadata {
     displayName
     avatar
+    thumbnail
   }
 }
 

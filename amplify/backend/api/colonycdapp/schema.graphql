@@ -280,6 +280,7 @@ type ColonyMetadata @model {
   id: ID! # colony contract address
   displayName: String!
   avatar: String
+  thumbnail: String
 }
 
 type User @model {
