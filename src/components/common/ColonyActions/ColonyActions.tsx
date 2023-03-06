@@ -236,6 +236,23 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         )}
         text="Test Unlock Token"
       />
+      <ActionButton
+        submit={ActionTypes.ACTION_MOVE_FUNDS}
+        error={ActionTypes.ACTION_MOVE_FUNDS_ERROR}
+        success={ActionTypes.ACTION_MOVE_FUNDS_SUCCESS}
+        transform={pipe(
+          mergePayload({
+            colonyAddress: colony.colonyAddress,
+            colonyName: colony.name,
+            fromDomain: colony.domains?.items.find((d) => d?.isRoot),
+            toDomain: colony.domains?.items.find((d) => !d?.isRoot),
+            amount: BigNumber.from(5).mul(BigNumber.from(10).pow(17)), // this is in wei
+            tokenAddress: colony.nativeToken.tokenAddress,
+          }),
+          withMeta({ navigate }),
+        )}
+        text="Test Move Funds"
+      />
       {actions.length ? (
         <>
           <ActionsListHeading
