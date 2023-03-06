@@ -47,7 +47,8 @@ fragment Colony on Colony {
       ...FundsClaim
     }
   }
-  chainFundsClaim { # For native chain tokens. Eg: Eth/Xdai
+  chainFundsClaim {
+    # For native chain tokens. Eg: Eth/Xdai
     ...ChainFundsClaim
   }
   watchers {
@@ -57,9 +58,7 @@ fragment Colony on Colony {
   }
   version
   metadata {
-    displayName
-    avatar
-    thumbnail
+    ...ColonyMetadata
   }
 }
 
@@ -91,6 +90,9 @@ fragment WatchedColony on Colony {
     chainId
     network
   }
+  metadata {
+    ...ColonyMetadata
+  }
 }
 
 fragment WatchListItem on WatchedColonies {
@@ -98,6 +100,12 @@ fragment WatchListItem on WatchedColonies {
     ...WatchedColony
   }
   createdAt
+}
+
+fragment ColonyMetadata on ColonyMetadata {
+  displayName
+  avatar
+  thumbnail
 }
 
 fragment ColonyBalance on ColonyBalance {
