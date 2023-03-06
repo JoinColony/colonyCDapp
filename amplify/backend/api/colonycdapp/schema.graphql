@@ -278,6 +278,14 @@ type ColonyMetadata @model {
   displayName: String!
   avatar: String
   thumbnail: String
+  changelog: [ColonyMetadataChangelog!]
+}
+
+type ColonyMetadataChangelog {
+  transactionHash: String!
+  oldDisplayName: String!
+  newDisplayName: String!
+  hasAvatarChanged: Boolean!
 }
 
 type User @model {

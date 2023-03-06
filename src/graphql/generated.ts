@@ -242,11 +242,27 @@ export type ColonyId = {
 export type ColonyMetadata = {
   __typename?: 'ColonyMetadata';
   avatar?: Maybe<Scalars['String']>;
+  changelog?: Maybe<Array<ColonyMetadataChangelog>>;
   createdAt: Scalars['AWSDateTime'];
   displayName: Scalars['String'];
   id: Scalars['ID'];
   thumbnail?: Maybe<Scalars['String']>;
   updatedAt: Scalars['AWSDateTime'];
+};
+
+export type ColonyMetadataChangelog = {
+  __typename?: 'ColonyMetadataChangelog';
+  hasAvatarChanged: Scalars['Boolean'];
+  newDisplayName: Scalars['String'];
+  oldDisplayName: Scalars['String'];
+  transactionHash: Scalars['String'];
+};
+
+export type ColonyMetadataChangelogInput = {
+  hasAvatarChanged: Scalars['Boolean'];
+  newDisplayName: Scalars['String'];
+  oldDisplayName: Scalars['String'];
+  transactionHash: Scalars['String'];
 };
 
 export type ColonyStatus = {
@@ -348,6 +364,7 @@ export type CreateColonyInput = {
 
 export type CreateColonyMetadataInput = {
   avatar?: InputMaybe<Scalars['String']>;
+  changelog?: InputMaybe<Array<ColonyMetadataChangelogInput>>;
   displayName: Scalars['String'];
   id?: InputMaybe<Scalars['ID']>;
   thumbnail?: InputMaybe<Scalars['String']>;
@@ -2506,6 +2523,7 @@ export type UpdateColonyInput = {
 
 export type UpdateColonyMetadataInput = {
   avatar?: InputMaybe<Scalars['String']>;
+  changelog?: InputMaybe<Array<ColonyMetadataChangelogInput>>;
   displayName?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   thumbnail?: InputMaybe<Scalars['String']>;
