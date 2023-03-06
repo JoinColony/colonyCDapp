@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '~redux';
-import { Address, WithKey, DomainColor, Domain } from '~types';
+import { Address, WithKey, DomainColor, Domain, Colony } from '~types';
 
 import {
   ErrorActionType,
@@ -42,7 +42,7 @@ export type ColonyActionsActionTypes =
         colonyAddress: Address;
         colonyName?: string;
         domain: Domain;
-        domainName: string;
+        domainName?: string;
         domainColor?: DomainColor;
         domainPurpose?: string;
         annotationMessage?: string;
@@ -79,11 +79,9 @@ export type ColonyActionsActionTypes =
   | UniqueActionType<
       ActionTypes.ACTION_EDIT_COLONY,
       {
-        colonyAddress: Address;
-        colonyName: string;
-        colonyDisplayName: string;
+        colony: Colony;
+        colonyDisplayName?: string;
         colonyAvatarImage?: string;
-        colonyAvatarHash?: string;
         hasAvatarChanged?: boolean;
         colonyTokens?: Address[];
         annotationMessage?: string;
@@ -91,12 +89,12 @@ export type ColonyActionsActionTypes =
          * @TODO I think this will also store the subscribed-to tokens list
          */
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_EDIT_COLONY_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_EDIT_COLONY_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.ACTION_MOVE_FUNDS,

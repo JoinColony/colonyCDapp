@@ -2706,6 +2706,13 @@ export type CreateColonyMetadataMutationVariables = Exact<{
 
 export type CreateColonyMetadataMutation = { __typename?: 'Mutation', createColonyMetadata?: { __typename?: 'ColonyMetadata', id: string } | null };
 
+export type UpdateColonyMetadataMutationVariables = Exact<{
+  input: UpdateColonyMetadataInput;
+}>;
+
+
+export type UpdateColonyMetadataMutation = { __typename?: 'Mutation', updateColonyMetadata?: { __typename?: 'ColonyMetadata', id: string } | null };
+
 export type CreateDomainMetadataMutationVariables = Exact<{
   input: CreateDomainMetadataInput;
 }>;
@@ -3169,6 +3176,39 @@ export function useCreateColonyMetadataMutation(baseOptions?: Apollo.MutationHoo
 export type CreateColonyMetadataMutationHookResult = ReturnType<typeof useCreateColonyMetadataMutation>;
 export type CreateColonyMetadataMutationResult = Apollo.MutationResult<CreateColonyMetadataMutation>;
 export type CreateColonyMetadataMutationOptions = Apollo.BaseMutationOptions<CreateColonyMetadataMutation, CreateColonyMetadataMutationVariables>;
+export const UpdateColonyMetadataDocument = gql`
+    mutation UpdateColonyMetadata($input: UpdateColonyMetadataInput!) {
+  updateColonyMetadata(input: $input) {
+    id
+  }
+}
+    `;
+export type UpdateColonyMetadataMutationFn = Apollo.MutationFunction<UpdateColonyMetadataMutation, UpdateColonyMetadataMutationVariables>;
+
+/**
+ * __useUpdateColonyMetadataMutation__
+ *
+ * To run a mutation, you first call `useUpdateColonyMetadataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateColonyMetadataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateColonyMetadataMutation, { data, loading, error }] = useUpdateColonyMetadataMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateColonyMetadataMutation(baseOptions?: Apollo.MutationHookOptions<UpdateColonyMetadataMutation, UpdateColonyMetadataMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateColonyMetadataMutation, UpdateColonyMetadataMutationVariables>(UpdateColonyMetadataDocument, options);
+      }
+export type UpdateColonyMetadataMutationHookResult = ReturnType<typeof useUpdateColonyMetadataMutation>;
+export type UpdateColonyMetadataMutationResult = Apollo.MutationResult<UpdateColonyMetadataMutation>;
+export type UpdateColonyMetadataMutationOptions = Apollo.BaseMutationOptions<UpdateColonyMetadataMutation, UpdateColonyMetadataMutationVariables>;
 export const CreateDomainMetadataDocument = gql`
     mutation CreateDomainMetadata($input: CreateDomainMetadataInput!) {
   createDomainMetadata(input: $input) {
