@@ -190,8 +190,6 @@ type Mutation {
   ): ColonyExtension @function(name: "updateExtensionByColonyAndHash")
 }
 
-# Applies to both Users and Colonies
-# Might need to separate it into two later down the line
 type Profile @model {
   id: ID!
   avatar: String
@@ -250,7 +248,7 @@ type ColonyID {
 }
 
 type Colony @model {
-  id: ID! @index(name: "byAddress", queryField: "getColonyByAddress") # contract address
+  id: ID! @index(name: "byAddress", queryField: "getColonyByAddress") # colony contract address
   name: String! @index(name: "byName", queryField: "getColonyByName")
   nativeToken: Token! @hasOne
   tokens: [Token] @manyToMany(relationName: "ColonyTokens")
@@ -275,10 +273,13 @@ type Colony @model {
   extensions: [ColonyExtension!] @hasMany(indexName: "byColony", fields: ["id"])
   version: Int!
   actions: [ColonyAction] @hasMany
+  metadata: ColonyMetadata @hasOne(fields: ["id"])
 }
 
 type ColonyMetadata @model {
-  id: ID
+  id: ID! # colony contract address
+  displayName: String!
+  avatar: String
 }
 
 type User @model {
