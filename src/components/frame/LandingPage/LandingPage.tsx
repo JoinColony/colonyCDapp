@@ -109,7 +109,7 @@ const LandingPage = () => {
                     {...MSG.exploreColony}
                     values={{
                       colonyName:
-                        metacolony?.profile?.displayName || metacolony.name,
+                        metacolony.metadata?.displayName || metacolony.name,
                     }}
                   />
                 </span>

@@ -24,7 +24,7 @@ const ColonyTitle = () => {
     return null;
   }
 
-  const { profile, name } = colony;
+  const { metadata, name } = colony;
 
   return (
     <div className={styles.main}>
@@ -36,7 +36,7 @@ const ColonyTitle = () => {
               weight: 'medium',
               margin: 'none',
             }}
-            text={profile?.displayName || name || MSG.fallbackColonyName}
+            text={metadata?.displayName || name || MSG.fallbackColonyName}
             data-test="colonyTitle"
           />
         </div>

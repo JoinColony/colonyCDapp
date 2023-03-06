@@ -28,7 +28,7 @@ const FriendlyName = ({
 }: Props) => {
   const { colony } = useColonyContext();
   const addressRef = useRef<HTMLElement>(null);
-  const colonyDisplayName = colony?.profile?.displayName || colony?.name;
+  const colonyDisplayName = colony?.metadata?.displayName || colony?.name;
   const colonyDisplayAddress =
     colony?.colonyAddress !== AddressZero ? colony?.colonyAddress : '';
   const walletAddress = user?.walletAddress;
