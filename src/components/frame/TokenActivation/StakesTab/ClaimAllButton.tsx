@@ -1,10 +1,9 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { BigNumber } from 'ethers';
-import { FormikProps } from 'formik';
 import { defineMessages } from 'react-intl';
 
 import Button from '~shared/Button';
-import { ActionForm } from '~shared/Fields';
+import { ActionHookForm as ActionForm } from '~shared/Fields';
 import { ParsedMotionStakedEvent } from '~gql';
 import { ActionTypes } from '~redux/actionTypes';
 import { Address } from '~types/index';
@@ -48,19 +47,18 @@ const ClaimAllButton = ({
 
   return (
     <ActionForm
-      initialValues={{}}
+      defaultValues={{}}
       submit={ActionTypes.MOTION_CLAIM}
       error={ActionTypes.MOTION_CLAIM_ERROR}
       success={ActionTypes.MOTION_CLAIM_SUCCESS}
       transform={transform}
       onSuccess={setIsPopoverOpen}
-      onError={setIsPopoverOpen}
     >
-      {({ handleSubmit, isSubmitting }: FormikProps<unknown>) => (
+      {({ formState: { isSubmitting } }) => (
         <Button
+          type="submit"
           appearance={{ theme: 'primary', size: 'medium' }}
           text={MSG.claimAll}
-          onClick={() => handleSubmit()}
           loading={isSubmitting}
           disabled={isSubmitting}
           dataTest="claimAllStakesButton"

@@ -63,6 +63,9 @@ const StakesTab = ({
   //   fetchPolicy: 'network-only',
   // });
 
+  // Hardcoded TX hash
+  const txHash = '0xB93A5E663ee145fBEf82E9d57c49FaAf6F3f31FC';
+
   if (isLoadingMotions) {
     return (
       <div className={styles.loader}>
@@ -93,7 +96,7 @@ const StakesTab = ({
                 )}
                 tokenSymbol={token.symbol}
                 colonyName={colony?.name || ''}
-                txHash="0x21231233"
+                txHash={txHash}
                 // txHash={
                 //   data?.motionsTxHashes &&
                 //   data?.motionsTxHashes[motion.values.motionId]
