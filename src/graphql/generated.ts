@@ -62,6 +62,7 @@ export type Colony = {
   extensions?: Maybe<ModelColonyExtensionConnection>;
   fundsClaims?: Maybe<ModelColonyFundsClaimConnection>;
   id: Scalars['ID'];
+  metadata?: Maybe<ColonyMetadata>;
   name: Scalars['String'];
   nativeToken: Token;
   profile?: Maybe<Profile>;
@@ -242,8 +243,10 @@ export type ColonyId = {
 
 export type ColonyMetadata = {
   __typename?: 'ColonyMetadata';
+  avatar?: Maybe<Scalars['String']>;
   createdAt: Scalars['AWSDateTime'];
-  id?: Maybe<Scalars['ID']>;
+  displayName: Scalars['String'];
+  id: Scalars['ID'];
   updatedAt: Scalars['AWSDateTime'];
 };
 
@@ -346,6 +349,8 @@ export type CreateColonyInput = {
 };
 
 export type CreateColonyMetadataInput = {
+  avatar?: InputMaybe<Scalars['String']>;
+  displayName: Scalars['String'];
   id?: InputMaybe<Scalars['ID']>;
 };
 
@@ -783,6 +788,8 @@ export type ModelColonyFundsClaimFilterInput = {
 
 export type ModelColonyMetadataConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyMetadataConditionInput>>>;
+  avatar?: InputMaybe<ModelStringInput>;
+  displayName?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelColonyMetadataConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyMetadataConditionInput>>>;
 };
@@ -795,6 +802,8 @@ export type ModelColonyMetadataConnection = {
 
 export type ModelColonyMetadataFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyMetadataFilterInput>>>;
+  avatar?: InputMaybe<ModelStringInput>;
+  displayName?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelColonyMetadataFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyMetadataFilterInput>>>;
@@ -1118,6 +1127,8 @@ export type ModelSubscriptionColonyFundsClaimFilterInput = {
 
 export type ModelSubscriptionColonyMetadataFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyMetadataFilterInput>>>;
+  avatar?: InputMaybe<ModelSubscriptionStringInput>;
+  displayName?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyMetadataFilterInput>>>;
 };
@@ -2505,6 +2516,8 @@ export type UpdateColonyInput = {
 };
 
 export type UpdateColonyMetadataInput = {
+  avatar?: InputMaybe<Scalars['String']>;
+  displayName?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
 };
 
@@ -2699,6 +2712,13 @@ export type CreateWatchedColoniesMutationVariables = Exact<{
 
 
 export type CreateWatchedColoniesMutation = { __typename?: 'Mutation', createWatchedColonies?: { __typename?: 'WatchedColonies', id: string } | null };
+
+export type CreateColonyMetadataMutationVariables = Exact<{
+  input: CreateColonyMetadataInput;
+}>;
+
+
+export type CreateColonyMetadataMutation = { __typename?: 'Mutation', createColonyMetadata?: { __typename?: 'ColonyMetadata', id: string } | null };
 
 export type CreateDomainMetadataMutationVariables = Exact<{
   input: CreateDomainMetadataInput;
@@ -3178,6 +3198,39 @@ export function useCreateWatchedColoniesMutation(baseOptions?: Apollo.MutationHo
 export type CreateWatchedColoniesMutationHookResult = ReturnType<typeof useCreateWatchedColoniesMutation>;
 export type CreateWatchedColoniesMutationResult = Apollo.MutationResult<CreateWatchedColoniesMutation>;
 export type CreateWatchedColoniesMutationOptions = Apollo.BaseMutationOptions<CreateWatchedColoniesMutation, CreateWatchedColoniesMutationVariables>;
+export const CreateColonyMetadataDocument = gql`
+    mutation CreateColonyMetadata($input: CreateColonyMetadataInput!) {
+  createColonyMetadata(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateColonyMetadataMutationFn = Apollo.MutationFunction<CreateColonyMetadataMutation, CreateColonyMetadataMutationVariables>;
+
+/**
+ * __useCreateColonyMetadataMutation__
+ *
+ * To run a mutation, you first call `useCreateColonyMetadataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateColonyMetadataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createColonyMetadataMutation, { data, loading, error }] = useCreateColonyMetadataMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateColonyMetadataMutation(baseOptions?: Apollo.MutationHookOptions<CreateColonyMetadataMutation, CreateColonyMetadataMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateColonyMetadataMutation, CreateColonyMetadataMutationVariables>(CreateColonyMetadataDocument, options);
+      }
+export type CreateColonyMetadataMutationHookResult = ReturnType<typeof useCreateColonyMetadataMutation>;
+export type CreateColonyMetadataMutationResult = Apollo.MutationResult<CreateColonyMetadataMutation>;
+export type CreateColonyMetadataMutationOptions = Apollo.BaseMutationOptions<CreateColonyMetadataMutation, CreateColonyMetadataMutationVariables>;
 export const CreateDomainMetadataDocument = gql`
     mutation CreateDomainMetadata($input: CreateDomainMetadataInput!) {
   createDomainMetadata(input: $input) {
