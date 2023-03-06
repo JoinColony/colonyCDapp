@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-// import { SpinnerLoader } from '~shared/Preloaders';
 import Heading from '~shared/Heading';
 import TokenInfoPopover from '~shared/TokenInfoPopover';
 import NavLink from '~shared/NavLink';
-// import { useTokenBalancesForDomainsQuery } from '~data/index';
 import { useColonyContext } from '~hooks';
-import { notNull } from '~utils/arrays';
+import { TokenFragment } from '~gql';
+import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 
 import TokenBalanceItem from './TokenBalanceItem';
 
@@ -22,39 +21,64 @@ const MSG = defineMessages({
   },
 });
 
-// interface Props {
-//   currentDomainId: number;
-// }
+interface Props {
+  currentDomainId?: number;
+}
 
-const ColonyFundingWidget = (/* { currentDomainId }: Props */) => {
+const ColonyFundingWidget = ({
+  currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
+}: Props) => {
   const { colony } = useColonyContext();
-
-  if (!colony) {
-    return null;
-  }
-
   const {
+    balances,
     name,
     tokens: colonyTokenItems,
-    nativeToken: { tokenAddress: nativeTokenAddress },
+    nativeToken,
     status,
-  } = colony;
+  } = colony || {};
 
-  const tokens = (colonyTokenItems?.items || [])
-    .filter(notNull)
-    .map((colonyToken) => colonyToken.token);
+  const tokens = (colonyTokenItems?.items || []).map(
+    (colonyToken) => colonyToken?.token,
+  );
 
-  // const {
-  //   data,
-  //   loading: isLoadingTokenBalances,
-  // } = useTokenBalancesForDomainsQuery({
-  //   variables: {
-  //     colonyAddress,
-  //     domainIds: [currentDomainId],
-  //     tokenAddresses: colonyTokens.map(({ address }) => address),
-  //   },
-  //   fetchPolicy: 'network-only',
-  // });
+  const domainBalances = useMemo(() => {
+    let filteredBalances;
+    if (balances?.items) {
+      /*
+       * Balances if "All Domains" selected
+       */
+      if (currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID) {
+        filteredBalances = balances.items.filter(
+          (balance) => balance?.domain === null,
+        );
+        /*
+         * Balances if native domain selected
+         */
+      } else {
+        filteredBalances = balances.items.filter(
+          (balance) => balance?.domain?.nativeId === currentDomainId,
+        );
+      }
+      /*
+       * Fallback balances (basically a list of all tokens with zero balance)
+       */
+    } else {
+      filteredBalances = tokens.map((token) => ({
+        token,
+        balance: '0',
+      }));
+    }
+    /*
+     * Reduce the array to a more digestable format
+     */
+    return filteredBalances.reduce(
+      (balanceTokens, currentBalance) => ({
+        ...balanceTokens,
+        [currentBalance.token?.tokenAddress || '']: currentBalance.balance,
+      }),
+      {},
+    );
+  }, [balances, currentDomainId, tokens]);
 
   return (
     <div className={styles.main}>
@@ -63,29 +87,27 @@ const ColonyFundingWidget = (/* { currentDomainId }: Props */) => {
           <FormattedMessage {...MSG.title} />
         </NavLink>
       </Heading>
-      {/* {data && !isLoadingTokenBalances ? ( */}
       <ul data-test="availableFunds">
         {tokens?.map((token) => (
-          <li key={token.tokenAddress}>
+          <li key={token?.tokenAddress}>
             <TokenInfoPopover
-              token={token}
-              isTokenNative={token.tokenAddress === nativeTokenAddress}
+              token={token as TokenFragment}
+              isTokenNative={token?.tokenAddress === nativeToken?.tokenAddress}
             >
               <div className={styles.tokenBalance}>
                 <TokenBalanceItem
-                  // currentDomainId={currentDomainId}
-                  token={token}
-                  isTokenNative={token.tokenAddress === nativeTokenAddress}
+                  token={token as TokenFragment}
+                  isTokenNative={
+                    token?.tokenAddress === nativeToken?.tokenAddress
+                  }
                   isNativeTokenLocked={!status?.nativeToken?.unlocked}
+                  balance={domainBalances[token?.tokenAddress as string]}
                 />
               </div>
             </TokenInfoPopover>
           </li>
         ))}
       </ul>
-      {/* ) : (
-        <SpinnerLoader />
-      )} */}
     </div>
   );
 };

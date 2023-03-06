@@ -82,9 +82,7 @@ const ColonyHomeLayout = ({
           <aside className={styles.rightAside}>
             <ColonyDomainDescription currentDomainId={filteredDomainId} />
             {/* <ColonyUnclaimedTransfers /> */}
-            <ColonyFundingWidget
-            // currentDomainId={filteredDomainId}
-            />
+            <ColonyFundingWidget currentDomainId={filteredDomainId} />
             <ColonyMembersWidget currentDomainId={filteredDomainId} />
             <ColonyExtensions />
           </aside>
