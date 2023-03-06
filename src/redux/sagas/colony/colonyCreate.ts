@@ -4,6 +4,9 @@ import { getExtensionHash, Extension, ClientType, Id } from '@colony/colony-js';
 import { poll } from 'ethers/lib/utils';
 
 import {
+  CreateColonyMetadataDocument,
+  CreateColonyMetadataMutation,
+  CreateColonyMetadataMutationVariables,
   CreateColonyTokensDocument,
   CreateColonyTokensMutation,
   CreateColonyTokensMutationVariables,
@@ -317,6 +320,22 @@ function* colonyCreate({
             colonyNativeTokenId: tokenAddress,
             profile: { displayName },
             version: toNumber(currentColonyVersion),
+          },
+        },
+      });
+
+      /**
+       * Save colony metadata to the db
+       */
+      yield apolloClient.mutate<
+        CreateColonyMetadataMutation,
+        CreateColonyMetadataMutationVariables
+      >({
+        mutation: CreateColonyMetadataDocument,
+        variables: {
+          input: {
+            id: colonyAddress,
+            displayName,
           },
         },
       });
