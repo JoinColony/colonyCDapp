@@ -14,11 +14,14 @@ import {
   ModelSortDirection,
   DomainColor,
   DomainMetadataFragment,
+  ColonyMetadataFragment,
 } from '~gql';
 
 export type User = UserFragment;
 
 export type Colony = ColonyFragment;
+
+export type ColonyMetadata = ColonyMetadataFragment;
 
 export type ColonyWatcher = WatcherFragment;
 
