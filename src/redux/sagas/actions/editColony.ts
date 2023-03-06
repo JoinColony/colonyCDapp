@@ -9,7 +9,11 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { putError, takeFrom } from '../utils';
+import {
+  getUpdatedColonyMetadataChangelog,
+  putError,
+  takeFrom,
+} from '../utils';
 import {
   transactionAddParams,
   transactionPending,
@@ -159,6 +163,11 @@ function* editColonyAction({
             id: colonyAddress,
             displayName: colonyDisplayName,
             avatar: colonyAvatarImage,
+            changelog: getUpdatedColonyMetadataChangelog(
+              txHash,
+              colony.metadata,
+              colonyDisplayName,
+            ),
           },
         },
       });
