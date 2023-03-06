@@ -61,6 +61,11 @@ const createDomainMetadata = /* GraphQL */`
     createDomainMetadata(input: $input) { id }
   }
 `;
+const createColonyMetadata = /* GraphQL */`
+  mutation CreateColonyMetadata($input: CreateColonyMetadataInput!) {
+    createColonyMetadata(input: $input) { id }
+  }
+`
 
 /*
  * Queries
@@ -232,7 +237,6 @@ const createMetacolony = async (singerOrWallet) => {
         id: utils.getAddress(metacolonyAddress),
         colonyNativeTokenId: utils.getAddress(metacolonyTokenAddress),
         name: 'meta',
-        profile: { displayName: 'Metacolony' },
         type: 'METACOLONY',
         version: BigNumber.from(metacolonyVersion).toNumber()
       }
@@ -253,7 +257,25 @@ const createMetacolony = async (singerOrWallet) => {
     if (metacolonyQuery?.errors) {
       console.log('METACOLONY COULD NOT BE CREATED.', metacolonyQuery.errors[0].message);
     } else {
-      console.log(`Creating metacolony { name: "meta", colonyAddress: "${utils.getAddress(metacolonyAddress)}", profile: { displayName: "Metacolony" }, nativeToken: "${utils.getAddress(metacolonyTokenAddress)}", version: "${metacolonyVersion.toString()}" }`);
+      console.log(`Creating metacolony { name: "meta", colonyAddress: "${utils.getAddress(metacolonyAddress)}", nativeToken: "${utils.getAddress(metacolonyTokenAddress)}", version: "${metacolonyVersion.toString()}" }`);
+    }
+
+    // create metacolony metadata 
+    const metadataMutation = await graphqlRequest(
+      createColonyMetadata,
+      {
+        input: {
+          id: utils.getAddress(metacolonyAddress),
+          displayName: 'Metacolony'
+        }
+      },
+      GRAPHQL_URI,
+      API_KEY,
+    );
+    await delay();
+
+    if(!metadataMutation.errors) {
+      console.log(`Creating metacolony metadata { displayName: "Metacolony" }`);
     }
 
     const rootDomainMetadataMutation = await graphqlRequest(
@@ -320,7 +342,6 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
         id: colonyAddress,
         colonyNativeTokenId: tokenAddress,
         name: colonyName,
-        profile: { displayName: `Colony ${colonyName.toUpperCase()}` },
         version: BigNumber.from(currentNetworkVersion).toNumber()
       }
     },
@@ -340,7 +361,25 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
   if (colonyQuery?.errors) {
     console.log('COLONY COULD NOT BE CREATED.', colonyQuery.errors[0].message);
   } else {
-    console.log(`Creating colony { name: "${colonyName}", colonyAddress: "${colonyAddress}", profile: { displayName: "Colony ${colonyName.toUpperCase()}" }, nativeToken: "${tokenAddress}", version: "${currentNetworkVersion.toString()}" }`);
+    console.log(`Creating colony { name: "${colonyName}", colonyAddress: "${colonyAddress}", nativeToken: "${tokenAddress}", version: "${currentNetworkVersion.toString()}" }`);
+  }
+
+  // Colony metadata
+  const metadataMutation = await graphqlRequest(
+    createColonyMetadata,
+    {
+      input: {
+        id: utils.getAddress(colonyAddress),
+        displayName: `Colony ${colonyName.toUpperCase()}`
+      }
+    },
+    GRAPHQL_URI,
+    API_KEY,
+  );
+  await delay();
+
+  if(!metadataMutation.errors) {
+    console.log(`Creating colony metadata { displayName: "Colony ${colonyName.toUpperCase()}" }`);
   }
 
   /*
