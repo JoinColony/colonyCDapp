@@ -96,6 +96,7 @@ fragment ColonyMetadata on ColonyMetadata {
     transactionHash
     newDisplayName
     oldDisplayName
+    hasAvatarChanged
   }
 }
 
