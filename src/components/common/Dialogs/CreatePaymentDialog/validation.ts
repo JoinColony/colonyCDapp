@@ -39,8 +39,8 @@ const validationSchema = object()
         'more-than-zero',
         () => MSG.amountZero,
         (value) => {
-          const numberWithouCommas = (value || '0').replace(/,/g, '');
-          return !new Decimal(numberWithouCommas).isZero();
+          const numberWithoutCommas = (value || '0').replace(/,/g, '');
+          return !new Decimal(numberWithoutCommas).isZero();
         },
       ),
     tokenAddress: string().address().required(),
