@@ -41,8 +41,8 @@ const validationSchema = object()
         'more-than-zero',
         () => MSG.errorAmountMin,
         (value) => {
-          const numberWithouCommas = (value || '0').replace(/,/g, '');
-          return !new Decimal(numberWithouCommas).isZero();
+          const numberWithoutCommas = (value || '0').replace(/,/g, '');
+          return !new Decimal(numberWithoutCommas).isZero();
         },
       ),
   })

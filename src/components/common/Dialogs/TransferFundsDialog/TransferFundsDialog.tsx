@@ -10,11 +10,11 @@ import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
+import { getDomainOptions } from '~shared/DomainFundSelectorSection/helpers';
 import { WizardDialogType } from '~hooks';
 // import { useEnabledExtensions } from '~hooks/useEnabledExtensions';
 
 import TransferFundsDialogForm from './TransferFundsDialogForm';
-import { getDomainOptions } from '~shared/DomainFundSelectorSection/helpers';
 import { getTransferFundsDialogPayload } from './helpers';
 
 const displayName = 'common.TransferFundsDialog';
@@ -57,8 +57,8 @@ const validationSchema = object()
         'more-than-zero',
         () => MSG.amountZero,
         (value) => {
-          const numberWithouCommas = (value || '0').replace(/,/g, '');
-          return !new Decimal(numberWithouCommas).isZero();
+          const numberWithoutCommas = (value || '0').replace(/,/g, '');
+          return !new Decimal(numberWithoutCommas).isZero();
         },
       ),
     tokenAddress: string().address().required(),

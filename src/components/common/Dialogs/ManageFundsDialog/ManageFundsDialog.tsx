@@ -195,6 +195,7 @@ const ManageFundsDialog = ({
       dataTest: 'unlockTokenDialogIndexItem',
     },
   ];
+  // @TODO: Uncomment code here when "status" is implemented as this filters menu items based on that. (Mint and Unlock token actions)
   const filteredItems =
     colony?.status?.nativeToken?.mintable &&
     colony?.status?.nativeToken?.unlockable
