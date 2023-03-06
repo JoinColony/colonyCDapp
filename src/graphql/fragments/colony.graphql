@@ -56,6 +56,10 @@ fragment Colony on Colony {
     }
   }
   version
+  metadata {
+    displayName
+    avatar
+  }
 }
 
 fragment Watcher on WatchedColonies {
