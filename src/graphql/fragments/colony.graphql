@@ -40,7 +40,6 @@ fragment Colony on Colony {
   balances {
     items {
       ...ColonyBalance
-      # id
     }
   }
   watchers {
