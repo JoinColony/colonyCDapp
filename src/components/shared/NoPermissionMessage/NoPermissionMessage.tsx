@@ -50,7 +50,7 @@ const RequiredRoleList = ({ requiredPermissions }) => {
 };
 
 const NoPermissionMessage = ({ requiredPermissions, domainName }: Props) => (
-  <div className={styles.noPermissionFromMessage}>
+  <span className={styles.noPermissionFromMessage}>
     <FormattedMessage
       {...MSG.noPermission}
       values={{
@@ -62,7 +62,7 @@ const NoPermissionMessage = ({ requiredPermissions, domainName }: Props) => (
         domainName,
       }}
     />
-  </div>
+  </span>
 );
 
 export default NoPermissionMessage;

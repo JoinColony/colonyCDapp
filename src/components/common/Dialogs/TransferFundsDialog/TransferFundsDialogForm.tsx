@@ -10,7 +10,7 @@ import { useFormContext } from 'react-hook-form';
 import DialogSection from '~shared/Dialog/DialogSection';
 import { Annotations } from '~shared/Fields';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import PermissionsLabel from '~shared/PermissionsLabel';
+import NoPermissionMessage from '~shared/NoPermissionMessage';
 import TokenAmountInput from '~shared/TokenAmountInput';
 import DomainFundSelectorSection from '~shared/DomainFundSelectorSection';
 import {
@@ -83,7 +83,6 @@ const TransferFundsDialogForm = ({ back, colony }: ActionDialogProps) => {
     toDomainId,
   ]);
   const hasRoleInFromDomain = userHasRole(fromDomainRoles, ColonyRole.Funding);
-  const hasRoleInToDomain = userHasRole(toDomainRoles, ColonyRole.Funding);
 
   const requiredRoles: ColonyRole[] = [ColonyRole.Funding];
 
@@ -132,23 +131,15 @@ const TransferFundsDialogForm = ({ back, colony }: ActionDialogProps) => {
         />
       </DialogSection>
       {!userHasPermission && (
-        <DialogSection>
-          <span className={styles.permissionsError}>
-            <FormattedMessage
-              {...MSG.noPermissionFrom}
-              values={{
-                permissionLabel: (
-                  <PermissionsLabel
-                    permission={ColonyRole.Funding}
-                    name={{ id: `role.${ColonyRole.Funding}` }}
-                  />
-                ),
-                domainName:
-                  (!hasRoleInFromDomain && fromDomain?.metadata?.name) ||
-                  (!hasRoleInToDomain && toDomain?.metadata?.name),
-              }}
-            />
-          </span>
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NoPermissionMessage
+            requiredPermissions={[ColonyRole.Funding]}
+            domainName={
+              hasRoleInFromDomain
+                ? fromDomain?.metadata?.name
+                : toDomain?.metadata?.name
+            }
+          />
         </DialogSection>
       )}
       {/* {onlyForceAction && (

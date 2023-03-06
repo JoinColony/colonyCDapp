@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import { Id } from '@colony/colony-js';
-import { string, object, boolean, number, InferType } from 'yup';
+import { string, object, boolean, InferType } from 'yup';
+import { defineMessages } from 'react-intl';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
-import { Color } from '~types';
+import { DomainColor } from '~types';
 import { ActionTypes } from '~redux/index';
 import { WizardDialogType } from '~hooks'; // useEnabledExtensions
 import { pipe, withMeta, mapPayload } from '~utils/actions';
@@ -18,11 +19,20 @@ type Props = DialogProps & WizardDialogType<object> & ActionDialogProps;
 
 const displayName = 'common.CreateDomainDialog';
 
+const MSG = defineMessages({
+  requiredFieldError: {
+    id: `${displayName}.requiredFieldError`,
+    defaultMessage: 'Please enter a value',
+  },
+});
+
 const validationSchema = object()
   .shape({
     forceAction: boolean().defined(),
-    teamName: string().max(20).required(),
-    domainColor: number().notRequired(),
+    teamName: string()
+      .max(20)
+      .required(() => MSG.requiredFieldError),
+    domainColor: string().notRequired(),
     domainPurpose: string().max(90).notRequired(),
     annotationMessage: string().max(4000).notRequired(),
   })
@@ -58,7 +68,7 @@ const CreateDomainDialog = ({
       defaultValues={{
         forceAction: false,
         teamName: '',
-        domainColor: Color.LightPink,
+        domainColor: DomainColor.LightPink,
         domainPurpose: '',
         annotationMessage: '',
         // motionDomainId: Id.RootDomain,

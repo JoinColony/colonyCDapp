@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, ReactNode, ComponentProps } from 'react';
 import { defineMessages } from 'react-intl';
-
 import { useFormContext } from 'react-hook-form';
+
 import { Appearance, Select, SelectOption } from '~shared/Fields';
 import ColorTag from '~shared/ColorTag';
 import { DomainColor } from '~types';
@@ -18,9 +18,6 @@ const MSG = defineMessages({
 interface Props {
   /** Should `select` be disabled */
   disabled?: boolean;
-
-  /** Active color */
-  activeOption: DomainColor;
 
   /** Callback function, called after value is changed */
   onColorChange?: (color: DomainColor) => any;
@@ -60,20 +57,17 @@ const ColorSelect = ({
     return <ColorTag color={activeOption} />;
   }, [activeOption]);
 
-  const options = useMemo<ComponentProps<typeof Select>['options']>(() => {
-    const colors = Object.keys(DomainColor).filter(
-      (val) => typeof DomainColor[val as any] === 'number',
-    );
-    return [
-      ...colors.map((color) => {
+  const options = useMemo<ComponentProps<typeof Select>['options']>(
+    () =>
+      Object.values(DomainColor).map((color) => {
         return {
-          children: <ColorTag color={DomainColor[color]} />,
-          label: `${color}`,
-          value: `${DomainColor[color]}`,
+          children: <ColorTag color={color} />,
+          label: color,
+          value: color,
         };
       }),
-    ];
-  }, []);
+    [],
+  );
 
   return (
     <div className={styles.main}>

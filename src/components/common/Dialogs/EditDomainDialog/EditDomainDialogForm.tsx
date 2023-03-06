@@ -6,7 +6,6 @@ import {
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import { graphQlDomainColorMap } from '~types';
 import {
   ActionDialogProps,
   DialogControls,
@@ -23,7 +22,7 @@ import DomainNameAndColorInputGroup from '~shared/DomainNameAndColorInputGroup';
 import { useDialogActionPermissions } from '~hooks'; // useEnabledExtensions
 import { DomainColor } from '~gql';
 import { notNull } from '~utils/arrays';
-import { findDomain } from '~utils/domains';
+import { findDomainByNativeId } from '~utils/domains';
 
 const displayName = 'common.EditDomainDialog.EditDomainDialogForm';
 
@@ -88,16 +87,17 @@ const EditDomainDialogForm = ({
     domainOptions.length === 0;
 
   const handleDomainChange = (selectedDomainValue: number) => {
-    const selectedDomain = findDomain(selectedDomainValue, colony);
+    const selectedDomain = findDomainByNativeId(selectedDomainValue, colony);
     const selectedDomainColor =
-      graphQlDomainColorMap[selectedDomain?.color || DomainColor.Lightpink];
+      selectedDomain?.metadata?.color || DomainColor.LightPink;
 
     if (selectedDomain) {
       resetForm({
         domainId: selectedDomain.nativeId,
         domainColor: selectedDomainColor,
-        domainName: selectedDomain.name || `Domain #${selectedDomain.nativeId}`,
-        domainPurpose: selectedDomain.description || '',
+        domainName:
+          selectedDomain.metadata?.name || `Domain #${selectedDomain.nativeId}`,
+        domainPurpose: selectedDomain.metadata?.description || '',
         forceAction,
       });
       // if (
@@ -124,7 +124,7 @@ const EditDomainDialogForm = ({
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <DialogHeading title={MSG.titleEdit} />
       </DialogSection>
-      {!userHasPermission && (
+      {domainOptions.length > 0 && !userHasPermission && (
         <DialogSection>
           <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
@@ -166,7 +166,7 @@ const EditDomainDialogForm = ({
           dataTest="editDomainAnnotation"
         />
       </DialogSection>
-      {!userHasPermission && (
+      {domainOptions.length > 0 && !userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage
             requiredPermissions={[ColonyRole.Architecture]}

@@ -8,7 +8,6 @@ import { ActionHookForm as Form } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { WizardDialogType } from '~hooks'; // useEnabledExtensions
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-import { graphQlDomainColorMap } from '~types';
 import { DomainColor } from '~gql';
 import { findDomainByNativeId } from '~utils/domains';
 
@@ -30,7 +29,7 @@ const validationSchema = object()
     forceAction: boolean().defined(),
     domainName: string().max(20).required(),
     domainId: number().required(),
-    domainColor: number().defined(),
+    domainColor: string().defined(),
     domainPurpose: string().max(90),
     annotationMessage: string().max(4000),
     motionDomainId: number(),
@@ -69,10 +68,9 @@ const EditDomainDialog = ({
     <Form<FormValues>
       defaultValues={{
         forceAction: false,
-        domainName: selectedDomain?.name || '',
-        domainColor:
-          graphQlDomainColorMap[selectedDomain?.color || DomainColor.Lightpink],
-        domainPurpose: selectedDomain?.description || '',
+        domainName: selectedDomain?.metadata?.name || '',
+        domainColor: selectedDomain?.metadata?.color || DomainColor.LightPink,
+        domainPurpose: selectedDomain?.metadata?.description || '',
         annotationMessage: '',
         domainId: selectedDomain?.nativeId,
         motionDomainId: selectedDomain?.nativeId,

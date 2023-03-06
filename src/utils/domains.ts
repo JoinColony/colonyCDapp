@@ -3,18 +3,19 @@ import { Colony } from '~types';
 import { notNull } from './arrays';
 
 export const findDomainByNativeId = (
-  domainNativeId?: number | null,
-  colony?: Colony,
+  domainNativeId: number | null | undefined,
+  colony: Colony,
   skipRootDomain?: boolean,
 ) => {
-  const domains = colony?.domains?.items;
-  if (!domains || !domainNativeId) {
+  const domains = colony.domains?.items;
+  if (!domains) {
     return undefined;
   }
   return domains
     .filter(notNull)
     .find(({ nativeId }) =>
-      skipRootDomain && (domainNativeId === undefined || domainNativeId === Id.RootDomain)
+      skipRootDomain &&
+      (domainNativeId === undefined || domainNativeId === Id.RootDomain)
         ? nativeId !== Id.RootDomain
         : nativeId === domainNativeId,
     );
