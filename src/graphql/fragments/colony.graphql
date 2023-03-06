@@ -78,4 +78,9 @@ fragment ColonyMetadata on ColonyMetadata {
   displayName
   avatar
   thumbnail
+  changelog {
+    transactionHash
+    newDisplayName
+    oldDisplayName
+  }
 }
