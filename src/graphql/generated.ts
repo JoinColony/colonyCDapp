@@ -65,8 +65,6 @@ export type Colony = {
   metadata?: Maybe<ColonyMetadata>;
   name: Scalars['String'];
   nativeToken: Token;
-  profile?: Maybe<Profile>;
-  profileId?: Maybe<Scalars['ID']>;
   status?: Maybe<ColonyStatus>;
   tokens?: Maybe<ModelColonyTokensConnection>;
   type?: Maybe<ColonyType>;
@@ -343,7 +341,6 @@ export type CreateColonyInput = {
   colonyNativeTokenId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
   name: Scalars['String'];
-  profileId?: InputMaybe<Scalars['ID']>;
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
   version: Scalars['Int'];
@@ -424,11 +421,10 @@ export type CreateTokenInput = {
 };
 
 export type CreateUniqueColonyInput = {
+  chainMetadata?: InputMaybe<ChainMetadataInput>;
   colonyNativeTokenId: Scalars['ID'];
   id: Scalars['ID'];
-  meta?: InputMaybe<MetadataInput>;
   name: Scalars['String'];
-  profile?: InputMaybe<ProfileInput>;
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
   version: Scalars['Int'];
@@ -619,14 +615,6 @@ export type GetUserReputationInput = {
   walletAddress: Scalars['String'];
 };
 
-export type MetadataInput = {
-  blockNumber?: InputMaybe<Scalars['Int']>;
-  chainId?: InputMaybe<Scalars['Int']>;
-  logIndex?: InputMaybe<Scalars['Int']>;
-  network?: InputMaybe<Network>;
-  transactionHash?: InputMaybe<Scalars['String']>;
-};
-
 export enum ModelAttributeTypes {
   Null = '_null',
   Binary = 'binary',
@@ -701,7 +689,6 @@ export type ModelColonyConditionInput = {
   name?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelColonyConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyConditionInput>>>;
-  profileId?: InputMaybe<ModelIdInput>;
   type?: InputMaybe<ModelColonyTypeInput>;
   version?: InputMaybe<ModelIntInput>;
 };
@@ -754,7 +741,6 @@ export type ModelColonyFilterInput = {
   name?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelColonyFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyFilterInput>>>;
-  profileId?: InputMaybe<ModelIdInput>;
   type?: InputMaybe<ModelColonyTypeInput>;
   version?: InputMaybe<ModelIntInput>;
 };
@@ -1115,7 +1101,6 @@ export type ModelSubscriptionColonyFilterInput = {
   id?: InputMaybe<ModelSubscriptionIdInput>;
   name?: InputMaybe<ModelSubscriptionStringInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyFilterInput>>>;
-  profileId?: InputMaybe<ModelSubscriptionIdInput>;
   type?: InputMaybe<ModelSubscriptionStringInput>;
   version?: InputMaybe<ModelSubscriptionIntInput>;
 };
@@ -2514,7 +2499,6 @@ export type UpdateColonyInput = {
   colonyNativeTokenId: Scalars['ID'];
   id: Scalars['ID'];
   name?: InputMaybe<Scalars['String']>;
-  profileId?: InputMaybe<Scalars['ID']>;
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
   version?: InputMaybe<Scalars['Int']>;
