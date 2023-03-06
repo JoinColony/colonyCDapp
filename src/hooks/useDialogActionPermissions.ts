@@ -1,7 +1,7 @@
 import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import { useAppContext, useTransformer } from '~hooks';
+import { useAppContext } from '~hooks';
 import { getUserRolesForDomain } from '~redux/transformers';
 import { Colony } from '~types';
 import { userHasRole } from '~utils/checks';
@@ -12,22 +12,27 @@ const useDialogActionPermissions = (
   colony: Colony,
   isVotingExtensionEnabled: boolean,
   requiredRoles: ColonyRole[],
-  domainId: number,
+  requiredRolesDomains: number[],
+  requiredRepDomain?: number,
 ) => {
   const { wallet } = useAppContext();
   const { getValues } = useFormContext();
   const { forceAction } = getValues();
-  const fromDomainRoles = useTransformer(getUserRolesForDomain, [
-    colony,
-    wallet?.address,
-    domainId,
-  ]);
 
-  const hasRoles = requiredRoles.every((role) =>
-    userHasRole(fromDomainRoles, role),
+  const hasRoles = requiredRolesDomains.every((domainId) => {
+    const userDomainRoles = getUserRolesForDomain(
+      colony,
+      wallet?.address,
+      domainId,
+    );
+
+    return requiredRoles.every((role) => userHasRole(userDomainRoles, role));
+  });
+
+  const hasReputation = useColonyReputation(
+    colony.colonyAddress,
+    requiredRepDomain,
   );
-
-  const hasReputation = useColonyReputation(colony.colonyAddress, domainId);
 
   const onlyForceAction =
     isVotingExtensionEnabled && !hasReputation && !forceAction;

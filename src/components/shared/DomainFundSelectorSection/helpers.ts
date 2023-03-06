@@ -4,7 +4,7 @@ import { sortBy } from '~utils/lodash';
 export const getDomainOptions = (colonyDomains: Domain[]) =>
   sortBy(
     colonyDomains.map((domain) => ({
-      value: `${domain?.nativeId}`,
+      value: domain?.nativeId || '',
       label: domain?.name || `Domain #${domain?.nativeId}`,
     })) || [],
     ['value'],

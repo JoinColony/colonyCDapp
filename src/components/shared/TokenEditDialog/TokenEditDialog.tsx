@@ -1,101 +1,98 @@
-import React, { useState, useMemo } from 'react';
-import { ColonyRole } from '@colony/colony-js';
+import React from 'react';
+import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { AddressZero } from '@ethersproject/constants';
-import isEqual from 'lodash/isEqual';
-import { FormikProps } from 'formik';
+import { useFormContext } from 'react-hook-form';
 
-import Button from '~shared/Button';
-import { ActionDialogProps, DialogSection } from '~shared/Dialog';
+import {
+  ActionDialogProps,
+  DialogHeading,
+  DialogSection,
+  DialogControls,
+} from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
-import Heading from '~shared/Heading';
+import { Heading4 } from '~shared/Heading';
 import Paragraph from '~shared/Paragraph';
-import TokenSelector from '~dashboard/CreateColonyWizard/TokenSelector';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import PermissionsLabel from '~shared/PermissionsLabel';
-import Toggle from '~shared/Fields/Toggle';
-import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-import MotionDomainSelect from '~dashboard/MotionDomainSelect';
+import { TokenSelector } from '~common/CreateColonyWizard';
+import { TokenManagementDialogFormValues } from '~common/Dialogs';
+// import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
-import { AnyToken, OneToken } from '~data/index';
-import { useTransformer, useAppContext } from '~hooks';
-import { useDialogActionPermissions } from '~utils/hooks/useDialogActionPermissions';
-import { getAllUserRoles } from '~modules/transformers';
-import { hasRoot } from '~modules/users/checks';
-import { FormValues } from '~dialogs/ColonyTokenManagementDialog/ColonyTokenManagementDialog';
+import {
+  useTransformer,
+  useAppContext,
+  useDialogActionPermissions,
+} from '~hooks';
+import { getAllUserRoles } from '~redux/transformers';
+import { hasRoot } from '~utils/checks';
+import { isEqual } from '~utils/lodash';
 
-import TokenItem from './TokenItem/index';
+import TokenItem from './TokenItem';
+import getTokenList from './getTokenList';
+
 import styles from './TokenEditDialog.css';
+
+const displayName = 'TokenEditDialog';
 
 const MSG = defineMessages({
   title: {
-    id: 'core.TokenEditDialog.title',
+    id: `${displayName}.title`,
     defaultMessage: 'Manage tokens',
   },
   fieldLabel: {
-    id: 'core.TokenEditDialog.fieldLabel',
+    id: `${displayName}.fieldLabel`,
     defaultMessage: 'Contract address',
   },
   textareaLabel: {
-    id: 'core.TokenEditDialog.textareaLabel',
+    id: `${displayName}.textareaLabel`,
     defaultMessage: 'Explain why you’re making these changes (optional)',
   },
   noTokensText: {
-    id: 'core.TokenEditDialog.noTokensText',
+    id: `${displayName}.noTokensText`,
     defaultMessage: `It looks no tokens have been added yet. Get started using the form above.`,
   },
   notListedToken: {
-    id: 'core.TokenEditDialog.notListedToken',
+    id: `${displayName}.notListedToken`,
     defaultMessage: `If token is not listed above, please add any ERC20 compatible token contract address below.`,
   },
   noPermission: {
-    id: 'core.TokenEditDialog.noPermission',
+    id: `${displayName}.noPermission`,
     defaultMessage: `You do not have the {roleRequired} permission required
       to take this action.`,
   },
 });
 
 interface Props extends ActionDialogProps {
-  // Token list from json file. Not supported on local env
-  tokensList?: AnyToken[];
   close: (val: any) => void;
 }
 
 const TokenEditDialog = ({
   close,
-  tokensList = [],
-  colony: { tokens = [], nativeTokenAddress, tokenAddresses },
   colony,
+  colony: { tokens, nativeToken },
   back,
-  isSubmitting,
-  isValid,
-  values,
-  handleSubmit,
-  isVotingExtensionEnabled,
-}: Props & FormikProps<FormValues>) => {
+}: // isVotingExtensionEnabled,
+Props) => {
   const { user, wallet } = useAppContext();
-
-  const [tokenData, setTokenData] = useState<OneToken | undefined>();
-  const [tokenSelectorHasError, setTokenSelectorHasError] =
-    useState<boolean>(false);
-  const [isLoadingAddress, setisLoadingAddress] = useState<boolean>(false);
-
-  const handleTokenSelect = (checkingAddress: boolean, token: OneToken) => {
-    setTokenData(token);
-    setisLoadingAddress(checkingAddress);
-  };
-
-  const handleTokenSelectError = (hasError: boolean) => {
-    setTokenSelectorHasError(hasError);
-  };
+  const {
+    getValues,
+    formState: { isValid, isSubmitting },
+  } = useFormContext();
+  const values = getValues();
+  const tokenList = getTokenList();
+  const colonyTokens = tokens?.items || [];
+  const colonyTokenAddresses = colonyTokens.map(
+    (colonyToken) => colonyToken?.token.tokenAddress,
+  );
 
   const hasTokensListChanged = ({
     selectedTokenAddresses,
     tokenAddress,
-  }: FormValues) =>
+  }: TokenManagementDialogFormValues) =>
     !!tokenAddress ||
     !isEqual(
-      [AddressZero, ...tokenAddresses].sort(),
+      [AddressZero, ...colonyTokenAddresses].sort(),
       selectedTokenAddresses?.sort(),
     );
 
@@ -104,57 +101,32 @@ const TokenEditDialog = ({
     wallet?.address,
   ]);
 
-  const canEditTokens = user?.name && hasRoot(allUserRoles);
+  const canEditTokens = !!(user?.name && hasRoot(allUserRoles));
   const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony.colonyAddress,
-    canEditTokens,
-    isVotingExtensionEnabled,
-    values.forceAction,
+    colony,
+    false, // isVotingExtensionEnabled,
+    requiredRoles,
+    [Id.RootDomain],
   );
 
   const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;
 
-  const allTokens = useMemo(() => {
-    return [...tokens, ...(canEditTokens ? tokensList : [])].filter(
-      ({ address: firstTokenAddress }, index, mergedTokens) =>
+  const allTokens = [...colonyTokens, ...(canEditTokens ? tokenList : [])]
+    .map((token) => token?.token)
+    .filter(
+      (firstToken, index, mergedTokens) =>
         mergedTokens.findIndex(
-          ({ address: secondTokenAddress }) =>
-            secondTokenAddress === firstTokenAddress,
+          (secondToken) =>
+            secondToken?.tokenAddress === firstToken?.tokenAddress,
         ) === index,
     );
-  }, [tokens, tokensList, canEditTokens]);
 
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <div className={styles.modalHeading}>
-          {isVotingExtensionEnabled && (
-            <div className={styles.motionVoteDomain}>
-              <MotionDomainSelect
-                colony={colony}
-                /*
-                 * @NOTE Always disabled since you can only create this motion in root
-                 */
-                disabled
-              />
-            </div>
-          )}
-          <div className={styles.headingContainer}>
-            <Heading
-              appearance={{ size: 'medium', margin: 'none', theme: 'dark' }}
-              text={MSG.title}
-            />
-            {canEditTokens && isVotingExtensionEnabled && (
-              <Toggle
-                label={{ id: 'label.force' }}
-                name="forceAction"
-                disabled={isSubmitting}
-              />
-            )}
-          </div>
-        </div>
+        <DialogHeading title={MSG.title} />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -165,20 +137,23 @@ const TokenEditDialog = ({
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         {allTokens.length > 0 ? (
           <div className={styles.tokenChoiceContainer}>
-            {allTokens.map((token) => (
-              <TokenItem
-                key={token.address}
-                token={token}
-                disabled={
-                  inputDisabled ||
-                  token.address === nativeTokenAddress ||
-                  token.address === AddressZero
-                }
-              />
-            ))}
+            {allTokens.map(
+              (token) =>
+                token && (
+                  <TokenItem
+                    key={token.tokenAddress}
+                    token={token}
+                    disabled={
+                      inputDisabled ||
+                      token.tokenAddress === nativeToken.tokenAddress ||
+                      token.tokenAddress === AddressZero
+                    }
+                  />
+                ),
+            )}
           </div>
         ) : (
-          <Heading appearance={{ size: 'normal' }} text={MSG.noTokensText} />
+          <Heading4 text={MSG.noTokensText} />
         )}
       </DialogSection>
       <DialogSection>
@@ -186,12 +161,6 @@ const TokenEditDialog = ({
           <FormattedMessage {...MSG.notListedToken} />
         </Paragraph>
         <TokenSelector
-          tokenAddress={values.tokenAddress as string}
-          onTokenSelect={handleTokenSelect}
-          onTokenSelectError={handleTokenSelectError}
-          tokenSelectorHasError={tokenSelectorHasError}
-          isLoadingAddress={isLoadingAddress}
-          tokenData={tokenData}
           label={MSG.fieldLabel}
           appearance={{ colorSchema: 'grey', theme: 'fat' }}
           disabled={inputDisabled}
@@ -223,38 +192,23 @@ const TokenEditDialog = ({
           </div>
         </DialogSection>
       )}
-      {onlyForceAction && (
+      {/* {onlyForceAction && (
         <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
-      )}
+      )} */}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
-        <Button
-          appearance={{ theme: 'secondary', size: 'large' }}
-          text={{
+        <DialogControls
+          onSecondaryButtonClick={back === undefined ? close : back}
+          secondaryButtonText={{
             id: back === undefined ? 'button.cancel' : 'button.back',
           }}
-          onClick={back === undefined ? close : back}
-        />
-        <Button
-          appearance={{ theme: 'primary', size: 'large' }}
-          text={{ id: 'button.confirm' }}
-          loading={isSubmitting}
-          onClick={() => handleSubmit()}
-          disabled={
-            tokenSelectorHasError ||
-            !isValid ||
-            inputDisabled ||
-            !hasTokensListChanged(values) ||
-            isLoadingAddress
-          }
-          type="submit"
-          style={{ width: styles.wideButton }}
-          data-test="confirm"
+          disabled={!isValid || inputDisabled || !hasTokensListChanged(values)}
+          dataTest="confirm"
         />
       </DialogSection>
     </>
   );
 };
 
-TokenEditDialog.displayName = 'core.TokenEditDialog';
+TokenEditDialog.displayName = displayName;
 
 export default TokenEditDialog;

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { defineMessages } from 'react-intl';
-import { Id } from '@colony/colony-js';
+import React from 'react';
+import {
+  MessageDescriptor,
+} from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
 import { Select } from '~shared/Fields';
@@ -11,51 +12,29 @@ import { notNull } from '~utils/arrays';
 import DomainBalance from './DomainBalance';
 import { getDomainOptions } from './helpers';
 
-import styles from './DomainFundSelector.css';
-
-const displayName =
-  'common.CreatePaymentDialog.CreatePaymentDialogForm.DomainFundSelector';
-
-const MSG = defineMessages({
-  from: {
-    id: `${displayName}.from`,
-    defaultMessage: 'From',
-  },
-  noBalance: {
-    id: `${displayName}.noBalance`,
-    defaultMessage: 'Insufficient balance in from domain pot',
-  },
-});
+const displayName = 'DomainFundSelectorSection.DomainFundSelector';
 
 interface Props {
   colony: Colony;
+  name: string;
+  label: MessageDescriptor | string;
+  onChange?: (val: any) => void;
+  disabled?: boolean;
 }
 
-const DomainFundSelector = ({ colony }: Props) => {
+const DomainFundSelector = ({
+  colony,
+  disabled,
+  name,
+  label,
+  onChange,
+}: Props) => {
   const {
-    getValues,
-    setValue,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useFormContext();
-  const values = getValues();
-  const [currentFromDomain, setCurrentFromDomain] = useState<number>(
-    values.domainId,
-  );
 
   const colonyDomains = colony?.domains?.items.filter(notNull) || [];
   const domainOptions = getDomainOptions(colonyDomains);
-
-  const handleFromDomainChange = (fromDomainValue) => {
-    const fromDomainId = parseInt(fromDomainValue, 10);
-    if (fromDomainId !== Id.RootDomain && fromDomainId !== currentFromDomain) {
-      setCurrentFromDomain(fromDomainId);
-    } else {
-      setCurrentFromDomain(Id.RootDomain);
-    }
-    if (values.motionDomainId !== fromDomainId) {
-      setValue('motionDomainId', fromDomainId);
-    }
-  };
 
   // const [
   //   loadTokenBalances,
@@ -141,20 +120,20 @@ const DomainFundSelector = ({ colony }: Props) => {
   // ]);
 
   return (
-    <div className={styles.domainSelects}>
-      <div>
-        <Select
-          options={domainOptions}
-          label={MSG.from}
-          name="domainId"
-          appearance={{ theme: 'grey', width: 'fluid' }}
-          onChange={handleFromDomainChange}
-          disabled={isSubmitting}
-          dataTest="domainIdSelector"
-          itemDataTest="domainIdItem"
-        />
+    <div>
+      <Select
+        options={domainOptions}
+        label={label}
+        name={name}
+        appearance={{ theme: 'grey', width: 'fluid' }}
+        onChange={onChange}
+        disabled={disabled || isSubmitting}
+        dataTest="domainIdSelector"
+        itemDataTest="domainIdItem"
+      />
+      {!errors[name] && (
         <DomainBalance colony={colony} />
-      </div>
+      )}
     </div>
   );
 };

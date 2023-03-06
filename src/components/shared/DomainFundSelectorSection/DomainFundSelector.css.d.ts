@@ -1,7 +1,9 @@
 declare namespace DomainFundSelectorCssNamespace {
   export interface IDomainFundSelectorCss {
     domainPotBalance: string;
-    domainSelects: string;
+    selectBetweenDomainsContainer: string;
+    selectDomainContainer: string;
+    transferIcon: string;
   }
 }
 

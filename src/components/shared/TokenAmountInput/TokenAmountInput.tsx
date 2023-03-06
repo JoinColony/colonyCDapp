@@ -13,8 +13,7 @@ import { Colony } from '~types';
 
 import styles from './TokenAmountInput.css';
 
-const displayName =
-  'common.CreatePaymentDialog.CreatePaymentDialogForm.TokenAmountInput';
+const displayName = 'TokenAmountInput';
 
 const MSG = defineMessages({
   amount: {
@@ -39,11 +38,11 @@ interface Props {
 const TokenAmountInput = ({ colony, disabled }: Props) => {
   const { getValues } = useFormContext();
   const values = getValues();
-  const selectedToken = getSelectedToken(colony, values.tokenAddress);
   const colonyTokens =
     colony?.tokens?.items
       .filter(notNull)
       .map((colonyToken) => colonyToken.token) || [];
+  const selectedToken = getSelectedToken(colony, values.tokenAddress);
   const formattingOptions = useMemo(
     () => ({
       delimiter: ',',

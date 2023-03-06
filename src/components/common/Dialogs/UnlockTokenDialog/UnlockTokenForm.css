@@ -1,0 +1,30 @@
+.noPermissionMessage {
+  margin-bottom: 20px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  line-height: 18px;
+  color: var(--danger);
+}
+
+.noPermissionMessage > div {
+  vertical-align: bottom;
+}
+
+.note {
+  margin: 20px 0;
+  font-size: var(--size-smallish);
+  font-weight: var(--weight-bold);
+  color: var(--danger);
+}
+
+.learnMoreLink {
+  margin-left: 4px;
+}
+
+.unlocked {
+  margin-bottom: 20px;
+}
+
+.wrapper {
+  margin-bottom: 20px;
+}
