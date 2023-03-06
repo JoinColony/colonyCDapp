@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { ActionButton } from '~shared/Button';
@@ -8,7 +8,7 @@ import Numeral from '~shared/Numeral';
 import { Tooltip } from '~shared/Popover';
 import Link from '~shared/Link';
 import { ActionTypes } from '~redux';
-// import { mergePayload } from '~utils/actions';
+import { mergePayload } from '~utils/actions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { useColonyContext } from '~hooks';
 
@@ -41,7 +41,7 @@ const MSG = defineMessages({
 
 const ColonyUnclaimedTransfers = () => {
   const { colony } = useColonyContext();
-  const { name, fundsClaims } = colony || {};
+  const { colonyAddress, name, fundsClaims } = colony || {};
   const { items: claims = [] } = fundsClaims || {};
 
   const { canInteractWithColony } = useColonyContext();
@@ -61,10 +61,14 @@ const ColonyUnclaimedTransfers = () => {
 
   const firstItem = sortedFundsClaims[0];
 
-  // const transform = useCallback(
-  //   mergePayload({ colonyAddress, tokenAddress: firstItem?.token || '' }),
-  //   [colonyAddress, firstItem],
-  // );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const transform = useCallback(
+    mergePayload({
+      colonyAddress,
+      tokenAddress: firstItem?.token?.tokenAddress || '',
+    }),
+    [colonyAddress, firstItem],
+  );
 
   const claimsLength = sortedFundsClaims?.length;
   const extraClaims = (claimsLength || 0) - 1;
@@ -123,7 +127,7 @@ const ColonyUnclaimedTransfers = () => {
               submit={ActionTypes.CLAIM_TOKEN}
               error={ActionTypes.CLAIM_TOKEN_ERROR}
               success={ActionTypes.CLAIM_TOKEN_SUCCESS}
-              // transform={transform}
+              transform={transform}
               disabled={!canInteractWithColony}
             />
           </Tooltip>

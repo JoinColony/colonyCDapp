@@ -2,9 +2,7 @@ import { all, call, fork, put } from 'redux-saga/effects';
 // import { formatEther } from 'ethers/lib/utils';
 
 // import actionsSagas from './actions';
-import { colonyCreateSaga } from './colony';
-// import colonySagas, {
-// } from './colony';
+import colonySagas, { colonyCreateSaga } from './colony';
 import extensionSagas from './extensions';
 // import motionSagas from './motions';
 // import whitelistSagas from './whitelist';
@@ -28,7 +26,7 @@ function* setupContextDependentSagas() {
   // const appLoadingState: typeof AppLoadingState = AppLoadingState;
   yield all([
     // call(actionsSagas),
-    // call(colonySagas),
+    call(colonySagas),
     call(colonyCreateSaga),
     call(extensionSagas),
     // call(motionSagas),
