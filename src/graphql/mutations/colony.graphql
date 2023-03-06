@@ -15,3 +15,9 @@ mutation CreateColonyMetadata($input: CreateColonyMetadataInput!) {
     id
   }
 }
+
+mutation UpdateColonyMetadata($input: UpdateColonyMetadataInput!) {
+  updateColonyMetadata(input: $input) {
+    id
+  }
+}
