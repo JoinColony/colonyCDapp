@@ -27,7 +27,7 @@ input ProfileMetadataInput {
   emailPermissions: [String!]!
 }
 
-input MetadataInput {
+input ChainMetadataInput {
   network: Network
   chainId: Int
   transactionHash: String
@@ -50,10 +50,9 @@ input CreateUniqueColonyInput {
   id: ID!
   name: String!
   colonyNativeTokenId: ID!
-  profile: ProfileInput
   type: ColonyType
   status: ColonyStatusInput
-  meta: MetadataInput
+  chainMetadata: ChainMetadataInput
   version: Int!
 }
 
@@ -252,8 +251,6 @@ type Colony @model {
   name: String! @index(name: "byName", queryField: "getColonyByName")
   nativeToken: Token! @hasOne
   tokens: [Token] @manyToMany(relationName: "ColonyTokens")
-  profileId: ID
-  profile: Profile @hasOne(fields: ["profileId"])
   status: ColonyStatus
   domains: [Domain] @hasMany(indexName: "byColony", fields: ["id"])
   watchers: [User] @manyToMany(relationName: "WatchedColonies") # colony subscriptions

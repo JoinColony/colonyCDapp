@@ -56,14 +56,4 @@ module.exports = {
       }
     }
   `,
-  createProfile: /* GraphQL */ `
-    mutation CreateProfile(
-      $input: CreateProfileInput!
-      $condition: ModelProfileConditionInput
-    ) {
-      createProfile(input: $input, condition: $condition) {
-        id
-      }
-    } 
-  `,
 };
