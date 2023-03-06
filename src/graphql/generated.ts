@@ -2135,6 +2135,7 @@ export type SubscriptionOnUpdateWatchedColoniesArgs = {
 };
 
 export type Token = {
+  tokenAddress: any;
   __typename?: 'Token';
   avatar?: Maybe<Scalars['String']>;
   colonies?: Maybe<ModelColonyTokensConnection>;
