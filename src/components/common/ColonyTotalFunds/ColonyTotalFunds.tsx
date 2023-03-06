@@ -5,14 +5,9 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import Icon from '~shared/Icon';
 import Link from '~shared/Link';
 import Numeral from '~shared/Numeral';
-// import { MiniSpinnerLoader } from '~shared/Preloaders';
 import IconTooltip from '~shared/IconTooltip';
-// import {
-//   useTokenBalancesForDomainsQuery,
-// } from '~data/index';
 import { Address } from '~types/index';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-// import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
 
@@ -43,19 +38,8 @@ const MSG = defineMessages({
 
 const ColonyTotalFunds = () => {
   const { colony, canInteractWithColony } = useColonyContext();
-  const { name, tokens, nativeToken, status } = colony || {};
+  const { name, tokens, nativeToken, status, balances } = colony || {};
   const { tokenAddress: nativeTokenAddress } = nativeToken || {};
-
-  // const {
-  //   data,
-  //   loading: isLoadingTokenBalances,
-  // } = useTokenBalancesForDomainsQuery({
-  //   variables: {
-  //     colonyAddress,
-  //     domainIds: [COLONY_TOTAL_BALANCE_DOMAIN_ID],
-  //     tokenAddresses: colonyTokens.map(({ address }) => address),
-  //   },
-  // });
 
   const [currentTokenAddress, setCurrentTokenAddress] = useState<Address>();
 
@@ -82,15 +66,22 @@ const ColonyTotalFunds = () => {
 
   const isSupportedColonyVersion = true;
 
-  // if (!data || !currentToken || isLoadingTokenBalances) {
-  //   return (
-  //     <MiniSpinnerLoader
-  //       className={styles.main}
-  //       loadingText={MSG.loadingData}
-  //       titleTextValues={{ hasCounter: false }}
-  //     />
-  //   );
-  // }
+  const totalTokenBalance = useMemo(() => {
+    if (balances?.items && currentToken) {
+      return (
+        balances.items
+          /*
+           * If the domain is not set, then we're dealing with "All Domains" (id 0)
+           */
+          .filter((balance) => balance?.domain === null)
+          .find(
+            (balance) =>
+              balance?.token?.tokenAddress === currentToken.token.tokenAddress,
+          )
+      );
+    }
+    return { balance: '0' };
+  }, [balances, currentToken]);
 
   return (
     <div className={styles.main}>
@@ -98,8 +89,7 @@ const ColonyTotalFunds = () => {
         <Numeral
           className={styles.selectedTokenAmount}
           decimals={getTokenDecimalsWithFallback(currentToken?.token?.decimals)}
-          // value={currentToken.balances[COLONY_TOTAL_BALANCE_DOMAIN_ID].amount}
-          value={0}
+          value={totalTokenBalance?.balance as string}
           data-test="colonyTotalFunds"
         />
         <ColonyTotalFundsPopover
