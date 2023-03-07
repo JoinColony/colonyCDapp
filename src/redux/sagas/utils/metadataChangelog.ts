@@ -2,7 +2,7 @@ import { DomainColor, DomainMetadataChangelogInput } from '~gql';
 import { DomainMetadata } from '~types';
 import { excludeTypenameKey } from '~utils/objects';
 
-export const getDomainMetadataChangelog = (
+export const getUpdatedDomainMetadataChangelog = (
   transactionHash: string,
   metadata: DomainMetadata,
   newName?: string,
