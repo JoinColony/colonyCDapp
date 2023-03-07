@@ -52,10 +52,10 @@ const UserNavigation = () => {
 
   const mockedTokenBalanceData = {
     nativeToken: colony?.nativeToken,
-    inactiveBalance: BigNumber.from(0),
+    inactiveBalance: BigNumber.from(11 ** 15),
     lockedBalance: BigNumber.from(0),
-    activeBalance: BigNumber.from(0),
-    totalBalance: BigNumber.from(0),
+    activeBalance: BigNumber.from(11 ** 15),
+    totalBalance: BigNumber.from(11 ** 15),
     isPendingBalanceZero: true,
   };
 

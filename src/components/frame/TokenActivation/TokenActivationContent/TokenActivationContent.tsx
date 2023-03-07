@@ -1,5 +1,6 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
+import { BigNumber } from 'ethers';
 
 import { Tab, Tabs, TabList, TabPanel } from '~shared/Tabs';
 // import { useClaimableStakedMotionsQuery } from '~data/generated';
@@ -49,6 +50,26 @@ const TokenActivationContent = (props: TokenActivationContentProps) => {
   //   : 0;
   const claimsCount = 0;
 
+  const unclaimedMotionStakeEvents = [
+    {
+      address: '0x0000000',
+      blockNumber: '1234',
+      hash: '0x0000000',
+      index: '1',
+      name: 'test',
+      signature: 'test',
+      timestamp: '1234567890',
+      topic: 'test topic',
+      values: {
+        amount: '10',
+        motionId: '0x0000012',
+        stakeAmount: BigNumber.from(10 ** 15),
+        staker: '0x0000000',
+        vote: '0123',
+      },
+    },
+  ];
+
   return (
     <div className={styles.main}>
       <Tabs
@@ -85,7 +106,7 @@ const TokenActivationContent = (props: TokenActivationContentProps) => {
         <TabPanel className={styles.tabContainer}>
           <StakesTab
             {...props}
-            unclaimedMotionStakeEvents={[]}
+            unclaimedMotionStakeEvents={unclaimedMotionStakeEvents}
             isLoadingMotions={loading}
             setIsPopoverOpen={setIsPopoverOpen}
           />
