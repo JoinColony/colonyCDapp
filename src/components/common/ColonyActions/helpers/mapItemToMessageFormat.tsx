@@ -2,7 +2,6 @@ import React from 'react';
 
 import Numeral from '~shared/Numeral';
 import FriendlyName from '~shared/FriendlyName';
-import { getColonyMetadataMessageValues } from '~utils/events';
 import {
   Colony,
   ColonyAndExtensionsEvents,
@@ -13,7 +12,8 @@ import {
 import { intl } from '~utils/intl';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
-import { getDomainMetadataChangesValue } from './getDomainValues';
+import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
+import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
 
 import styles from './itemStyles.css';
 
@@ -89,15 +89,9 @@ export const mapColonyEventToExpectedFormat = (
   actionData: ColonyAction,
   colony?: Colony,
 ) => {
-  /*
-   * TODO: Update the following to account for metadata changes being kept in the model as an array of changes,
-   * with the latest one being the most recent one.
-   */
-  const colonyMetadataChanges = { namedChanged: true, logoChanged: true };
   // const role = item.roles[0];
 
   return {
-    ...getColonyMetadataMessageValues(colonyMetadataChanges, colony?.name),
     amount: (
       <Numeral
         value={actionData.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
@@ -106,6 +100,7 @@ export const mapColonyEventToExpectedFormat = (
     ),
     // ...getColonyRoleSetTitleValues(role?.setTo),
     domainMetadataChanges: getDomainMetadataChangesValue(actionData),
+    colonyMetadataChanges: getColonyMetadataChangesValue(actionData, colony),
     fromDomain:
       getDomainNameFromChangelog(
         actionData.transactionHash,

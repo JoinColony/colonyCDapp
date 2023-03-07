@@ -46,6 +46,7 @@ export const getUpdatedColonyMetadataChangelog = (
       transactionHash,
       newDisplayName: newDisplayName ?? metadata.displayName,
       oldDisplayName: metadata.displayName,
+      // @TODO: Actually check whether the avatar has changed
       hasAvatarChanged: false,
     },
   ];
