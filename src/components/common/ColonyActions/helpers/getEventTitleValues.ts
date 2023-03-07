@@ -14,7 +14,7 @@ enum EventTitleMessageKeys {
   Changed = 'changed',
   ClientOrExtensionType = 'clientOrExtensionType',
   ColonyMetadata = 'colonyMetadata',
-  ColonyMetadataChange = 'colonyMetadataChange',
+  ColonyMetadataChanges = 'colonyMetadataChanges',
   DomainMetadataChanges = 'domainMetadataChanges',
   EventNameDecorated = 'eventNameDecorated',
   FromDomain = 'fromDomain',
@@ -112,8 +112,7 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
   [ColonyAndExtensionsEvents.ColonyMetadata]: [
     EventTitleMessageKeys.Initiator,
     EventTitleMessageKeys.Changed,
-    EventTitleMessageKeys.ColonyMetadata,
-    EventTitleMessageKeys.ColonyMetadataChange,
+    EventTitleMessageKeys.ColonyMetadataChanges,
   ],
   [ColonyAndExtensionsEvents.DomainMetadata]: [
     EventTitleMessageKeys.Initiator,
