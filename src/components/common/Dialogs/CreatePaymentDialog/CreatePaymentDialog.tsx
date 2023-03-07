@@ -14,8 +14,7 @@ import { ActionTypes } from '~redux/index';
 // } from '~data/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
-import { WizardDialogType } from '~hooks';
-// import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
+import { WizardDialogType, useEnabledExtensions } from '~hooks';
 import { notNull } from '~utils/arrays';
 
 import validationSchema from './validation';
@@ -44,13 +43,14 @@ const CreatePaymentDialog = ({
   const navigate = useNavigate();
   const colonyWatchers =
     colony?.watchers?.items.filter(notNull).map((item) => item.user) || [];
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const {
+    enabledExtensions: { isVotingReputationEnabled },
+  } = useEnabledExtensions();
 
-  const actionType = !isForce /* && isVotingExtensionEnabled */
-    ? ActionTypes.MOTION_EXPENDITURE_PAYMENT
-    : ActionTypes.ACTION_EXPENDITURE_PAYMENT;
+  const actionType =
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.MOTION_EXPENDITURE_PAYMENT
+      : ActionTypes.ACTION_EXPENDITURE_PAYMENT;
 
   // const { data: colonyMembers } = useMembersSubscription({
   //   variables: { colonyAddress },

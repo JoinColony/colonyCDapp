@@ -11,8 +11,7 @@ import { ActionTypes } from '~redux/index';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 import { getDomainOptions } from '~shared/DomainFundSelectorSection/helpers';
-import { WizardDialogType } from '~hooks';
-// import { useEnabledExtensions } from '~hooks/useEnabledExtensions';
+import { WizardDialogType, useEnabledExtensions } from '~hooks';
 
 import TransferFundsDialogForm from './TransferFundsDialogForm';
 import { getTransferFundsDialogPayload } from './helpers';
@@ -79,13 +78,14 @@ const TransferFundsDialog = ({
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const {
+    enabledExtensions: { isVotingReputationEnabled },
+  } = useEnabledExtensions();
 
-  const actionType = !isForce /* && isVotingExtensionEnabled */
-    ? ActionTypes.MOTION_MOVE_FUNDS
-    : ActionTypes.ACTION_MOVE_FUNDS;
+  const actionType =
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.MOTION_MOVE_FUNDS
+      : ActionTypes.ACTION_MOVE_FUNDS;
 
   const colonyDomains = colony?.domains?.items.filter(notNull) || [];
   const domainOptions = getDomainOptions(colonyDomains);

@@ -6,7 +6,7 @@ import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, withKey, mapPayload } from '~utils/actions';
-import { WizardDialogType } from '~hooks'; // useEnabledExtensions
+import { WizardDialogType, useEnabledExtensions } from '~hooks';
 
 import UnlockTokenForm from './UnlockTokenForm';
 import { getUnlockTokenDialogPayload } from './helpers';
@@ -36,13 +36,14 @@ const UnlockTokenDialog = ({
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const {
+    enabledExtensions: { isVotingReputationEnabled },
+  } = useEnabledExtensions();
 
-  const actionType = !isForce /* && isVotingExtensionEnabled */
-    ? ActionTypes.ROOT_MOTION
-    : ActionTypes.ACTION_UNLOCK_TOKEN;
+  const actionType =
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.ROOT_MOTION
+      : ActionTypes.ACTION_UNLOCK_TOKEN;
 
   const transform = pipe(
     withKey(colony?.colonyAddress || ''),

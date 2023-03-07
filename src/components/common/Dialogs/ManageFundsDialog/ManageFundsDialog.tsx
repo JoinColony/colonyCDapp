@@ -113,15 +113,13 @@ const ManageFundsDialog = ({
     wallet?.address,
   ]);
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  // const { enabledExtensions: { isVotingReputationEnabled }, } = useEnabledExtensions();
 
   // const canMoveFunds = canFund(allUserRoles);
-  // const canUserMintNativeToken = isVotingExtensionEnabled
+  // const canUserMintNativeToken = isVotingReputationEnabled
   //   ? colony.status?.nativeToken?.mintable
   //   : hasRoot(allUserRoles) && colony.status?.nativeToken?.mintable;
-  // const canUserUnlockNativeToken = isVotingExtensionEnabled
+  // const canUserUnlockNativeToken = isVotingReputationEnabled
   //   ? colony.status?.nativeToken?.unlockable
   //   : hasRoot(allUserRoles) && colony.status?.nativeToken?.unlockable;
 
@@ -132,7 +130,7 @@ const ManageFundsDialog = ({
       title: MSG.transferFundsTitle,
       description: MSG.transferFundsDescription,
       icon: 'emoji-world-globe',
-      permissionRequired: false, // !canMoveFunds || isVotingExtensionEnabled,
+      permissionRequired: false, // !canMoveFunds || isVotingReputationEnabled,
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
         permissionsList: <FormattedMessage {...MSG.paymentPermissionsList} />,
@@ -158,7 +156,7 @@ const ManageFundsDialog = ({
       title: MSG.manageTokensTitle,
       description: MSG.manageTokensDescription,
       icon: 'emoji-pen',
-      permissionRequired: !canManageTokens, // || isVotingExtensionEnabled
+      permissionRequired: !canManageTokens, // || isVotingReputationEnabled
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
         permissionsList: (

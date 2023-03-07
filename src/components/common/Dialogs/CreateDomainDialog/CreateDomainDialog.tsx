@@ -9,7 +9,7 @@ import { ActionHookForm as Form } from '~shared/Fields';
 
 import { DomainColor } from '~types';
 import { ActionTypes } from '~redux/index';
-import { WizardDialogType } from '~hooks'; // useEnabledExtensions
+import { WizardDialogType, useEnabledExtensions } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 
 import CreateDomainDialogForm from './CreateDomainDialogForm';
@@ -50,13 +50,14 @@ const CreateDomainDialog = ({
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const {
+    enabledExtensions: { isVotingReputationEnabled },
+  } = useEnabledExtensions();
 
-  const actionType = !isForce /* && isVotingExtensionEnabled */
-    ? ActionTypes.MOTION_DOMAIN_CREATE_EDIT
-    : ActionTypes.ACTION_DOMAIN_CREATE;
+  const actionType =
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.MOTION_DOMAIN_CREATE_EDIT
+      : ActionTypes.ACTION_DOMAIN_CREATE;
 
   const transform = pipe(
     mapPayload((payload) => getCreateDomainDialogPayload(colony, payload)),

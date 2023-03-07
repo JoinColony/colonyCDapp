@@ -9,7 +9,7 @@ import { ActionHookForm as Form } from '~shared/Fields';
 
 import { ActionTypes } from '~redux/index';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
-import { WizardDialogType } from '~hooks'; // useEnabledExtensions
+import { WizardDialogType, useEnabledExtensions } from '~hooks';
 
 import MintTokenDialogForm from './MintTokenDialogForm';
 import { getMintTokenDialogPayload } from './helpers';
@@ -60,13 +60,14 @@ const MintTokenDialog = ({
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const {
+    enabledExtensions: { isVotingReputationEnabled },
+  } = useEnabledExtensions();
 
-  const actionType = !isForce /* && isVotingExtensionEnabled */
-    ? ActionTypes.ROOT_MOTION
-    : ActionTypes.ACTION_MINT_TOKENS;
+  const actionType =
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.ROOT_MOTION
+      : ActionTypes.ACTION_MINT_TOKENS;
 
   const transform = pipe(
     mapPayload((payload) => getMintTokenDialogPayload(colony, payload)),

@@ -4,7 +4,12 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import { WizardDialogType, useTransformer, useAppContext } from '~hooks'; // useEnabledExtensions
+import {
+  WizardDialogType,
+  useTransformer,
+  useAppContext,
+  useEnabledExtensions,
+} from '~hooks';
 import { getAllUserRoles } from '~redux/transformers';
 import { canArchitect, hasRoot } from '~utils/checks';
 
@@ -85,16 +90,16 @@ const ManageDomainsDialog = ({
   const canCreateEditDomain =
     hasRegisteredProfile && canArchitect(allUserRoles);
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const {
+    enabledExtensions: { isVotingReputationEnabled },
+  } = useEnabledExtensions();
 
   const items = [
     {
       title: MSG.createNewDomainTitle,
       description: MSG.createNewDomainDescription,
       icon: 'emoji-crane',
-      permissionRequired: !canCreateEditDomain, // || isVotingExtensionEnabled
+      permissionRequired: !canCreateEditDomain || isVotingReputationEnabled,
       permissionInfoTextValues: {
         permissionRequired: <FormattedMessage {...MSG.domainPermissionsList} />,
       },
@@ -105,7 +110,7 @@ const ManageDomainsDialog = ({
       title: MSG.editDomainTitle,
       description: MSG.editDomainDescription,
       icon: 'emoji-pencil-note',
-      permissionRequired: !canCreateEditDomain, // || isVotingExtensionEnabled
+      permissionRequired: !canCreateEditDomain || isVotingReputationEnabled,
       permissionInfoTextValues: {
         permissionRequired: <FormattedMessage {...MSG.domainPermissionsList} />,
       },

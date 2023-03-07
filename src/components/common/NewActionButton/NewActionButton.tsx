@@ -7,10 +7,9 @@ import {
   useAppContext,
   useNaiveBranchingDialogWizard,
   useColonyContext,
+  useEnabledExtensions,
 } from '~hooks';
 import DialogButton from '~shared/Button/DialogButton';
-
-// import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
 
 // import {
 //   colonyMustBeUpgraded,
@@ -52,9 +51,7 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
 
   // const [isLoadingUser, setIsLoadingUser] = useState<boolean>(!ethereal);
 
-  // const { isLoadingExtensions } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const { loading } = useEnabledExtensions();
 
   // const { data } = useColonyExtensionsQuery({
   //   variables: { address: colony.colonyAddress },
@@ -82,7 +79,7 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
   // const mustUpgradeOneTx = oneTxMustBeUpgraded(oneTxPaymentExtension);
   const hasRegisteredProfile = !!user?.name && !!user.walletAddress;
   // const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
-  // const isLoadingData = isLoadingExtensions || isLoadingUser;
+  const isLoadingData = loading; // || isLoadingUser;
 
   if (!colony) {
     return null;
@@ -91,7 +88,7 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
   return (
     <DialogButton
       text={MSG.newAction}
-      loading={false} // isLoadingData
+      loading={isLoadingData}
       handleClick={() => startWizardFlow('common.ColonyActionsDialog')}
       disabled={!hasRegisteredProfile}
       data-test="newActionButton"

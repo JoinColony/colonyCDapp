@@ -9,7 +9,7 @@ import { ActionHookForm as Form } from '~shared/Fields';
 
 import { ActionTypes } from '~redux/index';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
-import { WizardDialogType } from '~hooks'; // useEnabledExtensions
+import { WizardDialogType, useEnabledExtensions } from '~hooks';
 import { formatText } from '~utils/intl';
 import { getTokenManagementDialogPayload } from './helpers';
 
@@ -48,13 +48,14 @@ const TokenManagementDialog = ({
   const navigate = useNavigate();
   const colonyTokens = colony?.tokens?.items || [];
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress,
-  // });
+  const {
+    enabledExtensions: { isVotingReputationEnabled },
+  } = useEnabledExtensions();
 
-  const actionType = !isForce /* && isVotingExtensionEnabled */
-    ? ActionTypes.MOTION_EDIT_COLONY
-    : ActionTypes.ACTION_EDIT_COLONY;
+  const actionType =
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.MOTION_EDIT_COLONY
+      : ActionTypes.ACTION_EDIT_COLONY;
 
   const transform = pipe(
     mapPayload((payload) => getTokenManagementDialogPayload(colony, payload)),
