@@ -1,5 +1,6 @@
 import React, { ReactNode, useCallback } from 'react';
-// import { ColonyVersion, ROOT_DOMAIN_ID, Extension } from '@colony/colony-js';
+// import { ColonyVersion, Extension } from '@colony/colony-js';
+import { Id } from '@colony/colony-js';
 
 import ColorTag from '~shared/ColorTag';
 import { HookForm as Form, SelectOption } from '~shared/Fields';
@@ -9,7 +10,6 @@ import DomainDropdown from '~shared/DomainDropdown';
 
 import { useColonyContext } from '~hooks';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-// import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
 import { Color, graphQlDomainColorMap } from '~types';
 
 import CreateDomainButton from './CreateDomainButton';
@@ -48,15 +48,13 @@ const ColonyDomainSelector = ({
   //   [openEditDialog, colony],
   // );
 
-  const ROOT_DOMAIN_ID = 1;
-
   const handleEditDomain = () => {};
 
   const getDomainColor = useCallback<(domainId: string | undefined) => Color>(
     (domainId) => {
       const rootDomainColor: Color = Color.LightPink;
       const defaultColor: Color = Color.Yellow;
-      if (domainId === String(ROOT_DOMAIN_ID)) {
+      if (domainId === String(Id.RootDomain)) {
         return rootDomainColor;
       }
       if (!colony || !domainId) {
