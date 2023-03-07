@@ -5,7 +5,7 @@ import paymentActionSaga from './payment';
 import moveFundsActionSaga from './moveFunds';
 // import versionUpgradeActionSaga from './versionUpgrade';
 import createDomainActionSaga from './createDomain';
-// import editDomainActionSaga from './editDomain';
+import editDomainActionSaga from './editDomain';
 // import editColonyActionSaga from './editColony';
 // import managePermissionsActionSaga from './managePermissions';
 import unlockTokenActionSaga from './unlockToken';
@@ -19,7 +19,7 @@ export default function* actionsSagas() {
     call(moveFundsActionSaga),
     // call(versionUpgradeActionSaga),
     call(createDomainActionSaga),
-    // call(editDomainActionSaga),
+    call(editDomainActionSaga),
     // call(editColonyActionSaga),
     // call(managePermissionsActionSaga),
     call(unlockTokenActionSaga),

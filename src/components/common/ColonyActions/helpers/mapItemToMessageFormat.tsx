@@ -8,15 +8,36 @@ import {
   ColonyAndExtensionsEvents,
   ColonyAction,
   ColonyActionType,
+  Domain,
 } from '~types';
 import { intl } from '~utils/intl';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+
+import { getDomainMetadataChangesValue } from './getDomainValues';
 
 import styles from './itemStyles.css';
 
 const { formatMessage } = intl({
   unknownDomain: 'UnknownDomain',
 });
+
+// Get the domain name at the time of a transaction with a given hash (or fallback to the current name)
+const getDomainNameFromChangelog = (
+  transactionHash: string,
+  domain?: Domain | null,
+) => {
+  if (!domain?.metadata) {
+    return null;
+  }
+
+  const changelogItem = domain.metadata.changelog?.find(
+    (item) => item.transactionHash === transactionHash,
+  );
+  if (!changelogItem?.newName) {
+    return domain.metadata.name;
+  }
+  return changelogItem.newName;
+};
 
 export const mapColonyActionToExpectedFormat = (actionData: ColonyAction) => {
   // const formattedRolesTitle = formatRolesTitle(item.roles); // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
@@ -35,8 +56,10 @@ export const mapColonyActionToExpectedFormat = (actionData: ColonyAction) => {
     ),
     // direction: formattedRolesTitle.direction,
     fromDomain:
-      actionData.fromDomain?.metadata?.name ??
-      formatMessage({ id: 'unknownDomain' }),
+      getDomainNameFromChangelog(
+        actionData.transactionHash,
+        actionData.fromDomain,
+      ) ?? formatMessage({ id: 'unknownDomain' }),
     initiator: (
       <span className={styles.titleDecoration}>
         <FriendlyName user={actionData.initiatorUser} autoShrinkAddress />
@@ -73,15 +96,6 @@ export const mapColonyEventToExpectedFormat = (
   const colonyMetadataChanges = { namedChanged: true, logoChanged: true };
   // const role = item.roles[0];
 
-  // const {
-  //   domainMetadataChanged,
-  //   newDomainMetadata: { values: newValues, color: newColor },
-  //   oldDomainMetadata: { values: oldValues, color: oldColor },
-  // } = getDomainMetadataTitleValues(
-  //   event.previousDomainMetadata,
-  //   event.domainMetadata,
-  // );
-
   return {
     ...getColonyMetadataMessageValues(colonyMetadataChanges, colony?.name),
     amount: (
@@ -91,12 +105,12 @@ export const mapColonyEventToExpectedFormat = (
       />
     ),
     // ...getColonyRoleSetTitleValues(role?.setTo),
-    // domainMetadataChanged,
-    // newDomainMetadata: getDomainMetadataValues(newValues, newColor),
-    // oldDomainMetadata: getDomainMetadataValues(oldValues, oldColor),
+    domainMetadataChanges: getDomainMetadataChangesValue(actionData),
     fromDomain:
-      actionData.fromDomain?.metadata?.name ??
-      formatMessage({ id: 'unknownDomain' }),
+      getDomainNameFromChangelog(
+        actionData.transactionHash,
+        actionData.fromDomain,
+      ) ?? formatMessage({ id: 'unknownDomain' }),
     toDomain:
       actionData.toDomain?.metadata?.name ??
       formatMessage({ id: 'unknownDomain' }),

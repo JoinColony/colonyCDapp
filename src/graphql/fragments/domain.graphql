@@ -4,8 +4,21 @@ fragment Domain on Domain {
   isRoot
   nativeFundingPotId
   metadata {
-    name
-    color
-    description
+    ...DomainMetadata
+  }
+}
+
+fragment DomainMetadata on DomainMetadata {
+  name
+  color
+  description
+  changelog {
+    transactionHash
+    oldName
+    newName
+    oldColor
+    newColor
+    oldDescription
+    newDescription
   }
 }

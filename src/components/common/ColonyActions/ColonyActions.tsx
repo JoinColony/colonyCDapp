@@ -224,6 +224,23 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Create Domain"
       />
       <ActionButton
+        submit={ActionTypes.ACTION_DOMAIN_EDIT}
+        error={ActionTypes.ACTION_DOMAIN_EDIT_ERROR}
+        success={ActionTypes.ACTION_DOMAIN_EDIT_SUCCESS}
+        transform={pipe(
+          mergePayload({
+            colonyAddress: colony.colonyAddress,
+            colonyName: colony.name,
+            domain: colony.domains?.items.find((d) => !d?.isRoot),
+            domainName: 'New Name',
+            domainColor: DomainColor.Magenta,
+            domainPurpose: 'New Description',
+          }),
+          withMeta({ navigate }),
+        )}
+        text="Test Edit Domain"
+      />
+      <ActionButton
         submit={ActionTypes.ACTION_UNLOCK_TOKEN}
         error={ActionTypes.ACTION_UNLOCK_TOKEN_ERROR}
         success={ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS}
