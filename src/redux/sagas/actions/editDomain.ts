@@ -20,7 +20,11 @@ import {
   transactionPending,
   transactionAddParams,
 } from '../../actionCreators';
-import { putError, takeFrom, getDomainMetadataChangelog } from '../utils';
+import {
+  putError,
+  takeFrom,
+  getUpdatedDomainMetadataChangelog,
+} from '../utils';
 
 function* editDomainAction({
   payload: {
@@ -121,7 +125,7 @@ function* editDomainAction({
             name: domainName,
             color: domainColor,
             description: domainPurpose,
-            changelog: getDomainMetadataChangelog(
+            changelog: getUpdatedDomainMetadataChangelog(
               txHash,
               domain.metadata,
               domainName,

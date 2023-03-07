@@ -21,7 +21,7 @@ const { formatMessage } = intl({
   unknownDomain: 'UnknownDomain',
 });
 
-// Get contemporary domain name at the time of a transaction with a given hash (or fallback to the current name)
+// Get the domain name at the time of a transaction with a given hash (or fallback to the current name)
 const getDomainNameFromChangelog = (
   transactionHash: string,
   domain?: Domain | null,
