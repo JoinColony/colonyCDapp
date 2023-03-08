@@ -216,8 +216,8 @@ const SingleUserPicker = ({
                   data-test={valueDataTest}
                 >
                   {value.profile.displayName ||
-                    value.profile.username ||
-                    value.profile.walletAddress}
+                    value.name ||
+                    value.walletAddress}
                 </button>
               )
             }

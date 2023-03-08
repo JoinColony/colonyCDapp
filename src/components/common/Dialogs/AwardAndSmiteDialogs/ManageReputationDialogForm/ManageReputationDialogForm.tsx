@@ -1,54 +1,36 @@
-import React, { useMemo, useCallback, useEffect, ReactNode } from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import {
-  Id,
   ColonyRole,
   // VotingReputationVersion,
 } from '@colony/colony-js';
 import Decimal from 'decimal.js';
-import { FormState, UseFormSetValue } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
-import Button from '~shared/Button';
 import { ItemDataType } from '~shared/OmniPicker';
-import { ActionDialogProps } from '~shared/Dialog';
-import DialogSection from '~shared/Dialog/DialogSection';
 import {
-  Select,
-  HookFormInput as Input,
-  Annotations,
-  SelectOption,
-} from '~shared/Fields';
-import { Heading3 } from '~shared/Heading';
-// import { ForceToggle } from '~shared/Fields';
+  ActionDialogProps,
+  DialogControls,
+  DialogHeading,
+} from '~shared/Dialog';
+import DialogSection from '~shared/Dialog/DialogSection';
+import { Select, Annotations } from '~shared/Fields';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import PermissionsLabel from '~shared/PermissionsLabel';
-import Numeral from '~shared/Numeral';
 import ExternalLink from '~shared/ExternalLink';
 import SingleUserPicker, {
   filterUserSelection,
 } from '~shared/SingleUserPicker';
 import UserAvatar from '~shared/UserAvatar';
-// import MotionDomainSelect from '~dashboard/MotionDomainSelect';
+import NoPermissionMessage from '~shared/NoPermissionMessage';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import { REPUTATION_LEARN_MORE } from '~constants/externalUrls';
 
-import { Address, ColonyWatcher, User } from '~types/index';
+import { ColonyWatcher, User } from '~types/index';
 
-import {
-  useAppContext,
-  useDialogActionPermissions,
-  useTransformer,
-  useUserReputation,
-} from '~hooks'; // useEnabledExtensions
-import { getFormattedTokenValue } from '~utils/tokens';
-import { calculatePercentageReputation } from '~utils/reputation';
-import { userHasRole } from '~utils/checks';
+import { useDialogActionPermissions, useUserReputation } from '~hooks'; // useEnabledExtensions
 import { sortBy } from '~utils/lodash';
 
-import { getUserRolesForDomain } from '~redux/transformers';
-
-import { ManageReputationDialogFormValues } from '../types';
-
+import ReputationAmountInput from './ReputationAmountInput';
 import TeamDropdownItem from './TeamDropdownItem';
 
 import styles from './ManageReputationDialogForm.css';
@@ -74,13 +56,6 @@ const MSG = defineMessages({
     id: `${displayName}.recipient`,
     defaultMessage: 'Recipient',
   },
-  amount: {
-    id: `${displayName}.amount`,
-    defaultMessage: `Amount of reputation points to {isSmiteAction, select,
-      true {deduct}
-      other {award}
-    }`,
-  },
   annotation: {
     id: `${displayName}.annotation`,
     defaultMessage: `Explain why you're {isSmiteAction, select,
@@ -92,26 +67,12 @@ const MSG = defineMessages({
     id: `${displayName}.userPickerPlaceholder`,
     defaultMessage: 'Search for a user or paste wallet address',
   },
-  noPermission: {
-    id: `${displayName}.noPermission`,
-    defaultMessage: `You need the {roleRequired} permission in {domain} to take this action.`,
-  },
-  maxReputation: {
-    id: `${displayName}.maxReputation`,
-    defaultMessage: `{isSmiteAction, select,
-      true {max: }
-      other {}
-    }{userReputationAmount} {userReputationAmount, plural,
-      one {pt}
-      other {pts}
-    } ({userPercentageReputation}%)`,
-  },
   warningTitle: {
     id: `${displayName}.warningTitle`,
     defaultMessage: `Caution!`,
   },
   warningText: {
-    id: `${displayName}.noPermission`,
+    id: `${displayName}.warningText`,
     defaultMessage: `Improper use of this feature can break your colony. <a>Learn more</a>`,
   },
   cannotCreateMotion: {
@@ -123,9 +84,6 @@ const MSG = defineMessages({
 interface Props extends ActionDialogProps {
   nativeTokenDecimals: number;
   verifiedUsers: ColonyWatcher['user'][];
-  values: ManageReputationDialogFormValues;
-  setValue: UseFormSetValue<ManageReputationDialogFormValues>;
-  ethDomainId?: number;
   updateReputation?: (
     userPercentageReputation: number,
     totalRep?: string,
@@ -133,8 +91,8 @@ interface Props extends ActionDialogProps {
   isSmiteAction?: boolean;
 }
 
-const supRenderAvatar = (address: Address, item: ItemDataType<User>) => (
-  <UserAvatar address={address} user={item} size="xs" notSet={false} />
+const supRenderAvatar = (item: ItemDataType<User>) => (
+  <UserAvatar user={item} size="xs" />
 );
 
 const LearnMoreLink = (chunks: React.ReactNode[]) => (
@@ -145,40 +103,20 @@ const ManageReputationDialogForm = ({
   back,
   colony: { domains, colonyAddress },
   colony,
-  isSubmitting,
-  isValid,
-  values,
   updateReputation,
-  ethDomainId: preselectedDomainId,
   nativeTokenDecimals,
   verifiedUsers,
   isSmiteAction = false,
-}: Props & FormState<ManageReputationDialogFormValues>) => {
-  const { user: currentUser } = useAppContext();
-  const hasRegisteredProfile =
-    !!currentUser?.name && !!currentUser.walletAddress;
+}: Props) => {
+  const {
+    getValues,
+    formState: { isValid },
+  } = useFormContext();
+  const values = getValues();
 
-  const selectedDomain =
-    preselectedDomainId === 0 || preselectedDomainId === undefined
-      ? Id.RootDomain
-      : preselectedDomainId;
-
-  const domainId = values.domainId
-    ? parseInt(values.domainId, 10)
-    : selectedDomain;
-
-  const domainRoles = useTransformer(getUserRolesForDomain, [
-    colony,
-    currentUser?.walletAddress,
-    domainId,
-  ]);
-
-  const hasRoles =
-    hasRegisteredProfile &&
-    userHasRole(
-      domainRoles,
-      isSmiteAction ? ColonyRole.Arbitration : ColonyRole.Root,
-    );
+  const requiredRoles = [
+    isSmiteAction ? ColonyRole.Arbitration : ColonyRole.Root,
+  ];
 
   // const {
   //   votingExtensionVersion,
@@ -188,11 +126,10 @@ const ManageReputationDialogForm = ({
   // });
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colonyAddress,
-    hasRoles,
+    colony,
     false, // isVotingExtensionEnabled,
-    values.forceAction,
-    domainId,
+    requiredRoles,
+    [values.domainId],
   );
 
   const inputDisabled = !userHasPermission || onlyForceAction;
@@ -203,69 +140,47 @@ const ManageReputationDialogForm = ({
     Number(values.domainId),
   );
 
-  const userPercentageReputation = calculatePercentageReputation(
-    userReputation,
-    totalReputation,
-  );
   const unformattedUserReputationAmount = new Decimal(userReputation || 0)
     .div(new Decimal(10).pow(nativeTokenDecimals))
     .toNumber();
-  const formattedUserReputationAmount = getFormattedTokenValue(
-    userReputation || 0,
-    nativeTokenDecimals,
-  );
 
-  const colonyDomains = useMemo(() => domains?.items || [], [domains]);
-  const domainOptions = useMemo(
-    () =>
-      sortBy(
-        colonyDomains.map((domain) => ({
-          children: (
-            <TeamDropdownItem
-              domain={domain}
-              user={values.user}
-              userReputation={userReputation}
-              totalReputation={totalReputation}
-            />
-          ),
-          value: `${domain?.nativeId}`,
-          label: domain?.name || `Domain #${domain?.nativeId}`,
-        })),
-        ['value'],
+  const colonyDomains = domains?.items || [];
+  const domainOptions = sortBy(
+    colonyDomains.map((domain) => ({
+      children: (
+        <TeamDropdownItem
+          domain={domain}
+          user={values.user}
+          userReputation={userReputation}
+          totalReputation={totalReputation}
+        />
       ),
-
-    [colonyDomains, values, totalReputation, userReputation],
+      value: `${domain?.nativeId}`,
+      label: domain?.name || `Domain #${domain?.nativeId}`,
+    })),
+    ['value'],
   );
 
-  const domainName = useMemo(
-    () =>
-      colonyDomains.filter(
-        (domain) => `${domain?.nativeId}` === domainId.toString(),
-      )[0]?.name,
-    [colonyDomains, domainId],
-  );
+  const domainName = colonyDomains.find(
+    (domain) => domain?.nativeId === values.domainId,
+  )?.name;
 
-  const renderActiveOption = useCallback<
-    (option: SelectOption | undefined) => ReactNode
-  >(
-    (option) => {
-      const value = option ? option.value : undefined;
-      const activeDomain =
-        colonyDomains.find((domain) => Number(value) === domain?.nativeId) ||
-        null;
-      return (
-        <div className={styles.activeItem}>
-          <TeamDropdownItem
-            domain={activeDomain}
-            user={values.user}
-            userReputation={userReputation}
-            totalReputation={totalReputation}
-          />
-        </div>
-      );
-    },
-    [values, colonyDomains, totalReputation, userReputation],
-  );
+  const renderActiveOption = (option) => {
+    const value = option ? option.value : undefined;
+    const activeDomain =
+      colonyDomains.find((domain) => Number(value) === domain?.nativeId) ||
+      null;
+    return (
+      <div className={styles.activeItem}>
+        <TeamDropdownItem
+          domain={activeDomain}
+          user={values.user}
+          userReputation={userReputation}
+          totalReputation={totalReputation}
+        />
+      </div>
+    );
+  };
 
   useEffect(() => {
     if (updateReputation) {
@@ -273,71 +188,25 @@ const ManageReputationDialogForm = ({
     }
   }, [updateReputation, unformattedUserReputationAmount]);
 
-  // const handleFilterMotionDomains = useCallback(
-  //   (optionDomain) => {
-  //     const optionDomainId = parseInt(optionDomain.value, 10);
-  //     if (domainId === Id.RootDomain) {
-  //       return optionDomainId === Id.RootDomain;
-  //     }
-  //     return optionDomainId === domainId || optionDomainId === Id.RootDomain;
-  //   },
-  //   [domainId],
-  // );
-
-  // const handleMotionDomainChange = useCallback(
-  //   (motionDomainId) => setFieldValue('motionDomainId', motionDomainId),
-  //   [setFieldValue],
-  // );
-
   // const cannotCreateMotion =
   //   votingExtensionVersion ===
   //     VotingReputationVersion.FuchsiaLightweightSpaceship &&
   //   !values.forceAction;
 
-  const formattingOptions = useMemo(
-    () => ({
-      numeral: true,
-      tailPrefix: true,
-      numeralDecimalScale: 10,
-    }),
-    [],
-  );
-  const formattedData = useMemo(
-    () => verifiedUsers.map((user) => ({ ...user, id: user.walletAddress })),
-    [verifiedUsers],
-  );
+  const formattedData = verifiedUsers.map((user) => ({
+    ...user,
+    id: user.walletAddress,
+  }));
 
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <div className={styles.modalHeading}>
-          {/*
-           * @NOTE We can only create a motion to vote in a subdomain if we
-           * change reputation in that subdomain
-           */}
-          {/* {isVotingExtensionEnabled && (
-            <div className={styles.motionVoteDomain}>
-              <MotionDomainSelect
-                colony={colony}
-                onDomainChange={handleMotionDomainChange}
-                disabled={values.forceAction}
-                filterDomains={handleFilterMotionDomains}
-                initialSelectedDomain={domainId}
-              />
-            </div>
-          )} */}
-          <div className={styles.headingContainer}>
-            <Heading3
-              appearance={{ margin: 'none', theme: 'dark' }}
-              text={MSG.title}
-              textValues={{
-                isSmiteAction,
-              }}
-            />
-            {/* {hasRoles && isVotingExtensionEnabled && (
-              <ForceToggle disabled={!userHasPermission || isSubmitting} />
-            )} */}
-          </div>
+        <DialogHeading
+          title={MSG.title}
+          titleValues={{
+            isSmiteAction,
+          }}
+        >
           {!isSmiteAction && (
             <div className={styles.warningContainer}>
               <p className={styles.warningTitle}>
@@ -353,7 +222,7 @@ const ManageReputationDialogForm = ({
               </p>
             </div>
           )}
-        </div>
+        </DialogHeading>
       </DialogSection>
       {!isSmiteAction && <hr className={styles.divider} />}
       {!userHasPermission && (
@@ -396,47 +265,11 @@ const ManageReputationDialogForm = ({
         </div>
       </DialogSection>
       <DialogSection>
-        <div className={styles.inputContainer}>
-          <div>
-            <Input
-              name="amount"
-              label={MSG.amount}
-              labelValues={{ isSmiteAction }}
-              appearance={{
-                theme: 'minimal',
-                align: 'right',
-              }}
-              formattingOptions={formattingOptions}
-              elementOnly
-              maxButtonParams={
-                isSmiteAction
-                  ? {
-                      maxAmount: String(unformattedUserReputationAmount),
-                    }
-                  : undefined
-              }
-              disabled={inputDisabled}
-              dataTest="reputationAmountInput"
-              valueAsNumber
-            />
-            <div className={styles.percentageSign}>pts</div>
-          </div>
-          <p className={styles.inputText}>
-            <FormattedMessage
-              {...MSG.maxReputation}
-              values={{
-                isSmiteAction,
-                userReputationAmount: (
-                  <Numeral value={formattedUserReputationAmount} />
-                ),
-                userPercentageReputation:
-                  userPercentageReputation === null
-                    ? 0
-                    : userPercentageReputation,
-              }}
-            />
-          </p>
-        </div>
+        <ReputationAmountInput
+          colony={colony}
+          disabled={inputDisabled}
+          nativeTokenDecimals={nativeTokenDecimals}
+        />
       </DialogSection>
       <DialogSection>
         <Annotations
@@ -451,20 +284,12 @@ const ManageReputationDialogForm = ({
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionFromMessage}>
-            <FormattedMessage
-              {...MSG.noPermission}
-              values={{
-                roleRequired: (
-                  <PermissionsLabel
-                    permission={ColonyRole.Architecture}
-                    name={{ id: `role.${ColonyRole.Architecture}` }}
-                  />
-                ),
-                domain: domainName,
-              }}
-            />
-          </div>
+          <NoPermissionMessage
+            requiredPermissions={[
+              isSmiteAction ? ColonyRole.Arbitration : ColonyRole.Root,
+            ]}
+            domainName={domainName}
+          />
         </DialogSection>
       )}
       {/* {onlyForceAction && (
@@ -487,22 +312,10 @@ const ManageReputationDialogForm = ({
         </DialogSection>
       )} */}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
-        <Button
-          appearance={{ theme: 'secondary', size: 'large' }}
-          onClick={back}
-          text={{ id: 'button.back' }}
-        />
-        <Button
-          appearance={{ theme: 'primary', size: 'large' }}
-          text={
-            values.forceAction || true // || !isVotingExtensionEnabled
-              ? { id: 'button.confirm' }
-              : { id: 'button.createMotion' }
-          }
-          loading={isSubmitting}
+        <DialogControls
+          onSecondaryButtonClick={back}
           disabled={!isValid || inputDisabled} // cannotCreateMotion ||
-          style={{ minWidth: styles.wideButton }}
-          data-test="reputationConfirmButton"
+          dataTest="reputationConfirmButton"
         />
       </DialogSection>
     </>

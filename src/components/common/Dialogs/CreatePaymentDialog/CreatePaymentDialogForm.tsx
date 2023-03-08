@@ -142,10 +142,10 @@ Props) => {
         )} */}
         {recipient &&
           isConfusing(
-            recipient.profile.walletAddress || recipient.profile?.displayName,
+            recipient.walletAddress || recipient.profile?.displayName,
           ) && (
             <ConfusableWarning
-              walletAddress={recipient.profile.walletAddress}
+              walletAddress={recipient.walletAddress}
               colonyAddress={colony?.colonyAddress}
             />
           )}

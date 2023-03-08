@@ -1,8 +1,7 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { string, object, number, boolean } from 'yup';
+import React, { useState } from 'react';
+import { string, object, number, boolean, InferType } from 'yup';
 import { Id } from '@colony/colony-js';
 import { useNavigate } from 'react-router-dom';
-import Decimal from 'decimal.js';
 import { defineMessages } from 'react-intl';
 
 import Dialog from '~shared/Dialog';
@@ -10,7 +9,6 @@ import { ActionHookForm as Form } from '~shared/Fields';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { ActionTypes } from '~redux/index';
-// import { useMembersSubscription } from '~data/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { useSelectedUser } from '~hooks';
 // import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
@@ -18,10 +16,9 @@ import { pipe, withMeta, mapPayload } from '~utils/actions';
 import { notNull } from '~utils/arrays';
 
 import DialogForm from '../ManageReputationDialogForm';
-import {
-  AwardAndSmiteDialogProps,
-  ManageReputationDialogFormValues,
-} from '../types';
+import { AwardAndSmiteDialogProps } from '../types';
+
+import { getManageReputationDialogPayload } from './helpers';
 
 const displayName = 'common.ManageReputationContainer';
 
@@ -32,28 +29,41 @@ const MSG = defineMessages({
   },
 });
 
+const defaultValidationSchema = object()
+  .shape({
+    domainId: number().required(),
+    user: object().shape({
+      profile: object().shape({
+        walletAddress: string().address().required(),
+      }),
+    }),
+    amount: number()
+      .required()
+      .moreThan(0, () => MSG.amountZero),
+    annotation: string().max(4000),
+    forceAction: boolean(),
+    motionDomainId: number(),
+  })
+  .defined();
+
+type FormValues = InferType<typeof defaultValidationSchema>;
+
 const ManageReputationContainer = ({
-  colony: { colonyAddress, name, nativeToken, watchers }, // tokens
+  colony: { nativeToken, watchers },
   colony,
   callStep,
   prevStep,
   cancel,
   close,
-  ethDomainId,
+  filteredDomainId,
   isSmiteAction = false,
 }: AwardAndSmiteDialogProps) => {
   const [isForce, setIsForce] = useState(false);
   const [userReputation, setUserReputation] = useState(0);
   const navigate = useNavigate();
 
-  // const { data: colonyMembers } = useMembersSubscription({
-  //   variables: { colonyAddress },
-  // });
-
-  const colonyWatchers = useMemo(
-    () => watchers?.items.filter(notNull).map((item) => item.user) || [],
-    [watchers],
-  );
+  const colonyWatchers =
+    watchers?.items.filter(notNull).map((item) => item.user) || [];
 
   // const verifiedUsers = useMemo(() => {
   //   return getVerifiedUsers(colony.whitelistedAddresses, colonyWatchers) || [];
@@ -67,31 +77,14 @@ const ManageReputationContainer = ({
   //   colonyAddress,
   // });
 
-  const getFormAction = useCallback(
-    (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-      const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
+  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
+    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
 
-      return !isForce // && isVotingExtensionEnabled
-        ? ActionTypes[`MOTION_MANAGE_REPUTATION${actionEnd}`]
-        : ActionTypes[`ACTION_MANAGE_REPUTATION${actionEnd}`];
-    },
-    [isForce], // , isVotingExtensionEnabled
-  );
+    return !isForce // && isVotingExtensionEnabled
+      ? ActionTypes[`MOTION_MANAGE_REPUTATION${actionEnd}`]
+      : ActionTypes[`ACTION_MANAGE_REPUTATION${actionEnd}`];
+  };
 
-  const defaultValidationSchema = object().shape({
-    domainId: number().required(),
-    user: object().shape({
-      profile: object().shape({
-        walletAddress: string().address().required(),
-      }),
-    }),
-    amount: number()
-      .required()
-      .moreThan(0, () => MSG.amountZero),
-    annotation: string().max(4000),
-    forceAction: boolean(),
-    motionDomainId: number(),
-  });
   let smiteValidationSchema;
 
   if (isSmiteAction) {
@@ -105,29 +98,16 @@ const ManageReputationContainer = ({
 
   const nativeTokenDecimals = nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS;
 
-  const transform = useCallback(
-    () =>
-      pipe(
-        mapPayload(({ amount, domainId, annotation, user, motionDomainId }) => {
-          const reputationChangeAmount = new Decimal(amount)
-            .mul(new Decimal(10).pow(nativeTokenDecimals))
-            // Smite amount needs to be negative, otherwise leave it as it is
-            .mul(isSmiteAction ? -1 : 1);
-
-          return {
-            colonyAddress,
-            colonyName: name,
-            domainId,
-            userAddress: user.profile.walletAddress,
-            annotationMessage: annotation,
-            amount: reputationChangeAmount.toString(),
-            motionDomainId,
-            isSmitingReputation: isSmiteAction,
-          };
-        }),
-        withMeta({ navigate }),
+  const transform = pipe(
+    mapPayload((payload) =>
+      getManageReputationDialogPayload(
+        colony,
+        isSmiteAction,
+        nativeTokenDecimals,
+        payload,
       ),
-    [isSmiteAction, colonyAddress, name, nativeTokenDecimals, navigate],
+    ),
+    withMeta({ navigate }),
   );
 
   // const { isWhitelistActivated } = colony;
@@ -136,13 +116,11 @@ const ManageReputationContainer = ({
   // );
 
   return (
-    <Form<ManageReputationDialogFormValues>
+    <Form<FormValues>
       defaultValues={{
         forceAction: false,
-        domainId: (ethDomainId === 0 || ethDomainId === undefined
-          ? Id.RootDomain
-          : ethDomainId
-        ).toString(),
+        domainId:
+          filteredDomainId === undefined ? Id.RootDomain : filteredDomainId,
         // user: selectedUser,
         motionDomainId: Id.RootDomain,
         amount: 0,
@@ -155,7 +133,7 @@ const ManageReputationContainer = ({
       onSuccess={close}
       transform={transform}
     >
-      {({ formState, getValues, setValue }) => {
+      {({ getValues }) => {
         const values = getValues();
         if (values.forceAction !== isForce) {
           setIsForce(values.forceAction);
@@ -163,13 +141,9 @@ const ManageReputationContainer = ({
         return (
           <Dialog cancel={cancel}>
             <DialogForm
-              {...formState}
-              values={values}
-              setValue={setValue}
               colony={colony}
               nativeTokenDecimals={nativeTokenDecimals}
               back={() => callStep(prevStep)}
-              ethDomainId={ethDomainId}
               verifiedUsers={
                 colonyWatchers // isWhitelistActivated ? verifiedUsers : colonyWatchers
               }

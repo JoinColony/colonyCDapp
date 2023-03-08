@@ -3,25 +3,11 @@ declare namespace ManageReputationDialogFormCssNamespace {
     activeItem: string;
     divider: string;
     domainSelects: string;
-    headingContainer: string;
-    inputContainer: string;
-    inputText: string;
-    mappings: string;
-    modalHeading: string;
     motionVoteDomain: string;
-    names: string;
-    noPermissionFromMessage: string;
-    percentageSign: string;
-    query700: string;
     singleUserContainer: string;
-    sourceRoot: string;
-    sources: string;
-    sourcesContent: string;
-    version: string;
     warningContainer: string;
     warningText: string;
     warningTitle: string;
-    wideButton: string;
   }
 }
 

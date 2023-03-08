@@ -3,8 +3,8 @@ import React from 'react';
 import ColorTag from '~shared/ColorTag';
 import { Heading4 } from '~shared/Heading';
 import MemberReputation from '~shared/MemberReputation';
-import { graphQlDomainColorMap, User } from '~types';
-import { Domain, DomainColor } from '~gql';
+import { graphQlDomainColorMap, User, Domain } from '~types';
+import { DomainColor } from '~gql';
 
 import styles from './TeamDropdownItem.css';
 
