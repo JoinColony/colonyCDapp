@@ -167,11 +167,11 @@ export const mapColonyEventToExpectedFormat = (
         actionData.amount,
         getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
       ),
-    // staker: (
-    //   <span className={styles.userDecoration}>
-    //     <FriendlyName user={event.staker} autoShrinkAddress />
-    //   </span>
-    // ),
+    staker: (
+      <span className={styles.userDecoration}>
+        <FriendlyName user={actionData.initiatorUser} autoShrinkAddress />
+      </span>
+    ),
     newVersion: actionData.newColonyVersion,
     reputationChangeNumeral: actionData.amount && (
       <Numeral

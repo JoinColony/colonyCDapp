@@ -19,9 +19,7 @@ interface DefaultActionProps {
 const DefaultAction = ({ actionData }: DefaultActionProps) => {
   const { colony } = useColonyContext();
 
-  const {
-    enabledExtensions: { isVotingReputationEnabled },
-  } = useEnabledExtensions();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
   if (!colony) {
     return null;
@@ -32,7 +30,7 @@ const DefaultAction = ({ actionData }: DefaultActionProps) => {
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
       {isVotingReputationEnabled && <ForcedTag />}
       <div className={styles.container}>
-        <DefaultActionContent actionData={actionData} colony={colony} />
+        <DefaultActionContent actionData={actionData} />
         <DetailsWidget actionData={actionData} colony={colony} />
       </div>
     </div>
