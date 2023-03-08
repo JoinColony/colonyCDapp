@@ -10,6 +10,18 @@ import { DEFAULT_NETWORK } from '~constants';
 import { ContextModule, getContext } from '~context';
 import { Network, ColonyJSNetworkMapping } from '~types';
 
+export const {
+  etherRouterAddress: networkAddress,
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
+} = require('../../../../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+
+export const getReputationOracleURL = () => {
+  if (DEFAULT_NETWORK === Network.Ganache) {
+    return new URL(`/reputation/local`, 'http://localhost:3001');
+  }
+
+  return new URL(`/reputation`, window.location.origin);
+};
 /*
  * Return an initialized ColonyNetworkClient instance.
  */
@@ -24,14 +36,9 @@ export default function* getNetworkClient() {
 
   const signer = walletProvider.getSigner();
 
-  let reputationOracleUrl = new URL(`/reputation`, window.location.origin);
+  const reputationOracleUrl = getReputationOracleURL();
 
   if (DEFAULT_NETWORK === Network.Ganache) {
-    reputationOracleUrl = new URL(`/reputation/local`, 'http://localhost:3001');
-    const {
-      etherRouterAddress: networkAddress,
-      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
-    } = require('../../../../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
     return yield call(getColonyNetworkClient, ColonyJSNetwork.Custom, signer, {
       networkAddress,
       reputationOracleEndpoint: reputationOracleUrl.href,
