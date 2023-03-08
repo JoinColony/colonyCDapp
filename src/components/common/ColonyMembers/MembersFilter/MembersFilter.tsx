@@ -36,11 +36,11 @@ export interface FormValues {
 }
 
 interface Props {
-  handleFiltersCallback: (filters: FormValues) => void;
+  handleFilterChange: (name, value) => void;
   isRoot: boolean;
 }
 
-const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
+const MembersFilter = ({ handleFilterChange, isRoot }: Props) => {
   return (
     <>
       <hr className={styles.divider} />
@@ -56,8 +56,6 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
           const showReset =
             values.verificationType !== VerificationType.All ||
             values.memberType !== MemberType.All;
-          console.log('values', values);
-          handleFiltersCallback(values);
 
           return (
             <div className={styles.filters}>
@@ -68,7 +66,6 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
                 {showReset && (
                   <Button
                     text={MSG.reset}
-                    type="submit"
                     appearance={{ theme: 'blue' }}
                     onClick={() => reset()}
                   />
@@ -85,7 +82,7 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
                         name={name}
                         options={options}
                         label={label}
-                        // handleFiltersCallback={handleFiltersCallback}
+                        handleFilterChange={handleFilterChange}
                       />
                     )
                   );
