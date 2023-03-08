@@ -68,7 +68,7 @@ const ActionDetailsPage = () => {
   if (isMotion) {
     return (
       <Layout isMotion>
-        <DefaultMotion item={action} />
+        <DefaultMotion actionData={action} />
       </Layout>
     );
   }

@@ -19,6 +19,7 @@ import { ActionTypes, RootMotionMethodNames } from '~redux';
 import { ActionsListHeading } from '.';
 
 import styles from './ColonyActions.css';
+import { DomainColor } from '~gql';
 
 const displayName = 'common.ColonyActions';
 
@@ -191,7 +192,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
       <ActionButton
         actionType={actionType}
         values={{
-          operationName: RootMotionMethodNames.MINT_TOKENS,
+          operationName: RootMotionMethodNames.MintTokens,
           colonyAddress: colony.colonyAddress,
           colonyName: colony.name,
           nativeTokenAddress: colony.nativeToken.tokenAddress,
@@ -202,7 +203,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Mint Tokens"
       />
       <ActionButton
-        submit={ActionTypes.ACTION_EXPENDITURE_PAYMENT}
+        actionType={ActionTypes.ACTION_EXPENDITURE_PAYMENT}
         error={ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR}
         success={ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS}
         transform={pipe(
@@ -222,7 +223,40 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Create Payment"
       />
       <ActionButton
-        submit={ActionTypes.ACTION_UNLOCK_TOKEN}
+        actionType={ActionTypes.ACTION_DOMAIN_CREATE}
+        error={ActionTypes.ACTION_DOMAIN_CREATE_ERROR}
+        success={ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS}
+        transform={pipe(
+          mergePayload({
+            colonyAddress: colony.colonyAddress,
+            colonyName: colony.name,
+            domainName: 'Test Domain',
+            domainColor: DomainColor.BlueGrey,
+            domainPurpose: 'Test Domain Description',
+          }),
+          withMeta({ navigate }),
+        )}
+        text="Test Create Domain"
+      />
+      <ActionButton
+        actionType={ActionTypes.ACTION_DOMAIN_EDIT}
+        error={ActionTypes.ACTION_DOMAIN_EDIT_ERROR}
+        success={ActionTypes.ACTION_DOMAIN_EDIT_SUCCESS}
+        transform={pipe(
+          mergePayload({
+            colonyAddress: colony.colonyAddress,
+            colonyName: colony.name,
+            domain: colony.domains?.items.find((d) => !d?.isRoot),
+            domainName: 'New Name',
+            domainColor: DomainColor.Magenta,
+            domainPurpose: 'New Description',
+          }),
+          withMeta({ navigate }),
+        )}
+        text="Test Edit Domain"
+      />
+      <ActionButton
+        actionType={ActionTypes.ACTION_UNLOCK_TOKEN}
         error={ActionTypes.ACTION_UNLOCK_TOKEN_ERROR}
         success={ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS}
         transform={pipe(
@@ -235,7 +269,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Unlock Token"
       />
       <ActionButton
-        submit={ActionTypes.ACTION_MOVE_FUNDS}
+        actionType={ActionTypes.ACTION_MOVE_FUNDS}
         error={ActionTypes.ACTION_MOVE_FUNDS_ERROR}
         success={ActionTypes.ACTION_MOVE_FUNDS_SUCCESS}
         transform={pipe(
@@ -252,7 +286,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Move Funds"
       />
       <ActionButton
-        submit={ActionTypes.ACTION_EDIT_COLONY}
+        actionType={ActionTypes.ACTION_EDIT_COLONY}
         error={ActionTypes.ACTION_EDIT_COLONY_ERROR}
         success={ActionTypes.ACTION_EDIT_COLONY_SUCCESS}
         transform={pipe(
@@ -265,7 +299,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Edit Colony"
       />
       <ActionButton
-        submit={ActionTypes.ACTION_VERSION_UPGRADE}
+        actionType={ActionTypes.ACTION_VERSION_UPGRADE}
         error={ActionTypes.ACTION_VERSION_UPGRADE_ERROR}
         success={ActionTypes.ACTION_VERSION_UPGRADE_SUCCESS}
         transform={pipe(
@@ -279,7 +313,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Version Upgrade"
       />
       <ActionButton
-        submit={ActionTypes.ACTION_MANAGE_REPUTATION}
+        actionType={ActionTypes.ACTION_MANAGE_REPUTATION}
         error={ActionTypes.ACTION_MANAGE_REPUTATION_ERROR}
         success={ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS}
         transform={pipe(
