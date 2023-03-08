@@ -1,14 +1,13 @@
 import React, { ReactElement, useMemo, useContext } from 'react';
 
 import Popover, { PopoverChildFn } from '~shared/Popover';
-
+import { TokenActivationContext } from '~shared/TokenActivationProvider';
 import { removeValueUnits } from '~utils/css';
 
 import TokenActivationContent from './TokenActivationContent';
 import { TokensTabProps } from './TokensTab';
-import styles from './TokenActivationPopover.css';
 
-import { TokenActivationContext } from '~shared/TokenActivationProvider';
+import styles from './TokenActivationPopover.css';
 
 interface Props extends TokensTabProps {
   children: ReactElement | PopoverChildFn;
