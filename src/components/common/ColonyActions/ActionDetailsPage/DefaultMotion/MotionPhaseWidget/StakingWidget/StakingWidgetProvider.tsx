@@ -14,6 +14,7 @@ import {
   useAppContext,
   useColonyContext,
   useMinAndRequiredStakes,
+  useUserBalance,
 } from '~hooks';
 import { MotionData, SetStateFn } from '~types';
 import {
@@ -107,23 +108,11 @@ const StakingWidgetProvider = ({
 
   const { minUserStake, requiredStake, loadingStakeData } =
     useMinAndRequiredStakes(skillRep);
-
-  // TODO
-  //   const {
-  //     data: userData,
-  //     loading: userDataLoading,
-  //   } = useUserBalanceWithLockQuery({
-  //     variables: {
-  //       address: walletAddress,
-  //       tokenAddress: nativeTokenAddress,
-  //       colonyAddress,
-  //     },
-  //   });
-  //userData?.user?.userLock?.balance || 0,
+  const userBalance = useUserBalance();
 
   const userActivatedTokens = useMemo(
-    () => new Decimal('100000000000000000000000000000000000000000'),
-    [],
+    () => new Decimal(userBalance ?? '0'),
+    [userBalance],
   );
 
   /* A user cannot stake more tokens than they have reputation. Thus, their rep is their max stake. */
