@@ -12,7 +12,7 @@ import {
 } from '~types';
 import { intl } from '~utils/intl';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
-import { MotionVote } from '~utils/colonyMotions';
+// import { MotionVote } from '~utils/colonyMotions';
 import {
   AmountTag,
   Motion as MotionTag,
@@ -113,14 +113,14 @@ export const mapColonyEventToExpectedFormat = (
     amountTag: (
       <AmountTag>
         <Numeral
-          value={item.amount ?? 0}
-          decimals={item.decimals ?? undefined}
-          suffix={item.tokenSymbol ?? ''}
+          value={actionData.amount ?? 0}
+          decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
+          suffix={actionData.token?.symbol ?? ''}
         />
       </AmountTag>
     ),
-    backedSideTag:
-      event.vote === MotionVote.Yay ? <MotionTag /> : <ObjectionTag />,
+    // backedSideTag:
+    //   event.vote === MotionVote.Yay ? <MotionTag /> : <ObjectionTag />,
     motionTag: <MotionTag />,
     objectionTag: <ObjectionTag />,
     // ...getColonyRoleSetTitleValues(role?.setTo),
@@ -150,10 +150,12 @@ export const mapColonyEventToExpectedFormat = (
     ),
     staker: (
       <span className={styles.userDecoration}>
-        <FriendlyName user={event.staker} autoShrinkAddress />
+        <FriendlyName user={actionData.initiatorUser} autoShrinkAddress />
       </span>
     ),
-    isSmiteAction: item.type === ColonyActionType.EmitDomainReputationPenalty,
+    isSmiteAction:
+      actionData.type === ColonyActionType.EmitDomainReputationPenalty,
+    tokenSymbol: actionData.token?.symbol,
     // reputationChange:
     //   item.reputationChange &&
     //   formatReputationChange(item.reputationChange, item.decimals),

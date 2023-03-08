@@ -4,7 +4,6 @@ import { defineMessages, MessageDescriptor } from 'react-intl';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import Numeral from '~shared/Numeral';
 import TransactionLink from '~shared/TransactionLink';
-import { getDetailsForAction } from '~utils/colonyActions';
 import { Colony, ColonyAction, UniversalMessageValues } from '~types';
 import { ActionPageDetails, getDetailItemsKeys } from '~utils/colonyActions';
 import { findDomainByNativeId } from '~utils/domains';
@@ -93,7 +92,7 @@ interface DetailItemConfig {
   item: ReactNode;
 }
 
-const getMotionDetailItem = (colony: Colony, motionDomainId?: string) => {
+const getMotionDetailItem = (colony: Colony, motionDomainId?: number) => {
   const motionDomain = findDomainByNativeId(
     Number(motionDomainId ?? 1),
     colony,
@@ -101,7 +100,9 @@ const getMotionDetailItem = (colony: Colony, motionDomainId?: string) => {
   return {
     label: MSG.motionDomain,
     labelValues: undefined,
-    item: motionDomain && <TeamDetail domain={motionDomain} />,
+    item: motionDomain?.metadata && (
+      <TeamDetail domainMetadata={motionDomain.metadata} />
+    ),
   };
 };
 
@@ -110,21 +111,16 @@ const getDetailItemsMap = (
   {
     type,
     transactionHash,
-    fromDomain: fromDomainId,
-    toDomain: toDomainId,
+    fromDomain,
+    toDomain,
     amount,
     recipient,
-    decimals,
-    //token,
-    // roles,
-    tokenSymbol,
-  }: // reputationChange
-  typeof mockEventData & ColonyAction,
+    token,
+  }: // roles,
+  // reputationChange
+  ColonyAction,
 ) => {
   const shortenedHash = getShortenedHash(transactionHash || '');
-  const fromDomain = findDomainByNativeId(fromDomainId, colony);
-  const toDomain = findDomainByNativeId(toDomainId, colony);
-  const adjustedAmount = getAdjustedAmount(amount, decimals);
   const recipientWalletAddress = recipient?.walletAddress;
   // const isSmiteAction =
   //   actionType === ColonyActions.EmitDomainReputationPenalty;
@@ -132,17 +128,23 @@ const getDetailItemsMap = (
     [ActionPageDetails.FromDomain]: {
       label: MSG.fromDomain,
       labelValues: undefined,
-      item: fromDomain.metadata && <TeamDetail domain={fromDomain.metadata} />,
+      item: fromDomain?.metadata && (
+        <TeamDetail domainMetadata={fromDomain.metadata} />
+      ),
     },
     [ActionPageDetails.Domain]: {
       label: MSG.domain,
       labelValues: undefined,
-      item: fromDomain.metadata && <TeamDetail domain={fromDomain.metadata} />,
+      item: fromDomain?.metadata && (
+        <TeamDetail domainMetadata={fromDomain.metadata} />
+      ),
     },
     [ActionPageDetails.ToDomain]: {
       label: MSG.toRecipient,
       labelValues: undefined,
-      item: toDomain?.metadata && <TeamDetail domain={toDomain.metadata} />,
+      item: toDomain?.metadata && (
+        <TeamDetail domainMetadata={toDomain.metadata} />
+      ),
     },
     [ActionPageDetails.ToRecipient]: {
       label: MSG.toRecipient,
@@ -163,7 +165,7 @@ const getDetailItemsMap = (
             />
           }
           symbol={token?.symbol}
-          token={token ?? undefined}
+          token={token}
         />
       ),
     },
@@ -191,7 +193,7 @@ const getDetailItemsMap = (
     [ActionPageDetails.Description]: {
       label: MSG.domainDescription,
       labelValues: undefined,
-      item: fromDomain?.metadata.description && (
+      item: fromDomain?.metadata?.description && (
         <DomainDescriptionDetail
           description={fromDomain.metadata.description}
         />
@@ -223,18 +225,21 @@ const getDetailItemsMap = (
 };
 
 const getDetailItems = (
-  itemData: typeof mockEventData & ColonyAction,
+  actionData: ColonyAction,
   colony: Colony,
 ): DetailItemConfig[] => {
-  const detailItemsMap = getDetailItemsMap(colony, itemData);
-  const detailItemKeys = getDetailItemsKeys(itemData.type);
-  const motionDetailItem = getMotionDetailItem(colony, itemData.fromDomain);
+  const detailItemsMap = getDetailItemsMap(colony, actionData);
+  const detailItemKeys = getDetailItemsKeys(actionData.type);
+  const motionDetailItem = getMotionDetailItem(
+    colony,
+    actionData.fromDomain?.nativeId,
+  );
 
   const detailItems = detailItemKeys
     .map((itemKey) => detailItemsMap[itemKey])
     .filter((detail) => !!detail.item);
 
-  if (itemData.isMotion) {
+  if (actionData.isMotion) {
     detailItems.splice(1, 0, motionDetailItem);
   }
 

@@ -7,7 +7,12 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import LoadMoreButton from '~shared/LoadMoreButton';
 import ActionsList from '~shared/ActionsList';
 import { ActionButton } from '~shared/Button';
-import { useAppContext, useColonyContext, usePaginatedActions } from '~hooks';
+import {
+  useAppContext,
+  useColonyContext,
+  useEnabledExtensions,
+  usePaginatedActions,
+} from '~hooks';
 import { mergePayload, pipe, withMeta } from '~utils/actions';
 import { DomainColor } from '~types';
 import { ActionTypes, RootMotionMethodNames } from '~redux';
@@ -189,7 +194,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
       <ActionButton
         actionType={actionType}
         values={{
-          operationName: RootMotionMethodNames.MINT_TOKENS,
+          operationName: RootMotionMethodNames.MintTokens,
           colonyAddress: colony.colonyAddress,
           colonyName: colony.name,
           nativeTokenAddress: colony.nativeToken.tokenAddress,
@@ -200,7 +205,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Mint Tokens"
       />
       <ActionButton
-        submit={ActionTypes.ACTION_EXPENDITURE_PAYMENT}
+        actionType={ActionTypes.ACTION_EXPENDITURE_PAYMENT}
         error={ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR}
         success={ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS}
         transform={pipe(
@@ -220,7 +225,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Create Payment"
       />
       <ActionButton
-        submit={ActionTypes.ACTION_DOMAIN_CREATE}
+        actionType={ActionTypes.ACTION_DOMAIN_CREATE}
         error={ActionTypes.ACTION_DOMAIN_CREATE_ERROR}
         success={ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS}
         transform={pipe(
@@ -236,7 +241,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Create Domain"
       />
       <ActionButton
-        submit={ActionTypes.ACTION_DOMAIN_EDIT}
+        actionType={ActionTypes.ACTION_DOMAIN_EDIT}
         error={ActionTypes.ACTION_DOMAIN_EDIT_ERROR}
         success={ActionTypes.ACTION_DOMAIN_EDIT_SUCCESS}
         transform={pipe(
@@ -253,7 +258,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Edit Domain"
       />
       <ActionButton
-        submit={ActionTypes.ACTION_UNLOCK_TOKEN}
+        actionType={ActionTypes.ACTION_UNLOCK_TOKEN}
         error={ActionTypes.ACTION_UNLOCK_TOKEN_ERROR}
         success={ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS}
         transform={pipe(
@@ -266,7 +271,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Unlock Token"
       />
       <ActionButton
-        submit={ActionTypes.ACTION_MOVE_FUNDS}
+        actionType={ActionTypes.ACTION_MOVE_FUNDS}
         error={ActionTypes.ACTION_MOVE_FUNDS_ERROR}
         success={ActionTypes.ACTION_MOVE_FUNDS_SUCCESS}
         transform={pipe(

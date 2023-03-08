@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { mockEventData } from '~common/ColonyActions/mockData';
 import DetailsWidget from '~shared/DetailsWidget';
 
 import { useColonyContext, useEnabledExtensions } from '~hooks';
@@ -16,10 +15,10 @@ import styles from './DefaultMotion.css';
 const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion';
 
 interface DefaultMotionProps {
-  item: ColonyAction;
+  actionData: ColonyAction;
 }
 
-const DefaultMotion = ({ item }: DefaultMotionProps) => {
+const DefaultMotion = ({ actionData }: DefaultMotionProps) => {
   const { colony } = useColonyContext();
 
   const {
@@ -45,7 +44,7 @@ const DefaultMotion = ({ item }: DefaultMotionProps) => {
       {showBanner && <StakeRequiredBanner isDecision={false} />}
       {isVotingReputationEnabled && <MotionHeading motionState={motionState} />}
       <div className={styles.container}>
-        <DefaultActionContent colony={colony} item={item} />
+        <DefaultActionContent colony={colony} actionData={actionData} />
         {/* {isStakingPhase && (
           <StakingWidgetFlow
             motionId={motionId}
@@ -86,7 +85,7 @@ const DefaultMotion = ({ item }: DefaultMotionProps) => {
             isDecision={isDecision}
           />
         )} */}
-        <DetailsWidget values={{ ...mockEventData, ...item }} colony={colony} />
+        <DetailsWidget actionData={actionData} colony={colony} />
       </div>
     </div>
   );
