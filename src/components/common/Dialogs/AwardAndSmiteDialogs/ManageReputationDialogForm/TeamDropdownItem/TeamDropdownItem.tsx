@@ -3,7 +3,7 @@ import React from 'react';
 import ColorTag from '~shared/ColorTag';
 import { Heading4 } from '~shared/Heading';
 import MemberReputation from '~shared/MemberReputation';
-import { graphQlDomainColorMap, User, Domain } from '~types';
+import { User, Domain } from '~types';
 import { DomainColor } from '~gql';
 
 import styles from './TeamDropdownItem.css';
@@ -25,14 +25,12 @@ const TeamDropdownItem = ({
 }: Props) => (
   <div className={styles.main}>
     <div className={styles.color}>
-      <ColorTag
-        color={graphQlDomainColorMap[domain?.color || DomainColor.Lightpink]}
-      />
+      <ColorTag color={domain?.metadata?.color || DomainColor.LightPink} />
     </div>
     <div className={styles.headingWrapper}>
       <Heading4
         appearance={{ margin: 'none', theme: 'dark' }}
-        text={domain?.name || ''}
+        text={domain?.metadata?.name || ''}
       />
     </div>
     {user && (

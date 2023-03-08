@@ -29,6 +29,7 @@ import { ColonyWatcher, User } from '~types/index';
 
 import { useDialogActionPermissions, useUserReputation } from '~hooks'; // useEnabledExtensions
 import { sortBy } from '~utils/lodash';
+import { notNull } from '~utils/arrays';
 
 import ReputationAmountInput from './ReputationAmountInput';
 import TeamDropdownItem from './TeamDropdownItem';
@@ -144,7 +145,7 @@ const ManageReputationDialogForm = ({
     .div(new Decimal(10).pow(nativeTokenDecimals))
     .toNumber();
 
-  const colonyDomains = domains?.items || [];
+  const colonyDomains = domains?.items.filter(notNull) || [];
   const domainOptions = sortBy(
     colonyDomains.map((domain) => ({
       children: (
@@ -155,15 +156,15 @@ const ManageReputationDialogForm = ({
           totalReputation={totalReputation}
         />
       ),
-      value: `${domain?.nativeId}`,
-      label: domain?.name || `Domain #${domain?.nativeId}`,
+      value: domain.nativeId,
+      label: domain.metadata?.name || `Domain #${domain.nativeId}`,
     })),
     ['value'],
   );
 
   const domainName = colonyDomains.find(
     (domain) => domain?.nativeId === values.domainId,
-  )?.name;
+  )?.metadata?.name;
 
   const renderActiveOption = (option) => {
     const value = option ? option.value : undefined;
@@ -269,6 +270,7 @@ const ManageReputationDialogForm = ({
           colony={colony}
           disabled={inputDisabled}
           nativeTokenDecimals={nativeTokenDecimals}
+          isSmiteAction={isSmiteAction}
         />
       </DialogSection>
       <DialogSection>

@@ -10,8 +10,7 @@ import { ActionHookForm as Form } from '~shared/Fields';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-// import { useSelectedUser } from '~hooks';
-// import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
+import { useEnabledExtensions } from '~hooks'; // useSelectedUser
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
 import { notNull } from '~utils/arrays';
 
@@ -33,9 +32,7 @@ const defaultValidationSchema = object()
   .shape({
     domainId: number().required(),
     user: object().shape({
-      profile: object().shape({
-        walletAddress: string().address().required(),
-      }),
+      walletAddress: string().address().required(),
     }),
     amount: number()
       .required()
@@ -73,17 +70,14 @@ const ManageReputationContainer = ({
     setUserReputation(userRepPercentage);
   };
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress,
-  // });
+  const {
+    enabledExtensions: { isVotingReputationEnabled },
+  } = useEnabledExtensions();
 
-  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
-
-    return !isForce // && isVotingExtensionEnabled
-      ? ActionTypes[`MOTION_MANAGE_REPUTATION${actionEnd}`]
-      : ActionTypes[`ACTION_MANAGE_REPUTATION${actionEnd}`];
-  };
+  const actionType =
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.MOTION_MANAGE_REPUTATION
+      : ActionTypes.ACTION_MANAGE_REPUTATION;
 
   let smiteValidationSchema;
 
@@ -119,16 +113,13 @@ const ManageReputationContainer = ({
     <Form<FormValues>
       defaultValues={{
         forceAction: false,
-        domainId:
-          filteredDomainId === undefined ? Id.RootDomain : filteredDomainId,
+        domainId: filteredDomainId ?? Id.RootDomain,
         // user: selectedUser,
         motionDomainId: Id.RootDomain,
         amount: 0,
         annotation: '',
       }}
-      submit={getFormAction('SUBMIT')}
-      error={getFormAction('ERROR')}
-      success={getFormAction('SUCCESS')}
+      actionType={actionType}
       validationSchema={smiteValidationSchema || defaultValidationSchema}
       onSuccess={close}
       transform={transform}
