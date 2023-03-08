@@ -2,7 +2,7 @@ import React from 'react';
 
 import { getActionTitleValues } from '~common/ColonyActions/helpers';
 import { Heading3 } from '~shared/Heading';
-import { Colony, ColonyAction } from '~types';
+import { ColonyAction } from '~types';
 
 import ActionsPageFeed from '../ActionDetailsPageFeed';
 
@@ -12,20 +12,16 @@ const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultActionContent';
 
 interface DefaultActionContentProps {
-  colony: Colony;
   actionData: ColonyAction;
 }
 
-const DefaultActionContent = ({
-  colony,
-  actionData,
-}: DefaultActionContentProps) => (
+const DefaultActionContent = ({ actionData }: DefaultActionContentProps) => (
   <div className={styles.content}>
     <Heading3
       className={styles.heading}
       data-test="actionHeading"
       text={{ id: 'action.title' }}
-      textValues={getActionTitleValues(actionData, colony)}
+      textValues={getActionTitleValues(actionData)}
     />
     <ActionsPageFeed actionData={actionData} />
   </div>
