@@ -180,7 +180,7 @@ const getDetailItemsMap = (
             />
           }
           symbol={token?.symbol}
-          token={token ?? undefined}
+          token={token}
         />
       ),
     },

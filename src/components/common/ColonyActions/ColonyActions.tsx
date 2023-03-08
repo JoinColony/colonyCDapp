@@ -190,7 +190,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
       <ActionButton
         actionType={actionType}
         values={{
-          operationName: RootMotionMethodNames.MINT_TOKENS,
+          operationName: RootMotionMethodNames.MintTokens,
           colonyAddress: colony.colonyAddress,
           colonyName: colony.name,
           nativeTokenAddress: colony.nativeToken.tokenAddress,
@@ -201,7 +201,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Mint Tokens"
       />
       <ActionButton
-        submit={ActionTypes.ACTION_UNLOCK_TOKEN}
+        actionType={ActionTypes.ACTION_UNLOCK_TOKEN}
         error={ActionTypes.ACTION_UNLOCK_TOKEN_ERROR}
         success={ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS}
         transform={pipe(
@@ -214,7 +214,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Unlock Token"
       />
       <ActionButton
-        submit={ActionTypes.ACTION_MOVE_FUNDS}
+        actionType={ActionTypes.ACTION_MOVE_FUNDS}
         error={ActionTypes.ACTION_MOVE_FUNDS_ERROR}
         success={ActionTypes.ACTION_MOVE_FUNDS_SUCCESS}
         transform={pipe(
