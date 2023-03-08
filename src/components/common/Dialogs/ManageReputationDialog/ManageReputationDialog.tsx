@@ -5,7 +5,12 @@ import { ColonyRole } from '@colony/colony-js';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import { WizardDialogType, useTransformer, useAppContext } from '~hooks'; // useEnabledExtensions
+import {
+  WizardDialogType,
+  useTransformer,
+  useAppContext,
+  useEnabledExtensions,
+} from '~hooks';
 
 import { getAllUserRoles } from '~redux/transformers';
 import { userHasRole } from '~utils/checks';
@@ -66,16 +71,19 @@ const ManageReputation = ({
     wallet?.address,
   ]);
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const {
+    enabledExtensions: { isVotingReputationEnabled },
+  } = useEnabledExtensions();
 
   const hasRegisteredProfile = !!user?.name && !!wallet?.address;
   const canSmiteReputation =
-    hasRegisteredProfile && userHasRole(allUserRoles, ColonyRole.Arbitration); // isVotingExtensionEnabled
+    hasRegisteredProfile &&
+    (userHasRole(allUserRoles, ColonyRole.Arbitration) ||
+      isVotingReputationEnabled);
 
   const canAwardReputation =
-    hasRegisteredProfile && userHasRole(allUserRoles, ColonyRole.Root); // || isVotingExtensionEnabled
+    hasRegisteredProfile &&
+    (userHasRole(allUserRoles, ColonyRole.Root) || isVotingReputationEnabled);
 
   const items = [
     {
