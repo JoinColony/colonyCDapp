@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { string, object, array, boolean, InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
-import { defineMessages } from 'react-intl';
 
-import { isAddress } from '~utils/web3';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
@@ -14,8 +12,11 @@ import { ActionHookForm as Form } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-import { formatText } from '~utils/intl';
-import { isEmpty } from '~utils/lodash';
+import {
+  mergeSchemas,
+  validationSchemaFile,
+  validationSchemaInput,
+} from '~utils/whitelistValidation';
 
 import ManageWhitelistDialogForm from './ManageWhitelistDialogForm';
 import { getManageWhitelistDialogPayload, TABS } from './helpers';
@@ -28,55 +29,10 @@ type Props = Required<DialogProps> &
 
 const displayName = 'common.ManageWhitelistDialog';
 
-const MSG = defineMessages({
-  requiredField: {
-    id: `${displayName}.requiredField`,
-    defaultMessage: `Wallet address is a required field.`,
-  },
-  uploadError: {
-    id: `${displayName}.uploadError`,
-    defaultMessage: `We do not accept more than 100 addresses at a time, please upload a smaller amount.`,
-  },
-  badFileError: {
-    id: `${displayName}.badFileError`,
-    defaultMessage: `.csv invalid or incomplete. Please ensure the file contains a single column with one address on each row.`,
-  },
-  invalidAddressError: {
-    id: `${displayName}.invalidAddressError`,
-    defaultMessage: `It looks like one of your addresses is invalid. Please review our required format & validate that your file matches our requirement. Once fixed, please try again.`,
-  },
-});
-
 const validationSchema = object({
-  whitelistAddress: string()
-    .required(() => formatText(MSG.requiredField))
-    .address(),
-  whitelistCSVUploader: object()
-    .defined()
-    .shape({
-      parsedData: array()
-        .of(string().address().defined())
-        .min(1, () => formatText(MSG.badFileError))
-        .max(1000, () => formatText(MSG.uploadError))
-        .test(
-          'valid-wallet-addresses',
-          () => formatText(MSG.invalidAddressError),
-          (value) =>
-            isEmpty(
-              value?.filter(
-                (potentialAddress: string) => !isAddress(potentialAddress),
-              ),
-            ),
-        )
-        .defined(),
-    })
-    .nullable(),
-  whitelistedAddresses: array().of(string().address().defined()),
   annotation: string().max(4000).defined(),
   isWhitelistActivated: boolean().defined(),
 }).defined();
-
-type FormValues = InferType<typeof validationSchema>;
 
 const ManageWhitelistDialog = ({
   cancel,
@@ -120,18 +76,30 @@ const ManageWhitelistDialog = ({
     setTabIndex(index);
   };
 
-  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
-
-    return ActionTypes[`VERIFIED_RECIPIENTS_MANAGE${actionEnd}`];
-  };
-
   const transform = pipe(
     mapPayload((payload) =>
       getManageWhitelistDialogPayload(colony, tabIndex, payload),
     ),
     withMeta({ navigate }),
   );
+
+  const addressesValidationSchema = useMemo(() => {
+    if (tabIndex === TABS.WHITELISTED) {
+      return object({
+        whitelistedAddresses: array()
+          .of(string().address().defined())
+          .defined(),
+      }).defined();
+    }
+    return showInput ? validationSchemaInput : validationSchemaFile;
+  }, [tabIndex, showInput]);
+
+  const mergedSchemas = mergeSchemas(
+    validationSchema,
+    addressesValidationSchema,
+  );
+
+  type FormValues = InferType<typeof mergedSchemas>;
 
   return (
     <Form<FormValues>
@@ -142,10 +110,8 @@ const ManageWhitelistDialog = ({
         whitelistAddress: userAddress,
         whitelistCSVUploader: null,
       }}
-      submit={getFormAction('SUBMIT')}
-      error={getFormAction('ERROR')}
-      success={getFormAction('SUCCESS')}
-      validationSchema={validationSchema}
+      actionType={ActionTypes.VERIFIED_RECIPIENTS_MANAGE}
+      validationSchema={mergedSchemas}
       transform={transform}
       onSuccess={() => {
         if (tabIndex === TABS.ADD_ADDRESS) {
@@ -165,7 +131,7 @@ const ManageWhitelistDialog = ({
           setFormSuccess={(isSuccess) => setFormSuccess(isSuccess)}
           tabIndex={tabIndex}
           setTabIndex={handleTabChange}
-          backButtonText={!prevStep ? 'button.cancel' : 'button.back'}
+          backButtonText={{ id: !prevStep ? 'button.cancel' : 'button.back' }}
         />
       </Dialog>
     </Form>

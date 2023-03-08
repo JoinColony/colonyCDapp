@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
 
 import { InputLabel, HookFormInput as Input } from '../Fields';
 import Button from '../Button';
@@ -59,7 +60,7 @@ const UploadAddresses = ({
   const [processingCSVData, setProcessingCSVData] = useState<boolean>(false);
   const [touchedAfterSuccess, setTouchedAfterSuccess] =
     useState<boolean>(false);
-
+  const { reset: resetForm } = useFormContext();
   const handleSetHasFile = useCallback(
     (value: boolean) => {
       setHasFile(value);
@@ -91,6 +92,10 @@ const UploadAddresses = ({
     inputSuccessMsg,
     fileSuccessMsg,
   ]);
+  const handleToggleButtonClick = () => {
+    toggleShowInput();
+    resetForm();
+  };
 
   return (
     <>
@@ -104,7 +109,7 @@ const UploadAddresses = ({
           <Button
             appearance={{ theme: 'blue' }}
             text={showInput ? MSG.upload : MSG.input}
-            onClick={toggleShowInput}
+            onClick={handleToggleButtonClick}
             disabled={processingCSVData || isSubmitting}
           />
         </div>
@@ -127,7 +132,7 @@ const UploadAddresses = ({
         >
           <CSVUploader
             name="whitelistCSVUploader"
-            error={errors?.whitelistCSVUploader?.parsedData}
+            error={errors?.whitelistCSVUploader?.parsedData?.message}
             processingData={processingCSVData}
             setProcessingData={setProcessingCSVData}
             status={statusMsg}

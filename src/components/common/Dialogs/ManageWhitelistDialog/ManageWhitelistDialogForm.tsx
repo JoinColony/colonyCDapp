@@ -14,7 +14,7 @@ import UploadAddresses from '~shared/UploadAddresses';
 import { useAppContext, useTransformer } from '~hooks';
 import { getAllUserRoles } from '~redux/transformers';
 import { hasRoot } from '~utils/checks';
-import { User } from '~types';
+import { Message, User } from '~types';
 
 import ManageWhitelistActiveToggle from './ManageWhitelistActiveToggle';
 import WhitelistedAddresses from './WhitelistedAddresses';
@@ -64,7 +64,7 @@ interface Props extends ActionDialogProps {
   setFormSuccess: (isSuccess: boolean) => void;
   tabIndex: TABS;
   setTabIndex: (index: TABS) => void;
-  backButtonText?: string;
+  backButtonText?: Message;
 }
 
 const ManageWhitelistDialogForm = ({
@@ -151,13 +151,13 @@ const ManageWhitelistDialogForm = ({
                   isWhitelistActivated={values.isWhitelistActivated}
                 />
                 <WhitelistedAddresses whitelistedUsers={whitelistedUsers} />
+                <Annotations
+                  label={MSG.annotation}
+                  name="annotation"
+                  disabled={!userHasPermission || isSubmitting}
+                />
               </>
             )) || <NoWhitelistedAddressesState />}
-            <Annotations
-              label={MSG.annotation}
-              name="annotation"
-              disabled={!userHasPermission || isSubmitting}
-            />
           </TabPanel>
         </Tabs>
       </DialogSection>
@@ -170,12 +170,7 @@ const ManageWhitelistDialogForm = ({
         <DialogControls
           secondaryButtonText={backButtonText}
           onSecondaryButtonClick={back}
-          disabled={
-            (tabIndex === 0 ? !values.whitelistAddress : !isDirty) ||
-            !userHasPermission ||
-            !isValid ||
-            isSubmitting
-          }
+          disabled={!isDirty || !userHasPermission || !isValid || isSubmitting}
           dataTest="whitelistConfirmButton"
           submitButtonAppearance={{
             theme: tabIndex === TABS.ADD_ADDRESS ? 'primary' : 'pink',

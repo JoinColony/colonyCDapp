@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
 
 import { FileReaderFile } from '~utils/fileReader/types';
-import { InputStatus } from '~shared/Fields';
+import { HookFormInputStatus as InputStatus } from '~shared/Fields';
 import { isEqual, isNil } from '~utils/lodash';
 
 import { DefaultPlaceholder, SingleFileUpload } from '../FileUpload';
@@ -34,7 +34,12 @@ const CSVUploader = ({
 }: Props) => {
   const [CSVFile, setCSVFile] = useState<FileReaderFile | null>(null);
   const [parsedCSV, setParsedCSV] = useState<ParseResult<unknown> | null>(null);
-  const { setValue, watch, trigger } = useFormContext();
+  const {
+    setValue,
+    watch,
+    trigger,
+    formState: { touchedFields },
+  } = useFormContext();
   const uploaderValue = watch(name);
 
   const handleUploadError = async () => {
@@ -53,13 +58,13 @@ const CSVUploader = ({
       if (setHasFile) setHasFile(true);
     } else if (!CSVFile && parsedCSV) {
       setParsedCSV(null);
-      setValue(name, null);
+      setValue(name, null, { shouldValidate: true });
       if (setHasFile) setHasFile(false);
     }
   }, [setHasFile, CSVFile, parsedCSV, name, setValue]);
 
   useEffect(() => {
-    if (parsedCSV && isNil(uploaderValue?.parsedData)) {
+    if (CSVFile && parsedCSV && isNil(uploaderValue?.parsedData)) {
       let validAddresses: string[] = [];
       if (parsedCSV.meta.fields?.length === 1) {
         validAddresses = parsedCSV.data.flatMap(
@@ -71,7 +76,11 @@ const CSVUploader = ({
       }
 
       if (!isEqual(validAddresses, uploaderValue?.parsedData)) {
-        setValue(name, { ...CSVFile, parsedData: validAddresses });
+        setValue(
+          name,
+          { ...CSVFile, parsedData: validAddresses },
+          { shouldTouch: true },
+        );
         trigger(name);
       }
     }
@@ -120,6 +129,7 @@ const CSVUploader = ({
         appearance={{ theme: 'fat', textSpace: 'wrap' }}
         status={status}
         error={error}
+        touched={touchedFields[name]}
       />
     </>
   );
