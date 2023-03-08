@@ -9,10 +9,15 @@ import HookForm, {
   CustomSubmitHandler,
   HookFormProps,
 } from './HookForm';
+import { UseFormReturn } from 'react-hook-form';
 
 const displayName = 'Form.ActionHookForm';
 
-export type OnSuccess<V> = (result: any, values: V) => void;
+export type OnSuccess<V> = (
+  result: any,
+  values: V,
+  formHelpers: UseFormReturn,
+) => void;
 
 interface Props<V extends Record<string, any>>
   extends Omit<HookFormProps<V>, 'onError' | 'onSubmit'> {
@@ -64,7 +69,7 @@ const ActionHookForm = <V extends Record<string, any>>({
   const handleSubmit: CustomSubmitHandler<V> = async (values, formHelpers) => {
     try {
       const res = await asyncFunction(values);
-      onSuccess?.(res, values);
+      onSuccess?.(res, values, formHelpers);
     } catch (e) {
       console.error(e);
       onError?.(e, formHelpers);

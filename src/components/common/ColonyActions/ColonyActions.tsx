@@ -213,7 +213,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
             recipientAddress: user?.walletAddress,
             domainId: colony.domains?.items[0]?.nativeId,
             singlePayment: {
-              amount: BigNumber.from(2), // this is in ethers
+              amount: BigNumber.from(10), // this is in ethers
               tokenAddress: colony.nativeToken.tokenAddress,
               decimals: 18,
             },

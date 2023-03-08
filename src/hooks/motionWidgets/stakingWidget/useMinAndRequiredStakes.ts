@@ -2,7 +2,7 @@ import { Extension, getExtensionHash } from '@colony/colony-js';
 import Decimal from 'decimal.js';
 
 import { useGetColonyExtensionQuery } from '~gql';
-import useColonyContext from '~hooks/useColonyContext';
+import { useColonyContext } from '~hooks';
 
 const useMinAndRequiredStakes = (skillRep: string) => {
   const { colony } = useColonyContext();
@@ -30,7 +30,9 @@ const useMinAndRequiredStakes = (skillRep: string) => {
     new Decimal(10).pow(18).toString(),
   );
 
-  const requiredStake = new Decimal(skillRep).mul(totalStakeFractionPercentage);
+  const requiredStake = new Decimal(skillRep)
+    .mul(totalStakeFractionPercentage)
+    .round();
 
   /*
    * The amount of the required stake each user must stake as a minimum.

@@ -59,3 +59,8 @@ export type ColonyChainClaimWithToken = ChainFundsClaimFragment & {
 };
 
 export type ColonyClaims = ColonyERC20Claims | ColonyChainClaimWithToken;
+export type RemoveTypeName<T> = T extends object
+  ? {
+      [K in Exclude<keyof T, '__typename'>]: RemoveTypeName<T[K]>;
+    }
+  : T;

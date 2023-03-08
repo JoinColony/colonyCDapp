@@ -22,7 +22,6 @@ const useStakingSlider = ({
   const { user } = useAppContext();
   const [limitExceeded, setLimitExceeded] = useState(false);
   useImperativeHandle(mutableRef, () => ({ limitExceeded }), [limitExceeded]);
-
   const showAnnotation = !remainingToStake.isZero();
   const showValidationMessage = !!user;
   const requiredStakeMessageProps = {

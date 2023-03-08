@@ -1,5 +1,4 @@
 import Decimal from 'decimal.js';
-import { BigNumber } from 'ethers';
 import { useFormContext } from 'react-hook-form';
 import {
   convertStakeToPercentage,
@@ -35,14 +34,11 @@ const useRequiredStakeMessage = ({
   const isThresholdAchieved = totalPercentage >= STAKING_THRESHOLD;
   const isUnderThreshold =
     !isThresholdAchieved &&
-    stakePercentage.lt(
-      BigNumber.from(STAKING_THRESHOLD).sub(totalPercentage).toString(),
-    );
+    stakePercentage.lt(STAKING_THRESHOLD - totalPercentage);
+
   const isOverThreshold =
     isThresholdAchieved ||
-    stakePercentage.gte(
-      BigNumber.from(STAKING_THRESHOLD).sub(totalPercentage).toString(),
-    );
+    stakePercentage.gte(STAKING_THRESHOLD - totalPercentage);
 
   return {
     stake,

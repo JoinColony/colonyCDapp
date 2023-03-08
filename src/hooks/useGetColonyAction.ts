@@ -13,7 +13,6 @@ const useGetColonyAction = (colony?: Colony | null) => {
   const skipQuery = !colony || !isValidTx;
   /* Unfortunately, we need to track polling state ourselves: https://github.com/apollographql/apollo-client/issues/9081#issuecomment-975722271 */
   const [isPolling, setIsPolling] = useState(!skipQuery);
-
   const {
     data: actionData,
     loading: loadingAction,

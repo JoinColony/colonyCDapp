@@ -3,6 +3,7 @@ import React, {
   ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -19,6 +20,7 @@ import {
   formatStakePercentage,
   getRemainingToStake,
   getStakedPercentages,
+  getUserStakes,
 } from './helpers';
 
 export interface StakingWidgetContextValues {
@@ -46,6 +48,8 @@ export interface StakingWidgetContextValues {
   reputationLoading: boolean;
   loadingStakeData: boolean;
   getErrorType: (limitExceeded: boolean) => string | null;
+  setMotionStakes: SetStateFn;
+  setUsersStakes: SetStateFn;
 }
 
 export const StakingWidgetContext = createContext<
@@ -65,6 +69,7 @@ export const useStakingWidgetContext = () => {
 interface StakingWidgetProviderProps {
   children: ReactNode;
   motionData: MotionData;
+  setShowStakeBanner: SetStateFn;
 }
 
 const StakingWidgetProvider = ({
@@ -72,18 +77,21 @@ const StakingWidgetProvider = ({
   motionData: {
     motionId,
     motionDomainId,
-    motionStakes: {
-      raw: { nay: totalNAYStaked },
-      raw: rawStakes,
-    },
+    motionStakes: { raw: rawMotionStakes },
+    usersStakes: usersStakesFromDB,
     rootHash,
     skillRep,
   },
+  setShowStakeBanner,
 }: StakingWidgetProviderProps) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
   const [isSummary, setIsSummary] = useState(false);
   const [isObjection, setIsObjection] = useState(false);
+  // for optimistic ui
+  const [usersStakes, setUsersStakes] = useState(usersStakesFromDB);
+  const [motionStakes, setMotionStakes] = useState(rawMotionStakes);
+  const { nay: totalNAYStakes } = motionStakes;
 
   const { data: userReputation, loading: reputationLoading } =
     useGetUserReputationQuery({
@@ -114,7 +122,7 @@ const StakingWidgetProvider = ({
   //userData?.user?.userLock?.balance || 0,
 
   const userActivatedTokens = useMemo(
-    () => new Decimal('10000000000000000000'),
+    () => new Decimal('100000000000000000000000000000000000000000'),
     [],
   );
 
@@ -133,12 +141,18 @@ const StakingWidgetProvider = ({
   const canUserStake = !!user && enoughReputation && enoughTokens;
 
   const { yayPercentage, nayPercentage, totalPercentage } =
-    getStakedPercentages(isObjection, requiredStake, rawStakes);
+    getStakedPercentages(isObjection, requiredStake, motionStakes);
+
+  useEffect(() => {
+    if (!loadingStakeData && totalPercentage >= 10) {
+      setShowStakeBanner(false);
+    }
+  }, [totalPercentage, loadingStakeData, setShowStakeBanner]);
 
   const { remainingToStake, remainingToFullyNayStaked } = getRemainingToStake(
     isObjection,
     requiredStake,
-    rawStakes,
+    motionStakes,
   );
 
   /*
@@ -186,13 +200,15 @@ const StakingWidgetProvider = ({
   const canUserStakeNay = canUserStake && remainingToFullyNayStaked.gt(0);
   const canBeStaked = canUserStake && remainingToStake.gt(0);
 
-  // todo: Add this data to the db once we handle the stake motion saga
-  const userStakes = {
-    yay: new Decimal(0),
-    nay: new Decimal(0),
-  };
+  const userStakes = getUserStakes(usersStakes, user?.walletAddress ?? '');
 
-  const userStake = isObjection ? userStakes.nay : userStakes.yay;
+  const userStake = useMemo(
+    () =>
+      new Decimal(
+        isObjection ? userStakes?.nay ?? '0' : userStakes?.yay ?? '0',
+      ),
+    [isObjection, userStakes],
+  );
 
   const nativeTokenDecimals = colony?.nativeToken.decimals || 18;
   const nativeTokenSymbol = colony?.nativeToken.symbol || '';
@@ -201,7 +217,7 @@ const StakingWidgetProvider = ({
     () => ({
       canBeStaked,
       canUserStakeNay,
-      totalNAYStaked,
+      totalNAYStakes,
       remainingToStake,
       minUserStake,
       maxUserStake,
@@ -223,12 +239,14 @@ const StakingWidgetProvider = ({
       reputationLoading,
       loadingStakeData,
       getErrorType,
+      setMotionStakes,
+      setUsersStakes,
     }),
     [
       canBeStaked,
       canUserStakeNay,
       remainingToStake,
-      totalNAYStaked,
+      totalNAYStakes,
       minUserStake,
       maxUserStake,
       yayPercentage,
@@ -249,6 +267,8 @@ const StakingWidgetProvider = ({
       reputationLoading,
       loadingStakeData,
       getErrorType,
+      setMotionStakes,
+      setUsersStakes,
     ],
   );
 

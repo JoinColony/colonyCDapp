@@ -1,4 +1,6 @@
 import Decimal from 'decimal.js';
+import { MotionData } from '~gql';
+import { Address } from '~types';
 
 export const getStakeFromSlider = (
   sliderAmount: number,
@@ -11,11 +13,16 @@ export const getStakeFromSlider = (
     .plus(minUserStake);
 
 export const getFinalStake = (
-  amount: number,
+  sliderAmount: number,
   remainingToStake: Decimal,
   minUserStake: Decimal,
 ) => {
-  const stake = getStakeFromSlider(amount, remainingToStake, minUserStake);
+  const stake = getStakeFromSlider(
+    sliderAmount,
+    remainingToStake,
+    minUserStake,
+  );
+
   return stake.round().toString();
 };
 
@@ -24,7 +31,6 @@ export const convertStakeToPercentage = (
   requiredStake: Decimal,
 ) => {
   const divisibleRequiredStake = requiredStake.isZero() ? 1 : requiredStake;
-
   return new Decimal(stake).div(divisibleRequiredStake).mul(100).toDP(2);
 };
 
@@ -110,4 +116,12 @@ export const getUserStakeLimitPercentage = (
     remainingToStake,
     minUserStake,
   );
+};
+
+export const getUserStakes = (
+  usersStakes: MotionData['usersStakes'],
+  userAddress: Address,
+) => {
+  const userStake = usersStakes.find(({ address }) => address === userAddress);
+  return userStake?.stakes.raw ?? null;
 };
