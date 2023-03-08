@@ -43,7 +43,7 @@ const CustomRadioGroup = ({
           value={value}
           label={label}
           key={value}
-          appearance={{ ...optionApperance, direction: appearance.direction }}
+          appearance={optionApperance}
           disabled={disabled}
           dataTest={dataTest}
           {...rest}

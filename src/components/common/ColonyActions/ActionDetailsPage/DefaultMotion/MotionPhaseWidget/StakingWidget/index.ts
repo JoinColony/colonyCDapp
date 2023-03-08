@@ -1,5 +1,5 @@
 export { default } from './StakingWidget';
-// export { StakeSide } from './TotalStakeWidget';
+export { StakeSide } from './TotalStakeWidget';
 export {
   default as StakingWidgetProvider,
   useStakingWidgetContext,

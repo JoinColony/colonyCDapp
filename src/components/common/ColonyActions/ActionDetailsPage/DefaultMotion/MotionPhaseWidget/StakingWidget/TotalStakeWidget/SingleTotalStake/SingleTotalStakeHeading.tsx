@@ -76,7 +76,7 @@ const SingleTotalStakeHeading = () => {
         <FormattedMessage
           {...MSG.stakeProgress}
           values={{
-            totalPercentage: totalPercentage,
+            totalPercentage,
             requiredStake: (
               <Numeral
                 value={requiredStake}
