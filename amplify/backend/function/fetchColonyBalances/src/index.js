@@ -1,4 +1,3 @@
-const { Amplify, API, graphqlOperation } = require('aws-amplify');
 const { getColonyNetworkClient, Network } = require('@colony/colony-js');
 const {
   providers,
@@ -6,6 +5,7 @@ const {
   constants: { AddressZero },
 } = require('ethers');
 
+const { graphqlRequest } = require('./utils');
 const { getColony } = require('./queries');
 
 const {
@@ -18,14 +18,8 @@ Logger.setLogLevel(Logger.levels.ERROR);
  * @TODO These values need to be imported properly, and differentiate based on environment
  */
 const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002';
+const GRAPHQL_URI = 'http://localhost:20002/graphql';
 const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
-
-Amplify.configure({
-  aws_appsync_graphqlEndpoint: `${GRAPHQL_URI}/graphql`,
-  aws_appsync_authenticationType: 'API_KEY',
-  aws_appsync_apiKey: API_KEY,
-});
 
 const provider = new providers.JsonRpcProvider(RPC_URL);
 
@@ -34,8 +28,11 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
 
   const {
     data: { getColony: colony },
-  } = await API.graphql(
-    graphqlOperation(getColony, { address: colonyAddress }),
+  } = await graphqlRequest(
+    getColony,
+    { address: colonyAddress },
+    GRAPHQL_URI,
+    API_KEY,
   );
 
   if (colony) {
