@@ -387,14 +387,29 @@ input TokenInput {
   id: ID!
 }
 
-type MotionStakes {
+type MotionStakeFragment {
   yay: String!
   nay: String!
+}
+
+type RawStakes {
+  raw: MotionStakeFragment!
+}
+
+type MotionStakes {
+  raw: MotionStakeFragment!
+  percentage: MotionStakeFragment!
+}
+
+type UserStake {
+  address: String!
+  stakes: RawStakes!
 }
 
 type MotionData {
   rootHash: String!
   motionStakes: MotionStakes!
+  usersStakes: [UserStake!]!
   motionState: Int!
   motionDomainId: String!
   skillRep: String!
