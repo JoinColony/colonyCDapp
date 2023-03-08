@@ -19,9 +19,7 @@ interface DefaultActionProps {
 const DefaultAction = ({ actionData }: DefaultActionProps) => {
   const { colony } = useColonyContext();
 
-  const {
-    enabledExtensions: { isVotingReputationEnabled },
-  } = useEnabledExtensions();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
   if (!colony) {
     return null;
