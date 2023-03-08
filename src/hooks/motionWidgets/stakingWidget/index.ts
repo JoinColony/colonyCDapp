@@ -7,3 +7,4 @@ export { default as useStakingWidgetSlider } from './useStakingWidgetSlider';
 export { default as useStakingSlider } from './useStakingSlider';
 export { default as useObjectButton } from './useObjectButton';
 export { default as useRaiseObjectionDialog } from './useRaiseObjectionDialog';
+export { default as useTotalStakeRadios } from './useTotalStakeRadios';
