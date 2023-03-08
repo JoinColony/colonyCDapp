@@ -23,8 +23,24 @@ fragment ColonyAction on ColonyAction {
     ...Domain
   }
   createdAt
-  isMotion
   colony {
     colonyAddress: id
   }
+  isMotion
+  motionData {
+    ...MotionData
+  }
 }
+
+fragment MotionData on MotionData {
+  motionDomainId
+  motionStakes {
+    yay
+    nay
+  }
+  motionState
+  rootHash
+  skillRep
+  motionId
+}
+

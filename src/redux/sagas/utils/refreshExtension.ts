@@ -85,6 +85,7 @@ export const refreshInstalledExtension = (
     isDeleted: false,
     isDeprecated: false,
     isInitialized: false,
+    extensionConfig: null,
   };
 
   saveExtensionInCache(modifiedExtension);

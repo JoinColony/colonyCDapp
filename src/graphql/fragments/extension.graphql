@@ -8,4 +8,8 @@ fragment Extension on ColonyExtension {
   isDeprecated
   isDeleted
   isInitialized
+  extensionConfig {
+    requiredStake
+    minimumStake
+  }
 }

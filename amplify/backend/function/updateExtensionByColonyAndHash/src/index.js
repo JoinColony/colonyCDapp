@@ -26,6 +26,7 @@ exports.handler = async (event) => {
     version,
     installedAt,
     installedBy,
+    extensionConfig,
   } = event.arguments?.input || {};
 
   const getExtensionData = await graphqlRequest(
@@ -55,6 +56,7 @@ exports.handler = async (event) => {
           isDeprecated,
           isInitialized,
           version,
+          extensionConfig,
         },
       },
       GRAPHQL_URI,
@@ -74,11 +76,11 @@ exports.handler = async (event) => {
         isDeleted,
         isInitialized,
         version,
+        extensionConfig,
       },
     },
     GRAPHQL_URI,
     API_KEY,
   );
-
   return updateExtensionData?.data?.updateColonyExtension;
 };

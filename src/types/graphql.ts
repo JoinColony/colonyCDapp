@@ -12,6 +12,7 @@ import {
   ModelSortDirection,
   DomainColor,
   DomainMetadataFragment,
+  MotionDataFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -33,6 +34,8 @@ export type WatchedColony = WatchedColonyFragment;
 export type ColonyExtension = ExtensionFragment;
 
 export type ColonyAction = ColonyActionFragment;
+
+export type MotionData = MotionDataFragment;
 
 export { ColonyActionType };
 
