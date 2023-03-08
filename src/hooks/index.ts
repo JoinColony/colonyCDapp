@@ -48,6 +48,7 @@ export { default as useExtensionData } from './useExtensionData';
 export { default as useExtensionsData } from './useExtensionsData';
 export { default as usePaginatedActions } from './usePaginatedActions';
 export { default as useGetColonyAction } from './useGetColonyAction';
+export { default as useDefaultMotion } from './useDefaultMotion';
 export * from './motionWidgets';
 export * from './useCanInteractWithColony';
 

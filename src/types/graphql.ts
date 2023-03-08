@@ -42,3 +42,9 @@ export { ColonyActionType };
 export { ModelSortDirection as SortDirection };
 
 export { DomainColor };
+
+export type RemoveTypeName<T> = T extends object
+  ? {
+      [K in Exclude<keyof T, '__typename'>]: RemoveTypeName<T[K]>;
+    }
+  : T;

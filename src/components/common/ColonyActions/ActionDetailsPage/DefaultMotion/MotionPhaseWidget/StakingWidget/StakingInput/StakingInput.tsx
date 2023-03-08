@@ -20,12 +20,8 @@ const validationSchema = object({
 export type StakingWidgetValues = InferType<typeof validationSchema>;
 
 const StakingInput = () => {
-  const { transform, stakingSliderProps, limitExceeded } = useStakingInput();
-  // const handleSuccess = (_, { setFieldValue, resetForm }) => {
-  //     resetForm({});
-  //     setFieldValue('amount', 0);
-  //     scrollToRef?.current?.scrollIntoView({ behavior: 'smooth' });
-  //   },
+  const { transform, handleSuccess, stakingSliderProps, limitExceeded } =
+    useStakingInput();
 
   return (
     <ActionForm<StakingWidgetValues>
@@ -35,7 +31,7 @@ const StakingInput = () => {
       validationSchema={validationSchema}
       actionType={ActionTypes.MOTION_STAKE}
       transform={transform}
-      // onSuccess={handleSuccess}
+      onSuccess={handleSuccess}
     >
       <StakingSlider {...stakingSliderProps} />
       <StakingControls limitExceeded={limitExceeded} />

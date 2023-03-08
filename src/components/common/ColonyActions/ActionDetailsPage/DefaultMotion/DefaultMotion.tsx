@@ -2,7 +2,7 @@ import React from 'react';
 
 import DetailsWidget from '~shared/DetailsWidget';
 
-import { useColonyContext, useEnabledExtensions } from '~hooks';
+import { useDefaultMotion } from '~hooks';
 import { ColonyAction } from '~types';
 import { motionStateMap } from '~utils/colonyMotions';
 
@@ -19,32 +19,33 @@ interface DefaultMotionProps {
   actionData: ColonyAction;
 }
 
-const DefaultMotion = ({ actionData }: DefaultMotionProps) => {
-  const { colony } = useColonyContext();
+const DefaultMotion = ({
+  actionData,
+  actionData: { motionData },
+}: DefaultMotionProps) => {
+  const { colony, showBanner, setShowBanner, showMotionHeading } =
+    useDefaultMotion(motionData);
 
-  const {
-    enabledExtensions: { isVotingReputationEnabled },
-  } = useEnabledExtensions();
-
-  const motionState = actionData.motionData?.motionState;
-
-  if (!colony || !motionState) {
+  if (!colony || !motionData) {
     return null;
   }
 
-  const showBanner = true; // !shouldDisplayMotionInActionsList(currentStake, requiredStake);
+  const { motionState } = motionData;
 
   return (
     <div className={styles.main}>
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
       {showBanner && <StakeRequiredBanner isDecision={false} />}
-      {isVotingReputationEnabled && (
+      {showMotionHeading && (
         <MotionHeading motionState={motionStateMap[motionState]} />
       )}
       <div className={styles.container}>
         <DefaultActionContent actionData={actionData} />
         <div className={styles.widgets}>
-          <MotionPhaseWidget actionData={actionData} />
+          <MotionPhaseWidget
+            actionData={actionData}
+            setShowStakeBanner={setShowBanner}
+          />
           {/* <div className={styles.details}>
         {motionState === MotionState.Voting && (
           <VoteWidget

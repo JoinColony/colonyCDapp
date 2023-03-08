@@ -11,6 +11,7 @@ const displayName =
 interface StakeButtonProps {
   stake: Decimal;
 }
+
 const StakeButton = ({ stake }: StakeButtonProps) => {
   const { canBeStaked, isObjection, userActivatedTokens } =
     useStakingWidgetContext();

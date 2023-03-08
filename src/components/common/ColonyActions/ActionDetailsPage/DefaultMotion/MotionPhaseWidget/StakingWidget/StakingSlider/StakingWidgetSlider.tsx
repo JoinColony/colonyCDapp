@@ -32,6 +32,7 @@ const StakingWidgetSlider = ({
     remainingToStake,
     userActivatedTokens,
   });
+
   return (
     <div className={styles.sliderContainer}>
       <Slider

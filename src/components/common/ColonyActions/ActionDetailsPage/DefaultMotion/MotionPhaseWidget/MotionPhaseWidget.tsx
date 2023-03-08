@@ -1,7 +1,7 @@
 import React from 'react';
 import { MotionState } from '@colony/colony-js';
 
-import { ColonyAction } from '~types';
+import { ColonyAction, SetStateFn } from '~types';
 import StakingWidget, { StakingWidgetProvider } from './StakingWidget';
 
 const displayName =
@@ -9,10 +9,12 @@ const displayName =
 
 interface MotionPhaseWidgetProps {
   actionData: ColonyAction;
+  setShowStakeBanner: SetStateFn;
 }
 
 const MotionPhaseWidget = ({
   actionData: { motionData },
+  setShowStakeBanner,
 }: MotionPhaseWidgetProps) => {
   if (!motionData) {
     return null;
@@ -21,7 +23,10 @@ const MotionPhaseWidget = ({
   switch (motionData.motionState) {
     case MotionState.Staking: {
       return (
-        <StakingWidgetProvider motionData={motionData}>
+        <StakingWidgetProvider
+          motionData={motionData}
+          setShowStakeBanner={setShowStakeBanner}
+        >
           <StakingWidget />
         </StakingWidgetProvider>
       );
