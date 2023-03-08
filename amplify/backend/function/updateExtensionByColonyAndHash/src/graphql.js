@@ -9,6 +9,10 @@ const extensionFragment = /* GraphQL */ `
     isDeleted
     isInitialized
     version
+    extensionConfig {
+      minimumStake
+      requiredStake
+    }
   }
 `;
 

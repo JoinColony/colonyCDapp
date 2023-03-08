@@ -39,6 +39,8 @@ export type ColonyExtension = ExtensionFragment;
 
 export type ColonyAction = ColonyActionFragment;
 
+export type MotionData = MotionDataFragment;
+
 export { ColonyActionType };
 
 export { ModelSortDirection as SortDirection };

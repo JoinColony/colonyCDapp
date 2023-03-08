@@ -1,4 +1,4 @@
-# This "input" configures a global authorization rule to enable public access to
+﻿# This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 input AMPLIFY {
   globalAuthRule: AuthRule = { allow: public }
@@ -84,6 +84,12 @@ input UpdateExtensionByColonyAndHashInput {
   version: Int
   installedBy: String
   installedAt: AWSTimestamp
+  extensionConfig: ExtensionConfigurationInput
+}
+
+input ExtensionConfigurationInput {
+  requiredStake: String!
+  minimumStake: String!
 }
 
 input SetCurrentVersionInput {
@@ -381,6 +387,20 @@ input TokenInput {
   id: ID!
 }
 
+type MotionStakes {
+  yay: String!
+  nay: String!
+}
+
+type MotionData {
+  rootHash: String!
+  motionStakes: MotionStakes!
+  motionState: Int!
+  motionDomainId: String!
+  skillRep: String!
+  motionId: String!
+}
+
 # This will store the relevant events we care about for a particular colony
 # Altough it might also hold events emmited by other clients (eg: network or token)
 # but are event pertaining to a colony
@@ -404,6 +424,12 @@ type ContractEvent @model {
   encodedArguments: String # basically a JSON string
 }
 
+# Currently only mapping VotingReputation params that are needed by motions.
+type ExtensionConfiguration {
+  requiredStake: String!
+  minimumStake: String!
+}
+
 type ColonyExtension @model {
   id: ID!
   colonyId: ID!
@@ -420,6 +446,7 @@ type ColonyExtension @model {
   isDeleted: Boolean!
   isInitialized: Boolean!
   version: Int!
+  extensionConfig: ExtensionConfiguration
 }
 
 type CurrentVersion @model {
@@ -440,13 +467,14 @@ type ColonyAction @model {
   colony: Colony! @belongsTo(fields: ["colonyId"])
   type: ColonyActionType!
   blockNumber: Int!
-  isMotion: Boolean
   createdAt: AWSDateTime!
   # Action type specific fields which might be null
   initiatorAddress: ID # Amplify will automatically populate one of the following fields with related model if there is an initiator
   initiatorUser: User @hasOne(fields: ["initiatorAddress"])
   initiatorExtension: ColonyExtension @hasOne(fields: ["initiatorAddress"])
   initiatorColony: Colony @hasOne(fields: ["initiatorAddress"])
+  isMotion: Boolean
+  motionData: MotionData
   recipientAddress: ID
   recipient: User @hasOne(fields: ["recipientAddress"])
   amount: String

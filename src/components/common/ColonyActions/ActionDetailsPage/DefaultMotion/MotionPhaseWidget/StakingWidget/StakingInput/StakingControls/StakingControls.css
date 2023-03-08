@@ -1,0 +1,12 @@
+.buttonGroup {
+  display: flex;
+  margin-top: 30px;
+  column-gap: 10px;
+}
+
+.buttonGroup button {
+  margin: 0px;
+  padding: 0 0 2px;
+  width: 100px;
+  font-size: var(--size-small);
+}
