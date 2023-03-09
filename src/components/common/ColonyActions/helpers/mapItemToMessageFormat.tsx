@@ -81,6 +81,7 @@ export const mapColonyActionToExpectedFormat = (actionData: ColonyAction) => {
     //   item.reputationChange &&
     //   formatReputationChange(item.reputationChange, item.decimals),
     // rolesChanged: formattedRolesTitle.roleTitle,
+    newVersion: actionData.newColonyVersion,
   };
 };
 
@@ -133,6 +134,7 @@ export const mapColonyEventToExpectedFormat = (
     // reputationChangeNumeral: item.reputationChange && (
     //   <Numeral value={item.reputationChange} decimals={Number(item.decimals)} />
     // ),
+    newVersion: actionData.newColonyVersion,
   };
 };
 

@@ -15,8 +15,8 @@ const actionsMessageDescriptors = {
       ${ColonyMotions.MintTokensMotion} {Mint {amount} {tokenSymbol}}
       ${ColonyActionType.CreateDomain} {New team: {fromDomain}}
       ${ColonyMotions.CreateDomainMotion} {New team: {fromDomain}}
-      ${ColonyActionType.VersionUpgrade} {Upgrade Colony to Version {newVersion}!}
-      ${ColonyMotions.VersionUpgradeMotion} {Upgrade Colony to Version {newVersion}!}
+      ${ColonyActionType.VersionUpgrade} {Upgrade Colony to Version {newVersion}}
+      ${ColonyMotions.VersionUpgradeMotion} {Upgrade Colony to Version {newVersion}}
       ${ColonyActionType.ColonyEdit} {Colony details changed}
       ${ColonyMotions.ColonyEditMotion} {Change colony details}
       ${ColonyActionType.EditDomain} {{fromDomain} team details edited}
