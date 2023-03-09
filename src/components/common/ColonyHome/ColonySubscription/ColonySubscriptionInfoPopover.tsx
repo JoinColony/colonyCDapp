@@ -39,7 +39,7 @@ const ColonySubscriptionInfoPopover = ({
     return null;
   }
 
-  const { colonyAddress, name, profile, nativeToken } = colony;
+  const { colonyAddress, name, nativeToken, metadata } = colony;
   const { tokenAddress } = nativeToken;
 
   return (
@@ -56,7 +56,7 @@ const ColonySubscriptionInfoPopover = ({
             </div>
             <div className={styles.colonyInfo}>
               <span className={styles.colonyInfoTitle}>
-                {profile?.displayName || name}
+                {metadata?.displayName || name}
               </span>
               <span className={styles.colonyInfoEns}>@{name}</span>
               <span className={styles.colonyInfoAddress}>

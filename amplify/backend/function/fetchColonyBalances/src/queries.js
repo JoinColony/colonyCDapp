@@ -2,7 +2,7 @@ module.exports = {
   getColony: /* GraphQL */ `
     query GetColony($address: ID!) {
       getColony(id: $address) {
-        meta {
+        chainMetadata {
           chainId
           network
         }
@@ -38,7 +38,7 @@ module.exports = {
               createdAt
               decimals
               id
-              meta {
+              chainMetadata {
                 chainId
                 network
               }

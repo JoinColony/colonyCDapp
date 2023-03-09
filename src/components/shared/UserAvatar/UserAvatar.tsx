@@ -65,7 +65,7 @@ const UserAvatar = ({
           placeholderIcon="circle-person"
           seed={address && address.toLowerCase()}
           title={
-            showInfo ? '' : user?.profile?.displayName || user?.name || address
+            showInfo ? '' : profile?.displayName || user?.name || address || ''
           }
           {...avatarProps}
         />

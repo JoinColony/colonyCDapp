@@ -9,3 +9,9 @@ mutation CreateWatchedColonies($input: CreateWatchedColoniesInput!) {
     id
   }
 }
+
+mutation CreateColonyMetadata($input: CreateColonyMetadataInput!) {
+  createColonyMetadata(input: $input) {
+    id
+  }
+}

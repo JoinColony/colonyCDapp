@@ -4,15 +4,6 @@ fragment Colony on Colony {
   nativeToken {
     ...Token
   }
-  profile {
-    avatar
-    bio
-    displayName
-    email
-    location
-    thumbnail
-    website
-  }
   status {
     recovery
     nativeToken {
@@ -21,7 +12,7 @@ fragment Colony on Colony {
       unlocked
     }
   }
-  meta {
+  chainMetadata {
     chainId
     network
   }
@@ -43,6 +34,9 @@ fragment Colony on Colony {
     }
   }
   version
+  metadata {
+    ...ColonyMetadata
+  }
 }
 
 fragment Watcher on WatchedColonies {
@@ -64,14 +58,12 @@ fragment Watcher on WatchedColonies {
 fragment WatchedColony on Colony {
   colonyAddress: id
   name
-  profile {
-    avatar
-    displayName
-    thumbnail
-  }
-  meta {
+  chainMetadata {
     chainId
     network
+  }
+  metadata {
+    ...ColonyMetadata
   }
 }
 
@@ -80,4 +72,10 @@ fragment WatchListItem on WatchedColonies {
     ...WatchedColony
   }
   createdAt
+}
+
+fragment ColonyMetadata on ColonyMetadata {
+  displayName
+  avatar
+  thumbnail
 }
