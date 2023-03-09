@@ -24,4 +24,5 @@ fragment ColonyAction on ColonyAction {
     ...Domain
   }
   createdAt
+  newColonyVersion
 }
