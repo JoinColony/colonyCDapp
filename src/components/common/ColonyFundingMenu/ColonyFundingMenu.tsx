@@ -24,17 +24,19 @@ import { useColonyContext } from '~hooks';
 
 import styles from './ColonyFundingMenu.css';
 
+const displayName = 'common.ColonyFundingMenu';
+
 const MSG = defineMessages({
   navItemMoveTokens: {
-    id: 'dashboard.ColonyFundingMenu.navItemMoveTokens',
+    id: `${displayName}.navItemMoveTokens`,
     defaultMessage: 'Move funds',
   },
   navItemMintNewTokens: {
-    id: 'dashboard.ColonyFundingMenu.navItemMintNewTokens',
+    id: `${displayName}.navItemMintNewTokens`,
     defaultMessage: 'Mint tokens',
   },
   navItemManageTokens: {
-    id: 'dashboard.ColonyFundingMenu.navItemManageTokens',
+    id: `${displayName}.navItemManageTokens`,
     defaultMessage: 'Manage tokens',
   },
 });
@@ -43,8 +45,6 @@ const MSG = defineMessages({
 // colony: Colony;
 // selectedDomainId: number;
 // }
-
-const displayName = 'dashboard.ColonyFundingMenu';
 
 const ColonyFundingMenu = () =>
   // {
