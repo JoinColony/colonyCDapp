@@ -47,7 +47,7 @@ const TokenBalanceItem = ({
         )}
       </span>
     </div>
-  );
+  ) : null;
 
 TokenBalanceItem.displayName = displayName;
 
