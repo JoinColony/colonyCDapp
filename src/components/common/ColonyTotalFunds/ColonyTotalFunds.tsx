@@ -77,7 +77,7 @@ const ColonyTotalFunds = () => {
           .find(
             (balance) =>
               balance?.token?.tokenAddress === currentToken.token.tokenAddress,
-          )
+          ) || { balance: '0' }
       );
     }
     return { balance: '0' };
@@ -89,7 +89,7 @@ const ColonyTotalFunds = () => {
         <Numeral
           className={styles.selectedTokenAmount}
           decimals={getTokenDecimalsWithFallback(currentToken?.token?.decimals)}
-          value={totalTokenBalance?.balance as string}
+          value={totalTokenBalance.balance}
           data-test="colonyTotalFunds"
         />
         <ColonyTotalFundsPopover
