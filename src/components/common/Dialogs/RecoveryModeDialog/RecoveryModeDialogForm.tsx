@@ -1,29 +1,29 @@
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
-import { FormState } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
-import Button from '~shared/Button';
-import DialogSection from '~shared/Dialog/DialogSection';
+import {
+  DialogSection,
+  ActionDialogProps,
+  DialogControls,
+  DialogHeading,
+} from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
-import { Heading3 } from '~shared/Heading';
 import PermissionsLabel from '~shared/PermissionsLabel';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import ExternalLink from '~shared/ExternalLink';
+import NoPermissionMessage from '~shared/NoPermissionMessage';
 
 import { useAppContext, useTransformer } from '~hooks';
 import { getAllUserRoles } from '~redux/transformers';
 import { canEnterRecoveryMode } from '~utils/checks';
 
 import { RECOVERY_HELP } from '~constants/externalUrls';
-import { Colony } from '~types';
-
-import { FormValues } from './RecoveryModeDialog';
 
 import styles from './RecoveryModeDialogForm.css';
 
-const displayName =
-  'common.ColonyHome.RecoveryModeDialog.RecoveryModeDialogForm';
+const displayName = 'common.RecoveryModeDialog.RecoveryModeDialogForm';
 
 const MSG = defineMessages({
   title: {
@@ -47,29 +47,17 @@ const MSG = defineMessages({
     defaultMessage:
       'Explain why you’re putting this colony into recovery mode (optional)',
   },
-  noPermission: {
-    id: `${displayName}.noPermission`,
-    defaultMessage: `You do not have the {roleRequired} permission required
-      to take this action.`,
-  },
 });
-
-interface Props {
-  back: () => void;
-  colony: Colony;
-}
 
 const HelpLink = (chunks: React.ReactNode[]) => (
   <ExternalLink href={RECOVERY_HELP}>{chunks}</ExternalLink>
 );
 
-const RecoveryModeDialogForm = ({
-  back,
-  colony,
-  isSubmitting,
-}: Props & FormState<FormValues>) => {
+const RecoveryModeDialogForm = ({ back, colony }: ActionDialogProps) => {
   const { user } = useAppContext();
-
+  const {
+    formState: { isSubmitting },
+  } = useFormContext();
   const allUserRoles = useTransformer(getAllUserRoles, [
     colony,
     user?.walletAddress,
@@ -82,12 +70,8 @@ const RecoveryModeDialogForm = ({
 
   return (
     <>
-      <DialogSection appearance={{ theme: 'heading' }}>
-        <Heading3
-          appearance={{ margin: 'none' }}
-          text={MSG.title}
-          className={styles.title}
-        />
+      <DialogSection appearance={{ theme: 'sidePadding' }}>
+        <DialogHeading title={MSG.title} />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
@@ -125,36 +109,14 @@ const RecoveryModeDialogForm = ({
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionMessage}>
-            <FormattedMessage
-              {...MSG.noPermission}
-              values={{
-                roleRequired: (
-                  <PermissionsLabel
-                    permission={ColonyRole.Recovery}
-                    name={{
-                      id: `role.${ColonyRole.Recovery}`,
-                    }}
-                  />
-                ),
-              }}
-            />
-          </div>
+          <NoPermissionMessage requiredPermissions={[ColonyRole.Recovery]} />
         </DialogSection>
       )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
-        <Button
-          appearance={{ theme: 'secondary', size: 'large' }}
-          onClick={back}
-          text={{ id: 'button.back' }}
-        />
-        <Button
-          appearance={{ theme: 'primary', size: 'large' }}
-          text={{ id: 'button.confirm' }}
-          loading={isSubmitting}
+        <DialogControls
+          onSecondaryButtonClick={back}
           disabled={!userHasPermission || isSubmitting}
-          style={{ minWidth: styles.wideButton }}
-          data-test="recoveryConfirmButton"
+          dataTest="recoveryConfirmButton"
         />
       </DialogSection>
     </>

@@ -5,12 +5,17 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import { WizardDialogType, useTransformer, useAppContext } from '~hooks'; // useEnabledExtensions
-import { Colony } from '~types';
+import {
+  WizardDialogType,
+  useTransformer,
+  useAppContext,
+  useEnabledExtensions,
+} from '~hooks';
+
 import { getAllUserRoles } from '~redux/transformers';
 import { canEnterRecoveryMode, hasRoot, canArchitect } from '~utils/checks';
 
-const displayName = 'common.ColonyHome.AdvancedDialog';
+const displayName = 'common.AdvancedDialog';
 
 const MSG = defineMessages({
   dialogHeader: {
@@ -89,7 +94,6 @@ interface CustomWizardDialogProps extends ActionDialogProps {
   nextStepEditDetails: string;
   nextStepVersionUpgrade: string;
   prevStep: string;
-  colony: Colony;
 }
 
 type Props = DialogProps & WizardDialogType<object> & CustomWizardDialogProps;
@@ -124,9 +128,9 @@ Props) => {
   const canEnterPermissionManagement =
     (hasRegisteredProfile && canArchitect(allUserRoles)) || hasRootPermission;
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const {
+    enabledExtensions: { isVotingReputationEnabled },
+  } = useEnabledExtensions();
 
   const items = [
     {
@@ -135,7 +139,7 @@ Props) => {
       icon: 'emoji-building',
       onClick: () => callStep(nextStepPermissionManagement),
       permissionRequired: !(
-        canEnterPermissionManagement // || isVotingExtensionEnabled
+        canEnterPermissionManagement || isVotingReputationEnabled
       ),
       permissionInfoText: MSG.permissionsText,
       permissionInfoTextValues: {
@@ -164,7 +168,7 @@ Props) => {
       title: MSG.upgradeTitle,
       description: MSG.upgradeDescription,
       icon: 'emoji-strong-person',
-      permissionRequired: !hasRootPermission, // || isVotingExtensionEnabled),
+      permissionRequired: !(hasRootPermission || isVotingReputationEnabled),
       permissionInfoText: MSG.permissionsText,
       permissionInfoTextValues: {
         permissionsList: <FormattedMessage {...MSG.upgradePermissionsList} />,
@@ -175,7 +179,7 @@ Props) => {
       title: MSG.editColonyDetailsTitle,
       description: MSG.editColonyDetailsDescription,
       icon: 'emoji-edit-tools',
-      permissionRequired: !hasRootPermission, // || isVotingExtensionEnabled),
+      permissionRequired: !(hasRootPermission || isVotingReputationEnabled),
       permissionInfoText: MSG.permissionsText,
       permissionInfoTextValues: {
         permissionsList: <FormattedMessage {...MSG.upgradePermissionsList} />,

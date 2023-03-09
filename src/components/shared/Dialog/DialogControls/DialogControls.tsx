@@ -1,8 +1,8 @@
 import React from 'react';
-
 import { useFormContext } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
 
+import { useEnabledExtensions } from '~hooks';
 import Button, { ButtonAppearance } from '~shared/Button';
 
 import styles from './DialogControls.css';
@@ -13,6 +13,7 @@ interface Props {
   disabled: boolean;
   dataTest: string;
   onSecondaryButtonClick: (() => void) | ((val: any) => void) | undefined;
+  isVotingReputationEnabled?: boolean;
   secondaryButtonText?: MessageDescriptor | string;
   submitButtonAppearance?: ButtonAppearance;
 }
@@ -23,6 +24,7 @@ const DialogControls = ({
   dataTest,
   secondaryButtonText = { id: 'button.back' },
   submitButtonAppearance = { theme: 'primary', size: 'large' },
+  isVotingReputationEnabled,
 }: Props) => {
   const {
     watch,
@@ -43,7 +45,7 @@ const DialogControls = ({
         type="submit"
         appearance={submitButtonAppearance}
         text={
-          forceAction || true // || !isVotingExtensionEnabled
+          forceAction || !isVotingReputationEnabled
             ? { id: 'button.confirm' }
             : { id: 'button.createMotion' }
         }

@@ -1,62 +1,46 @@
-import React, { useCallback } from 'react';
-import * as yup from 'yup';
+import React from 'react';
+import { object, string, InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
 
-import Dialog, { DialogProps } from '~shared/Dialog';
+import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
 import { ActionTypes } from '~redux/index';
 import { useAppContext, WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-import { Colony } from '~types';
 
+import { getRecoveryModeDialogPayload } from './helpers';
 import DialogForm from './RecoveryModeDialogForm';
 
-export interface FormValues {
-  annotation: string;
-}
+type Props = Required<DialogProps> &
+  WizardDialogType<object> &
+  ActionDialogProps;
 
-interface CustomWizardDialogProps {
-  prevStep: string;
-  colony: Colony;
-}
+const displayName = 'common.RecoveryModeDialog';
 
-type Props = DialogProps & WizardDialogType<object> & CustomWizardDialogProps;
+const validationSchema = object()
+  .shape({
+    annotation: string().max(4000).defined(),
+  })
+  .defined();
 
-const displayName = 'common.ColonyHome.RecoveryModeDialog';
+type FormValues = InferType<typeof validationSchema>;
 
 const RecoveryModeDialog = ({
   cancel,
   close,
   callStep,
   prevStep,
-  colony: { name, colonyAddress },
   colony,
 }: Props) => {
   const { user } = useAppContext();
   const navigate = useNavigate();
 
-  const validationSchema = yup
-    .object()
-    .shape({
-      annotation: yup.string().max(4000).defined(),
-    })
-    .defined();
-
-  const transform = useCallback(
-    () =>
-      pipe(
-        mapPayload(({ annotation: annotationMessage }) => {
-          return {
-            colonyName: name,
-            colonyAddress,
-            walletAddress: user?.walletAddress,
-            annotationMessage,
-          };
-        }),
-        withMeta({ navigate }),
-      ),
-    [navigate, name, user, colonyAddress],
+  const transform = pipe(
+    mapPayload((payload) =>
+      getRecoveryModeDialogPayload(colony, payload, user),
+    ),
+    withMeta({ navigate }),
   );
 
   return (
@@ -64,9 +48,7 @@ const RecoveryModeDialog = ({
       defaultValues={{
         annotation: '',
       }}
-      submit={ActionTypes.ACTION_RECOVERY}
-      error={ActionTypes.ACTION_RECOVERY_ERROR}
-      success={ActionTypes.ACTION_RECOVERY_SUCCESS}
+      actionType={ActionTypes.ACTION_RECOVERY}
       validationSchema={validationSchema}
       onSuccess={close}
       transform={transform}

@@ -177,6 +177,7 @@ const ManageWhitelistDialogForm = ({
             theme: tabIndex === TABS.ADD_ADDRESS ? 'primary' : 'pink',
             size: 'large',
           }}
+          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
         />
       </DialogSection>
     </>

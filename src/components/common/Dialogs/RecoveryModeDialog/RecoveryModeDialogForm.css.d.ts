@@ -1,10 +1,6 @@
 declare namespace RecoveryModeDialogFormCssNamespace {
   export interface IRecoveryModeDialogFormCss {
     leavingRecoveryMessage: string;
-    noPermissionMessage: string;
-    permissionLabel: string;
-    title: string;
-    wideButton: string;
   }
 }
 
