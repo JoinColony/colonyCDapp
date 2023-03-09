@@ -8,7 +8,7 @@ import {
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
 } from '~constants';
 
-export const getBalnceForTokenAndDomain = (
+export const getBalanceForTokenAndDomain = (
   balances: ColonyBalances,
   tokenAddress: Address,
   domainId: number = COLONY_TOTAL_BALANCE_DOMAIN_ID,

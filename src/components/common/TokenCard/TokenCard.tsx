@@ -10,7 +10,7 @@ import TokenIcon from '~shared/TokenIcon';
 import IconTooltip from '~shared/IconTooltip';
 import { Token } from '~types';
 import {
-  getBalnceForTokenAndDomain,
+  getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
 import { useColonyContext } from '~hooks';
@@ -43,7 +43,7 @@ const TokenCard = ({ domainId, token }: Props) => {
   const { nativeToken: nativeTokenStatus } = status || {};
 
   const currentTokenBalance =
-    getBalnceForTokenAndDomain(
+    getBalanceForTokenAndDomain(
       balances as ColonyBalances,
       token?.tokenAddress,
       domainId,
