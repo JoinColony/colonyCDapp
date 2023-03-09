@@ -9,11 +9,9 @@ import { Tooltip } from '~shared/Popover';
 import Link from '~shared/Link';
 
 import { ActionTypes } from '~redux';
-import { useColonyContext } from '~hooks';
-import { ADDRESS_ZERO } from '~constants';
+import { useColonyContext, useColonyFundsClaims } from '~hooks';
 import { mergePayload } from '~utils/actions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { notNull } from '~utils/arrays';
 
 import styles from './ColonyUnclaimedTransfers.css';
 
@@ -44,51 +42,16 @@ const MSG = defineMessages({
 
 const ColonyUnclaimedTransfers = () => {
   const { colony, canInteractWithColony } = useColonyContext();
-  const { colonyAddress, name, fundsClaims, chainFundsClaim, tokens } =
-    colony || {};
-  const { items: claims = [] } = fundsClaims || {};
+  const claims = useColonyFundsClaims();
 
-  /*
-   * @NOTE We have to do some very heavy lifting (more or less) here due to us
-   * not being able to use Apollo's cache, so we want to short-circuit early
-   * in order to not waste any computing resources unecesarily
-   */
-  if (!chainFundsClaim && !fundsClaims) {
-    return null;
-  }
-
-  const chainClaimWithToken = chainFundsClaim
-    ? {
-        ...chainFundsClaim,
-        token: tokens?.items?.find(
-          (token) => token?.token?.tokenAddress === ADDRESS_ZERO,
-        )?.token,
-      }
-    : null;
-
-  /*
-   * Claims data needs to be merged, both ERC20's and Native Chain Tokens
-   *
-   * Also, we have to sort in-client since Apollo's cache is being a bitch
-   * not allowing more than 3 local field entries without breaking, forcing us
-   * to do the sorting / merging here, rather than at the time we fetch data.
-   * This kinda sucks!
-   */
-  const sortedFundsClaims = [...claims, chainClaimWithToken]
-    .filter(notNull)
-    .sort(
-      (first, second) =>
-        (second?.createdAtBlock || 0) - (first?.createdAtBlock || 0),
-    );
-
-  const firstItem = sortedFundsClaims[0];
+  const firstItem = claims[0];
 
   const transform = mergePayload({
-    colonyAddress,
+    colonyAddress: colony?.colonyAddress,
     tokenAddress: firstItem?.token?.tokenAddress || '',
   });
 
-  const claimsLength = sortedFundsClaims?.length;
+  const claimsLength = claims?.length;
   const extraClaims = (claimsLength || 0) - 1;
 
   /*
@@ -99,7 +62,7 @@ const ColonyUnclaimedTransfers = () => {
   return claimsLength ? (
     <div className={styles.main}>
       <Heading appearance={{ size: 'normal', weight: 'bold' }}>
-        <NavLink to={`/colony/${name}/funds`}>
+        <NavLink to={`/colony/${colony?.name}/funds`}>
           <FormattedMessage {...MSG.title} />
         </NavLink>
       </Heading>
@@ -154,7 +117,7 @@ const ColonyUnclaimedTransfers = () => {
           <li>
             <Link
               className={styles.manageFundsLink}
-              to={`/colony/${name}/funds`}
+              to={`/colony/${colony?.name}/funds`}
               data-test="manageFunds"
             >
               <div className={styles.tokenItem}>

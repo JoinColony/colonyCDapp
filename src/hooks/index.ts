@@ -48,6 +48,7 @@ export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
 export { default as useExtensionData } from './useExtensionData';
 export { default as useExtensionsData } from './useExtensionsData';
 export * from './useCanInteractWithColony';
+export { default as useColonyFundsClaims } from './useColonyFundsClaims';
 
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously

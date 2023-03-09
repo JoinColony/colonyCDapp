@@ -9,7 +9,7 @@ import TokenIcon from '~shared/TokenIcon';
 import { ActionTypes } from '~redux';
 import { mergePayload } from '~utils/actions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { ColonyFundsClaim } from '~gql';
+import { ColonyClaims } from '~types';
 import { useColonyContext } from '~hooks';
 
 import styles from './UnclaimedTransfersItem.css';
@@ -32,7 +32,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  claim: ColonyFundsClaim;
+  claim: ColonyClaims;
 }
 
 const UnclaimedTransfersItem = ({ claim }: Props) => {
@@ -49,14 +49,14 @@ const UnclaimedTransfersItem = ({ claim }: Props) => {
     <li>
       <div className={styles.content}>
         <div className={styles.tokenWrapper}>
-          <TokenIcon token={token} size="s" />
+          {token && <TokenIcon token={token} size="s" />}
           <div className={styles.tokenName}>
-            {token.symbol ? (
+            {token?.symbol ? (
               <span>{token.symbol}</span>
             ) : (
               <>
                 <FormattedMessage {...MSG.unknownToken} />
-                <CopyableAddress>{token.tokenAddress}</CopyableAddress>
+                <CopyableAddress>{token?.tokenAddress || ''}</CopyableAddress>
               </>
             )}
           </div>
@@ -65,10 +65,10 @@ const UnclaimedTransfersItem = ({ claim }: Props) => {
           <div className={styles.amountWrapper}>
             <Numeral
               value={claim?.amount}
-              decimals={getTokenDecimalsWithFallback(token.decimals)}
+              decimals={getTokenDecimalsWithFallback(token?.decimals)}
               className={styles.amount}
             />
-            <span className={styles.tokenSymbol}>{token.symbol}</span>
+            <span className={styles.tokenSymbol}>{token?.symbol}</span>
           </div>
           <ActionButton
             text={MSG.buttonClaim}
