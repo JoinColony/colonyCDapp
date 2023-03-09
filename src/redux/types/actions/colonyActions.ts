@@ -140,11 +140,11 @@ export type ColonyActionsActionTypes =
         colonyName?: string;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ActionTypeWithMeta<
       ActionTypes.ACTION_VERSION_UPGRADE_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_VERSION_UPGRADE_ERROR, object>
   | UniqueActionType<
