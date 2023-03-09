@@ -1,5 +1,5 @@
 import React, { ComponentProps, useMemo, useState } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { Form, Select } from '~shared/Fields';
@@ -12,6 +12,7 @@ import ColonyHomeInfo from '~common/ColonyHome/ColonyHomeInfo';
 import ColonyDomainSelector from '~common/ColonyHome/ColonyDomainSelector';
 import { useColonyContext, useMobile } from '~hooks';
 import { ColonyTokens } from '~gql';
+import { formatText } from '~utils/intl';
 
 import styles from './ColonyFunding.css';
 
@@ -33,7 +34,6 @@ const MSG = defineMessages({
 });
 
 const ColonyFunding = () => {
-  const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
   const { domains, tokens } = colony || {};
@@ -70,8 +70,8 @@ const ColonyFunding = () => {
       domainChoices.find(
         ({ value }) => value === selectedDomainId.toString(),
       ) || {};
-    return typeof label === 'string' ? label : formatMessage(label);
-  }, [domainChoices, formatMessage, selectedDomainId]);
+    return formatText(label) || '';
+  }, [domainChoices, selectedDomainId]);
 
   // eslint-disable-next-line react/no-unstable-nested-components
   const Aside = () => (
