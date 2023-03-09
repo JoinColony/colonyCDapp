@@ -10,28 +10,27 @@ import TokenCardList from '~common/TokenCardList';
 import UnclaimedTransfers from '~common/UnclaimedTransfers';
 import ColonyHomeInfo from '~common/ColonyHome/ColonyHomeInfo';
 import ColonyDomainSelector from '~common/ColonyHome/ColonyDomainSelector';
-// import { useColonyFromNameQuery } from '~data/index';
 import { useColonyContext, useMobile } from '~hooks';
 import { ColonyTokens } from '~gql';
 
 import styles from './ColonyFunding.css';
 
+const displayName = 'common.ColonyFunding';
+
 const MSG = defineMessages({
   labelSelectDomain: {
-    id: 'dashboard.ColonyFunding.labelSelectDomain',
+    id: `${displayName}.labelSelectDomain`,
     defaultMessage: 'Select a domain',
   },
   title: {
-    id: 'dashboard.ColonyFunding.title',
+    id: `${displayName}.title`,
     defaultMessage: 'Funds',
   },
   loadingText: {
-    id: 'dashboard.ColonyFunding.loadingText',
+    id: `${displayName}.loadingText`,
     defaultMessage: 'Loading Colony',
   },
 });
-
-const componentDisplayName = 'dashboard.ColonyFunding';
 
 const ColonyFunding = () => {
   const { formatMessage } = useIntl();
@@ -136,6 +135,6 @@ const ColonyFunding = () => {
   );
 };
 
-ColonyFunding.displayName = componentDisplayName;
+ColonyFunding.displayName = displayName;
 
 export default ColonyFunding;
