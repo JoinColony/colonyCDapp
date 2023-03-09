@@ -7,7 +7,7 @@ import { colonyCache } from '~cache';
  *
  * See: https://www.apollographql.com/docs/react/local-state/managing-state-with-field-policies
  */
-const localOnlyFields = {
+const cacheUpdates = {
   ...colonyCache,
 };
 
@@ -16,7 +16,7 @@ const cache = new InMemoryCache({
     ModelColonyConnection: {
       merge: false,
     },
-    ...localOnlyFields,
+    ...cacheUpdates,
   },
 });
 
