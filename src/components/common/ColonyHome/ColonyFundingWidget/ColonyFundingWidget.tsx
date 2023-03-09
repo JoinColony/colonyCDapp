@@ -5,8 +5,8 @@ import Heading from '~shared/Heading';
 import TokenInfoPopover from '~shared/TokenInfoPopover';
 import NavLink from '~shared/NavLink';
 import { useColonyContext } from '~hooks';
-import { TokenFragment } from '~gql';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
+import { notNull } from '~utils/arrays';
 
 import TokenBalanceItem from './TokenBalanceItem';
 
@@ -37,8 +37,12 @@ const ColonyFundingWidget = ({
     status,
   } = colony || {};
 
-  const tokens = (colonyTokenItems?.items || []).map(
-    (colonyToken) => colonyToken?.token,
+  const tokens = useMemo(
+    () =>
+      colonyTokenItems?.items
+        .filter(notNull)
+        .map((colonyToken) => colonyToken.token),
+    [colonyTokenItems],
   );
 
   const domainBalances = useMemo(() => {
@@ -63,7 +67,7 @@ const ColonyFundingWidget = ({
        * Fallback balances (basically a list of all tokens with zero balance)
        */
     } else {
-      filteredBalances = tokens.map((token) => ({
+      filteredBalances = tokens?.map((token) => ({
         token,
         balance: '0',
       }));
@@ -91,12 +95,12 @@ const ColonyFundingWidget = ({
         {tokens?.map((token) => (
           <li key={token?.tokenAddress}>
             <TokenInfoPopover
-              token={token as TokenFragment}
+              token={token}
               isTokenNative={token?.tokenAddress === nativeToken?.tokenAddress}
             >
               <div className={styles.tokenBalance}>
                 <TokenBalanceItem
-                  token={token as TokenFragment}
+                  token={token}
                   isTokenNative={
                     token?.tokenAddress === nativeToken?.tokenAddress
                   }
