@@ -18,7 +18,7 @@ export const getBlockscoutUserURL = (userAddress: string) =>
 /*
  * Motions and Disputes
  */
-export const MD_OBJECTIONS_HELP = `https://colony.io/dev/docs/colonynetwork/whitepaper-tldr-objections-and-disputes#objections`;
+export const MD_OBJECTIONS_HELP = `https://docs.colony.io/develop/dev-learning/disputes/#objections`;
 export const MD_REPUTATION_INFO = `https://colony.gitbook.io/colony/key-concepts/reputation`;
 
 /*

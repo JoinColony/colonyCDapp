@@ -27,8 +27,9 @@ import {
 export interface StakingWidgetContextValues {
   canBeStaked: boolean;
   canUserStakeNay: boolean;
-  totalNAYStaked: string;
+  totalNAYStakes: Decimal;
   remainingToStake: Decimal;
+  remainingToFullyNayStaked: Decimal;
   minUserStake: Decimal;
   maxUserStake: Decimal;
   yayPercentage: string;
@@ -92,8 +93,8 @@ const StakingWidgetProvider = ({
   // for optimistic ui
   const [usersStakes, setUsersStakes] = useState(usersStakesFromDB);
   const [motionStakes, setMotionStakes] = useState(rawMotionStakes);
-  const { nay: totalNAYStakes } = motionStakes;
-
+  const { nay } = motionStakes;
+  const totalNAYStakes = useMemo(() => new Decimal(nay), [nay]);
   const { data: userReputation, loading: reputationLoading } =
     useGetUserReputationQuery({
       variables: {
@@ -208,6 +209,7 @@ const StakingWidgetProvider = ({
       canUserStakeNay,
       totalNAYStakes,
       remainingToStake,
+      remainingToFullyNayStaked,
       minUserStake,
       maxUserStake,
       yayPercentage: formatStakePercentage(yayPercentage),
@@ -235,6 +237,7 @@ const StakingWidgetProvider = ({
       canBeStaked,
       canUserStakeNay,
       remainingToStake,
+      remainingToFullyNayStaked,
       totalNAYStakes,
       minUserStake,
       maxUserStake,
