@@ -7,11 +7,13 @@ import NavLink from '~shared/NavLink';
 import Numeral from '~shared/Numeral';
 import { Tooltip } from '~shared/Popover';
 import Link from '~shared/Link';
+
 import { ActionTypes } from '~redux';
-import { mergePayload } from '~utils/actions';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { useColonyContext } from '~hooks';
 import { ADDRESS_ZERO } from '~constants';
+import { mergePayload } from '~utils/actions';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { notNull } from '~utils/arrays';
 
 import styles from './ColonyUnclaimedTransfers.css';
 
@@ -73,7 +75,7 @@ const ColonyUnclaimedTransfers = () => {
    * This kinda sucks!
    */
   const sortedFundsClaims = [...claims, chainClaimWithToken]
-    .filter((claim) => !!claim)
+    .filter(notNull)
     .sort(
       (first, second) =>
         (second?.createdAtBlock || 0) - (first?.createdAtBlock || 0),
