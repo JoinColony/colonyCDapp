@@ -1,61 +1,41 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 
-import { ContextModule, getContext } from '~context';
-import {
-  ProcessedColonyQuery,
-  ProcessedColonyQueryVariables,
-  ProcessedColonyDocument,
-  getNetworkContracts,
-} from '~data/index';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-  getColonyManager,
-} from '../utils';
+import { Action, ActionTypes, AllActions } from '~redux';
 
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { transactionReady } from '../../actionCreators';
+import { getColonyManager, putError, takeFrom } from '../utils';
 
 function* createVersionUpgradeAction({
-  payload: { colonyAddress, colonyName, version, annotationMessage },
-  meta: { id: metaId, history },
+  payload: { colonyAddress, colonyName, version /* annotationMessage */ },
+  meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ACTION_VERSION_UPGRADE>) {
   let txChannel;
   try {
-    const apolloClient = getContext(ContextModule.ApolloClient);
     const colonyManager = yield getColonyManager();
+    const { networkClient } = colonyManager;
 
-    const { version: newestVersion } = yield getNetworkContracts();
-    const currentVersion = parseInt(version, 10);
-    const nextVersion = currentVersion + 1;
-    if (nextVersion > parseInt(newestVersion, 10)) {
+    const newestVersion = yield networkClient.getCurrentColonyVersion();
+    const nextVersion = BigNumber.from(version).add(1);
+
+    if (nextVersion.gt(newestVersion)) {
       throw new Error('Colony has the newest version');
     }
 
-    const supportAnnotation = currentVersion >= 5 && annotationMessage;
+    // const supportAnnotation = currentVersion >= 5 && annotationMessage;
 
     txChannel = yield call(getTxChannel, metaId);
 
     const batchKey = 'upgrade';
 
-    const { upgrade, annotateUpgrade } = yield createTransactionChannels(
-      metaId,
-      ['upgrade', 'annotateUpgrade'],
-    );
+    const { upgrade } = yield createTransactionChannels(metaId, ['upgrade']);
 
     yield fork(createTransaction, upgrade.id, {
       context: ClientType.ColonyClient,
@@ -70,26 +50,26 @@ function* createVersionUpgradeAction({
       ready: false,
     });
 
-    if (supportAnnotation) {
-      yield fork(createTransaction, annotateUpgrade.id, {
-        context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
-        identifier: colonyAddress,
-        params: [],
-        group: {
-          key: batchKey,
-          id: metaId,
-          index: 1,
-        },
-        ready: false,
-      });
-    }
+    // if (supportAnnotation) {
+    //   yield fork(createTransaction, annotateUpgrade.id, {
+    //     context: ClientType.ColonyClient,
+    //     methodName: 'annotateTransaction',
+    //     identifier: colonyAddress,
+    //     params: [],
+    //     group: {
+    //       key: batchKey,
+    //       id: metaId,
+    //       index: 1,
+    //     },
+    //     ready: false,
+    //   });
+    // }
 
     yield takeFrom(upgrade.channel, ActionTypes.TRANSACTION_CREATED);
 
-    if (supportAnnotation) {
-      yield takeFrom(annotateUpgrade.channel, ActionTypes.TRANSACTION_CREATED);
-    }
+    // if (supportAnnotation) {
+    //   yield takeFrom(annotateUpgrade.channel, ActionTypes.TRANSACTION_CREATED);
+    // }
 
     yield put(transactionReady(upgrade.id));
 
@@ -99,32 +79,21 @@ function* createVersionUpgradeAction({
 
     yield takeFrom(upgrade.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    /* need to check for annotaiton message here again because there is a TS error when pushing */
-    if (annotationMessage && supportAnnotation) {
-      yield put(transactionPending(annotateUpgrade.id));
+    // /* need to check for annotaiton message here again because there is a TS error when pushing */
+    // if (annotationMessage && supportAnnotation) {
+    //   yield put(transactionPending(annotateUpgrade.id));
 
-      const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
+    //   const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
 
-      yield put(transactionAddParams(annotateUpgrade.id, [txHash, ipfsHash]));
+    //   yield put(transactionAddParams(annotateUpgrade.id, [txHash, ipfsHash]));
 
-      yield put(transactionReady(annotateUpgrade.id));
+    //   yield put(transactionReady(annotateUpgrade.id));
 
-      yield takeFrom(
-        annotateUpgrade.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
-    }
-
-    yield apolloClient.query<
-      ProcessedColonyQuery,
-      ProcessedColonyQueryVariables
-    >({
-      query: ProcessedColonyDocument,
-      variables: {
-        address: colonyAddress,
-      },
-      fetchPolicy: 'network-only',
-    });
+    //   yield takeFrom(
+    //     annotateUpgrade.channel,
+    //     ActionTypes.TRANSACTION_SUCCEEDED,
+    //   );
+    // }
 
     yield colonyManager.setColonyClient(colonyAddress);
 
@@ -133,8 +102,8 @@ function* createVersionUpgradeAction({
       meta,
     });
 
-    if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+    if (colonyName && navigate) {
+      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
     }
   } catch (caughtError) {
     putError(ActionTypes.ACTION_VERSION_UPGRADE_ERROR, caughtError, meta);
