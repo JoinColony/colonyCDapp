@@ -270,6 +270,19 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         )}
         text="Test Move Funds"
       />
+      <ActionButton
+        submit={ActionTypes.ACTION_EDIT_COLONY}
+        error={ActionTypes.ACTION_EDIT_COLONY_ERROR}
+        success={ActionTypes.ACTION_EDIT_COLONY_SUCCESS}
+        transform={pipe(
+          mergePayload({
+            colony,
+            colonyDisplayName: 'New Colony Name',
+          }),
+          withMeta({ navigate }),
+        )}
+        text="Test Edit Colony"
+      />
       {actions.length ? (
         <>
           <ActionsListHeading

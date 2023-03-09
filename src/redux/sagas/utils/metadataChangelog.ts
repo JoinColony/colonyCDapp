@@ -1,6 +1,14 @@
-import { DomainColor, DomainMetadataChangelogInput } from '~gql';
-import { DomainMetadata } from '~types';
+import {
+  DomainColor,
+  DomainMetadataChangelogInput,
+  ColonyMetadataChangelogInput,
+} from '~gql';
+import { ColonyMetadata, DomainMetadata } from '~types';
 import { excludeTypenameKey } from '~utils/objects';
+
+const getExistingChangelog = <T extends { __typename?: string }>(
+  changelog?: T[] | null,
+) => changelog?.map((changelogItem) => excludeTypenameKey(changelogItem)) ?? [];
 
 export const getUpdatedDomainMetadataChangelog = (
   transactionHash: string,
@@ -9,10 +17,7 @@ export const getUpdatedDomainMetadataChangelog = (
   newColor?: DomainColor,
   newDescription?: string,
 ): DomainMetadataChangelogInput[] => {
-  const existingChangelog =
-    metadata.changelog?.map((changelogItem) =>
-      excludeTypenameKey(changelogItem),
-    ) ?? [];
+  const existingChangelog = getExistingChangelog(metadata.changelog);
 
   return [
     ...existingChangelog,
@@ -24,6 +29,25 @@ export const getUpdatedDomainMetadataChangelog = (
       oldColor: metadata.color,
       newDescription: newDescription ?? metadata.description,
       oldDescription: metadata.description,
+    },
+  ];
+};
+
+export const getUpdatedColonyMetadataChangelog = (
+  transactionHash: string,
+  metadata: ColonyMetadata,
+  newDisplayName?: string,
+): ColonyMetadataChangelogInput[] => {
+  const existingChangelog = getExistingChangelog(metadata.changelog);
+
+  return [
+    ...existingChangelog,
+    {
+      transactionHash,
+      newDisplayName: newDisplayName ?? metadata.displayName,
+      oldDisplayName: metadata.displayName,
+      // @TODO: Actually check whether the avatar has changed
+      hasAvatarChanged: false,
     },
   ];
 };
