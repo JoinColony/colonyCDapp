@@ -23,7 +23,7 @@ const TokenBalanceItem = ({
   isNativeTokenLocked,
   balance,
 }: Props) =>
-  balance ? (
+  balance && (
     <div className={styles.tokenItem}>
       <span
         className={styles.tokenValue}
@@ -47,7 +47,7 @@ const TokenBalanceItem = ({
         )}
       </span>
     </div>
-  ) : null;
+  );
 
 TokenBalanceItem.displayName = displayName;
 
