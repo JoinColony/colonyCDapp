@@ -5,3 +5,5 @@ export { default as useUserStakeMessage } from './useUserStakeMessage';
 export { default as useMinAndRequiredStakes } from './useMinAndRequiredStakes';
 export { default as useStakingWidgetSlider } from './useStakingWidgetSlider';
 export { default as useStakingSlider } from './useStakingSlider';
+export { default as useObjectButton } from './useObjectButton';
+export { default as useRaiseObjectionDialog } from './useRaiseObjectionDialog';

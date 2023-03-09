@@ -1,5 +1,11 @@
 import Decimal from 'decimal.js';
-import { StakingSliderProps } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget/StakingSlider/StakingSlider';
+import { useRef } from 'react';
+import {
+  StakingSliderProps,
+  SomeSliderAnnotationProps,
+  SomeStakingValidationProps,
+  SomeStakingWidgetSliderProps,
+} from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
 import { Address, MotionData, RemoveTypeName } from '~types';
 
 export type UsersStakes = MotionData['usersStakes'];
@@ -9,6 +15,12 @@ enum MotionSide {
   YAY = 'yay',
   NAY = 'nay',
 }
+
+type AllStakingSliderProps = SomeSliderAnnotationProps &
+  SomeStakingValidationProps &
+  SomeStakingWidgetSliderProps & {
+    mutableRef?: ReturnType<typeof useRef>;
+  };
 
 export const mapStakingSliderProps = ({
   isObjection,
@@ -24,7 +36,7 @@ export const mapStakingSliderProps = ({
   reputationLoading,
   getErrorType,
   mutableRef,
-}): StakingSliderProps => ({
+}: AllStakingSliderProps): StakingSliderProps => ({
   stakingWidgetSliderProps: {
     isObjection,
     minUserStake,

@@ -5,6 +5,12 @@ export {
   useStakingWidgetContext,
   StakingWidgetContextValues,
 } from './StakingWidgetProvider';
-export { default as StakingSlider, StakingSliderProps } from './StakingSlider';
+export {
+  default as StakingSlider,
+  StakingSliderProps,
+  SomeSliderAnnotationProps,
+  SomeStakingValidationProps,
+  SomeStakingWidgetSliderProps,
+} from './StakingSlider';
 export { SLIDER_AMOUNT_KEY } from './StakingInput';
 export * from './helpers';

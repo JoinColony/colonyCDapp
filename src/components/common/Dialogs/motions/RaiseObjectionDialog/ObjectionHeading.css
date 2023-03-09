@@ -1,0 +1,10 @@
+.descriptionText {
+  padding-bottom: 20px;
+}
+
+.title {
+  font-size: var(--size-medium-l);
+  font-weight: var(--weight-bold);
+  line-height: 24px;
+  color: var(--dark);
+}
