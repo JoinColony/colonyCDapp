@@ -1,4 +1,4 @@
-import React, { ComponentProps, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
@@ -42,36 +42,25 @@ const ColonyFunding = () => {
     COLONY_TOTAL_BALANCE_DOMAIN_ID,
   );
 
-  const domainChoices = useMemo<
-    ComponentProps<typeof Select>['options']
-  >(() => {
-    if (!domains?.items) {
-      return [];
-    }
-    return [
-      {
-        value: COLONY_TOTAL_BALANCE_DOMAIN_ID.toString(),
-        label: { id: 'domain.all' },
-      },
-      ...(domains?.items ?? [])
-        .map((domain) => ({
-          label: domain?.name ?? '',
-          value: domain?.nativeId.toString() ?? '',
-        }))
-        .sort(
-          (first, second) =>
-            parseInt(first.value, 10) - parseInt(second.value, 10),
-        ),
-    ];
-  }, [domains]);
+  const domainChoices = [
+    {
+      value: COLONY_TOTAL_BALANCE_DOMAIN_ID.toString(),
+      label: { id: 'domain.all' },
+    },
+    ...(domains?.items ?? [])
+      .map((domain) => ({
+        label: domain?.name ?? '',
+        value: domain?.nativeId.toString() ?? '',
+      }))
+      .sort(
+        (first, second) =>
+          parseInt(first.value, 10) - parseInt(second.value, 10),
+      ),
+  ];
 
-  const selectedDomainLabel: string = useMemo(() => {
-    const { label = '' } =
-      domainChoices.find(
-        ({ value }) => value === selectedDomainId.toString(),
-      ) || {};
-    return formatText(label) || '';
-  }, [domainChoices, selectedDomainId]);
+  const { label: selectedDomainLabel = '' } =
+    domainChoices.find(({ value }) => value === selectedDomainId.toString()) ||
+    {};
 
   // eslint-disable-next-line react/no-unstable-nested-components
   const Aside = () => (
@@ -88,7 +77,9 @@ const ColonyFunding = () => {
           <div className={styles.titleContainer}>
             <Heading
               text={MSG.title}
-              textValues={{ selectedDomainLabel }}
+              textValues={{
+                selectedDomainLabel: formatText(selectedDomainLabel),
+              }}
               appearance={{ size: 'medium', theme: 'dark' }}
             />
             {isMobile ? (
