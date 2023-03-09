@@ -25,7 +25,7 @@ function* createVersionUpgradeAction({
     const newestVersion = yield networkClient.getCurrentColonyVersion();
     const nextVersion = BigNumber.from(version).add(1);
 
-    if (nextVersion.lte(newestVersion)) {
+    if (nextVersion.gt(newestVersion)) {
       throw new Error('Colony has the newest version');
     }
 
