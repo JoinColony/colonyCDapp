@@ -105,7 +105,7 @@ const ColonyFundingWidget = ({
                     token?.tokenAddress === nativeToken?.tokenAddress
                   }
                   isNativeTokenLocked={!status?.nativeToken?.unlocked}
-                  balance={domainBalances[token?.tokenAddress as string]}
+                  balance={domainBalances[token?.tokenAddress]}
                 />
               </div>
             </TokenInfoPopover>

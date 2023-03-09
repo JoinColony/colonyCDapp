@@ -4,7 +4,7 @@ import Numeral from '~shared/Numeral';
 import IconTooltip from '~shared/IconTooltip';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
-import { Token } from '~types';
+import { Token, Address } from '~types';
 
 import styles from './ColonyFundingWidget.css';
 
@@ -12,7 +12,7 @@ interface Props {
   token: Token;
   isTokenNative?: boolean;
   isNativeTokenLocked?: boolean;
-  balance: string;
+  balance?: Address;
 }
 
 const displayName = 'common.ColonyHome.ColonyFundingWidget.TokenBalanceItem';
@@ -23,7 +23,7 @@ const TokenBalanceItem = ({
   isNativeTokenLocked,
   balance,
 }: Props) =>
-  typeof balance === 'undefined' ? null : (
+  balance ? (
     <div className={styles.tokenItem}>
       <span
         className={styles.tokenValue}
@@ -47,7 +47,7 @@ const TokenBalanceItem = ({
         )}
       </span>
     </div>
-  );
+  ) : null;
 
 TokenBalanceItem.displayName = displayName;
 
