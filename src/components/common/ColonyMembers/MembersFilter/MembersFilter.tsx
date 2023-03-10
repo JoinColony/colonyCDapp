@@ -40,6 +40,13 @@ interface Props {
   isRoot: boolean;
 }
 
+const handleReset = (handleFilterChange, reset, defaultValues) => {
+  Object.entries(defaultValues).forEach(([key, value]) => {
+    handleFilterChange(key, value);
+  });
+  reset();
+};
+
 const MembersFilter = ({ handleFilterChange, isRoot }: Props) => {
   return (
     <>
@@ -51,7 +58,7 @@ const MembersFilter = ({ handleFilterChange, isRoot }: Props) => {
         }}
         onSubmit={() => {}}
       >
-        {({ formState: { isDirty }, reset }) => {
+        {({ formState: { isDirty, defaultValues }, reset }) => {
           return (
             <div className={styles.filters}>
               <div className={styles.titleContainer}>
@@ -62,7 +69,9 @@ const MembersFilter = ({ handleFilterChange, isRoot }: Props) => {
                   <Button
                     text={MSG.reset}
                     appearance={{ theme: 'blue' }}
-                    onClick={() => reset()}
+                    onClick={() =>
+                      handleReset(handleFilterChange, reset, defaultValues)
+                    }
                   />
                 )}
               </div>
