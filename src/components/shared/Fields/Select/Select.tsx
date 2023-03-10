@@ -170,7 +170,11 @@ const Select = ({
       return;
     }
     const { value: optionValue } = options[selectedOption];
-    setValue(name, optionValue);
+    setValue(name, optionValue, {
+      shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true,
+    });
     if (onChangeCallback) {
       onChangeCallback(optionValue);
     }

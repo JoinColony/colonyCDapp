@@ -51,19 +51,14 @@ const MembersFilter = ({ handleFilterChange, isRoot }: Props) => {
         }}
         onSubmit={() => {}}
       >
-        {({ getValues, reset }) => {
-          const values = getValues();
-          const showReset =
-            values.verificationType !== VerificationType.All ||
-            values.memberType !== MemberType.All;
-
+        {({ formState: { isDirty }, reset }) => {
           return (
             <div className={styles.filters}>
               <div className={styles.titleContainer}>
                 <span className={styles.title}>
                   <FormattedMessage {...MSG.filter} />
                 </span>
-                {showReset && (
+                {isDirty && (
                   <Button
                     text={MSG.reset}
                     appearance={{ theme: 'blue' }}
