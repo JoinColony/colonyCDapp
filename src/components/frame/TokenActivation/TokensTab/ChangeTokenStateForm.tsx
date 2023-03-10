@@ -1,14 +1,16 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import { BigNumber } from 'ethers';
-import { FormikProps } from 'formik';
 import moveDecimal from 'move-decimal-point';
-import * as yup from 'yup';
+import { number, object, InferType } from 'yup';
 import Decimal from 'decimal.js';
 import toFinite from 'lodash/toFinite';
 
 import Button from '~shared/Button';
-import { ActionForm, Input } from '~shared/Fields';
+import {
+  ActionHookForm as ActionForm,
+  HookFormInput as Input,
+} from '~shared/Fields';
 import Numeral from '~shared/Numeral';
 import { Tooltip } from '~shared/Popover';
 
@@ -55,17 +57,14 @@ const MSG = defineMessages({
   },
 });
 
-const validationSchema = yup.object({
-  amount: yup
-    .number()
+const validationSchema = object({
+  amount: number()
     .transform((value) => toFinite(value))
     .required()
     .moreThan(0),
-});
+}).defined();
 
-type FormValues = {
-  amount: number;
-};
+type FormValues = InferType<typeof validationSchema>;
 
 export interface ChangeTokenStateFormProps {
   token: Token;
@@ -136,8 +135,8 @@ const ChangeTokenStateForm = ({
     }),
   );
 
-  const handleSubmitSuccess = useCallback((_, { resetForm }) => {
-    resetForm();
+  const handleSubmitSuccess = useCallback((res, values, { reset }) => {
+    reset();
   }, []);
 
   return (
@@ -162,8 +161,8 @@ const ChangeTokenStateForm = ({
           />
         </div>
       </div>
-      <ActionForm
-        initialValues={{ amount: 0 }}
+      <ActionForm<FormValues>
+        defaultValues={{ amount: 0 }}
         validationSchema={validationSchema}
         transform={transform}
         submit={formAction('')}
@@ -171,7 +170,7 @@ const ChangeTokenStateForm = ({
         success={formAction('_SUCCESS')}
         onSuccess={handleSubmitSuccess}
       >
-        {({ isValid, values, setFieldValue }: FormikProps<FormValues>) => (
+        {({ formState: { isValid }, getValues }) => (
           <div className={styles.form}>
             <div className={styles.inputField}>
               <Input
@@ -187,9 +186,7 @@ const ChangeTokenStateForm = ({
                   numeralDecimalScale: tokenDecimals,
                 }}
                 maxButtonParams={{
-                  setFieldValue,
                   maxAmount: unformattedTokenBalance,
-                  fieldName: 'amount',
                 }}
                 dataTest="activateTokensInput"
               />
@@ -247,10 +244,12 @@ const ChangeTokenStateForm = ({
               type="submit"
               disabled={
                 !isValid ||
-                values.amount === 0 ||
+                getValues().amount === 0 ||
                 new Decimal(unformattedTokenBalance).lt(
                   /* a bit hacky way of doing the check but nothing else seems to be working */
-                  values.amount.toString() === '.' ? 0 : values.amount || 0,
+                  getValues().amount.toString() === '.'
+                    ? 0
+                    : getValues().amount || 0,
                 )
               }
               dataTest="tokenActivationConfirm"
