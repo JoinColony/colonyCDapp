@@ -72,11 +72,6 @@ const TransferFundsDialogForm = ({ back, colony }: ActionDialogProps) => {
     fromDomainId,
   ]);
 
-  const toDomainRoles = useTransformer(getUserRolesForDomain, [
-    colony,
-    wallet?.address,
-    toDomainId,
-  ]);
   const hasRoleInFromDomain = userHasRole(fromDomainRoles, ColonyRole.Funding);
 
   const requiredRoles: ColonyRole[] = [ColonyRole.Funding];

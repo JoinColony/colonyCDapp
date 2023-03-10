@@ -1,9 +1,6 @@
 declare namespace TransferFundsDialogFormCssNamespace {
   export interface ITransferFundsDialogFormCss {
-    cannotCreateMotion: string;
-    permissionsError: string;
     permissionsRequired: string;
-    query700: string;
   }
 }
 
