@@ -97,7 +97,7 @@ const ManageDomainsDialog = ({
       title: MSG.createNewDomainTitle,
       description: MSG.createNewDomainDescription,
       icon: 'emoji-crane',
-      permissionRequired: !canCreateEditDomain || isVotingReputationEnabled,
+      permissionRequired: !(canCreateEditDomain || isVotingReputationEnabled),
       permissionInfoTextValues: {
         permissionRequired: <FormattedMessage {...MSG.domainPermissionsList} />,
       },
@@ -108,7 +108,7 @@ const ManageDomainsDialog = ({
       title: MSG.editDomainTitle,
       description: MSG.editDomainDescription,
       icon: 'emoji-pencil-note',
-      permissionRequired: !canCreateEditDomain || isVotingReputationEnabled,
+      permissionRequired: !(canCreateEditDomain || isVotingReputationEnabled),
       permissionInfoTextValues: {
         permissionRequired: <FormattedMessage {...MSG.domainPermissionsList} />,
       },

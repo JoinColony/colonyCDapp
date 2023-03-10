@@ -97,7 +97,7 @@ const ManageExpenditureDialog = ({
       title: MSG.paymentTitle,
       description: MSG.paymentDescription,
       icon: 'emoji-dollar-stack',
-      permissionRequired: !canCreatePayment || !isOneTxPaymentEnabled,
+      permissionRequired: !(canCreatePayment || isOneTxPaymentEnabled),
       permissionInfoText: !canCreatePayment
         ? MSG.paymentPermissionsText
         : MSG.noOneTxExtension,
