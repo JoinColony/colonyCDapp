@@ -50,9 +50,7 @@ const CreateDomainDialog = ({
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  const {
-    enabledExtensions: { isVotingReputationEnabled },
-  } = useEnabledExtensions();
+  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
 
   const actionType =
     !isForce && isVotingReputationEnabled

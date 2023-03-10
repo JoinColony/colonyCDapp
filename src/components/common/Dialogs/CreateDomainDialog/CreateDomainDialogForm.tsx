@@ -11,11 +11,13 @@ import {
 } from '~shared/Dialog';
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
 import NoPermissionMessage from '~shared/NoPermissionMessage';
+import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import DomainNameAndColorInputGroup from '~shared/DomainNameAndColorInputGroup';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
+import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
-import { useDialogActionPermissions } from '~hooks'; // useEnabledExtensions
+import { useDialogActionPermissions, useEnabledExtensions } from '~hooks';
 
 const displayName = 'common.CreateDomainDialog.CreateDomainDialogForm';
 
@@ -32,38 +34,30 @@ const MSG = defineMessages({
     id: `${displayName}.annotation`,
     defaultMessage: 'Explain why you’re creating this team (optional)',
   },
-  cannotCreateMotion: {
-    id: `${displayName}.cannotCreateMotion`,
-    defaultMessage: `Cannot create motions using the Governance v{version} Extension. Please upgrade to a newer version (when available)`,
-  },
 });
 
 const CreateDomainDialogForm = ({ back, colony }: ActionDialogProps) => {
   const {
     formState: { isValid, isSubmitting },
+    getValues,
   } = useFormContext();
-
-  // const {
-  //   votingExtensionVersion,
-  //   isVotingExtensionEnabled,
-  // } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const values = getValues();
+  const { votingReputationVersion, isVotingReputationEnabled } =
+    useEnabledExtensions(colony);
 
   const requiredRoles: ColonyRole[] = [ColonyRole.Architecture];
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
     colony,
-    false, // isVotingExtensionEnabled,
+    isVotingReputationEnabled,
     requiredRoles,
     [Id.RootDomain],
   );
 
   const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;
 
-  // const cannotCreateMotion =
-  //   votingExtensionVersion ===
-  //     VotingReputationExtensionVersion.FuchsiaLightweightSpaceship &&
-  //   !values.forceAction;
+  const cannotCreateMotion =
+    votingReputationVersion === noMotionsVotingReputationVersion &&
+    !values.forceAction;
 
   return (
     <>
@@ -109,20 +103,12 @@ const CreateDomainDialogForm = ({ back, colony }: ActionDialogProps) => {
       )}
       {/* {onlyForceAction && (
         <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
-      )}
+      )} */}
       {cannotCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionFromMessage}>
-            <FormattedMessage
-              {...MSG.cannotCreateMotion}
-              values={{
-                version:
-                  VotingReputationExtensionVersion.FuchsiaLightweightSpaceship,
-              }}
-            />
-          </div>
+          <CannotCreateMotionMessage />
         </DialogSection>
-      )} */}
+      )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}

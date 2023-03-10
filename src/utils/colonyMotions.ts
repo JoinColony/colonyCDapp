@@ -9,6 +9,8 @@ import { AnyUser } from '~data/index';
 import { ActionUserRoles } from '~types';
 import { TagColorSchema, TagTheme } from '~shared/Tag/Tag';
 
+export const noMotionsVotingReputationVersion = 4;
+
 export enum MotionState {
   Staked = 'Staked',
   Staking = 'Staking',

@@ -1,11 +1,7 @@
 import React, { useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
-import {
-  ColonyRole,
-  Id,
-  // VotingReputationVersion,
-} from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 
 import {
   ActionDialogProps,
@@ -16,14 +12,16 @@ import {
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-
+import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 import {
   // useTransformer,
   useDialogActionPermissions,
   // useAppContext,
-} from '~hooks'; // useEnabledExtensions
+  useEnabledExtensions,
+} from '~hooks';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import NoPermissionMessage from '~shared/NoPermissionMessage';
+import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
 
 // import { getAllUserRoles } from '~redux/transformers';
 // import { hasRoot } from '~utils/checks';
@@ -54,7 +52,9 @@ const MSG = defineMessages({
 const MintTokenDialogForm = ({ colony, back }: ActionDialogProps) => {
   const {
     formState: { isValid, isSubmitting },
+    getValues,
   } = useFormContext();
+  const values = getValues();
   const requiredRoles: ColonyRole[] = [ColonyRole.Root];
   // const { wallet } = useAppContext();
   // const allUserRoles = useTransformer(getAllUserRoles, [
@@ -64,26 +64,21 @@ const MintTokenDialogForm = ({ colony, back }: ActionDialogProps) => {
 
   // const canUserMintNativeToken = hasRoot(allUserRoles) && !!colony.status?.nativeToken?.mintable;
 
-  // const {
-  //   votingExtensionVersion,
-  //   isVotingExtensionEnabled,
-  // } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const { votingReputationVersion, isVotingReputationEnabled } =
+    useEnabledExtensions(colony);
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
     colony,
-    false, // isVotingExtensionEnabled,
+    isVotingReputationEnabled,
     requiredRoles,
     [Id.RootDomain],
   );
 
   const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;
 
-  // const cannotCreateMotion =
-  //   votingExtensionVersion ===
-  //     VotingReputationExtensionVersion.FuchsiaLightweightSpaceship &&
-  //   !values.forceAction;
+  const cannotCreateMotion =
+    votingReputationVersion === noMotionsVotingReputationVersion &&
+    !values.forceAction;
 
   const formattingOptions = useMemo(
     () => ({
@@ -139,24 +134,16 @@ const MintTokenDialogForm = ({ colony, back }: ActionDialogProps) => {
           <NoPermissionMessage requiredPermissions={[ColonyRole.Root]} />
         </DialogSection>
       )}
-      {/* {onlyForceAction && <NotEnoughReputation />}
+      {/* {onlyForceAction && <NotEnoughReputation />} */}
       {cannotCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionMessage}>
-            <FormattedMessage
-              {...MSG.cannotCreateMotion}
-              values={{
-                version:
-                  VotingReputationVersion.FuchsiaLightweightSpaceship,
-              }}
-            />
-          </div>
+          <CannotCreateMotionMessage />
         </DialogSection>
-      )} */}
+      )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}
-          disabled={!isValid || inputDisabled} // cannotCreateMotion ||
+          disabled={cannotCreateMotion || !isValid || inputDisabled}
           dataTest="mintConfirmButton"
         />
       </DialogSection>

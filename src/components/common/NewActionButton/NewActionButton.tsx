@@ -51,7 +51,7 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
 
   // const [isLoadingUser, setIsLoadingUser] = useState<boolean>(!ethereal);
 
-  const { loading } = useEnabledExtensions();
+  const { loading } = useEnabledExtensions(colony);
 
   // const { data } = useColonyExtensionsQuery({
   //   variables: { address: colony.colonyAddress },

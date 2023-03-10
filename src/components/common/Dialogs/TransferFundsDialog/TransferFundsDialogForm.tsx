@@ -1,10 +1,6 @@
 import React from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
-import {
-  ColonyRole,
-  Id,
-  // VotingReputationVersion,
-} from '@colony/colony-js';
+import { defineMessages } from 'react-intl';
+import { ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import DialogSection from '~shared/Dialog/DialogSection';
@@ -13,6 +9,7 @@ import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import NoPermissionMessage from '~shared/NoPermissionMessage';
 import TokenAmountInput from '~shared/TokenAmountInput';
 import DomainFundSelectorSection from '~shared/DomainFundSelectorSection';
+import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
 import {
   ActionDialogProps,
   DialogControls,
@@ -23,9 +20,11 @@ import {
   useAppContext,
   useDialogActionPermissions,
   useTransformer,
-} from '~hooks'; // useEnabledExtensions
+  useEnabledExtensions,
+} from '~hooks';
 import { getUserRolesForDomain } from '~redux/transformers';
 import { userHasRole } from '~utils/checks';
+import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
 import styles from './TransferFundsDialogForm.css';
 
@@ -54,12 +53,8 @@ const TransferFundsDialogForm = ({ back, colony }: ActionDialogProps) => {
   } = useFormContext();
   const values = getValues();
 
-  // const {
-  //   isVotingExtensionEnabled,
-  //   votingExtensionVersion,
-  // } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const { isVotingReputationEnabled, votingReputationVersion } =
+    useEnabledExtensions(colony);
 
   const fromDomainId = values.fromDomain ? values.fromDomain : Id.RootDomain;
   const colonyDomains = colony?.domains?.items || [];
@@ -88,17 +83,16 @@ const TransferFundsDialogForm = ({ back, colony }: ActionDialogProps) => {
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
     colony,
-    false, // isVotingExtensionEnabled,
+    isVotingReputationEnabled,
     requiredRoles,
     [fromDomainId, toDomainId],
   );
 
   const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;
 
-  // const cannotCreateMotion =
-  //   votingExtensionVersion ===
-  //     VotingReputationVersion.FuchsiaLightweightSpaceship &&
-  //   !values.forceAction;
+  const cannotCreateMotion =
+    votingReputationVersion === noMotionsVotingReputationVersion &&
+    !values.forceAction;
 
   return (
     <>
@@ -145,23 +139,15 @@ const TransferFundsDialogForm = ({ back, colony }: ActionDialogProps) => {
       {/* {onlyForceAction && (
         <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
       )} */}
-      {/* {cannotCreateMotion && (
+      {cannotCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.cannotCreateMotion}>
-            <FormattedMessage
-              {...MSG.cannotCreateMotion}
-              values={{
-                version:
-                  VotingReputationVersion.FuchsiaLightweightSpaceship,
-              }}
-            />
-          </div>
+          <CannotCreateMotionMessage />
         </DialogSection>
-      )} */}
+      )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}
-          disabled={!isValid || inputDisabled} // cannotCreateMotion ||
+          disabled={cannotCreateMotion || !isValid || inputDisabled}
           dataTest="transferFundsConfirmation"
         />
       </DialogSection>

@@ -6,14 +6,16 @@ import {
   useGetColonyExtensionsQuery,
   useGetCurrentExtensionsVersionsQuery,
 } from '~gql';
-import { InstallableExtensionData, InstalledExtensionData } from '~types';
+import {
+  Colony,
+  InstallableExtensionData,
+  InstalledExtensionData,
+} from '~types';
 import { notNull } from '~utils/arrays';
 import {
   mapToInstallableExtensionData,
   mapToInstalledExtensionData,
 } from '~utils/extensions';
-
-import useColonyContext from './useColonyContext';
 
 interface UseExtensionsDataReturn {
   installedExtensionsData: InstalledExtensionData[];
@@ -25,9 +27,9 @@ interface UseExtensionsDataReturn {
  * Hook for fetching extensions data available to a colony
  * and mapping it into Installed or InstallableExtensionData object
  */
-const useExtensionsData = (): UseExtensionsDataReturn => {
-  const { colony } = useColonyContext();
-
+const useExtensionsData = (
+  colony: Colony | undefined,
+): UseExtensionsDataReturn => {
   const { data, loading: extensionsLoading } = useGetColonyExtensionsQuery({
     variables: {
       colonyAddress: colony?.colonyAddress ?? '',

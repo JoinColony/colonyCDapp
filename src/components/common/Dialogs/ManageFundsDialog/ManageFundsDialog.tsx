@@ -4,7 +4,12 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import { WizardDialogType, useTransformer, useAppContext } from '~hooks'; // useEnabledExtensions
+import {
+  WizardDialogType,
+  useTransformer,
+  useAppContext,
+  useEnabledExtensions,
+} from '~hooks';
 
 import { getAllUserRoles } from '~redux/transformers';
 import { hasRoot } from '~utils/checks'; // canFund
@@ -113,7 +118,7 @@ const ManageFundsDialog = ({
     wallet?.address,
   ]);
 
-  // const { enabledExtensions: { isVotingReputationEnabled }, } = useEnabledExtensions();
+  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
 
   // const canMoveFunds = canFund(allUserRoles);
   // const canUserMintNativeToken = isVotingReputationEnabled
@@ -156,7 +161,7 @@ const ManageFundsDialog = ({
       title: MSG.manageTokensTitle,
       description: MSG.manageTokensDescription,
       icon: 'emoji-pen',
-      permissionRequired: !canManageTokens, // || isVotingReputationEnabled
+      permissionRequired: !(canManageTokens || isVotingReputationEnabled),
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
         permissionsList: (

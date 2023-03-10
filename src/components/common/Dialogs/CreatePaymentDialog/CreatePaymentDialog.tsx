@@ -43,9 +43,7 @@ const CreatePaymentDialog = ({
   const navigate = useNavigate();
   const colonyWatchers =
     colony?.watchers?.items.filter(notNull).map((item) => item.user) || [];
-  const {
-    enabledExtensions: { isVotingReputationEnabled },
-  } = useEnabledExtensions();
+  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
 
   const actionType =
     !isForce && isVotingReputationEnabled

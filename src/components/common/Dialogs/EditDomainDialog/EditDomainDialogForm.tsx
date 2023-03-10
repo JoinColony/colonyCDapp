@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  ColonyRole,
-  // VotingReputationVersion,
-} from '@colony/colony-js';
+import { ColonyRole } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
@@ -17,12 +14,14 @@ import { getDomainOptions } from '~shared/DomainFundSelectorSection/helpers';
 import NoPermissionMessage from '~shared/NoPermissionMessage';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import DomainNameAndColorInputGroup from '~shared/DomainNameAndColorInputGroup';
+import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
-import { useDialogActionPermissions } from '~hooks'; // useEnabledExtensions
+import { useDialogActionPermissions, useEnabledExtensions } from '~hooks';
 import { DomainColor } from '~gql';
 import { notNull } from '~utils/arrays';
 import { findDomainByNativeId } from '~utils/domains';
+import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
 const displayName = 'common.EditDomainDialog.EditDomainDialogForm';
 
@@ -64,17 +63,13 @@ const EditDomainDialogForm = ({
   const colonyDomains = domains?.items.filter(notNull) || [];
   const domainOptions = getDomainOptions(colonyDomains, true);
 
-  // const {
-  //   votingExtensionVersion,
-  //   isVotingExtensionEnabled,
-  // } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const { votingReputationVersion, isVotingReputationEnabled } =
+    useEnabledExtensions(colony);
 
   const requiredRoles: ColonyRole[] = [ColonyRole.Architecture];
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
     colony,
-    false, // isVotingExtensionEnabled,
+    isVotingReputationEnabled,
     requiredRoles,
     [domainId],
     domainId,
@@ -110,10 +105,9 @@ const EditDomainDialogForm = ({
     return null;
   };
 
-  // const cannotCreateMotion =
-  //   votingExtensionVersion ===
-  //     VotingReputationExtensionVersion.FuchsiaLightweightSpaceship &&
-  //   !forceAction;
+  const cannotCreateMotion =
+    votingReputationVersion === noMotionsVotingReputationVersion &&
+    !forceAction;
   const hasEditedDomain =
     dirtyFields.domainColor ||
     dirtyFields.domainName ||
@@ -180,23 +174,17 @@ const EditDomainDialogForm = ({
           domainId={Number(domainId)}
         />
       )} */}
-      {/* {cannotCreateMotion && (
+      {cannotCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionFromMessage}>
-            <FormattedMessage
-              {...MSG.cannotCreateMotion}
-              values={{
-                version:
-                  VotingReputationVersion.FuchsiaLightweightSpaceship,
-              }}
-            />
-          </div>
+          <CannotCreateMotionMessage />
         </DialogSection>
-      )} */}
+      )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}
-          disabled={inputDisabled || !isValid || !hasEditedDomain} // cannotCreateMotion ||
+          disabled={
+            cannotCreateMotion || inputDisabled || !isValid || !hasEditedDomain
+          }
           dataTest="editDomainConfirmButton"
         />
       </DialogSection>

@@ -90,9 +90,7 @@ const ManageDomainsDialog = ({
   const canCreateEditDomain =
     hasRegisteredProfile && canArchitect(allUserRoles);
 
-  const {
-    enabledExtensions: { isVotingReputationEnabled },
-  } = useEnabledExtensions();
+  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
 
   const items = [
     {

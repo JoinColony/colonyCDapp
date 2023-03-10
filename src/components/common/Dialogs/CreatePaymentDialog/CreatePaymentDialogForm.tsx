@@ -19,13 +19,13 @@ import SingleUserPicker, {
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import DomainFundSelectorSection from '~shared/DomainFundSelectorSection';
 import TokenAmountInput from '~shared/TokenAmountInput';
-
+import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
+import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
 
 import { ColonyWatcher } from '~types';
 
-import { useDialogActionPermissions } from '~hooks';
-// import { useEnabledExtensions } from '~hooks/useEnabledExtensions';
+import { useDialogActionPermissions, useEnabledExtensions } from '~hooks';
 
 import styles from './CreatePaymentDialogForm.css';
 
@@ -58,10 +58,6 @@ const MSG = defineMessages({
     id: `${displayName}.warningText`,
     defaultMessage: `<span>Warning.</span> You are about to make a payment to an address not on the whitelist. Are you sure the address is correct?`,
   },
-  cannotCreateMotion: {
-    id: `${displayName}.cannotCreateMotion`,
-    defaultMessage: `Cannot create motions using the Governance v{version} Extension. Please upgrade to a newer version (when available)`,
-  },
 });
 
 interface Props extends ActionDialogProps {
@@ -89,13 +85,11 @@ Props) => {
     MessageDescriptor | string | undefined
   >(undefined);
 
-  // const {
-  //   isOneTxPaymentExtensionEnabled,
-  //   votingExtensionVersion,
-  //   isVotingExtensionEnabled,
-  // } = useEnabledExtensions({
-  //   colonyAddress,
-  // });
+  const {
+    isOneTxPaymentEnabled,
+    votingReputationVersion,
+    isVotingReputationEnabled,
+  } = useEnabledExtensions(colony);
 
   const requiredRoles: ColonyRole[] = [
     ColonyRole.Funding,
@@ -104,17 +98,16 @@ Props) => {
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
     colony,
-    false, // isVotingExtensionEnabled,
+    isVotingReputationEnabled,
     requiredRoles,
     [values.fromDomain],
   );
 
-  // const cannotCreateMotion =
-  //   votingExtensionVersion ===
-  //     VotingReputationExtensionVersion.FuchsiaLightweightSpaceship &&
-  //   !values.forceAction;
+  const cannotCreateMotion =
+    votingReputationVersion === noMotionsVotingReputationVersion &&
+    !values.forceAction;
 
-  const canMakePayment = userHasPermission; // && isOneTxPaymentExtensionEnabled;
+  const canMakePayment = userHasPermission && isOneTxPaymentEnabled;
 
   const inputDisabled = !canMakePayment || onlyForceAction || isSubmitting;
 
@@ -196,38 +189,25 @@ Props) => {
           />
         </DialogSection>
       )}
-      {/* {userHasPermission && !isOneTxPaymentExtensionEnabled && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionFromMessage}>
-            <FormattedMessage {...MSG.noOneTxExtension} />
-          </div>
-        </DialogSection>
-      )} */}
       {/* {onlyForceAction && (
         <NotEnoughReputation
           appearance={{ marginTop: 'negative' }}
           domainId={domainId}
         />
       )} */}
-      {/* {cannotCreateMotion && (
+      {cannotCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionFromMessage}>
-            <FormattedMessage
-              {...MSG.cannotCreateMotion}
-              values={{
-                version:
-                  VotingReputationExtensionVersion.FuchsiaLightweightSpaceship,
-              }}
-            />
-          </div>
+          <CannotCreateMotionMessage />
         </DialogSection>
-      )} */}
+      )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}
           disabled={
-            // cannotCreateMotion ||
-            !isValid || !!customAmountError || inputDisabled
+            cannotCreateMotion ||
+            !isValid ||
+            !!customAmountError ||
+            inputDisabled
           }
           dataTest="paymentConfirmButton"
         />

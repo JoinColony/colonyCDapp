@@ -2,11 +2,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import {
-  ColonyRole,
-  Id,
-  // VotingReputationVersion,
-} from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 
 import ExternalLink from '~shared/ExternalLink';
 import {
@@ -18,15 +14,18 @@ import {
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import NoPermissionMessage from '~shared/NoPermissionMessage';
 import { Annotations } from '~shared/Fields';
+import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
 import { getAllUserRoles } from '~redux/transformers';
 import { hasRoot } from '~utils/checks';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
+import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
 import {
   useTransformer,
   useDialogActionPermissions,
   useAppContext,
-} from '~hooks'; // useEnabledExtensions
+  useEnabledExtensions,
+} from '~hooks';
 
 import { TOKEN_UNLOCK_INFO } from '~constants/externalUrls';
 
@@ -68,7 +67,9 @@ const UnlockTokenForm = ({ colony, back }: ActionDialogProps) => {
   const { wallet } = useAppContext();
   const {
     formState: { isValid },
+    getValues,
   } = useFormContext();
+  const values = getValues();
   const allUserRoles = useTransformer(getAllUserRoles, [
     colony,
     wallet?.address,
@@ -78,26 +79,21 @@ const UnlockTokenForm = ({ colony, back }: ActionDialogProps) => {
   // const canUserUnlockNativeToken = hasRootPermission && status?.nativeToken?.unlockable && isNativeTokenLocked;
   const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 
-  // const {
-  //   votingExtensionVersion,
-  //   isVotingExtensionEnabled,
-  // } = useEnabledExtensions({
-  //   colonyAddress,
-  // });
+  const { votingReputationVersion, isVotingReputationEnabled } =
+    useEnabledExtensions(colony);
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
     colony,
-    false, // isVotingExtensionEnabled,
+    isVotingReputationEnabled,
     requiredRoles,
     [Id.RootDomain],
   );
 
   const inputDisabled = !userHasPermission || onlyForceAction; // || isNativeTokenLocked;
 
-  // const cannotCreateMotion =
-  //   votingExtensionVersion ===
-  //     VotingReputationVersion.FuchsiaLightweightSpaceship &&
-  //   !values.forceAction;
+  const cannotCreateMotion =
+    votingReputationVersion === noMotionsVotingReputationVersion &&
+    !values.forceAction;
 
   return (
     <>
@@ -142,29 +138,21 @@ const UnlockTokenForm = ({ colony, back }: ActionDialogProps) => {
           </DialogSection>
         </>
       )}
-      {!hasRootPermission && ( // || isVotingExtensionEnabled && isNativeTokenLocked &&
+      {!(hasRootPermission || isVotingReputationEnabled) && ( // && isNativeTokenLocked &&
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage requiredPermissions={[ColonyRole.Root]} />
         </DialogSection>
       )}
-      {/* {onlyForceAction && isNativeTokenLocked && <NotEnoughReputation />}
+      {/* {onlyForceAction && isNativeTokenLocked && <NotEnoughReputation />} */}
       {cannotCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionMessage}>
-            <FormattedMessage
-              {...MSG.cannotCreateMotion}
-              values={{
-                version:
-                  VotingReputationExtensionVersion.FuchsiaLightweightSpaceship,
-              }}
-            />
-          </div>
+          <CannotCreateMotionMessage />
         </DialogSection>
-      )} */}
+      )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}
-          disabled={!isValid || inputDisabled} // cannotCreateMotion ||
+          disabled={cannotCreateMotion || !isValid || inputDisabled}
           dataTest="unlockTokenConfirmButton"
         />
       </DialogSection>

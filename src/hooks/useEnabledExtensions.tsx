@@ -1,9 +1,11 @@
 import { Extension } from '@colony/colony-js';
 
+import { Colony } from '~types';
+
 import useExtensionsData from './useExtensionsData';
 
-const useEnabledExtensions = () => {
-  const { installedExtensionsData, loading } = useExtensionsData();
+const useEnabledExtensions = (colony: Colony | undefined) => {
+  const { installedExtensionsData, loading } = useExtensionsData(colony);
 
   const oneTxPaymentExtension = installedExtensionsData.find(
     (extension) => extension.extensionId === Extension.OneTxPayment,

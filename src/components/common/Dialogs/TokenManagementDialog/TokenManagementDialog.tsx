@@ -48,9 +48,7 @@ const TokenManagementDialog = ({
   const navigate = useNavigate();
   const colonyTokens = colony?.tokens?.items || [];
 
-  const {
-    enabledExtensions: { isVotingReputationEnabled },
-  } = useEnabledExtensions();
+  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
 
   const actionType =
     !isForce && isVotingReputationEnabled

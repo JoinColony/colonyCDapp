@@ -77,9 +77,8 @@ const ManageExpenditureDialog = ({
   nextStep,
 }: Props) => {
   const { wallet, user } = useAppContext();
-  const {
-    enabledExtensions: { isVotingReputationEnabled, isOneTxPaymentEnabled },
-  } = useEnabledExtensions();
+  const { isVotingReputationEnabled, isOneTxPaymentEnabled } =
+    useEnabledExtensions(colony);
 
   const allUserRoles = useTransformer(getAllUserRoles, [
     colony,
