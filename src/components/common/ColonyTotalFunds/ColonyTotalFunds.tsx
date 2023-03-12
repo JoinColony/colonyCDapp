@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 // import { ColonyVersion } from '@colony/colony-js';
 
@@ -7,7 +7,11 @@ import Link from '~shared/Link';
 import Numeral from '~shared/Numeral';
 import IconTooltip from '~shared/IconTooltip';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { useColonyContext, useCurrentSelectedToken } from '~hooks';
+import {
+  useColonyContext,
+  useCurrentSelectedToken,
+  useTokenTotalBalance,
+} from '~hooks';
 import { notNull } from '~utils/arrays';
 
 import ColonyTotalFundsPopover from './ColonyTotalFundsPopover';
@@ -37,31 +41,17 @@ const MSG = defineMessages({
 
 const ColonyTotalFunds = () => {
   const { colony, canInteractWithColony } = useColonyContext();
-  const { name, tokens, nativeToken, status, balances } = colony || {};
+  const { name, tokens, nativeToken, status } = colony || {};
   const { tokenAddress: nativeTokenAddress } = nativeToken || {};
   const { currentToken, setCurrentTokenAddress } = useCurrentSelectedToken();
+  const totalTokenBalance = useTokenTotalBalance(
+    currentToken?.token?.tokenAddress,
+  );
 
   // const isSupportedColonyVersion =
   //   parseInt(version, 10) >= ColonyVersion.LightweightSpaceship;
 
   const isSupportedColonyVersion = true;
-
-  const totalTokenBalance = useMemo(() => {
-    if (balances?.items && currentToken) {
-      return (
-        balances.items
-          /*
-           * If the domain is not set, then we're dealing with "All Domains" (id 0)
-           */
-          .filter((balance) => balance?.domain === null)
-          .find(
-            (balance) =>
-              balance?.token?.tokenAddress === currentToken.token.tokenAddress,
-          ) || { balance: '0' }
-      );
-    }
-    return { balance: '0' };
-  }, [balances, currentToken]);
 
   return (
     <div className={styles.main}>
