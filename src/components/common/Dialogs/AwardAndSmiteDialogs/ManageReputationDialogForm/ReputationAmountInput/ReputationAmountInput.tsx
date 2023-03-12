@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { HookFormInput as Input } from '~shared/Fields';
 import Numeral from '~shared/Numeral';
-import { Colony } from '~types/index';
+import { Colony } from '~types';
 
 import { useUserReputation } from '~hooks';
 import { getFormattedTokenValue } from '~utils/tokens';
@@ -67,9 +67,9 @@ const ReputationAmountInput = ({
     userReputation,
     totalReputation,
   );
-  const unformattedUserReputationAmount = new Decimal(userReputation || 0)
-    .div(new Decimal(10).pow(nativeTokenDecimals))
-    .toNumber();
+  const unformattedUserReputationAmount = new Decimal(userReputation || 0).div(
+    new Decimal(10).pow(nativeTokenDecimals),
+  );
   const formattedUserReputationAmount = getFormattedTokenValue(
     userReputation || 0,
     nativeTokenDecimals,
@@ -91,7 +91,7 @@ const ReputationAmountInput = ({
           maxButtonParams={
             isSmiteAction
               ? {
-                  maxAmount: String(unformattedUserReputationAmount),
+                  maxAmount: unformattedUserReputationAmount.toString(),
                 }
               : undefined
           }

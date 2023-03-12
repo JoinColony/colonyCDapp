@@ -71,9 +71,7 @@ const ManageReputation = ({
     wallet?.address,
   ]);
 
-  const {
-    enabledExtensions: { isVotingReputationEnabled },
-  } = useEnabledExtensions();
+  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
 
   const hasRegisteredProfile = !!user?.name && !!wallet?.address;
   const canSmiteReputation =

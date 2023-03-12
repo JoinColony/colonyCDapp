@@ -24,12 +24,18 @@ import UserAvatar from '~shared/UserAvatar';
 import NoPermissionMessage from '~shared/NoPermissionMessage';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import { REPUTATION_LEARN_MORE } from '~constants/externalUrls';
+import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
 
-import { ColonyWatcher, User } from '~types/index';
+import { ColonyWatcher, User } from '~types';
 
-import { useDialogActionPermissions, useUserReputation } from '~hooks'; // useEnabledExtensions
+import {
+  useDialogActionPermissions,
+  useUserReputation,
+  useEnabledExtensions,
+} from '~hooks';
 import { sortBy } from '~utils/lodash';
 import { notNull } from '~utils/arrays';
+import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
 import ReputationAmountInput from './ReputationAmountInput';
 import TeamDropdownItem from './TeamDropdownItem';
@@ -119,16 +125,12 @@ const ManageReputationDialogForm = ({
     isSmiteAction ? ColonyRole.Arbitration : ColonyRole.Root,
   ];
 
-  // const {
-  //   votingExtensionVersion,
-  //   isVotingExtensionEnabled,
-  // } = useEnabledExtensions({
-  //   colonyAddress,
-  // });
+  const { votingReputationVersion, isVotingReputationEnabled } =
+    useEnabledExtensions(colony);
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
     colony,
-    false, // isVotingExtensionEnabled,
+    isVotingReputationEnabled,
     requiredRoles,
     [values.domainId],
   );
@@ -189,10 +191,9 @@ const ManageReputationDialogForm = ({
     }
   }, [updateReputation, unformattedUserReputationAmount]);
 
-  // const cannotCreateMotion =
-  //   votingExtensionVersion ===
-  //     VotingReputationVersion.FuchsiaLightweightSpaceship &&
-  //   !values.forceAction;
+  const cannotCreateMotion =
+    votingReputationVersion === noMotionsVotingReputationVersion &&
+    !values.forceAction;
 
   const formattedData = verifiedUsers.map((user) => ({
     ...user,
@@ -300,23 +301,15 @@ const ManageReputationDialogForm = ({
           domainId={Number(domainId)}
         />
       )} */}
-      {/* {cannotCreateMotion && (
+      {cannotCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionFromMessage}>
-            <FormattedMessage
-              {...MSG.cannotCreateMotion}
-              values={{
-                version:
-                  VotingReputationVersion.FuchsiaLightweightSpaceship,
-              }}
-            />
-          </div>
+          <CannotCreateMotionMessage />
         </DialogSection>
-      )} */}
+      )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}
-          disabled={!isValid || inputDisabled} // cannotCreateMotion ||
+          disabled={cannotCreateMotion || !isValid || inputDisabled}
           dataTest="reputationConfirmButton"
         />
       </DialogSection>

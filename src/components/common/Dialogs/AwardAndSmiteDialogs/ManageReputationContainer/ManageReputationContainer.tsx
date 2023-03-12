@@ -4,6 +4,7 @@ import { Id } from '@colony/colony-js';
 import { useNavigate } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 
+import Decimal from 'decimal.js';
 import Dialog from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
@@ -26,6 +27,10 @@ const MSG = defineMessages({
     id: `${displayName}.amountZero`,
     defaultMessage: 'Amount must be greater than zero',
   },
+  maxAmount: {
+    id: `${displayName}.maxAmount`,
+    defaultMessage: "Amount must be less than the user's reputation",
+  },
 });
 
 const defaultValidationSchema = object()
@@ -34,9 +39,16 @@ const defaultValidationSchema = object()
     user: object().shape({
       walletAddress: string().address().required(),
     }),
-    amount: number()
+    amount: string()
       .required()
-      .moreThan(0, () => MSG.amountZero),
+      .test(
+        'more-than-zero',
+        () => MSG.amountZero,
+        (value) => {
+          const numberWithoutCommas = (value || '0').replace(/,/g, '');
+          return !new Decimal(numberWithoutCommas).isZero();
+        },
+      ),
     annotation: string().max(4000),
     forceAction: boolean(),
     motionDomainId: number(),
@@ -70,9 +82,7 @@ const ManageReputationContainer = ({
     setUserReputation(userRepPercentage);
   };
 
-  const {
-    enabledExtensions: { isVotingReputationEnabled },
-  } = useEnabledExtensions();
+  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
 
   const actionType =
     !isForce && isVotingReputationEnabled
@@ -83,7 +93,28 @@ const ManageReputationContainer = ({
 
   if (isSmiteAction) {
     const amountValidationSchema = object()
-      .shape({ amount: number().max(userReputation) })
+      .shape({
+        amount: string()
+          .required()
+          .test(
+            'more-than-zero',
+            () => MSG.amountZero,
+            (value) => {
+              const numberWithoutCommas = (value || '0').replace(/,/g, '');
+              return !new Decimal(numberWithoutCommas).isZero();
+            },
+          )
+          .test(
+            'less-than-user-reputation',
+            () => MSG.maxAmount,
+            (value) => {
+              const numberWithoutCommas = (value || '0').replace(/,/g, '');
+              return !new Decimal(numberWithoutCommas).greaterThan(
+                userReputation,
+              );
+            },
+          ),
+      })
       .required();
     smiteValidationSchema = defaultValidationSchema.concat(
       amountValidationSchema,
@@ -116,7 +147,7 @@ const ManageReputationContainer = ({
         domainId: filteredDomainId ?? Id.RootDomain,
         // user: selectedUser,
         motionDomainId: Id.RootDomain,
-        amount: 0,
+        amount: '',
         annotation: '',
       }}
       actionType={actionType}
