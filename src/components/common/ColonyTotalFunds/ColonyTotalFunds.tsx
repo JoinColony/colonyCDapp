@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 // import { ColonyVersion } from '@colony/colony-js';
 
@@ -6,9 +6,8 @@ import Icon from '~shared/Icon';
 import Link from '~shared/Link';
 import Numeral from '~shared/Numeral';
 import IconTooltip from '~shared/IconTooltip';
-import { Address } from '~types/index';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useCurrentSelectedToken } from '~hooks';
 import { notNull } from '~utils/arrays';
 
 import ColonyTotalFundsPopover from './ColonyTotalFundsPopover';
@@ -40,26 +39,7 @@ const ColonyTotalFunds = () => {
   const { colony, canInteractWithColony } = useColonyContext();
   const { name, tokens, nativeToken, status, balances } = colony || {};
   const { tokenAddress: nativeTokenAddress } = nativeToken || {};
-
-  const [currentTokenAddress, setCurrentTokenAddress] = useState<Address>();
-
-  useEffect(() => {
-    if (!nativeTokenAddress) {
-      return;
-    }
-
-    setCurrentTokenAddress(nativeTokenAddress);
-  }, [nativeTokenAddress]);
-
-  const currentToken = useMemo(() => {
-    if (tokens) {
-      return tokens.items.find(
-        (colonyToken) =>
-          colonyToken?.token.tokenAddress === currentTokenAddress,
-      );
-    }
-    return undefined;
-  }, [tokens, currentTokenAddress]);
+  const { currentToken, setCurrentTokenAddress } = useCurrentSelectedToken();
 
   // const isSupportedColonyVersion =
   //   parseInt(version, 10) >= ColonyVersion.LightweightSpaceship;
@@ -97,13 +77,13 @@ const ColonyTotalFunds = () => {
             .filter(notNull)
             .map((colonyToken) => colonyToken.token)}
           onSelectToken={setCurrentTokenAddress}
-          currentTokenAddress={currentTokenAddress}
+          currentTokenAddress={currentToken?.token?.tokenAddress}
         >
           <button className={styles.selectedTokenSymbol} type="button">
             <span data-test="colonyTokenSymbol">
               {currentToken?.token?.symbol}
             </span>
-            {currentTokenAddress === nativeTokenAddress &&
+            {currentToken?.token?.tokenAddress === nativeTokenAddress &&
               !status?.nativeToken?.unlocked && (
                 <IconTooltip
                   icon="lock"
