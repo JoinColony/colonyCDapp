@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@colony/colony-js": "^6.1.0",
-    "aws-amplify": "^4.3.43",
-    "ethers": "^5.7.2"
+    "ethers": "^5.7.2",
+    "node-fetch": "2.6.7"
   }
 }

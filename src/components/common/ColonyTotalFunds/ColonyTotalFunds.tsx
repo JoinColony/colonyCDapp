@@ -1,19 +1,17 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 // import { ColonyVersion } from '@colony/colony-js';
 
 import Icon from '~shared/Icon';
 import Link from '~shared/Link';
 import Numeral from '~shared/Numeral';
-// import { MiniSpinnerLoader } from '~shared/Preloaders';
 import IconTooltip from '~shared/IconTooltip';
-// import {
-//   useTokenBalancesForDomainsQuery,
-// } from '~data/index';
-import { Address } from '~types/index';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-// import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { useColonyContext } from '~hooks';
+import {
+  useColonyContext,
+  useCurrentSelectedToken,
+  useTokenTotalBalance,
+} from '~hooks';
 import { notNull } from '~utils/arrays';
 
 import ColonyTotalFundsPopover from './ColonyTotalFundsPopover';
@@ -45,52 +43,15 @@ const ColonyTotalFunds = () => {
   const { colony, canInteractWithColony } = useColonyContext();
   const { name, tokens, nativeToken, status } = colony || {};
   const { tokenAddress: nativeTokenAddress } = nativeToken || {};
-
-  // const {
-  //   data,
-  //   loading: isLoadingTokenBalances,
-  // } = useTokenBalancesForDomainsQuery({
-  //   variables: {
-  //     colonyAddress,
-  //     domainIds: [COLONY_TOTAL_BALANCE_DOMAIN_ID],
-  //     tokenAddresses: colonyTokens.map(({ address }) => address),
-  //   },
-  // });
-
-  const [currentTokenAddress, setCurrentTokenAddress] = useState<Address>();
-
-  useEffect(() => {
-    if (!nativeTokenAddress) {
-      return;
-    }
-
-    setCurrentTokenAddress(nativeTokenAddress);
-  }, [nativeTokenAddress]);
-
-  const currentToken = useMemo(() => {
-    if (tokens) {
-      return tokens.items.find(
-        (colonyToken) =>
-          colonyToken?.token.tokenAddress === currentTokenAddress,
-      );
-    }
-    return undefined;
-  }, [tokens, currentTokenAddress]);
+  const { currentToken, setCurrentTokenAddress } = useCurrentSelectedToken();
+  const totalTokenBalance = useTokenTotalBalance(
+    currentToken?.token?.tokenAddress,
+  );
 
   // const isSupportedColonyVersion =
   //   parseInt(version, 10) >= ColonyVersion.LightweightSpaceship;
 
   const isSupportedColonyVersion = true;
-
-  // if (!data || !currentToken || isLoadingTokenBalances) {
-  //   return (
-  //     <MiniSpinnerLoader
-  //       className={styles.main}
-  //       loadingText={MSG.loadingData}
-  //       titleTextValues={{ hasCounter: false }}
-  //     />
-  //   );
-  // }
 
   return (
     <div className={styles.main}>
@@ -98,8 +59,7 @@ const ColonyTotalFunds = () => {
         <Numeral
           className={styles.selectedTokenAmount}
           decimals={getTokenDecimalsWithFallback(currentToken?.token?.decimals)}
-          // value={currentToken.balances[COLONY_TOTAL_BALANCE_DOMAIN_ID].amount}
-          value={0}
+          value={totalTokenBalance.balance}
           data-test="colonyTotalFunds"
         />
         <ColonyTotalFundsPopover
@@ -107,13 +67,13 @@ const ColonyTotalFunds = () => {
             .filter(notNull)
             .map((colonyToken) => colonyToken.token)}
           onSelectToken={setCurrentTokenAddress}
-          currentTokenAddress={currentTokenAddress}
+          currentTokenAddress={currentToken?.token?.tokenAddress}
         >
           <button className={styles.selectedTokenSymbol} type="button">
             <span data-test="colonyTokenSymbol">
               {currentToken?.token?.symbol}
             </span>
-            {currentTokenAddress === nativeTokenAddress &&
+            {currentToken?.token?.tokenAddress === nativeTokenAddress &&
               !status?.nativeToken?.unlocked && (
                 <IconTooltip
                   icon="lock"

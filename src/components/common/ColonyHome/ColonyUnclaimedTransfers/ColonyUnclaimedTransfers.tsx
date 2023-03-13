@@ -1,7 +1,5 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-
-import { useColonyTransfersQuery, useTokenQuery } from '~data/index';
 
 import { ActionButton } from '~shared/Button';
 import Heading from '~shared/Heading';
@@ -9,10 +7,11 @@ import NavLink from '~shared/NavLink';
 import Numeral from '~shared/Numeral';
 import { Tooltip } from '~shared/Popover';
 import Link from '~shared/Link';
+
 import { ActionTypes } from '~redux';
+import { useColonyContext, useColonyFundsClaims } from '~hooks';
 import { mergePayload } from '~utils/actions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { useColonyContext } from '~hooks';
 
 import styles from './ColonyUnclaimedTransfers.css';
 
@@ -42,36 +41,28 @@ const MSG = defineMessages({
 });
 
 const ColonyUnclaimedTransfers = () => {
-  const { colony } = useColonyContext();
-  const { colonyAddress, name } = colony || {};
+  const { colony, canInteractWithColony } = useColonyContext();
+  const claims = useColonyFundsClaims();
 
-  const { data, error } = useColonyTransfersQuery({
-    variables: { address: colonyAddress },
-  });
-  const { canInteractWithColony } = useColonyContext();
+  const firstItem = claims[0];
 
-  const firstItem = data?.processedColony.unclaimedTransfers[0];
-
-  const { data: tokenData } = useTokenQuery({
-    variables: { address: firstItem?.token || '' },
+  const transform = mergePayload({
+    colonyAddress: colony?.colonyAddress,
+    tokenAddress: firstItem?.token?.tokenAddress || '',
   });
 
-  const transform = useCallback(
-    mergePayload({ colonyAddress, tokenAddress: firstItem?.token || '' }),
-    [colonyAddress, firstItem],
-  );
-
-  const claimsLength = data?.processedColony?.unclaimedTransfers?.length;
+  const claimsLength = claims?.length;
   const extraClaims = (claimsLength || 0) - 1;
 
-  // if (error) console.warn(error);
-
-  const token = tokenData?.token;
+  /*
+   * Token of the first claim (to be displayed)
+   */
+  const token = firstItem?.token;
 
   return claimsLength ? (
     <div className={styles.main}>
       <Heading appearance={{ size: 'normal', weight: 'bold' }}>
-        <NavLink to={`/colony/${name}/funds`}>
+        <NavLink to={`/colony/${colony?.name}/funds`}>
           <FormattedMessage {...MSG.title} />
         </NavLink>
       </Heading>
@@ -126,7 +117,7 @@ const ColonyUnclaimedTransfers = () => {
           <li>
             <Link
               className={styles.manageFundsLink}
-              to={`/colony/${name}/funds`}
+              to={`/colony/${colony?.name}/funds`}
               data-test="manageFunds"
             >
               <div className={styles.tokenItem}>

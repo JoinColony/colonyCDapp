@@ -6,6 +6,8 @@ import {
   WatchListItemFragment,
   WatchedColonyFragment,
   ExtensionFragment,
+  FundsClaimFragment,
+  ChainFundsClaimFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -21,3 +23,16 @@ export type WatchListItem = WatchListItemFragment;
 export type WatchedColony = WatchedColonyFragment;
 
 export type ColonyExtension = ExtensionFragment;
+
+/*
+ * Funds claims
+ */
+export type ColonyERC20Claims = FundsClaimFragment;
+
+export type ColonyChainClaim = ChainFundsClaimFragment;
+
+export type ColonyChainClaimWithToken = ChainFundsClaimFragment & {
+  token?: Token;
+};
+
+export type ColonyClaims = ColonyERC20Claims | ColonyChainClaimWithToken;

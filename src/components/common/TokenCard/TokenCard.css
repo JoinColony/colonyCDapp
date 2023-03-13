@@ -1,0 +1,161 @@
+@value headerFooterHeights: 35px;
+@value query700 from '~styles/queries.css';
+
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px;
+}
+
+.cardHeading {
+  display: flex;
+  align-items: center;
+  height: headerFooterHeights;
+  cursor: pointer;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  margin-right: 6px;
+}
+
+.iconContainer img {
+  max-height: 36px;
+  max-width: 36px;
+}
+
+.tooltipClassName {
+  width: 250px;
+}
+
+.tokenSymbol {
+  composes: flexContainerRow flexAlignCenter flexJustifyCenter from '~styles/layout.css';
+  margin-left: 15px;
+  font-size: var(--size-small);
+  font-weight: var(--weight-bold);
+  line-height: var(--size-small);
+  color: var(--grey-dark);
+}
+
+.tokenLockWrapper {
+  display: block;
+  margin-left: 3px;
+  margin-top: 1px;
+  position: relative;
+}
+
+.tokenLockWrapper svg {
+  fill: var(--grey-purple);
+}
+
+.nativeTokenText {
+  margin-left: 3px;
+  color: var(--grey-purple);
+}
+
+.balanceContent {
+  display: flex;
+  justify-content: center;
+  margin-top: calc(headerFooterHeights / 2);
+  font-size: var(--size-medium-l);
+  color: var(--dark);
+}
+
+.balanceNumeral {
+  font-size: var(--size-medium-l);
+}
+
+.balanceNotPositive {
+  composes: balanceContent;
+  color: var(--pink);
+}
+
+.cardFooter {
+  composes: marginBottomMedium from '~styles/layout.css';
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: headerFooterHeights;
+  font-weight: var(--weight-thin);
+  color: var(--grey-purple);
+}
+
+.ethUsdText {
+  font-weight: var(--weight-bold);
+}
+
+.cardFooter span {
+  font-size: var(--size-small);
+}
+
+@media screen and query700 {
+  .main {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 0px;
+    gap: 10px;
+    box-shadow: none;
+  }
+
+  .main div {
+    align-items: center;
+    gap: 10px;
+  }
+
+  .main > div:nth-child(3) {
+    line-height: 12px;
+  }
+
+  .main div[role='tooltip'] {
+    width: 100%;
+  }
+
+  .main div[role='tooltip'] > div {
+    max-width: 100%;
+  }
+
+  .main div[role='tooltip'] > div > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: white;
+    gap: 10px;
+  }
+
+  .main div[role='tooltip'] > div > div > div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .main div[role='tooltip'] p + div > div {
+    align-items: flex-start;
+    gap: 30px;
+  }
+
+  .main div[role='tooltip'] p + div > div > div:first-child {
+    overflow-wrap: anywhere;
+  }
+
+  .main div[role='tooltip'] span:nth-child(2) {
+    padding-right: 10px;
+    line-height: 0px;
+  }
+
+  .main div[role='tooltip'] button {
+    line-height: 10px;
+  }
+
+  .main figure {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .main figure > div {
+    position: static;
+  }
+}

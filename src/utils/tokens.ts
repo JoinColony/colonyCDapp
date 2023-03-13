@@ -1,31 +1,28 @@
 import Decimal from 'decimal.js';
 import { BigNumber, BigNumberish } from 'ethers';
+import { ColonyBalances } from '~gql';
+import { Address } from '~types';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import {
+  DEFAULT_TOKEN_DECIMALS,
+  COLONY_TOTAL_BALANCE_DOMAIN_ID,
+} from '~constants';
 
-export const getBalanceFromToken = (
-  /** @TODO: add proper type */
-  token: any,
-  tokenDomainId = 0,
+export const getBalanceForTokenAndDomain = (
+  balances: ColonyBalances,
+  tokenAddress: Address,
+  domainId: number = COLONY_TOTAL_BALANCE_DOMAIN_ID,
 ) => {
-  let result;
-  if (!token) return BigNumber.from(0);
-  if ('balances' in token) {
-    const domainBalance = token.balances.find(
-      ({ domainId }) => domainId === tokenDomainId,
+  const currentDomainBalance = balances?.items
+    ?.filter((domainBalance) =>
+      domainId === COLONY_TOTAL_BALANCE_DOMAIN_ID
+        ? domainBalance?.domain === null
+        : domainBalance?.domain?.nativeId === domainId,
+    )
+    .find(
+      (domainBalance) => domainBalance?.token?.tokenAddress === tokenAddress,
     );
-    result = domainBalance ? domainBalance.amount : 0;
-  } else if ('processedBalances' in token) {
-    const domainBalance = token.processedBalances.find(
-      ({ domainId }) => domainId === tokenDomainId,
-    );
-    result = domainBalance ? domainBalance.amount : 0;
-  } else if ('balance' in token) {
-    result = token.balance;
-  } else {
-    result = 0;
-  }
-  return BigNumber.from(result);
+  return BigNumber.from(currentDomainBalance?.balance);
 };
 
 /*

@@ -2,35 +2,28 @@ import React from 'react';
 
 import Numeral from '~shared/Numeral';
 import IconTooltip from '~shared/IconTooltip';
-// import { TokenBalancesForDomainsQuery } from '~data/index';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
-import { Token } from '~types';
+import { Token, Address } from '~types';
 
 import styles from './ColonyFundingWidget.css';
 
 interface Props {
-  // currentDomainId: number;
   token: Token;
   isTokenNative?: boolean;
   isNativeTokenLocked?: boolean;
+  balance?: Address;
 }
 
 const displayName = 'common.ColonyHome.ColonyFundingWidget.TokenBalanceItem';
 
 const TokenBalanceItem = ({
-  // currentDomainId,
   token: { decimals, symbol },
   isTokenNative,
   isNativeTokenLocked,
-}: Props) => {
-  // const domainBalance = balances.find(
-  //   ({ domainId }) => domainId === currentDomainId,
-  // );
-  // const balance = domainBalance && domainBalance.amount;
-  const balance = 0;
-
-  return typeof balance === 'undefined' ? null : (
+  balance,
+}: Props) =>
+  balance && (
     <div className={styles.tokenItem}>
       <span
         className={styles.tokenValue}
@@ -55,7 +48,6 @@ const TokenBalanceItem = ({
       </span>
     </div>
   );
-};
 
 TokenBalanceItem.displayName = displayName;
 
