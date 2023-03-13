@@ -1,7 +1,7 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
-// import { BigNumber } from 'ethers';
-import { utils } from 'ethers';
+import { call, fork, put, takeLatest } from 'redux-saga/effects';
+import { BigNumber, utils } from 'ethers';
 import { QueryOptions } from '@apollo/client';
+import { ClientType, TokenLockingClient } from '@colony/colony-js';
 
 import { ContextModule, getContext, removeContext } from '~context';
 import { clearLastWallet } from '~utils/autoLogin';
@@ -15,18 +15,16 @@ import {
 
 import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
-import {
-  putError,
-  // getColonyManager
-} from '../utils';
+import { getColonyManager, putError, takeFrom } from '../utils';
 import { getWallet } from '../wallet';
+import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
+import { transactionReady } from '~redux/actionCreators';
 
 // import { transactionLoadRelated, transactionReady } from '../../actionCreators';
-// import {
-//   createTransactionChannels,
-//   createTransaction,
-//   getTxChannel,
-// } from '../transactions';
 
 // function* userAvatarRemove({ meta }: Action<ActionTypes.USER_AVATAR_REMOVE>) {
 //   try {
@@ -164,91 +162,76 @@ function* userLogout() {
   return null;
 }
 
-// function* userDepositToken({
-//   meta,
-//   payload: { tokenAddress, amount, colonyAddress },
-// }: Action<ActionTypes.USER_DEPOSIT_TOKEN>) {
-//   const txChannel = yield call(getTxChannel, meta.id);
-//   try {
-//     const apolloClient = getContext(ContextModule.ApolloClient);
-//     const colonyManager = yield getColonyManager();
-//     const { walletAddress } = yield getLoggedInUser();
+function* userDepositToken({
+  meta,
+  payload: { tokenAddress, amount, colonyAddress },
+}: Action<ActionTypes.USER_DEPOSIT_TOKEN>) {
+  const txChannel = yield call(getTxChannel, meta.id);
+  try {
+    const colonyManager = yield getColonyManager();
 
-//     const tokenLockingClient: TokenLockingClient =
-//       yield colonyManager.getClient(
-//         ClientType.TokenLockingClient,
-//         colonyAddress,
-//       );
+    const tokenLockingClient: TokenLockingClient =
+      yield colonyManager.getClient(
+        ClientType.TokenLockingClient,
+        colonyAddress,
+      );
 
-//     const batchKey = 'deposit';
+    const batchKey = 'deposit';
 
-//     const { approve, deposit } = yield createTransactionChannels(meta.id, [
-//       'approve',
-//       'deposit',
-//     ]);
+    const { approve, deposit } = yield createTransactionChannels(meta.id, [
+      'approve',
+      'deposit',
+    ]);
 
-//     const createGroupTransaction = ({ id, index }, config) =>
-//       fork(createTransaction, id, {
-//         ...config,
-//         group: {
-//           key: batchKey,
-//           id: meta.id,
-//           index,
-//         },
-//       });
+    const createGroupTransaction = ({ id, index }, config) =>
+      fork(createTransaction, id, {
+        ...config,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index,
+        },
+      });
 
-//     yield createGroupTransaction(approve, {
-//       context: ClientType.TokenClient,
-//       methodName: 'approve',
-//       identifier: tokenAddress,
-//       params: [tokenLockingClient.address, BigNumber.from(amount)],
-//       ready: false,
-//     });
+    yield createGroupTransaction(approve, {
+      context: ClientType.TokenClient,
+      methodName: 'approve',
+      identifier: tokenAddress,
+      params: [tokenLockingClient.address, BigNumber.from(amount)],
+      ready: false,
+    });
 
-//     yield createGroupTransaction(deposit, {
-//       context: ClientType.TokenLockingClient,
-//       methodName: 'deposit',
-//       identifier: colonyAddress,
-//       params: [tokenAddress, BigNumber.from(amount), false],
-//       ready: false,
-//     });
+    yield createGroupTransaction(deposit, {
+      context: ClientType.TokenLockingClient,
+      methodName: 'deposit',
+      identifier: colonyAddress,
+      params: [tokenAddress, BigNumber.from(amount), false],
+      ready: false,
+    });
 
-//     yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
+    yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
 
-//     yield put(transactionReady(approve.id));
+    yield put(transactionReady(approve.id));
 
-//     yield takeFrom(approve.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield takeFrom(approve.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-//     yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
+    yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
 
-//     yield put(transactionReady(deposit.id));
+    yield put(transactionReady(deposit.id));
 
-//     yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-//     yield apolloClient.query<
-//       UserBalanceWithLockQuery,
-//       UserBalanceWithLockQueryVariables
-//     >({
-//       query: UserBalanceWithLockDocument,
-//       variables: {
-//         address: walletAddress,
-//         tokenAddress,
-//         colonyAddress,
-//       },
-//       fetchPolicy: 'network-only',
-//     });
-
-//     yield put({
-//       type: ActionTypes.USER_DEPOSIT_TOKEN_SUCCESS,
-//       meta,
-//     });
-//   } catch (error) {
-//     return yield putError(ActionTypes.USER_DEPOSIT_TOKEN_ERROR, error, meta);
-//   } finally {
-//     txChannel.close();
-//   }
-//   return null;
-// }
+    yield put({
+      type: ActionTypes.USER_DEPOSIT_TOKEN_SUCCESS,
+      meta,
+    });
+  } catch (error) {
+    return yield putError(ActionTypes.USER_DEPOSIT_TOKEN_ERROR, error, meta);
+  } finally {
+    txChannel.close();
+  }
+  return null;
+}
 
 // function* userWithdrawToken({
 //   meta,
@@ -314,6 +297,6 @@ export function* setupUsersSagas() {
   // yield takeLatest(ActionTypes.USER_AVATAR_UPLOAD, userAvatarUpload);
   yield takeLatest(ActionTypes.USER_LOGOUT, userLogout);
   yield takeLatest(ActionTypes.USERNAME_CREATE, usernameCreate);
-  // yield takeLatest(ActionTypes.USER_DEPOSIT_TOKEN, userDepositToken);
+  yield takeLatest(ActionTypes.USER_DEPOSIT_TOKEN, userDepositToken);
   // yield takeLatest(ActionTypes.USER_WITHDRAW_TOKEN, userWithdrawToken);
 }
