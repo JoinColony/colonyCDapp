@@ -3,7 +3,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import { Token } from '~types';
-import { ParsedMotionStakedEvent } from '~gql';
+import { MotionStakedEvent } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 
 import { getFormattedTokenValue } from '~utils/tokens';
@@ -32,7 +32,7 @@ const MSG = defineMessages({
 });
 
 export interface Props {
-  unclaimedMotionStakeEvents?: Array<ParsedMotionStakedEvent>;
+  unclaimedMotionStakeEvents?: Array<MotionStakedEvent>;
   isLoadingMotions: boolean;
   token: Token;
   setIsPopoverOpen: Dispatch<SetStateAction<boolean>>;

@@ -447,7 +447,7 @@ type ColonyAction @model {
   newColonyVersion: Int
 }
 
-type ParsedMotionStakedEventValues {
+type MotionStakedEventValues {
   amount: String!
   motionId: String!
   stakeAmount: String!
@@ -455,7 +455,7 @@ type ParsedMotionStakedEventValues {
   vote: Int!
 }
 
-type ParsedMotionStakedEvent {
+type MotionStakedEvent {
   address: String!
   blockNumber: Int!
   hash: String!
@@ -464,5 +464,5 @@ type ParsedMotionStakedEvent {
   signature: String!
   timestamp: Int!
   topic: String!
-  values: ParsedMotionStakedEventValues!
+  values: MotionStakedEventValues!
 }
