@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { useDialogActionPermissions } from '~hooks';
 import { Colony } from '~types';
 import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
+
 import { EnabledExtensionData } from './useEnabledExtensions';
 
 const useActionDialogStatus = (
