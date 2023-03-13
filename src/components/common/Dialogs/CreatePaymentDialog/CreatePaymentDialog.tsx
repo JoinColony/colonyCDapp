@@ -14,7 +14,7 @@ import { ActionTypes } from '~redux/index';
 // } from '~data/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
-import { WizardDialogType, useEnabledExtensions } from '~hooks';
+import { WizardDialogType } from '~hooks';
 import { notNull } from '~utils/arrays';
 
 import validationSchema from './validation';
@@ -38,12 +38,13 @@ const CreatePaymentDialog = ({
   close,
   filteredDomainId,
   colony,
+  enabledExtensionData,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
   const colonyWatchers =
     colony?.watchers?.items.filter(notNull).map((item) => item.user) || [];
-  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
+  const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
     !isForce && isVotingReputationEnabled
@@ -121,6 +122,7 @@ const CreatePaymentDialog = ({
               //   values?.recipient?.walletAddress,
               // )}
               colony={colony}
+              enabledExtensionData={enabledExtensionData}
             />
           </Dialog>
         );

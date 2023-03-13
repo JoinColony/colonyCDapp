@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { string, object, number, boolean, InferType } from 'yup';
+import { defineMessages } from 'react-intl';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
-import { ActionTypes } from '~redux/index';
-import { WizardDialogType, useEnabledExtensions } from '~hooks';
+import { Domain } from '~types';
+import { ActionTypes } from '~redux';
+import { WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 import { DomainColor } from '~gql';
 import { findDomainByNativeId } from '~utils/domains';
+import { notNull } from '~utils/arrays';
+import { getDomainOptions } from '~shared/DomainFundSelectorSection/helpers';
 
 import EditDomainDialogForm from './EditDomainDialogForm';
-import { getEditDomainDialogPayload } from './helpers';
+import { getEditDomainDialogPayload, notRootDomain } from './helpers';
 
 interface CustomWizardDialogProps extends ActionDialogProps {
   filteredDomainId?: number;
@@ -24,10 +28,19 @@ type Props = DialogProps &
 
 const displayName = 'common.EditDomainDialog';
 
+const MSG = defineMessages({
+  requiredFieldError: {
+    id: `${displayName}.requiredFieldError`,
+    defaultMessage: 'Please enter a value',
+  },
+});
+
 const validationSchema = object()
   .shape({
     forceAction: boolean().defined(),
-    domainName: string().max(20).required(),
+    domainName: string()
+      .max(20)
+      .required(() => MSG.requiredFieldError),
     domainId: number().required(),
     domainColor: string().defined(),
     domainPurpose: string().max(90),
@@ -45,13 +58,20 @@ const EditDomainDialog = ({
   close,
   colony,
   filteredDomainId,
+  enabledExtensionData,
 }: Props) => {
-  const selectedDomain = findDomainByNativeId(filteredDomainId, colony, true);
+  const colonyDomains =
+    colony.domains?.items.filter(
+      (domain) => notNull(domain) && notRootDomain(domain),
+    ) || [];
+  const domainOptions = getDomainOptions(colonyDomains as Domain[]);
+  const selectedDomainId = filteredDomainId || domainOptions[0]?.value;
+  const selectedDomain = findDomainByNativeId(selectedDomainId, colony);
 
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
+  const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
     !isForce && isVotingReputationEnabled
@@ -89,6 +109,8 @@ const EditDomainDialog = ({
             <EditDomainDialogForm
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
               colony={colony}
+              domainOptions={domainOptions}
+              enabledExtensionData={enabledExtensionData}
             />
           </Dialog>
         );

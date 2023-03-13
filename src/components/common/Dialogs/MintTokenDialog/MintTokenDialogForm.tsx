@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { defineMessages } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
 import { ColonyRole, Id } from '@colony/colony-js';
 
 import {
@@ -12,12 +11,10 @@ import {
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 import {
+  useActionDialogStatus,
   // useTransformer,
-  useDialogActionPermissions,
   // useAppContext,
-  useEnabledExtensions,
 } from '~hooks';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import NoPermissionMessage from '~shared/NoPermissionMessage';
@@ -49,13 +46,21 @@ const MSG = defineMessages({
   },
 });
 
-const MintTokenDialogForm = ({ colony, back }: ActionDialogProps) => {
-  const {
-    formState: { isValid, isSubmitting },
-    getValues,
-  } = useFormContext();
-  const values = getValues();
-  const requiredRoles: ColonyRole[] = [ColonyRole.Root];
+const requiredRoles: ColonyRole[] = [ColonyRole.Root];
+
+const MintTokenDialogForm = ({
+  colony,
+  back,
+  enabledExtensionData,
+}: ActionDialogProps) => {
+  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } =
+    useActionDialogStatus(
+      colony,
+      requiredRoles,
+      [Id.RootDomain],
+      enabledExtensionData,
+    );
+  // @TODO: Integrate those checks into another hook that uses useActionDialogStatus internally, when the data is made available.
   // const { wallet } = useAppContext();
   // const allUserRoles = useTransformer(getAllUserRoles, [
   //   colony,
@@ -63,22 +68,6 @@ const MintTokenDialogForm = ({ colony, back }: ActionDialogProps) => {
   // ]);
 
   // const canUserMintNativeToken = hasRoot(allUserRoles) && !!colony.status?.nativeToken?.mintable;
-
-  const { votingReputationVersion, isVotingReputationEnabled } =
-    useEnabledExtensions(colony);
-
-  const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony,
-    isVotingReputationEnabled,
-    requiredRoles,
-    [Id.RootDomain],
-  );
-
-  const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;
-
-  const cannotCreateMotion =
-    votingReputationVersion === noMotionsVotingReputationVersion &&
-    !values.forceAction;
 
   const formattingOptions = useMemo(
     () => ({
@@ -109,7 +98,7 @@ const MintTokenDialogForm = ({ colony, back }: ActionDialogProps) => {
               formattingOptions={formattingOptions}
               label={MSG.amountLabel}
               name="mintAmount"
-              disabled={inputDisabled}
+              disabled={disabledInput}
             />
           </div>
           <span
@@ -125,17 +114,17 @@ const MintTokenDialogForm = ({ colony, back }: ActionDialogProps) => {
           <Annotations
             label={MSG.annotationLabel}
             name="annotation"
-            disabled={inputDisabled}
+            disabled={disabledInput}
           />
         </div>
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <NoPermissionMessage requiredPermissions={[ColonyRole.Root]} />
+          <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
       {/* {onlyForceAction && <NotEnoughReputation />} */}
-      {cannotCreateMotion && (
+      {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>
@@ -143,7 +132,7 @@ const MintTokenDialogForm = ({ colony, back }: ActionDialogProps) => {
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}
-          disabled={cannotCreateMotion || !isValid || inputDisabled}
+          disabled={disabledSubmit}
           dataTest="mintConfirmButton"
         />
       </DialogSection>

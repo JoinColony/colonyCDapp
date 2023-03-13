@@ -1,6 +1,6 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { ColonyRole, Id } from '@colony/colony-js';
+import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import DialogSection from '~shared/Dialog/DialogSection';
@@ -16,15 +16,8 @@ import {
   DialogHeading,
 } from '~shared/Dialog';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-import {
-  useAppContext,
-  useDialogActionPermissions,
-  useTransformer,
-  useEnabledExtensions,
-} from '~hooks';
-import { getUserRolesForDomain } from '~redux/transformers';
-import { userHasRole } from '~utils/checks';
-import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
+
+import { useTransferFundsDialogStatus } from './helpers';
 
 import styles from './TransferFundsDialogForm.css';
 
@@ -45,49 +38,32 @@ const MSG = defineMessages({
   },
 });
 
-const TransferFundsDialogForm = ({ back, colony }: ActionDialogProps) => {
-  const { wallet } = useAppContext();
-  const {
-    getValues,
-    formState: { isSubmitting, isValid },
-  } = useFormContext();
-  const values = getValues();
+const requiredRoles: ColonyRole[] = [ColonyRole.Funding];
 
-  const { isVotingReputationEnabled, votingReputationVersion } =
-    useEnabledExtensions(colony);
+const TransferFundsDialogForm = ({
+  back,
+  colony,
+  enabledExtensionData,
+}: ActionDialogProps) => {
+  const { getValues } = useFormContext();
+  const { fromDomain: fromDomainId, toDomain: toDomainId } = getValues();
 
-  const fromDomainId = values.fromDomain ? values.fromDomain : Id.RootDomain;
   const colonyDomains = colony?.domains?.items || [];
   const fromDomain = colonyDomains.find(
     (domain) => domain?.nativeId === fromDomainId,
   );
-  const toDomainId = values.toDomain ? values.toDomain : undefined;
+
   const toDomain = colonyDomains.find(
     (domain) => domain?.nativeId === toDomainId,
   );
-
-  const fromDomainRoles = useTransformer(getUserRolesForDomain, [
-    colony,
-    wallet?.address,
-    fromDomainId,
-  ]);
-
-  const hasRoleInFromDomain = userHasRole(fromDomainRoles, ColonyRole.Funding);
-
-  const requiredRoles: ColonyRole[] = [ColonyRole.Funding];
-
-  const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony,
-    isVotingReputationEnabled,
-    requiredRoles,
-    [fromDomainId, toDomainId],
-  );
-
-  const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;
-
-  const cannotCreateMotion =
-    votingReputationVersion === noMotionsVotingReputationVersion &&
-    !values.forceAction;
+  const {
+    userHasPermission,
+    disabledInput,
+    disabledSubmit,
+    canCreateMotion,
+    canOnlyForceAction,
+    hasRoleInFromDomain,
+  } = useTransferFundsDialogStatus(colony, requiredRoles, enabledExtensionData);
 
   return (
     <>
@@ -105,17 +81,17 @@ const TransferFundsDialogForm = ({ back, colony }: ActionDialogProps) => {
         <DomainFundSelectorSection
           colony={colony}
           transferBetweenDomains
-          disabled={onlyForceAction}
+          disabled={canOnlyForceAction}
         />
       </DialogSection>
       <DialogSection>
-        <TokenAmountInput colony={colony} disabled={inputDisabled} />
+        <TokenAmountInput colony={colony} disabled={disabledInput} />
       </DialogSection>
       <DialogSection>
         <Annotations
           label={MSG.annotation}
           name="annotation"
-          disabled={inputDisabled}
+          disabled={disabledInput}
           dataTest="transferFundsAnnotation"
         />
       </DialogSection>
@@ -134,7 +110,7 @@ const TransferFundsDialogForm = ({ back, colony }: ActionDialogProps) => {
       {/* {onlyForceAction && (
         <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
       )} */}
-      {cannotCreateMotion && (
+      {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>
@@ -142,7 +118,7 @@ const TransferFundsDialogForm = ({ back, colony }: ActionDialogProps) => {
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}
-          disabled={cannotCreateMotion || !isValid || inputDisabled}
+          disabled={disabledSubmit}
           dataTest="transferFundsConfirmation"
         />
       </DialogSection>

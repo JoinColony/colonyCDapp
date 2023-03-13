@@ -6,7 +6,7 @@ import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, withKey, mapPayload } from '~utils/actions';
-import { WizardDialogType, useEnabledExtensions } from '~hooks';
+import { WizardDialogType } from '~hooks';
 
 import UnlockTokenForm from './UnlockTokenForm';
 import { getUnlockTokenDialogPayload } from './helpers';
@@ -32,11 +32,12 @@ const UnlockTokenDialog = ({
   close,
   callStep,
   prevStep,
+  enabledExtensionData,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
+  const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
     !isForce && isVotingReputationEnabled
@@ -75,6 +76,7 @@ const UnlockTokenDialog = ({
             <UnlockTokenForm
               colony={colony}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+              enabledExtensionData={enabledExtensionData}
             />
           </Dialog>
         );

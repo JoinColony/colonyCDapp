@@ -11,7 +11,7 @@ import { ActionTypes } from '~redux/index';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 import { getDomainOptions } from '~shared/DomainFundSelectorSection/helpers';
-import { WizardDialogType, useEnabledExtensions } from '~hooks';
+import { WizardDialogType } from '~hooks';
 
 import TransferFundsDialogForm from './TransferFundsDialogForm';
 import { getTransferFundsDialogPayload } from './helpers';
@@ -19,6 +19,10 @@ import { getTransferFundsDialogPayload } from './helpers';
 const displayName = 'common.TransferFundsDialog';
 
 const MSG = defineMessages({
+  requiredFieldError: {
+    id: `${displayName}.requiredFieldError`,
+    defaultMessage: 'Please enter a value',
+  },
   amountZero: {
     id: `${displayName}.amountZero`,
     defaultMessage: 'Amount must be greater than zero',
@@ -51,7 +55,7 @@ const validationSchema = object()
       .required()
       .test('same-domain', () => MSG.sameDomain, checkIfSameDomain),
     amount: string()
-      .required()
+      .required(() => MSG.requiredFieldError)
       .test(
         'more-than-zero',
         () => MSG.amountZero,
@@ -74,11 +78,12 @@ const TransferFundsDialog = ({
   prevStep,
   cancel,
   close,
+  enabledExtensionData,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
+  const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
     !isForce && isVotingReputationEnabled
@@ -127,6 +132,7 @@ const TransferFundsDialog = ({
             <TransferFundsDialogForm
               colony={colony}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+              enabledExtensionData={enabledExtensionData}
             />
           </Dialog>
         );

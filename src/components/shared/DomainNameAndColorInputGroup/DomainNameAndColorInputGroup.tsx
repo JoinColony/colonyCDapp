@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 
 import ColorSelect from '~shared/ColorSelect';
 
-import { HookFormInput as Input, Select } from '~shared/Fields';
+import { HookFormInput as Input, Select, SelectOption } from '~shared/Fields';
 
 import styles from './DomainNameAndColorInputGroup.css';
 
@@ -25,10 +25,7 @@ interface Props {
   disabled: boolean;
   isCreatingDomain?: boolean;
   onSelectDomainChange?: (val: any) => void;
-  domainOptions?: {
-    value: number;
-    label: string;
-  }[];
+  domainOptions?: SelectOption[];
 }
 
 const DomainNameAndColorInputGroup = ({

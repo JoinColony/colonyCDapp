@@ -1,7 +1,6 @@
 import React from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
 
 import {
   ActionDialogProps,
@@ -15,9 +14,7 @@ import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import DomainNameAndColorInputGroup from '~shared/DomainNameAndColorInputGroup';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
-
-import { useDialogActionPermissions, useEnabledExtensions } from '~hooks';
+import { useActionDialogStatus } from '~hooks';
 
 const displayName = 'common.CreateDomainDialog.CreateDomainDialogForm';
 
@@ -36,29 +33,20 @@ const MSG = defineMessages({
   },
 });
 
-const CreateDomainDialogForm = ({ back, colony }: ActionDialogProps) => {
-  const {
-    formState: { isValid, isSubmitting },
-    getValues,
-  } = useFormContext();
-  const values = getValues();
-  const { votingReputationVersion, isVotingReputationEnabled } =
-    useEnabledExtensions(colony);
+const requiredRoles: ColonyRole[] = [ColonyRole.Architecture];
 
-  const requiredRoles: ColonyRole[] = [ColonyRole.Architecture];
-  const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony,
-    isVotingReputationEnabled,
-    requiredRoles,
-    [Id.RootDomain],
-  );
-
-  const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;
-
-  const cannotCreateMotion =
-    votingReputationVersion === noMotionsVotingReputationVersion &&
-    !values.forceAction;
-
+const CreateDomainDialogForm = ({
+  back,
+  colony,
+  enabledExtensionData,
+}: ActionDialogProps) => {
+  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } =
+    useActionDialogStatus(
+      colony,
+      requiredRoles,
+      [Id.RootDomain],
+      enabledExtensionData,
+    );
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -66,13 +54,13 @@ const CreateDomainDialogForm = ({ back, colony }: ActionDialogProps) => {
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
-          <PermissionRequiredInfo requiredRoles={[ColonyRole.Architecture]} />
+          <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
       )}
       <DialogSection>
         <DomainNameAndColorInputGroup
           isCreatingDomain
-          disabled={inputDisabled}
+          disabled={disabledInput}
         />
       </DialogSection>
       <DialogSection>
@@ -80,7 +68,7 @@ const CreateDomainDialogForm = ({ back, colony }: ActionDialogProps) => {
           label={MSG.purpose}
           name="domainPurpose"
           appearance={{ colorSchema: 'grey', theme: 'fat' }}
-          disabled={inputDisabled}
+          disabled={disabledInput}
           maxLength={90}
           dataTest="domainPurposeInput"
         />
@@ -89,14 +77,14 @@ const CreateDomainDialogForm = ({ back, colony }: ActionDialogProps) => {
         <Annotations
           label={MSG.annotation}
           name="annotationMessage"
-          disabled={inputDisabled}
+          disabled={disabledInput}
           dataTest="createDomainAnnotation"
         />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage
-            requiredPermissions={[ColonyRole.Architecture]}
+            requiredPermissions={requiredRoles}
             domainName="Root"
           />
         </DialogSection>
@@ -104,7 +92,7 @@ const CreateDomainDialogForm = ({ back, colony }: ActionDialogProps) => {
       {/* {onlyForceAction && (
         <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
       )} */}
-      {cannotCreateMotion && (
+      {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>
@@ -112,7 +100,7 @@ const CreateDomainDialogForm = ({ back, colony }: ActionDialogProps) => {
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}
-          disabled={inputDisabled || !isValid}
+          disabled={disabledSubmit}
           dataTest="createDomainConfirmButton"
         />
       </DialogSection>

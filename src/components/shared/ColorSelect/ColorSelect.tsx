@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, ReactNode, ComponentProps } from 'react';
+import React, { useCallback, useMemo, ReactNode } from 'react';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
@@ -57,7 +57,7 @@ const ColorSelect = ({
     return <ColorTag color={activeOption} />;
   }, [activeOption]);
 
-  const options = useMemo<ComponentProps<typeof Select>['options']>(
+  const options = useMemo<SelectOption[]>(
     () =>
       Object.values(DomainColor).map((color) => {
         return {

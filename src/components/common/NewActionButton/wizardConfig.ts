@@ -1,3 +1,4 @@
+import { EnabledExtensionData } from '~hooks/useEnabledExtensions';
 import { Colony } from '~types';
 import {
   ColonyActionsDialog,
@@ -24,6 +25,7 @@ import {
 export const getWizardFlowConfig = (
   colony: Colony | undefined,
   filteredDomainId: number,
+  enabledExtensionData: EnabledExtensionData,
 ) => [
   {
     component: ColonyActionsDialog,
@@ -41,6 +43,7 @@ export const getWizardFlowConfig = (
       nextStep: 'common.CreatePaymentDialog',
       prevStep: 'common.ColonyActionsDialog',
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -49,6 +52,7 @@ export const getWizardFlowConfig = (
       prevStep: 'common.ManageExpenditureDialog',
       filteredDomainId,
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -60,6 +64,7 @@ export const getWizardFlowConfig = (
       nextStepUnlockToken: 'common.UnlockTokenDialog',
       prevStep: 'common.ColonyActionsDialog',
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -67,6 +72,7 @@ export const getWizardFlowConfig = (
     props: {
       prevStep: 'common.ManageFundsDialog',
       colony,
+      enabledExtensionData,
       filteredDomainId,
     },
   },
@@ -75,6 +81,7 @@ export const getWizardFlowConfig = (
     props: {
       prevStep: 'common.ManageFundsDialog',
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -85,6 +92,7 @@ export const getWizardFlowConfig = (
       nextStepEdit: 'common.EditDomainDialog',
       nextStepManageWhitelist: 'common.ManageWhitelistDialog',
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -92,6 +100,7 @@ export const getWizardFlowConfig = (
     props: {
       prevStep: 'common.ManageDomainsDialog',
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -100,6 +109,7 @@ export const getWizardFlowConfig = (
       prevStep: 'common.ManageDomainsDialog',
       filteredDomainId,
       colony,
+      enabledExtensionData,
     },
   },
   // {
@@ -172,6 +182,7 @@ export const getWizardFlowConfig = (
     props: {
       prevStep: 'common.ManageFundsDialog',
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -179,6 +190,7 @@ export const getWizardFlowConfig = (
     props: {
       prevStep: 'common.ManageFundsDialog',
       colony,
+      enabledExtensionData,
     },
   },
 ];

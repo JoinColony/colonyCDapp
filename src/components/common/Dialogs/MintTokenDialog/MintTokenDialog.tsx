@@ -9,7 +9,7 @@ import { ActionHookForm as Form } from '~shared/Fields';
 
 import { ActionTypes } from '~redux/index';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
-import { WizardDialogType, useEnabledExtensions } from '~hooks';
+import { WizardDialogType } from '~hooks';
 
 import MintTokenDialogForm from './MintTokenDialogForm';
 import { getMintTokenDialogPayload } from './helpers';
@@ -56,11 +56,12 @@ const MintTokenDialog = ({
   close,
   callStep,
   prevStep,
+  enabledExtensionData,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
+  const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
     !isForce && isVotingReputationEnabled
@@ -99,6 +100,7 @@ const MintTokenDialog = ({
             <MintTokenDialogForm
               colony={colony}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+              enabledExtensionData={enabledExtensionData}
             />
           </Dialog>
         );

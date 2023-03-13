@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { defineMessages, MessageDescriptor } from 'react-intl';
+import React from 'react';
+import { defineMessages, FormattedMessage } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 import { isConfusing } from '@colony/unicode-confusables-noascii';
 import { useFormContext } from 'react-hook-form';
@@ -19,13 +19,12 @@ import SingleUserPicker, {
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import DomainFundSelectorSection from '~shared/DomainFundSelectorSection';
 import TokenAmountInput from '~shared/TokenAmountInput';
-import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
 
 import { ColonyWatcher } from '~types';
 
-import { useDialogActionPermissions, useEnabledExtensions } from '~hooks';
+import { useCreatePaymentDialogStatus } from './helpers';
 
 import styles from './CreatePaymentDialogForm.css';
 
@@ -65,56 +64,34 @@ interface Props extends ActionDialogProps {
   // showWhitelistWarning: boolean;
 }
 
+const requiredRoles: ColonyRole[] = [
+  ColonyRole.Funding,
+  ColonyRole.Administration,
+];
+
 const CreatePaymentDialogForm = ({
   back,
   verifiedUsers,
   colony,
+  enabledExtensionData,
 }: // showWhitelistWarning,
 Props) => {
-  const {
-    getValues,
-    formState: { isSubmitting, isValid },
-  } = useFormContext();
+  const { getValues } = useFormContext();
   const values = getValues();
 
-  /*
-   * Custom error state tracking
-   */
-  const [customAmountError] = useState<
-    // setCustomAmountError
-    MessageDescriptor | string | undefined
-  >(undefined);
-
   const {
-    isOneTxPaymentEnabled,
-    votingReputationVersion,
-    isVotingReputationEnabled,
-  } = useEnabledExtensions(colony);
-
-  const requiredRoles: ColonyRole[] = [
-    ColonyRole.Funding,
-    ColonyRole.Administration,
-  ];
-
-  const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony,
-    isVotingReputationEnabled,
-    requiredRoles,
-    [values.fromDomain],
-  );
-
-  const cannotCreateMotion =
-    votingReputationVersion === noMotionsVotingReputationVersion &&
-    !values.forceAction;
-
-  const canMakePayment = userHasPermission && isOneTxPaymentEnabled;
-
-  const inputDisabled = !canMakePayment || onlyForceAction || isSubmitting;
+    userHasPermission,
+    disabledSubmit,
+    disabledInput,
+    canCreateMotion,
+    canCreatePayment,
+  } = useCreatePaymentDialogStatus(colony, requiredRoles, enabledExtensionData);
 
   const formattedData = verifiedUsers.map((user) => ({
     ...user,
     id: user.walletAddress,
   }));
+
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -126,7 +103,10 @@ Props) => {
         </DialogSection>
       )}
       <DialogSection>
-        <DomainFundSelectorSection colony={colony} />
+        <DomainFundSelectorSection
+          colony={colony}
+          disabled={!canCreatePayment}
+        />
       </DialogSection>
       <DialogSection>
         <div className={styles.singleUserContainer}>
@@ -136,7 +116,7 @@ Props) => {
             label={MSG.to}
             name="recipient"
             filter={filterUserSelection}
-            disabled={inputDisabled}
+            disabled={disabledInput}
             placeholder={MSG.userPickerPlaceholder}
             dataTest="paymentRecipientPicker"
             itemDataTest="paymentRecipientItem"
@@ -169,24 +149,26 @@ Props) => {
           )}
       </DialogSection>
       <DialogSection>
-        <TokenAmountInput colony={colony} disabled={inputDisabled} />
+        <TokenAmountInput colony={colony} disabled={disabledInput} />
       </DialogSection>
       <DialogSection>
         <Annotations
           label={MSG.annotation}
           name="annotation"
-          disabled={inputDisabled}
+          disabled={disabledInput}
           dataTest="paymentAnnotation"
         />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <NoPermissionMessage
-            requiredPermissions={[
-              ColonyRole.Administration,
-              ColonyRole.Funding,
-            ]}
-          />
+          <NoPermissionMessage requiredPermissions={requiredRoles} />
+        </DialogSection>
+      )}
+      {userHasPermission && !canCreatePayment && (
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <div className={styles.noOneTxExtension}>
+            <FormattedMessage {...MSG.noOneTxExtension} />
+          </div>
         </DialogSection>
       )}
       {/* {onlyForceAction && (
@@ -195,7 +177,7 @@ Props) => {
           domainId={domainId}
         />
       )} */}
-      {cannotCreateMotion && (
+      {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>
@@ -203,12 +185,7 @@ Props) => {
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}
-          disabled={
-            cannotCreateMotion ||
-            !isValid ||
-            !!customAmountError ||
-            inputDisabled
-          }
+          disabled={disabledSubmit}
           dataTest="paymentConfirmButton"
         />
       </DialogSection>

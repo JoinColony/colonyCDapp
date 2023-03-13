@@ -45,13 +45,14 @@ interface Props {
 
 const NewActionButton = ({ filteredDomainId }: Props) => {
   const { colony } = useColonyContext();
-  const { user } = useAppContext();
+  const { user, walletConnecting } = useAppContext();
 
   // const { version: networkVersion } = useNetworkContracts();
 
   // const [isLoadingUser, setIsLoadingUser] = useState<boolean>(!ethereal);
 
-  const { loading } = useEnabledExtensions(colony);
+  const enabledExtensionData = useEnabledExtensions();
+  const { loading: loadingExtensions } = enabledExtensionData;
 
   // const { data } = useColonyExtensionsQuery({
   //   variables: { address: colony.colonyAddress },
@@ -67,7 +68,7 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
   // });
 
   const startWizardFlow = useNaiveBranchingDialogWizard(
-    getWizardFlowConfig(colony, filteredDomainId),
+    getWizardFlowConfig(colony, filteredDomainId, enabledExtensionData),
   );
 
   // const oneTxPaymentExtension = data?.processedColony?.installedExtensions.find(
@@ -79,7 +80,7 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
   // const mustUpgradeOneTx = oneTxMustBeUpgraded(oneTxPaymentExtension);
   const hasRegisteredProfile = !!user?.name && !!user.walletAddress;
   // const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
-  const isLoadingData = loading; // || isLoadingUser;
+  const isLoadingData = loadingExtensions || !!walletConnecting;
 
   if (!colony) {
     return null;

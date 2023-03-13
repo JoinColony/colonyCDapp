@@ -9,11 +9,11 @@ import { ActionHookForm as Form } from '~shared/Fields';
 
 import { DomainColor } from '~types';
 import { ActionTypes } from '~redux/index';
-import { WizardDialogType, useEnabledExtensions } from '~hooks';
+import { WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 
-import CreateDomainDialogForm from './CreateDomainDialogForm';
 import { getCreateDomainDialogPayload } from './helpers';
+import CreateDomainDialogForm from './CreateDomainDialogForm';
 
 type Props = DialogProps & WizardDialogType<object> & ActionDialogProps;
 
@@ -46,11 +46,12 @@ const CreateDomainDialog = ({
   cancel,
   close,
   colony,
+  enabledExtensionData,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
+  const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
     !isForce && isVotingReputationEnabled
@@ -87,6 +88,7 @@ const CreateDomainDialog = ({
             <CreateDomainDialogForm
               back={prevStep ? () => callStep(prevStep) : undefined}
               colony={colony}
+              enabledExtensionData={enabledExtensionData}
             />
           </Dialog>
         );

@@ -26,7 +26,11 @@ export {
 export { default as useAvatarDisplayCounter } from './useAvatarDisplayCounter';
 export { default as useColonyReputation } from './useColonyReputation';
 export { default as useDialogActionPermissions } from './useDialogActionPermissions';
-export { default as useEnabledExtensions } from './useEnabledExtensions';
+export { default as useActionDialogStatus } from './useActionDialogStatus';
+export {
+  default as useEnabledExtensions,
+  EnabledExtensionData,
+} from './useEnabledExtensions';
 export { default as useSelectedUser } from './useSelectedUser';
 export { default as useSplitTime } from './useSplitTime';
 export { default as useTitle } from './useTitle';

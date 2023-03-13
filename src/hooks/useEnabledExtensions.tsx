@@ -1,11 +1,16 @@
 import { Extension } from '@colony/colony-js';
 
-import { Colony } from '~types';
-
 import useExtensionsData from './useExtensionsData';
 
-const useEnabledExtensions = (colony: Colony | undefined) => {
-  const { installedExtensionsData, loading } = useExtensionsData(colony);
+export interface EnabledExtensionData {
+  loading: boolean;
+  isOneTxPaymentEnabled: boolean;
+  isVotingReputationEnabled: boolean;
+  votingReputationVersion: number | undefined;
+}
+
+const useEnabledExtensions = (): EnabledExtensionData => {
+  const { installedExtensionsData, loading } = useExtensionsData();
 
   const oneTxPaymentExtension = installedExtensionsData.find(
     (extension) => extension.extensionId === Extension.OneTxPayment,

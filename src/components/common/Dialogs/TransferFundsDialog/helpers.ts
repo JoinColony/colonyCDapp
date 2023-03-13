@@ -1,7 +1,17 @@
+import { ColonyRole } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
+import { useFormContext } from 'react-hook-form';
 
+import {
+  useActionDialogStatus,
+  useAppContext,
+  useTransformer,
+  EnabledExtensionData,
+} from '~hooks';
+import { getUserRolesForDomain } from '~redux/transformers';
 import { Colony } from '~types';
+import { userHasRole } from '~utils/checks';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 export const getTransferFundsDialogPayload = (
@@ -32,5 +42,43 @@ export const getTransferFundsDialogPayload = (
     amount,
     tokenAddress,
     annotationMessage,
+  };
+};
+
+export const useTransferFundsDialogStatus = (
+  colony: Colony,
+  requiredRoles: ColonyRole[],
+  enabledExtensionData: EnabledExtensionData,
+) => {
+  const { wallet } = useAppContext();
+  const { getValues } = useFormContext();
+  const { fromDomain: fromDomainId, toDomain: toDomainId } = getValues();
+  const fromDomainRoles = useTransformer(getUserRolesForDomain, [
+    colony,
+    wallet?.address,
+    fromDomainId,
+  ]);
+  const {
+    userHasPermission,
+    disabledSubmit,
+    disabledInput,
+    canCreateMotion,
+    canOnlyForceAction,
+  } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [fromDomainId, toDomainId],
+    enabledExtensionData,
+  );
+
+  const hasRoleInFromDomain = userHasRole(fromDomainRoles, ColonyRole.Funding);
+
+  return {
+    userHasPermission,
+    disabledInput,
+    disabledSubmit,
+    canCreateMotion,
+    canOnlyForceAction,
+    hasRoleInFromDomain,
   };
 };

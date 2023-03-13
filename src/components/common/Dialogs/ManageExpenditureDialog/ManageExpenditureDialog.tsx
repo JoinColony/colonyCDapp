@@ -4,12 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import {
-  WizardDialogType,
-  useTransformer,
-  useAppContext,
-  useEnabledExtensions,
-} from '~hooks';
+import { WizardDialogType, useTransformer, useAppContext } from '~hooks';
 import { getAllUserRoles } from '~redux/transformers';
 import { canAdminister, canFund } from '~utils/checks';
 
@@ -75,10 +70,11 @@ const ManageExpenditureDialog = ({
   prevStep,
   colony,
   nextStep,
+  enabledExtensionData,
 }: Props) => {
   const { wallet, user } = useAppContext();
   const { isVotingReputationEnabled, isOneTxPaymentEnabled } =
-    useEnabledExtensions(colony);
+    enabledExtensionData;
 
   const allUserRoles = useTransformer(getAllUserRoles, [
     colony,

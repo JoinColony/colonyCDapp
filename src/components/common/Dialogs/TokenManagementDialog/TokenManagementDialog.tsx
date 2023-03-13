@@ -9,8 +9,9 @@ import { ActionHookForm as Form } from '~shared/Fields';
 
 import { ActionTypes } from '~redux/index';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
-import { WizardDialogType, useEnabledExtensions } from '~hooks';
+import { WizardDialogType } from '~hooks';
 import { formatText } from '~utils/intl';
+
 import { getTokenManagementDialogPayload } from './helpers';
 
 const displayName = 'common.TokenManagementDialog';
@@ -43,12 +44,13 @@ const TokenManagementDialog = ({
   close,
   callStep,
   prevStep,
+  enabledExtensionData,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
   const colonyTokens = colony?.tokens?.items || [];
 
-  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
+  const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
     !isForce && isVotingReputationEnabled
@@ -98,6 +100,7 @@ const TokenManagementDialog = ({
               colony={colony}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
               close={close}
+              enabledExtensionData={enabledExtensionData}
             />
           </Dialog>
         );

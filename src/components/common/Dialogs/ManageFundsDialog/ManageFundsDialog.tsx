@@ -4,12 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import {
-  WizardDialogType,
-  useTransformer,
-  useAppContext,
-  useEnabledExtensions,
-} from '~hooks';
+import { WizardDialogType, useTransformer, useAppContext } from '~hooks';
 
 import { getAllUserRoles } from '~redux/transformers';
 import { hasRoot } from '~utils/checks'; // canFund
@@ -110,6 +105,7 @@ const ManageFundsDialog = ({
   nextStepMintTokens,
   nextStepManageTokens,
   nextStepUnlockToken,
+  enabledExtensionData,
 }: Props) => {
   const { wallet } = useAppContext();
 
@@ -118,7 +114,7 @@ const ManageFundsDialog = ({
     wallet?.address,
   ]);
 
-  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
+  const { isVotingReputationEnabled } = enabledExtensionData;
 
   // const canMoveFunds = canFund(allUserRoles);
   // const canUserMintNativeToken = isVotingReputationEnabled

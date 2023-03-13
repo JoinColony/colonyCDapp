@@ -19,13 +19,7 @@ import { TokenSelector } from '~common/CreateColonyWizard';
 import { TokenManagementDialogFormValues } from '~common/Dialogs';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
-import {
-  useTransformer,
-  useAppContext,
-  useDialogActionPermissions,
-} from '~hooks';
-import { getAllUserRoles } from '~redux/transformers';
-import { hasRoot } from '~utils/checks';
+import { useActionDialogStatus } from '~hooks';
 import { isEqual } from '~utils/lodash';
 
 import TokenItem from './TokenItem';
@@ -67,19 +61,24 @@ interface Props extends ActionDialogProps {
   close: (val: any) => void;
 }
 
+const requiredRoles: ColonyRole[] = [ColonyRole.Root];
+
 const TokenEditDialog = ({
   close,
   colony,
   colony: { tokens, nativeToken },
   back,
-}: // isVotingExtensionEnabled,
-Props) => {
-  const { user, wallet } = useAppContext();
-  const {
-    getValues,
-    formState: { isValid, isSubmitting },
-  } = useFormContext();
+  enabledExtensionData,
+}: Props) => {
+  const { getValues } = useFormContext();
   const values = getValues();
+  const { userHasPermission, disabledInput, disabledSubmit } =
+    useActionDialogStatus(
+      colony,
+      requiredRoles,
+      [Id.RootDomain],
+      enabledExtensionData,
+    );
   const tokenList = getTokenList();
   const colonyTokens = tokens?.items || [];
   const colonyTokenAddresses = colonyTokens.map(
@@ -96,24 +95,7 @@ Props) => {
       selectedTokenAddresses?.sort(),
     );
 
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
-  ]);
-
-  const canEditTokens = !!(user?.name && hasRoot(allUserRoles));
-  const requiredRoles: ColonyRole[] = [ColonyRole.Root];
-
-  const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony,
-    false, // isVotingExtensionEnabled,
-    requiredRoles,
-    [Id.RootDomain],
-  );
-
-  const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;
-
-  const allTokens = [...colonyTokens, ...(canEditTokens ? tokenList : [])]
+  const allTokens = [...colonyTokens, ...(userHasPermission ? tokenList : [])]
     .map((token) => token?.token)
     .filter(
       (firstToken, index, mergedTokens) =>
@@ -144,7 +126,7 @@ Props) => {
                     key={token.tokenAddress}
                     token={token}
                     disabled={
-                      inputDisabled ||
+                      disabledInput ||
                       token.tokenAddress === nativeToken.tokenAddress ||
                       token.tokenAddress === AddressZero
                     }
@@ -163,13 +145,13 @@ Props) => {
         <TokenSelector
           label={MSG.fieldLabel}
           appearance={{ colorSchema: 'grey', theme: 'fat' }}
-          disabled={inputDisabled}
+          disabled={disabledInput}
         />
         <div className={styles.textarea}>
           <Annotations
             label={MSG.textareaLabel}
             name="annotationMessage"
-            disabled={inputDisabled}
+            disabled={disabledInput}
           />
         </div>
       </DialogSection>
@@ -187,7 +169,7 @@ Props) => {
           secondaryButtonText={{
             id: back === undefined ? 'button.cancel' : 'button.back',
           }}
-          disabled={!isValid || inputDisabled || !hasTokensListChanged(values)}
+          disabled={disabledSubmit || !hasTokensListChanged(values)}
           dataTest="confirm"
         />
       </DialogSection>

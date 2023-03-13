@@ -1,4 +1,4 @@
-import React, { ComponentProps, ReactNode, useCallback, useMemo } from 'react';
+import React, { ReactNode, useCallback, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { HookFormSelect as Select, SelectOption } from '~shared/Fields';
@@ -85,7 +85,7 @@ const DomainDropdown = ({
     [onDomainChange],
   );
 
-  const options = useMemo<ComponentProps<typeof Select>['options']>(() => {
+  const options = useMemo<SelectOption[]>(() => {
     const allDomainsOption: SelectOption = {
       children: (
         <DomainDropdownItem

@@ -1,12 +1,7 @@
-import { Id } from '@colony/colony-js';
-
 import { Domain } from '~types';
 import { sortBy } from '~utils/lodash';
 
-export const getDomainOptions = (
-  colonyDomains: Domain[],
-  skipRootDomain?: boolean,
-) =>
+export const getDomainOptions = (colonyDomains: Domain[]) =>
   sortBy(
     colonyDomains.map((domain) => ({
       value: domain?.nativeId || '',

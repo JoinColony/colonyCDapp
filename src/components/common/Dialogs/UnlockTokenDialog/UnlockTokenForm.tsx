@@ -1,5 +1,4 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { ColonyRole, Id } from '@colony/colony-js';
@@ -15,17 +14,9 @@ import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import NoPermissionMessage from '~shared/NoPermissionMessage';
 import { Annotations } from '~shared/Fields';
 import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
-import { getAllUserRoles } from '~redux/transformers';
-import { hasRoot } from '~utils/checks';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
-import {
-  useTransformer,
-  useDialogActionPermissions,
-  useAppContext,
-  useEnabledExtensions,
-} from '~hooks';
+import { useActionDialogStatus } from '~hooks';
 
 import { TOKEN_UNLOCK_INFO } from '~constants/externalUrls';
 
@@ -63,37 +54,23 @@ const MSG = defineMessages({
   },
 });
 
-const UnlockTokenForm = ({ colony, back }: ActionDialogProps) => {
-  const { wallet } = useAppContext();
-  const {
-    formState: { isValid },
-    getValues,
-  } = useFormContext();
-  const values = getValues();
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
-  ]);
+const requiredRoles: ColonyRole[] = [ColonyRole.Root];
+
+const UnlockTokenForm = ({
+  colony,
+  back,
+  enabledExtensionData,
+}: ActionDialogProps) => {
+  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } =
+    useActionDialogStatus(
+      colony,
+      requiredRoles,
+      [Id.RootDomain],
+      enabledExtensionData,
+    );
+  // @TODO: Integrate those checks into another hook that uses useActionDialogStatus internally, when the data is made available.
   // const isNativeTokenLocked = !!colony?.nativeToken?.unlocked;
-  const hasRootPermission = hasRoot(allUserRoles);
   // const canUserUnlockNativeToken = hasRootPermission && status?.nativeToken?.unlockable && isNativeTokenLocked;
-  const requiredRoles: ColonyRole[] = [ColonyRole.Root];
-
-  const { votingReputationVersion, isVotingReputationEnabled } =
-    useEnabledExtensions(colony);
-
-  const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony,
-    isVotingReputationEnabled,
-    requiredRoles,
-    [Id.RootDomain],
-  );
-
-  const inputDisabled = !userHasPermission || onlyForceAction; // || isNativeTokenLocked;
-
-  const cannotCreateMotion =
-    votingReputationVersion === noMotionsVotingReputationVersion &&
-    !values.forceAction;
 
   return (
     <>
@@ -132,19 +109,19 @@ const UnlockTokenForm = ({ colony, back }: ActionDialogProps) => {
             <Annotations
               label={MSG.annotation}
               name="annotationMessage"
-              disabled={inputDisabled}
+              disabled={disabledInput}
               dataTest="unlockTokenAnnotation"
             />
           </DialogSection>
         </>
       )}
-      {!(hasRootPermission || isVotingReputationEnabled) && ( // && isNativeTokenLocked &&
+      {!userHasPermission && ( // && isNativeTokenLocked
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage requiredPermissions={[ColonyRole.Root]} />
         </DialogSection>
       )}
       {/* {onlyForceAction && isNativeTokenLocked && <NotEnoughReputation />} */}
-      {cannotCreateMotion && (
+      {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>
@@ -152,7 +129,7 @@ const UnlockTokenForm = ({ colony, back }: ActionDialogProps) => {
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}
-          disabled={cannotCreateMotion || !isValid || inputDisabled}
+          disabled={disabledSubmit}
           dataTest="unlockTokenConfirmButton"
         />
       </DialogSection>

@@ -9,19 +9,21 @@ import {
   DialogHeading,
   DialogSection,
 } from '~shared/Dialog';
-import { HookFormInput as Input, Annotations } from '~shared/Fields';
-import { getDomainOptions } from '~shared/DomainFundSelectorSection/helpers';
+import {
+  HookFormInput as Input,
+  Annotations,
+  SelectOption,
+} from '~shared/Fields';
 import NoPermissionMessage from '~shared/NoPermissionMessage';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import DomainNameAndColorInputGroup from '~shared/DomainNameAndColorInputGroup';
 import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
-import { useDialogActionPermissions, useEnabledExtensions } from '~hooks';
 import { DomainColor } from '~gql';
-import { notNull } from '~utils/arrays';
 import { findDomainByNativeId } from '~utils/domains';
-import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
+
+import { useEditDomainDialogStatus } from './helpers';
 
 const displayName = 'common.EditDomainDialog.EditDomainDialogForm';
 
@@ -48,38 +50,22 @@ const MSG = defineMessages({
   },
 });
 
+const requiredRoles: ColonyRole[] = [ColonyRole.Architecture];
+
+interface Props extends ActionDialogProps {
+  domainOptions: SelectOption[];
+}
+
 const EditDomainDialogForm = ({
   back,
   colony,
-  colony: { domains },
-}: ActionDialogProps) => {
-  const {
-    getValues,
-    formState: { isValid, isSubmitting, dirtyFields },
-    reset: resetForm,
-  } = useFormContext();
-  const { domainId, domainName, domainPurpose, forceAction } = getValues();
-
-  const colonyDomains = domains?.items.filter(notNull) || [];
-  const domainOptions = getDomainOptions(colonyDomains, true);
-
-  const { votingReputationVersion, isVotingReputationEnabled } =
-    useEnabledExtensions(colony);
-
-  const requiredRoles: ColonyRole[] = [ColonyRole.Architecture];
-  const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony,
-    isVotingReputationEnabled,
-    requiredRoles,
-    [domainId],
-    domainId,
-  );
-
-  const inputDisabled =
-    !userHasPermission ||
-    onlyForceAction ||
-    isSubmitting ||
-    domainOptions.length === 0;
+  domainOptions,
+  enabledExtensionData,
+}: Props) => {
+  const { getValues, reset: resetForm } = useFormContext();
+  const { domainName, domainPurpose, forceAction } = getValues();
+  const { userHasPermission, disabledSubmit, disabledInput, canCreateMotion } =
+    useEditDomainDialogStatus(colony, requiredRoles, enabledExtensionData);
 
   const handleDomainChange = (selectedDomainValue: number) => {
     const selectedDomain = findDomainByNativeId(selectedDomainValue, colony);
@@ -105,14 +91,6 @@ const EditDomainDialogForm = ({
     return null;
   };
 
-  const cannotCreateMotion =
-    votingReputationVersion === noMotionsVotingReputationVersion &&
-    !forceAction;
-  const hasEditedDomain =
-    dirtyFields.domainColor ||
-    dirtyFields.domainName ||
-    dirtyFields.domainPurpose;
-
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -125,7 +103,7 @@ const EditDomainDialogForm = ({
       )}
       <DialogSection>
         <DomainNameAndColorInputGroup
-          disabled={inputDisabled}
+          disabled={disabledInput}
           domainOptions={domainOptions}
           onSelectDomainChange={handleDomainChange}
         />
@@ -136,7 +114,7 @@ const EditDomainDialogForm = ({
           name="domainName"
           value={domainName || ''}
           appearance={{ colorSchema: 'grey', theme: 'fat' }}
-          disabled={inputDisabled}
+          disabled={disabledInput}
           maxLength={20}
           dataTest="domainNameInput"
         />
@@ -147,7 +125,7 @@ const EditDomainDialogForm = ({
           name="domainPurpose"
           value={domainPurpose || ''}
           appearance={{ colorSchema: 'grey', theme: 'fat' }}
-          disabled={inputDisabled}
+          disabled={disabledInput}
           maxLength={90}
           dataTest="domainPurposeInput"
         />
@@ -156,7 +134,7 @@ const EditDomainDialogForm = ({
         <Annotations
           label={MSG.annotation}
           name="annotationMessage"
-          disabled={inputDisabled}
+          disabled={disabledInput}
           dataTest="editDomainAnnotation"
         />
       </DialogSection>
@@ -174,7 +152,7 @@ const EditDomainDialogForm = ({
           domainId={Number(domainId)}
         />
       )} */}
-      {cannotCreateMotion && (
+      {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>
@@ -182,9 +160,7 @@ const EditDomainDialogForm = ({
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}
-          disabled={
-            cannotCreateMotion || inputDisabled || !isValid || !hasEditedDomain
-          }
+          disabled={disabledSubmit}
           dataTest="editDomainConfirmButton"
         />
       </DialogSection>

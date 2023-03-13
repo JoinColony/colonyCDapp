@@ -4,12 +4,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import {
-  WizardDialogType,
-  useTransformer,
-  useAppContext,
-  useEnabledExtensions,
-} from '~hooks';
+import { WizardDialogType, useTransformer, useAppContext } from '~hooks';
 import { getAllUserRoles } from '~redux/transformers';
 import { canArchitect, hasRoot } from '~utils/checks';
 
@@ -78,6 +73,7 @@ const ManageDomainsDialog = ({
   nextStepEdit,
   nextStepManageWhitelist,
   colony,
+  enabledExtensionData,
 }: Props) => {
   const { wallet, user } = useAppContext();
 
@@ -90,7 +86,7 @@ const ManageDomainsDialog = ({
   const canCreateEditDomain =
     hasRegisteredProfile && canArchitect(allUserRoles);
 
-  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
+  const { isVotingReputationEnabled } = enabledExtensionData;
 
   const items = [
     {
