@@ -117,7 +117,6 @@ const getDetailItems = (
   // const isSmiteAction =
   //   actionType === ColonyActions.EmitDomainReputationPenalty;
 
-  const colonyName = colony.name;
   return [
     {
       label: MSG.actionType,
@@ -210,7 +209,7 @@ const getDetailItems = (
     {
       label: MSG.colonyName,
       labelValues: undefined,
-      item: detailsForAction.Name && colonyName,
+      item: detailsForAction.Name && colony.metadata?.displayName,
     },
     {
       label: MSG.transactionHash,
