@@ -79,7 +79,7 @@ function* createVersionUpgradeAction({
 
     yield takeFrom(upgrade.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    // /* need to check for annotaiton message here again because there is a TS error when pushing */
+    // /* need to check for annotation message here again because there is a TS error when pushing */
     // if (annotationMessage && supportAnnotation) {
     //   yield put(transactionPending(annotateUpgrade.id));
 
