@@ -11,8 +11,8 @@ import UnclaimedTransfers from '~common/UnclaimedTransfers';
 import ColonyHomeInfo from '~common/ColonyHome/ColonyHomeInfo';
 import ColonyDomainSelector from '~common/ColonyHome/ColonyDomainSelector';
 import { useColonyContext, useMobile } from '~hooks';
-import { ColonyTokens } from '~gql';
 import { formatText } from '~utils/intl';
+import { notNull } from '~utils/arrays';
 
 import styles from './ColonyFunding.css';
 
@@ -112,7 +112,9 @@ const ColonyFunding = () => {
           <UnclaimedTransfers />
           <TokenCardList
             appearance={{ numCols: '3' }}
-            tokens={tokens?.items as unknown as ColonyTokens[]}
+            tokens={
+              tokens?.items.filter(notNull).map((token) => token.token) ?? []
+            }
             domainId={selectedDomainId}
           />
         </div>
