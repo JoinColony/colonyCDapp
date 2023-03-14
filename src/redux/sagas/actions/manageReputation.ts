@@ -17,7 +17,7 @@ function* manageReputationAction({
     colonyAddress,
     colonyName,
     domainId,
-    userAddress,
+    walletAddress,
     amount,
     isSmitingReputation,
     /* annotationMessage */
@@ -31,7 +31,7 @@ function* manageReputationAction({
       ? 'emitDomainReputationPenalty'
       : 'emitDomainReputationReward';
 
-    if (!userAddress) {
+    if (!walletAddress) {
       throw new Error(`User address not set for ${batchKey} transaction`);
     }
 
@@ -67,7 +67,7 @@ function* manageReputationAction({
         ? 'emitDomainReputationPenaltyWithProofs'
         : 'emitDomainReputationReward',
       identifier: colonyAddress,
-      params: [domainId, userAddress, amount],
+      params: [domainId, walletAddress, amount],
       ready: false,
     });
 
@@ -129,7 +129,7 @@ function* manageReputationAction({
     /*
      * Refesh the user & colony reputation
      */
-    yield fork(updateDomainReputation, colonyAddress, userAddress, domainId);
+    yield fork(updateDomainReputation, colonyAddress, walletAddress, domainId);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS,
