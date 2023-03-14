@@ -249,10 +249,10 @@ export type ColonyActionsActionTypes =
         isSmitingReputation?: boolean;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_MANAGE_REPUTATION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >;
