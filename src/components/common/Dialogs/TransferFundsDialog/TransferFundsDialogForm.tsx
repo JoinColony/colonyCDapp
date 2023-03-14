@@ -149,8 +149,8 @@ const TransferFundsDialogForm = ({ back, colony }: ActionDialogProps) => {
                   />
                 ),
                 domainName:
-                  (!hasRoleInFromDomain && fromDomain?.name) ||
-                  (!hasRoleInToDomain && toDomain?.name),
+                  (!hasRoleInFromDomain && fromDomain?.metadata?.name) ||
+                  (!hasRoleInToDomain && toDomain?.metadata?.name),
               }}
             />
           </span>

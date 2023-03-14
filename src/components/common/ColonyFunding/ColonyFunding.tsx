@@ -49,7 +49,7 @@ const ColonyFunding = () => {
     },
     ...(domains?.items ?? [])
       .map((domain) => ({
-        label: domain?.name ?? '',
+        label: domain?.metadata?.name ?? '',
         value: domain?.nativeId.toString() ?? '',
       }))
       .sort(

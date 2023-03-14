@@ -5,7 +5,7 @@ export const getDomainOptions = (colonyDomains: Domain[]) =>
   sortBy(
     colonyDomains.map((domain) => ({
       value: domain?.nativeId || '',
-      label: domain?.name || `Domain #${domain?.nativeId}`,
+      label: domain?.metadata?.name || `Domain #${domain?.nativeId}`,
     })) || [],
     ['value'],
   );

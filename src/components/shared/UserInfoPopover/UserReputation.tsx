@@ -88,7 +88,7 @@ const UserReputation = ({
                 ({ reputationDomain, reputationPercentage }) => (
                   <UserReputationItem
                     key={`${reputationDomain?.id}-${reputationPercentage}`}
-                    domainName={reputationDomain?.name || ''}
+                    domainName={reputationDomain?.metadata?.name || ''}
                     reputationPercentage={reputationPercentage}
                   />
                 ),
