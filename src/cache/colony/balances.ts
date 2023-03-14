@@ -94,7 +94,7 @@ const balancesFieldCache = {
   balances: {
     read: (domainBalanceRefs, { readField, cache }) => {
       const colonyAddress = readField('id');
-      const { chainId: colonyChainId } = readField('meta');
+      const { chainId: colonyChainId } = readField('chainMetadata');
       const { items: colonyTokens = [] } = readField('tokens');
 
       const allDomainBalances = getAllDomainBalancesFromRefs(
