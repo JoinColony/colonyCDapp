@@ -5,7 +5,6 @@ import {
   Routes as RoutesSwitch,
   useLocation,
 } from 'react-router-dom';
-import { Id } from '@colony/colony-js';
 
 import ColonyActions from '~common/ColonyActions';
 // import ColonyEvents from '~dashboard/ColonyEvents';
@@ -34,8 +33,6 @@ const ColonyHome = () => {
     Number(queryDomainIdFilter),
   );
 
-  const filteredDomainId = domainIdFilter || Id.RootDomain;
-
   const memoizedSwitch = useMemo(() => {
     if (colony) {
       return (
@@ -44,7 +41,7 @@ const ColonyHome = () => {
             path={COLONY_EVENTS_ROUTE}
             element={
               <ColonyHomeLayout
-                filteredDomainId={filteredDomainId}
+                filteredDomainId={domainIdFilter}
                 onDomainChange={setDomainIdFilter}
               >
                 {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> */}
@@ -55,7 +52,7 @@ const ColonyHome = () => {
           <Route
             element={
               <ColonyHomeLayout
-                filteredDomainId={filteredDomainId}
+                filteredDomainId={domainIdFilter}
                 onDomainChange={setDomainIdFilter}
               >
                 <Outlet />
@@ -78,7 +75,7 @@ const ColonyHome = () => {
       );
     }
     return null;
-  }, [colony, filteredDomainId]);
+  }, [colony, domainIdFilter]);
 
   return memoizedSwitch;
 };

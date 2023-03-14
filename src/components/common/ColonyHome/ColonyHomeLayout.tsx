@@ -68,7 +68,7 @@ const ColonyHomeLayout = ({
                     onDomainChange={onDomainChange}
                   />
                 </div>
-                <NewActionButton /* ethDomainId={ethDomainId} */ />
+                <NewActionButton filteredDomainId={filteredDomainId} />
               </div>
             </>
           )}
@@ -84,7 +84,6 @@ const ColonyHomeLayout = ({
           </aside>
         )}
       </div>
-      {/* <ColonyUpgrade colony={colony} /> */}
       <OneTxPaymentUpgrade />
     </div>
   );

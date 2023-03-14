@@ -1,5 +1,5 @@
 import React, { ReactNode, useCallback } from 'react';
-// import { ColonyVersion, ROOT_DOMAIN_ID, Extension } from '@colony/colony-js';
+import { Id } from '@colony/colony-js';
 
 import ColorTag from '~shared/ColorTag';
 import { HookForm as Form, SelectOption } from '~shared/Fields';
@@ -34,10 +34,6 @@ const ColonyDomainSelector = ({
   const { colony, canInteractWithColony } = useColonyContext();
   const { domains } = colony || {};
 
-  // const { data } = useColonyExtensionsQuery({
-  //   variables: { address: colonyAddress },
-  // });
-
   // const openEditDialog = useDialog(EditDomainDialog);
   // const handleEditDomain = useCallback(
   //   (ethDomainId: number) =>
@@ -48,24 +44,22 @@ const ColonyDomainSelector = ({
   //   [openEditDialog, colony],
   // );
 
-  const ROOT_DOMAIN_ID = 1;
-
   const handleEditDomain = () => {};
 
   const getDomainColor = useCallback<
-    (domainId: string | undefined) => DomainColor
+    (domainId: number | undefined) => DomainColor
   >(
     (domainId) => {
       const rootDomainColor = DomainColor.LightPink;
       const defaultColor = DomainColor.Yellow;
-      if (domainId === String(ROOT_DOMAIN_ID)) {
+      if (domainId === Id.RootDomain) {
         return rootDomainColor;
       }
       if (!colony || !domainId) {
         return defaultColor;
       }
       const domain = domains?.items?.find(
-        (currentDomain) => Number(domainId) === currentDomain?.nativeId,
+        (currentDomain) => domainId === currentDomain?.nativeId,
       );
       return domain?.metadata?.color || defaultColor;
     },
@@ -77,7 +71,7 @@ const ColonyDomainSelector = ({
   >(
     (option, label) => {
       const value = option ? option.value : undefined;
-      const color = getDomainColor(value);
+      const color = getDomainColor(Number(value));
       return (
         <div className={styles.activeItem}>
           <ColorTag color={color} />{' '}
