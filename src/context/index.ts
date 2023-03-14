@@ -4,7 +4,7 @@ import { Wallet as WalletType } from '~types';
 
 import ColonyManagerClass from './ColonyManager';
 
-import apolloClient from './apollo';
+import apolloClient from './apolloClient';
 import UserSettingsClass from './userSettings';
 
 export { UserSettingsClass as UserSettings };
