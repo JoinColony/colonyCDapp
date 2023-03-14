@@ -93,7 +93,7 @@ export const getUserRolesForDomain = (
   // excludeInherited = false,
 ): ColonyRole[] => {
   if (!colony || !domainId || !userAddress) return [];
-  return [0, 1, 2, 3, 4, 5, 6, 7];
+  return [0, 1, 2, 3, 5, 6];
   // if (excludeInherited) {
   //   return getRolesForUserAndDomain(colony.roles, userAddress, domainId);
   // }
@@ -121,7 +121,7 @@ export const getAllUserRoles = (
   userAddress: Address | undefined,
 ): ColonyRole[] => {
   if (!colony || !userAddress) return [] as ColonyRole[];
-  return [0, 1, 2, 3, 4, 5, 6, 7];
+  return [0, 1, 2, 3, 5, 6];
   // const userRoles = colony.roles.find(({ address }) => address === userAddress);
   // if (!userRoles) return [] as ColonyRole[];
   // return Array.from(

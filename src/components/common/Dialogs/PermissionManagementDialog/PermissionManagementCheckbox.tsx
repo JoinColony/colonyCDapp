@@ -1,14 +1,15 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
 
+import { useFormContext } from 'react-hook-form';
 import { HookFormCheckbox as Checkbox } from '~shared/Fields';
 import PermissionsLabel from '~shared/PermissionsLabel';
 import { formatText } from '~utils/intl';
 
 import styles from './PermissionManagementCheckbox.css';
 
-const displayName = `common.ColonyHome.PermissionManagementDialog.PermissionManagementCheckbox`;
+const displayName = `common.PermissionManagementDialog.PermissionManagementForm.PermissionManagementCheckbox`;
 
 const MSG = defineMessages({
   roleWithAsterisk: {
@@ -52,6 +53,7 @@ const MSG = defineMessages({
 
 interface Props {
   asterisk: boolean;
+  readOnly: boolean;
   disabled: boolean;
   role: ColonyRole;
   domainId: number;
@@ -60,20 +62,20 @@ interface Props {
 
 const PermissionManagementCheckbox = ({
   asterisk,
+  readOnly,
   disabled,
   role,
   domainId,
   dataTest,
 }: Props) => {
+  const { getValues } = useFormContext();
+  const user = getValues('user');
+
   const roleNameMessage = { id: `role.${role}` };
-  const roleDescriptionMessage = useMemo(
-    () =>
-      MSG[`roleDescription${role}`] || {
-        id: '',
-        defaultMessage: '',
-      },
-    [role],
-  );
+  const roleDescriptionMessage = MSG[`roleDescription${role}`] || {
+    id: '',
+    defaultMessage: '',
+  };
 
   const formattedRole = formatText(roleNameMessage);
 
@@ -89,10 +91,11 @@ const PermissionManagementCheckbox = ({
   return (
     <Checkbox
       className={styles.permissionChoice}
-      value={role}
+      value={role.toString()}
       name="roles"
+      readOnly={readOnly}
       disabled={disabled}
-      tooltipText={formattedTooltipText}
+      tooltipText={user ? formattedTooltipText : undefined}
       tooltipPopperOptions={{
         modifiers: [
           {

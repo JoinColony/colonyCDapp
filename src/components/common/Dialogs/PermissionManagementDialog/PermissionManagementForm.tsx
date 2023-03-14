@@ -1,37 +1,43 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { defineMessages } from 'react-intl'; // FormattedMessage
-import {
-  ColonyRole,
-  Id,
-  // VotingReputationVersion,
-} from '@colony/colony-js';
-import { FormState } from 'react-hook-form';
+import { ColonyRole, Id } from '@colony/colony-js';
+import { useFormContext } from 'react-hook-form';
 
-import { InputLabel, Select, Annotations } from '~shared/Fields'; // ForceToggle
-import { DialogSection } from '~shared/Dialog';
-import { Heading3 } from '~shared/Heading';
+import { InputLabel, Select, Annotations } from '~shared/Fields';
+import {
+  ActionDialogProps,
+  DialogControls,
+  DialogHeading,
+  DialogSection,
+} from '~shared/Dialog';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import SingleUserPicker, {
   filterUserSelection,
 } from '~shared/SingleUserPicker';
 import { ItemDataType } from '~shared/OmniPicker';
 import UserAvatar from '~shared/UserAvatar';
+import NoPermissionMessage from '~shared/NoPermissionMessage';
+import {
+  useAppContext,
+  useDialogActionPermissions,
+  useEnabledExtensions,
+  useTransformer,
+} from '~hooks';
+import { getAllRootAccounts, getUserRolesForDomain } from '~redux/transformers';
 
-// import MotionDomainSelect from '~dashboard/MotionDomainSelect';
-
-import { Address, Colony, User } from '~types/index';
+import { User } from '~types';
 import { notNull } from '~utils/arrays';
-// import { useTransformer, useEnabledExtensions} from '~hooks';
 // import { getAllUserRolesForDomain } from '~redux/transformers';
-import { sortBy } from '~utils/lodash';
+import { isEqual, sortBy } from '~utils/lodash';
 
 import { availableRoles } from './constants';
-import { FormValues } from './PermissionManagementDialog';
 import PermissionManagementCheckbox from './PermissionManagementCheckbox';
 
-import styles from './PermissionManagementDialog.css';
+import { useSelectedUserRoles } from './helpers';
 
-const displayName = `common.ColonyHome.PermissionManagementDialog.PermissionManagementForm`;
+import styles from './PermissionManagementDialogForm.css';
+
+const displayName = `common.PermissionManagementDialog.PermissionManagementForm`;
 
 const MSG = defineMessages({
   title: {
@@ -64,99 +70,122 @@ const MSG = defineMessages({
   },
 });
 
-interface Props {
-  colony: Colony;
-  currentUserRoles: ColonyRole[];
-  domainId: number;
-  rootAccounts: Address[];
-  userDirectRoles: ColonyRole[];
-  currentUserRolesInRoot: ColonyRole[];
-  userInheritedRoles: ColonyRole[];
-  onDomainSelected: (domain: number) => void;
-  onChangeSelectedUser: React.Dispatch<React.SetStateAction<string>>;
-  onMotionDomainChange: (domain: number) => void;
-  inputDisabled: boolean;
-  userHasPermission: boolean;
-  values: FormValues;
+interface Props extends ActionDialogProps {
+  close: (val: any) => void;
 }
 
-const supRenderAvatar = (address: string, item: ItemDataType<User>) => (
-  <UserAvatar address={address} user={item} size="xs" notSet={false} />
+const supRenderAvatar = (item: ItemDataType<User>) => (
+  <UserAvatar user={item} size="xs" />
 );
 
 const PermissionManagementForm = ({
   colony: { watchers, domains },
-  // colony,
-  currentUserRoles,
-  domainId,
-  rootAccounts,
-  userDirectRoles,
-  userInheritedRoles,
-  currentUserRolesInRoot,
-  inputDisabled,
-  userHasPermission,
-  onDomainSelected,
-  onMotionDomainChange,
-  onChangeSelectedUser,
-  values,
-}: // isSubmitting,
-Props & FormState<FormValues>) => {
-  const colonyWatchers = useMemo(
+  colony,
+  back,
+  close,
+}: Props) => {
+  const {
+    formState: { isValid, isSubmitting },
+    getValues,
+    setValue,
+  } = useFormContext();
+  const { user: currentUser } = useAppContext();
+  const {
+    // votingExtensionVersion,
+    enabledExtensions: { isVotingReputationEnabled },
+  } = useEnabledExtensions();
+
+  const values = getValues();
+  const colonyWatchers =
+    watchers?.items
+      .filter(notNull)
+      .map((item) => ({ ...item.user, id: item.user.walletAddress })) || [];
+
+  const colonyDomains = domains?.items.filter(notNull) || [];
+  const domain = colonyDomains.find(
+    (colonyDomain) => colonyDomain.nativeId === values.domainId,
+  );
+  const {
+    inheritedRoles: selectedUserInheritedRoles,
+    directRoles: selectedUserDirectRoles,
+  } = useSelectedUserRoles(colony, values.user, values.domainId);
+  const defaultSelectedUserRoles = useMemo(
     () =>
-      watchers?.items
-        .filter(notNull)
-        .map((item) => ({ ...item.user, id: item.user.walletAddress })) || [],
-    [watchers],
+      [
+        ...new Set([...selectedUserDirectRoles, ...selectedUserInheritedRoles]),
+      ].map((role) => role.toString()),
+    [selectedUserDirectRoles, selectedUserInheritedRoles],
   );
 
-  const colonyDomains = useMemo(() => domains?.items || [], [domains]);
-  const domain = colonyDomains?.find(
-    (colonyDomain) => colonyDomain?.nativeId === domainId,
-  );
+  useEffect(() => {
+    setValue('roles', defaultSelectedUserRoles);
+  }, [defaultSelectedUserRoles]);
+
+  const currentUserRoles = useTransformer(getUserRolesForDomain, [
+    colony,
+    // CURRENT USER!
+    currentUser?.walletAddress,
+    values.domainId,
+  ]);
+
+  const currentUserRolesInRoot = useTransformer(getUserRolesForDomain, [
+    colony,
+    currentUser?.walletAddress,
+    Id.RootDomain,
+  ]);
+
+  const rootAccounts = useTransformer(getAllRootAccounts, [colony]);
 
   const canSetPermissionsInRoot =
-    domainId === Id.RootDomain &&
+    values.domainId === Id.RootDomain &&
     currentUserRoles.includes(ColonyRole.Root) &&
-    (!userDirectRoles.includes(ColonyRole.Root) || rootAccounts.length > 1);
+    (!selectedUserDirectRoles.includes(ColonyRole.Root) ||
+      rootAccounts.length > 1);
   const hasRoot = currentUserRolesInRoot.includes(ColonyRole.Root);
   const hasArchitectureInRoot = currentUserRolesInRoot.includes(
     ColonyRole.Architecture,
   );
-  // const canEditPermissions =
-  //   (domainId === Id.RootDomain &&
-  //     currentUserRolesInRoot.includes(ColonyRole.Root)) ||
-  //   currentUserRolesInRoot.includes(ColonyRole.Architecture);
+
   const requiredRoles: ColonyRole[] = [ColonyRole.Architecture];
 
-  // Check which roles the current user is allowed to set in this domain
-  const canRoleBeSet = useCallback(
-    (role: ColonyRole) => {
-      switch (role) {
-        case ColonyRole.Arbitration:
-          return true;
-
-        // Can only be set by root and in root domain (and only unset if other root accounts exist)
-        case ColonyRole.Root:
-        case ColonyRole.Recovery:
-          return canSetPermissionsInRoot;
-
-        // Must be root for these
-        case ColonyRole.Administration:
-        case ColonyRole.Funding:
-          return hasArchitectureInRoot;
-
-        // Can be set if root domain and has root OR has architecture in parent
-        case ColonyRole.Architecture:
-          return (
-            (domainId === Id.RootDomain && hasRoot) || hasArchitectureInRoot
-          );
-
-        default:
-          return false;
-      }
-    },
-    [domainId, canSetPermissionsInRoot, hasArchitectureInRoot, hasRoot],
+  const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
+    colony,
+    !!isVotingReputationEnabled,
+    [
+      values.domainId === Id.RootDomain
+        ? ColonyRole.Root
+        : ColonyRole.Architecture,
+    ],
+    [values.domainId],
   );
+
+  // Check which roles the current user is allowed to set in this domain
+  const canRoleBeSet = (role: ColonyRole) => {
+    switch (role) {
+      case ColonyRole.Arbitration:
+        return true;
+
+      // Can only be set by root and in root domain (and only unset if other root accounts exist)
+      case ColonyRole.Root:
+      case ColonyRole.Recovery:
+        return canSetPermissionsInRoot;
+
+      // Must be root for these
+      case ColonyRole.Administration:
+      case ColonyRole.Funding:
+        return hasArchitectureInRoot;
+
+      // Can be set if root domain and has root OR has architecture in parent
+      case ColonyRole.Architecture:
+        return (
+          (values.domainId === Id.RootDomain && hasRoot) ||
+          hasArchitectureInRoot
+        );
+
+      default:
+        return false;
+    }
+  };
 
   // const domainRoles = useTransformer(getAllUserRolesForDomain, [
   //   colony,
@@ -171,8 +200,8 @@ Props & FormState<FormValues>) => {
 
   const domainSelectOptions = sortBy(
     colonyDomains.map((colonyDomain) => ({
-      value: colonyDomain?.nativeId || '',
-      label: colonyDomain?.name || '',
+      value: colonyDomain.nativeId || '',
+      label: colonyDomain.metadata?.name || '',
     })),
     ['value'],
   );
@@ -209,86 +238,33 @@ Props & FormState<FormValues>) => {
     };
   });
 
-  const handleDomainChange = useCallback(
-    (domainValue: string) => {
-      const fromDomainId = parseInt(domainValue, 10);
-      const selectedMotionDomainId = parseInt(values.motionDomainId, 10);
-      onDomainSelected(fromDomainId);
-      if (selectedMotionDomainId !== fromDomainId) {
-        onMotionDomainChange(fromDomainId);
-      }
-    },
-    [onDomainSelected, onMotionDomainChange, values.motionDomainId],
-  );
+  const handleDomainChange = (domainValue: number) => {
+    setValue('domainId', domainValue);
+    if (values.motionDomainId !== domainValue) {
+      setValue('motionDomainId', domainValue);
+    }
+  };
 
-  // const handleFilterMotionDomains = useCallback(
-  //   (optionDomain) => {
-  //     const optionDomainId = parseInt(optionDomain.value, 10);
-  //     if (domainId === Id.RootDomain) {
-  //       return optionDomainId === Id.RootDomain;
-  //     }
-  //     return optionDomainId === domainId || optionDomainId === Id.RootDomain;
-  //   },
-  //   [domainId],
-  // );
-
-  // const handleMotionDomainChange = useCallback(
-  //   (motionDomainId) => onMotionDomainChange(motionDomainId),
-  //   [onMotionDomainChange],
-  // );
-
-  const filteredRoles = useMemo(
-    () =>
-      domainId !== Id.RootDomain
-        ? availableRoles.filter(
-            (role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery,
-          )
-        : availableRoles,
-    [domainId],
-  );
-
-  // const {
-  //   votingExtensionVersion,
-  //   isVotingExtensionEnabled,
-  // } = useEnabledExtensions({
-  //   colonyAddress,
-  // });
+  const filteredRoles =
+    values.domainId !== Id.RootDomain
+      ? availableRoles.filter(
+          (role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery,
+        )
+      : availableRoles;
 
   // const cannotCreateMotion =
   //   votingExtensionVersion ===
   //     VotingReputationExtensionVersion.FuchsiaLightweightSpaceship &&
   //   !values.forceAction;
+  const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;
 
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <div className={styles.modalHeading}>
-          {/*
-           * @NOTE We can only create a motion to vote in a subdomain if we
-           * create a payment from that subdomain
-           */}
-          {/* {isVotingExtensionEnabled && (
-            <div className={styles.motionVoteDomain}>
-              <MotionDomainSelect
-                colony={colony}
-                onDomainChange={handleMotionDomainChange}
-                disabled={values.forceAction}
-                filterDomains={handleFilterMotionDomains}
-                initialSelectedDomain={parseInt(values.domainId, 10)}
-              />
-            </div>
-          )} */}
-          <div className={styles.headingContainer}>
-            <Heading3
-              appearance={{ margin: 'none', theme: 'dark' }}
-              text={MSG.title}
-              textValues={{ domain: domain?.name }}
-            />
-            {/* {canEditPermissions && isVotingExtensionEnabled && (
-              <ForceToggle disabled={isSubmitting} />
-            )} */}
-          </div>
-        </div>
+        <DialogHeading
+          title={MSG.title}
+          titleValues={{ domain: domain?.metadata?.name }}
+        />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
@@ -302,7 +278,6 @@ Props & FormState<FormValues>) => {
             label={MSG.selectUser}
             name="user"
             filter={filterUserSelection}
-            onSelected={onChangeSelectedUser}
             renderAvatar={supRenderAvatar}
             disabled={inputDisabled}
             placeholder={MSG.userPickerPlaceholder}
@@ -328,17 +303,16 @@ Props & FormState<FormValues>) => {
         <div className={styles.permissionChoiceContainer}>
           {filteredRoles.map((role) => {
             const roleIsInherited =
-              !userDirectRoles.includes(role) &&
-              userInheritedRoles.includes(role);
+              !selectedUserDirectRoles.includes(role) &&
+              selectedUserInheritedRoles.includes(role);
             return (
               <PermissionManagementCheckbox
                 key={role}
-                disabled={
-                  inputDisabled || !canRoleBeSet(role) || roleIsInherited
-                }
+                readOnly={!canRoleBeSet(role) || roleIsInherited}
+                disabled={inputDisabled || !values.user}
                 role={role}
                 asterisk={roleIsInherited}
-                domainId={domainId}
+                domainId={values.domainId}
                 dataTest="permission"
               />
             );
@@ -364,6 +338,36 @@ Props & FormState<FormValues>) => {
           </div>
         </DialogSection>
       )} */}
+      {!userHasPermission && (
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          \
+          <NoPermissionMessage
+            requiredPermissions={[ColonyRole.Architecture]}
+          />
+        </DialogSection>
+      )}
+      {/* {onlyForceAction && (
+        <NotEnoughReputation domainId={Number(values.domainId)} />
+      )} */}
+      <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
+        <DialogControls
+          disabled={
+            // (votingExtensionVersion ===
+            //   // eslint-disable-next-line max-len
+            //   VotingReputationExtensionVersion.FuchsiaLightweightSpaceship &&
+            //   !values.forceAction) ||
+            inputDisabled ||
+            !isValid ||
+            isSubmitting ||
+            isEqual(sortBy(values.roles), sortBy(defaultSelectedUserRoles))
+          }
+          dataTest="permissionConfirmButton"
+          onSecondaryButtonClick={back ?? close}
+          secondaryButtonText={{
+            id: back ? 'button.back' : 'button.cancel',
+          }}
+        />
+      </DialogSection>
     </>
   );
 };

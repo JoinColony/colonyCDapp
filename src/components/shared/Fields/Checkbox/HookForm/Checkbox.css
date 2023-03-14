@@ -56,10 +56,15 @@
   display: block;
 }
 
-.checkbox:disabled {
+.checkbox:disabled,
+.checkbox[readonly] {
   border-color: var(--text-disabled);
   box-shadow: 0 0 0 2px color-mod(var(--text-disabled) alpha(25%));
   cursor: default;
+}
+
+.checkbox[readonly] {
+  pointer-events: none;
 }
 
 @media screen and query700 {

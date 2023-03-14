@@ -1,15 +1,9 @@
 declare namespace PermissionManagementDialogCssNamespace {
   export interface IPermissionManagementDialogCss {
-    dialogContainer: string;
-    dialogFooterSection: string;
     domainSelectContainer: string;
-    headingContainer: string;
-    modalHeading: string;
-    motionVoteDomain: string;
     noPermissionFromMessage: string;
     permissionChoiceContainer: string;
     singleUserContainer: string;
-    wideButton: string;
   }
 }
 
