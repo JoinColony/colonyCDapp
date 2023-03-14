@@ -1,10 +1,8 @@
 import React from 'react';
-import {
-  MessageDescriptor,
-} from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import { Select } from '~shared/Fields';
+import { HookFormSelect as Select } from '~shared/Fields';
 import { Colony } from '~types';
 
 import { notNull } from '~utils/arrays';
@@ -131,9 +129,7 @@ const DomainFundSelector = ({
         dataTest="domainIdSelector"
         itemDataTest="domainIdItem"
       />
-      {!errors[name] && (
-        <DomainBalance colony={colony} />
-      )}
+      {!errors[name] && <DomainBalance colony={colony} />}
     </div>
   );
 };
