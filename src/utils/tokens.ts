@@ -23,7 +23,8 @@ export const getBalanceForTokenAndDomain = (
         : domainBalance?.domain?.nativeId === domainId,
     )
     .find((domainBalance) => domainBalance?.token?.id === tokenAddress);
-  return BigNumber.from(currentDomainBalance?.balance);
+
+  return BigNumber.from(currentDomainBalance?.balance ?? 0);
 };
 
 /*
