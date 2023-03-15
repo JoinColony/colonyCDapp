@@ -2755,6 +2755,8 @@ export type WatchListItemFragment = { __typename?: 'WatchedColonies', createdAt:
 
 export type ColonyMetadataFragment = { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean }> | null };
 
+export type ColonyBalancesFragment = { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null };
+
 export type ColonyBalanceFragment = { __typename?: 'ColonyBalance', id: string, balance: string, domain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } };
 
 export type FundsClaimFragment = { __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } };
@@ -3138,6 +3140,13 @@ export const ColonyBalanceFragmentDoc = gql`
 }
     ${DomainFragmentDoc}
 ${TokenFragmentDoc}`;
+export const ColonyBalancesFragmentDoc = gql`
+    fragment ColonyBalances on ColonyBalances {
+  items {
+    ...ColonyBalance
+  }
+}
+    ${ColonyBalanceFragmentDoc}`;
 export const FundsClaimFragmentDoc = gql`
     fragment FundsClaim on ColonyFundsClaim {
   id
@@ -3189,9 +3198,7 @@ export const ColonyFragmentDoc = gql`
     }
   }
   balances {
-    items {
-      ...ColonyBalance
-    }
+    ...ColonyBalances
   }
   fundsClaims {
     items {
@@ -3208,7 +3215,7 @@ export const ColonyFragmentDoc = gql`
 }
     ${TokenFragmentDoc}
 ${DomainFragmentDoc}
-${ColonyBalanceFragmentDoc}
+${ColonyBalancesFragmentDoc}
 ${FundsClaimFragmentDoc}
 ${ChainFundsClaimFragmentDoc}
 ${ColonyMetadataFragmentDoc}`;
