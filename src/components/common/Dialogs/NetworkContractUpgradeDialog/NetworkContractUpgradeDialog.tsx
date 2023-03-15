@@ -1,21 +1,16 @@
-import React, { useCallback, useState } from 'react';
-import { string, object, boolean } from 'yup';
+import React, { useState } from 'react';
+import { string, object, boolean, InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
 
 import { pipe, mergePayload, withMeta, mapPayload } from '~utils/actions';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
-import { ActionTypes } from '~redux/index';
-import { RootMotionOperationNames } from '~redux/types/actions';
-import { WizardDialogType } from '~hooks'; // useEnabledExtensions
+import { ActionTypes } from '~redux';
+import { WizardDialogType, useEnabledExtensions } from '~hooks';
 
 import DialogForm from './NetworkContractUpgradeDialogForm';
-
-export interface FormValues {
-  forceAction: boolean;
-  annotation: string;
-}
+import { getNetworkContractUpgradeDialogPayload } from './helpers';
 
 type Props = DialogProps &
   Partial<WizardDialogType<object>> &
@@ -30,50 +25,32 @@ const validationSchema = object()
   })
   .defined();
 
+type FormValues = InferType<typeof validationSchema>;
+
 const NetworkContractUpgradeDialog = ({
   cancel,
   close,
   callStep,
   prevStep,
   colony,
-  colony: { colonyAddress, name }, // version
+  colony: { colonyAddress, name, version: currentVersion },
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
 
-  const getFormAction = useCallback(
-    (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-      const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
+  const actionType =
+    isVotingReputationEnabled && !isForce
+      ? ActionTypes.ROOT_MOTION
+      : ActionTypes.ACTION_VERSION_UPGRADE;
 
-      return !isForce // isVotingExtensionEnabled &&
-        ? ActionTypes[`ROOT_MOTION${actionEnd}`]
-        : ActionTypes[`ACTION_VERSION_UPGRADE${actionEnd}`];
-    },
-    [isForce], // isVotingExtensionEnabled,
-  );
-  const currentVersion = parseInt('1', 10); // version
-  const nextVersion = currentVersion + 1;
-  const transform = useCallback(
-    () =>
-      pipe(
-        mapPayload(({ annotation: annotationMessage }) => {
-          return {
-            operationName: RootMotionOperationNames.UPGRADE,
-            colonyAddress,
-            colonyName: name,
-            version: '1', // version
-            motionParams: [nextVersion],
-            annotationMessage,
-          };
-        }),
-        mergePayload({ colonyAddress, version: '1', colonyName: name }), // version
-        withMeta({ navigate }),
-      ),
-    [colonyAddress, name, navigate, nextVersion], // version
+  const transform = pipe(
+    mapPayload((payload) =>
+      getNetworkContractUpgradeDialogPayload(colony, payload),
+    ),
+    mergePayload({ colonyAddress, version: currentVersion, colonyName: name }),
+    withMeta({ navigate }),
   );
 
   return (
@@ -87,14 +64,12 @@ const NetworkContractUpgradeDialog = ({
          * pass the value over to the motion, since it will always be 1
          */
       }}
-      submit={getFormAction('SUBMIT')}
-      error={getFormAction('ERROR')}
-      success={getFormAction('SUCCESS')}
+      actionType={actionType}
       validationSchema={validationSchema}
       transform={transform}
       onSuccess={close}
     >
-      {({ formState, getValues }) => {
+      {({ getValues }) => {
         const values = getValues();
         if (values.forceAction !== isForce) {
           setIsForce(values.forceAction);
@@ -102,8 +77,6 @@ const NetworkContractUpgradeDialog = ({
         return (
           <Dialog cancel={cancel}>
             <DialogForm
-              {...formState}
-              values={values}
               colony={colony}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
             />
