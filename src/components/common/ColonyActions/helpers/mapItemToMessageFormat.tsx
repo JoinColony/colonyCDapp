@@ -10,7 +10,7 @@ import {
   Domain,
 } from '~types';
 import { intl } from '~utils/intl';
-import { formatReputationChange } from '~utils/reputation';
+// import { formatReputationChange } from '~utils/reputation';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
@@ -78,15 +78,14 @@ export const mapColonyActionToExpectedFormat = (actionData: ColonyAction) => {
     reputationChangeNumeral: actionData.amount && (
       <Numeral
         value={actionData.amount}
-        decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
+        // decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
-    reputationChange:
-      actionData.amount &&
-      formatReputationChange(
-        actionData.amount,
-        actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS,
-      ),
+    reputationChange: actionData.amount, // &&
+    // formatReputationChange(
+    //   actionData.amount,
+    //   actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS,
+    // ),
     // rolesChanged: formattedRolesTitle.roleTitle,
     newVersion: actionData.newColonyVersion,
   };
@@ -135,16 +134,16 @@ export const mapColonyEventToExpectedFormat = (
     isSmiteAction:
       actionData.type === ColonyActionType.EmitDomainReputationPenalty,
     tokenSymbol: actionData.token?.symbol,
-    reputationChange:
-      actionData.amount &&
-      formatReputationChange(
-        actionData.amount,
-        actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS,
-      ),
+    reputationChange: actionData.amount,
+    // &&
+    // formatReputationChange(
+    //   actionData.amount,
+    //   actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS,
+    // ),
     reputationChangeNumeral: actionData.amount && (
       <Numeral
         value={actionData.amount}
-        decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
+        // decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
   };
