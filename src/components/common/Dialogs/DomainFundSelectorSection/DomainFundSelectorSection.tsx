@@ -56,7 +56,7 @@ const DomainFundSelectorSection = ({ colony, transferBetweenDomains, disabled }:
         clearErrors('fromDomain');
       }
     }
-  }, [errors, fromDomain, toDomain]);
+  }, [clearErrors, errors, fromDomain, toDomain]);
 
   return (
     <div
