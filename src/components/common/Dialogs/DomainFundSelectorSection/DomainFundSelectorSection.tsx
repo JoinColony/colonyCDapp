@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
@@ -38,29 +38,14 @@ const DomainFundSelectorSection = ({
   transferBetweenDomains,
   disabled,
 }: Props) => {
-  const {
-    watch,
-    setValue,
-    formState: { errors },
-    clearErrors,
-  } = useFormContext();
-  const { motionDomainId, fromDomain, toDomain } = watch();
+  const { watch, setValue } = useFormContext();
+  const { motionDomainId } = watch();
+
   const handleFromDomainChange = (fromDomainValue) => {
     if (motionDomainId !== fromDomainValue) {
       setValue('motionDomainId', fromDomainValue);
     }
   };
-
-  useEffect(() => {
-    if (fromDomain !== toDomain) {
-      if (errors.toDomain?.type === 'same-pot') {
-        clearErrors('toDomain');
-      }
-      if (errors.fromDomain?.type === 'same-pot') {
-        clearErrors('fromDomain');
-      }
-    }
-  }, [clearErrors, errors, fromDomain, toDomain]);
 
   return (
     <div
