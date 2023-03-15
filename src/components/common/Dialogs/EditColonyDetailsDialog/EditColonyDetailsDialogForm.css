@@ -1,5 +1,3 @@
-@value wideButton: 160px;
-
 .title {
   font-size: var(--size-medium-l);
   font-weight: var(--weight-bold);
@@ -23,37 +21,10 @@
   font-size: var(--size-tiny);
 }
 
-.permissionLabel > div {
-  vertical-align: bottom;
-}
-
-.noPermissionMessage {
-  composes: permissionLabel;
-  font-size: var(--size-tiny);
-  font-weight: var(--weight-bold);
-  line-height: 18px;
-  color: var(--danger);
-}
-
 .avatarUploadError {
   margin: -20px 0 5px;
 }
 
-.modalHeading {
-  padding: 32px 0 20px;
-}
-
-.headingContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.motionVoteDomain {
-  margin: 6px 0;
-}
-
 .cannotCreateMotion {
-  composes: noPermissionMessage;
   margin-bottom: 30px;
 }

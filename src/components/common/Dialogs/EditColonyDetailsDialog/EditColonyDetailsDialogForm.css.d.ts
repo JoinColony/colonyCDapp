@@ -2,16 +2,10 @@ declare namespace EditColonyDetailsDialogFormCssNamespace {
   export interface IEditColonyDetailsDialogFormCss {
     avatarUploadError: string;
     cannotCreateMotion: string;
-    headingContainer: string;
     logoPlaceholder: string;
-    modalHeading: string;
-    motionVoteDomain: string;
-    noPermissionMessage: string;
-    permissionLabel: string;
     smallText: string;
     tinyText: string;
     title: string;
-    wideButton: string;
   }
 }
 

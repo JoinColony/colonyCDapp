@@ -1,36 +1,26 @@
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
-import {
-  ColonyRole,
-  // VotingReputationVersion,
-} from '@colony/colony-js';
-import { FormState, UseFormSetValue } from 'react-hook-form';
+import { ColonyRole, Id } from '@colony/colony-js';
+import { useFormContext } from 'react-hook-form';
 
 import AvatarUploader from '~shared/AvatarUploader';
-import Button from '~shared/Button';
-import { ActionDialogProps } from '~shared/Dialog';
+import {
+  ActionDialogProps,
+  DialogControls,
+  DialogHeading,
+} from '~shared/Dialog';
 import DialogSection from '~shared/Dialog/DialogSection';
 import {
   Annotations,
   HookFormInput as Input,
   InputStatus,
-} from '~shared/Fields'; // ForceToggle
-import { Heading3 } from '~shared/Heading';
-import PermissionsLabel from '~shared/PermissionsLabel';
+} from '~shared/Fields';
 import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import ColonyAvatar from '~shared/ColonyAvatar';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-// import MotionDomainSelect from '~dashboard/MotionDomainSelect';
-
-import {
-  useTransformer,
-  useDialogActionPermissions,
-  useAppContext,
-} from '~hooks'; // useEnabledExtensions
-import { getAllUserRoles } from '~redux/transformers';
-import { hasRoot } from '~utils/checks';
-
-import { FormValues } from './EditColonyDetailsDialog';
+import NoPermissionMessage from '~shared/NoPermissionMessage';
+import Avatar from '~shared/Avatar';
+import { useDialogActionPermissions } from '~hooks'; // useEnabledExtensions
 
 import styles from './EditColonyDetailsDialogForm.css';
 
@@ -52,17 +42,11 @@ const MSG = defineMessages({
   },
   permittedFormat: {
     id: `${displayName}.permittedFormat`,
-    defaultMessage:
-      'Permitted format: .png or .svg (at least 250px, up to 1 MB)',
+    defaultMessage: 'Permitted format: .png or .svg',
   },
   annotation: {
     id: `${displayName}.annotation`,
     defaultMessage: `Explain why you’re editing the colony's details (optional)`,
-  },
-  noPermission: {
-    id: `${displayName}.noPermission`,
-    defaultMessage: `You do not have the {roleRequired} permission required
-      to take this action.`,
   },
   invalidAvatarFormat: {
     id: `${displayName}.invalidAvatarFormat`,
@@ -74,30 +58,21 @@ const MSG = defineMessages({
   },
 });
 
-interface Props extends ActionDialogProps {
-  values: FormValues;
-  setValue: UseFormSetValue<FormValues>;
-}
+const requiredRoles = [ColonyRole.Root];
 
 const EditColonyDetailsDialogForm = ({
   back,
   colony,
-  colony: { colonyAddress, profile },
-  isSubmitting,
-  isValid,
-  values: { colonyAvatarImage, colonyDisplayName, forceAction },
-  setValue,
-}: Props & FormState<FormValues>) => {
+  colony: { colonyAddress, metadata },
+}: ActionDialogProps) => {
+  const {
+    formState: { isSubmitting, isValid },
+    setValue,
+    getValues,
+  } = useFormContext();
+  const { colonyAvatarImage, colonyDisplayName } = getValues();
   const [showUploadedAvatar, setShowUploadedAvatar] = useState(false);
   const [avatarFileError, setAvatarFileError] = useState(false);
-  const { user } = useAppContext();
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    user?.walletAddress,
-  ]);
-
-  const hasRegisteredProfile = !!user?.name && !!user.walletAddress;
-  const canEdit = hasRegisteredProfile && hasRoot(allUserRoles);
 
   // const {
   //   votingExtensionVersion,
@@ -107,10 +82,10 @@ const EditColonyDetailsDialogForm = ({
   // });
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony.colonyAddress,
-    canEdit,
+    colony,
     false, // isVotingExtensionEnabled,
-    forceAction,
+    requiredRoles,
+    [Id.RootDomain],
   );
 
   const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;
@@ -125,7 +100,7 @@ const EditColonyDetailsDialogForm = ({
   const handleFileRead = async (file) => {
     if (file) {
       const base64image = file.data;
-      setValue('colonyAvatarImage', String(base64image));
+      setValue('colonyAvatarImage', String(base64image), { shouldDirty: true });
       setShowUploadedAvatar(true);
       return String(base64image);
     }
@@ -133,7 +108,7 @@ const EditColonyDetailsDialogForm = ({
   };
 
   const handleFileRemove = async () => {
-    setValue('colonyAvatarImage', null);
+    setValue('colonyAvatarImage', null, { shouldDirty: true });
     setShowUploadedAvatar(true);
   };
 
@@ -145,18 +120,9 @@ const EditColonyDetailsDialogForm = ({
     setAvatarFileError(true);
   };
 
-  const canValuesBeUpdate =
-    /*
-     * If the newly set name is different from the existing one
-     */
-    displayName !== colonyDisplayName ||
-    /*
-     * If the newly set image is differnet from the existing one but only if
-     * - it's a truthy (default form value)
-     * - it's not null (it has been specifically removed by the user)
-     */
-    ((!!colonyAvatarImage || colonyAvatarImage === null) &&
-      profile?.thumbnail !== colonyAvatarImage);
+  const hasEditedColony =
+    metadata?.displayName !== colonyDisplayName ||
+    metadata?.avatar !== colonyAvatarImage;
 
   // const cannotCreateMotion =
   //   votingExtensionVersion ===
@@ -166,28 +132,7 @@ const EditColonyDetailsDialogForm = ({
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <div className={styles.modalHeading}>
-          {/*
-           * @NOTE Always disabled since you can only create this motion in root
-           */}
-          {/* {isVotingExtensionEnabled && (
-            <div className={styles.motionVoteDomain}>
-              <MotionDomainSelect
-                colony={colony}
-                disabled
-              />
-            </div>
-          )} */}
-          <div className={styles.headingContainer}>
-            <Heading3
-              appearance={{ margin: 'none', theme: 'dark' }}
-              text={MSG.title}
-            />
-            {/* {canEdit && isVotingExtensionEnabled && (
-              <ForceToggle disabled={isSubmitting} />
-            )} */}
-          </div>
-        </div>
+        <DialogHeading title={MSG.title} />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
@@ -196,7 +141,7 @@ const EditColonyDetailsDialogForm = ({
       )}
       <DialogSection>
         <AvatarUploader
-          avatar={profile?.avatar}
+          avatar={showUploadedAvatar ? colonyAvatarImage : metadata?.avatar}
           disabled={inputDisabled}
           label={MSG.logo}
           handleFileAccept={handleFileRead}
@@ -213,9 +158,10 @@ const EditColonyDetailsDialogForm = ({
                  * passed as `undefined` so that the blockies show.
                  * This is intended functionality
                  */
-                <ColonyAvatar
-                  colonyAddress={colonyAddress}
+                <Avatar
                   avatar={colonyAvatarImage}
+                  seed={colonyAddress.toLowerCase()}
+                  title={metadata?.displayName || colony.name || colonyAddress}
                   size="xl"
                 />
               ) : (
@@ -261,21 +207,7 @@ const EditColonyDetailsDialogForm = ({
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
-          <div className={styles.noPermissionMessage}>
-            <FormattedMessage
-              {...MSG.noPermission}
-              values={{
-                roleRequired: (
-                  <PermissionsLabel
-                    permission={ColonyRole.Root}
-                    name={{
-                      id: `role.${ColonyRole.Root}`,
-                    }}
-                  />
-                ),
-              }}
-            />
-          </div>
+          <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
       {/* {onlyForceAction && (
@@ -295,29 +227,17 @@ const EditColonyDetailsDialogForm = ({
         </DialogSection>
       )} */}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
-        <Button
-          appearance={{ theme: 'secondary', size: 'large' }}
-          onClick={back}
-          text={{ id: 'button.back' }}
-        />
-        <Button
-          appearance={{ theme: 'primary', size: 'large' }}
-          text={
-            forceAction || true // || !isVotingExtensionEnabled
-              ? { id: 'button.confirm' }
-              : { id: 'button.createMotion' }
-          }
-          loading={isSubmitting}
+        <DialogControls
           disabled={
             // cannotCreateMotion ||
             inputDisabled ||
             !isValid ||
             avatarFileError ||
-            !canValuesBeUpdate ||
+            !hasEditedColony ||
             isSubmitting
           }
-          style={{ minWidth: styles.wideButton }}
-          data-test="confirmButton"
+          dataTest="confirmButton"
+          onSecondaryButtonClick={back}
         />
       </DialogSection>
     </>
