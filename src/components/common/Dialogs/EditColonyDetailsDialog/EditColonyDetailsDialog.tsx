@@ -42,7 +42,7 @@ const EditColonyDetailsDialog = ({
   close,
   callStep,
   prevStep,
-  colony: { name, metadata },
+  colony: { metadata },
   colony,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
@@ -65,8 +65,8 @@ const EditColonyDetailsDialog = ({
     <Form<FormValues>
       defaultValues={{
         forceAction: false,
-        colonyDisplayName: metadata?.displayName || name,
-        colonyAvatarImage: metadata?.avatar || '',
+        colonyDisplayName: metadata?.displayName,
+        colonyAvatarImage: metadata?.avatar,
         annotationMessage: '',
         /*
          * @NOTE That since this a root motion, and we don't actually make use
