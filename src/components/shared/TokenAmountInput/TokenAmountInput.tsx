@@ -68,6 +68,9 @@ const TokenAmountInput = ({ colony, disabled }: Props) => {
           formattingOptions={formattingOptions}
           disabled={disabled}
           dataTest="paymentAmountInput"
+          // @NOTE: If we don't explicitly pass the amount value here, the input will lose their value when a different token is selected.
+          // (Most likely to do with formattingOptions changing when the token changes?)
+          value={values.amount}
         />
         {/* <NetworkFee colony={colony} networkFeeInverse={networkFeeInverse} customAmountError={customAmountError} /> */}
       </div>
@@ -86,7 +89,7 @@ const TokenAmountInput = ({ colony, disabled }: Props) => {
           <div className={styles.tokenAmountUsd}>
             <EthUsd
               // appearance={{ theme: 'grey' }}
-              value={values.amount}
+              value={values.amount.replace(/,/g, '') || 0} // @NOTE: Get the amount without commas as BigNumber doesn't like them
             />
           </div>
         )}

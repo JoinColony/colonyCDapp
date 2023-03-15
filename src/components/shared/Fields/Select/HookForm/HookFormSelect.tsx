@@ -53,11 +53,12 @@ const HookFormSelect = ({
 }: SelectProps) => {
   const [id] = useState<string>(idProp || nanoid());
   const {
-    formState: { errors },
+    formState: { errors, touchedFields },
     watch,
     setValue,
   } = useFormContext();
-  const error = errors[name] as Message;
+  const error = errors[name]?.message as Message;
+  const touched = touchedFields[name];
   const value = watch(name);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -109,7 +110,11 @@ const HookFormSelect = ({
       return;
     }
     const { value: optionValue } = options[selectedOption];
-    setValue(name, optionValue);
+    setValue(name, optionValue, {
+      shouldDirty: true,
+      shouldValidate: true,
+      shouldTouch: true,
+    });
     onChangeCallback?.(optionValue);
     close();
   };
@@ -280,6 +285,7 @@ const HookFormSelect = ({
           status={status}
           statusValues={statusValues}
           error={error}
+          touched={touched}
         />
       )}
     </div>

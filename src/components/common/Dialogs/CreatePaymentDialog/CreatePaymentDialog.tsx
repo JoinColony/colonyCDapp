@@ -93,12 +93,12 @@ const CreatePaymentDialog = ({
     <Form<FormValues>
       defaultValues={{
         forceAction: false,
-        fromDomain: filteredDomainId ?? Id.RootDomain,
+        fromDomain: filteredDomainId || Id.RootDomain,
         recipient: undefined,
         amount: '',
         tokenAddress: colony?.nativeToken.tokenAddress,
         annotation: '',
-        motionDomainId: filteredDomainId ?? Id.RootDomain,
+        motionDomainId: filteredDomainId || Id.RootDomain,
       }}
       validationSchema={validationSchema}
       actionType={actionType}

@@ -160,7 +160,7 @@ Props) => {
         />
       </DialogSection>
       {!userHasPermission && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
+        <DialogSection>
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
