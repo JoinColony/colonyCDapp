@@ -9,6 +9,7 @@ fragment ColonyAction on ColonyAction {
     ...User
   }
   recipientAddress
+  skillId
   recipient {
     ...User
   }

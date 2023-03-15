@@ -445,4 +445,5 @@ type ColonyAction @model {
   toDomain: Domain @hasOne(fields: ["toDomainId"])
   fundamentalChainId: Int
   newColonyVersion: Int
+  skillId: Int
 }
