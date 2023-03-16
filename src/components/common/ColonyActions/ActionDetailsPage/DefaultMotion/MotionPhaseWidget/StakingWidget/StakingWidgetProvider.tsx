@@ -13,7 +13,8 @@ import { useGetUserReputationQuery } from '~gql';
 import {
   useAppContext,
   useColonyContext,
-  useMinAndRequiredStakes,
+  useMinStake,
+  useRequiredStake,
   useUserBalance,
 } from '~hooks';
 import { MotionData, SetStateFn } from '~types';
@@ -109,8 +110,10 @@ const StakingWidgetProvider = ({
       },
     });
 
-  const { minUserStake, requiredStake, loadingStakeData } =
-    useMinAndRequiredStakes(skillRep);
+  const { requiredStake, loadingRequiredStake } = useRequiredStake(skillRep);
+  const { minUserStake, loadingMinStake } = useMinStake(requiredStake);
+  const loadingStakeData = loadingRequiredStake || loadingMinStake;
+
   const userBalance = useUserBalance();
 
   const userActivatedTokens = useMemo(
