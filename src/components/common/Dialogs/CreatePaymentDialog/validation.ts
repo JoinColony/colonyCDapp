@@ -29,7 +29,7 @@ const validationSchema = object()
             displayName: string().nullable(),
           })
           .defined(),
-        walletAddress: string().address().defined(),
+        walletAddress: string().address().required(),
       })
       .default(undefined)
       .required(() => MSG.requiredFieldError),
