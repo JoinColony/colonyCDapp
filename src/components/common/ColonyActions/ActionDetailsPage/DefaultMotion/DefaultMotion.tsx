@@ -1,50 +1,55 @@
 import React from 'react';
 
 import DetailsWidget from '~shared/DetailsWidget';
-
+import LoadingTemplate from '~frame/LoadingTemplate';
 import { useDefaultMotion } from '~hooks';
-import { ColonyAction } from '~types';
-import { motionStateMap } from '~utils/colonyMotions';
 
 import { DefaultActionContent } from '../DefaultAction';
 import MotionHeading from './MotionHeading';
 import MotionPhaseWidget from './MotionPhaseWidget';
 import StakeRequiredBanner from './StakeRequiredBanner';
 
+import { loadingActionMSG } from '../ActionDetailsPage';
+
 import styles from './DefaultMotion.css';
 
 const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion';
 
 interface DefaultMotionProps {
-  actionData: ColonyAction;
+  motionId: string;
 }
 
-const DefaultMotion = ({
-  actionData,
-  actionData: { motionData },
-}: DefaultMotionProps) => {
-  const { colony, showBanner, setShowBanner, showMotionHeading } =
-    useDefaultMotion(motionData);
+const DefaultMotion = ({ motionId }: DefaultMotionProps) => {
+  const {
+    showBanner,
+    setShowBanner,
+    showMotionHeading,
+    updateMotion,
+    updatedMotion,
+    motionState,
+    loadingMotion,
+    colony,
+  } = useDefaultMotion(motionId);
 
-  if (!colony || !motionData) {
-    return null;
+  const showLoading = loadingMotion || !updatedMotion;
+
+  if (showLoading) {
+    return <LoadingTemplate loadingText={loadingActionMSG} />;
   }
-
-  const { motionState } = motionData;
 
   return (
     <div className={styles.main}>
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
       {showBanner && <StakeRequiredBanner isDecision={false} />}
-      {showMotionHeading && (
-        <MotionHeading motionState={motionStateMap[motionState]} />
-      )}
+      {showMotionHeading && <MotionHeading motionState={motionState} />}
       <div className={styles.container}>
-        <DefaultActionContent actionData={actionData} />
+        <DefaultActionContent actionData={updatedMotion} />
         <div className={styles.widgets}>
           <MotionPhaseWidget
-            actionData={actionData}
+            actionData={updatedMotion}
+            motionState={motionState}
             setShowStakeBanner={setShowBanner}
+            updateMotion={updateMotion}
           />
           {/* <div className={styles.details}>
         {motionState === MotionState.Voting && (
@@ -78,7 +83,7 @@ const DefaultMotion = ({
             isDecision={isDecision}
           />
         )} */}
-          <DetailsWidget actionData={actionData} colony={colony} />
+          <DetailsWidget actionData={updatedMotion} colony={colony} />
         </div>
       </div>
     </div>
