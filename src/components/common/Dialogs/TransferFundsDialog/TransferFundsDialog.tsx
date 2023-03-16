@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 import { Id } from '@colony/colony-js';
 import { string, object, number, boolean, InferType } from 'yup';
-import Decimal from 'decimal.js';
 
 import { getDomainOptions } from '~utils/domains';
 import { notNull } from '~utils/arrays';
@@ -12,6 +11,7 @@ import { ActionTypes } from '~redux/index';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 import { WizardDialogType } from '~hooks';
+import { toFinite } from '~utils/lodash';
 
 import TransferFundsDialogForm from './TransferFundsDialogForm';
 import { getTransferFundsDialogPayload } from './helpers';
@@ -48,16 +48,10 @@ const validationSchema = object()
       .when('fromDomain', (fromDomain, schema) =>
         schema.notOneOf([fromDomain], MSG.sameDomain),
       ),
-    amount: string()
-      .required(() => MSG.requiredFieldError)
-      .test(
-        'more-than-zero',
-        () => MSG.amountZero,
-        (value) => {
-          const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
-          return !new Decimal(numberWithoutCommas).isZero();
-        },
-      ),
+    amount: number()
+      .required()
+      .transform((value) => toFinite(value))
+      .moreThan(0, () => MSG.amountZero),
     tokenAddress: string().address().required(),
     annotation: string().max(4000).defined(),
   })
@@ -103,7 +97,7 @@ const TransferFundsDialog = ({
               domainOptions.find((domain) => domain.value !== selectedDomainId)
                 ?.value,
             ) || Id.RootDomain,
-          amount: '',
+          amount: 0,
           tokenAddress: colony?.nativeToken.tokenAddress,
           annotation: '',
           /*
