@@ -322,6 +322,7 @@ type Colony @model {
   version: Int!
   actions: [ColonyAction] @hasMany
   metadata: ColonyMetadata @hasOne(fields: ["id"])
+  roles: [ColonyRole] @hasMany
 }
 
 type ColonyMetadata @model {
@@ -505,4 +506,16 @@ type ColonyAction @model {
   toDomain: Domain @hasOne(fields: ["toDomainId"])
   fundamentalChainId: Int
   newColonyVersion: Int
+}
+
+type ColonyRole @model {
+  id: ID!
+  domain: Domain!
+  user: User!
+  recovery: Boolean
+  root: Boolean
+  arbitration: Boolean
+  architecture: Boolean
+  funding: Boolean
+  administration: Boolean
 }
