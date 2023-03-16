@@ -322,6 +322,9 @@ type Colony @model {
   version: Int!
   actions: [ColonyAction] @hasMany
   metadata: ColonyMetadata @hasOne(fields: ["id"])
+  # @TODO This should not be fetched upfront
+  # It should be retrieved on demand at the earliest occasion it's needed
+  # ie: when opening a UAC modal
   roles: [ColonyRole] @hasMany
 }
 
@@ -505,9 +508,28 @@ type ColonyAction @model {
 }
 
 type ColonyRole @model {
-  id: ID!
+  id: ID! @index # colonyAddress_userAddress_domainNativeId_role
   domain: Domain!
   user: User!
+  recovery: Boolean
+  root: Boolean
+  arbitration: Boolean
+  architecture: Boolean
+  funding: Boolean
+  administration: Boolean
+}
+
+# it's a model, not a type since this is designed to work outside of the main
+# colony model, or colony role model, as, by design it should be only used
+# in very specific cases
+#
+# This should take a snapshot of the user's full roles/permissions at a specific block
+
+type ColonyHistoricRole @model {
+  id: ID!  @index(sortKeyFields: ["blockNumber"]) # colonyAddress_userAddress_domainNativeId_blockNumber_role
+  domain: Domain!
+  user: User!
+  blockNumber: Int!
   recovery: Boolean
   root: Boolean
   arbitration: Boolean
