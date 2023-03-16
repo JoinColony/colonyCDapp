@@ -90,7 +90,7 @@ const HookFormFormattedInputComponent = ({
       {maxButtonParams && <MaxButton handleClick={(e) => handleMaxButtonClick(e, maxButtonParams)} />}
       <Cleave
         {...restInputProps}
-        value={value || ''}
+        value={value}
         name={name}
         key={dynamicCleaveOptionKey}
         /*

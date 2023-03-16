@@ -1,107 +1,184 @@
-import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import React, { useCallback, useState, InputHTMLAttributes, useMemo, RefObject, useEffect } from 'react';
+import { defineMessages } from 'react-intl';
+import Cleave from 'cleave.js/react';
+import { CleaveOptions } from 'cleave.js/options';
+import { ChangeEvent } from 'cleave.js/react/props';
+import Decimal from 'decimal.js';
+
+import Button from '~shared/Button';
 
 import { getMainClasses } from '~utils/css';
+import { isNil } from '~utils/lodash';
 
-import { HookFormInputProps as InputProps } from './Input';
-import FormattedInput from './FormattedInputComponent';
+import { InputComponentAppearance as Appearance } from '../Input';
+import styles from './InputComponent.css';
 
-import styles from '../InputComponent.css';
+const MSG = defineMessages({
+  max: {
+    id: `users.Fileds.Input.InputComponent.max`,
+    defaultMessage: 'Max',
+  },
+});
 
-interface LengthWidgetProps {
-  length: number;
-  maxLength: number;
+type CleaveHTMLInputElement = HTMLInputElement & { rawValue: string };
+
+interface MaxButtonParams {
+  setFieldValue: (field, value) => void;
+  maxAmount: string;
+  fieldName: string;
 }
 
-const LengthWidget = ({ length, maxLength }: LengthWidgetProps) => (
-  <span className={styles.characterCounter}>
-    {length}/{maxLength}
-  </span>
-);
+export interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'form'> {
+  /** Appearance object */
+  appearance?: Appearance;
 
-export interface HookFormInputComponentProps extends Omit<InputProps, 'placeholder'> {
-  placeholder?: string;
-  inputValueLength: number;
+  /** Options for cleave.js formatting (see [this list](https://github.com/nosir/cleave.js/blob/master/doc/options.md)) */
+  formattingOptions?: CleaveOptions;
+
+  /** Input field name (form variable) */
+  name: string;
+
+  /** Pass a ref to the `<input>` element */
+  innerRef?: RefObject<any> | ((ref: HTMLInputElement | null) => void);
+
+  /** Pass params to a max button - implemented only in Cleave options */
+  maxButtonParams?: MaxButtonParams;
+  /** Testing */
+  dataTest?: string;
 }
 
-const displayName = 'HookFormInputComponent';
-
-const getAppearanceObject = (
-  maxLength: HookFormInputComponentProps['maxLength'],
-  maxButtonParams: HookFormInputComponentProps['maxButtonParams'],
-  appearance: HookFormInputComponentProps['appearance'],
-) => {
-  let classes: any = {
-    ...appearance,
-  };
-
-  if (maxLength) {
-    classes = {
-      ...classes,
-      paddingRight: 'extra',
-    };
-  }
-
-  if (maxButtonParams) {
-    classes = {
-      ...classes,
-      paddingLeft: 'extra',
-    };
-  }
-  return classes;
-};
-
-const HookFormInputComponent = ({
+const InputComponent = ({
   appearance,
-  dataTest,
   formattingOptions,
-  inputValueLength: length,
-  maxLength,
-  maxButtonParams,
-  name,
+  innerRef,
   onChange,
-  onBlur,
-  ...restInputProps
-}: HookFormInputComponentProps) => {
-  const { register } = useFormContext();
-  const { onChange: hookFormOnChange, onBlur: hookFormOnBlur, ref } = register(name);
+  placeholder,
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  // Cleave TS defs don't expect/allow these
+  contentEditable,
+  draggable,
+  spellCheck,
+  maxLength,
+  value,
+  maxButtonParams,
+  dataTest,
+  /* eslint-enable @typescript-eslint/no-unused-vars */
+  ...props
+}: Props) => {
+  /* problem with cleave types, that's why `any` */
+  const [cleave, setCleave] = useState<any>(null);
 
-  const classes = getAppearanceObject(maxLength, maxButtonParams, appearance);
-  const className = getMainClasses(classes, styles);
+  const length = value ? value.toString().length : 0;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    hookFormOnChange(e);
-    onChange?.(e);
-  };
+  const handleCleaveChange = useCallback(
+    (evt: ChangeEvent<CleaveHTMLInputElement>): void => {
+      // We are reassigning the value here as cleave just adds a `rawValue` prop
+      if (evt.currentTarget !== undefined) {
+        // eslint-disable-next-line no-param-reassign
+        evt.currentTarget.value = evt.currentTarget.rawValue;
+      } else {
+        // setCleaveValue(evt.currentTarget?.rawValue);
+        // @ts-ignore
+        // eslint-disable-next-line no-param-reassign
+        evt.currentTarget = {
+          // @ts-ignore
+          value: evt.currentTarget?.rawValue as string,
+        };
+      }
+      if (onChange && evt.target.name) onChange(evt);
+    },
+    [onChange],
+  );
+  /*
+   * @NOTE Coerce cleave into handling dynamically changing options
+   * See here for why this isn't yet supported "officially":
+   * https://github.com/nosir/cleave.js/issues/352#issuecomment-447640572
+   */
+  const dynamicCleaveOptionKey = useMemo(() => JSON.stringify(formattingOptions), [formattingOptions]);
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    hookFormOnBlur(e);
-    onBlur?.(e);
-  };
+  useEffect(() => {
+    if (isNil(value) && cleave) {
+      cleave.setRawValue('');
+    }
+  }, [cleave, value]);
 
-  const props = {
-    ...restInputProps,
-    onChange: handleChange,
-    onBlur: handleBlur,
-    'data-test': dataTest,
-    maxLength,
-    name,
-    className,
-    tabIndex: 0,
-  };
+  if (formattingOptions) {
+    if (typeof innerRef === 'object') {
+      console.error('Cleave inner ref must be a function');
+      return null;
+    }
+    return maxButtonParams === undefined ? (
+      <Cleave
+        {...props}
+        value={value || ''}
+        key={dynamicCleaveOptionKey}
+        className={getMainClasses(appearance, styles)}
+        htmlRef={innerRef}
+        options={formattingOptions}
+        onChange={handleCleaveChange}
+        placeholder={placeholder}
+        data-test={dataTest}
+      />
+    ) : (
+      <div className={styles.inputContainer}>
+        <Button
+          className={styles.maxButton}
+          text={MSG.max}
+          onClick={() => {
+            maxButtonParams?.setFieldValue(maxButtonParams?.fieldName, maxButtonParams.maxAmount);
+            const decimalValue = new Decimal(maxButtonParams.maxAmount);
+            if (decimalValue.lt(0.00001) && decimalValue.gt(0)) {
+              cleave?.setRawValue(decimalValue.toSD(5, Decimal.ROUND_DOWN).toNumber());
+            } else {
+              cleave?.setRawValue(new Decimal(maxButtonParams.maxAmount).toDP(5, Decimal.ROUND_DOWN).toNumber());
+            }
+          }}
+          dataTest="inputMaxButton"
+        />
+        <Cleave
+          {...props}
+          key={dynamicCleaveOptionKey}
+          className={getMainClasses(appearance, styles)}
+          htmlRef={innerRef}
+          options={formattingOptions}
+          onChange={handleCleaveChange}
+          placeholder={placeholder}
+          onInit={(cleaveInstance) => setCleave(cleaveInstance)}
+          data-test={dataTest}
+        />
+      </div>
+    );
+  }
 
-  return (
+  return !maxLength ? (
+    <input
+      className={getMainClasses(appearance, styles)}
+      onChange={onChange}
+      placeholder={placeholder}
+      ref={innerRef}
+      value={value || ''}
+      data-test={dataTest}
+      {...props}
+    />
+  ) : (
     <div className={styles.inputContainer}>
-      {formattingOptions ? (
-        <FormattedInput {...props} htmlRef={ref} maxButtonParams={maxButtonParams} options={formattingOptions} />
-      ) : (
-        <input {...props} className={className} ref={ref} />
+      <input
+        className={getMainClasses({ paddingRight: 'extra', ...appearance }, styles)}
+        onChange={onChange}
+        placeholder={placeholder}
+        ref={innerRef}
+        maxLength={maxLength}
+        value={value || ''}
+        data-test={dataTest}
+        {...props}
+      />
+      {maxLength && (
+        <span className={styles.characterCounter}>
+          {length}/{maxLength}
+        </span>
       )}
-      {maxLength && <LengthWidget maxLength={maxLength} length={length} />}
     </div>
   );
 };
 
-HookFormInputComponent.displayName = displayName;
-
-export default HookFormInputComponent;
+export default InputComponent;
