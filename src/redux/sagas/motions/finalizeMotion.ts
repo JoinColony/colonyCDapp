@@ -1,23 +1,16 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
-import { AddressZero } from '@ethersproject/constants';
-import { BigNumber } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  updateMotionValues,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, getColonyManager } from '../utils';
 
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady, transactionUpdateGas } from '../../actionCreators';
+import { transactionReady } from '../../actionCreators';
 
 function* finalizeMotion({
   meta,
@@ -38,17 +31,17 @@ function* finalizeMotion({
       );
     const motion = yield votingReputationClient.getMotion(motionId);
 
-    const networkEstimate = yield provider.estimateGas({
-      from: votingReputationClient.address,
-      to:
-        /*
-         * If the motion target is 0x000... then we pass in the colony's address
-         */
-        motion.altTarget === AddressZero
-          ? colonyClient.address
-          : motion.altTarget,
-      data: motion.action,
-    });
+    // const networkEstimate = yield provider.estimateGas({
+    //   from: votingReputationClient.address,
+    //   to:
+    //     /*
+    //      * If the motion target is 0x000... then we pass in the colony's address
+    //      */
+    //     motion.altTarget === AddressZero
+    //       ? colonyClient.address
+    //       : motion.altTarget,
+    //   data: motion.action,
+    // });
 
     /*
      * Increase the estimate by 100k WEI. This is a flat increase for all networks
@@ -57,9 +50,9 @@ function* finalizeMotion({
      * that requires even more gas, but since we don't use that one yet, there's
      * no reason to account for it just yet
      */
-    const estimate = BigNumber.from(networkEstimate).add(
-      BigNumber.from(100000),
-    );
+    // const estimate = BigNumber.from(networkEstimate).add(
+    //   BigNumber.from(100000),
+    // );
 
     const { finalizeMotionTransaction } = yield createTransactionChannels(
       meta.id,
@@ -91,11 +84,11 @@ function* finalizeMotion({
       ActionTypes.TRANSACTION_CREATED,
     );
 
-    yield put(
-      transactionUpdateGas(finalizeMotionTransaction.id, {
-        gasLimit: estimate.toString(),
-      }),
-    );
+    // yield put(
+    //   transactionUpdateGas(finalizeMotionTransaction.id, {
+    //     gasLimit: estimate.toString(),
+    //   }),
+    // );
 
     yield put(transactionReady(finalizeMotionTransaction.id));
 
@@ -107,7 +100,7 @@ function* finalizeMotion({
     /*
      * Update motion page values
      */
-    yield fork(updateMotionValues, colonyAddress, userAddress, motionId);
+    // yield fork(updateMotionValues, colonyAddress, userAddress, motionId);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_FINALIZE_SUCCESS,
