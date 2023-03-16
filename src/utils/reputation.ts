@@ -44,7 +44,7 @@ export const calculatePercentageReputation = (
 
 export const formatReputationChange = (
   reputationChange: string,
-  decimals: number,
+  decimals: string,
 ) => {
   const value = adjustConvertedValue(
     new Decimal(reputationChange),
