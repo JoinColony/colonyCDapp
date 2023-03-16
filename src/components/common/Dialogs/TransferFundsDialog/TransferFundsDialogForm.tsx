@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
+import moveDecimal from 'move-decimal-point';
+import { BigNumber } from 'ethers';
 
 import { Annotations } from '~shared/Fields';
-
 import {
   ActionDialogProps,
   DialogControls,
   DialogHeading,
   DialogSection,
 } from '~shared/Dialog';
+import { findDomainByNativeId } from '~utils/domains';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import {
@@ -20,10 +22,15 @@ import {
 } from '../Messages';
 import TokenAmountInput from '../TokenAmountInput';
 import DomainFundSelectorSection from '../DomainFundSelectorSection';
-
 import { useTransferFundsDialogStatus } from './helpers';
 
 import styles from './TransferFundsDialogForm.css';
+import {
+  getBalanceForTokenAndDomain,
+  getSelectedToken,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens';
+import { formatText } from '~utils/intl';
 
 const displayName = 'common.TransferFundsDialog.TransferFundsDialogForm';
 
@@ -40,6 +47,10 @@ const MSG = defineMessages({
     id: `${displayName}.cannotCreateMotion`,
     defaultMessage: `Cannot create motions using the Governance v{version} Extension. Please upgrade to a newer version (when available)`,
   },
+  notEnoughBalance: {
+    id: `${displayName}.notEnoughBalance`,
+    defaultMessage: 'Insufficient balance in from team pot',
+  },
 });
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Funding];
@@ -49,17 +60,18 @@ const TransferFundsDialogForm = ({
   colony,
   enabledExtensionData,
 }: ActionDialogProps) => {
-  const { watch } = useFormContext();
-  const { fromDomain: fromDomainId, toDomain: toDomainId } = watch();
+  const { watch, setError, clearErrors } = useFormContext();
+  const {
+    fromDomain: fromDomainId,
+    toDomain: toDomainId,
+    tokenAddress,
+    amount,
+  } = watch();
 
   const colonyDomains = colony?.domains?.items || [];
-  const fromDomain = colonyDomains.find(
-    (domain) => domain?.nativeId === fromDomainId,
-  );
+  const fromDomain = findDomainByNativeId(fromDomainId, colony);
+  const toDomain = findDomainByNativeId(toDomainId, colony);
 
-  const toDomain = colonyDomains.find(
-    (domain) => domain?.nativeId === toDomainId,
-  );
   const {
     userHasPermission,
     disabledInput,
@@ -68,6 +80,30 @@ const TransferFundsDialogForm = ({
     canOnlyForceAction,
     hasRoleInFromDomain,
   } = useTransferFundsDialogStatus(colony, requiredRoles, enabledExtensionData);
+
+  // const cannotCreateMotion =
+  //   votingExtensionVersion ===
+  //     VotingReputationVersion.FuchsiaLightweightSpaceship &&
+  //   !values.forceAction;
+
+  const selectedToken = getSelectedToken(colony, tokenAddress);
+  const fromDomainBalance = getBalanceForTokenAndDomain(
+    colony.balances,
+    tokenAddress,
+    fromDomainId,
+  );
+  const convertedAmount = BigNumber.from(
+    moveDecimal(amount, getTokenDecimalsWithFallback(selectedToken?.decimals)),
+  );
+  const hasEnoughBalance = convertedAmount.lte(fromDomainBalance);
+
+  useEffect(() => {
+    if (!hasEnoughBalance) {
+      setError('amount', { message: formatText(MSG.notEnoughBalance) });
+    } else {
+      clearErrors('amount');
+    }
+  }, [clearErrors, hasEnoughBalance, setError]);
 
   return (
     <>
