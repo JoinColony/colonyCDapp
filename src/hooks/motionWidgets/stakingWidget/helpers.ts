@@ -1,6 +1,7 @@
 import Decimal from 'decimal.js';
 import { BigNumber } from 'ethers';
 import { useRef } from 'react';
+import { Extension, getExtensionHash } from '@colony/colony-js';
 
 import {
   getFinalStake,
@@ -11,12 +12,13 @@ import {
 } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
 import { mapPayload } from '~utils/actions';
 import { Address, MotionData, RemoveTypeName } from '~types';
+import { GetColonyExtensionQuery, useGetColonyExtensionQuery } from '~gql';
 
 export type MotionStakes = MotionData['motionStakes'];
 export type UsersStakes = MotionData['usersStakes'];
 type UserStakes = RemoveTypeName<UsersStakes[0]>;
 
-enum MotionSide {
+export enum MotionSide {
   YAY = 'yay',
   NAY = 'nay',
 }
@@ -171,3 +173,54 @@ export const getMotionStakingTransform = ({
       };
     },
   );
+
+export const getRequiredStake = (
+  totalStakeFraction: string,
+  skillRep: string,
+) =>
+  new Decimal(skillRep)
+    .mul(totalStakeFraction)
+    .div(new Decimal(10).pow(18))
+    .floor();
+
+export const getMinUserStake = (
+  userMinStakeFraction: string,
+  requiredStake: Decimal,
+) => {
+  const userMinStakeFractionPercentage = new Decimal(userMinStakeFraction).div(
+    new Decimal(10).pow(18),
+  );
+
+  /*
+   * The amount of the required stake each user must stake as a minimum.
+   * E.g. if the required stake is 1% of the domain rep, and the min user stake is 1%, then it will be:
+   * 1% of 1% of the total domain rep.
+   */
+  const minUserStake = requiredStake.mul(userMinStakeFractionPercentage);
+
+  return minUserStake;
+};
+
+export const useGetVotingReputationData = (colonyAddress: string) => {
+  const { data: votingReputationData, loading: loadingVotingReputationData } =
+    useGetColonyExtensionQuery({
+      variables: {
+        colonyAddress: colonyAddress ?? '',
+        extensionHash: getExtensionHash(Extension.VotingReputation),
+      },
+    });
+
+  return { votingReputationData, loadingVotingReputationData };
+};
+
+export const getTotalStakeFraction = (
+  votingReputationData?: GetColonyExtensionQuery,
+) =>
+  votingReputationData?.getExtensionByColonyAndHash?.items[0]?.extensionConfig
+    ?.requiredStake ?? '1';
+
+export const getMinUserFraction = (
+  votingReputationData?: GetColonyExtensionQuery,
+) =>
+  votingReputationData?.getExtensionByColonyAndHash?.items[0]?.extensionConfig
+    ?.minimumStake ?? '1';

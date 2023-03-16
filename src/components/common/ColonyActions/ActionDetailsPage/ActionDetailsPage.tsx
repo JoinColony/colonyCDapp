@@ -24,6 +24,8 @@ const MSG = defineMessages({
   },
 });
 
+export const { loading: loadingActionMSG } = MSG;
+
 export type ActionDetailsPageParams = Record<
   'colonyName' | 'transactionHash',
   string
@@ -65,10 +67,11 @@ const ActionDetailsPage = () => {
     );
   }
 
-  if (isMotion) {
+  if (isMotion && action.motionData) {
+    const { motionId } = action.motionData;
     return (
       <Layout isMotion>
-        <DefaultMotion actionData={action} />
+        <DefaultMotion motionId={motionId} />
       </Layout>
     );
   }
