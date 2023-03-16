@@ -9,7 +9,7 @@ export const getCreatePaymentDialogPayload = (colony: Colony, payload: any) => {
   const {
     amount,
     tokenAddress,
-    domainId,
+    fromDomain,
     recipient: { walletAddress },
     annotation: annotationMessage,
     motionDomainId,
@@ -23,10 +23,10 @@ export const getCreatePaymentDialogPayload = (colony: Colony, payload: any) => {
   //   : amount;
 
   return {
-    colonyName: colony?.name || '',
-    colonyAddress: colony?.colonyAddress || '',
+    colonyName: colony.name,
+    colonyAddress: colony.colonyAddress,
     recipientAddress: walletAddress,
-    domainId,
+    domainId: fromDomain,
     singlePayment: {
       tokenAddress,
       amount, // amountWithFees - @NOTE: The contract only sees this amount
