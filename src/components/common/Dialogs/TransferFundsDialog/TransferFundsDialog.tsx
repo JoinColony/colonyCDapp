@@ -39,21 +39,15 @@ type Props = Required<DialogProps> &
     filteredDomainId?: number;
   };
 
-function checkIfSameDomain(value: number) {
-  const oppositeDomain =
-    this.parent[this.path === 'fromDomain' ? 'toDomain' : 'fromDomain'];
-  return oppositeDomain !== value;
-}
-
 const validationSchema = object()
   .shape({
     forceAction: boolean().defined(),
-    fromDomain: number()
-      .required()
-      .test('same-domain', () => MSG.sameDomain, checkIfSameDomain),
+    fromDomain: number().required(),
     toDomain: number()
       .required()
-      .test('same-domain', () => MSG.sameDomain, checkIfSameDomain),
+      .when('fromDomain', (fromDomain, schema) =>
+        schema.notOneOf([fromDomain], MSG.sameDomain),
+      ),
     amount: string()
       .required(() => MSG.requiredFieldError)
       .test(
