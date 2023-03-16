@@ -417,6 +417,7 @@ type MotionData {
   skillRep: String!
   motionId: String!
   isFinalized: Boolean!
+  isClaimed: Boolean!
 }
 
 # This will store the relevant events we care about for a particular colony

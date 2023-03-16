@@ -161,6 +161,7 @@ module.exports = {
           skillRep
           motionId
           isFinalized
+          isClaimed
         }
       }
     }
@@ -327,6 +328,7 @@ module.exports = {
           skillRep
           motionId
           isFinalized
+          isClaimed
         }
       }
     }

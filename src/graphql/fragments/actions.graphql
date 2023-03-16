@@ -67,5 +67,6 @@ fragment MotionData on MotionData {
   skillRep
   motionId
   isFinalized
+  isClaimed
 }
 
