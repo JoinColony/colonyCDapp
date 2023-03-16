@@ -34,11 +34,12 @@ const HookFormInputStatus = ({
   const loadingText = formatMessage({ id: 'status.loading' }, { optionalText: formatText(loadingAnnotation) });
   const text = errorText || statusText;
   const Element = appearance.direction === 'horizontal' ? 'span' : 'p';
+
   return (
     <Element
       className={getMainClasses(appearance, styles, {
         error: !!error && !isLoading,
-        hidden: (!text && !isLoading) || (!!error && !touched),
+        hidden: (!text && !isLoading) || (!!error && touched === false),
       })}
     >
       {isLoading ? loadingText : text}
