@@ -5,10 +5,10 @@ fragment ColonyAction on ColonyAction {
   blockNumber
   initiatorAddress
   initiatorUser {
-    ...UserDisplayFragment
+    ...UserDisplay
   }
   initiatorColony {
-    ...ColonyDisplayFragment
+    ...ColonyDisplay
   }
   initiatorExtension {
     ...ExtensionDisplayFragment
@@ -20,10 +20,10 @@ fragment ColonyAction on ColonyAction {
   }
   recipientAddress
   recipientUser {
-    ...UserDisplayFragment
+    ...UserDisplay
   }
   recipientColony {
-    ...ColonyDisplayFragment
+    ...ColonyDisplay
   }
   recipientExtension {
     ...ExtensionDisplayFragment

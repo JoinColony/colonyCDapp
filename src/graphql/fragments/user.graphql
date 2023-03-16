@@ -15,7 +15,7 @@ fragment User on User {
   }
 }
 
-fragment UserDisplayFragment on User {
+fragment UserDisplay on User {
   walletAddress: id
   name
   profile {
