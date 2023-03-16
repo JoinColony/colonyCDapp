@@ -63,5 +63,4 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
-  }
 }

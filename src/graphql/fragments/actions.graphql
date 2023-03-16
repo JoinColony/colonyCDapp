@@ -55,9 +55,19 @@ fragment MotionData on MotionData {
       }
     }
   }
+  stakerRewards {
+    address
+    rewards {
+      raw {
+        yay
+        nay
+      }
+    }
+  }
   motionState
   rootHash
   skillRep
   motionId
+  isFinalized
 }
 
