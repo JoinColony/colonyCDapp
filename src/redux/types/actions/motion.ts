@@ -2,7 +2,7 @@ import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
-import { Address, DomainColor } from '~types';
+import { Address, DomainColor, RemoveTypeName } from '~types';
 
 import {
   ErrorActionType,
@@ -12,6 +12,7 @@ import {
   MetaWithHistory,
   MetaWithNavigate,
 } from './index';
+import { MotionStakeFragment } from '~gql';
 
 export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
@@ -82,13 +83,25 @@ export type MotionActionTypes =
       {
         userAddress: Address;
         colonyAddress: Address;
+        motionId: string;
+        claims: Array<RemoveTypeName<MotionStakeFragment>>;
+      },
+      Record<string, any>
+    >
+  | ErrorActionType<ActionTypes.MOTION_CLAIM_ERROR, object>
+  | ActionTypeWithMeta<ActionTypes.MOTION_CLAIM_SUCCESS, Record<string, any>>
+  | UniqueActionType<
+      ActionTypes.MOTION_CLAIM_ALL,
+      {
+        userAddress: Address;
+        colonyAddress: Address;
         motionIds: Array<BigNumber>;
       },
       MetaWithHistory<object>
     >
-  | ErrorActionType<ActionTypes.MOTION_CLAIM_ERROR, object>
+  | ErrorActionType<ActionTypes.MOTION_CLAIM_ALL_ERROR, object>
   | ActionTypeWithMeta<
-      ActionTypes.MOTION_CLAIM_SUCCESS,
+      ActionTypes.MOTION_CLAIM_ALL_SUCCESS,
       MetaWithHistory<object>
     >
   | UniqueActionType<
