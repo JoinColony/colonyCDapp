@@ -14,12 +14,11 @@ import {
 import Numeral from '~shared/Numeral';
 import { Tooltip } from '~shared/Popover';
 
-import { ActionTypes } from '~redux/index';
-import { Address } from '~types/index';
+import { ActionTypes } from '~redux';
 import { pipe, mapPayload } from '~utils/actions';
 import { getFormattedTokenValue } from '~utils/tokens';
 import { useAppContext } from '~hooks';
-import { Token } from '~types';
+import { Address, Token } from '~types';
 
 import styles from './TokensTab.css';
 
