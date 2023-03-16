@@ -112,7 +112,7 @@ const HookFormFormattedInputComponent = ({
       )}
       <Cleave
         {...restInputProps}
-        value={value || ''}
+        value={value}
         name={name}
         key={dynamicCleaveOptionKey}
         /*
