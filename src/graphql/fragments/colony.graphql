@@ -40,6 +40,11 @@ fragment Colony on Colony {
   metadata {
     ...ColonyMetadata
   }
+  roles {
+    items {
+      ...ColonyRole
+    }
+  }
 }
 
 fragment ColonyTokensConnection on ModelColonyTokensConnection {
@@ -118,4 +123,20 @@ fragment ChainFundsClaim on ColonyChainFundsClaim {
   createdAtBlock
   createdAt
   amount
+}
+
+fragment ColonyRole on ColonyRole {
+  id
+  domain {
+    ...Domain
+  }
+  user {
+    ...User
+  }
+  recovery
+  root
+  arbitration
+  architecture
+  funding
+  administration
 }
