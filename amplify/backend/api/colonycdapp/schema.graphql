@@ -88,6 +88,12 @@ input UpdateExtensionByColonyAndHashInput {
   extensionConfig: ExtensionConfigurationInput
 }
 
+input UpdateMotionStateInput {
+  motionId: Int!
+  transactionHash: String!
+  colonyAddress: String!
+}
+
 input ExtensionConfigurationInput {
   requiredStake: String!
   minimumStake: String!
@@ -206,6 +212,7 @@ type Mutation {
   updateExtensionByColonyAndHash(
     input: UpdateExtensionByColonyAndHashInput
   ): ColonyExtension @function(name: "updateExtensionByColonyAndHash")
+  updateMotionState(input: UpdateMotionStateInput): ColonyAction @function(name: "updateMotionState")
 }
 
 # Applies to both Users and Colonies
@@ -395,14 +402,21 @@ type UserStake {
   stakes: RawStakes!
 }
 
+type StakerRewards {
+  address: String!
+  rewards: RawStakes!
+}
+
 type MotionData {
   rootHash: String!
   motionStakes: MotionStakes!
   usersStakes: [UserStake!]!
+  stakerRewards: [StakerRewards!]!
   motionState: Int!
   motionDomainId: String!
   skillRep: String!
   motionId: String!
+  isFinalized: Boolean!
 }
 
 # This will store the relevant events we care about for a particular colony

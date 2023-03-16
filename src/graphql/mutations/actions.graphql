@@ -1,0 +1,6 @@
+mutation UpdateMotionState($input: UpdateMotionStateInput!) {
+    updateMotionState(input: $input) {
+        id
+        ...ColonyAction
+    }
+}

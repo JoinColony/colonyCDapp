@@ -61,7 +61,12 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-     "setCurrentVersion": {
+    "setCurrentVersion": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "updateMotionState": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
