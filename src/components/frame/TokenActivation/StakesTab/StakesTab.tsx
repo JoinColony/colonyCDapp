@@ -3,7 +3,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import { Token } from '~types';
-import { MotionStakedEvent } from '~gql';
+import { MotionStakedEvent } from './types';
 import { useAppContext, useColonyContext } from '~hooks';
 
 import { getFormattedTokenValue } from '~utils/tokens';

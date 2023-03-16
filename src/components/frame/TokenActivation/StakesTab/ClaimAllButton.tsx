@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 
 import Button from '~shared/Button';
 import { ActionHookForm as ActionForm } from '~shared/Fields';
-import { MotionStakedEvent } from '~gql';
+import { MotionStakedEvent } from './types';
 import { ActionTypes } from '~redux/actionTypes';
 import { Address } from '~types/index';
 import { mapPayload } from '~utils/actions';

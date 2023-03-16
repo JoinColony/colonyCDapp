@@ -1403,28 +1403,6 @@ export type ModelWatchedColoniesFilterInput = {
   userID?: InputMaybe<ModelIdInput>;
 };
 
-export type MotionStakedEvent = {
-  __typename?: 'MotionStakedEvent';
-  address: Scalars['String'];
-  blockNumber: Scalars['Int'];
-  hash: Scalars['String'];
-  index: Scalars['String'];
-  name: Scalars['String'];
-  signature: Scalars['String'];
-  timestamp: Scalars['Int'];
-  topic: Scalars['String'];
-  values: MotionStakedEventValues;
-};
-
-export type MotionStakedEventValues = {
-  __typename?: 'MotionStakedEventValues';
-  amount: Scalars['String'];
-  motionId: Scalars['String'];
-  stakeAmount: Scalars['String'];
-  staker: Scalars['String'];
-  vote: Scalars['Int'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   createColony?: Maybe<Colony>;

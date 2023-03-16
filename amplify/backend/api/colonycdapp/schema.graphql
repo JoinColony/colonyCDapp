@@ -446,23 +446,3 @@ type ColonyAction @model {
   fundamentalChainId: Int
   newColonyVersion: Int
 }
-
-type MotionStakedEventValues {
-  amount: String!
-  motionId: String!
-  stakeAmount: String!
-  staker: String!
-  vote: Int!
-}
-
-type MotionStakedEvent {
-  address: String!
-  blockNumber: Int!
-  hash: String!
-  index: String!
-  name: String!
-  signature: String!
-  timestamp: Int!
-  topic: String!
-  values: MotionStakedEventValues!
-}
