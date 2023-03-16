@@ -44,6 +44,11 @@ fragment Colony on Colony {
   metadata {
     ...ColonyMetadata
   }
+  roles {
+    items {
+      ...ColonyRole
+    }
+  }
 }
 
 fragment WatchedColony on Colony {
@@ -109,4 +114,20 @@ fragment ChainFundsClaim on ColonyChainFundsClaim {
   createdAtBlock
   createdAt
   amount
+}
+
+fragment ColonyRole on ColonyRole {
+  id
+  domain {
+    ...Domain
+  }
+  user {
+    ...User
+  }
+  recovery
+  root
+  arbitration
+  architecture
+  funding
+  administration
 }
