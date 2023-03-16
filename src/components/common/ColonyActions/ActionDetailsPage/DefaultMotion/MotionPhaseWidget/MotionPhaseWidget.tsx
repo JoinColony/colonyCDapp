@@ -3,6 +3,7 @@ import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import { ColonyAction, SetStateFn } from '~types';
 import StakingWidget, { StakingWidgetProvider } from './StakingWidget';
 import FinalizeMotion from './FinalizeMotion';
+import ClaimMotionStakes from './ClaimMotionStakes';
 import { MotionState } from '~utils/colonyMotions';
 
 const displayName =
@@ -45,6 +46,9 @@ const MotionPhaseWidget = ({
         );
       }
       return null;
+    }
+    case NetworkMotionState.Finalized: {
+      return <ClaimMotionStakes motionData={motionData} />;
     }
 
     default: {
