@@ -2514,7 +2514,7 @@ export type UpdateColonyExtensionInput = {
 
 export type UpdateColonyFundsClaimInput = {
   amount?: InputMaybe<Scalars['String']>;
-  colonyFundsClaimTokenId?: InputMaybe<Scalars['ID']>;
+  colonyFundsClaimTokenId: Scalars['ID'];
   colonyFundsClaimsId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   createdAtBlock?: InputMaybe<Scalars['Int']>;
@@ -2525,7 +2525,7 @@ export type UpdateColonyInput = {
   balances?: InputMaybe<ColonyBalancesInput>;
   chainFundsClaim?: InputMaybe<ColonyChainFundsClaimInput>;
   chainMetadata?: InputMaybe<ChainMetadataInput>;
-  colonyNativeTokenId?: InputMaybe<Scalars['ID']>;
+  colonyNativeTokenId: Scalars['ID'];
   id: Scalars['ID'];
   name?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<ColonyStatusInput>;

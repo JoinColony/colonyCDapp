@@ -288,10 +288,6 @@ type ColonyMetadataChangelog {
   hasAvatarChanged: Boolean!
 }
 
-type ColonyMetadata @model {
-  id: ID
-}
-
 type User @model {
   id: ID! @index(name: "byAddress", queryField: "getUserByAddress") # wallet address
   name: String! @index(name: "byName", queryField: "getUserByName")
@@ -448,6 +444,6 @@ type ColonyAction @model {
   toDomainId: ID
   toDomain: Domain @hasOne(fields: ["toDomainId"])
   fundamentalChainId: Int
-  newColonyVersion: Int 
+  newColonyVersion: Int
   skillId: Int
 }

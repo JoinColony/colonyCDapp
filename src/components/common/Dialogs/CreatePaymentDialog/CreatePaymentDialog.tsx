@@ -14,7 +14,7 @@ import { ActionTypes } from '~redux/index';
 // } from '~data/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
-import { useColonyContext, WizardDialogType } from '~hooks';
+import { WizardDialogType } from '~hooks';
 // import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
 import { notNull } from '~utils/arrays';
 
@@ -41,7 +41,6 @@ const CreatePaymentDialog = ({
   colony,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
-  const { colony } = useColonyContext();
   const navigate = useNavigate();
   const colonyWatchers =
     colony?.watchers?.items.filter(notNull).map((item) => item.user) || [];

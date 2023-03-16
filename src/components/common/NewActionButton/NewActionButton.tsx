@@ -6,7 +6,7 @@ import { defineMessages } from 'react-intl';
 import {
   useAppContext,
   useNaiveBranchingDialogWizard,
-  // useColonyContext,
+  useColonyContext,
 } from '~hooks';
 import DialogButton from '~shared/Button/DialogButton';
 
@@ -45,7 +45,7 @@ interface Props {
 // }
 
 const NewActionButton = ({ filteredDomainId }: Props) => {
-  // const { colony } = useColonyContext();
+  const { colony } = useColonyContext();
   const { user } = useAppContext();
 
   // const { version: networkVersion } = useNetworkContracts();
@@ -70,7 +70,7 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
   // });
 
   const startWizardFlow = useNaiveBranchingDialogWizard(
-    getWizardFlowConfig(filteredDomainId),
+    getWizardFlowConfig(colony, filteredDomainId),
   );
 
   // const oneTxPaymentExtension = data?.processedColony?.installedExtensions.find(

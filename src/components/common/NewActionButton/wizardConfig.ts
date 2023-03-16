@@ -1,3 +1,4 @@
+import { Colony } from '~types';
 import {
   ColonyActionsDialog,
   ManageExpenditureDialog,
@@ -20,7 +21,10 @@ import {
   // AwardDialog,
 } from '../Dialogs';
 
-export const getWizardFlowConfig = (filteredDomainId: number) => [
+export const getWizardFlowConfig = (
+  colony: Colony | undefined,
+  filteredDomainId: number,
+) => [
   {
     component: ColonyActionsDialog,
     props: {
@@ -44,6 +48,7 @@ export const getWizardFlowConfig = (filteredDomainId: number) => [
     props: {
       prevStep: 'common.ManageExpenditureDialog',
       filteredDomainId,
+      colony,
     },
   },
   {

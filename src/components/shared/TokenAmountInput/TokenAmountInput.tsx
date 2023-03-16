@@ -38,7 +38,6 @@ interface Props {
 const TokenAmountInput = ({ colony, disabled }: Props) => {
   const { getValues } = useFormContext();
   const values = getValues();
-  const selectedToken = getSelectedToken(colony, values.tokenAddress);
   const colonyTokens =
     colony?.tokens?.items
       .filter(notNull)
