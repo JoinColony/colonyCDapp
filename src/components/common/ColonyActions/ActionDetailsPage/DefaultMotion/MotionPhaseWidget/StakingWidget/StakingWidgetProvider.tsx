@@ -24,6 +24,7 @@ import {
   getStakedPercentages,
   getUserStakes,
 } from './helpers';
+import { MotionState } from '~utils/colonyMotions';
 
 export interface StakingWidgetContextValues {
   canBeStaked: boolean;
@@ -73,6 +74,7 @@ interface StakingWidgetProviderProps {
   children: ReactNode;
   motionData: MotionData;
   setShowStakeBanner: SetStateFn;
+  setMotionState: SetStateFn;
 }
 
 const StakingWidgetProvider = ({
@@ -86,6 +88,7 @@ const StakingWidgetProvider = ({
     skillRep,
   },
   setShowStakeBanner,
+  setMotionState,
 }: StakingWidgetProviderProps) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
@@ -96,6 +99,7 @@ const StakingWidgetProvider = ({
   // for optimistic ui
   const [usersStakes, setUsersStakes] = useState(usersStakesFromDB);
   const [motionStakes, setMotionStakes] = useState(rawMotionStakes);
+
   const { nay } = motionStakes;
   const totalNAYStakes = useMemo(() => new Decimal(nay), [nay]);
   const { data: userReputation, loading: reputationLoading } =
@@ -149,6 +153,12 @@ const StakingWidgetProvider = ({
     requiredStake,
     motionStakes,
   );
+
+  useEffect(() => {
+    if (remainingToStake.isZero()) {
+      setMotionState(MotionState.Staked);
+    }
+  }, [remainingToStake, setMotionState]);
 
   /*
    * User's reputation in the domain is less than the amount still needed to stake, i.e. their

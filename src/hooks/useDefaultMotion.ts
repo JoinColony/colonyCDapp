@@ -66,6 +66,7 @@ const useDefaultMotion = (motionId?: string) => {
     updateMotion,
     updatedMotion,
     motionState,
+    setMotionState,
     loadingMotion: loadingMotion || userLoading,
   };
 };

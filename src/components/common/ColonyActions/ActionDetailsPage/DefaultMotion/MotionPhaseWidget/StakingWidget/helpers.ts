@@ -17,6 +17,10 @@ export const getFinalStake = (
   remainingToStake: Decimal,
   minUserStake: Decimal,
 ) => {
+  if (sliderAmount === 100) {
+    return remainingToStake.toString();
+  }
+
   const stake = getStakeFromSlider(
     sliderAmount,
     remainingToStake,

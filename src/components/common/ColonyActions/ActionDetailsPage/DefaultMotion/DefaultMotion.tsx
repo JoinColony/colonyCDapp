@@ -27,6 +27,7 @@ const DefaultMotion = ({ motionId }: DefaultMotionProps) => {
     updateMotion,
     updatedMotion,
     motionState,
+    setMotionState,
     loadingMotion,
     colony,
   } = useDefaultMotion(motionId);
@@ -50,6 +51,7 @@ const DefaultMotion = ({ motionId }: DefaultMotionProps) => {
             motionState={motionState}
             setShowStakeBanner={setShowBanner}
             updateMotion={updateMotion}
+            setMotionState={setMotionState}
           />
           {/* <div className={styles.details}>
         {motionState === MotionState.Voting && (

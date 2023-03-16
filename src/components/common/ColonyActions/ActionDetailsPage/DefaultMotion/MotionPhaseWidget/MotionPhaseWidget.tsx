@@ -14,6 +14,7 @@ interface MotionPhaseWidgetProps {
   motionState: MotionState;
   setShowStakeBanner: SetStateFn;
   updateMotion: () => void;
+  setMotionState: SetStateFn;
 }
 
 const MotionPhaseWidget = ({
@@ -21,6 +22,7 @@ const MotionPhaseWidget = ({
   motionState,
   setShowStakeBanner,
   updateMotion,
+  setMotionState,
 }: MotionPhaseWidgetProps) => {
   if (!motionData) {
     return null;
@@ -34,6 +36,7 @@ const MotionPhaseWidget = ({
         <StakingWidgetProvider
           motionData={motionData}
           setShowStakeBanner={setShowStakeBanner}
+          setMotionState={setMotionState}
         >
           <StakingWidget />
         </StakingWidgetProvider>
