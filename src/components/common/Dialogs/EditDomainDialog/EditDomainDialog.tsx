@@ -6,7 +6,6 @@ import { defineMessages } from 'react-intl';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
-import { Domain } from '~types';
 import { ActionTypes } from '~redux';
 import { WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
@@ -61,11 +60,10 @@ const EditDomainDialog = ({
   enabledExtensionData,
 }: Props) => {
   const colonyDomains =
-    colony.domains?.items.filter(
-      (domain) => notNull(domain) && notRootDomain(domain),
-    ) || [];
-  const domainOptions = getDomainOptions(colonyDomains as Domain[]);
-  const selectedDomainId = filteredDomainId || domainOptions[0]?.value;
+    colony.domains?.items.filter(notNull).filter(notRootDomain) || [];
+  const domainOptions = getDomainOptions(colonyDomains);
+  const selectedDomainId =
+    filteredDomainId || Number(domainOptions[0]?.value) || null;
   const selectedDomain = findDomainByNativeId(selectedDomainId, colony);
 
   const [isForce, setIsForce] = useState(false);
@@ -99,8 +97,8 @@ const EditDomainDialog = ({
       transform={transform}
       onSuccess={close}
     >
-      {({ getValues }) => {
-        const forceActionValue = getValues('forceAction');
+      {({ watch }) => {
+        const forceActionValue = watch('forceAction');
         if (forceActionValue !== isForce) {
           setIsForce(forceActionValue);
         }

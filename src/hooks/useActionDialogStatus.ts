@@ -16,9 +16,9 @@ const useActionDialogStatus = (
 ) => {
   const {
     formState: { isValid, isSubmitting },
-    getValues,
+    watch,
   } = useFormContext();
-  const values = getValues();
+  const forceAction = watch('forceAction');
 
   const { isVotingReputationEnabled, votingReputationVersion } =
     enabledExtensionData;
@@ -35,8 +35,7 @@ const useActionDialogStatus = (
   const disabledSubmit = disabledInput || !isValid;
 
   const canCreateMotion =
-    votingReputationVersion !== noMotionsVotingReputationVersion ||
-    values.forceAction;
+    votingReputationVersion !== noMotionsVotingReputationVersion || forceAction;
 
   return {
     userHasPermission,

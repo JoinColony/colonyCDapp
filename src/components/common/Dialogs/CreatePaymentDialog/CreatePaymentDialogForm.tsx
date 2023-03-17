@@ -76,8 +76,8 @@ const CreatePaymentDialogForm = ({
   enabledExtensionData,
 }: // showWhitelistWarning,
 Props) => {
-  const { getValues } = useFormContext();
-  const values = getValues();
+  const { watch } = useFormContext();
+  const recipient = watch('recipient');
 
   const {
     userHasPermission,
@@ -137,13 +137,12 @@ Props) => {
             </p>
           </div>
         )} */}
-        {values.recipient &&
+        {recipient &&
           isConfusing(
-            values.recipient.profile.walletAddress ||
-              values.recipient.profile?.displayName,
+            recipient.profile.walletAddress || recipient.profile?.displayName,
           ) && (
             <ConfusableWarning
-              walletAddress={values.recipient.profile.walletAddress}
+              walletAddress={recipient.profile.walletAddress}
               colonyAddress={colony?.colonyAddress}
             />
           )}

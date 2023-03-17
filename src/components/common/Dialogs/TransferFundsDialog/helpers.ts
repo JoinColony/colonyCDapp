@@ -51,8 +51,8 @@ export const useTransferFundsDialogStatus = (
   enabledExtensionData: EnabledExtensionData,
 ) => {
   const { wallet } = useAppContext();
-  const { getValues } = useFormContext();
-  const { fromDomain: fromDomainId, toDomain: toDomainId } = getValues();
+  const { watch } = useFormContext();
+  const { fromDomain: fromDomainId, toDomain: toDomainId } = watch();
   const fromDomainRoles = useTransformer(getUserRolesForDomain, [
     colony,
     wallet?.address,

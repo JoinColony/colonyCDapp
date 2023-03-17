@@ -62,8 +62,8 @@ const EditDomainDialogForm = ({
   domainOptions,
   enabledExtensionData,
 }: Props) => {
-  const { getValues, reset: resetForm } = useFormContext();
-  const { domainName, domainPurpose, forceAction } = getValues();
+  const { watch, reset: resetForm } = useFormContext();
+  const { domainName, domainPurpose, forceAction } = watch();
   const { userHasPermission, disabledSubmit, disabledInput, canCreateMotion } =
     useEditDomainDialogStatus(colony, requiredRoles, enabledExtensionData);
 

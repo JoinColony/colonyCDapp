@@ -57,7 +57,7 @@ const HookFormSelect = ({
     watch,
     setValue,
   } = useFormContext();
-  const error = errors[name]?.message as Message;
+  const error = errors[name]?.message as Message | undefined;
   const touched = touchedFields[name];
   const value = watch(name);
 

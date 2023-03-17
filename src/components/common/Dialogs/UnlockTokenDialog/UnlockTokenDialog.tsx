@@ -66,8 +66,8 @@ const UnlockTokenDialog = ({
       onSuccess={close}
       transform={transform}
     >
-      {({ getValues }) => {
-        const forceActionValue = getValues('forceAction');
+      {({ watch }) => {
+        const forceActionValue = watch('forceAction');
         if (forceActionValue !== isForce) {
           setIsForce(forceActionValue);
         }

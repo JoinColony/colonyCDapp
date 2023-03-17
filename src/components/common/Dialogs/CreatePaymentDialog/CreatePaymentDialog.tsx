@@ -105,8 +105,8 @@ const CreatePaymentDialog = ({
       transform={transform}
       onSuccess={close}
     >
-      {({ getValues }) => {
-        const forceActionvalue = getValues('forceAction');
+      {({ watch }) => {
+        const forceActionvalue = watch('forceAction');
         if (forceActionvalue !== isForce) {
           setIsForce(forceActionvalue);
         }

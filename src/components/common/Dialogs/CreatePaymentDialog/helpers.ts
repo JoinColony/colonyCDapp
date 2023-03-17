@@ -42,8 +42,8 @@ export const useCreatePaymentDialogStatus = (
   requiredRoles: ColonyRole[],
   enabledExtensionData: EnabledExtensionData,
 ) => {
-  const { getValues } = useFormContext();
-  const values = getValues();
+  const { watch } = useFormContext();
+  const fromDomain = watch('fromDomain');
   const { isOneTxPaymentEnabled } = enabledExtensionData;
   const {
     userHasPermission,
@@ -53,7 +53,7 @@ export const useCreatePaymentDialogStatus = (
   } = useActionDialogStatus(
     colony,
     requiredRoles,
-    [values.fromDomain],
+    [fromDomain],
     enabledExtensionData,
   );
   const disabledInput = defaultDisabledInput || !isOneTxPaymentEnabled;

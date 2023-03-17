@@ -17,10 +17,10 @@ export const useEditDomainDialogStatus = (
   enabledExtensionData: EnabledExtensionData,
 ) => {
   const {
-    getValues,
+    watch,
     formState: { dirtyFields },
   } = useFormContext();
-  const { domainId } = getValues();
+  const domainId = watch('domainId');
   const {
     userHasPermission,
     disabledSubmit: defaultDisabledSubmit,

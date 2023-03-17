@@ -60,7 +60,7 @@ const validationSchema = object()
         'more-than-zero',
         () => MSG.amountZero,
         (value) => {
-          const numberWithoutCommas = (value || '0').replace(/,/g, '');
+          const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
           return !new Decimal(numberWithoutCommas).isZero();
         },
       ),
@@ -122,8 +122,8 @@ const TransferFundsDialog = ({
       onSuccess={close}
       transform={transform}
     >
-      {({ getValues }) => {
-        const forceActionValue = getValues('forceAction');
+      {({ watch }) => {
+        const forceActionValue = watch('forceAction');
         if (forceActionValue !== isForce) {
           setIsForce(forceActionValue);
         }

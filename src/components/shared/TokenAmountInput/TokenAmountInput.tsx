@@ -36,13 +36,13 @@ interface Props {
 }
 
 const TokenAmountInput = ({ colony, disabled }: Props) => {
-  const { getValues } = useFormContext();
-  const values = getValues();
+  const { watch } = useFormContext();
+  const { amount, tokenAddress } = watch();
   const colonyTokens =
     colony?.tokens?.items
       .filter(notNull)
       .map((colonyToken) => colonyToken.token) || [];
-  const selectedToken = getSelectedToken(colony, values.tokenAddress);
+  const selectedToken = getSelectedToken(colony, tokenAddress);
   const formattingOptions = useMemo(
     () => ({
       delimiter: ',',
@@ -70,7 +70,7 @@ const TokenAmountInput = ({ colony, disabled }: Props) => {
           dataTest="paymentAmountInput"
           // @NOTE: If we don't explicitly pass the amount value here, the input will lose their value when a different token is selected.
           // (Most likely to do with formattingOptions changing when the token changes?)
-          value={values.amount}
+          value={amount}
         />
         {/* <NetworkFee colony={colony} networkFeeInverse={networkFeeInverse} customAmountError={customAmountError} /> */}
       </div>
@@ -85,11 +85,11 @@ const TokenAmountInput = ({ colony, disabled }: Props) => {
             disabled={disabled}
           />
         </div>
-        {values.tokenAddress === AddressZero && (
+        {tokenAddress === AddressZero && (
           <div className={styles.tokenAmountUsd}>
             <EthUsd
               // appearance={{ theme: 'grey' }}
-              value={values.amount.replace(/,/g, '') || 0} // @NOTE: Get the amount without commas as BigNumber doesn't like them
+              value={amount.replace(/,/g, '') || 0} // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
             />
           </div>
         )}

@@ -1,12 +1,8 @@
-import React, { useCallback, useMemo, ReactNode } from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import {
-  Appearance,
-  HookFormSelect as Select,
-  SelectOption,
-} from '~shared/Fields';
+import { Appearance, HookFormSelect as Select } from '~shared/Fields';
 import ColorTag from '~shared/ColorTag';
 import { DomainColor } from '~types';
 
@@ -42,8 +38,8 @@ const ColorSelect = ({
   appearance,
   name = 'color',
 }: Props) => {
-  const { getValues } = useFormContext();
-  const activeOption = getValues(name);
+  const { watch } = useFormContext();
+  const activeOption = watch(name);
 
   const onChange = useCallback(
     (color: DomainColor) => {
@@ -55,23 +51,13 @@ const ColorSelect = ({
     [onColorChange],
   );
 
-  const renderActiveOption = useCallback<
-    (option: SelectOption | undefined, label: string) => ReactNode
-  >(() => {
-    return <ColorTag color={activeOption} />;
-  }, [activeOption]);
+  const renderActiveOption = () => <ColorTag color={activeOption} />;
 
-  const options = useMemo<SelectOption[]>(
-    () =>
-      Object.values(DomainColor).map((color) => {
-        return {
-          children: <ColorTag color={color} />,
-          label: color,
-          value: color,
-        };
-      }),
-    [],
-  );
+  const options = Object.values(DomainColor).map((color) => ({
+    children: <ColorTag color={color} />,
+    label: color,
+    value: color,
+  }));
 
   return (
     <div className={styles.main}>

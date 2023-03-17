@@ -89,8 +89,8 @@ const TokenManagementDialog = ({
       onSuccess={handleSuccess}
       onError={handleError}
     >
-      {({ getValues }) => {
-        const forceActionValue = getValues('forceAction');
+      {({ watch }) => {
+        const forceActionValue = watch('forceAction');
         if (forceActionValue !== isForce) {
           setIsForce(forceActionValue);
         }

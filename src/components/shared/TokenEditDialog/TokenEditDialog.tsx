@@ -70,8 +70,8 @@ const TokenEditDialog = ({
   back,
   enabledExtensionData,
 }: Props) => {
-  const { getValues } = useFormContext();
-  const values = getValues();
+  const { watch } = useFormContext();
+  const values = watch();
   const { userHasPermission, disabledInput, disabledSubmit } =
     useActionDialogStatus(
       colony,

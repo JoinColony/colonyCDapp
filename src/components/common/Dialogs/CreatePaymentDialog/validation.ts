@@ -39,7 +39,7 @@ const validationSchema = object()
         'more-than-zero',
         () => MSG.amountZero,
         (value) => {
-          const numberWithoutCommas = (value || '0').replace(/,/g, '');
+          const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
           return !new Decimal(numberWithoutCommas).isZero();
         },
       ),
