@@ -2,6 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { MiniSpinnerLoader } from '~shared/Preloaders';
+import StakingInput from './StakingInput';
 
 import styles from './StakingWidget.css';
 
@@ -32,11 +33,11 @@ const StakingWidget = () => {
     <div className={styles.main} data-test="stakingWidget">
       {/* {isSummary ? (
         <GroupedTotalStake />
-      ) : <> 
-      <SingleTotalStake />
-      <StakingInput />
-        </>)
+      ) : <> */}
+      {/* <SingleTotalStake /> 
+      </>)
         */}
+      <StakingInput />
     </div>
   );
 };
