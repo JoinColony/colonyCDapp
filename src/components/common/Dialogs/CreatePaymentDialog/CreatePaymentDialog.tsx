@@ -48,13 +48,9 @@ const CreatePaymentDialog = ({
   //   colonyAddress: colony.colonyAddress,
   // });
 
-  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
-
-    return !isForce // && isVotingExtensionEnabled
-      ? ActionTypes[`MOTION_EXPENDITURE_PAYMENT${actionEnd}`]
-      : ActionTypes[`ACTION_EXPENDITURE_PAYMENT${actionEnd}`];
-  };
+  const formAction = !isForce // && isVotingExtensionEnabled
+    ? ActionTypes.MOTION_EXPENDITURE_PAYMENT
+    : ActionTypes.ACTION_EXPENDITURE_PAYMENT;
 
   // const { data: colonyMembers } = useMembersSubscription({
   //   variables: { colonyAddress },
@@ -112,9 +108,7 @@ const CreatePaymentDialog = ({
             : filteredDomainId,
       }}
       validationSchema={validationSchema}
-      submit={getFormAction('SUBMIT')}
-      error={getFormAction('ERROR')}
-      success={getFormAction('SUCCESS')}
+      actionType={formAction}
       transform={transform}
       onSuccess={close}
     >
