@@ -83,13 +83,9 @@ const TransferFundsDialog = ({
   //   colonyAddress: colony.colonyAddress,
   // });
 
-  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
-
-    return !isForce // && isVotingExtensionEnabled
-      ? ActionTypes[`MOTION_MOVE_FUNDS${actionEnd}`]
-      : ActionTypes[`ACTION_MOVE_FUNDS${actionEnd}`];
-  };
+  const formAction = !isForce // && isVotingExtensionEnabled
+    ? ActionTypes.MOTION_MOVE_FUNDS
+    : ActionTypes.ACTION_MOVE_FUNDS;
 
   const colonyDomains = colony?.domains?.items.filter(notNull) || [];
   const domainOptions = getDomainOptions(colonyDomains);
@@ -119,9 +115,7 @@ const TransferFundsDialog = ({
          */
       }}
       validationSchema={validationSchema}
-      submit={getFormAction('SUBMIT')}
-      error={getFormAction('ERROR')}
-      success={getFormAction('SUCCESS')}
+      actionType={formAction}
       onSuccess={close}
       transform={transform}
     >

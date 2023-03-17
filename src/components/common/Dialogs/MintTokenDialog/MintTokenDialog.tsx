@@ -64,13 +64,9 @@ const MintTokenDialog = ({
   //   colonyAddress: colony.colonyAddress,
   // });
 
-  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
-
-    return !isForce // && isVotingExtensionEnabled
-      ? ActionTypes[`ROOT_MOTION${actionEnd}`]
-      : ActionTypes[`ACTION_MINT_TOKENS${actionEnd}`];
-  };
+  const formAction = !isForce // && isVotingExtensionEnabled
+    ? ActionTypes.ROOT_MOTION
+    : ActionTypes.ACTION_MINT_TOKENS;
 
   const transform = pipe(
     mapPayload((payload) => getMintTokenDialogPayload(colony, payload)),
@@ -90,9 +86,7 @@ const MintTokenDialog = ({
          */
       }}
       validationSchema={validationSchema}
-      submit={getFormAction('SUBMIT')}
-      error={getFormAction('ERROR')}
-      success={getFormAction('SUCCESS')}
+      actionType={formAction}
       onSuccess={close}
       transform={transform}
     >
