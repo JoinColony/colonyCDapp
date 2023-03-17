@@ -12,6 +12,7 @@ declare namespace DefaultMotionCssNamespace {
     sources: string;
     sourcesContent: string;
     version: string;
+    widgets: string;
   }
 }
 

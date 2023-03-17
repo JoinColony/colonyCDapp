@@ -12,6 +12,13 @@
   composes: container from DefaultAction;
 }
 
+.widgets {
+  display: flex;
+  flex-direction: column;
+  grid-area: details;
+  row-gap: 100px;
+}
+
 @media screen and query700 {
   .main {
     padding-top: 65px;
