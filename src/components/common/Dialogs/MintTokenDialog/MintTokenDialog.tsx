@@ -74,38 +74,38 @@ const MintTokenDialog = ({
   );
 
   return (
-    <Form<FormValues>
-      defaultValues={{
-        forceAction: false,
-        annotation: '',
-        mintAmount: '',
-        /*
-         * @NOTE That since this a root motion, and we don't actually make use
-         * of the motion domain selected (it's disabled), we don't need to actually
-         * pass the value over to the motion, since it will always be 1
-         */
-      }}
-      validationSchema={validationSchema}
-      actionType={actionType}
-      onSuccess={close}
-      transform={transform}
-    >
-      {({ watch }) => {
-        const forceActionValue = watch('forceAction');
-        if (forceActionValue !== isForce) {
-          setIsForce(forceActionValue);
-        }
-        return (
-          <Dialog cancel={cancel}>
+    <Dialog cancel={cancel}>
+      <Form<FormValues>
+        defaultValues={{
+          forceAction: false,
+          annotation: '',
+          mintAmount: '',
+          /*
+           * @NOTE That since this a root motion, and we don't actually make use
+           * of the motion domain selected (it's disabled), we don't need to actually
+           * pass the value over to the motion, since it will always be 1
+           */
+        }}
+        validationSchema={validationSchema}
+        actionType={actionType}
+        onSuccess={close}
+        transform={transform}
+      >
+        {({ watch }) => {
+          const forceActionValue = watch('forceAction');
+          if (forceActionValue !== isForce) {
+            setIsForce(forceActionValue);
+          }
+          return (
             <MintTokenDialogForm
               colony={colony}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
               enabledExtensionData={enabledExtensionData}
             />
-          </Dialog>
-        );
-      }}
-    </Form>
+          );
+        }}
+      </Form>
+    </Dialog>
   );
 };
 

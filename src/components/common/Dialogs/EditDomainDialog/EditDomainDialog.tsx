@@ -82,38 +82,38 @@ const EditDomainDialog = ({
   );
 
   return (
-    <Form<FormValues>
-      defaultValues={{
-        forceAction: false,
-        domainName: selectedDomain?.metadata?.name || '',
-        domainColor: selectedDomain?.metadata?.color || DomainColor.LightPink,
-        domainPurpose: selectedDomain?.metadata?.description || '',
-        annotationMessage: '',
-        domainId: selectedDomain?.nativeId,
-        motionDomainId: selectedDomain?.nativeId,
-      }}
-      actionType={actionType}
-      validationSchema={validationSchema}
-      transform={transform}
-      onSuccess={close}
-    >
-      {({ watch }) => {
-        const forceActionValue = watch('forceAction');
-        if (forceActionValue !== isForce) {
-          setIsForce(forceActionValue);
-        }
-        return (
-          <Dialog cancel={cancel}>
+    <Dialog cancel={cancel}>
+      <Form<FormValues>
+        defaultValues={{
+          forceAction: false,
+          domainName: selectedDomain?.metadata?.name || '',
+          domainColor: selectedDomain?.metadata?.color || DomainColor.LightPink,
+          domainPurpose: selectedDomain?.metadata?.description || '',
+          annotationMessage: '',
+          domainId: selectedDomain?.nativeId,
+          motionDomainId: selectedDomain?.nativeId,
+        }}
+        actionType={actionType}
+        validationSchema={validationSchema}
+        transform={transform}
+        onSuccess={close}
+      >
+        {({ watch }) => {
+          const forceActionValue = watch('forceAction');
+          if (forceActionValue !== isForce) {
+            setIsForce(forceActionValue);
+          }
+          return (
             <EditDomainDialogForm
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
               colony={colony}
               domainOptions={domainOptions}
               enabledExtensionData={enabledExtensionData}
             />
-          </Dialog>
-        );
-      }}
-    </Form>
+          );
+        }}
+      </Form>
+    </Dialog>
   );
 };
 

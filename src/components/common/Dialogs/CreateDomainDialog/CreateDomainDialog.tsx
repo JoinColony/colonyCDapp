@@ -64,36 +64,36 @@ const CreateDomainDialog = ({
   );
 
   return (
-    <Form<FormValues>
-      defaultValues={{
-        forceAction: false,
-        teamName: '',
-        domainColor: DomainColor.LightPink,
-        domainPurpose: '',
-        annotationMessage: '',
-        // motionDomainId: Id.RootDomain,
-      }}
-      actionType={actionType}
-      validationSchema={validationSchema}
-      transform={transform}
-      onSuccess={close}
-    >
-      {({ watch }) => {
-        const forceActionValue = watch('forceAction');
-        if (forceActionValue !== isForce) {
-          setIsForce(forceActionValue);
-        }
-        return (
-          <Dialog cancel={cancel}>
+    <Dialog cancel={cancel}>
+      <Form<FormValues>
+        defaultValues={{
+          forceAction: false,
+          teamName: '',
+          domainColor: DomainColor.LightPink,
+          domainPurpose: '',
+          annotationMessage: '',
+          // motionDomainId: Id.RootDomain,
+        }}
+        actionType={actionType}
+        validationSchema={validationSchema}
+        transform={transform}
+        onSuccess={close}
+      >
+        {({ watch }) => {
+          const forceActionValue = watch('forceAction');
+          if (forceActionValue !== isForce) {
+            setIsForce(forceActionValue);
+          }
+          return (
             <CreateDomainDialogForm
               back={prevStep ? () => callStep(prevStep) : undefined}
               colony={colony}
               enabledExtensionData={enabledExtensionData}
             />
-          </Dialog>
-        );
-      }}
-    </Form>
+          );
+        }}
+      </Form>
+    </Dialog>
   );
 };
 

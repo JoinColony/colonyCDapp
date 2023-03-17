@@ -90,29 +90,29 @@ const CreatePaymentDialog = ({
   );
 
   return (
-    <Form<FormValues>
-      defaultValues={{
-        forceAction: false,
-        fromDomain: filteredDomainId || Id.RootDomain,
-        recipient: undefined,
-        amount: '',
-        tokenAddress: colony?.nativeToken.tokenAddress,
-        annotation: '',
-        motionDomainId: filteredDomainId || Id.RootDomain,
-      }}
-      validationSchema={validationSchema}
-      actionType={actionType}
-      transform={transform}
-      onSuccess={close}
-    >
-      {({ watch }) => {
-        const forceActionvalue = watch('forceAction');
-        if (forceActionvalue !== isForce) {
-          setIsForce(forceActionvalue);
-        }
+    <Dialog cancel={cancel}>
+      <Form<FormValues>
+        defaultValues={{
+          forceAction: false,
+          fromDomain: filteredDomainId || Id.RootDomain,
+          recipient: undefined,
+          amount: '',
+          tokenAddress: colony?.nativeToken.tokenAddress,
+          annotation: '',
+          motionDomainId: filteredDomainId || Id.RootDomain,
+        }}
+        validationSchema={validationSchema}
+        actionType={actionType}
+        transform={transform}
+        onSuccess={close}
+      >
+        {({ watch }) => {
+          const forceActionvalue = watch('forceAction');
+          if (forceActionvalue !== isForce) {
+            setIsForce(forceActionvalue);
+          }
 
-        return (
-          <Dialog cancel={cancel}>
+          return (
             <DialogForm
               back={() => callStep(prevStep)}
               verifiedUsers={
@@ -124,10 +124,10 @@ const CreatePaymentDialog = ({
               colony={colony}
               enabledExtensionData={enabledExtensionData}
             />
-          </Dialog>
-        );
-      }}
-    </Form>
+          );
+        }}
+      </Form>
+    </Dialog>
   );
 };
 
