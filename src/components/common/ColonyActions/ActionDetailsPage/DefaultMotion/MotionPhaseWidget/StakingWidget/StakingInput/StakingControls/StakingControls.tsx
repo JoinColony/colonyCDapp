@@ -1,4 +1,5 @@
 import React from 'react';
+import StakeButton from './StakeButton';
 
 import styles from './StakingControls.css';
 
@@ -16,7 +17,9 @@ const StakingControls = () => {
           onClick={() => setIsSummary(true)}
         />
       )}
-      <StakeButton stake={stake} />
+      */}
+      <StakeButton />
+      {/*
       {showObjectButton && <ObjectButton />}
       {showActivateButton && <ActivateButton />}
       */}
