@@ -38,19 +38,16 @@ const MSG = defineMessages({
 interface Props {
   colony: Colony;
   customAmountError: string | MessageDescriptor | undefined;
-  networkFeeInverse: string | undefined;
+  networkInverseFee: string | undefined;
 }
 
-const NetworkFee = ({
-  colony,
-  networkFeeInverse,
-  customAmountError,
-}: Props) => {
+const NetworkFee = ({ colony, networkInverseFee }: Props) => {
   const { watch } = useFormContext();
   const { tokenAddress, amount } = watch();
   const selectedToken = getSelectedToken(colony, tokenAddress);
+  const amountWithoutCommas = amount.replace(/,/g, ''); // @TODO: Remove this once a fix for the raw value of the inputs having commas is implemented.
 
-  if (!networkFeeInverse || customAmountError || new Decimal(amount).isZero()) {
+  if (!networkInverseFee || new Decimal(amountWithoutCommas || 0).isZero()) {
     return null;
   }
 
@@ -67,8 +64,8 @@ const NetworkFee = ({
               // }}
               value={
                 calculateFee(
-                  amount,
-                  networkFeeInverse,
+                  amountWithoutCommas,
+                  networkInverseFee,
                   getTokenDecimalsWithFallback(selectedToken?.decimals),
                 ).feesInWei
               }

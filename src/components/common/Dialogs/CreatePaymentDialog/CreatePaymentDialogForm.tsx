@@ -94,7 +94,6 @@ Props) => {
     ...user,
     id: user.walletAddress,
   }));
-
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>

@@ -58,6 +58,7 @@ export { default as useColonyFundsClaims } from './useColonyFundsClaims';
 export { default as useCurrentSelectedToken } from './useCurrentSelectedToken';
 export { default as useTokenTotalBalance } from './useTokenTotalBalance';
 export { default as useColonyContractVersion } from './useColonyContractVersion';
+export { default as useNetworkInverseFee } from './useNetworkInverseFee';
 
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously
