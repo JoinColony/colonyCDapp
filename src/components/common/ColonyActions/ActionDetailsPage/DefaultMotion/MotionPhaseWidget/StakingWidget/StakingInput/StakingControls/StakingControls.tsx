@@ -1,4 +1,6 @@
 import React from 'react';
+
+import ObjectButton from './ObjectButton';
 import StakeButton from './StakeButton';
 
 import styles from './StakingControls.css';
@@ -19,8 +21,8 @@ const StakingControls = () => {
       )}
       */}
       <StakeButton />
+      <ObjectButton />
       {/*
-      {showObjectButton && <ObjectButton />}
       {showActivateButton && <ActivateButton />}
       */}
     </div>
