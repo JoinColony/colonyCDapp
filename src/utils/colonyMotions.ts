@@ -26,6 +26,18 @@ export enum MotionState {
   Forced = 'Forced',
 }
 
+// Todo: port full mapping logic
+export const motionStateMap = {
+  // 0: MotionState.Null,
+  1: MotionState.Staking,
+  2: MotionState.Voting,
+  3: MotionState.Reveal,
+  4: MotionState.Escalation,
+  // 5: MotionState.Finalizable,
+  // 6: MotionState.Finalized,
+  7: MotionState.Failed,
+};
+
 export const getMotionRequiredStake = (
   skillRep: BigNumber,
   totalStakeFraction: BigNumber,

@@ -1,13 +1,15 @@
 import React from 'react';
+import { MotionState } from '@colony/colony-js';
 
 import DetailsWidget from '~shared/DetailsWidget';
 
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { ColonyAction } from '~types';
-import { MotionState } from '~utils/colonyMotions';
+import { motionStateMap } from '~utils/colonyMotions';
 
 import { DefaultActionContent } from '../DefaultAction';
 import MotionHeading from './MotionHeading';
+import MotionPhaseWidget from './MotionPhaseWidget';
 import StakeRequiredBanner from './StakeRequiredBanner';
 
 import styles from './DefaultMotion.css';
@@ -27,12 +29,7 @@ const DefaultMotion = ({ actionData }: DefaultMotionProps) => {
     return null;
   }
 
-  const motionState = MotionState.Voting as MotionState;
-
-  //   const isStakingPhase =
-  //     motionState === MotionState.Staking ||
-  //     motionState === MotionState.Staked ||
-  //     motionState === MotionState.Objection;
+  const motionState = MotionState.Staking;
 
   const showBanner = true; // !shouldDisplayMotionInActionsList(currentStake, requiredStake);
 
@@ -40,18 +37,14 @@ const DefaultMotion = ({ actionData }: DefaultMotionProps) => {
     <div className={styles.main}>
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
       {showBanner && <StakeRequiredBanner isDecision={false} />}
-      {isVotingReputationEnabled && <MotionHeading motionState={motionState} />}
+      {isVotingReputationEnabled && (
+        <MotionHeading motionState={motionStateMap[motionState]} />
+      )}
       <div className={styles.container}>
         <DefaultActionContent actionData={actionData} />
-        {/* {isStakingPhase && (
-          <StakingWidgetFlow
-            motionId={motionId}
-            colony={colony}
-            scrollToRef={bottomElementRef}
-            isDecision={isDecision}
-          />
-        )} */}
-        {/* <div className={styles.details}>
+        <div className={styles.widgets}>
+          <MotionPhaseWidget motionState={motionState} />
+          {/* <div className={styles.details}>
         {motionState === MotionState.Voting && (
           <VoteWidget
             colony={colony}
@@ -83,7 +76,8 @@ const DefaultMotion = ({ actionData }: DefaultMotionProps) => {
             isDecision={isDecision}
           />
         )} */}
-        <DetailsWidget actionData={actionData} colony={colony} />
+          <DetailsWidget actionData={actionData} colony={colony} />
+        </div>
       </div>
     </div>
   );
