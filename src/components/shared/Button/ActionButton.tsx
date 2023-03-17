@@ -1,22 +1,15 @@
 import React, { useState, ElementType } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
-import { ActionTransformFnType } from '~utils/actions';
+import { ActionTransformFnType, getFormAction } from '~utils/actions';
 import { useAsyncFunction, useMounted } from '~hooks';
 import DefaultButton from '~shared/Button';
 import { ActionTypes } from '~redux';
 
 import { Props as DefaultButtonProps } from './Button';
 
-const getFormAction = (
-  action: ActionTypes,
-  actionType: 'ERROR' | 'SUCCESS',
-) => {
-  const actionEnd = `_${actionType}`;
-  return `${action}${actionEnd}`;
-};
-
 interface Props extends DefaultButtonProps {
+  /** The base (i.e. submit) redux action type */
   actionType: ActionTypes;
   button?: ElementType;
   confirmText?: any;
