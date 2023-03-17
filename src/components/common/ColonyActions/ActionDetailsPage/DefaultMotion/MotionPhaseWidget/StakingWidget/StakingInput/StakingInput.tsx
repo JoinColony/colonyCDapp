@@ -6,6 +6,7 @@ import { ActionTypes } from '~redux';
 
 import StakingControls from './StakingControls';
 import StakingSliderDescription from './StakingSliderDescription';
+import StakingSliderAnnotation from './StakingSliderAnnotation';
 import StakingWidgetSlider from './StakingWidgetSlider';
 
 const displayName =
@@ -37,13 +38,7 @@ const StakingInput = () => {
       // onSuccess={handleSuccess}
     >
       <StakingSliderDescription isObjection={false} />
-      {/*
-      {showAnnotation && (
-        <SliderAnnotation
-          enoughTokens={enoughTokens}
-          requiredStakeMessageProps={requiredStakeMessageProps}
-        />
-      )} */}
+      <StakingSliderAnnotation />
       <StakingWidgetSlider />
       {/*
       {showValidationMessage && (
