@@ -4,7 +4,6 @@ import { ColonyRole } from '@colony/colony-js';
 import { isConfusing } from '@colony/unicode-confusables-noascii';
 import { useFormContext } from 'react-hook-form';
 
-import NoPermissionMessage from '~shared/NoPermissionMessage';
 import ConfusableWarning from '~shared/ConfusableWarning';
 import {
   ActionDialogProps,
@@ -16,13 +15,17 @@ import { Annotations } from '~shared/Fields';
 import SingleUserPicker, {
   filterUserSelection,
 } from '~shared/SingleUserPicker';
-import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import DomainFundSelectorSection from '~shared/DomainFundSelectorSection';
-import TokenAmountInput from '~shared/TokenAmountInput';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
 
 import { ColonyWatcher } from '~types';
+
+import DomainFundSelectorSection from '../DomainFundSelectorSection';
+import TokenAmountInput from '../TokenAmountInput';
+import {
+  NoPermissionMessage,
+  CannotCreateMotionMessage,
+  PermissionRequiredInfo,
+} from '../Messages';
 
 import { useCreatePaymentDialogStatus } from './helpers';
 

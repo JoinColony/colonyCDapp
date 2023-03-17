@@ -10,15 +10,18 @@ import {
   DialogHeading,
   DialogControls,
 } from '~shared/Dialog';
-import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import NoPermissionMessage from '~shared/NoPermissionMessage';
 import { Annotations } from '~shared/Fields';
-import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import { useActionDialogStatus } from '~hooks';
 
 import { TOKEN_UNLOCK_INFO } from '~constants/externalUrls';
+
+import {
+  NoPermissionMessage,
+  CannotCreateMotionMessage,
+  PermissionRequiredInfo,
+} from '../Messages';
 
 import styles from './UnlockTokenForm.css';
 

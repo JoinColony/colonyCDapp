@@ -3,19 +3,23 @@ import { defineMessages } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import DialogSection from '~shared/Dialog/DialogSection';
 import { Annotations } from '~shared/Fields';
-import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import NoPermissionMessage from '~shared/NoPermissionMessage';
-import TokenAmountInput from '~shared/TokenAmountInput';
-import DomainFundSelectorSection from '~shared/DomainFundSelectorSection';
-import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
+
 import {
   ActionDialogProps,
   DialogControls,
   DialogHeading,
+  DialogSection,
 } from '~shared/Dialog';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
+
+import {
+  NoPermissionMessage,
+  CannotCreateMotionMessage,
+  PermissionRequiredInfo,
+} from '../Messages';
+import TokenAmountInput from '../TokenAmountInput';
+import DomainFundSelectorSection from '../DomainFundSelectorSection';
 
 import { useTransferFundsDialogStatus } from './helpers';
 

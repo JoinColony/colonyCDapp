@@ -8,7 +8,8 @@ import { Token } from '~types';
 
 import styles from './TokenItem.css';
 
-const displayName = 'TokenEditDialog.TokenItem';
+const displayName =
+  'common.TokenManagementDialog.TokenManagementDialogForm.TokenItem';
 
 const MSG = defineMessages({
   unknownToken: {

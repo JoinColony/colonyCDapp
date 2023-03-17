@@ -5,12 +5,12 @@ import { Id } from '@colony/colony-js';
 import { string, object, number, boolean, InferType } from 'yup';
 import Decimal from 'decimal.js';
 
+import { getDomainOptions } from '~utils/domains';
 import { notNull } from '~utils/arrays';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
-import { getDomainOptions } from '~shared/DomainFundSelectorSection/helpers';
 import { WizardDialogType } from '~hooks';
 
 import TransferFundsDialogForm from './TransferFundsDialogForm';

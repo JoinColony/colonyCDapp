@@ -9,7 +9,6 @@ import {
   DialogSection,
 } from '~shared/Dialog';
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
-import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import {
   useActionDialogStatus,
@@ -17,11 +16,15 @@ import {
   // useAppContext,
 } from '~hooks';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import NoPermissionMessage from '~shared/NoPermissionMessage';
-import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
 
 // import { getAllUserRoles } from '~redux/transformers';
 // import { hasRoot } from '~utils/checks';
+
+import {
+  NoPermissionMessage,
+  CannotCreateMotionMessage,
+  PermissionRequiredInfo,
+} from '../Messages';
 
 import styles from './MintTokenDialogForm.css';
 

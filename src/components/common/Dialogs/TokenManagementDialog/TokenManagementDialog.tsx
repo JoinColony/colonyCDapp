@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { string, object, array, boolean, InferType } from 'yup';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
-import TokenEditDialog from '~shared/TokenEditDialog';
+
 import { ActionHookForm as Form } from '~shared/Fields';
 
 import { ActionTypes } from '~redux/index';
@@ -13,6 +13,7 @@ import { WizardDialogType } from '~hooks';
 import { formatText } from '~utils/intl';
 
 import { getTokenManagementDialogPayload } from './helpers';
+import TokenManagementDialogForm from './TokenManagementDialogForm';
 
 const displayName = 'common.TokenManagementDialog';
 
@@ -96,7 +97,7 @@ const TokenManagementDialog = ({
             setIsForce(forceActionValue);
           }
           return (
-            <TokenEditDialog
+            <TokenManagementDialogForm
               colony={colony}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
               close={close}

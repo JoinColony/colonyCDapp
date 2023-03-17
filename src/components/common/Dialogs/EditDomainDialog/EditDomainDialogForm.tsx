@@ -14,14 +14,17 @@ import {
   Annotations,
   SelectOption,
 } from '~shared/Fields';
-import NoPermissionMessage from '~shared/NoPermissionMessage';
-import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import DomainNameAndColorInputGroup from '~shared/DomainNameAndColorInputGroup';
-import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import { DomainColor } from '~gql';
 import { findDomainByNativeId } from '~utils/domains';
+
+import DomainNameAndColorInputGroup from '../DomainNameAndColorInputGroup';
+import {
+  NoPermissionMessage,
+  CannotCreateMotionMessage,
+  PermissionRequiredInfo,
+} from '../Messages';
 
 import { useEditDomainDialogStatus } from './helpers';
 

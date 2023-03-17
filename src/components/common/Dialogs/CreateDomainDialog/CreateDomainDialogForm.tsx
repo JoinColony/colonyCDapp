@@ -9,12 +9,16 @@ import {
   DialogSection,
 } from '~shared/Dialog';
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
-import NoPermissionMessage from '~shared/NoPermissionMessage';
-import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
-import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import DomainNameAndColorInputGroup from '~shared/DomainNameAndColorInputGroup';
+
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import { useActionDialogStatus } from '~hooks';
+
+import DomainNameAndColorInputGroup from '../DomainNameAndColorInputGroup';
+import {
+  NoPermissionMessage,
+  CannotCreateMotionMessage,
+  PermissionRequiredInfo,
+} from '../Messages';
 
 const displayName = 'common.CreateDomainDialog.CreateDomainDialogForm';
 

@@ -13,8 +13,6 @@ import {
 import { Annotations } from '~shared/Fields';
 import { Heading4 } from '~shared/Heading';
 import Paragraph from '~shared/Paragraph';
-import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import NoPermissionMessage from '~shared/NoPermissionMessage';
 import { TokenSelector } from '~common/CreateColonyWizard';
 import { TokenManagementDialogFormValues } from '~common/Dialogs';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
@@ -22,12 +20,14 @@ import { TokenManagementDialogFormValues } from '~common/Dialogs';
 import { useActionDialogStatus } from '~hooks';
 import { isEqual } from '~utils/lodash';
 
+import { NoPermissionMessage, PermissionRequiredInfo } from '../../Messages';
+
 import TokenItem from './TokenItem';
 import getTokenList from './getTokenList';
 
-import styles from './TokenEditDialog.css';
+import styles from './TokenManagementDialogForm.css';
 
-const displayName = 'TokenEditDialog';
+const displayName = 'common.TokenManagementDialog.TokenManagementDialogForm';
 
 const MSG = defineMessages({
   title: {
@@ -63,7 +63,7 @@ interface Props extends ActionDialogProps {
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 
-const TokenEditDialog = ({
+const TokenManagementDialogForm = ({
   close,
   colony,
   colony: { tokens, nativeToken },
@@ -177,6 +177,6 @@ const TokenEditDialog = ({
   );
 };
 
-TokenEditDialog.displayName = displayName;
+TokenManagementDialogForm.displayName = displayName;
 
-export default TokenEditDialog;
+export default TokenManagementDialogForm;

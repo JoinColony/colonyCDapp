@@ -10,9 +10,8 @@ import { ActionTypes } from '~redux';
 import { WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 import { DomainColor } from '~gql';
-import { findDomainByNativeId } from '~utils/domains';
+import { findDomainByNativeId, getDomainOptions } from '~utils/domains';
 import { notNull } from '~utils/arrays';
-import { getDomainOptions } from '~shared/DomainFundSelectorSection/helpers';
 
 import EditDomainDialogForm from './EditDomainDialogForm';
 import { getEditDomainDialogPayload, notRootDomain } from './helpers';

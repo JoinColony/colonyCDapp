@@ -1,4 +1,6 @@
-import { Colony } from '~types';
+import { Colony, Domain } from '~types';
+
+import { sortBy } from './lodash';
 import { notNull } from './arrays';
 
 export const findDomainByNativeId = (
@@ -23,3 +25,12 @@ export const getDomainDatabaseId = (
 ) => {
   return `${colonyAddress}_${nativeDomainId}`;
 };
+
+export const getDomainOptions = (colonyDomains: Domain[]) =>
+  sortBy(
+    colonyDomains.map((domain) => ({
+      value: domain?.nativeId || '',
+      label: domain?.metadata?.name || `Domain #${domain?.nativeId}`,
+    })) || [],
+    ['value'],
+  );
