@@ -1,11 +1,12 @@
 import React from 'react';
-import { defineMessages, FormattedMessage, MessageDescriptor } from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
-import Decimal from 'decimal.js';
 
 import { calculateFee, getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 import Numeral from '~shared/Numeral';
 import { Colony } from '~types';
+import { useNetworkInverseFee } from '~hooks';
+import { toFinite } from '~utils/lodash';
 
 import styles from './NetworkFee.css';
 
@@ -28,16 +29,15 @@ const MSG = defineMessages({
 
 interface Props {
   colony: Colony;
-  customAmountError: string | MessageDescriptor | undefined;
-  networkFeeInverse: string | undefined;
 }
 
-const NetworkFee = ({ colony, networkFeeInverse, customAmountError }: Props) => {
+const NetworkFee = ({ colony }: Props) => {
   const { watch } = useFormContext();
+  const { networkInverseFee } = useNetworkInverseFee();
   const { tokenAddress, amount } = watch();
   const selectedToken = getSelectedToken(colony, tokenAddress);
 
-  if (!networkFeeInverse || customAmountError || new Decimal(amount).isZero()) {
+  if (toFinite(amount || 0) === 0 || !networkInverseFee) {
     return null;
   }
 
@@ -48,12 +48,8 @@ const NetworkFee = ({ colony, networkFeeInverse, customAmountError }: Props) => 
         values={{
           fee: (
             <Numeral
-              // appearance={{
-              //   size: 'small',
-              //   theme: 'grey',
-              // }}
               value={
-                calculateFee(amount, networkFeeInverse, getTokenDecimalsWithFallback(selectedToken?.decimals)).feesInWei
+                calculateFee(amount, networkInverseFee, getTokenDecimalsWithFallback(selectedToken?.decimals)).feesInWei
               }
               decimals={getTokenDecimalsWithFallback(selectedToken?.decimals)}
             />

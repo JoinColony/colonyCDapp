@@ -3,9 +3,17 @@ import { useFormContext } from 'react-hook-form';
 
 import { useActionDialogStatus, EnabledExtensionData } from '~hooks';
 import { Colony } from '~types';
-import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
+import {
+  calculateFee,
+  getSelectedToken,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens';
 
-export const getCreatePaymentDialogPayload = (colony: Colony, payload: any) => {
+export const getCreatePaymentDialogPayload = (
+  colony: Colony,
+  payload: any,
+  networkInverseFee: string | undefined,
+) => {
   const {
     amount,
     tokenAddress,
@@ -18,9 +26,9 @@ export const getCreatePaymentDialogPayload = (colony: Colony, payload: any) => {
 
   const decimals = getTokenDecimalsWithFallback(selectedToken?.decimals);
 
-  // const amountWithFees = networkFeeInverse
-  //   ? calculateFee(amount, networkFeeInverse, decimals).totalToPay
-  //   : amount;
+  const amountWithFees = networkInverseFee
+    ? calculateFee(amount, networkInverseFee, decimals).totalToPay
+    : amount;
 
   return {
     colonyName: colony.name,
@@ -29,7 +37,7 @@ export const getCreatePaymentDialogPayload = (colony: Colony, payload: any) => {
     domainId: fromDomain,
     singlePayment: {
       tokenAddress,
-      amount, // amountWithFees - @NOTE: The contract only sees this amount
+      amount: amountWithFees, // @NOTE: Only the contract sees this amount
       decimals,
     },
     annotationMessage,

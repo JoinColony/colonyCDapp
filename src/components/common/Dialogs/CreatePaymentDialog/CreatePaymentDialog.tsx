@@ -14,7 +14,7 @@ import { ActionTypes } from '~redux/index';
 // } from '~data/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
-import { WizardDialogType } from '~hooks';
+import { WizardDialogType, useNetworkInverseFee } from '~hooks';
 import { notNull } from '~utils/arrays';
 
 import validationSchema from './validation';
@@ -44,6 +44,7 @@ const CreatePaymentDialog = ({
   const navigate = useNavigate();
   const colonyWatchers = colony?.watchers?.items.filter(notNull).map((item) => item.user) || [];
   const { isVotingReputationEnabled } = enabledExtensionData;
+  const { networkInverseFee } = useNetworkInverseFee();
 
   const actionType =
     !isForce && isVotingReputationEnabled
@@ -53,8 +54,6 @@ const CreatePaymentDialog = ({
   // const { data: colonyMembers } = useMembersSubscription({
   //   variables: { colonyAddress },
   // });
-
-  // const { feeInverse: networkFeeInverse } = useNetworkContracts();
 
   /*
    * @NOTE This (extravagant) query retrieves the latest whitelist data.
@@ -84,7 +83,9 @@ const CreatePaymentDialog = ({
   // };
 
   const transform = pipe(
-    mapPayload((payload) => getCreatePaymentDialogPayload(colony, payload)),
+    mapPayload((payload) =>
+      getCreatePaymentDialogPayload(colony, payload, networkInverseFee),
+    ),
     withMeta({ navigate }),
   );
 
