@@ -3,7 +3,7 @@ import { ClientType } from '@colony/colony-js';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 
-import { putError, takeFrom, updateDomainReputation } from '../utils';
+import { putError, takeFrom } from '../utils';
 
 import {
   createTransaction,
@@ -125,11 +125,6 @@ function* manageReputationAction({
     //     ActionTypes.TRANSACTION_SUCCEEDED,
     //   );
     // }
-
-    /*
-     * Refesh the user & colony reputation
-     */
-    yield fork(updateDomainReputation, colonyAddress, walletAddress, domainId);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS,

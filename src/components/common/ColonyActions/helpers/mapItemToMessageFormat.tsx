@@ -140,6 +140,7 @@ export const mapColonyEventToExpectedFormat = (
     //   actionData.amount,
     //   actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS,
     // ),
+    newVersion: actionData.newColonyVersion,
     reputationChangeNumeral: actionData.amount && (
       <Numeral
         value={actionData.amount}

@@ -284,6 +284,20 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Edit Colony"
       />
       <ActionButton
+        submit={ActionTypes.ACTION_VERSION_UPGRADE}
+        error={ActionTypes.ACTION_VERSION_UPGRADE_ERROR}
+        success={ActionTypes.ACTION_VERSION_UPGRADE_SUCCESS}
+        transform={pipe(
+          mergePayload({
+            colonyAddress: colony.colonyAddress,
+            colonyName: colony.name,
+            version: colony.version,
+          }),
+          withMeta({ navigate }),
+        )}
+        text="Test Version Upgrade"
+      />
+      <ActionButton
         submit={ActionTypes.ACTION_MANAGE_REPUTATION}
         error={ActionTypes.ACTION_MANAGE_REPUTATION_ERROR}
         success={ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS}
@@ -293,7 +307,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
             colonyName: colony.name,
             domainId: colony.domains?.items[0]?.nativeId,
             walletAddress: user?.walletAddress,
-            amount: BigNumber.from(2), // this is in ethers
+            amount: BigNumber.from(2),
             isSmitingReputation: false,
           }),
           withMeta({ navigate }),
