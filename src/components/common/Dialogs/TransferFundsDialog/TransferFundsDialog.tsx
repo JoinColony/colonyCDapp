@@ -45,7 +45,7 @@ const validationSchema = object()
     fromDomainId: number().required(),
     toDomainId: number()
       .required()
-      .when('fromDomain', (fromDomain, schema) =>
+      .when('fromDomainId', (fromDomain, schema) =>
         schema.notOneOf([fromDomain], MSG.sameDomain),
       ),
     amount: number()
