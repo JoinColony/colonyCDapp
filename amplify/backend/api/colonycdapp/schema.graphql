@@ -101,6 +101,11 @@ input GetReputationForTopDomainsInput {
   rootHash: String
 }
 
+input GetUserBalanceInput {
+  walletAddress: String!
+  tokenAddress: String!
+}
+
 type UserDomainReputation {
   domainId: Int!
   reputationPercentage: String!
@@ -175,6 +180,8 @@ type Query {
     @function(name: "getReputationForTopDomains")
   getUserReputation(input: GetUserReputationInput): String
     @function(name: "getUserReputation")
+  getUserBalance(input: GetUserBalanceInput): String
+    @function(name: "getUserBalance")
 }
 
 type Mutation {
@@ -295,7 +302,6 @@ type User @model {
   profileId: ID
   profile: Profile @hasOne(fields: ["profileId"])
   watchlist: [Colony] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
-  balance: String @function(name: "fetchUserBalance")
 }
 
 type Domain @model {

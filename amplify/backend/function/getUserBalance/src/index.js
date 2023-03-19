@@ -12,6 +12,7 @@ const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be exte
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
+  const { walletAddress, tokenAddress } = event.arguments?.input || {};
   const provider = new providers.JsonRpcProvider(RPC_URL);
 
   const {
@@ -24,8 +25,8 @@ exports.handler = async (event) => {
   const tokenLockingClient = await networkClient.getTokenLockingClient();
   const userLock = await tokenLockingClient.getUserLock(
     tokenAddress,
-    userAddress,
+    walletAddress,
   );
 
-  return 'hi';
+  return userLock.balance.toString();
 };

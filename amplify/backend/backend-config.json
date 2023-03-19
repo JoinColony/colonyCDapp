@@ -63,7 +63,7 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "fetchUserBalance": {
+    "getUserBalance": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"

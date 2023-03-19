@@ -22,7 +22,7 @@
         "fetchColonyBalances": {},
         "updateExtensionByColonyAndHash": {},
         "setCurrentVersion": {},
-        "fetchUserBalance": {}
+        "getUserBalance": {}
       }
     }
   }
