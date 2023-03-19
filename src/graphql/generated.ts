@@ -456,6 +456,7 @@ export type CreateUniqueUserInput = {
 };
 
 export type CreateUserInput = {
+  balance?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   name: Scalars['String'];
   profileId?: InputMaybe<Scalars['ID']>;
@@ -1274,6 +1275,7 @@ export type ModelSubscriptionTokenFilterInput = {
 
 export type ModelSubscriptionUserFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionUserFilterInput>>>;
+  balance?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   name?: InputMaybe<ModelSubscriptionStringInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionUserFilterInput>>>;
@@ -1336,6 +1338,7 @@ export type ModelTokenTypeInput = {
 
 export type ModelUserConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelUserConditionInput>>>;
+  balance?: InputMaybe<ModelStringInput>;
   name?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelUserConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelUserConditionInput>>>;
@@ -1350,6 +1353,7 @@ export type ModelUserConnection = {
 
 export type ModelUserFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelUserFilterInput>>>;
+  balance?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
   name?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelUserFilterInput>;
@@ -2614,6 +2618,7 @@ export type UpdateTokenInput = {
 };
 
 export type UpdateUserInput = {
+  balance?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   name?: InputMaybe<Scalars['String']>;
   profileId?: InputMaybe<Scalars['ID']>;
@@ -2633,6 +2638,7 @@ export type UpdateWatchedColoniesInput = {
 
 export type User = {
   __typename?: 'User';
+  balance?: Maybe<Scalars['String']>;
   createdAt: Scalars['AWSDateTime'];
   id: Scalars['ID'];
   name: Scalars['String'];

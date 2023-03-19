@@ -295,6 +295,7 @@ type User @model {
   profileId: ID
   profile: Profile @hasOne(fields: ["profileId"])
   watchlist: [Colony] @manyToMany(relationName: "WatchedColonies") # colony subscriptions
+  balance: String @function(name: "fetchUserBalance")
 }
 
 type Domain @model {
