@@ -86,17 +86,20 @@ const TransferFundsDialog = ({
     withMeta({ navigate }),
   );
 
+  const defaultFromDomainId = selectedDomainId || Id.RootDomain;
+  const defaultToDomainId =
+    Number(
+      domainOptions.find((option) => option.value !== defaultFromDomainId)
+        ?.value,
+    ) || Id.RootDomain;
+
   return (
     <Dialog cancel={cancel}>
       <Form<FormValues>
         defaultValues={{
           forceAction: false,
-          fromDomainId: selectedDomainId || Id.RootDomain,
-          toDomainId:
-            Number(
-              domainOptions.find((domain) => domain.value !== selectedDomainId)
-                ?.value,
-            ) || Id.RootDomain,
+          fromDomainId: defaultFromDomainId,
+          toDomainId: defaultToDomainId,
           amount: 0,
           tokenAddress: colony?.nativeToken.tokenAddress,
           annotation: '',
