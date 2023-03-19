@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
@@ -30,7 +30,6 @@ import {
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
-import { formatText } from '~utils/intl';
 
 const displayName = 'common.TransferFundsDialog.TransferFundsDialogForm';
 
@@ -46,10 +45,6 @@ const MSG = defineMessages({
   cannotCreateMotion: {
     id: `${displayName}.cannotCreateMotion`,
     defaultMessage: `Cannot create motions using the Governance v{version} Extension. Please upgrade to a newer version (when available)`,
-  },
-  notEnoughBalance: {
-    id: `${displayName}.notEnoughBalance`,
-    defaultMessage: 'Insufficient balance in from team pot',
   },
 });
 
@@ -95,15 +90,7 @@ const TransferFundsDialogForm = ({
   const convertedAmount = BigNumber.from(
     moveDecimal(amount, getTokenDecimalsWithFallback(selectedToken?.decimals)),
   );
-  const hasEnoughBalance = convertedAmount.lte(fromDomainBalance);
-
-  useEffect(() => {
-    if (!hasEnoughBalance) {
-      setError('amount', { message: formatText(MSG.notEnoughBalance) });
-    } else {
-      clearErrors('amount');
-    }
-  }, [clearErrors, hasEnoughBalance, setError]);
+  const notEnoughBalance = convertedAmount.gt(fromDomainBalance);
 
   return (
     <>

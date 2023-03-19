@@ -28,6 +28,10 @@ const MSG = defineMessages({
     id: `${displayName}.address`,
     defaultMessage: 'Token',
   },
+  notEnoughBalance: {
+    id: `${displayName}.notEnoughBalance`,
+    defaultMessage: 'Insufficient balance in from team pot',
+  },
 });
 
 interface Props {
@@ -38,6 +42,7 @@ interface Props {
 const TokenAmountInput = ({ colony, disabled }: Props) => {
   const { watch } = useFormContext();
   const { amount, tokenAddress } = watch();
+
   const colonyTokens =
     colony?.tokens?.items
       .filter(notNull)
@@ -89,7 +94,7 @@ const TokenAmountInput = ({ colony, disabled }: Props) => {
           <div className={styles.tokenAmountUsd}>
             <EthUsd
               // appearance={{ theme: 'grey' }}
-              value={amount.replace(/,/g, '') || 0} // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
+              value={amount ?? 0}
             />
           </div>
         )}
