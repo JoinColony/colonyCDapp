@@ -54,7 +54,7 @@ const DomainFundSelectorSection = ({
       })}
     >
       <DomainFundSelector
-        name="fromDomain"
+        name="fromDomainId"
         label={MSG.from}
         colony={colony}
         disabled={disabled}
@@ -69,7 +69,7 @@ const DomainFundSelectorSection = ({
             appearance={{ size: 'medium' }}
           />
           <DomainFundSelector
-            name="toDomain"
+            name="toDomainId"
             label={MSG.to}
             colony={colony}
             disabled={disabled}

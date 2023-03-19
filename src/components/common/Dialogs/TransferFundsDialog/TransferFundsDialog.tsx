@@ -42,8 +42,8 @@ type Props = Required<DialogProps> &
 const validationSchema = object()
   .shape({
     forceAction: boolean().defined(),
-    fromDomain: number().required(),
-    toDomain: number()
+    fromDomainId: number().required(),
+    toDomainId: number()
       .required()
       .when('fromDomain', (fromDomain, schema) =>
         schema.notOneOf([fromDomain], MSG.sameDomain),
@@ -91,8 +91,8 @@ const TransferFundsDialog = ({
       <Form<FormValues>
         defaultValues={{
           forceAction: false,
-          fromDomain: selectedDomainId || Id.RootDomain,
-          toDomain:
+          fromDomainId: selectedDomainId || Id.RootDomain,
+          toDomainId:
             Number(
               domainOptions.find((domain) => domain.value !== selectedDomainId)
                 ?.value,

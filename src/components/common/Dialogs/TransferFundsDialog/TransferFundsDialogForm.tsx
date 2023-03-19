@@ -2,8 +2,6 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
-import moveDecimal from 'move-decimal-point';
-import { BigNumber } from 'ethers';
 
 import { Annotations } from '~shared/Fields';
 import {
@@ -25,11 +23,6 @@ import DomainFundSelectorSection from '../DomainFundSelectorSection';
 import { useTransferFundsDialogStatus } from './helpers';
 
 import styles from './TransferFundsDialogForm.css';
-import {
-  getBalanceForTokenAndDomain,
-  getSelectedToken,
-  getTokenDecimalsWithFallback,
-} from '~utils/tokens';
 
 const displayName = 'common.TransferFundsDialog.TransferFundsDialogForm';
 
@@ -55,15 +48,9 @@ const TransferFundsDialogForm = ({
   colony,
   enabledExtensionData,
 }: ActionDialogProps) => {
-  const { watch, setError, clearErrors } = useFormContext();
-  const {
-    fromDomain: fromDomainId,
-    toDomain: toDomainId,
-    tokenAddress,
-    amount,
-  } = watch();
+  const { watch } = useFormContext();
+  const { fromDomainId, toDomainId } = watch();
 
-  const colonyDomains = colony?.domains?.items || [];
   const fromDomain = findDomainByNativeId(fromDomainId, colony);
   const toDomain = findDomainByNativeId(toDomainId, colony);
 
@@ -80,17 +67,6 @@ const TransferFundsDialogForm = ({
   //   votingExtensionVersion ===
   //     VotingReputationVersion.FuchsiaLightweightSpaceship &&
   //   !values.forceAction;
-
-  const selectedToken = getSelectedToken(colony, tokenAddress);
-  const fromDomainBalance = getBalanceForTokenAndDomain(
-    colony.balances,
-    tokenAddress,
-    fromDomainId,
-  );
-  const convertedAmount = BigNumber.from(
-    moveDecimal(amount, getTokenDecimalsWithFallback(selectedToken?.decimals)),
-  );
-  const notEnoughBalance = convertedAmount.gt(fromDomainBalance);
 
   return (
     <>
