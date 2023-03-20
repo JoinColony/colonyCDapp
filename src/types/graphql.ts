@@ -15,6 +15,7 @@ import {
   DomainColor,
   DomainMetadataFragment,
   ColonyMetadataFragment,
+  UserTokenBalanceDataFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -38,6 +39,8 @@ export type WatchedColony = WatchedColonyFragment;
 export type ColonyExtension = ExtensionFragment;
 
 export type ColonyAction = ColonyActionFragment;
+
+export type UserTokenBalanceData = UserTokenBalanceDataFragment;
 
 export { ColonyActionType };
 

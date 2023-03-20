@@ -639,31 +639,11 @@ export type GetUserTokenBalanceInput = {
   walletAddress: Scalars['String'];
 };
 
-<<<<<<< HEAD
-=======
 export type GetUserTokenBalanceReturn = {
   __typename?: 'GetUserTokenBalanceReturn';
   balance?: Maybe<Scalars['String']>;
 };
 
-export type Metadata = {
-  __typename?: 'Metadata';
-  blockNumber?: Maybe<Scalars['Int']>;
-  chainId?: Maybe<Scalars['Int']>;
-  logIndex?: Maybe<Scalars['Int']>;
-  network?: Maybe<Network>;
-  transactionHash?: Maybe<Scalars['String']>;
-};
-
-export type MetadataInput = {
-  blockNumber?: InputMaybe<Scalars['Int']>;
-  chainId?: InputMaybe<Scalars['Int']>;
-  logIndex?: InputMaybe<Scalars['Int']>;
-  network?: InputMaybe<Network>;
-  transactionHash?: InputMaybe<Scalars['String']>;
-};
-
->>>>>>> 4833ce7f (Return balance for native and colony tokens)
 export enum ModelAttributeTypes {
   Null = '_null',
   Binary = 'binary',
@@ -2749,6 +2729,8 @@ export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, 
 
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
+export type UserTokenBalanceDataFragment = { __typename?: 'GetUserTokenBalanceReturn', balance?: string | null };
+
 export type UserFragment = { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata?: { __typename?: 'ChainMetadata', chainId?: number | null, network?: Network | null } | null, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean }> | null } | null } } | null> } | null };
 
 export type CreateUniqueColonyMutationVariables = Exact<{
@@ -2899,6 +2881,13 @@ export type GetTokenFromEverywhereQueryVariables = Exact<{
 
 
 export type GetTokenFromEverywhereQuery = { __typename?: 'Query', getTokenFromEverywhere?: { __typename?: 'TokenFromEverywhereReturn', items?: Array<{ __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null> | null } | null };
+
+export type GetUserTokenBalanceQueryVariables = Exact<{
+  input: GetUserTokenBalanceInput;
+}>;
+
+
+export type GetUserTokenBalanceQuery = { __typename?: 'Query', getUserTokenBalance?: { __typename?: 'GetUserTokenBalanceReturn', balance?: string | null } | null };
 
 export type GetCurrentUserQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -3196,6 +3185,11 @@ export const ExtensionFragmentDoc = gql`
   isDeprecated
   isDeleted
   isInitialized
+}
+    `;
+export const UserTokenBalanceDataFragmentDoc = gql`
+    fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
+  balance
 }
     `;
 export const CreateUniqueColonyDocument = gql`
@@ -3950,6 +3944,41 @@ export function useGetTokenFromEverywhereLazyQuery(baseOptions?: Apollo.LazyQuer
 export type GetTokenFromEverywhereQueryHookResult = ReturnType<typeof useGetTokenFromEverywhereQuery>;
 export type GetTokenFromEverywhereLazyQueryHookResult = ReturnType<typeof useGetTokenFromEverywhereLazyQuery>;
 export type GetTokenFromEverywhereQueryResult = Apollo.QueryResult<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>;
+export const GetUserTokenBalanceDocument = gql`
+    query GetUserTokenBalance($input: GetUserTokenBalanceInput!) {
+  getUserTokenBalance(input: $input) {
+    ...UserTokenBalanceData
+  }
+}
+    ${UserTokenBalanceDataFragmentDoc}`;
+
+/**
+ * __useGetUserTokenBalanceQuery__
+ *
+ * To run a query within a React component, call `useGetUserTokenBalanceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserTokenBalanceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserTokenBalanceQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetUserTokenBalanceQuery(baseOptions: Apollo.QueryHookOptions<GetUserTokenBalanceQuery, GetUserTokenBalanceQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserTokenBalanceQuery, GetUserTokenBalanceQueryVariables>(GetUserTokenBalanceDocument, options);
+      }
+export function useGetUserTokenBalanceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserTokenBalanceQuery, GetUserTokenBalanceQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserTokenBalanceQuery, GetUserTokenBalanceQueryVariables>(GetUserTokenBalanceDocument, options);
+        }
+export type GetUserTokenBalanceQueryHookResult = ReturnType<typeof useGetUserTokenBalanceQuery>;
+export type GetUserTokenBalanceLazyQueryHookResult = ReturnType<typeof useGetUserTokenBalanceLazyQuery>;
+export type GetUserTokenBalanceQueryResult = Apollo.QueryResult<GetUserTokenBalanceQuery, GetUserTokenBalanceQueryVariables>;
 export const GetCurrentUserDocument = gql`
     query GetCurrentUser($address: ID!) {
   getUserByAddress(id: $address) {
