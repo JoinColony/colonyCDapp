@@ -243,7 +243,7 @@ function* userWithdrawToken({
 
     yield fork(createTransaction, withdraw.id, {
       context: ClientType.TokenLockingClient,
-      methodName: 'withdraw',
+      methodName: 'withdraw(address,uint256,bool)',
       identifier: colonyAddress,
       params: [tokenAddress, BigNumber.from(amount), false],
       ready: false,
