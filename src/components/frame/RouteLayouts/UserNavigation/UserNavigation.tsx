@@ -1,5 +1,4 @@
 import React from 'react';
-import { BigNumber } from 'ethers';
 import { defineMessages, useIntl } from 'react-intl';
 
 import MemberReputation from '~shared/MemberReputation';
@@ -41,24 +40,14 @@ const UserNavigation = () => {
   const { wallet } = useAppContext();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
+  const canInteractWithNetwork = useCanInteractWithNetwork();
 
   const { colonyAddress, nativeToken } = colony || {};
-
-  const canInteractWithNetwork = useCanInteractWithNetwork();
 
   const { userReputation, totalReputation } = useUserReputation(
     colonyAddress,
     wallet?.address,
   );
-
-  const mockedTokenBalanceData = {
-    nativeToken: colony?.nativeToken,
-    inactiveBalance: BigNumber.from(11 ** 15),
-    lockedBalance: BigNumber.from(0),
-    activeBalance: BigNumber.from(11 ** 15),
-    totalBalance: BigNumber.from(11 ** 15),
-    isPendingBalanceZero: true,
-  };
 
   const { data: tokenBalanceQueryData } = useGetUserTokenBalanceQuery({
     variables: {
@@ -108,10 +97,12 @@ const UserNavigation = () => {
       </div>
 
       <Wallet />
-      <AvatarDropdown
-        spinnerMsg={MSG.walletAutologin}
-        tokenBalanceData={mockedTokenBalanceData}
-      />
+      {tokenBalanceData && (
+        <AvatarDropdown
+          spinnerMsg={MSG.walletAutologin}
+          tokenBalanceData={tokenBalanceData}
+        />
+      )}
       <HamburgerDropdown />
     </div>
   );
