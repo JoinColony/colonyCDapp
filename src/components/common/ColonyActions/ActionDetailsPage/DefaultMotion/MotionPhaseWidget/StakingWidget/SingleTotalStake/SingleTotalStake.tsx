@@ -4,11 +4,10 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import ProgressBar from '~shared/ProgressBar';
 import { Tooltip } from '~shared/Popover';
 
-// import UserStakeMessage from './UserStakeMessage';
-// import SingleTotalStakeHeading from './SingleTotalStakeHeading';
+import UserStakeMessage from './UserStakeMessage';
+import SingleTotalStakeHeading from './SingleTotalStakeHeading';
 
 import styles from './SingleTotalStake.css';
-import SingleTotalStakeHeading from './SingleTotalStakeHeading';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.SingleTotalStake';
@@ -39,9 +38,9 @@ const MinStakeTooltip = ({ children }: MinStakeTooltipProps) => (
 );
 
 const SingleTotalStake = () => {
-  // const userHasStaked = false;
+  const userHasStaked = true;
   const isObjection = false;
-  const totalPercentage = 0;
+  const totalPercentage = 10;
 
   const progressBar = (
     <ProgressBar
@@ -65,7 +64,7 @@ const SingleTotalStake = () => {
       ) : (
         progressBar
       )}
-      {/* {userHasStaked && <UserStakeMessage />} */}
+      {userHasStaked && <UserStakeMessage />}
     </>
   );
 };
