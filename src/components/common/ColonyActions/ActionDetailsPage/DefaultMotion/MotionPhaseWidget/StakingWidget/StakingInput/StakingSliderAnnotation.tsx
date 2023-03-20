@@ -3,6 +3,8 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { Tooltip } from '~shared/Popover';
 
+import { RequiredStakeMessage } from './StakingSliderMessages';
+
 import styles from './StakingSliderAnnotation.css';
 
 const displayName =
@@ -42,10 +44,11 @@ const StakingSliderAnnotation = () => {
         placement="top"
         popperOptions={tooltipOptions}
       >
+        <RequiredStakeMessage />
+
         {/* {showMinStakeMsg ? (
           <MinimumStakeMessage />
         ) : (
-          <RequiredStakeMessage {...requiredStakeMessageProps} />
         )} */}
       </Tooltip>
     </span>
