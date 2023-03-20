@@ -14,28 +14,25 @@ import { transactionReady } from '../../actionCreators';
 
 function* stakeMotion({
   meta,
-  payload: {
-    colonyAddress,
-    motionId,
-    vote,
-    amount,
-    // annotationMessage,
-  },
+  payload: { colonyAddress, motionId, vote, amount },
 }: Action<ActionTypes.MOTION_STAKE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const colonyManager = yield getColonyManager();
+    const colonyManager = yield call(getColonyManager);
 
-    const votingReputationClient: AnyVotingReputationClient =
-      yield colonyManager.getClient(
-        ClientType.VotingReputationClient,
-        colonyAddress,
-      );
+    const votingReputationClient: AnyVotingReputationClient = yield call(
+      [colonyManager, colonyManager.getClient],
+      ClientType.VotingReputationClient,
+      colonyAddress,
+    );
 
-    const { domainId } = yield votingReputationClient.getMotion(motionId);
+    const { domainId } = yield call(
+      [votingReputationClient, votingReputationClient.getMotion],
+      motionId,
+    );
 
     const { approveStake, stakeMotionTransaction /* annotateStaking */ } =
-      yield createTransactionChannels(meta.id, [
+      yield call(createTransactionChannels, meta.id, [
         'approveStake',
         'stakeMotionTransaction',
         // 'annotateStaking',
