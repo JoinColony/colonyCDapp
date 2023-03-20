@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { TokenActivationPopover } from '~frame/TokenActivation';
 import { Tooltip } from '~shared/Popover';
-import { UserTokenBalanceData } from '~types';
+import { Token, UserTokenBalanceData } from '~types';
 
 import UserTokenActivationDisplay from './UserTokenActivationDisplay';
 
@@ -22,27 +22,16 @@ const MSG = defineMessages({
 interface Props {
   dataTest: string;
   tokenBalanceData: UserTokenBalanceData;
+  nativeToken?: Token;
 }
 
-const UserTokenActivationButton = ({ dataTest, tokenBalanceData }: Props) => {
-  const {
-    nativeToken,
-    activeBalance,
-    inactiveBalance,
-    totalBalance,
-    lockedBalance,
-    isPendingBalanceZero,
-  } = tokenBalanceData; // State shared with AvatarDropdownPopoverMobile
-
+const UserTokenActivationButton = ({
+  dataTest,
+  nativeToken,
+  tokenBalanceData,
+}: Props) => {
   return (
-    <TokenActivationPopover
-      activeTokens={activeBalance}
-      inactiveTokens={inactiveBalance}
-      totalTokens={totalBalance}
-      lockedTokens={lockedBalance}
-      token={nativeToken}
-      isPendingBalanceZero={isPendingBalanceZero}
-    >
+    <TokenActivationPopover tokenBalanceData={tokenBalanceData}>
       {({ isOpen, toggle, ref }) => (
         <button
           type="button"
@@ -71,7 +60,8 @@ const UserTokenActivationButton = ({ dataTest, tokenBalanceData }: Props) => {
             }}
           >
             <UserTokenActivationDisplay
-              {...{ nativeToken, inactiveBalance, totalBalance }}
+              tokenBalanceData={tokenBalanceData}
+              nativeToken={nativeToken}
             />
           </Tooltip>
         </button>

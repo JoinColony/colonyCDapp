@@ -14,6 +14,7 @@ import {
   useMobile,
   useCanInteractWithNetwork,
 } from '~hooks';
+import { useGetUserTokenBalanceQuery } from '~gql';
 
 import Wallet from './Wallet';
 
@@ -41,12 +42,14 @@ const UserNavigation = () => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
 
+  const { colonyAddress, nativeToken } = colony || {};
+
   // const userLock = userData?.user.userLock;
   // const nativeToken = userLock?.nativeToken;
   const canInteractWithNetwork = useCanInteractWithNetwork();
 
   const { userReputation, totalReputation } = useUserReputation(
-    colony?.colonyAddress,
+    colonyAddress,
     wallet?.address,
   );
 
@@ -58,6 +61,17 @@ const UserNavigation = () => {
     totalBalance: BigNumber.from(11 ** 15),
     isPendingBalanceZero: true,
   };
+
+  const { data: tokenBalanceQueryData } = useGetUserTokenBalanceQuery({
+    variables: {
+      input: {
+        walletAddress: wallet?.address ?? '',
+        tokenAddress: nativeToken?.tokenAddress ?? '',
+      },
+    },
+    skip: !wallet?.address || !nativeToken?.tokenAddress,
+  });
+  const tokenBalanceData = tokenBalanceQueryData?.getUserTokenBalance;
 
   return (
     <div className={styles.main}>
@@ -88,7 +102,8 @@ const UserNavigation = () => {
       <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
         {canInteractWithNetwork && colony?.nativeToken && (
           <UserTokenActivationButton
-            tokenBalanceData={mockedTokenBalanceData}
+            nativeToken={colony?.nativeToken}
+            tokenBalanceData={tokenBalanceData}
             dataTest="tokenActivationButton"
           />
         )}

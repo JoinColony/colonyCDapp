@@ -9,7 +9,6 @@ export * from './transactions';
 export * from './wallet';
 export * from './graphql';
 export * from './rpcMethods';
-export * from './tokens';
 export * from './network';
 export * from './domains';
 

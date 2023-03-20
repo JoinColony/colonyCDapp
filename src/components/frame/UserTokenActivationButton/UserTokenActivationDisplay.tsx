@@ -1,10 +1,9 @@
 import React from 'react';
-import { BigNumber } from 'ethers';
 import classnames from 'classnames';
 
-import { getFormattedTokenValue } from '~utils/tokens';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import Numeral from '~shared/Numeral';
-import { Token } from '~types';
+import { Token, UserTokenBalanceData } from '~types';
 
 import styles from './UserTokenActivationButton.css';
 
@@ -13,28 +12,26 @@ const displayName =
 
 interface Props {
   nativeToken?: Token;
-  inactiveBalance: BigNumber;
-  totalBalance: BigNumber;
+  tokenBalanceData: UserTokenBalanceData;
 }
 
 const UserTokenActivationDisplay = ({
   nativeToken,
-  inactiveBalance,
-  totalBalance,
+  tokenBalanceData,
 }: Props) => {
-  const formattedTotalBalance = getFormattedTokenValue(
-    totalBalance,
-    nativeToken?.decimals,
-  );
-
   return (
     <div>
       <span
         className={classnames(styles.dot, {
-          [styles.dotInactive]: inactiveBalance.gt(0) || totalBalance.isZero(),
+          /** @TODO Pass inactive balance below */
+          // [styles.dotInactive]: inactiveBalance.gt(0) || totalBalance.isZero(),
         })}
       />
-      <Numeral value={formattedTotalBalance} suffix={nativeToken?.symbol} />
+      <Numeral
+        value={tokenBalanceData.balance ?? 0}
+        decimals={getTokenDecimalsWithFallback(nativeToken?.decimals)}
+        suffix={nativeToken?.symbol}
+      />
     </div>
   );
 };
