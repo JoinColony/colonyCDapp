@@ -12,6 +12,7 @@ declare namespace ProgressBarCssNamespace {
     threshold: string;
     thresholdPercentage: string;
     thresholdSeparator: string;
+    thresholdVisibility: string;
     wrapper: string;
   }
 }
