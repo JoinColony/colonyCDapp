@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import ReactSlider from 'rc-slider';
-import { useField } from 'formik';
 import Decimal from 'decimal.js';
+import { useFormContext } from 'react-hook-form';
 
 import 'rc-slider/assets/index.css';
 
@@ -40,7 +40,7 @@ const Slider = ({
   handleLimitExceeded,
 }: Props) => {
   const [sliderValue, setSliderValue] = useState<number>(value);
-  const [, , { setValue }] = useField(name);
+  const { setValue } = useFormContext();
 
   /*
    * This is needed to trigger an outside reset of the slider
@@ -69,7 +69,7 @@ const Slider = ({
         !limitValue
       ) {
         setSliderValue(val);
-        setValue(val);
+        setValue(name, val);
         if (onChange) {
           onChange(val);
         }
@@ -82,7 +82,7 @@ const Slider = ({
         (limitValue.lt(sliderValue) || val > limitValue)
       ) {
         setSliderValue(limitValue.toNumber());
-        setValue(limitValue.toString());
+        setValue(name, limitValue.toString());
 
         if (onChange) {
           onChange(limitValue.toString());
