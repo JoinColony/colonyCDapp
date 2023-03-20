@@ -2,16 +2,15 @@ import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import { BigNumber } from 'ethers';
 
-// import Icon from '~shared/Icon';
+import Icon from '~shared/Icon';
 import TokenInfoPopover from '~shared/TokenInfoPopover';
 import TokenIcon from '~shared/TokenIcon';
 import Numeral from '~shared/Numeral';
 import { UserTokenBalanceData } from '~types';
 import { useColonyContext } from '~hooks';
-
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
-// import ChangeTokenStateForm from './ChangeTokenStateForm';
+import ChangeTokenStateForm from './ChangeTokenStateForm';
 import TokenTooltip from './TokenTooltip';
 
 import styles from './TokensTab.css';
@@ -66,13 +65,18 @@ export interface TokensTabProps {
   tokenBalanceData: UserTokenBalanceData;
 }
 
-const TokensTab = ({
-  tokenBalanceData: { balance, inactiveBalance, lockedBalance, activeBalance },
-}: TokensTabProps) => {
+const TokensTab = ({ tokenBalanceData }: TokensTabProps) => {
   const { colony } = useColonyContext();
   const targetRef = useRef<HTMLParagraphElement>(null);
 
   const { nativeToken } = colony || {};
+  const {
+    balance,
+    inactiveBalance,
+    lockedBalance,
+    activeBalance,
+    pendingBalance,
+  } = tokenBalanceData;
 
   const [totalTokensWidth, setTotalTokensWidth] = useState(0);
 
@@ -85,6 +89,7 @@ const TokensTab = ({
   }, [totalTokensWidth]);
 
   const hasLockedTokens = BigNumber.from(lockedBalance ?? 0).gt(0);
+  const hasPendingBalance = BigNumber.from(pendingBalance ?? 0).gt(0);
 
   const tokenDecimals = useMemo(
     () => getTokenDecimalsWithFallback(nativeToken?.decimals),
@@ -181,7 +186,7 @@ const TokensTab = ({
                 />
               </span>
             </div>
-            {/* {!isPendingBalanceZero && (
+            {hasPendingBalance && (
               <div className={styles.pendingError}>
                 <FormattedMessage {...MSG.pendingError} />
                 <TokenTooltip
@@ -196,19 +201,14 @@ const TokensTab = ({
                   />
                 </TokenTooltip>
               </div>
-            )} */}
+            )}
           </li>
         </ul>
       </div>
-      {/* <ChangeTokenStateForm
-        token={token}
-        tokenDecimals={tokenDecimals}
-        activeTokens={activeTokens}
-        inactiveTokens={inactiveTokens}
-        lockedTokens={lockedTokens}
-        colonyAddress={colony?.colonyAddress || ''}
+      <ChangeTokenStateForm
+        tokenBalanceData={tokenBalanceData}
         hasLockedTokens={hasLockedTokens}
-      /> */}
+      />
     </>
   );
 };

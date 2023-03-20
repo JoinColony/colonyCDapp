@@ -1,11 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { number, object, InferType } from 'yup';
-import Decimal from 'decimal.js';
-import { toFinite } from '~utils/lodash';
 
+import { toFinite } from '~utils/lodash';
 import Button from '~shared/Button';
 import {
   ActionHookForm as ActionForm,
@@ -13,12 +12,11 @@ import {
 } from '~shared/Fields';
 import Numeral from '~shared/Numeral';
 import { Tooltip } from '~shared/Popover';
-
 import { ActionTypes } from '~redux';
 import { pipe, mapPayload } from '~utils/actions';
-import { getFormattedTokenValue } from '~utils/tokens';
-import { useAppContext } from '~hooks';
-import { Address, Token } from '~types';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { useColonyContext } from '~hooks';
+import { UserTokenBalanceData } from '~types';
 
 import styles from './TokensTab.css';
 
@@ -56,6 +54,7 @@ const MSG = defineMessages({
   },
 });
 
+/** @TODO Add validation against amount higher than the balance */
 const validationSchema = object({
   amount: number()
     .transform((value) => toFinite(value))
@@ -66,48 +65,22 @@ const validationSchema = object({
 type FormValues = InferType<typeof validationSchema>;
 
 export interface ChangeTokenStateFormProps {
-  token: Token;
-  tokenDecimals: number;
-  activeTokens: BigNumber;
-  inactiveTokens: BigNumber;
-  lockedTokens: BigNumber;
+  tokenBalanceData: UserTokenBalanceData;
   hasLockedTokens: boolean;
-  colonyAddress: Address;
 }
 
 const ChangeTokenStateForm = ({
-  token,
-  tokenDecimals,
-  activeTokens,
-  inactiveTokens,
-  lockedTokens,
+  tokenBalanceData: { inactiveBalance, activeBalance, lockedBalance },
   hasLockedTokens,
-  colonyAddress,
 }: ChangeTokenStateFormProps) => {
+  const { colony } = useColonyContext();
+
   const [isActivate, setIsActive] = useState(true);
 
-  const { wallet } = useAppContext();
-
-  const formattedActiveTokens = getFormattedTokenValue(
-    activeTokens,
-    token.decimals,
-  );
-  const formattedInactiveTokens = getFormattedTokenValue(
-    inactiveTokens,
-    token.decimals,
-  );
-  const formattedLockedTokens = getFormattedTokenValue(
-    lockedTokens,
-    token.decimals,
-  );
-  const unformattedTokenBalance = moveDecimal(
-    isActivate ? inactiveTokens : activeTokens,
-    -tokenDecimals,
-  );
-
-  const tokenBalance = isActivate
-    ? formattedInactiveTokens
-    : formattedActiveTokens;
+  const nativeToken = colony?.nativeToken;
+  const tokenDecimals = getTokenDecimalsWithFallback(nativeToken?.decimals);
+  const tokenBalance = isActivate ? inactiveBalance : activeBalance;
+  const tokenBalanceInEthers = moveDecimal(tokenBalance, -tokenDecimals);
 
   const formAction = (actionType: '' | '_ERROR' | '_SUCCESS') =>
     isActivate
@@ -118,21 +91,16 @@ const ChangeTokenStateForm = ({
     mapPayload(({ amount }) => {
       // Convert amount string with decimals to BigInt (eth to wei)
       const formattedAmount = BigNumber.from(
-        moveDecimal(amount, tokenDecimals),
+        moveDecimal(amount, nativeToken?.decimals),
       );
 
       return {
         amount: formattedAmount,
-        userAddress: wallet?.address,
-        colonyAddress,
-        tokenAddress: token.tokenAddress,
+        colonyAddress: colony?.colonyAddress,
+        tokenAddress: nativeToken?.tokenAddress,
       };
     }),
   );
-
-  const handleSubmitSuccess = useCallback((res, values, { reset }) => {
-    reset();
-  }, []);
 
   return (
     <div className={styles.changeTokensState}>
@@ -164,9 +132,8 @@ const ChangeTokenStateForm = ({
         submit={formAction('')}
         error={formAction('_ERROR')}
         success={formAction('_SUCCESS')}
-        onSuccess={handleSubmitSuccess}
       >
-        {({ formState: { isValid }, getValues }) => (
+        {({ formState: { isValid } }) => (
           <div className={styles.form}>
             <div className={styles.inputField}>
               <Input
@@ -179,10 +146,10 @@ const ChangeTokenStateForm = ({
                 formattingOptions={{
                   delimiter: ',',
                   numeral: true,
-                  numeralDecimalScale: tokenDecimals,
+                  numeralDecimalScale: nativeToken?.decimals,
                 }}
                 maxButtonParams={{
-                  maxAmount: unformattedTokenBalance,
+                  maxAmount: tokenBalanceInEthers,
                 }}
                 dataTest="activateTokensInput"
               />
@@ -200,8 +167,9 @@ const ChangeTokenStateForm = ({
                   values={{
                     tokenBalance: (
                       <Numeral
-                        value={tokenBalance}
-                        suffix={token?.symbol}
+                        value={tokenBalance ?? 0}
+                        decimals={tokenDecimals}
+                        suffix={nativeToken?.symbol}
                         className={styles.balanceAmount}
                       />
                     ),
@@ -225,8 +193,9 @@ const ChangeTokenStateForm = ({
                     values={{
                       lockedTokens: (
                         <Numeral
-                          value={formattedLockedTokens}
-                          suffix={token?.symbol}
+                          value={lockedBalance ?? 0}
+                          decimals={tokenDecimals}
+                          suffix={nativeToken?.symbol}
                           className={styles.balanceAmount}
                         />
                       ),
@@ -238,16 +207,7 @@ const ChangeTokenStateForm = ({
             <Button
               text={{ id: 'button.confirm' }}
               type="submit"
-              disabled={
-                !isValid ||
-                getValues().amount === 0 ||
-                new Decimal(unformattedTokenBalance).lt(
-                  /* a bit hacky way of doing the check but nothing else seems to be working */
-                  getValues().amount.toString() === '.'
-                    ? 0
-                    : getValues().amount || 0,
-                )
-              }
+              disabled={!isValid}
               dataTest="tokenActivationConfirm"
             />
           </div>
