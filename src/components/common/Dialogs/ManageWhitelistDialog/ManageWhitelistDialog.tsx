@@ -41,6 +41,7 @@ const ManageWhitelistDialog = ({
   prevStep,
   colony,
   userAddress,
+  enabledExtensionData,
 }: Props) => {
   const [showInput, setShowInput] = useState<boolean>(true);
   const [formSuccess, setFormSuccess] = useState<boolean>(false);
@@ -132,6 +133,7 @@ const ManageWhitelistDialog = ({
           tabIndex={tabIndex}
           setTabIndex={handleTabChange}
           backButtonText={{ id: !prevStep ? 'button.cancel' : 'button.back' }}
+          enabledExtensionData={enabledExtensionData}
         />
       </Dialog>
     </Form>

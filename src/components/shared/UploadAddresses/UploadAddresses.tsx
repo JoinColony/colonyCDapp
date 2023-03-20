@@ -32,8 +32,7 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  userHasPermission: boolean;
-  isSubmitting: boolean;
+  disabledInput: boolean;
   showInput: boolean;
   toggleShowInput: () => void;
   errors?: any;
@@ -45,9 +44,7 @@ interface Props {
 }
 
 const UploadAddresses = ({
-  userHasPermission,
   errors,
-  isSubmitting,
   showInput,
   toggleShowInput,
   formSuccess,
@@ -55,6 +52,7 @@ const UploadAddresses = ({
   inputLabelMsg = MSG.inputLabel,
   inputSuccessMsg,
   fileSuccessMsg,
+  disabledInput,
 }: Props) => {
   const [hasFile, setHasFile] = useState<boolean>(false);
   const [processingCSVData, setProcessingCSVData] = useState<boolean>(false);
@@ -110,7 +108,7 @@ const UploadAddresses = ({
             appearance={{ theme: 'blue' }}
             text={showInput ? MSG.upload : MSG.input}
             onClick={handleToggleButtonClick}
-            disabled={processingCSVData || isSubmitting}
+            disabled={processingCSVData || disabledInput}
           />
         </div>
       </div>
@@ -119,7 +117,7 @@ const UploadAddresses = ({
           <Input
             name="whitelistAddress"
             appearance={{ colorSchema: 'grey', theme: 'fat' }}
-            disabled={!userHasPermission || isSubmitting}
+            disabled={disabledInput}
             status={statusMsg}
             onChange={handleChange}
           />

@@ -39,8 +39,8 @@ export const getManageWhitelistDialogPayload = (
   }
   return {
     colonyAddress,
-    colonyDisplayName: colony.profile?.displayName,
-    colonyAvatarHash: colony.profile?.avatar,
+    colonyDisplayName: colony.metadata?.displayName,
+    colonyAvatarHash: colony.metadata?.avatar,
     verifiedAddresses,
     isWhitelistActivated: whitelistActivated,
     annotationMessage,
