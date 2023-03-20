@@ -1,4 +1,4 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
@@ -6,7 +6,7 @@ import { AllActions, Action } from '../../types/actions';
 import { putError, takeFrom, getColonyManager } from '../utils';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
@@ -15,7 +15,6 @@ import { transactionReady } from '../../actionCreators';
 function* stakeMotion({
   meta,
   payload: {
-    userAddress,
     colonyAddress,
     motionId,
     vote,
@@ -26,10 +25,6 @@ function* stakeMotion({
   const txChannel = yield call(getTxChannel, meta.id);
   try {
     const colonyManager = yield getColonyManager();
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
 
     const votingReputationClient: AnyVotingReputationClient =
       yield colonyManager.getClient(
@@ -37,21 +32,7 @@ function* stakeMotion({
         colonyAddress,
       );
 
-    const { domainId, rootHash } = yield votingReputationClient.getMotion(
-      motionId,
-    );
-
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      domainId,
-    );
-
-    const { key, value, branchMask, siblings } = yield call(
-      colonyClient.getReputation,
-      skillId,
-      userAddress,
-      rootHash,
-    );
+    const { domainId } = yield votingReputationClient.getMotion(motionId);
 
     const { approveStake, stakeMotionTransaction /* annotateStaking */ } =
       yield createTransactionChannels(meta.id, [
@@ -62,17 +43,7 @@ function* stakeMotion({
 
     const batchKey = 'stakeMotion';
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(approveStake, {
+    yield createGroupTransaction(approveStake, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'approveStake',
       identifier: colonyAddress,
@@ -80,11 +51,11 @@ function* stakeMotion({
       ready: false,
     });
 
-    yield createGroupTransaction(stakeMotionTransaction, {
+    yield createGroupTransaction(stakeMotionTransaction, batchKey, meta, {
       context: ClientType.VotingReputationClient,
       methodName: 'stakeMotionWithProofs',
       identifier: colonyAddress,
-      params: [motionId, vote, amount, key, value, branchMask, siblings],
+      params: [motionId, vote, amount],
       ready: false,
     });
 
