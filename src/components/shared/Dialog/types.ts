@@ -1,6 +1,8 @@
 import { ComponentType } from 'react';
 
-import { Colony } from '~data/index';
+import { EnabledExtensionData } from '~hooks/useEnabledExtensions';
+
+import { Colony } from '~types';
 
 type Cancel = () => void;
 
@@ -23,6 +25,6 @@ export interface DialogType<P> {
 
 export interface ActionDialogProps {
   colony: Colony;
-  isVotingExtensionEnabled: boolean;
+  enabledExtensionData: EnabledExtensionData;
   back?: () => void;
 }

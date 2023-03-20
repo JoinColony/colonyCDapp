@@ -1,86 +1,137 @@
 import React, { useState, useEffect } from 'react';
 import Papa, { ParseResult } from 'papaparse';
-import { useField } from 'formik';
+import { useFormContext } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
-import isNil from 'lodash/isNil';
 
-import FileUpload from '../FileUpload';
+import { FileReaderFile } from '~utils/fileReader/types';
+import { HookFormInputStatus as InputStatus } from '~shared/Fields';
+import { isEqual, isNil } from '~utils/lodash';
+
+import { DefaultPlaceholder, SingleFileUpload } from '../FileUpload';
 
 import CSVUploaderItem from './CSVUploaderItem';
 
 interface Props {
   name: string;
-  error?: string | MessageDescriptor;
   processingData: boolean;
   setProcessingData: React.Dispatch<React.SetStateAction<boolean>>;
+  status?: string | MessageDescriptor;
+  error?: string | MessageDescriptor;
+  setHasFile?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const MIME_TYPES = {
-  text: ['.csv'],
+  'text/csv': [],
 };
 
 const CSVUploader = ({
   name,
   error,
+  status,
   processingData,
   setProcessingData,
+  setHasFile,
 }: Props) => {
-  const [CSVFile, setCSVFile] = useState<File | null>(null);
+  const [CSVFile, setCSVFile] = useState<FileReaderFile | null>(null);
   const [parsedCSV, setParsedCSV] = useState<ParseResult<unknown> | null>(null);
-  const [, { value }, { setValue }] = useField(name);
+  const {
+    setValue,
+    watch,
+    trigger,
+    formState: { touchedFields },
+  } = useFormContext();
+  const uploaderValue = watch(name);
 
   const handleUploadError = async () => {
-    if (isNil(value[0].parsedData)) {
-      await setValue([{ ...value[0], parsedData: [] }]);
+    if (isNil(uploaderValue?.parsedData)) {
+      setValue(name, { ...CSVFile, parsedData: [] });
     }
   };
 
   useEffect(() => {
     if (CSVFile && !parsedCSV) {
-      Papa.parse(CSVFile, {
+      Papa.parse(CSVFile.file, {
         complete: setParsedCSV,
         header: true,
       });
+
+      if (setHasFile) setHasFile(true);
     } else if (!CSVFile && parsedCSV) {
       setParsedCSV(null);
+      setValue(name, null, { shouldValidate: true });
+      if (setHasFile) setHasFile(false);
     }
-  }, [CSVFile, parsedCSV]);
+  }, [setHasFile, CSVFile, parsedCSV, name, setValue]);
 
   useEffect(() => {
-    if (parsedCSV && value[0] && isNil(value[0].parsedData)) {
+    if (CSVFile && parsedCSV && isNil(uploaderValue?.parsedData)) {
+      let validAddresses: string[] = [];
       if (parsedCSV.meta.fields?.length === 1) {
-        const validAddresses = parsedCSV.data.flatMap(
+        validAddresses = parsedCSV.data.flatMap(
           (CSVRow: Record<string, any>) => {
             const potentialAddress: string = CSVRow[Object.keys(CSVRow)[0]];
             return potentialAddress ? [potentialAddress] : [];
           },
         );
+      }
 
-        setValue([{ ...value[0], parsedData: validAddresses }]);
-      } else {
-        setValue([{ ...value[0], parsedData: [] }]);
+      if (!isEqual(validAddresses, uploaderValue?.parsedData)) {
+        setValue(
+          name,
+          { ...CSVFile, parsedData: validAddresses },
+          { shouldTouch: true },
+        );
+        trigger(name);
       }
     }
 
     if (processingData) {
       setProcessingData(false);
     }
-  }, [parsedCSV, value, setValue, processingData, setProcessingData]);
+  }, [
+    trigger,
+    parsedCSV,
+    uploaderValue,
+    setValue,
+    processingData,
+    setProcessingData,
+    name,
+    CSVFile,
+  ]);
+
+  const getPlaceholder = () => {
+    if (!CSVFile) {
+      return <DefaultPlaceholder />;
+    }
+
+    return (
+      <CSVUploaderItem
+        error={error}
+        name={name}
+        upload={(file: FileReaderFile | null) => setCSVFile(file)}
+        processingData={processingData}
+        handleProcessingData={setProcessingData}
+      />
+    );
+  };
 
   return (
-    <FileUpload
-      name={name}
-      upload={(file: File) => setCSVFile(file)}
-      dropzoneOptions={{
-        accept: MIME_TYPES,
-      }}
-      customErrorMessage={error}
-      appearance={{ theme: 'minimal', textSpace: 'wrap' }}
-      itemComponent={CSVUploaderItem}
-      handleError={handleUploadError}
-      processingData={processingData}
-      handleProcessingData={setProcessingData}
-    />
+    <>
+      <SingleFileUpload
+        handleFileAccept={setCSVFile}
+        dropzoneOptions={{
+          accept: MIME_TYPES,
+        }}
+        handleFileReject={handleUploadError}
+        placeholder={getPlaceholder()}
+      />
+      <InputStatus
+        appearance={{ theme: 'fat', textSpace: 'wrap' }}
+        status={status}
+        error={error}
+        touched={touchedFields[name]}
+      />
+    </>
   );
 };
 

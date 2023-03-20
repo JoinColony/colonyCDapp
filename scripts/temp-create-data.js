@@ -51,11 +51,21 @@ const createWatchedColonies = /* GraphQL */ `
     createWatchedColonies(input: $input) { id }
   }
 `;
-const createUniqueDomain = /* GraphQL */ `
-  mutation CreateUniqueDomain($input: CreateUniqueDomainInput) {
-    createUniqueDomain(input: $input) { nativeId }
+const createDomain = /* GraphQL */`
+  mutation CreateDomain($input: CreateDomainInput!) {
+    createDomain(input: $input) { id }
   }
 `;
+const createDomainMetadata = /* GraphQL */`
+  mutation CreateDomainMetadata($input: CreateDomainMetadataInput!) {
+    createDomainMetadata(input: $input) { id }
+  }
+`;
+const createColonyMetadata = /* GraphQL */`
+  mutation CreateColonyMetadata($input: CreateColonyMetadataInput!) {
+    createColonyMetadata(input: $input) { id }
+  }
+`
 
 /*
  * Queries
@@ -227,7 +237,6 @@ const createMetacolony = async (singerOrWallet) => {
         id: utils.getAddress(metacolonyAddress),
         colonyNativeTokenId: utils.getAddress(metacolonyTokenAddress),
         name: 'meta',
-        profile: { displayName: 'Metacolony' },
         type: 'METACOLONY',
         version: BigNumber.from(metacolonyVersion).toNumber()
       }
@@ -248,18 +257,52 @@ const createMetacolony = async (singerOrWallet) => {
     if (metacolonyQuery?.errors) {
       console.log('METACOLONY COULD NOT BE CREATED.', metacolonyQuery.errors[0].message);
     } else {
-      console.log(`Creating metacolony { name: "meta", colonyAddress: "${utils.getAddress(metacolonyAddress)}", profile: { displayName: "Metacolony" }, nativeToken: "${utils.getAddress(metacolonyTokenAddress)}", version: "${metacolonyVersion.toString()}" }`);
+      console.log(`Creating metacolony { name: "meta", colonyAddress: "${utils.getAddress(metacolonyAddress)}", nativeToken: "${utils.getAddress(metacolonyTokenAddress)}", version: "${metacolonyVersion.toString()}" }`);
     }
 
-    /*
-     * Root
-     */
-    const rootDomainMutation = await graphqlRequest(
-      createUniqueDomain,
+    // create metacolony metadata 
+    const metadataMutation = await graphqlRequest(
+      createColonyMetadata,
       {
         input: {
-          colonyAddress: utils.getAddress(metacolonyAddress),
+          id: utils.getAddress(metacolonyAddress),
+          displayName: 'Metacolony'
         }
+      },
+      GRAPHQL_URI,
+      API_KEY,
+    );
+    await delay();
+
+    if(!metadataMutation.errors) {
+      console.log(`Creating metacolony metadata { displayName: "Metacolony" }`);
+    }
+
+    const rootDomainMetadataMutation = await graphqlRequest(
+      createDomainMetadata,
+      {
+        input: {
+          id: `${utils.getAddress(metacolonyAddress)}_1`,
+          name: 'Root',
+          color: 'LIGHT_PINK',
+          description: ''
+        },
+      },
+      GRAPHQL_URI,
+      API_KEY,
+    );
+    // @NOTE: Temporary, until handled by block-ingestor (unlike subdomains)
+    const rootDomainMutation = await graphqlRequest(
+      createDomain,
+      {
+        input: {
+          id: `${utils.getAddress(metacolonyAddress)}_1`,
+          colonyId: utils.getAddress(metacolonyAddress),
+          nativeId: 1,
+          isRoot: true,
+          nativeFundingPotId: 1,
+          nativeSkillId: 1
+        },
       },
       GRAPHQL_URI,
       API_KEY,
@@ -267,8 +310,8 @@ const createMetacolony = async (singerOrWallet) => {
 
     await delay();
 
-    if (!rootDomainMutation?.errors) {
-      console.log(`Creating root domain { name: "Root", nativeId: "1", parentId: "null", id: "${utils.getAddress(metacolonyAddress)}_1"`);
+    if (!rootDomainMetadataMutation?.errors && !rootDomainMutation?.errors) {
+      console.log(`Creating root domain and its metadata { name: "Root", id: "${utils.getAddress(metacolonyAddress)}_1", color: "LIGHT_PINK", description: "" }`);
     }
   }
 
@@ -299,7 +342,6 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
         id: colonyAddress,
         colonyNativeTokenId: tokenAddress,
         name: colonyName,
-        profile: { displayName: `Colony ${colonyName.toUpperCase()}` },
         version: BigNumber.from(currentNetworkVersion).toNumber()
       }
     },
@@ -319,7 +361,25 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
   if (colonyQuery?.errors) {
     console.log('COLONY COULD NOT BE CREATED.', colonyQuery.errors[0].message);
   } else {
-    console.log(`Creating colony { name: "${colonyName}", colonyAddress: "${colonyAddress}", profile: { displayName: "Colony ${colonyName.toUpperCase()}" }, nativeToken: "${tokenAddress}", version: "${currentNetworkVersion.toString()}" }`);
+    console.log(`Creating colony { name: "${colonyName}", colonyAddress: "${colonyAddress}", nativeToken: "${tokenAddress}", version: "${currentNetworkVersion.toString()}" }`);
+  }
+
+  // Colony metadata
+  const metadataMutation = await graphqlRequest(
+    createColonyMetadata,
+    {
+      input: {
+        id: utils.getAddress(colonyAddress),
+        displayName: `Colony ${colonyName.toUpperCase()}`
+      }
+    },
+    GRAPHQL_URI,
+    API_KEY,
+  );
+  await delay();
+
+  if(!metadataMutation.errors) {
+    console.log(`Creating colony metadata { displayName: "Colony ${colonyName.toUpperCase()}" }`);
   }
 
   /*
@@ -329,12 +389,31 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
     /*
      * Root
      */
-    const rootDomainMutation = await graphqlRequest(
-      createUniqueDomain,
+    const rootDomainMetadataMutation = await graphqlRequest(
+      createDomainMetadata,
       {
         input: {
-          colonyAddress: colonyAddress,
-        }
+          id: `${utils.getAddress(colonyAddress)}_1`,
+          name: 'Root',
+          color: 'LIGHT_PINK',
+          description: ''
+        },
+      },
+      GRAPHQL_URI,
+      API_KEY,
+    );
+     // @NOTE: Temporary, until handled by block-ingestor (unlike subdomains)
+    const rootDomainMutation = await graphqlRequest(
+      createDomain,
+      {
+        input: {
+          id: `${utils.getAddress(colonyAddress)}_1`,
+          colonyId: utils.getAddress(colonyAddress),
+          nativeId: 1,
+          isRoot: true,
+          nativeFundingPotId: 1,
+          nativeSkillId: 1
+        },
       },
       GRAPHQL_URI,
       API_KEY,
@@ -342,8 +421,8 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
 
     await delay();
 
-    if (!rootDomainMutation?.errors) {
-      console.log(`Creating root domain { name: "Root", nativeId: "1", parentId: "null", id: "${colonyAddress}_1"`);
+    if (!rootDomainMetadataMutation?.errors && !rootDomainMutation?.errors) {
+      console.log(`Creating root domain and its metadata { name: "Root", id: "${utils.getAddress(colonyAddress)}_1", color: "LIGHT_PINK", description: "" }`);
     }
 
     /*
@@ -355,24 +434,24 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
     await delay();
     const { args: { domainId: firstSubdomainId } } = firstSubdomainTransactions.events.find(event => !!event?.args?.domainId);
 
-    const firstDomainMutation = await graphqlRequest(
-      createUniqueDomain,
+    const firstDomainMetadataMutation = await graphqlRequest(
+      createDomainMetadata,
       {
         input: {
-          colonyAddress: colonyAddress,
+          id: `${utils.getAddress(colonyAddress)}_${firstSubdomainId.toString()}`,
           name: 'Red',
-          description: 'First domain',
           color: 'RED',
+          description: 'First domain'
         }
       },
       GRAPHQL_URI,
       API_KEY,
-    );
+    )
 
     await delay();
 
-    if (!firstDomainMutation?.errors) {
-      console.log(`Creating subdomain { name: "First Subdomain", nativeId: "${firstSubdomainId.toString()}", parentId: "1", id: "${colonyAddress}_${firstSubdomainId.toString()}"`);
+    if (!firstDomainMetadataMutation?.errors) {
+      console.log(`Creating subdomain metadata { name: "Red", id: "${colonyAddress}_${firstSubdomainId.toString()}", color: "RED", description: "First domain" }`);
     }
 
     /*
@@ -384,24 +463,24 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
     await delay();
     const { args: { domainId: secondSubdomainId } } = secondSubdomainTransactions.events.find(event => !!event?.args?.domainId);
 
-    const secondDomainMutation = await graphqlRequest(
-      createUniqueDomain,
+    const secondDomainMetadataMutation = await graphqlRequest(
+      createDomainMetadata,
       {
         input: {
-          colonyAddress: colonyAddress,
+          id: `${utils.getAddress(colonyAddress)}_${secondSubdomainId.toString()}`,
           name: 'Orange',
-          description: 'Second domain',
           color: 'ORANGE',
+          description: 'Second domain'
         }
       },
       GRAPHQL_URI,
       API_KEY,
-    );
+    )
 
     await delay();
 
-    if (!secondDomainMutation?.errors) {
-      console.log(`Creating subdomain { name: "Second Subdomain", nativeId: "${secondSubdomainId.toString()}", parentId: "1", id: "${colonyAddress}_${secondSubdomainId.toString()}"`);
+    if (!secondDomainMetadataMutation?.errors) {
+      console.log(`Creating subdomain metadata { name: "Orange", id: "${colonyAddress}_${secondSubdomainId.toString()}", color: "ORANGE", description: "Second domain" }`);
     }
   }
 

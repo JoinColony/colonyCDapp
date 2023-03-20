@@ -1,0 +1,38 @@
+@value centered: "left main right" 100% / 1fr 900px 1fr;
+@value query700 from "~styles/queries.css";
+
+.main {
+  display: flex;
+  justify-content: center;
+  grid-area: main;
+}
+
+.layout {
+  display: grid;
+  padding: 90px 0;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  grid-template:
+    "left main right" 100%
+    / 2.2fr 900px 1fr;
+}
+
+.center {
+  grid-template: centered;
+}
+
+/* Centre the layout on wider screens */
+@media (max-resolution: 2dppx) {
+  .layout {
+    grid-template: centered;
+  }
+}
+
+@media screen and query700 {
+  .layout {
+    grid-template:
+      "main" 100%
+      / 1fr;
+  }
+}

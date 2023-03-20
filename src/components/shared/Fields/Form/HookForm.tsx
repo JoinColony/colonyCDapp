@@ -4,21 +4,31 @@ import {
   UseFormProps,
   FormProvider,
   UseFormReturn,
-  SubmitHandler,
-  SubmitErrorHandler,
   FieldValues,
+  FieldErrors,
 } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Schema } from 'yup';
 
 const displayName = 'HookForm';
 
+export type CustomSubmitHandler<FormData extends FieldValues> = (
+  data: FormData,
+  formHelpers: UseFormReturn<FormData>,
+  event?: React.BaseSyntheticEvent,
+) => any | Promise<any>;
+export type CustomSubmitErrorHandler<FormData extends FieldValues> = (
+  errors: FieldErrors<FormData>,
+  formHelpers: UseFormReturn<FormData, any>,
+  event?: React.BaseSyntheticEvent,
+) => any | Promise<any>;
+
 export interface HookFormProps<FormData extends FieldValues> {
   children:
     | ((props: UseFormReturn<FormData>) => React.ReactNode)
     | React.ReactNode;
-  onSubmit: SubmitHandler<FormData>;
-  onError?: SubmitErrorHandler<FormData>;
+  onSubmit: CustomSubmitHandler<FormData>;
+  onError?: CustomSubmitErrorHandler<FormData>;
   validationSchema?: Schema<FormData>;
   defaultValues?: UseFormProps<FormData>['defaultValues'];
   mode?: UseFormProps<FormData>['mode'];
@@ -60,11 +70,16 @@ const HookForm = <FormData extends FieldValues>({
     if (isSubmitting && resetOnSubmit) {
       reset(values);
     }
-  }, [isSubmitting, values]);
+  }, [isSubmitting, values, resetOnSubmit, reset]);
 
   return (
     <FormProvider {...formHelpers}>
-      <form onSubmit={handleSubmit(onSubmit, onError)}>
+      <form
+        onSubmit={handleSubmit(
+          (data, e) => onSubmit(data, formHelpers, e),
+          (errors, e) => onError && onError(errors, formHelpers, e),
+        )}
+      >
         {typeof children === 'function' ? children(formHelpers) : children}
       </form>
     </FormProvider>

@@ -6,9 +6,9 @@ import {
   useLocation,
 } from 'react-router-dom';
 
-import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-// import ColonyActions from '~dashboard/ColonyActions';
+import ColonyActions from '~common/ColonyActions';
 // import ColonyEvents from '~dashboard/ColonyEvents';
+
 import {
   COLONY_EVENTS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
@@ -33,51 +33,33 @@ const ColonyHome = () => {
     Number(queryDomainIdFilter),
   );
 
-  const filteredDomainId = domainIdFilter || COLONY_TOTAL_BALANCE_DOMAIN_ID;
-
   const memoizedSwitch = useMemo(() => {
     if (colony) {
       return (
         <RoutesSwitch>
           <Route
-            path="/"
-            element={
-              <ColonyHomeLayout
-                filteredDomainId={filteredDomainId}
-                onDomainChange={setDomainIdFilter}
-                // ethDomainId={filteredDomainId}
-              >
-                {/* <ColonyActions colony={colony} ethDomainId={filteredDomainId} /> */}
-                <div>Actions & Motions List</div>
-              </ColonyHomeLayout>
-            }
-          />
-          <Route
             path={COLONY_EVENTS_ROUTE}
             element={
               <ColonyHomeLayout
-                filteredDomainId={filteredDomainId}
+                filteredDomainId={domainIdFilter}
                 onDomainChange={setDomainIdFilter}
-                showActions={false}
               >
                 {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> */}
                 <div>Events (Transactions Log)</div>
               </ColonyHomeLayout>
             }
           />
-
           <Route
             element={
               <ColonyHomeLayout
-                filteredDomainId={filteredDomainId}
+                filteredDomainId={domainIdFilter}
                 onDomainChange={setDomainIdFilter}
-                showControls={false}
-                showSidebar={false}
               >
                 <Outlet />
               </ColonyHomeLayout>
             }
           >
+            <Route path="/" element={<ColonyActions />} />
             <Route
               path={COLONY_EXTENSIONS_ROUTE}
               element={<ColonyExtensions />}
@@ -93,7 +75,7 @@ const ColonyHome = () => {
       );
     }
     return null;
-  }, [colony, filteredDomainId]);
+  }, [colony, domainIdFilter]);
 
   return memoizedSwitch;
 };

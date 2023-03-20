@@ -77,7 +77,7 @@ interface Props extends DialogProps {
 
 const UserAvatar = HookedUserAvatar({ fetchUser: false });
 
-const supRenderAvatar = (address: Address, item: ItemDataType<AnyUser>) => (
+const renderAvatar = (address: Address, item: ItemDataType<AnyUser>) => (
   <UserAvatar address={address} user={item} size="xs" notSet={false} />
 );
 
@@ -174,7 +174,7 @@ const BanUser = ({ colonyAddress, cancel, close, isBanning = true }: Props) => {
                 label={MSG.selectUser}
                 name="userAddress"
                 filter={filterUserSelection}
-                renderAvatar={supRenderAvatar}
+                renderAvatar={renderAvatar}
                 disabled={
                   loadingBannedUsers || loadingBanAction || isSubmitting
                 }

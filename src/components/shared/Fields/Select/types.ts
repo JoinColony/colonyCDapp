@@ -3,7 +3,7 @@ import { MessageDescriptor } from 'react-intl';
 
 import { SimpleMessageValues } from '~types';
 
-export { Props } from './Select';
+export { SelectProps } from './Select';
 
 export interface Appearance {
   alignOptions?: 'left' | 'center' | 'right';
@@ -18,7 +18,7 @@ export interface SelectOption {
   children?: ReactNode;
   disabled?: boolean;
   label: MessageDescriptor | string;
-  value: string;
+  value: string | number;
   labelValues?: SimpleMessageValues;
   labelElement?: ReactNode;
 }

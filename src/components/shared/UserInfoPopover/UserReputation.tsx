@@ -1,11 +1,12 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import isEmpty from 'lodash/isEmpty';
 
 import Heading from '~shared/Heading';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { UserDomainReputation } from '~hooks';
 import { Colony } from '~types';
+import { isEmpty } from '~utils/lodash';
+import { findDomainByNativeId } from '~utils/domains';
 
 import UserReputationItem from './UserReputationItem';
 
@@ -28,8 +29,8 @@ const MSG = defineMessages({
   noReputationDescription: {
     id: `${displayName}.noReputationDescription`,
     defaultMessage: `{isCurrentUserReputation, select,
-      true {You don’t have any reputation yet.\nTo earn reputation you}
-      other {This user doesn’t have any reputation yet.
+      true {You don't have any reputation yet.\nTo earn reputation you}
+      other {This user doesn't have any reputation yet.
             To earn reputation they}
     } need to contribute to the colony`,
   },
@@ -47,9 +48,7 @@ const UserReputation = ({
 }: Props) => {
   const formattedUserReputations = userReputationForTopDomains?.map(
     ({ domainId, ...rest }) => {
-      const reputationDomain = colony?.domains?.items.find(
-        (domain) => domain?.nativeId === domainId,
-      );
+      const reputationDomain = findDomainByNativeId(domainId, colony);
       return {
         ...rest,
         reputationDomain,
@@ -89,7 +88,7 @@ const UserReputation = ({
                 ({ reputationDomain, reputationPercentage }) => (
                   <UserReputationItem
                     key={`${reputationDomain?.id}-${reputationPercentage}`}
-                    domainName={reputationDomain?.name || ''}
+                    domainName={reputationDomain?.metadata?.name || ''}
                     reputationPercentage={reputationPercentage}
                   />
                 ),

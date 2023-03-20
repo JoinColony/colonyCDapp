@@ -1,6 +1,6 @@
-import { ColonyRole, ColonyRoles, Id } from '@colony/colony-js';
+import { ColonyRole, ColonyRoles } from '@colony/colony-js'; // , Id
 
-import { Address } from '~types';
+import { Address, Colony } from '~types';
 
 export const getRolesForUserAndDomain = (
   roles: ColonyRoles,
@@ -15,28 +15,28 @@ export const getRolesForUserAndDomain = (
   return domainRoles ? (domainRoles.roles as ColonyRole[]) : [];
 };
 
-const getRolesForUserAndParentDomains = (
-  colony,
-  userAddress: Address,
-  domainId: number,
-  roleSet = new Set<ColonyRole>(),
-): ColonyRole[] => {
-  const domain = colony?.domains?.find(
-    ({ ethDomainId }) => ethDomainId === domainId,
-  );
-  if (!domain) return Array.from(roleSet);
-  const roles = getRolesForUserAndDomain(colony.roles, userAddress, domainId);
-  roles.forEach((role) => roleSet.add(role));
-  if (domain.ethParentDomainId) {
-    getRolesForUserAndParentDomains(
-      colony,
-      userAddress,
-      domain.ethParentDomainId,
-      roleSet,
-    );
-  }
-  return Array.from(roleSet);
-};
+// const getRolesForUserAndParentDomains = (
+//   colony,
+//   userAddress: Address,
+//   domainId: number,
+//   roleSet = new Set<ColonyRole>(),
+// ): ColonyRole[] => {
+//   const domain = colony?.domains?.find(
+//     ({ ethDomainId }) => ethDomainId === domainId,
+//   );
+//   if (!domain) return Array.from(roleSet);
+//   const roles = getRolesForUserAndDomain(colony.roles, userAddress, domainId);
+//   roles.forEach((role) => roleSet.add(role));
+//   if (domain.ethParentDomainId) {
+//     getRolesForUserAndParentDomains(
+//       colony,
+//       userAddress,
+//       domain.ethParentDomainId,
+//       roleSet,
+//     );
+//   }
+//   return Array.from(roleSet);
+// };
 
 // const getCombinedRolesForDomains = (
 //   domainIds: number[],
@@ -90,38 +90,44 @@ export const getUserRolesForDomain = (
   colony,
   userAddress: Address | undefined,
   domainId: number | undefined,
-  excludeInherited = false,
+  // excludeInherited = false,
 ): ColonyRole[] => {
   if (!colony || !domainId || !userAddress) return [];
-  if (excludeInherited) {
-    return getRolesForUserAndDomain(colony.roles, userAddress, domainId);
-  }
-  return getRolesForUserAndParentDomains(colony, userAddress, domainId);
+  return [0, 1, 2, 3, 4, 5, 6, 7];
+  // if (excludeInherited) {
+  //   return getRolesForUserAndDomain(colony.roles, userAddress, domainId);
+  // }
+  // return getRolesForUserAndParentDomains(colony, userAddress, domainId);
 };
 
 /* Gets all account addresses that have the ROOT role in the ROOT_DOMAIN */
-export const getAllRootAccounts = (colony): Address[] => {
-  if (!colony) return [];
+export const getAllRootAccounts = (): Address[] => {
+  // (colony: Colony)
 
-  return colony.roles
-    .filter(
-      ({ domains }) =>
-        !!domains.find(
-          ({ domainId, roles }) =>
-            domainId === Id.RootDomain && roles.includes(ColonyRole.Root),
-        ),
-    )
-    .map(({ address }) => address);
+  return ['0x'];
+  // return colony.roles
+  //   .filter(
+  //     ({ domains }) =>
+  //       !!domains.find(
+  //         ({ domainId, roles }) =>
+  //           domainId === Id.RootDomain && roles.includes(ColonyRole.Root),
+  //       ),
+  //   )
+  //   .map(({ address }) => address);
 };
 
-export const getAllUserRoles = (colony, userAddress: Address): ColonyRole[] => {
-  if (!colony) return [] as ColonyRole[];
-  const userRoles = colony.roles.find(({ address }) => address === userAddress);
-  if (!userRoles) return [] as ColonyRole[];
-  return Array.from(
-    userRoles.domains.reduce((allUserRoles, domain) => {
-      domain.roles.forEach((role) => allUserRoles.add(role));
-      return allUserRoles;
-    }, new Set<ColonyRole>()),
-  );
+export const getAllUserRoles = (
+  colony: Colony | undefined,
+  userAddress: Address | undefined,
+): ColonyRole[] => {
+  if (!colony || !userAddress) return [] as ColonyRole[];
+  return [0, 1, 2, 3, 4, 5, 6, 7];
+  // const userRoles = colony.roles.find(({ address }) => address === userAddress);
+  // if (!userRoles) return [] as ColonyRole[];
+  // return Array.from(
+  //   userRoles.domains.reduce((allUserRoles, domain) => {
+  //     domain.roles.forEach((role) => allUserRoles.add(role));
+  //     return allUserRoles;
+  //   }, new Set<ColonyRole>()),
+  // );
 };

@@ -40,7 +40,6 @@ const UserMeta = ({ user: { walletAddress, profile }, user }: Props) => {
       <div data-test="userProfileAvatar">
         <UserAvatar
           className={styles.avatar}
-          address={walletAddress || ''}
           notSet={!walletAddress}
           size={isMobile ? 'm' : 'xl'}
           user={user}

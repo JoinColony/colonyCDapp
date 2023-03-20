@@ -4,12 +4,11 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 // import { SpinnerLoader } from '~core/Preloaders';
 import Button /* ThreeDotsButton */ from '~shared/Button';
 import Link from '~shared/Link';
-import MaskedAddress from '~shared/MaskedAddress';
-import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 
 import { Colony } from '~types';
 import { useAppContext, useColonyContext } from '~hooks';
 import { CREATE_USER_ROUTE } from '~routes/index';
+import Address from '~shared/Address';
 
 import ColonySubscriptionInfoPopover from './ColonySubscriptionInfoPopover';
 
@@ -52,14 +51,11 @@ const ColonySubscription = () => {
         ))} */}
       <div className={isSubscribed ? styles.colonySubscribed : ''}>
         {colonyAddress && (
-          <InvisibleCopyableAddress
+          <Address
             address={colonyAddress}
+            maskedAddressStyles={styles.colonyAddress}
             copyMessage={MSG.copyMessage}
-          >
-            <div className={styles.colonyAddress}>
-              <MaskedAddress address={colonyAddress} />
-            </div>
-          </InvisibleCopyableAddress>
+          />
         )}
         {isSubscribed && (
           <ColonySubscriptionInfoPopover

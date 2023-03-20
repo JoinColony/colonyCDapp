@@ -1,46 +1,36 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
-import { ContextModule, getContext } from '~context';
-import {
-  ProcessedColonyQuery,
-  ProcessedColonyQueryVariables,
-  ProcessedColonyDocument,
-} from '~data/index';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
-import { putError, routeRedirect, takeFrom } from '../utils';
+// import { ContextModule, getContext } from '~context';
+import { Action, ActionTypes, AllActions } from '~redux';
+
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { ipfsUpload } from '../ipfs';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { transactionReady } from '~redux/actionCreators';
+import { putError, takeFrom } from '../utils';
 
 function* tokenUnlockAction({
   meta,
-  meta: { id: metaId, history },
-  payload: { colonyAddress, annotationMessage, colonyName },
+  meta: { id: metaId, navigate },
+  payload: { colonyAddress, /* annotationMessage */ colonyName },
 }: Action<ActionTypes.ACTION_UNLOCK_TOKEN>) {
   let txChannel;
 
   try {
-    const apolloClient = getContext(ContextModule.ApolloClient);
+    // const apolloClient = getContext(ContextModule.ApolloClient);
 
     txChannel = yield call(getTxChannel, metaId);
 
     const batchKey = 'tokenUnlockAction';
     const {
       tokenUnlockAction: tokenUnlock,
-      annotateTokenUnlockAction: annotateTokenUnlock,
+      // annotateTokenUnlockAction: annotateTokenUnlock,
     } = yield createTransactionChannels(metaId, [
       'tokenUnlockAction',
-      'annotateTokenUnlockAction',
+      // 'annotateTokenUnlockAction',
     ]);
 
     /*
@@ -59,7 +49,6 @@ function* tokenUnlockAction({
     /*
      * Add the tokenUnlock transaction to the group
      */
-
     yield createGroupTransaction(tokenUnlock, {
       context: ClientType.ColonyClient,
       methodName: 'unlockToken',
@@ -71,16 +60,15 @@ function* tokenUnlockAction({
     /*
      * If annotation message exists add the transaction to the group
      */
-
-    if (annotationMessage) {
-      yield createGroupTransaction(annotateTokenUnlock, {
-        context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
-        identifier: colonyAddress,
-        params: [],
-        ready: false,
-      });
-    }
+    // if (annotationMessage) {
+    //   yield createGroupTransaction(annotateTokenUnlock, {
+    //     context: ClientType.ColonyClient,
+    //     methodName: 'annotateTransaction',
+    //     identifier: colonyAddress,
+    //     params: [],
+    //     ready: false,
+    //   });
+    // }
 
     /*
      * Wait for transactions to be created
@@ -88,17 +76,16 @@ function* tokenUnlockAction({
 
     yield takeFrom(tokenUnlock.channel, ActionTypes.TRANSACTION_CREATED);
 
-    if (annotationMessage) {
-      yield takeFrom(
-        annotateTokenUnlock.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
-    }
+    // if (annotationMessage) {
+    //   yield takeFrom(
+    //     annotateTokenUnlock.channel,
+    //     ActionTypes.TRANSACTION_CREATED,
+    //   );
+    // }
 
     /*
      * Check for transaction and wait for response
      */
-
     yield put(transactionReady(tokenUnlock.id));
 
     const {
@@ -109,53 +96,53 @@ function* tokenUnlockAction({
     );
     yield takeFrom(tokenUnlock.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    if (annotationMessage) {
-      yield put(transactionPending(annotateTokenUnlock.id));
+    // if (annotationMessage) {
+    //   yield put(transactionPending(annotateTokenUnlock.id));
 
-      /*
-       * Upload annotation metadata to IPFS
-       */
-      let annotationMessageIpfsHash = null;
-      annotationMessageIpfsHash = yield call(
-        ipfsUpload,
-        JSON.stringify({
-          annotationMessage,
-        }),
-      );
+    //   /*
+    //    * Upload annotation metadata to IPFS
+    //    */
+    //   let annotationMessageIpfsHash = null;
+    //   annotationMessageIpfsHash = yield call(
+    //     ipfsUpload,
+    //     JSON.stringify({
+    //       annotationMessage,
+    //     }),
+    //   );
 
-      yield put(
-        transactionAddParams(annotateTokenUnlock.id, [
-          txHash,
-          annotationMessageIpfsHash,
-        ]),
-      );
+    //   yield put(
+    //     transactionAddParams(annotateTokenUnlock.id, [
+    //       txHash,
+    //       annotationMessageIpfsHash,
+    //     ]),
+    //   );
 
-      yield put(transactionReady(annotateTokenUnlock.id));
+    //   yield put(transactionReady(annotateTokenUnlock.id));
 
-      yield takeFrom(
-        annotateTokenUnlock.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
-    }
+    //   yield takeFrom(
+    //     annotateTokenUnlock.channel,
+    //     ActionTypes.TRANSACTION_SUCCEEDED,
+    //   );
+    // }
 
-    yield apolloClient.query<
-      ProcessedColonyQuery,
-      ProcessedColonyQueryVariables
-    >({
-      query: ProcessedColonyDocument,
-      variables: {
-        address: colonyAddress,
-      },
-      fetchPolicy: 'network-only',
-    });
+    // yield apolloClient.query<
+    //   ProcessedColonyQuery,
+    //   ProcessedColonyQueryVariables
+    // >({
+    //   query: ProcessedColonyDocument,
+    //   variables: {
+    //     address: colonyAddress,
+    //   },
+    //   fetchPolicy: 'network-only',
+    // });
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS,
       meta,
     });
 
-    if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+    if (colonyName && navigate) {
+      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
     }
   } catch (error) {
     putError(ActionTypes.ACTION_UNLOCK_TOKEN_ERROR, error, meta);

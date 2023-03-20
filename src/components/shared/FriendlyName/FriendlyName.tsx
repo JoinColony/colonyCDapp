@@ -1,84 +1,45 @@
 import React, { useRef, useEffect } from 'react';
 import { AddressZero } from '@ethersproject/constants';
 
-import { isEmpty } from 'lodash';
 import MaskedAddress from '~shared/MaskedAddress';
-
-import { AnyUser, Colony } from '~data/index';
-
+import { isEmpty } from '~utils/lodash';
 import { removeValueUnits } from '~utils/css';
+
+import { User } from '~types';
+import { useColonyContext } from '~hooks';
 
 import styles from './FriendlyName.css';
 
 const displayName = 'FriendlyName';
 
 interface Props {
-  /*
-   * The user object to display
-   */
-  user?: AnyUser;
-  /*
-   * Whether to show a masked address or a full one
-   */
+  /**  The user object to display */
+  user?: User | null;
+  /** Whether to show a masked address or a full one */
   maskedAddress?: boolean;
-  /*
-   * Whether to apply the "shrink tech font by 1px" logic
-   */
+  /** Whether to apply the "shrink tech font by 1px" logic */
   autoShrinkAddress?: boolean;
-  /*
-   * Colony object to display in case of wallet address is equal to colony address
-   */
-  colony?: Colony;
 }
 
 const FriendlyName = ({
   user,
   maskedAddress = true,
   autoShrinkAddress = false,
-  colony,
 }: Props) => {
+  const { colony } = useColonyContext();
   const addressRef = useRef<HTMLElement>(null);
-  let colonyDisplay: string | undefined | null = '';
-  let userDisplay: string | undefined | null = '';
-  let colonyDisplayAddress: string | undefined | null = '';
-  let userDisplayAddress: string | undefined | null = '';
-
-  if (user?.profile) {
-    const {
-      profile: { username, displayName: userDisplayName, walletAddress },
-    } = user;
-    userDisplay = userDisplayName || username;
-    if (walletAddress !== AddressZero) {
-      userDisplayAddress = walletAddress;
-    }
-  }
-
-  if (colony) {
-    const {
-      colonyName,
-      displayName: colonyDisplayName,
-      colonyAddress,
-    } = colony;
-    colonyDisplay = colonyDisplayName || colonyName;
-    if (colonyAddress !== AddressZero) {
-      colonyDisplayAddress = colonyAddress;
-    }
-  }
+  const colonyDisplayName = colony?.metadata?.displayName || colony?.name;
+  const colonyDisplayAddress =
+    colony?.colonyAddress !== AddressZero ? colony?.colonyAddress : '';
+  const walletAddress = user?.walletAddress;
+  const userDisplayName = user?.profile?.displayName || user?.name;
+  const userDisplayAddress = walletAddress !== AddressZero ? walletAddress : '';
 
   /*
-   * @NOTE On touching element styles manually
-   * The "tech" font we user renders a bit larger than our display font while
+   * We always make (for this component only), the address
+   * size to be 1px smaller than the rest of the text because
+   * the "tech" font we user renders a bit larger than our display font while
    * using the same font size.
-   *
-   * Since we don't really know the size this element is going to be styled with
-   * we can't determine the correct font size from the css styles directly.
-   *
-   * To solve this, we are fetching the computed styles of the address element,
-   * getting the font size, subtracting one (it's usually enough to make it look
-   * the same size as the other fonts), then applying it.
-   *
-   * So as, an overview, we always make (for this component only), the address
-   * size to be 1px smaller than the rest of the text
    */
   useEffect(() => {
     if (autoShrinkAddress && addressRef?.current) {
@@ -87,13 +48,15 @@ const FriendlyName = ({
       addressRef.current.style.fontSize = `${inheritedFontSize - 1}px`;
     }
   }, [addressRef, autoShrinkAddress]);
+
   const isColony =
-    user?.profile.walletAddress === colony?.colonyAddress ||
+    walletAddress === colony?.colonyAddress ||
     (isEmpty(user) && !isEmpty(colony));
+
   return (
     <div className={styles.main}>
       <div className={styles.name}>
-        {userDisplay || (isColony && colonyDisplay) || (
+        {userDisplayName || (isColony && colonyDisplayName) || (
           <MaskedAddress
             address={userDisplayAddress || colonyDisplayAddress || AddressZero}
             full={!maskedAddress}

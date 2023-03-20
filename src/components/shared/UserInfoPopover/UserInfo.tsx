@@ -16,11 +16,11 @@ interface Props {
 const displayName = 'UserInfoPopover.UserInfo';
 
 const UserInfo = ({ user }: Props) => {
-  const { displayName: userDisplayName } = user.profile || {};
+  const userDisplayName = user.profile?.displayName || user.name;
 
   return (
     <div className={styles.container}>
-      <UserAvatar size="s" address={user.walletAddress} user={user} />
+      <UserAvatar size="s" user={user} />
       <div className={styles.textContainer}>
         {userDisplayName && (
           <Heading

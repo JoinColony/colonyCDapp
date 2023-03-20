@@ -1,0 +1,28 @@
+fragment ColonyAction on ColonyAction {
+  id
+  transactionHash: id
+  colonyAddress: colonyId
+  type
+  blockNumber
+  initiatorAddress
+  initiatorUser {
+    ...User
+  }
+  recipientAddress
+  recipient {
+    ...User
+  }
+  amount
+  tokenAddress
+  token {
+    ...Token
+  }
+  fromDomain {
+    ...Domain
+  }
+  toDomain {
+    ...Domain
+  }
+  createdAt
+  newColonyVersion
+}

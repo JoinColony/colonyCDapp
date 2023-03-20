@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import NewActionButton from '~common/NewActionButton';
 import ColonyTotalFunds from '~common/ColonyTotalFunds';
@@ -17,6 +18,10 @@ import OneTxPaymentUpgrade from './OneTxPaymentUpgrade';
 
 import styles from './ColonyHomeLayout.css';
 
+const isExtensionsRoute = (pathname: string) => {
+  return pathname.includes('extensions');
+};
+
 type Props = {
   filteredDomainId: number;
   onDomainChange?: (domainId: number) => void;
@@ -25,11 +30,6 @@ type Props = {
    * otherwise it has no point
    */
   children: ReactNode;
-  showControls?: boolean;
-  showNavigation?: boolean;
-  showSidebar?: boolean;
-  showActions?: boolean;
-  // ethDomainId?: number;
 };
 
 const displayName = 'common.ColonyHome.ColonyHomeLayout';
@@ -37,30 +37,28 @@ const displayName = 'common.ColonyHome.ColonyHomeLayout';
 const ColonyHomeLayout = ({
   filteredDomainId,
   children,
-  // ethDomainId,
-  showControls = true,
-  showNavigation = true,
-  showSidebar = true,
-  showActions = true,
   onDomainChange = () => null,
 }: Props) => {
   const { colony } = useColonyContext();
+  const { pathname } = useLocation();
 
   if (!colony) {
     return null;
   }
 
+  const isExtensions = isExtensionsRoute(pathname);
+
   return (
     <div className={styles.main}>
       <div
-        className={showSidebar ? styles.mainContentGrid : styles.minimalGrid}
+        className={isExtensions ? styles.mainContentGrid : styles.minimalGrid}
       >
         <aside className={styles.leftAside}>
           <ColonyTitle />
-          {showNavigation && <ColonyNavigation />}
+          <ColonyNavigation />
         </aside>
         <div className={styles.mainContent}>
-          {showControls && (
+          {!isExtensions && (
             <>
               <ColonyTotalFunds />
               <div className={styles.contentActionsPanel}>
@@ -70,15 +68,13 @@ const ColonyHomeLayout = ({
                     onDomainChange={onDomainChange}
                   />
                 </div>
-                {showActions && (
-                  <NewActionButton /* ethDomainId={ethDomainId} */ />
-                )}
+                <NewActionButton filteredDomainId={filteredDomainId} />
               </div>
             </>
           )}
           {children}
         </div>
-        {showSidebar && (
+        {!isExtensions && (
           <aside className={styles.rightAside}>
             <ColonyDomainDescription currentDomainId={filteredDomainId} />
             <ColonyUnclaimedTransfers />
@@ -88,7 +84,6 @@ const ColonyHomeLayout = ({
           </aside>
         )}
       </div>
-      {/* <ColonyUpgrade colony={colony} /> */}
       <OneTxPaymentUpgrade />
     </div>
   );

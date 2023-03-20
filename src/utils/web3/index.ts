@@ -1,24 +1,15 @@
 import BN from 'bn.js';
-import { getAddress, hexlify } from 'ethers/lib.esm/utils';
 import { ClientType, TokenClientType } from '@colony/colony-js';
 
-import { Address, ExtendedClientType } from '~types';
+import { ExtendedClientType } from '~types';
 import { TransactionError } from '~redux/immutable/Transaction';
 import { NETWORK_DATA } from '~constants';
 
-export const createAddress = (address: string): Address => getAddress(address);
-
-// @TODO ethers v5 will have an isAddress utility function
-export const isAddress = (address: string) => {
-  try {
-    getAddress(address);
-  } catch {
-    return false;
-  }
-  return true;
-};
-
-export const toHex = hexlify;
+export {
+  isAddress,
+  hexlify as toHex,
+  getAddress as createAddress,
+} from 'ethers/lib.esm/utils';
 
 export type Unit =
   | 'noether'
@@ -56,7 +47,7 @@ export const isTransactionFormat = (
   if (!potentialTransactionHash) {
     return false;
   }
-  return !!potentialTransactionHash.match(hexStringRegex);
+  return hexStringRegex.test(potentialTransactionHash);
 };
 
 export const generateMetatransactionErrorMessage = (

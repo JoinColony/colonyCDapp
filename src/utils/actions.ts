@@ -1,5 +1,6 @@
 import pipe from 'lodash/fp/pipe';
-import { UniqueActionType } from '~redux';
+
+import { ActionTypes, UniqueActionType } from '~redux';
 
 export type ActionTransformFnType = (
   arg0: UniqueActionType<any, any, any>,
@@ -41,3 +42,8 @@ export const filterUniqueAction =
     action.meta &&
     action.meta.id === id &&
     (type ? action.type === type : true);
+
+export const getFormAction = (
+  action: ActionTypes,
+  actionType: 'ERROR' | 'SUCCESS',
+) => `${action}_${actionType}`;

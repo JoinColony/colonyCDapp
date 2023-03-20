@@ -1,0 +1,30 @@
+.separator::before {
+  display: inline-block;
+  margin: 0px 10px -2px;
+  height: 12px;
+  width: 1px;
+  background-color: var(--light-grey-beige);
+  content: '';
+}
+
+.domain {
+  composes: separator;
+}
+
+.commentCount {
+  composes: separator;
+  display: inline-block;
+}
+
+.commentCountIcon {
+  display: inline-block;
+  margin: 0 5px 2px 0;
+  height: 13px;
+  width: 13px;
+  vertical-align: bottom;
+  stroke: none;
+}
+
+.commentCountIcon svg {
+  fill: color-mod(var(--dark) alpha(70%));
+}

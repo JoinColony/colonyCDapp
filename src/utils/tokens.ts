@@ -1,12 +1,15 @@
 import Decimal from 'decimal.js';
 import { BigNumber, BigNumberish } from 'ethers';
-import { ColonyBalances } from '~gql';
-import { Address } from '~types';
+import moveDecimal from 'move-decimal-point';
 
+import { ColonyBalances } from '~gql';
+import { Colony, Address } from '~types';
 import {
   DEFAULT_TOKEN_DECIMALS,
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
 } from '~constants';
+
+import { notNull } from './arrays';
 
 export const getBalanceForTokenAndDomain = (
   balances: ColonyBalances,
@@ -19,10 +22,9 @@ export const getBalanceForTokenAndDomain = (
         ? domainBalance?.domain === null
         : domainBalance?.domain?.nativeId === domainId,
     )
-    .find(
-      (domainBalance) => domainBalance?.token?.tokenAddress === tokenAddress,
-    );
-  return BigNumber.from(currentDomainBalance?.balance);
+    .find((domainBalance) => domainBalance?.token?.id === tokenAddress);
+
+  return BigNumber.from(currentDomainBalance?.balance ?? 0);
 };
 
 /*
@@ -57,4 +59,38 @@ export const getFormattedTokenValue = (
   return new Decimal(value.toString())
     .div(new Decimal(10).pow(tokenDecimals))
     .toString();
+};
+
+// NOTE: The equation to calculate totalToPay is as following (in Wei)
+// totalToPay = (receivedAmount + 1) * (feeInverse / (feeInverse -1))
+// The network adds 1 wei extra fee after the percentage calculation
+// For more info check out
+// https://github.com/JoinColony/colonyNetwork/blob/806e4d5750dc3a6b9fa80f6e007773b28327c90f/contracts/colony/ColonyFunding.sol#L656
+
+export const calculateFee = (
+  receivedAmount: string, // amount that the recipient finally receives
+  feeInverse: string,
+  decimals: number,
+): { feesInWei: string; totalToPay: string } => {
+  const amountInWei = moveDecimal(receivedAmount, decimals);
+  const totalToPayInWei = BigNumber.from(amountInWei)
+    .add(1)
+    .mul(feeInverse)
+    .div(BigNumber.from(feeInverse).sub(1));
+  const feesInWei = totalToPayInWei.sub(amountInWei);
+  return {
+    feesInWei: feesInWei.toString(),
+    totalToPay: moveDecimal(totalToPayInWei, -1 * decimals),
+  }; // NOTE: seems like moveDecimal does not have strict typing
+};
+
+export const getSelectedToken = (colony: Colony, tokenAddress: string) => {
+  const colonyTokens =
+    colony?.tokens?.items
+      .filter(notNull)
+      .map((colonyToken) => colonyToken.token) || [];
+  const selectedToken = colonyTokens.find(
+    (token) => token?.tokenAddress === tokenAddress,
+  );
+  return selectedToken;
 };

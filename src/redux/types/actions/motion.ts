@@ -2,7 +2,7 @@ import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
-import { Address, Color } from '~types';
+import { Address, DomainColor } from '~types';
 
 import {
   ErrorActionType,
@@ -12,10 +12,10 @@ import {
   MetaWithHistory,
 } from './index';
 
-export enum RootMotionOperationNames {
-  MINT_TOKENS = 'mintTokens',
-  UPGRADE = 'upgrade',
-  UNLOCK_TOKEN = 'unlockToken',
+export enum RootMotionMethodNames {
+  MintTokens = 'mintTokens',
+  Upgrade = 'upgrade',
+  UnlockToken = 'unlockToken',
 }
 
 export type MotionActionTypes =
@@ -96,7 +96,7 @@ export type MotionActionTypes =
         colonyAddress: Address;
         colonyName?: string;
         domainName: string;
-        domainColor?: Color;
+        domainColor?: DomainColor;
         domainPurpose?: string;
         annotationMessage?: string;
         parentId?: number;
@@ -177,7 +177,7 @@ export type MotionActionTypes =
   | UniqueActionType<
       ActionTypes.ROOT_MOTION,
       {
-        operationName: RootMotionOperationNames;
+        operationName: RootMotionMethodNames;
         colonyAddress: Address;
         colonyName?: string;
         motionParams: [BigNumber] | [string];

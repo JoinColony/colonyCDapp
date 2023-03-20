@@ -1,4 +1,4 @@
-import { defineMessage } from 'react-intl';
+import { defineMessages, MessageDescriptor } from 'react-intl';
 import { BigNumber } from 'ethers';
 import { Decimal } from 'decimal.js';
 import { isNil } from 'lodash';
@@ -7,6 +7,9 @@ import { ColonyRoles } from '@colony/colony-js';
 import { getRolesForUserAndDomain } from '~redux/transformers';
 import { AnyUser } from '~data/index';
 import { ActionUserRoles } from '~types';
+import { TagColorSchema, TagTheme } from '~shared/Tag/Tag';
+
+export const noMotionsVotingReputationVersion = 4;
 
 export enum MotionState {
   Staked = 'Staked',
@@ -28,7 +31,7 @@ export enum MotionVote {
   Nay = 0,
 }
 
-const MSG = defineMessage({
+const MSG = defineMessages({
   stakedTag: {
     id: 'dashboard.ActionsPage.stakedTag',
     defaultMessage: 'Staked',
@@ -75,76 +78,83 @@ const MSG = defineMessage({
   },
 });
 
+export interface MotionStyles {
+  theme: TagTheme;
+  colorSchema: TagColorSchema;
+  name: MessageDescriptor;
+  tagName: string;
+}
+
 export const MOTION_TAG_MAP = {
   [MotionState.Staked]: {
-    theme: 'primary',
-    colorSchema: 'fullColor',
+    theme: TagTheme.Primary,
+    colorSchema: TagColorSchema.FullColor,
     name: MSG.stakedTag,
     tagName: 'motionTag',
   },
   [MotionState.Staking]: {
-    theme: 'pink',
-    colorSchema: 'inverted',
+    theme: TagTheme.Pink,
+    colorSchema: TagColorSchema.Inverted,
     name: MSG.stakingTag,
     tagName: 'stakingTag',
   },
   [MotionState.Voting]: {
-    theme: 'golden',
-    colorSchema: 'fullColor',
+    theme: TagTheme.Golden,
+    colorSchema: TagColorSchema.FullColor,
     name: MSG.votingTag,
     tagName: 'votingTag',
   },
   [MotionState.Reveal]: {
-    theme: 'blue',
-    colorSchema: 'fullColor',
+    theme: TagTheme.Blue,
+    colorSchema: TagColorSchema.FullColor,
     name: MSG.revealTag,
     tagName: 'revealTag',
   },
   [MotionState.Objection]: {
-    theme: 'pink',
-    colorSchema: 'fullColor',
+    theme: TagTheme.Pink,
+    colorSchema: TagColorSchema.FullColor,
     name: MSG.objectionTag,
     tagName: 'objectionTag',
   },
   [MotionState.Motion]: {
-    theme: 'primary',
-    colorSchema: 'fullColor',
+    theme: TagTheme.Primary,
+    colorSchema: TagColorSchema.FullColor,
     name: MSG.motionTag,
     tagName: 'motionTag',
   },
   [MotionState.Failed]: {
-    theme: 'pink',
-    colorSchema: 'plain',
+    theme: TagTheme.Pink,
+    colorSchema: TagColorSchema.Plain,
     name: MSG.failedTag,
     tagName: 'failedTag',
   },
   [MotionState.FailedNoFinalizable]: {
-    theme: 'pink',
-    colorSchema: 'plain',
+    theme: TagTheme.Pink,
+    colorSchema: TagColorSchema.Plain,
     name: MSG.failedTag,
     tagName: 'failedTag',
   },
   [MotionState.Passed]: {
-    theme: 'primary',
-    colorSchema: 'plain',
+    theme: TagTheme.Primary,
+    colorSchema: TagColorSchema.Plain,
     name: MSG.passedTag,
     tagName: 'passedTag',
   },
   [MotionState.Invalid]: {
-    theme: 'pink',
-    colorSchema: 'plain',
+    theme: TagTheme.Pink,
+    colorSchema: TagColorSchema.Plain,
     name: MSG.invalidTag,
     tagName: 'invalidTag',
   },
   [MotionState.Escalation]: {
-    theme: 'dangerGhost',
-    colorSchema: 'plain',
+    theme: TagTheme.DangerGhost,
+    colorSchema: TagColorSchema.Plain,
     name: MSG.escalateTag,
     tagName: 'escalateTag',
   },
   [MotionState.Forced]: {
-    theme: 'blue',
-    colorSchema: 'inverted',
+    theme: TagTheme.Blue,
+    colorSchema: TagColorSchema.Inverted,
     name: MSG.forcedTag,
     tagName: 'forcedTag',
   },

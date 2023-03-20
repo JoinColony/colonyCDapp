@@ -57,9 +57,21 @@ export const humanReadableFileSize = (size: number) => {
  * @param {string} word The word / string to capitalize
  * @return {string} The capitalized string
  */
-export const capitalize = (word: string): string =>
+export const capitalizeFirstLetter = (word: string): string =>
   word && word.charAt(0).toUpperCase() + word.slice(1);
 
+/**
+ * Capitalize a word (converts the word to lower case, except for the first letter)
+ *
+ * @method convertToCapitalized
+ *
+ * @param {string} word The word / string to capitalize
+ * @return {string} The capitalized string
+ */
+export const capitalizeWord = (word: string): string => {
+  const lower = word.toLowerCase();
+  return capitalizeFirstLetter(lower);
+};
 /**
  * Strip the normal and secure website protocol from the start of a string.
  * If will only check for the specific 'http' and 'https' strings and strip them out,
@@ -131,8 +143,7 @@ export const splitAddress = (address: Address): AddressElements | Error => {
 export const splitTransactionHash = (
   transactionHash: string,
 ): AddressElements | undefined => {
-  try {
-    isTransactionFormat(transactionHash);
+  if (isTransactionFormat(transactionHash)) {
     const HEX_HEADER = '0x';
     const addressStart: string = transactionHash.slice(2, 6);
     const addressMiddle: string = transactionHash.slice(4, -4);
@@ -143,9 +154,8 @@ export const splitTransactionHash = (
       middle: `${addressMiddle}`,
       end: addressEnd,
     };
-  } catch (caughtError) {
-    return undefined;
   }
+  return undefined;
 };
 
 // This should be opaque

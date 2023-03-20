@@ -33,7 +33,7 @@
   },
   "homepage": "https://colony.io",
   "devDependencies": {
-    "@aws-amplify/cli": "^10.6.1",
+    "@aws-amplify/cli": "10.8.1",
     "@babel/core": "^7.13.10",
     "@babel/node": "^7.13.10",
     "@babel/preset-env": "^7.13.10",

@@ -1,0 +1,35 @@
+.main {
+  display: inline-flex;
+  width: 26px;
+}
+
+.statusTheme {
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: var(--colony-blue);
+  cursor: default;
+}
+
+.themeFailed {
+  composes: statusTheme;
+  background-color: var(--pink);
+}
+
+.themePending {
+  composes: statusTheme;
+  background-color: var(--golden);
+}
+
+.themeSucceeded {
+  composes: statusTheme;
+  background-color: var(--primary);
+}
+
+.themeSystemMessage {
+  composes: statusTheme;
+  border-radius: 0;
+  background-color: var(--primary);
+  transform: rotate(45deg);
+}

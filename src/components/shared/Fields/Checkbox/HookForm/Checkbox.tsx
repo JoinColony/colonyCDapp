@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import InputLabel from '~shared/Fields/InputLabel';
 import { Tooltip } from '~shared/Popover';
 import { getMainClasses } from '~utils/css';
-import { UniversalMessageValues } from '~types';
+import { Message, UniversalMessageValues } from '~types';
 import { formatText } from '~utils/intl';
 
 import { CoreInputProps } from '../../Input/HookForm';
@@ -23,7 +23,7 @@ export interface Props
     Omit<InputHTMLAttributes<HTMLInputElement>, 'name' | 'placeholder'> {
   appearance: Appearance;
   /**  Text for the checkbox tooltip */
-  tooltipText?: string;
+  tooltipText?: Message;
   /** Text values for tooltip */
   tooltipTextValues?: UniversalMessageValues;
   /** Options to pass to the underlying PopperJS element. See here for more: https://popper.js.org/docs/v2/constructors/#options. */

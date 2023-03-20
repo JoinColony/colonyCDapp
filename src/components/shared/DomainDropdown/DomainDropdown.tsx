@@ -1,9 +1,8 @@
-import React, { ComponentProps, ReactNode, useCallback, useMemo } from 'react';
+import React, { ReactNode, useCallback, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { ALLDOMAINS_DOMAIN_SELECTION } from '~constants';
-import { Select, SelectOption } from '~shared/Fields';
-import { Colony } from '~types';
+import { HookFormSelect as Select, SelectOption } from '~shared/Fields';
+import { Colony, DomainColor } from '~types';
 import { notNull } from '~utils/arrays';
 
 import DomainDropdownItem from './DomainDropdownItem';
@@ -86,11 +85,25 @@ const DomainDropdown = ({
     [onDomainChange],
   );
 
-  const options = useMemo<ComponentProps<typeof Select>['options']>(() => {
+  const options = useMemo<SelectOption[]>(() => {
     const allDomainsOption: SelectOption = {
       children: (
         <DomainDropdownItem
-          domain={ALLDOMAINS_DOMAIN_SELECTION}
+          domain={{
+            /**
+             * This is a dummy domain data that we use to display the "All Teams" option
+             * The isRoot property has to be set to true so that it doesn't show as a subdomain in the dropdown
+             */
+            id: '',
+            isRoot: true,
+            nativeId: 0,
+            nativeFundingPotId: 0,
+            metadata: {
+              name: 'All Teams',
+              description: '',
+              color: DomainColor.Yellow,
+            },
+          }}
           isSelected={currentDomainId === 0}
           onDomainEdit={onDomainEdit}
           showDescription={showDescription}
@@ -110,15 +123,11 @@ const DomainDropdown = ({
     const domainOptions = [
       ...showAllDomainsOption,
       ...(colony.domains?.items || [])
-        /*
-         * While this looks like an array, it's not a "true" one (this is the result from the subgraph query)
-         * So we must first convert it to an array in order to sort it
-         */
-        .slice(0)
         .filter(notNull)
         .sort(sortByDomainId)
         .map((domain) => {
-          const { nativeId, name: domainName } = domain || {};
+          const { nativeId, metadata } = domain;
+          const { name: domainName } = metadata || {};
           return {
             children: (
               <DomainDropdownItem

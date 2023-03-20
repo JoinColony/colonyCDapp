@@ -1,6 +1,6 @@
 import { ApolloClient, HttpLink } from '@apollo/client';
 
-import cache from './apolloCache';
+import cache from '~cache';
 
 /*
  * @TODO This needs to be fetched from a proper location

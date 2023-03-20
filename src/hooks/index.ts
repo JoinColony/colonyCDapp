@@ -21,13 +21,16 @@ export type Given = (
 export {
   default as useNaiveBranchingDialogWizard,
   WizardDialogType,
-} from './naiveBranchingDialogWizardHook';
+} from './useNaiveBranchingDialogWizard';
 
 export { default as useAvatarDisplayCounter } from './useAvatarDisplayCounter';
 export { default as useColonyReputation } from './useColonyReputation';
 export { default as useDialogActionPermissions } from './useDialogActionPermissions';
-export { default as useEnabledExtensions } from './useEnabledExtensions';
-export { default as useFormatRolesTitle } from './useFormatRolesTitle';
+export { default as useActionDialogStatus } from './useActionDialogStatus';
+export {
+  default as useEnabledExtensions,
+  EnabledExtensionData,
+} from './useEnabledExtensions';
 export { default as useSelectedUser } from './useSelectedUser';
 export { default as useSplitTime } from './useSplitTime';
 export { default as useTitle } from './useTitle';
@@ -47,6 +50,7 @@ export { default as useColonyContext } from './useColonyContext';
 export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
 export { default as useExtensionData } from './useExtensionData';
 export { default as useExtensionsData } from './useExtensionsData';
+export { default as usePaginatedActions } from './usePaginatedActions';
 export * from './useCanInteractWithColony';
 export { default as useColonyFundsClaims } from './useColonyFundsClaims';
 export { default as useCurrentSelectedToken } from './useCurrentSelectedToken';

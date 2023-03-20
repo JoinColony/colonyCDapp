@@ -1,0 +1,24 @@
+fragment Domain on Domain {
+  id
+  nativeId
+  isRoot
+  nativeFundingPotId
+  metadata {
+    ...DomainMetadata
+  }
+}
+
+fragment DomainMetadata on DomainMetadata {
+  name
+  color
+  description
+  changelog {
+    transactionHash
+    oldName
+    newName
+    oldColor
+    newColor
+    oldDescription
+    newDescription
+  }
+}

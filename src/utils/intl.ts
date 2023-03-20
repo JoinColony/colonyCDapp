@@ -2,7 +2,9 @@ import { createIntl, createIntlCache } from '@formatjs/intl';
 import { MessageDescriptor } from 'react-intl';
 import { ReactNode } from 'react';
 
+import { nanoid } from 'nanoid';
 import {
+  AnyMessageValues,
   ComplexMessageValues,
   Message,
   SimpleMessageValues,
@@ -12,7 +14,6 @@ import {
 import colonyMessages from '../i18n/en.json';
 import actionMessages from '../i18n/en-actions';
 import eventsMessages from '../i18n/en-events';
-import motionMessages from '../i18n/en-motions';
 import systemMessages from '../i18n/en-system-messages';
 
 // https://formatjs.io/docs/intl
@@ -36,7 +37,6 @@ export const intl = <T = string>(
         ...colonyMessages,
         ...actionMessages,
         ...eventsMessages,
-        ...motionMessages,
         ...systemMessages,
         ...messages,
       },
@@ -51,6 +51,26 @@ const isMessageDescriptor = (message?: Message): message is MessageDescriptor =>
 
 const { formatMessage: formatIntlMessage } = intl<ReactNode>();
 
+const addKeyToFormattedMessage = (
+  formattedMessage: ReturnType<typeof formatIntlMessage>,
+) => {
+  if (Array.isArray(formattedMessage)) {
+    return formattedMessage.map((element) => {
+      if (typeof element === 'object') {
+        return {
+          ...element,
+          // apply key when formatting ComplexMessageValues
+          key: nanoid(),
+        };
+      }
+
+      return element;
+    });
+  }
+
+  return formattedMessage;
+};
+
 // Overloads. Ensures return type is correctly inferred from type of messageValues.
 export function formatText(
   message?: Message,
@@ -64,12 +84,19 @@ export function formatText(
   message?: Message,
   messageValues?: UniversalMessageValues,
 ): ReactNode;
+export function formatText(
+  message?: Message,
+  messageValues?: AnyMessageValues,
+): ReactNode;
 // Implementation
 export function formatText(
   message?: Message,
   messageValues?: UniversalMessageValues,
 ) {
-  return isMessageDescriptor(message)
-    ? formatIntlMessage(message, messageValues)
-    : message;
+  if (isMessageDescriptor(message)) {
+    const formattedMessage = formatIntlMessage(message, messageValues);
+    return addKeyToFormattedMessage(formattedMessage);
+  }
+
+  return message;
 }

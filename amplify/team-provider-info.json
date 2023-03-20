@@ -16,7 +16,6 @@
         "fetchTokenFromChain": {},
         "createUniqueUser": {},
         "createUniqueColony": {},
-        "createUniqueDomain": {},
         "getUserReputation": {},
         "getReputationForTopDomains": {},
         "fetchColonyNativeFundsClaim": {},

@@ -1,9 +1,10 @@
-import React, { useCallback, useMemo, ReactNode, ComponentProps } from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
 
-import { Appearance, Select, SelectOption } from '~shared/Fields';
+import { Appearance, HookFormSelect as Select } from '~shared/Fields';
 import ColorTag from '~shared/ColorTag';
-import { Color } from '~types';
+import { DomainColor } from '~types';
 
 import styles from './ColorSelect.css';
 
@@ -18,11 +19,8 @@ interface Props {
   /** Should `select` be disabled */
   disabled?: boolean;
 
-  /** Active color */
-  activeOption: Color;
-
   /** Callback function, called after value is changed */
-  onColorChange?: (color: Color) => any;
+  onColorChange?: (color: DomainColor) => any;
 
   appearance?: Appearance;
 
@@ -36,13 +34,15 @@ const displayName = 'ColorSelect';
 
 const ColorSelect = ({
   disabled,
-  activeOption,
   onColorChange,
   appearance,
   name = 'color',
 }: Props) => {
+  const { watch } = useFormContext();
+  const activeOption = watch(name);
+
   const onChange = useCallback(
-    (color: Color) => {
+    (color: DomainColor) => {
       if (onColorChange) {
         return onColorChange(color);
       }
@@ -51,26 +51,13 @@ const ColorSelect = ({
     [onColorChange],
   );
 
-  const renderActiveOption = useCallback<
-    (option: SelectOption | undefined, label: string) => ReactNode
-  >(() => {
-    return <ColorTag color={activeOption} />;
-  }, [activeOption]);
+  const renderActiveOption = () => <ColorTag color={activeOption} />;
 
-  const options = useMemo<ComponentProps<typeof Select>['options']>(() => {
-    const colors = Object.keys(Color).filter(
-      (val) => typeof Color[val as any] === 'number',
-    );
-    return [
-      ...colors.map((color) => {
-        return {
-          children: <ColorTag color={Color[color]} />,
-          label: `${color}`,
-          value: `${Color[color]}`,
-        };
-      }),
-    ];
-  }, []);
+  const options = Object.values(DomainColor).map((color) => ({
+    children: <ColorTag color={color} />,
+    label: color,
+    value: color,
+  }));
 
   return (
     <div className={styles.main}>
@@ -83,7 +70,7 @@ const ColorSelect = ({
         label={MSG.labelColorSelect}
         name={name}
         onChange={(val) => {
-          onChange(Number(val));
+          onChange(DomainColor[Number(val)]);
         }}
         options={options}
         renderActiveOption={renderActiveOption}

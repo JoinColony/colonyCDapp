@@ -1,0 +1,13 @@
+
+.filter {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.filter button > div {
+  height: 18px;
+}
+
+.filter span {
+  font-size: var(--size-small);
+}

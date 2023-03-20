@@ -1,0 +1,24 @@
+query GetColonyActions(
+  $colonyAddress: ID!
+  $nextToken: String
+  $limit: Int
+  $sortDirection: ModelSortDirection
+) {
+  getActionsByColony(
+    colonyId: $colonyAddress
+    nextToken: $nextToken
+    limit: $limit
+    sortDirection: $sortDirection
+  ) {
+    items {
+      ...ColonyAction
+    }
+    nextToken
+  }
+}
+
+query GetColonyAction($transactionHash: ID!) {
+  getColonyAction(id: $transactionHash) {
+    ...ColonyAction
+  }
+}

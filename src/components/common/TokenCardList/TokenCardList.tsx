@@ -1,7 +1,7 @@
 import React from 'react';
 
 import CardList from '~shared/CardList';
-import { ColonyTokens } from '~gql';
+import { Token } from '~types';
 
 import TokenCard from '../TokenCard';
 
@@ -17,7 +17,7 @@ interface Appearance {
 interface Props {
   appearance?: Appearance;
   domainId?: number;
-  tokens: ColonyTokens[];
+  tokens: Token[];
 }
 
 const displayName = 'common.TokenCardList';
@@ -25,7 +25,7 @@ const displayName = 'common.TokenCardList';
 const TokenCardList = ({ appearance, domainId = 1, tokens }: Props) => (
   <div className={styles.tokenCardContainer} data-test="userTokenCards">
     <CardList appearance={appearance}>
-      {tokens.map(({ token }) => (
+      {tokens.map((token) => (
         <div key={token.tokenAddress} data-test="tokenCardItem">
           <TokenCard domainId={domainId} token={token} />
         </div>
