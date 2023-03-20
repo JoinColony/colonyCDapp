@@ -53,24 +53,16 @@ const AvatarDropdownPopoverMobile = ({
   spinnerMsg,
   tokenBalanceData,
 }: Props) => {
-  const {
-    nativeToken,
-    activeBalance,
-    inactiveBalance,
-    totalBalance,
-    lockedBalance,
-    isPendingBalanceZero,
-  } = tokenBalanceData;
-
   const { colony } = useColonyContext();
   const { wallet } = useAppContext();
-  const { address: walletAddress } = wallet || {};
+  const canInteractWithNetwork = useCanInteractWithNetwork();
+
+  const { colonyAddress, nativeToken } = colony || {};
+
   const { userReputation, totalReputation } = useUserReputation(
-    colony?.colonyAddress,
+    colonyAddress,
     wallet?.address,
   );
-  const colonyAddress = colony?.colonyAddress;
-  const canInteractWithNetwork = useCanInteractWithNetwork();
 
   return (
     <DropdownMenu>
@@ -84,7 +76,8 @@ const AvatarDropdownPopoverMobile = ({
           <ItemContainer message={MSG.balance} spinnerMsg={spinnerMsg}>
             {canInteractWithNetwork && nativeToken && (
               <UserTokenActivationDisplay
-                {...{ nativeToken, inactiveBalance, totalBalance }}
+                nativeToken={nativeToken}
+                tokenBalanceData={tokenBalanceData}
               />
             )}
           </ItemContainer>
@@ -103,14 +96,7 @@ const AvatarDropdownPopoverMobile = ({
         <DropdownMenuItem>
           <div className={styles.buttonContainer}>
             {nativeToken && (
-              <TokenActivationPopover
-                activeTokens={activeBalance}
-                inactiveTokens={inactiveBalance}
-                totalTokens={totalBalance}
-                lockedTokens={lockedBalance}
-                token={nativeToken}
-                {...{ colony, walletAddress, isPendingBalanceZero }}
-              >
+              <TokenActivationPopover tokenBalanceData={tokenBalanceData}>
                 {({ toggle, ref }) => (
                   <Button
                     appearance={{
