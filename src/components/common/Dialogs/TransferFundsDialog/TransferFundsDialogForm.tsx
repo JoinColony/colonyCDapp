@@ -102,7 +102,7 @@ const TransferFundsDialogForm = ({
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage
-            requiredPermissions={[ColonyRole.Funding]}
+            requiredPermissions={requiredRoles}
             domainName={
               hasRoleInFromDomain
                 ? fromDomain?.metadata?.name

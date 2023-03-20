@@ -120,7 +120,7 @@ const UnlockTokenForm = ({
       )}
       {!userHasPermission && ( // && isNativeTokenLocked
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <NoPermissionMessage requiredPermissions={[ColonyRole.Root]} />
+          <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
       {/* {onlyForceAction && isNativeTokenLocked && <NotEnoughReputation />} */}

@@ -71,7 +71,6 @@ const ManageReputationContainer = ({
   const [isForce, setIsForce] = useState(false);
   const [userReputation, setUserReputation] = useState(0);
   const navigate = useNavigate();
-
   const colonyWatchers =
     watchers?.items.filter(notNull).map((item) => item.user) || [];
 
@@ -145,7 +144,7 @@ const ManageReputationContainer = ({
     <Form<FormValues>
       defaultValues={{
         forceAction: false,
-        domainId: filteredDomainId ?? Id.RootDomain,
+        domainId: filteredDomainId || Id.RootDomain,
         // user: selectedUser,
         motionDomainId: Id.RootDomain,
         amount: '',

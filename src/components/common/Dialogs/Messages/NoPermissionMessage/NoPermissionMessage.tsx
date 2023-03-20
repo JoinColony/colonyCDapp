@@ -22,7 +22,7 @@ const MSG = defineMessages({
 
 interface Props {
   requiredPermissions: ColonyRole[];
-  domainName?: string | null;
+  domainName?: string;
 }
 
 const RequiredRoleList = ({ requiredPermissions }) => {

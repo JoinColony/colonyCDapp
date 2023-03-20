@@ -27,10 +27,9 @@ import { REPUTATION_LEARN_MORE } from '~constants/externalUrls';
 
 import { ColonyWatcher, User } from '~types';
 
-import { useDialogActionPermissions, useUserReputation } from '~hooks';
+import { useActionDialogStatus, useUserReputation } from '~hooks';
 import { sortBy } from '~utils/lodash';
 import { notNull } from '~utils/arrays';
-import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
 import ReputationAmountInput from './ReputationAmountInput';
 import TeamDropdownItem from './TeamDropdownItem';
@@ -107,29 +106,22 @@ const ManageReputationDialogForm = ({
   isSmiteAction = false,
   enabledExtensionData,
 }: Props) => {
-  const {
-    getValues,
-    formState: { isValid },
-  } = useFormContext();
+  const { getValues } = useFormContext();
   const values = getValues();
 
   const requiredRoles = [
     isSmiteAction ? ColonyRole.Arbitration : ColonyRole.Root,
   ];
 
-  const { votingReputationVersion, isVotingReputationEnabled } =
-    enabledExtensionData;
+  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } =
+    useActionDialogStatus(
+      colony,
+      requiredRoles,
+      [values.domainId],
+      enabledExtensionData,
+    );
 
-  const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony,
-    isVotingReputationEnabled,
-    requiredRoles,
-    [values.domainId],
-  );
-
-  const inputDisabled = !userHasPermission || onlyForceAction;
-
-  const { userReputation, totalReputation } = useUserReputation(
+  const { userReputation } = useUserReputation(
     colonyAddress,
     values.user?.walletAddress,
     Number(values.domainId),
@@ -145,9 +137,7 @@ const ManageReputationDialogForm = ({
       children: (
         <TeamDropdownItem
           domain={domain}
-          user={values.user}
-          userReputation={userReputation}
-          totalReputation={totalReputation}
+          colonyAddress={colony.colonyAddress}
         />
       ),
       value: domain.nativeId,
@@ -169,9 +159,7 @@ const ManageReputationDialogForm = ({
       <div className={styles.activeItem}>
         <TeamDropdownItem
           domain={activeDomain}
-          user={values.user}
-          userReputation={userReputation}
-          totalReputation={totalReputation}
+          colonyAddress={colony.colonyAddress}
         />
       </div>
     );
@@ -182,10 +170,6 @@ const ManageReputationDialogForm = ({
       updateReputation(unformattedUserReputationAmount);
     }
   }, [updateReputation, unformattedUserReputationAmount]);
-
-  const cannotCreateMotion =
-    votingReputationVersion === noMotionsVotingReputationVersion &&
-    !values.forceAction;
 
   const formattedData = verifiedUsers.map((user) => ({
     ...user,
@@ -221,7 +205,7 @@ const ManageReputationDialogForm = ({
       {!isSmiteAction && <hr className={styles.divider} />}
       {!userHasPermission && (
         <DialogSection>
-          <PermissionRequiredInfo requiredRoles={[ColonyRole.Arbitration]} />
+          <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
       )}
       <DialogSection>
@@ -234,7 +218,7 @@ const ManageReputationDialogForm = ({
             filter={filterUserSelection}
             renderAvatar={supRenderAvatar}
             placeholder={MSG.userPickerPlaceholder}
-            disabled={inputDisabled}
+            disabled={disabledInput}
             dataTest="reputationRecipientSelector"
             itemDataTest="reputationRecipientSelectorItem"
             valueDataTest="reputationRecipientName"
@@ -261,7 +245,7 @@ const ManageReputationDialogForm = ({
       <DialogSection>
         <ReputationAmountInput
           colony={colony}
-          disabled={inputDisabled}
+          disabled={disabledInput}
           nativeTokenDecimals={nativeTokenDecimals}
           isSmiteAction={isSmiteAction}
         />
@@ -273,16 +257,14 @@ const ManageReputationDialogForm = ({
             isSmiteAction,
           }}
           name="annotation"
-          disabled={inputDisabled}
+          disabled={disabledInput}
           dataTest="reputationAnnotation"
         />
       </DialogSection>
       {!userHasPermission && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
+        <DialogSection>
           <NoPermissionMessage
-            requiredPermissions={[
-              isSmiteAction ? ColonyRole.Arbitration : ColonyRole.Root,
-            ]}
+            requiredPermissions={requiredRoles}
             domainName={domainName}
           />
         </DialogSection>
@@ -293,15 +275,15 @@ const ManageReputationDialogForm = ({
           domainId={Number(domainId)}
         />
       )} */}
-      {cannotCreateMotion && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
+      {!canCreateMotion && (
+        <DialogSection>
           <CannotCreateMotionMessage />
         </DialogSection>
       )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}
-          disabled={cannotCreateMotion || !isValid || inputDisabled}
+          disabled={disabledSubmit}
           dataTest="reputationConfirmButton"
         />
       </DialogSection>

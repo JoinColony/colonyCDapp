@@ -47,6 +47,7 @@ const formattingOptions = {
   numeral: true,
   tailPrefix: true,
   numeralDecimalScale: 10,
+  numeralPositiveOnly: true,
 };
 
 const ReputationAmountInput = ({
@@ -92,6 +93,11 @@ const ReputationAmountInput = ({
             isSmiteAction
               ? {
                   maxAmount: unformattedUserReputationAmount.toString(),
+                  options: {
+                    shouldValidate: true,
+                    shouldTouch: true,
+                    shouldDirty: true,
+                  },
                 }
               : undefined
           }
