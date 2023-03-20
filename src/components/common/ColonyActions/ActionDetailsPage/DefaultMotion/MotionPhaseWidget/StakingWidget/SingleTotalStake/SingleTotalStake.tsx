@@ -8,6 +8,7 @@ import { Tooltip } from '~shared/Popover';
 // import SingleTotalStakeHeading from './SingleTotalStakeHeading';
 
 import styles from './SingleTotalStake.css';
+import SingleTotalStakeHeading from './SingleTotalStakeHeading';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.SingleTotalStake';
@@ -58,7 +59,7 @@ const SingleTotalStake = () => {
 
   return (
     <>
-      {/* <SingleTotalStakeHeading /> */}
+      <SingleTotalStakeHeading />
       {totalPercentage < 10 ? (
         <MinStakeTooltip>{progressBar}</MinStakeTooltip>
       ) : (
