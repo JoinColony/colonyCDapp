@@ -44,8 +44,6 @@ const UserNavigation = () => {
 
   const { colonyAddress, nativeToken } = colony || {};
 
-  // const userLock = userData?.user.userLock;
-  // const nativeToken = userLock?.nativeToken;
   const canInteractWithNetwork = useCanInteractWithNetwork();
 
   const { userReputation, totalReputation } = useUserReputation(
@@ -100,9 +98,9 @@ const UserNavigation = () => {
         </Tooltip>
       )}
       <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
-        {canInteractWithNetwork && colony?.nativeToken && (
+        {canInteractWithNetwork && colony?.nativeToken && tokenBalanceData && (
           <UserTokenActivationButton
-            nativeToken={colony?.nativeToken}
+            nativeToken={colony.nativeToken}
             tokenBalanceData={tokenBalanceData}
             dataTest="tokenActivationButton"
           />

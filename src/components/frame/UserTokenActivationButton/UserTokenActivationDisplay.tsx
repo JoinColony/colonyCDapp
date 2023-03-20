@@ -12,7 +12,7 @@ const displayName =
   'frame.RouteLayouts.UserNavigation.UserTokenActivationButton.UserTokenActivationDisplay';
 
 interface Props {
-  nativeToken?: Token;
+  nativeToken: Token;
   tokenBalanceData: UserTokenBalanceData;
 }
 

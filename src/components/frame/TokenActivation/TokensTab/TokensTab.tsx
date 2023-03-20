@@ -2,21 +2,17 @@ import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import { BigNumber } from 'ethers';
 
-import { SMALL_TOKEN_AMOUNT_FORMAT } from '~constants';
-import Icon from '~shared/Icon';
+// import Icon from '~shared/Icon';
 import TokenInfoPopover from '~shared/TokenInfoPopover';
 import TokenIcon from '~shared/TokenIcon';
 import Numeral from '~shared/Numeral';
-import { Token } from '~types';
+import { UserTokenBalanceData } from '~types';
 import { useColonyContext } from '~hooks';
-import {
-  getFormattedTokenValue,
-  getTokenDecimalsWithFallback,
-} from '~utils/tokens';
 
-import ChangeTokenStateForm from './ChangeTokenStateForm';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
+
+// import ChangeTokenStateForm from './ChangeTokenStateForm';
 import TokenTooltip from './TokenTooltip';
-import SmallTokenAmountMessage from './SmallTokenAmountMessage';
 
 import styles from './TokensTab.css';
 
@@ -67,24 +63,16 @@ const MSG = defineMessages({
 });
 
 export interface TokensTabProps {
-  activeTokens: BigNumber;
-  inactiveTokens: BigNumber;
-  totalTokens: BigNumber;
-  lockedTokens: BigNumber;
-  isPendingBalanceZero: boolean;
-  token: Token;
+  tokenBalanceData: UserTokenBalanceData;
 }
 
 const TokensTab = ({
-  activeTokens,
-  inactiveTokens,
-  totalTokens,
-  lockedTokens,
-  token,
-  isPendingBalanceZero,
+  tokenBalanceData: { balance, inactiveBalance, lockedBalance, activeBalance },
 }: TokensTabProps) => {
   const { colony } = useColonyContext();
   const targetRef = useRef<HTMLParagraphElement>(null);
+
+  const { nativeToken } = colony || {};
 
   const [totalTokensWidth, setTotalTokensWidth] = useState(0);
 
@@ -96,33 +84,20 @@ const TokensTab = ({
     }
   }, [totalTokensWidth]);
 
-  const hasLockedTokens = useMemo(() => !lockedTokens.isZero(), [lockedTokens]);
+  const hasLockedTokens = BigNumber.from(lockedBalance ?? 0).gt(0);
 
   const tokenDecimals = useMemo(
-    () => getTokenDecimalsWithFallback(token?.decimals),
-    [token],
+    () => getTokenDecimalsWithFallback(nativeToken?.decimals),
+    [nativeToken],
   );
 
-  const formattedTotalAmount = getFormattedTokenValue(
-    totalTokens,
-    token.decimals,
-  );
-  const formattedLockedTokens = getFormattedTokenValue(
-    lockedTokens,
-    token.decimals,
-  );
-  const formattedActiveTokens = getFormattedTokenValue(
-    activeTokens,
-    token.decimals,
-  );
-  const formattedInactiveTokens = getFormattedTokenValue(
-    inactiveTokens,
-    token.decimals,
-  );
+  if (!nativeToken) {
+    return null;
+  }
 
   return (
     <>
-      <TokenInfoPopover token={token} isTokenNative>
+      <TokenInfoPopover token={nativeToken} isTokenNative>
         <div className={styles.totalTokensContainer}>
           <div
             className={
@@ -132,7 +107,7 @@ const TokensTab = ({
             }
           >
             <TokenIcon
-              token={token || {}}
+              token={nativeToken}
               size={totalTokensWidth <= widthLimit ? 'xs' : 'xxs'}
             />
           </div>
@@ -144,7 +119,11 @@ const TokensTab = ({
                 : styles.totalTokensSmall
             }
           >
-            <Numeral value={formattedTotalAmount} suffix={token.symbol} />
+            <Numeral
+              value={balance ?? 0}
+              decimals={tokenDecimals}
+              suffix={nativeToken.symbol}
+            />
           </p>
         </div>
       </TokenInfoPopover>
@@ -161,23 +140,28 @@ const TokensTab = ({
             </TokenTooltip>
             <div className={styles.tokenNumbers}>
               <span data-test="activeTokens">
-                <Numeral value={formattedActiveTokens} suffix={token.symbol} />
+                <Numeral
+                  value={activeBalance ?? 0}
+                  decimals={tokenDecimals}
+                  suffix={nativeToken.symbol}
+                />
               </span>
-              {formattedActiveTokens === SMALL_TOKEN_AMOUNT_FORMAT && (
-                <SmallTokenAmountMessage />
-              )}
             </div>
+          </li>
+          <li>
             <TokenTooltip
               className={styles.lockedTokens}
               content={<FormattedMessage {...MSG.stakedTokensTooltip} />}
             >
               <FormattedMessage {...MSG.staked} />
             </TokenTooltip>
-          </li>
-          <li>
             <div className={styles.tokenNumbersLocked}>
               <span data-test="stakedTokens">
-                <Numeral value={formattedLockedTokens} suffix={token.symbol} />
+                <Numeral
+                  value={lockedBalance ?? 0}
+                  decimals={tokenDecimals}
+                  suffix={nativeToken.symbol}
+                />
               </span>
             </div>
           </li>
@@ -191,15 +175,13 @@ const TokensTab = ({
             <div className={styles.tokenNumbersInactive}>
               <span data-test="inactiveTokens">
                 <Numeral
-                  value={formattedInactiveTokens}
-                  suffix={token.symbol}
+                  value={inactiveBalance ?? 0}
+                  decimals={tokenDecimals}
+                  suffix={nativeToken.symbol}
                 />
               </span>
-              {formattedInactiveTokens === SMALL_TOKEN_AMOUNT_FORMAT && (
-                <SmallTokenAmountMessage />
-              )}
             </div>
-            {!isPendingBalanceZero && (
+            {/* {!isPendingBalanceZero && (
               <div className={styles.pendingError}>
                 <FormattedMessage {...MSG.pendingError} />
                 <TokenTooltip
@@ -214,11 +196,11 @@ const TokensTab = ({
                   />
                 </TokenTooltip>
               </div>
-            )}
+            )} */}
           </li>
         </ul>
       </div>
-      <ChangeTokenStateForm
+      {/* <ChangeTokenStateForm
         token={token}
         tokenDecimals={tokenDecimals}
         activeTokens={activeTokens}
@@ -226,7 +208,7 @@ const TokensTab = ({
         lockedTokens={lockedTokens}
         colonyAddress={colony?.colonyAddress || ''}
         hasLockedTokens={hasLockedTokens}
-      />
+      /> */}
     </>
   );
 };

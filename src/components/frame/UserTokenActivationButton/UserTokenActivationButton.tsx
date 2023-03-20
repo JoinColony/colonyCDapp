@@ -22,7 +22,7 @@ const MSG = defineMessages({
 interface Props {
   dataTest: string;
   tokenBalanceData: UserTokenBalanceData;
-  nativeToken?: Token;
+  nativeToken: Token;
 }
 
 const UserTokenActivationButton = ({
