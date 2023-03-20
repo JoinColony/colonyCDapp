@@ -53,7 +53,7 @@ const SingleTotalStake = () => {
         backgroundTheme: 'default',
         size: 'normal',
       }}
-      // hidePercentage
+      hidePercentage
     />
   );
 
