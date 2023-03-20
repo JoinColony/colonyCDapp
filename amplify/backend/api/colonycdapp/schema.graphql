@@ -120,6 +120,7 @@ type GetUserTokenBalanceReturn {
   inactiveBalance: String
   lockedBalance: String
   activeBalance: String
+  pendingBalance: String
 }
 
 enum TokenType {

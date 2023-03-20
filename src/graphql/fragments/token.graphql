@@ -13,4 +13,5 @@ fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   inactiveBalance
   lockedBalance
   activeBalance
+  pendingBalance
 }

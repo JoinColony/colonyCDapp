@@ -68,6 +68,7 @@ const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be exte
         inactiveBalance: inactiveBalance.toString(),
         lockedBalance: lockedBalance.toString(),
         activeBalance: activeBalance.toString(),
+        pendingBalance: userLock.pendingBalance.toString(),
       };
     } catch {
       console.error('Could not get token balance');
