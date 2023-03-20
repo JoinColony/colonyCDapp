@@ -12,7 +12,7 @@ import {
   TransferFundsDialog,
   // AdvancedDialog,
   // PermissionManagementDialog,
-  // ManageWhitelistDialog,
+  ManageWhitelistDialog,
   MintTokenDialog,
   // NetworkContractUpgradeDialog,
   // EditColonyDetailsDialog,
@@ -159,12 +159,14 @@ export const getWizardFlowConfig = (
   //     prevStep: 'common.AdvancedDialog',
   //   },
   // },
-  // {
-  //   component: ManageWhitelistDialog,
-  //   props: {
-  //     prevStep: 'common.ManageDomainsDialog',
-  //   },
-  // },
+  {
+    component: ManageWhitelistDialog,
+    props: {
+      prevStep: 'common.ManageDomainsDialog',
+      colony,
+      enabledExtensionData,
+    },
+  },
   // {
   //   component: NetworkContractUpgradeDialog,
   //   props: {

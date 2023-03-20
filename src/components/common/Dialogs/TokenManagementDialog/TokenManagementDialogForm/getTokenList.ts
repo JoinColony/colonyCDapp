@@ -14,7 +14,7 @@ interface ListToken {
   decimals: number;
 }
 
-export interface FormattedListToken {
+interface FormattedListToken {
   token: {
     tokenAddress: string;
     symbol: string;
