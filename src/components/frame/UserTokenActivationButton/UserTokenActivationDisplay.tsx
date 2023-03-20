@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { BigNumber } from 'ethers';
 
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import Numeral from '~shared/Numeral';
@@ -17,18 +18,19 @@ interface Props {
 
 const UserTokenActivationDisplay = ({
   nativeToken,
-  tokenBalanceData,
+  tokenBalanceData: { balance, inactiveBalance },
 }: Props) => {
   return (
     <div>
       <span
         className={classnames(styles.dot, {
-          /** @TODO Pass inactive balance below */
-          // [styles.dotInactive]: inactiveBalance.gt(0) || totalBalance.isZero(),
+          [styles.dotInactive]:
+            BigNumber.from(inactiveBalance ?? 0).gt(0) ||
+            BigNumber.from(balance ?? 0).isZero(),
         })}
       />
       <Numeral
-        value={tokenBalanceData.balance ?? 0}
+        value={balance ?? 0}
         decimals={getTokenDecimalsWithFallback(nativeToken?.decimals)}
         suffix={nativeToken?.symbol}
       />
