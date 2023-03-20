@@ -115,6 +115,10 @@ type GetReputationForTopDomainsReturn {
   items: [UserDomainReputation!]
 }
 
+type GetUserTokenBalanceReturn {
+  balance: String
+}
+
 enum TokenType {
   COLONY
   ERC20
@@ -180,8 +184,9 @@ type Query {
     @function(name: "getReputationForTopDomains")
   getUserReputation(input: GetUserReputationInput): String
     @function(name: "getUserReputation")
-  getUserTokenBalance(input: GetUserTokenBalanceInput): String
-    @function(name: "getUserTokenBalance")
+  getUserTokenBalance(
+    input: GetUserTokenBalanceInput
+  ): GetUserTokenBalanceReturn @function(name: "getUserTokenBalance")
 }
 
 type Mutation {

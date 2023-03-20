@@ -639,6 +639,31 @@ export type GetUserTokenBalanceInput = {
   walletAddress: Scalars['String'];
 };
 
+<<<<<<< HEAD
+=======
+export type GetUserTokenBalanceReturn = {
+  __typename?: 'GetUserTokenBalanceReturn';
+  balance?: Maybe<Scalars['String']>;
+};
+
+export type Metadata = {
+  __typename?: 'Metadata';
+  blockNumber?: Maybe<Scalars['Int']>;
+  chainId?: Maybe<Scalars['Int']>;
+  logIndex?: Maybe<Scalars['Int']>;
+  network?: Maybe<Network>;
+  transactionHash?: Maybe<Scalars['String']>;
+};
+
+export type MetadataInput = {
+  blockNumber?: InputMaybe<Scalars['Int']>;
+  chainId?: InputMaybe<Scalars['Int']>;
+  logIndex?: InputMaybe<Scalars['Int']>;
+  network?: InputMaybe<Network>;
+  transactionHash?: InputMaybe<Scalars['String']>;
+};
+
+>>>>>>> 4833ce7f (Return balance for native and colony tokens)
 export enum ModelAttributeTypes {
   Null = '_null',
   Binary = 'binary',
@@ -1837,7 +1862,7 @@ export type Query = {
   getUserByAddress?: Maybe<ModelUserConnection>;
   getUserByName?: Maybe<ModelUserConnection>;
   getUserReputation?: Maybe<Scalars['String']>;
-  getUserTokenBalance?: Maybe<Scalars['String']>;
+  getUserTokenBalance?: Maybe<GetUserTokenBalanceReturn>;
   getUserTokens?: Maybe<UserTokens>;
   getWatchedColonies?: Maybe<WatchedColonies>;
   listColonies?: Maybe<ModelColonyConnection>;
