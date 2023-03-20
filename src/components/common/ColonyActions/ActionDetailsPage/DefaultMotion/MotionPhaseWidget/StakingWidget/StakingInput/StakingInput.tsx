@@ -6,6 +6,7 @@ import { ActionTypes } from '~redux';
 
 import StakingControls from './StakingControls';
 import StakingSliderDescription from './StakingSliderDescription';
+import StakingWidgetSlider from './StakingWidgetSlider';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget';
@@ -42,11 +43,9 @@ const StakingInput = () => {
           enoughTokens={enoughTokens}
           requiredStakeMessageProps={requiredStakeMessageProps}
         />
-      )}
-      <StakingWidgetSlider
-        {...stakingWidgetSliderProps}
-        setLimitExceeded={setLimitExceeded}
-      />
+      )} */}
+      <StakingWidgetSlider />
+      {/*
       {showValidationMessage && (
         <StakingValidationMessage
           {...stakingValidationMessageProps}
