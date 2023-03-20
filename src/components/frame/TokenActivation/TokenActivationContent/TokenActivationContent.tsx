@@ -28,11 +28,13 @@ interface TokenActivationContentProps extends TokensTabProps {
   setIsPopoverOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const TokenActivationContent = (props: TokenActivationContentProps) => {
+const TokenActivationContent = ({
+  setIsPopoverOpen,
+  ...otherProps
+}: TokenActivationContentProps) => {
   const [tabIndex, setTabIndex] = useState<number>(0);
   // const { colony } = useColonyContext();
   // const { wallet } = useAppContext();
-  const { setIsPopoverOpen } = props;
 
   // const { data: unclaimedMotions, loading } = useClaimableStakedMotionsQuery({
   //   variables: {
@@ -53,19 +55,19 @@ const TokenActivationContent = (props: TokenActivationContentProps) => {
   const unclaimedMotionStakeEvents = [
     {
       address: '0x0000000',
-      blockNumber: '1234',
+      blockNumber: 1234,
       hash: '0x0000000',
       index: '1',
       name: 'test',
       signature: 'test',
-      timestamp: '1234567890',
+      timestamp: 1234567890,
       topic: 'test topic',
       values: {
         amount: '10',
         motionId: '0x0000012',
-        stakeAmount: BigNumber.from(10 ** 15),
+        stakeAmount: BigNumber.from(10 ** 15).toString(),
         staker: '0x0000000',
-        vote: '0123',
+        vote: 123,
       },
     },
   ];
@@ -101,11 +103,11 @@ const TokenActivationContent = (props: TokenActivationContentProps) => {
           </Tab>
         </TabList>
         <TabPanel className={styles.tabContainer}>
-          <TokensTab {...props} />
+          <TokensTab {...otherProps} />
         </TabPanel>
         <TabPanel className={styles.tabContainer}>
           <StakesTab
-            {...props}
+            {...otherProps}
             unclaimedMotionStakeEvents={unclaimedMotionStakeEvents}
             isLoadingMotions={loading}
             setIsPopoverOpen={setIsPopoverOpen}
