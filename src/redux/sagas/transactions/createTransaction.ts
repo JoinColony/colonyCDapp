@@ -4,6 +4,7 @@ import {
   all,
   call,
   cancel,
+  fork,
   put,
   take,
   takeEvery,
@@ -131,3 +132,18 @@ export function* waitForTxResult(channel: Channel<any>) {
     throw new Error('Transaction failed');
   }
 }
+
+export const createGroupTransaction = (
+  { id, index }: { id: string; index: number },
+  key: string,
+  meta: { id: string },
+  config: any,
+) =>
+  fork(createTransaction, id, {
+    ...config,
+    group: {
+      key,
+      id: meta.id,
+      index,
+    },
+  });
