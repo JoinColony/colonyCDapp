@@ -12,6 +12,7 @@ import {
   GetProfileByEmailDocument,
   GetUserByNameDocument,
 } from '~gql';
+import { transactionReady } from '~redux/actionCreators';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
@@ -22,7 +23,6 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionReady } from '~redux/actionCreators';
 
 // import { transactionLoadRelated, transactionReady } from '../../actionCreators';
 
