@@ -203,7 +203,7 @@ function* userDepositToken({
 
     yield createGroupTransaction(deposit, {
       context: ClientType.TokenLockingClient,
-      methodName: 'deposit',
+      methodName: 'deposit(address,uint256,bool)',
       identifier: colonyAddress,
       params: [tokenAddress, BigNumber.from(amount), false],
       ready: false,
