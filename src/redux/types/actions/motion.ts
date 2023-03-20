@@ -23,14 +23,13 @@ export type MotionActionTypes =
   | UniqueActionType<
       ActionTypes.MOTION_STAKE,
       {
-        userAddress: Address;
         colonyAddress: Address;
         motionId: BigNumber;
         vote: number;
         amount: BigNumber;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      object
     >
   | ErrorActionType<ActionTypes.MOTION_STAKE_ERROR, object>
   | ActionTypeWithMeta<
