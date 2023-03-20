@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import {
-  ColonyRole,
-  // VotingReputationVersion,
-} from '@colony/colony-js';
+import { ColonyRole } from '@colony/colony-js';
 import Decimal from 'decimal.js';
 import { useFormContext } from 'react-hook-form';
 
@@ -12,27 +9,25 @@ import {
   ActionDialogProps,
   DialogControls,
   DialogHeading,
+  DialogSection,
 } from '~shared/Dialog';
-import DialogSection from '~shared/Dialog/DialogSection';
-import { Select, Annotations } from '~shared/Fields';
-import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
+import { HookFormSelect as Select, Annotations } from '~shared/Fields';
 import ExternalLink from '~shared/ExternalLink';
 import SingleUserPicker, {
   filterUserSelection,
 } from '~shared/SingleUserPicker';
 import UserAvatar from '~shared/UserAvatar';
-import NoPermissionMessage from '~shared/NoPermissionMessage';
+import {
+  NoPermissionMessage,
+  CannotCreateMotionMessage,
+  PermissionRequiredInfo,
+} from '../../Messages';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import { REPUTATION_LEARN_MORE } from '~constants/externalUrls';
-import CannotCreateMotionMessage from '~shared/CannotCreateMotionMessage';
 
 import { ColonyWatcher, User } from '~types';
 
-import {
-  useDialogActionPermissions,
-  useUserReputation,
-  useEnabledExtensions,
-} from '~hooks';
+import { useDialogActionPermissions, useUserReputation } from '~hooks';
 import { sortBy } from '~utils/lodash';
 import { notNull } from '~utils/arrays';
 import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
@@ -82,10 +77,6 @@ const MSG = defineMessages({
     id: `${displayName}.warningText`,
     defaultMessage: `Improper use of this feature can break your colony. <a>Learn more</a>`,
   },
-  cannotCreateMotion: {
-    id: `${displayName}.cannotCreateMotion`,
-    defaultMessage: `Cannot create motions using the Governance v{version} Extension. Please upgrade to a newer version (when available)`,
-  },
 });
 
 interface Props extends ActionDialogProps {
@@ -114,6 +105,7 @@ const ManageReputationDialogForm = ({
   nativeTokenDecimals,
   verifiedUsers,
   isSmiteAction = false,
+  enabledExtensionData,
 }: Props) => {
   const {
     getValues,
@@ -126,7 +118,7 @@ const ManageReputationDialogForm = ({
   ];
 
   const { votingReputationVersion, isVotingReputationEnabled } =
-    useEnabledExtensions(colony);
+    enabledExtensionData;
 
   const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
     colony,

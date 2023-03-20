@@ -119,6 +119,7 @@ export const getWizardFlowConfig = (
       nextStepSmiteReputation: 'common.SmiteDialog',
       prevStep: 'common.ColonyActionsDialog',
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -127,6 +128,7 @@ export const getWizardFlowConfig = (
       prevStep: 'common.ManageReputationDialog',
       filteredDomainId,
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -135,6 +137,7 @@ export const getWizardFlowConfig = (
       prevStep: 'common.ManageReputationDialog',
       filteredDomainId,
       colony,
+      enabledExtensionData,
     },
   },
   // {

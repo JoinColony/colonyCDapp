@@ -11,7 +11,7 @@ import { ActionHookForm as Form } from '~shared/Fields';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-import { useEnabledExtensions } from '~hooks'; // useSelectedUser
+// import { useSelectedUser } from '~hooks';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
 import { notNull } from '~utils/arrays';
 
@@ -45,7 +45,7 @@ const defaultValidationSchema = object()
         'more-than-zero',
         () => MSG.amountZero,
         (value) => {
-          const numberWithoutCommas = (value || '0').replace(/,/g, '');
+          const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
           return !new Decimal(numberWithoutCommas).isZero();
         },
       ),
@@ -66,6 +66,7 @@ const ManageReputationContainer = ({
   close,
   filteredDomainId,
   isSmiteAction = false,
+  enabledExtensionData,
 }: AwardAndSmiteDialogProps) => {
   const [isForce, setIsForce] = useState(false);
   const [userReputation, setUserReputation] = useState(0);
@@ -82,7 +83,7 @@ const ManageReputationContainer = ({
     setUserReputation(userRepPercentage);
   };
 
-  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
+  const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
     !isForce && isVotingReputationEnabled
@@ -100,7 +101,7 @@ const ManageReputationContainer = ({
             'more-than-zero',
             () => MSG.amountZero,
             (value) => {
-              const numberWithoutCommas = (value || '0').replace(/,/g, '');
+              const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
               return !new Decimal(numberWithoutCommas).isZero();
             },
           )
@@ -108,7 +109,7 @@ const ManageReputationContainer = ({
             'less-than-user-reputation',
             () => MSG.maxAmount,
             (value) => {
-              const numberWithoutCommas = (value || '0').replace(/,/g, '');
+              const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
               return !new Decimal(numberWithoutCommas).greaterThan(
                 userReputation,
               );
@@ -173,6 +174,7 @@ const ManageReputationContainer = ({
                 isSmiteAction ? updateReputationCallback : undefined
               }
               isSmiteAction={isSmiteAction}
+              enabledExtensionData={enabledExtensionData}
             />
           </Dialog>
         );
