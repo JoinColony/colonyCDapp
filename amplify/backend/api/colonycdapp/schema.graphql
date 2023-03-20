@@ -432,6 +432,10 @@ input TokenInput {
   id: ID!
 }
 
+type MotionData {
+  motionId: String!
+}
+
 # This will store the relevant events we care about for a particular colony
 # Altough it might also hold events emmited by other clients (eg: network or token)
 # but are event pertaining to a colony
@@ -492,6 +496,7 @@ type ColonyAction @model {
   type: ColonyActionType!
   blockNumber: Int!
   isMotion: Boolean
+  motionData: MotionData
   createdAt: AWSDateTime!
   # Action type specific fields which might be null
   initiatorAddress: ID # Amplify will automatically populate one of the following fields with related model if there is an initiator

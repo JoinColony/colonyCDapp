@@ -25,7 +25,14 @@ fragment ColonyAction on ColonyAction {
   createdAt
   newColonyVersion
   isMotion
+  motionData {
+    ...MotionData
+  }
   colony {
     colonyAddress: id
   }
+}
+
+fragment MotionData on MotionData {
+  motionId
 }
