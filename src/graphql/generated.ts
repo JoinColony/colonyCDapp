@@ -627,15 +627,15 @@ export type GetReputationForTopDomainsReturn = {
   items?: Maybe<Array<UserDomainReputation>>;
 };
 
-export type GetUserBalanceInput = {
-  tokenAddress: Scalars['String'];
-  walletAddress: Scalars['String'];
-};
-
 export type GetUserReputationInput = {
   colonyAddress: Scalars['String'];
   domainId?: InputMaybe<Scalars['Int']>;
   rootHash?: InputMaybe<Scalars['String']>;
+  walletAddress: Scalars['String'];
+};
+
+export type GetUserTokenBalanceInput = {
+  tokenAddress: Scalars['String'];
   walletAddress: Scalars['String'];
 };
 
@@ -1834,10 +1834,10 @@ export type Query = {
   getTokenFromEverywhere?: Maybe<TokenFromEverywhereReturn>;
   getTokensByType?: Maybe<ModelTokenConnection>;
   getUser?: Maybe<User>;
-  getUserBalance?: Maybe<Scalars['String']>;
   getUserByAddress?: Maybe<ModelUserConnection>;
   getUserByName?: Maybe<ModelUserConnection>;
   getUserReputation?: Maybe<Scalars['String']>;
+  getUserTokenBalance?: Maybe<Scalars['String']>;
   getUserTokens?: Maybe<UserTokens>;
   getWatchedColonies?: Maybe<WatchedColonies>;
   listColonies?: Maybe<ModelColonyConnection>;
@@ -2016,11 +2016,6 @@ export type QueryGetUserArgs = {
 };
 
 
-export type QueryGetUserBalanceArgs = {
-  input?: InputMaybe<GetUserBalanceInput>;
-};
-
-
 export type QueryGetUserByAddressArgs = {
   filter?: InputMaybe<ModelUserFilterInput>;
   id: Scalars['ID'];
@@ -2041,6 +2036,11 @@ export type QueryGetUserByNameArgs = {
 
 export type QueryGetUserReputationArgs = {
   input?: InputMaybe<GetUserReputationInput>;
+};
+
+
+export type QueryGetUserTokenBalanceArgs = {
+  input?: InputMaybe<GetUserTokenBalanceInput>;
 };
 
 
@@ -2519,7 +2519,7 @@ export type UpdateColonyExtensionInput = {
 
 export type UpdateColonyFundsClaimInput = {
   amount?: InputMaybe<Scalars['String']>;
-  colonyFundsClaimTokenId?: InputMaybe<Scalars['ID']>;
+  colonyFundsClaimTokenId: Scalars['ID'];
   colonyFundsClaimsId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   createdAtBlock?: InputMaybe<Scalars['Int']>;
@@ -2530,7 +2530,7 @@ export type UpdateColonyInput = {
   balances?: InputMaybe<ColonyBalancesInput>;
   chainFundsClaim?: InputMaybe<ColonyChainFundsClaimInput>;
   chainMetadata?: InputMaybe<ChainMetadataInput>;
-  colonyNativeTokenId?: InputMaybe<Scalars['ID']>;
+  colonyNativeTokenId: Scalars['ID'];
   id: Scalars['ID'];
   name?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<ColonyStatusInput>;

@@ -101,7 +101,7 @@ input GetReputationForTopDomainsInput {
   rootHash: String
 }
 
-input GetUserBalanceInput {
+input GetUserTokenBalanceInput {
   walletAddress: String!
   tokenAddress: String!
 }
@@ -180,8 +180,8 @@ type Query {
     @function(name: "getReputationForTopDomains")
   getUserReputation(input: GetUserReputationInput): String
     @function(name: "getUserReputation")
-  getUserBalance(input: GetUserBalanceInput): String
-    @function(name: "getUserBalance")
+  getUserTokenBalance(input: GetUserTokenBalanceInput): String
+    @function(name: "getUserTokenBalance")
 }
 
 type Mutation {

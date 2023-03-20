@@ -63,7 +63,7 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "getUserBalance": {
+    "getUserTokenBalance": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
