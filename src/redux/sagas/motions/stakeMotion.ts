@@ -3,24 +3,14 @@ import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  updateMotionValues,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, getColonyManager } from '../utils';
 
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
-import { ipfsUpload } from '../ipfs';
+import { transactionReady } from '../../actionCreators';
 
 function* stakeMotion({
   meta,
@@ -30,7 +20,7 @@ function* stakeMotion({
     motionId,
     vote,
     amount,
-    annotationMessage,
+    // annotationMessage,
   },
 }: Action<ActionTypes.MOTION_STAKE>) {
   const txChannel = yield call(getTxChannel, meta.id);
@@ -63,11 +53,11 @@ function* stakeMotion({
       rootHash,
     );
 
-    const { approveStake, stakeMotionTransaction, annotateStaking } =
+    const { approveStake, stakeMotionTransaction /* annotateStaking */ } =
       yield createTransactionChannels(meta.id, [
         'approveStake',
         'stakeMotionTransaction',
-        'annotateStaking',
+        // 'annotateStaking',
       ]);
 
     const batchKey = 'stakeMotion';
@@ -98,15 +88,15 @@ function* stakeMotion({
       ready: false,
     });
 
-    if (annotationMessage) {
-      yield createGroupTransaction(annotateStaking, {
-        context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
-        identifier: colonyAddress,
-        params: [],
-        ready: false,
-      });
-    }
+    // if (annotationMessage) {
+    //   yield createGroupTransaction(annotateStaking, {
+    //     context: ClientType.ColonyClient,
+    //     methodName: 'annotateTransaction',
+    //     identifier: colonyAddress,
+    //     params: [],
+    //     ready: false,
+    //   });
+    // }
 
     yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
     yield takeFrom(
@@ -114,9 +104,9 @@ function* stakeMotion({
       ActionTypes.TRANSACTION_CREATED,
     );
 
-    if (annotationMessage) {
-      yield takeFrom(annotateStaking.channel, ActionTypes.TRANSACTION_CREATED);
-    }
+    // if (annotationMessage) {
+    //   yield takeFrom(annotateStaking.channel, ActionTypes.TRANSACTION_CREATED);
+    // }
 
     yield put(transactionReady(approveStake.id));
 
@@ -124,9 +114,7 @@ function* stakeMotion({
 
     yield put(transactionReady(stakeMotionTransaction.id));
 
-    const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
+    yield takeFrom(
       stakeMotionTransaction.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
@@ -136,39 +124,39 @@ function* stakeMotion({
       ActionTypes.TRANSACTION_SUCCEEDED,
     );
 
-    if (annotationMessage) {
-      yield put(transactionPending(annotateStaking.id));
+    // if (annotationMessage) {
+    //   yield put(transactionPending(annotateStaking.id));
 
-      /*
-       * Upload annotation metadata to IPFS
-       */
-      let annotationMessageIpfsHash = null;
-      annotationMessageIpfsHash = yield call(
-        ipfsUpload,
-        JSON.stringify({
-          annotationMessage,
-        }),
-      );
+    //   /*
+    //    * Upload annotation metadata to IPFS
+    //    */
+    //   let annotationMessageIpfsHash = null;
+    //   annotationMessageIpfsHash = yield call(
+    //     ipfsUpload,
+    //     JSON.stringify({
+    //       annotationMessage,
+    //     }),
+    //   );
 
-      yield put(
-        transactionAddParams(annotateStaking.id, [
-          txHash,
-          annotationMessageIpfsHash,
-        ]),
-      );
+    //   yield put(
+    //     transactionAddParams(annotateStaking.id, [
+    //       txHash,
+    //       annotationMessageIpfsHash,
+    //     ]),
+    //   );
 
-      yield put(transactionReady(annotateStaking.id));
+    //   yield put(transactionReady(annotateStaking.id));
 
-      yield takeFrom(
-        annotateStaking.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
-    }
+    //   yield takeFrom(
+    //     annotateStaking.channel,
+    //     ActionTypes.TRANSACTION_SUCCEEDED,
+    //   );
+    // }
 
     /*
      * Update motion page values
      */
-    yield fork(updateMotionValues, colonyAddress, userAddress, motionId);
+    // yield fork(updateMotionValues, colonyAddress, userAddress, motionId);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_STAKE_SUCCESS,
