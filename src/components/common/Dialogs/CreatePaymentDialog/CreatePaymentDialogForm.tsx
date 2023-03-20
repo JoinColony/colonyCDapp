@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
-import {
-  defineMessages,
-  FormattedMessage,
-  MessageDescriptor,
-} from 'react-intl';
-import { ColonyRole, Id } from '@colony/colony-js';
+import React from 'react';
+import { defineMessages, FormattedMessage } from 'react-intl';
+import { ColonyRole } from '@colony/colony-js';
 import { isConfusing } from '@colony/unicode-confusables-noascii';
 import { useFormContext } from 'react-hook-form';
 
-import PermissionsLabel from '~shared/PermissionsLabel';
 import ConfusableWarning from '~shared/ConfusableWarning';
 import {
   ActionDialogProps,
@@ -20,16 +15,19 @@ import { Annotations } from '~shared/Fields';
 import SingleUserPicker, {
   filterUserSelection,
 } from '~shared/SingleUserPicker';
-import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import DomainFundSelectorSection from '~shared/DomainFundSelectorSection';
-import TokenAmountInput from '~shared/TokenAmountInput';
-
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import { ColonyWatcher } from '~types';
 
-import { useDialogActionPermissions } from '~hooks';
-// import { useEnabledExtensions } from '~hooks/useEnabledExtensions';
+import DomainFundSelectorSection from '../DomainFundSelectorSection';
+import TokenAmountInput from '../TokenAmountInput';
+import {
+  NoPermissionMessage,
+  CannotCreateMotionMessage,
+  PermissionRequiredInfo,
+} from '../Messages';
+
+import { useCreatePaymentDialogStatus } from './helpers';
 
 import styles from './CreatePaymentDialogForm.css';
 
@@ -48,11 +46,6 @@ const MSG = defineMessages({
     id: `${displayName}.annotation`,
     defaultMessage: 'Explain why you’re making this payment (optional)',
   },
-  noPermissionFrom: {
-    id: `${displayName}.noPermissionFrom`,
-    defaultMessage: `You do not have the {firstRoleRequired} and
-    {secondRoleRequired} permissions required to take this action.`,
-  },
   noOneTxExtension: {
     id: `${displayName}.noOneTxExtension`,
     defaultMessage: `The OneTxPayment extension is not installed in this colony.
@@ -67,94 +60,41 @@ const MSG = defineMessages({
     id: `${displayName}.warningText`,
     defaultMessage: `<span>Warning.</span> You are about to make a payment to an address not on the whitelist. Are you sure the address is correct?`,
   },
-  cannotCreateMotion: {
-    id: `${displayName}.cannotCreateMotion`,
-    defaultMessage: `Cannot create motions using the Governance v{version} Extension. Please upgrade to a newer version (when available)`,
-  },
 });
 
 interface Props extends ActionDialogProps {
   verifiedUsers: ColonyWatcher['user'][];
   // showWhitelistWarning: boolean;
-  filteredDomainId?: number;
 }
 
-const noPermissionFromMessageValues = {
-  firstRoleRequired: (
-    <PermissionsLabel
-      permission={ColonyRole.Funding}
-      name={{ id: `role.${ColonyRole.Funding}` }}
-    />
-  ),
-  secondRoleRequired: (
-    <PermissionsLabel
-      permission={ColonyRole.Administration}
-      name={{ id: `role.${ColonyRole.Administration}` }}
-    />
-  ),
-};
+const requiredRoles: ColonyRole[] = [
+  ColonyRole.Funding,
+  ColonyRole.Administration,
+];
 
 const CreatePaymentDialogForm = ({
   back,
   verifiedUsers,
-  filteredDomainId: preselectedDomainId,
   colony,
+  enabledExtensionData,
 }: // showWhitelistWarning,
 Props) => {
+  const { watch } = useFormContext();
+  const recipient = watch('recipient');
+
   const {
-    getValues,
-    formState: { isSubmitting, isValid },
-  } = useFormContext();
-  const values = getValues();
-  const selectedDomain =
-    preselectedDomainId === 0 || preselectedDomainId === undefined
-      ? Id.RootDomain
-      : preselectedDomainId;
-
-  const domainId = values.domainId
-    ? parseInt(values.domainId, 10)
-    : selectedDomain;
-  /*
-   * Custom error state tracking
-   */
-  const [customAmountError] = useState<
-    // setCustomAmountError
-    MessageDescriptor | string | undefined
-  >(undefined);
-
-  // const {
-  //   isOneTxPaymentExtensionEnabled,
-  //   votingExtensionVersion,
-  //   isVotingExtensionEnabled,
-  // } = useEnabledExtensions({
-  //   colonyAddress,
-  // });
-
-  const requiredRoles: ColonyRole[] = [
-    ColonyRole.Funding,
-    ColonyRole.Administration,
-  ];
-
-  const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony,
-    false, // isVotingExtensionEnabled,
-    requiredRoles,
-    [domainId],
-  );
-
-  // const cannotCreateMotion =
-  //   votingExtensionVersion ===
-  //     VotingReputationExtensionVersion.FuchsiaLightweightSpaceship &&
-  //   !values.forceAction;
-
-  const canMakePayment = userHasPermission; // && isOneTxPaymentExtensionEnabled;
-
-  const inputDisabled = !canMakePayment || onlyForceAction || isSubmitting;
+    userHasPermission,
+    disabledSubmit,
+    disabledInput,
+    canCreateMotion,
+    canCreatePayment,
+  } = useCreatePaymentDialogStatus(colony, requiredRoles, enabledExtensionData);
 
   const formattedData = verifiedUsers.map((user) => ({
     ...user,
     id: user.walletAddress,
   }));
+
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -166,7 +106,10 @@ Props) => {
         </DialogSection>
       )}
       <DialogSection>
-        <DomainFundSelectorSection colony={colony} />
+        <DomainFundSelectorSection
+          colony={colony}
+          disabled={!canCreatePayment}
+        />
       </DialogSection>
       <DialogSection>
         <div className={styles.singleUserContainer}>
@@ -176,7 +119,7 @@ Props) => {
             label={MSG.to}
             name="recipient"
             filter={filterUserSelection}
-            disabled={inputDisabled}
+            disabled={disabledInput}
             placeholder={MSG.userPickerPlaceholder}
             dataTest="paymentRecipientPicker"
             itemDataTest="paymentRecipientItem"
@@ -197,71 +140,54 @@ Props) => {
             </p>
           </div>
         )} */}
-        {values.recipient &&
+        {recipient &&
           isConfusing(
-            values.recipient.profile.walletAddress ||
-              values.recipient.profile?.displayName,
+            recipient.profile.walletAddress || recipient.profile?.displayName,
           ) && (
             <ConfusableWarning
-              walletAddress={values.recipient.profile.walletAddress}
+              walletAddress={recipient.profile.walletAddress}
               colonyAddress={colony?.colonyAddress}
             />
           )}
       </DialogSection>
       <DialogSection>
-        <TokenAmountInput colony={colony} disabled={inputDisabled} />
+        <TokenAmountInput colony={colony} disabled={disabledInput} />
       </DialogSection>
       <DialogSection>
         <Annotations
           label={MSG.annotation}
           name="annotation"
-          disabled={inputDisabled}
+          disabled={disabledInput}
           dataTest="paymentAnnotation"
         />
       </DialogSection>
       {!userHasPermission && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionFromMessage}>
-            <FormattedMessage
-              {...MSG.noPermissionFrom}
-              values={noPermissionFromMessageValues}
-            />
-          </div>
+        <DialogSection>
+          <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
-      {/* {userHasPermission && !isOneTxPaymentExtensionEnabled && (
+      {userHasPermission && !canCreatePayment && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionFromMessage}>
+          <div className={styles.noOneTxExtension}>
             <FormattedMessage {...MSG.noOneTxExtension} />
           </div>
         </DialogSection>
-      )} */}
+      )}
       {/* {onlyForceAction && (
         <NotEnoughReputation
           appearance={{ marginTop: 'negative' }}
           domainId={domainId}
         />
       )} */}
-      {/* {cannotCreateMotion && (
+      {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionFromMessage}>
-            <FormattedMessage
-              {...MSG.cannotCreateMotion}
-              values={{
-                version:
-                  VotingReputationExtensionVersion.FuchsiaLightweightSpaceship,
-              }}
-            />
-          </div>
+          <CannotCreateMotionMessage />
         </DialogSection>
-      )} */}
+      )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}
-          disabled={
-            // cannotCreateMotion ||
-            !isValid || !!customAmountError || inputDisabled
-          }
+          disabled={disabledSubmit}
           dataTest="paymentConfirmButton"
         />
       </DialogSection>

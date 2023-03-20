@@ -1,31 +1,27 @@
 import React from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
-import {
-  ColonyRole,
-  Id,
-  // VotingReputationVersion,
-} from '@colony/colony-js';
+import { defineMessages } from 'react-intl';
+import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import DialogSection from '~shared/Dialog/DialogSection';
 import { Annotations } from '~shared/Fields';
-import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import PermissionsLabel from '~shared/PermissionsLabel';
-import TokenAmountInput from '~shared/TokenAmountInput';
-import DomainFundSelectorSection from '~shared/DomainFundSelectorSection';
+
 import {
   ActionDialogProps,
   DialogControls,
   DialogHeading,
+  DialogSection,
 } from '~shared/Dialog';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
+
 import {
-  useAppContext,
-  useDialogActionPermissions,
-  useTransformer,
-} from '~hooks'; // useEnabledExtensions
-import { getUserRolesForDomain } from '~redux/transformers';
-import { userHasRole } from '~utils/checks';
+  NoPermissionMessage,
+  CannotCreateMotionMessage,
+  PermissionRequiredInfo,
+} from '../Messages';
+import TokenAmountInput from '../TokenAmountInput';
+import DomainFundSelectorSection from '../DomainFundSelectorSection';
+
+import { useTransferFundsDialogStatus } from './helpers';
 
 import styles from './TransferFundsDialogForm.css';
 
@@ -40,71 +36,38 @@ const MSG = defineMessages({
     id: `${displayName}.annotation`,
     defaultMessage: 'Explain why you’re transferring these funds (optional)',
   },
-  noPermissionFrom: {
-    id: `${displayName}.noPermissionFrom`,
-    defaultMessage: `You need the {permissionLabel} permission in {domainName}
-      to take this action`,
-  },
   cannotCreateMotion: {
     id: `${displayName}.cannotCreateMotion`,
     defaultMessage: `Cannot create motions using the Governance v{version} Extension. Please upgrade to a newer version (when available)`,
   },
 });
 
-const TransferFundsDialogForm = ({ back, colony }: ActionDialogProps) => {
-  const { wallet } = useAppContext();
-  const {
-    getValues,
-    formState: { isSubmitting, isValid },
-  } = useFormContext();
-  const values = getValues();
+const requiredRoles: ColonyRole[] = [ColonyRole.Funding];
 
-  // const {
-  //   isVotingExtensionEnabled,
-  //   votingExtensionVersion,
-  // } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+const TransferFundsDialogForm = ({
+  back,
+  colony,
+  enabledExtensionData,
+}: ActionDialogProps) => {
+  const { watch } = useFormContext();
+  const { fromDomain: fromDomainId, toDomain: toDomainId } = watch();
 
-  const fromDomainId = values.fromDomain ? values.fromDomain : Id.RootDomain;
   const colonyDomains = colony?.domains?.items || [];
   const fromDomain = colonyDomains.find(
     (domain) => domain?.nativeId === fromDomainId,
   );
-  const toDomainId = values.toDomain ? values.toDomain : undefined;
+
   const toDomain = colonyDomains.find(
     (domain) => domain?.nativeId === toDomainId,
   );
-
-  const fromDomainRoles = useTransformer(getUserRolesForDomain, [
-    colony,
-    wallet?.address,
-    fromDomainId,
-  ]);
-
-  const toDomainRoles = useTransformer(getUserRolesForDomain, [
-    colony,
-    wallet?.address,
-    toDomainId,
-  ]);
-  const hasRoleInFromDomain = userHasRole(fromDomainRoles, ColonyRole.Funding);
-  const hasRoleInToDomain = userHasRole(toDomainRoles, ColonyRole.Funding);
-
-  const requiredRoles: ColonyRole[] = [ColonyRole.Funding];
-
-  const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony,
-    false, // isVotingExtensionEnabled,
-    requiredRoles,
-    [fromDomainId, toDomainId],
-  );
-
-  const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;
-
-  // const cannotCreateMotion =
-  //   votingExtensionVersion ===
-  //     VotingReputationVersion.FuchsiaLightweightSpaceship &&
-  //   !values.forceAction;
+  const {
+    userHasPermission,
+    disabledInput,
+    disabledSubmit,
+    canCreateMotion,
+    canOnlyForceAction,
+    hasRoleInFromDomain,
+  } = useTransferFundsDialogStatus(colony, requiredRoles, enabledExtensionData);
 
   return (
     <>
@@ -122,60 +85,44 @@ const TransferFundsDialogForm = ({ back, colony }: ActionDialogProps) => {
         <DomainFundSelectorSection
           colony={colony}
           transferBetweenDomains
-          disabled={onlyForceAction}
+          disabled={canOnlyForceAction}
         />
       </DialogSection>
       <DialogSection>
-        <TokenAmountInput colony={colony} disabled={inputDisabled} />
+        <TokenAmountInput colony={colony} disabled={disabledInput} />
       </DialogSection>
       <DialogSection>
         <Annotations
           label={MSG.annotation}
           name="annotation"
-          disabled={inputDisabled}
+          disabled={disabledInput}
           dataTest="transferFundsAnnotation"
         />
       </DialogSection>
       {!userHasPermission && (
-        <DialogSection>
-          <span className={styles.permissionsError}>
-            <FormattedMessage
-              {...MSG.noPermissionFrom}
-              values={{
-                permissionLabel: (
-                  <PermissionsLabel
-                    permission={ColonyRole.Funding}
-                    name={{ id: `role.${ColonyRole.Funding}` }}
-                  />
-                ),
-                domainName:
-                  (!hasRoleInFromDomain && fromDomain?.metadata?.name) ||
-                  (!hasRoleInToDomain && toDomain?.metadata?.name),
-              }}
-            />
-          </span>
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NoPermissionMessage
+            requiredPermissions={[ColonyRole.Funding]}
+            domainName={
+              hasRoleInFromDomain
+                ? fromDomain?.metadata?.name
+                : toDomain?.metadata?.name
+            }
+          />
         </DialogSection>
       )}
       {/* {onlyForceAction && (
         <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
       )} */}
-      {/* {cannotCreateMotion && (
+      {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.cannotCreateMotion}>
-            <FormattedMessage
-              {...MSG.cannotCreateMotion}
-              values={{
-                version:
-                  VotingReputationVersion.FuchsiaLightweightSpaceship,
-              }}
-            />
-          </div>
+          <CannotCreateMotionMessage />
         </DialogSection>
-      )} */}
+      )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back}
-          disabled={!isValid || inputDisabled} // cannotCreateMotion ||
+          disabled={disabledSubmit}
           dataTest="transferFundsConfirmation"
         />
       </DialogSection>

@@ -1,6 +1,6 @@
 declare namespace CreatePaymentDialogFormCssNamespace {
   export interface ICreatePaymentDialogFormCss {
-    noPermissionFromMessage: string;
+    noOneTxExtension: string;
     singleUserContainer: string;
     warningContainer: string;
     warningLabel: string;

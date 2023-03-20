@@ -1,11 +1,12 @@
+import { EnabledExtensionData } from '~hooks/useEnabledExtensions';
 import { Colony } from '~types';
 import {
   ColonyActionsDialog,
   ManageExpenditureDialog,
-  // CreateDomainDialog,
-  // EditDomainDialog,
+  CreateDomainDialog,
+  EditDomainDialog,
   CreatePaymentDialog,
-  // ManageDomainsDialog,
+  ManageDomainsDialog,
   ManageFundsDialog,
   UnlockTokenDialog,
   TransferFundsDialog,
@@ -24,6 +25,7 @@ import {
 export const getWizardFlowConfig = (
   colony: Colony | undefined,
   filteredDomainId: number,
+  enabledExtensionData: EnabledExtensionData,
 ) => [
   {
     component: ColonyActionsDialog,
@@ -41,6 +43,7 @@ export const getWizardFlowConfig = (
       nextStep: 'common.CreatePaymentDialog',
       prevStep: 'common.ColonyActionsDialog',
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -49,6 +52,7 @@ export const getWizardFlowConfig = (
       prevStep: 'common.ManageExpenditureDialog',
       filteredDomainId,
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -60,6 +64,7 @@ export const getWizardFlowConfig = (
       nextStepUnlockToken: 'common.UnlockTokenDialog',
       prevStep: 'common.ColonyActionsDialog',
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -67,6 +72,7 @@ export const getWizardFlowConfig = (
     props: {
       prevStep: 'common.ManageFundsDialog',
       colony,
+      enabledExtensionData,
       filteredDomainId,
     },
   },
@@ -75,30 +81,37 @@ export const getWizardFlowConfig = (
     props: {
       prevStep: 'common.ManageFundsDialog',
       colony,
+      enabledExtensionData,
     },
   },
-  // {
-  //   component: ManageDomainsDialog,
-  //   props: {
-  //     prevStep: 'common.ColonyActionsDialog',
-  //     nextStep: 'common.CreateDomainDialog',
-  //     nextStepEdit: 'common.EditDomainDialog',
-  //     nextStepManageWhitelist: 'common.ManageWhitelistDialog',
-  //   },
-  // },
-  // {
-  //   component: CreateDomainDialog,
-  //   props: {
-  //     prevStep: 'common.ManageDomainsDialog',
-  //   },
-  // },
-  // {
-  //   component: EditDomainDialog,
-  //   props: {
-  //     prevStep: 'common.ManageDomainsDialog',
-  //     filteredDomainId,
-  //   },
-  // },
+  {
+    component: ManageDomainsDialog,
+    props: {
+      prevStep: 'common.ColonyActionsDialog',
+      nextStep: 'common.CreateDomainDialog',
+      nextStepEdit: 'common.EditDomainDialog',
+      nextStepManageWhitelist: 'common.ManageWhitelistDialog',
+      colony,
+      enabledExtensionData,
+    },
+  },
+  {
+    component: CreateDomainDialog,
+    props: {
+      prevStep: 'common.ManageDomainsDialog',
+      colony,
+      enabledExtensionData,
+    },
+  },
+  {
+    component: EditDomainDialog,
+    props: {
+      prevStep: 'common.ManageDomainsDialog',
+      filteredDomainId,
+      colony,
+      enabledExtensionData,
+    },
+  },
   // {
   //   component: ManageReputationDialog,
   //   props: {
@@ -169,6 +182,7 @@ export const getWizardFlowConfig = (
     props: {
       prevStep: 'common.ManageFundsDialog',
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -176,6 +190,7 @@ export const getWizardFlowConfig = (
     props: {
       prevStep: 'common.ManageFundsDialog',
       colony,
+      enabledExtensionData,
     },
   },
 ];

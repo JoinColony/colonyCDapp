@@ -6,9 +6,9 @@ import { HookFormSelect as Select } from '~shared/Fields';
 import { Colony } from '~types';
 
 import { notNull } from '~utils/arrays';
+import { getDomainOptions } from '~utils/domains';
 
 import DomainBalance from './DomainBalance';
-import { getDomainOptions } from './helpers';
 
 const displayName = 'DomainFundSelectorSection.DomainFundSelector';
 

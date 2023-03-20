@@ -32,9 +32,8 @@ const getDomainFundMessageValues = (selectedToken: Token | undefined) => ({
 });
 
 const DomainBalance = ({ colony }: Props) => {
-  const { getValues } = useFormContext();
-  const values = getValues();
-  const { tokenAddress } = values;
+  const { watch } = useFormContext();
+  const tokenAddress = watch('tokenAddress');
   const selectedToken = getSelectedToken(colony, tokenAddress);
 
   return (

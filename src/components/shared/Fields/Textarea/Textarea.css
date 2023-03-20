@@ -51,6 +51,7 @@
 .main[aria-disabled="true"],
 .main[aria-busy="true"] {
   background-color: var(--text-disabled);
+  cursor: not-allowed;
 }
 
 .main[aria-invalid="true"] {

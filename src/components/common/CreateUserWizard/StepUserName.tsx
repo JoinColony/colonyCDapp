@@ -64,9 +64,7 @@ const StepUserName = ({
 
   return (
     <ActionHookForm<UserWizardStep2>
-      submit={ActionTypes.USERNAME_CREATE}
-      success={ActionTypes.USERNAME_CREATE_SUCCESS}
-      error={ActionTypes.USERNAME_CREATE_ERROR}
+      actionType={ActionTypes.USERNAME_CREATE}
       onSuccess={handleSuccess}
       transform={transform}
       validationSchema={validationSchema}

@@ -5,14 +5,13 @@ import { Id } from '@colony/colony-js';
 import { string, object, number, boolean, InferType } from 'yup';
 import Decimal from 'decimal.js';
 
+import { getDomainOptions } from '~utils/domains';
 import { notNull } from '~utils/arrays';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
-import { getDomainOptions } from '~shared/DomainFundSelectorSection/helpers';
 import { WizardDialogType } from '~hooks';
-// import { useEnabledExtensions } from '~hooks/useEnabledExtensions';
 
 import TransferFundsDialogForm from './TransferFundsDialogForm';
 import { getTransferFundsDialogPayload } from './helpers';
@@ -20,6 +19,10 @@ import { getTransferFundsDialogPayload } from './helpers';
 const displayName = 'common.TransferFundsDialog';
 
 const MSG = defineMessages({
+  requiredFieldError: {
+    id: `${displayName}.requiredFieldError`,
+    defaultMessage: 'Please enter a value',
+  },
   amountZero: {
     id: `${displayName}.amountZero`,
     defaultMessage: 'Amount must be greater than zero',
@@ -52,12 +55,12 @@ const validationSchema = object()
       .required()
       .test('same-domain', () => MSG.sameDomain, checkIfSameDomain),
     amount: string()
-      .required()
+      .required(() => MSG.requiredFieldError)
       .test(
         'more-than-zero',
         () => MSG.amountZero,
         (value) => {
-          const numberWithoutCommas = (value || '0').replace(/,/g, '');
+          const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
           return !new Decimal(numberWithoutCommas).isZero();
         },
       ),
@@ -75,21 +78,17 @@ const TransferFundsDialog = ({
   prevStep,
   cancel,
   close,
+  enabledExtensionData,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const { isVotingReputationEnabled } = enabledExtensionData;
 
-  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
-
-    return !isForce // && isVotingExtensionEnabled
-      ? ActionTypes[`MOTION_MOVE_FUNDS${actionEnd}`]
-      : ActionTypes[`ACTION_MOVE_FUNDS${actionEnd}`];
-  };
+  const actionType =
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.MOTION_MOVE_FUNDS
+      : ActionTypes.ACTION_MOVE_FUNDS;
 
   const colonyDomains = colony?.domains?.items.filter(notNull) || [];
   const domainOptions = getDomainOptions(colonyDomains);
@@ -100,46 +99,45 @@ const TransferFundsDialog = ({
   );
 
   return (
-    <Form<FormValues>
-      defaultValues={{
-        forceAction: false,
-        fromDomain: selectedDomainId || Id.RootDomain,
-        toDomain:
-          Number(
-            domainOptions.find((domain) => domain.value !== selectedDomainId)
-              ?.value,
-          ) || Id.RootDomain,
-        amount: '',
-        tokenAddress: colony?.nativeToken.tokenAddress,
-        annotation: '',
-        /*
-         * @NOTE That since this a root motion, and we don't actually make use
-         * of the motion domain selected (it's disabled), we don't need to actually
-         * pass the value over to the motion, since it will always be 1
-         */
-      }}
-      validationSchema={validationSchema}
-      submit={getFormAction('SUBMIT')}
-      error={getFormAction('ERROR')}
-      success={getFormAction('SUCCESS')}
-      onSuccess={close}
-      transform={transform}
-    >
-      {({ getValues }) => {
-        const forceActionValue = getValues('forceAction');
-        if (forceActionValue !== isForce) {
-          setIsForce(forceActionValue);
-        }
-        return (
-          <Dialog cancel={cancel}>
+    <Dialog cancel={cancel}>
+      <Form<FormValues>
+        defaultValues={{
+          forceAction: false,
+          fromDomain: selectedDomainId || Id.RootDomain,
+          toDomain:
+            Number(
+              domainOptions.find((domain) => domain.value !== selectedDomainId)
+                ?.value,
+            ) || Id.RootDomain,
+          amount: '',
+          tokenAddress: colony?.nativeToken.tokenAddress,
+          annotation: '',
+          /*
+           * @NOTE That since this a root motion, and we don't actually make use
+           * of the motion domain selected (it's disabled), we don't need to actually
+           * pass the value over to the motion, since it will always be 1
+           */
+        }}
+        validationSchema={validationSchema}
+        actionType={actionType}
+        onSuccess={close}
+        transform={transform}
+      >
+        {({ watch }) => {
+          const forceActionValue = watch('forceAction');
+          if (forceActionValue !== isForce) {
+            setIsForce(forceActionValue);
+          }
+          return (
             <TransferFundsDialogForm
               colony={colony}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+              enabledExtensionData={enabledExtensionData}
             />
-          </Dialog>
-        );
-      }}
-    </Form>
+          );
+        }}
+      </Form>
+    </Dialog>
   );
 };
 

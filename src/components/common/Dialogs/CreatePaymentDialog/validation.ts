@@ -21,7 +21,7 @@ const MSG = defineMessages({
 
 const validationSchema = object()
   .shape({
-    domainId: string().required(),
+    fromDomain: number().required(),
     recipient: object()
       .shape({
         profile: object()
@@ -39,7 +39,7 @@ const validationSchema = object()
         'more-than-zero',
         () => MSG.amountZero,
         (value) => {
-          const numberWithoutCommas = (value || '0').replace(/,/g, '');
+          const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
           return !new Decimal(numberWithoutCommas).isZero();
         },
       ),

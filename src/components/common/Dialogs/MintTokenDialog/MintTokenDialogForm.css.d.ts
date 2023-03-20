@@ -6,7 +6,6 @@ declare namespace MintTokenDialogFormCssNamespace {
     mappings: string;
     names: string;
     nativeToken: string;
-    noPermissionMessage: string;
     query700: string;
     sourceRoot: string;
     sources: string;

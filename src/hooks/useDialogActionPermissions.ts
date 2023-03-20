@@ -16,8 +16,8 @@ const useDialogActionPermissions = (
   requiredRepDomain?: number,
 ) => {
   const { wallet } = useAppContext();
-  const { getValues } = useFormContext();
-  const { forceAction } = getValues();
+  const { watch } = useFormContext();
+  const forceAction = watch('forceAction');
 
   const hasRoles = requiredRolesDomains.every((domainId) => {
     const userDomainRoles = getUserRolesForDomain(

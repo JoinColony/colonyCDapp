@@ -13,27 +13,21 @@ import {
 import { Annotations } from '~shared/Fields';
 import { Heading4 } from '~shared/Heading';
 import Paragraph from '~shared/Paragraph';
-import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-import PermissionsLabel from '~shared/PermissionsLabel';
 import { TokenSelector } from '~common/CreateColonyWizard';
 import { TokenManagementDialogFormValues } from '~common/Dialogs';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
-import {
-  useTransformer,
-  useAppContext,
-  useDialogActionPermissions,
-} from '~hooks';
-import { getAllUserRoles } from '~redux/transformers';
-import { hasRoot } from '~utils/checks';
+import { useActionDialogStatus } from '~hooks';
 import { isEqual } from '~utils/lodash';
+
+import { NoPermissionMessage, PermissionRequiredInfo } from '../../Messages';
 
 import TokenItem from './TokenItem';
 import getTokenList from './getTokenList';
 
-import styles from './TokenEditDialog.css';
+import styles from './TokenManagementDialogForm.css';
 
-const displayName = 'TokenEditDialog';
+const displayName = 'common.TokenManagementDialog.TokenManagementDialogForm';
 
 const MSG = defineMessages({
   title: {
@@ -67,19 +61,24 @@ interface Props extends ActionDialogProps {
   close: (val: any) => void;
 }
 
-const TokenEditDialog = ({
+const requiredRoles: ColonyRole[] = [ColonyRole.Root];
+
+const TokenManagementDialogForm = ({
   close,
   colony,
   colony: { tokens, nativeToken },
   back,
-}: // isVotingExtensionEnabled,
-Props) => {
-  const { user, wallet } = useAppContext();
-  const {
-    getValues,
-    formState: { isValid, isSubmitting },
-  } = useFormContext();
-  const values = getValues();
+  enabledExtensionData,
+}: Props) => {
+  const { watch } = useFormContext();
+  const values = watch();
+  const { userHasPermission, disabledInput, disabledSubmit } =
+    useActionDialogStatus(
+      colony,
+      requiredRoles,
+      [Id.RootDomain],
+      enabledExtensionData,
+    );
   const tokenList = getTokenList();
   const colonyTokens = tokens?.items || [];
   const colonyTokenAddresses = colonyTokens.map(
@@ -96,24 +95,7 @@ Props) => {
       selectedTokenAddresses?.sort(),
     );
 
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
-  ]);
-
-  const canEditTokens = !!(user?.name && hasRoot(allUserRoles));
-  const requiredRoles: ColonyRole[] = [ColonyRole.Root];
-
-  const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony,
-    false, // isVotingExtensionEnabled,
-    requiredRoles,
-    [Id.RootDomain],
-  );
-
-  const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;
-
-  const allTokens = [...colonyTokens, ...(canEditTokens ? tokenList : [])]
+  const allTokens = [...colonyTokens, ...(userHasPermission ? tokenList : [])]
     .map((token) => token?.token)
     .filter(
       (firstToken, index, mergedTokens) =>
@@ -144,7 +126,7 @@ Props) => {
                     key={token.tokenAddress}
                     token={token}
                     disabled={
-                      inputDisabled ||
+                      disabledInput ||
                       token.tokenAddress === nativeToken.tokenAddress ||
                       token.tokenAddress === AddressZero
                     }
@@ -156,40 +138,26 @@ Props) => {
           <Heading4 text={MSG.noTokensText} />
         )}
       </DialogSection>
-      <DialogSection>
+      <DialogSection appearance={{ theme: 'sidePadding' }}>
         <Paragraph className={styles.description}>
           <FormattedMessage {...MSG.notListedToken} />
         </Paragraph>
         <TokenSelector
           label={MSG.fieldLabel}
           appearance={{ colorSchema: 'grey', theme: 'fat' }}
-          disabled={inputDisabled}
+          disabled={disabledInput}
         />
         <div className={styles.textarea}>
           <Annotations
             label={MSG.textareaLabel}
             name="annotationMessage"
-            disabled={inputDisabled}
+            disabled={disabledInput}
           />
         </div>
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionMessage}>
-            <FormattedMessage
-              {...MSG.noPermission}
-              values={{
-                roleRequired: (
-                  <PermissionsLabel
-                    permission={ColonyRole.Root}
-                    name={{
-                      id: `role.${ColonyRole.Root}`,
-                    }}
-                  />
-                ),
-              }}
-            />
-          </div>
+          <NoPermissionMessage requiredPermissions={[ColonyRole.Root]} />
         </DialogSection>
       )}
       {/* {onlyForceAction && (
@@ -201,7 +169,7 @@ Props) => {
           secondaryButtonText={{
             id: back === undefined ? 'button.cancel' : 'button.back',
           }}
-          disabled={!isValid || inputDisabled || !hasTokensListChanged(values)}
+          disabled={disabledSubmit || !hasTokensListChanged(values)}
           dataTest="confirm"
         />
       </DialogSection>
@@ -209,6 +177,6 @@ Props) => {
   );
 };
 
-TokenEditDialog.displayName = displayName;
+TokenManagementDialogForm.displayName = displayName;
 
-export default TokenEditDialog;
+export default TokenManagementDialogForm;

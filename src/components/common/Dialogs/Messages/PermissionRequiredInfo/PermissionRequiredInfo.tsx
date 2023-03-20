@@ -5,8 +5,9 @@ import { ColonyRole } from '@colony/colony-js';
 import Heading from '~shared/Heading';
 import PermissionsLabel from '~shared/PermissionsLabel';
 import Icon from '~shared/Icon';
-import styles from './PermissionRequiredInfo.css';
 import { Tooltip } from '~shared/Popover';
+
+import styles from './PermissionRequiredInfo.css';
 
 const MSG = defineMessages({
   title: {
@@ -66,7 +67,7 @@ const PermissionRequiredInfo = ({ requiredRoles }: Props) => {
           </p>
           <Tooltip content={tooltipText} placement="right">
             <div className={styles.labelIcon}>
-              <Icon name="question-mark" title={MSG.title} />
+              <Icon name="question-mark" />
             </div>
           </Tooltip>
 

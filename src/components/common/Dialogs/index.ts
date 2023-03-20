@@ -1,9 +1,9 @@
 export { default as ColonyActionsDialog } from './ColonyActionsDialog';
 export { default as ManageExpenditureDialog } from './ManageExpenditureDialog';
-// export { default as CreateDomainDialog } from './CreateDomainDialog';
-// export { default as EditDomainDialog } from './EditDomainDialog';
+export { default as CreateDomainDialog } from './CreateDomainDialog';
+export { default as EditDomainDialog } from './EditDomainDialog';
 export { default as CreatePaymentDialog } from './CreatePaymentDialog';
-// export { default as ManageDomainsDialog } from './ManageDomainsDialog';
+export { default as ManageDomainsDialog } from './ManageDomainsDialog';
 export { default as ManageFundsDialog } from './ManageFundsDialog';
 export { default as UnlockTokenDialog } from './UnlockTokenDialog';
 export { default as TransferFundsDialog } from './TransferFundsDialog';

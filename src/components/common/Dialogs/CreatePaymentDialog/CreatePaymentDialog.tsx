@@ -15,7 +15,6 @@ import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
 import { WizardDialogType } from '~hooks';
-// import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
 import { notNull } from '~utils/arrays';
 
 import validationSchema from './validation';
@@ -39,22 +38,18 @@ const CreatePaymentDialog = ({
   close,
   filteredDomainId,
   colony,
+  enabledExtensionData,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
   const colonyWatchers =
     colony?.watchers?.items.filter(notNull).map((item) => item.user) || [];
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const { isVotingReputationEnabled } = enabledExtensionData;
 
-  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
-
-    return !isForce // && isVotingExtensionEnabled
-      ? ActionTypes[`MOTION_EXPENDITURE_PAYMENT${actionEnd}`]
-      : ActionTypes[`ACTION_EXPENDITURE_PAYMENT${actionEnd}`];
-  };
+  const actionType =
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.MOTION_EXPENDITURE_PAYMENT
+      : ActionTypes.ACTION_EXPENDITURE_PAYMENT;
 
   // const { data: colonyMembers } = useMembersSubscription({
   //   variables: { colonyAddress },
@@ -95,52 +90,44 @@ const CreatePaymentDialog = ({
   );
 
   return (
-    <Form<FormValues>
-      defaultValues={{
-        forceAction: false,
-        domainId: (filteredDomainId === 0 || filteredDomainId === undefined
-          ? Id.RootDomain
-          : filteredDomainId
-        ).toString(),
-        recipient: undefined,
-        amount: '',
-        tokenAddress: colony?.nativeToken.tokenAddress,
-        annotation: '',
-        motionDomainId:
-          filteredDomainId === 0 || filteredDomainId === undefined
-            ? Id.RootDomain
-            : filteredDomainId,
-      }}
-      validationSchema={validationSchema}
-      submit={getFormAction('SUBMIT')}
-      error={getFormAction('ERROR')}
-      success={getFormAction('SUCCESS')}
-      transform={transform}
-      onSuccess={close}
-    >
-      {({ getValues }) => {
-        const forceActionvalue = getValues('forceAction');
-        if (forceActionvalue !== isForce) {
-          setIsForce(forceActionvalue);
-        }
+    <Dialog cancel={cancel}>
+      <Form<FormValues>
+        defaultValues={{
+          forceAction: false,
+          fromDomain: filteredDomainId || Id.RootDomain,
+          recipient: undefined,
+          amount: '',
+          tokenAddress: colony?.nativeToken.tokenAddress,
+          annotation: '',
+          motionDomainId: filteredDomainId || Id.RootDomain,
+        }}
+        validationSchema={validationSchema}
+        actionType={actionType}
+        transform={transform}
+        onSuccess={close}
+      >
+        {({ watch }) => {
+          const forceActionvalue = watch('forceAction');
+          if (forceActionvalue !== isForce) {
+            setIsForce(forceActionvalue);
+          }
 
-        return (
-          <Dialog cancel={cancel}>
+          return (
             <DialogForm
               back={() => callStep(prevStep)}
               verifiedUsers={
                 colonyWatchers // isWhitelistActivated ? verifiedUsers : ...
               }
-              filteredDomainId={filteredDomainId}
               // showWhitelistWarning={showWarningForAddress(
               //   values?.recipient?.walletAddress,
               // )}
               colony={colony}
+              enabledExtensionData={enabledExtensionData}
             />
-          </Dialog>
-        );
-      }}
-    </Form>
+          );
+        }}
+      </Form>
+    </Dialog>
   );
 };
 

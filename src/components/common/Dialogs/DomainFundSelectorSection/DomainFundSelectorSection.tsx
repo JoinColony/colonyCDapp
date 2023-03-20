@@ -39,20 +39,20 @@ const DomainFundSelectorSection = ({
   disabled,
 }: Props) => {
   const {
-    getValues,
+    watch,
     setValue,
     formState: { errors },
     clearErrors,
   } = useFormContext();
-  const values = getValues();
+  const { motionDomainId, fromDomain, toDomain } = watch();
   const handleFromDomainChange = (fromDomainValue) => {
-    if (values.motionDomainId !== fromDomainValue) {
+    if (motionDomainId !== fromDomainValue) {
       setValue('motionDomainId', fromDomainValue);
     }
   };
 
   useEffect(() => {
-    if (values.fromDomain !== values.toDomain) {
+    if (fromDomain !== toDomain) {
       if (errors.toDomain?.type === 'same-pot') {
         clearErrors('toDomain');
       }
@@ -60,7 +60,7 @@ const DomainFundSelectorSection = ({
         clearErrors('fromDomain');
       }
     }
-  }, [errors, values]);
+  }, [errors, fromDomain, toDomain]);
 
   return (
     <div

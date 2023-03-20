@@ -1,7 +1,8 @@
-import React, { useCallback, useMemo, ReactNode, ComponentProps } from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
 
-import { Appearance, Select, SelectOption } from '~shared/Fields';
+import { Appearance, HookFormSelect as Select } from '~shared/Fields';
 import ColorTag from '~shared/ColorTag';
 import { DomainColor } from '~types';
 
@@ -18,9 +19,6 @@ interface Props {
   /** Should `select` be disabled */
   disabled?: boolean;
 
-  /** Active color */
-  activeOption: DomainColor;
-
   /** Callback function, called after value is changed */
   onColorChange?: (color: DomainColor) => any;
 
@@ -36,11 +34,13 @@ const displayName = 'ColorSelect';
 
 const ColorSelect = ({
   disabled,
-  activeOption,
   onColorChange,
   appearance,
   name = 'color',
 }: Props) => {
+  const { watch } = useFormContext();
+  const activeOption = watch(name);
+
   const onChange = useCallback(
     (color: DomainColor) => {
       if (onColorChange) {
@@ -51,26 +51,13 @@ const ColorSelect = ({
     [onColorChange],
   );
 
-  const renderActiveOption = useCallback<
-    (option: SelectOption | undefined, label: string) => ReactNode
-  >(() => {
-    return <ColorTag color={activeOption} />;
-  }, [activeOption]);
+  const renderActiveOption = () => <ColorTag color={activeOption} />;
 
-  const options = useMemo<ComponentProps<typeof Select>['options']>(() => {
-    const colors = Object.keys(DomainColor).filter(
-      (val) => typeof DomainColor[val as any] === 'number',
-    );
-    return [
-      ...colors.map((color) => {
-        return {
-          children: <ColorTag color={DomainColor[color]} />,
-          label: `${color}`,
-          value: `${DomainColor[color]}`,
-        };
-      }),
-    ];
-  }, []);
+  const options = Object.values(DomainColor).map((color) => ({
+    children: <ColorTag color={color} />,
+    label: color,
+    value: color,
+  }));
 
   return (
     <div className={styles.main}>

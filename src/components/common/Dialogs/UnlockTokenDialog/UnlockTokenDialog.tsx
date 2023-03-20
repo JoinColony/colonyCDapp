@@ -6,7 +6,7 @@ import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, withKey, mapPayload } from '~utils/actions';
-import { WizardDialogType } from '~hooks'; // useEnabledExtensions
+import { WizardDialogType } from '~hooks';
 
 import UnlockTokenForm from './UnlockTokenForm';
 import { getUnlockTokenDialogPayload } from './helpers';
@@ -32,21 +32,17 @@ const UnlockTokenDialog = ({
   close,
   callStep,
   prevStep,
+  enabledExtensionData,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const { isVotingReputationEnabled } = enabledExtensionData;
 
-  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
-
-    return !isForce // && isVotingExtensionEnabled
-      ? ActionTypes[`ROOT_MOTION${actionEnd}`]
-      : ActionTypes[`ACTION_UNLOCK_TOKEN${actionEnd}`];
-  };
+  const actionType =
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.ROOT_MOTION
+      : ActionTypes.ACTION_UNLOCK_TOKEN;
 
   const transform = pipe(
     withKey(colony?.colonyAddress || ''),
@@ -55,38 +51,37 @@ const UnlockTokenDialog = ({
   );
 
   return (
-    <Form<FormValues>
-      defaultValues={{
-        forceAction: false,
-        annotationMessage: '',
-        /*
-         * @NOTE That since this a root motion, and we don't actually make use
-         * of the motion domain selected (it's disabled), we don't need to actually
-         * pass the value over to the motion, since it will always be 1
-         */
-      }}
-      validationSchema={validationSchema}
-      submit={getFormAction('SUBMIT')}
-      error={getFormAction('ERROR')}
-      success={getFormAction('SUCCESS')}
-      onSuccess={close}
-      transform={transform}
-    >
-      {({ getValues }) => {
-        const forceActionValue = getValues('forceAction');
-        if (forceActionValue !== isForce) {
-          setIsForce(forceActionValue);
-        }
-        return (
-          <Dialog cancel={cancel}>
+    <Dialog cancel={cancel}>
+      <Form<FormValues>
+        defaultValues={{
+          forceAction: false,
+          annotationMessage: '',
+          /*
+           * @NOTE That since this a root motion, and we don't actually make use
+           * of the motion domain selected (it's disabled), we don't need to actually
+           * pass the value over to the motion, since it will always be 1
+           */
+        }}
+        validationSchema={validationSchema}
+        actionType={actionType}
+        onSuccess={close}
+        transform={transform}
+      >
+        {({ watch }) => {
+          const forceActionValue = watch('forceAction');
+          if (forceActionValue !== isForce) {
+            setIsForce(forceActionValue);
+          }
+          return (
             <UnlockTokenForm
               colony={colony}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+              enabledExtensionData={enabledExtensionData}
             />
-          </Dialog>
-        );
-      }}
-    </Form>
+          );
+        }}
+      </Form>
+    </Dialog>
   );
 };
 

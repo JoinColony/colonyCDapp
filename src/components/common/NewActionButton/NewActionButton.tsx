@@ -7,10 +7,9 @@ import {
   useAppContext,
   useNaiveBranchingDialogWizard,
   useColonyContext,
+  useEnabledExtensions,
 } from '~hooks';
 import DialogButton from '~shared/Button/DialogButton';
-
-// import { useEnabledExtensions } from '~utils/hooks/useEnabledExtensions';
 
 // import {
 //   colonyMustBeUpgraded,
@@ -46,15 +45,14 @@ interface Props {
 
 const NewActionButton = ({ filteredDomainId }: Props) => {
   const { colony } = useColonyContext();
-  const { user } = useAppContext();
+  const { user, walletConnecting } = useAppContext();
 
   // const { version: networkVersion } = useNetworkContracts();
 
   // const [isLoadingUser, setIsLoadingUser] = useState<boolean>(!ethereal);
 
-  // const { isLoadingExtensions } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const enabledExtensionData = useEnabledExtensions();
+  const { loading: loadingExtensions } = enabledExtensionData;
 
   // const { data } = useColonyExtensionsQuery({
   //   variables: { address: colony.colonyAddress },
@@ -70,7 +68,7 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
   // });
 
   const startWizardFlow = useNaiveBranchingDialogWizard(
-    getWizardFlowConfig(colony, filteredDomainId),
+    getWizardFlowConfig(colony, filteredDomainId, enabledExtensionData),
   );
 
   // const oneTxPaymentExtension = data?.processedColony?.installedExtensions.find(
@@ -82,7 +80,7 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
   // const mustUpgradeOneTx = oneTxMustBeUpgraded(oneTxPaymentExtension);
   const hasRegisteredProfile = !!user?.name && !!user.walletAddress;
   // const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
-  // const isLoadingData = isLoadingExtensions || isLoadingUser;
+  const isLoadingData = loadingExtensions || !!walletConnecting;
 
   if (!colony) {
     return null;
@@ -91,7 +89,7 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
   return (
     <DialogButton
       text={MSG.newAction}
-      loading={false} // isLoadingData
+      loading={isLoadingData}
       handleClick={() => startWizardFlow('common.ColonyActionsDialog')}
       disabled={!hasRegisteredProfile}
       data-test="newActionButton"

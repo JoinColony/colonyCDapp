@@ -46,15 +46,11 @@ const NetworkFee = ({
   networkFeeInverse,
   customAmountError,
 }: Props) => {
-  const { getValues } = useFormContext();
-  const values = getValues();
-  const selectedToken = getSelectedToken(colony, values.tokenAddress);
+  const { watch } = useFormContext();
+  const { tokenAddress, amount } = watch();
+  const selectedToken = getSelectedToken(colony, tokenAddress);
 
-  if (
-    !networkFeeInverse ||
-    customAmountError ||
-    new Decimal(values.amount).isZero()
-  ) {
+  if (!networkFeeInverse || customAmountError || new Decimal(amount).isZero()) {
     return null;
   }
 
@@ -71,7 +67,7 @@ const NetworkFee = ({
               // }}
               value={
                 calculateFee(
-                  values.amount,
+                  amount,
                   networkFeeInverse,
                   getTokenDecimalsWithFallback(selectedToken?.decimals),
                 ).feesInWei

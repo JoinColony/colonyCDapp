@@ -23,10 +23,10 @@ const DialogControls = ({
   secondaryButtonText = { id: 'button.back' },
 }: Props) => {
   const {
-    getValues,
+    watch,
     formState: { isSubmitting },
   } = useFormContext();
-  const values = getValues();
+  const forceAction = watch('forceAction');
 
   return (
     <>
@@ -41,7 +41,7 @@ const DialogControls = ({
         type="submit"
         appearance={{ theme: 'primary', size: 'large' }}
         text={
-          values.forceAction || true // || !isVotingExtensionEnabled
+          forceAction || true // || !isVotingExtensionEnabled
             ? { id: 'button.confirm' }
             : { id: 'button.createMotion' }
         }

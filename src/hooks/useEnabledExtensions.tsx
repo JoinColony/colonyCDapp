@@ -2,7 +2,14 @@ import { Extension } from '@colony/colony-js';
 
 import useExtensionsData from './useExtensionsData';
 
-const useEnabledExtensions = () => {
+export interface EnabledExtensionData {
+  loading: boolean;
+  isOneTxPaymentEnabled: boolean;
+  isVotingReputationEnabled: boolean;
+  votingReputationVersion: number | undefined;
+}
+
+const useEnabledExtensions = (): EnabledExtensionData => {
   const { installedExtensionsData, loading } = useExtensionsData();
 
   const oneTxPaymentExtension = installedExtensionsData.find(

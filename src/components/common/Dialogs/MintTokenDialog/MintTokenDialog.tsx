@@ -9,7 +9,7 @@ import { ActionHookForm as Form } from '~shared/Fields';
 
 import { ActionTypes } from '~redux/index';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
-import { WizardDialogType } from '~hooks'; // useEnabledExtensions
+import { WizardDialogType } from '~hooks';
 
 import MintTokenDialogForm from './MintTokenDialogForm';
 import { getMintTokenDialogPayload } from './helpers';
@@ -41,7 +41,7 @@ const validationSchema = object()
         'more-than-zero',
         () => MSG.errorAmountMin,
         (value) => {
-          const numberWithoutCommas = (value || '0').replace(/,/g, '');
+          const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
           return !new Decimal(numberWithoutCommas).isZero();
         },
       ),
@@ -56,21 +56,17 @@ const MintTokenDialog = ({
   close,
   callStep,
   prevStep,
+  enabledExtensionData,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony.colonyAddress,
-  // });
+  const { isVotingReputationEnabled } = enabledExtensionData;
 
-  const getFormAction = (actionType: 'SUBMIT' | 'ERROR' | 'SUCCESS') => {
-    const actionEnd = actionType === 'SUBMIT' ? '' : `_${actionType}`;
-
-    return !isForce // && isVotingExtensionEnabled
-      ? ActionTypes[`ROOT_MOTION${actionEnd}`]
-      : ActionTypes[`ACTION_MINT_TOKENS${actionEnd}`];
-  };
+  const actionType =
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.ROOT_MOTION
+      : ActionTypes.ACTION_MINT_TOKENS;
 
   const transform = pipe(
     mapPayload((payload) => getMintTokenDialogPayload(colony, payload)),
@@ -78,39 +74,38 @@ const MintTokenDialog = ({
   );
 
   return (
-    <Form<FormValues>
-      defaultValues={{
-        forceAction: false,
-        annotation: '',
-        mintAmount: '',
-        /*
-         * @NOTE That since this a root motion, and we don't actually make use
-         * of the motion domain selected (it's disabled), we don't need to actually
-         * pass the value over to the motion, since it will always be 1
-         */
-      }}
-      validationSchema={validationSchema}
-      submit={getFormAction('SUBMIT')}
-      error={getFormAction('ERROR')}
-      success={getFormAction('SUCCESS')}
-      onSuccess={close}
-      transform={transform}
-    >
-      {({ getValues }) => {
-        const forceActionValue = getValues('forceAction');
-        if (forceActionValue !== isForce) {
-          setIsForce(forceActionValue);
-        }
-        return (
-          <Dialog cancel={cancel}>
+    <Dialog cancel={cancel}>
+      <Form<FormValues>
+        defaultValues={{
+          forceAction: false,
+          annotation: '',
+          mintAmount: '',
+          /*
+           * @NOTE That since this a root motion, and we don't actually make use
+           * of the motion domain selected (it's disabled), we don't need to actually
+           * pass the value over to the motion, since it will always be 1
+           */
+        }}
+        validationSchema={validationSchema}
+        actionType={actionType}
+        onSuccess={close}
+        transform={transform}
+      >
+        {({ watch }) => {
+          const forceActionValue = watch('forceAction');
+          if (forceActionValue !== isForce) {
+            setIsForce(forceActionValue);
+          }
+          return (
             <MintTokenDialogForm
               colony={colony}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+              enabledExtensionData={enabledExtensionData}
             />
-          </Dialog>
-        );
-      }}
-    </Form>
+          );
+        }}
+      </Form>
+    </Dialog>
   );
 };
 

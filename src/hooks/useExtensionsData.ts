@@ -27,7 +27,6 @@ interface UseExtensionsDataReturn {
  */
 const useExtensionsData = (): UseExtensionsDataReturn => {
   const { colony } = useColonyContext();
-
   const { data, loading: extensionsLoading } = useGetColonyExtensionsQuery({
     variables: {
       colonyAddress: colony?.colonyAddress ?? '',
