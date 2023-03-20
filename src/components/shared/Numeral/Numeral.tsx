@@ -3,6 +3,7 @@ import { BigNumber } from 'ethers';
 import numbro from 'numbro';
 import classNames from 'classnames';
 
+import Decimal from 'decimal.js';
 import { getMainClasses } from '~utils/css';
 
 import numbroLanguage from './numbroLanguage';
@@ -20,7 +21,7 @@ numbro.setLanguage('en-GB');
 
 const displayName = 'Numeral';
 
-export type NumeralValue = string | number | BigNumber;
+export type NumeralValue = string | number | BigNumber | Decimal;
 
 export interface Appearance {
   theme?: 'dark';
