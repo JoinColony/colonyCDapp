@@ -37,9 +37,6 @@ const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be exte
     try {
       // Get token balance
       const tokenClient = await getTokenClient(tokenAddress, provider);
-      const balance = await tokenClient.balanceOf(walletAddress);
-
-      // Get user lock info
       const {
         etherRouterAddress: networkAddress,
       } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
@@ -59,11 +56,16 @@ const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be exte
         tokenAddress,
       );
 
+      const inactiveBalance = await tokenClient.balanceOf(walletAddress);
       const lockedBalance = totalObligation.add(stakedTokens);
       const activeBalance = userLock.balance.sub(totalObligation);
+      const totalBalance = inactiveBalance
+        .add(lockedBalance)
+        .add(activeBalance);
 
       return {
-        balance: balance.toString(),
+        balance: totalBalance.toString(),
+        inactiveBalance: inactiveBalance.toString(),
         lockedBalance: lockedBalance.toString(),
         activeBalance: activeBalance.toString(),
       };

@@ -116,9 +116,10 @@ type GetReputationForTopDomainsReturn {
 }
 
 type GetUserTokenBalanceReturn {
-  balance: String
-  activeBalance: String
+  balance: String # total balance, sum of inactive, locked and active
+  inactiveBalance: String
   lockedBalance: String
+  activeBalance: String
 }
 
 enum TokenType {

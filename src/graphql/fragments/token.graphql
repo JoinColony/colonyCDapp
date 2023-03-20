@@ -10,6 +10,7 @@ fragment Token on Token {
 
 fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   balance
+  inactiveBalance
   lockedBalance
   activeBalance
 }
