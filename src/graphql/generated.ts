@@ -641,7 +641,9 @@ export type GetUserTokenBalanceInput = {
 
 export type GetUserTokenBalanceReturn = {
   __typename?: 'GetUserTokenBalanceReturn';
+  activeBalance?: Maybe<Scalars['String']>;
   balance?: Maybe<Scalars['String']>;
+  lockedBalance?: Maybe<Scalars['String']>;
 };
 
 export enum ModelAttributeTypes {
@@ -2729,7 +2731,7 @@ export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, 
 
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
-export type UserTokenBalanceDataFragment = { __typename?: 'GetUserTokenBalanceReturn', balance?: string | null };
+export type UserTokenBalanceDataFragment = { __typename?: 'GetUserTokenBalanceReturn', balance?: string | null, lockedBalance?: string | null, activeBalance?: string | null };
 
 export type UserFragment = { __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata?: { __typename?: 'ChainMetadata', chainId?: number | null, network?: Network | null } | null, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean }> | null } | null } } | null> } | null };
 
@@ -2887,7 +2889,7 @@ export type GetUserTokenBalanceQueryVariables = Exact<{
 }>;
 
 
-export type GetUserTokenBalanceQuery = { __typename?: 'Query', getUserTokenBalance?: { __typename?: 'GetUserTokenBalanceReturn', balance?: string | null } | null };
+export type GetUserTokenBalanceQuery = { __typename?: 'Query', getUserTokenBalance?: { __typename?: 'GetUserTokenBalanceReturn', balance?: string | null, lockedBalance?: string | null, activeBalance?: string | null } | null };
 
 export type GetCurrentUserQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -3190,6 +3192,8 @@ export const ExtensionFragmentDoc = gql`
 export const UserTokenBalanceDataFragmentDoc = gql`
     fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   balance
+  lockedBalance
+  activeBalance
 }
     `;
 export const CreateUniqueColonyDocument = gql`

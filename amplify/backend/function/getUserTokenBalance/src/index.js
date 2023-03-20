@@ -1,4 +1,8 @@
-const { getTokenClient, getColonyNetworkClient } = require('@colony/colony-js');
+const {
+  getTokenClient,
+  getColonyNetworkClient,
+  Network,
+} = require('@colony/colony-js');
 const {
   providers,
   utils: { Logger },
@@ -36,20 +40,32 @@ const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be exte
       const balance = await tokenClient.balanceOf(walletAddress);
 
       // Get user lock info
-      // const {
-      //   etherRouterAddress: networkAddress,
-      // } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-      // const networkClient = getColonyNetworkClient(Network.Custom, provider, {
-      //   networkAddress,
-      // });
-      // const tokenLockingClient = await networkClient.getTokenLockingClient();
-      // const userLock = await tokenLockingClient.getUserLock(
-      //   tokenAddress,
-      //   walletAddress,
-      // );
+      const {
+        etherRouterAddress: networkAddress,
+      } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+      const networkClient = getColonyNetworkClient(Network.Custom, provider, {
+        networkAddress,
+      });
+      const tokenLockingClient = await networkClient.getTokenLockingClient();
+      const userLock = await tokenLockingClient.getUserLock(
+        tokenAddress,
+        walletAddress,
+      );
+
+      /** @TODO Get staked tokens from voting rep client */
+      const stakedTokens = 0;
+      const totalObligation = await tokenLockingClient.getTotalObligation(
+        walletAddress,
+        tokenAddress,
+      );
+
+      const lockedBalance = totalObligation.add(stakedTokens);
+      const activeBalance = userLock.balance.sub(totalObligation);
 
       return {
         balance: balance.toString(),
+        lockedBalance: lockedBalance.toString(),
+        activeBalance: activeBalance.toString(),
       };
     } catch {
       console.error('Could not get token balance');
