@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { Placement } from '@popperjs/core';
 
-// import { Heading5 } from '~shared/Heading';
+import { Heading5 } from '~shared/Heading';
 import Numeral from '~shared/Numeral';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 
@@ -47,17 +47,18 @@ const SingleTotalStakeHeading = () => {
   const nativeTokenSymbol = 'WILL';
   const nativeTokenDecimals = 18;
   const requiredStake = '1000000000000000000';
+  const isObjection = false;
   return (
     <div className={styles.widgetHeading}>
       <div className={styles.subHeading}>
-        {/* <Heading5
+        <Heading5
           appearance={{
             theme: 'dark',
             margin: 'none',
           }}
           text={isObjection ? MSG.objectionTitle : MSG.motionTitle}
           className={styles.title}
-        /> */}
+        />
         <QuestionMarkTooltip
           tooltipText={MSG.stakeToolTip}
           className={styles.helpTooltip}
