@@ -20,6 +20,7 @@ import {
   MemberUserFragment,
   ColonyBalanceFragment,
   ColonyBalancesFragment,
+  MotionDataFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -35,6 +36,8 @@ export type Watcher = WatcherFragment;
 export type Domain = DomainFragment;
 
 export type DomainMetadata = DomainMetadataFragment;
+
+export type MotionData = MotionDataFragment;
 
 export type Token = TokenFragment;
 
