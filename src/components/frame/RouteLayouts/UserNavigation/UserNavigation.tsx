@@ -53,10 +53,11 @@ const UserNavigation = () => {
     variables: {
       input: {
         walletAddress: wallet?.address ?? '',
+        colonyAddress: colonyAddress ?? '',
         tokenAddress: nativeToken?.tokenAddress ?? '',
       },
     },
-    skip: !wallet?.address || !nativeToken?.tokenAddress,
+    skip: !wallet?.address || !colonyAddress || !nativeToken?.tokenAddress,
   });
   const tokenBalanceData = tokenBalanceQueryData?.getUserTokenBalance;
 

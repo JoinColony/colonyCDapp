@@ -2,6 +2,7 @@ const {
   getTokenClient,
   getColonyNetworkClient,
   Network,
+  Extension,
 } = require('@colony/colony-js');
 const {
   providers,
@@ -13,12 +14,25 @@ Logger.setLogLevel(Logger.levels.ERROR);
 
 const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
 
+const getVotingReputationClient = async (colonyAddress, networkClient) => {
+  try {
+    const colonyClient = await networkClient.getColonyClient(colonyAddress);
+    const votingReputationClient = await colonyClient.getExtensionClient(
+      Extension.VotingReputation,
+    );
+    return votingReputationClient;
+  } catch {
+    return null;
+  }
+};
+
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 (
   exports.handler = async (event) => {
-    const { walletAddress, tokenAddress } = event.arguments?.input || {};
+    const { walletAddress, tokenAddress, colonyAddress } =
+      event.arguments?.input || {};
     const provider = new providers.JsonRpcProvider(RPC_URL);
 
     if (tokenAddress === constants.AddressZero) {
@@ -37,6 +51,7 @@ const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be exte
     try {
       // Get token balance
       const tokenClient = await getTokenClient(tokenAddress, provider);
+
       const {
         etherRouterAddress: networkAddress,
       } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
@@ -48,14 +63,15 @@ const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be exte
         tokenAddress,
         walletAddress,
       );
+      const votingReputationClient = await getVotingReputationClient(
+        colonyAddress,
+        networkClient,
+      );
 
-      /** @TODO Get staked tokens from voting rep client */
-      const stakedTokens = 0;
       const totalObligation = await tokenLockingClient.getTotalObligation(
         walletAddress,
         tokenAddress,
       );
-
       const inactiveBalance = await tokenClient.balanceOf(walletAddress);
       const lockedBalance = totalObligation.add(stakedTokens);
       const activeBalance = userLock.balance.sub(totalObligation);

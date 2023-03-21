@@ -635,6 +635,7 @@ export type GetUserReputationInput = {
 };
 
 export type GetUserTokenBalanceInput = {
+  colonyAddress: Scalars['String'];
   tokenAddress: Scalars['String'];
   walletAddress: Scalars['String'];
 };
