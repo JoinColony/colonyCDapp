@@ -1,16 +1,10 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-// import { ColonyVersion } from '@colony/colony-js';
 
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import {
-  WizardDialogType,
-  useTransformer,
-  useAppContext,
-  useEnabledExtensions,
-} from '~hooks';
+import { WizardDialogType, useTransformer, useAppContext } from '~hooks';
 
 import { getAllUserRoles } from '~redux/transformers';
 import { canEnterRecoveryMode, hasRoot, canArchitect } from '~utils/checks';
@@ -108,8 +102,8 @@ const AdvancedDialog = ({
   nextStepEditDetails,
   nextStepVersionUpgrade,
   colony,
-}: // colony: { version: colonyVersion },
-Props) => {
+  enabledExtensionData: { isVotingReputationEnabled },
+}: Props) => {
   const { user } = useAppContext();
 
   const hasRegisteredProfile = !!user?.name && !!user.walletAddress;
@@ -122,15 +116,10 @@ Props) => {
 
   const canEnterRecovery =
     hasRegisteredProfile && canEnterRecoveryMode(allUserRoles);
-  // const isSupportedColonyVersion =
-  //   parseInt(colonyVersion, 10) > ColonyVersion.LightweightSpaceship;
+  const isSupportedColonyVersion = colony.version > 5;
 
   const canEnterPermissionManagement =
     (hasRegisteredProfile && canArchitect(allUserRoles)) || hasRootPermission;
-
-  const {
-    enabledExtensions: { isVotingReputationEnabled },
-  } = useEnabledExtensions();
 
   const items = [
     {
@@ -151,7 +140,7 @@ Props) => {
     },
     {
       title: MSG.recoveryTitle,
-      description: true // isSupportedColonyVersion
+      description: isSupportedColonyVersion
         ? MSG.recoveryDescription
         : MSG.recoveryPreventDescription,
       icon: 'emoji-alarm-lamp',
@@ -161,7 +150,7 @@ Props) => {
       permissionInfoTextValues: {
         permissionsList: <FormattedMessage {...MSG.recoveryPermissionsList} />,
       },
-      // disabled: !isSupportedColonyVersion,
+      disabled: !isSupportedColonyVersion,
       dataTest: 'recoveryDialogIndexItem',
     },
     {

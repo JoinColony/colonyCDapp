@@ -11,15 +11,15 @@ import {
 } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 import PermissionsLabel from '~shared/PermissionsLabel';
-import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import ExternalLink from '~shared/ExternalLink';
-import NoPermissionMessage from '~shared/NoPermissionMessage';
 
 import { useAppContext, useTransformer } from '~hooks';
 import { getAllUserRoles } from '~redux/transformers';
 import { canEnterRecoveryMode } from '~utils/checks';
 
 import { RECOVERY_HELP } from '~constants/externalUrls';
+
+import { NoPermissionMessage, PermissionRequiredInfo } from '../Messages';
 
 import styles from './RecoveryModeDialogForm.css';
 
@@ -53,7 +53,10 @@ const HelpLink = (chunks: React.ReactNode[]) => (
   <ExternalLink href={RECOVERY_HELP}>{chunks}</ExternalLink>
 );
 
-const RecoveryModeDialogForm = ({ back, colony }: ActionDialogProps) => {
+const RecoveryModeDialogForm = ({
+  back,
+  colony,
+}: Omit<ActionDialogProps, 'enabledExtensionData'>) => {
   const { user } = useAppContext();
   const {
     formState: { isSubmitting },

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
-import { ActionTypes } from '~redux/index';
+import { ActionTypes } from '~redux';
 import { useAppContext, WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 

@@ -145,13 +145,12 @@ export const getWizardFlowConfig = (
     component: AdvancedDialog,
     props: {
       prevStep: 'common.ColonyActionsDialog',
-      nextStepPermissionManagement:
-        'common.PermissionManagementDialog',
+      nextStepPermissionManagement: 'common.PermissionManagementDialog',
       nextStepRecovery: 'common.RecoveryModeDialog',
       nextStepEditDetails: 'common.EditColonyDetailsDialog',
-      nextStepVersionUpgrade:
-        'common.NetworkContractUpgradeDialog',
+      nextStepVersionUpgrade: 'common.NetworkContractUpgradeDialog',
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -160,6 +159,7 @@ export const getWizardFlowConfig = (
       prevStep: 'common.AdvancedDialog',
       filteredDomainId,
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -167,6 +167,7 @@ export const getWizardFlowConfig = (
     props: {
       prevStep: 'common.AdvancedDialog',
       colony,
+      enabledExtensionData,
     },
   },
   {
