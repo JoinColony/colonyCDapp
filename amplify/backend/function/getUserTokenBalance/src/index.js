@@ -2,29 +2,17 @@ const {
   getTokenClient,
   getColonyNetworkClient,
   Network,
-  Extension,
 } = require('@colony/colony-js');
 const {
   providers,
   utils: { Logger },
   constants,
 } = require('ethers');
+const { getStakedTokens } = require('./helpers');
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
 const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
-
-const getVotingReputationClient = async (colonyAddress, networkClient) => {
-  try {
-    const colonyClient = await networkClient.getColonyClient(colonyAddress);
-    const votingReputationClient = await colonyClient.getExtensionClient(
-      Extension.VotingReputation,
-    );
-    return votingReputationClient;
-  } catch {
-    return null;
-  }
-};
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -63,15 +51,12 @@ const getVotingReputationClient = async (colonyAddress, networkClient) => {
         tokenAddress,
         walletAddress,
       );
-      const votingReputationClient = await getVotingReputationClient(
-        colonyAddress,
-        networkClient,
-      );
 
       const totalObligation = await tokenLockingClient.getTotalObligation(
         walletAddress,
         tokenAddress,
       );
+      const stakedTokens = await getStakedTokens(colonyAddress, networkClient);
       const inactiveBalance = await tokenClient.balanceOf(walletAddress);
       const lockedBalance = totalObligation.add(stakedTokens);
       const activeBalance = userLock.balance.sub(totalObligation);
