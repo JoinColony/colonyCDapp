@@ -9,16 +9,16 @@ import TokenIcon from '~shared/TokenIcon';
 import Numeral from '~shared/Numeral';
 import { Token } from '~types';
 import { useColonyContext } from '~hooks';
-
 import {
   getFormattedTokenValue,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
 
-import styles from './TokensTab.css';
 import ChangeTokenStateForm from './ChangeTokenStateForm';
 import TokenTooltip from './TokenTooltip';
 import SmallTokenAmountMessage from './SmallTokenAmountMessage';
+
+import styles from './TokensTab.css';
 
 const displayName = 'frame.TokenActivation.TokensTab';
 

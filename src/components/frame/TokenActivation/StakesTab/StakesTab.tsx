@@ -3,18 +3,17 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import { Token } from '~types';
-import { MotionStakedEvent } from './types';
 import { useAppContext, useColonyContext } from '~hooks';
-
 import { getFormattedTokenValue } from '~utils/tokens';
 // import { useMotionsTxHashesQuery } from '~data/index';
 
+import { MotionStakedEvent } from './types';
 import ClaimAllButton from './ClaimAllButton';
 import StakesListItem from './StakesListItem';
 
 import styles from './StakesTab.css';
 
-const displayName = 'TokenActivation.StakesTab';
+const displayName = 'frame.TokenActivation.StakesTab';
 
 const MSG = defineMessages({
   yourStakes: {

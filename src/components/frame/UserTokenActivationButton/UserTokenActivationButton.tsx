@@ -3,12 +3,13 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { TokenActivationPopover } from '~frame/TokenActivation';
 import { Tooltip } from '~shared/Popover';
-import UserTokenActivationDisplay from './UserTokenActivationDisplay';
 import { UserTokenBalanceData } from '~types';
+
+import UserTokenActivationDisplay from './UserTokenActivationDisplay';
 
 import styles from './UserTokenActivationButton.css';
 
-const displayName = 'users.UserTokenActivationButton';
+const displayName = 'frame.UserTokenActivationButton';
 
 const MSG = defineMessages({
   tooltip: {

@@ -86,7 +86,6 @@ const UserNavigation = () => {
         </Tooltip>
       )}
       <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
-        {/* {canInteractWithNetwork && colony?.nativeToken && userLock && ( */}
         {canInteractWithNetwork && colony?.nativeToken && (
           <UserTokenActivationButton
             tokenBalanceData={mockedTokenBalanceData}

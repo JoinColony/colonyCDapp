@@ -4,12 +4,13 @@ import { defineMessages } from 'react-intl';
 
 import Button from '~shared/Button';
 import { ActionHookForm as ActionForm } from '~shared/Fields';
-import { MotionStakedEvent } from './types';
 import { ActionTypes } from '~redux/actionTypes';
 import { Address } from '~types/index';
 import { mapPayload } from '~utils/actions';
 
-const displayName = 'TokenActivation.StakesTab.ClaimAllButton';
+import { MotionStakedEvent } from './types';
+
+const displayName = 'frame.TokenActivation.StakesTab.ClaimAllButton';
 
 const MSG = defineMessages({
   claimAll: {

@@ -4,7 +4,7 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { number, object, InferType } from 'yup';
 import Decimal from 'decimal.js';
-import toFinite from 'lodash/toFinite';
+import { toFinite } from '~utils/lodash';
 
 import Button from '~shared/Button';
 import {
