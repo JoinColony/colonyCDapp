@@ -45,8 +45,12 @@ const ActionDetailsPage = () => {
 
   const isMotion = action?.isMotion;
   const createdAt = action?.createdAt;
+  const isInvalidMotion = isMotion && !action.motionData;
   const isInvalidTransaction =
-    isInvalidTransactionHash || isUnknownTransaction || !action;
+    isInvalidTransactionHash ||
+    isUnknownTransaction ||
+    !action ||
+    isInvalidMotion;
 
   if (loadingAction) {
     return <LoadingTemplate loadingText={MSG.loading} />;

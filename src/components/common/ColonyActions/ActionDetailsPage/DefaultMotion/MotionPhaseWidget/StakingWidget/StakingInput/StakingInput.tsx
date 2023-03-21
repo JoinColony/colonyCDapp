@@ -1,8 +1,12 @@
 import React from 'react';
 import { InferType, number, object } from 'yup';
+import { BigNumber } from 'ethers';
 
 import { ActionHookForm as ActionForm } from '~shared/Fields';
-import { ActionTypes } from '~redux';
+import { Action, ActionTypes } from '~redux';
+import { mapPayload } from '~utils/actions';
+import { MotionVote } from '~utils/colonyMotions';
+import { useAppContext, useColonyContext } from '~hooks';
 
 import StakingControls from './StakingControls';
 import StakingSliderDescription from './StakingSliderDescription';
@@ -19,13 +23,36 @@ const validationSchema = object({
 }).defined();
 
 export type StakingWidgetValues = InferType<typeof validationSchema>;
+type StakeMotionPayload = Action<ActionTypes.MOTION_STAKE>['payload'];
 
-const StakingInput = () => {
+interface StakingInputProps {
+  motionId: string;
+}
+
+const StakingInput = ({ motionId }: StakingInputProps) => {
   // const handleSuccess = (_, { setFieldValue, resetForm }) => {
   //     resetForm({});
   //     setFieldValue('amount', 0);
   //     scrollToRef?.current?.scrollIntoView({ behavior: 'smooth' });
   //   },
+
+  const { user } = useAppContext();
+  const { colony } = useColonyContext();
+  const isObjection = false;
+  const vote = isObjection ? MotionVote.Nay : MotionVote.Yay;
+
+  const transform = mapPayload(({ amount: sliderAmount }) => {
+    const finalStake = BigNumber.from('1000000000000000000').div(sliderAmount);
+    /* getFinalStakeFromSliderAmount(amount); */
+
+    return {
+      amount: finalStake,
+      userAddress: user?.walletAddress,
+      colonyAddress: colony?.colonyAddress,
+      motionId: BigNumber.from(motionId),
+      vote,
+    } as StakeMotionPayload;
+  });
 
   return (
     <ActionForm<StakingWidgetValues>
@@ -34,7 +61,7 @@ const StakingInput = () => {
       }}
       validationSchema={validationSchema}
       actionType={ActionTypes.MOTION_STAKE}
-      // transform={transform}
+      transform={transform}
       // onSuccess={handleSuccess}
     >
       <StakingSliderDescription isObjection={false} />
