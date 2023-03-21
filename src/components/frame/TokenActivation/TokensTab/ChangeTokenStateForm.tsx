@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
@@ -105,18 +105,14 @@ const ChangeTokenStateForm = ({
     -tokenDecimals,
   );
 
-  const tokenBalance = useMemo(
-    () => (isActivate ? formattedInactiveTokens : formattedActiveTokens),
-    [isActivate, formattedActiveTokens, formattedInactiveTokens],
-  );
+  const tokenBalance = isActivate
+    ? formattedInactiveTokens
+    : formattedActiveTokens;
 
-  const formAction = useCallback(
-    (actionType: '' | '_ERROR' | '_SUCCESS') =>
-      isActivate
-        ? ActionTypes[`USER_DEPOSIT_TOKEN${actionType}`]
-        : ActionTypes[`USER_WITHDRAW_TOKEN${actionType}`],
-    [isActivate],
-  );
+  const formAction = (actionType: '' | '_ERROR' | '_SUCCESS') =>
+    isActivate
+      ? ActionTypes[`USER_DEPOSIT_TOKEN${actionType}`]
+      : ActionTypes[`USER_WITHDRAW_TOKEN${actionType}`];
 
   const transform = pipe(
     mapPayload(({ amount }) => {
