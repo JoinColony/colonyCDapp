@@ -6,7 +6,7 @@ import Numeral from '~shared/Numeral';
 
 import styles from './StakesTab.css';
 
-const displayName = 'TokenActivation.StakesTab.StakesListItem';
+const displayName = 'frame.TokenActivation.StakesTab.StakesListItem';
 
 const MSG = defineMessages({
   motionUrl: {

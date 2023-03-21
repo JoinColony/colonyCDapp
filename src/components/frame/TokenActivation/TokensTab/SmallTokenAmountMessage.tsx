@@ -5,7 +5,7 @@ import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 
 import styles from './SmallTokenAmountMessage.css';
 
-const displayName = 'TokenActivation.TokensTab.SmallTokenAmountMessage';
+const displayName = 'frame.TokenActivation.TokensTab.SmallTokenAmountMessage';
 
 const MSG = defineMessages({
   smallAmountHidden: {
