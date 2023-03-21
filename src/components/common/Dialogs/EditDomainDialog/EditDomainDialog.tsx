@@ -61,9 +61,15 @@ const EditDomainDialog = ({
   const colonyDomains =
     colony.domains?.items.filter(notNull).filter(notRootDomain) || [];
   const domainOptions = getDomainOptions(colonyDomains);
-  const selectedDomainId =
+  const defaultDomainId =
     filteredDomainId || Number(domainOptions[0]?.value) || null;
-  const selectedDomain = findDomainByNativeId(selectedDomainId, colony);
+  const { metadata, nativeId } =
+    findDomainByNativeId(defaultDomainId, colony) ?? {};
+  const {
+    name = '',
+    color = DomainColor.LightPink,
+    description = '',
+  } = metadata ?? {};
 
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
@@ -85,12 +91,12 @@ const EditDomainDialog = ({
       <Form<FormValues>
         defaultValues={{
           forceAction: false,
-          domainName: selectedDomain?.metadata?.name || '',
-          domainColor: selectedDomain?.metadata?.color || DomainColor.LightPink,
-          domainPurpose: selectedDomain?.metadata?.description || '',
+          domainName: name,
+          domainColor: color,
+          domainPurpose: description,
           annotationMessage: '',
-          domainId: selectedDomain?.nativeId,
-          motionDomainId: selectedDomain?.nativeId,
+          domainId: nativeId,
+          motionDomainId: nativeId,
         }}
         actionType={actionType}
         validationSchema={validationSchema}

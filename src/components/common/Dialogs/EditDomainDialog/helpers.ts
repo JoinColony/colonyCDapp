@@ -3,9 +3,14 @@ import { useFormContext } from 'react-hook-form';
 
 import { useActionDialogStatus, EnabledExtensionData } from '~hooks';
 import { Colony, Domain } from '~types';
+import { findDomainByNativeId } from '~utils/domains';
 
-export const getEditDomainDialogPayload = (colony: Colony, payload) => ({
-  ...payload,
+export const getEditDomainDialogPayload = (
+  colony: Colony,
+  { domainId, ...rest },
+) => ({
+  ...rest,
+  domain: findDomainByNativeId(domainId, colony),
   colonyAddress: colony.colonyAddress,
   colonyName: colony.name,
   isCreateDomain: false,

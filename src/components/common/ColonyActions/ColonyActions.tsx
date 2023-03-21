@@ -10,7 +10,6 @@ import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { useAppContext, useColonyContext, usePaginatedActions } from '~hooks';
 import { mergePayload, pipe, withMeta } from '~utils/actions';
-import { DomainColor } from '~types';
 
 import { ActionsListHeading } from '.';
 
@@ -206,39 +205,6 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
           withMeta({ navigate }),
         )}
         text="Test Create Payment"
-      />
-      <ActionButton
-        submit={ActionTypes.ACTION_DOMAIN_CREATE}
-        error={ActionTypes.ACTION_DOMAIN_CREATE_ERROR}
-        success={ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS}
-        transform={pipe(
-          mergePayload({
-            colonyAddress: colony.colonyAddress,
-            colonyName: colony.name,
-            domainName: 'Test Domain',
-            domainColor: DomainColor.BlueGrey,
-            domainPurpose: 'Test Domain Description',
-          }),
-          withMeta({ navigate }),
-        )}
-        text="Test Create Domain"
-      />
-      <ActionButton
-        submit={ActionTypes.ACTION_DOMAIN_EDIT}
-        error={ActionTypes.ACTION_DOMAIN_EDIT_ERROR}
-        success={ActionTypes.ACTION_DOMAIN_EDIT_SUCCESS}
-        transform={pipe(
-          mergePayload({
-            colonyAddress: colony.colonyAddress,
-            colonyName: colony.name,
-            domain: colony.domains?.items.find((d) => !d?.isRoot),
-            domainName: 'New Name',
-            domainColor: DomainColor.Magenta,
-            domainPurpose: 'New Description',
-          }),
-          withMeta({ navigate }),
-        )}
-        text="Test Edit Domain"
       />
       <ActionButton
         submit={ActionTypes.ACTION_UNLOCK_TOKEN}
