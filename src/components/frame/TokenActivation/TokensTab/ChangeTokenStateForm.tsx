@@ -162,6 +162,7 @@ const ChangeTokenStateForm = ({
       </div>
       <ActionForm<FormValues>
         defaultValues={{ amount: 0 }}
+        actionType={formAction('')}
         validationSchema={validationSchema}
         transform={transform}
         submit={formAction('')}

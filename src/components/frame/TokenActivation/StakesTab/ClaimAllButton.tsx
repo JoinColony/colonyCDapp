@@ -49,6 +49,7 @@ const ClaimAllButton = ({
   return (
     <ActionForm
       defaultValues={{}}
+      actionType={ActionTypes.MOTION_CLAIM}
       submit={ActionTypes.MOTION_CLAIM}
       error={ActionTypes.MOTION_CLAIM_ERROR}
       success={ActionTypes.MOTION_CLAIM_SUCCESS}
