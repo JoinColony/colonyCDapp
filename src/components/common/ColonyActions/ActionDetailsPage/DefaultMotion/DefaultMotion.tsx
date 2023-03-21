@@ -43,7 +43,10 @@ const DefaultMotion = ({ actionData }: DefaultMotionProps) => {
       <div className={styles.container}>
         <DefaultActionContent actionData={actionData} />
         <div className={styles.widgets}>
-          <MotionPhaseWidget motionState={motionState} />
+          <MotionPhaseWidget
+            actionData={actionData}
+            motionState={motionState}
+          />
           {/* <div className={styles.details}>
         {motionState === MotionState.Voting && (
           <VoteWidget
