@@ -307,7 +307,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
             colonyName: colony.name,
             domainId: colony.domains?.items[0]?.nativeId,
             walletAddress: user?.walletAddress,
-            amount: BigNumber.from(2),
+            amount: BigNumber.from(1).mul(BigNumber.from(10).pow(18)),
             isSmitingReputation: false,
           }),
           withMeta({ navigate }),

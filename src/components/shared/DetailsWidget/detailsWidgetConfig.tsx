@@ -185,7 +185,10 @@ const getDetailItems = (
       label: MSG.reputationChange,
       labelValues: { isSmiteAction },
       item: detailsForAction.ReputationChange && amount && (
-        <ReputationChangeDetail reputationChange={amount} />
+        <ReputationChangeDetail
+          reputationChange={amount}
+          decimals={token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
+        />
       ),
     },
     // {

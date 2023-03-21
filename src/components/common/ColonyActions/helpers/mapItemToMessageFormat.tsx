@@ -10,7 +10,7 @@ import {
   Domain,
 } from '~types';
 import { intl } from '~utils/intl';
-// import { formatReputationChange } from '~utils/reputation';
+import { formatReputationChange } from '~utils/reputation';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
@@ -42,10 +42,6 @@ const getDomainNameFromChangelog = (
 
 export const mapColonyActionToExpectedFormat = (actionData: ColonyAction) => {
   // const formattedRolesTitle = formatRolesTitle(item.roles); // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
-  // const reputationChange = formatReputationChange(
-  //   item.decimals,
-  //   item.reputationChange,
-  // );
 
   return {
     ...actionData,
@@ -78,14 +74,15 @@ export const mapColonyActionToExpectedFormat = (actionData: ColonyAction) => {
     reputationChangeNumeral: actionData.amount && (
       <Numeral
         value={actionData.amount}
-        // decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
+        decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
-    reputationChange: actionData.amount, // &&
-    // formatReputationChange(
-    //   actionData.amount,
-    //   actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS,
-    // ),
+    reputationChange:
+      actionData.amount &&
+      formatReputationChange(
+        actionData.amount,
+        actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS,
+      ),
     // rolesChanged: formattedRolesTitle.roleTitle,
     newVersion: actionData.newColonyVersion,
   };
@@ -134,17 +131,17 @@ export const mapColonyEventToExpectedFormat = (
     isSmiteAction:
       actionData.type === ColonyActionType.EmitDomainReputationPenalty,
     tokenSymbol: actionData.token?.symbol,
-    reputationChange: actionData.amount,
-    // &&
-    // formatReputationChange(
-    //   actionData.amount,
-    //   actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS,
-    // ),
+    reputationChange:
+      actionData.amount &&
+      formatReputationChange(
+        actionData.amount,
+        actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS,
+      ),
     newVersion: actionData.newColonyVersion,
     reputationChangeNumeral: actionData.amount && (
       <Numeral
         value={actionData.amount}
-        // decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
+        decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
   };
