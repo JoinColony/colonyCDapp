@@ -2,7 +2,6 @@ declare namespace PermissionManagementCheckboxCssNamespace {
   export interface IPermissionManagementCheckboxCss {
     permissionChoice: string;
     permissionChoiceDescription: string;
-    popoverContent: string;
   }
 }
 

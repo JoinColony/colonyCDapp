@@ -1,7 +1,6 @@
 declare namespace PermissionManagementDialogFormCssNamespace {
   export interface IPermissionManagementDialogFormCss {
     domainSelectContainer: string;
-    noPermissionFromMessage: string;
     permissionChoiceContainer: string;
     singleUserContainer: string;
   }

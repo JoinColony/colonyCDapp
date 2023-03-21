@@ -10,8 +10,8 @@ import {
   pipe,
   withMeta,
 } from '~utils/actions';
-import { ActionTypes } from '~redux/index';
-import { WizardDialogType } from '~hooks'; // useEnabledExtensions
+import { ActionTypes } from '~redux';
+import { WizardDialogType } from '~hooks';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
@@ -58,20 +58,16 @@ const PermissionManagementDialog = ({
   callStep,
   prevStep,
   ethDomainId: preselectedDomainId,
+  enabledExtensionData,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
+  const { isVotingReputationEnabled } = enabledExtensionData;
 
-  // const {
-  //   isVotingExtensionEnabled,
-  //   votingExtensionVersion,
-  // } = useEnabledExtensions({
-  //   colonyAddress,
-  // });
-
-  const actionType = !isForce
-    ? ActionTypes.MOTION_USER_ROLES_SET
-    : ActionTypes.ACTION_USER_ROLES_SET; // && isVotingExtensionEnabled
+  const actionType =
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.MOTION_USER_ROLES_SET
+      : ActionTypes.ACTION_USER_ROLES_SET;
 
   const transform = pipe(
     withKey(colonyAddress),
@@ -114,6 +110,7 @@ const PermissionManagementDialog = ({
               colony={colony}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
               close={close}
+              enabledExtensionData={enabledExtensionData}
             />
           </Dialog>
         );
