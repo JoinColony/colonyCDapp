@@ -12,6 +12,7 @@ import {
 import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
@@ -40,7 +41,10 @@ const getDomainNameFromChangelog = (
   return changelogItem.newName;
 };
 
-export const mapColonyActionToExpectedFormat = (actionData: ColonyAction) => {
+export const mapColonyActionToExpectedFormat = (
+  actionData: ColonyAction,
+  colony?: Colony,
+) => {
   // const formattedRolesTitle = formatRolesTitle(item.roles); // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
 
   return {
@@ -74,14 +78,14 @@ export const mapColonyActionToExpectedFormat = (actionData: ColonyAction) => {
     reputationChangeNumeral: actionData.amount && (
       <Numeral
         value={actionData.amount}
-        decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
+        decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
       />
     ),
     reputationChange:
       actionData.amount &&
       formatReputationChange(
         actionData.amount,
-        actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS,
+        getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
       ),
     // rolesChanged: formattedRolesTitle.roleTitle,
     newVersion: actionData.newColonyVersion,
@@ -135,13 +139,13 @@ export const mapColonyEventToExpectedFormat = (
       actionData.amount &&
       formatReputationChange(
         actionData.amount,
-        actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS,
+        getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
       ),
     newVersion: actionData.newColonyVersion,
     reputationChangeNumeral: actionData.amount && (
       <Numeral
         value={actionData.amount}
-        decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
+        decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
       />
     ),
   };
