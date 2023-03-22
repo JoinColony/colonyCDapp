@@ -30,8 +30,8 @@ const MotionPhaseWidget = ({
   switch (motionState) {
     case MotionState.Staking: {
       return (
-        <StakingWidgetProvider>
-          <StakingWidget motionData={motionData} />;
+        <StakingWidgetProvider motionData={motionData}>
+          <StakingWidget />;
         </StakingWidgetProvider>
       );
     }
