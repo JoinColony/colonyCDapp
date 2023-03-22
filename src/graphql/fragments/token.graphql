@@ -7,3 +7,11 @@ fragment Token on Token {
   avatar
   thumbnail
 }
+
+fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
+  balance
+  inactiveBalance
+  lockedBalance
+  activeBalance
+  pendingBalance
+}

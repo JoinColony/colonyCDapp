@@ -101,6 +101,11 @@ input GetReputationForTopDomainsInput {
   rootHash: String
 }
 
+input GetUserTokenBalanceInput {
+  walletAddress: String!
+  tokenAddress: String!
+}
+
 type UserDomainReputation {
   domainId: Int!
   reputationPercentage: String!
@@ -108,6 +113,14 @@ type UserDomainReputation {
 
 type GetReputationForTopDomainsReturn {
   items: [UserDomainReputation!]
+}
+
+type GetUserTokenBalanceReturn {
+  balance: String # total balance, sum of inactive, locked and active
+  inactiveBalance: String
+  lockedBalance: String
+  activeBalance: String
+  pendingBalance: String
 }
 
 enum TokenType {
@@ -175,6 +188,9 @@ type Query {
     @function(name: "getReputationForTopDomains")
   getUserReputation(input: GetUserReputationInput): String
     @function(name: "getUserReputation")
+  getUserTokenBalance(
+    input: GetUserTokenBalanceInput
+  ): GetUserTokenBalanceReturn @function(name: "getUserTokenBalance")
 }
 
 type Mutation {

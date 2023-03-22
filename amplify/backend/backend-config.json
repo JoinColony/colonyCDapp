@@ -53,6 +53,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getUserTokenBalance": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "setCurrentVersion": {
       "build": true,
       "providerPlugin": "awscloudformation",

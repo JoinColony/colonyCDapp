@@ -2,7 +2,6 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { SpinnerLoader } from '~shared/Preloaders';
-import { Token } from '~types';
 import { useAppContext, useColonyContext } from '~hooks';
 import { getFormattedTokenValue } from '~utils/tokens';
 // import { useMotionsTxHashesQuery } from '~data/index';
@@ -31,20 +30,21 @@ const MSG = defineMessages({
 });
 
 export interface Props {
-  unclaimedMotionStakeEvents?: Array<MotionStakedEvent>;
+  unclaimedMotionStakeEvents?: MotionStakedEvent[];
   isLoadingMotions: boolean;
-  token: Token;
   setIsPopoverOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const StakesTab = ({
   unclaimedMotionStakeEvents,
   isLoadingMotions,
-  token,
   setIsPopoverOpen,
 }: Props) => {
   const { colony } = useColonyContext();
   const { wallet } = useAppContext();
+
+  const { nativeToken } = colony || {};
+
   // extract flat array of motionIds
   // const motionIds = useMemo(
   //   () =>
@@ -73,6 +73,10 @@ const StakesTab = ({
     );
   }
 
+  if (!nativeToken) {
+    return null;
+  }
+
   return (
     <div className={styles.stakesContainer}>
       {unclaimedMotionStakeEvents && unclaimedMotionStakeEvents?.length > 0 ? (
@@ -91,9 +95,9 @@ const StakesTab = ({
               <StakesListItem
                 stakedAmount={getFormattedTokenValue(
                   motion.values.stakeAmount,
-                  token.decimals,
+                  nativeToken.decimals,
                 )}
-                tokenSymbol={token.symbol}
+                tokenSymbol={nativeToken.symbol}
                 colonyName={colony?.name || ''}
                 txHash={txHash}
                 // txHash={
