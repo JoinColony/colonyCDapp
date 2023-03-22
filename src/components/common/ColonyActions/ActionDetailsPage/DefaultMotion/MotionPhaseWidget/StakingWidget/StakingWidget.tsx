@@ -2,7 +2,6 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { MiniSpinnerLoader } from '~shared/Preloaders';
-import { MotionData } from '~types';
 
 import SingleTotalStake from './SingleTotalStake';
 import StakingInput from './StakingInput';
@@ -19,11 +18,7 @@ const MSG = defineMessages({
   },
 });
 
-interface StakingWidgetProps {
-  motionData: MotionData;
-}
-
-const StakingWidget = ({ motionData: { motionId } }: StakingWidgetProps) => {
+const StakingWidget = () => {
   const loadingStakeData = false;
 
   if (loadingStakeData) {
@@ -46,7 +41,7 @@ const StakingWidget = ({ motionData: { motionId } }: StakingWidgetProps) => {
       </>)
         */}
       <SingleTotalStake />
-      <StakingInput motionId={motionId} />
+      <StakingInput />
     </div>
   );
 };
