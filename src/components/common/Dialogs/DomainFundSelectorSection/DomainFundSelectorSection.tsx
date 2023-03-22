@@ -45,6 +45,7 @@ const DomainFundSelectorSection = ({ colony, transferBetweenDomains, disabled }:
       setValue('toDomainId', toDomainId, { shouldTouch: true });
       trigger();
     }
+    trigger();
   };
 
   return (
