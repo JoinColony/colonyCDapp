@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import Cleave from 'cleave.js/react';
 import {
@@ -102,6 +102,14 @@ const HookFormFormattedInputComponent = ({
     setValue(name, e.target.rawValue);
     onChange?.(e);
   };
+
+  /**
+   * As the Cleave input is "detached" from hook-form, we need to set the default value,
+   * if any, when the component is mounted
+   */
+  useEffect(() => {
+    setValue(name, value);
+  }, [name, setValue, value]);
 
   return (
     <>
