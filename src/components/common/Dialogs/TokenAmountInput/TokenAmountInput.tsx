@@ -28,10 +28,6 @@ const MSG = defineMessages({
     id: `${displayName}.address`,
     defaultMessage: 'Token',
   },
-  notEnoughBalance: {
-    id: `${displayName}.notEnoughBalance`,
-    defaultMessage: 'Insufficient balance in from team pot',
-  },
 });
 
 interface Props {

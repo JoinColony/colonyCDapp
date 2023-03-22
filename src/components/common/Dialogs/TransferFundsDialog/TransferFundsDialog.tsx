@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 import { Id } from '@colony/colony-js';
 import { string, object, number, boolean, InferType } from 'yup';
+import { BigNumber } from 'ethers';
+import moveDecimal from 'move-decimal-point';
 
 import { getDomainOptions } from '~utils/domains';
 import { notNull } from '~utils/arrays';
@@ -12,6 +14,7 @@ import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 import { WizardDialogType } from '~hooks';
 import { toFinite } from '~utils/lodash';
+import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import TransferFundsDialogForm from './TransferFundsDialogForm';
 import { getTransferFundsDialogPayload } from './helpers';
@@ -31,6 +34,10 @@ const MSG = defineMessages({
     id: `${displayName}.sameDomain`,
     defaultMessage: 'Cannot move to same team pot',
   },
+  notEnoughBalance: {
+    id: `${displayName}.notEnoughBalance`,
+    defaultMessage: 'Insufficient balance in from team pot',
+  },
 });
 
 type Props = Required<DialogProps> &
@@ -38,26 +45,6 @@ type Props = Required<DialogProps> &
   ActionDialogProps & {
     filteredDomainId?: number;
   };
-
-const validationSchema = object()
-  .shape({
-    forceAction: boolean().defined(),
-    fromDomainId: number().required(),
-    toDomainId: number()
-      .required()
-      .when('fromDomainId', (fromDomain, schema) =>
-        schema.notOneOf([fromDomain], MSG.sameDomain),
-      ),
-    amount: number()
-      .required()
-      .transform((value) => toFinite(value))
-      .moreThan(0, () => MSG.amountZero),
-    tokenAddress: string().address().required(),
-    annotation: string().max(4000).defined(),
-  })
-  .defined();
-
-type FormValues = InferType<typeof validationSchema>;
 
 const TransferFundsDialog = ({
   colony,
@@ -80,6 +67,7 @@ const TransferFundsDialog = ({
 
   const colonyDomains = colony?.domains?.items.filter(notNull) || [];
   const domainOptions = getDomainOptions(colonyDomains);
+  const colonyBalances = colony.balances?.items?.filter(notNull) || [];
 
   const transform = pipe(
     mapPayload((payload) => getTransferFundsDialogPayload(colony, payload)),
@@ -92,6 +80,57 @@ const TransferFundsDialog = ({
       domainOptions.find((option) => option.value !== defaultFromDomainId)
         ?.value,
     ) || Id.RootDomain;
+
+  const validationSchema = object()
+    .shape({
+      forceAction: boolean().defined(),
+      fromDomainId: number().required(),
+      toDomainId: number()
+        .required()
+        .when('fromDomainId', (fromDomainId, schema) =>
+          schema.notOneOf([fromDomainId], MSG.sameDomain),
+        ),
+      amount: number()
+        .required()
+        .transform((value) => toFinite(value))
+        .moreThan(0, () => MSG.amountZero)
+        .test(
+          'not-enough-balance',
+          () => MSG.notEnoughBalance,
+          (value, context) => {
+            if (!value) {
+              return true;
+            }
+
+            const { fromDomainId, tokenAddress } = context.parent;
+            const selectedDomainBalance = colonyBalances.find(
+              (balance) =>
+                balance.token.tokenAddress === tokenAddress &&
+                balance.domain.nativeId === fromDomainId,
+            );
+            const selectedToken = getSelectedToken(colony, tokenAddress);
+
+            if (!selectedDomainBalance || !selectedToken) {
+              return true;
+            }
+
+            const tokenDecimals = getTokenDecimalsWithFallback(
+              selectedToken.decimals,
+            );
+            const convertedAmount = BigNumber.from(
+              moveDecimal(value, tokenDecimals),
+            );
+
+            return convertedAmount.lte(selectedDomainBalance.balance);
+          },
+        )
+        .max(100, () => MSG.notEnoughBalance),
+      tokenAddress: string().address().required(),
+      annotation: string().max(4000).defined(),
+    })
+    .defined();
+
+  type FormValues = InferType<typeof validationSchema>;
 
   return (
     <Dialog cancel={cancel}>
