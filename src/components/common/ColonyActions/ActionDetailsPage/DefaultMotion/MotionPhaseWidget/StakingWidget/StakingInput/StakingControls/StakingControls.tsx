@@ -1,5 +1,8 @@
 import React from 'react';
 
+import ObjectButton from './ObjectButton';
+import StakeButton from './StakeButton';
+
 import styles from './StakingControls.css';
 
 const displayName =
@@ -16,8 +19,10 @@ const StakingControls = () => {
           onClick={() => setIsSummary(true)}
         />
       )}
-      <StakeButton stake={stake} />
-      {showObjectButton && <ObjectButton />}
+      */}
+      <StakeButton />
+      <ObjectButton />
+      {/*
       {showActivateButton && <ActivateButton />}
       */}
     </div>
