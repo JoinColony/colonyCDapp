@@ -38,13 +38,14 @@ const DomainFundSelectorSection = ({
   transferBetweenDomains,
   disabled,
 }: Props) => {
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, trigger } = useFormContext();
   const { motionDomainId } = watch();
 
   const handleFromDomainChange = (fromDomainValue) => {
     if (motionDomainId !== fromDomainValue) {
       setValue('motionDomainId', fromDomainValue);
     }
+    trigger();
   };
 
   return (

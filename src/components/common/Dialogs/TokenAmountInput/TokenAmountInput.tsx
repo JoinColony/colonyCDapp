@@ -85,7 +85,7 @@ const TokenAmountInput = ({ colony, disabled }: Props) => {
             appearance={{ alignOptions: 'right', theme: 'grey' }}
             disabled={disabled}
             onChange={() => {
-              trigger();
+              trigger('amount');
             }}
           />
         </div>
