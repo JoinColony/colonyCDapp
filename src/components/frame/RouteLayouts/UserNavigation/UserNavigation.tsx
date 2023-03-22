@@ -1,17 +1,18 @@
 import React from 'react';
+import { BigNumber } from 'ethers';
 import { defineMessages, useIntl } from 'react-intl';
 
 import MemberReputation from '~shared/MemberReputation';
 import { Tooltip } from '~shared/Popover';
 import { AvatarDropdown } from '~frame/AvatarDropdown';
-// import UserTokenActivationButton from '~users/UserTokenActivationButton';
+import UserTokenActivationButton from '~frame/UserTokenActivationButton';
 import HamburgerDropdown from '~frame/HamburgerDropdown';
 import {
   useAppContext,
   useColonyContext,
   useUserReputation,
   useMobile,
-  // useCanInteractWithNetwork,
+  useCanInteractWithNetwork,
 } from '~hooks';
 
 import Wallet from './Wallet';
@@ -42,12 +43,21 @@ const UserNavigation = () => {
 
   // const userLock = userData?.user.userLock;
   // const nativeToken = userLock?.nativeToken;
-  // const canInteractWithNetwork = useCanInteractWithNetwork();
+  const canInteractWithNetwork = useCanInteractWithNetwork();
 
   const { userReputation, totalReputation } = useUserReputation(
     colony?.colonyAddress,
     wallet?.address,
   );
+
+  const mockedTokenBalanceData = {
+    nativeToken: colony?.nativeToken,
+    inactiveBalance: BigNumber.from(11 ** 15),
+    lockedBalance: BigNumber.from(0),
+    activeBalance: BigNumber.from(11 ** 15),
+    totalBalance: BigNumber.from(11 ** 15),
+    isPendingBalanceZero: true,
+  };
 
   return (
     <div className={styles.main}>
@@ -75,21 +85,20 @@ const UserNavigation = () => {
           </div>
         </Tooltip>
       )}
-      {/*
-        <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
-          {canInteractWithNetwork && nativeToken && userLock && (
-            <UserTokenActivationButton
-              nativeToken={nativeToken}
-              userLock={userLock}
-              colony={colonyData?.processedColony}
-              walletAddress={walletAddress}
-              dataTest="tokenActivationButton"
-            />
-          )}
-        </div>
-      */}
+      <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
+        {canInteractWithNetwork && colony?.nativeToken && (
+          <UserTokenActivationButton
+            tokenBalanceData={mockedTokenBalanceData}
+            dataTest="tokenActivationButton"
+          />
+        )}
+      </div>
+
       <Wallet />
-      <AvatarDropdown spinnerMsg={MSG.walletAutologin} />
+      <AvatarDropdown
+        spinnerMsg={MSG.walletAutologin}
+        tokenBalanceData={mockedTokenBalanceData}
+      />
       <HamburgerDropdown />
     </div>
   );

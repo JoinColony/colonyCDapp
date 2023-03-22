@@ -18,6 +18,10 @@
   line-height: 26px;
 }
 
+.walletWrapper {
+  padding: 1px;
+}
+
 .reputation:hover {
   background-color: color-mod(var(--colony-blue) alpha(10%));
   cursor: pointer;

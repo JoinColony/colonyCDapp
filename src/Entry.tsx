@@ -7,8 +7,8 @@ import { ApolloProvider } from '@apollo/client';
 import layout from '~styles/layout.css';
 import '~utils/yup/customMethods'; // ensures custom yup methods are available when components load
 import { DialogProvider } from '~shared/Dialog';
-// import { TokenActivationProvider } from '~users/TokenActivationProvider';
 import { AppContextProvider, getContext, ContextModule } from '~context';
+import { TokenActivationProvider } from '~shared/TokenActivationProvider';
 
 import messages from './i18n/en.json';
 import actionMessages from './i18n/en-actions';
@@ -47,11 +47,11 @@ const Entry = ({ store }: Props) => {
           <AppContextProvider>
             <Router>
               <DialogProvider>
-                {/* <TokenActivationProvider> */}
-                <div className={layout.stretch}>
-                  <Routes />
-                </div>
-                {/* </TokenActivationProvider> */}
+                <TokenActivationProvider>
+                  <div className={layout.stretch}>
+                    <Routes />
+                  </div>
+                </TokenActivationProvider>
               </DialogProvider>
             </Router>
           </AppContextProvider>
