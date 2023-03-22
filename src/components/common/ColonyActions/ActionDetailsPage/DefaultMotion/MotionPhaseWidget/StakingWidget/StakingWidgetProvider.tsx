@@ -1,6 +1,7 @@
 import React, { createContext, ReactNode, useContext, useMemo } from 'react';
+import { MotionData } from '~types';
 
-export interface StakingWidgetContextValues {}
+export type StakingWidgetContextValues = MotionData;
 
 const StakingWidgetContext = createContext<Partial<StakingWidgetContextValues>>(
   {},
@@ -18,12 +19,20 @@ export const useStakingWidgetContext = () => {
 
 interface StakingWidgetProviderProps {
   children: ReactNode;
+  motionData: MotionData;
 }
 
 export const StakingWidgetProvider = ({
   children,
+  motionData,
 }: StakingWidgetProviderProps) => {
-  const stakingWidgetValues = useMemo(() => ({}), []);
+  const stakingWidgetValues = useMemo(
+    () => ({
+      ...motionData,
+    }),
+    [motionData],
+  );
+
   return (
     <StakingWidgetContext.Provider value={stakingWidgetValues}>
       {children}

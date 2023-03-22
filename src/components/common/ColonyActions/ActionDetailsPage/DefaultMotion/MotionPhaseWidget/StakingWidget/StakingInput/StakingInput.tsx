@@ -12,6 +12,7 @@ import StakingControls from './StakingControls';
 import StakingSliderDescription from './StakingSliderDescription';
 import StakingSliderAnnotation from './StakingSliderAnnotation';
 import StakingWidgetSlider from './StakingWidgetSlider';
+import { useStakingWidgetContext } from '../StakingWidgetProvider';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget';
@@ -25,11 +26,7 @@ const validationSchema = object({
 export type StakingWidgetValues = InferType<typeof validationSchema>;
 type StakeMotionPayload = Action<ActionTypes.MOTION_STAKE>['payload'];
 
-interface StakingInputProps {
-  motionId: string;
-}
-
-const StakingInput = ({ motionId }: StakingInputProps) => {
+const StakingInput = () => {
   // const handleSuccess = (_, { setFieldValue, resetForm }) => {
   //     resetForm({});
   //     setFieldValue('amount', 0);
@@ -38,6 +35,7 @@ const StakingInput = ({ motionId }: StakingInputProps) => {
 
   const { user } = useAppContext();
   const { colony } = useColonyContext();
+  const { motionId } = useStakingWidgetContext();
   const isObjection = false;
   const vote = isObjection ? MotionVote.Nay : MotionVote.Yay;
 
