@@ -19,4 +19,4 @@ export * from './metadataChangelog';
 //   setupEnablingGroupTransactions,
 //   Channel,
 // } from './enableExtensionHelpers';
-// export { updateDomainReputation } from './updateDomainReputation';
+export { updateDomainReputation } from './updateDomainReputation';

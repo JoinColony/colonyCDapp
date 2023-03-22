@@ -244,15 +244,15 @@ export type ColonyActionsActionTypes =
         colonyAddress: Address;
         colonyName: string;
         domainId: number;
-        userAddress: Address;
+        walletAddress: Address;
         amount: BigNumber;
         isSmitingReputation?: boolean;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_MANAGE_REPUTATION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >;

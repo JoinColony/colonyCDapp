@@ -10,7 +10,9 @@ import {
   Domain,
 } from '~types';
 import { intl } from '~utils/intl';
+import { formatReputationChange } from '~utils/reputation';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
@@ -39,12 +41,11 @@ const getDomainNameFromChangelog = (
   return changelogItem.newName;
 };
 
-export const mapColonyActionToExpectedFormat = (actionData: ColonyAction) => {
+export const mapColonyActionToExpectedFormat = (
+  actionData: ColonyAction,
+  colony?: Colony,
+) => {
   // const formattedRolesTitle = formatRolesTitle(item.roles); // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
-  // const reputationChange = formatReputationChange(
-  //   item.decimals,
-  //   item.reputationChange,
-  // );
 
   return {
     ...actionData,
@@ -74,12 +75,18 @@ export const mapColonyActionToExpectedFormat = (actionData: ColonyAction) => {
       actionData.toDomain?.metadata?.name ??
       formatMessage({ id: 'unknownDomain' }),
     tokenSymbol: actionData.token?.symbol,
-    // reputationChangeNumeral: item.reputationChange && (
-    //   <Numeral value={item.reputationChange} decimals={Number(item.decimals)} />
-    // ),
-    // reputationChange:
-    //   item.reputationChange &&
-    //   formatReputationChange(item.reputationChange, item.decimals),
+    reputationChangeNumeral: actionData.amount && (
+      <Numeral
+        value={actionData.amount}
+        decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
+      />
+    ),
+    reputationChange:
+      actionData.amount &&
+      formatReputationChange(
+        actionData.amount,
+        getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
+      ),
     // rolesChanged: formattedRolesTitle.roleTitle,
     newVersion: actionData.newColonyVersion,
   };
@@ -128,13 +135,19 @@ export const mapColonyEventToExpectedFormat = (
     isSmiteAction:
       actionData.type === ColonyActionType.EmitDomainReputationPenalty,
     tokenSymbol: actionData.token?.symbol,
-    // reputationChange:
-    //   item.reputationChange &&
-    //   formatReputationChange(item.reputationChange, item.decimals),
-    // reputationChangeNumeral: item.reputationChange && (
-    //   <Numeral value={item.reputationChange} decimals={Number(item.decimals)} />
-    // ),
+    reputationChange:
+      actionData.amount &&
+      formatReputationChange(
+        actionData.amount,
+        getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
+      ),
     newVersion: actionData.newColonyVersion,
+    reputationChangeNumeral: actionData.amount && (
+      <Numeral
+        value={actionData.amount}
+        decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
+      />
+    ),
   };
 };
 

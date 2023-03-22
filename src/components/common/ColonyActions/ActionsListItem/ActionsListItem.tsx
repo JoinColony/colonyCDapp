@@ -97,7 +97,7 @@ const ActionsListItem = ({
       status={status}
       // tag={tag}
       title={{ id: 'action.title' }}
-      titleValues={getActionTitleValues(item)}
+      titleValues={getActionTitleValues(item, colony)}
     />
   );
 };

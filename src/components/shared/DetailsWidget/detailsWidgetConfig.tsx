@@ -19,6 +19,7 @@ import {
   TeamDetail,
   AmountDetail,
   DomainDescriptionDetail,
+  ReputationChangeDetail,
 } from '../DetailsWidget';
 
 import styles from './DetailsWidget.css';
@@ -106,16 +107,14 @@ const getDetailItems = (
     recipient,
     transactionHash,
     token,
-  }: // reputationChange,
-  // roles,
+  }: // roles,
   ColonyAction,
   colony: Colony,
 ): DetailItemConfig[] => {
   const detailsForAction = getDetailsForAction(type);
   const shortenedHash = getShortenedHash(transactionHash || '');
 
-  // const isSmiteAction =
-  //   actionType === ColonyActions.EmitDomainReputationPenalty;
+  const isSmiteAction = type === ColonyActionType.EmitDomainReputationPenalty;
 
   return [
     {
@@ -182,13 +181,16 @@ const getDetailItems = (
         <UserDetail walletAddress={recipient.walletAddress} />
       ),
     },
-    // {
-    //   label: MSG.reputationChange,
-    //   labelValues: { isSmiteAction },
-    //   item: detailsForAction.ReputationChange && reputationChange && (
-    //     <ReputationChangeDetail reputationChange={reputationChange} />
-    //   ),
-    // },
+    {
+      label: MSG.reputationChange,
+      labelValues: { isSmiteAction },
+      item: detailsForAction.ReputationChange && amount && (
+        <ReputationChangeDetail
+          reputationChange={amount}
+          decimals={token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
+        />
+      ),
+    },
     // {
     //   label: MSG.roles,
     //   labelValues: undefined,
