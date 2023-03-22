@@ -5,6 +5,9 @@ import { ActionHookForm as ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 
 import StakingControls from './StakingControls';
+import StakingSliderDescription from './StakingSliderDescription';
+import StakingSliderAnnotation from './StakingSliderAnnotation';
+import StakingWidgetSlider from './StakingWidgetSlider';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget';
@@ -34,17 +37,10 @@ const StakingInput = () => {
       // transform={transform}
       // onSuccess={handleSuccess}
     >
-      {/* <SliderDescription isObjection={isObjection} />
-      {showAnnotation && (
-        <SliderAnnotation
-          enoughTokens={enoughTokens}
-          requiredStakeMessageProps={requiredStakeMessageProps}
-        />
-      )}
-      <StakingWidgetSlider
-        {...stakingWidgetSliderProps}
-        setLimitExceeded={setLimitExceeded}
-      />
+      <StakingSliderDescription isObjection={false} />
+      <StakingSliderAnnotation />
+      <StakingWidgetSlider />
+      {/*
       {showValidationMessage && (
         <StakingValidationMessage
           {...stakingValidationMessageProps}
