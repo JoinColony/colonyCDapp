@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { defineMessages } from 'react-intl';
 import { Id } from '@colony/colony-js';
-import { string, object, number, boolean, InferType } from 'yup';
-import { BigNumber } from 'ethers';
-import moveDecimal from 'move-decimal-point';
+import { InferType } from 'yup';
 
 import { getDomainOptions } from '~utils/domains';
 import { notNull } from '~utils/arrays';
@@ -13,32 +10,12 @@ import { ActionTypes } from '~redux/index';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 import { WizardDialogType } from '~hooks';
-import { toFinite } from '~utils/lodash';
-import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import TransferFundsDialogForm from './TransferFundsDialogForm';
 import { getTransferFundsDialogPayload } from './helpers';
+import { getValidationSchema } from './validation';
 
-const displayName = 'common.TransferFundsDialog';
-
-const MSG = defineMessages({
-  requiredFieldError: {
-    id: `${displayName}.requiredFieldError`,
-    defaultMessage: 'Please enter a value',
-  },
-  amountZero: {
-    id: `${displayName}.amountZero`,
-    defaultMessage: 'Amount must be greater than zero',
-  },
-  sameDomain: {
-    id: `${displayName}.sameDomain`,
-    defaultMessage: 'Cannot move to same team pot',
-  },
-  notEnoughBalance: {
-    id: `${displayName}.notEnoughBalance`,
-    defaultMessage: 'Insufficient balance in from team pot',
-  },
-});
+export const displayName = 'common.TransferFundsDialog';
 
 type Props = Required<DialogProps> &
   WizardDialogType<object> &
@@ -67,7 +44,6 @@ const TransferFundsDialog = ({
 
   const colonyDomains = colony?.domains?.items.filter(notNull) || [];
   const domainOptions = getDomainOptions(colonyDomains);
-  const colonyBalances = colony.balances?.items?.filter(notNull) || [];
 
   const transform = pipe(
     mapPayload((payload) => getTransferFundsDialogPayload(colony, payload)),
@@ -81,54 +57,7 @@ const TransferFundsDialog = ({
         ?.value,
     ) || Id.RootDomain;
 
-  const validationSchema = object()
-    .shape({
-      forceAction: boolean().defined(),
-      fromDomainId: number().required(),
-      toDomainId: number()
-        .required()
-        .when('fromDomainId', (fromDomainId, schema) =>
-          schema.notOneOf([fromDomainId], MSG.sameDomain),
-        ),
-      amount: number()
-        .required()
-        .transform((value) => toFinite(value))
-        .moreThan(0, () => MSG.amountZero)
-        .test(
-          'not-enough-balance',
-          () => MSG.notEnoughBalance,
-          (value, context) => {
-            if (!value) {
-              return true;
-            }
-
-            const { fromDomainId, tokenAddress } = context.parent;
-            const selectedDomainBalance = colonyBalances.find(
-              (balance) =>
-                balance.token.tokenAddress === tokenAddress &&
-                balance.domain.nativeId === fromDomainId,
-            );
-            const selectedToken = getSelectedToken(colony, tokenAddress);
-
-            if (!selectedDomainBalance || !selectedToken) {
-              return true;
-            }
-
-            const tokenDecimals = getTokenDecimalsWithFallback(
-              selectedToken.decimals,
-            );
-            const convertedAmount = BigNumber.from(
-              moveDecimal(value, tokenDecimals),
-            );
-
-            return convertedAmount.lte(selectedDomainBalance.balance);
-          },
-        )
-        .max(100, () => MSG.notEnoughBalance),
-      tokenAddress: string().address().required(),
-      annotation: string().max(4000).defined(),
-    })
-    .defined();
+  const validationSchema = getValidationSchema(colony);
 
   type FormValues = InferType<typeof validationSchema>;
 
