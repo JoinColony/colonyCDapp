@@ -34,8 +34,6 @@ export interface HookFormInputProps
   maxButtonParams?: MaxButtonParams;
   /** Show ConfusableWarning based on user input */
   showConfusable?: boolean;
-  /** Custom error message to show */
-  customError?: Message;
 }
 
 const displayName = 'HookFormInput';
@@ -58,7 +56,6 @@ const HookFormInput = ({
   showConfusable = false,
   status,
   statusValues,
-  customError,
   ...restInputProps
 }: HookFormInputProps) => {
   const [id] = useState(idProp || nanoid());
@@ -111,7 +108,7 @@ const HookFormInput = ({
       {!elementOnly && (
         <InputStatus
           appearance={appearance}
-          error={error || customError}
+          error={error}
           isLoading={isLoading}
           loadingAnnotation={loadingAnnotation}
           status={status}
