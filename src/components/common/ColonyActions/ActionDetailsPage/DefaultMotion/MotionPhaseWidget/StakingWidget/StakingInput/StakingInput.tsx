@@ -72,7 +72,7 @@ const StakingInput = () => {
       // onSuccess={handleSuccess}
     >
       <StakingSliderDescription isObjection={false} />
-      <StakingSliderAnnotation />
+      {remainingToStake !== '0' && <StakingSliderAnnotation />}
       <StakingWidgetSlider />
       {/*
       {showValidationMessage && (
