@@ -44,7 +44,6 @@ const TransferFundsDialog = ({
 
   const colonyDomains = colony?.domains?.items.filter(notNull) || [];
   const domainOptions = getDomainOptions(colonyDomains);
-  const colonyBalances = colony.balances?.items?.filter(notNull) || [];
 
   const transform = pipe(
     mapPayload((payload) => getTransferFundsDialogPayload(colony, payload)),
@@ -57,54 +56,7 @@ const TransferFundsDialog = ({
 
   const validationSchema = getValidationSchema(colony);
 
-  const validationSchema = object()
-    .shape({
-      forceAction: boolean().defined(),
-      fromDomainId: number().required(),
-      toDomainId: number()
-        .required()
-        .when('fromDomainId', (fromDomainId, schema) =>
-          schema.notOneOf([fromDomainId], MSG.sameDomain),
-        ),
-      amount: number()
-        .required()
-        .transform((value) => toFinite(value))
-        .moreThan(0, () => MSG.amountZero)
-        .test(
-          'not-enough-balance',
-          () => MSG.notEnoughBalance,
-          (value, context) => {
-            if (!value) {
-              return true;
-            }
-
-            const { fromDomainId, tokenAddress } = context.parent;
-            const selectedDomainBalance = colonyBalances.find(
-              (balance) =>
-                balance.token.tokenAddress === tokenAddress &&
-                balance.domain.nativeId === fromDomainId,
-            );
-            const selectedToken = getSelectedToken(colony, tokenAddress);
-
-            if (!selectedDomainBalance || !selectedToken) {
-              return true;
-            }
-
-            const tokenDecimals = getTokenDecimalsWithFallback(
-              selectedToken.decimals,
-            );
-            const convertedAmount = BigNumber.from(
-              moveDecimal(value, tokenDecimals),
-            );
-
-            return convertedAmount.lte(selectedDomainBalance.balance);
-          },
-        )
-        .max(100, () => MSG.notEnoughBalance),
-      tokenAddress: string().address().required(),
-      annotation: string().max(4000).defined(),
-    })
-    .defined();
+  const validationSchema = getValidationSchema(colony);
 
   type FormValues = InferType<typeof validationSchema>;
 
