@@ -66,7 +66,7 @@ export const getValidationSchema = (colony: Colony) => {
         .transform((value) => toFinite(value))
         .moreThan(0, () => MSG.amountZero)
         .test(
-          'not-enough-balance',
+          'has-enough-balance',
           () => MSG.notEnoughBalance,
           getHasEnoughBalanceTestFn(colony),
         ),
