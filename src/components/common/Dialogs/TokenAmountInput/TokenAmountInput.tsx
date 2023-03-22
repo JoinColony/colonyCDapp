@@ -36,7 +36,7 @@ interface Props {
 }
 
 const TokenAmountInput = ({ colony, disabled }: Props) => {
-  const { watch } = useFormContext();
+  const { watch, trigger } = useFormContext();
   const { amount, tokenAddress } = watch();
 
   const colonyTokens =
@@ -84,6 +84,9 @@ const TokenAmountInput = ({ colony, disabled }: Props) => {
             elementOnly
             appearance={{ alignOptions: 'right', theme: 'grey' }}
             disabled={disabled}
+            onChange={() => {
+              trigger();
+            }}
           />
         </div>
         {tokenAddress === AddressZero && (
