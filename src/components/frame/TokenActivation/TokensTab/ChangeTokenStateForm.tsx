@@ -82,10 +82,9 @@ const ChangeTokenStateForm = ({
   const tokenBalance = isActivate ? inactiveBalance : activeBalance;
   const tokenBalanceInEthers = moveDecimal(tokenBalance, -tokenDecimals);
 
-  const formAction = (actionType: '' | '_ERROR' | '_SUCCESS') =>
-    isActivate
-      ? ActionTypes[`USER_DEPOSIT_TOKEN${actionType}`]
-      : ActionTypes[`USER_WITHDRAW_TOKEN${actionType}`];
+  const actionType = isActivate
+    ? ActionTypes.USER_DEPOSIT_TOKEN
+    : ActionTypes.USER_WITHDRAW_TOKEN;
 
   const transform = pipe(
     mapPayload(({ amount }) => {
@@ -126,12 +125,9 @@ const ChangeTokenStateForm = ({
       </div>
       <ActionForm<FormValues>
         defaultValues={{ amount: 0 }}
-        actionType={formAction('')}
+        actionType={actionType}
         validationSchema={validationSchema}
         transform={transform}
-        submit={formAction('')}
-        error={formAction('_ERROR')}
-        success={formAction('_SUCCESS')}
       >
         {({ formState: { isValid } }) => (
           <div className={styles.form}>
