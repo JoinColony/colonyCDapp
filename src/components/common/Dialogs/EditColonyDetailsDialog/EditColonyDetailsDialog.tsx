@@ -7,7 +7,7 @@ import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
 import { ActionTypes } from '~redux';
-import { WizardDialogType } from '~hooks'; // useEnabledExtensions
+import { WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 
 import EditColonyDetailsDialogForm from './EditColonyDetailsDialogForm';
@@ -44,17 +44,16 @@ const EditColonyDetailsDialog = ({
   prevStep,
   colony: { metadata },
   colony,
+  enabledExtensionData: { isVotingReputationEnabled },
+  enabledExtensionData,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress,
-  // });
-
-  const actionType = !isForce // isVotingExtensionEnabled &&
-    ? ActionTypes.MOTION_EDIT_COLONY
-    : ActionTypes.ACTION_EDIT_COLONY;
+  const actionType =
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.MOTION_EDIT_COLONY
+      : ActionTypes.ACTION_EDIT_COLONY;
 
   const transform = pipe(
     mapPayload((payload) => getEditColonyDetailsDialogPayload(colony, payload)),
@@ -89,6 +88,7 @@ const EditColonyDetailsDialog = ({
             <EditColonyDetailsDialogForm
               colony={colony}
               back={() => callStep(prevStep)}
+              enabledExtensionData={enabledExtensionData}
             />
           </Dialog>
         );

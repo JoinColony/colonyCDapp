@@ -8,19 +8,23 @@ import {
   ActionDialogProps,
   DialogControls,
   DialogHeading,
+  DialogSection,
 } from '~shared/Dialog';
-import DialogSection from '~shared/Dialog/DialogSection';
 import {
   Annotations,
   HookFormInput as Input,
   InputStatus,
 } from '~shared/Fields';
-import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
 import ColonyAvatar from '~shared/ColonyAvatar';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-import NoPermissionMessage from '~shared/NoPermissionMessage';
 import Avatar from '~shared/Avatar';
-import { useDialogActionPermissions } from '~hooks'; // useEnabledExtensions
+import { useActionDialogStatus } from '~hooks';
+
+import {
+  CannotCreateMotionMessage,
+  NoPermissionMessage,
+  PermissionRequiredInfo,
+} from '../Messages';
 
 import styles from './EditColonyDetailsDialogForm.css';
 
@@ -64,31 +68,20 @@ const EditColonyDetailsDialogForm = ({
   back,
   colony,
   colony: { colonyAddress, metadata },
+  enabledExtensionData,
 }: ActionDialogProps) => {
-  const {
-    formState: { isSubmitting, isValid },
-    setValue,
-    getValues,
-  } = useFormContext();
+  const { setValue, getValues } = useFormContext();
   const { colonyAvatarImage, colonyDisplayName } = getValues();
   const [showUploadedAvatar, setShowUploadedAvatar] = useState(false);
   const [avatarFileError, setAvatarFileError] = useState(false);
 
-  // const {
-  //   votingExtensionVersion,
-  //   isVotingExtensionEnabled,
-  // } = useEnabledExtensions({
-  //   colonyAddress,
-  // });
-
-  const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
-    colony,
-    false, // isVotingExtensionEnabled,
-    requiredRoles,
-    [Id.RootDomain],
-  );
-
-  const inputDisabled = !userHasPermission || onlyForceAction || isSubmitting;
+  const { userHasPermission, canCreateMotion, disabledInput, disabledSubmit } =
+    useActionDialogStatus(
+      colony,
+      requiredRoles,
+      [Id.RootDomain],
+      enabledExtensionData,
+    );
 
   /*
    * Note that these threee methods just read the file locally, they don't actually
@@ -124,11 +117,6 @@ const EditColonyDetailsDialogForm = ({
     metadata?.displayName !== colonyDisplayName ||
     metadata?.avatar !== colonyAvatarImage;
 
-  // const cannotCreateMotion =
-  //   votingExtensionVersion ===
-  //     VotingReputationExtensionVersion.FuchsiaLightweightSpaceship &&
-  //   !forceAction;
-
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -136,13 +124,13 @@ const EditColonyDetailsDialogForm = ({
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
-          <PermissionRequiredInfo requiredRoles={[ColonyRole.Root]} />
+          <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
       )}
       <DialogSection>
         <AvatarUploader
           avatar={showUploadedAvatar ? colonyAvatarImage : metadata?.avatar}
-          disabled={inputDisabled}
+          disabled={disabledInput}
           label={MSG.logo}
           handleFileAccept={handleFileRead}
           handleFileRemove={handleFileRemove}
@@ -193,7 +181,7 @@ const EditColonyDetailsDialogForm = ({
           label={MSG.name}
           name="colonyDisplayName"
           appearance={{ colorSchema: 'grey', theme: 'fat' }}
-          disabled={inputDisabled}
+          disabled={disabledInput}
           maxLength={20}
           value={colonyDisplayName}
         />
@@ -202,7 +190,7 @@ const EditColonyDetailsDialogForm = ({
         <Annotations
           label={MSG.annotation}
           name="annotationMessage"
-          disabled={inputDisabled}
+          disabled={disabledInput}
         />
       </DialogSection>
       {!userHasPermission && (
@@ -213,29 +201,14 @@ const EditColonyDetailsDialogForm = ({
       {/* {onlyForceAction && (
         <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
       )} */}
-      {/* {cannotCreateMotion && (
+      {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.cannotCreateMotion}>
-            <FormattedMessage
-              {...MSG.cannotCreateMotion}
-              values={{
-                version:
-                  VotingReputationExtensionVersion.FuchsiaLightweightSpaceship,
-              }}
-            />
-          </div>
+          <CannotCreateMotionMessage />
         </DialogSection>
-      )} */}
+      )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
-          disabled={
-            // cannotCreateMotion ||
-            inputDisabled ||
-            !isValid ||
-            avatarFileError ||
-            !hasEditedColony ||
-            isSubmitting
-          }
+          disabled={disabledSubmit || avatarFileError || !hasEditedColony}
           dataTest="confirmButton"
           onSecondaryButtonClick={back}
         />
