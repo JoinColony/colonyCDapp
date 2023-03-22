@@ -2,7 +2,7 @@ import React from 'react';
 import { MotionState } from '@colony/colony-js';
 
 import { ColonyAction } from '~types';
-import StakingWidget from './StakingWidget';
+import StakingWidget, { StakingWidgetProvider } from './StakingWidget';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.MotionPhaseWidget';
@@ -29,7 +29,11 @@ const MotionPhaseWidget = ({
 
   switch (motionState) {
     case MotionState.Staking: {
-      return <StakingWidget motionData={motionData} />;
+      return (
+        <StakingWidgetProvider>
+          <StakingWidget motionData={motionData} />;
+        </StakingWidgetProvider>
+      );
     }
 
     /* Extend with other widgets as they get ported. */
