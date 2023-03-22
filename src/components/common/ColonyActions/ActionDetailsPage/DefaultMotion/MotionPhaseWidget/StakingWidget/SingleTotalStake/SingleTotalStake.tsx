@@ -42,7 +42,9 @@ const SingleTotalStake = () => {
   const isObjection = false;
   const {
     motionStakes: { percentage: percentageStaked },
+    requiredStake,
   } = useStakingWidgetContext();
+
   const totalPercentage = Number(
     isObjection ? percentageStaked.nay : percentageStaked.yay,
   );
@@ -63,7 +65,10 @@ const SingleTotalStake = () => {
 
   return (
     <>
-      <SingleTotalStakeHeading />
+      <SingleTotalStakeHeading
+        totalPercentage={totalPercentage}
+        requiredStake={requiredStake}
+      />
       {totalPercentage < 10 ? (
         <MinStakeTooltip>{progressBar}</MinStakeTooltip>
       ) : (
