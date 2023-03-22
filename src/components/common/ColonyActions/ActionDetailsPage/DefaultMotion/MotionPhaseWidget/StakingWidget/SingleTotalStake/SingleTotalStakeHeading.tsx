@@ -5,6 +5,7 @@ import { Placement } from '@popperjs/core';
 import { Heading5 } from '~shared/Heading';
 import Numeral from '~shared/Numeral';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
+import { useColonyContext } from '~hooks';
 
 import styles from './SingleTotalStakeHeading.css';
 
@@ -42,11 +43,19 @@ const tooltipOptions = {
   ],
 };
 
-const SingleTotalStakeHeading = () => {
-  const totalPercentage = 0;
-  const nativeTokenSymbol = 'WILL';
-  const nativeTokenDecimals = 18;
-  const requiredStake = '1000000000000000000';
+interface SingleTotalStakeHeadingProps {
+  totalPercentage: number;
+  requiredStake: string;
+}
+
+const SingleTotalStakeHeading = ({
+  totalPercentage,
+  requiredStake,
+}: SingleTotalStakeHeadingProps) => {
+  const { colony } = useColonyContext();
+  const { symbol: nativeTokenSymbol, decimals: nativeTokenDecimals } =
+    colony?.nativeToken || {};
+
   const isObjection = false;
   return (
     <div className={styles.widgetHeading}>
