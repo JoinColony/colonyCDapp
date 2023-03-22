@@ -13,6 +13,7 @@ import StakingSliderDescription from './StakingSliderDescription';
 import StakingSliderAnnotation from './StakingSliderAnnotation';
 import StakingWidgetSlider from './StakingWidgetSlider';
 import { useStakingWidgetContext } from '../StakingWidgetProvider';
+import { getStakeFromSlider } from '../helpers';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget';
@@ -35,13 +36,21 @@ const StakingInput = () => {
 
   const { user } = useAppContext();
   const { colony } = useColonyContext();
-  const { motionId } = useStakingWidgetContext();
+  const {
+    motionId,
+    remainingStakes: [nayRemaining, yayRemaining],
+    userMinStake,
+  } = useStakingWidgetContext();
   const isObjection = false;
+  const remainingToStake = isObjection ? nayRemaining : yayRemaining;
   const vote = isObjection ? MotionVote.Nay : MotionVote.Yay;
 
   const transform = mapPayload(({ amount: sliderAmount }) => {
-    const finalStake = BigNumber.from('1000000000000000000').div(sliderAmount);
-    /* getFinalStakeFromSliderAmount(amount); */
+    const finalStake = getStakeFromSlider(
+      sliderAmount,
+      remainingToStake,
+      userMinStake,
+    );
 
     return {
       amount: finalStake,
