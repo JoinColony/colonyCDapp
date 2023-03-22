@@ -7,7 +7,7 @@ import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
 import { ActionTypes } from '~redux';
-import { WizardDialogType, useEnabledExtensions } from '~hooks';
+import { WizardDialogType } from '~hooks';
 
 import DialogForm from './NetworkContractUpgradeDialogForm';
 import { getNetworkContractUpgradeDialogPayload } from './helpers';
@@ -34,11 +34,11 @@ const NetworkContractUpgradeDialog = ({
   prevStep,
   colony,
   colony: { colonyAddress, name, version: currentVersion },
+  enabledExtensionData: { isVotingReputationEnabled },
+  enabledExtensionData,
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
-
-  const { isVotingReputationEnabled } = useEnabledExtensions(colony);
 
   const actionType =
     isVotingReputationEnabled && !isForce
@@ -79,6 +79,7 @@ const NetworkContractUpgradeDialog = ({
             <DialogForm
               colony={colony}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+              enabledExtensionData={enabledExtensionData}
             />
           </Dialog>
         );

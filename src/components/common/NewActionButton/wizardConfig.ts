@@ -183,6 +183,7 @@ export const getWizardFlowConfig = (
     props: {
       prevStep: 'common.AdvancedDialog',
       colony,
+      enabledExtensionData,
     },
   },
   {
@@ -190,6 +191,7 @@ export const getWizardFlowConfig = (
     props: {
       prevStep: 'common.AdvancedDialog',
       colony,
+      enabledExtensionData,
     },
   },
   {

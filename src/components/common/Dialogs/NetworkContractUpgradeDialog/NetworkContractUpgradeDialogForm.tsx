@@ -1,28 +1,27 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { ColonyRole, Id } from '@colony/colony-js';
-import { useFormContext } from 'react-hook-form';
+import { ColonyRole } from '@colony/colony-js';
 
 import {
   ActionDialogProps,
   DialogControls,
   DialogHeading,
+  DialogSection,
 } from '~shared/Dialog';
-import DialogSection from '~shared/Dialog/DialogSection';
 import { Annotations } from '~shared/Fields';
-import PermissionRequiredInfo from '~shared/PermissionRequiredInfo';
-// import { MiniSpinnerLoader } from '~shared/Preloaders';
+import { MiniSpinnerLoader } from '~shared/Preloaders';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-import NoPermissionMessage from '~shared/NoPermissionMessage';
-// import {
-//   useNetworkContracts,
-//   useLegacyNumberOfRecoveryRolesQuery,
-// } from '~data/index';
-import { useDialogActionPermissions } from '~hooks'; // useEnabledExtensions
-// import { colonyCanBeUpgraded } from '~utils/checks';
+import {
+  CannotCreateMotionMessage,
+  NoPermissionMessage,
+  PermissionRequiredInfo,
+} from '../Messages';
 
 import LegacyPermissionWarning from './LegacyPermissionWarning';
 import ContractVersionSection from './ContractVersionSection';
+import { useNetworkContractUpgradeDialogStatus } from './helpers';
+
+import styles from './NetworkContractUpgradeDialogForm.css';
 
 const displayName =
   'common.NetworkContractUpgradeDialog.NetworkContractUpgradeDialogForm';
@@ -40,10 +39,6 @@ const MSG = defineMessages({
     id: `${displayName}.loadingData`,
     defaultMessage: "Loading the Colony's Recovery Roles",
   },
-  cannotCreateMotion: {
-    id: `${displayName}.cannotCreateMotion`,
-    defaultMessage: `Cannot create motions using the Governance v{version} Extension. Please upgrade to a newer version (when available)`,
-  },
 });
 
 const requiredRoles = [ColonyRole.Root];
@@ -52,64 +47,35 @@ const NetworkContractUpgradeDialogForm = ({
   back,
   colony,
   colony: { version },
+  enabledExtensionData,
 }: ActionDialogProps) => {
   const {
-    formState: { isSubmitting },
-  } = useFormContext();
-
-  // const {
-  //   data,
-  //   loading: loadingLegacyRecoveyRole,
-  // } = useLegacyNumberOfRecoveryRolesQuery({
-  //   variables: {
-  //     colonyAddress,
-  //   },
-  // });
-
-  // const { version: newVersion } = useNetworkContracts();
-
-  // const {
-  //   votingExtensionVersion,
-  //   isVotingExtensionEnabled,
-  // } = useEnabledExtensions({
-  //   colonyAddress,
-  // });
-
-  const [userHasPermission, onlyForceAction] = useDialogActionPermissions(
+    userHasPermission,
+    canCreateMotion,
+    disabledSubmit,
+    disabledInput,
+    hasLegacyRecoveryRole,
+    isLoadingLegacyRecoveryRole,
+  } = useNetworkContractUpgradeDialogStatus(
     colony,
-    false, // isVotingExtensionEnabled,
     requiredRoles,
-    [Id.RootDomain],
+    enabledExtensionData,
   );
-  // const canUpgradeVersion =
-  //   userHasPermission && !!colonyCanBeUpgraded(colony, newVersion as string);
-
-  const inputDisabled = onlyForceAction || isSubmitting; // !canUpgradeVersion ||
-
-  // const PREVENT_UPGRADE_IF_LEGACY_RECOVERY_ROLES =
-  //   data?.legacyNumberOfRecoveryRoles
-  //     ? data?.legacyNumberOfRecoveryRoles > 1
-  //     : false;
-
-  // const cannotCreateMotion =
-  //   votingExtensionVersion ===
-  //     VotingReputationExtensionVersion.FuchsiaLightweightSpaceship &&
-  //   !values.forceAction;
 
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <DialogHeading title={MSG.title} />
       </DialogSection>
-      {/* {loadingLegacyRecoveyRole && (
+      {isLoadingLegacyRecoveryRole && (
         <DialogSection>
           <MiniSpinnerLoader
             className={styles.loadingInfo}
             loadingText={MSG.loadingData}
           />
         </DialogSection>
-      )} */}
-      {false && ( // PREVENT_UPGRADE_IF_LEGACY_RECOVERY_ROLES
+      )}
+      {hasLegacyRecoveryRole && (
         <DialogSection>
           <LegacyPermissionWarning />
         </DialogSection>
@@ -126,7 +92,7 @@ const NetworkContractUpgradeDialogForm = ({
         <Annotations
           label={MSG.annotation}
           name="annotation"
-          disabled={inputDisabled}
+          disabled={disabledInput}
         />
       </DialogSection>
       {!userHasPermission && (
@@ -134,31 +100,18 @@ const NetworkContractUpgradeDialogForm = ({
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
-      {/* {onlyForceAction && <NotEnoughReputation />}
-      {cannotCreateMotion && (
+      {/* {onlyForceAction && <NotEnoughReputation />} */}
+      {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <div className={styles.noPermissionMessage}>
-            <FormattedMessage
-              {...MSG.cannotCreateMotion}
-              values={{
-                version:
-                  VotingReputationExtensionVersion.FuchsiaLightweightSpaceship,
-              }}
-            />
-          </div>
+          <CannotCreateMotionMessage />
         </DialogSection>
-      )} */}
+      )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
-          disabled={
-            // cannotCreateMotion ||
-            inputDisabled ||
-            // PREVENT_UPGRADE_IF_LEGACY_RECOVERY_ROLES ||
-            isSubmitting
-          }
+          disabled={disabledSubmit}
           dataTest="confirmButton"
           onSecondaryButtonClick={back}
-          // loading={loadingLegacyRecoveyRole} @TODO: Add a loading prop when this data becomes available.
+          // loading={isLoadingLegacyRecoveryRole} @TODO: Add a loading prop when this data becomes available.
         />
       </DialogSection>
     </>
