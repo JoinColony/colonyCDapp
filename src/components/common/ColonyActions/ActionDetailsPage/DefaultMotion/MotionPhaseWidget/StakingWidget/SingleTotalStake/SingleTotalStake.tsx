@@ -38,7 +38,6 @@ const MinStakeTooltip = ({ children }: MinStakeTooltipProps) => (
 );
 
 const SingleTotalStake = () => {
-  const userHasStaked = true;
   const isObjection = false;
   const totalPercentage = 10;
 
@@ -64,7 +63,7 @@ const SingleTotalStake = () => {
       ) : (
         progressBar
       )}
-      {userHasStaked && <UserStakeMessage />}
+      <UserStakeMessage />
     </>
   );
 };
