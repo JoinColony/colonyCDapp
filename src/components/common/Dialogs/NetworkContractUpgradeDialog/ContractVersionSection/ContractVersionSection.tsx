@@ -23,7 +23,7 @@ interface Props {
 
 const LegacyPermissionWarning = ({ currentVersion }: Props) => {
   const nextVersion = currentVersion + 1;
-  const networkVersion = parseInt('1', 10); // parseInt(newVersion || '1', 10);
+  const networkVersion = 1; // newVersion - @TODO: This value comes from useNetworkContracts() in the Dapp. To be wired up.
 
   return (
     <>

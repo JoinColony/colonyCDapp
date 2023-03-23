@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormattedMessage, defineMessages } from 'react-intl';
+import { defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
@@ -44,10 +44,6 @@ const MSG = defineMessages({
     id: `${displayName}.logo`,
     defaultMessage: 'Colony Logo (Optional)',
   },
-  permittedFormat: {
-    id: `${displayName}.permittedFormat`,
-    defaultMessage: 'Permitted format: .png or .svg',
-  },
   annotation: {
     id: `${displayName}.annotation`,
     defaultMessage: `Explain why you’re editing the colony's details (optional)`,
@@ -55,10 +51,6 @@ const MSG = defineMessages({
   invalidAvatarFormat: {
     id: `${displayName}.invalidAvatarFormat`,
     defaultMessage: `Image you tried to upload is in an invalid format`,
-  },
-  cannotCreateMotion: {
-    id: `${displayName}.cannotCreateMotion`,
-    defaultMessage: `Cannot create motions using the Governance v{version} Extension. Please upgrade to a newer version (when available)`,
   },
 });
 
@@ -83,13 +75,6 @@ const EditColonyDetailsDialogForm = ({
       enabledExtensionData,
     );
 
-  /*
-   * Note that these threee methods just read the file locally, they don't actually
-   * upload it anywere.
-   *
-   * The upload method returns the file as a base64 string, which, after we submit
-   * the form we will be uploading to IPFS
-   */
   const handleFileRead = async (file) => {
     if (file) {
       const base64image = file.data;
@@ -172,9 +157,6 @@ const EditColonyDetailsDialogForm = ({
             <InputStatus error={MSG.invalidAvatarFormat} />
           </div>
         )}
-        <p className={styles.smallText}>
-          <FormattedMessage {...MSG.permittedFormat} />
-        </p>
       </DialogSection>
       <DialogSection>
         <Input
