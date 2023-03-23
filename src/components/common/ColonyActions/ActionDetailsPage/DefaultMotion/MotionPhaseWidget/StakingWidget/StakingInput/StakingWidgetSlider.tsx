@@ -8,6 +8,9 @@ import { SLIDER_AMOUNT_KEY } from './StakingInput';
 
 import styles from './StakingWidgetSlider.css';
 
+const displayName =
+  'common.ColonyActions.DefaultMotion.StakingWidget.StakingWidgetSlider';
+
 const StakingWidgetSlider = () => {
   const { watch } = useFormContext();
   const { canBeStaked } = useStakingWidgetContext();
@@ -34,5 +37,7 @@ const StakingWidgetSlider = () => {
     </div>
   );
 };
+
+StakingWidgetSlider.displayName = displayName;
 
 export default StakingWidgetSlider;
