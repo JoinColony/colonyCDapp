@@ -5,12 +5,12 @@ import classNames from 'classnames';
 
 import { useColonyContext } from '~hooks';
 import Numeral from '~shared/Numeral';
-import { SLIDER_AMOUNT_KEY } from '../StakingInput';
 import {
   getStakeFromSlider,
   getStakePercentage,
   useStakingWidgetContext,
 } from '../..';
+import { SLIDER_AMOUNT_KEY } from '..';
 
 import styles from './RequiredStakeMessage.css';
 
