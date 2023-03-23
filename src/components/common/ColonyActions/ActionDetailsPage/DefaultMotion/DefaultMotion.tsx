@@ -25,18 +25,24 @@ const DefaultMotion = ({ actionData }: DefaultMotionProps) => {
 
   const { isVotingReputationEnabled } = useEnabledExtensions();
 
-  if (!colony) {
+  if (!colony || !actionData.motionData) {
     return null;
   }
 
   const motionState = MotionState.Staking;
-
-  const showBanner = true; // !shouldDisplayMotionInActionsList(currentStake, requiredStake);
+  const {
+    motionData: {
+      motionStakes: {
+        percentage: { nay, yay },
+      },
+    },
+  } = actionData;
+  const stakeLessThan10Percent = Number(nay) + Number(yay) < 10;
 
   return (
     <div className={styles.main}>
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
-      {showBanner && <StakeRequiredBanner isDecision={false} />}
+      {stakeLessThan10Percent && <StakeRequiredBanner isDecision={false} />}
       {isVotingReputationEnabled && (
         <MotionHeading motionState={motionStateMap[motionState]} />
       )}
