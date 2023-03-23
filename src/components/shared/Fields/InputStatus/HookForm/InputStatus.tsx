@@ -39,7 +39,7 @@ const HookFormInputStatus = ({
     <Element
       className={getMainClasses(appearance, styles, {
         error: !!error && !isLoading,
-        hidden: (!text && !isLoading) || (!!error && touched === false),
+        hidden: (!text && !isLoading) || (!!error && !touched),
       })}
     >
       {isLoading ? loadingText : text}
