@@ -1,7 +1,10 @@
 import React, { createContext, ReactNode, useContext, useMemo } from 'react';
+import { useAppContext } from '~hooks';
 import { MotionData } from '~types';
 
-export type StakingWidgetContextValues = MotionData;
+export interface StakingWidgetContextValues extends MotionData {
+  canBeStaked: boolean;
+}
 
 const StakingWidgetContext = createContext<Partial<StakingWidgetContextValues>>(
   {},
@@ -24,13 +27,24 @@ interface StakingWidgetProviderProps {
 
 export const StakingWidgetProvider = ({
   children,
+  motionData: {
+    remainingStakes: [nayRemaining, yayRemaining],
+  },
   motionData,
 }: StakingWidgetProviderProps) => {
+  const { user } = useAppContext();
+  const isObjection = false;
+  const remainingToStake = isObjection ? nayRemaining : yayRemaining;
+
+  // Todo: extend this definition
+  const canBeStaked = !!(user && remainingToStake !== '0');
+
   const stakingWidgetValues = useMemo(
     () => ({
       ...motionData,
+      canBeStaked,
     }),
-    [motionData],
+    [motionData, canBeStaked],
   );
 
   return (
