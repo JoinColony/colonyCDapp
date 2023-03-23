@@ -157,7 +157,7 @@ const TokenManagementDialogForm = ({
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <NoPermissionMessage requiredPermissions={[ColonyRole.Root]} />
+          <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
       {/* {onlyForceAction && (

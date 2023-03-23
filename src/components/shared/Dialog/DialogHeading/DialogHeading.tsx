@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
 import { Heading3 } from '~shared/Heading';
+import { UniversalMessageValues } from '~types';
 
 // import { ForceToggle } from '~shared/Fields';
 // import MotionDomainSelect from '~dashboard/MotionDomainSelect';
@@ -12,9 +13,11 @@ const displayName = 'DialogHeading';
 
 interface Props {
   title: MessageDescriptor;
+  titleValues?: UniversalMessageValues;
+  children?: ReactNode;
 }
 
-const DialogHeading = ({ title }: Props) => {
+const DialogHeading = ({ title, titleValues, children }: Props) => {
   // const handleFilterMotionDomains = (optionDomain) => {
   //     const optionDomainId = parseInt(optionDomain.value, 10);
   //     if (currentFromDomain === Id.RootDomain) {
@@ -49,11 +52,13 @@ const DialogHeading = ({ title }: Props) => {
         <Heading3
           appearance={{ size: 'medium', margin: 'none', theme: 'dark' }}
           text={title}
+          textValues={titleValues}
         />
         {/* {hasRoles && isVotingExtensionEnabled && (
           <ForceToggle disabled={!canMakePayment || isSubmitting} />
         )} */}
       </div>
+      {children}
     </div>
   );
 };

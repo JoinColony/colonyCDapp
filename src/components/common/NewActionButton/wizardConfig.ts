@@ -16,10 +16,10 @@ import {
   MintTokenDialog,
   // NetworkContractUpgradeDialog,
   // EditColonyDetailsDialog,
-  // ManageReputationDialog,
+  ManageReputationDialog,
   TokenManagementDialog,
-  // SmiteDialog,
-  // AwardDialog,
+  SmiteDialog,
+  AwardDialog,
 } from '../Dialogs';
 
 export const getWizardFlowConfig = (
@@ -112,28 +112,34 @@ export const getWizardFlowConfig = (
       enabledExtensionData,
     },
   },
-  // {
-  //   component: ManageReputationDialog,
-  //   props: {
-  //     nextStepAwardReputation: 'common.AwardDialog',
-  //     nextStepSmiteReputation: 'common.SmiteDialog',
-  //     prevStep: 'common.ColonyActionsDialog',
-  //   },
-  // },
-  // {
-  //   component: AwardDialog,
-  //   props: {
-  //     prevStep: 'common.ManageReputationDialog',
-  //     filteredDomainId,
-  //   },
-  // },
-  // {
-  //   component: SmiteDialog,
-  //   props: {
-  //     prevStep: 'common.ManageReputationDialog',
-  //     filteredDomainId,
-  //   },
-  // },
+  {
+    component: ManageReputationDialog,
+    props: {
+      nextStepAwardReputation: 'common.AwardDialog',
+      nextStepSmiteReputation: 'common.SmiteDialog',
+      prevStep: 'common.ColonyActionsDialog',
+      colony,
+      enabledExtensionData,
+    },
+  },
+  {
+    component: AwardDialog,
+    props: {
+      prevStep: 'common.ManageReputationDialog',
+      filteredDomainId,
+      colony,
+      enabledExtensionData,
+    },
+  },
+  {
+    component: SmiteDialog,
+    props: {
+      prevStep: 'common.ManageReputationDialog',
+      filteredDomainId,
+      colony,
+      enabledExtensionData,
+    },
+  },
   // {
   //   component: AdvancedDialog,
   //   props: {

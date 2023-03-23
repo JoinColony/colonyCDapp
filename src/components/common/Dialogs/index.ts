@@ -13,9 +13,9 @@ export { default as ManageWhitelistDialog } from './ManageWhitelistDialog';
 export { default as MintTokenDialog } from './MintTokenDialog';
 // export { default as NetworkContractUpgradeDialog } from './NetworkContractUpgradeDialog';
 // export { default as EditColonyDetailsDialog } from './EditColonyDetailsDialog';
-// export { default as ManageReputationDialog } from './ManageReputationDialog';
+export { default as ManageReputationDialog } from './ManageReputationDialog';
 export {
   default as TokenManagementDialog,
   FormValues as TokenManagementDialogFormValues,
 } from './TokenManagementDialog';
-// export { SmiteDialog, AwardDialog } from './AwardAndSmiteDialogs';
+export { SmiteDialog, AwardDialog } from './AwardAndSmiteDialogs';

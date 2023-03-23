@@ -26,7 +26,7 @@ const validationSchema = object()
       .shape({
         profile: object()
           .shape({
-            displayName: string(),
+            displayName: string().nullable(),
           })
           .defined(),
         walletAddress: string().address().defined(),
