@@ -11,7 +11,7 @@ export const getStakeFromSlider = (
     .add(userMinStake);
 
 /* BigNumbers round down, therefore if it's been rounded down to zero, display '1' */
-export const getStakePercentage = (
+export const getRemainingStakePercentage = (
   stake: BigNumber,
   remainingToStake: string,
 ) =>
