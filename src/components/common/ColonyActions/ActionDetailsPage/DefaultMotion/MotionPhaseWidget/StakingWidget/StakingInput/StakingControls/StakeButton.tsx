@@ -1,12 +1,14 @@
 import React from 'react';
 
 import Button from '~shared/Button';
+import { useStakingWidgetContext } from '../../StakingWidgetProvider';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.StakeButton';
 
 const StakeButton = () => {
   const isObjection = false;
+  const { canBeStaked } = useStakingWidgetContext();
   return (
     <Button
       appearance={{
@@ -14,7 +16,10 @@ const StakeButton = () => {
         size: 'medium',
       }}
       type="submit"
-      disabled={false}
+      disabled={!canBeStaked}
+      /* userActivatedTokens.lt(
+        getDecimalStake(values.amount).round(),
+      ) */
       text={{ id: 'button.stake' }}
       dataTest="stakeWidgetStakeButton"
     />
