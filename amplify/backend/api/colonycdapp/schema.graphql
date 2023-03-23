@@ -436,8 +436,31 @@ input TokenInput {
   id: ID!
 }
 
+type MotionStakeFragment {
+  yay: String!
+  nay: String!
+}
+
+type MotionStakes {
+  raw: MotionStakeFragment!
+  percentage: MotionStakeFragment!
+}
+
+type UserStakes {
+  address: String!
+  stakes: MotionStakes!
+}
+
 type MotionData {
   motionId: String!
+  usersStakes: [UserStakes!]!
+  motionStakes: MotionStakes!
+  remainingStakes: [String!]! # tuple [nayRemaining, yayRemaining]
+  userMinStake: String!
+  requiredStake: String!
+  # For calculating user's max stake in client
+  rootHash: String!
+  motionDomainId: String!
 }
 
 # This will store the relevant events we care about for a particular colony
