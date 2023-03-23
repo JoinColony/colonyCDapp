@@ -8,12 +8,12 @@ import {
   GANACHE_NETWORK,
   TOKEN_DATA,
   GANACHE_LOCAL_RPC_URL,
-  isDev,
+  // isDev,
 } from '~constants';
 
-import ganacheModule from './ganacheModule';
+// import ganacheModule from './ganacheModule';
 
-import { private_keys as ganachePrivateKeys } from '../../../../amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json';
+// import { private_keys as ganachePrivateKeys } from '../../../../amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json';
 
 // import {
 //   create as createSoftwareWallet,
@@ -30,18 +30,18 @@ import { Network, DevelopmentWallets } from '~types';
 // import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';
 
 const injected = injectedModule();
-const ganache = isDev
-  ? Object.values(ganachePrivateKeys)
-      .map((privateKey, index) => ganacheModule(privateKey, index + 1))
-      /*
-       * Remove the wallets used by the reputation miner and the block ingestor
-       * As to not cause any "unplesantness"
-       */
-      .slice(0, -2)
-  : [];
+// const ganache = isDev
+//   ? Object.values(ganachePrivateKeys)
+//       .map((privateKey, index) => ganacheModule(privateKey, index + 1))
+//       /*
+//        * Remove the wallets used by the reputation miner and the block ingestor
+//        * As to not cause any "unplesantness"
+//        */
+//       .slice(0, -2)
+//   : [];
 
 const onboard = Onboard({
-  wallets: [injected, ...ganache],
+  wallets: [injected],
   /*
    * @TODO This needs to be set up properly for other networks as well
    */
