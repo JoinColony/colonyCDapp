@@ -44,25 +44,25 @@ const RecoveryModeDialog = ({
   );
 
   return (
-    <Form<FormValues>
-      defaultValues={{
-        annotation: '',
-      }}
-      actionType={ActionTypes.ACTION_RECOVERY}
-      validationSchema={validationSchema}
-      onSuccess={close}
-      transform={transform}
-    >
-      {({ formState }) => (
-        <Dialog cancel={cancel}>
+    <Dialog cancel={cancel}>
+      <Form<FormValues>
+        defaultValues={{
+          annotation: '',
+        }}
+        actionType={ActionTypes.ACTION_RECOVERY}
+        validationSchema={validationSchema}
+        onSuccess={close}
+        transform={transform}
+      >
+        {({ formState }) => (
           <DialogForm
             {...formState}
             colony={colony}
             back={() => callStep(prevStep)}
           />
-        </Dialog>
-      )}
-    </Form>
+        )}
+      </Form>
+    </Dialog>
   );
 };
 
