@@ -293,6 +293,7 @@ const ManageReputationDialogForm = ({
           onSecondaryButtonClick={back}
           disabled={disabledSubmit}
           dataTest="reputationConfirmButton"
+          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
         />
       </DialogSection>
     </>

@@ -21,7 +21,7 @@ interface Appearance {
 export interface Props
   extends Omit<CoreInputProps, 'placeholder' | 'placeholderValues'>,
     Omit<InputHTMLAttributes<HTMLInputElement>, 'name' | 'placeholder'> {
-  appearance: Appearance;
+  appearance?: Appearance;
   /**  Text for the checkbox tooltip */
   tooltipText?: Message;
   /** Text values for tooltip */
