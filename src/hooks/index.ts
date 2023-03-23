@@ -61,6 +61,7 @@ export { default as useTokenTotalBalance } from './useTokenTotalBalance';
 export { default as useStakingSlider } from './useStakingSlider';
 export { default as useObjectButton } from './useObjectButton';
 export { default as useTotalStakeRadios } from './useTotalStakeRadios';
+export { default as useStakingInput } from './useStakingInput';
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously
  */
