@@ -17,6 +17,8 @@ import { getValidationSchema } from './validation';
 
 export const displayName = 'common.TransferFundsDialog';
 
+type FormValues = InferType<ReturnType<typeof getValidationSchema>>;
+
 type Props = Required<DialogProps> &
   WizardDialogType<object> &
   ActionDialogProps & {
@@ -58,8 +60,6 @@ const TransferFundsDialog = ({
     ) || Id.RootDomain;
 
   const validationSchema = getValidationSchema(colony);
-
-  type FormValues = InferType<typeof validationSchema>;
 
   return (
     <Dialog cancel={cancel}>

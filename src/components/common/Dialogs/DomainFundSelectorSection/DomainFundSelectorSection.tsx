@@ -41,9 +41,9 @@ const DomainFundSelectorSection = ({
   const { watch, setValue, trigger } = useFormContext();
   const { motionDomainId } = watch();
 
-  const handleFromDomainChange = (fromDomainValue) => {
-    if (motionDomainId !== fromDomainValue) {
-      setValue('motionDomainId', fromDomainValue);
+  const handleFromDomainChange = (fromDomainId: string) => {
+    if (motionDomainId !== fromDomainId) {
+      setValue('motionDomainId', fromDomainId);
     }
     trigger();
   };
