@@ -4,6 +4,7 @@ export {
   default as StakingInput,
   StakingSlider,
   getStakingTransformFn,
+  StakingWidgetValues,
 } from './StakingInput';
 export { default as GroupedTotalStake } from './GroupedTotalStake';
 export * from './StakingWidgetProvider';

@@ -4,11 +4,12 @@ import { BigNumber } from 'ethers';
 
 import { ActionHookForm as ActionForm } from '~shared/Fields';
 import { Action, ActionTypes } from '~redux';
+import { useStakingInput } from '~hooks';
 import { mapPayload } from '~utils/actions';
 import { MotionVote } from '~utils/colonyMotions';
 import { useAppContext, useColonyContext } from '~hooks';
 
-import { useStakingWidgetContext, getStakeFromSlider } from '..';
+import { getStakeFromSlider } from '..';
 import { StakingControls, StakingSlider } from '.';
 
 const displayName =
@@ -48,31 +49,8 @@ export const getStakingTransformFn = (
   });
 
 const StakingInput = () => {
-  // const handleSuccess = (_, { setFieldValue, resetForm }) => {
-  //     resetForm({});
-  //     setFieldValue('amount', 0);
-  //     scrollToRef?.current?.scrollIntoView({ behavior: 'smooth' });
-  //   },
-
-  const { user } = useAppContext();
-  const { colony } = useColonyContext();
-  const {
-    motionId,
-    remainingStakes: [nayRemaining, yayRemaining],
-    userMinStake,
-    canBeStaked,
-    isObjection,
-  } = useStakingWidgetContext();
-  const remainingToStake = isObjection ? nayRemaining : yayRemaining;
-  const vote = isObjection ? MotionVote.Nay : MotionVote.Yay;
-  const transform = getStakingTransformFn(
-    remainingToStake,
-    userMinStake,
-    user?.walletAddress ?? '',
-    colony?.colonyAddress ?? '',
-    motionId,
-    vote,
-  );
+  const { transform, handleSuccess, canBeStaked, isObjection } =
+    useStakingInput();
   return (
     <ActionForm<StakingWidgetValues>
       defaultValues={{
