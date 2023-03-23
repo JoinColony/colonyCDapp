@@ -7,19 +7,20 @@ import { useFormContext } from 'react-hook-form';
 import { ItemDataType } from '~shared/OmniPicker';
 import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
 import { HookFormSelect as Select, Annotations } from '~shared/Fields';
-import ExternalLink from '~shared/ExternalLink';
+import ExternalLink from '~shared/Extensions/ExternalLink';
 import SingleUserPicker, { filterUserSelection } from '~shared/SingleUserPicker';
 import UserAvatar from '~shared/UserAvatar';
-import { NoPermissionMessage, CannotCreateMotionMessage, PermissionRequiredInfo } from '../../Messages';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import { REPUTATION_LEARN_MORE } from '~constants/externalUrls';
 
-import { ColonyWatcher, User } from '~types';
+import { MemberUser, User } from '~types';
 
 import { useActionDialogStatus, useUserReputation } from '~hooks';
 import { sortBy } from '~utils/lodash';
 import { notNull } from '~utils/arrays';
+import { findDomainByNativeId } from '~utils/domains';
 
+import { NoPermissionMessage, CannotCreateMotionMessage, PermissionRequiredInfo } from '../../Messages';
 import ReputationAmountInput from './ReputationAmountInput';
 import TeamDropdownItem from './TeamDropdownItem';
 
@@ -68,7 +69,7 @@ const MSG = defineMessages({
 
 interface Props extends ActionDialogProps {
   nativeTokenDecimals: number;
-  verifiedUsers: ColonyWatcher['user'][];
+  verifiedUsers: MemberUser[];
   schemaUserReputation?: number;
   updateSchemaUserReputation?: (userPercentageReputation: number, totalRep?: string) => void;
   isSmiteAction?: boolean;
@@ -117,7 +118,8 @@ const ManageReputationDialogForm = ({
     ['value'],
   );
 
-  const domainName = colonyDomains.find((domain) => domain?.nativeId === domainId)?.metadata?.name;
+  const selectedDomain = findDomainByNativeId(domainId, colony);
+  const domainName = selectedDomain?.metadata?.name;
 
   const renderActiveOption = (option) => {
     const value = option ? option.value : undefined;
@@ -143,7 +145,7 @@ const ManageReputationDialogForm = ({
 
   const formattedData = verifiedUsers.map((user) => ({
     ...user,
-    id: user.walletAddress,
+    id: user,
   }));
 
   return (

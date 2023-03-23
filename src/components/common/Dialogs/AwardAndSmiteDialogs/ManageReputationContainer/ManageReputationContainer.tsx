@@ -123,28 +123,28 @@ const ManageReputationContainer = ({
   // );
 
   return (
-    <Form<FormValues>
-      defaultValues={{
-        forceAction: false,
-        domainId: filteredDomainId || Id.RootDomain,
-        // user: selectedUser,
-        motionDomainId: Id.RootDomain,
-        amount: '',
-        annotation: '',
-      }}
-      actionType={actionType}
-      validationSchema={smiteValidationSchema || defaultValidationSchema}
-      onSuccess={close}
-      transform={transform}
-    >
-      {({ watch }) => {
-        const forceAction = watch('forceAction');
-        if (forceAction !== isForce) {
-          setIsForce(forceAction);
-        }
+    <Dialog cancel={cancel}>
+      <Form<FormValues>
+        defaultValues={{
+          forceAction: false,
+          domainId: filteredDomainId || Id.RootDomain,
+          // user: selectedUser,
+          motionDomainId: Id.RootDomain,
+          amount: '',
+          annotation: '',
+        }}
+        actionType={actionType}
+        validationSchema={smiteValidationSchema || defaultValidationSchema}
+        onSuccess={close}
+        transform={transform}
+      >
+        {({ watch }) => {
+          const forceAction = watch('forceAction');
+          if (forceAction !== isForce) {
+            setIsForce(forceAction);
+          }
 
-        return (
-          <Dialog cancel={cancel}>
+          return (
             <DialogForm
               colony={colony}
               nativeTokenDecimals={nativeTokenDecimals}
@@ -157,10 +157,10 @@ const ManageReputationContainer = ({
               isSmiteAction={isSmiteAction}
               enabledExtensionData={enabledExtensionData}
             />
-          </Dialog>
-        );
-      }}
-    </Form>
+          );
+        }}
+      </Form>
+    </Dialog>
   );
 };
 

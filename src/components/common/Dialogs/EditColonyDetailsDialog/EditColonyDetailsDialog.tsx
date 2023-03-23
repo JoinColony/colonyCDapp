@@ -57,39 +57,39 @@ const EditColonyDetailsDialog = ({
   );
 
   return (
-    <Form<FormValues>
-      defaultValues={{
-        forceAction: false,
-        colonyDisplayName: metadata?.displayName,
-        colonyAvatarImage: metadata?.avatar,
-        annotationMessage: '',
-        /*
-         * @NOTE That since this a root motion, and we don't actually make use
-         * of the motion domain selected (it's disabled), we don't need to actually
-         * pass the value over to the motion, since it will always be 1
-         */
-      }}
-      actionType={actionType}
-      validationSchema={validationSchema}
-      onSuccess={close}
-      transform={transform}
-    >
-      {({ getValues }) => {
-        const values = getValues();
-        if (values.forceAction !== isForce) {
-          setIsForce(values.forceAction);
-        }
-        return (
-          <Dialog cancel={cancel}>
+    <Dialog cancel={cancel}>
+      <Form<FormValues>
+        defaultValues={{
+          forceAction: false,
+          colonyDisplayName: metadata?.displayName,
+          colonyAvatarImage: metadata?.avatar,
+          annotationMessage: '',
+          /*
+           * @NOTE That since this a root motion, and we don't actually make use
+           * of the motion domain selected (it's disabled), we don't need to actually
+           * pass the value over to the motion, since it will always be 1
+           */
+        }}
+        actionType={actionType}
+        validationSchema={validationSchema}
+        onSuccess={close}
+        transform={transform}
+      >
+        {({ getValues }) => {
+          const values = getValues();
+          if (values.forceAction !== isForce) {
+            setIsForce(values.forceAction);
+          }
+          return (
             <EditColonyDetailsDialogForm
               colony={colony}
               back={() => callStep(prevStep)}
               enabledExtensionData={enabledExtensionData}
             />
-          </Dialog>
-        );
-      }}
-    </Form>
+          );
+        }}
+      </Form>
+    </Dialog>
   );
 };
 

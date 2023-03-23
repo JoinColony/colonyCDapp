@@ -74,38 +74,38 @@ const PermissionManagementDialog = ({
   const defaultDomain = !preselectedDomainId ? Id.RootDomain : preselectedDomainId;
 
   return (
-    <Form<FormValues>
-      defaultValues={{
-        forceAction: false,
-        user: null,
-        domainId: defaultDomain,
-        roles: [],
-        annotation: '',
-        motionDomainId: defaultDomain,
-      }}
-      validationSchema={validationSchema}
-      onSuccess={close}
-      actionType={actionType}
-      transform={transform}
-    >
-      {({ watch }) => {
-        const forceAction = watch('forceAction');
-        if (forceAction !== isForce) {
-          setIsForce(forceAction);
-        }
+    <Dialog cancel={cancel}>
+      <Form<FormValues>
+        defaultValues={{
+          forceAction: false,
+          user: null,
+          domainId: defaultDomain,
+          roles: [],
+          annotation: '',
+          motionDomainId: defaultDomain,
+        }}
+        validationSchema={validationSchema}
+        onSuccess={close}
+        actionType={actionType}
+        transform={transform}
+      >
+        {({ watch }) => {
+          const forceAction = watch('forceAction');
+          if (forceAction !== isForce) {
+            setIsForce(forceAction);
+          }
 
-        return (
-          <Dialog cancel={cancel}>
+          return (
             <PermissionManagementForm
               colony={colony}
               back={prevStep && callStep ? () => callStep(prevStep) : undefined}
               close={close}
               enabledExtensionData={enabledExtensionData}
             />
-          </Dialog>
-        );
-      }}
-    </Form>
+          );
+        }}
+      </Form>
+    </Dialog>
   );
 };
 
