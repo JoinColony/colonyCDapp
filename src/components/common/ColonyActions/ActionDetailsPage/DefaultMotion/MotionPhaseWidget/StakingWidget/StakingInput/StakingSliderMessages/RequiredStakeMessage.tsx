@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 
 import Numeral from '~shared/Numeral';
-import { getStakeFromSlider, getStakePercentage } from '../../helpers';
+import { getStakeFromSlider, getRemainingStakePercentage } from '../../helpers';
 import { SLIDER_AMOUNT_KEY } from '..';
 
 import styles from './RequiredStakeMessage.css';
@@ -42,7 +42,7 @@ const RequiredStakeMessage = ({
     remainingToStake,
     userMinStake,
   );
-  const stakePercentage = getStakePercentage(stake, remainingToStake);
+  const stakePercentage = getRemainingStakePercentage(stake, remainingToStake);
 
   return (
     <div>
