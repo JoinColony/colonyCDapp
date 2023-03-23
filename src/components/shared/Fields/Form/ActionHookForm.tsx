@@ -1,6 +1,6 @@
 import React from 'react';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
 
-import { UseFormReturn, FieldValues } from 'react-hook-form';
 import { ActionTypes, ActionTypeString } from '~redux';
 import { ActionTransformFnType, getFormAction } from '~utils/actions';
 import { useAsyncFunction } from '~hooks';
@@ -14,9 +14,9 @@ import HookForm, {
 const displayName = 'Form.ActionHookForm';
 
 export type OnSuccess<V extends FieldValues> = (
-  result: any,
   values: V,
-  FormValues: UseFormReturn<V>,
+  formHelpers: UseFormReturn<V, any>,
+  result: any,
 ) => void;
 
 interface Props<V extends Record<string, any>>
@@ -66,7 +66,7 @@ const ActionHookForm = <V extends Record<string, any>>({
   const handleSubmit: CustomSubmitHandler<V> = async (values, formHelpers) => {
     try {
       const res = await asyncFunction(values);
-      onSuccess?.(res, values, formHelpers);
+      onSuccess?.(values, formHelpers, res);
     } catch (e) {
       console.error(e);
       onError?.(e, formHelpers);
