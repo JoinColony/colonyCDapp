@@ -8,12 +8,13 @@ import { mapPayload } from '~utils/actions';
 import { MotionVote } from '~utils/colonyMotions';
 import { useAppContext, useColonyContext } from '~hooks';
 
-import StakingControls from './StakingControls';
-import StakingSliderDescription from './StakingSliderDescription';
-import StakingSliderAnnotation from './StakingSliderAnnotation';
-import StakingWidgetSlider from './StakingWidgetSlider';
-import { useStakingWidgetContext } from '../StakingWidgetProvider';
-import { getStakeFromSlider } from '../helpers';
+import { useStakingWidgetContext, getStakeFromSlider } from '..';
+import {
+  StakingControls,
+  StakingSliderDescription,
+  StakingSliderAnnotation,
+  StakingWidgetSlider,
+} from '.';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget';
