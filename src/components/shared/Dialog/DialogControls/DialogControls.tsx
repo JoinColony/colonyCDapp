@@ -2,7 +2,6 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
 
-import { useEnabledExtensions } from '~hooks';
 import Button, { ButtonAppearance } from '~shared/Button';
 
 import styles from './DialogControls.css';

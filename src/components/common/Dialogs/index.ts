@@ -12,8 +12,8 @@ export { default as PermissionManagementDialog } from './PermissionManagementDia
 export { default as RecoveryModeDialog } from './RecoveryModeDialog';
 export { default as ManageWhitelistDialog } from './ManageWhitelistDialog';
 export { default as MintTokenDialog } from './MintTokenDialog';
-// export { default as NetworkContractUpgradeDialog } from './NetworkContractUpgradeDialog';
-// export { default as EditColonyDetailsDialog } from './EditColonyDetailsDialog';
+export { default as NetworkContractUpgradeDialog } from './NetworkContractUpgradeDialog';
+export { default as EditColonyDetailsDialog } from './EditColonyDetailsDialog';
 export { default as ManageReputationDialog } from './ManageReputationDialog';
 export {
   default as TokenManagementDialog,

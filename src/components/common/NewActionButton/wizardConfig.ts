@@ -15,8 +15,8 @@ import {
   RecoveryModeDialog,
   ManageWhitelistDialog,
   MintTokenDialog,
-  // NetworkContractUpgradeDialog,
-  // EditColonyDetailsDialog,
+  NetworkContractUpgradeDialog,
+  EditColonyDetailsDialog,
   ManageReputationDialog,
   TokenManagementDialog,
   SmiteDialog,
@@ -178,18 +178,22 @@ export const getWizardFlowConfig = (
       enabledExtensionData,
     },
   },
-  // {
-  //   component: NetworkContractUpgradeDialog,
-  //   props: {
-  //     prevStep: 'common.AdvancedDialog',
-  //   },
-  // },
-  // {
-  //   component: EditColonyDetailsDialog,
-  //   props: {
-  //     prevStep: 'common.AdvancedDialog',
-  //   },
-  // },
+  {
+    component: NetworkContractUpgradeDialog,
+    props: {
+      prevStep: 'common.AdvancedDialog',
+      colony,
+      enabledExtensionData,
+    },
+  },
+  {
+    component: EditColonyDetailsDialog,
+    props: {
+      prevStep: 'common.AdvancedDialog',
+      colony,
+      enabledExtensionData,
+    },
+  },
   {
     component: MintTokenDialog,
     props: {
