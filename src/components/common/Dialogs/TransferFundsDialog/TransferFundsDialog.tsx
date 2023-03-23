@@ -58,8 +58,6 @@ const TransferFundsDialog = ({
 
   const validationSchema = getValidationSchema(colony);
 
-  type FormValues = InferType<typeof validationSchema>;
-
   return (
     <Dialog cancel={cancel}>
       <Form<FormValues>
