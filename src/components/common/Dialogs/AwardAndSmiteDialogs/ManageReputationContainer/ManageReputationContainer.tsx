@@ -8,12 +8,12 @@ import Decimal from 'decimal.js';
 import Dialog from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { useSelectedUser } from '~hooks';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
 import { notNull } from '~utils/arrays';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import DialogForm from '../ManageReputationDialogForm';
 import { AwardAndSmiteDialogProps } from '../types';
@@ -69,7 +69,7 @@ const ManageReputationContainer = ({
   enabledExtensionData,
 }: AwardAndSmiteDialogProps) => {
   const [isForce, setIsForce] = useState(false);
-  const [userReputation, setUserReputation] = useState(0);
+  const [schemaUserReputation, setSchemaUserReputation] = useState(0);
   const navigate = useNavigate();
   const colonyWatchers =
     watchers?.items.filter(notNull).map((item) => item.user) || [];
@@ -77,10 +77,6 @@ const ManageReputationContainer = ({
   // const verifiedUsers = useMemo(() => {
   //   return getVerifiedUsers(colony.whitelistedAddresses, colonyWatchers) || [];
   // }, [colonyWatchers, colony]);
-
-  const updateReputationCallback = (userRepPercentage: number) => {
-    setUserReputation(userRepPercentage);
-  };
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
@@ -110,7 +106,7 @@ const ManageReputationContainer = ({
             (value) => {
               const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
               return !new Decimal(numberWithoutCommas).greaterThan(
-                userReputation,
+                schemaUserReputation,
               );
             },
           ),
@@ -121,7 +117,9 @@ const ManageReputationContainer = ({
     );
   }
 
-  const nativeTokenDecimals = nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS;
+  const nativeTokenDecimals = getTokenDecimalsWithFallback(
+    nativeToken?.decimals,
+  );
 
   const transform = pipe(
     mapPayload((payload) =>
@@ -155,11 +153,12 @@ const ManageReputationContainer = ({
       onSuccess={close}
       transform={transform}
     >
-      {({ getValues }) => {
-        const values = getValues();
-        if (values.forceAction !== isForce) {
-          setIsForce(values.forceAction);
+      {({ watch }) => {
+        const forceAction = watch('forceAction');
+        if (forceAction !== isForce) {
+          setIsForce(forceAction);
         }
+
         return (
           <Dialog cancel={cancel}>
             <DialogForm
@@ -169,9 +168,10 @@ const ManageReputationContainer = ({
               verifiedUsers={
                 colonyWatchers // isWhitelistActivated ? verifiedUsers : colonyWatchers
               }
-              updateReputation={
-                isSmiteAction ? updateReputationCallback : undefined
+              updateSchemaUserReputation={
+                isSmiteAction ? setSchemaUserReputation : undefined
               }
+              schemaUserReputation={schemaUserReputation}
               isSmiteAction={isSmiteAction}
               enabledExtensionData={enabledExtensionData}
             />

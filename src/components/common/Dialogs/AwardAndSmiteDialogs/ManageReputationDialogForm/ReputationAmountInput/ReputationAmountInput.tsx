@@ -56,12 +56,12 @@ const ReputationAmountInput = ({
   isSmiteAction = false,
   disabled,
 }: Props) => {
-  const { getValues } = useFormContext();
-  const values = getValues();
+  const { watch } = useFormContext();
+  const { user, domainId } = watch();
   const { userReputation, totalReputation } = useUserReputation(
     colonyAddress,
-    values.user?.walletAddress,
-    Number(values.domainId),
+    user?.walletAddress,
+    Number(domainId),
   );
 
   const userPercentageReputation = calculatePercentageReputation(

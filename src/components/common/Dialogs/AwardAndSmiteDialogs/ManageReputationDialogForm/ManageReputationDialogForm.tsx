@@ -81,7 +81,8 @@ const MSG = defineMessages({
 interface Props extends ActionDialogProps {
   nativeTokenDecimals: number;
   verifiedUsers: ColonyWatcher['user'][];
-  updateReputation?: (
+  schemaUserReputation?: number;
+  updateSchemaUserReputation?: (
     userPercentageReputation: number,
     totalRep?: string,
   ) => void;
@@ -100,14 +101,15 @@ const ManageReputationDialogForm = ({
   back,
   colony: { domains, colonyAddress },
   colony,
-  updateReputation,
+  schemaUserReputation,
+  updateSchemaUserReputation,
   nativeTokenDecimals,
   verifiedUsers,
   isSmiteAction = false,
   enabledExtensionData,
 }: Props) => {
-  const { getValues } = useFormContext();
-  const values = getValues();
+  const { watch, trigger } = useFormContext();
+  const { domainId, user: selectedUser } = watch();
 
   const requiredRoles = [
     isSmiteAction ? ColonyRole.Arbitration : ColonyRole.Root,
@@ -117,14 +119,14 @@ const ManageReputationDialogForm = ({
     useActionDialogStatus(
       colony,
       requiredRoles,
-      [values.domainId],
+      [domainId],
       enabledExtensionData,
     );
 
   const { userReputation } = useUserReputation(
     colonyAddress,
-    values.user?.walletAddress,
-    Number(values.domainId),
+    selectedUser?.walletAddress,
+    Number(domainId),
   );
 
   const unformattedUserReputationAmount = new Decimal(userReputation || 0)
@@ -147,7 +149,7 @@ const ManageReputationDialogForm = ({
   );
 
   const domainName = colonyDomains.find(
-    (domain) => domain?.nativeId === values.domainId,
+    (domain) => domain?.nativeId === domainId,
   )?.metadata?.name;
 
   const renderActiveOption = (option) => {
@@ -166,10 +168,16 @@ const ManageReputationDialogForm = ({
   };
 
   useEffect(() => {
-    if (updateReputation) {
-      updateReputation(unformattedUserReputationAmount);
+    if (updateSchemaUserReputation) {
+      updateSchemaUserReputation(unformattedUserReputationAmount);
     }
-  }, [updateReputation, unformattedUserReputationAmount]);
+  }, [updateSchemaUserReputation, unformattedUserReputationAmount]);
+
+  useEffect(() => {
+    if (isSmiteAction) {
+      trigger('amount');
+    }
+  }, [schemaUserReputation, isSmiteAction, trigger]);
 
   const formattedData = verifiedUsers.map((user) => ({
     ...user,
