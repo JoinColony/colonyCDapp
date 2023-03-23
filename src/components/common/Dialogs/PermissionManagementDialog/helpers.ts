@@ -100,7 +100,6 @@ export const useCanRoleBeSet = (
   const { user: currentUser } = useAppContext();
   const currentUserRoles = useTransformer(getUserRolesForDomain, [
     colony,
-    // CURRENT USER!
     currentUser?.walletAddress,
     domainId,
   ]);

@@ -98,10 +98,10 @@ const PermissionManagementDialog = ({
       actionType={actionType}
       transform={transform}
     >
-      {({ getValues }) => {
-        const values = getValues();
-        if (values.forceAction !== isForce) {
-          setIsForce(values.forceAction);
+      {({ watch }) => {
+        const forceAction = watch('forceAction');
+        if (forceAction !== isForce) {
+          setIsForce(forceAction);
         }
 
         return (

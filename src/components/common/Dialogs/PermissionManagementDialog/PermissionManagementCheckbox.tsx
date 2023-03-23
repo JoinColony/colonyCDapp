@@ -1,8 +1,8 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
-
 import { useFormContext } from 'react-hook-form';
+
 import { HookFormCheckbox as Checkbox } from '~shared/Fields';
 import PermissionsLabel from '~shared/PermissionsLabel';
 import { formatText } from '~utils/intl';
@@ -68,8 +68,8 @@ const PermissionManagementCheckbox = ({
   domainId,
   dataTest,
 }: Props) => {
-  const { getValues } = useFormContext();
-  const user = getValues('user');
+  const { watch } = useFormContext();
+  const user = watch('user');
 
   const roleNameMessage = { id: `role.${role}` };
   const roleDescriptionMessage = MSG[`roleDescription${role}`] || {

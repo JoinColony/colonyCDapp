@@ -23,7 +23,7 @@ import UserAvatar from '~shared/UserAvatar';
 import { User } from '~types';
 import { notNull } from '~utils/arrays';
 // import { getAllUserRolesForDomain } from '~redux/transformers';
-import { getDomainOptions } from '~utils/domains';
+import { findDomainByNativeId, getDomainOptions } from '~utils/domains';
 
 import {
   CannotCreateMotionMessage,
@@ -95,9 +95,8 @@ const PermissionManagementForm = ({
       .map((item) => ({ ...item.user, id: item.user.walletAddress })) || [];
 
   const colonyDomains = domains?.items.filter(notNull) || [];
-  const domain = colonyDomains.find(
-    (colonyDomain) => colonyDomain.nativeId === domainId,
-  );
+  const domain = findDomainByNativeId(domainId, colony);
+
   const {
     inheritedRoles: selectedUserInheritedRoles,
     directRoles: selectedUserDirectRoles,
