@@ -93,7 +93,7 @@ const TokenAmountInput = ({ colony, disabled }: Props) => {
           <div className={styles.tokenAmountUsd}>
             <EthUsd
               // appearance={{ theme: 'grey' }}
-              value={amount ?? 0}
+              value={amount}
             />
           </div>
         )}
