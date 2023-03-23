@@ -66,6 +66,35 @@ fragment ColonyAction on ColonyAction {
   }
 }
 
+fragment MotionStakeFragment on MotionStakeFragment {
+  yay
+  nay
+}
+
 fragment MotionData on MotionData {
   motionId
+  motionStakes {
+    raw {
+      ...MotionStakeFragment
+    }
+    percentage {
+      ...MotionStakeFragment
+    }
+  }
+  usersStakes {
+    address
+    stakes {
+      raw {
+        ...MotionStakeFragment
+      }
+      percentage {
+        ...MotionStakeFragment
+      }
+    }
+  }
+  remainingStakes 
+  userMinStake
+  requiredStake
+  rootHash
+  motionDomainId
 }
