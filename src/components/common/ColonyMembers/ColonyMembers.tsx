@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 import ColonyHomeInfo from '~common/ColonyHome/ColonyHomeInfo';
 import Members from '~common/Members';
 import NotFoundRoute from '~routes/NotFoundRoute';
-import { useColonyMembers } from '~hooks';
+import { useColonyMembers, useColonyContext } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
 
 import MemberControls from './MemberControls';
@@ -23,9 +23,8 @@ const MSG = defineMessages({
 });
 
 const ColonyMembers = () => {
+  const { colony, loading } = useColonyContext();
   const {
-    colony,
-    loading,
     filters,
     selectedDomainId,
     setSelectedDomainId,
