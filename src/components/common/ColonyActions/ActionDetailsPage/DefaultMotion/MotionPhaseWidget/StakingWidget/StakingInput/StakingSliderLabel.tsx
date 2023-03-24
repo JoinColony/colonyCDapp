@@ -3,13 +3,15 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { Tooltip } from '~shared/Popover';
 
-import { RequiredStakeMessage } from './StakingSliderMessages';
+import {
+  RequiredStakeMessage,
+  RequiredStakeMessageProps,
+} from './StakingSliderMessages';
 
-import styles from './StakingSliderAnnotation.css';
-import { RequiredStakeMessageProps } from './StakingSliderMessages/RequiredStakeMessage';
+import styles from './StakingSliderLabel.css';
 
 const displayName =
-  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingSliderAnnotation';
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingSliderLabel';
 
 const MSG = defineMessages({
   tooltip: {
@@ -29,13 +31,13 @@ const tooltipOptions = {
   ],
 };
 
-interface StakingSliderAnnotationProps {
+interface StakingSliderLabelProps {
   requiredStakeMessageProps: RequiredStakeMessageProps;
 }
 
-const StakingSliderAnnotation = ({
+const StakingSliderLabel = ({
   requiredStakeMessageProps,
-}: StakingSliderAnnotationProps) => {
+}: StakingSliderLabelProps) => {
   // const { user } = useAppContext();
   // const showMinStakeMsg = !!user && !enoughTokens;
 
@@ -62,6 +64,6 @@ const StakingSliderAnnotation = ({
   );
 };
 
-StakingSliderAnnotation.displayName = displayName;
+StakingSliderLabel.displayName = displayName;
 
-export default StakingSliderAnnotation;
+export default StakingSliderLabel;

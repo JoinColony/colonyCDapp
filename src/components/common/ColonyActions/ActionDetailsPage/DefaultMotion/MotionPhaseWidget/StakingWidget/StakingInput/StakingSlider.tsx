@@ -2,8 +2,8 @@ import React from 'react';
 import { useStakingSlider } from '~hooks';
 
 import {
-  StakingSliderAnnotation,
   StakingSliderDescription,
+  StakingSliderLabel,
   StakingWidgetSlider,
 } from '.';
 
@@ -27,7 +27,7 @@ const StakingSlider = ({ isObjection, canBeStaked }: StakingSliderProps) => {
     <>
       <StakingSliderDescription isObjection={isObjection} />
       {remainingToStake !== '0' && (
-        <StakingSliderAnnotation
+        <StakingSliderLabel
           requiredStakeMessageProps={{
             totalPercentageStaked,
             remainingToStake,
