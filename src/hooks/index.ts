@@ -61,7 +61,7 @@ export { default as useColonyContractVersion } from './useColonyContractVersion'
 export { default as useNetworkInverseFee } from './useNetworkInverseFee';
 export { default as useUserByAddress } from './useUserByAddress';
 export { default as useUserByName } from './useUserByName';
-
+export { default as useStakingSlider } from './useStakingSlider';
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously
  */
