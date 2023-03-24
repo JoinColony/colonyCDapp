@@ -23,6 +23,30 @@ const validationSchema = object({
 export type StakingWidgetValues = InferType<typeof validationSchema>;
 type StakeMotionPayload = Action<ActionTypes.MOTION_STAKE>['payload'];
 
+export const getStakingTransformFn = (
+  remainingToStake: string,
+  userMinStake: string,
+  userAddress: string,
+  colonyAddress: string,
+  motionId: string,
+  vote: number,
+) =>
+  mapPayload(({ amount: sliderAmount }) => {
+    const finalStake = getStakeFromSlider(
+      sliderAmount,
+      remainingToStake,
+      userMinStake,
+    );
+
+    return {
+      amount: finalStake,
+      userAddress,
+      colonyAddress,
+      motionId: BigNumber.from(motionId),
+      vote,
+    } as StakeMotionPayload;
+  });
+
 const StakingInput = () => {
   // const handleSuccess = (_, { setFieldValue, resetForm }) => {
   //     resetForm({});
@@ -41,23 +65,14 @@ const StakingInput = () => {
   const isObjection = false;
   const remainingToStake = isObjection ? nayRemaining : yayRemaining;
   const vote = isObjection ? MotionVote.Nay : MotionVote.Yay;
-
-  const transform = mapPayload(({ amount: sliderAmount }) => {
-    const finalStake = getStakeFromSlider(
-      sliderAmount,
-      remainingToStake,
-      userMinStake,
-    );
-
-    return {
-      amount: finalStake,
-      userAddress: user?.walletAddress,
-      colonyAddress: colony?.colonyAddress,
-      motionId: BigNumber.from(motionId),
-      vote,
-    } as StakeMotionPayload;
-  });
-
+  const transform = getStakingTransformFn(
+    remainingToStake,
+    userMinStake,
+    user?.walletAddress ?? '',
+    colony?.colonyAddress ?? '',
+    motionId,
+    vote,
+  );
   return (
     <ActionForm<StakingWidgetValues>
       defaultValues={{
