@@ -15,7 +15,9 @@ import { pipe, withMeta, mapPayload } from '~utils/actions';
 import { getCreateDomainDialogPayload } from './helpers';
 import CreateDomainDialogForm from './CreateDomainDialogForm';
 
-type Props = DialogProps & WizardDialogType<object> & ActionDialogProps;
+type Props = DialogProps &
+  Partial<WizardDialogType<object>> &
+  ActionDialogProps;
 
 const displayName = 'common.CreateDomainDialog';
 
@@ -86,7 +88,7 @@ const CreateDomainDialog = ({
           }
           return (
             <CreateDomainDialogForm
-              back={prevStep ? () => callStep(prevStep) : undefined}
+              back={prevStep && callStep ? () => callStep(prevStep) : undefined}
               colony={colony}
               enabledExtensionData={enabledExtensionData}
             />

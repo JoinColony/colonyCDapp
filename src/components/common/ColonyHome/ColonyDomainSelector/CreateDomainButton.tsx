@@ -1,10 +1,10 @@
 import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Icon from '~shared/Icon';
-// import { useDialog } from '~core/Dialog';
-// import CreateDomainDialog from '~dialogs/CreateDomainDialog';
-import { useColonyContext } from '~hooks';
+import { useDialog } from '~shared/Dialog';
+import { CreateDomainDialog } from '~common/Dialogs';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
 
 import styles from './CreateDomainButton.css';
 
@@ -18,30 +18,16 @@ const MSG = defineMessages({
 });
 
 const CreateDomainButton = () => {
-  const { formatMessage } = useIntl();
-
   const { colony } = useColonyContext();
+  const enabledExtensionData = useEnabledExtensions();
+  const openCreateDomainDialog = useDialog(CreateDomainDialog);
 
-  // const openCreateDomainDialog = useDialog(CreateDomainDialog);
-
-  // const handleClick = useCallback<MouseEventHandler<HTMLButtonElement>>(
-  //   (evt) => {
-  //     evt.stopPropagation();
-  //     /*
-  //      * We don't have, and can't inject all the required props that the component
-  //      * is expecting when using it in a wizard
-  //      */
-  //     // @ts-ignore
-  //     return openCreateDomainDialog({
-  //       colony,
-  //     });
-  //   },
-  //   [openCreateDomainDialog, colony],
-  // );
-
-  const handleClick = () => colony;
-
-  const text = formatMessage(MSG.buttonCreateNewDomain);
+  const handleClick = () =>
+    colony &&
+    openCreateDomainDialog({
+      colony,
+      enabledExtensionData,
+    });
 
   return (
     <div className={styles.container}>
@@ -49,11 +35,13 @@ const CreateDomainButton = () => {
         <div className={styles.buttonIcon}>
           <Icon
             name="circle-plus"
-            title={text}
+            title={MSG.buttonCreateNewDomain}
             appearance={{ size: 'medium' }}
           />
         </div>
-        <div>{text}</div>
+        <div>
+          <FormattedMessage {...MSG.buttonCreateNewDomain} />
+        </div>
       </button>
     </div>
   );
