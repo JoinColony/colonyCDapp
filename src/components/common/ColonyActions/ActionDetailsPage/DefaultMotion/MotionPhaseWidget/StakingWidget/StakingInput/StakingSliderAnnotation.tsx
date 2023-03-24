@@ -6,6 +6,7 @@ import { Tooltip } from '~shared/Popover';
 import { RequiredStakeMessage } from './StakingSliderMessages';
 
 import styles from './StakingSliderAnnotation.css';
+import { RequiredStakeMessageProps } from './StakingSliderMessages/RequiredStakeMessage';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingSliderAnnotation';
@@ -28,7 +29,13 @@ const tooltipOptions = {
   ],
 };
 
-const StakingSliderAnnotation = () => {
+interface StakingSliderAnnotationProps {
+  requiredStakeMessageProps: RequiredStakeMessageProps;
+}
+
+const StakingSliderAnnotation = ({
+  requiredStakeMessageProps,
+}: StakingSliderAnnotationProps) => {
   // const { user } = useAppContext();
   // const showMinStakeMsg = !!user && !enoughTokens;
 
@@ -44,7 +51,7 @@ const StakingSliderAnnotation = () => {
         placement="top"
         popperOptions={tooltipOptions}
       >
-        <RequiredStakeMessage />
+        <RequiredStakeMessage {...requiredStakeMessageProps} />
 
         {/* {showMinStakeMsg ? (
           <MinimumStakeMessage />
