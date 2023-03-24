@@ -1,8 +1,6 @@
 import React from 'react';
 import { object, number, InferType, string } from 'yup';
 
-import { getStakeFromSlider } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
-
 import Dialog, { DialogProps } from '~shared/Dialog';
 import { ActionHookForm as ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
@@ -28,21 +26,13 @@ const validationSchema = object()
 type ObjectionValues = InferType<typeof validationSchema>;
 
 interface RaiseObjectionDialogProps extends DialogProps {
-  // stakingSliderProps: StakingSliderProps;
+  canBeStaked: boolean;
 }
 
 const RaiseObjectionDialog = ({
   close,
-}: //   stakingSliderProps: {
-//     stakingWidgetSliderProps: {
-//       remainingToStake,
-//       minUserStake,
-//       canBeStaked,
-//       userActivatedTokens,
-//     },
-//   },
-//   stakingSliderProps,
-RaiseObjectionDialogProps) => {
+  canBeStaked,
+}: RaiseObjectionDialogProps) => {
   // const { transform, handleSuccess } = useRaiseObjectionDialog();
 
   return (
@@ -57,22 +47,22 @@ RaiseObjectionDialogProps) => {
         // onSuccess={handleSuccess}
         // transform={transform}
       >
-        {({ formState: { isSubmitting }, watch }) => {
-          const sliderAmount = watch('amount');
+        {({ formState: { isSubmitting } /* watch */ }) => {
+          // const sliderAmount = watch('amount');
           //   const stake = getStakeFromSlider(
           //     sliderAmount,
           //     remainingToStake,
           //     minUserStake,
           //   );
-          //  const disabled = !canBeStaked || isSubmitting;
+          const disabled = !canBeStaked || isSubmitting;
           return (
             <>
               <ObjectionHeading />
-              <ObjectionSlider /* stakingSliderProps={stakingSliderProps} */ />
+              <ObjectionSlider canBeStaked={canBeStaked} />
               <ObjectionAnnotation disabled={disabled} />
               <ObjectionControls
                 cancel={close}
-                // disabled={disabled || userActivatedTokens.lt(stake)}
+                disabled={disabled /* || userActivatedTokens.lt(stake) */}
               />
             </>
           );

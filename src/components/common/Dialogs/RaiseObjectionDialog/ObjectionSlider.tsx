@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StakingWidgetSlider } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
+import { StakingSlider } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
 import { DialogSection } from '~shared/Dialog';
 
 import styles from './ObjectionSlider.css';
@@ -8,17 +8,16 @@ import styles from './ObjectionSlider.css';
 const displayName = 'common.Dialogs.RaiseObjectionDialog.ObjectionSlider';
 
 interface ObjectionSliderProps {
-  // stakingSliderProps: StakingSliderProps;
+  canBeStaked: boolean;
 }
 
-const ObjectionSlider =
-  (/* { stakingSliderProps }: ObjectionSliderProps */) => (
-    <DialogSection appearance={{ theme: 'sidePadding' }}>
-      <div className={styles.main}>
-        <StakingWidgetSlider /* {...stakingSliderProps} */ />
-      </div>
-    </DialogSection>
-  );
+const ObjectionSlider = ({ canBeStaked }: ObjectionSliderProps) => (
+  <DialogSection appearance={{ theme: 'sidePadding' }}>
+    <div className={styles.main}>
+      <StakingSlider canBeStaked={canBeStaked} isObjection />
+    </div>
+  </DialogSection>
+);
 
 ObjectionSlider.displayName = displayName;
 
