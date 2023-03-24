@@ -30,6 +30,10 @@ fragment ColonyAction on ColonyAction {
   }
   colony {
     colonyAddress: id
+    nativeToken {
+      nativeTokenDecimals: decimals
+      nativeTokenSymbol: symbol
+    }
   }
 }
 
