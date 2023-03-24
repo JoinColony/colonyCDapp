@@ -1,6 +1,7 @@
 import React from 'react';
+import { Id } from '@colony/colony-js';
 
-import { COLONY_TOTAL_BALANCE_DOMAIN_ID, ROOT_DOMAIN_ID } from '~constants';
+import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import {
   // FormValues as FiltersFormValues,
   MemberType,
@@ -27,7 +28,7 @@ const MembersContent = ({
   contributors,
 }: Props) => {
   const isRootDomain =
-    selectedDomain === ROOT_DOMAIN_ID ||
+    selectedDomain === Id.RootDomain ||
     selectedDomain === COLONY_TOTAL_BALANCE_DOMAIN_ID;
   const showContributors =
     filters.memberType === MemberType.All ||

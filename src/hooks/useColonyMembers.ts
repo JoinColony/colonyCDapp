@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { Id } from '@colony/colony-js';
 
-import { COLONY_TOTAL_BALANCE_DOMAIN_ID, ROOT_DOMAIN_ID } from '~constants';
-import { useColonyContext, useMobile } from '~hooks';
+import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
+import { useMobile } from '~hooks';
 
 import { FormValues } from '~common/ColonyMembers/MembersFilter';
 import {
@@ -10,8 +11,6 @@ import {
 } from '~common/ColonyMembers/MembersFilter/filtersConfig';
 
 const useColonyMembers = () => {
-  const { colony, loading } = useColonyContext();
-
   const [filters, setFilters] = useState<FormValues>({
     memberType: MemberType.All,
     verificationType: VerificationType.All,
@@ -31,14 +30,12 @@ const useColonyMembers = () => {
   };
 
   const isRootDomain =
-    selectedDomainId === ROOT_DOMAIN_ID ||
+    selectedDomainId === Id.RootDomain ||
     selectedDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID;
 
   const isMobile = useMobile();
 
   return {
-    colony,
-    loading,
     filters,
     setFilters,
     selectedDomainId,

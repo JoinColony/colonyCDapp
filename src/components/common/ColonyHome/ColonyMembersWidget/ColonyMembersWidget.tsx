@@ -1,8 +1,9 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
+import { Id } from '@colony/colony-js';
 
 import { MiniSpinnerLoader } from '~shared/Preloaders';
-import { ROOT_DOMAIN_ID, COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
+import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useColonyContext } from '~hooks';
 import { useGetMembersForColonyQuery } from '~gql';
 
@@ -65,7 +66,7 @@ const ColonyMembersWidget = ({
         colony={colony}
         isContributorsSubsection
       />
-      {(currentDomainId === ROOT_DOMAIN_ID ||
+      {(currentDomainId === Id.RootDomain ||
         currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID) && (
         <MembersSubsection
           members={watchers}
