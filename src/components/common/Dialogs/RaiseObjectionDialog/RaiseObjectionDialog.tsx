@@ -7,6 +7,7 @@ import Dialog, { DialogProps } from '~shared/Dialog';
 import { ActionHookForm as ActionForm } from '~shared/Fields';
 
 import { ActionTypes } from '~redux';
+import { ObjectionHeading } from '.';
 
 const displayName = 'common.Dialogs.RaiseObjectionDialog';
 
@@ -61,8 +62,8 @@ RaiseObjectionDialogProps) => {
           //  const disabled = !canBeStaked || isSubmitting;
           return (
             <>
-              {/* <ObjectionHeading />
-              <ObjectionSlider stakingSliderProps={stakingSliderProps} />
+              <ObjectionHeading />
+              {/* <ObjectionSlider stakingSliderProps={stakingSliderProps} />
               <ObjectionAnnotation disabled={disabled} />
               <ObjectionControls
                 cancel={close}
