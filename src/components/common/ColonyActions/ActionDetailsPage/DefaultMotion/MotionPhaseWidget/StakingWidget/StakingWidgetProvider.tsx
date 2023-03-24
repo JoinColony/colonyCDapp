@@ -13,6 +13,8 @@ export interface StakingWidgetContextValues extends MotionData {
   canBeStaked: boolean;
   isObjection: boolean;
   setIsObjection: SetStateFn;
+  isSummary: boolean;
+  setIsSummary: SetStateFn;
 }
 
 const StakingWidgetContext = createContext<
@@ -37,12 +39,17 @@ interface StakingWidgetProviderProps {
 export const StakingWidgetProvider = ({
   children,
   motionData: {
+    motionStakes: {
+      raw: { nay: nayStakes },
+    },
     remainingStakes: [nayRemaining, yayRemaining],
   },
   motionData,
 }: StakingWidgetProviderProps) => {
   const { user } = useAppContext();
   const [isObjection, setIsObjection] = useState<boolean>(false);
+  const showSummary = Number(nayStakes) > 0;
+  const [isSummary, setIsSummary] = useState<boolean>(showSummary);
   const remainingToStake = isObjection ? nayRemaining : yayRemaining;
 
   // Todo: extend this definition
@@ -54,8 +61,17 @@ export const StakingWidgetProvider = ({
       canBeStaked,
       isObjection,
       setIsObjection,
+      isSummary,
+      setIsSummary,
     }),
-    [motionData, canBeStaked, isObjection, setIsObjection],
+    [
+      motionData,
+      canBeStaked,
+      isObjection,
+      setIsObjection,
+      isSummary,
+      setIsSummary,
+    ],
   );
 
   return (
