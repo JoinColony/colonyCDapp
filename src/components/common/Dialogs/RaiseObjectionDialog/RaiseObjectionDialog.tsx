@@ -5,8 +5,8 @@ import Dialog, { DialogProps } from '~shared/Dialog';
 import { ActionHookForm as ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 import { mapPayload } from '~utils/actions';
-import { SetStateFn } from '~types';
 
+import { SetStateFn } from '~types';
 import {
   ObjectionHeading,
   ObjectionSlider,
@@ -31,6 +31,7 @@ interface RaiseObjectionDialogProps extends DialogProps {
   canBeStaked: boolean;
   transform: ReturnType<typeof mapPayload>;
   setIsSummary: SetStateFn;
+  amount: number;
 }
 
 const RaiseObjectionDialog = ({
@@ -38,6 +39,7 @@ const RaiseObjectionDialog = ({
   canBeStaked,
   transform,
   setIsSummary,
+  amount,
 }: RaiseObjectionDialogProps) => {
   const handleSuccess = () => {
     setIsSummary(true);
@@ -47,7 +49,7 @@ const RaiseObjectionDialog = ({
     <Dialog cancel={close}>
       <ActionForm<ObjectionValues>
         defaultValues={{
-          amount: AMOUNT_DEFAULT,
+          amount,
         }}
         actionType={ActionTypes.MOTION_STAKE}
         validationSchema={validationSchema}
