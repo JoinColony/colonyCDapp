@@ -1,0 +1,17 @@
+.widgetHeading {
+  composes: widgetHeading from '../SingleTotalStake/SingleTotalStakeHeading.css';
+}
+
+.title {
+  composes: title from '../SingleTotalStake/SingleTotalStakeHeading.css';
+}
+
+.tooltip {
+  composes: tooltip from '../SingleTotalStake/SingleTotalStake.css';
+}
+
+.help {
+  margin-right: auto;
+  margin-left: 8px;
+  height: 16px;
+}
