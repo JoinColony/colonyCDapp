@@ -63,6 +63,7 @@ export { default as useUserByAddress } from './useUserByAddress';
 export { default as useUserByName } from './useUserByName';
 export { default as useStakingSlider } from './useStakingSlider';
 export { default as useObjectButton } from './useObjectButton';
+export { default as useTotalStakeRadios } from './useTotalStakeRadios';
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously
  */
