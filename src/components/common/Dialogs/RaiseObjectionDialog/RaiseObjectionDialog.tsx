@@ -5,11 +5,14 @@ import { getStakeFromSlider } from '~common/ColonyActions/ActionDetailsPage/Defa
 
 import Dialog, { DialogProps } from '~shared/Dialog';
 import { ActionHookForm as ActionForm } from '~shared/Fields';
-
 import { ActionTypes } from '~redux';
-import { ObjectionHeading } from '.';
-import ObjectionSlider from './ObjectionSlider';
-import ObjectionControls from './ObjectionControls';
+
+import {
+  ObjectionHeading,
+  ObjectionSlider,
+  ObjectionControls,
+  ObjectionAnnotation,
+} from '.';
 
 const displayName = 'common.Dialogs.RaiseObjectionDialog';
 
@@ -66,7 +69,7 @@ RaiseObjectionDialogProps) => {
             <>
               <ObjectionHeading />
               <ObjectionSlider /* stakingSliderProps={stakingSliderProps} */ />
-              {/* <ObjectionAnnotation disabled={disabled} /> */}
+              <ObjectionAnnotation disabled={disabled} />
               <ObjectionControls
                 cancel={close}
                 // disabled={disabled || userActivatedTokens.lt(stake)}
