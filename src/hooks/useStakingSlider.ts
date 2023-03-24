@@ -38,13 +38,12 @@ const useStakingSlider = (isObjection: boolean) => {
 
   const { nativeTokenDecimals, nativeTokenSymbol } = nativeToken;
 
-  const percentageStaked = isObjection
-    ? nayPercentageStaked
-    : yayPercentageStaked;
+  const totalPercentageStaked =
+    Number(nayPercentageStaked) + Number(yayPercentageStaked);
 
   return {
     remainingToStake: isObjection ? nayRemaining : yayRemaining,
-    percentageStaked,
+    totalPercentageStaked,
     userMinStake,
     nativeTokenDecimals,
     nativeTokenSymbol,

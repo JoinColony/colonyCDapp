@@ -18,7 +18,7 @@ interface StakingSliderProps {
 const StakingSlider = ({ isObjection, canBeStaked }: StakingSliderProps) => {
   const {
     remainingToStake,
-    percentageStaked,
+    totalPercentageStaked,
     userMinStake,
     nativeTokenDecimals,
     nativeTokenSymbol,
@@ -29,7 +29,7 @@ const StakingSlider = ({ isObjection, canBeStaked }: StakingSliderProps) => {
       {remainingToStake !== '0' && (
         <StakingSliderAnnotation
           requiredStakeMessageProps={{
-            percentageStaked,
+            totalPercentageStaked,
             remainingToStake,
             userMinStake,
             nativeTokenDecimals,

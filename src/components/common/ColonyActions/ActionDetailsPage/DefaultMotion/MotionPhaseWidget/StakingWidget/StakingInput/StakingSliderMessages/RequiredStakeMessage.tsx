@@ -20,7 +20,7 @@ const MSG = defineMessages({
 });
 
 export interface RequiredStakeMessageProps {
-  percentageStaked: string;
+  totalPercentageStaked: number;
   remainingToStake: string;
   userMinStake: string;
   nativeTokenDecimals: number;
@@ -28,7 +28,7 @@ export interface RequiredStakeMessageProps {
 }
 
 const RequiredStakeMessage = ({
-  percentageStaked,
+  totalPercentageStaked,
   remainingToStake,
   userMinStake,
   nativeTokenDecimals,
@@ -36,7 +36,7 @@ const RequiredStakeMessage = ({
 }: RequiredStakeMessageProps) => {
   const { watch } = useFormContext();
   const sliderAmount = watch(SLIDER_AMOUNT_KEY);
-  const isUnderThreshold = sliderAmount < 10 - Number(percentageStaked);
+  const isUnderThreshold = sliderAmount < 10 - totalPercentageStaked;
   const stake = getStakeFromSlider(
     sliderAmount,
     remainingToStake,
