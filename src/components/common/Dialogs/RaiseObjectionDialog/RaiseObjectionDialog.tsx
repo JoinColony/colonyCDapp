@@ -9,6 +9,7 @@ import { ActionHookForm as ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 import { ObjectionHeading } from '.';
 import ObjectionSlider from './ObjectionSlider';
+import ObjectionControls from './ObjectionControls';
 
 const displayName = 'common.Dialogs.RaiseObjectionDialog';
 
@@ -65,11 +66,11 @@ RaiseObjectionDialogProps) => {
             <>
               <ObjectionHeading />
               <ObjectionSlider /* stakingSliderProps={stakingSliderProps} */ />
-              {/* <ObjectionAnnotation disabled={disabled} />
+              {/* <ObjectionAnnotation disabled={disabled} /> */}
               <ObjectionControls
                 cancel={close}
-                disabled={disabled || userActivatedTokens.lt(stake)}
-              /> */}
+                // disabled={disabled || userActivatedTokens.lt(stake)}
+              />
             </>
           );
         }}
