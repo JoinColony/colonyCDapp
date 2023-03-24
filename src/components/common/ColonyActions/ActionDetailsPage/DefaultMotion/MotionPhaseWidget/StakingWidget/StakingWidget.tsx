@@ -3,8 +3,12 @@ import { defineMessages } from 'react-intl';
 
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 
-import SingleTotalStake from './SingleTotalStake';
-import StakingInput from './StakingInput';
+import {
+  useStakingWidgetContext,
+  StakingInput,
+  SingleTotalStake,
+  GroupedTotalStake,
+} from '.';
 
 import styles from './StakingWidget.css';
 
@@ -20,6 +24,7 @@ const MSG = defineMessages({
 
 const StakingWidget = () => {
   const loadingStakeData = false;
+  const { isSummary } = useStakingWidgetContext();
 
   if (loadingStakeData) {
     return (
@@ -34,14 +39,14 @@ const StakingWidget = () => {
 
   return (
     <div className={styles.main} data-test="stakingWidget">
-      {/* {isSummary ? (
+      {isSummary ? (
         <GroupedTotalStake />
-      ) : <> */}
-      {/*
-      </>)
-        */}
-      <SingleTotalStake />
-      <StakingInput />
+      ) : (
+        <>
+          <SingleTotalStake />
+          <StakingInput />
+        </>
+      )}
     </div>
   );
 };

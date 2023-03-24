@@ -23,11 +23,11 @@ const validationSchema = object()
 type GroupedTotalStakeVals = InferType<typeof validationSchema>;
 
 const GroupedTotalStake = () => {
-  const { /* setIsSummary, */ setIsObjection } = useStakingWidgetContext();
+  const { setIsSummary, setIsObjection } = useStakingWidgetContext();
 
   const handleSubmit = ({ stakeSide }: { stakeSide: StakeSide }) => {
     setIsObjection(stakeSide === StakeSide.Objection);
-    // setIsSummary(false);
+    setIsSummary(false);
   };
 
   return (
