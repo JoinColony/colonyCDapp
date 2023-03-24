@@ -18,7 +18,7 @@ const useObjectButton = () => {
     userMinStake,
     motionId,
   } = useStakingWidgetContext();
-
+  console.log(useStakingWidgetContext(), 'vals');
   const transform = getStakingTransformFn(
     nayRemaining,
     userMinStake,
