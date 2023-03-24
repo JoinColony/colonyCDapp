@@ -1,26 +1,13 @@
 import React from 'react';
 
-import { RaiseObjectionDialog } from '~common/Dialogs';
 import Button from '~shared/Button';
-import { useDialog } from '~shared/Dialog';
-
-import { useStakingWidgetContext } from '../../StakingWidgetProvider';
+import { useObjectButton } from '~hooks';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.ObjectButton';
 
 const ObjectButton = () => {
-  const openRaiseObjectionDialog = useDialog(RaiseObjectionDialog);
-  const { canBeStaked } = useStakingWidgetContext();
-
-  const handleObjection = () => {
-    openRaiseObjectionDialog({ canBeStaked });
-  };
-
-  /* totalNAYStakes.isZero()
-      ? openRaiseObjectionDialog({ stakingSliderProps })
-      : setIsSummary(true); */
-
+  const { handleObjection } = useObjectButton();
   return (
     <Button
       appearance={{ theme: 'pink', size: 'medium' }}
