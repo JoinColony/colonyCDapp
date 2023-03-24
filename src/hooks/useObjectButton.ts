@@ -18,7 +18,6 @@ const useObjectButton = () => {
     userMinStake,
     motionId,
   } = useStakingWidgetContext();
-  console.log(useStakingWidgetContext(), 'vals');
   const transform = getStakingTransformFn(
     nayRemaining,
     userMinStake,
@@ -35,10 +34,6 @@ const useObjectButton = () => {
   };
 
   return { handleObjection, canUserStakedNay };
-
-  /* totalNAYStakes.isZero()
-      ? openRaiseObjectionDialog({ stakingSliderProps })
-      : setIsSummary(true); */
 };
 
 export default useObjectButton;
