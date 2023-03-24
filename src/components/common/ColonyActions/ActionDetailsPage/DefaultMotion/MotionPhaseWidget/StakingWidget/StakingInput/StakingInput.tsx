@@ -9,12 +9,7 @@ import { MotionVote } from '~utils/colonyMotions';
 import { useAppContext, useColonyContext } from '~hooks';
 
 import { useStakingWidgetContext, getStakeFromSlider } from '..';
-import {
-  StakingControls,
-  StakingSliderDescription,
-  StakingSliderAnnotation,
-  StakingWidgetSlider,
-} from '.';
+import { StakingControls, StakingSlider } from '.';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget';
@@ -41,6 +36,7 @@ const StakingInput = () => {
     motionId,
     remainingStakes: [nayRemaining, yayRemaining],
     userMinStake,
+    canBeStaked,
   } = useStakingWidgetContext();
   const isObjection = false;
   const remainingToStake = isObjection ? nayRemaining : yayRemaining;
@@ -72,9 +68,7 @@ const StakingInput = () => {
       transform={transform}
       // onSuccess={handleSuccess}
     >
-      <StakingSliderDescription isObjection={false} />
-      {remainingToStake !== '0' && <StakingSliderAnnotation />}
-      <StakingWidgetSlider />
+      <StakingSlider canBeStaked={canBeStaked} isObjection={isObjection} />
       {/*
       {showValidationMessage && (
         <StakingValidationMessage
