@@ -36,7 +36,7 @@ export interface FormValues {
 }
 
 interface Props {
-  handleFilterChange: (name, value) => void;
+  onFilterChange: (name, value) => void;
   isRoot: boolean;
 }
 
@@ -47,7 +47,7 @@ const handleReset = (handleFilterChange, reset, defaultValues) => {
   reset();
 };
 
-const MembersFilter = ({ handleFilterChange, isRoot }: Props) => {
+const MembersFilter = ({ onFilterChange, isRoot }: Props) => {
   return (
     <>
       <hr className={styles.divider} />
@@ -70,7 +70,7 @@ const MembersFilter = ({ handleFilterChange, isRoot }: Props) => {
                     text={MSG.reset}
                     appearance={{ theme: 'blue' }}
                     onClick={() =>
-                      handleReset(handleFilterChange, reset, defaultValues)
+                      handleReset(onFilterChange, reset, defaultValues)
                     }
                   />
                 )}
@@ -86,7 +86,7 @@ const MembersFilter = ({ handleFilterChange, isRoot }: Props) => {
                         name={name}
                         options={options}
                         label={label}
-                        handleFilterChange={handleFilterChange}
+                        handleFilterChange={onFilterChange}
                       />
                     )
                   );
