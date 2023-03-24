@@ -3148,6 +3148,10 @@ export const ColonyActionFragmentDoc = gql`
   }
   colony {
     colonyAddress: id
+    nativeToken {
+      nativeTokenDecimals: decimals
+      nativeTokenSymbol: symbol
+    }
   }
 }
     ${UserFragmentDoc}
