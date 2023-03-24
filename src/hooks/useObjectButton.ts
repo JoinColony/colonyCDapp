@@ -17,7 +17,9 @@ const useObjectButton = () => {
     remainingStakes: [nayRemaining],
     userMinStake,
     motionId,
+    setIsSummary,
   } = useStakingWidgetContext();
+
   const transform = getStakingTransformFn(
     nayRemaining,
     userMinStake,
@@ -29,9 +31,12 @@ const useObjectButton = () => {
 
   const canUserStakedNay = !!(user && nayRemaining !== '0');
 
-  const handleObjection = () => {
-    openRaiseObjectionDialog({ canBeStaked: canUserStakedNay, transform });
-  };
+  const handleObjection = () =>
+    openRaiseObjectionDialog({
+      canBeStaked: canUserStakedNay,
+      transform,
+      setIsSummary,
+    });
 
   return { handleObjection, canUserStakedNay };
 };
