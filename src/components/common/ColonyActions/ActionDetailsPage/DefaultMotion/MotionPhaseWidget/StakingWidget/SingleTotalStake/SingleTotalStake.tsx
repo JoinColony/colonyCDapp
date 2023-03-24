@@ -39,10 +39,10 @@ const MinStakeTooltip = ({ children }: MinStakeTooltipProps) => (
 );
 
 const SingleTotalStake = () => {
-  const isObjection = false;
   const {
     motionStakes: { percentage: percentageStaked },
     requiredStake,
+    isObjection,
   } = useStakingWidgetContext();
 
   const totalPercentage = Number(
