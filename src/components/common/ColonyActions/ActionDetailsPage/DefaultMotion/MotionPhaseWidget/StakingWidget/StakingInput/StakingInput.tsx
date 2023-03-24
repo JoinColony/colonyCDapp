@@ -61,8 +61,8 @@ const StakingInput = () => {
     remainingStakes: [nayRemaining, yayRemaining],
     userMinStake,
     canBeStaked,
+    isObjection,
   } = useStakingWidgetContext();
-  const isObjection = false;
   const remainingToStake = isObjection ? nayRemaining : yayRemaining;
   const vote = isObjection ? MotionVote.Nay : MotionVote.Yay;
   const transform = getStakingTransformFn(

@@ -7,8 +7,7 @@ const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.StakeButton';
 
 const StakeButton = () => {
-  const isObjection = false;
-  const { canBeStaked } = useStakingWidgetContext();
+  const { canBeStaked, isObjection } = useStakingWidgetContext();
   return (
     <Button
       appearance={{

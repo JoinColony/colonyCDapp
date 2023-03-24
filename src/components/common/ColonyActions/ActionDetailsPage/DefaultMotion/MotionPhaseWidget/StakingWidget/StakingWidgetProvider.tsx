@@ -1,9 +1,18 @@
-import React, { createContext, ReactNode, useContext, useMemo } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
+
 import { useAppContext } from '~hooks';
-import { MotionData } from '~types';
+import { MotionData, SetStateFn } from '~types';
 
 export interface StakingWidgetContextValues extends MotionData {
   canBeStaked: boolean;
+  isObjection: boolean;
+  setIsObjection: SetStateFn;
 }
 
 const StakingWidgetContext = createContext<
@@ -33,7 +42,7 @@ export const StakingWidgetProvider = ({
   motionData,
 }: StakingWidgetProviderProps) => {
   const { user } = useAppContext();
-  const isObjection = false;
+  const [isObjection, setIsObjection] = useState<boolean>(false);
   const remainingToStake = isObjection ? nayRemaining : yayRemaining;
 
   // Todo: extend this definition
@@ -43,8 +52,10 @@ export const StakingWidgetProvider = ({
     () => ({
       ...motionData,
       canBeStaked,
+      isObjection,
+      setIsObjection,
     }),
-    [motionData, canBeStaked],
+    [motionData, canBeStaked, isObjection, setIsObjection],
   );
 
   return (

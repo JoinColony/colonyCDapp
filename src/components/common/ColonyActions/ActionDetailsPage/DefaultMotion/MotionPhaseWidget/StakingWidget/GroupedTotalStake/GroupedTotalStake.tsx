@@ -3,6 +3,7 @@ import { object, string, InferType } from 'yup';
 
 import { HookForm as Form } from '~shared/Fields';
 
+import { useStakingWidgetContext } from '../StakingWidgetProvider';
 import { GroupedTotalStakeHeading, TotalStakeRadios, SubmitButton } from '.';
 
 const displayName =
@@ -22,17 +23,18 @@ const validationSchema = object()
 type GroupedTotalStakeVals = InferType<typeof validationSchema>;
 
 const GroupedTotalStake = () => {
-  // const { setIsSummary, setIsObjection } = useStakingWidgetContext();
+  const { /* setIsSummary, */ setIsObjection } = useStakingWidgetContext();
 
-  //   const handleSubmit = ({ stakeSide }) => {
-  //     setIsObjection(stakeSide === StakeSide.Objection);
-  //     setIsSummary(false);
-  //   };
+  const handleSubmit = ({ stakeSide }: { stakeSide: StakeSide }) => {
+    setIsObjection(stakeSide === StakeSide.Objection);
+    // setIsSummary(false);
+  };
+
   return (
     <Form<GroupedTotalStakeVals>
       defaultValues={{ stakeSide: '' }}
       validationSchema={validationSchema}
-      onSubmit={() => {}} /* handleSubmit */
+      onSubmit={handleSubmit}
     >
       <GroupedTotalStakeHeading />
       <TotalStakeRadios />
