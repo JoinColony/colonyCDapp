@@ -61,6 +61,7 @@ export { default as useTokenTotalBalance } from './useTokenTotalBalance';
 export { default as useColonyContractVersion } from './useColonyContractVersion';
 export { default as useNetworkInverseFee } from './useNetworkInverseFee';
 export { default as useStakingSlider } from './useStakingSlider';
+export { default as useObjectButton } from './useObjectButton';
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously
  */
