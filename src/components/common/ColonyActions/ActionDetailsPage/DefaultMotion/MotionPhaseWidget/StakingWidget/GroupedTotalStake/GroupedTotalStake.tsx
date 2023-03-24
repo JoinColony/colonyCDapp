@@ -3,7 +3,7 @@ import { object, string, InferType } from 'yup';
 
 import { HookForm as Form } from '~shared/Fields';
 
-import { GroupedTotalStakeHeading, TotalStakeRadios } from '.';
+import { GroupedTotalStakeHeading, TotalStakeRadios, SubmitButton } from '.';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.GroupedTotalStake';
@@ -36,9 +36,7 @@ const GroupedTotalStake = () => {
     >
       <GroupedTotalStakeHeading />
       <TotalStakeRadios />
-      {/*
       <SubmitButton />
-  */}
     </Form>
   );
 };
