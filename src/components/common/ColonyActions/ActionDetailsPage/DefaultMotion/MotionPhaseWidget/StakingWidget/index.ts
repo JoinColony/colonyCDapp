@@ -1,4 +1,4 @@
 export { default } from './StakingWidget';
-export { StakingSlider } from './StakingInput';
+export { StakingSlider, getStakingTransformFn } from './StakingInput';
 export * from './StakingWidgetProvider';
 export * from './helpers';
