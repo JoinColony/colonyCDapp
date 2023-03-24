@@ -5,6 +5,7 @@ import Dialog, { DialogProps } from '~shared/Dialog';
 import { ActionHookForm as ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 import { mapPayload } from '~utils/actions';
+import { SetStateFn } from '~types';
 
 import {
   ObjectionHeading,
@@ -29,14 +30,19 @@ type ObjectionValues = InferType<typeof validationSchema>;
 interface RaiseObjectionDialogProps extends DialogProps {
   canBeStaked: boolean;
   transform: ReturnType<typeof mapPayload>;
+  setIsSummary: SetStateFn;
 }
 
 const RaiseObjectionDialog = ({
   close,
   canBeStaked,
   transform,
+  setIsSummary,
 }: RaiseObjectionDialogProps) => {
-  // const { transform, handleSuccess } = useRaiseObjectionDialog();
+  const handleSuccess = () => {
+    setIsSummary(true);
+    close();
+  };
   return (
     <Dialog cancel={close}>
       <ActionForm<ObjectionValues>
@@ -46,7 +52,7 @@ const RaiseObjectionDialog = ({
         actionType={ActionTypes.MOTION_STAKE}
         validationSchema={validationSchema}
         transform={transform}
-        // onSuccess={handleSuccess}
+        onSuccess={handleSuccess}
       >
         {({ formState: { isSubmitting } /* watch */ }) => {
           // const sliderAmount = watch('amount');
