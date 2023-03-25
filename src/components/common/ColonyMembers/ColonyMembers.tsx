@@ -4,12 +4,13 @@ import { defineMessages } from 'react-intl';
 import ColonyHomeInfo from '~common/ColonyHome/ColonyHomeInfo';
 import Members from '~common/Members';
 import NotFoundRoute from '~routes/NotFoundRoute';
-import { useColonyMembers, useColonyContext } from '~hooks';
+import { useColonyContext } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
 
 import MemberControls from './MemberControls';
 import MembersFilter from './MembersFilter';
 import TotalReputation from './TotalReputation';
+import useColonyMembers from './useColonyMembers';
 
 import styles from './ColonyMembers.css';
 
