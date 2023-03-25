@@ -111,6 +111,8 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
     );
   }
 
+  const hasMembers = filteredContributors?.length || filteredWatchers?.length;
+
   return (
     <div className={styles.main}>
       <MembersTitle
@@ -120,17 +122,17 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
         searchValue={searchValue}
         handleSearch={handleSearch}
       />
-      {!filteredContributors?.length && !filteredWatchers?.length ? (
-        <div className={styles.noResults}>
-          <FormattedMessage {...MSG.noMembersFound} />
-        </div>
-      ) : (
+      {hasMembers ? (
         <MembersContent
           selectedDomain={selectedDomain}
           filters={filters}
           contributors={filteredContributors}
           watchers={filteredWatchers}
         />
+      ) : (
+        <div className={styles.noResults}>
+          <FormattedMessage {...MSG.noMembersFound} />
+        </div>
       )}
     </div>
   );
