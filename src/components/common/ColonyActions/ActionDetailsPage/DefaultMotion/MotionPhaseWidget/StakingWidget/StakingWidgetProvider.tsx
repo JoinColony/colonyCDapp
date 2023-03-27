@@ -6,18 +6,18 @@ export interface StakingWidgetContextValues extends MotionData {
   canBeStaked: boolean;
 }
 
-const StakingWidgetContext = createContext<Partial<StakingWidgetContextValues>>(
-  {},
-);
+const StakingWidgetContext = createContext<
+  StakingWidgetContextValues | undefined
+>(undefined);
 
 export const useStakingWidgetContext = () => {
   const ctx = useContext(StakingWidgetContext);
 
-  if (!Object.keys(ctx).length) {
+  if (!ctx) {
     throw new Error('Could not find StakingWidgetContext');
   }
 
-  return ctx as StakingWidgetContextValues;
+  return ctx;
 };
 
 interface StakingWidgetProviderProps {
