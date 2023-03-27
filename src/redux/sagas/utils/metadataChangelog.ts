@@ -32,6 +32,7 @@ export const getUpdatedColonyMetadataChangelog = (
   transactionHash: string,
   metadata: ColonyMetadata,
   newDisplayName?: string,
+  newAvatarImage?: string | null,
 ): ColonyMetadataChangelogInput[] => {
   const existingChangelog = getExistingChangelog(metadata.changelog);
 
@@ -41,8 +42,10 @@ export const getUpdatedColonyMetadataChangelog = (
       transactionHash,
       newDisplayName: newDisplayName ?? metadata.displayName,
       oldDisplayName: metadata.displayName,
-      // @TODO: Actually check whether the avatar has changed
-      hasAvatarChanged: false,
+      hasAvatarChanged:
+        newAvatarImage === undefined
+          ? false
+          : newAvatarImage !== metadata.avatar,
     },
   ];
 };
