@@ -150,7 +150,11 @@ Props) => {
           )}
       </DialogSection>
       <DialogSection>
-        <TokenAmountInput colony={colony} disabled={disabledInput} />
+        <TokenAmountInput
+          colony={colony}
+          disabled={disabledInput}
+          includeNetworkFee
+        />
       </DialogSection>
       <DialogSection>
         <Annotations

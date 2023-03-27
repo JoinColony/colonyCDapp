@@ -10,6 +10,7 @@ import {
 } from '~utils/tokens';
 import Numeral from '~shared/Numeral';
 import { Colony } from '~types';
+import { useNetworkInverseFee } from '~hooks';
 
 import styles from './NetworkFee.css';
 
@@ -33,15 +34,15 @@ const MSG = defineMessages({
 
 interface Props {
   colony: Colony;
-  networkInverseFee: string | undefined;
 }
 
-const NetworkFee = ({ colony, networkInverseFee }: Props) => {
+const NetworkFee = ({ colony }: Props) => {
   const { watch } = useFormContext();
+  const { networkInverseFee } = useNetworkInverseFee();
   const { tokenAddress, amount } = watch();
   const selectedToken = getSelectedToken(colony, tokenAddress);
 
-  if (!networkInverseFee || new Decimal(amount || 0).isZero()) {
+  if (new Decimal(amount || 0).isZero()) {
     return null;
   }
 

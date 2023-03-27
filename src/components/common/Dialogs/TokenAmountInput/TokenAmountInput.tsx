@@ -6,7 +6,6 @@ import { useFormContext } from 'react-hook-form';
 import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 import { notNull } from '~utils/arrays';
 import { Colony } from '~types';
-import { useNetworkInverseFee } from '~hooks';
 import { HookFormInput as Input, TokenSymbolSelector } from '~shared/Fields';
 import EthUsd from '~shared/EthUsd';
 import NetworkFee from '~shared/NetworkFee';
@@ -33,10 +32,14 @@ const MSG = defineMessages({
 interface Props {
   colony: Colony;
   disabled: boolean;
+  includeNetworkFee?: boolean;
 }
 
-const TokenAmountInput = ({ colony, disabled }: Props) => {
-  const { networkInverseFee } = useNetworkInverseFee();
+const TokenAmountInput = ({
+  colony,
+  disabled,
+  includeNetworkFee = false,
+}: Props) => {
   const { watch, trigger } = useFormContext();
   const { amount, tokenAddress } = watch();
 
@@ -74,7 +77,7 @@ const TokenAmountInput = ({ colony, disabled }: Props) => {
           // (Most likely to do with formattingOptions changing when the token changes?)
           value={amount}
         />
-        <NetworkFee colony={colony} networkInverseFee={networkInverseFee} />
+        {includeNetworkFee && <NetworkFee colony={colony} />}
       </div>
       <div className={styles.tokenAmountContainer}>
         <div className={styles.tokenAmountSelect}>
