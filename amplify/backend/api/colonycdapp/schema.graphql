@@ -440,14 +440,14 @@ input TokenInput {
   id: ID!
 }
 
-type MotionStakeFragment {
+type MotionStakeValues {
   yay: String!
   nay: String!
 }
 
 type MotionStakes {
-  raw: MotionStakeFragment!
-  percentage: MotionStakeFragment!
+  raw: MotionStakeValues!
+  percentage: MotionStakeValues!
 }
 
 type UserStakes {
@@ -464,6 +464,7 @@ type MotionData {
   requiredStake: String!
   # For calculating user's max stake in client
   rootHash: String!
+  # native domain id
   motionDomainId: String!
 }
 
