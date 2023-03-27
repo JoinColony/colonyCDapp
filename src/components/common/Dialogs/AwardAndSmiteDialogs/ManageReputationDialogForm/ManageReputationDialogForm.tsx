@@ -150,7 +150,8 @@ const ManageReputationDialogForm = ({
     ['value'],
   );
 
-  const domainName = findDomainByNativeId(domainId, colony)?.metadata?.name;
+  const selectedDomain = findDomainByNativeId(domainId, colony);
+  const domainName = selectedDomain?.metadata?.name;
 
   const renderActiveOption = (option) => {
     const value = option ? option.value : undefined;
