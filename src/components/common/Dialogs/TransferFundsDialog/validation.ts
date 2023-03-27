@@ -1,12 +1,9 @@
-import { BigNumber } from 'ethers';
 import { defineMessages } from 'react-intl';
-import { boolean, number, object, string, TestContext } from 'yup';
-import moveDecimal from 'move-decimal-point';
+import { boolean, number, object, string } from 'yup';
 
 import { Colony } from '~types';
-import { notNull } from '~utils/arrays';
-import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 import { toFinite } from '~utils/lodash';
+import { getHasEnoughBalanceTestFn } from '~utils/yup/tests';
 
 import { displayName } from './TransferFundsDialog';
 
@@ -24,32 +21,6 @@ const MSG = defineMessages({
     defaultMessage: 'Insufficient balance in from team pot',
   },
 });
-
-const getHasEnoughBalanceTestFn = (colony: Colony) => {
-  const colonyBalances = colony.balances?.items?.filter(notNull) || [];
-  return (value: number | undefined, context: TestContext) => {
-    if (!value) {
-      return true;
-    }
-
-    const { fromDomainId, tokenAddress } = context.parent;
-    const selectedDomainBalance = colonyBalances.find(
-      (balance) =>
-        balance.token.tokenAddress === tokenAddress &&
-        balance.domain.nativeId === fromDomainId,
-    );
-    const selectedToken = getSelectedToken(colony, tokenAddress);
-
-    if (!selectedDomainBalance || !selectedToken) {
-      return true;
-    }
-
-    const tokenDecimals = getTokenDecimalsWithFallback(selectedToken.decimals);
-    const convertedAmount = BigNumber.from(moveDecimal(value, tokenDecimals));
-
-    return convertedAmount.lte(selectedDomainBalance.balance);
-  };
-};
 
 export const getValidationSchema = (colony: Colony) => {
   return object()

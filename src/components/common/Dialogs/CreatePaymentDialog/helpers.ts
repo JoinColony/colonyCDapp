@@ -17,7 +17,7 @@ export const getCreatePaymentDialogPayload = (
   const {
     amount,
     tokenAddress,
-    fromDomain,
+    fromDomainId,
     recipient: { walletAddress },
     annotation: annotationMessage,
     motionDomainId,
@@ -34,7 +34,7 @@ export const getCreatePaymentDialogPayload = (
     colonyName: colony.name,
     colonyAddress: colony.colonyAddress,
     recipientAddress: walletAddress,
-    domainId: fromDomain,
+    domainId: fromDomainId,
     singlePayment: {
       tokenAddress,
       amount: amountWithFees, // @NOTE: Only the contract sees this amount
@@ -51,7 +51,7 @@ export const useCreatePaymentDialogStatus = (
   enabledExtensionData: EnabledExtensionData,
 ) => {
   const { watch } = useFormContext();
-  const fromDomain = watch('fromDomain');
+  const fromDomain = watch('fromDomainId');
   const { isOneTxPaymentEnabled } = enabledExtensionData;
   const {
     userHasPermission,

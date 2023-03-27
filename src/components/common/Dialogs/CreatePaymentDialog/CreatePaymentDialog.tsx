@@ -17,9 +17,9 @@ import { pipe, withMeta, mapPayload } from '~utils/actions';
 import { WizardDialogType, useNetworkInverseFee } from '~hooks';
 import { notNull } from '~utils/arrays';
 
-import validationSchema from './validation';
 import DialogForm from './CreatePaymentDialogForm';
 import { getCreatePaymentDialogPayload } from './helpers';
+import getValidationSchema from './validation';
 
 const displayName = 'common.CreatePaymentDialog';
 
@@ -28,8 +28,6 @@ type Props = Required<DialogProps> &
   ActionDialogProps & {
     filteredDomainId?: number;
   };
-
-export type FormValues = InferType<typeof validationSchema>;
 
 const CreatePaymentDialog = ({
   callStep,
@@ -50,6 +48,10 @@ const CreatePaymentDialog = ({
     !isForce && isVotingReputationEnabled
       ? ActionTypes.MOTION_EXPENDITURE_PAYMENT
       : ActionTypes.ACTION_EXPENDITURE_PAYMENT;
+
+  const validationSchema = getValidationSchema(colony);
+
+  type FormValues = InferType<typeof validationSchema>;
 
   // const { data: colonyMembers } = useMembersSubscription({
   //   variables: { colonyAddress },
@@ -94,9 +96,9 @@ const CreatePaymentDialog = ({
       <Form<FormValues>
         defaultValues={{
           forceAction: false,
-          fromDomain: filteredDomainId || Id.RootDomain,
+          fromDomainId: filteredDomainId || Id.RootDomain,
           recipient: undefined,
-          amount: '',
+          amount: 0,
           tokenAddress: colony?.nativeToken.tokenAddress,
           annotation: '',
           motionDomainId: filteredDomainId || Id.RootDomain,
