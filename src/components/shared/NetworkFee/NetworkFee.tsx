@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  defineMessages,
-  FormattedMessage,
-  MessageDescriptor,
-} from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import Decimal from 'decimal.js';
 
@@ -37,7 +33,6 @@ const MSG = defineMessages({
 
 interface Props {
   colony: Colony;
-  customAmountError: string | MessageDescriptor | undefined;
   networkInverseFee: string | undefined;
 }
 
@@ -45,9 +40,8 @@ const NetworkFee = ({ colony, networkInverseFee }: Props) => {
   const { watch } = useFormContext();
   const { tokenAddress, amount } = watch();
   const selectedToken = getSelectedToken(colony, tokenAddress);
-  const amountWithoutCommas = amount.replace(/,/g, ''); // @TODO: Remove this once a fix for the raw value of the inputs having commas is implemented.
 
-  if (!networkInverseFee || new Decimal(amountWithoutCommas || 0).isZero()) {
+  if (!networkInverseFee || new Decimal(amount || 0).isZero()) {
     return null;
   }
 
@@ -64,7 +58,7 @@ const NetworkFee = ({ colony, networkInverseFee }: Props) => {
               // }}
               value={
                 calculateFee(
-                  amountWithoutCommas,
+                  amount,
                   networkInverseFee,
                   getTokenDecimalsWithFallback(selectedToken?.decimals),
                 ).feesInWei

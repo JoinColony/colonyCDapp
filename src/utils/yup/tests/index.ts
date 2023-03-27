@@ -1,8 +1,13 @@
+import { BigNumber } from 'ethers';
 import { DocumentNode, OperationDefinitionNode } from 'graphql';
 import { TestContext, ValidationError, TestFunction } from 'yup';
+import moveDecimal from 'move-decimal-point';
 
 import { ContextModule, getContext } from '~context';
+import { Colony } from '~types';
+import { notNull } from '~utils/arrays';
 import { now } from '~utils/lodash';
+import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import {
   cancelEarly,
@@ -250,3 +255,29 @@ export function yupDebounce(
 
   return caller as TestFunction;
 }
+
+export const getHasEnoughBalanceTestFn = (colony: Colony) => {
+  const colonyBalances = colony.balances?.items?.filter(notNull) || [];
+  return (value: number | undefined, context: TestContext) => {
+    if (!value) {
+      return true;
+    }
+
+    const { fromDomainId, tokenAddress } = context.parent;
+    const selectedDomainBalance = colonyBalances.find(
+      (balance) =>
+        balance.token.tokenAddress === tokenAddress &&
+        balance.domain.nativeId === fromDomainId,
+    );
+    const selectedToken = getSelectedToken(colony, tokenAddress);
+
+    if (!selectedDomainBalance || !selectedToken) {
+      return true;
+    }
+
+    const tokenDecimals = getTokenDecimalsWithFallback(selectedToken.decimals);
+    const convertedAmount = BigNumber.from(moveDecimal(value, tokenDecimals));
+
+    return convertedAmount.lte(selectedDomainBalance.balance);
+  };
+};
