@@ -30,7 +30,7 @@ const ColonyMembers = () => {
     selectedDomainId,
     setSelectedDomainId,
     handleFilterChange,
-    isRootDomain,
+    isRootOrAllDomains,
     isMobile,
   } = useColonyMembers();
 
@@ -55,14 +55,15 @@ const ColonyMembers = () => {
             selectedDomain={selectedDomainId}
             handleDomainChange={setSelectedDomainId}
             filters={filters}
+            isRootOrAllDomains={isRootOrAllDomains}
           />
         </div>
         <aside className={styles.rightAside}>
           <TotalReputation selectedDomainId={selectedDomainId} />
-          <MemberControls isRootDomain={isRootDomain} />
+          <MemberControls isRootOrAllDomains={isRootOrAllDomains} />
           <MembersFilter
             onFilterChange={handleFilterChange}
-            isRoot={isRootDomain}
+            isRootOrAllDomains={isRootOrAllDomains}
           />
         </aside>
       </div>

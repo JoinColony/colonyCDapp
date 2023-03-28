@@ -41,6 +41,7 @@ interface Props {
   selectedDomain?: number;
   handleDomainChange: React.Dispatch<React.SetStateAction<number>>;
   filters: FormValues;
+  isRootOrAllDomains: boolean;
 }
 
 export type Member = User & {
@@ -63,7 +64,12 @@ const getDomainSelectOptions = (colony?: Colony) => {
   );
 };
 
-const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
+const Members = ({
+  selectedDomain,
+  handleDomainChange,
+  filters,
+  isRootOrAllDomains,
+}: Props) => {
   const { colony } = useColonyContext();
   const [searchValue, setSearchValue] = useState<string>('');
   const sortingMethod = SortingMethod.ByHighestRep;
@@ -124,10 +130,10 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
       />
       {hasMembers ? (
         <MembersContent
-          selectedDomain={selectedDomain}
           filters={filters}
           contributors={filteredContributors}
           watchers={filteredWatchers}
+          isRootOrAllDomains={isRootOrAllDomains}
         />
       ) : (
         <div className={styles.noResults}>

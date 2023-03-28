@@ -29,7 +29,7 @@ const useColonyMembers = () => {
     }
   };
 
-  const isRootDomain =
+  const isRootOrAllDomains =
     selectedDomainId === Id.RootDomain ||
     selectedDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID;
 
@@ -41,7 +41,7 @@ const useColonyMembers = () => {
     selectedDomainId,
     setSelectedDomainId,
     handleFilterChange,
-    isRootDomain,
+    isRootOrAllDomains,
     isMobile,
   };
 };

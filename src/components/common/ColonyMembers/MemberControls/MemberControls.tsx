@@ -26,10 +26,10 @@ const displayName = 'common.ColonyMembers.MemberControls';
 // });
 
 type Props = {
-  isRootDomain: boolean;
+  isRootOrAllDomains: boolean;
 };
 
-const MemberControls = ({ isRootDomain }: Props) => {
+const MemberControls = ({ isRootOrAllDomains }: Props) => {
   const { colony } = useColonyContext();
 
   // const openPermissionManagementDialog =  useDialog(PermissionManagementDialog);
@@ -72,7 +72,7 @@ const MemberControls = ({ isRootDomain }: Props) => {
     <>
       {!controlsDisabled && (
         <ul className={styles.controls}>
-          {isRootDomain && (
+          {isRootOrAllDomains && (
             <li>
               <InviteLinkButton
                 colonyName={colony?.name || ''}

@@ -37,7 +37,7 @@ export interface FormValues {
 
 interface Props {
   onFilterChange: (name, value) => void;
-  isRoot: boolean;
+  isRootOrAllDomains: boolean;
 }
 
 const handleReset = (handleFilterChange, reset, defaultValues) => {
@@ -47,7 +47,7 @@ const handleReset = (handleFilterChange, reset, defaultValues) => {
   reset();
 };
 
-const MembersFilter = ({ onFilterChange, isRoot }: Props) => {
+const MembersFilter = ({ onFilterChange, isRootOrAllDomains }: Props) => {
   return (
     <>
       <hr className={styles.divider} />
@@ -77,7 +77,7 @@ const MembersFilter = ({ onFilterChange, isRoot }: Props) => {
               </div>
               {filterItems.map(
                 ({ appearance, name, options, label, isRootRequired }) => {
-                  const hideFilter = isRootRequired && !isRoot;
+                  const hideFilter = isRootRequired && !isRootOrAllDomains;
                   return (
                     !hideFilter && (
                       <Filter
