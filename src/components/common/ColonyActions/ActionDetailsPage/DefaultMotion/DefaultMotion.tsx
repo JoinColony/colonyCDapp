@@ -19,9 +19,11 @@ const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion';
 
 interface DefaultMotionProps {
   actionData: ColonyAction;
+  startPollingAction: (pollingInterval: number) => void;
+  stopPollingAction: () => void;
 }
 
-const DefaultMotion = ({ actionData }: DefaultMotionProps) => {
+const DefaultMotion = ({ actionData, ...rest }: DefaultMotionProps) => {
   const { colony } = useColonyContext();
 
   const { isVotingReputationEnabled } = useEnabledExtensions();
@@ -53,6 +55,7 @@ const DefaultMotion = ({ actionData }: DefaultMotionProps) => {
           <MotionPhaseWidget
             actionData={actionData}
             motionState={motionState}
+            {...rest}
           />
           {/* <div className={styles.details}>
         {motionState === MotionState.Voting && (

@@ -36,6 +36,8 @@ const ActionDetailsPage = () => {
     isUnknownTransaction,
     action,
     loadingAction,
+    startPollingForAction,
+    stopPollingForAction,
   } = useGetColonyAction(colony);
 
   // const status = action?.transactionStatus;
@@ -72,7 +74,11 @@ const ActionDetailsPage = () => {
   if (isMotion) {
     return (
       <Layout isMotion>
-        <DefaultMotion actionData={action} />
+        <DefaultMotion
+          actionData={action}
+          startPollingAction={startPollingForAction}
+          stopPollingAction={stopPollingForAction}
+        />
       </Layout>
     );
   }

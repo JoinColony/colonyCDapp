@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 
-import { useAppContext } from '~hooks';
+import { useAppContext, useStakingWidgetUpdate } from '~hooks';
 import { MotionData, SetStateFn } from '~types';
 
 export interface StakingWidgetContextValues extends MotionData {
@@ -15,6 +15,7 @@ export interface StakingWidgetContextValues extends MotionData {
   setIsObjection: SetStateFn;
   isSummary: boolean;
   setIsSummary: SetStateFn;
+  startPollingAction: (pollingInterval: number) => void;
 }
 
 const StakingWidgetContext = createContext<
@@ -34,6 +35,8 @@ export const useStakingWidgetContext = () => {
 interface StakingWidgetProviderProps {
   children: ReactNode;
   motionData: MotionData;
+  startPollingAction: (pollingInterval: number) => void;
+  stopPollingAction: () => void;
 }
 
 export const StakingWidgetProvider = ({
@@ -45,6 +48,8 @@ export const StakingWidgetProvider = ({
     remainingStakes: [nayRemaining, yayRemaining],
   },
   motionData,
+  startPollingAction,
+  stopPollingAction,
 }: StakingWidgetProviderProps) => {
   const { user } = useAppContext();
   const [isObjection, setIsObjection] = useState<boolean>(false);
@@ -59,6 +64,7 @@ export const StakingWidgetProvider = ({
     () => ({
       ...motionData,
       canBeStaked,
+      startPollingAction,
       isObjection,
       setIsObjection,
       isSummary,
@@ -67,6 +73,7 @@ export const StakingWidgetProvider = ({
     [
       motionData,
       canBeStaked,
+      startPollingAction,
       isObjection,
       setIsObjection,
       isSummary,
