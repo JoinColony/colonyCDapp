@@ -246,20 +246,6 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         )}
         text="Test Edit Colony"
       />
-      <ActionButton
-        submit={ActionTypes.ACTION_VERSION_UPGRADE}
-        error={ActionTypes.ACTION_VERSION_UPGRADE_ERROR}
-        success={ActionTypes.ACTION_VERSION_UPGRADE_SUCCESS}
-        transform={pipe(
-          mergePayload({
-            colonyAddress: colony.colonyAddress,
-            colonyName: colony.name,
-            version: colony.version,
-          }),
-          withMeta({ navigate }),
-        )}
-        text="Test Version Upgrade"
-      />
       {actions.length ? (
         <>
           <ActionsListHeading sortDirection={sortDirection} onSortChange={onSortDirectionChange} />
