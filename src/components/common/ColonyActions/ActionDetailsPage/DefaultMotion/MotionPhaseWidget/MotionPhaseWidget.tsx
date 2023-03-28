@@ -10,11 +10,14 @@ const displayName =
 interface MotionPhaseWidgetProps {
   actionData: ColonyAction;
   motionState: MotionState;
+  startPollingAction: (pollingInterval: number) => void;
+  stopPollingAction: () => void;
 }
 
 const MotionPhaseWidget = ({
   actionData,
   motionState,
+  ...rest
 }: MotionPhaseWidgetProps) => {
   const { motionData } = actionData;
 
@@ -30,7 +33,7 @@ const MotionPhaseWidget = ({
   switch (motionState) {
     case MotionState.Staking: {
       return (
-        <StakingWidgetProvider motionData={motionData}>
+        <StakingWidgetProvider motionData={motionData} {...rest}>
           <StakingWidget />
         </StakingWidgetProvider>
       );
