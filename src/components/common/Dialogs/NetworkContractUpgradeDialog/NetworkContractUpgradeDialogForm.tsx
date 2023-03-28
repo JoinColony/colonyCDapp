@@ -2,6 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 
+import { useColonyContractVersion } from '~hooks';
 import {
   ActionDialogProps,
   DialogControls,
@@ -37,7 +38,7 @@ const MSG = defineMessages({
   },
   loadingData: {
     id: `${displayName}.loadingData`,
-    defaultMessage: "Loading the Colony's Recovery Roles",
+    defaultMessage: "Loading the colony's recovery roles and contract version",
   },
 });
 
@@ -61,13 +62,15 @@ const NetworkContractUpgradeDialogForm = ({
     requiredRoles,
     enabledExtensionData,
   );
+  const { colonyContractVersion, loadingColonyContractVersion } =
+    useColonyContractVersion();
 
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <DialogHeading title={MSG.title} />
       </DialogSection>
-      {isLoadingLegacyRecoveryRole && (
+      {(isLoadingLegacyRecoveryRole || loadingColonyContractVersion) && (
         <DialogSection>
           <MiniSpinnerLoader
             className={styles.loadingInfo}
@@ -86,7 +89,11 @@ const NetworkContractUpgradeDialogForm = ({
         </DialogSection>
       )}
       <DialogSection>
-        <ContractVersionSection currentVersion={version} />
+        <ContractVersionSection
+          colony={colony}
+          currentVersion={version}
+          colonyContractVersion={colonyContractVersion}
+        />
       </DialogSection>
       <DialogSection>
         <Annotations
@@ -111,7 +118,9 @@ const NetworkContractUpgradeDialogForm = ({
           disabled={disabledSubmit}
           dataTest="confirmButton"
           onSecondaryButtonClick={back}
-          // loading={isLoadingLegacyRecoveryRole} @TODO: Add a loading prop when this data becomes available.
+          isLoading={
+            isLoadingLegacyRecoveryRole || loadingColonyContractVersion
+          }
         />
       </DialogSection>
     </>

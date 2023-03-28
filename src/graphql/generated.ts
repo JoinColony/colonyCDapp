@@ -4391,3 +4391,35 @@ export function useGetCurrentExtensionVersionLazyQuery(baseOptions?: Apollo.Lazy
 export type GetCurrentExtensionVersionQueryHookResult = ReturnType<typeof useGetCurrentExtensionVersionQuery>;
 export type GetCurrentExtensionVersionLazyQueryHookResult = ReturnType<typeof useGetCurrentExtensionVersionLazyQuery>;
 export type GetCurrentExtensionVersionQueryResult = Apollo.QueryResult<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>;
+export const GetNewestColonyContractVersionDocument = gql`
+    query GetNewestColonyContractVersion {
+  getNewestColonyContractVersion
+}
+    `;
+
+/**
+ * __useGetNewestColonyContractVersionQuery__
+ *
+ * To run a query within a React component, call `useGetNewestColonyContractVersionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNewestColonyContractVersionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNewestColonyContractVersionQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetNewestColonyContractVersionQuery(baseOptions?: Apollo.QueryHookOptions<GetNewestColonyContractVersionQuery, GetNewestColonyContractVersionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNewestColonyContractVersionQuery, GetNewestColonyContractVersionQueryVariables>(GetNewestColonyContractVersionDocument, options);
+      }
+export function useGetNewestColonyContractVersionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNewestColonyContractVersionQuery, GetNewestColonyContractVersionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNewestColonyContractVersionQuery, GetNewestColonyContractVersionQueryVariables>(GetNewestColonyContractVersionDocument, options);
+        }
+export type GetNewestColonyContractVersionQueryHookResult = ReturnType<typeof useGetNewestColonyContractVersionQuery>;
+export type GetNewestColonyContractVersionLazyQueryHookResult = ReturnType<typeof useGetNewestColonyContractVersionLazyQuery>;
+export type GetNewestColonyContractVersionQueryResult = Apollo.QueryResult<GetNewestColonyContractVersionQuery, GetNewestColonyContractVersionQueryVariables>;
