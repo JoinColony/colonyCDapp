@@ -4,7 +4,9 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 
 import Numeral from '~shared/Numeral';
+import { STAKING_THRESHOLD } from '~constants';
 import { getStakeFromSlider, getRemainingStakePercentage } from '../../helpers';
+
 import { SLIDER_AMOUNT_KEY } from '..';
 
 import styles from './RequiredStakeMessage.css';
@@ -36,7 +38,8 @@ const RequiredStakeMessage = ({
 }: RequiredStakeMessageProps) => {
   const { watch } = useFormContext();
   const sliderAmount = watch(SLIDER_AMOUNT_KEY);
-  const isUnderThreshold = sliderAmount < 10 - totalPercentageStaked;
+  const isUnderThreshold =
+    sliderAmount < STAKING_THRESHOLD - totalPercentageStaked;
   const stake = getStakeFromSlider(
     sliderAmount,
     remainingToStake,

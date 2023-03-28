@@ -6,6 +6,7 @@ import DetailsWidget from '~shared/DetailsWidget';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { ColonyAction } from '~types';
 import { motionStateMap } from '~utils/colonyMotions';
+import { STAKING_THRESHOLD } from '~constants';
 
 import { DefaultActionContent } from '../DefaultAction';
 import MotionHeading from './MotionHeading';
@@ -32,17 +33,17 @@ const DefaultMotion = ({ actionData }: DefaultMotionProps) => {
   const motionState = MotionState.Staking;
   const {
     motionData: {
-      motionStakes: {
-        percentage: { nay, yay },
-      },
+      motionStakes: { percentage: percentageStaked },
     },
   } = actionData;
-  const stakeLessThan10Percent = Number(nay) + Number(yay) < 10;
+  const isUnderThreshold =
+    Number(percentageStaked.nay) + Number(percentageStaked.yay) <
+    STAKING_THRESHOLD;
 
   return (
     <div className={styles.main}>
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
-      {stakeLessThan10Percent && <StakeRequiredBanner isDecision={false} />}
+      {isUnderThreshold && <StakeRequiredBanner isDecision={false} />}
       {isVotingReputationEnabled && (
         <MotionHeading motionState={motionStateMap[motionState]} />
       )}
