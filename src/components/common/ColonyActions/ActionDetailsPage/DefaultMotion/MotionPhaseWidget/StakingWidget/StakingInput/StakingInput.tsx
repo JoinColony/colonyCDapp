@@ -1,15 +1,10 @@
 import React from 'react';
 import { InferType, number, object } from 'yup';
-import { BigNumber } from 'ethers';
 
 import { ActionHookForm as ActionForm } from '~shared/Fields';
-import { Action, ActionTypes } from '~redux';
+import { ActionTypes } from '~redux';
 import { useStakingInput } from '~hooks';
-import { mapPayload } from '~utils/actions';
-import { MotionVote } from '~utils/colonyMotions';
-import { useAppContext, useColonyContext } from '~hooks';
 
-import { getStakeFromSlider } from '..';
 import { StakingControls, StakingSlider } from '.';
 
 const displayName =
@@ -22,31 +17,6 @@ const validationSchema = object({
 }).defined();
 
 export type StakingWidgetValues = InferType<typeof validationSchema>;
-type StakeMotionPayload = Action<ActionTypes.MOTION_STAKE>['payload'];
-
-export const getStakingTransformFn = (
-  remainingToStake: string,
-  userMinStake: string,
-  userAddress: string,
-  colonyAddress: string,
-  motionId: string,
-  vote: number,
-) =>
-  mapPayload(({ amount: sliderAmount }) => {
-    const finalStake = getStakeFromSlider(
-      sliderAmount,
-      remainingToStake,
-      userMinStake,
-    );
-
-    return {
-      amount: finalStake,
-      userAddress,
-      colonyAddress,
-      motionId: BigNumber.from(motionId),
-      vote,
-    } as StakeMotionPayload;
-  });
 
 const StakingInput = () => {
   const { transform, handleSuccess, canBeStaked, isObjection } =
@@ -59,7 +29,7 @@ const StakingInput = () => {
       validationSchema={validationSchema}
       actionType={ActionTypes.MOTION_STAKE}
       transform={transform}
-      // onSuccess={handleSuccess}
+      onSuccess={handleSuccess}
     >
       <StakingSlider canBeStaked={canBeStaked} isObjection={isObjection} />
       {/*

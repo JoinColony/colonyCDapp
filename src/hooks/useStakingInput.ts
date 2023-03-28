@@ -1,10 +1,11 @@
 import {
   useStakingWidgetContext,
-  getStakingTransformFn,
   StakingWidgetValues,
 } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
 import { OnSuccess } from '~shared/Fields';
+
 import { MotionVote } from '~utils/colonyMotions';
+import { getStakingTransformFn } from './helpers';
 
 import useAppContext from './useAppContext';
 import useColonyContext from './useColonyContext';

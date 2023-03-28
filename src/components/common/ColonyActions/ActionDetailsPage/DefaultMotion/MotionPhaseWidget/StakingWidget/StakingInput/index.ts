@@ -1,7 +1,6 @@
 export {
   default,
   SLIDER_AMOUNT_KEY,
-  getStakingTransformFn,
   StakingWidgetValues,
 } from './StakingInput';
 export { default as StakingControls } from './StakingControls';
