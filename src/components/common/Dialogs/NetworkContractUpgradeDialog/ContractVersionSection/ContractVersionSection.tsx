@@ -1,5 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
+import { Colony } from '~types';
+import { canColonyBeUpgraded } from '~utils/checks';
 
 import styles from './ContractVersionSection.css';
 
@@ -17,12 +19,17 @@ const MSG = defineMessages({
 });
 
 interface Props {
+  colony: Colony;
   currentVersion: number;
+  colonyContractVersion: number;
 }
 
-const LegacyPermissionWarning = ({ currentVersion }: Props) => {
+const LegacyPermissionWarning = ({
+  colony,
+  currentVersion,
+  colonyContractVersion,
+}: Props) => {
   const nextVersion = currentVersion + 1;
-  const networkVersion = 1; // newVersion - @TODO: This value comes from useNetworkContracts() in the Dapp. To be wired up.
 
   return (
     <>
@@ -34,7 +41,10 @@ const LegacyPermissionWarning = ({ currentVersion }: Props) => {
       <div className={styles.contractVersionLine}>
         <FormattedMessage {...MSG.newVersion} />
         <div className={styles.contractVersionNumber}>
-          {nextVersion < networkVersion ? nextVersion : networkVersion}
+          {/* @NOTE: The '-' is a fallback in the case that colonyContractVersion is 0 (Hasn't finished loading or there was an error while fetching) */}
+          {canColonyBeUpgraded(colony, colonyContractVersion)
+            ? nextVersion
+            : colonyContractVersion || '-'}
         </div>
       </div>
       <hr className={styles.divider} />

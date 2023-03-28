@@ -1,9 +1,13 @@
 import { ColonyRole, Id } from '@colony/colony-js';
 
-import { EnabledExtensionData, useActionDialogStatus } from '~hooks';
+import {
+  EnabledExtensionData,
+  useActionDialogStatus,
+  useColonyContractVersion,
+} from '~hooks';
 import { RootMotionMethodNames } from '~redux';
 import { Colony } from '~types';
-// import { colonyCanBeUpgraded } from '~utils/checks';
+import { canColonyBeUpgraded } from '~utils/checks';
 
 export const getNetworkContractUpgradeDialogPayload = (
   { colonyAddress, version, name: colonyName }: Colony,
@@ -24,7 +28,7 @@ export const useNetworkContractUpgradeDialogStatus = (
   requiredRoles: ColonyRole[],
   enabledExtensionData: EnabledExtensionData,
 ) => {
-  // const { version: newVersion } = useNetworkContracts();
+  const { colonyContractVersion } = useColonyContractVersion();
 
   const {
     userHasPermission,
@@ -34,8 +38,7 @@ export const useNetworkContractUpgradeDialogStatus = (
     canOnlyForceAction,
   } = useActionDialogStatus(colony, requiredRoles, [Id.RootDomain], enabledExtensionData);
 
-  // const canUpgradeVersion =
-  //   userHasPermission && !!colonyCanBeUpgraded(colony, newVersion as string);
+  const canUpgradeVersion = canColonyBeUpgraded(colony, colonyContractVersion);
 
   // const {
   //   data,
@@ -46,15 +49,16 @@ export const useNetworkContractUpgradeDialogStatus = (
   //   },
   // });
 
-  const isLoadingLegacyRecoveryRole = false;
+  const isLoadingLegacyRecoveryRole = false; // @TODO: Add logic when this data becomes available.
   const hasLegacyRecoveryRole = false;
   // data?.legacyNumberOfRecoveryRoles
   //   ? data?.legacyNumberOfRecoveryRoles > 1
   //   : false;
   return {
     userHasPermission,
-    disabledInput: defaultDisabledInput, // !canUpgradeVersion ||
-    disabledSubmit: defaultDisabledSubmit || hasLegacyRecoveryRole,
+    disabledInput: defaultDisabledInput || !canUpgradeVersion,
+    disabledSubmit:
+      defaultDisabledSubmit || hasLegacyRecoveryRole || !canUpgradeVersion,
     canCreateMotion,
     canOnlyForceAction,
     hasLegacyRecoveryRole,

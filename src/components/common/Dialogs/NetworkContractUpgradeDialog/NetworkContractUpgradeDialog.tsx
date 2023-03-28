@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { string, object, boolean, InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
 
-import { pipe, mergePayload, withMeta, mapPayload } from '~utils/actions';
+import { pipe, withMeta, mapPayload } from '~utils/actions';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
@@ -31,7 +31,6 @@ const NetworkContractUpgradeDialog = ({
   callStep,
   prevStep,
   colony,
-  colony: { colonyAddress, name, version: currentVersion },
   enabledExtensionData: { isVotingReputationEnabled },
   enabledExtensionData,
 }: Props) => {
@@ -43,7 +42,6 @@ const NetworkContractUpgradeDialog = ({
 
   const transform = pipe(
     mapPayload((payload) => getNetworkContractUpgradeDialogPayload(colony, payload)),
-    mergePayload({ colonyAddress, version: currentVersion, colonyName: name }),
     withMeta({ navigate }),
   );
 
