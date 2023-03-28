@@ -2,7 +2,7 @@ import React from 'react';
 import { object, number, InferType, string } from 'yup';
 
 import Dialog, { DialogProps } from '~shared/Dialog';
-import { ActionHookForm as ActionForm } from '~shared/Fields';
+import { ActionHookForm as ActionForm, OnSuccess } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 import { mapPayload } from '~utils/actions';
 
@@ -29,6 +29,7 @@ type ObjectionValues = InferType<typeof validationSchema>;
 
 interface RaiseObjectionDialogProps extends DialogProps {
   canBeStaked: boolean;
+  handleStakeSuccess: OnSuccess<ObjectionValues>;
   transform: ReturnType<typeof mapPayload>;
   setIsSummary: SetStateFn;
   amount: number;
@@ -37,14 +38,17 @@ interface RaiseObjectionDialogProps extends DialogProps {
 const RaiseObjectionDialog = ({
   close,
   canBeStaked,
+  handleStakeSuccess,
   transform,
   setIsSummary,
   amount,
 }: RaiseObjectionDialogProps) => {
-  const handleSuccess = () => {
+  const handleSuccess: OnSuccess<ObjectionValues> = (...args) => {
+    handleStakeSuccess(...args);
     setIsSummary(true);
     close();
   };
+
   return (
     <Dialog cancel={close}>
       <ActionForm<ObjectionValues>
