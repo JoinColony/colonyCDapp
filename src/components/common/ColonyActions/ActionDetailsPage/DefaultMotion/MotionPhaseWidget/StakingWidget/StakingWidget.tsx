@@ -23,10 +23,9 @@ const MSG = defineMessages({
 });
 
 const StakingWidget = () => {
-  const loadingStakeData = false;
-  const { isSummary } = useStakingWidgetContext();
+  const { isSummary, isRefetching } = useStakingWidgetContext();
 
-  if (loadingStakeData) {
+  if (isRefetching) {
     return (
       <div className={styles.main}>
         <MiniSpinnerLoader
