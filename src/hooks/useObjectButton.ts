@@ -3,16 +3,13 @@ import { useFormContext } from 'react-hook-form';
 import {
   useStakingWidgetContext,
   SLIDER_AMOUNT_KEY,
-  StakingWidgetValues,
 } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
 import { RaiseObjectionDialog } from '~common/Dialogs';
 import { useDialog } from '~shared/Dialog';
-import { OnSuccess } from '~shared/Fields';
 import { MotionVote } from '~utils/colonyMotions';
 
-import { getStakingTransformFn } from './helpers';
-import useAppContext from './useAppContext';
-import useColonyContext from './useColonyContext';
+import { getHandleStakeSuccessFn, getStakingTransformFn } from './helpers';
+import { useAppContext, useColonyContext } from '.';
 
 const useObjectButton = () => {
   const { user } = useAppContext();
@@ -24,6 +21,8 @@ const useObjectButton = () => {
     userMinStake,
     motionId,
     setIsSummary,
+    setIsRefetching,
+    startPollingAction,
   } = useStakingWidgetContext();
 
   const transform = getStakingTransformFn(
@@ -37,9 +36,11 @@ const useObjectButton = () => {
 
   const canUserStakedNay = !!(user && nayRemaining !== '0');
 
-  const handleStakeSuccess: OnSuccess<StakingWidgetValues> = (_, { reset }) => {
-    reset();
-  };
+  const handleStakeSuccess = getHandleStakeSuccessFn(
+    setIsRefetching,
+    startPollingAction,
+  );
+
   const handleObjection = () =>
     openRaiseObjectionDialog({
       canBeStaked: canUserStakedNay,
