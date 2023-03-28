@@ -3,6 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import ProgressBar from '~shared/ProgressBar';
 import { Tooltip } from '~shared/Popover';
+import { STAKING_THRESHOLD } from '~constants';
 
 import UserStakeMessage from './UserStakeMessage';
 import SingleTotalStakeHeading from './SingleTotalStakeHeading';
@@ -49,6 +50,8 @@ const SingleTotalStake = () => {
     isObjection ? percentageStaked.nay : percentageStaked.yay,
   );
 
+  const isUnderThreshold = totalPercentage < STAKING_THRESHOLD;
+
   const progressBar = (
     <ProgressBar
       value={totalPercentage}
@@ -69,7 +72,7 @@ const SingleTotalStake = () => {
         totalPercentage={totalPercentage}
         requiredStake={requiredStake}
       />
-      {totalPercentage < 10 ? (
+      {isUnderThreshold ? (
         <MinStakeTooltip>{progressBar}</MinStakeTooltip>
       ) : (
         progressBar
