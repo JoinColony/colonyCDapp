@@ -1,25 +1,21 @@
-import {
-  useStakingWidgetContext,
-  StakingWidgetValues,
-} from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
-import { OnSuccess } from '~shared/Fields';
+import { useStakingWidgetContext } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
 
 import { MotionVote } from '~utils/colonyMotions';
-import { getStakingTransformFn } from './helpers';
+import { getHandleStakeSuccessFn, getStakingTransformFn } from './helpers';
 
-import useAppContext from './useAppContext';
-import useColonyContext from './useColonyContext';
+import { useAppContext, useColonyContext } from '.';
 
 const useStakingInput = () => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
-
   const {
     canBeStaked,
     isObjection,
     motionId,
     remainingStakes: [nayRemaining, yayRemaining],
     userMinStake,
+    setIsRefetching,
+    startPollingAction,
   } = useStakingWidgetContext();
 
   const vote = isObjection ? MotionVote.Nay : MotionVote.Yay;
@@ -34,9 +30,10 @@ const useStakingInput = () => {
     vote,
   );
 
-  const handleSuccess: OnSuccess<StakingWidgetValues> = (_, { reset }) => {
-    reset();
-  };
+  const handleSuccess = getHandleStakeSuccessFn(
+    setIsRefetching,
+    startPollingAction,
+  );
 
   return { transform, handleSuccess, canBeStaked, isObjection };
 };
