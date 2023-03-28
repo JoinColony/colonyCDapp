@@ -15,6 +15,8 @@ export interface StakingWidgetContextValues extends MotionData {
   setIsObjection: SetStateFn;
   isSummary: boolean;
   setIsSummary: SetStateFn;
+  isRefetching: boolean;
+  setIsRefetching: SetStateFn;
   startPollingAction: (pollingInterval: number) => void;
 }
 
@@ -45,6 +47,7 @@ export const StakingWidgetProvider = ({
     motionStakes: {
       raw: { nay: nayStakes },
     },
+    motionStakes,
     remainingStakes: [nayRemaining, yayRemaining],
   },
   motionData,
@@ -56,6 +59,10 @@ export const StakingWidgetProvider = ({
   const showSummary = Number(nayStakes) > 0;
   const [isSummary, setIsSummary] = useState<boolean>(showSummary);
   const remainingToStake = isObjection ? nayRemaining : yayRemaining;
+  const [isRefetching, setIsRefetching] = useStakingWidgetUpdate(
+    motionStakes,
+    stopPollingAction,
+  );
 
   // Todo: extend this definition
   const canBeStaked = !!(user && remainingToStake !== '0');
@@ -69,6 +76,8 @@ export const StakingWidgetProvider = ({
       setIsObjection,
       isSummary,
       setIsSummary,
+      isRefetching,
+      setIsRefetching,
     }),
     [
       motionData,
@@ -78,6 +87,8 @@ export const StakingWidgetProvider = ({
       setIsObjection,
       isSummary,
       setIsSummary,
+      isRefetching,
+      setIsRefetching,
     ],
   );
 
