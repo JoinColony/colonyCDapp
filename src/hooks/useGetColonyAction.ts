@@ -17,6 +17,7 @@ const useGetColonyAction = (colony?: Colony | null) => {
   const {
     data: actionData,
     loading: loadingAction,
+    startPolling: startPollingForAction,
     stopPolling: stopPollingForAction,
   } = useGetColonyActionQuery({
     skip: skipQuery,
@@ -48,6 +49,8 @@ const useGetColonyAction = (colony?: Colony | null) => {
       isValidTx && action?.colony?.colonyAddress !== colony?.colonyAddress,
     loadingAction: loadingAction || isPolling,
     action,
+    startPollingForAction,
+    stopPollingForAction,
   };
 };
 
