@@ -3,12 +3,14 @@ query GetColonyActions(
   $nextToken: String
   $limit: Int
   $sortDirection: ModelSortDirection
+  $filter: ModelColonyActionFilterInput
 ) {
   getActionsByColony(
     colonyId: $colonyAddress
     nextToken: $nextToken
     limit: $limit
     sortDirection: $sortDirection
+    filter: $filter
   ) {
     items {
       ...ColonyAction
