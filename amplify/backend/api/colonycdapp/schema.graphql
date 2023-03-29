@@ -113,6 +113,11 @@ input GetUserTokenBalanceInput {
   tokenAddress: String!
 }
 
+input GetMotionStateInput {
+  motionId: Int!
+  colonyAddress: String!
+}
+
 type UserDomainReputation {
   domainId: Int!
   reputationPercentage: String!
@@ -228,6 +233,8 @@ type Query {
   ): GetUserTokenBalanceReturn @function(name: "getUserTokenBalance")
   getMembersForColony(input: MembersForColonyInput): MembersForColonyReturn
     @function(name: "getMembersForColony")
+  getMotionState(input: GetMotionStateInput): Int
+    @function(name: "fetchMotionState")
 }
 
 type Mutation {
@@ -447,9 +454,15 @@ type UserStakes {
   stakes: MotionStakes!
 }
 
+type StakerRewards {
+  address: String!
+  rewards: MotionStakeValues!
+}
+
 type MotionData {
   motionId: String!
   usersStakes: [UserStakes!]!
+  stakerRewards: [StakerRewards!]!
   motionStakes: MotionStakes!
   remainingStakes: [String!]! # tuple [nayRemaining, yayRemaining]
   userMinStake: String!
@@ -458,6 +471,7 @@ type MotionData {
   rootHash: String!
   # native domain id
   motionDomainId: String!
+  isFinalized: Boolean!
 }
 
 # This will store the relevant events we care about for a particular colony
