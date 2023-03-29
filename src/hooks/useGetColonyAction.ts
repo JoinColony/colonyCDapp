@@ -3,7 +3,7 @@ import { useLocation, useParams } from 'react-router-dom';
 
 import { ActionDetailsPageParams } from '~common/ColonyActions/ActionDetailsPage';
 import { failedLoadingDuration as pollingTimeout } from '~frame/LoadingTemplate';
-import { useGetColonyActionQuery } from '~gql';
+import { useGetColonyActionQuery, useGetMotionStateQuery } from '~gql';
 import { Colony } from '~types';
 import { isTransactionFormat } from '~utils/web3';
 
@@ -43,14 +43,26 @@ const useGetColonyAction = (colony?: Colony | null) => {
     setIsPolling(false);
   }
 
+  const { data: motionStateData, loading: loadingMotionState } =
+    useGetMotionStateQuery({
+      skip: !action?.motionData,
+      variables: {
+        input: {
+          colonyAddress: colony?.colonyAddress ?? '',
+          motionId: Number(action?.motionData?.motionId),
+        },
+      },
+    });
+
   return {
     isInvalidTransactionHash: !isValidTx,
     isUnknownTransaction:
       isValidTx && action?.colony?.colonyAddress !== colony?.colonyAddress,
-    loadingAction: loadingAction || isPolling,
+    loadingAction: loadingAction || isPolling || loadingMotionState,
     action,
     startPollingForAction,
     stopPollingForAction,
+    motionState: motionStateData?.getMotionState,
   };
 };
 
