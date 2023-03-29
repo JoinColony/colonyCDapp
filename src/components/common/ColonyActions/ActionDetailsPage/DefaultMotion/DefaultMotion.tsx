@@ -1,11 +1,10 @@
 import React from 'react';
-import { MotionState } from '@colony/colony-js';
+import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import DetailsWidget from '~shared/DetailsWidget';
-
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { ColonyAction } from '~types';
-import { motionStateMap } from '~utils/colonyMotions';
+import { getMotionState } from '~utils/colonyMotions';
 import { STAKING_THRESHOLD } from '~constants';
 
 import { DefaultActionContent } from '../DefaultAction';
@@ -19,11 +18,16 @@ const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion';
 
 interface DefaultMotionProps {
   actionData: ColonyAction;
+  networkMotionState: NetworkMotionState;
   startPollingAction: (pollingInterval: number) => void;
   stopPollingAction: () => void;
 }
 
-const DefaultMotion = ({ actionData, ...rest }: DefaultMotionProps) => {
+const DefaultMotion = ({
+  actionData,
+  networkMotionState,
+  ...rest
+}: DefaultMotionProps) => {
   const { colony } = useColonyContext();
 
   const { isVotingReputationEnabled } = useEnabledExtensions();
@@ -32,12 +36,14 @@ const DefaultMotion = ({ actionData, ...rest }: DefaultMotionProps) => {
     return null;
   }
 
-  const motionState = MotionState.Staking;
+  const motionState = getMotionState(networkMotionState, actionData.motionData);
+
   const {
     motionData: {
       motionStakes: { percentage: percentageStaked },
     },
   } = actionData;
+
   const isUnderThreshold =
     Number(percentageStaked.nay) + Number(percentageStaked.yay) <
     STAKING_THRESHOLD;
@@ -46,9 +52,7 @@ const DefaultMotion = ({ actionData, ...rest }: DefaultMotionProps) => {
     <div className={styles.main}>
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
       {isUnderThreshold && <StakeRequiredBanner isDecision={false} />}
-      {isVotingReputationEnabled && (
-        <MotionHeading motionState={motionStateMap[motionState]} />
-      )}
+      {isVotingReputationEnabled && <MotionHeading motionState={motionState} />}
       <div className={styles.container}>
         <DefaultActionContent actionData={actionData} />
         <div className={styles.widgets}>
