@@ -42,30 +42,9 @@ fragment Colony on Colony {
     # For native chain tokens. Eg: Eth/Xdai
     ...ChainFundsClaim
   }
-  watchers {
-    items {
-      ...Watcher
-    }
-  }
   version
   metadata {
     ...ColonyMetadata
-  }
-}
-
-fragment Watcher on WatchedColonies {
-  user {
-    walletAddress: id
-    name
-    profile {
-      avatar
-      bio
-      displayName
-      email
-      location
-      website
-      thumbnail
-    }
   }
 }
 

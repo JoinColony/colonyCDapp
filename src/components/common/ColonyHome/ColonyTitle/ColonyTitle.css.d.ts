@@ -2,6 +2,13 @@ declare namespace ColonyTitleCssNamespace {
   export interface IColonyTitleCss {
     colonyTitle: string;
     main: string;
+    mappings: string;
+    names: string;
+    query700: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
+    version: string;
     wrapper: string;
   }
 }

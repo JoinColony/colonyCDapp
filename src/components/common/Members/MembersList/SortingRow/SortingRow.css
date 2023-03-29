@@ -1,0 +1,15 @@
+@value query700 from '~styles/queries.css';
+
+.container {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 44px;
+  gap: 105px;
+}
+
+@media screen and query700 {
+  .container {
+    padding-right: 0;
+    gap: 8px;
+  }
+}

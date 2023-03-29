@@ -1,15 +1,26 @@
-export const main: string;
-export const stateDisableHover: string;
-export const stateActiveActions: string;
-export const stateAnnotation: string;
-export const stateGhosted: string;
-export const avatar: string;
-export const text: string;
-export const stateHideControls: string;
-export const details: string;
-export const content: string;
-export const actions: string;
-export const username: string;
-export const themePrimary: string;
-export const themeDanger: string;
-export const bannedTag: string;
+declare namespace CommentCssNamespace {
+  export interface ICommentCss {
+    actions: string;
+    avatar: string;
+    bannedTag: string;
+    content: string;
+    details: string;
+    main: string;
+    stateActiveActions: string;
+    stateAnnotation: string;
+    stateDisableHover: string;
+    stateGhosted: string;
+    stateHideControls: string;
+    text: string;
+    themeDanger: string;
+    themePrimary: string;
+    username: string;
+  }
+}
+
+declare const CommentCssModule: CommentCssNamespace.ICommentCss & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: CommentCssNamespace.ICommentCss;
+};
+
+export = CommentCssModule;

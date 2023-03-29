@@ -12,6 +12,13 @@ input TokenFromEverywhereArguments {
   tokenAddress: String!
 }
 
+input MembersForColonyInput {
+  colonyAddress: String!
+  rootHash: String
+  domainId: Int
+  sortingMethod: SortingMethod
+}
+
 input CreateUniqueUserInput {
   id: ID!
   name: String!
@@ -123,6 +130,15 @@ type GetUserTokenBalanceReturn {
   pendingBalance: String
 }
 
+# Definitions:
+# Member = User watching a Colony, with or without reputation
+# Contributor = User watching a Colony WITH reputation
+# Watcher = User watching a Colony WITHOUT reputation
+type MembersForColonyReturn {
+  contributors: [Contributor!]
+  watchers: [Watcher!]
+}
+
 enum TokenType {
   COLONY
   ERC20
@@ -178,6 +194,13 @@ enum ColonyActionType {
   EMIT_DOMAIN_REPUTATION_REWARD
 }
 
+enum SortingMethod {
+  BY_HIGHEST_REP
+  BY_LOWEST_REP
+  BY_MORE_PERMISSIONS
+  BY_LESS_PERMISSIONS
+}
+
 type Query {
   getTokenFromEverywhere(
     input: TokenFromEverywhereArguments
@@ -191,6 +214,8 @@ type Query {
   getUserTokenBalance(
     input: GetUserTokenBalanceInput
   ): GetUserTokenBalanceReturn @function(name: "getUserTokenBalance")
+  getMembersForColony(input: MembersForColonyInput): MembersForColonyReturn
+    @function(name: "getMembersForColony")
 }
 
 type Mutation {
@@ -240,6 +265,16 @@ type ChainMetadata {
 
 type ProfileMetadata {
   emailPermissions: [String!]!
+}
+
+type Contributor {
+  user: User
+  reputationPercentage: String
+  reputationAmount: String
+}
+
+type Watcher {
+  user: User
 }
 
 type Token @model {

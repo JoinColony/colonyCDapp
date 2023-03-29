@@ -8,13 +8,13 @@ import { useColonyContext } from '~hooks';
 import ColonyDomainSelector from './ColonyDomainSelector';
 import ColonyFundingWidget from './ColonyFundingWidget';
 import ColonyUnclaimedTransfers from './ColonyUnclaimedTransfers';
-import ColonyTitle from './ColonyTitle';
-import ColonyNavigation from './ColonyNavigation';
 import ColonyMembersWidget from './ColonyMembersWidget';
 import ColonyExtensions from './ColonyExtensionsWidget';
 import ColonyDomainDescription from './ColonyDomainDescription';
 // import ColonyUpgrade from './ColonyUpgrade';
 import OneTxPaymentUpgrade from './OneTxPaymentUpgrade';
+// import ExtensionUpgrade from './ExtensionUpgrade';
+import ColonyHomeInfo from './ColonyHomeInfo';
 
 import styles from './ColonyHomeLayout.css';
 
@@ -37,6 +37,7 @@ const displayName = 'common.ColonyHome.ColonyHomeLayout';
 const ColonyHomeLayout = ({
   filteredDomainId,
   children,
+
   onDomainChange = () => null,
 }: Props) => {
   const { colony } = useColonyContext();
@@ -53,10 +54,7 @@ const ColonyHomeLayout = ({
       <div
         className={isExtensions ? styles.mainContentGrid : styles.minimalGrid}
       >
-        <aside className={styles.leftAside}>
-          <ColonyTitle />
-          <ColonyNavigation />
-        </aside>
+        <ColonyHomeInfo />
         <div className={styles.mainContent}>
           {!isExtensions && (
             <>
