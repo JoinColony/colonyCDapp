@@ -43,7 +43,7 @@ fragment MotionStakeValues on MotionStakeValues {
 }
 
 fragment MotionData on MotionData {
-  motionId
+  motionId: nativeMotionId
   motionStakes {
     raw {
       ...MotionStakeValues
@@ -74,6 +74,7 @@ fragment MotionData on MotionData {
       yay
       nay
     }
+    isClaimed
   }
   isFinalized
 }
