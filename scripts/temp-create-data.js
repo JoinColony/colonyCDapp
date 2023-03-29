@@ -99,15 +99,12 @@ const getTokenFromEverywhere = /* GraphQL */ `
 /*
  * Helper methods
  */
-const delay = (ms = 300, verbose = false) =>
-  new Promise((resolve) =>
-    setTimeout(() => {
-      if (verbose) {
-        console.log(`Delaying execution by ${ms} milliseconds`);
-      }
-      resolve();
-    }, ms),
-  );
+const delay = (ms = 300, verbose = false) => new Promise(resolve => setTimeout(() => {
+  if (verbose) {
+    console.log(`Delaying execution by ${ms} milliseconds`);
+  }
+  resolve();
+}, ms));
 
 /*
  * User
@@ -127,16 +124,14 @@ const subscribeUserToColony = async (userAddress, colonyAddress) => {
   );
   await delay();
 
-  console.log(
-    `Subscribing user { address: "${userAddress}" } to colony's { address: "${colonyAddress}" } watchers`,
-  );
+  console.log(`Subscribing user { address: "${userAddress}" } to colony's { address: "${colonyAddress}" } watchers`);
 };
 
 const createUser = async (username, accountIndex = 0) => {
   /*
-   * @NOTE This could be done "cheaper", but I wanted to make sure the address
-   * is proper, so I've instantiated a wallet as well
-   */
+  * @NOTE This could be done "cheaper", but I wanted to make sure the address
+  * is proper, so I've instantiated a wallet as well
+  */
   const provider = new providers.JsonRpcProvider();
   const privateKey = Object.values(private_keys)[accountIndex];
   const userWallet = new Wallet(privateKey, provider);
@@ -191,9 +186,7 @@ const addTokenToUserTokens = async (userAddress, tokenAddress) => {
   );
   await delay();
 
-  console.log(
-    `Adding token { address: "${tokenAddress}" } to user's { address: "${userAddress}" } tokens list`,
-  );
+  console.log(`Adding token { address: "${tokenAddress}" } to user's { address: "${userAddress}" } tokens list`,);
 };
 
 const addTokenToColonyTokens = async (colonyAddress, tokenAddress) => {
@@ -211,9 +204,7 @@ const addTokenToColonyTokens = async (colonyAddress, tokenAddress) => {
   );
   await delay();
 
-  console.log(
-    `Adding token { address: "${tokenAddress}" } to colony's { address: "${colonyAddress}" } tokens list`,
-  );
+  console.log(`Adding token { address: "${tokenAddress}" } to colony's { address: "${colonyAddress}" } tokens list`,);
 };
 
 const addTokenToDB = async (tokenAddress) => {
@@ -251,8 +242,7 @@ const createToken = async (symbol, singerOrWallet) => {
  * Colony
  */
 const createMetacolony = async (singerOrWallet) => {
-  const { abi: IColonyNetworkAbi } =
-    colonyJSExtras.factories.latest.IColonyNetwork__factory;
+  const { abi: IColonyNetworkAbi } = colonyJSExtras.factories.latest.IColonyNetwork__factory;
   const { abi: IColonyAbi } = colonyJSIColony.IColony__factory;
   const colonyNetwork = new Contract(
     etherRouterAddress,
@@ -482,17 +472,11 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
     /*
      * First Domain
      */
-    const firstSubdomainDeployment = await colony[
-      'addDomainWithProofs(uint256)'
-    ](1);
+    const firstSubdomainDeployment = await colony['addDomainWithProofs(uint256)'](1);
     await delay();
     const firstSubdomainTransactions = await firstSubdomainDeployment.wait();
     await delay();
-    const {
-      args: { domainId: firstSubdomainId },
-    } = firstSubdomainTransactions.events.find(
-      (event) => !!event?.args?.domainId,
-    );
+    const { args: { domainId: firstSubdomainId } } = firstSubdomainTransactions.events.find(event => !!event?.args?.domainId);
 
     const firstDomainMetadataMutation = await graphqlRequest(
       createDomainMetadata,
@@ -517,17 +501,11 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
     /*
      * Second Domain
      */
-    const secondSubdomainDeployment = await colony[
-      'addDomainWithProofs(uint256)'
-    ](1);
+    const secondSubdomainDeployment = await colony['addDomainWithProofs(uint256)'](1);
     await delay();
     const secondSubdomainTransactions = await secondSubdomainDeployment.wait();
     await delay();
-    const {
-      args: { domainId: secondSubdomainId },
-    } = secondSubdomainTransactions.events.find(
-      (event) => !!event?.args?.domainId,
-    );
+    const { args: { domainId: secondSubdomainId } } = secondSubdomainTransactions.events.find(event => !!event?.args?.domainId);
 
     const secondDomainMetadataMutation = await graphqlRequest(
       createDomainMetadata,
@@ -557,9 +535,9 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
  * Orchestration
  */
 const createUserAndColonyData = async () => {
-  const firstUser = await createUser('Boris', 0);
-  const secondUser = await createUser('Liz', 1);
-  const thirdUser = await createUser('Rishi', 2);
+  const firstUser = await createUser('a', 0);
+  const secondUser = await createUser('b', 1);
+  const thirdUser = await createUser('c', 2);
 
   await createMetacolony(firstUser);
 
@@ -574,21 +552,9 @@ const createUserAndColonyData = async () => {
   await addTokenToUserTokens(thirdUser.address, firstTokenAddress);
   await addTokenToUserTokens(thirdUser.address, secondTokenAddress);
 
-  const firstColonyAddress = await createColony(
-    'a',
-    firstTokenAddress,
-    firstUser,
-  );
-  const secondColonyAddress = await createColony(
-    'b',
-    secondTokenAddress,
-    secondUser,
-  );
-  const thirdColonyAddress = await createColony(
-    'c',
-    thirdTokenAddress,
-    thirdUser,
-  );
+  const firstColonyAddress = await createColony('a', firstTokenAddress, firstUser);
+  const secondColonyAddress = await createColony('b',secondTokenAddress,secondUser);
+  const thirdColonyAddress = await createColony('c',thirdTokenAddress,thirdUser);
 
   await subscribeUserToColony(firstUser.address, secondColonyAddress);
   await subscribeUserToColony(firstUser.address, thirdColonyAddress);

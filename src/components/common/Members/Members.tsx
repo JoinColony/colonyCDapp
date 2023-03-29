@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 import { sortBy } from '~utils/lodash';
@@ -7,12 +7,8 @@ import { SpinnerLoader } from '~shared/Preloaders';
 
 import { useColonyContext } from '~hooks';
 import { Domain, useGetMembersForColonyQuery, SortingMethod } from '~gql';
-import {
-  COLONY_TOTAL_BALANCE_DOMAIN_ID,
-  ALLDOMAINS_DOMAIN_SELECTION,
-} from '~constants';
-import { User, Colony, Contributor, Watcher } from '~types';
-import { notNull } from '~utils/arrays';
+import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
+import { User, Colony, Contributor, Watcher, DomainColor } from '~types';
 import { FormValues } from '~common/ColonyMembers/MembersFilter';
 
 import MembersTitle from './MembersTitle';
@@ -42,6 +38,7 @@ interface Props {
   selectedDomain?: number;
   handleDomainChange: React.Dispatch<React.SetStateAction<number>>;
   filters: FormValues;
+  isRootOrAllDomains: boolean;
 }
 
 export type Member = User & {
@@ -52,23 +49,36 @@ export type Member = User & {
 
 const getDomainSelectOptions = (colony?: Colony) => {
   return sortBy(
-    [...(colony?.domains?.items || []), ALLDOMAINS_DOMAIN_SELECTION].map(
-      ({ nativeId, name }: Domain) => {
-        return {
-          value: nativeId?.toString(),
-          label: name || '',
-        };
+    [
+      ...(colony?.domains?.items || []),
+      {
+        id: '',
+        isRoot: true,
+        nativeId: 0,
+        metadata: {
+          name: 'All Teams',
+          description: '',
+          color: DomainColor.Yellow,
+        },
       },
-    ),
+    ].map(({ nativeId, metadata }: Domain) => {
+      return {
+        value: nativeId?.toString(),
+        label: metadata?.name || '',
+      };
+    }),
     ['value'],
   );
 };
 
-const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
+const Members = ({
+  selectedDomain,
+  handleDomainChange,
+  filters,
+  isRootOrAllDomains,
+}: Props) => {
   const { colony } = useColonyContext();
   const [searchValue, setSearchValue] = useState<string>('');
-  const [contributors, setContributors] = useState<Contributor[]>([]);
-  const [watchers, setWatchers] = useState<Watcher[]>([]);
   const sortingMethod = SortingMethod.ByHighestRep;
 
   const { data, loading: loadingMembers } = useGetMembersForColonyQuery({
@@ -83,41 +93,25 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  useEffect(() => {
-    setContributors(
-      data?.getMembersForColony?.contributors?.filter(notNull) ?? [],
-    );
-    setWatchers(data?.getMembersForColony?.watchers?.filter(notNull) ?? []);
-  }, [data]);
-
-  const filterContributorsAndWatchers = useCallback(() => {
-    const filteredContributors = filterMembers<Contributor>(
-      data?.getMembersForColony?.contributors || [],
-      searchValue,
-      filters,
-    );
-    setContributors(filteredContributors);
-    const filteredWatchers = filterMembers<Watcher>(
-      data?.getMembersForColony?.watchers || [],
-      searchValue,
-      filters,
-    );
-    setWatchers(filteredWatchers);
-  }, [data, filters, searchValue]);
-
-  // handles search values & close button
   const handleSearch = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = event.target?.value || '';
       setSearchValue(value);
-      filterContributorsAndWatchers();
     },
-    [filterContributorsAndWatchers, setSearchValue],
+    [setSearchValue],
   );
 
-  useEffect(() => {
-    filterContributorsAndWatchers();
-  }, [filterContributorsAndWatchers, filters]);
+  const filteredContributors = filterMembers<Contributor>(
+    data?.getMembersForColony?.contributors || [],
+    searchValue,
+    filters,
+  );
+
+  const filteredWatchers = filterMembers<Watcher>(
+    data?.getMembersForColony?.watchers || [],
+    searchValue,
+    filters,
+  );
 
   if (loadingMembers && !data) {
     return (
@@ -130,6 +124,8 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
     );
   }
 
+  const hasMembers = filteredContributors?.length || filteredWatchers?.length;
+
   return (
     <div className={styles.main}>
       <MembersTitle
@@ -139,17 +135,17 @@ const Members = ({ selectedDomain, handleDomainChange, filters }: Props) => {
         searchValue={searchValue}
         handleSearch={handleSearch}
       />
-      {!contributors?.length && !watchers?.length ? (
+      {hasMembers ? (
+        <MembersContent
+          filters={filters}
+          contributors={filteredContributors}
+          watchers={filteredWatchers}
+          isRootOrAllDomains={isRootOrAllDomains}
+        />
+      ) : (
         <div className={styles.noResults}>
           <FormattedMessage {...MSG.noMembersFound} />
         </div>
-      ) : (
-        <MembersContent
-          selectedDomain={selectedDomain}
-          filters={filters}
-          contributors={contributors}
-          watchers={watchers}
-        />
       )}
     </div>
   );

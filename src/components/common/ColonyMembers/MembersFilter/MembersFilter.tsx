@@ -1,9 +1,8 @@
 import React from 'react';
-import { FormikProps } from 'formik';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Button from '~shared/Button';
-import { Form } from '~shared/Fields';
+import { HookForm as Form } from '~shared/Fields';
 
 import Filter from './Filter';
 import { filterItems, MemberType, VerificationType } from './filtersConfig';
@@ -37,44 +36,48 @@ export interface FormValues {
 }
 
 interface Props {
-  handleFiltersCallback: (filters: FormValues) => void;
-  isRoot: boolean;
+  onFilterChange: (name, value) => void;
+  isRootOrAllDomains: boolean;
 }
 
-const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
+const handleReset = (handleFilterChange, reset, defaultValues) => {
+  Object.entries(defaultValues).forEach(([key, value]) => {
+    handleFilterChange(key, value);
+  });
+  reset();
+};
+
+const MembersFilter = ({ onFilterChange, isRootOrAllDomains }: Props) => {
   return (
     <>
       <hr className={styles.divider} />
       <Form
-        initialValues={{
+        defaultValues={{
           memberType: MemberType.All,
           verificationType: VerificationType.All,
         }}
         onSubmit={() => {}}
-        enableReinitialize
       >
-        {({ resetForm, values }: FormikProps<FormValues>) => {
-          const showReset =
-            values.verificationType !== VerificationType.All ||
-            values.memberType !== MemberType.All;
-          handleFiltersCallback(values);
+        {({ formState: { isDirty, defaultValues }, reset }) => {
           return (
             <div className={styles.filters}>
               <div className={styles.titleContainer}>
                 <span className={styles.title}>
                   <FormattedMessage {...MSG.filter} />
                 </span>
-                {showReset && (
+                {isDirty && (
                   <Button
                     text={MSG.reset}
                     appearance={{ theme: 'blue' }}
-                    onClick={() => resetForm()}
+                    onClick={() =>
+                      handleReset(onFilterChange, reset, defaultValues)
+                    }
                   />
                 )}
               </div>
               {filterItems.map(
                 ({ appearance, name, options, label, isRootRequired }) => {
-                  const hideFilter = isRootRequired && !isRoot;
+                  const hideFilter = isRootRequired && !isRootOrAllDomains;
                   return (
                     !hideFilter && (
                       <Filter
@@ -83,6 +86,7 @@ const MembersFilter = ({ handleFiltersCallback, isRoot }: Props) => {
                         name={name}
                         options={options}
                         label={label}
+                        handleFilterChange={onFilterChange}
                       />
                     )
                   );

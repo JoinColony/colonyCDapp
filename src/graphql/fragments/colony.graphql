@@ -42,11 +42,6 @@ fragment Colony on Colony {
     # For native chain tokens. Eg: Eth/Xdai
     ...ChainFundsClaim
   }
-  watchers {
-    items {
-      ...Watcher
-    }
-  }
   version
   metadata {
     ...ColonyMetadata

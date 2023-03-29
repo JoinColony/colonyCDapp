@@ -13,9 +13,16 @@ interface Props {
   name: string;
   options?: SelectOption[];
   label: string | MessageDescriptor;
+  handleFilterChange: (name, value) => void;
 }
 
-const Filter = ({ appearance, name, options, label }: Props) => {
+const Filter = ({
+  appearance,
+  name,
+  options,
+  label,
+  handleFilterChange,
+}: Props) => {
   const selectRef = useRef<HTMLDivElement>(null);
 
   const scrollIntoView = () => {
@@ -31,6 +38,7 @@ const Filter = ({ appearance, name, options, label }: Props) => {
       onKeyUp={scrollIntoView}
     >
       <Select
+        onChange={(value) => handleFilterChange(name, value)}
         appearance={appearance}
         name={name}
         options={options}

@@ -1,15 +1,12 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 import Decimal from 'decimal.js';
+import { Id } from '@colony/colony-js';
 
 import Heading from '~shared/Heading';
 import Numeral from '~shared/Numeral';
 
-import {
-  ROOT_DOMAIN_ID,
-  DEFAULT_TOKEN_DECIMALS,
-  ADDRESS_ZERO,
-} from '~constants';
+import { DEFAULT_TOKEN_DECIMALS, ADDRESS_ZERO } from '~constants';
 import { useColonyContext } from '~hooks';
 import { useGetUserReputationQuery } from '~gql';
 
@@ -35,7 +32,7 @@ const TotalReputation = ({ selectedDomainId }: Props) => {
       input: {
         walletAddress: ADDRESS_ZERO,
         colonyAddress: colony?.colonyAddress || '',
-        domainId: selectedDomainId || ROOT_DOMAIN_ID,
+        domainId: selectedDomainId || Id.RootDomain,
       },
     },
     fetchPolicy: 'cache-and-network',

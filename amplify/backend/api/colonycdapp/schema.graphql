@@ -153,7 +153,7 @@ enum Network {
   GNOSISFORK
 }
 
-enum   {
+enum DomainColor {
   LIGHT_PINK
   PINK
   BLACK

@@ -1,4 +1,4 @@
-import React, { useRef, MouseEvent, ChangeEvent } from 'react';
+import React, { useRef, ChangeEvent } from 'react';
 import { defineMessages } from 'react-intl';
 
 import Heading from '~shared/Heading';
@@ -41,7 +41,7 @@ interface Props {
   domainSelectOptions: SelectOption[];
   handleDomainChange: (domainId: number) => void;
   searchValue: string;
-  handleSearch: (e: ChangeEvent | MouseEvent) => void;
+  handleSearch: (e: ChangeEvent) => void;
 }
 
 const MembersTitle = ({

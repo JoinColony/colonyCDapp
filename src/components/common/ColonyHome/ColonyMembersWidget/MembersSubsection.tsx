@@ -167,10 +167,11 @@ const MembersSubsection = ({
                        */
                       offset: [-208, -12],
                     },
-                  ],
-                }}
-              />
-              {/* {canAdministerComments && banned && (
+                  },
+                ],
+              }}
+            />
+            {/* {canAdministerComments && banned && (
                   <div className={styles.userBanned}>
                     <Icon
                       appearance={{ size: 'extraTiny' }}
@@ -179,8 +180,8 @@ const MembersSubsection = ({
                     />
                   </div>
                 )} */}
-            </li>
-          ))}
+          </li>
+        ))}
         {!!remainingAvatarsCount && (
           <li className={styles.remaningAvatars}>
             <NavLink to={membersPageRoute} title={MSG.viewMore}>

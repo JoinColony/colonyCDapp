@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import ColonyHomeInfo from '~common/ColonyHome/ColonyHomeInfo';
-import { COLONY_TOTAL_BALANCE_DOMAIN_ID, ROOT_DOMAIN_ID } from '~constants';
 import Members from '~common/Members';
 import NotFoundRoute from '~routes/NotFoundRoute';
-import { useColonyContext, useMobile } from '~hooks';
+import { useColonyContext } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
 
 import MemberControls from './MemberControls';
-import MembersFilter, { FormValues } from './MembersFilter';
-import { MemberType, VerificationType } from './MembersFilter/filtersConfig';
+import MembersFilter from './MembersFilter';
 import TotalReputation from './TotalReputation';
+import useColonyMembers from './useColonyMembers';
 
 import styles from './ColonyMembers.css';
 
@@ -26,21 +25,14 @@ const MSG = defineMessages({
 
 const ColonyMembers = () => {
   const { colony, loading } = useColonyContext();
-
-  const [filters, setFilters] = useState<FormValues>({
-    memberType: MemberType.All,
-    verificationType: VerificationType.All,
-  });
-
-  const [selectedDomainId, setSelectedDomainId] = useState<number>(
-    COLONY_TOTAL_BALANCE_DOMAIN_ID,
-  );
-
-  const isRootDomain =
-    selectedDomainId === ROOT_DOMAIN_ID ||
-    selectedDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID;
-
-  const isMobile = useMobile();
+  const {
+    filters,
+    selectedDomainId,
+    setSelectedDomainId,
+    handleFilterChange,
+    isRootOrAllDomains,
+    isMobile,
+  } = useColonyMembers();
 
   if (loading) {
     return (
@@ -63,14 +55,15 @@ const ColonyMembers = () => {
             selectedDomain={selectedDomainId}
             handleDomainChange={setSelectedDomainId}
             filters={filters}
+            isRootOrAllDomains={isRootOrAllDomains}
           />
         </div>
         <aside className={styles.rightAside}>
           <TotalReputation selectedDomainId={selectedDomainId} />
-          <MemberControls isRootDomain={isRootDomain} />
+          <MemberControls isRootOrAllDomains={isRootOrAllDomains} />
           <MembersFilter
-            handleFiltersCallback={setFilters}
-            isRoot={isRootDomain}
+            onFilterChange={handleFilterChange}
+            isRootOrAllDomains={isRootOrAllDomains}
           />
         </aside>
       </div>
