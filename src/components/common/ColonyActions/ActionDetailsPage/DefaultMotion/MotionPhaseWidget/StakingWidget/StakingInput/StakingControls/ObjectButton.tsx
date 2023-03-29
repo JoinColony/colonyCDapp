@@ -7,12 +7,13 @@ const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.ObjectButton';
 
 const ObjectButton = () => {
-  const { handleObjection } = useObjectButton();
+  const { handleObjection, canUserStakedNay } = useObjectButton();
+
   return (
     <Button
       appearance={{ theme: 'pink', size: 'medium' }}
       text={{ id: 'button.object' }}
-      disabled={false}
+      disabled={!canUserStakedNay}
       dataTest="stakeWidgetObjectButton"
       onClick={handleObjection}
     />

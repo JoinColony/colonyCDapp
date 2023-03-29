@@ -14,7 +14,6 @@ const useObjectButton = () => {
   const { colony } = useColonyContext();
   const openRaiseObjectionDialog = useDialog(RaiseObjectionDialog);
   const {
-    canBeStaked,
     remainingStakes: [nayRemaining],
     userMinStake,
     motionId,
@@ -29,11 +28,13 @@ const useObjectButton = () => {
     MotionVote.Nay,
   );
 
+  const canUserStakedNay = !!(user && nayRemaining !== '0');
+
   const handleObjection = () => {
-    openRaiseObjectionDialog({ canBeStaked, transform });
+    openRaiseObjectionDialog({ canBeStaked: canUserStakedNay, transform });
   };
 
-  return { handleObjection };
+  return { handleObjection, canUserStakedNay };
 
   /* totalNAYStakes.isZero()
       ? openRaiseObjectionDialog({ stakingSliderProps })
