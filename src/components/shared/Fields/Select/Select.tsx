@@ -8,8 +8,8 @@ import React, {
   useState,
 } from 'react';
 import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
+import { useField } from 'formik';
 import { nanoid } from 'nanoid';
-import { useFormContext } from 'react-hook-form';
 
 import { getMainClasses } from '~utils/css';
 import { DOWN, ENTER, ESC, SimpleMessageValues, SPACE, UP } from '~types';
@@ -29,7 +29,7 @@ const MSG = defineMessages({
   },
 });
 
-export interface SelectProps {
+export interface Props {
   /** Appearance object */
   appearance?: Appearance;
 
@@ -109,14 +109,9 @@ const Select = ({
   statusValues,
   dataTest,
   itemDataTest,
-}: SelectProps) => {
+}: Props) => {
   const [id] = useState<string>(idProp || nanoid());
-  const {
-    formState: { errors },
-    watch,
-    setValue,
-  } = useFormContext();
-  const selectValue = watch(name);
+  const [, { error, value }, { setValue }] = useField(name);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const { formatMessage } = useIntl();
 
@@ -124,8 +119,8 @@ const Select = ({
   const [selectedOption, setSelectedOption] = useState<number>(-1);
 
   const checkedOption = useMemo(
-    () => options.findIndex((option) => option.value === selectValue),
-    [selectValue, options],
+    () => options.findIndex((option) => option.value === value),
+    [value, options],
   );
 
   const open = () => {
@@ -170,11 +165,7 @@ const Select = ({
       return;
     }
     const { value: optionValue } = options[selectedOption];
-    setValue(name, optionValue, {
-      shouldDirty: true,
-      shouldTouch: true,
-      shouldValidate: true,
-    });
+    setValue(optionValue);
     if (onChangeCallback) {
       onChangeCallback(optionValue);
     }
@@ -349,7 +340,7 @@ const Select = ({
           appearance={{ theme: 'minimal' }}
           status={status}
           statusValues={statusValues}
-          error={errors[name]}
+          error={error}
         />
       )}
     </div>
