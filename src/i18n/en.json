@@ -23,6 +23,8 @@
   "button.approve": "Approve",
   "button.cancel": "Cancel",
   "button.choose": "Choose",
+  "button.claim": "Claim",
+  "button.claimed": "Claimed",
   "button.decline": "Decline",
   "button.delete": "Delete",
   "button.dismiss": "Dismiss",
