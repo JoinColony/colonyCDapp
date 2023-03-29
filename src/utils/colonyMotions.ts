@@ -26,6 +26,12 @@ export enum MotionState {
   Forced = 'Forced',
 }
 
+export const getMotionDatabaseId = (
+  chainId: number,
+  votingRepExtnAddress: string,
+  nativeMotionId: BigNumber,
+): string => `${chainId}-${votingRepExtnAddress}_${nativeMotionId}`;
+
 export const getMotionState = (
   motionState: NetworkMotionState,
   {
