@@ -3,15 +3,21 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import Slider from '~shared/Slider';
+import { useStakingWidgetContext } from '../StakingWidgetProvider';
 import { SLIDER_AMOUNT_KEY } from './StakingInput';
 
 import styles from './StakingWidgetSlider.css';
 
+const displayName =
+  'common.ColonyActions.DefaultMotion.StakingWidget.StakingWidgetSlider';
+
 const StakingWidgetSlider = () => {
   const { watch } = useFormContext();
+  const { canBeStaked } = useStakingWidgetContext();
   const sliderAmount = watch(SLIDER_AMOUNT_KEY);
 
   const isObjection = false;
+
   return (
     <div className={styles.sliderContainer}>
       <Slider
@@ -21,7 +27,7 @@ const StakingWidgetSlider = () => {
         step={1}
         min={0}
         max={100}
-        // disabled={!canBeStaked}
+        disabled={!canBeStaked}
         appearance={{
           theme: isObjection ? 'danger' : 'primary',
           size: 'thick',
@@ -31,5 +37,7 @@ const StakingWidgetSlider = () => {
     </div>
   );
 };
+
+StakingWidgetSlider.displayName = displayName;
 
 export default StakingWidgetSlider;

@@ -6,6 +6,7 @@ import { Tooltip } from '~shared/Popover';
 
 import UserStakeMessage from './UserStakeMessage';
 import SingleTotalStakeHeading from './SingleTotalStakeHeading';
+import { useStakingWidgetContext } from '../StakingWidgetProvider';
 
 import styles from './SingleTotalStake.css';
 
@@ -38,9 +39,15 @@ const MinStakeTooltip = ({ children }: MinStakeTooltipProps) => (
 );
 
 const SingleTotalStake = () => {
-  const userHasStaked = true;
   const isObjection = false;
-  const totalPercentage = 10;
+  const {
+    motionStakes: { percentage: percentageStaked },
+    requiredStake,
+  } = useStakingWidgetContext();
+
+  const totalPercentage = Number(
+    isObjection ? percentageStaked.nay : percentageStaked.yay,
+  );
 
   const progressBar = (
     <ProgressBar
@@ -58,13 +65,16 @@ const SingleTotalStake = () => {
 
   return (
     <>
-      <SingleTotalStakeHeading />
+      <SingleTotalStakeHeading
+        totalPercentage={totalPercentage}
+        requiredStake={requiredStake}
+      />
       {totalPercentage < 10 ? (
         <MinStakeTooltip>{progressBar}</MinStakeTooltip>
       ) : (
         progressBar
       )}
-      {userHasStaked && <UserStakeMessage />}
+      <UserStakeMessage />
     </>
   );
 };

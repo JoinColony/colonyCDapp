@@ -8,10 +8,13 @@ import { mapPayload } from '~utils/actions';
 import { MotionVote } from '~utils/colonyMotions';
 import { useAppContext, useColonyContext } from '~hooks';
 
-import StakingControls from './StakingControls';
-import StakingSliderDescription from './StakingSliderDescription';
-import StakingSliderAnnotation from './StakingSliderAnnotation';
-import StakingWidgetSlider from './StakingWidgetSlider';
+import { useStakingWidgetContext, getStakeFromSlider } from '..';
+import {
+  StakingControls,
+  StakingSliderDescription,
+  StakingSliderAnnotation,
+  StakingWidgetSlider,
+} from '.';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget';
@@ -25,11 +28,7 @@ const validationSchema = object({
 export type StakingWidgetValues = InferType<typeof validationSchema>;
 type StakeMotionPayload = Action<ActionTypes.MOTION_STAKE>['payload'];
 
-interface StakingInputProps {
-  motionId: string;
-}
-
-const StakingInput = ({ motionId }: StakingInputProps) => {
+const StakingInput = () => {
   // const handleSuccess = (_, { setFieldValue, resetForm }) => {
   //     resetForm({});
   //     setFieldValue('amount', 0);
@@ -38,12 +37,21 @@ const StakingInput = ({ motionId }: StakingInputProps) => {
 
   const { user } = useAppContext();
   const { colony } = useColonyContext();
+  const {
+    motionId,
+    remainingStakes: [nayRemaining, yayRemaining],
+    userMinStake,
+  } = useStakingWidgetContext();
   const isObjection = false;
+  const remainingToStake = isObjection ? nayRemaining : yayRemaining;
   const vote = isObjection ? MotionVote.Nay : MotionVote.Yay;
 
   const transform = mapPayload(({ amount: sliderAmount }) => {
-    const finalStake = BigNumber.from('1000000000000000000').div(sliderAmount);
-    /* getFinalStakeFromSliderAmount(amount); */
+    const finalStake = getStakeFromSlider(
+      sliderAmount,
+      remainingToStake,
+      userMinStake,
+    );
 
     return {
       amount: finalStake,
@@ -65,7 +73,7 @@ const StakingInput = ({ motionId }: StakingInputProps) => {
       // onSuccess={handleSuccess}
     >
       <StakingSliderDescription isObjection={false} />
-      <StakingSliderAnnotation />
+      {remainingToStake !== '0' && <StakingSliderAnnotation />}
       <StakingWidgetSlider />
       {/*
       {showValidationMessage && (

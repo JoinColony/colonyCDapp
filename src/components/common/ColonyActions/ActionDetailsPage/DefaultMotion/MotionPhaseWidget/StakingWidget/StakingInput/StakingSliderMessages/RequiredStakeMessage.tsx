@@ -2,10 +2,15 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
-import Decimal from 'decimal.js';
 
+import { useColonyContext } from '~hooks';
 import Numeral from '~shared/Numeral';
-import { SLIDER_AMOUNT_KEY } from '../StakingInput';
+import {
+  getStakeFromSlider,
+  getStakePercentage,
+  useStakingWidgetContext,
+} from '../..';
+import { SLIDER_AMOUNT_KEY } from '..';
 
 import styles from './RequiredStakeMessage.css';
 
@@ -21,15 +26,28 @@ const MSG = defineMessages({
 
 const RequiredStakeMessage = () => {
   const { watch } = useFormContext();
+  const { colony } = useColonyContext();
+  const { decimals: nativeTokenDecimals, symbol: nativeTokenSymbol } =
+    colony?.nativeToken || {};
+  const {
+    motionStakes: {
+      percentage: { yay: yayPercentageStaked, nay: nayPercentageStaked },
+    },
+    remainingStakes: [nayRemaining, yayRemaining],
+    userMinStake,
+  } = useStakingWidgetContext();
+  const isObjection = false;
+  const remainingToStake = isObjection ? nayRemaining : yayRemaining;
   const sliderAmount = watch(SLIDER_AMOUNT_KEY);
-  const isUnderThreshold = sliderAmount < 10;
-  const isOverThreshold = !isUnderThreshold;
-  const nativeTokenDecimals = 18;
-  const nativeTokenSymbol = 'WILL';
-  const stake =
-    sliderAmount === 0
-      ? 0
-      : new Decimal('1000000000000000000').div(sliderAmount);
+  const isUnderThreshold =
+    sliderAmount <
+    10 - Number(isObjection ? nayPercentageStaked : yayPercentageStaked);
+  const stake = getStakeFromSlider(
+    sliderAmount,
+    remainingToStake,
+    userMinStake,
+  );
+  const stakePercentage = getStakePercentage(stake, remainingToStake);
 
   return (
     <div>
@@ -42,13 +60,10 @@ const RequiredStakeMessage = () => {
       <span
         className={classNames(styles.requiredStakeText, {
           [styles.requiredStakeUnderThreshold]: isUnderThreshold,
-          [styles.requiredStakeAboveThreshold]: isOverThreshold,
+          [styles.requiredStakeAboveThreshold]: !isUnderThreshold,
         })}
       >
-        <FormattedMessage
-          {...MSG.requiredStake}
-          values={{ stakePercentage: sliderAmount }}
-        />
+        <FormattedMessage {...MSG.requiredStake} values={{ stakePercentage }} />
       </span>
     </div>
   );
