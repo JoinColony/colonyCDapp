@@ -43,6 +43,7 @@ fragment MotionStakeValues on MotionStakeValues {
 }
 
 fragment MotionData on MotionData {
+  databaseMotionId: motionId
   motionId: nativeMotionId
   motionStakes {
     raw {
