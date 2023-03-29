@@ -1,0 +1,10 @@
+.loading {
+  composes: loading from '../StakingWidget/StakingWidget.css';
+}
+
+.finalizeError {
+  margin-top: 6px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  color: var(--pink);
+}
