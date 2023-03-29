@@ -68,4 +68,12 @@ fragment MotionData on MotionData {
   requiredStake
   rootHash
   motionDomainId
+  stakerRewards {
+    address
+    rewards {
+      yay
+      nay
+    }
+  }
+  isFinalized
 }
