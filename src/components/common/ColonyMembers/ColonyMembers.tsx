@@ -24,6 +24,9 @@ const MSG = defineMessages({
 });
 
 const ColonyMembers = () => {
+  // const { extensionId } = useParams<{
+  //   extensionId?: string;
+  // }>();
   const { colony, loading } = useColonyContext();
   const {
     filters,
@@ -41,6 +44,10 @@ const ColonyMembers = () => {
       </div>
     );
   }
+
+  // if (!isExtensionIdValid) {
+  //   return <NotFoundRoute />;
+  // }
 
   if (!colony) {
     return <NotFoundRoute />;
