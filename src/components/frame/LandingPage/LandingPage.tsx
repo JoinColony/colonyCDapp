@@ -60,8 +60,7 @@ const LandingPage = () => {
    * Are the network contract deployed to the chain the user is connected
    * so that they can create a new colony on it
    */
-  const { wallet, updateUser, user, userLoading, connectWallet } =
-    useAppContext();
+  const { wallet, updateUser, user, userLoading } = useAppContext();
   const canInteractWithNetwork = useCanInteractWithNetwork();
   const { data, loading } = useGetMetacolonyQuery();
 
@@ -87,13 +86,9 @@ const LandingPage = () => {
           {wallet && !userLoading && !user && (
             <LandingItem to={CREATE_USER_ROUTE} message={MSG.createUsername} />
           )}
-          <LandingItem
-            to={CREATE_COLONY_ROUTE}
-            message={MSG.createColony}
-            onClick={
-              !canInteractWithNetwork && !wallet ? connectWallet : undefined
-            }
-          />
+          {canInteractWithNetwork && (
+            <LandingItem to={CREATE_COLONY_ROUTE} message={MSG.createColony} />
+          )}
           {loading && (
             <li className={styles.itemLoading}>
               <SpinnerLoader appearance={{ size: 'medium' }} />
