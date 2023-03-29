@@ -17,12 +17,12 @@ query GetColonyActions(
   }
 }
 
-query GetColonyAction(
-  $transactionHash: ID!
-) {
-  getColonyAction (
-    id: $transactionHash
-  ) {
+query GetColonyAction($transactionHash: ID!) {
+  getColonyAction(id: $transactionHash) {
     ...ColonyAction
   }
+}
+
+query GetMotionState($input: GetMotionStateInput!) {
+  getMotionState(input: $input)
 }
