@@ -46,7 +46,6 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     // It means that it was not set in context yet
   }
 
-  // initConnect used for smoother handling async processes
   const [wallet, setWallet] = useState(initialWallet);
   const [user, setUser] = useState<User | null | undefined>();
   const [userLoading, setUserLoading] = useState(false);

@@ -30,8 +30,7 @@ const MSG = defineMessages({
 
 const ColonySubscription = () => {
   const { colony, canInteractWithColony } = useColonyContext();
-  const { canSubscribe, handleSubscribe, unsubscribe } =
-    useColonySubscription();
+  const { canWatch, handleWatch, unwatch } = useColonySubscription();
 
   return (
     <div className={styles.main}>
@@ -46,11 +45,8 @@ const ColonySubscription = () => {
             </div>
           </InvisibleCopyableAddress>
         )}
-        {!canSubscribe && (
-          <ColonySubscriptionInfoPopover
-            onUnsubscribe={unsubscribe}
-            canUnsubscribe
-          >
+        {!canWatch && (
+          <ColonySubscriptionInfoPopover onUnsubscribe={unwatch} canUnsubscribe>
             {({ isOpen, toggle, ref, id }) => (
               <ThreeDotsButton
                 id={id}
@@ -66,10 +62,10 @@ const ColonySubscription = () => {
             )}
           </ColonySubscriptionInfoPopover>
         )}
-        {canSubscribe && (
+        {canWatch && (
           <div className={styles.colonyJoin}>
             <Button
-              onClick={handleSubscribe}
+              onClick={handleWatch}
               appearance={{ theme: 'blue', size: 'small' }}
               data-test="joinColonyButton"
               className={styles.colonyJoinBtn}

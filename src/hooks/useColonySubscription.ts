@@ -26,7 +26,7 @@ const useColonySubscription = () => {
   const watchedItem = getWatchedColony(colony, user?.watchlist?.items);
 
   /* Watch (follow) a colony */
-  const [subscribe, { data: watchData }] = useCreateWatchedColoniesMutation({
+  const [watch, { data: watchData }] = useCreateWatchedColoniesMutation({
     variables: {
       input: {
         colonyID: colony?.colonyAddress || '',
@@ -42,17 +42,15 @@ const useColonySubscription = () => {
   });
 
   /* Unwatch (unfollow) a colony */
-  const [unsubscribe, { data: unwatchData }] = useDeleteWatchedColoniesMutation(
-    {
-      variables: { input: { id: watchedItem?.id || '' } },
-      refetchQueries: [
-        {
-          query: GetFullColonyByNameDocument,
-          variables: { name: colony?.name },
-        },
-      ],
-    },
-  );
+  const [unwatch, { data: unwatchData }] = useDeleteWatchedColoniesMutation({
+    variables: { input: { id: watchedItem?.id || '' } },
+    refetchQueries: [
+      {
+        query: GetFullColonyByNameDocument,
+        variables: { name: colony?.name },
+      },
+    ],
+  });
 
   /* Update user on watch/unwatch */
   useEffect(() => {
@@ -61,9 +59,9 @@ const useColonySubscription = () => {
     }
   }, [user, updateUser, watchData, unwatchData]);
 
-  const handleSubscribe = () => {
+  const handleWatch = () => {
     if (user) {
-      subscribe();
+      watch();
     } else if (wallet && !user) {
       handleNewUser();
       // TO Do: update to new user modal
@@ -73,13 +71,12 @@ const useColonySubscription = () => {
     }
   };
 
-  const canSubscribe =
-    !canInteractWithColony && !walletConnecting && !userLoading;
+  const canWatch = !canInteractWithColony && !walletConnecting && !userLoading;
 
   return {
-    canSubscribe,
-    handleSubscribe,
-    unsubscribe,
+    canWatch,
+    handleWatch,
+    unwatch,
   };
 };
 
