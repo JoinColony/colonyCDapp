@@ -41,10 +41,12 @@ const MSG = defineMessages({
 interface LandingItemProps {
   to: string;
   message: MessageDescriptor;
+  onClick?: () => void;
 }
-const LandingItem = ({ to, message }: LandingItemProps) => (
+
+const LandingItem = ({ to, message, onClick }: LandingItemProps) => (
   <li className={styles.item}>
-    <NavLink to={to} className={styles.itemLink}>
+    <NavLink to={to} onClick={onClick} className={styles.itemLink}>
       <Icon className={styles.itemIcon} name="circle-plus" title={message} />
       <span className={styles.itemTitle}>
         <FormattedMessage {...message} />

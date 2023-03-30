@@ -27,7 +27,7 @@ const MSG = defineMessages({
   },
   walletNotConnectedWarning: {
     id: `${displayName}.walletNotConnectedWarning`,
-    defaultMessage: `To interact with a Colony you must have your wallet connected, have a user profile registered, and be on the same network as the specific colony.`,
+    defaultMessage: `To interact with a colony you must connect your wallet, be on the same network as the colony, and have joined the colony.`,
   },
 });
 
@@ -44,7 +44,7 @@ interface Props {
 // }
 
 const NewActionButton = ({ filteredDomainId }: Props) => {
-  const { colony } = useColonyContext();
+  const { colony, canInteractWithColony } = useColonyContext();
   const { user, walletConnecting } = useAppContext();
 
   // const { version: networkVersion } = useNetworkContracts();

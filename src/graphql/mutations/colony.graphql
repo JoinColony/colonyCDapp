@@ -21,3 +21,9 @@ mutation UpdateColonyMetadata($input: UpdateColonyMetadataInput!) {
     id
   }
 }
+
+mutation DeleteWatchedColonies($input: DeleteWatchedColoniesInput!) {
+  deleteWatchedColonies(input: $input) {
+    id
+  }
+}
