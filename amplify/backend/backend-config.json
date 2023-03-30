@@ -43,11 +43,6 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "getNewestColonyContractVersion": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "getReputationForTopDomains": {
       "build": true,
       "providerPlugin": "awscloudformation",
