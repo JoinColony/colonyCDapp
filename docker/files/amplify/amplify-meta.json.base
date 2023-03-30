@@ -76,10 +76,5 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "getNewestColonyContractVersion": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
   }
 }
