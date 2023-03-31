@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BigNumber } from 'ethers';
 
 import Numeral from '~shared/Numeral';
@@ -22,6 +22,7 @@ const useClaimWidgetConfig = (
 ) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
+  const [isClaimed, setIsClaimed] = useState(false);
 
   const userAddress = user?.walletAddress;
   const colonyAddress = colony?.colonyAddress;
@@ -53,8 +54,12 @@ const useClaimWidgetConfig = (
 
   const {
     rewards: { yay: yayReward, nay: nayReward },
-    isClaimed,
+    isClaimed: isRewardClaimed,
   } = stakerReward;
+
+  if (isRewardClaimed && !isClaimed) {
+    setIsClaimed(true);
+  }
 
   const {
     stakes: {
@@ -69,6 +74,10 @@ const useClaimWidgetConfig = (
   // Else, return full widget
   const buttonTextId = isClaimed ? 'button.claimed' : 'button.claim';
   const canClaimStakes = !userTotalStake.isZero() && !isClaimed;
+  const handleClaimSuccess = () => {
+    setIsClaimed(true);
+    startPollingAction(1000);
+  };
 
   const claimPayload = {
     userAddress,
@@ -84,7 +93,7 @@ const useClaimWidgetConfig = (
       text={{ id: buttonTextId }}
       disabled={!canClaimStakes}
       dataTest="claimStakeButton"
-      onSuccess={() => startPollingAction(1000)}
+      onSuccess={handleClaimSuccess}
     />
   );
 
