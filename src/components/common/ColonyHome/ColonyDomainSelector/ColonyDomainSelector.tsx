@@ -1,13 +1,13 @@
 import React, { ReactNode, useCallback } from 'react';
 import { Id } from '@colony/colony-js';
 
+import { useDialog } from '~shared/Dialog';
 import ColorTag from '~shared/ColorTag';
 import { HookForm as Form, SelectOption } from '~shared/Fields';
 import DomainDropdown from '~shared/DomainDropdown';
-// import { useDialog } from '~shared/Dialog';
-// import EditDomainDialog from '~dialogs/EditDomainDialog';
+import { EditDomainDialog } from '~common/Dialogs';
 
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 // import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
 import { DomainColor } from '~types';
@@ -33,18 +33,16 @@ const ColonyDomainSelector = ({
 }: Props) => {
   const { colony, canInteractWithColony } = useColonyContext();
   const { domains } = colony || {};
+  const enabledExtensionData = useEnabledExtensions();
 
-  // const openEditDialog = useDialog(EditDomainDialog);
-  // const handleEditDomain = useCallback(
-  //   (ethDomainId: number) =>
-  //     openEditDialog({
-  //       ethDomainId,
-  //       colony,
-  //     }),
-  //   [openEditDialog, colony],
-  // );
-
-  const handleEditDomain = () => {};
+  const openEditDialog = useDialog(EditDomainDialog);
+  const handleEditDomain = (selectedDomainId: number) =>
+    colony &&
+    openEditDialog({
+      filteredDomainId: selectedDomainId,
+      colony,
+      enabledExtensionData,
+    });
 
   const getDomainColor = useCallback<
     (domainId: number | undefined) => DomainColor
