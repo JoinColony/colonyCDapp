@@ -6,7 +6,7 @@ import { canColonyBeUpgraded } from '~utils/checks';
 import styles from './ContractVersionSection.css';
 
 const displayName =
-  'common.NetworkContractUpgradeDialog.NetworkContractUpgradeDialogForm.LegacyPermissionWarning';
+  'common.NetworkContractUpgradeDialog.NetworkContractUpgradeDialogForm.ContractVersionSection';
 
 const MSG = defineMessages({
   currentVersion: {
@@ -25,7 +25,7 @@ interface Props {
   colonyContractVersion: number;
 }
 
-const LegacyPermissionWarning = ({
+const ContractVersionSection = ({
   colony,
   currentVersion,
   colonyContractVersion,
@@ -53,6 +53,6 @@ const LegacyPermissionWarning = ({
   );
 };
 
-LegacyPermissionWarning.displayName = displayName;
+ContractVersionSection.displayName = displayName;
 
-export default LegacyPermissionWarning;
+export default ContractVersionSection;
