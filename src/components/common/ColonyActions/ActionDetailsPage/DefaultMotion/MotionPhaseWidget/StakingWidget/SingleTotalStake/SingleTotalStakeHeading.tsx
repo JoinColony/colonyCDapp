@@ -7,6 +7,8 @@ import Numeral from '~shared/Numeral';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 import { useColonyContext } from '~hooks';
 
+import { useStakingWidgetContext } from '../StakingWidgetProvider';
+
 import styles from './SingleTotalStakeHeading.css';
 
 const displayName =
@@ -52,11 +54,11 @@ const SingleTotalStakeHeading = ({
   totalPercentage,
   requiredStake,
 }: SingleTotalStakeHeadingProps) => {
+  const { isObjection } = useStakingWidgetContext();
   const { colony } = useColonyContext();
   const { symbol: nativeTokenSymbol, decimals: nativeTokenDecimals } =
     colony?.nativeToken || {};
 
-  const isObjection = false;
   return (
     <div className={styles.widgetHeading}>
       <div className={styles.subHeading}>
