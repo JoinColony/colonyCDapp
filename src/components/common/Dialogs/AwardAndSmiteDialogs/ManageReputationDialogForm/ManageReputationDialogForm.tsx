@@ -17,11 +17,6 @@ import SingleUserPicker, {
   filterUserSelection,
 } from '~shared/SingleUserPicker';
 import UserAvatar from '~shared/UserAvatar';
-import {
-  NoPermissionMessage,
-  CannotCreateMotionMessage,
-  PermissionRequiredInfo,
-} from '../../Messages';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import { REPUTATION_LEARN_MORE } from '~constants/externalUrls';
 
@@ -31,10 +26,17 @@ import { useActionDialogStatus, useUserReputation } from '~hooks';
 import { sortBy } from '~utils/lodash';
 import { notNull } from '~utils/arrays';
 
+import {
+  NoPermissionMessage,
+  CannotCreateMotionMessage,
+  PermissionRequiredInfo,
+} from '../../Messages';
+
 import ReputationAmountInput from './ReputationAmountInput';
 import TeamDropdownItem from './TeamDropdownItem';
 
 import styles from './ManageReputationDialogForm.css';
+import { findDomainByNativeId } from '~utils/domains';
 
 const displayName =
   'common.ManageReputationContainer.ManageReputationDialogForm';
@@ -148,9 +150,8 @@ const ManageReputationDialogForm = ({
     ['value'],
   );
 
-  const domainName = colonyDomains.find(
-    (domain) => domain?.nativeId === domainId,
-  )?.metadata?.name;
+  const selectedDomain = findDomainByNativeId(domainId, colony);
+  const domainName = selectedDomain?.metadata?.name;
 
   const renderActiveOption = (option) => {
     const value = option ? option.value : undefined;
@@ -293,7 +294,9 @@ const ManageReputationDialogForm = ({
           onSecondaryButtonClick={back}
           disabled={disabledSubmit}
           dataTest="reputationConfirmButton"
-          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>
