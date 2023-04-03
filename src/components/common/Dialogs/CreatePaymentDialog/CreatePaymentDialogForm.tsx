@@ -140,9 +140,7 @@ Props) => {
           </div>
         )} */}
         {recipient &&
-          isConfusing(
-            recipient.walletAddress || recipient.profile?.displayName,
-          ) && (
+          isConfusing(recipient.name || recipient.profile?.displayName) && (
             <ConfusableWarning
               walletAddress={recipient.walletAddress}
               colonyAddress={colony?.colonyAddress}

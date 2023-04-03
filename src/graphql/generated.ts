@@ -399,6 +399,11 @@ export type CreateContractEventInput = {
   target: Scalars['String'];
 };
 
+export type CreateCurrentNetworkInverseFeeInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  inverseFee: Scalars['String'];
+};
+
 export type CreateCurrentVersionInput = {
   id?: InputMaybe<Scalars['ID']>;
   key: Scalars['String'];
@@ -480,6 +485,14 @@ export type CreateWatchedColoniesInput = {
   userID: Scalars['ID'];
 };
 
+export type CurrentNetworkInverseFee = {
+  __typename?: 'CurrentNetworkInverseFee';
+  createdAt: Scalars['AWSDateTime'];
+  id: Scalars['ID'];
+  inverseFee: Scalars['String'];
+  updatedAt: Scalars['AWSDateTime'];
+};
+
 export type CurrentVersion = {
   __typename?: 'CurrentVersion';
   createdAt: Scalars['AWSDateTime'];
@@ -514,6 +527,10 @@ export type DeleteColonyTokensInput = {
 };
 
 export type DeleteContractEventInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteCurrentNetworkInverseFeeInput = {
   id: Scalars['ID'];
 };
 
@@ -919,6 +936,27 @@ export type ModelContractEventFilterInput = {
   target?: InputMaybe<ModelStringInput>;
 };
 
+export type ModelCurrentNetworkInverseFeeConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelCurrentNetworkInverseFeeConditionInput>>>;
+  inverseFee?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelCurrentNetworkInverseFeeConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelCurrentNetworkInverseFeeConditionInput>>>;
+};
+
+export type ModelCurrentNetworkInverseFeeConnection = {
+  __typename?: 'ModelCurrentNetworkInverseFeeConnection';
+  items: Array<Maybe<CurrentNetworkInverseFee>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelCurrentNetworkInverseFeeFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelCurrentNetworkInverseFeeFilterInput>>>;
+  id?: InputMaybe<ModelIdInput>;
+  inverseFee?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelCurrentNetworkInverseFeeFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelCurrentNetworkInverseFeeFilterInput>>>;
+};
+
 export type ModelCurrentVersionConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelCurrentVersionConditionInput>>>;
   key?: InputMaybe<ModelStringInput>;
@@ -1198,6 +1236,13 @@ export type ModelSubscriptionContractEventFilterInput = {
   target?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
+export type ModelSubscriptionCurrentNetworkInverseFeeFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionCurrentNetworkInverseFeeFilterInput>>>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  inverseFee?: InputMaybe<ModelSubscriptionStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionCurrentNetworkInverseFeeFilterInput>>>;
+};
+
 export type ModelSubscriptionCurrentVersionFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionCurrentVersionFilterInput>>>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
@@ -1446,6 +1491,7 @@ export type Mutation = {
   createColonyMetadata?: Maybe<ColonyMetadata>;
   createColonyTokens?: Maybe<ColonyTokens>;
   createContractEvent?: Maybe<ContractEvent>;
+  createCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
   createCurrentVersion?: Maybe<CurrentVersion>;
   createDomain?: Maybe<Domain>;
   createDomainMetadata?: Maybe<DomainMetadata>;
@@ -1463,6 +1509,7 @@ export type Mutation = {
   deleteColonyMetadata?: Maybe<ColonyMetadata>;
   deleteColonyTokens?: Maybe<ColonyTokens>;
   deleteContractEvent?: Maybe<ContractEvent>;
+  deleteCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
   deleteCurrentVersion?: Maybe<CurrentVersion>;
   deleteDomain?: Maybe<Domain>;
   deleteDomainMetadata?: Maybe<DomainMetadata>;
@@ -1471,6 +1518,7 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUserTokens?: Maybe<UserTokens>;
   deleteWatchedColonies?: Maybe<WatchedColonies>;
+  setCurrentNetworkInverseFee?: Maybe<Scalars['Boolean']>;
   setCurrentVersion?: Maybe<Scalars['Boolean']>;
   updateColony?: Maybe<Colony>;
   updateColonyAction?: Maybe<ColonyAction>;
@@ -1479,6 +1527,7 @@ export type Mutation = {
   updateColonyMetadata?: Maybe<ColonyMetadata>;
   updateColonyTokens?: Maybe<ColonyTokens>;
   updateContractEvent?: Maybe<ContractEvent>;
+  updateCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
   updateCurrentVersion?: Maybe<CurrentVersion>;
   updateDomain?: Maybe<Domain>;
   updateDomainMetadata?: Maybe<DomainMetadata>;
@@ -1530,6 +1579,12 @@ export type MutationCreateColonyTokensArgs = {
 export type MutationCreateContractEventArgs = {
   condition?: InputMaybe<ModelContractEventConditionInput>;
   input: CreateContractEventInput;
+};
+
+
+export type MutationCreateCurrentNetworkInverseFeeArgs = {
+  condition?: InputMaybe<ModelCurrentNetworkInverseFeeConditionInput>;
+  input: CreateCurrentNetworkInverseFeeInput;
 };
 
 
@@ -1633,6 +1688,12 @@ export type MutationDeleteContractEventArgs = {
 };
 
 
+export type MutationDeleteCurrentNetworkInverseFeeArgs = {
+  condition?: InputMaybe<ModelCurrentNetworkInverseFeeConditionInput>;
+  input: DeleteCurrentNetworkInverseFeeInput;
+};
+
+
 export type MutationDeleteCurrentVersionArgs = {
   condition?: InputMaybe<ModelCurrentVersionConditionInput>;
   input: DeleteCurrentVersionInput;
@@ -1681,6 +1742,11 @@ export type MutationDeleteWatchedColoniesArgs = {
 };
 
 
+export type MutationSetCurrentNetworkInverseFeeArgs = {
+  input?: InputMaybe<SetCurrentNetworkInverseFeeInput>;
+};
+
+
 export type MutationSetCurrentVersionArgs = {
   input?: InputMaybe<SetCurrentVersionInput>;
 };
@@ -1725,6 +1791,12 @@ export type MutationUpdateColonyTokensArgs = {
 export type MutationUpdateContractEventArgs = {
   condition?: InputMaybe<ModelContractEventConditionInput>;
   input: UpdateContractEventInput;
+};
+
+
+export type MutationUpdateCurrentNetworkInverseFeeArgs = {
+  condition?: InputMaybe<ModelCurrentNetworkInverseFeeConditionInput>;
+  input: UpdateCurrentNetworkInverseFeeInput;
 };
 
 
@@ -1850,6 +1922,7 @@ export type Query = {
   getColonyMetadata?: Maybe<ColonyMetadata>;
   getColonyTokens?: Maybe<ColonyTokens>;
   getContractEvent?: Maybe<ContractEvent>;
+  getCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
   getCurrentVersion?: Maybe<CurrentVersion>;
   getCurrentVersionByKey?: Maybe<ModelCurrentVersionConnection>;
   getDomain?: Maybe<Domain>;
@@ -1877,6 +1950,7 @@ export type Query = {
   listColonyMetadata?: Maybe<ModelColonyMetadataConnection>;
   listColonyTokens?: Maybe<ModelColonyTokensConnection>;
   listContractEvents?: Maybe<ModelContractEventConnection>;
+  listCurrentNetworkInverseFees?: Maybe<ModelCurrentNetworkInverseFeeConnection>;
   listCurrentVersions?: Maybe<ModelCurrentVersionConnection>;
   listDomainMetadata?: Maybe<ModelDomainMetadataConnection>;
   listDomains?: Maybe<ModelDomainConnection>;
@@ -1956,6 +2030,11 @@ export type QueryGetColonyTokensArgs = {
 
 
 export type QueryGetContractEventArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGetCurrentNetworkInverseFeeArgs = {
   id: Scalars['ID'];
 };
 
@@ -2138,6 +2217,13 @@ export type QueryListContractEventsArgs = {
 };
 
 
+export type QueryListCurrentNetworkInverseFeesArgs = {
+  filter?: InputMaybe<ModelCurrentNetworkInverseFeeFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryListCurrentVersionsArgs = {
   filter?: InputMaybe<ModelCurrentVersionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -2193,6 +2279,10 @@ export type QueryListWatchedColoniesArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
+export type SetCurrentNetworkInverseFeeInput = {
+  inverseFee: Scalars['String'];
+};
+
 export type SetCurrentVersionInput = {
   key: Scalars['String'];
   version: Scalars['Int'];
@@ -2214,6 +2304,7 @@ export type Subscription = {
   onCreateColonyMetadata?: Maybe<ColonyMetadata>;
   onCreateColonyTokens?: Maybe<ColonyTokens>;
   onCreateContractEvent?: Maybe<ContractEvent>;
+  onCreateCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
   onCreateCurrentVersion?: Maybe<CurrentVersion>;
   onCreateDomain?: Maybe<Domain>;
   onCreateDomainMetadata?: Maybe<DomainMetadata>;
@@ -2229,6 +2320,7 @@ export type Subscription = {
   onDeleteColonyMetadata?: Maybe<ColonyMetadata>;
   onDeleteColonyTokens?: Maybe<ColonyTokens>;
   onDeleteContractEvent?: Maybe<ContractEvent>;
+  onDeleteCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
   onDeleteCurrentVersion?: Maybe<CurrentVersion>;
   onDeleteDomain?: Maybe<Domain>;
   onDeleteDomainMetadata?: Maybe<DomainMetadata>;
@@ -2244,6 +2336,7 @@ export type Subscription = {
   onUpdateColonyMetadata?: Maybe<ColonyMetadata>;
   onUpdateColonyTokens?: Maybe<ColonyTokens>;
   onUpdateContractEvent?: Maybe<ContractEvent>;
+  onUpdateCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
   onUpdateCurrentVersion?: Maybe<CurrentVersion>;
   onUpdateDomain?: Maybe<Domain>;
   onUpdateDomainMetadata?: Maybe<DomainMetadata>;
@@ -2287,6 +2380,11 @@ export type SubscriptionOnCreateColonyTokensArgs = {
 
 export type SubscriptionOnCreateContractEventArgs = {
   filter?: InputMaybe<ModelSubscriptionContractEventFilterInput>;
+};
+
+
+export type SubscriptionOnCreateCurrentNetworkInverseFeeArgs = {
+  filter?: InputMaybe<ModelSubscriptionCurrentNetworkInverseFeeFilterInput>;
 };
 
 
@@ -2365,6 +2463,11 @@ export type SubscriptionOnDeleteContractEventArgs = {
 };
 
 
+export type SubscriptionOnDeleteCurrentNetworkInverseFeeArgs = {
+  filter?: InputMaybe<ModelSubscriptionCurrentNetworkInverseFeeFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteCurrentVersionArgs = {
   filter?: InputMaybe<ModelSubscriptionCurrentVersionFilterInput>;
 };
@@ -2437,6 +2540,11 @@ export type SubscriptionOnUpdateColonyTokensArgs = {
 
 export type SubscriptionOnUpdateContractEventArgs = {
   filter?: InputMaybe<ModelSubscriptionContractEventFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateCurrentNetworkInverseFeeArgs = {
+  filter?: InputMaybe<ModelSubscriptionCurrentNetworkInverseFeeFilterInput>;
 };
 
 
@@ -2606,6 +2714,11 @@ export type UpdateContractEventInput = {
   name?: InputMaybe<Scalars['String']>;
   signature?: InputMaybe<Scalars['String']>;
   target?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateCurrentNetworkInverseFeeInput = {
+  id: Scalars['ID'];
+  inverseFee?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateCurrentVersionInput = {

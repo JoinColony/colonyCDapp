@@ -22,7 +22,8 @@
         "fetchColonyBalances": {},
         "updateExtensionByColonyAndHash": {},
         "setCurrentVersion": {},
-        "getUserTokenBalance": {}
+        "getUserTokenBalance": {},
+        "setCurrentNetworkInverseFee": {}
       }
     }
   }

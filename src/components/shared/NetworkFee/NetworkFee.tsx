@@ -42,7 +42,7 @@ const NetworkFee = ({ colony }: Props) => {
   const { tokenAddress, amount } = watch();
   const selectedToken = getSelectedToken(colony, tokenAddress);
 
-  if (new Decimal(amount || 0).isZero()) {
+  if (new Decimal(amount || 0).isZero() || !networkInverseFee) {
     return null;
   }
 

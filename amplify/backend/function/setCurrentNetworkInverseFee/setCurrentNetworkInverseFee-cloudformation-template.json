@@ -49,13 +49,13 @@
             "FunctionName": {
                 "Fn::If": [
                     "ShouldNotCreateEnvResources",
-                    "getNetworkInverseFee",
+                    "setCurrentNetworkInverseFee",
                     {
 
                         "Fn::Join": [
                             "",
                             [
-                                "getNetworkInverseFee",
+                                "setCurrentNetworkInverseFee",
                                 "-",
                                 {
                                     "Ref": "env"
@@ -80,13 +80,13 @@
                 "RoleName": {
                     "Fn::If": [
                         "ShouldNotCreateEnvResources",
-                        "colonycdappLambdaRolebb5b47c1",
+                        "colonycdappLambdaRolebbc492c2",
                         {
 
                             "Fn::Join": [
                                 "",
                                 [
-                                    "colonycdappLambdaRolebb5b47c1",
+                                    "colonycdappLambdaRolebbc492c2",
                                     "-",
                                     {
                                         "Ref": "env"
