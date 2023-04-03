@@ -1,6 +1,6 @@
 import React from 'react';
 
-import RaiseObjectionDialog from '~common/Dialogs/RaiseObjectionDialog';
+import { RaiseObjectionDialog } from '~common/Dialogs';
 import Button from '~shared/Button';
 import { useDialog } from '~shared/Dialog';
 

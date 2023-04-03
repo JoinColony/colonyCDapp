@@ -1,1 +1,1 @@
-export { default } from './TokenManagementDialog';
+export { default, FormValues } from './TokenManagementDialog';
