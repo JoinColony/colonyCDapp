@@ -3,13 +3,8 @@ import { useFormContext } from 'react-hook-form';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 
-import { useColonyContext } from '~hooks';
 import Numeral from '~shared/Numeral';
-import {
-  getStakeFromSlider,
-  getStakePercentage,
-  useStakingWidgetContext,
-} from '../..';
+import { getStakeFromSlider, getStakePercentage } from '../../helpers';
 import { SLIDER_AMOUNT_KEY } from '..';
 
 import styles from './RequiredStakeMessage.css';
@@ -24,24 +19,24 @@ const MSG = defineMessages({
   },
 });
 
-const RequiredStakeMessage = () => {
+export interface RequiredStakeMessageProps {
+  totalPercentageStaked: number;
+  remainingToStake: string;
+  userMinStake: string;
+  nativeTokenDecimals: number;
+  nativeTokenSymbol: string;
+}
+
+const RequiredStakeMessage = ({
+  totalPercentageStaked,
+  remainingToStake,
+  userMinStake,
+  nativeTokenDecimals,
+  nativeTokenSymbol,
+}: RequiredStakeMessageProps) => {
   const { watch } = useFormContext();
-  const { colony } = useColonyContext();
-  const { decimals: nativeTokenDecimals, symbol: nativeTokenSymbol } =
-    colony?.nativeToken || {};
-  const {
-    motionStakes: {
-      percentage: { yay: yayPercentageStaked, nay: nayPercentageStaked },
-    },
-    remainingStakes: [nayRemaining, yayRemaining],
-    userMinStake,
-  } = useStakingWidgetContext();
-  const isObjection = false;
-  const remainingToStake = isObjection ? nayRemaining : yayRemaining;
   const sliderAmount = watch(SLIDER_AMOUNT_KEY);
-  const isUnderThreshold =
-    sliderAmount <
-    10 - Number(isObjection ? nayPercentageStaked : yayPercentageStaked);
+  const isUnderThreshold = sliderAmount < 10 - totalPercentageStaked;
   const stake = getStakeFromSlider(
     sliderAmount,
     remainingToStake,

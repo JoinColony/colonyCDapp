@@ -1,1 +1,4 @@
-export { default as RequiredStakeMessage } from './RequiredStakeMessage';
+export {
+  default as RequiredStakeMessage,
+  RequiredStakeMessageProps,
+} from './RequiredStakeMessage';

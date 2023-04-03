@@ -11,6 +11,7 @@ export { default as TransferFundsDialog } from './TransferFundsDialog';
 // export { default as PermissionManagementDialog } from './PermissionManagementDialog';
 // export { default as ManageWhitelistDialog } from './ManageWhitelistDialog';
 export { default as MintTokenDialog } from './MintTokenDialog';
+export { default as RaiseObjectionDialog } from './RaiseObjectionDialog';
 // export { default as NetworkContractUpgradeDialog } from './NetworkContractUpgradeDialog';
 // export { default as EditColonyDetailsDialog } from './EditColonyDetailsDialog';
 // export { default as ManageReputationDialog } from './ManageReputationDialog';

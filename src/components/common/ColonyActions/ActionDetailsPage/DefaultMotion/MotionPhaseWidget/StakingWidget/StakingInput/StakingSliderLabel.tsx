@@ -3,12 +3,15 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { Tooltip } from '~shared/Popover';
 
-import { RequiredStakeMessage } from './StakingSliderMessages';
+import {
+  RequiredStakeMessage,
+  RequiredStakeMessageProps,
+} from './StakingSliderMessages';
 
-import styles from './StakingSliderAnnotation.css';
+import styles from './StakingSliderLabel.css';
 
 const displayName =
-  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingSliderAnnotation';
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingSliderLabel';
 
 const MSG = defineMessages({
   tooltip: {
@@ -28,7 +31,13 @@ const tooltipOptions = {
   ],
 };
 
-const StakingSliderAnnotation = () => {
+interface StakingSliderLabelProps {
+  requiredStakeMessageProps: RequiredStakeMessageProps;
+}
+
+const StakingSliderLabel = ({
+  requiredStakeMessageProps,
+}: StakingSliderLabelProps) => {
   // const { user } = useAppContext();
   // const showMinStakeMsg = !!user && !enoughTokens;
 
@@ -44,7 +53,7 @@ const StakingSliderAnnotation = () => {
         placement="top"
         popperOptions={tooltipOptions}
       >
-        <RequiredStakeMessage />
+        <RequiredStakeMessage {...requiredStakeMessageProps} />
 
         {/* {showMinStakeMsg ? (
           <MinimumStakeMessage />
@@ -55,6 +64,6 @@ const StakingSliderAnnotation = () => {
   );
 };
 
-StakingSliderAnnotation.displayName = displayName;
+StakingSliderLabel.displayName = displayName;
 
-export default StakingSliderAnnotation;
+export default StakingSliderLabel;
