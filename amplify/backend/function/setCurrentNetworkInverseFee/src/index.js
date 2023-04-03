@@ -1,8 +1,8 @@
 const { graphqlRequest } = require('../../utils');
 const {
-  getCurrentVersion,
-  updateCurrentVersion,
-  createCurrentVersion,
+  getCurrentNetworkInverseFee,
+  createCurrentNetworkInverseFee,
+  updateCurrentNetworkInverseFee,
 } = require('./graphql');
 
 /*
@@ -15,27 +15,25 @@ const GRAPHQL_URI = 'http://localhost:20002/graphql';
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  const { key, version } = event.arguments?.input || {};
+  const { inverseFee } = event.arguments?.input || {};
 
-  const getCurrentVersionData = await graphqlRequest(
-    getCurrentVersion,
-    {
-      key,
-    },
+  const getCurrentNetworkInverseFeeData = await graphqlRequest(
+    getCurrentNetworkInverseFee,
+    {},
     GRAPHQL_URI,
     API_KEY,
   );
 
-  const existingEntryId =
-    getCurrentVersionData?.data?.getCurrentVersionByKey?.items?.[0]?.id;
+  const existingFeeId =
+    getCurrentNetworkInverseFeeData?.data?.listCurrentNetworkInverseFees?.items?.[0]?.id;
 
-  if (existingEntryId) {
+  if (existingFeeId) {
     const updateCurrentVersionData = await graphqlRequest(
-      updateCurrentVersion,
+        updateCurrentNetworkInverseFee,
       {
         input: {
-          id: existingEntryId,
-          version,
+          id: existingFeeId,
+          inverseFee,
         },
       },
       GRAPHQL_URI,
@@ -46,11 +44,10 @@ exports.handler = async (event) => {
   }
 
   const createCurrentVersionData = await graphqlRequest(
-    createCurrentVersion,
+    createCurrentNetworkInverseFee,
     {
       input: {
-        key,
-        version,
+        inverseFee,
       },
     },
     GRAPHQL_URI,

@@ -1,9 +1,10 @@
-import { useGetNetworkInverseFeeQuery } from '~gql';
+import { useGetCurrentNetworkInverseFeeQuery } from '~gql';
 
 const useNetworkInverseFee = () => {
   const { data, loading: loadingNetworkInverseFee } =
-    useGetNetworkInverseFeeQuery();
-  const networkInverseFee = data?.getNetworkInverseFee ?? '0';
+    useGetCurrentNetworkInverseFeeQuery();
+  const networkInverseFee =
+    data?.listCurrentNetworkInverseFees?.items[0]?.inverseFee;
 
   return {
     networkInverseFee,
