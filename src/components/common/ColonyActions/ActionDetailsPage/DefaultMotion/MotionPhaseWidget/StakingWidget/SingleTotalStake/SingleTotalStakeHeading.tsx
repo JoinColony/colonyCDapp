@@ -7,8 +7,9 @@ import Numeral from '~shared/Numeral';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 import { useColonyContext } from '~hooks';
 
-import styles from './SingleTotalStakeHeading.css';
 import { useStakingWidgetContext } from '../StakingWidgetProvider';
+
+import styles from './SingleTotalStakeHeading.css';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.SingleTotalStakeHeading';
