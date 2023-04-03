@@ -32,7 +32,7 @@ const UserStakeMessage = () => {
     : userStakes?.stakes.raw.yay;
 
   const userStakePercentage = isObjection
-    ? userStakes?.stakes?.percentage.nay
+    ? userStakes?.stakes.percentage.nay
     : userStakes?.stakes.percentage.yay;
 
   const hasUserStaked = !!(userStake && userStake !== '0');
