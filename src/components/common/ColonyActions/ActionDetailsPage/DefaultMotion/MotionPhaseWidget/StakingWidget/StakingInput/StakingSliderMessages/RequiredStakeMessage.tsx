@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 
 import Numeral from '~shared/Numeral';
-import { getStakeFromSlider, getStakePercentage } from '../..';
+import { getStakeFromSlider, getStakePercentage } from '../../helpers';
 import { SLIDER_AMOUNT_KEY } from '..';
 
 import styles from './RequiredStakeMessage.css';
