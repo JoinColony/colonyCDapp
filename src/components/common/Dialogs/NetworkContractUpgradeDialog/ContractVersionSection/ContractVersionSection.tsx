@@ -5,7 +5,7 @@ import { canColonyBeUpgraded } from '~utils/checks';
 
 import styles from './ContractVersionSection.css';
 
-const displayName = 'common.NetworkContractUpgradeDialog.NetworkContractUpgradeDialogForm.LegacyPermissionWarning';
+const displayName = 'common.NetworkContractUpgradeDialog.NetworkContractUpgradeDialogForm.ContractVersionSection';
 
 const MSG = defineMessages({
   currentVersion: {
@@ -24,11 +24,7 @@ interface Props {
   colonyContractVersion: number;
 }
 
-const LegacyPermissionWarning = ({
-  colony,
-  currentVersion,
-  colonyContractVersion,
-}: Props) => {
+const ContractVersionSection = ({ colony, currentVersion, colonyContractVersion }: Props) => {
   const nextVersion = currentVersion + 1;
 
   return (
@@ -42,9 +38,7 @@ const LegacyPermissionWarning = ({
         <FormattedMessage {...MSG.newVersion} />
         <div className={styles.contractVersionNumber}>
           {/* @NOTE: The '-' is a fallback in the case that colonyContractVersion is 0 (Hasn't finished loading or there was an error while fetching) */}
-          {canColonyBeUpgraded(colony, colonyContractVersion)
-            ? nextVersion
-            : colonyContractVersion || '-'}
+          {canColonyBeUpgraded(colony, colonyContractVersion) ? nextVersion : colonyContractVersion || '-'}
         </div>
       </div>
       <hr className={styles.divider} />
@@ -52,6 +46,6 @@ const LegacyPermissionWarning = ({
   );
 };
 
-LegacyPermissionWarning.displayName = displayName;
+ContractVersionSection.displayName = displayName;
 
-export default LegacyPermissionWarning;
+export default ContractVersionSection;
