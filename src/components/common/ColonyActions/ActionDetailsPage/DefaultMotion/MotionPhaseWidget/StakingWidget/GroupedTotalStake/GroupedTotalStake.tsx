@@ -2,17 +2,13 @@ import React from 'react';
 import { object, string, InferType } from 'yup';
 
 import { HookForm as Form } from '~shared/Fields';
+import { StakeSide } from '~types/motions';
 
 import { useStakingWidgetContext } from '../StakingWidgetProvider';
 import { GroupedTotalStakeHeading, TotalStakeRadios, SubmitButton } from '.';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.GroupedTotalStake';
-
-export enum StakeSide {
-  Motion = 'MOTION',
-  Objection = 'OBJECTION',
-}
 
 const validationSchema = object()
   .shape({
