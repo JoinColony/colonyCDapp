@@ -7,14 +7,10 @@ import styles from './ObjectionSlider.css';
 
 const displayName = 'common.Dialogs.RaiseObjectionDialog.ObjectionSlider';
 
-interface ObjectionSliderProps {
-  canBeStaked: boolean;
-}
-
-const ObjectionSlider = ({ canBeStaked }: ObjectionSliderProps) => (
+const ObjectionSlider = () => (
   <DialogSection appearance={{ theme: 'sidePadding' }}>
     <div className={styles.main}>
-      <StakingSlider canBeStaked={canBeStaked} isObjection />
+      <StakingSlider canBeStaked isObjection />
     </div>
   </DialogSection>
 );

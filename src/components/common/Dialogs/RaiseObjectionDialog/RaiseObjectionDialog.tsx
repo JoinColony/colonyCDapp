@@ -28,7 +28,6 @@ const validationSchema = object()
 type ObjectionValues = InferType<typeof validationSchema>;
 
 interface RaiseObjectionDialogProps extends DialogProps {
-  canBeStaked: boolean;
   handleStakeSuccess: OnSuccess<ObjectionValues>;
   transform: ReturnType<typeof mapPayload>;
   setIsSummary: SetStateFn;
@@ -37,7 +36,6 @@ interface RaiseObjectionDialogProps extends DialogProps {
 
 const RaiseObjectionDialog = ({
   close,
-  canBeStaked,
   handleStakeSuccess,
   transform,
   setIsSummary,
@@ -67,15 +65,15 @@ const RaiseObjectionDialog = ({
           //     remainingToStake,
           //     minUserStake,
           //   );
-          const disabled = !canBeStaked || isSubmitting;
+
           return (
             <>
               <ObjectionHeading />
-              <ObjectionSlider canBeStaked={canBeStaked} />
-              <ObjectionAnnotation disabled={disabled} />
+              <ObjectionSlider />
+              <ObjectionAnnotation disabled={isSubmitting} />
               <ObjectionControls
                 cancel={close}
-                disabled={disabled /* || userActivatedTokens.lt(stake) */}
+                disabled={isSubmitting /* || userActivatedTokens.lt(stake) */}
               />
             </>
           );
