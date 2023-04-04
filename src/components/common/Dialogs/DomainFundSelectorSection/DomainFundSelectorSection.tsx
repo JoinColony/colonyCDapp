@@ -39,7 +39,7 @@ const DomainFundSelectorSection = ({
   disabled,
 }: Props) => {
   const { watch, setValue, trigger } = useFormContext();
-  const { motionDomainId } = watch();
+  const motionDomainId = watch('motionDomainId');
 
   const handleFromDomainChange = (fromDomainId: string) => {
     if (motionDomainId !== fromDomainId) {

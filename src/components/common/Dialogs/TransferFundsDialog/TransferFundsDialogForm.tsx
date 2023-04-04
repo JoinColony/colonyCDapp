@@ -63,11 +63,6 @@ const TransferFundsDialogForm = ({
     hasRoleInFromDomain,
   } = useTransferFundsDialogStatus(colony, requiredRoles, enabledExtensionData);
 
-  // const cannotCreateMotion =
-  //   votingExtensionVersion ===
-  //     VotingReputationVersion.FuchsiaLightweightSpaceship &&
-  //   !values.forceAction;
-
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
