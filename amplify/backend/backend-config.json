@@ -43,6 +43,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "fetchMotionTimeoutPeriods": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "fetchTokenFromChain": {
       "build": true,
       "providerPlugin": "awscloudformation",
