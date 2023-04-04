@@ -34,8 +34,6 @@ const useObjectButton = () => {
     MotionVote.Nay,
   );
 
-  const canUserStakedNay = !!(user && nayRemaining !== '0');
-
   const handleStakeSuccess = getHandleStakeSuccessFn(
     setIsRefetching,
     startPollingAction,
@@ -43,14 +41,13 @@ const useObjectButton = () => {
 
   const handleObjection = () =>
     openRaiseObjectionDialog({
-      canBeStaked: canUserStakedNay,
       transform,
       handleStakeSuccess,
       setIsSummary,
       amount: getValues(SLIDER_AMOUNT_KEY),
     });
 
-  return { handleObjection, canUserStakedNay };
+  return { handleObjection };
 };
 
 export default useObjectButton;
