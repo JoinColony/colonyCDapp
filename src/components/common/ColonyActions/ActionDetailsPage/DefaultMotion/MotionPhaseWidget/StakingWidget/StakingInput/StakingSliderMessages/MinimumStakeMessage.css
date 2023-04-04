@@ -1,0 +1,4 @@
+.minAmount {
+  composes: amount from './RequiredStakeMessage.css';
+  color: var(--pink);
+}
