@@ -6,14 +6,19 @@ import { useObjectButton } from '~hooks';
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.ObjectButton';
 
-const ObjectButton = () => {
-  const { handleObjection, canUserStakedNay } = useObjectButton();
+interface ObjectButtonProps {
+  isLoadingData: boolean;
+  canBeObjected: boolean;
+}
+
+const ObjectButton = ({ isLoadingData, canBeObjected }: ObjectButtonProps) => {
+  const { handleObjection } = useObjectButton();
 
   return (
     <Button
       appearance={{ theme: 'pink', size: 'medium' }}
       text={{ id: 'button.object' }}
-      disabled={!canUserStakedNay}
+      disabled={isLoadingData || !canBeObjected}
       dataTest="stakeWidgetObjectButton"
       onClick={handleObjection}
     />
