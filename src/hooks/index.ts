@@ -31,7 +31,6 @@ export {
   EnabledExtensionData,
 } from './useEnabledExtensions';
 export { default as useSelectedUser } from './useSelectedUser';
-export { default as useSplitTime } from './useSplitTime';
 export { default as useTitle } from './useTitle';
 export { default as useTokenInfo, TokenInfoProvider } from './useTokenInfo';
 export { default as useUserAvatarImageFromIPFS } from './useUserAvatarImageFromIPFS';
