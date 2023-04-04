@@ -50,11 +50,10 @@ const MotionCountdown = ({ motionState, motionData }: MotionCountdownProps) => {
   // const motionDomain = 1;
   const motionId = 1;
   const isFullyNayStaked = false; // getIsFullyNayStaked();
-  // const loadingMotionStatus = false;
-  // const isMotionFinished =
-  //   motionState === MotionState.Passed ||
-  //   motionState === MotionState.Failed ||
-  //   motionState === MotionState.FailedNotFinalizable;
+  const isMotionFinished =
+    motionState === MotionState.Passed ||
+    motionState === MotionState.Failed ||
+    motionState === MotionState.FailedNotFinalizable;
 
   // const showEscalateButton
   //   motionDomain !== Id.RootDomain &&
@@ -62,16 +61,16 @@ const MotionCountdown = ({ motionState, motionData }: MotionCountdownProps) => {
   //   motionState === MotionState.Escalation;
 
   const showVotingProgress = motionState === MotionState.Voting;
-  const showCountdownTimer = true; // !loadingMotionStatus && !isMotionFinished;
+
   return (
     <div
       className={classNames(styles.countdownContainer, {
         [styles.votingCountdownContainer]: showVotingProgress,
       })}
     >
-      {showCountdownTimer && (
+      {!isMotionFinished && (
         <CountDownTimer
-          state={motionState as MotionState}
+          state={motionState}
           motionId={motionId}
           isFullyNayStaked={isFullyNayStaked}
         />
