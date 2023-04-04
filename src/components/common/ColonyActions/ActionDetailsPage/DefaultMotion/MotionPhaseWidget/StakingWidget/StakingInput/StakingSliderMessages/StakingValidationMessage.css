@@ -1,0 +1,12 @@
+.validationError {
+  margin-top: 10px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  color: var(--pink);
+}
+
+.validationErrorValues {
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  color: var(--colony-white);
+}
