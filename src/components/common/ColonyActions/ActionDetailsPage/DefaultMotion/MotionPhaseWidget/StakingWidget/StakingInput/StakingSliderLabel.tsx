@@ -6,6 +6,7 @@ import { Tooltip } from '~shared/Popover';
 import {
   RequiredStakeMessage,
   RequiredStakeMessageProps,
+  MinimumStakeMessage,
 } from './StakingSliderMessages';
 
 import styles from './StakingSliderLabel.css';
@@ -37,6 +38,11 @@ interface StakingSliderLabelProps {
 }
 
 const StakingSliderLabel = ({
+  requiredStakeMessageProps: {
+    userMinStake,
+    nativeTokenDecimals,
+    nativeTokenSymbol,
+  },
   requiredStakeMessageProps,
   enoughTokensToStakeMinimum,
 }: StakingSliderLabelProps) => (
@@ -59,15 +65,10 @@ const StakingSliderLabel = ({
         />
       ) : (
         <RequiredStakeMessage {...requiredStakeMessageProps} />
-
-        {/* {showMinStakeMsg ? (
-          <MinimumStakeMessage />
-        ) : (
-        )} */}
-      </Tooltip>
-    </span>
-  );
-};
+      )}
+    </Tooltip>
+  </span>
+);
 
 StakingSliderLabel.displayName = displayName;
 
