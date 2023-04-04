@@ -1,7 +1,6 @@
 .buttonGroup {
   display: flex;
   margin-top: 30px;
-  column-gap: 10px;
 }
 
 .buttonGroup button {
