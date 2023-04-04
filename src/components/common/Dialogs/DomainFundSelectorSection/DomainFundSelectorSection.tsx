@@ -39,13 +39,16 @@ const DomainFundSelectorSection = ({
   disabled,
 }: Props) => {
   const { watch, setValue, trigger } = useFormContext();
-  const motionDomainId = watch('motionDomainId');
+  const toDomainId = watch('toDomainId');
 
   const handleFromDomainChange = (fromDomainId: string) => {
-    if (motionDomainId !== fromDomainId) {
-      setValue('motionDomainId', fromDomainId);
+    setValue('motionDomainId', fromDomainId);
+
+    if (transferBetweenDomains) {
+      // Touch the toDomainId field to show any error messages and trigger validation of the entire form (e.g. the amount)
+      setValue('toDomainId', toDomainId, { shouldTouch: true });
+      trigger();
     }
-    trigger();
   };
 
   return (
