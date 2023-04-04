@@ -23,6 +23,7 @@ const StakingControls = ({ limitExceeded }: StakingControlsProps) => {
     showActivateButton,
     enoughTokensToStakeMinimum,
     isLoadingData,
+    cantStakeMore,
   } = useStakingControls(limitExceeded);
 
   return (
@@ -31,6 +32,7 @@ const StakingControls = ({ limitExceeded }: StakingControlsProps) => {
       <StakeButton
         isLoadingData={isLoadingData}
         enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
+        cantStakeMore={cantStakeMore}
       />
       {!showBackButton && (
         <ObjectButton

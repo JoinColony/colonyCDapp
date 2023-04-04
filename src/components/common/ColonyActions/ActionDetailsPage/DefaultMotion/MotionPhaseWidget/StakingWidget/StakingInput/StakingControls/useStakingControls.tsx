@@ -48,8 +48,13 @@ const useStakingControls = (limitExceeded: boolean) => {
 
   const showBackButton = nayStakes !== '0';
 
+  const cantStakeMore =
+    BigNumber.from(remainingToStake).lte(userMinStake) &&
+    remainingToStake !== '0';
+
   const showActivateButton =
     !!user &&
+    !cantStakeMore &&
     remainingToStake !== '0' &&
     enoughReputationToStakeMinimum &&
     enoughTokensToStakeMinimum &&
@@ -61,6 +66,7 @@ const useStakingControls = (limitExceeded: boolean) => {
     userActivatedTokens,
     enoughTokensToStakeMinimum,
     enoughReputationToStakeMinimum,
+    cantStakeMore,
     isLoadingData:
       loadingColony ||
       userLoading ||

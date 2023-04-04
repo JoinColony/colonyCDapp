@@ -1,8 +1,8 @@
 import Decimal from 'decimal.js';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useAppContext } from '~hooks';
 
+import { useAppContext } from '~hooks';
 import Slider from '~shared/Slider';
 import { SetStateFn } from '~types';
 import { SLIDER_AMOUNT_KEY } from './StakingInput';
@@ -17,6 +17,7 @@ interface StakingWidgetSliderProps {
   remainingToStake: string;
   enoughTokensToStakeMinimum: boolean;
   isObjection: boolean;
+  enoughReputationToStakeMinimum: boolean;
   limit: Decimal;
   handleLimitExceeded: SetStateFn;
 }
@@ -26,6 +27,7 @@ const StakingWidgetSlider = ({
   remainingToStake,
   enoughTokensToStakeMinimum,
   isObjection,
+  enoughReputationToStakeMinimum,
   limit,
   handleLimitExceeded,
 }: StakingWidgetSliderProps) => {
@@ -46,7 +48,8 @@ const StakingWidgetSlider = ({
           isLoading ||
           !user ||
           remainingToStake === '0' ||
-          !enoughTokensToStakeMinimum
+          !enoughTokensToStakeMinimum ||
+          !enoughReputationToStakeMinimum
         }
         appearance={{
           theme: isObjection ? 'danger' : 'primary',

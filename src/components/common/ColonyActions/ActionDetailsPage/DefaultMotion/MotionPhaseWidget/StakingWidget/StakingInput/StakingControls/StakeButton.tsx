@@ -9,13 +9,16 @@ const displayName =
 interface StakeButtonProps {
   isLoadingData: boolean;
   enoughTokensToStakeMinimum: boolean;
+  cantStakeMore: boolean;
 }
 
 const StakeButton = ({
   isLoadingData,
   enoughTokensToStakeMinimum,
+  cantStakeMore,
 }: StakeButtonProps) => {
   const { isObjection, remainingToStake } = useStakingWidgetContext();
+
   return (
     <Button
       appearance={{
@@ -24,7 +27,10 @@ const StakeButton = ({
       }}
       type="submit"
       disabled={
-        isLoadingData || !enoughTokensToStakeMinimum || remainingToStake === '0'
+        isLoadingData ||
+        cantStakeMore ||
+        !enoughTokensToStakeMinimum ||
+        remainingToStake === '0'
       }
       /* userActivatedTokens.lt(
         getDecimalStake(values.amount).round(),
