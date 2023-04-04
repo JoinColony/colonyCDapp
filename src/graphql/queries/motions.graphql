@@ -9,3 +9,12 @@ query GetVoterRewards($input: GetVoterRewardsInput!) {
     reward
   }
 }
+
+query GetMotionTimeoutPeriods($input: GetMotionTimeoutPeriodsInput!) {
+  getMotionTimeoutPeriods(input: $input) {
+    timeLeftToStake
+    timeLeftToSubmit
+    timeLeftToReveal
+    timeLeftToEscalate
+  }
+}

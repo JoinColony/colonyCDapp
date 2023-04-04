@@ -656,6 +656,19 @@ export type GetMotionStateInput = {
   transactionHash: Scalars['String'];
 };
 
+export type GetMotionTimeoutPeriodsInput = {
+  colonyAddress: Scalars['String'];
+  motionId: Scalars['Int'];
+};
+
+export type GetMotionTimeoutPeriodsReturn = {
+  __typename?: 'GetMotionTimeoutPeriodsReturn';
+  timeLeftToEscalate: Scalars['String'];
+  timeLeftToReveal: Scalars['String'];
+  timeLeftToStake: Scalars['String'];
+  timeLeftToSubmit: Scalars['String'];
+};
+
 export type GetReputationForTopDomainsInput = {
   colonyAddress: Scalars['String'];
   rootHash?: InputMaybe<Scalars['String']>;
@@ -1962,6 +1975,7 @@ export type Query = {
   getExtensionByColonyAndHash?: Maybe<ModelColonyExtensionConnection>;
   getMembersForColony?: Maybe<MembersForColonyReturn>;
   getMotionState?: Maybe<Scalars['Int']>;
+  getMotionTimeoutPeriods?: Maybe<GetMotionTimeoutPeriodsReturn>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
@@ -2108,6 +2122,11 @@ export type QueryGetMembersForColonyArgs = {
 
 export type QueryGetMotionStateArgs = {
   input?: InputMaybe<GetMotionStateInput>;
+};
+
+
+export type QueryGetMotionTimeoutPeriodsArgs = {
+  input?: InputMaybe<GetMotionTimeoutPeriodsInput>;
 };
 
 
@@ -3128,6 +3147,13 @@ export type GetVoterRewardsQueryVariables = Exact<{
 
 
 export type GetVoterRewardsQuery = { __typename?: 'Query', getVoterRewards?: { __typename?: 'VoterRewardsReturn', min: string, max: string, reward: string } | null };
+
+export type GetMotionTimeoutPeriodsQueryVariables = Exact<{
+  input: GetMotionTimeoutPeriodsInput;
+}>;
+
+
+export type GetMotionTimeoutPeriodsQuery = { __typename?: 'Query', getMotionTimeoutPeriods?: { __typename?: 'GetMotionTimeoutPeriodsReturn', timeLeftToStake: string, timeLeftToSubmit: string, timeLeftToReveal: string, timeLeftToEscalate: string } | null };
 
 export type GetProfileByEmailQueryVariables = Exact<{
   email: Scalars['AWSEmail'];
@@ -4339,6 +4365,44 @@ export function useGetVoterRewardsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetVoterRewardsQueryHookResult = ReturnType<typeof useGetVoterRewardsQuery>;
 export type GetVoterRewardsLazyQueryHookResult = ReturnType<typeof useGetVoterRewardsLazyQuery>;
 export type GetVoterRewardsQueryResult = Apollo.QueryResult<GetVoterRewardsQuery, GetVoterRewardsQueryVariables>;
+export const GetMotionTimeoutPeriodsDocument = gql`
+    query GetMotionTimeoutPeriods($input: GetMotionTimeoutPeriodsInput!) {
+  getMotionTimeoutPeriods(input: $input) {
+    timeLeftToStake
+    timeLeftToSubmit
+    timeLeftToReveal
+    timeLeftToEscalate
+  }
+}
+    `;
+
+/**
+ * __useGetMotionTimeoutPeriodsQuery__
+ *
+ * To run a query within a React component, call `useGetMotionTimeoutPeriodsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMotionTimeoutPeriodsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMotionTimeoutPeriodsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetMotionTimeoutPeriodsQuery(baseOptions: Apollo.QueryHookOptions<GetMotionTimeoutPeriodsQuery, GetMotionTimeoutPeriodsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMotionTimeoutPeriodsQuery, GetMotionTimeoutPeriodsQueryVariables>(GetMotionTimeoutPeriodsDocument, options);
+      }
+export function useGetMotionTimeoutPeriodsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMotionTimeoutPeriodsQuery, GetMotionTimeoutPeriodsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMotionTimeoutPeriodsQuery, GetMotionTimeoutPeriodsQueryVariables>(GetMotionTimeoutPeriodsDocument, options);
+        }
+export type GetMotionTimeoutPeriodsQueryHookResult = ReturnType<typeof useGetMotionTimeoutPeriodsQuery>;
+export type GetMotionTimeoutPeriodsLazyQueryHookResult = ReturnType<typeof useGetMotionTimeoutPeriodsLazyQuery>;
+export type GetMotionTimeoutPeriodsQueryResult = Apollo.QueryResult<GetMotionTimeoutPeriodsQuery, GetMotionTimeoutPeriodsQueryVariables>;
 export const GetProfileByEmailDocument = gql`
     query GetProfileByEmail($email: AWSEmail!) {
   getProfileByEmail(email: $email) {
