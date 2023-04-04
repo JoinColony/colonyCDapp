@@ -72,6 +72,7 @@ const useStakingSlider = (isObjection: boolean) => {
   /* User cannot stake more than their reputation in tokens. */
   const userMaxStake = BigNumber.from(userReputation ?? '0');
   const remainingToStake = isObjection ? nayRemaining : yayRemaining;
+  const enoughReputation = userMaxStake.gt(0) && userMaxStake.gte(userMinStake);
 
   const userStakeLimitDecimal = calculateStakeLimitDecimal(
     remainingToStake,
@@ -97,7 +98,10 @@ const useStakingSlider = (isObjection: boolean) => {
       userLoading ||
       walletConnecting ||
       loadingReputation ||
+      loadingReputation ||
       loadingActionData,
+    enoughReputation,
+    userMaxStake,
   };
 };
 

@@ -34,9 +34,12 @@ const StakingSlider = ({
     isLoadingData,
     userActivatedTokens,
     userStakeLimitDecimal,
+    enoughReputationToStakeMinimum,
+    userMaxStake,
   } = useStakingSlider(isObjection);
 
-  const displayLabel = !!user && !isLoadingData && remainingToStake !== '0';
+  const displayErrMsg = !!user && !isLoadingData && remainingToStake !== '0';
+  const displayLabel = displayErrMsg && enoughReputationToStakeMinimum;
 
   return (
     <>
@@ -58,14 +61,19 @@ const StakingSlider = ({
         isLoading={isLoadingData}
         remainingToStake={remainingToStake}
         enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
+        enoughReputationToStakeMinimum={enoughReputationToStakeMinimum}
         limit={userStakeLimitDecimal}
         handleLimitExceeded={setLimitExceeded}
       />
-      {displayLabel && (
+      {displayErrMsg && (
         <StakingValidationMessage
+          enoughReputationToStakeMinimum={enoughReputationToStakeMinimum}
           enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
-          userActivatedTokens={userActivatedTokens}
           userMinStake={userMinStake}
+          userActivatedTokens={userActivatedTokens}
+          userMaxStake={userMaxStake}
+          remainingToStake={remainingToStake}
+          nativeTokenDecimals={nativeTokenDecimals}
           limitExceeded={limitExceeded}
         />
       )}
