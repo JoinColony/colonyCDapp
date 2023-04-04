@@ -4,6 +4,7 @@ import { useStakingSlider } from '~hooks';
 import {
   StakingSliderDescription,
   StakingSliderLabel,
+  StakingValidationMessage,
   StakingWidgetSlider,
 } from '.';
 
@@ -41,6 +42,12 @@ const StakingSlider = ({ isObjection, canBeStaked }: StakingSliderProps) => {
         isObjection={isObjection}
         canBeStaked={canBeStaked}
       />
+      {!isLoadingData && (
+        <StakingValidationMessage
+          enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
+          tokensLeftToActivate={tokensLeftToActivate}
+        />
+      )}
     </>
   );
 };
