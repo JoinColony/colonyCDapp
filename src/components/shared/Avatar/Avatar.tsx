@@ -46,10 +46,7 @@ const Avatar = ({
   const mainClass = size ? styles[size] : styles.main;
   if (children) {
     return (
-      <figure
-        className={className ? `${mainClass} ${className}` : mainClass}
-        title={title}
-      >
+      <figure className={className ? `${mainClass} ${className}` : mainClass} title={title}>
         {children}
       </figure>
     );
@@ -63,17 +60,12 @@ const Avatar = ({
       }
     : {};
   return (
-    <figure
-      className={className ? `${mainClass} ${className}` : mainClass}
-      title={title}
-    >
+    <figure className={className ? `${mainClass} ${className}` : mainClass} title={title}>
       {source ? (
         <div className={styles.image} style={imageStyle} />
       ) : (
         <Icon
-          className={
-            notSet ? styles.placeholderIconNotSet : styles.placeholderIcon
-          }
+          className={notSet ? styles.placeholderIconNotSet : styles.placeholderIcon}
           name={placeholderIcon}
           title={title}
           data-test="avatar"

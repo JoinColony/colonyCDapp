@@ -4,18 +4,9 @@ import { AddressZero } from '@ethersproject/constants';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  updateMotionValues,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, updateMotionValues, getColonyManager } from '../utils';
 
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
+import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
 import { transactionReady } from '../../actionCreators';
 
 function* escalateMotion({
@@ -25,26 +16,13 @@ function* escalateMotion({
   const txChannel = yield call(getTxChannel, meta.id);
   try {
     const context = yield getColonyManager();
-    const colonyClient = yield context.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
+    const colonyClient = yield context.getClient(ClientType.ColonyClient, colonyAddress);
 
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      Id.RootDomain,
-    );
+    const { skillId } = yield call([colonyClient, colonyClient.getDomain], Id.RootDomain);
 
-    const { key, value, branchMask, siblings } = yield call(
-      colonyClient.getReputation,
-      skillId,
-      AddressZero,
-    );
+    const { key, value, branchMask, siblings } = yield call(colonyClient.getReputation, skillId, AddressZero);
 
-    const { escalateMotionTransaction } = yield createTransactionChannels(
-      meta.id,
-      ['escalateMotionTransaction'],
-    );
+    const { escalateMotionTransaction } = yield createTransactionChannels(meta.id, ['escalateMotionTransaction']);
 
     const batchKey = 'escalateMotion';
 
@@ -77,17 +55,11 @@ function* escalateMotion({
       ready: false,
     });
 
-    yield takeFrom(
-      escalateMotionTransaction.channel,
-      ActionTypes.TRANSACTION_CREATED,
-    );
+    yield takeFrom(escalateMotionTransaction.channel, ActionTypes.TRANSACTION_CREATED);
 
     yield put(transactionReady(escalateMotionTransaction.id));
 
-    yield takeFrom(
-      escalateMotionTransaction.channel,
-      ActionTypes.TRANSACTION_SUCCEEDED,
-    );
+    yield takeFrom(escalateMotionTransaction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     /*
      * Update motion page values

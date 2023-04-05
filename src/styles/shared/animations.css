@@ -12,7 +12,7 @@
   animation: spin 500ms infinite linear;
 }
 
-.busySpin[aria-busy="true"]::after {
+.busySpin[aria-busy='true']::after {
   /* This is a poor mans approach to mixins */
   animation: spin 500ms infinite linear;
 }

@@ -27,9 +27,7 @@ const MSG = defineMessages({
   },
 });
 
-type Props = DialogProps &
-  Partial<WizardDialogType<object>> &
-  ActionDialogProps;
+type Props = DialogProps & Partial<WizardDialogType<object>> & ActionDialogProps;
 
 const validationSchema = object()
   .shape({
@@ -50,23 +48,13 @@ const validationSchema = object()
 
 type FormValues = InferType<typeof validationSchema>;
 
-const MintTokenDialog = ({
-  colony,
-  cancel,
-  close,
-  callStep,
-  prevStep,
-  enabledExtensionData,
-}: Props) => {
+const MintTokenDialog = ({ colony, cancel, close, callStep, prevStep, enabledExtensionData }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
-  const actionType =
-    !isForce && isVotingReputationEnabled
-      ? ActionTypes.ROOT_MOTION
-      : ActionTypes.ACTION_MINT_TOKENS;
+  const actionType = !isForce && isVotingReputationEnabled ? ActionTypes.ROOT_MOTION : ActionTypes.ACTION_MINT_TOKENS;
 
   const transform = pipe(
     mapPayload((payload) => getMintTokenDialogPayload(colony, payload)),

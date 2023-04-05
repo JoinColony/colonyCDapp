@@ -3,11 +3,7 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 
-import {
-  createTransaction,
-  getTxChannel,
-  waitForTxResult,
-} from '../transactions';
+import { createTransaction, getTxChannel, waitForTxResult } from '../transactions';
 import { putError, refreshUninstalledExtension, takeFrom } from '../utils';
 
 export function* extensionUninstall({

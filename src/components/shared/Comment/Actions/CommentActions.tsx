@@ -27,11 +27,7 @@ interface Props {
 
 const displayName = 'core.Comment.CommentActions';
 
-const CommentActions = ({
-  permission,
-  fullComment,
-  onHoverActiveState = () => null,
-}: Props) => {
+const CommentActions = ({ permission, fullComment, onHoverActiveState = () => null }: Props) => {
   const [isOpen, setOpen] = useState(false);
   /*
    * @NOTE Offset Calculations
@@ -54,11 +50,7 @@ const CommentActions = ({
   return (
     <Popover
       content={({ close }) => (
-        <CommentActionsPopover
-          closePopover={close}
-          permission={permission}
-          fullComment={fullComment}
-        />
+        <CommentActionsPopover closePopover={close} permission={permission} fullComment={fullComment} />
       )}
       trigger="click"
       showArrow={false}
@@ -87,11 +79,7 @@ const CommentActions = ({
           type="button"
           data-test="commentActionsButton"
         >
-          <Icon
-            className={styles.actionsIcon}
-            name="three-dots-row"
-            title={MSG.commentActionsTitle}
-          />
+          <Icon className={styles.actionsIcon} name="three-dots-row" title={MSG.commentActionsTitle} />
         </button>
       )}
     </Popover>

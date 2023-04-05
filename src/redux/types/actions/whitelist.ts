@@ -20,8 +20,4 @@ export type WhitelistActionTypes =
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.VERIFIED_RECIPIENTS_MANAGE_ERROR, object>
-  | UniqueActionType<
-      ActionTypes.VERIFIED_RECIPIENTS_MANAGE_SUCCESS,
-      object,
-      object
-    >;
+  | UniqueActionType<ActionTypes.VERIFIED_RECIPIENTS_MANAGE_SUCCESS, object, object>;

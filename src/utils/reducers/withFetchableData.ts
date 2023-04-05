@@ -4,8 +4,7 @@ import { ReducerType } from '~redux/types';
 
 import { getActionTypes } from './utils';
 
-const handleFetch = <T extends FetchableDataRecord<any>>(state: T) =>
-  state.set('isFetching', true);
+const handleFetch = <T extends FetchableDataRecord<any>>(state: T) => state.set('isFetching', true);
 
 const handleSuccess = <T extends FetchableDataRecord<any>>(state: T) =>
   state.merge({
@@ -14,23 +13,17 @@ const handleSuccess = <T extends FetchableDataRecord<any>>(state: T) =>
     lastFetchedAt: new Date(),
   });
 
-const handleError = <T extends FetchableDataRecord<any>>(
-  state: T,
-  { payload: error }: any,
-) =>
+const handleError = <T extends FetchableDataRecord<any>>(state: T, { payload: error }: any) =>
   state.merge({
     isFetching: false,
     error: error.message || error.toString(),
   });
 
 const withFetchableData =
-  <T extends FetchableDataRecord<any>>(
-    actionTypes: ActionTypeString | Set<ActionTypeString>,
-  ) =>
+  <T extends FetchableDataRecord<any>>(actionTypes: ActionTypeString | Set<ActionTypeString>) =>
   (wrappedReducer: ReducerType<T>) => {
     // Set up fetch/success/error types according to the usual pattern
-    const { fetchTypes, successTypes, errorTypes } =
-      getActionTypes(actionTypes);
+    const { fetchTypes, successTypes, errorTypes } = getActionTypes(actionTypes);
 
     // Return a wrapped reducer.
     return (state: any, action: AllActions) => {

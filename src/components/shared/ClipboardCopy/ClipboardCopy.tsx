@@ -37,10 +37,7 @@ const ClipboardCopy = ({ value, text = MSG.copyLabel }: Props) => {
    * function gets called on unmount.
    * The first one is only called on render.
    */
-  useEffect(
-    () => () => clearTimeout(userFeedbackTimer.current),
-    [userFeedbackTimer],
-  );
+  useEffect(() => () => clearTimeout(userFeedbackTimer.current), [userFeedbackTimer]);
   return (
     <Button
       appearance={{ size: 'small', theme: 'blue' }}

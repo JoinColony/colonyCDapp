@@ -6,9 +6,7 @@ interface Props extends HTMLAttributes<HTMLTableSectionElement> {
 
 const displayName = 'TableBody';
 
-const TableBody = ({ children, ...props }: Props) => (
-  <tbody {...props}>{children}</tbody>
-);
+const TableBody = ({ children, ...props }: Props) => <tbody {...props}>{children}</tbody>;
 
 TableBody.displayName = displayName;
 

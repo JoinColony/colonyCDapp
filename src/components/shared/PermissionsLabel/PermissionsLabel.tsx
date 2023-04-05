@@ -59,10 +59,7 @@ const PermissionsLabel = ({
   const permissionName = name || permissionDefaults.label;
   const permissionIcon = icon || permissionDefaults.icon;
 
-  const translatedName =
-    typeof permissionName === 'string'
-      ? permissionName
-      : formatMessage(permissionName);
+  const translatedName = typeof permissionName === 'string' ? permissionName : formatMessage(permissionName);
 
   return (
     <Tooltip
@@ -92,12 +89,7 @@ const PermissionsLabel = ({
           noPointer: !infoMessage,
         })}
       >
-        <Icon
-          appearance={{ size: 'extraTiny' }}
-          className={styles.icon}
-          name={permissionIcon}
-          title={translatedName}
-        />
+        <Icon appearance={{ size: 'extraTiny' }} className={styles.icon} name={permissionIcon} title={translatedName} />
         {!minimal && (
           <span className={styles.label}>
             {translatedName}

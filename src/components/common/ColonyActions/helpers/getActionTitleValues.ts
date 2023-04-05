@@ -18,16 +18,10 @@ enum ActionTitleMessageKeys {
 }
 
 /* Maps actionTypes to message values as found in en-actions.ts */
-const getMessageDescriptorKeys = (
-  actionType: ColonyActionType | ColonyMotions,
-) => {
+const getMessageDescriptorKeys = (actionType: ColonyActionType | ColonyMotions) => {
   switch (true) {
     case actionType.includes(ColonyActionType.Payment):
-      return [
-        ActionTitleMessageKeys.Recipient,
-        ActionTitleMessageKeys.Amount,
-        ActionTitleMessageKeys.TokenSymbol,
-      ];
+      return [ActionTitleMessageKeys.Recipient, ActionTitleMessageKeys.Amount, ActionTitleMessageKeys.TokenSymbol];
     case actionType.includes(ColonyActionType.MoveFunds):
       return [
         ActionTitleMessageKeys.Amount,
@@ -38,10 +32,7 @@ const getMessageDescriptorKeys = (
     case actionType.includes(ColonyActionType.UnlockToken):
       return [ActionTitleMessageKeys.TokenSymbol];
     case actionType.includes(ColonyActionType.MintTokens):
-      return [
-        ActionTitleMessageKeys.Amount,
-        ActionTitleMessageKeys.TokenSymbol,
-      ];
+      return [ActionTitleMessageKeys.Amount, ActionTitleMessageKeys.TokenSymbol];
     case actionType.includes(ColonyActionType.CreateDomain):
       return [ActionTitleMessageKeys.FromDomain];
     case actionType.includes(ColonyActionType.VersionUpgrade):

@@ -38,17 +38,12 @@ interface Props {
   isWhitelistActivated: boolean;
 }
 
-const WarningLabel = (chunks: React.ReactNode[]) => (
-  <span className={styles.warningLabel}>{chunks}</span>
-);
+const WarningLabel = (chunks: React.ReactNode[]) => <span className={styles.warningLabel}>{chunks}</span>;
 
 const ManageWhitelistActiveToggle = ({ isWhitelistActivated }: Props) => (
   <>
     <div className={styles.toggleContainer}>
-      <Heading4
-        appearance={{ margin: 'none', theme: 'dark' }}
-        text={MSG.headerTitle}
-      />
+      <Heading4 appearance={{ margin: 'none', theme: 'dark' }} text={MSG.headerTitle} />
       <Toggle
         label={MSG.toggleLabel}
         labelValues={{ isWhitelistActivated }}

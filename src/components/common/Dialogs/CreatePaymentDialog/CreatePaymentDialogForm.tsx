@@ -5,27 +5,16 @@ import { isConfusing } from '@colony/unicode-confusables-noascii';
 import { useFormContext } from 'react-hook-form';
 
 import ConfusableWarning from '~shared/ConfusableWarning';
-import {
-  ActionDialogProps,
-  DialogSection,
-  DialogHeading,
-  DialogControls,
-} from '~shared/Dialog';
+import { ActionDialogProps, DialogSection, DialogHeading, DialogControls } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
-import SingleUserPicker, {
-  filterUserSelection,
-} from '~shared/SingleUserPicker';
+import SingleUserPicker, { filterUserSelection } from '~shared/SingleUserPicker';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import { ColonyWatcher } from '~types';
 
 import DomainFundSelectorSection from '../DomainFundSelectorSection';
 import TokenAmountInput from '../TokenAmountInput';
-import {
-  NoPermissionMessage,
-  CannotCreateMotionMessage,
-  PermissionRequiredInfo,
-} from '../Messages';
+import { NoPermissionMessage, CannotCreateMotionMessage, PermissionRequiredInfo } from '../Messages';
 
 import { useCreatePaymentDialogStatus } from './helpers';
 
@@ -67,10 +56,7 @@ interface Props extends ActionDialogProps {
   // showWhitelistWarning: boolean;
 }
 
-const requiredRoles: ColonyRole[] = [
-  ColonyRole.Funding,
-  ColonyRole.Administration,
-];
+const requiredRoles: ColonyRole[] = [ColonyRole.Funding, ColonyRole.Administration];
 
 const CreatePaymentDialogForm = ({
   back,
@@ -82,13 +68,8 @@ Props) => {
   const { watch } = useFormContext();
   const recipient = watch('recipient');
 
-  const {
-    userHasPermission,
-    disabledSubmit,
-    disabledInput,
-    canCreateMotion,
-    canCreatePayment,
-  } = useCreatePaymentDialogStatus(colony, requiredRoles, enabledExtensionData);
+  const { userHasPermission, disabledSubmit, disabledInput, canCreateMotion, canCreatePayment } =
+    useCreatePaymentDialogStatus(colony, requiredRoles, enabledExtensionData);
 
   const formattedData = verifiedUsers.map((user) => ({
     ...user,
@@ -106,10 +87,7 @@ Props) => {
         </DialogSection>
       )}
       <DialogSection>
-        <DomainFundSelectorSection
-          colony={colony}
-          disabled={!canCreatePayment}
-        />
+        <DomainFundSelectorSection colony={colony} disabled={!canCreatePayment} />
       </DialogSection>
       <DialogSection>
         <div className={styles.singleUserContainer}>
@@ -140,26 +118,15 @@ Props) => {
             </p>
           </div>
         )} */}
-        {recipient &&
-          isConfusing(
-            recipient.walletAddress || recipient.profile?.displayName,
-          ) && (
-            <ConfusableWarning
-              walletAddress={recipient.walletAddress}
-              colonyAddress={colony?.colonyAddress}
-            />
-          )}
+        {recipient && isConfusing(recipient.walletAddress || recipient.profile?.displayName) && (
+          <ConfusableWarning walletAddress={recipient.walletAddress} colonyAddress={colony?.colonyAddress} />
+        )}
       </DialogSection>
       <DialogSection>
         <TokenAmountInput colony={colony} disabled={disabledInput} />
       </DialogSection>
       <DialogSection>
-        <Annotations
-          label={MSG.annotation}
-          name="annotation"
-          disabled={disabledInput}
-          dataTest="paymentAnnotation"
-        />
+        <Annotations label={MSG.annotation} name="annotation" disabled={disabledInput} dataTest="paymentAnnotation" />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>

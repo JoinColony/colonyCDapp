@@ -11,9 +11,7 @@ const useUserByNameOrAddress = (usernameOrAddress: string) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const user = isAddress(usernameOrAddress)
-    ? data?.getUserByAddress?.items[0]
-    : data?.getUserByName?.items[0];
+  const user = isAddress(usernameOrAddress) ? data?.getUserByAddress?.items[0] : data?.getUserByName?.items[0];
 
   return {
     user,

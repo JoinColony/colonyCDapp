@@ -48,13 +48,13 @@
 }
 
 .main:disabled,
-.main[aria-disabled="true"],
-.main[aria-busy="true"] {
+.main[aria-disabled='true'],
+.main[aria-busy='true'] {
   background-color: var(--text-disabled);
   cursor: not-allowed;
 }
 
-.main[aria-invalid="true"] {
+.main[aria-invalid='true'] {
   border-color: var(--danger);
 }
 
@@ -126,7 +126,7 @@
     border-color: transparent;
   }
 
-  &[aria-invalid="true"] {
+  &[aria-invalid='true'] {
     border-color: transparent;
   }
 }

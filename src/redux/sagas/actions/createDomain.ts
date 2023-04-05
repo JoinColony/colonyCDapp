@@ -1,17 +1,9 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, Id } from '@colony/colony-js';
 import { Action, ActionTypes, AllActions } from '~redux';
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
+import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
 import { putError, takeFrom } from '../utils';
-import {
-  transactionAddParams,
-  transactionPending,
-  transactionReady,
-} from '~redux/actionCreators';
+import { transactionAddParams, transactionPending, transactionReady } from '~redux/actionCreators';
 import { ContextModule, getContext } from '~context';
 import {
   CreateDomainMetadataDocument,
@@ -48,13 +40,11 @@ function* createDomainAction({
     txChannel = yield call(getTxChannel, metaId);
 
     const batchKey = 'createDomainAction';
-    const {
-      createDomainAction: createDomain,
-      annotateCreateDomainAction: annotateCreateDomain,
-    } = yield createTransactionChannels(metaId, [
-      'createDomainAction',
-      // 'annotateCreateDomainAction',
-    ]);
+    const { createDomainAction: createDomain, annotateCreateDomainAction: annotateCreateDomain } =
+      yield createTransactionChannels(metaId, [
+        'createDomainAction',
+        // 'annotateCreateDomainAction',
+      ]);
 
     const createGroupTransaction = ({ id, index }, config) =>
       fork(createTransaction, id, {
@@ -86,10 +76,7 @@ function* createDomainAction({
 
     yield takeFrom(createDomain.channel, ActionTypes.TRANSACTION_CREATED);
     if (annotationMessage) {
-      yield takeFrom(
-        annotateCreateDomain.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
+      yield takeFrom(annotateCreateDomain.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
     yield put(transactionPending(createDomain.id));
@@ -108,10 +95,7 @@ function* createDomainAction({
     /**
      * Save domain metadata in the database
      */
-    yield apolloClient.mutate<
-      CreateDomainMetadataMutation,
-      CreateDomainMetadataMutationVariables
-    >({
+    yield apolloClient.mutate<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>({
       mutation: CreateDomainMetadataDocument,
       variables: {
         input: {

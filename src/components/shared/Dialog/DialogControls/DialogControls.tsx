@@ -43,11 +43,7 @@ const DialogControls = ({
       <Button
         type="submit"
         appearance={submitButtonAppearance}
-        text={
-          forceAction || !isVotingReputationEnabled
-            ? { id: 'button.confirm' }
-            : { id: 'button.createMotion' }
-        }
+        text={forceAction || !isVotingReputationEnabled ? { id: 'button.confirm' } : { id: 'button.createMotion' }}
         loading={isSubmitting}
         /*
          * Disable Form submissions if either the form is invalid, or

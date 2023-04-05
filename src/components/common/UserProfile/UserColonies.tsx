@@ -37,19 +37,14 @@ const MSG = defineMessages({
   },
 });
 
-const UserColonies = ({
-  user: { walletAddress, watchlist, name, profile },
-}: Props) => {
+const UserColonies = ({ user: { walletAddress, watchlist, name, profile } }: Props) => {
   const { user: currentUser, walletConnecting } = useAppContext();
   const isCurrentUser = currentUser?.walletAddress === walletAddress;
 
   if (walletConnecting) {
     return (
       <div className={styles.loader}>
-        <SpinnerLoader
-          appearance={{ theme: 'primary', size: 'huge' }}
-          loadingText={MSG.loadingColonies}
-        />
+        <SpinnerLoader appearance={{ theme: 'primary', size: 'huge' }} loadingText={MSG.loadingColonies} />
       </div>
     );
   }
@@ -57,26 +52,17 @@ const UserColonies = ({
   return (
     <ColonyGrid
       colonies={watchlist?.items.filter(notNull)}
-      emptyStateDescription={
-        isCurrentUser ? MSG.currentUserNoColonies : MSG.otherUserNoColonies
-      }
+      emptyStateDescription={isCurrentUser ? MSG.currentUserNoColonies : MSG.otherUserNoColonies}
       emptyStateDescriptionValues={
         isCurrentUser
           ? {
               createColonyLink: (
-                <Link
-                  to={CREATE_COLONY_ROUTE}
-                  text={MSG.createColonyLink}
-                  className={styles.createColonyLink}
-                />
+                <Link to={CREATE_COLONY_ROUTE} text={MSG.createColonyLink} className={styles.createColonyLink} />
               ),
             }
           : {
               friendlyUsername: (
-                <span
-                  title={profile?.displayName || name}
-                  className={styles.userHighlight}
-                >
+                <span title={profile?.displayName || name} className={styles.userHighlight}>
                   {profile?.displayName || name}
                 </span>
               ),

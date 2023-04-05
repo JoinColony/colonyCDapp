@@ -15,9 +15,7 @@ import { pipe, withMeta, mapPayload } from '~utils/actions';
 import { getCreateDomainDialogPayload } from './helpers';
 import CreateDomainDialogForm from './CreateDomainDialogForm';
 
-type Props = DialogProps &
-  Partial<WizardDialogType<object>> &
-  ActionDialogProps;
+type Props = DialogProps & Partial<WizardDialogType<object>> & ActionDialogProps;
 
 const displayName = 'common.CreateDomainDialog';
 
@@ -42,23 +40,14 @@ const validationSchema = object()
 
 type FormValues = InferType<typeof validationSchema>;
 
-const CreateDomainDialog = ({
-  callStep,
-  prevStep,
-  cancel,
-  close,
-  colony,
-  enabledExtensionData,
-}: Props) => {
+const CreateDomainDialog = ({ callStep, prevStep, cancel, close, colony, enabledExtensionData }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
-    !isForce && isVotingReputationEnabled
-      ? ActionTypes.MOTION_DOMAIN_CREATE_EDIT
-      : ActionTypes.ACTION_DOMAIN_CREATE;
+    !isForce && isVotingReputationEnabled ? ActionTypes.MOTION_DOMAIN_CREATE_EDIT : ActionTypes.ACTION_DOMAIN_CREATE;
 
   const transform = pipe(
     mapPayload((payload) => getCreateDomainDialogPayload(colony, payload)),

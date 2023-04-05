@@ -16,11 +16,7 @@ interface AddressProps {
   maskedAddressStyles?: string;
 }
 
-const Address = ({
-  address,
-  copyMessage,
-  maskedAddressStyles = styles.address,
-}: AddressProps) => (
+const Address = ({ address, copyMessage, maskedAddressStyles = styles.address }: AddressProps) => (
   <InvisibleCopyableAddress address={address} copyMessage={copyMessage}>
     <span className={maskedAddressStyles}>
       <MaskedAddress address={address} />

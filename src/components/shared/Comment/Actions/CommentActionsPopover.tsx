@@ -2,10 +2,7 @@ import React, { useCallback } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { COMMENT_MODERATION } from '~redux/immutable';
-import DropdownMenu, {
-  DropdownMenuSection,
-  DropdownMenuItem,
-} from '~shared/DropdownMenu';
+import DropdownMenu, { DropdownMenuSection, DropdownMenuItem } from '~shared/DropdownMenu';
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';
 import { useDialog } from '~shared/Dialog';
@@ -40,11 +37,7 @@ interface Props {
 
 const displayName = 'core.Comment.CommentActionsPopover';
 
-const CommentActionsPopover = ({
-  closePopover,
-  permission,
-  fullComment,
-}: Props) => {
+const CommentActionsPopover = ({ closePopover, permission, fullComment }: Props) => {
   const openDeleteCommentDialog = useDialog(DeleteCommentDialog);
   const openBanUserDialog = useDialog(BanCommentDialog);
 
@@ -75,10 +68,7 @@ const CommentActionsPopover = ({
   const renderUserActions = () => (
     <DropdownMenuSection separator>
       <DropdownMenuItem>
-        <Button
-          appearance={{ theme: 'no-style' }}
-          onClick={() => closePopover()}
-        >
+        <Button appearance={{ theme: 'no-style' }} onClick={() => closePopover()}>
           <div className={styles.actionButton}>
             <Icon name="trash" title={MSG.deleteComment} />
             <FormattedMessage {...MSG.deleteComment} />
@@ -105,10 +95,7 @@ const CommentActionsPopover = ({
                 title={MSG.deleteComment}
                 titleValues={{ undelete: commentDeleted }}
               />
-              <FormattedMessage
-                {...MSG.deleteComment}
-                values={{ undelete: commentDeleted }}
-              />
+              <FormattedMessage {...MSG.deleteComment} values={{ undelete: commentDeleted }} />
             </div>
           </Button>
         </DropdownMenuItem>
@@ -124,10 +111,7 @@ const CommentActionsPopover = ({
                 title={MSG.banFromChat}
                 titleValues={{ unban: userBanned }}
               />
-              <FormattedMessage
-                {...MSG.banFromChat}
-                values={{ unban: userBanned }}
-              />
+              <FormattedMessage {...MSG.banFromChat} values={{ unban: userBanned }} />
             </div>
           </Button>
         </DropdownMenuItem>
@@ -137,12 +121,8 @@ const CommentActionsPopover = ({
 
   return (
     <DropdownMenu onClick={closePopover}>
-      {permission === COMMENT_MODERATION.CAN_MODERATE ? (
-        <>{renderModeratorOptions()}</>
-      ) : null}
-      {permission === COMMENT_MODERATION.CAN_EDIT ? (
-        <>{renderUserActions()}</>
-      ) : null}
+      {permission === COMMENT_MODERATION.CAN_MODERATE ? <>{renderModeratorOptions()}</> : null}
+      {permission === COMMENT_MODERATION.CAN_EDIT ? <>{renderUserActions()}</> : null}
     </DropdownMenu>
   );
 };

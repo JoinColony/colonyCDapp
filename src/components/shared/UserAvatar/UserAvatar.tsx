@@ -11,8 +11,7 @@ import { getMainClasses } from '~utils/css';
 
 import styles from './UserAvatar.css';
 
-export interface UserAvatarProps
-  extends Pick<AvatarProps, 'size' | 'className' | 'notSet'> {
+export interface UserAvatarProps extends Pick<AvatarProps, 'size' | 'className' | 'notSet'> {
   /** Banned comment status */
   banned?: boolean;
   /** Passed on to the `Popper` component */
@@ -52,21 +51,15 @@ const UserAvatar = ({
       showArrow={showArrow}
     >
       <div
-        className={getMainClasses(
-          {},
-          styles as unknown as { [k: string]: string },
-          {
-            showOnClick: trigger === 'click',
-          },
-        )}
+        className={getMainClasses({}, styles as unknown as { [k: string]: string }, {
+          showOnClick: trigger === 'click',
+        })}
       >
         <Avatar
           avatar={imageString}
           placeholderIcon="circle-person"
           seed={address && address.toLowerCase()}
-          title={
-            showInfo ? '' : profile?.displayName || user?.name || address || ''
-          }
+          title={showInfo ? '' : profile?.displayName || user?.name || address || ''}
           {...avatarProps}
         />
       </div>

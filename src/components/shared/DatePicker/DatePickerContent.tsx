@@ -60,9 +60,7 @@ const DatePickerContent = ({
          potential fix or removal */
         // navbarElement={(props) => <NavbarElement {...props} />}
       />
-      {typeof renderContentFooter == 'function'
-        ? renderContentFooter(close, currentDate)
-        : null}
+      {typeof renderContentFooter == 'function' ? renderContentFooter(close, currentDate) : null}
     </div>
   );
 };

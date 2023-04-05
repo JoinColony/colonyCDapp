@@ -5,13 +5,8 @@ import { RootStateRecord } from '../state';
 import { MessagesListMap } from '../state/messages';
 import { CORE_MESSAGES, CORE_MESSAGES_LIST } from '../constants';
 
-export const messageById = (
-  state: RootStateRecord,
-  id: string,
-): MessageRecord | undefined =>
-  state.getIn([CORE_MESSAGES, CORE_MESSAGES_LIST, id]) as
-    | MessageRecord
-    | undefined;
+export const messageById = (state: RootStateRecord, id: string): MessageRecord | undefined =>
+  state.getIn([CORE_MESSAGES, CORE_MESSAGES_LIST, id]) as MessageRecord | undefined;
 
 export const getAllMessages = (state: RootStateRecord): MessagesListMap =>
   state.getIn([CORE_MESSAGES, CORE_MESSAGES_LIST]) as MessagesListMap;
@@ -37,7 +32,5 @@ export const messageGroups = createSelector(getAllMessages, (messages) =>
      * Sort everything by the 'first' (and only) entry in the group
      * This is only useful if this selector is to be used individually
      */
-    .sortBy(
-      (messageGroup) => (messageGroup.first() as MessageRecord).createdAt,
-    ),
+    .sortBy((messageGroup) => (messageGroup.first() as MessageRecord).createdAt),
 );

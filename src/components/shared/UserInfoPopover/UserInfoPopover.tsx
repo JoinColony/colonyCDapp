@@ -7,11 +7,7 @@ import Tag from '~shared/Tag';
 // import { getAllUserRoles } from '~redux/transformers';
 import NotAvailableMessage from '../NotAvailableMessage/NotAvailableMessage';
 import { User } from '~types';
-import {
-  useAppContext,
-  useColonyContext,
-  useUserReputationForTopDomains,
-} from '~hooks';
+import { useAppContext, useColonyContext, useUserReputationForTopDomains } from '~hooks';
 
 // import UserPermissions from './UserPermissions';
 // import UserTokens from './UserTokens';
@@ -37,8 +33,10 @@ const UserInfoPopover = ({ user, banned = false }: Props) => {
   //     variables: { address: colonyAddress },
   //   });
 
-  const { userReputation, loadingUserReputation } =
-    useUserReputationForTopDomains(colony?.colonyAddress, walletAddress);
+  const { userReputation, loadingUserReputation } = useUserReputationForTopDomains(
+    colony?.colonyAddress,
+    walletAddress,
+  );
 
   // const { data: userReputationData, loading: loadingUserReputation } =
   //   useUserReputationForTopDomainsQuery({

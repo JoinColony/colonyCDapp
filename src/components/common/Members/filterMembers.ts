@@ -3,26 +3,16 @@ import { VerificationType } from '~common/ColonyMembers/MembersFilter/filtersCon
 
 import { Contributor, Watcher } from '~types';
 
-const filterMemberBySearchTerm = (
-  member: Contributor | Watcher,
-  searchTerm?: string,
-) => {
+const filterMemberBySearchTerm = (member: Contributor | Watcher, searchTerm?: string) => {
   return (
     searchTerm &&
-    (member?.user?.profile?.displayName
-      ?.toLowerCase()
-      .includes(searchTerm.toLowerCase()) ||
-      member?.user?.walletAddress
-        ?.toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
+    (member?.user?.profile?.displayName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      member?.user?.walletAddress?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       member?.user?.name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 };
 
-const filterMemberByVerificationStatus = (
-  member: Contributor | Watcher,
-  verificationType?: VerificationType,
-) => {
+const filterMemberByVerificationStatus = (member: Contributor | Watcher, verificationType?: VerificationType) => {
   if (verificationType === VerificationType.Verified) {
     return true;
     // return member.isWhitelisted;

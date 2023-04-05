@@ -5,18 +5,9 @@ import { BigNumber } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  updateMotionValues,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, updateMotionValues, getColonyManager } from '../utils';
 
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
+import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
 import { transactionReady, transactionUpdateGas } from '../../actionCreators';
 
 function* finalizeMotion({
@@ -27,15 +18,11 @@ function* finalizeMotion({
   try {
     const colonyManager = yield getColonyManager();
     const { provider } = colonyManager;
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
+    const colonyClient = yield colonyManager.getClient(ClientType.ColonyClient, colonyAddress);
+    const votingReputationClient: AnyVotingReputationClient = yield colonyManager.getClient(
+      ClientType.VotingReputationClient,
       colonyAddress,
     );
-    const votingReputationClient: AnyVotingReputationClient =
-      yield colonyManager.getClient(
-        ClientType.VotingReputationClient,
-        colonyAddress,
-      );
     const motion = yield votingReputationClient.getMotion(motionId);
 
     const networkEstimate = yield provider.estimateGas({
@@ -44,9 +31,7 @@ function* finalizeMotion({
         /*
          * If the motion target is 0x000... then we pass in the colony's address
          */
-        motion.altTarget === AddressZero
-          ? colonyClient.address
-          : motion.altTarget,
+        motion.altTarget === AddressZero ? colonyClient.address : motion.altTarget,
       data: motion.action,
     });
 
@@ -57,14 +42,9 @@ function* finalizeMotion({
      * that requires even more gas, but since we don't use that one yet, there's
      * no reason to account for it just yet
      */
-    const estimate = BigNumber.from(networkEstimate).add(
-      BigNumber.from(100000),
-    );
+    const estimate = BigNumber.from(networkEstimate).add(BigNumber.from(100000));
 
-    const { finalizeMotionTransaction } = yield createTransactionChannels(
-      meta.id,
-      ['finalizeMotionTransaction'],
-    );
+    const { finalizeMotionTransaction } = yield createTransactionChannels(meta.id, ['finalizeMotionTransaction']);
 
     const batchKey = 'finalizeMotion';
 
@@ -86,10 +66,7 @@ function* finalizeMotion({
       ready: false,
     });
 
-    yield takeFrom(
-      finalizeMotionTransaction.channel,
-      ActionTypes.TRANSACTION_CREATED,
-    );
+    yield takeFrom(finalizeMotionTransaction.channel, ActionTypes.TRANSACTION_CREATED);
 
     yield put(
       transactionUpdateGas(finalizeMotionTransaction.id, {
@@ -99,10 +76,7 @@ function* finalizeMotion({
 
     yield put(transactionReady(finalizeMotionTransaction.id));
 
-    yield takeFrom(
-      finalizeMotionTransaction.channel,
-      ActionTypes.TRANSACTION_SUCCEEDED,
-    );
+    yield takeFrom(finalizeMotionTransaction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     /*
      * Update motion page values

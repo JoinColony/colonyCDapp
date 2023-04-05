@@ -9,10 +9,7 @@ import ExternalLink from '~shared/ExternalLink';
 import { useNetworkContracts } from '~data/index';
 import { useTransformer, useAppContext, useColonyContext } from '~hooks';
 import { getNetworkRelaseLink } from '~utils/external';
-import {
-  colonyMustBeUpgraded,
-  colonyShouldBeUpgraded,
-} from '~modules/dashboard/checks';
+import { colonyMustBeUpgraded, colonyShouldBeUpgraded } from '~modules/dashboard/checks';
 import { hasRoot } from '~modules/users/checks';
 import { getAllUserRoles } from '~modules/transformers';
 
@@ -47,18 +44,12 @@ const ColonyUpgrade = () => {
     [colony, openUpgradeVersionDialog],
   );
 
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
-  ]);
+  const allUserRoles = useTransformer(getAllUserRoles, [colony, wallet?.address]);
 
   const canUpgradeColony = user?.name && hasRoot(allUserRoles);
 
   const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
-  const shouldUpdgrade = colonyShouldBeUpgraded(
-    colony,
-    networkVersion as string,
-  );
+  const shouldUpdgrade = colonyShouldBeUpgraded(colony, networkVersion as string);
 
   if (mustUpgrade) {
     return (

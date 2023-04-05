@@ -35,8 +35,6 @@ const defaultValues: DefaultValues<GasPricesProps> = {
   timestamp: undefined,
 };
 
-export class GasPricesRecord
-  extends Record<GasPricesProps>(defaultValues)
-  implements RecordToJS<GasPricesProps> {}
+export class GasPricesRecord extends Record<GasPricesProps>(defaultValues) implements RecordToJS<GasPricesProps> {}
 
 export const GasPrices = (p?: GasPricesProps) => new GasPricesRecord(p);

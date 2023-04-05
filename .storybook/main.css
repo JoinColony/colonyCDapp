@@ -1,0 +1,115 @@
+@import 'react-responsive-carousel/lib/styles/carousel.min.css';
+@import 'react-popper-tooltip/dist/styles.css';
+@import 'react-tabs/style/react-tabs.css';
+@import 'react-tabs-scrollable/dist/rts.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@value query850 from '~styles/queries.css';
+@value query1024 from '~styles/queries.css';
+
+@layer base {
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+  html {
+    @apply font-inter text-lg text-gray-600 h-full antialiased;
+  }
+
+  body {
+    @apply h-full overflow-scroll overflow-x-hidden;
+  }
+
+  svg:not([class]) {
+    @apply fill-current stroke-none;
+  }
+
+  #root {
+    @apply h-full;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    @apply m-0;
+  }
+
+  /* hide arrows for Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer utilities {
+  .heading-1 {
+    @apply text-4xl font-semibold;
+  }
+
+  .heading-2 {
+    @apply text-3xl font-semibold;
+  }
+
+  .heading-3 {
+    @apply text-2xl font-semibold;
+  }
+
+  .heading-4 {
+    @apply text-xl font-semibold;
+  }
+}
+
+@layer components {
+  .inner {
+    @apply px-6 w-full h-full max-w-[77.375rem] mx-auto;
+  }
+}
+
+.carouselWrapper .carousel {
+  @apply relative overflow-visible;
+}
+
+.carouselWrapper [class~='carousel'] {
+  @apply relative overflow-visible;
+}
+
+.carouselWrapper [class~='carousel-slider'],
+.carouselWrapper [class~='slider-wrapper'] {
+  @apply w-[33.5rem];
+}
+.carouselWrapper [class~='slide'] {
+  @apply mr-4 h-[15.5rem];
+}
+
+.carouselWrapper [class~='control-dots'] {
+  @apply bottom-[-2.5rem] overflow-visible flex justify-center;
+}
+
+.rts___tabs {
+  @apply py-0;
+}
+
+.rts___tab {
+  @apply shadow-none border-0 relative inline-flex items-center justify-center px-0 py-2 text-md font-medium cursor-pointer border-b border-transparent transition-colors duration-normal  ml-0 mr-6 last:mr-0 hover:text-blue-400 rounded-none;
+}
+
+.rts___tab___selected {
+  @apply shadow-none text-blue-400 border-blue-400;
+}
+
+.rts___nav___btn:hover {
+  @apply bg-gray-300;
+}
+
+button:disabled.rts___btn,
+.rts___nav___btn:disabled,
+button[disabled].rts___btn {
+  @apply invisible;
+}
+
+.rts___nav___btn > svg {
+  @apply w-[0.75rem];
+}
+
+.rts___nav___btn:hover > svg {
+  @apply stroke-none;
+}

@@ -4,28 +4,14 @@ import ColorTag from '~shared/ColorTag';
 import { AnyMessageValues, ColonyAction } from '~types';
 import { formatText } from '~utils/intl';
 
-export const getDomainMetadataChangesValue = ({
-  fromDomain: domain,
-  transactionHash,
-}: ColonyAction) => {
-  const {
-    newName,
-    oldName,
-    newColor,
-    oldColor,
-    newDescription,
-    oldDescription,
-  } =
-    domain?.metadata?.changelog?.find(
-      (item) => item.transactionHash === transactionHash,
-    ) || {};
+export const getDomainMetadataChangesValue = ({ fromDomain: domain, transactionHash }: ColonyAction) => {
+  const { newName, oldName, newColor, oldColor, newDescription, oldDescription } =
+    domain?.metadata?.changelog?.find((item) => item.transactionHash === transactionHash) || {};
 
   const hasNameChanged = oldName && newName && newName !== oldName;
   const hasColorChanged = oldColor && newColor && newColor !== oldColor;
-  const hasDescriptionChanged =
-    oldDescription && newDescription && newDescription !== oldDescription;
-  const hasNoChanges =
-    !hasNameChanged && !hasColorChanged && !hasDescriptionChanged;
+  const hasDescriptionChanged = oldDescription && newDescription && newDescription !== oldDescription;
+  const hasNoChanges = !hasNameChanged && !hasColorChanged && !hasDescriptionChanged;
 
   if (!domain || hasNoChanges) {
     return formatText({

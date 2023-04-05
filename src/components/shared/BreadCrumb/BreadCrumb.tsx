@@ -48,11 +48,7 @@ const BreadCrumb = ({ elements }: Props) => {
               <SingleCrumb crumbText={crumbText} crumbLink={crumbLink} />
             ) : null}
             {i === elements.length - 1 || elements.length === 1 ? (
-              <SingleCrumb
-                crumbText={crumbText}
-                crumbLink={crumbLink}
-                lastCrumb
-              />
+              <SingleCrumb crumbText={crumbText} crumbLink={crumbLink} lastCrumb />
             ) : null}
           </Fragment>
         );

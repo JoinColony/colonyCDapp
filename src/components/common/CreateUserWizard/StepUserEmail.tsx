@@ -22,23 +22,15 @@ const MSG = defineMessages({
   },
   description: {
     id: `${displayName}.description`,
-    defaultMessage:
-      'Enter your email address below to enhance your experience.',
+    defaultMessage: 'Enter your email address below to enhance your experience.',
   },
 });
 
 type Props = WizardStepProps<FormValues, UserWizardStep1>;
 
-const StepUserEmail = ({
-  nextStep,
-  wizardForm: { initialValues: defaultValues },
-}: Props) => {
+const StepUserEmail = ({ nextStep, wizardForm: { initialValues: defaultValues } }: Props) => {
   return (
-    <HookForm<UserWizardStep1>
-      validationSchema={validationSchema}
-      defaultValues={defaultValues}
-      onSubmit={nextStep}
-    >
+    <HookForm<UserWizardStep1> validationSchema={validationSchema} defaultValues={defaultValues} onSubmit={nextStep}>
       {({ formState: { isSubmitting, isValid } }) => {
         return (
           <UserStepTemplate

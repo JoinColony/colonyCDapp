@@ -40,12 +40,7 @@ const UserInfo = ({ user: { walletAddress }, user }: UserInfoProps) => {
       </CopyableAddress>
       <div className={styles.usernameContainer}>
         <InputLabel label={MSG.labelUsername} />
-        <UserMention
-          user={user}
-          title={user.name || walletAddress}
-          hasLink={false}
-          data-test="userProfileUsername"
-        />
+        <UserMention user={user} title={user.name || walletAddress} hasLink={false} data-test="userProfileUsername" />
       </div>
     </>
   );

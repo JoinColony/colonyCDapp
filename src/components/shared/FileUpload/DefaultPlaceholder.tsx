@@ -21,11 +21,7 @@ interface Props {
 }
 
 const DefaultPlaceholder = ({ disabled }: Props) => (
-  <div
-    className={
-      disabled ? styles.placeholderTextDisabled : styles.placeholderText
-    }
-  >
+  <div className={disabled ? styles.placeholderTextDisabled : styles.placeholderText}>
     <FormattedMessage
       {...MSG.dropzoneText}
       values={{

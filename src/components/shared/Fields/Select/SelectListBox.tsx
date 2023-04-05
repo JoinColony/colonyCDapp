@@ -22,8 +22,7 @@ interface Props {
   dataTest?: string;
 }
 
-const getOptionId = (name, idx) =>
-  idx >= 0 ? `${name}-listbox-entry-${idx}` : '';
+const getOptionId = (name, idx) => (idx >= 0 ? `${name}-listbox-entry-${idx}` : '');
 
 const SelectListBox = ({
   appearance,
@@ -37,13 +36,9 @@ const SelectListBox = ({
   name,
   dataTest,
 }: Props) => {
-  const activeDescendantOption = options.find(
-    (_, idx) => selectedOption === idx,
-  );
+  const activeDescendantOption = options.find((_, idx) => selectedOption === idx);
   const activeDescendantIdx = activeDescendantOption
-    ? options.findIndex(
-        (option) => option.value === activeDescendantOption.value,
-      )
+    ? options.findIndex((option) => option.value === activeDescendantOption.value)
     : -1;
   return (
     // We're safe to disable this eslint rule - if this were a standard listbox (as opposed to collapsible, as it is now) we'd want this element to be tabbable

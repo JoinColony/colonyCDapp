@@ -7,7 +7,7 @@
 }
 
 .main {
-  composes: button from "~styles/reset.css";
+  composes: button from '~styles/reset.css';
   display: flex;
   justify-content: center;
   align-items: center;

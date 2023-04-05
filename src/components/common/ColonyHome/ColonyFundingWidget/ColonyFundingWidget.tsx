@@ -25,23 +25,12 @@ interface Props {
   currentDomainId?: number;
 }
 
-const ColonyFundingWidget = ({
-  currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
-}: Props) => {
+const ColonyFundingWidget = ({ currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID }: Props) => {
   const { colony } = useColonyContext();
-  const {
-    balances,
-    name,
-    tokens: colonyTokenItems,
-    nativeToken,
-    status,
-  } = colony || {};
+  const { balances, name, tokens: colonyTokenItems, nativeToken, status } = colony || {};
 
   const tokens = useMemo(
-    () =>
-      colonyTokenItems?.items
-        .filter(notNull)
-        .map((colonyToken) => colonyToken.token),
+    () => colonyTokenItems?.items.filter(notNull).map((colonyToken) => colonyToken.token),
     [colonyTokenItems],
   );
 
@@ -52,16 +41,12 @@ const ColonyFundingWidget = ({
        * Balances if "All Domains" selected
        */
       if (currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID) {
-        filteredBalances = balances.items.filter(
-          (balance) => balance?.domain === null,
-        );
+        filteredBalances = balances.items.filter((balance) => balance?.domain === null);
         /*
          * Balances if native domain selected
          */
       } else {
-        filteredBalances = balances.items.filter(
-          (balance) => balance?.domain?.nativeId === currentDomainId,
-        );
+        filteredBalances = balances.items.filter((balance) => balance?.domain?.nativeId === currentDomainId);
       }
       /*
        * Fallback balances (basically a list of all tokens with zero balance)
@@ -94,16 +79,11 @@ const ColonyFundingWidget = ({
       <ul data-test="availableFunds">
         {tokens?.map((token) => (
           <li key={token?.tokenAddress}>
-            <TokenInfoPopover
-              token={token}
-              isTokenNative={token?.tokenAddress === nativeToken?.tokenAddress}
-            >
+            <TokenInfoPopover token={token} isTokenNative={token?.tokenAddress === nativeToken?.tokenAddress}>
               <div className={styles.tokenBalance}>
                 <TokenBalanceItem
                   token={token}
-                  isTokenNative={
-                    token?.tokenAddress === nativeToken?.tokenAddress
-                  }
+                  isTokenNative={token?.tokenAddress === nativeToken?.tokenAddress}
                   isNativeTokenLocked={!status?.nativeToken?.unlocked}
                   balance={domainBalances[token?.tokenAddress]}
                 />

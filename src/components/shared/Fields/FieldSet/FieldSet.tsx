@@ -23,9 +23,7 @@ interface Props {
 }
 
 const FieldSet = ({ appearance, children, className }: Props) => (
-  <fieldset className={cx(getMainClasses(appearance, styles), className)}>
-    {children}
-  </fieldset>
+  <fieldset className={cx(getMainClasses(appearance, styles), className)}>{children}</fieldset>
 );
 
 FieldSet.displayName = displayName;

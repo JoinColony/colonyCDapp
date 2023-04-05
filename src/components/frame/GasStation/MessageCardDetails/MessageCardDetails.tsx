@@ -35,18 +35,10 @@ interface Props {
   onClose: (event: MouseEvent) => void;
 }
 
-const MessageCardDetails = ({
-  message: { status, purpose, message: messageContent, id },
-  message,
-  onClose,
-}: Props) => {
+const MessageCardDetails = ({ message: { status, purpose, message: messageContent, id }, message, onClose }: Props) => {
   const dispatch = useDispatch();
-  const [isShowingCancelConfirmation, setShowCancelConfirmation] =
-    useState(false);
-  const cancelMessageSigning = useCallback(
-    () => dispatch(messageCancel(id)),
-    [dispatch, id],
-  );
+  const [isShowingCancelConfirmation, setShowCancelConfirmation] = useState(false);
+  const cancelMessageSigning = useCallback(() => dispatch(messageCancel(id)), [dispatch, id]);
   const canBeCancelled = status === TRANSACTION_STATUSES.CREATED;
   return (
     <div>
@@ -64,15 +56,11 @@ const MessageCardDetails = ({
             <MessageCardStatus status={status} />
           </div>
           <div
-            className={getMainClasses(
-              { theme: 'message' },
-              styles as unknown as { [k: string]: string },
-              {
-                failed: status === TRANSACTION_STATUSES.FAILED,
-                succeeded: status === TRANSACTION_STATUSES.SUCCEEDED,
-                isShowingCancelConfirmation,
-              },
-            )}
+            className={getMainClasses({ theme: 'message' }, styles as unknown as { [k: string]: string }, {
+              failed: status === TRANSACTION_STATUSES.FAILED,
+              succeeded: status === TRANSACTION_STATUSES.SUCCEEDED,
+              isShowingCancelConfirmation,
+            })}
           >
             <span className={styles.title}>
               <FormattedMessage {...MSG.messageHeading} />
@@ -80,11 +68,7 @@ const MessageCardDetails = ({
                 <div className={styles.confirmationButtonsWrapper}>
                   {isShowingCancelConfirmation ? (
                     <>
-                      <button
-                        type="button"
-                        className={styles.confirmationButton}
-                        onClick={cancelMessageSigning}
-                      >
+                      <button type="button" className={styles.confirmationButton} onClick={cancelMessageSigning}>
                         <FormattedMessage {...{ id: 'button.yes' }} />
                       </button>
                       <span className={styles.cancelDecision}>/</span>
@@ -112,8 +96,7 @@ const MessageCardDetails = ({
           </div>
         </Card>
       </CardList>
-      {(status === TRANSACTION_STATUSES.CREATED ||
-        status === TRANSACTION_STATUSES.PENDING) && (
+      {(status === TRANSACTION_STATUSES.CREATED || status === TRANSACTION_STATUSES.PENDING) && (
         <MessageCardControls message={message} />
       )}
     </div>

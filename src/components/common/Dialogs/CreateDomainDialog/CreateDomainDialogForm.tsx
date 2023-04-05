@@ -2,23 +2,14 @@ import React from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 
-import {
-  ActionDialogProps,
-  DialogControls,
-  DialogHeading,
-  DialogSection,
-} from '~shared/Dialog';
+import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
 
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import { useActionDialogStatus } from '~hooks';
 
 import DomainNameAndColorInputGroup from '../DomainNameAndColorInputGroup';
-import {
-  NoPermissionMessage,
-  CannotCreateMotionMessage,
-  PermissionRequiredInfo,
-} from '../Messages';
+import { NoPermissionMessage, CannotCreateMotionMessage, PermissionRequiredInfo } from '../Messages';
 
 const displayName = 'common.CreateDomainDialog.CreateDomainDialogForm';
 
@@ -39,18 +30,13 @@ const MSG = defineMessages({
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Architecture];
 
-const CreateDomainDialogForm = ({
-  back,
-  colony,
-  enabledExtensionData,
-}: ActionDialogProps) => {
-  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } =
-    useActionDialogStatus(
-      colony,
-      requiredRoles,
-      [Id.RootDomain],
-      enabledExtensionData,
-    );
+const CreateDomainDialogForm = ({ back, colony, enabledExtensionData }: ActionDialogProps) => {
+  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -62,10 +48,7 @@ const CreateDomainDialogForm = ({
         </DialogSection>
       )}
       <DialogSection>
-        <DomainNameAndColorInputGroup
-          isCreatingDomain
-          disabled={disabledInput}
-        />
+        <DomainNameAndColorInputGroup isCreatingDomain disabled={disabledInput} />
       </DialogSection>
       <DialogSection>
         <Input
@@ -87,10 +70,7 @@ const CreateDomainDialogForm = ({
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <NoPermissionMessage
-            requiredPermissions={requiredRoles}
-            domainName="Root"
-          />
+          <NoPermissionMessage requiredPermissions={requiredRoles} domainName="Root" />
         </DialogSection>
       )}
       {/* {onlyForceAction && (

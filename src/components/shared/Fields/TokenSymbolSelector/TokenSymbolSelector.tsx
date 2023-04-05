@@ -18,16 +18,10 @@ const TokenSymbolSelector = ({ tokens, ...props }: Props) => {
   const tokenOptions = useMemo(
     () =>
       tokens.map((token) => {
-        const labelElement = (
-          elementType: 'labelElement' | 'optionElement',
-        ) => (
+        const labelElement = (elementType: 'labelElement' | 'optionElement') => (
           <div className={styles[elementType]}>
             <TokenIcon token={token} size="xxs" />
-            <span
-              className={elementType === 'labelElement' ? styles.symbol : ''}
-            >
-              {token.symbol || '???'}
-            </span>
+            <span className={elementType === 'labelElement' ? styles.symbol : ''}>{token.symbol || '???'}</span>
           </div>
         );
 

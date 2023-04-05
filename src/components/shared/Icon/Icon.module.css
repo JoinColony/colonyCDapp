@@ -1,0 +1,43 @@
+.main {
+  @apply inline-block;
+}
+
+.main[role='button'] {
+  @apply cursor-pointer active:outline-none hover:outline-none;
+}
+
+.sizeExtraTiny {
+  @apply w-[0.75rem] h-[0.75rem];
+}
+
+.sizeTiny {
+  @apply w-[0.875rem] h-[0.875rem];
+}
+
+.sizeSmall {
+  @apply w-[1rem] h-[1rem];
+}
+
+.sizeNormal {
+  @apply w-[1.25rem] h-[1.25rem];
+}
+
+.sizeMedium {
+  @apply w-[1.75rem] h-[1.75rem];
+}
+
+.sizeLarge {
+  @apply w-[2.625rem] h-[2.625rem];
+}
+
+.sizeHuge {
+  @apply w-[4rem] h-[4rem];
+}
+
+.themePrimary {
+  @apply inline-block [&_svg]:fill-current [&_svg]:stroke-current;
+}
+
+.themeInvert {
+  @apply inline-block [&_svg]:fill-current [&_svg]:stroke-current;
+}

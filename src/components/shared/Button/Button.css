@@ -38,7 +38,7 @@
  * Loading styles via `aria-busy`
  */
 
-.main[aria-busy="true"] {
+.main[aria-busy='true'] {
   /* We really want to hide the text on the button for the spinner. Same for icons */
   color: transparent !important;
   pointer-events: none;
@@ -49,7 +49,7 @@
   }
 }
 
-.main[aria-busy="true"]::after {
+.main[aria-busy='true']::after {
   display: block;
   margin: -8px 0 0 -8px;
   height: 16px;
@@ -153,7 +153,7 @@
   color: var(--colony-white);
 }
 
-.themePrimary[aria-busy="true"]::after {
+.themePrimary[aria-busy='true']::after {
   border-color: var(--colony-white);
   border-right-color: transparent;
   border-top-color: transparent;
@@ -200,7 +200,7 @@
   color: var(--colony-white);
 }
 
-.themeDanger[aria-busy="true"]::after {
+.themeDanger[aria-busy='true']::after {
   border-color: var(--colony-white);
   border-right-color: transparent;
   border-top-color: transparent;
@@ -305,14 +305,14 @@
   text-decoration: underline;
 }
 
-.themeBlue[disabled]:not([aria-busy="true"]) {
+.themeBlue[disabled]:not([aria-busy='true']) {
   border-color: transparent;
   background-color: transparent;
   color: disabledBackground;
   cursor: default;
 }
 
-.themeBlue[disabled]:not([aria-busy="true"]):hover {
+.themeBlue[disabled]:not([aria-busy='true']):hover {
   text-decoration: none;
 }
 
@@ -374,7 +374,7 @@
   color: var(--colony-white);
 }
 
-.themePink[aria-busy="true"]::after {
+.themePink[aria-busy='true']::after {
   border-color: var(--colony-white);
   border-right-color: transparent;
   border-top-color: transparent;

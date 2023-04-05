@@ -63,10 +63,7 @@ const LoadingTemplate = ({ children, loadingText }: Props) => {
         {loadingState !== 'failed' && (
           <div>
             <div className={styles.loaderContainer}>
-              <SpinnerLoader
-                loadingText={loadingText}
-                appearance={{ theme: 'primary', size: 'massive' }}
-              />
+              <SpinnerLoader loadingText={loadingText} appearance={{ theme: 'primary', size: 'massive' }} />
             </div>
             {children}
           </div>
@@ -83,11 +80,7 @@ const LoadingTemplate = ({ children, loadingText }: Props) => {
         {loadingState !== 'default' && (
           <div>
             <div className={styles.loadingDelayedOrFailed}>
-              <p>
-                {loadingState === 'delayed'
-                  ? formatMessage(MSG.loadingDelayed)
-                  : formatMessage(MSG.loadingFailed)}
-              </p>
+              <p>{loadingState === 'delayed' ? formatMessage(MSG.loadingDelayed) : formatMessage(MSG.loadingFailed)}</p>
               <div className={styles.loadingDelayedOrFailedDetail}>
                 <p>
                   {loadingState === 'delayed'

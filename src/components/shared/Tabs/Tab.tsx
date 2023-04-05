@@ -6,7 +6,6 @@ import styles from './Tab.css';
 interface Props extends HTMLAttributes<any> {
   /** Disable this tab which will make it not do anything when clicked. */
   disabled?: boolean;
-
   selectedClassName?: string;
   disabledClassName?: string;
   className?: string;

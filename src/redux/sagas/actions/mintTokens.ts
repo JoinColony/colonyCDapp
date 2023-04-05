@@ -9,11 +9,7 @@ import {
   takeFrom,
   // uploadIfpsAnnotation,
 } from '../utils';
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
+import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
 import {
   transactionReady,
   // transactionPending,
@@ -44,12 +40,11 @@ function* createMintTokensAction({
     // setup batch ids and channels
     const batchKey = 'mintTokens';
 
-    const { mintTokens, claimColonyFunds /* annotateMintTokens */ } =
-      yield createTransactionChannels(metaId, [
-        'mintTokens',
-        'claimColonyFunds',
-        // 'annotateMintTokens',
-      ]);
+    const { mintTokens, claimColonyFunds /* annotateMintTokens */ } = yield createTransactionChannels(metaId, [
+      'mintTokens',
+      'claimColonyFunds',
+      // 'annotateMintTokens',
+    ]);
 
     // create transactions
     yield fork(createTransaction, mintTokens.id, {
@@ -105,10 +100,7 @@ function* createMintTokensAction({
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(
-      mintTokens.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+    } = yield takeFrom(mintTokens.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
     yield takeFrom(mintTokens.channel, ActionTypes.TRANSACTION_SUCCEEDED);
     yield put(transactionReady(claimColonyFunds.id));
     yield takeFrom(claimColonyFunds.channel, ActionTypes.TRANSACTION_SUCCEEDED);

@@ -28,14 +28,15 @@
   cursor: pointer;
 }
 
-.main::after, .main:hover:not(.stateDisabled)::before {
+.main::after,
+.main:hover:not(.stateDisabled)::before {
   height: 1px;
   position: absolute;
   right: 40px;
   bottom: 0;
   left: 40px;
   background-color: color-mod(var(--dark-grey) alpha(15%));
-  content: "";
+  content: '';
 }
 
 .stateDisabled .title,

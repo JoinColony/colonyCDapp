@@ -5,10 +5,7 @@ import { useActionDialogStatus, EnabledExtensionData } from '~hooks';
 import { Colony, Domain } from '~types';
 import { findDomainByNativeId } from '~utils/domains';
 
-export const getEditDomainDialogPayload = (
-  colony: Colony,
-  { domainId, ...rest },
-) => ({
+export const getEditDomainDialogPayload = (colony: Colony, { domainId, ...rest }) => ({
   ...rest,
   domain: findDomainByNativeId(domainId, colony),
   colonyAddress: colony.colonyAddress,
@@ -31,18 +28,9 @@ export const useEditDomainDialogStatus = (
     disabledSubmit: defaultDisabledSubmit,
     disabledInput,
     canCreateMotion,
-  } = useActionDialogStatus(
-    colony,
-    requiredRoles,
-    [domainId],
-    enabledExtensionData,
-    domainId,
-  );
+  } = useActionDialogStatus(colony, requiredRoles, [domainId], enabledExtensionData, domainId);
 
-  const hasEditedDomain =
-    dirtyFields.domainColor ||
-    dirtyFields.domainName ||
-    dirtyFields.domainPurpose;
+  const hasEditedDomain = dirtyFields.domainColor || dirtyFields.domainName || dirtyFields.domainPurpose;
   const disabledSubmit = defaultDisabledSubmit || !hasEditedDomain;
 
   return {
@@ -53,5 +41,4 @@ export const useEditDomainDialogStatus = (
   };
 };
 
-export const notRootDomain = (domain: Domain) =>
-  domain.nativeId !== Id.RootDomain;
+export const notRootDomain = (domain: Domain) => domain.nativeId !== Id.RootDomain;

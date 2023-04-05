@@ -22,9 +22,7 @@ interface UsePaginatedActionsReturn {
 export const usePaginatedActions = (): UsePaginatedActionsReturn => {
   const { colony } = useColonyContext();
 
-  const [sortDirection, setSortDirection] = useState<SortDirection>(
-    SortDirection.Desc,
-  );
+  const [sortDirection, setSortDirection] = useState<SortDirection>(SortDirection.Desc);
 
   const { data, loading, fetchMore } = useGetColonyActionsQuery({
     variables: {
@@ -39,9 +37,7 @@ export const usePaginatedActions = (): UsePaginatedActionsReturn => {
   const actions = items?.filter(notNull) || [];
   const hasMoreActions = !!nextToken;
 
-  const handleSortDirectionChange: SortDirectionChangeHandler = (
-    newSortDirection,
-  ) => {
+  const handleSortDirectionChange: SortDirectionChangeHandler = (newSortDirection) => {
     setSortDirection(newSortDirection);
   };
 

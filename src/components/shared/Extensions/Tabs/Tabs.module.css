@@ -1,0 +1,19 @@
+.tabList {
+  @apply relative flex items-center w-full before:absolute before:bottom-0 before:left-0 before:w-full before:bg-gray-200 before:block before:h-px before:content-[""] p-0;
+}
+
+.navButton {
+  @apply transition-colors duration-normal border-none bg-gray-200 w-[1.375rem] h-[1.375rem] rounded flex items-center justify-center shrink-0 hover:bg-gray-300 [&_i]:w-[0.625em] [&_i]:h-[0.625em];
+}
+
+.navLeftButton {
+  @apply absolute top-[50%] translate-y-[-50%] left-0 z-10;
+}
+
+.navRightButton {
+  @apply absolute top-[50%] translate-y-[-50%] right-0 z-10;
+}
+
+.panel {
+  @apply pt-4;
+}
