@@ -1,7 +1,6 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
-import Decimal from 'decimal.js';
 
 import {
   calculateFee,
@@ -11,6 +10,7 @@ import {
 import Numeral from '~shared/Numeral';
 import { Colony } from '~types';
 import { useNetworkInverseFee } from '~hooks';
+import { toFinite } from '~utils/lodash';
 
 import styles from './NetworkFee.css';
 
@@ -42,7 +42,7 @@ const NetworkFee = ({ colony }: Props) => {
   const { tokenAddress, amount } = watch();
   const selectedToken = getSelectedToken(colony, tokenAddress);
 
-  if (new Decimal(amount || 0).isZero() || !networkInverseFee) {
+  if (toFinite(amount || 0) === 0 || !networkInverseFee) {
     return null;
   }
 
@@ -53,10 +53,6 @@ const NetworkFee = ({ colony }: Props) => {
         values={{
           fee: (
             <Numeral
-              // appearance={{
-              //   size: 'small',
-              //   theme: 'grey',
-              // }}
               value={
                 calculateFee(
                   amount,
