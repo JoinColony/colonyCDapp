@@ -10,14 +10,13 @@ const useStakingInput = () => {
   const {
     isObjection,
     motionId,
-    remainingStakes: [nayRemaining, yayRemaining],
+    remainingToStake,
     userMinStake,
     setIsRefetching,
     startPollingAction,
   } = useStakingWidgetContext();
 
   const vote = isObjection ? MotionVote.Nay : MotionVote.Yay;
-  const remainingToStake = isObjection ? nayRemaining : yayRemaining;
 
   const transform = getStakingTransformFn(
     remainingToStake,
