@@ -23,7 +23,8 @@ import { capitalizeFirstLetter } from '../strings';
  */
 export const getMainClasses = (
   { theme, ...modifiers }: any = {},
-  styleObject: { [k: string]: string } = {},
+  /** @NOTE This is temporary typing until a proper type for CSS modules imports can be figured out */
+  styleObject: any = {},
   state: { [k: string]: boolean } = {},
 ) => {
   const styles = [

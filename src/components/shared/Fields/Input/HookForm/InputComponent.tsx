@@ -100,7 +100,6 @@ const HookFormInputComponent = ({
       {formattingOptions ? (
         <FormattedInput
           {...props}
-          htmlRef={ref}
           maxButtonParams={maxButtonParams}
           options={formattingOptions}
         />

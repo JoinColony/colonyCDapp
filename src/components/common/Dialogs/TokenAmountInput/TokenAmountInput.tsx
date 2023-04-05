@@ -36,8 +36,9 @@ interface Props {
 }
 
 const TokenAmountInput = ({ colony, disabled }: Props) => {
-  const { watch } = useFormContext();
+  const { watch, trigger } = useFormContext();
   const { amount, tokenAddress } = watch();
+
   const colonyTokens =
     colony?.tokens?.items
       .filter(notNull)
@@ -83,13 +84,16 @@ const TokenAmountInput = ({ colony, disabled }: Props) => {
             elementOnly
             appearance={{ alignOptions: 'right', theme: 'grey' }}
             disabled={disabled}
+            onChange={() => {
+              trigger('amount');
+            }}
           />
         </div>
         {tokenAddress === AddressZero && (
           <div className={styles.tokenAmountUsd}>
             <EthUsd
               // appearance={{ theme: 'grey' }}
-              value={amount.replace(/,/g, '') || 0} // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
+              value={amount}
             />
           </div>
         )}

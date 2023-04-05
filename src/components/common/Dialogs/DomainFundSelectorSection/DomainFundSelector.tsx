@@ -129,7 +129,9 @@ const DomainFundSelector = ({
         dataTest="domainIdSelector"
         itemDataTest="domainIdItem"
       />
-      {!errors[name] && <DomainBalance colony={colony} />}
+      {!errors[name] && (
+        <DomainBalance colony={colony} domainFieldName={name} />
+      )}
     </div>
   );
 };

@@ -40,6 +40,7 @@ const HookFormInputStatus = ({
   );
   const text = errorText || statusText;
   const Element = appearance.direction === 'horizontal' ? 'span' : 'p';
+
   return (
     <Element
       className={getMainClasses(appearance, styles, {

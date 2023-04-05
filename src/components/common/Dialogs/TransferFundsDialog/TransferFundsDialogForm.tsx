@@ -4,13 +4,13 @@ import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import { Annotations } from '~shared/Fields';
-
 import {
   ActionDialogProps,
   DialogControls,
   DialogHeading,
   DialogSection,
 } from '~shared/Dialog';
+import { findDomainByNativeId } from '~utils/domains';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import {
@@ -20,7 +20,6 @@ import {
 } from '../Messages';
 import TokenAmountInput from '../TokenAmountInput';
 import DomainFundSelectorSection from '../DomainFundSelectorSection';
-
 import { useTransferFundsDialogStatus } from './helpers';
 
 import styles from './TransferFundsDialogForm.css';
@@ -50,16 +49,11 @@ const TransferFundsDialogForm = ({
   enabledExtensionData,
 }: ActionDialogProps) => {
   const { watch } = useFormContext();
-  const { fromDomain: fromDomainId, toDomain: toDomainId } = watch();
+  const { fromDomainId, toDomainId } = watch();
 
-  const colonyDomains = colony?.domains?.items || [];
-  const fromDomain = colonyDomains.find(
-    (domain) => domain?.nativeId === fromDomainId,
-  );
+  const fromDomain = findDomainByNativeId(fromDomainId, colony);
+  const toDomain = findDomainByNativeId(toDomainId, colony);
 
-  const toDomain = colonyDomains.find(
-    (domain) => domain?.nativeId === toDomainId,
-  );
   const {
     userHasPermission,
     disabledInput,
