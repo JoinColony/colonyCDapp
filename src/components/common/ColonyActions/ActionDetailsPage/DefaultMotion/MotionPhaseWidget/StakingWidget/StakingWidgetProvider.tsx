@@ -10,6 +10,7 @@ import { useStakingWidgetUpdate } from '~hooks';
 import { MotionData, SetStateFn } from '~types';
 
 export interface StakingWidgetContextValues extends MotionData {
+  remainingToStake: string;
   isObjection: boolean;
   setIsObjection: SetStateFn;
   isSummary: boolean;
@@ -46,6 +47,7 @@ export const StakingWidgetProvider = ({
     motionStakes: {
       raw: { nay: nayStakes },
     },
+    remainingStakes: [nayRemaining, yayRemaining],
     motionStakes,
   },
   motionData,
@@ -55,6 +57,7 @@ export const StakingWidgetProvider = ({
   const [isObjection, setIsObjection] = useState<boolean>(false);
   const showSummary = Number(nayStakes) > 0;
   const [isSummary, setIsSummary] = useState<boolean>(showSummary);
+  const remainingToStake = isObjection ? nayRemaining : yayRemaining;
   const [isRefetching, setIsRefetching] = useStakingWidgetUpdate(
     motionStakes,
     stopPollingAction,
@@ -63,6 +66,7 @@ export const StakingWidgetProvider = ({
   const stakingWidgetValues = useMemo(
     () => ({
       ...motionData,
+      remainingToStake,
       startPollingAction,
       isObjection,
       setIsObjection,
@@ -73,6 +77,7 @@ export const StakingWidgetProvider = ({
     }),
     [
       motionData,
+      remainingToStake,
       startPollingAction,
       isObjection,
       setIsObjection,
