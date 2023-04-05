@@ -12,6 +12,7 @@ import {
   GetColonyActionsQueryVariables,
 } from '~gql';
 import { notNull } from '~utils/arrays';
+import { getMotionDatabaseId } from '~utils/colonyMotions';
 
 import {
   ChannelDefinition,
@@ -21,7 +22,6 @@ import {
 } from '../transactions';
 
 import { getColonyManager, putError, takeFrom } from '../utils';
-import { getMotionDatabaseId } from '~utils/colonyMotions';
 
 export type ClaimAllMotionRewardsPayload =
   Action<ActionTypes.MOTION_CLAIM>['payload'];

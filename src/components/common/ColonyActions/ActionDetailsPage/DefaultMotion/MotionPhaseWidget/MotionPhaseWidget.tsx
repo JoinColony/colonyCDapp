@@ -1,7 +1,7 @@
 import React from 'react';
+
 import { StakerRewards } from '~gql';
 import { useAppContext } from '~hooks';
-
 import { ColonyAction, ColonyActionType, Address } from '~types';
 import { MotionState } from '~utils/colonyMotions';
 
