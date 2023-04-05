@@ -1,4 +1,4 @@
-const { graphqlRequest } = require('../../utils');
+const { graphqlRequest } = require('./utils');
 const {
   getCurrentVersion,
   updateCurrentVersion,

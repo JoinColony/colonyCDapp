@@ -98,10 +98,6 @@ input SetCurrentVersionInput {
   version: Int!
 }
 
-input SetCurrentNetworkInverseFeeInput {
-  inverseFee: String!
-}
-
 type TokenFromEverywhereReturn {
   items: [Token]
 }
@@ -229,8 +225,6 @@ type Mutation {
     @function(name: "createUniqueColony")
   setCurrentVersion(input: SetCurrentVersionInput): Boolean
     @function(name: "setCurrentVersion")
-  setCurrentNetworkInverseFee(input: SetCurrentNetworkInverseFeeInput): Boolean
-    @function(name: "setCurrentNetworkInverseFee")
   updateExtensionByColonyAndHash(
     input: UpdateExtensionByColonyAndHashInput
   ): ColonyExtension @function(name: "updateExtensionByColonyAndHash")
