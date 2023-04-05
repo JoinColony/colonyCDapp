@@ -9,15 +9,13 @@ const displayName =
 interface StakeButtonProps {
   isLoadingData: boolean;
   enoughTokensToStakeMinimum: boolean;
-  remainingToStake: string;
 }
 
 const StakeButton = ({
   isLoadingData,
   enoughTokensToStakeMinimum,
-  remainingToStake,
 }: StakeButtonProps) => {
-  const { isObjection } = useStakingWidgetContext();
+  const { isObjection, remainingToStake } = useStakingWidgetContext();
   return (
     <Button
       appearance={{
