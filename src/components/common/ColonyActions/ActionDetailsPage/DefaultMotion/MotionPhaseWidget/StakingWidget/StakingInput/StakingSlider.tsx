@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAppContext, useStakingSlider } from '~hooks';
+import { SetStateFn } from '~types';
 
 import {
   StakingSliderDescription,
@@ -13,9 +14,15 @@ const displayName =
 
 interface StakingSliderProps {
   isObjection: boolean;
+  limitExceeded: boolean;
+  setLimitExceeded: SetStateFn;
 }
 
-const StakingSlider = ({ isObjection }: StakingSliderProps) => {
+const StakingSlider = ({
+  isObjection,
+  limitExceeded,
+  setLimitExceeded,
+}: StakingSliderProps) => {
   const { user } = useAppContext();
   const {
     remainingToStake,
@@ -26,6 +33,7 @@ const StakingSlider = ({ isObjection }: StakingSliderProps) => {
     enoughTokensToStakeMinimum,
     isLoadingData,
     userActivatedTokens,
+    userStakeLimitDecimal,
   } = useStakingSlider(isObjection);
 
   const displayLabel = !!user && !isLoadingData && remainingToStake !== '0';
@@ -50,12 +58,15 @@ const StakingSlider = ({ isObjection }: StakingSliderProps) => {
         isLoading={isLoadingData}
         remainingToStake={remainingToStake}
         enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
+        limit={userStakeLimitDecimal}
+        handleLimitExceeded={setLimitExceeded}
       />
       {displayLabel && (
         <StakingValidationMessage
           enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
           userActivatedTokens={userActivatedTokens}
           userMinStake={userMinStake}
+          limitExceeded={limitExceeded}
         />
       )}
     </>

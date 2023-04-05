@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js';
 import { BigNumber } from 'ethers';
 import { getStakeFromSlider } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
 import { MotionStakes } from '~gql';
@@ -49,3 +50,33 @@ export const getHandleStakeSuccessFn =
     /* On stake success, initiate db polling so ui updates */
     startPolling(1000);
   };
+
+export const calculateStakeLimitDecimal = (
+  remainingToStake: string,
+  userMinStake: string,
+  userMaxStake: BigNumber,
+  userActivatedTokens: BigNumber,
+) => {
+  if (BigNumber.from(remainingToStake).lt(userMinStake)) {
+    return new Decimal(0);
+  }
+  const stakingLimit = userMaxStake.gte(userActivatedTokens)
+    ? userActivatedTokens
+    : userMaxStake;
+
+  const adjustedStakingLimit = stakingLimit.sub(userMinStake);
+
+  // Accounts for the user's minimum stake, which is the slider's start point (i.e 0%)
+  const adjustedRemainingToStake =
+    BigNumber.from(remainingToStake).sub(userMinStake);
+
+  if (adjustedStakingLimit.gte(adjustedRemainingToStake)) {
+    return new Decimal(1);
+  }
+
+  const stakeDecimal = new Decimal(adjustedStakingLimit.toString()).div(
+    adjustedRemainingToStake.toString(),
+  );
+
+  return stakeDecimal;
+};
