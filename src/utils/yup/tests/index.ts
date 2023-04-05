@@ -7,7 +7,11 @@ import { ContextModule, getContext } from '~context';
 import { Colony } from '~types';
 import { notNull } from '~utils/arrays';
 import { now } from '~utils/lodash';
-import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
+import {
+  calculateFee,
+  getSelectedToken,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens';
 
 import {
   cancelEarly,
@@ -256,7 +260,10 @@ export function yupDebounce(
   return caller as TestFunction;
 }
 
-export const getHasEnoughBalanceTestFn = (colony: Colony) => {
+export const getHasEnoughBalanceTestFn = (
+  colony: Colony,
+  networkInverseFee?: string | undefined,
+) => {
   const colonyBalances = colony.balances?.items?.filter(notNull) || [];
   return (value: number | undefined, context: TestContext) => {
     if (!value) {
@@ -276,7 +283,15 @@ export const getHasEnoughBalanceTestFn = (colony: Colony) => {
     }
 
     const tokenDecimals = getTokenDecimalsWithFallback(selectedToken.decimals);
-    const convertedAmount = BigNumber.from(moveDecimal(value, tokenDecimals));
+
+    const amountWithFeesIncluded = networkInverseFee
+      ? calculateFee(value.toString(), networkInverseFee, tokenDecimals)
+          .totalToPay
+      : value;
+
+    const convertedAmount = BigNumber.from(
+      moveDecimal(amountWithFeesIncluded, tokenDecimals),
+    );
 
     return convertedAmount.lte(selectedDomainBalance.balance);
   };
