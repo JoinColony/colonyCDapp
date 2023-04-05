@@ -1,14 +1,20 @@
+import Decimal from 'decimal.js';
 import { BigNumber } from 'ethers';
 
 export const getStakeFromSlider = (
   sliderAmount: number,
   remainingToStake: string,
   userMinStake: string,
-) =>
-  BigNumber.from(sliderAmount)
-    .mul(BigNumber.from(remainingToStake).sub(userMinStake))
+) => {
+  const exactStake = new Decimal(sliderAmount)
+    .mul(BigNumber.from(remainingToStake).sub(userMinStake).toString())
     .div(100)
-    .add(userMinStake);
+    .add(userMinStake)
+    .floor()
+    .toString();
+
+  return BigNumber.from(exactStake);
+};
 
 /* BigNumbers round down, therefore if it's been rounded down to zero, display '1' */
 export const getRemainingStakePercentage = (
