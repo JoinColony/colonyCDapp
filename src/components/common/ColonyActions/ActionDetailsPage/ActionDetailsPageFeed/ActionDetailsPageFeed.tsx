@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ColonyAction } from '~types';
-import { ACTIONS_EVENTS } from '../staticMaps';
+// import { ACTIONS_EVENTS } from '../staticMaps';
 
 import ActionsPageEvent from './ActionDetailsPageEvent';
 
@@ -10,13 +10,9 @@ const displayName =
 
 interface ActionsPageFeedProps {
   actionData: ColonyAction;
-  // networkEvents: FormattedEvent[];
 }
 
-const ActionDetailsPageFeed = ({
-  actionData,
-}: // networkEvents,
-ActionsPageFeedProps) => {
+const ActionDetailsPageFeed = ({ actionData }: ActionsPageFeedProps) => {
   const events =
     JSON.parse(actionData.individualEvents as string) ||
     ACTIONS_EVENTS[actionData.type];
