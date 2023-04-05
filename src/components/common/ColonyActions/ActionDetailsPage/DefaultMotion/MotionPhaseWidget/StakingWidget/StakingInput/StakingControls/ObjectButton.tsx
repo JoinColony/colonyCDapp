@@ -9,11 +9,13 @@ const displayName =
 interface ObjectButtonProps {
   isLoadingData: boolean;
   enoughTokensToStakeMinimum: boolean;
+  enoughReputationToStakeMinimum: boolean;
 }
 
 const ObjectButton = ({
   isLoadingData,
   enoughTokensToStakeMinimum,
+  enoughReputationToStakeMinimum,
 }: ObjectButtonProps) => {
   const { user } = useAppContext();
   const { handleObjection } = useObjectButton();
@@ -22,7 +24,12 @@ const ObjectButton = ({
     <Button
       appearance={{ theme: 'pink', size: 'medium' }}
       text={{ id: 'button.object' }}
-      disabled={!user || isLoadingData || !enoughTokensToStakeMinimum}
+      disabled={
+        !user ||
+        isLoadingData ||
+        !enoughTokensToStakeMinimum ||
+        !enoughReputationToStakeMinimum
+      }
       dataTest="stakeWidgetObjectButton"
       onClick={handleObjection}
     />
