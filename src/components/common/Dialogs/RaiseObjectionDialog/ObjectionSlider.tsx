@@ -10,7 +10,7 @@ const displayName = 'common.Dialogs.RaiseObjectionDialog.ObjectionSlider';
 const ObjectionSlider = () => (
   <DialogSection appearance={{ theme: 'sidePadding' }}>
     <div className={styles.main}>
-      <StakingSlider canBeStaked isObjection />
+      <StakingSlider isObjection />
     </div>
   </DialogSection>
 );
