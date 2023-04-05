@@ -1518,7 +1518,6 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUserTokens?: Maybe<UserTokens>;
   deleteWatchedColonies?: Maybe<WatchedColonies>;
-  setCurrentNetworkInverseFee?: Maybe<Scalars['Boolean']>;
   setCurrentVersion?: Maybe<Scalars['Boolean']>;
   updateColony?: Maybe<Colony>;
   updateColonyAction?: Maybe<ColonyAction>;
@@ -1739,11 +1738,6 @@ export type MutationDeleteUserTokensArgs = {
 export type MutationDeleteWatchedColoniesArgs = {
   condition?: InputMaybe<ModelWatchedColoniesConditionInput>;
   input: DeleteWatchedColoniesInput;
-};
-
-
-export type MutationSetCurrentNetworkInverseFeeArgs = {
-  input?: InputMaybe<SetCurrentNetworkInverseFeeInput>;
 };
 
 
@@ -2277,10 +2271,6 @@ export type QueryListWatchedColoniesArgs = {
   filter?: InputMaybe<ModelWatchedColoniesFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
-};
-
-export type SetCurrentNetworkInverseFeeInput = {
-  inverseFee: Scalars['String'];
 };
 
 export type SetCurrentVersionInput = {
