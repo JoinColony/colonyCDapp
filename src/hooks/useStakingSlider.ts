@@ -1,7 +1,9 @@
+import { BigNumber } from 'ethers';
 import { useLocation } from 'react-router-dom';
 import { useEnoughTokensForStaking } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget/StakingInput/useEnoughTokensForStaking';
 
-import { useGetColonyActionQuery } from '~gql';
+import { useGetColonyActionQuery, useGetUserReputationQuery } from '~gql';
+import { calculateStakeLimitDecimal } from './helpers';
 import useAppContext from './useAppContext';
 
 const getTransactionHashFromPathName = (pathname: string) =>
@@ -39,6 +41,8 @@ const useStakingSlider = (isObjection: boolean) => {
     motionStakes: {
       percentage: { nay: nayPercentageStaked, yay: yayPercentageStaked },
     },
+    rootHash,
+    motionDomainId,
   } = motionData;
 
   const { nativeTokenDecimals, nativeTokenSymbol, tokenAddress } = nativeToken;
@@ -53,6 +57,29 @@ const useStakingSlider = (isObjection: boolean) => {
     userMinStake,
   );
 
+  const { data, loading: loadingReputation } = useGetUserReputationQuery({
+    variables: {
+      input: {
+        colonyAddress: actionData.getColonyAction?.colonyAddress ?? '',
+        walletAddress: user?.walletAddress ?? '',
+        domainId: Number(motionDomainId),
+        rootHash,
+      },
+    },
+  });
+
+  const userReputation = data?.getUserReputation;
+  /* User cannot stake more than their reputation in tokens. */
+  const userMaxStake = BigNumber.from(userReputation ?? '0');
+  const remainingToStake = isObjection ? nayRemaining : yayRemaining;
+
+  const userStakeLimitDecimal = calculateStakeLimitDecimal(
+    remainingToStake,
+    userMinStake,
+    userMaxStake,
+    userActivatedTokens,
+  );
+
   const totalPercentageStaked =
     Number(nayPercentageStaked) + Number(yayPercentageStaked);
 
@@ -64,10 +91,12 @@ const useStakingSlider = (isObjection: boolean) => {
     nativeTokenSymbol,
     enoughTokensToStakeMinimum,
     userActivatedTokens,
+    userStakeLimitDecimal,
     isLoadingData:
       loadingUserTokenBalance ||
       userLoading ||
       walletConnecting ||
+      loadingReputation ||
       loadingActionData,
   };
 };
