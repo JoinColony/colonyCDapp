@@ -22,7 +22,6 @@ export default function* actionsSagas() {
     // call(revealVoteMotionSaga),
     call(finalizeMotionSaga),
     call(claimMotionRewardsSaga),
-    call(claimMotionRewardsSaga),
     call(rootMotionSaga),
     // call(createEditDomainMotionSaga),
     // call(moveFundsMotionSaga),
