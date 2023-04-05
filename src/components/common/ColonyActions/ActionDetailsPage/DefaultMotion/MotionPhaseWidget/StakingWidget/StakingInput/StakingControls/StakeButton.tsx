@@ -6,8 +6,18 @@ import { useStakingWidgetContext } from '../../StakingWidgetProvider';
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.StakeButton';
 
-const StakeButton = () => {
-  const { canBeStaked, isObjection } = useStakingWidgetContext();
+interface StakeButtonProps {
+  isLoadingData: boolean;
+  enoughTokensToStakeMinimum: boolean;
+  remainingToStake: string;
+}
+
+const StakeButton = ({
+  isLoadingData,
+  enoughTokensToStakeMinimum,
+  remainingToStake,
+}: StakeButtonProps) => {
+  const { isObjection } = useStakingWidgetContext();
   return (
     <Button
       appearance={{
@@ -15,7 +25,9 @@ const StakeButton = () => {
         size: 'medium',
       }}
       type="submit"
-      disabled={!canBeStaked}
+      disabled={
+        isLoadingData || !enoughTokensToStakeMinimum || remainingToStake === '0'
+      }
       /* userActivatedTokens.lt(
         getDecimalStake(values.amount).round(),
       ) */
