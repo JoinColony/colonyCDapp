@@ -5,7 +5,7 @@ import { ActionHookForm as ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 import { useStakingInput } from '~hooks';
 
-import { StakingControls, StakingSlider } from '.';
+import { StakingControls, StakingSlider, StakingValidationMessage } from '.';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget';
@@ -19,8 +19,7 @@ const validationSchema = object({
 export type StakingWidgetValues = InferType<typeof validationSchema>;
 
 const StakingInput = () => {
-  const { transform, handleSuccess, canBeStaked, isObjection } =
-    useStakingInput();
+  const { transform, handleSuccess, isObjection } = useStakingInput();
   return (
     <ActionForm<StakingWidgetValues>
       defaultValues={{
@@ -31,16 +30,7 @@ const StakingInput = () => {
       transform={transform}
       onSuccess={handleSuccess}
     >
-      <StakingSlider canBeStaked={canBeStaked} isObjection={isObjection} />
-      {/*
-      {showValidationMessage && (
-        <StakingValidationMessage
-          {...stakingValidationMessageProps}
-          limitExceeded={limitExceeded}
-          minUserStake={minUserStake}
-          maxUserStake={maxUserStake}
-        />
-      )} */}
+      <StakingSlider isObjection={isObjection} />
       <StakingControls />
     </ActionForm>
   );

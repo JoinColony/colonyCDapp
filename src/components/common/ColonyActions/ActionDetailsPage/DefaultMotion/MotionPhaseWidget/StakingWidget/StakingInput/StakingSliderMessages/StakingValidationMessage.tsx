@@ -6,15 +6,15 @@ const displayName =
   '~common.ColonyActions.ActionDetails.DefaultMotion.StakingWidget.StakingValidationMessage';
 
 interface StakingValidationMessageProps {
-  enoughTokens: boolean;
+  enoughTokensToStakeMinimum: boolean;
   tokensLeftToActivate: string;
 }
 
 const StakingValidationMessage = ({
-  enoughTokens,
+  enoughTokensToStakeMinimum,
   tokensLeftToActivate,
 }: StakingValidationMessageProps) => {
-  if (!enoughTokens) {
+  if (!enoughTokensToStakeMinimum) {
     return <TokenErrorMessage tokensLeftToActivate={tokensLeftToActivate} />;
   }
 
