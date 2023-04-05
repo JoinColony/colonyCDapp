@@ -1523,6 +1523,7 @@ export type MotionData = {
   userMinStake: Scalars['String'];
   usersStakes: Array<UserStakes>;
   voterRecord: Array<VoterRecord>;
+  events: Array<MotionEvent>;
 };
 
 export type MotionDataInput = {
@@ -1542,6 +1543,26 @@ export type MotionDataInput = {
   userMinStake: Scalars['String'];
   usersStakes: Array<UserStakesInput>;
   voterRecord: Array<VoterRecordInput>;
+  events: Array<MotionEventInput>;
+};
+
+export type MotionEvent = {
+  __typename?: 'MotionEvent';
+  createdAt: Scalars['AWSDateTime'];
+  emmitedBy: Scalars['String'];
+  name: Scalars['String'];
+  transactionHash: Scalars['String'];
+  type: Scalars['String'];
+  values: Array<Scalars['String']>;
+};
+
+export type MotionEventInput = {
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  emmitedBy: Scalars['String'];
+  name: Scalars['String'];
+  transactionHash: Scalars['String'];
+  type: Scalars['String'];
+  values: Array<Scalars['String']>;
 };
 
 export type MotionStakeValues = {
@@ -3398,6 +3419,13 @@ export const MotionDataFragmentDoc = gql`
   }
   skillRep
   repSubmitted
+  events {
+    name
+    values
+    createdAt
+    emmitedBy
+    transactionHash
+  }
 }
     ${MotionStakeValuesFragmentDoc}`;
 export const ColonyActionFragmentDoc = gql`
