@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BackButton, ObjectButton, StakeButton } from '.';
+import { BackButton, ObjectButton, StakeButton, ActivateButton } from '.';
 import useStakingControls from './useStakingControls';
 
 import styles from './StakingControls.css';
@@ -13,8 +13,12 @@ interface StakingControlsProps {
 }
 
 const StakingControls = ({ limitExceeded }: StakingControlsProps) => {
-  const { showBackButton, enoughTokensToStakeMinimum, isLoadingData } =
-    useStakingControls(limitExceeded);
+  const {
+    showBackButton,
+    showActivateButton,
+    enoughTokensToStakeMinimum,
+    isLoadingData,
+  } = useStakingControls(limitExceeded);
 
   return (
     <div className={styles.buttonGroup}>
@@ -29,9 +33,7 @@ const StakingControls = ({ limitExceeded }: StakingControlsProps) => {
           enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
         />
       )}
-      {/*
       {showActivateButton && <ActivateButton />}
-      */}
     </div>
   );
 };
