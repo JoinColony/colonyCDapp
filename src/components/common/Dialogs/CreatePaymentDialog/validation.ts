@@ -22,7 +22,10 @@ const MSG = defineMessages({
   },
 });
 
-const getValidationSchema = (colony: Colony) =>
+const getValidationSchema = (
+  colony: Colony,
+  networkInverseFee: string | undefined,
+) =>
   object()
     .shape({
       fromDomainId: number().required(),
@@ -39,7 +42,7 @@ const getValidationSchema = (colony: Colony) =>
         .test(
           'has-enough-balance',
           () => MSG.noBalance,
-          getHasEnoughBalanceTestFn(colony),
+          getHasEnoughBalanceTestFn(colony, networkInverseFee),
         ),
       tokenAddress: string().address().required(),
       annotation: string().max(4000).defined(),
