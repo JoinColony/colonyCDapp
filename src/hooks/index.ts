@@ -63,6 +63,8 @@ export { default as useObjectButton } from './useObjectButton';
 export { default as useTotalStakeRadios } from './useTotalStakeRadios';
 export { default as useStakingInput } from './useStakingInput';
 export { default as useStakingWidgetUpdate } from './useStakingWidgetUpdate';
+export { default as useClaimWidgetConfig } from './useClaimWidgetConfig';
+
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously
  */

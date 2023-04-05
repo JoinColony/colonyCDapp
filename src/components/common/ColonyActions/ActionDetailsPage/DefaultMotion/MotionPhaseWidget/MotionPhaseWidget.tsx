@@ -1,13 +1,27 @@
 import React from 'react';
 
-import { ColonyAction, ColonyActionType } from '~types';
+import { StakerRewards } from '~gql';
+import { useAppContext } from '~hooks';
+import { ColonyAction, ColonyActionType, Address } from '~types';
 import { MotionState } from '~utils/colonyMotions';
 
+import ClaimMotionStakes from './ClaimMotionStakes';
 import FinalizeMotion from './FinalizeMotion';
 import StakingWidget, { StakingWidgetProvider } from './StakingWidget';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.MotionPhaseWidget';
+
+const isMotionClaimed = (
+  stakerRewards: StakerRewards[],
+  walletAddress: Address,
+) => {
+  const userReward = stakerRewards.find(
+    ({ address }) => address === walletAddress,
+  );
+
+  return !!userReward?.isClaimed;
+};
 
 interface MotionPhaseWidgetProps {
   actionData: ColonyAction;
@@ -21,7 +35,9 @@ const MotionPhaseWidget = ({
   motionState,
   ...rest
 }: MotionPhaseWidgetProps) => {
+  const { user } = useAppContext();
   const { motionData, type, amount, fromDomain } = actionData;
+  const { stopPollingAction } = rest;
 
   if (!motionData) {
     /*
@@ -58,7 +74,16 @@ const MotionPhaseWidget = ({
         );
       }
 
-      return <div>claim!</div>;
+      const isClaimed = isMotionClaimed(
+        motionData.stakerRewards,
+        user?.walletAddress ?? '',
+      );
+
+      if (isClaimed) {
+        stopPollingAction();
+      }
+
+      return <ClaimMotionStakes motionData={motionData} {...rest} />;
     }
 
     /* Extend with other widgets as they get ported. */

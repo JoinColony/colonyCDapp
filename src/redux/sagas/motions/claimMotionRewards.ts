@@ -1,35 +1,30 @@
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, ExtensionClient } from '@colony/colony-js';
-import { $Values } from 'utility-types';
-import { BigNumber } from 'ethers';
-import { isEmpty } from 'lodash';
+import { all, call, put, takeEvery } from 'redux-saga/effects';
+import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
+import { ApolloQueryResult } from '@apollo/client';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { getContext, ContextModule } from '~context';
-import { TxConfig } from '~types';
+import { getContext, ContextModule, ColonyManager } from '~context';
+import { Address, ColonyAction } from '~types';
 import {
-  ClaimableStakedMotionsDocument,
-  ClaimableStakedMotionsQuery,
-  ClaimableStakedMotionsQueryVariables,
-  UserBalanceWithLockDocument,
-  UserBalanceWithLockQuery,
-  UserBalanceWithLockQueryVariables,
-} from '~data/generated';
+  GetColonyActionsDocument,
+  GetColonyActionsQuery,
+  GetColonyActionsQueryVariables,
+} from '~gql';
+import { notNull } from '~utils/arrays';
+import { getMotionDatabaseId } from '~utils/colonyMotions';
 
 import {
   ChannelDefinition,
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
 
-import {
-  updateMotionValues,
-  putError,
-  takeFrom,
-  getColonyManager,
-} from '../utils';
+import { getColonyManager, putError, takeFrom } from '../utils';
+
+export type ClaimAllMotionRewardsPayload =
+  Action<ActionTypes.MOTION_CLAIM>['payload'];
 
 function* claimMotionRewards({
   meta,
@@ -37,85 +32,54 @@ function* claimMotionRewards({
 }: Action<ActionTypes.MOTION_CLAIM>) {
   const txChannel = yield call(getTxChannel, meta.id);
   const apolloClient = getContext(ContextModule.ApolloClient);
-
   try {
-    const colonyManager = yield getColonyManager();
-    const votingReputationClient: ExtensionClient =
+    const colonyManager: ColonyManager = yield getColonyManager();
+    const { chainId } = yield colonyManager.provider.getNetwork();
+    const votingClient: AnyVotingReputationClient =
       yield colonyManager.getClient(
         ClientType.VotingReputationClient,
         colonyAddress,
       );
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
+
+    const {
+      data: { getActionsByColony },
+    }: ApolloQueryResult<GetColonyActionsQuery> = yield apolloClient.query<
+      GetColonyActionsQuery,
+      GetColonyActionsQueryVariables
+    >({
+      query: GetColonyActionsDocument,
+      variables: {
+        colonyAddress,
+        filter: { isMotion: { eq: true } },
+      },
+    });
+
+    const motions = getActionsByColony?.items.filter(notNull);
+
+    if (!motions) {
+      throw new Error('Could not retrieve motions from database');
+    }
+
+    const databaseMotionIds = motionIds.map((nativeMotionId) =>
+      getMotionDatabaseId(chainId, votingClient.address, nativeMotionId),
     );
 
-    /*
-     * We need to do the claim reward transaction, potentially for both sides,
-     * Once for yay and once of nay (if the user staked both sides)
-     *
-     * To do that we try to estimate both transactions, and the one that fails,
-     * we know there are no rewards to be claimed on that side
-     */
-    const motionWithYAYClaims: BigNumber[] = [];
-    const motionWithNAYClaims: BigNumber[] = [];
-
-    yield Promise.all(
-      motionIds.map(async (motionId) => {
-        try {
-          /*
-           * @NOTE For some reason colonyJS doesn't export types for the estimate methods
-           */
-          // @ts-ignore
-          await votingReputationClient.estimateGas.claimRewardWithProofs(
-            motionId,
-            userAddress,
-            1,
-          );
-          motionWithYAYClaims.push(motionId);
-        } catch (error) {
-          /*
-           * We don't want to handle the error here as we are doing this to
-           * inferr the user's reward
-           *
-           * This is a "cheaper" alternative to looking through events, since
-           * this doesn't use so many requests
-           */
-          // silent error
-        }
-        try {
-          /*
-           * @NOTE For some reason colonyJS doesn't export types for the estimate methods
-           */
-          // @ts-ignore
-          await votingReputationClient.estimateGas.claimRewardWithProofs(
-            motionId,
-            userAddress,
-            0,
-          );
-          motionWithNAYClaims.push(motionId);
-        } catch (error) {
-          /*
-           * We don't want to handle the error here as we are doing this to
-           * inferr the user's reward
-           *
-           * This is a "cheaper" alternative to looking through events, since
-           * this doesn't use so many requests
-           */
-          // silent error
-        }
-      }),
+    const [motionsWithYayClaim, motionsWithNayClaim] = getMotionsWithClaims(
+      motions,
+      databaseMotionIds,
+      userAddress,
     );
 
-    const allMotionClaims = motionWithYAYClaims.concat(motionWithNAYClaims);
+    const allMotionClaimsCount =
+      motionsWithYayClaim.length + motionsWithNayClaim.length;
 
-    if (isEmpty(allMotionClaims)) {
+    if (!allMotionClaimsCount) {
       throw new Error('A motion with claims needs to be provided');
     }
 
     const channelNames: string[] = [];
 
-    for (let index = 0; index < allMotionClaims.length; index += 1) {
+    for (let index = 0; index < allMotionClaimsCount; index += 1) {
       channelNames.push(String(index));
     }
 
@@ -125,29 +89,16 @@ function* claimMotionRewards({
       channelNames,
     );
 
-    const createGroupTransaction = (
-      { id, index }: $Values<typeof channels>,
-      config: TxConfig,
-    ) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: 'claimMotionRewards',
-          id: meta.id,
-          index,
-        },
-      });
-
     yield all(
       Object.keys(channels).map((id) =>
-        createGroupTransaction(channels[id], {
+        createGroupTransaction(channels[id], 'claimMotionRewards', meta, {
           context: ClientType.VotingReputationClient,
           methodName: 'claimRewardWithProofs',
           identifier: colonyAddress,
           params: [
-            allMotionClaims[id],
+            motionIds[id],
             userAddress,
-            parseInt(id, 10) > motionWithYAYClaims.length - 1 ? 0 : 1,
+            parseInt(id, 10) > motionsWithYayClaim.length - 1 ? 0 : 1,
           ],
         }),
       ),
@@ -165,38 +116,6 @@ function* claimMotionRewards({
       ),
     );
 
-    yield all(
-      [...new Set([...motionWithYAYClaims, ...motionWithNAYClaims])].map(
-        (motionId) =>
-          fork(updateMotionValues, colonyAddress, userAddress, motionId),
-      ),
-    );
-
-    yield apolloClient.query<
-      ClaimableStakedMotionsQuery,
-      ClaimableStakedMotionsQueryVariables
-    >({
-      query: ClaimableStakedMotionsDocument,
-      variables: {
-        colonyAddress: colonyAddress.toLowerCase(),
-        walletAddress: userAddress.toLowerCase(),
-      },
-      fetchPolicy: 'network-only',
-    });
-
-    yield apolloClient.query<
-      UserBalanceWithLockQuery,
-      UserBalanceWithLockQueryVariables
-    >({
-      query: UserBalanceWithLockDocument,
-      variables: {
-        colonyAddress: colonyAddress.toLowerCase(),
-        address: userAddress.toLowerCase(),
-        tokenAddress: colonyClient.tokenClient.address.toLowerCase(),
-      },
-      fetchPolicy: 'network-only',
-    });
-
     yield put<AllActions>({
       type: ActionTypes.MOTION_CLAIM_SUCCESS,
       meta,
@@ -209,6 +128,59 @@ function* claimMotionRewards({
   return null;
 }
 
-export default function* claimMotionRewardsSaga() {
+export default function* claimAllMotionRewardsSaga() {
   yield takeEvery(ActionTypes.MOTION_CLAIM, claimMotionRewards);
+}
+
+/**
+ * Client-side filtering the motions in the db for those
+ * with outstanding claims by the given user
+ */
+
+function getMotionsWithClaims(
+  motions: ColonyAction[],
+  databaseMotionIds: string[],
+  userAddress: Address,
+) {
+  const motionsWithYayClaims: string[] = [];
+  const motionsWithNayClaims: string[] = [];
+
+  motions
+    /* Filter motions by those ids provided to saga */
+    .filter(({ motionData }) =>
+      motionData
+        ? databaseMotionIds.some(
+            (databaseId) => databaseId === motionData.databaseMotionId,
+          )
+        : false,
+    )
+    .forEach(({ motionData }) => {
+      if (motionData) {
+        const { motionId } = motionData;
+        const currentUserRewards = motionData.stakerRewards.find(
+          ({ address }) => address === userAddress,
+        );
+
+        if (currentUserRewards) {
+          const {
+            rewards: { nay, yay },
+            isClaimed,
+          } = currentUserRewards;
+
+          if (isClaimed) {
+            return;
+          }
+
+          if (nay !== '0') {
+            motionsWithNayClaims.push(motionId);
+          }
+
+          if (yay !== '0') {
+            motionsWithYayClaims.push(motionId);
+          }
+        }
+      }
+    });
+
+  return [motionsWithYayClaims, motionsWithNayClaims];
 }

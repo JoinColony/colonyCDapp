@@ -457,21 +457,22 @@ type UserStakes {
 type StakerRewards {
   address: String!
   rewards: MotionStakeValues!
+  isClaimed: Boolean!
 }
 
 type MotionData {
-  motionId: String!
+  motionId: String! # to ensure uniqueness, we format as: chainId-votingRepExtnAddress_nativeMotionId
+  nativeMotionId: String!
   usersStakes: [UserStakes!]!
   stakerRewards: [StakerRewards!]!
   motionStakes: MotionStakes!
   remainingStakes: [String!]! # tuple [nayRemaining, yayRemaining]
   userMinStake: String!
   requiredStake: String!
-  # For calculating user's max stake in client
-  rootHash: String!
-  # native domain id
-  motionDomainId: String!
+  rootHash: String! # For calculating user's max stake in client
+  motionDomainId: String! # native domain id
   isFinalized: Boolean!
+  createdBy: String! # voting rep extn address. Useful to check if we're viewing a "read-only" motion
 }
 
 # This will store the relevant events we care about for a particular colony

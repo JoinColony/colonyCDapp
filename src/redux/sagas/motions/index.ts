@@ -4,7 +4,7 @@ import stakeMotionSaga from './stakeMotion';
 // import voteMotionSaga from './voteMotion';
 // import revealVoteMotionSaga from './revealVoteMotion';
 import finalizeMotionSaga from './finalizeMotion';
-// import claimMotionRewardsSaga from './claimMotionRewards';
+import claimMotionRewardsSaga from './claimMotionRewards';
 import rootMotionSaga from './rootMotion';
 // import createEditDomainMotionSaga from './createEditDomainMotion';
 // import moveFundsMotionSaga from './moveFundsMotion';
@@ -21,7 +21,7 @@ export default function* actionsSagas() {
     // call(voteMotionSaga),
     // call(revealVoteMotionSaga),
     call(finalizeMotionSaga),
-    // call(claimMotionRewardsSaga),
+    call(claimMotionRewardsSaga),
     call(rootMotionSaga),
     // call(createEditDomainMotionSaga),
     // call(moveFundsMotionSaga),
