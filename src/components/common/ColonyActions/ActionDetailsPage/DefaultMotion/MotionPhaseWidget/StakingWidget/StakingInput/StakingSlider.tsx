@@ -22,8 +22,9 @@ const StakingSlider = ({ isObjection }: StakingSliderProps) => {
     userMinStake,
     nativeTokenDecimals,
     nativeTokenSymbol,
-    isLoadingData,
     enoughTokensToStakeMinimum,
+    isLoadingData,
+    userActivatedTokens,
   } = useStakingSlider(isObjection);
 
   const displayLabel = !isLoadingData && remainingToStake !== '0';
@@ -52,7 +53,8 @@ const StakingSlider = ({ isObjection }: StakingSliderProps) => {
       {!isLoadingData && (
         <StakingValidationMessage
           enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
-          tokensLeftToActivate={tokensLeftToActivate}
+          userActivatedTokens={userActivatedTokens}
+          userMinStake={userMinStake}
         />
       )}
     </>

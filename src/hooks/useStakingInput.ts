@@ -32,7 +32,11 @@ const useStakingInput = () => {
     startPollingAction,
   );
 
-  return { transform, handleSuccess, isObjection };
+  return {
+    transform,
+    handleSuccess,
+    isObjection,
+  };
 };
 
 export default useStakingInput;

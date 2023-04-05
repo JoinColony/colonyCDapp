@@ -20,6 +20,7 @@ export type StakingWidgetValues = InferType<typeof validationSchema>;
 
 const StakingInput = () => {
   const { transform, handleSuccess, isObjection } = useStakingInput();
+
   return (
     <ActionForm<StakingWidgetValues>
       defaultValues={{
