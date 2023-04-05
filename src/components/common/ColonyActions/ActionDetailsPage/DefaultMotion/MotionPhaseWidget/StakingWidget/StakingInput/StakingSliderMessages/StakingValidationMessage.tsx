@@ -6,6 +6,7 @@ import TokenErrorMessage from './TokenErrorMessage';
 import NotEnoughReputationMessage from './NotEnoughReputationMessage';
 
 import styles from './StakingValidationMessage.css';
+import { userCantStakeMore, userHasInsufficientReputation } from './helpers';
 
 const displayName =
   'common.ColonyActions.DefaultMotion.StakingWidget.StakingValidationMessage';
@@ -45,7 +46,7 @@ interface StakingValidationMessageProps {
   nativeTokenDecimals: number;
   userMinStake: string;
   userMaxStake: BigNumber;
-  enoughReputation: boolean;
+  enoughReputationToStakeMinimum: boolean;
   remainingToStake: string;
 }
 
@@ -53,7 +54,7 @@ const StakingValidationMessage = ({
   enoughTokensToStakeMinimum,
   userActivatedTokens,
   limitExceeded,
-  enoughReputation,
+  enoughReputationToStakeMinimum,
   nativeTokenDecimals,
   userMinStake,
   userMaxStake,
@@ -63,7 +64,7 @@ const StakingValidationMessage = ({
     .sub(userActivatedTokens)
     .toString();
 
-  if (!enoughReputation) {
+  if (!enoughReputationToStakeMinimum) {
     return (
       <NotEnoughReputationMessage
         userMaxStake={userMaxStake}
@@ -79,20 +80,13 @@ const StakingValidationMessage = ({
 
   let errorType: StakingValidationErrors | undefined;
 
-  /*
-   * User's reputation in the domain is less than the amount still needed to stake, i.e. their
-   * staking ability is limited, not by their number of tokens activated, but by their (lack of) reputation.
-   */
-  const userNeedsMoreReputation =
-    userActivatedTokens.gt(userMaxStake) && userMaxStake.lt(remainingToStake);
+  const userNeedsMoreReputation = userHasInsufficientReputation(
+    userActivatedTokens,
+    userMaxStake,
+    remainingToStake,
+  );
 
-  /*
-   * Occurs when the remaining amount to be staked is less than the user's minimum stake. (i.e. can't
-   * stake more than 100% of a motion)
-   */
-  const cantStakeMore =
-    BigNumber.from(remainingToStake).lte(userMinStake) &&
-    remainingToStake !== '0';
+  const cantStakeMore = userCantStakeMore(userMinStake, remainingToStake);
 
   if (cantStakeMore) {
     errorType = StakingValidationErrors.CANT_STAKE_MORE;

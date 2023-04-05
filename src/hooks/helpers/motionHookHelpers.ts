@@ -62,6 +62,7 @@ export const calculateStakeLimitDecimal = (
   userTotalStake: string,
   userActivatedTokens: BigNumber,
 ) => {
+  // corresponds to cantStakeMore error
   if (BigNumber.from(remainingToStake).lt(userMinStake)) {
     return new Decimal(0);
   }
@@ -71,6 +72,11 @@ export const calculateStakeLimitDecimal = (
 
   let adjustedStakingLimit = stakingLimit.sub(userMinStake);
 
+  /*
+   * Corresponds to moreRepNeeded error. If a user's ability to stake is limited
+   * by their reputation, then every time they stake, the limit should decrease to reflect
+   * the fact their total stake is getting closer to their max stake.
+   */
   if (
     userHasInsufficientReputation(
       userActivatedTokens,
