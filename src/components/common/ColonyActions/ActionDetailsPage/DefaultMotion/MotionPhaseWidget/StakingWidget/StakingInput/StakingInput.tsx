@@ -5,7 +5,7 @@ import { ActionHookForm as ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 import { useStakingInput } from '~hooks';
 
-import { StakingControls, StakingSlider, StakingValidationMessage } from '.';
+import { StakingControls, StakingSlider } from '.';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget';
