@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStakingSlider } from '~hooks';
+import { useAppContext, useStakingSlider } from '~hooks';
 
 import {
   StakingSliderDescription,
@@ -16,6 +16,7 @@ interface StakingSliderProps {
 }
 
 const StakingSlider = ({ isObjection }: StakingSliderProps) => {
+  const { user } = useAppContext();
   const {
     remainingToStake,
     totalPercentageStaked,
@@ -27,7 +28,7 @@ const StakingSlider = ({ isObjection }: StakingSliderProps) => {
     userActivatedTokens,
   } = useStakingSlider(isObjection);
 
-  const displayLabel = !isLoadingData && remainingToStake !== '0';
+  const displayLabel = !!user && !isLoadingData && remainingToStake !== '0';
 
   return (
     <>
@@ -50,7 +51,7 @@ const StakingSlider = ({ isObjection }: StakingSliderProps) => {
         remainingToStake={remainingToStake}
         enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
       />
-      {!isLoadingData && (
+      {displayLabel && (
         <StakingValidationMessage
           enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
           userActivatedTokens={userActivatedTokens}

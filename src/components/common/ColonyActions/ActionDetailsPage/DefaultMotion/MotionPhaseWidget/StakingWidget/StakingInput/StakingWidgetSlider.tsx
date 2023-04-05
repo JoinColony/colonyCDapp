@@ -1,9 +1,9 @@
 import Decimal from 'decimal.js';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useAppContext } from '~hooks';
 
 import { useAppContext } from '~hooks';
+
 import Slider from '~shared/Slider';
 import { SLIDER_AMOUNT_KEY } from './StakingInput';
 
