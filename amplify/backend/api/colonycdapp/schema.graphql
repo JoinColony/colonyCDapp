@@ -548,6 +548,14 @@ input MotionDataInput {
   skillRep: String!
 }
 
+type MotionEvent {
+  name: String!
+  # values: [String!]!
+  # createdAt: AWSDateTime!
+  # emmitedBy: String!
+  # transactionHash: String!
+}
+
 type MotionData {
   motionId: String! # to ensure uniqueness, we format as: chainId-votingRepExtnAddress_nativeMotionId
   nativeMotionId: String!
@@ -565,6 +573,7 @@ type MotionData {
   revealedVotes: MotionStakes! ## I.e. MotionVotes (same type)
   repSubmitted: String!
   skillRep: String!
+  events: [MotionEvent!]!
 }
 
 # This will store the relevant events we care about for a particular colony

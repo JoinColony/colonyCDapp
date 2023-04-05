@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ColonyAction } from '~types';
-import { ACTIONS_EVENTS } from '../staticMaps';
+import { ColonyAction, ColonyAndExtensionsEvents } from '~types';
+// import { ACTIONS_EVENTS } from '../staticMaps';
 
 import ActionsPageEvent from './ActionDetailsPageEvent';
 
@@ -10,21 +10,17 @@ const displayName =
 
 interface ActionsPageFeedProps {
   actionData: ColonyAction;
-  // networkEvents: FormattedEvent[];
 }
 
-const ActionDetailsPageFeed = ({
-  actionData,
-}: // networkEvents,
-ActionsPageFeedProps) => {
-  const events = ACTIONS_EVENTS[actionData.type];
+const ActionDetailsPageFeed = ({ actionData }: ActionsPageFeedProps) => {
+  const events = actionData.motionData?.events;
   return (
     <>
       {events?.map((event) => (
         <ActionsPageEvent
           actionData={actionData}
-          eventName={event}
-          key={event}
+          eventName={ColonyAndExtensionsEvents[event.name]}
+          key={event.transactionHash}
         />
       ))}
     </>
