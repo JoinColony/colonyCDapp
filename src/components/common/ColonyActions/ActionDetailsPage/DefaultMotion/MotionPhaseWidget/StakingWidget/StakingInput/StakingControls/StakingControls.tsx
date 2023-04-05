@@ -1,7 +1,12 @@
 import React from 'react';
 
-import { BackButton, ObjectButton, StakeButton, ActivateButton } from '.';
-import useStakingControls from './useStakingControls';
+import {
+  BackButton,
+  ObjectButton,
+  StakeButton,
+  ActivateButton,
+  useStakingControls,
+} from '.';
 
 import styles from './StakingControls.css';
 
