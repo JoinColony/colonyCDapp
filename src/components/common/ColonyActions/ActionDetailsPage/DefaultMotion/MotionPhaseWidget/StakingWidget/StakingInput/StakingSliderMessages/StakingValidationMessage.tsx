@@ -15,6 +15,13 @@ const MSG = defineMessages({
   },
 });
 
+const MSG = defineMessages({
+  limitExceeded: {
+    id: `${displayName}.limitExceeded`,
+    defaultMessage: `Oops! You don't have enough active tokens. To stake more than this, please activate more tokens.`,
+  },
+});
+
 interface StakingValidationMessageProps {
   enoughTokensToStakeMinimum: boolean;
   userActivatedTokens: BigNumber;
