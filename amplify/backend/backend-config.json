@@ -43,6 +43,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getMembersForColony": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getReputationForTopDomains": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -53,12 +58,12 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "setCurrentNetworkInverseFee": {
+    "getUserTokenBalance": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "getUserTokenBalance": {
+    "setCurrentNetworkInverseFee": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -69,11 +74,6 @@
       "service": "Lambda"
     },
     "updateExtensionByColonyAndHash": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "getMembersForColony": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
