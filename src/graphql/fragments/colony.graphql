@@ -14,6 +14,7 @@ fragment Colony on Colony {
   }
   chainMetadata {
     chainId
+    network
   }
   tokens {
     ...ColonyTokensConnection
@@ -84,6 +85,7 @@ fragment WatchedColony on Colony {
   name
   chainMetadata {
     chainId
+    network
   }
   metadata {
     ...ColonyMetadata
@@ -110,6 +112,12 @@ fragment ColonyMetadata on ColonyMetadata {
     hasAvatarChanged
     hasWhitelistChanged
     haveTokensChanged
+  }
+}
+
+fragment ColonyBalances on ColonyBalances {
+  items {
+    ...ColonyBalance
   }
 }
 

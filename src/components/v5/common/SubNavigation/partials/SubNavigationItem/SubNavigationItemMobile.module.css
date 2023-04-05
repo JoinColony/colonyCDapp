@@ -1,0 +1,15 @@
+.tooltipContainer {
+  @apply bg-base-white p-[0.625rem] shadow-default border border-gray-200 rounded-lg;
+}
+
+.button {
+  @apply flex justify-between items-center text-gray-700 py-3 w-full sm:w-auto sm:hover:text-blue-400 font-semibold text-lg sm:text-md;
+}
+
+.activeButton {
+  @apply text-blue-400;
+}
+
+.dropdownContent {
+  @apply border border-gray-200 rounded-md bg-base-white mb-3 sm:mb-0;
+}

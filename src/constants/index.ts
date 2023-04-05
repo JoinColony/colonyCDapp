@@ -157,8 +157,14 @@ export const isDev = process.env.NETWORK === 'ganache';
 
 export const CDAPP_VERSION = version;
 
+export const MAX_INSTALLED_NUMBER = 39;
+
 export const STAKING_THRESHOLD = 10;
 
 export const MAX_COLONY_DISPLAY_NAME = 20;
 
 export const MAX_ANNOTATION_LENGTH = 4000;
+export const HOMEPAGE_MEMBERS_LIST_LIMIT = 8;
+export const HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT = 5;
+export const MEMBERS_LIST_LIMIT = 12;
+export const MEMBERS_MOBILE_LIST_LIMIT = 6;

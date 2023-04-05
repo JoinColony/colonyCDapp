@@ -1,0 +1,11 @@
+.mobileButtons {
+  @apply w-full pb-6 mb-6 border-b border-b-gray-200 flex md:hidden items-center gap-1 md:pb-5 md:mb-5;
+}
+
+.userMenuPopup {
+  @apply w-full px-6 pt-4 pb-6 rounded-lg flex border-gray-200 justify-start z-[9999] overflow-hidden bg-base-white;
+}
+
+.buttonBack {
+  @apply flex w-full items-center text-gray-400 transition-all duration-normal hover:text-blue-400;
+}

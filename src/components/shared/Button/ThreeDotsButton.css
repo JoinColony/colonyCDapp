@@ -9,11 +9,13 @@
   cursor: pointer;
 }
 
-.menuActive, .main:hover {
+.menuActive,
+.main:hover {
   border-color: var(--colony-blue);
 }
 
-.menuActive .icon, .main:hover .icon {
+.menuActive .icon,
+.main:hover .icon {
   fill: var(--colony-blue);
 }
 

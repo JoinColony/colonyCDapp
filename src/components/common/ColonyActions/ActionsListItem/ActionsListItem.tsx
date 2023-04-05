@@ -100,6 +100,10 @@ const ActionsListItem = ({
 
   const domainName = getDomainName(fromDomain, motionData?.motionDomain);
 
+  if (!colony) {
+    return null;
+  }
+
   return (
     <ListItem
       avatar={

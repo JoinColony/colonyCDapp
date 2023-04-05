@@ -4,7 +4,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import { ApolloProvider } from '@apollo/client';
 
-import layout from '~styles/layout.css';
 import '~utils/yup/customMethods'; // ensures custom yup methods are available when components load
 import { DialogProvider } from '~shared/Dialog';
 import { AppContextProvider, getContext, ContextModule } from '~context';
@@ -48,7 +47,7 @@ const Entry = ({ store }: Props) => {
             <Router>
               <DialogProvider>
                 <TokenActivationProvider>
-                  <div className={layout.stretch}>
+                  <div className="h-full w-full bg-base-white">
                     <Routes />
                   </div>
                 </TokenActivationProvider>

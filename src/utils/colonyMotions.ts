@@ -179,3 +179,29 @@ export const useShouldDisplayMotionCountdownTime = (
     motionState !== MotionState.Invalid
   );
 };
+
+export interface MotionValue {
+  motionId: number;
+}
+
+// export const getUpdatedDecodedMotionRoles = (
+//   recipient: User,
+//   fromDomain: number,
+//   currentRoles: ColonyRolesArgs = [],
+//   setRoles: ActionUserRoles[],
+// ) => {
+//   const currentUserRoles = getRolesForUserAndDomain(
+//     currentRoles,
+//     recipient.walletAddress,
+//     fromDomain,
+//   );
+//   const updatedRoles = setRoles.filter((role) => {
+//     const foundCurrentRole = currentUserRoles.find((currentRole) => currentRole === role.id);
+//     if (!isNil(foundCurrentRole)) {
+//       return !role.setTo;
+//     }
+//     return role.setTo;
+//   });
+
+//   return updatedRoles;
+// };

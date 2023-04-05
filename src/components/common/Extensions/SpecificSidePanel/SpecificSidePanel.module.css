@@ -1,0 +1,11 @@
+.panelRow {
+  @apply flex items-start min-h-[1.25rem] gap-x-4;
+}
+
+.panelTitle {
+  @apply font-normal text-sm text-gray-600 w-[calc(50%-1rem)] shrink-0;
+}
+
+.panelData {
+  @apply font-normal text-md justify-start;
+}

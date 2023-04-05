@@ -1,0 +1,7 @@
+.tooltipContainer {
+  @apply bg-base-white p-6 shadow-default border border-gray-200 rounded-lg;
+}
+
+.mobileButtons {
+  @apply w-full px-6 pb-6 mb-6 border-b border-b-gray-200 flex items-center gap-1 md:pb-5;
+}

@@ -5,15 +5,12 @@ import {
   Navigate,
   Outlet,
 } from 'react-router-dom';
-import { defineMessages } from 'react-intl';
 
 import CreateUserWizard from '~common/CreateUserWizard';
 import ColonyHome from '~common/ColonyHome';
 import ColonyFunding from '~common/ColonyFunding';
-import ColonyMembers from '~common/ColonyMembers';
 import FourOFour from '~frame/FourOFour';
 import UserProfile from '~common/UserProfile';
-import UserProfileEdit from '~common/UserProfileEdit';
 import {
   // NavBar, Plain, SimpleNav,
   Default,
@@ -27,7 +24,7 @@ import LandingPage from '~frame/LandingPage';
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
 // import appLoadingContext from '~context/appLoadingState';
-import { useAppContext, useMobile } from '~hooks';
+import { useAppContext } from '~hooks';
 
 import {
   COLONY_FUNDING_ROUTE,
@@ -41,6 +38,22 @@ import {
   LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
   ACTIONS_PAGE_ROUTE,
+  COLONY_EXTENSIONS_ROUTE,
+  COLONY_EXTENSION_DETAILS_ROUTE,
+  COLONY_REPUTATION_ROUTE,
+  COLONY_DETAILS_ROUTE,
+  COLONY_PERMISSIONS_ROUTE,
+  COLONY_INTEGRATIONS_ROUTE,
+  COLONY_INCORPORATION_ROUTE,
+  COLONY_ADVANCED_ROUTE,
+  COLONY_EXTENSION_DETAILS_SETUP_ROUTE,
+  COLONY_CONTRIBUTORS_ROUTE,
+  COLONY_FOLLOWERS_ROUTE,
+  COLONY_VERIFIED_ROUTE,
+  COLONY_TEAMS_ROUTE,
+  USER_PREFERENCES_ROUTE,
+  USER_ADVANCED_ROUTE,
+  COLONY_ADMIN_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -49,25 +62,34 @@ import NotFoundRoute from './NotFoundRoute';
 import { ColonyContextProvider } from '~context/ColonyContext';
 import CreateColonyWizard from '~common/CreateColonyWizard';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
+import PageLayout from '~frame/Extensions/layouts/PageLayout';
+import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage';
+import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage';
+import ReputationPage from '~frame/Extensions/pages/ReputationPage';
+import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage';
+import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage';
+import IncorporationPage from '~frame/Extensions/pages/IncorporationPage';
+import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
+import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
+import LazyConsensusPage from '~frame/Extensions/pages/LazyConsensusPage';
+import { ExtensionsContextProvider } from '~context/ExtensionsContext';
+import MembersPage from '~frame/v5/pages/MembersPage';
+import ColonyUsersPage from '~frame/v5/pages/ColonyUsersPage';
+import VerifiedPage from '~frame/v5/pages/VerifiedPage';
+import TeamsPage from '~frame/v5/pages/TeamsPage';
+import { SearchContextProvider } from '~context/SearchContext';
+import { ColonyUsersPageType } from '~frame/v5/pages/ColonyUsersPage/types';
+import { MemberContextProvider } from '~context/MemberContext';
+import UserProfilePage from '~frame/v5/pages/UserProfilePage';
+import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
+import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
 
 // import useTitle from '~hooks/useTitle';
 
 const displayName = 'routes.Routes';
 
-const MSG = defineMessages({
-  userProfileEditBack: {
-    id: `${displayName}.userProfileEditBack`,
-    defaultMessage: 'Go to profile',
-  },
-  // loadingAppMessage: {
-  //   id: 'routes.Routes.loadingAppMessage',
-  //   defaultMessage: 'Loading App',
-  // },
-});
-
 const Routes = () => {
   const { user, wallet } = useAppContext();
-  const isMobile = useMobile();
   // const isAppLoading = appLoadingContext.getIsLoading();
 
   // disabling rules to silence eslint warnings
@@ -126,12 +148,99 @@ const Routes = () => {
           }
         >
           <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
-          {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
-            (path) => (
-              <Route key={path} path={path} element={<ColonyMembers />} />
-            ),
-          )}
         </Route>
+        {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
+          (path) => (
+            <Route
+              key={path}
+              path={path}
+              element={
+                <ColonyContextProvider>
+                  <ExtensionsContextProvider>
+                    <SearchContextProvider>
+                      <MemberContextProvider>
+                        <PageLayout
+                          loadingText="members"
+                          title={{ id: 'membersPage.title' }}
+                          description={{ id: 'membersPage.description' }}
+                          pageName="members"
+                        >
+                          <MembersPage />
+                        </PageLayout>
+                      </MemberContextProvider>
+                    </SearchContextProvider>
+                  </ExtensionsContextProvider>
+                </ColonyContextProvider>
+              }
+            />
+          ),
+        )}
+        {[COLONY_CONTRIBUTORS_ROUTE, COLONY_FOLLOWERS_ROUTE].map((path) => {
+          const pageName = path.split('/')[2] as ColonyUsersPageType;
+
+          return (
+            <Route
+              key={path}
+              path={path}
+              element={
+                <ColonyContextProvider>
+                  <ExtensionsContextProvider>
+                    <SearchContextProvider>
+                      <MemberContextProvider>
+                        <PageLayout
+                          loadingText={pageName}
+                          title={{ id: `${pageName}Page.title` }}
+                          description={{ id: `${pageName}Page.description` }}
+                          pageName="members"
+                        >
+                          <ColonyUsersPage pageName={pageName} />
+                        </PageLayout>
+                      </MemberContextProvider>
+                    </SearchContextProvider>
+                  </ExtensionsContextProvider>
+                </ColonyContextProvider>
+              }
+            />
+          );
+        })}
+        <Route
+          path={COLONY_VERIFIED_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsContextProvider>
+                <SearchContextProvider>
+                  <MemberContextProvider>
+                    <PageLayout
+                      loadingText="verified"
+                      title={{ id: 'verifiedPage.title' }}
+                      description={{ id: 'verifiedPage.description' }}
+                      pageName="members"
+                    >
+                      <VerifiedPage />
+                    </PageLayout>
+                  </MemberContextProvider>
+                </SearchContextProvider>
+              </ExtensionsContextProvider>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_TEAMS_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsContextProvider>
+                <PageLayout
+                  loadingText="teams"
+                  title={{ id: 'teamsPage.title' }}
+                  description={{ id: 'teamsPage.description' }}
+                  pageName="members"
+                >
+                  <TeamsPage />
+                </PageLayout>
+              </ExtensionsContextProvider>
+            </ColonyContextProvider>
+          }
+        />
         <Route
           path={COLONY_HOME_ROUTE}
           element={
@@ -139,6 +248,40 @@ const Routes = () => {
               <Default routeProps={{ hasBackLink: false }}>
                 <ColonyHome />
               </Default>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_EXTENSION_DETAILS_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsContextProvider>
+                <PageLayout
+                  loadingText={{ id: 'loading.extensionsPage' }}
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
+                >
+                  <ExtensionDetailsPage />
+                </PageLayout>
+              </ExtensionsContextProvider>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_EXTENSION_DETAILS_SETUP_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsContextProvider>
+                <PageLayout
+                  loadingText={{ id: 'loading.extensionsPage' }}
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
+                >
+                  <LazyConsensusPage />
+                </PageLayout>
+              </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
         />
@@ -154,6 +297,128 @@ const Routes = () => {
         />
         <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
         <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
+        {[COLONY_ADMIN_ROUTE, COLONY_DETAILS_ROUTE].map((path) => (
+          <Route
+            path={path}
+            key={path}
+            element={
+              <ColonyContextProvider>
+                <ExtensionsContextProvider>
+                  <PageLayout
+                    loadingText={{ id: 'loading.extensionsPage' }}
+                    title={{ id: 'colonyDetailsPage.title' }}
+                    description={{ id: 'colonyDetailsPage.description' }}
+                    pageName="extensions"
+                  >
+                    <ColonyDetailsPage />
+                  </PageLayout>
+                </ExtensionsContextProvider>
+              </ColonyContextProvider>
+            }
+          />
+        ))}
+        <Route
+          path={COLONY_REPUTATION_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsContextProvider>
+                <PageLayout
+                  loadingText={{ id: 'loading.extensionsPage' }}
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
+                >
+                  <ReputationPage />
+                </PageLayout>
+              </ExtensionsContextProvider>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_PERMISSIONS_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsContextProvider>
+                <PageLayout
+                  loadingText={{ id: 'loading.extensionsPage' }}
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
+                >
+                  <PermissionsPage />
+                </PageLayout>
+              </ExtensionsContextProvider>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_EXTENSIONS_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsContextProvider>
+                <PageLayout
+                  loadingText={{ id: 'loading.extensionsPage' }}
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
+                >
+                  <ExtensionsPage />
+                </PageLayout>
+              </ExtensionsContextProvider>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_INTEGRATIONS_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsContextProvider>
+                <PageLayout
+                  loadingText={{ id: 'loading.extensionsPage' }}
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
+                >
+                  <IntegrationsPage />
+                </PageLayout>
+              </ExtensionsContextProvider>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_INCORPORATION_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <PageLayout
+                loadingText={{ id: 'loading.extensionsPage' }}
+                title={{ id: 'extensionsPage.title' }}
+                description={{ id: 'extensionsPage.description' }}
+                pageName="extensions"
+              >
+                <ExtensionsContextProvider>
+                  <IncorporationPage />
+                </ExtensionsContextProvider>
+              </PageLayout>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_ADVANCED_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsContextProvider>
+                <PageLayout
+                  loadingText={{ id: 'loading.extensionsPage' }}
+                  title={{ id: 'extensionsPage.title' }}
+                  description={{ id: 'extensionsPage.description' }}
+                  pageName="extensions"
+                >
+                  <AdvancedPage />
+                </PageLayout>
+              </ExtensionsContextProvider>
+            </ColonyContextProvider>
+          }
+        />
         <Route
           path={USER_ROUTE}
           element={
@@ -165,16 +430,43 @@ const Routes = () => {
         <Route
           path={USER_EDIT_ROUTE}
           element={
-            <Default
-              routeProps={{
-                hasBackLink: true,
-                hasSubscribedColonies: isMobile,
-                backText: MSG.userProfileEditBack,
-                backRoute: `/user/${user?.name}`,
-              }}
+            <PageLayout
+              loadingText={{ id: 'loading.userProfilePage' }}
+              title={{ id: 'userProfilePage.title' }}
+              description={{ id: 'userProfilePage.description' }}
+              pageName="profile"
+              hideColonies
             >
-              <UserProfileEdit />
-            </Default>
+              <UserProfilePage />
+            </PageLayout>
+          }
+        />
+        <Route
+          path={USER_PREFERENCES_ROUTE}
+          element={
+            <PageLayout
+              loadingText={{ id: 'loading.userPreferencesPage' }}
+              title={{ id: 'userPreferencesPage.title' }}
+              description={{ id: 'userPreferencesPage.description' }}
+              pageName="profile"
+              hideColonies
+            >
+              <UserPreferencesPage />
+            </PageLayout>
+          }
+        />
+        <Route
+          path={USER_ADVANCED_ROUTE}
+          element={
+            <PageLayout
+              loadingText={{ id: 'loading.userAdvancedPage' }}
+              title={{ id: 'userAdvancedPage.title' }}
+              description={{ id: 'userAdvancedPage.description' }}
+              pageName="profile"
+              hideColonies
+            >
+              <UserAdvancedPage />
+            </PageLayout>
           }
         />
         {/* <WalletRequiredRoute
@@ -245,7 +537,7 @@ const Routes = () => {
         <Route path="*" element={<NotFoundRoute />} />
       </RoutesSwitch>
     ),
-    [user, isMobile],
+    [],
   );
 
   // if (isAppLoading) {

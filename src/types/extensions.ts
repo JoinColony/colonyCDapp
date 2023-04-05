@@ -2,6 +2,7 @@ import { ColonyRole, Extension } from '@colony/colony-js';
 import { CleaveOptions } from 'cleave.js/options';
 import { MessageDescriptor } from 'react-intl';
 import { Schema } from 'yup';
+import { ExtensionCategory } from '~constants';
 
 import { ColonyExtension } from '~types';
 
@@ -30,6 +31,7 @@ export interface ExtensionInitParam {
 
 export interface ExtensionConfig {
   extensionId: Extension;
+  category: ExtensionCategory;
   name: MessageDescriptor;
   descriptionShort: MessageDescriptor;
   descriptionLong: MessageDescriptor;
@@ -37,16 +39,30 @@ export interface ExtensionConfig {
   initializationParams?: ExtensionInitParam[];
   uninstallable: boolean;
   createdAt: number;
+  icon: string;
+  permissions: {
+    title: string;
+    permissions: {
+      key: string;
+      text: MessageDescriptor;
+      description: MessageDescriptor;
+      name: string;
+    }[];
+  };
 }
 
 export type InstalledExtensionData = ExtensionConfig &
   ColonyExtension & {
     availableVersion: number;
     isEnabled: boolean;
+    address: string;
   };
 
 export type InstallableExtensionData = ExtensionConfig & {
   availableVersion: number;
+  isEnabled?: boolean;
+  isInitialized?: boolean;
+  isDeprecated?: boolean;
 };
 
 export type AnyExtensionData =

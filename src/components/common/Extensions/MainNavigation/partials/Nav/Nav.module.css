@@ -1,0 +1,7 @@
+.navLink {
+  @apply flex items-center min-h-[2rem] px-3 font-semibold text-gray-700 transition-all duration-normal py-1.5 text-md hover:text-gray-900 hover:bg-base-bg hover:rounded-lg;
+}
+
+.subMenu {
+  @apply absolute top-full left-0 opacity-0 overflow-hidden max-h-0 pointer-events-none transition-all duration-normal;
+}

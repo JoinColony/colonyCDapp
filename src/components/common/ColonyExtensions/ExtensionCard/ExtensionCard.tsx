@@ -33,7 +33,7 @@ const ExtensionCard = ({ extensionData }: Props) => {
               <Icon
                 name="colony-logo"
                 title={extensionData.name}
-                appearance={{ size: 'small' }}
+                appearance={{ size: 'extraSmall' }}
               />
             </div>
             <div>
