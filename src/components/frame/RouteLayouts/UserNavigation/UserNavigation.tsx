@@ -97,12 +97,11 @@ const UserNavigation = () => {
       </div>
 
       <Wallet />
-      {tokenBalanceData && (
-        <AvatarDropdown
-          spinnerMsg={MSG.walletAutologin}
-          tokenBalanceData={tokenBalanceData}
-        />
-      )}
+      <AvatarDropdown
+        spinnerMsg={MSG.walletAutologin}
+        tokenBalanceData={tokenBalanceData ?? undefined}
+      />
+
       <HamburgerDropdown />
     </div>
   );

@@ -46,7 +46,7 @@ const MSG = defineMessages({
 
 interface Props {
   spinnerMsg: SimpleMessageValues;
-  tokenBalanceData: UserTokenBalanceData;
+  tokenBalanceData?: UserTokenBalanceData;
 }
 
 const AvatarDropdownPopoverMobile = ({
@@ -74,7 +74,7 @@ const AvatarDropdownPopoverMobile = ({
         </DropdownMenuItem>
         <DropdownMenuItem>
           <ItemContainer message={MSG.balance} spinnerMsg={spinnerMsg}>
-            {canInteractWithNetwork && nativeToken && (
+            {canInteractWithNetwork && nativeToken && tokenBalanceData && (
               <UserTokenActivationDisplay
                 nativeToken={nativeToken}
                 tokenBalanceData={tokenBalanceData}
@@ -95,7 +95,7 @@ const AvatarDropdownPopoverMobile = ({
         </DropdownMenuItem>
         <DropdownMenuItem>
           <div className={styles.buttonContainer}>
-            {nativeToken && (
+            {nativeToken && tokenBalanceData && (
               <TokenActivationPopover tokenBalanceData={tokenBalanceData}>
                 {({ toggle, ref }) => (
                   <Button
