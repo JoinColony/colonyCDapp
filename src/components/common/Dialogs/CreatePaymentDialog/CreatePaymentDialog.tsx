@@ -15,10 +15,13 @@ import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
 import { WizardDialogType, useNetworkInverseFee } from '~hooks';
-import { notNull } from '~utils/arrays';
+import { useGetMembersForColonyQuery } from '~gql';
 
 import DialogForm from './CreatePaymentDialogForm';
-import { getCreatePaymentDialogPayload } from './helpers';
+import {
+  extractUsersFromColonyMemberData,
+  getCreatePaymentDialogPayload,
+} from './helpers';
 import getValidationSchema from './validation';
 
 const displayName = 'common.CreatePaymentDialog';
@@ -28,6 +31,8 @@ type Props = Required<DialogProps> &
   ActionDialogProps & {
     filteredDomainId?: number;
   };
+
+type FormValues = InferType<ReturnType<typeof getValidationSchema>>;
 
 const CreatePaymentDialog = ({
   callStep,
@@ -49,9 +54,7 @@ const CreatePaymentDialog = ({
       ? ActionTypes.MOTION_EXPENDITURE_PAYMENT
       : ActionTypes.ACTION_EXPENDITURE_PAYMENT;
 
-  const validationSchema = getValidationSchema(colony);
-
-  type FormValues = InferType<typeof validationSchema>;
+  const validationSchema = getValidationSchema(colony, networkInverseFee);
 
   // const { data: colonyMembers } = useMembersSubscription({
   //   variables: { colonyAddress },
@@ -118,7 +121,7 @@ const CreatePaymentDialog = ({
             <DialogForm
               back={() => callStep(prevStep)}
               verifiedUsers={
-                colonyWatchers // isWhitelistActivated ? verifiedUsers : ...
+                colonyMembers // isWhitelistActivated ? verifiedUsers : ...
               }
               // showWhitelistWarning={showWarningForAddress(
               //   values?.recipient?.walletAddress,

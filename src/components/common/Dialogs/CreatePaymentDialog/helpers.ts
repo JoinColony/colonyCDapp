@@ -2,12 +2,21 @@ import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import { useActionDialogStatus, EnabledExtensionData } from '~hooks';
-import { Colony } from '~types';
+import { Colony, Member } from '~types';
+import { notNull, notUndefined } from '~utils/arrays';
 import {
   calculateFee,
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
+
+export const extractUsersFromColonyMemberData = (
+  members: Member[] | null | undefined,
+) =>
+  members
+    ?.map((member) => member.user)
+    .filter(notNull)
+    .filter(notUndefined) || [];
 
 export const getCreatePaymentDialogPayload = (
   colony: Colony,
