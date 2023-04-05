@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
-import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 
+import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 import { Message, UniversalMessageValues } from '~types';
 import { formatText } from '~utils/intl';
 
