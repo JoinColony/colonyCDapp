@@ -1,7 +1,9 @@
 import React from 'react';
-import { MotionState } from '@colony/colony-js';
 
-import { ColonyAction } from '~types';
+import { ColonyAction, ColonyActionType } from '~types';
+import { MotionState } from '~utils/colonyMotions';
+
+import FinalizeMotion from './FinalizeMotion';
 import StakingWidget, { StakingWidgetProvider } from './StakingWidget';
 
 const displayName =
@@ -19,7 +21,7 @@ const MotionPhaseWidget = ({
   motionState,
   ...rest
 }: MotionPhaseWidgetProps) => {
-  const { motionData } = actionData;
+  const { motionData, type, amount, fromDomain } = actionData;
 
   if (!motionData) {
     /*
@@ -31,12 +33,32 @@ const MotionPhaseWidget = ({
   }
 
   switch (motionState) {
+    case MotionState.Staked:
     case MotionState.Staking: {
       return (
         <StakingWidgetProvider motionData={motionData} {...rest}>
           <StakingWidget />
         </StakingWidgetProvider>
       );
+    }
+
+    case MotionState.Passed: {
+      if (!motionData.isFinalized) {
+        return (
+          <FinalizeMotion
+            amount={amount}
+            motionData={motionData}
+            requiresDomainFunds={
+              !!fromDomain &&
+              !!amount &&
+              type !== ColonyActionType.MintTokensMotion
+            }
+            {...rest}
+          />
+        );
+      }
+
+      return <div>claim!</div>;
     }
 
     /* Extend with other widgets as they get ported. */
