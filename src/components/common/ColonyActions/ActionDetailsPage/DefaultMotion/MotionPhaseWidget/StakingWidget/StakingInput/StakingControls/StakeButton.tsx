@@ -1,4 +1,8 @@
+import { BigNumber } from 'ethers';
 import React from 'react';
+
+import { useAppContext } from '~hooks';
+import { calculateStakeLimitDecimal } from '~hooks/helpers';
 
 import Button from '~shared/Button';
 import { useStakingWidgetContext } from '../../StakingWidgetProvider';
@@ -9,16 +13,43 @@ const displayName =
 interface StakeButtonProps {
   isLoadingData: boolean;
   enoughTokensToStakeMinimum: boolean;
+  enoughReputationToStakeMinimum: boolean;
   cantStakeMore: boolean;
+  userMaxStake: BigNumber;
+  userActivatedTokens: BigNumber;
+  userNeedsMoreReputation: boolean;
 }
 
 const StakeButton = ({
   isLoadingData,
   enoughTokensToStakeMinimum,
+  enoughReputationToStakeMinimum,
+  userNeedsMoreReputation,
+  userMaxStake,
+  userActivatedTokens,
   cantStakeMore,
 }: StakeButtonProps) => {
-  const { isObjection, remainingToStake } = useStakingWidgetContext();
+  const { user } = useAppContext();
+  const { isObjection, remainingToStake, usersStakes, userMinStake } =
+    useStakingWidgetContext();
 
+  const userStakes = usersStakes.find(
+    ({ address }) => address === user?.walletAddress,
+  );
+
+  const userTotalStake = isObjection
+    ? userStakes?.stakes.raw.nay
+    : userStakes?.stakes.raw.yay;
+
+  const limitIsZero = calculateStakeLimitDecimal(
+    remainingToStake,
+    userMinStake,
+    userMaxStake,
+    userTotalStake ?? '0',
+    userActivatedTokens,
+  ).isZero();
+
+  const userHasReachedReputationLimit = userNeedsMoreReputation && limitIsZero;
   return (
     <Button
       appearance={{
@@ -28,13 +59,12 @@ const StakeButton = ({
       type="submit"
       disabled={
         isLoadingData ||
+        userHasReachedReputationLimit ||
         cantStakeMore ||
         !enoughTokensToStakeMinimum ||
+        !enoughReputationToStakeMinimum ||
         remainingToStake === '0'
       }
-      /* userActivatedTokens.lt(
-        getDecimalStake(values.amount).round(),
-      ) */
       text={{ id: 'button.stake' }}
       dataTest="stakeWidgetStakeButton"
     />

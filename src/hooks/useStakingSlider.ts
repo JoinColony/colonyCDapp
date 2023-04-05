@@ -43,7 +43,12 @@ const useStakingSlider = (isObjection: boolean) => {
     },
     rootHash,
     motionDomainId,
+    usersStakes,
   } = motionData;
+
+  const userStakes = usersStakes.find(
+    ({ address }) => address === user?.walletAddress,
+  );
 
   const { nativeTokenDecimals, nativeTokenSymbol, tokenAddress } = nativeToken;
 
@@ -72,12 +77,18 @@ const useStakingSlider = (isObjection: boolean) => {
   /* User cannot stake more than their reputation in tokens. */
   const userMaxStake = BigNumber.from(userReputation ?? '0');
   const remainingToStake = isObjection ? nayRemaining : yayRemaining;
-  const enoughReputation = userMaxStake.gt(0) && userMaxStake.gte(userMinStake);
+  const userTotalStake = isObjection
+    ? userStakes?.stakes.raw.nay
+    : userStakes?.stakes.raw.yay;
+
+  const enoughReputationToStakeMinimum =
+    userMaxStake.gt(0) && userMaxStake.gte(userMinStake);
 
   const userStakeLimitDecimal = calculateStakeLimitDecimal(
     remainingToStake,
     userMinStake,
     userMaxStake,
+    userTotalStake ?? '0',
     userActivatedTokens,
   );
 
@@ -91,6 +102,7 @@ const useStakingSlider = (isObjection: boolean) => {
     nativeTokenDecimals,
     nativeTokenSymbol,
     enoughTokensToStakeMinimum,
+    enoughReputationToStakeMinimum,
     userActivatedTokens,
     userStakeLimitDecimal,
     isLoadingData:
@@ -100,7 +112,6 @@ const useStakingSlider = (isObjection: boolean) => {
       loadingReputation ||
       loadingReputation ||
       loadingActionData,
-    enoughReputation,
     userMaxStake,
   };
 };

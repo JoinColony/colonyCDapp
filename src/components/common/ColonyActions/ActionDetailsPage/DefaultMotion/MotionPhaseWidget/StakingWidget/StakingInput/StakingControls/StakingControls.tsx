@@ -22,8 +22,12 @@ const StakingControls = ({ limitExceeded }: StakingControlsProps) => {
     showBackButton,
     showActivateButton,
     enoughTokensToStakeMinimum,
+    enoughReputationToStakeMinimum,
     isLoadingData,
     cantStakeMore,
+    userNeedsMoreReputation,
+    userMaxStake,
+    userActivatedTokens,
   } = useStakingControls(limitExceeded);
 
   return (
@@ -32,12 +36,17 @@ const StakingControls = ({ limitExceeded }: StakingControlsProps) => {
       <StakeButton
         isLoadingData={isLoadingData}
         enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
+        enoughReputationToStakeMinimum={enoughReputationToStakeMinimum}
         cantStakeMore={cantStakeMore}
+        userNeedsMoreReputation={userNeedsMoreReputation}
+        userMaxStake={userMaxStake}
+        userActivatedTokens={userActivatedTokens}
       />
       {!showBackButton && (
         <ObjectButton
           isLoadingData={isLoadingData}
           enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
+          enoughReputationToStakeMinimum={enoughReputationToStakeMinimum}
         />
       )}
       {showActivateButton && <ActivateButton />}

@@ -1,6 +1,10 @@
 import Decimal from 'decimal.js';
 import { BigNumber } from 'ethers';
-import { getStakeFromSlider } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
+import {
+  getStakeFromSlider,
+  userHasInsufficientReputation,
+} from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
+
 import { MotionStakes } from '~gql';
 import { Action, ActionTypes } from '~redux';
 import { SetStateFn } from '~types';
@@ -55,6 +59,7 @@ export const calculateStakeLimitDecimal = (
   remainingToStake: string,
   userMinStake: string,
   userMaxStake: BigNumber,
+  userTotalStake: string,
   userActivatedTokens: BigNumber,
 ) => {
   if (BigNumber.from(remainingToStake).lt(userMinStake)) {
@@ -64,7 +69,17 @@ export const calculateStakeLimitDecimal = (
     ? userActivatedTokens
     : userMaxStake;
 
-  const adjustedStakingLimit = stakingLimit.sub(userMinStake);
+  let adjustedStakingLimit = stakingLimit.sub(userMinStake);
+
+  if (
+    userHasInsufficientReputation(
+      userActivatedTokens,
+      userMaxStake,
+      remainingToStake,
+    )
+  ) {
+    adjustedStakingLimit = adjustedStakingLimit.sub(userTotalStake);
+  }
 
   // Accounts for the user's minimum stake, which is the slider's start point (i.e 0%)
   const adjustedRemainingToStake =
@@ -78,5 +93,5 @@ export const calculateStakeLimitDecimal = (
     adjustedRemainingToStake.toString(),
   );
 
-  return stakeDecimal;
+  return stakeDecimal.lt(0) ? new Decimal(0) : stakeDecimal;
 };
