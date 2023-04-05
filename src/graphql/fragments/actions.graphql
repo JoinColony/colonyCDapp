@@ -100,4 +100,11 @@ fragment MotionData on MotionData {
   }
   skillRep
   repSubmitted
+  events {
+    name
+    # values
+    # createdAt
+    # emmitedBy
+    # transactionHash
+  }
 }
