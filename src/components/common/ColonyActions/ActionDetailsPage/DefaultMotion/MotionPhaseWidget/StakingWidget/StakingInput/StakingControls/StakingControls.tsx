@@ -1,6 +1,9 @@
 import React from 'react';
 
+import { useAppContext, useColonyContext } from '~hooks';
+
 import { useStakingWidgetContext } from '../../StakingWidgetProvider';
+import { useEnoughTokensForStaking } from '../useEnoughTokensForStaking';
 import { BackButton, ObjectButton, StakeButton } from '.';
 
 import styles from './StakingControls.css';
@@ -8,23 +11,26 @@ import styles from './StakingControls.css';
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.StakingWidgetControls';
 
-interface StakingControlsProps {
-  isLoadingData: boolean;
-  enoughTokensToStakeMinimum: boolean;
-}
-
-const StakingControls = ({
-  isLoadingData,
-  enoughTokensToStakeMinimum,
-}: StakingControlsProps) => {
+const StakingControls = () => {
+  const { user, userLoading, walletConnecting } = useAppContext();
+  const { colony, loading: loadingColony } = useColonyContext();
   const {
     motionStakes: {
       raw: { nay: nayStakes },
     },
     remainingToStake,
+    userMinStake,
   } = useStakingWidgetContext();
+  const { tokenAddress } = colony?.nativeToken || {};
   const showBackButton = nayStakes !== '0';
-
+  const { loadingUserTokenBalance, enoughTokensToStakeMinimum } =
+    useEnoughTokensForStaking(
+      tokenAddress ?? '',
+      user?.walletAddress ?? '',
+      userMinStake,
+    );
+  const isLoadingData =
+    loadingUserTokenBalance || userLoading || walletConnecting || loadingColony;
   return (
     <div className={styles.buttonGroup}>
       {showBackButton && <BackButton />}

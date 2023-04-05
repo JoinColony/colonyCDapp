@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers';
 import React from 'react';
 
 import TokenErrorMessage from './TokenErrorMessage';
@@ -7,13 +8,18 @@ const displayName =
 
 interface StakingValidationMessageProps {
   enoughTokensToStakeMinimum: boolean;
-  tokensLeftToActivate: string;
+  userActivatedTokens: BigNumber;
+  userMinStake: string;
 }
 
 const StakingValidationMessage = ({
   enoughTokensToStakeMinimum,
-  tokensLeftToActivate,
+  userActivatedTokens,
+  userMinStake,
 }: StakingValidationMessageProps) => {
+  const tokensLeftToActivate = BigNumber.from(userMinStake)
+    .sub(userActivatedTokens)
+    .toString();
   if (!enoughTokensToStakeMinimum) {
     return <TokenErrorMessage tokensLeftToActivate={tokensLeftToActivate} />;
   }

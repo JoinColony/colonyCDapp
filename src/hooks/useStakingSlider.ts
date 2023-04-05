@@ -43,12 +43,15 @@ const useStakingSlider = (isObjection: boolean) => {
 
   const { nativeTokenDecimals, nativeTokenSymbol, tokenAddress } = nativeToken;
 
-  const { enoughTokensToStakeMinimum, loadingUserTokenBalance } =
-    useEnoughTokensForStaking(
-      tokenAddress,
-      user?.walletAddress ?? '',
-      userMinStake,
-    );
+  const {
+    enoughTokensToStakeMinimum,
+    loadingUserTokenBalance,
+    userActivatedTokens,
+  } = useEnoughTokensForStaking(
+    tokenAddress,
+    user?.walletAddress ?? '',
+    userMinStake,
+  );
 
   const totalPercentageStaked =
     Number(nayPercentageStaked) + Number(yayPercentageStaked);
@@ -60,6 +63,7 @@ const useStakingSlider = (isObjection: boolean) => {
     nativeTokenDecimals,
     nativeTokenSymbol,
     enoughTokensToStakeMinimum,
+    userActivatedTokens,
     isLoadingData:
       loadingUserTokenBalance ||
       userLoading ||
