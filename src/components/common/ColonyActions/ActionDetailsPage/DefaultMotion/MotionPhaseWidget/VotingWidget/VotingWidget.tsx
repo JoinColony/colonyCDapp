@@ -5,14 +5,12 @@ import { object, number, InferType } from 'yup';
 import { ActionHookForm as ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 
-import styles from './VotingWidget.css';
-import VotingWidgetHeading from './VotingWidgetHeading';
 import { ColonyActionType } from '~gql';
-import VoteButton from './VoteButton';
 import { MotionData } from '~types';
 import { MotionState } from '~utils/colonyMotions';
-import VoteDetails from './VoteDetails';
-import VotingPanel from './VotingPanel';
+import { VoteDetails, VotingPanel, VotingWidgetHeading } from '.';
+
+import styles from './VotingWidget.css';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget';
@@ -42,7 +40,7 @@ export const VOTE_FORM_KEY = 'vote';
 
 const VotingWidget = ({
   actionType,
-  // motionData: { motionId },
+  motionData: { motionId, motionDomainId },
   motionState,
 }: VotingWidgetProps) => {
   const hasUserVoted = false;
@@ -66,10 +64,10 @@ const VotingWidget = ({
           <VotingWidgetHeading actionType={actionType} />
           <VotingPanel />
           <VoteDetails
-            // motionId={motionId}
+            motionId={motionId}
             motionState={motionState}
-            // showReward={hasReputationToVote}
-            button={<VoteButton />}
+            motionDomainId={motionDomainId}
+            hasUserVoted={false}
           />
         </div>
       </ActionForm>
