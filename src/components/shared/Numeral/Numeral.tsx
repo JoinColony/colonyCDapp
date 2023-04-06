@@ -25,6 +25,7 @@ export type NumeralValue = string | number | BigNumber | Decimal;
 
 export interface Appearance {
   theme?: 'dark';
+  size?: 'small';
 }
 
 export interface Props extends HTMLAttributes<HTMLSpanElement> {
