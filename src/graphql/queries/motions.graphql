@@ -1,0 +1,10 @@
+query GetMotionState($input: GetMotionStateInput!) {
+  getMotionState(input: $input)
+}
+
+query GetVoterRewards($input: GetVoterRewardsInput!) {
+  getVoterRewards(input: $input) {
+    min
+    max
+  }
+}

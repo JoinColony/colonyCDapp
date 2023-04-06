@@ -24,7 +24,3 @@ query GetColonyAction($transactionHash: ID!) {
     ...ColonyAction
   }
 }
-
-query GetMotionState($input: GetMotionStateInput!) {
-  getMotionState(input: $input)
-}
