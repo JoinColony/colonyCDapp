@@ -1,4 +1,5 @@
 export { default } from './DetailsWidget';
+export { default as DetailItem, DetailItemProps } from './DetailItem';
 export { default as ActionTypeDetail } from './ActionTypeDetail';
 export { default as AmountDetail } from './AmountDetail';
 export { default as DomainDescriptionDetail } from './DomainDescriptionDetail';
