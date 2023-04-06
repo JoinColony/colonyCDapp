@@ -1,24 +1,20 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, ExtensionClient } from '@colony/colony-js';
+import { call, put, takeEvery } from 'redux-saga/effects';
+import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
 import { utils } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  updateMotionValues,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, getColonyManager } from '../utils';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
 import { transactionReady } from '../../actionCreators';
 import { signMessage } from '../messages';
 
+export type MotionVotePayload = Action<ActionTypes.MOTION_VOTE>['payload'];
 function* voteMotion({
   meta,
   payload: { userAddress, colonyAddress, motionId, vote },
@@ -30,7 +26,7 @@ function* voteMotion({
       ClientType.ColonyClient,
       colonyAddress,
     );
-    const votingReputationClient: ExtensionClient =
+    const votingReputationClient: AnyVotingReputationClient =
       yield colonyManager.getClient(
         ClientType.VotingReputationClient,
         colonyAddress,
@@ -71,19 +67,7 @@ function* voteMotion({
       'voteMotionTransaction',
     ]);
 
-    const batchKey = 'voteMotion';
-
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(voteMotionTransaction, {
+    yield createGroupTransaction(voteMotionTransaction, 'voteMotion', meta, {
       context: ClientType.VotingReputationClient,
       methodName: 'submitVote',
       identifier: colonyAddress,
@@ -102,11 +86,6 @@ function* voteMotion({
       voteMotionTransaction.channel,
       ActionTypes.TRANSACTION_SUCCEEDED,
     );
-
-    /*
-     * Update motion page values
-     */
-    yield fork(updateMotionValues, colonyAddress, userAddress, motionId);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_VOTE_SUCCESS,
