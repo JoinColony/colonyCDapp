@@ -693,6 +693,14 @@ export type GetUserTokenBalanceReturn = {
   pendingBalance?: Maybe<Scalars['String']>;
 };
 
+export type GetVoterRewardsInput = {
+  colonyAddress: Scalars['String'];
+  motionDomainId: Scalars['String'];
+  motionId: Scalars['String'];
+  rootHash: Scalars['String'];
+  voterAddress: Scalars['String'];
+};
+
 export type MembersForColonyInput = {
   colonyAddress: Scalars['String'];
   domainId?: InputMaybe<Scalars['Int']>;
@@ -1520,6 +1528,7 @@ export type MotionData = {
   stakerRewards: Array<StakerRewards>;
   userMinStake: Scalars['String'];
   usersStakes: Array<UserStakes>;
+  voterRecord: Array<VoterRecord>;
 };
 
 export type MotionDataInput = {
@@ -1535,6 +1544,7 @@ export type MotionDataInput = {
   stakerRewards: Array<StakerRewardsInput>;
   userMinStake: Scalars['String'];
   usersStakes: Array<UserStakesInput>;
+  voterRecord: Array<VoterRecordInput>;
 };
 
 export type MotionStakeValues = {
@@ -2014,6 +2024,7 @@ export type Query = {
   getUserReputation?: Maybe<Scalars['String']>;
   getUserTokenBalance?: Maybe<GetUserTokenBalanceReturn>;
   getUserTokens?: Maybe<UserTokens>;
+  getVoterRewards?: Maybe<VoterRewardsReturn>;
   getWatchedColonies?: Maybe<WatchedColonies>;
   listColonies?: Maybe<ModelColonyConnection>;
   listColonyActions?: Maybe<ModelColonyActionConnection>;
@@ -2237,6 +2248,11 @@ export type QueryGetUserTokenBalanceArgs = {
 
 export type QueryGetUserTokensArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryGetVoterRewardsArgs = {
+  input?: InputMaybe<GetVoterRewardsInput>;
 };
 
 
@@ -2939,6 +2955,24 @@ export type UserTokens = {
   updatedAt: Scalars['AWSDateTime'];
   user: User;
   userID: Scalars['ID'];
+};
+
+export type VoterRecord = {
+  __typename?: 'VoterRecord';
+  address: Scalars['String'];
+  voteCount: Scalars['String'];
+};
+
+export type VoterRecordInput = {
+  address: Scalars['String'];
+  voteCount: Scalars['String'];
+};
+
+export type VoterRewardsReturn = {
+  __typename?: 'VoterRewardsReturn';
+  max: Scalars['String'];
+  min: Scalars['String'];
+  reward: Scalars['String'];
 };
 
 export type WatchedColonies = {

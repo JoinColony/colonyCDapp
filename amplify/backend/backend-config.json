@@ -48,6 +48,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "fetchVoterRewards": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getMembersForColony": {
       "build": true,
       "providerPlugin": "awscloudformation",
