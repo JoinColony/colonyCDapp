@@ -4,7 +4,7 @@ import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import DetailsWidget from '~shared/DetailsWidget';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { ColonyAction } from '~types';
-import { getMotionState } from '~utils/colonyMotions';
+import { getMotionState, MotionState } from '~utils/colonyMotions';
 import { STAKING_THRESHOLD } from '~constants';
 
 import { DefaultActionContent } from '../DefaultAction';
@@ -36,7 +36,7 @@ const DefaultMotion = ({
     return null;
   }
 
-  const motionState = getMotionState(networkMotionState, actionData.motionData);
+  const motionState = MotionState.Voting; //getMotionState(networkMotionState, actionData.motionData);
 
   const {
     motionData: {
