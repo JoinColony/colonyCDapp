@@ -1,0 +1,16 @@
+.main {
+  display: block;
+  margin: 0px 0 100px 0;
+}
+
+.voteHiddenContainer {
+  margin-top: 20px;
+  padding: 13px 10px;
+  width: 340px;
+  background: var(--colony-light-blue);
+  font-size: var(--size-smallish);
+  font-weight: var(--weight-bold);
+  text-align: center;
+  white-space: pre-line;
+  color: var(--grey-purple);
+}
