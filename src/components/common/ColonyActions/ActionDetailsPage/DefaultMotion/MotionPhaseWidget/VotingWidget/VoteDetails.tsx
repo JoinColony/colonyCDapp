@@ -8,7 +8,7 @@ import { useVoteDetailsConfig } from './useVoteDetailsConfig';
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget.VoteDetails';
 
-interface VoteDetailsProps {
+export interface VoteDetailsProps {
   motionState: MotionState;
   button: JSX.Element;
 }
