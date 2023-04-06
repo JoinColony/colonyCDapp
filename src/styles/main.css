@@ -9,7 +9,6 @@
 @layer base {
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-
   html {
     @apply antialiased;
     @apply font-inter bg-base-white;
