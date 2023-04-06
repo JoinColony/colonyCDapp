@@ -78,4 +78,8 @@ fragment MotionData on MotionData {
     isClaimed
   }
   isFinalized
+  voterRecord {
+    address
+    voteCount
+  }
 }
