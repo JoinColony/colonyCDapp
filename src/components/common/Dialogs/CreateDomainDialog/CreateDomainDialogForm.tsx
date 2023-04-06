@@ -10,7 +10,6 @@ import {
 } from '~shared/Dialog';
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
 
-// import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import { useActionDialogStatus } from '~hooks';
 
 import DomainNameAndColorInputGroup from '../DomainNameAndColorInputGroup';
@@ -18,6 +17,7 @@ import {
   NoPermissionMessage,
   CannotCreateMotionMessage,
   PermissionRequiredInfo,
+  NotEnoughReputation,
 } from '../Messages';
 
 const displayName = 'common.CreateDomainDialog.CreateDomainDialogForm';
@@ -43,18 +43,30 @@ const CreateDomainDialogForm = ({
   back,
   colony,
   enabledExtensionData,
+  enabledExtensionData: { isVotingReputationEnabled },
 }: ActionDialogProps) => {
-  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } =
-    useActionDialogStatus(
-      colony,
-      requiredRoles,
-      [Id.RootDomain],
-      enabledExtensionData,
-    );
+  const {
+    userHasPermission,
+    disabledInput,
+    disabledSubmit,
+    canCreateMotion,
+    canOnlyForceAction,
+  } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading title={MSG.titleCreate} />
+        <DialogHeading
+          title={MSG.titleCreate}
+          colony={colony}
+          userHasPermission={userHasPermission}
+          isVotingExtensionEnabled={isVotingReputationEnabled}
+          isRootMotion
+        />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
@@ -93,9 +105,11 @@ const CreateDomainDialogForm = ({
           />
         </DialogSection>
       )}
-      {/* {onlyForceAction && (
-        <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
-      )} */}
+      {canOnlyForceAction && (
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
+        </DialogSection>
+      )}
       {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />

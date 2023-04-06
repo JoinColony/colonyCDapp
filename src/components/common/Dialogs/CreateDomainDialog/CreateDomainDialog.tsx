@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { Id } from '@colony/colony-js';
-import { string, object, boolean, InferType } from 'yup';
+import { Id } from '@colony/colony-js';
+import { string, object, boolean, InferType, number } from 'yup';
 import { defineMessages } from 'react-intl';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
@@ -37,6 +37,7 @@ const validationSchema = object()
     domainColor: string().notRequired(),
     domainPurpose: string().max(90).notRequired(),
     annotationMessage: string().max(4000).notRequired(),
+    motionDomainId: number().defined(),
   })
   .defined();
 
@@ -74,7 +75,7 @@ const CreateDomainDialog = ({
           domainColor: DomainColor.LightPink,
           domainPurpose: '',
           annotationMessage: '',
-          // motionDomainId: Id.RootDomain,
+          motionDomainId: Id.RootDomain,
         }}
         actionType={actionType}
         validationSchema={validationSchema}
