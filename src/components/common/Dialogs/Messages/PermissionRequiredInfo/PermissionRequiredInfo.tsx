@@ -9,23 +9,25 @@ import { Tooltip } from '~shared/Popover';
 
 import styles from './PermissionRequiredInfo.css';
 
+const displayName = 'PermissionRequiredInfo';
+
 const MSG = defineMessages({
   title: {
-    id: 'PermissionRequiredInfo.title',
+    id: `${displayName}.title`,
     defaultMessage: 'You need the following permission(s)',
   },
   sectionLabel: {
-    id: 'PermissionRequiredInfo.sectionLabel',
+    id: `${displayName}.sectionLabel`,
     defaultMessage: 'Permission',
   },
   tooltipTextFirstParagraph: {
-    id: 'PermissionRequiredInfo.tooltipTextFirstParagraph',
+    id: `${displayName}.tooltipTextFirstParagraph`,
     defaultMessage: `Colony has six permission classes which can be assigned
       to any Ethereum address: Funding, Administration, Arbitration,
       Architecture, Root, and Recovery.`,
   },
   tooltipTextSecondParagraph: {
-    id: 'PermissionRequiredInfo.tooltipTextSecondParagraph',
+    id: `${displayName}.tooltipTextSecondParagraph`,
     defaultMessage: `Permissions are assigned at the team level.
       If an account is granted a permission in a team,
       it also has that same permission in all of that
@@ -37,8 +39,6 @@ interface Props {
   /** Array with roles required */
   requiredRoles: ColonyRole[];
 }
-
-const displayName = 'PermissionRequiredInfo';
 
 const PermissionRequiredInfo = ({ requiredRoles }: Props) => {
   const { formatMessage } = useIntl();
