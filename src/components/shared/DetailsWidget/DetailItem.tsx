@@ -9,7 +9,7 @@ import styles from './DetailItem.css';
 
 const displayName = 'DetailsWidget.DetailItem';
 
-interface DetailItemProps {
+export interface DetailItemProps {
   label: Message;
   labelValues?: UniversalMessageValues;
   item: ReactNode;
