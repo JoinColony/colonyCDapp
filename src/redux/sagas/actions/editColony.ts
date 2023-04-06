@@ -34,6 +34,7 @@ function* editColonyAction({
     colony: { colonyAddress, name: colonyName },
     colonyDisplayName,
     colonyAvatarImage,
+    // hasAvatarChanged,
   },
   meta: { id: metaId, navigate },
   meta,
@@ -98,6 +99,39 @@ function* editColonyAction({
     // }
 
     yield put(transactionPending(editColony.id));
+
+    // /*
+    //  * Upload colony metadata to IPFS
+    //  *
+    //  * @NOTE Only (re)upload the avatar if it has changed, otherwise just use
+    //  * the old hash.
+    //  * This cuts down on some transaction signing wait time, since IPFS uplaods
+    //  * tend to be on the slower side :(
+    //  */
+    // let colonyAvatarIpfsHash = null;
+    // if (colonyAvatarImage && hasAvatarChanged) {
+    //   colonyAvatarIpfsHash = yield call(
+    //     ipfsUpload,
+    //     JSON.stringify({
+    //       image: colonyAvatarImage,
+    //     }),
+    //   );
+    // }
+
+    // /*
+    //  * Upload colony metadata to IPFS
+    //  */
+    // let colonyMetadataIpfsHash = null;
+    // colonyMetadataIpfsHash = yield call(
+    //   ipfsUpload,
+    //   JSON.stringify({
+    //     colonyDisplayName,
+    //     colonyAvatarHash: hasAvatarChanged
+    //       ? colonyAvatarIpfsHash
+    //       : colonyAvatarHash,
+    //     colonyTokens,
+    //   }),
+    // );
 
     /**
      * @NOTE: In order for the ColonyMetadata event (which is the only event associated with Colony Edit action) to be emitted,
