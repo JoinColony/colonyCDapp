@@ -43,16 +43,24 @@ const useGetColonyAction = (colony?: Colony | null) => {
     setIsPolling(false);
   }
 
-  const { data: motionStateData, loading: loadingMotionState } =
-    useGetMotionStateQuery({
-      skip: !action?.motionData,
-      variables: {
-        input: {
-          colonyAddress: colony?.colonyAddress ?? '',
-          motionId: Number(action?.motionData?.motionId),
-        },
+  const {
+    data: motionStateData,
+    loading: loadingMotionState,
+    refetch: refetchMotionState,
+  } = useGetMotionStateQuery({
+    skip: !action?.motionData,
+    variables: {
+      input: {
+        colonyAddress: colony?.colonyAddress ?? '',
+        motionId: Number(action?.motionData?.motionId),
       },
-    });
+    },
+  });
+
+  /* Ensures motion state is kept in sync with motion data */
+  useEffect(() => {
+    refetchMotionState();
+  }, [actionData, refetchMotionState]);
 
   return {
     isInvalidTransactionHash: !isValidTx,
