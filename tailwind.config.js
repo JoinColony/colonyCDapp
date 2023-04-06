@@ -134,6 +134,16 @@ module.exports = {
         md: '64rem',
         lg: '90rem',
       },
+      transitionDuration: {
+        slow: '175ms',
+        normal: '300ms',
+        fast: '450ms',
+      },
+    },
+    screens: {
+      sm: '26.75rem',
+      md: '64rem',
+      lg: '90rem',
     },
   },
   future: {
