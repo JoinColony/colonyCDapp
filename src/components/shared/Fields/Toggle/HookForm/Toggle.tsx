@@ -64,7 +64,7 @@ const HookFormToggle = ({
           appearance={{ colorSchema: 'grey' }}
         />
       )}
-      <div>
+      <div className={styles.checkboxContainer}>
         <input
           {...hookFormHelpers}
           type="checkbox"
@@ -86,6 +86,7 @@ const HookFormToggle = ({
           tooltipPopperOptions={tooltipPopperOptions}
           tooltipClassName={tooltipClassName}
           tooltipTextValues={tooltipTextValues}
+          tooltipClassName={tooltipClassName}
         />
       )}
     </div>
