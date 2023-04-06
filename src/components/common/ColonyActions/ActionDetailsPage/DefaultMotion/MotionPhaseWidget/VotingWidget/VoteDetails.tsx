@@ -10,14 +10,20 @@ const displayName =
 
 export interface VoteDetailsProps {
   motionState: MotionState;
-  button: JSX.Element;
+  motionId: string;
+  motionDomainId: string;
+  hasUserVoted: boolean;
 }
 
-const VoteDetails = ({ motionState, button }: VoteDetailsProps) => {
-  const voteDetailsConfig = useVoteDetailsConfig(motionState, button);
-  return voteDetailsConfig.map((config) => (
-    <DetailItem {...config} key={config.label.id} />
-  ));
+const VoteDetails = (props: VoteDetailsProps) => {
+  const voteDetailsConfig = useVoteDetailsConfig(props);
+  return (
+    <>
+      {voteDetailsConfig.map((config) => (
+        <DetailItem {...config} key={config.label} />
+      ))}
+    </>
+  );
 };
 
 VoteDetails.displayName = displayName;
