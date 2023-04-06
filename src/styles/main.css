@@ -1,5 +1,4 @@
 @import 'variables.css';
-
 @import 'fonts.css';
 @tailwind base;
 @tailwind components;
@@ -11,7 +10,19 @@
 
   html {
     @apply antialiased;
-    @apply font-inter bg-base-white;
+    @apply font-inter bg-base-black text-base text-gray-600 h-full;
+  }
+
+  body {
+    @apply h-full overflow-hidden;
+  }
+
+  svg:not([class]) {
+    fill: currentColor;
+  }
+
+  :global(#root) {
+    height: 100%;
   }
 }
 
