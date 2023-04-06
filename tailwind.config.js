@@ -1,8 +1,6 @@
 module.exports = {
-  content: [
-    './src/components/**/*.{js,ts,jsx,tsx}',
-    './stories/**/*.{js,ts,jsx,tsx}',
-  ],
+  mode: 'jit',
+  content: ['./src/components/**/*.{js,ts,jsx,tsx}'],
   theme: {
     fontFamily: {
       inter: ['Inter', 'sans-serif'],
@@ -77,7 +75,72 @@ module.exports = {
           200: '#9B8AFB',
           400: '#6938EF',
         },
+        'teams-yellow': {
+          50: '#FFFAF5',
+          100: '#FFF6ED',
+          500: '#F4A118',
+        },
+        'teams-red': {
+          50: '#FFF1F3',
+          100: '#FFF2ED',
+          400: '#C4320A',
+          600: '#E31B54',
+        },
+        'teams-pink': {
+          50: '#FEF6FB',
+          100: '#FDF2FA',
+          150: '#F9EBEB',
+          400: '#EE46BC',
+          500: '#C11574',
+          600: '#A11043',
+        },
+        'teams-green': {
+          50: '#E5FFFA',
+          100: '#FFF6ED',
+          400: '#0FA98A',
+          500: '#01A63E',
+        },
+        'teams-teal': {
+          50: '#EDFAFA',
+          500: '#0694A2',
+        },
+        'teams-blue': {
+          50: '#EBF5FF',
+          400: '#338FEB',
+        },
+        'teams-indigo': {
+          50: '#EAECF5',
+          500: '#4E5BA6',
+        },
+        'teams-purple': {
+          100: '#ECE7FE',
+          400: '#7A5AF8',
+          500: '#3405E1',
+        },
+        'teams-grey': {
+          50: '#F4F4F4',
+          100: '#ECEFF1',
+          500: '#415A77',
+        },
+      },
+      boxShadow: {
+        default: '0px 10px 30px rgba(0, 0, 0, 0.05)',
+        content: '0px 1px 2px rgba(16, 24, 40, 0.05)',
+        overlay: 'blur(2px)',
+      },
+      transitionDuration: {
+        slow: '175ms',
+        normal: '300ms',
+        fast: '450ms',
       },
     },
+    screens: {
+      sm: '26.75rem',
+      md: '64rem',
+      lg: '90rem',
+    },
+  },
+  future: {
+    hoverOnlyWhenSupported: true,
   },
 };

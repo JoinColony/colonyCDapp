@@ -1,6 +1,40 @@
 @import 'variables.css';
+
 @import 'fonts.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @value query700 from '~styles/queries.css';
+
+@layer base {
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+
+  html {
+    @apply antialiased;
+    @apply font-inter bg-base-white;
+  }
+}
+
+@layer utilities {
+  .heading-1 {
+    @apply text-4xl font-semibold;
+  }
+
+  .heading-2 {
+    @apply text-3xl font-semibold;
+  }
+
+  .heading-3 {
+    @apply text-2xl font-semibold;
+  }
+
+  .heading-4 {
+    @apply text-xl font-semibold;
+  }
+}
+
+/* TODO: check these styles, change to tailwind where we can and remove unused styles */
 
 /*! minireset.css v0.0.3 | MIT License | github.com/jgthms/minireset.css */
 html,
