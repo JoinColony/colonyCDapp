@@ -118,6 +118,14 @@ input GetMotionStateInput {
   colonyAddress: String!
 }
 
+input GetVoterRewardsInput {
+  voterAddress: String!
+  colonyAddress: String!
+  motionDomainId: String!
+  motionId: String!
+  rootHash: String!
+}
+
 type UserDomainReputation {
   domainId: Int!
   reputationPercentage: String!
