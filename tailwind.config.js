@@ -123,6 +123,21 @@ module.exports = {
           500: '#415A77',
         },
       },
+      boxShadow: {
+        default: '0px 10px 30px rgba(0, 0, 0, 0.05)',
+        content: '0px 1px 2px rgba(16, 24, 40, 0.05)',
+        overlay: 'blur(2px)',
+      },
+      transitionDuration: {
+        slow: '175ms',
+        normal: '300ms',
+        fast: '450ms',
+      },
+    },
+    screens: {
+      sm: '26.75rem',
+      md: '64rem',
+      lg: '90rem',
     },
   },
   future: {
