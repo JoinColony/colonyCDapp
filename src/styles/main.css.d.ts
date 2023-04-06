@@ -1,5 +1,6 @@
 declare namespace MainCssNamespace {
   export interface IMainCss {
+    bgBaseBlack: string;
     block: string;
     blur: string;
     border: string;
