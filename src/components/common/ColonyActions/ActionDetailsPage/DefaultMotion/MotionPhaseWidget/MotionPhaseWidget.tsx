@@ -8,6 +8,7 @@ import { MotionState } from '~utils/colonyMotions';
 import ClaimMotionStakes from './ClaimMotionStakes';
 import FinalizeMotion from './FinalizeMotion';
 import StakingWidget, { StakingWidgetProvider } from './StakingWidget';
+import { VotingWidget } from './VotingWidget';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.MotionPhaseWidget';
@@ -84,6 +85,16 @@ const MotionPhaseWidget = ({
       }
 
       return <ClaimMotionStakes motionData={motionData} {...rest} />;
+    }
+
+    case MotionState.Voting: {
+      return (
+        <VotingWidget
+          actionType={type}
+          motionData={motionData}
+          motionState={motionState}
+        />
+      );
     }
 
     /* Extend with other widgets as they get ported. */
