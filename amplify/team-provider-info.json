@@ -23,7 +23,8 @@
         "updateExtensionByColonyAndHash": {},
         "setCurrentVersion": {},
         "getUserTokenBalance": {},
-        "fetchMotionState": {}
+        "fetchMotionState": {},
+        "fetchVoterRewards": {}
       }
     }
   }
