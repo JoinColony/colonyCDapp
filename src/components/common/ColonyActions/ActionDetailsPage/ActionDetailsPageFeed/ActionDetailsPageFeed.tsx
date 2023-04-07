@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { ColonyAction, ColonyAndExtensionsEvents } from '~types';
-// import { ACTIONS_EVENTS } from '../staticMaps';
 
 import ActionsPageEvent from './ActionDetailsPageEvent';
 
@@ -13,15 +12,15 @@ interface ActionsPageFeedProps {
 }
 
 const ActionDetailsPageFeed = ({ actionData }: ActionsPageFeedProps) => {
-  const events = actionData.motionData?.events;
+  const motionEvents = actionData.motionData?.events;
   return (
     <>
-      {events?.map((event) => (
+      {motionEvents?.map((event) => (
         <ActionsPageEvent
           actionData={actionData}
-          eventData={event}
+          motionEventData={event}
           eventName={ColonyAndExtensionsEvents[event.name]}
-          // key={event.transactionHash}
+          key={`${event.name}-${event.initiatorAddress}-${event.amount}`}
         />
       ))}
     </>
