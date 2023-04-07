@@ -2873,7 +2873,6 @@ export type VoterRewardsReturn = {
   __typename?: 'VoterRewardsReturn';
   max: Scalars['String'];
   min: Scalars['String'];
-  reward: Scalars['String'];
 };
 
 export type WatchedColonies = {
