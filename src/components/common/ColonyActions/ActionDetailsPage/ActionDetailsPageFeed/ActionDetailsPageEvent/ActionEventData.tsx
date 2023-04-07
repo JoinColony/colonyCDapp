@@ -18,6 +18,7 @@ const ActionEventData = ({
   eventId,
 }: Pick<ActionsPageEventProps, 'actionData' | 'eventName' | 'eventId'>) => {
   const { colony } = useColonyContext();
+
   return (
     <div className={styles.content}>
       <div className={styles.text} data-test="actionsEventText">

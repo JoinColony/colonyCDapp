@@ -9,6 +9,7 @@ import {
   ColonyActionType,
   DomainMetadata,
   MotionEvent,
+  User,
 } from '~types';
 import { MotionVote } from '~utils/colonyMotions';
 import { intl } from '~utils/intl';
@@ -123,14 +124,14 @@ export const mapColonyEventToExpectedFormat = (
     amountTag: (
       <AmountTag>
         <Numeral
-          value={eventData.amount ?? 0}
+          value={motionEventData.amount ?? 0}
           decimals={actionData.token?.decimals ?? undefined}
           suffix={actionData.token?.symbol ?? ''}
         />
       </AmountTag>
     ),
     backedSideTag:
-      Number(eventData.vote) === MotionVote.Yay ? (
+      Number(motionEventData.vote) === MotionVote.Yay ? (
         <MotionTag />
       ) : (
         <ObjectionTag />
@@ -175,7 +176,7 @@ export const mapColonyEventToExpectedFormat = (
       ),
     staker: (
       <span className={styles.userDecoration}>
-        <FriendlyName user={actionData.initiatorUser} autoShrinkAddress />
+        <FriendlyName user={motionEventInitiatorUser} autoShrinkAddress />
       </span>
     ),
     newVersion: actionData.newColonyVersion,

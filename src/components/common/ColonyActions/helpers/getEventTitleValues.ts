@@ -3,7 +3,6 @@ import {
   Colony,
   ColonyAction,
   ColonyAndExtensionsEvents,
-  MotionEvent,
 } from '~types';
 
 import { mapColonyEventToExpectedFormat } from './mapItemToMessageFormat';
