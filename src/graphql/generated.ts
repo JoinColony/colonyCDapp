@@ -3363,6 +3363,14 @@ export const MotionStakeValuesFragmentDoc = gql`
   nay
 }
     `;
+export const MotionEventFragmentDoc = gql`
+    fragment MotionEvent on MotionEvent {
+  name
+  initiatorAddress
+  vote
+  amount
+}
+    `;
 export const MotionDataFragmentDoc = gql`
     fragment MotionData on MotionData {
   databaseMotionId: motionId
@@ -3418,13 +3426,11 @@ export const MotionDataFragmentDoc = gql`
   skillRep
   repSubmitted
   events {
-    name
-    initiatorAddress
-    vote
-    amount
+    ...MotionEvent
   }
 }
-    ${MotionStakeValuesFragmentDoc}`;
+    ${MotionStakeValuesFragmentDoc}
+${MotionEventFragmentDoc}`;
 export const ColonyActionFragmentDoc = gql`
     fragment ColonyAction on ColonyAction {
   transactionHash: id

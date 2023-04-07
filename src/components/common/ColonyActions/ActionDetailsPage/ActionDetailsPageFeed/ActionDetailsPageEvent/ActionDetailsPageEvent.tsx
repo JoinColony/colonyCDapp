@@ -12,21 +12,21 @@ const displayName =
 export interface ActionsPageEventProps {
   eventName: ColonyAndExtensionsEvents;
   actionData: ColonyAction;
-  eventData: MotionEvent;
+  motionEventData: MotionEvent;
   dataTest?: string;
 }
 
 const ActionsPageEvent = ({
   eventName,
   actionData,
-  eventData,
+  motionEventData,
   dataTest,
 }: ActionsPageEventProps) => (
   <div className={styles.main} data-test={dataTest}>
     <TransactionStatus status={TransactionStatuses.Succeeded} showTooltip />
     <ActionEventData
       actionData={actionData}
-      eventData={eventData}
+      motionEventData={motionEventData}
       eventName={eventName}
     />
   </div>
