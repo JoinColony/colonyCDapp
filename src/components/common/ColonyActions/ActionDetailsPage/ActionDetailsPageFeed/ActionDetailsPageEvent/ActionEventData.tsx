@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { getEventTitleValues, TransactionMeta } from '~common/ColonyActions';
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useUserByNameOrAddress } from '~hooks';
 
 import ActionRoles from './ActionRoles';
 import { ActionsPageEventProps } from './ActionDetailsPageEvent';
@@ -14,16 +14,29 @@ const displayName = 'common.ColonyActions.ActionDetailsPage.ActionEventData';
 const ActionEventData = ({
   actionData: { createdAt, transactionHash, type },
   actionData,
-  eventData,
+  motionEventData,
   eventName,
-}: Pick<ActionsPageEventProps, 'actionData' | 'eventName' | 'eventData'>) => {
+}: Pick<
+  ActionsPageEventProps,
+  'actionData' | 'eventName' | 'motionEventData'
+>) => {
   const { colony } = useColonyContext();
+  const { user: motionEventInitiatorUser } = useUserByNameOrAddress(
+    motionEventData.initiatorAddress || '',
+  );
+
   return (
     <div className={styles.content}>
       <div className={styles.text} data-test="actionsEventText">
         <FormattedMessage
           id="event.title"
-          values={getEventTitleValues(eventName, actionData, eventData, colony)}
+          values={getEventTitleValues(
+            eventName,
+            actionData,
+            motionEventData,
+            motionEventInitiatorUser,
+            colony,
+          )}
         />
       </div>
       <div className={styles.details}>

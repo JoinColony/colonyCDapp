@@ -101,10 +101,7 @@ fragment MotionData on MotionData {
   skillRep
   repSubmitted
   events {
-    name
-    initiatorAddress
-    vote
-    amount
+    ...MotionEvent
   }
 }
 
