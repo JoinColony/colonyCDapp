@@ -5,7 +5,10 @@ import { useAppContext, useColonyContext, useUserReputation } from '~hooks';
 import { DetailItemProps } from '~shared/DetailsWidget';
 import MemberReputation from '~shared/MemberReputation';
 import { intl } from '~utils/intl';
+import { MotionState } from '~utils/colonyMotions';
+import { useGetVoterRewardsQuery } from '~gql';
 
+import { RevealRewardItem, RevealButton } from '../RevealWidget';
 import { VoteDetailsProps, VoteButton, VoteRewardItem } from '.';
 
 const { formatMessage } = intl({
@@ -28,10 +31,10 @@ interface VoteDetailsConfig extends DetailItemProps {
 }
 
 export const useVoteDetailsConfig = ({
-  //  motionState,
-  motionData: { motionDomainId },
-  motionData,
+  motionState,
+  motionData: { motionId, motionDomainId, rootHash },
   hasUserVoted,
+  userVoteRevealed = false,
 }: VoteDetailsProps): VoteDetailsConfig[] => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
@@ -40,6 +43,26 @@ export const useVoteDetailsConfig = ({
     user?.walletAddress ?? '',
     Number(motionDomainId),
   );
+
+  const { data } = useGetVoterRewardsQuery({
+    variables: {
+      input: {
+        voterAddress: user?.walletAddress ?? '',
+        colonyAddress: colony?.colonyAddress ?? '',
+        motionDomainId,
+        motionId,
+        rootHash,
+      },
+    },
+    skip: !user || !colony,
+    fetchPolicy: 'network-only',
+  });
+
+  const {
+    max: maxReward,
+    min: minReward,
+    reward: voterReward,
+  } = data?.getVoterRewards || {};
   const hasReputationToVote = BigNumber.from(userReputation ?? 0).gt(0);
 
   const config = [
@@ -51,12 +74,18 @@ export const useVoteDetailsConfig = ({
     {
       label: formatMessage({ id: 'label.rules' }),
       tooltipText: formatMessage({ id: 'tooltip.rules' }),
-      item: (
-        <VoteButton
-          hasReputationToVote={hasReputationToVote}
-          hasUserVoted={hasUserVoted}
-        />
-      ),
+      item:
+        motionState === MotionState.Voting ? (
+          <VoteButton
+            hasReputationToVote={hasReputationToVote}
+            hasUserVoted={hasUserVoted}
+          />
+        ) : (
+          <RevealButton
+            hasUserVoted={hasUserVoted}
+            userVoteRevealed={userVoteRevealed}
+          />
+        ),
     },
   ];
 
@@ -77,12 +106,12 @@ export const useVoteDetailsConfig = ({
       {
         label: formatMessage({ id: 'label.reward' }),
         tooltipText: formatMessage({ id: 'tooltip.reward' }),
-        item: (
-          <VoteRewardItem
-            //  motionState={motionState}
-            motionData={motionData}
-          />
-        ),
+        item:
+          motionState === MotionState.Voting ? (
+            <VoteRewardItem minReward={minReward} maxReward={maxReward} />
+          ) : (
+            <RevealRewardItem voterReward={voterReward} />
+          ),
       },
     );
   }

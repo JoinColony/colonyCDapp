@@ -14,6 +14,7 @@ export interface VoteDetailsProps {
   motionState: MotionState;
   motionData: MotionData;
   hasUserVoted: boolean;
+  userVoteRevealed?: boolean;
 }
 
 const VoteDetails = (props: VoteDetailsProps) => {
