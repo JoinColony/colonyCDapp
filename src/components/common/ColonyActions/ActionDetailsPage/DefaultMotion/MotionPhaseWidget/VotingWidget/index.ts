@@ -5,3 +5,4 @@ export { default as VoteRewardItem } from './VoteRewardItem';
 export { default as VotingPanel } from './VotingPanel';
 export { default as VoteDetails } from './VoteDetails';
 export { default as VotingWidgetHeading } from './VotingWidgetHeading';
+export { useVotingWidgetUpdate } from './useVotingWidgetUpdate';

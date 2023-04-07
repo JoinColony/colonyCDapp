@@ -31,8 +31,8 @@ export const useVoteDetailsConfig = ({
   //  motionState,
   // motionId,
   motionDomainId,
-}: // hasUserVoted,
-VoteDetailsProps): VoteDetailsConfig[] => {
+  hasUserVoted,
+}: VoteDetailsProps): VoteDetailsConfig[] => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
   const { userReputation, totalReputation } = useUserReputation(
@@ -51,7 +51,12 @@ VoteDetailsProps): VoteDetailsConfig[] => {
     {
       label: formatMessage({ id: 'label.rules' }),
       tooltipText: formatMessage({ id: 'tooltip.rules' }),
-      item: <VoteButton />,
+      item: (
+        <VoteButton
+          hasReputationToVote={hasReputationToVote}
+          hasUserVoted={hasUserVoted}
+        />
+      ),
     },
   ];
 
