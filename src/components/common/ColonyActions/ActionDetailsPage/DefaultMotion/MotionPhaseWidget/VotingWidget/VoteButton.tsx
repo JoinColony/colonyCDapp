@@ -10,16 +10,17 @@ import { VOTE_FORM_KEY } from './VotingWidget';
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget.VoteButton';
 
-const VoteButton = () => {
+interface VoteButtonProps {
+  hasReputationToVote: boolean;
+  hasUserVoted: boolean;
+}
+const VoteButton = ({ hasReputationToVote, hasUserVoted }: VoteButtonProps) => {
   const { user } = useAppContext();
   const {
     formState: { isValid, isSubmitting },
     getValues,
   } = useFormContext();
 
-  // TODO
-  const hasUserVoted = false;
-  const hasReputationToVote = true;
   const vote = getValues(VOTE_FORM_KEY);
 
   return (

@@ -1,7 +1,8 @@
+import { BigNumber } from 'ethers';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { useAppContext } from '~hooks';
+import { useAppContext, useColonyContext, useUserReputation } from '~hooks';
 import { CustomRadioGroup } from '~shared/Fields';
 
 import { getVotingPanelConfig } from './getVotingPanelConfig';
@@ -10,15 +11,25 @@ import { VOTE_FORM_KEY } from './VotingWidget';
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget.VotingPanel';
 
-const VotingPanel = () => {
+interface VotingPanelProps {
+  motionDomainId: number;
+}
+
+const VotingPanel = ({ motionDomainId }: VotingPanelProps) => {
   const { user } = useAppContext();
+  const { colony } = useColonyContext();
   const {
     formState: { isSubmitting },
     getValues,
   } = useFormContext();
 
-  // Wire in...
-  const hasReputationToVote = true;
+  const { userReputation } = useUserReputation(
+    colony?.colonyAddress ?? '',
+    user?.walletAddress ?? '',
+    motionDomainId,
+  );
+
+  const hasReputationToVote = BigNumber.from(userReputation ?? 0).gt(0);
   const vote = getValues(VOTE_FORM_KEY);
   const disabled = !user || !hasReputationToVote || isSubmitting;
   const config = getVotingPanelConfig(vote, disabled);
