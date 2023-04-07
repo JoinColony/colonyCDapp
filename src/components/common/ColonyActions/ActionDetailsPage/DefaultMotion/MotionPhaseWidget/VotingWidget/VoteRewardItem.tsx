@@ -8,7 +8,7 @@ import styles from './VoteRewardItem.css';
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget.VoteReward';
 
-const VoteReward = () => {
+const VoteRewardItem = () => {
   const { colony } = useColonyContext();
   const { nativeToken } = colony || {};
   const minReward = '1000000000000000000';
@@ -66,6 +66,6 @@ const VoteReward = () => {
     )} */
 };
 
-VoteReward.displayName = displayName;
+VoteRewardItem.displayName = displayName;
 
-export default VoteReward;
+export default VoteRewardItem;
