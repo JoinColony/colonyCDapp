@@ -155,6 +155,7 @@ type MembersForColonyReturn {
 type VoterRewardsReturn {
   min: String!
   max: String!
+  reward: String!
 }
 
 enum TokenType {
