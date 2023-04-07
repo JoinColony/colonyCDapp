@@ -53,6 +53,7 @@ export const VOTE_FORM_KEY = 'vote';
 const VotingWidget = ({
   actionType,
   motionData: { motionDomainId, motionId, voterRecord },
+  motionData,
   motionState,
   startPollingAction,
   stopPollingAction,
@@ -100,8 +101,7 @@ const VotingWidget = ({
           <VotingWidgetHeading actionType={actionType} />
           <VotingPanel motionDomainId={Number(motionDomainId)} />
           <VoteDetails
-            motionId={motionId}
-            motionDomainId={motionDomainId}
+            motionData={motionData}
             motionState={motionState}
             hasUserVoted={hasUserVoted}
           />
