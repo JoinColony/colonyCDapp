@@ -8,7 +8,9 @@ import {
   ColonyAction,
   ColonyActionType,
   DomainMetadata,
+  MotionEvent,
 } from '~types';
+import { MotionVote } from '~utils/colonyMotions';
 import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
@@ -100,6 +102,7 @@ export const mapColonyActionToExpectedFormat = (
 export const mapColonyEventToExpectedFormat = (
   eventName: ColonyAndExtensionsEvents,
   actionData: ColonyAction,
+  eventData: MotionEvent,
   colony?: Colony,
 ) => {
   // const role = item.roles[0];
@@ -114,14 +117,18 @@ export const mapColonyEventToExpectedFormat = (
     amountTag: (
       <AmountTag>
         <Numeral
-          value={actionData.amount ?? 0}
+          value={eventData.amount ?? 0}
           decimals={actionData.token?.decimals ?? undefined}
           suffix={actionData.token?.symbol ?? ''}
         />
       </AmountTag>
     ),
-    // backedSideTag:
-    //   event.vote === MotionVote.Yay ? <MotionTag /> : <ObjectionTag />,
+    backedSideTag:
+      Number(eventData.vote) === MotionVote.Yay ? (
+        <MotionTag />
+      ) : (
+        <ObjectionTag />
+      ),
     motionTag: <MotionTag />,
     objectionTag: <ObjectionTag />,
     // ...getColonyRoleSetTitleValues(role?.setTo),

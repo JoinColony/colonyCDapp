@@ -550,10 +550,9 @@ input MotionDataInput {
 
 type MotionEvent {
   name: String!
-  # values: [String!]!
-  # createdAt: AWSDateTime!
-  # emmitedBy: String!
-  # transactionHash: String!
+  initiatorAddress: String
+  vote: String
+  amount: String
 }
 
 type MotionData {

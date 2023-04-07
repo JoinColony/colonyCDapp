@@ -19,8 +19,9 @@ const ActionDetailsPageFeed = ({ actionData }: ActionsPageFeedProps) => {
       {events?.map((event) => (
         <ActionsPageEvent
           actionData={actionData}
+          eventData={event}
           eventName={ColonyAndExtensionsEvents[event.name]}
-          key={event.transactionHash}
+          // key={event.transactionHash}
         />
       ))}
     </>
