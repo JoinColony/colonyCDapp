@@ -1,0 +1,8 @@
+.main h4 {
+  padding: 20px 0px 10px;
+}
+
+.voteHiddenInfo {
+  composes: voteHiddenContainer from '../VotingWidget/VotingWidget.css';
+  margin-top: 0px;
+}
