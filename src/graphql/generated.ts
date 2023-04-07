@@ -1508,6 +1508,7 @@ export type ModelWatchedColoniesFilterInput = {
 export type MotionData = {
   __typename?: 'MotionData';
   createdBy: Scalars['String'];
+  events: Array<MotionEvent>;
   isFinalized: Scalars['Boolean'];
   motionDomainId: Scalars['String'];
   motionId: Scalars['String'];
@@ -1528,6 +1529,7 @@ export type MotionData = {
 
 export type MotionDataInput = {
   createdBy: Scalars['String'];
+  events: Array<MotionEventInput>;
   isFinalized: Scalars['Boolean'];
   motionDomainId: Scalars['String'];
   motionId: Scalars['String'];
@@ -1548,21 +1550,17 @@ export type MotionDataInput = {
 
 export type MotionEvent = {
   __typename?: 'MotionEvent';
-  createdAt: Scalars['AWSDateTime'];
-  emmitedBy: Scalars['String'];
+  amount?: Maybe<Scalars['String']>;
+  initiatorAddress?: Maybe<Scalars['String']>;
   name: Scalars['String'];
-  transactionHash: Scalars['String'];
-  type: Scalars['String'];
-  values: Array<Scalars['String']>;
+  vote?: Maybe<Scalars['String']>;
 };
 
 export type MotionEventInput = {
-  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
-  emmitedBy: Scalars['String'];
+  amount?: InputMaybe<Scalars['String']>;
+  initiatorAddress?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
-  transactionHash: Scalars['String'];
-  type: Scalars['String'];
-  values: Array<Scalars['String']>;
+  vote?: InputMaybe<Scalars['String']>;
 };
 
 export type MotionStakeValues = {
@@ -3421,10 +3419,9 @@ export const MotionDataFragmentDoc = gql`
   repSubmitted
   events {
     name
-    values
-    createdAt
-    emmitedBy
-    transactionHash
+    initiatorAddress
+    vote
+    amount
   }
 }
     ${MotionStakeValuesFragmentDoc}`;

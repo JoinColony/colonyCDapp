@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ColonyAction, ColonyAndExtensionsEvents } from '~types';
+import { ColonyAction, ColonyAndExtensionsEvents, MotionEvent } from '~types';
 import { TransactionStatus, TransactionStatuses } from '~common/ColonyActions';
 import ActionEventData from './ActionEventData';
 
@@ -12,17 +12,23 @@ const displayName =
 export interface ActionsPageEventProps {
   eventName: ColonyAndExtensionsEvents;
   actionData: ColonyAction;
+  eventData: MotionEvent;
   dataTest?: string;
 }
 
 const ActionsPageEvent = ({
-  actionData,
   eventName,
+  actionData,
+  eventData,
   dataTest,
 }: ActionsPageEventProps) => (
   <div className={styles.main} data-test={dataTest}>
     <TransactionStatus status={TransactionStatuses.Succeeded} showTooltip />
-    <ActionEventData actionData={actionData} eventName={eventName} />
+    <ActionEventData
+      actionData={actionData}
+      eventData={eventData}
+      eventName={eventName}
+    />
   </div>
 );
 

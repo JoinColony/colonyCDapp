@@ -3,6 +3,7 @@ import {
   Colony,
   ColonyAction,
   ColonyAndExtensionsEvents,
+  MotionEvent,
 } from '~types';
 
 import { mapColonyEventToExpectedFormat } from './mapItemToMessageFormat';
@@ -158,11 +159,13 @@ export const generateMessageValues = (
 const getEventTitleValues = (
   eventName: ColonyAndExtensionsEvents,
   actionData: ColonyAction,
+  eventData: MotionEvent,
   colony?: Colony,
 ) => {
   const updatedItem = mapColonyEventToExpectedFormat(
     eventName,
     actionData,
+    eventData,
     colony,
   );
   const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
