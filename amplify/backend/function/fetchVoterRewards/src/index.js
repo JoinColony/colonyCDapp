@@ -1,4 +1,8 @@
-const { graphqlRequest, getVoterRewardRange } = require('./utils');
+const {
+  graphqlRequest,
+  getVoterRewardRange,
+  getVoterReward,
+} = require('./utils');
 const { getUserReputation } = require('./graphql');
 
 /**
@@ -25,6 +29,8 @@ exports.handler = async (event) => {
     voterAddress,
   );
 
+  const reward = await getVoterReward(colonyAddress, motionId, userReputation);
+
   if (!range) {
     return undefined;
   }
@@ -33,5 +39,6 @@ exports.handler = async (event) => {
   return {
     min: min.toString(),
     max: max.toString(),
+    reward: reward?.toString() || '0',
   };
 };

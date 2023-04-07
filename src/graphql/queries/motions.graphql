@@ -6,5 +6,6 @@ query GetVoterRewards($input: GetVoterRewardsInput!) {
   getVoterRewards(input: $input) {
     min
     max
+    reward
   }
 }

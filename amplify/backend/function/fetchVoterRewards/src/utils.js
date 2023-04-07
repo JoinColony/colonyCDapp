@@ -49,8 +49,20 @@ const getVoterRewardRange = async (
       userAddress,
     );
     return range;
-  } catch (e) {
-    console.error(e);
+  } catch {
+    return undefined;
+  }
+};
+
+const getVoterReward = async (colonyAddress, motionId, userReputation) => {
+  const votingClient = await getVotingClient(colonyAddress);
+  try {
+    const reward = await votingClient.getVoterReward(
+      BigNumber.from(motionId),
+      BigNumber.from(userReputation),
+    );
+    return reward;
+  } catch {
     return undefined;
   }
 };
@@ -89,4 +101,5 @@ const graphqlRequest = async (queryOrMutation, variables) => {
 module.exports = {
   graphqlRequest,
   getVoterRewardRange,
+  getVoterReward,
 };
