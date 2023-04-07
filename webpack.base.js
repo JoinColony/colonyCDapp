@@ -30,14 +30,14 @@ const config = {
         '~context': path.resolve(__dirname, 'src/context'),
         '~hooks': path.resolve(__dirname, 'src/hooks'),
         '~images': path.resolve(__dirname, 'src/images'),
-      //   '~data': path.resolve(__dirname, 'src/data'),
+        //   '~data': path.resolve(__dirname, 'src/data'),
         '~redux': path.resolve(__dirname, 'src/redux'),
         '~routes': path.resolve(__dirname, 'src/routes'),
         '~utils': path.resolve(__dirname, 'src/utils'),
         '~styles': path.resolve(__dirname, 'src/styles/shared'),
-      //   '~testutils': path.resolve(__dirname, 'src/__tests__/utils.ts'),
+        //   '~testutils': path.resolve(__dirname, 'src/__tests__/utils.ts'),
         '~types': path.resolve(__dirname, 'src/types'),
-      //   '~dialogs': path.resolve(__dirname, 'src/modules/dashboard/components/Dialogs')
+        //   '~dialogs': path.resolve(__dirname, 'src/modules/dashboard/components/Dialogs')
         '~cache': path.resolve(__dirname, 'src/cache'),
         assert: 'assert',
         buffer: 'buffer',
@@ -63,26 +63,49 @@ const config = {
     rules: [
       {
         test: /\.css$/,
-        include: [
-          path.resolve(__dirname, 'src', 'components'),
-          path.resolve(__dirname, 'src', 'styles'),
-        ],
-        use: [
-          'style-loader',
-          '@teamsupercell/typings-for-css-modules-loader',
+        oneOf: [
           {
-            loader: 'css-loader',
-            options: {
-              modules: {
-                mode: 'local',
-                exportLocalsConvention: 'camelCaseOnly',
-                localIdentName: '[name]_[local]_[contenthash:base64:8]',
+            test: /\.global\.css$/,
+            include: [
+              path.resolve(__dirname, 'src', 'components'),
+              path.resolve(__dirname, 'src', 'styles'),
+            ],
+            use: [
+              'style-loader',
+              '@teamsupercell/typings-for-css-modules-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  importLoaders: 1,
+                },
               },
-              importLoaders: 1,
-            },
+              'postcss-loader',
+            ],
           },
-          'postcss-loader',
-        ],
+          {
+            test: /\.css$/,
+            include: [
+              path.resolve(__dirname, 'src', 'components'),
+              path.resolve(__dirname, 'src', 'styles'),
+            ],
+            use: [
+              'style-loader',
+              '@teamsupercell/typings-for-css-modules-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  modules: {
+                    mode: 'local',
+                    exportLocalsConvention: 'camelCaseOnly',
+                    localIdentName: '[name]_[local]_[contenthash:base64:8]',
+                  },
+                  importLoaders: 1,
+                },
+              },
+              'postcss-loader',
+            ],
+          }
+        ]
       },
       {
         test: /\.css$/,

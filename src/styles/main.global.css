@@ -10,7 +10,7 @@
 
   html {
     @apply antialiased;
-    @apply font-inter bg-base-black text-base text-gray-600 h-full;
+    @apply font-inter text-base text-gray-600 h-full;
   }
 
   body {
@@ -21,7 +21,7 @@
     fill: currentColor;
   }
 
-  :global(#root) {
+  #root {
     height: 100%;
   }
 }
