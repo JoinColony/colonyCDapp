@@ -17,8 +17,8 @@ export interface ActionsPageEventProps {
 }
 
 const ActionsPageEvent = ({
-  actionData,
   eventName,
+  actionData,
   dataTest,
   eventId,
 }: ActionsPageEventProps) => (
