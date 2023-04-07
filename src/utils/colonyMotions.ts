@@ -44,6 +44,7 @@ export const getMotionState = (
       raw: { yay: yayStakes, nay: nayStakes },
     },
     requiredStake,
+    votes,
   }: MotionData,
 ) => {
   switch (motionState) {
@@ -64,19 +65,28 @@ export const getMotionState = (
     }
     case NetworkMotionState.Finalizable:
     case NetworkMotionState.Finalized: {
-      /* @TODO: Add when voting gets wired in.
-        if (nayStakes.gte(requiredStakes) && yayStakes.gte(requiredStakes)) {
-        const [nayVotes, yayVotes] = motion.votes;
-        
+      /*
+       * Both sides staked fully, we go to a vote
+       *
+       * @TODO We're using gte as opposed to just eq to counteract a bug on the contracts
+       * Once that is fixed, we can switch this back to equals
+       */
+      if (
+        BigNumber.from(nayStakes).gte(requiredStake) &&
+        BigNumber.from(yayStakes).gte(requiredStake)
+      ) {
+        const [nayVotes, yayVotes] = votes;
+        /*
          * It only passes if the yay votes outnumber the nay votes
          * If the votes are equal, it fails
-         
-        if (yayVotes.gt(nayVotes)) {
+         */
+        if (BigNumber.from(yayVotes).gt(nayVotes)) {
           return MotionState.Passed;
         }
+
         return MotionState.Failed;
       }
-      */
+
       if (BigNumber.from(yayStakes).eq(requiredStake)) {
         return MotionState.Passed;
       }
