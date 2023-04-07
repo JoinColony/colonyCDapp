@@ -3082,7 +3082,7 @@ export type GetVoterRewardsQueryVariables = Exact<{
 }>;
 
 
-export type GetVoterRewardsQuery = { __typename?: 'Query', getVoterRewards?: { __typename?: 'VoterRewardsReturn', min: string, max: string } | null };
+export type GetVoterRewardsQuery = { __typename?: 'Query', getVoterRewards?: { __typename?: 'VoterRewardsReturn', min: string, max: string, reward: string } | null };
 
 export type GetProfileByEmailQueryVariables = Exact<{
   email: Scalars['AWSEmail'];
@@ -4243,6 +4243,7 @@ export const GetVoterRewardsDocument = gql`
   getVoterRewards(input: $input) {
     min
     max
+    reward
   }
 }
     `;
