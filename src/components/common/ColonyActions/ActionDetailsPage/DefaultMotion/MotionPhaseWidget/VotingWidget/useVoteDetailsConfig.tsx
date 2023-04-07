@@ -6,7 +6,7 @@ import { DetailItemProps } from '~shared/DetailsWidget';
 import MemberReputation from '~shared/MemberReputation';
 import { intl } from '~utils/intl';
 
-import { VoteDetailsProps, VoteButton, VoteReward } from '.';
+import { VoteDetailsProps, VoteButton, VoteRewardItem } from '.';
 
 const { formatMessage } = intl({
   'label.votingMethod': 'Voting method',
@@ -29,7 +29,7 @@ interface VoteDetailsConfig extends DetailItemProps {
 
 export const useVoteDetailsConfig = ({
   //  motionState,
-  motionId,
+  // motionId,
   motionDomainId,
 }: // hasUserVoted,
 VoteDetailsProps): VoteDetailsConfig[] => {
@@ -72,13 +72,7 @@ VoteDetailsProps): VoteDetailsConfig[] => {
       {
         label: formatMessage({ id: 'label.reward' }),
         tooltipText: formatMessage({ id: 'tooltip.reward' }),
-        item: (
-          <VoteReward
-            //  motionState={motionState}
-            motionId={motionId}
-            motionDomainId={motionDomainId}
-          />
-        ),
+        item: <VoteRewardItem />,
       },
     );
   }
