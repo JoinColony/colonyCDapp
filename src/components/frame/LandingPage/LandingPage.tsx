@@ -82,6 +82,7 @@ const LandingPage = () => {
             appearance={{ size: 'medium', margin: 'none', theme: 'dark' }}
           />
         </div>
+        <p className="font-black bg-base-black text-base-white">Hej!</p>
         <ul>
           {wallet && !userLoading && !user && (
             <LandingItem to={CREATE_USER_ROUTE} message={MSG.createUsername} />
