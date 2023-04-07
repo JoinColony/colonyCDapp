@@ -117,4 +117,14 @@ fragment MotionData on MotionData {
     voteCount
     vote
   }
+  revealedVotes {
+    raw {
+      yay
+      nay
+    }
+    percentage {
+      yay
+      nay
+    }
+  }
 }
