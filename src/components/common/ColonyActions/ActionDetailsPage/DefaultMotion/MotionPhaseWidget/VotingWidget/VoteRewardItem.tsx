@@ -3,6 +3,7 @@ import { useGetVoterRewardsQuery } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 import Numeral from '~shared/Numeral';
 import TokenIcon from '~shared/TokenIcon';
+import { MotionData } from '~types';
 
 import styles from './VoteRewardItem.css';
 
@@ -11,14 +12,12 @@ const displayName =
 
 interface VoteRewardItemProps {
   // motionState: MotionState;
-  motionId: string;
-  motionDomainId: string;
+  motionData: MotionData;
 }
 
 const VoteRewardItem = ({
   //  motionState,
-  motionId,
-  motionDomainId,
+  motionData: { motionId, motionDomainId, rootHash },
 }: VoteRewardItemProps) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -30,6 +29,7 @@ const VoteRewardItem = ({
         colonyAddress: colony?.colonyAddress ?? '',
         motionDomainId,
         motionId,
+        rootHash,
       },
     },
   });

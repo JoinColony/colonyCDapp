@@ -29,8 +29,8 @@ interface VoteDetailsConfig extends DetailItemProps {
 
 export const useVoteDetailsConfig = ({
   //  motionState,
-  // motionId,
-  motionDomainId,
+  motionData: { motionDomainId },
+  motionData,
   hasUserVoted,
 }: VoteDetailsProps): VoteDetailsConfig[] => {
   const { user } = useAppContext();
@@ -77,7 +77,12 @@ export const useVoteDetailsConfig = ({
       {
         label: formatMessage({ id: 'label.reward' }),
         tooltipText: formatMessage({ id: 'tooltip.reward' }),
-        item: <VoteRewardItem />,
+        item: (
+          <VoteRewardItem
+            //  motionState={motionState}
+            motionData={motionData}
+          />
+        ),
       },
     );
   }
