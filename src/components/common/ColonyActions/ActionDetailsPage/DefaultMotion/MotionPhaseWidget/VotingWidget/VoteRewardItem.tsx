@@ -1,5 +1,6 @@
 import React from 'react';
-import { useColonyContext } from '~hooks';
+import { useGetVoterRewardsQuery } from '~gql';
+import { useAppContext, useColonyContext } from '~hooks';
 import Numeral from '~shared/Numeral';
 import TokenIcon from '~shared/TokenIcon';
 
@@ -8,11 +9,34 @@ import styles from './VoteRewardItem.css';
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget.VoteReward';
 
-const VoteRewardItem = () => {
+interface VoteRewardItemProps {
+  // motionState: MotionState;
+  motionId: string;
+  motionDomainId: string;
+}
+
+const VoteRewardItem = ({
+  //  motionState,
+  motionId,
+  motionDomainId,
+}: VoteRewardItemProps) => {
   const { colony } = useColonyContext();
+  const { user } = useAppContext();
+
+  const { data } = useGetVoterRewardsQuery({
+    variables: {
+      input: {
+        voterAddress: user?.walletAddress ?? '',
+        colonyAddress: colony?.colonyAddress ?? '',
+        motionDomainId,
+        motionId,
+      },
+    },
+  });
+
+  const { max: maxReward, min: minReward } = data?.getVoterRewards || {};
+
   const { nativeToken } = colony || {};
-  const minReward = '1000000000000000000';
-  const maxReward = '10000000000000000000';
   const showRewardRange = minReward !== maxReward;
   // if (motionState === MotionState.Voting) {
   return (

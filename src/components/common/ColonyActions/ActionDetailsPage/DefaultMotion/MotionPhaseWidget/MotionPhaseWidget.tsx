@@ -24,11 +24,14 @@ const isMotionClaimed = (
   return !!userReward?.isClaimed;
 };
 
-interface MotionPhaseWidgetProps {
-  actionData: ColonyAction;
-  motionState: MotionState;
+export interface PollingControls {
   startPollingAction: (pollingInterval: number) => void;
   stopPollingAction: () => void;
+}
+
+interface MotionPhaseWidgetProps extends PollingControls {
+  actionData: ColonyAction;
+  motionState: MotionState;
 }
 
 const MotionPhaseWidget = ({
@@ -39,7 +42,6 @@ const MotionPhaseWidget = ({
   const { user } = useAppContext();
   const { motionData, type, amount, fromDomain } = actionData;
   const { stopPollingAction } = rest;
-
   if (!motionData) {
     /*
      * Will not happen. Undefined motion data will result in the invalid transaction view being
@@ -93,6 +95,7 @@ const MotionPhaseWidget = ({
           actionType={type}
           motionData={motionData}
           motionState={motionState}
+          {...rest}
         />
       );
     }
