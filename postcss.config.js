@@ -4,6 +4,7 @@ const postCSSPresetEnv = require('postcss-preset-env');
 const postCSSSvg = require('postcss-svg');
 const svgoPlugins = require('./webpack.base').svgoPlugins;
 const tailwindcss = require('tailwindcss');
+const autoprefixer = require('autoprefixer');
 
 // Aliases for CSS @import rules (relative to this file)
 const aliases = {
@@ -33,6 +34,7 @@ module.exports = {
         plugins: svgoPlugins,
       },
     }),
-    tailwindcss({}),
+    tailwindcss(),
+    autoprefixer(),
   ],
 };
