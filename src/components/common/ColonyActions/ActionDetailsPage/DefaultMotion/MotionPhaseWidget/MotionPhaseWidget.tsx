@@ -102,7 +102,13 @@ const MotionPhaseWidget = ({
     }
 
     case MotionState.Reveal: {
-      return <RevealWidget motionData={motionData} motionState={motionState} />;
+      return (
+        <RevealWidget
+          motionData={motionData}
+          motionState={motionState}
+          {...rest}
+        />
+      );
     }
 
     /* Extend with other widgets as they get ported. */
