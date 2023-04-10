@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BigNumber } from 'ethers';
 
 import { MotionState, MotionVote } from '~utils/colonyMotions';
@@ -10,8 +10,9 @@ import { mapPayload } from '~utils/actions';
 import { RevealMotionPayload } from '~redux/sagas/motions/revealVoteMotion';
 
 import { VoteDetails } from '../VotingWidget';
-import RevealWidgetHeading from './RevealWidgetHeading';
 import { PollingControls } from '../MotionPhaseWidget';
+import RevealWidgetHeading from './RevealWidgetHeading';
+import { useRevealWidgetUpdate } from './useRevealWidgetUpdate';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.RevealWidget';
@@ -30,17 +31,10 @@ const RevealWidget = ({
 }: RevealWidgetProps) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const currentVotingRecord = voterRecord.find(
-    ({ address }) => address === user?.walletAddress,
+  const { hasUserVoted, vote } = useRevealWidgetUpdate(
+    voterRecord,
+    stopPollingAction,
   );
-  const hasUserVoted = !!currentVotingRecord;
-  const vote = currentVotingRecord?.vote ?? null;
-  const [prevVote, setPrevVote] = useState(vote);
-
-  if (vote !== prevVote) {
-    stopPollingAction();
-    setPrevVote(vote);
-  }
 
   const transform = mapPayload(
     () =>
