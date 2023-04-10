@@ -55,7 +55,7 @@ export const useVoteDetailsConfig = ({
       },
     },
     skip: !user || !colony,
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
   });
 
   const {
