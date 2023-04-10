@@ -167,6 +167,7 @@ function* editColonyAction({
               txHash,
               colony.metadata,
               colonyDisplayName,
+              colonyAvatarImage,
             ),
           },
         },

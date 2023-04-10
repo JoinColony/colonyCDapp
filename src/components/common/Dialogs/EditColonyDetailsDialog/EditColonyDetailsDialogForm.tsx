@@ -146,6 +146,7 @@ const EditColonyDetailsDialogForm = ({
                   colony={colony}
                   colonyAddress={colonyAddress}
                   size="xl"
+                  preferThumbnail={false}
                 />
               )}
             </>

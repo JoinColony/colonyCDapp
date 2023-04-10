@@ -84,6 +84,7 @@ const SubscribedColoniesList = () => {
                       colony={item?.colony}
                       colonyAddress={colonyAddress}
                       size="s"
+                      preferThumbnail={false}
                     />
                   </div>
                 </NavLink>
