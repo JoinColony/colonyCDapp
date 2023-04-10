@@ -1,6 +1,6 @@
 module.exports = {
   mode: 'jit',
-  content: ['./src/components/**/*.{js,ts,jsx,tsx}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     fontFamily: {
       inter: ['Inter', 'sans-serif'],
