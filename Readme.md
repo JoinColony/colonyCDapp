@@ -1,6 +1,6 @@
 # Colony CDapp
 
-A interation of the Colony Dapp sporting both a fully decentralized operating mode, as well as a mode enhanced by a metadata caching layer
+An iteration of the Colony Dapp sporting both a fully decentralized operating mode, as well as a mode enhanced by a metadata caching layer
 
 ## Prerequisites
 * `node` `v16.16.x` (Best use [nvm](https://github.com/nvm-sh/nvm))
@@ -35,7 +35,7 @@ npm run dev
 
 This will build your local docker images, then attempt to start them _(the local dev environment runs inside a couple of docker containers).
 
-On the next start, assuming no key cache files changed, it will skip the image building step _(as it will just used the cached version)_, and go strait to starting your environment
+On the next start, assuming no key cache files changed, it will skip the image building step _(as it will just use the cached version)_, and go straight to starting your environment
 
 ## Running the dev web server
 
