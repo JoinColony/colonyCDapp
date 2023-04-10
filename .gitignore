@@ -38,3 +38,5 @@ amplify/mock-data
 # Due to the way the Docker container is set up, they will always be under the root
 # user, so ignoring them will prevent alot of unpleasantness
 amplify/backend/api/colonycdapp/resolvers/*.vtl
+
+src/**/*.css.d.ts

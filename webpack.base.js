@@ -14,7 +14,7 @@ const svgoPlugins = [
   { removeTitle: true },
   { convertColors: { shorthex: false } },
   { convertPathData: false },
-]
+];
 
 const config = {
   mode,
@@ -30,14 +30,11 @@ const config = {
         '~context': path.resolve(__dirname, 'src/context'),
         '~hooks': path.resolve(__dirname, 'src/hooks'),
         '~images': path.resolve(__dirname, 'src/images'),
-      //   '~data': path.resolve(__dirname, 'src/data'),
         '~redux': path.resolve(__dirname, 'src/redux'),
         '~routes': path.resolve(__dirname, 'src/routes'),
         '~utils': path.resolve(__dirname, 'src/utils'),
         '~styles': path.resolve(__dirname, 'src/styles/shared'),
-      //   '~testutils': path.resolve(__dirname, 'src/__tests__/utils.ts'),
         '~types': path.resolve(__dirname, 'src/types'),
-      //   '~dialogs': path.resolve(__dirname, 'src/modules/dashboard/components/Dialogs')
         '~cache': path.resolve(__dirname, 'src/cache'),
         assert: 'assert',
         buffer: 'buffer',
@@ -47,8 +44,8 @@ const config = {
         os: 'os-browserify/browser',
         process: 'process/browser',
         stream: 'stream-browserify',
-        util: 'util'
-      },
+        util: 'util',
+      }
     ),
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
     fallback: {
@@ -63,25 +60,48 @@ const config = {
     rules: [
       {
         test: /\.css$/,
-        include: [
-          path.resolve(__dirname, 'src', 'components'),
-          path.resolve(__dirname, 'src', 'styles'),
-        ],
-        use: [
-          'style-loader',
-          '@teamsupercell/typings-for-css-modules-loader',
+        oneOf: [
           {
-            loader: 'css-loader',
-            options: {
-              modules: {
-                mode: 'local',
-                exportLocalsConvention: 'camelCaseOnly',
-                localIdentName: '[name]_[local]_[contenthash:base64:8]',
+            test: /\.global\.css$/,
+            include: [
+              path.resolve(__dirname, 'src', 'components'),
+              path.resolve(__dirname, 'src', 'styles'),
+            ],
+            use: [
+              'style-loader',
+              '@teamsupercell/typings-for-css-modules-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  importLoaders: 1,
+                },
               },
-              importLoaders: 1,
-            },
+              'postcss-loader',
+            ],
           },
-          'postcss-loader',
+          {
+            test: /\.css$/,
+            include: [
+              path.resolve(__dirname, 'src', 'components'),
+              path.resolve(__dirname, 'src', 'styles'),
+            ],
+            use: [
+              'style-loader',
+              '@teamsupercell/typings-for-css-modules-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  modules: {
+                    mode: 'local',
+                    exportLocalsConvention: 'camelCaseOnly',
+                    localIdentName: '[name]_[local]_[contenthash:base64:8]',
+                  },
+                  importLoaders: 1,
+                },
+              },
+              'postcss-loader',
+            ],
+          },
         ],
       },
       {
@@ -94,9 +114,7 @@ const config = {
       },
       {
         test: /\.(woff|woff2|png|jpe?g|gif)$/,
-        include: [
-          path.resolve('src'),
-        ],
+        include: [path.resolve('src')],
         type: 'asset/resource',
       },
       /*
@@ -104,9 +122,7 @@ const config = {
        */
       {
         test: /\.svg$/,
-        exclude: [
-          path.resolve(__dirname, 'src', 'images', 'icons')
-        ],
+        exclude: [path.resolve(__dirname, 'src', 'images', 'icons')],
         use: '@svgr/webpack',
       },
       /*
@@ -116,9 +132,7 @@ const config = {
        */
       {
         test: /\.svg$/,
-        include: [
-          path.resolve(__dirname, 'src', 'images', 'icons')
-        ],
+        include: [path.resolve(__dirname, 'src', 'images', 'icons')],
         use: [
           {
             loader: 'svg-sprite-loader',
@@ -133,9 +147,7 @@ const config = {
       },
       {
         test: /\.svg$/,
-        include: [
-          path.resolve(__dirname, 'src', 'images', 'tokens'),
-        ],
+        include: [path.resolve(__dirname, 'src', 'images', 'tokens')],
         use: [
           {
             loader: 'svgo-loader',
@@ -163,8 +175,8 @@ const config = {
     }),
     new webpack.ProvidePlugin({
       process: 'process/browser',
-      Buffer: ['buffer', 'Buffer']
-    })
+      Buffer: ['buffer', 'Buffer'],
+    }),
   ],
   /*
    * Fix for the XMLHttpRequest compile-time bug.
@@ -178,7 +190,7 @@ const config = {
     },
   ],
   experiments: {
-    asyncWebAssembly: true
+    asyncWebAssembly: true,
   },
 };
 

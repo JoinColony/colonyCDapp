@@ -1,5 +1,20 @@
 module.exports = {
+  mode: 'jit',
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    fontFamily: {
+      inter: ['Inter', 'sans-serif'],
+    },
+    fontSize: {
+      xs: ['0.625rem', 1.6],
+      sm: ['0.75rem', 1.5],
+      base: ['0.875rem', 1.4],
+      lg: ['1rem', 1.5],
+      xl: ['1.125rem', 1.5],
+      '2xl': ['1.5rem', 1.25],
+      '3xl': ['1.875rem', 1.3],
+      '4xl': ['2.375rem', 1.2],
+    },
     extend: {
       colors: {
         gray: {
@@ -124,5 +139,8 @@ module.exports = {
       md: '64rem',
       lg: '90rem',
     },
+  },
+  future: {
+    hoverOnlyWhenSupported: true,
   },
 };

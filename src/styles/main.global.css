@@ -1,0 +1,51 @@
+@import 'variables.css';
+@import 'fonts.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@value query700 from '~styles/queries.css';
+
+@layer base {
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+  html {
+    @apply antialiased;
+    @apply font-inter text-base text-gray-600 h-full;
+  }
+
+  body {
+    @apply h-full overflow-hidden;
+  }
+
+  svg:not([class]) {
+    fill: currentColor;
+  }
+
+  #root {
+    height: 100%;
+  }
+}
+
+@layer utilities {
+  .heading-1 {
+    @apply text-4xl font-semibold;
+  }
+
+  .heading-2 {
+    @apply text-3xl font-semibold;
+  }
+
+  .heading-3 {
+    @apply text-2xl font-semibold;
+  }
+
+  .heading-4 {
+    @apply text-xl font-semibold;
+  }
+}
+
+@media screen and query700 {
+  html {
+    background-color: white;
+  }
+}
