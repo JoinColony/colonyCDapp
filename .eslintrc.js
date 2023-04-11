@@ -112,7 +112,7 @@ module.exports = {
     'max-len': [
       'error',
       {
-        code: 150,
+        code: 120,
         // Allow import, export and implements statements. Also long backticks
         ignorePattern: '^import [^,]+ from |^export | implements | `.{30,}`',
         ignoreComments: true,
