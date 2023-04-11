@@ -38,6 +38,7 @@ const Button = ({
               'bg-blue-400 text-base-white hover:bg-blue-300':
                 mode === 'primarySolid',
               'bg-gray-300': mode === 'primarySolid' && disabled,
+              // eslint-disable-next-line max-len
               'bg-base-white text-gray-700 border border-gray-300 hover:bg-blue-400 hover:border-blue-400 hover:text-base-white':
                 mode === 'primaryOutline',
               'text-gray-300 border-gray-300':
