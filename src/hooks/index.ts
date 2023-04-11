@@ -23,7 +23,6 @@ export {
   WizardDialogType,
 } from './useNaiveBranchingDialogWizard';
 
-export { default as useAvatarDisplayCounter } from './useAvatarDisplayCounter';
 export { default as useColonyReputation } from './useColonyReputation';
 export { default as useDialogActionPermissions } from './useDialogActionPermissions';
 export { default as useActionDialogStatus } from './useActionDialogStatus';
