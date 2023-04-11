@@ -10,6 +10,7 @@ import FinalizeMotion from './FinalizeMotion';
 import StakingWidget, { StakingWidgetProvider } from './StakingWidget';
 import { VotingWidget } from './VotingWidget';
 import { RevealWidget } from './RevealWidget';
+import { VoteOutcome } from './VoteOutcome';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.MotionPhaseWidget';
@@ -62,19 +63,23 @@ const MotionPhaseWidget = ({
       );
     }
 
+    case MotionState.Failed:
     case MotionState.Passed: {
       if (!motionData.isFinalized) {
         return (
-          <FinalizeMotion
-            amount={amount}
-            motionData={motionData}
-            requiresDomainFunds={
-              !!fromDomain &&
-              !!amount &&
-              type !== ColonyActionType.MintTokensMotion
-            }
-            {...rest}
-          />
+          <div>
+            <FinalizeMotion
+              amount={amount}
+              motionData={motionData}
+              requiresDomainFunds={
+                !!fromDomain &&
+                !!amount &&
+                type !== ColonyActionType.MintTokensMotion
+              }
+              {...rest}
+            />
+            <VoteOutcome motionData={motionData} actionType={type} />
+          </div>
         );
       }
 
@@ -87,7 +92,21 @@ const MotionPhaseWidget = ({
         stopPollingAction();
       }
 
-      return <ClaimMotionStakes motionData={motionData} {...rest} />;
+      return (
+        <div>
+          <ClaimMotionStakes motionData={motionData} {...rest} />
+          <VoteOutcome motionData={motionData} actionType={type} />
+        </div>
+      );
+    }
+
+    case MotionState.FailedNotFinalizable: {
+      return (
+        <>
+          <ClaimMotionStakes motionData={motionData} {...rest} />
+          <VoteOutcome motionData={motionData} actionType={type} />
+        </>
+      );
     }
 
     case MotionState.Voting: {
