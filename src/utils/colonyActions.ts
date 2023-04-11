@@ -553,3 +553,6 @@ export const getExtendedActionType = (
 
   return actionData.type;
 };
+
+export const formatActionType = (actionType: ColonyActionType) =>
+  formatText({ id: 'action.type' }, { actionType });

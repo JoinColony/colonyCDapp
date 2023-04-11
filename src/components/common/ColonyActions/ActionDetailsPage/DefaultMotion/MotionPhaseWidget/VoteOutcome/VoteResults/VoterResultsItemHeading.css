@@ -1,0 +1,12 @@
+.main {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.votePercentage {
+  margin-left: 5px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  color: var(--grey-purple);
+}

@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 
 import { ColonyActionType } from '~gql';
 import { Heading4 } from '~shared/Heading';
-import { formatText } from '~utils/intl';
+import { formatActionType } from '~utils/colonyActions';
 
 import styles from './VotingWidgetHeading.css';
 
@@ -17,18 +17,19 @@ const MSG = defineMessages({
   },
 });
 
+export const { title: voteTitleMsg } = MSG;
+
 interface VotingWidgetHeadingProps {
   actionType: ColonyActionType;
 }
 
 const VotingWidgetHeading = ({ actionType }: VotingWidgetHeadingProps) => {
-  const formattedActionType = formatText({ id: 'action.type' }, { actionType });
   return (
     <div className={styles.main}>
       <Heading4
         text={MSG.title}
         textValues={{
-          actionType: formattedActionType,
+          actionType: formatActionType(actionType),
         }}
         appearance={{ weight: 'bold', theme: 'dark', margin: 'none' }}
       />
