@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
 
 import Numeral from '~shared/Numeral';
@@ -8,10 +8,13 @@ import { ClaimAllMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRe
 import Button, { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { useAppContext, useColonyContext } from '~hooks';
+import { ClaimMotionStakesStyles } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/ClaimMotionStakes/ClaimMotionStakes';
+import { DetailItemProps } from '~shared/DetailsWidget';
 
 const { formatMessage } = intl({
   'label.stake': 'Stake',
   'label.winnings': 'Winnings',
+  'label.penalty': 'Penalty',
   'label.total': 'Total',
   'label.claim': 'Claim your tokens',
 });
@@ -19,6 +22,7 @@ const { formatMessage } = intl({
 const useClaimWidgetConfig = (
   { motionId, usersStakes, stakerRewards }: MotionData,
   startPollingAction: (pollInterval: number) => void,
+  styles: ClaimMotionStakesStyles,
 ) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
@@ -33,8 +37,19 @@ const useClaimWidgetConfig = (
   const stakerReward = stakerRewards.find(
     ({ address }) => address === userAddress,
   );
+
+  // Keep isClaimed state in sync with user changes
+  useEffect(() => {
+    if (!user) {
+      setIsClaimed(false);
+    } else {
+      setIsClaimed(!!stakerReward?.isClaimed);
+    }
+  }, [user, stakerReward]);
+
   const claimItem = {
     label: formatMessage({ id: 'label.claim' }),
+    labelStyles: styles.claimLabel,
     item: (
       <Button
         appearance={{ theme: 'primary', size: 'medium' }}
@@ -44,10 +59,9 @@ const useClaimWidgetConfig = (
     ),
   };
 
-  const config = [claimItem];
+  const config: DetailItemProps[] = [claimItem];
 
   // Return basic view if we have insufficient data
-
   if (!userStake || !stakerReward || !userAddress || !colonyAddress) {
     return config;
   }
@@ -73,7 +87,7 @@ const useClaimWidgetConfig = (
 
   // Else, return full widget
   const buttonTextId = isClaimed ? 'button.claimed' : 'button.claim';
-  const canClaimStakes = !userTotalStake.isZero() && !isClaimed;
+  const canClaimStakes = !totals.isZero() && !isClaimed;
   const handleClaimSuccess = () => {
     setIsClaimed(true);
     startPollingAction(1000);
@@ -109,7 +123,9 @@ const useClaimWidgetConfig = (
   };
 
   const winningsItem = {
-    label: formatMessage({ id: 'label.winnings' }),
+    label: formatMessage({
+      id: userWinnings.gte(0) ? 'label.winnings' : 'label.penalty',
+    }),
     item: (
       <Numeral
         value={userWinnings}
