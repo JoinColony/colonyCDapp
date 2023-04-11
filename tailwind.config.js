@@ -8,7 +8,7 @@ module.exports = {
     fontSize: {
       xs: ['0.625rem', 1.6],
       sm: ['0.75rem', 1.5],
-      base: ['0.875rem', 1.4],
+      md: ['0.875rem', 1.4],
       lg: ['1rem', 1.5],
       xl: ['1.125rem', 1.5],
       '2xl': ['1.5rem', 1.25],
@@ -122,6 +122,10 @@ module.exports = {
           100: '#ECEFF1',
           500: '#415A77',
         },
+      },
+      spacing: {
+        10: '0.625rem',
+        16: '1rem',
       },
       boxShadow: {
         default: '0px 10px 30px rgba(0, 0, 0, 0.05)',
