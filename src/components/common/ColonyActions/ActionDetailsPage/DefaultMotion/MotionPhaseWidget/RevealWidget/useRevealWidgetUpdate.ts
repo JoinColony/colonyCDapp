@@ -12,8 +12,18 @@ export const useRevealWidgetUpdate = (
     ({ address }) => address === user?.walletAddress,
   );
   const hasUserVoted = !!currentVotingRecord;
-  const vote = currentVotingRecord?.vote;
+  const vote = currentVotingRecord?.vote ?? null;
   const [prevVote, setPrevVote] = useState(vote);
+  const [userVoteRevealed, setUserVoteRevealed] = useState(vote !== null);
+
+  /* Keep revealed state in sync with user changes */
+  useEffect(() => {
+    if (!user) {
+      setUserVoteRevealed(false);
+    } else {
+      setUserVoteRevealed(typeof vote === 'number');
+    }
+  }, [user, vote]);
 
   /* Vote has been updated in db, stop polling */
   if (vote !== prevVote) {
@@ -23,5 +33,5 @@ export const useRevealWidgetUpdate = (
 
   useEffect(() => stopPollingAction, [stopPollingAction]);
 
-  return { hasUserVoted, vote };
+  return { hasUserVoted, vote, userVoteRevealed, setUserVoteRevealed };
 };
