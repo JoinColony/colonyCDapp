@@ -1,0 +1,15 @@
+.main {
+  margin-top: 30px;
+}
+
+.main h4 {
+  padding-top: 10px;
+}
+
+.outcome {
+  padding: 10px 0;
+  border-bottom: 1px solid color-mod(var(--grey-purple) alpha(15%));
+  font-size: var(--size-smallish);
+  font-weight: var(--weight-bold);
+  color: var(--dark);
+}

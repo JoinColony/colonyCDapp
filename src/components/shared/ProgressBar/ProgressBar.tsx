@@ -25,7 +25,7 @@ interface Props {
   value?: number;
   max?: number;
   threshold?: number;
-  hidePercentage: boolean;
+  hidePercentage?: boolean;
 }
 
 const displayName = 'ProgressBar';

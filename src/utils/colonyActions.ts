@@ -510,3 +510,6 @@ export const formatRolesTitle = (roles: ActionUserRoles[]) => {
     direction,
   };
 };
+
+export const formatActionType = (actionType: ColonyActionType) =>
+  formatText({ id: 'action.type' }, { actionType });
