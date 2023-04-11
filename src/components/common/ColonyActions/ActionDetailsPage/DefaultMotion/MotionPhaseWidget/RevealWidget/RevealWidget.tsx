@@ -1,7 +1,7 @@
 import React from 'react';
 import { BigNumber } from 'ethers';
 
-import { MotionState, MotionVote } from '~utils/colonyMotions';
+import { MotionState } from '~utils/colonyMotions';
 import { MotionData } from '~types';
 import { useAppContext, useColonyContext } from '~hooks';
 import { ActionHookForm as ActionForm, OnSuccess } from '~shared/Fields';
@@ -31,11 +31,8 @@ const RevealWidget = ({
 }: RevealWidgetProps) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { hasUserVoted, vote } = useRevealWidgetUpdate(
-    voterRecord,
-    stopPollingAction,
-  );
-
+  const { hasUserVoted, vote, userVoteRevealed, setUserVoteRevealed } =
+    useRevealWidgetUpdate(voterRecord, stopPollingAction);
   const transform = mapPayload(
     () =>
       ({
@@ -48,6 +45,7 @@ const RevealWidget = ({
   const handleSuccess: OnSuccess<Record<string, any>> = (_, { reset }) => {
     reset();
     startPollingAction(1000);
+    setUserVoteRevealed(true);
   };
 
   return (
@@ -56,12 +54,16 @@ const RevealWidget = ({
       onSuccess={handleSuccess}
       transform={transform}
     >
-      <RevealWidgetHeading hasUserVoted={hasUserVoted} vote={vote} />
+      <RevealWidgetHeading
+        hasUserVoted={hasUserVoted}
+        userVoteRevealed={userVoteRevealed}
+        vote={vote}
+      />
       <VoteDetails
         motionData={motionData}
         motionState={motionState}
         hasUserVoted={hasUserVoted}
-        userVoteRevealed={!!vote}
+        userVoteRevealed={userVoteRevealed}
       />
     </ActionForm>
   );
