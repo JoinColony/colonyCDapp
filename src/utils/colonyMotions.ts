@@ -39,7 +39,9 @@ export const getMotionState = (
       raw: { yay: yayStakes, nay: nayStakes },
     },
     requiredStake,
-    votes,
+    revealedVotes: {
+      raw: { yay: yayVotes, nay: nayVotes },
+    },
   }: MotionData,
 ) => {
   switch (motionState) {
@@ -70,7 +72,6 @@ export const getMotionState = (
         BigNumber.from(nayStakes).gte(requiredStake) &&
         BigNumber.from(yayStakes).gte(requiredStake)
       ) {
-        const [nayVotes, yayVotes] = votes;
         /*
          * It only passes if the yay votes outnumber the nay votes
          * If the votes are equal, it fails
