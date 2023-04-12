@@ -12,7 +12,7 @@ import { SLIDER_AMOUNT_KEY } from '..';
 import styles from './RequiredStakeMessage.css';
 
 const displayName =
-  'common.ActionDetailsPage.DefaultMotion.StakingWidget.RequiredStakeMessage';
+  'common.ColonyActions.DefaultMotion.StakingWidget.RequiredStakeMessage';
 
 const MSG = defineMessages({
   requiredStake: {
