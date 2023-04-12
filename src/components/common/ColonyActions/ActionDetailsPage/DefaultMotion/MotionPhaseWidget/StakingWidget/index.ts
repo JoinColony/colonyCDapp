@@ -5,6 +5,7 @@ export {
   StakingSlider,
   StakingWidgetValues,
   SLIDER_AMOUNT_KEY,
+  userHasInsufficientReputation,
 } from './StakingInput';
 export { default as GroupedTotalStake } from './GroupedTotalStake';
 export * from './StakingWidgetProvider';

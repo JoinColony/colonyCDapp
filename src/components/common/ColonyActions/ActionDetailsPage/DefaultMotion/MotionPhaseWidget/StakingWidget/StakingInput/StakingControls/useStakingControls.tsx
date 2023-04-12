@@ -4,6 +4,10 @@ import { useGetUserReputationQuery } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 
 import { useStakingWidgetContext } from '../../StakingWidgetProvider';
+import {
+  userCanStakeMore,
+  userHasInsufficientReputation,
+} from '../StakingSliderMessages/helpers';
 import { useEnoughTokensForStaking } from '../useEnoughTokensForStaking';
 
 const useStakingControls = (limitExceeded: boolean) => {
@@ -48,8 +52,18 @@ const useStakingControls = (limitExceeded: boolean) => {
 
   const showBackButton = nayStakes !== '0';
 
+  const canStakeMore = userCanStakeMore(userMinStake, remainingToStake);
+
+  const userNeedsMoreReputation = userHasInsufficientReputation(
+    userActivatedTokens,
+    userMaxStake,
+    remainingToStake,
+  );
+
   const showActivateButton =
     !!user &&
+    canStakeMore &&
+    !userNeedsMoreReputation &&
     remainingToStake !== '0' &&
     enoughReputationToStakeMinimum &&
     enoughTokensToStakeMinimum &&
@@ -58,9 +72,12 @@ const useStakingControls = (limitExceeded: boolean) => {
   return {
     showBackButton,
     showActivateButton,
-    userActivatedTokens,
     enoughTokensToStakeMinimum,
     enoughReputationToStakeMinimum,
+    userNeedsMoreReputation,
+    userMaxStake,
+    userActivatedTokens,
+    canStakeMore,
     isLoadingData:
       loadingColony ||
       userLoading ||
