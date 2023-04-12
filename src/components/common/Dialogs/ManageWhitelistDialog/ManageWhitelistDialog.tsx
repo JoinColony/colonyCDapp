@@ -112,7 +112,7 @@ const ManageWhitelistDialog = ({
           whitelistAddress: userAddress,
           whitelistCSVUploader: null,
         }}
-        actionType={ActionTypes.VERIFIED_RECIPIENTS_MANAGE}
+        actionType={ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE}
         validationSchema={mergedSchemas}
         transform={transform}
         onSuccess={() => {

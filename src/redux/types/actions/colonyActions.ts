@@ -255,4 +255,24 @@ export type ColonyActionsActionTypes =
   | ActionTypeWithMeta<
       ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS,
       MetaWithNavigate<object>
+    >
+  | UniqueActionType<
+      ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE,
+      {
+        colonyAddress: Address;
+        colonyDisplayName: string;
+        colonyAvatarHash: string;
+        verifiedAddresses: Address[];
+        colonyTokens: Address[];
+        annotationMessage?: string;
+        colonyName: string;
+        isWhitelistActivated: boolean;
+      },
+      MetaWithHistory<object>
+    >
+  | ErrorActionType<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE, object>
+  | UniqueActionType<
+      ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_SUCCESS,
+      object,
+      object
     >;
