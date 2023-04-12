@@ -15,7 +15,7 @@ interface Props {
   appearance?: Appearance;
   options: Omit<CustomRadioProps, 'name' | 'checked'>[];
   /** Currently selected value */
-  currentlyCheckedValue: string;
+  currentlyCheckedValue?: string | number;
   /** HTML field name */
   name: string;
   /** Disable the input */
@@ -33,25 +33,22 @@ const CustomRadioGroup = ({
   appearance = { direction: 'horizontal' },
   disabled,
   dataTest,
-}: Props) => {
-  return (
-    <div className={getMainClasses(appearance, styles)}>
-      {options.map(({ value, label, appearance: optionApperance, ...rest }) => (
-        <CustomRadio
-          checked={currentlyCheckedValue === value}
-          name={name}
-          value={value}
-          label={label}
-          key={value}
-          appearance={{ ...optionApperance }}
-          disabled={disabled}
-          dataTest={dataTest}
-          {...rest}
-        />
-      ))}
-    </div>
-  );
-};
+}: Props) => (
+  <div className={getMainClasses(appearance, styles)}>
+    {options.map(({ value, appearance: optionApperance, ...rest }) => (
+      <CustomRadio
+        checked={currentlyCheckedValue === value}
+        name={name}
+        value={value}
+        key={value}
+        appearance={{ ...optionApperance }}
+        disabled={disabled}
+        dataTest={dataTest}
+        {...rest}
+      />
+    ))}
+  </div>
+);
 
 CustomRadioGroup.displayName = displayName;
 

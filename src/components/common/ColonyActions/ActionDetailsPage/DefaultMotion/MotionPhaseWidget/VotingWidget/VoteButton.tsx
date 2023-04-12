@@ -7,6 +7,8 @@ import { formatText } from '~utils/intl';
 
 import { VOTE_FORM_KEY } from './VotingWidget';
 
+import styles from './VoteButton.css';
+
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget.VoteButton';
 
@@ -23,22 +25,24 @@ const VoteButton = () => {
   const vote = getValues(VOTE_FORM_KEY);
 
   return (
-    <Button
-      appearance={{ theme: 'primary', size: 'medium' }}
-      text={formatText({
-        id: hasUserVoted ? 'button.changeVote' : 'button.vote',
-      })}
-      disabled={
-        !isValid ||
-        !user ||
-        vote === undefined ||
-        !hasReputationToVote ||
-        isSubmitting
-      }
-      type="submit"
-      loading={isSubmitting}
-      dataTest="voteButton"
-    />
+    <div className={styles.main}>
+      <Button
+        appearance={{ theme: 'primary', size: 'medium' }}
+        text={formatText({
+          id: hasUserVoted ? 'button.changeVote' : 'button.vote',
+        })}
+        disabled={
+          !isValid ||
+          !user ||
+          vote === undefined ||
+          !hasReputationToVote ||
+          isSubmitting
+        }
+        type="submit"
+        loading={isSubmitting}
+        dataTest="voteButton"
+      />
+    </div>
   );
 };
 

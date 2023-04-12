@@ -22,26 +22,22 @@ const getIcon = (
 export const getVotingPanelConfig = (
   checkedValue: MotionVote,
   inputDisabled: boolean,
-): CustomRadioProps[] => [
+): Omit<CustomRadioProps, 'checked' | 'name'>[] => [
   {
     value: MotionVote.Yay,
     label: { id: 'button.yes' },
-    name: 'vote',
     appearance: {
       theme: 'primary',
     },
-    checked: false,
     icon: getIcon(inputDisabled, MotionVote.Yay, checkedValue),
     dataTest: 'yesVoteButton',
   },
   {
     value: MotionVote.Nay,
     label: { id: 'button.no' },
-    name: 'vote',
     appearance: {
       theme: 'danger',
     },
-    checked: false,
     icon: getIcon(inputDisabled, MotionVote.Nay, checkedValue),
   },
 ];
