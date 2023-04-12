@@ -20,7 +20,7 @@ const ActionDetailsPageFeed = ({ actionData }: ActionsPageFeedProps) => {
           actionData={actionData}
           motionEventData={event}
           eventName={ColonyAndExtensionsEvents[event.name]}
-          key={`${event.name}-${event.initiatorAddress}-${event.amount}`}
+          key={`${event.transactionHash}${event.logIndex}`}
         />
       ))}
     </>
