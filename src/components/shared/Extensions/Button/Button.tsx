@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { ButtonProps } from './types';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
 import styles from './Button.module.css';
+import Icon from '~shared/Icon';
 
 const displayName = 'Extensions.Button';
 
@@ -18,14 +19,18 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
   text,
   textValues,
   type = 'button',
+  className,
+  isFullRounded = false,
   ariaLabel,
   isFullSize,
+  setTriggerRef,
+  isPending,
   ...rest
 }) => {
   const { formatMessage } = useIntl();
 
-  const titleText = typeof title == 'string' ? title : title && formatMessage(title);
-  const buttonText = typeof text == 'string' ? text : text && formatMessage(text, textValues);
+  const titleText = typeof title === 'string' ? title : title && formatMessage(title);
+  const buttonText = typeof text === 'string' ? text : text && formatMessage(text, textValues);
   const ariaLabelText = typeof ariaLabel === 'string' ? ariaLabel : ariaLabel && formatMessage(ariaLabel);
 
   return (
@@ -34,22 +39,40 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
         <SpinnerLoader appearance={{ size: 'medium' }} />
       ) : (
         <button
-          className={clsx('flex items-center justify-center font-medium transition-all duration-normal', {
-            [styles.primarySolid]: mode === 'primarySolid',
-            [styles.primaryOutline]: mode === 'primaryOutline',
-            [styles.secondarySolid]: mode === 'secondarySolid',
-            [styles.textButton]: mode === 'textButton',
-            'pointer-events-none': disabled,
-            'w-full': isFullSize,
-          })}
+          className={clsx(
+            'flex items-center justify-center font-medium transition-all duration-normal',
+            {
+              [styles.primarySolid]: mode === 'primarySolid',
+              [styles.primaryOutline]: mode === 'primaryOutline',
+              [styles.secondarySolid]: mode === 'secondarySolid',
+              [styles.secondaryOutline]: mode === 'secondaryOutline',
+              [styles.tertiaryOutline]: mode === 'tertiaryOutline',
+              [styles.quaternaryOutline]: mode === 'quaternaryOutline',
+              [styles.quinary]: mode === 'quinary',
+              [styles.textButton]: mode === 'textButton',
+              [styles.pending]: mode === 'pending',
+              'pointer-events-none': disabled,
+              'w-full': isFullSize,
+              'rounded-full': isFullRounded,
+              'rounded-lg': !isFullRounded,
+            },
+            className,
+          )}
           disabled={disabled || loading}
           aria-label={ariaLabelText}
           aria-busy={loading}
           title={titleText}
           type={type}
+          ref={setTriggerRef}
           {...rest}
         >
           {buttonText || children}
+          {mode === 'pending' && isPending && (
+            <Icon
+              name="spinner-gap"
+              className={`ml-[0.59375rem] w-[0.8125rem] h-[0.8125rem] ${isPending ? 'animate-spin' : 'animate-none'}`}
+            />
+          )}
         </button>
       )}
     </>
