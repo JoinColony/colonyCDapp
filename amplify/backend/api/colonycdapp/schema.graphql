@@ -546,7 +546,9 @@ input MotionDataInput {
 
 type MotionEvent {
   name: String!
-  initiatorAddress: String
+  transactionHash: String!
+  logIndex: Int!
+  initiatorAddress: String!
   vote: String
   amount: String
 }
