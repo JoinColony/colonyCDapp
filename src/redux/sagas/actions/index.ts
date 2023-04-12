@@ -11,6 +11,7 @@ import editColonyActionSaga from './editColony';
 import unlockTokenActionSaga from './unlockToken';
 // import enterRecoveryActionSaga from './enterRecovery';
 import manageReputationActionSaga from './manageReputation';
+import manageVerifiedRecipientsSaga from './manageVerifiedRecipients';
 
 export default function* actionsSagas() {
   yield all([
@@ -25,5 +26,6 @@ export default function* actionsSagas() {
     call(unlockTokenActionSaga),
     // call(enterRecoveryActionSaga),
     call(manageReputationActionSaga),
+    call(manageVerifiedRecipientsSaga),
   ]);
 }

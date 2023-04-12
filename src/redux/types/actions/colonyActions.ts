@@ -268,9 +268,9 @@ export type ColonyActionsActionTypes =
         colonyName: string;
         isWhitelistActivated: boolean;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
-  | ErrorActionType<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE, object>
+  | ErrorActionType<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_ERROR, object>
   | UniqueActionType<
       ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_SUCCESS,
       object,
