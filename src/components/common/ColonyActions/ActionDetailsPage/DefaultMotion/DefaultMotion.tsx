@@ -42,6 +42,7 @@ const DefaultMotion = ({
     motionData: {
       motionStakes: { percentage: percentageStaked },
     },
+    motionData,
   } = actionData;
 
   const isUnderThreshold =
@@ -52,7 +53,9 @@ const DefaultMotion = ({
     <div className={styles.main}>
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
       {isUnderThreshold && <StakeRequiredBanner isDecision={false} />}
-      {isVotingReputationEnabled && <MotionHeading motionState={motionState} />}
+      {isVotingReputationEnabled && (
+        <MotionHeading motionState={motionState} motionData={motionData} />
+      )}
       <div className={styles.container}>
         <DefaultActionContent actionData={actionData} />
         <div className={styles.widgets}>
@@ -61,38 +64,6 @@ const DefaultMotion = ({
             motionState={motionState}
             {...rest}
           />
-          {/* <div className={styles.details}>
-        {motionState === MotionState.Voting && (
-          <VoteWidget
-            colony={colony}
-            actionType={actionType}
-            motionId={motionId}
-            motionDomain={motionDomain}
-            scrollToRef={bottomElementRef}
-            motionState={motionState}
-          />
-        )}
-        {motionState === MotionState.Reveal && (
-          <RevealWidget
-            colony={colony}
-            motionId={motionId}
-            scrollToRef={bottomElementRef}
-            motionState={motionState}
-          />
-        )}
-        {(isMotionFinished || motionState === MotionState.Escalation) && (
-          <FinalizeMotionAndClaimWidget
-            colony={colony}
-            actionType={actionType}
-            motionId={motionId}
-            scrollToRef={bottomElementRef}
-            motionState={motionState as MotionState}
-            fromDomain={fromDomain}
-            motionAmount={amount}
-            tokenAddress={tokenAddress}
-            isDecision={isDecision}
-          />
-        )} */}
           <DetailsWidget actionData={actionData} colony={colony} />
         </div>
       </div>
