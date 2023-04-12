@@ -14,7 +14,7 @@ interface StakeButtonProps {
   isLoadingData: boolean;
   enoughTokensToStakeMinimum: boolean;
   enoughReputationToStakeMinimum: boolean;
-  cantStakeMore: boolean;
+  canStakeMore: boolean;
   userMaxStake: BigNumber;
   userActivatedTokens: BigNumber;
   userNeedsMoreReputation: boolean;
@@ -27,7 +27,7 @@ const StakeButton = ({
   userNeedsMoreReputation,
   userMaxStake,
   userActivatedTokens,
-  cantStakeMore,
+  canStakeMore,
 }: StakeButtonProps) => {
   const { user } = useAppContext();
   const { isObjection, remainingToStake, usersStakes, userMinStake } =
@@ -60,7 +60,7 @@ const StakeButton = ({
       disabled={
         isLoadingData ||
         userHasReachedReputationLimit ||
-        cantStakeMore ||
+        !canStakeMore ||
         !enoughTokensToStakeMinimum ||
         !enoughReputationToStakeMinimum ||
         remainingToStake === '0'
