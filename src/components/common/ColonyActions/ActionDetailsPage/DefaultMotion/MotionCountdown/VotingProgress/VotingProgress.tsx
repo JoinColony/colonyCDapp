@@ -1,9 +1,14 @@
 import { Placement } from '@popperjs/core';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
+import { BigNumber } from 'ethers';
+import { Extension } from '@colony/colony-js';
 
 import ProgressBar, { ProgressBarAppearance } from '~shared/ProgressBar';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
+
+import { InstalledExtensionData, MotionData } from '~types';
+import { useExtensionData } from '~hooks';
 
 import styles from './VotingProgress.css';
 
@@ -40,41 +45,27 @@ const progressBarAppearance = {
   borderRadius: 'small',
 } as ProgressBarAppearance;
 
-const VotingProgress = () => {
-  // const skillRep = 10;
-  // const repSubmitted = 10;
-  // const votingStateData = {
-  //   thresholdValue: BigNumber.from('10').toString(),
-  //   totalVotedReputation: repSubmitted.toString(),
-  //   skillRep: skillRep.toString(),
-  // };
+interface VotingProgressProps {
+  motionData: MotionData;
+}
 
-  // const totalVotedReputationValue = BigNumber.from(
-  //   votingStateData.totalVotedReputation || 0,
-  // ).div(BigNumber.from(10).pow(18));
+const VotingProgress = ({
+  motionData: { repSubmitted, skillRep },
+}: VotingProgressProps) => {
+  const { extensionData } = useExtensionData(Extension.VotingReputation);
 
-  // const threshold = BigNumber.from(votingStateData?.thresholdValue || 0).div(
-  //   BigNumber.from(10).pow(18),
-  // );
+  const maxVoteFraction = (extensionData as InstalledExtensionData)?.params
+    ?.votingReputation?.maxVoteFraction;
 
-  // const skillRepValue = BigNumber.from(votingStateData?.skillRep || 0).div(
-  //   BigNumber.from(10).pow(18),
-  // );
+  const currentReputationPercent = BigNumber.from(repSubmitted)
+    .mul(100)
+    .div(skillRep)
+    .toNumber();
 
-  // const currentReputationPercent = !totalVotedReputationValue.isZero()
-  //   ? Math.round(
-  //       totalVotedReputationValue.div(skillRepValue).mul(100).toNumber(),
-  //     )
-  //   : 0;
-
-  // const thresholdPercent = !skillRepValue.isZero()
-  //   ? Math.round(threshold.mul(100).div(skillRepValue).toNumber())
-  //   : 0;
-
-  // if (!votingStateData) {
-  //   return null;
-  // }
-
+  const thresoldPercent = BigNumber.from(maxVoteFraction ?? '0')
+    .mul(100)
+    .div(BigNumber.from(10).pow(18))
+    .toNumber();
   return (
     <div className={styles.progressStateContainer}>
       <span className={styles.text}>
@@ -82,8 +73,8 @@ const VotingProgress = () => {
       </span>
       <div className={styles.progressBarContainer}>
         <ProgressBar
-          value={5} // currentReputationPercent}
-          threshold={10} // thresholdPercent}
+          value={currentReputationPercent}
+          threshold={thresoldPercent}
           max={100}
           appearance={progressBarAppearance}
         />
