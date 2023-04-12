@@ -35,6 +35,8 @@ module.exports = {
       '~images': path.resolve(__dirname, '../src/images'),
       '~types': path.resolve(__dirname, '../src/types'),
       '~utils': path.resolve(__dirname, '../src/utils'),
+      '~utils/lodash': path.resolve(__dirname, '../src/utils/lodash'),
+      '~utils/isUrlExternal': path.resolve(__dirname, '../src/utils/isUrlExternal'),
       '~gql': path.resolve(__dirname, '../src/graphql'),
       '~constants': path.resolve(__dirname, '../src/constants'),
       '~shared': path.resolve(__dirname, '../src/components/shared'),

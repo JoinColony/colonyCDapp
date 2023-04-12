@@ -1,38 +1,70 @@
-import React, { FC, PropsWithChildren } from 'react';
-import { useIntl } from 'react-intl';
-import clsx from 'clsx';
-import { ExtensionStatusBadgeProps } from './types';
+import React from 'react';
+import { defineMessages } from 'react-intl';
+
+import Tag from '~shared/Tag';
+import { isInstalledExtensionData } from '~utils/extensions';
+import { AnyExtensionData } from '~types';
+
+import styles from './ExtensionStatusBadge.css';
 
 const displayName = 'common.Extensions.ExtensionStatusBadge';
 
-const ExtensionStatusBadge: FC<PropsWithChildren<ExtensionStatusBadgeProps>> = ({
-  mode = 'coming-soon',
-  children,
-  text,
-  textValues,
-  ...rest
-}) => {
-  const { formatMessage } = useIntl();
+const MSG = defineMessages({
+  notInstalled: {
+    id: `${displayName}.notInstalled`,
+    defaultMessage: 'Not installed',
+  },
+  missingPermissions: {
+    id: `${displayName}.missingPermissions`,
+    defaultMessage: 'Missing permissions',
+  },
+  deprecated: {
+    id: `${displayName}.deprecated`,
+    defaultMessage: 'Deprecated',
+  },
+  enabled: {
+    id: `${displayName}.enabled`,
+    defaultMessage: 'Enabled',
+  },
+  disabled: {
+    id: `${displayName}.disabled`,
+    defaultMessage: 'Disabled',
+  },
+});
 
-  const extensionStatusBadgeText = typeof text == 'string' ? text : text && formatMessage(text, textValues);
+interface Props {
+  deprecatedOnly?: boolean;
+  extensionData: AnyExtensionData;
+}
+
+const ExtensionStatusBadge = ({ deprecatedOnly = false, extensionData }: Props) => {
+  let status;
+  let theme;
+
+  if (!isInstalledExtensionData(extensionData)) {
+    status = MSG.notInstalled;
+  } else if (extensionData.isDeprecated) {
+    status = MSG.deprecated;
+    theme = 'danger';
+  }
+  // else if (installedExtension.details?.missingPermissions.length) {
+  //   status = MSG.missingPermissions;
+  //   theme = 'danger';
+  // }
+  else if (extensionData.isEnabled) {
+    status = MSG.enabled;
+    theme = 'primary';
+  } else {
+    status = MSG.disabled;
+    theme = 'golden';
+  }
+
+  const isDeprecated = isInstalledExtensionData(extensionData) && extensionData.isDeprecated;
 
   return (
-    <span
-      className={clsx(
-        'inline-flex items-center text-center text-sm font-medium px-3 py-1 rounded-3xl h-[1.625rem] capitalize',
-        {
-          'text-indigo-400 bg-indigo-100': mode === 'coming-soon',
-          'text-blue-400 bg-blue-100': mode === 'not-installed',
-          'text-green-400 bg-green-100': mode === 'enabled' || mode === 'new',
-          'text-red-400 bg-red-100': mode === 'disabled',
-          'text-purple-400 bg-purple-100': mode === 'deprecated',
-          'text-gray-900 bg-base-white border border-gray-200': mode === 'governance',
-        }
-      )}
-      {...rest}
-    >
-      {extensionStatusBadgeText || children}
-    </span>
+    <div className={styles.tagContainer}>
+      {(isDeprecated || !deprecatedOnly) && <Tag appearance={{ theme }} text={status} />}
+    </div>
   );
 };
 

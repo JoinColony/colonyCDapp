@@ -1,5 +1,6 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
+import Icon from '~shared/Icon';
 import styles from './Tooltip.module.css';
 import { TooltipProps } from './types';
 
@@ -32,7 +33,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
 
   return (
     <>
-      <div className="cursor-pointer" ref={setTriggerRef}>
+      <div className="flex cursor-pointer" ref={setTriggerRef}>
         {children}
       </div>
       {visible && (
@@ -42,7 +43,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
             className: `${
               styles.tooltipContainer
             } tooltip-container text-base-white z-[999] relative font-medium text-sm p-3 ${
-              isSuccess ? 'bg-success-400' : 'bg-gray-900'
+              isSuccess ? 'bg-success-400' : 'bg-gray-900 [&_a]:underline'
             }`,
           })}
         >
@@ -53,7 +54,16 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
               }`,
             })}
           />
-          <div className="max-w-[15.625rem] flex flex-col items-start">{tooltipContent}</div>
+          <div className="max-w-[15.625rem] flex flex-col items-start">
+            {isSuccess ? (
+              <div className="flex items-center text-base-white gap-2">
+                <Icon name="check" appearance={{ size: 'extraTiny' }} />
+                {tooltipContent}
+              </div>
+            ) : (
+              tooltipContent
+            )}
+          </div>
         </div>
       )}
     </>

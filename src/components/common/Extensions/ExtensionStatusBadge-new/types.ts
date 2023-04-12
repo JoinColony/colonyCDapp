@@ -8,7 +8,10 @@ export type ExtensionStatusBadgeMode =
   | 'disabled'
   | 'deprecated'
   | 'governance'
-  | 'new';
+  | 'new'
+  | 'staking'
+  | 'finalizable'
+  | 'claimed';
 
 export interface ExtensionStatusBadgeProps {
   mode?: ExtensionStatusBadgeMode;

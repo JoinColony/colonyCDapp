@@ -1,7 +1,0 @@
-.doc-list-title {
-  @apply uppercase text-xs font-medium text-blue-400;
-}
-
-.doc-list-subtitle {
-  @apply font-semibold text-lg text-gray-900;
-}
