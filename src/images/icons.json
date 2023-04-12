@@ -113,5 +113,13 @@
     "Berthold Beetle",
     "Sanjeet Shrimp",
     "Norman Naked Mole Rat"
+  ],
+  "pills": [
+    "administration",
+    "arbitration",
+    "architecture",
+    "funding",
+    "recovery",
+    "root"
   ]
 }
