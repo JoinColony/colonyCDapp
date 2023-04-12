@@ -5,7 +5,7 @@ import { useAppContext, useColonyContext } from '~hooks';
 
 import { useStakingWidgetContext } from '../../StakingWidgetProvider';
 import {
-  userCantStakeMore,
+  userCanStakeMore,
   userHasInsufficientReputation,
 } from '../StakingSliderMessages/helpers';
 import { useEnoughTokensForStaking } from '../useEnoughTokensForStaking';
@@ -52,7 +52,7 @@ const useStakingControls = (limitExceeded: boolean) => {
 
   const showBackButton = nayStakes !== '0';
 
-  const cantStakeMore = userCantStakeMore(userMinStake, remainingToStake);
+  const canStakeMore = userCanStakeMore(userMinStake, remainingToStake);
 
   const userNeedsMoreReputation = userHasInsufficientReputation(
     userActivatedTokens,
@@ -62,7 +62,7 @@ const useStakingControls = (limitExceeded: boolean) => {
 
   const showActivateButton =
     !!user &&
-    !cantStakeMore &&
+    canStakeMore &&
     !userNeedsMoreReputation &&
     remainingToStake !== '0' &&
     enoughReputationToStakeMinimum &&
@@ -77,7 +77,7 @@ const useStakingControls = (limitExceeded: boolean) => {
     userNeedsMoreReputation,
     userMaxStake,
     userActivatedTokens,
-    cantStakeMore,
+    canStakeMore,
     isLoadingData:
       loadingColony ||
       userLoading ||

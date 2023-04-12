@@ -6,17 +6,10 @@ import TokenErrorMessage from './TokenErrorMessage';
 import NotEnoughReputationMessage from './NotEnoughReputationMessage';
 
 import styles from './StakingValidationMessage.css';
-import { userCantStakeMore, userHasInsufficientReputation } from './helpers';
+import { userCanStakeMore, userHasInsufficientReputation } from './helpers';
 
 const displayName =
   'common.ColonyActions.DefaultMotion.StakingWidget.StakingValidationMessage';
-
-const MSG = defineMessages({
-  limitExceeded: {
-    id: `${displayName}.limitExceeded`,
-    defaultMessage: `Oops! You don't have enough active tokens. To stake more than this, please activate more tokens.`,
-  },
-});
 
 const MSG = defineMessages({
   limitExceeded: {
@@ -86,9 +79,9 @@ const StakingValidationMessage = ({
     remainingToStake,
   );
 
-  const cantStakeMore = userCantStakeMore(userMinStake, remainingToStake);
+  const canStakeMore = userCanStakeMore(userMinStake, remainingToStake);
 
-  if (cantStakeMore) {
+  if (!canStakeMore) {
     errorType = StakingValidationErrors.CANT_STAKE_MORE;
   } else if (userNeedsMoreReputation) {
     errorType = StakingValidationErrors.MORE_REP_NEEDED;
