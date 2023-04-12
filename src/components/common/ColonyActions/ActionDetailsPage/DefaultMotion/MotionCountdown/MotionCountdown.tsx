@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import CountDownTimer from '~common/ColonyActions/CountDownTimer';
 import { MotionState } from '~utils/colonyMotions';
@@ -6,6 +7,7 @@ import { MotionState } from '~utils/colonyMotions';
 import VotingProgress from './VotingProgress';
 
 import styles from './MotionCountdown.css';
+import { MotionData } from '~types';
 
 const displayName = 'common.ColonyActions.ActionDetailsPage.MotionCountdown';
 
@@ -41,9 +43,10 @@ const displayName = 'common.ColonyActions.ActionDetailsPage.MotionCountdown';
 
 interface MotionCountdownProps {
   motionState: MotionState;
+  motionData: MotionData;
 }
 
-const MotionCountdown = ({ motionState }: MotionCountdownProps) => {
+const MotionCountdown = ({ motionState, motionData }: MotionCountdownProps) => {
   // const motionDomain = 1;
   const motionId = 1;
   const isFullyNayStaked = false; // getIsFullyNayStaked();
@@ -61,7 +64,11 @@ const MotionCountdown = ({ motionState }: MotionCountdownProps) => {
   const showVotingProgress = motionState === MotionState.Voting;
   const showCountdownTimer = true; // !loadingMotionStatus && !isMotionFinished;
   return (
-    <div className={styles.countdownContainer}>
+    <div
+      className={classNames(styles.countdownContainer, {
+        [styles.votingCountdownContainer]: showVotingProgress,
+      })}
+    >
       {showCountdownTimer && (
         <CountDownTimer
           state={motionState as MotionState}
@@ -69,7 +76,7 @@ const MotionCountdown = ({ motionState }: MotionCountdownProps) => {
           isFullyNayStaked={isFullyNayStaked}
         />
       )}
-      {showVotingProgress && <VotingProgress />}
+      {showVotingProgress && <VotingProgress motionData={motionData} />}
       {/* {showEscalateButton && (
         <EscalateButton motionId={motionId} userAddress={user?.walletAddress} />
       )} */}
