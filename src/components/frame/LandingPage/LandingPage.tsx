@@ -1,9 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  defineMessages,
-  FormattedMessage,
-  MessageDescriptor,
-} from 'react-intl';
+import { defineMessages, FormattedMessage, MessageDescriptor } from 'react-intl';
 
 import NavLink from '~shared/NavLink';
 import Icon from '~shared/Icon';
@@ -16,6 +12,7 @@ import { useGetMetacolonyQuery } from '~gql';
 import { useAppContext, useCanInteractWithNetwork } from '~hooks';
 
 import styles from './LandingPage.css';
+import SupportingDocuments from '~common/Extensions/SupportingDocuments';
 
 const displayName = 'frame.LandingPage';
 
@@ -77,18 +74,12 @@ const LandingPage = () => {
     <div className={styles.main}>
       <div>
         <div className={styles.title}>
-          <Heading
-            text={MSG.callToAction}
-            appearance={{ size: 'medium', margin: 'none', theme: 'dark' }}
-          />
+          <Heading text={MSG.callToAction} appearance={{ size: 'medium', margin: 'none', theme: 'dark' }} />
         </div>
+        <SupportingDocuments />
         <ul>
-          {wallet && !userLoading && !user && (
-            <LandingItem to={CREATE_USER_ROUTE} message={MSG.createUsername} />
-          )}
-          {canInteractWithNetwork && (
-            <LandingItem to={CREATE_COLONY_ROUTE} message={MSG.createColony} />
-          )}
+          {wallet && !userLoading && !user && <LandingItem to={CREATE_USER_ROUTE} message={MSG.createUsername} />}
+          {canInteractWithNetwork && <LandingItem to={CREATE_COLONY_ROUTE} message={MSG.createColony} />}
           {loading && (
             <li className={styles.itemLoading}>
               <SpinnerLoader appearance={{ size: 'medium' }} />
@@ -96,10 +87,7 @@ const LandingPage = () => {
           )}
           {metacolony && (
             <li className={styles.item}>
-              <NavLink
-                to={`/colony/${metacolony.name}`}
-                className={styles.itemLink}
-              >
+              <NavLink to={`/colony/${metacolony.name}`} className={styles.itemLink}>
                 <ColonyAvatar
                   className={styles.itemIcon}
                   colonyAddress={metacolony.colonyAddress}
@@ -110,8 +98,7 @@ const LandingPage = () => {
                   <FormattedMessage
                     {...MSG.exploreColony}
                     values={{
-                      colonyName:
-                        metacolony.metadata?.displayName || metacolony.name,
+                      colonyName: metacolony.metadata?.displayName || metacolony.name,
                     }}
                   />
                 </span>
