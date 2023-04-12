@@ -1,4 +1,4 @@
-@value query700 from "~styles/queries.css";
+@value query850 from "~styles/queries.css";
 
 .main {
   composes: stretch from '~styles/layout.css';
@@ -65,7 +65,7 @@
   display: block;
 }
 
-@media screen and query700 {
+@media screen and query850 {
   .mainContent {
     display: grid;
     padding: 0;

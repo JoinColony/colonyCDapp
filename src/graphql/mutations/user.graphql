@@ -1,10 +1,10 @@
 mutation CreateUniqueUser($input: CreateUniqueUserInput!) {
   createUniqueUser(input: $input) {
-      id
+    id
   }
 }
 
-mutation UpdateUserProfile ($input: UpdateProfileInput!) {
+mutation UpdateUserProfile($input: UpdateProfileInput!) {
   updateProfile(input: $input) {
     id
     avatar

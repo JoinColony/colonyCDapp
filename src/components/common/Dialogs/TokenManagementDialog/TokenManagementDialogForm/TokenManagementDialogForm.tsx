@@ -149,7 +149,9 @@ const TokenManagementDialogForm = ({
           }}
           disabled={disabledSubmit || !hasTokensListChanged(values)}
           dataTest="confirm"
-          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>

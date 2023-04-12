@@ -156,7 +156,9 @@ Props) => {
           onSecondaryButtonClick={back}
           disabled={disabledSubmit}
           dataTest="paymentConfirmButton"
-          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>
