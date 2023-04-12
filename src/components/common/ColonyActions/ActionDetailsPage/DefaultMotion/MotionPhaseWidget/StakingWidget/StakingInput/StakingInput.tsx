@@ -19,8 +19,8 @@ const validationSchema = object({
 export type StakingWidgetValues = InferType<typeof validationSchema>;
 
 const StakingInput = () => {
-  const { transform, handleSuccess, canBeStaked, isObjection } =
-    useStakingInput();
+  const { transform, handleSuccess, isObjection } = useStakingInput();
+
   return (
     <ActionForm<StakingWidgetValues>
       defaultValues={{
@@ -31,16 +31,7 @@ const StakingInput = () => {
       transform={transform}
       onSuccess={handleSuccess}
     >
-      <StakingSlider canBeStaked={canBeStaked} isObjection={isObjection} />
-      {/*
-      {showValidationMessage && (
-        <StakingValidationMessage
-          {...stakingValidationMessageProps}
-          limitExceeded={limitExceeded}
-          minUserStake={minUserStake}
-          maxUserStake={maxUserStake}
-        />
-      )} */}
+      <StakingSlider isObjection={isObjection} />
       <StakingControls />
     </ActionForm>
   );

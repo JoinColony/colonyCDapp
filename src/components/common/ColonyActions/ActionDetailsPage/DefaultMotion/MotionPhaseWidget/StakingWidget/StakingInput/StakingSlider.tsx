@@ -1,9 +1,10 @@
 import React from 'react';
-import { useStakingSlider } from '~hooks';
+import { useAppContext, useStakingSlider } from '~hooks';
 
 import {
   StakingSliderDescription,
   StakingSliderLabel,
+  StakingValidationMessage,
   StakingWidgetSlider,
 } from '.';
 
@@ -12,21 +13,27 @@ const displayName =
 
 interface StakingSliderProps {
   isObjection: boolean;
-  canBeStaked: boolean;
 }
 
-const StakingSlider = ({ isObjection, canBeStaked }: StakingSliderProps) => {
+const StakingSlider = ({ isObjection }: StakingSliderProps) => {
+  const { user } = useAppContext();
   const {
     remainingToStake,
     totalPercentageStaked,
     userMinStake,
     nativeTokenDecimals,
     nativeTokenSymbol,
+    enoughTokensToStakeMinimum,
+    isLoadingData,
+    userActivatedTokens,
   } = useStakingSlider(isObjection);
+
+  const displayLabel = !!user && !isLoadingData && remainingToStake !== '0';
+
   return (
     <>
       <StakingSliderDescription isObjection={isObjection} />
-      {remainingToStake !== '0' && (
+      {displayLabel && (
         <StakingSliderLabel
           requiredStakeMessageProps={{
             totalPercentageStaked,
@@ -35,12 +42,22 @@ const StakingSlider = ({ isObjection, canBeStaked }: StakingSliderProps) => {
             nativeTokenDecimals,
             nativeTokenSymbol,
           }}
+          enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
         />
       )}
       <StakingWidgetSlider
         isObjection={isObjection}
-        canBeStaked={canBeStaked}
+        isLoading={isLoadingData}
+        remainingToStake={remainingToStake}
+        enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
       />
+      {displayLabel && (
+        <StakingValidationMessage
+          enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
+          userActivatedTokens={userActivatedTokens}
+          userMinStake={userMinStake}
+        />
+      )}
     </>
   );
 };

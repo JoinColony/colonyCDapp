@@ -6,11 +6,11 @@ import React, {
   useState,
 } from 'react';
 
-import { useAppContext, useStakingWidgetUpdate } from '~hooks';
+import { useStakingWidgetUpdate } from '~hooks';
 import { MotionData, SetStateFn } from '~types';
 
 export interface StakingWidgetContextValues extends MotionData {
-  canBeStaked: boolean;
+  remainingToStake: string;
   isObjection: boolean;
   setIsObjection: SetStateFn;
   isSummary: boolean;
@@ -47,14 +47,13 @@ export const StakingWidgetProvider = ({
     motionStakes: {
       raw: { nay: nayStakes },
     },
-    motionStakes,
     remainingStakes: [nayRemaining, yayRemaining],
+    motionStakes,
   },
   motionData,
   startPollingAction,
   stopPollingAction,
 }: StakingWidgetProviderProps) => {
-  const { user } = useAppContext();
   const [isObjection, setIsObjection] = useState<boolean>(false);
   const showSummary = Number(nayStakes) > 0;
   const [isSummary, setIsSummary] = useState<boolean>(showSummary);
@@ -64,13 +63,10 @@ export const StakingWidgetProvider = ({
     stopPollingAction,
   );
 
-  // Todo: extend this definition
-  const canBeStaked = !!(user && remainingToStake !== '0');
-
   const stakingWidgetValues = useMemo(
     () => ({
       ...motionData,
-      canBeStaked,
+      remainingToStake,
       startPollingAction,
       isObjection,
       setIsObjection,
@@ -81,7 +77,7 @@ export const StakingWidgetProvider = ({
     }),
     [
       motionData,
-      canBeStaked,
+      remainingToStake,
       startPollingAction,
       isObjection,
       setIsObjection,

@@ -2,24 +2,21 @@ import { useStakingWidgetContext } from '~common/ColonyActions/ActionDetailsPage
 
 import { MotionVote } from '~utils/colonyMotions';
 import { getHandleStakeSuccessFn, getStakingTransformFn } from './helpers';
-
 import { useAppContext, useColonyContext } from '.';
 
 const useStakingInput = () => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
   const {
-    canBeStaked,
     isObjection,
     motionId,
-    remainingStakes: [nayRemaining, yayRemaining],
+    remainingToStake,
     userMinStake,
     setIsRefetching,
     startPollingAction,
   } = useStakingWidgetContext();
 
   const vote = isObjection ? MotionVote.Nay : MotionVote.Yay;
-  const remainingToStake = isObjection ? nayRemaining : yayRemaining;
 
   const transform = getStakingTransformFn(
     remainingToStake,
@@ -35,7 +32,11 @@ const useStakingInput = () => {
     startPollingAction,
   );
 
-  return { transform, handleSuccess, canBeStaked, isObjection };
+  return {
+    transform,
+    handleSuccess,
+    isObjection,
+  };
 };
 
 export default useStakingInput;
