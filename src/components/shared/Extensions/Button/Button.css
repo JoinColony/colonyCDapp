@@ -3,5 +3,5 @@
 }
 
 .primaryOutline {
-  @apply bg-base-white text-gray-700 border border-gray-300 hover:bg-blue-400 hover:border-blue-400 hover:text-base-white disabled:text-gray-300 border-gray-300;
+  @apply bg-base-white text-gray-700 border border-gray-300 hover:bg-blue-400 hover:border-blue-400 hover:text-base-white disabled:text-gray-300;
 }
