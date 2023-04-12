@@ -1,43 +1,36 @@
 import React from 'react';
 
-import { useAppContext, useColonyContext } from '~hooks';
-
-import { useStakingWidgetContext } from '../../StakingWidgetProvider';
-import { useEnoughTokensForStaking } from '../useEnoughTokensForStaking';
-import { BackButton, ObjectButton, StakeButton } from '.';
+import {
+  BackButton,
+  ObjectButton,
+  StakeButton,
+  ActivateButton,
+  useStakingControls,
+} from '.';
 
 import styles from './StakingControls.css';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.StakingWidgetControls';
 
-const StakingControls = () => {
-  const { user, userLoading, walletConnecting } = useAppContext();
-  const { colony, loading: loadingColony } = useColonyContext();
+interface StakingControlsProps {
+  limitExceeded: boolean;
+}
+
+const StakingControls = ({ limitExceeded }: StakingControlsProps) => {
   const {
-    motionStakes: {
-      raw: { nay: nayStakes },
-    },
-    remainingToStake,
-    userMinStake,
-  } = useStakingWidgetContext();
-  const { tokenAddress } = colony?.nativeToken || {};
-  const showBackButton = nayStakes !== '0';
-  const { loadingUserTokenBalance, enoughTokensToStakeMinimum } =
-    useEnoughTokensForStaking(
-      tokenAddress ?? '',
-      user?.walletAddress ?? '',
-      userMinStake,
-    );
-  const isLoadingData =
-    loadingUserTokenBalance || userLoading || walletConnecting || loadingColony;
+    showBackButton,
+    showActivateButton,
+    enoughTokensToStakeMinimum,
+    isLoadingData,
+  } = useStakingControls(limitExceeded);
+
   return (
     <div className={styles.buttonGroup}>
       {showBackButton && <BackButton />}
       <StakeButton
         isLoadingData={isLoadingData}
         enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
-        remainingToStake={remainingToStake}
       />
       {!showBackButton && (
         <ObjectButton
@@ -45,9 +38,7 @@ const StakingControls = () => {
           enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
         />
       )}
-      {/*
       {showActivateButton && <ActivateButton />}
-      */}
     </div>
   );
 };
