@@ -5,6 +5,7 @@ import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 import { ButtonProps } from './types';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
+import styles from './Button.css';
 
 const displayName = 'Button';
 
@@ -33,16 +34,10 @@ const Button = ({
       ) : (
         <button
           className={clsx(
-            'flex text-md font-medium px-16 py-10 rounded-lg min-h-[2.5rem] transition-all duration-normal',
+            'flex text-md font-medium px-4 py-2.5 rounded-lg h-[2.5rem] transition-all duration-normal',
             {
-              'bg-blue-400 text-base-white hover:bg-blue-300':
-                mode === 'primarySolid',
-              'bg-gray-300': mode === 'primarySolid' && disabled,
-              // eslint-disable-next-line max-len
-              'bg-base-white text-gray-700 border border-gray-300 hover:bg-blue-400 hover:border-blue-400 hover:text-base-white':
-                mode === 'primaryOutline',
-              'text-gray-300 border-gray-300':
-                mode === 'primaryOutline' && disabled,
+              [styles.primarySolid]: mode === 'primarySolid',
+              [styles.primaryOutline]: mode === 'primaryOutline',
               'pointer-events-none': disabled,
             },
           )}

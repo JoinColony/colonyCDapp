@@ -22,9 +22,6 @@ const config = {
     alias: Object.assign(
       {},
       {
-        '~atoms': path.resolve(__dirname, 'src/components/atoms'),
-        '~molecules': path.resolve(__dirname, 'src/components/molecules'),
-        '~organisms': path.resolve(__dirname, 'src/components/organisms'),
         '~shared': path.resolve(__dirname, 'src/components/shared'),
         '~common': path.resolve(__dirname, 'src/components/common'),
         '~frame': path.resolve(__dirname, 'src/components/frame'),
