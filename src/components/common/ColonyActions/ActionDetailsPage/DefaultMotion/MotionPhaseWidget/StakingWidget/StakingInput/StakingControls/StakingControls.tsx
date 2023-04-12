@@ -24,7 +24,7 @@ const StakingControls = ({ limitExceeded }: StakingControlsProps) => {
     enoughTokensToStakeMinimum,
     enoughReputationToStakeMinimum,
     isLoadingData,
-    cantStakeMore,
+    canStakeMore,
     userNeedsMoreReputation,
     userMaxStake,
     userActivatedTokens,
@@ -37,7 +37,7 @@ const StakingControls = ({ limitExceeded }: StakingControlsProps) => {
         isLoadingData={isLoadingData}
         enoughTokensToStakeMinimum={enoughTokensToStakeMinimum}
         enoughReputationToStakeMinimum={enoughReputationToStakeMinimum}
-        cantStakeMore={cantStakeMore}
+        canStakeMore={canStakeMore}
         userNeedsMoreReputation={userNeedsMoreReputation}
         userMaxStake={userMaxStake}
         userActivatedTokens={userActivatedTokens}
