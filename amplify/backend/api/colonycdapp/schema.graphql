@@ -330,6 +330,7 @@ type ColonyMetadata @model {
   avatar: String
   thumbnail: String
   changelog: [ColonyMetadataChangelog!]
+  whitelistedAddresses: [String!]
 }
 
 type ColonyMetadataChangelog {

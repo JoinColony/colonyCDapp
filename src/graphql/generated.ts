@@ -249,6 +249,7 @@ export type ColonyMetadata = {
   id: Scalars['ID'];
   thumbnail?: Maybe<Scalars['String']>;
   updatedAt: Scalars['AWSDateTime'];
+  whitelistedAddresses?: Maybe<Array<Scalars['String']>>;
 };
 
 export type ColonyMetadataChangelog = {
@@ -377,6 +378,7 @@ export type CreateColonyMetadataInput = {
   displayName: Scalars['String'];
   id?: InputMaybe<Scalars['ID']>;
   thumbnail?: InputMaybe<Scalars['String']>;
+  whitelistedAddresses?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type CreateColonyTokensInput = {
@@ -853,6 +855,7 @@ export type ModelColonyMetadataConditionInput = {
   not?: InputMaybe<ModelColonyMetadataConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyMetadataConditionInput>>>;
   thumbnail?: InputMaybe<ModelStringInput>;
+  whitelistedAddresses?: InputMaybe<ModelStringInput>;
 };
 
 export type ModelColonyMetadataConnection = {
@@ -869,6 +872,7 @@ export type ModelColonyMetadataFilterInput = {
   not?: InputMaybe<ModelColonyMetadataFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyMetadataFilterInput>>>;
   thumbnail?: InputMaybe<ModelStringInput>;
+  whitelistedAddresses?: InputMaybe<ModelStringInput>;
 };
 
 export type ModelColonyTokensConditionInput = {
@@ -1215,6 +1219,7 @@ export type ModelSubscriptionColonyMetadataFilterInput = {
   id?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyMetadataFilterInput>>>;
   thumbnail?: InputMaybe<ModelSubscriptionStringInput>;
+  whitelistedAddresses?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
 export type ModelSubscriptionColonyTokensFilterInput = {
@@ -2684,6 +2689,7 @@ export type UpdateColonyMetadataInput = {
   displayName?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   thumbnail?: InputMaybe<Scalars['String']>;
+  whitelistedAddresses?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type UpdateColonyTokensInput = {
