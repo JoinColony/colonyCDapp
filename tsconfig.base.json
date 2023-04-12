@@ -14,15 +14,6 @@
       "~context/*": [
         "src/context/*"
       ],
-      "~atoms/*": [
-        "src/components/atoms/*"
-      ],
-      "~molecules/*": [
-        "src/components/molecules/*"
-      ],
-      "~organisms/*": [
-        "src/components/organisms/*"
-      ],
       "~shared/*": [
         "src/components/shared/*"
       ],
