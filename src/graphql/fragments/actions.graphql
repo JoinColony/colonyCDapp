@@ -107,6 +107,8 @@ fragment MotionData on MotionData {
 
 fragment MotionEvent on MotionEvent {
   name
+  transactionHash
+  logIndex
   initiatorAddress
   vote
   amount
