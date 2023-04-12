@@ -94,4 +94,6 @@ fragment MotionData on MotionData {
       nay
     }
   }
+  skillRep
+  repSubmitted
 }

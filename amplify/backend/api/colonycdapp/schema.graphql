@@ -501,6 +501,8 @@ type MotionData {
   createdBy: String! # voting rep extn address. Useful to check if we're viewing a "read-only" motion
   voterRecord: [VoterRecord!]!
   revealedVotes: MotionStakes! ## I.e. MotionVotes (same type)
+  repSubmitted: String!
+  skillRep: String!
 }
 
 # This will store the relevant events we care about for a particular colony
@@ -526,6 +528,22 @@ type ContractEvent @model {
   encodedArguments: String # basically a JSON string
 }
 
+type VotingReputationParams {
+  totalStakeFraction: String!
+  voterRewardFraction: String!
+  userMinStakeFraction: String!
+  maxVoteFraction: String!
+  stakePeriod: String!
+  submitPeriod: String!
+  revealPeriod: String!
+  escalationPeriod: String!
+}
+
+# Parameters an extension is initialised with, e.g VotingRepExtn
+type ExtensionParams {
+  votingReputation: VotingReputationParams
+}
+
 type ColonyExtension @model {
   id: ID!
   colonyId: ID!
@@ -542,6 +560,7 @@ type ColonyExtension @model {
   isDeleted: Boolean!
   isInitialized: Boolean!
   version: Int!
+  params: ExtensionParams
 }
 
 type CurrentVersion @model {
