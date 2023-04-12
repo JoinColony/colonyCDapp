@@ -4,7 +4,7 @@ import React from 'react';
 import TokenErrorMessage from './TokenErrorMessage';
 
 const displayName =
-  '~common.ColonyActions.ActionDetails.DefaultMotion.StakingWidget.StakingValidationMessage';
+  'common.ColonyActions.DefaultMotion.StakingWidget.StakingValidationMessage';
 
 interface StakingValidationMessageProps {
   enoughTokensToStakeMinimum: boolean;
