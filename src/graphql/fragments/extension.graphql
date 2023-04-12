@@ -8,4 +8,9 @@ fragment Extension on ColonyExtension {
   isDeprecated
   isDeleted
   isInitialized
+  params {
+    votingReputation {
+      maxVoteFraction
+    }
+  }
 }
