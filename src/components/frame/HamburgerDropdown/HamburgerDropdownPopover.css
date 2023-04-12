@@ -4,7 +4,8 @@
   background-color: var(--grey-purple);
 }
 
-.menu li > *, .menu li:only-child > * {
+.menu li > *,
+.menu li:only-child > * {
   padding: 5px 15px;
 }
 

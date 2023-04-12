@@ -22,7 +22,7 @@
   }
 }
 
-.uploadItem[aria-invalid="true"] {
+.uploadItem[aria-invalid='true'] {
   & .itemIcon {
     & svg {
       stroke: var(--danger);

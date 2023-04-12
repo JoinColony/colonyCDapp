@@ -180,7 +180,7 @@
   font-weight: var(--weight-normal);
 }
 
-.inputField > div > div > div > input[aria-invalid="true"] {
+.inputField > div > div > div > input[aria-invalid='true'] {
   border-color: var(--primary);
 }
 

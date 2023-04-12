@@ -1,4 +1,3 @@
-
 .main {
   display: flex;
   align-items: flex-start;
@@ -8,7 +7,8 @@
   word-break: break-word;
 }
 
-.main:not(.stateDisableHover):hover, .main.stateActiveActions:not(.stateDisableHover) {
+.main:not(.stateDisableHover):hover,
+.main.stateActiveActions:not(.stateDisableHover) {
   background-color: color-mod(var(--colony-blue) alpha(6%));
   opacity: 1;
 }
@@ -17,7 +17,8 @@
   background-color: color-mod(var(--primary) alpha(6%));
 }
 
-.stateGhosted .avatar, .stateGhosted .text {
+.stateGhosted .avatar,
+.stateGhosted .text {
   /* opacity: 0.5; */
 }
 
@@ -72,7 +73,8 @@
   opacity: 0;
 }
 
-.main:hover .actions, .main.stateActiveActions .actions {
+.main:hover .actions,
+.main.stateActiveActions .actions {
   opacity: 1;
 }
 

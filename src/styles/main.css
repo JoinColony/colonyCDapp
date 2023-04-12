@@ -55,7 +55,9 @@ button {
   outline: 0;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: inherit;
 }
 
@@ -160,8 +162,8 @@ img {
   max-width: 100%;
 }
 
-input[type="checkbox"],
-input[type="radio"] {
+input[type='checkbox'],
+input[type='radio'] {
   vertical-align: baseline;
 }
 
@@ -200,7 +202,8 @@ table {
   border-spacing: 0;
   table-layout: fixed;
 
-  & tbody, & tr {
+  & tbody,
+  & tr {
     border-color: inherit;
   }
 
