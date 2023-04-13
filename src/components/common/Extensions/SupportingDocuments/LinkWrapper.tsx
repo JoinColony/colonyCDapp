@@ -7,7 +7,7 @@ interface LinkWrapperProps {
   isDoubleLinkVisible: boolean;
 }
 
-const displayName = 'LinkWrapper';
+const displayName = 'common.Extensions/SupportingDocuments/LinkWrapper';
 
 const singleLink = [
   {
