@@ -13,7 +13,7 @@ query GetVoterRewards($input: GetVoterRewardsInput!) {
 query GetMotionTimeoutPeriods($input: GetMotionTimeoutPeriodsInput!) {
   getMotionTimeoutPeriods(input: $input) {
     timeLeftToStake
-    timeLeftToSubmit
+    timeLeftToVote
     timeLeftToReveal
     timeLeftToEscalate
   }
