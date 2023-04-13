@@ -74,6 +74,7 @@ fragment ColonyMetadata on ColonyMetadata {
     newDisplayName
     oldDisplayName
     hasAvatarChanged
+    hasWhitelistChanged
   }
 }
 

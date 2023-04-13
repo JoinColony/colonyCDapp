@@ -338,6 +338,7 @@ type ColonyMetadataChangelog {
   oldDisplayName: String!
   newDisplayName: String!
   hasAvatarChanged: Boolean!
+  hasWhitelistChanged: Boolean!
 }
 
 type User @model {
