@@ -49,7 +49,6 @@ interface MotionCountdownProps {
 const MotionCountdown = ({ motionState, motionData }: MotionCountdownProps) => {
   // const motionDomain = 1;
   const motionId = 1;
-  const isFullyNayStaked = false; // getIsFullyNayStaked();
   const isMotionFinished =
     motionState === MotionState.Passed ||
     motionState === MotionState.Failed ||
@@ -69,11 +68,7 @@ const MotionCountdown = ({ motionState, motionData }: MotionCountdownProps) => {
       })}
     >
       {!isMotionFinished && (
-        <CountDownTimer
-          state={motionState}
-          motionId={motionId}
-          isFullyNayStaked={isFullyNayStaked}
-        />
+        <CountDownTimer state={motionState} motionId={motionId} />
       )}
       {showVotingProgress && <VotingProgress motionData={motionData} />}
       {/* {showEscalateButton && (

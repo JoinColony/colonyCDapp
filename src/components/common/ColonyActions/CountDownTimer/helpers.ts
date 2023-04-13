@@ -10,6 +10,8 @@ import { useAppContext, useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { MotionState } from '~utils/colonyMotions';
 
+import { useStakingWidgetContext } from '../ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
+
 const splitTimeLeft = (period: number) => {
   if (period > 0) {
     return {
@@ -32,7 +34,7 @@ const getCurrentStatePeriod = (
     case MotionState.Objection:
       return motionTimeoutPeriods.timeLeftToStake;
     case MotionState.Voting:
-      return motionTimeoutPeriods.timeLeftToSubmit;
+      return motionTimeoutPeriods.timeLeftToVote;
     case MotionState.Reveal:
       return motionTimeoutPeriods.timeLeftToReveal;
     case MotionState.Escalation:
@@ -45,10 +47,12 @@ const getCurrentStatePeriod = (
 const useMotionTimeoutPeriods = (colonyAddress = '', motionId: number) => {
   const { data, loading, refetch } = useGetMotionTimeoutPeriodsQuery({
     variables: { input: { colonyAddress, motionId } },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'network-only',
   });
   const motionTimeoutPeriods = data?.getMotionTimeoutPeriods || {
     timeLeftToEscalate: '-1',
-    timeLeftToSubmit: '-1',
+    timeLeftToVote: '-1',
     timeLeftToReveal: '-1',
     timeLeftToStake: '-1',
   };
@@ -60,14 +64,14 @@ const useMotionTimeoutPeriods = (colonyAddress = '', motionId: number) => {
   };
 };
 
-export const useMotionCountdown = (
-  state: MotionState,
-  motionId: number,
-  isFullyNayStaked: boolean,
-) => {
+export const useMotionCountdown = (state: MotionState, motionId: number) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const dispatch = useDispatch();
+  const {
+    motionStakes: { percentage: percentageStaked },
+  } = useStakingWidgetContext();
+  const isFullyNayStaked = percentageStaked.nay === '100';
 
   const {
     motionTimeoutPeriods,
