@@ -116,6 +116,7 @@ input GetUserTokenBalanceInput {
 input GetMotionStateInput {
   motionId: Int!
   colonyAddress: String!
+  transactionHash: String!
 }
 
 input GetVoterRewardsInput {
@@ -455,9 +456,19 @@ input TokenInput {
   id: ID!
 }
 
+input MotionStakeValuesInput {
+  yay: String!
+  nay: String!
+}
+
 type MotionStakeValues {
   yay: String!
   nay: String!
+}
+
+input MotionStakesInput {
+  raw: MotionStakeValuesInput!
+  percentage: MotionStakeValuesInput!
 }
 
 type MotionStakes {
@@ -465,9 +476,20 @@ type MotionStakes {
   percentage: MotionStakeValues!
 }
 
+input UserStakesInput {
+  address: String!
+  stakes: MotionStakesInput!
+}
+
 type UserStakes {
   address: String!
   stakes: MotionStakes!
+}
+
+input StakerRewardsInput {
+  address: String!
+  rewards: MotionStakeValuesInput!
+  isClaimed: Boolean!
 }
 
 type StakerRewards {
@@ -476,10 +498,36 @@ type StakerRewards {
   isClaimed: Boolean!
 }
 
+input VoterRecordInput {
+  address: String!
+  voteCount: String!
+  vote: Int # nullable since we don't know the vote until it's revealed
+}
+
 type VoterRecord {
   address: String!
   voteCount: String!
   vote: Int # nullable since we don't know the vote until it's revealed
+}
+
+# Duplicate of MotionData type, required to mutate the motionData in `fetchMotionState` lamda
+input MotionDataInput {
+  motionId: String! # to ensure uniqueness, we format as: chainId-votingRepExtnAddress_nativeMotionId
+  nativeMotionId: String!
+  usersStakes: [UserStakesInput!]!
+  stakerRewards: [StakerRewardsInput!]!
+  motionStakes: MotionStakesInput!
+  remainingStakes: [String!]! # tuple [nayRemaining, yayRemaining]
+  userMinStake: String!
+  requiredStake: String!
+  rootHash: String! # For calculating user's max stake in client
+  motionDomainId: String! # native domain id
+  isFinalized: Boolean!
+  createdBy: String! # voting rep extn address. Useful to check if we're viewing a "read-only" motion
+  voterRecord: [VoterRecordInput!]!
+  revealedVotes: MotionStakesInput! ## I.e. MotionVotes (same type)
+  repSubmitted: String!
+  skillRep: String!
 }
 
 type MotionData {

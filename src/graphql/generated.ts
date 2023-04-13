@@ -659,6 +659,7 @@ export enum EmailPermissions {
 export type GetMotionStateInput = {
   colonyAddress: Scalars['String'];
   motionId: Scalars['Int'];
+  transactionHash: Scalars['String'];
 };
 
 export type GetReputationForTopDomainsInput = {
