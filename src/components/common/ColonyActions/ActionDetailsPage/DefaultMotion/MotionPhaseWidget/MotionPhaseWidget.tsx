@@ -7,7 +7,7 @@ import { MotionState } from '~utils/colonyMotions';
 
 import ClaimMotionStakes from './ClaimMotionStakes';
 import FinalizeMotion from './FinalizeMotion';
-import StakingWidget, { StakingWidgetProvider } from './StakingWidget';
+import StakingWidget from './StakingWidget';
 import { VotingWidget } from './VotingWidget';
 import { RevealWidget } from './RevealWidget';
 import { VoteOutcome } from './VoteOutcome';
@@ -56,11 +56,7 @@ const MotionPhaseWidget = ({
   switch (motionState) {
     case MotionState.Staked:
     case MotionState.Staking: {
-      return (
-        <StakingWidgetProvider motionData={motionData} {...rest}>
-          <StakingWidget />
-        </StakingWidgetProvider>
-      );
+      return <StakingWidget />;
     }
 
     case MotionState.Failed:

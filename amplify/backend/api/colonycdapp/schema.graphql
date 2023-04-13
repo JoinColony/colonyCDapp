@@ -151,7 +151,7 @@ type GetUserTokenBalanceReturn {
 
 type GetMotionTimeoutPeriodsReturn {
   timeLeftToStake: String!,
-  timeLeftToSubmit: String!,
+  timeLeftToVote: String!,
   timeLeftToReveal: String!,
   timeLeftToEscalate: String!
 }

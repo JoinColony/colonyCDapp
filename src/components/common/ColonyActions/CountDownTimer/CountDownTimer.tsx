@@ -33,19 +33,10 @@ const MSG = defineMessages({
 interface Props {
   state: MotionState;
   motionId: number;
-  isFullyNayStaked?: boolean;
 }
 
-const CountDownTimer = ({
-  state,
-  motionId,
-  isFullyNayStaked = false,
-}: Props) => {
-  const { countdown, loadingCountdown } = useMotionCountdown(
-    state,
-    motionId,
-    isFullyNayStaked,
-  );
+const CountDownTimer = ({ state, motionId }: Props) => {
+  const { countdown, loadingCountdown } = useMotionCountdown(state, motionId);
 
   if (loadingCountdown) {
     return (
