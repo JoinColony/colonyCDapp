@@ -1,0 +1,31 @@
+import React from 'react';
+import { useIntl } from 'react-intl';
+import Link from '~shared/Link';
+import { doubleLink, singleLink } from './const';
+
+interface LinkWrapperProps {
+  isDoubleLinkVisible: boolean;
+}
+
+const displayName = 'common.Extensions/SupportingDocuments/LinkWrapper';
+
+const LinkWrapper = ({ isDoubleLinkVisible }: LinkWrapperProps) => {
+  const { formatMessage } = useIntl();
+  const links = isDoubleLinkVisible ? doubleLink : singleLink;
+
+  return (
+    <>
+      {links.map((item) => (
+        <div className="pb-2">
+          <Link key={item.url} to={item.url} className="font-normal text-sm text-gray-600 hover:text-blue-400">
+            {formatMessage({ id: item.text })}
+          </Link>
+        </div>
+      ))}
+    </>
+  );
+};
+
+LinkWrapper.displayName = displayName;
+
+export default LinkWrapper;
