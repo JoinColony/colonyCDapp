@@ -666,7 +666,7 @@ export type GetMotionTimeoutPeriodsReturn = {
   timeLeftToEscalate: Scalars['String'];
   timeLeftToReveal: Scalars['String'];
   timeLeftToStake: Scalars['String'];
-  timeLeftToSubmit: Scalars['String'];
+  timeLeftToVote: Scalars['String'];
 };
 
 export type GetReputationForTopDomainsInput = {
@@ -3153,7 +3153,7 @@ export type GetMotionTimeoutPeriodsQueryVariables = Exact<{
 }>;
 
 
-export type GetMotionTimeoutPeriodsQuery = { __typename?: 'Query', getMotionTimeoutPeriods?: { __typename?: 'GetMotionTimeoutPeriodsReturn', timeLeftToStake: string, timeLeftToSubmit: string, timeLeftToReveal: string, timeLeftToEscalate: string } | null };
+export type GetMotionTimeoutPeriodsQuery = { __typename?: 'Query', getMotionTimeoutPeriods?: { __typename?: 'GetMotionTimeoutPeriodsReturn', timeLeftToStake: string, timeLeftToVote: string, timeLeftToReveal: string, timeLeftToEscalate: string } | null };
 
 export type GetProfileByEmailQueryVariables = Exact<{
   email: Scalars['AWSEmail'];
@@ -4369,7 +4369,7 @@ export const GetMotionTimeoutPeriodsDocument = gql`
     query GetMotionTimeoutPeriods($input: GetMotionTimeoutPeriodsInput!) {
   getMotionTimeoutPeriods(input: $input) {
     timeLeftToStake
-    timeLeftToSubmit
+    timeLeftToVote
     timeLeftToReveal
     timeLeftToEscalate
   }
