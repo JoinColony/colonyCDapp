@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import LinkWrapper from './LinkWrapper';
 import { SupportingDocumentsProps } from './types';
+import styles from './SupportingDocuments.module.css';
 
 const displayName = 'common.Extensions.SupportingDocuments';
 
