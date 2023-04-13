@@ -1,12 +1,13 @@
 import { Colony, ColonyAction, ColonyActionType } from '~types';
 
 const getActionTitleMessageId = (actionData: ColonyAction, colony?: Colony) => {
-  const lastChangelogEntry =
-    colony?.metadata?.changelog?.[colony.metadata.changelog.length - 1];
+  const changelogItem = colony?.metadata?.changelog?.find(
+    (item) => item.transactionHash === actionData.transactionHash,
+  );
 
   if (
     actionData.type === ColonyActionType.ColonyEdit &&
-    lastChangelogEntry?.hasWhitelistChanged
+    changelogItem?.hasWhitelistChanged
   ) {
     return `action.${ColonyActionType.ColonyEdit}.verifiedAddresses`;
   }
