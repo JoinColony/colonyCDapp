@@ -6,3 +6,7 @@
 .votingCountdownContainer {
   justify-content: flex-end;
 }
+
+.escalateContainer {
+  column-gap: 10px;
+}

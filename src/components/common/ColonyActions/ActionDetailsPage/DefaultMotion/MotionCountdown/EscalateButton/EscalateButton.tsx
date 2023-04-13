@@ -1,12 +1,13 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
+import { BigNumber } from 'ethers';
 
 import { ActionButton } from '~shared/Button';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 import { ActionTypes } from '~redux';
 import { mapPayload } from '~utils/actions';
-import { Address } from '~types';
-import { useColonyContext } from '~hooks';
+import { useAppContext, useColonyContext } from '~hooks';
+import { EscalateMotionPayload } from '~redux/sagas/motions/escalateMotion';
 
 import styles from './EscalateButton.css';
 
@@ -25,22 +26,26 @@ const MSG = defineMessages({
 });
 
 interface EscalateButtonProps {
-  motionId: number;
-  userAddress: Address;
+  motionId: string;
 }
 
-const EscalateButton = ({ motionId, userAddress }: EscalateButtonProps) => {
+const EscalateButton = ({ motionId }: EscalateButtonProps) => {
   const { colony } = useColonyContext();
+  const { user } = useAppContext();
 
   if (!colony) {
     return null;
   }
 
-  const escalateTransform = mapPayload(() => ({
-    colony: colony.colonyAddress,
-    motionId,
-    userAddress,
-  }));
+  const escalateTransform = mapPayload(() => {
+    const payload: EscalateMotionPayload = {
+      colonyAddress: colony.colonyAddress ?? '',
+      motionId: BigNumber.from(motionId),
+      userAddress: user?.walletAddress ?? '',
+    };
+
+    return payload;
+  });
 
   return (
     <div className={styles.escalation}>
