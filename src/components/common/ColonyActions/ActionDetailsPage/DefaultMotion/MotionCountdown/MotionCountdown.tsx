@@ -1,46 +1,18 @@
 import React from 'react';
 import classNames from 'classnames';
+import { Id } from '@colony/colony-js';
 
 import CountDownTimer from '~common/ColonyActions/CountDownTimer';
 import { MotionState } from '~utils/colonyMotions';
 import { MotionData } from '~types';
-import { RefetchMotionState } from '~hooks';
+import { RefetchMotionState, useAppContext } from '~hooks';
 
 import VotingProgress from './VotingProgress';
+import EscalateButton from './EscalateButton';
 
 import styles from './MotionCountdown.css';
 
 const displayName = 'common.ColonyActions.ActionDetailsPage.MotionCountdown';
-
-// const getMotionStakeData = () => {
-//   const totalYAYStaked = 10;
-//   const totalNAYStakes = 10;
-//   const userStakeYay = 10;
-//   const userStakeNay = 10;
-//   const requiredStake = 50;
-//   return {
-//     totalStaked: {
-//       YAY: totalYAYStaked.toString(),
-//       NAY: totalNAYStakes.toString(),
-//     },
-//     userStake: {
-//       YAY: userStakeYay.toString(),
-//       NAY: userStakeNay.toString(),
-//     },
-//     requiredStake,
-//   };
-// };
-
-// const getIsFullyNayStaked = () => {
-//   const motionStakeData = getMotionStakeData();
-
-//   const requiredStake = BigNumber.from(
-//     motionStakeData?.requiredStake || 0,
-//   ).toString();
-
-//   const totalNayStake = BigNumber.from(motionStakeData?.totalStaked.NAY || 0);
-//   return totalNayStake.gte(requiredStake);
-// };
 
 interface MotionCountdownProps {
   motionState: MotionState;
@@ -50,39 +22,40 @@ interface MotionCountdownProps {
 
 const MotionCountdown = ({
   motionState,
+  motionData: { motionDomainId, motionId, motionStakes },
   motionData,
   refetchMotionState,
 }: MotionCountdownProps) => {
+  const { user } = useAppContext();
+
   const isMotionFinished =
     motionState === MotionState.Passed ||
     motionState === MotionState.Failed ||
     motionState === MotionState.FailedNotFinalizable;
 
-  // const showEscalateButton
-  //   motionDomain !== Id.RootDomain &&
-  //   user?.profile &&
-  //   motionState === MotionState.Escalation;
-
   const showVotingProgress = motionState === MotionState.Voting;
+  const showEscalateButton =
+    !!user &&
+    motionState === MotionState.Escalation &&
+    Number(motionDomainId) !== Id.RootDomain;
 
   return (
     <div
       className={classNames(styles.countdownContainer, {
         [styles.votingCountdownContainer]: showVotingProgress,
+        [styles.escalateContainer]: showEscalateButton,
       })}
     >
       {!isMotionFinished && (
         <CountDownTimer
           motionState={motionState}
           refetchMotionState={refetchMotionState}
-          motionId={motionData.motionId}
-          motionStakes={motionData.motionStakes}
+          motionId={motionId}
+          motionStakes={motionStakes}
         />
       )}
       {showVotingProgress && <VotingProgress motionData={motionData} />}
-      {/* {showEscalateButton && (
-        <EscalateButton motionId={motionId} userAddress={user?.walletAddress} />
-      )} */}
+      {showEscalateButton && <EscalateButton motionId={motionId} />}
     </div>
   );
 };

@@ -18,6 +18,9 @@ import {
 } from '../transactions';
 import { transactionReady } from '../../actionCreators';
 
+export type EscalateMotionPayload =
+  Action<ActionTypes.MOTION_ESCALATE>['payload'];
+
 function* escalateMotion({
   meta,
   payload: { userAddress, colonyAddress, motionId },
