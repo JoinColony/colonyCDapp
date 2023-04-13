@@ -25,16 +25,13 @@ import {
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
 
-/**
- * @TODO: Handle colony thumbnail change
- */
 function* editColonyAction({
   payload: {
     colony,
     colony: { colonyAddress, name: colonyName },
     colonyDisplayName,
     colonyAvatarImage,
-    // hasAvatarChanged,
+    colonyThumbnail,
   },
   meta: { id: metaId, navigate },
   meta,
@@ -163,6 +160,7 @@ function* editColonyAction({
             id: colonyAddress,
             displayName: colonyDisplayName,
             avatar: colonyAvatarImage,
+            thumbnail: colonyThumbnail,
             changelog: getUpdatedColonyMetadataChangelog(
               txHash,
               colony.metadata,

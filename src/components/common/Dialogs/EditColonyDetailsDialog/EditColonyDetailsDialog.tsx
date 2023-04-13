@@ -30,6 +30,7 @@ const validationSchema = object()
   .shape({
     forceAction: boolean().defined(),
     colonyAvatarImage: string().nullable().defined(),
+    colonyThumbnail: string().nullable().defined(),
     colonyDisplayName: string().required(() => MSG.requiredFieldError),
     annotationMessage: string().max(4000).defined(),
   })
@@ -67,6 +68,7 @@ const EditColonyDetailsDialog = ({
           forceAction: false,
           colonyDisplayName: metadata?.displayName,
           colonyAvatarImage: metadata?.avatar,
+          colonyThumbnail: metadata?.thumbnail,
           annotationMessage: '',
           /*
            * @NOTE That since this a root motion, and we don't actually make use
