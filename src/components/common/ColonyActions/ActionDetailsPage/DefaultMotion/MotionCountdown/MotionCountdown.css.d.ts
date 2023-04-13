@@ -1,6 +1,7 @@
 declare namespace MotionCountdownCssNamespace {
   export interface IMotionCountdownCss {
     countdownContainer: string;
+    escalateContainer: string;
     votingCountdownContainer: string;
   }
 }
