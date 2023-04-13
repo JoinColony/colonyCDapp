@@ -30,6 +30,8 @@ const actionsMessageDescriptors = {
       ${ColonyMotions.SetUserRolesMotion} {{rolesChanged} in {fromDomain} {direction} {recipient}}
       other {Generic action we don't have information about}
     }`,
+  [`action.${ColonyActionType.ColonyEdit}.verifiedAddresses`]: `Address book was updated`,
+  [`action.${ColonyActionType.ColonyEdit}.tokens`]: `Colony tokens were updated`,
   'action.type': `{actionType, select,
       ${ColonyActionType.WrongColony} {Not part of the Colony}
       ${ColonyActionType.Payment} {Payment}
