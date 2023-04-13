@@ -1,23 +1,33 @@
 import { ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { transactionPending, transactionReady } from '~redux/actionCreators';
 
 import { Action, AllActions, ActionTypes } from '~redux';
+import { ContextModule, getContext } from '~context';
+import { transactionPending, transactionReady } from '~redux/actionCreators';
 
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { putError, takeFrom } from '../utils';
+import {
+  getUpdatedColonyMetadataChangelog,
+  putError,
+  takeFrom,
+} from '../utils';
+import {
+  UpdateColonyMetadataDocument,
+  UpdateColonyMetadataMutation,
+  UpdateColonyMetadataMutationVariables,
+} from '~gql';
 
 function* manageVerifiedRecipients({
   payload: {
-    colonyName,
-    colonyAddress,
+    colony,
+    colony: { colonyAddress },
     colonyDisplayName,
     // colonyAvatarHash,
-    // verifiedAddresses = [],
+    verifiedAddresses = [],
     // colonyTokens = [],
     // annotationMessage,
     // isWhitelistActivated,
@@ -28,6 +38,8 @@ function* manageVerifiedRecipients({
 }: Action<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE>) {
   let txChannel;
   try {
+    const apolloClient = getContext(ContextModule.ApolloClient);
+
     /*
      * Validate the required values for the transaction
      */
@@ -146,14 +158,39 @@ function* manageVerifiedRecipients({
     //   );
     // }
 
+    /**
+     * Update colony metadata in the db
+     */
+    if (colony.metadata) {
+      yield apolloClient.mutate<
+        UpdateColonyMetadataMutation,
+        UpdateColonyMetadataMutationVariables
+      >({
+        mutation: UpdateColonyMetadataDocument,
+        variables: {
+          input: {
+            id: colonyAddress,
+            whitelistedAddresses: verifiedAddresses,
+            changelog: getUpdatedColonyMetadataChangelog(
+              txHash,
+              colony.metadata,
+              undefined,
+              undefined,
+              true,
+            ),
+          },
+        },
+      });
+    }
+
     yield put<AllActions>({
       type: ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_SUCCESS,
       payload: {},
       meta,
     });
 
-    if (colonyName && navigate) {
-      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
+    if (colony.name && navigate) {
+      yield navigate(`/colony/${colony.name}/tx/${txHash}`);
     }
   } catch (error) {
     return yield putError(

@@ -1,9 +1,14 @@
+import { Action, ActionTypes } from '~redux';
 import { Address, Colony } from '~types';
+import { notNull } from '~utils/arrays';
 
 export enum TABS {
   ADD_ADDRESS = 0,
   WHITELISTED = 1,
 }
+
+type ManageWhitelistDialogPayload =
+  Action<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE>['payload'];
 
 export const getManageWhitelistDialogPayload = (
   colony: Colony,
@@ -15,9 +20,8 @@ export const getManageWhitelistDialogPayload = (
     // whitelistCSVUploader,
     isWhitelistActivated,
   },
-) => {
-  const { name: colonyName, tokens, nativeToken, colonyAddress } = colony;
-  const colonyTokens = tokens?.items || [];
+): ManageWhitelistDialogPayload => {
+  const colonyTokens = colony.tokens?.items.filter(notNull) || [];
   let verifiedAddresses: Address[];
   let whitelistActivated = false;
   if (tabIndex === TABS.WHITELISTED) {
@@ -38,15 +42,13 @@ export const getManageWhitelistDialogPayload = (
     }
   }
   return {
-    colonyAddress,
-    colonyDisplayName: colony.metadata?.displayName,
-    colonyAvatarHash: colony.metadata?.avatar,
+    colony,
+    colonyDisplayName: colony.metadata?.displayName ?? '',
+    colonyTokenAddresses: colonyTokens.map(
+      (token) => token?.token.tokenAddress,
+    ),
     verifiedAddresses,
     isWhitelistActivated: whitelistActivated,
     annotationMessage,
-    colonyName,
-    colonyTokens: colonyTokens.filter(
-      (token) => token?.token.tokenAddress !== nativeToken.tokenAddress,
-    ),
   };
 };

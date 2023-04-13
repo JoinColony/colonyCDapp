@@ -259,13 +259,11 @@ export type ColonyActionsActionTypes =
   | UniqueActionType<
       ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE,
       {
-        colonyAddress: Address;
+        colony: Colony;
         colonyDisplayName: string;
-        colonyAvatarHash: string;
         verifiedAddresses: Address[];
-        colonyTokens: Address[];
+        colonyTokenAddresses: Address[];
         annotationMessage?: string;
-        colonyName: string;
         isWhitelistActivated: boolean;
       },
       MetaWithNavigate<object>
