@@ -56,6 +56,14 @@
   .heading-4 {
     @apply text-xl font-semibold;
   }
+
+  .doc-list-title {
+    @apply uppercase text-xs font-medium text-blue-400;
+  }
+
+  .doc-list-subtitle {
+    @apply font-semibold text-base text-gray-900;
+  }
 }
 
 @layer components {
