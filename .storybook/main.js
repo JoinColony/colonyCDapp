@@ -35,6 +35,7 @@ module.exports = {
       '~gql': path.resolve(__dirname, '../src/graphql'),
       '~shared/Link': path.resolve(__dirname, '../src/components/shared/Link'),
       '~constants': path.resolve(__dirname, '../src/constants'),
+      '~common/Extensions': path.resolve(__dirname, '../src/components/common/Extensions'),
     };
     return config;
   },
