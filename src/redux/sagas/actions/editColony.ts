@@ -3,6 +3,11 @@ import { ClientType } from '@colony/colony-js';
 
 import { ContextModule, getContext } from '~context';
 import { Action, ActionTypes, AllActions } from '~redux';
+import {
+  UpdateColonyMetadataDocument,
+  UpdateColonyMetadataMutation,
+  UpdateColonyMetadataMutationVariables,
+} from '~gql';
 
 import {
   createTransaction,
@@ -19,11 +24,6 @@ import {
   transactionPending,
   transactionReady,
 } from '../../actionCreators';
-import {
-  UpdateColonyMetadataDocument,
-  UpdateColonyMetadataMutation,
-  UpdateColonyMetadataMutationVariables,
-} from '~gql';
 
 function* editColonyAction({
   payload: {
