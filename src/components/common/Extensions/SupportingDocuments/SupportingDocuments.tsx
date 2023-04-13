@@ -6,7 +6,7 @@ import { SupportingDocumentsProps } from './types';
 
 const displayName = 'SupportingDocuments';
 
-const SupportingDocuments = ({ isDoubleLinkVisible }: SupportingDocumentsProps) => {
+const SupportingDocuments = ({ isDoubleLinkVisible = false }: SupportingDocumentsProps) => {
   const { formatMessage } = useIntl();
 
   return (
