@@ -29,10 +29,10 @@ interface VoteDetailsConfig extends DetailItemProps {
 
 export const useVoteDetailsConfig = ({
   //  motionState,
-  // motionId,
-  motionDomainId,
-}: // hasUserVoted,
-VoteDetailsProps): VoteDetailsConfig[] => {
+  motionData: { motionDomainId },
+  motionData,
+  hasUserVoted,
+}: VoteDetailsProps): VoteDetailsConfig[] => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
   const { userReputation, totalReputation } = useUserReputation(
@@ -51,7 +51,12 @@ VoteDetailsProps): VoteDetailsConfig[] => {
     {
       label: formatMessage({ id: 'label.rules' }),
       tooltipText: formatMessage({ id: 'tooltip.rules' }),
-      item: <VoteButton />,
+      item: (
+        <VoteButton
+          hasReputationToVote={hasReputationToVote}
+          hasUserVoted={hasUserVoted}
+        />
+      ),
     },
   ];
 
@@ -72,7 +77,12 @@ VoteDetailsProps): VoteDetailsConfig[] => {
       {
         label: formatMessage({ id: 'label.reward' }),
         tooltipText: formatMessage({ id: 'tooltip.reward' }),
-        item: <VoteRewardItem />,
+        item: (
+          <VoteRewardItem
+            //  motionState={motionState}
+            motionData={motionData}
+          />
+        ),
       },
     );
   }
