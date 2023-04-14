@@ -21,11 +21,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react', 'jsx-a11y', 'jsdoc', 'react-hooks'],
   overrides: [
     {
-      files: [
-        '**/__tests__/*.test.js',
-        '**/__tests__/*.test.ts',
-        '**/__tests__/*.test.tsx',
-      ],
+      files: ['**/__tests__/*.test.js', '**/__tests__/*.test.ts', '**/__tests__/*.test.tsx'],
       plugins: ['jest'],
       rules: {
         'max-len': 'off',
