@@ -36,6 +36,7 @@ fragment ColonyAction on ColonyAction {
       tokenAddress: id
     }
   }
+  showInActionsList
 }
 
 fragment MotionStakeValues on MotionStakeValues {
