@@ -5,6 +5,8 @@ import Button from '~shared/Button';
 
 import { formatText } from '~utils/intl';
 
+import styles from './RevealButton.css';
+
 const displayName = 'common.ColonyActions.DefaultMotion.RevealWidget';
 
 interface RevealButtonProps {
@@ -19,15 +21,17 @@ const RevealButton = ({
   const { user } = useAppContext();
 
   return (
-    <Button
-      appearance={{ theme: 'primary', size: 'medium' }}
-      text={formatText({
-        id: userVoteRevealed ? 'button.revealed' : 'button.reveal',
-      })}
-      disabled={!user || userVoteRevealed || !hasUserVoted}
-      type="submit"
-      dataTest="revealButton"
-    />
+    <div className={styles.main}>
+      <Button
+        appearance={{ theme: 'primary', size: 'medium' }}
+        text={formatText({
+          id: userVoteRevealed ? 'button.revealed' : 'button.reveal',
+        })}
+        disabled={!user || userVoteRevealed || !hasUserVoted}
+        type="submit"
+        dataTest="revealButton"
+      />
+    </div>
   );
 };
 
