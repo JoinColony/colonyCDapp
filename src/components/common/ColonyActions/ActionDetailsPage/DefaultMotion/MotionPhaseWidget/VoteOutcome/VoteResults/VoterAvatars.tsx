@@ -7,6 +7,7 @@ import {
   calculateRemainingItems,
 } from '~utils/avatars';
 import UserAvatar from '~shared/UserAvatar';
+
 import { useGetUsers } from './helpers';
 
 import styles from './VoterAvatars.css';
