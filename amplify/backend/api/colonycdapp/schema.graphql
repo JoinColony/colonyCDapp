@@ -654,6 +654,7 @@ type ColonyAction @model {
   blockNumber: Int!
   isMotion: Boolean
   motionData: MotionData
+  showInActionsList: Boolean! # True for actions, true for motions if staked above 10%
   createdAt: AWSDateTime!
 
   # Action type specific fields which might be null
