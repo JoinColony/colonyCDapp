@@ -2,13 +2,13 @@ import { MessageDescriptor } from 'react-intl';
 import { SimpleMessageValues } from '~types';
 
 type ExtensionStatusBadgeMode =
-  | 'comingSoon'
-  | 'notInstalled'
-  | 'enabled'
-  | 'disabled'
-  | 'deprecated'
-  | 'governance'
-  | 'new';
+  | 'Coming soon'
+  | 'Not installed'
+  | 'Enabled'
+  | 'Disabled'
+  | 'Deprecated'
+  | 'Governance'
+  | 'New';
 
 export interface ExtensionStatusBadgeProps {
   mode?: ExtensionStatusBadgeMode;
