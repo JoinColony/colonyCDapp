@@ -19,6 +19,14 @@ export const useVotingWidgetUpdate = (
     setHasUserVoted(true);
   }
 
+  useEffect(() => {
+    if (!user) {
+      setHasUserVoted(false);
+    } else {
+      setHasUserVoted(!!currentVotingRecord);
+    }
+  }, [user, currentVotingRecord]);
+
   // if user's vote count increased, db has been updated, stop polling
   if (currentVotingRecord?.voteCount !== prevRecord?.voteCount) {
     stopPollingAction();
