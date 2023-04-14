@@ -97,4 +97,7 @@ fragment MotionData on MotionData {
   }
   skillRep
   repSubmitted
+  pendingDomainMetadata {
+    ...DomainMetadata
+  }
 }
