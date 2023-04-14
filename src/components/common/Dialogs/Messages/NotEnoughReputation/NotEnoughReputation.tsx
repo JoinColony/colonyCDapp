@@ -25,7 +25,7 @@ const MSG = defineMessage({
     id: `${displayName}.title`,
     defaultMessage: `There is no reputation in this {onRootDomain, select,
       true {colony}
-      false {team}
+      other {team}
     } yet.`,
   },
   description: {
@@ -35,7 +35,7 @@ const MSG = defineMessage({
      true { If you have the necessary permissions to
      take this action you can toggle “Force”
      in the top right to bypass the governance process.}
-     false {}
+     other {}
      } <a>Learn more</a>`,
   },
 });
