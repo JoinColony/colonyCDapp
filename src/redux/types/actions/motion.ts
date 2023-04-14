@@ -1,8 +1,9 @@
 import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
-import { ActionTypes } from '../../actionTypes';
 import { Address, Domain, DomainColor } from '~types';
+
+import { ActionTypes } from '../../actionTypes';
 
 import {
   ErrorActionType,
@@ -93,22 +94,22 @@ export type MotionActionTypes =
       ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
       {
         colonyAddress: Address;
+        isCreateDomain: boolean;
+        motionDomainId: number;
+        domain?: Domain;
         colonyName?: string;
         domainName: string;
         domainColor?: DomainColor;
         domainPurpose?: string;
         annotationMessage?: string;
         parentId?: number;
-        domainId?: number;
-        isCreateDomain: boolean;
-        motionDomainId: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.MOTION_DOMAIN_CREATE_EDIT_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_DOMAIN_CREATE_EDIT_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.MOTION_EXPENDITURE_PAYMENT,
