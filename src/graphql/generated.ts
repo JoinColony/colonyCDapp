@@ -141,6 +141,8 @@ export type ColonyAction = {
   isMotion?: Maybe<Scalars['Boolean']>;
   motionData?: Maybe<MotionData>;
   newColonyVersion?: Maybe<Scalars['Int']>;
+  pendingDomainMetadata?: Maybe<DomainMetadata>;
+  pendingDomainMetadataId?: Maybe<Scalars['ID']>;
   recipient?: Maybe<User>;
   recipientAddress?: Maybe<Scalars['ID']>;
   toDomain?: Maybe<Domain>;
@@ -348,6 +350,7 @@ export type CreateColonyActionInput = {
   isMotion?: InputMaybe<Scalars['Boolean']>;
   motionData?: InputMaybe<MotionDataInput>;
   newColonyVersion?: InputMaybe<Scalars['Int']>;
+  pendingDomainMetadataId?: InputMaybe<Scalars['ID']>;
   recipientAddress?: InputMaybe<Scalars['ID']>;
   toDomainId?: InputMaybe<Scalars['ID']>;
   tokenAddress?: InputMaybe<Scalars['ID']>;
@@ -749,6 +752,7 @@ export type ModelColonyActionConditionInput = {
   newColonyVersion?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyActionConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionConditionInput>>>;
+  pendingDomainMetadataId?: InputMaybe<ModelIdInput>;
   recipientAddress?: InputMaybe<ModelIdInput>;
   toDomainId?: InputMaybe<ModelIdInput>;
   tokenAddress?: InputMaybe<ModelIdInput>;
@@ -776,6 +780,7 @@ export type ModelColonyActionFilterInput = {
   newColonyVersion?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyActionFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionFilterInput>>>;
+  pendingDomainMetadataId?: InputMaybe<ModelIdInput>;
   recipientAddress?: InputMaybe<ModelIdInput>;
   toDomainId?: InputMaybe<ModelIdInput>;
   tokenAddress?: InputMaybe<ModelIdInput>;
@@ -1203,6 +1208,7 @@ export type ModelSubscriptionColonyActionFilterInput = {
   isMotion?: InputMaybe<ModelSubscriptionBooleanInput>;
   newColonyVersion?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionFilterInput>>>;
+  pendingDomainMetadataId?: InputMaybe<ModelSubscriptionIdInput>;
   recipientAddress?: InputMaybe<ModelSubscriptionIdInput>;
   toDomainId?: InputMaybe<ModelSubscriptionIdInput>;
   tokenAddress?: InputMaybe<ModelSubscriptionIdInput>;
@@ -2754,6 +2760,7 @@ export type UpdateColonyActionInput = {
   isMotion?: InputMaybe<Scalars['Boolean']>;
   motionData?: InputMaybe<MotionDataInput>;
   newColonyVersion?: InputMaybe<Scalars['Int']>;
+  pendingDomainMetadataId?: InputMaybe<Scalars['ID']>;
   recipientAddress?: InputMaybe<Scalars['ID']>;
   toDomainId?: InputMaybe<Scalars['ID']>;
   tokenAddress?: InputMaybe<Scalars['ID']>;
