@@ -6,7 +6,7 @@ import { getUserRolesForDomain } from '~redux/transformers';
 import { Colony } from '~types';
 import { userHasRole } from '~utils/checks';
 
-import useColonyReputation from './useColonyReputation';
+import useColonyHasReputation from './useColonyHasReputation';
 
 const useDialogActionPermissions = (
   colony: Colony,
@@ -29,7 +29,7 @@ const useDialogActionPermissions = (
     return requiredRoles.every((role) => userHasRole(userDomainRoles, role));
   });
 
-  const hasReputation = useColonyReputation(
+  const hasReputation = useColonyHasReputation(
     colony.colonyAddress,
     requiredRepDomain,
   );

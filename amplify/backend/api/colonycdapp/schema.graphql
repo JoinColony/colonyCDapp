@@ -669,4 +669,6 @@ type ColonyAction @model {
   toDomain: Domain @hasOne(fields: ["toDomainId"])
   fundamentalChainId: Int
   newColonyVersion: Int
+  pendingDomainMetadataId: ID
+  pendingDomainMetadata: DomainMetadata @hasOne(fields: ["pendingDomainMetadataId"])
 }
