@@ -9,7 +9,6 @@ import {
 } from '~hooks';
 import { ColonyAction } from '~types';
 import { getMotionState } from '~utils/colonyMotions';
-import { STAKING_THRESHOLD } from '~constants';
 
 import { DefaultActionContent } from '../DefaultAction';
 import MotionHeading from './MotionHeading';
@@ -44,21 +43,12 @@ const DefaultMotion = ({
 
   const motionState = getMotionState(networkMotionState, actionData.motionData);
 
-  const {
-    motionData: {
-      motionStakes: { percentage: percentageStaked },
-    },
-    motionData,
-  } = actionData;
-
-  const isUnderThreshold =
-    Number(percentageStaked.nay) + Number(percentageStaked.yay) <
-    STAKING_THRESHOLD;
+  const { motionData, showInActionsList } = actionData;
 
   return (
     <div className={styles.main}>
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
-      {isUnderThreshold && <StakeRequiredBanner isDecision={false} />}
+      {!showInActionsList && <StakeRequiredBanner isDecision={false} />}
       {isVotingReputationEnabled && (
         <MotionHeading
           motionState={motionState}
