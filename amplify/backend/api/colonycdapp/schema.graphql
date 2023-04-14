@@ -680,6 +680,9 @@ type ColonyAction @model {
   toDomain: Domain @hasOne(fields: ["toDomainId"])
   fundamentalChainId: Int
   newColonyVersion: Int
+  pendingDomainMetadataId: ID
+  pendingDomainMetadata: DomainMetadata
+    @hasOne(fields: ["pendingDomainMetadataId"])
   roles: ColonyActionRoles
 
   # Required since some actions might have multiple event entries in the list
