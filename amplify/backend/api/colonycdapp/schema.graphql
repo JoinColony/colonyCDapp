@@ -116,7 +116,7 @@ input GetUserTokenBalanceInput {
 input GetMotionStateInput {
   motionId: Int!
   colonyAddress: String!
-  transactionHash: String!
+  transactionHash: String
 }
 
 input GetVoterRewardsInput {
