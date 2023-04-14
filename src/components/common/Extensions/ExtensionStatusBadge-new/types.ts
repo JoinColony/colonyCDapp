@@ -1,7 +1,7 @@
 import { MessageDescriptor } from 'react-intl';
 import { SimpleMessageValues } from '~types';
 
-type ExtensionStatusMode =
+type ExtensionStatusBadgeMode =
   | 'comingSoon'
   | 'notInstalled'
   | 'enabled'
@@ -10,8 +10,8 @@ type ExtensionStatusMode =
   | 'governance'
   | 'new';
 
-export interface ExtensionStatusProps {
-  mode?: ExtensionStatusMode;
+export interface ExtensionStatusBadgeProps {
+  mode?: ExtensionStatusBadgeMode;
   text?: MessageDescriptor | string;
   textValues?: SimpleMessageValues;
 }

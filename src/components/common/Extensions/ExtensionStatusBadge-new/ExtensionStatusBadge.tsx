@@ -1,20 +1,16 @@
 import React, { PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
-import { ExtensionStatusProps } from './types';
+import { ExtensionStatusBadgeProps } from './types';
 
-const displayName = 'Pills.ExtensionStatus';
+const displayName = 'common.Extensions.ExtensionStatusBadge';
 
-const ExtensionStatus: React.FC<PropsWithChildren<ExtensionStatusProps>> = ({
-  mode = 'comingSoon',
-  children,
-  text,
-  textValues,
-  ...rest
-}) => {
+const ExtensionStatusBadge: React.FC<
+  PropsWithChildren<ExtensionStatusBadgeProps>
+> = ({ mode = 'comingSoon', children, text, textValues, ...rest }) => {
   const { formatMessage } = useIntl();
 
-  const extensionStatusText =
+  const extensionStatusBadgeText =
     typeof text == 'string' ? text : text && formatMessage(text, textValues);
 
   return (
@@ -33,11 +29,11 @@ const ExtensionStatus: React.FC<PropsWithChildren<ExtensionStatusProps>> = ({
       )}
       {...rest}
     >
-      {extensionStatusText || children}
+      {extensionStatusBadgeText || children}
     </span>
   );
 };
 
-ExtensionStatus.displayName = displayName;
+ExtensionStatusBadge.displayName = displayName;
 
-export default ExtensionStatus;
+export default ExtensionStatusBadge;

@@ -1,0 +1,7 @@
+.badge {
+  @apply inline-flex items-center text-center text-gray-900 bg-base-white text-sm font-medium px-3 py-1.5 rounded-3xl border border-gray-100 h-[1.875rem] cursor-pointer;
+}
+
+.tooltip-badge {
+  @apply flex items-center text-center text-inherit px-3 py-1.5 rounded-3xl border border-base-white h-[1.875rem];
+}
