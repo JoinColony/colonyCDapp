@@ -9,6 +9,7 @@ import ClaimMotionStakes from './ClaimMotionStakes';
 import FinalizeMotion from './FinalizeMotion';
 import StakingWidget, { StakingWidgetProvider } from './StakingWidget';
 import { VotingWidget } from './VotingWidget';
+import { RevealWidget } from './RevealWidget';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.MotionPhaseWidget';
@@ -93,6 +94,16 @@ const MotionPhaseWidget = ({
       return (
         <VotingWidget
           actionType={type}
+          motionData={motionData}
+          motionState={motionState}
+          {...rest}
+        />
+      );
+    }
+
+    case MotionState.Reveal: {
+      return (
+        <RevealWidget
           motionData={motionData}
           motionState={motionState}
           {...rest}

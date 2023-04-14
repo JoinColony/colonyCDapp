@@ -1,0 +1,3 @@
+.tokenIcon {
+  composes: tokenIcon from '../VotingWidget/VoteRewardItem.css';
+}

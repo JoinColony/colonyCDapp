@@ -155,6 +155,7 @@ type MembersForColonyReturn {
 type VoterRewardsReturn {
   min: String!
   max: String!
+  reward: String!
 }
 
 enum TokenType {
@@ -478,6 +479,7 @@ type StakerRewards {
 type VoterRecord {
   address: String!
   voteCount: String!
+  vote: Int # nullable since we don't know the vote until it's revealed
 }
 
 type MotionData {
