@@ -5,9 +5,9 @@ import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 import { ButtonProps } from './types';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
-import styles from './Button.css';
+import styles from './Button.module.css';
 
-const displayName = 'Button';
+const displayName = 'Extensions.Button';
 
 const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   mode = 'primarySolid',
@@ -22,10 +22,8 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  const titleText =
-    typeof title == 'string' ? title : title && formatMessage(title);
-  const buttonText =
-    typeof text == 'string' ? text : text && formatMessage(text, textValues);
+  const titleText = typeof title == 'string' ? title : title && formatMessage(title);
+  const buttonText = typeof text == 'string' ? text : text && formatMessage(text, textValues);
 
   return (
     <>
@@ -33,14 +31,12 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
         <SpinnerLoader appearance={{ size: 'medium' }} />
       ) : (
         <button
-          className={clsx(
-            'flex text-md font-medium px-4 py-2.5 rounded-lg h-[2.5rem] transition-all duration-normal',
-            {
-              [styles.primarySolid]: mode === 'primarySolid',
-              [styles.primaryOutline]: mode === 'primaryOutline',
-              'pointer-events-none': disabled,
-            },
-          )}
+          className={clsx('flex font-medium transition-all duration-normal', {
+            [styles.primarySolid]: mode === 'primarySolid',
+            [styles.primaryOutline]: mode === 'primaryOutline',
+            [styles.textButton]: mode === 'textButton',
+            'pointer-events-none': disabled,
+          })}
           disabled={disabled || loading}
           aria-busy={loading}
           title={titleText}

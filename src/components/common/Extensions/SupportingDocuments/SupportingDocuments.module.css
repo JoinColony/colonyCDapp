@@ -3,5 +3,5 @@
 }
 
 .doc-list-subtitle {
-  @apply font-semibold text-base text-gray-900;
+  @apply font-semibold text-lg text-gray-900;
 }
