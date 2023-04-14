@@ -7,7 +7,7 @@ import {
   ColonyAndExtensionsEvents,
   ColonyAction,
   ColonyActionType,
-  Domain,
+  DomainMetadata,
 } from '~types';
 import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
@@ -31,17 +31,17 @@ const { formatMessage } = intl({
 // Get the domain name at the time of a transaction with a given hash (or fallback to the current name)
 const getDomainNameFromChangelog = (
   transactionHash: string,
-  domain?: Domain | null,
+  domainMetadata?: DomainMetadata | null,
 ) => {
-  if (!domain?.metadata) {
+  if (!domainMetadata) {
     return null;
   }
 
-  const changelogItem = domain.metadata.changelog?.find(
+  const changelogItem = domainMetadata.changelog?.find(
     (item) => item.transactionHash === transactionHash,
   );
   if (!changelogItem?.newName) {
-    return domain.metadata.name;
+    return domainMetadata.name;
   }
   return changelogItem.newName;
 };
@@ -64,7 +64,7 @@ export const mapColonyActionToExpectedFormat = (
     fromDomain:
       getDomainNameFromChangelog(
         actionData.transactionHash,
-        actionData.fromDomain,
+        actionData.fromDomain?.metadata || actionData.pendingDomainMetadata,
       ) ?? formatMessage({ id: 'unknownDomain' }),
     initiator: (
       <span className={styles.titleDecoration}>
@@ -130,7 +130,7 @@ export const mapColonyEventToExpectedFormat = (
     fromDomain:
       getDomainNameFromChangelog(
         actionData.transactionHash,
-        actionData.fromDomain,
+        actionData.fromDomain?.metadata || actionData.pendingDomainMetadata,
       ) ?? formatMessage({ id: 'unknownDomain' }),
     toDomain:
       actionData.toDomain?.metadata?.name ??
