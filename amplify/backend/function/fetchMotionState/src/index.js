@@ -18,7 +18,7 @@ exports.handler = async (event) => {
    * This ensures the rewards are present in the event a motion fails before going to a vote,
    * so the side that has objected can reclaim their stake.
    */
-  if (motionState === MotionState.Failed) {
+  if (transactionHash && motionState === MotionState.Failed) {
     const motionData = await getMotionData(transactionHash);
     if (motionData) {
       const {
