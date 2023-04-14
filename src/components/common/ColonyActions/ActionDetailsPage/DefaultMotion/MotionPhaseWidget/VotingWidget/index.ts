@@ -4,5 +4,8 @@ export { VoteDetailsProps } from './VoteDetails';
 export { default as VoteRewardItem } from './VoteRewardItem';
 export { default as VotingPanel } from './VotingPanel';
 export { default as VoteDetails } from './VoteDetails';
-export { default as VotingWidgetHeading } from './VotingWidgetHeading';
+export {
+  default as VotingWidgetHeading,
+  voteTitleMsg,
+} from './VotingWidgetHeading';
 export { useVotingWidgetUpdate } from './useVotingWidgetUpdate';
