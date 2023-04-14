@@ -16,15 +16,7 @@ const meta: Meta<typeof UserPermissionsBadge> = {
     },
     name: {
       name: 'Icon Name',
-      options: [
-        'appWindow',
-        'bank',
-        'buildings',
-        'Disabled',
-        'clipboardText',
-        'clockCounterClockwise',
-        'scales',
-      ],
+      options: ['appWindow', 'bank', 'buildings', 'disabled', 'clipboardText', 'clockCounterClockwise', 'scales'],
       control: {
         type: 'select',
       },
@@ -45,7 +37,6 @@ export const Base: Story = {
   args: {
     text: 'Architecture',
     name: 'buildings',
-    description:
-      'This permission allows users to create new domains, and manage permissions within those domains.',
+    description: 'This permission allows users to create new domains, and manage permissions within those domains.',
   },
 };
