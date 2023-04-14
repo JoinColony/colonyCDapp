@@ -5,10 +5,11 @@ import { Placement } from '@popperjs/core';
 import UserAvatar from '~shared/UserAvatar';
 import ListItem, { ListItemStatus } from '~shared/ListItem';
 import { ColonyAction } from '~types';
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
 
 import { getActionTitleValues } from '../helpers';
 import ActionsListItemMeta from './ActionsListItemMeta';
+import { useMotionTag } from './helpers';
 
 const displayName = 'common.ColonyActions.ActionsListItem';
 
@@ -48,6 +49,8 @@ const ActionsListItem = ({
     // commentCount = 0,
     // status = ListItemStatus.Defused,
     createdAt,
+    isMotion,
+    motionData,
   },
   item,
 }: Props) => {
@@ -61,19 +64,15 @@ const ActionsListItem = ({
   const handleActionRedirect = () =>
     navigate(`/colony/${colony?.name}/tx/${transactionHash}`);
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony?.colonyAddress,
-  // });
-
-  // const isForced = true; //isVotingExtensionEnabled && !actionType?.endsWith('Motion');
-  // const tag = motionState || (isForced && MotionState.Forced) || MotionState.Invalid;
-
   // const displayCountdownTimer = shouldDisplayCountDownTimer(
   //   motionId,
   //   motionState,
   // );
 
   const status = ListItemStatus.Defused;
+  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const MotionTag = useMotionTag(isMotion, motionData);
+  const showMotionTag = isVotingReputationEnabled && !!MotionTag;
 
   return (
     <ListItem
@@ -98,7 +97,7 @@ const ActionsListItem = ({
       meta={<ActionsListItemMeta fromDomain={fromDomain ?? undefined} />}
       onClick={handleActionRedirect}
       status={status}
-      // tag={tag}
+      tag={showMotionTag ? <MotionTag /> : undefined}
       title={{ id: 'action.title' }}
       titleValues={getActionTitleValues(item, colony)}
     />
