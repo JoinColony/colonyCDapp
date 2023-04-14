@@ -23,7 +23,7 @@ export {
   WizardDialogType,
 } from './useNaiveBranchingDialogWizard';
 
-export { default as useColonyReputation } from './useColonyReputation';
+export { default as useColonyHasReputation } from './useColonyHasReputation';
 export { default as useDialogActionPermissions } from './useDialogActionPermissions';
 export { default as useActionDialogStatus } from './useActionDialogStatus';
 export {
