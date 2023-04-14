@@ -2,10 +2,9 @@ import { ButtonHTMLAttributes } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { SimpleMessageValues } from '~types';
 
-export type ButtonMode = 'primarySolid' | 'primaryOutline';
+export type ButtonMode = 'primarySolid' | 'primaryOutline' | 'textButton';
 
-export interface ButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title'> {
+export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title'> {
   mode?: ButtonMode;
   disabled?: boolean;
   type?: 'submit' | 'reset' | 'button';
