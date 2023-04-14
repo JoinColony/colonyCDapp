@@ -1,4 +1,4 @@
-const { getColonyNetworkClient, Network } = require('@colony/colony-js');
+const { getColonyNetworkClient, Network, Id } = require('@colony/colony-js');
 const {
   providers,
   utils: { Logger },
@@ -6,7 +6,6 @@ const {
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
-const ROOT_DOMAIN_ID = 1; // this used to be exported from @colony/colony-js but isn't anymore
 const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
 
 /**
@@ -32,7 +31,7 @@ exports.handler = async (event) => {
   });
   const colonyClient = await networkClient.getColonyClient(colonyAddress);
 
-  const { skillId } = await colonyClient.getDomain(domainId ?? ROOT_DOMAIN_ID);
+  const { skillId } = await colonyClient.getDomain(domainId ?? Id.RootDomain);
 
   try {
     const { reputationAmount } = await colonyClient.getReputationWithoutProofs(
