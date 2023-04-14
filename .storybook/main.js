@@ -32,11 +32,11 @@ module.exports = {
       '~types': path.resolve(__dirname, '../src/types'),
       '~utils/lodash': path.resolve(__dirname, '../src/utils/lodash'),
       '~utils/isUrlExternal': path.resolve(__dirname, '../src/utils/isUrlExternal'),
-      '~utils/isUrlExternal': path.resolve(__dirname, '../src/utils/isUrlExternal'),
       '~gql': path.resolve(__dirname, '../src/graphql'),
-      '~shared/Link': path.resolve(__dirname, '../src/components/shared/Link'),
       '~constants': path.resolve(__dirname, '../src/constants'),
-      '~common/Extensions': path.resolve(__dirname, '../src/components/common/Extensions'),
+      '~shared': path.resolve(__dirname, '../src/components/shared'),
+      '~common': path.resolve(__dirname, '../src/components/common'),
+      '~frame': path.resolve(__dirname, '../src/components/frame'),
     };
     return config;
   },

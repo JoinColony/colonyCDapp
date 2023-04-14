@@ -7,7 +7,7 @@ const displayName = 'common.Extensions.ExtensionStatusBadge';
 
 const ExtensionStatusBadge: React.FC<
   PropsWithChildren<ExtensionStatusBadgeProps>
-> = ({ mode = 'comingSoon', children, text, textValues, ...rest }) => {
+> = ({ mode = 'Coming soon', children, text, textValues, ...rest }) => {
   const { formatMessage } = useIntl();
 
   const extensionStatusBadgeText =
@@ -18,13 +18,13 @@ const ExtensionStatusBadge: React.FC<
       className={clsx(
         'inline-flex items-center text-center text-sm font-medium px-3 py-1 rounded-3xl h-[1.625rem]',
         {
-          'text-indigo-400 bg-indigo-100': mode === 'comingSoon',
-          'text-blue-400 bg-blue-100': mode === 'notInstalled',
-          'text-green-400 bg-green-100': mode === 'enabled' || mode === 'new',
-          'text-red-400 bg-red-100': mode === 'disabled',
-          'text-purple-400 bg-purple-100': mode === 'deprecated',
+          'text-indigo-400 bg-indigo-100': mode === 'Coming soon',
+          'text-blue-400 bg-blue-100': mode === 'Not installed',
+          'text-green-400 bg-green-100': mode === 'Enabled' || mode === 'New',
+          'text-red-400 bg-red-100': mode === 'Disabled',
+          'text-purple-400 bg-purple-100': mode === 'Deprecated',
           'text-gray-900 bg-base-white border border-gray-200':
-            mode === 'governance',
+            mode === 'Governance',
         },
       )}
       {...rest}

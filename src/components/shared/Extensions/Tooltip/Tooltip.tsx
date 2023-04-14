@@ -1,6 +1,6 @@
 import React from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
-import styles from './Tooltip.css';
+import styles from './Tooltip.module.css';
 import { TooltipProps } from './types';
 
 const Tooltip = ({

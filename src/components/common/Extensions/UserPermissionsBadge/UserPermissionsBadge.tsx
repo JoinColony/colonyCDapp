@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import camelcase from 'camelcase';
+import clsx from 'clsx';
 import { UserPermissionsBadgeProps } from './types';
 import styles from './UserPermissionsBadge.module.css';
 import { pills as iconNames } from '~images/icons.json';
@@ -50,14 +51,13 @@ const UserPermissionsBadge: React.FC<
     </>
   );
 
-  // 'mb-2.5'
   return (
     <Tooltip
       trigger="hover"
       content={
         <div className="w-[15.625rem] flex flex-col items-start">
-          <span className={styles['tooltip-badge']}>{content}</span>
-          {userPermissionsBadgeDescription}
+          <span className={clsx(styles.tooltipBadge, 'mb-2.5')}>{content}</span>
+          {userPermissionsBadgeText}: {userPermissionsBadgeDescription}
         </div>
       }
       placement="top"
