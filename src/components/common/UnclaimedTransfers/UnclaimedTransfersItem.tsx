@@ -73,9 +73,7 @@ const UnclaimedTransfersItem = ({ claim }: Props) => {
           <ActionButton
             text={MSG.buttonClaim}
             className={styles.button}
-            submit={ActionTypes.CLAIM_TOKEN}
-            error={ActionTypes.CLAIM_TOKEN_ERROR}
-            success={ActionTypes.CLAIM_TOKEN_SUCCESS}
+            actionType={ActionTypes.CLAIM_TOKEN}
             transform={transform}
             disabled={!canInteractWithColony}
             dataTest="claimForColonyButton"

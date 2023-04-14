@@ -1,10 +1,10 @@
 import { all, call } from 'redux-saga/effects';
 
-// import stakeMotionSaga from './stakeMotion';
-// import voteMotionSaga from './voteMotion';
+import stakeMotionSaga from './stakeMotion';
+import voteMotionSaga from './voteMotion';
 // import revealVoteMotionSaga from './revealVoteMotion';
-// import finalizeMotionSaga from './finalizeMotion';
-// import claimMotionRewardsSaga from './claimMotionRewards';
+import finalizeMotionSaga from './finalizeMotion';
+import claimMotionRewardsSaga from './claimMotionRewards';
 import rootMotionSaga from './rootMotion';
 // import createEditDomainMotionSaga from './createEditDomainMotion';
 // import moveFundsMotionSaga from './moveFundsMotion';
@@ -17,11 +17,11 @@ import rootMotionSaga from './rootMotion';
 
 export default function* actionsSagas() {
   yield all([
-    // call(stakeMotionSaga),
-    // call(voteMotionSaga),
+    call(stakeMotionSaga),
+    call(voteMotionSaga),
     // call(revealVoteMotionSaga),
-    // call(finalizeMotionSaga),
-    // call(claimMotionRewardsSaga),
+    call(finalizeMotionSaga),
+    call(claimMotionRewardsSaga),
     call(rootMotionSaga),
     // call(createEditDomainMotionSaga),
     // call(moveFundsMotionSaga),

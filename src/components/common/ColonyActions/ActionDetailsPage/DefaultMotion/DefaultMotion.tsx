@@ -1,13 +1,15 @@
 import React from 'react';
+import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import DetailsWidget from '~shared/DetailsWidget';
-
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { ColonyAction } from '~types';
-import { MotionState } from '~utils/colonyMotions';
+import { getMotionState } from '~utils/colonyMotions';
+import { STAKING_THRESHOLD } from '~constants';
 
 import { DefaultActionContent } from '../DefaultAction';
 import MotionHeading from './MotionHeading';
+import MotionPhaseWidget from './MotionPhaseWidget';
 import StakeRequiredBanner from './StakeRequiredBanner';
 
 import styles from './DefaultMotion.css';
@@ -16,42 +18,50 @@ const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion';
 
 interface DefaultMotionProps {
   actionData: ColonyAction;
+  networkMotionState: NetworkMotionState;
+  startPollingAction: (pollingInterval: number) => void;
+  stopPollingAction: () => void;
 }
 
-const DefaultMotion = ({ actionData }: DefaultMotionProps) => {
+const DefaultMotion = ({
+  actionData,
+  networkMotionState,
+  ...rest
+}: DefaultMotionProps) => {
   const { colony } = useColonyContext();
 
   const { isVotingReputationEnabled } = useEnabledExtensions();
 
-  if (!colony) {
+  if (!colony || !actionData.motionData) {
     return null;
   }
 
-  const motionState = MotionState.Voting as MotionState;
+  const motionState = getMotionState(networkMotionState, actionData.motionData);
 
-  //   const isStakingPhase =
-  //     motionState === MotionState.Staking ||
-  //     motionState === MotionState.Staked ||
-  //     motionState === MotionState.Objection;
+  const {
+    motionData: {
+      motionStakes: { percentage: percentageStaked },
+    },
+  } = actionData;
 
-  const showBanner = true; // !shouldDisplayMotionInActionsList(currentStake, requiredStake);
+  const isUnderThreshold =
+    Number(percentageStaked.nay) + Number(percentageStaked.yay) <
+    STAKING_THRESHOLD;
 
   return (
     <div className={styles.main}>
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
-      {showBanner && <StakeRequiredBanner isDecision={false} />}
+      {isUnderThreshold && <StakeRequiredBanner isDecision={false} />}
       {isVotingReputationEnabled && <MotionHeading motionState={motionState} />}
       <div className={styles.container}>
         <DefaultActionContent actionData={actionData} />
-        {/* {isStakingPhase && (
-          <StakingWidgetFlow
-            motionId={motionId}
-            colony={colony}
-            scrollToRef={bottomElementRef}
-            isDecision={isDecision}
+        <div className={styles.widgets}>
+          <MotionPhaseWidget
+            actionData={actionData}
+            motionState={motionState}
+            {...rest}
           />
-        )} */}
-        {/* <div className={styles.details}>
+          {/* <div className={styles.details}>
         {motionState === MotionState.Voting && (
           <VoteWidget
             colony={colony}
@@ -83,7 +93,8 @@ const DefaultMotion = ({ actionData }: DefaultMotionProps) => {
             isDecision={isDecision}
           />
         )} */}
-        <DetailsWidget actionData={actionData} colony={colony} />
+          <DetailsWidget actionData={actionData} colony={colony} />
+        </div>
       </div>
     </div>
   );

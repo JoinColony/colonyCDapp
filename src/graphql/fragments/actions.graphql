@@ -25,7 +25,62 @@ fragment ColonyAction on ColonyAction {
   createdAt
   newColonyVersion
   isMotion
+  motionData {
+    ...MotionData
+  }
   colony {
     colonyAddress: id
+    nativeToken {
+      nativeTokenDecimals: decimals
+      nativeTokenSymbol: symbol
+      tokenAddress: id
+    }
+  }
+}
+
+fragment MotionStakeValues on MotionStakeValues {
+  yay
+  nay
+}
+
+fragment MotionData on MotionData {
+  databaseMotionId: motionId
+  motionId: nativeMotionId
+  motionStakes {
+    raw {
+      ...MotionStakeValues
+    }
+    percentage {
+      ...MotionStakeValues
+    }
+  }
+  usersStakes {
+    address
+    stakes {
+      raw {
+        ...MotionStakeValues
+      }
+      percentage {
+        ...MotionStakeValues
+      }
+    }
+  }
+  remainingStakes
+  userMinStake
+  requiredStake
+  rootHash
+  motionDomainId
+  stakerRewards {
+    address
+    rewards {
+      yay
+      nay
+    }
+    isClaimed
+  }
+  isFinalized
+  voterRecord {
+    address
+    voteCount
   }
 }

@@ -1,10 +1,13 @@
 import { BigNumber } from 'ethers';
 import { Decimal } from 'decimal.js';
-import { ColonyRoles } from '@colony/colony-js';
+import {
+  ColonyRoles,
+  MotionState as NetworkMotionState,
+} from '@colony/colony-js';
 
 import { isNil } from '~utils/lodash';
 import { getRolesForUserAndDomain } from '~redux/transformers';
-import { ActionUserRoles, User } from '~types';
+import { ActionUserRoles, MotionData, User } from '~types';
 
 export enum MotionVote {
   Yay = 1,
@@ -27,6 +30,64 @@ export enum MotionState {
   Escalation = 'Escalation',
   Forced = 'Forced',
 }
+
+export const getMotionDatabaseId = (
+  chainId: number,
+  votingRepExtnAddress: string,
+  nativeMotionId: BigNumber,
+): string => `${chainId}-${votingRepExtnAddress}_${nativeMotionId}`;
+
+export const getMotionState = (
+  motionState: NetworkMotionState,
+  {
+    motionStakes: {
+      raw: { yay: yayStakes, nay: nayStakes },
+    },
+    requiredStake,
+  }: MotionData,
+) => {
+  switch (motionState) {
+    case NetworkMotionState.Staking: {
+      return BigNumber.from(yayStakes).gte(requiredStake) &&
+        BigNumber.from(nayStakes).isZero()
+        ? MotionState.Staked
+        : MotionState.Staking;
+    }
+    case NetworkMotionState.Submit: {
+      return MotionState.Voting;
+    }
+    case NetworkMotionState.Reveal: {
+      return MotionState.Reveal;
+    }
+    case NetworkMotionState.Closed: {
+      return MotionState.Escalation;
+    }
+    case NetworkMotionState.Finalizable:
+    case NetworkMotionState.Finalized: {
+      /* @TODO: Add when voting gets wired in.
+        if (nayStakes.gte(requiredStakes) && yayStakes.gte(requiredStakes)) {
+        const [nayVotes, yayVotes] = motion.votes;
+        
+         * It only passes if the yay votes outnumber the nay votes
+         * If the votes are equal, it fails
+         
+        if (yayVotes.gt(nayVotes)) {
+          return MotionState.Passed;
+        }
+        return MotionState.Failed;
+      }
+      */
+      if (BigNumber.from(yayStakes).eq(requiredStake)) {
+        return MotionState.Passed;
+      }
+      return MotionState.Failed;
+    }
+    case NetworkMotionState.Failed:
+      return MotionState.FailedNotFinalizable;
+    default:
+      return MotionState.Invalid;
+  }
+};
 
 export const getMotionRequiredStake = (
   skillRep: BigNumber,

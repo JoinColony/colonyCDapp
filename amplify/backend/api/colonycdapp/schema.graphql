@@ -113,6 +113,19 @@ input GetUserTokenBalanceInput {
   tokenAddress: String!
 }
 
+input GetMotionStateInput {
+  motionId: Int!
+  colonyAddress: String!
+}
+
+input GetVoterRewardsInput {
+  voterAddress: String!
+  colonyAddress: String!
+  motionDomainId: String!
+  motionId: String!
+  rootHash: String!
+}
+
 type UserDomainReputation {
   domainId: Int!
   reputationPercentage: String!
@@ -137,6 +150,11 @@ type GetUserTokenBalanceReturn {
 type MembersForColonyReturn {
   contributors: [Contributor!]
   watchers: [Watcher!]
+}
+
+type VoterRewardsReturn {
+  min: String!
+  max: String!
 }
 
 enum TokenType {
@@ -228,6 +246,10 @@ type Query {
   ): GetUserTokenBalanceReturn @function(name: "getUserTokenBalance")
   getMembersForColony(input: MembersForColonyInput): MembersForColonyReturn
     @function(name: "getMembersForColony")
+  getMotionState(input: GetMotionStateInput): Int
+    @function(name: "fetchMotionState")
+  getVoterRewards(input: GetVoterRewardsInput): VoterRewardsReturn
+    @function(name: "fetchVoterRewards")
 }
 
 type Mutation {
@@ -432,6 +454,48 @@ input TokenInput {
   id: ID!
 }
 
+type MotionStakeValues {
+  yay: String!
+  nay: String!
+}
+
+type MotionStakes {
+  raw: MotionStakeValues!
+  percentage: MotionStakeValues!
+}
+
+type UserStakes {
+  address: String!
+  stakes: MotionStakes!
+}
+
+type StakerRewards {
+  address: String!
+  rewards: MotionStakeValues!
+  isClaimed: Boolean!
+}
+
+type VoterRecord {
+  address: String!
+  voteCount: String!
+}
+
+type MotionData {
+  motionId: String! # to ensure uniqueness, we format as: chainId-votingRepExtnAddress_nativeMotionId
+  nativeMotionId: String!
+  usersStakes: [UserStakes!]!
+  stakerRewards: [StakerRewards!]!
+  motionStakes: MotionStakes!
+  remainingStakes: [String!]! # tuple [nayRemaining, yayRemaining]
+  userMinStake: String!
+  requiredStake: String!
+  rootHash: String! # For calculating user's max stake in client
+  motionDomainId: String! # native domain id
+  isFinalized: Boolean!
+  createdBy: String! # voting rep extn address. Useful to check if we're viewing a "read-only" motion
+  voterRecord: [VoterRecord!]!
+}
+
 # This will store the relevant events we care about for a particular colony
 # Altough it might also hold events emmited by other clients (eg: network or token)
 # but are event pertaining to a colony
@@ -492,6 +556,7 @@ type ColonyAction @model {
   type: ColonyActionType!
   blockNumber: Int!
   isMotion: Boolean
+  motionData: MotionData
   createdAt: AWSDateTime!
   # Action type specific fields which might be null
   initiatorAddress: ID # Amplify will automatically populate one of the following fields with related model if there is an initiator

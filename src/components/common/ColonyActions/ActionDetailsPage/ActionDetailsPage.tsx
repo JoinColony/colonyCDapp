@@ -1,5 +1,6 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
+import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import { useColonyContext, useGetColonyAction } from '~hooks';
 import LoadingTemplate from '~frame/LoadingTemplate';
@@ -36,6 +37,9 @@ const ActionDetailsPage = () => {
     isUnknownTransaction,
     action,
     loadingAction,
+    motionState,
+    startPollingForAction,
+    stopPollingForAction,
   } = useGetColonyAction(colony);
 
   // const status = action?.transactionStatus;
@@ -45,8 +49,15 @@ const ActionDetailsPage = () => {
 
   const isMotion = action?.isMotion;
   const createdAt = action?.createdAt;
+  const isInvalidMotion =
+    (isMotion && !action.motionData) ||
+    (isMotion && (motionState === null || motionState === undefined));
+
   const isInvalidTransaction =
-    isInvalidTransactionHash || isUnknownTransaction || !action;
+    isInvalidTransactionHash ||
+    isUnknownTransaction ||
+    !action ||
+    isInvalidMotion;
 
   if (loadingAction) {
     return <LoadingTemplate loadingText={MSG.loading} />;
@@ -68,7 +79,13 @@ const ActionDetailsPage = () => {
   if (isMotion) {
     return (
       <Layout isMotion>
-        <DefaultMotion actionData={action} />
+        <DefaultMotion
+          actionData={action}
+          // Safe casting since if it's a motion without motionState, we render TransactionNotFound.
+          networkMotionState={motionState as NetworkMotionState}
+          startPollingAction={startPollingForAction}
+          stopPollingAction={stopPollingForAction}
+        />
       </Layout>
     );
   }
