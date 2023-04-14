@@ -42,3 +42,10 @@ export const REPUTATION_LEARN_MORE = `https://colony.gitbook.io/colony/key-conce
  * Metatransactions
  */
 export const METATRANSACTIONS_LEARN_MORE = `https://colony.gitbook.io/colony/announcements/metatransactions`;
+
+/*
+ *  Supporting documents
+ */
+export const LAZY_CONSENSUS = `https://docs.colony.io/learn/governance/lazy-consensus`;
+export const PAYMENTS = `https://docs.colony.io/use/making-payments/payments`;
+export const MOTIONS_AND_DISPUTES = `https://docs.colony.io/use/governance/motions-and-disputes/`;
