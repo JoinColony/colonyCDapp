@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { ColonyAndExtensionsEvents } from '~types';
 import { getEventTitleValues, TransactionMeta } from '~common/ColonyActions';
 import { useColonyContext } from '~hooks';
 
@@ -28,7 +29,10 @@ const ActionEventData = ({
         />
       </div>
       <div className={styles.details}>
-        <ActionRoles actionType={type} eventName={eventName} />
+        <ActionRoles
+          actionType={type}
+          eventName={eventName as ColonyAndExtensionsEvents}
+        />
         <TransactionMeta
           transactionHash={transactionHash}
           createdAt={createdAt}

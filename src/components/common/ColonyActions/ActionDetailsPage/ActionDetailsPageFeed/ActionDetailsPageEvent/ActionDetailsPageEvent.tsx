@@ -10,7 +10,7 @@ const displayName =
   'common.ColonyActions.ActionDetailsPage.ActionDetailsPageEvent';
 
 export interface ActionsPageEventProps {
-  eventName: ColonyAndExtensionsEvents;
+  eventName: ColonyAndExtensionsEvents | SystemMessagesName;
   actionData: ColonyAction;
   dataTest?: string;
   eventId?: string;

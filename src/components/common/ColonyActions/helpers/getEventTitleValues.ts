@@ -38,7 +38,9 @@ enum EventTitleMessageKeys {
 
 /* Maps eventType to message values as found in en-events.ts */
 const EVENT_TYPE_MESSAGE_KEYS_MAP: {
-  [key in ColonyAndExtensionsEvents]?: EventTitleMessageKeys[];
+  [key in
+    | ColonyAndExtensionsEvents
+    | SystemMessagesName]?: EventTitleMessageKeys[];
 } = {
   [ColonyAndExtensionsEvents.OneTxPaymentMade]: [
     EventTitleMessageKeys.Amount,
@@ -133,6 +135,17 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
     EventTitleMessageKeys.ReputationChangeNumeral,
     EventTitleMessageKeys.Recipient,
   ],
+  [SystemMessagesName.ObjectionFullyStaked]: [
+    EventTitleMessageKeys.ObjectionTag,
+    EventTitleMessageKeys.MotionTag,
+  ],
+  [SystemMessagesName.MotionFullyStakedAfterObjection]: [
+    EventTitleMessageKeys.MotionTag,
+  ],
+  [SystemMessagesName.MotionFullyStaked]: [
+    EventTitleMessageKeys.ObjectionTag,
+    EventTitleMessageKeys.MotionTag,
+  ],
 };
 
 const DEFAULT_KEYS = [
@@ -156,7 +169,7 @@ export const generateMessageValues = (
 
 /* Returns the correct message values according to the event type. */
 const getEventTitleValues = (
-  eventName: ColonyAndExtensionsEvents,
+  eventName: ColonyAndExtensionsEvents | SystemMessagesName,
   actionData: ColonyAction,
   eventId?: string,
   colony?: Colony,
