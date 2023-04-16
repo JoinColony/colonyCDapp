@@ -1,0 +1,10 @@
+.wrapper {
+  &::after {
+    @apply bg-gray-200 mt-6;
+
+    display: block;
+    height: 1px;
+    width: 100%;
+    content: '';
+  }
+}
