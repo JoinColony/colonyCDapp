@@ -7,7 +7,12 @@ export const getColonyMetadataChangesValue = (
   { transactionHash }: ColonyAction,
   colony?: Colony,
 ) => {
-  const { newDisplayName, oldDisplayName, hasAvatarChanged } =
+  const {
+    newDisplayName,
+    oldDisplayName,
+    hasAvatarChanged,
+    hasWhitelistChanged,
+  } =
     colony?.metadata?.changelog?.find(
       (item) => item.transactionHash === transactionHash,
     ) || {};
@@ -15,12 +20,20 @@ export const getColonyMetadataChangesValue = (
   const hasNameChanged =
     oldDisplayName && newDisplayName && newDisplayName !== oldDisplayName;
 
-  const hasNoChanges = !hasNameChanged && !hasAvatarChanged;
+  const hasNoChanges =
+    !hasNameChanged && !hasAvatarChanged && !hasWhitelistChanged;
 
   if (!colony || hasNoChanges) {
     return formatText({
       id: 'colonyMetadata.fallback',
       defaultMessage: 'metadata, but the values are the same',
+    });
+  }
+
+  if (hasWhitelistChanged) {
+    return formatText({
+      id: 'colonyMetadata.change',
+      defaultMessage: 'address book',
     });
   }
 
