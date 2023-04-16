@@ -100,15 +100,14 @@ fragment MotionData on MotionData {
   }
   skillRep
   repSubmitted
-  events {
-    ...MotionEvent
+  messages {
+    ...MotionMessage
   }
 }
 
-fragment MotionEvent on MotionEvent {
+fragment MotionMessage on MotionMessage {
   name
-  transactionHash
-  logIndex
+  messageKey
   initiatorAddress
   vote
   amount

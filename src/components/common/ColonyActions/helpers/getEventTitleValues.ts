@@ -3,8 +3,9 @@ import {
   Colony,
   ColonyAction,
   ColonyAndExtensionsEvents,
-  MotionEvent,
+  MotionMessage,
   User,
+  SystemMessagesName,
 } from '~types';
 
 import { mapColonyEventToExpectedFormat } from './mapItemToMessageFormat';
@@ -40,7 +41,9 @@ enum EventTitleMessageKeys {
 
 /* Maps eventType to message values as found in en-events.ts */
 const EVENT_TYPE_MESSAGE_KEYS_MAP: {
-  [key in ColonyAndExtensionsEvents]?: EventTitleMessageKeys[];
+  [key in
+    | ColonyAndExtensionsEvents
+    | SystemMessagesName]?: EventTitleMessageKeys[];
 } = {
   [ColonyAndExtensionsEvents.OneTxPaymentMade]: [
     EventTitleMessageKeys.Amount,
@@ -135,6 +138,17 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
     EventTitleMessageKeys.ReputationChangeNumeral,
     EventTitleMessageKeys.Recipient,
   ],
+  [SystemMessagesName.ObjectionFullyStaked]: [
+    EventTitleMessageKeys.ObjectionTag,
+    EventTitleMessageKeys.MotionTag,
+  ],
+  [SystemMessagesName.MotionFullyStakedAfterObjection]: [
+    EventTitleMessageKeys.MotionTag,
+  ],
+  [SystemMessagesName.MotionFullyStaked]: [
+    EventTitleMessageKeys.ObjectionTag,
+    EventTitleMessageKeys.MotionTag,
+  ],
 };
 
 const DEFAULT_KEYS = [
@@ -158,17 +172,17 @@ export const generateMessageValues = (
 
 /* Returns the correct message values according to the event type. */
 const getEventTitleValues = (
-  eventName: ColonyAndExtensionsEvents,
+  eventName: ColonyAndExtensionsEvents | SystemMessagesName,
   actionData: ColonyAction,
-  motionEventData: MotionEvent,
-  motionEventInitiatorUser?: User | null,
+  motionMessageData: MotionMessage,
+  motionMessageInitiatorUser?: User | null,
   colony?: Colony,
 ) => {
   const updatedItem = mapColonyEventToExpectedFormat(
     eventName,
     actionData,
-    motionEventData,
-    motionEventInitiatorUser,
+    motionMessageData,
+    motionMessageInitiatorUser,
     colony,
   );
   const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
