@@ -1,104 +1,51 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "~constants": [
-        "src/constants"
-      ],
-      "~constants/*": [
-        "src/constants/*"
-      ],
-      "~context": [
-        "src/context"
-      ],
-      "~context/*": [
-        "src/context/*"
-      ],
-      "~shared/*": [
-        "src/components/shared/*"
-      ],
-      "~common/*": [
-        "src/components/common/*"
-      ],
-      "~frame/*": [
-        "src/components/frame/*"
-      ],
-      "~gql": [
-        "src/graphql"
-      ],
-      "~gql/*": [
-        "src/graphql/*"
-      ],
-      "~hooks": [
-        "src/hooks"
-      ],
-      "~hooks/*": [
-        "src/hooks/*"
-      ],
-      "~images/*": [
-        "src/images/*"
-      ],
-      //   "~dashboard/*": ["src/modules/dashboard/components/*"],
-      //   "~data/*": ["src/data/*"],
-      //   "~dialogs/*": ["src/modules/dashboard/components/Dialogs/*"],
-      //   "~pages/*": ["src/modules/pages/components/*"],
-      "~redux": [
-        "src/redux"
-      ],
-      "~redux/*": [
-        "src/redux/*"
-      ],
-      "~styles/*": [
-        "src/styles/shared/*"
-      ],
-      //   "~testutils": ["src/__tests__/utils.ts"],
-      "~types": [
-        "src/types"
-      ],
-      "~types/*": [
-        "src/types/*"
-      ],
-      //   "~users/*": ["src/modules/users/components/*"],
-      "~utils/*": [
-        "src/utils/*"
-      ],
-      "~routes": [
-        "src/routes"
-      ],
-      "~routes/*": [
-        "src/routes/*"
-      ],
-      "~cache": [
-        "src/cache"
-      ],
-      "~cache/*": [
-        "src/cache/*"
-      ]
-    },
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "esModuleInterop": true,
-    "jsx": "react",
-    "lib": [
-      "dom",
-      "es2019"
-    ],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noEmit": true,
-    "noImplicitAny": false,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "target": "es6",
-    "typeRoots": [
-      "src/types/definitions",
-      "node_modules/@types"
-    ],
-    "types": [
-      "node",
-      "jest"
-    ]
-  }
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "~constants": ["src/constants"],
+            "~constants/*": ["src/constants/*"],
+            "~context": ["src/context"],
+            "~context/*": ["src/context/*"],
+            "~shared/*": ["src/components/shared/*"],
+            "~common/*": ["src/components/common/*"],
+            "~frame/*": ["src/components/frame/*"],
+            "~gql": ["src/graphql"],
+            "~gql/*": ["src/graphql/*"],
+            "~hooks": ["src/hooks"],
+            "~hooks/*": ["src/hooks/*"],
+            "~images/*": ["src/images/*"],
+            //   "~dashboard/*": ["src/modules/dashboard/components/*"],
+            //   "~data/*": ["src/data/*"],
+            //   "~dialogs/*": ["src/modules/dashboard/components/Dialogs/*"],
+            //   "~pages/*": ["src/modules/pages/components/*"],
+            "~redux": ["src/redux"],
+            "~redux/*": ["src/redux/*"],
+            "~styles/*": ["src/styles/shared/*"],
+            //   "~testutils": ["src/__tests__/utils.ts"],
+            "~types": ["src/types"],
+            "~types/*": ["src/types/*"],
+            //   "~users/*": ["src/modules/users/components/*"],
+            "~utils/*": ["src/utils/*"],
+            "~routes": ["src/routes"],
+            "~routes/*": ["src/routes/*"],
+            "~cache": ["src/cache"],
+            "~cache/*": ["src/cache/*"]
+        },
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true,
+        "esModuleInterop": true,
+        "jsx": "react",
+        "lib": ["dom", "es2019"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noEmit": true,
+        "noImplicitAny": false,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "strictNullChecks": true,
+        "strictPropertyInitialization": true,
+        "target": "es6",
+        "typeRoots": ["src/types/definitions", "node_modules/@types"],
+        "types": ["node", "jest"]
+    }
 }
