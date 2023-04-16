@@ -19,7 +19,7 @@ import {
   UserTokenBalanceDataFragment,
   MemberUserFragment,
   MotionDataFragment,
-  MotionEventFragment,
+  MotionMessageFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -38,7 +38,7 @@ export type DomainMetadata = DomainMetadataFragment;
 
 export type MotionData = MotionDataFragment;
 
-export type MotionEvent = MotionEventFragment;
+export type MotionMessage = MotionMessageFragment;
 
 export type Token = TokenFragment;
 

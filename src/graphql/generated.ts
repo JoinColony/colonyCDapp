@@ -1508,8 +1508,8 @@ export type ModelWatchedColoniesFilterInput = {
 export type MotionData = {
   __typename?: 'MotionData';
   createdBy: Scalars['String'];
-  events: Array<MotionEvent>;
   isFinalized: Scalars['Boolean'];
+  messages: Array<MotionMessage>;
   motionDomainId: Scalars['String'];
   motionId: Scalars['String'];
   motionStakes: MotionStakes;
@@ -1528,8 +1528,8 @@ export type MotionData = {
 
 export type MotionDataInput = {
   createdBy: Scalars['String'];
-  events: Array<MotionEventInput>;
   isFinalized: Scalars['Boolean'];
+  messages: Array<MotionMessageInput>;
   motionDomainId: Scalars['String'];
   motionId: Scalars['String'];
   motionStakes: MotionStakesInput;
@@ -1546,22 +1546,20 @@ export type MotionDataInput = {
   voterRecord: Array<VoterRecordInput>;
 };
 
-export type MotionEvent = {
-  __typename?: 'MotionEvent';
+export type MotionMessage = {
+  __typename?: 'MotionMessage';
   amount?: Maybe<Scalars['String']>;
   initiatorAddress: Scalars['String'];
-  logIndex: Scalars['Int'];
+  messageKey: Scalars['String'];
   name: Scalars['String'];
-  transactionHash: Scalars['String'];
   vote?: Maybe<Scalars['String']>;
 };
 
-export type MotionEventInput = {
+export type MotionMessageInput = {
   amount?: InputMaybe<Scalars['String']>;
   initiatorAddress: Scalars['String'];
-  logIndex: Scalars['Int'];
+  messageKey: Scalars['String'];
   name: Scalars['String'];
-  transactionHash: Scalars['String'];
   vote?: InputMaybe<Scalars['String']>;
 };
 
@@ -2989,9 +2987,9 @@ export type ColonyActionFragment = { __typename?: 'ColonyAction', type: ColonyAc
 
 export type MotionStakeValuesFragment = { __typename?: 'MotionStakeValues', yay: string, nay: string };
 
-export type MotionDataFragment = { __typename?: 'MotionData', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, motionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, events: Array<{ __typename?: 'MotionEvent', name: string, transactionHash: string, logIndex: number, initiatorAddress: string, vote?: string | null, amount?: string | null }> };
+export type MotionDataFragment = { __typename?: 'MotionData', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, motionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, messages: Array<{ __typename?: 'MotionMessage', name: string, messageKey: string, initiatorAddress: string, vote?: string | null, amount?: string | null }> };
 
-export type MotionEventFragment = { __typename?: 'MotionEvent', name: string, transactionHash: string, logIndex: number, initiatorAddress: string, vote?: string | null, amount?: string | null };
+export type MotionMessageFragment = { __typename?: 'MotionMessage', name: string, messageKey: string, initiatorAddress: string, vote?: string | null, amount?: string | null };
 
 export type ColonyFragment = { __typename?: 'Colony', name: string, version: number, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, chainMetadata?: { __typename?: 'ChainMetadata', chainId?: number | null, network?: Network | null } | null, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null } | null> } | null, balances?: { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null } | null, fundsClaims?: { __typename?: 'ModelColonyFundsClaimConnection', items: Array<{ __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, chainFundsClaim?: { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string } | null, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean }> | null } | null };
 
@@ -3367,11 +3365,10 @@ export const MotionStakeValuesFragmentDoc = gql`
   nay
 }
     `;
-export const MotionEventFragmentDoc = gql`
-    fragment MotionEvent on MotionEvent {
+export const MotionMessageFragmentDoc = gql`
+    fragment MotionMessage on MotionMessage {
   name
-  transactionHash
-  logIndex
+  messageKey
   initiatorAddress
   vote
   amount
@@ -3431,12 +3428,12 @@ export const MotionDataFragmentDoc = gql`
   }
   skillRep
   repSubmitted
-  events {
-    ...MotionEvent
+  messages {
+    ...MotionMessage
   }
 }
     ${MotionStakeValuesFragmentDoc}
-${MotionEventFragmentDoc}`;
+${MotionMessageFragmentDoc}`;
 export const ColonyActionFragmentDoc = gql`
     fragment ColonyAction on ColonyAction {
   transactionHash: id
