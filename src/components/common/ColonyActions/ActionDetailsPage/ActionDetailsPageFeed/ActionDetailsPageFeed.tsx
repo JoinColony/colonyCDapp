@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { ColonyAction, ColonyAndExtensionsEvents } from '~types';
+import { ACTIONS_EVENTS } from '../staticMaps';
+import {
+  ColonyAction,
+  ColonyAndExtensionsEvents,
+  SystemMessagesName,
+} from '~types';
 
 import ActionsPageEvent from './ActionDetailsPageEvent';
 
@@ -12,15 +17,20 @@ interface ActionsPageFeedProps {
 }
 
 const ActionDetailsPageFeed = ({ actionData }: ActionsPageFeedProps) => {
-  const motionEvents = actionData.motionData?.events;
+  const messages = actionData.isMotion
+    ? actionData.motionData?.messages
+    : ACTIONS_EVENTS[actionData.type];
   return (
     <>
-      {motionEvents?.map((event) => (
+      {messages?.map((message) => (
         <ActionsPageEvent
           actionData={actionData}
-          motionEventData={event}
-          eventName={ColonyAndExtensionsEvents[event.name]}
-          key={`${event.transactionHash}${event.logIndex}`}
+          motionMessageData={message}
+          eventName={
+            ColonyAndExtensionsEvents[message.name] ??
+            SystemMessagesName[message.name]
+          }
+          key={message.messageKey || message}
         />
       ))}
     </>

@@ -8,8 +8,9 @@ import {
   ColonyAction,
   ColonyActionType,
   DomainMetadata,
-  MotionEvent,
+  MotionMessage,
   User,
+  SystemMessagesName,
 } from '~types';
 import { MotionVote } from '~utils/colonyMotions';
 import { intl } from '~utils/intl';
@@ -101,10 +102,10 @@ export const mapColonyActionToExpectedFormat = (
 };
 
 export const mapColonyEventToExpectedFormat = (
-  eventName: ColonyAndExtensionsEvents,
+  eventName: ColonyAndExtensionsEvents | SystemMessagesName,
   actionData: ColonyAction,
-  motionEventData: MotionEvent,
-  motionEventInitiatorUser?: User | null,
+  motionMessageData: MotionMessage,
+  motionMessageInitiatorUser?: User | null,
   colony?: Colony,
 ) => {
   // const role = item.roles[0];
@@ -119,14 +120,14 @@ export const mapColonyEventToExpectedFormat = (
     amountTag: (
       <AmountTag>
         <Numeral
-          value={motionEventData.amount ?? 0}
+          value={motionMessageData.amount ?? 0}
           decimals={actionData.token?.decimals ?? undefined}
           suffix={actionData.token?.symbol ?? ''}
         />
       </AmountTag>
     ),
     backedSideTag:
-      Number(motionEventData.vote) === MotionVote.Yay ? (
+      Number(motionMessageData.vote) === MotionVote.Yay ? (
         <MotionTag />
       ) : (
         <ObjectionTag />
@@ -170,7 +171,7 @@ export const mapColonyEventToExpectedFormat = (
       ),
     staker: (
       <span className={styles.userDecoration}>
-        <FriendlyName user={motionEventInitiatorUser} autoShrinkAddress />
+        <FriendlyName user={motionMessageInitiatorUser} autoShrinkAddress />
       </span>
     ),
     newVersion: actionData.newColonyVersion,
