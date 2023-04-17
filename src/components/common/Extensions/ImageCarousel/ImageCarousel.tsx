@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Carousel } from 'react-responsive-carousel';
+import { images } from './const';
 import styles from './ImageCarousel.module.css';
 import { ImageCarouselProps } from './ImageCarousel.types';
 import './ImageCarousel.css'; // to fix rendering styles in storybook

@@ -216,9 +216,7 @@ export const getUpdatedDecodedMotionRoles = (
     fromDomain,
   );
   const updatedRoles = setRoles.filter((role) => {
-    const foundCurrentRole = currentUserRoles.find(
-      (currentRole) => currentRole === role.id,
-    );
+    const foundCurrentRole = currentUserRoles.find((currentRole) => currentRole === role.id);
     if (!isNil(foundCurrentRole)) {
       return !role.setTo;
     }
