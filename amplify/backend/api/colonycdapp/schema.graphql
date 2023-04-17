@@ -683,6 +683,7 @@ type ColonyAction @model {
   pendingDomainMetadataId: ID
   pendingDomainMetadata: DomainMetadata
     @hasOne(fields: ["pendingDomainMetadataId"])
+  motionDomainId: Int
   roles: ColonyActionRoles
 
   # Required since some actions might have multiple event entries in the list
