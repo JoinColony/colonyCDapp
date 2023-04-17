@@ -6,7 +6,7 @@ const useColonyHasReputation = (
   colonyAddress: string,
   reputationDomain?: number,
 ) => {
-  const { data, error } = useGetUserReputationQuery({
+  const { data, error, loading } = useGetUserReputationQuery({
     variables: {
       input: {
         walletAddress: ADDRESS_ZERO,
@@ -14,10 +14,9 @@ const useColonyHasReputation = (
         domainId: reputationDomain,
       },
     },
-    fetchPolicy: 'cache-and-network',
   });
 
-  return !!toFinite(data?.getUserReputation) && !error;
+  return loading || (!!toFinite(data?.getUserReputation) && !error);
 };
 
 export default useColonyHasReputation;
