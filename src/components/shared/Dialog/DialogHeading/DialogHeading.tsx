@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
-import { Id } from '@colony/colony-js';
-
 import { useFormContext } from 'react-hook-form';
+
 import { Heading3 } from '~shared/Heading';
 import { Colony, UniversalMessageValues } from '~types';
+import { SelectOption } from '~shared/Fields';
 
 import ForceToggle from './ForceToggle';
 import MotionDomainSelect from './MotionDomainSelect';
@@ -37,13 +37,8 @@ const DialogHeading = ({
     formState: { isSubmitting },
   } = useFormContext();
   const { fromDomainId } = watch();
-  const handleFilterMotionDomains = (optionDomain) => {
-    const optionDomainId = parseInt(optionDomain.value, 10);
-    if (fromDomainId === Id.RootDomain) {
-      return optionDomainId === Id.RootDomain;
-    }
-    return optionDomainId === fromDomainId || optionDomainId === Id.RootDomain;
-  };
+  const handleFilterMotionDomains = (optionDomain: SelectOption) =>
+    optionDomain.value !== fromDomainId;
 
   return (
     <div className={styles.modalHeading}>
