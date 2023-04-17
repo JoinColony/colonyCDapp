@@ -170,6 +170,7 @@
     "ethers": "^5.6.8",
     "format-number": "^3.0.0",
     "formik": "^2.2.9",
+    "framer-motion": "^10.12.2",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "image-blob-reduce": "^4.1.0",
