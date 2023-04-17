@@ -646,10 +646,11 @@ type ColonyAction @model {
   blockNumber: Int!
   isMotion: Boolean
   motionData: MotionData
-  showInActionsList: Boolean! # True for actions, true for motions if staked above 10%
+  showInActionsList: Boolean! # True for (forced) actions. True for motions if staked above 10%
   createdAt: AWSDateTime!
+  initiatorAddress: ID!
   # Action type specific fields which might be null
-  initiatorAddress: ID # Amplify will automatically populate one of the following fields with related model if there is an initiator
+  # Amplify will automatically populate one of the following fields with related model if there is an initiator
   initiatorUser: User @hasOne(fields: ["initiatorAddress"])
   initiatorExtension: ColonyExtension @hasOne(fields: ["initiatorAddress"])
   initiatorColony: Colony @hasOne(fields: ["initiatorAddress"])
