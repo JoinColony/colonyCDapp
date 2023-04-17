@@ -162,6 +162,7 @@
     "camelcase": "^6.0.0",
     "classnames": "^2.2.6",
     "cleave.js": "1.4.10",
+    "clsx": "^1.2.1",
     "copy-to-clipboard": "^3.0.8",
     "decimal.js": "^10.2.1",
     "draft-js": "^0.11.4",

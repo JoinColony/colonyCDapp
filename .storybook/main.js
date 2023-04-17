@@ -30,8 +30,7 @@ module.exports = {
     config.resolve.alias = {
       ...config.resolve.alias,
       '~types': path.resolve(__dirname, '../src/types'),
-      '~utils/lodash': path.resolve(__dirname, '../src/utils/lodash'),
-      '~utils/isUrlExternal': path.resolve(__dirname, '../src/utils/isUrlExternal'),
+      '~utils': path.resolve(__dirname, '../src/utils'),
       '~gql': path.resolve(__dirname, '../src/graphql'),
       '~constants': path.resolve(__dirname, '../src/constants'),
       '~shared': path.resolve(__dirname, '../src/components/shared'),
