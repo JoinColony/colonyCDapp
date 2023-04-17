@@ -133,11 +133,11 @@ module.exports = {
         normal: '300ms',
         fast: '450ms',
       },
-    },
-    screens: {
-      sm: '26.75rem',
-      md: '64rem',
-      lg: '90rem',
+      screens: {
+        sm: '26.75rem',
+        md: '64rem',
+        lg: '90rem',
+      },
     },
   },
   future: {
