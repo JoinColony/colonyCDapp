@@ -150,9 +150,9 @@ type GetUserTokenBalanceReturn {
 }
 
 type GetMotionTimeoutPeriodsReturn {
-  timeLeftToStake: String!,
-  timeLeftToVote: String!,
-  timeLeftToReveal: String!,
+  timeLeftToStake: String!
+  timeLeftToVote: String!
+  timeLeftToReveal: String!
   timeLeftToEscalate: String!
 }
 
@@ -264,8 +264,9 @@ type Query {
     @function(name: "fetchMotionState")
   getVoterRewards(input: GetVoterRewardsInput): VoterRewardsReturn
     @function(name: "fetchVoterRewards")
-  getMotionTimeoutPeriods(input: GetMotionTimeoutPeriodsInput): GetMotionTimeoutPeriodsReturn
-    @function(name: "fetchMotionTimeoutPeriods")
+  getMotionTimeoutPeriods(
+    input: GetMotionTimeoutPeriodsInput
+  ): GetMotionTimeoutPeriodsReturn @function(name: "fetchMotionTimeoutPeriods")
 }
 
 type Mutation {
@@ -654,12 +655,11 @@ type ColonyAction @model {
   blockNumber: Int!
   isMotion: Boolean
   motionData: MotionData
-  showInActionsList: Boolean! # True for actions, true for motions if staked above 10%
+  showInActionsList: Boolean! # True for (forced) actions. True for motions if staked above 10%
   createdAt: AWSDateTime!
-
+  initiatorAddress: ID!
   # Action type specific fields which might be null
-
-  initiatorAddress: ID # Amplify will automatically populate one of the following fields with related model if there is an initiator
+  # Amplify will automatically populate one of the following fields with related model if there is an initiator
   initiatorUser: User @hasOne(fields: ["initiatorAddress"])
   initiatorExtension: ColonyExtension @hasOne(fields: ["initiatorAddress"])
   initiatorColony: Colony @hasOne(fields: ["initiatorAddress"])
@@ -743,7 +743,6 @@ type ColonyRole @model {
 
 type ColonyHistoricRole @model {
   id: ID! # colonyAddress_domainNativeId_userAddress_blockNumber_roles
-
   # I HATE AMPLIFY SORTING! MAY IT DIE A THOUSAND DEATHS!
   #
   # @NOTE Always set to `type` to "SortedHistoricRole" to enable Amplify sorting, it DOES NOT WORK with `id`
