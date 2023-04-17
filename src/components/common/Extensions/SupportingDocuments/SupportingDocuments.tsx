@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 // import FileText from '~images/icons/FileText.svg';
 import LinkWrapper from './LinkWrapper';
@@ -6,7 +6,7 @@ import { SupportingDocumentsProps } from './types';
 
 const displayName = 'common.Extensions.SupportingDocuments';
 
-const SupportingDocuments = ({ isDoubleLinkVisible = false }: SupportingDocumentsProps) => {
+const SupportingDocuments: FC<SupportingDocumentsProps> = ({ isDoubleLinkVisible = false }) => {
   const { formatMessage } = useIntl();
 
   return (

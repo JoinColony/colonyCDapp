@@ -12,6 +12,7 @@ import { useGetMetacolonyQuery } from '~gql';
 import { useAppContext, useCanInteractWithNetwork } from '~hooks';
 
 import styles from './LandingPage.css';
+import ImageCarousel from '~common/Extensions/ImageCarousel/ImageCarousel';
 
 const displayName = 'frame.LandingPage';
 

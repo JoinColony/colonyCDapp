@@ -1,0 +1,4 @@
+.carousel-wrapper [class~='carousel control-dots'] {
+  display: flex;
+  justify-content: center;
+}
