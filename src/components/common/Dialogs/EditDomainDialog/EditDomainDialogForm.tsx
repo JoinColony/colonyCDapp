@@ -1,5 +1,5 @@
 import React from 'react';
-import { ColonyRole } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
@@ -14,7 +14,6 @@ import {
   Annotations,
   SelectOption,
 } from '~shared/Fields';
-// import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import { DomainColor } from '~gql';
 import { findDomainByNativeId } from '~utils/domains';
@@ -24,6 +23,7 @@ import {
   NoPermissionMessage,
   CannotCreateMotionMessage,
   PermissionRequiredInfo,
+  NotEnoughReputation,
 } from '../Messages';
 
 import { useEditDomainDialogStatus } from './helpers';
@@ -66,9 +66,20 @@ const EditDomainDialogForm = ({
   enabledExtensionData,
 }: Props) => {
   const { watch, reset: resetForm } = useFormContext();
-  const { domainName, domainPurpose, forceAction } = watch();
-  const { userHasPermission, disabledSubmit, disabledInput, canCreateMotion } =
-    useEditDomainDialogStatus(colony, requiredRoles, enabledExtensionData);
+  const { domainName, domainPurpose, forceAction, domainId, motionDomainId } =
+    watch();
+  const {
+    userHasPermission,
+    disabledSubmit,
+    disabledInput,
+    canCreateMotion,
+    canOnlyForceAction,
+  } = useEditDomainDialogStatus(
+    colony,
+    requiredRoles,
+    enabledExtensionData,
+    domainOptions,
+  );
 
   const handleDomainChange = (selectedDomainValue: number) => {
     const selectedDomain = findDomainByNativeId(selectedDomainValue, colony);
@@ -83,13 +94,12 @@ const EditDomainDialogForm = ({
           selectedDomain.metadata?.name || `Domain #${selectedDomain.nativeId}`,
         domainPurpose: selectedDomain.metadata?.description || '',
         forceAction,
+        motionDomainId:
+          motionDomainId !== Id.RootDomain &&
+          motionDomainId !== selectedDomainValue
+            ? selectedDomain.nativeId
+            : motionDomainId,
       });
-      // if (
-      //   selectedMotionDomainId !== Id.RootDomain &&
-      //   selectedMotionDomainId !== selectedDomainId
-      // ) {
-      //   setFieldValue('motionDomainId', selectedDomainId);
-      // }
     }
     return null;
   };
@@ -97,7 +107,14 @@ const EditDomainDialogForm = ({
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading title={MSG.titleEdit} />
+        <DialogHeading
+          title={MSG.titleEdit}
+          colony={colony}
+          userHasPermission={userHasPermission}
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
+        />
       </DialogSection>
       {domainOptions.length > 0 && !userHasPermission && (
         <DialogSection>
@@ -149,12 +166,14 @@ const EditDomainDialogForm = ({
           />
         </DialogSection>
       )}
-      {/* {onlyForceAction && (
-        <NotEnoughReputation
-          appearance={{ marginTop: 'negative' }}
-          domainId={Number(domainId)}
-        />
-      )} */}
+      {canOnlyForceAction && (
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NotEnoughReputation
+            appearance={{ marginTop: 'negative' }}
+            domainId={domainId}
+          />
+        </DialogSection>
+      )}
       {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
