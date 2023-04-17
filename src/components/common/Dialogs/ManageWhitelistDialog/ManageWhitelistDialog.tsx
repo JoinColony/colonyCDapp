@@ -55,22 +55,7 @@ const ManageWhitelistDialog = ({
 
   const navigate = useNavigate();
 
-  // const { data: colonyData } = useColonyFromNameQuery({
-  //   variables: { name: colonyName, address: colonyAddress },
-  // });
-
-  // const { data } = useVerifiedUsersQuery({
-  //   variables: {
-  //     verifiedAddresses:
-  //       colonyData?.processedColony?.whitelistedAddresses || [],
-  //   },
-  // });
-
-  // const storedVerifiedRecipients = useMemo(
-  //   () =>
-  //     (data?.verifiedUsers || []).map((user: User) => user?.id),
-  //   [data],
-  // );
+  const whitelistedAddresses = colony.metadata?.whitelistedAddresses ?? [];
 
   const handleTabChange = (index: number) => {
     setFormSuccess(false);
@@ -108,7 +93,7 @@ const ManageWhitelistDialog = ({
         defaultValues={{
           annotation: '',
           isWhitelistActivated: false, // colonyData?.processedColony?.isWhitelistActivated,
-          whitelistedAddresses: [], // storedVerifiedRecipients,
+          whitelistedAddresses,
           whitelistAddress: userAddress,
           whitelistCSVUploader: null,
         }}
@@ -124,7 +109,7 @@ const ManageWhitelistDialog = ({
       >
         <ManageWhitelistDialogForm
           colony={colony}
-          whitelistedUsers={[]} // data?.verifiedUsers ||
+          whitelistedUsers={[]}
           back={prevStep && callStep ? () => callStep(prevStep) : cancel}
           showInput={showInput}
           toggleShowInput={handleToggleShowInput}

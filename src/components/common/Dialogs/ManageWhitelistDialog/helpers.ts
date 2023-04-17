@@ -15,9 +15,9 @@ export const getManageWhitelistDialogPayload = (
   tabIndex: number,
   {
     annotation: annotationMessage,
-    // whitelistAddress,
+    whitelistAddress,
     whitelistedAddresses,
-    // whitelistCSVUploader,
+    whitelistCSVUploader,
     isWhitelistActivated,
   },
 ): ManageWhitelistDialogPayload => {
@@ -28,15 +28,16 @@ export const getManageWhitelistDialogPayload = (
     verifiedAddresses = whitelistedAddresses;
     whitelistActivated = isWhitelistActivated;
   } else {
-    verifiedAddresses = [];
-    // whitelistAddress !== undefined
-    //   ? [...new Set([...storedVerifiedRecipients, whitelistAddress])]
-    //   : [
-    //       ...new Set([
-    //         ...storedVerifiedRecipients,
-    //         ...whitelistCSVUploader[0].parsedData,
-    //       ]),
-    //     ];
+    verifiedAddresses =
+      whitelistAddress !== undefined
+        ? [...new Set([...whitelistedAddresses, whitelistAddress])]
+        : [
+            ...new Set([
+              ...whitelistedAddresses,
+              ...whitelistCSVUploader[0].parsedData,
+            ]),
+          ];
+
     if (verifiedAddresses.length) {
       whitelistActivated = true;
     }
