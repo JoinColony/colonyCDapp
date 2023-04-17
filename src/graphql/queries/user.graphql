@@ -39,3 +39,11 @@ query CombinedUser($name: String!, $address: ID!) {
     }
   }
 }
+
+query GetUsers($filter: ModelUserFilterInput) {
+  listUsers(filter: $filter) {
+    items {
+      ...User
+    }
+  }
+}

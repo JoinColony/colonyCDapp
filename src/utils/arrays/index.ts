@@ -164,3 +164,41 @@ export const immutableSort = <T>(
   arr: T[],
   sortFn?: (a: T, b: T) => number,
 ): any[] => [...arr].sort(sortFn);
+
+/** In some cases, we want to filter the results of a query based on some array.
+ * The easiest way to achieve that is to pass a chain of or options to the filter, e.g.:
+ *
+ * data: [{ name: 'a' }, { name: 'b' }, { name: 'c' }, { name: 'd' }, { name: 'e' }]
+ * filter: [b, c, e]
+ *
+ * filter: {
+ *  or: {
+ *    name: {
+ *      eq: 'c'
+ *    }
+ *  },
+ *  or: {
+ *    name: {
+ *      eq: 'b'
+ *    }
+ *  }
+ *  or: {
+ *    name: {
+ *      eq: 'e'
+ *    }
+ *  }
+ *  }
+ *
+ * This function generated the or filters from an array
+ */
+export const getOrFilterFromArray = <T>(
+  sourceArray: T[],
+  fieldName: string,
+  filterOption: string,
+) => {
+  return sourceArray.map((value) => ({
+    [fieldName]: {
+      [filterOption]: value,
+    },
+  }));
+};

@@ -17,6 +17,8 @@ import {
   validationSchemaFile,
   validationSchemaInput,
 } from '~utils/whitelistValidation';
+import { useGetUsersQuery } from '~gql';
+import { getOrFilterFromArray, notNull } from '~utils/arrays';
 
 import ManageWhitelistDialogForm from './ManageWhitelistDialogForm';
 import { getManageWhitelistDialogPayload, TABS } from './helpers';
@@ -56,6 +58,14 @@ const ManageWhitelistDialog = ({
   const navigate = useNavigate();
 
   const whitelistedAddresses = colony.metadata?.whitelistedAddresses ?? [];
+  const { data } = useGetUsersQuery({
+    variables: {
+      filter: {
+        or: getOrFilterFromArray(whitelistedAddresses, 'id', 'eq'),
+      },
+    },
+  });
+  const whitelistedUsers = data?.listUsers?.items.filter(notNull) ?? [];
 
   const handleTabChange = (index: number) => {
     setFormSuccess(false);
@@ -109,7 +119,7 @@ const ManageWhitelistDialog = ({
       >
         <ManageWhitelistDialogForm
           colony={colony}
-          whitelistedUsers={[]}
+          whitelistedUsers={whitelistedUsers}
           back={prevStep && callStep ? () => callStep(prevStep) : cancel}
           showInput={showInput}
           toggleShowInput={handleToggleShowInput}
