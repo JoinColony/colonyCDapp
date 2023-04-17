@@ -2,6 +2,7 @@ import { ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import { useActionDialogStatus, EnabledExtensionData } from '~hooks';
+import { SelectOption } from '~shared/Fields';
 import { Colony, Domain } from '~types';
 import { findDomainByNativeId } from '~utils/domains';
 
@@ -20,6 +21,7 @@ export const useEditDomainDialogStatus = (
   colony: Colony,
   requiredRoles: ColonyRole[],
   enabledExtensionData: EnabledExtensionData,
+  domainOptions: SelectOption[],
 ) => {
   const {
     watch,
@@ -29,8 +31,9 @@ export const useEditDomainDialogStatus = (
   const {
     userHasPermission,
     disabledSubmit: defaultDisabledSubmit,
-    disabledInput,
+    disabledInput: defaultDisabledInput,
     canCreateMotion,
+    canOnlyForceAction,
   } = useActionDialogStatus(
     colony,
     requiredRoles,
@@ -44,12 +47,14 @@ export const useEditDomainDialogStatus = (
     dirtyFields.domainName ||
     dirtyFields.domainPurpose;
   const disabledSubmit = defaultDisabledSubmit || !hasEditedDomain;
+  const disabledInput = defaultDisabledInput || domainOptions.length === 0;
 
   return {
     userHasPermission,
     disabledInput,
     disabledSubmit,
     canCreateMotion,
+    canOnlyForceAction,
   };
 };
 
