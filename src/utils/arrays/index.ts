@@ -1,3 +1,5 @@
+import { xor } from 'lodash';
+
 /**
  * Sort an array of objects by multiple properties.
  */
@@ -165,12 +167,15 @@ export const immutableSort = <T>(
   sortFn?: (a: T, b: T) => number,
 ): any[] => [...arr].sort(sortFn);
 
-/** In some cases, we want to filter the results of a query based on some array.
- * The easiest way to achieve that is to pass a chain of or options to the filter, e.g.:
+/**
+ * In some cases, we want to filter the results of a query based on some array.
+ * The easiest way to achieve that is to pass a chain of or options to the filter,
  *
+ * e.g. for the following data and filter:
  * data: [{ name: 'a' }, { name: 'b' }, { name: 'c' }, { name: 'd' }, { name: 'e' }]
  * filter: [b, c, e]
  *
+ * you want to pass the following argument to the query:
  * filter: {
  *  or: {
  *    name: {
@@ -189,7 +194,7 @@ export const immutableSort = <T>(
  *  }
  *  }
  *
- * This function generated the or filters from an array
+ * This function generates the or filters from an array
  */
 export const getOrFilterFromArray = <T>(
   sourceArray: T[],
@@ -201,4 +206,11 @@ export const getOrFilterFromArray = <T>(
       [filterOption]: value,
     },
   }));
+};
+
+/**
+ * Function for checking if two arrays contain the same elements (regardless of order)
+ */
+export const containSameElements = (arrayA: Array<any>, arrayB: Array<any>) => {
+  return xor(arrayA, arrayB).length === 0;
 };
