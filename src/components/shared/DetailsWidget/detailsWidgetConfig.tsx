@@ -104,20 +104,6 @@ interface DetailItemConfig {
   item: ReactNode;
 }
 
-const getMotionDetailItem = (colony: Colony, motionDomainId?: number) => {
-  const motionDomain = findDomainByNativeId(
-    Number(motionDomainId ?? 1),
-    colony,
-  );
-  return {
-    label: MSG.motionDomain,
-    labelValues: undefined,
-    item: motionDomain?.metadata && (
-      <TeamDetail domainMetadata={motionDomain.metadata} />
-    ),
-  };
-};
-
 const getDetailItemsMap = (
   colony: Colony,
   actionData: ColonyAction,
@@ -131,12 +117,21 @@ const getDetailItemsMap = (
     recipientAddress,
     token,
     roles,
+    motionData,
   } = actionData;
 
   const shortenedHash = getShortenedHash(transactionHash || '');
-  const isSmiteAction = type === ColonyActionType.EmitDomainReputationPenalty;
+
   const normalizedRoles = roles ? normalizeRolesForAction(roles) : [];
+
+  const isSmiteAction = type.includes(
+    ColonyActionType.EmitDomainReputationPenalty,
+  );
   const extendedActionType = getExtendedActionType(actionData, colony);
+  const motionDomain = findDomainByNativeId(
+    Number(motionData?.motionDomainId ?? 1),
+    colony,
+  );
 
   return {
     [ActionPageDetails.Type]: {
@@ -220,6 +215,13 @@ const getDetailItemsMap = (
       labelValues: undefined,
       item: colony.metadata?.displayName,
     },
+    [ActionPageDetails.Motion]: {
+      label: MSG.motionDomain,
+      labelValues: undefined,
+      item: motionDomain?.metadata && (
+        <TeamDetail domainMetadata={motionDomain.metadata} />
+      ),
+    },
     [ActionPageDetails.Generic]: {
       label: MSG.transactionHash,
       labelValues: undefined,
@@ -241,19 +243,12 @@ const getDetailItems = (
 ): DetailItemConfig[] => {
   const detailItemsMap = getDetailItemsMap(colony, actionData);
   const detailItemKeys = getDetailItemsKeys(actionData.type);
-  const motionDetailItem = getMotionDetailItem(
-    colony,
-    actionData.fromDomain?.nativeId,
-  );
+
   const detailItems = detailItemKeys
-    .map((itemKey) => detailItemsMap[itemKey])
-    .filter((detail) => !!detail.item);
+    .map<DetailItemConfig | undefined>((itemKey) => detailItemsMap[itemKey])
+    .filter((detail) => !!detail?.item);
 
-  if (actionData.isMotion) {
-    detailItems.splice(1, 0, motionDetailItem);
-  }
-
-  return detailItems;
+  return detailItems as DetailItemConfig[];
 };
 
 export default getDetailItems;

@@ -32,9 +32,14 @@ export enum ActionPageDetails {
   Author = 'Author',
   Generic = 'Generic',
   Roles = 'Roles',
+  Motion = 'Motion',
 }
 
 type DetailsValuesMap = Partial<Record<ActionPageDetails, boolean>>;
+
+const MOTION_SUFFIX = 'MOTION';
+const isMotion = (actionType: AnyActionType) =>
+  actionType.includes(MOTION_SUFFIX);
 
 export const getDetailItemsKeys = (actionType: AnyActionType) => {
   switch (true) {
@@ -55,10 +60,19 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
       ];
     }
     case actionType.includes(ColonyActionType.UnlockToken): {
-      return [ActionPageDetails.Type, ActionPageDetails.Domain];
+      return [
+        ActionPageDetails.Type,
+        isMotion(actionType)
+          ? ActionPageDetails.Motion
+          : ActionPageDetails.Domain,
+      ];
     }
     case actionType.includes(ColonyActionType.MintTokens): {
-      return [ActionPageDetails.Type, ActionPageDetails.Amount];
+      return [
+        ActionPageDetails.Type,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
+        ActionPageDetails.Amount,
+      ];
     }
     case actionType.includes(ColonyActionType.CreateDomain): {
       return [
