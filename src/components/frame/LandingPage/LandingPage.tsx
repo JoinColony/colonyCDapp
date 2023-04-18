@@ -13,6 +13,7 @@ import { useAppContext, useCanInteractWithNetwork } from '~hooks';
 
 import styles from './LandingPage.css';
 import ImageCarousel from '~common/Extensions/ImageCarousel/ImageCarousel';
+import { images } from '~common/Extensions/ImageCarousel/const';
 
 const displayName = 'frame.LandingPage';
 
