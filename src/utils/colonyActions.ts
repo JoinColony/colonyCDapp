@@ -26,7 +26,12 @@ export enum ActionPageDetails {
   ReputationChange = 'ReputationChange',
   Author = 'Author',
   Generic = 'Generic',
+  Motion = 'Motion',
 }
+
+const MOTION_SUFFIX = 'MOTION';
+const isMotion = (actionType: ColonyActionType) =>
+  actionType.includes(MOTION_SUFFIX);
 
 export const getDetailItemsKeys = (actionType: ColonyActionType) => {
   switch (true) {
@@ -47,10 +52,19 @@ export const getDetailItemsKeys = (actionType: ColonyActionType) => {
       ];
     }
     case actionType.includes(ColonyActionType.UnlockToken): {
-      return [ActionPageDetails.Type, ActionPageDetails.Domain];
+      return [
+        ActionPageDetails.Type,
+        isMotion(actionType)
+          ? ActionPageDetails.Motion
+          : ActionPageDetails.Domain,
+      ];
     }
     case actionType.includes(ColonyActionType.MintTokens): {
-      return [ActionPageDetails.Type, ActionPageDetails.Amount];
+      return [
+        ActionPageDetails.Type,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
+        ActionPageDetails.Amount,
+      ];
     }
     case actionType.includes(ColonyActionType.CreateDomain): {
       return [
