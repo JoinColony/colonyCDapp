@@ -1,5 +1,6 @@
 @import 'variables.css';
 @import 'fonts.css';
+@import 'react-popper-tooltip/dist/styles.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

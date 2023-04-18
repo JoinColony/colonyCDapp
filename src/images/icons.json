@@ -113,5 +113,13 @@
     "Berthold Beetle",
     "Sanjeet Shrimp",
     "Norman Naked Mole Rat"
+  ],
+  "pills": [
+    "ClipboardText",
+    "AppWindow",
+    "Buildings",
+    "ClockCounterClockwise",
+    "Scales",
+    "Bank"
   ]
 }

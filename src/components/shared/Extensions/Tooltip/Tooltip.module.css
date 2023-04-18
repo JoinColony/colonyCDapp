@@ -1,0 +1,27 @@
+.tooltipContainer {
+  @apply border-none rounded-none shadow-none;
+}
+
+.tooltipArrow::after {
+  @apply hidden;
+}
+
+.tooltipContainer[data-popper-placement*='top'] .tooltipArrow {
+  @apply -mb-3;
+}
+
+.tooltipContainer[data-popper-placement*='top'] .tooltipArrow::before {
+  @apply border-t-[currentColor] border-r-transparent border-b-transparent border-l-transparent border-t-[0.625rem] border-r-[0.625rem] border-b-0 border-l-[0.625rem];
+}
+
+.tooltipContainer[data-popper-placement*='left'] .tooltipArrow::before {
+  @apply border-t-transparent border-r-transparent border-b-transparent border-l-[currentColor] border-t-[0.625rem] border-r-0 border-b-[0.625rem] border-l-[0.625rem];
+}
+
+.tooltipContainer[data-popper-placement*='bottom'] .tooltipArrow::before {
+  @apply border-t-transparent border-r-[transparent] border-b-[currentColor] border-l-transparent border-t-0 border-r-[0.625rem] border-b-[0.625rem] border-l-[0.625rem];
+}
+
+.tooltipContainer[data-popper-placement*='right'] .tooltipArrow::before {
+  @apply border-t-transparent border-r-[currentColor] border-b-transparent border-l-transparent border-t-[0.625rem] border-r-[0.625rem] border-b-[0.625rem] border-l-0;
+}
