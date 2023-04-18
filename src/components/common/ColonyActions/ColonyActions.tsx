@@ -214,13 +214,18 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Unlock Token"
       />
       <ActionButton
-        actionType={ActionTypes.ACTION_MOVE_FUNDS}
+        actionType={
+          isMotion
+            ? ActionTypes.MOTION_MOVE_FUNDS
+            : ActionTypes.ACTION_MOVE_FUNDS
+        }
         error={ActionTypes.ACTION_MOVE_FUNDS_ERROR}
         success={ActionTypes.ACTION_MOVE_FUNDS_SUCCESS}
         transform={pipe(
           mergePayload({
             colonyAddress: colony.colonyAddress,
             colonyName: colony.name,
+            version: colony.version,
             fromDomain: colony.domains?.items.find((d) => d?.isRoot),
             toDomain: colony.domains?.items.find((d) => !d?.isRoot),
             amount: BigNumber.from(5).mul(BigNumber.from(10).pow(17)), // this is in wei

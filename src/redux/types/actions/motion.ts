@@ -2,7 +2,7 @@ import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
-import { Address, DomainColor } from '~types';
+import { Address, Domain, DomainColor } from '~types';
 
 import {
   ErrorActionType,
@@ -159,19 +159,19 @@ export type MotionActionTypes =
       {
         colonyAddress: Address;
         colonyName?: string;
-        version: string;
+        version: number;
         tokenAddress: Address;
-        fromDomainId: number;
-        toDomainId: number;
+        fromDomain: Domain;
+        toDomain: Domain;
         amount: BigNumber;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.MOTION_MOVE_FUNDS_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_MOVE_FUNDS_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.ROOT_MOTION,
