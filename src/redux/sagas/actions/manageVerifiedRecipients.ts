@@ -4,6 +4,11 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { Action, AllActions, ActionTypes } from '~redux';
 import { ContextModule, getContext } from '~context';
 import { transactionPending, transactionReady } from '~redux/actionCreators';
+import {
+  UpdateColonyMetadataDocument,
+  UpdateColonyMetadataMutation,
+  UpdateColonyMetadataMutationVariables,
+} from '~gql';
 
 import {
   createTransaction,
@@ -15,11 +20,6 @@ import {
   putError,
   takeFrom,
 } from '../utils';
-import {
-  UpdateColonyMetadataDocument,
-  UpdateColonyMetadataMutation,
-  UpdateColonyMetadataMutationVariables,
-} from '~gql';
 
 function* manageVerifiedRecipients({
   payload: {
@@ -30,7 +30,7 @@ function* manageVerifiedRecipients({
     verifiedAddresses = [],
     // colonyTokens = [],
     // annotationMessage,
-    // isWhitelistActivated,
+    isWhitelistActivated,
     // colonySafes = [],
   },
   meta: { id: metaId, navigate },
@@ -170,6 +170,7 @@ function* manageVerifiedRecipients({
         variables: {
           input: {
             id: colonyAddress,
+            isWhitelistActivated,
             whitelistedAddresses: verifiedAddresses,
             changelog: getUpdatedColonyMetadataChangelog(
               txHash,

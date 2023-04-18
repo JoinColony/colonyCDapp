@@ -102,7 +102,7 @@ const ManageWhitelistDialog = ({
       <Form<FormValues>
         defaultValues={{
           annotation: '',
-          isWhitelistActivated: false, // colonyData?.processedColony?.isWhitelistActivated,
+          isWhitelistActivated: colony.metadata?.isWhitelistActivated,
           whitelistedAddresses,
           whitelistAddress: userAddress,
           whitelistCSVUploader: null,

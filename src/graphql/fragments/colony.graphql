@@ -69,6 +69,7 @@ fragment ColonyMetadata on ColonyMetadata {
   displayName
   avatar
   thumbnail
+  isWhitelistActivated
   whitelistedAddresses
   changelog {
     transactionHash
