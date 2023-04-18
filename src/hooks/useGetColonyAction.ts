@@ -19,6 +19,7 @@ const useGetColonyAction = (colony?: Colony | null) => {
     loading: loadingAction,
     startPolling: startPollingForAction,
     stopPolling: stopPollingForAction,
+    refetch: refetchAction,
   } = useGetColonyActionQuery({
     skip: skipQuery,
     variables: {
@@ -53,7 +54,12 @@ const useGetColonyAction = (colony?: Colony | null) => {
       input: {
         colonyAddress: colony?.colonyAddress ?? '',
         motionId: Number(action?.motionData?.motionId),
+        transactionHash: transactionHash ?? '',
       },
+    },
+    onCompleted: () => {
+      /* Keeps action data in sync when staker rewards are updated by this query */
+      refetchAction();
     },
   });
 

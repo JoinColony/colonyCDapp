@@ -653,6 +653,7 @@ export type ExtensionParamsInput = {
 export type GetMotionStateInput = {
   colonyAddress: Scalars['String'];
   motionId: Scalars['Int'];
+  transactionHash: Scalars['String'];
 };
 
 export type GetReputationForTopDomainsInput = {
