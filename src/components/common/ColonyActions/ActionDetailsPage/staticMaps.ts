@@ -97,6 +97,7 @@ export const ACTIONS_EVENTS: ActionsEventsMap = {
   [ColonyActionType.SetUserRolesMotion]: MOTION_EVENTS,
   [ColonyActionType.PaymentMotion]: MOTION_EVENTS,
   [ColonyActionType.MoveFundsMotion]: MOTION_EVENTS,
+  [ColonyActionType.VersionUpgradeMotion]: MOTION_EVENTS,
   [ColonyActionType.EmitDomainReputationPenaltyMotion]: MOTION_EVENTS,
   [ColonyActionType.EmitDomainReputationRewardMotion]: MOTION_EVENTS,
 };
