@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
@@ -57,6 +57,8 @@ const requiredRoles: ColonyRole[] = [ColonyRole.Architecture];
 
 interface Props extends ActionDialogProps {
   domainOptions: SelectOption[];
+  handleIsForceChange: Dispatch<SetStateAction<boolean>>;
+  isForce: boolean;
 }
 
 const EditDomainDialogForm = ({
@@ -64,6 +66,8 @@ const EditDomainDialogForm = ({
   colony,
   domainOptions,
   enabledExtensionData,
+  handleIsForceChange,
+  isForce,
 }: Props) => {
   const { watch, reset: resetForm } = useFormContext();
   const { domainName, domainPurpose, forceAction, domainId, motionDomainId } =
@@ -103,6 +107,12 @@ const EditDomainDialogForm = ({
     }
     return null;
   };
+
+  useEffect(() => {
+    if (forceAction !== isForce) {
+      handleIsForceChange(forceAction);
+    }
+  }, [forceAction, isForce, handleIsForceChange]);
 
   return (
     <>
