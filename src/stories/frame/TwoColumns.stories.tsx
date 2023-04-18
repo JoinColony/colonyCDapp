@@ -23,8 +23,18 @@ type Story = StoryObj<typeof TwoColumns>;
 export const Base: Story = {
   render: () => (
     <TwoColumns
-      aside={<div className="bg-gray-300">Aside</div>}
-      mainColumn={<div className="bg-gray-300">Main column</div>}
+      aside={
+        <div className="bg-gray-300">
+          Left Aside (navigation). The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy
+          dog. The quick brown fox jumps over the lazy dog.
+        </div>
+      }
+      mainColumn={
+        <div className="bg-gray-300">
+          Main column: The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The
+          quick brown fox jumps over the lazy dog.
+        </div>
+      }
     />
   ),
 };
