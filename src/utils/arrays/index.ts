@@ -1,5 +1,3 @@
-import { xor } from 'lodash';
-
 /**
  * Sort an array of objects by multiple properties.
  */
@@ -206,11 +204,4 @@ export const getOrFilterFromArray = <T>(
       [filterOption]: value,
     },
   }));
-};
-
-/**
- * Function for checking if two arrays contain the same elements (regardless of order)
- */
-export const containSameElements = (arrayA: Array<any>, arrayB: Array<any>) => {
-  return xor(arrayA, arrayB).length === 0;
 };
