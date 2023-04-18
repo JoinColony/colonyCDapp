@@ -1,4 +1,6 @@
 .main button {
+  padding-right: 0px;
+  padding-left: 0px;
   width: 100px;
   font-size: var(--size-small);
 }
