@@ -77,8 +77,7 @@ const MembersSubsection = ({
   //   userHasAccountRegistered &&
   //   (hasRoot(allUserRoles) || canAdminister(allUserRoles));
 
-  const { avatarsDisplaySplitRules, remainingAvatarsCount } =
-    useAvatarDisplayCounter(maxAvatars, members ?? [], false);
+  const { avatarsDisplaySplitRules, remainingAvatarsCount } = useAvatarDisplayCounter(maxAvatars, members ?? [], false);
 
   const BASE_MEMBERS_ROUTE = `/colony/${name}/members`;
   const membersPageRoute =
@@ -92,17 +91,11 @@ const MembersSubsection = ({
         <Tooltip
           content={
             <div className={styles.tooltip}>
-              <FormattedMessage
-                {...MSG.tooltipText}
-                values={{ isContributorsSubsection }}
-              />
+              <FormattedMessage {...MSG.tooltipText} values={{ isContributorsSubsection }} />
             </div>
           }
         >
-          <ClickableHeading
-            linkTo={membersPageRoute}
-            appearance={{ margin: 'none' }}
-          >
+          <ClickableHeading linkTo={membersPageRoute} appearance={{ margin: 'none' }}>
             <FormattedMessage
               {...MSG.title}
               values={{
@@ -114,10 +107,7 @@ const MembersSubsection = ({
           </ClickableHeading>
         </Tooltip>
         {!isContributorsSubsection && (
-          <InviteLinkButton
-            colonyName={name}
-            buttonAppearance={{ theme: 'blueWithBackground' }}
-          />
+          <InviteLinkButton colonyName={name} buttonAppearance={{ theme: 'blueWithBackground' }} />
         )}
       </div>
     ),
@@ -129,10 +119,7 @@ const MembersSubsection = ({
       <div className={styles.main}>
         {setHeading(false)}
         <span className={styles.loadingText}>
-          <FormattedMessage
-            {...MSG.reputationFetchFailed}
-            values={{ isContributorsSubsection }}
-          />
+          <FormattedMessage {...MSG.reputationFetchFailed} values={{ isContributorsSubsection }} />
         </span>
       </div>
     );

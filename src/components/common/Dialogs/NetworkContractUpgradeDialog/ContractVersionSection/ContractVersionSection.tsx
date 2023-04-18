@@ -3,8 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import styles from './ContractVersionSection.css';
 
-const displayName =
-  'common.NetworkContractUpgradeDialog.NetworkContractUpgradeDialogForm.LegacyPermissionWarning';
+const displayName = 'common.NetworkContractUpgradeDialog.NetworkContractUpgradeDialogForm.LegacyPermissionWarning';
 
 const MSG = defineMessages({
   currentVersion: {

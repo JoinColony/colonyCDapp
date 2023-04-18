@@ -56,8 +56,7 @@ const UploadAddresses = ({
 }: Props) => {
   const [hasFile, setHasFile] = useState<boolean>(false);
   const [processingCSVData, setProcessingCSVData] = useState<boolean>(false);
-  const [touchedAfterSuccess, setTouchedAfterSuccess] =
-    useState<boolean>(false);
+  const [touchedAfterSuccess, setTouchedAfterSuccess] = useState<boolean>(false);
   const { reset: resetForm } = useFormContext();
   const handleSetHasFile = useCallback(
     (value: boolean) => {
@@ -79,17 +78,9 @@ const UploadAddresses = ({
   }, [formSuccess, setFormSuccess, setTouchedAfterSuccess]);
 
   const statusMsg = useMemo(() => {
-    if (!formSuccess || (!showInput && !hasFile) || touchedAfterSuccess)
-      return undefined;
+    if (!formSuccess || (!showInput && !hasFile) || touchedAfterSuccess) return undefined;
     return showInput ? inputSuccessMsg : fileSuccessMsg;
-  }, [
-    hasFile,
-    formSuccess,
-    showInput,
-    touchedAfterSuccess,
-    inputSuccessMsg,
-    fileSuccessMsg,
-  ]);
+  }, [hasFile, formSuccess, showInput, touchedAfterSuccess, inputSuccessMsg, fileSuccessMsg]);
   const handleToggleButtonClick = () => {
     toggleShowInput();
     resetForm();
@@ -98,10 +89,7 @@ const UploadAddresses = ({
   return (
     <>
       <div className={styles.actionsContainer}>
-        <InputLabel
-          label={showInput ? inputLabelMsg : MSG.uploadLabel}
-          appearance={{ colorSchema: 'grey' }}
-        />
+        <InputLabel label={showInput ? inputLabelMsg : MSG.uploadLabel} appearance={{ colorSchema: 'grey' }} />
         <div className={styles.actionsSubContainer}>
           {!showInput && <DownloadTemplate />}
           <Button
@@ -123,11 +111,7 @@ const UploadAddresses = ({
           />
         </div>
       ) : (
-        <div
-          className={
-            !errors?.whitelistCSVUploader ? styles.uploaderContainer : ''
-          }
-        >
+        <div className={!errors?.whitelistCSVUploader ? styles.uploaderContainer : ''}>
           <CSVUploader
             name="whitelistCSVUploader"
             error={errors?.whitelistCSVUploader?.parsedData?.message}

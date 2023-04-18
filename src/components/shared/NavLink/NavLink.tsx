@@ -41,13 +41,9 @@ const NavLink = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  const linkText =
-    typeof text === 'string' ? text : text && formatMessage(text, textValues);
+  const linkText = typeof text === 'string' ? text : text && formatMessage(text, textValues);
 
-  const titleText =
-    typeof title === 'string'
-      ? title
-      : title && formatMessage(title, titleValues);
+  const titleText = typeof title === 'string' ? title : title && formatMessage(title, titleValues);
 
   return (
     <NavLinkComponent

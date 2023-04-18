@@ -70,17 +70,10 @@ const ColonyUnclaimedTransfers = () => {
         <li className={styles.firstLineContainer}>
           <div className={styles.tokenItem}>
             <span className={styles.tokenValue}>
-              <Numeral
-                decimals={getTokenDecimalsWithFallback(token?.decimals)}
-                value={firstItem?.amount || ''}
-              />
+              <Numeral decimals={getTokenDecimalsWithFallback(token?.decimals)} value={firstItem?.amount || ''} />
             </span>
             <span className={styles.tokenSymbol}>
-              {token?.symbol ? (
-                <span>{token?.symbol}</span>
-              ) : (
-                <FormattedMessage {...MSG.unknownToken} />
-              )}
+              {token?.symbol ? <span>{token?.symbol}</span> : <FormattedMessage {...MSG.unknownToken} />}
             </span>
           </div>
           <Tooltip
@@ -115,11 +108,7 @@ const ColonyUnclaimedTransfers = () => {
         </li>
         {claimsLength > 1 && (
           <li>
-            <Link
-              className={styles.manageFundsLink}
-              to={`/colony/${colony?.name}/funds`}
-              data-test="manageFunds"
-            >
+            <Link className={styles.manageFundsLink} to={`/colony/${colony?.name}/funds`} data-test="manageFunds">
               <div className={styles.tokenItem}>
                 <FormattedMessage {...MSG.more} values={{ extraClaims }} />
               </div>

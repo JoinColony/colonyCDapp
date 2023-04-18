@@ -15,11 +15,7 @@ interface Props {
 const SingleCrumb = ({ crumbText, crumbLink, lastCrumb }: Props) => {
   const crumbTitle = typeof crumbText === 'string' ? crumbText : '';
   const text =
-    typeof crumbText === 'string' || isValidElement(crumbText) ? (
-      crumbText
-    ) : (
-      <FormattedMessage {...crumbText} />
-    );
+    typeof crumbText === 'string' || isValidElement(crumbText) ? crumbText : <FormattedMessage {...crumbText} />;
 
   if (lastCrumb) {
     return (

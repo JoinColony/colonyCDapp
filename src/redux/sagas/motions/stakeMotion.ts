@@ -3,72 +3,37 @@ import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  updateMotionValues,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, updateMotionValues, getColonyManager } from '../utils';
 
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import { transactionReady, transactionPending, transactionAddParams } from '../../actionCreators';
 import { ipfsUpload } from '../ipfs';
 
 function* stakeMotion({
   meta,
-  payload: {
-    userAddress,
-    colonyAddress,
-    motionId,
-    vote,
-    amount,
-    annotationMessage,
-  },
+  payload: { userAddress, colonyAddress, motionId, vote, amount, annotationMessage },
 }: Action<ActionTypes.MOTION_STAKE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
     const colonyManager = yield getColonyManager();
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
+    const colonyClient = yield colonyManager.getClient(ClientType.ColonyClient, colonyAddress);
+
+    const votingReputationClient: AnyVotingReputationClient = yield colonyManager.getClient(
+      ClientType.VotingReputationClient,
       colonyAddress,
     );
 
-    const votingReputationClient: AnyVotingReputationClient =
-      yield colonyManager.getClient(
-        ClientType.VotingReputationClient,
-        colonyAddress,
-      );
+    const { domainId, rootHash } = yield votingReputationClient.getMotion(motionId);
 
-    const { domainId, rootHash } = yield votingReputationClient.getMotion(
-      motionId,
-    );
+    const { skillId } = yield call([colonyClient, colonyClient.getDomain], domainId);
 
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      domainId,
-    );
+    const { key, value, branchMask, siblings } = yield call(colonyClient.getReputation, skillId, userAddress, rootHash);
 
-    const { key, value, branchMask, siblings } = yield call(
-      colonyClient.getReputation,
-      skillId,
-      userAddress,
-      rootHash,
-    );
-
-    const { approveStake, stakeMotionTransaction, annotateStaking } =
-      yield createTransactionChannels(meta.id, [
-        'approveStake',
-        'stakeMotionTransaction',
-        'annotateStaking',
-      ]);
+    const { approveStake, stakeMotionTransaction, annotateStaking } = yield createTransactionChannels(meta.id, [
+      'approveStake',
+      'stakeMotionTransaction',
+      'annotateStaking',
+    ]);
 
     const batchKey = 'stakeMotion';
 
@@ -109,10 +74,7 @@ function* stakeMotion({
     }
 
     yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
-    yield takeFrom(
-      stakeMotionTransaction.channel,
-      ActionTypes.TRANSACTION_CREATED,
-    );
+    yield takeFrom(stakeMotionTransaction.channel, ActionTypes.TRANSACTION_CREATED);
 
     if (annotationMessage) {
       yield takeFrom(annotateStaking.channel, ActionTypes.TRANSACTION_CREATED);
@@ -126,15 +88,9 @@ function* stakeMotion({
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(
-      stakeMotionTransaction.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+    } = yield takeFrom(stakeMotionTransaction.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
 
-    yield takeFrom(
-      stakeMotionTransaction.channel,
-      ActionTypes.TRANSACTION_SUCCEEDED,
-    );
+    yield takeFrom(stakeMotionTransaction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
       yield put(transactionPending(annotateStaking.id));
@@ -150,19 +106,11 @@ function* stakeMotion({
         }),
       );
 
-      yield put(
-        transactionAddParams(annotateStaking.id, [
-          txHash,
-          annotationMessageIpfsHash,
-        ]),
-      );
+      yield put(transactionAddParams(annotateStaking.id, [txHash, annotationMessageIpfsHash]));
 
       yield put(transactionReady(annotateStaking.id));
 
-      yield takeFrom(
-        annotateStaking.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield takeFrom(annotateStaking.channel, ActionTypes.TRANSACTION_SUCCEEDED);
     }
 
     /*

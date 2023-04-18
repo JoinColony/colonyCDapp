@@ -1,8 +1,4 @@
-import {
-  DEFAULT_MAX_FILE_LIMIT,
-  DEFAULT_MAX_FILE_SIZE,
-  DEFAULT_MIME_TYPES,
-} from '~shared/FileUpload/limits';
+import { DEFAULT_MAX_FILE_LIMIT, DEFAULT_MAX_FILE_SIZE, DEFAULT_MIME_TYPES } from '~shared/FileUpload/limits';
 import { FileReaderFile, FileReaderOptions } from './types';
 
 const fileReaderFactory = (options?: Partial<FileReaderOptions>) => {
@@ -31,12 +27,7 @@ const fileReaderFactory = (options?: Partial<FileReaderOptions>) => {
       const reader = new FileReader();
       reader.onload = (evt: any) => {
         if (!evt || !evt.target || !evt.target.result) {
-          reject(
-            new Error(
-              'An unexpected error occurred while trying to read the file ' +
-                'sent.',
-            ),
-          );
+          reject(new Error('An unexpected error occurred while trying to read the file sent.'));
         }
 
         const { type, size } = file;
@@ -65,31 +56,23 @@ const fileReaderFactory = (options?: Partial<FileReaderOptions>) => {
 
   return async function fileReader(files: (File | Blob)[]) {
     if (!files) {
-      throw new Error(
-        'An unexpected input was given, should receive files to upload.',
-      );
+      throw new Error('An unexpected input was given, should receive files to upload.');
     }
 
     if (config.maxFilesLimit && files.length > config.maxFilesLimit) {
-      throw new Error(
-        `You can only have ${config.maxFilesLimit} or fewer attached file(s)`,
-      );
+      throw new Error(`You can only have ${config.maxFilesLimit} or fewer attached file(s)`);
     }
 
     const sizeValidationErrors = files.filter(hasInvalidFileSize);
     if (sizeValidationErrors && sizeValidationErrors.length) {
       const fileSize = config.maxFileSize / (1024 * 1024);
-      throw new Error(
-        `Please provide files that is smaller or equal to ${fileSize}MB`,
-      );
+      throw new Error(`Please provide files that is smaller or equal to ${fileSize}MB`);
     }
 
     const allowedTypesValidationErrors = files.filter(hasValidType);
     if (allowedTypesValidationErrors && allowedTypesValidationErrors.length) {
       const allowedTypes = Object.keys(config.allowedTypes).join(', ');
-      throw new Error(
-        `Only types: ${allowedTypes} are allowed to be uploaded.`,
-      );
+      throw new Error(`Only types: ${allowedTypes} are allowed to be uploaded.`);
     }
 
     const fileReaderFiles = files.map(readFile);

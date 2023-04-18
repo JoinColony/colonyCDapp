@@ -2,16 +2,10 @@ import { getExtensionHash } from '@colony/colony-js';
 import { useMemo } from 'react';
 
 import { supportedExtensionsConfig } from '~constants';
-import {
-  useGetColonyExtensionsQuery,
-  useGetCurrentExtensionsVersionsQuery,
-} from '~gql';
+import { useGetColonyExtensionsQuery, useGetCurrentExtensionsVersionsQuery } from '~gql';
 import { InstallableExtensionData, InstalledExtensionData } from '~types';
 import { notNull } from '~utils/arrays';
-import {
-  mapToInstallableExtensionData,
-  mapToInstalledExtensionData,
-} from '~utils/extensions';
+import { mapToInstallableExtensionData, mapToInstalledExtensionData } from '~utils/extensions';
 
 import useColonyContext from './useColonyContext';
 
@@ -36,12 +30,10 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
   });
   const colonyExtensions = data?.getColony?.extensions?.items?.filter(notNull);
 
-  const { data: versionsData, loading: versionsLoading } =
-    useGetCurrentExtensionsVersionsQuery({
-      fetchPolicy: 'cache-and-network',
-    });
-  const extensionVersions =
-    versionsData?.listCurrentVersions?.items?.filter(notNull);
+  const { data: versionsData, loading: versionsLoading } = useGetCurrentExtensionsVersionsQuery({
+    fetchPolicy: 'cache-and-network',
+  });
+  const extensionVersions = versionsData?.listCurrentVersions?.items?.filter(notNull);
 
   const installedExtensionsData = useMemo<InstalledExtensionData[]>(() => {
     if (!colonyExtensions) {
@@ -54,9 +46,7 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
           (e) => getExtensionHash(e.extensionId) === extension?.hash,
         );
 
-        const { version } =
-          extensionVersions?.find((e) => e?.extensionHash === extension.hash) ||
-          {};
+        const { version } = extensionVersions?.find((e) => e?.extensionHash === extension.hash) || {};
 
         // Unsupported extension
         if (!extensionConfig || !version) {
@@ -73,28 +63,18 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
       return [];
     }
 
-    return supportedExtensionsConfig.reduce<InstallableExtensionData[]>(
-      (availableExtensions, extensionConfig) => {
-        const extensionHash = getExtensionHash(extensionConfig.extensionId);
-        const isExtensionInstalled = !!colonyExtensions.find(
-          (e) => e.hash === extensionHash,
-        );
-        const { version } =
-          extensionVersions?.find((e) => e?.extensionHash === extensionHash) ||
-          {};
+    return supportedExtensionsConfig.reduce<InstallableExtensionData[]>((availableExtensions, extensionConfig) => {
+      const extensionHash = getExtensionHash(extensionConfig.extensionId);
+      const isExtensionInstalled = !!colonyExtensions.find((e) => e.hash === extensionHash);
+      const { version } = extensionVersions?.find((e) => e?.extensionHash === extensionHash) || {};
 
-        // skip if extension is installed or we don't have version information
-        if (isExtensionInstalled || !version) {
-          return availableExtensions;
-        }
+      // skip if extension is installed or we don't have version information
+      if (isExtensionInstalled || !version) {
+        return availableExtensions;
+      }
 
-        return [
-          ...availableExtensions,
-          mapToInstallableExtensionData(extensionConfig, version),
-        ];
-      },
-      [],
-    );
+      return [...availableExtensions, mapToInstallableExtensionData(extensionConfig, version)];
+    }, []);
   }, [colonyExtensions, extensionVersions]);
 
   return {

@@ -27,8 +27,7 @@ export interface ActionType<T extends string> {
  * P: the action payload, e.g. `{| tokenAddress: string |}`
  * M: any additional `meta` properties, e.g. `key: *`
  */
-export interface ActionTypeWithPayload<T extends string, P>
-  extends ActionType<T> {
+export interface ActionTypeWithPayload<T extends string, P> extends ActionType<T> {
   type: T;
   payload: P;
 }
@@ -38,10 +37,7 @@ export interface ActionTypeWithPayload<T extends string, P>
  *
  * M: any additional `meta` properties, e.g. `key: *`
  */
-export interface ActionTypeWithMeta<
-  T extends string,
-  M extends Record<string, unknown>,
-> extends ActionType<T> {
+export interface ActionTypeWithMeta<T extends string, M extends Record<string, unknown>> extends ActionType<T> {
   type: T;
   meta: M;
 }
@@ -52,11 +48,8 @@ export interface ActionTypeWithMeta<
  * P: the action payload, e.g. `{| tokenAddress: string |}`
  * M: any additional `meta` properties, e.g. `key: *`
  */
-export interface ActionTypeWithPayloadAndMeta<
-  T extends string,
-  P,
-  M extends Record<string, unknown>,
-> extends ActionType<T> {
+export interface ActionTypeWithPayloadAndMeta<T extends string, P, M extends Record<string, unknown>>
+  extends ActionType<T> {
   type: T;
   meta: M;
   payload: P;
@@ -86,8 +79,7 @@ export interface UniqueActionTypeWithoutPayload<T extends string, M> {
 /*
  * Type that represents an error action.
  */
-export interface ErrorActionType<T extends string, M>
-  extends ActionTypeWithPayloadAndMeta<T, Error, M> {
+export interface ErrorActionType<T extends string, M> extends ActionTypeWithPayloadAndMeta<T, Error, M> {
   error: true;
 }
 
@@ -105,10 +97,7 @@ export type AllActions =
   | MetacolonyVestingTypes
   | WalletActionTypes;
 
-export type Action<T extends AllActions['type']> = Extract<
-  AllActions,
-  { type: T }
->;
+export type Action<T extends AllActions['type']> = Extract<AllActions, { type: T }>;
 
 export type ActionTypeString = AllActions['type'];
 

@@ -1,9 +1,5 @@
 import { BigNumber } from 'ethers';
-import {
-  DEFAULT_NETWORK_TOKEN,
-  ADDRESS_ZERO,
-  COLONY_TOTAL_BALANCE_DOMAIN_ID,
-} from '~constants';
+import { DEFAULT_NETWORK_TOKEN, ADDRESS_ZERO, COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 
 const BALANCE_TYPE_NAME = 'ColonyBalance';
 
@@ -36,10 +32,7 @@ const getTokenDataWithNative = (token) => {
  * us from returning the modified data, and will overwrite our returned
  * results with the ones already available in the cache.
  */
-const getAllDomainBalancesFromRefs = (
-  domainBalanceRefs: { _ref: string }[],
-  { readField, cache },
-) =>
+const getAllDomainBalancesFromRefs = (domainBalanceRefs: { _ref: string }[], { readField, cache }) =>
   domainBalanceRefs.map((balanceRef) => {
     const token = readField('token', balanceRef);
     const balance = readField('balance', balanceRef);
@@ -97,10 +90,7 @@ const balancesFieldCache = {
       const { chainId: colonyChainId } = readField('chainMetadata');
       const { items: colonyTokens = [] } = readField('tokens');
 
-      const allDomainBalances = getAllDomainBalancesFromRefs(
-        domainBalanceRefs.items,
-        { readField, cache },
-      );
+      const allDomainBalances = getAllDomainBalancesFromRefs(domainBalanceRefs.items, { readField, cache });
       const totalTokenBalances = getTotalTokenBalances(allDomainBalances);
       return {
         ...domainBalanceRefs,

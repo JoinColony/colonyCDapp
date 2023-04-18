@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  defineMessages,
-  FormattedMessage,
-  MessageDescriptor,
-} from 'react-intl';
+import { defineMessages, FormattedMessage, MessageDescriptor } from 'react-intl';
 
 import { useColonyContext } from '~hooks';
 import { Tooltip } from '~shared/Popover';

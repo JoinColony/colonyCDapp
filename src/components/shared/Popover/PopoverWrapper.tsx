@@ -1,21 +1,11 @@
-import React, {
-  CSSProperties,
-  Dispatch,
-  FocusEvent,
-  isValidElement,
-  SetStateAction,
-  useMemo,
-} from 'react';
+import React, { CSSProperties, Dispatch, FocusEvent, isValidElement, SetStateAction, useMemo } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 import { State as PopperJsState } from '@popperjs/core';
 
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
-import {
-  PopoverAppearanceType,
-  PopoverContent as PopoverContentType,
-} from './types';
+import { PopoverAppearanceType, PopoverContent as PopoverContentType } from './types';
 import getPopoverArrowClasses from './getPopoverArrowClasses';
 
 import styles from './PopoverWrapper.css';
@@ -65,14 +55,10 @@ const PopoverWrapper = ({
     <div
       className={`
         popoverWrapper
-        ${getMainClasses(
-          appearance,
-          styles as unknown as { [k: string]: string },
-          {
-            hideArrow: !showArrow,
-            showArrow,
-          },
-        )}
+        ${getMainClasses(appearance, styles as unknown as { [k: string]: string }, {
+          hideArrow: !showArrow,
+          showArrow,
+        })}
       `}
       onFocus={onFocus}
       ref={contentRef}

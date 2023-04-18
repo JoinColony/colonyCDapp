@@ -32,12 +32,7 @@ export const useNetworkContractUpgradeDialogStatus = (
     disabledInput: defaultDisabledInput,
     canCreateMotion,
     canOnlyForceAction,
-  } = useActionDialogStatus(
-    colony,
-    requiredRoles,
-    [Id.RootDomain],
-    enabledExtensionData,
-  );
+  } = useActionDialogStatus(colony, requiredRoles, [Id.RootDomain], enabledExtensionData);
 
   // const canUpgradeVersion =
   //   userHasPermission && !!colonyCanBeUpgraded(colony, newVersion as string);

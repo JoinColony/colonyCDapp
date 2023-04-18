@@ -29,14 +29,7 @@ interface SaveFormProps {
   dataTest?: string;
 }
 
-const SaveForm = ({
-  showSnackbar,
-  setShowSnackbar,
-  disabled,
-  error,
-  loading,
-  dataTest,
-}: SaveFormProps) => (
+const SaveForm = ({ showSnackbar, setShowSnackbar, disabled, error, loading, dataTest }: SaveFormProps) => (
   <div className={styles.save}>
     <Button
       text={{ id: 'button.save' }}

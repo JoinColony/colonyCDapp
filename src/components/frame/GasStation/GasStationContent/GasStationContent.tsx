@@ -62,9 +62,7 @@ const GasStationContent = ({
   autoOpenTransaction = false,
   setAutoOpenTransaction = () => {},
 }: Props) => {
-  const [selectedGroupIdx, setSelectedGroupIdx] = useState<number>(
-    autoOpenTransaction ? 0 : -1,
-  );
+  const [selectedGroupIdx, setSelectedGroupIdx] = useState<number>(autoOpenTransaction ? 0 : -1);
 
   const unselectTransactionGroup = () => {
     setSelectedGroupIdx(-1);
@@ -97,10 +95,7 @@ const GasStationContent = ({
         );
       }
       return (
-        <MessageCardDetails
-          message={detailsTransactionGroup[0] as MessageType}
-          onClose={unselectTransactionGroup}
-        />
+        <MessageCardDetails message={detailsTransactionGroup[0] as MessageType} onClose={unselectTransactionGroup} />
       );
     }
     return (
@@ -111,20 +106,13 @@ const GasStationContent = ({
     );
   };
 
-  const isEmpty =
-    !transactionAndMessageGroups || !transactionAndMessageGroups.length;
+  const isEmpty = !transactionAndMessageGroups || !transactionAndMessageGroups.length;
   return (
-    <div
-      className={getMainClasses({}, styles, { isEmpty })}
-      data-test="gasStation"
-    >
+    <div className={getMainClasses({}, styles, { isEmpty })} data-test="gasStation">
       {interactive && <GasStationHeader close={close} />}
       <div className={styles.transactionsContainer}>
         {isEmpty ? (
-          <Heading
-            appearance={{ margin: 'none', size: 'normal' }}
-            text={MSG.transactionsEmptyStateText}
-          />
+          <Heading appearance={{ margin: 'none', size: 'normal' }} text={MSG.transactionsEmptyStateText} />
         ) : (
           renderTransactions()
         )}

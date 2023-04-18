@@ -14,11 +14,7 @@ async function getTransactionPromise(
 ): Promise<TransactionResponse> {
   const {
     methodName,
-    options: {
-      gasLimit: gasLimitOverride,
-      gasPrice: gasPriceOverride,
-      ...restOptions
-    },
+    options: { gasLimit: gasLimitOverride, gasPrice: gasPriceOverride, ...restOptions },
     params,
     gasLimit,
     gasPrice,

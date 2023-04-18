@@ -24,23 +24,14 @@ const ExtensionCard = ({ extensionData }: Props) => {
   }>();
   return (
     <div className={styles.main}>
-      <Link
-        to={`/colony/${colonyName}/extensions/${extensionData.extensionId}`}
-      >
+      <Link to={`/colony/${colonyName}/extensions/${extensionData.extensionId}`}>
         <Card className={styles.card}>
           <div className={styles.header}>
             <div className={styles.headerIcon}>
-              <Icon
-                name="colony-logo"
-                title={extensionData.name}
-                appearance={{ size: 'small' }}
-              />
+              <Icon name="colony-logo" title={extensionData.name} appearance={{ size: 'small' }} />
             </div>
             <div>
-              <Heading4
-                appearance={{ size: 'normal', margin: 'none', theme: 'dark' }}
-                text={extensionData.name}
-              />
+              <Heading4 appearance={{ size: 'normal', margin: 'none', theme: 'dark' }} text={extensionData.name} />
               <span className={styles.version}>
                 v
                 {isInstalledExtensionData(extensionData)

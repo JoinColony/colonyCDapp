@@ -4,18 +4,9 @@ import { utils } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  updateMotionValues,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, updateMotionValues, getColonyManager } from '../utils';
 
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
+import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
 import { transactionReady } from '../../actionCreators';
 import { signMessage } from '../messages';
 
@@ -26,31 +17,17 @@ function* revealVoteMotion({
   const txChannel = yield call(getTxChannel, meta.id);
   try {
     const colonyManager = yield getColonyManager();
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
+    const colonyClient = yield colonyManager.getClient(ClientType.ColonyClient, colonyAddress);
+    const votingReputationClient: AnyVotingReputationClient = yield colonyManager.getClient(
+      ClientType.VotingReputationClient,
       colonyAddress,
     );
-    const votingReputationClient: AnyVotingReputationClient =
-      yield colonyManager.getClient(
-        ClientType.VotingReputationClient,
-        colonyAddress,
-      );
 
-    const { domainId, rootHash } = yield votingReputationClient.getMotion(
-      motionId,
-    );
+    const { domainId, rootHash } = yield votingReputationClient.getMotion(motionId);
 
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      domainId,
-    );
+    const { skillId } = yield call([colonyClient, colonyClient.getDomain], domainId);
 
-    const { key, value, branchMask, siblings } = yield call(
-      colonyClient.getReputation,
-      skillId,
-      userAddress,
-      rootHash,
-    );
+    const { key, value, branchMask, siblings } = yield call(colonyClient.getReputation, skillId, userAddress, rootHash);
 
     /*
      * @NOTE We this to be all in one line (no new lines, or line breaks) since
@@ -73,15 +50,7 @@ function* revealVoteMotion({
        * @NOTE For some reason colonyJS doesn't export types for the estimate methods
        */
       // @ts-ignore
-      yield votingReputationClient.estimateGas.revealVote(
-        motionId,
-        salt,
-        0,
-        key,
-        value,
-        branchMask,
-        siblings,
-      );
+      yield votingReputationClient.estimateGas.revealVote(motionId, salt, 0, key, value, branchMask, siblings);
       sideVoted = 0;
     } catch (error) {
       /*
@@ -98,15 +67,7 @@ function* revealVoteMotion({
        * @NOTE For some reason colonyJS doesn't export types for the estimate methods
        */
       // @ts-ignore
-      yield votingReputationClient.estimateGas.revealVote(
-        motionId,
-        salt,
-        1,
-        key,
-        value,
-        branchMask,
-        siblings,
-      );
+      yield votingReputationClient.estimateGas.revealVote(motionId, salt, 1, key, value, branchMask, siblings);
       sideVoted = 1;
     } catch (error) {
       /*
@@ -119,10 +80,7 @@ function* revealVoteMotion({
       // silent error
     }
     if (sideVoted !== undefined) {
-      const { revealVoteMotionTransaction } = yield createTransactionChannels(
-        meta.id,
-        ['revealVoteMotionTransaction'],
-      );
+      const { revealVoteMotionTransaction } = yield createTransactionChannels(meta.id, ['revealVoteMotionTransaction']);
 
       const batchKey = 'revealVoteMotion';
 
@@ -144,17 +102,11 @@ function* revealVoteMotion({
         ready: false,
       });
 
-      yield takeFrom(
-        revealVoteMotionTransaction.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
+      yield takeFrom(revealVoteMotionTransaction.channel, ActionTypes.TRANSACTION_CREATED);
 
       yield put(transactionReady(revealVoteMotionTransaction.id));
 
-      yield takeFrom(
-        revealVoteMotionTransaction.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield takeFrom(revealVoteMotionTransaction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
       /*
        * Update motion page values

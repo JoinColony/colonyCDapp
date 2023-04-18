@@ -4,10 +4,7 @@ import { MessageDescriptor, useIntl } from 'react-intl';
 
 import { InputComponentAppearance } from '~shared/Fields/Input';
 import Popover from '~shared/Popover';
-import {
-  PopoverChildFnProps,
-  PopoverTriggerElementType,
-} from '~shared/Popover/types';
+import { PopoverChildFnProps, PopoverTriggerElementType } from '~shared/Popover/types';
 import { SimpleMessageValues } from '~types';
 
 import DatePickerContent from './DatePickerContent';
@@ -151,19 +148,11 @@ const DatePicker = ({
         renderContentFooter={renderContentFooter}
       />
     ),
-    [
-      closeOnDayPick,
-      currentDate,
-      handleDayPick,
-      renderContentFooter,
-      selectedDay,
-    ],
+    [closeOnDayPick, currentDate, handleDayPick, renderContentFooter, selectedDay],
   );
 
   const placeholder =
-    typeof placeholderProp === 'object'
-      ? formatMessage(placeholderProp, placeholderValues)
-      : placeholderProp;
+    typeof placeholderProp === 'object' ? formatMessage(placeholderProp, placeholderValues) : placeholderProp;
 
   return (
     <div className={styles.main}>

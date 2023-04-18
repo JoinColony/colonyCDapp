@@ -55,11 +55,7 @@ const PermissionRequiredInfo = ({ requiredRoles }: Props) => {
 
   return (
     <div>
-      <Heading
-        appearance={{ size: 'normal', weight: 'bold' }}
-        text={MSG.title}
-        className={styles.title}
-      />
+      <Heading appearance={{ size: 'normal', weight: 'bold' }} text={MSG.title} className={styles.title} />
       <div className={styles.requiredPermissionSection}>
         <div className={styles.section}>
           <p className={styles.sectionLabel}>
@@ -74,19 +70,12 @@ const PermissionRequiredInfo = ({ requiredRoles }: Props) => {
           <div className={styles.permissionList}>
             {requiredRoles.map((role) => (
               <div className={styles.listItem} key={`permission.${role}`}>
-                <PermissionsLabel
-                  permission={role}
-                  name={formatMessage({ id: `role.${role}` })}
-                />
+                <PermissionsLabel permission={role} name={formatMessage({ id: `role.${role}` })} />
               </div>
             ))}
           </div>
         </div>
-        <Icon
-          name="circle-close"
-          title="Error"
-          appearance={{ size: 'medium' }}
-        />
+        <Icon name="circle-close" title="Error" appearance={{ size: 'medium' }} />
       </div>
     </div>
   );

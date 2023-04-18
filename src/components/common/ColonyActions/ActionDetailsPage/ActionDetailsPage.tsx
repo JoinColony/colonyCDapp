@@ -7,11 +7,7 @@ import { useColonyContext } from '~hooks';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import { useGetFullColonyByAddressQuery, useGetColonyActionQuery } from '~gql';
 
-import {
-  TransactionNotFound,
-  ActionDetailsPageLayout as Layout,
-  DefaultAction,
-} from '.';
+import { TransactionNotFound, ActionDetailsPageLayout as Layout, DefaultAction } from '.';
 
 const displayName = 'common.ColonyActions.ActionDetailsPage';
 
@@ -46,25 +42,19 @@ const ActionDetailsPage = () => {
   const isValidTx = isTransactionFormat(transactionHash);
   const events = ['event']; // to be taken from real data
 
-  const { data: colonyData, loading: loadingColony } =
-    useGetFullColonyByAddressQuery({
-      variables: {
-        address: action?.colonyAddress ?? '',
-      },
-      skip: !action?.colonyAddress,
-    });
+  const { data: colonyData, loading: loadingColony } = useGetFullColonyByAddressQuery({
+    variables: {
+      address: action?.colonyAddress ?? '',
+    },
+    skip: !action?.colonyAddress,
+  });
   const txColony = colonyData?.getColonyByAddress?.items[0];
 
   if (!colony) {
     return null;
   }
 
-  const isInvalidTransaction =
-    !isValidTx ||
-    !events.length ||
-    !action ||
-    !txColony ||
-    txColony.name !== colonyName;
+  const isInvalidTransaction = !isValidTx || !events.length || !action || !txColony || txColony.name !== colonyName;
 
   if (loading || loadingColony) {
     return <LoadingTemplate loadingText={MSG.loading} />;

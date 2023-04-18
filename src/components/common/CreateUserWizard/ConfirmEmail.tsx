@@ -3,10 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { EmailPermissions } from '~gql';
-import {
-  HookFormCheckbox as Checkbox,
-  HookFormInput as Input,
-} from '~shared/Fields';
+import { HookFormCheckbox as Checkbox, HookFormInput as Input } from '~shared/Fields';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 import { Message } from '~types';
 import { setFieldTouched } from '~utils/hookForm';
@@ -52,11 +49,7 @@ class PermissionDescription {
 
   tooltipText: Message;
 
-  constructor(
-    permission: EmailPermission,
-    label: Message,
-    tooltipText: Message,
-  ) {
+  constructor(permission: EmailPermission, label: Message, tooltipText: Message) {
     this.permission = permission;
     this.label = label;
     this.tooltipText = tooltipText;
@@ -64,16 +57,8 @@ class PermissionDescription {
 }
 
 const permissions = [
-  new PermissionDescription(
-    EmailPermissions.IsHuman,
-    MSG.confirmHumanity,
-    MSG.confirmHumanityTooltip,
-  ),
-  new PermissionDescription(
-    EmailPermissions.SendNotifications,
-    MSG.sendNotifications,
-    MSG.sendNotificationsTooltip,
-  ),
+  new PermissionDescription(EmailPermissions.IsHuman, MSG.confirmHumanity, MSG.confirmHumanityTooltip),
+  new PermissionDescription(EmailPermissions.SendNotifications, MSG.sendNotifications, MSG.sendNotificationsTooltip),
 ];
 
 const PermissionsHeading = () => (
@@ -105,10 +90,7 @@ const EmailPermissionsRow = ({
       value={value}
       onChange={onCheckboxChange}
     />
-    <QuestionMarkTooltip
-      tooltipText={tooltipText}
-      tooltipClassName={styles.tooltip}
-    />
+    <QuestionMarkTooltip tooltipText={tooltipText} tooltipClassName={styles.tooltip} />
   </div>
 );
 
@@ -149,12 +131,7 @@ const ConfirmEmail = () => {
   } = useFormContext();
   return (
     <>
-      <Input
-        appearance={{ theme: 'fat' }}
-        name="email"
-        label={MSG.label}
-        disabled={isSubmitting}
-      />
+      <Input appearance={{ theme: 'fat' }} name="email" label={MSG.label} disabled={isSubmitting} />
       <EmailPermissionsSection />
     </>
   );

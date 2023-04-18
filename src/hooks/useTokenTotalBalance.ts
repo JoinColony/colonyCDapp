@@ -15,9 +15,7 @@ const useTokenTotalBalance = (currentTokenAddress?: Address) => {
            * If the domain is not set, then we're dealing with "All Domains" (id 0)
            */
           .filter((balance) => balance?.domain === null)
-          .find(
-            (balance) => balance?.token?.tokenAddress === currentTokenAddress,
-          ) || { balance: '0' }
+          .find((balance) => balance?.token?.tokenAddress === currentTokenAddress) || { balance: '0' }
       );
     }
     return { balance: '0' };

@@ -4,21 +4,9 @@ import { ClientType } from '@colony/colony-js';
 import { ContextModule, getContext } from '~context';
 import { Action, ActionTypes, AllActions } from '~redux';
 
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
-import {
-  getUpdatedColonyMetadataChangelog,
-  putError,
-  takeFrom,
-} from '../utils';
-import {
-  transactionAddParams,
-  transactionPending,
-  transactionReady,
-} from '../../actionCreators';
+import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import { getUpdatedColonyMetadataChangelog, putError, takeFrom } from '../utils';
+import { transactionAddParams, transactionPending, transactionReady } from '../../actionCreators';
 import {
   UpdateColonyMetadataDocument,
   UpdateColonyMetadataMutation,
@@ -56,10 +44,7 @@ function* editColonyAction({
     const {
       editColonyAction: editColony,
       // annotateEditColonyAction: annotateEditColony,
-    } = yield createTransactionChannels(metaId, [
-      'editColonyAction',
-      'annotateEditColonyAction',
-    ]);
+    } = yield createTransactionChannels(metaId, ['editColonyAction', 'annotateEditColonyAction']);
 
     const createGroupTransaction = ({ id, index }, config) =>
       fork(createTransaction, id, {
@@ -143,31 +128,21 @@ function* editColonyAction({
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(
-      editColony.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+    } = yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     /**
      * Save the updated metadata in the database
      */
     if (colony.metadata) {
-      yield apolloClient.mutate<
-        UpdateColonyMetadataMutation,
-        UpdateColonyMetadataMutationVariables
-      >({
+      yield apolloClient.mutate<UpdateColonyMetadataMutation, UpdateColonyMetadataMutationVariables>({
         mutation: UpdateColonyMetadataDocument,
         variables: {
           input: {
             id: colonyAddress,
             displayName: colonyDisplayName,
             avatar: colonyAvatarImage,
-            changelog: getUpdatedColonyMetadataChangelog(
-              txHash,
-              colony.metadata,
-              colonyDisplayName,
-            ),
+            changelog: getUpdatedColonyMetadataChangelog(txHash, colony.metadata, colonyDisplayName),
           },
         },
       });

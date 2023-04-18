@@ -40,15 +40,10 @@ const TotalReputation = ({ selectedDomainId }: Props) => {
 
   return (
     <div className={styles.teamReputationPointsContainer}>
-      <Heading
-        text={MSG.totalReputationTitle}
-        appearance={{ size: 'normal', theme: 'dark' }}
-      />
+      <Heading text={MSG.totalReputationTitle} appearance={{ size: 'normal', theme: 'dark' }} />
       <p className={styles.reputationPoints}>
         <Numeral
-          value={new Decimal(totalReputation?.getUserReputation || '0')
-            .abs()
-            .toString()}
+          value={new Decimal(totalReputation?.getUserReputation || '0').abs().toString()}
           decimals={colony?.nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS}
           suffix="reputation points"
         />

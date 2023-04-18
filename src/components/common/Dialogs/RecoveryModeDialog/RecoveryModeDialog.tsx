@@ -12,9 +12,7 @@ import { pipe, withMeta, mapPayload } from '~utils/actions';
 import { getRecoveryModeDialogPayload } from './helpers';
 import DialogForm from './RecoveryModeDialogForm';
 
-type Props = Required<DialogProps> &
-  WizardDialogType<object> &
-  ActionDialogProps;
+type Props = Required<DialogProps> & WizardDialogType<object> & ActionDialogProps;
 
 const displayName = 'common.RecoveryModeDialog';
 
@@ -26,20 +24,12 @@ const validationSchema = object()
 
 type FormValues = InferType<typeof validationSchema>;
 
-const RecoveryModeDialog = ({
-  cancel,
-  close,
-  callStep,
-  prevStep,
-  colony,
-}: Props) => {
+const RecoveryModeDialog = ({ cancel, close, callStep, prevStep, colony }: Props) => {
   const { user } = useAppContext();
   const navigate = useNavigate();
 
   const transform = pipe(
-    mapPayload((payload) =>
-      getRecoveryModeDialogPayload(colony, payload, user),
-    ),
+    mapPayload((payload) => getRecoveryModeDialogPayload(colony, payload, user)),
     withMeta({ navigate }),
   );
 
@@ -55,11 +45,7 @@ const RecoveryModeDialog = ({
     >
       {({ formState }) => (
         <Dialog cancel={cancel}>
-          <DialogForm
-            {...formState}
-            colony={colony}
-            back={() => callStep(prevStep)}
-          />
+          <DialogForm {...formState} colony={colony} back={() => callStep(prevStep)} />
         </Dialog>
       )}
     </Form>

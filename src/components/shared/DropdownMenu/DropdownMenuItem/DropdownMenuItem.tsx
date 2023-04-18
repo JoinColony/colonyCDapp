@@ -4,10 +4,7 @@ import styles from './DropdownMenuItem.css';
 
 const displayName = 'DropdownMenuItem';
 
-const DropdownMenuItem = ({
-  children,
-  ...props
-}: HTMLAttributes<HTMLLIElement>) => (
+const DropdownMenuItem = ({ children, ...props }: HTMLAttributes<HTMLLIElement>) => (
   <li className={styles.main} {...props} role="menuitem">
     {children}
   </li>

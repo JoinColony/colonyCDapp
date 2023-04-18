@@ -26,13 +26,7 @@ interface Props {
 
 const displayName = 'TransactionLink';
 
-const TransactionLink = ({
-  className,
-  hash,
-  text,
-  textValues,
-  title,
-}: Props) => (
+const TransactionLink = ({ className, hash, text, textValues, title }: Props) => (
   <ExternalLink
     className={className}
     href={getBlockExplorerLink({

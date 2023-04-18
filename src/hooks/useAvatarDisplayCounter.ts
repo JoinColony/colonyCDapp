@@ -2,11 +2,7 @@ import { useMemo } from 'react';
 
 import { Member } from '~types';
 
-const useAvatarDisplayCounter = (
-  maxAvatars: number,
-  members: Member[],
-  isLastAvatarIncluded = true,
-) => {
+const useAvatarDisplayCounter = (maxAvatars: number, members: Member[], isLastAvatarIncluded = true) => {
   const avatarsDisplaySplitRules = useMemo(() => {
     if (!members?.length) {
       return 0;
@@ -23,9 +19,7 @@ const useAvatarDisplayCounter = (
     if (members.length <= maxAvatars) {
       return 0;
     }
-    return (
-      members.length - (isLastAvatarIncluded ? maxAvatars : maxAvatars - 1)
-    );
+    return members.length - (isLastAvatarIncluded ? maxAvatars : maxAvatars - 1);
   }, [members, maxAvatars, isLastAvatarIncluded]);
   return {
     avatarsDisplaySplitRules,

@@ -1,17 +1,7 @@
-import React, {
-  useCallback,
-  KeyboardEvent,
-  SyntheticEvent,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, KeyboardEvent, SyntheticEvent, useRef, useState } from 'react';
 import * as yup from 'yup';
 import { FormikProps, FormikBag } from 'formik';
-import {
-  defineMessages,
-  FormattedMessage,
-  MessageDescriptor,
-} from 'react-intl';
+import { defineMessages, FormattedMessage, MessageDescriptor } from 'react-intl';
 
 import { Form, TextareaAutoresize } from '~shared/Fields';
 import { SpinnerLoader } from '~shared/Preloaders';
@@ -62,10 +52,7 @@ interface Props {
   disabledInputPlaceholder?: MessageDescriptor | string;
 }
 
-const handleKeyboardSubmit = (
-  capturedEvent: KeyboardEvent<any>,
-  callback: (e: SyntheticEvent<any>) => any,
-) => {
+const handleKeyboardSubmit = (capturedEvent: KeyboardEvent<any>, callback: (e: SyntheticEvent<any>) => any) => {
   const { key, shiftKey } = capturedEvent;
 
   /*
@@ -79,24 +66,14 @@ const handleKeyboardSubmit = (
   return false;
 };
 
-const CommentInput = ({
-  transactionHash,
-  colonyAddress,
-  callback,
-  disabled,
-  disabledInputPlaceholder,
-}: Props) => {
+const CommentInput = ({ transactionHash, colonyAddress, callback, disabled, disabledInputPlaceholder }: Props) => {
   const commentBoxRef = useRef<HTMLInputElement>(null);
-  const [commentBoxInputRef, setCommentBoxInputRef] =
-    useState<HTMLElement | null>(null);
+  const [commentBoxInputRef, setCommentBoxInputRef] = useState<HTMLElement | null>(null);
 
   const [sendTransactionMessage] = useSendTransactionMessageMutation();
 
   const onSubmit = useCallback(
-    (
-      { message }: FormValues,
-      { resetForm, setFieldError }: FormikBag<object, FormValues>,
-    ) =>
+    ({ message }: FormValues, { resetForm, setFieldError }: FormikBag<object, FormValues>) =>
       sendTransactionMessage({
         variables: {
           input: {
@@ -129,13 +106,7 @@ const CommentInput = ({
           callback(message);
         }
       }),
-    [
-      transactionHash,
-      colonyAddress,
-      sendTransactionMessage,
-      commentBoxInputRef,
-      callback,
-    ],
+    [transactionHash, colonyAddress, sendTransactionMessage, commentBoxInputRef, callback],
   );
 
   return (
@@ -153,9 +124,7 @@ const CommentInput = ({
               elementOnly
               label={MSG.commentInputPlaceholder}
               name="message"
-              placeholder={
-                disabledInputPlaceholder || MSG.commentInputPlaceholder
-              }
+              placeholder={disabledInputPlaceholder || MSG.commentInputPlaceholder}
               minRows={1}
               maxRows={6}
               onKeyDown={(event) => handleKeyboardSubmit(event, handleSubmit)}
@@ -168,13 +137,7 @@ const CommentInput = ({
                 <SpinnerLoader />
               </div>
             )}
-            <div
-              className={
-                isValid
-                  ? styles.sendInstructionsFadeIn
-                  : styles.sendInstructions
-              }
-            >
+            <div className={isValid ? styles.sendInstructionsFadeIn : styles.sendInstructions}>
               <FormattedMessage
                 {...MSG.commentInstuctions}
                 values={{

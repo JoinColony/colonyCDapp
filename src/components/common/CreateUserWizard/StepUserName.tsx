@@ -53,10 +53,7 @@ const UsernameInput = ({ disabled }: UsernameInputProps) => (
 
 type Props = WizardStepProps<FormValues, UserWizardStep2>;
 
-const StepUserName = ({
-  wizardValues,
-  wizardForm: { initialValues: defaultValues },
-}: Props) => {
+const StepUserName = ({ wizardValues, wizardForm: { initialValues: defaultValues } }: Props) => {
   const navigate = useNavigate();
   const transform = mergePayload(wizardValues);
   /* Replace: true so you can't get back to the User wizard after completion */

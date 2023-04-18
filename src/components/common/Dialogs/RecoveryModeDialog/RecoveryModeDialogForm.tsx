@@ -3,12 +3,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import {
-  DialogSection,
-  ActionDialogProps,
-  DialogControls,
-  DialogHeading,
-} from '~shared/Dialog';
+import { DialogSection, ActionDialogProps, DialogControls, DialogHeading } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 import PermissionsLabel from '~shared/PermissionsLabel';
 import ExternalLink from '~shared/ExternalLink';
@@ -44,32 +39,22 @@ const MSG = defineMessages({
   },
   annotation: {
     id: `${displayName}.annotation`,
-    defaultMessage:
-      'Explain why you’re putting this colony into recovery mode (optional)',
+    defaultMessage: 'Explain why you’re putting this colony into recovery mode (optional)',
   },
 });
 
-const HelpLink = (chunks: React.ReactNode[]) => (
-  <ExternalLink href={RECOVERY_HELP}>{chunks}</ExternalLink>
-);
+const HelpLink = (chunks: React.ReactNode[]) => <ExternalLink href={RECOVERY_HELP}>{chunks}</ExternalLink>;
 
-const RecoveryModeDialogForm = ({
-  back,
-  colony,
-}: Omit<ActionDialogProps, 'enabledExtensionData'>) => {
+const RecoveryModeDialogForm = ({ back, colony }: Omit<ActionDialogProps, 'enabledExtensionData'>) => {
   const { user } = useAppContext();
   const {
     formState: { isSubmitting },
   } = useFormContext();
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    user?.walletAddress,
-  ]);
+  const allUserRoles = useTransformer(getAllUserRoles, [colony, user?.walletAddress]);
 
   const hasRegisteredProfile = !!user?.name && !!user?.walletAddress;
 
-  const userHasPermission =
-    hasRegisteredProfile && canEnterRecoveryMode(allUserRoles);
+  const userHasPermission = hasRegisteredProfile && canEnterRecoveryMode(allUserRoles);
 
   return (
     <>

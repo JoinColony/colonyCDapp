@@ -5,11 +5,7 @@ import { ExtendedClientType } from '~types';
 import { TransactionError } from '~redux/immutable/Transaction';
 import { NETWORK_DATA } from '~constants';
 
-export {
-  isAddress,
-  hexlify as toHex,
-  getAddress as createAddress,
-} from 'ethers/lib.esm/utils';
+export { isAddress, hexlify as toHex, getAddress as createAddress } from 'ethers/lib.esm/utils';
 
 export type Unit =
   | 'noether'
@@ -40,9 +36,7 @@ export type Unit =
   | 'gether'
   | 'tether';
 
-export const isTransactionFormat = (
-  potentialTransactionHash?: string,
-): boolean => {
+export const isTransactionFormat = (potentialTransactionHash?: string): boolean => {
   const hexStringRegex = /^0x([A-Fa-f0-9]{64})$/;
   if (!potentialTransactionHash) {
     return false;
@@ -54,25 +48,17 @@ export const generateMetatransactionErrorMessage = (
   emmitentClient: any, // Disregard the `any`. The new ColonyJS messed up all the types
 ) =>
   `Contract does not support MetaTransactions. ${emmitentClient.clientType}${
-    emmitentClient.clientType === ClientType.TokenClient
-      ? ` of type ${emmitentClient.tokenClientType}`
-      : ''
+    emmitentClient.clientType === ClientType.TokenClient ? ` of type ${emmitentClient.tokenClientType}` : ''
   } at ${emmitentClient.address}`;
 
-export const generateMetamaskTypedDataSignatureErrorMessage = (
-  chainId: number,
-) =>
+export const generateMetamaskTypedDataSignatureErrorMessage = (chainId: number) =>
   `Please switch your wallet's network to ${NETWORK_DATA?.[chainId]?.name} in order to sign this typed data`;
 
 export function intArrayToBytes32(arr: Array<number>) {
-  return `0x${new BN(
-    arr.map((num) => new BN(1).shln(num)).reduce((a, b) => a.or(b), new BN(0)),
-  ).toString(16, 64)}`;
+  return `0x${new BN(arr.map((num) => new BN(1).shln(num)).reduce((a, b) => a.or(b), new BN(0))).toString(16, 64)}`;
 }
 
-export const isGasStationMetatransactionError = (
-  error?: TransactionError,
-): boolean =>
+export const isGasStationMetatransactionError = (error?: TransactionError): boolean =>
   !!error?.message.includes('Contract does not support MetaTransactions');
 
 /*
@@ -85,9 +71,7 @@ export const isGasStationMetatransactionError = (
  * Also, as a side note, this can only happen, currently, for the TokenClient
  * contracts
  */
-export const isMetatransactionErrorFromColonyContract = (
-  error?: TransactionError,
-): boolean => {
+export const isMetatransactionErrorFromColonyContract = (error?: TransactionError): boolean => {
   if (!error?.message) {
     return false;
   }
@@ -99,10 +83,7 @@ export const isMetatransactionErrorFromColonyContract = (
    * While technically ours, they don't support metatransactions and they're
    * not upgradable either, so no such functionality can be added to them
    */
-  if (
-    clientType === ExtendedClientType.VestingSimpleClient ||
-    clientType === ExtendedClientType.WrappedTokenClient
-  ) {
+  if (clientType === ExtendedClientType.VestingSimpleClient || clientType === ExtendedClientType.WrappedTokenClient) {
     return false;
   }
   let tokenType: string = TokenClientType.Erc20;
@@ -114,10 +95,9 @@ export const isMetatransactionErrorFromColonyContract = (
    * Locally defined clients (in Dapp) may not. Out of them, the only one currently
    * supporting that is the `Light Token Client` hence why it's singled out
    */
-  const isCorrectClient = [
-    ...Object.values(ClientType),
-    ExtendedClientType.LightTokenClient,
-  ].includes(clientType as ClientType);
+  const isCorrectClient = [...Object.values(ClientType), ExtendedClientType.LightTokenClient].includes(
+    clientType as ClientType,
+  );
   const isCorrectToken = tokenType === TokenClientType.Colony;
   if (clientType === ClientType.TokenClient) {
     return isCorrectClient && isCorrectToken;

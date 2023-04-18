@@ -1,9 +1,4 @@
-import {
-  AnyMessageValues,
-  Colony,
-  ColonyAction,
-  ColonyAndExtensionsEvents,
-} from '~types';
+import { AnyMessageValues, Colony, ColonyAction, ColonyAndExtensionsEvents } from '~types';
 
 import { mapColonyEventToExpectedFormat } from './mapItemToMessageFormat';
 
@@ -55,22 +50,15 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
     EventTitleMessageKeys.ToDomain,
     EventTitleMessageKeys.TokenSymbol,
   ],
-  [ColonyAndExtensionsEvents.TokenUnlocked]: [
-    EventTitleMessageKeys.TokenSymbol,
-  ],
+  [ColonyAndExtensionsEvents.TokenUnlocked]: [EventTitleMessageKeys.TokenSymbol],
   [ColonyAndExtensionsEvents.TokensMinted]: [
     EventTitleMessageKeys.Amount,
     EventTitleMessageKeys.Initiator,
     EventTitleMessageKeys.Recipient,
     EventTitleMessageKeys.TokenSymbol,
   ],
-  [ColonyAndExtensionsEvents.DomainAdded]: [
-    EventTitleMessageKeys.FromDomain,
-    EventTitleMessageKeys.Initiator,
-  ],
-  [ColonyAndExtensionsEvents.ColonyUpgraded]: [
-    EventTitleMessageKeys.NewVersion,
-  ],
+  [ColonyAndExtensionsEvents.DomainAdded]: [EventTitleMessageKeys.FromDomain, EventTitleMessageKeys.Initiator],
+  [ColonyAndExtensionsEvents.ColonyUpgraded]: [EventTitleMessageKeys.NewVersion],
   // [ColonyAndExtensionsEvents.MotionFinalized]: [
   //   EventTitleMessageKeys.MotionTag,
   // ],
@@ -135,17 +123,10 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
   ],
 };
 
-const DEFAULT_KEYS = [
-  EventTitleMessageKeys.EventNameDecorated,
-  EventTitleMessageKeys.ClientOrExtensionType,
-];
+const DEFAULT_KEYS = [EventTitleMessageKeys.EventNameDecorated, EventTitleMessageKeys.ClientOrExtensionType];
 
 /* Filters the item by keys provided */
-export const generateMessageValues = (
-  item: Record<string, any>,
-  keys: string[],
-  initialEntry: Record<string, any>,
-) =>
+export const generateMessageValues = (item: Record<string, any>, keys: string[], initialEntry: Record<string, any>) =>
   keys.reduce<AnyMessageValues>(
     (values, key) => ({
       ...values,
@@ -155,16 +136,8 @@ export const generateMessageValues = (
   );
 
 /* Returns the correct message values according to the event type. */
-const getEventTitleValues = (
-  eventName: ColonyAndExtensionsEvents,
-  actionData: ColonyAction,
-  colony?: Colony,
-) => {
-  const updatedItem = mapColonyEventToExpectedFormat(
-    eventName,
-    actionData,
-    colony,
-  );
+const getEventTitleValues = (eventName: ColonyAndExtensionsEvents, actionData: ColonyAction, colony?: Colony) => {
+  const updatedItem = mapColonyEventToExpectedFormat(eventName, actionData, colony);
   const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
   return generateMessageValues(updatedItem, keys, {
     eventName,

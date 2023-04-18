@@ -58,11 +58,7 @@ const Comment = ({
   disableHover = false,
 }: Props) => {
   const { wallet } = useAppContext();
-  const rootRoles = useTransformer(getUserRolesForDomain, [
-    colony,
-    wallet?.address,
-    Id.RootDomain,
-  ]);
+  const rootRoles = useTransformer(getUserRolesForDomain, [colony, wallet?.address, Id.RootDomain]);
 
   // Check for permissions for comment actions
   let permission = COMMENT_MODERATION.NONE;
@@ -73,35 +69,23 @@ const Comment = ({
   // }
 
   // Check for permissions to moderate
-  if (
-    userHasRole(rootRoles, ColonyRole.Root) ||
-    userHasRole(rootRoles, ColonyRole.Administration)
-  ) {
+  if (userHasRole(rootRoles, ColonyRole.Root) || userHasRole(rootRoles, ColonyRole.Administration)) {
     permission = COMMENT_MODERATION.CAN_MODERATE;
   }
 
   const [hoverState, setHoverState] = useState<boolean>(false);
 
   const { Decorate } = new TextDecorator({
-    username: (usernameWithAtSign) => (
-      <UserMention username={usernameWithAtSign.slice(1)} />
-    ),
+    username: (usernameWithAtSign) => <UserMention username={usernameWithAtSign.slice(1)} />,
   });
 
-  const {
-    deleted = false,
-    adminDelete = false,
-    userBanned = false,
-  } = commentMeta || {};
+  const { deleted = false, adminDelete = false, userBanned = false } = commentMeta || {};
 
   return (
     <div
       className={getMainClasses(appearance, styles, {
         annotation,
-        ghosted:
-          showControls &&
-          permission !== COMMENT_MODERATION.NONE &&
-          !!(deleted || adminDelete || userBanned),
+        ghosted: showControls && permission !== COMMENT_MODERATION.NONE && !!(deleted || adminDelete || userBanned),
         hideControls: !showControls || permission === COMMENT_MODERATION.NONE,
         activeActions: hoverState,
         disableHover,
@@ -127,16 +111,11 @@ const Comment = ({
             <FriendlyName user={user as AnyUser} />
           </span>
           {createdAt && <TransactionMeta createdAt={createdAt} />}
-          {userBanned &&
-            showControls &&
-            permission !== COMMENT_MODERATION.NONE && (
-              <div className={styles.bannedTag}>
-                <Tag
-                  text={{ id: 'label.banned' }}
-                  appearance={{ theme: 'banned' }}
-                />
-              </div>
-            )}
+          {userBanned && showControls && permission !== COMMENT_MODERATION.NONE && (
+            <div className={styles.bannedTag}>
+              <Tag text={{ id: 'label.banned' }} appearance={{ theme: 'banned' }} />
+            </div>
+          )}
         </div>
         <div className={styles.text} data-test="comment">
           <Decorate>{comment}</Decorate>

@@ -46,15 +46,13 @@ const UserReputation = ({
   isCurrentUserReputation,
   isUserReputationLoading = false,
 }: Props) => {
-  const formattedUserReputations = userReputationForTopDomains?.map(
-    ({ domainId, ...rest }) => {
-      const reputationDomain = findDomainByNativeId(domainId, colony);
-      return {
-        ...rest,
-        reputationDomain,
-      };
-    },
-  );
+  const formattedUserReputations = userReputationForTopDomains?.map(({ domainId, ...rest }) => {
+    const reputationDomain = findDomainByNativeId(domainId, colony);
+    return {
+      ...rest,
+      reputationDomain,
+    };
+  });
 
   return (
     <div className={styles.sectionContainer}>
@@ -77,22 +75,17 @@ const UserReputation = ({
         <>
           {isEmpty(formattedUserReputations) ? (
             <p className={styles.noReputationDescription}>
-              <FormattedMessage
-                {...MSG.noReputationDescription}
-                values={{ isCurrentUserReputation }}
-              />
+              <FormattedMessage {...MSG.noReputationDescription} values={{ isCurrentUserReputation }} />
             </p>
           ) : (
             <ul>
-              {formattedUserReputations.map(
-                ({ reputationDomain, reputationPercentage }) => (
-                  <UserReputationItem
-                    key={`${reputationDomain?.id}-${reputationPercentage}`}
-                    domainName={reputationDomain?.metadata?.name || ''}
-                    reputationPercentage={reputationPercentage}
-                  />
-                ),
-              )}
+              {formattedUserReputations.map(({ reputationDomain, reputationPercentage }) => (
+                <UserReputationItem
+                  key={`${reputationDomain?.id}-${reputationPercentage}`}
+                  domainName={reputationDomain?.metadata?.name || ''}
+                  reputationPercentage={reputationPercentage}
+                />
+              ))}
             </ul>
           )}
         </>

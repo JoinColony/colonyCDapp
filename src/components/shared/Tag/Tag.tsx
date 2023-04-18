@@ -49,12 +49,7 @@ const Tag = ({ appearance, className, text, textValues, ...rest }: Props) => {
   return (
     <span className={classNames} {...rest}>
       {appearance?.theme === 'banned' && (
-        <Icon
-          title={text}
-          name="emoji-goblin"
-          appearance={{ size: 'normal' }}
-          className={styles.icon}
-        />
+        <Icon title={text} name="emoji-goblin" appearance={{ size: 'normal' }} className={styles.icon} />
       )}
       {formatText(text, textValues)}
     </span>

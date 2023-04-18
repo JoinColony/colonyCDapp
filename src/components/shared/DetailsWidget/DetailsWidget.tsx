@@ -19,12 +19,7 @@ const DetailsWidget = ({ colony, actionData }: Props) => {
   return (
     <div>
       {detailItems.map(({ label, labelValues, item }) => (
-        <DetailItem
-          label={label}
-          labelValues={labelValues}
-          item={item}
-          key={nanoid()}
-        />
+        <DetailItem label={label} labelValues={labelValues} item={item} key={nanoid()} />
       ))}
     </div>
   );

@@ -45,8 +45,6 @@ export const getManageWhitelistDialogPayload = (
     isWhitelistActivated: whitelistActivated,
     annotationMessage,
     colonyName,
-    colonyTokens: colonyTokens.filter(
-      (token) => token?.token.tokenAddress !== nativeToken.tokenAddress,
-    ),
+    colonyTokens: colonyTokens.filter((token) => token?.token.tokenAddress !== nativeToken.tokenAddress),
   };
 };

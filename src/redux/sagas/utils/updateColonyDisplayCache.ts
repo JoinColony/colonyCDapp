@@ -1,9 +1,5 @@
 import { ContextModule, getContext } from '~context';
-import {
-  ProcessedColonyQuery,
-  ProcessedColonyQueryVariables,
-  ProcessedColonyDocument,
-} from '~data/index';
+import { ProcessedColonyQuery, ProcessedColonyQueryVariables, ProcessedColonyDocument } from '~data/index';
 import { Address } from '~types';
 
 export function* updateColonyDisplayCache(
@@ -16,10 +12,7 @@ export function* updateColonyDisplayCache(
 
   const {
     data: { processedColony },
-  } = yield apolloClient.query<
-    ProcessedColonyQuery,
-    ProcessedColonyQueryVariables
-  >({
+  } = yield apolloClient.query<ProcessedColonyQuery, ProcessedColonyQueryVariables>({
     query: ProcessedColonyDocument,
     variables: {
       address: colonyAddress,

@@ -10,10 +10,7 @@ interface ActionsPageLayoutProps {
 
 const displayName = 'common.ColonyActions.ActionDetailsPageLayout';
 
-const ActionDetailsPageLayout = ({
-  children,
-  center = false,
-}: ActionsPageLayoutProps) => {
+const ActionDetailsPageLayout = ({ children, center = false }: ActionsPageLayoutProps) => {
   return (
     <div
       className={classNames(styles.layout, {

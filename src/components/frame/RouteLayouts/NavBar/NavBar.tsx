@@ -17,21 +17,12 @@ interface Props {
 }
 
 const NavBar = ({
-  routeProps: {
-    className,
-    hasBackLink = true,
-    backRoute,
-    backText,
-    backTextValues,
-  } = {},
+  routeProps: { className, hasBackLink = true, backRoute, backText, backTextValues } = {},
   children,
 }: Props) => {
   const location = useLocation<{ hasBackLink?: boolean }>();
 
-  const backLinkExists =
-    hasBackLink === undefined
-      ? location.state && location.state.hasBackLink
-      : hasBackLink;
+  const backLinkExists = hasBackLink === undefined ? location.state && location.state.hasBackLink : hasBackLink;
 
   return (
     <div className={className || getMainClasses({}, styles)}>
@@ -39,11 +30,7 @@ const NavBar = ({
         <nav className={styles.navigation}>
           {backLinkExists && (
             <div className={styles.history}>
-              <HistoryNavigation
-                backRoute={backRoute}
-                backText={backText}
-                backTextValues={backTextValues}
-              />
+              <HistoryNavigation backRoute={backRoute} backText={backText} backTextValues={backTextValues} />
             </div>
           )}
           <div className={styles.user}>

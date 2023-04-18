@@ -9,9 +9,7 @@ export const { formatMessage } = intl({
 });
 
 export function cleanQueryName(queryName: string) {
-  const customQueryKey = Object.keys(customQueries).find(
-    (k) => k === queryName,
-  );
+  const customQueryKey = Object.keys(customQueries).find((k) => k === queryName);
 
   /* If custom query, return actual query name */
   if (customQueryKey) {
@@ -28,11 +26,6 @@ export function createUnknownError(createError: TestContext['createError']) {
   });
 }
 
-export function cancelEarly(
-  circuitBreaker: NonNullable<CustomTestConfig['circuitBreaker']>,
-  value,
-) {
-  return typeof circuitBreaker === 'boolean'
-    ? circuitBreaker
-    : !circuitBreaker(value);
+export function cancelEarly(circuitBreaker: NonNullable<CustomTestConfig['circuitBreaker']>, value) {
+  return typeof circuitBreaker === 'boolean' ? circuitBreaker : !circuitBreaker(value);
 }

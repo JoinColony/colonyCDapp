@@ -1,34 +1,14 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import {
-  ClientType,
-  Id,
-  getPermissionProofs,
-  getChildIndex,
-  ColonyRole,
-} from '@colony/colony-js';
+import { ClientType, Id, getPermissionProofs, getChildIndex, ColonyRole } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, routeRedirect, uploadIfpsAnnotation, getColonyManager } from '../utils';
 
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
+import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
 import { ipfsUpload } from '../ipfs';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { transactionReady, transactionPending, transactionAddParams } from '../../actionCreators';
 
 function* createEditDomainMotion({
   payload: {
@@ -62,14 +42,8 @@ function* createEditDomainMotion({
     const domainId = !isCreateDomain && editDomainId ? editDomainId : parentId;
 
     const context = yield getColonyManager();
-    const colonyClient = yield context.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
-    const votingReputationClient = yield context.getClient(
-      ClientType.VotingReputationClient,
-      colonyAddress,
-    );
+    const colonyClient = yield context.getClient(ClientType.ColonyClient, colonyAddress);
+    const votingReputationClient = yield context.getClient(ClientType.VotingReputationClient, colonyAddress);
 
     const [permissionDomainId, childSkillIndex] = yield call(
       getPermissionProofs,
@@ -79,33 +53,21 @@ function* createEditDomainMotion({
       votingReputationClient.address,
     );
 
-    const motionChildSkillIndex = yield call(
-      getChildIndex,
-      colonyClient,
-      motionDomainId,
-      domainId,
-    );
+    const motionChildSkillIndex = yield call(getChildIndex, colonyClient, motionDomainId, domainId);
 
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      motionDomainId,
-    );
+    const { skillId } = yield call([colonyClient, colonyClient.getDomain], motionDomainId);
 
-    const { key, value, branchMask, siblings } = yield call(
-      colonyClient.getReputation,
-      skillId,
-      AddressZero,
-    );
+    const { key, value, branchMask, siblings } = yield call(colonyClient.getReputation, skillId, AddressZero);
 
     txChannel = yield call(getTxChannel, metaId);
 
     // setup batch ids and channels
     const batchKey = 'createMotion';
 
-    const { createMotion, annotateMotion } = yield createTransactionChannels(
-      metaId,
-      ['createMotion', 'annotateMotion'],
-    );
+    const { createMotion, annotateMotion } = yield createTransactionChannels(metaId, [
+      'createMotion',
+      'annotateMotion',
+    ]);
 
     /*
      * Upload domain metadata to IPFS
@@ -121,9 +83,7 @@ function* createEditDomainMotion({
     );
 
     const encodedAction = colonyClient.interface.encodeFunctionData(
-      isCreateDomain
-        ? 'addDomain(uint256,uint256,uint256,string)'
-        : 'editDomain',
+      isCreateDomain ? 'addDomain(uint256,uint256,uint256,string)' : 'editDomain',
       [permissionDomainId, childSkillIndex, domainId, domainMetadataIpfsHash],
     );
 
@@ -132,16 +92,7 @@ function* createEditDomainMotion({
       context: ClientType.VotingReputationClient,
       methodName: 'createMotion',
       identifier: colonyAddress,
-      params: [
-        motionDomainId,
-        motionChildSkillIndex,
-        AddressZero,
-        encodedAction,
-        key,
-        value,
-        branchMask,
-        siblings,
-      ],
+      params: [motionDomainId, motionChildSkillIndex, AddressZero, encodedAction, key, value, branchMask, siblings],
       group: {
         key: batchKey,
         id: metaId,
@@ -174,10 +125,7 @@ function* createEditDomainMotion({
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+    } = yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -206,8 +154,5 @@ function* createEditDomainMotion({
 }
 
 export default function* createEditDomainMotionSaga() {
-  yield takeEvery(
-    ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
-    createEditDomainMotion,
-  );
+  yield takeEvery(ActionTypes.MOTION_DOMAIN_CREATE_EDIT, createEditDomainMotion);
 }

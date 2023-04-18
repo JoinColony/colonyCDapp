@@ -6,9 +6,7 @@ import styles from './VerticalTabList.css';
 const displayName = 'VerticalTabList';
 const tabsRole = 'TabList';
 
-const VerticalTabList = ({ ...props }: HTMLAttributes<any>) => (
-  <ReactTabList className={styles.main} {...props} />
-);
+const VerticalTabList = ({ ...props }: HTMLAttributes<any>) => <ReactTabList className={styles.main} {...props} />;
 
 VerticalTabList.tabsRole = tabsRole;
 

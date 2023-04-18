@@ -17,22 +17,11 @@ interface Props {
 
 const displayName = 'common.ColonyHome.ColonyFundingWidget.TokenBalanceItem';
 
-const TokenBalanceItem = ({
-  token: { decimals, symbol },
-  isTokenNative,
-  isNativeTokenLocked,
-  balance,
-}: Props) =>
+const TokenBalanceItem = ({ token: { decimals, symbol }, isTokenNative, isNativeTokenLocked, balance }: Props) =>
   balance && (
     <div className={styles.tokenItem}>
-      <span
-        className={styles.tokenValue}
-        data-test={isTokenNative ? 'colonyFundingNativeTokenValue' : null}
-      >
-        <Numeral
-          decimals={getTokenDecimalsWithFallback(decimals)}
-          value={balance}
-        />
+      <span className={styles.tokenValue} data-test={isTokenNative ? 'colonyFundingNativeTokenValue' : null}>
+        <Numeral decimals={getTokenDecimalsWithFallback(decimals)} value={balance} />
       </span>
       <span className={styles.tokenSymbol}>
         <span>{symbol}</span>

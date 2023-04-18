@@ -3,11 +3,7 @@ import { ClientType, Id } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
-import {
-  ColonyExtensionQuery,
-  ColonyExtensionQueryVariables,
-  ColonyExtensionDocument,
-} from '~data/index';
+import { ColonyExtensionQuery, ColonyExtensionQueryVariables, ColonyExtensionDocument } from '~data/index';
 import extensionData from '~data/staticData/extensionData';
 import { ContextModule, getContext } from '~context';
 import { intArrayToBytes32 } from '~utils/web3';
@@ -44,10 +40,7 @@ function* extensionEnable({
   const apolloClient = getContext(ContextModule.ApolloClient);
 
   try {
-    const { data } = yield apolloClient.query<
-      ColonyExtensionQuery,
-      ColonyExtensionQueryVariables
-    >({
+    const { data } = yield apolloClient.query<ColonyExtensionQuery, ColonyExtensionQueryVariables>({
       query: ColonyExtensionDocument,
       variables: {
         colonyAddress,
@@ -64,19 +57,13 @@ function* extensionEnable({
      */
     let agreementHash = '';
     if (payload.agreement) {
-      agreementHash = yield call(
-        ipfsUpload,
-        JSON.stringify({ agreement: payload.agreement }),
-      );
+      agreementHash = yield call(ipfsUpload, JSON.stringify({ agreement: payload.agreement }));
     }
 
     const { address, details } = data.colonyExtension;
 
     if (!details?.initialized && extension.initializationParams) {
-      const initParams = [
-        payload?.policy !== WhitelistPolicy.AgreementOnly,
-        agreementHash,
-      ];
+      const initParams = [payload?.policy !== WhitelistPolicy.AgreementOnly, agreementHash];
 
       const additionalChannels: {
         setUserRolesWithProofs?: Channel;
@@ -94,12 +81,7 @@ function* extensionEnable({
         transactionChannels,
         transactionChannels: { initialise, setUserRolesWithProofs },
         createGroupTransaction,
-      } = yield setupEnablingGroupTransactions(
-        metaId,
-        initParams,
-        extensionId,
-        additionalChannels,
-      );
+      } = yield setupEnablingGroupTransactions(metaId, initParams, extensionId, additionalChannels);
 
       yield all(
         Object.keys(channels).map((channelName) =>
@@ -113,20 +95,14 @@ function* extensionEnable({
 
       yield all(
         Object.keys(transactionChannels).map((id) =>
-          takeFrom(
-            transactionChannels[id].channel,
-            ActionTypes.TRANSACTION_CREATED,
-          ),
+          takeFrom(transactionChannels[id].channel, ActionTypes.TRANSACTION_CREATED),
         ),
       );
 
       yield takeFrom(initialise.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
       if (setUserRolesWithProofs) {
-        yield takeFrom(
-          setUserRolesWithProofs.channel,
-          ActionTypes.TRANSACTION_SUCCEEDED,
-        );
+        yield takeFrom(setUserRolesWithProofs.channel, ActionTypes.TRANSACTION_SUCCEEDED);
       }
     }
     yield call(refreshExtension, colonyAddress, extensionId);

@@ -39,16 +39,11 @@ const context: Context = {
   [ContextModule.UserSettings]: undefined,
 };
 
-export const setContext = <K extends keyof Context>(
-  contextKey: K,
-  contextValue: Context[K],
-) => {
+export const setContext = <K extends keyof Context>(contextKey: K, contextValue: Context[K]) => {
   context[contextKey] = contextValue;
 };
 
-export const getContext = <K extends keyof Context>(
-  contextKey: K,
-): NonNullable<Context[K]> => {
+export const getContext = <K extends keyof Context>(contextKey: K): NonNullable<Context[K]> => {
   const ctx = context[contextKey];
   if (!ctx) throw new Error(`Could not get context: ${contextKey}`);
   // ctx is always defined from here on

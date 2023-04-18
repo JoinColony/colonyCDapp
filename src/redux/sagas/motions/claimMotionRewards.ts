@@ -17,19 +17,9 @@ import {
   UserBalanceWithLockQueryVariables,
 } from '~data/generated';
 
-import {
-  ChannelDefinition,
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
+import { ChannelDefinition, createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
 
-import {
-  updateMotionValues,
-  putError,
-  takeFrom,
-  getColonyManager,
-} from '../utils';
+import { updateMotionValues, putError, takeFrom, getColonyManager } from '../utils';
 
 function* claimMotionRewards({
   meta,
@@ -40,15 +30,11 @@ function* claimMotionRewards({
 
   try {
     const colonyManager = yield getColonyManager();
-    const votingReputationClient: ExtensionClient =
-      yield colonyManager.getClient(
-        ClientType.VotingReputationClient,
-        colonyAddress,
-      );
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
+    const votingReputationClient: ExtensionClient = yield colonyManager.getClient(
+      ClientType.VotingReputationClient,
       colonyAddress,
     );
+    const colonyClient = yield colonyManager.getClient(ClientType.ColonyClient, colonyAddress);
 
     /*
      * We need to do the claim reward transaction, potentially for both sides,
@@ -67,11 +53,7 @@ function* claimMotionRewards({
            * @NOTE For some reason colonyJS doesn't export types for the estimate methods
            */
           // @ts-ignore
-          await votingReputationClient.estimateGas.claimRewardWithProofs(
-            motionId,
-            userAddress,
-            1,
-          );
+          await votingReputationClient.estimateGas.claimRewardWithProofs(motionId, userAddress, 1);
           motionWithYAYClaims.push(motionId);
         } catch (error) {
           /*
@@ -88,11 +70,7 @@ function* claimMotionRewards({
            * @NOTE For some reason colonyJS doesn't export types for the estimate methods
            */
           // @ts-ignore
-          await votingReputationClient.estimateGas.claimRewardWithProofs(
-            motionId,
-            userAddress,
-            0,
-          );
+          await votingReputationClient.estimateGas.claimRewardWithProofs(motionId, userAddress, 0);
           motionWithNAYClaims.push(motionId);
         } catch (error) {
           /*
@@ -119,16 +97,9 @@ function* claimMotionRewards({
       channelNames.push(String(index));
     }
 
-    const channels: { [id: string]: ChannelDefinition } = yield call(
-      createTransactionChannels,
-      meta.id,
-      channelNames,
-    );
+    const channels: { [id: string]: ChannelDefinition } = yield call(createTransactionChannels, meta.id, channelNames);
 
-    const createGroupTransaction = (
-      { id, index }: $Values<typeof channels>,
-      config: TxConfig,
-    ) =>
+    const createGroupTransaction = ({ id, index }: $Values<typeof channels>, config: TxConfig) =>
       fork(createTransaction, id, {
         ...config,
         group: {
@@ -144,38 +115,22 @@ function* claimMotionRewards({
           context: ClientType.VotingReputationClient,
           methodName: 'claimRewardWithProofs',
           identifier: colonyAddress,
-          params: [
-            allMotionClaims[id],
-            userAddress,
-            parseInt(id, 10) > motionWithYAYClaims.length - 1 ? 0 : 1,
-          ],
+          params: [allMotionClaims[id], userAddress, parseInt(id, 10) > motionWithYAYClaims.length - 1 ? 0 : 1],
         }),
       ),
     );
 
+    yield all(Object.keys(channels).map((id) => takeFrom(channels[id].channel, ActionTypes.TRANSACTION_CREATED)));
+
+    yield all(Object.keys(channels).map((id) => takeFrom(channels[id].channel, ActionTypes.TRANSACTION_SUCCEEDED)));
+
     yield all(
-      Object.keys(channels).map((id) =>
-        takeFrom(channels[id].channel, ActionTypes.TRANSACTION_CREATED),
+      [...new Set([...motionWithYAYClaims, ...motionWithNAYClaims])].map((motionId) =>
+        fork(updateMotionValues, colonyAddress, userAddress, motionId),
       ),
     );
 
-    yield all(
-      Object.keys(channels).map((id) =>
-        takeFrom(channels[id].channel, ActionTypes.TRANSACTION_SUCCEEDED),
-      ),
-    );
-
-    yield all(
-      [...new Set([...motionWithYAYClaims, ...motionWithNAYClaims])].map(
-        (motionId) =>
-          fork(updateMotionValues, colonyAddress, userAddress, motionId),
-      ),
-    );
-
-    yield apolloClient.query<
-      ClaimableStakedMotionsQuery,
-      ClaimableStakedMotionsQueryVariables
-    >({
+    yield apolloClient.query<ClaimableStakedMotionsQuery, ClaimableStakedMotionsQueryVariables>({
       query: ClaimableStakedMotionsDocument,
       variables: {
         colonyAddress: colonyAddress.toLowerCase(),
@@ -184,10 +139,7 @@ function* claimMotionRewards({
       fetchPolicy: 'network-only',
     });
 
-    yield apolloClient.query<
-      UserBalanceWithLockQuery,
-      UserBalanceWithLockQueryVariables
-    >({
+    yield apolloClient.query<UserBalanceWithLockQuery, UserBalanceWithLockQueryVariables>({
       query: UserBalanceWithLockDocument,
       variables: {
         colonyAddress: colonyAddress.toLowerCase(),

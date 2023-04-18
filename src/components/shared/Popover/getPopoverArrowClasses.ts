@@ -35,9 +35,7 @@ const getPopoverArrowClasses = (
      * Arrows have the theme name encoded in the class's name (which also
      * has the position encoded, as above)
      */
-    const themeClass = `theme${capitalizeFirstLetter(
-      theme,
-    )}${capitalizeFirstLetter(placementClass)}`;
+    const themeClass = `theme${capitalizeFirstLetter(theme)}${capitalizeFirstLetter(placementClass)}`;
     styleArray.push(styleObject[themeClass]);
   }
   return styleArray.join(' ');

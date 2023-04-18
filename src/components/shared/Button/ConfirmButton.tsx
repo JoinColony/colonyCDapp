@@ -13,13 +13,7 @@ interface Props {
   confirmText?: MessageDescriptor;
 }
 
-const ConfirmButton = ({
-  onConfirmToggled,
-  onClick,
-  text,
-  confirmText,
-  ...rest
-}: Props) => {
+const ConfirmButton = ({ onConfirmToggled, onClick, text, confirmText, ...rest }: Props) => {
   const [showConfirm, setShowConfirm] = useState(false);
   const toggleConfirmState = () => {
     if (onConfirmToggled) onConfirmToggled(!showConfirm);
@@ -32,20 +26,10 @@ const ConfirmButton = ({
   if (showConfirm) {
     return (
       <span className={styles.confirmContainer}>
-        <span className={styles.confirmText}>
-          {confirmText && <FormattedMessage {...confirmText} />}
-        </span>
-        <Button
-          text={{ id: 'button.yes' }}
-          appearance={{ theme: 'blue' }}
-          onClick={handleSubmit}
-        />
+        <span className={styles.confirmText}>{confirmText && <FormattedMessage {...confirmText} />}</span>
+        <Button text={{ id: 'button.yes' }} appearance={{ theme: 'blue' }} onClick={handleSubmit} />
         <span className={styles.separator}>/</span>
-        <Button
-          text={{ id: 'button.no' }}
-          appearance={{ theme: 'blue' }}
-          onClick={toggleConfirmState}
-        />
+        <Button text={{ id: 'button.no' }} appearance={{ theme: 'blue' }} onClick={toggleConfirmState} />
       </span>
     );
   }

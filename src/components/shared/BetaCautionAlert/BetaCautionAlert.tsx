@@ -24,17 +24,9 @@ const BetaCautionAlert = () => {
   const toggleHover = (hasHover) => setIsHovered(hasHover);
 
   return (
-    <div
-      className={styles.container}
-      onMouseEnter={() => toggleHover(true)}
-      onMouseLeave={() => toggleHover(false)}
-    >
+    <div className={styles.container} onMouseEnter={() => toggleHover(true)} onMouseLeave={() => toggleHover(false)}>
       {isHovered ? (
-        <ExternalLink
-          text={{ id: 'text.learnMore' }}
-          className={styles.link}
-          href={BETA_DISCLAIMER}
-        />
+        <ExternalLink text={{ id: 'text.learnMore' }} className={styles.link} href={BETA_DISCLAIMER} />
       ) : (
         <>
           <div className={styles.pinkStripe} />

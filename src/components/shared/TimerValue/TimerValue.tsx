@@ -33,22 +33,14 @@ const TimerValue = ({ splitTime }: Props) => {
 
   return (
     <>
-      {splitTime.days > 0 && (
-        <FormattedMessage {...MSG.days} values={{ days: splitTime.days }} />
-      )}
+      {splitTime.days > 0 && <FormattedMessage {...MSG.days} values={{ days: splitTime.days }} />}
       {(splitTime.days > 0 || splitTime.hours > 0) && (
         <FormattedMessage {...MSG.hours} values={{ hours: splitTime.hours }} />
       )}
       {(splitTime.days > 0 || splitTime.hours > 0 || splitTime.minutes) > 0 && (
-        <FormattedMessage
-          {...MSG.minutes}
-          values={{ minutes: splitTime.minutes }}
-        />
+        <FormattedMessage {...MSG.minutes} values={{ minutes: splitTime.minutes }} />
       )}
-      <FormattedMessage
-        {...MSG.seconds}
-        values={{ seconds: splitTime.seconds }}
-      />
+      <FormattedMessage {...MSG.seconds} values={{ seconds: splitTime.seconds }} />
     </>
   );
 };

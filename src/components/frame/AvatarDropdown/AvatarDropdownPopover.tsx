@@ -15,11 +15,7 @@ interface Props {
 
 const displayName = 'frame.AvatarDropdown.AvatarDropdownPopover';
 
-const AvatarDropdownPopover = ({
-  closePopover,
-  walletConnected = false,
-  preventTransactions = false,
-}: Props) => {
+const AvatarDropdownPopover = ({ closePopover, walletConnected = false, preventTransactions = false }: Props) => {
   /*
    * Are the network contract deployed to the chain the user is connected
    * so that they can create a new colony on it
