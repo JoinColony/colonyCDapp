@@ -1,8 +1,9 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import {
   ClientType,
-  getExtensionPermissionProofs,
   getChildIndex,
+  getPermissionProofs,
+  ColonyRole,
 } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
@@ -10,24 +11,14 @@ import moveDecimal from 'move-decimal-point';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, getColonyManager } from '../utils';
 
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { transactionReady } from '../../actionCreators';
 
 function* createPaymentMotion({
   payload: {
@@ -39,7 +30,7 @@ function* createPaymentMotion({
     annotationMessage,
     motionDomainId,
   },
-  meta: { id: metaId, history },
+  meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.MOTION_EXPENDITURE_PAYMENT>) {
   let txChannel;
@@ -69,18 +60,18 @@ function* createPaymentMotion({
       }
     }
 
-    const context = yield getColonyManager();
-    const oneTxPaymentClient = yield context.getClient(
+    const colonyManager = yield getColonyManager();
+    const oneTxPaymentClient = yield colonyManager.getClient(
       ClientType.OneTxPaymentClient,
       colonyAddress,
     );
 
-    const votingReputationClient = yield context.getClient(
+    const votingReputationClient = yield colonyManager.getClient(
       ClientType.VotingReputationClient,
       colonyAddress,
     );
 
-    const colonyClient = yield context.getClient(
+    const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
@@ -93,16 +84,18 @@ function* createPaymentMotion({
     );
 
     const [extensionPDID, extensionCSI] = yield call(
-      getExtensionPermissionProofs,
+      getPermissionProofs,
       colonyClient,
       domainId,
+      [ColonyRole.Funding, ColonyRole.Administration],
       oneTxPaymentClient.address,
     );
 
     const [votingReputationPDID, votingReputationCSI] = yield call(
-      getExtensionPermissionProofs,
+      getPermissionProofs,
       colonyClient,
       domainId,
+      [ColonyRole.Funding, ColonyRole.Administration],
       votingReputationClient.address,
     );
 
@@ -206,29 +199,31 @@ function* createPaymentMotion({
     );
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    if (annotationMessage) {
-      yield put(transactionPending(annotatePaymentMotion.id));
+    // if (annotationMessage) {
+    //   yield put(transactionPending(annotatePaymentMotion.id));
 
-      const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
+    //   const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
 
-      yield put(
-        transactionAddParams(annotatePaymentMotion.id, [txHash, ipfsHash]),
-      );
+    //   yield put(
+    //     transactionAddParams(annotatePaymentMotion.id, [txHash, ipfsHash]),
+    //   );
 
-      yield put(transactionReady(annotatePaymentMotion.id));
+    //   yield put(transactionReady(annotatePaymentMotion.id));
 
-      yield takeFrom(
-        annotatePaymentMotion.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
-    }
+    //   yield takeFrom(
+    //     annotatePaymentMotion.channel,
+    //     ActionTypes.TRANSACTION_SUCCEEDED,
+    //   );
+    // }
     yield put<AllActions>({
       type: ActionTypes.MOTION_EXPENDITURE_PAYMENT_SUCCESS,
       meta,
     });
 
     if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (caughtError) {
     putError(ActionTypes.MOTION_EXPENDITURE_PAYMENT_ERROR, caughtError, meta);
