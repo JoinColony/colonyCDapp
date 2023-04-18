@@ -38,6 +38,7 @@ const ActionDetailsPage = () => {
     action,
     loadingAction,
     motionState,
+    refetchMotionState,
     startPollingForAction,
     stopPollingForAction,
   } = useGetColonyAction(colony);
@@ -83,6 +84,7 @@ const ActionDetailsPage = () => {
           actionData={action}
           // Safe casting since if it's a motion without motionState, we render TransactionNotFound.
           networkMotionState={motionState as NetworkMotionState}
+          refetchMotionState={refetchMotionState}
           startPollingAction={startPollingForAction}
           stopPollingAction={stopPollingForAction}
         />
