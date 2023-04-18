@@ -29,12 +29,11 @@ export const Base: Story = {
           dog. The quick brown fox jumps over the lazy dog.
         </div>
       }
-      mainColumn={
-        <div className="bg-gray-300">
-          Main column: The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The
-          quick brown fox jumps over the lazy dog.
-        </div>
-      }
-    />
+    >
+      <div className="bg-gray-300">
+        Main column: The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick
+        brown fox jumps over the lazy dog.
+      </div>
+    </TwoColumns>
   ),
 };

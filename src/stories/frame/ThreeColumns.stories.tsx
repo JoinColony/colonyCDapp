@@ -30,19 +30,18 @@ export const Base: Story = {
         </div>
       }
       topRow={<div className="bg-gray-300">Top row with the title and action</div>}
-      mainColumn={
-        <div className="bg-gray-300">
-          Main column: The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The
-          quick brown fox jumps over the lazy dog.
-        </div>
-      }
       rightAside={
         <div className="bg-gray-300">
           Right aside: Extensions details. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over
           the lazy dog. The quick brown fox jumps over the lazy dog.
         </div>
       }
-    />
+    >
+      <div className="bg-gray-300">
+        Main column: The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick
+        brown fox jumps over the lazy dog.
+      </div>
+    </ThreeColumns>
   ),
 };
 
@@ -57,18 +56,17 @@ export const WithSlider: Story = {
       }
       topRow={<div className="bg-gray-300">Top row with the title and action</div>}
       withSlider={<div className="bg-gray-300">Slider</div>}
-      mainColumn={
-        <div className="bg-gray-300">
-          Main column: The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The
-          quick brown fox jumps over the lazy dog.
-        </div>
-      }
       rightAside={
         <div className="bg-gray-300">
           Right aside: Extensions details. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over
           the lazy dog. The quick brown fox jumps over the lazy dog.
         </div>
       }
-    />
+    >
+      <div className="bg-gray-300">
+        Main column: The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick
+        brown fox jumps over the lazy dog.
+      </div>
+    </ThreeColumns>
   ),
 };
