@@ -203,11 +203,16 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Mint Tokens"
       />
       <ActionButton
-        actionType={ActionTypes.ACTION_EXPENDITURE_PAYMENT}
+        actionType={
+          isMotion
+            ? ActionTypes.MOTION_EXPENDITURE_PAYMENT
+            : ActionTypes.ACTION_EXPENDITURE_PAYMENT
+        }
         error={ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR}
         success={ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS}
         transform={pipe(
           mergePayload({
+            motionDomainId: '1',
             colonyAddress: colony.colonyAddress,
             colonyName: colony.name,
             recipientAddress: user?.walletAddress,
