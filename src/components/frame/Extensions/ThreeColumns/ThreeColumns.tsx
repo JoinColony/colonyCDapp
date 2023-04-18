@@ -4,6 +4,8 @@ import clsx from 'clsx';
 import styles from './ThreeColumns.module.css';
 import { ThreeColumnsProps } from './types';
 
+const displayName = 'frame.Extensions.ThreeColumns';
+
 const ThreeColumns: React.FC<PropsWithChildren<ThreeColumnsProps>> = ({
   leftAside,
   topRow,
@@ -27,5 +29,7 @@ const ThreeColumns: React.FC<PropsWithChildren<ThreeColumnsProps>> = ({
     </aside>
   </div>
 );
+
+ThreeColumns.displayName = displayName;
 
 export default ThreeColumns;
