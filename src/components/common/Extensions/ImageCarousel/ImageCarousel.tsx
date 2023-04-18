@@ -1,42 +1,43 @@
 import React, { FC } from 'react';
-// import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
+import { images } from './const';
 import styles from './ImageCarousel.module.css';
+import { ImageCarouselProps } from './ImageCarousel.types';
 
 const displayName = 'common.Extensions.ImageCarousel';
 
-const images = [
-  'https://res.cloudinary.com/ifeomaimoh/image/upload/v1652345767/demo_image2.jpg',
-  'https://res.cloudinary.com/ifeomaimoh/image/upload/v1652345874/demo_image1.jpg',
-  'https://res.cloudinary.com/ifeomaimoh/image/upload/v1652345767/demo_image2.jpg',
-];
-
-const ImageCarousel: FC = () => {
+const ImageCarousel: FC<ImageCarouselProps> = ({ slidePercentage = 95, transitionTime = 300, slideUrls = images }) => {
   return (
     <div className={styles.carouselWrapper}>
       <Carousel
-        className="cursor-pointer w-[500px] h-[400px] relative"
+        className="w-[33.5rem]"
         showArrows={false}
         showThumbs={false}
         showStatus={false}
         swipeable
         useKeyboardArrows
         emulateTouch
-        centerSlidePercentage={80}
-        // renderIndicator={(clickHandler, isSelected, index) => {
-        //   return (
-        //     <li
-        //       onClick={clickHandler}
-        //       className={`w-3 h-3 rounded ${isSelected ? 'bg-blue-400' : 'bg-gray-500'}`}
-        //       key={index}
-        //       role="button"
-        //       aria-label={`slide item ${index}`}
-        //       tabIndex="0"
-        //     />
-        //   );
-        // }}
+        centerSlidePercentage={slidePercentage}
+        centerMode
+        transitionTime={transitionTime}
+        renderIndicator={(onClickHandler, isSelected, index, label) => (
+          <li>
+            <div
+              className={`opacity-100 w-2 h-2 cursor-pointer rounded-full mx-2 hover:bg-blue-400 ${
+                isSelected ? 'bg-gray-500' : 'bg-gray-200'
+              }`}
+              onClick={onClickHandler}
+              onKeyDown={onClickHandler}
+              onKeyPress={onClickHandler}
+              key={index}
+              role="button"
+              tabIndex={0}
+              aria-label={`${label} ${index + 1}`}
+            />
+          </li>
+        )}
       >
-        {images.map((url) => (
+        {slideUrls.map((url) => (
           <div className="slide">
             <img alt="file" src={url} key={url} />
           </div>
