@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
 
 import {
   ActionDialogProps,
@@ -39,12 +40,21 @@ const MSG = defineMessages({
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Architecture];
 
+interface Props extends ActionDialogProps {
+  handleIsForceChange: Dispatch<SetStateAction<boolean>>;
+  isForce: boolean;
+}
+
 const CreateDomainDialogForm = ({
   back,
   colony,
   enabledExtensionData,
   enabledExtensionData: { isVotingReputationEnabled },
-}: ActionDialogProps) => {
+  handleIsForceChange,
+  isForce,
+}: Props) => {
+  const { watch } = useFormContext();
+  const forceAction = watch('forceAction');
   const {
     userHasPermission,
     disabledInput,
@@ -57,6 +67,13 @@ const CreateDomainDialogForm = ({
     [Id.RootDomain],
     enabledExtensionData,
   );
+
+  useEffect(() => {
+    if (forceAction !== isForce) {
+      handleIsForceChange(forceAction);
+    }
+  }, [forceAction, isForce, handleIsForceChange]);
+
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>

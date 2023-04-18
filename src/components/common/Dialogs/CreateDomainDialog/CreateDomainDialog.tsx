@@ -82,19 +82,15 @@ const CreateDomainDialog = ({
         transform={transform}
         onSuccess={close}
       >
-        {({ watch }) => {
-          const forceActionValue = watch('forceAction');
-          if (forceActionValue !== isForce) {
-            setIsForce(forceActionValue);
-          }
-          return (
-            <CreateDomainDialogForm
-              back={prevStep && callStep ? () => callStep(prevStep) : undefined}
-              colony={colony}
-              enabledExtensionData={enabledExtensionData}
-            />
-          );
-        }}
+        {() => (
+          <CreateDomainDialogForm
+            back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+            colony={colony}
+            enabledExtensionData={enabledExtensionData}
+            handleIsForceChange={setIsForce}
+            isForce={isForce}
+          />
+        )}
       </Form>
     </Dialog>
   );
