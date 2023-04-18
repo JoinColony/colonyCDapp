@@ -671,5 +671,4 @@ type ColonyAction @model {
   newColonyVersion: Int
   pendingDomainMetadataId: ID
   pendingDomainMetadata: DomainMetadata @hasOne(fields: ["pendingDomainMetadataId"])
-  motionDomainId: Int
 }
