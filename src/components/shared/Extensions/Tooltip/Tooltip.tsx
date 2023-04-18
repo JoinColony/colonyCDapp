@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import styles from './Tooltip.module.css';
 import { TooltipProps } from './types';
 
-const Tooltip = ({
+const Tooltip: React.FC<PropsWithChildren<TooltipProps>> = ({
   children,
   content,
   placement = 'top',
@@ -11,14 +11,8 @@ const Tooltip = ({
   showArrow = true,
   trigger = 'hover',
   isOpen,
-}: TooltipProps) => {
-  const {
-    getArrowProps,
-    getTooltipProps,
-    setTooltipRef,
-    setTriggerRef,
-    visible,
-  } = usePopperTooltip(
+}) => {
+  const { getArrowProps, getTooltipProps, setTooltipRef, setTriggerRef, visible } = usePopperTooltip(
     {
       delayShow: 200,
       placement,
@@ -40,9 +34,7 @@ const Tooltip = ({
         >
           <div
             {...getArrowProps({
-              className: showArrow
-                ? `${styles.tooltipArrow} tooltip-arrow text-gray-900`
-                : '',
+              className: showArrow ? `${styles.tooltipArrow} tooltip-arrow text-gray-900` : '',
             })}
           />
           {content}
