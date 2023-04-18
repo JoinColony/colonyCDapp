@@ -3,11 +3,11 @@ import classNames from 'classnames';
 
 import CountDownTimer from '~common/ColonyActions/CountDownTimer';
 import { MotionState } from '~utils/colonyMotions';
+import { MotionData } from '~types';
 
 import VotingProgress from './VotingProgress';
 
 import styles from './MotionCountdown.css';
-import { MotionData } from '~types';
 
 const displayName = 'common.ColonyActions.ActionDetailsPage.MotionCountdown';
 
