@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC } from 'react';
 import { AccordionContentItemProps } from '../Accordion.types';
+import AccordionHeader from './AccordionHeader';
 
 const displayName = 'Extensions.Accordion.Partials.AccordionContentItem';
 
@@ -8,8 +9,7 @@ const AccordionContentItem: FC<AccordionContentItemProps> = ({ accordionItem, is
   return (
     <div className="relative">
       <div onClick={onClick} onKeyUp={onClick} role="button" tabIndex={0}>
-        {accordionItem?.header}
-        <div className="w-full bg-gray-200 h-[1px] mb-6" />
+        <AccordionHeader title={accordionItem?.header} />
         <AnimatePresence>
           {isOpen && (
             <motion.div
