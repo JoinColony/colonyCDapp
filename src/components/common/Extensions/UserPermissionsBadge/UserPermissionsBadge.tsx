@@ -19,9 +19,7 @@ const icons = iconNames.reduce((iconObj, iconName) => {
   };
 }, {});
 
-const UserPermissionsBadge: React.FC<
-  PropsWithChildren<UserPermissionsBadgeProps>
-> = ({
+const UserPermissionsBadge: React.FC<PropsWithChildren<UserPermissionsBadgeProps>> = ({
   children,
   text,
   textValues,
@@ -32,13 +30,10 @@ const UserPermissionsBadge: React.FC<
 }) => {
   const { formatMessage } = useIntl();
 
-  const userPermissionsBadgeText =
-    typeof text == 'string' ? text : text && formatMessage(text, textValues);
+  const userPermissionsBadgeText = typeof text == 'string' ? text : text && formatMessage(text, textValues);
 
   const userPermissionsBadgeDescription =
-    typeof description == 'string'
-      ? description
-      : description && formatMessage(description, descriptionValues);
+    typeof description == 'string' ? description : description && formatMessage(description, descriptionValues);
 
   const Icon = icons[name];
 
