@@ -4,6 +4,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { MotionState } from '~utils/colonyMotions';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import TimerValue from '~shared/TimerValue';
+import { RefetchMotionState } from '~hooks';
 
 import { useMotionCountdown } from './helpers';
 
@@ -31,12 +32,21 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  state: MotionState;
+  motionState: MotionState;
+  refetchMotionState: RefetchMotionState;
   motionId: number;
 }
 
-const CountDownTimer = ({ state, motionId }: Props) => {
-  const { countdown, loadingCountdown } = useMotionCountdown(state, motionId);
+const CountDownTimer = ({
+  motionState,
+  motionId,
+  refetchMotionState,
+}: Props) => {
+  const { countdown, loadingCountdown } = useMotionCountdown(
+    motionState,
+    motionId,
+    refetchMotionState,
+  );
 
   if (loadingCountdown) {
     return (
@@ -49,7 +59,7 @@ const CountDownTimer = ({ state, motionId }: Props) => {
 
   return (
     <div className={styles.container} data-test="countDownTimer">
-      <FormattedMessage {...MSG.title} values={{ motionState: state }} />
+      <FormattedMessage {...MSG.title} values={{ motionState }} />
       <span className={styles.time}>
         <TimerValue splitTime={countdown} />
       </span>
