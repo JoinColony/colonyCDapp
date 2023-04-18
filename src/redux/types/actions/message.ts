@@ -8,13 +8,6 @@ export type MessageActionTypes =
       { id: string; purpose?: string; message: string; createdAt?: Date }
     >
   | UniqueActionType<ActionTypes.MESSAGE_SIGN, { id: string }, object>
-  | UniqueActionType<
-      ActionTypes.MESSAGE_SIGNED,
-      { id: string; message?: string; signature: string },
-      object
-    >
-  | ErrorActionType<
-      ActionTypes.MESSAGE_ERROR,
-      { id: string; messageId: string }
-    >
+  | UniqueActionType<ActionTypes.MESSAGE_SIGNED, { id: string; message?: string; signature: string }, object>
+  | ErrorActionType<ActionTypes.MESSAGE_ERROR, { id: string; messageId: string }>
   | ActionTypeWithPayload<ActionTypes.MESSAGE_CANCEL, { id: string }>;

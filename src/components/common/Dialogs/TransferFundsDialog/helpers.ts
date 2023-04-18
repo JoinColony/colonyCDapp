@@ -3,12 +3,7 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { useFormContext } from 'react-hook-form';
 
-import {
-  useActionDialogStatus,
-  useAppContext,
-  useTransformer,
-  EnabledExtensionData,
-} from '~hooks';
+import { useActionDialogStatus, useAppContext, useTransformer, EnabledExtensionData } from '~hooks';
 import { getUserRolesForDomain } from '~redux/transformers';
 import { Colony } from '~types';
 import { userHasRole } from '~utils/checks';
@@ -26,9 +21,7 @@ export const getTransferFundsDialogPayload = (
   },
 ) => {
   const colonyTokens = colony?.tokens?.items || [];
-  const selectedToken = colonyTokens.find(
-    (token) => token?.token.tokenAddress === tokenAddress,
-  );
+  const selectedToken = colonyTokens.find((token) => token?.token.tokenAddress === tokenAddress);
   const decimals = getTokenDecimalsWithFallback(selectedToken?.token.decimals);
 
   // Convert amount string with decimals to BigInt (eth to wei)

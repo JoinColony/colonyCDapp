@@ -1,9 +1,5 @@
 import React, { ReactElement } from 'react';
-import {
-  defineMessages,
-  FormattedMessage,
-  MessageDescriptor,
-} from 'react-intl';
+import { defineMessages, FormattedMessage, MessageDescriptor } from 'react-intl';
 
 import Heading from '~shared/Heading';
 import Link from '~shared/Link';
@@ -43,21 +39,12 @@ const ColonyGrid = ({
   colonies = [],
   emptyStateDescription = MSG.emptyText,
   emptyStateDescriptionValues = {
-    link: (
-      <Link
-        to={CREATE_COLONY_ROUTE}
-        text={MSG.createColonyLink}
-        className={styles.createColonyLink}
-      />
-    ),
+    link: <Link to={CREATE_COLONY_ROUTE} text={MSG.createColonyLink} className={styles.createColonyLink} />,
   },
 }: Props) =>
   colonies.length === 0 ? (
     <p className={styles.emptyText}>
-      <FormattedMessage
-        {...emptyStateDescription}
-        values={emptyStateDescriptionValues}
-      />
+      <FormattedMessage {...emptyStateDescription} values={emptyStateDescriptionValues} />
     </p>
   ) : (
     <div className={styles.main}>
@@ -67,11 +54,7 @@ const ColonyGrid = ({
       <div className={styles.colonyGrid}>
         {colonies
           .filter(notNull)
-          .map(({ colony }) =>
-            colony ? (
-              <ColonyGridItem colony={colony} key={colony.colonyAddress} />
-            ) : null,
-          )}
+          .map(({ colony }) => (colony ? <ColonyGridItem colony={colony} key={colony.colonyAddress} /> : null))}
       </div>
     </div>
   );

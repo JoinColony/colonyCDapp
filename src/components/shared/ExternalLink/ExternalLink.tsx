@@ -31,18 +31,9 @@ interface Props {
   download?: string | boolean;
 }
 
-const ExternalLink = ({
-  children,
-  href,
-  text,
-  textValues,
-  className,
-  title,
-  download,
-}: Props) => {
+const ExternalLink = ({ children, href, text, textValues, className, title, download }: Props) => {
   const { formatMessage } = useIntl();
-  const typeOfText =
-    typeof text == 'string' ? text : text && formatMessage(text, textValues);
+  const typeOfText = typeof text == 'string' ? text : text && formatMessage(text, textValues);
   const linkText = children || typeOfText || href;
   return (
     <a

@@ -35,18 +35,14 @@ const ColonyTotalFunds = () => {
               <FormattedMessage {...MSG.totalBalance} />
             </div>
           </SelectedToken>
-          {isSupportedColonyVersion && canInteractWithColony && (
-            <ManageFundsLink />
-          )}
+          {isSupportedColonyVersion && canInteractWithColony && <ManageFundsLink />}
         </>
       ) : (
         <>
           <SelectedToken />
           <div className={styles.totalBalanceCopy}>
             <FormattedMessage {...MSG.totalBalance} />
-            {isSupportedColonyVersion && canInteractWithColony && (
-              <ManageFundsLink />
-            )}
+            {isSupportedColonyVersion && canInteractWithColony && <ManageFundsLink />}
           </div>
         </>
       )}

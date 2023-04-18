@@ -3,13 +3,7 @@ import { Id } from '@colony/colony-js';
 import { useNavigate } from 'react-router-dom';
 import { string, object, array, number, boolean, InferType } from 'yup';
 
-import {
-  mergePayload,
-  withKey,
-  mapPayload,
-  pipe,
-  withMeta,
-} from '~utils/actions';
+import { mergePayload, withKey, mapPayload, pipe, withMeta } from '~utils/actions';
 import { ActionTypes } from '~redux';
 import { WizardDialogType } from '~hooks';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
@@ -65,9 +59,7 @@ const PermissionManagementDialog = ({
   const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
-    !isForce && isVotingReputationEnabled
-      ? ActionTypes.MOTION_USER_ROLES_SET
-      : ActionTypes.ACTION_USER_ROLES_SET;
+    !isForce && isVotingReputationEnabled ? ActionTypes.MOTION_USER_ROLES_SET : ActionTypes.ACTION_USER_ROLES_SET;
 
   const transform = pipe(
     withKey(colonyAddress),
@@ -79,9 +71,7 @@ const PermissionManagementDialog = ({
     withMeta({ navigate }),
   );
 
-  const defaultDomain = !preselectedDomainId
-    ? Id.RootDomain
-    : preselectedDomainId;
+  const defaultDomain = !preselectedDomainId ? Id.RootDomain : preselectedDomainId;
 
   return (
     <Dialog cancel={cancel}>

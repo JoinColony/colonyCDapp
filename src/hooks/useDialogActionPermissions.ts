@@ -20,25 +20,16 @@ const useDialogActionPermissions = (
   const forceAction = watch('forceAction');
 
   const hasRoles = requiredRolesDomains.every((domainId) => {
-    const userDomainRoles = getUserRolesForDomain(
-      colony,
-      wallet?.address,
-      domainId,
-    );
+    const userDomainRoles = getUserRolesForDomain(colony, wallet?.address, domainId);
 
     return requiredRoles.every((role) => userHasRole(userDomainRoles, role));
   });
 
-  const hasReputation = useColonyReputation(
-    colony.colonyAddress,
-    requiredRepDomain,
-  );
+  const hasReputation = useColonyReputation(colony.colonyAddress, requiredRepDomain);
 
-  const onlyForceAction =
-    isVotingExtensionEnabled && !hasReputation && !forceAction;
+  const onlyForceAction = isVotingExtensionEnabled && !hasReputation && !forceAction;
 
-  const userHasPermission =
-    hasRoles || (isVotingExtensionEnabled && hasReputation);
+  const userHasPermission = hasRoles || (isVotingExtensionEnabled && hasReputation);
 
   return [userHasPermission, onlyForceAction];
 };

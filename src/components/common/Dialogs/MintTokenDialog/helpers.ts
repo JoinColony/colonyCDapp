@@ -10,12 +10,7 @@ export const getMintTokenDialogPayload = (
   { mintAmount: inputAmount, annotation: annotationMessage },
 ) => {
   // Find the selected token's decimals
-  const amount = BigNumber.from(
-    moveDecimal(
-      inputAmount,
-      getTokenDecimalsWithFallback(colony?.nativeToken?.decimals),
-    ),
-  );
+  const amount = BigNumber.from(moveDecimal(inputAmount, getTokenDecimalsWithFallback(colony?.nativeToken?.decimals)));
   return {
     operationName: RootMotionMethodNames.MintTokens,
     colonyAddress: colony?.colonyAddress,

@@ -4,12 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
 
 import ExternalLink from '~shared/ExternalLink';
-import {
-  DialogSection,
-  ActionDialogProps,
-  DialogHeading,
-  DialogControls,
-} from '~shared/Dialog';
+import { DialogSection, ActionDialogProps, DialogHeading, DialogControls } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
@@ -17,11 +12,7 @@ import { useActionDialogStatus } from '~hooks';
 
 import { TOKEN_UNLOCK_INFO } from '~constants/externalUrls';
 
-import {
-  NoPermissionMessage,
-  CannotCreateMotionMessage,
-  PermissionRequiredInfo,
-} from '../Messages';
+import { NoPermissionMessage, CannotCreateMotionMessage, PermissionRequiredInfo } from '../Messages';
 
 import styles from './UnlockTokenForm.css';
 
@@ -40,8 +31,7 @@ const MSG = defineMessages({
   },
   note: {
     id: `${displayName}.note`,
-    defaultMessage:
-      'Please note: this action is irreversible. Use with caution',
+    defaultMessage: 'Please note: this action is irreversible. Use with caution',
   },
   unlockedDescription: {
     id: `${displayName}.unlockedDescription`,
@@ -59,18 +49,13 @@ const MSG = defineMessages({
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 
-const UnlockTokenForm = ({
-  colony,
-  back,
-  enabledExtensionData,
-}: ActionDialogProps) => {
-  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } =
-    useActionDialogStatus(
-      colony,
-      requiredRoles,
-      [Id.RootDomain],
-      enabledExtensionData,
-    );
+const UnlockTokenForm = ({ colony, back, enabledExtensionData }: ActionDialogProps) => {
+  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
   // @TODO: Integrate those checks into another hook that uses useActionDialogStatus internally, when the data is made available.
   // const isNativeTokenLocked = !!colony?.nativeToken?.unlocked;
   // const canUserUnlockNativeToken = hasRootPermission && status?.nativeToken?.unlockable && isNativeTokenLocked;
@@ -102,11 +87,7 @@ const UnlockTokenForm = ({
           <DialogSection appearance={{ theme: 'sidePadding' }}>
             <div className={styles.note}>
               <FormattedMessage {...MSG.note} />
-              <ExternalLink
-                className={styles.learnMoreLink}
-                text={{ id: 'text.learnMore' }}
-                href={TOKEN_UNLOCK_INFO}
-              />
+              <ExternalLink className={styles.learnMoreLink} text={{ id: 'text.learnMore' }} href={TOKEN_UNLOCK_INFO} />
             </div>
           </DialogSection>
           <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -144,7 +125,6 @@ const UnlockTokenForm = ({
   );
 };
 
-UnlockTokenForm.displayName =
-  'common.ColonyHome.UnlockTokenDialog.UnlockTokenForm';
+UnlockTokenForm.displayName = 'common.ColonyHome.UnlockTokenDialog.UnlockTokenForm';
 
 export default UnlockTokenForm;

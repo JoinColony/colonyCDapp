@@ -40,9 +40,7 @@ const TransferFundsDialog = ({
   const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
-    !isForce && isVotingReputationEnabled
-      ? ActionTypes.MOTION_MOVE_FUNDS
-      : ActionTypes.ACTION_MOVE_FUNDS;
+    !isForce && isVotingReputationEnabled ? ActionTypes.MOTION_MOVE_FUNDS : ActionTypes.ACTION_MOVE_FUNDS;
 
   const colonyDomains = colony?.domains?.items.filter(notNull) || [];
   const domainOptions = getDomainOptions(colonyDomains);

@@ -21,17 +21,11 @@ const ActionEventData = ({
   return (
     <div className={styles.content}>
       <div className={styles.text} data-test="actionsEventText">
-        <FormattedMessage
-          id="event.title"
-          values={getEventTitleValues(eventName, actionData, colony)}
-        />
+        <FormattedMessage id="event.title" values={getEventTitleValues(eventName, actionData, colony)} />
       </div>
       <div className={styles.details}>
         <ActionRoles actionType={type} eventName={eventName} />
-        <TransactionMeta
-          transactionHash={transactionHash}
-          createdAt={createdAt}
-        />
+        <TransactionMeta transactionHash={transactionHash} createdAt={createdAt} />
       </div>
     </div>
   );

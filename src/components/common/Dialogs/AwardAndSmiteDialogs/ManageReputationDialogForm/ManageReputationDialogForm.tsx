@@ -5,17 +5,10 @@ import Decimal from 'decimal.js';
 import { useFormContext } from 'react-hook-form';
 
 import { ItemDataType } from '~shared/OmniPicker';
-import {
-  ActionDialogProps,
-  DialogControls,
-  DialogHeading,
-  DialogSection,
-} from '~shared/Dialog';
+import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
 import { HookFormSelect as Select, Annotations } from '~shared/Fields';
 import ExternalLink from '~shared/ExternalLink';
-import SingleUserPicker, {
-  filterUserSelection,
-} from '~shared/SingleUserPicker';
+import SingleUserPicker, { filterUserSelection } from '~shared/SingleUserPicker';
 import UserAvatar from '~shared/UserAvatar';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import { REPUTATION_LEARN_MORE } from '~constants/externalUrls';
@@ -37,8 +30,7 @@ import TeamDropdownItem from './TeamDropdownItem';
 
 import styles from './ManageReputationDialogForm.css';
 
-const displayName =
-  'common.ManageReputationContainer.ManageReputationDialogForm';
+const displayName = 'common.ManageReputationContainer.ManageReputationDialogForm';
 
 const MSG = defineMessages({
   title: {
@@ -83,20 +75,13 @@ interface Props extends ActionDialogProps {
   nativeTokenDecimals: number;
   verifiedUsers: MemberUser[];
   schemaUserReputation?: number;
-  updateSchemaUserReputation?: (
-    userPercentageReputation: number,
-    totalRep?: string,
-  ) => void;
+  updateSchemaUserReputation?: (userPercentageReputation: number, totalRep?: string) => void;
   isSmiteAction?: boolean;
 }
 
-const supRenderAvatar = (item: ItemDataType<User>) => (
-  <UserAvatar user={item} size="xs" />
-);
+const supRenderAvatar = (item: ItemDataType<User>) => <UserAvatar user={item} size="xs" />;
 
-const LearnMoreLink = (chunks: React.ReactNode[]) => (
-  <ExternalLink href={REPUTATION_LEARN_MORE}>{chunks}</ExternalLink>
-);
+const LearnMoreLink = (chunks: React.ReactNode[]) => <ExternalLink href={REPUTATION_LEARN_MORE}>{chunks}</ExternalLink>;
 
 const ManageReputationDialogForm = ({
   back,
@@ -112,23 +97,16 @@ const ManageReputationDialogForm = ({
   const { watch, trigger } = useFormContext();
   const { domainId, user: selectedUser } = watch();
 
-  const requiredRoles = [
-    isSmiteAction ? ColonyRole.Arbitration : ColonyRole.Root,
-  ];
+  const requiredRoles = [isSmiteAction ? ColonyRole.Arbitration : ColonyRole.Root];
 
-  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } =
-    useActionDialogStatus(
-      colony,
-      requiredRoles,
-      [domainId],
-      enabledExtensionData,
-    );
-
-  const { userReputation } = useUserReputation(
-    colonyAddress,
-    selectedUser?.walletAddress,
-    Number(domainId),
+  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [domainId],
+    enabledExtensionData,
   );
+
+  const { userReputation } = useUserReputation(colonyAddress, selectedUser?.walletAddress, Number(domainId));
 
   const unformattedUserReputationAmount = new Decimal(userReputation || 0)
     .div(new Decimal(10).pow(nativeTokenDecimals))
@@ -137,12 +115,7 @@ const ManageReputationDialogForm = ({
   const colonyDomains = domains?.items.filter(notNull) || [];
   const domainOptions = sortBy(
     colonyDomains.map((domain) => ({
-      children: (
-        <TeamDropdownItem
-          domain={domain}
-          colonyAddress={colony.colonyAddress}
-        />
-      ),
+      children: <TeamDropdownItem domain={domain} colonyAddress={colony.colonyAddress} />,
       value: domain.nativeId,
       label: domain.metadata?.name || `Domain #${domain.nativeId}`,
     })),
@@ -154,15 +127,10 @@ const ManageReputationDialogForm = ({
 
   const renderActiveOption = (option) => {
     const value = option ? option.value : undefined;
-    const activeDomain =
-      colonyDomains.find((domain) => Number(value) === domain?.nativeId) ||
-      null;
+    const activeDomain = colonyDomains.find((domain) => Number(value) === domain?.nativeId) || null;
     return (
       <div className={styles.activeItem}>
-        <TeamDropdownItem
-          domain={activeDomain}
-          colonyAddress={colony.colonyAddress}
-        />
+        <TeamDropdownItem domain={activeDomain} colonyAddress={colony.colonyAddress} />
       </div>
     );
   };
@@ -271,10 +239,7 @@ const ManageReputationDialogForm = ({
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
-          <NoPermissionMessage
-            requiredPermissions={requiredRoles}
-            domainName={domainName}
-          />
+          <NoPermissionMessage requiredPermissions={requiredRoles} domainName={domainName} />
         </DialogSection>
       )}
       {/* {onlyForceAction && (

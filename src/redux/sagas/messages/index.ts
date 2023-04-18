@@ -31,16 +31,8 @@ export function* signMessage(purpose, message) {
    * for sign or cancel and get its generated id for the async listener
    */
   const [signAction, cancelAction] = yield race([
-    take(
-      (action: AllActions) =>
-        action.type === ActionTypes.MESSAGE_SIGN &&
-        action.payload.id === messageId,
-    ),
-    take(
-      (action: AllActions) =>
-        action.type === ActionTypes.MESSAGE_CANCEL &&
-        action.payload.id === messageId,
-    ),
+    take((action: AllActions) => action.type === ActionTypes.MESSAGE_SIGN && action.payload.id === messageId),
+    take((action: AllActions) => action.type === ActionTypes.MESSAGE_CANCEL && action.payload.id === messageId),
   ]);
 
   if (cancelAction) throw new Error('User cancelled signing of message');

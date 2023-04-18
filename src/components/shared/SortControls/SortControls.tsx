@@ -25,11 +25,7 @@ interface SortControlsProps {
   sortDirection: SortDirection;
 }
 
-const SortControls = ({
-  options = SortSelectOptions,
-  onChange,
-  sortDirection,
-}: SortControlsProps) => {
+const SortControls = ({ options = SortSelectOptions, onChange, sortDirection }: SortControlsProps) => {
   return (
     <Form defaultValues={{ filter: sortDirection }} onSubmit={() => null}>
       <div className={styles.filter}>

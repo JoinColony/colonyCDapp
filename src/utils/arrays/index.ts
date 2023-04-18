@@ -13,10 +13,7 @@ interface SortByPropertyConfig {
 export const sortObjectsBy = (
   ...sortByPropertyNames: (string | SortByPropertyConfig)[]
 ): ((prev: object, next: object) => number) => {
-  const defaultCompare = (
-    valA: ValidSortByType,
-    valB: ValidSortByType,
-  ): number => {
+  const defaultCompare = (valA: ValidSortByType, valB: ValidSortByType): number => {
     if (!!valA && valB === undefined) {
       return -1;
     }
@@ -56,11 +53,7 @@ export const sortObjectsBy = (
     let result = 0;
 
     for (let i = 0; i < sortByConfigs.length; i += 1) {
-      const {
-        name,
-        compareFn = defaultCompare,
-        reverse = false,
-      }: SortByPropertyConfig = sortByConfigs[i];
+      const { name, compareFn = defaultCompare, reverse = false }: SortByPropertyConfig = sortByConfigs[i];
 
       const directionMultiplier = reverse ? -1 : 1;
       const prevVal = prev[name];
@@ -119,10 +112,7 @@ interface CollapsedItem {
   name: string;
   children?: CollapsedItem[];
 }
-export const recursiveNestChildren = (
-  items: ConsumableItem[] = [],
-  firstParentLevel = 0,
-) => {
+export const recursiveNestChildren = (items: ConsumableItem[] = [], firstParentLevel = 0) => {
   const collapsedItems: CollapsedItem[] = [];
   items.forEach((item) => {
     if (!item.parent) {
@@ -160,7 +150,4 @@ export const arrayToObject = (arr: any[]) =>
 export const notUndefined = <T>(x: T | undefined): x is T => x !== undefined;
 export const notNull = <T>(x: T | null): x is T => x !== null;
 
-export const immutableSort = <T>(
-  arr: T[],
-  sortFn?: (a: T, b: T) => number,
-): any[] => [...arr].sort(sortFn);
+export const immutableSort = <T>(arr: T[], sortFn?: (a: T, b: T) => number): any[] => [...arr].sort(sortFn);

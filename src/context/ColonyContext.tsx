@@ -28,11 +28,7 @@ const MSG = defineMessages({
   },
 });
 
-export const ColonyContextProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const ColonyContextProvider = ({ children }: { children: ReactNode }) => {
   const { colonyName } = useParams<{ colonyName: string }>();
 
   const { data, loading, error } = useGetFullColonyByNameQuery({
@@ -64,11 +60,7 @@ export const ColonyContextProvider = ({
     return <NotFoundRoute />;
   }
 
-  return (
-    <ColonyContext.Provider value={colonyContext}>
-      {children}
-    </ColonyContext.Provider>
-  );
+  return <ColonyContext.Provider value={colonyContext}>{children}</ColonyContext.Provider>;
 };
 
 ColonyContext.displayName = displayName;

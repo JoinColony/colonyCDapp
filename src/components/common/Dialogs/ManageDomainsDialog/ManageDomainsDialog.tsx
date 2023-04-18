@@ -21,8 +21,7 @@ const MSG = defineMessages({
   },
   createNewDomainDescription: {
     id: `${displayName}.createNewDomainDescription`,
-    defaultMessage:
-      'Domains, departments, circles: teams let you group types of activity.',
+    defaultMessage: 'Domains, departments, circles: teams let you group types of activity.',
   },
   editDomainTitle: {
     id: `${displayName}.editDomainTitle`,
@@ -77,14 +76,10 @@ const ManageDomainsDialog = ({
 }: Props) => {
   const { wallet, user } = useAppContext();
 
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
-  ]);
+  const allUserRoles = useTransformer(getAllUserRoles, [colony, wallet?.address]);
   const hasRegisteredProfile = !!user?.name && !!wallet?.address;
   const hasRootPermission = hasRegisteredProfile && hasRoot(allUserRoles);
-  const canCreateEditDomain =
-    hasRegisteredProfile && canArchitect(allUserRoles);
+  const canCreateEditDomain = hasRegisteredProfile && canArchitect(allUserRoles);
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
@@ -119,22 +114,14 @@ const ManageDomainsDialog = ({
       permissionRequired: !hasRootPermission,
       permissionInfoText: MSG.permissionsText,
       permissionInfoTextValues: {
-        permissionsList: (
-          <FormattedMessage {...MSG.manageWhitelistPermissionsList} />
-        ),
+        permissionsList: <FormattedMessage {...MSG.manageWhitelistPermissionsList} />,
       },
       onClick: () => callStep(nextStepManageWhitelist),
     },
   ];
 
   return (
-    <IndexModal
-      title={MSG.dialogHeader}
-      cancel={cancel}
-      close={close}
-      items={items}
-      back={() => callStep(prevStep)}
-    />
+    <IndexModal title={MSG.dialogHeader} cancel={cancel} close={close} items={items} back={() => callStep(prevStep)} />
   );
 };
 

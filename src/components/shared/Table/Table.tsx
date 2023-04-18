@@ -18,16 +18,8 @@ interface Props extends TableHTMLAttributes<HTMLTableElement> {
 
 const displayName = 'Table';
 
-const Table = ({
-  appearance = { separators: 'rows' },
-  children,
-  scrollable = false,
-  ...props
-}: Props) => (
-  <table
-    className={getMainClasses(appearance, styles, { scrollable })}
-    {...props}
-  >
+const Table = ({ appearance = { separators: 'rows' }, children, scrollable = false, ...props }: Props) => (
+  <table className={getMainClasses(appearance, styles, { scrollable })} {...props}>
     {children}
   </table>
 );

@@ -53,9 +53,7 @@ const TokenAmountInput = ({
       delimiter: ',',
       numeral: true,
       numeralPositiveOnly: true,
-      numeralDecimalScale: getTokenDecimalsWithFallback(
-        selectedToken && selectedToken.decimals,
-      ),
+      numeralDecimalScale: getTokenDecimalsWithFallback(selectedToken && selectedToken.decimals),
     }),
     [selectedToken],
   );

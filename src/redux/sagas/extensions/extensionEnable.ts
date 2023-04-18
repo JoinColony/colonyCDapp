@@ -35,11 +35,7 @@ function* extensionEnable({
         transactionChannels,
         transactionChannels: { initialise },
         createGroupTransaction,
-      } = yield setupEnablingGroupTransactions(
-        meta.id,
-        initParams,
-        extensionId,
-      );
+      } = yield setupEnablingGroupTransactions(meta.id, initParams, extensionId);
 
       yield all(
         Object.keys(transactionChannels).map((channelName) =>
@@ -53,10 +49,7 @@ function* extensionEnable({
 
       yield all(
         Object.keys(transactionChannels).map((id) =>
-          takeFrom(
-            transactionChannels[id].channel,
-            ActionTypes.TRANSACTION_CREATED,
-          ),
+          takeFrom(transactionChannels[id].channel, ActionTypes.TRANSACTION_CREATED),
         ),
       );
 

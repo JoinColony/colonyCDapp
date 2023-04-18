@@ -3,10 +3,7 @@ import { BigNumber } from 'ethers';
 import { LATEST_TAG } from '@colony/colony-js/extras';
 
 import { DEFAULT_NETWORK } from '~constants';
-import {
-  NETWORK_RELEASES,
-  ETHERSCAN_CONVERSION_RATE,
-} from '~constants/externalUrls';
+import { NETWORK_RELEASES, ETHERSCAN_CONVERSION_RATE } from '~constants/externalUrls';
 import { Network } from '~types';
 
 interface EthUsdResponse {
@@ -36,8 +33,7 @@ export const getEthToUsd = (ethValue: BigNumber): Promise<number | void> => {
   const ETH_USD_TIMESTAMP_KEY = 'ethUsdTimestamp';
 
   const cachedEthUsd = localStorage.getItem(ETH_USD_KEY) || null;
-  const cachedEthUsdTimestamp =
-    localStorage.getItem(ETH_USD_TIMESTAMP_KEY) || null;
+  const cachedEthUsdTimestamp = localStorage.getItem(ETH_USD_TIMESTAMP_KEY) || null;
   const currentTimestamp = new Date().getTime();
 
   /**
@@ -48,9 +44,7 @@ export const getEthToUsd = (ethValue: BigNumber): Promise<number | void> => {
       localStorage.setItem(ETH_USD_KEY, '1');
       localStorage.setItem(ETH_USD_TIMESTAMP_KEY, currentTimestamp.toString());
       // eslint-disable-next-line no-promise-executor-return
-      return resolve(
-        parseFloat(formatUnits(ethValue, 'ether')) * parseFloat('1'),
-      );
+      return resolve(parseFloat(formatUnits(ethValue, 'ether')) * parseFloat('1'));
     });
   }
 
@@ -58,12 +52,9 @@ export const getEthToUsd = (ethValue: BigNumber): Promise<number | void> => {
     /*
       Cache exchange rate for one day
     */
-    const olderThanOneDay =
-      currentTimestamp - parseInt(cachedEthUsdTimestamp, 10) > 86400000;
+    const olderThanOneDay = currentTimestamp - parseInt(cachedEthUsdTimestamp, 10) > 86400000;
     if (!olderThanOneDay) {
-      return Promise.resolve(
-        parseFloat(formatUnits(ethValue, 'ether')) * parseFloat(cachedEthUsd),
-      );
+      return Promise.resolve(parseFloat(formatUnits(ethValue, 'ether')) * parseFloat(cachedEthUsd));
     }
   }
 
@@ -110,8 +101,7 @@ export const getBlockExplorerLink = ({
     return `https://blockscout.com/poa/${network}/${xdaiLinkType}/${addressOrHash}`;
   }
   const tld = network === 'tobalaba' ? 'com' : 'io';
-  const networkSubdomain =
-    network === 'homestead' || network === Network.Mainnet ? '' : `${network}.`;
+  const networkSubdomain = network === 'homestead' || network === Network.Mainnet ? '' : `${network}.`;
   return `https://${networkSubdomain}etherscan.${tld}/${linkType}/${addressOrHash}`;
 };
 

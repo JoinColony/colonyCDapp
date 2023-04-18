@@ -12,9 +12,7 @@ import { WizardDialogType } from '~hooks';
 import DialogForm from './NetworkContractUpgradeDialogForm';
 import { getNetworkContractUpgradeDialogPayload } from './helpers';
 
-type Props = DialogProps &
-  Partial<WizardDialogType<object>> &
-  ActionDialogProps;
+type Props = DialogProps & Partial<WizardDialogType<object>> & ActionDialogProps;
 
 const displayName = 'common.NetworkContractUpgradeDialog';
 
@@ -40,9 +38,7 @@ const NetworkContractUpgradeDialog = ({
   const navigate = useNavigate();
 
   const actionType =
-    isVotingReputationEnabled && !isForce
-      ? ActionTypes.ROOT_MOTION
-      : ActionTypes.ACTION_VERSION_UPGRADE;
+    isVotingReputationEnabled && !isForce ? ActionTypes.ROOT_MOTION : ActionTypes.ACTION_VERSION_UPGRADE;
 
   const transform = pipe(
     mapPayload((payload) =>

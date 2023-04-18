@@ -15,18 +15,9 @@ interface Props {
   isRootOrAllDomains: boolean;
 }
 
-const MembersContent = ({
-  filters,
-  watchers,
-  contributors,
-  isRootOrAllDomains,
-}: Props) => {
-  const showContributors =
-    filters.memberType === MemberType.All ||
-    filters.memberType === MemberType.Contributers;
-  const showWatchers =
-    filters.memberType === MemberType.All ||
-    filters.memberType === MemberType.Watchers;
+const MembersContent = ({ filters, watchers, contributors, isRootOrAllDomains }: Props) => {
+  const showContributors = filters.memberType === MemberType.All || filters.memberType === MemberType.Contributers;
+  const showWatchers = filters.memberType === MemberType.All || filters.memberType === MemberType.Watchers;
   return (
     <>
       {showContributors && (

@@ -23,13 +23,7 @@ interface Props {
 
 const displayName = 'MembersList.MembersListItem';
 
-const MembersListItem = ({
-  extraItemContent,
-  showUserInfo,
-  showUserReputation,
-  member: { user },
-  member,
-}: Props) => {
+const MembersListItem = ({ extraItemContent, showUserInfo, showUserReputation, member: { user }, member }: Props) => {
   const { walletAddress } = user || {};
   const { colony } = useColonyContext();
   const { reputationAmount, reputationPercentage } = member as Contributor;
@@ -63,15 +57,11 @@ const MembersListItem = ({
           />
         </div>
         <MemberInfo isWhitelisted={isWhitelisted} user={user} />
-        {renderedExtraItemContent && !isMobile && (
-          <div>{renderedExtraItemContent}</div>
-        )}
+        {renderedExtraItemContent && !isMobile && <div>{renderedExtraItemContent}</div>}
         {showUserReputation && (
           <div className={styles.reputationSection}>
             <MemberReputation
-              nativeTokenDecimals={
-                colony?.nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS
-              }
+              nativeTokenDecimals={colony?.nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS}
               userReputation={reputationAmount || ''}
               userReputationPercentage={reputationPercentage || ''}
               showReputationPoints={!isMobile}

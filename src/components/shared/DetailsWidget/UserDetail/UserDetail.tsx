@@ -34,19 +34,9 @@ const UserDetail = ({ walletAddress }: Props) => {
 
   return (
     <div className={styles.main}>
-      <UserAvatar
-        size="s"
-        notSet={false}
-        user={user}
-        showInfo
-        popperOptions={userDetailPopoverOptions}
-      />
+      <UserAvatar size="s" notSet={false} user={user} showInfo popperOptions={userDetailPopoverOptions} />
       <div className={styles.textContainer}>
-        {(userDisplayName || username) && (
-          <div className={styles.username}>
-            {userDisplayName || `@${username}`}
-          </div>
-        )}
+        {(userDisplayName || username) && <div className={styles.username}>{userDisplayName || `@${username}`}</div>}
         <Address address={walletAddress} maskedAddressStyles={styles.address} />
       </div>
     </div>

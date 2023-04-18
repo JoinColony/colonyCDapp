@@ -2,9 +2,7 @@ import React, { HTMLAttributes } from 'react';
 
 const displayName = 'TableRow';
 
-const TableRow = ({ children, ...props }: HTMLAttributes<any>) => (
-  <tr {...props}>{children}</tr>
-);
+const TableRow = ({ children, ...props }: HTMLAttributes<any>) => <tr {...props}>{children}</tr>;
 
 TableRow.displayName = displayName;
 

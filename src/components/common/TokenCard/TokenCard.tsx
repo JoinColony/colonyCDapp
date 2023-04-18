@@ -9,10 +9,7 @@ import TokenInfoPopover from '~shared/TokenInfoPopover';
 import TokenIcon from '~shared/TokenIcon';
 import IconTooltip from '~shared/IconTooltip';
 import { Token } from '~types';
-import {
-  getBalanceForTokenAndDomain,
-  getTokenDecimalsWithFallback,
-} from '~utils/tokens';
+import { getBalanceForTokenAndDomain, getTokenDecimalsWithFallback } from '~utils/tokens';
 import { useColonyContext } from '~hooks';
 import { ADDRESS_ZERO } from '~constants';
 
@@ -71,15 +68,14 @@ const TokenCard = ({ domainId, token }: Props) => {
                 <CopyableAddress>{token.tokenAddress}</CopyableAddress>
               </>
             )}
-            {token.tokenAddress === nativeToken?.tokenAddress &&
-              !nativeTokenStatus?.unlocked && (
-                <IconTooltip
-                  icon="lock"
-                  tooltipText={{ id: 'tooltip.lockedToken' }}
-                  className={styles.tokenLockWrapper}
-                  appearance={{ size: 'tiny' }}
-                />
-              )}
+            {token.tokenAddress === nativeToken?.tokenAddress && !nativeTokenStatus?.unlocked && (
+              <IconTooltip
+                icon="lock"
+                tooltipText={{ id: 'tooltip.lockedToken' }}
+                className={styles.tokenLockWrapper}
+                appearance={{ size: 'tiny' }}
+              />
+            )}
             {token.tokenAddress === nativeToken?.tokenAddress && (
               <span className={styles.nativeTokenText}>
                 <FormattedMessage {...MSG.nativeToken} />
@@ -88,13 +84,7 @@ const TokenCard = ({ domainId, token }: Props) => {
           </div>
         </div>
       </TokenInfoPopover>
-      <div
-        className={
-          currentTokenBalance.lt(0)
-            ? styles.balanceNotPositive
-            : styles.balanceContent
-        }
-      >
+      <div className={currentTokenBalance.lt(0) ? styles.balanceNotPositive : styles.balanceContent}>
         <Numeral
           className={styles.balanceNumeral}
           decimals={getTokenDecimalsWithFallback(token.decimals)}
@@ -102,9 +92,7 @@ const TokenCard = ({ domainId, token }: Props) => {
         />
       </div>
       <div className={styles.cardFooter}>
-        {token.tokenAddress === ADDRESS_ZERO && (
-          <EthUsd className={styles.ethUsdText} value={currentTokenBalance} />
-        )}
+        {token.tokenAddress === ADDRESS_ZERO && <EthUsd className={styles.ethUsdText} value={currentTokenBalance} />}
       </div>
     </Card>
   );

@@ -2,12 +2,7 @@ import React, { useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
 
-import {
-  ActionDialogProps,
-  DialogControls,
-  DialogHeading,
-  DialogSection,
-} from '~shared/Dialog';
+import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import {
@@ -20,11 +15,7 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens';
 // import { getAllUserRoles } from '~redux/transformers';
 // import { hasRoot } from '~utils/checks';
 
-import {
-  NoPermissionMessage,
-  CannotCreateMotionMessage,
-  PermissionRequiredInfo,
-} from '../Messages';
+import { NoPermissionMessage, CannotCreateMotionMessage, PermissionRequiredInfo } from '../Messages';
 
 import styles from './MintTokenDialogForm.css';
 
@@ -51,18 +42,13 @@ const MSG = defineMessages({
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 
-const MintTokenDialogForm = ({
-  colony,
-  back,
-  enabledExtensionData,
-}: ActionDialogProps) => {
-  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } =
-    useActionDialogStatus(
-      colony,
-      requiredRoles,
-      [Id.RootDomain],
-      enabledExtensionData,
-    );
+const MintTokenDialogForm = ({ colony, back, enabledExtensionData }: ActionDialogProps) => {
+  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
   // @TODO: Integrate those checks into another hook that uses useActionDialogStatus internally, when the data is made available.
   // const { wallet } = useAppContext();
   // const allUserRoles = useTransformer(getAllUserRoles, [
@@ -76,9 +62,7 @@ const MintTokenDialogForm = ({
     () => ({
       numeral: true,
       numeralPositiveOnly: true,
-      numeralDecimalScale: getTokenDecimalsWithFallback(
-        colony?.nativeToken?.decimals,
-      ),
+      numeralDecimalScale: getTokenDecimalsWithFallback(colony?.nativeToken?.decimals),
     }),
     [colony],
   );
@@ -104,21 +88,14 @@ const MintTokenDialogForm = ({
               disabled={disabledInput}
             />
           </div>
-          <span
-            className={styles.nativeToken}
-            title={colony?.nativeToken?.name || undefined}
-          >
+          <span className={styles.nativeToken} title={colony?.nativeToken?.name || undefined}>
             {colony?.nativeToken?.symbol}
           </span>
         </div>
       </DialogSection>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <div className={styles.annotation}>
-          <Annotations
-            label={MSG.annotationLabel}
-            name="annotation"
-            disabled={disabledInput}
-          />
+          <Annotations label={MSG.annotationLabel} name="annotation" disabled={disabledInput} />
         </div>
       </DialogSection>
       {!userHasPermission && (

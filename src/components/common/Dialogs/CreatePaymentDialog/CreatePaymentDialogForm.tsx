@@ -5,16 +5,9 @@ import { isConfusing } from '@colony/unicode-confusables-noascii';
 import { useFormContext } from 'react-hook-form';
 
 import ConfusableWarning from '~shared/ConfusableWarning';
-import {
-  ActionDialogProps,
-  DialogSection,
-  DialogHeading,
-  DialogControls,
-} from '~shared/Dialog';
+import { ActionDialogProps, DialogSection, DialogHeading, DialogControls } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
-import SingleUserPicker, {
-  filterUserSelection,
-} from '~shared/SingleUserPicker';
+import SingleUserPicker, { filterUserSelection } from '~shared/SingleUserPicker';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import UserAvatar from '~shared/UserAvatar/UserAvatar';
 import { MemberUser, User } from '~types';
@@ -22,11 +15,7 @@ import { ItemDataType } from '~shared/OmniPicker';
 
 import DomainFundSelectorSection from '../DomainFundSelectorSection';
 import TokenAmountInput from '../TokenAmountInput';
-import {
-  NoPermissionMessage,
-  CannotCreateMotionMessage,
-  PermissionRequiredInfo,
-} from '../Messages';
+import { NoPermissionMessage, CannotCreateMotionMessage, PermissionRequiredInfo } from '../Messages';
 
 import { useCreatePaymentDialogStatus } from './helpers';
 
@@ -87,13 +76,8 @@ Props) => {
   const { watch } = useFormContext();
   const recipient = watch('recipient');
 
-  const {
-    userHasPermission,
-    disabledSubmit,
-    disabledInput,
-    canCreateMotion,
-    canCreatePayment,
-  } = useCreatePaymentDialogStatus(colony, requiredRoles, enabledExtensionData);
+  const { userHasPermission, disabledSubmit, disabledInput, canCreateMotion, canCreatePayment } =
+    useCreatePaymentDialogStatus(colony, requiredRoles, enabledExtensionData);
 
   const formattedData = verifiedUsers.map((user) => ({
     ...user,
@@ -110,10 +94,7 @@ Props) => {
         </DialogSection>
       )}
       <DialogSection>
-        <DomainFundSelectorSection
-          colony={colony}
-          disabled={!canCreatePayment}
-        />
+        <DomainFundSelectorSection colony={colony} disabled={!canCreatePayment} />
       </DialogSection>
       <DialogSection>
         <div className={styles.singleUserContainer}>
@@ -161,12 +142,7 @@ Props) => {
         />
       </DialogSection>
       <DialogSection>
-        <Annotations
-          label={MSG.annotation}
-          name="annotation"
-          disabled={disabledInput}
-          dataTest="paymentAnnotation"
-        />
+        <Annotations label={MSG.annotation} name="annotation" disabled={disabledInput} dataTest="paymentAnnotation" />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>

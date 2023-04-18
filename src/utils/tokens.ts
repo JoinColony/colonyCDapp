@@ -35,10 +35,7 @@ export const getBalanceForTokenAndDomain = (
  * a number, and return that number (even if that number is 0).
  * If it's not a number then fallback to the default token decimals value.
  */
-export const getTokenDecimalsWithFallback = (
-  decimals: any,
-  fallbackDecimals?: any,
-): number => {
+export const getTokenDecimalsWithFallback = (decimals: any, fallbackDecimals?: any): number => {
   if (Number.isInteger(decimals) && decimals >= 0) {
     return decimals;
   }
@@ -51,15 +48,10 @@ export const getTokenDecimalsWithFallback = (
 /**
  * Get value with its decimal point shifted by @param decimals places
  */
-export const getFormattedTokenValue = (
-  value: BigNumberish,
-  decimals: any,
-): string => {
+export const getFormattedTokenValue = (value: BigNumberish, decimals: any): string => {
   const tokenDecimals = new Decimal(getTokenDecimalsWithFallback(decimals));
 
-  return new Decimal(value.toString())
-    .div(new Decimal(10).pow(tokenDecimals))
-    .toString();
+  return new Decimal(value.toString()).div(new Decimal(10).pow(tokenDecimals)).toString();
 };
 
 // NOTE: The equation to calculate totalToPay is as following (in Wei)
@@ -74,10 +66,7 @@ export const calculateFee = (
   decimals: number,
 ): { feesInWei: string; totalToPay: string } => {
   const amountInWei = moveDecimal(receivedAmount, decimals);
-  const totalToPayInWei = BigNumber.from(amountInWei)
-    .add(1)
-    .mul(feeInverse)
-    .div(BigNumber.from(feeInverse).sub(1));
+  const totalToPayInWei = BigNumber.from(amountInWei).add(1).mul(feeInverse).div(BigNumber.from(feeInverse).sub(1));
   const feesInWei = totalToPayInWei.sub(amountInWei);
   return {
     feesInWei: feesInWei.toString(),
@@ -86,12 +75,7 @@ export const calculateFee = (
 };
 
 export const getSelectedToken = (colony: Colony, tokenAddress: string) => {
-  const colonyTokens =
-    colony?.tokens?.items
-      .filter(notNull)
-      .map((colonyToken) => colonyToken.token) || [];
-  const selectedToken = colonyTokens.find(
-    (token) => token?.tokenAddress === tokenAddress,
-  );
+  const colonyTokens = colony?.tokens?.items.filter(notNull).map((colonyToken) => colonyToken.token) || [];
+  const selectedToken = colonyTokens.find((token) => token?.tokenAddress === tokenAddress);
   return selectedToken;
 };

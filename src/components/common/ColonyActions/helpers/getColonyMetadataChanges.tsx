@@ -3,17 +3,11 @@ import React from 'react';
 import { Colony, ColonyAction, SimpleMessageValues } from '~types';
 import { formatText } from '~utils/intl';
 
-export const getColonyMetadataChangesValue = (
-  { transactionHash }: ColonyAction,
-  colony?: Colony,
-) => {
+export const getColonyMetadataChangesValue = ({ transactionHash }: ColonyAction, colony?: Colony) => {
   const { newDisplayName, oldDisplayName, hasAvatarChanged } =
-    colony?.metadata?.changelog?.find(
-      (item) => item.transactionHash === transactionHash,
-    ) || {};
+    colony?.metadata?.changelog?.find((item) => item.transactionHash === transactionHash) || {};
 
-  const hasNameChanged =
-    oldDisplayName && newDisplayName && newDisplayName !== oldDisplayName;
+  const hasNameChanged = oldDisplayName && newDisplayName && newDisplayName !== oldDisplayName;
 
   const hasNoChanges = !hasNameChanged && !hasAvatarChanged;
 

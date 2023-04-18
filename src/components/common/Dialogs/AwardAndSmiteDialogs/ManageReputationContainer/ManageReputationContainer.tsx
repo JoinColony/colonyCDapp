@@ -85,9 +85,7 @@ const ManageReputationContainer = ({
   const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
-    !isForce && isVotingReputationEnabled
-      ? ActionTypes.MOTION_MANAGE_REPUTATION
-      : ActionTypes.ACTION_MANAGE_REPUTATION;
+    !isForce && isVotingReputationEnabled ? ActionTypes.MOTION_MANAGE_REPUTATION : ActionTypes.ACTION_MANAGE_REPUTATION;
 
   let smiteValidationSchema;
 
@@ -109,31 +107,18 @@ const ManageReputationContainer = ({
             () => MSG.maxAmount,
             (value) => {
               const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
-              return !new Decimal(numberWithoutCommas).greaterThan(
-                schemaUserReputation,
-              );
+              return !new Decimal(numberWithoutCommas).greaterThan(schemaUserReputation);
             },
           ),
       })
       .required();
-    smiteValidationSchema = defaultValidationSchema.concat(
-      amountValidationSchema,
-    );
+    smiteValidationSchema = defaultValidationSchema.concat(amountValidationSchema);
   }
 
-  const nativeTokenDecimals = getTokenDecimalsWithFallback(
-    nativeToken?.decimals,
-  );
+  const nativeTokenDecimals = getTokenDecimalsWithFallback(nativeToken?.decimals);
 
   const transform = pipe(
-    mapPayload((payload) =>
-      getManageReputationDialogPayload(
-        colony,
-        isSmiteAction,
-        nativeTokenDecimals,
-        payload,
-      ),
-    ),
+    mapPayload((payload) => getManageReputationDialogPayload(colony, isSmiteAction, nativeTokenDecimals, payload)),
     withMeta({ navigate }),
   );
 
@@ -172,9 +157,7 @@ const ManageReputationContainer = ({
               verifiedUsers={
                 colonyWatchers // isWhitelistActivated ? verifiedUsers : colonyWatchers
               }
-              updateSchemaUserReputation={
-                isSmiteAction ? setSchemaUserReputation : undefined
-              }
+              updateSchemaUserReputation={isSmiteAction ? setSchemaUserReputation : undefined}
               schemaUserReputation={schemaUserReputation}
               isSmiteAction={isSmiteAction}
               enabledExtensionData={enabledExtensionData}

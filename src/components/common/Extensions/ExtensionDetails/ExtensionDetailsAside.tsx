@@ -14,8 +14,7 @@ import { getTableData } from './tableData';
 
 import styles from './ExtensionDetails.css';
 
-export const displayName =
-  'common.Extensions.ExtensionDetails.ExtensionDetailsAside';
+export const displayName = 'common.Extensions.ExtensionDetails.ExtensionDetailsAside';
 
 const MSG = defineMessages({
   buttonDeprecate: {
@@ -62,11 +61,7 @@ interface Props {
   canBeUninstalled: boolean;
 }
 
-const ExtensionDetailsAside = ({
-  extensionData,
-  canBeDeprecated,
-  canBeUninstalled,
-}: Props) => {
+const ExtensionDetailsAside = ({ extensionData, canBeDeprecated, canBeUninstalled }: Props) => {
   const { colony } = useColonyContext();
 
   if (!colony) {
@@ -80,9 +75,7 @@ const ExtensionDetailsAside = ({
     <aside>
       <div className={styles.buttonWrapper}>
         <ExtensionActionButton extensionData={extensionData} />
-        <ExtensionUpgradeButton
-          extensionData={extensionData as InstalledExtensionData}
-        />
+        <ExtensionUpgradeButton extensionData={extensionData as InstalledExtensionData} />
       </div>
 
       <Table appearance={{ theme: 'lined' }}>

@@ -1,6 +1,4 @@
-export const excludeTypenameKey = <T>(
-  objectWithTypename: T & { __typename?: string },
-) => {
+export const excludeTypenameKey = <T>(objectWithTypename: T & { __typename?: string }) => {
   if (!objectWithTypename) {
     return objectWithTypename;
   }

@@ -3,12 +3,7 @@ import { defineMessages } from 'react-intl';
 // import { Extension } from '@colony/colony-js';
 // import { useSelector } from 'react-redux';
 
-import {
-  useAppContext,
-  useNaiveBranchingDialogWizard,
-  useColonyContext,
-  useEnabledExtensions,
-} from '~hooks';
+import { useAppContext, useNaiveBranchingDialogWizard, useColonyContext, useEnabledExtensions } from '~hooks';
 import DialogButton from '~shared/Button/DialogButton';
 
 // import {

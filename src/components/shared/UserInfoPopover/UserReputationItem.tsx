@@ -26,17 +26,10 @@ const UserReputationItem = ({ domainName, reputationPercentage }: Props) => {
     <li className={styles.domainReputationItem}>
       <p className={styles.domainName}>{domainName}</p>
       <div className={styles.reputationContainer}>
-        {reputationPercentage === ZeroValue.NearZero && (
-          <div className={styles.reputation}>{reputationPercentage}</div>
+        {reputationPercentage === ZeroValue.NearZero && <div className={styles.reputation}>{reputationPercentage}</div>}
+        {reputationPercentage && reputationPercentage !== ZeroValue.NearZero && (
+          <Numeral className={styles.reputation} value={reputationPercentage} suffix="%" />
         )}
-        {reputationPercentage &&
-          reputationPercentage !== ZeroValue.NearZero && (
-            <Numeral
-              className={styles.reputation}
-              value={reputationPercentage}
-              suffix="%"
-            />
-          )}
         <Icon
           name="star"
           appearance={{ size: 'extraTiny' }}

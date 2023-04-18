@@ -15,10 +15,7 @@ export const getTokenManagementDialogPayload = (
       addresses
         .map((address) => createAddress(address))
         .filter((address) => {
-          if (
-            address === ADDRESS_ZERO ||
-            address === colony.nativeToken.tokenAddress
-          ) {
+          if (address === ADDRESS_ZERO || address === colony.nativeToken.tokenAddress) {
             return false;
           }
           return true;

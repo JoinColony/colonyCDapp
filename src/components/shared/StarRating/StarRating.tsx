@@ -41,11 +41,7 @@ const StarRating = ({ highestPossible = 3, rating }: Props) => (
             rating,
             highestPossible,
           }}
-          className={
-            rating >= possibleValue
-              ? styles.ratingStarSelected
-              : styles.ratingStarUnselected
-          }
+          className={rating >= possibleValue ? styles.ratingStarSelected : styles.ratingStarUnselected}
         />
       ))}
   </>

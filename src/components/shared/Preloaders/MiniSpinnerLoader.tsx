@@ -29,13 +29,7 @@ const MiniSpinnerLoader = ({
 }: Props) => {
   return (
     <div className={className}>
-      {title && (
-        <Heading
-          text={title}
-          textValues={titleTextValues}
-          appearance={titleAppearance}
-        />
-      )}
+      {title && <Heading text={title} textValues={titleTextValues} appearance={titleAppearance} />}
       <SpinnerLoader appearance={appearance} />
       {loadingText &&
         (typeof loadingText === 'string' ? (

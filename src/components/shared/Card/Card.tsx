@@ -19,13 +19,7 @@ interface Props {
 
 const displayName = 'Card';
 
-const Card = ({
-  children,
-  className,
-  isDismissible = false,
-  onCardDismissed: callback,
-  ...rest
-}: Props) => {
+const Card = ({ children, className, isDismissible = false, onCardDismissed: callback, ...rest }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
 
   const handleClose = useCallback(() => {
@@ -43,16 +37,8 @@ const Card = ({
   return (
     <li className={classNames} {...rest}>
       {isDismissible && (
-        <button
-          className={styles.closeButton}
-          onClick={handleClose}
-          type="button"
-        >
-          <Icon
-            appearance={{ size: 'normal' }}
-            name="close"
-            title={{ id: 'button.close' }}
-          />
+        <button className={styles.closeButton} onClick={handleClose} type="button">
+          <Icon appearance={{ size: 'normal' }} name="close" title={{ id: 'button.close' }} />
         </button>
       )}
       {children}

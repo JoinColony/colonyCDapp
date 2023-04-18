@@ -11,9 +11,7 @@ import { WizardDialogType } from '~hooks';
 import UnlockTokenForm from './UnlockTokenForm';
 import { getUnlockTokenDialogPayload } from './helpers';
 
-type Props = DialogProps &
-  Partial<WizardDialogType<object>> &
-  ActionDialogProps;
+type Props = DialogProps & Partial<WizardDialogType<object>> & ActionDialogProps;
 
 const displayName = 'common.UnlockTokenDialog';
 
@@ -26,23 +24,13 @@ const validationSchema = object()
 
 type FormValues = InferType<typeof validationSchema>;
 
-const UnlockTokenDialog = ({
-  colony,
-  cancel,
-  close,
-  callStep,
-  prevStep,
-  enabledExtensionData,
-}: Props) => {
+const UnlockTokenDialog = ({ colony, cancel, close, callStep, prevStep, enabledExtensionData }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
-  const actionType =
-    !isForce && isVotingReputationEnabled
-      ? ActionTypes.ROOT_MOTION
-      : ActionTypes.ACTION_UNLOCK_TOKEN;
+  const actionType = !isForce && isVotingReputationEnabled ? ActionTypes.ROOT_MOTION : ActionTypes.ACTION_UNLOCK_TOKEN;
 
   const transform = pipe(
     withKey(colony?.colonyAddress || ''),

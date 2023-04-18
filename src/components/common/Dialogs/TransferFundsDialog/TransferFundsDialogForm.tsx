@@ -13,11 +13,7 @@ import {
 import { findDomainByNativeId } from '~utils/domains';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
-import {
-  NoPermissionMessage,
-  CannotCreateMotionMessage,
-  PermissionRequiredInfo,
-} from '../Messages';
+import { NoPermissionMessage, CannotCreateMotionMessage, PermissionRequiredInfo } from '../Messages';
 import TokenAmountInput from '../TokenAmountInput';
 import DomainFundSelectorSection from '../DomainFundSelectorSection';
 import { useTransferFundsDialogStatus } from './helpers';
@@ -43,11 +39,7 @@ const MSG = defineMessages({
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Funding];
 
-const TransferFundsDialogForm = ({
-  back,
-  colony,
-  enabledExtensionData,
-}: ActionDialogProps) => {
+const TransferFundsDialogForm = ({ back, colony, enabledExtensionData }: ActionDialogProps) => {
   const { watch } = useFormContext();
   const { fromDomainId, toDomainId } = watch();
 
@@ -76,11 +68,7 @@ const TransferFundsDialogForm = ({
         </div>
       )}
       <DialogSection>
-        <DomainFundSelectorSection
-          colony={colony}
-          transferBetweenDomains
-          disabled={canOnlyForceAction}
-        />
+        <DomainFundSelectorSection colony={colony} transferBetweenDomains disabled={canOnlyForceAction} />
       </DialogSection>
       <DialogSection>
         <TokenAmountInput colony={colony} disabled={disabledInput} />
@@ -97,11 +85,7 @@ const TransferFundsDialogForm = ({
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage
             requiredPermissions={requiredRoles}
-            domainName={
-              hasRoleInFromDomain
-                ? fromDomain?.metadata?.name
-                : toDomain?.metadata?.name
-            }
+            domainName={hasRoleInFromDomain ? fromDomain?.metadata?.name : toDomain?.metadata?.name}
           />
         </DialogSection>
       )}

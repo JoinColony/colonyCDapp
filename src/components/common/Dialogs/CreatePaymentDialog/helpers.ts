@@ -67,12 +67,7 @@ export const useCreatePaymentDialogStatus = (
     disabledSubmit,
     disabledInput: defaultDisabledInput,
     canCreateMotion,
-  } = useActionDialogStatus(
-    colony,
-    requiredRoles,
-    [fromDomain],
-    enabledExtensionData,
-  );
+  } = useActionDialogStatus(colony, requiredRoles, [fromDomain], enabledExtensionData);
   const disabledInput = defaultDisabledInput || !isOneTxPaymentEnabled;
 
   return {

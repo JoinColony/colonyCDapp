@@ -6,10 +6,7 @@ import {
   FileRejection,
 } from 'react-dropzone';
 import { ComponentType, ReactNode, Ref } from 'react';
-import {
-  CoreInputProps,
-  InputComponentAppearance as Appearance,
-} from '~shared/Fields';
+import { CoreInputProps, InputComponentAppearance as Appearance } from '~shared/Fields';
 import { Message } from '~types';
 import { FileReaderFile } from '~utils/fileReader/types';
 

@@ -4,10 +4,7 @@ import styles from './DropdownMenuHeader.css';
 
 const displayName = 'DropdownMenuHeader';
 
-const DropdownMenuHeader = ({
-  children,
-  ...props
-}: HTMLAttributes<HTMLLIElement>) => (
+const DropdownMenuHeader = ({ children, ...props }: HTMLAttributes<HTMLLIElement>) => (
   <li className={styles.main} role="menuitem" {...props}>
     {children}
   </li>

@@ -9,8 +9,7 @@ const DEFAULT_USER_AVATAR_MAX_DIMENSION = 500;
 
 const fileReader = getFileReader();
 
-const getOptimisedBlob = (file: File, options: Options) =>
-  reducer.toBlob(file, options);
+const getOptimisedBlob = (file: File, options: Options) => reducer.toBlob(file, options);
 
 const createOptimisedImage = async (file: File, max: number) => {
   const blob = await getOptimisedBlob(file, {

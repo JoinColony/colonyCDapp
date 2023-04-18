@@ -13,8 +13,7 @@ import { calculatePercentageReputation } from '~utils/reputation';
 
 import styles from './ReputationAmountInput.css';
 
-const displayName =
-  'common.ManageReputationContainer.ManageReputationDialogForm.ReputationAmountInput';
+const displayName = 'common.ManageReputationContainer.ManageReputationDialogForm.ReputationAmountInput';
 
 const MSG = defineMessages({
   amount: {
@@ -58,23 +57,13 @@ const ReputationAmountInput = ({
 }: Props) => {
   const { watch } = useFormContext();
   const { user, domainId } = watch();
-  const { userReputation, totalReputation } = useUserReputation(
-    colonyAddress,
-    user?.walletAddress,
-    Number(domainId),
-  );
+  const { userReputation, totalReputation } = useUserReputation(colonyAddress, user?.walletAddress, Number(domainId));
 
-  const userPercentageReputation = calculatePercentageReputation(
-    userReputation,
-    totalReputation,
-  );
+  const userPercentageReputation = calculatePercentageReputation(userReputation, totalReputation);
   const unformattedUserReputationAmount = new Decimal(userReputation || 0).div(
     new Decimal(10).pow(nativeTokenDecimals),
   );
-  const formattedUserReputationAmount = getFormattedTokenValue(
-    userReputation || 0,
-    nativeTokenDecimals,
-  );
+  const formattedUserReputationAmount = getFormattedTokenValue(userReputation || 0, nativeTokenDecimals);
 
   return (
     <div className={styles.inputContainer}>
@@ -111,11 +100,8 @@ const ReputationAmountInput = ({
           {...MSG.maxReputation}
           values={{
             isSmiteAction,
-            userReputationAmount: (
-              <Numeral value={formattedUserReputationAmount} />
-            ),
-            userPercentageReputation:
-              userPercentageReputation === null ? 0 : userPercentageReputation,
+            userReputationAmount: <Numeral value={formattedUserReputationAmount} />,
+            userPercentageReputation: userPercentageReputation === null ? 0 : userPercentageReputation,
           }}
         />
       </p>

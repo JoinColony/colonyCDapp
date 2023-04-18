@@ -12,27 +12,16 @@ import styles from './SortingButton.css';
 export interface Props {
   isSortingByRep: boolean;
   nextSortingMethod: SortingMethod;
-  handleSortingMethodChange: React.Dispatch<
-    React.SetStateAction<SortingMethod>
-  >;
+  handleSortingMethodChange: React.Dispatch<React.SetStateAction<SortingMethod>>;
   message: MessageDescriptor;
   caretUp: boolean;
 }
 
 const displayName = 'MembersList.SortingRow.SortingButton';
 
-const SortingButton = ({
-  isSortingByRep,
-  nextSortingMethod,
-  handleSortingMethodChange,
-  message,
-  caretUp,
-}: Props) => {
+const SortingButton = ({ isSortingByRep, nextSortingMethod, handleSortingMethodChange, message, caretUp }: Props) => {
   return (
-    <Button
-      className={styles.sortingButton}
-      onClick={() => handleSortingMethodChange(nextSortingMethod)}
-    >
+    <Button className={styles.sortingButton} onClick={() => handleSortingMethodChange(nextSortingMethod)}>
       <FormattedMessage {...message} />
       <Icon
         className={classnames(styles.sortingIcon, {

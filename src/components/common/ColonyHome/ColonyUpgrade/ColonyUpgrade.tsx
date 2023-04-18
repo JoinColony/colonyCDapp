@@ -50,10 +50,7 @@ const ColonyUpgrade = () => {
       enabledExtensionData,
     });
 
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
-  ]);
+  const allUserRoles = useTransformer(getAllUserRoles, [colony, wallet?.address]);
 
   const canUpgradeColony = user?.name && hasRoot(allUserRoles);
 

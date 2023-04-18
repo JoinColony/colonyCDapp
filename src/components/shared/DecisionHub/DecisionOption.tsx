@@ -1,9 +1,5 @@
 import React, { ButtonHTMLAttributes } from 'react';
-import {
-  MessageDescriptor,
-  defineMessages,
-  FormattedMessage,
-} from 'react-intl';
+import { MessageDescriptor, defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { LinkProps } from 'react-router-dom';
 
@@ -51,12 +47,7 @@ interface Props {
 type IconProps = Props['option'] & {
   isMobile?: boolean;
 };
-const DecisionOptionIcon = ({
-  icon,
-  tooltip,
-  title,
-  isMobile = false,
-}: IconProps) => {
+const DecisionOptionIcon = ({ icon, tooltip, title, isMobile = false }: IconProps) => {
   if (icon) {
     // Wrap the icon in a Tooltip wrapper only if the tooltip property exists
     return tooltip ? (
@@ -82,13 +73,7 @@ const DecisionOptionIcon = ({
   return null;
 };
 
-const DecisionOption = ({
-  appearance,
-  name,
-  option: { title, subtitle, disabled, value },
-  option,
-  link,
-}: Props) => {
+const DecisionOption = ({ appearance, name, option: { title, subtitle, disabled, value }, option, link }: Props) => {
   const { setValue } = useFormContext();
   const isMobile = useMobile();
 
@@ -117,14 +102,8 @@ const DecisionOption = ({
       >
         {!isMobile && <DecisionOptionIcon {...option} />}
         <div className={styles.rowContent}>
-          <Heading
-            appearance={{ size: 'small', weight: 'bold', margin: 'small' }}
-            text={title}
-          />
-          <Heading
-            appearance={{ size: 'tiny', weight: 'thin', margin: 'small' }}
-            text={subtitle}
-          />
+          <Heading appearance={{ size: 'small', weight: 'bold', margin: 'small' }} text={title} />
+          <Heading appearance={{ size: 'tiny', weight: 'thin', margin: 'small' }} text={subtitle} />
         </div>
         <Icon name="caret-right" title={MSG.iconTitle} />
       </Element>

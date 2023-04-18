@@ -4,32 +4,18 @@ import { ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import AvatarUploader from '~shared/AvatarUploader';
-import {
-  ActionDialogProps,
-  DialogControls,
-  DialogHeading,
-  DialogSection,
-} from '~shared/Dialog';
-import {
-  Annotations,
-  HookFormInput as Input,
-  InputStatus,
-} from '~shared/Fields';
+import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
+import { Annotations, HookFormInput as Input, InputStatus } from '~shared/Fields';
 import ColonyAvatar from '~shared/ColonyAvatar';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import Avatar from '~shared/Avatar';
 import { useActionDialogStatus } from '~hooks';
 
-import {
-  CannotCreateMotionMessage,
-  NoPermissionMessage,
-  PermissionRequiredInfo,
-} from '../Messages';
+import { CannotCreateMotionMessage, NoPermissionMessage, PermissionRequiredInfo } from '../Messages';
 
 import styles from './EditColonyDetailsDialogForm.css';
 
-const displayName =
-  'common.EditColonyDetailsDialog.EditColonyDetailsDialogForm';
+const displayName = 'common.EditColonyDetailsDialog.EditColonyDetailsDialogForm';
 
 const MSG = defineMessages({
   title: {
@@ -67,13 +53,12 @@ const EditColonyDetailsDialogForm = ({
   const [showUploadedAvatar, setShowUploadedAvatar] = useState(false);
   const [avatarFileError, setAvatarFileError] = useState(false);
 
-  const { userHasPermission, canCreateMotion, disabledInput, disabledSubmit } =
-    useActionDialogStatus(
-      colony,
-      requiredRoles,
-      [Id.RootDomain],
-      enabledExtensionData,
-    );
+  const { userHasPermission, canCreateMotion, disabledInput, disabledSubmit } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
 
   const handleFileRead = async (file) => {
     if (file) {
@@ -98,9 +83,7 @@ const EditColonyDetailsDialogForm = ({
     setAvatarFileError(true);
   };
 
-  const hasEditedColony =
-    metadata?.displayName !== colonyDisplayName ||
-    metadata?.avatar !== colonyAvatarImage;
+  const hasEditedColony = metadata?.displayName !== colonyDisplayName || metadata?.avatar !== colonyAvatarImage;
 
   return (
     <>
@@ -170,11 +153,7 @@ const EditColonyDetailsDialogForm = ({
         />
       </DialogSection>
       <DialogSection>
-        <Annotations
-          label={MSG.annotation}
-          name="annotationMessage"
-          disabled={disabledInput}
-        />
+        <Annotations label={MSG.annotation} name="annotationMessage" disabled={disabledInput} />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>

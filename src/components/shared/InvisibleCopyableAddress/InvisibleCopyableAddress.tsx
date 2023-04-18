@@ -1,10 +1,5 @@
 import React, { ReactNode, useState, useEffect } from 'react';
-import {
-  defineMessages,
-  FormattedMessage,
-  MessageDescriptor,
-  useIntl,
-} from 'react-intl';
+import { defineMessages, FormattedMessage, MessageDescriptor, useIntl } from 'react-intl';
 
 import copyToClipboard from 'copy-to-clipboard';
 import { Address } from '~types';
@@ -38,11 +33,7 @@ const MSG = defineMessages({
 
 const displayName = 'InvisibleCopyableAddress';
 
-const InvisibleCopyableAddress = ({
-  children,
-  address,
-  copyMessage,
-}: Props) => {
+const InvisibleCopyableAddress = ({ children, address, copyMessage }: Props) => {
   const [copied, setCopied] = useState(false);
   const { formatMessage } = useIntl();
 
@@ -60,27 +51,15 @@ const InvisibleCopyableAddress = ({
       clearTimeout(timeout);
     };
   }, [copied]);
-  const tooltipMessage =
-    (copyMessage && formatMessage(copyMessage)) ||
-    formatMessage(MSG.copyMessage);
+  const tooltipMessage = (copyMessage && formatMessage(copyMessage)) || formatMessage(MSG.copyMessage);
   return (
     <Tooltip
       placement="right"
       trigger="hover"
-      content={
-        <FormattedMessage
-          {...MSG.copyAddressTooltip}
-          values={{ copied, tooltipMessage }}
-        />
-      }
+      content={<FormattedMessage {...MSG.copyAddressTooltip} values={{ copied, tooltipMessage }} />}
     >
       <div className={styles.addressWrapper}>
-        <div
-          onClick={handleClipboardCopy}
-          onKeyPress={handleClipboardCopy}
-          role="button"
-          tabIndex={0}
-        >
+        <div onClick={handleClipboardCopy} onKeyPress={handleClipboardCopy} role="button" tabIndex={0}>
           {children}
         </div>
       </div>

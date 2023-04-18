@@ -10,23 +10,14 @@ import Form from './Form';
 const MSG = defineMessages({
   defaultError: {
     id: 'ActionForm.defaultError',
-    defaultMessage:
-      "Something went wrong with the thing you just wanted to do. It's not your fault. Promise!",
+    defaultMessage: "Something went wrong with the thing you just wanted to do. It's not your fault. Promise!",
   },
 });
 
 const displayName = 'Form.ActionForm';
 
-export type OnError = (
-  error: any,
-  bag: FormikBag<any, any>,
-  values?: any,
-) => void;
-export type OnSuccess = (
-  result: any,
-  bag: FormikBag<any, any>,
-  values: any,
-) => void;
+export type OnError = (error: any, bag: FormikBag<any, any>, values?: any) => void;
+export type OnSuccess = (result: any, bag: FormikBag<any, any>, values: any) => void;
 
 interface Props<V> extends Omit<FormikConfig<V>, 'onSubmit'> {
   /** Redux action to dispatch on submit (e.g. CREATE_XXX) */

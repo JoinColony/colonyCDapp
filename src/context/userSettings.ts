@@ -50,8 +50,7 @@ class UserSettings {
    * call the setter from a redux saga.
    * So in order to cut down on code boilerplate, we're just doing this
    */
-  getStorageSlot = (): UserSettingsSlot | null =>
-    JSON.parse(localStorage.getItem(this.slot) as string);
+  getStorageSlot = (): UserSettingsSlot | null => JSON.parse(localStorage.getItem(this.slot) as string);
 
   setStorageSlot = (slotValue: UserSettingsSlot): string | null => {
     if (slotValue) {
@@ -67,19 +66,14 @@ class UserSettings {
     return true;
   };
 
-  getSlotStorageAtKey = <K extends SlotKey>(
-    slotKey: K,
-  ): UserSettingsSlot[K] | null => {
+  getSlotStorageAtKey = <K extends SlotKey>(slotKey: K): UserSettingsSlot[K] | null => {
     if (slotKey && this.currentSettings[slotKey]) {
       return this.currentSettings[slotKey];
     }
     return null;
   };
 
-  setSlotStorageAtKey = <K extends SlotKey>(
-    slotKey: K,
-    value: UserSettingsSlot[K],
-  ): UserSettingsSlot[K] | null => {
+  setSlotStorageAtKey = <K extends SlotKey>(slotKey: K, value: UserSettingsSlot[K]): UserSettingsSlot[K] | null => {
     if (slotKey && (typeof value !== 'undefined' || value !== null)) {
       this.currentSettings[slotKey] = value;
       localStorage.setItem(this.slot, JSON.stringify(this.currentSettings));

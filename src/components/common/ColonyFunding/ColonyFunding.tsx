@@ -38,9 +38,7 @@ const ColonyFunding = () => {
   const { colony } = useColonyContext();
   const { domains, tokens } = colony || {};
 
-  const [selectedDomainId, setSelectedDomainId] = useState<number>(
-    COLONY_TOTAL_BALANCE_DOMAIN_ID,
-  );
+  const [selectedDomainId, setSelectedDomainId] = useState<number>(COLONY_TOTAL_BALANCE_DOMAIN_ID);
 
   const domainChoices = [
     {
@@ -52,15 +50,11 @@ const ColonyFunding = () => {
         label: domain?.metadata?.name ?? '',
         value: domain?.nativeId.toString() ?? '',
       }))
-      .sort(
-        (first, second) =>
-          parseInt(first.value, 10) - parseInt(second.value, 10),
-      ),
+      .sort((first, second) => parseInt(first.value, 10) - parseInt(second.value, 10)),
   ];
 
   const { label: selectedDomainLabel = '' } =
-    domainChoices.find(({ value }) => value === selectedDomainId.toString()) ||
-    {};
+    domainChoices.find(({ value }) => value === selectedDomainId.toString()) || {};
 
   // eslint-disable-next-line react/no-unstable-nested-components
   const Aside = () => (
@@ -83,10 +77,7 @@ const ColonyFunding = () => {
               appearance={{ size: 'medium', theme: 'dark' }}
             />
             {isMobile ? (
-              <ColonyDomainSelector
-                filteredDomainId={selectedDomainId}
-                onDomainChange={setSelectedDomainId}
-              />
+              <ColonyDomainSelector filteredDomainId={selectedDomainId} onDomainChange={setSelectedDomainId} />
             ) : (
               <Form
                 initialValues={{
@@ -112,9 +103,7 @@ const ColonyFunding = () => {
           <UnclaimedTransfers />
           <TokenCardList
             appearance={{ numCols: '3' }}
-            tokens={
-              tokens?.items.filter(notNull).map((token) => token.token) ?? []
-            }
+            tokens={tokens?.items.filter(notNull).map((token) => token.token) ?? []}
             domainId={selectedDomainId}
           />
         </div>

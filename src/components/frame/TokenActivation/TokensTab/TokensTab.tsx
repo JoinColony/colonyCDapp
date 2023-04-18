@@ -70,13 +70,7 @@ const TokensTab = ({ tokenBalanceData }: TokensTabProps) => {
   const targetRef = useRef<HTMLParagraphElement>(null);
 
   const { nativeToken } = colony || {};
-  const {
-    balance,
-    inactiveBalance,
-    lockedBalance,
-    activeBalance,
-    pendingBalance,
-  } = tokenBalanceData;
+  const { balance, inactiveBalance, lockedBalance, activeBalance, pendingBalance } = tokenBalanceData;
 
   const [totalTokensWidth, setTotalTokensWidth] = useState(0);
 
@@ -91,10 +85,7 @@ const TokensTab = ({ tokenBalanceData }: TokensTabProps) => {
   const hasLockedTokens = BigNumber.from(lockedBalance ?? 0).gt(0);
   const hasPendingBalance = BigNumber.from(pendingBalance ?? 0).gt(0);
 
-  const tokenDecimals = useMemo(
-    () => getTokenDecimalsWithFallback(nativeToken?.decimals),
-    [nativeToken],
-  );
+  const tokenDecimals = useMemo(() => getTokenDecimalsWithFallback(nativeToken?.decimals), [nativeToken]);
 
   if (!nativeToken) {
     return null;
@@ -104,69 +95,33 @@ const TokensTab = ({ tokenBalanceData }: TokensTabProps) => {
     <>
       <TokenInfoPopover token={nativeToken} isTokenNative>
         <div className={styles.totalTokensContainer}>
-          <div
-            className={
-              totalTokensWidth <= widthLimit
-                ? styles.tokenSymbol
-                : styles.tokenSymbolSmall
-            }
-          >
-            <TokenIcon
-              token={nativeToken}
-              size={totalTokensWidth <= widthLimit ? 'xs' : 'xxs'}
-            />
+          <div className={totalTokensWidth <= widthLimit ? styles.tokenSymbol : styles.tokenSymbolSmall}>
+            <TokenIcon token={nativeToken} size={totalTokensWidth <= widthLimit ? 'xs' : 'xxs'} />
           </div>
-          <p
-            ref={targetRef}
-            className={
-              totalTokensWidth <= widthLimit
-                ? styles.totalTokens
-                : styles.totalTokensSmall
-            }
-          >
-            <Numeral
-              value={balance ?? 0}
-              decimals={tokenDecimals}
-              suffix={nativeToken.symbol}
-            />
+          <p ref={targetRef} className={totalTokensWidth <= widthLimit ? styles.totalTokens : styles.totalTokensSmall}>
+            <Numeral value={balance ?? 0} decimals={tokenDecimals} suffix={nativeToken.symbol} />
           </p>
         </div>
       </TokenInfoPopover>
       <div className={styles.tokensDetailsContainer}>
         <ul>
           <li>
-            <TokenTooltip
-              className={styles.listItemActive}
-              content={<FormattedMessage {...MSG.activeTokensTooltip} />}
-            >
-              <FormattedMessage
-                {...(!hasLockedTokens ? MSG.active : MSG.activeLocked)}
-              />
+            <TokenTooltip className={styles.listItemActive} content={<FormattedMessage {...MSG.activeTokensTooltip} />}>
+              <FormattedMessage {...(!hasLockedTokens ? MSG.active : MSG.activeLocked)} />
             </TokenTooltip>
             <div className={styles.tokenNumbers}>
               <span data-test="activeTokens">
-                <Numeral
-                  value={activeBalance ?? 0}
-                  decimals={tokenDecimals}
-                  suffix={nativeToken.symbol}
-                />
+                <Numeral value={activeBalance ?? 0} decimals={tokenDecimals} suffix={nativeToken.symbol} />
               </span>
             </div>
           </li>
           <li>
-            <TokenTooltip
-              className={styles.lockedTokens}
-              content={<FormattedMessage {...MSG.stakedTokensTooltip} />}
-            >
+            <TokenTooltip className={styles.lockedTokens} content={<FormattedMessage {...MSG.stakedTokensTooltip} />}>
               <FormattedMessage {...MSG.staked} />
             </TokenTooltip>
             <div className={styles.tokenNumbersLocked}>
               <span data-test="stakedTokens">
-                <Numeral
-                  value={lockedBalance ?? 0}
-                  decimals={tokenDecimals}
-                  suffix={nativeToken.symbol}
-                />
+                <Numeral value={lockedBalance ?? 0} decimals={tokenDecimals} suffix={nativeToken.symbol} />
               </span>
             </div>
           </li>
@@ -179,11 +134,7 @@ const TokensTab = ({ tokenBalanceData }: TokensTabProps) => {
             </TokenTooltip>
             <div className={styles.tokenNumbersInactive}>
               <span data-test="inactiveTokens">
-                <Numeral
-                  value={inactiveBalance ?? 0}
-                  decimals={tokenDecimals}
-                  suffix={nativeToken.symbol}
-                />
+                <Numeral value={inactiveBalance ?? 0} decimals={tokenDecimals} suffix={nativeToken.symbol} />
               </span>
             </div>
             {hasPendingBalance && (
@@ -194,21 +145,14 @@ const TokensTab = ({ tokenBalanceData }: TokensTabProps) => {
                   content={<FormattedMessage {...MSG.pendingErrorTooltip} />}
                   popperOffset={[-5, 8]}
                 >
-                  <Icon
-                    name="question-mark"
-                    title={MSG.pendingError}
-                    appearance={{ size: 'small' }}
-                  />
+                  <Icon name="question-mark" title={MSG.pendingError} appearance={{ size: 'small' }} />
                 </TokenTooltip>
               </div>
             )}
           </li>
         </ul>
       </div>
-      <ChangeTokenStateForm
-        tokenBalanceData={tokenBalanceData}
-        hasLockedTokens={hasLockedTokens}
-      />
+      <ChangeTokenStateForm tokenBalanceData={tokenBalanceData} hasLockedTokens={hasLockedTokens} />
     </>
   );
 };

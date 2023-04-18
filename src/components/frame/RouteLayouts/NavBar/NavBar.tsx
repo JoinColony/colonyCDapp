@@ -17,13 +17,7 @@ interface Props {
 }
 
 const NavBar = ({
-  routeProps: {
-    className,
-    hasBackLink = true,
-    backRoute,
-    backText,
-    backTextValues,
-  } = {},
+  routeProps: { className, hasBackLink = true, backRoute, backText, backTextValues } = {},
   children,
 }: Props) => {
   const location = useLocation();

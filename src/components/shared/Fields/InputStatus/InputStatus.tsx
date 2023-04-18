@@ -25,17 +25,10 @@ interface Props {
 
 const displayName = 'InputStatus';
 
-const InputStatus = ({
-  appearance = {},
-  error,
-  status,
-  statusValues,
-  touched,
-}: Props) => {
+const InputStatus = ({ appearance = {}, error, status, statusValues, touched }: Props) => {
   const { formatMessage } = useIntl();
   const errorText = typeof error === 'object' ? formatMessage(error) : error;
-  const statusText =
-    typeof status === 'object' ? formatMessage(status, statusValues) : status;
+  const statusText = typeof status === 'object' ? formatMessage(status, statusValues) : status;
   const text = errorText || statusText;
   const Element = appearance.direction === 'horizontal' ? 'span' : 'p';
   return (

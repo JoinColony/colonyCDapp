@@ -1,18 +1,8 @@
 import { MessageDescriptor, FormattedMessage } from 'react-intl';
-import React, {
-  Component,
-  KeyboardEvent,
-  SyntheticEvent,
-  MouseEvent,
-} from 'react';
+import React, { Component, KeyboardEvent, SyntheticEvent, MouseEvent } from 'react';
 import cx from 'classnames';
 
-import {
-  Choose,
-  OmniPickerData,
-  EmptyRenderFnType,
-  ItemRenderFnType,
-} from './types';
+import { Choose, OmniPickerData, EmptyRenderFnType, ItemRenderFnType } from './types';
 import OmniPickerContent from './OmniPickerContent';
 import OmniPickerItemEmpty from './OmniPickerItemEmpty';
 import styles from './OmniPicker.css';
@@ -53,12 +43,7 @@ export interface Props {
   onChange?: (evt: SyntheticEvent<HTMLInputElement>) => void;
 
   /** Passes through the blur event from the input field */
-  onBlur?: (
-    evt:
-      | MouseEvent
-      | SyntheticEvent<HTMLInputElement>
-      | KeyboardEvent<HTMLElement>,
-  ) => void;
+  onBlur?: (evt: MouseEvent | SyntheticEvent<HTMLInputElement> | KeyboardEvent<HTMLElement>) => void;
 
   /** Is called when a data entry was picked */
   onPick?: (itemData: OmniPickerData) => void;
@@ -70,12 +55,7 @@ export interface Props {
   choose: Choose;
 
   /** @ignore Will be injected by `withOmniPicker` */
-  close?: (
-    evt:
-      | MouseEvent
-      | SyntheticEvent<HTMLInputElement>
-      | KeyboardEvent<HTMLElement>,
-  ) => void;
+  close?: (evt: MouseEvent | SyntheticEvent<HTMLInputElement> | KeyboardEvent<HTMLElement>) => void;
 
   /** @ignore Will be injected by `withOmniPicker` */
   getItem: (data: OmniPickerData[], selectedIdx: number) => OmniPickerData;
@@ -111,21 +91,13 @@ class OmniPicker extends Component<Props> {
 
   componentDidMount() {
     if (document.body) {
-      document.body.addEventListener(
-        'click',
-        this.handleOutsideClick as any,
-        true,
-      );
+      document.body.addEventListener('click', this.handleOutsideClick as any, true);
     }
   }
 
   componentWillUnmount() {
     if (document.body) {
-      document.body.removeEventListener(
-        'click',
-        this.handleOutsideClick as any,
-        true,
-      );
+      document.body.removeEventListener('click', this.handleOutsideClick as any, true);
     }
   }
 
@@ -183,12 +155,7 @@ class OmniPicker extends Component<Props> {
     }
   };
 
-  handleBlur = (
-    evt:
-      | MouseEvent
-      | SyntheticEvent<HTMLInputElement>
-      | KeyboardEvent<HTMLElement>,
-  ) => {
+  handleBlur = (evt: MouseEvent | SyntheticEvent<HTMLInputElement> | KeyboardEvent<HTMLElement>) => {
     const { inputRef, onBlur } = this.props;
     if (inputRef) {
       inputRef.blur();
@@ -209,9 +176,7 @@ class OmniPicker extends Component<Props> {
   handleOutsideClick = (evt: MouseEvent) => {
     const { inputRef, close } = this.props;
     if (
-      (evt.target instanceof Node &&
-        this.elm &&
-        this.elm.contains(evt.target)) ||
+      (evt.target instanceof Node && this.elm && this.elm.contains(evt.target)) ||
       (evt.target instanceof Node && inputRef && inputRef.contains(evt.target))
     )
       return;
@@ -229,9 +194,7 @@ class OmniPicker extends Component<Props> {
     } = this.props;
     return (
       title && (
-        <div
-          className={cx(styles.header, styles[`header-${position}`], 'header')}
-        >
+        <div className={cx(styles.header, styles[`header-${position}`], 'header')}>
           {typeof title == 'string' ? title : <FormattedMessage {...title} />}
         </div>
       )

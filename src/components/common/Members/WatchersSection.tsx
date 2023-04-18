@@ -32,11 +32,7 @@ interface Props {
   itemsPerSection?: number;
 }
 
-const WatchersSection = ({
-  watchers,
-  extraItemContent,
-  itemsPerSection = 10,
-}: Props & Partial<SortingProps>) => {
+const WatchersSection = ({ watchers, extraItemContent, itemsPerSection = 10 }: Props & Partial<SortingProps>) => {
   const [dataPage, setDataPage] = useState<number>(1);
 
   const paginatedMembers = watchers.slice(0, itemsPerSection * dataPage);
@@ -56,11 +52,7 @@ const WatchersSection = ({
       </div>
       {paginatedMembers.length ? (
         <div className={styles.membersList}>
-          <MembersList
-            extraItemContent={extraItemContent}
-            members={paginatedMembers}
-            showUserReputation={false}
-          />
+          <MembersList extraItemContent={extraItemContent} members={paginatedMembers} showUserReputation={false} />
         </div>
       ) : (
         <div className={styles.noResults}>

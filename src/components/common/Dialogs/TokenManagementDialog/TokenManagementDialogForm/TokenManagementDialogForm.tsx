@@ -4,12 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { AddressZero } from '@ethersproject/constants';
 import { useFormContext } from 'react-hook-form';
 
-import {
-  ActionDialogProps,
-  DialogHeading,
-  DialogSection,
-  DialogControls,
-} from '~shared/Dialog';
+import { ActionDialogProps, DialogHeading, DialogSection, DialogControls } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 import { Heading4 } from '~shared/Heading';
 import Paragraph from '~shared/Paragraph';
@@ -71,18 +66,15 @@ const TokenManagementDialogForm = ({
 }: Props) => {
   const { watch } = useFormContext<FormValues>();
   const values = watch();
-  const { userHasPermission, disabledInput, disabledSubmit } =
-    useActionDialogStatus(
-      colony,
-      requiredRoles,
-      [Id.RootDomain],
-      enabledExtensionData,
-    );
+  const { userHasPermission, disabledInput, disabledSubmit } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
   const tokenList = getTokenList();
   const colonyTokens = tokens?.items || [];
-  const colonyTokenAddresses = colonyTokens.map(
-    (colonyToken) => colonyToken?.token.tokenAddress,
-  );
+  const colonyTokenAddresses = colonyTokens.map((colonyToken) => colonyToken?.token.tokenAddress);
 
   const hasTokensListChanged = ({
     selectedTokenAddresses,
@@ -98,10 +90,7 @@ const TokenManagementDialogForm = ({
     .map((token) => token?.token)
     .filter(
       (firstToken, index, mergedTokens) =>
-        mergedTokens.findIndex(
-          (secondToken) =>
-            secondToken?.tokenAddress === firstToken?.tokenAddress,
-        ) === index,
+        mergedTokens.findIndex((secondToken) => secondToken?.tokenAddress === firstToken?.tokenAddress) === index,
     );
 
   return (
@@ -147,11 +136,7 @@ const TokenManagementDialogForm = ({
           disabled={disabledInput}
         />
         <div className={styles.textarea}>
-          <Annotations
-            label={MSG.textareaLabel}
-            name="annotationMessage"
-            disabled={disabledInput}
-          />
+          <Annotations label={MSG.textareaLabel} name="annotationMessage" disabled={disabledInput} />
         </div>
       </DialogSection>
       {!userHasPermission && (

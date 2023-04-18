@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import Cleave from 'cleave.js/react';
-import {
-  Props as CleaveProps,
-  ReactInstanceWithCleave,
-} from 'cleave.js/react/props';
+import { Props as CleaveProps, ReactInstanceWithCleave } from 'cleave.js/react/props';
 import Decimal from 'decimal.js';
 import { useFormContext } from 'react-hook-form';
 
@@ -17,18 +14,12 @@ type CleaveChangeEvent = React.ChangeEvent<
   HTMLInputElement & { rawValue: string }
 >;
 
-const setCleaveRawValue = (
-  cleave: ReactInstanceWithCleave,
-  maxAmount: string,
-  decimalPlaces = 5,
-) => {
+const setCleaveRawValue = (cleave: ReactInstanceWithCleave, maxAmount: string, decimalPlaces = 5) => {
   const decimalValue = new Decimal(maxAmount);
   if (decimalValue.lt(0.00001) && decimalValue.gt(0)) {
     cleave.setRawValue(maxAmount);
   } else {
-    cleave.setRawValue(
-      new Decimal(maxAmount).toDP(decimalPlaces, Decimal.ROUND_DOWN).toString(),
-    );
+    cleave.setRawValue(new Decimal(maxAmount).toDP(decimalPlaces, Decimal.ROUND_DOWN).toString());
   }
 };
 
@@ -46,12 +37,7 @@ interface MaxButtonProps {
 }
 
 export const MaxButton = ({ handleClick }: MaxButtonProps) => (
-  <Button
-    className={styles.hookFormMaxButton}
-    dataTest="inputMaxButton"
-    onClick={handleClick}
-    text={MSG.max}
-  />
+  <Button className={styles.hookFormMaxButton} dataTest="inputMaxButton" onClick={handleClick} text={MSG.max} />
 );
 
 interface HookFormFormattedInputComponentProps
@@ -81,11 +67,7 @@ const HookFormFormattedInputComponent = ({
 
   const handleMaxButtonClick = (
     e: React.MouseEvent<HTMLButtonElement>,
-    {
-      maxAmount,
-      options,
-      customOnClickFn,
-    }: NonNullable<HookFormFormattedInputComponentProps['maxButtonParams']>,
+    { maxAmount, options, customOnClickFn }: NonNullable<HookFormFormattedInputComponentProps['maxButtonParams']>,
   ) => {
     setValue(name, maxAmount, options);
     customOnClickFn?.(e);
@@ -113,11 +95,7 @@ const HookFormFormattedInputComponent = ({
 
   return (
     <>
-      {maxButtonParams && (
-        <MaxButton
-          handleClick={(e) => handleMaxButtonClick(e, maxButtonParams)}
-        />
-      )}
+      {maxButtonParams && <MaxButton handleClick={(e) => handleMaxButtonClick(e, maxButtonParams)} />}
       <Cleave
         {...restInputProps}
         value={value}

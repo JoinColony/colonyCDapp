@@ -1,25 +1,14 @@
 import { ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import {
-  EnabledExtensionData,
-  useActionDialogStatus,
-  useAppContext,
-  useTransformer,
-} from '~hooks';
+import { EnabledExtensionData, useActionDialogStatus, useAppContext, useTransformer } from '~hooks';
 import { getAllRootAccounts, getUserRolesForDomain } from '~redux/transformers';
 import { Colony } from '~types';
 import { isEqual, sortBy } from '~utils/lodash';
 
 import { availableRoles } from './constants';
 
-export const getPermissionManagementDialogPayload = ({
-  roles,
-  user,
-  domainId,
-  annotationMessage,
-  motionDomainId,
-}) => ({
+export const getPermissionManagementDialogPayload = ({ roles, user, domainId, annotationMessage, motionDomainId }) => ({
   domainId,
   userAddress: user.profile.walletAddress,
   roles: availableRoles.reduce(
@@ -33,11 +22,7 @@ export const getPermissionManagementDialogPayload = ({
   motionDomainId: parseInt(motionDomainId, 10),
 });
 
-export const useSelectedUserRoles = (
-  colony: Colony,
-  walletAddress: string | undefined,
-  domainId: number,
-) => {
+export const useSelectedUserRoles = (colony: Colony, walletAddress: string | undefined, domainId: number) => {
   const userDirectRoles = useTransformer(getUserRolesForDomain, [
     colony,
     walletAddress,
@@ -45,11 +30,7 @@ export const useSelectedUserRoles = (
     // true,
   ]);
 
-  const userInheritedRoles = useTransformer(getUserRolesForDomain, [
-    colony,
-    walletAddress,
-    domainId,
-  ]);
+  const userInheritedRoles = useTransformer(getUserRolesForDomain, [colony, walletAddress, domainId]);
 
   return {
     inheritedRoles: userInheritedRoles,
@@ -72,37 +53,23 @@ export const usePermissionManagementDialogStatus = (
     disabledInput,
     canCreateMotion,
     canOnlyForceAction,
-  } = useActionDialogStatus(
-    colony,
-    requiredRoles,
-    [domainId],
-    enabledExtensionData,
-  );
+  } = useActionDialogStatus(colony, requiredRoles, [domainId], enabledExtensionData);
 
   return {
     userHasPermission,
     disabledInput,
-    disabledSubmit:
-      defaultDisabledSubmit ||
-      isEqual(sortBy(roles), sortBy(defaultSelectedUserRoles)),
+    disabledSubmit: defaultDisabledSubmit || isEqual(sortBy(roles), sortBy(defaultSelectedUserRoles)),
     canCreateMotion,
     canOnlyForceAction,
   };
 };
 
 // Check which roles the current user is allowed to set in this domain
-export const useCanRoleBeSet = (
-  colony: Colony,
-  selectedUserDirectRoles: ColonyRole[],
-) => {
+export const useCanRoleBeSet = (colony: Colony, selectedUserDirectRoles: ColonyRole[]) => {
   const { watch } = useFormContext();
   const domainId = watch('domainId');
   const { user: currentUser } = useAppContext();
-  const currentUserRoles = useTransformer(getUserRolesForDomain, [
-    colony,
-    currentUser?.walletAddress,
-    domainId,
-  ]);
+  const currentUserRoles = useTransformer(getUserRolesForDomain, [colony, currentUser?.walletAddress, domainId]);
 
   const currentUserRolesInRoot = useTransformer(getUserRolesForDomain, [
     colony,
@@ -116,12 +83,9 @@ export const useCanRoleBeSet = (
   const canSetPermissionsInRoot =
     domainId === Id.RootDomain &&
     currentUserRoles.includes(ColonyRole.Root) &&
-    (!selectedUserDirectRoles.includes(ColonyRole.Root) ||
-      rootAccounts.length > 1);
+    (!selectedUserDirectRoles.includes(ColonyRole.Root) || rootAccounts.length > 1);
   const hasRoot = currentUserRolesInRoot.includes(ColonyRole.Root);
-  const hasArchitectureInRoot = currentUserRolesInRoot.includes(
-    ColonyRole.Architecture,
-  );
+  const hasArchitectureInRoot = currentUserRolesInRoot.includes(ColonyRole.Architecture);
   const canRoleBeSet = (role: ColonyRole) => {
     switch (role) {
       case ColonyRole.Arbitration:

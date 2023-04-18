@@ -23,10 +23,7 @@ const UserInfo = ({ user }: Props) => {
       <UserAvatar size="s" user={user} />
       <div className={styles.textContainer}>
         {userDisplayName && (
-          <Heading
-            appearance={{ margin: 'none', size: 'normal', theme: 'dark' }}
-            text={userDisplayName}
-          />
+          <Heading appearance={{ margin: 'none', size: 'normal', theme: 'dark' }} text={userDisplayName} />
         )}
         {userDisplayName && (
           /*

@@ -26,18 +26,12 @@ const MetaMaskWalletInteraction = ({ transactionType }: Props) => {
   return (
     <div className={styles.main}>
       <div className={styles.content}>
-        <Icon
-          name="metamask"
-          title={{ id: 'wallet.metamask' }}
-          appearance={{ size: 'medium' }}
-        />
+        <Icon name="metamask" title={{ id: 'wallet.metamask' }} appearance={{ size: 'medium' }} />
         <span className={styles.text}>
           <FormattedMessage
             {...MSG.metamaskPromptText}
             values={{
-              isMetatransaction: !transactionType
-                ? undefined
-                : transactionType === 'metatransaction',
+              isMetatransaction: !transactionType ? undefined : transactionType === 'metatransaction',
             }}
           />
         </span>

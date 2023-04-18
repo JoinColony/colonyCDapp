@@ -27,16 +27,12 @@ export const getMainClasses = (
   styleObject: any = {},
   state: { [k: string]: boolean } = {},
 ) => {
-  const styles = [
-    styleObject[theme ? `theme${capitalizeFirstLetter(theme)}` : 'main'],
-  ];
+  const styles = [styleObject[theme ? `theme${capitalizeFirstLetter(theme)}` : 'main']];
   const modifierClasses = Object.keys(modifiers)
     .map((key) => styleObject[`${key}${capitalizeFirstLetter(modifiers[key])}`])
     .filter(Boolean);
   const stateClasses = Object.keys(state)
-    .map((key) =>
-      state[key] ? styleObject[`state${capitalizeFirstLetter(key)}`] : '',
-    )
+    .map((key) => (state[key] ? styleObject[`state${capitalizeFirstLetter(key)}`] : ''))
     .filter(Boolean);
   return [...styles, ...modifierClasses, ...stateClasses].join(' ');
 };
@@ -68,11 +64,5 @@ export const removeValueUnits = (valueWithUnit: string): number => {
     // eslint-disable-next-line no-useless-escape, prettier/prettier
     '%',
   ];
-  return parseInt(
-    valueWithUnit.replace(
-      new RegExp(`(${measurementUnits.join('|')})$`, 'g'),
-      '',
-    ),
-    10,
-  );
+  return parseInt(valueWithUnit.replace(new RegExp(`(${measurementUnits.join('|')})$`, 'g'), ''), 10);
 };

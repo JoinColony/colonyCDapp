@@ -28,17 +28,7 @@ interface Props {
 
 const displayName = 'SelectOption';
 
-const SelectOption = ({
-  bordered,
-  checked,
-  id,
-  idx,
-  onClick,
-  onSelect,
-  option,
-  selected,
-  dataTest,
-}: Props) => {
+const SelectOption = ({ bordered, checked, id, idx, onClick, onSelect, option, selected, dataTest }: Props) => {
   const { formatMessage } = useIntl();
 
   const handleItemClick = useCallback(
@@ -61,10 +51,7 @@ const SelectOption = ({
     onSelect(idx);
   }, [idx, onSelect]);
 
-  const label =
-    typeof option.label === 'object'
-      ? formatMessage(option.label, option.labelValues)
-      : option.label;
+  const label = typeof option.label === 'object' ? formatMessage(option.label, option.labelValues) : option.label;
 
   return (
     <li
@@ -87,11 +74,7 @@ const SelectOption = ({
         {option.children || (
           <>
             {label}
-            {checked && (
-              <small className={styles.selectedHelpText}>
-                ({formatMessage(MSG.selectedLabelHelp)})
-              </small>
-            )}
+            {checked && <small className={styles.selectedHelpText}>({formatMessage(MSG.selectedLabelHelp)})</small>}
           </>
         )}
       </span>

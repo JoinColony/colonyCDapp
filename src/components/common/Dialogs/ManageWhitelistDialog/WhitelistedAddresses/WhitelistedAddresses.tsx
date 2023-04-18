@@ -32,9 +32,7 @@ const MSG = defineMessages({
 });
 
 const WhitelistedAddresses = ({ whitelistedUsers }: Props) => {
-  const [users, setUsers] = useState<User[] | Omit<OmniPickerUser, 'name'>[]>(
-    whitelistedUsers,
-  );
+  const [users, setUsers] = useState<User[] | Omit<OmniPickerUser, 'name'>[]>(whitelistedUsers);
 
   useEffect(() => {
     if (whitelistedUsers?.length) {
@@ -49,10 +47,7 @@ const WhitelistedAddresses = ({ whitelistedUsers }: Props) => {
           ...user,
           id: user.walletAddress,
         }));
-        const [, ...filteredUsers] = filterUserSelection(
-          formattedWhitelistedUsers,
-          e.target?.value,
-        );
+        const [, ...filteredUsers] = filterUserSelection(formattedWhitelistedUsers, e.target?.value);
         setUsers(filteredUsers);
       }
     },
@@ -62,12 +57,7 @@ const WhitelistedAddresses = ({ whitelistedUsers }: Props) => {
   return (
     <div className={styles.main}>
       <div className={styles.searchContainer}>
-        <input
-          name="warning"
-          className={styles.input}
-          onChange={handleOnChange}
-          placeholder={formatText(MSG.search)}
-        />
+        <input name="warning" className={styles.input} onChange={handleOnChange} placeholder={formatText(MSG.search)} />
         <Icon className={styles.icon} name="search" title={MSG.search} />
       </div>
       <div className={styles.container}>

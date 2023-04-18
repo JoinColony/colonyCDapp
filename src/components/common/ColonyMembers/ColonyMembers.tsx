@@ -28,14 +28,8 @@ const ColonyMembers = () => {
   //   extensionId?: string;
   // }>();
   const { colony, loading } = useColonyContext();
-  const {
-    filters,
-    selectedDomainId,
-    setSelectedDomainId,
-    handleFilterChange,
-    isRootOrAllDomains,
-    isMobile,
-  } = useColonyMembers();
+  const { filters, selectedDomainId, setSelectedDomainId, handleFilterChange, isRootOrAllDomains, isMobile } =
+    useColonyMembers();
 
   if (loading) {
     return (
@@ -68,10 +62,7 @@ const ColonyMembers = () => {
         <aside className={styles.rightAside}>
           <TotalReputation selectedDomainId={selectedDomainId} />
           <MemberControls isRootOrAllDomains={isRootOrAllDomains} />
-          <MembersFilter
-            onFilterChange={handleFilterChange}
-            isRootOrAllDomains={isRootOrAllDomains}
-          />
+          <MembersFilter onFilterChange={handleFilterChange} isRootOrAllDomains={isRootOrAllDomains} />
         </aside>
       </div>
     </div>

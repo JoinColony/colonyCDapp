@@ -44,9 +44,7 @@ interface RecoverableDeploymentErrorProps {
   colonyName: string;
 }
 
-const RecoverableDeploymentError = ({
-  colonyName,
-}: RecoverableDeploymentErrorProps) => (
+const RecoverableDeploymentError = ({ colonyName }: RecoverableDeploymentErrorProps) => (
   <div className={styles.deploymentError}>
     <FormattedMessage
       {...MSG.deploymentFailed}
@@ -71,20 +69,14 @@ type NewestGroup = Array<{
 const getContractDeploymentStatus = (newestGroup: NewestGroup) =>
   !!newestGroup.find(
     ({ methodName = '', status = '' }) =>
-      methodName.includes('createColony') &&
-      status === TRANSACTION_STATUSES.SUCCEEDED,
+      methodName.includes('createColony') && status === TRANSACTION_STATUSES.SUCCEEDED,
   );
 
 const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
-  const [
-    existsRecoverableDeploymentError,
-    setExistsRecoverableDeploymentError,
-  ] = useState<boolean>(false);
+  const [existsRecoverableDeploymentError, setExistsRecoverableDeploymentError] = useState<boolean>(false);
   const dispatch = useDispatch();
 
-  const txGroups = useSelector(
-    groupedTransactionsAndMessages,
-  ).toJS() as TransactionOrMessageGroups;
+  const txGroups = useSelector(groupedTransactionsAndMessages).toJS() as TransactionOrMessageGroups;
 
   const newestGroup = findNewestGroup(txGroups);
 
@@ -93,22 +85,15 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
      * Find out if the deployment failed, and we can actually recover it
      * Show an error message based on that
      */
-    const colonyContractWasDeployed = getContractDeploymentStatus(
-      newestGroup as unknown as NewestGroup,
-    );
-    const deploymentHasErrors =
-      getGroupStatus(newestGroup) === TRANSACTION_STATUSES.FAILED;
+    const colonyContractWasDeployed = getContractDeploymentStatus(newestGroup as unknown as NewestGroup);
+    const deploymentHasErrors = getGroupStatus(newestGroup) === TRANSACTION_STATUSES.FAILED;
     if (colonyContractWasDeployed && deploymentHasErrors) {
       setExistsRecoverableDeploymentError(true);
     } else if (existsRecoverableDeploymentError) {
       // Hide the error if the user pressed the retry button
       setExistsRecoverableDeploymentError(false);
     }
-  }, [
-    newestGroup,
-    existsRecoverableDeploymentError,
-    setExistsRecoverableDeploymentError,
-  ]);
+  }, [newestGroup, existsRecoverableDeploymentError, setExistsRecoverableDeploymentError]);
 
   // Cancel the saga when the component unmounts
   useEffect(
@@ -126,20 +111,12 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
     return <Navigate to={`/colony/${colonyName}`} />;
   }
 
-  const createColonyTxGroup = findTransactionGroupByKey(
-    txGroups,
-    'group.createColony',
-  );
+  const createColonyTxGroup = findTransactionGroupByKey(txGroups, 'group.createColony');
 
   return (
     <section className={styles.main}>
-      <ConfirmTransactions
-        transactionGroup={createColonyTxGroup}
-        headingText={MSG.heading}
-      />
-      {existsRecoverableDeploymentError && (
-        <RecoverableDeploymentError colonyName={colonyName} />
-      )}
+      <ConfirmTransactions transactionGroup={createColonyTxGroup} headingText={MSG.heading} />
+      {existsRecoverableDeploymentError && <RecoverableDeploymentError colonyName={colonyName} />}
     </section>
   );
 };

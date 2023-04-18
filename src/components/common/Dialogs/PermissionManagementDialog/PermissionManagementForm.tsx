@@ -3,20 +3,9 @@ import { defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import {
-  InputLabel,
-  HookFormSelect as Select,
-  Annotations,
-} from '~shared/Fields';
-import {
-  ActionDialogProps,
-  DialogControls,
-  DialogHeading,
-  DialogSection,
-} from '~shared/Dialog';
-import SingleUserPicker, {
-  filterUserSelection,
-} from '~shared/SingleUserPicker';
+import { InputLabel, HookFormSelect as Select, Annotations } from '~shared/Fields';
+import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
+import SingleUserPicker, { filterUserSelection } from '~shared/SingleUserPicker';
 import { ItemDataType } from '~shared/OmniPicker';
 import UserAvatar from '~shared/UserAvatar';
 import { User } from '~types';
@@ -24,20 +13,12 @@ import { notNull } from '~utils/arrays';
 // import { getAllUserRolesForDomain } from '~redux/transformers';
 import { findDomainByNativeId, getDomainOptions } from '~utils/domains';
 
-import {
-  CannotCreateMotionMessage,
-  NoPermissionMessage,
-  PermissionRequiredInfo,
-} from '../Messages';
+import { CannotCreateMotionMessage, NoPermissionMessage, PermissionRequiredInfo } from '../Messages';
 
 import { availableRoles } from './constants';
 import PermissionManagementCheckbox from './PermissionManagementCheckbox';
 
-import {
-  useCanRoleBeSet,
-  usePermissionManagementDialogStatus,
-  useSelectedUserRoles,
-} from './helpers';
+import { useCanRoleBeSet, usePermissionManagementDialogStatus, useSelectedUserRoles } from './helpers';
 
 import styles from './PermissionManagementDialogForm.css';
 
@@ -74,9 +55,7 @@ interface Props extends ActionDialogProps {
   close: (val: any) => void;
 }
 
-const supRenderAvatar = (item: ItemDataType<User>) => (
-  <UserAvatar user={item} size="xs" />
-);
+const supRenderAvatar = (item: ItemDataType<User>) => <UserAvatar user={item} size="xs" />;
 
 const PermissionManagementForm = ({
   colony: { domains },
@@ -97,15 +76,13 @@ const PermissionManagementForm = ({
   const colonyDomains = domains?.items.filter(notNull) || [];
   const domain = findDomainByNativeId(domainId, colony);
 
-  const {
-    inheritedRoles: selectedUserInheritedRoles,
-    directRoles: selectedUserDirectRoles,
-  } = useSelectedUserRoles(colony, user, domainId);
+  const { inheritedRoles: selectedUserInheritedRoles, directRoles: selectedUserDirectRoles } = useSelectedUserRoles(
+    colony,
+    user,
+    domainId,
+  );
   const defaultSelectedUserRoles = useMemo(
-    () =>
-      [
-        ...new Set([...selectedUserDirectRoles, ...selectedUserInheritedRoles]),
-      ].map((role) => role.toString()),
+    () => [...new Set([...selectedUserDirectRoles, ...selectedUserInheritedRoles])].map((role) => role.toString()),
     [selectedUserDirectRoles, selectedUserInheritedRoles],
   );
 
@@ -113,17 +90,14 @@ const PermissionManagementForm = ({
     setValue('roles', defaultSelectedUserRoles);
   }, [defaultSelectedUserRoles, setValue]);
 
-  const requiredRoles = [
-    domainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture,
-  ];
+  const requiredRoles = [domainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture];
   const canRoleBeSet = useCanRoleBeSet(colony, selectedUserDirectRoles);
-  const { userHasPermission, canCreateMotion, disabledInput, disabledSubmit } =
-    usePermissionManagementDialogStatus(
-      colony,
-      requiredRoles,
-      enabledExtensionData,
-      defaultSelectedUserRoles,
-    );
+  const { userHasPermission, canCreateMotion, disabledInput, disabledSubmit } = usePermissionManagementDialogStatus(
+    colony,
+    requiredRoles,
+    enabledExtensionData,
+    defaultSelectedUserRoles,
+  );
 
   // const domainRoles = useTransformer(getAllUserRolesForDomain, [
   //   colony,
@@ -179,18 +153,13 @@ const PermissionManagementForm = ({
 
   const filteredRoles =
     domainId !== Id.RootDomain
-      ? availableRoles.filter(
-          (role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery,
-        )
+      ? availableRoles.filter((role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery)
       : availableRoles;
 
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading
-          title={MSG.title}
-          titleValues={{ domain: domain?.metadata?.name }}
-        />
+        <DialogHeading title={MSG.title} titleValues={{ domain: domain?.metadata?.name }} />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
@@ -222,15 +191,11 @@ const PermissionManagementForm = ({
             onChange={handleDomainChange}
           />
         </div>
-        <InputLabel
-          label={MSG.permissionsLabel}
-          appearance={{ colorSchema: 'grey' }}
-        />
+        <InputLabel label={MSG.permissionsLabel} appearance={{ colorSchema: 'grey' }} />
         <div className={styles.permissionChoiceContainer}>
           {filteredRoles.map((role) => {
             const roleIsInherited =
-              !selectedUserDirectRoles.includes(role) &&
-              selectedUserInheritedRoles.includes(role);
+              !selectedUserDirectRoles.includes(role) && selectedUserInheritedRoles.includes(role);
             return (
               <PermissionManagementCheckbox
                 key={role}
@@ -258,9 +223,7 @@ const PermissionManagementForm = ({
       )}
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <NoPermissionMessage
-            requiredPermissions={[ColonyRole.Architecture]}
-          />
+          <NoPermissionMessage requiredPermissions={[ColonyRole.Architecture]} />
         </DialogSection>
       )}
       {/* {onlyForceAction && (

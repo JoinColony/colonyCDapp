@@ -23,11 +23,7 @@ const TokenActivationProvider = ({ children }: Props) => {
     [isOpen],
   );
 
-  return (
-    <TokenActivationContext.Provider value={value}>
-      {children}
-    </TokenActivationContext.Provider>
-  );
+  return <TokenActivationContext.Provider value={value}>{children}</TokenActivationContext.Provider>;
 };
 
 export default TokenActivationProvider;

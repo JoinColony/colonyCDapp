@@ -12,11 +12,7 @@ import {
 import { Annotations } from '~shared/Fields';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-import {
-  CannotCreateMotionMessage,
-  NoPermissionMessage,
-  PermissionRequiredInfo,
-} from '../Messages';
+import { CannotCreateMotionMessage, NoPermissionMessage, PermissionRequiredInfo } from '../Messages';
 
 import LegacyPermissionWarning from './LegacyPermissionWarning';
 import ContractVersionSection from './ContractVersionSection';
@@ -24,8 +20,7 @@ import { useNetworkContractUpgradeDialogStatus } from './helpers';
 
 import styles from './NetworkContractUpgradeDialogForm.css';
 
-const displayName =
-  'common.NetworkContractUpgradeDialog.NetworkContractUpgradeDialogForm';
+const displayName = 'common.NetworkContractUpgradeDialog.NetworkContractUpgradeDialogForm';
 
 const MSG = defineMessages({
   title: {
@@ -72,10 +67,7 @@ const NetworkContractUpgradeDialogForm = ({
       </DialogSection>
       {(isLoadingLegacyRecoveryRole || loadingColonyContractVersion) && (
         <DialogSection>
-          <MiniSpinnerLoader
-            className={styles.loadingInfo}
-            loadingText={MSG.loadingData}
-          />
+          <MiniSpinnerLoader className={styles.loadingInfo} loadingText={MSG.loadingData} />
         </DialogSection>
       )}
       {hasLegacyRecoveryRole && (
@@ -96,11 +88,7 @@ const NetworkContractUpgradeDialogForm = ({
         />
       </DialogSection>
       <DialogSection>
-        <Annotations
-          label={MSG.annotation}
-          name="annotation"
-          disabled={disabledInput}
-        />
+        <Annotations label={MSG.annotation} name="annotation" disabled={disabledInput} />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>

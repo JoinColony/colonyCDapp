@@ -39,41 +39,26 @@ interface Props {
  * @NOTE We're forwarding the ref so we can access the child's ref from the parent
  * See: https://reactjs.org/docs/forwarding-refs.html#forwarding-refs-to-dom-components
  */
-const MaskedAddress = forwardRef(
-  (
-    { address, mask = '...', full = false, dataTest }: Props,
-    ref: RefObject<any>,
-  ) => {
-    const cutAddress: AddressElements | Error = splitAddress(address);
-    if (cutAddress instanceof Error) {
-      return <FormattedMessage {...MSG.wrongAddressFormat} />;
-    }
-    if (!full) {
-      return (
-        <span
-          className={styles.address}
-          title={address}
-          ref={ref}
-          data-test={dataTest}
-        >
-          {`${cutAddress.header}${cutAddress.start}${mask}${cutAddress.end}`}
-        </span>
-      );
-    }
+const MaskedAddress = forwardRef(({ address, mask = '...', full = false, dataTest }: Props, ref: RefObject<any>) => {
+  const cutAddress: AddressElements | Error = splitAddress(address);
+  if (cutAddress instanceof Error) {
+    return <FormattedMessage {...MSG.wrongAddressFormat} />;
+  }
+  if (!full) {
     return (
-      <span
-        className={styles.address}
-        title={address}
-        ref={ref}
-        data-test={dataTest}
-      >
-        {cutAddress.header}
-        {cutAddress.start}
-        <span className={styles.middleSection}>{cutAddress.middle}</span>
-        {cutAddress.end}
+      <span className={styles.address} title={address} ref={ref} data-test={dataTest}>
+        {`${cutAddress.header}${cutAddress.start}${mask}${cutAddress.end}`}
       </span>
     );
-  },
-);
+  }
+  return (
+    <span className={styles.address} title={address} ref={ref} data-test={dataTest}>
+      {cutAddress.header}
+      {cutAddress.start}
+      <span className={styles.middleSection}>{cutAddress.middle}</span>
+      {cutAddress.end}
+    </span>
+  );
+});
 
 export default MaskedAddress;
