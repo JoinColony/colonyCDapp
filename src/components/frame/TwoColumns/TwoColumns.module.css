@@ -1,3 +1,0 @@
-.twoColumns {
-  @apply grid grid-cols-1 md:grid-cols-[8.9375rem_1fr] md:gap-12 lg:gap-[6.25rem];
-}
