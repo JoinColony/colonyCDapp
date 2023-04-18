@@ -125,12 +125,12 @@ export type MotionActionTypes =
         annotationMessage?: string;
         motionDomainId: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_PAYMENT_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_EXPENDITURE_PAYMENT_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.MOTION_EDIT_COLONY,
