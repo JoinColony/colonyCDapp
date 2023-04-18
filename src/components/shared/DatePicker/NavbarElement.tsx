@@ -23,27 +23,11 @@ interface Props {
 
 const NavbarElement = ({ onPreviousClick, onNextClick }: Props) => (
   <div className={styles.main}>
-    <button
-      className={styles.navButton}
-      type="button"
-      onClick={() => onPreviousClick()}
-    >
-      <Icon
-        name="caret-left"
-        appearance={{ size: 'small' }}
-        title={MSG.nextMonth}
-      />
+    <button className={styles.navButton} type="button" onClick={() => onPreviousClick()}>
+      <Icon name="caret-left" appearance={{ size: 'small' }} title={MSG.nextMonth} />
     </button>
-    <button
-      className={styles.navButton}
-      type="button"
-      onClick={() => onNextClick()}
-    >
-      <Icon
-        name="caret-right"
-        appearance={{ size: 'small' }}
-        title={MSG.prevMonth}
-      />
+    <button className={styles.navButton} type="button" onClick={() => onNextClick()}>
+      <Icon name="caret-right" appearance={{ size: 'small' }} title={MSG.prevMonth} />
     </button>
   </div>
 );

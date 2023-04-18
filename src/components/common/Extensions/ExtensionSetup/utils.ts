@@ -4,9 +4,7 @@ import { object } from 'yup';
 
 import { ExtensionInitParam } from '~types';
 
-export const createExtensionSetupInitialValues = (
-  initializationParams: ExtensionInitParam[],
-) => {
+export const createExtensionSetupInitialValues = (initializationParams: ExtensionInitParam[]) => {
   return initializationParams.reduce((initialValues, param) => {
     return {
       ...initialValues,
@@ -15,9 +13,7 @@ export const createExtensionSetupInitialValues = (
   }, {});
 };
 
-export const createExtensionSetupValidationSchema = (
-  initializationParams: ExtensionInitParam[],
-) => {
+export const createExtensionSetupValidationSchema = (initializationParams: ExtensionInitParam[]) => {
   const validationFields = initializationParams.reduce((fields, param) => {
     return {
       ...fields,
@@ -37,16 +33,12 @@ export const mapExtensionActionPayload = (
       if (paramName.endsWith('Period')) {
         return {
           ...formattedPayload,
-          [paramName]: new Decimal(payload[paramName])
-            .mul(3600)
-            .toFixed(0, Decimal.ROUND_HALF_UP),
+          [paramName]: new Decimal(payload[paramName]).mul(3600).toFixed(0, Decimal.ROUND_HALF_UP),
         };
       }
       return {
         ...formattedPayload,
-        [paramName]: new Decimal(payload[paramName])
-          .mul(new Decimal(10).pow(16))
-          .toString(),
+        [paramName]: new Decimal(payload[paramName]).mul(new Decimal(10).pow(16)).toString(),
       };
     }, {});
   }

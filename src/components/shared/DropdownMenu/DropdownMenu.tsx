@@ -16,13 +16,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 const displayName = 'DropdownMenu';
 
 const DropdownMenu = ({ appearance, children, ...props }: Props) => (
-  <div
-    className={getMainClasses(
-      appearance,
-      styles as unknown as { [k: string]: string },
-    )}
-    {...props}
-  >
+  <div className={getMainClasses(appearance, styles as unknown as { [k: string]: string })} {...props}>
     {children}
   </div>
 );

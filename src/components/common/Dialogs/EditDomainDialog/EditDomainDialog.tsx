@@ -20,9 +20,7 @@ interface CustomWizardDialogProps extends ActionDialogProps {
   filteredDomainId?: number;
 }
 
-type Props = DialogProps &
-  Partial<WizardDialogType<object>> &
-  CustomWizardDialogProps;
+type Props = DialogProps & Partial<WizardDialogType<object>> & CustomWizardDialogProps;
 
 const displayName = 'common.EditDomainDialog';
 
@@ -58,18 +56,11 @@ const EditDomainDialog = ({
   filteredDomainId,
   enabledExtensionData,
 }: Props) => {
-  const colonyDomains =
-    colony.domains?.items.filter(notNull).filter(notRootDomain) || [];
+  const colonyDomains = colony.domains?.items.filter(notNull).filter(notRootDomain) || [];
   const domainOptions = getDomainOptions(colonyDomains);
-  const defaultDomainId =
-    filteredDomainId || Number(domainOptions[0]?.value) || null;
-  const { metadata, nativeId } =
-    findDomainByNativeId(defaultDomainId, colony) ?? {};
-  const {
-    name = '',
-    color = DomainColor.LightPink,
-    description = '',
-  } = metadata ?? {};
+  const defaultDomainId = filteredDomainId || Number(domainOptions[0]?.value) || null;
+  const { metadata, nativeId } = findDomainByNativeId(defaultDomainId, colony) ?? {};
+  const { name = '', color = DomainColor.LightPink, description = '' } = metadata ?? {};
 
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
@@ -77,9 +68,7 @@ const EditDomainDialog = ({
   const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
-    !isForce && isVotingReputationEnabled
-      ? ActionTypes.MOTION_DOMAIN_CREATE_EDIT
-      : ActionTypes.ACTION_DOMAIN_EDIT;
+    !isForce && isVotingReputationEnabled ? ActionTypes.MOTION_DOMAIN_CREATE_EDIT : ActionTypes.ACTION_DOMAIN_EDIT;
 
   const transform = pipe(
     mapPayload((payload) => getEditDomainDialogPayload(colony, payload)),

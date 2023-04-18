@@ -6,13 +6,7 @@ import { Tooltip } from '~shared/Popover';
 import { AvatarDropdown } from '~frame/AvatarDropdown';
 import UserTokenActivationButton from '~frame/UserTokenActivationButton';
 import HamburgerDropdown from '~frame/HamburgerDropdown';
-import {
-  useAppContext,
-  useColonyContext,
-  useUserReputation,
-  useMobile,
-  useCanInteractWithNetwork,
-} from '~hooks';
+import { useAppContext, useColonyContext, useUserReputation, useMobile, useCanInteractWithNetwork } from '~hooks';
 import { useGetUserTokenBalanceQuery } from '~gql';
 
 import Wallet from './Wallet';
@@ -44,10 +38,7 @@ const UserNavigation = () => {
 
   const { colonyAddress, nativeToken } = colony || {};
 
-  const { userReputation, totalReputation } = useUserReputation(
-    colonyAddress,
-    wallet?.address,
-  );
+  const { userReputation, totalReputation } = useUserReputation(colonyAddress, wallet?.address);
 
   const { data: tokenBalanceQueryData } = useGetUserTokenBalanceQuery({
     variables: {
@@ -78,11 +69,7 @@ const UserNavigation = () => {
           }}
         >
           <div className={`${styles.elementWrapper} ${styles.reputation}`}>
-            <MemberReputation
-              userReputation={userReputation}
-              totalReputation={totalReputation}
-              showIconTitle={false}
-            />
+            <MemberReputation userReputation={userReputation} totalReputation={totalReputation} showIconTitle={false} />
           </div>
         </Tooltip>
       )}
@@ -97,12 +84,7 @@ const UserNavigation = () => {
       </div>
 
       <Wallet />
-      {tokenBalanceData && (
-        <AvatarDropdown
-          spinnerMsg={MSG.walletAutologin}
-          tokenBalanceData={tokenBalanceData}
-        />
-      )}
+      {tokenBalanceData && <AvatarDropdown spinnerMsg={MSG.walletAutologin} tokenBalanceData={tokenBalanceData} />}
       <HamburgerDropdown />
     </div>
   );

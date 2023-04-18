@@ -37,9 +37,7 @@ const ArgumentDisplay = ({
   const UserAvatar = HookedUserAvatar({ fetchUser: false });
 
   return (
-    <div
-      className={`${styles.container} ${getMainClasses(appearance, styles)}`}
-    >
+    <div className={`${styles.container} ${getMainClasses(appearance, styles)}`}>
       <div className={styles.avatar}>
         <UserAvatar address={author} user={user} size="xs" notSet={false} />
       </div>
@@ -53,10 +51,7 @@ const ArgumentDisplay = ({
               fontSize: 'small',
             }}
           />
-          <TimeRelative
-            className={styles.timestamp}
-            value={new Date(timestamp)}
-          />
+          <TimeRelative className={styles.timestamp} value={new Date(timestamp)} />
         </div>
         <p className={styles.message}>{comment}</p>
       </div>

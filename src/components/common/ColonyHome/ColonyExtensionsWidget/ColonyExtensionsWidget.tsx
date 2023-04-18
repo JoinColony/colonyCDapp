@@ -29,13 +29,7 @@ const ColonyExtensions = () => {
   const { installedExtensionsData, loading } = useExtensionsData();
 
   if (loading) {
-    return (
-      <MiniSpinnerLoader
-        className={styles.main}
-        title={MSG.title}
-        loadingText={MSG.loadingData}
-      />
-    );
+    return <MiniSpinnerLoader className={styles.main} title={MSG.title} loadingText={MSG.loadingData} />;
   }
 
   if (!installedExtensionsData.length) {
@@ -63,10 +57,7 @@ const ColonyExtensions = () => {
                   to={`/colony/${colony?.name}/extensions/${extensionId}`}
                   text={extension.name}
                 />
-                <ExtensionStatusBadge
-                  extensionData={extension}
-                  deprecatedOnly
-                />
+                <ExtensionStatusBadge extensionData={extension} deprecatedOnly />
               </li>
             );
           })}

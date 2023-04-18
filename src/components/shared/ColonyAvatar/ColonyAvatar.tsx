@@ -4,8 +4,7 @@ import { Address, Colony, WatchedColony } from '~types';
 import Avatar, { AvatarProps } from '~shared/Avatar';
 import NavLink from '~shared/NavLink';
 
-export interface Props
-  extends Pick<AvatarProps, 'className' | 'notSet' | 'size'> {
+export interface Props extends Pick<AvatarProps, 'className' | 'notSet' | 'size'> {
   /** Address of the colony for identicon fallback */
   colonyAddress: Address;
 
@@ -21,13 +20,7 @@ export interface Props
 
 const displayName = 'ColonyAvatar';
 
-const ColonyAvatar = ({
-  colonyAddress,
-  colony,
-  showLink,
-  preferThumbnail = true,
-  ...avatarProps
-}: Props) => {
+const ColonyAvatar = ({ colonyAddress, colony, showLink, preferThumbnail = true, ...avatarProps }: Props) => {
   const { metadata, name } = colony || {};
   const imageString = preferThumbnail ? metadata?.thumbnail : metadata?.avatar;
   const colonyAvatar = (

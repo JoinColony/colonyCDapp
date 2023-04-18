@@ -9,10 +9,7 @@ export interface Heading3Props extends Omit<HeadingProps, 'appearance'> {
 }
 
 const Heading3 = ({ appearance, ...props }: Heading3Props) => (
-  <Heading
-    appearance={{ size: 'medium', weight: 'bold', ...appearance }}
-    {...props}
-  />
+  <Heading appearance={{ size: 'medium', weight: 'bold', ...appearance }} {...props} />
 );
 
 Heading3.displayName = displayName;

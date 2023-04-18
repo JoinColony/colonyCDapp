@@ -32,14 +32,7 @@ export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
   textValues?: UniversalMessageValues;
 }
 
-const Heading = ({
-  appearance = { size: 'huge' },
-  children,
-  tagName,
-  text,
-  textValues,
-  ...props
-}: HeadingProps) => {
+const Heading = ({ appearance = { size: 'huge' }, children, tagName, text, textValues, ...props }: HeadingProps) => {
   const { size } = appearance;
   const HeadingElement: any =
     tagName ||

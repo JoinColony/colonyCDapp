@@ -8,11 +8,7 @@ import Button from '../Button';
 import Icon from '../Icon';
 import { Tooltip } from '../Popover';
 import ProgressBar from '../ProgressBar';
-import {
-  FileUploadFormValues,
-  HookFormUploadItemComponentProps,
-  UploadFile,
-} from './types';
+import { FileUploadFormValues, HookFormUploadItemComponentProps, UploadFile } from './types';
 import styles from './UploadItem.css';
 
 const MSG = defineMessages({
@@ -24,14 +20,7 @@ const MSG = defineMessages({
 
 const displayName = 'UploadItem';
 
-const UploadItem = ({
-  accept,
-  error,
-  idx,
-  maxFileSize,
-  name,
-  upload,
-}: HookFormUploadItemComponentProps) => {
+const UploadItem = ({ accept, error, idx, maxFileSize, name, upload }: HookFormUploadItemComponentProps) => {
   const { setError } = useFormContext();
   const { fields, update, remove } = useFieldArray<FileUploadFormValues>({
     name,
@@ -89,11 +78,7 @@ const UploadItem = ({
   return (
     <div className={styles.uploadItem} aria-invalid={!!error}>
       <div className={styles.fileInfo}>
-        <Tooltip
-          placement="left"
-          content={error || null}
-          trigger={error ? 'hover' : null}
-        >
+        <Tooltip placement="left" content={error || null} trigger={error ? 'hover' : null}>
           <span className={styles.itemIcon}>
             <Icon name="file" title={file.name} />
           </span>
@@ -107,12 +92,7 @@ const UploadItem = ({
         )}
       </div>
       <div>
-        <Button
-          type="button"
-          onClick={handleRemoveClick}
-          appearance={{ theme: 'blue' }}
-          text={MSG.removeActionText}
-        />
+        <Button type="button" onClick={handleRemoveClick} appearance={{ theme: 'blue' }} text={MSG.removeActionText} />
       </div>
     </div>
   );

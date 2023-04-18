@@ -1,10 +1,6 @@
 import { DropzoneOptions, DropzoneProps, useDropzone } from 'react-dropzone';
 
-import {
-  DEFAULT_MIME_TYPES,
-  DEFAULT_MAX_FILE_SIZE,
-  DEFAULT_MAX_FILE_LIMIT,
-} from '~shared/FileUpload/limits';
+import { DEFAULT_MIME_TYPES, DEFAULT_MAX_FILE_SIZE, DEFAULT_MAX_FILE_LIMIT } from '~shared/FileUpload/limits';
 import { HandleFileAccept } from '~shared/FileUpload/types';
 import getFileReader from '~utils/fileReader';
 

@@ -32,10 +32,7 @@ export type MotionActionTypes =
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.MOTION_STAKE_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_STAKE_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | ActionTypeWithMeta<ActionTypes.MOTION_STAKE_SUCCESS, MetaWithHistory<object>>
   | UniqueActionType<
       ActionTypes.MOTION_VOTE,
       {
@@ -58,10 +55,7 @@ export type MotionActionTypes =
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.MOTION_REVEAL_VOTE_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_REVEAL_VOTE_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | ActionTypeWithMeta<ActionTypes.MOTION_REVEAL_VOTE_SUCCESS, MetaWithHistory<object>>
   | UniqueActionType<
       ActionTypes.MOTION_FINALIZE,
       {
@@ -72,10 +66,7 @@ export type MotionActionTypes =
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.MOTION_FINALIZE_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_FINALIZE_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | ActionTypeWithMeta<ActionTypes.MOTION_FINALIZE_SUCCESS, MetaWithHistory<object>>
   | UniqueActionType<
       ActionTypes.MOTION_CLAIM,
       {
@@ -86,10 +77,7 @@ export type MotionActionTypes =
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.MOTION_CLAIM_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_CLAIM_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | ActionTypeWithMeta<ActionTypes.MOTION_CLAIM_SUCCESS, MetaWithHistory<object>>
   | UniqueActionType<
       ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
       {
@@ -107,10 +95,7 @@ export type MotionActionTypes =
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.MOTION_DOMAIN_CREATE_EDIT_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_DOMAIN_CREATE_EDIT_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | ActionTypeWithMeta<ActionTypes.MOTION_DOMAIN_CREATE_EDIT_SUCCESS, MetaWithHistory<object>>
   | UniqueActionType<
       ActionTypes.MOTION_EXPENDITURE_PAYMENT,
       {
@@ -129,10 +114,7 @@ export type MotionActionTypes =
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_PAYMENT_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_EXPENDITURE_PAYMENT_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | ActionTypeWithMeta<ActionTypes.MOTION_EXPENDITURE_PAYMENT_SUCCESS, MetaWithHistory<object>>
   | UniqueActionType<
       ActionTypes.MOTION_EDIT_COLONY,
       {
@@ -151,10 +133,7 @@ export type MotionActionTypes =
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.MOTION_EDIT_COLONY_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_EDIT_COLONY_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | ActionTypeWithMeta<ActionTypes.MOTION_EDIT_COLONY_SUCCESS, MetaWithHistory<object>>
   | UniqueActionType<
       ActionTypes.MOTION_MOVE_FUNDS,
       {
@@ -170,10 +149,7 @@ export type MotionActionTypes =
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.MOTION_MOVE_FUNDS_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_MOVE_FUNDS_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | ActionTypeWithMeta<ActionTypes.MOTION_MOVE_FUNDS_SUCCESS, MetaWithHistory<object>>
   | UniqueActionType<
       ActionTypes.ROOT_MOTION,
       {
@@ -201,10 +177,7 @@ export type MotionActionTypes =
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.MOTION_USER_ROLES_SET_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_USER_ROLES_SET_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | ActionTypeWithMeta<ActionTypes.MOTION_USER_ROLES_SET_SUCCESS, MetaWithHistory<object>>
   | UniqueActionType<
       ActionTypes.MOTION_STATE_UPDATE,
       {
@@ -215,10 +188,7 @@ export type MotionActionTypes =
       object
     >
   | ErrorActionType<ActionTypes.MOTION_STATE_UPDATE_ERROR, object>
-  | UniqueActionTypeWithoutPayload<
-      ActionTypes.MOTION_STATE_UPDATE_SUCCESS,
-      object
-    >
+  | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_STATE_UPDATE_SUCCESS, object>
   | UniqueActionType<
       ActionTypes.MOTION_ESCALATE,
       {
@@ -229,10 +199,7 @@ export type MotionActionTypes =
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.MOTION_ESCALATE_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_ESCALATE_SUCCESS,
-      MetaWithHistory<object>
-    >
+  | ActionTypeWithMeta<ActionTypes.MOTION_ESCALATE_SUCCESS, MetaWithHistory<object>>
   | UniqueActionType<
       ActionTypes.MOTION_MANAGE_REPUTATION,
       {
@@ -248,7 +215,4 @@ export type MotionActionTypes =
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.MOTION_MANAGE_REPUTATION_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_MANAGE_REPUTATION_SUCCESS,
-      MetaWithHistory<object>
-    >;
+  | ActionTypeWithMeta<ActionTypes.MOTION_MANAGE_REPUTATION_SUCCESS, MetaWithHistory<object>>;

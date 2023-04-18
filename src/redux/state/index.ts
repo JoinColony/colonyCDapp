@@ -2,11 +2,7 @@ import { Record } from 'immutable';
 
 import { GasPrices, GasPricesRecord } from '../immutable';
 
-import {
-  CORE_GAS_PRICES,
-  CORE_MESSAGES,
-  CORE_TRANSACTIONS,
-} from '../constants';
+import { CORE_GAS_PRICES, CORE_MESSAGES, CORE_TRANSACTIONS } from '../constants';
 
 import { CoreTransactions, CoreTransactionsRecord } from './transactions';
 import { CoreMessages, CoreMessagesRecord } from './messages';

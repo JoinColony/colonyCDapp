@@ -1,11 +1,6 @@
 import { TransactionReceipt } from '@ethersproject/providers';
 
-import {
-  MethodParams,
-  TxConfig,
-  TRANSACTION_STATUSES,
-  TRANSACTION_ERRORS,
-} from '~types';
+import { MethodParams, TxConfig, TRANSACTION_STATUSES, TRANSACTION_ERRORS } from '~types';
 
 import { ActionTypes } from '../actionTypes';
 import { AllActions } from '../types/actions';
@@ -39,10 +34,7 @@ export const createTransactionAction = (
     methodName,
     options,
     params,
-    status:
-      ready === false
-        ? TRANSACTION_STATUSES.CREATED
-        : TRANSACTION_STATUSES.READY,
+    status: ready === false ? TRANSACTION_STATUSES.CREATED : TRANSACTION_STATUSES.READY,
     metatransaction,
     title,
     titleValues,
@@ -50,11 +42,7 @@ export const createTransactionAction = (
   meta: { id },
 });
 
-const transactionError = (
-  type: TransactionError['type'],
-  id: string,
-  error: Error,
-): AllActions => ({
+const transactionError = (type: TransactionError['type'], id: string, error: Error): AllActions => ({
   type: ActionTypes.TRANSACTION_ERROR,
   payload: {
     error: {
@@ -66,30 +54,15 @@ const transactionError = (
   meta: { id },
 });
 
-export const transactionEstimateError = transactionError.bind(
-  null,
-  TRANSACTION_ERRORS.ESTIMATE,
-);
+export const transactionEstimateError = transactionError.bind(null, TRANSACTION_ERRORS.ESTIMATE);
 
-export const transactionEventDataError = transactionError.bind(
-  null,
-  TRANSACTION_ERRORS.EVENT_DATA,
-);
+export const transactionEventDataError = transactionError.bind(null, TRANSACTION_ERRORS.EVENT_DATA);
 
-export const transactionReceiptError = transactionError.bind(
-  null,
-  TRANSACTION_ERRORS.RECEIPT,
-);
+export const transactionReceiptError = transactionError.bind(null, TRANSACTION_ERRORS.RECEIPT);
 
-export const transactionSendError = transactionError.bind(
-  null,
-  TRANSACTION_ERRORS.SEND,
-);
+export const transactionSendError = transactionError.bind(null, TRANSACTION_ERRORS.SEND);
 
-export const transactionUnsuccessfulError = transactionError.bind(
-  null,
-  TRANSACTION_ERRORS.UNSUCCESSFUL,
-);
+export const transactionUnsuccessfulError = transactionError.bind(null, TRANSACTION_ERRORS.UNSUCCESSFUL);
 
 export const transactionReceiptReceived = (
   id: string,
@@ -134,19 +107,13 @@ export const transactionSucceeded = (
   meta: { id, metatransaction },
 });
 
-export const transactionAddIdentifier = (
-  id: string,
-  identifier: string,
-): AllActions => ({
+export const transactionAddIdentifier = (id: string, identifier: string): AllActions => ({
   type: ActionTypes.TRANSACTION_ADD_IDENTIFIER,
   meta: { id },
   payload: { identifier },
 });
 
-export const transactionAddParams = (
-  id: string,
-  params: MethodParams,
-): AllActions => ({
+export const transactionAddParams = (id: string, params: MethodParams): AllActions => ({
   type: ActionTypes.TRANSACTION_ADD_PARAMS,
   meta: { id },
   payload: { params },
@@ -167,19 +134,13 @@ export const transactionEstimateGas = (id: string): AllActions => ({
   meta: { id },
 });
 
-export const transactionUpdateGas = (
-  id: string,
-  data: { gasLimit?: string; gasPrice?: string },
-): AllActions => ({
+export const transactionUpdateGas = (id: string, data: { gasLimit?: string; gasPrice?: string }): AllActions => ({
   type: ActionTypes.TRANSACTION_GAS_UPDATE,
   payload: data,
   meta: { id },
 });
 
-export const transactionLoadRelated = (
-  id: string,
-  loading: boolean,
-): AllActions => ({
+export const transactionLoadRelated = (id: string, loading: boolean): AllActions => ({
   type: ActionTypes.TRANSACTION_LOAD_RELATED,
   payload: { loading },
   meta: { id },

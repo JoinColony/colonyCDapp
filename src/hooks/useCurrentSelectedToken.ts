@@ -20,10 +20,7 @@ const useCurrentSelectedToken = () => {
 
   const currentToken = useMemo(() => {
     if (tokens) {
-      return tokens.items.find(
-        (colonyToken) =>
-          colonyToken?.token.tokenAddress === currentTokenAddress,
-      );
+      return tokens.items.find((colonyToken) => colonyToken?.token.tokenAddress === currentTokenAddress);
     }
     return undefined;
   }, [tokens, currentTokenAddress]);

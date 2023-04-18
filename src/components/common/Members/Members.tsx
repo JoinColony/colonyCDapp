@@ -71,12 +71,7 @@ const getDomainSelectOptions = (colony?: Colony) => {
   );
 };
 
-const Members = ({
-  selectedDomain,
-  handleDomainChange,
-  filters,
-  isRootOrAllDomains,
-}: Props) => {
+const Members = ({ selectedDomain, handleDomainChange, filters, isRootOrAllDomains }: Props) => {
   const { colony } = useColonyContext();
   const [searchValue, setSearchValue] = useState<string>('');
   const sortingMethod = SortingMethod.ByHighestRep;
@@ -107,19 +102,12 @@ const Members = ({
     filters,
   );
 
-  const filteredWatchers = filterMembers<Watcher>(
-    data?.getMembersForColony?.watchers || [],
-    searchValue,
-    filters,
-  );
+  const filteredWatchers = filterMembers<Watcher>(data?.getMembersForColony?.watchers || [], searchValue, filters);
 
   if (loadingMembers && !data) {
     return (
       <div className={styles.main}>
-        <SpinnerLoader
-          loadingText={MSG.loading}
-          appearance={{ size: 'massive', theme: 'primary' }}
-        />
+        <SpinnerLoader loadingText={MSG.loading} appearance={{ size: 'massive', theme: 'primary' }} />
       </div>
     );
   }

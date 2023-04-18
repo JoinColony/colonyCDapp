@@ -33,11 +33,7 @@ interface Props {
   transferBetweenDomains?: boolean;
 }
 
-const DomainFundSelectorSection = ({
-  colony,
-  transferBetweenDomains,
-  disabled,
-}: Props) => {
+const DomainFundSelectorSection = ({ colony, transferBetweenDomains, disabled }: Props) => {
   const {
     watch,
     setValue,
@@ -83,12 +79,7 @@ const DomainFundSelectorSection = ({
             title={MSG.transferIconTitle}
             appearance={{ size: 'medium' }}
           />
-          <DomainFundSelector
-            name="toDomain"
-            label={MSG.to}
-            colony={colony}
-            disabled={disabled}
-          />
+          <DomainFundSelector name="toDomain" label={MSG.to} colony={colony} disabled={disabled} />
         </>
       )}
     </div>

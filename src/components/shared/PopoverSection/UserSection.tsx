@@ -36,18 +36,10 @@ const UserSection = () => {
       {userHasAccountRegistered ? (
         <>
           <DropdownMenuItem>
-            <NavLink
-              to={`/user/${user?.name}`}
-              text={MSG.myProfile}
-              data-test="userProfile"
-            />
+            <NavLink to={`/user/${user?.name}`} text={MSG.myProfile} data-test="userProfile" />
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <NavLink
-              to={USER_EDIT_ROUTE}
-              text={MSG.settings}
-              data-test="userProfileSettings"
-            />
+            <NavLink to={USER_EDIT_ROUTE} text={MSG.settings} data-test="userProfileSettings" />
           </DropdownMenuItem>
         </>
       ) : (

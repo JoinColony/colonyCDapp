@@ -1,16 +1,5 @@
-import React, {
-  Fragment,
-  ReactNode,
-  useCallback,
-  useMemo,
-  useState,
-  useEffect,
-} from 'react';
-import {
-  defineMessages,
-  FormattedMessage,
-  MessageDescriptor,
-} from 'react-intl';
+import React, { Fragment, ReactNode, useCallback, useMemo, useState, useEffect } from 'react';
+import { defineMessages, FormattedMessage, MessageDescriptor } from 'react-intl';
 import { useField } from 'formik';
 
 import Button from '~shared/Button';
@@ -78,9 +67,7 @@ const ItemsList = ({
   nullable,
   showArrow = true,
 }: Props) => {
-  const [, { initialValue, value }, { setValue }] = useField<
-    number | null | undefined
-  >(fieldName);
+  const [, { initialValue, value }, { setValue }] = useField<number | null | undefined>(fieldName);
   // This values determines if any item in the (newly opened) list was selected
   const [listTouched, setListTouched] = useState<boolean>(false);
   // Item selected in the popover list
@@ -116,8 +103,7 @@ const ItemsList = ({
    */
   const handleSet = useCallback(
     (close: () => void) => {
-      const { id: currentItemId } =
-        list.find(({ id }) => id === selectedItem) || {};
+      const { id: currentItemId } = list.find(({ id }) => id === selectedItem) || {};
       setListTouched(false);
       setValue(currentItemId);
       close();
@@ -151,13 +137,7 @@ const ItemsList = ({
    */
   const renderListItem = useCallback(
     (
-      {
-        disabled: itemDisabled,
-        disabledText,
-        id,
-        name,
-        children: itemChildren,
-      }: ConsumableItem,
+      { disabled: itemDisabled, disabledText, id, name, children: itemChildren }: ConsumableItem,
       nestingCounter = 0,
     ) => {
       /*
@@ -169,9 +149,7 @@ const ItemsList = ({
        */
       const recursiveChildRender = () => {
         if (itemChildren && itemChildren.length) {
-          return itemChildren.map((item: ConsumableItem) =>
-            renderListItem(item, nestingCounter + 1),
-          );
+          return itemChildren.map((item: ConsumableItem) => renderListItem(item, nestingCounter + 1));
         }
         return null;
       };
@@ -179,11 +157,7 @@ const ItemsList = ({
       let tooltipContent;
       if (disabledText) {
         tooltipContent =
-          typeof disabledText === 'string' ? (
-            <>{disabledText}</>
-          ) : (
-            <FormattedMessage {...disabledText} />
-          );
+          typeof disabledText === 'string' ? <>{disabledText}</> : <FormattedMessage {...disabledText} />;
       }
 
       return (
@@ -191,9 +165,7 @@ const ItemsList = ({
           <li
             className={selectedItem === id ? styles.selectedItem : undefined}
             style={{
-              paddingLeft: `${
-                nestingCounter * parseInt(styles.paddingValue, 10)
-              }px`,
+              paddingLeft: `${nestingCounter * parseInt(styles.paddingValue, 10)}px`,
             }}
           >
             <Tooltip content={tooltipContent} placement="bottom-start">
@@ -233,15 +205,9 @@ const ItemsList = ({
     }
   }, [initialValue]);
 
-  const collapsedList = useMemo(
-    () => recursiveNestChildren(list.sort(sortObjectsBy('name'))),
-    [list],
-  );
+  const collapsedList = useMemo(() => recursiveNestChildren(list.sort(sortObjectsBy('name'))), [list]);
 
-  const currentItemElement = useMemo(
-    () => list.find(({ id }) => id === value),
-    [value, list],
-  );
+  const currentItemElement = useMemo(() => list.find(({ id }) => id === value), [value, list]);
 
   return (
     <div className={styles.main}>
@@ -252,11 +218,7 @@ const ItemsList = ({
         showArrow={showArrow}
         content={({ close }) => (
           <div className={styles.itemsWrapper}>
-            <ul className={styles.itemList}>
-              {collapsedList.map((item: ConsumableItem) =>
-                renderListItem(item),
-              )}
-            </ul>
+            <ul className={styles.itemList}>{collapsedList.map((item: ConsumableItem) => renderListItem(item))}</ul>
             <div className={styles.controls}>
               <Button
                 appearance={{ theme: 'secondary' }}
@@ -286,10 +248,7 @@ const ItemsList = ({
            * @NOTE In case there wasn't a child passed in, we render a
            * fallback button
            */
-          <Button
-            appearance={{ theme: 'primary' }}
-            text={MSG.fallbackListButton}
-          />
+          <Button appearance={{ theme: 'primary' }} text={MSG.fallbackListButton} />
         )}
       </Popover>
       {/*
@@ -299,14 +258,9 @@ const ItemsList = ({
        */}
       <div
         className={styles.selectedItemDisplay}
-        title={
-          currentItemElement
-            ? `${itemDisplayPrefix}${currentItemElement.name}${itemDisplaySuffix}`
-            : undefined
-        }
+        title={currentItemElement ? `${itemDisplayPrefix}${currentItemElement.name}${itemDisplaySuffix}` : undefined}
       >
-        {!!currentItemElement &&
-          `${itemDisplayPrefix}${currentItemElement.name}${itemDisplaySuffix}`}
+        {!!currentItemElement && `${itemDisplayPrefix}${currentItemElement.name}${itemDisplaySuffix}`}
       </div>
     </div>
   );

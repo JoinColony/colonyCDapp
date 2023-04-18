@@ -9,10 +9,7 @@ import { Message } from '~types';
 import styles from '../InputStatus.css';
 
 interface HookFormInputStatusProps
-  extends Pick<
-    HookFormInputProps,
-    'appearance' | 'status' | 'statusValues' | 'isLoading' | 'loadingAnnotation'
-  > {
+  extends Pick<HookFormInputProps, 'appearance' | 'status' | 'statusValues' | 'isLoading' | 'loadingAnnotation'> {
   /** Error text (if applicable) */
   error?: Message;
 
@@ -34,10 +31,7 @@ const HookFormInputStatus = ({
   const { formatMessage } = useIntl();
   const errorText = formatText(error);
   const statusText = formatText(status, statusValues);
-  const loadingText = formatMessage(
-    { id: 'status.loading' },
-    { optionalText: formatText(loadingAnnotation) },
-  );
+  const loadingText = formatMessage({ id: 'status.loading' }, { optionalText: formatText(loadingAnnotation) });
   const text = errorText || statusText;
   const Element = appearance.direction === 'horizontal' ? 'span' : 'p';
   return (

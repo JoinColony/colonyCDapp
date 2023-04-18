@@ -59,15 +59,10 @@ export default class ColonyManager {
     if (!isAddress(identifier)) {
       throw new Error('A colony address must be provided');
     }
-    return (
-      this.colonyClients.get(identifier) || this.setColonyClient(identifier)
-    );
+    return this.colonyClients.get(identifier) || this.setColonyClient(identifier);
   }
 
-  private async getColonyExtensionClient(
-    identifier: Address,
-    extensionId: Extension,
-  ): Promise<ExtensionClient> {
+  private async getColonyExtensionClient(identifier: Address, extensionId: Extension): Promise<ExtensionClient> {
     if (!isAddress(identifier)) {
       throw new Error('A colony address must be provided');
     }
@@ -96,53 +91,32 @@ export default class ColonyManager {
 
   async getClient(type: ClientType.NetworkClient): Promise<ColonyNetworkClient>;
 
-  async getClient(
-    type: ClientType.ColonyClient,
-    identifier?: Address,
-  ): Promise<AnyColonyClient>;
+  async getClient(type: ClientType.ColonyClient, identifier?: Address): Promise<AnyColonyClient>;
 
-  async getClient(
-    type: ClientType.TokenClient,
-    identifier?: Address,
-  ): Promise<TokenClient>;
+  async getClient(type: ClientType.TokenClient, identifier?: Address): Promise<TokenClient>;
 
-  async getClient(
-    type: ClientType.TokenLockingClient,
-    identifier?: Address,
-  ): Promise<TokenLockingClient>;
+  async getClient(type: ClientType.TokenLockingClient, identifier?: Address): Promise<TokenLockingClient>;
 
-  async getClient(
-    type: ClientType.OneTxPaymentClient,
-    identifier?: Address,
-  ): Promise<AnyOneTxPaymentClient>;
+  async getClient(type: ClientType.OneTxPaymentClient, identifier?: Address): Promise<AnyOneTxPaymentClient>;
 
-  async getClient(
-    type: ClientType,
-    identifier?: Address,
-  ): Promise<ContractClient>;
+  async getClient(type: ClientType, identifier?: Address): Promise<ContractClient>;
 
-  async getClient(
-    type: ClientType,
-    identifier?: Address,
-  ): Promise<ContractClient> {
+  async getClient(type: ClientType, identifier?: Address): Promise<ContractClient> {
     switch (type) {
       case ClientType.NetworkClient: {
         return this.networkClient;
       }
       case ClientType.ColonyClient: {
-        if (!identifier)
-          throw new Error('Need colony identifier to get ColonyClient');
+        if (!identifier) throw new Error('Need colony identifier to get ColonyClient');
         return this.getColonyClient(identifier);
       }
       case ClientType.TokenClient: {
-        if (!identifier)
-          throw new Error('Need colony identifier to get TokenClient');
+        if (!identifier) throw new Error('Need colony identifier to get TokenClient');
         const colonyClient = await this.getColonyClient(identifier);
         return colonyClient.tokenClient;
       }
       case ClientType.TokenLockingClient: {
-        if (!identifier)
-          throw new Error('Need colony identifier to get TokenLockingClient');
+        if (!identifier) throw new Error('Need colony identifier to get TokenLockingClient');
         const colonyClient = await this.getColonyClient(identifier);
         const tokenLockingClient = this.networkClient.getTokenLockingClient();
         /*
@@ -153,31 +127,19 @@ export default class ColonyManager {
         return tokenLockingClient;
       }
       case ClientType.OneTxPaymentClient: {
-        if (!identifier)
-          throw new Error('Need colony identifier to get OneTxPaymentClient');
-        return this.getColonyExtensionClient(
-          identifier,
-          Extension.OneTxPayment,
-        );
+        if (!identifier) throw new Error('Need colony identifier to get OneTxPaymentClient');
+        return this.getColonyExtensionClient(identifier, Extension.OneTxPayment);
       }
       case ClientType.CoinMachineClient: {
-        if (!identifier)
-          throw new Error('Need colony identifier to get CoinMachineClient');
+        if (!identifier) throw new Error('Need colony identifier to get CoinMachineClient');
         return this.getColonyExtensionClient(identifier, Extension.CoinMachine);
       }
       case ClientType.VotingReputationClient: {
-        if (!identifier)
-          throw new Error(
-            'Need colony identifier to get the VotingReputationClient',
-          );
-        return this.getColonyExtensionClient(
-          identifier,
-          Extension.VotingReputation,
-        );
+        if (!identifier) throw new Error('Need colony identifier to get the VotingReputationClient');
+        return this.getColonyExtensionClient(identifier, Extension.VotingReputation);
       }
       case ClientType.WhitelistClient: {
-        if (!identifier)
-          throw new Error('Need colony identifier to get the WhitelistClient');
+        if (!identifier) throw new Error('Need colony identifier to get the WhitelistClient');
         return this.getColonyExtensionClient(identifier, Extension.Whitelist);
       }
       default: {
@@ -187,8 +149,7 @@ export default class ColonyManager {
   }
 
   async getTokenClient(address: Address): Promise<TokenClient> {
-    if (!address)
-      throw new Error('Need colony identifier to get the TokenClient');
+    if (!address) throw new Error('Need colony identifier to get the TokenClient');
     let clientPromise = this.tokenClients.get(address);
     if (!clientPromise) {
       clientPromise = getTokenClient(address, this.signer);

@@ -17,19 +17,13 @@ const ColonyListItem = ({ colony }: Props) => {
   return (
     <DropdownMenuItem>
       <NavLink
-        className={({ isActive }) =>
-          isActive ? styles.activeColony : undefined
-        }
+        className={({ isActive }) => (isActive ? styles.activeColony : undefined)}
         title={colony.name}
         to={`/colony/${colony.name}`}
       >
         <div className={styles.dropdownItem}>
           <div className={styles.itemImage}>
-            <ColonyAvatar
-              colony={colony}
-              colonyAddress={colony.colonyAddress}
-              size="xs"
-            />
+            <ColonyAvatar colony={colony} colonyAddress={colony.colonyAddress} size="xs" />
           </div>
           <div>{colony.metadata?.displayName || colony.name}</div>
         </div>

@@ -6,8 +6,7 @@ import ActionEventData from './ActionEventData';
 
 import styles from './ActionDetailsPageEvent.css';
 
-const displayName =
-  'common.ColonyActions.ActionDetailsPage.ActionDetailsPageEvent';
+const displayName = 'common.ColonyActions.ActionDetailsPage.ActionDetailsPageEvent';
 
 export interface ActionsPageEventProps {
   eventName: ColonyAndExtensionsEvents;
@@ -15,11 +14,7 @@ export interface ActionsPageEventProps {
   dataTest?: string;
 }
 
-const ActionsPageEvent = ({
-  actionData,
-  eventName,
-  dataTest,
-}: ActionsPageEventProps) => (
+const ActionsPageEvent = ({ actionData, eventName, dataTest }: ActionsPageEventProps) => (
   <div className={styles.main} data-test={dataTest}>
     <TransactionStatus status={TransactionStatuses.Succeeded} showTooltip />
     <ActionEventData actionData={actionData} eventName={eventName} />

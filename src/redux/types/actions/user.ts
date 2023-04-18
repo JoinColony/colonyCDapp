@@ -6,24 +6,12 @@ import { ActionTypes } from '../../actionTypes';
 import { ActionType, ErrorActionType, UniqueActionType } from './index';
 
 export type UserActionTypes =
-  | UniqueActionType<
-      ActionTypes.USERNAME_CREATE,
-      CreateUserWizardFormValues,
-      object
-    >
+  | UniqueActionType<ActionTypes.USERNAME_CREATE, CreateUserWizardFormValues, object>
   | ErrorActionType<ActionTypes.USERNAME_CREATE_ERROR, object>
-  | UniqueActionType<
-      ActionTypes.USERNAME_CREATE_SUCCESS,
-      CreateUserWizardFormValues,
-      object
-    >
+  | UniqueActionType<ActionTypes.USERNAME_CREATE_SUCCESS, CreateUserWizardFormValues, object>
   | UniqueActionType<ActionTypes.USER_AVATAR_REMOVE, object, object>
   | ErrorActionType<ActionTypes.USER_AVATAR_REMOVE_ERROR, object>
-  | UniqueActionType<
-      ActionTypes.USER_AVATAR_REMOVE_SUCCESS,
-      { address: Address },
-      object
-    >
+  | UniqueActionType<ActionTypes.USER_AVATAR_REMOVE_SUCCESS, { address: Address }, object>
   | UniqueActionType<ActionTypes.USER_AVATAR_UPLOAD, { data: string }, object>
   | ErrorActionType<ActionTypes.USER_AVATAR_UPLOAD_ERROR, object>
   | UniqueActionType<

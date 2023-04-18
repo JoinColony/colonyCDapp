@@ -26,18 +26,9 @@ interface Props {
   setIsPopoverOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const ClaimAllButton = ({
-  unclaimedMotionStakeEvents,
-  userAddress,
-  colonyAddress,
-  setIsPopoverOpen,
-}: Props) => {
+const ClaimAllButton = ({ unclaimedMotionStakeEvents, userAddress, colonyAddress, setIsPopoverOpen }: Props) => {
   const uniqueMotionIds = [
-    ...new Set(
-      unclaimedMotionStakeEvents.map(
-        (motionStakeEvent) => motionStakeEvent.values.motionId,
-      ),
-    ),
+    ...new Set(unclaimedMotionStakeEvents.map((motionStakeEvent) => motionStakeEvent.values.motionId)),
   ];
 
   const transform = mapPayload(() => ({

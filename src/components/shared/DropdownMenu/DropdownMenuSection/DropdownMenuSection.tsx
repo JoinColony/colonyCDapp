@@ -10,11 +10,7 @@ interface Props extends HTMLAttributes<HTMLUListElement> {
 const displayName = 'DropdownMenuSection';
 
 const DropdownMenuSection = ({ children, separator, ...props }: Props) => (
-  <ul
-    className={separator ? styles.separator : undefined}
-    {...props}
-    role="menu"
-  >
+  <ul className={separator ? styles.separator : undefined} {...props} role="menu">
     {children}
   </ul>
 );

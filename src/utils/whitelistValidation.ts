@@ -42,12 +42,7 @@ export const validationSchemaFile = object({
         .test(
           'valid-wallet-addresses',
           () => formatText(MSG.invalidAddressError),
-          (value) =>
-            isEmpty(
-              value?.filter(
-                (potentialAddress: string) => !isAddress(potentialAddress),
-              ),
-            ),
+          (value) => isEmpty(value?.filter((potentialAddress: string) => !isAddress(potentialAddress))),
         )
         .defined(),
     }),
@@ -55,9 +50,6 @@ export const validationSchemaFile = object({
 
 export const mergeSchemas = (...schemas: ObjectSchema<object>[]) => {
   const [first, ...rest] = schemas;
-  const merged = rest.reduce(
-    (mergedSchemas, schema) => mergedSchemas.concat(schema),
-    first,
-  );
+  const merged = rest.reduce((mergedSchemas, schema) => mergedSchemas.concat(schema), first);
   return merged;
 };

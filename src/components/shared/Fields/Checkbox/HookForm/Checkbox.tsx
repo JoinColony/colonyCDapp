@@ -86,11 +86,7 @@ const HookFormCheckbox = ({
   return (
     <div className={classNames}>
       {showTooltip ? (
-        <Tooltip
-          content={toolTipContent}
-          placement="bottom"
-          popperOptions={tooltipPopperOptions}
-        >
+        <Tooltip content={toolTipContent} placement="bottom" popperOptions={tooltipPopperOptions}>
           {checkboxInput}
         </Tooltip>
       ) : (

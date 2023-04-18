@@ -8,30 +8,18 @@ interface Props extends HTMLAttributes<HTMLSpanElement> {
   value: Date;
 }
 
-const nearestIntervalOf = (value: number, increment: number) =>
-  Math.round(value / increment) * increment;
+const nearestIntervalOf = (value: number, increment: number) => Math.round(value / increment) * increment;
 
 const displayName = 'TimeRelative';
 
-const TimeRelative = ({
-  value: valueProp,
-  updateInterval = 15,
-  ...rest
-}: Props) => {
+const TimeRelative = ({ value: valueProp, updateInterval = 15, ...rest }: Props) => {
   const valueInSeconds = Math.floor(
-    nearestIntervalOf(
-      (new Date(valueProp).getTime() - new Date().getTime()) / 1000,
-      updateInterval,
-    ),
+    nearestIntervalOf((new Date(valueProp).getTime() - new Date().getTime()) / 1000, updateInterval),
   );
 
   return (
     <span {...rest}>
-      <FormattedRelativeTime
-        numeric="auto"
-        updateIntervalInSeconds={updateInterval}
-        value={valueInSeconds}
-      />
+      <FormattedRelativeTime numeric="auto" updateIntervalInSeconds={updateInterval} value={valueInSeconds} />
     </span>
   );
 };

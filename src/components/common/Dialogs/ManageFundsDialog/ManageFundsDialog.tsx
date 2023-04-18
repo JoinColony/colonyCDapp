@@ -63,8 +63,7 @@ const MSG = defineMessages({
   },
   rewardPayoutDescription: {
     id: `${displayName}.rewardPayoutDescription`,
-    defaultMessage:
-      "Are there funds in your colony's reward pot? Make it rain!",
+    defaultMessage: "Are there funds in your colony's reward pot? Make it rain!",
   },
   rewardsTitle: {
     id: `${displayName}.rewardsTitle`,
@@ -80,8 +79,7 @@ const MSG = defineMessages({
   },
   unlockTokensDescription: {
     id: `${displayName}.unlockTokensDescription`,
-    defaultMessage:
-      'Allow your native token to be transferred between accounts.',
+    defaultMessage: 'Allow your native token to be transferred between accounts.',
   },
 });
 
@@ -109,10 +107,7 @@ const ManageFundsDialog = ({
 }: Props) => {
   const { wallet } = useAppContext();
 
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
-  ]);
+  const allUserRoles = useTransformer(getAllUserRoles, [colony, wallet?.address]);
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
@@ -146,9 +141,7 @@ const ManageFundsDialog = ({
       permissionRequired: false, // !canUserMintNativeToken,
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
-        permissionsList: (
-          <FormattedMessage {...MSG.mintTokensPermissionsList} />
-        ),
+        permissionsList: <FormattedMessage {...MSG.mintTokensPermissionsList} />,
       },
       onClick: () => callStep(nextStepMintTokens),
       dataTest: 'mintTokensDialogItem',
@@ -160,9 +153,7 @@ const ManageFundsDialog = ({
       permissionRequired: !(canManageTokens || isVotingReputationEnabled),
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
-        permissionsList: (
-          <FormattedMessage {...MSG.manageTokensPermissionsList} />
-        ),
+        permissionsList: <FormattedMessage {...MSG.manageTokensPermissionsList} />,
       },
       onClick: () => callStep(nextStepManageTokens),
       dataTest: 'manageTokensDialogItem',
@@ -187,23 +178,17 @@ const ManageFundsDialog = ({
       permissionRequired: false, // !canUserUnlockNativeToken,
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
-        permissionsList: (
-          <FormattedMessage {...MSG.manageTokensPermissionsList} />
-        ),
+        permissionsList: <FormattedMessage {...MSG.manageTokensPermissionsList} />,
       },
       dataTest: 'unlockTokenDialogIndexItem',
     },
   ];
   // @TODO: Uncomment code here when "status" is implemented as this filters menu items based on that. (Mint and Unlock token actions)
   const filteredItems =
-    colony?.status?.nativeToken?.mintable &&
-    colony?.status?.nativeToken?.unlockable
+    colony?.status?.nativeToken?.mintable && colony?.status?.nativeToken?.unlockable
       ? items
       : items.filter(({ icon }) => {
-          if (
-            icon === 'emoji-padlock' &&
-            !colony?.status?.nativeToken?.unlockable
-          ) {
+          if (icon === 'emoji-padlock' && !colony?.status?.nativeToken?.unlockable) {
             return true; // false
           }
           return true; // !(

@@ -12,24 +12,15 @@ describe('Icon component', () => {
   const mockFileName = iconNames[0];
   const mockTitle = 'The Greatest Icon Ever';
   test('Renders initial component', () => {
-    const wrapper = mountWithIntl(
-      <Icon name={mockFileName} title={mockTitle} />,
-    );
+    const wrapper = mountWithIntl(<Icon name={mockFileName} title={mockTitle} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
   test('Works with MessageDescriptors', () => {
-    const wrapper = mountWithIntl(
-      <Icon
-        name={mockFileName}
-        title={{ id: 'iconTitle', defaultMessage: mockTitle }}
-      />,
-    );
+    const wrapper = mountWithIntl(<Icon name={mockFileName} title={{ id: 'iconTitle', defaultMessage: mockTitle }} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
   test('Shows the title value', () => {
-    const wrapper = mountWithIntl(
-      <Icon name={mockFileName} title={mockTitle} />,
-    );
+    const wrapper = mountWithIntl(<Icon name={mockFileName} title={mockTitle} />);
     expect(wrapper.html()).toContain(mockTitle);
   });
 });

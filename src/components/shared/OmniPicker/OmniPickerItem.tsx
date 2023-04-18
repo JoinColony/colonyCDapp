@@ -14,14 +14,7 @@ interface Props {
 
 const displayName = 'OmniPicker.OmniPickerItem';
 
-const OmniPickerItem = ({
-  idx,
-  keyUsed,
-  onSelect,
-  selected,
-  itemData,
-  renderItem,
-}: Props) => {
+const OmniPickerItem = ({ idx, keyUsed, onSelect, selected, itemData, renderItem }: Props) => {
   const select = useCallback(() => {
     onSelect(idx);
   }, [idx, onSelect]);

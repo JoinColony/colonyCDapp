@@ -28,10 +28,7 @@ interface TokenActivationContentProps extends TokensTabProps {
   setIsPopoverOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const TokenActivationContent = ({
-  setIsPopoverOpen,
-  ...otherProps
-}: TokenActivationContentProps) => {
+const TokenActivationContent = ({ setIsPopoverOpen, ...otherProps }: TokenActivationContentProps) => {
   const [tabIndex, setTabIndex] = useState<number>(0);
   // const { colony } = useColonyContext();
   // const { wallet } = useAppContext();
@@ -80,15 +77,8 @@ const TokenActivationContent = ({
           setTabIndex(newIndex);
         }}
       >
-        <TabList
-          className={styles.tabsList}
-          containerClassName={styles.tabsListContainer}
-        >
-          <Tab
-            selectedClassName={styles.tabSelected}
-            className={styles.tab}
-            data-test="yourTokensTab"
-          >
+        <TabList className={styles.tabsList} containerClassName={styles.tabsListContainer}>
+          <Tab selectedClassName={styles.tabSelected} className={styles.tab} data-test="yourTokensTab">
             <FormattedMessage {...MSG.yourTokens} />
           </Tab>
           <Tab selectedClassName={styles.tabSelected} className={styles.tab}>

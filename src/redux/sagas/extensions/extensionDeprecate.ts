@@ -5,11 +5,7 @@ import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import { putError, takeFrom, refreshDeprecatedExtension } from '../utils';
 
-import {
-  createTransaction,
-  getTxChannel,
-  waitForTxResult,
-} from '../transactions';
+import { createTransaction, getTxChannel, waitForTxResult } from '../transactions';
 
 function* extensionDeprecate({
   meta,

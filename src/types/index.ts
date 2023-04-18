@@ -19,8 +19,7 @@ export type WithKey = {
 
 export type Values<T> = T[keyof T];
 export type ExcludesNull = <T>(x: T | null) => x is T;
-export type RequireProps<T, K extends keyof T> = Omit<T, K> &
-  Required<Pick<T, K>>;
+export type RequireProps<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
 
 // https://stackoverflow.com/questions/54607400/typescript-remove-entries-from-tuple-type
 export type RemoveFirstFromTuple<T extends any[]> = T['length'] extends 0
@@ -62,10 +61,7 @@ export type ComplexMessageValues = Record<string, ReactNode>;
  */
 export type AnyMessageValues = Record<string, PrimitiveType | ReactNode>;
 
-export type UniversalMessageValues =
-  | SimpleMessageValues
-  | ComplexMessageValues
-  | AnyMessageValues;
+export type UniversalMessageValues = SimpleMessageValues | ComplexMessageValues | AnyMessageValues;
 
 export type Message = MessageDescriptor | string;
 

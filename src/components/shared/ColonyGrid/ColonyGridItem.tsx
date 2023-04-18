@@ -14,19 +14,13 @@ interface Props {
 
 const displayName = 'common.ColonyGrid.ColonyGridItem';
 
-const ColonyGridItem = ({
-  colony,
-  colony: { name, metadata, colonyAddress },
-}: Props) => {
+const ColonyGridItem = ({ colony, colony: { name, metadata, colonyAddress } }: Props) => {
   return (
     <div className={styles.main}>
       <Link to={`/colony/${name}`}>
         <ColonyAvatar colonyAddress={colonyAddress} colony={colony} />
         <Heading appearance={{ size: 'small' }}>
-          <span
-            title={metadata?.displayName || name}
-            className={styles.displayName}
-          >
+          <span title={metadata?.displayName || name} className={styles.displayName}>
             {metadata?.displayName || name}
           </span>
         </Heading>

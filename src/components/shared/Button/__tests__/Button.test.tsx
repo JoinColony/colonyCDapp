@@ -48,9 +48,7 @@ describe('Button component', () => {
   });
 
   test('button has custom props', () => {
-    const wrapper = mountWithIntl(
-      <Button text="Some Text" data-test="test additional props" />,
-    );
+    const wrapper = mountWithIntl(<Button text="Some Text" data-test="test additional props" />);
     expect(wrapper.prop('data-test')).toBe('test additional props');
   });
 });

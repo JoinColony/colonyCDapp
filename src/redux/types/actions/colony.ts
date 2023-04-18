@@ -3,17 +3,9 @@ import { Address, InstallableExtensionData, WithKey } from '~types';
 import { ActionType, ErrorActionType, UniqueActionType } from './index';
 
 export type ColonyActionTypes =
-  | UniqueActionType<
-      ActionTypes.CLAIM_TOKEN,
-      { tokenAddress: Address; colonyAddress: Address },
-      object
-    >
+  | UniqueActionType<ActionTypes.CLAIM_TOKEN, { tokenAddress: Address; colonyAddress: Address }, object>
   | ErrorActionType<ActionTypes.CLAIM_TOKEN_ERROR, object>
-  | UniqueActionType<
-      ActionTypes.CLAIM_TOKEN_SUCCESS,
-      { params: { token: Address } },
-      object
-    >
+  | UniqueActionType<ActionTypes.CLAIM_TOKEN_SUCCESS, { params: { token: Address } }, object>
   | UniqueActionType<
       ActionTypes.CREATE,
       {
@@ -51,11 +43,7 @@ export type ColonyActionTypes =
     >
   | UniqueActionType<ActionTypes.EXTENSION_DEPRECATE_SUCCESS, object, object>
   | ErrorActionType<ActionTypes.EXTENSION_DEPRECATE_ERROR, object>
-  | UniqueActionType<
-      ActionTypes.EXTENSION_UNINSTALL,
-      { colonyAddress: Address; extensionId: string },
-      WithKey
-    >
+  | UniqueActionType<ActionTypes.EXTENSION_UNINSTALL, { colonyAddress: Address; extensionId: string }, WithKey>
   | UniqueActionType<ActionTypes.EXTENSION_UNINSTALL_SUCCESS, object, object>
   | ErrorActionType<ActionTypes.EXTENSION_UNINSTALL_ERROR, object>
   | UniqueActionType<

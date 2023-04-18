@@ -4,12 +4,7 @@ import { defineMessages, MessageDescriptor } from 'react-intl';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import Numeral from '~shared/Numeral';
 import TransactionLink from '~shared/TransactionLink';
-import {
-  Colony,
-  ColonyAction,
-  ColonyActionType,
-  UniversalMessageValues,
-} from '~types';
+import { Colony, ColonyAction, ColonyActionType, UniversalMessageValues } from '~types';
 import { getDetailsForAction } from '~utils/colonyActions';
 import { splitTransactionHash } from '~utils/strings';
 
@@ -130,26 +125,19 @@ const getDetailItems = (
     {
       label: MSG.fromDomain,
       labelValues: undefined,
-      item: detailsForAction.FromDomain && fromDomain?.metadata && (
-        <TeamDetail domainMetadata={fromDomain.metadata} />
-      ),
+      item: detailsForAction.FromDomain && fromDomain?.metadata && <TeamDetail domainMetadata={fromDomain.metadata} />,
     },
     {
       label: MSG.domain,
       labelValues: undefined,
       item: detailsForAction.Domain && fromDomain?.metadata && (
-        <TeamDetail
-          transactionHash={transactionHash}
-          domainMetadata={fromDomain.metadata}
-        />
+        <TeamDetail transactionHash={transactionHash} domainMetadata={fromDomain.metadata} />
       ),
     },
     {
       label: MSG.toRecipient,
       labelValues: undefined,
-      item: detailsForAction.ToDomain && toDomain?.metadata && (
-        <TeamDetail domainMetadata={toDomain.metadata} />
-      ),
+      item: detailsForAction.ToDomain && toDomain?.metadata && <TeamDetail domainMetadata={toDomain.metadata} />,
     },
     {
       label: MSG.toRecipient,
@@ -163,12 +151,7 @@ const getDetailItems = (
       labelValues: undefined,
       item: detailsForAction.Amount && amount && (
         <AmountDetail
-          amount={
-            <Numeral
-              value={amount}
-              decimals={token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
-            />
-          }
+          amount={<Numeral value={amount} decimals={token?.decimals ?? DEFAULT_TOKEN_DECIMALS} />}
           symbol={token?.symbol}
           token={token ?? undefined}
         />
@@ -185,10 +168,7 @@ const getDetailItems = (
       label: MSG.reputationChange,
       labelValues: { isSmiteAction },
       item: detailsForAction.ReputationChange && amount && (
-        <ReputationChangeDetail
-          reputationChange={amount}
-          decimals={token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
-        />
+        <ReputationChangeDetail reputationChange={amount} decimals={token?.decimals ?? DEFAULT_TOKEN_DECIMALS} />
       ),
     },
     // {
@@ -201,12 +181,9 @@ const getDetailItems = (
     {
       label: MSG.domainDescription,
       labelValues: undefined,
-      item: detailsForAction.Description &&
-        fromDomain?.metadata?.description && (
-          <DomainDescriptionDetail
-            description={fromDomain.metadata.description}
-          />
-        ),
+      item: detailsForAction.Description && fromDomain?.metadata?.description && (
+        <DomainDescriptionDetail description={fromDomain.metadata.description} />
+      ),
     },
     {
       label: MSG.colonyName,

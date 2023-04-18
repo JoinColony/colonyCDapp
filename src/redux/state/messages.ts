@@ -23,5 +23,4 @@ export class CoreMessagesRecord
   extends Record<CoreMessagesProps>(defaultValues)
   implements RecordToJS<{ [CORE_MESSAGES_LIST]: MessagesListObject }> {}
 
-export const CoreMessages = (p?: CoreMessagesProps) =>
-  new CoreMessagesRecord(p);
+export const CoreMessages = (p?: CoreMessagesProps) => new CoreMessagesRecord(p);

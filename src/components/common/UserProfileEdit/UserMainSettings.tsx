@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { string, object, InferType } from 'yup';
 
-import {
-  FieldSet,
-  HookForm as Form,
-  HookFormInput as Input,
-  HookFormTextArea as Textarea,
-} from '~shared/Fields';
+import { FieldSet, HookForm as Form, HookFormInput as Input, HookFormTextArea as Textarea } from '~shared/Fields';
 
 import { useUpdateUserProfileMutation } from '~gql';
 import { User } from '~types';
@@ -69,10 +64,7 @@ const validationSchema = object({
 
 type FormValues = InferType<typeof validationSchema>;
 
-const UserMainSettings = ({
-  user: { walletAddress, profile },
-  user,
-}: Props) => {
+const UserMainSettings = ({ user: { walletAddress, profile }, user }: Props) => {
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const { updateUser } = useAppContext();
   const [editUser, { error }] = useUpdateUserProfileMutation();
@@ -117,18 +109,8 @@ const UserMainSettings = ({
                 formattingOptions={noSpaces}
                 value={defaultValues.email}
               />
-              <Input
-                label={MSG.labelName}
-                name="displayName"
-                dataTest="userSettingsName"
-                showConfusable
-              />
-              <Textarea
-                label={MSG.labelBio}
-                name="bio"
-                maxLength={160}
-                dataTest="userSettingsBio"
-              />
+              <Input label={MSG.labelName} name="displayName" dataTest="userSettingsName" showConfusable />
+              <Textarea label={MSG.labelBio} name="bio" maxLength={160} dataTest="userSettingsBio" />
               <Input
                 label={MSG.labelWebsite}
                 name="website"
@@ -136,11 +118,7 @@ const UserMainSettings = ({
                 formattingOptions={noSpaces}
                 value={defaultValues.website}
               />
-              <Input
-                label={MSG.labelLocation}
-                name="location"
-                dataTest="userSettingsLocation"
-              />
+              <Input label={MSG.labelLocation} name="location" dataTest="userSettingsLocation" />
             </FieldSet>
             <SaveForm
               dataTest="userSettingsSubmit"

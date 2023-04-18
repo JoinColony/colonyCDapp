@@ -42,9 +42,7 @@ const TokenActivationPopover = ({ children, ...otherProps }: Props) => {
       placement="bottom"
       isOpen={isOpen}
       onClose={() => setIsOpen(false)}
-      renderContent={() => (
-        <TokenActivationContent {...otherProps} setIsPopoverOpen={setIsOpen} />
-      )}
+      renderContent={() => <TokenActivationContent {...otherProps} setIsPopoverOpen={setIsOpen} />}
       popperOptions={{
         modifiers: [
           {

@@ -1,7 +1,6 @@
 import { Accept } from 'react-dropzone';
 
-export interface FileReaderFile
-  extends Pick<File, 'name' | 'type' | 'size' | 'lastModified'> {
+export interface FileReaderFile extends Pick<File, 'name' | 'type' | 'size' | 'lastModified'> {
   uploadDate: number;
   data: string;
   file: File;

@@ -31,11 +31,7 @@ interface Props {
   canUnsubscribe?: boolean;
 }
 
-const ColonySubscriptionInfoPopover = ({
-  children,
-  canUnsubscribe = true,
-  onUnsubscribe = () => {},
-}: Props) => {
+const ColonySubscriptionInfoPopover = ({ children, canUnsubscribe = true, onUnsubscribe = () => {} }: Props) => {
   const { colony } = useColonyContext();
 
   if (!colony) {
@@ -51,16 +47,10 @@ const ColonySubscriptionInfoPopover = ({
         <div className={styles.main}>
           <div className={styles.colonyDetails}>
             <div className={styles.colonyAvatar}>
-              <ColonyAvatar
-                colonyAddress={colonyAddress}
-                colony={colony}
-                size="s"
-              />
+              <ColonyAvatar colonyAddress={colonyAddress} colony={colony} size="s" />
             </div>
             <div className={styles.colonyInfo}>
-              <span className={styles.colonyInfoTitle}>
-                {metadata?.displayName || name}
-              </span>
+              <span className={styles.colonyInfoTitle}>{metadata?.displayName || name}</span>
               <span className={styles.colonyInfoEns}>@{name}</span>
               <span className={styles.colonyInfoAddress}>
                 <MaskedAddress address={colonyAddress} full />
@@ -68,10 +58,7 @@ const ColonySubscriptionInfoPopover = ({
             </div>
             {canUnsubscribe && (
               <div className={styles.unsubscribeFromColony}>
-                <Button
-                  appearance={{ theme: 'blue', size: 'small' }}
-                  onClick={onUnsubscribe}
-                >
+                <Button appearance={{ theme: 'blue', size: 'small' }} onClick={onUnsubscribe}>
                   <FormattedMessage {...MSG.leaveColonyQuestion} />
                 </Button>
               </div>
@@ -81,11 +68,7 @@ const ColonySubscriptionInfoPopover = ({
             <FormattedMessage {...MSG.nativeTokenTitle} />
           </span>
           <span className={styles.nativeTokenAddress}>
-            <MaskedAddress
-              address={tokenAddress}
-              full
-              dataTest="nativeTokenAddress"
-            />
+            <MaskedAddress address={tokenAddress} full dataTest="nativeTokenAddress" />
           </span>
         </div>
       }

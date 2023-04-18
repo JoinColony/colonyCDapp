@@ -56,18 +56,11 @@ const Slider = ({
     return limit ? limit.times(100) : new Decimal(0);
   }, [limit]);
 
-  const gradientPercentage = useMemo(
-    () => (limitValue.gte(100) ? new Decimal(100) : limitValue),
-    [limitValue],
-  );
+  const gradientPercentage = useMemo(() => (limitValue.gte(100) ? new Decimal(100) : limitValue), [limitValue]);
 
   const onSliderChange = useCallback(
     (val): void => {
-      if (
-        (limit !== undefined && limitValue.gt(sliderValue)) ||
-        val < sliderValue ||
-        !limitValue
-      ) {
+      if ((limit !== undefined && limitValue.gt(sliderValue)) || val < sliderValue || !limitValue) {
         setSliderValue(val);
         setValue(val);
         if (onChange) {
@@ -77,10 +70,7 @@ const Slider = ({
           handleLimitExceeded(false);
         }
       }
-      if (
-        limit !== undefined &&
-        (limitValue.lt(sliderValue) || val > limitValue)
-      ) {
+      if (limit !== undefined && (limitValue.lt(sliderValue) || val > limitValue)) {
         setSliderValue(limitValue.toNumber());
         setValue(limitValue.toString());
 
@@ -154,10 +144,7 @@ const Slider = ({
           backgroundColor: '#FFFFFF',
         }}
         dotStyle={{
-          display:
-            gradientPercentage.eq(100) || gradientPercentage.lte(0)
-              ? 'none'
-              : '',
+          display: gradientPercentage.eq(100) || gradientPercentage.lte(0) ? 'none' : '',
           height: sizes.markHeight,
           width: sizes.markWidth,
           backgroundColor: '#76748B',

@@ -36,13 +36,10 @@ const ExtensionActionButton = ({ extensionData }: Props) => {
   }
 
   const handleEnableButtonClick = () => {
-    navigate(
-      `/colony/${colony.name}/extensions/${extensionData.extensionId}/setup`,
-    );
+    navigate(`/colony/${colony.name}/extensions/${extensionData.extensionId}/setup`);
   };
 
-  const isSupportedColonyVersion =
-    colony.version >= MIN_SUPPORTED_COLONY_VERSION;
+  const isSupportedColonyVersion = colony.version >= MIN_SUPPORTED_COLONY_VERSION;
 
   if (!isInstalledExtensionData(extensionData)) {
     return (
