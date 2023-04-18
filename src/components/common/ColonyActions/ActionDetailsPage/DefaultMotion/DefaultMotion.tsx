@@ -2,7 +2,11 @@ import React from 'react';
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import DetailsWidget from '~shared/DetailsWidget';
-import { useColonyContext, useEnabledExtensions } from '~hooks';
+import {
+  RefetchMotionState,
+  useColonyContext,
+  useEnabledExtensions,
+} from '~hooks';
 import { ColonyAction } from '~types';
 import { getMotionState } from '~utils/colonyMotions';
 import { STAKING_THRESHOLD } from '~constants';
@@ -21,6 +25,7 @@ const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion';
 interface DefaultMotionProps {
   actionData: ColonyAction;
   networkMotionState: NetworkMotionState;
+  refetchMotionState: RefetchMotionState;
   startPollingAction: (pollingInterval: number) => void;
   stopPollingAction: () => void;
 }
@@ -28,6 +33,7 @@ interface DefaultMotionProps {
 const DefaultMotion = ({
   actionData,
   networkMotionState,
+  refetchMotionState,
   ...rest
 }: DefaultMotionProps) => {
   const { colony } = useColonyContext();
@@ -57,7 +63,11 @@ const DefaultMotion = ({
         {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
         {isUnderThreshold && <StakeRequiredBanner isDecision={false} />}
         {isVotingReputationEnabled && (
-          <MotionHeading motionState={motionState} motionData={motionData} />
+          <MotionHeading
+            motionState={motionState}
+            refetchMotionState={refetchMotionState}
+            motionData={motionData}
+          />
         )}
         <div className={styles.container}>
           <DefaultActionContent actionData={actionData} />

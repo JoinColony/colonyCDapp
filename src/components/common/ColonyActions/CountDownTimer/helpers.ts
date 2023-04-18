@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -6,8 +5,7 @@ import {
   GetMotionTimeoutPeriodsReturn,
   useGetMotionTimeoutPeriodsQuery,
 } from '~gql';
-import { useAppContext, useColonyContext } from '~hooks';
-import { ActionTypes } from '~redux';
+import { RefetchMotionState, useAppContext, useColonyContext } from '~hooks';
 import { MotionState } from '~utils/colonyMotions';
 
 import { useStakingWidgetContext } from '../ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
@@ -24,7 +22,7 @@ const splitTimeLeft = (period: number) => {
   return undefined;
 };
 
-const getCurrentStatePeriod = (
+const getCurrentStatePeriodInMs = (
   motionState: MotionState,
   motionTimeoutPeriods: GetMotionTimeoutPeriodsReturn,
 ) => {
@@ -64,7 +62,11 @@ const useMotionTimeoutPeriods = (colonyAddress = '', motionId: number) => {
   };
 };
 
-export const useMotionCountdown = (state: MotionState, motionId: number) => {
+export const useMotionCountdown = (
+  state: MotionState,
+  motionId: number,
+  refetchMotionState: RefetchMotionState,
+) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const dispatch = useDispatch();
@@ -79,7 +81,10 @@ export const useMotionCountdown = (state: MotionState, motionId: number) => {
     refetchMotionTimeoutPeriods,
   } = useMotionTimeoutPeriods(colony?.colonyAddress, motionId);
 
-  const currentStatePeriod = getCurrentStatePeriod(state, motionTimeoutPeriods);
+  const currentStatePeriodInMs = getCurrentStatePeriodInMs(
+    state,
+    motionTimeoutPeriods,
+  );
 
   const [timeLeft, setTimeLeft] = useState<number>(-1);
 
@@ -109,17 +114,33 @@ export const useMotionCountdown = (state: MotionState, motionId: number) => {
   useEffect(() => {
     if (
       !loadingMotionTimeoutPeriods &&
+      /*  @NOTE: If we have loaded the motion timeout periods, we should only set/reset the timer:
+       *
+       *  !isStakingPhaseState - If the current motion state is not related to the staking phase. (voting phase, reveal phase, etc.).
+       *  We do this in case the motion state changes from 1 phase to another one while the user is in the motion page (Goes from staking to voting, for example).
+       *
+       *  OR
+       *
+       *  isStakingPhaseState - If the current motion state is a staking phase but:
+       *    isFullyNayStaked - The NAY side is fully staked (For example, if the user fully staked the NAY side, the timer should reset).
+       *    revStateRef.current === null - There's no previous reference of a timer, therefore, the user just loaded/reloaded the motion page and this is the "initial" timer.
+       */
       (!isStakingPhaseState ||
         (isStakingPhaseState &&
           (isFullyNayStaked || prevStateRef.current === null)))
     ) {
-      const period = Number(currentStatePeriod) / 1000;
+      const currentStatePeriodInSeconds = Number(currentStatePeriodInMs) / 1000;
 
-      setTimeLeft(period > 0 ? period + 5 : period);
+      setTimeLeft(
+        currentStatePeriodInSeconds > 0
+          ? currentStatePeriodInSeconds + 5
+          : currentStatePeriodInSeconds,
+      );
       prevStateRef.current = state;
     }
   }, [
-    currentStatePeriod,
+    currentStatePeriodInMs,
+    loadingMotionTimeoutPeriods,
     prevStateRef,
     state,
     isStakingPhaseState,
@@ -131,18 +152,11 @@ export const useMotionCountdown = (state: MotionState, motionId: number) => {
    */
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(timeLeft - 1);
+      setTimeLeft((oldTimeLeft) => oldTimeLeft - 1);
     }, 1000);
 
     if (timeLeft === 0) {
-      dispatch({
-        type: ActionTypes.MOTION_STATE_UPDATE,
-        payload: {
-          colonyAddress: colony?.colonyAddress,
-          motionId: BigNumber.from(motionId),
-          userAddress: user?.walletAddress,
-        },
-      });
+      refetchMotionState();
     }
 
     if (timeLeft < 0) {
@@ -150,7 +164,15 @@ export const useMotionCountdown = (state: MotionState, motionId: number) => {
     }
 
     return () => clearInterval(timer);
-  }, [timeLeft, currentStatePeriod, dispatch, colony, motionId, user]);
+  }, [
+    timeLeft,
+    currentStatePeriodInMs,
+    dispatch,
+    colony,
+    motionId,
+    user,
+    refetchMotionState,
+  ]);
 
   useEffect(() => {
     if (!isStakingPhaseState || isFullyNayStaked) {
