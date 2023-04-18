@@ -8,6 +8,11 @@ const AccordionContent: FC<AccordionMocksContentProps> = ({ content }) => {
   const [openIndex, setOpenIndex] = useState<number | undefined>();
 
   const onOpenIndexChange = (index: number | undefined) => {
+    if (index === openIndex) {
+      setOpenIndex(undefined);
+
+      return;
+    }
     setOpenIndex(index);
   };
 

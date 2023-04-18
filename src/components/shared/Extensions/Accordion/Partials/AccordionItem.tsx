@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AccordionItemProps } from './AccordtionItem.types';
+import AccordionHeader from './AccordionHeader';
 
 const displayName = 'Extensions.Accordion.Partials.AccordionItem';
 
@@ -8,17 +9,13 @@ const AccordionItem: FC<AccordionItemProps> = ({ title, content, isOpen, onClick
   return (
     <div>
       <div
-        className="w-full text-gray-900 font-semibold text-md my-4"
+        className="w-full text-gray-900 font-semibold text-md"
         onClick={onClick}
         onKeyUp={onClick}
         role="button"
         tabIndex={0}
       >
-        <div className="flex justify-between items-center py-2">
-          {title}
-          <span>*</span>
-        </div>
-        <div className="w-full bg-gray-200 h-[1px]" />
+        <AccordionHeader title={title} />
       </div>
       <div className="relative">
         <AnimatePresence>
