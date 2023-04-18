@@ -25,31 +25,12 @@ interface Props {
 
 const displayName = 'Dialog';
 
-const Dialog = ({
-  children,
-  cancel,
-  isDismissable = true,
-  ...props
-}: Props) => (
-  <Modal
-    {...props}
-    role="dialog"
-    className={styles.modal}
-    onRequestClose={cancel}
-    isOpen
-  >
+const Dialog = ({ children, cancel, isDismissable = true, ...props }: Props) => (
+  <Modal {...props} role="dialog" className={styles.modal} onRequestClose={cancel} isOpen>
     {isDismissable && (
       <div className={styles.dialogOuterActions}>
-        <button
-          type="button"
-          className={styles.closeIconButton}
-          onClick={cancel}
-        >
-          <Icon
-            appearance={{ size: 'medium' }}
-            name="circle-close"
-            title={MSG.buttonCancel}
-          />
+        <button type="button" className={styles.closeIconButton} onClick={cancel}>
+          <Icon appearance={{ size: 'medium' }} name="circle-close" title={MSG.buttonCancel} />
         </button>
       </div>
     )}

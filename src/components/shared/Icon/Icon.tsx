@@ -5,10 +5,7 @@ import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
 
-import {
-  icons as iconNames,
-  multiColorIcons as multiColorIconNames,
-} from '~images/icons.json';
+import { icons as iconNames, multiColorIcons as multiColorIconNames } from '~images/icons.json';
 
 import styles from './Icon.css';
 
@@ -16,14 +13,7 @@ const displayName = 'Icon';
 
 type Appearance = {
   theme?: 'primary' | 'invert';
-  size?:
-    | 'extraTiny'
-    | 'tiny'
-    | 'small'
-    | 'normal'
-    | 'medium'
-    | 'large'
-    | 'huge';
+  size?: 'extraTiny' | 'tiny' | 'small' | 'normal' | 'medium' | 'large' | 'huge';
 };
 
 interface Props extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
@@ -69,18 +59,14 @@ const Icon = ({
   ...props
 }: Props) => {
   // Remove the theme if it's a multiColor icon
-  const multiColorAppearance = multiColorIcons[name]
-    ? { size: appearance.size || 'normal' }
-    : null;
+  const multiColorAppearance = multiColorIcons[name] ? { size: appearance.size || 'normal' } : null;
   const icon = icons[name] || multiColorIcons[name];
   const iconHref = typeof icon === 'object' ? `#${icon.default.id}` : icon;
   const iconTitle = formatText(title, titleValues);
   return (
     <i
       title={title ? iconTitle : undefined}
-      className={
-        className || getMainClasses(multiColorAppearance || appearance, styles)
-      }
+      className={className || getMainClasses(multiColorAppearance || appearance, styles)}
       {...props}
     >
       <svg viewBox={viewBoxOverride}>

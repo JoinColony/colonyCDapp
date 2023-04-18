@@ -1,11 +1,4 @@
-import React, {
-  useCallback,
-  useState,
-  InputHTMLAttributes,
-  useMemo,
-  RefObject,
-  useEffect,
-} from 'react';
+import React, { useCallback, useState, InputHTMLAttributes, useMemo, RefObject, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import Cleave from 'cleave.js/react';
 import { CleaveOptions } from 'cleave.js/options';
@@ -35,8 +28,7 @@ interface MaxButtonParams {
   fieldName: string;
 }
 
-export interface Props
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'form'> {
+export interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'form'> {
   /** Appearance object */
   appearance?: Appearance;
 
@@ -102,10 +94,7 @@ const InputComponent = ({
    * See here for why this isn't yet supported "officially":
    * https://github.com/nosir/cleave.js/issues/352#issuecomment-447640572
    */
-  const dynamicCleaveOptionKey = useMemo(
-    () => JSON.stringify(formattingOptions),
-    [formattingOptions],
-  );
+  const dynamicCleaveOptionKey = useMemo(() => JSON.stringify(formattingOptions), [formattingOptions]);
 
   useEffect(() => {
     if (isNil(value) && cleave) {
@@ -136,21 +125,12 @@ const InputComponent = ({
           className={styles.maxButton}
           text={MSG.max}
           onClick={() => {
-            maxButtonParams?.setFieldValue(
-              maxButtonParams?.fieldName,
-              maxButtonParams.maxAmount,
-            );
+            maxButtonParams?.setFieldValue(maxButtonParams?.fieldName, maxButtonParams.maxAmount);
             const decimalValue = new Decimal(maxButtonParams.maxAmount);
             if (decimalValue.lt(0.00001) && decimalValue.gt(0)) {
-              cleave?.setRawValue(
-                decimalValue.toSD(5, Decimal.ROUND_DOWN).toNumber(),
-              );
+              cleave?.setRawValue(decimalValue.toSD(5, Decimal.ROUND_DOWN).toNumber());
             } else {
-              cleave?.setRawValue(
-                new Decimal(maxButtonParams.maxAmount)
-                  .toDP(5, Decimal.ROUND_DOWN)
-                  .toNumber(),
-              );
+              cleave?.setRawValue(new Decimal(maxButtonParams.maxAmount).toDP(5, Decimal.ROUND_DOWN).toNumber());
             }
           }}
           dataTest="inputMaxButton"
@@ -183,10 +163,7 @@ const InputComponent = ({
   ) : (
     <div className={styles.inputContainer}>
       <input
-        className={getMainClasses(
-          { paddingRight: 'extra', ...appearance },
-          styles,
-        )}
+        className={getMainClasses({ paddingRight: 'extra', ...appearance }, styles)}
         onChange={onChange}
         placeholder={placeholder}
         ref={innerRef}

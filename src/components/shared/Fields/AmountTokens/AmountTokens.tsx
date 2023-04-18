@@ -21,14 +21,7 @@ interface Props {
 
 const displayName = 'Fields.AmountTokens';
 
-const AmountTokens = ({
-  id,
-  label,
-  nameAmount,
-  nameToken,
-  selectedTokenAddress,
-  tokens,
-}: Props) => {
+const AmountTokens = ({ id, label, nameAmount, nameToken, selectedTokenAddress, tokens }: Props) => {
   const tokenOptions = useMemo(
     () =>
       tokens.map(({ address, symbol }) => ({
@@ -42,9 +35,7 @@ const AmountTokens = ({
     () => tokens.find(({ address }) => address === selectedTokenAddress),
     [selectedTokenAddress, tokens],
   );
-  const decimals = getTokenDecimalsWithFallback(
-    selectedToken && selectedToken.decimals,
-  );
+  const decimals = getTokenDecimalsWithFallback(selectedToken && selectedToken.decimals);
   return (
     <div className={styles.main}>
       <div className={styles.inputContainer}>

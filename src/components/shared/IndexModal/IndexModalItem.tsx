@@ -97,10 +97,7 @@ const IndexModalItem = ({
           trigger="hover"
           content={
             <div className={styles.tooltip}>
-              <FormattedMessage
-                {...permissionInfoText}
-                values={permissionInfoTextValues}
-              />
+              <FormattedMessage {...permissionInfoText} values={permissionInfoTextValues} />
             </div>
           }
         >
@@ -111,11 +108,7 @@ const IndexModalItem = ({
       )}
       {!comingSoon && !permissionRequired && !disabled && (
         <div className={styles.iconCaret}>
-          <Icon
-            appearance={{ size: 'medium' }}
-            name="caret-right"
-            title={title}
-          />
+          <Icon appearance={{ size: 'medium' }} name="caret-right" title={title} />
         </div>
       )}
     </div>

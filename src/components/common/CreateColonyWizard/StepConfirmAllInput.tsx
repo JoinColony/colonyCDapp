@@ -70,19 +70,11 @@ const StepConfirmAllInput = ({ nextStep, wizardValues }: Props) => {
     >
       {({ formState: { isSubmitting } }) => (
         <section className={styles.main}>
-          <HeadingText
-            appearance={{ margin: 'none' }}
-            text={MSG.title}
-            paragraph={MSG.subtitle}
-          />
+          <HeadingText appearance={{ margin: 'none' }} text={MSG.title} paragraph={MSG.subtitle} />
           <div className={styles.finalContainer}>
             <CardRow cardOptions={options} values={wizardValues} />
           </div>
-          <SubmitFormButton
-            dataTest="userInputConfirm"
-            loading={isSubmitting}
-            disabled={isSubmitting}
-          />
+          <SubmitFormButton dataTest="userInputConfirm" loading={isSubmitting} disabled={isSubmitting} />
         </section>
       )}
     </ActionForm>

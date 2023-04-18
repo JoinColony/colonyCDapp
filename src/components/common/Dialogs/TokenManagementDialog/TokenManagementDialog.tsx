@@ -24,29 +24,18 @@ const MSG = defineMessages({
   },
 });
 
-type Props = DialogProps &
-  Partial<WizardDialogType<object>> &
-  ActionDialogProps;
+type Props = DialogProps & Partial<WizardDialogType<object>> & ActionDialogProps;
 
 const validationSchema = object({
   forceAction: boolean().defined(),
   tokenAddress: string().address().notRequired(),
-  selectedTokenAddresses: array()
-    .of(string().address().defined())
-    .notRequired(),
+  selectedTokenAddresses: array().of(string().address().defined()).notRequired(),
   annotationMessage: string().max(4000).notRequired(),
 }).defined();
 
 export type FormValues = InferType<typeof validationSchema>;
 
-const TokenManagementDialog = ({
-  colony,
-  cancel,
-  close,
-  callStep,
-  prevStep,
-  enabledExtensionData,
-}: Props) => {
+const TokenManagementDialog = ({ colony, cancel, close, callStep, prevStep, enabledExtensionData }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
   const colonyTokens = colony?.tokens?.items || [];
@@ -54,9 +43,7 @@ const TokenManagementDialog = ({
   const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
-    !isForce && isVotingReputationEnabled
-      ? ActionTypes.MOTION_EDIT_COLONY
-      : ActionTypes.ACTION_EDIT_COLONY;
+    !isForce && isVotingReputationEnabled ? ActionTypes.MOTION_EDIT_COLONY : ActionTypes.ACTION_EDIT_COLONY;
 
   const transform = pipe(
     mapPayload((payload) => getTokenManagementDialogPayload(colony, payload)),
@@ -76,9 +63,7 @@ const TokenManagementDialog = ({
         defaultValues={{
           forceAction: false,
           tokenAddress: '',
-          selectedTokenAddresses: colonyTokens.map(
-            (token) => token?.token.tokenAddress || '',
-          ),
+          selectedTokenAddresses: colonyTokens.map((token) => token?.token.tokenAddress || ''),
           annotationMessage: '',
           /*
            * @NOTE That since this a root motion, and we don't actually make use

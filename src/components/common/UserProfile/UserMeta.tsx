@@ -76,11 +76,7 @@ const UserMeta = ({ user: { walletAddress, profile }, user }: Props) => {
       )}
       {location && (
         <div className={styles.locationContainer}>
-          <Heading
-            appearance={{ size: 'normal', weight: 'thin' }}
-            text={location}
-            data-test="userProfileLocation"
-          />
+          <Heading appearance={{ size: 'normal', weight: 'thin' }} text={location} data-test="userProfileLocation" />
         </div>
       )}
     </div>

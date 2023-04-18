@@ -3,12 +3,7 @@ import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-} from '../utils';
+import { putError, takeFrom, routeRedirect, uploadIfpsAnnotation } from '../utils';
 import {
   ProcessedColonyDocument,
   ProcessedColonyQuery,
@@ -31,16 +26,8 @@ import {
 } from '~data/index';
 import { ContextModule, getContext } from '~context';
 
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
-import {
-  createTransaction,
-  getTxChannel,
-  createTransactionChannels,
-} from '../transactions';
+import { transactionReady, transactionPending, transactionAddParams } from '../../actionCreators';
+import { createTransaction, getTxChannel, createTransactionChannels } from '../transactions';
 
 function* enterRecoveryAction({
   payload: { colonyAddress, walletAddress, colonyName, annotationMessage },
@@ -55,11 +42,10 @@ function* enterRecoveryAction({
     txChannel = yield call(getTxChannel, metaId);
 
     const batchKey = 'recoveryAction';
-    const { recoveryAction, annotateRecoveryAction } =
-      yield createTransactionChannels(metaId, [
-        'recoveryAction',
-        'annotateRecoveryAction',
-      ]);
+    const { recoveryAction, annotateRecoveryAction } = yield createTransactionChannels(metaId, [
+      'recoveryAction',
+      'annotateRecoveryAction',
+    ]);
 
     yield fork(createTransaction, recoveryAction.id, {
       context: ClientType.ColonyClient,
@@ -90,20 +76,14 @@ function* enterRecoveryAction({
 
     yield takeFrom(recoveryAction.channel, ActionTypes.TRANSACTION_CREATED);
     if (annotationMessage) {
-      yield takeFrom(
-        annotateRecoveryAction.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
+      yield takeFrom(annotateRecoveryAction.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
     yield put(transactionReady(recoveryAction.id));
 
     const {
       payload: { hash: txHash, blockNumber },
-    } = yield takeFrom(
-      recoveryAction.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+    } = yield takeFrom(recoveryAction.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
     yield takeFrom(recoveryAction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -111,25 +91,17 @@ function* enterRecoveryAction({
 
       const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
 
-      yield put(
-        transactionAddParams(annotateRecoveryAction.id, [txHash, ipfsHash]),
-      );
+      yield put(transactionAddParams(annotateRecoveryAction.id, [txHash, ipfsHash]));
 
       yield put(transactionReady(annotateRecoveryAction.id));
 
-      yield takeFrom(
-        annotateRecoveryAction.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield takeFrom(annotateRecoveryAction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
     }
 
     /*
      * Refesh the current colony data object
      */
-    yield apolloClient.query<
-      ProcessedColonyQuery,
-      ProcessedColonyQueryVariables
-    >({
+    yield apolloClient.query<ProcessedColonyQuery, ProcessedColonyQueryVariables>({
       query: ProcessedColonyDocument,
       variables: {
         address: colonyAddress,
@@ -139,10 +111,7 @@ function* enterRecoveryAction({
     /*
      * Refesh the current colony data object
      */
-    yield apolloClient.query<
-      RecoveryRolesUsersQuery,
-      RecoveryRolesUsersQueryVariables
-    >({
+    yield apolloClient.query<RecoveryRolesUsersQuery, RecoveryRolesUsersQueryVariables>({
       query: RecoveryRolesUsersDocument,
       variables: {
         colonyAddress,
@@ -152,10 +121,7 @@ function* enterRecoveryAction({
     /*
      * Refresh recovery events
      */
-    yield apolloClient.query<
-      RecoveryEventsForSessionQuery,
-      RecoveryEventsForSessionQueryVariables
-    >({
+    yield apolloClient.query<RecoveryEventsForSessionQuery, RecoveryEventsForSessionQueryVariables>({
       query: RecoveryEventsForSessionDocument,
       variables: {
         colonyAddress,
@@ -166,10 +132,7 @@ function* enterRecoveryAction({
     /*
      * Actions that need attention
      */
-    yield apolloClient.query<
-      ActionsThatNeedAttentionQuery,
-      ActionsThatNeedAttentionQueryVariables
-    >({
+    yield apolloClient.query<ActionsThatNeedAttentionQuery, ActionsThatNeedAttentionQueryVariables>({
       query: ActionsThatNeedAttentionDocument,
       variables: {
         colonyAddress,
@@ -195,27 +158,17 @@ function* enterRecoveryAction({
 }
 
 function* setStorageSlotValue({
-  payload: {
-    colonyAddress,
-    walletAddress,
-    startBlock,
-    storageSlotLocation,
-    storageSlotValue,
-  },
+  payload: { colonyAddress, walletAddress, startBlock, storageSlotLocation, storageSlotValue },
   meta: { id: metaId },
   meta,
 }: Action<ActionTypes.ACTION_RECOVERY_SET_SLOT>) {
   let txChannel;
   try {
     if (!storageSlotLocation) {
-      throw new Error(
-        'The storage slot location is required in order to update it',
-      );
+      throw new Error('The storage slot location is required in order to update it');
     }
     if (!storageSlotValue) {
-      throw new Error(
-        'The storage slot value is required in order to update it',
-      );
+      throw new Error('The storage slot value is required in order to update it');
     }
 
     const apolloClient = getContext(ContextModule.ApolloClient);
@@ -223,9 +176,7 @@ function* setStorageSlotValue({
     txChannel = yield call(getTxChannel, metaId);
 
     const batchKey = 'setStorageSlot';
-    const { setStorageSlot } = yield createTransactionChannels(metaId, [
-      'setStorageSlot',
-    ]);
+    const { setStorageSlot } = yield createTransactionChannels(metaId, ['setStorageSlot']);
 
     yield fork(createTransaction, setStorageSlot.id, {
       context: ClientType.ColonyClient,
@@ -249,10 +200,7 @@ function* setStorageSlotValue({
     /*
      * Refresh recovery events
      */
-    yield apolloClient.query<
-      RecoveryEventsForSessionQuery,
-      RecoveryEventsForSessionQueryVariables
-    >({
+    yield apolloClient.query<RecoveryEventsForSessionQuery, RecoveryEventsForSessionQueryVariables>({
       query: RecoveryEventsForSessionDocument,
       variables: {
         colonyAddress,
@@ -277,10 +225,7 @@ function* setStorageSlotValue({
     /*
      * Refresh Actions that need attention
      */
-    yield apolloClient.query<
-      ActionsThatNeedAttentionQuery,
-      ActionsThatNeedAttentionQueryVariables
-    >({
+    yield apolloClient.query<ActionsThatNeedAttentionQuery, ActionsThatNeedAttentionQueryVariables>({
       query: ActionsThatNeedAttentionDocument,
       variables: {
         colonyAddress,
@@ -294,11 +239,7 @@ function* setStorageSlotValue({
       meta,
     });
   } catch (error) {
-    return yield putError(
-      ActionTypes.ACTION_RECOVERY_SET_SLOT_ERROR,
-      error,
-      meta,
-    );
+    return yield putError(ActionTypes.ACTION_RECOVERY_SET_SLOT_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
@@ -317,9 +258,7 @@ function* approveExitRecovery({
     txChannel = yield call(getTxChannel, metaId);
 
     const batchKey = 'approveExit';
-    const { approveExit } = yield createTransactionChannels(metaId, [
-      'approveExit',
-    ]);
+    const { approveExit } = yield createTransactionChannels(metaId, ['approveExit']);
 
     yield fork(createTransaction, approveExit.id, {
       context: ClientType.ColonyClient,
@@ -343,10 +282,7 @@ function* approveExitRecovery({
     /*
      * Refresh recovery events
      */
-    yield apolloClient.query<
-      RecoveryEventsForSessionQuery,
-      RecoveryEventsForSessionQueryVariables
-    >({
+    yield apolloClient.query<RecoveryEventsForSessionQuery, RecoveryEventsForSessionQueryVariables>({
       query: RecoveryEventsForSessionDocument,
       variables: {
         colonyAddress,
@@ -371,10 +307,7 @@ function* approveExitRecovery({
     /*
      * Refresh system messages
      */
-    yield apolloClient.query<
-      RecoverySystemMessagesForSessionQuery,
-      RecoverySystemMessagesForSessionQueryVariables
-    >({
+    yield apolloClient.query<RecoverySystemMessagesForSessionQuery, RecoverySystemMessagesForSessionQueryVariables>({
       query: RecoverySystemMessagesForSessionDocument,
       variables: {
         colonyAddress,
@@ -385,10 +318,7 @@ function* approveExitRecovery({
     /*
      * Refresh Actions that need attention
      */
-    yield apolloClient.query<
-      ActionsThatNeedAttentionQuery,
-      ActionsThatNeedAttentionQueryVariables
-    >({
+    yield apolloClient.query<ActionsThatNeedAttentionQuery, ActionsThatNeedAttentionQueryVariables>({
       query: ActionsThatNeedAttentionDocument,
       variables: {
         colonyAddress,
@@ -419,11 +349,7 @@ function* approveExitRecovery({
      */
     scrollToRef?.current?.scrollIntoView({ behavior: 'smooth' });
   } catch (error) {
-    return yield putError(
-      ActionTypes.ACTION_RECOVERY_APPROVE_ERROR,
-      error,
-      meta,
-    );
+    return yield putError(ActionTypes.ACTION_RECOVERY_APPROVE_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
@@ -442,9 +368,7 @@ function* exitRecoveryMode({
     txChannel = yield call(getTxChannel, metaId);
 
     const batchKey = 'exitRecovery';
-    const { exitRecovery } = yield createTransactionChannels(metaId, [
-      'exitRecovery',
-    ]);
+    const { exitRecovery } = yield createTransactionChannels(metaId, ['exitRecovery']);
 
     yield fork(createTransaction, exitRecovery.id, {
       context: ClientType.ColonyClient,
@@ -468,10 +392,7 @@ function* exitRecoveryMode({
     /*
      * Refresh recovery events
      */
-    yield apolloClient.query<
-      RecoveryEventsForSessionQuery,
-      RecoveryEventsForSessionQueryVariables
-    >({
+    yield apolloClient.query<RecoveryEventsForSessionQuery, RecoveryEventsForSessionQueryVariables>({
       query: RecoveryEventsForSessionDocument,
       variables: {
         colonyAddress,
@@ -502,11 +423,7 @@ function* exitRecoveryMode({
      */
     scrollToRef?.current?.scrollIntoView({ behavior: 'smooth' });
   } catch (error) {
-    return yield putError(
-      ActionTypes.ACTION_RECOVERY_APPROVE_ERROR,
-      error,
-      meta,
-    );
+    return yield putError(ActionTypes.ACTION_RECOVERY_APPROVE_ERROR, error, meta);
   } finally {
     txChannel.close();
   }

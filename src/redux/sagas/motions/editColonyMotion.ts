@@ -4,25 +4,11 @@ import { AddressZero } from '@ethersproject/constants';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, routeRedirect, uploadIfpsAnnotation, getColonyManager } from '../utils';
 
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
+import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
 import { ipfsUpload } from '../ipfs';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { transactionReady, transactionPending, transactionAddParams } from '../../actionCreators';
 
 function* editColonyMotion({
   payload: {
@@ -48,39 +34,23 @@ function* editColonyMotion({
     }
 
     const context = yield getColonyManager();
-    const colonyClient = yield context.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
+    const colonyClient = yield context.getClient(ClientType.ColonyClient, colonyAddress);
 
-    const childSkillIndex = yield call(
-      getChildIndex,
-      colonyClient,
-      Id.RootDomain,
-      Id.RootDomain,
-    );
+    const childSkillIndex = yield call(getChildIndex, colonyClient, Id.RootDomain, Id.RootDomain);
 
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      Id.RootDomain,
-    );
+    const { skillId } = yield call([colonyClient, colonyClient.getDomain], Id.RootDomain);
 
-    const { key, value, branchMask, siblings } = yield call(
-      colonyClient.getReputation,
-      skillId,
-      AddressZero,
-    );
+    const { key, value, branchMask, siblings } = yield call(colonyClient.getReputation, skillId, AddressZero);
 
     txChannel = yield call(getTxChannel, metaId);
 
     // setup batch ids and channels
     const batchKey = 'createMotion';
 
-    const { createMotion, annotateEditColonyMotion } =
-      yield createTransactionChannels(metaId, [
-        'createMotion',
-        'annotateEditColonyMotion',
-      ]);
+    const { createMotion, annotateEditColonyMotion } = yield createTransactionChannels(metaId, [
+      'createMotion',
+      'annotateEditColonyMotion',
+    ]);
 
     /*
      * Upload colony metadata to IPFS
@@ -108,33 +78,19 @@ function* editColonyMotion({
       ipfsUpload,
       JSON.stringify({
         colonyDisplayName,
-        colonyAvatarHash: hasAvatarChanged
-          ? colonyAvatarIpfsHash
-          : colonyAvatarHash,
+        colonyAvatarHash: hasAvatarChanged ? colonyAvatarIpfsHash : colonyAvatarHash,
         colonyTokens,
       }),
     );
 
-    const encodedAction = colonyClient.interface.encodeFunctionData(
-      'editColony',
-      [colonyMetadataIpfsHash],
-    );
+    const encodedAction = colonyClient.interface.encodeFunctionData('editColony', [colonyMetadataIpfsHash]);
 
     // create transactions
     yield fork(createTransaction, createMotion.id, {
       context: ClientType.VotingReputationClient,
       methodName: 'createMotion',
       identifier: colonyAddress,
-      params: [
-        Id.RootDomain,
-        childSkillIndex,
-        AddressZero,
-        encodedAction,
-        key,
-        value,
-        branchMask,
-        siblings,
-      ],
+      params: [Id.RootDomain, childSkillIndex, AddressZero, encodedAction, key, value, branchMask, siblings],
       group: {
         key: batchKey,
         id: metaId,
@@ -160,36 +116,25 @@ function* editColonyMotion({
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
     if (annotationMessage) {
-      yield takeFrom(
-        annotateEditColonyMotion.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
+      yield takeFrom(annotateEditColonyMotion.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
     yield put(transactionReady(createMotion.id));
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+    } = yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
       const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
       yield put(transactionPending(annotateEditColonyMotion.id));
 
-      yield put(
-        transactionAddParams(annotateEditColonyMotion.id, [txHash, ipfsHash]),
-      );
+      yield put(transactionAddParams(annotateEditColonyMotion.id, [txHash, ipfsHash]));
 
       yield put(transactionReady(annotateEditColonyMotion.id));
 
-      yield takeFrom(
-        annotateEditColonyMotion.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield takeFrom(annotateEditColonyMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
     }
     yield put<AllActions>({
       type: ActionTypes.MOTION_EDIT_COLONY_SUCCESS,

@@ -31,9 +31,7 @@ const TransactionStatus = ({ status, showTooltip = true }: Props) => (
   <Tooltip
     placement="left"
     trigger={showTooltip ? 'hover' : null}
-    content={
-      <FormattedMessage {...MSG.transactionStatus} values={{ status }} />
-    }
+    content={<FormattedMessage {...MSG.transactionStatus} values={{ status }} />}
   >
     <div className={styles.main}>
       <span className={getMainClasses({ theme: status }, styles)} />

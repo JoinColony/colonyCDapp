@@ -37,8 +37,7 @@ const MSG = defineMessages({
   },
   smiteReputationDescription: {
     id: `${displayName}.smiteReputationDescription`,
-    defaultMessage:
-      'Punish undesirable behaviour by deducting reputation points.',
+    defaultMessage: 'Punish undesirable behaviour by deducting reputation points.',
   },
 });
 
@@ -62,22 +61,16 @@ const ManageReputation = ({
 }: Props) => {
   const { wallet, user } = useAppContext();
 
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
-  ]);
+  const allUserRoles = useTransformer(getAllUserRoles, [colony, wallet?.address]);
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
   const hasRegisteredProfile = !!user?.name && !!wallet?.address;
   const canSmiteReputation =
-    hasRegisteredProfile &&
-    (userHasRole(allUserRoles, ColonyRole.Arbitration) ||
-      isVotingReputationEnabled);
+    hasRegisteredProfile && (userHasRole(allUserRoles, ColonyRole.Arbitration) || isVotingReputationEnabled);
 
   const canAwardReputation =
-    hasRegisteredProfile &&
-    (userHasRole(allUserRoles, ColonyRole.Root) || isVotingReputationEnabled);
+    hasRegisteredProfile && (userHasRole(allUserRoles, ColonyRole.Root) || isVotingReputationEnabled);
 
   const items = [
     {
@@ -110,13 +103,7 @@ const ManageReputation = ({
     },
   ];
   return (
-    <IndexModal
-      cancel={cancel}
-      close={close}
-      title={MSG.dialogHeader}
-      items={items}
-      back={() => callStep(prevStep)}
-    />
+    <IndexModal cancel={cancel} close={close} title={MSG.dialogHeader} items={items} back={() => callStep(prevStep)} />
   );
 };
 

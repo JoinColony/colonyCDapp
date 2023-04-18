@@ -17,11 +17,7 @@ export const generateBroadcasterHumanReadableError = (
     reason?: string;
   },
 ): string => {
-  let errorMessage =
-    error?.reason ||
-    response?.reason ||
-    response?.payload ||
-    formatMessage({ id: 'error.unknown' });
+  let errorMessage = error?.reason || response?.reason || response?.payload || formatMessage({ id: 'error.unknown' });
 
   /*
    * @NOTE Account for error reasons encoded as hex strings
@@ -59,10 +55,6 @@ export const generateBroadcasterHumanReadableError = (
    * @NOTE If the error in unknown _(we didn't trigger the previous logic checks)_
    * make sure to log it out so we can debug it
    */
-  console.error(
-    errorMessage,
-    `Reponse: ${response?.payload} ${response?.reason}`,
-    `Decoded: ${hexReasonValue}`,
-  );
+  console.error(errorMessage, `Reponse: ${response?.payload} ${response?.reason}`, `Decoded: ${hexReasonValue}`);
   return errorMessage;
 };

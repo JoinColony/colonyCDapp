@@ -8,11 +8,7 @@ import { Action } from '../../types/actions';
 import { selectAsJS, getColonyManager } from '../utils';
 import { mergePayload } from '~utils/actions';
 import { TransactionRecord } from '../../immutable';
-import {
-  TRANSACTION_STATUSES,
-  TRANSACTION_METHODS,
-  ExtendedClientType,
-} from '~types';
+import { TRANSACTION_STATUSES, TRANSACTION_METHODS, ExtendedClientType } from '~types';
 
 import { transactionSendError } from '../../actionCreators';
 import { oneTransaction } from '../../selectors';
@@ -29,13 +25,10 @@ const abis = {
   vestingSimple: { default: { abi: {} as ContractInterface } },
 };
 
-export default function* sendTransaction({
-  meta: { id },
-}: Action<ActionTypes.TRANSACTION_SEND>) {
+export default function* sendTransaction({ meta: { id } }: Action<ActionTypes.TRANSACTION_SEND>) {
   const transaction: TransactionRecord = yield selectAsJS(oneTransaction, id);
 
-  const { status, context, identifier, metatransaction, methodName } =
-    transaction;
+  const { status, context, identifier, metatransaction, methodName } = transaction;
 
   if (status !== TRANSACTION_STATUSES.READY) {
     throw new Error('Transaction is not ready to send.');
@@ -46,44 +39,26 @@ export default function* sendTransaction({
   if (context === ClientType.TokenClient) {
     contextClient = yield colonyManager.getTokenClient(identifier as string);
   } else if (context === ClientType.TokenLockingClient) {
-    contextClient = yield colonyManager.getTokenLockingClient(
-      identifier as string,
-    );
-  } else if (
-    metatransaction &&
-    methodName === TRANSACTION_METHODS.DeployTokenAuthority
-  ) {
+    contextClient = yield colonyManager.getTokenLockingClient(identifier as string);
+  } else if (metatransaction && methodName === TRANSACTION_METHODS.DeployTokenAuthority) {
     contextClient = colonyManager.networkClient;
   } else if (context === ExtendedClientType.WrappedTokenClient) {
     const wrappedTokenAbi = abis.WrappedToken.default.abi;
-    contextClient = new Contract(
-      identifier || '',
-      wrappedTokenAbi,
-      colonyManager.signer,
-    );
+    contextClient = new Contract(identifier || '', wrappedTokenAbi, colonyManager.signer);
     contextClient.clientType = ExtendedClientType.WrappedTokenClient;
   } else if (context === ExtendedClientType.VestingSimpleClient) {
     const vestingSimpleAbi = abis.vestingSimple.default.abi;
-    contextClient = new Contract(
-      identifier || '',
-      vestingSimpleAbi,
-      colonyManager.signer,
-    );
+    contextClient = new Contract(identifier || '', vestingSimpleAbi, colonyManager.signer);
     contextClient.clientType = ExtendedClientType.VestingSimpleClient;
   } else {
-    contextClient = yield colonyManager.getClient(
-      context as ClientType,
-      identifier,
-    );
+    contextClient = yield colonyManager.getClient(context as ClientType, identifier);
   }
 
   if (!contextClient) {
     throw new Error('Context client failed to instantiate');
   }
 
-  const promiseMethod = metatransaction
-    ? getMetatransactionPromise
-    : getTransactionPromise;
+  const promiseMethod = metatransaction ? getMetatransactionPromise : getTransactionPromise;
 
   /*
    * @NOTE Create a promise to send the transaction with the given method.
@@ -94,12 +69,7 @@ export default function* sendTransaction({
    */
   const txPromise = promiseMethod(contextClient, transaction);
 
-  const channel = yield call(
-    transactionChannel,
-    txPromise,
-    transaction,
-    contextClient,
-  );
+  const channel = yield call(transactionChannel, txPromise, transaction, contextClient);
 
   try {
     while (true) {

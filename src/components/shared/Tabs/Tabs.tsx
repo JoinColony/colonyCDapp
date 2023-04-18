@@ -29,9 +29,7 @@ interface Props {
 
 const displayName = 'Tabs';
 
-const Tabs = ({ innerRef, ...props }: Props) => (
-  <ReactTabs className={styles.main} domRef={innerRef} {...props} />
-);
+const Tabs = ({ innerRef, ...props }: Props) => <ReactTabs className={styles.main} domRef={innerRef} {...props} />;
 
 Tabs.displayName = displayName;
 

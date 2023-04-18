@@ -14,11 +14,7 @@ import {
 import { getContext, ContextModule } from '~context';
 import { putError, takeFrom } from '../utils';
 
-import {
-  createTransaction,
-  getTxChannel,
-  waitForTxResult,
-} from '../transactions';
+import { createTransaction, getTxChannel, waitForTxResult } from '../transactions';
 
 function* claimAllocation({
   meta,
@@ -46,10 +42,7 @@ function* claimAllocation({
     /*
      *  Refresh queries
      */
-    yield apolloClient.query<
-      UserBalanceWithLockQuery,
-      UserBalanceWithLockQueryVariables
-    >({
+    yield apolloClient.query<UserBalanceWithLockQuery, UserBalanceWithLockQueryVariables>({
       query: UserBalanceWithLockDocument,
       variables: {
         address: userAddress,
@@ -59,10 +52,7 @@ function* claimAllocation({
       fetchPolicy: 'network-only',
     });
 
-    yield apolloClient.query<
-      ClaimTokensFromMetacolonyQuery,
-      ClaimTokensFromMetacolonyQueryVariables
-    >({
+    yield apolloClient.query<ClaimTokensFromMetacolonyQuery, ClaimTokensFromMetacolonyQueryVariables>({
       query: ClaimTokensFromMetacolonyDocument,
       variables: {
         userAddress,

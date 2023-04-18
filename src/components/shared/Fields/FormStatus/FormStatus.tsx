@@ -17,15 +17,9 @@ const FormStatus = ({ status: { info, error } = {} }: Props) => {
   if (!info && !error) return null;
   return (
     <div className={styles.main}>
-      {info && (
-        <span className={styles.info}>
-          {typeof info == 'string' ? info : <FormattedMessage {...info} />}
-        </span>
-      )}
+      {info && <span className={styles.info}>{typeof info == 'string' ? info : <FormattedMessage {...info} />}</span>}
       {error && (
-        <span className={styles.error}>
-          {typeof error == 'string' ? error : <FormattedMessage {...error} />}
-        </span>
+        <span className={styles.error}>{typeof error == 'string' ? error : <FormattedMessage {...error} />}</span>
       )}
     </div>
   );

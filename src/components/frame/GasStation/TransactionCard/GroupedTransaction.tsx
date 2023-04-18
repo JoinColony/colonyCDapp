@@ -7,11 +7,7 @@ import Card from '~shared/Card';
 import { TransactionType } from '~redux/immutable';
 import { arrayToObject } from '~utils/arrays';
 
-import {
-  getGroupKey,
-  getGroupStatus,
-  getGroupValues,
-} from '../transactionGroup';
+import { getGroupKey, getGroupStatus, getGroupValues } from '../transactionGroup';
 import { Appearance } from '../GasStationContent';
 import GroupedTransactionCard from './GroupedTransactionCard';
 import TransactionStatus from './TransactionStatus';
@@ -25,29 +21,19 @@ interface Props {
 
 const displayName = 'frame.GasStation.GroupedTransaction';
 
-const GroupedTransaction = ({
-  appearance,
-  selectedTransactionIdx,
-  transactionGroup,
-}: Props) => {
+const GroupedTransaction = ({ appearance, selectedTransactionIdx, transactionGroup }: Props) => {
   const { interactive } = appearance;
   const groupKey = getGroupKey(transactionGroup);
   const status = getGroupStatus(transactionGroup);
   const values = getGroupValues<TransactionType>(transactionGroup);
 
   const defaultTransactionGroupMessageDescriptorTitleId = {
-    id: `${
-      transactionGroup[0].metatransaction ? 'meta' : ''
-    }transaction.${groupKey}.title`,
+    id: `${transactionGroup[0].metatransaction ? 'meta' : ''}transaction.${groupKey}.title`,
   };
   const defaultTransactionGroupMessageDescriptorDescriptionId = {
     id: process.env.DEBUG
-      ? `${
-          transactionGroup[0].metatransaction ? 'meta' : ''
-        }transaction.debug.description`
-      : `${
-          transactionGroup[0].metatransaction ? 'meta' : ''
-        }transaction.${groupKey}.description`,
+      ? `${transactionGroup[0].metatransaction ? 'meta' : ''}transaction.debug.description`
+      : `${transactionGroup[0].metatransaction ? 'meta' : ''}transaction.${groupKey}.description`,
   };
 
   return (
@@ -61,28 +47,18 @@ const GroupedTransaction = ({
                 ...defaultTransactionGroupMessageDescriptorTitleId,
                 ...values.group?.title,
               }}
-              textValues={
-                values.group?.titleValues || arrayToObject(values.params)
-              }
+              textValues={values.group?.titleValues || arrayToObject(values.params)}
             />
             <FormattedMessage
               {...defaultTransactionGroupMessageDescriptorDescriptionId}
               {...values.group?.description}
-              values={
-                values.group?.descriptionValues || arrayToObject(values.params)
-              }
+              values={values.group?.descriptionValues || arrayToObject(values.params)}
             />
           </div>
-          <TransactionStatus
-            groupCount={transactionGroup.length}
-            status={status}
-          />
+          <TransactionStatus groupCount={transactionGroup.length} status={status} />
         </div>
       )}
-      <ul
-        className={styles.transactionList}
-        data-test="gasStationGroupedTransaction"
-      >
+      <ul className={styles.transactionList} data-test="gasStationGroupedTransaction">
         {transactionGroup.map((transaction, idx) => (
           <GroupedTransactionCard
             key={transaction.id}

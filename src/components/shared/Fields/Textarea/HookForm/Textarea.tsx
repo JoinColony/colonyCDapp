@@ -88,12 +88,7 @@ const Textarea = ({
         )}
       </div>
       {!elementOnly && (
-        <InputStatus
-          appearance={appearance}
-          status={status}
-          statusValues={statusValues}
-          error={error?.message}
-        />
+        <InputStatus appearance={appearance} status={status} statusValues={statusValues} error={error?.message} />
       )}
     </div>
   );

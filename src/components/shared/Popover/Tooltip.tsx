@@ -1,9 +1,5 @@
 import React, { ReactNode } from 'react';
-import {
-  usePopperTooltip,
-  TriggerType,
-  PopperOptions,
-} from 'react-popper-tooltip';
+import { usePopperTooltip, TriggerType, PopperOptions } from 'react-popper-tooltip';
 import { Placement as PlacementType } from '@popperjs/core';
 
 import styles from './Tooltip.css';
@@ -40,13 +36,7 @@ const Tooltip = ({
   trigger = 'hover',
   isOpen,
 }: Props) => {
-  const {
-    getArrowProps,
-    getTooltipProps,
-    setTooltipRef,
-    setTriggerRef,
-    visible,
-  } = usePopperTooltip(
+  const { getArrowProps, getTooltipProps, setTooltipRef, setTriggerRef, visible } = usePopperTooltip(
     {
       delayShow: 200,
       placement,
@@ -60,10 +50,7 @@ const Tooltip = ({
     <>
       <span ref={setTriggerRef}>{children}</span>
       {visible && (
-        <div
-          ref={setTooltipRef}
-          {...getTooltipProps({ className: styles.tooltipContainer })}
-        >
+        <div ref={setTooltipRef} {...getTooltipProps({ className: styles.tooltipContainer })}>
           <div
             {...getArrowProps({
               className: showArrow ? styles.tooltipArrow : '',

@@ -1,14 +1,9 @@
-import {
-  DomainColor,
-  DomainMetadataChangelogInput,
-  ColonyMetadataChangelogInput,
-} from '~gql';
+import { DomainColor, DomainMetadataChangelogInput, ColonyMetadataChangelogInput } from '~gql';
 import { ColonyMetadata, DomainMetadata } from '~types';
 import { excludeTypenameKey } from '~utils/objects';
 
-const getExistingChangelog = <T extends { __typename?: string }>(
-  changelog?: T[] | null,
-) => changelog?.map((changelogItem) => excludeTypenameKey(changelogItem)) ?? [];
+const getExistingChangelog = <T extends { __typename?: string }>(changelog?: T[] | null) =>
+  changelog?.map((changelogItem) => excludeTypenameKey(changelogItem)) ?? [];
 
 export const getUpdatedDomainMetadataChangelog = (
   transactionHash: string,

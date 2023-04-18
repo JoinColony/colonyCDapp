@@ -1,11 +1,4 @@
-import {
-  ComponentType,
-  createElement,
-  Component,
-  SyntheticEvent,
-  KeyboardEvent,
-  MouseEvent,
-} from 'react';
+import { ComponentType, createElement, Component, SyntheticEvent, KeyboardEvent, MouseEvent } from 'react';
 import { nanoid } from 'nanoid';
 
 import OmniPicker, { Props as OmniPickerProps } from './OmniPicker';
@@ -13,8 +6,7 @@ import { OmniPickerData, WrappedComponentProps } from './types';
 import { ESC, TAB, UP, DOWN, ENTER } from '~types';
 
 const defaultProps = {
-  getItem: (filteredData: OmniPickerData[], selectedIdx: number) =>
-    filteredData[selectedIdx],
+  getItem: (filteredData: OmniPickerData[], selectedIdx: number) => filteredData[selectedIdx],
 };
 
 export interface Props extends Partial<DefaultProps> {
@@ -84,12 +76,7 @@ const getClass = (WrappedComponent) => {
       );
     };
 
-    close = (
-      evt:
-        | MouseEvent
-        | SyntheticEvent<HTMLInputElement>
-        | KeyboardEvent<HTMLElement>,
-    ) => {
+    close = (evt: MouseEvent | SyntheticEvent<HTMLInputElement> | KeyboardEvent<HTMLElement>) => {
       this.blur(evt);
       if (this.omniPicker) {
         this.omniPicker.handleClose();
@@ -169,12 +156,7 @@ const getClass = (WrappedComponent) => {
       }
     };
 
-    blur = (
-      evt:
-        | MouseEvent
-        | SyntheticEvent<HTMLInputElement>
-        | KeyboardEvent<HTMLElement>,
-    ) => {
+    blur = (evt: MouseEvent | SyntheticEvent<HTMLInputElement> | KeyboardEvent<HTMLElement>) => {
       if (this.omniPicker) {
         this.omniPicker.handleBlur(evt);
       }
@@ -295,7 +277,6 @@ const getClass = (WrappedComponent) => {
   return OmniPickerBase;
 };
 
-const withOmniPicker = (WrappedComponent: ComponentType<any>) =>
-  getClass(WrappedComponent);
+const withOmniPicker = (WrappedComponent: ComponentType<any>) => getClass(WrappedComponent);
 
 export default withOmniPicker;

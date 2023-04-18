@@ -2,13 +2,7 @@ import React from 'react';
 
 import Numeral from '~shared/Numeral';
 import FriendlyName from '~shared/FriendlyName';
-import {
-  Colony,
-  ColonyAndExtensionsEvents,
-  ColonyAction,
-  ColonyActionType,
-  Domain,
-} from '~types';
+import { Colony, ColonyAndExtensionsEvents, ColonyAction, ColonyActionType, Domain } from '~types';
 import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
@@ -24,27 +18,19 @@ const { formatMessage } = intl({
 });
 
 // Get the domain name at the time of a transaction with a given hash (or fallback to the current name)
-const getDomainNameFromChangelog = (
-  transactionHash: string,
-  domain?: Domain | null,
-) => {
+const getDomainNameFromChangelog = (transactionHash: string, domain?: Domain | null) => {
   if (!domain?.metadata) {
     return null;
   }
 
-  const changelogItem = domain.metadata.changelog?.find(
-    (item) => item.transactionHash === transactionHash,
-  );
+  const changelogItem = domain.metadata.changelog?.find((item) => item.transactionHash === transactionHash);
   if (!changelogItem?.newName) {
     return domain.metadata.name;
   }
   return changelogItem.newName;
 };
 
-export const mapColonyActionToExpectedFormat = (
-  actionData: ColonyAction,
-  colony?: Colony,
-) => {
+export const mapColonyActionToExpectedFormat = (actionData: ColonyAction, colony?: Colony) => {
   // const formattedRolesTitle = formatRolesTitle(item.roles); // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
 
   return {
@@ -57,10 +43,8 @@ export const mapColonyActionToExpectedFormat = (
     ),
     // direction: formattedRolesTitle.direction,
     fromDomain:
-      getDomainNameFromChangelog(
-        actionData.transactionHash,
-        actionData.fromDomain,
-      ) ?? formatMessage({ id: 'unknownDomain' }),
+      getDomainNameFromChangelog(actionData.transactionHash, actionData.fromDomain) ??
+      formatMessage({ id: 'unknownDomain' }),
     initiator: (
       <span className={styles.titleDecoration}>
         <FriendlyName user={actionData.initiatorUser} autoShrinkAddress />
@@ -71,22 +55,14 @@ export const mapColonyActionToExpectedFormat = (
         <FriendlyName user={actionData.recipient} autoShrinkAddress />
       </span>
     ),
-    toDomain:
-      actionData.toDomain?.metadata?.name ??
-      formatMessage({ id: 'unknownDomain' }),
+    toDomain: actionData.toDomain?.metadata?.name ?? formatMessage({ id: 'unknownDomain' }),
     tokenSymbol: actionData.token?.symbol,
     reputationChangeNumeral: actionData.amount && (
-      <Numeral
-        value={actionData.amount}
-        decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
-      />
+      <Numeral value={actionData.amount} decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)} />
     ),
     reputationChange:
       actionData.amount &&
-      formatReputationChange(
-        actionData.amount,
-        getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
-      ),
+      formatReputationChange(actionData.amount, getTokenDecimalsWithFallback(colony?.nativeToken.decimals)),
     // rolesChanged: formattedRolesTitle.roleTitle,
     newVersion: actionData.newColonyVersion,
   };
@@ -110,13 +86,9 @@ export const mapColonyEventToExpectedFormat = (
     domainMetadataChanges: getDomainMetadataChangesValue(actionData),
     colonyMetadataChanges: getColonyMetadataChangesValue(actionData, colony),
     fromDomain:
-      getDomainNameFromChangelog(
-        actionData.transactionHash,
-        actionData.fromDomain,
-      ) ?? formatMessage({ id: 'unknownDomain' }),
-    toDomain:
-      actionData.toDomain?.metadata?.name ??
+      getDomainNameFromChangelog(actionData.transactionHash, actionData.fromDomain) ??
       formatMessage({ id: 'unknownDomain' }),
+    toDomain: actionData.toDomain?.metadata?.name ?? formatMessage({ id: 'unknownDomain' }),
     eventNameDecorated: <b>{eventName}</b>,
     // role: role && formatText({ id: `role.${role.id}` }),
     // clientOrExtensionType: (
@@ -132,21 +104,14 @@ export const mapColonyEventToExpectedFormat = (
         <FriendlyName user={actionData.recipient} autoShrinkAddress />
       </span>
     ),
-    isSmiteAction:
-      actionData.type === ColonyActionType.EmitDomainReputationPenalty,
+    isSmiteAction: actionData.type === ColonyActionType.EmitDomainReputationPenalty,
     tokenSymbol: actionData.token?.symbol,
     reputationChange:
       actionData.amount &&
-      formatReputationChange(
-        actionData.amount,
-        getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
-      ),
+      formatReputationChange(actionData.amount, getTokenDecimalsWithFallback(colony?.nativeToken.decimals)),
     newVersion: actionData.newColonyVersion,
     reputationChangeNumeral: actionData.amount && (
-      <Numeral
-        value={actionData.amount}
-        decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
-      />
+      <Numeral value={actionData.amount} decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)} />
     ),
   };
 };

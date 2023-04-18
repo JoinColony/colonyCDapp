@@ -55,8 +55,7 @@ const ActionsListItem = ({
   const { colony } = useColonyContext();
   const navigate = useNavigate();
 
-  const handleActionRedirect = () =>
-    navigate(`/colony/${colony?.name}/tx/${transactionHash}`);
+  const handleActionRedirect = () => navigate(`/colony/${colony?.name}/tx/${transactionHash}`);
 
   // const { isVotingExtensionEnabled } = useEnabledExtensions({
   //   colonyAddress: colony?.colonyAddress,
@@ -74,14 +73,7 @@ const ActionsListItem = ({
 
   return (
     <ListItem
-      avatar={
-        <UserAvatar
-          size="s"
-          user={item.initiatorUser}
-          showInfo
-          popperOptions={userAvatarPopoverOptions}
-        />
-      }
+      avatar={<UserAvatar size="s" user={item.initiatorUser} showInfo popperOptions={userAvatarPopoverOptions} />}
       createdAt={createdAt}
       extra={
         null // displayCountdownTimer && (

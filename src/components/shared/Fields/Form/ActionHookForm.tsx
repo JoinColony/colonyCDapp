@@ -5,22 +5,13 @@ import { ActionTypes, ActionTypeString } from '~redux';
 import { ActionTransformFnType, getFormAction } from '~utils/actions';
 import { useAsyncFunction } from '~hooks';
 
-import HookForm, {
-  CustomSubmitErrorHandler,
-  CustomSubmitHandler,
-  HookFormProps,
-} from './HookForm';
+import HookForm, { CustomSubmitErrorHandler, CustomSubmitHandler, HookFormProps } from './HookForm';
 
 const displayName = 'Form.ActionHookForm';
 
-export type OnSuccess<V extends FieldValues> = (
-  result: any,
-  values: V,
-  FormValues: UseFormReturn<V>,
-) => void;
+export type OnSuccess<V extends FieldValues> = (result: any, values: V, FormValues: UseFormReturn<V>) => void;
 
-interface Props<V extends Record<string, any>>
-  extends Omit<HookFormProps<V>, 'onError' | 'onSubmit'> {
+interface Props<V extends Record<string, any>> extends Omit<HookFormProps<V>, 'onError' | 'onSubmit'> {
   /** Redux action type to dispatch on submit (e.g. CREATE_XXX) */
   actionType: ActionTypes;
 
@@ -73,9 +64,7 @@ const ActionHookForm = <V extends Record<string, any>>({
     }
   };
 
-  return (
-    <HookForm {...props} onSubmit={handleSubmit} onError={onSubmitError} />
-  );
+  return <HookForm {...props} onSubmit={handleSubmit} onError={onSubmitError} />;
 };
 
 ActionHookForm.displayName = displayName;

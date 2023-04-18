@@ -1,10 +1,6 @@
 import { ColonyRole } from '@colony/colony-js';
 
-import {
-  ColonyActionType,
-  ColonyAndExtensionsEvents,
-  ColonyMotions,
-} from '~types';
+import { ColonyActionType, ColonyAndExtensionsEvents, ColonyMotions } from '~types';
 
 export enum TransactionStatuses {
   Failed = 'failed',
@@ -31,13 +27,8 @@ type ActionsEventsMap = Partial<{
 }>;
 
 export const EVENT_ROLES_MAP: EventRolesMap = {
-  [ColonyAndExtensionsEvents.OneTxPaymentMade]: [
-    ColonyRole.Administration,
-    ColonyRole.Funding,
-  ],
-  [ColonyAndExtensionsEvents.ColonyFundsMovedBetweenFundingPots]: [
-    ColonyRole.Funding,
-  ],
+  [ColonyAndExtensionsEvents.OneTxPaymentMade]: [ColonyRole.Administration, ColonyRole.Funding],
+  [ColonyAndExtensionsEvents.ColonyFundsMovedBetweenFundingPots]: [ColonyRole.Funding],
   [ColonyAndExtensionsEvents.TokenUnlocked]: [ColonyRole.Root],
   [ColonyAndExtensionsEvents.TokensMinted]: [ColonyRole.Root],
   [ColonyAndExtensionsEvents.DomainAdded]: [ColonyRole.Architecture],
@@ -50,10 +41,7 @@ export const EVENT_ROLES_MAP: EventRolesMap = {
   [ColonyAndExtensionsEvents.RecoveryStorageSlotSet]: [ColonyRole.Recovery],
   [ColonyAndExtensionsEvents.RecoveryModeExitApproved]: [ColonyRole.Recovery],
   [ColonyAndExtensionsEvents.RecoveryModeExited]: [ColonyRole.Recovery],
-  [ColonyAndExtensionsEvents.ArbitraryReputationUpdate]: [
-    ColonyRole.Root,
-    ColonyRole.Arbitration,
-  ],
+  [ColonyAndExtensionsEvents.ArbitraryReputationUpdate]: [ColonyRole.Root, ColonyRole.Arbitration],
   [ColonyAndExtensionsEvents.Generic]: [],
 };
 
@@ -71,9 +59,7 @@ const MOTION_EVENTS = [
 
 export const ACTIONS_EVENTS: ActionsEventsMap = {
   [ColonyActionType.Payment]: [ColonyAndExtensionsEvents.OneTxPaymentMade],
-  [ColonyActionType.MoveFunds]: [
-    ColonyAndExtensionsEvents.ColonyFundsMovedBetweenFundingPots,
-  ],
+  [ColonyActionType.MoveFunds]: [ColonyAndExtensionsEvents.ColonyFundsMovedBetweenFundingPots],
   [ColonyActionType.UnlockToken]: [ColonyAndExtensionsEvents.TokenUnlocked],
   [ColonyActionType.MintTokens]: [ColonyAndExtensionsEvents.TokensMinted],
   [ColonyActionType.CreateDomain]: [ColonyAndExtensionsEvents.DomainAdded],
@@ -87,12 +73,8 @@ export const ACTIONS_EVENTS: ActionsEventsMap = {
     ColonyAndExtensionsEvents.RecoveryModeExitApproved,
     ColonyAndExtensionsEvents.RecoveryModeExited,
   ],
-  [ColonyActionType.EmitDomainReputationPenalty]: [
-    ColonyAndExtensionsEvents.ArbitraryReputationUpdate,
-  ],
-  [ColonyActionType.EmitDomainReputationReward]: [
-    ColonyAndExtensionsEvents.ArbitraryReputationUpdate,
-  ],
+  [ColonyActionType.EmitDomainReputationPenalty]: [ColonyAndExtensionsEvents.ArbitraryReputationUpdate],
+  [ColonyActionType.EmitDomainReputationReward]: [ColonyAndExtensionsEvents.ArbitraryReputationUpdate],
   [ColonyMotions.UnlockTokenMotion]: MOTION_EVENTS,
   [ColonyMotions.MintTokensMotion]: MOTION_EVENTS,
   [ColonyMotions.CreateDomainMotion]: MOTION_EVENTS,

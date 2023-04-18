@@ -4,11 +4,7 @@ import { ClientType } from '@colony/colony-js';
 // import { ContextModule, getContext } from '~context';
 import { Action, ActionTypes, AllActions } from '~redux';
 
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
+import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
 import { transactionReady } from '../../actionCreators';
 import { putError, takeFrom } from '../utils';
 
@@ -33,24 +29,16 @@ function* createMoveFundsAction({
      * Validate the required values for the payment
      */
     if (!fromDomain) {
-      throw new Error(
-        'Source domain not set for oveFundsBetweenPots transaction',
-      );
+      throw new Error('Source domain not set for oveFundsBetweenPots transaction');
     }
     if (!toDomain) {
-      throw new Error(
-        'Recipient domain not set for MoveFundsBetweenPots transaction',
-      );
+      throw new Error('Recipient domain not set for MoveFundsBetweenPots transaction');
     }
     if (!amount) {
-      throw new Error(
-        'Payment amount not set for MoveFundsBetweenPots transaction',
-      );
+      throw new Error('Payment amount not set for MoveFundsBetweenPots transaction');
     }
     if (!tokenAddress) {
-      throw new Error(
-        'Payment token not set for MoveFundsBetweenPots transaction',
-      );
+      throw new Error('Payment token not set for MoveFundsBetweenPots transaction');
     }
 
     const { nativeFundingPotId: fromPot } = fromDomain;
@@ -61,16 +49,14 @@ function* createMoveFundsAction({
     // setup batch ids and channels
     const batchKey = 'moveFunds';
 
-    const { moveFunds /* annotateMoveFunds */ } =
-      yield createTransactionChannels(metaId, [
-        'moveFunds',
-        // 'annotateMoveFunds',
-      ]);
+    const { moveFunds /* annotateMoveFunds */ } = yield createTransactionChannels(metaId, [
+      'moveFunds',
+      // 'annotateMoveFunds',
+    ]);
 
     yield fork(createTransaction, moveFunds.id, {
       context: ClientType.ColonyClient,
-      methodName:
-        'moveFundsBetweenPotsWithProofs(uint256,uint256,uint256,address)',
+      methodName: 'moveFundsBetweenPotsWithProofs(uint256,uint256,uint256,address)',
       identifier: colonyAddress,
       params: [fromPot, toPot, amount, tokenAddress],
       group: {
@@ -108,10 +94,7 @@ function* createMoveFundsAction({
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(
-      moveFunds.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+    } = yield takeFrom(moveFunds.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
 
     yield takeFrom(moveFunds.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 

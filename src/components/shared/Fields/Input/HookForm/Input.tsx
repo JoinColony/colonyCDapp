@@ -74,8 +74,7 @@ const HookFormInput = ({
     [styles.containerHorizontal]: appearance.direction === 'horizontal',
   });
 
-  const showConfusableWarning =
-    showConfusable && isConfusing(inputValue || '') && isValid && touched;
+  const showConfusableWarning = showConfusable && isConfusing(inputValue || '') && isValid && touched;
 
   return (
     <div className={containerClasses}>
@@ -101,9 +100,7 @@ const HookFormInput = ({
           inputValueLength={inputValue?.length || 0}
           {...restInputProps}
         />
-        {extensionStringText && (
-          <div className={styles.extension}>{extensionStringText}</div>
-        )}
+        {extensionStringText && <div className={styles.extension}>{extensionStringText}</div>}
       </div>
       {!elementOnly && (
         <InputStatus

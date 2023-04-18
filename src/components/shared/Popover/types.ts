@@ -21,7 +21,4 @@ export type PopoverTriggerElementType = PopoverChildFn | ReactElement;
 
 export type PopoverTriggerType = 'hover' | 'click' | 'disabled';
 
-export type PopoverContent =
-  | ReactNode
-  | MessageDescriptor
-  | ((arg0: { close: () => void }) => ReactNode);
+export type PopoverContent = ReactNode | MessageDescriptor | ((arg0: { close: () => void }) => ReactNode);

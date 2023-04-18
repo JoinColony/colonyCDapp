@@ -1,44 +1,18 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import {
-  ClientType,
-  getExtensionPermissionProofs,
-  getChildIndex,
-} from '@colony/colony-js';
+import { ClientType, getExtensionPermissionProofs, getChildIndex } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, routeRedirect, uploadIfpsAnnotation, getColonyManager } from '../utils';
 
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import { transactionReady, transactionPending, transactionAddParams } from '../../actionCreators';
 
 function* createPaymentMotion({
-  payload: {
-    colonyAddress,
-    colonyName,
-    recipientAddress,
-    domainId,
-    singlePayment,
-    annotationMessage,
-    motionDomainId,
-  },
+  payload: { colonyAddress, colonyName, recipientAddress, domainId, singlePayment, annotationMessage, motionDomainId },
   meta: { id: metaId, history },
   meta,
 }: Action<ActionTypes.MOTION_EXPENDITURE_PAYMENT>) {
@@ -63,34 +37,18 @@ function* createPaymentMotion({
         throw new Error('Payment token not set for OneTxPayment transaction');
       }
       if (!singlePayment.decimals) {
-        throw new Error(
-          'Payment token decimals not set for OneTxPayment transaction',
-        );
+        throw new Error('Payment token decimals not set for OneTxPayment transaction');
       }
     }
 
     const context = yield getColonyManager();
-    const oneTxPaymentClient = yield context.getClient(
-      ClientType.OneTxPaymentClient,
-      colonyAddress,
-    );
+    const oneTxPaymentClient = yield context.getClient(ClientType.OneTxPaymentClient, colonyAddress);
 
-    const votingReputationClient = yield context.getClient(
-      ClientType.VotingReputationClient,
-      colonyAddress,
-    );
+    const votingReputationClient = yield context.getClient(ClientType.VotingReputationClient, colonyAddress);
 
-    const colonyClient = yield context.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
+    const colonyClient = yield context.getClient(ClientType.ColonyClient, colonyAddress);
 
-    const childSkillIndex = yield call(
-      getChildIndex,
-      colonyClient,
-      motionDomainId,
-      domainId,
-    );
+    const childSkillIndex = yield call(getChildIndex, colonyClient, motionDomainId, domainId);
 
     const [extensionPDID, extensionCSI] = yield call(
       getExtensionPermissionProofs,
@@ -108,47 +66,36 @@ function* createPaymentMotion({
 
     const { amount, tokenAddress, decimals = 18 } = singlePayment;
 
-    const encodedAction = oneTxPaymentClient.interface.encodeFunctionData(
-      'makePaymentFundedFromDomain',
-      [
-        extensionPDID,
-        extensionCSI,
-        votingReputationPDID,
-        votingReputationCSI,
-        [recipientAddress],
-        [tokenAddress],
-        [BigNumber.from(moveDecimal(amount, decimals))],
-        domainId,
-        /*
-         * NOTE Always make the payment in the global skill 0
-         * This will make it so that the user only receives reputation in the
-         * above domain, but none in the skill itself.
-         */
-        0,
-      ],
-    );
+    const encodedAction = oneTxPaymentClient.interface.encodeFunctionData('makePaymentFundedFromDomain', [
+      extensionPDID,
+      extensionCSI,
+      votingReputationPDID,
+      votingReputationCSI,
+      [recipientAddress],
+      [tokenAddress],
+      [BigNumber.from(moveDecimal(amount, decimals))],
+      domainId,
+      /*
+       * NOTE Always make the payment in the global skill 0
+       * This will make it so that the user only receives reputation in the
+       * above domain, but none in the skill itself.
+       */
+      0,
+    ]);
 
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      motionDomainId,
-    );
+    const { skillId } = yield call([colonyClient, colonyClient.getDomain], motionDomainId);
 
-    const { key, value, branchMask, siblings } = yield call(
-      colonyClient.getReputation,
-      skillId,
-      AddressZero,
-    );
+    const { key, value, branchMask, siblings } = yield call(colonyClient.getReputation, skillId, AddressZero);
 
     txChannel = yield call(getTxChannel, metaId);
 
     // setup batch ids and channels
     const batchKey = 'createMotion';
 
-    const { createMotion, annotatePaymentMotion } =
-      yield createTransactionChannels(metaId, [
-        'createMotion',
-        'annotatePaymentMotion',
-      ]);
+    const { createMotion, annotatePaymentMotion } = yield createTransactionChannels(metaId, [
+      'createMotion',
+      'annotatePaymentMotion',
+    ]);
 
     // create transactions
     yield fork(createTransaction, createMotion.id, {
@@ -190,20 +137,14 @@ function* createPaymentMotion({
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
     if (annotationMessage) {
-      yield takeFrom(
-        annotatePaymentMotion.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
+      yield takeFrom(annotatePaymentMotion.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
     yield put(transactionReady(createMotion.id));
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+    } = yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -211,16 +152,11 @@ function* createPaymentMotion({
 
       const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
 
-      yield put(
-        transactionAddParams(annotatePaymentMotion.id, [txHash, ipfsHash]),
-      );
+      yield put(transactionAddParams(annotatePaymentMotion.id, [txHash, ipfsHash]));
 
       yield put(transactionReady(annotatePaymentMotion.id));
 
-      yield takeFrom(
-        annotatePaymentMotion.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield takeFrom(annotatePaymentMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
     }
     yield put<AllActions>({
       type: ActionTypes.MOTION_EXPENDITURE_PAYMENT_SUCCESS,

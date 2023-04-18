@@ -4,11 +4,7 @@ import { call, takeEvery, fork, put } from 'redux-saga/effects';
 import { Action, ActionTypes, AllActions } from '~redux';
 
 import { takeFrom, putError, refreshInstalledExtension } from '../utils';
-import {
-  createTransaction,
-  getTxChannel,
-  waitForTxResult,
-} from '../transactions';
+import { createTransaction, getTxChannel, waitForTxResult } from '../transactions';
 
 export function* extensionInstall({
   meta,

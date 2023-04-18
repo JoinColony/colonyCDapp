@@ -21,22 +21,16 @@ const TokenSymbol = ({ token, tokenAddress, innerRef, onClick }: Props) => {
   const { tokenAddress: nativeTokenAddress } = nativeToken || {};
 
   return (
-    <button
-      className={styles.selectedTokenSymbol}
-      ref={innerRef}
-      onClick={onClick}
-      type="button"
-    >
+    <button className={styles.selectedTokenSymbol} ref={innerRef} onClick={onClick} type="button">
       <span data-test="colonyTokenSymbol">{token?.symbol}</span>
-      {tokenAddress === nativeTokenAddress &&
-        !status?.nativeToken?.unlocked && (
-          <IconTooltip
-            icon="lock"
-            tooltipText={{ id: 'tooltip.lockedToken' }}
-            className={styles.tokenLockWrapper}
-            appearance={{ size: 'large' }}
-          />
-        )}
+      {tokenAddress === nativeTokenAddress && !status?.nativeToken?.unlocked && (
+        <IconTooltip
+          icon="lock"
+          tooltipText={{ id: 'tooltip.lockedToken' }}
+          className={styles.tokenLockWrapper}
+          appearance={{ size: 'large' }}
+        />
+      )}
     </button>
   );
 };

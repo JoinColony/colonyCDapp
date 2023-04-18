@@ -1,45 +1,17 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import {
-  ClientType,
-  Id,
-  getPermissionProofs,
-  getChildIndex,
-  ColonyRole,
-} from '@colony/colony-js';
+import { ClientType, Id, getPermissionProofs, getChildIndex, ColonyRole } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 import { hexlify, hexZeroPad } from 'ethers/lib/utils';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  routeRedirect,
-  uploadIfpsAnnotation,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, routeRedirect, uploadIfpsAnnotation, getColonyManager } from '../utils';
 
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
-import {
-  transactionReady,
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators';
+import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import { transactionReady, transactionPending, transactionAddParams } from '../../actionCreators';
 
 function* managePermissionsMotion({
-  payload: {
-    colonyAddress,
-    domainId,
-    userAddress,
-    roles,
-    colonyName,
-    annotationMessage,
-    motionDomainId,
-  },
+  payload: { colonyAddress, domainId, userAddress, roles, colonyName, annotationMessage, motionDomainId },
   meta: { id: metaId, history },
   meta,
 }: Action<ActionTypes.MOTION_USER_ROLES_SET>) {
@@ -61,14 +33,8 @@ function* managePermissionsMotion({
     }
 
     const context = yield getColonyManager();
-    const colonyClient = yield context.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
-    const votingReputationClient = yield context.getClient(
-      ClientType.VotingReputationClient,
-      colonyAddress,
-    );
+    const colonyClient = yield context.getClient(ClientType.ColonyClient, colonyAddress);
+    const votingReputationClient = yield context.getClient(ClientType.VotingReputationClient, colonyAddress);
 
     const [permissionDomainId, childSkillIndex] = yield call(
       getPermissionProofs,
@@ -78,34 +44,21 @@ function* managePermissionsMotion({
       votingReputationClient.address,
     );
 
-    const motionChildSkillIndex = yield call(
-      getChildIndex,
-      colonyClient,
-      motionDomainId,
-      domainId,
-    );
+    const motionChildSkillIndex = yield call(getChildIndex, colonyClient, motionDomainId, domainId);
 
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      motionDomainId,
-    );
+    const { skillId } = yield call([colonyClient, colonyClient.getDomain], motionDomainId);
 
-    const { key, value, branchMask, siblings } = yield call(
-      colonyClient.getReputation,
-      skillId,
-      AddressZero,
-    );
+    const { key, value, branchMask, siblings } = yield call(colonyClient.getReputation, skillId, AddressZero);
 
     txChannel = yield call(getTxChannel, metaId);
 
     // setup batch ids and channels
     const batchKey = 'createMotion';
 
-    const { createMotion, annotateSetUserRolesMotion } =
-      yield createTransactionChannels(metaId, [
-        'createMotion',
-        'annotateSetUserRolesMotion',
-      ]);
+    const { createMotion, annotateSetUserRolesMotion } = yield createTransactionChannels(metaId, [
+      'createMotion',
+      'annotateSetUserRolesMotion',
+    ]);
 
     const roleArray = Object.values(roles).reverse();
     roleArray.splice(2, 0, false);
@@ -119,32 +72,20 @@ function* managePermissionsMotion({
     const hexString = hexlify(parseInt(roleBitmask, 2));
     const zeroPadHexString = hexZeroPad(hexString, 32);
 
-    const encodedAction = colonyClient.interface.encodeFunctionData(
-      'setUserRoles',
-      [
-        permissionDomainId,
-        childSkillIndex,
-        userAddress,
-        domainId,
-        zeroPadHexString,
-      ],
-    );
+    const encodedAction = colonyClient.interface.encodeFunctionData('setUserRoles', [
+      permissionDomainId,
+      childSkillIndex,
+      userAddress,
+      domainId,
+      zeroPadHexString,
+    ]);
 
     // create transactions
     yield fork(createTransaction, createMotion.id, {
       context: ClientType.VotingReputationClient,
       methodName: 'createMotion',
       identifier: colonyAddress,
-      params: [
-        motionDomainId,
-        motionChildSkillIndex,
-        AddressZero,
-        encodedAction,
-        key,
-        value,
-        branchMask,
-        siblings,
-      ],
+      params: [motionDomainId, motionChildSkillIndex, AddressZero, encodedAction, key, value, branchMask, siblings],
       group: {
         key: batchKey,
         id: metaId,
@@ -170,36 +111,25 @@ function* managePermissionsMotion({
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
     if (annotationMessage) {
-      yield takeFrom(
-        annotateSetUserRolesMotion.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
+      yield takeFrom(annotateSetUserRolesMotion.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
     yield put(transactionReady(createMotion.id));
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+    } = yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
       const ipfsHash = yield call(uploadIfpsAnnotation, annotationMessage);
       yield put(transactionPending(annotateSetUserRolesMotion.id));
 
-      yield put(
-        transactionAddParams(annotateSetUserRolesMotion.id, [txHash, ipfsHash]),
-      );
+      yield put(transactionAddParams(annotateSetUserRolesMotion.id, [txHash, ipfsHash]));
 
       yield put(transactionReady(annotateSetUserRolesMotion.id));
 
-      yield takeFrom(
-        annotateSetUserRolesMotion.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield takeFrom(annotateSetUserRolesMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
     }
     yield put<AllActions>({
       type: ActionTypes.MOTION_USER_ROLES_SET_SUCCESS,

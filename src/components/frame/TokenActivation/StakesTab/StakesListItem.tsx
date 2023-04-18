@@ -23,13 +23,7 @@ interface Props {
   setIsPopoverOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const StakesListItem = ({
-  stakedAmount,
-  tokenSymbol,
-  colonyName,
-  txHash,
-  setIsPopoverOpen,
-}: Props) => {
+const StakesListItem = ({ stakedAmount, tokenSymbol, colonyName, txHash, setIsPopoverOpen }: Props) => {
   return (
     <li className={styles.stakesListItem}>
       <Link to={`/colony/${colonyName}/tx/${txHash}`}>

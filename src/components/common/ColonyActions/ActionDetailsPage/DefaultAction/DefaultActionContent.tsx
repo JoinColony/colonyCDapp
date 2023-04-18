@@ -15,10 +15,7 @@ interface DefaultActionContentProps {
   actionData: ColonyAction;
 }
 
-const DefaultActionContent = ({
-  colony,
-  actionData,
-}: DefaultActionContentProps) => (
+const DefaultActionContent = ({ colony, actionData }: DefaultActionContentProps) => (
   <div className={styles.content}>
     <Heading3
       className={styles.heading}
