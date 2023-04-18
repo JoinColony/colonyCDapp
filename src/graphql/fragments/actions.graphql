@@ -37,6 +37,9 @@ fragment ColonyAction on ColonyAction {
     }
   }
   showInActionsList
+  pendingDomainMetadata {
+    ...DomainMetadata
+  }
 }
 
 fragment MotionStakeValues on MotionStakeValues {
@@ -97,8 +100,4 @@ fragment MotionData on MotionData {
   }
   skillRep
   repSubmitted
-  pendingDomainMetadata {
-    ...DomainMetadata
-  }
-  motionDomainId
 }
