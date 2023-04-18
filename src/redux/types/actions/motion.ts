@@ -7,7 +7,6 @@ import { Address, DomainColor } from '~types';
 import {
   ErrorActionType,
   UniqueActionType,
-  UniqueActionTypeWithoutPayload,
   ActionTypeWithMeta,
   MetaWithHistory,
   MetaWithNavigate,
@@ -204,20 +203,6 @@ export type MotionActionTypes =
   | ActionTypeWithMeta<
       ActionTypes.MOTION_USER_ROLES_SET_SUCCESS,
       MetaWithHistory<object>
-    >
-  | UniqueActionType<
-      ActionTypes.MOTION_STATE_UPDATE,
-      {
-        colonyAddress: Address;
-        motionId: BigNumber;
-        userAddress: Address;
-      },
-      object
-    >
-  | ErrorActionType<ActionTypes.MOTION_STATE_UPDATE_ERROR, object>
-  | UniqueActionTypeWithoutPayload<
-      ActionTypes.MOTION_STATE_UPDATE_SUCCESS,
-      object
     >
   | UniqueActionType<
       ActionTypes.MOTION_ESCALATE,
