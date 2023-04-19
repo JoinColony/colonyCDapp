@@ -1,3 +1,5 @@
+import { withRouter } from 'storybook-addon-react-router-v6';
+
 import '~utils/yup/customMethods';
 import type { Preview } from '@storybook/react';
 import '../src/styles/main.global.css';
@@ -28,5 +30,7 @@ const preview: Preview = {
     },
   },
 };
+
+export const decorators = [withRouter];
 
 export default preview;
