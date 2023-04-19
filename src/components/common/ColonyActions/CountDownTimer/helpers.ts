@@ -7,8 +7,7 @@ import {
 } from '~gql';
 import { RefetchMotionState, useAppContext, useColonyContext } from '~hooks';
 import { MotionState } from '~utils/colonyMotions';
-
-import { useStakingWidgetContext } from '../ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
+import { MotionData } from '~types';
 
 const splitTimeLeft = (period: number) => {
   if (period > 0) {
@@ -66,14 +65,14 @@ export const useMotionCountdown = (
   state: MotionState,
   motionId: string,
   refetchMotionState: RefetchMotionState,
+  motionStakes: MotionData['motionStakes'],
 ) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const dispatch = useDispatch();
-  const {
-    motionStakes: { percentage: percentageStaked },
-  } = useStakingWidgetContext();
-  const isFullyNayStaked = percentageStaked.nay === '100';
+  const { percentage: percentageStaked } = motionStakes;
+  const isAnySideFullyStaked =
+    percentageStaked.nay === '100' || percentageStaked.yay === '100';
 
   const {
     motionTimeoutPeriods,
@@ -122,12 +121,12 @@ export const useMotionCountdown = (
        *  OR
        *
        *  isStakingPhaseState - If the current motion state is a staking phase but:
-       *    isFullyNayStaked - The NAY side is fully staked (For example, if the user fully staked the NAY side, the timer should reset).
+       *    isAnySideFullyStaked - The YAY or NAY  side is fully staked (For example, if the user fully staked the NAY side, the timer should reset).
        *    revStateRef.current === null - There's no previous reference of a timer, therefore, the user just loaded/reloaded the motion page and this is the "initial" timer.
        */
       (!isStakingPhaseState ||
         (isStakingPhaseState &&
-          (isFullyNayStaked || prevStateRef.current === null)))
+          (isAnySideFullyStaked || prevStateRef.current === null)))
     ) {
       const currentStatePeriodInSeconds = Number(currentStatePeriodInMs) / 1000;
 
@@ -144,7 +143,7 @@ export const useMotionCountdown = (
     prevStateRef,
     state,
     isStakingPhaseState,
-    isFullyNayStaked,
+    isAnySideFullyStaked,
   ]);
 
   /*
@@ -175,14 +174,14 @@ export const useMotionCountdown = (
   ]);
 
   useEffect(() => {
-    if (!isStakingPhaseState || isFullyNayStaked) {
+    if (!isStakingPhaseState || isAnySideFullyStaked) {
       refetchMotionTimeoutPeriods();
     }
   }, [
     isStakingPhaseState,
     refetchMotionTimeoutPeriods,
     state,
-    isFullyNayStaked,
+    isAnySideFullyStaked,
   ]);
 
   /*
