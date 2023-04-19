@@ -82,15 +82,13 @@ const CreateDomainDialog = ({
         transform={transform}
         onSuccess={close}
       >
-        {() => (
-          <CreateDomainDialogForm
-            back={prevStep && callStep ? () => callStep(prevStep) : undefined}
-            colony={colony}
-            enabledExtensionData={enabledExtensionData}
-            handleIsForceChange={setIsForce}
-            isForce={isForce}
-          />
-        )}
+        <CreateDomainDialogForm
+          back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+          colony={colony}
+          enabledExtensionData={enabledExtensionData}
+          handleIsForceChange={setIsForce}
+          isForce={isForce}
+        />
       </Form>
     </Dialog>
   );
