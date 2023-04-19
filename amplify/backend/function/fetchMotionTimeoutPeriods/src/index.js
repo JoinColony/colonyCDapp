@@ -15,34 +15,43 @@ const {
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-    const provider = new providers.JsonRpcProvider(RPC_URL);
-    const networkClient = getColonyNetworkClient(Network.Custom, provider, {
-      networkAddress,
-      reputationOracleEndpoint:
-        'http://reputation-monitor.docker:3001/reputation/local',
-    });
+  const provider = new providers.JsonRpcProvider(RPC_URL);
+  const networkClient = getColonyNetworkClient(Network.Custom, provider, {
+    networkAddress,
+    reputationOracleEndpoint:
+      'http://reputation-monitor.docker:3001/reputation/local',
+  });
 
-    const { motionId, colonyAddress } = event.arguments?.input || {};
+  const { motionId, colonyAddress } = event.arguments?.input || {};
 
-    const colonyClient = await networkClient.getColonyClient(colonyAddress);
-    const votingReputationClient = await colonyClient.getExtensionClient(Extension.VotingReputation);
+  const colonyClient = await networkClient.getColonyClient(colonyAddress);
+  const votingReputationClient = await colonyClient.getExtensionClient(
+    Extension.VotingReputation,
+  );
 
-    const blockTime =
-    (await getBlockTime(networkClient.provider, 'latest')) || 0;
+  const blockTime = (await getBlockTime(networkClient.provider, 'latest')) || 0;
 
-    const escalationPeriod = await votingReputationClient.getEscalationPeriod();
+  const escalationPeriod = await votingReputationClient.getEscalationPeriod();
 
-    const { events } = await votingReputationClient.getMotion(motionId);
+  const { events } = await votingReputationClient.getMotion(motionId);
 
-    const timeLeftToStake = events[0].mul(1000).sub(blockTime);
-    const timeLeftToVote = events[1].mul(1000).sub(blockTime);
-    const timeLeftToReveal = events[2].mul(1000).sub(blockTime);
-    const timeLeftToEscalate = timeLeftToReveal.add(escalationPeriod.mul(1000));
+  const timeLeftToStake = events[0].mul(1000).sub(blockTime);
+  const timeLeftToVote = events[1].mul(1000).sub(blockTime);
+  const timeLeftToReveal = events[2].mul(1000).sub(blockTime);
+  const timeLeftToEscalate = timeLeftToReveal.add(escalationPeriod.mul(1000));
 
-    return {
-        timeLeftToStake: !timeLeftToStake.isNegative() ? timeLeftToStake.toString() : '0',
-        timeLeftToVote: !timeLeftToVote.isNegative() ? timeLeftToVote.toString() : '0',
-        timeLeftToReveal: !timeLeftToReveal.isNegative() ? timeLeftToReveal.toString() : '0',
-        timeLeftToEscalate: !timeLeftToEscalate.isNegative() ? timeLeftToEscalate.toString() : '0',
-    };
+  return {
+    timeLeftToStake: !timeLeftToStake.isNegative()
+      ? timeLeftToStake.toString()
+      : '0',
+    timeLeftToVote: !timeLeftToVote.isNegative()
+      ? timeLeftToVote.toString()
+      : '0',
+    timeLeftToReveal: !timeLeftToReveal.isNegative()
+      ? timeLeftToReveal.toString()
+      : '0',
+    timeLeftToEscalate: !timeLeftToEscalate.isNegative()
+      ? timeLeftToEscalate.toString()
+      : '0',
+  };
 };
