@@ -34,7 +34,7 @@ const MSG = defineMessages({
 interface Props {
   motionState: MotionState;
   refetchMotionState: RefetchMotionState;
-  motionId: number;
+  motionId: string;
 }
 
 const CountDownTimer = ({
