@@ -53,8 +53,6 @@ const MotionCountdown = ({
   motionData,
   refetchMotionState,
 }: MotionCountdownProps) => {
-  // const motionDomain = 1;
-  const motionId = 1;
   const isMotionFinished =
     motionState === MotionState.Passed ||
     motionState === MotionState.Failed ||
@@ -77,7 +75,7 @@ const MotionCountdown = ({
         <CountDownTimer
           motionState={motionState}
           refetchMotionState={refetchMotionState}
-          motionId={motionId}
+          motionId={motionData.motionId}
         />
       )}
       {showVotingProgress && <VotingProgress motionData={motionData} />}

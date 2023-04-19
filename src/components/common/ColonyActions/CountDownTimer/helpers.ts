@@ -42,7 +42,7 @@ const getCurrentStatePeriodInMs = (
   }
 };
 
-const useMotionTimeoutPeriods = (colonyAddress = '', motionId: number) => {
+const useMotionTimeoutPeriods = (colonyAddress = '', motionId: string) => {
   const { data, loading, refetch } = useGetMotionTimeoutPeriodsQuery({
     variables: { input: { colonyAddress, motionId } },
     notifyOnNetworkStatusChange: true,
@@ -64,7 +64,7 @@ const useMotionTimeoutPeriods = (colonyAddress = '', motionId: number) => {
 
 export const useMotionCountdown = (
   state: MotionState,
-  motionId: number,
+  motionId: string,
   refetchMotionState: RefetchMotionState,
 ) => {
   const { colony } = useColonyContext();
