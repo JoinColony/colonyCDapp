@@ -86,6 +86,7 @@ export const getDetailItemsKeys = (actionType: ColonyActionType) => {
     case actionType.includes(ColonyActionType.EditDomain): {
       return [
         ActionPageDetails.Type,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
         ActionPageDetails.Domain,
         ActionPageDetails.Description,
       ];
