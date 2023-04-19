@@ -3,6 +3,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 
 import Button from '~shared/Extensions/Button/Button';
 import { LEARN_MORE_PAYMENTS } from '~constants';
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge-new/ExtensionStatusBadge';
 
 import LinkItem from '../LinkItem';
 
@@ -56,6 +57,10 @@ const MSG = defineMessages({
     id: `${displayName}.helpText`,
     defaultMessage: 'Need help with payments? <a>Learn more</a>',
   },
+  commingSoon: {
+    id: `${displayName}.commingSoon`,
+    defaultMessage: 'Coming soon',
+  },
 });
 
 const PayDropdown: React.FC<PropsWithChildren> = () => (
@@ -66,7 +71,11 @@ const PayDropdown: React.FC<PropsWithChildren> = () => (
       </div>
       <ul className={styles.listWrapper}>
         <LinkItem title={MSG.singlePayments} description={MSG.singlePaymentsDescription} />
-        <LinkItem title={MSG.advancedPayments} description={MSG.advancedPaymentsDescription} />
+        <LinkItem
+          title={MSG.advancedPayments}
+          description={MSG.advancedPaymentsDescription}
+          statusBadge={<ExtensionStatusBadge text={MSG.commingSoon} />}
+        />
         <LinkItem title={MSG.streamingPayments} description={MSG.streamingPaymentsDescription} />
         <LinkItem title={MSG.moveFunds} description={MSG.moveFundsDescription} />
       </ul>
