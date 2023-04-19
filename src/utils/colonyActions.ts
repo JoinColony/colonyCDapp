@@ -77,6 +77,7 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
     case actionType.includes(ColonyActionType.CreateDomain): {
       return [
         ActionPageDetails.Type,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
         ActionPageDetails.Domain,
         ActionPageDetails.Description,
       ];
