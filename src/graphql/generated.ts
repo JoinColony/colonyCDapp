@@ -658,7 +658,7 @@ export type GetMotionStateInput = {
 
 export type GetMotionTimeoutPeriodsInput = {
   colonyAddress: Scalars['String'];
-  motionId: Scalars['Int'];
+  motionId: Scalars['String'];
 };
 
 export type GetMotionTimeoutPeriodsReturn = {
