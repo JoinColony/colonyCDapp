@@ -53,6 +53,7 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
     case actionType.includes(ColonyActionType.MoveFunds): {
       return [
         ActionPageDetails.Type,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
         ActionPageDetails.FromDomain,
         ActionPageDetails.ToDomain,
         ActionPageDetails.Amount,
