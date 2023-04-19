@@ -1,4 +1,4 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
 import { Action, ActionTypes, AllActions } from '~redux';
@@ -6,7 +6,7 @@ import { Action, ActionTypes, AllActions } from '~redux';
 import { putError, takeFrom } from '../utils';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
@@ -17,7 +17,7 @@ function* manageReputationAction({
     colonyAddress,
     colonyName,
     domainId,
-    walletAddress,
+    userAddress,
     amount,
     isSmitingReputation,
     /* annotationMessage */
@@ -31,7 +31,7 @@ function* manageReputationAction({
       ? 'emitDomainReputationPenalty'
       : 'emitDomainReputationReward';
 
-    if (!walletAddress) {
+    if (!userAddress) {
       throw new Error(`User address not set for ${batchKey} transaction`);
     }
 
@@ -51,23 +51,13 @@ function* manageReputationAction({
         // 'annotateManageReputation',
       ]);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(manageReputation, {
+    yield createGroupTransaction(manageReputation, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: isSmitingReputation
         ? 'emitDomainReputationPenaltyWithProofs'
         : 'emitDomainReputationReward',
       identifier: colonyAddress,
-      params: [domainId, walletAddress, amount],
+      params: [domainId, userAddress, amount],
       ready: false,
     });
 
