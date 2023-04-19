@@ -98,16 +98,18 @@ export const getDetailItemsKeys = (actionType: ColonyActionType) => {
     case actionType.includes(ColonyActionType.EmitDomainReputationPenalty): {
       return [
         ActionPageDetails.Type,
-        ActionPageDetails.Domain,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
         ActionPageDetails.ToRecipient,
+        ActionPageDetails.Domain,
         ActionPageDetails.ReputationChange,
       ];
     }
     case actionType.includes(ColonyActionType.EmitDomainReputationReward): {
       return [
         ActionPageDetails.Type,
-        ActionPageDetails.Domain,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
         ActionPageDetails.ToRecipient,
+        ActionPageDetails.Domain,
         ActionPageDetails.ReputationChange,
       ];
     }

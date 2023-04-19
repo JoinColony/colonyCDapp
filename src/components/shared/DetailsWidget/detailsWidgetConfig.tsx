@@ -116,7 +116,10 @@ const getDetailItemsMap = (
 ): { [key in Exclude<ActionPageDetails, 'Permissions'>]: DetailItemConfig } => {
   const shortenedHash = getShortenedHash(transactionHash || '');
   const recipientWalletAddress = recipient?.walletAddress;
-  const isSmiteAction = type === ColonyActionType.EmitDomainReputationPenalty;
+  const isSmiteAction = type.includes(
+    ColonyActionType.EmitDomainReputationPenalty,
+  );
+
   const motionDomain = findDomainByNativeId(
     Number(motionData?.motionDomainId ?? Id.RootDomain),
     colony,
