@@ -5,6 +5,7 @@ import { MotionState } from '~utils/colonyMotions';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import TimerValue from '~shared/TimerValue';
 import { RefetchMotionState } from '~hooks';
+import { MotionData } from '~types';
 
 import { useMotionCountdown } from './helpers';
 
@@ -35,17 +36,20 @@ interface Props {
   motionState: MotionState;
   refetchMotionState: RefetchMotionState;
   motionId: string;
+  motionStakes: MotionData['motionStakes'];
 }
 
 const CountDownTimer = ({
   motionState,
   motionId,
   refetchMotionState,
+  motionStakes,
 }: Props) => {
   const { countdown, loadingCountdown } = useMotionCountdown(
     motionState,
     motionId,
     refetchMotionState,
+    motionStakes,
   );
 
   if (loadingCountdown) {
