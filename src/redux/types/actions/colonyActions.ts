@@ -244,7 +244,7 @@ export type ColonyActionsActionTypes =
         colonyAddress: Address;
         colonyName: string;
         domainId: number;
-        walletAddress: Address;
+        userAddress: Address;
         amount: BigNumber;
         isSmitingReputation?: boolean;
         annotationMessage?: string;
