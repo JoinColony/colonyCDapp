@@ -231,10 +231,10 @@ export type MotionActionTypes =
         annotationMessage?: string;
         isSmitingReputation?: boolean;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.MOTION_MANAGE_REPUTATION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_MANAGE_REPUTATION_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >;
