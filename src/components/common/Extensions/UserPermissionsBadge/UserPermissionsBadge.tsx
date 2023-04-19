@@ -47,24 +47,12 @@ const UserPermissionsBadge: React.FC<PropsWithChildren<UserPermissionsBadgeProps
 
   return (
     <Tooltip
-      trigger="hover"
-      content={
-        <div className="w-[15.625rem] flex flex-col items-start">
+      tooltipContent={
+        <>
           <span className={clsx(styles.tooltipBadge, 'mb-2.5')}>{content}</span>
           {userPermissionsBadgeText}: {userPermissionsBadgeDescription}
-        </div>
+        </>
       }
-      placement="top"
-      popperOptions={{
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: [0, 16],
-            },
-          },
-        ],
-      }}
     >
       <span className={styles.badge} {...rest}>
         {content}
