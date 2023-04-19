@@ -22,7 +22,6 @@ import { AllActions, Action } from '../../types/actions';
 import {
   putError,
   takeFrom,
-  routeRedirect,
   // uploadIfpsAnnotation,
   getColonyManager,
   getUpdatedDomainMetadataChangelog,
@@ -253,7 +252,9 @@ function* createEditDomainMotion({
     });
 
     if (colonyName) {
-      yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, navigate);
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (caughtError) {
     putError(ActionTypes.MOTION_DOMAIN_CREATE_EDIT_ERROR, caughtError, meta);
