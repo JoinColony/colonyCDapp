@@ -1,4 +1,3 @@
-import { toFinite } from '~utils/lodash';
 import { ADDRESS_ZERO } from '~constants';
 import { useGetUserReputationQuery } from '~gql';
 
@@ -16,7 +15,7 @@ const useColonyHasReputation = (
     },
   });
 
-  return loading || (!!toFinite(data?.getUserReputation) && !error);
+  return loading || (!!data?.getUserReputation && !error);
 };
 
 export default useColonyHasReputation;

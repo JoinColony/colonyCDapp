@@ -99,6 +99,13 @@ const EditDomainDialogForm = ({
         domainPurpose: selectedDomain.metadata?.description || '',
         forceAction,
         motionDomainId:
+          /* @NOTE: We only want to update the motion domain id along with the selected domain for edit
+           * if motionDomainId is different from the selected domain and it's NOT Root.
+           *
+           * This is done to avoid cases in which the user may select a subdomain of Root, and then change the selected
+           * domain to another subdomain of Root. In cases like that, we need to change motion domain id because you can't create a motion
+           * in a subdomain, to edit a "sibling" subdomain.
+           */
           motionDomainId !== Id.RootDomain &&
           motionDomainId !== selectedDomainValue
             ? selectedDomain.nativeId
@@ -124,6 +131,7 @@ const EditDomainDialogForm = ({
           isVotingExtensionEnabled={
             enabledExtensionData.isVotingReputationEnabled
           }
+          selectedDomainId={domainId}
         />
       </DialogSection>
       {domainOptions.length > 0 && !userHasPermission && (
