@@ -4,13 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { string, object, array, boolean, InferType } from 'yup';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
-
 import { ActionHookForm as Form } from '~shared/Fields';
-
 import { ActionTypes } from '~redux/index';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { WizardDialogType } from '~hooks';
 import { formatText } from '~utils/intl';
+import { notNull } from '~utils/arrays';
 
 import { getTokenManagementDialogPayload } from './helpers';
 import TokenManagementDialogForm from './TokenManagementDialogForm';
@@ -49,7 +48,7 @@ const TokenManagementDialog = ({
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
-  const colonyTokens = colony?.tokens?.items || [];
+  const colonyTokens = colony?.tokens?.items.filter(notNull) || [];
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
@@ -64,7 +63,7 @@ const TokenManagementDialog = ({
   );
 
   const handleSuccess = () => close();
-  const handleError = (error, formHelpers) => {
+  const handleError = (_, formHelpers) => {
     const { setError } = formHelpers;
     setError('tokenAddress', { message: formatText(MSG.errorAddingToken) });
   };
@@ -77,7 +76,7 @@ const TokenManagementDialog = ({
           forceAction: false,
           tokenAddress: '',
           selectedTokenAddresses: colonyTokens.map(
-            (token) => token?.token.tokenAddress || '',
+            (token) => token?.token.tokenAddress,
           ),
           annotationMessage: '',
           /*

@@ -4,10 +4,16 @@ import { ClientType } from '@colony/colony-js';
 import { ContextModule, getContext } from '~context';
 import { Action, ActionTypes, AllActions } from '~redux';
 import {
+  CreateColonyTokensDocument,
+  CreateColonyTokensMutation,
+  CreateColonyTokensMutationVariables,
   UpdateColonyMetadataDocument,
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
+import { notNull } from '~utils/arrays';
+import { xor } from '~utils/lodash';
+import { ADDRESS_ZERO } from '~constants';
 
 import {
   createTransaction,
@@ -25,6 +31,30 @@ import {
   transactionReady,
 } from '../../actionCreators';
 
+/**
+ * Function returning the token address that was either added to or deleted from modified token addresses list
+ * It returns null if there's no difference between the lists
+ */
+const getModifiedTokenAddress = (
+  nativeTokenAddress: string,
+  existingTokenAddresses: string[],
+  modifiedTokenAddresses?: string[] | null,
+) => {
+  if (!modifiedTokenAddresses) {
+    return null;
+  }
+
+  // get a token address that has been modified, excluding colony's native token and chain's default token
+  const modifiedTokenAddress = xor(
+    existingTokenAddresses,
+    modifiedTokenAddresses,
+  ).filter(
+    (tokenAddress) =>
+      tokenAddress !== nativeTokenAddress && tokenAddress !== ADDRESS_ZERO,
+  )[0];
+  return modifiedTokenAddress ?? null;
+};
+
 function* editColonyAction({
   payload: {
     colony,
@@ -32,6 +62,7 @@ function* editColonyAction({
     colonyDisplayName,
     colonyAvatarImage,
     colonyThumbnail,
+    tokenAddresses,
   },
   meta: { id: metaId, navigate },
   meta,
@@ -39,13 +70,6 @@ function* editColonyAction({
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
-
-    /*
-     * Validate the required values for the payment
-     */
-    if (!colonyDisplayName && colonyDisplayName !== null) {
-      throw new Error('A colony name is required in order to edit the colony');
-    }
 
     txChannel = yield call(getTxChannel, metaId);
 
@@ -145,6 +169,37 @@ function* editColonyAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    const existingTokenAddresses =
+      colony.tokens?.items
+        .filter(notNull)
+        .map((tokenItem) => tokenItem?.token.tokenAddress) || [];
+    const modifiedTokenAddress = getModifiedTokenAddress(
+      colony.nativeToken.tokenAddress,
+      existingTokenAddresses,
+      tokenAddresses,
+    );
+
+    // check if the token list has changed
+    if (tokenAddresses && modifiedTokenAddress) {
+      if (!tokenAddresses.includes(modifiedTokenAddress)) {
+        // @TODO token was deleted
+      } else {
+        // token was added
+        yield apolloClient.mutate<
+          CreateColonyTokensMutation,
+          CreateColonyTokensMutationVariables
+        >({
+          mutation: CreateColonyTokensDocument,
+          variables: {
+            input: {
+              colonyID: colony.colonyAddress,
+              tokenID: modifiedTokenAddress,
+            },
+          },
+        });
+      }
+    }
 
     /**
      * Save the updated metadata in the database
