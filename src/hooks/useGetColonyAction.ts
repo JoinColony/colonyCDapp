@@ -1,28 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { ApolloQueryResult } from '@apollo/client';
 
 import { ActionDetailsPageParams } from '~common/ColonyActions/ActionDetailsPage';
 import { failedLoadingDuration as pollingTimeout } from '~frame/LoadingTemplate';
-import {
-  useGetColonyActionQuery,
-  useGetMotionStateQuery,
-  Exact,
-  GetMotionStateInput,
-  GetMotionStateQuery,
-} from '~gql';
+import { useGetColonyActionQuery, useGetMotionStateQuery } from '~gql';
 import { Colony } from '~types';
 import { isTransactionFormat } from '~utils/web3';
 
-export type RefetchMotionState = (
-  variables?:
-    | Partial<
-        Exact<{
-          input: GetMotionStateInput;
-        }>
-      >
-    | undefined,
-) => Promise<ApolloQueryResult<GetMotionStateQuery>>;
+export type RefetchMotionState = ReturnType<
+  typeof useGetMotionStateQuery
+>['refetch'];
 
 const useGetColonyAction = (colony?: Colony | null) => {
   const { transactionHash } = useParams<ActionDetailsPageParams>();
