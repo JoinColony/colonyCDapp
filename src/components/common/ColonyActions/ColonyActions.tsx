@@ -329,7 +329,11 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Version Upgrade"
       />
       <ActionButton
-        actionType={ActionTypes.ACTION_MANAGE_REPUTATION}
+        actionType={
+          isMotion
+            ? ActionTypes.MOTION_MANAGE_REPUTATION
+            : ActionTypes.ACTION_MANAGE_REPUTATION
+        }
         error={ActionTypes.ACTION_MANAGE_REPUTATION_ERROR}
         success={ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS}
         transform={pipe(
@@ -337,7 +341,8 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
             colonyAddress: colony.colonyAddress,
             colonyName: colony.name,
             domainId: colony.domains?.items[0]?.nativeId,
-            walletAddress: user?.walletAddress,
+            motionDomainId: '1',
+            userAddress: user?.walletAddress,
             amount: BigNumber.from(1).mul(BigNumber.from(10).pow(18)),
             isSmitingReputation: false,
           }),
