@@ -1,25 +1,10 @@
 import React from 'react';
-import { FormattedMessage, defineMessages } from 'react-intl';
+import SubNavigation from '../SubNavigation/SubNavigation';
 
 import { PageTitleProps } from './types';
 import styles from './PageTitle.module.css';
 
 const displayName = 'Extensions.PageTitle';
-
-const MSG = defineMessages({
-  pay: {
-    id: `${displayName}.pay`,
-    defaultMessage: 'Pay',
-  },
-  decide: {
-    id: `${displayName}.decide`,
-    defaultMessage: 'Decide',
-  },
-  manage: {
-    id: `${displayName}.manage`,
-    defaultMessage: 'Manage',
-  },
-});
 
 const PageTitle = ({ title, subtitle }: PageTitleProps) => (
   <div className={styles.wrapper}>
@@ -29,18 +14,7 @@ const PageTitle = ({ title, subtitle }: PageTitleProps) => (
         {subtitle && <h2 className="text-xl text-gray-600 leading-normal">{subtitle}</h2>}
       </div>
       <div className="hidden lg:block">
-        {/* it's placeholder for sub navigation */}
-        <ul className="flex gap-8 font-semibold text-md text-gray-700">
-          <li>
-            <FormattedMessage {...MSG.pay} />
-          </li>
-          <li>
-            <FormattedMessage {...MSG.decide} />
-          </li>
-          <li>
-            <FormattedMessage {...MSG.manage} />
-          </li>
-        </ul>
+        <SubNavigation />
       </div>
     </div>
   </div>
