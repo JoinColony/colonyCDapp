@@ -1,10 +1,10 @@
 import React from 'react';
 import { Id } from '@colony/colony-js';
-import { useIntl, defineMessages, MessageDescriptor } from 'react-intl';
+import { defineMessages, MessageDescriptor } from 'react-intl';
 
 import { SelectOption } from '~shared/Fields';
 import DomainDropdown from '~shared/DomainDropdown';
-
+import { formatText } from '~utils/intl';
 import { Colony } from '~types';
 
 import styles from './MotionDomainSelect.css';
@@ -35,28 +35,21 @@ const MotionDomainSelect = ({
   disabled = false,
   dropdownLabel,
 }: Props) => {
-  const { formatMessage } = useIntl();
   const renderActiveOption = (
     option: SelectOption | undefined,
     label: string,
   ) => {
     /*
-     * @NOTE This is so that the active item is displayed as `Root/Current Domain`
-     * when a subdomain is selected
+     * @NOTE This is done so that the active item is displayed as `Root/Current Domain`
+     * when a subdomain is selected, otherwise show `Root`
      */
-    let displayLabel =
+    const baseDropdownLabel = `${formatText(
+      dropdownLabel || MSG.createDomain,
+    )} ${formatText({ id: 'domain.root' })}`;
+    const displayLabel =
       (option?.value || Id.RootDomain) === Id.RootDomain
-        ? `${formatMessage(dropdownLabel || MSG.createDomain)} ${label}`
-        : `${formatMessage(dropdownLabel || MSG.createDomain)} ${formatMessage({
-            id: 'domain.root',
-          })}/${label}`;
-    /*
-     * @NOTE If the filtering function removed our previously selected option,
-     * reset the selection back to Root
-     */
-    if (!option) {
-      displayLabel = formatMessage({ id: 'domain.root' });
-    }
+        ? baseDropdownLabel
+        : `${baseDropdownLabel}/${label}`;
     return <div className={styles.activeItem}>{displayLabel}</div>;
   };
 
