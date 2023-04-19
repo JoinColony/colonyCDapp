@@ -9,17 +9,12 @@ import { RefetchMotionState, useAppContext, useColonyContext } from '~hooks';
 import { MotionState } from '~utils/colonyMotions';
 import { MotionData } from '~types';
 
-const splitTimeLeft = (period: number) => {
-  if (period > 0) {
-    return {
-      days: Math.floor(period / (60 * 60 * 24)),
-      hours: Math.floor((period / (60 * 60)) % 24),
-      minutes: Math.floor((period / 60) % 60),
-      seconds: Math.floor(period % 60),
-    };
-  }
-  return undefined;
-};
+const splitTimeLeft = (period: number) => ({
+  days: Math.floor(period / (60 * 60 * 24)),
+  hours: Math.floor((period / (60 * 60)) % 24),
+  minutes: Math.floor((period / 60) % 60),
+  seconds: Math.floor(period % 60),
+});
 
 const getCurrentStatePeriodInMs = (
   motionState: MotionState,
