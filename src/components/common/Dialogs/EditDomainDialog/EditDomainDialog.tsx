@@ -103,16 +103,14 @@ const EditDomainDialog = ({
         transform={transform}
         onSuccess={close}
       >
-        {() => (
-          <EditDomainDialogForm
-            back={prevStep && callStep ? () => callStep(prevStep) : undefined}
-            colony={colony}
-            domainOptions={domainOptions}
-            enabledExtensionData={enabledExtensionData}
-            handleIsForceChange={setIsForce}
-            isForce={isForce}
-          />
-        )}
+        <EditDomainDialogForm
+          back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+          colony={colony}
+          domainOptions={domainOptions}
+          enabledExtensionData={enabledExtensionData}
+          handleIsForceChange={setIsForce}
+          isForce={isForce}
+        />
       </Form>
     </Dialog>
   );
