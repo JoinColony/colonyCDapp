@@ -151,9 +151,6 @@ export const useMotionCountdown = (
 
     if (timeLeft === 0) {
       refetchMotionState();
-    }
-
-    if (timeLeft < 0) {
       clearInterval(timer);
     }
 
