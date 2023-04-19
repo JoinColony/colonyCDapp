@@ -13,7 +13,7 @@ import moveFundsMotionSaga from './moveFundsMotion';
 // import updateMotionStateSaga from './updateState';
 import paymentMotionSaga from './paymentMotion';
 // import escalateMotionSaga from './escalateMotion';
-// import manageReputationMotionSaga from './manageReputationMotion';
+import manageReputationMotionSaga from './manageReputationMotion';
 
 export default function* actionsSagas() {
   yield all([
@@ -30,6 +30,6 @@ export default function* actionsSagas() {
     // call(updateMotionStateSaga),
     call(paymentMotionSaga),
     // call(escalateMotionSaga),
-    // call(manageReputationMotionSaga),
+    call(manageReputationMotionSaga),
   ]);
 }
