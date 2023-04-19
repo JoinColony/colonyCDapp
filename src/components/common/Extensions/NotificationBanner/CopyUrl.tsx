@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { CopyUrlProps } from './NotificationBanner.types';
+import { CopyUrlProps } from './types';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 
 const displayName = 'common.Extensions.CopyUrl';
