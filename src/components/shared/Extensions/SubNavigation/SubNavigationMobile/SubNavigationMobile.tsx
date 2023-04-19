@@ -1,6 +1,8 @@
 import React, { PropsWithChildren, useMemo, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
+import { useDetectClickOutside } from '~hooks';
+
 import { SubNavigationItemProps } from '../SubNavigationItem/types';
 import PayDropdown from '../DropdownItems/PayDropdown';
 import DecideDropdown from '../DropdownItems/DecideDropdown';
@@ -8,7 +10,6 @@ import ManageDropdown from '../DropdownItems/ManageDropdown';
 import SubNavigationItemMobile from '../SubNavigationItemMobile/SubNavigationItemMobile';
 
 import styles from './SubNavigationMobile.module.css';
-// import useDetectClickOutside from '../useDetectClickOutside';
 
 const displayName = 'Extensions.SubNavigation.SubNavigationMobile';
 
@@ -57,10 +58,10 @@ const SubNavigationMobile: React.FC<PropsWithChildren> = () => {
     [openIndex],
   );
 
-  // const ref = useDetectClickOutside({ onTriggered: () => setOpenIndex(undefined) });
+  const ref = useDetectClickOutside({ onTriggered: () => setOpenIndex(undefined) });
 
   return (
-    <ul className={styles.listWrapper}>
+    <ul className={styles.listWrapper} ref={ref}>
       {items.map((item) => (
         <SubNavigationItemMobile {...item} key={item.id} />
       ))}

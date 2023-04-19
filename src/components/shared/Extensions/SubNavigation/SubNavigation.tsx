@@ -1,12 +1,13 @@
 import React, { PropsWithChildren, useMemo, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
+import { useDetectClickOutside } from '~hooks';
+
 import { SubNavigationItemProps } from './SubNavigationItem/types';
 import SubNavigationItem from './SubNavigationItem/SubNavigationItem';
 import PayDropdown from './DropdownItems/PayDropdown';
 import DecideDropdown from './DropdownItems/DecideDropdown';
 import ManageDropdown from './DropdownItems/ManageDropdown';
-// import useDetectClickOutside from './useDetectClickOutside';
 
 const displayName = 'Extensions.SubNavigation';
 
@@ -27,15 +28,6 @@ const MSG = defineMessages({
 
 const SubNavigation: React.FC<PropsWithChildren> = () => {
   const [openIndex, setOpenIndex] = useState<number>();
-  // const { getArrowProps, getTooltipProps, setTooltipRef, setTriggerRef, visible } = usePopperTooltip(
-  //   {
-  //     delayShow: 200,
-  //     placement: 'bottom',
-  //     trigger: 'click',
-  //     visible: isOpen,
-  //   }
-  //   // popperOptions
-  // );
 
   const items = useMemo<SubNavigationItemProps[]>(() => {
     const navigationItems: SubNavigationItemProps[] = [
@@ -65,10 +57,10 @@ const SubNavigation: React.FC<PropsWithChildren> = () => {
     return navigationItems;
   }, [openIndex]);
 
-  // const ref = useDetectClickOutside({ onTriggered: () => setOpenIndex(undefined) });
+  const ref = useDetectClickOutside({ onTriggered: () => setOpenIndex(undefined) });
 
   return (
-    <ul className="flex gap-8 font-semibold text-md text-gray-700">
+    <ul className="flex gap-8 font-semibold text-md text-gray-700" ref={ref}>
       {items.map((item) => (
         <SubNavigationItem {...item} key={item.id} />
       ))}
