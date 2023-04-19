@@ -16,8 +16,6 @@ import MotionHeading from './MotionHeading';
 import MotionPhaseWidget from './MotionPhaseWidget';
 import StakeRequiredBanner from './StakeRequiredBanner';
 
-import { StakingWidgetProvider } from './MotionPhaseWidget/StakingWidget';
-
 import styles from './DefaultMotion.css';
 
 const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion';
@@ -59,28 +57,26 @@ const DefaultMotion = ({
 
   return (
     <div className={styles.main}>
-      <StakingWidgetProvider motionData={actionData.motionData} {...rest}>
-        {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
-        {isUnderThreshold && <StakeRequiredBanner isDecision={false} />}
-        {isVotingReputationEnabled && (
-          <MotionHeading
+      {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
+      {isUnderThreshold && <StakeRequiredBanner isDecision={false} />}
+      {isVotingReputationEnabled && (
+        <MotionHeading
+          motionState={motionState}
+          refetchMotionState={refetchMotionState}
+          motionData={motionData}
+        />
+      )}
+      <div className={styles.container}>
+        <DefaultActionContent actionData={actionData} />
+        <div className={styles.widgets}>
+          <MotionPhaseWidget
+            actionData={actionData}
             motionState={motionState}
-            refetchMotionState={refetchMotionState}
-            motionData={motionData}
+            {...rest}
           />
-        )}
-        <div className={styles.container}>
-          <DefaultActionContent actionData={actionData} />
-          <div className={styles.widgets}>
-            <MotionPhaseWidget
-              actionData={actionData}
-              motionState={motionState}
-              {...rest}
-            />
-            <DetailsWidget actionData={actionData} colony={colony} />
-          </div>
+          <DetailsWidget actionData={actionData} colony={colony} />
         </div>
-      </StakingWidgetProvider>
+      </div>
     </div>
   );
 };

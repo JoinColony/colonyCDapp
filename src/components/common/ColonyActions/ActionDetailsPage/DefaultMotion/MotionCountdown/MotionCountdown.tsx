@@ -76,6 +76,7 @@ const MotionCountdown = ({
           motionState={motionState}
           refetchMotionState={refetchMotionState}
           motionId={motionData.motionId}
+          motionStakes={motionData.motionStakes}
         />
       )}
       {showVotingProgress && <VotingProgress motionData={motionData} />}
