@@ -110,6 +110,7 @@ const getDetailItemsMap = (
     recipient,
     token,
     motionData,
+    pendingDomainMetadata,
   }: // roles,
   ColonyAction,
 ): { [key in Exclude<ActionPageDetails, 'Permissions'>]: DetailItemConfig } => {
@@ -120,6 +121,7 @@ const getDetailItemsMap = (
     Number(motionData?.motionDomainId ?? Id.RootDomain),
     colony,
   );
+  const domainMetadata = fromDomain?.metadata || pendingDomainMetadata;
 
   return {
     [ActionPageDetails.Type]: {
@@ -137,9 +139,7 @@ const getDetailItemsMap = (
     [ActionPageDetails.Domain]: {
       label: MSG.domain,
       labelValues: undefined,
-      item: fromDomain?.metadata && (
-        <TeamDetail domainMetadata={fromDomain.metadata} />
-      ),
+      item: domainMetadata && <TeamDetail domainMetadata={domainMetadata} />,
     },
     [ActionPageDetails.ToDomain]: {
       label: MSG.toRecipient,
@@ -198,10 +198,8 @@ const getDetailItemsMap = (
     [ActionPageDetails.Description]: {
       label: MSG.domainDescription,
       labelValues: undefined,
-      item: fromDomain?.metadata?.description && (
-        <DomainDescriptionDetail
-          description={fromDomain.metadata.description}
-        />
+      item: domainMetadata?.description && (
+        <DomainDescriptionDetail description={domainMetadata.description} />
       ),
     },
     [ActionPageDetails.Name]: {
@@ -242,7 +240,7 @@ const getDetailItems = (
     .map<DetailItemConfig | undefined>((itemKey) => detailItemsMap[itemKey])
     .filter((detail): detail is DetailItemConfig => !!detail?.item);
 
-  return detailItems;
+  return detailItems as DetailItemConfig[];
 };
 
 export default getDetailItems;
