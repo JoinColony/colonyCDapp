@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
+import { Id } from '@colony/colony-js';
 
 import { Heading3 } from '~shared/Heading';
 import { Colony, UniversalMessageValues } from '~types';
@@ -21,6 +22,7 @@ interface Props {
   isRootMotion?: boolean;
   titleValues?: UniversalMessageValues;
   children?: ReactNode;
+  selectedDomainId?: number;
 }
 
 const DialogHeading = ({
@@ -31,14 +33,14 @@ const DialogHeading = ({
   userHasPermission,
   isVotingExtensionEnabled,
   isRootMotion,
+  selectedDomainId = Id.RootDomain,
 }: Props) => {
   const {
-    watch,
     formState: { isSubmitting },
   } = useFormContext();
-  const { fromDomainId } = watch();
   const handleFilterMotionDomains = (optionDomain: SelectOption) =>
-    optionDomain.value !== fromDomainId;
+    optionDomain.value === selectedDomainId ||
+    optionDomain.value === Id.RootDomain;
 
   return (
     <div className={styles.modalHeading}>
