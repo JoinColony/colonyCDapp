@@ -128,7 +128,7 @@ input GetVoterRewardsInput {
 }
 
 input GetMotionTimeoutPeriodsInput {
-  motionId: Int!
+  motionId: String!
   colonyAddress: String!
 }
 
