@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { ContentTypeTextProps } from '../Accordion.types';
+import { ContentTypeProps } from '../Accordion.types';
 
 const displayName = 'Extensions.Accordion.Partials.AccordionDetails';
 
-const ContentTypeText: FC<ContentTypeTextProps> = ({ title, subTitle }) => {
+const ContentTypeText: FC<ContentTypeProps> = ({ title, subTitle }) => {
   /*
    * @TODO: add translactions
    */

@@ -1,16 +1,16 @@
-import { AccordionItemProps } from './Partials/AccordtionItem.types';
-
 export interface AccordionProps {
-  items: AccordionItemProps[];
+  items: AccordionMocksContent[];
   openIndex?: number;
   onOpenIndexChange?: (newOpenIndex: number | undefined) => void;
 }
 
-export interface AccordionMocksContentProps {
-  content: AccordionMocksContent[];
+export interface AccordionMocksContent {
+  id: string;
+  title: string;
+  content: AccordionMocksContentDetails[];
 }
 
-export interface AccordionMocksContent {
+export interface AccordionMocksContentDetails {
   id: number;
   textItem?: JSX.Element;
   inputItem?: JSX.Element;
@@ -18,23 +18,18 @@ export interface AccordionMocksContent {
 }
 
 export interface AccordionMocksItemProps {
-  id: number;
+  id: string;
   header: JSX.Element;
   content: JSX.Element;
 }
-
-export interface AccordionContentItemProps {
-  items?: AccordionItemProps[];
-  accordionItem: AccordionMocksItemProps;
-  isOpen: boolean;
-  onClick: () => void;
+export interface AccordionItemProps {
+  title?: string;
+  content?: AccordionMocksContentDetails[];
+  isOpen?: boolean;
+  onClick?: () => void;
 }
-
-export interface AccordionHeaderProps {
-  title: string | JSX.Element;
-}
-
-export interface ContentTypeTextProps {
-  title: string;
-  subTitle: string;
+export interface ContentTypeProps {
+  title?: string;
+  subTitle?: string;
+  details?: string;
 }

@@ -1,5 +1,7 @@
 import React from 'react';
 import { AccordionMocksContent } from './Accordion.types';
+import ContentTypeAccordionContent from './Partials/ContentTypeAccordionContent';
+import ContentTypeAccordionHeader from './Partials/ContentTypeAccordionHeader';
 import ContentTypeText from './Partials/ContentTypeText';
 
 /*
@@ -8,72 +10,64 @@ import ContentTypeText from './Partials/ContentTypeText';
 
 export const accordionMocksContent: AccordionMocksContent[] = [
   {
-    id: 0,
-    textItem: (
-      <ContentTypeText
-        title="Required Stake"
-        subTitle="What percentage of the team’s reputation, 
-        in token terms, should need to stake on each side of a motion?"
-      />
-    ),
-    /*
-     * @TODO: add custom input component
-     */
-    inputItem: <input placeholder="1%" />,
-    accordionItem: [
+    id: 'step-0',
+    title: 'Show extension parameters',
+    content: [
       {
         id: 0,
-        header: (
-          <div className="flex justify-between items-center marker:font-medium text-gray-900 text-md">
-            Example scenario
-          </div>
+        textItem: (
+          <ContentTypeText
+            title="Required Stake"
+            subTitle="What percentage of the team’s reputation, 
+            in token terms, should need to stake on each side of a motion?"
+          />
         ),
-        content: (
-          <div className="text-sm font-normal text-gray-600 pt-2">
-            If a team has 100 reputation points between them, and the Required Stake is 5%, then 5 tokens would need to
-            be staked to either support or object to a motion.
-          </div>
-        ),
+        inputItem: <input placeholder="1%" />,
+        accordionItem: [
+          {
+            id: 'step-0-0',
+            header: <ContentTypeAccordionHeader>Example scenario</ContentTypeAccordionHeader>,
+            content: (
+              <ContentTypeAccordionContent>
+                If a team has 100 reputation points between them, and the Required Stake is 5%, then 5 tokens would need
+                to be staked to either support or object to a motion.
+              </ContentTypeAccordionContent>
+            ),
+          },
+        ],
       },
     ],
   },
   {
-    id: 1,
-    textItem: (
-      <ContentTypeText
-        title="Voter Reward"
-        subTitle="In a dispute, what percentage of the losing side’s stake should be awarded to the voters?"
-      />
-    ),
-    inputItem: <input placeholder="20%" />,
-    accordionItem: [
-      {
-        id: 0,
-        header: (
-          <div className="flex justify-between items-center marker:font-medium text-gray-900 text-md">
-            Example scenario
-          </div>
-        ),
-        content: (
-          <div className="text-sm font-normal text-gray-600 pt-2">
-            If a team has 100 reputation points between them, and the Required Stake is 5%, then 5 tokens would need to
-            be staked to either support or object to a motion.
-          </div>
-        ),
-      },
+    id: 'step-1',
+    title: 'Show extension parameters 2',
+    content: [
       {
         id: 1,
-        header: (
-          <div className="flex justify-between items-center marker:font-medium text-gray-900 text-md">
-            Example scenario
-          </div>
+        textItem: (
+          <ContentTypeText
+            title="Voter Reward"
+            subTitle="In a dispute, what percentage of the losing side’s stake should be awarded to the voters?"
+          />
         ),
-        content: (
-          <div className="text-sm font-normal text-gray-600 pt-2">
-            If a team has 100 reputation points between them, and the Required Stake is 5%, then 5 tokens would need to
-            be staked to either support or object to a motion.
-          </div>
-        ),
+        inputItem: <input placeholder="20%" />,
+        accordionItem: [
+          {
+            id: 'step-1-0',
+            header: <ContentTypeAccordionHeader>Example scenario 1</ContentTypeAccordionHeader>,
+            content: <ContentTypeAccordionContent>content 1</ContentTypeAccordionContent>,
+          },
+          {
+            id: 'step-1-1',
+            header: <ContentTypeAccordionHeader>Example scenario 2</ContentTypeAccordionHeader>,
+            content: <ContentTypeAccordionContent>content 2</ContentTypeAccordionContent>,
+          },
+          {
+            id: 'step-1-2',
+            header: <ContentTypeAccordionHeader>Example scenario 3</ContentTypeAccordionHeader>,
+            content: <ContentTypeAccordionContent>content 3</ContentTypeAccordionContent>,
+          },
+        ],
       },
     ],
   },

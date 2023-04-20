@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { AccordionItemProps } from './AccordtionItem.types';
 import AccordionHeader from './AccordionHeader';
+import AccordionContent from './AccordionContent';
+import { AccordionItemProps } from '../Accordion.types';
 
 const displayName = 'Extensions.Accordion.Partials.AccordionItem';
 
@@ -28,7 +29,7 @@ const AccordionItem: FC<AccordionItemProps> = ({ title, content, isOpen, onClick
               transition={{ duration: 0.4, ease: 'easeOut' }}
               className="overflow-hidden"
             >
-              <div>{content}</div>
+              <AccordionContent content={content} />
             </motion.div>
           )}
         </AnimatePresence>

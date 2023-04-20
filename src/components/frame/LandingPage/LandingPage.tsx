@@ -14,7 +14,6 @@ import { useAppContext, useCanInteractWithNetwork } from '~hooks';
 import styles from './LandingPage.css';
 import Accordion from '~shared/Extensions/Accordion/Accordion';
 import { useAccordion } from '~shared/Extensions/Accordion/useAccortion';
-import AccordionContent from '~shared/Extensions/Accordion/Partials/AccordionContent';
 import { accordionMocksContent } from '~shared/Extensions/Accordion/Accordion.mocks';
 
 const displayName = 'frame.LandingPage';
@@ -81,22 +80,7 @@ const LandingPage = () => {
         <div className={styles.title}>
           <Heading text={MSG.callToAction} appearance={{ size: 'medium', margin: 'none', theme: 'dark' }} />
         </div>
-        <Accordion
-          openIndex={openIndex}
-          onOpenIndexChange={onOpenIndexChange}
-          items={[
-            {
-              id: 0,
-              title: 'Show extension parameters',
-              content: <AccordionContent content={accordionMocksContent} />,
-            },
-            {
-              id: 1,
-              title: 'Show extension parameters 2',
-              content: <AccordionContent content={accordionMocksContent} />,
-            },
-          ]}
-        />
+        <Accordion openIndex={openIndex} onOpenIndexChange={onOpenIndexChange} items={accordionMocksContent} />
         <ul>
           {wallet && !userLoading && !user && <LandingItem to={CREATE_USER_ROUTE} message={MSG.createUsername} />}
           {canInteractWithNetwork && <LandingItem to={CREATE_COLONY_ROUTE} message={MSG.createColony} />}
