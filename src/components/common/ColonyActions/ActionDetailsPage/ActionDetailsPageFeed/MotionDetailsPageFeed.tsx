@@ -3,7 +3,7 @@ import React from 'react';
 import {
   ColonyAction,
   ColonyAndExtensionsEvents,
-  SystemMessagesName,
+  SystemMessages,
 } from '~types';
 
 import MotionDetailsPageEvent from './MotionDetailsPageEvent/MotionDetailsPageEvent';
@@ -25,7 +25,7 @@ const MotionDetailsPageFeed = ({ actionData }: MotionDetailsPageFeedProps) => {
           motionMessageData={message}
           eventName={
             ColonyAndExtensionsEvents[message.name] ??
-            SystemMessagesName[message.name]
+            SystemMessages[message.name]
           }
           key={message.messageKey}
         />
