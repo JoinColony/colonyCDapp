@@ -7,6 +7,10 @@ import { useGetColonyActionQuery, useGetMotionStateQuery } from '~gql';
 import { Colony } from '~types';
 import { isTransactionFormat } from '~utils/web3';
 
+export type RefetchMotionState = ReturnType<
+  typeof useGetMotionStateQuery
+>['refetch'];
+
 const useGetColonyAction = (colony?: Colony | null) => {
   const { transactionHash } = useParams<ActionDetailsPageParams>();
   const isValidTx = isTransactionFormat(transactionHash);
@@ -77,6 +81,7 @@ const useGetColonyAction = (colony?: Colony | null) => {
     startPollingForAction,
     stopPollingForAction,
     motionState: motionStateData?.getMotionState,
+    refetchMotionState,
   };
 };
 

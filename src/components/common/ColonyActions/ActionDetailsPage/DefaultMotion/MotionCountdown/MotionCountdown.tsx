@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import CountDownTimer from '~common/ColonyActions/CountDownTimer';
 import { MotionState } from '~utils/colonyMotions';
 import { MotionData } from '~types';
+import { RefetchMotionState } from '~hooks';
 
 import VotingProgress from './VotingProgress';
 
@@ -43,18 +44,19 @@ const displayName = 'common.ColonyActions.ActionDetailsPage.MotionCountdown';
 
 interface MotionCountdownProps {
   motionState: MotionState;
+  refetchMotionState: RefetchMotionState;
   motionData: MotionData;
 }
 
-const MotionCountdown = ({ motionState, motionData }: MotionCountdownProps) => {
-  // const motionDomain = 1;
-  const motionId = 1;
-  const isFullyNayStaked = false; // getIsFullyNayStaked();
-  // const loadingMotionStatus = false;
-  // const isMotionFinished =
-  //   motionState === MotionState.Passed ||
-  //   motionState === MotionState.Failed ||
-  //   motionState === MotionState.FailedNotFinalizable;
+const MotionCountdown = ({
+  motionState,
+  motionData,
+  refetchMotionState,
+}: MotionCountdownProps) => {
+  const isMotionFinished =
+    motionState === MotionState.Passed ||
+    motionState === MotionState.Failed ||
+    motionState === MotionState.FailedNotFinalizable;
 
   // const showEscalateButton
   //   motionDomain !== Id.RootDomain &&
@@ -62,18 +64,19 @@ const MotionCountdown = ({ motionState, motionData }: MotionCountdownProps) => {
   //   motionState === MotionState.Escalation;
 
   const showVotingProgress = motionState === MotionState.Voting;
-  const showCountdownTimer = true; // !loadingMotionStatus && !isMotionFinished;
+
   return (
     <div
       className={classNames(styles.countdownContainer, {
         [styles.votingCountdownContainer]: showVotingProgress,
       })}
     >
-      {showCountdownTimer && (
+      {!isMotionFinished && (
         <CountDownTimer
-          state={motionState as MotionState}
-          motionId={motionId}
-          isFullyNayStaked={isFullyNayStaked}
+          motionState={motionState}
+          refetchMotionState={refetchMotionState}
+          motionId={motionData.motionId}
+          motionStakes={motionData.motionStakes}
         />
       )}
       {showVotingProgress && <VotingProgress motionData={motionData} />}

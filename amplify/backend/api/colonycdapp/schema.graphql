@@ -127,6 +127,11 @@ input GetVoterRewardsInput {
   rootHash: String!
 }
 
+input GetMotionTimeoutPeriodsInput {
+  motionId: String!
+  colonyAddress: String!
+}
+
 type UserDomainReputation {
   domainId: Int!
   reputationPercentage: String!
@@ -142,6 +147,13 @@ type GetUserTokenBalanceReturn {
   lockedBalance: String
   activeBalance: String
   pendingBalance: String
+}
+
+type GetMotionTimeoutPeriodsReturn {
+  timeLeftToStake: String!,
+  timeLeftToVote: String!,
+  timeLeftToReveal: String!,
+  timeLeftToEscalate: String!
 }
 
 # Definitions:
@@ -252,6 +264,8 @@ type Query {
     @function(name: "fetchMotionState")
   getVoterRewards(input: GetVoterRewardsInput): VoterRewardsReturn
     @function(name: "fetchVoterRewards")
+  getMotionTimeoutPeriods(input: GetMotionTimeoutPeriodsInput): GetMotionTimeoutPeriodsReturn
+    @function(name: "fetchMotionTimeoutPeriods")
 }
 
 type Mutation {

@@ -3,6 +3,7 @@ import React from 'react';
 import { motionTags } from '~shared/Tag';
 import { MotionState } from '~utils/colonyMotions';
 import { MotionData } from '~types';
+import { RefetchMotionState } from '~hooks';
 
 import MotionCountdown from '../MotionCountdown';
 
@@ -13,16 +14,25 @@ const displayName =
 
 interface MotionHeadingProps {
   motionState: MotionState;
+  refetchMotionState: RefetchMotionState;
   motionData: MotionData;
 }
 
-const MotionHeading = ({ motionState, motionData }: MotionHeadingProps) => {
+const MotionHeading = ({
+  motionState,
+  motionData,
+  refetchMotionState,
+}: MotionHeadingProps) => {
   const MotionTag = motionTags[motionState];
 
   return (
     <div className={styles.main}>
       <MotionTag />
-      <MotionCountdown motionState={motionState} motionData={motionData} />
+      <MotionCountdown
+        motionState={motionState}
+        refetchMotionState={refetchMotionState}
+        motionData={motionData}
+      />
     </div>
   );
 };
