@@ -4,27 +4,28 @@ import { ColonyAction, ColonyAndExtensionsEvents } from '~types';
 import { TransactionStatus, TransactionStatuses } from '~common/ColonyActions';
 import ActionEventData from './ActionEventData';
 
-import styles from './ActionDetailsPageEvent.css';
+import styles from '../ActionDetailsPageEvent.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.ActionsPageEvent';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.ActionDetailsPageEvent';
 
-export interface ActionsPageEventProps {
+export interface ActionDetailsPageEventProps {
   eventName: ColonyAndExtensionsEvents;
   actionData: ColonyAction;
   dataTest?: string;
 }
 
-const ActionsPageEvent = ({
+const ActionDetailsPageEvent = ({
   eventName,
   actionData,
   dataTest,
-}: ActionsPageEventProps) => (
+}: ActionDetailsPageEventProps) => (
   <div className={styles.main} data-test={dataTest}>
     <TransactionStatus status={TransactionStatuses.Succeeded} showTooltip />
     <ActionEventData actionData={actionData} eventName={eventName} />
   </div>
 );
 
-ActionsPageEvent.displayName = displayName;
+ActionDetailsPageEvent.displayName = displayName;
 
-export default ActionsPageEvent;
+export default ActionDetailsPageEvent;
