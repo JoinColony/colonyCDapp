@@ -37,6 +37,7 @@ const SubNavigation: React.FC<PropsWithChildren> = () => {
         content: <PayDropdown />,
         isOpen: openIndex === 0,
         setOpen: () => setOpenIndex((prevState) => (prevState === 0 ? undefined : 0)),
+        icon: 'hand-coins',
       },
       {
         id: 1,
@@ -44,6 +45,7 @@ const SubNavigation: React.FC<PropsWithChildren> = () => {
         content: <DecideDropdown />,
         isOpen: openIndex === 1,
         setOpen: () => setOpenIndex((prevState) => (prevState === 1 ? undefined : 1)),
+        icon: 'hands-clapping',
       },
       {
         id: 2,
@@ -51,6 +53,7 @@ const SubNavigation: React.FC<PropsWithChildren> = () => {
         content: <ManageDropdown />,
         isOpen: openIndex === 2,
         setOpen: () => setOpenIndex((prevState) => (prevState === 2 ? undefined : 2)),
+        icon: 'folders',
       },
     ];
 

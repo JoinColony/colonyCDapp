@@ -82,7 +82,7 @@ const PayDropdown: React.FC<PropsWithChildren> = () => (
       <div className={styles.buttonWrapper}>
         <Button text={MSG.buttonText} mode="primaryOutline" />
       </div>
-      <div className="mt-6 md:mt-8 mb-4 text-sm flex justify-center">
+      <div className="mt-6 md:mt-8 mb-4 text-sm flex justify-center font-normal">
         <FormattedMessage
           {...MSG.helpText}
           values={{

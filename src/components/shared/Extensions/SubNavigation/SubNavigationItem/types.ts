@@ -6,4 +6,5 @@ export interface SubNavigationItemProps {
   isOpen: boolean;
   setOpen: (value: React.SetStateAction<number | undefined>) => void;
   id: number;
+  icon: string;
 }
