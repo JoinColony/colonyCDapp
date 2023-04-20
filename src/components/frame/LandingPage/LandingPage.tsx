@@ -69,8 +69,6 @@ const LandingPage = () => {
     }
   }, [wallet, updateUser]);
 
-  const { openIndex, onOpenIndexChange } = useAccordion();
-
   return (
     <div className="inner">
       <div className={styles.main}>

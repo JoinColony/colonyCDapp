@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { AccordionHeaderProps } from '../Accordion.types';
+import { AccordionItemProps } from '../Accordion.types';
 
 const displayName = 'Extensions.Accordion.Partials.AccordionHeader';
 
-const AccordionHeader: FC<AccordionHeaderProps> = ({ title }) => {
+const AccordionHeader: FC<AccordionItemProps> = ({ title }) => {
   /*
    * @TODO: add arrow icon
    */

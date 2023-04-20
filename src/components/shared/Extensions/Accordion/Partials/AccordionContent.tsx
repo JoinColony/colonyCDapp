@@ -1,24 +1,24 @@
 import React, { FC, useState } from 'react';
-import { AccordionMocksContentProps } from '../Accordion.types';
+import { AccordionItemProps, AccordionMocksItemProps } from '../Accordion.types';
 import AccordionContentItem from './AccordionContentItem';
 
 const displayName = 'Extensions.Accordion.Partials.AccordionContent';
 
-const AccordionContent: FC<AccordionMocksContentProps> = ({ content }) => {
-  const [openIndex, setOpenIndex] = useState<number | undefined>();
+const AccordionContent: FC<AccordionItemProps> = ({ content }) => {
+  const [openIndex, setOpenIndex] = useState<string | undefined>();
 
-  const onOpenIndexChange = (index: number | undefined) => {
-    if (index === openIndex) {
+  const onOpenIndexChange = (accordionItem: AccordionMocksItemProps) => {
+    if (accordionItem.id === openIndex) {
       setOpenIndex(undefined);
 
       return;
     }
-    setOpenIndex(index);
+    setOpenIndex(accordionItem.id);
   };
 
   return (
     <div className="relative">
-      {content.map((item, index) => (
+      {content?.map((item) => (
         <div key={item.id}>
           <div className="flex justify-between mt-4">
             {item.textItem && item.textItem}
@@ -30,8 +30,8 @@ const AccordionContent: FC<AccordionMocksContentProps> = ({ content }) => {
               <AccordionContentItem
                 key={accordionItem.id}
                 accordionItem={accordionItem}
-                isOpen={openIndex === index}
-                onClick={() => onOpenIndexChange(index)}
+                isOpen={openIndex === accordionItem.id}
+                onClick={() => onOpenIndexChange(accordionItem)}
               />
             ))}
         </div>
