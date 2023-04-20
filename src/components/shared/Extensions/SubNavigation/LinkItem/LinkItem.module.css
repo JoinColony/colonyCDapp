@@ -1,7 +1,0 @@
-.itemWrapper {
-  @apply px-4 py-2 md:mt-2 md:mb-1;
-
-  &:hover {
-    @apply bg-gray-50 cursor-pointer;
-  }
-}

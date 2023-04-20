@@ -13,7 +13,3 @@
     @apply w-full flex justify-center text-blue-400 font-semibold border-blue-400;
   }
 }
-
-.externalLink {
-  @apply font-semibold ml-1 text-gray-900 underline underline-offset-2 hover:cursor-pointer;
-}

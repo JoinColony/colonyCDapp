@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
 
-export interface SubNavigationItemMobileProps {
+export interface SubNavigationItemProps {
   label: ReactNode;
   content: ReactNode;
   isOpen: boolean;
-  setOpen: (value: React.SetStateAction<number | undefined>) => void;
+  setOpen: () => void;
   id: number;
   icon: string;
 }

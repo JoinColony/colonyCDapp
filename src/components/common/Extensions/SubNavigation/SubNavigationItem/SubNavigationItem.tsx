@@ -3,19 +3,18 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 import clsx from 'clsx';
 
 import Button from '~shared/Extensions/Button/Button';
+import Icon from '~shared/Icon/Icon';
 
 import { SubNavigationItemProps } from './types';
 import styles from './SubNavigationItem.module.css';
-import Icon from '~shared/Icon/Icon';
 
-const displayName = 'Extensions.SubNavigation.SubNavigationItem';
+const displayName = 'common.Extensions.SubNavigation.SubNavigationItem';
 
 const SubNavigationItem: React.FC<PropsWithChildren<SubNavigationItemProps>> = ({
   label,
   content,
   isOpen,
   setOpen,
-  id,
   icon,
 }) => {
   const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip(
@@ -32,17 +31,19 @@ const SubNavigationItem: React.FC<PropsWithChildren<SubNavigationItemProps>> = (
           name: 'eventListeners',
           options: { scroll: true },
         },
+        {
+          name: 'offset',
+          options: {
+            offset: [0, 8],
+          },
+        },
       ],
     },
   );
 
   return (
     <li>
-      <Button
-        onClick={() => setOpen(id)}
-        mode="textButton"
-        className={clsx(styles.button, { [styles.activeButton]: isOpen })}
-      >
+      <Button onClick={setOpen} mode="textButton" className={clsx(styles.button, { [styles.activeButton]: isOpen })}>
         <Icon name={icon} />
         <div ref={setTriggerRef}>{label}</div>
       </Button>

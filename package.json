@@ -118,7 +118,6 @@
     "prettier": "^2.8.7",
     "process": "^0.11.10",
     "storybook": "^7.0.2",
-    "storybook-addon-react-router-v6": "^0.3.5",
     "storybook-react-intl": "^2.0.1",
     "stream": "^0.0.2",
     "stream-browserify": "^3.0.0",
