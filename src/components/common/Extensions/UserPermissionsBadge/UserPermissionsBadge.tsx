@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import camelcase from 'camelcase';
 import clsx from 'clsx';
@@ -19,7 +19,7 @@ const displayName = 'common.Extensions.UserPermissionsBadge';
 //   };
 // }, {});
 
-const UserPermissionsBadge: React.FC<PropsWithChildren<UserPermissionsBadgeProps>> = ({
+const UserPermissionsBadge: FC<PropsWithChildren<UserPermissionsBadgeProps>> = ({
   children,
   text,
   textValues,

@@ -7,7 +7,7 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     mode: {
       name: 'Mode',
-      options: ['primarySolid', 'primaryOutline', 'textButton'],
+      options: ['primarySolid', 'primaryOutline', 'secondarySolid', 'textButton'],
       control: {
         type: 'select',
       },
@@ -24,22 +24,34 @@ const meta: Meta<typeof Button> = {
         type: 'boolean',
       },
     },
+    isFullSize: {
+      name: 'Is full size?',
+      control: {
+        type: 'boolean',
+      },
+    },
   },
-  args: { text: 'New action', disabled: false },
+  args: {
+    text: 'New action',
+    disabled: false,
+    isFullSize: false,
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-export const PrimarySolid: Story = {
-  args: {
-    mode: 'primarySolid',
-  },
-};
+export const PrimarySolid: Story = {};
 
 export const PrimaryOutline: Story = {
   args: {
     mode: 'primaryOutline',
+  },
+};
+
+export const SecondarySolid: Story = {
+  args: {
+    mode: 'secondarySolid',
   },
 };
 

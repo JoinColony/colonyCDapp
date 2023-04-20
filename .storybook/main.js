@@ -29,6 +29,8 @@ module.exports = {
   webpackFinal: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
+      '~hooks': path.resolve(__dirname, '../src/hooks'),
+      '~images': path.resolve(__dirname, '../src/images'),
       '~types': path.resolve(__dirname, '../src/types'),
       '~utils': path.resolve(__dirname, '../src/utils'),
       '~gql': path.resolve(__dirname, '../src/graphql'),
