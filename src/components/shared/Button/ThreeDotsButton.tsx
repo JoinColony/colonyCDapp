@@ -16,14 +16,7 @@ interface Props extends DefaultButtonProps {
   innerRef?: (ref: HTMLInputElement | null) => void;
 }
 
-const ThreeDotsButton = ({
-  className,
-  isOpen,
-  title,
-  activeStyles,
-  innerRef,
-  ...props
-}: Props) => {
+const ThreeDotsButton = ({ className, isOpen, title, activeStyles, innerRef, ...props }: Props) => {
   const active = activeStyles || styles.menuActive;
   return (
     <Button

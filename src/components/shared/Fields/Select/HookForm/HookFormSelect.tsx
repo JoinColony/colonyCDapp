@@ -1,12 +1,4 @@
-import React, {
-  KeyboardEvent,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { KeyboardEvent, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { nanoid } from 'nanoid';
 import { useFormContext } from 'react-hook-form';
@@ -80,11 +72,7 @@ const HookFormSelect = ({
 
   const handleOutsideClick = useCallback(
     (evt: MouseEvent) => {
-      if (
-        wrapperRef.current &&
-        evt.target instanceof Node &&
-        !wrapperRef.current.contains(evt.target)
-      ) {
+      if (wrapperRef.current && evt.target instanceof Node && !wrapperRef.current.contains(evt.target)) {
         close();
       }
     },
@@ -211,10 +199,7 @@ const HookFormSelect = ({
     let activeOptionLabel;
     if (activeOption) {
       if (typeof activeOption.label === 'object') {
-        activeOptionLabel = formatText(
-          activeOption.label,
-          activeOption.labelValues,
-        );
+        activeOptionLabel = formatText(activeOption.label, activeOption.labelValues);
       } else if (activeOption.labelElement) {
         activeOptionLabel = activeOption.labelElement;
       } else {

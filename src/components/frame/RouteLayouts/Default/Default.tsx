@@ -21,23 +21,13 @@ const displayName = 'pages.Default';
 
 const Default = ({
   children,
-  routeProps: {
-    hasBackLink = true,
-    backRoute,
-    backText,
-    backTextValues,
-    hasSubscribedColonies = true,
-  } = {},
+  routeProps: { hasBackLink = true, backRoute, backText, backTextValues, hasSubscribedColonies = true } = {},
 }: Props) => {
   const location = useLocation();
-  const backLinkExists =
-    hasBackLink === undefined
-      ? location.state && location.state.hasBackLink
-      : hasBackLink;
+  const backLinkExists = hasBackLink === undefined ? location.state && location.state.hasBackLink : hasBackLink;
 
   const params = useParams();
-  const resolvedBackRoute =
-    typeof backRoute === 'function' ? backRoute(params) : backRoute;
+  const resolvedBackRoute = typeof backRoute === 'function' ? backRoute(params) : backRoute;
   const isMobile = useMobile();
 
   return (
@@ -48,9 +38,7 @@ const Default = ({
             backRoute={resolvedBackRoute}
             backText={backText}
             backTextValues={backTextValues}
-            className={
-              hasSubscribedColonies ? styles.history : styles.onlyHistory
-            }
+            className={hasSubscribedColonies ? styles.history : styles.onlyHistory}
           />
         )}
         <div className={styles.content}>

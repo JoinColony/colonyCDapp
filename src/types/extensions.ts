@@ -49,6 +49,4 @@ export type InstallableExtensionData = ExtensionConfig & {
   availableVersion: number;
 };
 
-export type AnyExtensionData =
-  | InstalledExtensionData
-  | InstallableExtensionData;
+export type AnyExtensionData = InstalledExtensionData | InstallableExtensionData;

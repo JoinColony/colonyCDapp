@@ -16,13 +16,7 @@ interface Props {
   handleFilterChange: (name, value) => void;
 }
 
-const Filter = ({
-  appearance,
-  name,
-  options,
-  label,
-  handleFilterChange,
-}: Props) => {
+const Filter = ({ appearance, name, options, label, handleFilterChange }: Props) => {
   const selectRef = useRef<HTMLDivElement>(null);
 
   const scrollIntoView = () => {
@@ -30,13 +24,7 @@ const Filter = ({
   };
 
   return (
-    <div
-      onClick={scrollIntoView}
-      ref={selectRef}
-      role="button"
-      tabIndex={0}
-      onKeyUp={scrollIntoView}
-    >
+    <div onClick={scrollIntoView} ref={selectRef} role="button" tabIndex={0} onKeyUp={scrollIntoView}>
       <Select
         onChange={(value) => handleFilterChange(name, value)}
         appearance={appearance}

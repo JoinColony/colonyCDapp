@@ -38,20 +38,13 @@ interface Props {
 
 const ExtensionSetup = ({
   extensionData,
-  extensionData: {
-    isInitialized,
-    isDeprecated,
-    extensionId,
-    initializationParams,
-  },
+  extensionData: { isInitialized, isDeprecated, extensionId, initializationParams },
 }: Props) => {
   const navigate = useNavigate();
   const { colony } = useColonyContext();
 
   const transform = pipe(
-    mapPayload((payload) =>
-      mapExtensionActionPayload(extensionId, payload, initializationParams),
-    ),
+    mapPayload((payload) => mapExtensionActionPayload(extensionId, payload, initializationParams)),
     mergePayload({ colonyAddress: colony?.colonyAddress, extensionData }),
   );
 
@@ -77,9 +70,7 @@ const ExtensionSetup = ({
   return (
     <ActionForm
       initialValues={initialValues}
-      validationSchema={createExtensionSetupValidationSchema(
-        initializationParams,
-      )}
+      validationSchema={createExtensionSetupValidationSchema(initializationParams)}
       submit={ActionTypes.EXTENSION_ENABLE}
       error={ActionTypes.EXTENSION_ENABLE_ERROR}
       success={ActionTypes.EXTENSION_ENABLE_SUCCESS}
@@ -89,10 +80,7 @@ const ExtensionSetup = ({
       {({ isSubmitting, isValid, status }) => {
         return (
           <div>
-            <Heading
-              appearance={{ size: 'medium', margin: 'none' }}
-              text={MSG.title}
-            />
+            <Heading appearance={{ size: 'medium', margin: 'none' }} text={MSG.title} />
             <FormattedMessage {...MSG.description} />
             <div className={styles.inputContainer}>
               {initializationParams.map((param) => (
@@ -104,11 +92,7 @@ const ExtensionSetup = ({
               appearance={{ theme: 'primary', size: 'large' }}
               text={{ id: 'button.confirm' }}
               loading={isSubmitting}
-              disabled={
-                !isValid ||
-                Object.values(status || {}).some((value) => !!value) ||
-                isSubmitting
-              }
+              disabled={!isValid || Object.values(status || {}).some((value) => !!value) || isSubmitting}
             />
           </div>
         );

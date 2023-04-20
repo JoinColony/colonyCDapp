@@ -1,10 +1,5 @@
 import React, { useMemo } from 'react';
-import {
-  Route,
-  Routes as RoutesSwitch,
-  Navigate,
-  Outlet,
-} from 'react-router-dom';
+import { Route, Routes as RoutesSwitch, Navigate, Outlet } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 
 import CreateUserWizard from '~common/CreateUserWizard';
@@ -126,11 +121,9 @@ const Routes = () => {
           }
         >
           <Route path={COLONY_FUNDING_ROUTE} element={<ColonyFunding />} />
-          {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
-            (path) => (
-              <Route key={path} path={path} element={<ColonyMembers />} />
-            ),
-          )}
+          {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map((path) => (
+            <Route key={path} path={path} element={<ColonyMembers />} />
+          ))}
         </Route>
         <Route
           path={COLONY_HOME_ROUTE}

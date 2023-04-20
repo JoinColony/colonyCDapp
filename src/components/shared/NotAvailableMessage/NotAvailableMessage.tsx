@@ -10,8 +10,7 @@ const displayName = 'NotAvailableMessage';
 const MSG = defineMessages({
   notAvailable: {
     id: `${displayName}.notAvailable`,
-    defaultMessage:
-      '{notAvailableDataName} data is not available or could not be loaded.',
+    defaultMessage: '{notAvailableDataName} data is not available or could not be loaded.',
   },
 });
 

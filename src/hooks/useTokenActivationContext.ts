@@ -6,9 +6,7 @@ const useTokenActivationContext = () => {
   const context = useContext(TokenActivationContext);
 
   if (!context) {
-    throw new Error(
-      'This hook must be used within the "TokenActivationContext" provider',
-    );
+    throw new Error('This hook must be used within the "TokenActivationContext" provider');
   }
 
   return context;

@@ -51,9 +51,7 @@ const ColonyHomeLayout = ({
 
   return (
     <div className={styles.main}>
-      <div
-        className={isExtensions ? styles.mainContentGrid : styles.minimalGrid}
-      >
+      <div className={isExtensions ? styles.mainContentGrid : styles.minimalGrid}>
         <ColonyHomeInfo />
         <div className={styles.mainContent}>
           {!isExtensions && (
@@ -61,10 +59,7 @@ const ColonyHomeLayout = ({
               <ColonyTotalFunds />
               <div className={styles.contentActionsPanel}>
                 <div className={styles.domainsDropdownContainer}>
-                  <ColonyDomainSelector
-                    filteredDomainId={filteredDomainId}
-                    onDomainChange={onDomainChange}
-                  />
+                  <ColonyDomainSelector filteredDomainId={filteredDomainId} onDomainChange={onDomainChange} />
                 </div>
                 <NewActionButton filteredDomainId={filteredDomainId} />
               </div>

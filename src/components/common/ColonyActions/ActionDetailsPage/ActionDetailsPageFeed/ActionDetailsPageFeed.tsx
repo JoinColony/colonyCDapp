@@ -5,8 +5,7 @@ import { ACTIONS_EVENTS } from '../staticMaps';
 
 import ActionsPageEvent from './ActionDetailsPageEvent';
 
-const displayName =
-  'common.ColonyActions.ActionDetailsPage.ActionDetailsPageFeed';
+const displayName = 'common.ColonyActions.ActionDetailsPage.ActionDetailsPageFeed';
 
 interface ActionsPageFeedProps {
   actionData: ColonyAction;
@@ -21,11 +20,7 @@ ActionsPageFeedProps) => {
   return (
     <>
       {events?.map((event) => (
-        <ActionsPageEvent
-          actionData={actionData}
-          eventName={event}
-          key={event}
-        />
+        <ActionsPageEvent actionData={actionData} eventName={event} key={event} />
       ))}
     </>
   );

@@ -13,15 +13,9 @@ interface ConfirmTransactionsProps {
   transactionGroup?: TransactionOrMessageGroup;
   headingText: Message;
 }
-const ConfirmTransactions = ({
-  transactionGroup,
-  headingText,
-}: ConfirmTransactionsProps) => (
+const ConfirmTransactions = ({ transactionGroup, headingText }: ConfirmTransactionsProps) => (
   <>
-    <Heading
-      appearance={{ size: 'medium', weight: 'medium' }}
-      text={headingText}
-    />
+    <Heading appearance={{ size: 'medium', weight: 'medium' }} text={headingText} />
     <div className={styles.container}>
       {transactionGroup && (
         <GasStationContent

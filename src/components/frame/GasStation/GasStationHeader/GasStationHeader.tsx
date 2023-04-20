@@ -21,10 +21,7 @@ const GasStationHeader = ({ close }: Props) => {
     <div className={styles.main}>
       <div className={styles.walletDetails}>
         <div className={styles.walletHeading}>
-          <Heading
-            appearance={{ margin: 'none', size: 'normal' }}
-            text={{ id: 'wallet' }}
-          />
+          <Heading appearance={{ margin: 'none', size: 'normal' }} text={{ id: 'wallet' }} />
         </div>
         <div className={styles.walletAddress}>
           <CopyableAddress>{wallet?.address || ''}</CopyableAddress>
@@ -32,17 +29,8 @@ const GasStationHeader = ({ close }: Props) => {
       </div>
       <div className={styles.actionsContainer}>
         {close && (
-          <button
-            className={styles.closeButton}
-            onClick={close}
-            type="button"
-            data-test="closeGasStationButton"
-          >
-            <Icon
-              appearance={{ size: 'normal' }}
-              name="close"
-              title={{ id: 'button.close' }}
-            />
+          <button className={styles.closeButton} onClick={close} type="button" data-test="closeGasStationButton">
+            <Icon appearance={{ size: 'normal' }} name="close" title={{ id: 'button.close' }} />
           </button>
         )}
       </div>

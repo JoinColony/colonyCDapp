@@ -161,10 +161,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
   if (loadingActions) {
     return (
       <div className={styles.loadingSpinner}>
-        <SpinnerLoader
-          loadingText={MSG.loading}
-          appearance={{ theme: 'primary', size: 'massive' }}
-        />
+        <SpinnerLoader loadingText={MSG.loading} appearance={{ theme: 'primary', size: 'massive' }} />
       </div>
     );
   }
@@ -282,10 +279,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
       />
       {actions.length ? (
         <>
-          <ActionsListHeading
-            sortDirection={sortDirection}
-            onSortChange={onSortDirectionChange}
-          />
+          <ActionsListHeading sortDirection={sortDirection} onSortChange={onSortDirectionChange} />
           <ActionsList items={actions} />
           {hasMoreActions && (
             <LoadMoreButton

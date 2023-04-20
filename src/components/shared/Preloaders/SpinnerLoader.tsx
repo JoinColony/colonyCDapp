@@ -23,11 +23,7 @@ interface Props {
   textValues?: UniversalMessageValues;
 }
 
-const SpinnerLoader = ({
-  appearance = { size: 'small', theme: 'grey' },
-  loadingText,
-  textValues,
-}: Props) => {
+const SpinnerLoader = ({ appearance = { size: 'small', theme: 'grey' }, loadingText, textValues }: Props) => {
   return (
     <div className={getMainClasses(appearance, styles)}>
       <div className={styles.loader} />

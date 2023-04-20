@@ -67,10 +67,7 @@ const useNaiveBranchingDialogWizard = (steps: Steps) => {
        * We log an error, but only if we're in dev mode
        */
       if (isDev || process.env.DEV) {
-        console.error(
-          `Could not find Component: "${componentName}".`,
-          'Check the arguments passed to "callStep()".',
-        );
+        console.error(`Could not find Component: "${componentName}".`, 'Check the arguments passed to "callStep()".');
       }
       return null;
     }

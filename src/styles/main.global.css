@@ -1,5 +1,6 @@
 @import 'variables.css';
 @import 'fonts.css';
+@import 'react-responsive-carousel/lib/styles/carousel.min.css';
 @import 'react-popper-tooltip/dist/styles.css';
 @tailwind base;
 @tailwind components;

@@ -2,19 +2,12 @@ import { getExtensionHash } from '@colony/colony-js';
 
 import { ADDRESS_ZERO } from '~constants';
 import { ContextModule, getContext } from '~context';
-import {
-  GetColonyExtensionDocument,
-  GetColonyExtensionQuery,
-  GetColonyExtensionQueryVariables,
-} from '~gql';
+import { GetColonyExtensionDocument, GetColonyExtensionQuery, GetColonyExtensionQueryVariables } from '~gql';
 import { ColonyExtension, InstallableExtensionData } from '~types';
 
 const getExistingExtension = (colonyAddress: string, extensionId: string) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
-  const data = apolloClient.readQuery<
-    GetColonyExtensionQuery,
-    GetColonyExtensionQueryVariables
-  >({
+  const data = apolloClient.readQuery<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>({
     query: GetColonyExtensionDocument,
     variables: {
       colonyAddress,
@@ -27,10 +20,7 @@ const getExistingExtension = (colonyAddress: string, extensionId: string) => {
 
 const saveExtensionInCache = (extension: ColonyExtension) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
-  apolloClient.writeQuery<
-    GetColonyExtensionQuery,
-    GetColonyExtensionQueryVariables
-  >({
+  apolloClient.writeQuery<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>({
     query: GetColonyExtensionDocument,
     variables: {
       colonyAddress: extension.colonyAddress,
@@ -45,15 +35,9 @@ const saveExtensionInCache = (extension: ColonyExtension) => {
   });
 };
 
-const removeExtensionFromCache = (
-  colonyAddress: string,
-  extensionId: string,
-) => {
+const removeExtensionFromCache = (colonyAddress: string, extensionId: string) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
-  apolloClient.writeQuery<
-    GetColonyExtensionQuery,
-    GetColonyExtensionQueryVariables
-  >({
+  apolloClient.writeQuery<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>({
     query: GetColonyExtensionDocument,
     variables: {
       colonyAddress,
@@ -90,11 +74,7 @@ export const refreshInstalledExtension = (
   saveExtensionInCache(modifiedExtension);
 };
 
-export const refreshDeprecatedExtension = (
-  colonyAddress: string,
-  extensionId: string,
-  isToDeprecate: boolean,
-) => {
+export const refreshDeprecatedExtension = (colonyAddress: string, extensionId: string, isToDeprecate: boolean) => {
   const existingExtension = getExistingExtension(colonyAddress, extensionId);
 
   if (!existingExtension) {
@@ -109,17 +89,11 @@ export const refreshDeprecatedExtension = (
   saveExtensionInCache(modifiedExtension);
 };
 
-export const refreshUninstalledExtension = (
-  colonyAddress: string,
-  extensionId: string,
-) => {
+export const refreshUninstalledExtension = (colonyAddress: string, extensionId: string) => {
   removeExtensionFromCache(colonyAddress, extensionId);
 };
 
-export const refreshEnabledExtension = (
-  colonyAddress: string,
-  extensionId: string,
-) => {
+export const refreshEnabledExtension = (colonyAddress: string, extensionId: string) => {
   const existingExtension = getExistingExtension(colonyAddress, extensionId);
 
   if (!existingExtension) {
@@ -134,11 +108,7 @@ export const refreshEnabledExtension = (
   saveExtensionInCache(modifiedExtension);
 };
 
-export const refreshUpgradedExtension = (
-  colonyAddress: string,
-  extensionId: string,
-  version: number,
-) => {
+export const refreshUpgradedExtension = (colonyAddress: string, extensionId: string, version: number) => {
   const existingExtension = getExistingExtension(colonyAddress, extensionId);
 
   if (!existingExtension) {

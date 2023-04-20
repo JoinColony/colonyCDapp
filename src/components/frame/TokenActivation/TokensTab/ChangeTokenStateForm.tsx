@@ -6,10 +6,7 @@ import { number, object, InferType } from 'yup';
 
 import { toFinite } from '~utils/lodash';
 import Button from '~shared/Button';
-import {
-  ActionHookForm as ActionForm,
-  HookFormInput as Input,
-} from '~shared/Fields';
+import { ActionHookForm as ActionForm, HookFormInput as Input } from '~shared/Fields';
 import Numeral from '~shared/Numeral';
 import { Tooltip } from '~shared/Popover';
 import { ActionTypes } from '~redux';
@@ -82,16 +79,12 @@ const ChangeTokenStateForm = ({
   const tokenBalance = isActivate ? inactiveBalance : activeBalance;
   const tokenBalanceInEthers = moveDecimal(tokenBalance, -tokenDecimals);
 
-  const actionType = isActivate
-    ? ActionTypes.USER_DEPOSIT_TOKEN
-    : ActionTypes.USER_WITHDRAW_TOKEN;
+  const actionType = isActivate ? ActionTypes.USER_DEPOSIT_TOKEN : ActionTypes.USER_WITHDRAW_TOKEN;
 
   const transform = pipe(
     mapPayload(({ amount }) => {
       // Convert amount string with decimals to BigInt (eth to wei)
-      const formattedAmount = BigNumber.from(
-        moveDecimal(amount, nativeToken?.decimals),
-      );
+      const formattedAmount = BigNumber.from(moveDecimal(amount, nativeToken?.decimals));
 
       return {
         amount: formattedAmount,
@@ -151,13 +144,7 @@ const ChangeTokenStateForm = ({
               />
             </div>
             {!hasLockedTokens || isActivate ? (
-              <div
-                className={
-                  isActivate
-                    ? styles.balanceInfoActivate
-                    : styles.balanceInfoWithdraw
-                }
-              >
+              <div className={isActivate ? styles.balanceInfoActivate : styles.balanceInfoWithdraw}>
                 <FormattedMessage
                   {...MSG.balance}
                   values={{
@@ -173,17 +160,8 @@ const ChangeTokenStateForm = ({
                 />
               </div>
             ) : (
-              <Tooltip
-                placement="right"
-                content={<FormattedMessage {...MSG.lockedTooltip} />}
-              >
-                <div
-                  className={
-                    hasLockedTokens
-                      ? styles.balanceInfoWithdrawLocked
-                      : styles.balanceInfoWithdraw
-                  }
-                >
+              <Tooltip placement="right" content={<FormattedMessage {...MSG.lockedTooltip} />}>
+                <div className={hasLockedTokens ? styles.balanceInfoWithdrawLocked : styles.balanceInfoWithdraw}>
                   <FormattedMessage
                     {...(hasLockedTokens ? MSG.locked : MSG.balance)}
                     values={{

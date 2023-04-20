@@ -8,8 +8,7 @@ import { Token } from '~types';
 
 import styles from './TokenItem.css';
 
-const displayName =
-  'common.TokenManagementDialog.TokenManagementDialogForm.TokenItem';
+const displayName = 'common.TokenManagementDialog.TokenManagementDialogForm.TokenItem';
 
 const MSG = defineMessages({
   unknownToken: {
@@ -23,20 +22,11 @@ interface Props {
   disabled?: boolean;
 }
 
-const TokenItem = ({
-  token: { symbol, name, tokenAddress: address },
-  token,
-  disabled = false,
-}: Props) => {
+const TokenItem = ({ token: { symbol, name, tokenAddress: address }, token, disabled = false }: Props) => {
   return (
     <div className={styles.main} data-test="tokenEditItem">
       <div className={styles.tokenChoice}>
-        <Checkbox
-          name="selectedTokenAddresses"
-          value={address}
-          className={styles.checkbox}
-          disabled={disabled}
-        />
+        <Checkbox name="selectedTokenAddresses" value={address} className={styles.checkbox} disabled={disabled} />
         <TokenIcon token={token} size="xs" />
         <span className={styles.tokenChoiceSymbol}>
           <Heading

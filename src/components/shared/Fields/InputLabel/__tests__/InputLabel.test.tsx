@@ -9,16 +9,12 @@ import InputLabel from '../InputLabel';
 
 describe('InputLabel intl={intl} component', () => {
   test('Renders initial component', () => {
-    const wrapper = mountWithIntl(
-      <InputLabel appearance={{}} inputId="foo" help="halp" label="awesome" />,
-    );
+    const wrapper = mountWithIntl(<InputLabel appearance={{}} inputId="foo" help="halp" label="awesome" />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   test('If error is false, and help is true, returns help field', () => {
-    const wrapper = mountWithIntl(
-      <InputLabel inputId="foo" help="(halp)" label="awesome" />,
-    );
+    const wrapper = mountWithIntl(<InputLabel inputId="foo" help="(halp)" label="awesome" />);
     expect(wrapper.html()).toContain('(halp)');
   });
 });

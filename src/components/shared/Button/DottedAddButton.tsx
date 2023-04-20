@@ -17,18 +17,9 @@ const DottedAddButton = ({ text, textValues, ...rest }: Props) => (
   <Button appearance={{ theme: 'dottedArea' }} {...rest}>
     <span className={styles.buttonTextContainer}>
       <div className={styles.buttonIcon}>
-        <Icon
-          appearance={{ size: 'medium' }}
-          name="circle-plus"
-          title={text}
-          titleValues={textValues}
-        />
+        <Icon appearance={{ size: 'medium' }} name="circle-plus" title={text} titleValues={textValues} />
       </div>
-      {typeof text === 'string' ? (
-        text
-      ) : (
-        <FormattedMessage {...text} values={textValues} />
-      )}
+      {typeof text === 'string' ? text : <FormattedMessage {...text} values={textValues} />}
     </span>
   </Button>
 );

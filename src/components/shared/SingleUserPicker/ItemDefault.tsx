@@ -50,14 +50,12 @@ const ItemDefault = ({
       {profile?.displayName && (
         <span className={styles.displayName}>
           {profile?.displayName}
-          {isAddress(walletAddress || '') &&
-            isAddress(userAddress) &&
-            walletAddress === userAddress && (
-              <span className={styles.thatsYou}>
-                &nbsp;
-                <FormattedMessage {...MSG.ownName} />
-              </span>
-            )}
+          {isAddress(walletAddress || '') && isAddress(userAddress) && walletAddress === userAddress && (
+            <span className={styles.thatsYou}>
+              &nbsp;
+              <FormattedMessage {...MSG.ownName} />
+            </span>
+          )}
           &nbsp;
         </span>
       )}

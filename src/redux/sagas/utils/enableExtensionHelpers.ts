@@ -8,10 +8,7 @@ import { createTransaction, createTransactionChannels } from '~redux/sagas';
 
 export type Channel = Omit<TxConfig, 'methodName'>;
 
-export const removeOldExtensionClients = (
-  colonyAddress: string,
-  extensionId: string,
-) => {
+export const removeOldExtensionClients = (colonyAddress: string, extensionId: string) => {
   try {
     const colonyManager = getContext(ContextModule.ColonyManager);
     // Remove old extensions client if exist
@@ -49,10 +46,7 @@ export function* setupEnablingGroupTransactions(
       ...additionalChannels,
     };
 
-    const transactionChannels = yield createTransactionChannels(
-      metaId,
-      Object.keys(channels),
-    );
+    const transactionChannels = yield createTransactionChannels(metaId, Object.keys(channels));
     const createGroupTransaction = ({ id, index }, config) =>
       fork(createTransaction, id, {
         ...config,

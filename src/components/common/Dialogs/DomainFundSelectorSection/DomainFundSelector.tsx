@@ -20,13 +20,7 @@ interface Props {
   disabled?: boolean;
 }
 
-const DomainFundSelector = ({
-  colony,
-  disabled,
-  name,
-  label,
-  onChange,
-}: Props) => {
+const DomainFundSelector = ({ colony, disabled, name, label, onChange }: Props) => {
   const {
     formState: { isSubmitting, errors },
   } = useFormContext();

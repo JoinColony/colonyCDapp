@@ -23,10 +23,7 @@ export const rmLineBreaks = (str: string) => str.replace(/(\r\n|\n|\r)/gm, ' ');
  *
  * @return {string} based on maxCharLength either the cut down string or the original one
  */
-export const multiLineTextEllipsis = (
-  string: string,
-  maxCharLength: number,
-) => {
+export const multiLineTextEllipsis = (string: string, maxCharLength: number) => {
   if (string && string.length > maxCharLength) {
     return `${string.substring(0, maxCharLength)}... `;
   }
@@ -44,9 +41,7 @@ export const multiLineTextEllipsis = (
  */
 export const humanReadableFileSize = (size: number) => {
   const index = Math.floor(Math.log(size) / Math.log(1024));
-  return `${(size / 1024 ** index).toFixed(2)} ${
-    ['B', 'kB', 'MB', 'GB', 'TB'][index]
-  }`;
+  return `${(size / 1024 ** index).toFixed(2)} ${['B', 'kB', 'MB', 'GB', 'TB'][index]}`;
 };
 
 /**
@@ -57,8 +52,7 @@ export const humanReadableFileSize = (size: number) => {
  * @param {string} word The word / string to capitalize
  * @return {string} The capitalized string
  */
-export const capitalizeFirstLetter = (word: string): string =>
-  word && word.charAt(0).toUpperCase() + word.slice(1);
+export const capitalizeFirstLetter = (word: string): string => word && word.charAt(0).toUpperCase() + word.slice(1);
 
 /**
  * Capitalize a word (converts the word to lower case, except for the first letter)
@@ -86,10 +80,8 @@ export const capitalizeWord = (word: string): string => {
  * @return {string} The new string (stripped of the protocol) or the original one
  */
 export const stripProtocol = (urlString: string) =>
-  (urlString.startsWith(HTTP_PROTOCOL) &&
-    urlString.replace(HTTP_PROTOCOL, '')) ||
-  (urlString.startsWith(HTTPS_PROTOCOL) &&
-    urlString.replace(HTTPS_PROTOCOL, '')) ||
+  (urlString.startsWith(HTTP_PROTOCOL) && urlString.replace(HTTP_PROTOCOL, '')) ||
+  (urlString.startsWith(HTTPS_PROTOCOL) && urlString.replace(HTTPS_PROTOCOL, '')) ||
   urlString;
 
 export type AddressElements = {
@@ -140,9 +132,7 @@ export const splitAddress = (address: Address): AddressElements | Error => {
   }
 };
 
-export const splitTransactionHash = (
-  transactionHash: string,
-): AddressElements | undefined => {
+export const splitTransactionHash = (transactionHash: string): AddressElements | undefined => {
   if (isTransactionFormat(transactionHash)) {
     const HEX_HEADER = '0x';
     const addressStart: string = transactionHash.slice(2, 6);
@@ -161,8 +151,7 @@ export const splitTransactionHash = (
 // This should be opaque
 type RandomId = string;
 
-export const generateUrlFriendlyId = (): RandomId =>
-  customAlphabet(urlAlphabet, 21)();
+export const generateUrlFriendlyId = (): RandomId => customAlphabet(urlAlphabet, 21)();
 
 export const ensureHexPrefix = (value: string): string => {
   const HEX_HEADER = '0x';

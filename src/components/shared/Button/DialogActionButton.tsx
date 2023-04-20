@@ -36,15 +36,7 @@ const DialogActionButton = <D extends ComponentType<any>>({
     if (typeof valuesProp === 'function') return valuesProp(dialogValues);
     return { ...dialogValues, ...valuesProp };
   }, [dialogProps, openDialog, valuesProp]);
-  return (
-    <ActionButton
-      submit={submit}
-      success={success}
-      error={error}
-      values={values}
-      {...props}
-    />
-  );
+  return <ActionButton submit={submit} success={success} error={error} values={values} {...props} />;
 };
 
 export default DialogActionButton;

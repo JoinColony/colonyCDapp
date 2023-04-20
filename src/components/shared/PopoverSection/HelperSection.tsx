@@ -23,18 +23,10 @@ const MSG = defineMessages({
 const HelperSection = () => (
   <DropdownMenuSection separator>
     <DropdownMenuItem>
-      <ExternalLink
-        href={FEEDBACK}
-        text={MSG.reportBugs}
-        className={styles.externalLink}
-      />
+      <ExternalLink href={FEEDBACK} text={MSG.reportBugs} className={styles.externalLink} />
     </DropdownMenuItem>
     <DropdownMenuItem>
-      <ExternalLink
-        href={HELP}
-        text={MSG.helpCenter}
-        className={styles.externalLink}
-      />
+      <ExternalLink href={HELP} text={MSG.helpCenter} className={styles.externalLink} />
     </DropdownMenuItem>
   </DropdownMenuSection>
 );

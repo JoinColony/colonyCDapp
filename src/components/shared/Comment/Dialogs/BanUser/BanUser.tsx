@@ -7,9 +7,7 @@ import Dialog, { DialogProps, DialogSection } from '~shared/Dialog';
 import { Form } from '~shared/Fields';
 import Heading from '~shared/Heading';
 import { ItemDataType } from '~shared/OmniPicker';
-import SingleUserPicker, {
-  filterUserSelection,
-} from '~shared/SingleUserPicker';
+import SingleUserPicker, { filterUserSelection } from '~shared/SingleUserPicker';
 import HookedUserAvatar from '~users/HookedUserAvatar';
 
 import {
@@ -94,29 +92,20 @@ const BanUser = ({ colonyAddress, cancel, close, isBanning = true }: Props) => {
     variables: { colonyAddress },
   });
 
-  const { data: bannedMembers, loading: loadingBannedUsers } =
-    useBannedUsersQuery({
-      variables: {
-        colonyAddress,
-      },
-    });
+  const { data: bannedMembers, loading: loadingBannedUsers } = useBannedUsersQuery({
+    variables: {
+      colonyAddress,
+    },
+  });
 
-  const membersBanned = useMemo(
-    () => bannedMembers?.bannedUsers || [],
-    [bannedMembers?.bannedUsers],
-  );
+  const membersBanned = useMemo(() => bannedMembers?.bannedUsers || [], [bannedMembers?.bannedUsers]);
 
   const membersNotBanned = useMemo(() => {
     const subscribedUsers = colonyMembers?.subscribedUsers || [];
     return subscribedUsers.filter(({ id: currentWalletAddress }) => {
       const isCurrentUserBanned = membersBanned.find(
-        ({
-          id: bannedUserWalletAddress,
-          banned,
-        }: {
-          id: string;
-          banned: boolean;
-        }) => currentWalletAddress === bannedUserWalletAddress && banned,
+        ({ id: bannedUserWalletAddress, banned }: { id: string; banned: boolean }) =>
+          currentWalletAddress === bannedUserWalletAddress && banned,
       );
       return !isCurrentUserBanned;
     });
@@ -134,8 +123,7 @@ const BanUser = ({ colonyAddress, cancel, close, isBanning = true }: Props) => {
           variables: {
             input: {
               colonyAddress,
-              userAddress: (userAddress as unknown as AnyUser).profile
-                .walletAddress,
+              userAddress: (userAddress as unknown as AnyUser).profile.walletAddress,
             },
           },
           refetchQueries: [
@@ -175,9 +163,7 @@ const BanUser = ({ colonyAddress, cancel, close, isBanning = true }: Props) => {
                 name="userAddress"
                 filter={filterUserSelection}
                 renderAvatar={renderAvatar}
-                disabled={
-                  loadingBannedUsers || loadingBanAction || isSubmitting
-                }
+                disabled={loadingBannedUsers || loadingBanAction || isSubmitting}
               />
             </div>
           </DialogSection>

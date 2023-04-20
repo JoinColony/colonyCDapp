@@ -73,20 +73,14 @@ const ManageExpenditureDialog = ({
   enabledExtensionData,
 }: Props) => {
   const { wallet, user } = useAppContext();
-  const { isVotingReputationEnabled, isOneTxPaymentEnabled } =
-    enabledExtensionData;
+  const { isVotingReputationEnabled, isOneTxPaymentEnabled } = enabledExtensionData;
 
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
-  ]);
+  const allUserRoles = useTransformer(getAllUserRoles, [colony, wallet?.address]);
 
   const username = user?.profile?.displayName || user?.name || '';
   const hasRegisteredProfile = !!username && !!wallet?.address;
   const canCreatePayment =
-    hasRegisteredProfile &&
-    ((canAdminister(allUserRoles) && canFund(allUserRoles)) ||
-      isVotingReputationEnabled);
+    hasRegisteredProfile && ((canAdminister(allUserRoles) && canFund(allUserRoles)) || isVotingReputationEnabled);
 
   const items = [
     {
@@ -94,9 +88,7 @@ const ManageExpenditureDialog = ({
       description: MSG.paymentDescription,
       icon: 'emoji-dollar-stack',
       permissionRequired: !(canCreatePayment || isOneTxPaymentEnabled),
-      permissionInfoText: !canCreatePayment
-        ? MSG.paymentPermissionsText
-        : MSG.noOneTxExtension,
+      permissionInfoText: !canCreatePayment ? MSG.paymentPermissionsText : MSG.noOneTxExtension,
       permissionInfoTextValues: {
         permissionsList: <FormattedMessage {...MSG.paymentPermissionsList} />,
       },
@@ -117,13 +109,7 @@ const ManageExpenditureDialog = ({
     },
   ];
   return (
-    <IndexModal
-      cancel={cancel}
-      close={close}
-      title={MSG.dialogHeader}
-      items={items}
-      back={() => callStep(prevStep)}
-    />
+    <IndexModal cancel={cancel} close={close} title={MSG.dialogHeader} items={items} back={() => callStep(prevStep)} />
   );
 };
 

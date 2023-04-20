@@ -6,10 +6,7 @@ import Button from '~shared/Button';
 import Dialog, { DialogProps, DialogSection } from '~shared/Dialog';
 import Heading from '~shared/Heading';
 import Comment, { Props as CommentProps } from '~shared/Comment';
-import {
-  useDeleteTransactionMessageMutation,
-  useUndeleteTransactionMessageMutation,
-} from '~data/index';
+import { useDeleteTransactionMessageMutation, useUndeleteTransactionMessageMutation } from '~data/index';
 
 import styles from './DeleteComment.css';
 
@@ -49,9 +46,7 @@ interface Props extends DialogProps {
 }
 
 const DeleteComment = ({ cancel, close, comment, undelete = false }: Props) => {
-  const updateMutationHook = !undelete
-    ? useDeleteTransactionMessageMutation
-    : useUndeleteTransactionMessageMutation;
+  const updateMutationHook = !undelete ? useDeleteTransactionMessageMutation : useUndeleteTransactionMessageMutation;
   const [updateTransactionMessage, { loading }] = updateMutationHook();
 
   const handleSubmit = useCallback(
@@ -89,11 +84,7 @@ const DeleteComment = ({ cancel, close, comment, undelete = false }: Props) => {
         )}
       </DialogSection>
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
-        <Button
-          appearance={{ theme: 'secondary', size: 'large' }}
-          text={MSG.buttonCancel}
-          onClick={cancel}
-        />
+        <Button appearance={{ theme: 'secondary', size: 'large' }} text={MSG.buttonCancel} onClick={cancel} />
         <Button
           appearance={{ theme: undelete ? 'primary' : 'pink', size: 'large' }}
           text={MSG.buttonDelete}

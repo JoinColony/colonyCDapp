@@ -46,17 +46,10 @@ import {
 } from '~data/index';
 import { getColonyManager } from '../utils';
 
-export function* updateMotionValues(
-  colonyAddress: Address,
-  userAddress: Address,
-  motionId: BigNumber,
-) {
+export function* updateMotionValues(colonyAddress: Address, userAddress: Address, motionId: BigNumber) {
   const apolloClient = getContext(ContextModule.ApolloClient);
   const colonyManager = yield getColonyManager();
-  const colonyClient = yield colonyManager.getClient(
-    ClientType.ColonyClient,
-    colonyAddress,
-  );
+  const colonyClient = yield colonyManager.getClient(ClientType.ColonyClient, colonyAddress);
   const tokenAddress = colonyClient.tokenClient.address;
   /*
    * Staking values
@@ -74,10 +67,7 @@ export function* updateMotionValues(
   /*
    * Objection stake annotation
    */
-  yield apolloClient.query<
-    MotionObjectionAnnotationQuery,
-    MotionObjectionAnnotationQueryVariables
-  >({
+  yield apolloClient.query<MotionObjectionAnnotationQuery, MotionObjectionAnnotationQueryVariables>({
     query: MotionObjectionAnnotationDocument,
     variables: {
       colonyAddress,
@@ -89,10 +79,7 @@ export function* updateMotionValues(
   /*
    * Vote Revelead
    */
-  yield apolloClient.query<
-    MotionUserVoteRevealedQuery,
-    MotionUserVoteRevealedQueryVariables
-  >({
+  yield apolloClient.query<MotionUserVoteRevealedQuery, MotionUserVoteRevealedQueryVariables>({
     query: MotionUserVoteRevealedDocument,
     variables: {
       colonyAddress,
@@ -105,10 +92,7 @@ export function* updateMotionValues(
   /*
    * User voted check
    */
-  yield apolloClient.query<
-    MotionCurrentUserVotedQuery,
-    MotionCurrentUserVotedQueryVariables
-  >({
+  yield apolloClient.query<MotionCurrentUserVotedQuery, MotionCurrentUserVotedQueryVariables>({
     query: MotionCurrentUserVotedDocument,
     variables: {
       colonyAddress,
@@ -121,10 +105,7 @@ export function* updateMotionValues(
   /*
    * Total stake widget values
    */
-  yield apolloClient.query<
-    StakeAmountsForMotionQuery,
-    StakeAmountsForMotionQueryVariables
-  >({
+  yield apolloClient.query<StakeAmountsForMotionQuery, StakeAmountsForMotionQueryVariables>({
     query: StakeAmountsForMotionDocument,
     variables: {
       colonyAddress,
@@ -137,24 +118,19 @@ export function* updateMotionValues(
   /*
    * Is motion finalized check
    */
-  yield apolloClient.query<MotionFinalizedQuery, MotionFinalizedQueryVariables>(
-    {
-      query: MotionFinalizedDocument,
-      variables: {
-        colonyAddress,
-        motionId: motionId.toNumber(),
-      },
-      fetchPolicy: 'network-only',
+  yield apolloClient.query<MotionFinalizedQuery, MotionFinalizedQueryVariables>({
+    query: MotionFinalizedDocument,
+    variables: {
+      colonyAddress,
+      motionId: motionId.toNumber(),
     },
-  );
+    fetchPolicy: 'network-only',
+  });
 
   /*
    * Refresh rewards values and if the user claimed them
    */
-  yield apolloClient.query<
-    MotionStakerRewardQuery,
-    MotionStakerRewardQueryVariables
-  >({
+  yield apolloClient.query<MotionStakerRewardQuery, MotionStakerRewardQueryVariables>({
     query: MotionStakerRewardDocument,
     variables: {
       colonyAddress,
@@ -167,24 +143,19 @@ export function* updateMotionValues(
   /*
    * Motion Events
    */
-  yield apolloClient.query<EventsForMotionQuery, EventsForMotionQueryVariables>(
-    {
-      query: EventsForMotionDocument,
-      variables: {
-        colonyAddress,
-        motionId: motionId.toNumber(),
-      },
-      fetchPolicy: 'network-only',
+  yield apolloClient.query<EventsForMotionQuery, EventsForMotionQueryVariables>({
+    query: EventsForMotionDocument,
+    variables: {
+      colonyAddress,
+      motionId: motionId.toNumber(),
     },
-  );
+    fetchPolicy: 'network-only',
+  });
 
   /*
    * Motion System Messages
    */
-  yield apolloClient.query<
-    MotionsSystemMessagesQuery,
-    MotionsSystemMessagesQueryVariables
-  >({
+  yield apolloClient.query<MotionsSystemMessagesQuery, MotionsSystemMessagesQueryVariables>({
     query: MotionsSystemMessagesDocument,
     variables: {
       colonyAddress,
@@ -212,10 +183,7 @@ export function* updateMotionValues(
   /*
    * Refresh wallet balance
    */
-  yield apolloClient.query<
-    UserBalanceWithLockQuery,
-    UserBalanceWithLockQueryVariables
-  >({
+  yield apolloClient.query<UserBalanceWithLockQuery, UserBalanceWithLockQueryVariables>({
     query: UserBalanceWithLockDocument,
     variables: {
       address: userAddress,
@@ -240,10 +208,7 @@ export function* updateMotionValues(
   /*
    * Timeout periods
    */
-  yield apolloClient.query<
-    MotionTimeoutPeriodsQuery,
-    MotionTimeoutPeriodsQueryVariables
-  >({
+  yield apolloClient.query<MotionTimeoutPeriodsQuery, MotionTimeoutPeriodsQueryVariables>({
     query: MotionTimeoutPeriodsDocument,
     variables: {
       motionId: motionId.toNumber(),

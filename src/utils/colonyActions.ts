@@ -44,27 +44,13 @@ type ActionsDetailsMap = Partial<{
 }>;
 
 export const DETAILS_FOR_ACTION: ActionsDetailsMap = {
-  [ColonyActionType.Payment]: [
-    ActionPageDetails.FromDomain,
-    ActionPageDetails.ToRecipient,
-    ActionPageDetails.Amount,
-  ],
-  [ColonyActionType.MoveFunds]: [
-    ActionPageDetails.FromDomain,
-    ActionPageDetails.ToDomain,
-    ActionPageDetails.Amount,
-  ],
+  [ColonyActionType.Payment]: [ActionPageDetails.FromDomain, ActionPageDetails.ToRecipient, ActionPageDetails.Amount],
+  [ColonyActionType.MoveFunds]: [ActionPageDetails.FromDomain, ActionPageDetails.ToDomain, ActionPageDetails.Amount],
   [ColonyActionType.UnlockToken]: [ActionPageDetails.Domain],
   [ColonyActionType.MintTokens]: [ActionPageDetails.Amount],
-  [ColonyActionType.CreateDomain]: [
-    ActionPageDetails.Domain,
-    ActionPageDetails.Description,
-  ],
+  [ColonyActionType.CreateDomain]: [ActionPageDetails.Domain, ActionPageDetails.Description],
   [ColonyActionType.ColonyEdit]: [ActionPageDetails.Name],
-  [ColonyActionType.EditDomain]: [
-    ActionPageDetails.Domain,
-    ActionPageDetails.Description,
-  ],
+  [ColonyActionType.EditDomain]: [ActionPageDetails.Domain, ActionPageDetails.Description],
   [ColonyActionType.SetUserRoles]: [
     ActionPageDetails.Domain,
     ActionPageDetails.ToRecipient,
@@ -87,21 +73,11 @@ export const DETAILS_FOR_ACTION: ActionsDetailsMap = {
     ActionPageDetails.ToRecipient,
     ActionPageDetails.Amount,
   ],
-  [ColonyMotions.MoveFundsMotion]: [
-    ActionPageDetails.FromDomain,
-    ActionPageDetails.ToDomain,
-    ActionPageDetails.Amount,
-  ],
+  [ColonyMotions.MoveFundsMotion]: [ActionPageDetails.FromDomain, ActionPageDetails.ToDomain, ActionPageDetails.Amount],
   [ColonyMotions.MintTokensMotion]: [ActionPageDetails.Amount],
-  [ColonyMotions.CreateDomainMotion]: [
-    ActionPageDetails.Domain,
-    ActionPageDetails.Description,
-  ],
+  [ColonyMotions.CreateDomainMotion]: [ActionPageDetails.Domain, ActionPageDetails.Description],
   [ColonyMotions.ColonyEditMotion]: [ActionPageDetails.Name],
-  [ColonyMotions.EditDomainMotion]: [
-    ActionPageDetails.Domain,
-    ActionPageDetails.Description,
-  ],
+  [ColonyMotions.EditDomainMotion]: [ActionPageDetails.Domain, ActionPageDetails.Description],
   [ColonyMotions.SetUserRolesMotion]: [
     ActionPageDetails.Domain,
     ActionPageDetails.ToRecipient,
@@ -154,16 +130,12 @@ export interface EventValues {
 /*
  * Get colony action details for DetailsWidget based on action type and ActionPageDetails map
  */
-export const getDetailsForAction = (
-  actionType: ActionItemType,
-): DetailsValuesMap => {
+export const getDetailsForAction = (actionType: ActionItemType): DetailsValuesMap => {
   const detailsForActionType = DETAILS_FOR_ACTION[actionType];
   return Object.keys(ActionPageDetails).reduce((detailsMap, detailsKey) => {
     return {
       ...detailsMap,
-      [detailsKey]: detailsForActionType?.includes(
-        detailsKey as ActionPageDetails,
-      ),
+      [detailsKey]: detailsForActionType?.includes(detailsKey as ActionPageDetails),
     };
   }, {});
 };
@@ -490,10 +462,7 @@ export const getDetailsForAction = (
 //   }
 // };
 
-const getFormattedRoleList = (
-  roleGroupA: ActionUserRoles[],
-  roleGroupB: ActionUserRoles[] | null,
-) => {
+const getFormattedRoleList = (roleGroupA: ActionUserRoles[], roleGroupB: ActionUserRoles[] | null) => {
   let roleList = '';
 
   roleGroupA.forEach((role: ActionUserRoles, i: number) => {
@@ -501,10 +470,7 @@ const getFormattedRoleList = (
     const formattedRole = formatText(roleNameMessage) as string;
     roleList += ` ${formattedRole.toLowerCase()}`;
 
-    if (
-      i < roleGroupA.length - 1 ||
-      (i === roleGroupA.length - 1 && !isEmpty(roleGroupB))
-    ) {
+    if (i < roleGroupA.length - 1 || (i === roleGroupA.length - 1 && !isEmpty(roleGroupB))) {
       roleList += ',';
     }
   });
@@ -521,10 +487,7 @@ export const formatRolesTitle = (roles: ActionUserRoles[]) => {
 
   if (!isEmpty(assignedRoles)) {
     direction = 'to';
-    roleTitle += `Assign the${getFormattedRoleList(
-      assignedRoles,
-      unassignedRoles,
-    )}`;
+    roleTitle += `Assign the${getFormattedRoleList(assignedRoles, unassignedRoles)}`;
   }
 
   if (!isEmpty(unassignedRoles)) {

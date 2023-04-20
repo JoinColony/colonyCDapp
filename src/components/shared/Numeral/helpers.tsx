@@ -32,18 +32,12 @@ const bigNumberFormat: numbro.Format = {
   },
 };
 
-export const getFormattedNumeralValue = (
-  convertedValue: Decimal | null,
-  value: NumeralValue,
-) => {
+export const getFormattedNumeralValue = (convertedValue: Decimal | null, value: NumeralValue) => {
   if (!convertedValue) {
     return value.toString();
   }
 
-  if (
-    (convertedValue.gt(0) && convertedValue.lt(0.00001)) ||
-    convertedValue.gte(1_000_000_000_000)
-  ) {
+  if ((convertedValue.gt(0) && convertedValue.lt(0.00001)) || convertedValue.gte(1_000_000_000_000)) {
     return <EngineeringNotation value={convertedValue} />;
   }
 
@@ -64,7 +58,5 @@ export const getFormattedNumeralValue = (
   return numbro(convertedValue.toString()).format(format);
 };
 
-export const adjustConvertedValue = (
-  convertedValue: Decimal,
-  decimals: number,
-) => convertedValue.div(new Decimal(10).pow(decimals));
+export const adjustConvertedValue = (convertedValue: Decimal, decimals: number) =>
+  convertedValue.div(new Decimal(10).pow(decimals));

@@ -1,17 +1,7 @@
-import React, {
-  createContext,
-  useState,
-  useMemo,
-  ReactNode,
-  useCallback,
-} from 'react';
+import React, { createContext, useState, useMemo, ReactNode, useCallback } from 'react';
 
 import { ActionTypes } from '~redux';
-import {
-  GetCurrentUserDocument,
-  GetCurrentUserQuery,
-  GetCurrentUserQueryVariables,
-} from '~gql';
+import { GetCurrentUserDocument, GetCurrentUserQuery, GetCurrentUserQueryVariables } from '~gql';
 import { Wallet, User } from '~types';
 import { useAsyncFunction } from '~hooks';
 
@@ -25,10 +15,7 @@ export interface AppContextValues {
   userLoading?: boolean;
   connectWallet?: () => void;
   updateWallet?: () => void;
-  updateUser?: (
-    address?: string,
-    shouldBackgroundUpdate?: boolean,
-  ) => Promise<void>;
+  updateUser?: (address?: string, shouldBackgroundUpdate?: boolean) => Promise<void>;
 }
 
 export const AppContext = createContext<AppContextValues>({});
@@ -51,37 +38,31 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [userLoading, setUserLoading] = useState(false);
   const [walletConnecting, setWalletConnecting] = useState(false);
 
-  const updateUser = useCallback(
-    async (address?: string, shouldBackgroundUpdate = false) => {
-      if (address) {
-        try {
-          if (!shouldBackgroundUpdate) {
-            setUserLoading(true);
-          }
-          const apolloClient = getContext(ContextModule.ApolloClient);
-          const { data } = await apolloClient.query<
-            GetCurrentUserQuery,
-            GetCurrentUserQueryVariables
-          >({
-            query: GetCurrentUserDocument,
-            variables: { address },
-            fetchPolicy: 'network-only',
-          });
-          const [currentUser] = data?.getUserByAddress?.items || [];
-          if (currentUser) {
-            setUser(currentUser);
-          } else {
-            setUser(null);
-          }
-        } catch (error) {
-          console.error(error);
-        } finally {
-          setUserLoading(false);
+  const updateUser = useCallback(async (address?: string, shouldBackgroundUpdate = false) => {
+    if (address) {
+      try {
+        if (!shouldBackgroundUpdate) {
+          setUserLoading(true);
         }
+        const apolloClient = getContext(ContextModule.ApolloClient);
+        const { data } = await apolloClient.query<GetCurrentUserQuery, GetCurrentUserQueryVariables>({
+          query: GetCurrentUserDocument,
+          variables: { address },
+          fetchPolicy: 'network-only',
+        });
+        const [currentUser] = data?.getUserByAddress?.items || [];
+        if (currentUser) {
+          setUser(currentUser);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setUserLoading(false);
       }
-    },
-    [],
-  );
+    }
+  }, []);
 
   const updateWallet = useCallback((): void => {
     try {
@@ -136,19 +117,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       updateWallet,
       updateUser,
     }),
-    [
-      wallet,
-      walletConnecting,
-      setWalletConnecting,
-      user,
-      userLoading,
-      connectWallet,
-      updateWallet,
-      updateUser,
-    ],
+    [wallet, walletConnecting, setWalletConnecting, user, userLoading, connectWallet, updateWallet, updateUser],
   );
 
-  return (
-    <AppContext.Provider value={appContext}>{children}</AppContext.Provider>
-  );
+  return <AppContext.Provider value={appContext}>{children}</AppContext.Provider>;
 };

@@ -4,11 +4,7 @@ import { ClientType } from '@colony/colony-js';
 // import { ContextModule, getContext } from '~context';
 import { Action, ActionTypes, AllActions } from '~redux';
 
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
+import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
 import { transactionReady } from '~redux/actionCreators';
 import { putError, takeFrom } from '../utils';
 
@@ -90,10 +86,7 @@ function* tokenUnlockAction({
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(
-      tokenUnlock.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+    } = yield takeFrom(tokenUnlock.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
     yield takeFrom(tokenUnlock.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     // if (annotationMessage) {

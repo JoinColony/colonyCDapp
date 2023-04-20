@@ -9,9 +9,7 @@ import styles from './SortingRow.css';
 
 export interface Props {
   sortingMethod: SortingMethod;
-  handleSortingMethodChange: React.Dispatch<
-    React.SetStateAction<SortingMethod>
-  >;
+  handleSortingMethodChange: React.Dispatch<React.SetStateAction<SortingMethod>>;
 }
 
 const displayName = 'MembersList.SortingRow';
@@ -29,16 +27,12 @@ const MSG = defineMessages({
 
 const SortingRow = ({ handleSortingMethodChange, sortingMethod }: Props) => {
   const nextSortingByRepMethod =
-    sortingMethod === SortingMethod.ByHighestRep
-      ? SortingMethod.ByLowestRep
-      : SortingMethod.ByHighestRep;
+    sortingMethod === SortingMethod.ByHighestRep ? SortingMethod.ByLowestRep : SortingMethod.ByHighestRep;
   const nextSortingByRoleMethod =
     sortingMethod === SortingMethod.ByMorePermissions
       ? SortingMethod.ByLessPermissions
       : SortingMethod.ByMorePermissions;
-  const isSortingByRep =
-    sortingMethod === SortingMethod.ByHighestRep ||
-    sortingMethod === SortingMethod.ByLowestRep;
+  const isSortingByRep = sortingMethod === SortingMethod.ByHighestRep || sortingMethod === SortingMethod.ByLowestRep;
 
   return (
     <div className={styles.container}>

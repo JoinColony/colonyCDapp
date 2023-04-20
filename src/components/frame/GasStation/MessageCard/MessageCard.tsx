@@ -19,12 +19,7 @@ interface Props {
 
 const MessageCard = ({ message: { status, purpose }, onClick, idx }: Props) => (
   <Card className={styles.main}>
-    <button
-      type="button"
-      className={styles.button}
-      onClick={() => onClick && onClick(idx)}
-      disabled={!onClick}
-    >
+    <button type="button" className={styles.button} onClick={() => onClick && onClick(idx)} disabled={!onClick}>
       <div className={styles.summary}>
         <div className={styles.description}>
           <Heading

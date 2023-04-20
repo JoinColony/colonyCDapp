@@ -18,13 +18,9 @@ const ganacheWalletModule = (privateKey, optionalAccountIndex = 1) => {
       getIcon: async () => walletIcon.content.replace('symbol', 'svg'),
       getInterface: async ({ EventEmitter, chains }) => {
         const [currentChain] = chains;
-        const ganacheProvider = new providers.JsonRpcProvider(
-          currentChain.rpcUrl,
-        );
-        (ganacheProvider as CustomJsonRpcProvider).request = ({
-          method,
-          params,
-        }) => ganacheProvider.send(method, params);
+        const ganacheProvider = new providers.JsonRpcProvider(currentChain.rpcUrl);
+        (ganacheProvider as CustomJsonRpcProvider).request = ({ method, params }) =>
+          ganacheProvider.send(method, params);
         const ganacheWallet = new Wallet(privateKey, ganacheProvider);
         const currentWalletAddress = utils.getAddress(ganacheWallet.address);
         const provider = createEIP1193Provider(ganacheProvider, {
@@ -48,13 +44,9 @@ const ganacheWalletModule = (privateKey, optionalAccountIndex = 1) => {
             const balance = await ganacheProvider.getBalance(address, block);
             return balance.toString();
           },
-          [RpcMethods.PersonalSign]: async ({ params: [message] }) =>
-            ganacheWallet.signMessage(message),
+          [RpcMethods.PersonalSign]: async ({ params: [message] }) => ganacheWallet.signMessage(message),
           [RpcMethods.SignTypedData]: async ({ params: [, typedData] }) =>
-            ganacheProvider.send(RpcMethods.SignTypedData, [
-              currentWalletAddress,
-              JSON.parse(typedData),
-            ]),
+            ganacheProvider.send(RpcMethods.SignTypedData, [currentWalletAddress, JSON.parse(typedData)]),
           /*
            * @NOTE EIP1193Provider apparetly doesn't know about the v4 of this
            * RPC call, but both ethers v5 and Metamask use it, so in order to
@@ -62,10 +54,7 @@ const ganacheWalletModule = (privateKey, optionalAccountIndex = 1) => {
            */
           // @ts-ignore
           [RpcMethods.SignTypedDataV4]: async ({ params: [, typedData] }) =>
-            ganacheProvider.send(RpcMethods.SignTypedData, [
-              currentWalletAddress,
-              JSON.parse(typedData),
-            ]),
+            ganacheProvider.send(RpcMethods.SignTypedData, [currentWalletAddress, JSON.parse(typedData)]),
         });
         const eventEmitter = new EventEmitter();
         provider.on = eventEmitter.on.bind(eventEmitter);

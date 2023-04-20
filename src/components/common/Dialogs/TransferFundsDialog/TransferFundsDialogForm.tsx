@@ -5,19 +5,10 @@ import { useFormContext } from 'react-hook-form';
 
 import { Annotations } from '~shared/Fields';
 
-import {
-  ActionDialogProps,
-  DialogControls,
-  DialogHeading,
-  DialogSection,
-} from '~shared/Dialog';
+import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
-import {
-  NoPermissionMessage,
-  CannotCreateMotionMessage,
-  PermissionRequiredInfo,
-} from '../Messages';
+import { NoPermissionMessage, CannotCreateMotionMessage, PermissionRequiredInfo } from '../Messages';
 import TokenAmountInput from '../TokenAmountInput';
 import DomainFundSelectorSection from '../DomainFundSelectorSection';
 
@@ -44,30 +35,16 @@ const MSG = defineMessages({
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Funding];
 
-const TransferFundsDialogForm = ({
-  back,
-  colony,
-  enabledExtensionData,
-}: ActionDialogProps) => {
+const TransferFundsDialogForm = ({ back, colony, enabledExtensionData }: ActionDialogProps) => {
   const { watch } = useFormContext();
   const { fromDomain: fromDomainId, toDomain: toDomainId } = watch();
 
   const colonyDomains = colony?.domains?.items || [];
-  const fromDomain = colonyDomains.find(
-    (domain) => domain?.nativeId === fromDomainId,
-  );
+  const fromDomain = colonyDomains.find((domain) => domain?.nativeId === fromDomainId);
 
-  const toDomain = colonyDomains.find(
-    (domain) => domain?.nativeId === toDomainId,
-  );
-  const {
-    userHasPermission,
-    disabledInput,
-    disabledSubmit,
-    canCreateMotion,
-    canOnlyForceAction,
-    hasRoleInFromDomain,
-  } = useTransferFundsDialogStatus(colony, requiredRoles, enabledExtensionData);
+  const toDomain = colonyDomains.find((domain) => domain?.nativeId === toDomainId);
+  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion, canOnlyForceAction, hasRoleInFromDomain } =
+    useTransferFundsDialogStatus(colony, requiredRoles, enabledExtensionData);
 
   return (
     <>
@@ -82,11 +59,7 @@ const TransferFundsDialogForm = ({
         </div>
       )}
       <DialogSection>
-        <DomainFundSelectorSection
-          colony={colony}
-          transferBetweenDomains
-          disabled={canOnlyForceAction}
-        />
+        <DomainFundSelectorSection colony={colony} transferBetweenDomains disabled={canOnlyForceAction} />
       </DialogSection>
       <DialogSection>
         <TokenAmountInput colony={colony} disabled={disabledInput} />
@@ -103,11 +76,7 @@ const TransferFundsDialogForm = ({
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage
             requiredPermissions={requiredRoles}
-            domainName={
-              hasRoleInFromDomain
-                ? fromDomain?.metadata?.name
-                : toDomain?.metadata?.name
-            }
+            domainName={hasRoleInFromDomain ? fromDomain?.metadata?.name : toDomain?.metadata?.name}
           />
         </DialogSection>
       )}

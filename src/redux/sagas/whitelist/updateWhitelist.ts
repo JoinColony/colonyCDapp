@@ -4,20 +4,12 @@ import { $Values } from 'utility-types';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  WhitelistedUsersDocument,
-  WhitelistedUsersQuery,
-  WhitelistedUsersQueryVariables,
-} from '~data/index';
+import { WhitelistedUsersDocument, WhitelistedUsersQuery, WhitelistedUsersQueryVariables } from '~data/index';
 import { ContextModule, getContext } from '~context';
 import { putError, takeFrom, refreshExtension } from '../utils';
 import { TxConfig } from '~types';
 
-import {
-  ChannelDefinition,
-  createTransaction,
-  createTransactionChannels,
-} from '../transactions';
+import { ChannelDefinition, createTransaction, createTransactionChannels } from '../transactions';
 
 export function* updateWhitelist({
   meta,
@@ -34,16 +26,9 @@ export function* updateWhitelist({
   /*
    * Define a manifest of transaction ids and their respective channels.
    */
-  const channels: { [id: string]: ChannelDefinition } = yield call(
-    createTransactionChannels,
-    meta.id,
-    channelNames,
-  );
+  const channels: { [id: string]: ChannelDefinition } = yield call(createTransactionChannels, meta.id, channelNames);
   try {
-    const createGroupedTransaction = (
-      { id, index }: $Values<typeof channels>,
-      config: TxConfig,
-    ) =>
+    const createGroupedTransaction = ({ id, index }: $Values<typeof channels>, config: TxConfig) =>
       fork(createTransaction, id, {
         ...config,
         group: {
@@ -62,13 +47,7 @@ export function* updateWhitelist({
           context: ClientType.WhitelistClient,
           methodName: 'approveUsers',
           identifier: colonyAddress,
-          params: [
-            userAddresses.slice(
-              channels[id].index * 100,
-              channels[id].index * 100 + 100,
-            ),
-            status,
-          ],
+          params: [userAddresses.slice(channels[id].index * 100, channels[id].index * 100 + 100), status],
         }),
       ),
     );
@@ -76,20 +55,12 @@ export function* updateWhitelist({
     /*
      * Wait until all transactions are created.
      */
-    yield all(
-      Object.keys(channels).map((id) =>
-        takeFrom(channels[id].channel, ActionTypes.TRANSACTION_CREATED),
-      ),
-    );
+    yield all(Object.keys(channels).map((id) => takeFrom(channels[id].channel, ActionTypes.TRANSACTION_CREATED)));
 
     /*
      * Wait until all transactions are succeeded.
      */
-    yield all(
-      Object.keys(channels).map((id) =>
-        takeFrom(channels[id].channel, ActionTypes.TRANSACTION_SUCCEEDED),
-      ),
-    );
+    yield all(Object.keys(channels).map((id) => takeFrom(channels[id].channel, ActionTypes.TRANSACTION_SUCCEEDED)));
 
     yield put<AllActions>({
       type: ActionTypes.WHITELIST_UPDATE_SUCCESS,
@@ -99,10 +70,7 @@ export function* updateWhitelist({
   } catch (error) {
     return yield putError(ActionTypes.WHITELIST_UPDATE_ERROR, error, meta);
   } finally {
-    yield apolloClient.query<
-      WhitelistedUsersQuery,
-      WhitelistedUsersQueryVariables
-    >({
+    yield apolloClient.query<WhitelistedUsersQuery, WhitelistedUsersQueryVariables>({
       query: WhitelistedUsersDocument,
       variables: {
         colonyAddress,
@@ -115,11 +83,7 @@ export function* updateWhitelist({
     /*
      * Close all transaction channels.
      */
-    yield all(
-      Object.keys(channels).map((id) =>
-        call([channels[id].channel, channels[id].channel.close]),
-      ),
-    );
+    yield all(Object.keys(channels).map((id) => call([channels[id].channel, channels[id].channel.close])));
   }
   return null;
 }

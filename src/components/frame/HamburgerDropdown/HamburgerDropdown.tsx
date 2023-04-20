@@ -12,9 +12,7 @@ const displayName = 'frame.HamburgerDropdown';
 const HamburgerDropdown = () => {
   return (
     <Popover
-      renderContent={({ close }) => (
-        <HamburgerDropdownPopover closePopover={close} />
-      )}
+      renderContent={({ close }) => <HamburgerDropdownPopover closePopover={close} />}
       trigger="click"
       showArrow={false}
       placement="bottom"

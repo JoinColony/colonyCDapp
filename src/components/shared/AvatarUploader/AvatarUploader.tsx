@@ -1,12 +1,7 @@
 import React, { useRef } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import {
-  CoreInputProps,
-  InputLabel,
-  InputStatus,
-  InputComponentAppearance as Appearance,
-} from '~shared/Fields';
+import { CoreInputProps, InputLabel, InputStatus, InputComponentAppearance as Appearance } from '~shared/Fields';
 import { SingleFileUpload, SingleFileUploadProps } from '~shared/FileUpload';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
@@ -26,8 +21,7 @@ const MSG = defineMessages({
   },
   fileCompressionError: {
     id: `${displayName}.fileCompressionError`,
-    defaultMessage:
-      'File could not be uploaded and may be corrupted. Try again with a different file.',
+    defaultMessage: 'File could not be uploaded and may be corrupted. Try again with a different file.',
   },
   fileSizeError: {
     id: `${displayName}.fileSizeError`,
@@ -35,8 +29,7 @@ const MSG = defineMessages({
   },
   fileTypeError: {
     id: `${displayName}.fileTypeError`,
-    defaultMessage:
-      'Unsupported file type. Accepted file types are: svg, jpg, png and webp',
+    defaultMessage: 'Unsupported file type. Accepted file types are: svg, jpg, png and webp',
   },
 });
 
@@ -54,10 +47,7 @@ const getErrorMessage = (errorMessage: string) => {
 
 export interface Props
   extends Pick<SingleFileUploadProps, 'handleFileAccept' | 'handleFileReject'>,
-    Omit<
-      CoreInputProps,
-      'name' | 'placeholder' | 'placeholderValues' | 'dataTest'
-    > {
+    Omit<CoreInputProps, 'name' | 'placeholder' | 'placeholderValues' | 'dataTest'> {
   /** Appearance object for both label and status */
   appearance?: Appearance;
   /** Avatar image string */
@@ -86,11 +76,7 @@ interface FileErrorProps {
 
 const FileError = ({ error }: FileErrorProps) => (
   <div className={styles.error}>
-    <Icon
-      name="file"
-      appearance={{ size: 'large' }}
-      title={formatText(error)}
-    />
+    <Icon name="file" appearance={{ size: 'large' }} title={formatText(error)} />
   </div>
 );
 
@@ -100,11 +86,7 @@ const LoadingOverlay = () => (
   </div>
 );
 
-const getPlaceholder = (
-  isLoading: boolean,
-  avatarPlaceholder: Props['avatarPlaceholder'],
-  error?: string,
-) => {
+const getPlaceholder = (isLoading: boolean, avatarPlaceholder: Props['avatarPlaceholder'], error?: string) => {
   if (error) {
     return <FileError error={error} />;
   }
@@ -175,13 +157,7 @@ const AvatarUploader = ({
       >
         <DropNowOverlay />
       </SingleFileUpload>
-      {showButtons && (
-        <UploadControls
-          handleFileRemove={handleFileRemove}
-          disableRemove={!avatar}
-          open={open}
-        />
-      )}
+      {showButtons && <UploadControls handleFileRemove={handleFileRemove} disableRemove={!avatar} open={open} />}
       {error && (
         <div className={styles.inputStatus}>
           <InputStatus

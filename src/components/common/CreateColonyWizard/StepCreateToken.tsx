@@ -30,10 +30,7 @@ const MSG = defineMessages({
   },
 });
 
-type Props = Pick<
-  WizardStepProps<FormValues, Step3>,
-  'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'
->;
+type Props = Pick<WizardStepProps<FormValues, Step3>, 'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'>;
 
 const StepCreateToken = ({
   nextStep,
@@ -48,26 +45,16 @@ const StepCreateToken = ({
   };
 
   return (
-    <Form<Step3>
-      onSubmit={handleSubmit}
-      validationSchema={validationSchema}
-      defaultValues={defaultValues}
-    >
+    <Form<Step3> onSubmit={handleSubmit} validationSchema={validationSchema} defaultValues={defaultValues}>
       {({ formState: { isSubmitting, isValid } }) => (
         <section className={styles.main}>
           <Heading3 text={MSG.heading} textValues={headingText} />
           <TokenInputs
             disabled={isSubmitting}
             cleaveDefaultValue={defaultValues.tokenSymbol}
-            extra={
-              <LinkToOtherStep onClick={goToSelectToken} linkText={MSG.link} />
-            }
+            extra={<LinkToOtherStep onClick={goToSelectToken} linkText={MSG.link} />}
           />
-          <SubmitFormButton
-            disabled={!isValid || isSubmitting}
-            loading={isSubmitting}
-            dataTest="definedTokenConfirm"
-          />
+          <SubmitFormButton disabled={!isValid || isSubmitting} loading={isSubmitting} dataTest="definedTokenConfirm" />
         </section>
       )}
     </Form>

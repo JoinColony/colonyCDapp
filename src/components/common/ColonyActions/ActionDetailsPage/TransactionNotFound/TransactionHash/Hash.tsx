@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  defineMessages,
-  FormattedMessage,
-  MessageDescriptor,
-} from 'react-intl';
+import { defineMessages, FormattedMessage, MessageDescriptor } from 'react-intl';
 
 import { TransactionStatus, TransactionStatuses } from '~common/ColonyActions';
 

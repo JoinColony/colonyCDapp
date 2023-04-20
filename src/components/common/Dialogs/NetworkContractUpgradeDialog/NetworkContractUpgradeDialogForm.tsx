@@ -2,20 +2,11 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 
-import {
-  ActionDialogProps,
-  DialogControls,
-  DialogHeading,
-  DialogSection,
-} from '~shared/Dialog';
+import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-import {
-  CannotCreateMotionMessage,
-  NoPermissionMessage,
-  PermissionRequiredInfo,
-} from '../Messages';
+import { CannotCreateMotionMessage, NoPermissionMessage, PermissionRequiredInfo } from '../Messages';
 
 import LegacyPermissionWarning from './LegacyPermissionWarning';
 import ContractVersionSection from './ContractVersionSection';
@@ -23,8 +14,7 @@ import { useNetworkContractUpgradeDialogStatus } from './helpers';
 
 import styles from './NetworkContractUpgradeDialogForm.css';
 
-const displayName =
-  'common.NetworkContractUpgradeDialog.NetworkContractUpgradeDialogForm';
+const displayName = 'common.NetworkContractUpgradeDialog.NetworkContractUpgradeDialogForm';
 
 const MSG = defineMessages({
   title: {
@@ -56,11 +46,7 @@ const NetworkContractUpgradeDialogForm = ({
     disabledInput,
     hasLegacyRecoveryRole,
     isLoadingLegacyRecoveryRole,
-  } = useNetworkContractUpgradeDialogStatus(
-    colony,
-    requiredRoles,
-    enabledExtensionData,
-  );
+  } = useNetworkContractUpgradeDialogStatus(colony, requiredRoles, enabledExtensionData);
 
   return (
     <>
@@ -69,10 +55,7 @@ const NetworkContractUpgradeDialogForm = ({
       </DialogSection>
       {isLoadingLegacyRecoveryRole && (
         <DialogSection>
-          <MiniSpinnerLoader
-            className={styles.loadingInfo}
-            loadingText={MSG.loadingData}
-          />
+          <MiniSpinnerLoader className={styles.loadingInfo} loadingText={MSG.loadingData} />
         </DialogSection>
       )}
       {hasLegacyRecoveryRole && (
@@ -89,11 +72,7 @@ const NetworkContractUpgradeDialogForm = ({
         <ContractVersionSection currentVersion={version} />
       </DialogSection>
       <DialogSection>
-        <Annotations
-          label={MSG.annotation}
-          name="annotation"
-          disabled={disabledInput}
-        />
+        <Annotations label={MSG.annotation} name="annotation" disabled={disabledInput} />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>

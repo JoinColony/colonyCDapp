@@ -9,9 +9,7 @@ import {
 /**
  * Type guard to distinguish installed extension data from installable extension data
  */
-export const isInstalledExtensionData = (
-  extension: AnyExtensionData,
-): extension is InstalledExtensionData =>
+export const isInstalledExtensionData = (extension: AnyExtensionData): extension is InstalledExtensionData =>
   (extension as InstalledExtensionData).address !== undefined;
 
 export const mapToInstallableExtensionData = (
@@ -30,8 +28,7 @@ export const mapToInstalledExtensionData = (
   version: number,
 ): InstalledExtensionData => {
   // extension is also considered initialized if it has no initialization params
-  const isInitialized =
-    colonyExtension?.isInitialized || !extensionConfig.initializationParams;
+  const isInitialized = colonyExtension?.isInitialized || !extensionConfig.initializationParams;
   const isEnabled = isInitialized && !colonyExtension.isDeprecated;
 
   return {

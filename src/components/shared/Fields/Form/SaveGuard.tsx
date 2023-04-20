@@ -35,9 +35,7 @@ const SaveGuard = () => {
     async (location: Location) => {
       await openDialog({
         heading: MSG.dialogTitle,
-        children: (
-          <FormattedMessage {...MSG.dialogText} values={{ br: <br /> }} />
-        ),
+        children: <FormattedMessage {...MSG.dialogText} values={{ br: <br /> }} />,
         confirmButtonText: MSG.dialogButtonConfirm,
       }).afterClosed();
       history.push(location.pathname, { discardChanges: true });

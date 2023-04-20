@@ -5,11 +5,7 @@ import { WizardStepProps } from '~shared/Wizard';
 import { HookForm as Form } from '~shared/Fields';
 import { useAppContext, useMobile } from '~hooks';
 
-import {
-  FormValues,
-  Step1,
-  colonyNameValidationSchema as validationSchema,
-} from '../CreateColonyWizard';
+import { FormValues, Step1, colonyNameValidationSchema as validationSchema } from '../CreateColonyWizard';
 import { HeadingText, SubmitFormButton, TruncatedName } from './shared';
 import NameInputs from './StepColonyNameInputs';
 
@@ -28,26 +24,16 @@ const MSG = defineMessages({
   },
 });
 
-type Props = Pick<
-  WizardStepProps<FormValues, Step1>,
-  'wizardForm' | 'nextStep' | 'wizardValues'
->;
+type Props = Pick<WizardStepProps<FormValues, Step1>, 'wizardForm' | 'nextStep' | 'wizardValues'>;
 
-const StepColonyName = ({
-  wizardForm: { initialValues: defaultValues },
-  nextStep,
-}: Props) => {
+const StepColonyName = ({ wizardForm: { initialValues: defaultValues }, nextStep }: Props) => {
   const { user } = useAppContext();
   const username = user?.profile?.displayName || user?.name || '';
   const isMobile = useMobile();
   const headingText = { username: TruncatedName(username, 38) };
 
   return (
-    <Form<Step1>
-      onSubmit={nextStep}
-      validationSchema={validationSchema}
-      defaultValues={defaultValues}
-    >
+    <Form<Step1> onSubmit={nextStep} validationSchema={validationSchema} defaultValues={defaultValues}>
       {({ formState: { isValid, isSubmitting } }) => (
         <section className={styles.main}>
           <HeadingText
@@ -57,11 +43,7 @@ const StepColonyName = ({
             appearance={{ weight: 'medium' }}
           />
           <div className={styles.nameForm}>
-            <NameInputs
-              disabled={isSubmitting}
-              isMobile={isMobile}
-              cleaveDefaultValue={defaultValues.colonyName}
-            />
+            <NameInputs disabled={isSubmitting} isMobile={isMobile} cleaveDefaultValue={defaultValues.colonyName} />
             <SubmitFormButton
               disabled={!isValid || isSubmitting}
               loading={isSubmitting}

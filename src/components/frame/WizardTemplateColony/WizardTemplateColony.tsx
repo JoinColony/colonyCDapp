@@ -22,16 +22,9 @@ const MSG = defineMessages({
   },
 });
 
-type Props = Pick<
-  WizardOuterProps<FormValues>,
-  'children' | 'previousStep' | 'hideQR'
->;
+type Props = Pick<WizardOuterProps<FormValues>, 'children' | 'previousStep' | 'hideQR'>;
 
-const WizardTemplateColony = ({
-  children,
-  previousStep,
-  hideQR = false,
-}: Props) => {
+const WizardTemplateColony = ({ children, previousStep, hideQR = false }: Props) => {
   const { wallet } = useAppContext();
   const walletAddress = wallet?.address || '';
 

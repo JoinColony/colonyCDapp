@@ -4,12 +4,7 @@ import Onboard, { ConnectOptions } from '@web3-onboard/core';
 import injectedModule from '@web3-onboard/injected-wallets';
 
 import colonyIcon from '~images/icons/colony-logo.svg';
-import {
-  GANACHE_NETWORK,
-  TOKEN_DATA,
-  GANACHE_LOCAL_RPC_URL,
-  isDev,
-} from '~constants';
+import { GANACHE_NETWORK, TOKEN_DATA, GANACHE_LOCAL_RPC_URL, isDev } from '~constants';
 
 import ganacheModule from './ganacheModule';
 

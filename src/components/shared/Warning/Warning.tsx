@@ -24,17 +24,10 @@ interface Props {
 
 const displayName = 'Warning';
 
-const Warning = ({
-  text,
-  textValues,
-  buttonText,
-  handleClick,
-  disabled = false,
-}: Props) => {
+const Warning = ({ text, textValues, buttonText, handleClick, disabled = false }: Props) => {
   const { formatMessage } = useIntl();
 
-  const warningText =
-    typeof text === 'string' ? text : text && formatMessage(text, textValues);
+  const warningText = typeof text === 'string' ? text : text && formatMessage(text, textValues);
 
   return (
     <div className={styles.warning}>

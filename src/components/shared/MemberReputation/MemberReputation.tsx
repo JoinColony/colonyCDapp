@@ -42,40 +42,27 @@ const MemberReputation = ({
   nativeTokenDecimals = DEFAULT_TOKEN_DECIMALS,
 }: Props) => {
   const percentageReputation =
-    userReputationPercentage ||
-    calculatePercentageReputation(userReputation, totalReputation);
+    userReputationPercentage || calculatePercentageReputation(userReputation, totalReputation);
 
   const formattedReputationPoints = getFormattedTokenValue(
     new Decimal(userReputation || 0).toString(),
     nativeTokenDecimals,
   );
 
-  const title = percentageReputation
-    ? MSG.starReputationTitle
-    : MSG.starNoReputationTitle;
+  const title = percentageReputation ? MSG.starReputationTitle : MSG.starNoReputationTitle;
   const iconTitle = showIconTitle ? title : undefined;
 
   return (
     <div className={styles.reputationWrapper}>
       {!percentageReputation && <div className={styles.reputation}>— %</div>}
-      {percentageReputation === ZeroValue.NearZero && (
-        <div className={styles.reputation}>{percentageReputation}</div>
-      )}
+      {percentageReputation === ZeroValue.NearZero && <div className={styles.reputation}>{percentageReputation}</div>}
       {percentageReputation && percentageReputation !== ZeroValue.NearZero && (
-        <Numeral
-          className={styles.reputation}
-          value={percentageReputation}
-          suffix="%"
-        />
+        <Numeral className={styles.reputation} value={percentageReputation} suffix="%" />
       )}
       {showReputationPoints && (
         <div className={styles.reputationPointsContainer}>
           <span className={styles.reputationPoints}>(</span>
-          <Numeral
-            className={styles.reputationPoints}
-            value={formattedReputationPoints}
-            suffix="pts)"
-          />
+          <Numeral className={styles.reputationPoints} value={formattedReputationPoints} suffix="pts)" />
         </div>
       )}
       <Icon

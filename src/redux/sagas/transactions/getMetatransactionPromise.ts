@@ -2,10 +2,7 @@ import { TransactionResponse } from '@ethersproject/providers';
 import { Contract, BigNumberish, utils, providers } from 'ethers';
 import { ContractClient, ClientType } from '@colony/colony-js';
 
-import {
-  generateMetatransactionErrorMessage,
-  generateMetamaskTypedDataSignatureErrorMessage,
-} from '~utils/web3';
+import { generateMetatransactionErrorMessage, generateMetamaskTypedDataSignatureErrorMessage } from '~utils/web3';
 import { TransactionRecord } from '../../immutable';
 import { ContextModule, getContext } from '~context';
 import {
@@ -36,9 +33,7 @@ async function getMetatransactionPromise(
   try {
     colonyManager = getContext(ContextModule.ColonyManager);
   } catch (error) {
-    throw new Error(
-      `Cannot generate Metatransaction. ColonyManager is not yet instantiated. ${error.message}`,
-    );
+    throw new Error(`Cannot generate Metatransaction. ColonyManager is not yet instantiated. ${error.message}`);
   }
 
   const { networkClient } = colonyManager;
@@ -67,11 +62,7 @@ async function getMetatransactionPromise(
     case TRANSACTION_METHODS.DeployTokenAuthority: {
       normalizedClient = networkClient;
       const [tokenAddress, allowedToTransfer] = params;
-      normalizedParams = [
-        tokenAddress,
-        clientAddress as string,
-        allowedToTransfer,
-      ];
+      normalizedParams = [tokenAddress, clientAddress as string, allowedToTransfer];
       break;
     }
     default:
@@ -109,11 +100,8 @@ async function getMetatransactionPromise(
      * See if the token supports Metatransactions
      */
     try {
-      availableNonce = await lightTokenClient.getMetatransactionNonce(
-        userAddress,
-      );
-      lightTokenClient.metatransactionVariation =
-        MetatransactionFlavour.Vanilla;
+      availableNonce = await lightTokenClient.getMetatransactionNonce(userAddress);
+      lightTokenClient.metatransactionVariation = MetatransactionFlavour.Vanilla;
     } catch (error) {
       // silent error
     }
@@ -123,8 +111,7 @@ async function getMetatransactionPromise(
      */
     try {
       availableNonce = await lightTokenClient.nonces(userAddress);
-      lightTokenClient.metatransactionVariation =
-        MetatransactionFlavour.EIP2612;
+      lightTokenClient.metatransactionVariation = MetatransactionFlavour.EIP2612;
     } catch (error) {
       // silent error
     }
@@ -139,9 +126,7 @@ async function getMetatransactionPromise(
      * support
      */
     try {
-      availableNonce = await normalizedClient.getMetatransactionNonce(
-        userAddress,
-      );
+      availableNonce = await normalizedClient.getMetatransactionNonce(userAddress);
     } catch (error) {
       throw new Error(generateMetatransactionErrorMessage(normalizedClient));
     }
@@ -154,8 +139,7 @@ async function getMetatransactionPromise(
    */
   if (
     normalizedClient.clientType === ClientType.TokenClient &&
-    lightTokenClient.metatransactionVariation ===
-      MetatransactionFlavour.EIP2612 &&
+    lightTokenClient.metatransactionVariation === MetatransactionFlavour.EIP2612 &&
     normalizedMethodName === TRANSACTION_METHODS.Approve
   ) {
     const tokenName = await normalizedClient.name();
@@ -187,12 +171,8 @@ async function getMetatransactionPromise(
         v,
       };
     } catch (error) {
-      if (
-        error.message.includes(MetamaskRpcErrors.TypedDataSignDifferentChain)
-      ) {
-        throw new Error(
-          generateMetamaskTypedDataSignatureErrorMessage(chainId),
-        );
+      if (error.message.includes(MetamaskRpcErrors.TypedDataSignDifferentChain)) {
+        throw new Error(generateMetamaskTypedDataSignatureErrorMessage(chainId));
       }
       throw new Error(error.message);
     }
@@ -201,9 +181,9 @@ async function getMetatransactionPromise(
      * All the 'WithProofs' helpers don't really exist on chain, so we have to
      * make sure we are calling the on-chain method, rather than our own helper
      */
-    const encodedTransaction = await normalizedClient.interface.functions[
-      normalizedMethodName
-    ].encode([...normalizedParams]);
+    const encodedTransaction = await normalizedClient.interface.functions[normalizedMethodName].encode([
+      ...normalizedParams,
+    ]);
 
     const { messageUint8: messageData } = await generateMetatransactionMessage(
       encodedTransaction,

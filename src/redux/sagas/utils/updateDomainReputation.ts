@@ -2,11 +2,7 @@ import { AddressZero } from '@ethersproject/constants';
 
 import { ContextModule, getContext } from '~context';
 import { Address } from '~types';
-import {
-  GetUserReputationDocument,
-  GetUserReputationQuery,
-  GetUserReputationQueryVariables,
-} from '~gql';
+import { GetUserReputationDocument, GetUserReputationQuery, GetUserReputationQueryVariables } from '~gql';
 
 export function* updateDomainReputation(
   colonyAddress: Address,
@@ -16,10 +12,7 @@ export function* updateDomainReputation(
 ) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
-  yield apolloClient.query<
-    GetUserReputationQuery,
-    GetUserReputationQueryVariables
-  >({
+  yield apolloClient.query<GetUserReputationQuery, GetUserReputationQueryVariables>({
     query: GetUserReputationDocument,
     variables: {
       input: {
@@ -32,10 +25,7 @@ export function* updateDomainReputation(
     fetchPolicy: 'network-only',
   });
 
-  yield apolloClient.query<
-    GetUserReputationQuery,
-    GetUserReputationQueryVariables
-  >({
+  yield apolloClient.query<GetUserReputationQuery, GetUserReputationQueryVariables>({
     query: GetUserReputationDocument,
     variables: {
       input: {

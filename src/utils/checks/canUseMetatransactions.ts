@@ -10,9 +10,7 @@ import { NETWORKS_WITH_METATRANSACTIONS, DEFAULT_NETWORK } from '~constants';
  * broadcaster runs out of funds and we need to emergency shut down the system
  */
 export const canUseMetatransactions = (): boolean => {
-  const networkSupportsMetatransactions = NETWORKS_WITH_METATRANSACTIONS.find(
-    (network) => network === DEFAULT_NETWORK,
-  );
+  const networkSupportsMetatransactions = NETWORKS_WITH_METATRANSACTIONS.find((network) => network === DEFAULT_NETWORK);
   const areMetaTransactionsEnabled = !!process.env.METATRANSACTIONS || false;
   return !!networkSupportsMetatransactions && areMetaTransactionsEnabled;
 };

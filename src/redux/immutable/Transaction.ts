@@ -87,5 +87,4 @@ export class TransactionRecord
   extends Record<TransactionRecordProps>(defaultValues)
   implements RecordToJS<TransactionType> {}
 
-export const Transaction = (p: TransactionRecordProps) =>
-  new TransactionRecord(p);
+export const Transaction = (p: TransactionRecordProps) => new TransactionRecord(p);

@@ -38,10 +38,7 @@ const formatColonyName = (values: FormValues, { valueKey }: GenericRow) => {
       <span title={values.displayName} className={styles.firstValue}>
         {values.displayName}
       </span>
-      <span
-        title={`(colony.io/colony/${values[valueKey]})`}
-        className={styles.secondValue}
-      >
+      <span title={`(colony.io/colony/${values[valueKey]})`} className={styles.secondValue}>
         {`(colony.io/colony/${values[valueKey]})`}
       </span>
     </>
@@ -59,11 +56,7 @@ const formatToken = (values: FormValues, { valueKey }: TokenRow) => (
   </>
 );
 
-const getHeadingPreviewText = (
-  option: Row,
-  values: CardProps['values'],
-  username: string,
-) => {
+const getHeadingPreviewText = (option: Row, values: CardProps['values'], username: string) => {
   if (option.valueKey === 'colonyName') {
     return formatColonyName(values, option as GenericRow);
   }
@@ -83,13 +76,8 @@ const CardRow = ({ cardOptions, values }: CardProps) => {
     <>
       {cardOptions.map((option) => (
         <div className={styles.cardRow} key={`option ${option.valueKey[0]}`}>
-          <Heading
-            appearance={{ size: 'tiny', weight: 'medium', margin: 'small' }}
-            text={option.title}
-          />
-          <Heading
-            appearance={{ size: 'normal', weight: 'thin', margin: 'none' }}
-          >
+          <Heading appearance={{ size: 'tiny', weight: 'medium', margin: 'small' }} text={option.title} />
+          <Heading appearance={{ size: 'normal', weight: 'thin', margin: 'none' }}>
             {getHeadingPreviewText(option, values, username)}
           </Heading>
         </div>
