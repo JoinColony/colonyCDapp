@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ContentTypeProps } from '../Accordion.types';
+import { ContentTypeProps } from '../types';
 
 const displayName = 'Extensions.Accordion.Partials.AccordionDetails';
 

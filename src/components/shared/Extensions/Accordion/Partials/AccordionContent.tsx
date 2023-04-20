@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { AccordionItemProps, AccordionMocksItemProps } from '../Accordion.types';
+import { AccordionItemProps, AccordionMocksItemProps } from '../types';
 import AccordionContentItem from './AccordionContentItem';
 
 const displayName = 'Extensions.Accordion.Partials.AccordionContent';

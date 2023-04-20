@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { AccordionItemProps } from '../Accordion.types';
+import { AccordionItemProps } from '../types';
 
 const displayName = 'Extensions.Accordion.Partials.AccordionHeader';
-
+// @TODO: add icon
 const AccordionHeader: FC<AccordionItemProps> = ({ title }) => (
   <div>
     <div className="flex justify-between items-center pb-2 pt-4">
