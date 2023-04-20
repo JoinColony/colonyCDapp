@@ -1,2 +1,1 @@
-export { default as ActionsPageEvent } from './ActionsPageEvent';
-export { default as MotionsPageEvent } from './MotionsPageEvent';
+export { default as ActionsPageEvent } from './ActionDetailsPageEvent';
