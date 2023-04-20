@@ -1,27 +1,55 @@
 .tooltipContainer {
-  @apply border-none rounded-none shadow-none;
+  @apply border-none rounded-none shadow-none [&_a]:underline hover:[&_a]:no-underline;
 }
 
 .tooltipArrow::after {
   @apply hidden;
 }
 
+
+.tooltipContainer[data-popper-placement*='top'] .tooltipArrow,
+.tooltipContainer[data-popper-placement*='bottom'] .tooltipArrow {
+  @apply h-2.5;
+}
+
+.tooltipContainer[data-popper-placement*='left'] .tooltipArrow,
+.tooltipContainer[data-popper-placement*='right'] .tooltipArrow {
+  @apply w-2.5;
+}
+
 .tooltipContainer[data-popper-placement*='top'] .tooltipArrow {
-  @apply -mb-3;
+  @apply -mb-2;
+}
+
+.tooltipContainer[data-popper-placement*='left'] .tooltipArrow {
+  @apply -mr-2;
+}
+
+.tooltipContainer[data-popper-placement*='right'] .tooltipArrow {
+  @apply -ml-2;
+}
+
+.tooltipContainer[data-popper-placement*='bottom'] .tooltipArrow {
+  @apply -mt-2;
 }
 
 .tooltipContainer[data-popper-placement*='top'] .tooltipArrow::before {
-  @apply border-t-[currentColor] border-r-transparent border-b-transparent border-l-transparent border-t-[0.625rem] border-r-[0.625rem] border-b-0 border-l-[0.625rem];
+  @apply border-t-[currentColor] border-r-transparent border-b-transparent border-l-transparent border-t-[0.625rem] border-r-[0.5rem] border-b-0 border-l-[0.5rem];
 }
 
 .tooltipContainer[data-popper-placement*='left'] .tooltipArrow::before {
-  @apply border-t-transparent border-r-transparent border-b-transparent border-l-[currentColor] border-t-[0.625rem] border-r-0 border-b-[0.625rem] border-l-[0.625rem];
+  @apply border-t-transparent border-r-transparent border-b-transparent border-l-[currentColor] border-t-[0.5rem] border-r-0 border-b-[0.5rem] border-l-[0.625rem];
 }
 
 .tooltipContainer[data-popper-placement*='bottom'] .tooltipArrow::before {
-  @apply border-t-transparent border-r-[transparent] border-b-[currentColor] border-l-transparent border-t-0 border-r-[0.625rem] border-b-[0.625rem] border-l-[0.625rem];
+  @apply border-t-transparent border-r-[transparent] border-b-[currentColor] border-l-transparent border-t-0 border-r-[0.5rem] border-b-[0.625rem] border-l-[0.5rem];
 }
 
+
 .tooltipContainer[data-popper-placement*='right'] .tooltipArrow::before {
-  @apply border-t-transparent border-r-[currentColor] border-b-transparent border-l-transparent border-t-[0.625rem] border-r-[0.625rem] border-b-[0.625rem] border-l-0;
+  @apply border-t-transparent border-r-[currentColor] border-b-transparent border-l-transparent border-t-[0.5rem] border-r-[0.625rem] border-b-[0.5rem] border-l-0;
 }
+
+.tooltipContainer[data-popper-interactive='false'] {
+  @apply pointer-events-auto;
+} 
