@@ -6,29 +6,22 @@ import ActionEventData from './ActionEventData';
 
 import styles from './ActionDetailsPageEvent.css';
 
-const displayName =
-  'common.ColonyActions.ActionDetailsPage.ActionDetailsPageEvent';
+const displayName = 'common.ColonyActions.ActionDetailsPage.ActionsPageEvent';
 
 export interface ActionsPageEventProps {
-  eventName: ColonyAndExtensionsEvents | SystemMessagesName;
+  eventName: ColonyAndExtensionsEvents;
   actionData: ColonyAction;
   dataTest?: string;
-  eventId?: string;
 }
 
 const ActionsPageEvent = ({
   eventName,
   actionData,
   dataTest,
-  eventId,
 }: ActionsPageEventProps) => (
   <div className={styles.main} data-test={dataTest}>
     <TransactionStatus status={TransactionStatuses.Succeeded} showTooltip />
-    <ActionEventData
-      actionData={actionData}
-      eventName={eventName}
-      eventId={eventId}
-    />
+    <ActionEventData actionData={actionData} eventName={eventName} />
   </div>
 );
 

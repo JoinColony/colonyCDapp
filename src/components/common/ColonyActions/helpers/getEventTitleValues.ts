@@ -173,12 +173,16 @@ const getEventTitleValues = (
   actionData: ColonyAction,
   eventId?: string,
   colony?: Colony,
+  motionMessageData?: MotionMessage,
+  motionMessageInitiatorUser?: User | null,
 ) => {
   const updatedItem = mapColonyEventToExpectedFormat(
     eventName,
     actionData,
     eventId,
     colony,
+    motionMessageData,
+    motionMessageInitiatorUser,
   );
   const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
   return generateMessageValues(updatedItem, keys, {

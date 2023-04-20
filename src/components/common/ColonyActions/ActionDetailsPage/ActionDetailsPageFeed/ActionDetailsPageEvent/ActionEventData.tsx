@@ -6,7 +6,7 @@ import { getEventTitleValues, TransactionMeta } from '~common/ColonyActions';
 import { useColonyContext } from '~hooks';
 
 import ActionRoles from './ActionRoles';
-import { ActionsPageEventProps } from './ActionDetailsPageEvent';
+import { ActionsPageEventProps } from './ActionsPageEvent';
 
 import styles from './ActionEventData.css';
 
