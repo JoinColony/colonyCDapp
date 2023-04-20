@@ -42,6 +42,7 @@ module.exports = {
       '~frame': path.resolve(__dirname, '../src/components/frame'),
       '~hooks': path.resolve(__dirname, '../src/hooks'),
       '~images': path.resolve(__dirname, '../src/images'),
+      '~images/*': path.resolve(__dirname, '../src/images'),
     };
     return config;
   },
