@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
+
 import SubNavigation from './SubNavigation';
 
 const meta: Meta<typeof SubNavigation> = {
-  title: 'Shared/Extensions/SubNavigation',
+  title: 'Common/SubNavigation',
   component: SubNavigation,
   argTypes: {},
 };

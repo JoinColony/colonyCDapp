@@ -1,6 +1,6 @@
 import React from 'react';
-import SubNavigationComponent from '~shared/Extensions/SubNavigation/SubNavigation';
-import SubNavigationMobile from '~shared/Extensions/SubNavigation/SubNavigationMobile/SubNavigationMobile';
+
+import SubNavigationComponent, { SubNavigationMobile } from '~common/Extensions/SubNavigation';
 
 const SubNavigation = () => {
   return (
