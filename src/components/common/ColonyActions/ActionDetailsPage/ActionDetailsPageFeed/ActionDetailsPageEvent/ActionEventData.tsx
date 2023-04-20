@@ -3,10 +3,10 @@ import { FormattedMessage } from 'react-intl';
 
 import { ColonyAndExtensionsEvents } from '~types';
 import { getEventTitleValues, TransactionMeta } from '~common/ColonyActions';
-import { useColonyContext, useUserByNameOrAddress } from '~hooks';
+import { useColonyContext } from '~hooks';
 
 import ActionRoles from './ActionRoles';
-import { ActionsPageEventProps } from './ActionDetailsPageEvent';
+import { ActionsPageEventProps } from './ActionsPageEvent';
 
 import styles from './ActionEventData.css';
 
@@ -15,34 +15,16 @@ const displayName = 'common.ColonyActions.ActionDetailsPage.ActionEventData';
 const ActionEventData = ({
   actionData: { createdAt, transactionHash, type },
   actionData,
-  motionMessageData,
   eventName,
-}: Pick<
-  ActionsPageEventProps,
-  'actionData' | 'eventName' | 'motionMessageData'
->) => {
+}: Pick<ActionsPageEventProps, 'actionData' | 'eventName'>) => {
   const { colony } = useColonyContext();
-  const { user: motionMessageInitiatorUser } = useUserByNameOrAddress(
-    motionMessageData.initiatorAddress || '',
-  );
-  const messageId = Object.values<string>(ColonyAndExtensionsEvents).includes(
-    eventName,
-  )
-    ? 'event.title'
-    : 'systemMessage.title';
 
   return (
     <div className={styles.content}>
       <div className={styles.text} data-test="actionsEventText">
         <FormattedMessage
-          id={messageId}
-          values={getEventTitleValues(
-            eventName,
-            actionData,
-            motionMessageData,
-            motionMessageInitiatorUser,
-            colony,
-          )}
+          id="event.title"
+          values={getEventTitleValues(eventName, actionData, colony)}
         />
       </div>
       <div className={styles.details}>
