@@ -2,25 +2,22 @@ import { useGetMotionStateQuery } from '~gql';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { motionTags } from '~shared/Tag';
 import { MotionData } from '~types';
-import { MotionState, getMotionState } from '~utils/colonyMotions';
+import {
+  MotionState,
+  getMotionState,
+  shouldDisplayMotionCountdownTime,
+} from '~utils/colonyMotions';
 
 const getMotionTag = (
-  networkMotionState: number | null | undefined,
   isMotion: boolean | null | undefined,
-  motionData: MotionData | null | undefined,
+  motionState: MotionState,
 ) => {
   // If not motion, then forced action
   if (!isMotion) {
     return motionTags.Forced;
   }
 
-  if (networkMotionState && motionData) {
-    return motionTags[getMotionState(networkMotionState, motionData)];
-  }
-
-  // If no motion state / data, display as invalid
-  return motionTags.Invalid;
-
+  return motionTags[motionState];
   // @TODO: handle case where motion is from now-uninstalled voting rep version.
 };
 
@@ -47,18 +44,16 @@ export const useMotionStatusDisplay = (
   const networkMotionState = motionStateData?.getMotionState;
 
   const showMotionTag = !loadingMotionState && isVotingReputationEnabled;
-  const MotionTag = showMotionTag ? getMotionTag(networkMotionState, isMotion, motionData) : () => null;
 
   const motionState =
     networkMotionState && motionData
       ? getMotionState(networkMotionState, motionData)
       : MotionState.Invalid;
 
+  const MotionTag = showMotionTag ? getMotionTag(isMotion, motionState) : () => null;
+
   const showMotionCountdownTimer =
-    motionState !== MotionState.Passed &&
-    motionState !== MotionState.Failed &&
-    motionState !== MotionState.FailedNotFinalizable &&
-    motionState !== MotionState.Invalid;
+    shouldDisplayMotionCountdownTime(motionState);
 
   return {
     motionState,
