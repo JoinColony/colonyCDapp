@@ -6,6 +6,7 @@ const displayName = 'common.Extensions.CopyUrl';
 
 const CopyUrl: FC<CopyUrlProps> = ({ actionText }) => {
   const [copied, setCopied] = useState(false);
+
   const handleClipboardCopy = () => {
     setCopied(true);
     copyToClipboard(actionText);
