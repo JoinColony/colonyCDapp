@@ -161,7 +161,7 @@ export type AnyActionType = ColonyActionType | ExtendedColonyActionType;
 /*
  * This list will get longer once we add more system events to the dapp
  */
-export enum SystemMessagesName {
+export enum SystemMessages {
   EnoughExitRecoveryApprovals = 'EnoughExitRecoveryApprovals',
   MotionHasPassed = 'MotionHasPassed',
   MotionHasFailedNotFinalizable = 'MotionHasFailedNotFinalizable',

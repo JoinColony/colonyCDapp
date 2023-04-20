@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { ColonyAction, ColonyAndExtensionsEvents } from '~types';
+import {
+  ColonyAction,
+  ColonyAndExtensionsEvents,
+  SystemMessages,
+} from '~types';
 import { TransactionStatus, TransactionStatuses } from '~common/ColonyActions';
 import MotionEventData from './MotionEventData';
 
@@ -10,7 +14,7 @@ const displayName =
   'common.ColonyActions.ActionDetailsPage.MotionDetailsPageEvent';
 
 export interface MotionDetailsPageEventProps {
-  eventName: ColonyAndExtensionsEvents | SystemMessagesName;
+  eventName: ColonyAndExtensionsEvents | SystemMessages;
   actionData: ColonyAction;
   dataTest?: string;
   eventId?: string;

@@ -10,7 +10,7 @@ import {
   DomainMetadata,
   MotionMessage,
   User,
-  SystemMessagesName,
+  SystemMessages,
 } from '~types';
 import { MotionVote } from '~utils/colonyMotions';
 import { intl } from '~utils/intl';
@@ -109,7 +109,7 @@ export const mapColonyActionToExpectedFormat = (
 };
 
 export const mapActionEventToExpectedFormat = (
-  eventName: ColonyAndExtensionsEvents | SystemMessagesName,
+  eventName: ColonyAndExtensionsEvents | SystemMessages,
   actionData: ColonyAction,
   eventId?: string,
   colony?: Colony,
