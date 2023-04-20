@@ -1,17 +1,11 @@
-import React, {
-  InputHTMLAttributes,
-  KeyboardEvent,
-  SyntheticEvent,
-  useCallback,
-} from 'react';
+import React, { InputHTMLAttributes, KeyboardEvent, SyntheticEvent, useCallback } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
 import { ESC, TAB } from './keyTypes';
 import { InputComponentAppearance, InputComponent } from '../Fields/Input';
 import { SimpleMessageValues } from '~types';
 
-interface Props
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   appearance?: InputComponentAppearance;
   close: (data?: any, modifiers?: { cancelled?: boolean }) => void;
   elementOnly?: boolean;
@@ -29,15 +23,7 @@ interface Props
   value: string;
 }
 
-const InputField = ({
-  close,
-  id,
-  innerRef,
-  isOpen,
-  open,
-  value,
-  ...rest
-}: Props) => {
+const InputField = ({ close, id, innerRef, isOpen, open, value, ...rest }: Props) => {
   const handleInputKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === TAB) {

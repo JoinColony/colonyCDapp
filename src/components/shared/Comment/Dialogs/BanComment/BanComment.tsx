@@ -65,16 +65,8 @@ interface Props extends DialogProps {
   unban?: boolean;
 }
 
-const BanComment = ({
-  cancel,
-  close,
-  comment,
-  comment: { user, colony },
-  unban = false,
-}: Props) => {
-  const updateMutationHook = !unban
-    ? useBanUserTransactionMessagesMutation
-    : useUnBanUserTransactionMessagesMutation;
+const BanComment = ({ cancel, close, comment, comment: { user, colony }, unban = false }: Props) => {
+  const updateMutationHook = !unban ? useBanUserTransactionMessagesMutation : useUnBanUserTransactionMessagesMutation;
   const [updateTransactionMessage, { loading }] = updateMutationHook();
 
   const handleSubmit = useCallback(
@@ -120,12 +112,8 @@ const BanComment = ({
                 notSet={false}
               />
               <div className={styles.userNameAndWallet}>
-                {user?.profile?.username && (
-                  <UserMention username={user.profile.username} />
-                )}
-                <MaskedAddress
-                  address={(user as AnyUser).profile.walletAddress}
-                />
+                {user?.profile?.username && <UserMention username={user.profile.username} />}
+                <MaskedAddress address={(user as AnyUser).profile.walletAddress} />
               </div>
             </div>
             {!unban && (
@@ -136,10 +124,7 @@ const BanComment = ({
           </div>
           {!unban && (
             <div className={styles.modalContent}>
-              <Heading
-                appearance={{ size: 'small', margin: 'none', theme: 'dark' }}
-                text={MSG.commentLabel}
-              />
+              <Heading appearance={{ size: 'small', margin: 'none', theme: 'dark' }} text={MSG.commentLabel} />
               {comment && (
                 <div className={styles.commentContainer}>
                   <Comment {...comment} />

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import Link from '~shared/Link';
-import { doubleLink, singleLink } from './const';
+import { doubleLink, singleLink } from './consts';
 
 interface LinkWrapperProps {
   isDoubleLinkVisible: boolean;
@@ -9,7 +9,7 @@ interface LinkWrapperProps {
 
 const displayName = 'common.Extensions/SupportingDocuments/LinkWrapper';
 
-const LinkWrapper = ({ isDoubleLinkVisible }: LinkWrapperProps) => {
+const LinkWrapper: FC<LinkWrapperProps> = ({ isDoubleLinkVisible }) => {
   const { formatMessage } = useIntl();
   const links = isDoubleLinkVisible ? doubleLink : singleLink;
 

@@ -56,9 +56,7 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
     }
 
     if (!userWallet) {
-      throw new Error(
-        'User wallet is not connected, aborting gas price update',
-      );
+      throw new Error('User wallet is not connected, aborting gas price update');
     }
 
     const rawNetworkGasPrice = await userWallet.provider.request({
@@ -71,10 +69,7 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
     if (DEFAULT_NETWORK === Network.Mainnet) {
       response = await fetch(ETH_GAS_STATION);
     }
-    if (
-      DEFAULT_NETWORK === Network.Gnosis ||
-      DEFAULT_NETWORK === Network.GnosisFork
-    ) {
+    if (DEFAULT_NETWORK === Network.Gnosis || DEFAULT_NETWORK === Network.GnosisFork) {
       response = await fetch(XDAI_GAS_STATION);
     }
 
@@ -100,10 +95,7 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
       };
     }
 
-    if (
-      DEFAULT_NETWORK === Network.Gnosis ||
-      DEFAULT_NETWORK === Network.GnosisFork
-    ) {
+    if (DEFAULT_NETWORK === Network.Gnosis || DEFAULT_NETWORK === Network.GnosisFork) {
       const data: BlockscoutGasStationAPIResponse = await response.json();
       // API prices are in Gwei, so they need to be normalised
       const oneGwei = BigNumber.from(10 ** 9);
@@ -115,32 +107,22 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
        * The integer part gets multiplied by 1 gwei, while the remainder
        * gets padded with 9 zeros. Everything will be added together.
        */
-      const [averageInteger, averageRemainder = 0] = String(data.average).split(
-        '.',
-      );
+      const [averageInteger, averageRemainder = 0] = String(data.average).split('.');
       const [slowInteger, slowRemainder = 0] = String(data.slow).split('.');
       const [fastInteger, fastRemainder = 0] = String(data.fast).split('.');
 
       return {
         ...defaultGasPrices,
 
-        suggested: BigNumber.from(averageInteger)
-          .mul(oneGwei)
-          .add(String(averageRemainder).padEnd(9, '0')),
-        cheaper: BigNumber.from(slowInteger)
-          .mul(oneGwei)
-          .add(String(slowRemainder).padEnd(9, '0')),
-        faster: BigNumber.from(fastInteger)
-          .mul(oneGwei)
-          .add(String(fastRemainder).padEnd(9, '0')),
+        suggested: BigNumber.from(averageInteger).mul(oneGwei).add(String(averageRemainder).padEnd(9, '0')),
+        cheaper: BigNumber.from(slowInteger).mul(oneGwei).add(String(slowRemainder).padEnd(9, '0')),
+        faster: BigNumber.from(fastInteger).mul(oneGwei).add(String(fastRemainder).padEnd(9, '0')),
       };
     }
 
     return defaultGasPrices;
   } catch (caughtError) {
-    console.info(
-      `Could not get ${DEFAULT_NETWORK} network gas prices: ${caughtError.message}`,
-    );
+    console.info(`Could not get ${DEFAULT_NETWORK} network gas prices: ${caughtError.message}`);
     // Default values
     return {
       ...defaultGasPrices,

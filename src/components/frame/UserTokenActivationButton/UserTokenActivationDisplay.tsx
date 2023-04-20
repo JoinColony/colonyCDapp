@@ -8,25 +8,19 @@ import { Token, UserTokenBalanceData } from '~types';
 
 import styles from './UserTokenActivationButton.css';
 
-const displayName =
-  'frame.RouteLayouts.UserNavigation.UserTokenActivationButton.UserTokenActivationDisplay';
+const displayName = 'frame.RouteLayouts.UserNavigation.UserTokenActivationButton.UserTokenActivationDisplay';
 
 interface Props {
   nativeToken: Token;
   tokenBalanceData: UserTokenBalanceData;
 }
 
-const UserTokenActivationDisplay = ({
-  nativeToken,
-  tokenBalanceData: { balance, inactiveBalance },
-}: Props) => {
+const UserTokenActivationDisplay = ({ nativeToken, tokenBalanceData: { balance, inactiveBalance } }: Props) => {
   return (
     <div>
       <span
         className={classnames(styles.dot, {
-          [styles.dotInactive]:
-            BigNumber.from(inactiveBalance ?? 0).gt(0) ||
-            BigNumber.from(balance ?? 0).isZero(),
+          [styles.dotInactive]: BigNumber.from(inactiveBalance ?? 0).gt(0) || BigNumber.from(balance ?? 0).isZero(),
         })}
       />
       <Numeral

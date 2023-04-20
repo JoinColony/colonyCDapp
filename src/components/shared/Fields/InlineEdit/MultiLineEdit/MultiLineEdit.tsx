@@ -1,11 +1,6 @@
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
-import {
-  EditorState as EditorStateType,
-  ContentState,
-  Editor,
-  EditorState,
-} from 'draft-js';
+import { EditorState as EditorStateType, ContentState, Editor, EditorState } from 'draft-js';
 import { useField } from 'formik';
 import { nanoid } from 'nanoid';
 
@@ -74,9 +69,7 @@ enum Return {
 }
 
 const createEditorState = (value: string) =>
-  value
-    ? EditorState.createWithContent(ContentState.createFromText(value))
-    : EditorState.createEmpty();
+  value ? EditorState.createWithContent(ContentState.createFromText(value)) : EditorState.createEmpty();
 
 const MultiLineEdit = ({
   allowReturns = true,
@@ -100,21 +93,15 @@ const MultiLineEdit = ({
   const [, { error, value }, { setValue }] = useField<string>(name);
   const { formatMessage } = useIntl();
 
-  const [editorState, setEditorState] = useState<EditorStateType>(() =>
-    createEditorState(value),
-  );
+  const [editorState, setEditorState] = useState<EditorStateType>(() => createEditorState(value));
   useEffect(() => setEditorState(createEditorState(value)), [value]);
 
-  const handleReturn = useCallback(
-    () => (!allowReturns ? Return.Handled : Return.NotHandled),
-    [allowReturns],
-  );
+  const handleReturn = useCallback(() => (!allowReturns ? Return.Handled : Return.NotHandled), [allowReturns]);
 
   const onBlur = useCallback(
     (evt: FocusEvent) => {
       const content = editorState.getCurrentContent();
-      const newValue =
-        (content.hasText() && content.getPlainText().trim()) || '';
+      const newValue = (content.hasText() && content.getPlainText().trim()) || '';
       if (newValue !== value && setValue) {
         setValue(newValue);
       }
@@ -126,9 +113,7 @@ const MultiLineEdit = ({
   );
 
   const placeholder =
-    typeof placeholderProp === 'object'
-      ? formatMessage(placeholderProp, placeholderValues)
-      : placeholderProp;
+    typeof placeholderProp === 'object' ? formatMessage(placeholderProp, placeholderValues) : placeholderProp;
 
   return (
     <div className={getMainClasses({}, styles)}>

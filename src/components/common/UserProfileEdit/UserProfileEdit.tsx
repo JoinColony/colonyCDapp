@@ -8,11 +8,7 @@ import ProfileTemplate from '~frame/ProfileTemplate';
 import { useCanEditProfile } from '~hooks';
 
 import UserProfileSpinner from '../UserProfile/UserProfileSpinner';
-import {
-  UserAvatarUploader,
-  UserMainSettings,
-  UserAdvancedSettings,
-} from '../UserProfileEdit';
+import { UserAvatarUploader, UserMainSettings, UserAdvancedSettings } from '../UserProfileEdit';
 
 const displayName = 'common.UserProfileEdit';
 
@@ -40,10 +36,7 @@ const UserProfileEdit = () => {
   }
 
   return (
-    <ProfileTemplate
-      appearance={{ theme: 'alt' }}
-      asideContent={<UserAvatarUploader user={user} />}
-    >
+    <ProfileTemplate appearance={{ theme: 'alt' }} asideContent={<UserAvatarUploader user={user} />}>
       <Tabs>
         <TabList>
           <Tab tabIndex={0}>

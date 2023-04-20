@@ -24,23 +24,14 @@ const MSG = defineMessages({
   },
 });
 
-const DescriptionChunks = (chunks: React.ReactNode[]) => (
-  <span className={styles.descriptionExample}>{chunks}</span>
-);
+const DescriptionChunks = (chunks: React.ReactNode[]) => <span className={styles.descriptionExample}>{chunks}</span>;
 
 interface Props {
   param: ExtensionInitParam;
 }
 
 const InitParamField = ({
-  param: {
-    title,
-    type,
-    paramName,
-    description,
-    complementaryLabel,
-    formattingOptions,
-  },
+  param: { title, type, paramName, description, complementaryLabel, formattingOptions },
 }: Props) => {
   const { isSubmitting } = useFormikContext();
 

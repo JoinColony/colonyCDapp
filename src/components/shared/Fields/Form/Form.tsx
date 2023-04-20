@@ -9,11 +9,7 @@ interface Props<V> extends FormikConfig<V> {
 
 const displayName = 'Form';
 
-const Form = <V extends Record<string, any>>({
-  children,
-  saveGuard = false,
-  ...props
-}: Props<V>) => (
+const Form = <V extends Record<string, any>>({ children, saveGuard = false, ...props }: Props<V>) => (
   <Formik<V> {...props}>
     {(injectedProps) => (
       <FormikForm>

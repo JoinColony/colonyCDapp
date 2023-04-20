@@ -4,9 +4,7 @@ import { canUseMetatransactions } from '~utils/checks';
 
 export function* getCanUserSendMetatransactions() {
   const userSettings = yield getContext(ContextModule.UserSettings);
-  const userHasMetatransactionEnabled = userSettings.getSlotStorageAtKey(
-    SlotKey.Metatransactions,
-  );
+  const userHasMetatransactionEnabled = userSettings.getSlotStorageAtKey(SlotKey.Metatransactions);
 
   const metatransactionsAvailable = canUseMetatransactions();
 

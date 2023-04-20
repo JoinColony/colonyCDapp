@@ -3,28 +3,15 @@ import { ColonyRole } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import {
-  ActionDialogProps,
-  DialogControls,
-  DialogHeading,
-  DialogSection,
-} from '~shared/Dialog';
-import {
-  HookFormInput as Input,
-  Annotations,
-  SelectOption,
-} from '~shared/Fields';
+import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
+import { HookFormInput as Input, Annotations, SelectOption } from '~shared/Fields';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import { DomainColor } from '~gql';
 import { findDomainByNativeId } from '~utils/domains';
 
 import DomainNameAndColorInputGroup from '../DomainNameAndColorInputGroup';
-import {
-  NoPermissionMessage,
-  CannotCreateMotionMessage,
-  PermissionRequiredInfo,
-} from '../Messages';
+import { NoPermissionMessage, CannotCreateMotionMessage, PermissionRequiredInfo } from '../Messages';
 
 import { useEditDomainDialogStatus } from './helpers';
 
@@ -59,28 +46,24 @@ interface Props extends ActionDialogProps {
   domainOptions: SelectOption[];
 }
 
-const EditDomainDialogForm = ({
-  back,
-  colony,
-  domainOptions,
-  enabledExtensionData,
-}: Props) => {
+const EditDomainDialogForm = ({ back, colony, domainOptions, enabledExtensionData }: Props) => {
   const { watch, reset: resetForm } = useFormContext();
   const { domainName, domainPurpose, forceAction } = watch();
-  const { userHasPermission, disabledSubmit, disabledInput, canCreateMotion } =
-    useEditDomainDialogStatus(colony, requiredRoles, enabledExtensionData);
+  const { userHasPermission, disabledSubmit, disabledInput, canCreateMotion } = useEditDomainDialogStatus(
+    colony,
+    requiredRoles,
+    enabledExtensionData,
+  );
 
   const handleDomainChange = (selectedDomainValue: number) => {
     const selectedDomain = findDomainByNativeId(selectedDomainValue, colony);
-    const selectedDomainColor =
-      selectedDomain?.metadata?.color || DomainColor.LightPink;
+    const selectedDomainColor = selectedDomain?.metadata?.color || DomainColor.LightPink;
 
     if (selectedDomain) {
       resetForm({
         domainId: selectedDomain.nativeId,
         domainColor: selectedDomainColor,
-        domainName:
-          selectedDomain.metadata?.name || `Domain #${selectedDomain.nativeId}`,
+        domainName: selectedDomain.metadata?.name || `Domain #${selectedDomain.nativeId}`,
         domainPurpose: selectedDomain.metadata?.description || '',
         forceAction,
       });
@@ -143,10 +126,7 @@ const EditDomainDialogForm = ({
       </DialogSection>
       {domainOptions.length > 0 && !userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <NoPermissionMessage
-            requiredPermissions={[ColonyRole.Architecture]}
-            domainName={domainName}
-          />
+          <NoPermissionMessage requiredPermissions={[ColonyRole.Architecture]} domainName={domainName} />
         </DialogSection>
       )}
       {/* {onlyForceAction && (

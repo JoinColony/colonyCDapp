@@ -10,11 +10,7 @@ import { TransactionRecordProps } from '../../immutable';
 import { ExtendedClientType } from '~types';
 
 import { oneTransaction } from '../../selectors';
-import {
-  transactionUpdateGas,
-  transactionEstimateError,
-  transactionSend,
-} from '../../actionCreators';
+import { transactionUpdateGas, transactionEstimateError, transactionSend } from '../../actionCreators';
 
 /*
  * @TODO Refactor to support abis (either added to the app or from colonyJS)
@@ -32,28 +28,19 @@ const abis = {
 // Plus 10%
 const SAFE_GAS_LIMIT_MULTIPLIER = BigNumber.from(10);
 
-export default function* estimateGasCost({
-  meta: { id },
-}: Action<ActionTypes.TRANSACTION_ESTIMATE_GAS>) {
+export default function* estimateGasCost({ meta: { id } }: Action<ActionTypes.TRANSACTION_ESTIMATE_GAS>) {
   try {
     // Get the given transaction
-    const {
-      context,
-      methodName,
-      identifier,
-      params,
-      gasLimit,
-      options,
-    }: TransactionRecordProps = yield selectAsJS(oneTransaction, id);
+    const { context, methodName, identifier, params, gasLimit, options }: TransactionRecordProps = yield selectAsJS(
+      oneTransaction,
+      id,
+    );
     const colonyManager = yield getColonyManager();
 
     let contextClient: Contract;
     if (context === ClientType.TokenClient) {
       contextClient = yield colonyManager.getTokenClient(identifier as string);
-    } else if (
-      context ===
-      (ExtendedClientType.WrappedTokenClient as unknown as ClientType)
-    ) {
+    } else if (context === (ExtendedClientType.WrappedTokenClient as unknown as ClientType)) {
       // @ts-ignore
       const wrappedTokenAbi = abis.WrappedToken.default.abi;
       contextClient = new Contract(
@@ -61,10 +48,7 @@ export default function* estimateGasCost({
         wrappedTokenAbi as ContractInterface, // @TODO Refactor when refactoring abis
         colonyManager.signer,
       );
-    } else if (
-      context ===
-      (ExtendedClientType.VestingSimpleClient as unknown as ClientType)
-    ) {
+    } else if (context === (ExtendedClientType.VestingSimpleClient as unknown as ClientType)) {
       // @ts-ignore
       const vestingSimpleAbi = abis.vestingSimple.default.abi;
       contextClient = new Contract(
@@ -81,14 +65,9 @@ export default function* estimateGasCost({
     }
 
     // Estimate the gas limit with the method.
-    const estimatedGas = yield contextClient.estimateGas[methodName](
-      ...params,
-      options,
-    );
+    const estimatedGas = yield contextClient.estimateGas[methodName](...params, options);
 
-    const suggestedGasLimit = estimatedGas
-      .div(SAFE_GAS_LIMIT_MULTIPLIER)
-      .add(estimatedGas);
+    const suggestedGasLimit = estimatedGas.div(SAFE_GAS_LIMIT_MULTIPLIER).add(estimatedGas);
 
     const { network, suggested } = yield call(getGasPrices);
 

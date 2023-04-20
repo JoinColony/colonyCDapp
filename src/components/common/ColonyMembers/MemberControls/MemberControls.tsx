@@ -74,10 +74,7 @@ const MemberControls = ({ isRootOrAllDomains }: Props) => {
         <ul className={styles.controls}>
           {isRootOrAllDomains && (
             <li>
-              <InviteLinkButton
-                colonyName={colony?.name || ''}
-                buttonAppearance={{ theme: 'blue' }}
-              />
+              <InviteLinkButton colonyName={colony?.name || ''} buttonAppearance={{ theme: 'blue' }} />
             </li>
           )}
           {/* {canMamangePermissions && (

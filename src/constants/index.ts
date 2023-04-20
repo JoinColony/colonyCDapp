@@ -141,11 +141,7 @@ export const DEFAULT_NETWORK_INFO = NETWORK_DATA[DEFAULT_NETWORK];
 /*
  * List all networks that curently support metatransactions
  */
-export const NETWORKS_WITH_METATRANSACTIONS = [
-  Network.Ganache,
-  Network.Gnosis,
-  Network.GnosisFork,
-];
+export const NETWORKS_WITH_METATRANSACTIONS = [Network.Ganache, Network.Gnosis, Network.GnosisFork];
 
 export const ADDRESS_ZERO = ethersContants.AddressZero;
 

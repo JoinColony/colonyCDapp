@@ -13,9 +13,7 @@ export const getGroupId = (txOrMessageGroup: TransactionOrMessageGroup) => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return Array.isArray((txOrMessageGroup[0] as TransactionType).group!.id)
       ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        ((txOrMessageGroup[0] as TransactionType).group!.id as string[]).join(
-          '.',
-        )
+        ((txOrMessageGroup[0] as TransactionType).group!.id as string[]).join('.')
       : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         ((txOrMessageGroup[0] as TransactionType).group!.id as string);
   }
@@ -28,21 +26,14 @@ export const getGroupKey = (txGroup: TransactionOrMessageGroup) => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return `group.${(txGroup[0] as TransactionType).group!.key}`;
   }
-  if (
-    (txGroup[0] as TransactionType).context &&
-    (txGroup[0] as TransactionType).methodName
-  ) {
-    return `${(txGroup[0] as TransactionType).context}.${
-      (txGroup[0] as TransactionType).methodName
-    }`;
+  if ((txGroup[0] as TransactionType).context && (txGroup[0] as TransactionType).methodName) {
+    return `${(txGroup[0] as TransactionType).context}.${(txGroup[0] as TransactionType).methodName}`;
   }
   return txGroup[0].id;
 };
 
-export const findTransactionGroupByKey = (
-  txGroups: TransactionOrMessageGroups,
-  key: string,
-) => txGroups.find((txGroup) => getGroupKey(txGroup) === key);
+export const findTransactionGroupByKey = (txGroups: TransactionOrMessageGroups, key: string) =>
+  txGroups.find((txGroup) => getGroupKey(txGroup) === key);
 
 // Since we are not currently delete old transactions we sometimes need to check
 // for the newest one
@@ -55,14 +46,10 @@ export const findNewestGroup = (txGroups: TransactionOrMessageGroups) => {
 // Get the index of the first transaction in a group that is ready to sign
 export const getActiveTransactionIdx = (txGroup: TransactionOrMessageGroup) => {
   // Select the pending selection so that the user can't sign the next one
-  const pendingTransactionIdx = txGroup.findIndex(
-    (tx) => tx.status === TRANSACTION_STATUSES.PENDING,
-  );
+  const pendingTransactionIdx = txGroup.findIndex((tx) => tx.status === TRANSACTION_STATUSES.PENDING);
   if (pendingTransactionIdx > -1) return pendingTransactionIdx;
   return txGroup.findIndex(
-    (tx) =>
-      tx.status === TRANSACTION_STATUSES.READY ||
-      tx.status === TRANSACTION_STATUSES.FAILED,
+    (tx) => tx.status === TRANSACTION_STATUSES.READY || tx.status === TRANSACTION_STATUSES.FAILED,
   );
 };
 
@@ -73,20 +60,16 @@ export const getGroupValues = <T>(
 
 // Get the joint status of the group
 export const getGroupStatus = (txGroup: TransactionOrMessageGroup) => {
-  if (txGroup.some((tx) => tx.status === TRANSACTION_STATUSES.FAILED))
-    return TRANSACTION_STATUSES.FAILED;
+  if (txGroup.some((tx) => tx.status === TRANSACTION_STATUSES.FAILED)) return TRANSACTION_STATUSES.FAILED;
 
-  if (txGroup.some((tx) => tx.status === TRANSACTION_STATUSES.PENDING))
-    return TRANSACTION_STATUSES.PENDING;
-  if (txGroup.every((tx) => tx.status === TRANSACTION_STATUSES.SUCCEEDED))
-    return TRANSACTION_STATUSES.SUCCEEDED;
+  if (txGroup.some((tx) => tx.status === TRANSACTION_STATUSES.PENDING)) return TRANSACTION_STATUSES.PENDING;
+  if (txGroup.every((tx) => tx.status === TRANSACTION_STATUSES.SUCCEEDED)) return TRANSACTION_STATUSES.SUCCEEDED;
   return TRANSACTION_STATUSES.READY;
 };
 
 // Get count of all transactions in the redux store
-export const transactionCount = (
-  txOrMessageGroups: TransactionOrMessageGroups,
-) => txOrMessageGroups.reduce((count, group) => count + group.length, 0);
+export const transactionCount = (txOrMessageGroups: TransactionOrMessageGroups) =>
+  txOrMessageGroups.reduce((count, group) => count + group.length, 0);
 
 /**
  * @NOTE Determine if we're dealing with a group of Transactions or a group of Messages to be signed.
@@ -100,16 +83,11 @@ export const isTxGroup = (txOrMessageGroup: TransactionOrMessageGroup) =>
   Object.prototype.hasOwnProperty.call(txOrMessageGroup[0], 'context');
 
 // Get count of all transactions that need signing
-export const readyTransactionsCount = (
-  txOrMessageGroups: TransactionOrMessageGroups,
-) => {
+export const readyTransactionsCount = (txOrMessageGroups: TransactionOrMessageGroups) => {
   let readyTransactions = 0;
   txOrMessageGroups.map((txOrMessageGroup) =>
     txOrMessageGroup.map((txOrMessage) => {
-      if (
-        txOrMessage.status === TRANSACTION_STATUSES.READY ||
-        txOrMessage.status === TRANSACTION_STATUSES.PENDING
-      ) {
+      if (txOrMessage.status === TRANSACTION_STATUSES.READY || txOrMessage.status === TRANSACTION_STATUSES.PENDING) {
         readyTransactions += 1;
       }
       return false;

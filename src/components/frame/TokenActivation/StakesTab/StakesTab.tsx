@@ -35,11 +35,7 @@ export interface Props {
   setIsPopoverOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const StakesTab = ({
-  unclaimedMotionStakeEvents,
-  isLoadingMotions,
-  setIsPopoverOpen,
-}: Props) => {
+const StakesTab = ({ unclaimedMotionStakeEvents, isLoadingMotions, setIsPopoverOpen }: Props) => {
   const { colony } = useColonyContext();
   const { wallet } = useAppContext();
 
@@ -93,10 +89,7 @@ const StakesTab = ({
           <ul data-test="claimableMotionsList">
             {unclaimedMotionStakeEvents?.map((motion) => (
               <StakesListItem
-                stakedAmount={getFormattedTokenValue(
-                  motion.values.stakeAmount,
-                  nativeToken.decimals,
-                )}
+                stakedAmount={getFormattedTokenValue(motion.values.stakeAmount, nativeToken.decimals)}
                 tokenSymbol={nativeToken.symbol}
                 colonyName={colony?.name || ''}
                 txHash={txHash}

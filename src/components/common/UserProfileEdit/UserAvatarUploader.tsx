@@ -4,10 +4,7 @@ import { FileRejection } from 'react-dropzone';
 
 import { useUpdateUserProfileMutation } from '~gql';
 import { useAppContext } from '~hooks';
-import {
-  getOptimisedAvatar,
-  getOptimisedThumbnail,
-} from '~images/optimisation';
+import { getOptimisedAvatar, getOptimisedThumbnail } from '~images/optimisation';
 import AvatarUploader from '~shared/AvatarUploader';
 import UserAvatar from '~shared/UserAvatar';
 import { Heading3 } from '~shared/Heading';
@@ -31,10 +28,7 @@ interface Props {
   user: User;
 }
 
-const UserAvatarUploader = ({
-  user,
-  user: { walletAddress, profile },
-}: Props) => {
+const UserAvatarUploader = ({ user, user: { walletAddress, profile } }: Props) => {
   const { updateUser } = useAppContext();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
@@ -84,9 +78,7 @@ const UserAvatarUploader = ({
       <Heading3 appearance={{ theme: 'dark' }} text={MSG.heading} />
       <AvatarUploader
         avatar={profile?.avatar}
-        avatarPlaceholder={
-          <UserAvatar user={user} size="xl" preferThumbnail={false} />
-        }
+        avatarPlaceholder={<UserAvatar user={user} size="xl" preferThumbnail={false} />}
         handleFileAccept={handleFileUpload}
         handleFileRemove={handleFileRemove}
         handleFileReject={handleFileReject}

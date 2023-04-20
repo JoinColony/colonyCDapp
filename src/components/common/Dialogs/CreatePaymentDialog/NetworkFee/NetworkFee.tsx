@@ -1,24 +1,15 @@
 import React from 'react';
-import {
-  defineMessages,
-  FormattedMessage,
-  MessageDescriptor,
-} from 'react-intl';
+import { defineMessages, FormattedMessage, MessageDescriptor } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import Decimal from 'decimal.js';
 
-import {
-  calculateFee,
-  getSelectedToken,
-  getTokenDecimalsWithFallback,
-} from '~utils/tokens';
+import { calculateFee, getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 import Numeral from '~shared/Numeral';
 import { Colony } from '~types';
 
 import styles from './NetworkFee.css';
 
-const displayName =
-  'common.CreatePaymentDialog.CreatePaymentDialogForm.NetworkFee';
+const displayName = 'common.CreatePaymentDialog.CreatePaymentDialogForm.NetworkFee';
 
 const MSG = defineMessages({
   amount: {
@@ -41,11 +32,7 @@ interface Props {
   networkFeeInverse: string | undefined;
 }
 
-const NetworkFee = ({
-  colony,
-  networkFeeInverse,
-  customAmountError,
-}: Props) => {
+const NetworkFee = ({ colony, networkFeeInverse, customAmountError }: Props) => {
   const { watch } = useFormContext();
   const { tokenAddress, amount } = watch();
   const selectedToken = getSelectedToken(colony, tokenAddress);
@@ -66,11 +53,7 @@ const NetworkFee = ({
               //   theme: 'grey',
               // }}
               value={
-                calculateFee(
-                  amount,
-                  networkFeeInverse,
-                  getTokenDecimalsWithFallback(selectedToken?.decimals),
-                ).feesInWei
+                calculateFee(amount, networkFeeInverse, getTokenDecimalsWithFallback(selectedToken?.decimals)).feesInWei
               }
               decimals={getTokenDecimalsWithFallback(selectedToken?.decimals)}
             />

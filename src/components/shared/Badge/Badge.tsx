@@ -31,12 +31,7 @@ const displayName = 'Badge';
 const Badge = ({ name, size = 'm', title }: Props) => {
   const BadgeIcon = badgeIcons[name];
   return (
-    <Avatar
-      className={styles.main}
-      placeholderIcon="question-mark"
-      size={size}
-      title={title}
-    >
+    <Avatar className={styles.main} placeholderIcon="question-mark" size={size} title={title}>
       <BadgeIcon />
     </Avatar>
   );

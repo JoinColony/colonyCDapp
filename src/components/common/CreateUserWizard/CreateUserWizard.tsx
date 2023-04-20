@@ -7,12 +7,7 @@ import ColonyButton from '~shared/Button';
 import WizardTemplate from '~frame/WizardTemplateColony';
 import withWizard from '~shared/Wizard/withWizard';
 
-import {
-  FormValues,
-  initialValues,
-  StepUserName,
-  StepUserEmail,
-} from '../CreateUserWizard';
+import { FormValues, initialValues, StepUserName, StepUserEmail } from '../CreateUserWizard';
 
 import styles from './CreateUserWizard.css';
 
@@ -31,13 +26,7 @@ interface UserStepTemplateProps {
   button: JSX.Element;
 }
 
-export const UserStepTemplate = ({
-  heading,
-  description,
-  descriptionValues,
-  input,
-  button,
-}: UserStepTemplateProps) => (
+export const UserStepTemplate = ({ heading, description, descriptionValues, input, button }: UserStepTemplateProps) => (
   <section className={styles.main}>
     <div>
       <Heading appearance={{ size: 'medium' }} text={heading} />
@@ -57,11 +46,7 @@ interface ContinueWizardProps {
   loading: boolean;
   dataTest?: string;
 }
-export const ContinueWizard = ({
-  disabled,
-  loading,
-  dataTest,
-}: ContinueWizardProps) => (
+export const ContinueWizard = ({ disabled, loading, dataTest }: ContinueWizardProps) => (
   <ColonyButton
     appearance={{ theme: 'primary', size: 'large' }}
     type="submit"

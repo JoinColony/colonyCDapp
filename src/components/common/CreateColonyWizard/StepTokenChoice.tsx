@@ -89,10 +89,7 @@ const Instructions = ({ colonyDisplayName }: InstructionsProps) => {
     <div className={styles.instructions}>
       <Heading3 text={MSG.heading} textValues={headingText} />
       <Heading4 text={MSG.subtitle} />
-      <Heading4
-        text={MSG.subtitleWithExample}
-        className={styles.subtitleWithExample}
-      />
+      <Heading4 text={MSG.subtitleWithExample} className={styles.subtitleWithExample} />
     </div>
   );
 };
@@ -105,24 +102,13 @@ const LearnMore = () => (
       }}
       text={MSG.notSure}
     />
-    <ExternalLink
-      className={styles.link}
-      text={{ id: 'text.learnMore' }}
-      href={LEARN_MORE_URL}
-    />
+    <ExternalLink className={styles.link} text={{ id: 'text.learnMore' }} href={LEARN_MORE_URL} />
   </div>
 );
 
-type Props = Pick<
-  WizardStepProps<FormValues, Step2>,
-  'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'
->;
+type Props = Pick<WizardStepProps<FormValues, Step2>, 'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'>;
 
-const handleSubmit = (
-  values: Step2,
-  setStepsValues: Props['setStepsValues'],
-  nextStep: Props['nextStep'],
-) => {
+const handleSubmit = (values: Step2, setStepsValues: Props['setStepsValues'], nextStep: Props['nextStep']) => {
   setStepsValues((stepsValues) => {
     const oldStep2: Partial<Step2> = stepsValues[1];
     /*
@@ -146,10 +132,7 @@ const StepTokenChoice = ({
   setStepsValues,
 }: Props) => {
   return (
-    <Form<Step2>
-      onSubmit={(values) => handleSubmit(values, setStepsValues, nextStep)}
-      defaultValues={defaultValues}
-    >
+    <Form<Step2> onSubmit={(values) => handleSubmit(values, setStepsValues, nextStep)} defaultValues={defaultValues}>
       <section className={styles.content}>
         <Instructions colonyDisplayName={colonyName} />
         <DecisionHub name="tokenChoice" options={options} />

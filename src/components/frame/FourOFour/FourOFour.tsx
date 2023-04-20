@@ -13,8 +13,7 @@ const displayName = 'frame.FourOFour';
 const MSG = defineMessages({
   message: {
     id: `${displayName}.message`,
-    defaultMessage:
-      'Something went wrong! Have you tried turning it off and on again?',
+    defaultMessage: 'Something went wrong! Have you tried turning it off and on again?',
   },
   nakedMole: {
     id: `${displayName}.nakedMole`,
@@ -37,10 +36,7 @@ const FourOFour = () => (
     </header>
     <div className={styles.herowrapper}>
       <div className={styles.title}>
-        <Heading
-          appearance={{ size: 'medium', weight: 'medium', margin: 'none' }}
-          text={MSG.fourOFour}
-        />
+        <Heading appearance={{ size: 'medium', weight: 'medium', margin: 'none' }} text={MSG.fourOFour} />
       </div>
       <p className={styles.description}>
         <FormattedMessage {...MSG.message} />

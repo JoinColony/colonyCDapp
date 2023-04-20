@@ -7,9 +7,7 @@ interface Props {
 
 const displayName = 'TableHeaderCell';
 
-const TableHeaderCell = ({ children, ...props }: Props) => (
-  <th {...props}>{children}</th>
-);
+const TableHeaderCell = ({ children, ...props }: Props) => <th {...props}>{children}</th>;
 
 TableHeaderCell.displayName = displayName;
 

@@ -48,19 +48,14 @@ const MessageCardStatus = ({ status }: Props) => (
          * @NOTE There's never going to be more then a message to sign at a
          * given time, so the counter will always show 1
          */}
-        {status === TRANSACTION_STATUSES.CREATED && (
-          <span className={styles.counter}>1</span>
-        )}
+        {status === TRANSACTION_STATUSES.CREATED && <span className={styles.counter}>1</span>}
         {status === TRANSACTION_STATUSES.PENDING && (
           <div>
             <SpinnerLoader appearance={{ size: 'small', theme: 'primary' }} />
           </div>
         )}
         {status === TRANSACTION_STATUSES.SUCCEEDED && (
-          <span
-            className={styles.completed}
-            data-test="gasStationTransactionSucceeded"
-          >
+          <span className={styles.completed} data-test="gasStationTransactionSucceeded">
             <Icon
               appearance={{ size: 'tiny' }}
               name="check-mark"
@@ -72,9 +67,7 @@ const MessageCardStatus = ({ status }: Props) => (
             />
           </span>
         )}
-        {status === TRANSACTION_STATUSES.FAILED && (
-          <span className={styles.failed}>!</span>
-        )}
+        {status === TRANSACTION_STATUSES.FAILED && <span className={styles.failed}>!</span>}
       </div>
     </Tooltip>
   </div>

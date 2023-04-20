@@ -57,16 +57,9 @@ const MembersTitle = ({
   return (
     <div className={styles.titleContainer}>
       <div className={styles.titleLeft}>
-        <Heading
-          text={MSG.title}
-          appearance={{ size: 'medium', theme: 'dark' }}
-          textValues={{ isMobile }}
-        />
+        <Heading text={MSG.title} appearance={{ size: 'medium', theme: 'dark' }} textValues={{ isMobile }} />
         {isMobile ? (
-          <ColonyDomainSelector
-            filteredDomainId={currentDomainId}
-            onDomainChange={handleDomainChange}
-          />
+          <ColonyDomainSelector filteredDomainId={currentDomainId} onDomainChange={handleDomainChange} />
         ) : (
           <MembersDomainSelector
             currentDomainId={currentDomainId}
@@ -86,12 +79,7 @@ const MembersTitle = ({
             placeholder={formatText(MSG.searchPlaceholder)}
           />
 
-          <Icon
-            appearance={{ size: 'normal' }}
-            className={styles.icon}
-            name="search"
-            title={MSG.search}
-          />
+          <Icon appearance={{ size: 'normal' }} className={styles.icon} name="search" title={MSG.search} />
         </div>
       )}
     </div>

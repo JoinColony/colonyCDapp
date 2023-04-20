@@ -43,12 +43,7 @@ interface Props {
 
 const displayName = 'RadioGroup';
 
-const RadioGroup = ({
-  appearance,
-  currentlyCheckedValue,
-  name,
-  options,
-}: Props) => (
+const RadioGroup = ({ appearance, currentlyCheckedValue, name, options }: Props) => (
   <div className={getMainClasses(appearance, styles)}>
     {options.map(({ children, value, ...rest }) => (
       <Radio

@@ -9,11 +9,7 @@ import { SimpleMessageValues } from '~types';
 
 import InputLabel from '../InputLabel';
 import InputStatus from '../InputStatus';
-import {
-  InputComponentAppearance as Appearance,
-  InputComponent,
-  InputComponentProps,
-} from '../Input';
+import { InputComponentAppearance as Appearance, InputComponent, InputComponentProps } from '../Input';
 
 import styles from './Input.css';
 
@@ -116,9 +112,7 @@ const Input = ({
   const [inputFieldProps, { error, touched }] = useField<string>(name);
 
   const placeholder =
-    typeof placeholderProp === 'object'
-      ? formatMessage(placeholderProp, placeholderValues)
-      : placeholderProp;
+    typeof placeholderProp === 'object' ? formatMessage(placeholderProp, placeholderValues) : placeholderProp;
 
   const inputProps: InputComponentProps = {
     ...inputFieldProps,
@@ -142,9 +136,7 @@ const Input = ({
   };
 
   const extensionStringText: string | undefined =
-    !extensionString || typeof extensionString === 'string'
-      ? extensionString
-      : formatMessage(extensionString);
+    !extensionString || typeof extensionString === 'string' ? extensionString : formatMessage(extensionString);
 
   const containerClasses = cx(styles.container, {
     [styles.containerHorizontal]: appearance.direction === 'horizontal',
@@ -165,9 +157,7 @@ const Input = ({
       )}
       <div className={styles.extensionContainer}>
         <InputComponent {...inputProps} />
-        {extensionStringText && (
-          <div className={styles.extension}>{extensionStringText}</div>
-        )}
+        {extensionStringText && <div className={styles.extension}>{extensionStringText}</div>}
       </div>
       {!elementOnly && (
         <InputStatus

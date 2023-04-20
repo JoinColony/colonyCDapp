@@ -2,16 +2,10 @@ import { ColonyRole, ColonyRoles } from '@colony/colony-js'; // , Id
 
 import { Address, Colony } from '~types';
 
-export const getRolesForUserAndDomain = (
-  roles: ColonyRoles,
-  userAddress: Address,
-  domainId: number,
-): ColonyRole[] => {
+export const getRolesForUserAndDomain = (roles: ColonyRoles, userAddress: Address, domainId: number): ColonyRole[] => {
   const userRoles = roles.find(({ address }) => address === userAddress);
   if (!userRoles) return [];
-  const domainRoles = userRoles.domains.find(
-    ({ domainId: ethDomainId }) => ethDomainId === domainId,
-  );
+  const domainRoles = userRoles.domains.find(({ domainId: ethDomainId }) => ethDomainId === domainId);
   return domainRoles ? (domainRoles.roles as ColonyRole[]) : [];
 };
 
@@ -116,10 +110,7 @@ export const getAllRootAccounts = (): Address[] => {
   //   .map(({ address }) => address);
 };
 
-export const getAllUserRoles = (
-  colony: Colony | undefined,
-  userAddress: Address | undefined,
-): ColonyRole[] => {
+export const getAllUserRoles = (colony: Colony | undefined, userAddress: Address | undefined): ColonyRole[] => {
   if (!colony || !userAddress) return [] as ColonyRole[];
   return [0, 1, 2, 3, 5, 6];
   // const userRoles = colony.roles.find(({ address }) => address === userAddress);

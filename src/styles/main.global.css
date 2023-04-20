@@ -1,5 +1,7 @@
 @import 'variables.css';
 @import 'fonts.css';
+@import 'react-responsive-carousel/lib/styles/carousel.min.css';
+@import 'react-popper-tooltip/dist/styles.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -40,6 +42,12 @@
 
   .heading-4 {
     @apply text-xl font-semibold;
+  }
+}
+
+@layer components {
+  .inner {
+    @apply px-6 w-full h-full max-w-[77.375rem] mx-auto;
   }
 }
 

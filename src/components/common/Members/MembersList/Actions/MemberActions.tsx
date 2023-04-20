@@ -28,9 +28,7 @@ const MemberActions = ({ userAddress }: Props) => {
 
   return (
     <Popover
-      renderContent={({ close }) => (
-        <MemberActionsPopover closePopover={close} userAddress={userAddress} />
-      )}
+      renderContent={({ close }) => <MemberActionsPopover closePopover={close} userAddress={userAddress} />}
       trigger="click"
       showArrow={false}
       placement="right"

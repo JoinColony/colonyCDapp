@@ -38,8 +38,7 @@ const ActionButton = ({
     let result;
     setLoading(true);
     try {
-      const asyncFuncValues =
-        typeof values == 'function' ? await values() : values;
+      const asyncFuncValues = typeof values == 'function' ? await values() : values;
       result = await asyncFunction(asyncFuncValues);
       if (isMountedRef.current) setLoading(false);
     } catch (err) {

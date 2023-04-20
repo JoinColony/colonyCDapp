@@ -14,9 +14,7 @@ interface TeamDetailProps {
 
 const TeamDetail = ({ transactionHash, domainMetadata }: TeamDetailProps) => {
   const changelogItem = transactionHash
-    ? domainMetadata.changelog?.find(
-        (item) => item.transactionHash === transactionHash,
-      )
+    ? domainMetadata.changelog?.find((item) => item.transactionHash === transactionHash)
     : undefined;
 
   const domainColor = changelogItem?.newColor ?? domainMetadata.color;

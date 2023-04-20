@@ -1,12 +1,7 @@
 import { log } from './debug';
 
 /* eslint-disable-next-line import/prefer-default-export */
-export const raceAgainstTimeout = async (
-  promise: Promise<any>,
-  ms: number,
-  err?: Error,
-  cleanup?: () => any,
-) => {
+export const raceAgainstTimeout = async (promise: Promise<any>, ms: number, err?: Error, cleanup?: () => any) => {
   let timeout;
   const throwError = err || new Error('Timed out');
   const timeoutPromise = new Promise((resolve, reject) => {

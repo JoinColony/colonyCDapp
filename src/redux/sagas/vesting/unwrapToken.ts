@@ -15,11 +15,7 @@ import {
 import { getContext, ContextModule } from '~context';
 import { putError, takeFrom } from '../utils';
 
-import {
-  createTransaction,
-  getTxChannel,
-  waitForTxResult,
-} from '../transactions';
+import { createTransaction, getTxChannel, waitForTxResult } from '../transactions';
 
 function* unwrapToken({
   meta,
@@ -48,10 +44,7 @@ function* unwrapToken({
     /*
      *  Refresh queries
      */
-    yield apolloClient.query<
-      UserBalanceWithLockQuery,
-      UserBalanceWithLockQueryVariables
-    >({
+    yield apolloClient.query<UserBalanceWithLockQuery, UserBalanceWithLockQueryVariables>({
       query: UserBalanceWithLockDocument,
       variables: {
         address: userAddress,
@@ -61,10 +54,7 @@ function* unwrapToken({
       fetchPolicy: 'network-only',
     });
 
-    yield apolloClient.query<
-      UnwrapTokenForMetacolonyQuery,
-      UnwrapTokenForMetacolonyQueryVariables
-    >({
+    yield apolloClient.query<UnwrapTokenForMetacolonyQuery, UnwrapTokenForMetacolonyQueryVariables>({
       query: UnwrapTokenForMetacolonyDocument,
       variables: {
         userAddress,

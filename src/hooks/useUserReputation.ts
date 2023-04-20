@@ -16,34 +16,32 @@ const useUserReputation = (
   domainId = Id.RootDomain,
   rootHash?: string,
 ): UseUserReputationHook => {
-  const { data: userReputationData, loading: loadingUserReputation } =
-    useGetUserReputationQuery({
-      variables: {
-        input: {
-          colonyAddress: colonyAddress ?? '',
-          walletAddress: walletAddress ?? '',
-          domainId,
-          rootHash,
-        },
+  const { data: userReputationData, loading: loadingUserReputation } = useGetUserReputationQuery({
+    variables: {
+      input: {
+        colonyAddress: colonyAddress ?? '',
+        walletAddress: walletAddress ?? '',
+        domainId,
+        rootHash,
       },
-      fetchPolicy: 'cache-and-network',
-      skip: !colonyAddress || !walletAddress,
-    });
+    },
+    fetchPolicy: 'cache-and-network',
+    skip: !colonyAddress || !walletAddress,
+  });
   const userReputation = userReputationData?.getUserReputation ?? undefined;
 
-  const { data: totalReputationData, loading: loadingTotalReputation } =
-    useGetUserReputationQuery({
-      variables: {
-        input: {
-          colonyAddress: colonyAddress ?? '',
-          walletAddress: ADDRESS_ZERO,
-          domainId,
-          rootHash,
-        },
+  const { data: totalReputationData, loading: loadingTotalReputation } = useGetUserReputationQuery({
+    variables: {
+      input: {
+        colonyAddress: colonyAddress ?? '',
+        walletAddress: ADDRESS_ZERO,
+        domainId,
+        rootHash,
       },
-      fetchPolicy: 'cache-and-network',
-      skip: !colonyAddress,
-    });
+    },
+    fetchPolicy: 'cache-and-network',
+    skip: !colonyAddress,
+  });
   const totalReputation = totalReputationData?.getUserReputation ?? undefined;
 
   return {

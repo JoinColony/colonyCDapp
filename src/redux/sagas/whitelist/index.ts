@@ -5,9 +5,5 @@ import updateWhitelistSaga from './updateWhitelist';
 import extensionEnableSaga from './extensionEnable';
 
 export default function* whitelistSagas() {
-  yield all([
-    call(signAgreement),
-    call(updateWhitelistSaga),
-    call(extensionEnableSaga),
-  ]);
+  yield all([call(signAgreement), call(updateWhitelistSaga), call(extensionEnableSaga)]);
 }

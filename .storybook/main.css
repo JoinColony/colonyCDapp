@@ -1,3 +1,4 @@
+@import 'react-popper-tooltip/dist/styles.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,8 +42,40 @@
   }
 }
 
+@layer components {
+  .inner {
+    @apply px-6 w-full h-full max-w-[77.375rem] mx-auto;
+  }
+}
+
+
 @media screen and query700 {
   html {
     background-color: white;
   }
+}
+
+.carouselWrapper [class~='carousel'] {
+  @apply relative overflow-visible;
+}
+
+.carouselWrapper [class~='carousel-slider'],
+.carouselWrapper [class~='slider-wrapper'] {
+  @apply w-[33.5rem];
+}
+
+.carouselWrapper [class~='control-dots'] {
+  @apply bottom-[-2.5rem] overflow-visible;
+}
+
+.carouselWrapper [class~='carousel control-dots dot selected'] {
+  @apply bg-gray-500 opacity-100;
+}
+
+.carouselWrapper [class~='dot'] {
+  @apply bg-gray-200 opacity-100;
+}
+
+.carouselWrapper [class~='slide'] {
+  @apply mr-4 h-[15.5rem];
 }

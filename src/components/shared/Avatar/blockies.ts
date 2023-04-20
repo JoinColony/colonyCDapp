@@ -17,8 +17,7 @@ function seedrand(seed) {
     randseed[i] = 0;
   }
   for (let i = 0; i < seed.length; i++) {
-    randseed[i % 4] =
-      (randseed[i % 4] << 5) - randseed[i % 4] + seed.charCodeAt(i);
+    randseed[i % 4] = (randseed[i % 4] << 5) - randseed[i % 4] + seed.charCodeAt(i);
   }
 }
 
@@ -104,8 +103,7 @@ function createIcon(opts: IconOptions) {
   const defaultOpts = opts || {};
   const size = defaultOpts.size || 8;
   const scale = defaultOpts.scale || 4;
-  const seed =
-    defaultOpts.seed || Math.floor(Math.random() * 10 ** 16).toString(16);
+  const seed = defaultOpts.seed || Math.floor(Math.random() * 10 ** 16).toString(16);
 
   seedrand(seed);
 

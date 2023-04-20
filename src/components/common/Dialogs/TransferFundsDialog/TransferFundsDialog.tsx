@@ -40,8 +40,7 @@ type Props = Required<DialogProps> &
   };
 
 function checkIfSameDomain(value: number) {
-  const oppositeDomain =
-    this.parent[this.path === 'fromDomain' ? 'toDomain' : 'fromDomain'];
+  const oppositeDomain = this.parent[this.path === 'fromDomain' ? 'toDomain' : 'fromDomain'];
   return oppositeDomain !== value;
 }
 
@@ -86,9 +85,7 @@ const TransferFundsDialog = ({
   const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
-    !isForce && isVotingReputationEnabled
-      ? ActionTypes.MOTION_MOVE_FUNDS
-      : ActionTypes.ACTION_MOVE_FUNDS;
+    !isForce && isVotingReputationEnabled ? ActionTypes.MOTION_MOVE_FUNDS : ActionTypes.ACTION_MOVE_FUNDS;
 
   const colonyDomains = colony?.domains?.items.filter(notNull) || [];
   const domainOptions = getDomainOptions(colonyDomains);
@@ -104,11 +101,7 @@ const TransferFundsDialog = ({
         defaultValues={{
           forceAction: false,
           fromDomain: selectedDomainId || Id.RootDomain,
-          toDomain:
-            Number(
-              domainOptions.find((domain) => domain.value !== selectedDomainId)
-                ?.value,
-            ) || Id.RootDomain,
+          toDomain: Number(domainOptions.find((domain) => domain.value !== selectedDomainId)?.value) || Id.RootDomain,
           amount: '',
           tokenAddress: colony?.nativeToken.tokenAddress,
           annotation: '',

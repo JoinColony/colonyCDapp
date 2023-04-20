@@ -38,10 +38,7 @@ const DomainBalance = ({ colony }: Props) => {
 
   return (
     <div className={styles.domainPotBalance}>
-      <FormattedMessage
-        {...MSG.domainTokenAmount}
-        values={getDomainFundMessageValues(selectedToken)}
-      />
+      <FormattedMessage {...MSG.domainTokenAmount} values={getDomainFundMessageValues(selectedToken)} />
     </div>
   );
 };

@@ -1,8 +1,4 @@
-import {
-  Provider,
-  TransactionReceipt,
-  TransactionResponse,
-} from '@ethersproject/providers';
+import { Provider, TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
 import { LogDescription, poll } from 'ethers/lib/utils';
 import { buffers, END, eventChannel, Buffer } from 'redux-saga';
 import { ContractClient } from '@colony/colony-js';
@@ -29,10 +25,7 @@ type TxSucceededEvent = {
   deployedContractAddress?: string;
 };
 
-const parseEventData = (
-  client: ContractClient,
-  receipt: TransactionReceipt,
-) => {
+const parseEventData = (client: ContractClient, receipt: TransactionReceipt) => {
   let parsedLogs: (LogDescription | null)[] = [];
   if (receipt && receipt.logs) {
     parsedLogs = receipt.logs.map((log) => {
@@ -152,12 +145,7 @@ const channelStart = async (
     const sentTx = await channelSendTransaction(tx, txPromise, emit);
     if (!sentTx) return null;
 
-    const receipt = await channelGetTransactionReceipt(
-      tx,
-      sentTx,
-      client.provider,
-      emit,
-    );
+    const receipt = await channelGetTransactionReceipt(tx, sentTx, client.provider, emit);
     if (!receipt) return null;
 
     if (receipt.status === 1) {
@@ -166,12 +154,7 @@ const channelStart = async (
       /**
        * @todo Use revert reason strings (once supported) in transactions.
        */
-      emit(
-        transactionUnsuccessfulError(
-          tx.id,
-          new Error('The transaction was unsuccessful'),
-        ),
-      );
+      emit(transactionUnsuccessfulError(tx.id, new Error('The transaction was unsuccessful')));
     }
 
     return null;
@@ -189,11 +172,7 @@ const channelStart = async (
  * Given a promise for sending a transaction, send the transaction and
  * emit actions with the transaction status.
  */
-const transactionChannel = (
-  txPromise: Promise<TransactionResponse>,
-  tx: TransactionRecord,
-  client: ContractClient,
-) =>
+const transactionChannel = (txPromise: Promise<TransactionResponse>, tx: TransactionRecord, client: ContractClient) =>
   eventChannel((emit) => {
     channelStart(tx, txPromise, client, emit);
     return () => {};

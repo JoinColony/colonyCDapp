@@ -2,11 +2,7 @@ import { Colony } from '~types';
 
 export const getEditColonyDetailsDialogPayload = (
   colony: Colony,
-  {
-    colonyAvatarImage,
-    colonyDisplayName: payloadDisplayName,
-    annotationMessage,
-  },
+  { colonyAvatarImage, colonyDisplayName: payloadDisplayName, annotationMessage },
 ) => {
   const colonyTokens = colony.tokens?.items || [];
 
@@ -19,12 +15,9 @@ export const getEditColonyDetailsDialogPayload = (
         ? colonyAvatarImage
         : colony.metadata?.thumbnail,
     colonyAvatarHash: colony.metadata?.avatar,
-    hasAvatarChanged: !!(
-      typeof colonyAvatarImage === 'string' || colonyAvatarImage === null
-    ),
+    hasAvatarChanged: !!(typeof colonyAvatarImage === 'string' || colonyAvatarImage === null),
     colonyTokens: colonyTokens.filter(
-      (colonyToken) =>
-        colonyToken?.token.tokenAddress !== colony.nativeToken.tokenAddress,
+      (colonyToken) => colonyToken?.token.tokenAddress !== colony.nativeToken.tokenAddress,
     ),
     // verifiedAddresses: colonyData?.processedColony?.whitelistedAddresses,
     annotationMessage,

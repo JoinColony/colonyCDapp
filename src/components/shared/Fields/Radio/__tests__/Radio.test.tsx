@@ -12,14 +12,7 @@ describe('Radio component', () => {
   test('Renders initial component', () => {
     const wrapper = mountWithIntl(
       <Formik initialValues={{}} onSubmit={() => undefined}>
-        <Radio
-          checked={false}
-          name="radioInput"
-          help="halp"
-          inputId="halpHalp"
-          label="awesome"
-          value="radioInput"
-        />
+        <Radio checked={false} name="radioInput" help="halp" inputId="halpHalp" label="awesome" value="radioInput" />
       </Formik>,
     );
     expect(toJson(wrapper)).toMatchSnapshot();

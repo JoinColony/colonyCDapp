@@ -31,7 +31,7 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
         <SpinnerLoader appearance={{ size: 'medium' }} />
       ) : (
         <button
-          className={clsx('flex font-medium transition-all duration-normal', {
+          className={clsx('flex items-center font-medium transition-all duration-normal', {
             [styles.primarySolid]: mode === 'primarySolid',
             [styles.primaryOutline]: mode === 'primaryOutline',
             [styles.textButton]: mode === 'textButton',

@@ -37,9 +37,7 @@ const ColonyDomainDescription = ({ currentDomainId }: Props) => {
   }
 
   const { name, color, description } =
-    colony.domains?.items.find(
-      (domain) => Number(domain?.nativeId) === currentDomainId,
-    ) || {};
+    colony.domains?.items.find((domain) => Number(domain?.nativeId) === currentDomainId) || {};
 
   return (
     <div className={styles.main}>

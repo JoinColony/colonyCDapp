@@ -1,9 +1,5 @@
 import React, { ReactNode } from 'react';
-import {
-  MessageDescriptor,
-  defineMessages,
-  FormattedMessage,
-} from 'react-intl';
+import { MessageDescriptor, defineMessages, FormattedMessage } from 'react-intl';
 
 import Button from '~shared/Button';
 import Heading from '~shared/Heading';
@@ -52,23 +48,13 @@ const ConfirmDialog = ({
 }: Props) => (
   <Dialog cancel={cancel}>
     <DialogSection appearance={{ theme: 'heading' }}>
-      <Heading
-        appearance={{ size: 'medium', margin: 'none' }}
-        text={heading}
-        className={styles.title}
-      />
+      <Heading appearance={{ size: 'medium', margin: 'none' }} text={heading} className={styles.title} />
     </DialogSection>
     <DialogSection>
-      <div className={styles.content}>
-        {children || <FormattedMessage {...MSG.defaultText} />}
-      </div>
+      <div className={styles.content}>{children || <FormattedMessage {...MSG.defaultText} />}</div>
     </DialogSection>
     <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
-      <Button
-        appearance={{ theme: 'secondary', size: 'large' }}
-        onClick={() => cancel()}
-        text={cancelButtonText}
-      />
+      <Button appearance={{ theme: 'secondary', size: 'large' }} onClick={() => cancel()} text={cancelButtonText} />
       <Button
         appearance={{
           theme: (appearance && appearance.theme) || 'primary',

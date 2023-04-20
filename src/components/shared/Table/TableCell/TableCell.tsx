@@ -7,9 +7,7 @@ interface Props extends TdHTMLAttributes<unknown> {
 
 const displayName = 'TableCell';
 
-const TableCell = ({ children, ...props }: Props) => (
-  <td {...props}>{children}</td>
-);
+const TableCell = ({ children, ...props }: Props) => <td {...props}>{children}</td>;
 
 TableCell.displayName = displayName;
 

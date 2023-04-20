@@ -20,11 +20,7 @@ const ManageFundsLink = () => {
   const { colony } = useColonyContext();
 
   return (
-    <Link
-      className={styles.manageFundsLink}
-      to={`/colony/${colony?.name}/funds`}
-      data-test="manageFunds"
-    >
+    <Link className={styles.manageFundsLink} to={`/colony/${colony?.name}/funds`} data-test="manageFunds">
       <Icon
         className={styles.rightArrowDisplay}
         name="arrow-right"
