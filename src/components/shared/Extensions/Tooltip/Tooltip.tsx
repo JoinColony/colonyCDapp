@@ -3,6 +3,8 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 import styles from './Tooltip.module.css';
 import { TooltipProps } from './types';
 
+const displayName = 'Extensions.Tooltip';
+
 const Tooltip: React.FC<PropsWithChildren<TooltipProps>> = ({
   children,
   tooltipContent,
@@ -57,5 +59,7 @@ const Tooltip: React.FC<PropsWithChildren<TooltipProps>> = ({
     </>
   );
 };
+
+Tooltip.displayName = displayName;
 
 export default Tooltip;
