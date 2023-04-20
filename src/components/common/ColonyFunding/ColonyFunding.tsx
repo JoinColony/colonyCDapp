@@ -73,7 +73,7 @@ const ColonyFunding = () => {
     <div className={styles.main}>
       <div className={styles.content}>
         <div>
-          {isMobile && <ColonyHomeInfo showNavigation isMobile />}
+          {isMobile && <ColonyHomeInfo />}
           <div className={styles.titleContainer}>
             <Heading
               text={MSG.title}

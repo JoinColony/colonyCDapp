@@ -12,7 +12,6 @@ import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { useSelectedUser } from '~hooks';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
-import { notNull } from '~utils/arrays';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import DialogForm from '../ManageReputationDialogForm';
@@ -58,7 +57,7 @@ const defaultValidationSchema = object()
 type FormValues = InferType<typeof defaultValidationSchema>;
 
 const ManageReputationContainer = ({
-  colony: { nativeToken, watchers },
+  colony: { nativeToken },
   colony,
   callStep,
   prevStep,
@@ -71,8 +70,13 @@ const ManageReputationContainer = ({
   const [isForce, setIsForce] = useState(false);
   const [schemaUserReputation, setSchemaUserReputation] = useState(0);
   const navigate = useNavigate();
-  const colonyWatchers =
-    watchers?.items.filter(notNull).map((item) => item.user) || [];
+  /**
+   * @TODO This needs fixing as it relied on the empty array fallback,
+   * `watchers` don't existing on the colony object we were passing
+   */
+  // const colonyWatchers =
+  //   watchers?.items.filter(notNull).map((item) => item.user) || [];
+  const colonyWatchers = [];
 
   // const verifiedUsers = useMemo(() => {
   //   return getVerifiedUsers(colony.whitelistedAddresses, colonyWatchers) || [];

@@ -20,23 +20,22 @@ import UserAvatar from '~shared/UserAvatar';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import { REPUTATION_LEARN_MORE } from '~constants/externalUrls';
 
-import { ColonyWatcher, User } from '~types';
+import { MemberUser, User } from '~types';
 
 import { useActionDialogStatus, useUserReputation } from '~hooks';
 import { sortBy } from '~utils/lodash';
 import { notNull } from '~utils/arrays';
+import { findDomainByNativeId } from '~utils/domains';
 
 import {
   NoPermissionMessage,
   CannotCreateMotionMessage,
   PermissionRequiredInfo,
 } from '../../Messages';
-
 import ReputationAmountInput from './ReputationAmountInput';
 import TeamDropdownItem from './TeamDropdownItem';
 
 import styles from './ManageReputationDialogForm.css';
-import { findDomainByNativeId } from '~utils/domains';
 
 const displayName =
   'common.ManageReputationContainer.ManageReputationDialogForm';
@@ -82,7 +81,7 @@ const MSG = defineMessages({
 
 interface Props extends ActionDialogProps {
   nativeTokenDecimals: number;
-  verifiedUsers: ColonyWatcher['user'][];
+  verifiedUsers: MemberUser[];
   schemaUserReputation?: number;
   updateSchemaUserReputation?: (
     userPercentageReputation: number,
@@ -182,7 +181,7 @@ const ManageReputationDialogForm = ({
 
   const formattedData = verifiedUsers.map((user) => ({
     ...user,
-    id: user.walletAddress,
+    id: user,
   }));
 
   return (

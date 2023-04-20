@@ -1,0 +1,72 @@
+@value query700 from '~styles/queries.css';
+
+.main {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px 12px 0;
+  height: 64px;
+  width: 100%;
+  border: none;
+  border-top: 1px solid var(--light-grey-blue);
+  background: none;
+  text-align: left;
+  cursor: pointer;
+
+  &:only-of-type {
+    border-bottom-color: transparent;
+  }
+
+  &:last-of-type:not(.themeAlt) {
+    border-bottom: 1px solid var(--light-grey-blue);
+  }
+}
+
+.stateDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.themeAlt {
+  composes: main;
+  border: none;
+  background-color: white;
+}
+
+.rowContent {
+  flex: 1;
+}
+
+.rowIcon {
+  width: 50px;
+  text-align: center;
+}
+
+.tooltip {
+  max-width: 270px;
+}
+
+@media screen and query700 {
+  .main {
+    height: auto;
+    border: none;
+
+    &:last-of-type:not(.themeAlt) {
+      border-bottom: 0px;
+    }
+  }
+
+  .wrapper {
+    display: flex;
+    align-items: center;
+    border: none;
+    border-top: 1px solid var(--light-grey-beige);
+
+    &:only-of-type {
+      border-bottom-color: transparent;
+    }
+
+    &:last-of-type:not(.themeAlt) {
+      border-bottom: 1px solid var(--light-grey-beige);
+    }
+  }
+}
