@@ -8,7 +8,7 @@ import LinkItem from '../LinkItem';
 import LearnMore from '../LearnMore';
 
 import { MSG } from './consts';
-import styles from './DropdownItems.module.css';
+import styles from './DropdownContent.module.css';
 
 const displayName = 'common.Extensions.SubNavigation.Partials.DropdownContent.DecideDropdown';
 

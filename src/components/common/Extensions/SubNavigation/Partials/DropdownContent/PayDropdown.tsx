@@ -8,7 +8,7 @@ import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge-new/Ex
 import LinkItem from '../LinkItem';
 import LearnMore from '../LearnMore';
 
-import styles from './DropdownItems.module.css';
+import styles from './DropdownContent.module.css';
 import { MSG } from './consts';
 
 const displayName = 'common.Extensions.SubNavigation.Partials.DropdownContent.PayDropdown';
