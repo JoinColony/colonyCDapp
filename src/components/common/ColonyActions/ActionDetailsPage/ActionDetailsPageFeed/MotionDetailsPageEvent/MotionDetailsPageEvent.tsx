@@ -4,7 +4,7 @@ import {
   ColonyAction,
   ColonyAndExtensionsEvents,
   MotionMessage,
-  SystemMessagesName,
+  SystemMessages,
 } from '~types';
 import { TransactionStatus, TransactionStatuses } from '~common/ColonyActions';
 import MotionEventData from './MotionEventData';
@@ -15,7 +15,7 @@ const displayName =
   'common.ColonyActions.ActionDetailsPage.MotionDetailsPageEvent';
 
 export interface MotionDetailsPageEventProps {
-  eventName: ColonyAndExtensionsEvents | SystemMessagesName;
+  eventName: ColonyAndExtensionsEvents | SystemMessages;
   actionData: ColonyAction;
   motionMessageData: MotionMessage;
   dataTest?: string;
