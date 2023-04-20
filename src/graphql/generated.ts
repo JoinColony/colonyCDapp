@@ -1508,6 +1508,7 @@ export type ModelWatchedColoniesFilterInput = {
 export type MotionData = {
   __typename?: 'MotionData';
   createdBy: Scalars['String'];
+  hasObjection: Scalars['Boolean'];
   isFinalized: Scalars['Boolean'];
   messages: Array<MotionMessage>;
   motionDomainId: Scalars['String'];
@@ -1528,6 +1529,7 @@ export type MotionData = {
 
 export type MotionDataInput = {
   createdBy: Scalars['String'];
+  hasObjection: Scalars['Boolean'];
   isFinalized: Scalars['Boolean'];
   messages: Array<MotionMessageInput>;
   motionDomainId: Scalars['String'];
@@ -2987,7 +2989,7 @@ export type ColonyActionFragment = { __typename?: 'ColonyAction', type: ColonyAc
 
 export type MotionStakeValuesFragment = { __typename?: 'MotionStakeValues', yay: string, nay: string };
 
-export type MotionDataFragment = { __typename?: 'MotionData', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, motionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, messages: Array<{ __typename?: 'MotionMessage', name: string, messageKey: string, initiatorAddress: string, vote?: string | null, amount?: string | null }> };
+export type MotionDataFragment = { __typename?: 'MotionData', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, motionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, messages: Array<{ __typename?: 'MotionMessage', name: string, messageKey: string, initiatorAddress: string, vote?: string | null, amount?: string | null }> };
 
 export type MotionMessageFragment = { __typename?: 'MotionMessage', name: string, messageKey: string, initiatorAddress: string, vote?: string | null, amount?: string | null };
 
@@ -3428,6 +3430,7 @@ export const MotionDataFragmentDoc = gql`
   }
   skillRep
   repSubmitted
+  hasObjection
   messages {
     ...MotionMessage
   }
