@@ -38,8 +38,8 @@ const ImageCarousel: FC<ImageCarouselProps> = ({ slidePercentage = 95, transitio
         )}
       >
         {slideUrls.map((url) => (
-          <div className="slide">
-            <img alt="file" src={url} key={url} />
+          <div className="slide" key={url}>
+            <img alt="file" src={url} />
           </div>
         ))}
       </Carousel>
