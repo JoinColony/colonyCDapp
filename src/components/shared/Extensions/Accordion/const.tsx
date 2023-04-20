@@ -1,5 +1,5 @@
 import React from 'react';
-import { AccordionMocksContent } from './Accordion.types';
+import { AccordionMocksContent } from './types';
 import ContentTypeAccordionContent from './Partials/ContentTypeAccordionContent';
 import ContentTypeAccordionHeader from './Partials/ContentTypeAccordionHeader';
 import ContentTypeText from './Partials/ContentTypeText';
