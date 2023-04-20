@@ -5,9 +5,8 @@ import { isNil } from 'lodash';
 import { ColonyRoles } from '@colony/colony-js';
 
 import { getRolesForUserAndDomain } from '~redux/transformers';
-import { AnyUser } from '~data/index';
-import { ActionUserRoles } from '~types';
-import { TagColorSchema, TagTheme } from '~shared/Tag/Tag';
+import { ActionUserRoles, User } from '~types';
+import { TagColorSchema, TagTheme } from '~shared/Tag/enums';
 
 export const noMotionsVotingReputationVersion = 4;
 
@@ -184,12 +183,12 @@ export interface MotionValue {
 }
 
 export const getUpdatedDecodedMotionRoles = (
-  recipient: AnyUser,
+  recipient: User,
   fromDomain: number,
   currentRoles: ColonyRoles = [],
   setRoles: ActionUserRoles[],
 ) => {
-  const currentUserRoles = getRolesForUserAndDomain(currentRoles, recipient.id, fromDomain);
+  const currentUserRoles = getRolesForUserAndDomain(currentRoles, recipient.walletAddress, fromDomain);
   const updatedRoles = setRoles.filter((role) => {
     const foundCurrentRole = currentUserRoles.find((currentRole) => currentRole === role.id);
     if (!isNil(foundCurrentRole)) {

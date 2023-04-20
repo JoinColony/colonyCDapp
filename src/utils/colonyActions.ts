@@ -2,7 +2,6 @@ import { BigNumber } from 'ethers';
 import { ReactNode } from 'react';
 
 import { isEmpty } from '~utils/lodash';
-import { MotionVote } from '~utils/colonyMotions';
 import {
   ColonyActionType,
   ColonyMotions,
@@ -11,13 +10,10 @@ import {
   Domain as ColonyDomain,
   ActionItemType,
   ActionUserRoles,
+  MotionVote,
 } from '~types';
 
 import { formatText } from './intl';
-
-// type ValuesForActionTypesMap = Partial<{
-//   [key in keyof FormattedAction]: FormattedAction[key];
-// }>;
 
 export enum ActionPageDetails {
   FromDomain = 'FromDomain',
