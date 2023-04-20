@@ -6,7 +6,6 @@ import colonySagas, { colonyCreateSaga } from './colony';
 import extensionSagas from './extensions';
 // import motionSagas from './motions';
 // import whitelistSagas from './whitelist';
-// import vestingSagas from './vesting';
 import { setupUsersSagas } from './users';
 import { getWallet } from './wallet';
 
