@@ -9,7 +9,6 @@ import Tooltip from '~shared/Extensions/Tooltip';
 
 const displayName = 'common.Extensions.UserPermissionsBadge';
 
-// This have to be uncommented when icon will work
 // const icons = iconNames.reduce((iconObj, iconName) => {
 //   const id = camelcase(iconName);
 
@@ -47,24 +46,12 @@ const UserPermissionsBadge: React.FC<PropsWithChildren<UserPermissionsBadgeProps
 
   return (
     <Tooltip
-      trigger="hover"
-      content={
-        <div className="w-[15.625rem] flex flex-col items-start">
+      tooltipContent={
+        <>
           <span className={clsx(styles.tooltipBadge, 'mb-2.5')}>{content}</span>
           {userPermissionsBadgeText}: {userPermissionsBadgeDescription}
-        </div>
+        </>
       }
-      placement="top"
-      popperOptions={{
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: [0, 16],
-            },
-          },
-        ],
-      }}
     >
       <span className={styles.badge} {...rest}>
         {content}
