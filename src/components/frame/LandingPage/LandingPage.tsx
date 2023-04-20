@@ -13,7 +13,7 @@ import { useAppContext, useCanInteractWithNetwork } from '~hooks';
 
 import styles from './LandingPage.css';
 import ImageCarousel from '~common/Extensions/ImageCarousel/ImageCarousel';
-import { images } from '~common/Extensions/ImageCarousel/const';
+import { images } from '~common/Extensions/ImageCarousel/consts';
 
 const displayName = 'frame.LandingPage';
 
@@ -72,41 +72,43 @@ const LandingPage = () => {
   }, [wallet, updateUser]);
 
   return (
-    <div className={styles.main}>
-      <div>
-        <div className={styles.title}>
-          <Heading text={MSG.callToAction} appearance={{ size: 'medium', margin: 'none', theme: 'dark' }} />
-        </div>
-        <ImageCarousel slideUrls={images} />
-        <ul>
-          {wallet && !userLoading && !user && <LandingItem to={CREATE_USER_ROUTE} message={MSG.createUsername} />}
-          {canInteractWithNetwork && <LandingItem to={CREATE_COLONY_ROUTE} message={MSG.createColony} />}
-          {loading && (
-            <li className={styles.itemLoading}>
-              <SpinnerLoader appearance={{ size: 'medium' }} />
-            </li>
-          )}
-          {metacolony && (
-            <li className={styles.item}>
-              <NavLink to={`/colony/${metacolony.name}`} className={styles.itemLink}>
-                <ColonyAvatar
-                  className={styles.itemIcon}
-                  colonyAddress={metacolony.colonyAddress}
-                  colony={metacolony}
-                  size="xl"
-                />
-                <span className={styles.itemTitle}>
-                  <FormattedMessage
-                    {...MSG.exploreColony}
-                    values={{
-                      colonyName: metacolony.metadata?.displayName || metacolony.name,
-                    }}
+    <div className="inner">
+      <div className={styles.main}>
+        <div>
+          <div className={styles.title}>
+            <Heading text={MSG.callToAction} appearance={{ size: 'medium', margin: 'none', theme: 'dark' }} />
+          </div>
+          <ImageCarousel slideUrls={images} />
+          <ul>
+            {wallet && !userLoading && !user && <LandingItem to={CREATE_USER_ROUTE} message={MSG.createUsername} />}
+            {canInteractWithNetwork && <LandingItem to={CREATE_COLONY_ROUTE} message={MSG.createColony} />}
+            {loading && (
+              <li className={styles.itemLoading}>
+                <SpinnerLoader appearance={{ size: 'medium' }} />
+              </li>
+            )}
+            {metacolony && (
+              <li className={styles.item}>
+                <NavLink to={`/colony/${metacolony.name}`} className={styles.itemLink}>
+                  <ColonyAvatar
+                    className={styles.itemIcon}
+                    colonyAddress={metacolony.colonyAddress}
+                    colony={metacolony}
+                    size="xl"
                   />
-                </span>
-              </NavLink>
-            </li>
-          )}
-        </ul>
+                  <span className={styles.itemTitle}>
+                    <FormattedMessage
+                      {...MSG.exploreColony}
+                      values={{
+                        colonyName: metacolony.metadata?.displayName || metacolony.name,
+                      }}
+                    />
+                  </span>
+                </NavLink>
+              </li>
+            )}
+          </ul>
+        </div>
       </div>
     </div>
   );

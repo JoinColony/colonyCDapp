@@ -42,6 +42,13 @@
   }
 }
 
+@layer components {
+  .inner {
+    @apply px-6 w-full h-full max-w-[77.375rem] mx-auto;
+  }
+}
+
+
 @media screen and query700 {
   html {
     background-color: white;

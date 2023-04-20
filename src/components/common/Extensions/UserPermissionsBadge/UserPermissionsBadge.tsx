@@ -4,7 +4,7 @@ import camelcase from 'camelcase';
 import clsx from 'clsx';
 import { UserPermissionsBadgeProps } from './types';
 import styles from './UserPermissionsBadge.module.css';
-import { pills as iconNames } from '~images/icons.json';
+// import { pills as iconNames } from '~images/icons.json';
 import Tooltip from '~shared/Extensions/Tooltip';
 
 const displayName = 'common.Extensions.UserPermissionsBadge';

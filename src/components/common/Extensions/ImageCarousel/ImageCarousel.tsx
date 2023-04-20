@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Carousel } from 'react-responsive-carousel';
-import { images } from './const';
+import { images } from './consts';
 import styles from './ImageCarousel.module.css';
 import { ImageCarouselProps } from './ImageCarousel.types';
 

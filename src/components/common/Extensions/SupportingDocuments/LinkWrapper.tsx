@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import Link from '~shared/Link';
-import { doubleLink, singleLink } from './const';
+import { doubleLink, singleLink } from './consts';
 
 interface LinkWrapperProps {
   isDoubleLinkVisible: boolean;
