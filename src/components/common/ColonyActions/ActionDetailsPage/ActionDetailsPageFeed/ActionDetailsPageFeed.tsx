@@ -7,7 +7,7 @@ import {
   SystemMessagesName,
 } from '~types';
 
-import ActionsPageEvent from './ActionDetailsPageEvent';
+import { MotionsPageEvent, ActionsPageEvent } from './ActionDetailsPageEvent';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.ActionDetailsPageFeed';
@@ -17,20 +17,32 @@ interface ActionsPageFeedProps {
 }
 
 const ActionDetailsPageFeed = ({ actionData }: ActionsPageFeedProps) => {
-  const messages = actionData.isMotion
-    ? actionData.motionData?.messages
-    : ACTIONS_EVENTS[actionData.type];
+  if (actionData.isMotion) {
+    const messages = actionData.motionData?.messages;
+    return (
+      <>
+        {messages?.map((message) => (
+          <MotionsPageEvent
+            actionData={actionData}
+            motionMessageData={message}
+            eventName={
+              ColonyAndExtensionsEvents[message.name] ??
+              SystemMessagesName[message.name]
+            }
+            key={message.messageKey}
+          />
+        ))}
+      </>
+    );
+  }
+  const events = ACTIONS_EVENTS[actionData.type];
   return (
     <>
-      {messages?.map((message) => (
+      {events?.map((event) => (
         <ActionsPageEvent
           actionData={actionData}
-          motionMessageData={message}
-          eventName={
-            ColonyAndExtensionsEvents[message.name] ??
-            SystemMessagesName[message.name]
-          }
-          key={message.messageKey || message}
+          eventName={event}
+          key={event}
         />
       ))}
     </>

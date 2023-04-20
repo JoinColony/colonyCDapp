@@ -174,16 +174,16 @@ export const generateMessageValues = (
 const getEventTitleValues = (
   eventName: ColonyAndExtensionsEvents | SystemMessagesName,
   actionData: ColonyAction,
-  motionMessageData: MotionMessage,
-  motionMessageInitiatorUser?: User | null,
   colony?: Colony,
+  motionMessageData?: MotionMessage,
+  motionMessageInitiatorUser?: User | null,
 ) => {
   const updatedItem = mapColonyEventToExpectedFormat(
     eventName,
     actionData,
+    colony,
     motionMessageData,
     motionMessageInitiatorUser,
-    colony,
   );
   const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
   return generateMessageValues(updatedItem, keys, {

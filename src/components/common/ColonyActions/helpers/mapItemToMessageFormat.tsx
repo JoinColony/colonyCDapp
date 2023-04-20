@@ -104,9 +104,9 @@ export const mapColonyActionToExpectedFormat = (
 export const mapColonyEventToExpectedFormat = (
   eventName: ColonyAndExtensionsEvents | SystemMessagesName,
   actionData: ColonyAction,
-  motionMessageData: MotionMessage,
-  motionMessageInitiatorUser?: User | null,
   colony?: Colony,
+  motionMessageData?: MotionMessage,
+  motionMessageInitiatorUser?: User | null,
 ) => {
   // const role = item.roles[0];
 
@@ -120,14 +120,14 @@ export const mapColonyEventToExpectedFormat = (
     amountTag: (
       <AmountTag>
         <Numeral
-          value={motionMessageData.amount ?? 0}
+          value={motionMessageData?.amount ?? 0}
           decimals={actionData.token?.decimals ?? undefined}
           suffix={actionData.token?.symbol ?? ''}
         />
       </AmountTag>
     ),
     backedSideTag:
-      Number(motionMessageData.vote) === MotionVote.Yay ? (
+      Number(motionMessageData?.vote) === MotionVote.Yay ? (
         <MotionTag />
       ) : (
         <ObjectionTag />
