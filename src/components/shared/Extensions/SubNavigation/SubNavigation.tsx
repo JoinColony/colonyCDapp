@@ -27,15 +27,6 @@ const MSG = defineMessages({
 
 const SubNavigation: React.FC<PropsWithChildren> = () => {
   const [openIndex, setOpenIndex] = useState<number>();
-  // const { getArrowProps, getTooltipProps, setTooltipRef, setTriggerRef, visible } = usePopperTooltip(
-  //   {
-  //     delayShow: 200,
-  //     placement: 'bottom',
-  //     trigger: 'click',
-  //     visible: isOpen,
-  //   }
-  //   // popperOptions
-  // );
 
   const items = useMemo<SubNavigationItemProps[]>(() => {
     const navigationItems: SubNavigationItemProps[] = [

@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import Button from '~shared/Extensions/Button/Button';
+import { LEARN_MORE_ADMIN } from '~constants';
 
 import LinkItem from '../LinkItem';
 
@@ -59,7 +60,7 @@ const DecideDropdown: React.FC<PropsWithChildren> = () => (
           {...MSG.helpText}
           values={{
             // eslint-disable-next-line react/no-unstable-nested-components
-            a: (chunks) => <LearnMore chunks={chunks} href="/" />,
+            a: (chunks) => <LearnMore chunks={chunks} href={LEARN_MORE_ADMIN} />,
           }}
         />
       </div>
