@@ -528,6 +528,22 @@ type VoterRecord {
   vote: Int # nullable since we don't know the vote until it's revealed
 }
 
+input MotionMessageInput {
+  name: String!
+  messageKey: String!
+  initiatorAddress: String!
+  vote: String
+  amount: String
+}
+
+type MotionMessage {
+  name: String!
+  messageKey: String!
+  initiatorAddress: String!
+  vote: String
+  amount: String
+}
+
 # Duplicate of MotionData type, required to mutate the motionData in `fetchMotionState` lamda
 input MotionDataInput {
   motionId: String! # to ensure uniqueness, we format as: chainId-votingRepExtnAddress_nativeMotionId
@@ -546,14 +562,8 @@ input MotionDataInput {
   revealedVotes: MotionStakesInput! ## I.e. MotionVotes (same type)
   repSubmitted: String!
   skillRep: String!
-}
-
-type MotionMessage {
-  name: String!
-  messageKey: String!
-  initiatorAddress: String!
-  vote: String
-  amount: String
+  hasObjection: Boolean!
+  messages: [MotionMessageInput!]!
 }
 
 type MotionData {
@@ -573,6 +583,7 @@ type MotionData {
   revealedVotes: MotionStakes! ## I.e. MotionVotes (same type)
   repSubmitted: String!
   skillRep: String!
+  hasObjection: Boolean!
   messages: [MotionMessage!]!
 }
 
