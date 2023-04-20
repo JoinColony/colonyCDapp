@@ -27,7 +27,7 @@ export const useEditDomainDialogStatus = (
     watch,
     formState: { dirtyFields },
   } = useFormContext();
-  const domainId = watch('domainId');
+  const { domainId, motionDomainId } = watch();
   const {
     userHasPermission,
     disabledSubmit: defaultDisabledSubmit,
@@ -39,7 +39,7 @@ export const useEditDomainDialogStatus = (
     requiredRoles,
     [domainId],
     enabledExtensionData,
-    domainId,
+    motionDomainId,
   );
 
   const hasEditedDomain =
