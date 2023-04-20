@@ -23,7 +23,7 @@ export interface AccordionMocksItemProps {
   content: JSX.Element;
 }
 export interface AccordionItemProps {
-  title?: string;
+  title?: string | JSX.Element;
   content?: AccordionMocksContentDetails[];
   isOpen?: boolean;
   onClick?: () => void;
@@ -32,4 +32,10 @@ export interface ContentTypeProps {
   title?: string;
   subTitle?: string;
   details?: string;
+}
+
+export interface AccordionContentItemProps {
+  accordionItem: AccordionMocksItemProps;
+  isOpen?: boolean;
+  onClick?: () => void;
 }
