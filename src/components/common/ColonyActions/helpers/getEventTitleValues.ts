@@ -8,7 +8,10 @@ import {
   SystemMessagesName,
 } from '~types';
 
-import { mapColonyEventToExpectedFormat } from './mapItemToMessageFormat';
+import {
+  mapActionEventToExpectedFormat,
+  mapMotionEventToExpectedFormat,
+} from './mapItemToMessageFormat';
 
 enum EventTitleMessageKeys {
   Amount = 'amount',
@@ -170,20 +173,16 @@ export const generateMessageValues = (
     initialEntry,
   );
 
-/* Returns the correct message values according to the event type. */
-const getEventTitleValues = (
+/* Returns the correct message values for Actions according to the event type. */
+export const getActionEventTitleValues = (
   eventName: ColonyAndExtensionsEvents | SystemMessagesName,
   actionData: ColonyAction,
   colony?: Colony,
-  motionMessageData?: MotionMessage,
-  motionMessageInitiatorUser?: User | null,
 ) => {
-  const updatedItem = mapColonyEventToExpectedFormat(
+  const updatedItem = mapActionEventToExpectedFormat(
     eventName,
     actionData,
     colony,
-    motionMessageData,
-    motionMessageInitiatorUser,
   );
   const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
   return generateMessageValues(updatedItem, keys, {
@@ -191,4 +190,20 @@ const getEventTitleValues = (
   });
 };
 
-export default getEventTitleValues;
+/* Returns the correct message values for Motions according to the event type. */
+export const getMotionEventTitleValues = (
+  eventName: ColonyAndExtensionsEvents | SystemMessagesName,
+  actionData: ColonyAction,
+  motionMessageData?: MotionMessage,
+  motionMessageInitiatorUser?: User | null,
+) => {
+  const updatedItem = mapMotionEventToExpectedFormat(
+    actionData,
+    motionMessageInitiatorUser,
+    motionMessageData,
+  );
+  const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
+  return generateMessageValues(updatedItem, keys, {
+    eventName,
+  });
+};

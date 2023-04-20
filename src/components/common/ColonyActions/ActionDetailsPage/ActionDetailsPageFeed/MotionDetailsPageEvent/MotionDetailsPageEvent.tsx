@@ -9,23 +9,24 @@ import {
 import { TransactionStatus, TransactionStatuses } from '~common/ColonyActions';
 import MotionEventData from './MotionEventData';
 
-import styles from './ActionDetailsPageEvent.css';
+import styles from '../ActionDetailsPageEvent.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.MotionsPageEvent';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.MotionDetailsPageEvent';
 
-export interface MotionsPageEventProps {
+export interface MotionDetailsPageEventProps {
   eventName: ColonyAndExtensionsEvents | SystemMessagesName;
   actionData: ColonyAction;
   motionMessageData: MotionMessage;
   dataTest?: string;
 }
 
-const MotionsPageEvent = ({
+const MotionDetailsPageEvent = ({
   eventName,
   actionData,
   motionMessageData,
   dataTest,
-}: MotionsPageEventProps) => (
+}: MotionDetailsPageEventProps) => (
   <div className={styles.main} data-test={dataTest}>
     <TransactionStatus status={TransactionStatuses.Succeeded} showTooltip />
     <MotionEventData
@@ -36,6 +37,6 @@ const MotionsPageEvent = ({
   </div>
 );
 
-MotionsPageEvent.displayName = displayName;
+MotionDetailsPageEvent.displayName = displayName;
 
-export default MotionsPageEvent;
+export default MotionDetailsPageEvent;

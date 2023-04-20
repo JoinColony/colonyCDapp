@@ -101,12 +101,10 @@ export const mapColonyActionToExpectedFormat = (
   };
 };
 
-export const mapColonyEventToExpectedFormat = (
+export const mapActionEventToExpectedFormat = (
   eventName: ColonyAndExtensionsEvents | SystemMessagesName,
   actionData: ColonyAction,
   colony?: Colony,
-  motionMessageData?: MotionMessage,
-  motionMessageInitiatorUser?: User | null,
 ) => {
   // const role = item.roles[0];
 
@@ -117,21 +115,6 @@ export const mapColonyEventToExpectedFormat = (
         decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
-    amountTag: (
-      <AmountTag>
-        <Numeral
-          value={motionMessageData?.amount ?? 0}
-          decimals={actionData.token?.decimals ?? undefined}
-          suffix={actionData.token?.symbol ?? ''}
-        />
-      </AmountTag>
-    ),
-    backedSideTag:
-      Number(motionMessageData?.vote) === MotionVote.Yay ? (
-        <MotionTag />
-      ) : (
-        <ObjectionTag />
-      ),
     motionTag: <MotionTag />,
     objectionTag: <ObjectionTag />,
     // ...getColonyRoleSetTitleValues(role?.setTo),
@@ -169,17 +152,48 @@ export const mapColonyEventToExpectedFormat = (
         actionData.amount,
         getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
       ),
-    staker: (
-      <span className={styles.userDecoration}>
-        <FriendlyName user={motionMessageInitiatorUser} autoShrinkAddress />
-      </span>
-    ),
     newVersion: actionData.newColonyVersion,
     reputationChangeNumeral: actionData.amount && (
       <Numeral
         value={actionData.amount}
         decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
       />
+    ),
+  };
+};
+
+export const mapMotionEventToExpectedFormat = (
+  actionData: ColonyAction,
+  initiatorUser?: User | null,
+  motionMessageData?: MotionMessage,
+) => {
+  return {
+    amountTag: (
+      <AmountTag>
+        <Numeral
+          value={motionMessageData?.amount ?? 0}
+          decimals={actionData.token?.decimals ?? undefined}
+          suffix={actionData.token?.symbol ?? ''}
+        />
+      </AmountTag>
+    ),
+    backedSideTag:
+      Number(motionMessageData?.vote) === MotionVote.Yay ? (
+        <MotionTag />
+      ) : (
+        <ObjectionTag />
+      ),
+    motionTag: <MotionTag />,
+    objectionTag: <ObjectionTag />,
+    initiator: (
+      <span className={styles.userDecoration}>
+        <FriendlyName user={initiatorUser} autoShrinkAddress />
+      </span>
+    ),
+    staker: (
+      <span className={styles.userDecoration}>
+        <FriendlyName user={initiatorUser} autoShrinkAddress />
+      </span>
     ),
   };
 };

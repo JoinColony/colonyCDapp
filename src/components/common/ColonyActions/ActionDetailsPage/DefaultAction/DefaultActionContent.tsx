@@ -4,7 +4,10 @@ import { getActionTitleValues } from '~common/ColonyActions/helpers';
 import { Heading3 } from '~shared/Heading';
 import { ColonyAction } from '~types';
 
-import ActionsPageFeed from '../ActionDetailsPageFeed';
+import {
+  ActionDetailsPageFeed,
+  MotionDetailsPageFeed,
+} from '../ActionDetailsPageFeed';
 
 import styles from './DefaultAction.css';
 
@@ -23,7 +26,11 @@ const DefaultActionContent = ({ actionData }: DefaultActionContentProps) => (
       text={{ id: 'action.title' }}
       textValues={getActionTitleValues(actionData)}
     />
-    <ActionsPageFeed actionData={actionData} />
+    {actionData.isMotion ? (
+      <MotionDetailsPageFeed actionData={actionData} />
+    ) : (
+      <ActionDetailsPageFeed actionData={actionData} />
+    )}
   </div>
 );
 

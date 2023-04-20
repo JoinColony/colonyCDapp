@@ -1,13 +1,9 @@
 import React from 'react';
 
 import { ACTIONS_EVENTS } from '../staticMaps';
-import {
-  ColonyAction,
-  ColonyAndExtensionsEvents,
-  SystemMessagesName,
-} from '~types';
+import { ColonyAction } from '~types';
 
-import { MotionsPageEvent, ActionsPageEvent } from './ActionDetailsPageEvent';
+import { ActionsPageEvent } from './ActionDetailsPageEvent';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.ActionDetailsPageFeed';
@@ -17,24 +13,6 @@ interface ActionsPageFeedProps {
 }
 
 const ActionDetailsPageFeed = ({ actionData }: ActionsPageFeedProps) => {
-  if (actionData.isMotion) {
-    const messages = actionData.motionData?.messages;
-    return (
-      <>
-        {messages?.map((message) => (
-          <MotionsPageEvent
-            actionData={actionData}
-            motionMessageData={message}
-            eventName={
-              ColonyAndExtensionsEvents[message.name] ??
-              SystemMessagesName[message.name]
-            }
-            key={message.messageKey}
-          />
-        ))}
-      </>
-    );
-  }
   const events = ACTIONS_EVENTS[actionData.type];
   return (
     <>

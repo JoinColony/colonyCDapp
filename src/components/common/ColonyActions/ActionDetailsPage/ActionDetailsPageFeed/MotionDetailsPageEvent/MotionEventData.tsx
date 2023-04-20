@@ -2,67 +2,56 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { ColonyAndExtensionsEvents } from '~types';
-import { getEventTitleValues, TransactionMeta } from '~common/ColonyActions';
-import { useColonyContext, useUserByNameOrAddress } from '~hooks';
+import {
+  getMotionEventTitleValues,
+  TransactionMeta,
+} from '~common/ColonyActions';
+import { useUserByNameOrAddress } from '~hooks';
+import EventData from '../EventData';
 
-import ActionRoles from './ActionRoles';
-import { MotionsPageEventProps } from './MotionsPageEvent';
-
-import styles from './ActionEventData.css';
+import { MotionDetailsPageEventProps } from './MotionDetailsPageEvent';
 
 const displayName = 'common.ColonyActions.ActionDetailsPage.ActionEventData';
 
 type MotionEventDataProps = Pick<
-  MotionsPageEventProps,
+  MotionDetailsPageEventProps,
   'actionData' | 'eventName' | 'motionMessageData'
 >;
 
 const MotionEventData = ({
-  actionData: { createdAt, transactionHash, type },
+  actionData: { createdAt, transactionHash },
   actionData,
   motionMessageData,
   eventName,
 }: MotionEventDataProps) => {
-  const { colony } = useColonyContext();
   const { user: motionMessageInitiatorUser } = useUserByNameOrAddress(
     motionMessageData.initiatorAddress || '',
   );
-  // const messageId = Object.values<string>(ColonyAndExtensionsEvents).includes(
-  //   eventName,
-  // )
-  //   ? 'event.title'
-  //   : 'systemMessage.title';
-
   const messageId =
     eventName in ColonyAndExtensionsEvents
       ? 'event.title'
       : 'systemMessage.title';
 
   return (
-    <div className={styles.content}>
-      <div className={styles.text} data-test="actionsEventText">
+    <EventData
+      text={
         <FormattedMessage
           id={messageId}
-          values={getEventTitleValues(
+          values={getMotionEventTitleValues(
             eventName,
             actionData,
-            colony,
             motionMessageData,
             motionMessageInitiatorUser,
           )}
         />
-      </div>
-      <div className={styles.details}>
-        <ActionRoles
-          actionType={type}
-          eventName={eventName as ColonyAndExtensionsEvents}
-        />
+      }
+      details={
         <TransactionMeta
           transactionHash={transactionHash}
           createdAt={createdAt}
         />
-      </div>
-    </div>
+      }
+    />
   );
 };
 
