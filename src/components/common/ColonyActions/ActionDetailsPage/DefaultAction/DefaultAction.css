@@ -14,7 +14,7 @@
   display: grid;
   border-top: 1px solid color-mod(var(--grey-purple) alpha(15%));
   grid-template:
-    "feed details" 100%
+    'feed details' 100%
     / 460px 340px;
   column-gap: 100px;
 }

@@ -12,7 +12,8 @@
   color: var(--dark);
 }
 
-.main a:hover, .main button:hover {
+.main a:hover,
+.main button:hover {
   background-color: var(--light-grey-blue);
   color: var(--dark-grey);
 }
@@ -23,7 +24,8 @@
   color: var(--colony-white);
 }
 
-.themeDark a, .themeDark button {
+.themeDark a,
+.themeDark button {
   color: var(--dark);
 }
 

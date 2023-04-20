@@ -17,7 +17,8 @@
   font-weight: var(--weight-bold);
 }
 
-.tokens:hover, .tokensNumber:hover {
+.tokens:hover,
+.tokensNumber:hover {
   z-index: 5;
   background-color: rgb(217, 216, 236);
   color: var(--colony-blue);
