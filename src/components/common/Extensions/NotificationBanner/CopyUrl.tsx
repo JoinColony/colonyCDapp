@@ -8,9 +8,9 @@ const CopyUrl: FC<CopyUrlProps> = ({ actionText }) => {
   const { handleClipboardCopy } = useCopyToClipboard(actionText);
 
   return (
-    <div onClick={handleClipboardCopy} onKeyPress={handleClipboardCopy} role="button" tabIndex={0}>
+    <button onClick={handleClipboardCopy} onKeyPress={handleClipboardCopy} type="button">
       {actionText}
-    </div>
+    </button>
   );
 };
 
