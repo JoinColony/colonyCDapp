@@ -3,11 +3,11 @@ import { useDispatch } from 'react-redux';
 
 import {
   GetMotionTimeoutPeriodsReturn,
+  MotionStakes,
   useGetMotionTimeoutPeriodsQuery,
 } from '~gql';
 import { RefetchMotionState, useAppContext, useColonyContext } from '~hooks';
 import { MotionState } from '~utils/colonyMotions';
-import { MotionData } from '~types';
 
 const splitTimeLeft = (period: number) => ({
   days: Math.floor(period / (60 * 60 * 24)),
@@ -60,7 +60,7 @@ export const useMotionCountdown = (
   state: MotionState,
   motionId: string,
   refetchMotionState: RefetchMotionState,
-  motionStakes: MotionData['motionStakes'],
+  motionStakes: MotionStakes,
 ) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
