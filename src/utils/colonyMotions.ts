@@ -157,3 +157,9 @@ export const getUpdatedDecodedMotionRoles = (
 
   return updatedRoles;
 };
+
+export const shouldDisplayMotionCountdownTime = (motionState: MotionState) =>
+  motionState !== MotionState.Passed &&
+  motionState !== MotionState.Failed &&
+  motionState !== MotionState.FailedNotFinalizable &&
+  motionState !== MotionState.Invalid;
