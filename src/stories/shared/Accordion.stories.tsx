@@ -5,7 +5,7 @@ import { accordionMocksContent } from '~shared/Extensions/Accordion/Accordion.mo
 import { useAccordion } from '~shared/Extensions/Accordion/Accortion.hooks';
 
 const meta: Meta<typeof Accordion> = {
-  title: 'Extensions/Accordion',
+  title: 'Shared/Accordion',
   component: Accordion,
 };
 
