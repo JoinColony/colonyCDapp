@@ -14,12 +14,15 @@ import { ActionTypes } from '~redux/index';
 // } from '~data/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
-import { WizardDialogType } from '~hooks';
-import { notNull } from '~utils/arrays';
+import { WizardDialogType, useNetworkInverseFee } from '~hooks';
+import { useGetMembersForColonyQuery } from '~gql';
 
-import validationSchema from './validation';
 import DialogForm from './CreatePaymentDialogForm';
-import { getCreatePaymentDialogPayload } from './helpers';
+import {
+  extractUsersFromColonyMemberData,
+  getCreatePaymentDialogPayload,
+} from './helpers';
+import getValidationSchema from './validation';
 
 const displayName = 'common.CreatePaymentDialog';
 
@@ -29,7 +32,7 @@ type Props = Required<DialogProps> &
     filteredDomainId?: number;
   };
 
-export type FormValues = InferType<typeof validationSchema>;
+type FormValues = InferType<ReturnType<typeof getValidationSchema>>;
 
 const CreatePaymentDialog = ({
   callStep,
@@ -42,20 +45,37 @@ const CreatePaymentDialog = ({
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
-  const colonyWatchers =
-    colony?.watchers?.items.filter(notNull).map((item) => item.user) || [];
+
+  const { data } = useGetMembersForColonyQuery({
+    skip: !colony.colonyAddress,
+    variables: {
+      input: {
+        colonyAddress: colony.colonyAddress,
+      },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+  const colonyContributors = extractUsersFromColonyMemberData(
+    data?.getMembersForColony?.contributors,
+  );
+  const colonyWatchers = extractUsersFromColonyMemberData(
+    data?.getMembersForColony?.watchers,
+  );
+  const colonyMembers = colonyContributors.concat(colonyWatchers);
+
   const { isVotingReputationEnabled } = enabledExtensionData;
+  const { networkInverseFee } = useNetworkInverseFee();
 
   const actionType =
     !isForce && isVotingReputationEnabled
       ? ActionTypes.MOTION_EXPENDITURE_PAYMENT
       : ActionTypes.ACTION_EXPENDITURE_PAYMENT;
 
+  const validationSchema = getValidationSchema(colony, networkInverseFee);
+
   // const { data: colonyMembers } = useMembersSubscription({
   //   variables: { colonyAddress },
   // });
-
-  // const { feeInverse: networkFeeInverse } = useNetworkContracts();
 
   /*
    * @NOTE This (extravagant) query retrieves the latest whitelist data.
@@ -85,7 +105,9 @@ const CreatePaymentDialog = ({
   // };
 
   const transform = pipe(
-    mapPayload((payload) => getCreatePaymentDialogPayload(colony, payload)),
+    mapPayload((payload) =>
+      getCreatePaymentDialogPayload(colony, payload, networkInverseFee),
+    ),
     withMeta({ navigate }),
   );
 
@@ -94,9 +116,9 @@ const CreatePaymentDialog = ({
       <Form<FormValues>
         defaultValues={{
           forceAction: false,
-          fromDomain: filteredDomainId || Id.RootDomain,
+          fromDomainId: filteredDomainId || Id.RootDomain,
           recipient: undefined,
-          amount: '',
+          amount: 0,
           tokenAddress: colony?.nativeToken.tokenAddress,
           annotation: '',
           motionDomainId: filteredDomainId || Id.RootDomain,
@@ -116,7 +138,7 @@ const CreatePaymentDialog = ({
             <DialogForm
               back={() => callStep(prevStep)}
               verifiedUsers={
-                colonyWatchers // isWhitelistActivated ? verifiedUsers : ...
+                colonyMembers // isWhitelistActivated ? verifiedUsers : ...
               }
               // showWhitelistWarning={showWarningForAddress(
               //   values?.recipient?.walletAddress,

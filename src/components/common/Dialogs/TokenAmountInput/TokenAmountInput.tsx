@@ -3,13 +3,12 @@ import { defineMessages } from 'react-intl';
 import { AddressZero } from '@ethersproject/constants';
 import { useFormContext } from 'react-hook-form';
 
-import { HookFormInput as Input, TokenSymbolSelector } from '~shared/Fields';
-import EthUsd from '~shared/EthUsd';
 import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 import { notNull } from '~utils/arrays';
 import { Colony } from '~types';
-
-// import NetworkFee from '../NetworkFee';
+import { HookFormInput as Input, TokenSymbolSelector } from '~shared/Fields';
+import EthUsd from '~shared/EthUsd';
+import NetworkFee from '~shared/NetworkFee';
 
 import styles from './TokenAmountInput.css';
 
@@ -33,9 +32,14 @@ const MSG = defineMessages({
 interface Props {
   colony: Colony;
   disabled: boolean;
+  includeNetworkFee?: boolean;
 }
 
-const TokenAmountInput = ({ colony, disabled }: Props) => {
+const TokenAmountInput = ({
+  colony,
+  disabled,
+  includeNetworkFee = false,
+}: Props) => {
   const { watch, trigger } = useFormContext();
   const { amount, tokenAddress } = watch();
 
@@ -73,7 +77,7 @@ const TokenAmountInput = ({ colony, disabled }: Props) => {
           // (Most likely to do with formattingOptions changing when the token changes?)
           value={amount}
         />
-        {/* <NetworkFee colony={colony} networkFeeInverse={networkFeeInverse} customAmountError={customAmountError} /> */}
+        {includeNetworkFee && <NetworkFee colony={colony} />}
       </div>
       <div className={styles.tokenAmountContainer}>
         <div className={styles.tokenAmountSelect}>

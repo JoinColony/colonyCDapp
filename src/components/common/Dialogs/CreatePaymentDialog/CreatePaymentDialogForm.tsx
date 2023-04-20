@@ -17,7 +17,7 @@ import SingleUserPicker, {
 } from '~shared/SingleUserPicker';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
-import { ColonyWatcher } from '~types';
+import { MemberUser } from '~types';
 
 import DomainFundSelectorSection from '../DomainFundSelectorSection';
 import TokenAmountInput from '../TokenAmountInput';
@@ -63,7 +63,7 @@ const MSG = defineMessages({
 });
 
 interface Props extends ActionDialogProps {
-  verifiedUsers: ColonyWatcher['user'][];
+  verifiedUsers: MemberUser[];
   // showWhitelistWarning: boolean;
 }
 
@@ -94,7 +94,6 @@ Props) => {
     ...user,
     id: user.walletAddress,
   }));
-
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -141,9 +140,7 @@ Props) => {
           </div>
         )} */}
         {recipient &&
-          isConfusing(
-            recipient.walletAddress || recipient.profile?.displayName,
-          ) && (
+          isConfusing(recipient.name || recipient.profile?.displayName) && (
             <ConfusableWarning
               walletAddress={recipient.walletAddress}
               colonyAddress={colony?.colonyAddress}
@@ -151,7 +148,11 @@ Props) => {
           )}
       </DialogSection>
       <DialogSection>
-        <TokenAmountInput colony={colony} disabled={disabledInput} />
+        <TokenAmountInput
+          colony={colony}
+          disabled={disabledInput}
+          includeNetworkFee
+        />
       </DialogSection>
       <DialogSection>
         <Annotations
