@@ -17,7 +17,7 @@ import SingleUserPicker, {
 } from '~shared/SingleUserPicker';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
-import { User } from '~types';
+import { MemberUser } from '~types';
 
 import DomainFundSelectorSection from '../DomainFundSelectorSection';
 import TokenAmountInput from '../TokenAmountInput';
@@ -63,7 +63,7 @@ const MSG = defineMessages({
 });
 
 interface Props extends ActionDialogProps {
-  verifiedUsers: User[];
+  verifiedUsers: MemberUser[];
   // showWhitelistWarning: boolean;
 }
 
