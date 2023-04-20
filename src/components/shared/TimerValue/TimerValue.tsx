@@ -1,7 +1,7 @@
 import React from 'react';
-import { FormattedMessage, defineMessage } from 'react-intl';
+import { FormattedMessage, defineMessages } from 'react-intl';
 
-const MSG = defineMessage({
+const MSG = defineMessages({
   days: {
     id: 'TimerValue.days',
     defaultMessage: ' {days}d',
