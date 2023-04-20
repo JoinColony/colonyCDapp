@@ -36,6 +36,7 @@ module.exports = {
       '~shared': path.resolve(__dirname, '../src/components/shared'),
       '~common': path.resolve(__dirname, '../src/components/common'),
       '~frame': path.resolve(__dirname, '../src/components/frame'),
+      '~images': path.resolve(__dirname, '../src/images'),
     };
     return config;
   },
