@@ -1,11 +1,11 @@
-import React, { PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import styles from './Tooltip.module.css';
 import { TooltipProps } from './types';
 
 const displayName = 'Extensions.Tooltip';
 
-const Tooltip: React.FC<PropsWithChildren<TooltipProps>> = ({
+const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   children,
   tooltipContent,
   placement = 'top',
@@ -41,7 +41,7 @@ const Tooltip: React.FC<PropsWithChildren<TooltipProps>> = ({
           {...getTooltipProps({
             className: `${
               styles.tooltipContainer
-            } tooltip-container text-base-white z-[9999] relative font-medium text-sm p-3 ${
+            } tooltip-container text-base-white z-[999] relative font-medium text-sm p-3 ${
               isSuccess ? 'bg-success-400' : 'bg-gray-900'
             }`,
           })}
