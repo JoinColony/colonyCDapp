@@ -20,7 +20,7 @@
   background-color: color-mod(var(--danger) alpha(30%));
 }
 
-.dropzone[aria-invalid="true"] {
+.dropzone[aria-invalid='true'] {
   border: 1px solid var(--danger);
   background-color: color-mod(var(--danger) alpha(20%));
 }

@@ -71,7 +71,7 @@
   /*
    * Fonts
    */
-  --family-primary: "MuliWeb", sans-serif;
+  --family-primary: 'MuliWeb', sans-serif;
 
   /* replace color-mod(var(--grey-dark) alpha(70%)) with below */
   --text: color-mod(var(--dark) alpha(80%));
@@ -94,8 +94,8 @@
   /**
    * @NOTE Weight medium and semi bold is only available on the techie font family
    */
-  --family-monospace: "Source Code Pro", "Monaco", "Inconsolata", monospace;
-  --family-techie: "IBM Plex Mono", sans-serif;
+  --family-monospace: 'Source Code Pro', 'Monaco', 'Inconsolata', monospace;
+  --family-techie: 'IBM Plex Mono', sans-serif;
   --weight-medium: 500;
 
   /*

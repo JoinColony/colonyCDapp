@@ -15,7 +15,7 @@
   pointer-events: none;
 }
 
-.main[role="button"] {
+.main[role='button'] {
   cursor: pointer;
 
   &:active {
