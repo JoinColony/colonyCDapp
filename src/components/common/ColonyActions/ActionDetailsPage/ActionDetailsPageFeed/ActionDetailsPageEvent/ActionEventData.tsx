@@ -1,7 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { ColonyAndExtensionsEvents } from '~types';
 import {
   getActionEventTitleValues,
   TransactionMeta,
@@ -31,10 +30,7 @@ const ActionEventData = ({
       }
       details={
         <>
-          <ActionRoles
-            actionType={type}
-            eventName={eventName as ColonyAndExtensionsEvents}
-          />
+          <ActionRoles actionType={type} eventName={eventName} />
           <TransactionMeta
             transactionHash={transactionHash}
             createdAt={createdAt}
