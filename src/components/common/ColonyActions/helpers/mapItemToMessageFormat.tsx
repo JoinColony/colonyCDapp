@@ -10,9 +10,8 @@ import {
   ColonyActionType,
   DomainMetadata,
   MotionMessage,
-  MotionData,
 } from '~types';
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useUserReputation } from '~hooks';
 import { MotionVote } from '~utils/colonyMotions';
 import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
@@ -34,6 +33,7 @@ import {
 import { useGetUserByAddressQuery } from '~gql';
 import { VoteResults } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VoteOutcome/VoteResults';
 import { VotingWidgetHeading } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
+import MemberReputation from '~shared/MemberReputation';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
@@ -177,9 +177,14 @@ export const mapActionEventToExpectedFormat = (
 
 export const useMapMotionEventToExpectedFormat = (
   motionMessageData: MotionMessage,
-  actionType: ColonyActionType,
-  motionData?: MotionData | null,
+  actionData: ColonyAction,
 ) => {
+  const {
+    colonyAddress,
+    fromDomain,
+    motionData,
+    type: actionType,
+  } = actionData;
   const { colony } = useColonyContext();
   const { data } = useGetUserByAddressQuery({
     skip: !motionMessageData?.initiatorAddress || !motionData,
@@ -187,6 +192,12 @@ export const useMapMotionEventToExpectedFormat = (
       address: motionMessageData?.initiatorAddress ?? '',
     },
   });
+  const initiatorUserReputation = useUserReputation(
+    colonyAddress,
+    motionMessageData.initiatorAddress,
+    fromDomain?.nativeId,
+    motionData?.rootHash,
+  );
   if (!motionData) {
     return {};
   }
@@ -225,14 +236,30 @@ export const useMapMotionEventToExpectedFormat = (
       </div>
     ),
     initiator: (
-      <span className={styles.userDecoration}>
-        <FriendlyName user={initiatorUser} autoShrinkAddress />
-      </span>
+      <>
+        <span className={styles.userDecoration}>
+          <FriendlyName user={initiatorUser} autoShrinkAddress />
+        </span>
+        <div className={styles.reputation}>
+          <MemberReputation
+            userReputation={initiatorUserReputation?.userReputation}
+            totalReputation={initiatorUserReputation?.totalReputation}
+          />
+        </div>
+      </>
     ),
     staker: (
-      <span className={styles.userDecoration}>
-        <FriendlyName user={initiatorUser} autoShrinkAddress />
-      </span>
+      <>
+        <span className={styles.userDecoration}>
+          <FriendlyName user={initiatorUser} autoShrinkAddress />
+        </span>
+        <div className={styles.reputation}>
+          <MemberReputation
+            userReputation={initiatorUserReputation?.userReputation}
+            totalReputation={initiatorUserReputation?.totalReputation}
+          />
+        </div>
+      </>
     ),
   };
 };
