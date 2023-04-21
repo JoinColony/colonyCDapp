@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import ReactModal from 'react-modal';
 import clsx from 'clsx';
-import styles from './Modal.module.css';
 import { ModalBaseProps } from './types';
+import styles from './Modal.module.css';
 
 const displayName = 'Extensions.ModalBase';
 
