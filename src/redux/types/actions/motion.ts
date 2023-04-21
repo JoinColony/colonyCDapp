@@ -159,7 +159,7 @@ export type MotionActionTypes =
       {
         colonyAddress: Address;
         colonyName?: string;
-        version: number;
+        colonyVersion: number;
         tokenAddress: Address;
         fromDomain: Domain;
         toDomain: Domain;
