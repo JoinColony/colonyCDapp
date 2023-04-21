@@ -10,8 +10,8 @@ import {
   DomainMetadata,
   MotionMessage,
   User,
-  SystemMessages,
 } from '~types';
+import { useColonyContext } from '~hooks';
 import { MotionVote } from '~utils/colonyMotions';
 import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
@@ -102,7 +102,7 @@ export const mapColonyActionToExpectedFormat = (
 };
 
 export const mapActionEventToExpectedFormat = (
-  eventName: ColonyAndExtensionsEvents | SystemMessages,
+  eventName: ColonyAndExtensionsEvents,
   actionData: ColonyAction,
   colony?: Colony,
 ) => {
@@ -115,8 +115,6 @@ export const mapActionEventToExpectedFormat = (
         decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
-    motionTag: <MotionTag />,
-    objectionTag: <ObjectionTag />,
     // ...getColonyRoleSetTitleValues(role?.setTo),
     domainMetadataChanges: getDomainMetadataChangesValue(actionData),
     colonyMetadataChanges: getColonyMetadataChangesValue(actionData, colony),
@@ -162,19 +160,20 @@ export const mapActionEventToExpectedFormat = (
   };
 };
 
-export const mapMotionEventToExpectedFormat = (
-  actionData: ColonyAction,
+export const useMapMotionEventToExpectedFormat = (
   initiatorUser?: User | null,
   motionMessageData?: MotionMessage,
 ) => {
+  const { colony } = useColonyContext();
+
   return {
     eventNameDecorated: <b>{motionMessageData?.name}</b>,
     amountTag: (
       <AmountTag>
         <Numeral
           value={motionMessageData?.amount ?? 0}
-          decimals={actionData.token?.decimals ?? undefined}
-          suffix={actionData.token?.symbol ?? ''}
+          decimals={colony?.nativeToken.decimals ?? undefined}
+          suffix={colony?.nativeToken.symbol ?? ''}
         />
       </AmountTag>
     ),
