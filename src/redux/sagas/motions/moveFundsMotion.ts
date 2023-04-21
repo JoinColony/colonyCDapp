@@ -25,7 +25,7 @@ function* moveFundsMotion({
   payload: {
     colonyAddress,
     colonyName,
-    version,
+    colonyVersion,
     fromDomain,
     toDomain,
     amount,
@@ -118,7 +118,7 @@ function* moveFundsMotion({
       votingReputationClient.address,
     );
 
-    const isOldVersion = version <= 6;
+    const isOldVersion = colonyVersion <= 6;
     const contractMethod = isOldVersion
       ? `moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)`
       : 'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)';
