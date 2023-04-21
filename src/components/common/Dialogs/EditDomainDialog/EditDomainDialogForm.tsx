@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
@@ -17,6 +17,7 @@ import {
 
 import { DomainColor } from '~gql';
 import { findDomainByNativeId } from '~utils/domains';
+import { SetStateFn } from '~types';
 
 import DomainNameAndColorInputGroup from '../DomainNameAndColorInputGroup';
 import {
@@ -57,7 +58,7 @@ const requiredRoles: ColonyRole[] = [ColonyRole.Architecture];
 
 interface Props extends ActionDialogProps {
   domainOptions: SelectOption[];
-  handleIsForceChange: Dispatch<SetStateAction<boolean>>;
+  handleIsForceChange: SetStateFn;
   isForce: boolean;
 }
 
