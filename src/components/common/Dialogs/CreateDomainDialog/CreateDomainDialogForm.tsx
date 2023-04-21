@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
 
 import {
   ActionDialogProps,
@@ -9,8 +10,7 @@ import {
   DialogSection,
 } from '~shared/Dialog';
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
-
-// import NotEnoughReputation from '~dashboard/NotEnoughReputation';
+import { SetStateFn } from '~types';
 import { useActionDialogStatus } from '~hooks';
 
 import DomainNameAndColorInputGroup from '../DomainNameAndColorInputGroup';
@@ -18,6 +18,7 @@ import {
   NoPermissionMessage,
   CannotCreateMotionMessage,
   PermissionRequiredInfo,
+  NotEnoughReputation,
 } from '../Messages';
 
 const displayName = 'common.CreateDomainDialog.CreateDomainDialogForm';
@@ -39,22 +40,50 @@ const MSG = defineMessages({
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Architecture];
 
+interface Props extends ActionDialogProps {
+  handleIsForceChange: SetStateFn;
+  isForce: boolean;
+}
+
 const CreateDomainDialogForm = ({
   back,
   colony,
   enabledExtensionData,
-}: ActionDialogProps) => {
-  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } =
-    useActionDialogStatus(
-      colony,
-      requiredRoles,
-      [Id.RootDomain],
-      enabledExtensionData,
-    );
+  enabledExtensionData: { isVotingReputationEnabled },
+  handleIsForceChange,
+  isForce,
+}: Props) => {
+  const { watch } = useFormContext();
+  const forceAction = watch('forceAction');
+  const {
+    userHasPermission,
+    disabledInput,
+    disabledSubmit,
+    canCreateMotion,
+    canOnlyForceAction,
+  } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
+
+  useEffect(() => {
+    if (forceAction !== isForce) {
+      handleIsForceChange(forceAction);
+    }
+  }, [forceAction, isForce, handleIsForceChange]);
+
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading title={MSG.titleCreate} />
+        <DialogHeading
+          title={MSG.titleCreate}
+          colony={colony}
+          userHasPermission={userHasPermission}
+          isVotingExtensionEnabled={isVotingReputationEnabled}
+          isRootMotion
+        />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
@@ -93,9 +122,11 @@ const CreateDomainDialogForm = ({
           />
         </DialogSection>
       )}
-      {/* {onlyForceAction && (
-        <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
-      )} */}
+      {canOnlyForceAction && (
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
+        </DialogSection>
+      )}
       {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
@@ -106,7 +137,7 @@ const CreateDomainDialogForm = ({
           onSecondaryButtonClick={back}
           disabled={disabledSubmit}
           dataTest="createDomainConfirmButton"
-          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingReputationEnabled={isVotingReputationEnabled}
         />
       </DialogSection>
     </>
