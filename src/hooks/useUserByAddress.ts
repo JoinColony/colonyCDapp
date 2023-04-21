@@ -1,7 +1,7 @@
-import { useGetCurrentUserQuery } from '~gql';
+import { useGetUserByAddressQuery } from '~gql';
 
 const useUserByAddress = (address: string) => {
-  const { data, error, loading } = useGetCurrentUserQuery({
+  const { data, error, loading } = useGetUserByAddressQuery({
     variables: {
       address,
     },
