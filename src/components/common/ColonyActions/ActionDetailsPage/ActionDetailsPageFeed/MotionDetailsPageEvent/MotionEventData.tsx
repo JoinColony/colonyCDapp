@@ -10,7 +10,7 @@ import EventData from '../EventData';
 
 import { MotionDetailsPageEventProps } from './MotionDetailsPageEvent';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.ActionEventData';
+const displayName = 'common.ColonyActions.ActionDetailsPage.MotionEventData';
 
 type MotionEventDataProps = Pick<
   MotionDetailsPageEventProps,
@@ -19,7 +19,6 @@ type MotionEventDataProps = Pick<
 
 const MotionEventData = ({
   actionData: { createdAt, transactionHash },
-  actionData,
   motionMessageData,
   eventName,
 }: MotionEventDataProps) => {
@@ -33,11 +32,7 @@ const MotionEventData = ({
       text={
         <FormattedMessage
           id={messageId}
-          values={useGetMotionEventTitleValues(
-            eventName,
-            actionData,
-            motionMessageData,
-          )}
+          values={useGetMotionEventTitleValues(eventName, motionMessageData)}
         />
       }
       details={
