@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 
 import { ContextModule, getContext } from '~context';
 import {
-  GetCurrentUserDocument,
-  GetCurrentUserQuery,
-  GetCurrentUserQueryVariables,
+  GetUserByAddressDocument,
+  GetUserByAddressQuery,
+  GetUserByAddressQueryVariables,
 } from '~gql';
 import { Address, User } from '~types';
 
@@ -19,10 +19,10 @@ const getUsers = (
        * Hence doing it directly.
        */
       const { data } = await apolloClient.query<
-        GetCurrentUserQuery,
-        GetCurrentUserQueryVariables
+        GetUserByAddressQuery,
+        GetUserByAddressQueryVariables
       >({
-        query: GetCurrentUserDocument,
+        query: GetUserByAddressDocument,
         variables: {
           address,
         },
