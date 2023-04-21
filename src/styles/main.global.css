@@ -1,6 +1,10 @@
 @import 'variables.css';
 @import 'fonts.css';
+@import 'react-responsive-carousel/lib/styles/carousel.min.css';
 @import 'react-popper-tooltip/dist/styles.css';
+@import 'react-tabs/style/react-tabs.css';
+@import 'react-tabs-scrollable/dist/rts.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -18,11 +22,18 @@
   }
 
   svg:not([class]) {
-    fill: currentColor;
+    @apply fill-current stroke-current;
   }
 
   #root {
-    height: 100%;
+    @apply h-full;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    @apply m-0;
+
+    -webkit-appearance: none;
   }
 }
 
@@ -52,272 +63,57 @@
 
 @media screen and query700 {
   html {
-    background-color: white;
-  }
-}
-@import 'variables.css';
-@import 'fonts.css';
-@import 'react-responsive-carousel/lib/styles/carousel.min.css';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-@value query700 from '~styles/queries.css';
-
-@layer base {
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-
-  html {
-    @apply font-inter text-lg text-gray-600 h-full antialiased;
-  }
-
-  body {
-    @apply h-full overflow-hidden;
-  }
-
-  svg:not([class]) {
-    fill: currentColor;
-  }
-
-  #root {
-    height: 100%;
+    @apply bg-base-white;
   }
 }
 
-@layer utilities {
-  .heading-1 {
-    @apply text-4xl font-semibold;
-  }
-
-  .heading-2 {
-    @apply text-3xl font-semibold;
-  }
-
-  .heading-3 {
-    @apply text-2xl font-semibold;
-  }
-
-  .heading-4 {
-    @apply text-xl font-semibold;
-  }
+.carouselWrapper [class~='carousel'] {
+  @apply relative overflow-visible;
 }
 
-/* TODO: check these styles, change to tailwind where we can and remove unused styles */
-
-/*! minireset.css v0.0.3 | MIT License | github.com/jgthms/minireset.css */
-html,
-body,
-p,
-ol,
-ul,
-li,
-dl,
-dt,
-dd,
-blockquote,
-figure,
-fieldset,
-legend,
-textarea,
-pre,
-iframe,
-hr,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  padding: 0;
+.carouselWrapper [class~='carousel-slider'],
+.carouselWrapper [class~='slider-wrapper'] {
+  @apply w-[33.5rem];
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-size: 100%;
-  font-weight: normal;
+.carouselWrapper [class~='control-dots'] {
+  @apply bottom-[-2.5rem] overflow-visible;
 }
 
-ul {
-  list-style: none;
+.carouselWrapper [class~='carousel control-dots dot selected'] {
+  @apply bg-gray-500 opacity-100;
 }
 
-button,
-input,
-select,
-textarea {
-  margin: 0;
+.carouselWrapper [class~='dot'] {
+  @apply bg-gray-200 opacity-100;
 }
 
-button {
-  outline: 0;
+.carouselWrapper [class~='slide'] {
+  @apply mr-4 h-[15.5rem];
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
+.rts___tabs {
+  @apply py-0;
 }
 
-img,
-embed,
-object,
-audio,
-video {
-  height: auto;
-  max-width: 100%;
+.rts___tab {
+  @apply shadow-none border-0 relative inline-flex items-center justify-center px-0 py-2 text-gray-700 text-md font-medium cursor-pointer border-b border-transparent transition-colors duration-normal ml-0 mr-6 last:mr-0 hover:text-blue-400 rounded-none;
 }
 
-iframe {
-  max-width: 100%;
-  border: 0;
+.rts___tab___selected {
+  @apply shadow-none font-semibold text-blue-400 border-blue-400;
 }
 
-td,
-th {
-  padding: 0;
-  text-align: left;
+button:disabled.rts___btn,
+.rts___nav___btn:disabled,
+button[disabled].rts___btn {
+  @apply opacity-0;
 }
 
-/* minireset.css end */
-
-html {
-  height: 100%;
-  background-color: var(--colony-white);
-  font-size: var(--size-normal);
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  box-sizing: border-box;
+.rts___nav___btn > svg {
+  @apply w-[0.75rem];
 }
 
-article,
-aside,
-figure,
-footer,
-header,
-hgroup,
-section {
-  display: block;
-}
-
-body,
-button,
-input,
-select,
-textarea {
-  font-family: var(--family-primary);
-}
-
-code,
-pre {
-  font-family: var(--family-monospace);
-  -webkit-font-smoothing: auto;
-  -moz-osx-font-smoothing: auto;
-  line-height: 1.25;
-}
-
-body {
-  height: 100%;
-  overflow: hidden;
-  font-size: 1rem;
-  font-weight: var(--weight-normal);
-  line-height: 1.428571428571429;
-  color: var(--text);
-}
-
-:global(#root) {
-  height: 100%;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-
-  &:hover {
-    color: inherit;
-  }
-}
-
-code {
-  padding: 1px 2px 2px;
-  background-color: var(--colony-white);
-  font-size: 12px;
-  font-weight: normal;
-  color: var(--danger);
-}
-
-hr {
-  display: block;
-  margin: 20px 0;
-  height: 1px;
-  border: none;
-  background-color: var(--light-grey);
-}
-
-img {
-  max-width: 100%;
-}
-
-input[type='checkbox'],
-input[type='radio'] {
-  vertical-align: baseline;
-}
-
-small {
-  font-size: var(--size-small);
-}
-
-span {
-  font-weight: inherit;
-  font-style: inherit;
-}
-
-strong {
-  font-weight: var(--weight-bold);
-  color: var(--dark-grey);
-}
-
-pre {
-  background-color: var(--colony-white);
-  word-wrap: normal;
-  white-space: pre;
-  color: var(--text);
-
-  & code {
-    display: block;
-    padding: 16px 20px;
-    overflow-x: auto;
-    background-color: var(--colony-white);
-    color: var(--text);
-  }
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  border-spacing: 0;
-  table-layout: fixed;
-
-  & tbody,
-  & tr {
-    border-color: inherit;
-  }
-
-  & td,
-  & th {
-    vertical-align: top;
-    border-color: inherit;
-    text-align: left;
-  }
-}
-
-@media screen and query700 {
-  html {
-    background-color: white;
-  }
+.rts___nav___btn:hover > svg {
+  @apply stroke-none;
 }
