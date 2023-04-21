@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
+import { Id } from '@colony/colony-js';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import Numeral from '~shared/Numeral';
@@ -116,7 +117,7 @@ const getDetailItemsMap = (
   const recipientWalletAddress = recipient?.walletAddress;
   const isSmiteAction = type === ColonyActionType.EmitDomainReputationPenalty;
   const motionDomain = findDomainByNativeId(
-    Number(motionData?.motionDomainId ?? 1),
+    Number(motionData?.motionDomainId ?? Id.RootDomain),
     colony,
   );
 
@@ -239,9 +240,9 @@ const getDetailItems = (
 
   const detailItems = detailItemKeys
     .map<DetailItemConfig | undefined>((itemKey) => detailItemsMap[itemKey])
-    .filter((detail) => !!detail?.item);
+    .filter((detail): detail is DetailItemConfig => !!detail?.item);
 
-  return detailItems as DetailItemConfig[];
+  return detailItems;
 };
 
 export default getDetailItems;
