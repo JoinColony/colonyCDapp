@@ -176,6 +176,7 @@ export const mapMotionEventToExpectedFormat = (
   motionMessageData?: MotionMessage,
 ) => {
   return {
+    eventNameDecorated: <b>{motionMessageData?.name}</b>,
     amountTag: (
       <AmountTag>
         <Numeral
