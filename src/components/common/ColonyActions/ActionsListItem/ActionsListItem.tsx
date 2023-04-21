@@ -10,6 +10,7 @@ import { useColonyContext } from '~hooks';
 import { getActionTitleValues } from '../helpers';
 
 import ActionsListItemMeta from './ActionsListItemMeta';
+import { useMotionTag } from './helpers';
 
 const displayName = 'common.ColonyActions.ActionsListItem';
 
@@ -49,6 +50,8 @@ const ActionsListItem = ({
     // commentCount = 0,
     // status = ListItemStatus.Defused,
     createdAt,
+    isMotion,
+    motionData,
   },
   item,
 }: Props) => {
@@ -58,19 +61,13 @@ const ActionsListItem = ({
   const handleActionRedirect = () =>
     navigate(`/colony/${colony?.name}/tx/${transactionHash}`);
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony?.colonyAddress,
-  // });
-
-  // const isForced = true; //isVotingExtensionEnabled && !actionType?.endsWith('Motion');
-  // const tag = motionState || (isForced && MotionState.Forced) || MotionState.Invalid;
-
   // const displayCountdownTimer = shouldDisplayCountDownTimer(
   //   motionId,
   //   motionState,
   // );
 
   const status = ListItemStatus.Defused;
+  const MotionTag = useMotionTag(isMotion, motionData);
 
   return (
     <ListItem
@@ -95,7 +92,7 @@ const ActionsListItem = ({
       meta={<ActionsListItemMeta fromDomain={fromDomain ?? undefined} />}
       onClick={handleActionRedirect}
       status={status}
-      // tag={tag}
+      tag={<MotionTag />}
       title={{ id: 'action.title' }}
       titleValues={getActionTitleValues(item, colony)}
     />
