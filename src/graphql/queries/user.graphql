@@ -1,4 +1,4 @@
-query GetCurrentUser($address: ID!) {
+query GetUserByAddress($address: ID!) {
   getUserByAddress(id: $address) {
     items {
       ...User
