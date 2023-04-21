@@ -1,0 +1,5 @@
+.wrapper {
+  &::after {
+    @apply bg-gray-200 mt-6 block w-full h-px content-[""];
+  }
+}
