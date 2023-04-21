@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import Button from '~shared/Extensions/Button/Button';
 import { LEARN_MORE_ADMIN } from '~constants';
+import Icon from '~shared/Icon/Icon';
 
 import LinkItem from '../LinkItem';
 import LearnMore from '../LearnMore';
@@ -25,7 +26,8 @@ const DecideDropdown: React.FC<PropsWithChildren> = () => (
       <div className={styles.buttonWrapper}>
         <Button text={MSG.buttonTextDecide} mode="primaryOutline" />
       </div>
-      <div className="mt-8 mb-4 text-sm text-gray-900 flex justify-center">
+      <div className={styles.infoWrapper}>
+        <Icon name="question-mark" className={styles.questionIcon} />
         <FormattedMessage
           {...MSG.helpTextDecide}
           values={{

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+
 import SubNavigation from './SubNavigation';
 
 const meta: Meta<typeof SubNavigation> = {

@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import Button from '~shared/Extensions/Button/Button';
 import { LEARN_MORE_PAYMENTS } from '~constants';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge-new/ExtensionStatusBadge';
+import Icon from '~shared/Icon/Icon';
 
 import LinkItem from '../LinkItem';
 import LearnMore from '../LearnMore';
@@ -32,7 +33,8 @@ const PayDropdown: React.FC<PropsWithChildren> = () => (
       <div className={styles.buttonWrapper}>
         <Button text={MSG.buttonTextPay} mode="primaryOutline" />
       </div>
-      <div className="mt-6 md:mt-8 mb-4 text-sm flex justify-center font-normal">
+      <div className={styles.infoWrapper}>
+        <Icon name="question-mark" className={styles.questionIcon} />
         <FormattedMessage
           {...MSG.helpTextPay}
           values={{

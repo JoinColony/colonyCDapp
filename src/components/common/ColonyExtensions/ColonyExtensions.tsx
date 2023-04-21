@@ -8,6 +8,7 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import ExtensionCard from './ExtensionCard';
 
 import styles from './ColonyExtensions.css';
+import SubNavigation from '~common/Extensions/SubNavigation/SubNavigation';
 
 const displayName = 'common.ColonyExtensions';
 
@@ -76,6 +77,7 @@ const ColonyExtensions = () => {
           </div>
         )}
       </div>
+      <SubNavigation />
     </div>
   );
 };
