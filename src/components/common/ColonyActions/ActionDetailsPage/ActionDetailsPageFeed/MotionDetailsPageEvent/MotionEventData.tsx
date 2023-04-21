@@ -3,10 +3,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { ColonyAndExtensionsEvents } from '~types';
 import {
-  getMotionEventTitleValues,
+  useGetMotionEventTitleValues,
   TransactionMeta,
 } from '~common/ColonyActions';
-import { useUserByAddress } from '~hooks';
 import EventData from '../EventData';
 
 import { MotionDetailsPageEventProps } from './MotionDetailsPageEvent';
@@ -21,13 +20,9 @@ type MotionEventDataProps = Pick<
 const MotionEventData = ({
   actionData: { createdAt, transactionHash },
   actionData,
-  motionMessageData: { initiatorAddress },
   motionMessageData,
   eventName,
 }: MotionEventDataProps) => {
-  const { user: motionMessageInitiatorUser } = useUserByAddress(
-    initiatorAddress || '',
-  );
   const messageId =
     eventName in ColonyAndExtensionsEvents
       ? 'event.title'
@@ -38,11 +33,10 @@ const MotionEventData = ({
       text={
         <FormattedMessage
           id={messageId}
-          values={getMotionEventTitleValues(
+          values={useGetMotionEventTitleValues(
             eventName,
             actionData,
             motionMessageData,
-            motionMessageInitiatorUser,
           )}
         />
       }
