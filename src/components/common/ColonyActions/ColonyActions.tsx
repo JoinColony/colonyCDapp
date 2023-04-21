@@ -285,7 +285,7 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
           mergePayload({
             colonyAddress: colony.colonyAddress,
             colonyName: colony.name,
-            version: colony.version,
+            colonyVersion: colony.version,
             fromDomain: colony.domains?.items.find((d) => d?.isRoot),
             toDomain: colony.domains?.items.find((d) => !d?.isRoot),
             amount: BigNumber.from(5).mul(BigNumber.from(10).pow(17)), // this is in wei
