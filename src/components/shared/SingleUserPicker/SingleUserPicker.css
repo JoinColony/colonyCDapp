@@ -75,7 +75,7 @@
   color: var(--colony-black);
   outline: none;
 
-  &[aria-invalid="true"] {
+  &[aria-invalid='true'] {
     border-color: var(--danger);
   }
 

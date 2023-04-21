@@ -37,7 +37,8 @@ button.menuIconContainer {
   border-radius: var(--radius-normal);
 }
 
-.menuIconContainer:hover, .menuIconContainer.menuActive {
+.menuIconContainer:hover,
+.menuIconContainer.menuActive {
   background-color: color-mod(var(--colony-blue) alpha(10%));
 }
 
