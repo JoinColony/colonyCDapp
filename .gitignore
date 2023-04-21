@@ -40,3 +40,7 @@ amplify/mock-data
 amplify/backend/api/colonycdapp/resolvers/*.vtl
 
 src/**/*.css.d.ts
+
+src/images/.DS_Store
+src/images/icons/.DS_Store
+src/.DS_Store
