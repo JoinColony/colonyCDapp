@@ -113,19 +113,19 @@
     box-shadow: 0px 1px 6px var(--drop-shadow);
   }
 
-  .scrollableContainer > div[role="tooltip"] {
+  .scrollableContainer > div[role='tooltip'] {
     border-radius: 4px 0px 4px 4px;
   }
 
-  .scrollableContainer > div[role="tooltip"] > div {
+  .scrollableContainer > div[role='tooltip'] > div {
     padding: 6px 0;
     max-height: 80vh;
     max-width: 85vw;
     overflow-y: scroll;
   }
 
-  .scrollableContainer > div[role="tooltip"] li > a,
-  .scrollableContainer > div[role="tooltip"] li:only-child > a {
+  .scrollableContainer > div[role='tooltip'] li > a,
+  .scrollableContainer > div[role='tooltip'] li:only-child > a {
     padding: 6px 0px 6px 12px;
     color: var(--grey-purple);
   }
