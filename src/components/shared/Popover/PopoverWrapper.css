@@ -151,17 +151,53 @@
  * Because of this the theme name needs to be encoded in the class's name.
  */
 
-.themeDarkTopArrow, .themeDarkTopEndArrow, .themeDarkTopStartArrow { border-top-color: transparent; }
-.themeDarkTopArrow::before, .themeDarkTopEndArrow::before, .themeDarkTopStartArrow::before { border-top-color: themeDarkBackgroundColor; }
+.themeDarkTopArrow,
+.themeDarkTopEndArrow,
+.themeDarkTopStartArrow {
+  border-top-color: transparent;
+}
 
-.themeDarkRightArrow, .themeDarkRightEndArrow, .themeDarkRightStartArrow { border-right-color: transparent; }
-.themeDarkRightArrow::before, .themeDarkRightEndArrow::before, .themeDarkRightStartArrow::before { border-right-color: themeDarkBackgroundColor; }
+.themeDarkTopArrow::before,
+.themeDarkTopEndArrow::before,
+.themeDarkTopStartArrow::before {
+  border-top-color: themeDarkBackgroundColor;
+}
 
-.themeDarkBottomArrow, .themeDarkBottomEndArrow, .themeDarkBottomStartArrow { border-bottom-color: transparent; }
-.themeDarkBottomArrow::before, .themeDarkBottomEndArrow::before, .themeDarkBottomStartArrow::before { border-bottom-color: themeDarkBackgroundColor; }
+.themeDarkRightArrow,
+.themeDarkRightEndArrow,
+.themeDarkRightStartArrow {
+  border-right-color: transparent;
+}
 
-.themeDarkLeftArrow, .themeDarkLeftEndArrow, .themeDarkLeftStartArrow { border-left-color: transparent; }
-.themeDarkLeftArrow::before, .themeDarkLeftEndArrow::before, .themeDarkLeftStartArrow::before { border-left-color: themeDarkBackgroundColor; }
+.themeDarkRightArrow::before,
+.themeDarkRightEndArrow::before,
+.themeDarkRightStartArrow::before {
+  border-right-color: themeDarkBackgroundColor;
+}
+
+.themeDarkBottomArrow,
+.themeDarkBottomEndArrow,
+.themeDarkBottomStartArrow {
+  border-bottom-color: transparent;
+}
+
+.themeDarkBottomArrow::before,
+.themeDarkBottomEndArrow::before,
+.themeDarkBottomStartArrow::before {
+  border-bottom-color: themeDarkBackgroundColor;
+}
+
+.themeDarkLeftArrow,
+.themeDarkLeftEndArrow,
+.themeDarkLeftStartArrow {
+  border-left-color: transparent;
+}
+
+.themeDarkLeftArrow::before,
+.themeDarkLeftEndArrow::before,
+.themeDarkLeftStartArrow::before {
+  border-left-color: themeDarkBackgroundColor;
+}
 
 .themeGrey {
   composes: main;
@@ -169,17 +205,53 @@
   box-shadow: 0 2px 11px 0px var(--drop-shadow);
 }
 
-.themeGreyTopArrow, .themeGreyTopEndArrow, .themeGreyTopStartArrow { border-top-color: transparent; }
-.themeGreyTopArrow::before, .themeGreyTopEndArrow::before, .themeGreyTopStartArrow::before { border-top-color: themeGreyBackgroundColor; }
+.themeGreyTopArrow,
+.themeGreyTopEndArrow,
+.themeGreyTopStartArrow {
+  border-top-color: transparent;
+}
 
-.themeGreyRightArrow, .themeGreyRightEndArrow, .themeGreyRightStartArrow { border-right-color: transparent; }
-.themeGreyRightArrow::before, .themeGreyRightEndArrow::before, .themeGreyRightStartArrow::before { border-right-color: themeGreyBackgroundColor; }
+.themeGreyTopArrow::before,
+.themeGreyTopEndArrow::before,
+.themeGreyTopStartArrow::before {
+  border-top-color: themeGreyBackgroundColor;
+}
 
-.themeGreyBottomArrow, .themeGreyBottomEndArrow, .themeGreyBottomStartArrow { border-bottom-color: transparent; }
-.themeGreyBottomArrow::before, .themeGreyBottomEndArrow::before, .themeGreyBottomStartArrow::before { border-bottom-color: themeGreyBackgroundColor; }
+.themeGreyRightArrow,
+.themeGreyRightEndArrow,
+.themeGreyRightStartArrow {
+  border-right-color: transparent;
+}
 
-.themeGreyLeftArrow, .themeGreyLeftEndArrow, .themeGreyLeftStartArrow { border-left-color: transparent; }
-.themeGreyLeftArrow::before, .themeGreyLeftEndArrow::before, .themeGreyLeftStartArrow::before { border-left-color: themeGreyBackgroundColor; }
+.themeGreyRightArrow::before,
+.themeGreyRightEndArrow::before,
+.themeGreyRightStartArrow::before {
+  border-right-color: themeGreyBackgroundColor;
+}
+
+.themeGreyBottomArrow,
+.themeGreyBottomEndArrow,
+.themeGreyBottomStartArrow {
+  border-bottom-color: transparent;
+}
+
+.themeGreyBottomArrow::before,
+.themeGreyBottomEndArrow::before,
+.themeGreyBottomStartArrow::before {
+  border-bottom-color: themeGreyBackgroundColor;
+}
+
+.themeGreyLeftArrow,
+.themeGreyLeftEndArrow,
+.themeGreyLeftStartArrow {
+  border-left-color: transparent;
+}
+
+.themeGreyLeftArrow::before,
+.themeGreyLeftEndArrow::before,
+.themeGreyLeftStartArrow::before {
+  border-left-color: themeGreyBackgroundColor;
+}
 
 /* State */
 

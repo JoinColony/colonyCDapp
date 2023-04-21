@@ -1,5 +1,5 @@
 const config = {
-  extends: ['stylelint-config-standard', 'stylelint-config-css-modules'],
+  extends: ['stylelint-config-standard', 'stylelint-config-css-modules', 'stylelint-config-prettier'],
   plugins: ['stylelint-order'],
   rules: {
     'at-rule-no-unknown': null,
@@ -51,23 +51,11 @@ const config = {
         'align',
         {
           order: 'flexible',
-          properties: [
-            'margin',
-            'margin-top',
-            'margin-right',
-            'margin-bottom',
-            'margin-left',
-          ],
+          properties: ['margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left'],
         },
         {
           order: 'flexible',
-          properties: [
-            'padding',
-            'padding-top',
-            'padding-right',
-            'padding-bottom',
-            'padding-left',
-          ],
+          properties: ['padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left'],
         },
         'height',
         'min-height',
@@ -139,30 +127,14 @@ const config = {
         },
         {
           order: 'flexible',
-          properties: [
-            'background',
-            'background-size',
-            'background-color',
-            'background-image',
-          ],
+          properties: ['background', 'background-size', 'background-color', 'background-image'],
         },
         {
-          properties: [
-            'font-family',
-            'font-size',
-            'font-weight',
-            'font-style',
-            'font-smoothing',
-          ],
+          properties: ['font-family', 'font-size', 'font-weight', 'font-style', 'font-smoothing'],
         },
         {
           order: 'flexible',
-          properties: [
-            'text-align',
-            'text-decoration',
-            'text-overflow',
-            'text-transform',
-          ],
+          properties: ['text-align', 'text-decoration', 'text-overflow', 'text-transform'],
         },
         'line-height',
         {

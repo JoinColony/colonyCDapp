@@ -15,8 +15,9 @@ module.exports = {
     'eslint-config-airbnb/rules/react',
     'eslint-config-airbnb/rules/react-a11y',
     'plugin:@typescript-eslint/recommended',
-    '@colony/eslint-config-colony',
     'plugin:storybook/recommended',
+    '@colony/eslint-config-colony',
+    'prettier',
   ],
   plugins: ['@typescript-eslint', 'react', 'jsx-a11y', 'jsdoc', 'react-hooks'],
   overrides: [

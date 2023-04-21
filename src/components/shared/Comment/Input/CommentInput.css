@@ -18,7 +18,7 @@
   box-shadow: shadow;
 }
 
-.commentBox textarea[aria-invalid="true"] {
+.commentBox textarea[aria-invalid='true'] {
   border: 1px solid var(--light-purple);
 }
 

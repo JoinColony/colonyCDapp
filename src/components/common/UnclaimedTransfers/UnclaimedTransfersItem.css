@@ -60,13 +60,16 @@
 }
 
 @media screen and query700 {
-  .content, .content > div {
+  .content,
+  .content > div {
     justify-content: flex-start;
     align-items: stretch;
     column-gap: 20px;
   }
 
-  .button, .amountWrapper, .tokenName {
+  .button,
+  .amountWrapper,
+  .tokenName {
     align-self: center;
   }
 }

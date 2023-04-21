@@ -2,7 +2,8 @@
   margin-bottom: 40px;
 }
 
-.main a:hover, .main a:active {
+.main a:hover,
+.main a:active {
   text-decoration: underline;
   color: var(--colony-blue);
 }

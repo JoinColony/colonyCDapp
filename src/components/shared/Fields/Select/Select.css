@@ -27,7 +27,8 @@
   position: relative;
 }
 
-.select[aria-disabled="true"], .select[aria-busy="true"] {
+.select[aria-disabled='true'],
+.select[aria-busy='true'] {
   background-color: var(--text-disabled);
   cursor: not-allowed;
 }
@@ -37,11 +38,11 @@
   stroke: var(--grey);
 }
 
-.select[aria-expanded="true"] .selectExpandContainer i {
+.select[aria-expanded='true'] .selectExpandContainer i {
   transform: rotate(180deg);
 }
 
-.select[aria-expanded="true"] .selectExpandContainer i svg {
+.select[aria-expanded='true'] .selectExpandContainer i svg {
   fill: var(--colony-blue);
   stroke: var(--colony-blue);
 }
@@ -63,12 +64,12 @@
   white-space: nowrap;
 }
 
-.select[aria-expanded="true"] .activeOption,
-.select[aria-expanded="true"]:focus {
+.select[aria-expanded='true'] .activeOption,
+.select[aria-expanded='true']:focus {
   color: var(--colony-blue);
 }
 
-.select[aria-expanded="false"]:focus {
+.select[aria-expanded='false']:focus {
   outline-color: var(--colony-blue);
 }
 
@@ -94,7 +95,7 @@
 }
 
 .themeAlt:active,
-.themeAlt[aria-expanded="true"]:focus {
+.themeAlt[aria-expanded='true']:focus {
   outline: none;
 }
 

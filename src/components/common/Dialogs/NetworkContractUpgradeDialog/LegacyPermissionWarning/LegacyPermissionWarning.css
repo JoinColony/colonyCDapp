@@ -19,7 +19,8 @@
   margin-bottom: 0;
 }
 
-.warningTitle > div, .warningDescription > div {
+.warningTitle > div,
+.warningDescription > div {
   vertical-align: top;
 }
 

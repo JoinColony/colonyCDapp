@@ -43,7 +43,7 @@
 }
 
 .userName {
-  composes: inlineEllipsis from "~styles/text.css";
+  composes: inlineEllipsis from '~styles/text.css';
   margin-bottom: 2px;
   width: 100%;
 }
