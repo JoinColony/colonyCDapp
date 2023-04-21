@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
@@ -10,7 +10,7 @@ import {
   DialogSection,
 } from '~shared/Dialog';
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
-
+import { SetStateFn } from '~types';
 import { useActionDialogStatus } from '~hooks';
 
 import DomainNameAndColorInputGroup from '../DomainNameAndColorInputGroup';
@@ -41,7 +41,7 @@ const MSG = defineMessages({
 const requiredRoles: ColonyRole[] = [ColonyRole.Architecture];
 
 interface Props extends ActionDialogProps {
-  handleIsForceChange: Dispatch<SetStateAction<boolean>>;
+  handleIsForceChange: SetStateFn;
   isForce: boolean;
 }
 
