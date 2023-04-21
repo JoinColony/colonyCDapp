@@ -1,5 +1,5 @@
 import { useGetMotionStateQuery } from '~gql';
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { motionTags } from '~shared/Tag';
 import { MotionData } from '~types';
 import { getMotionState } from '~utils/colonyMotions';
@@ -9,6 +9,7 @@ export const useMotionTag = (
   motionData?: MotionData | null,
 ) => {
   const { colony } = useColonyContext();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
   const { data: motionStateData, loading: loadingMotionState } =
     useGetMotionStateQuery({
       skip: !isMotion || !motionData || !colony,
@@ -22,9 +23,9 @@ export const useMotionTag = (
 
   const networkMotionState = motionStateData?.getMotionState;
 
-  // No tag while loading motion state
-  if (loadingMotionState) {
-    return undefined;
+  // No tag while loading motion state or voting rep not enabled
+  if (loadingMotionState || !isVotingReputationEnabled) {
+    return () => null;
   }
 
   // If not motion, then forced action
