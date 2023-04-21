@@ -5,7 +5,7 @@ import { Placement } from '@popperjs/core';
 import UserAvatar from '~shared/UserAvatar';
 import ListItem, { ListItemStatus } from '~shared/ListItem';
 import { ColonyAction } from '~types';
-import { useColonyContext, useEnabledExtensions } from '~hooks';
+import { useColonyContext } from '~hooks';
 
 import { getActionTitleValues } from '../helpers';
 import ActionsListItemMeta from './ActionsListItemMeta';
@@ -70,9 +70,7 @@ const ActionsListItem = ({
   // );
 
   const status = ListItemStatus.Defused;
-  const { isVotingReputationEnabled } = useEnabledExtensions();
   const MotionTag = useMotionTag(isMotion, motionData);
-  const showMotionTag = isVotingReputationEnabled && !!MotionTag;
 
   return (
     <ListItem
@@ -97,7 +95,7 @@ const ActionsListItem = ({
       meta={<ActionsListItemMeta fromDomain={fromDomain ?? undefined} />}
       onClick={handleActionRedirect}
       status={status}
-      tag={showMotionTag ? <MotionTag /> : undefined}
+      tag={<MotionTag />}
       title={{ id: 'action.title' }}
       titleValues={getActionTitleValues(item, colony)}
     />
