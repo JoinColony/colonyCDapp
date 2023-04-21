@@ -77,12 +77,6 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
   [ColonyAndExtensionsEvents.ColonyUpgraded]: [
     EventTitleMessageKeys.NewVersion,
   ],
-  // [ColonyAndExtensionsEvents.MotionFinalized]: [
-  //   EventTitleMessageKeys.MotionTag,
-  // ],
-  // [ColonyAndExtensionsEvents.MotionRewardClaimed]: [
-  //   EventTitleMessageKeys.Staker,
-  // ],
   // [ColonyAndExtensionsEvents.RecoveryModeEntered]: [
   //   EventTitleMessageKeys.Initiator,
   // ],
