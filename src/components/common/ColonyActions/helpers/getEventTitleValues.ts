@@ -5,8 +5,6 @@ import {
   ColonyAndExtensionsEvents,
   MotionMessage,
   SystemMessages,
-  MotionData,
-  ColonyActionType,
 } from '~types';
 
 import {
@@ -213,13 +211,11 @@ export const getActionEventTitleValues = (
 export const useGetMotionEventTitleValues = (
   eventName: ColonyAndExtensionsEvents | SystemMessages,
   motionMessageData: MotionMessage,
-  actionType: ColonyActionType,
-  motionData?: MotionData | null,
+  actionData: ColonyAction,
 ) => {
   const updatedItem = useMapMotionEventToExpectedFormat(
     motionMessageData,
-    actionType,
-    motionData,
+    actionData,
   );
   const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
   return generateMessageValues(updatedItem, keys, {
