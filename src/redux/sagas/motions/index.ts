@@ -11,7 +11,7 @@ import rootMotionSaga from './rootMotion';
 // import managePermissionsMotionSaga from './managePermissionsMotion';
 // import editColonyMotionSaga from './editColonyMotion';
 // import updateMotionStateSaga from './updateState';
-// import paymentMotionSaga from './paymentMotion';
+import paymentMotionSaga from './paymentMotion';
 // import escalateMotionSaga from './escalateMotion';
 // import manageReputationMotionSaga from './manageReputationMotion';
 
@@ -28,7 +28,7 @@ export default function* actionsSagas() {
     // call(managePermissionsMotionSaga),
     // call(editColonyMotionSaga),
     // call(updateMotionStateSaga),
-    // call(paymentMotionSaga),
+    call(paymentMotionSaga),
     // call(escalateMotionSaga),
     // call(manageReputationMotionSaga),
   ]);
