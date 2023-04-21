@@ -6,6 +6,7 @@ import {
   useGetMotionEventTitleValues,
   TransactionMeta,
 } from '~common/ColonyActions';
+
 import EventData from '../EventData';
 
 import { MotionDetailsPageEventProps } from './MotionDetailsPageEvent';
@@ -18,7 +19,8 @@ type MotionEventDataProps = Pick<
 >;
 
 const MotionEventData = ({
-  actionData: { createdAt, transactionHash, motionData, type },
+  actionData: { createdAt, transactionHash },
+  actionData,
   motionMessageData,
   eventName,
 }: MotionEventDataProps) => {
@@ -35,8 +37,7 @@ const MotionEventData = ({
           values={useGetMotionEventTitleValues(
             eventName,
             motionMessageData,
-            type,
-            motionData,
+            actionData,
           )}
         />
       }

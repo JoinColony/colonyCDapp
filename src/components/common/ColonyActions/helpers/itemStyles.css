@@ -18,3 +18,8 @@
   border: 1px solid var(--text-disabled);
   border-radius: var(--radius-large);
 }
+
+.reputation {
+  display: inline-block;
+  margin-left: 4px;
+}
