@@ -299,7 +299,11 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Edit Colony"
       />
       <ActionButton
-        actionType={ActionTypes.ACTION_VERSION_UPGRADE}
+        actionType={
+          isMotion
+            ? ActionTypes.ROOT_MOTION
+            : ActionTypes.ACTION_VERSION_UPGRADE
+        }
         error={ActionTypes.ACTION_VERSION_UPGRADE_ERROR}
         success={ActionTypes.ACTION_VERSION_UPGRADE_SUCCESS}
         transform={pipe(
@@ -307,6 +311,8 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
             colonyAddress: colony.colonyAddress,
             colonyName: colony.name,
             version: colony.version,
+            operationName: RootMotionMethodNames.Upgrade,
+            motionParams: [colony.version],
           }),
           withMeta({ navigate }),
         )}
