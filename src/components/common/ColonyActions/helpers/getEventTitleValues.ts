@@ -4,9 +4,9 @@ import {
   ColonyAction,
   ColonyAndExtensionsEvents,
   MotionMessage,
-  User,
   SystemMessages,
 } from '~types';
+import { useUserByAddress } from '~hooks';
 
 import {
   mapActionEventToExpectedFormat,
@@ -183,15 +183,17 @@ export const getActionEventTitleValues = (
 };
 
 /* Returns the correct message values for Motions according to the event type. */
-export const getMotionEventTitleValues = (
+export const useGetMotionEventTitleValues = (
   eventName: ColonyAndExtensionsEvents | SystemMessages,
   actionData: ColonyAction,
   motionMessageData?: MotionMessage,
-  motionMessageInitiatorUser?: User | null,
 ) => {
+  const { user: initiatorUser } = useUserByAddress(
+    motionMessageData?.initiatorAddress || '',
+  );
   const updatedItem = mapMotionEventToExpectedFormat(
     actionData,
-    motionMessageInitiatorUser,
+    initiatorUser,
     motionMessageData,
   );
   const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
