@@ -6,7 +6,7 @@ import {
   getMotionEventTitleValues,
   TransactionMeta,
 } from '~common/ColonyActions';
-import { useUserByNameOrAddress } from '~hooks';
+import { useUserByAddress } from '~hooks';
 import EventData from '../EventData';
 
 import { MotionDetailsPageEventProps } from './MotionDetailsPageEvent';
@@ -21,11 +21,12 @@ type MotionEventDataProps = Pick<
 const MotionEventData = ({
   actionData: { createdAt, transactionHash },
   actionData,
+  motionMessageData: { initiatorAddress },
   motionMessageData,
   eventName,
 }: MotionEventDataProps) => {
-  const { user: motionMessageInitiatorUser } = useUserByNameOrAddress(
-    motionMessageData.initiatorAddress || '',
+  const { user: motionMessageInitiatorUser } = useUserByAddress(
+    initiatorAddress || '',
   );
   const messageId =
     eventName in ColonyAndExtensionsEvents
