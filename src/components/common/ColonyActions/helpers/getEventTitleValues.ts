@@ -10,7 +10,7 @@ import { useUserByAddress } from '~hooks';
 
 import {
   mapActionEventToExpectedFormat,
-  mapMotionEventToExpectedFormat,
+  useMapMotionEventToExpectedFormat,
 } from './mapItemToMessageFormat';
 
 enum EventTitleMessageKeys {
@@ -167,7 +167,7 @@ export const generateMessageValues = (
 
 /* Returns the correct message values for Actions according to the event type. */
 export const getActionEventTitleValues = (
-  eventName: ColonyAndExtensionsEvents | SystemMessages,
+  eventName: ColonyAndExtensionsEvents,
   actionData: ColonyAction,
   colony?: Colony,
 ) => {
@@ -185,14 +185,12 @@ export const getActionEventTitleValues = (
 /* Returns the correct message values for Motions according to the event type. */
 export const useGetMotionEventTitleValues = (
   eventName: ColonyAndExtensionsEvents | SystemMessages,
-  actionData: ColonyAction,
-  motionMessageData?: MotionMessage,
+  motionMessageData: MotionMessage,
 ) => {
   const { user: initiatorUser } = useUserByAddress(
-    motionMessageData?.initiatorAddress || '',
+    motionMessageData.initiatorAddress || '',
   );
-  const updatedItem = mapMotionEventToExpectedFormat(
-    actionData,
+  const updatedItem = useMapMotionEventToExpectedFormat(
     initiatorUser,
     motionMessageData,
   );
