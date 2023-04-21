@@ -1,7 +1,7 @@
 export { default as getActionTitleValues } from './getActionTitleValues';
 export {
   getActionEventTitleValues,
-  getMotionEventTitleValues,
+  useGetMotionEventTitleValues,
 } from './getEventTitleValues';
 
 export * from './mapItemToMessageFormat';
