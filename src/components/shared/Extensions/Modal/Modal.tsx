@@ -1,9 +1,9 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import Icon from '~shared/Icon';
-import styles from './Modal.module.css';
 import { ModalProps } from './types';
 import ModalBase from './ModalBase';
+import styles from './Modal.module.css';
 
 const displayName = 'Extensions.Modal';
 
