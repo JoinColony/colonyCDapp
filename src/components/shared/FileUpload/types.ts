@@ -1,4 +1,3 @@
-import { FieldArrayRenderProps } from 'formik';
 import {
   Accept,
   DropzoneOptions,
@@ -23,16 +22,9 @@ export interface UploadFile {
 }
 
 export interface UploadItemComponentProps {
-  accept: { [key: string]: string[] };
   error?: Message;
-  key: string;
-  idx: number;
-  maxFileSize: number;
   name: string;
-  remove: FieldArrayRenderProps['remove'];
-  reset: FieldArrayRenderProps['form']['resetForm'];
   upload: UploadFn;
-  handleError?: (...args: any[]) => Promise<any>;
   processingData?: boolean;
   handleProcessingData?: (...args: any) => void;
 }
