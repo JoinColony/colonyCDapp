@@ -517,7 +517,13 @@ type ColonyAction @model {
 type ColonyRole @model {
   id: ID! @index # colonyAddress_domainNativeId_userAddress_roles
   domain: Domain! @hasOne
-  user: User! @hasOne
+
+  targetAddress: ID # Amplify will automatically populate one of the following fields with related model if it finds one
+  targetUser: User @hasOne(fields: ["targetAddress"])
+  targetColony: Colony @hasOne(fields: ["targetAddress"])
+  targetExtension: ColonyExtension @hasOne(fields: ["targetAddress"])
+  targetToken: Token @hasOne(fields: ["targetAddress"])
+
   latestBlock: Int!
   role_0: Boolean # recovery
   role_1: Boolean # root
@@ -552,8 +558,14 @@ type ColonyHistoricRole @model {
     )
 
   domain: Domain! @hasOne
-  user: User! @hasOne
   colony: Colony! @hasOne
+
+  targetAddress: ID # Amplify will automatically populate one of the following fields with related model if it finds one
+  targetUser: User @hasOne(fields: ["targetAddress"])
+  targetColony: Colony @hasOne(fields: ["targetAddress"])
+  targetExtension: ColonyExtension @hasOne(fields: ["targetAddress"])
+  targetToken: Token @hasOne(fields: ["targetAddress"])
+
   blockNumber: Int!
   role_0: Boolean # recovery
   role_1: Boolean # root
