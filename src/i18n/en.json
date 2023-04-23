@@ -79,6 +79,7 @@
 
   "transaction.group.createColony.title": "Create Colony",
   "transaction.group.createColony.description": "Create Colony",
+  "transaction.group.createColony.titleWithHold": "Create Colony (Waiting for Block Ingestor)",
   "transaction.NetworkClient.deployToken.title": "Create Token",
   "transaction.NetworkClient.deployToken.description": "Create Token",
   "transaction.NetworkClient.deployTokenViaNetwork.title": "Create Token",
