@@ -511,16 +511,20 @@ type ColonyAction @model {
   newColonyVersion: Int
 }
 
+# Roles have been set as role_<number> so we can more easily map them to their
+# actual contract counterpart on the client and block ingestor side(s)
+
 type ColonyRole @model {
-  id: ID! @index # colonyAddress_userAddress_domainNativeId_role
-  domain: Domain!
-  user: User!
-  recovery: Boolean
-  root: Boolean
-  arbitration: Boolean
-  architecture: Boolean
-  funding: Boolean
-  administration: Boolean
+  id: ID! @index # colonyAddress_domainNativeId_userAddress_roles
+  domain: Domain! @hasOne
+  user: User! @hasOne
+  latestBlock: Int!
+  role_0: Boolean # recovery
+  role_1: Boolean # root
+  role_2: Boolean # arbitration
+  role_3: Boolean # architecture
+  role_5: Boolean # funding
+  role_6: Boolean # administration
 }
 
 # it's a model, not a type since this is designed to work outside of the main
@@ -530,14 +534,32 @@ type ColonyRole @model {
 # This should take a snapshot of the user's full roles/permissions at a specific block
 
 type ColonyHistoricRole @model {
-  id: ID!  @index(sortKeyFields: ["blockNumber"]) # colonyAddress_userAddress_domainNativeId_blockNumber_role
-  domain: Domain!
-  user: User!
+  id: ID! # colonyAddress_domainNativeId_userAddress_blockNumber_roles
+
+  # I HATE AMPLIFY SORTING! MAY IT DIE A THOUSAND DEATHS!
+  #
+  # @NOTE Always set to `type` to "SortedHistoricRole" to enable Amplify sorting, it DOES NOT WORK with `id`
+  #
+  # Apparently, it can only filter non-primary fields, meaning that if we sort by `blockNumber` then that
+  # field is considered primary, so it won't allow us to filter by it.
+  # To overcome this we've sorted by creation date, which is not really correct from a block chain
+  # point of view, but due to the nature of the block ingestor, it works for our use case
+  type: String!
+    @index(
+      name: "getColonyHistoricRoleByDate"
+      queryField: "getColonyHistoricRoleByDate"
+      sortKeyFields: ["createdAt"]
+    )
+
+  domain: Domain! @hasOne
+  user: User! @hasOne
+  colony: Colony! @hasOne
   blockNumber: Int!
-  recovery: Boolean
-  root: Boolean
-  arbitration: Boolean
-  architecture: Boolean
-  funding: Boolean
-  administration: Boolean
+  role_0: Boolean # recovery
+  role_1: Boolean # root
+  role_2: Boolean # arbitration
+  role_3: Boolean # architecture
+  role_5: Boolean # funding
+  role_6: Boolean # administration
+  createdAt: AWSDateTime!
 }
