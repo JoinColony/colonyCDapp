@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import { getMainClasses } from '~utils/css';
 
 import HistoryNavigation from '../HistoryNavigation';
 import UserNavigation from '../UserNavigation';
-import { RouteComponentProps } from '~pages/RouteLayouts';
+import { RouteComponentProps } from '..';
 
 import styles from './NavBar.css';
 
@@ -26,12 +26,16 @@ const NavBar = ({
   } = {},
   children,
 }: Props) => {
-  const location = useLocation<{ hasBackLink?: boolean }>();
+  const location = useLocation();
 
   const backLinkExists =
     hasBackLink === undefined
       ? location.state && location.state.hasBackLink
       : hasBackLink;
+
+  const params = useParams();
+  const resolvedBackRoute =
+    typeof backRoute === 'function' ? backRoute(params) : backRoute;
 
   return (
     <div className={className || getMainClasses({}, styles)}>
@@ -40,7 +44,7 @@ const NavBar = ({
           {backLinkExists && (
             <div className={styles.history}>
               <HistoryNavigation
-                backRoute={backRoute}
+                backRoute={resolvedBackRoute}
                 backText={backText}
                 backTextValues={backTextValues}
               />
