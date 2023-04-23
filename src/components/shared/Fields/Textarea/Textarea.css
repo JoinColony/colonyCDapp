@@ -13,7 +13,7 @@
   line-height: 0;
 }
 
-.TextareaAutoresizeWrapper {
+.textareaAutoresizeWrapper {
   composes: textareaWrapper;
 
   & .main {
