@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
+import { noMotionsVotingReputationVersion } from '~types';
 
 import styles from './CannotCreateMotionMessage.css';
 

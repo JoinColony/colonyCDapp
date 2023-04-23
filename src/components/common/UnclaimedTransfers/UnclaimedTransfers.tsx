@@ -30,7 +30,7 @@ const UnclaimedTransfers = () => {
         <FormattedMessage
           {...MSG.title}
           values={{
-            colony: colony?.profile?.displayName || 'colony',
+            colony: colony?.metadata?.displayName || 'colony',
           }}
         />
       </div>
