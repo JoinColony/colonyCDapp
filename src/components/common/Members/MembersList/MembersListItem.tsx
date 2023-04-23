@@ -55,8 +55,6 @@ const MembersListItem = ({
         <div className={styles.section}>
           <UserAvatar
             size="s"
-            colony={colony}
-            address={walletAddress || ''}
             user={user}
             showInfo={showUserInfo}
             notSet={false}

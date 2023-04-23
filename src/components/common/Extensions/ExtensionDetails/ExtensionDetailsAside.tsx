@@ -87,7 +87,7 @@ const ExtensionDetailsAside = ({
 
       <Table appearance={{ theme: 'lined' }}>
         <TableBody>
-          {getTableData(extensionData, colony).map(
+          {getTableData(extensionData).map(
             ({
               label,
               value,
