@@ -60,7 +60,7 @@ const ActionsListItem = ({
     MotionTag,
     showMotionCountdownTimer,
     refetchMotionState,
-  } = useMotionStatusDisplay(isMotion, motionData);
+  } = useMotionStatusDisplay(isMotion, motionData, transactionHash);
 
   return (
     <ListItem

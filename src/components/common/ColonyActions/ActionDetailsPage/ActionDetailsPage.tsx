@@ -51,8 +51,7 @@ const ActionDetailsPage = () => {
   const isMotion = action?.isMotion;
   const createdAt = action?.createdAt;
   const isInvalidMotion =
-    (isMotion && !action.motionData) ||
-    (isMotion && (motionState === null || motionState === undefined));
+    (isMotion && !action.motionData) || (isMotion && motionState === undefined);
 
   const isInvalidTransaction =
     isInvalidTransactionHash ||
