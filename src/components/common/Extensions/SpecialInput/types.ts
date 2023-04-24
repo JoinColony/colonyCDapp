@@ -1,9 +1,10 @@
 import { UseFormRegister } from 'react-hook-form';
 
-export interface SpecialHourInputProps {
+export interface SpecialInputProps {
   id: string;
   name: string;
-  register: UseFormRegister<Inputs>;
+  register: UseFormRegister<FormHourInput | FormPercengateInput>;
+  type: ComponentType;
   defaultValue?: number;
   placeholder?: string;
   disabled?: boolean;
@@ -12,6 +13,12 @@ export interface SpecialHourInputProps {
   isError?: boolean;
 }
 
-export type Inputs = {
+export type ComponentType = 'percentage' | 'hour';
+
+export type FormHourInput = {
   hour: number;
+};
+
+export type FormPercengateInput = {
+  percentage: number;
 };
