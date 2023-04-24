@@ -489,13 +489,21 @@ type ColonyAction @model {
   type: ColonyActionType!
   blockNumber: Int!
   createdAt: AWSDateTime!
+
   # Action type specific fields which might be null
+
   initiatorAddress: ID # Amplify will automatically populate one of the following fields with related model if there is an initiator
   initiatorUser: User @hasOne(fields: ["initiatorAddress"])
   initiatorExtension: ColonyExtension @hasOne(fields: ["initiatorAddress"])
   initiatorColony: Colony @hasOne(fields: ["initiatorAddress"])
-  recipientAddress: ID
-  recipient: User @hasOne(fields: ["recipientAddress"])
+  initiatorToken: Token @hasOne(fields: ["initiatorAddress"])
+
+  recipientAddress: ID # Amplify will automatically populate one of the following fields with related model if there is an recipient
+  recipientUser: User @hasOne(fields: ["recipientAddress"])
+  recipientColony: Colony @hasOne(fields: ["recipientAddress"])
+  recipientExtension: ColonyExtension @hasOne(fields: ["recipientAddress"])
+  recipientToken: Token @hasOne(fields: ["recipientAddress"])
+
   amount: String
   tokenAddress: ID
   token: Token @hasOne(fields: ["tokenAddress"])
@@ -505,6 +513,36 @@ type ColonyAction @model {
   toDomain: Domain @hasOne(fields: ["toDomainId"])
   fundamentalChainId: Int
   newColonyVersion: Int
+  roles: ColonyActionRoles
+
+  # Required since some actions might have multiple event entries in the list
+  # which need to be iterated over and exposed individually
+  #
+  # This should be a list/array, but this is yet another thing Amplify is bad at
+  # The official response from them is to use DynamoDB directly:
+  # https://stackoverflow.com/questions/50992106/append-item-to-list-using-aws-appsync-to-dynamodb
+  # Which is just freaking great!
+  #
+  # As such, I've decided to simplify this, an just pass a stringified JSON around
+  # since this is for display purpouses only.
+  #
+  # If anyone has a better idea on how to handle this, I'll gladly change it!
+  #
+  # When / if you decide to use it, just be mindful of what format other people
+  # are using, and follow suit.
+  #
+  # Roles Types:
+  # [{ id: String, type: String, role: Number, setTo: boolean }]
+  individualEvents: String
+}
+
+type ColonyActionRoles {
+  role_0: Boolean # recovery
+  role_1: Boolean # root
+  role_2: Boolean # arbitration
+  role_3: Boolean # architecture
+  role_5: Boolean # funding
+  role_6: Boolean # administration
 }
 
 # Roles have been set as role_<number> so we can more easily map them to their
