@@ -13,6 +13,7 @@ import {
 import {
   getDetailsForAction,
   getExtendedActionType,
+  normalizeRolesForAction,
 } from '~utils/colonyActions';
 import { splitTransactionHash } from '~utils/strings';
 
@@ -23,6 +24,7 @@ import {
   AmountDetail,
   DomainDescriptionDetail,
   ReputationChangeDetail,
+  RolesDetail,
 } from '../DetailsWidget';
 
 import styles from './DetailsWidget.css';
@@ -110,17 +112,18 @@ const getDetailItems = (
     fromDomain,
     toDomain,
     amount,
-    recipient,
+    // @TODO Add the other target types in (colony, extension, token)
+    recipientUser,
     transactionHash,
     token,
-    /* roles */
+    roles,
   } = actionData;
 
   const extendedActionType = getExtendedActionType(actionData, colony);
   const detailsForAction = getDetailsForAction(extendedActionType);
   const shortenedHash = getShortenedHash(transactionHash || '');
-
   const isSmiteAction = type === ColonyActionType.EmitDomainReputationPenalty;
+  const normalizedRoles = roles ? normalizeRolesForAction(roles) : [];
 
   return [
     {
@@ -160,8 +163,8 @@ const getDetailItems = (
     {
       label: MSG.toRecipient,
       labelValues: undefined,
-      item: detailsForAction.ToRecipient && recipient?.walletAddress && (
-        <UserDetail walletAddress={recipient.walletAddress} />
+      item: detailsForAction.ToRecipient && recipientUser?.walletAddress && (
+        <UserDetail walletAddress={recipientUser.walletAddress} />
       ),
     },
     {
@@ -183,8 +186,8 @@ const getDetailItems = (
     {
       label: MSG.author,
       labelValues: undefined,
-      item: detailsForAction.Author && recipient?.walletAddress && (
-        <UserDetail walletAddress={recipient.walletAddress} />
+      item: detailsForAction.Author && recipientUser?.walletAddress && (
+        <UserDetail walletAddress={recipientUser.walletAddress} />
       ),
     },
     {
@@ -197,13 +200,13 @@ const getDetailItems = (
         />
       ),
     },
-    // {
-    //   label: MSG.roles,
-    //   labelValues: undefined,
-    //   item: detailsForAction.Permissions && roles && (
-    //     <RolesDetail roles={roles} />
-    //   ),
-    // },
+    {
+      label: MSG.roles,
+      labelValues: undefined,
+      item: detailsForAction.Permissions && roles && (
+        <RolesDetail roles={normalizedRoles} />
+      ),
+    },
     {
       label: MSG.domainDescription,
       labelValues: undefined,
