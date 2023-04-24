@@ -536,7 +536,7 @@ type VoterRecord {
 input MotionMessageInput {
   name: String!
   messageKey: String!
-  initiatorAddress: String!
+  initiatorAddress: String
   vote: String
   amount: String
 }
@@ -544,7 +544,7 @@ input MotionMessageInput {
 type MotionMessage {
   name: String!
   messageKey: String!
-  initiatorAddress: String!
+  initiatorAddress: String
   vote: String
   amount: String
 }
