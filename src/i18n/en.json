@@ -387,5 +387,8 @@
     "supporting.documents.link2": "Understanding Payments",
     "supporting.documents.link3": "How Motions and Disputes work",
     "shared.modal.buttonCancel": "Cancel",
-    "shared.modal.buttonCloseAriaLabel": "Close the modal"
+    "shared.modal.buttonCloseAriaLabel": "Close the modal",
+    "hours": "Hours",
+    "special.hour.input.error.min.value": "Hours can not be 0",
+    "special.hour.input.error.max.value": "Hours must be less than"
 }
