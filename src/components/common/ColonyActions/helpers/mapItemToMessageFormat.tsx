@@ -9,7 +9,6 @@ import {
   ColonyActionType,
   DomainMetadata,
   MotionMessage,
-  User,
 } from '~types';
 import { useColonyContext } from '~hooks';
 import { MotionVote } from '~utils/colonyMotions';
@@ -21,7 +20,9 @@ import {
   AmountTag,
   Motion as MotionTag,
   Objection as ObjectionTag,
+  Voting as VotingTag,
 } from '~shared/Tag';
+import { useGetUserByAddressQuery } from '~gql';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
@@ -161,10 +162,16 @@ export const mapActionEventToExpectedFormat = (
 };
 
 export const useMapMotionEventToExpectedFormat = (
-  initiatorUser?: User | null,
   motionMessageData?: MotionMessage,
 ) => {
   const { colony } = useColonyContext();
+  const { data } = useGetUserByAddressQuery({
+    variables: {
+      address: motionMessageData?.initiatorAddress ?? '',
+    },
+  });
+
+  const initiatorUser = data?.getUserByAddress?.items[0];
 
   return {
     eventNameDecorated: <b>{motionMessageData?.name}</b>,
@@ -185,6 +192,7 @@ export const useMapMotionEventToExpectedFormat = (
       ),
     motionTag: <MotionTag />,
     objectionTag: <ObjectionTag />,
+    votingTag: <VotingTag />,
     initiator: (
       <span className={styles.userDecoration}>
         <FriendlyName user={initiatorUser} autoShrinkAddress />
