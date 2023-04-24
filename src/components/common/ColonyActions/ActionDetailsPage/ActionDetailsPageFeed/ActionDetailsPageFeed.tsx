@@ -17,14 +17,17 @@ const ActionDetailsPageFeed = ({
   actionData,
 }: // networkEvents,
 ActionsPageFeedProps) => {
-  const events = ACTIONS_EVENTS[actionData.type];
+  const events =
+    JSON.parse(actionData.individualEvents as string) ||
+    ACTIONS_EVENTS[actionData.type];
   return (
     <>
       {events?.map((event) => (
         <ActionsPageEvent
           actionData={actionData}
-          eventName={event}
-          key={event}
+          eventName={event?.type || event}
+          key={event?.id || event}
+          eventId={event?.id || event}
         />
       ))}
     </>
