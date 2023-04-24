@@ -11,6 +11,7 @@ import {
   ActionItemType,
   ActionUserRoles,
 } from '~types';
+import { ColonyActionRoles } from '~gql';
 
 import { formatText } from './intl';
 import { MotionVote } from './colonyMotions';
@@ -486,6 +487,28 @@ export const getDetailsForAction = (
 //   }
 // };
 
+export const normalizeRolesForAction = (
+  roles: ColonyActionRoles,
+): ActionUserRoles[] => {
+  /*
+   * Done manually since this list is static
+   */
+  const extractedRoles = [
+    { id: 0, setTo: roles.role_0 },
+    { id: 1, setTo: roles.role_1 },
+    { id: 2, setTo: roles.role_2 },
+    { id: 3, setTo: roles.role_3 },
+    { id: 5, setTo: roles.role_5 },
+    { id: 6, setTo: roles.role_6 },
+  ];
+  return extractedRoles.filter(
+    ({ setTo }) => setTo !== null,
+    /*
+     * Have to force cast it, since TS doesn't pick up the above filter
+     */
+  ) as ActionUserRoles[];
+};
+
 const getFormattedRoleList = (
   roleGroupA: ActionUserRoles[],
   roleGroupB: ActionUserRoles[] | null,
@@ -508,31 +531,57 @@ const getFormattedRoleList = (
   return roleList;
 };
 
-export const formatRolesTitle = (roles: ActionUserRoles[]) => {
+export const formatRolesTitle = (roles?: ColonyActionRoles | null) => {
   let roleTitle = '';
   let direction = '';
 
-  const assignedRoles = roles.filter((role) => role.setTo);
-  const unassignedRoles = roles.filter((role) => !role.setTo);
+  if (roles) {
+    const normalizedRoles = normalizeRolesForAction(roles);
 
-  if (!isEmpty(assignedRoles)) {
-    direction = 'to';
-    roleTitle += `Assign the${getFormattedRoleList(
-      assignedRoles,
-      unassignedRoles,
-    )}`;
+    const assignedRoles = normalizedRoles.filter((role) => role.setTo);
+    const unassignedRoles = normalizedRoles.filter((role) => !role.setTo);
+
+    if (!isEmpty(assignedRoles)) {
+      direction = 'to';
+      roleTitle += `Assign the${getFormattedRoleList(
+        assignedRoles,
+        unassignedRoles,
+      )}`;
+    }
+
+    if (!isEmpty(unassignedRoles)) {
+      direction += direction ? '/from' : 'from';
+      roleTitle += roleTitle ? ' and remove the' : 'Remove the';
+      roleTitle += getFormattedRoleList(unassignedRoles, null);
+    }
+
+    roleTitle += normalizedRoles.length > 1 ? ' permissions' : ' permission';
   }
-
-  if (!isEmpty(unassignedRoles)) {
-    direction += direction ? '/from' : 'from';
-    roleTitle += roleTitle ? ' and remove the' : 'Remove the';
-    roleTitle += getFormattedRoleList(unassignedRoles, null);
-  }
-
-  roleTitle += roles.length > 1 ? ' permissions' : ' permission';
 
   return {
     roleTitle,
     direction,
+  };
+};
+
+export const getColonyRoleSetTitleValues = (
+  encodedEvents?: string,
+  eventId?: string,
+) => {
+  const role = JSON.parse(encodedEvents as string)?.find(
+    ({ id }) => id === eventId,
+  );
+  if (role) {
+    const { role: roleId, setTo } = role;
+    return {
+      role: formatText({ id: `role.${roleId}` }),
+      roleSetAction: formatText({ id: `role.${setTo ? 'assign' : 'remove'}` }),
+      roleSetDirection: formatText({ id: `role.${setTo ? 'to' : 'from'}` }),
+    };
+  }
+  return {
+    role: '',
+    roleSetAction: '',
+    roleSetDirection: '',
   };
 };
