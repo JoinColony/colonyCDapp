@@ -47,7 +47,6 @@ export {
 } from './useUserReputationForTopDomains';
 export { default as useColonyContext } from './useColonyContext';
 export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
-export { default as useUserByAddress } from './useUserByAddress';
 export { default as useExtensionData } from './useExtensionData';
 export { default as useExtensionsData } from './useExtensionsData';
 export { default as usePaginatedActions } from './usePaginatedActions';
