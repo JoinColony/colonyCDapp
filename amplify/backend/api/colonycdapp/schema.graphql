@@ -114,9 +114,8 @@ input GetUserTokenBalanceInput {
 }
 
 input GetMotionStateInput {
-  motionId: Int!
   colonyAddress: String!
-  transactionHash: String
+  transactionHash: String!
 }
 
 input GetVoterRewardsInput {
@@ -260,7 +259,7 @@ type Query {
   ): GetUserTokenBalanceReturn @function(name: "getUserTokenBalance")
   getMembersForColony(input: MembersForColonyInput): MembersForColonyReturn
     @function(name: "getMembersForColony")
-  getMotionState(input: GetMotionStateInput): Int
+  getMotionState(input: GetMotionStateInput): Int!
     @function(name: "fetchMotionState")
   getVoterRewards(input: GetVoterRewardsInput): VoterRewardsReturn
     @function(name: "fetchVoterRewards")

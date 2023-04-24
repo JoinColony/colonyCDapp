@@ -57,7 +57,6 @@ const useGetColonyAction = (colony?: Colony | null) => {
     variables: {
       input: {
         colonyAddress: colony?.colonyAddress ?? '',
-        motionId: Number(action?.motionData?.motionId),
         transactionHash: transactionHash ?? '',
       },
     },
