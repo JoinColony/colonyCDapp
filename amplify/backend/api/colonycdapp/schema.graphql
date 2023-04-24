@@ -150,9 +150,9 @@ type GetUserTokenBalanceReturn {
 }
 
 type GetMotionTimeoutPeriodsReturn {
-  timeLeftToStake: String!,
-  timeLeftToVote: String!,
-  timeLeftToReveal: String!,
+  timeLeftToStake: String!
+  timeLeftToVote: String!
+  timeLeftToReveal: String!
   timeLeftToEscalate: String!
 }
 
@@ -260,12 +260,13 @@ type Query {
   ): GetUserTokenBalanceReturn @function(name: "getUserTokenBalance")
   getMembersForColony(input: MembersForColonyInput): MembersForColonyReturn
     @function(name: "getMembersForColony")
-  getMotionState(input: GetMotionStateInput): Int
+  getMotionState(input: GetMotionStateInput): Int!
     @function(name: "fetchMotionState")
   getVoterRewards(input: GetVoterRewardsInput): VoterRewardsReturn
     @function(name: "fetchVoterRewards")
-  getMotionTimeoutPeriods(input: GetMotionTimeoutPeriodsInput): GetMotionTimeoutPeriodsReturn
-    @function(name: "fetchMotionTimeoutPeriods")
+  getMotionTimeoutPeriods(
+    input: GetMotionTimeoutPeriodsInput
+  ): GetMotionTimeoutPeriodsReturn @function(name: "fetchMotionTimeoutPeriods")
 }
 
 type Mutation {
@@ -661,5 +662,6 @@ type ColonyAction @model {
   fundamentalChainId: Int
   newColonyVersion: Int
   pendingDomainMetadataId: ID
-  pendingDomainMetadata: DomainMetadata @hasOne(fields: ["pendingDomainMetadataId"])
+  pendingDomainMetadata: DomainMetadata
+    @hasOne(fields: ["pendingDomainMetadataId"])
 }

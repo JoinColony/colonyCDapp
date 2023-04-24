@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { StakerRewards } from '~gql';
-import { useAppContext } from '~hooks';
+import { useAppContext, useEnabledExtensions } from '~hooks';
 import { ColonyAction, ColonyActionType, Address } from '~types';
 import { MotionState } from '~utils/colonyMotions';
 
@@ -42,6 +42,7 @@ const MotionPhaseWidget = ({
   ...rest
 }: MotionPhaseWidgetProps) => {
   const { user } = useAppContext();
+  const { votingReputationAddress } = useEnabledExtensions();
   const { motionData, type, amount, fromDomain } = actionData;
   const { stopPollingAction } = rest;
   if (!motionData) {
@@ -50,6 +51,13 @@ const MotionPhaseWidget = ({
      * rendered by the parent. But, this is cleaner than creating a custom ColonyAction type to reflect
      * the fact that motion data is defined here.
      */
+    return null;
+  }
+
+  const { createdBy, stakerRewards } = motionData;
+
+  /* Do not show a widget if the voting repuation extn that created the motion is no longer installed. */
+  if (createdBy !== votingReputationAddress) {
     return null;
   }
 
@@ -84,7 +92,7 @@ const MotionPhaseWidget = ({
       }
 
       const isClaimed = isMotionClaimed(
-        motionData.stakerRewards,
+        stakerRewards,
         user?.walletAddress ?? '',
       );
 

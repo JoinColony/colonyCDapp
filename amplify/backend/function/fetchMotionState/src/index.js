@@ -11,8 +11,16 @@ const {
 exports.handler = async (event) => {
   const { motionId, colonyAddress, transactionHash } =
     event.arguments?.input || {};
-  /* Get latest motion state from chain */
-  const motionState = await getLatestMotionState(colonyAddress, motionId);
+
+  let motionState = MotionState.Null;
+
+  try {
+    /* Get latest motion state from chain */
+    motionState = await getLatestMotionState(colonyAddress, motionId);
+  } catch {
+    /* This will fail if the voting reputation extn is not installed, in which case we return 0. */
+  }
+
   /*
    * Check if we need to update staker rewards
    * This ensures the rewards are present in the event a motion fails before going to a vote,

@@ -100,4 +100,5 @@ fragment MotionData on MotionData {
   }
   skillRep
   repSubmitted
+  createdBy
 }

@@ -1,5 +1,6 @@
 import { Extension } from '@colony/colony-js';
 
+import { Address } from '~types';
 import useExtensionsData from './useExtensionsData';
 
 export interface EnabledExtensionData {
@@ -7,6 +8,7 @@ export interface EnabledExtensionData {
   isOneTxPaymentEnabled: boolean;
   isVotingReputationEnabled: boolean;
   votingReputationVersion: number | undefined;
+  votingReputationAddress: Address | undefined;
 }
 
 const useEnabledExtensions = (): EnabledExtensionData => {
@@ -24,6 +26,7 @@ const useEnabledExtensions = (): EnabledExtensionData => {
     isOneTxPaymentEnabled: !!oneTxPaymentExtension?.isEnabled,
     isVotingReputationEnabled: !!votingReputationExtension?.isEnabled,
     votingReputationVersion: votingReputationExtension?.currentVersion,
+    votingReputationAddress: votingReputationExtension?.address,
   };
 };
 
