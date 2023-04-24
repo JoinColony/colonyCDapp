@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import AccordionItem from './Partials/AccordionItem';
+import AccordionItem from './partials/AccordionItem';
 import { AccordionProps } from './types';
 
 const displayName = 'Extensions.Accordion';

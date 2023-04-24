@@ -17,7 +17,6 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({ title, children, icon = 'clo
       <div className="flex mb-4 relative">
         {icon && (
           <span className={styles.icon}>
-            {/* @TODO when icons will work */}
             <Icon appearance={{ size: 'extraTiny' }} name={icon} />
           </span>
         )}
