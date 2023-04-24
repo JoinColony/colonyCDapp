@@ -674,8 +674,7 @@ export type ExtensionParamsInput = {
 
 export type GetMotionStateInput = {
   colonyAddress: Scalars['String'];
-  motionId: Scalars['Int'];
-  transactionHash?: InputMaybe<Scalars['String']>;
+  transactionHash: Scalars['String'];
 };
 
 export type GetMotionTimeoutPeriodsInput = {
@@ -2073,7 +2072,7 @@ export type Query = {
   getDomainMetadata?: Maybe<DomainMetadata>;
   getExtensionByColonyAndHash?: Maybe<ModelColonyExtensionConnection>;
   getMembersForColony?: Maybe<MembersForColonyReturn>;
-  getMotionState?: Maybe<Scalars['Int']>;
+  getMotionState: Scalars['Int'];
   getMotionTimeoutPeriods?: Maybe<GetMotionTimeoutPeriodsReturn>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
@@ -3280,7 +3279,7 @@ export type GetMotionStateQueryVariables = Exact<{
 }>;
 
 
-export type GetMotionStateQuery = { __typename?: 'Query', getMotionState?: number | null };
+export type GetMotionStateQuery = { __typename?: 'Query', getMotionState: number };
 
 export type GetVoterRewardsQueryVariables = Exact<{
   input: GetVoterRewardsInput;
