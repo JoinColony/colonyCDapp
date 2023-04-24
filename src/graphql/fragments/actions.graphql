@@ -18,6 +18,15 @@ fragment ColonyAction on ColonyAction {
     # on that fragment are just 2 less than the actual "full" version of the Fragment
     ...Token
   }
+  initiatorColony {
+    ...Colony
+  }
+  initiatorExtension {
+    ...Extension
+  }
+  initiatorToken {
+    ...Token
+  }
   recipientAddress
   recipientUser {
     ...UserDisplay
@@ -31,6 +40,15 @@ fragment ColonyAction on ColonyAction {
   recipientToken {
     # NOTE: Token doesn't have a lightweight Display-only Fragment, as the props
     # on that fragment are just 2 less than the actual "full" version of the Fragment
+    ...Token
+  }
+  recipientColony {
+    ...Colony
+  }
+  recipientExtension {
+    ...Extension
+  }
+  recipientToken {
     ...Token
   }
   amount
