@@ -11,7 +11,7 @@
 }
 
 .navRightButton {
-  @apply absolute top-[50%] translate-y-[-50%] right-0 z-10;
+  @apply z-10;
 }
 
 .panel {
