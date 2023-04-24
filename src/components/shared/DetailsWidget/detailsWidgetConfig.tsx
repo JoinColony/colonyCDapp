@@ -13,6 +13,7 @@ import {
 import {
   getDetailsForAction,
   getExtendedActionType,
+  normalizeRolesForAction,
 } from '~utils/colonyActions';
 import { splitTransactionHash } from '~utils/strings';
 
@@ -23,6 +24,7 @@ import {
   AmountDetail,
   DomainDescriptionDetail,
   ReputationChangeDetail,
+  RolesDetail,
 } from '../DetailsWidget';
 
 import styles from './DetailsWidget.css';
@@ -121,6 +123,7 @@ const getDetailItems = (
   const shortenedHash = getShortenedHash(transactionHash || '');
 
   const isSmiteAction = type === ColonyActionType.EmitDomainReputationPenalty;
+  const normalizedRoles = roles ? normalizeRolesForAction(roles) : [];
 
   return [
     {
@@ -197,13 +200,13 @@ const getDetailItems = (
         />
       ),
     },
-    // {
-    //   label: MSG.roles,
-    //   labelValues: undefined,
-    //   item: detailsForAction.Permissions && roles && (
-    //     <RolesDetail roles={roles} />
-    //   ),
-    // },
+    {
+      label: MSG.roles,
+      labelValues: undefined,
+      item: detailsForAction.Permissions && roles && (
+        <RolesDetail roles={normalizedRoles} />
+      ),
+    },
     {
       label: MSG.domainDescription,
       labelValues: undefined,
