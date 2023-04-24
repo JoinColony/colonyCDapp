@@ -5,36 +5,36 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useIntl } from 'react-intl';
 import SpecialInput from '~common/Extensions/SpecialInput/SpecialInput';
-import { FormHourInput } from '~common/Extensions/SpecialInput/types';
+import { FormPercengateInput } from '~common/Extensions/SpecialInput/types';
 import FormError from '~shared/Extensions/FormError/FormError';
 
 const meta: Meta<typeof SpecialInput> = {
-  title: 'Common/Special Hour Input',
+  title: 'Common/Special Percentage Input',
   component: SpecialInput,
 };
 
 export default meta;
 type Story = StoryObj<typeof SpecialInput>;
 
-const SpecialHourInputWithHooks = (args) => {
+const SpecialPercentageInputWithHooks = (args) => {
   const { formatMessage } = useIntl();
   const validationSchema = yup
     .object({
-      hour: yup
+      percentage: yup
         .number()
         .positive('')
         .integer('')
         .required('')
-        .typeError(formatMessage({ id: 'special.hour.input.error.min.value' }))
-        .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
-        .max(8765, formatMessage({ id: 'special.hour.input.error.max.value' })),
+        .typeError(formatMessage({ id: 'special.percentage.input.error.min.value' }))
+        .min(1, formatMessage({ id: 'special.percentage.input.error.min.value' }))
+        .max(99, formatMessage({ id: 'special.percentage.input.error.max.value' })),
     })
     .required('');
 
   const {
     register,
     formState: { errors },
-  } = useForm<FormHourInput>({
+  } = useForm<FormPercengateInput>({
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
@@ -46,23 +46,23 @@ const SpecialHourInputWithHooks = (args) => {
         <SpecialInput
           {...args}
           register={register}
-          isError={!!errors.hour?.message}
-          name="hour"
+          isError={!!errors.percentage?.message}
+          name="percentage"
           min={1}
-          max={8765}
-          type="hour"
-          placeholder="8"
+          max={99}
+          type="percentage"
+          placeholder="1"
         />
-        {errors.hour && <FormError>{errors.hour.message}</FormError>}
+        {errors.percentage && <FormError>{errors.percentage.message}</FormError>}
       </form>
     </div>
   );
 };
 
 export const Base: Story = {
-  render: () => <SpecialHourInputWithHooks defaultValue={1} id="hour-1" />,
+  render: () => <SpecialPercentageInputWithHooks defaultValue={1} id="percentage-1" />,
 };
 
 export const Disabled: Story = {
-  render: () => <SpecialHourInputWithHooks defaultValue={0} disabled id="hour-2" />,
+  render: () => <SpecialPercentageInputWithHooks defaultValue={0} disabled id="percentage-2" />,
 };

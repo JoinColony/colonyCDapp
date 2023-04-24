@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import styles from './SpecialHourInput.module.css';
-import { SpecialHourInputProps } from './types';
+import styles from './SpecialInput.module.css';
+import { SpecialInputProps } from './types';
 
-const displayName = 'common.Extensions.SpecialHourInput';
+const displayName = 'common.Extensions.SpecialInput';
 
-const SpecialHourInput: FC<SpecialHourInputProps> = ({
+const SpecialInput: FC<SpecialInputProps> = ({
   min = 1,
   max = 8765,
   defaultValue,
@@ -15,13 +15,14 @@ const SpecialHourInput: FC<SpecialHourInputProps> = ({
   placeholder,
   register,
   isError,
+  type,
 }) => {
   const { formatMessage } = useIntl();
   return (
-    <div className="flex group" role="button" tabIndex={0}>
+    <div className="flex group justify-end" role="button" tabIndex={0}>
       <input
         defaultValue={defaultValue}
-        {...register(name)}
+        {...register(type)}
         name={name}
         type="number"
         min={min}
@@ -41,11 +42,11 @@ const SpecialHourInput: FC<SpecialHourInputProps> = ({
           disabled && 'cursor-not-allowed opacity-50 group-hover:border-gray-300'
         }`}
       >
-        {formatMessage({ id: 'hours' })}
+        {type === 'hour' ? formatMessage({ id: 'hours' }) : '%'}
       </div>
     </div>
   );
 };
-SpecialHourInput.displayName = displayName;
+SpecialInput.displayName = displayName;
 
-export default SpecialHourInput;
+export default SpecialInput;

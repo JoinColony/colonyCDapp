@@ -1,1 +1,1 @@
-export { default } from './SpecialHourInput';
+export { default } from './SpecialInput';
