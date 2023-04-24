@@ -15,7 +15,8 @@ const ActionEventData = ({
   actionData: { createdAt, transactionHash, type },
   actionData,
   eventName,
-}: Pick<ActionsPageEventProps, 'actionData' | 'eventName'>) => {
+  eventId,
+}: Pick<ActionsPageEventProps, 'actionData' | 'eventName' | 'eventId'>) => {
   const { colony } = useColonyContext();
 
   return (
@@ -23,7 +24,7 @@ const ActionEventData = ({
       <div className={styles.text} data-test="actionsEventText">
         <FormattedMessage
           id="event.title"
-          values={getEventTitleValues(eventName, actionData, colony)}
+          values={getEventTitleValues(eventName, actionData, eventId, colony)}
         />
       </div>
       <div className={styles.details}>
