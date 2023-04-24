@@ -6,7 +6,7 @@ import {
   MotionMessage,
   SystemMessages,
 } from '~types';
-import { useUserByAddress } from '~hooks';
+import { useGetUserByAddressQuery } from '~gql';
 
 import {
   mapActionEventToExpectedFormat,
@@ -187,9 +187,13 @@ export const useGetMotionEventTitleValues = (
   eventName: ColonyAndExtensionsEvents | SystemMessages,
   motionMessageData: MotionMessage,
 ) => {
-  const { user: initiatorUser } = useUserByAddress(
-    motionMessageData.initiatorAddress || '',
-  );
+  const { data } = useGetUserByAddressQuery({
+    variables: {
+      address: motionMessageData.initiatorAddress || '',
+    },
+  });
+  const initiatorUser = data?.getUserByAddress?.items[0];
+
   const updatedItem = useMapMotionEventToExpectedFormat(
     initiatorUser,
     motionMessageData,
