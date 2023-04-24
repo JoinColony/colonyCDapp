@@ -19,7 +19,7 @@ const SpecialInput: FC<SpecialInputProps> = ({
 }) => {
   const { formatMessage } = useIntl();
   return (
-    <div className="flex group justify-end" role="button" tabIndex={0}>
+    <div className="flex group justify-end">
       <input
         defaultValue={defaultValue}
         {...register(type)}
