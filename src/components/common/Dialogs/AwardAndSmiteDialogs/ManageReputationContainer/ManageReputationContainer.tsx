@@ -72,7 +72,7 @@ const ManageReputationContainer = ({
   const navigate = useNavigate();
   /**
    * @TODO This needs fixing as it relied on the empty array fallback,
-   * `watchers` don't existing on the colony object we were passing
+   * `watchers` don't exist on the colony object we were passing
    */
   // const colonyWatchers =
   //   watchers?.items.filter(notNull).map((item) => item.user) || [];
