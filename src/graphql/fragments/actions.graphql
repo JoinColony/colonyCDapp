@@ -8,9 +8,27 @@ fragment ColonyAction on ColonyAction {
   initiatorUser {
     ...User
   }
+  initiatorColony {
+    ...Colony
+  }
+  initiatorExtension {
+    ...Extension
+  }
+  initiatorToken {
+    ...Token
+  }
   recipientAddress
-  recipient {
+  recipientUser {
     ...User
+  }
+  recipientColony {
+    ...Colony
+  }
+  recipientExtension {
+    ...Extension
+  }
+  recipientToken {
+    ...Token
   }
   amount
   tokenAddress
@@ -25,4 +43,13 @@ fragment ColonyAction on ColonyAction {
   }
   createdAt
   newColonyVersion
+  roles {
+    role_0
+    role_1
+    role_2
+    role_3
+    role_5
+    role_6
+  }
+  individualEvents
 }
