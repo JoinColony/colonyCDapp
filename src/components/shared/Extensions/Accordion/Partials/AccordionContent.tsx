@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { AccordionItemProps, AccordionMocksItemProps } from '../types';
 import AccordionContentItem from './AccordionContentItem';
 
-const displayName = 'Extensions.Accordion.Partials.AccordionContent';
+const displayName = 'Extensions.Accordion.partials.AccordionContent';
 
 const AccordionContent: FC<AccordionItemProps> = ({ content }) => {
   const [openIndex, setOpenIndex] = useState<string | undefined>();

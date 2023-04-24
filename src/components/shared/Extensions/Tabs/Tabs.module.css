@@ -1,0 +1,19 @@
+.tabList {
+  @apply relative flex items-center w-full before:absolute before:bottom-0 before:left-0 before:w-full before:bg-gray-200 before:block before:h-px before:content-[""];
+}
+
+.tabItem {
+  @apply relative inline-flex items-center justify-center py-2 text-gray-700 text-md font-medium cursor-pointer border-b border-transparent transition-colors duration-normal hover:text-blue-400 mr-7 last:mr-0 focus-visible:outline-none focus-visible:font-semibold focus-visible:text-blue-400 focus-visible:border-blue-400 focus-visible:z-[1];
+}
+
+.selected {
+  @apply font-semibold text-blue-400 border-blue-400 z-[1];
+}
+
+.disabled {
+  @apply text-gray-300 pointer-events-none;
+}
+
+.panel {
+  @apply mt-6;
+}

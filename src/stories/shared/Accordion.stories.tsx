@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import Accordion from '~shared/Extensions/Accordion/Accordion';
-import { accordionMocksContent } from '~shared/Extensions/Accordion/const';
+import { accordionMocksContent } from '~shared/Extensions/Accordion/consts';
 import { useAccordion } from '~shared/Extensions/Accordion/hooks';
 
 const meta: Meta<typeof Accordion> = {

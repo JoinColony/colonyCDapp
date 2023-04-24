@@ -1,6 +1,6 @@
 /* eslint-disable react/button-has-type */
 
-import React, { PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 import { ButtonProps } from './types';
@@ -9,7 +9,7 @@ import styles from './Button.module.css';
 
 const displayName = 'Extensions.Button';
 
-const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
+const Button: FC<PropsWithChildren<ButtonProps>> = ({
   mode = 'primarySolid',
   children,
   disabled = false,

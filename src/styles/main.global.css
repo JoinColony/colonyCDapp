@@ -2,6 +2,7 @@
 @import 'fonts.css';
 @import 'react-responsive-carousel/lib/styles/carousel.min.css';
 @import 'react-popper-tooltip/dist/styles.css';
+@import 'react-tabs/style/react-tabs.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
