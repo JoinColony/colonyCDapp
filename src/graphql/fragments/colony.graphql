@@ -130,13 +130,10 @@ fragment ColonyRole on ColonyRole {
   domain {
     ...Domain
   }
-  user {
-    ...User
-  }
-  recovery
-  root
-  arbitration
-  architecture
-  funding
-  administration
+  role_0
+  role_1
+  role_2
+  role_3
+  role_5
+  role_6
 }
