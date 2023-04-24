@@ -129,6 +129,11 @@ class OmniPicker extends Component<Props> {
     }
   }
 
+  /**
+   * @NOTE All of the following methods are actually used by the wrapped component,
+   * eslint just doesn't seem to be able to pick it up
+   */
+  // eslint-disable-next-line react/no-unused-class-component-methods
   handleOpen = () => {
     const { onOpen } = this.props;
     if (typeof onOpen == 'function') {
@@ -136,6 +141,7 @@ class OmniPicker extends Component<Props> {
     }
   };
 
+  // eslint-disable-next-line react/no-unused-class-component-methods
   handleClose = () => {
     const { onClose } = this.props;
     if (typeof onClose == 'function') {
@@ -143,6 +149,7 @@ class OmniPicker extends Component<Props> {
     }
   };
 
+  // eslint-disable-next-line react/no-unused-class-component-methods
   handleReset = () => {
     const { onReset } = this.props;
     if (typeof onReset == 'function') {
@@ -150,6 +157,7 @@ class OmniPicker extends Component<Props> {
     }
   };
 
+  // eslint-disable-next-line react/no-unused-class-component-methods
   handleKeyUp = (evt: KeyboardEvent<HTMLElement>) => {
     const { onKeyUp } = this.props;
     if (typeof onKeyUp == 'function') {
@@ -157,6 +165,7 @@ class OmniPicker extends Component<Props> {
     }
   };
 
+  // eslint-disable-next-line react/no-unused-class-component-methods
   handleKeyDown = (evt: KeyboardEvent<HTMLElement>) => {
     const { onKeyDown } = this.props;
     if (typeof onKeyDown == 'function') {
@@ -164,6 +173,7 @@ class OmniPicker extends Component<Props> {
     }
   };
 
+  // eslint-disable-next-line react/no-unused-class-component-methods
   handleChange = (evt: SyntheticEvent<HTMLInputElement>) => {
     const { onChange } = this.props;
     if (typeof onChange == 'function') {
@@ -171,6 +181,7 @@ class OmniPicker extends Component<Props> {
     }
   };
 
+  // eslint-disable-next-line react/no-unused-class-component-methods
   handleFocus = (evt: SyntheticEvent<HTMLInputElement>) => {
     const { onFocus } = this.props;
     if (typeof onFocus == 'function') {
@@ -178,6 +189,7 @@ class OmniPicker extends Component<Props> {
     }
   };
 
+  // eslint-disable-next-line react/no-unused-class-component-methods
   handleBlur = (
     evt:
       | MouseEvent
@@ -193,6 +205,7 @@ class OmniPicker extends Component<Props> {
     }
   };
 
+  // eslint-disable-next-line react/no-unused-class-component-methods
   handlePick = (itemData: OmniPickerData) => {
     const { onPick } = this.props;
     if (typeof onPick == 'function') {

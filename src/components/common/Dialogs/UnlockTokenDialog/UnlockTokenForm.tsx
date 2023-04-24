@@ -88,13 +88,14 @@ const UnlockTokenForm = ({
         </DialogSection>
       )}
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        {true ? ( // isNativeTokenLocked
+        {/* {isNativeTokenLocked ? (
           <FormattedMessage {...MSG.description} />
         ) : (
           <div className={styles.unlocked}>
             <FormattedMessage {...MSG.unlockedDescription} />
           </div>
-        )}
+        )} */}
+        <FormattedMessage {...MSG.description} />
       </DialogSection>
       {true && ( // isNativeTokenLocked
         <>
