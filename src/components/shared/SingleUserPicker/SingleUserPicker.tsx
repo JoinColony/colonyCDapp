@@ -1,17 +1,17 @@
-import React, { ReactNode, useCallback } from 'react';
+import React, { ComponentType, ReactNode, useCallback } from 'react';
 import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
 import classnames from 'classnames';
 import { useFormContext } from 'react-hook-form';
 
 import { SimpleMessageValues, User } from '~types';
 import { getMainClasses } from '~utils/css';
+import UserAvatar from '~shared/UserAvatar';
 
 import { ItemDataType, withOmniPicker, WrappedComponentProps } from '../OmniPicker';
 import { Props as WithOmnipickerInProps } from '../OmniPicker/withOmniPicker';
 import { InputLabel, HookFormInputStatus as InputStatus } from '../Fields';
 import Icon from '../Icon';
 import Button from '../Button';
-import UserAvatar from '~shared/UserAvatar';
 import ItemDefault from './ItemDefault';
 
 import styles from './SingleUserPicker.css';
@@ -48,7 +48,7 @@ interface Appearance {
   width?: 'wide';
 }
 
-interface Props extends WithOmnipickerInProps, WrappedComponentProps {
+interface Props extends WithOmnipickerInProps {
   /** Appearance object */
   appearance?: Appearance;
 
@@ -123,7 +123,7 @@ const SingleUserPicker = ({
   dataTest,
   itemDataTest,
   valueDataTest,
-}: Props) => {
+}: Props & WrappedComponentProps) => {
   const {
     formState: { errors, touchedFields },
     setValue,
@@ -247,4 +247,7 @@ const SingleUserPicker = ({
 
 SingleUserPicker.displayName = displayName;
 
-export default withOmniPicker(SingleUserPicker);
+/** @NOTE I don't like it either, but digging through the HOC types seems counter productive considering we'll refactor it soon */
+export default withOmniPicker(
+  SingleUserPicker,
+) as unknown as ComponentType<Props>;
