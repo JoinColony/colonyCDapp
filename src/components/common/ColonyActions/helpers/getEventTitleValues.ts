@@ -6,7 +6,6 @@ import {
   MotionMessage,
   SystemMessages,
 } from '~types';
-import { useGetUserByAddressQuery } from '~gql';
 
 import {
   mapActionEventToExpectedFormat,
@@ -40,6 +39,7 @@ enum EventTitleMessageKeys {
   TokenSymbol = 'tokenSymbol',
   ToDomain = 'toDomain',
   TokensMinted = 'tokensMinted',
+  VotingTag = 'votingTag',
 }
 
 /* Maps eventType to message values as found in en-events.ts */
@@ -144,6 +144,7 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
     EventTitleMessageKeys.ObjectionTag,
     EventTitleMessageKeys.MotionTag,
   ],
+  [SystemMessages.MotionVotingPhase]: [EventTitleMessageKeys.VotingTag],
 };
 
 const DEFAULT_KEYS = [
@@ -187,17 +188,8 @@ export const useGetMotionEventTitleValues = (
   eventName: ColonyAndExtensionsEvents | SystemMessages,
   motionMessageData: MotionMessage,
 ) => {
-  const { data } = useGetUserByAddressQuery({
-    variables: {
-      address: motionMessageData.initiatorAddress || '',
-    },
-  });
-  const initiatorUser = data?.getUserByAddress?.items[0];
+  const updatedItem = useMapMotionEventToExpectedFormat(motionMessageData);
 
-  const updatedItem = useMapMotionEventToExpectedFormat(
-    initiatorUser,
-    motionMessageData,
-  );
   const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
   return generateMessageValues(updatedItem, keys, {
     eventName,
