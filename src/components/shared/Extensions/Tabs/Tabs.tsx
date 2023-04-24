@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Tabs as ReactTabs, Tab, TabList, TabPanel } from 'react-tabs';
 import { useIntl } from 'react-intl';
-import { Carousel } from 'react-responsive-carousel';
 import styles from './Tabs.module.css';
 import { TabsProps } from './types';
 
