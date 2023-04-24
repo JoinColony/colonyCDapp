@@ -18,7 +18,7 @@ const useCanEditProfile = () => {
     if (lastWalletLabel === null || user === null) {
       navigate(LANDING_PAGE_ROUTE);
     }
-  }, [user, lastWalletLabel]);
+  }, [user, lastWalletLabel, navigate]);
 
   return {
     loadingProfile: userLoading || walletConnecting,
