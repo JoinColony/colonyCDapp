@@ -3,6 +3,8 @@ import { AccordionMocksContent } from './types';
 import ContentTypeAccordionContent from './Partials/ContentTypeAccordionContent';
 import ContentTypeAccordionHeader from './Partials/ContentTypeAccordionHeader';
 import ContentTypeText from './Partials/ContentTypeText';
+import SpecialHourInput from './Partials/SpecialHourInput';
+import SpecialPercentageInput from './Partials/SpecialPercentageInput';
 
 /*
  * @TODO: display data from API, update components
@@ -22,7 +24,7 @@ export const accordionMocksContent: AccordionMocksContent[] = [
             in token terms, should need to stake on each side of a motion?"
           />
         ),
-        inputItem: <input placeholder="1%" />,
+        inputItem: <SpecialHourInput />,
         accordionItem: [
           {
             id: 'step-0-0',
@@ -50,7 +52,7 @@ export const accordionMocksContent: AccordionMocksContent[] = [
             subTitle="In a dispute, what percentage of the losing side’s stake should be awarded to the voters?"
           />
         ),
-        inputItem: <input placeholder="20%" />,
+        inputItem: <SpecialPercentageInput />,
         accordionItem: [
           {
             id: 'step-1-0',
