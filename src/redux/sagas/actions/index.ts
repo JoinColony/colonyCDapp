@@ -7,7 +7,7 @@ import versionUpgradeActionSaga from './versionUpgrade';
 import createDomainActionSaga from './createDomain';
 import editDomainActionSaga from './editDomain';
 import editColonyActionSaga from './editColony';
-// import managePermissionsActionSaga from './managePermissions';
+import managePermissionsActionSaga from './managePermissions';
 import unlockTokenActionSaga from './unlockToken';
 // import enterRecoveryActionSaga from './enterRecovery';
 import manageReputationActionSaga from './manageReputation';
@@ -21,7 +21,7 @@ export default function* actionsSagas() {
     call(createDomainActionSaga),
     call(editDomainActionSaga),
     call(editColonyActionSaga),
-    // call(managePermissionsActionSaga),
+    call(managePermissionsActionSaga),
     call(unlockTokenActionSaga),
     // call(enterRecoveryActionSaga),
     call(manageReputationActionSaga),
