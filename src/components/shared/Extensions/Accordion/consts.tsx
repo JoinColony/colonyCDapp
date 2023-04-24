@@ -1,8 +1,8 @@
 import React from 'react';
 import { AccordionMocksContent } from './types';
-import ContentTypeAccordionContent from './Partials/ContentTypeAccordionContent';
-import ContentTypeAccordionHeader from './Partials/ContentTypeAccordionHeader';
-import ContentTypeText from './Partials/ContentTypeText';
+import ContentTypeAccordionContent from './partials/ContentTypeAccordionContent';
+import ContentTypeAccordionHeader from './partials/ContentTypeAccordionHeader';
+import ContentTypeText from './partials/ContentTypeText';
 
 /*
  * @TODO: display data from API, update components

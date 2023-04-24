@@ -55,13 +55,9 @@
     "label.waiting": "Waiting",
     "placeholder.email": "handle@domain.com",
     "placeholder.password": "Password",
-
     "wallet.metamask": "MetaMask",
-
     "text.learnMore": "Learn More",
-
     "transaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
-
     "transaction.group.deposit.title": "Activate tokens",
     "transaction.group.deposit.description": "Activate tokens",
     "transaction.TokenLockingClient.deposit(address,uint256,bool).title": "Activate tokens",
@@ -76,7 +72,6 @@
     "transaction.group.transaction.batch.createUser.description": "Claim Your Username \"{0}\"",
     "transaction.NetworkClient.registerUserLabel.title": "Claim Username",
     "transaction.NetworkClient.registerUserLabel.description": "Confirm Your Username \"{0}\"",
-
     "transaction.group.createColony.title": "Create Colony",
     "transaction.group.createColony.description": "Create Colony",
     "transaction.NetworkClient.deployToken.title": "Create Token",
@@ -119,12 +114,10 @@
     "transaction.group.exitRecovery.description": "Exit Recovery Mode",
     "transaction.ColonyClient.exitRecoveryMode.title": "Exit Recovery Mode",
     "transaction.ColonyClient.exitRecoveryMode.description": "Exit Recovery Mode",
-
     "transaction.group.tokenUnlockAction.title": "Unlock Token",
     "transaction.group.tokenUnlockAction.description": "Unlocking native Token",
     "transaction.ColonyClient.unlockToken.title": "Unlocking Token",
     "transaction.ColonyClient.unlockToken.description": "Unlocking Token",
-
     "transaction.group.paymentAction.title": "Expenditure Payment",
     "transaction.group.paymentAction.description": "Expenditure Payment",
     "transaction.OneTxPaymentClient.makePaymentFundedFromDomainWithProofs.title": "Expenditure Payment",
@@ -141,10 +134,8 @@
     "transaction.ColonyClient.addDomainWithProofs(uint256).description": "Create Team",
     "transaction.ColonyClient.editDomainWithProofs.title": "Edit Team",
     "transaction.ColonyClient.editDomainWithProofs.description": "Edit Team",
-
     "transaction.ColonyClient.annotateTransaction.title": "Annotate Transaction",
     "transaction.ColonyClient.annotateTransaction.description": "Annotate Transaction",
-
     "transaction.group.editColonyAction.title": "Edit Colony Details",
     "transaction.group.editColonyAction.description": "Edit Colony Details",
     "transaction.ColonyClient.editColony.title": "Edit Colony Details",
@@ -159,12 +150,10 @@
     "transaction.ColonyClient.claimColonyFunds.description": "Claim Pending Transactions",
     "transaction.ColonyClient.moveFundsBetweenPotsWithProofs(uint256,uint256,uint256,address).title": "Move Funds Between Pots",
     "transaction.ColonyClient.moveFundsBetweenPotsWithProofs(uint256,uint256,uint256,address).description": "Move Token from one team pot to another",
-
     "transaction.group.setUserRoles.title": "Assign permissions",
     "transaction.group.setUserRoles.description": "Assign permissions",
     "transaction.ColonyClient.setUserRolesWithProofs.title": "Assign permissions",
     "transaction.ColonyClient.setUserRolesWithProofs.description": "Assign permissions",
-
     "transaction.group.enableExtension.title": "Enable Colony Extension",
     "transaction.group.enableExtension.description": "Enable Colony Extension",
     "transaction.group.unistallExtensions.title": "Uninstall Colony Extension",
@@ -176,44 +165,36 @@
     "transaction.ColonyClient.deprecateExtension.description": "Deprecate Colony Extension",
     "transaction.ColonyClient.upgradeExtension.title": "Upgrade Colony Extension",
     "transaction.ColonyClient.upgradeExtension.description": "Upgrade Colony Extension",
-
     "transaction.VotingReputationClient.createMotion.title": "Create motion",
     "transaction.VotingReputationClient.createMotion.description": "Create motion",
     "transaction.group.createMotion.title": "Create motion",
     "transaction.group.createMotion.description": "Create motion",
-
     "transaction.group.stakeMotion.title": "Stake motion",
     "transaction.group.stakeMotion.description": "Stake motion",
     "transaction.VotingReputationClient.stakeMotionWithProofs.title": "Stake motion",
     "transaction.VotingReputationClient.stakeMotionWithProofs.description": "Stake motion",
     "transaction.ColonyClient.approveStake.title": "Approve stake",
     "transaction.ColonyClient.approveStake.description": "Approve stake",
-
     "transaction.group.voteMotion.title": "Vote on motion",
     "transaction.group.voteMotion.description": "Vote on motion",
     "transaction.VotingReputationClient.submitVote.title": "Submit motion vote",
     "transaction.VotingReputationClient.submitVote.description": "Submit motion vote",
-
     "transaction.group.revealVoteMotion.title": "Reveal vote",
     "transaction.group.revealVoteMotion.description": "Reveal vote",
     "transaction.VotingReputationClient.revealVote.title": "Reveal your motion vote",
     "transaction.VotingReputationClient.revealVote.description": "Reveal your motion vote",
-
     "transaction.group.finalizeMotion.title": "Finalize motion",
     "transaction.group.finalizeMotion.description": "Finalize motion",
     "transaction.VotingReputationClient.finalizeMotion.title": "Finalize motion",
     "transaction.VotingReputationClient.finalizeMotion.description": "Finalize motion",
-
     "transaction.group.claimMotionRewards.title": "Claim Rewards",
     "transaction.group.claimMotionRewards.description": "Claim Rewards",
     "transaction.VotingReputationClient.claimRewardWithProofs.title": "Claim motion reward",
     "transaction.VotingReputationClient.claimRewardWithProofs.description": "Claim motion reward",
-
     "transaction.group.escalateMotion.title": "Escalate Motion",
     "transaction.group.escalateMotion.description": "Escalate Motion",
     "transaction.VotingReputationClient.escalateMotionWithProofs.title": "Escalate Motion",
     "transaction.VotingReputationClient.escalateMotionWithProofs.description": "Escalate Motion",
-
     "transaction.group.buyTokens.title": "Buy Tokens",
     "transaction.group.buyTokens.description": "Buy Tokens",
     "transaction.group.emitDomainReputationPenalty.title": "Smiting user",
@@ -224,12 +205,10 @@
     "transaction.group.emitDomainReputationReward.description": "Awarding user",
     "transaction.ColonyClient.emitDomainReputationReward.title": "Awarding user",
     "transaction.ColonyClient.emitDomainReputationReward.description": "Awarding user",
-
     "transaction.WrappedTokenClient.withdraw.title": "Unwrap Token",
     "transaction.WrappedTokenClient.withdraw.description": "Unwrap Token",
     "transaction.VestingSimpleClient.claimGrant.title": "Claim Colony Grant",
     "transaction.VestingSimpleClient.claimGrant.description": "Claim Colony Grant",
-
     "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
     "metatransaction.group.deposit.title": "Activate tokens",
     "metatransaction.group.deposit.description": "Activate tokens",
@@ -384,7 +363,6 @@
     "metatransaction.WrappedTokenClient.withdraw.description": "Unwrap Token",
     "metatransaction.VestingSimpleClient.claimGrant.title": "Claim Colony Grant",
     "metatransaction.VestingSimpleClient.claimGrant.description": "Claim Colony Grant",
-
     "message.generic.title": "Generic Message",
     "message.generic.description": "This needs your wallet's signature",
     "message.metaMintTokens.title": "Mint Tokens Signature",
@@ -393,28 +371,24 @@
     "message.motionVote.description": "Sign message to vote",
     "message.motionRevealVote.title": "Sign message to reveal vote",
     "message.motionRevealVote.description": "Sign message to reveal vote",
-
     "permission.6": "Administration",
     "permission.2": "Arbitration",
     "permission.3": "Architecture",
     "permission.5": "Funding",
     "permission.0": "Recovery",
     "permission.1": "Root",
-
     "tooltip.lockedToken": "This token is locked. Colony native tokens are locked and non-transferrable by default to avoid unwanted project token transfer outside of the colony.",
     "tooltip.forceToggle": "Toggle \"Force\" to bypass governance and perform this action immediately. This is only possible with the right permissions.",
-
     "error.network": "There was a problem with the connection. Please try again",
-
     "status.loading": "Loading{optionalText}...",
     "supporting.documents.title": "extension support",
     "supporting.documents.subtitle": "Supporting guides and documentation",
     "supporting.documents.link1": "How Lazy Consensus works",
     "supporting.documents.link2": "Understanding Payments",
     "supporting.documents.link3": "How Motions and Disputes work",
-
+    "shared.modal.buttonCancel": "Cancel",
+    "shared.modal.buttonCloseAriaLabel": "Close the modal",
     "hours": "Hours",
-
     "special.hour.input.error.min.value": "Hours can not be 0",
     "special.hour.input.error.max.value": "Hours must be less than 8766",
     "special.percentage.input.error.min.value": "Percentage must be greater than 0",
