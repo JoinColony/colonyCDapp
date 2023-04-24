@@ -77,7 +77,7 @@ export interface FileUploadProps extends CoreInputProps {
     disabled?: string;
   };
   /** Options for the dropzone provider */
-  dropzoneOptions: DropzoneOptions;
+  dropzoneOptions?: DropzoneOptions;
   /** Hide the status component beneath the file uploader. Useful if you wish to display the status elsewhere, e.g. outside the component. */
   hideStatus?: boolean;
   /** The component to render each item to be uploaded */
