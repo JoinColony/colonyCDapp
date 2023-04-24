@@ -1,10 +1,10 @@
 import React from 'react';
 import { AccordionMocksContent } from './types';
-import ContentTypeAccordionContent from './Partials/ContentTypeAccordionContent';
-import ContentTypeAccordionHeader from './Partials/ContentTypeAccordionHeader';
-import ContentTypeText from './Partials/ContentTypeText';
-import SpecialHourInput from './Partials/SpecialHourInput';
-import SpecialPercentageInput from './Partials/SpecialPercentageInput';
+import ContentTypeAccordionContent from './partials/ContentTypeAccordionContent';
+import ContentTypeAccordionHeader from './partials/ContentTypeAccordionHeader';
+import ContentTypeText from './partials/ContentTypeText';
+import SpecialHourInput from './partials/SpecialHourInput';
+import SpecialPercentageInput from './partials/SpecialPercentageInput';
 
 /*
  * @TODO: display data from API, update components
