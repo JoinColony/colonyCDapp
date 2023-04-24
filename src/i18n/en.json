@@ -411,5 +411,10 @@
     "supporting.documents.subtitle": "Supporting guides and documentation",
     "supporting.documents.link1": "How Lazy Consensus works",
     "supporting.documents.link2": "Understanding Payments",
-    "supporting.documents.link3": "How Motions and Disputes work"
+    "supporting.documents.link3": "How Motions and Disputes work",
+
+    "hours": "Hours",
+
+    "special.hour.input.error.min.value": "Hours can not be 0",
+    "special.hour.input.error.max.value": "Hours must be less than 8766"
 }
