@@ -119,8 +119,10 @@ fragment ChainFundsClaim on ColonyChainFundsClaim {
 fragment ColonyRole on ColonyRole {
   id
   domain {
-    ...Domain
+    # @TODO Make a "Light" fragment out of this
+    nativeId
   }
+  targetAddress
   role_0
   role_1
   role_2

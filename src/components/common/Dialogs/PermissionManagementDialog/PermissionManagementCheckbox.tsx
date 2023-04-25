@@ -52,18 +52,18 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  asterisk: boolean;
-  readOnly: boolean;
-  disabled: boolean;
+  asterisk?: boolean;
+  readOnly?: boolean;
+  disabled?: boolean;
   role: ColonyRole;
   domainId: number;
   dataTest: string;
 }
 
 const PermissionManagementCheckbox = ({
-  asterisk,
-  readOnly,
-  disabled,
+  asterisk = false,
+  readOnly = false,
+  disabled = false,
   role,
   domainId,
   dataTest,
