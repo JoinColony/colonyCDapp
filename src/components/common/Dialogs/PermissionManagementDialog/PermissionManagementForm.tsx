@@ -19,6 +19,7 @@ import SingleUserPicker, {
 } from '~shared/SingleUserPicker';
 import { ItemDataType } from '~shared/OmniPicker';
 import UserAvatar from '~shared/UserAvatar';
+
 import { User } from '~types';
 import { notNull } from '~utils/arrays';
 // import { getAllUserRolesForDomain } from '~redux/transformers';
@@ -72,6 +73,7 @@ const MSG = defineMessages({
 
 interface Props extends ActionDialogProps {
   close: (val: any) => void;
+  users: User[];
 }
 
 const supRenderAvatar = (item: ItemDataType<User>) => (
@@ -79,51 +81,91 @@ const supRenderAvatar = (item: ItemDataType<User>) => (
 );
 
 const PermissionManagementForm = ({
-  colony: { domains },
+  colony: { domains, roles },
   colony,
   back,
   close,
-  enabledExtensionData,
+  // enabledExtensionData,
+  users,
 }: Props) => {
   const { watch, setValue } = useFormContext();
-  const { domainId, user, motionDomainId } = watch();
+  const {
+    domainId: selectedDomainId,
+    user: selectedUser,
+    motionDomainId,
+  } = watch();
 
-  // @TODO Temp fix, this should be retrieved from a query
-  const colonyWatchers: Array<Record<string, unknown>> = [];
-  // watchers?.items
-  //   .filter(notNull)
-  //   .map((item) => ({ ...item.user, id: item.user.walletAddress })) || [];
+  // const colonyWatchers =
+  //   watchers?.items
+  //     .filter(notNull)
+  //     .map((item) => ({ ...item.user, id: item.user.walletAddress })) || [];
 
   const colonyDomains = domains?.items.filter(notNull) || [];
-  const domain = findDomainByNativeId(domainId, colony);
+  const domain = findDomainByNativeId(selectedDomainId, colony);
 
-  const {
-    inheritedRoles: selectedUserInheritedRoles,
-    directRoles: selectedUserDirectRoles,
-  } = useSelectedUserRoles(colony, user, domainId);
-  const defaultSelectedUserRoles = useMemo(
-    () =>
-      [
-        ...new Set([...selectedUserDirectRoles, ...selectedUserInheritedRoles]),
-      ].map((role) => role.toString()),
-    [selectedUserDirectRoles, selectedUserInheritedRoles],
-  );
+  // console.log(all)
+
+  // const {
+  //   inheritedRoles: selectedUserInheritedRoles,
+  //   directRoles: selectedUserDirectRoles,
+  // } = useSelectedUserRoles(colony, user, domainId);
+  // const defaultSelectedUserRoles = useMemo(
+  //   () =>
+  //     [
+  //       ...new Set([...selectedUserDirectRoles, ...selectedUserInheritedRoles]),
+  //     ].map((role) => role.toString()),
+  //   [selectedUserDirectRoles, selectedUserInheritedRoles],
+  // );
+
+  // useEffect(() => {
+  //   setValue('roles', defaultSelectedUserRoles);
+  // }, [defaultSelectedUserRoles, setValue]);
+
 
   useEffect(() => {
-    setValue('roles', defaultSelectedUserRoles);
-  }, [defaultSelectedUserRoles, setValue]);
+    if (selectedUser) {
+      const userRoles = roles?.items?.find(
+        (role) =>
+          role?.targetAddress === selectedUser.walletAddress &&
+          role?.domain?.nativeId === selectedDomainId,
+      );
+      if (userRoles) {
+        const {
+          role_0: recoveryRole,
+          role_1: rootRole,
+          role_2: arbitrationRole,
+          role_3: architectureRole,
+          role_5: fundingRole,
+          role_6: administrationRole,
+        } = userRoles;
+        // @NOTE Different order of roles, since it's required by the UI
+        const formRolesMap = [
+          rootRole && '1',
+          administrationRole && '6',
+          architectureRole && '3',
+          fundingRole && '5',
+          recoveryRole && '0',
+          arbitrationRole && '2',
+        ].filter((role) => !!role);
+        setValue('roles', formRolesMap);
+      } else {
+        setValue('roles', []);
+      }
+    }
+  }, [selectedUser, roles, selectedDomainId, setValue]);
 
-  const requiredRoles = [
-    domainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture,
-  ];
-  const canRoleBeSet = useCanRoleBeSet(colony, selectedUserDirectRoles);
-  const { userHasPermission, canCreateMotion, disabledInput, disabledSubmit } =
-    usePermissionManagementDialogStatus(
-      colony,
-      requiredRoles,
-      enabledExtensionData,
-      defaultSelectedUserRoles,
-    );
+
+  // const requiredRoles = [
+  //   domainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture,
+  // ];
+  // const canRoleBeSet = useCanRoleBeSet(colony, selectedUserDirectRoles);
+  // const { userHasPermission, canCreateMotion, disabledInput, disabledSubmit } =
+  //   usePermissionManagementDialogStatus(
+  //     colony,
+  //     requiredRoles,
+  //     enabledExtensionData,
+  //     defaultSelectedUserRoles,
+  //   );
 
   // const domainRoles = useTransformer(getAllUserRolesForDomain, [
   //   colony,
@@ -156,19 +198,19 @@ const PermissionManagementForm = ({
   //   [directDomainRoles, domainRoles],
   // );
 
-  const members = colonyWatchers.map((colonyUser) => {
-    // const {
-    //   profile: { walletAddress },
-    // } = user;
-    // const domainRole = domainRolesArray.find(
-    //   (rolesObject) => rolesObject.userAddress === walletAddress,
-    // );
-    return {
-      ...colonyUser,
-      roles: [], // domainRole ? domainRole.roles : [],
-      directRoles: [], // domainRole ? domainRole.directRoles : [],
-    };
-  });
+  // const members = colonyWatchers.map((colonyUser) => {
+  //   // const {
+  //   //   profile: { walletAddress },
+  //   // } = user;
+  //   // const domainRole = domainRolesArray.find(
+  //   //   (rolesObject) => rolesObject.userAddress === walletAddress,
+  //   // );
+  //   return {
+  //     ...colonyUser,
+  //     roles: [], // domainRole ? domainRole.roles : [],
+  //     directRoles: [], // domainRole ? domainRole.directRoles : [],
+  //   };
+  // });
 
   const handleDomainChange = (domainValue: number) => {
     setValue('domainId', domainValue);
@@ -178,10 +220,14 @@ const PermissionManagementForm = ({
   };
 
   const filteredRoles =
-    domainId !== Id.RootDomain
+    selectedDomainId !== Id.RootDomain
       ? availableRoles.filter(
-          (role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery,
-        )
+          /*
+           * Can't set recovery and root on a subdomain
+           * In subdomains they can only be inherited
+           */
+        (role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery,
+      )
       : availableRoles;
 
   return (
@@ -192,23 +238,26 @@ const PermissionManagementForm = ({
           titleValues={{ domain: domain?.metadata?.name }}
         />
       </DialogSection>
-      {!userHasPermission && (
+      {/* {!userHasPermission && (
         <DialogSection>
           <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
-      )}
+      )} */}
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <div className={styles.singleUserContainer}>
           <SingleUserPicker
-            data={members}
+            data={users}
             label={MSG.selectUser}
             name="user"
             filter={filterUserSelection}
             renderAvatar={supRenderAvatar}
-            disabled={disabledInput}
+            // disabled={disabledInput}
             placeholder={MSG.userPickerPlaceholder}
             dataTest="permissionUserSelector"
             itemDataTest="permissionUserSelectorItem"
+            // onSelected={(user) => {
+            //   console.log('changed user', user);
+            // }}
           />
         </div>
       </DialogSection>
@@ -228,17 +277,18 @@ const PermissionManagementForm = ({
         />
         <div className={styles.permissionChoiceContainer}>
           {filteredRoles.map((role) => {
-            const roleIsInherited =
-              !selectedUserDirectRoles.includes(role) &&
-              selectedUserInheritedRoles.includes(role);
+            // console.log('filtered role', role)
+            // const roleIsInherited =
+            //   !selectedUserDirectRoles.includes(role) &&
+            //   selectedUserInheritedRoles.includes(role);
             return (
               <PermissionManagementCheckbox
                 key={role}
-                readOnly={!canRoleBeSet(role) || roleIsInherited}
-                disabled={disabledInput || !user}
+                // readOnly={!canRoleBeSet(role) || roleIsInherited}
+                // disabled={disabledInput || !user}
                 role={role}
-                asterisk={roleIsInherited}
-                domainId={domainId}
+                // asterisk={roleIsInherited}
+                domainId={selectedDomainId}
                 dataTest="permission"
               />
             );
@@ -247,11 +297,11 @@ const PermissionManagementForm = ({
         <Annotations
           label={MSG.annotation}
           name="annotationMessage"
-          disabled={disabledInput}
+          // disabled={disabledInput}
           dataTest="permissionAnnotation"
         />
       </DialogSection>
-      {!canCreateMotion && (
+      {/* {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>
@@ -262,13 +312,13 @@ const PermissionManagementForm = ({
             requiredPermissions={[ColonyRole.Architecture]}
           />
         </DialogSection>
-      )}
+      )} */}
       {/* {onlyForceAction && (
         <NotEnoughReputation domainId={Number(domainId)} />
       )} */}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
-          disabled={disabledSubmit}
+          // disabled={disabledSubmit}
           dataTest="permissionConfirmButton"
           onSecondaryButtonClick={back ?? close}
           secondaryButtonText={{
