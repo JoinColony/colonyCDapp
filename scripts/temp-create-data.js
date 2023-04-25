@@ -1,9 +1,18 @@
-const { utils, Wallet, Contract, ContractFactory, providers, BigNumber } = require('ethers');
+const {
+  utils,
+  Wallet,
+  Contract,
+  ContractFactory,
+  providers,
+  BigNumber,
+} = require('ethers');
 
-const colonyJSExtras = require('@colony/colony-js/extras')
-const colonyJSIColony = require('../node_modules/@colony/colony-js/dist/cjs/contracts/IColony/9/factories/IColony__factory.js')
-const colonyJSMetaTxToken = require('../node_modules/@colony/colony-js/dist/cjs/contracts/factories/latest/MetaTxToken__factory.js')
-const { addAugmentsB } = require('../node_modules/@colony/colony-js/dist/cjs/clients/Core/augments/AddDomain.js');
+const colonyJSIColonyNetwork = require('../node_modules/@colony/colony-js/dist/cjs/contracts/factories/IColonyNetwork__factory.js');
+const colonyJSIColony = require('../node_modules/@colony/colony-js/dist/cjs/contracts/IColony/9/factories/IColony__factory.js');
+const colonyJSMetaTxToken = require('../node_modules/@colony/colony-js/dist/cjs/tokens/contracts/factories/MetaTxToken__factory.js');
+const {
+  addAugmentsB,
+} = require('../node_modules/@colony/colony-js/dist/cjs/clients/Core/augments/AddDomain.js');
 
 /*
  * @NOTE To preserve time, I just re-used a script I wrote for one of the lambda functions
@@ -67,21 +76,27 @@ const createWatchedColonies = /* GraphQL */ `
     }
   }
 `;
-const createDomain = /* GraphQL */`
+const createDomain = /* GraphQL */ `
   mutation CreateDomain($input: CreateDomainInput!) {
-    createDomain(input: $input) { id }
+    createDomain(input: $input) {
+      id
+    }
   }
 `;
-const createDomainMetadata = /* GraphQL */`
+const createDomainMetadata = /* GraphQL */ `
   mutation CreateDomainMetadata($input: CreateDomainMetadataInput!) {
-    createDomainMetadata(input: $input) { id }
+    createDomainMetadata(input: $input) {
+      id
+    }
   }
 `;
-const createColonyMetadata = /* GraphQL */`
+const createColonyMetadata = /* GraphQL */ `
   mutation CreateColonyMetadata($input: CreateColonyMetadataInput!) {
-    createColonyMetadata(input: $input) { id }
+    createColonyMetadata(input: $input) {
+      id
+    }
   }
-`
+`;
 
 /*
  * Queries
@@ -99,12 +114,15 @@ const getTokenFromEverywhere = /* GraphQL */ `
 /*
  * Helper methods
  */
-const delay = (ms = 300, verbose = false) => new Promise(resolve => setTimeout(() => {
-  if (verbose) {
-    console.log(`Delaying execution by ${ms} milliseconds`);
-  }
-  resolve();
-}, ms));
+const delay = (ms = 300, verbose = false) =>
+  new Promise((resolve) =>
+    setTimeout(() => {
+      if (verbose) {
+        console.log(`Delaying execution by ${ms} milliseconds`);
+      }
+      resolve();
+    }, ms),
+  );
 
 /*
  * User
@@ -124,14 +142,16 @@ const subscribeUserToColony = async (userAddress, colonyAddress) => {
   );
   await delay();
 
-  console.log(`Subscribing user { address: "${userAddress}" } to colony's { address: "${colonyAddress}" } watchers`);
+  console.log(
+    `Subscribing user { address: "${userAddress}" } to colony's { address: "${colonyAddress}" } watchers`,
+  );
 };
 
 const createUser = async (username, accountIndex = 0) => {
   /*
-  * @NOTE This could be done "cheaper", but I wanted to make sure the address
-  * is proper, so I've instantiated a wallet as well
-  */
+   * @NOTE This could be done "cheaper", but I wanted to make sure the address
+   * is proper, so I've instantiated a wallet as well
+   */
   const provider = new providers.JsonRpcProvider();
   const privateKey = Object.values(private_keys)[accountIndex];
   const userWallet = new Wallet(privateKey, provider);
@@ -186,7 +206,9 @@ const addTokenToUserTokens = async (userAddress, tokenAddress) => {
   );
   await delay();
 
-  console.log(`Adding token { address: "${tokenAddress}" } to user's { address: "${userAddress}" } tokens list`,);
+  console.log(
+    `Adding token { address: "${tokenAddress}" } to user's { address: "${userAddress}" } tokens list`,
+  );
 };
 
 const addTokenToColonyTokens = async (colonyAddress, tokenAddress) => {
@@ -204,7 +226,9 @@ const addTokenToColonyTokens = async (colonyAddress, tokenAddress) => {
   );
   await delay();
 
-  console.log(`Adding token { address: "${tokenAddress}" } to colony's { address: "${colonyAddress}" } tokens list`,);
+  console.log(
+    `Adding token { address: "${tokenAddress}" } to colony's { address: "${colonyAddress}" } tokens list`,
+  );
 };
 
 const addTokenToDB = async (tokenAddress) => {
@@ -218,9 +242,18 @@ const addTokenToDB = async (tokenAddress) => {
 };
 
 const createToken = async (symbol, singerOrWallet) => {
-  const { abi: TokenAbi, bytecode: TokenBytecode } = colonyJSMetaTxToken.MetaTxToken__factory;
-  const tokenFactory = new ContractFactory(TokenAbi, TokenBytecode, singerOrWallet);
-  const token = await tokenFactory.deploy(`Token ${symbol.toUpperCase()}`, symbol.toUpperCase(), 18);
+  const { abi: TokenAbi, bytecode: TokenBytecode } =
+    colonyJSMetaTxToken.MetaTxToken__factory;
+  const tokenFactory = new ContractFactory(
+    TokenAbi,
+    TokenBytecode,
+    singerOrWallet,
+  );
+  const token = await tokenFactory.deploy(
+    `Token ${symbol.toUpperCase()}`,
+    symbol.toUpperCase(),
+    18,
+  );
   await delay();
   await token.deployed();
   await delay();
@@ -242,7 +275,8 @@ const createToken = async (symbol, singerOrWallet) => {
  * Colony
  */
 const createMetacolony = async (singerOrWallet) => {
-  const { abi: IColonyNetworkAbi } = colonyJSExtras.factories.latest.IColonyNetwork__factory;
+  const { abi: IColonyNetworkAbi } =
+    colonyJSIColonyNetwork.IColonyNetwork__factory;
   const { abi: IColonyAbi } = colonyJSIColony.IColony__factory;
   const colonyNetwork = new Contract(
     etherRouterAddress,
@@ -270,8 +304,8 @@ const createMetacolony = async (singerOrWallet) => {
         colonyNativeTokenId: utils.getAddress(metacolonyTokenAddress),
         name: 'meta',
         type: 'METACOLONY',
-        version: BigNumber.from(metacolonyVersion).toNumber()
-      }
+        version: BigNumber.from(metacolonyVersion).toNumber(),
+      },
     },
     GRAPHQL_URI,
     API_KEY,
@@ -292,24 +326,30 @@ const createMetacolony = async (singerOrWallet) => {
         metacolonyQuery.errors[0].message,
       );
     } else {
-      console.log(`Creating metacolony { name: "meta", colonyAddress: "${utils.getAddress(metacolonyAddress)}", nativeToken: "${utils.getAddress(metacolonyTokenAddress)}", version: "${metacolonyVersion.toString()}" }`);
+      console.log(
+        `Creating metacolony { name: "meta", colonyAddress: "${utils.getAddress(
+          metacolonyAddress,
+        )}", nativeToken: "${utils.getAddress(
+          metacolonyTokenAddress,
+        )}", version: "${metacolonyVersion.toString()}" }`,
+      );
     }
 
-    // create metacolony metadata 
+    // create metacolony metadata
     const metadataMutation = await graphqlRequest(
       createColonyMetadata,
       {
         input: {
           id: utils.getAddress(metacolonyAddress),
-          displayName: 'Metacolony'
-        }
+          displayName: 'Metacolony',
+        },
       },
       GRAPHQL_URI,
       API_KEY,
     );
     await delay();
 
-    if(!metadataMutation.errors) {
+    if (!metadataMutation.errors) {
       console.log(`Creating metacolony metadata { displayName: "Metacolony" }`);
     }
 
@@ -320,7 +360,7 @@ const createMetacolony = async (singerOrWallet) => {
           id: `${utils.getAddress(metacolonyAddress)}_1`,
           name: 'Root',
           color: 'LIGHT_PINK',
-          description: ''
+          description: '',
         },
       },
       GRAPHQL_URI,
@@ -336,7 +376,7 @@ const createMetacolony = async (singerOrWallet) => {
           nativeId: 1,
           isRoot: true,
           nativeFundingPotId: 1,
-          nativeSkillId: 1
+          nativeSkillId: 1,
         },
       },
       GRAPHQL_URI,
@@ -346,7 +386,11 @@ const createMetacolony = async (singerOrWallet) => {
     await delay();
 
     if (!rootDomainMetadataMutation?.errors && !rootDomainMutation?.errors) {
-      console.log(`Creating root domain and its metadata { name: "Root", id: "${utils.getAddress(metacolonyAddress)}_1", color: "LIGHT_PINK", description: "" }`);
+      console.log(
+        `Creating root domain and its metadata { name: "Root", id: "${utils.getAddress(
+          metacolonyAddress,
+        )}_1", color: "LIGHT_PINK", description: "" }`,
+      );
     }
   }
 
@@ -355,7 +399,7 @@ const createMetacolony = async (singerOrWallet) => {
 
 const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
   const { abi: IColonyNetworkAbi } =
-    colonyJSExtras.factories.latest.IColonyNetwork__factory;
+    colonyJSIColonyNetwork.IColonyNetwork__factory;
   const colonyNetwork = new Contract(
     etherRouterAddress,
     IColonyNetworkAbi,
@@ -386,8 +430,8 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
         id: colonyAddress,
         colonyNativeTokenId: tokenAddress,
         name: colonyName,
-        version: BigNumber.from(currentNetworkVersion).toNumber()
-      }
+        version: BigNumber.from(currentNetworkVersion).toNumber(),
+      },
     },
     GRAPHQL_URI,
     API_KEY,
@@ -405,7 +449,9 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
   if (colonyQuery?.errors) {
     console.log('COLONY COULD NOT BE CREATED.', colonyQuery.errors[0].message);
   } else {
-    console.log(`Creating colony { name: "${colonyName}", colonyAddress: "${colonyAddress}", nativeToken: "${tokenAddress}", version: "${currentNetworkVersion.toString()}" }`);
+    console.log(
+      `Creating colony { name: "${colonyName}", colonyAddress: "${colonyAddress}", nativeToken: "${tokenAddress}", version: "${currentNetworkVersion.toString()}" }`,
+    );
   }
 
   // Colony metadata
@@ -414,16 +460,18 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
     {
       input: {
         id: utils.getAddress(colonyAddress),
-        displayName: `Colony ${colonyName.toUpperCase()}`
-      }
+        displayName: `Colony ${colonyName.toUpperCase()}`,
+      },
     },
     GRAPHQL_URI,
     API_KEY,
   );
   await delay();
 
-  if(!metadataMutation.errors) {
-    console.log(`Creating colony metadata { displayName: "Colony ${colonyName.toUpperCase()}" }`);
+  if (!metadataMutation.errors) {
+    console.log(
+      `Creating colony metadata { displayName: "Colony ${colonyName.toUpperCase()}" }`,
+    );
   }
 
   /*
@@ -440,13 +488,13 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
           id: `${utils.getAddress(colonyAddress)}_1`,
           name: 'Root',
           color: 'LIGHT_PINK',
-          description: ''
+          description: '',
         },
       },
       GRAPHQL_URI,
       API_KEY,
     );
-     // @NOTE: Temporary, until handled by block-ingestor (unlike subdomains)
+    // @NOTE: Temporary, until handled by block-ingestor (unlike subdomains)
     const rootDomainMutation = await graphqlRequest(
       createDomain,
       {
@@ -456,7 +504,7 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
           nativeId: 1,
           isRoot: true,
           nativeFundingPotId: 1,
-          nativeSkillId: 1
+          nativeSkillId: 1,
         },
       },
       GRAPHQL_URI,
@@ -466,65 +514,89 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
     await delay();
 
     if (!rootDomainMetadataMutation?.errors && !rootDomainMutation?.errors) {
-      console.log(`Creating root domain and its metadata { name: "Root", id: "${utils.getAddress(colonyAddress)}_1", color: "LIGHT_PINK", description: "" }`);
+      console.log(
+        `Creating root domain and its metadata { name: "Root", id: "${utils.getAddress(
+          colonyAddress,
+        )}_1", color: "LIGHT_PINK", description: "" }`,
+      );
     }
 
     /*
      * First Domain
      */
-    const firstSubdomainDeployment = await colony['addDomainWithProofs(uint256)'](1);
+    const firstSubdomainDeployment = await colony[
+      'addDomainWithProofs(uint256)'
+    ](1);
     await delay();
     const firstSubdomainTransactions = await firstSubdomainDeployment.wait();
     await delay();
-    const { args: { domainId: firstSubdomainId } } = firstSubdomainTransactions.events.find(event => !!event?.args?.domainId);
+    const {
+      args: { domainId: firstSubdomainId },
+    } = firstSubdomainTransactions.events.find(
+      (event) => !!event?.args?.domainId,
+    );
 
     const firstDomainMetadataMutation = await graphqlRequest(
       createDomainMetadata,
       {
         input: {
-          id: `${utils.getAddress(colonyAddress)}_${firstSubdomainId.toString()}`,
+          id: `${utils.getAddress(
+            colonyAddress,
+          )}_${firstSubdomainId.toString()}`,
           name: 'Red',
           color: 'RED',
-          description: 'First domain'
-        }
+          description: 'First domain',
+        },
       },
       GRAPHQL_URI,
       API_KEY,
-    )
+    );
 
     await delay();
 
     if (!firstDomainMetadataMutation?.errors) {
-      console.log(`Creating subdomain metadata { name: "Red", id: "${colonyAddress}_${firstSubdomainId.toString()}", color: "RED", description: "First domain" }`);
+      console.log(
+        `Creating subdomain metadata { name: "Red", id: "${colonyAddress}_${firstSubdomainId.toString()}", color: "RED", description: "First domain" }`,
+      );
     }
 
     /*
      * Second Domain
      */
-    const secondSubdomainDeployment = await colony['addDomainWithProofs(uint256)'](1);
+    const secondSubdomainDeployment = await colony[
+      'addDomainWithProofs(uint256)'
+    ](1);
     await delay();
     const secondSubdomainTransactions = await secondSubdomainDeployment.wait();
     await delay();
-    const { args: { domainId: secondSubdomainId } } = secondSubdomainTransactions.events.find(event => !!event?.args?.domainId);
+    const {
+      args: { domainId: secondSubdomainId },
+    } = secondSubdomainTransactions.events.find(
+      (event) => !!event?.args?.domainId,
+    );
 
     const secondDomainMetadataMutation = await graphqlRequest(
       createDomainMetadata,
       {
         input: {
-          id: `${utils.getAddress(colonyAddress)}_${secondSubdomainId.toString()}`,
+          id: `${utils.getAddress(
+            colonyAddress,
+          )}_${secondSubdomainId.toString()}`,
           name: 'Orange',
           color: 'ORANGE',
-          description: 'Second domain'
-        }
+          description: 'Second domain',
+        },
       },
       GRAPHQL_URI,
       API_KEY,
-    )
+    );
 
     await delay();
 
     if (!secondDomainMetadataMutation?.errors) {
-      console.log(`Creating subdomain metadata { name: "Orange", id: "${colonyAddress}_${secondSubdomainId.toString()}", color: "ORANGE", description: "Second domain" }`);
+      console.log(
+        `Creating subdomain metadata { name: "Orange", id: "${colonyAddress}_${secondSubdomainId.toString()}", color: "ORANGE", description: "Second domain" }`,
+      );
     }
   }
 
@@ -552,9 +624,21 @@ const createUserAndColonyData = async () => {
   await addTokenToUserTokens(thirdUser.address, firstTokenAddress);
   await addTokenToUserTokens(thirdUser.address, secondTokenAddress);
 
-  const firstColonyAddress = await createColony('a', firstTokenAddress, firstUser);
-  const secondColonyAddress = await createColony('b',secondTokenAddress,secondUser);
-  const thirdColonyAddress = await createColony('c',thirdTokenAddress,thirdUser);
+  const firstColonyAddress = await createColony(
+    'a',
+    firstTokenAddress,
+    firstUser,
+  );
+  const secondColonyAddress = await createColony(
+    'b',
+    secondTokenAddress,
+    secondUser,
+  );
+  const thirdColonyAddress = await createColony(
+    'c',
+    thirdTokenAddress,
+    thirdUser,
+  );
 
   await subscribeUserToColony(firstUser.address, secondColonyAddress);
   await subscribeUserToColony(firstUser.address, thirdColonyAddress);
