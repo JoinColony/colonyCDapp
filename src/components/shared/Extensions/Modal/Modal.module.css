@@ -13,7 +13,7 @@
 }
 
 .icon {
-  @apply flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded border border-gray-200 shadow-[0_1px_2px_rgba(16,24,40,0.05)];
+  @apply flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded border shadow-[0_1px_2px_rgba(16,24,40,0.05)];
 }
 
 .closeIcon {
