@@ -1,19 +1,19 @@
 .tabList {
-  @apply relative flex items-center w-full before:absolute before:bottom-0 before:left-0 before:w-full before:bg-gray-200 before:block before:h-px before:content-[""];
+  @apply relative flex items-center w-full before:absolute before:bottom-0 before:left-0 before:w-full before:bg-gray-200 before:block before:h-px before:content-[""] p-0;
 }
 
-.tabItem {
-  @apply relative inline-flex items-center justify-center py-2 text-gray-700 text-md font-medium cursor-pointer border-b border-transparent transition-colors duration-normal hover:text-blue-400 mr-7 last:mr-0 focus-visible:outline-none focus-visible:font-semibold focus-visible:text-blue-400 focus-visible:border-blue-400 focus-visible:z-[1];
+.navButton {
+  @apply transition-colors duration-normal border-none bg-gray-200 w-[1.375rem] h-[1.375rem] rounded flex items-center justify-center shrink-0 hover:bg-gray-300;
 }
 
-.selected {
-  @apply font-semibold text-blue-400 border-blue-400 z-[1];
+.navLeftButton {
+  @apply absolute top-[50%] translate-y-[-50%] left-0 z-10;
 }
 
-.disabled {
-  @apply text-gray-300 pointer-events-none;
+.navRightButton {
+  @apply absolute top-[50%] translate-y-[-50%] right-0 z-10;
 }
 
 .panel {
-  @apply mt-6;
+  @apply pt-4;
 }
