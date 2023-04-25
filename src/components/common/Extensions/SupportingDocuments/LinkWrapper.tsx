@@ -16,7 +16,7 @@ const LinkWrapper: FC<LinkWrapperProps> = ({ isDoubleLinkVisible }) => {
   return (
     <>
       {links.map((item) => (
-        <div className="pb-2">
+        <div className="pb-2" key={item.url}>
           <Link key={item.url} to={item.url} className="font-normal text-sm text-gray-600 hover:text-blue-400">
             {formatMessage({ id: item.text })}
           </Link>
