@@ -7,10 +7,10 @@ import './ImageCarousel.css'; // to fix rendering styles in storybook
 
 const displayName = 'common.Extensions.ImageCarousel';
 
-const ImageCarousel: FC<ImageCarouselProps> = ({ slidePercentage = 95, transitionTime = 300, slideUrls = images }) => (
+const ImageCarousel: FC<ImageCarouselProps> = ({ slidePercentage = 80, transitionTime = 300, slideUrls = images }) => (
   <div className={styles.carouselWrapper}>
     <Carousel
-      className="w-[33.5rem]"
+      className="w-[23.75rem] md:w-[49.0625rem] lg:w-[33.5rem]"
       showArrows={false}
       showThumbs={false}
       showStatus={false}
