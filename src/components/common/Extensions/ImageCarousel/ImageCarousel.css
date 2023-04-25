@@ -1,0 +1,20 @@
+#storybook-root > div > div > div {
+  position: relative;
+  overflow: visible;
+}
+
+#storybook-root > div > div > div > ul {
+  display: flex;
+  justify-content: center;
+  bottom: -2.5rem;
+  overflow: visible;
+}
+
+.carousel .slider-wrapper {
+  width: 33.5rem;
+}
+
+#storybook-root > div > div > div > div > ul > li.slide {
+  margin-right: 1rem;
+  height: 15.5rem;
+}
