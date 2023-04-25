@@ -1,12 +1,11 @@
 import { MessageDescriptor } from 'react-intl';
-import { TabsProps as ReactTabsProps } from 'react-tabs';
 
 export interface TabItem {
-  id: string;
+  id: number;
   title: MessageDescriptor | string;
   content: React.ReactNode;
 }
 
-export interface TabsProps extends ReactTabsProps {
+export interface TabsProps {
   items: TabItem[];
 }

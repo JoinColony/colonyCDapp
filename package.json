@@ -200,6 +200,7 @@
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.4.2",
     "react-tabs": "^5.1.0",
+    "react-tabs-scrollable": "^2.0.0-alpha",
     "react-textarea-autosize": "^8.3.4",
     "redux": "^4.2.0",
     "redux-immutable": "^4.0.0",

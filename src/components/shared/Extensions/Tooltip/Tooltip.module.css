@@ -33,19 +33,19 @@
 }
 
 .tooltipContainer[data-popper-placement*='top'] .tooltipArrow::before {
-  @apply border-t-[currentColor] border-r-transparent border-b-transparent border-l-transparent border-t-[0.625rem] border-r-[0.5rem] border-b-0 border-l-[0.5rem];
+  @apply border-t-current border-r-transparent border-b-transparent border-l-transparent border-t-[0.625rem] border-r-[0.5rem] border-b-0 border-l-[0.5rem];
 }
 
 .tooltipContainer[data-popper-placement*='left'] .tooltipArrow::before {
-  @apply border-t-transparent border-r-transparent border-b-transparent border-l-[currentColor] border-t-[0.5rem] border-r-0 border-b-[0.5rem] border-l-[0.625rem];
+  @apply border-t-transparent border-r-transparent border-b-transparent border-l-current border-t-[0.5rem] border-r-0 border-b-[0.5rem] border-l-[0.625rem];
 }
 
 .tooltipContainer[data-popper-placement*='bottom'] .tooltipArrow::before {
-  @apply border-t-transparent border-r-[transparent] border-b-[currentColor] border-l-transparent border-t-0 border-r-[0.5rem] border-b-[0.625rem] border-l-[0.5rem];
+  @apply border-t-transparent border-r-[transparent] border-b-current border-l-transparent border-t-0 border-r-[0.5rem] border-b-[0.625rem] border-l-[0.5rem];
 }
 
 .tooltipContainer[data-popper-placement*='right'] .tooltipArrow::before {
-  @apply border-t-transparent border-r-[currentColor] border-b-transparent border-l-transparent border-t-[0.5rem] border-r-[0.625rem] border-b-[0.5rem] border-l-0;
+  @apply border-t-transparent border-r-current border-b-transparent border-l-transparent border-t-[0.5rem] border-r-[0.625rem] border-b-[0.5rem] border-l-0;
 }
 
 .tooltipContainer[data-popper-interactive='false'] {
