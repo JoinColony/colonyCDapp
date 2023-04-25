@@ -10,12 +10,12 @@
   .inner {
     @apply w-full overflow-y-auto pr-6 max-h-[calc(100vh-4rem-1rem)] md:max-h-[calc(100vh-4rem-4rem-1rem)] pb-6;
 
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  .icon {
-    @apply flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded border border-gray-200 shadow-[0_1px_2px_rgba(16,24,40,0.05)];
-  }
+  -webkit-overflow-scrolling: touch;
+}
+
+.icon {
+  @apply flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded border shadow-[0_1px_2px_rgba(16,24,40,0.05)];
+}
 
   .closeIcon {
     @apply absolute -top-2 right-4 w-[2rem] h-[2rem] flex items-center justify-center transition-all duration-normal hover:text-gray-400;
