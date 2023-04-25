@@ -29,7 +29,7 @@ type Props = DialogProps &
 
 const validationSchema = object({
   forceAction: boolean().defined(),
-  tokenAddress: string().address().notRequired(),
+  tokenAddress: string().notRequired(),
   selectedTokenAddresses: array()
     .of(string().address().defined())
     .notRequired(),
