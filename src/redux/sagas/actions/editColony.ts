@@ -7,6 +7,9 @@ import {
   CreateColonyTokensDocument,
   CreateColonyTokensMutation,
   CreateColonyTokensMutationVariables,
+  GetTokenFromEverywhereDocument,
+  GetTokenFromEverywhereQuery,
+  GetTokenFromEverywhereQueryVariables,
   UpdateColonyMetadataDocument,
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
@@ -186,18 +189,37 @@ function* editColonyAction({
         // @TODO token was deleted
       } else {
         // token was added
-        yield apolloClient.mutate<
-          CreateColonyTokensMutation,
-          CreateColonyTokensMutationVariables
+        const response = yield apolloClient.query<
+          GetTokenFromEverywhereQuery,
+          GetTokenFromEverywhereQueryVariables
         >({
-          mutation: CreateColonyTokensDocument,
+          query: GetTokenFromEverywhereDocument,
           variables: {
             input: {
-              colonyID: colony.colonyAddress,
-              tokenID: modifiedTokenAddress,
+              tokenAddress: modifiedTokenAddress,
             },
           },
         });
+
+        /**
+         * @NOTE Do not create colony/token entry in the db if the token wasn't returned by the GetTokenFromEverywhereQuery.
+         * Otherwise, it will cause any query referencing it to fail
+         * This case should hopefully be prevented by validation in token management dialog
+         */
+        if (response?.data.getTokenFromEverywhere?.items?.length) {
+          yield apolloClient.mutate<
+            CreateColonyTokensMutation,
+            CreateColonyTokensMutationVariables
+          >({
+            mutation: CreateColonyTokensDocument,
+            variables: {
+              input: {
+                colonyID: colony.colonyAddress,
+                tokenID: modifiedTokenAddress,
+              },
+            },
+          });
+        }
       }
     }
 
