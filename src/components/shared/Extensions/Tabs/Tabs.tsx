@@ -6,9 +6,9 @@ import styles from './Tabs.module.css';
 
 const displayName = 'Extensions.Tabs';
 
-const Tabs: FC<TabsProps> = ({ items }) => {
+const Tabs: FC<TabsProps> = ({ items, initialActiveTab = 0 }) => {
   const { formatMessage } = useIntl();
-  const [activeTab, setActiveTab] = React.useState(0);
+  const [activeTab, setActiveTab] = React.useState(initialActiveTab);
 
   const handleOnTabClick = (_, id) => {
     setActiveTab(id);
