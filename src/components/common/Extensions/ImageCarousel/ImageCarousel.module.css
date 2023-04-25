@@ -8,11 +8,11 @@
 
 .carouselWrapper [class~='carousel-slider'],
 .carouselWrapper [class~='slider-wrapper'] {
-  @apply w-[33.5rem];
+  @apply w-[23.75rem] md:w-[49.0625rem] lg:w-[33.5rem];
 }
 
 .carouselWrapper [class~='slide'] {
-  @apply mr-4 h-[15.5rem];
+  @apply md:h-[15.5rem] md:mr-4;
 }
 
 .carouselWrapper [class~='control-dots'] {
