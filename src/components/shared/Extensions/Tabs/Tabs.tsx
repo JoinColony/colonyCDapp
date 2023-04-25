@@ -8,7 +8,7 @@ const displayName = 'Extensions.Tabs';
 
 const Tabs: FC<TabsProps> = ({ items }) => {
   const { formatMessage } = useIntl();
-  const [activeTab, setActiveTab] = React.useState(1);
+  const [activeTab, setActiveTab] = React.useState(0);
 
   const handleOnTabClick = (_, id) => {
     setActiveTab(id);
