@@ -18,12 +18,15 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
   text,
   textValues,
   type = 'button',
+  ariaLabel,
+  isFullSize,
   ...rest
 }) => {
   const { formatMessage } = useIntl();
 
   const titleText = typeof title == 'string' ? title : title && formatMessage(title);
   const buttonText = typeof text == 'string' ? text : text && formatMessage(text, textValues);
+  const ariaLabelText = typeof ariaLabel === 'string' ? ariaLabel : ariaLabel && formatMessage(ariaLabel);
 
   return (
     <>
@@ -31,13 +34,16 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
         <SpinnerLoader appearance={{ size: 'medium' }} />
       ) : (
         <button
-          className={clsx('flex items-center font-medium transition-all duration-normal', {
+          className={clsx('flex items-center justify-center font-medium transition-all duration-normal', {
             [styles.primarySolid]: mode === 'primarySolid',
             [styles.primaryOutline]: mode === 'primaryOutline',
+            [styles.secondarySolid]: mode === 'secondarySolid',
             [styles.textButton]: mode === 'textButton',
             'pointer-events-none': disabled,
+            'w-full': isFullSize,
           })}
           disabled={disabled || loading}
+          aria-label={ariaLabelText}
           aria-busy={loading}
           title={titleText}
           type={type}

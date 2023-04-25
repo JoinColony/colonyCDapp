@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 
 import clsx from 'clsx';
 import styles from './ThreeColumns.module.css';
@@ -6,7 +6,7 @@ import { ThreeColumnsProps } from './types';
 
 const displayName = 'frame.Extensions.ThreeColumns';
 
-const ThreeColumns: React.FC<PropsWithChildren<ThreeColumnsProps>> = ({
+const ThreeColumns: FC<PropsWithChildren<ThreeColumnsProps>> = ({
   leftAside,
   topRow,
   children,

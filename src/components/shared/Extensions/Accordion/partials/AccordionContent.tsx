@@ -20,7 +20,7 @@ const AccordionContent: FC<AccordionItemProps> = ({ content }) => {
     <div className="relative">
       {content?.map((item) => (
         <div key={item.id}>
-          <div className="flex justify-between mt-4">
+          <div className="flex justify-between mt-4 items-center">
             {item.textItem && item.textItem}
             {item.inputItem && item.inputItem}
           </div>

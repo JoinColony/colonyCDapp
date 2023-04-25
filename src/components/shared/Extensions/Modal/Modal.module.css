@@ -1,0 +1,21 @@
+.overlay {
+  @apply flex justify-center items-center fixed top-0 left-0 right-0 bottom-0 z-[999] overflow-hidden bg-base-sprite bg-opacity-[50%];
+}
+
+.modal {
+  @apply relative outline-0 overflow-hidden bg-base-white pt-6 pl-6 w-[100vw] h-[100vh] md:w-[30.3125rem] md:h-auto md:max-h-[calc(100vh-4rem)] md:border md:border-gray-200 md:rounded-xl  shadow-[0_0.625rem_1.875rem_rgba(0,0,0,0.05)];
+}
+
+.inner {
+  @apply w-full overflow-y-auto pr-6 max-h-[calc(100vh-4rem-1rem)] md:max-h-[calc(100vh-4rem-4rem-1rem)] pb-6;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+.icon {
+  @apply flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded border border-gray-200 shadow-[0_1px_2px_rgba(16,24,40,0.05)];
+}
+
+.closeIcon {
+  @apply absolute -top-2 right-4 w-[2rem] h-[2rem] flex items-center justify-center transition-all duration-normal hover:text-gray-400;
+}

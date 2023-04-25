@@ -1,11 +1,11 @@
-import React, { PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 import { ExtensionStatusBadgeProps } from './types';
 
 const displayName = 'common.Extensions.ExtensionStatusBadge';
 
-const ExtensionStatusBadge: React.FC<PropsWithChildren<ExtensionStatusBadgeProps>> = ({
+const ExtensionStatusBadge: FC<PropsWithChildren<ExtensionStatusBadgeProps>> = ({
   mode = 'Coming soon',
   children,
   text,
