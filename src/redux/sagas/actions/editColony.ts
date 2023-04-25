@@ -185,9 +185,9 @@ function* editColonyAction({
       existingTokenAddresses,
       tokenAddresses,
     );
+    const haveTokensChanged = !!(tokenAddresses && modifiedTokenAddress);
 
-    // check if the token list has changed
-    if (tokenAddresses && modifiedTokenAddress) {
+    if (haveTokensChanged) {
       if (tokenAddresses.includes(modifiedTokenAddress)) {
         // token was added
         const response = yield apolloClient.query<
@@ -266,6 +266,8 @@ function* editColonyAction({
               colony.metadata,
               colonyDisplayName,
               colonyAvatarImage,
+              false,
+              haveTokensChanged,
             ),
           },
         },
