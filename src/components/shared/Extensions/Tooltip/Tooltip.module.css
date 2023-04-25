@@ -51,7 +51,3 @@
 .tooltipContainer[data-popper-interactive='false'] {
   @apply pointer-events-auto;
 }
-
-.tooltipContainer[data-popper-interactive='false'] {
-  @apply pointer-events-auto;
-}
