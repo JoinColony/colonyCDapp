@@ -18,6 +18,7 @@ fragment Colony on Colony {
   }
   tokens {
     items {
+      colonyTokensId: id
       token {
         ...Token
       }

@@ -7,6 +7,9 @@ import {
   CreateColonyTokensDocument,
   CreateColonyTokensMutation,
   CreateColonyTokensMutationVariables,
+  DeleteColonyTokensDocument,
+  DeleteColonyTokensMutation,
+  DeleteColonyTokensMutationVariables,
   GetTokenFromEverywhereDocument,
   GetTokenFromEverywhereQuery,
   GetTokenFromEverywhereQueryVariables,
@@ -185,9 +188,7 @@ function* editColonyAction({
 
     // check if the token list has changed
     if (tokenAddresses && modifiedTokenAddress) {
-      if (!tokenAddresses.includes(modifiedTokenAddress)) {
-        // @TODO token was deleted
-      } else {
+      if (tokenAddresses.includes(modifiedTokenAddress)) {
         // token was added
         const response = yield apolloClient.query<
           GetTokenFromEverywhereQuery,
@@ -216,6 +217,28 @@ function* editColonyAction({
               input: {
                 colonyID: colony.colonyAddress,
                 tokenID: modifiedTokenAddress,
+              },
+            },
+          });
+        }
+      } else {
+        // token was deleted
+        // get id of the colony/token entry in the DB (this is separate from either token or colony address)
+        const { colonyTokensId } =
+          colony.tokens?.items.find(
+            (colonyToken) =>
+              colonyToken?.token.tokenAddress === modifiedTokenAddress,
+          ) || {};
+
+        if (colonyTokensId) {
+          yield apolloClient.mutate<
+            DeleteColonyTokensMutation,
+            DeleteColonyTokensMutationVariables
+          >({
+            mutation: DeleteColonyTokensDocument,
+            variables: {
+              input: {
+                id: colonyTokensId,
               },
             },
           });
