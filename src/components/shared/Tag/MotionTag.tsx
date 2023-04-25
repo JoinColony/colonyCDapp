@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MotionStyles } from '~types';
+import { MotionStyles } from '~utils/colonyMotions';
 
 import Tag from './Tag';
 

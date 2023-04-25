@@ -2,7 +2,8 @@ import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import { useDialogActionPermissions } from '~hooks';
-import { Colony, noMotionsVotingReputationVersion } from '~types';
+import { Colony } from '~types';
+import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
 
 import { EnabledExtensionData } from './useEnabledExtensions';
 
