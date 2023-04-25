@@ -3,7 +3,8 @@ import React from 'react';
 import DetailsWidget from '~shared/DetailsWidget';
 import { MotionTag } from '~shared/Tag';
 import { useColonyContext } from '~hooks';
-import { ColonyAction, MOTION_TAG_MAP, MotionState } from '~types';
+import { ColonyAction } from '~types';
+import { MOTION_TAG_MAP, MotionState } from '~utils/colonyMotions';
 
 import DefaultActionContent from './DefaultActionContent';
 

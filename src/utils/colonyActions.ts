@@ -10,10 +10,10 @@ import {
   Domain as ColonyDomain,
   ActionItemType,
   ActionUserRoles,
-  MotionVote,
 } from '~types';
 
 import { formatText } from './intl';
+import { MotionVote } from './colonyMotions';
 
 export enum ActionPageDetails {
   FromDomain = 'FromDomain',

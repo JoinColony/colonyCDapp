@@ -3,14 +3,10 @@ import React, { ReactNode } from 'react';
 import { FormattedDateParts } from 'react-intl';
 
 import { MotionTag } from '~shared/Tag';
-import {
-  MOTION_TAG_MAP,
-  Message,
-  MotionState,
-  UniversalMessageValues,
-} from '~types';
+import { Message, UniversalMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
+import { MOTION_TAG_MAP, MotionState } from '~utils/colonyMotions';
 
 import styles from './ListItem.css';
 
