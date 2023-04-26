@@ -59,7 +59,7 @@ const MSG = defineMessages({
   },
   annotation: {
     id: `${displayName}.annotation`,
-    defaultMessage: 'Explain why you’re making these changes (optional)',
+    defaultMessage: `Explain why you're making these changes (optional)`,
   },
   selectUser: {
     id: `${displayName}.selectUser`,
@@ -81,7 +81,7 @@ const supRenderAvatar = (item: ItemDataType<User>) => (
 );
 
 const PermissionManagementForm = ({
-  colony: { domains, roles },
+  colony: { domains },
   colony,
   back,
   close,
@@ -103,57 +103,45 @@ const PermissionManagementForm = ({
   const colonyDomains = domains?.items.filter(notNull) || [];
   const domain = findDomainByNativeId(selectedDomainId, colony);
 
-  // console.log(all)
-
-  // const {
-  //   inheritedRoles: selectedUserInheritedRoles,
-  //   directRoles: selectedUserDirectRoles,
-  // } = useSelectedUserRoles(colony, user, domainId);
-  // const defaultSelectedUserRoles = useMemo(
-  //   () =>
-  //     [
-  //       ...new Set([...selectedUserDirectRoles, ...selectedUserInheritedRoles]),
-  //     ].map((role) => role.toString()),
-  //   [selectedUserDirectRoles, selectedUserInheritedRoles],
-  // );
-
-  // useEffect(() => {
-  //   setValue('roles', defaultSelectedUserRoles);
-  // }, [defaultSelectedUserRoles, setValue]);
-
+  const userRoles = useSelectedUserRoles(colony, selectedUser?.walletAddress);
 
   useEffect(() => {
-    if (selectedUser) {
-      const userRoles = roles?.items?.find(
-        (role) =>
-          role?.targetAddress === selectedUser.walletAddress &&
-          role?.domain?.nativeId === selectedDomainId,
-      );
-      if (userRoles) {
-        const {
-          role_0: recoveryRole,
-          role_1: rootRole,
-          role_2: arbitrationRole,
-          role_3: architectureRole,
-          role_5: fundingRole,
-          role_6: administrationRole,
-        } = userRoles;
-        // @NOTE Different order of roles, since it's required by the UI
-        const formRolesMap = [
-          rootRole && '1',
-          administrationRole && '6',
-          architectureRole && '3',
-          fundingRole && '5',
-          recoveryRole && '0',
-          arbitrationRole && '2',
-        ].filter((role) => !!role);
-        setValue('roles', formRolesMap);
-      } else {
-        setValue('roles', []);
-      }
-    }
-  }, [selectedUser, roles, selectedDomainId, setValue]);
+    if (userRoles) {
+      // @NOTE They only matter for subdomains and will never exist for Root
+      const {
+        0: inheritedRecoveryRole,
+        1: inheritedRootRole,
+        2: inheritedArbitrationRole,
+        3: inheritedArchitectureRole,
+        // architecture subdomain missing since it's deprecated
+        5: inheritedFundingRole,
+        6: inheritedAdministrationRole,
+      } = userRoles.inherited?.[selectedDomainId] || {};
 
+      const {
+        0: directRecoveryRole,
+        1: directRootRole,
+        2: directArbitrationRole,
+        3: directArchitectureRole,
+        // architecture subdomain missing since it's deprecated
+        5: directFundingRole,
+        6: directAdministrationRole,
+      } = userRoles.direct?.[selectedDomainId] || {};
+
+      // @NOTE Different order of roles, since it's required by the UI
+      const formRolesMap = [
+        (inheritedRootRole || directRootRole) && '1',
+        (inheritedAdministrationRole || directAdministrationRole) && '6',
+        (inheritedArchitectureRole || directArchitectureRole) && '3',
+        (inheritedFundingRole || directFundingRole) && '5',
+        (inheritedRecoveryRole || directRecoveryRole) && '0',
+        (inheritedArbitrationRole || directArbitrationRole) && '2',
+      ].filter((role) => !!role);
+      setValue('roles', formRolesMap);
+    } else {
+      setValue('roles', []);
+    }
+  }, [selectedDomainId, setValue, userRoles]);
 
   // const requiredRoles = [
   //   domainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture,
@@ -224,10 +212,10 @@ const PermissionManagementForm = ({
       ? availableRoles.filter(
           /*
            * Can't set recovery and root on a subdomain
-           * In subdomains they can only be inherited
+           * They can only be inherited in subdomains
            */
-        (role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery,
-      )
+          (role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery,
+        )
       : availableRoles;
 
   return (
@@ -277,7 +265,9 @@ const PermissionManagementForm = ({
         />
         <div className={styles.permissionChoiceContainer}>
           {filteredRoles.map((role) => {
-            // console.log('filtered role', role)
+            const directRole = userRoles?.direct?.[selectedDomainId]?.[role];
+            const inheritedRole =
+              userRoles?.inherited?.[selectedDomainId]?.[role];
             // const roleIsInherited =
             //   !selectedUserDirectRoles.includes(role) &&
             //   selectedUserInheritedRoles.includes(role);
@@ -285,9 +275,10 @@ const PermissionManagementForm = ({
               <PermissionManagementCheckbox
                 key={role}
                 // readOnly={!canRoleBeSet(role) || roleIsInherited}
+                readOnly={inheritedRole && !directRole}
                 // disabled={disabledInput || !user}
                 role={role}
-                // asterisk={roleIsInherited}
+                asterisk={inheritedRole}
                 domainId={selectedDomainId}
                 dataTest="permission"
               />

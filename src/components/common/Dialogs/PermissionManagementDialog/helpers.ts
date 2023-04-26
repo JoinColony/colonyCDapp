@@ -1,5 +1,6 @@
 import { ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
+import { useMemo } from 'react';
 
 import {
   EnabledExtensionData,
@@ -37,66 +38,68 @@ export const getPermissionManagementDialogPayload = ({
 export const useSelectedUserRoles = (
   colony: ColonyFragment,
   selectedUserAddress: Address,
-) => {
-  const formattedUserRoles = {
-    direct: {},
-    inherited: {},
-  };
-  if (colony?.roles && colony?.domains && selectedUserAddress) {
-    const allExistingUserRoles = colony.roles.items.filter(
-      (role) => role?.targetAddress === selectedUserAddress,
-    );
-    colony.domains.items.map((domain) => {
-      /*
-       * @NOTE Re-filtering
-       * Preffer filtering again, as opposed to iterating over the full array each time
-       * This will still iterate, just that it's going to be over a limited size array
-       *
-       * @NOTE Inheritence
-       * Permissions are inherited from parent down to all childen (and their children)
-       * Since we only have one current parrent in the CDapp, meaning "Root", we only
-       * have to account for it.
-       * However this will need to be refactored once we move to multi level domains
-       */
-      const specificDomainUserRoles = allExistingUserRoles.filter((role) => {
-        const rolesInRoot = role?.domain?.nativeId === Id.RootDomain;
-        const rolesInSubdomain = role?.domain?.nativeId === domain?.nativeId;
-        if (domain?.nativeId === Id.RootDomain) {
-          return rolesInRoot;
-        }
-        return rolesInRoot || rolesInSubdomain;
-      });
-      const currentDomainId = domain?.nativeId || 'unknownDomainId';
-      return specificDomainUserRoles.map((role) => {
-        let roleType = 'direct';
-        // Inherited
-        if (currentDomainId !== role?.domain?.nativeId) {
-          roleType = 'inherited';
-        }
+) =>
+  useMemo(() => {
+    const formattedUserRoles = {
+      direct: {},
+      inherited: {},
+    };
+    if (colony?.roles && colony?.domains && selectedUserAddress) {
+      const allExistingUserRoles = colony.roles.items.filter(
+        (role) => role?.targetAddress === selectedUserAddress,
+      );
+      colony.domains.items.map((domain) => {
         /*
-         * I think this rule is stupid. I think I'm going to disable it.
-         * We need a forum to do this, I don't want to feel that I'm making
-         * decisions like this unanimous
+         * @NOTE Re-filtering
+         * Preffer filtering again, as opposed to iterating over the full array each time
+         * This will still iterate, just that it's going to be over a limited size array
+         *
+         * @NOTE Inheritence
+         * Permissions are inherited from parent down to all childen (and their children)
+         * Since we only have one current parrent in the CDapp, meaning "Root", we only
+         * have to account for it.
+         * However this will need to be refactored once we move to multi level domains
          */
-        // eslint-disable-next-line no-multi-assign
-        const currentDomainRoles = (formattedUserRoles[roleType][
-          currentDomainId
-        ] = {
-          ...formattedUserRoles[roleType][currentDomainId],
-          recoveryRole: role?.role_0,
-          rootRole: role?.role_1,
-          arbitrationRole: role?.role_2,
-          architectureRole: role?.role_3,
-          fundingRole: role?.role_5,
-          administrationRole: role?.role_6,
+        const specificDomainUserRoles = allExistingUserRoles.filter((role) => {
+          const rolesInRoot = role?.domain?.nativeId === Id.RootDomain;
+          const rolesInSubdomain = role?.domain?.nativeId === domain?.nativeId;
+          if (domain?.nativeId === Id.RootDomain) {
+            return rolesInRoot;
+          }
+          return rolesInRoot || rolesInSubdomain;
         });
-        return currentDomainRoles;
+        const currentDomainId = domain?.nativeId || 'unknownDomainId';
+        return specificDomainUserRoles.map((role) => {
+          let roleType = 'direct';
+          // Inherited
+          if (currentDomainId !== role?.domain?.nativeId) {
+            roleType = 'inherited';
+          }
+          /*
+           * I think this rule is stupid. I think I'm going to disable it.
+           * We need a forum to do this, I don't want to feel that I'm making
+           * decisions like this unanimous
+           */
+          // eslint-disable-next-line no-multi-assign
+          const currentDomainRoles = (formattedUserRoles[roleType][
+            currentDomainId
+          ] = {
+            ...formattedUserRoles[roleType][currentDomainId],
+            0: role?.role_0, // recovery
+            1: role?.role_1, // root
+            2: role?.role_2, // arbitration
+            3: role?.role_3, // architecture
+            // role_4 architecture subdomain is deprecated
+            5: role?.role_5, // funding
+            6: role?.role_6, // administrator
+          });
+          return currentDomainRoles;
+        });
       });
-    });
+      return formattedUserRoles;
+    }
     return formattedUserRoles;
-  }
-  return formattedUserRoles;
-};
+  }, [colony, selectedUserAddress]);
 
 export const usePermissionManagementDialogStatus = (
   colony: Colony,
