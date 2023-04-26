@@ -6,7 +6,7 @@ type WindowDimensions = {
 };
 
 const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState<WindowDimensions | null>(null);
+  const [windowSize, setWindowSize] = useState<WindowDimensions>();
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,8 +22,8 @@ const useWindowSize = () => {
   }, []);
 
   return {
-    width: windowSize?.width,
-    height: windowSize?.height,
+    width: windowSize?.width as number,
+    height: windowSize?.height as number,
   };
 };
 
