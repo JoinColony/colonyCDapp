@@ -11,6 +11,7 @@ import {
 import { getAllRootAccounts } from '~redux/transformers';
 import { Address, Colony } from '~types';
 import { isEqual, sortBy } from '~utils/lodash';
+import { notNull, notUndefined } from '~utils/arrays';
 
 import { availableRoles } from './constants';
 import { ColonyFragment } from '~gql';
@@ -191,4 +192,49 @@ export const useCanRoleBeSet = (
   };
 
   return canRoleBeSet;
+};
+
+export const formatRolesForForm = (
+  userRoles: Record<
+    string,
+    Record<string, Record<string, boolean | undefined | null>>
+  >,
+  domainId: number,
+) => {
+  if (userRoles) {
+    // @NOTE They only matter for subdomains and will never exist for Root
+    const {
+      0: inheritedRecoveryRole,
+      1: inheritedRootRole,
+      2: inheritedArbitrationRole,
+      3: inheritedArchitectureRole,
+      // architecture subdomain missing since it's deprecated
+      5: inheritedFundingRole,
+      6: inheritedAdministrationRole,
+    } = userRoles.inherited?.[domainId] || {};
+
+    const {
+      0: directRecoveryRole,
+      1: directRootRole,
+      2: directArbitrationRole,
+      3: directArchitectureRole,
+      // architecture subdomain missing since it's deprecated
+      5: directFundingRole,
+      6: directAdministrationRole,
+    } = userRoles.direct?.[domainId] || {};
+
+    // @NOTE Different order of roles, since it's required by the UI
+    const formRolesMap = [
+      (inheritedRootRole || directRootRole) && '1',
+      (inheritedAdministrationRole || directAdministrationRole) && '6',
+      (inheritedArchitectureRole || directArchitectureRole) && '3',
+      (inheritedFundingRole || directFundingRole) && '5',
+      (inheritedRecoveryRole || directRecoveryRole) && '0',
+      (inheritedArbitrationRole || directArbitrationRole) && '2',
+    ]
+      .filter(notNull)
+      .filter(notUndefined);
+    return formRolesMap;
+  }
+  return [];
 };
