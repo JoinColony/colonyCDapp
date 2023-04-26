@@ -6,11 +6,15 @@ import UserAvatar from '~shared/UserAvatar';
 import ListItem, { ListItemStatus } from '~shared/ListItem';
 import { ColonyAction } from '~types';
 import { useColonyContext } from '~hooks';
+import {
+  MotionState,
+  useShouldDisplayMotionCountdownTime,
+} from '~utils/colonyMotions';
 
 import CountDownTimer from '../CountDownTimer';
 import { getActionTitleValues } from '../helpers';
 import ActionsListItemMeta from './ActionsListItemMeta';
-import { useMotionStatusDisplay } from './helpers';
+import { useColonyMotionState, useMotionTag } from './helpers';
 
 const displayName = 'common.ColonyActions.ActionsListItem';
 
@@ -55,12 +59,15 @@ const ActionsListItem = ({
 
   const status = ListItemStatus.Defused;
 
-  const {
-    motionState,
-    MotionTag,
-    showMotionCountdownTimer,
-    refetchMotionState,
-  } = useMotionStatusDisplay(isMotion, motionData, transactionHash);
+  const { motionState, refetchMotionState } = useColonyMotionState(
+    isMotion,
+    motionData,
+    transactionHash,
+  );
+
+  const MotionTag = useMotionTag(isMotion, motionState);
+  const showMotionCountdownTimer =
+    useShouldDisplayMotionCountdownTime(motionState);
 
   return (
     <ListItem
@@ -77,7 +84,7 @@ const ActionsListItem = ({
         showMotionCountdownTimer &&
         motionData && (
           <CountDownTimer
-            motionState={motionState}
+            motionState={motionState as MotionState} // safe casting: if motionState is null, showMotionCountdownTimer will be false.
             motionId={motionData.motionId}
             motionStakes={motionData.motionStakes}
             refetchMotionState={refetchMotionState}

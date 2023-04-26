@@ -2,64 +2,52 @@ import { useGetMotionStateQuery } from '~gql';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { motionTags } from '~shared/Tag';
 import { Address, MotionData } from '~types';
-import {
-  MotionState,
-  getMotionState,
-  shouldDisplayMotionCountdownTime,
-} from '~utils/colonyMotions';
+import { MotionState, getMotionState } from '~utils/colonyMotions';
 
-const getMotionTag = (
-  isMotion: boolean | null | undefined,
-  motionState: MotionState,
-) => {
-  // If not motion, then forced action
-  if (!isMotion) {
-    return motionTags.Forced;
-  }
-
-  return motionTags[motionState];
-  // @TODO: handle case where motion is from now-uninstalled voting rep version.
-};
-
-export const useMotionStatusDisplay = (
+export const useColonyMotionState = (
   isMotion: boolean | null | undefined,
   motionData: MotionData | null | undefined,
   transactionHash: Address,
 ) => {
-  const { isVotingReputationEnabled } = useEnabledExtensions();
   const { colony } = useColonyContext();
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
-  const {
-    data: motionStateData,
-    loading: loadingMotionState,
-    refetch: refetchMotionState,
-  } = useGetMotionStateQuery({
-    skip: !isMotion || !motionData || !colony,
-    variables: {
-      input: {
-        colonyAddress: colony?.colonyAddress ?? '',
-        transactionHash,
+  const { data: motionStateData, refetch: refetchMotionState } =
+    useGetMotionStateQuery({
+      skip: !isMotion || !motionData || !colony || !isVotingReputationEnabled,
+      variables: {
+        input: {
+          colonyAddress: colony?.colonyAddress ?? '',
+          transactionHash,
+        },
       },
-    },
-  });
+      fetchPolicy: 'cache-and-network',
+    });
   const networkMotionState = motionStateData?.getMotionState;
 
-  const showMotionTag = !loadingMotionState && isVotingReputationEnabled;
-
   const motionState =
-    networkMotionState && motionData
+    networkMotionState !== undefined && motionData
       ? getMotionState(networkMotionState, motionData)
-      : MotionState.Invalid;
+      : null;
 
-  const MotionTag = showMotionTag ? getMotionTag(isMotion, motionState) : () => null;
+  return { motionState, refetchMotionState };
+};
 
-  const showMotionCountdownTimer =
-    shouldDisplayMotionCountdownTime(motionState);
+export const useMotionTag = (
+  isMotion: boolean | null | undefined,
+  motionState: MotionState | null,
+) => {
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
-  return {
-    motionState,
-    MotionTag,
-    showMotionCountdownTimer,
-    refetchMotionState,
-  };
+  // If not motion, then forced action
+  if (!isMotion && isVotingReputationEnabled) {
+    return motionTags.Forced;
+  }
+
+  if (motionState) {
+    return motionTags[motionState];
+  }
+
+  // If no motion state, or voting rep is not enabled, don't show a motion tag.
+  return () => null;
 };
