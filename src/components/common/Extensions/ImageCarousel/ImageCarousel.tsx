@@ -4,47 +4,52 @@ import { images } from './consts';
 import styles from './ImageCarousel.module.css';
 import { ImageCarouselProps } from './ImageCarousel.types';
 import './ImageCarousel.css'; // to fix rendering styles in storybook
+import useWindowSize from '~hooks/useWindowSize';
 
 const displayName = 'common.Extensions.ImageCarousel';
 
-const ImageCarousel: FC<ImageCarouselProps> = ({ slidePercentage = 80, transitionTime = 300, slideUrls = images }) => (
-  <div className={styles.carouselWrapper}>
-    <Carousel
-      className="w-[23.75rem] md:w-[49.0625rem] lg:w-[33.5rem]"
-      showArrows={false}
-      showThumbs={false}
-      showStatus={false}
-      swipeable
-      useKeyboardArrows
-      emulateTouch
-      centerSlidePercentage={slidePercentage}
-      centerMode
-      transitionTime={transitionTime}
-      renderIndicator={(onClickHandler, isSelected, index, label) => (
-        <li>
-          <div
-            className={`opacity-100 w-2 h-2 cursor-pointer rounded-full mx-2 hover:bg-blue-400 ${
-              isSelected ? 'bg-gray-500' : 'bg-gray-200'
-            }`}
-            onClick={onClickHandler}
-            onKeyDown={onClickHandler}
-            onKeyPress={onClickHandler}
-            key={index}
-            role="button"
-            tabIndex={0}
-            aria-label={`${label} ${index + 1}`}
-          />
-        </li>
-      )}
-    >
-      {slideUrls.map((url) => (
-        <div className="slide" key={url}>
-          <img alt="file" src={url} />
-        </div>
-      ))}
-    </Carousel>
-  </div>
-);
+const ImageCarousel: FC<ImageCarouselProps> = ({ transitionTime = 300, slideUrls = images }) => {
+  const { width } = useWindowSize();
+  const setSlidePercentage = (width >= 1024 && 90) || (width >= 428 && 65) || (width >= 427 && 100);
+  return (
+    <div className={styles.carouselWrapper}>
+      <Carousel
+        className="max-w-[23.75rem] sm:max-w-[49.0625rem] md:max-w-[35.75rem]"
+        showArrows={false}
+        showThumbs={false}
+        showStatus={false}
+        swipeable
+        useKeyboardArrows
+        emulateTouch
+        centerSlidePercentage={setSlidePercentage || 100}
+        centerMode
+        transitionTime={transitionTime}
+        renderIndicator={(onClickHandler, isSelected, index, label) => (
+          <li>
+            <div
+              className={`opacity-100 w-2 h-2 cursor-pointer rounded-full mx-2 hover:bg-blue-400 ${
+                isSelected ? 'bg-gray-500' : 'bg-gray-200'
+              }`}
+              onClick={onClickHandler}
+              onKeyDown={onClickHandler}
+              onKeyPress={onClickHandler}
+              key={index}
+              role="button"
+              tabIndex={0}
+              aria-label={`${label} ${index + 1}`}
+            />
+          </li>
+        )}
+      >
+        {slideUrls.map((url) => (
+          <div className="slide" key={url}>
+            <img alt="file" src={url} />
+          </div>
+        ))}
+      </Carousel>
+    </div>
+  );
+};
 
 ImageCarousel.displayName = displayName;
 
