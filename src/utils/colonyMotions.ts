@@ -3,6 +3,7 @@ import { Decimal } from 'decimal.js';
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import { MotionData } from '~types';
+import { useEnabledExtensions } from '~hooks';
 
 export enum MotionVote {
   Yay = 1,
@@ -153,8 +154,16 @@ export interface MotionValue {
 //   return updatedRoles;
 // };
 
-export const shouldDisplayMotionCountdownTime = (motionState: MotionState) =>
-  motionState !== MotionState.Passed &&
-  motionState !== MotionState.Failed &&
-  motionState !== MotionState.FailedNotFinalizable &&
-  motionState !== MotionState.Invalid;
+export const useShouldDisplayMotionCountdownTime = (
+  motionState: MotionState | null,
+) => {
+  const { isVotingReputationEnabled } = useEnabledExtensions();
+  return (
+    isVotingReputationEnabled &&
+    !!motionState &&
+    motionState !== MotionState.Passed &&
+    motionState !== MotionState.Failed &&
+    motionState !== MotionState.FailedNotFinalizable &&
+    motionState !== MotionState.Invalid
+  );
+};
