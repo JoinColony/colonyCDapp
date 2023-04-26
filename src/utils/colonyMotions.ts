@@ -8,6 +8,7 @@ import {
 import { isNil } from '~utils/lodash';
 import { getRolesForUserAndDomain } from '~redux/transformers';
 import { ActionUserRoles, MotionData, User } from '~types';
+import { useEnabledExtensions } from '~hooks';
 
 export enum MotionVote {
   Yay = 1,
@@ -158,8 +159,16 @@ export const getUpdatedDecodedMotionRoles = (
   return updatedRoles;
 };
 
-export const shouldDisplayMotionCountdownTime = (motionState: MotionState) =>
-  motionState !== MotionState.Passed &&
-  motionState !== MotionState.Failed &&
-  motionState !== MotionState.FailedNotFinalizable &&
-  motionState !== MotionState.Invalid;
+export const useShouldDisplayMotionCountdownTime = (
+  motionState: MotionState | null,
+) => {
+  const { isVotingReputationEnabled } = useEnabledExtensions();
+  return (
+    isVotingReputationEnabled &&
+    !!motionState &&
+    motionState !== MotionState.Passed &&
+    motionState !== MotionState.Failed &&
+    motionState !== MotionState.FailedNotFinalizable &&
+    motionState !== MotionState.Invalid
+  );
+};
