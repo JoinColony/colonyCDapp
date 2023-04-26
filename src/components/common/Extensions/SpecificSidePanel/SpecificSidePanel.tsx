@@ -4,6 +4,11 @@ import { SpecificSidePanelProps } from './types';
 import styles from './SpecificSidePanel.module.css';
 import ExtensionStatusBadge from '../ExtensionStatusBadge-new/ExtensionStatusBadge';
 import Permissions from './partials/Permissions';
+import DateInstalled from './partials/DateInstalled';
+import InstaledBy from './partials/InstaledBy';
+import Version from './partials/Version';
+import ContractAddress from './partials/ContractAddress';
+import Developer from './partials/Developer';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 
@@ -15,50 +20,33 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ types, sidepanelData })
       <h3 className="font-semibold text-lg text-gray-900 pb-[1.375rem]">
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
-      {sidepanelData.map((item) => (
-        <Fragment key={item.id}>
-          <div className={styles.panelRow} key={item.statusType.title}>
-            <div className={styles.panelTitle}>{item.statusType.title}</div>
-            <div className="w-[50%] justify-start flex flex-row">
-              {types?.map((type) => (
-                <div className=" mr-1" key={type}>
-                  <ExtensionStatusBadge mode={type} text={type} />
-                </div>
-              ))}
+      {sidepanelData.map(
+        ({ id, dateInstalled, instaledBy, statusType, versionInstalled, contractAddress, developer, permissions }) => (
+          <Fragment key={id}>
+            <div className={styles.panelRow}>
+              <div className={styles.panelTitle}>{statusType.title}</div>
+              <div className="w-[50%] justify-start flex flex-row">
+                {types?.map((type) => (
+                  <div className=" mr-1" key={type}>
+                    <ExtensionStatusBadge mode={type} text={type} />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-          {types?.[0] === 'not-installed' && (
-            <div className={styles.panelRow} key={item.dateInstalled.title}>
-              <div className={styles.panelTitle}>{item.dateInstalled.title}</div>
-              <div className={styles.panelData}>{item.dateInstalled.date}</div>
+            {types?.[0] === 'not-installed' && <DateInstalled title={dateInstalled.title} date={dateInstalled.date} />}
+            {types?.[0] !== 'not-installed' && <InstaledBy title={instaledBy.title} component={instaledBy.component} />}
+            <Version title={versionInstalled.title} version={versionInstalled.version} />
+            {types?.[0] !== 'not-installed' && (
+              <ContractAddress title={contractAddress.title} address={contractAddress.address} />
+            )}
+            <Developer title={developer.title} developer={developer.developer} />
+            <div className="flex flex-col justify-between">
+              <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">{permissions.title}</div>
+              <Permissions data={permissions.permissions} />
             </div>
-          )}
-          {types?.[0] !== 'not-installed' && (
-            <div className={styles.panelRow} key={item.instaledBy.title}>
-              <div className={styles.panelTitle}>{item.instaledBy.title}</div>
-              <div>{item.instaledBy.component}</div>
-            </div>
-          )}
-          <div className={styles.panelRow} key={item.versionInstalled.title}>
-            <div className={styles.panelTitle}>{item.versionInstalled.title}</div>
-            <div className={styles.panelData}>{item.versionInstalled.version}</div>
-          </div>
-          {types?.[0] !== 'not-installed' && (
-            <div className={styles.panelRow} key={item.contractAddress.title}>
-              <div className={styles.panelTitle}>{item.contractAddress.title}</div>
-              <div className={styles.panelData}>{item.contractAddress.address}</div>
-            </div>
-          )}
-          <div className={styles.panelRow} key={item.developer.title}>
-            <div className={styles.panelTitle}>{item.developer.title}</div>
-            <div className={styles.panelData}>{item.developer.developer}</div>
-          </div>
-          <div className="flex flex-col justify-between" key={item.permissions.title}>
-            <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">{item.permissions.title}</div>
-            <Permissions data={item.permissions.permissions} />
-          </div>
-        </Fragment>
-      ))}
+          </Fragment>
+        )
+      )}
     </div>
   );
 };

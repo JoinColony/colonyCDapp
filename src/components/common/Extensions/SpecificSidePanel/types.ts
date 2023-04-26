@@ -1,3 +1,4 @@
+import React from 'react';
 import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge-new/types';
 import { sidepanelData } from './consts';
 
@@ -13,3 +14,12 @@ export interface PermissionsProps {
 }
 
 export type SidepanelDataProps = typeof sidepanelData;
+
+export interface PanelTypeProps {
+  title: string;
+  date?: string;
+  component?: React.ReactElement;
+  version?: string;
+  address?: string;
+  developer?: string;
+}
