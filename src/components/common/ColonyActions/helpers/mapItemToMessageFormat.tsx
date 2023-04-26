@@ -166,6 +166,7 @@ export const useMapMotionEventToExpectedFormat = (
 ) => {
   const { colony } = useColonyContext();
   const { data } = useGetUserByAddressQuery({
+    skip: !motionMessageData?.initiatorAddress,
     variables: {
       address: motionMessageData?.initiatorAddress ?? '',
     },
