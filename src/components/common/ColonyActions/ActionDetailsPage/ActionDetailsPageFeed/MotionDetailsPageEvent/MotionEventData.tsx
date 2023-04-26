@@ -18,7 +18,7 @@ type MotionEventDataProps = Pick<
 >;
 
 const MotionEventData = ({
-  actionData: { createdAt, transactionHash },
+  actionData: { createdAt, transactionHash, motionData, type },
   motionMessageData,
   eventName,
 }: MotionEventDataProps) => {
@@ -32,7 +32,12 @@ const MotionEventData = ({
       text={
         <FormattedMessage
           id={messageId}
-          values={useGetMotionEventTitleValues(eventName, motionMessageData)}
+          values={useGetMotionEventTitleValues(
+            eventName,
+            motionMessageData,
+            type,
+            motionData,
+          )}
         />
       }
       details={
