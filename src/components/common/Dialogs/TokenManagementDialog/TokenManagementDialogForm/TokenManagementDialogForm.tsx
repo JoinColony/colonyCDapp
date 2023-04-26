@@ -89,10 +89,7 @@ const TokenManagementDialogForm = ({
     tokenAddress,
   }: FormValues) =>
     !!tokenAddress ||
-    !isEqual(
-      [AddressZero, ...colonyTokenAddresses].sort(),
-      selectedTokenAddresses?.sort(),
-    );
+    !isEqual([...colonyTokenAddresses].sort(), selectedTokenAddresses?.sort());
 
   const allTokens = [...colonyTokens, ...(userHasPermission ? tokenList : [])]
     .map((token) => token?.token)
