@@ -84,19 +84,13 @@ const MintTokenDialog = ({
         onSuccess={close}
         transform={transform}
       >
-        {({ watch }) => {
-          const forceActionValue = watch('forceAction');
-          if (forceActionValue !== isForce) {
-            setIsForce(forceActionValue);
-          }
-          return (
-            <MintTokenDialogForm
-              colony={colony}
-              back={prevStep && callStep ? () => callStep(prevStep) : undefined}
-              enabledExtensionData={enabledExtensionData}
-            />
-          );
-        }}
+        <MintTokenDialogForm
+          colony={colony}
+          back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+          enabledExtensionData={enabledExtensionData}
+          handleIsForceChange={setIsForce}
+          isForce={isForce}
+        />
       </Form>
     </Dialog>
   );
