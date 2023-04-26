@@ -35,6 +35,7 @@ const UserPermissionsBadge: FC<PropsWithChildren<UserPermissionsBadgeProps>> = (
 
   return (
     <Tooltip
+      {...rest}
       tooltipContent={
         <>
           <span className={clsx(styles.tooltipBadge, 'mb-2.5')}>{content}</span>
@@ -42,9 +43,7 @@ const UserPermissionsBadge: FC<PropsWithChildren<UserPermissionsBadgeProps>> = (
         </>
       }
     >
-      <span className={styles.badge} {...rest}>
-        {content}
-      </span>
+      <span className={styles.badge}>{content}</span>
     </Tooltip>
   );
 };
