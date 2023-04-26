@@ -27,6 +27,16 @@ const meta: Meta<typeof UserPermissionsBadge> = {
         type: 'text',
       },
     },
+    placement: {
+      name: 'Placement',
+      options: ['auto', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'right', 'left'],
+      control: {
+        type: 'select',
+      },
+    },
+  },
+  args: {
+    placement: 'auto',
   },
 };
 
