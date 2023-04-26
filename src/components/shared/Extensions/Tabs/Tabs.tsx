@@ -22,6 +22,7 @@ const Tabs: FC<TabsProps> = ({ items }) => {
         tabsUpperContainerClassName={styles.tabList}
         leftNavBtnClassName={styles.navLeftButton}
         rightNavBtnClassName={styles.navRightButton}
+        // @ts-ignore - react-tabs-scrollable has invalid type for this prop
         leftBtnIcon={
           <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 30 30">
             <path
@@ -30,6 +31,7 @@ const Tabs: FC<TabsProps> = ({ items }) => {
             />
           </svg>
         }
+        // @ts-ignore - react-tabs-scrollable has invalid type for this prop
         rightBtnIcon={
           <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 30 30">
             <path
