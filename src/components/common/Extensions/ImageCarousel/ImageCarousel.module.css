@@ -6,13 +6,8 @@
   @apply relative overflow-visible;
 }
 
-.carouselWrapper [class~='carousel-slider'],
-.carouselWrapper [class~='slider-wrapper'] {
-  @apply w-[23.75rem] md:w-[49.0625rem] lg:w-[33.5rem];
-}
-
 .carouselWrapper [class~='slide'] {
-  @apply md:h-[15.5rem] md:mr-4;
+  @apply max-h-[15.5rem] sm:mr-4;
 }
 
 .carouselWrapper [class~='control-dots'] {
