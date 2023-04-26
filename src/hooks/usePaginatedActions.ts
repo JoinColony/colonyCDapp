@@ -37,10 +37,11 @@ export const usePaginatedActions = (): UsePaginatedActionsReturn => {
     fetchPolicy: 'network-only',
   });
   const { items, nextToken } = data?.getActionsByColony || {};
-  const [visibleActions, setVisibleActions] = useState(ITEMS_PER_PAGE);
+  const [visibleActionsCount, setVisibleActionsCount] =
+    useState(ITEMS_PER_PAGE);
 
   const actions = items?.filter(notNull) || [];
-  const hasMoreActions = visibleActions < actions.length || !!nextToken;
+  const hasMoreActions = visibleActionsCount < actions.length || !!nextToken;
 
   const handleSortDirectionChange: SortDirectionChangeHandler = (
     newSortDirection,
@@ -48,7 +49,7 @@ export const usePaginatedActions = (): UsePaginatedActionsReturn => {
     setSortDirection(newSortDirection);
   };
 
-  const fetchMoreActions = nextToken && actions.length < visibleActions;
+  const fetchMoreActions = nextToken && actions.length < visibleActionsCount;
   if (fetchMoreActions) {
     fetchMore({
       variables: {
@@ -58,14 +59,14 @@ export const usePaginatedActions = (): UsePaginatedActionsReturn => {
   }
 
   const loadMoreActions = () => {
-    setVisibleActions((count) => count + ITEMS_PER_PAGE);
+    setVisibleActionsCount((count) => count + ITEMS_PER_PAGE);
   };
 
   return {
     loading,
     sortDirection,
     onSortDirectionChange: handleSortDirectionChange,
-    actions: actions.slice(0, visibleActions),
+    actions: actions.slice(0, visibleActionsCount),
     hasMoreActions,
     loadMoreActions,
   };
