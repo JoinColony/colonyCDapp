@@ -1,0 +1,11 @@
+.panelRow {
+  @apply flex flex-row items-center justify-between py-[0.625rem];
+}
+
+.panelTitle {
+  @apply font-normal text-sm text-gray-600 w-[50%];
+}
+
+.panelData {
+  @apply font-normal text-md text-gray-900 w-[50%] justify-start;
+}
