@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { AccordionContentItemProps } from '../types';
 import AccordionHeader from './AccordionHeader';
 
-const displayName = 'Extensions.Accordion.Partials.AccordionContentItem';
+const displayName = 'Extensions.Accordion.partials.AccordionContentItem';
 
 const AccordionContentItem: FC<AccordionContentItemProps> = ({ accordionItem, isOpen, onClick }) => (
   <div className="relative">

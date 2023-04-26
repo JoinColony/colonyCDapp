@@ -1,5 +1,8 @@
 @import 'react-responsive-carousel/lib/styles/carousel.min.css';
 @import 'react-popper-tooltip/dist/styles.css';
+@import 'react-tabs/style/react-tabs.css';
+@import "react-tabs-scrollable/dist/rts.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -84,4 +87,28 @@
 
 .carouselWrapper [class~='slide'] {
   @apply mr-4 h-[15.5rem];
+}
+
+.rts___tabs {
+  @apply py-0;
+}
+
+.rts___tab {
+  @apply shadow-none border-0 relative inline-flex items-center justify-center px-0 py-2 text-gray-700 text-md font-medium cursor-pointer border-b border-transparent transition-colors duration-normal  ml-0 mr-6 last:mr-0 hover:text-blue-400 rounded-none;
+}
+
+.rts___tab___selected {
+  @apply shadow-none font-semibold text-blue-400 border-blue-400;
+}
+
+button:disabled.rts___btn, .rts___nav___btn:disabled, button[disabled].rts___btn {
+  @apply invisible;
+}
+
+.rts___nav___btn > svg {
+  @apply w-[0.75rem];
+}
+
+.rts___nav___btn:hover > svg {
+  @apply stroke-none;
 }
