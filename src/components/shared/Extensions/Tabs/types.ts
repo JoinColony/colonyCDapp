@@ -7,6 +7,5 @@ export interface TabItem {
 }
 
 export interface TabsProps {
-  initialActiveTab?: number;
   items: TabItem[];
 }
