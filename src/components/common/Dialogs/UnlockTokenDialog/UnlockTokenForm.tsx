@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-
+import { useFormContext } from 'react-hook-form';
 import { ColonyRole, Id } from '@colony/colony-js';
 
+import { SetStateFn } from '~types';
 import ExternalLink from '~shared/ExternalLink';
 import {
   DialogSection,
@@ -11,7 +12,6 @@ import {
   DialogControls,
 } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
-// import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import { useActionDialogStatus } from '~hooks';
 
@@ -21,6 +21,7 @@ import {
   NoPermissionMessage,
   CannotCreateMotionMessage,
   PermissionRequiredInfo,
+  NotEnoughReputation,
 } from '../Messages';
 
 import styles from './UnlockTokenForm.css';
@@ -59,26 +60,54 @@ const MSG = defineMessages({
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 
+interface Props extends ActionDialogProps {
+  handleIsForceChange: SetStateFn;
+  isForce: boolean;
+}
+
 const UnlockTokenForm = ({
   colony,
   back,
   enabledExtensionData,
-}: ActionDialogProps) => {
-  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } =
-    useActionDialogStatus(
-      colony,
-      requiredRoles,
-      [Id.RootDomain],
-      enabledExtensionData,
-    );
+  handleIsForceChange,
+  isForce,
+}: Props) => {
+  const { watch } = useFormContext();
+  const { forceAction } = watch();
+  const {
+    userHasPermission,
+    disabledInput,
+    disabledSubmit,
+    canCreateMotion,
+    canOnlyForceAction,
+  } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
   // @TODO: Integrate those checks into another hook that uses useActionDialogStatus internally, when the data is made available.
   // const isNativeTokenLocked = !!colony?.nativeToken?.unlocked;
   // const canUserUnlockNativeToken = hasRootPermission && status?.nativeToken?.unlockable && isNativeTokenLocked;
 
+  useEffect(() => {
+    if (forceAction !== isForce) {
+      handleIsForceChange(forceAction);
+    }
+  }, [forceAction, isForce, handleIsForceChange]);
+
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading title={MSG.title} />
+        <DialogHeading
+          title={MSG.title}
+          colony={colony}
+          userHasPermission={userHasPermission}
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
+          isRootMotion
+        />
       </DialogSection>
       {!userHasPermission && ( // && isNativeTokenLocked
         <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -124,7 +153,11 @@ const UnlockTokenForm = ({
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
-      {/* {onlyForceAction && isNativeTokenLocked && <NotEnoughReputation />} */}
+      {canOnlyForceAction && ( // && isNativeTokenLocked
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NotEnoughReputation />
+        </DialogSection>
+      )}
       {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
