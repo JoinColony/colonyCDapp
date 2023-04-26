@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, Fragment } from 'react';
 import { useIntl } from 'react-intl';
 import { SpecificSidePanelProps } from './types';
 import styles from './SpecificSidePanel.module.css';
@@ -16,12 +16,12 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ types, sidepanelData })
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
       {sidepanelData.map((item) => (
-        <>
+        <Fragment key={item.id}>
           <div className={styles.panelRow} key={item.statusType.title}>
             <div className={styles.panelTitle}>{item.statusType.title}</div>
             <div className="w-[50%] justify-start flex flex-row">
               {types?.map((type) => (
-                <div className=" mr-1">
+                <div className=" mr-1" key={type}>
                   <ExtensionStatusBadge mode={type} text={type} />
                 </div>
               ))}
@@ -57,7 +57,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ types, sidepanelData })
             <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">{item.permissions.title}</div>
             <Permissions data={item.permissions.permissions} />
           </div>
-        </>
+        </Fragment>
       ))}
     </div>
   );

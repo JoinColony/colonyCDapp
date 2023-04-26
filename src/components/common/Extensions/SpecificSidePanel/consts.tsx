@@ -2,6 +2,7 @@ import React from 'react';
 
 export const sidepanelData = [
   {
+    id: 0,
     statusType: {
       title: 'Status',
     },
