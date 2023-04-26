@@ -53,7 +53,7 @@ const useGetColonyAction = (colony?: Colony | null) => {
     loading: loadingMotionState,
     refetch: refetchMotionState,
   } = useGetMotionStateQuery({
-    skip: !action?.motionData,
+    skip: !action?.motionData || skipQuery,
     variables: {
       input: {
         colonyAddress: colony?.colonyAddress ?? '',
