@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
@@ -38,6 +38,7 @@ import {
   useCanRoleBeSet,
   usePermissionManagementDialogStatus,
   useSelectedUserRoles,
+  formatRolesForForm,
 } from './helpers';
 
 import styles from './PermissionManagementDialogForm.css';
@@ -106,41 +107,7 @@ const PermissionManagementForm = ({
   const userRoles = useSelectedUserRoles(colony, selectedUser?.walletAddress);
 
   useEffect(() => {
-    if (userRoles) {
-      // @NOTE They only matter for subdomains and will never exist for Root
-      const {
-        0: inheritedRecoveryRole,
-        1: inheritedRootRole,
-        2: inheritedArbitrationRole,
-        3: inheritedArchitectureRole,
-        // architecture subdomain missing since it's deprecated
-        5: inheritedFundingRole,
-        6: inheritedAdministrationRole,
-      } = userRoles.inherited?.[selectedDomainId] || {};
-
-      const {
-        0: directRecoveryRole,
-        1: directRootRole,
-        2: directArbitrationRole,
-        3: directArchitectureRole,
-        // architecture subdomain missing since it's deprecated
-        5: directFundingRole,
-        6: directAdministrationRole,
-      } = userRoles.direct?.[selectedDomainId] || {};
-
-      // @NOTE Different order of roles, since it's required by the UI
-      const formRolesMap = [
-        (inheritedRootRole || directRootRole) && '1',
-        (inheritedAdministrationRole || directAdministrationRole) && '6',
-        (inheritedArchitectureRole || directArchitectureRole) && '3',
-        (inheritedFundingRole || directFundingRole) && '5',
-        (inheritedRecoveryRole || directRecoveryRole) && '0',
-        (inheritedArbitrationRole || directArbitrationRole) && '2',
-      ].filter((role) => !!role);
-      setValue('roles', formRolesMap);
-    } else {
-      setValue('roles', []);
-    }
+    setValue('roles', formatRolesForForm(userRoles, selectedDomainId));
   }, [selectedDomainId, setValue, userRoles]);
 
   // const requiredRoles = [
@@ -243,9 +210,6 @@ const PermissionManagementForm = ({
             placeholder={MSG.userPickerPlaceholder}
             dataTest="permissionUserSelector"
             itemDataTest="permissionUserSelectorItem"
-            // onSelected={(user) => {
-            //   console.log('changed user', user);
-            // }}
           />
         </div>
       </DialogSection>
