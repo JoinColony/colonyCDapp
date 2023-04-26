@@ -9,8 +9,6 @@ import {
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
 import { notNull } from '~utils/arrays';
-import { xor } from '~utils/lodash';
-import { ADDRESS_ZERO } from '~constants';
 
 import {
   createTransaction,
@@ -27,32 +25,10 @@ import {
   transactionPending,
   transactionReady,
 } from '../../actionCreators';
-import { updateColonyTokens } from '../utils/updateColonyTokens';
-
-/**
- * Function returning an array of token addresses that were either added to or deleted
- * from the modified token addresses list.
- * It returns an empty array if there's no difference between the lists
- */
-const getModifiedTokenAddresses = (
-  nativeTokenAddress: string,
-  existingTokenAddresses: string[],
-  modifiedTokenAddresses?: string[] | null,
-) => {
-  if (!modifiedTokenAddresses) {
-    return [];
-  }
-
-  // get a token address that has been modified, excluding colony's native token and chain's default token
-  const modifiedTokenAddress = xor(
-    existingTokenAddresses,
-    modifiedTokenAddresses,
-  ).filter(
-    (tokenAddress) =>
-      tokenAddress !== nativeTokenAddress && tokenAddress !== ADDRESS_ZERO,
-  );
-  return modifiedTokenAddress;
-};
+import {
+  getModifiedTokenAddresses,
+  updateColonyTokens,
+} from '../utils/updateColonyTokens';
 
 function* editColonyAction({
   payload: {

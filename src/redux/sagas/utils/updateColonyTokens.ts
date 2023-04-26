@@ -1,3 +1,4 @@
+import { ADDRESS_ZERO } from '~constants';
 import { ContextModule, getContext } from '~context';
 import {
   CreateColonyTokensDocument,
@@ -11,6 +12,32 @@ import {
   GetTokenFromEverywhereQueryVariables,
 } from '~gql';
 import { Colony } from '~types';
+import { xor } from '~utils/lodash';
+
+/**
+ * Function returning an array of token addresses that were either added to or deleted
+ * from the modified token addresses list.
+ * It returns an empty array if there's no difference between the lists
+ */
+export const getModifiedTokenAddresses = (
+  nativeTokenAddress: string,
+  existingTokenAddresses: string[],
+  modifiedTokenAddresses?: string[] | null,
+) => {
+  if (!modifiedTokenAddresses) {
+    return [];
+  }
+
+  // get a token address that has been modified, excluding colony's native token and chain's default token
+  const modifiedTokenAddress = xor(
+    existingTokenAddresses,
+    modifiedTokenAddresses,
+  ).filter(
+    (tokenAddress) =>
+      tokenAddress !== nativeTokenAddress && tokenAddress !== ADDRESS_ZERO,
+  );
+  return modifiedTokenAddress;
+};
 
 export function* updateColonyTokens(
   colony: Colony,
