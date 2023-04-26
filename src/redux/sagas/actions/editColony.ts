@@ -4,15 +4,6 @@ import { ClientType } from '@colony/colony-js';
 import { ContextModule, getContext } from '~context';
 import { Action, ActionTypes, AllActions } from '~redux';
 import {
-  CreateColonyTokensDocument,
-  CreateColonyTokensMutation,
-  CreateColonyTokensMutationVariables,
-  DeleteColonyTokensDocument,
-  DeleteColonyTokensMutation,
-  DeleteColonyTokensMutationVariables,
-  GetTokenFromEverywhereDocument,
-  GetTokenFromEverywhereQuery,
-  GetTokenFromEverywhereQueryVariables,
   UpdateColonyMetadataDocument,
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
@@ -36,18 +27,20 @@ import {
   transactionPending,
   transactionReady,
 } from '../../actionCreators';
+import { updateColonyTokens } from '../utils/updateColonyTokens';
 
 /**
- * Function returning the token address that was either added to or deleted from modified token addresses list
- * It returns null if there's no difference between the lists
+ * Function returning an array of token addresses that were either added to or deleted
+ * from the modified token addresses list.
+ * It returns an empty array if there's no difference between the lists
  */
-const getModifiedTokenAddress = (
+const getModifiedTokenAddresses = (
   nativeTokenAddress: string,
   existingTokenAddresses: string[],
   modifiedTokenAddresses?: string[] | null,
 ) => {
   if (!modifiedTokenAddresses) {
-    return null;
+    return [];
   }
 
   // get a token address that has been modified, excluding colony's native token and chain's default token
@@ -57,8 +50,8 @@ const getModifiedTokenAddress = (
   ).filter(
     (tokenAddress) =>
       tokenAddress !== nativeTokenAddress && tokenAddress !== ADDRESS_ZERO,
-  )[0];
-  return modifiedTokenAddress ?? null;
+  );
+  return modifiedTokenAddress;
 };
 
 function* editColonyAction({
@@ -180,70 +173,21 @@ function* editColonyAction({
       colony.tokens?.items
         .filter(notNull)
         .map((tokenItem) => tokenItem?.token.tokenAddress) || [];
-    const modifiedTokenAddress = getModifiedTokenAddress(
+    const modifiedTokenAddresses = getModifiedTokenAddresses(
       colony.nativeToken.tokenAddress,
       existingTokenAddresses,
       tokenAddresses,
     );
-    const haveTokensChanged = !!(tokenAddresses && modifiedTokenAddress);
+    const haveTokensChanged = !!(
+      tokenAddresses && modifiedTokenAddresses.length
+    );
 
     if (haveTokensChanged) {
-      if (tokenAddresses.includes(modifiedTokenAddress)) {
-        // token was added
-        const response = yield apolloClient.query<
-          GetTokenFromEverywhereQuery,
-          GetTokenFromEverywhereQueryVariables
-        >({
-          query: GetTokenFromEverywhereDocument,
-          variables: {
-            input: {
-              tokenAddress: modifiedTokenAddress,
-            },
-          },
-        });
-
-        /**
-         * @NOTE Do not create colony/token entry in the db if the token wasn't returned by the GetTokenFromEverywhereQuery.
-         * Otherwise, it will cause any query referencing it to fail
-         * This case should hopefully be prevented by validation in token management dialog
-         */
-        if (response?.data.getTokenFromEverywhere?.items?.length) {
-          yield apolloClient.mutate<
-            CreateColonyTokensMutation,
-            CreateColonyTokensMutationVariables
-          >({
-            mutation: CreateColonyTokensDocument,
-            variables: {
-              input: {
-                colonyID: colony.colonyAddress,
-                tokenID: modifiedTokenAddress,
-              },
-            },
-          });
-        }
-      } else {
-        // token was deleted
-        // get id of the colony/token entry in the DB (this is separate from either token or colony address)
-        const { colonyTokensId } =
-          colony.tokens?.items.find(
-            (colonyToken) =>
-              colonyToken?.token.tokenAddress === modifiedTokenAddress,
-          ) || {};
-
-        if (colonyTokensId) {
-          yield apolloClient.mutate<
-            DeleteColonyTokensMutation,
-            DeleteColonyTokensMutationVariables
-          >({
-            mutation: DeleteColonyTokensDocument,
-            variables: {
-              input: {
-                id: colonyTokensId,
-              },
-            },
-          });
-        }
-      }
+      yield updateColonyTokens(
+        colony,
+        existingTokenAddresses,
+        modifiedTokenAddresses,
+      );
     }
 
     /**
