@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 // import Link from '~shared/Link/Link';
@@ -6,9 +6,9 @@ import { FormattedMessage } from 'react-intl';
 import { LinkItemProps } from './types';
 import styles from './LinkItem.module.css';
 
-const displayName = 'common.Extensions.SubNavigation.Partials.LinkItem';
+const displayName = 'common.Extensions.SubNavigation.partials.LinkItem';
 
-const LinkItem: React.FC<PropsWithChildren<LinkItemProps>> = ({ title, description, statusBadge }) => {
+const LinkItem: FC<PropsWithChildren<LinkItemProps>> = ({ title, description, statusBadge }) => {
   return (
     <li className={styles.itemWrapper}>
       {/* <Link to="/"> */}

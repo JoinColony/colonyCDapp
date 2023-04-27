@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, FC } from 'react';
 import clsx from 'clsx';
 
 import Button from '~shared/Extensions/Button/Button';
@@ -9,7 +9,7 @@ import styles from './SubNavigationItemMobile.module.css';
 
 const displayName = 'common.Extensions.SubNavigation.SubNavigationItem.SubNavigationItemMobile';
 
-const SubNavigationItemMobile: React.FC<PropsWithChildren<SubNavigationItemProps>> = ({
+const SubNavigationItemMobile: FC<PropsWithChildren<SubNavigationItemProps>> = ({
   label,
   content,
   isOpen,

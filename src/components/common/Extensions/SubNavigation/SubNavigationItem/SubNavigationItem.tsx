@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import clsx from 'clsx';
 
@@ -10,7 +10,7 @@ import styles from './SubNavigationItem.module.css';
 
 const displayName = 'common.Extensions.SubNavigation.SubNavigationItem';
 
-const SubNavigationItem: React.FC<PropsWithChildren<SubNavigationItemProps>> = ({
+const SubNavigationItem: FC<PropsWithChildren<SubNavigationItemProps>> = ({
   label,
   content,
   isOpen,
@@ -38,7 +38,7 @@ const SubNavigationItem: React.FC<PropsWithChildren<SubNavigationItemProps>> = (
           },
         },
       ],
-    },
+    }
   );
 
   return (

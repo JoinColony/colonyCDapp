@@ -1,11 +1,11 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren, useState, FC } from 'react';
 
 import { useDetectClickOutside } from '~hooks';
 
 import SubNavigationItem from './SubNavigationItem';
 import { displayName, subNavigationItems } from './consts';
 
-const SubNavigation: React.FC<PropsWithChildren> = () => {
+const SubNavigation: FC<PropsWithChildren> = () => {
   const [openIndex, setOpenIndex] = useState<number>();
 
   const ref = useDetectClickOutside({ onTriggered: () => setOpenIndex(undefined) });

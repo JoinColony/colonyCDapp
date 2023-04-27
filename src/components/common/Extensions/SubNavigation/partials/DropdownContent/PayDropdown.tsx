@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Button from '~shared/Extensions/Button/Button';
@@ -12,9 +12,9 @@ import LearnMore from '../LearnMore';
 import styles from './DropdownContent.module.css';
 import { MSG } from './consts';
 
-const displayName = 'common.Extensions.SubNavigation.Partials.DropdownContent.PayDropdown';
+const displayName = 'common.Extensions.SubNavigation.partials.DropdownContent.PayDropdown';
 
-const PayDropdown: React.FC<PropsWithChildren> = () => (
+const PayDropdown: FC<PropsWithChildren> = () => (
   <div>
     <div className="text-gray-400 text-xs">
       <div className="hidden md:block mx-4 mt-4">

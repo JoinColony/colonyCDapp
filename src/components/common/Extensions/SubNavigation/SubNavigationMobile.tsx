@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren, useState, FC } from 'react';
 
 import { useDetectClickOutside } from '~hooks';
 
@@ -8,7 +8,7 @@ import styles from './SubNavigationMobile.module.css';
 
 const displayName = 'Extensions.SubNavigation.SubNavigationMobile';
 
-const SubNavigationMobile: React.FC<PropsWithChildren> = () => {
+const SubNavigationMobile: FC<PropsWithChildren> = () => {
   const [openIndex, setOpenIndex] = useState<number>();
 
   const ref = useDetectClickOutside({ onTriggered: () => setOpenIndex(undefined) });

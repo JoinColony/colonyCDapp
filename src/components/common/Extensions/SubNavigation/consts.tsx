@@ -2,9 +2,9 @@ import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { SubNavigationItemProps } from './SubNavigationItem/types';
-import PayDropdown from './Partials/DropdownContent/PayDropdown';
-import DecideDropdown from './Partials/DropdownContent/DecideDropdown';
-import ManageDropdown from './Partials/DropdownContent/ManageDropdown';
+import PayDropdown from './partials/DropdownContent/PayDropdown';
+import DecideDropdown from './partials/DropdownContent/DecideDropdown';
+import ManageDropdown from './partials/DropdownContent/ManageDropdown';
 
 export const displayName = 'common.Extensions.SubNavigation';
 

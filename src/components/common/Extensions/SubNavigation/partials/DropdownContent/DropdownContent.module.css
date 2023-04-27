@@ -20,12 +20,4 @@
 
 .questionIcon {
   @apply mr-2;
-
-  & svg {
-    display: block;
-    height: 14px;
-    width: 14px;
-    background-color: white;
-    stroke: none;
-  }
 }

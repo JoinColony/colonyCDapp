@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Button from '~shared/Extensions/Button/Button';
@@ -11,9 +11,9 @@ import LearnMore from '../LearnMore';
 import { MSG } from './consts';
 import styles from './DropdownContent.module.css';
 
-const displayName = 'common.Extensions.SubNavigation.Partials.DropdownContent.ManageDropdown';
+const displayName = 'common.Extensions.SubNavigation.partials.DropdownContent.ManageDropdown';
 
-const ManageDropdown: React.FC<PropsWithChildren> = () => (
+const ManageDropdown: FC<PropsWithChildren> = () => (
   <div>
     <div className="text-gray-400 text-xs">
       <div className="hidden md:block mx-4 mt-4">
