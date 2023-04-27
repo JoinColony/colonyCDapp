@@ -14,8 +14,8 @@ import {
 import { transactionReady } from '../../actionCreators';
 
 function* managePermissionsAction({
-  payload: { colonyAddress, domainId, userAddress, roles },
-  meta: { id: metaId },
+  payload: { colonyAddress, domainId, userAddress, roles, colonyName },
+  meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ACTION_USER_ROLES_SET>) {
   let txChannel;
@@ -31,6 +31,8 @@ function* managePermissionsAction({
     if (!roles) {
       throw new Error('Roles not set for setUserRole transaction');
     }
+
+    /* @TODO Throw if the Archicture Subdomain Role is being set (Role 4) */
 
     txChannel = yield call(getTxChannel, metaId);
 
@@ -51,6 +53,7 @@ function* managePermissionsAction({
       });
 
     const roleArray = Object.values(roles).reverse();
+    /* Always make sure the Architecture Subdomain is false, it's deprecated */
     roleArray.splice(2, 0, false);
 
     let roleBitmask = '';
@@ -76,19 +79,20 @@ function* managePermissionsAction({
 
     yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
 
-    yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    const {
+      payload: {
+        receipt: { transactionHash },
+      },
+    } = yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_USER_ROLES_SET_SUCCESS,
       meta,
     });
 
-    /*
-     * @TODO Redirect to be implemented after #254 gets merged
-     */
-    // if (colonyName) {
-    //   yield routeRedirect(`/colony/${colonyName}/tx/${txHash}`, history);
-    // }
+    if (colonyName && navigate) {
+      navigate(`/colony/${colonyName}/tx/${transactionHash}`);
+    }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_USER_ROLES_SET_ERROR, error, meta);
   } finally {
