@@ -35,7 +35,7 @@ export const getManageWhitelistDialogPayload = (
         : [
             ...new Set([
               ...whitelistedAddresses,
-              ...whitelistCSVUploader[0].parsedData,
+              ...whitelistCSVUploader.parsedData,
             ]),
           ];
 
