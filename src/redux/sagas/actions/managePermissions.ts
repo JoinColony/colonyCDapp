@@ -1,6 +1,6 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { hexlify, hexZeroPad } from 'ethers/lib/utils';
-import { ClientType } from '@colony/colony-js';
+import { ClientType, ColonyRole } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
@@ -32,7 +32,11 @@ function* managePermissionsAction({
       throw new Error('Roles not set for setUserRole transaction');
     }
 
-    /* @TODO Throw if the Archicture Subdomain Role is being set (Role 4) */
+    if (roles[ColonyRole.ArchitectureSubdomain]) {
+      throw new Error(
+        'The Architecture Subdomain roles has been deprecated at a contract level and should not be set',
+      );
+    }
 
     txChannel = yield call(getTxChannel, metaId);
 
