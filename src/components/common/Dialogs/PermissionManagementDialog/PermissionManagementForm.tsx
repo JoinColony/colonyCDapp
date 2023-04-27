@@ -73,7 +73,7 @@ const MSG = defineMessages({
 
 interface Props extends ActionDialogProps {
   close: (val: any) => void;
-  users: User[];
+  users?: User[];
 }
 
 const supRenderAvatar = (item: ItemDataType<User>) => (
@@ -159,7 +159,7 @@ const PermissionManagementForm = ({
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <div className={styles.singleUserContainer}>
           <SingleUserPicker
-            data={users}
+            data={users || []}
             label={MSG.selectUser}
             name="user"
             filter={filterUserSelection}
