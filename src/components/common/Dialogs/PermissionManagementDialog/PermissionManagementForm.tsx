@@ -110,10 +110,12 @@ const PermissionManagementForm = ({
     setValue('roles', formatRolesForForm(userRoles, selectedDomainId));
   }, [selectedDomainId, setValue, userRoles]);
 
-  // const requiredRoles = [
-  //   domainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture,
-  // ];
-  // const canRoleBeSet = useCanRoleBeSet(colony, selectedUserDirectRoles);
+  const requiredRoles = [
+    selectedDomainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture,
+  ];
+
+  const canRoleBeSet = useCanRoleBeSet(colony);
+
   // const { userHasPermission, canCreateMotion, disabledInput, disabledSubmit } =
   //   usePermissionManagementDialogStatus(
   //     colony,
@@ -239,7 +241,7 @@ const PermissionManagementForm = ({
               <PermissionManagementCheckbox
                 key={role}
                 // readOnly={!canRoleBeSet(role) || roleIsInherited}
-                readOnly={inheritedRole && !directRole}
+                readOnly={(inheritedRole && !directRole) || !canRoleBeSet(role)}
                 // disabled={disabledInput || !user}
                 role={role}
                 asterisk={inheritedRole}
