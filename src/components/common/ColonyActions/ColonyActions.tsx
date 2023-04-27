@@ -2,7 +2,6 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { BigNumber } from 'ethers';
 import { useNavigate } from 'react-router-dom';
-import { ColonyRole } from '@colony/colony-js';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import LoadMoreButton from '~shared/LoadMoreButton';
@@ -215,87 +214,6 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
           withMeta({ navigate }),
         )}
         text="Test Move Funds"
-      />
-      <ActionButton
-        submit={ActionTypes.ACTION_USER_ROLES_SET}
-        error={ActionTypes.ACTION_USER_ROLES_SET_ERROR}
-        success={ActionTypes.ACTION_USER_ROLES_SET_SUCCESS}
-        transform={pipe(
-          mergePayload({
-            colonyAddress: colony.colonyAddress,
-            userAddress: '0xb77D57F4959eAfA0339424b83FcFaf9c15407461',
-            domainId: 1,
-            roles: {
-              [ColonyRole.Recovery]: true,
-              [ColonyRole.Root]: true,
-              [ColonyRole.Arbitration]: true,
-              [ColonyRole.Architecture]: true,
-              /*
-               * @WARNING Never set Role 4 since it's deprecated and it will
-               * mess up the logic in the saga
-               */
-              // [ColonyRole.ArchitectureSubdomain]: true,
-              [ColonyRole.Funding]: false,
-              [ColonyRole.Administration]: false,
-            },
-          }),
-          withMeta({ navigate }),
-        )}
-        text="Test Permissions #1"
-      />
-      <ActionButton
-        submit={ActionTypes.ACTION_USER_ROLES_SET}
-        error={ActionTypes.ACTION_USER_ROLES_SET_ERROR}
-        success={ActionTypes.ACTION_USER_ROLES_SET_SUCCESS}
-        transform={pipe(
-          mergePayload({
-            colonyAddress: colony.colonyAddress,
-            userAddress: '0xb77D57F4959eAfA0339424b83FcFaf9c15407461',
-            domainId: 1,
-            roles: {
-              [ColonyRole.Recovery]: true,
-              [ColonyRole.Root]: true,
-              [ColonyRole.Arbitration]: false,
-              [ColonyRole.Architecture]: true,
-              /*
-               * @WARNING Never set Role 4 since it's deprecated and it will
-               * mess up the logic in the saga
-               */
-              // [ColonyRole.ArchitectureSubdomain]: true,
-              [ColonyRole.Funding]: true,
-              [ColonyRole.Administration]: true,
-            },
-          }),
-          withMeta({ navigate }),
-        )}
-        text="Test Permissions #2"
-      />
-      <ActionButton
-        submit={ActionTypes.ACTION_USER_ROLES_SET}
-        error={ActionTypes.ACTION_USER_ROLES_SET_ERROR}
-        success={ActionTypes.ACTION_USER_ROLES_SET_SUCCESS}
-        transform={pipe(
-          mergePayload({
-            colonyAddress: colony.colonyAddress,
-            userAddress: '0xb77D57F4959eAfA0339424b83FcFaf9c15407461',
-            domainId: 2,
-            roles: {
-              [ColonyRole.Recovery]: false,
-              [ColonyRole.Root]: false,
-              [ColonyRole.Arbitration]: true,
-              [ColonyRole.Architecture]: false,
-              /*
-               * @WARNING Never set Role 4 since it's deprecated and it will
-               * mess up the logic in the saga
-               */
-              // [ColonyRole.ArchitectureSubdomain]: true,
-              [ColonyRole.Funding]: true,
-              [ColonyRole.Administration]: false,
-            },
-          }),
-          withMeta({ navigate }),
-        )}
-        text="Test Permissions #2 (Second Domain)"
       />
       {actions.length ? (
         <>
