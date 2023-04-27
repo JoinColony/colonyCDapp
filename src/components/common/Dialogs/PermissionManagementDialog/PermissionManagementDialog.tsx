@@ -17,6 +17,7 @@ import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
 import PermissionManagementForm from './PermissionManagementForm';
+import { getPermissionManagementDialogPayload } from './helpers';
 
 const validationSchema = object()
   .shape({
@@ -84,7 +85,7 @@ const PermissionManagementDialog = ({
     ? Id.RootDomain
     : preselectedDomainId;
 
-  const { data, loading: loadingMembers } = useGetMembersForColonyQuery({
+  const { data } = useGetMembersForColonyQuery({
     skip: !colony?.colonyAddress,
     variables: {
       input: {
@@ -100,12 +101,14 @@ const PermissionManagementDialog = ({
    * extension, token, or a random address)
    */
   const users = [
-    ...data?.getMembersForColony?.contributors,
-    ...data?.getMembersForColony?.watchers,
+    ...(data?.getMembersForColony?.contributors || []),
+    ...(data?.getMembersForColony?.watchers || []),
   ].map(({ user }) => ({
+    walletAddress: '',
+    name: '',
     ...user,
     // Needed to satisly Omnipicker's key
-    id: user.walletAddress,
+    id: user?.walletAddress,
   }));
 
   const defaultUser =

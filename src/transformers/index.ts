@@ -40,6 +40,16 @@ export const getRolesForUserAndDomain = (
 //   return Array.from(roleSet);
 // };
 
+const convertRolesToArray = (rolesInDomain?: ColonyRoleFragment | null) =>
+  Object.keys(rolesInDomain || {})
+    .filter((keyName) => keyName.startsWith('role_'))
+    .map((keyName) =>
+      rolesInDomain?.[keyName]
+        ? parseInt(keyName.slice(keyName.indexOf('_') + 1), 10)
+        : undefined,
+    )
+    .filter(notUndefined);
+
 export const getUserRolesForDomain = (
   colony: ColonyFragment,
   userAddress: Address,
@@ -47,16 +57,6 @@ export const getUserRolesForDomain = (
   excludeInherited = false,
 ): ColonyRole[] => {
   if (!colony || !domainId || !userAddress) return [];
-
-  const convertRolesToArray = (rolesInDomain?: ColonyRoleFragment | null) =>
-    Object.keys(rolesInDomain || {})
-      .filter((keyName) => keyName.startsWith('role_'))
-      .map((keyName) =>
-        rolesInDomain?.[keyName]
-          ? parseInt(keyName.slice(0, keyName.indexOf('_') + 1), 10)
-          : undefined,
-      )
-      .filter(notUndefined);
 
   const userRolesInAnyDomain = colony.roles?.items.find(
     (domainRole) =>
@@ -74,10 +74,12 @@ export const getUserRolesForDomain = (
   }
 
   if (!excludeInherited && userRolesInAnyDomain && userRolesInRootDomain) {
-    return [
-      ...convertRolesToArray(userRolesInRootDomain),
-      ...convertRolesToArray(userRolesInRootDomain),
-    ];
+    return Array.from(
+      new Set([
+        ...convertRolesToArray(userRolesInRootDomain),
+        ...convertRolesToArray(userRolesInRootDomain),
+      ]),
+    );
   }
 
   return [];
