@@ -19,7 +19,7 @@ import {
   mustColonyBeUpgraded,
   canColonyBeUpgraded,
 } from '~utils/checks';
-import { getAllUserRoles } from '~redux/transformers';
+import { getAllUserRoles } from '~transformers';
 
 import styles from './ColonyUpgrade.css';
 

@@ -9,7 +9,7 @@ import {
   useTransformer,
   EnabledExtensionData,
 } from '~hooks';
-import { getUserRolesForDomain } from '~redux/transformers';
+import { getUserRolesForDomain } from '~transformers';
 import { Colony } from '~types';
 import { userHasRole } from '~utils/checks';
 import { findDomainByNativeId } from '~utils/domains';

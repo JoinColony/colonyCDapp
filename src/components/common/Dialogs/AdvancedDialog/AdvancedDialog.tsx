@@ -6,7 +6,7 @@ import IndexModal from '~shared/IndexModal';
 
 import { WizardDialogType, useTransformer, useAppContext } from '~hooks';
 
-import { getAllUserRoles } from '~redux/transformers';
+import { getAllUserRoles } from '~transformers';
 import { canEnterRecoveryMode, hasRoot, canArchitect } from '~utils/checks';
 
 const displayName = 'common.AdvancedDialog';

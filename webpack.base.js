@@ -39,6 +39,7 @@ const config = {
         '~types': path.resolve(__dirname, 'src/types'),
       //   '~dialogs': path.resolve(__dirname, 'src/modules/dashboard/components/Dialogs')
         '~cache': path.resolve(__dirname, 'src/cache'),
+        '~transformers': path.resolve(__dirname, 'src/transformers'),
         assert: 'assert',
         buffer: 'buffer',
         crypto: 'crypto-browserify',
