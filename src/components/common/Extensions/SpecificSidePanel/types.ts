@@ -3,11 +3,14 @@ import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge-new/types';
 import { sidepanelData } from './consts';
 
 export interface SpecificSidePanelProps {
-  types: SpecificSidePanelType[];
+  statuses: SpecificSidePanelStatus[];
   sidepanelData: SidepanelDataProps;
 }
 
-type SpecificSidePanelType = Extract<ExtensionStatusBadgeMode, 'disabled' | 'enabled' | 'not-installed' | 'deprecated'>;
+type SpecificSidePanelStatus = Extract<
+  ExtensionStatusBadgeMode,
+  'disabled' | 'enabled' | 'not-installed' | 'deprecated'
+>;
 
 export interface PermissionsProps {
   data: { id: number; title: string }[];

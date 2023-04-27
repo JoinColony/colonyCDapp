@@ -1,7 +1,6 @@
 import React, { FC, Fragment } from 'react';
 import { useIntl } from 'react-intl';
 import { SpecificSidePanelProps } from './types';
-import styles from './SpecificSidePanel.module.css';
 import ExtensionStatusBadge from '../ExtensionStatusBadge-new/ExtensionStatusBadge';
 import Permissions from './partials/Permissions';
 import DateInstalled from './partials/DateInstalled';
@@ -9,10 +8,11 @@ import InstaledBy from './partials/InstaledBy';
 import Version from './partials/Version';
 import ContractAddress from './partials/ContractAddress';
 import Developer from './partials/Developer';
+import styles from './SpecificSidePanel.module.css';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 
-const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ types, sidepanelData }) => {
+const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidepanelData }) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -26,22 +26,24 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ types, sidepanelData })
             <div className={styles.panelRow}>
               <div className={styles.panelTitle}>{statusType.title}</div>
               <div className="w-[50%] justify-start flex flex-row">
-                {types?.map((type) => (
+                {statuses?.map((type) => (
                   <div className=" mr-1" key={type}>
                     <ExtensionStatusBadge mode={type} text={type} />
                   </div>
                 ))}
               </div>
             </div>
-            {types?.[0] === 'not-installed' && <DateInstalled title={dateInstalled.title} date={dateInstalled.date} />}
-            {types?.[0] !== 'not-installed' && <InstaledBy title={instaledBy.title} component={instaledBy.component} />}
+            {!statuses?.includes('not-installed') && (
+              <InstaledBy title={instaledBy.title} component={instaledBy.component} />
+            )}
+            <DateInstalled title={dateInstalled.title} date={dateInstalled.date} />
             <Version title={versionInstalled.title} version={versionInstalled.version} />
-            {types?.[0] !== 'not-installed' && (
+            {!statuses?.includes('not-installed') && (
               <ContractAddress title={contractAddress.title} address={contractAddress.address} />
             )}
             <Developer title={developer.title} developer={developer.developer} />
             <div className="flex flex-col justify-between">
-              <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">{permissions.title}</div>
+              <div className="font-normal text-sm text-gray-600 pb-[0.875rem] pt-[0.625rem]">{permissions.title}</div>
               <Permissions data={permissions.permissions} />
             </div>
           </Fragment>
