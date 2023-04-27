@@ -7,7 +7,7 @@ import IndexModal from '~shared/IndexModal';
 
 import { WizardDialogType, useTransformer, useAppContext } from '~hooks';
 
-import { getAllUserRoles } from '~redux/transformers';
+import { getAllUserRoles } from '~transformers';
 import { userHasRole } from '~utils/checks';
 import { formatText } from '~utils/intl';
 

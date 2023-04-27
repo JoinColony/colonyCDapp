@@ -5,7 +5,7 @@ import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
 import { WizardDialogType, useTransformer, useAppContext } from '~hooks';
-import { getAllUserRoles } from '~redux/transformers';
+import { getAllUserRoles } from '~transformers';
 import { canAdminister, canFund } from '~utils/checks';
 
 const displayName = 'common.ManageExpenditureDialog';
