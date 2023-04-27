@@ -26,14 +26,13 @@ const validationSchema = object()
       .shape({
         profile: object()
           .shape({
-            displayName: string(),
+            displayName: string().nullable(),
           })
           .defined()
           .nullable(),
         walletAddress: string().address().required(),
       })
-      .defined()
-      .nullable(),
+      .defined(),
     roles: array().ensure().of(string()).defined(),
     annotation: string().max(4000).defined(),
     forceAction: boolean(),
