@@ -18,10 +18,14 @@ import {
   validationSchemaInput,
 } from '~utils/whitelistValidation';
 import { useGetUsersQuery } from '~gql';
-import { getOrFilterFromArray, notNull } from '~utils/arrays';
+import { notNull } from '~utils/arrays';
 
 import ManageWhitelistDialogForm from './ManageWhitelistDialogForm';
-import { getManageWhitelistDialogPayload, TABS } from './helpers';
+import {
+  getManageWhitelistDialogPayload,
+  getWhitelistedAddressesQueryFilter,
+  TABS,
+} from './helpers';
 
 type Props = Required<DialogProps> &
   WizardDialogType<object> &
@@ -60,10 +64,10 @@ const ManageWhitelistDialog = ({
   const whitelistedAddresses = colony.metadata?.whitelistedAddresses ?? [];
   const { data } = useGetUsersQuery({
     variables: {
-      filter: {
-        or: getOrFilterFromArray(whitelistedAddresses, 'id', 'eq'),
-      },
+      filter: getWhitelistedAddressesQueryFilter(whitelistedAddresses),
     },
+    // The skip option is rather important here - without it, the query will return ALL the CDapp users
+    skip: !whitelistedAddresses.length,
   });
   const whitelistedUsers = data?.listUsers?.items.filter(notNull) ?? [];
 

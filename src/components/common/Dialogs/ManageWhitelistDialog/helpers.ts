@@ -1,3 +1,4 @@
+import { ModelUserFilterInput } from '~gql';
 import { Action, ActionTypes } from '~redux';
 import { Address, Colony } from '~types';
 import { notNull } from '~utils/arrays';
@@ -51,5 +52,21 @@ export const getManageWhitelistDialogPayload = (
     verifiedAddresses,
     isWhitelistActivated: whitelistActivated,
     annotationMessage,
+  };
+};
+
+export const getWhitelistedAddressesQueryFilter = (
+  whitelistedAddresses: string[],
+): ModelUserFilterInput => {
+  if (whitelistedAddresses.length === 1) {
+    return {
+      id: {
+        eq: whitelistedAddresses[0],
+      },
+    };
+  }
+
+  return {
+    or: whitelistedAddresses.map((address) => ({ id: { eq: address } })),
   };
 };
