@@ -139,6 +139,36 @@ const getStakerReward = async (motionId, userAddress, colonyAddress) => {
   };
 };
 
+const didMotionPass = ({
+  motionStakes: {
+    raw: { yay: yayStakes, nay: nayStakes },
+  },
+  requiredStake,
+  revealedVotes: {
+    raw: { yay: yayVotes, nay: nayVotes },
+  },
+}) => {
+  if (
+    BigNumber.from(nayStakes).gte(requiredStake) &&
+    BigNumber.from(yayStakes).gte(requiredStake)
+  ) {
+    /*
+     * It only passes if the yay votes outnumber the nay votes
+     * If the votes are equal, it fails
+     */
+    if (BigNumber.from(yayVotes).gt(nayVotes)) {
+      return MotionState.Passed;
+    }
+
+    return MotionState.Failed;
+  }
+
+  if (BigNumber.from(yayStakes).eq(requiredStake)) {
+    return MotionState.Passed;
+  }
+  return MotionState.Failed;
+};
+
 const updateStakerRewardsInDB = async (
   colonyAddress,
   transactionHash,
@@ -172,8 +202,35 @@ const updateStakerRewardsInDB = async (
   });
 };
 
+const updateMotionMessagesInDB = async (
+  transactionHash,
+  motionData,
+  motionMessage,
+) => {
+  console.log('====================Updating motion messages in db');
+  const { messages } = motionData;
+
+  const updatedMessages = [
+    ...messages,
+    {
+      name: motionMessage,
+      messageKey: `${transactionHash}_${motionMessage}}`,
+    },
+  ];
+
+  await graphqlRequest(updateColonyAction, {
+    id: transactionHash,
+    motionData: {
+      ...motionData,
+      messages: updatedMessages,
+    },
+  });
+};
+
 module.exports = {
   getLatestMotionState,
+  didMotionPass,
   updateStakerRewardsInDB,
   getMotionData,
+  updateMotionMessagesInDB,
 };
