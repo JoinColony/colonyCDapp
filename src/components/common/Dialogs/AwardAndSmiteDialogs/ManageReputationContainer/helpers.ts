@@ -1,7 +1,7 @@
 import Decimal from 'decimal.js';
 
 import { useGetMembersForColonyQuery } from '~gql';
-import { Address, Colony, Contributor, Watcher } from '~types';
+import { Address, Colony, Contributor, MemberUser, Watcher } from '~types';
 import { notMaybe } from '~utils/arrays';
 
 export const getManageReputationDialogPayload = (
@@ -40,5 +40,5 @@ export const useGetColonyMembers = (colonyAddress?: Address | null) => {
   const watchers = data?.getMembersForColony?.watchers ?? [];
   const contributors = data?.getMembersForColony?.contributors ?? [];
   const allMembers: (Watcher | Contributor)[] = [...watchers, ...contributors];
-  return allMembers.map((member) => member.user).filter(notMaybe);
+  return allMembers.map((member) => member.user).filter<MemberUser>(notMaybe);
 };

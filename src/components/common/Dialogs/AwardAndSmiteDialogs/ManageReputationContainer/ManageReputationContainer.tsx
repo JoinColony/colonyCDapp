@@ -2,22 +2,28 @@ import React, { useState } from 'react';
 import { Id } from '@colony/colony-js';
 import { useNavigate } from 'react-router-dom';
 
-import Decimal from 'decimal.js';
 import Dialog from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-// import { useSelectedUser } from '~hooks';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { useSelectedUser } from '~hooks';
 
 import DialogForm from '../ManageReputationDialogForm';
 import { AwardAndSmiteDialogProps } from '../types';
 
-import { getManageReputationDialogPayload } from './helpers';
+import {
+  getManageReputationDialogPayload,
+  useGetColonyMembers,
+} from './helpers';
 
-import { FormValues, defaultValidationSchema } from './validation';
+import {
+  FormValues,
+  defaultValidationSchema,
+  getAmountValidationSchema,
+} from './validation';
 
 const displayName = 'common.ManageReputationContainer';
 
@@ -35,13 +41,7 @@ const ManageReputationContainer = ({
   const [isForce, setIsForce] = useState(false);
   const [schemaUserReputation, setSchemaUserReputation] = useState(0);
   const navigate = useNavigate();
-  /**
-   * @TODO This needs fixing as it relied on the empty array fallback,
-   * `watchers` don't exist on the colony object we were passing
-   */
-  // const colonyWatchers =
-  //   watchers?.items.filter(notNull).map((item) => item.user) || [];
-  const colonyWatchers = [];
+  const allColonyMembers = useGetColonyMembers(colony.colonyAddress);
 
   // const verifiedUsers = useMemo(() => {
   //   return getVerifiedUsers(colony.whitelistedAddresses, colonyWatchers) || [];
@@ -57,30 +57,8 @@ const ManageReputationContainer = ({
   let smiteValidationSchema;
 
   if (isSmiteAction) {
-    const amountValidationSchema = object()
-      .shape({
-        amount: string()
-          .required()
-          .test(
-            'more-than-zero',
-            () => MSG.amountZero,
-            (value) => {
-              const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
-              return !new Decimal(numberWithoutCommas).isZero();
-            },
-          )
-          .test(
-            'less-than-user-reputation',
-            () => MSG.maxAmount,
-            (value) => {
-              const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
-              return !new Decimal(numberWithoutCommas).greaterThan(
-                schemaUserReputation,
-              );
-            },
-          ),
-      })
-      .required();
+    const amountValidationSchema =
+      getAmountValidationSchema(schemaUserReputation);
     smiteValidationSchema = defaultValidationSchema.concat(
       amountValidationSchema,
     );
@@ -103,9 +81,8 @@ const ManageReputationContainer = ({
   );
 
   // const { isWhitelistActivated } = colony;
-  // const selectedUser = useSelectedUser(
+  const selectedUser = useSelectedUser(allColonyMembers);
   //   isWhitelistActivated ? verifiedUsers : colonyWatchers,
-  // );
 
   return (
     <Dialog cancel={cancel}>
@@ -113,7 +90,7 @@ const ManageReputationContainer = ({
         defaultValues={{
           forceAction: false,
           domainId: filteredDomainId || Id.RootDomain,
-          // user: selectedUser,
+          user: selectedUser,
           motionDomainId: Id.RootDomain,
           amount: '',
           annotation: '',
@@ -123,29 +100,22 @@ const ManageReputationContainer = ({
         onSuccess={close}
         transform={transform}
       >
-        {({ watch }) => {
-          const forceAction = watch('forceAction');
-          if (forceAction !== isForce) {
-            setIsForce(forceAction);
+        <DialogForm
+          colony={colony}
+          nativeTokenDecimals={nativeTokenDecimals}
+          back={() => callStep(prevStep)}
+          users={
+            allColonyMembers // isWhitelistActivated ? verifiedUsers : colonyWatchers
           }
-
-          return (
-            <DialogForm
-              colony={colony}
-              nativeTokenDecimals={nativeTokenDecimals}
-              back={() => callStep(prevStep)}
-              verifiedUsers={
-                colonyWatchers // isWhitelistActivated ? verifiedUsers : colonyWatchers
-              }
-              updateSchemaUserReputation={
-                isSmiteAction ? setSchemaUserReputation : undefined
-              }
-              schemaUserReputation={schemaUserReputation}
-              isSmiteAction={isSmiteAction}
-              enabledExtensionData={enabledExtensionData}
-            />
-          );
-        }}
+          updateSchemaUserReputation={
+            isSmiteAction ? setSchemaUserReputation : undefined
+          }
+          schemaUserReputation={schemaUserReputation}
+          isSmiteAction={isSmiteAction}
+          enabledExtensionData={enabledExtensionData}
+          isForce={isForce}
+          setIsForce={setIsForce}
+        />
       </Form>
     </Dialog>
   );
