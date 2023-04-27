@@ -4,7 +4,7 @@ import { useGetUserReputationQuery } from '~gql';
 const useColonyHasReputation = (
   colonyAddress: string,
   reputationDomain?: number,
-) => {
+): boolean => {
   const { data, error, loading } = useGetUserReputationQuery({
     variables: {
       input: {

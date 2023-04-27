@@ -14,7 +14,7 @@ const useDialogActionPermissions = (
   requiredRoles: ColonyRole[],
   requiredRolesDomains: number[],
   requiredRepDomain?: number,
-) => {
+): [boolean, boolean] => {
   const { wallet } = useAppContext();
   const { watch } = useFormContext();
   const forceAction = watch('forceAction');
