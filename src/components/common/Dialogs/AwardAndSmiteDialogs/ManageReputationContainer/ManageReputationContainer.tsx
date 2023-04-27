@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { string, object, number, boolean, InferType } from 'yup';
 import { Id } from '@colony/colony-js';
 import { useNavigate } from 'react-router-dom';
-import { defineMessages } from 'react-intl';
 
 import Decimal from 'decimal.js';
 import Dialog from '~shared/Dialog';
@@ -19,42 +17,9 @@ import { AwardAndSmiteDialogProps } from '../types';
 
 import { getManageReputationDialogPayload } from './helpers';
 
+import { FormValues, defaultValidationSchema } from './validation';
+
 const displayName = 'common.ManageReputationContainer';
-
-const MSG = defineMessages({
-  amountZero: {
-    id: `${displayName}.amountZero`,
-    defaultMessage: 'Amount must be greater than zero',
-  },
-  maxAmount: {
-    id: `${displayName}.maxAmount`,
-    defaultMessage: "Amount must be less than the user's reputation",
-  },
-});
-
-const defaultValidationSchema = object()
-  .shape({
-    domainId: number().required(),
-    user: object().shape({
-      walletAddress: string().address().required(),
-    }),
-    amount: string()
-      .required()
-      .test(
-        'more-than-zero',
-        () => MSG.amountZero,
-        (value) => {
-          const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
-          return !new Decimal(numberWithoutCommas).isZero();
-        },
-      ),
-    annotation: string().max(4000),
-    forceAction: boolean(),
-    motionDomainId: number(),
-  })
-  .defined();
-
-type FormValues = InferType<typeof defaultValidationSchema>;
 
 const ManageReputationContainer = ({
   colony: { nativeToken },
