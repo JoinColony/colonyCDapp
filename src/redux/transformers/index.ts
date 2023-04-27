@@ -100,22 +100,6 @@ export const getUserRolesForDomain = (
   // return getRolesForUserAndParentDomains(colony, userAddress, domainId);
 };
 
-/* Gets all account addresses that have the ROOT role in the ROOT_DOMAIN */
-export const getAllRootAccounts = (): Address[] => {
-  // (colony: Colony)
-
-  return ['0x'];
-  // return colony.roles
-  //   .filter(
-  //     ({ domains }) =>
-  //       !!domains.find(
-  //         ({ domainId, roles }) =>
-  //           domainId === Id.RootDomain && roles.includes(ColonyRole.Root),
-  //       ),
-  //   )
-  //   .map(({ address }) => address);
-};
-
 export const getAllUserRoles = (
   colony: Colony | undefined,
   userAddress: Address | undefined,
