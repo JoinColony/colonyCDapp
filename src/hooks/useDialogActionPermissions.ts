@@ -2,7 +2,7 @@ import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import { useAppContext } from '~hooks';
-import { getUserRolesForDomain } from '~redux/transformers';
+import { getUserRolesForDomain } from '~transformers';
 import { Colony } from '~types';
 import { userHasRole } from '~utils/checks';
 
@@ -22,7 +22,7 @@ const useDialogActionPermissions = (
   const hasRoles = requiredRolesDomains.every((domainId) => {
     const userDomainRoles = getUserRolesForDomain(
       colony,
-      wallet?.address,
+      wallet?.address || '',
       domainId,
     );
 
