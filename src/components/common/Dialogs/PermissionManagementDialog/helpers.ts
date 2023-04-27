@@ -23,14 +23,16 @@ export const getPermissionManagementDialogPayload = ({
   motionDomainId,
 }) => ({
   domainId,
-  userAddress: user.profile.walletAddress,
-  roles: availableRoles.reduce(
-    (acc, role) => ({
-      ...acc,
-      [role]: roles.includes(role),
-    }),
-    {},
-  ),
+  userAddress: user.walletAddress,
+  roles: availableRoles
+    .map((role) => role.toString())
+    .reduce(
+      (acc, role) => ({
+        ...acc,
+        [role]: roles.includes(role),
+      }),
+      {},
+    ),
   annotationMessage,
   motionDomainId: parseInt(motionDomainId, 10),
 });
@@ -133,7 +135,10 @@ export const usePermissionManagementDialogStatus = (
     disabledInput,
     disabledSubmit:
       defaultDisabledSubmit ||
-      isEqual(sortBy(roles), sortBy(userDirectAndInheritedRoles)),
+      isEqual(
+        sortBy(roles),
+        sortBy(userDirectAndInheritedRoles.map((role) => role.toString())),
+      ),
     canCreateMotion,
     canOnlyForceAction,
   };
