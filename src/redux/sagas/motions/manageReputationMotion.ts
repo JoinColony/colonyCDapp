@@ -4,6 +4,7 @@ import {
   getChildIndex,
   getPermissionProofs,
   ColonyRole,
+  Id,
 } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
@@ -22,6 +23,9 @@ import {
   getTxChannel,
 } from '../transactions';
 import { transactionReady } from '../../actionCreators';
+
+export type ManageReputationMotionPayload =
+  Action<ActionTypes.MOTION_MANAGE_REPUTATION>['payload'];
 
 function* manageReputationMotion({
   payload: {
@@ -81,7 +85,7 @@ function* manageReputationMotion({
       getChildIndex,
       colonyClient,
       motionDomainId,
-      domainId,
+      isSmitingReputation ? domainId : Id.RootDomain,
     );
 
     const { skillId } = yield call(

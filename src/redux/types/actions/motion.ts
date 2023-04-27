@@ -227,7 +227,7 @@ export type MotionActionTypes =
         domainId: number;
         userAddress: Address;
         amount: BigNumber;
-        motionDomainId: string;
+        motionDomainId: number;
         annotationMessage?: string;
         isSmitingReputation?: boolean;
       },
