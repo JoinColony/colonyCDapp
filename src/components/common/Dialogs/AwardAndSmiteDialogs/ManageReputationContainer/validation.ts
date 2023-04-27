@@ -27,8 +27,8 @@ export const defaultValidationSchema = object()
     }),
     amount: amountValidation,
     annotation: string().max(4000),
-    forceAction: boolean(),
-    motionDomainId: number(),
+    forceAction: boolean().defined(),
+    motionDomainId: number().defined(),
   })
   .defined();
 

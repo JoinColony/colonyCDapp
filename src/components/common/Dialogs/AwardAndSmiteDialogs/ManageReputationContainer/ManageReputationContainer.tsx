@@ -83,7 +83,6 @@ const ManageReputationContainer = ({
   // const { isWhitelistActivated } = colony;
   const selectedUser = useSelectedUser(allColonyMembers);
   //   isWhitelistActivated ? verifiedUsers : colonyWatchers,
-
   return (
     <Dialog cancel={cancel}>
       <Form<FormValues>
@@ -91,7 +90,7 @@ const ManageReputationContainer = ({
           forceAction: false,
           domainId: filteredDomainId || Id.RootDomain,
           user: selectedUser,
-          motionDomainId: Id.RootDomain,
+          motionDomainId: (isSmiteAction && filteredDomainId) || Id.RootDomain,
           amount: '',
           annotation: '',
         }}
