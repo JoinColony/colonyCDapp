@@ -36,7 +36,6 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({ title, children, icon, onClo
             name="close"
             title={formatMessage({ id: 'shared.modal.buttonCancel' })}
           />
-          *
         </button>
       </div>
       <div className={styles.inner}>

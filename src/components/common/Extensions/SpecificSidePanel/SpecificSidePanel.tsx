@@ -43,7 +43,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData
             )}
             <Developer title={developer.title} developer={developer.developer} />
             <div className="flex flex-col justify-between">
-              <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">{permissions.title}</div>
+              <div className="font-normal text-sm text-gray-600 pb-[0.875rem] pt-[0.625rem]">{permissions.title}</div>
               <Permissions data={permissions.permissions} />
             </div>
           </Fragment>

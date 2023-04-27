@@ -42,7 +42,7 @@
   input[type='number']::-webkit-inner-spin-button,
   input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
-    margin: 0;
+    @apply m-0;
   }
 }
 
@@ -132,21 +132,12 @@ button[disabled].rts___btn {
 .carouselWrapper [class~='slider-wrapper'] {
   @apply w-[33.5rem];
 }
-
-.carouselWrapper [class~='control-dots'] {
-  @apply bottom-[-2.5rem] overflow-visible;
-}
-
-.carouselWrapper [class~='carousel control-dots dot selected'] {
-  @apply bg-gray-500 opacity-100;
-}
-
-.carouselWrapper [class~='dot'] {
-  @apply bg-gray-200 opacity-100;
-}
-
 .carouselWrapper [class~='slide'] {
   @apply mr-4 h-[15.5rem];
+}
+
+.carouselWrapper [class~='control-dots'] {
+  @apply bottom-[-2.5rem] overflow-visible flex justify-center;
 }
 
 .rts___tabs {
@@ -161,7 +152,9 @@ button[disabled].rts___btn {
   @apply shadow-none font-semibold text-blue-400 border-blue-400;
 }
 
-button:disabled.rts___btn, .rts___nav___btn:disabled, button[disabled].rts___btn {
+button:disabled.rts___btn,
+.rts___nav___btn:disabled,
+button[disabled].rts___btn {
   @apply invisible;
 }
 

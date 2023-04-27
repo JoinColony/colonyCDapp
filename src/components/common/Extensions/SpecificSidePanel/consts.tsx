@@ -1,6 +1,8 @@
 import React from 'react';
+import UserAvatarPopover from '~shared/Extensions/UserAvatarPopover';
+import { colonyReputationItems, permissionsItems } from '~shared/Extensions/UserAvatarPopover/partials/consts';
 
-export const sidepanelData = [
+export const sidePanelData = [
   {
     id: 0,
     statusType: {
@@ -10,9 +12,20 @@ export const sidepanelData = [
       title: 'Date installed',
       date: '28 October 2020',
     },
-    instaledBy: {
+    installedBy: {
       title: 'Installed by',
-      component: <div />,
+      component: (
+        <UserAvatarPopover
+          title="asdf"
+          userName="Panda"
+          walletAddress="0x155....1051"
+          isVerified
+          copyUrl
+          aboutDescription="description"
+          colonyReputation={colonyReputationItems}
+          permissions={permissionsItems}
+        />
+      ),
     },
     versionInstalled: {
       title: 'Version installed',
@@ -30,28 +43,32 @@ export const sidepanelData = [
       title: 'Permissions the extension needs in the colony:',
       permissions: [
         {
-          id: 0,
-          title: 'Administrations',
+          key: '1',
+          text: 'Architecture',
+          description:
+            'This permission allows users to create new domains, and manage permissions within those domains.',
+          name: 'clipboard-text',
         },
         {
-          id: 1,
-          title: 'Funding',
+          key: '2',
+          text: 'Arbitration',
+          description:
+            'This permission allows users to create new domains, and manage permissions within those domains.',
+          name: 'scales',
         },
         {
-          id: 2,
-          title: 'Arbitration',
+          key: '3',
+          text: 'Recovery',
+          description:
+            'This permission allows users to create new domains, and manage permissions within those domains.',
+          name: 'clock-counter-clockwise',
         },
         {
-          id: 3,
-          title: 'Recovery',
-        },
-        {
-          id: 4,
-          title: 'Architecture',
-        },
-        {
-          id: 5,
-          title: 'Root',
+          key: '4',
+          text: 'Funding',
+          description:
+            'This permission allows users to create new domains, and manage permissions within those domains.',
+          name: 'bank',
         },
       ],
     },

@@ -25,7 +25,8 @@
     "voyager": "ts-node temp-voyager/voyager",
     "codegen": "node codegen",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "npx chromatic --project-token=f08326e25dbf"
   },
   "repository": {
     "type": "git",
@@ -208,5 +209,7 @@
     "reselect": "^4.1.5",
     "scroll-into-view-if-needed": "^2.2.16",
     "yup": "^0.30.0"
-  }
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "colony-cdapp@5.0.0-alpha.0"
 }

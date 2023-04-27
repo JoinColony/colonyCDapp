@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import SpecificSidePanel from '~common/Extensions/SpecificSidePanel';
-import { sidepanelData } from '~common/Extensions/SpecificSidePanel/consts';
+import { sidePanelData } from '~common/Extensions/SpecificSidePanel/consts';
 
 const meta: Meta<typeof SpecificSidePanel> = {
   title: 'Common/Specific Side Panel',
@@ -13,20 +13,20 @@ type Story = StoryObj<typeof SpecificSidePanel>;
 export const Base: Story = {
   args: {
     statuses: ['enabled'],
-    sidepanelData,
+    sidePanelData,
   },
 };
 
 export const DisabledDeprecated: Story = {
   args: {
     statuses: ['disabled', 'deprecated'],
-    sidepanelData,
+    sidePanelData,
   },
 };
 
 export const NotInstalled: Story = {
   args: {
     statuses: ['not-installed'],
-    sidepanelData,
+    sidePanelData,
   },
 };
