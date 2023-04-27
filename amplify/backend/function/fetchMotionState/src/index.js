@@ -3,8 +3,9 @@ const {
   getLatestMotionState,
   updateStakerRewardsInDB,
   getMotionData,
+  didMotionPass,
+  updateMotionMessagesInDB,
 } = require('./utils');
-
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
@@ -32,6 +33,36 @@ exports.handler = async (event) => {
           colonyAddress,
           transactionHash,
           motionData,
+        );
+      }
+    }
+  }
+
+  if (motionState === MotionState.Reveal) {
+    if (motionData) {
+      console.log('======================motionData:Reveal: ', motionData);
+      updateMotionMessagesInDB(
+        transactionHash,
+        motionData,
+        'MotionRevealPhase',
+      );
+    }
+  }
+
+  if (motionState === MotionState.Finalizable) {
+    if (motionData) {
+      console.log('======================motionData:Finalizable: ', motionData);
+      if (didMotionPass(motionData)) {
+        updateMotionMessagesInDB(
+          transactionHash,
+          motionData,
+          'MotionHasPassed',
+        );
+      } else {
+        updateMotionMessagesInDB(
+          transactionHash,
+          motionData,
+          'MotionHasFailedNotFinalizable',
         );
       }
     }
