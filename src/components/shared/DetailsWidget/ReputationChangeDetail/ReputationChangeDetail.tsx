@@ -1,4 +1,5 @@
 import React from 'react';
+import Decimal from 'decimal.js';
 
 import Numeral from '~shared/Numeral';
 import { formatReputationChange } from '~utils/reputation';
@@ -17,7 +18,7 @@ const ReputationChangeDetail = ({
   decimals,
 }: ReputationChangeDetailProps) => (
   <div className={styles.main}>
-    <Numeral value={reputationChange} decimals={decimals} />
+    <Numeral value={new Decimal(reputationChange).abs()} decimals={decimals} />
     <span>
       {formatReputationChange(reputationChange, decimals) === '1'
         ? 'pt'
