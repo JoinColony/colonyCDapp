@@ -335,6 +335,7 @@ function* colonyCreate({
           input: {
             id: colonyAddress,
             displayName,
+            isWhitelistActivated: true,
           },
         },
       });
