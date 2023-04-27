@@ -10,10 +10,10 @@ import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { WizardDialogType } from '~hooks';
 import { formatText } from '~utils/intl';
 import { notNull } from '~utils/arrays';
+import { isAddress } from '~utils/web3';
 
 import { getTokenManagementDialogPayload } from './helpers';
 import TokenManagementDialogForm from './TokenManagementDialogForm';
-import { isAddress } from '~utils/web3';
 
 const displayName = 'common.TokenManagementDialog';
 
