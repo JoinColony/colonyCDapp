@@ -157,7 +157,7 @@ export type ColonyActionsActionTypes =
         roles: Record<ColonyRole, boolean>;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_USER_ROLES_SET_ERROR, object>
   | ActionTypeWithMeta<
