@@ -120,7 +120,7 @@ const ManageReputationDialogForm = ({
     if (forceAction !== isForce) {
       setIsForce(forceAction);
     }
-  });
+  }, [forceAction, isForce, setIsForce]);
 
   const { domainId, user: selectedUser } = watch();
 
@@ -215,6 +215,7 @@ const ManageReputationDialogForm = ({
             enabledExtensionData.isVotingReputationEnabled
           }
           isRootMotion={!isSmiteAction}
+          selectedDomainId={selectedDomain?.nativeId}
         >
           {!isSmiteAction && (
             <div className={styles.warningContainer}>
