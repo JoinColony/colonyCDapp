@@ -65,7 +65,8 @@ export const getColonyMetadataChangesValue = (
         },
         values,
       )}
-      {index < changeValues.length - 1 && ', '}
+      {index < changeValues.length - 2 && ', '}
+      {index === changeValues.length - 2 && ' and its '}
     </>
   ));
 };
