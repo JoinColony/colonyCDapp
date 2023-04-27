@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
@@ -22,11 +22,10 @@ import UserAvatar from '~shared/UserAvatar';
 
 import { User } from '~types';
 import { notNull } from '~utils/arrays';
-// import { getAllUserRolesForDomain } from '~redux/transformers';
 import { findDomainByNativeId, getDomainOptions } from '~utils/domains';
 
 import {
-  CannotCreateMotionMessage,
+  // CannotCreateMotionMessage,
   NoPermissionMessage,
   PermissionRequiredInfo,
 } from '../Messages';
@@ -86,7 +85,7 @@ const PermissionManagementForm = ({
   colony,
   back,
   close,
-  // enabledExtensionData,
+  enabledExtensionData,
   users,
 }: Props) => {
   const { watch, setValue } = useFormContext();
@@ -95,11 +94,6 @@ const PermissionManagementForm = ({
     user: selectedUser,
     motionDomainId,
   } = watch();
-
-  // const colonyWatchers =
-  //   watchers?.items
-  //     .filter(notNull)
-  //     .map((item) => ({ ...item.user, id: item.user.walletAddress })) || [];
 
   const colonyDomains = domains?.items.filter(notNull) || [];
   const domain = findDomainByNativeId(selectedDomainId, colony);
@@ -111,63 +105,25 @@ const PermissionManagementForm = ({
   }, [selectedDomainId, setValue, userRoles]);
 
   const requiredRoles = [
-    selectedDomainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture,
+    selectedDomainId === Id.RootDomain
+      ? ColonyRole.Root
+      : ColonyRole.Architecture,
   ];
 
   const canRoleBeSet = useCanRoleBeSet(colony);
 
-  // const { userHasPermission, canCreateMotion, disabledInput, disabledSubmit } =
-  //   usePermissionManagementDialogStatus(
-  //     colony,
-  //     requiredRoles,
-  //     enabledExtensionData,
-  //     defaultSelectedUserRoles,
-  //   );
-
-  // const domainRoles = useTransformer(getAllUserRolesForDomain, [
-  //   colony,
-  //   domainId,
-  // ]);
-
-  // const directDomainRoles = useTransformer(getAllUserRolesForDomain, [
-  //   colony,
-  //   domainId,
-  //   true,
-  // ]);
+  const {
+    userHasPermission,
+    // canCreateMotion,
+    disabledInput,
+    disabledSubmit,
+  } = usePermissionManagementDialogStatus(
+    colony,
+    requiredRoles,
+    enabledExtensionData,
+  );
 
   const domainSelectOptions = getDomainOptions(colonyDomains);
-
-  // const domainRolesArray = useMemo(
-  //   () =>
-  //     domainRoles
-  //       .sort(({ roles }) => (roles.includes(ColonyRole.Root) ? -1 : 1))
-  //       .filter(({ roles }) => !!roles.length)
-  //       .map(({ address, roles }) => {
-  //         const directUserRoles = directDomainRoles.find(
-  //           ({ address: userAddress }) => userAddress === address,
-  //         );
-  //         return {
-  //           userAddress: address,
-  //           roles,
-  //           directRoles: directUserRoles ? directUserRoles.roles : [],
-  //         };
-  //       }),
-  //   [directDomainRoles, domainRoles],
-  // );
-
-  // const members = colonyWatchers.map((colonyUser) => {
-  //   // const {
-  //   //   profile: { walletAddress },
-  //   // } = user;
-  //   // const domainRole = domainRolesArray.find(
-  //   //   (rolesObject) => rolesObject.userAddress === walletAddress,
-  //   // );
-  //   return {
-  //     ...colonyUser,
-  //     roles: [], // domainRole ? domainRole.roles : [],
-  //     directRoles: [], // domainRole ? domainRole.directRoles : [],
-  //   };
-  // });
 
   const handleDomainChange = (domainValue: number) => {
     setValue('domainId', domainValue);
@@ -195,11 +151,11 @@ const PermissionManagementForm = ({
           titleValues={{ domain: domain?.metadata?.name }}
         />
       </DialogSection>
-      {/* {!userHasPermission && (
+      {!userHasPermission && (
         <DialogSection>
           <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
-      )} */}
+      )}
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <div className={styles.singleUserContainer}>
           <SingleUserPicker
@@ -208,7 +164,7 @@ const PermissionManagementForm = ({
             name="user"
             filter={filterUserSelection}
             renderAvatar={supRenderAvatar}
-            // disabled={disabledInput}
+            disabled={disabledInput}
             placeholder={MSG.userPickerPlaceholder}
             dataTest="permissionUserSelector"
             itemDataTest="permissionUserSelectorItem"
@@ -234,15 +190,11 @@ const PermissionManagementForm = ({
             const directRole = userRoles?.direct?.[selectedDomainId]?.[role];
             const inheritedRole =
               userRoles?.inherited?.[selectedDomainId]?.[role];
-            // const roleIsInherited =
-            //   !selectedUserDirectRoles.includes(role) &&
-            //   selectedUserInheritedRoles.includes(role);
             return (
               <PermissionManagementCheckbox
                 key={role}
-                // readOnly={!canRoleBeSet(role) || roleIsInherited}
                 readOnly={(inheritedRole && !directRole) || !canRoleBeSet(role)}
-                // disabled={disabledInput || !user}
+                disabled={disabledInput || !selectedUser}
                 role={role}
                 asterisk={inheritedRole}
                 domainId={selectedDomainId}
@@ -254,7 +206,7 @@ const PermissionManagementForm = ({
         <Annotations
           label={MSG.annotation}
           name="annotationMessage"
-          // disabled={disabledInput}
+          disabled={disabledInput}
           dataTest="permissionAnnotation"
         />
       </DialogSection>
@@ -262,20 +214,20 @@ const PermissionManagementForm = ({
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>
-      )}
+      )} */}
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage
             requiredPermissions={[ColonyRole.Architecture]}
           />
         </DialogSection>
-      )} */}
+      )}
       {/* {onlyForceAction && (
         <NotEnoughReputation domainId={Number(domainId)} />
       )} */}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
-          // disabled={disabledSubmit}
+          disabled={disabledSubmit}
           dataTest="permissionConfirmButton"
           onSecondaryButtonClick={back ?? close}
           secondaryButtonText={{
