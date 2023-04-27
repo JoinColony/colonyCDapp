@@ -14,7 +14,7 @@ import PermissionsLabel from '~shared/PermissionsLabel';
 import ExternalLink from '~shared/ExternalLink';
 
 import { useAppContext, useTransformer } from '~hooks';
-import { getAllUserRoles } from '~redux/transformers';
+import { getAllUserRoles } from '~transformers';
 import { canEnterRecoveryMode } from '~utils/checks';
 
 import { RECOVERY_HELP } from '~constants/externalUrls';

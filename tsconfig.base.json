@@ -29,7 +29,9 @@
       "~routes": ["src/routes"],
       "~routes/*": ["src/routes/*"],
       "~cache": ["src/cache"],
-      "~cache/*": ["src/cache/*"]
+      "~cache/*": ["src/cache/*"],
+      "~transformers": ["src/transformers"],
+      "~transformers/*": ["src/transformers/*"]
 
     },
     "allowSyntheticDefaultImports": true,
