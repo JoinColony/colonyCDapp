@@ -1,6 +1,6 @@
 import React from 'react';
 
-const displayName = 'Extensions.Accordion.Partials.ContentTypeAccordionContent';
+const displayName = 'Extensions.Accordion.partials.ContentTypeAccordionContent';
 
 type Props = {
   children: string | JSX.Element | JSX.Element;

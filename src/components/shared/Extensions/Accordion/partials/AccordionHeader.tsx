@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { AccordionItemProps } from '../types';
 
-const displayName = 'Extensions.Accordion.Partials.AccordionHeader';
+const displayName = 'Extensions.Accordion.partials.AccordionHeader';
 // @TODO: add icon
 const AccordionHeader: FC<AccordionItemProps> = ({ title }) => (
   <div>

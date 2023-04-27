@@ -1,5 +1,6 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
+import clsx from 'clsx';
 import Icon from '~shared/Icon';
 import { ModalProps } from './types';
 import ModalBase from './ModalBase';
@@ -7,7 +8,14 @@ import styles from './Modal.module.css';
 
 const displayName = 'Extensions.Modal';
 
-const Modal: FC<PropsWithChildren<ModalProps>> = ({ title, children, icon = 'close', onClose, ...props }) => {
+const Modal: FC<PropsWithChildren<ModalProps>> = ({
+  title,
+  children,
+  icon = 'close',
+  onClose,
+  isWarning = false,
+  ...props
+}) => {
   const { formatMessage } = useIntl();
 
   const titleText = typeof title == 'string' ? title : title && formatMessage(title);
@@ -16,8 +24,12 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({ title, children, icon = 'clo
     <ModalBase onRequestClose={onClose} {...props}>
       <div className="flex mb-4 relative">
         {icon && (
-          <span className={styles.icon}>
-            <Icon appearance={{ size: 'extraTiny' }} name={icon} />
+          <span
+            className={clsx(styles.icon, 'border-gray-200', {
+              'border-red-200 text-red-400': isWarning,
+            })}
+          >
+            <Icon appearance={{ size: 'extraTiny' }} name={icon} />*
           </span>
         )}
         <button
@@ -31,6 +43,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({ title, children, icon = 'clo
             name="close"
             title={formatMessage({ id: 'shared.modal.buttonCancel' })}
           />
+          *
         </button>
       </div>
       <div className={styles.inner}>

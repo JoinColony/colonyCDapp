@@ -8,7 +8,7 @@ const displayName = 'Extensions.Tooltip';
 const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   children,
   tooltipContent,
-  placement = 'top',
+  placement = 'auto',
   popperOptions,
   interactive,
   offset = [0, 12],
@@ -27,14 +27,14 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
       interactive,
       offset,
     },
-    popperOptions,
+    popperOptions
   );
 
   return (
     <>
-      <span className="cursor-pointer" ref={setTriggerRef}>
+      <div className="cursor-pointer" ref={setTriggerRef}>
         {children}
-      </span>
+      </div>
       {visible && (
         <div
           ref={setTooltipRef}

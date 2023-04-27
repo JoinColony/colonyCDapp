@@ -4,7 +4,7 @@ import AccordionHeader from './AccordionHeader';
 import AccordionContent from './AccordionContent';
 import { AccordionItemProps } from '../types';
 
-const displayName = 'Extensions.Accordion.Partials.AccordionItem';
+const displayName = 'Extensions.Accordion.partials.AccordionItem';
 
 const AccordionItem: FC<AccordionItemProps> = ({ title, content, isOpen, onClick }) => (
   <>

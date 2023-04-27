@@ -171,7 +171,11 @@
         "user-plus",
         "wallet"
     ],
-    "multiColorIcons": ["circle-check-primary", "metamask", "shield-pink"],
+    "multiColorIcons": [
+        "circle-check-primary",
+        "metamask",
+        "shield-pink"
+    ],
     "badges": [
         "Alessandra Aphid",
         "Terry Termite",
@@ -181,6 +185,5 @@
         "Berthold Beetle",
         "Sanjeet Shrimp",
         "Norman Naked Mole Rat"
-    ],
-    "pills": ["ClipboardText", "AppWindow", "Buildings", "ClockCounterClockwise", "Scales", "Bank"]
+    ]
 }
