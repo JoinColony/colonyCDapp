@@ -13,6 +13,7 @@ import { notNull } from '~utils/arrays';
 
 import { getTokenManagementDialogPayload } from './helpers';
 import TokenManagementDialogForm from './TokenManagementDialogForm';
+import { isAddress } from '~utils/web3';
 
 const displayName = 'common.TokenManagementDialog';
 
@@ -20,6 +21,10 @@ const MSG = defineMessages({
   errorAddingToken: {
     id: `${displayName}.errorAddingToken`,
     defaultMessage: `Sorry, there was an error adding this token. Learn more about tokens at: https://colony.io.`,
+  },
+  invalidAddress: {
+    id: `${displayName}.invalidAddress`,
+    defaultMessage: 'This is not a valid address',
   },
 });
 
@@ -29,7 +34,13 @@ type Props = DialogProps &
 
 const validationSchema = object({
   forceAction: boolean().defined(),
-  tokenAddress: string().notRequired(),
+  tokenAddress: string()
+    .notRequired()
+    .test(
+      'is-address',
+      () => MSG.invalidAddress,
+      (value) => !value || isAddress(value),
+    ),
   selectedTokenAddresses: array()
     .of(string().address().defined())
     .notRequired(),
