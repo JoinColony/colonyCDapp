@@ -24,6 +24,8 @@ import {
   Objection as ObjectionTag,
   Voting as VotingTag,
   Failed as FailedTag,
+  Reveal as RevealTag,
+  Passed as PassedTag,
 } from '~shared/Tag';
 import { useGetUserByAddressQuery } from '~gql';
 import { VoteResults } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VoteOutcome/VoteResults';
@@ -204,6 +206,8 @@ export const useMapMotionEventToExpectedFormat = (
     objectionTag: <ObjectionTag />,
     votingTag: <VotingTag />,
     failedTag: <FailedTag />,
+    revealTag: <RevealTag />,
+    passedTag: <PassedTag />,
     voteResultsWidget: (
       <div className={styles.voteResultsWrapper}>
         <VotingWidgetHeading actionType={actionType} />
