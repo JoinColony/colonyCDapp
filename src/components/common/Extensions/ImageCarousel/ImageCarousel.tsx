@@ -1,16 +1,17 @@
 import React, { FC } from 'react';
 import { Carousel } from 'react-responsive-carousel';
-import { images } from './consts';
 import styles from './ImageCarousel.module.css';
 import { ImageCarouselProps } from './ImageCarousel.types';
 import './ImageCarousel.css'; // to fix rendering styles in storybook
 import useWindowSize from '~hooks/useWindowSize';
+import { images } from './consts';
 
 const displayName = 'common.Extensions.ImageCarousel';
 
 const ImageCarousel: FC<ImageCarouselProps> = ({ transitionTime = 300, slideUrls = images }) => {
-  const { width } = useWindowSize();
-  const setSlidePercentage = (width >= 1024 && 90) || (width >= 428 && 65) || (width >= 427 && 100);
+  const windowSize = useWindowSize();
+  const setSlidePercentage =
+    (windowSize?.width >= 1024 && 90) || (windowSize?.width >= 428 && 65) || (windowSize?.width >= 427 && 100);
 
   return (
     <div className={styles.carouselWrapper}>
