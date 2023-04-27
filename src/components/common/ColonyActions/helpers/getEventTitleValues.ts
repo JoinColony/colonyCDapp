@@ -43,7 +43,9 @@ enum EventTitleMessageKeys {
   TokensMinted = 'tokensMinted',
   VotingTag = 'votingTag',
   VoteResultsWidget = 'VoteResultsWidget',
-  FailedTag = 'FailedTag',
+  FailedTag = 'failedTag',
+  RevealTag = 'revealTag',
+  PassedTag = 'passedTag',
 }
 
 /* Maps eventType to message values as found in en-events.ts */
@@ -160,6 +162,14 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
   [SystemMessages.MotionHasFailedFinalizable]: [
     EventTitleMessageKeys.MotionTag,
     EventTitleMessageKeys.FailedTag,
+  ],
+  [SystemMessages.MotionRevealPhase]: [EventTitleMessageKeys.RevealTag],
+  [SystemMessages.MotionHasPassed]: [
+    EventTitleMessageKeys.MotionTag,
+    EventTitleMessageKeys.PassedTag,
+  ],
+  [SystemMessages.MotionHasFailedNotFinalizable]: [
+    EventTitleMessageKeys.MotionTag,
   ],
 };
 
