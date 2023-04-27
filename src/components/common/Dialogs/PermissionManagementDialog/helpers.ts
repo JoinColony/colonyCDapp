@@ -8,11 +8,12 @@ import {
   useAppContext,
 } from '~hooks';
 import { Address, Colony } from '~types';
+import { ColonyFragment } from '~gql';
 import { isEqual, sortBy } from '~utils/lodash';
 import { notNull, notUndefined } from '~utils/arrays';
+import { getUserRolesForDomain } from '~transformers';
 
 import { availableRoles } from './constants';
-import { ColonyFragment } from '~gql';
 
 export const getPermissionManagementDialogPayload = ({
   roles,
@@ -104,10 +105,9 @@ export const usePermissionManagementDialogStatus = (
   colony: Colony,
   requiredRoles: ColonyRole[],
   enabledExtensionData: EnabledExtensionData,
-  defaultSelectedUserRoles: string[],
 ) => {
   const { watch } = useFormContext();
-  const { domainId, roles } = watch();
+  const { domainId, roles, user: selectedUser } = watch();
 
   const {
     userHasPermission,
@@ -122,12 +122,18 @@ export const usePermissionManagementDialogStatus = (
     enabledExtensionData,
   );
 
+  const userDirectAndInheritedRoles = getUserRolesForDomain(
+    colony,
+    selectedUser?.walletAddress || '',
+    domainId,
+  );
+
   return {
     userHasPermission,
     disabledInput,
     disabledSubmit:
       defaultDisabledSubmit ||
-      isEqual(sortBy(roles), sortBy(defaultSelectedUserRoles)),
+      isEqual(sortBy(roles), sortBy(userDirectAndInheritedRoles)),
     canCreateMotion,
     canOnlyForceAction,
   };
