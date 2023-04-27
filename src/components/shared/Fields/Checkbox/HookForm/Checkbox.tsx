@@ -87,31 +87,29 @@ const HookFormCheckbox = ({
       className={classNames(mainClasses, className)}
       disabled={disabled}
     >
-      <div>
-        {showTooltip ? (
-          <Tooltip
-            content={toolTipContent}
-            placement="bottom"
-            popperOptions={tooltipPopperOptions}
-          >
-            {checkboxInput}
-          </Tooltip>
-        ) : (
-          checkboxInput
-        )}
-        {showLabel ? (
-          <InputLabel
-            inputId={inputId}
-            label={label}
-            labelValues={labelValues}
-            help={help}
-            helpValues={helpValues}
-            appearance={{ direction: 'horizontal' }}
-          />
-        ) : (
-          children
-        )}
-      </div>
+      {showTooltip ? (
+        <Tooltip
+          content={toolTipContent}
+          placement="bottom"
+          popperOptions={tooltipPopperOptions}
+        >
+          {checkboxInput}
+        </Tooltip>
+      ) : (
+        checkboxInput
+      )}
+      {showLabel ? (
+        <InputLabel
+          inputId={inputId}
+          label={label}
+          labelValues={labelValues}
+          help={help}
+          helpValues={helpValues}
+          appearance={{ direction: 'horizontal' }}
+        />
+      ) : (
+        children
+      )}
     </fieldset>
   );
 };
