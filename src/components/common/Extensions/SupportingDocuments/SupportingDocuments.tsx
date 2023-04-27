@@ -14,7 +14,7 @@ const SupportingDocuments: FC<SupportingDocumentsProps> = ({ isDoubleLinkVisible
       <div className="uppercase text-xs font-medium text-blue-400">
         {formatMessage({ id: 'supporting.documents.title' })}
       </div>
-      <div className="font-semibold text-base text-gray-900">
+      <div className="font-semibold text-md text-gray-900">
         {formatMessage({ id: 'supporting.documents.subtitle' })}
       </div>
       <div className="min-w-[35.75rem] h-[0.0625rem] bg-gray-200 my-4" />
