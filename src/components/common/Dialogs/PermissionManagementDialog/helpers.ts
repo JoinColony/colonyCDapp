@@ -6,9 +6,7 @@ import {
   EnabledExtensionData,
   useActionDialogStatus,
   useAppContext,
-  useTransformer,
 } from '~hooks';
-import { getAllRootAccounts } from '~redux/transformers';
 import { Address, Colony } from '~types';
 import { isEqual, sortBy } from '~utils/lodash';
 import { notNull, notUndefined } from '~utils/arrays';
@@ -136,55 +134,57 @@ export const usePermissionManagementDialogStatus = (
 };
 
 // Check which roles the current user is allowed to set in this domain
-export const useCanRoleBeSet = (
-  colony: Colony,
-  selectedUserDirectRoles: ColonyRole[],
-) => {
+export const useCanRoleBeSet = (colony: Colony) => {
   const { watch } = useFormContext();
   const domainId = watch('domainId');
   const { user: currentUser } = useAppContext();
-  const currentUserRoles = useTransformer(getUserRolesForDomain, [
-    colony,
-    currentUser?.walletAddress,
-    domainId,
-  ]);
 
-  const currentUserRolesInRoot = useTransformer(getUserRolesForDomain, [
+  const currentUserRoles = useSelectedUserRoles(
     colony,
-    currentUser?.walletAddress,
-    Id.RootDomain,
-  ]);
-
-  const rootAccounts = useTransformer(getAllRootAccounts, [
-    /* colony */
-  ]);
-  const canSetPermissionsInRoot =
-    domainId === Id.RootDomain &&
-    currentUserRoles.includes(ColonyRole.Root) &&
-    (!selectedUserDirectRoles.includes(ColonyRole.Root) ||
-      rootAccounts.length > 1);
-  const hasRoot = currentUserRolesInRoot.includes(ColonyRole.Root);
-  const hasArchitectureInRoot = currentUserRolesInRoot.includes(
-    ColonyRole.Architecture,
+    currentUser?.walletAddress || '',
   );
+
+  const checkUserRole = (role: ColonyRole, inheritedRole = false) => {
+    return !!currentUserRoles[inheritedRole ? 'inherited' : 'direct']?.[
+      domainId
+    ]?.[role];
+  };
+
+  const isCurrentDomainRoot = domainId === Id.RootDomain;
+  const hasInheritedRoot = checkUserRole(ColonyRole.Root, true);
+  const hasDirectdRoot = checkUserRole(ColonyRole.Root);
+  const hasInheriteddArchitecture = checkUserRole(
+    ColonyRole.Architecture,
+    true,
+  );
+  const hasDirectdArchitecture = checkUserRole(ColonyRole.Architecture);
+  const hasRoot = hasInheritedRoot || hasDirectdRoot;
+  const hasArchitecture = hasInheriteddArchitecture || hasDirectdArchitecture;
+  const hasUltimateRoot = isCurrentDomainRoot && hasRoot;
+  const canAssignRole = hasRoot || hasArchitecture;
+
+  /*
+   * @NOTE That this is most likely bugged
+   * For now, we're kicking the can down the road, but this needs a full do-over
+   * both structurally, and logically, when we get to do the new UI
+   */
   const canRoleBeSet = (role: ColonyRole) => {
     switch (role) {
       case ColonyRole.Arbitration:
-        return true;
+        return canAssignRole;
 
       // Can only be set by root and in root domain (and only unset if other root accounts exist)
       case ColonyRole.Root:
       case ColonyRole.Recovery:
-        return canSetPermissionsInRoot;
+        return hasUltimateRoot;
 
-      // Must be root for these
       case ColonyRole.Administration:
       case ColonyRole.Funding:
-        return hasArchitectureInRoot;
+        return canAssignRole;
 
       // Can be set if root domain and has root OR has architecture in parent
       case ColonyRole.Architecture:
-        return (domainId === Id.RootDomain && hasRoot) || hasArchitectureInRoot;
+        return canAssignRole;
 
       default:
         return false;
