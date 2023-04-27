@@ -111,9 +111,13 @@ const ManageWhitelistDialogForm = ({
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <Tabs
           selectedIndex={tabIndex}
-          onSelect={(newIndex) => {
+          onSelect={(newIndex, lastIndex) => {
+            if (newIndex === lastIndex) {
+              return true;
+            }
             setTabIndex(newIndex);
             resetForm();
+            return false;
           }}
         >
           <TabList
