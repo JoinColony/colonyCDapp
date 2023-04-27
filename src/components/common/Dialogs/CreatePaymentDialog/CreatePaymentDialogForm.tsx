@@ -16,8 +16,9 @@ import SingleUserPicker, {
   filterUserSelection,
 } from '~shared/SingleUserPicker';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-
-import { MemberUser } from '~types';
+import UserAvatar from '~shared/UserAvatar/UserAvatar';
+import { MemberUser, User } from '~types';
+import { ItemDataType } from '~shared/OmniPicker';
 
 import DomainFundSelectorSection from '../DomainFundSelectorSection';
 import TokenAmountInput from '../TokenAmountInput';
@@ -72,6 +73,10 @@ const requiredRoles: ColonyRole[] = [
   ColonyRole.Administration,
 ];
 
+const supRenderAvatar = (item: ItemDataType<User>) => (
+  <UserAvatar user={item} size="xs" />
+);
+
 const CreatePaymentDialogForm = ({
   back,
   verifiedUsers,
@@ -123,6 +128,7 @@ Props) => {
             dataTest="paymentRecipientPicker"
             itemDataTest="paymentRecipientItem"
             valueDataTest="paymentRecipientName"
+            renderAvatar={supRenderAvatar}
           />
         </div>
         {/* {showWhitelistWarning && (

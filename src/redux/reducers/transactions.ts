@@ -93,7 +93,7 @@ const coreTransactionsReducer: ReducerType<CoreTransactionsRecord> = (
       } = action;
       return state.updateIn(
         [CORE_TRANSACTIONS_LIST, id, 'params'],
-        (originalParams) => [...originalParams, ...params],
+        (originalParams: any[]) => [...originalParams, ...params],
       );
     }
     case ActionTypes.TRANSACTION_READY: {

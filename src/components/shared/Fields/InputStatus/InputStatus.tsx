@@ -2,7 +2,7 @@ import { MessageDescriptor, useIntl } from 'react-intl';
 import React from 'react';
 
 import { isNil } from 'lodash';
-import { SimpleMessageValues } from '~types';
+import { UniversalMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
 import { InputComponentAppearance as Appearance } from '../Input';
@@ -19,7 +19,7 @@ interface Props {
   status?: string | MessageDescriptor;
 
   /** Values for status text (react-intl interpolation) (if applicable) */
-  statusValues?: SimpleMessageValues;
+  statusValues?: UniversalMessageValues;
   touched?: boolean;
 }
 

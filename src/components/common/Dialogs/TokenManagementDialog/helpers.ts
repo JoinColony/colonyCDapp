@@ -28,9 +28,9 @@ export const getTokenManagementDialogPayload = (
   return {
     colonyAddress: colony.colonyAddress,
     colonyName: colony.name,
-    colonyDisplayName: colony.profile?.displayName,
-    colonyAvatarImage: colony.profile?.thumbnail,
-    colonyAvatarHash: colony.profile?.avatar,
+    colonyDisplayName: colony.metadata?.displayName,
+    colonyAvatarImage: colony.metadata?.thumbnail,
+    colonyAvatarHash: colony.metadata?.avatar,
     hasAvatarChanged: false,
     colonyTokens: addresses,
     // verifiedAddresses: whitelistedAddresses,

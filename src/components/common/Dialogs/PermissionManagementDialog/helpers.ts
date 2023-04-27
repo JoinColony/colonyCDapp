@@ -110,7 +110,9 @@ export const useCanRoleBeSet = (
     Id.RootDomain,
   ]);
 
-  const rootAccounts = useTransformer(getAllRootAccounts, [colony]);
+  const rootAccounts = useTransformer(getAllRootAccounts, [
+    /* colony */
+  ]);
   const canSetPermissionsInRoot =
     domainId === Id.RootDomain &&
     currentUserRoles.includes(ColonyRole.Root) &&

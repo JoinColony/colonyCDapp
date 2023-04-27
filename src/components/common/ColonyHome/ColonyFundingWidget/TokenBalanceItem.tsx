@@ -3,7 +3,6 @@ import React from 'react';
 import Numeral from '~shared/Numeral';
 import IconTooltip from '~shared/IconTooltip';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-
 import { Token, Address } from '~types';
 
 import styles from './ColonyFundingWidget.css';
@@ -23,7 +22,7 @@ const TokenBalanceItem = ({
   isNativeTokenLocked,
   balance,
 }: Props) =>
-  balance && (
+  balance ? (
     <div className={styles.tokenItem}>
       <span
         className={styles.tokenValue}
@@ -47,7 +46,7 @@ const TokenBalanceItem = ({
         )}
       </span>
     </div>
-  );
+  ) : null;
 
 TokenBalanceItem.displayName = displayName;
 
