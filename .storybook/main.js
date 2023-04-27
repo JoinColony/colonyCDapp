@@ -33,17 +33,22 @@ module.exports = {
       '~images': path.resolve(__dirname, '../src/images'),
       '~types': path.resolve(__dirname, '../src/types'),
       '~utils': path.resolve(__dirname, '../src/utils'),
-      '~utils/lodash': path.resolve(__dirname, '../src/utils/lodash'),
-      '~utils/isUrlExternal': path.resolve(__dirname, '../src/utils/isUrlExternal'),
       '~gql': path.resolve(__dirname, '../src/graphql'),
       '~constants': path.resolve(__dirname, '../src/constants'),
       '~shared': path.resolve(__dirname, '../src/components/shared'),
       '~common': path.resolve(__dirname, '../src/components/common'),
       '~frame': path.resolve(__dirname, '../src/components/frame'),
-      '~hooks': path.resolve(__dirname, '../src/hooks'),
-      '~images': path.resolve(__dirname, '../src/images'),
       '~images/*': path.resolve(__dirname, '../src/images'),
     };
+
+    const fileLoaderRule = config.module.rules.find((rule) => !Array.isArray(rule.test) && rule.test.test('.svg'));
+    fileLoaderRule.exclude = /\.svg$/;
+
+    config.module.rules.push({
+      test: /\.svg$/i,
+      loader: require.resolve('svg-sprite-loader'),
+    });
+
     return config;
   },
 };
