@@ -27,7 +27,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData
               <div className={styles.panelTitle}>{statusType.title}</div>
               <div className="w-[50%] justify-start flex flex-row">
                 {statuses?.map((status) => (
-                  <div className=" mr-1" key={status}>
+                  <div className="mr-1" key={status}>
                     <ExtensionStatusBadge mode={status} text={status} />
                   </div>
                 ))}
