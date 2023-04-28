@@ -61,7 +61,7 @@ exports.handler = async (event) => {
             (message) => message.name === 'MotionHasPassed',
           )
         ) {
-          updateMotionMessagesInDB(
+          await updateMotionMessagesInDB(
             transactionHash,
             motionData,
             'MotionHasPassed',
@@ -72,7 +72,7 @@ exports.handler = async (event) => {
           (message) => message.name === 'MotionHasFailedNotFinalizable',
         )
       ) {
-        updateMotionMessagesInDB(
+        await updateMotionMessagesInDB(
           transactionHash,
           motionData,
           'MotionHasFailedNotFinalizable',
