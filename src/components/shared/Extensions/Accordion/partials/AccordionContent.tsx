@@ -22,7 +22,7 @@ const AccordionContent: FC<AccordionItemProps> = ({ content }) => {
         <div key={item.id}>
           <div className="flex justify-between mt-4 items-center">
             {item.textItem && item.textItem}
-            <div className="ml-[4.0625rem] md:ml-auto">{item.inputItem && item.inputItem}</div>
+            <div className="ml-6">{item.inputItem && item.inputItem}</div>
           </div>
 
           {item?.accordionItem &&

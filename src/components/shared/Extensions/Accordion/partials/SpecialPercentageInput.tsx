@@ -33,8 +33,8 @@ const SpecialPercentageInput = () => {
   });
 
   return (
-    <div className="text-right max-w-[8rem]">
-      <form>
+    <div className="text-right">
+      <form className="flex justify-end flex-col w-[8.8rem]">
         {/* <Form<FormValues> use it later */}
         <SpecialInput
           register={register}
