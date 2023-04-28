@@ -1,10 +1,10 @@
 import React from 'react';
 import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge-new/types';
-import { sidepanelData } from './consts';
+import { sidePanelData } from './consts';
 
 export interface SpecificSidePanelProps {
   statuses: SpecificSidePanelStatus[];
-  sidepanelData: SidepanelDataProps;
+  sidePanelData: SidepanelDataProps;
 }
 
 type SpecificSidePanelStatus = Extract<
@@ -16,7 +16,7 @@ export interface PermissionsProps {
   data: { id: number; title: string }[];
 }
 
-export type SidepanelDataProps = typeof sidepanelData;
+export type SidepanelDataProps = typeof sidePanelData;
 
 export interface PanelTypeProps {
   title: string;

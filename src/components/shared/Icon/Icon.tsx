@@ -7,7 +7,7 @@ import { formatText } from '~utils/intl';
 
 import { icons as iconNames, multiColorIcons as multiColorIconNames } from '~images/icons.json';
 
-import styles from './Icon.css';
+import styles from './Icon.module.css';
 
 const displayName = 'Icon';
 

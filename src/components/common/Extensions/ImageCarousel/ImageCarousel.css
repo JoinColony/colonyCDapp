@@ -1,0 +1,21 @@
+#storybook-root > div > div > div {
+  position: relative;
+  overflow: visible;
+}
+
+#storybook-root > div > div > div > ul {
+  display: flex;
+  justify-content: center;
+  bottom: -2.5rem;
+  overflow: visible;
+}
+
+#storybook-root > div > div > div > div > ul > li.slide {
+  margin-right: 0;
+}
+
+@media screen and (min-width: 26.75rem) {
+  #storybook-root > div > div > div > div > ul > li.slide {
+    margin-right: 1rem;
+  }
+}

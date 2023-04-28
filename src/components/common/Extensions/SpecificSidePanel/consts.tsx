@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const sidepanelData = [
+export const sidePanelData = [
   {
     id: 0,
     statusType: {
