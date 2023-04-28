@@ -4,12 +4,7 @@ import { AddressZero } from '@ethersproject/constants';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  updateMotionValues,
-  getColonyManager,
-} from '../utils';
+import { putError, takeFrom, getColonyManager } from '../utils';
 
 import {
   createTransaction,
@@ -23,7 +18,7 @@ export type EscalateMotionPayload =
 
 function* escalateMotion({
   meta,
-  payload: { userAddress, colonyAddress, motionId },
+  payload: { colonyAddress, motionId },
 }: Action<ActionTypes.MOTION_ESCALATE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
@@ -91,11 +86,6 @@ function* escalateMotion({
       escalateMotionTransaction.channel,
       ActionTypes.TRANSACTION_SUCCEEDED,
     );
-
-    /*
-     * Update motion page values
-     */
-    yield fork(updateMotionValues, colonyAddress, userAddress, motionId);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_ESCALATE_SUCCESS,

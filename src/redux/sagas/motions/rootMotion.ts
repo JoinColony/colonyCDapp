@@ -1,10 +1,5 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import {
-  ClientType,
-  Id,
-  getChildIndex,
-  AnyColonyClient,
-} from '@colony/colony-js';
+import { ClientType, Id, getChildIndex } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
 import { ColonyManager } from '~context';
@@ -43,7 +38,7 @@ function* createRootMotionSaga({
 
     const colonyManager: ColonyManager = yield getColonyManager();
 
-    const colonyClient: AnyColonyClient = yield colonyManager.getClient(
+    const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
