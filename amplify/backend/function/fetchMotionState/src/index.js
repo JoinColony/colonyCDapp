@@ -38,10 +38,14 @@ exports.handler = async (event) => {
     }
   }
 
-  if (motionState === MotionState.Reveal) {
-    if (motionData) {
-      console.log('======================motionData:Reveal: ', motionData);
-      updateMotionMessagesInDB(
+  if (transactionHash && motionState === MotionState.Reveal) {
+    if (
+      motionData &&
+      !motionData?.messages.find(
+        (message) => message.name === 'MotionRevealPhase',
+      )
+    ) {
+      await updateMotionMessagesInDB(
         transactionHash,
         motionData,
         'MotionRevealPhase',
@@ -49,16 +53,25 @@ exports.handler = async (event) => {
     }
   }
 
-  if (motionState === MotionState.Finalizable) {
+  if (transactionHash && motionState === MotionState.Finalizable) {
     if (motionData) {
-      console.log('======================motionData:Finalizable: ', motionData);
       if (didMotionPass(motionData)) {
-        updateMotionMessagesInDB(
-          transactionHash,
-          motionData,
-          'MotionHasPassed',
-        );
-      } else {
+        if (
+          !motionData.messages.find(
+            (message) => message.name === 'MotionHasPassed',
+          )
+        ) {
+          updateMotionMessagesInDB(
+            transactionHash,
+            motionData,
+            'MotionHasPassed',
+          );
+        }
+      } else if (
+        !motionData.messages.find(
+          (message) => message.name === 'MotionHasFailedNotFinalizable',
+        )
+      ) {
         updateMotionMessagesInDB(
           transactionHash,
           motionData,
