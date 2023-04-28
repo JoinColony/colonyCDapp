@@ -1,95 +1,43 @@
-/*
- * Base `Icon` styles
- * Everything inherits from this
- */
-
 .main {
-  display: inline-block;
-}
-
-.main svg {
-  vertical-align: top;
-}
-
-.main svg use {
-  pointer-events: none;
+  @apply inline-block;
 }
 
 .main[role='button'] {
-  cursor: pointer;
-
-  &:active {
-    outline: none;
-  }
-
-  &:hover {
-    outline: none;
-  }
+  @apply cursor-pointer active:outline-none hover:outline-none;
 }
 
-/*
- * Sizing
- *
- * Next set of classes will define the icons's size
- */
-
 .sizeExtraTiny {
-  height: 12px;
-  width: 12px;
+  @apply w-[0.75rem] h-[0.75rem];
 }
 
 .sizeTiny {
-  height: 14px;
-  width: 14px;
+  @apply w-[0.875rem] h-[0.875rem];
 }
 
 .sizeSmall {
-  height: 16px;
-  width: 16px;
+  @apply w-[1rem] h-[1rem];
 }
 
 .sizeNormal {
-  height: 18px;
-  width: 18px;
+  @apply w-[1.25rem] h-[1.25rem];
 }
 
 .sizeMedium {
-  height: 28px;
-  width: 28px;
+  @apply w-[1.75rem] h-[1.75rem];
 }
 
 .sizeLarge {
-  height: 42px;
-  width: 42px;
+  @apply w-[2.625rem] h-[2.625rem];
 }
 
 .sizeHuge {
-  height: 64px;
-  width: 64px;
+  @apply w-[4rem] h-[4rem];
 }
 
-/*
- * Themeing
- *
- * Next set of classes will define our various icon themes.
- *
- * Some of them will also have an `invert` version. This is for dark backgrounds.
- */
-
 .themePrimary {
-  composes: main;
-
-  & svg {
-    fill: red;
-    stroke: red;
-  }
+  @apply inline-block [&_svg]:fill-current  [&_svg]:stroke-current;
 }
 
 .themeInvert {
-  composes: main;
-
-  & svg {
-    fill: red;
-    stroke: red;
-  }
+  @apply inline-block [&_svg]:fill-current  [&_svg]:stroke-current;
 }
