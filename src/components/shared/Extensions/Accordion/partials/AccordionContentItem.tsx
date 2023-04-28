@@ -8,7 +8,7 @@ const displayName = 'Extensions.Accordion.partials.AccordionContentItem';
 const AccordionContentItem: FC<AccordionContentItemProps> = ({ accordionItem, isOpen, onClick }) => (
   <div className="relative">
     <div onClick={onClick} onKeyUp={onClick} role="button" tabIndex={0}>
-      <AccordionHeader title={accordionItem?.header} />
+      <AccordionHeader title={accordionItem?.header} isOpen={isOpen} />
       <AnimatePresence>
         {isOpen && (
           <motion.div

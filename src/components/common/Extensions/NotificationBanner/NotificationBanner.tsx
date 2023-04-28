@@ -30,7 +30,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
         <div className="flex items-center">
           <Icon
             name={status === 'success' ? 'check-circle' : 'warning-circle'}
-            className={clsx('min-w-[0.84375rem] min-h-[0.84375rem]', {
+            className={clsx('min-w-[0.875rem] min-h-[0.875rem]', {
               'stroke-success-400': status === 'success',
               'stroke-warning-400': status === 'warning',
               'stroke-negative-400': status === 'error',
