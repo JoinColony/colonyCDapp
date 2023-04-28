@@ -38,19 +38,17 @@ const getLatestMotionState = async (
   colonyAddress,
   { nativeMotionId, createdBy },
 ) => {
-  let motionState = MotionState.Null;
   try {
     const votingReputationClient = await getVotingClient(colonyAddress);
     const isDeprecated = await votingReputationClient.getDeprecated();
     /* Only fetch state for a motion that was created by the current (active) installation of the voting rep extn */
     if (!isDeprecated && votingReputationClient.address === createdBy) {
-      motionState = votingReputationClient.getMotionState(nativeMotionId);
+      return votingReputationClient.getMotionState(nativeMotionId);
     }
+    return MotionState.Null;
   } catch {
-    /* This will fail if the voting reputation extn is not installed, in which case we return 0. */
+    return MotionState.Null;
   }
-
-  return motionState;
 };
 
 const graphqlRequest = async (queryOrMutation, variables) => {

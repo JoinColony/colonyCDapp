@@ -25,6 +25,11 @@ export const useColonyMotionState = (
     });
   const networkMotionState = motionStateData?.getMotionState;
 
+  /*
+   * We want a distinction between an invalid motion and a motion for which we don't currently have the motion state
+   * (else we'll see invalid when the motion state is loading). Hence assigning to null, not MotionState.Invalid.
+   */
+
   const motionState =
     networkMotionState !== undefined && motionData
       ? getMotionState(networkMotionState, motionData)
