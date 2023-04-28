@@ -35,9 +35,9 @@
 }
 
 .themePrimary {
-  @apply inline-block [&_svg]:fill-current  [&_svg]:stroke-current;
+  @apply inline-block [&_svg]:fill-current [&_svg]:stroke-current;
 }
 
 .themeInvert {
-  @apply inline-block [&_svg]:fill-current  [&_svg]:stroke-current;
+  @apply inline-block [&_svg]:fill-current [&_svg]:stroke-current;
 }
