@@ -5,14 +5,14 @@ import { ADDRESS_ZERO } from '~constants';
 import { useGetUserReputationQuery } from '~gql';
 
 interface UseUserReputationHook {
-  userReputation?: string;
-  totalReputation?: string;
+  userReputation: string | undefined;
+  totalReputation: string | undefined;
   loading: boolean;
 }
 
 const useUserReputation = (
-  colonyAddress?: Address,
-  walletAddress?: Address,
+  colonyAddress: Address | null | undefined,
+  walletAddress: Address | null | undefined,
   domainId = Id.RootDomain,
   rootHash?: string,
 ): UseUserReputationHook => {
