@@ -42,7 +42,7 @@ enum EventTitleMessageKeys {
   ToDomain = 'toDomain',
   TokensMinted = 'tokensMinted',
   VotingTag = 'votingTag',
-  VoteResultsWidget = 'VoteResultsWidget',
+  VoteResultsWidget = 'voteResultsWidget',
   FailedTag = 'failedTag',
   RevealTag = 'revealTag',
   PassedTag = 'passedTag',
