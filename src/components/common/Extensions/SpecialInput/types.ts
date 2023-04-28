@@ -24,5 +24,5 @@ export type FormPercentageInput = {
 };
 
 export type FormPercengateInput = {
-  percentage: number;
+  percentage?: number;
 };
