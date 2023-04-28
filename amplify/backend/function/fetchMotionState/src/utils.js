@@ -33,10 +33,8 @@ const getVotingClient = async (colonyAddress) => {
   return colonyClient.getExtensionClient(Extension.VotingReputation);
 };
 
-const getLatestMotionState = async (
-  colonyAddress,
-  { nativeMotionId, createdBy },
-) => {
+const getLatestMotionState = async (colonyAddress, motionData) => {
+  const { nativeMotionId, createdBy } = motionData;
   try {
     const votingReputationClient = await getVotingClient(colonyAddress);
     const isDeprecated = await votingReputationClient.getDeprecated();
@@ -214,10 +212,7 @@ const updateMotionMessagesInDB = async (
       messageKey: `${transactionHash}_${motionMessage}}`,
     },
   ];
-  console.log(
-    '====================Updating motion messages in db',
-    updatedMessages,
-  );
+
   await graphqlRequest(updateColonyAction, {
     id: transactionHash,
     motionData: {
