@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,10 +6,11 @@ import { useIntl } from 'react-intl';
 import SpecialInput from '~common/Extensions/SpecialInput/SpecialInput';
 import FormError from '~shared/Extensions/FormError/FormError';
 import { FormPercengateInput } from '~common/Extensions/SpecialInput/types';
+import { SpecialInputProps } from '../types';
 
 const displayName = 'Extensions.SpecialPercentageInput';
 
-const SpecialPercentageInput = () => {
+const SpecialPercentageInput: FC<SpecialInputProps> = ({ maxValue }) => {
   const { formatMessage } = useIntl();
   const validationSchema = yup
     .object({
@@ -20,7 +21,7 @@ const SpecialPercentageInput = () => {
         .required('')
         .typeError(formatMessage({ id: 'special.percentage.input.error.min.value' }))
         .min(1, formatMessage({ id: 'special.percentage.input.error.min.value' }))
-        .max(99, formatMessage({ id: 'special.percentage.input.error.max.value' })),
+        .max(maxValue, formatMessage({ id: 'special.percentage.input.error.max.value' }, { maxValue })),
     })
     .required('');
 

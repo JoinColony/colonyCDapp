@@ -16,7 +16,7 @@ const meta: Meta<typeof SpecialInput> = {
 export default meta;
 type Story = StoryObj<typeof SpecialInput>;
 
-const SpecialPercentageInputWithHooks = (args) => {
+const SpecialPercentageInputWithHooks = (args: { maxValue }) => {
   const { formatMessage } = useIntl();
   const validationSchema = yup
     .object({
@@ -27,7 +27,7 @@ const SpecialPercentageInputWithHooks = (args) => {
         .required('')
         .typeError(formatMessage({ id: 'special.percentage.input.error.min.value' }))
         .min(1, formatMessage({ id: 'special.percentage.input.error.min.value' }))
-        .max(99, formatMessage({ id: 'special.percentage.input.error.max.value' })),
+        .max(maxValue, formatMessage({ id: 'special.percentage.input.error.max.value' }, { maxValue })),
     })
     .required('');
 
@@ -59,8 +59,12 @@ const SpecialPercentageInputWithHooks = (args) => {
   );
 };
 
-export const Base: Story = {
-  render: () => <SpecialPercentageInputWithHooks defaultValue={1} id="percentage-1" />,
+export const MaxValue50: Story = {
+  render: () => <SpecialPercentageInputWithHooks defaultValue={1} id="percentage-1" maxValue={50} />,
+};
+
+export const MaxValue100: Story = {
+  render: () => <SpecialPercentageInputWithHooks defaultValue={1} id="percentage-1" maxValue={100} />,
 };
 
 export const Disabled: Story = {

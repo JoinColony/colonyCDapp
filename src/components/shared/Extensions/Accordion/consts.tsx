@@ -52,7 +52,7 @@ export const accordionMocksContent: AccordionMocksContent[] = [
             subTitle="In a dispute, what percentage of the losing side’s stake should be awarded to the voters?"
           />
         ),
-        inputItem: <SpecialPercentageInput />,
+        inputItem: <SpecialPercentageInput maxValue={50} />,
         accordionItem: [
           {
             id: 'step-1-0',
@@ -70,6 +70,22 @@ export const accordionMocksContent: AccordionMocksContent[] = [
             content: <ContentTypeAccordionContent>content 3</ContentTypeAccordionContent>,
           },
         ],
+      },
+    ],
+  },
+  {
+    id: 'step-2',
+    title: 'Show extension parameters 3',
+    content: [
+      {
+        id: 1,
+        textItem: (
+          <ContentTypeText
+            title="Voter Reward"
+            subTitle="In a dispute, what percentage of the losing side’s stake should be awarded to the voters?"
+          />
+        ),
+        inputItem: <SpecialPercentageInput maxValue={100} />,
       },
     ],
   },
