@@ -101,6 +101,9 @@ fragment MotionData on MotionData {
   skillRep
   repSubmitted
   hasObjection
+  hasPassed
+  inRevealPhase
+  hasFailedNotFinalizable
   messages {
     ...MotionMessage
   }

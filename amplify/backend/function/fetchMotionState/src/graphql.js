@@ -76,6 +76,9 @@ module.exports = {
           repSubmitted
           createdBy
           hasObjection
+          hasPassed
+          inRevealPhase
+          hasFailedNotFinalizable
           messages {
             ...MotionMessage
           }
