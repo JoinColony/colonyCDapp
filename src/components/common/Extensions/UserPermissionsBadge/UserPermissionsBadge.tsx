@@ -1,24 +1,12 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
-import camelcase from 'camelcase';
 import clsx from 'clsx';
 import { UserPermissionsBadgeProps } from './types';
 import styles from './UserPermissionsBadge.module.css';
-// import { pills as iconNames } from '~images/icons.json';
 import Tooltip from '~shared/Extensions/Tooltip';
+import Icon from '~shared/Icon';
 
 const displayName = 'common.Extensions.UserPermissionsBadge';
-
-// This have to be uncommented when icon will work
-// const icons = iconNames.reduce((iconObj, iconName) => {
-//   const id = camelcase(iconName);
-
-//   return {
-//     ...iconObj,
-//     // eslint-disable-next-line no-param-reassign, global-require, import/no-dynamic-require, @typescript-eslint/no-var-requires
-//     [id]: require(`~images/pills/${id}.svg`).default,
-//   };
-// }, {});
 
 const UserPermissionsBadge: FC<PropsWithChildren<UserPermissionsBadgeProps>> = ({
   children,
@@ -35,8 +23,6 @@ const UserPermissionsBadge: FC<PropsWithChildren<UserPermissionsBadgeProps>> = (
 
   const userPermissionsBadgeDescription =
     typeof description == 'string' ? description : description && formatMessage(description, descriptionValues);
-
-  // const Icon = icons[name];
 
   const content = (
     <>
