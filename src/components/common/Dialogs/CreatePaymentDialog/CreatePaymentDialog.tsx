@@ -9,8 +9,6 @@ import { ActionHookForm as Form } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 // import {
 //   useColonyFromNameQuery,
-//   useMembersSubscription,
-//   useNetworkContracts,
 // } from '~data/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
@@ -73,10 +71,6 @@ const CreatePaymentDialog = ({
 
   const validationSchema = getValidationSchema(colony, networkInverseFee);
 
-  // const { data: colonyMembers } = useMembersSubscription({
-  //   variables: { colonyAddress },
-  // });
-
   /*
    * @NOTE This (extravagant) query retrieves the latest whitelist data.
    * Whitelist data from colony prop can be stale.
@@ -128,26 +122,19 @@ const CreatePaymentDialog = ({
         transform={transform}
         onSuccess={close}
       >
-        {({ watch }) => {
-          const forceActionvalue = watch('forceAction');
-          if (forceActionvalue !== isForce) {
-            setIsForce(forceActionvalue);
+        <DialogForm
+          back={() => callStep(prevStep)}
+          verifiedUsers={
+            colonyMembers // isWhitelistActivated ? verifiedUsers : ...
           }
-
-          return (
-            <DialogForm
-              back={() => callStep(prevStep)}
-              verifiedUsers={
-                colonyMembers // isWhitelistActivated ? verifiedUsers : ...
-              }
-              // showWhitelistWarning={showWarningForAddress(
-              //   values?.recipient?.walletAddress,
-              // )}
-              colony={colony}
-              enabledExtensionData={enabledExtensionData}
-            />
-          );
-        }}
+          // showWhitelistWarning={showWarningForAddress(
+          //   values?.recipient?.walletAddress,
+          // )}
+          colony={colony}
+          enabledExtensionData={enabledExtensionData}
+          handleIsForceChange={setIsForce}
+          isForce={isForce}
+        />
       </Form>
     </Dialog>
   );
