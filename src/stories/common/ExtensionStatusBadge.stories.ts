@@ -7,7 +7,7 @@ const meta: Meta<typeof ExtensionsStatusBadge> = {
   argTypes: {
     mode: {
       name: 'Mode',
-      options: ['Coming soon', 'Not installed', 'Enabled', 'Disabled', 'Deprecated', 'Governance', 'New'],
+      options: ['coming-soon', 'not-installed', 'enabled', 'disabled', 'deprecated', 'governance', 'new'],
       control: {
         type: 'select',
       },
@@ -26,7 +26,7 @@ type Story = StoryObj<typeof ExtensionsStatusBadge>;
 
 export const Base: Story = {
   args: {
-    mode: 'Coming soon',
+    mode: 'coming-soon',
     text: 'Coming soon',
   },
 };
