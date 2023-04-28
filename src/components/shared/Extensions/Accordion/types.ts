@@ -39,3 +39,7 @@ export interface AccordionContentItemProps {
   isOpen?: boolean;
   onClick?: () => void;
 }
+
+export interface SpecialInputProps {
+  maxValue: number;
+}

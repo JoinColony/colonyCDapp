@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 import Link from '~shared/Link';
-import { ToastComponentProps } from './types';
+import { ToastProps } from './types';
 import Icon from '~shared/Icon';
-import 'react-toastify/dist/ReactToastify.css';
 
-const displayName = 'Extensions.ToastComponent';
+const displayName = 'Extensions.Toast';
 
-const ToastComponent: FC<ToastComponentProps> = ({ type = 'success', title, description, linkName, url = '' }) => (
+const Toast: FC<ToastProps> = ({ type = 'success', title, description, linkName, url = '' }) => (
   <div className="flex bg-base-white relative">
     <div
       className={clsx({
@@ -40,6 +39,6 @@ const ToastComponent: FC<ToastComponentProps> = ({ type = 'success', title, desc
   </div>
 );
 
-ToastComponent.displayName = displayName;
+Toast.displayName = displayName;
 
-export default ToastComponent;
+export default Toast;
