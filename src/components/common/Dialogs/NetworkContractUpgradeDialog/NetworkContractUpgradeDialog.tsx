@@ -68,19 +68,13 @@ const NetworkContractUpgradeDialog = ({
         transform={transform}
         onSuccess={close}
       >
-        {({ getValues }) => {
-          const values = getValues();
-          if (values.forceAction !== isForce) {
-            setIsForce(values.forceAction);
-          }
-          return (
-            <DialogForm
-              colony={colony}
-              back={prevStep && callStep ? () => callStep(prevStep) : undefined}
-              enabledExtensionData={enabledExtensionData}
-            />
-          );
-        }}
+        <DialogForm
+          colony={colony}
+          back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+          enabledExtensionData={enabledExtensionData}
+          handleIsForceChange={setIsForce}
+          isForce={isForce}
+        />
       </Form>
     </Dialog>
   );
