@@ -1,6 +1,7 @@
 import React, { createContext, useMemo, ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
+import { ObservableQuery } from '@apollo/client';
 
 import { useGetFullColonyByNameQuery } from '~gql';
 import { Colony } from '~types';
@@ -12,11 +13,13 @@ interface ColonyContextValue {
   colony?: Colony;
   loading: boolean;
   canInteractWithColony: boolean;
+  refetchColony: (() => null) | ObservableQuery['refetch'];
 }
 
 const ColonyContext = createContext<ColonyContextValue>({
   loading: false,
   canInteractWithColony: false,
+  refetchColony: () => null,
 });
 
 const displayName = 'ColonyContextProvider';
@@ -35,12 +38,18 @@ export const ColonyContextProvider = ({
 }) => {
   const { colonyName } = useParams<{ colonyName: string }>();
 
-  const { data, loading, error } = useGetFullColonyByNameQuery({
+  const {
+    data,
+    loading,
+    error,
+    refetch: refetchColony,
+  } = useGetFullColonyByNameQuery({
     skip: !colonyName,
     variables: {
       name: colonyName ?? '',
     },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
+    nextFetchPolicy: 'cache-first',
   });
 
   const colony = data?.getColonyByName?.items?.[0] ?? undefined;
@@ -48,8 +57,13 @@ export const ColonyContextProvider = ({
   const canInteractWithColony = useCanInteractWithColony(colony);
 
   const colonyContext = useMemo<ColonyContextValue>(
-    () => ({ colony, loading, canInteractWithColony }),
-    [colony, loading, canInteractWithColony],
+    () => ({
+      colony,
+      loading,
+      canInteractWithColony,
+      refetchColony,
+    }),
+    [colony, loading, canInteractWithColony, refetchColony],
   );
 
   if (!colonyName) {
