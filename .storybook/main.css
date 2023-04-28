@@ -20,17 +20,17 @@
   }
 
   svg:not([class]) {
-    fill: currentColor;
+    @apply fill-current stroke-current;
   }
 
   #root {
-    height: 100%;
+    @apply h-full;
   }
 
   input[type='number']::-webkit-inner-spin-button,
   input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
-    margin: 0;
+    @apply m-0;
   }
 }
 
@@ -60,7 +60,7 @@
 
 @media screen and query700 {
   html {
-    background-color: white;
+    @apply bg-base-white;
   }
 }
 

@@ -24,9 +24,9 @@ const Tabs: FC<TabsProps> = ({ items, initialActiveTab = 0 }) => {
         leftNavBtnClassName={styles.navLeftButton}
         rightNavBtnClassName={styles.navRightButton}
         // @ts-ignore - react-tabs-scrollable has invalid type for this prop
-        leftBtnIcon={<Icon name="caret-left" />}
+        leftBtnIcon={<Icon name="caret-left" appearance={{ size: 'extraTiny' }} />}
         // @ts-ignore - react-tabs-scrollable has invalid type for this prop
-        rightBtnIcon={<Icon name="caret-right" />}
+        rightBtnIcon={<Icon name="caret-right" appearance={{ size: 'extraTiny' }} />}
         navBtnClassName={styles.navButton}
         hideNavBtnsOnMobile={false}
       >

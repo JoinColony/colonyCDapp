@@ -16,7 +16,7 @@ const meta: Meta<typeof UserPermissionsBadge> = {
     },
     name: {
       name: 'Icon Name',
-      options: ['appWindow', 'bank', 'buildings', 'disabled', 'clipboardText', 'clockCounterClockwise', 'scales'],
+      options: ['app-window', 'bank', 'buildings', 'clipboard-text', 'clock-counter-clockwise', 'scales'],
       control: {
         type: 'select',
       },

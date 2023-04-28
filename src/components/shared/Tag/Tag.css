@@ -126,7 +126,7 @@
 }
 
 .fontSizeTiny,
-.fontSizeTiny span {
+.fontSizeExtraSmall span {
   font-size: 9px;
   line-height: 15px;
 }

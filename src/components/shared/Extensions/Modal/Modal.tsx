@@ -8,14 +8,7 @@ import styles from './Modal.module.css';
 
 const displayName = 'Extensions.Modal';
 
-const Modal: FC<PropsWithChildren<ModalProps>> = ({
-  title,
-  children,
-  icon = 'close',
-  onClose,
-  isWarning = false,
-  ...props
-}) => {
+const Modal: FC<PropsWithChildren<ModalProps>> = ({ title, children, icon, onClose, isWarning = false, ...props }) => {
   const { formatMessage } = useIntl();
 
   const titleText = typeof title == 'string' ? title : title && formatMessage(title);
@@ -29,7 +22,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
               'border-red-200 text-red-400': isWarning,
             })}
           >
-            <Icon appearance={{ size: 'extraTiny' }} name={icon} />*
+            <Icon appearance={{ size: 'small' }} name={icon} />
           </span>
         )}
         <button
@@ -43,7 +36,6 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
             name="close"
             title={formatMessage({ id: 'shared.modal.buttonCancel' })}
           />
-          *
         </button>
       </div>
       <div className={styles.inner}>

@@ -58,11 +58,15 @@ const ModalWithState = (args) => {
 };
 
 export const Base: Story = {
+  args: {
+    icon: 'trash',
+  },
   render: (args) => <ModalWithState {...args} />,
 };
 
 export const WithWarning: Story = {
   args: {
+    icon: 'trash',
     isWarning: true,
   },
   render: (args) => <ModalWithState {...args} />,

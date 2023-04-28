@@ -40,7 +40,9 @@ const UserPermissionsBadge: FC<PropsWithChildren<UserPermissionsBadgeProps>> = (
 
   const content = (
     <>
-      <span className="flex flex-shrink-0 w-[0.75rem]">{/* <Icon /> */}</span>
+      <span className="flex items-center flex-shrink-0">
+        <Icon name={name} appearance={{ size: 'extraTiny' }} />
+      </span>
       <span className="ml-1.5">{userPermissionsBadgeText || children}</span>
     </>
   );
