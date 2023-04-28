@@ -5,7 +5,6 @@ import { FormattedDateParts } from 'react-intl';
 import { Message, UniversalMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
-import { MOTION_TAG_MAP, MotionState } from '~utils/colonyMotions';
 
 import styles from './ListItem.css';
 
