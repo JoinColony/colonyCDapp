@@ -5,10 +5,12 @@ import Button, { Props as ButtonProps } from './Button';
 import Icon from '../Icon';
 
 import styles from './DottedAddButton.css';
+import { SimpleMessageValues } from '~types';
 
 interface Props extends Omit<ButtonProps, 'appearance'> {
   // Make text required (optional in `ButtonProps`)
   text: MessageDescriptor | string;
+  textValues: SimpleMessageValues;
 }
 
 const displayName = 'Button.DottedAddButton';
