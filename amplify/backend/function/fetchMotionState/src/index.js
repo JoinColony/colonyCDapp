@@ -13,7 +13,8 @@ exports.handler = async (event) => {
   const { colonyAddress, transactionHash } = event.arguments?.input || {};
   /* Get latest motion state from chain */
   const motionData = await getMotionData(transactionHash);
-  const motionState = await getLatestMotionState(colonyAddress, motionData);
+  const motionState =
+    motionData && (await getLatestMotionState(colonyAddress, motionData));
   /*
    * Check if we need to update staker rewards
    * This ensures the rewards are present in the event a motion fails before going to a vote,
@@ -39,45 +40,37 @@ exports.handler = async (event) => {
   }
 
   if (transactionHash && motionState === MotionState.Reveal) {
-    if (
-      motionData &&
-      !motionData?.messages.find(
-        (message) => message.name === 'MotionRevealPhase',
-      )
-    ) {
+    if (motionData && !motionData.inRevealPhase) {
       await updateMotionMessagesInDB(
         transactionHash,
         motionData,
         'MotionRevealPhase',
+        'inRevealPhase',
       );
     }
   }
 
-  if (transactionHash && motionState === MotionState.Finalizable) {
-    if (motionData) {
-      if (didMotionPass(motionData)) {
-        if (
-          !motionData.messages.find(
-            (message) => message.name === 'MotionHasPassed',
-          )
-        ) {
-          await updateMotionMessagesInDB(
-            transactionHash,
-            motionData,
-            'MotionHasPassed',
-          );
-        }
-      } else if (
-        !motionData.messages.find(
-          (message) => message.name === 'MotionHasFailedNotFinalizable',
-        )
-      ) {
+  if (
+    transactionHash &&
+    motionData &&
+    motionState === MotionState.Finalizable
+  ) {
+    if (didMotionPass(motionData)) {
+      if (!motionData.hasPassed) {
         await updateMotionMessagesInDB(
           transactionHash,
           motionData,
-          'MotionHasFailedNotFinalizable',
+          'MotionHasPassed',
+          'hasPassed',
         );
       }
+    } else if (!motionData.hasFailedNotFinalizable) {
+      await updateMotionMessagesInDB(
+        transactionHash,
+        motionData,
+        'MotionHasFailedNotFinalizable',
+        'hasFailedNotFinalizable',
+      );
     }
   }
 

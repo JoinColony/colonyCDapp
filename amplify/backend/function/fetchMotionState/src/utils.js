@@ -203,6 +203,7 @@ const updateMotionMessagesInDB = async (
   transactionHash,
   motionData,
   motionMessage,
+  flag,
 ) => {
   const { messages } = motionData;
   const updatedMessages = [
@@ -218,6 +219,7 @@ const updateMotionMessagesInDB = async (
     motionData: {
       ...motionData,
       messages: updatedMessages,
+      [flag]: true,
     },
   });
 };
