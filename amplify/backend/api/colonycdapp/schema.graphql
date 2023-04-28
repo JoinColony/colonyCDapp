@@ -563,6 +563,9 @@ input MotionDataInput {
   repSubmitted: String!
   skillRep: String!
   hasObjection: Boolean!
+  hasPassed: Boolean!
+  inRevealPhase: Boolean!
+  hasFailedNotFinalizable: Boolean!
   messages: [MotionMessageInput!]!
 }
 
@@ -584,6 +587,9 @@ type MotionData {
   repSubmitted: String!
   skillRep: String!
   hasObjection: Boolean!
+  hasPassed: Boolean!
+  inRevealPhase: Boolean!
+  hasFailedNotFinalizable: Boolean!
   messages: [MotionMessage!]!
 }
 
