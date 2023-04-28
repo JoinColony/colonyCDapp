@@ -24,7 +24,7 @@ export const accordionMocksContent: AccordionMocksContent[] = [
             in token terms, should need to stake on each side of a motion?"
           />
         ),
-        inputItem: <SpecialHourInput />,
+        inputItem: <SpecialHourInput maxValue={8766} />,
         accordionItem: [
           {
             id: 'step-0-0',
