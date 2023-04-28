@@ -1,16 +1,15 @@
+.carouselWrapper .carousel {
+  @apply relative overflow-visible;
+}
+
 .carouselWrapper [class~='carousel'] {
   @apply relative overflow-visible;
 }
 
-.carouselWrapper [class~='carousel-slider'],
-.carouselWrapper [class~='slider-wrapper'] {
-  @apply w-[33.5rem];
+.carouselWrapper [class~='slide'] {
+  @apply max-h-[15.5rem] sm:mr-4;
 }
 
 .carouselWrapper [class~='control-dots'] {
   @apply bottom-[-2.5rem] overflow-visible flex justify-center;
-}
-
-.carouselWrapper [class~='slide'] {
-  @apply mr-4 h-[15.5rem];
 }
