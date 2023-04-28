@@ -3,7 +3,6 @@ const {
   getColonyNetworkClient,
   Network,
   Extension,
-  MotionState,
 } = require('@colony/colony-js');
 const { default: fetch, Request } = require('node-fetch');
 
@@ -157,16 +156,16 @@ const didMotionPass = ({
      * If the votes are equal, it fails
      */
     if (BigNumber.from(yayVotes).gt(nayVotes)) {
-      return MotionState.Passed;
+      return true;
     }
 
-    return MotionState.Failed;
+    return false;
   }
 
   if (BigNumber.from(yayStakes).eq(requiredStake)) {
-    return MotionState.Passed;
+    return true;
   }
-  return MotionState.Failed;
+  return false;
 };
 
 const updateStakerRewardsInDB = async (
@@ -207,9 +206,7 @@ const updateMotionMessagesInDB = async (
   motionData,
   motionMessage,
 ) => {
-  console.log('====================Updating motion messages in db');
   const { messages } = motionData;
-
   const updatedMessages = [
     ...messages,
     {
@@ -217,7 +214,10 @@ const updateMotionMessagesInDB = async (
       messageKey: `${transactionHash}_${motionMessage}}`,
     },
   ];
-
+  console.log(
+    '====================Updating motion messages in db',
+    updatedMessages,
+  );
   await graphqlRequest(updateColonyAction, {
     id: transactionHash,
     motionData: {
