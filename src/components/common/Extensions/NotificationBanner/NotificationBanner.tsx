@@ -3,6 +3,7 @@ import React, { FC, PropsWithChildren } from 'react';
 import CopyUrl from './CopyUrl';
 import { NotificationBannerProps } from './NotificationBanner.types';
 import Link from '~shared/Link';
+import Icon from '~shared/Icon';
 
 const displayName = 'common.Extensions.NotificationBanner';
 
@@ -27,7 +28,14 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
     >
       <div className={clsx('flex', { 'flex-col': children, 'flex-row': !children })}>
         <div className="flex items-center">
-          <div>*</div>
+          <Icon
+            name={status === 'success' ? 'check-circle' : 'warning-circle'}
+            className={clsx('min-w-[0.84375rem] min-h-[0.84375rem]', {
+              'stroke-success-400': status === 'success',
+              'stroke-warning-400': status === 'warning',
+              'stroke-negative-400': status === 'error',
+            })}
+          />
           <div className="text-md font-normal text-gray-900 ml-2">{title}</div>
         </div>
         {children && <div className="text-sm font-normal text-gray-600 max-w-[50rem]">{children}</div>}
