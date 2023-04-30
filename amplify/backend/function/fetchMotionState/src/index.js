@@ -20,34 +20,31 @@ exports.handler = async (event) => {
    * This ensures the rewards are present in the event a motion fails before going to a vote,
    * so the side that has objected can reclaim their stake.
    */
-  if (transactionHash && motionState === MotionState.Failed) {
-    if (motionData) {
-      const {
-        motionStakes: {
-          percentage: { yay: yayPercent },
-        },
-      } = motionData;
+  if (transactionHash && motionData && motionState === MotionState.Failed) {
+    const {
+      motionStakes: {
+        percentage: { yay: yayPercent },
+      },
+    } = motionData;
 
-      // Motion did not go to a vote
-      if (yayPercent !== '100') {
-        await updateStakerRewardsInDB(
-          colonyAddress,
-          transactionHash,
-          motionData,
-        );
-      }
+    // Motion did not go to a vote
+    if (yayPercent !== '100') {
+      await updateStakerRewardsInDB(colonyAddress, transactionHash, motionData);
     }
   }
 
-  if (transactionHash && motionState === MotionState.Reveal) {
-    if (motionData && !motionData.inRevealPhase) {
-      await updateMotionMessagesInDB(
-        transactionHash,
-        motionData,
-        'MotionRevealPhase',
-        'inRevealPhase',
-      );
-    }
+  if (
+    transactionHash &&
+    motionData &&
+    motionState === MotionState.Reveal &&
+    !motionData.inRevealPhase
+  ) {
+    await updateMotionMessagesInDB(
+      transactionHash,
+      motionData,
+      'MotionRevealPhase',
+      'inRevealPhase',
+    );
   }
 
   if (
@@ -55,16 +52,18 @@ exports.handler = async (event) => {
     motionData &&
     motionState === MotionState.Finalizable
   ) {
-    if (didMotionPass(motionData)) {
-      if (!motionData.hasPassed) {
-        await updateMotionMessagesInDB(
-          transactionHash,
-          motionData,
-          'MotionHasPassed',
-          'hasPassed',
-        );
-      }
-    } else if (!motionData.hasFailedNotFinalizable) {
+    const didPass = await didMotionPass(motionData);
+
+    if (didPass && !motionData.hasPassed) {
+      await updateMotionMessagesInDB(
+        transactionHash,
+        motionData,
+        'MotionHasPassed',
+        'hasPassed',
+      );
+    }
+
+    if (!didPass && !motionData.hasFailedNotFinalizable) {
       await updateMotionMessagesInDB(
         transactionHash,
         motionData,
