@@ -1,5 +1,5 @@
-import React, { createContext, useMemo, ReactNode } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { createContext, useMemo, ReactNode, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 import { ObservableQuery } from '@apollo/client';
 
@@ -37,12 +37,15 @@ export const ColonyContextProvider = ({
   children: ReactNode;
 }) => {
   const { colonyName } = useParams<{ colonyName: string }>();
+  const { state: locationState } = useLocation();
+  const [isPolling, setIsPolling] = useState(!!colonyName);
 
   const {
     data,
     loading,
     error,
     refetch: refetchColony,
+    stopPolling,
   } = useGetFullColonyByNameQuery({
     skip: !colonyName,
     variables: {
@@ -50,9 +53,17 @@ export const ColonyContextProvider = ({
     },
     fetchPolicy: 'network-only',
     nextFetchPolicy: 'cache-first',
+    pollInterval: 1000,
   });
 
+  const isRedirect = locationState?.isRedirect;
   const colony = data?.getColonyByName?.items?.[0] ?? undefined;
+
+  /* Stop polling if we weren't redirected from the ColonyCreation wizard or when the query returns the colony */
+  if (isPolling && (!isRedirect || colony)) {
+    stopPolling();
+    setIsPolling(false);
+  }
 
   const canInteractWithColony = useCanInteractWithColony(colony);
 
@@ -70,7 +81,7 @@ export const ColonyContextProvider = ({
     return null;
   }
 
-  if (loading) {
+  if (loading || isPolling) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;
   }
 
