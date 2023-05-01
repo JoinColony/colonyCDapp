@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { StakerRewards } from '~gql';
-import { useAppContext } from '~hooks';
+import { useAppContext, useColonyContext } from '~hooks';
 import { ColonyAction, ColonyActionType, Address } from '~types';
 import { MotionState } from '~utils/colonyMotions';
 
@@ -42,8 +42,10 @@ const MotionPhaseWidget = ({
   ...rest
 }: MotionPhaseWidgetProps) => {
   const { user } = useAppContext();
+  const { refetchColony } = useColonyContext();
   const { motionData, type, amount, fromDomain } = actionData;
   const { stopPollingAction } = rest;
+
   if (!motionData) {
     /*
      * Will not happen. Undefined motion data will result in the invalid transaction view being
@@ -82,6 +84,9 @@ const MotionPhaseWidget = ({
           </div>
         );
       }
+
+      /* Update colony object when motion gets finalized. */
+      refetchColony();
 
       const isClaimed = isMotionClaimed(
         motionData.stakerRewards,
