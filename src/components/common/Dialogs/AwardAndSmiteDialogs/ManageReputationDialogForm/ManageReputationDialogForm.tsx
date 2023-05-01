@@ -139,6 +139,7 @@ const ManageReputationDialogForm = ({
     requiredRoles,
     [domainId],
     enabledExtensionData,
+    domainId,
   );
 
   const { userReputation } = useUserReputation(
@@ -269,7 +270,7 @@ const ManageReputationDialogForm = ({
               name="domainId"
               appearance={{ theme: 'grey', width: 'fluid' }}
               renderActiveOption={renderActiveOption}
-              disabled={!userHasPermission}
+              disabled={!userHasPermission || canOnlyForceAction}
             />
           </div>
         </div>
