@@ -6,7 +6,7 @@ import DetailItem from '~shared/DetailsWidget/DetailItem';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import { MotionData } from '~types';
 import { useColonyContext } from '~hooks';
-import { getDomainBalance } from '~utils/domains';
+import { getBalanceForTokenAndDomain } from '~utils/tokens';
 
 import FinalizeButton from './FinalizeButton';
 
@@ -38,6 +38,7 @@ const MSG = defineMessages({
 
 export interface FinalizeMotionProps {
   amount?: string | null;
+  tokenAddress?: string | null;
   motionData: MotionData;
   requiresDomainFunds: boolean;
   startPollingAction: (pollingInterval: number) => void;
@@ -46,6 +47,7 @@ export interface FinalizeMotionProps {
 
 const FinalizeMotion = ({
   amount,
+  tokenAddress,
   motionData: { motionDomainId, motionId },
   requiresDomainFunds,
   startPollingAction,
@@ -64,7 +66,11 @@ const FinalizeMotion = ({
     );
   }
 
-  const domainBalance = getDomainBalance(motionDomainId, balances);
+  const domainBalance = getBalanceForTokenAndDomain(
+    balances,
+    tokenAddress ?? '',
+    Number(motionDomainId),
+  );
 
   const isFinalizable =
     !requiresDomainFunds ||
