@@ -123,7 +123,9 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
     getGroupStatus(newestGroup) === TRANSACTION_STATUSES.SUCCEEDED &&
     getGroupKey(newestGroup) === 'group.createColony'
   ) {
-    return <Navigate to={`/colony/${colonyName}`} />;
+    return (
+      <Navigate to={`/colony/${colonyName}`} state={{ isRedirect: true }} />
+    );
   }
 
   const createColonyTxGroup = findTransactionGroupByKey(
