@@ -43,7 +43,7 @@ const MotionPhaseWidget = ({
 }: MotionPhaseWidgetProps) => {
   const { user } = useAppContext();
   const { refetchColony } = useColonyContext();
-  const { motionData, type, amount, fromDomain } = actionData;
+  const { motionData, type, amount, fromDomain, tokenAddress } = actionData;
   const { stopPollingAction } = rest;
 
   if (!motionData) {
@@ -72,6 +72,7 @@ const MotionPhaseWidget = ({
           <div>
             <FinalizeMotion
               amount={amount}
+              tokenAddress={tokenAddress}
               motionData={motionData}
               requiresDomainFunds={
                 !!fromDomain &&
