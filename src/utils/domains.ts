@@ -41,20 +41,3 @@ export const getDomainOptions = (colonyDomains: Domain[]) =>
     })) || [],
     ['value'],
   );
-
-/**
- * Get a specific domain balance from the array of Colony balances.
- */
-export const getDomainBalance = (
-  nativeDomainId: number | string,
-  balances?: Colony['balances'] | null,
-) => {
-  const { balance } =
-    balances?.items
-      ?.filter(notNull)
-      .find(
-        ({ domain: { nativeId } }) => nativeId === Number(nativeDomainId),
-      ) || {};
-
-  return balance;
-};
