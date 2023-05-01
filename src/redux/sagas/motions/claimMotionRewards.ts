@@ -70,16 +70,15 @@ function* claimMotionRewards({
       userAddress,
     );
 
-    const allMotionClaimsCount =
-      motionsWithYayClaim.length + motionsWithNayClaim.length;
+    const allMotionClaims = [...motionsWithYayClaim, ...motionsWithNayClaim];
 
-    if (!allMotionClaimsCount) {
+    if (!allMotionClaims.length) {
       throw new Error('A motion with claims needs to be provided');
     }
 
     const channelNames: string[] = [];
 
-    for (let index = 0; index < allMotionClaimsCount; index += 1) {
+    for (let index = 0; index < allMotionClaims.length; index += 1) {
       channelNames.push(String(index));
     }
 
@@ -96,7 +95,7 @@ function* claimMotionRewards({
           methodName: 'claimRewardWithProofs',
           identifier: colonyAddress,
           params: [
-            motionIds[id],
+            allMotionClaims[id],
             userAddress,
             parseInt(id, 10) > motionsWithYayClaim.length - 1 ? 0 : 1,
           ],
