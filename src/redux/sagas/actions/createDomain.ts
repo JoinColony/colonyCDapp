@@ -165,8 +165,10 @@ function* createDomainAction({
       meta,
     });
 
-    if (colonyName && navigate) {
-      navigate(`/colony/${colonyName}/tx/${transactionHash}`);
+    if (colonyName) {
+      navigate(`/colony/${colonyName}/tx/${transactionHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_DOMAIN_CREATE_ERROR, error, meta);

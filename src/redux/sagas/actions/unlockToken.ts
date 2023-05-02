@@ -141,8 +141,10 @@ function* tokenUnlockAction({
       meta,
     });
 
-    if (colonyName && navigate) {
-      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
+    if (colonyName) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     putError(ActionTypes.ACTION_UNLOCK_TOKEN_ERROR, error, meta);

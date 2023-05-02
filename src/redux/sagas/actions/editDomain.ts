@@ -168,8 +168,10 @@ function* editDomainAction({
       meta,
     });
 
-    if (colonyName && navigate) {
-      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
+    if (colonyName) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_DOMAIN_EDIT_ERROR, error, meta);
