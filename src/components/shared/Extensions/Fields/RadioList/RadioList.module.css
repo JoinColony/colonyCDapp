@@ -1,5 +1,5 @@
 .radioButtonLabel {
-  @apply transition-all duration-normal text-md min-h-[2.75rem] rounded-lg flex flex-col relative text-gray-900 justify-center cursor-pointer border pl-[3.25rem] pr-6 py-[0.6875rem] before:absolute before:w-[1rem] before:h-[1rem] before:rounded-full before:border before:border-gray-200 before:left-6 before:top-3.5 before:transition-all before:duration-normal after:absolute after:translate-x-[calc(50%+1px)] after:translate-y-[calc(50%+1px)] after:top-3.5 after:left-6 after:w-[0.4375rem] after:h-[0.4375rem] after:rounded-full after:bg-blue-400 after:transition-all after:duration-normal after:opacity-0 hover:border-blue-400;
+  @apply transition-all duration-normal text-md min-h-[2.75rem] rounded-lg flex flex-col relative text-gray-900 justify-center cursor-pointer border pl-[3.25rem] pr-6 py-[0.6875rem] before:absolute before:w-[1rem] before:h-[1rem] before:rounded-full before:border before:border-gray-200 before:left-6 before:transition-all before:duration-normal after:absolute after:translate-x-[calc(50%+1px)] after:translate-y-[calc(50%+1px)] after:left-6 after:w-[0.4375rem] after:h-[0.4375rem] after:rounded-full after:bg-blue-400 after:transition-all after:duration-normal after:opacity-0 hover:border-blue-400;
 }
 
 .label {

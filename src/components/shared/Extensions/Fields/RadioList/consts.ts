@@ -7,14 +7,14 @@ export const radioItems: RadioItemProps[] = [
   },
   {
     value: 'radio-button-2',
-    label: 'High trust team',
+    label: 'Second field',
     tooltip: {
       tooltipContent: 'Some content here',
     },
   },
   {
     value: 'radio-button-3',
-    label: 'High trust team',
+    label: 'Third field',
     badge: {
       mode: 'coming-soon',
       text: 'Coming Soon',
