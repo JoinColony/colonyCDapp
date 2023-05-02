@@ -4,7 +4,7 @@ import { Decimal } from 'decimal.js';
 import { isNil } from 'lodash';
 import { ColonyRoles } from '@colony/colony-js';
 
-import { getRolesForUserAndDomain } from '~redux/transformers';
+import { getRolesForUserAndDomain } from '~transformers';
 import { ActionUserRoles, User } from '~types';
 import { TagColorSchema, TagTheme } from '~shared/Tag/Tag';
 
