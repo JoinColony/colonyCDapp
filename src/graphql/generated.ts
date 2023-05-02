@@ -3101,7 +3101,7 @@ export type GetUserByNameQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByNameQuery = { __typename?: 'Query', getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', id: string } | null> } | null };
+export type GetUserByNameQuery = { __typename?: 'Query', getUserByName?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', name: string, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null } | null, watchlist?: { __typename?: 'ModelWatchedColoniesConnection', items: Array<{ __typename?: 'WatchedColonies', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, chainMetadata?: { __typename?: 'ChainMetadata', chainId?: number | null, network?: Network | null } | null, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean }> | null } | null } } | null> } | null } | null> } | null };
 
 export type CombinedUserQueryVariables = Exact<{
   name: Scalars['String'];
@@ -4420,11 +4420,11 @@ export const GetUserByNameDocument = gql`
     query GetUserByName($name: String!) {
   getUserByName(name: $name) {
     items {
-      id
+      ...User
     }
   }
 }
-    `;
+    ${UserFragmentDoc}`;
 
 /**
  * __useGetUserByNameQuery__

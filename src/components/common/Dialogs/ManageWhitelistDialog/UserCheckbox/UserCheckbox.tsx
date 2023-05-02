@@ -7,7 +7,7 @@ import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 import MaskedAddress from '~shared/MaskedAddress';
 import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
-import { useUserByNameOrAddress } from '~hooks';
+import { useUserByAddress } from '~hooks';
 import { Address } from '~types';
 
 import styles from './UserCheckbox.css';
@@ -27,7 +27,7 @@ const UserCheckbox = ({
   unCheckedTooltipText,
   showDisplayName = true,
 }: Props) => {
-  const { user } = useUserByNameOrAddress(walletAddress);
+  const { user } = useUserByAddress(walletAddress);
   const [isChecked, setIsChecked] = useState<boolean>(true);
 
   const {

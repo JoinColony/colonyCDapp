@@ -22,7 +22,7 @@ query GetReputationForTopDomains($input: GetReputationForTopDomainsInput!) {
 query GetUserByName($name: String!) {
   getUserByName(name: $name) {
     items {
-      id
+      ...User
     }
   }
 }
