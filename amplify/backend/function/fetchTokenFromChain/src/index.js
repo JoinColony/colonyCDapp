@@ -10,12 +10,11 @@ const { graphqlRequest, getTokenType } = require('./utils');
  */
 const { createToken, getTokenByAddress } = require('./graphql');
 
-/*
- * @TODO These values need to be imported properly, and differentiate based on environment
- */
-const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002/graphql';
-const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+const API_KEY = process.env.APPSYNC_API_KEY || 'da2-fakeApiId123456';
+const GRAPHQL_URI =
+  process.env.AWS_APPSYNC_GRAPHQL_URL || 'http://localhost:20002/graphql';
+const RPC_URL =
+  process.env.CHAIN_RPC_ENDPOINT || 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
 
 const baseToken = {
   __typename: 'Token',

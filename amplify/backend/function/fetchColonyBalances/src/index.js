@@ -8,18 +8,24 @@ const {
 const { graphqlRequest } = require('./utils');
 const { getColony } = require('./queries');
 
-const {
-  etherRouterAddress: networkAddress,
-} = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+let networkAddress;
+try {
+  const artifacts = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+  networkAddress = artifacts.etherRouterAddress;
+} catch (error) {
+  // silent error
+  // means we're in a production environment without access to the contract build artifacts
+}
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
-/*
- * @TODO These values need to be imported properly, and differentiate based on environment
- */
-const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002/graphql';
-const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+const API_KEY = process.env.APPSYNC_API_KEY || 'da2-fakeApiId123456';
+const GRAPHQL_URI =
+  process.env.AWS_APPSYNC_GRAPHQL_URL || 'http://localhost:20002/graphql';
+const RPC_URL =
+  process.env.CHAIN_RPC_ENDPOINT || 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+const NETWORK = process.env.CHAIN_RPC_ENDPOINT || Network.Custom;
+const NETWORK_ADDRESS = process.env.CHAIN_NETWORK_CONTRACT || networkAddress;
 
 const provider = new providers.JsonRpcProvider(RPC_URL);
 
@@ -38,8 +44,8 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
     return null;
   }
 
-  const networkClient = await getColonyNetworkClient(Network.Custom, provider, {
-    networkAddress,
+  const networkClient = await getColonyNetworkClient(NETWORK, provider, {
+    networkAddress: NETWORK_ADDRESS,
   });
 
   const colonyClient = await networkClient.getColonyClient(colonyAddress);
