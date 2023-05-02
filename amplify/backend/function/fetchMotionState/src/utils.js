@@ -202,17 +202,18 @@ const updateStakerRewardsInDB = async (
 const updateMotionMessagesInDB = async (
   transactionHash,
   motionData,
-  motionMessage,
+  motionMessages,
   flag,
 ) => {
   const { messages } = motionData;
-  const updatedMessages = [
-    ...messages,
-    {
-      name: motionMessage,
-      messageKey: `${transactionHash}_${motionMessage}}`,
-    },
-  ];
+  const updatedMessages = [...messages];
+
+  motionMessages.forEach((message) => {
+    updatedMessages.push({
+      name: message,
+      messageKey: `${transactionHash}_${message}`,
+    });
+  });
 
   await graphqlRequest(updateColonyAction, {
     id: transactionHash,

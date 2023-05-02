@@ -33,6 +33,8 @@ exports.handler = async (event) => {
     }
   }
 
+  const didPass = didMotionPass(motionData);
+
   if (
     transactionHash &&
     motionData &&
@@ -42,7 +44,7 @@ exports.handler = async (event) => {
     await updateMotionMessagesInDB(
       transactionHash,
       motionData,
-      'MotionRevealPhase',
+      ['MotionRevealPhase'],
       'inRevealPhase',
     );
   }
@@ -50,24 +52,40 @@ exports.handler = async (event) => {
   if (
     transactionHash &&
     motionData &&
-    motionState === MotionState.Finalizable
+    (motionState === MotionState.Finalizable ||
+      motionState === MotionState.Finalized)
   ) {
-    const didPass = didMotionPass(motionData);
-
     if (didPass && !motionData.hasPassed) {
+      const newMessages = [];
+      newMessages.push('MotionRevealResultMotionWon');
+      newMessages.push('MotionHasPassed');
       await updateMotionMessagesInDB(
         transactionHash,
         motionData,
-        'MotionHasPassed',
+        newMessages,
         'hasPassed',
       );
     }
 
-    if (!didPass && !motionData.hasFailedNotFinalizable) {
+    if (!didPass && !motionData.hasFailed) {
+      const newMessages = [];
+      newMessages.push('MotionRevealResultObjectionWon');
+      newMessages.push('MotionHasFailedFinalizable');
       await updateMotionMessagesInDB(
         transactionHash,
         motionData,
-        'MotionHasFailedNotFinalizable',
+        newMessages,
+        'hasFailed',
+      );
+    }
+  }
+
+  if (transactionHash && motionData && motionState === MotionState.Failed) {
+    if (!motionData.hasFailedNotFinalizable) {
+      await updateMotionMessagesInDB(
+        transactionHash,
+        motionData,
+        ['MotionHasFailedNotFinalizable'],
         'hasFailedNotFinalizable',
       );
     }
