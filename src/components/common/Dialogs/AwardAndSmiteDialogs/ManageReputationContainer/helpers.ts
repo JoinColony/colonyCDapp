@@ -17,7 +17,7 @@ export const getManageReputationDialogPayload = (
     colonyAddress: colony.colonyAddress,
     colonyName: colony.name,
     domainId,
-    userAddress: user.profile.walletAddress,
+    walletAddress: user.walletAddress,
     annotationMessage: annotation,
     amount: reputationChangeAmount.toString(),
     motionDomainId,

@@ -13,7 +13,7 @@ interface Appearance {
   margin?: 'none' | 'default';
 }
 
-type childrenFn = (handleDismissed: any) => void;
+type childrenFn = (handleDismissed: any) => JSX.Element;
 
 interface Props {
   /** Appearance object */

@@ -8,6 +8,7 @@ import { Tooltip } from '~shared/Popover';
 import asFieldArray, { AsFieldArrayEnhancedProps } from '~shared/Fields/asFieldArray';
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
+import { formatText } from '~utils/intl';
 
 import styles from './Checkbox.css';
 
@@ -132,7 +133,7 @@ const Checkbox = ({
           appearance={{ direction: 'horizontal' }}
         />
       ) : (
-        label || children
+        formatText(label, labelValues) || children
       )}
     </label>
   );

@@ -9,16 +9,15 @@ import { Annotations } from '~shared/Fields';
 import { Heading4 } from '~shared/Heading';
 import Paragraph from '~shared/Paragraph';
 import { TokenSelector } from '~common/CreateColonyWizard';
-import { TokenManagementDialogFormValues } from '~common/Dialogs';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import { useActionDialogStatus } from '~hooks';
 import { isEqual } from '~utils/lodash';
 
 import { NoPermissionMessage, PermissionRequiredInfo } from '../../Messages';
-
 import TokenItem from './TokenItem';
 import getTokenList from './getTokenList';
+import { FormValues } from '../TokenManagementDialog';
 
 import styles from './TokenManagementDialogForm.css';
 
@@ -35,7 +34,7 @@ const MSG = defineMessages({
   },
   textareaLabel: {
     id: `${displayName}.textareaLabel`,
-    defaultMessage: 'Explain why you’re making these changes (optional)',
+    defaultMessage: `Explain why you're making these changes (optional)`,
   },
   noTokensText: {
     id: `${displayName}.noTokensText`,
@@ -65,7 +64,7 @@ const TokenManagementDialogForm = ({
   back,
   enabledExtensionData,
 }: Props) => {
-  const { watch } = useFormContext();
+  const { watch } = useFormContext<FormValues>();
   const values = watch();
   const { userHasPermission, disabledInput, disabledSubmit } = useActionDialogStatus(
     colony,
@@ -77,7 +76,7 @@ const TokenManagementDialogForm = ({
   const colonyTokens = tokens?.items || [];
   const colonyTokenAddresses = colonyTokens.map((colonyToken) => colonyToken?.token.tokenAddress);
 
-  const hasTokensListChanged = ({ selectedTokenAddresses, tokenAddress }: TokenManagementDialogFormValues) =>
+  const hasTokensListChanged = ({ selectedTokenAddresses, tokenAddress }: FormValues) =>
     !!tokenAddress || !isEqual([AddressZero, ...colonyTokenAddresses].sort(), selectedTokenAddresses?.sort());
 
   const allTokens = [...colonyTokens, ...(userHasPermission ? tokenList : [])]

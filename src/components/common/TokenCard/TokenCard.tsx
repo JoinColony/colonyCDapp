@@ -11,7 +11,6 @@ import IconTooltip from '~shared/IconTooltip';
 import { Token } from '~types';
 import { getBalanceForTokenAndDomain, getTokenDecimalsWithFallback } from '~utils/tokens';
 import { useColonyContext } from '~hooks';
-import { ColonyBalances } from '~gql';
 import { ADDRESS_ZERO } from '~constants';
 
 import styles from './TokenCard.css';
@@ -39,8 +38,7 @@ const TokenCard = ({ domainId, token }: Props) => {
   const { balances, nativeToken, status } = colony || {};
   const { nativeToken: nativeTokenStatus } = status || {};
 
-  const currentTokenBalance =
-    getBalanceForTokenAndDomain(balances as ColonyBalances, token?.tokenAddress, domainId) || 0;
+  const currentTokenBalance = getBalanceForTokenAndDomain(balances, token?.tokenAddress, domainId) || 0;
 
   return (
     <Card key={token.tokenAddress} className={styles.main}>

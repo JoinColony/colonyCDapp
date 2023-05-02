@@ -47,7 +47,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData
               <Permissions data={permissions.permissions} />
             </div>
           </Fragment>
-        )
+        ),
       )}
     </div>
   );

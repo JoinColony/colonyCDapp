@@ -125,7 +125,7 @@ const EditColonyDetailsDialogForm = ({
                  * Show the colony hooked avatar. This is only visible until the
                  * user interacts with avatar input for the first time
                  */
-                <ColonyAvatar colony={colony} colonyAddress={colonyAddress} size="xl" />
+                <ColonyAvatar colony={colony} colonyAddress={colonyAddress} size="xl" preferThumbnail={false} />
               )}
             </>
           }
