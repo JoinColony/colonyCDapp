@@ -22,6 +22,7 @@
     "button.decline": "Decline",
     "button.delete": "Delete",
     "button.dismiss": "Dismiss",
+    "button.enable": "Enable",
     "button.edit": "Edit",
     "button.remove": "Remove",
     "button.retry": "Retry",
@@ -394,5 +395,6 @@
     "special.percentage.input.error.min.value": "Percentage must be greater than 0",
     "special.percentage.input.error.max.value": "Percentage must be less than or equal to 100",
     "specific.side.panel.title": "Extension details",
-    "file-text": "File text icon"
+    "file-text": "File text icon",
+    "radio.error.governance": "Please select a governance style option before enabling",
 }
