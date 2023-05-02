@@ -7,8 +7,7 @@ import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 import MaskedAddress from '~shared/MaskedAddress';
 import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
-import { useUserByAddress } from '~hooks';
-import { Address } from '~types';
+import { Address, User } from '~types';
 
 import styles from './UserCheckbox.css';
 
@@ -18,6 +17,7 @@ interface Props {
   checkedTooltipText?: string;
   unCheckedTooltipText?: string;
   showDisplayName?: boolean;
+  user?: User;
 }
 
 const UserCheckbox = ({
@@ -25,9 +25,9 @@ const UserCheckbox = ({
   name,
   checkedTooltipText,
   unCheckedTooltipText,
+  user,
   showDisplayName = true,
 }: Props) => {
-  const { user } = useUserByAddress(walletAddress);
   const [isChecked, setIsChecked] = useState<boolean>(true);
 
   const {
@@ -38,14 +38,8 @@ const UserCheckbox = ({
     visible,
   } = usePopperTooltip({ placement: 'right' }) as any;
 
-  if (!user?.profile) {
-    return null;
-  }
-
-  const {
-    profile: { displayName },
-    name: username,
-  } = user;
+  const { profile } = user || {};
+  const { displayName = walletAddress } = profile || {};
 
   return (
     <div
@@ -78,7 +72,7 @@ const UserCheckbox = ({
               {displayName}
             </span>
           )}
-          {username && (
+          {user && (
             <span className={styles.username}>
               <UserMention hasLink={false} user={user} />
             </span>

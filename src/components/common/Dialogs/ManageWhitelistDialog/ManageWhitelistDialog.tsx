@@ -69,7 +69,19 @@ const ManageWhitelistDialog = ({
     // The skip option is rather important here - without it, the query will return ALL the CDapp users
     skip: !whitelistedAddresses.length,
   });
-  const whitelistedUsers = data?.listUsers?.items.filter(notNull) ?? [];
+  const users = data?.listUsers?.items.filter(notNull) ?? [];
+  const whitelistedUsers = whitelistedAddresses.map((address) => {
+    const matchingUser = users.find((user) => user.walletAddress === address);
+    if (!matchingUser) {
+      return {
+        address,
+      };
+    }
+    return {
+      address,
+      user: matchingUser,
+    };
+  });
 
   const handleTabChange = (index: number) => {
     setFormSuccess(false);

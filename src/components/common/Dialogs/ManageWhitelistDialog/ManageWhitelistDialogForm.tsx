@@ -11,12 +11,11 @@ import { ActionDialogProps, DialogControls } from '~shared/Dialog';
 import { Tab, Tabs, TabList, TabPanel } from '~shared/Tabs';
 import UploadAddresses from '~shared/UploadAddresses';
 import { useActionDialogStatus } from '~hooks';
-import { Message, User } from '~types';
+import { Message } from '~types';
 
 import { NoPermissionMessage, PermissionRequiredInfo } from '../Messages';
-
 import ManageWhitelistActiveToggle from './ManageWhitelistActiveToggle';
-import WhitelistedAddresses from './WhitelistedAddresses';
+import WhitelistedAddresses, { WhitelistedUser } from './WhitelistedAddresses';
 import NoWhitelistedAddressesState from './NoWhitelistedAddressesState';
 import { TABS } from './helpers';
 
@@ -56,7 +55,7 @@ const MSG = defineMessages({
 });
 
 interface Props extends ActionDialogProps {
-  whitelistedUsers: User[];
+  whitelistedUsers: WhitelistedUser[];
   showInput: boolean;
   toggleShowInput: () => void;
   formSuccess: boolean;

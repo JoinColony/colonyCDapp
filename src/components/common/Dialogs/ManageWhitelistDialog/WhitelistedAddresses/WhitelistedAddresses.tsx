@@ -2,16 +2,20 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 
 import Icon from '~shared/Icon';
-import { filterUserSelection, OmniPickerUser } from '~shared/SingleUserPicker';
-import { User } from '~types';
+import { Address, User } from '~types';
 import { formatText } from '~utils/intl';
 
 import UserCheckbox from '../UserCheckbox';
 
 import styles from './WhitelistedAddresses.css';
 
+export interface WhitelistedUser {
+  address: Address;
+  user?: User;
+}
+
 interface Props {
-  whitelistedUsers: User[];
+  whitelistedUsers: WhitelistedUser[];
 }
 
 const displayName = 'common.ManageWhitelistDialog.WhitelistedAddresses';
@@ -32,9 +36,7 @@ const MSG = defineMessages({
 });
 
 const WhitelistedAddresses = ({ whitelistedUsers }: Props) => {
-  const [users, setUsers] = useState<User[] | Omit<OmniPickerUser, 'name'>[]>(
-    whitelistedUsers,
-  );
+  const [users, setUsers] = useState<WhitelistedUser[]>(whitelistedUsers);
 
   useEffect(() => {
     if (whitelistedUsers?.length) {
@@ -45,18 +47,18 @@ const WhitelistedAddresses = ({ whitelistedUsers }: Props) => {
   const handleOnChange = useCallback(
     (e) => {
       if (e.target?.value) {
-        const formattedWhitelistedUsers = whitelistedUsers.map((user) => ({
-          ...user,
-          id: user.walletAddress,
-        }));
-        const [, ...filteredUsers] = filterUserSelection(
-          formattedWhitelistedUsers,
-          e.target?.value,
-        );
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredUsers = whitelistedUsers.filter((user) => {
+          return (
+            user.address.toLowerCase().includes(searchTerm) ||
+            user.user?.name.toLowerCase().includes(searchTerm) ||
+            user.user?.profile?.displayName?.toLowerCase().includes(searchTerm)
+          );
+        });
         setUsers(filteredUsers);
       }
     },
-    [whitelistedUsers, setUsers],
+    [whitelistedUsers],
   );
 
   return (
@@ -71,12 +73,13 @@ const WhitelistedAddresses = ({ whitelistedUsers }: Props) => {
         <Icon className={styles.icon} name="search" title={MSG.search} />
       </div>
       <div className={styles.container}>
-        {(users || []).map((user) => {
+        {users.map((user) => {
           return (
             <UserCheckbox
-              key={user.walletAddress}
+              key={user.address}
               name="whitelistedAddresses"
-              walletAddress={user.walletAddress}
+              walletAddress={user.address}
+              user={user.user}
               checkedTooltipText={formatText(MSG.checkedTooltipText)}
               unCheckedTooltipText={formatText(MSG.unCheckedTooltipText)}
               showDisplayName={false}
