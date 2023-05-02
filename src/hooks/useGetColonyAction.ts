@@ -68,8 +68,10 @@ const useGetColonyAction = (colony?: Colony | null) => {
 
   /* Ensures motion state is kept in sync with motion data */
   useEffect(() => {
-    refetchMotionState();
-  }, [actionData, refetchMotionState]);
+    if (action?.motionData) {
+      refetchMotionState();
+    }
+  }, [action?.motionData, refetchMotionState]);
 
   return {
     isInvalidTransactionHash: !isValidTx,
