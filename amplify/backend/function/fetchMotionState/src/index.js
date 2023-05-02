@@ -52,7 +52,7 @@ exports.handler = async (event) => {
     motionData &&
     motionState === MotionState.Finalizable
   ) {
-    const didPass = await didMotionPass(motionData);
+    const didPass = didMotionPass(motionData);
 
     if (didPass && !motionData.hasPassed) {
       await updateMotionMessagesInDB(
