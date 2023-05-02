@@ -17,15 +17,24 @@ const { calculatePercentageReputation } = require('./reputation');
 const { graphqlRequest } = require('./utils');
 const { getWatchersInColony } = require('./graphql');
 
-/*
- * @TODO These values need to be imported properly, and differentiate based on environment
- */
-const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002/graphql';
+let networkAddress;
+try {
+  const artifacts = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+  networkAddress = artifacts.etherRouterAddress;
+} catch (error) {
+  // silent error
+  // means we're in a production environment without access to the contract build artifacts
+}
 
-const ROOT_DOMAIN_ID = 1; // this used to be exported from @colony/colony-js but isn't anymore
-const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
-const REPUTATION_ENDPOINT = 'http://network-contracts:3002';
+const API_KEY = process.env.APPSYNC_API_KEY || 'da2-fakeApiId123456';
+const GRAPHQL_URI =
+  process.env.AWS_APPSYNC_GRAPHQL_URL || 'http://localhost:20002/graphql';
+const RPC_URL =
+  process.env.CHAIN_RPC_ENDPOINT || 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+const REPUTATION_ENDPOINT =
+  process.env.REPUTATION_ENDPOINT || 'http://network-contracts:3002';
+const NETWORK = process.env.CHAIN_RPC_ENDPOINT || Network.Custom;
+const NETWORK_ADDRESS = process.env.CHAIN_NETWORK_CONTRACT || networkAddress;
 
 const SortingMethod = {
   BY_HIGHEST_REP: 'BY_HIGHEST_REP',
@@ -44,13 +53,8 @@ exports.handler = async (event) => {
   } = event?.arguments?.input || {};
   const provider = new providers.JsonRpcProvider(RPC_URL);
 
-  const {
-    etherRouterAddress: networkAddress,
-    // eslint-disable-next-line global-require
-  } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-
-  const networkClient = getColonyNetworkClient(Network.Custom, provider, {
-    networkAddress,
+  const networkClient = getColonyNetworkClient(NETWORK, provider, {
+    networkAddress: NETWORK_ADDRESS,
     reputationOracleEndpoint: REPUTATION_ENDPOINT,
   });
 

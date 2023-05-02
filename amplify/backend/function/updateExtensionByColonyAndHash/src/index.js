@@ -7,11 +7,9 @@
 const { graphqlRequest } = require('./utils');
 const { getExtension, updateExtension, createExtension } = require('./graphql');
 
-/*
- * @TODO These values need to be imported properly, and differentiate based on environment
- */
-const API_KEY = 'da2-fakeApiId123456';
-const GRAPHQL_URI = 'http://localhost:20002/graphql';
+const API_KEY = process.env.APPSYNC_API_KEY || 'da2-fakeApiId123456';
+const GRAPHQL_URI =
+  process.env.AWS_APPSYNC_GRAPHQL_URL || 'http://localhost:20002/graphql';
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}

@@ -11,7 +11,19 @@ const {
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
-const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let networkAddress;
+try {
+  const artifacts = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+  networkAddress = artifacts.etherRouterAddress;
+} catch (error) {
+  // silent error
+  // means we're in a production environment without access to the contract build artifacts
+}
+
+const RPC_URL =
+  process.env.CHAIN_RPC_ENDPOINT || 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+const NETWORK = process.env.CHAIN_RPC_ENDPOINT || Network.Custom;
+const NETWORK_ADDRESS = process.env.CHAIN_NETWORK_CONTRACT || networkAddress;
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -37,12 +49,11 @@ const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be exte
     try {
       // Get token balance
       const tokenClient = await getTokenClient(tokenAddress, provider);
-      const {
-        etherRouterAddress: networkAddress,
-      } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-      const networkClient = getColonyNetworkClient(Network.Custom, provider, {
-        networkAddress,
+
+      const networkClient = getColonyNetworkClient(NETWORK, provider, {
+        networkAddress: NETWORK_ADDRESS,
       });
+
       const tokenLockingClient = await networkClient.getTokenLockingClient();
       const userLock = await tokenLockingClient.getUserLock(
         tokenAddress,
