@@ -21,7 +21,6 @@ import {
 } from '../Messages';
 import TokenAmountInput from '../TokenAmountInput';
 import DomainFundSelectorSection from '../DomainFundSelectorSection';
-
 import { useTransferFundsDialogStatus } from './helpers';
 
 import styles from './TransferFundsDialogForm.css';
