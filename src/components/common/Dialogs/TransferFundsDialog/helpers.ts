@@ -7,11 +7,12 @@ import { useActionDialogStatus, useAppContext, useTransformer, EnabledExtensionD
 import { getUserRolesForDomain } from '~redux/transformers';
 import { Colony } from '~types';
 import { userHasRole } from '~utils/checks';
+import { findDomainByNativeId } from '~utils/domains';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 export const getTransferFundsDialogPayload = (
   colony: Colony,
-  { tokenAddress, amount: transferAmount, fromDomain: sourceDomain, toDomain, annotation: annotationMessage },
+  { tokenAddress, amount: transferAmount, fromDomainId, toDomainId, annotation: annotationMessage },
 ) => {
   const colonyTokens = colony?.tokens?.items || [];
   const selectedToken = colonyTokens.find((token) => token?.token.tokenAddress === tokenAddress);
@@ -20,14 +21,16 @@ export const getTransferFundsDialogPayload = (
   // Convert amount string with decimals to BigInt (eth to wei)
   const amount = BigNumber.from(moveDecimal(transferAmount, decimals));
 
+  const fromDomain = findDomainByNativeId(fromDomainId, colony);
+  const toDomain = findDomainByNativeId(toDomainId, colony);
+
   return {
-    colonyAddress: colony?.colonyAddress,
-    colonyName: colony?.name,
-    // version,
-    fromDomainId: parseInt(sourceDomain, 10),
-    toDomainId: parseInt(toDomain, 10),
-    amount,
+    colonyAddress: colony.colonyAddress,
+    colonyName: colony.name,
     tokenAddress,
+    fromDomain,
+    toDomain,
+    amount,
     annotationMessage,
   };
 };
@@ -39,7 +42,7 @@ export const useTransferFundsDialogStatus = (
 ) => {
   const { wallet } = useAppContext();
   const { watch } = useFormContext();
-  const { fromDomain: fromDomainId, toDomain: toDomainId } = watch();
+  const { fromDomainId, toDomainId } = watch();
   const fromDomainRoles = useTransformer(getUserRolesForDomain, [colony, wallet?.address, fromDomainId]);
   const { userHasPermission, disabledSubmit, disabledInput, canCreateMotion, canOnlyForceAction } =
     useActionDialogStatus(colony, requiredRoles, [fromDomainId, toDomainId], enabledExtensionData);

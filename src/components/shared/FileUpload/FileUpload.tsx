@@ -42,7 +42,7 @@ const FileUpload = ({
   appearance,
   children,
   classNames = styles,
-  dropzoneOptions: { accept: acceptProp, disabled, ...dropzoneOptions },
+  dropzoneOptions: { accept: acceptProp, disabled, ...dropzoneOptions } = {},
   elementOnly,
   extra,
   forwardedRef: ref,

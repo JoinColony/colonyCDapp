@@ -80,7 +80,7 @@ const ExtensionDetailsAside = ({ extensionData, canBeDeprecated, canBeUninstalle
 
       <Table appearance={{ theme: 'lined' }}>
         <TableBody>
-          {getTableData(extensionData, colony).map(
+          {getTableData(extensionData).map(
             ({
               label,
               value,

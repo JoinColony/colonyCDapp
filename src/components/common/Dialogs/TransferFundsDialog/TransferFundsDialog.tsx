@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { defineMessages } from 'react-intl';
 import { Id } from '@colony/colony-js';
-import { string, object, number, boolean, InferType } from 'yup';
-import Decimal from 'decimal.js';
+import { InferType } from 'yup';
 
 import { getDomainOptions } from '~utils/domains';
 import { notNull } from '~utils/arrays';
@@ -15,60 +13,17 @@ import { WizardDialogType } from '~hooks';
 
 import TransferFundsDialogForm from './TransferFundsDialogForm';
 import { getTransferFundsDialogPayload } from './helpers';
+import { getValidationSchema } from './validation';
 
-const displayName = 'common.TransferFundsDialog';
+export const displayName = 'common.TransferFundsDialog';
 
-const MSG = defineMessages({
-  requiredFieldError: {
-    id: `${displayName}.requiredFieldError`,
-    defaultMessage: 'Please enter a value',
-  },
-  amountZero: {
-    id: `${displayName}.amountZero`,
-    defaultMessage: 'Amount must be greater than zero',
-  },
-  sameDomain: {
-    id: `${displayName}.sameDomain`,
-    defaultMessage: 'Cannot move to same team pot',
-  },
-});
+type FormValues = InferType<ReturnType<typeof getValidationSchema>>;
 
 type Props = Required<DialogProps> &
   WizardDialogType<object> &
   ActionDialogProps & {
     filteredDomainId?: number;
   };
-
-function checkIfSameDomain(value: number) {
-  const oppositeDomain = this.parent[this.path === 'fromDomain' ? 'toDomain' : 'fromDomain'];
-  return oppositeDomain !== value;
-}
-
-const validationSchema = object()
-  .shape({
-    forceAction: boolean().defined(),
-    fromDomain: number()
-      .required()
-      .test('same-domain', () => MSG.sameDomain, checkIfSameDomain),
-    toDomain: number()
-      .required()
-      .test('same-domain', () => MSG.sameDomain, checkIfSameDomain),
-    amount: string()
-      .required(() => MSG.requiredFieldError)
-      .test(
-        'more-than-zero',
-        () => MSG.amountZero,
-        (value) => {
-          const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
-          return !new Decimal(numberWithoutCommas).isZero();
-        },
-      ),
-    tokenAddress: string().address().required(),
-    annotation: string().max(4000).defined(),
-  })
-  .defined();
-
-type FormValues = InferType<typeof validationSchema>;
 
 const TransferFundsDialog = ({
   colony,
@@ -95,14 +50,20 @@ const TransferFundsDialog = ({
     withMeta({ navigate }),
   );
 
+  const defaultFromDomainId = selectedDomainId || Id.RootDomain;
+  const defaultToDomainId =
+    Number(domainOptions.find((option) => option.value !== defaultFromDomainId)?.value) || Id.RootDomain;
+
+  const validationSchema = getValidationSchema(colony);
+
   return (
     <Dialog cancel={cancel}>
       <Form<FormValues>
         defaultValues={{
           forceAction: false,
-          fromDomain: selectedDomainId || Id.RootDomain,
-          toDomain: Number(domainOptions.find((domain) => domain.value !== selectedDomainId)?.value) || Id.RootDomain,
-          amount: '',
+          fromDomainId: defaultFromDomainId,
+          toDomainId: defaultToDomainId,
+          amount: 0,
           tokenAddress: colony?.nativeToken.tokenAddress,
           annotation: '',
           /*

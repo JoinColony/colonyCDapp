@@ -3,13 +3,12 @@ import { defineMessages } from 'react-intl';
 import { AddressZero } from '@ethersproject/constants';
 import { useFormContext } from 'react-hook-form';
 
-import { HookFormInput as Input, TokenSymbolSelector } from '~shared/Fields';
-import EthUsd from '~shared/EthUsd';
 import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 import { notNull } from '~utils/arrays';
 import { Colony } from '~types';
-
-// import NetworkFee from '../NetworkFee';
+import { HookFormInput as Input, TokenSymbolSelector } from '~shared/Fields';
+import EthUsd from '~shared/EthUsd';
+import NetworkFee from '~shared/NetworkFee';
 
 import styles from './TokenAmountInput.css';
 
@@ -33,11 +32,13 @@ const MSG = defineMessages({
 interface Props {
   colony: Colony;
   disabled: boolean;
+  includeNetworkFee?: boolean;
 }
 
-const TokenAmountInput = ({ colony, disabled }: Props) => {
-  const { watch } = useFormContext();
+const TokenAmountInput = ({ colony, disabled, includeNetworkFee = false }: Props) => {
+  const { watch, trigger } = useFormContext();
   const { amount, tokenAddress } = watch();
+
   const colonyTokens = colony?.tokens?.items.filter(notNull).map((colonyToken) => colonyToken.token) || [];
   const selectedToken = getSelectedToken(colony, tokenAddress);
   const formattingOptions = useMemo(
@@ -67,7 +68,7 @@ const TokenAmountInput = ({ colony, disabled }: Props) => {
           // (Most likely to do with formattingOptions changing when the token changes?)
           value={amount}
         />
-        {/* <NetworkFee colony={colony} networkFeeInverse={networkFeeInverse} customAmountError={customAmountError} /> */}
+        {includeNetworkFee && <NetworkFee colony={colony} />}
       </div>
       <div className={styles.tokenAmountContainer}>
         <div className={styles.tokenAmountSelect}>
@@ -78,13 +79,16 @@ const TokenAmountInput = ({ colony, disabled }: Props) => {
             elementOnly
             appearance={{ alignOptions: 'right', theme: 'grey' }}
             disabled={disabled}
+            onChange={() => {
+              trigger('amount');
+            }}
           />
         </div>
         {tokenAddress === AddressZero && (
           <div className={styles.tokenAmountUsd}>
             <EthUsd
               // appearance={{ theme: 'grey' }}
-              value={amount.replace(/,/g, '') || 0} // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
+              value={amount}
             />
           </div>
         )}

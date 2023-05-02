@@ -92,25 +92,25 @@ const ManageWhitelistDialog = ({
   type FormValues = InferType<typeof mergedSchemas>;
 
   return (
-    <Form<FormValues>
-      defaultValues={{
-        annotation: '',
-        isWhitelistActivated: false, // colonyData?.processedColony?.isWhitelistActivated,
-        whitelistedAddresses: [], // storedVerifiedRecipients,
-        whitelistAddress: userAddress,
-        whitelistCSVUploader: null,
-      }}
-      actionType={ActionTypes.VERIFIED_RECIPIENTS_MANAGE}
-      validationSchema={mergedSchemas}
-      transform={transform}
-      onSuccess={() => {
-        if (tabIndex === TABS.ADD_ADDRESS) {
-          setFormSuccess(true);
-        }
-        close();
-      }}
-    >
-      <Dialog cancel={cancel}>
+    <Dialog cancel={cancel}>
+      <Form<FormValues>
+        defaultValues={{
+          annotation: '',
+          isWhitelistActivated: false, // colonyData?.processedColony?.isWhitelistActivated,
+          whitelistedAddresses: [], // storedVerifiedRecipients,
+          whitelistAddress: userAddress,
+          whitelistCSVUploader: null,
+        }}
+        actionType={ActionTypes.VERIFIED_RECIPIENTS_MANAGE}
+        validationSchema={mergedSchemas}
+        transform={transform}
+        onSuccess={() => {
+          if (tabIndex === TABS.ADD_ADDRESS) {
+            setFormSuccess(true);
+          }
+          close();
+        }}
+      >
         <ManageWhitelistDialogForm
           colony={colony}
           whitelistedUsers={[]} // data?.verifiedUsers ||
@@ -124,8 +124,8 @@ const ManageWhitelistDialog = ({
           backButtonText={{ id: !prevStep ? 'button.cancel' : 'button.back' }}
           enabledExtensionData={enabledExtensionData}
         />
-      </Dialog>
-    </Form>
+      </Form>
+    </Dialog>
   );
 };
 

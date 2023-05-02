@@ -1,8 +1,13 @@
+import { BigNumber } from 'ethers';
 import { DocumentNode, OperationDefinitionNode } from 'graphql';
 import { TestContext, ValidationError, TestFunction } from 'yup';
+import moveDecimal from 'move-decimal-point';
 
 import { ContextModule, getContext } from '~context';
+import { Colony } from '~types';
+import { notNull } from '~utils/arrays';
 import { now } from '~utils/lodash';
+import { calculateFee, getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import { cancelEarly, cleanQueryName, createUnknownError, formatMessage } from './helpers';
 
@@ -235,3 +240,32 @@ export function yupDebounce(fn: TestFunction, wait: number, options?: YupDebounc
 
   return caller as TestFunction;
 }
+
+export const getHasEnoughBalanceTestFn = (colony: Colony, networkInverseFee?: string | undefined) => {
+  const colonyBalances = colony.balances?.items?.filter(notNull) || [];
+  return (value: number | undefined, context: TestContext) => {
+    if (!value) {
+      return true;
+    }
+
+    const { fromDomainId, tokenAddress } = context.parent;
+    const selectedDomainBalance = colonyBalances.find(
+      (balance) => balance.token.tokenAddress === tokenAddress && balance.domain.nativeId === fromDomainId,
+    );
+    const selectedToken = getSelectedToken(colony, tokenAddress);
+
+    if (!selectedDomainBalance || !selectedToken) {
+      return true;
+    }
+
+    const tokenDecimals = getTokenDecimalsWithFallback(selectedToken.decimals);
+
+    const amountWithFeesIncluded = networkInverseFee
+      ? calculateFee(value.toString(), networkInverseFee, tokenDecimals).totalToPay
+      : value;
+
+    const convertedAmount = BigNumber.from(moveDecimal(amountWithFeesIncluded, tokenDecimals));
+
+    return convertedAmount.lte(selectedDomainBalance.balance);
+  };
+};

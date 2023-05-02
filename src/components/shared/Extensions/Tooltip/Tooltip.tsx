@@ -27,7 +27,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
       interactive,
       offset,
     },
-    popperOptions
+    popperOptions,
   );
 
   return (

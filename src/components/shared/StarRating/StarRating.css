@@ -1,5 +1,5 @@
 .baseStar {
-  composes: sizeTiny themePrimary from '~core/Icon/Icon.module.css';
+  composes: sizeTiny themePrimary from '~core/Icon/Icon.css';
 
   & + .baseStar {
     margin-left: 3px;

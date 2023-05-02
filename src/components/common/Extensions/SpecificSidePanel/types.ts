@@ -4,7 +4,7 @@ import { sidePanelData } from './consts';
 
 export interface SpecificSidePanelProps {
   statuses: SpecificSidePanelStatus[];
-  sidePanelData: SidepanelDataProps;
+  sidePanelData: SidePanelDataProps;
 }
 
 type SpecificSidePanelStatus = Extract<
@@ -16,7 +16,7 @@ export interface PermissionsProps {
   data: { id: number; title: string }[];
 }
 
-export type SidepanelDataProps = typeof sidePanelData;
+export type SidePanelDataProps = typeof sidePanelData;
 
 export interface PanelTypeProps {
   title: string;

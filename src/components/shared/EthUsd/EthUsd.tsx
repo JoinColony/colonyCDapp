@@ -41,6 +41,10 @@ const EthUsd = ({ showPrefix = true, showSuffix = true, unit = 'ether', value, .
   const suffixText = formatMessage(MSG.usdAbbreviation);
 
   useEffect(() => {
+    if (!value) {
+      return () => {};
+    }
+
     let didCancel = false;
 
     setIsLoading(true);
