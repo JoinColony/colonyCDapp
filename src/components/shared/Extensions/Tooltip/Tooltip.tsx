@@ -27,12 +27,12 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
       interactive,
       offset,
     },
-    popperOptions,
+    popperOptions
   );
 
   return (
     <>
-      <div className="cursor-pointer" ref={setTriggerRef}>
+      <div className="flex cursor-pointer" ref={setTriggerRef}>
         {children}
       </div>
       {visible && (

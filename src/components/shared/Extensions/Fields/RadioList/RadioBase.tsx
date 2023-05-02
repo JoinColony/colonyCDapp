@@ -1,50 +1,76 @@
-import React, { forwardRef } from 'react';
+import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import styles from './RadioList.module.css';
 import { RadioBaseProps } from './types';
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge-new/ExtensionStatusBadge';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip';
+import Icon from '~shared/Icon';
 
 const displayName = 'common.Extensions.RadioList';
 
-// tooltip and badge
+const RadioBase: FC<RadioBaseProps> = ({ item, isError, register }) => {
+  const { disabled, label, description, value, badge, tooltip } = item;
 
-const RadioBase = forwardRef<HTMLInputElement, RadioBaseProps>(
-  ({ checked, disabled, error, label, description, ...rest }, ref) => {
-    const { formatMessage } = useIntl();
-    const labelText = typeof label == 'string' ? label : label && formatMessage(label);
-    const descriptionText = typeof description == 'string' ? description : description && formatMessage(description);
+  const { formatMessage } = useIntl();
 
-    return (
-      <div className="relative w-full">
-        <input
-          id={label}
-          type="radio"
-          className={clsx('peer/radio hidden', {
-            'pointer-events-none opacity-50': disabled,
-          })}
-          aria-disabled={disabled}
-          disabled={disabled}
-          checked={checked}
-          {...{ ref, ...rest }}
-        />
-        <label
-          htmlFor={label}
-          className={clsx(
-            styles.radioButtonLabel,
-            `border-gray-300 peer-checked/radio:border-blue-400 peer-checked/radio:before:border-blue-400 peer-checked/radio:after:opacity-100 peer-focus/radio:border-blue-200  peer-focus/radio:before:bg-gray-25`,
-            {
-              'border-negative-400': !!error,
-              'pointer-events-none border-gray-300 opacity-50': disabled,
-            }
+  const labelText = typeof label == 'string' ? label : label && formatMessage(label);
+  const descriptionText = typeof description == 'string' ? description : description && formatMessage(description);
+
+  return (
+    <div className="relative w-full">
+      <input
+        type="radio"
+        {...register('radio')}
+        id={label}
+        aria-disabled={disabled}
+        disabled={disabled}
+        className={clsx('peer/radio hidden', {
+          'pointer-events-none opacity-50': disabled,
+        })}
+        value={value}
+      />
+      <label
+        htmlFor={label}
+        className={clsx(
+          styles.radioButtonLabel,
+          `border-gray-300 peer-checked/radio:border-blue-400 peer-checked/radio:before:border-blue-400 peer-checked/radio:after:opacity-100 peer-focus/radio:border-blue-200  peer-focus/radio:before:bg-gray-25`,
+          {
+            'after:top-4': tooltip,
+            'border-negative-400': isError,
+            'pointer-events-none border-gray-300 opacity-50': disabled,
+          }
+        )}
+      >
+        <div className="flex justify-between">
+          <div>
+            <div className="inline-flex items-center">
+              <span className={styles.label}>{labelText}</span>
+              {tooltip && (
+                <div className="flex items-center ml-2 text-gray-400">
+                  <Tooltip {...tooltip}>
+                    <Icon
+                      name="info"
+                      appearance={{
+                        size: 'extraTiny',
+                      }}
+                    />
+                  </Tooltip>
+                </div>
+              )}
+            </div>
+            {descriptionText && <span className={styles.description}>{descriptionText}</span>}
+          </div>
+          {badge && (
+            <div className="flex flex-shrink-0 ml-2">
+              <ExtensionStatusBadge {...badge} />
+            </div>
           )}
-        >
-          <span className={styles.label}>{labelText}</span>
-          {descriptionText && <span className={styles.description}>{descriptionText}</span>}
-        </label>
-      </div>
-    );
-  }
-);
+        </div>
+      </label>
+    </div>
+  );
+};
 
 RadioBase.displayName = displayName;
 

@@ -26,6 +26,7 @@
     "button.remove": "Remove",
     "button.retry": "Retry",
     "button.submit": "Submit",
+    "button.enable": "Enable",
     "button.ok": "Okay",
     "button.yes": "Yes",
     "button.no": "No",
@@ -393,7 +394,7 @@
     "special.hour.input.error.max.value": "Hours must be less than 8766",
     "special.percentage.input.error.min.value": "Percentage must be greater than 0",
     "special.percentage.input.error.max.value": "Percentage must be less than or equal to 100",
-
     "specific.side.panel.title": "Extension details",
-    "file-text": "File text icon"
+    "file-text": "File text icon",
+    "radio.error.governance": "Please select a governance style option before enabling"
 }

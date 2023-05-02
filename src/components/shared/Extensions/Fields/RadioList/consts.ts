@@ -7,16 +7,41 @@ export const radioItems: RadioItemProps[] = [
   },
   {
     value: 'radio-button-2',
-    label: 'Fully open organization',
-    description: 'We won’t know everyone, so we prefer higher security.',
+    label: 'High trust team',
+    tooltip: {
+      tooltipContent: 'Some content here',
+    },
   },
   {
     value: 'radio-button-3',
-    label: 'Testing governance',
-    description: 'Do everything fast to figure out how things work.',
+    label: 'High trust team',
+    badge: {
+      mode: 'coming-soon',
+      text: 'Coming Soon',
+    },
   },
   {
     value: 'radio-button-4',
+    label: 'Fully open organization',
+    description: 'We won’t know everyone, so we prefer higher security.',
+    tooltip: {
+      tooltipContent: 'Some content here',
+    },
+  },
+  {
+    value: 'radio-button-5',
+    label: 'Testing governance',
+    description: 'Do everything fast to figure out how things work.',
+    tooltip: {
+      tooltipContent: 'Some content here',
+    },
+    badge: {
+      mode: 'coming-soon',
+      text: 'Coming Soon',
+    },
+  },
+  {
+    value: 'radio-button-6',
     label: 'Custom (Advanced)',
     description: 'I know what I’m doing and want to configure it myself.',
     disabled: true,
