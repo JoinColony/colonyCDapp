@@ -102,8 +102,9 @@ fragment MotionData on MotionData {
   repSubmitted
   hasObjection
   hasPassed
-  inRevealPhase
+  hasFailed
   hasFailedNotFinalizable
+  inRevealPhase
   messages {
     ...MotionMessage
   }

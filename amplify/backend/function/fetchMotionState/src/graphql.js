@@ -77,8 +77,9 @@ module.exports = {
           createdBy
           hasObjection
           hasPassed
-          inRevealPhase
+          hasFailed
           hasFailedNotFinalizable
+          inRevealPhase
           messages {
             ...MotionMessage
           }
