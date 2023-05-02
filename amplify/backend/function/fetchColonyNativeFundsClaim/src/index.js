@@ -1,10 +1,8 @@
 const { constants, providers, Contract } = require('ethers');
 const basicColonyAbi = require('./basicColonyAbi.json');
 
-/*
- * @TODO These values need to be imported properly, and differentiate based on environment
- */
-const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+const RPC_URL =
+  process.env.CHAIN_RPC_ENDPOINT || 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
 
 const provider = new providers.JsonRpcProvider(RPC_URL);
 
