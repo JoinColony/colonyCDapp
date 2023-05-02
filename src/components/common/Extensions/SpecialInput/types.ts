@@ -22,7 +22,3 @@ export type FormHourInput = {
 export type FormPercentageInput = {
   percentage?: number;
 };
-
-export type FormPercengateInput = {
-  percentage?: number;
-};

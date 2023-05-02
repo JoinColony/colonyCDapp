@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useIntl } from 'react-intl';
 import SpecialInput from '~common/Extensions/SpecialInput/SpecialInput';
-import { FormPercengateInput } from '~common/Extensions/SpecialInput/types';
+import { FormPercentageInput } from '~common/Extensions/SpecialInput/types';
 import FormError from '~shared/Extensions/FormError/FormError';
 
 const meta: Meta<typeof SpecialInput> = {
@@ -34,7 +34,7 @@ const SpecialPercentageInputWithHooks = (args) => {
   const {
     register,
     formState: { errors },
-  } = useForm<FormPercengateInput>({
+  } = useForm<FormPercentageInput>({
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
   });

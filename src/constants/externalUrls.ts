@@ -49,3 +49,10 @@ export const METATRANSACTIONS_LEARN_MORE = `https://colony.gitbook.io/colony/ann
 export const LAZY_CONSENSUS = `https://docs.colony.io/learn/governance/lazy-consensus`;
 export const PAYMENTS = `https://docs.colony.io/use/making-payments/payments`;
 export const MOTIONS_AND_DISPUTES = `https://docs.colony.io/use/governance/motions-and-disputes/`;
+
+/*
+ * Navigation
+ */
+export const LEARN_MORE_PAYMENTS = `https://docs.colony.io/use/making-payments/payments`;
+export const LEARN_MORE_DECISIONS = `https://docs.colony.io/use/decisions`;
+export const LEARN_MORE_ADMIN = `https://docs.colony.io/use/admin`;
