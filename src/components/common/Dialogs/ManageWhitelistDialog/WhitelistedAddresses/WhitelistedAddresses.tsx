@@ -1,21 +1,17 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
 import Icon from '~shared/Icon';
-import { Address, User } from '~types';
+import { Address } from '~types';
 import { formatText } from '~utils/intl';
 
 import UserCheckbox from '../UserCheckbox';
+import { getFilteredUsers, useWhitelistedUsers } from './helpers';
 
 import styles from './WhitelistedAddresses.css';
 
-export interface WhitelistedUser {
-  address: Address;
-  user?: User;
-}
-
 interface Props {
-  whitelistedUsers: WhitelistedUser[];
+  whitelistedAddresses: Address[];
 }
 
 const displayName = 'common.ManageWhitelistDialog.WhitelistedAddresses';
@@ -35,30 +31,13 @@ const MSG = defineMessages({
   },
 });
 
-const WhitelistedAddresses = ({ whitelistedUsers }: Props) => {
-  const [users, setUsers] = useState<WhitelistedUser[]>(whitelistedUsers);
+const WhitelistedAddresses = ({ whitelistedAddresses }: Props) => {
+  const users = useWhitelistedUsers(whitelistedAddresses);
+  const [filterTerm, setFilterTerm] = useState('');
 
-  useEffect(() => {
-    if (whitelistedUsers?.length) {
-      setUsers(whitelistedUsers);
-    }
-  }, [whitelistedUsers]);
-
-  const handleOnChange = useCallback(
-    (e) => {
-      if (e.target?.value) {
-        const searchTerm = e.target.value.toLowerCase();
-        const filteredUsers = whitelistedUsers.filter((user) => {
-          return (
-            user.address.toLowerCase().includes(searchTerm) ||
-            user.user?.name.toLowerCase().includes(searchTerm) ||
-            user.user?.profile?.displayName?.toLowerCase().includes(searchTerm)
-          );
-        });
-        setUsers(filteredUsers);
-      }
-    },
-    [whitelistedUsers],
+  const filteredUsers = useMemo(
+    () => getFilteredUsers(users, filterTerm),
+    [filterTerm, users],
   );
 
   return (
@@ -67,13 +46,14 @@ const WhitelistedAddresses = ({ whitelistedUsers }: Props) => {
         <input
           name="warning"
           className={styles.input}
-          onChange={handleOnChange}
+          value={filterTerm}
+          onChange={(e) => setFilterTerm(e.currentTarget.value)}
           placeholder={formatText(MSG.search)}
         />
         <Icon className={styles.icon} name="search" title={MSG.search} />
       </div>
       <div className={styles.container}>
-        {users.map((user) => {
+        {filteredUsers.map((user) => {
           return (
             <UserCheckbox
               key={user.address}

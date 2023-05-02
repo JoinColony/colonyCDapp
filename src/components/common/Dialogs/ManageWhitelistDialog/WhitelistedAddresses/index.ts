@@ -1,1 +1,1 @@
-export { default, WhitelistedUser } from './WhitelistedAddresses';
+export { default } from './WhitelistedAddresses';

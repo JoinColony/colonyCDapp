@@ -5,10 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
-// import {
-//   useVerifiedUsersQuery,
-//   useColonyFromNameQuery,
-// } from '~data/index';
 import { ActionTypes } from '~redux/index';
 import { WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
@@ -17,15 +13,9 @@ import {
   validationSchemaFile,
   validationSchemaInput,
 } from '~utils/whitelistValidation';
-import { useGetUsersQuery } from '~gql';
-import { notNull } from '~utils/arrays';
 
 import ManageWhitelistDialogForm from './ManageWhitelistDialogForm';
-import {
-  getManageWhitelistDialogPayload,
-  getWhitelistedAddressesQueryFilter,
-  TABS,
-} from './helpers';
+import { getManageWhitelistDialogPayload, TABS } from './helpers';
 
 type Props = Required<DialogProps> &
   WizardDialogType<object> &
@@ -62,26 +52,6 @@ const ManageWhitelistDialog = ({
   const navigate = useNavigate();
 
   const whitelistedAddresses = colony.metadata?.whitelistedAddresses ?? [];
-  const { data } = useGetUsersQuery({
-    variables: {
-      filter: getWhitelistedAddressesQueryFilter(whitelistedAddresses),
-    },
-    // The skip option is rather important here - without it, the query will return ALL the CDapp users
-    skip: !whitelistedAddresses.length,
-  });
-  const users = data?.listUsers?.items.filter(notNull) ?? [];
-  const whitelistedUsers = whitelistedAddresses.map((address) => {
-    const matchingUser = users.find((user) => user.walletAddress === address);
-    if (!matchingUser) {
-      return {
-        address,
-      };
-    }
-    return {
-      address,
-      user: matchingUser,
-    };
-  });
 
   const handleTabChange = (index: number) => {
     setFormSuccess(false);
@@ -135,7 +105,7 @@ const ManageWhitelistDialog = ({
       >
         <ManageWhitelistDialogForm
           colony={colony}
-          whitelistedUsers={whitelistedUsers}
+          whitelistedAddresses={whitelistedAddresses}
           back={prevStep && callStep ? () => callStep(prevStep) : cancel}
           showInput={showInput}
           toggleShowInput={handleToggleShowInput}

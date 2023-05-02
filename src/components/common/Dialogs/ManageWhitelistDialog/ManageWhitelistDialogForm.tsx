@@ -11,11 +11,11 @@ import { ActionDialogProps, DialogControls } from '~shared/Dialog';
 import { Tab, Tabs, TabList, TabPanel } from '~shared/Tabs';
 import UploadAddresses from '~shared/UploadAddresses';
 import { useActionDialogStatus } from '~hooks';
-import { Message } from '~types';
+import { Address, Message } from '~types';
 
 import { NoPermissionMessage, PermissionRequiredInfo } from '../Messages';
 import ManageWhitelistActiveToggle from './ManageWhitelistActiveToggle';
-import WhitelistedAddresses, { WhitelistedUser } from './WhitelistedAddresses';
+import WhitelistedAddresses from './WhitelistedAddresses';
 import NoWhitelistedAddressesState from './NoWhitelistedAddressesState';
 import { TABS } from './helpers';
 
@@ -55,7 +55,6 @@ const MSG = defineMessages({
 });
 
 interface Props extends ActionDialogProps {
-  whitelistedUsers: WhitelistedUser[];
   showInput: boolean;
   toggleShowInput: () => void;
   formSuccess: boolean;
@@ -63,6 +62,7 @@ interface Props extends ActionDialogProps {
   tabIndex: TABS;
   setTabIndex: (index: TABS) => void;
   backButtonText?: Message;
+  whitelistedAddresses: Address[];
 }
 
 const requiredRoles = [ColonyRole.Root];
@@ -70,7 +70,6 @@ const requiredRoles = [ColonyRole.Root];
 const ManageWhitelistDialogForm = ({
   back,
   colony,
-  whitelistedUsers,
   showInput,
   toggleShowInput,
   formSuccess,
@@ -79,6 +78,7 @@ const ManageWhitelistDialogForm = ({
   setTabIndex,
   backButtonText,
   enabledExtensionData,
+  whitelistedAddresses,
 }: Props) => {
   const {
     watch,
@@ -149,12 +149,14 @@ const ManageWhitelistDialogForm = ({
             />
           </TabPanel>
           <TabPanel>
-            {(whitelistedUsers?.length && (
+            {(whitelistedAddresses?.length && (
               <>
                 <ManageWhitelistActiveToggle
                   isWhitelistActivated={isWhitelistActivated}
                 />
-                <WhitelistedAddresses whitelistedUsers={whitelistedUsers} />
+                <WhitelistedAddresses
+                  whitelistedAddresses={whitelistedAddresses}
+                />
                 <Annotations
                   label={MSG.annotation}
                   name="annotation"
