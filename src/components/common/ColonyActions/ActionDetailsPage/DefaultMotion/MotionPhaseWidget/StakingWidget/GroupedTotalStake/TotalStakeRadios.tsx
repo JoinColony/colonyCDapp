@@ -1,7 +1,7 @@
 import React from 'react';
 import { CustomRadioGroup } from '~shared/Fields';
 
-import { useTotalStakeRadios } from '~hooks';
+import useTotalStakeRadios from './useTotalStakeRadios';
 
 import styles from './TotalStakeRadios.css';
 

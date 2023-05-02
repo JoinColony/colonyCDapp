@@ -8,8 +8,9 @@ import { ClaimAllMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRe
 import Button, { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { useAppContext, useColonyContext } from '~hooks';
-import { ClaimMotionStakesStyles } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/ClaimMotionStakes/ClaimMotionStakes';
 import { DetailItemProps } from '~shared/DetailsWidget';
+
+import { ClaimMotionStakesStyles } from './ClaimMotionStakes';
 
 const { formatMessage } = intl({
   'label.stake': 'Stake',

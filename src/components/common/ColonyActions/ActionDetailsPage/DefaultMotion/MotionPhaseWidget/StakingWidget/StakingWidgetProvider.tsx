@@ -6,8 +6,9 @@ import React, {
   useState,
 } from 'react';
 
-import { useStakingWidgetUpdate } from '~hooks';
 import { MotionData, SetStateFn } from '~types';
+
+import useStakingWidgetUpdate from './useStakingWidgetUpdate';
 
 export interface StakingWidgetContextValues extends MotionData {
   remainingToStake: string;
