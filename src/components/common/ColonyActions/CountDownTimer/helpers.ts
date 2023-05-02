@@ -6,8 +6,10 @@ import {
   MotionStakes,
   useGetMotionTimeoutPeriodsQuery,
 } from '~gql';
-import { RefetchMotionState, useAppContext, useColonyContext } from '~hooks';
+import { useAppContext, useColonyContext } from '~hooks';
 import { MotionState } from '~utils/colonyMotions';
+
+import { RefetchMotionState } from '../ActionDetailsPage';
 
 const splitTimeLeft = (period: number) => ({
   days: Math.floor(period / (60 * 60 * 24)),

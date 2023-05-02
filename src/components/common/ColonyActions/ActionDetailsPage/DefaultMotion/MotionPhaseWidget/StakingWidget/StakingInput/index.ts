@@ -8,4 +8,7 @@ export { default as StakingSliderLabel } from './StakingSliderLabel';
 export { default as StakingSliderDescription } from './StakingSliderDescription';
 export { default as StakingWidgetSlider } from './StakingWidgetSlider';
 export { default as StakingSlider } from './StakingSlider';
+export { useStakingSlider } from './useStakingSlider';
+export { useStakingInput } from './useStakingInput';
+
 export * from './StakingSliderMessages';

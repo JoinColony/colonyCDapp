@@ -8,8 +8,9 @@ import {
   useShouldDisplayMotionCountdownTime,
 } from '~utils/colonyMotions';
 import { MotionData } from '~types';
-import { RefetchMotionState, useAppContext } from '~hooks';
+import { useAppContext } from '~hooks';
 
+import { RefetchMotionState } from '../../useGetColonyAction';
 import VotingProgress from './VotingProgress';
 import EscalateButton from './EscalateButton';
 

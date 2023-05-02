@@ -1,10 +1,10 @@
-import { useStakingWidgetContext } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
+import { useAppContext, useColonyContext } from '~hooks';
 
 import { MotionVote } from '~utils/colonyMotions';
+import { useStakingWidgetContext } from '../StakingWidgetProvider';
 import { getHandleStakeSuccessFn, getStakingTransformFn } from './helpers';
-import { useAppContext, useColonyContext } from '.';
 
-const useStakingInput = () => {
+export const useStakingInput = () => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
   const {
@@ -38,5 +38,3 @@ const useStakingInput = () => {
     isObjection,
   };
 };
-
-export default useStakingInput;

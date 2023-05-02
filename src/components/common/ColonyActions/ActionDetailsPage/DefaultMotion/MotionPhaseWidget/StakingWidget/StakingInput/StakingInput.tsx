@@ -3,9 +3,8 @@ import { InferType, number, object } from 'yup';
 
 import { ActionHookForm as ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
-import { useStakingInput } from '~hooks';
 
-import { StakingControls, StakingSlider } from '.';
+import { StakingControls, StakingSlider, useStakingInput } from '.';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget';

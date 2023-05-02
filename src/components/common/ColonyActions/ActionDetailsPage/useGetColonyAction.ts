@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-import { ActionDetailsPageParams } from '~common/ColonyActions/ActionDetailsPage';
 import { failedLoadingDuration as pollingTimeout } from '~frame/LoadingTemplate';
 import { useGetColonyActionQuery, useGetMotionStateQuery } from '~gql';
 import { Colony } from '~types';
 import { isTransactionFormat } from '~utils/web3';
 
+import { ActionDetailsPageParams } from './ActionDetailsPage';
+
 export type RefetchMotionState = ReturnType<
   typeof useGetMotionStateQuery
 >['refetch'];
 
-const useGetColonyAction = (colony?: Colony | null) => {
+export const useGetColonyAction = (colony?: Colony | null) => {
   const { transactionHash } = useParams<ActionDetailsPageParams>();
   const isValidTx = isTransactionFormat(transactionHash);
   const skipQuery = !colony || !isValidTx;
@@ -85,5 +86,3 @@ const useGetColonyAction = (colony?: Colony | null) => {
     refetchMotionState,
   };
 };
-
-export default useGetColonyAction;

@@ -2,14 +2,16 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
-import { useStakingWidgetContext } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
 import { useAppContext, useColonyContext } from '~hooks';
 import { CustomRadioAppearance } from '~shared/Fields/Radio';
 import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
 import { StakeSide } from '~types/motions';
 
-const displayName = 'hooks.motionWidgets.stakingWidget.useTotalStakeRadios';
+import { useStakingWidgetContext } from '../StakingWidgetProvider';
+
+const displayName =
+  'common.ColonyActions.DefaultMotion.StakingWidget.GroupedTotalStake.useTotalStakeRadios';
 
 const MSG = defineMessages({
   YAYName: {

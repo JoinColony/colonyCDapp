@@ -2,8 +2,8 @@ import React from 'react';
 
 import DetailItem from '~shared/DetailsWidget/DetailItem';
 import { MotionData } from '~types';
-import { useClaimWidgetConfig } from '~hooks';
 
+import useClaimWidgetConfig from './useClaimWidgetConfig';
 import styles from './ClaimMotionStakes.css';
 
 const displayName = `common.ColonyActions.ActionDetailsPage.DefaultMotion.ClaimMotionStakes`;

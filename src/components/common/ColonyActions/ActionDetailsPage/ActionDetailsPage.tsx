@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
-import { useColonyContext, useGetColonyAction } from '~hooks';
+import { useColonyContext } from '~hooks';
 import LoadingTemplate from '~frame/LoadingTemplate';
 
 import {
@@ -10,6 +10,7 @@ import {
   ActionDetailsPageLayout as Layout,
   DefaultAction,
   DefaultMotion,
+  useGetColonyAction,
 } from '.';
 
 const displayName = 'common.ColonyActions.ActionDetailsPage';

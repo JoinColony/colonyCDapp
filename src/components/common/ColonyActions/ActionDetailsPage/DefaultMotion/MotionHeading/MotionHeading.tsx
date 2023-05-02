@@ -3,8 +3,8 @@ import React from 'react';
 import { motionTags } from '~shared/Tag';
 import { MotionState } from '~utils/colonyMotions';
 import { MotionData } from '~types';
-import { RefetchMotionState } from '~hooks';
 
+import { RefetchMotionState } from '../../useGetColonyAction';
 import MotionCountdown from '../MotionCountdown';
 
 import styles from './MotionHeading.css';

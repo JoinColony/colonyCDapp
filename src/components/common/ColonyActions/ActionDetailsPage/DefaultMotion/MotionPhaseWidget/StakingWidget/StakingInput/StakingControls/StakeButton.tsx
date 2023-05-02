@@ -2,9 +2,9 @@ import { BigNumber } from 'ethers';
 import React from 'react';
 
 import { useAppContext } from '~hooks';
-import { calculateStakeLimitDecimal } from '~hooks/helpers';
-
 import Button from '~shared/Button';
+
+import { calculateStakeLimitDecimal } from '../../helpers';
 import { useStakingWidgetContext } from '../../StakingWidgetProvider';
 
 const displayName =

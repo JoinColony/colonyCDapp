@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppContext, useStakingSlider } from '~hooks';
+import { useAppContext } from '~hooks';
 import { SetStateFn } from '~types';
 
 import {
@@ -7,6 +7,7 @@ import {
   StakingSliderLabel,
   StakingValidationMessage,
   StakingWidgetSlider,
+  useStakingSlider,
 } from '.';
 
 const displayName =
