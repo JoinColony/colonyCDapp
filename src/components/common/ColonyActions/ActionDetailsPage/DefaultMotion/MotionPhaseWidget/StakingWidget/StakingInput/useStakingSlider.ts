@@ -1,15 +1,16 @@
 import { BigNumber } from 'ethers';
 import { useLocation } from 'react-router-dom';
-import { useEnoughTokensForStaking } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget/StakingInput/useEnoughTokensForStaking';
 
 import { useGetColonyActionQuery, useGetUserReputationQuery } from '~gql';
-import { calculateStakeLimitDecimal } from './helpers';
-import useAppContext from './useAppContext';
+import { useAppContext } from '~hooks';
+
+import { calculateStakeLimitDecimal } from '../helpers';
+import { useEnoughTokensForStaking } from './useEnoughTokensForStaking';
 
 const getTransactionHashFromPathName = (pathname: string) =>
   pathname.split('/').pop();
 
-const useStakingSlider = (isObjection: boolean) => {
+export const useStakingSlider = (isObjection: boolean) => {
   const { user, userLoading, walletConnecting } = useAppContext();
   const { pathname } = useLocation();
   const transactionHash = getTransactionHashFromPathName(pathname);
@@ -115,5 +116,3 @@ const useStakingSlider = (isObjection: boolean) => {
     userMaxStake,
   };
 };
-
-export default useStakingSlider;
