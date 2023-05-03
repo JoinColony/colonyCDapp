@@ -540,6 +540,22 @@ type MotionMessage {
   amount: String
 }
 
+input MotionStateHistoryInput {
+  hasVoted: Boolean!
+  hasPassed: Boolean!
+  hasFailed: Boolean!
+  hasFailedNotFinalizable: Boolean!
+  inRevealPhase: Boolean!
+}
+
+type MotionStateHistory {
+  hasVoted: Boolean!
+  hasPassed: Boolean!
+  hasFailed: Boolean!
+  hasFailedNotFinalizable: Boolean!
+  inRevealPhase: Boolean!
+}
+
 # Duplicate of MotionData type, required to mutate the motionData in `fetchMotionState` lamda
 input MotionDataInput {
   motionId: String! # to ensure uniqueness, we format as: chainId-votingRepExtnAddress_nativeMotionId
@@ -559,10 +575,7 @@ input MotionDataInput {
   repSubmitted: String!
   skillRep: String!
   hasObjection: Boolean!
-  hasPassed: Boolean!
-  hasFailed: Boolean!
-  hasFailedNotFinalizable: Boolean!
-  inRevealPhase: Boolean!
+  motionStateHistory: MotionStateHistoryInput!
   messages: [MotionMessageInput!]!
 }
 
@@ -584,10 +597,7 @@ type MotionData {
   repSubmitted: String!
   skillRep: String!
   hasObjection: Boolean!
-  hasPassed: Boolean!
-  hasFailed: Boolean!
-  hasFailedNotFinalizable: Boolean!
-  inRevealPhase: Boolean!
+  motionStateHistory: MotionStateHistory!
   messages: [MotionMessage!]!
 }
 
