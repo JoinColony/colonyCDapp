@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
@@ -9,8 +9,9 @@ import {
 import { isAddress } from '~utils/web3';
 import { formatText } from '~utils/intl';
 import { connectionIs4G } from '~utils/network';
-import { GetTokenByAddressQuery, Token, useGetTokenByAddressQuery } from '~gql';
+import { useGetTokenFromEverywhereQuery } from '~gql';
 import { DEFAULT_NETWORK_INFO } from '~constants';
+import { Token } from '~types';
 
 import styles from './TokenSelector.css';
 
@@ -35,24 +36,15 @@ interface Props
   extends Pick<InputProps, 'label' | 'appearance' | 'extra' | 'disabled'> {
   /** Name of token address input. Defaults to 'tokenAddress' */
   addressField?: string;
-  /** Function called when query completes successfully without an error */
-  handleComplete?: (data: any) => void;
 }
-
-type TokenData = Partial<Pick<Token, 'name' | 'symbol'>>;
 
 interface StatusTextProps {
   hasError: boolean;
   isDirty: boolean;
-  tokenData: TokenData;
+  token: Token | null;
 }
-const getStatusText = ({
-  hasError,
-  tokenData: { name, symbol },
-  isDirty,
-}: StatusTextProps) => {
-  const noTokenData = !name && !symbol;
-  if (!isDirty && noTokenData) {
+const getStatusText = ({ hasError, token, isDirty }: StatusTextProps) => {
+  if (!isDirty && !token) {
     return {
       status: MSG.hint,
       statusValues: {
@@ -61,20 +53,15 @@ const getStatusText = ({
     };
   }
 
-  if (hasError || noTokenData) {
+  if (hasError || !token) {
     return {};
   }
 
+  const { name, symbol } = token;
   return {
     status: MSG.preview,
     statusValues: { name, symbol },
   };
-};
-
-const getTokenData = (tokenQuery?: GetTokenByAddressQuery) => {
-  const tokenData = tokenQuery?.getTokenByAddress?.items;
-  const { name, symbol } = tokenData?.[0] || {};
-  return { name, symbol };
 };
 
 const getLoadingState = (isLoading: boolean) =>
@@ -82,7 +69,6 @@ const getLoadingState = (isLoading: boolean) =>
   connectionIs4G() !== false ? false : isLoading;
 
 const TokenSelector = ({
-  handleComplete,
   extra,
   label,
   appearance,
@@ -92,20 +78,35 @@ const TokenSelector = ({
   const {
     watch,
     formState: { isValid, isDirty, isValidating },
+    setValue,
+    clearErrors,
   } = useFormContext();
   const tokenAddress = watch(addressField);
 
   const {
-    data: tokenQuery,
+    data,
     loading: isFetchingAddress,
     error: fetchingTokenError,
-  } = useGetTokenByAddressQuery({
+  } = useGetTokenFromEverywhereQuery({
     variables: {
-      address: tokenAddress,
+      input: {
+        tokenAddress,
+      },
     },
-    skip: !isValid,
-    onCompleted: handleComplete,
+    skip: !isAddress(tokenAddress),
   });
+  const token = data?.getTokenFromEverywhere?.items?.[0] ?? null;
+
+  useEffect(() => {
+    // When token is updated (either found or null), clear errors and set the values in hook-form
+    clearErrors(addressField);
+    setValue('tokenName', token?.name ?? null, {
+      shouldValidate: true,
+    });
+    setValue('tokenSymbol', token?.symbol ?? null, {
+      shouldValidate: true,
+    });
+  }, [addressField, clearErrors, setValue, token]);
 
   const displayLoading =
     isFetchingAddress || (isValidating && isAddress(tokenAddress));
@@ -122,7 +123,7 @@ const TokenSelector = ({
         {...getStatusText({
           isDirty,
           hasError: !isValid || !!fetchingTokenError,
-          tokenData: getTokenData(tokenQuery),
+          token,
         })}
         isLoading={getLoadingState(displayLoading)}
         appearance={appearance}

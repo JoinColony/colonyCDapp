@@ -4,13 +4,10 @@ import {
   FormattedMessage,
   MessageDescriptor,
 } from 'react-intl';
-import { UseFormSetValue } from 'react-hook-form';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { HookForm as Form } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
-
-import { GetTokenByAddressQuery } from '~gql';
 
 import {
   FormValues,
@@ -74,16 +71,6 @@ export const switchTokenInputType = (
   });
 };
 
-const handleFetchSuccess = (
-  { getTokenByAddress }: GetTokenByAddressQuery,
-  setValue: UseFormSetValue<Step3>,
-) => {
-  const token = getTokenByAddress?.items[0];
-  const { name: tokenName, symbol: tokenSymbol } = token || {};
-  setValue('tokenName', tokenName || '');
-  setValue('tokenSymbol', tokenSymbol || '');
-};
-
 interface LinkToOtherStepProps {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   linkText: MessageDescriptor;
@@ -119,12 +106,9 @@ const StepSelectToken = ({
         validationSchema={validationSchema}
         defaultValues={defaultValues}
       >
-        {({ formState: { isValid, isValidating, isSubmitting }, setValue }) => (
+        {({ formState: { isValid, isValidating, isSubmitting } }) => (
           <div>
             <TokenSelector
-              handleComplete={(data: GetTokenByAddressQuery) =>
-                handleFetchSuccess(data, setValue)
-              }
               extra={
                 <LinkToOtherStep
                   onClick={goToCreateToken}

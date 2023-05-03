@@ -19,8 +19,8 @@ const stepArray: StepType[] = [
 ];
 
 export type FormValues = {
-  tokenName: string;
-  tokenSymbol: string;
+  tokenName: string | null;
+  tokenSymbol: string | null;
   tokenAddress: string;
   colonyName: string;
   tokenChoice: 'create' | 'select';

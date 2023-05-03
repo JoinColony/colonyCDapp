@@ -58,7 +58,7 @@ const StepCreateToken = ({
           <Heading3 text={MSG.heading} textValues={headingText} />
           <TokenInputs
             disabled={isSubmitting}
-            cleaveDefaultValue={defaultValues.tokenSymbol}
+            cleaveDefaultValue={defaultValues.tokenSymbol ?? ''}
             extra={
               <LinkToOtherStep onClick={goToSelectToken} linkText={MSG.link} />
             }

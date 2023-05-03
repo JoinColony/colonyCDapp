@@ -1,10 +1,11 @@
 import { string, object } from 'yup';
 
 import { ADDRESS_ZERO, DEFAULT_NETWORK_TOKEN } from '~constants';
-import { GetFullColonyByNameDocument, GetTokenByAddressDocument } from '~gql';
+import { GetFullColonyByNameDocument } from '~gql';
 import { intl } from '~utils/intl';
-import { isAddress } from '~utils/web3';
 import { createYupTestFromQuery } from '~utils/yup/tests';
+
+import { FormValues } from './CreateColonyWizard';
 
 /*
  * The colony name regex is composed of
@@ -19,12 +20,6 @@ const TOKEN_SYMBOL_REGEX = /^[A-Za-z0-9]{0,5}$/;
 const isNameTaken = createYupTestFromQuery({
   query: GetFullColonyByNameDocument,
   circuitBreaker: isValidName,
-});
-
-const doesTokenExist = createYupTestFromQuery({
-  query: GetTokenByAddressDocument,
-  circuitBreaker: isValidTokenAddress,
-  failIfPresent: false,
 });
 
 const { formatMessage } = intl({
@@ -68,14 +63,16 @@ export const selectTokenValidationSchema = object({
           symbol: DEFAULT_NETWORK_TOKEN.symbol,
         },
       ),
-    )
-    .test(
-      'doesTokenExist',
-      formatMessage({ id: 'error.tokenNotFound' }),
-      doesTokenExist,
     ),
-  tokenName: string().default(''),
-  tokenSymbol: string().default(''),
+  /**
+   * The test below relies on the fact that both tokenName and tokenSymbol will be null
+   * if token data cannot be found. The message argument is empty since it won't show anywhere
+   */
+  tokenName: string()
+    .defined()
+    .nullable()
+    .test('doesTokenExist', '', doesTokenExist),
+  tokenSymbol: string().defined(),
 }).defined();
 
 export const createTokenValidationSchema = object({
@@ -103,6 +100,12 @@ function isValidTokenSymbol(symbol: string) {
   return symbol ? new RegExp(TOKEN_SYMBOL_REGEX).test(symbol) : true;
 }
 
-function isValidTokenAddress(address: string) {
-  return isAddress(address) && address !== ADDRESS_ZERO;
+function doesTokenExist(value: FormValues['tokenName']) {
+  if (!value) {
+    return this.createError({
+      message: formatMessage({ id: 'error.tokenNotFound' }),
+      path: 'tokenAddress',
+    });
+  }
+  return true;
 }
