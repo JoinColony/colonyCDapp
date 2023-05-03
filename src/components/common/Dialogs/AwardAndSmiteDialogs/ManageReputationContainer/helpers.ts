@@ -2,7 +2,7 @@ import Decimal from 'decimal.js';
 import { BigNumber } from 'ethers';
 
 import { useGetMembersForColonyQuery } from '~gql';
-import { Address, Colony, Contributor, MemberUser, Watcher } from '~types';
+import { Address, Colony, Member, MemberUser } from '~types';
 import { ManageReputationMotionPayload } from '~redux/sagas/motions/manageReputationMotion';
 
 import { notMaybe } from '~utils/arrays';
@@ -44,6 +44,6 @@ export const useGetColonyMembers = (colonyAddress?: Address | null) => {
 
   const watchers = data?.getMembersForColony?.watchers ?? [];
   const contributors = data?.getMembersForColony?.contributors ?? [];
-  const allMembers: (Watcher | Contributor)[] = [...watchers, ...contributors];
+  const allMembers: Member[] = [...watchers, ...contributors];
   return allMembers.map((member) => member.user).filter<MemberUser>(notMaybe);
 };
