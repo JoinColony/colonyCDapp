@@ -4,6 +4,7 @@ import { ClientType } from '@colony/colony-js';
 import { ContextModule, getContext } from '~context';
 import { Action, ActionTypes, AllActions } from '~redux';
 import {
+  GetFullColonyByNameDocument,
   UpdateColonyMetadataDocument,
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
@@ -191,6 +192,7 @@ function* editColonyAction({
             ),
           },
         },
+        refetchQueries: [GetFullColonyByNameDocument],
       });
     }
 
