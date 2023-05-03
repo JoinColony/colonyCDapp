@@ -5,6 +5,7 @@ import { Action, AllActions, ActionTypes } from '~redux';
 import { ContextModule, getContext } from '~context';
 import { transactionPending, transactionReady } from '~redux/actionCreators';
 import {
+  GetFullColonyByNameDocument,
   UpdateColonyMetadataDocument,
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
@@ -181,6 +182,8 @@ function* manageVerifiedRecipients({
             ),
           },
         },
+        // Update colony object with modified metadata
+        refetchQueries: [GetFullColonyByNameDocument],
       });
     }
 
