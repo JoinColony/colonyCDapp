@@ -114,15 +114,13 @@ const ManageReputationDialogForm = ({
   setIsForce,
 }: Props) => {
   const { watch, trigger } = useFormContext();
-  const forceAction = watch('forceAction');
+  const { domainId, motionDomainId, user: selectedUser, forceAction } = watch();
 
   useEffect(() => {
     if (forceAction !== isForce) {
       setIsForce(forceAction);
     }
   }, [forceAction, isForce, setIsForce]);
-
-  const { domainId, user: selectedUser } = watch();
 
   const requiredRoles = [
     isSmiteAction ? ColonyRole.Arbitration : ColonyRole.Root,
@@ -139,7 +137,7 @@ const ManageReputationDialogForm = ({
     requiredRoles,
     [domainId],
     enabledExtensionData,
-    domainId,
+    motionDomainId,
   );
 
   const { userReputation } = useUserReputation(
@@ -307,7 +305,7 @@ const ManageReputationDialogForm = ({
         <DialogSection>
           <NotEnoughReputation
             appearance={{ marginTop: 'negative' }}
-            domainId={Number(domainId)}
+            domainId={Number(motionDomainId)}
           />
         </DialogSection>
       )}
