@@ -5,6 +5,7 @@ import React, {
   ReactNode,
   useCallback,
 } from 'react';
+import { utils } from 'ethers';
 
 import { ActionTypes } from '~redux';
 import {
@@ -64,7 +65,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
             GetCurrentUserQueryVariables
           >({
             query: GetCurrentUserDocument,
-            variables: { address },
+            variables: { address: utils.getAddress(address || '') },
             fetchPolicy: 'network-only',
           });
           const [currentUser] = data?.getUserByAddress?.items || [];
