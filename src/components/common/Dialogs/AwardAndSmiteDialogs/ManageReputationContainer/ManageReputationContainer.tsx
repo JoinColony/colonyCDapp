@@ -91,7 +91,6 @@ const ManageReputationContainer = ({
           domainId: filteredDomainId || Id.RootDomain,
           user: selectedUser,
           motionDomainId: (isSmiteAction && filteredDomainId) || Id.RootDomain,
-          amount: '',
           annotation: '',
         }}
         actionType={actionType}
