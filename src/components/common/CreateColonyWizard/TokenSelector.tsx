@@ -35,7 +35,9 @@ const MSG = defineMessages({
 interface Props
   extends Pick<InputProps, 'label' | 'appearance' | 'extra' | 'disabled'> {
   /** Name of token address input. Defaults to 'tokenAddress' */
-  addressField?: string;
+  addressFieldName?: string;
+  /** Name of token field. Defaults to 'token' */
+  tokenFieldName?: string;
 }
 
 interface StatusTextProps {
@@ -72,7 +74,8 @@ const TokenSelector = ({
   extra,
   label,
   appearance,
-  addressField = 'tokenAddress',
+  addressFieldName = 'tokenAddress',
+  tokenFieldName = 'token',
   disabled = false,
 }: Props) => {
   const {
@@ -81,7 +84,7 @@ const TokenSelector = ({
     setValue,
     clearErrors,
   } = useFormContext();
-  const tokenAddress = watch(addressField);
+  const tokenAddress = watch(addressFieldName);
 
   const {
     data,
@@ -99,14 +102,11 @@ const TokenSelector = ({
 
   useEffect(() => {
     // When token is updated (either found or null), clear errors and set the values in hook-form
-    clearErrors(addressField);
-    setValue('tokenName', token?.name ?? null, {
+    clearErrors(addressFieldName);
+    setValue(tokenFieldName, token, {
       shouldValidate: true,
     });
-    setValue('tokenSymbol', token?.symbol ?? null, {
-      shouldValidate: true,
-    });
-  }, [addressField, clearErrors, setValue, token]);
+  }, [addressFieldName, clearErrors, setValue, token, tokenFieldName]);
 
   const displayLoading =
     isFetchingAddress || (isValidating && isAddress(tokenAddress));
@@ -117,7 +117,7 @@ const TokenSelector = ({
      */
     <div className={styles.inputWrapper}>
       <Input
-        name={addressField}
+        name={addressFieldName}
         label={formatText(label) || MSG.label}
         extra={extra}
         {...getStatusText({

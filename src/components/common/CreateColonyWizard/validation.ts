@@ -4,6 +4,7 @@ import { ADDRESS_ZERO, DEFAULT_NETWORK_TOKEN } from '~constants';
 import { GetFullColonyByNameDocument } from '~gql';
 import { intl } from '~utils/intl';
 import { createYupTestFromQuery } from '~utils/yup/tests';
+import { Token } from '~types';
 
 import { FormValues } from './CreateColonyWizard';
 
@@ -65,14 +66,10 @@ export const selectTokenValidationSchema = object({
       ),
     ),
   /**
-   * The test below relies on the fact that both tokenName and tokenSymbol will be null
+   * The test below relies on the fact that token field will be null
    * if token data cannot be found. The message argument is empty since it won't show anywhere
    */
-  tokenName: string()
-    .defined()
-    .nullable()
-    .test('doesTokenExist', '', doesTokenExist),
-  tokenSymbol: string().defined(),
+  token: object<Token>().nullable().test('doesTokenExist', '', doesTokenExist),
 }).defined();
 
 export const createTokenValidationSchema = object({
@@ -100,7 +97,7 @@ function isValidTokenSymbol(symbol: string) {
   return symbol ? new RegExp(TOKEN_SYMBOL_REGEX).test(symbol) : true;
 }
 
-function doesTokenExist(value: FormValues['tokenName']) {
+function doesTokenExist(value: FormValues['token']) {
   if (!value) {
     return this.createError({
       message: formatMessage({ id: 'error.tokenNotFound' }),
