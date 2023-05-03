@@ -204,30 +204,30 @@ enum SortingMethod {
 type Query {
   getTokenFromEverywhere(
     input: TokenFromEverywhereArguments
-  ): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain")
+  ): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain-${env}")
   getReputationForTopDomains(
     input: GetReputationForTopDomainsInput
   ): GetReputationForTopDomainsReturn
-    @function(name: "getReputationForTopDomains")
+    @function(name: "getReputationForTopDomains-${env}")
   getUserReputation(input: GetUserReputationInput): String
-    @function(name: "getUserReputation")
+    @function(name: "getUserReputation-${env}")
   getUserTokenBalance(
     input: GetUserTokenBalanceInput
-  ): GetUserTokenBalanceReturn @function(name: "getUserTokenBalance")
+  ): GetUserTokenBalanceReturn @function(name: "getUserTokenBalance-${env}")
   getMembersForColony(input: MembersForColonyInput): MembersForColonyReturn
-    @function(name: "getMembersForColony")
+    @function(name: "getMembersForColony-${env}")
 }
 
 type Mutation {
   createUniqueUser(input: CreateUniqueUserInput): User
-    @function(name: "createUniqueUser")
+    @function(name: "createUniqueUser-${env}")
   createUniqueColony(input: CreateUniqueColonyInput): Colony
-    @function(name: "createUniqueColony")
+    @function(name: "createUniqueColony-${env}")
   setCurrentVersion(input: SetCurrentVersionInput): Boolean
-    @function(name: "setCurrentVersion")
+    @function(name: "setCurrentVersion-${env}")
   updateExtensionByColonyAndHash(
     input: UpdateExtensionByColonyAndHashInput
-  ): ColonyExtension @function(name: "updateExtensionByColonyAndHash")
+  ): ColonyExtension @function(name: "updateExtensionByColonyAndHash-${env}")
 }
 
 type Profile @model {
@@ -313,10 +313,10 @@ type Colony @model {
   # Native chain token claims (eg: Token 0x0000...0000)
   # This is not an array since only a single token type can be returned
   chainFundsClaim: ColonyChainFundsClaim
-    @function(name: "fetchColonyNativeFundsClaim")
+    @function(name: "fetchColonyNativeFundsClaim-${env}")
   type: ColonyType @index(name: "byType", queryField: "getColonyByType")
   # Returns a list token balances for each domain and each token that the colony has
-  balances: ColonyBalances @function(name: "fetchColonyBalances")
+  balances: ColonyBalances @function(name: "fetchColonyBalances-${env}")
   chainMetadata: ChainMetadata
   extensions: [ColonyExtension!] @hasMany(indexName: "byColony", fields: ["id"])
   version: Int!
