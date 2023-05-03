@@ -17,6 +17,13 @@
       "service": "AppSync"
     }
   },
+  "custom": {
+    "lambdaParams": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "customCloudformation"
+    }
+  },
   "function": {
     "createUniqueColony": {
       "build": true,
@@ -72,6 +79,184 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_createUniqueColony_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createUniqueColony"
+        }
+      ]
+    },
+    "AMPLIFY_function_createUniqueColony_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createUniqueColony"
+        }
+      ]
+    },
+    "AMPLIFY_function_createUniqueUser_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createUniqueUser"
+        }
+      ]
+    },
+    "AMPLIFY_function_createUniqueUser_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createUniqueUser"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchColonyBalances_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchColonyBalances"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchColonyBalances_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchColonyBalances"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchColonyNativeFundsClaim_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchColonyNativeFundsClaim"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchColonyNativeFundsClaim_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchColonyNativeFundsClaim"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchTokenFromChain_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchTokenFromChain"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchTokenFromChain_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchTokenFromChain"
+        }
+      ]
+    },
+    "AMPLIFY_function_getMembersForColony_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getMembersForColony"
+        }
+      ]
+    },
+    "AMPLIFY_function_getMembersForColony_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getMembersForColony"
+        }
+      ]
+    },
+    "AMPLIFY_function_getReputationForTopDomains_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getReputationForTopDomains"
+        }
+      ]
+    },
+    "AMPLIFY_function_getReputationForTopDomains_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getReputationForTopDomains"
+        }
+      ]
+    },
+    "AMPLIFY_function_getUserReputation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getUserReputation"
+        }
+      ]
+    },
+    "AMPLIFY_function_getUserReputation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getUserReputation"
+        }
+      ]
+    },
+    "AMPLIFY_function_getUserTokenBalance_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getUserTokenBalance"
+        }
+      ]
+    },
+    "AMPLIFY_function_getUserTokenBalance_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getUserTokenBalance"
+        }
+      ]
+    },
+    "AMPLIFY_function_setCurrentVersion_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "setCurrentVersion"
+        }
+      ]
+    },
+    "AMPLIFY_function_setCurrentVersion_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "setCurrentVersion"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateExtensionByColonyAndHash_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateExtensionByColonyAndHash"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateExtensionByColonyAndHash_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateExtensionByColonyAndHash"
+        }
+      ]
     }
   }
 }

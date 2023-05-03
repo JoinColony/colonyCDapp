@@ -13,3 +13,5 @@ src/**/*.css.d.ts
 # amplify
 
 src/graphql
+
+amplify-codegen-temp/models

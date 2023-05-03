@@ -1,0 +1,98 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters": {
+    "env": {
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "chainNetworkSSM": {
+      "Type": "AWS::SSM::Parameter",
+      "Properties": {
+        "Name": {
+          "Fn::Sub": "/amplify/cdapp/${env}/chain_network"
+        },
+        "Type": "String",
+        "Value": "xdai",
+        "Description": "The name of the network"
+      }
+    },
+    "chainRpcEndpointSSM": {
+      "Type": "AWS::SSM::Parameter",
+      "Properties": {
+        "Name": {
+          "Fn::Sub": "/amplify/cdapp/${env}/chain_rpc_endpoint"
+        },
+        "Type": "String",
+        "Value": "https://qa-cdapp.colony.io/rpc/",
+        "Description": "Xdai chain RPC endpoint"
+      }
+    },
+    "chainNetworkContractSSM": {
+      "Type": "AWS::SSM::Parameter",
+      "Properties": {
+        "Name": {
+          "Fn::Sub": "/amplify/cdapp/${env}/chain_network_contract"
+        },
+        "Type": "String",
+        "Value": "0x6a05DD32860C1b5351B97b4eCAAbFbc60edb102f",
+        "Description": "Xdai chain network contract"
+      }
+    },
+    "reputationEndpointSSM": {
+      "Type": "AWS::SSM::Parameter",
+      "Properties": {
+        "Name": {
+          "Fn::Sub": "/amplify/cdapp/${env}/reputation_endpoint"
+        },
+        "Type": "String",
+        "Value": "https://qa-cdapp.colony.io/reputation/",
+        "Description": "Reputation endpoint"
+      }
+    },
+    "awsAppSyncGraphqlUrlSSM": {
+      "Type": "AWS::SSM::Parameter",
+      "Properties": {
+        "Name": {
+          "Fn::Sub": "/amplify/cdapp/${env}/aws_appsync_graphql_url"
+        },
+        "Type": "String",
+        "Value": "https://x2yqu43sc5fk7lgol5fagr6csq.appsync-api.eu-west-2.amazonaws.com/graphql",
+        "Description": "Reputation endpoint"
+      }
+    }
+  },
+  "Outputs": {
+    "chainNetworkSSM": {
+      "Value": { "Ref": "chainNetworkSSM" },
+      "Export": {
+        "Name": "chainNetworkSSM"
+      }
+    },
+    "chainRpcEndpointSSM": {
+      "Value": { "Ref": "chainRpcEndpointSSM" },
+      "Export": {
+        "Name": "chainRpcEndpointSSM"
+      }
+    },
+    "chainNetworkContractSSM": {
+      "Value": { "Ref": "chainNetworkContractSSM" },
+      "Export": {
+        "Name": "chainNetworkContractSSM"
+      }
+    },
+    "reputationEndpointSSM": {
+      "Value": { "Ref": "reputationEndpointSSM" },
+      "Export": {
+        "Name": "reputationEndpointSSM"
+      }
+    },
+    "awsAppSyncGraphqlUrlSSM": {
+      "Value": { "Ref": "awsAppSyncGraphqlUrlSSM" },
+      "Export": {
+        "Name": "awsAppSyncGraphqlUrlSSM"
+      }
+    }
+  },
+  "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"Amplify\",\"createdWith\":\"11.1.1\",\"stackType\":\"custom-customCloudformation\",\"metadata\":{}}"
+}
