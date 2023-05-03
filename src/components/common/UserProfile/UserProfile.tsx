@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import ProfileTemplate from '~frame/ProfileTemplate';
 import NotFoundRoute from '~routes/NotFoundRoute';
-import { useUserByNameOrAddress } from '~hooks';
+import { useUserByName } from '~hooks';
 
 import UserMeta from './UserMeta';
 import UserProfileSpinner from './UserProfileSpinner';
@@ -14,10 +14,8 @@ import styles from './UserProfile.css';
 const displayName = 'common.UserProfile';
 
 const UserProfile = () => {
-  const { usernameOrAddress } = useParams();
-  const { user, loading, error } = useUserByNameOrAddress(
-    usernameOrAddress || '',
-  );
+  const { username } = useParams();
+  const { user, loading, error } = useUserByName(username || '');
 
   if (loading) {
     return <UserProfileSpinner />;

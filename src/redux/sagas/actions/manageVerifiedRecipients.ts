@@ -1,9 +1,11 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { Action, AllActions, ActionTypes } from '~redux';
 import { ContextModule, getContext } from '~context';
-import { Action, ActionTypes, AllActions } from '~redux';
+import { transactionPending, transactionReady } from '~redux/actionCreators';
 import {
+  GetFullColonyByNameDocument,
   UpdateColonyMetadataDocument,
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
@@ -19,32 +21,33 @@ import {
   putError,
   takeFrom,
 } from '../utils';
-import {
-  transactionAddParams,
-  transactionPending,
-  transactionReady,
-} from '../../actionCreators';
 
-function* editColonyAction({
+function* manageVerifiedRecipients({
   payload: {
     colony,
-    colony: { colonyAddress, name: colonyName },
+    colony: { colonyAddress },
     colonyDisplayName,
-    colonyAvatarImage,
-    colonyThumbnail,
+    // colonyAvatarHash,
+    verifiedAddresses = [],
+    // colonyTokens = [],
+    // annotationMessage,
+    isWhitelistActivated,
+    // colonySafes = [],
   },
   meta: { id: metaId, navigate },
   meta,
-}: Action<ActionTypes.ACTION_EDIT_COLONY>) {
+}: Action<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE>) {
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
 
     /*
-     * Validate the required values for the payment
+     * Validate the required values for the transaction
      */
     if (!colonyDisplayName && colonyDisplayName !== null) {
-      throw new Error('A colony name is required in order to edit the colony');
+      throw new Error(
+        `A colony name is required in order to add whitelist addresses to the colony`,
+      );
     }
 
     txChannel = yield call(getTxChannel, metaId);
@@ -55,7 +58,7 @@ function* editColonyAction({
       // annotateEditColonyAction: annotateEditColony,
     } = yield createTransactionChannels(metaId, [
       'editColonyAction',
-      'annotateEditColonyAction',
+      // 'annotateEditColonyAction',
     ]);
 
     const createGroupTransaction = ({ id, index }, config) =>
@@ -97,45 +100,29 @@ function* editColonyAction({
 
     yield put(transactionPending(editColony.id));
 
-    // /*
-    //  * Upload colony metadata to IPFS
-    //  *
-    //  * @NOTE Only (re)upload the avatar if it has changed, otherwise just use
-    //  * the old hash.
-    //  * This cuts down on some transaction signing wait time, since IPFS uplaods
-    //  * tend to be on the slower side :(
-    //  */
-    // let colonyAvatarIpfsHash = null;
-    // if (colonyAvatarImage && hasAvatarChanged) {
-    //   colonyAvatarIpfsHash = yield call(
-    //     ipfsUpload,
-    //     JSON.stringify({
-    //       image: colonyAvatarImage,
-    //     }),
-    //   );
-    // }
-
-    // /*
-    //  * Upload colony metadata to IPFS
-    //  */
+    /*
+     * Upload colony metadata to IPFS
+     */
     // let colonyMetadataIpfsHash = null;
+
     // colonyMetadataIpfsHash = yield call(
-    //   ipfsUpload,
-    //   JSON.stringify({
+    //   ipfsUploadWithFallback,
+    //   getStringForMetadataColony({
     //     colonyDisplayName,
-    //     colonyAvatarHash: hasAvatarChanged
-    //       ? colonyAvatarIpfsHash
-    //       : colonyAvatarHash,
+    //     colonyAvatarHash,
+    //     verifiedAddresses,
     //     colonyTokens,
+    //     isWhitelistActivated,
+    //     colonySafes,
     //   }),
     // );
 
-    /**
-     * @NOTE: In order for the ColonyMetadata event (which is the only event associated with Colony Edit action) to be emitted,
-     * the second parameter must be non-empty.
-     * It will be replaced with the IPFS hash in due course.
-     */
-    yield put(transactionAddParams(editColony.id, ['.']));
+    // yield put(
+    //   transactionAddParams(editColony.id, [
+    //     (colonyMetadataIpfsHash as unknown) as string,
+    //   ]),
+    // );
+
     yield put(transactionReady(editColony.id));
 
     const {
@@ -146,32 +133,6 @@ function* editColonyAction({
     );
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    /**
-     * Save the updated metadata in the database
-     */
-    if (colony.metadata) {
-      yield apolloClient.mutate<
-        UpdateColonyMetadataMutation,
-        UpdateColonyMetadataMutationVariables
-      >({
-        mutation: UpdateColonyMetadataDocument,
-        variables: {
-          input: {
-            id: colonyAddress,
-            displayName: colonyDisplayName,
-            avatar: colonyAvatarImage,
-            thumbnail: colonyThumbnail,
-            changelog: getUpdatedColonyMetadataChangelog(
-              txHash,
-              colony.metadata,
-              colonyDisplayName,
-              colonyAvatarImage,
-            ),
-          },
-        },
-      });
-    }
-
     // if (annotationMessage) {
     //   yield put(transactionPending(annotateEditColony.id));
 
@@ -179,7 +140,7 @@ function* editColonyAction({
     //    * Upload annotation metadata to IPFS
     //    */
     //   const annotationMessageIpfsHash = yield call(
-    //     uploadIfpsAnnotation,
+    //     ipfsUploadAnnotation,
     //     annotationMessage,
     //   );
 
@@ -198,22 +159,58 @@ function* editColonyAction({
     //   );
     // }
 
+    /**
+     * Update colony metadata in the db
+     */
+    if (colony.metadata) {
+      yield apolloClient.mutate<
+        UpdateColonyMetadataMutation,
+        UpdateColonyMetadataMutationVariables
+      >({
+        mutation: UpdateColonyMetadataDocument,
+        variables: {
+          input: {
+            id: colonyAddress,
+            isWhitelistActivated,
+            whitelistedAddresses: verifiedAddresses,
+            changelog: getUpdatedColonyMetadataChangelog(
+              txHash,
+              colony.metadata,
+              undefined,
+              undefined,
+              true,
+            ),
+          },
+        },
+        // Update colony object with modified metadata
+        refetchQueries: [GetFullColonyByNameDocument],
+      });
+    }
+
     yield put<AllActions>({
-      type: ActionTypes.ACTION_EDIT_COLONY_SUCCESS,
+      type: ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_SUCCESS,
+      payload: {},
       meta,
     });
 
-    if (colonyName && navigate) {
-      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
+    if (colony.name && navigate) {
+      yield navigate(`/colony/${colony.name}/tx/${txHash}`);
     }
   } catch (error) {
-    return yield putError(ActionTypes.ACTION_EDIT_COLONY_ERROR, error, meta);
+    return yield putError(
+      ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_ERROR,
+      error,
+      meta,
+    );
   } finally {
     txChannel.close();
   }
   return null;
 }
 
-export default function* editColonyActionSaga() {
-  yield takeEvery(ActionTypes.ACTION_EDIT_COLONY, editColonyAction);
+export default function* manageVerifiedRecipientsSaga() {
+  yield takeEvery(
+    ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE,
+    manageVerifiedRecipients,
+  );
 }

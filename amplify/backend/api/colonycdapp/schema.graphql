@@ -330,6 +330,8 @@ type ColonyMetadata @model {
   avatar: String
   thumbnail: String
   changelog: [ColonyMetadataChangelog!]
+  isWhitelistActivated: Boolean
+  whitelistedAddresses: [String!]
 }
 
 type ColonyMetadataChangelog {
@@ -337,6 +339,7 @@ type ColonyMetadataChangelog {
   oldDisplayName: String!
   newDisplayName: String!
   hasAvatarChanged: Boolean!
+  hasWhitelistChanged: Boolean!
 }
 
 type User @model {

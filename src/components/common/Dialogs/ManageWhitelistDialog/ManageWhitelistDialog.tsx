@@ -5,10 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
-// import {
-//   useVerifiedUsersQuery,
-//   useColonyFromNameQuery,
-// } from '~data/index';
 import { ActionTypes } from '~redux/index';
 import { WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
@@ -55,22 +51,7 @@ const ManageWhitelistDialog = ({
 
   const navigate = useNavigate();
 
-  // const { data: colonyData } = useColonyFromNameQuery({
-  //   variables: { name: colonyName, address: colonyAddress },
-  // });
-
-  // const { data } = useVerifiedUsersQuery({
-  //   variables: {
-  //     verifiedAddresses:
-  //       colonyData?.processedColony?.whitelistedAddresses || [],
-  //   },
-  // });
-
-  // const storedVerifiedRecipients = useMemo(
-  //   () =>
-  //     (data?.verifiedUsers || []).map((user: User) => user?.id),
-  //   [data],
-  // );
+  const whitelistedAddresses = colony.metadata?.whitelistedAddresses ?? [];
 
   const handleTabChange = (index: number) => {
     setFormSuccess(false);
@@ -107,12 +88,12 @@ const ManageWhitelistDialog = ({
       <Form<FormValues>
         defaultValues={{
           annotation: '',
-          isWhitelistActivated: false, // colonyData?.processedColony?.isWhitelistActivated,
-          whitelistedAddresses: [], // storedVerifiedRecipients,
+          isWhitelistActivated: colony.metadata?.isWhitelistActivated,
+          whitelistedAddresses,
           whitelistAddress: userAddress,
           whitelistCSVUploader: null,
         }}
-        actionType={ActionTypes.VERIFIED_RECIPIENTS_MANAGE}
+        actionType={ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE}
         validationSchema={mergedSchemas}
         transform={transform}
         onSuccess={() => {
@@ -124,7 +105,7 @@ const ManageWhitelistDialog = ({
       >
         <ManageWhitelistDialogForm
           colony={colony}
-          whitelistedUsers={[]} // data?.verifiedUsers ||
+          whitelistedAddresses={whitelistedAddresses}
           back={prevStep && callStep ? () => callStep(prevStep) : cancel}
           showInput={showInput}
           toggleShowInput={handleToggleShowInput}

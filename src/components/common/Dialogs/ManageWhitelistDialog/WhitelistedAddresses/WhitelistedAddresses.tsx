@@ -1,17 +1,17 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
 import Icon from '~shared/Icon';
-import { filterUserSelection, OmniPickerUser } from '~shared/SingleUserPicker';
-import { User } from '~types';
+import { Address } from '~types';
 import { formatText } from '~utils/intl';
 
 import UserCheckbox from '../UserCheckbox';
+import { getFilteredUsers, useWhitelistedUsers } from './helpers';
 
 import styles from './WhitelistedAddresses.css';
 
 interface Props {
-  whitelistedUsers: User[];
+  whitelistedAddresses: Address[];
 }
 
 const displayName = 'common.ManageWhitelistDialog.WhitelistedAddresses';
@@ -31,32 +31,13 @@ const MSG = defineMessages({
   },
 });
 
-const WhitelistedAddresses = ({ whitelistedUsers }: Props) => {
-  const [users, setUsers] = useState<User[] | Omit<OmniPickerUser, 'name'>[]>(
-    whitelistedUsers,
-  );
+const WhitelistedAddresses = ({ whitelistedAddresses }: Props) => {
+  const users = useWhitelistedUsers(whitelistedAddresses);
+  const [filterTerm, setFilterTerm] = useState('');
 
-  useEffect(() => {
-    if (whitelistedUsers?.length) {
-      setUsers(whitelistedUsers);
-    }
-  }, [whitelistedUsers]);
-
-  const handleOnChange = useCallback(
-    (e) => {
-      if (e.target?.value) {
-        const formattedWhitelistedUsers = whitelistedUsers.map((user) => ({
-          ...user,
-          id: user.walletAddress,
-        }));
-        const [, ...filteredUsers] = filterUserSelection(
-          formattedWhitelistedUsers,
-          e.target?.value,
-        );
-        setUsers(filteredUsers);
-      }
-    },
-    [whitelistedUsers, setUsers],
+  const filteredUsers = useMemo(
+    () => getFilteredUsers(users, filterTerm),
+    [filterTerm, users],
   );
 
   return (
@@ -65,18 +46,20 @@ const WhitelistedAddresses = ({ whitelistedUsers }: Props) => {
         <input
           name="warning"
           className={styles.input}
-          onChange={handleOnChange}
+          value={filterTerm}
+          onChange={(e) => setFilterTerm(e.currentTarget.value)}
           placeholder={formatText(MSG.search)}
         />
         <Icon className={styles.icon} name="search" title={MSG.search} />
       </div>
       <div className={styles.container}>
-        {(users || []).map((user) => {
+        {filteredUsers.map((user) => {
           return (
             <UserCheckbox
-              key={user.walletAddress}
+              key={user.address}
               name="whitelistedAddresses"
-              walletAddress={user.walletAddress}
+              walletAddress={user.address}
+              user={user.user}
               checkedTooltipText={formatText(MSG.checkedTooltipText)}
               unCheckedTooltipText={formatText(MSG.unCheckedTooltipText)}
               showDisplayName={false}

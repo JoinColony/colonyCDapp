@@ -17,6 +17,7 @@ interface Appearance {
 
 interface Props extends Omit<HookFormCheckboxProps, 'appearance'> {
   appearance?: Appearance;
+  tooltipClassName?: string;
 }
 
 const HookFormToggle = ({
@@ -29,6 +30,7 @@ const HookFormToggle = ({
   onChange,
   tooltipTextValues,
   tooltipText,
+  tooltipClassName,
   tooltipPopperOptions = {
     placement: 'right-start',
     modifiers: [
@@ -82,6 +84,7 @@ const HookFormToggle = ({
           className={styles.icon}
           tooltipText={tooltipText}
           tooltipPopperOptions={tooltipPopperOptions}
+          tooltipClassName={tooltipClassName}
           tooltipTextValues={tooltipTextValues}
         />
       )}

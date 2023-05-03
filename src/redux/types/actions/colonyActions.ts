@@ -82,6 +82,7 @@ export type ColonyActionsActionTypes =
         colony: Colony;
         colonyDisplayName?: string;
         colonyAvatarImage?: string;
+        colonyThumbnail?: string;
         hasAvatarChanged?: boolean;
         colonyTokens?: Address[];
         verifiedAddresses?: Address[];
@@ -255,4 +256,22 @@ export type ColonyActionsActionTypes =
   | ActionTypeWithMeta<
       ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS,
       MetaWithNavigate<object>
+    >
+  | UniqueActionType<
+      ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE,
+      {
+        colony: Colony;
+        colonyDisplayName: string;
+        verifiedAddresses: Address[];
+        colonyTokenAddresses: Address[];
+        annotationMessage?: string;
+        isWhitelistActivated: boolean;
+      },
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_SUCCESS,
+      object,
+      object
     >;

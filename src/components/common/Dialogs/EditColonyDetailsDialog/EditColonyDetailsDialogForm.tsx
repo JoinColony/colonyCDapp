@@ -19,6 +19,11 @@ import ColonyAvatar from '~shared/ColonyAvatar';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import Avatar from '~shared/Avatar';
 import { useActionDialogStatus } from '~hooks';
+import {
+  getOptimisedAvatar,
+  getOptimisedThumbnail,
+} from '~images/optimisation';
+import { FileReaderFile } from '~utils/fileReader/types';
 
 import {
   CannotCreateMotionMessage,
@@ -75,18 +80,25 @@ const EditColonyDetailsDialogForm = ({
       enabledExtensionData,
     );
 
-  const handleFileRead = async (file) => {
-    if (file) {
-      const base64image = file.data;
-      setValue('colonyAvatarImage', String(base64image), { shouldDirty: true });
-      setShowUploadedAvatar(true);
-      return String(base64image);
+  const handleFileRead = async (file: FileReaderFile) => {
+    if (!file) {
+      return;
     }
-    return '';
+
+    try {
+      const optimisedImage = await getOptimisedAvatar(file.file);
+      const optimisedThumbnail = await getOptimisedThumbnail(file.file);
+      setValue('colonyAvatarImage', optimisedImage, { shouldDirty: true });
+      setValue('colonyThumbnail', optimisedThumbnail);
+      setShowUploadedAvatar(true);
+    } catch (e) {
+      setAvatarFileError(true);
+    }
   };
 
   const handleFileRemove = async () => {
     setValue('colonyAvatarImage', null, { shouldDirty: true });
+    setValue('colonyThumbnail', null);
     setShowUploadedAvatar(true);
   };
 

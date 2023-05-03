@@ -8,9 +8,9 @@ import React, {
 
 import { ActionTypes } from '~redux';
 import {
-  GetCurrentUserDocument,
-  GetCurrentUserQuery,
-  GetCurrentUserQueryVariables,
+  GetUserByAddressDocument,
+  GetUserByAddressQuery,
+  GetUserByAddressQueryVariables,
 } from '~gql';
 import { Wallet, User } from '~types';
 import { useAsyncFunction } from '~hooks';
@@ -60,10 +60,10 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
           }
           const apolloClient = getContext(ContextModule.ApolloClient);
           const { data } = await apolloClient.query<
-            GetCurrentUserQuery,
-            GetCurrentUserQueryVariables
+            GetUserByAddressQuery,
+            GetUserByAddressQueryVariables
           >({
-            query: GetCurrentUserDocument,
+            query: GetUserByAddressDocument,
             variables: { address },
             fetchPolicy: 'network-only',
           });

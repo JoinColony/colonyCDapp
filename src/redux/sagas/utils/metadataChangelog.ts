@@ -38,6 +38,7 @@ export const getUpdatedColonyMetadataChangelog = (
   metadata: ColonyMetadata,
   newDisplayName?: string,
   newAvatarImage?: string | null,
+  hasWhitelistChanged = false,
 ): ColonyMetadataChangelogInput[] => {
   const existingChangelog = getExistingChangelog(metadata.changelog);
 
@@ -51,6 +52,7 @@ export const getUpdatedColonyMetadataChangelog = (
         newAvatarImage === undefined
           ? false
           : newAvatarImage !== metadata.avatar,
+      hasWhitelistChanged,
     },
   ];
 };

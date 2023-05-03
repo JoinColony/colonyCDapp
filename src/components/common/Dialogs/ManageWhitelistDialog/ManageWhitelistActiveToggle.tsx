@@ -54,6 +54,7 @@ const ManageWhitelistActiveToggle = ({ isWhitelistActivated }: Props) => (
         labelValues={{ isWhitelistActivated }}
         name="isWhitelistActivated"
         tooltipText={MSG.tooltipText}
+        tooltipClassName={styles.tooltip}
       />
     </div>
     {!isWhitelistActivated && (

@@ -7,8 +7,7 @@ import ListItem, { ListItemStatus } from '~shared/ListItem';
 import { ColonyAction } from '~types';
 import { useColonyContext } from '~hooks';
 
-import { getActionTitleValues } from '../helpers';
-
+import { getActionTitleValues, getActionTitleMessageId } from '../helpers';
 import ActionsListItemMeta from './ActionsListItemMeta';
 
 const displayName = 'common.ColonyActions.ActionsListItem';
@@ -96,7 +95,7 @@ const ActionsListItem = ({
       onClick={handleActionRedirect}
       status={status}
       // tag={tag}
-      title={{ id: 'action.title' }}
+      title={{ id: getActionTitleMessageId(item, colony) }}
       titleValues={getActionTitleValues(item, colony)}
     />
   );

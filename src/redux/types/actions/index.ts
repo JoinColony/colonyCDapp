@@ -83,7 +83,7 @@ export interface UniqueActionTypeWithoutPayload<T extends string, M> {
 /*
  * Type that represents an error action.
  */
-export interface ErrorActionType<T extends string, M>
+export interface ErrorActionType<T extends string, M extends object>
   extends ActionTypeWithPayloadAndMeta<T, Error, M> {
   error: true;
 }
