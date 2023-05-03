@@ -76,10 +76,13 @@ module.exports = {
           repSubmitted
           createdBy
           hasObjection
-          hasPassed
-          hasFailed
-          hasFailedNotFinalizable
-          inRevealPhase
+          motionStateHistory {
+            hasVoted
+            hasPassed
+            hasFailed
+            hasFailedNotFinalizable
+            inRevealPhase
+          }
           messages {
             ...MotionMessage
           }
