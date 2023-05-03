@@ -13,11 +13,11 @@ import {
 import { Annotations } from '~shared/Fields';
 import { Heading4 } from '~shared/Heading';
 import Paragraph from '~shared/Paragraph';
-import { TokenSelector } from '~common/CreateColonyWizard';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import { useActionDialogStatus } from '~hooks';
 import { isEqual } from '~utils/lodash';
+import TokenSelector from '~shared/TokenSelector';
 
 import { NoPermissionMessage, PermissionRequiredInfo } from '../../Messages';
 import TokenItem from './TokenItem';

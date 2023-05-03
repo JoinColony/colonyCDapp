@@ -15,7 +15,7 @@ import { Token } from '~types';
 
 import styles from './TokenSelector.css';
 
-const displayName = 'common.CreateColonyWizard.TokenSelector';
+const displayName = 'shared.TokenSelector';
 
 const MSG = defineMessages({
   label: {

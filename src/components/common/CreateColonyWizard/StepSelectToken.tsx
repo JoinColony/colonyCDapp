@@ -8,12 +8,12 @@ import {
 import { WizardStepProps } from '~shared/Wizard';
 import { HookForm as Form } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
+import TokenSelector from '~shared/TokenSelector';
 
 import {
   FormValues,
   Step3,
   selectTokenValidationSchema as validationSchema,
-  TokenSelector,
 } from '../CreateColonyWizard';
 import { SubmitFormButton, TruncatedName } from './shared';
 
