@@ -11,6 +11,7 @@ import { WizardDialogType } from '~hooks';
 import { formatText } from '~utils/intl';
 import { notNull } from '~utils/arrays';
 import { isAddress } from '~utils/web3';
+import { Token } from '~types';
 
 import { getTokenManagementDialogPayload } from './helpers';
 import TokenManagementDialogForm from './TokenManagementDialogForm';
@@ -25,6 +26,11 @@ const MSG = defineMessages({
   invalidAddress: {
     id: `${displayName}.invalidAddress`,
     defaultMessage: 'This is not a valid address',
+  },
+  tokenNotFound: {
+    id: `${displayName}.tokenNotFound`,
+    defaultMessage:
+      'Token data not found. Please check the token contract address.',
   },
 });
 
@@ -41,6 +47,19 @@ const validationSchema = object({
       () => MSG.invalidAddress,
       (value) => !value || isAddress(value),
     ),
+  token: object<Token>()
+    .nullable()
+    .test('doesTokenExist', '', function doesTokenExist(value, context) {
+      if (!context.parent.tokenAddress || !!value) {
+        // Skip validation if tokenAddress is empty or token has been found
+        return true;
+      }
+
+      return this.createError({
+        message: formatText(MSG.tokenNotFound),
+        path: 'tokenAddress',
+      });
+    }),
   selectedTokenAddresses: array()
     .of(string().address().defined())
     .notRequired(),
