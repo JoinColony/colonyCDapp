@@ -33,8 +33,10 @@ const getVotingClient = async (colonyAddress) => {
   return colonyClient.getExtensionClient(Extension.VotingReputation);
 };
 
-const getLatestMotionState = async (colonyAddress, motionData) => {
-  const { nativeMotionId, createdBy } = motionData;
+const getLatestMotionState = async (
+  colonyAddress,
+  { nativeMotionId, createdBy },
+) => {
   try {
     const votingReputationClient = await getVotingClient(colonyAddress);
     const isDeprecated = await votingReputationClient.getDeprecated();
