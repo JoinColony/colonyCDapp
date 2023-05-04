@@ -105,5 +105,5 @@ exports.handler = async (event) => {
     return motionState;
   }
 
-  return undefined;
+  return MotionState.Null;
 };
