@@ -1,4 +1,4 @@
-FROM node:16.14.2 
+FROM node:16.14.2
 
 ARG DEV
 
@@ -68,7 +68,8 @@ EXPOSE 80
 RUN if [ -z "$DEV" ]; then export PROCESS_VAR='[a-z]'; else export PROCESS_VAR='process'; fi && \
         echo "sed -i \"s|${PROCESS_VAR}.env.NETWORK|\\\"\$NETWORK\\\"|g\" *.js" \
         "&& sed -i \"s|${PROCESS_VAR}.env.NETWORK_CONTRACT_ADDRESS|\\\"\$NETWORK_CONTRACT_ADDRESS\\\"|g\" *.js" \
-        "&& sed -i \"s/${PROCESS_VAR}.env.AWS_APPSYNC_GRAPHQL_URL/\\\"\$AWS_APPSYNC_GRAPHQL_URL\\\"/g\" *.js" \
+        "&& sed -i \"s|${PROCESS_VAR}.env.AWS_APPSYNC_GRAPHQL_URL|\\\"\$AWS_APPSYNC_GRAPHQL_URL\\\"|g\" *.js" \
+        "&& sed -i \"s|${PROCESS_VAR}.env.AWS_APPSYNC_KEY|\\\"\$AWS_APPSYNC_KEY\\\"|g\" *.js" \
         "&& sed -i \"s/${PROCESS_VAR}.env.METATRANSACTIONS/\\\"\$METATRANSACTIONS\\\"/g\" *.js" \
         " && nginx -g 'daemon off;'" > ./run.sh
 RUN chmod +x ./run.sh
