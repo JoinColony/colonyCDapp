@@ -12,7 +12,7 @@ import styles from './SpecificSidePanel.module.css';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 
-const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidepanelData }) => {
+const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData }) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -20,7 +20,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidepanelData
       <h3 className="font-semibold text-lg text-gray-900 pb-[1.375rem]">
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
-      {sidepanelData.map(
+      {sidePanelData.map(
         ({ id, dateInstalled, instaledBy, statusType, versionInstalled, contractAddress, developer, permissions }) => (
           <Fragment key={id}>
             <div className={styles.panelRow}>
