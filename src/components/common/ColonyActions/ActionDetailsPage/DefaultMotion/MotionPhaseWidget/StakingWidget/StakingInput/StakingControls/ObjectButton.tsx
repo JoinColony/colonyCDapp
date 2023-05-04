@@ -1,7 +1,9 @@
 import React from 'react';
 
 import Button from '~shared/Button';
-import { useAppContext, useObjectButton } from '~hooks';
+import { useAppContext } from '~hooks';
+
+import useObjectButton from './useObjectButton';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.ObjectButton';

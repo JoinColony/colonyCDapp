@@ -4,9 +4,9 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { MotionState } from '~utils/colonyMotions';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import TimerValue from '~shared/TimerValue';
-import { RefetchMotionState } from '~hooks';
 import { MotionData } from '~types';
 
+import { RefetchMotionState } from '../ActionDetailsPage';
 import { useMotionCountdown } from './helpers';
 
 import styles from './CountDownTimer.css';

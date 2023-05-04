@@ -3,7 +3,12 @@ import { useState, useEffect } from 'react';
 import { MotionStakes } from '~gql';
 import { SetStateFn } from '~types';
 
-import { compareMotionStakes } from './helpers';
+const compareMotionStakes = (
+  oldMotionStakes: MotionStakes,
+  newMotionStates: MotionStakes | undefined,
+) =>
+  oldMotionStakes.raw.yay !== newMotionStates?.raw.yay ||
+  oldMotionStakes.raw.nay !== newMotionStates?.raw.nay;
 
 const useStakingWidgetUpdate = (
   motionStakes: MotionStakes,

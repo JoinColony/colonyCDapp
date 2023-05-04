@@ -1,15 +1,13 @@
 import { useFormContext } from 'react-hook-form';
 
-import {
-  useStakingWidgetContext,
-  SLIDER_AMOUNT_KEY,
-} from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/StakingWidget';
 import { RaiseObjectionDialog } from '~common/Dialogs';
+import { useAppContext, useColonyContext } from '~hooks';
 import { useDialog } from '~shared/Dialog';
 import { MotionVote } from '~utils/colonyMotions';
 
-import { getHandleStakeSuccessFn, getStakingTransformFn } from './helpers';
-import { useAppContext, useColonyContext } from '.';
+import { useStakingWidgetContext } from '../../StakingWidgetProvider';
+import { getHandleStakeSuccessFn, getStakingTransformFn } from '../helpers';
+import { SLIDER_AMOUNT_KEY } from '../StakingInput';
 
 const useObjectButton = () => {
   const { user } = useAppContext();
