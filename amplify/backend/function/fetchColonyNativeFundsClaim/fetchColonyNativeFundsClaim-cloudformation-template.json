@@ -70,7 +70,7 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "CHAIN_RPC_ENDPOINT": "https://qa-cdapp.colony.io/rpc/"
+            "CHAIN_RPC_ENDPOINT": "http://qa-cdapp.colony.io/rpc/"
           }
         },
         "Role": {
