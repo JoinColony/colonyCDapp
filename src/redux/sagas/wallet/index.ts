@@ -50,10 +50,11 @@ const onboard = Onboard({
       /*
        * chain id for @web3-onboard needs to be expressed as a hex string
        */
-      id: `0x${GANACHE_NETWORK.chainId.toString(16)}`,
-      token: TOKEN_DATA[Network.Ganache].symbol,
-      label: DevelopmentWallets.Ganache,
-      rpcUrl: GANACHE_LOCAL_RPC_URL,
+      // id: `0x${GANACHE_NETWORK.chainId.toString(16)}`,
+      id: '0x64',
+      token: TOKEN_DATA[Network.Gnosis].symbol,
+      label: 'Metamask Wallet',
+      rpcUrl: 'https://rpc.gnosischain.com',
     },
   ],
   accountCenter: {
@@ -98,6 +99,7 @@ export function* getWallet() {
   // yield openGanacheWallet(action);
 
   const lastWalletLabel = getLastWallet();
+  console.log('last label', lastWalletLabel);
   const connectOptions = {
     autoSelect: {
       label: lastWalletLabel,
