@@ -9,6 +9,7 @@
   --pink: rgb(254, 94, 124);
   --golden: rgba(255, 176, 0); /* Think pending states (golden yellow) */
   --dark: rgb(60, 68, 77); /* Used for colony name display (colony simplified) */
+
   --grey-dark: rgb(47, 47, 47);
   --text-disabled: rgb(194, 204, 204);
   --colony-light-blue: rgb(238, 242, 245);
@@ -18,9 +19,12 @@
   --grey: rgb(124, 124, 124);
   --grey-navbar: rgb(246, 246, 246);
   --light-grey-pink: rgb(244, 238, 242); /* Used for user profile gradient start color */
+
   --light-ash: rgb(231, 242, 246); /* Used for user profile gradient end color */
+
   --light-purple: rgb(200, 214, 247); /* Used for some box shadows */
   --grey-purple: rgb(118, 116, 139); /* Used for the wallet connect button in the user navigation */
+
   --grey-blue: rgb(188, 197, 216);
   --light-grey: rgb(213, 213, 213);
   --light-grey-beige: rgb(227, 224, 227); /* Used for separator background */

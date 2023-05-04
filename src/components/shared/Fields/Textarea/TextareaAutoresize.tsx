@@ -107,7 +107,7 @@ const TextareaAutoresize = ({
 
   const renderAutoresizingTextarea = () => {
     return (
-      <div className={styles.TextareaAutoresizeWrapper}>
+      <div className={styles.textareaAutoresizeWrapper}>
         <Textarea {...inputProps} />
       </div>
     );
@@ -129,7 +129,7 @@ const TextareaAutoresize = ({
         extra={extra}
         screenReaderOnly={elementOnly}
       />
-      <div className={styles.TextareaAutoresizeWrapper}>{renderAutoresizingTextarea()}</div>
+      <div className={styles.textareaAutoresizeWrapper}>{renderAutoresizingTextarea()}</div>
       <InputStatus appearance={appearance} status={status} statusValues={statusValues} error={error} />
     </div>
   );

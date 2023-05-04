@@ -467,6 +467,11 @@ type CurrentVersion @model {
   version: Int!
 }
 
+type CurrentNetworkInverseFee @model {
+  id: ID!
+  inverseFee: String!
+}
+
 type ColonyAction @model {
   # Required fields common for all actions
   id: ID!

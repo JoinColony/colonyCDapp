@@ -1,6 +1,6 @@
 import { formatUnits } from 'ethers/lib.esm/utils';
 import { BigNumber } from 'ethers';
-import { ColonyVersion, releaseMap } from '@colony/colony-js';
+import { LATEST_TAG } from '@colony/colony-js/extras';
 
 import { DEFAULT_NETWORK } from '~constants';
 import { NETWORK_RELEASES, ETHERSCAN_CONVERSION_RATE } from '~constants/externalUrls';
@@ -105,4 +105,4 @@ export const getBlockExplorerLink = ({
   return `https://${networkSubdomain}etherscan.${tld}/${linkType}/${addressOrHash}`;
 };
 
-export const getNetworkRelaseLink = (version: ColonyVersion) => `${NETWORK_RELEASES}/${releaseMap[version]}`;
+export const getNetworkReleaseLink = () => `${NETWORK_RELEASES}/${LATEST_TAG}`;

@@ -39,7 +39,7 @@ interface Props {
 // }
 
 const NewActionButton = ({ filteredDomainId }: Props) => {
-  const { colony, canInteractWithColony } = useColonyContext();
+  const { colony } = useColonyContext();
   const { user, walletConnecting } = useAppContext();
 
   // const { version: networkVersion } = useNetworkContracts();

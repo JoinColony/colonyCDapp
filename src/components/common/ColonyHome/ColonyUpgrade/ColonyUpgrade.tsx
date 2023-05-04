@@ -1,17 +1,21 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { useDialog } from '~shared/Dialog';
-import NetworkContractUpgradeDialog from '~dialogs/NetworkContractUpgradeDialog';
+import { NetworkContractUpgradeDialog } from '~common/Dialogs';
 import Alert from '~shared/Alert';
 import Button from '~shared/Button';
 import ExternalLink from '~shared/ExternalLink';
-import { useNetworkContracts } from '~data/index';
-import { useTransformer, useAppContext, useColonyContext } from '~hooks';
-import { getNetworkRelaseLink } from '~utils/external';
-import { colonyMustBeUpgraded, colonyShouldBeUpgraded } from '~modules/dashboard/checks';
-import { hasRoot } from '~modules/users/checks';
-import { getAllUserRoles } from '~modules/transformers';
+import {
+  useTransformer,
+  useAppContext,
+  useColonyContext,
+  useColonyContractVersion,
+  useEnabledExtensions,
+} from '~hooks';
+import { getNetworkReleaseLink } from '~utils/external';
+import { hasRoot, mustColonyBeUpgraded, canColonyBeUpgraded } from '~utils/checks';
+import { getAllUserRoles } from '~redux/transformers';
 
 import styles from './ColonyUpgrade.css';
 
@@ -31,25 +35,23 @@ const MSG = defineMessages({
 
 const ColonyUpgrade = () => {
   const { colony } = useColonyContext();
-
-  const openUpgradeVersionDialog = useDialog(NetworkContractUpgradeDialog);
-  const { version: networkVersion } = useNetworkContracts();
+  const { colonyContractVersion } = useColonyContractVersion();
+  const openUpgradeColonyDialog = useDialog(NetworkContractUpgradeDialog);
   const { user, wallet } = useAppContext();
-
-  const handleUpgradeColony = useCallback(
-    () =>
-      openUpgradeVersionDialog({
-        colony,
-      }),
-    [colony, openUpgradeVersionDialog],
-  );
+  const enabledExtensionData = useEnabledExtensions();
+  const handleUpgradeColony = () =>
+    colony &&
+    openUpgradeColonyDialog({
+      colony,
+      enabledExtensionData,
+    });
 
   const allUserRoles = useTransformer(getAllUserRoles, [colony, wallet?.address]);
 
   const canUpgradeColony = user?.name && hasRoot(allUserRoles);
 
-  const mustUpgrade = colonyMustBeUpgraded(colony, networkVersion as string);
-  const shouldUpdgrade = colonyShouldBeUpgraded(colony, networkVersion as string);
+  const mustUpgrade = mustColonyBeUpgraded(colony, colonyContractVersion);
+  const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
 
   if (mustUpgrade) {
     return (
@@ -77,7 +79,7 @@ const ColonyUpgrade = () => {
     );
   }
 
-  if (shouldUpdgrade) {
+  if (canUpgrade) {
     return (
       <div className={styles.upgradeBannerContainer}>
         <Alert
@@ -93,15 +95,7 @@ const ColonyUpgrade = () => {
                 <FormattedMessage
                   {...MSG.upgradeSuggested}
                   values={{
-                    linkToRelease: (
-                      <ExternalLink
-                        text={{ id: 'text.learnMore' }}
-                        href={getNetworkRelaseLink(
-                          // parseInt(colony.version, 10) + 1,
-                          10,
-                        )}
-                      />
-                    ),
+                    linkToRelease: <ExternalLink text={{ id: 'text.learnMore' }} href={getNetworkReleaseLink()} />,
                   }}
                 />
               </div>

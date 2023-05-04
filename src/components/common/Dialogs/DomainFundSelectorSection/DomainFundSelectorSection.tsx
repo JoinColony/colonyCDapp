@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
@@ -34,29 +34,18 @@ interface Props {
 }
 
 const DomainFundSelectorSection = ({ colony, transferBetweenDomains, disabled }: Props) => {
-  const {
-    watch,
-    setValue,
-    formState: { errors },
-    clearErrors,
-  } = useFormContext();
-  const { motionDomainId, fromDomain, toDomain } = watch();
-  const handleFromDomainChange = (fromDomainValue) => {
-    if (motionDomainId !== fromDomainValue) {
-      setValue('motionDomainId', fromDomainValue);
+  const { watch, setValue, trigger } = useFormContext();
+  const toDomainId = watch('toDomainId');
+
+  const handleFromDomainChange = (fromDomainId: string) => {
+    setValue('motionDomainId', fromDomainId);
+
+    if (transferBetweenDomains) {
+      // Touch the toDomainId field to show any error messages and trigger validation of the entire form (e.g. the amount)
+      setValue('toDomainId', toDomainId, { shouldTouch: true });
+      trigger();
     }
   };
-
-  useEffect(() => {
-    if (fromDomain !== toDomain) {
-      if (errors.toDomain?.type === 'same-pot') {
-        clearErrors('toDomain');
-      }
-      if (errors.fromDomain?.type === 'same-pot') {
-        clearErrors('fromDomain');
-      }
-    }
-  }, [errors, fromDomain, toDomain]);
 
   return (
     <div
@@ -65,7 +54,7 @@ const DomainFundSelectorSection = ({ colony, transferBetweenDomains, disabled }:
       })}
     >
       <DomainFundSelector
-        name="fromDomain"
+        name="fromDomainId"
         label={MSG.from}
         colony={colony}
         disabled={disabled}
@@ -79,7 +68,7 @@ const DomainFundSelectorSection = ({ colony, transferBetweenDomains, disabled }:
             title={MSG.transferIconTitle}
             appearance={{ size: 'medium' }}
           />
-          <DomainFundSelector name="toDomain" label={MSG.to} colony={colony} disabled={disabled} />
+          <DomainFundSelector name="toDomainId" label={MSG.to} colony={colony} disabled={disabled} />
         </>
       )}
     </div>

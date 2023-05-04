@@ -15,6 +15,7 @@ interface Props {
   isVotingReputationEnabled?: boolean;
   secondaryButtonText?: MessageDescriptor | string;
   submitButtonAppearance?: ButtonAppearance;
+  isLoading?: boolean;
 }
 
 const DialogControls = ({
@@ -24,6 +25,7 @@ const DialogControls = ({
   secondaryButtonText = { id: 'button.back' },
   submitButtonAppearance = { theme: 'primary', size: 'large' },
   isVotingReputationEnabled,
+  isLoading,
 }: Props) => {
   const {
     watch,
@@ -44,7 +46,7 @@ const DialogControls = ({
         type="submit"
         appearance={submitButtonAppearance}
         text={forceAction || !isVotingReputationEnabled ? { id: 'button.confirm' } : { id: 'button.createMotion' }}
-        loading={isSubmitting}
+        loading={isSubmitting || isLoading}
         /*
          * Disable Form submissions if either the form is invalid, or
          * if our custom state was triggered.

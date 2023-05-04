@@ -67,12 +67,6 @@ const memberTypes = [
   { label: MSG.watchers, value: MemberType.Watchers },
 ];
 
-const verificationTypes = [
-  { label: MSG.any, value: VerificationType.All },
-  { label: MSG.verified, value: VerificationType.Verified },
-  { label: MSG.unverified, value: VerificationType.Unverified },
-];
-
 export type filterItem = {
   appearance?: Appearance;
   name: string;

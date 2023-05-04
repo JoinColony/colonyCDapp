@@ -390,10 +390,9 @@
     "shared.modal.buttonCloseAriaLabel": "Close the modal",
     "hours": "Hours",
     "special.hour.input.error.min.value": "Hours can not be 0",
-    "special.hour.input.error.max.value": "Hours must be less than 8766",
+    "special.hour.input.error.max.value": "Hours must be less than",
     "special.percentage.input.error.min.value": "Percentage must be greater than 0",
     "special.percentage.input.error.max.value": "Percentage must be less than or equal to 100",
-
-    "specific.side.panel.title": "Extension details",
-    "file-text": "File text icon"
+    "file-text": "File text icon",
+    "specific.side.panel.title": "Extension details"
 }

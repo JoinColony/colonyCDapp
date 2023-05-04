@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
-import { string, object, bool, InferType } from 'yup';
+import { string, object, bool, InferType, number } from 'yup';
 import { useNavigate } from 'react-router-dom';
-import Decimal from 'decimal.js';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
-
-import { ActionTypes } from '~redux/index';
+import { ActionTypes } from '~redux';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { WizardDialogType } from '~hooks';
+import { toFinite } from '~utils/lodash';
 
 import MintTokenDialogForm from './MintTokenDialogForm';
 import { getMintTokenDialogPayload } from './helpers';
@@ -33,16 +32,10 @@ const validationSchema = object()
   .shape({
     forceAction: bool().defined(),
     annotation: string().max(4000).defined(),
-    mintAmount: string()
+    mintAmount: number()
       .required(() => MSG.errorAmountRequired)
-      .test(
-        'more-than-zero',
-        () => MSG.errorAmountMin,
-        (value) => {
-          const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
-          return !new Decimal(numberWithoutCommas).isZero();
-        },
-      ),
+      .transform((value) => toFinite(value))
+      .moreThan(0, () => MSG.errorAmountMin),
   })
   .defined();
 
@@ -67,7 +60,7 @@ const MintTokenDialog = ({ colony, cancel, close, callStep, prevStep, enabledExt
         defaultValues={{
           forceAction: false,
           annotation: '',
-          mintAmount: '',
+          mintAmount: 0,
           /*
            * @NOTE That since this a root motion, and we don't actually make use
            * of the motion domain selected (it's disabled), we don't need to actually

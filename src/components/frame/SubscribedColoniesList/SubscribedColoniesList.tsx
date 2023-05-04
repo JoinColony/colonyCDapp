@@ -68,7 +68,12 @@ const SubscribedColoniesList = () => {
                   to={`/colony/${name}`}
                 >
                   <div className={styles.itemImage}>
-                    <ColonyAvatar colony={item?.colony} colonyAddress={colonyAddress} size="s" />
+                    <ColonyAvatar
+                      colony={item?.colony}
+                      colonyAddress={colonyAddress}
+                      size="s"
+                      preferThumbnail={false}
+                    />
                   </div>
                 </NavLink>
               </div>
