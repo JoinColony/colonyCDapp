@@ -1,4 +1,3 @@
-export { default as AmountTokens } from './AmountTokens';
 export { default as Checkbox, HookFormCheckbox } from './Checkbox';
 export { default as Form, ActionForm, HookForm, ActionHookForm } from './Form';
 export { default as FormStatus } from './FormStatus';

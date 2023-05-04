@@ -16,7 +16,7 @@ const meta: Meta<typeof UserPermissionsBadge> = {
     },
     name: {
       name: 'Icon Name',
-      options: ['appWindow', 'bank', 'buildings', 'disabled', 'clipboardText', 'clockCounterClockwise', 'scales'],
+      options: ['app-window', 'bank', 'buildings', 'clipboard-text', 'clock-counter-clockwise', 'scales'],
       control: {
         type: 'select',
       },
@@ -27,6 +27,16 @@ const meta: Meta<typeof UserPermissionsBadge> = {
         type: 'text',
       },
     },
+    placement: {
+      name: 'Placement',
+      options: ['auto', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'right', 'left'],
+      control: {
+        type: 'select',
+      },
+    },
+  },
+  args: {
+    placement: 'auto',
   },
 };
 

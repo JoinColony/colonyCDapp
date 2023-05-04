@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+import Icon from '~shared/Icon';
 import Link from '~shared/Link';
-import { doubleLink, singleLink } from './consts';
+import { doubleLink, singleLink } from './const';
 
 interface LinkWrapperProps {
   isDoubleLinkVisible: boolean;
@@ -16,8 +17,9 @@ const LinkWrapper: FC<LinkWrapperProps> = ({ isDoubleLinkVisible }) => {
   return (
     <>
       {links.map((item) => (
-        <div className="pb-2">
-          <Link key={item.url} to={item.url} className="font-normal text-sm text-gray-600 hover:text-blue-400">
+        <div className="pb-2 flex items-center" key={item.text}>
+          <Icon appearance={{ size: 'tiny' }} name="file-text" title={{ id: 'file-text' }} />
+          <Link key={item.url} to={item.url} className="font-normal text-sm text-gray-600 hover:text-blue-400 ml-2">
             {formatMessage({ id: item.text })}
           </Link>
         </div>

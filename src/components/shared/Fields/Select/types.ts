@@ -3,7 +3,7 @@ import { MessageDescriptor } from 'react-intl';
 
 import { SimpleMessageValues } from '~types';
 
-export { SelectProps } from './Select';
+export { Props as SelectProps } from './Select';
 
 export interface Appearance {
   alignOptions?: 'left' | 'center' | 'right';

@@ -1,9 +1,8 @@
 import { ColonyRole } from '@colony/colony-js';
 
 import { ListItemStatus } from '~shared/ListItem';
-import { MotionState } from '~utils/colonyMotions';
 
-import { Address, User, ColonyActionType } from './index';
+import { Address, ColonyActionType } from './index';
 import { ColonyMotions } from './motions';
 
 export enum ColonyAndExtensionsEvents {
@@ -116,36 +115,6 @@ export type ActionUserRoles = {
   id: ColonyRole;
   setTo: boolean;
 };
-
-export interface FormattedAction {
-  id: string;
-  status?: ListItemStatus;
-  actionType: ColonyActionType | ColonyMotions;
-  initiator: User;
-  recipient: User;
-  amount: string;
-  tokenAddress: Address;
-  transactionTokenAddress?: Address;
-  tokenSymbol: string;
-  decimals: string;
-  fromDomain: string;
-  toDomain: string;
-  transactionHash: string;
-  createdAt: Date;
-  commentCount: number;
-  metadata?: string;
-  roles: ActionUserRoles[];
-  oldVersion?: string;
-  newVersion?: string;
-  motionState?: MotionState;
-  motionId?: string;
-  // timeoutPeriods: MotionTimeoutPeriods;
-  blockNumber: number;
-  totalNayStake?: string;
-  requiredStake?: string;
-  reputationChange?: string;
-  transactionStatus?: number;
-}
 
 export interface FormattedEvent {
   id: string;

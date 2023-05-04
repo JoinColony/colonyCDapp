@@ -123,7 +123,7 @@ const DomainFundSelector = ({ colony, disabled, name, label, onChange }: Props) 
         dataTest="domainIdSelector"
         itemDataTest="domainIdItem"
       />
-      {!errors[name] && <DomainBalance colony={colony} />}
+      {!errors[name] && <DomainBalance colony={colony} domainFieldName={name} />}
     </div>
   );
 };

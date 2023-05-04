@@ -35,7 +35,7 @@ const ModalWithState = (args) => {
 
   return (
     <>
-      <Button mode="primaryOutline" aria-label="Open modal" text="Deprecate extension" onClick={onOpenModal} />
+      <Button mode="primaryOutline" aria-label="Open modal" text="Trigger button" onClick={onOpenModal} />
       <Modal {...args} onClose={onCloseModal} isOpen={isOpen}>
         The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox
         jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy
@@ -58,5 +58,16 @@ const ModalWithState = (args) => {
 };
 
 export const Base: Story = {
-  render: () => <ModalWithState />,
+  args: {
+    icon: 'trash',
+  },
+  render: (args) => <ModalWithState {...args} />,
+};
+
+export const WithWarning: Story = {
+  args: {
+    icon: 'trash',
+    isWarning: true,
+  },
+  render: (args) => <ModalWithState {...args} />,
 };

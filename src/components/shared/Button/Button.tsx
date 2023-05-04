@@ -103,7 +103,7 @@ const Button = ({
 
   if (linkTo) {
     return (
-      <NavLink className={classNames} to={linkTo} {...(props as NavLinkProps)}>
+      <NavLink className={classNames} to={linkTo} {...(props as Omit<NavLinkProps, 'to'>)}>
         {buttonText || children}
       </NavLink>
     );

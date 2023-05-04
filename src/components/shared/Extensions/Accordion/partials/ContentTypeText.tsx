@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { ContentTypeProps } from '../types';
 
-const displayName = 'Extensions.Accordion.Partials.AccordionDetails';
+const displayName = 'Extensions.Accordion.partials.AccordionDetails';
 
 const ContentTypeText: FC<ContentTypeProps> = ({ title, subTitle }) => (
   <div>

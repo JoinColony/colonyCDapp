@@ -38,10 +38,17 @@ module.exports = {
       '~shared': path.resolve(__dirname, '../src/components/shared'),
       '~common': path.resolve(__dirname, '../src/components/common'),
       '~frame': path.resolve(__dirname, '../src/components/frame'),
-      '~images': path.resolve(__dirname, '../src/images'),
       '~images/*': path.resolve(__dirname, '../src/images'),
-      '~hooks': path.resolve(__dirname, '../src/hooks'),
     };
+
+    const fileLoaderRule = config.module.rules.find((rule) => !Array.isArray(rule.test) && rule.test.test('.svg'));
+    fileLoaderRule.exclude = /\.svg$/;
+
+    config.module.rules.push({
+      test: /\.svg$/i,
+      loader: require.resolve('svg-sprite-loader'),
+    });
+
     return config;
   },
 };

@@ -15,7 +15,7 @@ import styles from './AvatarDropdown.css';
 interface Props {
   preventTransactions?: boolean;
   spinnerMsg: SimpleMessageValues;
-  tokenBalanceData: UserTokenBalanceData;
+  tokenBalanceData?: UserTokenBalanceData;
 }
 
 const displayName = 'frame.AvatarDropdown';

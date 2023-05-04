@@ -101,6 +101,11 @@ class OmniPicker extends Component<Props> {
     }
   }
 
+  /**
+   * @NOTE All of the following methods are actually used by the wrapped component,
+   * eslint just doesn't seem to be able to pick it up
+   */
+  /* eslint-disable react/no-unused-class-component-methods */
   handleOpen = () => {
     const { onOpen } = this.props;
     if (typeof onOpen == 'function') {
@@ -166,6 +171,7 @@ class OmniPicker extends Component<Props> {
       onPick(itemData);
     }
   };
+  /* eslint-enable react/no-unused-class-component-methods */
 
   handleOutsideClick = (evt: MouseEvent) => {
     const { inputRef, close } = this.props;

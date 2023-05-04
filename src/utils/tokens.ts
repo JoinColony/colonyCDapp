@@ -2,14 +2,13 @@ import Decimal from 'decimal.js';
 import { BigNumber, BigNumberish } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
-import { ColonyBalances } from '~gql';
-import { Colony, Address } from '~types';
+import { Colony, Address, ColonyBalances } from '~types';
 import { DEFAULT_TOKEN_DECIMALS, COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 
 import { notNull } from './arrays';
 
 export const getBalanceForTokenAndDomain = (
-  balances: ColonyBalances,
+  balances: ColonyBalances | null | undefined,
   tokenAddress: Address,
   domainId: number = COLONY_TOTAL_BALANCE_DOMAIN_ID,
 ) => {
@@ -19,7 +18,7 @@ export const getBalanceForTokenAndDomain = (
         ? domainBalance?.domain === null
         : domainBalance?.domain?.nativeId === domainId,
     )
-    .find((domainBalance) => domainBalance?.token?.id === tokenAddress);
+    .find((domainBalance) => domainBalance?.token?.tokenAddress === tokenAddress);
 
   return BigNumber.from(currentDomainBalance?.balance ?? 0);
 };

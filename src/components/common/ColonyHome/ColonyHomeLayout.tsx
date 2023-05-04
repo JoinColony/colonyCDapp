@@ -11,7 +11,7 @@ import ColonyUnclaimedTransfers from './ColonyUnclaimedTransfers';
 import ColonyMembersWidget from './ColonyMembersWidget';
 import ColonyExtensions from './ColonyExtensionsWidget';
 import ColonyDomainDescription from './ColonyDomainDescription';
-// import ColonyUpgrade from './ColonyUpgrade';
+import ColonyUpgrade from './ColonyUpgrade';
 import OneTxPaymentUpgrade from './OneTxPaymentUpgrade';
 // import ExtensionUpgrade from './ExtensionUpgrade';
 import ColonyHomeInfo from './ColonyHomeInfo';
@@ -77,6 +77,7 @@ const ColonyHomeLayout = ({
           </aside>
         )}
       </div>
+      <ColonyUpgrade />
       <OneTxPaymentUpgrade />
     </div>
   );

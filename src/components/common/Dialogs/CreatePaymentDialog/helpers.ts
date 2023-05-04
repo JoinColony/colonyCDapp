@@ -2,14 +2,21 @@ import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import { useActionDialogStatus, EnabledExtensionData } from '~hooks';
-import { Colony } from '~types';
-import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
+import { Colony, Member } from '~types';
+import { notNull, notUndefined } from '~utils/arrays';
+import { calculateFee, getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 
-export const getCreatePaymentDialogPayload = (colony: Colony, payload: any) => {
+export const extractUsersFromColonyMemberData = (members: Member[] | null | undefined) =>
+  members
+    ?.map((member) => member.user)
+    .filter(notNull)
+    .filter(notUndefined) || [];
+
+export const getCreatePaymentDialogPayload = (colony: Colony, payload: any, networkInverseFee: string | undefined) => {
   const {
     amount,
     tokenAddress,
-    domainId,
+    fromDomainId,
     recipient: { walletAddress },
     annotation: annotationMessage,
     motionDomainId,
@@ -18,18 +25,16 @@ export const getCreatePaymentDialogPayload = (colony: Colony, payload: any) => {
 
   const decimals = getTokenDecimalsWithFallback(selectedToken?.decimals);
 
-  // const amountWithFees = networkFeeInverse
-  //   ? calculateFee(amount, networkFeeInverse, decimals).totalToPay
-  //   : amount;
+  const amountWithFees = networkInverseFee ? calculateFee(amount, networkInverseFee, decimals).totalToPay : amount;
 
   return {
-    colonyName: colony?.name || '',
-    colonyAddress: colony?.colonyAddress || '',
+    colonyName: colony.name,
+    colonyAddress: colony.colonyAddress,
     recipientAddress: walletAddress,
-    domainId,
+    domainId: fromDomainId,
     singlePayment: {
       tokenAddress,
-      amount, // amountWithFees - @NOTE: The contract only sees this amount
+      amount: amountWithFees, // @NOTE: Only the contract sees this amount
       decimals,
     },
     annotationMessage,
@@ -43,7 +48,7 @@ export const useCreatePaymentDialogStatus = (
   enabledExtensionData: EnabledExtensionData,
 ) => {
   const { watch } = useFormContext();
-  const fromDomain = watch('fromDomain');
+  const fromDomain = watch('fromDomainId');
   const { isOneTxPaymentEnabled } = enabledExtensionData;
   const {
     userHasPermission,

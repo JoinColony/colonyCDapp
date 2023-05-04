@@ -1,23 +1,29 @@
 import React, { FC } from 'react';
 import { Carousel } from 'react-responsive-carousel';
-import { images } from './consts';
 import styles from './ImageCarousel.module.css';
 import { ImageCarouselProps } from './ImageCarousel.types';
+import './ImageCarousel.css'; // to fix rendering styles in storybook
+import useWindowSize from '~hooks/useWindowSize';
+import { images } from './const';
 
 const displayName = 'common.Extensions.ImageCarousel';
 
-const ImageCarousel: FC<ImageCarouselProps> = ({ slidePercentage = 95, transitionTime = 300, slideUrls = images }) => {
+const ImageCarousel: FC<ImageCarouselProps> = ({ transitionTime = 300, slideUrls = images }) => {
+  const windowSize = useWindowSize();
+  const width = windowSize?.width ?? 0;
+  const setSlidePercentage = (width >= 1024 && 90) || (width >= 428 && 65) || (width >= 427 && 100);
+
   return (
     <div className={styles.carouselWrapper}>
       <Carousel
-        className="w-[33.5rem]"
+        className="max-w-[23.75rem] sm:max-w-[49.0625rem] md:max-w-[35.75rem]"
         showArrows={false}
         showThumbs={false}
         showStatus={false}
         swipeable
         useKeyboardArrows
         emulateTouch
-        centerSlidePercentage={slidePercentage}
+        centerSlidePercentage={setSlidePercentage || 100}
         centerMode
         transitionTime={transitionTime}
         renderIndicator={(onClickHandler, isSelected, index, label) => (
