@@ -207,8 +207,12 @@ const updateMotionMessagesInDB = async (
   motionMessages,
   flag,
 ) => {
-  const { messages } = motionData;
+  const { messages, motionStateHistory } = motionData;
   const updatedMessages = [...messages];
+  const updatedStateHistory = {
+    ...motionStateHistory,
+    [flag]: true,
+  };
 
   motionMessages.forEach((message) => {
     updatedMessages.push({
@@ -222,7 +226,7 @@ const updateMotionMessagesInDB = async (
     motionData: {
       ...motionData,
       messages: updatedMessages,
-      [flag]: true,
+      motionStateHistory: updatedStateHistory,
     },
   });
 };

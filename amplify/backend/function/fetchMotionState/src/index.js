@@ -12,7 +12,7 @@ const {
 exports.handler = async (event) => {
   const { colonyAddress, transactionHash } = event.arguments?.input || {};
   /* Get latest motion state from chain */
-  const { motionData } = await getMotionData(transactionHash);
+  const motionData = await getMotionData(transactionHash);
 
   if (transactionHash && motionData) {
     const { motionStateHistory } = motionData;
@@ -68,7 +68,14 @@ exports.handler = async (event) => {
     ) {
       // Check if the motion passed and the messages have not already been stored in the db
       if (didPass && !motionStateHistory.hasPassed) {
-        const newMessages = ['MotionRevealResultMotionWon', 'MotionHasPassed'];
+        const newMessages = [];
+
+        // only display voting results if a vote has occurred
+        if (motionStateHistory.hasVoted) {
+          newMessages.push('MotionRevealResultMotionWon');
+        }
+        newMessages.push('MotionHasPassed');
+
         await updateMotionMessagesInDB(
           transactionHash,
           motionData,
@@ -78,10 +85,14 @@ exports.handler = async (event) => {
       }
 
       if (!didPass && !motionStateHistory.hasFailed) {
-        const newMessages = [
-          'MotionRevealResultObjectionWon',
-          'MotionHasFailedFinalizable',
-        ];
+        const newMessages = [];
+
+        // only display voting results if a vote has occurred
+        if (motionStateHistory.hasVoted) {
+          newMessages.push('MotionRevealResultObjectionWon');
+        }
+        newMessages.push('MotionHasFailedFinalizable');
+
         await updateMotionMessagesInDB(
           transactionHash,
           motionData,
