@@ -70,7 +70,7 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "CHAIN_NETWORK": "xdai",
+            "CHAIN_NETWORK": "gnosis",
             "CHAIN_RPC_ENDPOINT": "https://qa-cdapp.colony.io/rpc/",
             "CHAIN_NETWORK_CONTRACT": "0x6a05DD32860C1b5351B97b4eCAAbFbc60edb102f",
             "APPSYNC_API_KEY": {
