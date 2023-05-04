@@ -70,7 +70,7 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "CHAIN_RPC_ENDPOINT": "https://qa-cdapp.colony.io/rpc/",
+            "CHAIN_RPC_ENDPOINT": "http://qa-cdapp.colony.io/rpc/",
             "APPSYNC_API_KEY": {
               "Fn::ImportValue": "amplify-colonycdapp-qa-113801-apicolonycdapp-1E5THNV10BXQV:GraphQLApiKey"
             },
