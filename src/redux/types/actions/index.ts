@@ -48,8 +48,7 @@ export interface ActionTypeWithMeta<T extends string, M extends Record<string, u
  * P: the action payload, e.g. `{| tokenAddress: string |}`
  * M: any additional `meta` properties, e.g. `key: *`
  */
-export interface ActionTypeWithPayloadAndMeta<T extends string, P, M extends Record<string, unknown>>
-  extends ActionType<T> {
+export interface ActionTypeWithPayloadAndMeta<T extends string, P, M> extends ActionType<T> {
   type: T;
   meta: M;
   payload: P;

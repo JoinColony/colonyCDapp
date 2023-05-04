@@ -2,12 +2,8 @@ node_modules
 scripts
 postcss.config.js
 webpack.*
-src/data/generated.ts
-src/lib/colonyNetwork
-src/lib/colonyServer
-src/lib/mock-oracle
-src/lib/subgraph
-src/lib/graph-node
+src/graphql/generated.ts
+
 
 # Css Type Definitions
 # They sometimes get generated way beyond the max-len rule, and can't be manually

@@ -5,6 +5,7 @@ import { MessageDescriptor } from 'react-intl';
 
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
+import { formatText } from '~utils/intl';
 
 import InputLabel from '../InputLabel';
 
@@ -101,7 +102,7 @@ const Radio = ({
           />
         </span>
       ) : (
-        label || children
+        formatText(label, labelValues) || children
       )}
     </label>
   );

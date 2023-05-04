@@ -72,7 +72,10 @@ const coreTransactionsReducer: ReducerType<CoreTransactionsRecord> = (state = Co
         meta: { id },
         payload: { params },
       } = action;
-      return state.updateIn([CORE_TRANSACTIONS_LIST, id, 'params'], (originalParams) => [...originalParams, ...params]);
+      return state.updateIn([CORE_TRANSACTIONS_LIST, id, 'params'], (originalParams: any[]) => [
+        ...originalParams,
+        ...params,
+      ]);
     }
     case ActionTypes.TRANSACTION_READY: {
       const {

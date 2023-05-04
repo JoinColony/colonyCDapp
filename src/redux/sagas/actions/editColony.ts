@@ -142,7 +142,7 @@ function* editColonyAction({
             id: colonyAddress,
             displayName: colonyDisplayName,
             avatar: colonyAvatarImage,
-            changelog: getUpdatedColonyMetadataChangelog(txHash, colony.metadata, colonyDisplayName),
+            changelog: getUpdatedColonyMetadataChangelog(txHash, colony.metadata, colonyDisplayName, colonyAvatarImage),
           },
         },
       });

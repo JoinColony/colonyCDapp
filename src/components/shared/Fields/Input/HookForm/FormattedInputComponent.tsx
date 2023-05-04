@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import Cleave from 'cleave.js/react';
 import { Props as CleaveProps, ReactInstanceWithCleave } from 'cleave.js/react/props';
@@ -10,11 +10,7 @@ import { HookFormInputProps as InputProps } from './Input';
 
 import styles from '../InputComponent.css';
 
-interface HookFormFormattedInputComponentProps
-  extends Omit<InputProps, 'placeholder' | 'formattingOptions'>,
-    Omit<CleaveProps, 'onChange' | 'name'> {
-  placeholder?: string;
-}
+type CleaveChangeEvent = React.ChangeEvent<HTMLInputElement & { rawValue: string }>;
 
 const setCleaveRawValue = (cleave: ReactInstanceWithCleave, maxAmount: string, decimalPlaces = 5) => {
   const decimalValue = new Decimal(maxAmount);
@@ -42,11 +38,18 @@ export const MaxButton = ({ handleClick }: MaxButtonProps) => (
   <Button className={styles.hookFormMaxButton} dataTest="inputMaxButton" onClick={handleClick} text={MSG.max} />
 );
 
+interface HookFormFormattedInputComponentProps
+  extends Omit<InputProps, 'placeholder' | 'formattingOptions'>,
+    Omit<CleaveProps, 'onChange' | 'name'> {
+  placeholder?: string;
+}
+
 const HookFormFormattedInputComponent = ({
   options: formattingOptions,
   maxButtonParams,
   name,
   value,
+  onChange,
   ...restInputProps
 }: HookFormFormattedInputComponentProps) => {
   const { setValue } = useFormContext();
@@ -71,12 +74,29 @@ const HookFormFormattedInputComponent = ({
     }
   };
 
+  /**
+   * A custom change handler must be provided to ensure the hook-form holds the raw value of the input
+   * E.g. 123456 instead of 123,456
+   */
+  const handleCleaveChange = (e: CleaveChangeEvent) => {
+    setValue(name, e.target.rawValue);
+    onChange?.(e);
+  };
+
+  /**
+   * As the Cleave input is "detached" from hook-form, we need to set the default value,
+   * if any, when the component is mounted
+   */
+  useEffect(() => {
+    setValue(name, value);
+  }, [name, setValue, value]);
+
   return (
     <>
       {maxButtonParams && <MaxButton handleClick={(e) => handleMaxButtonClick(e, maxButtonParams)} />}
       <Cleave
         {...restInputProps}
-        value={value || ''}
+        value={value}
         name={name}
         key={dynamicCleaveOptionKey}
         /*
@@ -85,6 +105,7 @@ const HookFormFormattedInputComponent = ({
          */
         options={formattingOptions}
         onInit={(cleaveInstance) => setCleave(cleaveInstance)}
+        onChange={handleCleaveChange}
       />
     </>
   );

@@ -1,0 +1,8 @@
+query GetCurrentNetworkInverseFee {
+  listCurrentNetworkInverseFees(limit: 1) {
+    # The CurrentNetworkInverseFee table should only have 1 item which we update when the inverse fee changes
+    items {
+      inverseFee
+    }
+  }
+}

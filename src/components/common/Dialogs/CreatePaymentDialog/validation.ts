@@ -1,6 +1,9 @@
 import { string, object, number, boolean } from 'yup';
-import Decimal from 'decimal.js';
 import { defineMessages } from 'react-intl';
+
+import { toFinite } from '~utils/lodash';
+import { Colony } from '~types';
+import { getHasEnoughBalanceTestFn } from '~utils/yup/tests';
 
 const displayName = 'common.CreatePaymentDialog';
 
@@ -15,39 +18,30 @@ const MSG = defineMessages({
   },
   noBalance: {
     id: `${displayName}.noBalance`,
-    defaultMessage: 'Insufficient balance in from domain pot',
+    defaultMessage: 'Insufficient balance in team pot',
   },
 });
 
-const validationSchema = object()
-  .shape({
-    fromDomain: number().required(),
-    recipient: object()
-      .shape({
-        profile: object()
-          .shape({
-            displayName: string().nullable(),
-          })
-          .defined(),
-        walletAddress: string().address().defined(),
-      })
-      .default(undefined)
-      .required(() => MSG.requiredFieldError),
-    amount: string()
-      .required(() => MSG.requiredFieldError)
-      .test(
-        'more-than-zero',
-        () => MSG.amountZero,
-        (value) => {
-          const numberWithoutCommas = (value || '0').replace(/,/g, ''); // @TODO: Remove this once the fix for FormattedInputComponent value is introduced.
-          return !new Decimal(numberWithoutCommas).isZero();
-        },
-      ),
-    tokenAddress: string().address().required(),
-    annotation: string().max(4000).defined(),
-    forceAction: boolean().defined(),
-    motionDomainId: number().defined(),
-  })
-  .defined();
+const getValidationSchema = (colony: Colony, networkInverseFee: string | undefined) =>
+  object()
+    .shape({
+      fromDomainId: number().required(),
+      recipient: object()
+        .shape({
+          walletAddress: string().address().required(),
+        })
+        .default(undefined)
+        .required(() => MSG.requiredFieldError),
+      amount: number()
+        .required(() => MSG.requiredFieldError)
+        .transform((value) => toFinite(value))
+        .moreThan(0, () => MSG.amountZero)
+        .test('has-enough-balance', () => MSG.noBalance, getHasEnoughBalanceTestFn(colony, networkInverseFee)),
+      tokenAddress: string().address().required(),
+      annotation: string().max(4000).defined(),
+      forceAction: boolean().defined(),
+      motionDomainId: number().defined(),
+    })
+    .defined();
 
-export default validationSchema;
+export default getValidationSchema;

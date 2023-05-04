@@ -4,6 +4,7 @@ import ColorTag from '~shared/ColorTag';
 
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useColonyContext } from '~hooks';
+import { findDomainByNativeId } from '~utils/domains';
 
 import styles from './ColonyDomainDescription.css';
 
@@ -36,8 +37,7 @@ const ColonyDomainDescription = ({ currentDomainId }: Props) => {
     return null;
   }
 
-  const { name, color, description } =
-    colony.domains?.items.find((domain) => Number(domain?.nativeId) === currentDomainId) || {};
+  const { name, color, description } = findDomainByNativeId(currentDomainId, colony)?.metadata || {};
 
   return (
     <div className={styles.main}>

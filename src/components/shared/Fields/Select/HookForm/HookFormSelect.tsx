@@ -48,6 +48,7 @@ const HookFormSelect = ({
     formState: { errors, touchedFields },
     watch,
     setValue,
+    trigger,
   } = useFormContext();
   const error = errors[name]?.message as Message | undefined;
   const touched = touchedFields[name];
@@ -104,6 +105,8 @@ const HookFormSelect = ({
       shouldTouch: true,
     });
     onChangeCallback?.(optionValue);
+    // Trigger hook-form validation with the new value
+    trigger(name);
     close();
   };
 

@@ -8,7 +8,6 @@ import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from 
 import SingleUserPicker, { filterUserSelection } from '~shared/SingleUserPicker';
 import { ItemDataType } from '~shared/OmniPicker';
 import UserAvatar from '~shared/UserAvatar';
-
 import { User } from '~types';
 import { notNull } from '~utils/arrays';
 // import { getAllUserRolesForDomain } from '~redux/transformers';
@@ -58,18 +57,15 @@ interface Props extends ActionDialogProps {
 
 const supRenderAvatar = (item: ItemDataType<User>) => <UserAvatar user={item} size="xs" />;
 
-const PermissionManagementForm = ({
-  colony: { watchers, domains },
-  colony,
-  back,
-  close,
-  enabledExtensionData,
-}: Props) => {
+const PermissionManagementForm = ({ colony: { domains }, colony, back, close, enabledExtensionData }: Props) => {
   const { watch, setValue } = useFormContext();
   const { domainId, user, motionDomainId } = watch();
 
-  const colonyWatchers =
-    watchers?.items.filter(notNull).map((item) => ({ ...item.user, id: item.user.walletAddress })) || [];
+  // @TODO Temp fix, this should be retrieved from a query
+  const colonyWatchers: Array<Record<string, unknown>> = [];
+  // watchers?.items
+  //   .filter(notNull)
+  //   .map((item) => ({ ...item.user, id: item.user.walletAddress })) || [];
 
   const colonyDomains = domains?.items.filter(notNull) || [];
   const domain = findDomainByNativeId(domainId, colony);

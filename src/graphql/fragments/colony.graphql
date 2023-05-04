@@ -29,9 +29,7 @@ fragment Colony on Colony {
     }
   }
   balances {
-    items {
-      ...ColonyBalance
-    }
+    ...ColonyBalances
   }
   fundsClaims {
     items {
@@ -76,6 +74,12 @@ fragment ColonyMetadata on ColonyMetadata {
     newDisplayName
     oldDisplayName
     hasAvatarChanged
+  }
+}
+
+fragment ColonyBalances on ColonyBalances {
+  items {
+    ...ColonyBalance
   }
 }
 

@@ -93,7 +93,7 @@ const HookFormInputComponent = ({
   return (
     <div className={styles.inputContainer}>
       {formattingOptions ? (
-        <FormattedInput {...props} htmlRef={ref} maxButtonParams={maxButtonParams} options={formattingOptions} />
+        <FormattedInput {...props} maxButtonParams={maxButtonParams} options={formattingOptions} />
       ) : (
         <input {...props} className={className} ref={ref} />
       )}

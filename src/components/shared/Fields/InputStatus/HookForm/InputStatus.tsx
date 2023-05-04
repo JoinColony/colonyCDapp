@@ -34,6 +34,7 @@ const HookFormInputStatus = ({
   const loadingText = formatMessage({ id: 'status.loading' }, { optionalText: formatText(loadingAnnotation) });
   const text = errorText || statusText;
   const Element = appearance.direction === 'horizontal' ? 'span' : 'p';
+
   return (
     <Element
       className={getMainClasses(appearance, styles, {

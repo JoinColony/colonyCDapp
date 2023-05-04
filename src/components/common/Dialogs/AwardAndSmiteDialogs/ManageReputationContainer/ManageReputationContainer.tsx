@@ -12,7 +12,6 @@ import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { useSelectedUser } from '~hooks';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
-import { notNull } from '~utils/arrays';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import DialogForm from '../ManageReputationDialogForm';
@@ -58,7 +57,7 @@ const defaultValidationSchema = object()
 type FormValues = InferType<typeof defaultValidationSchema>;
 
 const ManageReputationContainer = ({
-  colony: { nativeToken, watchers },
+  colony: { nativeToken },
   colony,
   callStep,
   prevStep,
@@ -71,7 +70,13 @@ const ManageReputationContainer = ({
   const [isForce, setIsForce] = useState(false);
   const [schemaUserReputation, setSchemaUserReputation] = useState(0);
   const navigate = useNavigate();
-  const colonyWatchers = watchers?.items.filter(notNull).map((item) => item.user) || [];
+  /**
+   * @TODO This needs fixing as it relied on the empty array fallback,
+   * `watchers` don't exist on the colony object we were passing
+   */
+  // const colonyWatchers =
+  //   watchers?.items.filter(notNull).map((item) => item.user) || [];
+  const colonyWatchers = [];
 
   // const verifiedUsers = useMemo(() => {
   //   return getVerifiedUsers(colony.whitelistedAddresses, colonyWatchers) || [];
@@ -123,28 +128,28 @@ const ManageReputationContainer = ({
   // );
 
   return (
-    <Form<FormValues>
-      defaultValues={{
-        forceAction: false,
-        domainId: filteredDomainId || Id.RootDomain,
-        // user: selectedUser,
-        motionDomainId: Id.RootDomain,
-        amount: '',
-        annotation: '',
-      }}
-      actionType={actionType}
-      validationSchema={smiteValidationSchema || defaultValidationSchema}
-      onSuccess={close}
-      transform={transform}
-    >
-      {({ watch }) => {
-        const forceAction = watch('forceAction');
-        if (forceAction !== isForce) {
-          setIsForce(forceAction);
-        }
+    <Dialog cancel={cancel}>
+      <Form<FormValues>
+        defaultValues={{
+          forceAction: false,
+          domainId: filteredDomainId || Id.RootDomain,
+          // user: selectedUser,
+          motionDomainId: Id.RootDomain,
+          amount: '',
+          annotation: '',
+        }}
+        actionType={actionType}
+        validationSchema={smiteValidationSchema || defaultValidationSchema}
+        onSuccess={close}
+        transform={transform}
+      >
+        {({ watch }) => {
+          const forceAction = watch('forceAction');
+          if (forceAction !== isForce) {
+            setIsForce(forceAction);
+          }
 
-        return (
-          <Dialog cancel={cancel}>
+          return (
             <DialogForm
               colony={colony}
               nativeTokenDecimals={nativeTokenDecimals}
@@ -157,10 +162,10 @@ const ManageReputationContainer = ({
               isSmiteAction={isSmiteAction}
               enabledExtensionData={enabledExtensionData}
             />
-          </Dialog>
-        );
-      }}
-    </Form>
+          );
+        }}
+      </Form>
+    </Dialog>
   );
 };
 
