@@ -1,12 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, Id } from '@colony/colony-js';
+
 import { Action, ActionTypes, AllActions } from '~redux';
-import {
-  createGroupTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
-import { putError, takeFrom } from '../utils';
 import {
   transactionAddParams,
   transactionPending,
@@ -17,9 +12,17 @@ import {
   CreateDomainMetadataDocument,
   CreateDomainMetadataMutation,
   CreateDomainMetadataMutationVariables,
+  GetFullColonyByNameDocument,
 } from '~gql';
 import { getDomainDatabaseId } from '~utils/domains';
 import { toNumber } from '~utils/numbers';
+
+import {
+  createGroupTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
+import { putError, takeFrom } from '../utils';
 
 function* createDomainAction({
   payload: {
@@ -111,6 +114,7 @@ function* createDomainAction({
           description: domainPurpose,
         },
       },
+      refetchQueries: [GetFullColonyByNameDocument],
     });
 
     // if (annotationMessage) {
