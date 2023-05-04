@@ -46,6 +46,7 @@ export const formatReputationChange = (
   reputationChange: string,
   decimals: number,
 ) => {
-  const value = adjustConvertedValue(new Decimal(reputationChange), decimals);
-  return getFormattedNumeralValue(value, reputationChange);
+  const absoluteChange = new Decimal(reputationChange).abs();
+  const value = adjustConvertedValue(absoluteChange, decimals);
+  return getFormattedNumeralValue(value, absoluteChange);
 };

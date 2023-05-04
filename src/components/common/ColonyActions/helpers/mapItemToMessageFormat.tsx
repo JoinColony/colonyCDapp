@@ -1,4 +1,5 @@
 import React from 'react';
+import Decimal from 'decimal.js';
 
 import Numeral from '~shared/Numeral';
 import FriendlyName from '~shared/FriendlyName';
@@ -87,7 +88,7 @@ export const mapColonyActionToExpectedFormat = (
     tokenSymbol: actionData.token?.symbol,
     reputationChangeNumeral: actionData.amount && (
       <Numeral
-        value={actionData.amount}
+        value={new Decimal(actionData.amount).abs()}
         decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
       />
     ),
