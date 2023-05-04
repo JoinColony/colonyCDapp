@@ -197,7 +197,7 @@ const ManageReputationDialogForm = ({
 
   const formattedData = users.map((user) => ({
     ...user,
-    id: user,
+    id: user.walletAddress,
   }));
 
   return (
