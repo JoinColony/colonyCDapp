@@ -3,20 +3,20 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import clsx from 'clsx';
-import ToastComponent from '~shared/Extensions/Toast/Toast';
+import Toast from '~shared/Extensions/Toast/Toast';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 import styles from '~components/shared/Extensions/Toast/Toast.module.css';
 
-const meta: Meta<typeof ToastComponent> = {
+const meta: Meta<typeof Toast> = {
   title: 'Shared/Toast',
-  component: ToastComponent,
+  component: Toast,
 };
 
 export default meta;
-type Story = StoryObj<typeof ToastComponent>;
+type Story = StoryObj<typeof Toast>;
 
-const ToastComponentWithHooks = (args) => {
-  const notify = () => toast(<ToastComponent {...args} />);
+const ToastWithHooks = (args) => {
+  const notify = () => toast(<Toast {...args} />);
 
   return (
     <Router>
@@ -32,7 +32,7 @@ const ToastComponentWithHooks = (args) => {
           // eslint-disable-next-line react/destructuring-assignment
           '[&>div]:border-l-negative-400 [&>div]:border-l-4': args?.type === 'warning',
         })}
-        autoClose={false}
+        autoClose={3000}
         hideProgressBar
         closeOnClick
         rtl={false}
@@ -46,7 +46,7 @@ const ToastComponentWithHooks = (args) => {
 
 export const Success: Story = {
   render: () => (
-    <ToastComponentWithHooks
+    <ToastWithHooks
       type="success"
       title="Confirm"
       description="Information about the action performed"
@@ -57,17 +57,12 @@ export const Success: Story = {
 
 export const Alert: Story = {
   render: () => (
-    <ToastComponentWithHooks type="alert" title="Alert" description="Information about the alert" linkName="Button" />
+    <ToastWithHooks type="alert" title="Alert" description="Information about the alert" linkName="Button" />
   ),
 };
 
 export const Warning: Story = {
   render: () => (
-    <ToastComponentWithHooks
-      type="warning"
-      title="Warning"
-      description="Information about the warning"
-      linkName="Button"
-    />
+    <ToastWithHooks type="warning" title="Warning" description="Information about the warning" linkName="Button" />
   ),
 };

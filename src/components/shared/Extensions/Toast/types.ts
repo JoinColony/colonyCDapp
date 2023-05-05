@@ -1,4 +1,4 @@
-export interface ToastComponentProps {
+export interface ToastProps {
   url?: string;
   title?: string;
   linkName?: string;
