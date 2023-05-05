@@ -147,9 +147,10 @@ const didMotionPass = ({
     raw: { yay: yayVotes, nay: nayVotes },
   },
 }) => {
+  const yayStake = BigNumber.from(yayStakes);
   if (
     BigNumber.from(nayStakes).gte(requiredStake) &&
-    BigNumber.from(yayStakes).gte(requiredStake)
+    yayStake.gte(requiredStake)
   ) {
     /*
      * It only passes if the yay votes outnumber the nay votes
@@ -162,7 +163,8 @@ const didMotionPass = ({
     return false;
   }
 
-  if (BigNumber.from(yayStakes).eq(requiredStake)) {
+  // in this case only the yayStake is equal to the required stake
+  if (yayStake.eq(requiredStake)) {
     return true;
   }
   return false;
