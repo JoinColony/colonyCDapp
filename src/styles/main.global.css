@@ -18,7 +18,7 @@
   }
 
   body {
-    @apply h-full overflow-hidden;
+    @apply h-full;
   }
 
   svg:not([class]) {
