@@ -1,5 +1,6 @@
 export interface FormErrorProps {
-  aligment?: TextAligment;
+  alignment?: TextAlignment;
+  isFullSize?: boolean;
 }
 
-type TextAligment = 'right' | 'left' | 'center';
+type TextAlignment = 'right' | 'left' | 'center';
