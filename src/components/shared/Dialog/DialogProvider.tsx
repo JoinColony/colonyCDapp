@@ -1,5 +1,6 @@
 import React, { createContext, ComponentType, ReactNode, useCallback, useState, useMemo } from 'react';
 import { nanoid } from 'nanoid';
+
 import { DialogType } from './types';
 
 export const DialogContext = createContext<{
