@@ -2,6 +2,7 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import clsx from 'clsx';
 import ToastComponent from '~shared/Extensions/Toast/Toast';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 import styles from '~components/shared/Extensions/Toast/Toast.module.css';
@@ -23,7 +24,14 @@ const ToastComponentWithHooks = (args) => {
         Notify!
       </button>
       <ToastContainer
-        className={styles.toastify}
+        className={clsx(styles.toastify, {
+          // eslint-disable-next-line react/destructuring-assignment
+          '[&>div]:border-l-success-400 [&>div]:border-l-4': args?.type === 'success',
+          // eslint-disable-next-line react/destructuring-assignment
+          '[&>div]:border-l-warning-400 [&>div]:border-l-4': args?.type === 'alert',
+          // eslint-disable-next-line react/destructuring-assignment
+          '[&>div]:border-l-negative-400 [&>div]:border-l-4': args?.type === 'warning',
+        })}
         autoClose={false}
         hideProgressBar
         closeOnClick
@@ -49,12 +57,7 @@ export const Success: Story = {
 
 export const Alert: Story = {
   render: () => (
-    <ToastComponentWithHooks
-      type="alert"
-      title="Confirm"
-      description="Information about the action performed"
-      linkName="Button"
-    />
+    <ToastComponentWithHooks type="alert" title="Alert" description="Information about the alert" linkName="Button" />
   ),
 };
 
@@ -62,8 +65,8 @@ export const Warning: Story = {
   render: () => (
     <ToastComponentWithHooks
       type="warning"
-      title="Confirm"
-      description="Information about the action performed"
+      title="Warning"
+      description="Information about the warning"
       linkName="Button"
     />
   ),
