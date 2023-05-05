@@ -3,7 +3,7 @@
 }
 
 .modal {
-  @apply relative outline-0 overflow-hidden bg-base-white pt-6 pl-6 w-[100vw] h-[100vh] md:w-[30.3125rem] md:h-auto md:max-h-[calc(100vh-4rem)] md:border md:border-gray-200 md:rounded-xl  shadow-[0_0.625rem_1.875rem_rgba(0,0,0,0.05)];
+  @apply relative outline-0 overflow-hidden bg-base-white pt-6 pl-6 w-[100vw] h-[100vh] md:w-[30.3125rem] md:h-auto md:max-h-[calc(100vh-4rem)] md:border md:border-gray-200 md:rounded-xl shadow-[0_0.625rem_1.875rem_rgba(0,0,0,0.05)];
 }
 
 .inner {
@@ -13,7 +13,7 @@
 }
 
 .icon {
-  @apply flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded border shadow-[0_1px_2px_rgba(16,24,40,0.05)];
+  @apply flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded border shadow-[0_1px_2px_rgba(16,24,40,0.05)] mb-4;
 }
 
 .closeIcon {

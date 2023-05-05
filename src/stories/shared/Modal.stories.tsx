@@ -7,15 +7,19 @@ const meta: Meta<typeof Modal> = {
   title: 'Shared/Modal',
   component: Modal,
   argTypes: {
-    title: {
-      name: 'Title',
+    icon: {
+      name: 'Icon',
+      options: ['trash'],
       control: {
-        type: 'text',
+        type: 'select',
       },
     },
-  },
-  args: {
-    title: 'Deprecate extension',
+    isWarning: {
+      name: 'Is warning?',
+      control: {
+        type: 'boolean',
+      },
+    },
   },
 };
 
@@ -67,7 +71,15 @@ export const Base: Story = {
 export const WithWarning: Story = {
   args: {
     icon: 'trash',
+
     isWarning: true,
+  },
+  render: (args) => <ModalWithState {...args} />,
+};
+
+export const WithAvatar: Story = {
+  args: {
+    icon: '',
   },
   render: (args) => <ModalWithState {...args} />,
 };

@@ -8,14 +8,12 @@ import styles from './Modal.module.css';
 
 const displayName = 'Extensions.Modal';
 
-const Modal: FC<PropsWithChildren<ModalProps>> = ({ title, children, icon, onClose, isWarning = false, ...props }) => {
+const Modal: FC<PropsWithChildren<ModalProps>> = ({ children, icon, onClose, isWarning = false, ...props }) => {
   const { formatMessage } = useIntl();
-
-  const titleText = typeof title == 'string' ? title : title && formatMessage(title);
 
   return (
     <ModalBase onRequestClose={onClose} {...props}>
-      <div className="flex mb-4 relative">
+      <div className="flex relative">
         {icon && (
           <span
             className={clsx(styles.icon, 'border-gray-200', {
@@ -38,10 +36,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({ title, children, icon, onClo
           />
         </button>
       </div>
-      <div className={styles.inner}>
-        <h3 className="font-xl font-semibold mb-1.5">{titleText}</h3>
-        {children}
-      </div>
+      <div className={styles.inner}>{children}</div>
     </ModalBase>
   );
 };
