@@ -34,7 +34,7 @@ const PayDropdown: FC<PropsWithChildren> = () => (
         <Button text={MSG.buttonTextPay} mode="primaryOutline" />
       </div>
       <div className={styles.infoWrapper}>
-        <Icon name="question-mark" className={styles.questionIcon} />
+        <Icon name="question-mark-inverted" className={styles.questionIcon} />
         <FormattedMessage
           {...MSG.helpTextPay}
           values={{

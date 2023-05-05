@@ -29,7 +29,7 @@ const ManageDropdown: FC<PropsWithChildren> = () => (
         <Button text={MSG.buttonTextManage} mode="primaryOutline" />
       </div>
       <div className={styles.infoWrapper}>
-        <Icon name="question-mark" className={styles.questionIcon} />
+        <Icon name="question-mark-inverted" className={styles.questionIcon} />
         <FormattedMessage
           {...MSG.helpTextManage}
           values={{

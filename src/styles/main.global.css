@@ -77,7 +77,7 @@
 }
 
 .carouselWrapper [class~='control-dots'] {
-  @apply bottom-[-2.5rem] overflow-visible;
+  @apply bottom-[-2.5rem] overflow-visible flex justify-center;
 }
 
 .carouselWrapper [class~='carousel control-dots dot selected'] {
