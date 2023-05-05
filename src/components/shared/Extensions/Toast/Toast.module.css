@@ -1,23 +1,16 @@
-.Toastify__close-button {
-  @apply absolute right-0 text-white;
-}
-
+.Toastify__toast,
 .Toastify__toast-container {
-  @apply w-[24.375rem] h-[5.75rem];
+  @apply w-[24.375rem] min-h-[6.875rem] p-0 mb-0 right-4 rounded-r-lg rounded-l-none shadow-none;
 }
 
-.Toastify__toast > div {
+.Toastify__toast-container > div {
+  @apply min-h-[6.875rem] rounded-r-lg rounded-l-none shadow-none border-t-[0.0625rem] border-b-[0.0625rem] border-r-[0.0625rem] border-r-gray-200 border-t-gray-200 border-b-gray-200 mb-0;
+}
+
+.Toastify__toast-body {
   @apply p-0;
 }
-
-.Toastify__toast > div > div {
-  @apply p-0;
-}
-
-/* .Toastify__toast button {
-  @apply absolute right-4 top-4 text-white opacity-100;
-} */
 
 .toastify {
-  @apply Toastify__toast Toastify__close-button;
+  @apply Toastify__toast Toastify__toast-container Toastify__toast-body;
 }
