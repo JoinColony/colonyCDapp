@@ -1,0 +1,15 @@
+.itemWrapper {
+  @apply px-4 py-2 md:mt-2 md:mb-1;
+
+  &:hover {
+    @apply bg-gray-50 cursor-pointer;
+  }
+}
+
+.title {
+  @apply text-gray-900 font-semibold text-lg flex justify-between mb-1;
+}
+
+.description {
+  @apply text-gray-600 text-md mb-2 flex-wrap;
+}
