@@ -6,23 +6,7 @@ import { useMainClasses } from '~hooks';
 import { formatText } from '~utils/intl';
 
 import styles from './Tag.css';
-
-export enum TagTheme {
-  Primary = 'primary',
-  Light = 'light',
-  Golden = 'golden',
-  Danger = 'danger',
-  Pink = 'pink',
-  Blue = 'blue',
-  DangerGhost = 'dangerGhost',
-  Banned = 'banned',
-}
-
-export enum TagColorSchema {
-  FullColor = 'fullColor',
-  Inverted = 'inverted',
-  Plain = 'plain',
-}
+import { TagColorSchema, TagTheme } from './enums';
 
 export interface Appearance {
   /* "light" is default */

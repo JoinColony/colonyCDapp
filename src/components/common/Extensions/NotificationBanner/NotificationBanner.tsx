@@ -3,6 +3,7 @@ import React, { FC, PropsWithChildren } from 'react';
 import CopyUrl from './CopyUrl';
 import { NotificationBannerProps } from './NotificationBanner.types';
 import Link from '~shared/Link';
+import Icon from '~shared/Icon';
 
 const displayName = 'common.Extensions.NotificationBanner';
 
@@ -18,16 +19,23 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   return (
     <div
       className={clsx('py-3 px-6 border border-solid rounded-lg flex justify-between', {
-        'bg-success-200 border-success-200 h-[2.75rem]': status === 'success',
-        'bg-warning-200 border-warning-200': status === 'warning',
-        'bg-negative-200 border-negative-200': status === 'error',
+        'bg-success-100 border-success-100 h-[2.75rem]': status === 'success',
+        'bg-warning-100 border-warning-100': status === 'warning',
+        'bg-negative-100 border-negative-100': status === 'error',
         'w-full flex-row items-center': isFullSize,
         'max-w-[23.75rem] flex-col': !isFullSize,
       })}
     >
       <div className={clsx('flex', { 'flex-col': children, 'flex-row': !children })}>
         <div className="flex items-center">
-          <div>*</div>
+          <Icon
+            name={status === 'success' ? 'check-circle' : 'warning-circle'}
+            className={clsx('min-w-[0.875rem] min-h-[0.875rem]', {
+              'stroke-success-400': status === 'success',
+              'stroke-warning-400': status === 'warning',
+              'stroke-negative-400': status === 'error',
+            })}
+          />
           <div className="text-md font-normal text-gray-900 ml-2">{title}</div>
         </div>
         {children && <div className="text-sm font-normal text-gray-600 max-w-[50rem]">{children}</div>}
