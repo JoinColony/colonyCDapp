@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useIntl } from 'react-intl';
 import SpecialInput from '~common/Extensions/SpecialInput/SpecialInput';
 import FormError from '~shared/Extensions/FormError/FormError';
-import { FormPercengateInput } from '~common/Extensions/SpecialInput/types';
+import { FormPercentageInput } from '~common/Extensions/SpecialInput/types';
 
 const displayName = 'Extensions.SpecialPercentageInput';
 
@@ -27,7 +27,7 @@ const SpecialPercentageInput = () => {
   const {
     register,
     formState: { errors },
-  } = useForm<FormPercengateInput>({
+  } = useForm<FormPercentageInput>({
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
   });

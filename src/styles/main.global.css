@@ -19,7 +19,7 @@
   }
 
   body {
-    @apply h-full overflow-hidden;
+    @apply h-full;
   }
 
   svg:not([class]) {
@@ -35,6 +35,11 @@
     @apply m-0;
 
     -webkit-appearance: none;
+  }
+
+  /* hide arrows for Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
   }
 }
 
@@ -78,7 +83,7 @@
 }
 
 .carouselWrapper [class~='control-dots'] {
-  @apply bottom-[-2.5rem] overflow-visible;
+  @apply bottom-[-2.5rem] overflow-visible flex justify-center;
 }
 
 .carouselWrapper [class~='carousel control-dots dot selected'] {

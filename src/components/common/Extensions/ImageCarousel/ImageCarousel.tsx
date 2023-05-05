@@ -4,7 +4,7 @@ import styles from './ImageCarousel.module.css';
 import { ImageCarouselProps } from './ImageCarousel.types';
 import './ImageCarousel.css'; // to fix rendering styles in storybook
 import useWindowSize from '~hooks/useWindowSize';
-import { images } from './const';
+import { images } from './consts';
 
 const displayName = 'common.Extensions.ImageCarousel';
 
