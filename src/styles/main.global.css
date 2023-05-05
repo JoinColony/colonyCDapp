@@ -35,6 +35,11 @@
 
     -webkit-appearance: none;
   }
+
+  /* hide arrows for Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 }
 
 @layer utilities {
