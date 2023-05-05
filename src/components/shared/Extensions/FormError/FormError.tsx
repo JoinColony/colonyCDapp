@@ -6,7 +6,7 @@ const displayName = 'Extensions.FormError';
 
 const FormError: FC<PropsWithChildren<FormErrorProps>> = ({ alignment = 'right', isFullSize, children }) => (
   <div
-    className={clsx(`flex mt-1 max-w-[8.75rem]`, {
+    className={clsx(`flex mt-1 w-[8.75rem]`, {
       'max-w-full': isFullSize,
       'text-right justify-end': alignment === 'right',
       'text-left justify-start': alignment === 'left',
