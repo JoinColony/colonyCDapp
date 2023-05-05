@@ -18,7 +18,7 @@
   }
 
   body {
-    @apply h-full overflow-hidden;
+    @apply h-full;
   }
 
   svg:not([class]) {
@@ -34,6 +34,11 @@
     @apply m-0;
 
     -webkit-appearance: none;
+  }
+
+  /* hide arrows for Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
   }
 }
 

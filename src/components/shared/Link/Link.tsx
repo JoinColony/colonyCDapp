@@ -32,7 +32,7 @@ const Link = ({ children, text, textValues, to, className, onClick, ...linkProps
       {linkText || children}
     </a>
   ) : (
-    <LinkComponent {...linkProps} to={to}>
+    <LinkComponent {...linkProps} to={to} className={className}>
       {linkText || children}
     </LinkComponent>
   );

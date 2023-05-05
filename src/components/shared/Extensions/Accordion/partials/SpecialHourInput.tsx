@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,21 +6,21 @@ import { useIntl } from 'react-intl';
 import SpecialInput from '~common/Extensions/SpecialInput/SpecialInput';
 import FormError from '~shared/Extensions/FormError/FormError';
 import { FormHourInput } from '~common/Extensions/SpecialInput/types';
+import { SpecialInputProps } from '../types';
 
 const displayName = 'Extensions.SpecialHourInput';
 
-const SpecialHourInput = () => {
+const SpecialHourInput: FC<SpecialInputProps> = ({ maxValue }) => {
   const { formatMessage } = useIntl();
   const validationSchema = yup
     .object({
       hour: yup
         .number()
         .positive('')
-        .integer('')
         .required('')
         .typeError(formatMessage({ id: 'special.hour.input.error.min.value' }))
         .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
-        .max(8765, formatMessage({ id: 'special.hour.input.error.max.value' })),
+        .max(maxValue, formatMessage({ id: 'special.hour.input.error.max.value' }, { maxValue })),
     })
     .required('');
 
@@ -33,8 +33,8 @@ const SpecialHourInput = () => {
   });
 
   return (
-    <div className="text-right max-w-[8rem]">
-      <form>
+    <div className="text-right">
+      <form className="flex justify-end flex-col w-[8.75rem]">
         {/* <Form<FormValues> use it later */}
         <SpecialInput
           register={register}

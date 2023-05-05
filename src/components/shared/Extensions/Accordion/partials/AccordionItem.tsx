@@ -15,7 +15,7 @@ const AccordionItem: FC<AccordionItemProps> = ({ title, content, isOpen, onClick
       role="button"
       tabIndex={0}
     >
-      <AccordionHeader title={title} />
+      <AccordionHeader title={title} isOpen={isOpen} />
     </div>
     <div className="relative">
       <AnimatePresence>
@@ -28,7 +28,7 @@ const AccordionItem: FC<AccordionItemProps> = ({ title, content, isOpen, onClick
             transition={{ duration: 0.4, ease: 'easeOut' }}
             className="overflow-hidden"
           >
-            <AccordionContent content={content} />
+            <AccordionContent content={content} isOpen={isOpen} />
           </motion.div>
         )}
       </AnimatePresence>
