@@ -1,0 +1,11 @@
+.listWrapper {
+  @apply font-semibold text-md text-gray-700;
+
+  & > li:not(:last-child) {
+    @apply mb-6 md:mb-6;
+  }
+
+  & button {
+    @apply text-md;
+  }
+}
