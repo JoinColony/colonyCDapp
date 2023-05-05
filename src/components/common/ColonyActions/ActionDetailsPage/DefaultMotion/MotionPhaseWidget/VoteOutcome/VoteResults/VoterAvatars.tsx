@@ -6,6 +6,7 @@ import {
   calculateLastSliceIndex,
   calculateRemainingItems,
 } from '~utils/avatars';
+import { useAppContext } from '~hooks';
 import UserAvatar from '~shared/UserAvatar';
 
 import { useGetUsers } from './helpers';
@@ -31,11 +32,23 @@ const VoterAvatars = ({ voters, maxAvatars }: VoterAvatarsProps) => {
     [maxAvatars, voters],
   );
 
+  const { user } = useAppContext();
   const registeredVoters = useGetUsers(voterAddresses);
+
+  const sortedUsers =
+    registeredVoters.length > 0 && user
+      ? [
+          user,
+          ...registeredVoters.filter(
+            (voter) => voter.walletAddress !== user.walletAddress,
+          ),
+        ]
+      : registeredVoters;
+
   return (
     <div className={styles.main}>
       <ul className={styles.voterAvatars}>
-        {registeredVoters.map((registeredVoter: User) => {
+        {sortedUsers.map((registeredVoter: User) => {
           return (
             <li
               className={styles.voterAvatar}
