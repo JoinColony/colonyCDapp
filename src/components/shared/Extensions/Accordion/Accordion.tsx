@@ -18,7 +18,7 @@ const Accordion: FC<AccordionProps> = ({ items, openIndex, onOpenIndexChange }) 
   };
 
   return (
-    <div className="max-w-[38.25rem] min-w-[38.25rem] bg-base-white">
+    <div className="w-[23.75rem] md:w-[35.75rem] bg-base-white">
       {items.map((item, index) => (
         <AccordionItem {...item} key={item.id} isOpen={openIndex === index} onClick={() => onClick(index)} />
       ))}

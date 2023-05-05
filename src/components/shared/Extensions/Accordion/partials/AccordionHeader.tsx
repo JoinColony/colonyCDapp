@@ -1,13 +1,18 @@
 import React, { FC } from 'react';
 import { AccordionItemProps } from '../types';
+import Icon from '~shared/Icon';
 
 const displayName = 'Extensions.Accordion.partials.AccordionHeader';
-// @TODO: add icon
-const AccordionHeader: FC<AccordionItemProps> = ({ title }) => (
+const AccordionHeader: FC<AccordionItemProps> = ({ title, isOpen }) => (
   <div>
     <div className="flex justify-between items-center pb-2 pt-4">
       {title}
-      <span>*</span>
+      <Icon
+        appearance={{ size: 'extraTiny' }}
+        name={isOpen ? 'caret-up' : 'caret-down'}
+        title={{ id: 'file-text' }}
+        className="stroke-gray-400 min-w-[0.875rem] min-h-[0.875rem]"
+      />
     </div>
     <div className="w-full bg-gray-200 h-[1px]" />
   </div>

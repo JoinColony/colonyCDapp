@@ -18,16 +18,16 @@ type Story = StoryObj<typeof SpecialInput>;
 
 const SpecialPercentageInputWithHooks = (args) => {
   const { formatMessage } = useIntl();
+  const maxValue = 50;
   const validationSchema = yup
     .object({
       percentage: yup
         .number()
         .positive('')
-        .integer('')
         .required('')
         .typeError(formatMessage({ id: 'special.percentage.input.error.min.value' }))
         .min(1, formatMessage({ id: 'special.percentage.input.error.min.value' }))
-        .max(99, formatMessage({ id: 'special.percentage.input.error.max.value' })),
+        .max(maxValue, formatMessage({ id: 'special.percentage.input.error.max.value' }, { maxValue })),
     })
     .required('');
 
@@ -40,8 +40,8 @@ const SpecialPercentageInputWithHooks = (args) => {
   });
 
   return (
-    <div className="text-right max-w-[8rem]">
-      <form>
+    <div className="text-right">
+      <form className="flex justify-end flex-col w-[8.8rem]">
         {/* <Form<FormValues> use it later */}
         <SpecialInput
           {...args}

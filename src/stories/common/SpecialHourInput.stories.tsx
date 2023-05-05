@@ -18,16 +18,16 @@ type Story = StoryObj<typeof SpecialInput>;
 
 const SpecialHourInputWithHooks = (args) => {
   const { formatMessage } = useIntl();
+  const maxValue = 8766;
   const validationSchema = yup
     .object({
       hour: yup
         .number()
         .positive('')
-        .integer('')
         .required('')
         .typeError(formatMessage({ id: 'special.hour.input.error.min.value' }))
         .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
-        .max(8765, formatMessage({ id: 'special.hour.input.error.max.value' })),
+        .max(maxValue, formatMessage({ id: 'special.hour.input.error.max.value' }, { maxValue })),
     })
     .required('');
 
@@ -40,8 +40,8 @@ const SpecialHourInputWithHooks = (args) => {
   });
 
   return (
-    <div className="text-right max-w-[8rem]">
-      <form>
+    <div className="text-right">
+      <form className="flex justify-end flex-col w-[8.8rem]">
         {/* <Form<FormValues> use it later */}
         <SpecialInput
           {...args}

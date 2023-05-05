@@ -13,7 +13,6 @@ module.exports = {
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     'storybook-react-intl',
-    'storybook-addon-react-router-v6',
     {
       name: '@storybook/addon-styling',
       options: {

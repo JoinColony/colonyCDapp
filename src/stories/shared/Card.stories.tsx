@@ -13,7 +13,7 @@ const meta: Meta<typeof Card> = {
         type: 'select',
       },
     },
-    withShadow: {
+    hasShadow: {
       name: 'With shadow?',
       control: {
         type: 'boolean',
@@ -21,7 +21,7 @@ const meta: Meta<typeof Card> = {
     },
   },
   args: {
-    withShadow: false,
+    hasShadow: false,
   },
 };
 

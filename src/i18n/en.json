@@ -55,6 +55,7 @@
     "label.waiting": "Waiting",
     "placeholder.email": "handle@domain.com",
     "placeholder.password": "Password",
+    "learn.more": "Learn more",
     "wallet.metamask": "MetaMask",
     "text.learnMore": "Learn More",
     "transaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
