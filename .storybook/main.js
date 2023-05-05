@@ -39,6 +39,7 @@ module.exports = {
       '~common': path.resolve(__dirname, '../src/components/common'),
       '~frame': path.resolve(__dirname, '../src/components/frame'),
       '~images/*': path.resolve(__dirname, '../src/images'),
+      '~components': path.resolve(__dirname, '../src/components'),
     };
 
     const fileLoaderRule = config.module.rules.find((rule) => !Array.isArray(rule.test) && rule.test.test('.svg'));

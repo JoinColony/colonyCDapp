@@ -4,6 +4,7 @@
 @import 'react-popper-tooltip/dist/styles.css';
 @import 'react-tabs/style/react-tabs.css';
 @import 'react-tabs-scrollable/dist/rts.css';
+@import 'react-toastify/dist/ReactToastify.css';
 
 @tailwind base;
 @tailwind components;

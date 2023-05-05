@@ -1,0 +1,23 @@
+.Toastify__close-button {
+  @apply absolute right-0 text-white;
+}
+
+.Toastify__toast-container {
+  @apply w-[24.375rem] h-[5.75rem];
+}
+
+.Toastify__toast > div {
+  @apply p-0;
+}
+
+.Toastify__toast > div > div {
+  @apply p-0;
+}
+
+/* .Toastify__toast button {
+  @apply absolute right-4 top-4 text-white opacity-100;
+} */
+
+.toastify {
+  @apply Toastify__toast Toastify__close-button;
+}
