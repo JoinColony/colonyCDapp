@@ -10,6 +10,7 @@ import {
   ColonyActionType,
   DomainMetadata,
   MotionMessage,
+  MotionData,
 } from '~types';
 import { useColonyContext } from '~hooks';
 import { MotionVote } from '~utils/colonyMotions';
@@ -22,8 +23,13 @@ import {
   Motion as MotionTag,
   Objection as ObjectionTag,
   Voting as VotingTag,
+  Failed as FailedTag,
+  Reveal as RevealTag,
+  Passed as PassedTag,
 } from '~shared/Tag';
 import { useGetUserByAddressQuery } from '~gql';
+import { VoteResults } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VoteOutcome/VoteResults';
+import { VotingWidgetHeading } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
@@ -163,16 +169,20 @@ export const mapActionEventToExpectedFormat = (
 };
 
 export const useMapMotionEventToExpectedFormat = (
-  motionMessageData?: MotionMessage,
+  motionMessageData: MotionMessage,
+  actionType: ColonyActionType,
+  motionData?: MotionData | null,
 ) => {
   const { colony } = useColonyContext();
   const { data } = useGetUserByAddressQuery({
-    skip: !motionMessageData?.initiatorAddress,
+    skip: !motionMessageData?.initiatorAddress || !motionData,
     variables: {
       address: motionMessageData?.initiatorAddress ?? '',
     },
   });
-
+  if (!motionData) {
+    return {};
+  }
   const initiatorUser = data?.getUserByAddress?.items[0];
 
   return {
@@ -195,6 +205,18 @@ export const useMapMotionEventToExpectedFormat = (
     motionTag: <MotionTag />,
     objectionTag: <ObjectionTag />,
     votingTag: <VotingTag />,
+    failedTag: <FailedTag />,
+    revealTag: <RevealTag />,
+    passedTag: <PassedTag />,
+    voteResultsWidget: (
+      <div className={styles.voteResultsWrapper}>
+        <VotingWidgetHeading actionType={actionType} />
+        <VoteResults
+          revealedVotes={motionData.revealedVotes}
+          voterRecord={motionData.voterRecord}
+        />
+      </div>
+    ),
     initiator: (
       <span className={styles.userDecoration}>
         <FriendlyName user={initiatorUser} autoShrinkAddress />

@@ -3,7 +3,6 @@ const {
   getColonyNetworkClient,
   Network,
   Extension,
-  MotionState,
 } = require('@colony/colony-js');
 const { default: fetch, Request } = require('node-fetch');
 
@@ -139,6 +138,38 @@ const getStakerReward = async (motionId, userAddress, colonyAddress) => {
   };
 };
 
+const didMotionPass = ({
+  motionStakes: {
+    raw: { yay: yayStakes, nay: nayStakes },
+  },
+  requiredStake,
+  revealedVotes: {
+    raw: { yay: yayVotes, nay: nayVotes },
+  },
+}) => {
+  const yayStake = BigNumber.from(yayStakes);
+  if (
+    BigNumber.from(nayStakes).gte(requiredStake) &&
+    yayStake.gte(requiredStake)
+  ) {
+    /*
+     * It only passes if the yay votes outnumber the nay votes
+     * If the votes are equal, it fails
+     */
+    if (BigNumber.from(yayVotes).gt(nayVotes)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  // in this case only the yayStake is equal to the required stake
+  if (yayStake.eq(requiredStake)) {
+    return true;
+  }
+  return false;
+};
+
 const updateStakerRewardsInDB = async (
   colonyAddress,
   transactionHash,
@@ -172,8 +203,40 @@ const updateStakerRewardsInDB = async (
   });
 };
 
+const updateMotionMessagesInDB = async (
+  transactionHash,
+  motionData,
+  motionMessages,
+  flag,
+) => {
+  const { messages, motionStateHistory } = motionData;
+  const updatedMessages = [...messages];
+  const updatedStateHistory = {
+    ...motionStateHistory,
+    [flag]: true,
+  };
+
+  motionMessages.forEach((message) => {
+    updatedMessages.push({
+      name: message,
+      messageKey: `${transactionHash}_${message}`,
+    });
+  });
+
+  await graphqlRequest(updateColonyAction, {
+    id: transactionHash,
+    motionData: {
+      ...motionData,
+      messages: updatedMessages,
+      motionStateHistory: updatedStateHistory,
+    },
+  });
+};
+
 module.exports = {
   getLatestMotionState,
+  didMotionPass,
   updateStakerRewardsInDB,
   getMotionData,
+  updateMotionMessagesInDB,
 };

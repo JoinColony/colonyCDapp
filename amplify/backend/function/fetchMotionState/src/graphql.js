@@ -5,9 +5,20 @@ const motionStakesFragment = /* GraphQL */ `
   }
 `;
 
+const motionMessageFragment = /* GraphQL */ `
+  fragment MotionMessage on MotionMessage {
+    name
+    messageKey
+    initiatorAddress
+    vote
+    amount
+  }
+`;
+
 module.exports = {
   getColonyAction: /* GraphQL */ `
     ${motionStakesFragment}
+    ${motionMessageFragment}
     query GetColonyAction($id: ID!) {
       getColonyAction(id: $id) {
         motionData {
@@ -64,6 +75,17 @@ module.exports = {
           skillRep
           repSubmitted
           createdBy
+          hasObjection
+          motionStateHistory {
+            hasVoted
+            hasPassed
+            hasFailed
+            hasFailedNotFinalizable
+            inRevealPhase
+          }
+          messages {
+            ...MotionMessage
+          }
         }
       }
     }

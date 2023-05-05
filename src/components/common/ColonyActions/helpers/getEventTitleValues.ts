@@ -5,6 +5,8 @@ import {
   ColonyAndExtensionsEvents,
   MotionMessage,
   SystemMessages,
+  MotionData,
+  ColonyActionType,
 } from '~types';
 
 import {
@@ -40,6 +42,10 @@ enum EventTitleMessageKeys {
   ToDomain = 'toDomain',
   TokensMinted = 'tokensMinted',
   VotingTag = 'votingTag',
+  VoteResultsWidget = 'voteResultsWidget',
+  FailedTag = 'failedTag',
+  RevealTag = 'revealTag',
+  PassedTag = 'passedTag',
 }
 
 /* Maps eventType to message values as found in en-events.ts */
@@ -145,6 +151,26 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
     EventTitleMessageKeys.MotionTag,
   ],
   [SystemMessages.MotionVotingPhase]: [EventTitleMessageKeys.VotingTag],
+  [SystemMessages.MotionRevealResultObjectionWon]: [
+    EventTitleMessageKeys.MotionTag,
+    EventTitleMessageKeys.VoteResultsWidget,
+  ],
+  [SystemMessages.MotionRevealResultMotionWon]: [
+    EventTitleMessageKeys.MotionTag,
+    EventTitleMessageKeys.VoteResultsWidget,
+  ],
+  [SystemMessages.MotionHasFailedFinalizable]: [
+    EventTitleMessageKeys.MotionTag,
+    EventTitleMessageKeys.FailedTag,
+  ],
+  [SystemMessages.MotionRevealPhase]: [EventTitleMessageKeys.RevealTag],
+  [SystemMessages.MotionHasPassed]: [
+    EventTitleMessageKeys.MotionTag,
+    EventTitleMessageKeys.PassedTag,
+  ],
+  [SystemMessages.MotionHasFailedNotFinalizable]: [
+    EventTitleMessageKeys.MotionTag,
+  ],
 };
 
 const DEFAULT_KEYS = [
@@ -187,9 +213,14 @@ export const getActionEventTitleValues = (
 export const useGetMotionEventTitleValues = (
   eventName: ColonyAndExtensionsEvents | SystemMessages,
   motionMessageData: MotionMessage,
+  actionType: ColonyActionType,
+  motionData?: MotionData | null,
 ) => {
-  const updatedItem = useMapMotionEventToExpectedFormat(motionMessageData);
-
+  const updatedItem = useMapMotionEventToExpectedFormat(
+    motionMessageData,
+    actionType,
+    motionData,
+  );
   const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
   return generateMessageValues(updatedItem, keys, {
     eventName,
