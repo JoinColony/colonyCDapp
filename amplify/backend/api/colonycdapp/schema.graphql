@@ -529,17 +529,18 @@ type VoterRecord {
 }
 
 input MotionMessageInput {
+  initiatorAddress: String!
   name: String!
   messageKey: String!
-  initiatorAddress: String
   vote: String
   amount: String
 }
 
-type MotionMessage {
+type MotionMessage @model {
+  initiatorAddress: ID!
   name: String!
   messageKey: String!
-  initiatorAddress: String
+  initiatorUser: User @hasOne(fields: ["initiatorAddress"])
   vote: String
   amount: String
 }

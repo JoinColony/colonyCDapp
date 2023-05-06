@@ -114,9 +114,12 @@ fragment MotionData on MotionData {
 }
 
 fragment MotionMessage on MotionMessage {
+  initiatorAddress
   name
   messageKey
-  initiatorAddress
+  initiatorUser {
+    ...User
+  }
   vote
   amount
 }

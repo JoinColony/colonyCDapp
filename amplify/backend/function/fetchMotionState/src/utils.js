@@ -1,4 +1,4 @@
-const { providers, BigNumber } = require('ethers');
+const { providers, BigNumber, constants } = require('ethers');
 const {
   getColonyNetworkClient,
   Network,
@@ -218,6 +218,7 @@ const updateMotionMessagesInDB = async (
 
   motionMessages.forEach((message) => {
     updatedMessages.push({
+      initiatorAddress: constants.AddressZero,
       name: message,
       messageKey: `${transactionHash}_${message}`,
     });
