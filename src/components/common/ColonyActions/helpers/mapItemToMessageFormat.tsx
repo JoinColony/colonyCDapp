@@ -30,7 +30,6 @@ import {
   Reveal as RevealTag,
   Passed as PassedTag,
 } from '~shared/Tag';
-import { useGetUserByAddressQuery } from '~gql';
 import { VoteResults } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VoteOutcome/VoteResults';
 import { VotingWidgetHeading } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
 import MemberReputation from '~shared/MemberReputation';
@@ -186,12 +185,7 @@ export const useMapMotionEventToExpectedFormat = (
     type: actionType,
   } = actionData;
   const { colony } = useColonyContext();
-  const { data } = useGetUserByAddressQuery({
-    skip: !motionMessageData?.initiatorAddress || !motionData,
-    variables: {
-      address: motionMessageData?.initiatorAddress ?? '',
-    },
-  });
+
   const initiatorUserReputation = useUserReputation(
     colonyAddress,
     motionMessageData.initiatorAddress,
@@ -201,7 +195,6 @@ export const useMapMotionEventToExpectedFormat = (
   if (!motionData) {
     return {};
   }
-  const initiatorUser = data?.getUserByAddress?.items[0];
 
   return {
     eventNameDecorated: <b>{motionMessageData?.name}</b>,
@@ -238,7 +231,10 @@ export const useMapMotionEventToExpectedFormat = (
     initiator: (
       <>
         <span className={styles.userDecoration}>
-          <FriendlyName user={initiatorUser} autoShrinkAddress />
+          <FriendlyName
+            user={motionMessageData.initiatorUser}
+            autoShrinkAddress
+          />
         </span>
         <div className={styles.reputation}>
           <MemberReputation
@@ -251,7 +247,10 @@ export const useMapMotionEventToExpectedFormat = (
     staker: (
       <>
         <span className={styles.userDecoration}>
-          <FriendlyName user={initiatorUser} autoShrinkAddress />
+          <FriendlyName
+            user={motionMessageData.initiatorUser}
+            autoShrinkAddress
+          />
         </span>
         <div className={styles.reputation}>
           <MemberReputation

@@ -10,6 +10,9 @@ const motionMessageFragment = /* GraphQL */ `
     name
     messageKey
     initiatorAddress
+    initiatorUser {
+      ...User
+    }
     vote
     amount
   }
