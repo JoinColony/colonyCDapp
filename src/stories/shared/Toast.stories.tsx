@@ -20,7 +20,7 @@ const ToastWithHooks = (args) => {
 
   return (
     <Router>
-      <button type="button" onClick={notify}>
+      <button type="button" aria-label="Open toast" onClick={notify}>
         Notify!
       </button>
       <ToastContainer
