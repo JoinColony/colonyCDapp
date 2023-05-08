@@ -81,13 +81,27 @@ export type MotionActionTypes =
       {
         userAddress: Address;
         colonyAddress: Address;
-        motionIds: Array<BigNumber>;
+        transactionHash: string;
       },
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.MOTION_CLAIM_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_CLAIM_SUCCESS,
+      MetaWithHistory<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_CLAIM_ALL,
+      {
+        userAddress: Address;
+        colonyAddress: Address;
+        motionIds: Array<BigNumber>;
+      },
+      MetaWithHistory<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_CLAIM_ALL_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_CLAIM_ALL_SUCCESS,
       MetaWithHistory<object>
     >
   | UniqueActionType<
