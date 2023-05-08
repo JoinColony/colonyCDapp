@@ -3,12 +3,10 @@ import { useLocation } from 'react-router-dom';
 
 import { useGetColonyActionQuery, useGetUserReputationQuery } from '~gql';
 import { useAppContext } from '~hooks';
+import { getTransactionHashFromPathName } from '~utils/urls';
 
 import { calculateStakeLimitDecimal } from '../helpers';
 import { useEnoughTokensForStaking } from './useEnoughTokensForStaking';
-
-const getTransactionHashFromPathName = (pathname: string) =>
-  pathname.split('/').pop();
 
 export const useStakingSlider = (isObjection: boolean) => {
   const { user, userLoading, walletConnecting } = useAppContext();
