@@ -137,7 +137,7 @@ export const createGroupTransaction = (
   { id, index }: { id: string; index: number },
   key: string,
   meta: { id: string },
-  config: any,
+  config: TxConfig,
 ) =>
   fork(createTransaction, id, {
     ...config,
