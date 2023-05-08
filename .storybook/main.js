@@ -32,6 +32,17 @@ module.exports = {
   webpackFinal: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
+      '~hooks': path.resolve(__dirname, '../src/hooks'),
+      '~images': path.resolve(__dirname, '../src/images'),
+      '~types': path.resolve(__dirname, '../src/types'),
+      '~utils': path.resolve(__dirname, '../src/utils'),
+      '~gql': path.resolve(__dirname, '../src/graphql'),
+      '~constants': path.resolve(__dirname, '../src/constants'),
+      '~shared': path.resolve(__dirname, '../src/components/shared'),
+      '~common': path.resolve(__dirname, '../src/components/common'),
+      '~frame': path.resolve(__dirname, '../src/components/frame'),
+      '~images/*': path.resolve(__dirname, '../src/images'),
+      '~components': path.resolve(__dirname, '../src/components'),
       ...devConfig.resolve.alias,
     };
 
