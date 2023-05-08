@@ -18,7 +18,7 @@ const useStakingControls = (limitExceeded: boolean) => {
       raw: { nay: nayStakes },
     },
     userMinStake,
-    motionDomainId,
+    nativeMotionDomainId,
     rootHash,
     remainingToStake,
   } = useStakingWidgetContext();
@@ -38,7 +38,7 @@ const useStakingControls = (limitExceeded: boolean) => {
       input: {
         colonyAddress: colony?.colonyAddress ?? '',
         walletAddress: user?.walletAddress ?? '',
-        domainId: Number(motionDomainId),
+        domainId: Number(nativeMotionDomainId),
         rootHash,
       },
     },
