@@ -108,7 +108,7 @@ const MessageCardDetails = ({
                 </div>
               )}
             </span>
-            {messageContent}
+            <span className={styles.messageContent}>{messageContent}</span>
           </div>
         </Card>
       </CardList>
