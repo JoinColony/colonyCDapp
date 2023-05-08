@@ -2,7 +2,7 @@
 @value itemLinkSizeMobile: 34px;
 @value itemMarginBotton: 4px;
 
-@value query700 from "~styles/queries.css";
+@value query428 from "~styles/queries.css";
 
 .main {
   display: flex;
@@ -59,7 +59,7 @@
   padding: 8px 0 2px;
 }
 
-@media screen and query700 {
+@media screen and query428 {
   .main {
     align-items: center;
   }

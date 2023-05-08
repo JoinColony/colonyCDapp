@@ -8,7 +8,7 @@ declare namespace CheckboxCssNamespace {
     main: string;
     mappings: string;
     names: string;
-    query700: string;
+    query428: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;

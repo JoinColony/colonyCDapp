@@ -1,7 +1,7 @@
 declare namespace MemberActionsPopoverCssNamespace {
   export interface IMemberActionsPopoverCss {
     actionButton: string;
-    query700: string;
+    query428: string;
   }
 }
 

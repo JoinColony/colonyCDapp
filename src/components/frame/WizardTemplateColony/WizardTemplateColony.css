@@ -1,4 +1,4 @@
-@value query700 from '~styles/queries.css';
+@value query428 from '~styles/queries.css';
 
 .layoutMain {
   composes: stretchVertical stretchHorizontal from '~styles/layout.css';
@@ -51,7 +51,7 @@
   margin-left: 8px;
 }
 
-@media screen and query700 {
+@media screen and query428 {
   .content section {
     padding-left: 14px;
     padding-right: 14px;

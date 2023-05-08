@@ -1,4 +1,4 @@
-@value query700 from "~styles/queries.css";
+@value query428 from "~styles/queries.css";
 
 .main {
   display: block;
@@ -19,7 +19,7 @@
   outline: 0;
 }
 
-@media screen and query700 {
+@media screen and query428 {
   .main {
     display: flex;
     justify-content: space-between;
