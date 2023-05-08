@@ -137,7 +137,7 @@ const getDetailItemsMap = (
     isMotion ? pendingColonyMetadata : colony.metadata,
   );
   const motionDomain = findDomainByNativeId(
-    Number(motionData?.motionDomainId ?? Id.RootDomain),
+    Number(motionData?.nativeMotionDomainId ?? Id.RootDomain),
     colony,
   );
   const domainMetadata = fromDomain?.metadata || pendingDomainMetadata;

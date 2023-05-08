@@ -41,7 +41,7 @@ export const useStakingSlider = (isObjection: boolean) => {
       percentage: { nay: nayPercentageStaked, yay: yayPercentageStaked },
     },
     rootHash,
-    motionDomainId,
+    nativeMotionDomainId,
     usersStakes,
   } = motionData;
 
@@ -66,7 +66,7 @@ export const useStakingSlider = (isObjection: boolean) => {
       input: {
         colonyAddress: actionData.getColonyAction?.colonyAddress ?? '',
         walletAddress: user?.walletAddress ?? '',
-        domainId: Number(motionDomainId),
+        domainId: Number(nativeMotionDomainId),
         rootHash,
       },
     },

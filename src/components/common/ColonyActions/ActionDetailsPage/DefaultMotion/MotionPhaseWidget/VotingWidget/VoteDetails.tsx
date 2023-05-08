@@ -2,7 +2,7 @@ import React from 'react';
 
 import DetailItem from '~shared/DetailsWidget/DetailItem';
 import { MotionState } from '~utils/colonyMotions';
-import { MotionData } from '~types';
+import { ColonyMotion } from '~types';
 
 import { useVoteDetailsConfig } from './useVoteDetailsConfig';
 import styles from './VoteDetails.css';
@@ -12,7 +12,7 @@ const displayName =
 
 export interface VoteDetailsProps {
   motionState: MotionState;
-  motionData: MotionData;
+  motionData: ColonyMotion;
   hasUserVoted: boolean;
   userVoteRevealed?: boolean;
 }

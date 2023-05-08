@@ -2,7 +2,7 @@ import React from 'react';
 
 import { motionTags } from '~shared/Tag';
 import { MotionState } from '~utils/colonyMotions';
-import { MotionData } from '~types';
+import { ColonyMotion } from '~types';
 
 import { RefetchMotionState } from '../../useGetColonyAction';
 import MotionCountdown from '../MotionCountdown';
@@ -15,7 +15,7 @@ const displayName =
 interface MotionHeadingProps {
   motionState: MotionState;
   refetchMotionState: RefetchMotionState;
-  motionData: MotionData;
+  motionData: ColonyMotion;
 }
 
 const MotionHeading = ({

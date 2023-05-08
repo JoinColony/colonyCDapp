@@ -16,15 +16,24 @@ const motionMessageFragment = /* GraphQL */ `
 `;
 
 module.exports = {
-  getColonyAction: /* GraphQL */ `
+  getColonyMotion: /* GraphQL */ `
     ${motionStakesFragment}
     ${motionMessageFragment}
-    query GetColonyAction($id: ID!) {
-      getColonyAction(id: $id) {
-        motionData {
-          motionId
-          nativeMotionId
-          motionStakes {
+    query GetColonyMotion($id: ID!) {
+      getColonyMotion(id: $id) {
+        id
+        nativeMotionId
+        motionStakes {
+          raw {
+            ...MotionStakeValues
+          }
+          percentage {
+            ...MotionStakeValues
+          }
+        }
+        usersStakes {
+          address
+          stakes {
             raw {
               ...MotionStakeValues
             }
@@ -32,67 +41,56 @@ module.exports = {
               ...MotionStakeValues
             }
           }
-          usersStakes {
-            address
-            stakes {
-              raw {
-                ...MotionStakeValues
-              }
-              percentage {
-                ...MotionStakeValues
-              }
-            }
+        }
+        remainingStakes
+        userMinStake
+        requiredStake
+        rootHash
+        nativeMotionDomainId
+        stakerRewards {
+          address
+          rewards {
+            yay
+            nay
           }
-          remainingStakes
-          userMinStake
-          requiredStake
-          rootHash
-          motionDomainId
-          stakerRewards {
-            address
-            rewards {
-              yay
-              nay
-            }
-            isClaimed
+          isClaimed
+        }
+        isFinalized
+        voterRecord {
+          address
+          voteCount
+          vote
+        }
+        revealedVotes {
+          raw {
+            yay
+            nay
           }
-          isFinalized
-          voterRecord {
-            address
-            voteCount
-            vote
+          percentage {
+            yay
+            nay
           }
-          revealedVotes {
-            raw {
-              yay
-              nay
-            }
-            percentage {
-              yay
-              nay
-            }
-          }
-          skillRep
-          repSubmitted
-          createdBy
-          hasObjection
-          motionStateHistory {
-            hasVoted
-            hasPassed
-            hasFailed
-            hasFailedNotFinalizable
-            inRevealPhase
-          }
-          messages {
-            ...MotionMessage
-          }
+        }
+        skillRep
+        repSubmitted
+        createdBy
+        hasObjection
+        motionStateHistory {
+          hasVoted
+          hasPassed
+          hasFailed
+          hasFailedNotFinalizable
+          inRevealPhase
+        }
+        messages {
+          ...MotionMessage
         }
       }
     }
   `,
-  updateColonyAction: /* GraphQL */ `
-    mutation UpdateColonyAction($id: ID!, $motionData: MotionDataInput!) {
-      updateColonyAction(input: { id: $id, motionData: $motionData }) {
+  updateColonyMotion: /* GraphQL */ `
+    mutation UpdateColonyMotion($input: UpdateColonyMotionInput!) {
+      updateColonyMotion(input: $input) {
         id
       }
     }

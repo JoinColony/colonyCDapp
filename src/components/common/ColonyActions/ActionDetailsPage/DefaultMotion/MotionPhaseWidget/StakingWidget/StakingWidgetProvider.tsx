@@ -6,11 +6,11 @@ import React, {
   useState,
 } from 'react';
 
-import { MotionData, SetStateFn } from '~types';
+import { ColonyMotion, SetStateFn } from '~types';
 
 import useStakingWidgetUpdate from './useStakingWidgetUpdate';
 
-export interface StakingWidgetContextValues extends MotionData {
+export interface StakingWidgetContextValues extends ColonyMotion {
   remainingToStake: string;
   isObjection: boolean;
   setIsObjection: SetStateFn;
@@ -37,7 +37,7 @@ export const useStakingWidgetContext = () => {
 
 interface StakingWidgetProviderProps {
   children: ReactNode;
-  motionData: MotionData;
+  motionData: ColonyMotion;
   startPollingAction: (pollingInterval: number) => void;
   stopPollingAction: () => void;
 }

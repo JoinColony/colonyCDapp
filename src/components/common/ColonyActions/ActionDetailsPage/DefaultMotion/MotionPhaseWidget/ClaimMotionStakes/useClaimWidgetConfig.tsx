@@ -4,15 +4,15 @@ import { useLocation } from 'react-router-dom';
 
 import Numeral from '~shared/Numeral';
 import { intl } from '~utils/intl';
-import { MotionData } from '~types';
+import { ColonyMotion } from '~types';
+import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
 import Button, { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { useAppContext, useColonyContext } from '~hooks';
 import { DetailItemProps } from '~shared/DetailsWidget';
+import { getTransactionHashFromPathName } from '~utils/urls';
 
 import { ClaimMotionStakesStyles } from './ClaimMotionStakes';
-import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
-import { getTransactionHashFromPathName } from '~utils/urls';
 
 const { formatMessage } = intl({
   'label.stake': 'Stake',
@@ -23,7 +23,7 @@ const { formatMessage } = intl({
 });
 
 const useClaimWidgetConfig = (
-  { usersStakes, stakerRewards }: MotionData,
+  { usersStakes, stakerRewards }: ColonyMotion,
   startPollingAction: (pollInterval: number) => void,
   styles: ClaimMotionStakesStyles,
 ) => {

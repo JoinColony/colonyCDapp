@@ -32,7 +32,7 @@ interface VoteDetailsConfig extends DetailItemProps {
 
 export const useVoteDetailsConfig = ({
   motionState,
-  motionData: { motionId, motionDomainId, rootHash },
+  motionData: { motionId, nativeMotionDomainId, rootHash },
   hasUserVoted,
   userVoteRevealed = false,
 }: VoteDetailsProps): VoteDetailsConfig[] => {
@@ -41,7 +41,7 @@ export const useVoteDetailsConfig = ({
   const { userReputation, totalReputation } = useUserReputation(
     colony?.colonyAddress ?? '',
     user?.walletAddress ?? '',
-    Number(motionDomainId),
+    Number(nativeMotionDomainId),
   );
 
   const { data } = useGetVoterRewardsQuery({
@@ -49,7 +49,7 @@ export const useVoteDetailsConfig = ({
       input: {
         voterAddress: user?.walletAddress ?? '',
         colonyAddress: colony?.colonyAddress ?? '',
-        motionDomainId,
+        nativeMotionDomainId,
         motionId,
         rootHash,
       },

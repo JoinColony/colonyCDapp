@@ -2,7 +2,7 @@ import { BigNumber } from 'ethers';
 import { Decimal } from 'decimal.js';
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
-import { MotionData } from '~types';
+import { ColonyMotion } from '~types';
 import { useEnabledExtensions } from '~hooks';
 
 export enum MotionVote {
@@ -43,7 +43,7 @@ export const getMotionState = (
     revealedVotes: {
       raw: { yay: yayVotes, nay: nayVotes },
     },
-  }: MotionData,
+  }: ColonyMotion,
 ) => {
   switch (motionState) {
     case NetworkMotionState.Staking: {

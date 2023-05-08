@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { MotionData } from '~gql';
+import { ColonyMotion } from '~gql';
 import { MotionVote } from '~utils/colonyMotions';
 
 import VoteResultsItem from './VoteResultsItem';
@@ -27,8 +27,8 @@ const MSG = defineMessages({
 });
 
 interface VoteResultsProps {
-  revealedVotes: MotionData['revealedVotes'];
-  voterRecord: MotionData['voterRecord'];
+  revealedVotes: ColonyMotion['revealedVotes'];
+  voterRecord: ColonyMotion['voterRecord'];
 }
 
 const VoteResults = ({

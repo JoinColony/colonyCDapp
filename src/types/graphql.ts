@@ -21,7 +21,7 @@ import {
   ColonyBalanceFragment,
   ColonyBalancesFragment,
   ColonyTokensConnectionFragment,
-  MotionDataFragment,
+  ColonyMotionFragment,
   MotionMessageFragment,
 } from '~gql';
 
@@ -39,7 +39,7 @@ export type Domain = DomainFragment;
 
 export type DomainMetadata = DomainMetadataFragment;
 
-export type MotionData = MotionDataFragment;
+export type ColonyMotion = ColonyMotionFragment;
 
 export type MotionMessage = MotionMessageFragment;
 

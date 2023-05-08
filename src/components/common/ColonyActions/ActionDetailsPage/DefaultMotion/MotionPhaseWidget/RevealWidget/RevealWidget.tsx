@@ -2,7 +2,7 @@ import React from 'react';
 import { BigNumber } from 'ethers';
 
 import { MotionState } from '~utils/colonyMotions';
-import { MotionData } from '~types';
+import { ColonyMotion } from '~types';
 import { useAppContext, useColonyContext } from '~hooks';
 import { ActionHookForm as ActionForm, OnSuccess } from '~shared/Fields';
 import { ActionTypes } from '~redux';
@@ -18,7 +18,7 @@ const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.RevealWidget';
 
 interface RevealWidgetProps extends PollingControls {
-  motionData: MotionData;
+  motionData: ColonyMotion;
   motionState: MotionState;
 }
 
