@@ -1,11 +1,11 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
 // import { ContextModule, getContext } from '~context';
 import { Action, ActionTypes, AllActions } from '~redux';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
@@ -34,22 +34,9 @@ function* tokenUnlockAction({
     ]);
 
     /*
-     * Create a grouped transaction
-     */
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    /*
      * Add the tokenUnlock transaction to the group
      */
-    yield createGroupTransaction(tokenUnlock, {
+    yield createGroupTransaction(tokenUnlock, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'unlockToken',
       identifier: colonyAddress,

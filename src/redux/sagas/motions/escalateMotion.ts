@@ -1,4 +1,4 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
@@ -7,7 +7,7 @@ import { AllActions, Action } from '../../types/actions';
 import { putError, takeFrom, getColonyManager } from '../utils';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
@@ -46,17 +46,7 @@ function* escalateMotion({
 
     const batchKey = 'escalateMotion';
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(escalateMotionTransaction, {
+    yield createGroupTransaction(escalateMotionTransaction, batchKey, meta, {
       context: ClientType.VotingReputationClient,
       methodName: 'escalateMotionWithProofs',
       identifier: colonyAddress,

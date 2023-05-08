@@ -1,8 +1,8 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, Id } from '@colony/colony-js';
 import { Action, ActionTypes, AllActions } from '~redux';
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
@@ -56,17 +56,7 @@ function* createDomainAction({
       // 'annotateCreateDomainAction',
     ]);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(createDomain, {
+    yield createGroupTransaction(createDomain, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'addDomainWithProofs(uint256)',
       identifier: colonyAddress,

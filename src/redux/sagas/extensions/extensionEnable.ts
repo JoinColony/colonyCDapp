@@ -2,7 +2,7 @@ import { all, call, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
-import { getTxChannel } from '../transactions';
+import { createGroupTransaction, getTxChannel } from '../transactions';
 import {
   modifyParams,
   putError,
@@ -34,20 +34,26 @@ function* extensionEnable({
         channels,
         transactionChannels,
         transactionChannels: { initialise },
-        createGroupTransaction,
       } = yield setupEnablingGroupTransactions(
         meta.id,
         initParams,
         extensionId,
       );
 
+      const batchKey = 'enableExtensions';
+
       yield all(
         Object.keys(transactionChannels).map((channelName) =>
-          createGroupTransaction(transactionChannels[channelName], {
-            identifier: colonyAddress,
-            methodName: channelName,
-            ...channels[channelName],
-          }),
+          createGroupTransaction(
+            transactionChannels[channelName],
+            batchKey,
+            meta,
+            {
+              identifier: colonyAddress,
+              methodName: channelName,
+              ...channels[channelName],
+            },
+          ),
         ),
       );
 
