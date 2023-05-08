@@ -1,4 +1,4 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 
@@ -7,7 +7,7 @@ import { AllActions, Action } from '../../types/actions';
 import { getColonyManager, putError, takeFrom } from '../utils';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
@@ -62,17 +62,7 @@ function* finalizeMotion({
 
     const batchKey = 'finalizeMotion';
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(finalizeMotionTransaction, {
+    yield createGroupTransaction(finalizeMotionTransaction, batchKey, meta, {
       context: ClientType.VotingReputationClient,
       methodName: 'finalizeMotion',
       identifier: colonyAddress,

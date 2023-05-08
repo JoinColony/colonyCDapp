@@ -1,4 +1,4 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
 import { ContextModule, getContext } from '~context';
@@ -12,7 +12,7 @@ import {
 import { notNull } from '~utils/arrays';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
@@ -58,17 +58,7 @@ function* editColonyAction({
       'annotateEditColonyAction',
     ]);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(editColony, {
+    yield createGroupTransaction(editColony, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'editColony',
       identifier: colonyAddress,

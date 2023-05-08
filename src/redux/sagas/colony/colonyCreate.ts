@@ -1,5 +1,5 @@
 import { Channel } from 'redux-saga';
-import { all, call, fork, put } from 'redux-saga/effects';
+import { all, call, put } from 'redux-saga/effects';
 import { getExtensionHash, Extension, ClientType, Id } from '@colony/colony-js';
 import { poll } from 'ethers/lib/utils';
 
@@ -34,7 +34,6 @@ import { ColonyManager, ContextModule, getContext } from '~context';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { ActionTypes, Action, AllActions } from '~redux/index';
 import { createAddress } from '~utils/web3';
-import { TxConfig } from '~types';
 import { toNumber } from '~utils/numbers';
 import { getDomainDatabaseId } from '~utils/domains';
 
@@ -51,7 +50,10 @@ import {
   takeLatestCancellable,
   getColonyManager,
 } from '../utils';
-import { createTransaction, createTransactionChannels } from '../transactions';
+import {
+  createGroupTransaction,
+  createTransactionChannels,
+} from '../transactions';
 import { getOneTxPaymentVersion } from '../utils/extensionVersion';
 
 interface ChannelDefinition {
@@ -118,25 +120,14 @@ function* colonyCreate({
     setOwner,
   } = channels;
 
-  const createGroupedTransaction = (
-    { id, index }: ChannelDefinition,
-    config: TxConfig,
-  ) =>
-    fork(createTransaction, id, {
-      ...config,
-      group: {
-        key: 'createColony',
-        id: meta.id,
-        index,
-      },
-    });
+  const batchKey = 'createColony';
 
   /*
    * Create all transactions for the group.
    */
   try {
     if (createToken) {
-      yield createGroupedTransaction(createToken, {
+      yield createGroupTransaction(createToken, batchKey, meta, {
         context: ClientType.NetworkClient,
         methodName: 'deployToken',
         params: [tokenName, tokenSymbol, DEFAULT_TOKEN_DECIMALS],
@@ -144,7 +135,7 @@ function* colonyCreate({
     }
 
     if (createColony) {
-      yield createGroupedTransaction(createColony, {
+      yield createGroupTransaction(createColony, batchKey, meta, {
         context: ClientType.NetworkClient,
         methodName: 'createColony(address,uint256,string,string)',
         ready: false,
@@ -152,7 +143,7 @@ function* colonyCreate({
     }
 
     if (deployTokenAuthority) {
-      yield createGroupedTransaction(deployTokenAuthority, {
+      yield createGroupTransaction(deployTokenAuthority, batchKey, meta, {
         context: ClientType.NetworkClient,
         methodName: 'deployTokenAuthority',
         ready: false,
@@ -160,7 +151,7 @@ function* colonyCreate({
     }
 
     if (setTokenAuthority) {
-      yield createGroupedTransaction(setTokenAuthority, {
+      yield createGroupTransaction(setTokenAuthority, batchKey, meta, {
         context: ClientType.TokenClient,
         methodName: 'setAuthority',
         ready: false,
@@ -168,7 +159,7 @@ function* colonyCreate({
     }
 
     if (setOwner) {
-      yield createGroupedTransaction(setOwner, {
+      yield createGroupTransaction(setOwner, batchKey, meta, {
         context: ClientType.TokenClient,
         methodName: 'setOwner',
         ready: false,
@@ -176,7 +167,7 @@ function* colonyCreate({
     }
 
     if (deployOneTx) {
-      yield createGroupedTransaction(deployOneTx, {
+      yield createGroupTransaction(deployOneTx, batchKey, meta, {
         context: ClientType.ColonyClient,
         methodName: 'installExtension',
         ready: false,
@@ -184,7 +175,7 @@ function* colonyCreate({
     }
 
     if (setOneTxRoleAdministration) {
-      yield createGroupedTransaction(setOneTxRoleAdministration, {
+      yield createGroupTransaction(setOneTxRoleAdministration, batchKey, meta, {
         context: ClientType.ColonyClient,
         methodContext: 'setOneTxRoles',
         methodName: 'setAdministrationRoleWithProofs',
@@ -193,7 +184,7 @@ function* colonyCreate({
     }
 
     if (setOneTxRoleFunding) {
-      yield createGroupedTransaction(setOneTxRoleFunding, {
+      yield createGroupTransaction(setOneTxRoleFunding, batchKey, meta, {
         context: ClientType.ColonyClient,
         methodContext: 'setOneTxRoles',
         methodName: 'setFundingRoleWithProofs',
