@@ -35,10 +35,11 @@ const PopoverWrapper: FC<PopoverWrapperProps> = ({
 
   return (
     <div
-      className={getMainClasses(appearance, {
+      className={`w-full max-w-[20rem] ${getMainClasses(appearance, {
         hideArrow: !showArrow,
         showArrow,
       })}
+        `}
       onFocus={onFocus}
       ref={contentRef}
       role="tooltip"

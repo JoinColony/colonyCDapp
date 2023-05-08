@@ -3,7 +3,7 @@
 }
 
 .modal {
-  @apply relative outline-0 overflow-hidden bg-base-white pt-6 pl-6 w-[100vw] h-[100vh] md:w-[30.3125rem] md:h-auto md:max-h-[calc(100vh-4rem)] md:border md:border-gray-200 md:rounded-xl shadow-default;
+  @apply relative outline-0 overflow-hidden bg-base-white pt-6 pl-6 md:h-auto md:max-h-[calc(100vh-4rem)] md:w-[30.3125rem] md:border md:border-gray-200 md:rounded-xl shadow-default;
 }
 
 .inner {
@@ -17,5 +17,5 @@
 }
 
 .closeIcon {
-  @apply absolute -top-2 right-4 w-[2rem] h-[2rem] flex items-center justify-center transition-all duration-normal text-gray-400 hover:text-gray-700;
+  @apply absolute top-4 right-4 w-[2rem] h-[2rem] flex items-center justify-center transition-all duration-normal text-gray-400 hover:text-gray-700;
 }

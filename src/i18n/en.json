@@ -397,5 +397,12 @@
     "special.percentage.input.error.max.value": "Percentage must be less than or equal to 100",
     "specific.side.panel.title": "Extension details",
     "file-text": "File text icon",
-    "radio.error.governance": "Please select a governance style option before enabling"
+    "radio.error.governance": "Please select a governance style option before enabling",
+    "userInfo.about.section": "about",
+    "userInfo.colonyReputation.section": "Colony reputation",
+    "userInfo.permissions.section": "Permissions",
+    "userInfo.colonyReputation.business": "Business",
+    "userInfo.colonyReputation.development": "Development",
+    "userInfo.colonyReputation.product": "Product",
+    "copyWalletAddress": "Copy wallet address"
 }

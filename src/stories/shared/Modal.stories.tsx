@@ -20,6 +20,16 @@ const meta: Meta<typeof Modal> = {
         type: 'boolean',
       },
     },
+    isFullOnMobile: {
+      name: 'Is full on mobile?',
+      control: {
+        type: 'boolean',
+      },
+    },
+  },
+  args: {
+    isFullOnMobile: true,
+    isWarning: false,
   },
 };
 
@@ -64,6 +74,7 @@ const ModalWithState = (args) => {
 export const Base: Story = {
   args: {
     icon: 'trash',
+    isFullOnMobile: true,
   },
   render: (args) => <ModalWithState {...args} />,
 };
@@ -71,8 +82,8 @@ export const Base: Story = {
 export const WithWarning: Story = {
   args: {
     icon: 'trash',
-
     isWarning: true,
+    isFullOnMobile: true,
   },
   render: (args) => <ModalWithState {...args} />,
 };
@@ -80,6 +91,7 @@ export const WithWarning: Story = {
 export const WithAvatar: Story = {
   args: {
     icon: '',
+    isFullOnMobile: true,
   },
   render: (args) => <ModalWithState {...args} />,
 };

@@ -6,7 +6,7 @@ import styles from './Modal.module.css';
 
 const displayName = 'Extensions.ModalBase';
 
-const ModalBase: FC<ModalBaseProps> = ({ role = 'dialog', ...props }) => (
+const ModalBase: FC<ModalBaseProps> = ({ role = 'dialog', isFullOnMobile, ...props }) => (
   <ReactModal
     role={role}
     overlayClassName={{
@@ -14,9 +14,17 @@ const ModalBase: FC<ModalBaseProps> = ({ role = 'dialog', ...props }) => (
       afterOpen: '',
       beforeClose: '',
     }}
-    className={clsx(styles.modal, {
-      base: 'z-[4] outline-0',
-    })}
+    className={clsx(
+      styles.modal,
+      `${
+        isFullOnMobile
+          ? 'w-[100vw] h-[100vh]'
+          : `w-[calc(100vw-3rem)] max-h-[calc(100vh-4rem)] border border-gray-200 rounded-xl shadow-default`
+      }`,
+      {
+        base: 'z-[4] outline-0',
+      },
+    )}
     shouldFocusAfterRender
     shouldCloseOnOverlayClick
     shouldCloseOnEsc

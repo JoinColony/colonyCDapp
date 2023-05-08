@@ -10,7 +10,7 @@ export const sidePanelData = [
       title: 'Date installed',
       date: '28 October 2020',
     },
-    instaledBy: {
+    installedBy: {
       title: 'Installed by',
       component: <div />,
     },

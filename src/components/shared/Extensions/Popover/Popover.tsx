@@ -49,7 +49,7 @@ const Popover: FC<PropsWithChildren<PopoverProps>> = ({
         name: 'arrow',
         options: { element: arrowElement },
       },
-      { name: 'offset', options: { offset: [0, 4] } },
+      { name: 'offset', options: { offset: [0, 6] } },
     ],
     placement: placementProp,
     ...popperOptions,
