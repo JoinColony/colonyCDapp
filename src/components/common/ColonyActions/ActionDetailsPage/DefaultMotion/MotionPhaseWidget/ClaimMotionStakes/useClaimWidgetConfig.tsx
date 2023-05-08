@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
+import { useLocation } from 'react-router-dom';
 
 import Numeral from '~shared/Numeral';
 import { intl } from '~utils/intl';
 import { MotionData } from '~types';
-import { ClaimAllMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
 import Button, { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { useAppContext, useColonyContext } from '~hooks';
 import { DetailItemProps } from '~shared/DetailsWidget';
 
 import { ClaimMotionStakesStyles } from './ClaimMotionStakes';
+import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
+import { getTransactionHashFromPathName } from '~utils/urls';
 
 const { formatMessage } = intl({
   'label.stake': 'Stake',
@@ -21,12 +23,13 @@ const { formatMessage } = intl({
 });
 
 const useClaimWidgetConfig = (
-  { motionId, usersStakes, stakerRewards }: MotionData,
+  { usersStakes, stakerRewards }: MotionData,
   startPollingAction: (pollInterval: number) => void,
   styles: ClaimMotionStakesStyles,
 ) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
+  const location = useLocation();
   const [isClaimed, setIsClaimed] = useState(false);
 
   const userAddress = user?.walletAddress;
@@ -97,8 +100,8 @@ const useClaimWidgetConfig = (
   const claimPayload = {
     userAddress,
     colonyAddress,
-    motionIds: [BigNumber.from(motionId)],
-  } as ClaimAllMotionRewardsPayload;
+    transactionHash: getTransactionHashFromPathName(location.pathname),
+  } as ClaimMotionRewardsPayload;
 
   claimItem.item = (
     <ActionButton
