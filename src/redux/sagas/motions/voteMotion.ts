@@ -57,7 +57,7 @@ function* voteMotion({
       votingReputationClient.address
     } Motion ID: ${motionId.toNumber()}`;
 
-    const signature = yield signMessage('motionRevealVote', message);
+    const signature = yield signMessage('motionVote', message);
     const hash = utils.solidityKeccak256(
       ['bytes', 'uint256'],
       [utils.keccak256(signature), vote],
