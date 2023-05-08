@@ -1,12 +1,12 @@
 import { useGetMotionStateQuery } from '~gql';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { motionTags } from '~shared/Tag';
-import { Address, MotionData } from '~types';
+import { Address, ColonyMotion } from '~types';
 import { MotionState, getMotionState } from '~utils/colonyMotions';
 
 export const useColonyMotionState = (
   isMotion: boolean | null | undefined,
-  motionData: MotionData | null | undefined,
+  motionData: ColonyMotion | null | undefined,
   transactionHash: Address,
 ) => {
   const { colony } = useColonyContext();
@@ -18,6 +18,7 @@ export const useColonyMotionState = (
       variables: {
         input: {
           colonyAddress: colony?.colonyAddress ?? '',
+          databaseMotionId: motionData?.databaseMotionId ?? '',
           transactionHash,
         },
       },

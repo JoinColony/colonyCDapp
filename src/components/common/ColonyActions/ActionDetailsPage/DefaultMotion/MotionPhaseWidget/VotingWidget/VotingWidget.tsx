@@ -53,7 +53,7 @@ const VotingWidget = ({
     type,
     transactionHash,
     pendingColonyMetadata,
-    motionData: { motionDomainId, motionId, voterRecord },
+    motionData: { nativeMotionDomainId, motionId, voterRecord },
     motionData,
   },
   motionState,
@@ -105,7 +105,7 @@ const VotingWidget = ({
             actionType={type}
             pendingColonyMetadata={pendingColonyMetadata}
           />
-          <VotingPanel motionDomainId={Number(motionDomainId)} />
+          <VotingPanel motionDomainId={Number(nativeMotionDomainId)} />
           <VoteDetails
             motionData={motionData}
             motionState={motionState}

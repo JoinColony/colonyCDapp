@@ -7,7 +7,7 @@ import {
   MotionState,
   useShouldDisplayMotionCountdownTime,
 } from '~utils/colonyMotions';
-import { MotionData } from '~types';
+import { ColonyMotion } from '~types';
 import { useAppContext } from '~hooks';
 
 import { RefetchMotionState } from '../../useGetColonyAction';
@@ -21,12 +21,12 @@ const displayName = 'common.ColonyActions.ActionDetailsPage.MotionCountdown';
 interface MotionCountdownProps {
   motionState: MotionState;
   refetchMotionState: RefetchMotionState;
-  motionData: MotionData;
+  motionData: ColonyMotion;
 }
 
 const MotionCountdown = ({
   motionState,
-  motionData: { motionDomainId, motionId, motionStakes },
+  motionData: { nativeMotionDomainId, motionId, motionStakes },
   motionData,
   refetchMotionState,
 }: MotionCountdownProps) => {
@@ -39,7 +39,7 @@ const MotionCountdown = ({
   const showEscalateButton =
     !!user &&
     motionState === MotionState.Escalation &&
-    Number(motionDomainId) !== Id.RootDomain;
+    Number(nativeMotionDomainId) !== Id.RootDomain;
 
   return (
     <div

@@ -70,6 +70,7 @@ export const useGetColonyAction = () => {
     variables: {
       input: {
         colonyAddress: colony?.colonyAddress ?? '',
+        databaseMotionId: action?.motionData?.databaseMotionId ?? '',
         transactionHash: transactionHash ?? '',
       },
     },

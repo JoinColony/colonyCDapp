@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import DetailItem from '~shared/DetailsWidget/DetailItem';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
-import { MotionData } from '~types';
+import { ColonyMotion } from '~types';
 import { useColonyContext } from '~hooks';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';
 
@@ -39,7 +39,7 @@ const MSG = defineMessages({
 export interface FinalizeMotionProps {
   amount?: string | null;
   tokenAddress?: string | null;
-  motionData: MotionData;
+  motionData: ColonyMotion;
   requiresDomainFunds: boolean;
   startPollingAction: (pollingInterval: number) => void;
   stopPollingAction: () => void;
@@ -48,7 +48,7 @@ export interface FinalizeMotionProps {
 const FinalizeMotion = ({
   amount,
   tokenAddress,
-  motionData: { motionDomainId, motionId },
+  motionData: { nativeMotionDomainId, motionId },
   requiresDomainFunds,
   startPollingAction,
   stopPollingAction,
@@ -69,7 +69,7 @@ const FinalizeMotion = ({
   const domainBalance = getBalanceForTokenAndDomain(
     balances,
     tokenAddress ?? '',
-    Number(motionDomainId),
+    Number(nativeMotionDomainId),
   );
 
   const isFinalizable =

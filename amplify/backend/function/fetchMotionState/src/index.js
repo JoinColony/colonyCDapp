@@ -10,11 +10,12 @@ const {
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  const { colonyAddress, transactionHash } = event.arguments?.input || {};
+  const { colonyAddress, databaseMotionId, transactionHash } =
+    event.arguments?.input || {};
   /* Get latest motion state from chain */
-  const motionData = await getMotionData(transactionHash);
+  const motionData = await getMotionData(databaseMotionId);
 
-  if (transactionHash && motionData) {
+  if (databaseMotionId && transactionHash && motionData) {
     const { motionStateHistory } = motionData;
     const motionState = await getLatestMotionState(colonyAddress, motionData);
     /*
@@ -31,11 +32,7 @@ exports.handler = async (event) => {
 
       // Motion did not go to a vote
       if (yayPercent !== '100') {
-        await updateStakerRewardsInDB(
-          colonyAddress,
-          transactionHash,
-          motionData,
-        );
+        await updateStakerRewardsInDB(colonyAddress, motionData);
       }
 
       if (!motionStateHistory.hasFailedNotFinalizable) {

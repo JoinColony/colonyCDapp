@@ -139,7 +139,8 @@ export type ColonyAction = {
   initiatorExtension?: Maybe<ColonyExtension>;
   initiatorUser?: Maybe<User>;
   isMotion?: Maybe<Scalars['Boolean']>;
-  motionData?: Maybe<MotionData>;
+  motionData?: Maybe<ColonyMotion>;
+  motionDataId?: Maybe<Scalars['ID']>;
   newColonyVersion?: Maybe<Scalars['Int']>;
   pendingColonyMetadata?: Maybe<ColonyMetadata>;
   pendingColonyMetadataId?: Maybe<Scalars['ID']>;
@@ -293,6 +294,53 @@ export type ColonyMetadataChangelogInput = {
   transactionHash: Scalars['String'];
 };
 
+export type ColonyMotion = {
+  __typename?: 'ColonyMotion';
+  createdAt: Scalars['AWSDateTime'];
+  createdBy: Scalars['String'];
+  hasObjection: Scalars['Boolean'];
+  id: Scalars['ID'];
+  isFinalized: Scalars['Boolean'];
+  messages: Array<MotionMessage>;
+  motionStakes: MotionStakes;
+  motionStateHistory: MotionStateHistory;
+  nativeMotionDomainId: Scalars['String'];
+  nativeMotionId: Scalars['String'];
+  remainingStakes: Array<Scalars['String']>;
+  repSubmitted: Scalars['String'];
+  requiredStake: Scalars['String'];
+  revealedVotes: MotionStakes;
+  rootHash: Scalars['String'];
+  skillRep: Scalars['String'];
+  stakerRewards: Array<StakerRewards>;
+  updatedAt: Scalars['AWSDateTime'];
+  userMinStake: Scalars['String'];
+  usersStakes: Array<UserStakes>;
+  voterRecord: Array<VoterRecord>;
+};
+
+export type ColonyMotionInput = {
+  createdBy: Scalars['String'];
+  hasObjection: Scalars['Boolean'];
+  id: Scalars['ID'];
+  isFinalized: Scalars['Boolean'];
+  messages: Array<MotionMessageInput>;
+  motionStakes: MotionStakesInput;
+  motionStateHistory: MotionStateHistoryInput;
+  nativeMotionDomainId: Scalars['String'];
+  nativeMotionId: Scalars['String'];
+  remainingStakes: Array<Scalars['String']>;
+  repSubmitted: Scalars['String'];
+  requiredStake: Scalars['String'];
+  revealedVotes: MotionStakesInput;
+  rootHash: Scalars['String'];
+  skillRep: Scalars['String'];
+  stakerRewards: Array<StakerRewardsInput>;
+  userMinStake: Scalars['String'];
+  usersStakes: Array<UserStakesInput>;
+  voterRecord: Array<VoterRecordInput>;
+};
+
 export type ColonyStatus = {
   __typename?: 'ColonyStatus';
   nativeToken?: Maybe<NativeTokenStatus>;
@@ -359,7 +407,7 @@ export type CreateColonyActionInput = {
   id?: InputMaybe<Scalars['ID']>;
   initiatorAddress: Scalars['ID'];
   isMotion?: InputMaybe<Scalars['Boolean']>;
-  motionData?: InputMaybe<MotionDataInput>;
+  motionDataId?: InputMaybe<Scalars['ID']>;
   newColonyVersion?: InputMaybe<Scalars['Int']>;
   pendingColonyMetadataId?: InputMaybe<Scalars['ID']>;
   pendingDomainMetadataId?: InputMaybe<Scalars['ID']>;
@@ -413,6 +461,28 @@ export type CreateColonyMetadataInput = {
   modifiedTokenAddresses?: InputMaybe<PendingModifiedTokenAddressesInput>;
   thumbnail?: InputMaybe<Scalars['String']>;
   whitelistedAddresses?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type CreateColonyMotionInput = {
+  createdBy: Scalars['String'];
+  hasObjection: Scalars['Boolean'];
+  id?: InputMaybe<Scalars['ID']>;
+  isFinalized: Scalars['Boolean'];
+  messages: Array<MotionMessageInput>;
+  motionStakes: MotionStakesInput;
+  motionStateHistory: MotionStateHistoryInput;
+  nativeMotionDomainId: Scalars['String'];
+  nativeMotionId: Scalars['String'];
+  remainingStakes: Array<Scalars['String']>;
+  repSubmitted: Scalars['String'];
+  requiredStake: Scalars['String'];
+  revealedVotes: MotionStakesInput;
+  rootHash: Scalars['String'];
+  skillRep: Scalars['String'];
+  stakerRewards: Array<StakerRewardsInput>;
+  userMinStake: Scalars['String'];
+  usersStakes: Array<UserStakesInput>;
+  voterRecord: Array<VoterRecordInput>;
 };
 
 export type CreateColonyTokensInput = {
@@ -567,6 +637,10 @@ export type DeleteColonyMetadataInput = {
   id: Scalars['ID'];
 };
 
+export type DeleteColonyMotionInput = {
+  id: Scalars['ID'];
+};
+
 export type DeleteColonyTokensInput = {
   id: Scalars['ID'];
 };
@@ -700,6 +774,7 @@ export type ExtensionParamsInput = {
 
 export type GetMotionStateInput = {
   colonyAddress: Scalars['String'];
+  databaseMotionId: Scalars['String'];
   transactionHash: Scalars['String'];
 };
 
@@ -750,8 +825,8 @@ export type GetUserTokenBalanceReturn = {
 
 export type GetVoterRewardsInput = {
   colonyAddress: Scalars['String'];
-  motionDomainId: Scalars['String'];
   motionId: Scalars['String'];
+  nativeMotionDomainId: Scalars['String'];
   rootHash: Scalars['String'];
   voterAddress: Scalars['String'];
 };
@@ -800,6 +875,7 @@ export type ModelColonyActionConditionInput = {
   fundamentalChainId?: InputMaybe<ModelIntInput>;
   initiatorAddress?: InputMaybe<ModelIdInput>;
   isMotion?: InputMaybe<ModelBooleanInput>;
+  motionDataId?: InputMaybe<ModelIdInput>;
   newColonyVersion?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyActionConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionConditionInput>>>;
@@ -830,6 +906,7 @@ export type ModelColonyActionFilterInput = {
   id?: InputMaybe<ModelIdInput>;
   initiatorAddress?: InputMaybe<ModelIdInput>;
   isMotion?: InputMaybe<ModelBooleanInput>;
+  motionDataId?: InputMaybe<ModelIdInput>;
   newColonyVersion?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyActionFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionFilterInput>>>;
@@ -965,6 +1042,47 @@ export type ModelColonyMetadataFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelColonyMetadataFilterInput>>>;
   thumbnail?: InputMaybe<ModelStringInput>;
   whitelistedAddresses?: InputMaybe<ModelStringInput>;
+};
+
+export type ModelColonyMotionConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelColonyMotionConditionInput>>>;
+  createdBy?: InputMaybe<ModelStringInput>;
+  hasObjection?: InputMaybe<ModelBooleanInput>;
+  isFinalized?: InputMaybe<ModelBooleanInput>;
+  nativeMotionDomainId?: InputMaybe<ModelStringInput>;
+  nativeMotionId?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelColonyMotionConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonyMotionConditionInput>>>;
+  remainingStakes?: InputMaybe<ModelStringInput>;
+  repSubmitted?: InputMaybe<ModelStringInput>;
+  requiredStake?: InputMaybe<ModelStringInput>;
+  rootHash?: InputMaybe<ModelStringInput>;
+  skillRep?: InputMaybe<ModelStringInput>;
+  userMinStake?: InputMaybe<ModelStringInput>;
+};
+
+export type ModelColonyMotionConnection = {
+  __typename?: 'ModelColonyMotionConnection';
+  items: Array<Maybe<ColonyMotion>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelColonyMotionFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelColonyMotionFilterInput>>>;
+  createdBy?: InputMaybe<ModelStringInput>;
+  hasObjection?: InputMaybe<ModelBooleanInput>;
+  id?: InputMaybe<ModelIdInput>;
+  isFinalized?: InputMaybe<ModelBooleanInput>;
+  nativeMotionDomainId?: InputMaybe<ModelStringInput>;
+  nativeMotionId?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelColonyMotionFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelColonyMotionFilterInput>>>;
+  remainingStakes?: InputMaybe<ModelStringInput>;
+  repSubmitted?: InputMaybe<ModelStringInput>;
+  requiredStake?: InputMaybe<ModelStringInput>;
+  rootHash?: InputMaybe<ModelStringInput>;
+  skillRep?: InputMaybe<ModelStringInput>;
+  userMinStake?: InputMaybe<ModelStringInput>;
 };
 
 export type ModelColonyTokensConditionInput = {
@@ -1293,6 +1411,7 @@ export type ModelSubscriptionColonyActionFilterInput = {
   id?: InputMaybe<ModelSubscriptionIdInput>;
   initiatorAddress?: InputMaybe<ModelSubscriptionIdInput>;
   isMotion?: InputMaybe<ModelSubscriptionBooleanInput>;
+  motionDataId?: InputMaybe<ModelSubscriptionIdInput>;
   newColonyVersion?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionFilterInput>>>;
   pendingColonyMetadataId?: InputMaybe<ModelSubscriptionIdInput>;
@@ -1345,6 +1464,23 @@ export type ModelSubscriptionColonyMetadataFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyMetadataFilterInput>>>;
   thumbnail?: InputMaybe<ModelSubscriptionStringInput>;
   whitelistedAddresses?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
+export type ModelSubscriptionColonyMotionFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyMotionFilterInput>>>;
+  createdBy?: InputMaybe<ModelSubscriptionStringInput>;
+  hasObjection?: InputMaybe<ModelSubscriptionBooleanInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  isFinalized?: InputMaybe<ModelSubscriptionBooleanInput>;
+  nativeMotionDomainId?: InputMaybe<ModelSubscriptionStringInput>;
+  nativeMotionId?: InputMaybe<ModelSubscriptionStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyMotionFilterInput>>>;
+  remainingStakes?: InputMaybe<ModelSubscriptionStringInput>;
+  repSubmitted?: InputMaybe<ModelSubscriptionStringInput>;
+  requiredStake?: InputMaybe<ModelSubscriptionStringInput>;
+  rootHash?: InputMaybe<ModelSubscriptionStringInput>;
+  skillRep?: InputMaybe<ModelSubscriptionStringInput>;
+  userMinStake?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
 export type ModelSubscriptionColonyTokensFilterInput = {
@@ -1622,51 +1758,6 @@ export type ModelWatchedColoniesFilterInput = {
   userID?: InputMaybe<ModelIdInput>;
 };
 
-export type MotionData = {
-  __typename?: 'MotionData';
-  createdBy: Scalars['String'];
-  hasObjection: Scalars['Boolean'];
-  isFinalized: Scalars['Boolean'];
-  messages: Array<MotionMessage>;
-  motionDomainId: Scalars['String'];
-  motionId: Scalars['String'];
-  motionStakes: MotionStakes;
-  motionStateHistory: MotionStateHistory;
-  nativeMotionId: Scalars['String'];
-  remainingStakes: Array<Scalars['String']>;
-  repSubmitted: Scalars['String'];
-  requiredStake: Scalars['String'];
-  revealedVotes: MotionStakes;
-  rootHash: Scalars['String'];
-  skillRep: Scalars['String'];
-  stakerRewards: Array<StakerRewards>;
-  userMinStake: Scalars['String'];
-  usersStakes: Array<UserStakes>;
-  voterRecord: Array<VoterRecord>;
-};
-
-export type MotionDataInput = {
-  createdBy: Scalars['String'];
-  hasObjection: Scalars['Boolean'];
-  isFinalized: Scalars['Boolean'];
-  messages: Array<MotionMessageInput>;
-  motionDomainId: Scalars['String'];
-  motionId: Scalars['String'];
-  motionStakes: MotionStakesInput;
-  motionStateHistory: MotionStateHistoryInput;
-  nativeMotionId: Scalars['String'];
-  remainingStakes: Array<Scalars['String']>;
-  repSubmitted: Scalars['String'];
-  requiredStake: Scalars['String'];
-  revealedVotes: MotionStakesInput;
-  rootHash: Scalars['String'];
-  skillRep: Scalars['String'];
-  stakerRewards: Array<StakerRewardsInput>;
-  userMinStake: Scalars['String'];
-  usersStakes: Array<UserStakesInput>;
-  voterRecord: Array<VoterRecordInput>;
-};
-
 export type MotionMessage = {
   __typename?: 'MotionMessage';
   amount?: Maybe<Scalars['String']>;
@@ -1734,6 +1825,7 @@ export type Mutation = {
   createColonyExtension?: Maybe<ColonyExtension>;
   createColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   createColonyMetadata?: Maybe<ColonyMetadata>;
+  createColonyMotion?: Maybe<ColonyMotion>;
   createColonyTokens?: Maybe<ColonyTokens>;
   createContractEvent?: Maybe<ContractEvent>;
   createCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
@@ -1753,6 +1845,7 @@ export type Mutation = {
   deleteColonyExtension?: Maybe<ColonyExtension>;
   deleteColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   deleteColonyMetadata?: Maybe<ColonyMetadata>;
+  deleteColonyMotion?: Maybe<ColonyMotion>;
   deleteColonyTokens?: Maybe<ColonyTokens>;
   deleteContractEvent?: Maybe<ContractEvent>;
   deleteCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
@@ -1771,6 +1864,7 @@ export type Mutation = {
   updateColonyExtension?: Maybe<ColonyExtension>;
   updateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   updateColonyMetadata?: Maybe<ColonyMetadata>;
+  updateColonyMotion?: Maybe<ColonyMotion>;
   updateColonyTokens?: Maybe<ColonyTokens>;
   updateContractEvent?: Maybe<ContractEvent>;
   updateCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
@@ -1814,6 +1908,12 @@ export type MutationCreateColonyFundsClaimArgs = {
 export type MutationCreateColonyMetadataArgs = {
   condition?: InputMaybe<ModelColonyMetadataConditionInput>;
   input: CreateColonyMetadataInput;
+};
+
+
+export type MutationCreateColonyMotionArgs = {
+  condition?: InputMaybe<ModelColonyMotionConditionInput>;
+  input: CreateColonyMotionInput;
 };
 
 
@@ -1929,6 +2029,12 @@ export type MutationDeleteColonyMetadataArgs = {
 };
 
 
+export type MutationDeleteColonyMotionArgs = {
+  condition?: InputMaybe<ModelColonyMotionConditionInput>;
+  input: DeleteColonyMotionInput;
+};
+
+
 export type MutationDeleteColonyTokensArgs = {
   condition?: InputMaybe<ModelColonyTokensConditionInput>;
   input: DeleteColonyTokensInput;
@@ -2033,6 +2139,12 @@ export type MutationUpdateColonyFundsClaimArgs = {
 export type MutationUpdateColonyMetadataArgs = {
   condition?: InputMaybe<ModelColonyMetadataConditionInput>;
   input: UpdateColonyMetadataInput;
+};
+
+
+export type MutationUpdateColonyMotionArgs = {
+  condition?: InputMaybe<ModelColonyMotionConditionInput>;
+  input: UpdateColonyMotionInput;
 };
 
 
@@ -2185,12 +2297,14 @@ export type Query = {
   getActionsByColony?: Maybe<ModelColonyActionConnection>;
   getColony?: Maybe<Colony>;
   getColonyAction?: Maybe<ColonyAction>;
+  getColonyActionByMotion?: Maybe<ModelColonyActionConnection>;
   getColonyByAddress?: Maybe<ModelColonyConnection>;
   getColonyByName?: Maybe<ModelColonyConnection>;
   getColonyByType?: Maybe<ModelColonyConnection>;
   getColonyExtension?: Maybe<ColonyExtension>;
   getColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   getColonyMetadata?: Maybe<ColonyMetadata>;
+  getColonyMotion?: Maybe<ColonyMotion>;
   getColonyTokens?: Maybe<ColonyTokens>;
   getContractEvent?: Maybe<ContractEvent>;
   getCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
@@ -2223,6 +2337,7 @@ export type Query = {
   listColonyExtensions?: Maybe<ModelColonyExtensionConnection>;
   listColonyFundsClaims?: Maybe<ModelColonyFundsClaimConnection>;
   listColonyMetadata?: Maybe<ModelColonyMetadataConnection>;
+  listColonyMotions?: Maybe<ModelColonyMotionConnection>;
   listColonyTokens?: Maybe<ModelColonyTokensConnection>;
   listContractEvents?: Maybe<ModelContractEventConnection>;
   listCurrentNetworkInverseFees?: Maybe<ModelCurrentNetworkInverseFeeConnection>;
@@ -2255,6 +2370,15 @@ export type QueryGetColonyArgs = {
 
 export type QueryGetColonyActionArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryGetColonyActionByMotionArgs = {
+  filter?: InputMaybe<ModelColonyActionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  motionDataId: Scalars['ID'];
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -2296,6 +2420,11 @@ export type QueryGetColonyFundsClaimArgs = {
 
 
 export type QueryGetColonyMetadataArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGetColonyMotionArgs = {
   id: Scalars['ID'];
 };
 
@@ -2499,6 +2628,13 @@ export type QueryListColonyMetadataArgs = {
 };
 
 
+export type QueryListColonyMotionsArgs = {
+  filter?: InputMaybe<ModelColonyMotionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryListColonyTokensArgs = {
   filter?: InputMaybe<ModelColonyTokensFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -2614,6 +2750,7 @@ export type Subscription = {
   onCreateColonyExtension?: Maybe<ColonyExtension>;
   onCreateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   onCreateColonyMetadata?: Maybe<ColonyMetadata>;
+  onCreateColonyMotion?: Maybe<ColonyMotion>;
   onCreateColonyTokens?: Maybe<ColonyTokens>;
   onCreateContractEvent?: Maybe<ContractEvent>;
   onCreateCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
@@ -2631,6 +2768,7 @@ export type Subscription = {
   onDeleteColonyExtension?: Maybe<ColonyExtension>;
   onDeleteColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   onDeleteColonyMetadata?: Maybe<ColonyMetadata>;
+  onDeleteColonyMotion?: Maybe<ColonyMotion>;
   onDeleteColonyTokens?: Maybe<ColonyTokens>;
   onDeleteContractEvent?: Maybe<ContractEvent>;
   onDeleteCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
@@ -2648,6 +2786,7 @@ export type Subscription = {
   onUpdateColonyExtension?: Maybe<ColonyExtension>;
   onUpdateColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   onUpdateColonyMetadata?: Maybe<ColonyMetadata>;
+  onUpdateColonyMotion?: Maybe<ColonyMotion>;
   onUpdateColonyTokens?: Maybe<ColonyTokens>;
   onUpdateContractEvent?: Maybe<ContractEvent>;
   onUpdateCurrentNetworkInverseFee?: Maybe<CurrentNetworkInverseFee>;
@@ -2685,6 +2824,11 @@ export type SubscriptionOnCreateColonyFundsClaimArgs = {
 
 export type SubscriptionOnCreateColonyMetadataArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyMetadataFilterInput>;
+};
+
+
+export type SubscriptionOnCreateColonyMotionArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyMotionFilterInput>;
 };
 
 
@@ -2773,6 +2917,11 @@ export type SubscriptionOnDeleteColonyMetadataArgs = {
 };
 
 
+export type SubscriptionOnDeleteColonyMotionArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyMotionFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteColonyTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyTokensFilterInput>;
 };
@@ -2855,6 +3004,11 @@ export type SubscriptionOnUpdateColonyFundsClaimArgs = {
 
 export type SubscriptionOnUpdateColonyMetadataArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyMetadataFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateColonyMotionArgs = {
+  filter?: InputMaybe<ModelSubscriptionColonyMotionFilterInput>;
 };
 
 
@@ -2979,7 +3133,7 @@ export type UpdateColonyActionInput = {
   id: Scalars['ID'];
   initiatorAddress?: InputMaybe<Scalars['ID']>;
   isMotion?: InputMaybe<Scalars['Boolean']>;
-  motionData?: InputMaybe<MotionDataInput>;
+  motionDataId?: InputMaybe<Scalars['ID']>;
   newColonyVersion?: InputMaybe<Scalars['Int']>;
   pendingColonyMetadataId?: InputMaybe<Scalars['ID']>;
   pendingDomainMetadataId?: InputMaybe<Scalars['ID']>;
@@ -3033,6 +3187,28 @@ export type UpdateColonyMetadataInput = {
   modifiedTokenAddresses?: InputMaybe<PendingModifiedTokenAddressesInput>;
   thumbnail?: InputMaybe<Scalars['String']>;
   whitelistedAddresses?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type UpdateColonyMotionInput = {
+  createdBy?: InputMaybe<Scalars['String']>;
+  hasObjection?: InputMaybe<Scalars['Boolean']>;
+  id: Scalars['ID'];
+  isFinalized?: InputMaybe<Scalars['Boolean']>;
+  messages?: InputMaybe<Array<MotionMessageInput>>;
+  motionStakes?: InputMaybe<MotionStakesInput>;
+  motionStateHistory?: InputMaybe<MotionStateHistoryInput>;
+  nativeMotionDomainId?: InputMaybe<Scalars['String']>;
+  nativeMotionId?: InputMaybe<Scalars['String']>;
+  remainingStakes?: InputMaybe<Array<Scalars['String']>>;
+  repSubmitted?: InputMaybe<Scalars['String']>;
+  requiredStake?: InputMaybe<Scalars['String']>;
+  revealedVotes?: InputMaybe<MotionStakesInput>;
+  rootHash?: InputMaybe<Scalars['String']>;
+  skillRep?: InputMaybe<Scalars['String']>;
+  stakerRewards?: InputMaybe<Array<StakerRewardsInput>>;
+  userMinStake?: InputMaybe<Scalars['String']>;
+  usersStakes?: InputMaybe<Array<UserStakesInput>>;
+  voterRecord?: InputMaybe<Array<VoterRecordInput>>;
 };
 
 export type UpdateColonyTokensInput = {
@@ -3711,7 +3887,7 @@ export const MotionDataFragmentDoc = gql`
   userMinStake
   requiredStake
   rootHash
-  motionDomainId
+  nativeMotionDomainId
   stakerRewards {
     address
     rewards {
@@ -3781,7 +3957,7 @@ export const ColonyActionFragmentDoc = gql`
   newColonyVersion
   isMotion
   motionData {
-    ...MotionData
+    ...ColonyMotion
   }
   colony {
     colonyAddress: id

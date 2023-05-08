@@ -26,7 +26,7 @@ fragment ColonyAction on ColonyAction {
   newColonyVersion
   isMotion
   motionData {
-    ...MotionData
+    ...ColonyMotion
   }
   colony {
     colonyAddress: id
@@ -50,8 +50,8 @@ fragment MotionStakeValues on MotionStakeValues {
   nay
 }
 
-fragment MotionData on MotionData {
-  databaseMotionId: motionId
+fragment ColonyMotion on ColonyMotion {
+  databaseMotionId: id
   motionId: nativeMotionId
   motionStakes {
     raw {
@@ -76,7 +76,7 @@ fragment MotionData on MotionData {
   userMinStake
   requiredStake
   rootHash
-  motionDomainId
+  nativeMotionDomainId
   stakerRewards {
     address
     rewards {

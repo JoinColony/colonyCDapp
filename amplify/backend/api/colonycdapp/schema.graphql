@@ -115,13 +115,14 @@ input GetUserTokenBalanceInput {
 
 input GetMotionStateInput {
   colonyAddress: String!
+  databaseMotionId: String!
   transactionHash: String!
 }
 
 input GetVoterRewardsInput {
   voterAddress: String!
   colonyAddress: String!
-  motionDomainId: String!
+  nativeMotionDomainId: String!
   motionId: String!
   rootHash: String!
 }
@@ -567,9 +568,9 @@ type MotionStateHistory {
   inRevealPhase: Boolean!
 }
 
-# Duplicate of MotionData type, required to mutate the motionData in `fetchMotionState` lamda
-input MotionDataInput {
-  motionId: String! # to ensure uniqueness, we format as: chainId-votingRepExtnAddress_nativeMotionId
+# Duplicate of ColonyMotion type, required to mutate the motionData in `fetchMotionState` lamda
+input ColonyMotionInput {
+  id: ID! # to ensure uniqueness, we format as: chainId-votingRepExtnAddress_nativeMotionId
   nativeMotionId: String!
   usersStakes: [UserStakesInput!]!
   stakerRewards: [StakerRewardsInput!]!
@@ -578,7 +579,7 @@ input MotionDataInput {
   userMinStake: String!
   requiredStake: String!
   rootHash: String! # For calculating user's max stake in client
-  motionDomainId: String! # native domain id
+  nativeMotionDomainId: String! # native domain id
   isFinalized: Boolean!
   createdBy: String! # voting rep extn address. Useful to check if we're viewing a "read-only" motion
   voterRecord: [VoterRecordInput!]!
@@ -590,8 +591,8 @@ input MotionDataInput {
   messages: [MotionMessageInput!]!
 }
 
-type MotionData {
-  motionId: String! # to ensure uniqueness, we format as: chainId-votingRepExtnAddress_nativeMotionId
+type ColonyMotion @model {
+  id: ID! # to ensure uniqueness, we format as: chainId-votingRepExtnAddress_nativeMotionId
   nativeMotionId: String!
   usersStakes: [UserStakes!]!
   stakerRewards: [StakerRewards!]!
@@ -600,7 +601,7 @@ type MotionData {
   userMinStake: String!
   requiredStake: String!
   rootHash: String! # For calculating user's max stake in client
-  motionDomainId: String! # native domain id
+  nativeMotionDomainId: String! # native domain id
   isFinalized: Boolean!
   createdBy: String! # voting rep extn address. Useful to check if we're viewing a "read-only" motion
   voterRecord: [VoterRecord!]!
@@ -694,7 +695,12 @@ type ColonyAction @model {
   type: ColonyActionType!
   blockNumber: Int!
   isMotion: Boolean
-  motionData: MotionData
+  motionDataId: ID
+    @index(
+      name: "byMotion"
+      queryField: "getColonyActionByMotion"
+    )
+  motionData: ColonyMotion @hasOne(fields: ["motionDataId"])
   showInActionsList: Boolean! # True for (forced) actions. True for motions if staked above 10%
   createdAt: AWSDateTime!
   initiatorAddress: ID!
