@@ -7,6 +7,7 @@ declare namespace MessageCardDetailsCssNamespace {
     confirmationButtonsWrapper: string;
     description: string;
     main: string;
+    messageContent: string;
     stateFailed: string;
     stateIsShowingCancelConfirmation: string;
     stateSucceeded: string;
