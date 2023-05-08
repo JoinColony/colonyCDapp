@@ -133,8 +133,8 @@ exports.handler = async (event) => {
          * have the concept of chains
          */
         chainMetadata: {
-          chainId: 2656691,
-          network: 'GANACHE',
+          chainId: 100,
+          network: 'GNOSIS',
         },
         version,
       },
