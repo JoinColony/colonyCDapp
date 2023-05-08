@@ -23,32 +23,29 @@ const displayName =
 
 const VoterAvatars = ({ voters, maxAvatars }: VoterAvatarsProps) => {
   const remainingAvatarsCount = calculateRemainingItems(maxAvatars, voters);
+  const { user } = useAppContext();
   const voterAddresses = useMemo(
     // We need a stable reference to this array to avoid an infinite loop in `useGetUsers`
     () =>
       voters
-        .map(({ address }) => address)
+        .reduce((acc, { address }) => {
+          if (address === user?.walletAddress) {
+            acc.unshift(address);
+          } else {
+            acc.push(address);
+          }
+          return acc;
+        }, [] as string[])
         .slice(0, calculateLastSliceIndex(maxAvatars, voters)),
-    [maxAvatars, voters],
+    [maxAvatars, voters, user],
   );
 
-  const { user } = useAppContext();
   const registeredVoters = useGetUsers(voterAddresses);
-
-  const sortedUsers =
-    registeredVoters.length > 0 && user
-      ? [
-          user,
-          ...registeredVoters.filter(
-            (voter) => voter.walletAddress !== user.walletAddress,
-          ),
-        ]
-      : registeredVoters;
 
   return (
     <div className={styles.main}>
       <ul className={styles.voterAvatars}>
-        {sortedUsers.map((registeredVoter: User) => {
+        {registeredVoters.map((registeredVoter: User) => {
           return (
             <li
               className={styles.voterAvatar}
