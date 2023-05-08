@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { ColonyRole, Id } from '@colony/colony-js';
 
-import ExternalLink from '~shared/ExternalLink';
+import ExternalLink from '~shared/Extensions/ExternalLink';
 import { DialogSection, ActionDialogProps, DialogHeading, DialogControls } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';

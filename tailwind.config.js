@@ -137,7 +137,7 @@ module.exports = {
       transitionDuration: {
         slow: '175ms',
         normal: '300ms',
-        fast: '450ms',
+        fast: '175ms',
       },
       screens: {
         sm: '26.75rem',

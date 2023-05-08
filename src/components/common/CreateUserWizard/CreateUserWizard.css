@@ -1,4 +1,4 @@
-@value query700 from '~styles/queries.css';
+@value query428 from '~styles/queries.css';
 
 .main {
   padding-top: 155px;
@@ -37,7 +37,7 @@
   line-height: 18px;
 }
 
-@media screen and query700 {
+@media screen and query428 {
   .nameForm > div:first-of-type {
     margin-bottom: 15px;
   }

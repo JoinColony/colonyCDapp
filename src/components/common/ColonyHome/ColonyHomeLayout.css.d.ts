@@ -10,7 +10,7 @@ declare namespace ColonyHomeLayoutCssNamespace {
     mappings: string;
     minimalGrid: string;
     names: string;
-    query700: string;
+    query428: string;
     rightAside: string;
     sourceRoot: string;
     sources: string;

@@ -1,4 +1,4 @@
-@value query700 from '~styles/queries.css';
+@value query428 from '~styles/queries.css';
 
 .submitButton {
   display: flex;
@@ -15,7 +15,7 @@
   word-break: break-word;
 }
 
-@media screen and query700 {
+@media screen and query428 {
   .submitButton {
     margin-top: 25px;
   }

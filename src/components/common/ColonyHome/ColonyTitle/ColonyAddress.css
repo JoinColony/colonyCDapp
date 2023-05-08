@@ -1,4 +1,4 @@
-@value query700 from '~styles/queries.css';
+@value query428 from '~styles/queries.css';
 
 .colonyAddress {
   padding: 4px 6px;
@@ -17,7 +17,7 @@
   color: var(--colony-blue);
 }
 
-@media screen and query700 {
+@media screen and query428 {
   .colonyAddress {
     padding-left: 0px;
   }

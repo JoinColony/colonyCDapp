@@ -12,7 +12,7 @@ declare namespace TokenCardCssNamespace {
     mappings: string;
     names: string;
     nativeTokenText: string;
-    query700: string;
+    query428: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;

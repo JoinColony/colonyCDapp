@@ -55,10 +55,6 @@ module.exports = {
 
     config.module.rules = config.module.rules.filter(
       ({ test }, index) => !test || (!test.test('test.css') && !test.test('test.scss') && !test.test('test.tsx')),
-    );
-    config.module.rules.push({
-      test: /\.css$/,
-      oneOf: [
         {
           test: /\.global\.css$/,
           include: [path.resolve(__dirname, '..', 'src', 'components'), path.resolve(__dirname, '..', 'src', 'styles')],

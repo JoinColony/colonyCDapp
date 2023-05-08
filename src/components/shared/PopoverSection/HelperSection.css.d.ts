@@ -4,7 +4,7 @@ declare namespace HelperSectionCssNamespace {
     mappings: string;
     names: string;
     queries: string;
-    query700: string;
+    query428: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;

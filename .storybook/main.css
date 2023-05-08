@@ -149,7 +149,11 @@ button[disabled].rts___btn {
 }
 
 .rts___tab___selected {
-  @apply shadow-none font-semibold text-blue-400 border-blue-400;
+  @apply shadow-none text-blue-400 border-blue-400;
+}
+
+.rts___nav___btn:hover {
+  @apply bg-gray-300;
 }
 
 button:disabled.rts___btn,
