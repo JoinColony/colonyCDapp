@@ -65,7 +65,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
             GetCurrentUserQueryVariables
           >({
             query: GetCurrentUserDocument,
-            variables: { address: utils.getAddress(address || '') },
+            variables: { address },
             fetchPolicy: 'network-only',
           });
           const [currentUser] = data?.getUserByAddress?.items || [];
@@ -87,6 +87,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const updateWallet = useCallback((): void => {
     try {
       const updatedWallet = getContext(ContextModule.Wallet);
+      updatedWallet.address = utils.getAddress(updatedWallet.address);
       setWallet(updatedWallet);
       // Update the user as soon as the wallet address changes
       if (updatedWallet?.address !== wallet?.address) {
@@ -125,6 +126,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
     setWalletConnecting?.(false);
   }, [asyncFunction, updateWallet, setWalletConnecting]);
+
+  // console.log(wallet);
 
   const appContext = useMemo<AppContextValues>(
     () => ({
