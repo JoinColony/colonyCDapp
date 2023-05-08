@@ -2,7 +2,7 @@ declare namespace SelectedTokenCssNamespace {
   export interface ISelectedTokenCss {
     mappings: string;
     names: string;
-    query700: string;
+    query428: string;
     selectedToken: string;
     selectedTokenAmount: string;
     sourceRoot: string;

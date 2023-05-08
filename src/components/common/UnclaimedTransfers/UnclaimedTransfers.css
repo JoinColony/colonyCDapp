@@ -1,4 +1,4 @@
-@value query700 from '~styles/queries.css';
+@value query428 from '~styles/queries.css';
 
 .main {
   margin: 25px 0 20px 0;
@@ -11,7 +11,7 @@
   color: var(--dark);
 }
 
-@media screen and query700 {
+@media screen and query428 {
   .title {
     padding: 0 14px;
   }

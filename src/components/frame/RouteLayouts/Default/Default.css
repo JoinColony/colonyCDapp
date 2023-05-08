@@ -1,4 +1,4 @@
-@value query700 from "~styles/queries.css";
+@value query428 from "~styles/queries.css";
 @value navHeight: 43px;
 
 .main {
@@ -46,7 +46,7 @@
   left: 0;
 }
 
-@media screen and query700 {
+@media screen and query428 {
   .content {
     flex-direction: column;
   }

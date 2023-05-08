@@ -1,5 +1,5 @@
 @value spaceBetween: 26px;
-@value query700 from '~styles/queries.css';
+@value query428 from '~styles/queries.css';
 
 .content {
   display: flex;
@@ -59,7 +59,7 @@
   align-items: center;
 }
 
-@media screen and query700 {
+@media screen and query428 {
   .content,
   .content > div {
     justify-content: flex-start;

@@ -10,7 +10,7 @@ declare namespace DefaultCssNamespace {
     names: string;
     navHeight: string;
     onlyHistory: string;
-    query700: string;
+    query428: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;
