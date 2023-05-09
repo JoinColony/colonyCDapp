@@ -16,7 +16,7 @@ jobs:
       - name: 'Setup node'
         uses: actions/setup-node@v3
         with:
-          node-version: 16.14.0
+          node-version: 16.10.0
       - uses: actions/checkout@v1
       - name: Install dependencies
         # 👇 Install dependencies with the same package manager used in the project (replace it as needed), e.g. yarn, npm, pnpm
