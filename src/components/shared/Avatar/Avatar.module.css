@@ -1,0 +1,61 @@
+.main {
+  @apply h-[2.8125rem] w-[2.8125rem] relative;
+}
+
+.xxs {
+  @apply relative w-[1.125rem] h-[1.125rem];
+}
+
+.xs {
+  @apply h-[1.625rem] w-[1.625rem] relative;
+}
+
+.s {
+  @apply h-[2.125rem] w-[2.125rem] relative;
+}
+
+.m {
+  @apply h-[3.75rem] w-[3.75rem] relative;
+}
+
+.l {
+  @apply h-[7.5rem] w-[7.5rem] relative;
+}
+
+.xl {
+  @apply h-[10rem] w-[10rem] relative;
+}
+
+.placeholderIcon {
+  height: 100%;
+  width: 100%;
+  opacity: 0.5;
+
+  & svg {
+    fill: rgb(118, 116, 139);
+    stroke: rgb(118, 116, 139);
+    stroke-width: 0.5;
+  }
+}
+
+.placeholderIconNotSet {
+  @apply placeholderIcon opacity-10;
+}
+
+.image {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  background-size: cover;
+}
+
+.highlighted {
+  @apply relative;
+
+  & .image::before {
+    @apply h-full w-full absolute top-0 left-0 border-2 border-gray-500 after:content-[''] rounded-full rotate-45;
+  }
+}
