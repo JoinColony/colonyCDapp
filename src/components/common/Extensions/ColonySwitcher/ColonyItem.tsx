@@ -13,7 +13,7 @@ const ColonyItem: FC<IColonyItem> = ({ colony, chainName }) => (
       to={`/colony/${colony.name}`}
       className={({ isActive }) => (isActive ? 'text-blue-400' : undefined)}
     >
-      <div className="flex items-center justify-between mx-4">
+      <div className="flex items-center justify-between md:mx-4">
         <div className="flex items-center">
           <div className="flex mr-2">
             <ColonyAvatar colony={colony} colonyAddress={colony.colonyAddress} size="xxs" />
