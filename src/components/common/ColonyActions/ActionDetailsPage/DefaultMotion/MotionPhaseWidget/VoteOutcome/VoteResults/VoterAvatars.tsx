@@ -6,6 +6,7 @@ import {
   calculateLastSliceIndex,
   calculateRemainingItems,
 } from '~utils/avatars';
+import { useAppContext } from '~hooks';
 import UserAvatar from '~shared/UserAvatar';
 
 import { useGetUsers } from './helpers';
@@ -22,16 +23,25 @@ const displayName =
 
 const VoterAvatars = ({ voters, maxAvatars }: VoterAvatarsProps) => {
   const remainingAvatarsCount = calculateRemainingItems(maxAvatars, voters);
+  const { user } = useAppContext();
   const voterAddresses = useMemo(
     // We need a stable reference to this array to avoid an infinite loop in `useGetUsers`
     () =>
       voters
-        .map(({ address }) => address)
+        .reduce<string[]>((acc, { address }) => {
+          if (address === user?.walletAddress) {
+            acc.unshift(address);
+          } else {
+            acc.push(address);
+          }
+          return acc;
+        }, [])
         .slice(0, calculateLastSliceIndex(maxAvatars, voters)),
-    [maxAvatars, voters],
+    [maxAvatars, voters, user],
   );
 
   const registeredVoters = useGetUsers(voterAddresses);
+
   return (
     <div className={styles.main}>
       <ul className={styles.voterAvatars}>
