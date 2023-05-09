@@ -28,14 +28,14 @@ const VoterAvatars = ({ voters, maxAvatars }: VoterAvatarsProps) => {
     // We need a stable reference to this array to avoid an infinite loop in `useGetUsers`
     () =>
       voters
-        .reduce((acc, { address }) => {
+        .reduce<string[]>((acc, { address }) => {
           if (address === user?.walletAddress) {
             acc.unshift(address);
           } else {
             acc.push(address);
           }
           return acc;
-        }, [] as string[])
+        }, [])
         .slice(0, calculateLastSliceIndex(maxAvatars, voters)),
     [maxAvatars, voters, user],
   );
