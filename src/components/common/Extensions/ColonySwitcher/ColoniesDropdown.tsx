@@ -10,6 +10,14 @@ const displayName = 'common.Extensions.ColonySwitcher.ColoniesDropdown';
 const ColoniesDropdown: FC<IColoniesDropdown> = ({ watchlist = [] }) => {
   const { colonyToDisplay, colonyToDisplayAddress } = useSelectedColony(watchlist);
 
+  const groupByCategory = watchlist.reduce((group, item) => {
+    const { network } = item.colony.chainMetadata;
+    // eslint-disable-next-line no-param-reassign
+    group[network] = group[network] ?? [];
+    group[network].push(item);
+    return group;
+  }, {});
+
   return (
     <div className="h-[24.75rem] p-1 w-full">
       <div className="flex items-center p-2 md:ml-4">
@@ -21,9 +29,17 @@ const ColoniesDropdown: FC<IColoniesDropdown> = ({ watchlist = [] }) => {
         </div>
       </div>
       <div className="w-full h-[0.0625rem] bg-gray-200 my-2" />
-      <div className="uppercase text-gray-400 text-xs font-medium ml-6">Gnosis</div>
-      {watchlist.map((item) => (
-        <ColonyItem colony={item?.colony as Colony} key={item?.colony?.colonyAddress} chainName="gnosis" />
+      {Object.keys(groupByCategory).map((key) => (
+        <div className="mt-6" key={key}>
+          <div className="uppercase text-gray-400 text-xs font-medium pl-2">{key}</div>
+          {groupByCategory[key].map((item) => (
+            <ColonyItem
+              colony={item?.colony as Colony}
+              key={item?.colony?.colonyAddress}
+              chainName={item?.colony?.chainMetadata?.network || ''}
+            />
+          ))}
+        </div>
       ))}
     </div>
   );

@@ -53,7 +53,7 @@ const ColonySwitcher = () => {
       <button
         aria-label="Open dropdown"
         className={clsx('flex items-center justify-between', {
-          'w-[9.3125rem] pl-4': isMobile,
+          'w-[40%] pl-4': isMobile,
           'w-[3.5225rem]': !isMobile,
         })}
         onClick={() => setIsOpen((prevState) => !prevState)}
