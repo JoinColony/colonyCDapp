@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Colony } from '~types';
+import { Colony, WatchListItem } from '~types';
 import ColonyItem from './ColonyItem';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import { IColoniesDropdown } from './types';
@@ -10,8 +10,8 @@ const displayName = 'common.Extensions.ColonySwitcher.ColoniesDropdown';
 const ColoniesDropdown: FC<IColoniesDropdown> = ({ watchlist = [] }) => {
   const { colonyToDisplay, colonyToDisplayAddress } = useSelectedColony(watchlist);
 
-  const groupByCategory = watchlist.reduce((group, item) => {
-    const { network } = item.colony.chainMetadata;
+  const groupByCategory = (watchlist as WatchListItem[]).reduce((group, item) => {
+    const network = (item && item.colony.chainMetadata?.network) || '';
     // eslint-disable-next-line no-param-reassign
     group[network] = group[network] ?? [];
     group[network].push(item);
