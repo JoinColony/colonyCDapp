@@ -62,11 +62,9 @@ export const switchTokenInputType = (
     const steps = [...stepsValues];
     steps[1] = { tokenChoice: type };
     /*
-     * Clear state of Create Token when coming back from Select Token
+     * Clear token state when switching between create/use existing
      */
-    if (steps[2] && type === 'create' && steps[2].tokenAddress !== '') {
-      steps[2] = {};
-    }
+    steps[2] = {};
     return steps;
   });
 };
