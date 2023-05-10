@@ -58,7 +58,7 @@ export const useTransferFundsDialogStatus = (
   const { fromDomainId, toDomainId } = watch();
   const fromDomainRoles = useTransformer(getUserRolesForDomain, [
     colony,
-    wallet?.address,
+    wallet?.address ?? '',
     fromDomainId,
   ]);
   const {
