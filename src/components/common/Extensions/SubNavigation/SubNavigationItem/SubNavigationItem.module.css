@@ -1,5 +1,5 @@
 .tooltipContainer {
-  @apply bg-white p-[0.625rem] shadow-default border border-gray-200 rounded-lg overflow-y-scroll  max-h-[36rem] min-w-[20.5rem];
+  @apply bg-white p-[0.625rem] shadow-default border border-gray-200 rounded-lg overflow-y-scroll max-h-[36rem] min-w-[20.5rem];
 
   &::-webkit-scrollbar {
     @apply hidden;
