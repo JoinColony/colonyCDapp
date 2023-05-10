@@ -4,12 +4,12 @@ import ColonyAvatar from '~shared/ColonyAvatar';
 import Icon from '~shared/Icon';
 import { IColonyItem } from './types';
 
-const displayName = 'common.Extensions.ColonySwitcher.ColonyItem';
+const displayName = 'common.Extensions..ColonyItem';
 
 const ColonyItem: FC<IColonyItem> = ({ colony, chainName }) => (
-  <div className="p-2 hover:bg-gray-50 rounded">
+  <div className="py-2 px-6 sm:px-2 hover:bg-gray-50 rounded">
     <NavLink title={colony?.name} to={`/colony/${colony?.name}`} className="group">
-      <div className="flex items-center justify-between md:mx-4">
+      <div className="flex items-center justify-between">
         <div className="flex items-center">
           <div className="flex mr-2">
             <ColonyAvatar colony={colony} colonyAddress={colony?.colonyAddress} size="xxs" />

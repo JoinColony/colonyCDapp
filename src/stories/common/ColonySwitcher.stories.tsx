@@ -56,18 +56,12 @@ export const ColonySwitcherWithHooks = () => {
   return (
     <Router>
       <div
-        className="bg-base-white max-w-[26.75rem] md:max-w-full md:h-[6.6875rem] flex flex-row 
+        className="bg-base-white w-full flex flex-row md:min-h-[6.6875rem] 
   justify-between md:px-6 border-b border-gray-200 md:border-b-0"
       >
-        <div
-          className="flex flex-col md:items-center md:flex-row max-w-[26.75rem]
-        w-[26.75rem] md:w-full md:max-w-full"
-        >
-          <div className="md:mr-[3.5rem] w-[26.75rem] md:w-auto">
-            <div
-              className="flex justify-between max-w-[26.75rem] w-[26.75rem] md:w-auto relative mx-4 mb:mx-0"
-              ref={ref}
-            >
+        <div className="flex flex-col md:items-center md:flex-row w-[90rem]">
+          <div className="md:mr-[2.5rem] mt-6 md:mt-0">
+            <div className="flex justify-between relative mx-6 mb:mx-0" ref={ref}>
               <button
                 aria-label="Open dropdown"
                 className={clsx('flex items-center justify-between', {
@@ -119,7 +113,7 @@ export const ColonySwitcherWithHooks = () => {
                   type="button"
                   aria-label="Close dropdown"
                   onClick={() => setIsOpen(false)}
-                  className="[&<i<svg]:fill-gray-400 [&<i<svg]:stroke-gray-400 pr-4"
+                  className="[&<i<svg]:fill-gray-400 [&<i<svg]:stroke-gray-400 md:pr-4"
                 >
                   <Icon name="close" appearance={{ size: 'extraTiny' }} />
                 </button>
@@ -127,19 +121,19 @@ export const ColonySwitcherWithHooks = () => {
             </div>
           </div>
           {isMobile ? (
-            <div className="flex justify-between mt-6 mb-4 mx-4 md:mx-0">
+            <div className="flex justify-between mt-6 mb-4 mx-6 md:mx-0">
               <div>Menu</div>
               <div className="ml-auto">wallett</div>
             </div>
           ) : (
-            <div className="flex justify-between">
-              <div className="flex flex-row">
+            <div className="flex justify-between w-full">
+              <div className="flex flex-row w-[400px]">
                 <div className="mx-2">Dashboard</div>
                 <div className="mx-2">Members</div>
                 <div className="mx-2">Decisions</div>
                 <div className="mx-2">More</div>
               </div>
-              <div>wallett</div>
+              <div className="block ml-auto">wallett</div>
             </div>
           )}
         </div>

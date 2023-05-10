@@ -13,10 +13,10 @@ const ColonyDropdownMobile: FC<PropsWithChildren<IColonyDropdownMobile>> = ({
 }) => (
   <>
     {isOpen && (
-      <div className="h-auto absolute">
+      <div className="h-auto absolute left-[-0.7rem]">
         <div
-          className={clsx('h-[24.75rem] p-1 flex justify-center z-[9999] bg-base-white', {
-            'w-[26.75rem]': isMobile,
+          className={clsx('h-[24.75rem] flex justify-center z-[9999] bg-base-white w-full', {
+            'w-[90vw]': isMobile,
           })}
         >
           {userLoading && (
