@@ -6,6 +6,7 @@ export interface IColonySwitcher {
 
 export interface IColoniesDropdown {
   watchlist: (WatchListItem | null)[];
+  isMobile?: boolean;
 }
 
 export interface IColonyItem {

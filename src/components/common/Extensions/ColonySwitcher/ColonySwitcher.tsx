@@ -49,11 +49,10 @@ const ColonySwitcher = () => {
   );
 
   return (
-    <div className="flex justify-between w-[26.75rem] md:w-[15.1875rem] relative" ref={ref}>
+    <div className="flex justify-between w-auto relative" ref={ref}>
       <button
         aria-label="Open dropdown"
         className={clsx('flex items-center justify-between', {
-          'w-[40%] pl-4': isMobile,
           'w-[3.5225rem]': !isMobile,
         })}
         onClick={() => setIsOpen((prevState) => !prevState)}
@@ -71,7 +70,7 @@ const ColonySwitcher = () => {
       {/* @TODO: add wallet buttons */}
 
       {isOpen && (
-        <div className="h-auto absolute top-[2.3rem]">
+        <div className="h-auto absolute top-[4.1rem] md:top-[2.3rem]">
           {!isMobile && (
             <div
               ref={setTooltipRef}
@@ -92,7 +91,9 @@ const ColonySwitcher = () => {
           )}
           {isMobile && (
             <ColonyDropdownMobile isOpen={isOpen} isMobile={isMobile} userLoading={userLoading}>
-              {!!watchlist.length && !userLoading && <ColoniesDropdown watchlist={[...watchlist].sort(sortByDate)} />}
+              {!!watchlist.length && !userLoading && (
+                <ColoniesDropdown watchlist={[...watchlist].sort(sortByDate)} isMobile={isMobile} />
+              )}
             </ColonyDropdownMobile>
           )}
         </div>
