@@ -4,7 +4,7 @@ import Icon from '~shared/Icon';
 import { Colony } from '~types';
 import { ColonyAvatarProps } from '../types';
 
-const displayName = 'common.Extensions.ColonySwitcher.ColonyAvatarWrapper';
+const displayName = 'common.Extensions.ColonySwitcher.partials.ColonyAvatarWrapper';
 
 const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
   colonyToDisplay,

@@ -4,7 +4,7 @@ import ColonyAvatar from '~shared/ColonyAvatar';
 import Icon from '~shared/Icon';
 import { ColonyItemProps } from '../types';
 
-const displayName = 'common.Extensions..ColonyItem';
+const displayName = 'common.Extensions.partials.ColonyItem';
 
 const ColonyItem: FC<ColonyItemProps> = ({ colony, chainName }) => (
   <div className="py-2 px-6 sm:px-2 hover:bg-gray-50 rounded">

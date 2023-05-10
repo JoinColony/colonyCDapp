@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { ColonyDropdownMobileProps } from '../types';
 
-const displayName = 'common.Extensions.ColonyDropdownMobile';
+const displayName = 'common.Extensions.partials.ColonyDropdownMobile';
 
 const ColonyDropdownMobile: FC<PropsWithChildren<ColonyDropdownMobileProps>> = ({
   isOpen,
