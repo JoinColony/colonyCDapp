@@ -406,5 +406,7 @@
     "userInfo.colonyReputation.business": "Business",
     "userInfo.colonyReputation.development": "Development",
     "userInfo.colonyReputation.product": "Product",
-    "copyWalletAddress": "Copy wallet address"
+    "copyWalletAddress": "Copy wallet address",
+    "copy.address": "Copy address",
+    "copied": "Copied"
 }
