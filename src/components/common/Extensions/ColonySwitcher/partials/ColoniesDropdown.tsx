@@ -5,7 +5,7 @@ import ColonyAvatar from '~shared/ColonyAvatar';
 import { ColoniesDropdownProps } from '../types';
 import { useSelectedColony } from '../hooks';
 
-const displayName = 'common.Extensions.ColonySwitcher.ColoniesDropdown';
+const displayName = 'common.Extensions.ColonySwitcher.partials.ColoniesDropdown';
 
 const ColoniesDropdown: FC<ColoniesDropdownProps> = ({ watchlist = [], isMobile }) => {
   const { colonyToDisplay, colonyToDisplayAddress } = useSelectedColony(watchlist);
