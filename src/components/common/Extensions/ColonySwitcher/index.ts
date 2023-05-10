@@ -1,4 +1,4 @@
 export { default } from './ColonySwitcher';
-export { default as ColoniesDropdown } from './ColoniesDropdown';
-export { default as ColonyItem } from './ColonyItem';
-export { default as ColonyAvatarWrapper } from './ColonyAvatarWrapper';
+export { default as ColoniesDropdown } from './partials/ColoniesDropdown';
+export { default as ColonyItem } from './partials/ColonyItem';
+export { default as ColonyAvatarWrapper } from './partials/ColonyAvatarWrapper';

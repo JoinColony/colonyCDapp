@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import Icon from '~shared/Icon';
 import { Colony } from '~types';
-import { IColonyAvatar } from './types';
+import { ColonyAvatarProps } from '../types';
 
-const displayName = 'common.Extensions.ColonySwitcher.ColonyAvatarWrapper';
+const displayName = 'common.Extensions.ColonySwitcher.partials.ColonyAvatarWrapper';
 
-const ColonyAvatarWrapper: FC<IColonyAvatar> = ({
+const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
   colonyToDisplay,
   colonyToDisplayAddress,
   isMobile,
@@ -31,11 +31,10 @@ const ColonyAvatarWrapper: FC<IColonyAvatar> = ({
     </div>
 
     {isMobile && (
-      <div className="font-semibold text-md text-gray-900">
-        {colonyToDisplay?.metadata?.displayName || colonyToDisplay?.name}
+      <div className="font-semibold text-md text-gray-900 mx-2">
+        {colonyToDisplay?.metadata?.displayName || colonyToDisplay?.name || 'Colony name'}
       </div>
     )}
-
     <span className=" [&>i>svg]:fill-base-black [&>i>svg]:stroke-base-black" ref={setTriggerRef}>
       <Icon name={isOpen ? 'caret-up' : 'caret-down'} appearance={{ size: 'extraTiny' }} />
     </span>

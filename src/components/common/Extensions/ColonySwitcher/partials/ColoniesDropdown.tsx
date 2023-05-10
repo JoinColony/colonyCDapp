@@ -2,12 +2,12 @@ import React, { FC } from 'react';
 import { Colony, WatchListItem } from '~types';
 import ColonyItem from './ColonyItem';
 import ColonyAvatar from '~shared/ColonyAvatar';
-import { IColoniesDropdown } from './types';
-import { useSelectedColony } from './hooks';
+import { ColoniesDropdownProps } from '../types';
+import { useSelectedColony } from '../hooks';
 
-const displayName = 'common.Extensions.ColonySwitcher.ColoniesDropdown';
+const displayName = 'common.Extensions.ColonySwitcher.partials.ColoniesDropdown';
 
-const ColoniesDropdown: FC<IColoniesDropdown> = ({ watchlist = [] }) => {
+const ColoniesDropdown: FC<ColoniesDropdownProps> = ({ watchlist = [], isMobile }) => {
   const { colonyToDisplay, colonyToDisplayAddress } = useSelectedColony(watchlist);
 
   const groupByCategory = (watchlist as WatchListItem[]).reduce((group, item) => {
@@ -20,18 +20,26 @@ const ColoniesDropdown: FC<IColoniesDropdown> = ({ watchlist = [] }) => {
 
   return (
     <div className="h-[24.75rem] p-1 w-full">
-      <div className="flex items-center p-2 md:ml-4">
-        <div className="flex mr-2">
-          <ColonyAvatar colony={colonyToDisplay as Colony} colonyAddress={colonyToDisplayAddress || ''} size="xxs" />
-        </div>
-        <div className="font-normal text-md text-gray-900">
-          {colonyToDisplay?.metadata?.displayName || colonyToDisplay?.name}
-        </div>
-      </div>
-      <div className="w-full h-[0.0625rem] bg-gray-200 my-2" />
+      {!isMobile && (
+        <>
+          <div className="flex items-center p-2">
+            <div className="flex mr-2">
+              <ColonyAvatar
+                colony={colonyToDisplay as Colony}
+                colonyAddress={colonyToDisplayAddress || ''}
+                size="xxs"
+              />
+            </div>
+            <div className="font-normal text-md text-gray-900">
+              {colonyToDisplay?.metadata?.displayName || colonyToDisplay?.name}
+            </div>
+          </div>
+          <div className="w-full h-[0.0625rem] bg-gray-200 md:my-2" />
+        </>
+      )}
       {Object.keys(groupByCategory).map((key) => (
         <div className="mt-6" key={key}>
-          <div className="uppercase text-gray-400 text-xs font-medium pl-2">{key}</div>
+          <div className="uppercase text-gray-400 text-xs font-medium pl-6 sm:pl-2">{key}</div>
           {groupByCategory[key].map((item) => (
             <ColonyItem
               colony={item?.colony as Colony}

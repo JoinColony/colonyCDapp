@@ -1,11 +1,11 @@
 import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
 import { SpinnerLoader } from '~shared/Preloaders';
-import { IColonyDropdownMobile } from './types';
+import { ColonyDropdownMobileProps } from '../types';
 
-const displayName = 'common.Extensions.ColonyDropdownMobile';
+const displayName = 'common.Extensions.partials.ColonyDropdownMobile';
 
-const ColonyDropdownMobile: FC<PropsWithChildren<IColonyDropdownMobile>> = ({
+const ColonyDropdownMobile: FC<PropsWithChildren<ColonyDropdownMobileProps>> = ({
   isOpen,
   isMobile,
   userLoading,
@@ -13,10 +13,10 @@ const ColonyDropdownMobile: FC<PropsWithChildren<IColonyDropdownMobile>> = ({
 }) => (
   <>
     {isOpen && (
-      <div className="h-auto absolute">
+      <div className="h-auto absolute left-[-0.7rem]">
         <div
-          className={clsx('h-[24.75rem] p-1 flex justify-center z-[9999] bg-base-white', {
-            'w-[26.75rem]': isMobile,
+          className={clsx('h-[24.75rem] flex justify-center z-[9999] bg-base-white w-full', {
+            'w-[90vw]': isMobile,
           })}
         >
           {userLoading && (

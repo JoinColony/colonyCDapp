@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import clsx from 'clsx';
+import { useIntl } from 'react-intl';
 import { useDetectClickOutside, useAppContext, useMobile } from '~hooks';
-import ColoniesDropdown from './ColoniesDropdown';
+import ColoniesDropdown from './partials/ColoniesDropdown';
 import Icon from '~shared/Icon';
 import { useSelectedColony } from './hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
-import ColonyAvatarWrapper from './ColonyAvatarWrapper';
-import ColonyDropdownMobile from './ColonyDropdownMobile';
+import ColonyAvatarWrapper from './partials/ColonyAvatarWrapper';
+import ColonyDropdownMobile from './partials/ColonyDropdownMobile';
 
 const displayName = 'common.Extensions.ColonySwitcher';
 
@@ -17,6 +18,7 @@ const ColonySwitcher = () => {
 
   const { items: watchlist = [] } = user?.watchlist || {};
 
+  const { formatMessage } = useIntl();
   const { colonyToDisplay, colonyToDisplayAddress } = useSelectedColony(watchlist);
   const isMobile = useMobile();
   const popperTooltipOffset = !isMobile ? [120, 8] : [0, 8];
@@ -49,11 +51,10 @@ const ColonySwitcher = () => {
   );
 
   return (
-    <div className="flex justify-between w-[26.75rem] md:w-[15.1875rem] relative" ref={ref}>
+    <div className="flex justify-between relative mx-6 mb:mx-0" ref={ref}>
       <button
-        aria-label="Open dropdown"
+        aria-label={formatMessage({ id: 'open.dropdown' })}
         className={clsx('flex items-center justify-between', {
-          'w-[40%] pl-4': isMobile,
           'w-[3.5225rem]': !isMobile,
         })}
         onClick={() => setIsOpen((prevState) => !prevState)}
@@ -71,7 +72,7 @@ const ColonySwitcher = () => {
       {/* @TODO: add wallet buttons */}
 
       {isOpen && (
-        <div className="h-auto absolute top-[2.3rem]">
+        <div className="h-auto absolute top-[6.5rem] md:top-[2.3rem]">
           {!isMobile && (
             <div
               ref={setTooltipRef}
@@ -92,7 +93,9 @@ const ColonySwitcher = () => {
           )}
           {isMobile && (
             <ColonyDropdownMobile isOpen={isOpen} isMobile={isMobile} userLoading={userLoading}>
-              {!!watchlist.length && !userLoading && <ColoniesDropdown watchlist={[...watchlist].sort(sortByDate)} />}
+              {!!watchlist.length && !userLoading && (
+                <ColoniesDropdown watchlist={[...watchlist].sort(sortByDate)} isMobile={isMobile} />
+              )}
             </ColonyDropdownMobile>
           )}
         </div>
@@ -101,7 +104,7 @@ const ColonySwitcher = () => {
       {isMobile && isOpen && (
         <button
           type="button"
-          aria-label="Close dropdown"
+          aria-label={formatMessage({ id: 'close.dropdown' })}
           onClick={() => setIsOpen(false)}
           className="[&<i<svg]:fill-gray-400 [&<i<svg]:stroke-gray-400 pr-4"
         >

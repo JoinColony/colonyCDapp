@@ -1,19 +1,20 @@
 import { Colony, WatchListItem } from '~types';
 
-export interface IColonySwitcher {
+export interface ColonySwitcherProps {
   watchlistMock?: (WatchListItem | null)[];
 }
 
-export interface IColoniesDropdown {
+export interface ColoniesDropdownProps {
   watchlist: (WatchListItem | null)[];
+  isMobile?: boolean;
 }
 
-export interface IColonyItem {
+export interface ColonyItemProps {
   colony: Colony;
   chainName: string;
 }
 
-export interface IColonyAvatar {
+export interface ColonyAvatarProps {
   colonyToDisplay: Colony;
   colonyToDisplayAddress?: string;
   isMobile: boolean;
@@ -21,7 +22,7 @@ export interface IColonyAvatar {
   setTriggerRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
 }
 
-export interface IColonyDropdownMobile {
+export interface ColonyDropdownMobileProps {
   isOpen: boolean;
   isMobile: boolean;
   userLoading?: boolean;
