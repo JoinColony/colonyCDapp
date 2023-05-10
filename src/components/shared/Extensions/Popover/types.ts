@@ -38,7 +38,7 @@ export interface PopoverChildFnProps {
 
 export type PopoverChildFn = (arg0: PopoverChildFnProps) => ReactNode;
 
-export type PopoverTriggerElementType = PopoverChildFn | ReactElement;
+export type PopoverTriggerElementType = PopoverChildFn | React.ReactElement;
 
 export type PopoverTriggerType = 'hover' | 'click' | 'disabled';
 
