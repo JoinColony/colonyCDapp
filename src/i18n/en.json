@@ -397,5 +397,7 @@
     "special.percentage.input.error.max.value": "Percentage must be less than or equal to { maxValue }",
     "specific.side.panel.title": "Extension details",
     "file-text": "File text icon",
-    "radio.error.governance": "Please select a governance style option before enabling"
+    "radio.error.governance": "Please select a governance style option before enabling",
+    "open.dropdown": "Open dropdown",
+    "close.dropdown": "Close dropdown"
 }

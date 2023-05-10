@@ -1,11 +1,11 @@
 import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
 import { SpinnerLoader } from '~shared/Preloaders';
-import { IColonyDropdownMobile } from './types';
+import { ColonyDropdownMobileProps } from '../types';
 
 const displayName = 'common.Extensions.ColonyDropdownMobile';
 
-const ColonyDropdownMobile: FC<PropsWithChildren<IColonyDropdownMobile>> = ({
+const ColonyDropdownMobile: FC<PropsWithChildren<ColonyDropdownMobileProps>> = ({
   isOpen,
   isMobile,
   userLoading,

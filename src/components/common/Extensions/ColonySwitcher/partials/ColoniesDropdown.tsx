@@ -2,12 +2,12 @@ import React, { FC } from 'react';
 import { Colony, WatchListItem } from '~types';
 import ColonyItem from './ColonyItem';
 import ColonyAvatar from '~shared/ColonyAvatar';
-import { IColoniesDropdown } from './types';
-import { useSelectedColony } from './hooks';
+import { ColoniesDropdownProps } from '../types';
+import { useSelectedColony } from '../hooks';
 
 const displayName = 'common.Extensions.ColonySwitcher.ColoniesDropdown';
 
-const ColoniesDropdown: FC<IColoniesDropdown> = ({ watchlist = [], isMobile }) => {
+const ColoniesDropdown: FC<ColoniesDropdownProps> = ({ watchlist = [], isMobile }) => {
   const { colonyToDisplay, colonyToDisplayAddress } = useSelectedColony(watchlist);
 
   const groupByCategory = (watchlist as WatchListItem[]).reduce((group, item) => {

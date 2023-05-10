@@ -8,7 +8,7 @@ import { watchlistMock } from '~common/Extensions/ColonySwitcher/consts';
 import { useSelectedColony } from '~common/Extensions/ColonySwitcher/hooks';
 import { useAppContext, useDetectClickOutside, useMobile } from '~hooks';
 import Icon from '~shared/Icon';
-import ColonyDropdownMobile from '~common/Extensions/ColonySwitcher/ColonyDropdownMobile';
+import ColonyDropdownMobile from '~common/Extensions/ColonySwitcher/partials/ColonyDropdownMobile';
 
 const meta: Meta<typeof ColonySwitcher> = {
   title: 'Common/Colony Switcher',

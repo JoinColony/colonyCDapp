@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import Icon from '~shared/Icon';
-import { IColonyItem } from './types';
+import { ColonyItemProps } from '../types';
 
 const displayName = 'common.Extensions..ColonyItem';
 
-const ColonyItem: FC<IColonyItem> = ({ colony, chainName }) => (
+const ColonyItem: FC<ColonyItemProps> = ({ colony, chainName }) => (
   <div className="py-2 px-6 sm:px-2 hover:bg-gray-50 rounded">
     <NavLink title={colony?.name} to={`/colony/${colony?.name}`} className="group">
       <div className="flex items-center justify-between">
