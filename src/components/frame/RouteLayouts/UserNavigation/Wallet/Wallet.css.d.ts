@@ -5,10 +5,18 @@ declare namespace WalletCssNamespace {
     connectWalletButtonLoading: string;
     gasStationReference: string;
     main: string;
+    mappings: string;
+    names: string;
+    query700: string;
     readyTransactionsCount: string;
+    sourceRoot: string;
+    sources: string;
+    sourcesContent: string;
+    version: string;
     walletAddress: string;
     walletAddressActive: string;
     walletAutoLogin: string;
+    walletLoader: string;
   }
 }
 
