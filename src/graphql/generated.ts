@@ -140,7 +140,7 @@ export type ColonyAction = {
   initiatorUser?: Maybe<User>;
   isMotion?: Maybe<Scalars['Boolean']>;
   motionData?: Maybe<ColonyMotion>;
-  motionDataId?: Maybe<Scalars['ID']>;
+  motionId?: Maybe<Scalars['ID']>;
   newColonyVersion?: Maybe<Scalars['Int']>;
   pendingColonyMetadata?: Maybe<ColonyMetadata>;
   pendingColonyMetadataId?: Maybe<Scalars['ID']>;
@@ -407,7 +407,7 @@ export type CreateColonyActionInput = {
   id?: InputMaybe<Scalars['ID']>;
   initiatorAddress: Scalars['ID'];
   isMotion?: InputMaybe<Scalars['Boolean']>;
-  motionDataId?: InputMaybe<Scalars['ID']>;
+  motionId?: InputMaybe<Scalars['ID']>;
   newColonyVersion?: InputMaybe<Scalars['Int']>;
   pendingColonyMetadataId?: InputMaybe<Scalars['ID']>;
   pendingDomainMetadataId?: InputMaybe<Scalars['ID']>;
@@ -875,7 +875,7 @@ export type ModelColonyActionConditionInput = {
   fundamentalChainId?: InputMaybe<ModelIntInput>;
   initiatorAddress?: InputMaybe<ModelIdInput>;
   isMotion?: InputMaybe<ModelBooleanInput>;
-  motionDataId?: InputMaybe<ModelIdInput>;
+  motionId?: InputMaybe<ModelIdInput>;
   newColonyVersion?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyActionConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionConditionInput>>>;
@@ -906,7 +906,7 @@ export type ModelColonyActionFilterInput = {
   id?: InputMaybe<ModelIdInput>;
   initiatorAddress?: InputMaybe<ModelIdInput>;
   isMotion?: InputMaybe<ModelBooleanInput>;
-  motionDataId?: InputMaybe<ModelIdInput>;
+  motionId?: InputMaybe<ModelIdInput>;
   newColonyVersion?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyActionFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionFilterInput>>>;
@@ -1411,7 +1411,7 @@ export type ModelSubscriptionColonyActionFilterInput = {
   id?: InputMaybe<ModelSubscriptionIdInput>;
   initiatorAddress?: InputMaybe<ModelSubscriptionIdInput>;
   isMotion?: InputMaybe<ModelSubscriptionBooleanInput>;
-  motionDataId?: InputMaybe<ModelSubscriptionIdInput>;
+  motionId?: InputMaybe<ModelSubscriptionIdInput>;
   newColonyVersion?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionFilterInput>>>;
   pendingColonyMetadataId?: InputMaybe<ModelSubscriptionIdInput>;
@@ -2376,7 +2376,7 @@ export type QueryGetColonyActionArgs = {
 export type QueryGetColonyActionByMotionArgs = {
   filter?: InputMaybe<ModelColonyActionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
-  motionDataId: Scalars['ID'];
+  motionId: Scalars['ID'];
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
@@ -3133,7 +3133,7 @@ export type UpdateColonyActionInput = {
   id: Scalars['ID'];
   initiatorAddress?: InputMaybe<Scalars['ID']>;
   isMotion?: InputMaybe<Scalars['Boolean']>;
-  motionDataId?: InputMaybe<Scalars['ID']>;
+  motionId?: InputMaybe<Scalars['ID']>;
   newColonyVersion?: InputMaybe<Scalars['Int']>;
   pendingColonyMetadataId?: InputMaybe<Scalars['ID']>;
   pendingDomainMetadataId?: InputMaybe<Scalars['ID']>;

@@ -10,12 +10,11 @@ const {
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  const { colonyAddress, databaseMotionId, transactionHash } =
-    event.arguments?.input || {};
+  const { colonyAddress, databaseMotionId } = event.arguments?.input || {};
   /* Get latest motion state from chain */
   const motionData = await getMotionData(databaseMotionId);
 
-  if (databaseMotionId && transactionHash && motionData) {
+  if (motionData) {
     const { motionStateHistory } = motionData;
     const motionState = await getLatestMotionState(colonyAddress, motionData);
     /*
@@ -37,7 +36,6 @@ exports.handler = async (event) => {
 
       if (!motionStateHistory.hasFailedNotFinalizable) {
         await updateMotionMessagesInDB(
-          transactionHash,
           motionData,
           ['MotionHasFailedNotFinalizable'],
           'hasFailedNotFinalizable',
@@ -52,7 +50,6 @@ exports.handler = async (event) => {
       !motionStateHistory.inRevealPhase
     ) {
       await updateMotionMessagesInDB(
-        transactionHash,
         motionData,
         ['MotionRevealPhase'],
         'inRevealPhase',
@@ -73,12 +70,7 @@ exports.handler = async (event) => {
         }
         newMessages.push('MotionHasPassed');
 
-        await updateMotionMessagesInDB(
-          transactionHash,
-          motionData,
-          newMessages,
-          'hasPassed',
-        );
+        await updateMotionMessagesInDB(motionData, newMessages, 'hasPassed');
       }
 
       if (!didPass && !motionStateHistory.hasFailed) {
@@ -90,12 +82,7 @@ exports.handler = async (event) => {
         }
         newMessages.push('MotionHasFailedFinalizable');
 
-        await updateMotionMessagesInDB(
-          transactionHash,
-          motionData,
-          newMessages,
-          'hasFailed',
-        );
+        await updateMotionMessagesInDB(motionData, newMessages, 'hasFailed');
       }
     }
 

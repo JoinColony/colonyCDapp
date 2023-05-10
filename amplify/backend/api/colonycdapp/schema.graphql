@@ -695,12 +695,12 @@ type ColonyAction @model {
   type: ColonyActionType!
   blockNumber: Int!
   isMotion: Boolean
-  motionDataId: ID
+  motionId: ID
     @index(
       name: "byMotion"
       queryField: "getColonyActionByMotion"
     )
-  motionData: ColonyMotion @hasOne(fields: ["motionDataId"])
+  motionData: ColonyMotion @hasOne(fields: ["motionId"])
   showInActionsList: Boolean! # True for (forced) actions. True for motions if staked above 10%
   createdAt: AWSDateTime!
   initiatorAddress: ID!
