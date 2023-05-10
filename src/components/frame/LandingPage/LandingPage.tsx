@@ -12,9 +12,7 @@ import { useGetMetacolonyQuery } from '~gql';
 import { useAppContext, useCanInteractWithNetwork } from '~hooks';
 
 import styles from './LandingPage.css';
-import ImageCarousel from '~common/Extensions/ImageCarousel/ImageCarousel';
-import { images } from '~common/Extensions/ImageCarousel/consts';
-import CalamityBanner from '~common/Extensions/CalamityBanner';
+import ColonySwitcher from '~common/Extensions/ColonySwitcher';
 
 const displayName = 'frame.LandingPage';
 
@@ -79,10 +77,7 @@ const LandingPage = () => {
           <div className={styles.title}>
             <Heading text={MSG.callToAction} appearance={{ size: 'medium', margin: 'none', theme: 'dark' }} />
           </div>
-          <ImageCarousel slideUrls={images} />
-          <CalamityBanner buttonName="button.upgrade" linkName="learn.more">
-            A new version of the Colony Network is available!
-          </CalamityBanner>
+          <ColonySwitcher />
           <ul>
             {wallet && !userLoading && !user && <LandingItem to={CREATE_USER_ROUTE} message={MSG.createUsername} />}
             {canInteractWithNetwork && <LandingItem to={CREATE_COLONY_ROUTE} message={MSG.createColony} />}

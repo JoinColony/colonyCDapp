@@ -398,6 +398,8 @@
     "specific.side.panel.title": "Extension details",
     "file-text": "File text icon",
     "radio.error.governance": "Please select a governance style option before enabling",
+    "open.dropdown": "Open dropdown",
+    "close.dropdown": "Close dropdown",
     "userInfo.about.section": "about",
     "userInfo.colonyReputation.section": "Colony reputation",
     "userInfo.permissions.section": "Permissions",
