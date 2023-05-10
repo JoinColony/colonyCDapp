@@ -1,4 +1,6 @@
 import React from 'react';
+import UserAvatarPopover from '~shared/Extensions/UserAvatarPopover';
+import { colonyReputationItems, permissionsItems } from '~shared/Extensions/UserAvatarPopover/partials/consts';
 
 export const sidePanelData = [
   {
@@ -12,7 +14,18 @@ export const sidePanelData = [
     },
     installedBy: {
       title: 'Installed by',
-      component: <div />,
+      component: (
+        <UserAvatarPopover
+          title="asdf"
+          userName="Panda"
+          walletAddress="0x155....1051"
+          isVerified
+          copyUrl
+          aboutDescription="description"
+          colonyReputation={colonyReputationItems}
+          permissions={permissionsItems}
+        />
+      ),
     },
     versionInstalled: {
       title: 'Version installed',
