@@ -86,22 +86,20 @@ const UserNavigation = () => {
           </div>
         </Tooltip>
       )}
-      <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
-        {canInteractWithNetwork && colony?.nativeToken && tokenBalanceData && (
+      {canInteractWithNetwork && colony?.nativeToken && tokenBalanceData && (
+        <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
           <UserTokenActivationButton
             nativeToken={colony.nativeToken}
             tokenBalanceData={tokenBalanceData}
             dataTest="tokenActivationButton"
           />
-        )}
-      </div>
-
+        </div>
+      )}
       <Wallet />
       <AvatarDropdown
         spinnerMsg={MSG.walletAutologin}
         tokenBalanceData={tokenBalanceData ?? undefined}
       />
-
       <HamburgerDropdown />
     </div>
   );
