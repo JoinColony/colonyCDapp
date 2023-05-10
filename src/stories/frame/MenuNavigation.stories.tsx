@@ -7,7 +7,7 @@ const meta: Meta<typeof MenuNavigation> = {
   component: MenuNavigation,
   decorators: [
     (Story) => (
-      <div className="bg-black p-2">
+      <div className="bg-gray-400 p-2">
         <Story />
       </div>
     ),

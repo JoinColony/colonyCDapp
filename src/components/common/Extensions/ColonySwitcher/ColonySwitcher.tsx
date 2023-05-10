@@ -49,7 +49,7 @@ const ColonySwitcher = () => {
   );
 
   return (
-    <div className="flex justify-between w-auto relative" ref={ref}>
+    <div className="flex justify-between relative mx-6 mb:mx-0" ref={ref}>
       <button
         aria-label="Open dropdown"
         className={clsx('flex items-center justify-between', {
@@ -70,7 +70,7 @@ const ColonySwitcher = () => {
       {/* @TODO: add wallet buttons */}
 
       {isOpen && (
-        <div className="h-auto absolute top-[4.1rem] md:top-[2.3rem]">
+        <div className="h-auto absolute top-[6.5rem] md:top-[2.3rem]">
           {!isMobile && (
             <div
               ref={setTooltipRef}
