@@ -5,7 +5,7 @@ import { useDialog } from '~shared/Dialog';
 import { NetworkContractUpgradeDialog } from '~common/Dialogs';
 import Alert from '~shared/Alert';
 import Button from '~shared/Button';
-import ExternalLink from '~shared/ExternalLink';
+import ExternalLink from '~shared/Extensions/ExternalLink';
 import {
   useTransformer,
   useAppContext,

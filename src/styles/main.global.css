@@ -10,6 +10,7 @@
 @tailwind components;
 @tailwind utilities;
 @value query428 from '~styles/queries.css';
+@value query1024 from '~styles/queries.css';
 
 @layer base {
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
@@ -64,12 +65,6 @@
 @layer components {
   .inner {
     @apply px-6 w-full h-full max-w-[77.375rem] mx-auto;
-  }
-}
-
-@media screen and query428 {
-  html {
-    @apply bg-base-white;
   }
 }
 

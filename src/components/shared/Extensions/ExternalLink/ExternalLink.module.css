@@ -1,0 +1,3 @@
+.main {
+  @apply transition-all duration-normal hover:text-blue-400;
+}

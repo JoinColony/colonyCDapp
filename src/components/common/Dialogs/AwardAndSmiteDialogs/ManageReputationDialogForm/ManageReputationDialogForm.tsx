@@ -7,7 +7,7 @@ import { useFormContext } from 'react-hook-form';
 import { ItemDataType } from '~shared/OmniPicker';
 import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
 import { HookFormSelect as Select, Annotations } from '~shared/Fields';
-import ExternalLink from '~shared/ExternalLink';
+import ExternalLink from '~shared/Extensions/ExternalLink';
 import SingleUserPicker, { filterUserSelection } from '~shared/SingleUserPicker';
 import UserAvatar from '~shared/UserAvatar';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';

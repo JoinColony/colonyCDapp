@@ -1,15 +1,11 @@
 import React, { PropsWithChildren, FC } from 'react';
 import { FormattedMessage } from 'react-intl';
-
 import Button from '~shared/Extensions/Button/Button';
 import { LEARN_MORE_DECISIONS } from '~constants';
-import Icon from '~shared/Icon/Icon';
-
 import LinkItem from '../LinkItem';
-import LearnMore from '../LearnMore';
-
 import { MSG } from './consts';
 import styles from './DropdownContent.module.css';
+import LearnMore from '~shared/Extensions/LearnMore';
 
 const displayName = 'common.Extensions.SubNavigation.partials.DropdownContent.ManageDropdown';
 
@@ -29,13 +25,9 @@ const ManageDropdown: FC<PropsWithChildren> = () => (
         <Button text={MSG.buttonTextManage} mode="primaryOutline" />
       </div>
       <div className={styles.infoWrapper}>
-        <Icon name="question-mark-inverted" className={styles.questionIcon} />
-        <FormattedMessage
-          {...MSG.helpTextManage}
-          values={{
-            // eslint-disable-next-line react/no-unstable-nested-components
-            a: (chunks) => <LearnMore chunks={chunks} href={LEARN_MORE_DECISIONS} />,
-          }}
+        <LearnMore
+          message={{ id: `${displayName}.helpText`, defaultMessage: 'Need help with admin? <a>Learn more</a>' }}
+          href={LEARN_MORE_DECISIONS}
         />
       </div>
     </div>

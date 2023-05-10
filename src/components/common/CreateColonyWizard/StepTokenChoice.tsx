@@ -6,7 +6,7 @@ import DecisionHub from '~shared/DecisionHub';
 import { HookForm as Form } from '~shared/Fields';
 import { Heading3, Heading4, Heading6 } from '~shared/Heading';
 import { SELECT_NATIVE_TOKEN_INFO as LEARN_MORE_URL } from '~constants';
-import ExternalLink from '~shared/ExternalLink';
+import ExternalLink from '~shared/Extensions/ExternalLink';
 
 import { FormValues, Step2 } from '../CreateColonyWizard';
 import { TruncatedName } from './shared';
