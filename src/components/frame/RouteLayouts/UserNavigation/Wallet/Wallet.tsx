@@ -26,7 +26,10 @@ const MSG = defineMessages({
   },
   walletAutologin: {
     id: `${displayName}.walletAutologin`,
-    defaultMessage: 'Connecting wallet...',
+    defaultMessage: `Connecting{isMobile, select, 
+        true {}
+        other { wallet}
+        }...`,
   },
 });
 
@@ -54,7 +57,11 @@ const Wallet = () => {
     <>
       {walletConnecting && (
         <div className={styles.walletAutoLogin}>
-          <MiniSpinnerLoader title={MSG.walletAutologin} />
+          <MiniSpinnerLoader
+            title={MSG.walletAutologin}
+            titleTextValues={{ isMobile }}
+            className={styles.walletLoader}
+          />
         </div>
       )}
       {!wallet?.address && (
