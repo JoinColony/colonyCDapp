@@ -2297,7 +2297,7 @@ export type Query = {
   getActionsByColony?: Maybe<ModelColonyActionConnection>;
   getColony?: Maybe<Colony>;
   getColonyAction?: Maybe<ColonyAction>;
-  getColonyActionByMotion?: Maybe<ModelColonyActionConnection>;
+  getColonyActionByMotionId?: Maybe<ModelColonyActionConnection>;
   getColonyByAddress?: Maybe<ModelColonyConnection>;
   getColonyByName?: Maybe<ModelColonyConnection>;
   getColonyByType?: Maybe<ModelColonyConnection>;
@@ -2373,7 +2373,7 @@ export type QueryGetColonyActionArgs = {
 };
 
 
-export type QueryGetColonyActionByMotionArgs = {
+export type QueryGetColonyActionByMotionIdArgs = {
   filter?: InputMaybe<ModelColonyActionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   motionId: Scalars['ID'];

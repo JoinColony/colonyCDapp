@@ -697,8 +697,8 @@ type ColonyAction @model {
   isMotion: Boolean
   motionId: ID
     @index(
-      name: "byMotion"
-      queryField: "getColonyActionByMotion"
+      name: "byMotionId"
+      queryField: "getColonyActionByMotionId"
     )
   motionData: ColonyMotion @hasOne(fields: ["motionId"])
   showInActionsList: Boolean! # True for (forced) actions. True for motions if staked above 10%
