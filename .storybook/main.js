@@ -7,6 +7,7 @@ module.exports = {
   core: {
     builder: 'webpack5',
   },
+  typescript: { reactDocgen: false },
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
     '@storybook/addon-links',
@@ -54,16 +55,15 @@ module.exports = {
       loader: require.resolve('svg-sprite-loader'),
     });
 
-    config.module.rules = config.module.rules.filter(({ test }, index) => !test || (!test.test("test.css") && !test.test("test.scss") && !test.test("test.tsx")));
+    config.module.rules = config.module.rules.filter(
+      ({ test }, index) => !test || (!test.test('test.css') && !test.test('test.scss') && !test.test('test.tsx')),
+    );
     config.module.rules.push({
       test: /\.css$/,
       oneOf: [
         {
           test: /\.global\.css$/,
-          include: [
-            path.resolve(__dirname, '..', 'src', 'components'),
-            path.resolve(__dirname, '..', 'src', 'styles'),
-          ],
+          include: [path.resolve(__dirname, '..', 'src', 'components'), path.resolve(__dirname, '..', 'src', 'styles')],
           use: [
             'style-loader',
             '@teamsupercell/typings-for-css-modules-loader',
@@ -78,10 +78,7 @@ module.exports = {
         },
         {
           test: /\.css$/,
-          include: [
-            path.resolve(__dirname, '..', 'src', 'components'),
-            path.resolve(__dirname, '..', 'src', 'styles'),
-          ],
+          include: [path.resolve(__dirname, '..', 'src', 'components'), path.resolve(__dirname, '..', 'src', 'styles')],
           use: [
             'style-loader',
             '@teamsupercell/typings-for-css-modules-loader',
@@ -119,7 +116,7 @@ module.exports = {
           loader: 'ts-loader',
           options: {
             transpileOnly: true,
-            configFile: 'tsconfig.dev.json'
+            configFile: 'tsconfig.dev.json',
           },
         },
       ],
