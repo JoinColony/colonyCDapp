@@ -1,4 +1,4 @@
-@value query700 from '~styles/queries.css';
+@value query428 from '~styles/queries.css';
 
 .main {
   margin-top: 4px;
@@ -60,7 +60,7 @@
   white-space: pre-wrap;
 }
 
-@media screen and query700 {
+@media screen and query428 {
   .main {
     white-space: normal;
   }

@@ -169,7 +169,8 @@
         "triangle-warning",
         "unlock",
         "user-plus",
-        "wallet"
+        "wallet",
+        "verified"
     ],
     "multiColorIcons": [
         "circle-check-primary",

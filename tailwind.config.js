@@ -129,9 +129,9 @@ module.exports = {
         overlay: 'blur(2px)',
       },
       transitionDuration: {
-        slow: '175ms',
+        slow: '450ms',
         normal: '300ms',
-        fast: '450ms',
+        fast: '175ms',
       },
       screens: {
         sm: '26.75rem',

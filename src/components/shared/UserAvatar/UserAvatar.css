@@ -11,7 +11,3 @@
 .main:hover figure {
   border-color: var(--primary);
 }
-
-.stateShowOnClick {
-  cursor: pointer;
-}

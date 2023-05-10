@@ -3,7 +3,7 @@ declare namespace MembersListItemCssNamespace {
     main: string;
     mappings: string;
     names: string;
-    query700: string;
+    query428: string;
     reputationSection: string;
     section: string;
     sourceRoot: string;

@@ -7,7 +7,7 @@ declare namespace StepConfirmAllInputCssNamespace {
     mappings: string;
     names: string;
     paragraph: string;
-    query700: string;
+    query428: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;

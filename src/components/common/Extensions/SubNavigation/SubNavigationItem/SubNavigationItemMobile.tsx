@@ -15,17 +15,15 @@ const SubNavigationItemMobile: FC<PropsWithChildren<SubNavigationItemProps>> = (
   isOpen,
   setOpen,
   icon,
-}) => {
-  return (
-    <li>
-      <Button onClick={setOpen} mode="textButton" className={clsx(styles.button, { [styles.activeButton]: isOpen })}>
-        <Icon name={icon} />
-        <div>{label}</div>
-      </Button>
-      {isOpen && <div className={styles.dropdownContent}>{content}</div>}
-    </li>
-  );
-};
+}) => (
+  <li>
+    <Button onClick={setOpen} mode="textButton" className={clsx(styles.button, { [styles.activeButton]: isOpen })}>
+      <Icon name={icon} />
+      <div>{label}</div>
+    </Button>
+    {isOpen && <div className={styles.dropdownContent}>{content}</div>}
+  </li>
+);
 
 SubNavigationItemMobile.displayName = displayName;
 

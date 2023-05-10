@@ -9,7 +9,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@value query700 from '~styles/queries.css';
+@value query428 from '~styles/queries.css';
 
 @layer base {
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
@@ -67,7 +67,7 @@
   }
 }
 
-@media screen and query700 {
+@media screen and query428 {
   html {
     @apply bg-base-white;
   }
@@ -107,7 +107,11 @@
 }
 
 .rts___tab___selected {
-  @apply shadow-none font-semibold text-blue-400 border-blue-400;
+  @apply shadow-none text-blue-400 border-blue-400;
+}
+
+.rts___nav___btn:hover {
+  @apply bg-gray-300;
 }
 
 button:disabled.rts___btn,

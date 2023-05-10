@@ -3,7 +3,7 @@ declare namespace DecisionOptionCssNamespace {
     main: string;
     mappings: string;
     names: string;
-    query700: string;
+    query428: string;
     rowContent: string;
     rowIcon: string;
     sourceRoot: string;

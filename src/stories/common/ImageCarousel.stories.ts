@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ImageCarousel from '~common/Extensions/ImageCarousel/ImageCarousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { images } from '~common/Extensions/ImageCarousel/consts';
 
 const meta: Meta<typeof ImageCarousel> = {

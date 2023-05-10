@@ -1,4 +1,4 @@
-@value query700 from '~styles/queries.css';
+@value query428 from '~styles/queries.css';
 
 .main {
   display: flex;
@@ -33,7 +33,7 @@
   opacity: 1;
 }
 
-@media screen and query700 {
+@media screen and query428 {
   .main {
     min-width: 0px;
     position: relative;
