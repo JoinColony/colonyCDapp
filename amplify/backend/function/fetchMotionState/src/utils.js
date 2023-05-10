@@ -191,17 +191,14 @@ const updateStakerRewardsInDB = async (colonyAddress, motionData) => {
   );
 
   await graphqlRequest(updateColonyMotion, {
-    ...motionData,
-    stakerRewards: updatedStakerRewards,
+    input: {
+      ...motionData,
+      stakerRewards: updatedStakerRewards,
+    },
   });
 };
 
-const updateMotionMessagesInDB = async (
-  transactionHash,
-  motionData,
-  motionMessages,
-  flag,
-) => {
+const updateMotionMessagesInDB = async (motionData, motionMessages, flag) => {
   const { messages, motionStateHistory } = motionData;
   const updatedMessages = [...messages];
   const updatedStateHistory = {
@@ -213,14 +210,16 @@ const updateMotionMessagesInDB = async (
     updatedMessages.push({
       initiatorAddress: constants.AddressZero,
       name: message,
-      messageKey: `${transactionHash}_${message}`,
+      messageKey: `${motionData.id}_${message}`,
     });
   });
 
   await graphqlRequest(updateColonyMotion, {
-    ...motionData,
-    messages: updatedMessages,
-    motionStateHistory: updatedStateHistory,
+    input: {
+      ...motionData,
+      messages: updatedMessages,
+      motionStateHistory: updatedStateHistory,
+    },
   });
 };
 
