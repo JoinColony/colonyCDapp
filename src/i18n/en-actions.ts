@@ -1,6 +1,10 @@
 /* eslint-disable max-len */
 
-import { ColonyActionType, ColonyMotions } from '~types';
+import {
+  ColonyActionType,
+  ColonyMotions,
+  ExtendedColonyActionType,
+} from '~types';
 
 const actionsMessageDescriptors = {
   'action.title': `{actionType, select,
@@ -28,10 +32,10 @@ const actionsMessageDescriptors = {
       ${ColonyMotions.EmitDomainReputationRewardMotion} {Award {recipient} with a {reputationChangeNumeral} {reputationChange, plural, one {pt} other {pts}} reputation reward}
       ${ColonyActionType.SetUserRoles} {{rolesChanged} in {fromDomain} {direction} {recipient}}
       ${ColonyMotions.SetUserRolesMotion} {{rolesChanged} in {fromDomain} {direction} {recipient}}
+      ${ExtendedColonyActionType.UpdateAddressBook} {Address book was updated}
+      ${ExtendedColonyActionType.UpdateTokens} {Colony tokens were updated}    
       other {Generic action we don't have information about}
     }`,
-  [`action.${ColonyActionType.ColonyEdit}.verifiedAddresses`]: `Address book was updated`,
-  [`action.${ColonyActionType.ColonyEdit}.tokens`]: `Colony tokens were updated`,
   'action.type': `{actionType, select,
       ${ColonyActionType.WrongColony} {Not part of the Colony}
       ${ColonyActionType.Payment} {Payment}
@@ -57,8 +61,12 @@ const actionsMessageDescriptors = {
       ${ColonyMotions.EmitDomainReputationPenaltyMotion} {Smite}
       ${ColonyActionType.EmitDomainReputationReward} {Award}
       ${ColonyMotions.EmitDomainReputationRewardMotion} {Award}
+      ${ExtendedColonyActionType.UpdateAddressBook} {Update Address Book}
+      ${ExtendedColonyActionType.UpdateTokens} {Update Tokens}    
       other {Generic}
     }`,
+  [`action.${ColonyActionType.ColonyEdit}.verifiedAddresses`]: `Address book was updated`,
+  [`action.${ColonyActionType.ColonyEdit}.tokens`]: `Colony tokens were updated`,
 };
 
 export default actionsMessageDescriptors;

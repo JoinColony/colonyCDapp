@@ -10,7 +10,10 @@ import {
   ColonyActionType,
   UniversalMessageValues,
 } from '~types';
-import { getDetailsForAction } from '~utils/colonyActions';
+import {
+  getDetailsForAction,
+  getExtendedActionType,
+} from '~utils/colonyActions';
 import { splitTransactionHash } from '~utils/strings';
 
 import {
@@ -98,7 +101,10 @@ interface DetailItemConfig {
 }
 
 const getDetailItems = (
-  {
+  actionData: ColonyAction,
+  colony: Colony,
+): DetailItemConfig[] => {
+  const {
     // motionDomain,
     type,
     fromDomain,
@@ -107,11 +113,11 @@ const getDetailItems = (
     recipient,
     transactionHash,
     token,
-  }: // roles,
-  ColonyAction,
-  colony: Colony,
-): DetailItemConfig[] => {
-  const detailsForAction = getDetailsForAction(type);
+    /* roles */
+  } = actionData;
+
+  const extendedActionType = getExtendedActionType(actionData, colony);
+  const detailsForAction = getDetailsForAction(extendedActionType);
   const shortenedHash = getShortenedHash(transactionHash || '');
 
   const isSmiteAction = type === ColonyActionType.EmitDomainReputationPenalty;
@@ -120,7 +126,7 @@ const getDetailItems = (
     {
       label: MSG.actionType,
       labelValues: undefined,
-      item: <ActionTypeDetail actionType={type} />,
+      item: <ActionTypeDetail actionType={extendedActionType} />,
     },
     // {
     //   label: MSG.motionDomain,
