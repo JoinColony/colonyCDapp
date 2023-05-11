@@ -22,7 +22,7 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({ watchlist = [], isMobile 
     <div className="h-[24.75rem] p-1 w-full">
       {!isMobile && (
         <>
-          <div className="flex items-center p-2">
+          <div className="flex items-center py-2">
             <div className="flex mr-2">
               <ColonyAvatar
                 colony={colonyToDisplay as Colony}
