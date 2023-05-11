@@ -1,104 +1,89 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
-import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
+import { ClientType } from '@colony/colony-js';
 import { ApolloQueryResult } from '@apollo/client';
+import { BigNumber } from 'ethers';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { getContext, ContextModule, ColonyManager } from '~context';
-import { Address, ColonyAction } from '~types';
+import { getContext, ContextModule } from '~context';
 import {
-  GetColonyActionsDocument,
-  GetColonyActionsQuery,
-  GetColonyActionsQueryVariables,
+  GetColonyActionDocument,
+  GetColonyActionQuery,
+  GetColonyActionQueryVariables,
 } from '~gql';
-import { notNull } from '~utils/arrays';
-import { getMotionDatabaseId } from '~utils/colonyMotions';
 
 import {
   ChannelDefinition,
   createGroupTransaction,
   createTransactionChannels,
-  getTxChannel,
 } from '../transactions';
 
-import { getColonyManager, putError, takeFrom } from '../utils';
+import { putError, takeFrom } from '../utils';
 
-export type ClaimAllMotionRewardsPayload =
+export type ClaimMotionRewardsPayload =
   Action<ActionTypes.MOTION_CLAIM>['payload'];
 
 function* claimMotionRewards({
   meta,
-  payload: { userAddress, colonyAddress, motionIds },
+  payload: { userAddress, colonyAddress, transactionHash },
 }: Action<ActionTypes.MOTION_CLAIM>) {
-  const txChannel = yield call(getTxChannel, meta.id);
   const apolloClient = getContext(ContextModule.ApolloClient);
   try {
-    const colonyManager: ColonyManager = yield getColonyManager();
-    const { chainId } = yield colonyManager.provider.getNetwork();
-    const votingClient: AnyVotingReputationClient =
-      yield colonyManager.getClient(
-        ClientType.VotingReputationClient,
-        colonyAddress,
-      );
-
     const {
-      data: { getActionsByColony },
-    }: ApolloQueryResult<GetColonyActionsQuery> = yield apolloClient.query<
-      GetColonyActionsQuery,
-      GetColonyActionsQueryVariables
+      data: { getColonyAction },
+    }: ApolloQueryResult<GetColonyActionQuery> = yield apolloClient.query<
+      GetColonyActionQuery,
+      GetColonyActionQueryVariables
     >({
-      query: GetColonyActionsDocument,
+      query: GetColonyActionDocument,
       variables: {
-        colonyAddress,
-        filter: { isMotion: { eq: true } },
+        transactionHash,
       },
     });
 
-    const motions = getActionsByColony?.items.filter(notNull);
+    const motionData = getColonyAction?.motionData;
 
-    if (!motions) {
-      throw new Error('Could not retrieve motions from database');
+    if (!motionData) {
+      throw new Error('Could not retrieve motion from database');
     }
 
-    const databaseMotionIds = motionIds.map((nativeMotionId) =>
-      getMotionDatabaseId(chainId, votingClient.address, nativeMotionId),
+    const userRewards = motionData.stakerRewards.find(
+      ({ address }) => address === userAddress,
     );
 
-    const [motionsWithYayClaim, motionsWithNayClaim] = getMotionsWithClaims(
-      motions,
-      databaseMotionIds,
-      userAddress,
-    );
+    if (!userRewards) {
+      throw new Error('Could not find rewards for given user address');
+    }
 
-    const allMotionClaims = [...motionsWithYayClaim, ...motionsWithNayClaim];
+    const {
+      rewards: { yay, nay },
+    } = userRewards;
 
-    if (!allMotionClaims.length) {
+    const hasYayClaim = !BigNumber.from(yay).isZero();
+    const hasNayClaim = !BigNumber.from(nay).isZero();
+
+    if (!hasYayClaim && !hasNayClaim) {
       throw new Error('A motion with claims needs to be provided');
     }
 
-    const channelNames: string[] = [];
-
-    for (let index = 0; index < allMotionClaims.length; index += 1) {
-      channelNames.push(String(index));
-    }
+    const YAY_ID = 'yayClaim';
+    const NAY_ID = 'nayClaim';
 
     const channels: { [id: string]: ChannelDefinition } = yield call(
       createTransactionChannels,
       meta.id,
-      channelNames,
+      [...(hasYayClaim ? [YAY_ID] : []), ...(hasNayClaim ? [NAY_ID] : [])],
     );
+
+    const BATCH_KEY = 'claimMotionRewards';
 
     yield all(
       Object.keys(channels).map((id) =>
-        createGroupTransaction(channels[id], 'claimMotionRewards', meta, {
+        createGroupTransaction(channels[id], BATCH_KEY, meta, {
           context: ClientType.VotingReputationClient,
           methodName: 'claimRewardWithProofs',
           identifier: colonyAddress,
-          params: [
-            allMotionClaims[id],
-            userAddress,
-            parseInt(id, 10) > motionsWithYayClaim.length - 1 ? 0 : 1,
-          ],
+          params: [motionData.motionId, userAddress, id === YAY_ID ? 1 : 0],
         }),
       ),
     );
@@ -121,65 +106,11 @@ function* claimMotionRewards({
     });
   } catch (error) {
     return yield putError(ActionTypes.MOTION_CLAIM_ERROR, error, meta);
-  } finally {
-    txChannel.close();
   }
+
   return null;
 }
 
-export default function* claimAllMotionRewardsSaga() {
+export default function* claimMotionRewardsSaga() {
   yield takeEvery(ActionTypes.MOTION_CLAIM, claimMotionRewards);
-}
-
-/**
- * Client-side filtering the motions in the db for those
- * with outstanding claims by the given user
- */
-
-function getMotionsWithClaims(
-  motions: ColonyAction[],
-  databaseMotionIds: string[],
-  userAddress: Address,
-) {
-  const motionsWithYayClaims: string[] = [];
-  const motionsWithNayClaims: string[] = [];
-
-  motions
-    /* Filter motions by those ids provided to saga */
-    .filter(({ motionData }) =>
-      motionData
-        ? databaseMotionIds.some(
-            (databaseId) => databaseId === motionData.databaseMotionId,
-          )
-        : false,
-    )
-    .forEach(({ motionData }) => {
-      if (motionData) {
-        const { motionId } = motionData;
-        const currentUserRewards = motionData.stakerRewards.find(
-          ({ address }) => address === userAddress,
-        );
-
-        if (currentUserRewards) {
-          const {
-            rewards: { nay, yay },
-            isClaimed,
-          } = currentUserRewards;
-
-          if (isClaimed) {
-            return;
-          }
-
-          if (nay !== '0') {
-            motionsWithNayClaims.push(motionId);
-          }
-
-          if (yay !== '0') {
-            motionsWithYayClaims.push(motionId);
-          }
-        }
-      }
-    });
-
-  return [motionsWithYayClaims, motionsWithNayClaims];
 }
