@@ -1,4 +1,4 @@
-@value query428 from '~styles/queries.css';
+@value query850 from '~styles/queries.css';
 
 .emailPermissions {
   display: flex;
@@ -19,7 +19,7 @@
   width: 218px;
 }
 
-@media screen and query428 {
+@media screen and query850 {
   section.emailPermissions {
     padding: 0px;
   }

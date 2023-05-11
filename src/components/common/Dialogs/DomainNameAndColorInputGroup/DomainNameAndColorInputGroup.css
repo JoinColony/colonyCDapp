@@ -1,4 +1,4 @@
-@value query428 from '~styles/queries.css';
+@value query850 from '~styles/queries.css';
 
 .nameAndColorContainer {
   display: flex;
@@ -14,7 +14,7 @@
   color: var(--dark);
 }
 
-@media screen and query428 {
+@media screen and query850 {
   .domainName > div:first-child {
     min-height: 85px;
   }

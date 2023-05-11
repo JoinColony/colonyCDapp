@@ -1,4 +1,4 @@
-@value query428 from '~styles/queries.css';
+@value query850 from '~styles/queries.css';
 
 .main {
   padding-top: 155px;
@@ -29,7 +29,7 @@
   margin-top: 13px;
 }
 
-@media screen and query428 {
+@media screen and query850 {
   .main {
     padding-bottom: 40px;
   }

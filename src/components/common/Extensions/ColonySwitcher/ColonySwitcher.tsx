@@ -9,6 +9,7 @@ import { useSelectedColony } from './hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
 import ColonyAvatarWrapper from './partials/ColonyAvatarWrapper';
 import ColonyDropdownMobile from './partials/ColonyDropdownMobile';
+import styles from './ColonySwitcher.module.css';
 
 const displayName = 'common.Extensions.ColonySwitcher';
 
@@ -77,10 +78,13 @@ const ColonySwitcher = () => {
             <div
               ref={setTooltipRef}
               {...getTooltipProps({
-                className: clsx('h-[24.75rem] p-1 flex justify-center z-[9999] tooltip-container', {
-                  'w-[26.75rem] border-none shadow-none': isMobile,
-                  'w-[15.1875rem]': !isMobile,
-                }),
+                className: clsx(
+                  `${styles.tooltipContainer} h-[24.75rem] p-1 flex justify-center z-[9999] tooltip-container`,
+                  {
+                    'w-[26.75rem] border-none shadow-none': isMobile,
+                    'w-[15.1875rem]': !isMobile,
+                  },
+                ),
               })}
             >
               {userLoading && (
@@ -92,7 +96,7 @@ const ColonySwitcher = () => {
             </div>
           )}
           {isMobile && (
-            <ColonyDropdownMobile isOpen={isOpen} isMobile={isMobile} userLoading={userLoading}>
+            <ColonyDropdownMobile isOpen={isOpen} userLoading={userLoading}>
               {!!watchlist.length && !userLoading && (
                 <ColoniesDropdown watchlist={[...watchlist].sort(sortByDate)} isMobile={isMobile} />
               )}

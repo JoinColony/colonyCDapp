@@ -1,4 +1,4 @@
-@value query428 from '~styles/queries.css';
+@value query850 from '~styles/queries.css';
 
 .main {
   width: 100%;
@@ -8,7 +8,7 @@
   margin-bottom: 11px;
 }
 
-@media screen and query428 {
+@media screen and query850 {
   .main > label {
     justify-content: center;
   }
