@@ -14,7 +14,6 @@ fragment Colony on Colony {
   }
   chainMetadata {
     chainId
-    network
   }
   tokens {
     ...ColonyTokensConnection
@@ -61,7 +60,6 @@ fragment WatchedColony on Colony {
   name
   chainMetadata {
     chainId
-    network
   }
   metadata {
     ...ColonyMetadata

@@ -274,21 +274,21 @@ const createToken = async (symbol, singerOrWallet) => {
 /*
  * Colony
  */
-const createMetacolony = async (singerOrWallet) => {
+const createMetacolony = async (signerOrWallet) => {
   const { abi: IColonyNetworkAbi } =
     colonyJSIColonyNetwork.IColonyNetwork__factory;
   const { abi: IColonyAbi } = colonyJSIColony.IColony__factory;
   const colonyNetwork = new Contract(
     etherRouterAddress,
     IColonyNetworkAbi,
-    singerOrWallet,
+    signerOrWallet,
   );
 
   const metacolonyAddress = await colonyNetwork['getMetaColony()']();
   const metacolony = new Contract(
     metacolonyAddress,
     IColonyAbi,
-    singerOrWallet,
+    signerOrWallet,
   );
   const metacolonyTokenAddress = await metacolony.getToken();
   const metacolonyVersion = await metacolony.version();
@@ -305,6 +305,9 @@ const createMetacolony = async (singerOrWallet) => {
         name: 'meta',
         type: 'METACOLONY',
         version: BigNumber.from(metacolonyVersion).toNumber(),
+        chainMetadata: {
+          chainId: (await signerOrWallet.provider.getNetwork()).chainId,
+        },
       },
     },
     GRAPHQL_URI,
@@ -397,13 +400,13 @@ const createMetacolony = async (singerOrWallet) => {
   return utils.getAddress(metacolonyAddress);
 };
 
-const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
+const createColony = async (colonyName, tokenAddress, signerOrWallet) => {
   const { abi: IColonyNetworkAbi } =
     colonyJSIColonyNetwork.IColonyNetwork__factory;
   const colonyNetwork = new Contract(
     etherRouterAddress,
     IColonyNetworkAbi,
-    singerOrWallet,
+    signerOrWallet,
   );
   const currentNetworkVersion = await colonyNetwork.getCurrentColonyVersion();
   const colonyDeployment = await colonyNetwork[
@@ -418,7 +421,7 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
   const colonyAddress = utils.getAddress(createColonyEvent.args.colonyAddress);
 
   const { abi: IColonyAbi } = colonyJSIColony.IColony__factory;
-  const colony = new Contract(colonyAddress, IColonyAbi, singerOrWallet);
+  const colony = new Contract(colonyAddress, IColonyAbi, signerOrWallet);
 
   addAugmentsB(colony);
 
@@ -431,6 +434,9 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
         colonyNativeTokenId: tokenAddress,
         name: colonyName,
         version: BigNumber.from(currentNetworkVersion).toNumber(),
+        chainMetadata: {
+          chainId: (await signerOrWallet.provider.getNetwork()).chainId,
+        },
       },
     },
     GRAPHQL_URI,
@@ -441,7 +447,7 @@ const createColony = async (colonyName, tokenAddress, singerOrWallet) => {
     // add token to colony's token list
     await addTokenToColonyTokens(colonyAddress, tokenAddress);
     // subscribe user to colony
-    await subscribeUserToColony(singerOrWallet.address, colonyAddress);
+    await subscribeUserToColony(signerOrWallet.address, colonyAddress);
   }
 
   await delay();
