@@ -1,14 +1,14 @@
 import { WalletState } from '@web3-onboard/core';
 
-export type ColonyWallet = BasicWallet | Wallet;
+export type ColonyWallet = BasicWallet | FullWallet;
 
-interface Wallet extends WalletState {
+export interface FullWallet extends WalletState {
   address: string;
   balance: Record<string, string>;
   ens?: string | null;
 }
 
-export type BasicWallet = Pick<Wallet, 'address' | 'label' | 'chains'>;
+export type BasicWallet = Pick<FullWallet, 'address' | 'label' | 'chains'>;
 
 export const isBasicWallet = (
   wallet?: ColonyWallet | null,
@@ -20,5 +20,6 @@ export const isBasicWallet = (
   return true;
 };
 
-export const isFullWallet = (wallet?: ColonyWallet | null): wallet is Wallet =>
-  !!wallet && 'balance' in wallet;
+export const isFullWallet = (
+  wallet?: ColonyWallet | null,
+): wallet is FullWallet => !!wallet && 'balance' in wallet;
