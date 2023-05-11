@@ -14,6 +14,7 @@ import {
   MetamaskRpcErrors,
   TRANSACTION_METHODS,
   ExtendedClientType,
+  isFullWallet,
 } from '~types';
 
 import {
@@ -29,6 +30,11 @@ async function getMetatransactionPromise(
   { methodName, params, identifier: clientAddress }: TransactionRecord,
 ): Promise<TransactionResponse> {
   const wallet = getContext(ContextModule.Wallet);
+
+  if (!isFullWallet(wallet)) {
+    throw new Error('Background login not yet completed.');
+  }
+
   const walletProvider = new providers.Web3Provider(wallet.provider);
   const signer = walletProvider.getSigner();
 
