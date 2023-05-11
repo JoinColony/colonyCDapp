@@ -35,7 +35,7 @@ const meta: Meta<typeof Button> = {
     text: 'New action',
     disabled: false,
     isFullSize: false,
-    isLoading: false,
+    isPending: false,
   },
 };
 
@@ -69,6 +69,6 @@ export const TextButton: Story = {
 export const Pending: Story = {
   args: {
     mode: 'pending',
-    isLoading: true,
+    isPending: true,
   },
 };
