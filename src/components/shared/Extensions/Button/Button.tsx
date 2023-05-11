@@ -41,6 +41,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               [styles.primarySolid]: mode === 'primarySolid',
               [styles.primaryOutline]: mode === 'primaryOutline',
               [styles.secondarySolid]: mode === 'secondarySolid',
+              [styles.secondaryOutline]: mode === 'secondaryOutline',
               [styles.textButton]: mode === 'textButton',
               'pointer-events-none': disabled,
               'w-full': isFullSize,

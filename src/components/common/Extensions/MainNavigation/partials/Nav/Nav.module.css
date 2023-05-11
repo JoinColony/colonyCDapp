@@ -1,7 +1,11 @@
 .navLink {
-  @apply flex items-center min-h-[2rem] px-3 font-semibold text-gray-700 transition-all duration-normal py-1.5 text-md hover:text-gray-900 hover:bg-base-bg hover:rounded-lg;
+  @apply flex items-center justify-between w-full px-6 py-3 text-lg font-semibold transition-all duration-normal sm:min-h-[2rem] sm:rounded-lg sm:hover:text-gray-900 sm:hover:bg-base-bg sm:px-3 sm:py-1.5 sm:text-md sm:justify-start sm:w-auto;
 }
 
 .subMenu {
-  @apply absolute top-full left-0 opacity-0 overflow-hidden max-h-0 pointer-events-none transition-all duration-normal;
+  @apply bg-base-white transition-all duration-normal pointer-events-none absolute top-full left-0 pt-3;
+}
+
+.subMenuMobile {
+  @apply bg-base-white px-6;
 }

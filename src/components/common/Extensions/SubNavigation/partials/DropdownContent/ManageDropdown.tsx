@@ -10,26 +10,24 @@ import LearnMore from '~shared/Extensions/LearnMore';
 const displayName = 'common.Extensions.SubNavigation.partials.DropdownContent.ManageDropdown';
 
 const ManageDropdown: FC<PropsWithChildren> = () => (
-  <div>
-    <div className="text-gray-400 text-xs">
-      <div className="hidden md:block mx-4 mt-4">
-        <FormattedMessage {...MSG.manageContentTitle} />
-      </div>
-      <ul className={styles.listWrapper}>
-        <LinkItem title={MSG.manageTeams} description={MSG.manageTeamsDescription} />
-        <LinkItem title={MSG.manageReputation} description={MSG.manageReputationDescription} />
-        <LinkItem title={MSG.managePermissions} description={MSG.managePermissionsDescription} />
-        <LinkItem title={MSG.organizationDetails} description={MSG.organizationDetailsDescription} />
-      </ul>
-      <div className={styles.buttonWrapper}>
-        <Button text={MSG.buttonTextManage} mode="primaryOutline" />
-      </div>
-      <div className={styles.infoWrapper}>
-        <LearnMore
-          message={{ id: `${displayName}.helpText`, defaultMessage: 'Need help with admin? <a>Learn more</a>' }}
-          href={LEARN_MORE_DECISIONS}
-        />
-      </div>
+  <div className="text-gray-400 text-xs">
+    <div className="hidden sm:block mx-6 mt-6">
+      <FormattedMessage {...MSG.manageContentTitle} />
+    </div>
+    <ul className={styles.listWrapper}>
+      <LinkItem title={MSG.manageTeams} description={MSG.manageTeamsDescription} />
+      <LinkItem title={MSG.manageReputation} description={MSG.manageReputationDescription} />
+      <LinkItem title={MSG.managePermissions} description={MSG.managePermissionsDescription} />
+      <LinkItem title={MSG.organizationDetails} description={MSG.organizationDetailsDescription} />
+    </ul>
+    <div className={styles.buttonWrapper}>
+      <Button text={MSG.buttonTextManage} mode="secondaryOutline" isFullSize />
+    </div>
+    <div className={styles.infoWrapper}>
+      <LearnMore
+        message={{ id: `${displayName}.helpText`, defaultMessage: 'Need help with admin? <a>Learn more</a>' }}
+        href={LEARN_MORE_DECISIONS}
+      />
     </div>
   </div>
 );

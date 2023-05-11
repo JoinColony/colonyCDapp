@@ -5,6 +5,9 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 const meta: Meta<typeof MainNavigation> = {
   title: 'Common/Main Navigation',
   component: MainNavigation,
+  parameters: {
+    layout: 'fullscreen',
+  },
 };
 
 export default meta;

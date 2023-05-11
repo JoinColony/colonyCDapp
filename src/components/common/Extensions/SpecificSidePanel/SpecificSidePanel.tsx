@@ -4,7 +4,7 @@ import { SpecificSidePanelProps } from './types';
 import ExtensionStatusBadge from '../ExtensionStatusBadge-new/ExtensionStatusBadge';
 import Permissions from './partials/Permissions';
 import DateInstalled from './partials/DateInstalled';
-import InstaledBy from './partials/InstaledBy';
+import InstalledBy from './partials/InstalledBy';
 import Version from './partials/Version';
 import ContractAddress from './partials/ContractAddress';
 import Developer from './partials/Developer';
@@ -21,7 +21,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
       {sidePanelData.map(
-        ({ id, dateInstalled, instaledBy, statusType, versionInstalled, contractAddress, developer, permissions }) => (
+        ({ id, dateInstalled, installedBy, statusType, versionInstalled, contractAddress, developer, permissions }) => (
           <Fragment key={id}>
             <div className={styles.panelRow}>
               <div className={styles.panelTitle}>{statusType.title}</div>
@@ -34,7 +34,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData
               </div>
             </div>
             {!statuses?.includes('not-installed') && (
-              <InstaledBy title={instaledBy.title} component={instaledBy.component} />
+              <InstalledBy title={installedBy.title} component={installedBy.component} />
             )}
             <DateInstalled title={dateInstalled.title} date={dateInstalled.date} />
             <Version title={versionInstalled.title} version={versionInstalled.version} />

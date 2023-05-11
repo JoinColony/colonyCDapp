@@ -1,70 +1,104 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
+import { AnimatePresence, motion } from 'framer-motion';
 import { NavItemProps, NavProps } from './types';
-import { useMobile } from '~hooks';
 import Icon from '~shared/Icon';
 import styles from './Nav.module.css';
 import SubMenu from '../SubMenu';
+import { useMobile } from '~hooks';
 
 const displayName = 'common.Extensions.MainNavigation.partials.Nav';
 
 const NavItem: FC<NavItemProps> = ({ item }) => {
-  const isMobile = useMobile();
   const { formatMessage } = useIntl();
+  const isMobile = useMobile();
 
-  const NavElement = item.isLink ? (
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleItem = useCallback(() => {
+    setIsOpen(!isOpen);
+
+    if (item.onToggle) {
+      item.onToggle(!isOpen);
+    }
+  }, [isOpen, item]);
+
+  const navLink = (
+    <a className={styles.navLink} href={item.href}>
+      {formatMessage({
+        id: `mainNavItem.${item.key}`,
+        defaultMessage: `${item.label}`,
+      })}
+    </a>
+  );
+
+  return isMobile ? (
     <>
-      {isMobile ? (
-        <a href={item.href} className="flex font-semibold text-lg text-gray-700 py-3 sm:text-md">
-          {item.label}
-          {item.subMenu && <Icon name="caret-down" appearance={{ size: 'extraTiny' }} />}
-        </a>
+      {item.href ? (
+        navLink
       ) : (
-        <>
-          <a href={item.href} className={styles.navLink}>
-            {item.label}
-          </a>
+        <button type="button" className={clsx(styles.navLink, { 'text-blue-400': isOpen })} onClick={toggleItem}>
+          {formatMessage({
+            id: `mainNavItem.${item.label}`,
+            defaultMessage: `${item.label}`,
+          })}
           {item.subMenu && (
-            <button type="button" onClick={() => 'click'}>
+            <span className={clsx('flex ml-2.5 transition-transform duration-normal', { 'rotate-180': isOpen })}>
               <Icon name="caret-down" appearance={{ size: 'extraTiny' }} />
-            </button>
+            </span>
           )}
-        </>
+        </button>
+      )}
+      {item.subMenu && (
+        <div className={styles.subMenuMobile}>
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                key="accordion-content"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
+                className="overflow-hidden"
+              >
+                <SubMenu items={item.subMenu} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       )}
     </>
   ) : (
     <>
-      {isMobile ? (
-        <button type="button" className="flex items-center py-3 text-lg">
-          <span className="font-semibold text-lg text-gray-900 block mr-2.5 sm:text-md">{item.label}</span>
-          {item.subMenu && <Icon name="caret-down" appearance={{ size: 'extraTiny' }} />}
-        </button>
+      {item.href ? (
+        navLink
       ) : (
         <button
           type="button"
-          className={clsx(styles.navLink)}
+          className={clsx(styles.navLink, 'text-gray-700 group-hover:text-gray-900 group-hover:bg-base-bg')}
           aria-label={`${formatMessage({ id: 'ariaLabel.open' })} ${formatMessage({
-            id: `navItem.${item.key}`,
+            id: `mainNavItem.${item.key}`,
             defaultMessage: `${item.label}`,
           })}`}
         >
-          <span className="font-semibold text-lg text-gray-900 block mr-2.5 sm:text-md">{item.label}</span>
-          {item.subMenu && <Icon name="caret-down" appearance={{ size: 'extraTiny' }} />}
+          {formatMessage({
+            id: `mainNavItem.${item.label}`,
+            defaultMessage: `${item.label}`,
+          })}
+          {item.subMenu && (
+            <span className="flex ml-2.5">
+              <Icon name="caret-down" appearance={{ size: 'extraTiny' }} />
+            </span>
+          )}
         </button>
       )}
-    </>
-  );
-
-  return (
-    <>
-      {NavElement}
       {item.subMenu && (
         <div
-          className={clsx(
-            styles.subMenu,
-            'group-hover:opacity-100 group-hover:max-h-[9999px] group-hover:pointer-events-auto',
-          )}
+          className={clsx(styles.subMenu, 'opacity-0 max-h-0', {
+            'group-hover:opacity-100 group-hover:max-h-[9999px] sm:group-hover:pointer-events-auto': !isMobile,
+            'max-h-[9999px] opacity-100': isOpen,
+          })}
         >
           <SubMenu items={item.subMenu} />
         </div>
@@ -74,7 +108,7 @@ const NavItem: FC<NavItemProps> = ({ item }) => {
 };
 
 const Nav: FC<NavProps> = ({ items }) => (
-  <ul className="flex flex-col sm:flex-row sm:gap-x-1">
+  <ul className="flex flex-col text-gray-700 sm:flex-row sm:gap-x-1">
     {items.map((item) => (
       <li key={item.key} className={item.subMenu && 'relative group'}>
         <NavItem {...{ item }} />

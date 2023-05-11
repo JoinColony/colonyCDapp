@@ -17,7 +17,7 @@
   }
 
   body {
-    @apply h-full overflow-scroll;
+    @apply h-full overflow-scroll overflow-x-hidden;
   }
 
   svg:not([class]) {

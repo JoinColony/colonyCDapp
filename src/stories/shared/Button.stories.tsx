@@ -7,7 +7,7 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     mode: {
       name: 'Mode',
-      options: ['primarySolid', 'primaryOutline', 'secondarySolid', 'textButton'],
+      options: ['primarySolid', 'primaryOutline', 'secondarySolid', 'secondaryOutline', 'textButton'],
       control: {
         type: 'select',
       },
@@ -52,6 +52,12 @@ export const PrimaryOutline: Story = {
 export const SecondarySolid: Story = {
   args: {
     mode: 'secondarySolid',
+  },
+};
+
+export const SecondaryOutline: Story = {
+  args: {
+    mode: 'secondaryOutline',
   },
 };
 

@@ -1,18 +1,12 @@
 import React from 'react';
 
 import SubNavigationComponent, { SubNavigationMobile } from '~common/Extensions/SubNavigation';
+import { useMobile } from '~hooks';
 
 const SubNavigation = () => {
-  return (
-    <>
-      <div className="hidden md:block">
-        <SubNavigationComponent />
-      </div>
-      <div className="md:hidden">
-        <SubNavigationMobile />
-      </div>
-    </>
-  );
+  const isMobile = useMobile();
+
+  return isMobile ? <SubNavigationMobile /> : <SubNavigationComponent />;
 };
 
 export default SubNavigation;

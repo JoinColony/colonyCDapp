@@ -7,15 +7,29 @@ const meta: Meta<typeof Modal> = {
   title: 'Shared/Modal',
   component: Modal,
   argTypes: {
-    title: {
-      name: 'Title',
+    icon: {
+      name: 'Icon',
+      options: ['trash'],
       control: {
-        type: 'text',
+        type: 'select',
+      },
+    },
+    isWarning: {
+      name: 'Is warning?',
+      control: {
+        type: 'boolean',
+      },
+    },
+    isFullOnMobile: {
+      name: 'Is full on mobile?',
+      control: {
+        type: 'boolean',
       },
     },
   },
   args: {
-    title: 'Deprecate extension',
+    isFullOnMobile: true,
+    isWarning: false,
   },
 };
 
@@ -60,6 +74,7 @@ const ModalWithState = (args) => {
 export const Base: Story = {
   args: {
     icon: 'trash',
+    isFullOnMobile: true,
   },
   render: (args) => <ModalWithState {...args} />,
 };
@@ -68,6 +83,15 @@ export const WithWarning: Story = {
   args: {
     icon: 'trash',
     isWarning: true,
+    isFullOnMobile: true,
+  },
+  render: (args) => <ModalWithState {...args} />,
+};
+
+export const WithAvatar: Story = {
+  args: {
+    icon: '',
+    isFullOnMobile: true,
   },
   render: (args) => <ModalWithState {...args} />,
 };

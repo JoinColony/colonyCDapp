@@ -3,26 +3,22 @@ import { NavItem } from './types';
 export const navMenuItems: NavItem[] = [
   {
     label: 'Dashboard',
-    href: '/',
     key: '1',
-    isLink: true,
+    href: '/',
   },
   {
     label: 'Members',
     key: '2',
-    href: '',
-    isLink: true,
+    href: '/',
   },
   {
     label: 'Decisions',
     key: '3',
-    href: '',
-    isLink: true,
+    href: '/',
   },
   {
     label: 'More',
     key: '4',
-    href: '',
     subMenu: [
       {
         label: 'Activity',
@@ -42,7 +38,7 @@ export const navMenuItems: NavItem[] = [
       {
         label: 'Members',
         href: '/members',
-        description: 'View and manage contributors and followers in this Colony.',
+        description: 'View and manage contributors and followers in this colony.',
       },
       {
         label: 'Teams',
@@ -53,6 +49,10 @@ export const navMenuItems: NavItem[] = [
         label: 'Work',
         href: '/work',
         description: 'View and participate in tasks, projects, and objectives.',
+        status: {
+          text: 'Coming Soon',
+          mode: 'coming-soon',
+        },
       },
     ],
   },
