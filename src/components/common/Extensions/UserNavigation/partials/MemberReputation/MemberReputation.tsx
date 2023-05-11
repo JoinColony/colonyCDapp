@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
-import Icon from '~shared/Icon/Icon';
+import Icon from '~shared/Icon';
 import { MemberReputationProps } from './types';
 import { ZeroValue, calculatePercentageReputation } from '~utils/reputation';
-import Numeral from '~shared/Numeral/Numeral';
+import Numeral from '~shared/Numeral';
 
-export const displayName = 'common.Extensions.UserNavigation.MemberReputation';
+export const displayName = 'common.Extensions.UserNavigation.partials.MemberReputation';
 
 const MemberReputation: FC<MemberReputationProps> = ({ userReputation, totalReputation }) => {
   const percentageReputation = calculatePercentageReputation(userReputation, totalReputation);

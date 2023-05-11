@@ -2,16 +2,15 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import React from 'react';
 import UserNavigation from '~common/Extensions/UserNavigation';
-import MemberReputation from '~common/Extensions/UserNavigation/MemberReputation/MemberReputation';
-import Token from '~common/Extensions/UserNavigation/Token/Token';
-import Button from '~shared/Extensions/Button/Button';
-import UserAvatar from '~shared/Extensions/UserAvatar/UserAvatar';
-import Icon from '~shared/Icon/Icon';
+import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
+import Token from '~common/Extensions/UserNavigation/partials/Token';
+import Button from '~shared/Extensions/Button';
+import UserAvatar from '~shared/Extensions/UserAvatar';
+import Icon from '~shared/Icon';
 
 const meta: Meta<typeof UserNavigation> = {
   title: 'Common/UserNavigation',
   component: UserNavigation,
-  argTypes: {},
 };
 
 export default meta;
@@ -31,13 +30,13 @@ export const UserNavigationWithData = () => {
   return (
     <div className="flex items-center gap-1">
       {nativeToken && <Token nativeToken={nativeToken} />}
-      <Button mode="tertiaryOutline" fullRounded>
+      <Button mode="tertiaryOutline" isFullRounded>
         <div className="flex items-center gap-3">
           <UserAvatar userName="panda" size="xxs" isLink={false} />
           <MemberReputation userReputation={userReputation} totalReputation={totalReputation} />
         </div>
       </Button>
-      <Button mode="tertiaryOutline" fullRounded>
+      <Button mode="tertiaryOutline" isFullRounded>
         <Icon name="list" appearance={{ size: 'tiny' }} />
       </Button>
     </div>

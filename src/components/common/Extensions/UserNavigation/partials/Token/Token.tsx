@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import TokenIcon from '~shared/TokenIcon/TokenIcon';
+import TokenIcon from '~shared/TokenIcon';
 import { TokenProps } from './types';
 
-export const displayName = 'common.Extensions.UserNavigation.Token';
+export const displayName = 'common.Extensions.UserNavigation.partials.Token';
 
 const Token: FC<TokenProps> = ({ nativeToken }) => (
   <div className="text-md h-[2.5rem] px-4 py-2.5 bg-base-white border rounded-full border-gray-300 flex items-center">

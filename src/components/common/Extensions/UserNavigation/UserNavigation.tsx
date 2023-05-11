@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { useAppContext, useColonyContext, useUserReputation } from '~hooks';
-import Button from '~shared/Extensions/Button/Button';
-import UserAvatar from '~shared/Extensions/UserAvatar/UserAvatar';
-import MemberReputation from './MemberReputation/MemberReputation';
-import Icon from '~shared/Icon/Icon';
-import Token from './Token/Token';
+import Button from '~shared/Extensions/Button';
+import UserAvatar from '~shared/Extensions/UserAvatar';
+import MemberReputation from './partials/MemberReputation';
+import Icon from '~shared/Icon';
+import Token from './partials/Token';
 
 export const displayName = 'common.Extensions.UserNavigation';
 
@@ -19,13 +19,13 @@ const UserNavigation: FC = () => {
   return isWalletConnected ? (
     <div className="flex items-center gap-1">
       {nativeToken && <Token nativeToken={nativeToken} />}
-      <Button mode="tertiaryOutline" fullRounded>
+      <Button mode="tertiaryOutline" isFullRounded>
         <div className="flex items-center gap-3">
           <UserAvatar user={user} userName={user?.name || ''} size="xxs" isLink={false} />
           <MemberReputation userReputation={userReputation} totalReputation={totalReputation} />
         </div>
       </Button>
-      <Button mode="tertiaryOutline" fullRounded>
+      <Button mode="tertiaryOutline" isFullRounded>
         <Icon name="list" appearance={{ size: 'tiny' }} />
       </Button>
     </div>
