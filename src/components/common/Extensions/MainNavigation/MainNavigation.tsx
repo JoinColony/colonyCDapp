@@ -1,6 +1,4 @@
-import React, { PropsWithChildren, FC } from 'react';
-
-import { MainNavigationProps } from './types';
+import React, { FC } from 'react';
 import Nav from './partials/Nav/Nav';
 import { navMenuItems } from './partials/Nav/consts';
 import { useMobile } from '~hooks';
@@ -11,7 +9,7 @@ import Button from '~shared/Extensions/Button';
 
 const displayName = 'common.Extensions.MainNavigation';
 
-const MainNavigation: FC<PropsWithChildren<MainNavigationProps>> = () => {
+const MainNavigation: FC = () => {
   const isMobile = useMobile();
 
   return (

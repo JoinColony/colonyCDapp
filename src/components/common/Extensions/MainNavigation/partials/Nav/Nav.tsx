@@ -27,7 +27,7 @@ const NavItem: FC<NavItemProps> = ({ item }) => {
   const navLink = (
     <a className={styles.navLink} href={item.href}>
       {formatMessage({
-        id: `mainNavItem.${item.key}`,
+        id: `mainNavItem.${item.label}`,
         defaultMessage: `${item.label}`,
       })}
     </a>
@@ -78,7 +78,7 @@ const NavItem: FC<NavItemProps> = ({ item }) => {
           type="button"
           className={clsx(styles.navLink, 'text-gray-700 group-hover:text-gray-900 group-hover:bg-base-bg')}
           aria-label={`${formatMessage({ id: 'ariaLabel.open' })} ${formatMessage({
-            id: `mainNavItem.${item.key}`,
+            id: `mainNavItem.${item.label}`,
             defaultMessage: `${item.label}`,
           })}`}
         >

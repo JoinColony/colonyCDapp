@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import Button from '~shared/Extensions/Button/Button';
 import { LEARN_MORE_PAYMENTS } from '~constants';
-import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge-new/ExtensionStatusBadge';
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge-new';
 
 import LinkItem from '../LinkItem';
 
