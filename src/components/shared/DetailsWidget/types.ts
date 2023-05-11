@@ -1,11 +1,14 @@
-import { ColonyActionType, ColonyMotions } from '~types';
+import {
+  AnyActionType,
+  ColonyActionType,
+  ColonyMotions,
+  ExtendedColonyActionType,
+} from '~types';
 
 /*
  * Which icons correspond to which action types in the details widget
  */
-export const ACTION_TYPES_ICONS_MAP: {
-  [key in ColonyActionType | ColonyMotions]: string;
-} = {
+export const ACTION_TYPES_ICONS_MAP: Record<AnyActionType, string> = {
   [ColonyActionType.WrongColony]: 'forbidden-signal',
   [ColonyActionType.Payment]: 'emoji-dollar-stack',
   [ColonyActionType.Recovery]: 'emoji-alarm-lamp',
@@ -33,4 +36,6 @@ export const ACTION_TYPES_ICONS_MAP: {
   [ColonyMotions.CreateDecisionMotion]: 'emoji-decisions',
   [ColonyMotions.NullMotion]: 'forbidden-signal',
   [ColonyActionType.Generic]: 'circle-check-primary',
+  [ExtendedColonyActionType.UpdateAddressBook]: 'emoji-edit-tools',
+  [ExtendedColonyActionType.UpdateTokens]: 'emoji-edit-tools',
 };

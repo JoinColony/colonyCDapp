@@ -84,7 +84,7 @@ export type ColonyActionsActionTypes =
         colonyAvatarImage?: string;
         colonyThumbnail?: string;
         hasAvatarChanged?: boolean;
-        colonyTokens?: Address[];
+        tokenAddresses?: Address[];
         verifiedAddresses?: Address[];
         isWhitelistActivated?: boolean;
         annotationMessage?: string;

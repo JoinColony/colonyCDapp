@@ -13,11 +13,11 @@ import {
 import { Annotations } from '~shared/Fields';
 import { Heading4 } from '~shared/Heading';
 import Paragraph from '~shared/Paragraph';
-import { TokenSelector } from '~common/CreateColonyWizard';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import { useActionDialogStatus } from '~hooks';
 import { isEqual } from '~utils/lodash';
+import TokenSelector from '~shared/TokenSelector';
 
 import { NoPermissionMessage, PermissionRequiredInfo } from '../../Messages';
 import TokenItem from './TokenItem';
@@ -89,10 +89,7 @@ const TokenManagementDialogForm = ({
     tokenAddress,
   }: FormValues) =>
     !!tokenAddress ||
-    !isEqual(
-      [AddressZero, ...colonyTokenAddresses].sort(),
-      selectedTokenAddresses?.sort(),
-    );
+    !isEqual([...colonyTokenAddresses].sort(), selectedTokenAddresses?.sort());
 
   const allTokens = [...colonyTokens, ...(userHasPermission ? tokenList : [])]
     .map((token) => token?.token)

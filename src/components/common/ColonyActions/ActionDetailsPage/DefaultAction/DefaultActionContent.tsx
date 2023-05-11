@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-  getActionTitleMessageId,
-  getActionTitleValues,
-} from '~common/ColonyActions/helpers';
+import { getActionTitleValues } from '~common/ColonyActions/helpers';
 import { Heading3 } from '~shared/Heading';
 import { Colony, ColonyAction } from '~types';
 
@@ -26,7 +23,7 @@ const DefaultActionContent = ({
     <Heading3
       className={styles.heading}
       data-test="actionHeading"
-      text={{ id: getActionTitleMessageId(actionData, colony) }}
+      text={{ id: 'action.title' }}
       textValues={getActionTitleValues(actionData, colony)}
     />
     <ActionsPageFeed actionData={actionData} />

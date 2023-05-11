@@ -26,15 +26,8 @@ export const getTokenManagementDialogPayload = (
     ),
   ];
   return {
-    colonyAddress: colony.colonyAddress,
-    colonyName: colony.name,
-    colonyDisplayName: colony.metadata?.displayName,
-    colonyAvatarImage: colony.metadata?.thumbnail,
-    colonyAvatarHash: colony.metadata?.avatar,
-    hasAvatarChanged: false,
-    colonyTokens: addresses,
-    // verifiedAddresses: whitelistedAddresses,
+    colony,
+    tokenAddresses: addresses,
     annotationMessage,
-    // isWhitelistActivated,
   };
 };

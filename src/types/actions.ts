@@ -149,7 +149,18 @@ export interface FormattedEvent {
   currentPeriod?: string;
 }
 
-export type ActionItemType = ColonyActionType | ColonyMotions;
+export enum ExtendedColonyActionType {
+  UpdateAddressBook = 'UPDATE_ADDRESS_BOOK',
+  UpdateTokens = 'UPDATE_TOKENS',
+}
+
+/**
+ * Union covering all contract-recognised and extended actions and motions types
+ */
+export type AnyActionType =
+  | ColonyActionType
+  | ColonyMotions
+  | ExtendedColonyActionType;
 
 /*
  * This list will get longer once we add more system events to the dapp

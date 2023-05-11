@@ -2,6 +2,7 @@ import { ComponentType } from 'react';
 
 import WizardTemplate from '~frame/WizardTemplateColony';
 import withWizard, { StepsFn, StepType } from '~shared/Wizard/withWizard';
+import { Token } from '~types';
 
 import StepColonyName from './StepColonyName';
 import StepConfirmAllInput from './StepConfirmAllInput';
@@ -19,9 +20,10 @@ const stepArray: StepType[] = [
 ];
 
 export type FormValues = {
-  tokenName: string;
-  tokenSymbol: string;
+  tokenName?: string;
+  tokenSymbol?: string;
   tokenAddress: string;
+  token?: Token | null;
   colonyName: string;
   tokenChoice: 'create' | 'select';
   displayName: string;
@@ -50,7 +52,7 @@ export type Step1 = Pick<FormValues, 'colonyName' | 'displayName'>;
 export type Step2 = Pick<FormValues, 'tokenChoice'>;
 export type Step3 = Pick<
   FormValues,
-  'tokenAddress' | 'tokenName' | 'tokenSymbol'
+  'tokenAddress' | 'tokenName' | 'tokenSymbol' | 'token'
 >;
 
 const initialValues: [Step1, Step2, Step3] = [
@@ -65,6 +67,7 @@ const initialValues: [Step1, Step2, Step3] = [
     tokenAddress: '',
     tokenName: '',
     tokenSymbol: '',
+    token: null,
   },
 ];
 

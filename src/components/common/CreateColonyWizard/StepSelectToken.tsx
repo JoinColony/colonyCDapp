@@ -4,19 +4,16 @@ import {
   FormattedMessage,
   MessageDescriptor,
 } from 'react-intl';
-import { UseFormSetValue } from 'react-hook-form';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { HookForm as Form } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
-
-import { GetTokenByAddressQuery } from '~gql';
+import TokenSelector from '~shared/TokenSelector';
 
 import {
   FormValues,
   Step3,
   selectTokenValidationSchema as validationSchema,
-  TokenSelector,
 } from '../CreateColonyWizard';
 import { SubmitFormButton, TruncatedName } from './shared';
 
@@ -65,23 +62,11 @@ export const switchTokenInputType = (
     const steps = [...stepsValues];
     steps[1] = { tokenChoice: type };
     /*
-     * Clear state of Create Token when coming back from Select Token
+     * Clear token state when switching between create/use existing
      */
-    if (steps[2] && type === 'create' && steps[2].tokenAddress !== '') {
-      steps[2] = {};
-    }
+    steps[2] = {};
     return steps;
   });
-};
-
-const handleFetchSuccess = (
-  { getTokenByAddress }: GetTokenByAddressQuery,
-  setValue: UseFormSetValue<Step3>,
-) => {
-  const token = getTokenByAddress?.items[0];
-  const { name: tokenName, symbol: tokenSymbol } = token || {};
-  setValue('tokenName', tokenName || '');
-  setValue('tokenSymbol', tokenSymbol || '');
 };
 
 interface LinkToOtherStepProps {
@@ -119,12 +104,9 @@ const StepSelectToken = ({
         validationSchema={validationSchema}
         defaultValues={defaultValues}
       >
-        {({ formState: { isValid, isValidating, isSubmitting }, setValue }) => (
+        {({ formState: { isValid, isValidating, isSubmitting } }) => (
           <div>
             <TokenSelector
-              handleComplete={(data: GetTokenByAddressQuery) =>
-                handleFetchSuccess(data, setValue)
-              }
               extra={
                 <LinkToOtherStep
                   onClick={goToCreateToken}

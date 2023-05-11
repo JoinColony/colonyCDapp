@@ -5,5 +5,4 @@ export {
   colonyNameValidationSchema,
 } from './validation';
 export { LinkToOtherStep, switchTokenInputType } from './StepSelectToken';
-export { default as TokenSelector } from './TokenSelector';
 export { default as ConfirmTransactions } from './ConfirmTransactions';

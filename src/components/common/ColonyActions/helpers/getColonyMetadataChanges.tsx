@@ -12,6 +12,7 @@ export const getColonyMetadataChangesValue = (
     oldDisplayName,
     hasAvatarChanged,
     hasWhitelistChanged,
+    haveTokensChanged,
   } =
     colony?.metadata?.changelog?.find(
       (item) => item.transactionHash === transactionHash,
@@ -21,7 +22,10 @@ export const getColonyMetadataChangesValue = (
     oldDisplayName && newDisplayName && newDisplayName !== oldDisplayName;
 
   const hasNoChanges =
-    !hasNameChanged && !hasAvatarChanged && !hasWhitelistChanged;
+    !hasNameChanged &&
+    !hasAvatarChanged &&
+    !hasWhitelistChanged &&
+    !haveTokensChanged;
 
   if (!colony || hasNoChanges) {
     return formatText({
@@ -34,6 +38,13 @@ export const getColonyMetadataChangesValue = (
     return formatText({
       id: 'colonyMetadata.change',
       defaultMessage: 'address book',
+    });
+  }
+
+  if (haveTokensChanged) {
+    return formatText({
+      id: 'colonyMetadata.change',
+      defaultMessage: 'tokens',
     });
   }
 

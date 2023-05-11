@@ -18,6 +18,7 @@ fragment Colony on Colony {
   }
   tokens {
     items {
+      colonyTokensId: id
       token {
         ...Token
       }
@@ -77,6 +78,7 @@ fragment ColonyMetadata on ColonyMetadata {
     oldDisplayName
     hasAvatarChanged
     hasWhitelistChanged
+    haveTokensChanged
   }
 }
 

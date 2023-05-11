@@ -4,10 +4,12 @@ import { ClientType } from '@colony/colony-js';
 import { ContextModule, getContext } from '~context';
 import { Action, ActionTypes, AllActions } from '~redux';
 import {
+  GetFullColonyByNameDocument,
   UpdateColonyMetadataDocument,
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
+import { notNull } from '~utils/arrays';
 
 import {
   createTransaction,
@@ -24,6 +26,10 @@ import {
   transactionPending,
   transactionReady,
 } from '../../actionCreators';
+import {
+  getModifiedTokenAddresses,
+  updateColonyTokens,
+} from '../utils/updateColonyTokens';
 
 function* editColonyAction({
   payload: {
@@ -32,6 +38,7 @@ function* editColonyAction({
     colonyDisplayName,
     colonyAvatarImage,
     colonyThumbnail,
+    tokenAddresses,
   },
   meta: { id: metaId, navigate },
   meta,
@@ -39,13 +46,6 @@ function* editColonyAction({
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
-
-    /*
-     * Validate the required values for the payment
-     */
-    if (!colonyDisplayName && colonyDisplayName !== null) {
-      throw new Error('A colony name is required in order to edit the colony');
-    }
 
     txChannel = yield call(getTxChannel, metaId);
 
@@ -146,6 +146,27 @@ function* editColonyAction({
     );
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
+    const existingTokenAddresses =
+      colony.tokens?.items
+        .filter(notNull)
+        .map((tokenItem) => tokenItem?.token.tokenAddress) || [];
+    const modifiedTokenAddresses = getModifiedTokenAddresses(
+      colony.nativeToken.tokenAddress,
+      existingTokenAddresses,
+      tokenAddresses,
+    );
+    const haveTokensChanged = !!(
+      tokenAddresses && modifiedTokenAddresses.length
+    );
+
+    if (haveTokensChanged) {
+      yield updateColonyTokens(
+        colony,
+        existingTokenAddresses,
+        modifiedTokenAddresses,
+      );
+    }
+
     /**
      * Save the updated metadata in the database
      */
@@ -166,9 +187,12 @@ function* editColonyAction({
               colony.metadata,
               colonyDisplayName,
               colonyAvatarImage,
+              false,
+              haveTokensChanged,
             ),
           },
         },
+        refetchQueries: [GetFullColonyByNameDocument],
       });
     }
 

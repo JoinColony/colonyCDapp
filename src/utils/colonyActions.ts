@@ -8,8 +8,11 @@ import {
   Address,
   Token,
   Domain as ColonyDomain,
-  ActionItemType,
+  AnyActionType,
   ActionUserRoles,
+  ColonyAction,
+  Colony,
+  ExtendedColonyActionType,
 } from '~types';
 
 import { formatText } from './intl';
@@ -28,16 +31,12 @@ export enum ActionPageDetails {
   Author = 'Author',
 }
 
-type DetailsValuesMap = Partial<{
-  [key in ActionPageDetails]: boolean;
-}>;
+type DetailsValuesMap = Partial<Record<ActionPageDetails, boolean>>;
 
 /*
  * Which details display for which type
  */
-type ActionsDetailsMap = Partial<{
-  [key in ActionItemType]: ActionPageDetails[];
-}>;
+type ActionsDetailsMap = Partial<Record<AnyActionType, ActionPageDetails[]>>;
 
 export const DETAILS_FOR_ACTION: ActionsDetailsMap = {
   [ColonyActionType.Payment]: [
@@ -115,10 +114,12 @@ export const DETAILS_FOR_ACTION: ActionsDetailsMap = {
   ],
   [ColonyMotions.UnlockTokenMotion]: [],
   [ColonyMotions.CreateDecisionMotion]: [ActionPageDetails.Author],
+  [ExtendedColonyActionType.UpdateTokens]: [ActionPageDetails.Name],
+  [ExtendedColonyActionType.UpdateAddressBook]: [ActionPageDetails.Name],
 };
 
 export interface EventValues {
-  actionType: ActionItemType;
+  actionType: AnyActionType;
   amount?: string | ReactNode;
   token?: Token;
   tokenSymbol?: string | ReactNode;
@@ -151,7 +152,7 @@ export interface EventValues {
  * Get colony action details for DetailsWidget based on action type and ActionPageDetails map
  */
 export const getDetailsForAction = (
-  actionType: ActionItemType,
+  actionType: AnyActionType,
 ): DetailsValuesMap => {
   const detailsForActionType = DETAILS_FOR_ACTION[actionType];
   return Object.keys(ActionPageDetails).reduce((detailsMap, detailsKey) => {
@@ -535,4 +536,28 @@ export const formatRolesTitle = (roles: ActionUserRoles[]) => {
     roleTitle,
     direction,
   };
+};
+
+/**
+ * Function returning action type based on the action data, that can include extended action types,
+ * e.g. UpdateAddressBook, UpdateTokens
+ */
+export const getExtendedActionType = (
+  actionData: ColonyAction,
+  colony: Colony,
+): AnyActionType => {
+  const changelogItem = colony.metadata?.changelog?.find(
+    (item) => item.transactionHash === actionData.transactionHash,
+  );
+
+  if (changelogItem?.haveTokensChanged) {
+    return ExtendedColonyActionType.UpdateTokens;
+  }
+  if (changelogItem?.hasWhitelistChanged) {
+    return ExtendedColonyActionType.UpdateAddressBook;
+  }
+
+  // logic for Safe control actions can be added here
+
+  return actionData.type;
 };

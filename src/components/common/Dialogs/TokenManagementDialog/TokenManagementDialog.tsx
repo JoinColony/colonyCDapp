@@ -4,13 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { string, object, array, boolean, InferType } from 'yup';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
-
 import { ActionHookForm as Form } from '~shared/Fields';
-
 import { ActionTypes } from '~redux/index';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { WizardDialogType } from '~hooks';
 import { formatText } from '~utils/intl';
+import { notNull } from '~utils/arrays';
+import { isAddress } from '~utils/web3';
+import { Token } from '~types';
 
 import { getTokenManagementDialogPayload } from './helpers';
 import TokenManagementDialogForm from './TokenManagementDialogForm';
@@ -22,6 +23,15 @@ const MSG = defineMessages({
     id: `${displayName}.errorAddingToken`,
     defaultMessage: `Sorry, there was an error adding this token. Learn more about tokens at: https://colony.io.`,
   },
+  invalidAddress: {
+    id: `${displayName}.invalidAddress`,
+    defaultMessage: 'This is not a valid address',
+  },
+  tokenNotFound: {
+    id: `${displayName}.tokenNotFound`,
+    defaultMessage:
+      'Token data not found. Please check the token contract address.',
+  },
 });
 
 type Props = DialogProps &
@@ -30,7 +40,26 @@ type Props = DialogProps &
 
 const validationSchema = object({
   forceAction: boolean().defined(),
-  tokenAddress: string().address().notRequired(),
+  tokenAddress: string()
+    .notRequired()
+    .test(
+      'is-address',
+      () => MSG.invalidAddress,
+      (value) => !value || isAddress(value),
+    ),
+  token: object<Token>()
+    .nullable()
+    .test('doesTokenExist', '', function doesTokenExist(value, context) {
+      if (!context.parent.tokenAddress || !!value) {
+        // Skip validation if tokenAddress is empty or token has been found
+        return true;
+      }
+
+      return this.createError({
+        message: formatText(MSG.tokenNotFound),
+        path: 'tokenAddress',
+      });
+    }),
   selectedTokenAddresses: array()
     .of(string().address().defined())
     .notRequired(),
@@ -49,7 +78,7 @@ const TokenManagementDialog = ({
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
-  const colonyTokens = colony?.tokens?.items || [];
+  const colonyTokens = colony?.tokens?.items.filter(notNull) || [];
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
@@ -64,7 +93,7 @@ const TokenManagementDialog = ({
   );
 
   const handleSuccess = () => close();
-  const handleError = (error, formHelpers) => {
+  const handleError = (_, formHelpers) => {
     const { setError } = formHelpers;
     setError('tokenAddress', { message: formatText(MSG.errorAddingToken) });
   };
@@ -77,7 +106,7 @@ const TokenManagementDialog = ({
           forceAction: false,
           tokenAddress: '',
           selectedTokenAddresses: colonyTokens.map(
-            (token) => token?.token.tokenAddress || '',
+            (token) => token?.token.tokenAddress,
           ),
           annotationMessage: '',
           /*

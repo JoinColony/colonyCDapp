@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
@@ -9,12 +9,13 @@ import {
 import { isAddress } from '~utils/web3';
 import { formatText } from '~utils/intl';
 import { connectionIs4G } from '~utils/network';
-import { GetTokenByAddressQuery, Token, useGetTokenByAddressQuery } from '~gql';
+import { useGetTokenFromEverywhereQuery } from '~gql';
 import { DEFAULT_NETWORK_INFO } from '~constants';
+import { Token } from '~types';
 
 import styles from './TokenSelector.css';
 
-const displayName = 'common.CreateColonyWizard.TokenSelector';
+const displayName = 'shared.TokenSelector';
 
 const MSG = defineMessages({
   label: {
@@ -34,25 +35,18 @@ const MSG = defineMessages({
 interface Props
   extends Pick<InputProps, 'label' | 'appearance' | 'extra' | 'disabled'> {
   /** Name of token address input. Defaults to 'tokenAddress' */
-  addressField?: string;
-  /** Function called when query completes successfully without an error */
-  handleComplete?: (data: any) => void;
+  addressFieldName?: string;
+  /** Name of token field. Defaults to 'token' */
+  tokenFieldName?: string;
 }
-
-type TokenData = Partial<Pick<Token, 'name' | 'symbol'>>;
 
 interface StatusTextProps {
   hasError: boolean;
   isDirty: boolean;
-  tokenData: TokenData;
+  token: Token | null;
 }
-const getStatusText = ({
-  hasError,
-  tokenData: { name, symbol },
-  isDirty,
-}: StatusTextProps) => {
-  const noTokenData = !name && !symbol;
-  if (!isDirty && noTokenData) {
+const getStatusText = ({ hasError, token, isDirty }: StatusTextProps) => {
+  if (!isDirty && !token) {
     return {
       status: MSG.hint,
       statusValues: {
@@ -61,20 +55,15 @@ const getStatusText = ({
     };
   }
 
-  if (hasError || noTokenData) {
+  if (hasError || !token) {
     return {};
   }
 
+  const { name, symbol } = token;
   return {
     status: MSG.preview,
     statusValues: { name, symbol },
   };
-};
-
-const getTokenData = (tokenQuery?: GetTokenByAddressQuery) => {
-  const tokenData = tokenQuery?.getTokenByAddress?.items;
-  const { name, symbol } = tokenData?.[0] || {};
-  return { name, symbol };
 };
 
 const getLoadingState = (isLoading: boolean) =>
@@ -82,30 +71,42 @@ const getLoadingState = (isLoading: boolean) =>
   connectionIs4G() !== false ? false : isLoading;
 
 const TokenSelector = ({
-  handleComplete,
   extra,
   label,
   appearance,
-  addressField = 'tokenAddress',
+  addressFieldName = 'tokenAddress',
+  tokenFieldName = 'token',
   disabled = false,
 }: Props) => {
   const {
     watch,
     formState: { isValid, isDirty, isValidating },
+    setValue,
+    clearErrors,
   } = useFormContext();
-  const tokenAddress = watch(addressField);
+  const tokenAddress = watch(addressFieldName);
 
   const {
-    data: tokenQuery,
+    data,
     loading: isFetchingAddress,
     error: fetchingTokenError,
-  } = useGetTokenByAddressQuery({
+  } = useGetTokenFromEverywhereQuery({
     variables: {
-      address: tokenAddress,
+      input: {
+        tokenAddress,
+      },
     },
-    skip: !isValid,
-    onCompleted: handleComplete,
+    skip: !isAddress(tokenAddress),
   });
+  const token = data?.getTokenFromEverywhere?.items?.[0] ?? null;
+
+  useEffect(() => {
+    // When token is updated (either found or null), clear errors and set the values in hook-form
+    clearErrors(addressFieldName);
+    setValue(tokenFieldName, token, {
+      shouldValidate: true,
+    });
+  }, [addressFieldName, clearErrors, setValue, token, tokenFieldName]);
 
   const displayLoading =
     isFetchingAddress || (isValidating && isAddress(tokenAddress));
@@ -116,13 +117,13 @@ const TokenSelector = ({
      */
     <div className={styles.inputWrapper}>
       <Input
-        name={addressField}
+        name={addressFieldName}
         label={formatText(label) || MSG.label}
         extra={extra}
         {...getStatusText({
           isDirty,
           hasError: !isValid || !!fetchingTokenError,
-          tokenData: getTokenData(tokenQuery),
+          token,
         })}
         isLoading={getLoadingState(displayLoading)}
         appearance={appearance}

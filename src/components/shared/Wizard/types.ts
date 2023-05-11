@@ -1,8 +1,6 @@
 import { AppContextValues } from '~context/AppContext';
-import { Values } from '~types';
 
-type WizardValues<T> = Record<string, Values<T>>;
-export type StepValues<T> = Partial<WizardValues<T>>;
+export type StepValues<T> = Partial<T>;
 export type StepsValues<T> = StepValues<T>[];
 
 type StepsValuesFn<T> = (props?: any) => StepsValues<T>;
@@ -30,9 +28,7 @@ export interface WizardOuterProps<FormValues>
 
 export interface WizardStepProps<FormValues, StepVals = Partial<FormValues>>
   extends SharedWizardProps<FormValues> {
-  setStepsValues: React.Dispatch<
-    React.SetStateAction<StepsValues<Values<FormValues>>>
-  >;
+  setStepsValues: React.Dispatch<React.SetStateAction<StepsValues<FormValues>>>;
   wizardForm: {
     initialValues: StepVals;
     validateOnMount: boolean;

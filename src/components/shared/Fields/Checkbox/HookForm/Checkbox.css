@@ -3,8 +3,9 @@
 .main {
   display: flex;
   align-items: center;
+  border: none;
+  background: none;
   column-gap: 10px;
-  cursor: pointer;
 }
 
 .checkbox {

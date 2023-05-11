@@ -2,6 +2,7 @@ import React, { InputHTMLAttributes, useState } from 'react';
 import { nanoid } from 'nanoid';
 import { PopperOptions } from 'react-popper-tooltip';
 import { useFormContext } from 'react-hook-form';
+import classNames from 'classnames';
 
 import InputLabel from '~shared/Fields/InputLabel';
 import { Tooltip } from '~shared/Popover';
@@ -55,7 +56,6 @@ const HookFormCheckbox = ({
   const { getValues, register } = useFormContext();
   const isChecked = getValues(name).indexOf(value) >= 0;
   const mainClasses = getMainClasses(appearance, styles);
-  const classNames = className ? `${mainClasses} ${className}` : mainClasses;
 
   const toolTipContent = formatText(tooltipText, tooltipTextValues);
   const showTooltip = disabled && tooltipText;
@@ -74,7 +74,6 @@ const HookFormCheckbox = ({
       className={styles.checkbox}
       type="checkbox"
       value={value}
-      disabled={disabled}
       onChange={handleChange}
       aria-disabled={disabled}
       aria-checked={isChecked}
@@ -84,7 +83,10 @@ const HookFormCheckbox = ({
   );
 
   return (
-    <div className={classNames}>
+    <fieldset
+      className={classNames(mainClasses, className)}
+      disabled={disabled}
+    >
       {showTooltip ? (
         <Tooltip
           content={toolTipContent}
@@ -108,7 +110,7 @@ const HookFormCheckbox = ({
       ) : (
         children
       )}
-    </div>
+    </fieldset>
   );
 };
 

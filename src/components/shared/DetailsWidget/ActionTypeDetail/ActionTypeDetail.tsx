@@ -2,8 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Icon from '~shared/Icon';
-import { ColonyMotions } from '~types';
-import { EventValues } from '~utils/colonyActions';
+import { AnyActionType, ColonyMotions } from '~types';
 
 import { ACTION_TYPES_ICONS_MAP } from '../types';
 
@@ -12,7 +11,7 @@ import styles from './ActionTypeDetail.css';
 const displayName = 'DetailsWidget.ActionTypeDetail';
 
 interface ActionTypeDetailProps {
-  actionType: EventValues['actionType'];
+  actionType: AnyActionType;
 }
 
 const ActionTypeDetail = ({ actionType }: ActionTypeDetailProps) => {

@@ -2,6 +2,7 @@ import { ColonyAction, ColonyActionType, ColonyMotions, Colony } from '~types';
 import { generateMessageValues } from './getEventTitleValues';
 
 import { mapColonyActionToExpectedFormat } from './mapItemToMessageFormat';
+import { getExtendedActionType } from '~utils/colonyActions';
 
 enum ActionTitleMessageKeys {
   Amount = 'amount',
@@ -76,11 +77,13 @@ const getMessageDescriptorKeys = (
 };
 
 /* Returns the correct message values according to the action type. */
-const getActionTitleValues = (item: ColonyAction, colony?: Colony) => {
-  const updatedItem = mapColonyActionToExpectedFormat(item, colony);
-  const keys = getMessageDescriptorKeys(item.type);
+const getActionTitleValues = (actionData: ColonyAction, colony: Colony) => {
+  const updatedItem = mapColonyActionToExpectedFormat(actionData, colony);
+  const actionType = getExtendedActionType(actionData, colony);
+  const keys = getMessageDescriptorKeys(actionData.type);
+
   return generateMessageValues(updatedItem, keys, {
-    actionType: item.type,
+    actionType,
   });
 };
 
