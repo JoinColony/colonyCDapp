@@ -49,7 +49,7 @@ async function getMetatransactionPromise(
 
   const { networkClient } = colonyManager;
   const { address: userAddress } = wallet;
-  const chainId = await getChainId();
+  const chainId = getChainId();
 
   let normalizedMethodName: string = methodName;
   let normalizedClient: any = client; // Disregard the `any`. The new ColonyJS messed up all the types
