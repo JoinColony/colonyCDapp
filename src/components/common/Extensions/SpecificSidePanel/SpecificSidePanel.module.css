@@ -1,5 +1,5 @@
 .panelRow {
-  @apply flex flex-row items-center justify-between py-[0.625rem];
+  @apply flex flex-row items-center py-[0.625rem];
 }
 
 .panelTitle {

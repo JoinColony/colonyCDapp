@@ -13,7 +13,7 @@ type SpecificSidePanelStatus = Extract<
 >;
 
 export interface PermissionsProps {
-  data: { id: number; title: string }[];
+  data: { key: string; name: string; text: string; description: string }[];
 }
 
 export type SidePanelDataProps = typeof sidePanelData;

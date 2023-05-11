@@ -35,7 +35,7 @@ const PopoverWrapper: FC<PopoverWrapperProps> = ({
 
   return (
     <div
-      className={`w-full max-w-[20rem] ${getMainClasses(appearance, {
+      className={`w-full max-w-[20rem] bg-base-white ${getMainClasses(appearance, {
         hideArrow: !showArrow,
         showArrow,
       })}
