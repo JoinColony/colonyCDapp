@@ -146,6 +146,11 @@ const ChangeTokenStateForm = ({
                 }}
                 maxButtonParams={{
                   maxAmount: tokenBalanceInEthers,
+                  options: {
+                    shouldTouch: true,
+                    shouldValidate: true,
+                    shouldDirty: true,
+                  },
                 }}
                 dataTest="activateTokensInput"
               />
