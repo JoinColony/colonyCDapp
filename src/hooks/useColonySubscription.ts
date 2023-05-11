@@ -7,12 +7,12 @@ import {
   useDeleteWatchedColoniesMutation,
 } from '~gql';
 import { CREATE_USER_ROUTE } from '~routes';
-import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext, useCanJoinColony, useColonyContext } from '~hooks';
 import { getWatchedColony } from '~utils/watching';
 import { handleNewUser } from '~utils/newUser';
 
 const useColonySubscription = () => {
-  const { colony, canInteractWithColony } = useColonyContext();
+  const { colony } = useColonyContext();
   const {
     user,
     updateUser,
@@ -71,7 +71,7 @@ const useColonySubscription = () => {
     }
   };
 
-  const canWatch = !canInteractWithColony && !walletConnecting && !userLoading;
+  const canWatch = useCanJoinColony() && !walletConnecting && !userLoading;
 
   return {
     canWatch,
