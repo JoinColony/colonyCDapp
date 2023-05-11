@@ -20,6 +20,7 @@ exports.handler = async (event) => {
     colonyNativeTokenId,
     type = 'COLONY',
     version,
+    chainMetadata,
   } = event.arguments?.input || {};
 
   /*
@@ -128,14 +129,7 @@ exports.handler = async (event) => {
         colonyNativeTokenId: checksummedToken,
         name,
         type,
-        /*
-         * @TODO These need to be properly added once Lambda Functions
-         * have the concept of chains
-         */
-        chainMetadata: {
-          chainId: 100,
-          network: 'GNOSIS',
-        },
+        chainMetadata,
         version,
       },
     },

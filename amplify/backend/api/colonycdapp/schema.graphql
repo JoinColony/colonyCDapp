@@ -36,7 +36,7 @@ input ProfileMetadataInput {
 
 input ChainMetadataInput {
   network: Network
-  chainId: Int
+  chainId: Int!
   transactionHash: String
   logIndex: Int
   blockNumber: Int
@@ -59,7 +59,7 @@ input CreateUniqueColonyInput {
   colonyNativeTokenId: ID!
   type: ColonyType
   status: ColonyStatusInput
-  chainMetadata: ChainMetadataInput
+  chainMetadata: ChainMetadataInput!
   version: Int!
 }
 
@@ -308,7 +308,7 @@ type ColonyStatus {
 # It does not apply to user accounts as they can live on all networks
 type ChainMetadata {
   network: Network
-  chainId: Int
+  chainId: Int!
   transactionHash: String
   logIndex: Int
   blockNumber: Int
@@ -340,7 +340,7 @@ type Token @model {
   users: [User] @manyToMany(relationName: "UserTokens")
   avatar: String
   thumbnail: String
-  chainMetadata: ChainMetadata
+  chainMetadata: ChainMetadata!
   createdAt: AWSDateTime!
 }
 
@@ -368,7 +368,7 @@ type Colony @model {
   type: ColonyType @index(name: "byType", queryField: "getColonyByType")
   # Returns a list token balances for each domain and each token that the colony has
   balances: ColonyBalances @function(name: "fetchColonyBalances-${env}")
-  chainMetadata: ChainMetadata
+  chainMetadata: ChainMetadata!
   extensions: [ColonyExtension!] @hasMany(indexName: "byColony", fields: ["id"])
   version: Int!
   actions: [ColonyAction] @hasMany
