@@ -29,7 +29,7 @@ const ImageCarousel: FC<ImageCarouselProps> = ({ transitionTime = 300, slideUrls
         renderIndicator={(onClickHandler, isSelected, index, label) => (
           <li>
             <div
-              className={`opacity-100 w-2 h-2 cursor-pointer rounded-full mx-2 hover:bg-blue-400 ${
+              className={`opacity-100 w-2 h-2 cursor-pointer rounded-full mx-2 transition-all hover:bg-blue-400 ${
                 isSelected ? 'bg-gray-500' : 'bg-gray-200'
               }`}
               onClick={onClickHandler}
