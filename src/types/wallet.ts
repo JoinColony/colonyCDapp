@@ -19,3 +19,6 @@ export const isBasicWallet = (
 
   return true;
 };
+
+export const isFullWallet = (wallet?: ColonyWallet | null): wallet is Wallet =>
+  !!wallet && 'balance' in wallet;
