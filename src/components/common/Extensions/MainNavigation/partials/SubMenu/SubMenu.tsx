@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 import { SubMenuProps } from './types';
@@ -12,7 +12,7 @@ import styles from './SubMenu.module.css';
 
 const displayName = 'common.Extensions.MainNavigation.partials.SubMenu';
 
-const SubMenu: React.FC<SubMenuProps> = ({ items }) => {
+const SubMenu: FC<SubMenuProps> = ({ items }) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
   const Wrapper = isMobile ? 'div' : Card;
