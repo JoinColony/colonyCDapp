@@ -13,34 +13,34 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   children,
   actionText,
   actionType,
-  isFullSize = true,
 }) => {
   // @TODO: handle actionType 'call-to-action'
   return (
     <div
-      className={clsx('py-3 px-6 border border-solid rounded-lg flex justify-between', {
-        'bg-success-100 border-success-100 h-[2.75rem]': status === 'success',
-        'bg-warning-100 border-warning-100': status === 'warning',
-        'bg-negative-100 border-negative-100': status === 'error',
-        'w-full flex-row items-center': isFullSize,
-        'max-w-[23.75rem] flex-col': !isFullSize,
-      })}
+      className={clsx(
+        `py-3 px-6 border border-solid rounded-lg flex justify-between min-w-[23.75rem] min-h-[2.75rem] flex-col md:w-full md:flex-row md:first-line:items-center`,
+        {
+          'bg-success-100 border-success-100': status === 'success',
+          'bg-warning-100 border-warning-100': status === 'warning',
+          'bg-negative-100 border-negative-100': status === 'error',
+        },
+      )}
     >
       <div className={clsx('flex', { 'flex-col': children, 'flex-row': !children })}>
-        <div className="flex items-center">
+        <div className="flex md:items-center">
           <Icon
             name={status === 'success' ? 'check-circle' : 'warning-circle'}
             className={clsx('min-w-[0.875rem] min-h-[0.875rem]', {
-              'stroke-success-400': status === 'success',
-              'stroke-warning-400': status === 'warning',
-              'stroke-negative-400': status === 'error',
+              'stroke-success-400 mt-[0.125rem] md:mt-0': status === 'success',
+              'stroke-warning-400 mt-[0.225rem] md:mt-0': status === 'warning',
+              'stroke-negative-400 mt-[0.225rem] md:mt-0': status === 'error',
             })}
           />
           <div className="text-md font-normal text-gray-900 ml-2">{title}</div>
         </div>
-        {children && <div className="text-sm font-normal text-gray-600 max-w-[50rem]">{children}</div>}
+        {children && <div className="text-sm font-normal text-gray-600 max-w-[50rem] ml-6 md:ml-0">{children}</div>}
       </div>
-      <div className={clsx('underline text-xs font-medium', { 'mt-2 ml-4': !isFullSize })}>
+      <div className="underline text-xs font-medium mt-2 ml-6 md:mt-0 md:ml-0">
         {actionType === 'copy-url' && <CopyUrl actionText={actionText} />}
         {actionType === 'redirect' && <Link to="https://external-url.pl">{actionText}</Link>}
         {actionType === 'call-to-action' && actionText}

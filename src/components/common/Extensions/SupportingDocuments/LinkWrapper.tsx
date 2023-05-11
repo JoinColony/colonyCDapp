@@ -8,7 +8,7 @@ interface LinkWrapperProps {
   isDoubleLinkVisible: boolean;
 }
 
-const displayName = 'common.Extensions/SupportingDocuments/LinkWrapper';
+const displayName = 'common.Extensions.SupportingDocuments.LinkWrapper';
 
 const LinkWrapper: FC<LinkWrapperProps> = ({ isDoubleLinkVisible }) => {
   const { formatMessage } = useIntl();
@@ -17,8 +17,13 @@ const LinkWrapper: FC<LinkWrapperProps> = ({ isDoubleLinkVisible }) => {
   return (
     <>
       {links.map((item) => (
-        <div className="pb-2 flex items-center" key={item.text}>
-          <Icon appearance={{ size: 'tiny' }} name="file-text" title={{ id: 'file-text' }} />
+        <div className="pb-2 flex items-center group" key={item.text}>
+          <Icon
+            appearance={{ size: 'tiny' }}
+            name="file-text"
+            title={{ id: 'file-text' }}
+            className="group-hover:[&>svg]:stroke-blue-400 w-3 h-3"
+          />
           <Link key={item.url} to={item.url} className="font-normal text-sm text-gray-600 hover:text-blue-400 ml-2">
             {formatMessage({ id: item.text })}
           </Link>

@@ -30,6 +30,12 @@ const meta: Meta<typeof Button> = {
         type: 'boolean',
       },
     },
+    isFullRounded: {
+      name: 'Is full rounded?',
+      control: {
+        type: 'boolean',
+      },
+    },
   },
   args: {
     text: 'New action',
@@ -58,6 +64,12 @@ export const SecondarySolid: Story = {
 export const SecondaryOutline: Story = {
   args: {
     mode: 'secondaryOutline',
+  },
+};
+
+export const TertiaryOutline: Story = {
+  args: {
+    mode: 'tertiaryOutline',
   },
 };
 

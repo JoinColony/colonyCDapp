@@ -19,6 +19,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
   textValues,
   type = 'button',
   className,
+  isFullRounded = false,
   ariaLabel,
   isFullSize,
   ...rest
@@ -42,9 +43,12 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               [styles.primaryOutline]: mode === 'primaryOutline',
               [styles.secondarySolid]: mode === 'secondarySolid',
               [styles.secondaryOutline]: mode === 'secondaryOutline',
+              [styles.tertiaryOutline]: mode === 'tertiaryOutline',
               [styles.textButton]: mode === 'textButton',
               'pointer-events-none': disabled,
               'w-full': isFullSize,
+              'rounded-full': isFullRounded,
+              'rounded-lg': !isFullRounded,
             },
             className,
           )}

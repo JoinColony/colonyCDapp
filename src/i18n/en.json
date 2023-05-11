@@ -399,11 +399,15 @@
     "file-text": "File text icon",
     "radio.error.governance": "Please select a governance style option before enabling",
     "ariaLabel.open": "Open",
+    "open.dropdown": "Open dropdown",
+    "close.dropdown": "Close dropdown",
     "userInfo.about.section": "about",
     "userInfo.colonyReputation.section": "Colony reputation",
     "userInfo.permissions.section": "Permissions",
     "userInfo.colonyReputation.business": "Business",
     "userInfo.colonyReputation.development": "Development",
     "userInfo.colonyReputation.product": "Product",
-    "copyWalletAddress": "Copy wallet address"
+    "copyWalletAddress": "Copy wallet address",
+    "copy.address": "Copy address",
+    "copied": "Copied"
 }
