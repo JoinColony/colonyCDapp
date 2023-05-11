@@ -3,6 +3,7 @@ import { all, call, fork, put } from 'redux-saga/effects';
 import { getExtensionHash, Extension, ClientType, Id } from '@colony/colony-js';
 import { poll } from 'ethers/lib/utils';
 import { utils } from 'ethers';
+import { Network as EthersNetwork } from '@ethersproject/networks';
 
 import {
   CreateColonyMetadataDocument,
@@ -308,6 +309,7 @@ function* colonyCreate({
           meta,
         );
       }
+      const network: EthersNetwork = yield colonyManager.provider.getNetwork();
 
       /*
        * Create colony in db
@@ -323,6 +325,9 @@ function* colonyCreate({
             name: givenColonyName,
             colonyNativeTokenId: tokenAddress,
             version: toNumber(currentColonyVersion),
+            chainMetadata: {
+              chainId: network.chainId,
+            },
           },
         },
       });
