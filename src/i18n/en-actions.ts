@@ -65,8 +65,6 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.UpdateTokens} {Update Tokens}    
       other {Generic}
     }`,
-  [`action.${ColonyActionType.ColonyEdit}.verifiedAddresses`]: `Address book was updated`,
-  [`action.${ColonyActionType.ColonyEdit}.tokens`]: `Colony tokens were updated`,
 };
 
 export default actionsMessageDescriptors;

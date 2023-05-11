@@ -7,7 +7,7 @@ import ListItem, { ListItemStatus } from '~shared/ListItem';
 import { ColonyAction } from '~types';
 import { useColonyContext } from '~hooks';
 
-import { getActionTitleValues, getActionTitleMessageId } from '../helpers';
+import { getActionTitleValues } from '../helpers';
 import ActionsListItemMeta from './ActionsListItemMeta';
 
 const displayName = 'common.ColonyActions.ActionsListItem';
@@ -54,6 +54,10 @@ const ActionsListItem = ({
   const { colony } = useColonyContext();
   const navigate = useNavigate();
 
+  if (!colony) {
+    return null;
+  }
+
   const handleActionRedirect = () =>
     navigate(`/colony/${colony?.name}/tx/${transactionHash}`);
 
@@ -95,7 +99,7 @@ const ActionsListItem = ({
       onClick={handleActionRedirect}
       status={status}
       // tag={tag}
-      title={{ id: getActionTitleMessageId(item, colony) }}
+      title={{ id: 'action.title' }}
       titleValues={getActionTitleValues(item, colony)}
     />
   );
