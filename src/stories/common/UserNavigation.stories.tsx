@@ -43,6 +43,4 @@ export const UserNavigationWithData = () => {
   );
 };
 
-export const Base: Story = {
-  args: {},
-};
+export const Base: Story = {};
