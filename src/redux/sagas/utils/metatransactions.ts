@@ -7,7 +7,7 @@ import { ContextModule, getContext } from '~context';
 
 import { generateBroadcasterHumanReadableError } from './errorMessages';
 
-export async function getChainId(): Promise<number> {
+export function getChainId(): number {
   /*
    * @NOTE Short-circuit early, skip making an unnecessary RPC call
    */
