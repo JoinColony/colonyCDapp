@@ -7,7 +7,7 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     mode: {
       name: 'Mode',
-      options: ['primarySolid', 'primaryOutline', 'secondarySolid', 'textButton'],
+      options: ['primarySolid', 'primaryOutline', 'secondarySolid', 'textButton', 'pending'],
       control: {
         type: 'select',
       },
@@ -35,13 +35,18 @@ const meta: Meta<typeof Button> = {
     text: 'New action',
     disabled: false,
     isFullSize: false,
+    isLoading: false,
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-export const PrimarySolid: Story = {};
+export const PrimarySolid: Story = {
+  args: {
+    mode: 'primarySolid',
+  },
+};
 
 export const PrimaryOutline: Story = {
   args: {
@@ -58,5 +63,12 @@ export const SecondarySolid: Story = {
 export const TextButton: Story = {
   args: {
     mode: 'textButton',
+  },
+};
+
+export const Pending: Story = {
+  args: {
+    mode: 'pending',
+    isLoading: true,
   },
 };
