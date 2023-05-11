@@ -92,7 +92,7 @@ const ColonySwitcher = () => {
             </div>
           )}
           {isMobile && (
-            <ColonyDropdownMobile isOpen={isOpen} isMobile={isMobile} userLoading={userLoading}>
+            <ColonyDropdownMobile isOpen={isOpen} userLoading={userLoading}>
               {!!watchlist.length && !userLoading && (
                 <ColoniesDropdown watchlist={[...watchlist].sort(sortByDate)} isMobile={isMobile} />
               )}
