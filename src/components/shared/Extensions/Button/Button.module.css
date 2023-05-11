@@ -21,3 +21,7 @@
 .textButton {
   @apply text-sm rounded-none text-gray-900 hover:text-blue-400 disabled:text-gray-400;
 }
+
+.pending {
+  @apply text-sm rounded-[6.25rem] h-[2.375rem] min-w-[6.25rem] px-[0.875rem] py-2.5 bg-blue-400 text-base-white hover:bg-blue-300;
+}

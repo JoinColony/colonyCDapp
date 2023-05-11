@@ -8,7 +8,8 @@ export type ButtonMode =
   | 'secondarySolid'
   | 'secondaryOutline'
   | 'tertiaryOutline'
-  | 'textButton';
+  | 'textButton'
+  | 'pending';
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title' | 'aria-label'> {
   mode?: ButtonMode;
@@ -20,5 +21,6 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   textValues?: SimpleMessageValues;
   ariaLabel?: MessageDescriptor | string;
   isFullSize?: boolean;
+  isPending?: boolean;
   isFullRounded?: boolean;
 }

@@ -99,7 +99,7 @@ export const ColonySwitcherWithHooks = () => {
                     </div>
                   )}
                   {isMobile && (
-                    <ColonyDropdownMobile isOpen={isOpen} isMobile={isMobile} userLoading={userLoading}>
+                    <ColonyDropdownMobile isOpen={isOpen} userLoading={userLoading}>
                       {!!watchlistMock.length && (
                         <ColoniesDropdown watchlist={[...watchlistMock].sort(sortByDate)} isMobile={isMobile} />
                       )}

@@ -1,5 +1,5 @@
 .tooltipContainer {
-  @apply border-none rounded-none shadow-none [&_a]:underline hover:[&_a]:no-underline;
+  @apply border-none rounded-none shadow-none hover:[&_a]:no-underline;
 }
 
 .tooltipArrow::after {

@@ -12,7 +12,7 @@ import { useGetMetacolonyQuery } from '~gql';
 import { useAppContext, useCanInteractWithNetwork } from '~hooks';
 
 import styles from './LandingPage.css';
-import ColonySwitcher from '~common/Extensions/ColonySwitcher';
+import ConnectingWalletButton from '~shared/Extensions/ConnectingWalletButton/ConnectingWalletButton';
 
 const displayName = 'frame.LandingPage';
 
@@ -77,7 +77,7 @@ const LandingPage = () => {
           <div className={styles.title}>
             <Heading text={MSG.callToAction} appearance={{ size: 'medium', margin: 'none', theme: 'dark' }} />
           </div>
-          <ColonySwitcher />
+          <ConnectingWalletButton />
           <ul>
             {wallet && !userLoading && !user && <LandingItem to={CREATE_USER_ROUTE} message={MSG.createUsername} />}
             {canInteractWithNetwork && <LandingItem to={CREATE_COLONY_ROUTE} message={MSG.createColony} />}
