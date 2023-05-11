@@ -8,7 +8,7 @@ import { providers } from 'ethers';
 
 import { DEFAULT_NETWORK } from '~constants';
 import { ContextModule, getContext } from '~context';
-import { ColonyJSNetworkMapping } from '~types';
+import { ColonyJSNetworkMapping, isFullWallet } from '~types';
 
 /*
  * Return an initialized ColonyNetworkClient instance.
@@ -16,7 +16,9 @@ import { ColonyJSNetworkMapping } from '~types';
 export default function* getNetworkClient() {
   const wallet = getContext(ContextModule.Wallet);
 
-  if (!wallet) throw new Error('No wallet in context');
+  if (!isFullWallet(wallet)) {
+    throw new Error('Background login not yet completed.');
+  }
 
   const network = DEFAULT_NETWORK;
 

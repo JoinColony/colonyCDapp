@@ -1,13 +1,13 @@
 import { BigNumberish, utils, providers, TypedDataField } from 'ethers';
 
-import { Address, Network } from '~types';
+import { Address, Network, isFullWallet } from '~types';
 
 import { DEFAULT_NETWORK, DEFAULT_NETWORK_INFO } from '~constants';
 import { ContextModule, getContext } from '~context';
 
 import { generateBroadcasterHumanReadableError } from './errorMessages';
 
-export async function getChainId(): Promise<number> {
+export function getChainId(): number {
   /*
    * @NOTE Short-circuit early, skip making an unnecessary RPC call
    */
@@ -40,6 +40,11 @@ export const signTypedData = async ({
   v?: number;
 }> => {
   const wallet = getContext(ContextModule.Wallet);
+
+  if (!isFullWallet(wallet)) {
+    throw new Error('Background login not yet completed.');
+  }
+
   const walletProvider = new providers.Web3Provider(wallet.provider);
   const signer = walletProvider.getSigner();
   // eslint-disable-next-line no-underscore-dangle
