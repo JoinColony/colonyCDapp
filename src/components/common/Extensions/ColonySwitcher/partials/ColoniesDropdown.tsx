@@ -30,7 +30,7 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({ watchlist = [], isMobile 
                 size="xxs"
               />
             </div>
-            <div className="font-normal text-md text-gray-900">
+            <div className="font-semibold text-md text-gray-900">
               {colonyToDisplay?.metadata?.displayName || colonyToDisplay?.name}
             </div>
           </div>
