@@ -16,7 +16,7 @@ const meta: Meta<typeof UserNavigation> = {
 export default meta;
 type Story = StoryObj<typeof UserNavigation>;
 
-export const UserNavigationWithData = () => {
+const UserNavigationWithData = () => {
   const nativeToken = {
     decimals: 18,
     name: 'Gnosis',
@@ -43,4 +43,22 @@ export const UserNavigationWithData = () => {
   );
 };
 
-export const Base: Story = {};
+const UserNavigationNotConnected = () => (
+  <div className="flex items-center gap-1">
+    <Button mode="tertiaryOutline" isFullRounded>
+      <Icon name="cardholder" appearance={{ size: 'tiny' }} />
+      <p className="text-sm font-inter font-medium ml-1">Connect wallet</p>
+    </Button>
+    <Button mode="tertiaryOutline" isFullRounded>
+      <Icon name="list" appearance={{ size: 'tiny' }} />
+    </Button>
+  </div>
+);
+
+export const WalletConnected: Story = {
+  render: () => <UserNavigationWithData />,
+};
+
+export const WalletNotConnected: Story = {
+  render: () => <UserNavigationNotConnected />,
+};
