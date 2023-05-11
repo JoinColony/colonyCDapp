@@ -1,15 +1,19 @@
 .primarySolid {
-  @apply text-md rounded-lg h-[2.5rem] px-4 py-2.5 bg-blue-400 text-base-white hover:bg-blue-300 disabled:bg-gray-300;
+  @apply text-md h-[2.5rem] px-4 py-2.5 bg-blue-400 text-base-white hover:bg-blue-300 disabled:bg-gray-300;
 }
 
 .primaryOutline {
-  @apply text-md rounded-lg h-[2.5rem] px-4 py-2.5 bg-base-white text-gray-700 border border-gray-300 hover:bg-blue-400 hover:border-blue-400 hover:text-base-white disabled:text-gray-300;
+  @apply text-md h-[2.5rem] px-4 py-2.5 bg-base-white text-gray-700 border border-gray-300 hover:bg-blue-400 hover:border-blue-400 hover:text-base-white disabled:text-gray-300;
 }
 
 .secondarySolid {
-  @apply text-md rounded-lg h-[2.5rem] px-4 py-2.5 bg-negative-400 text-base-white hover:bg-negative-300 disabled:bg-gray-300;
+  @apply text-md h-[2.5rem] px-4 py-2.5 bg-negative-400 text-base-white hover:bg-negative-300 disabled:bg-gray-300;
+}
+
+.tertiaryOutline {
+  @apply text-md h-[2.5rem] px-4 py-2.5 bg-base-white text-gray-700 border border-gray-300 hover:border-blue-400 disabled:text-gray-300;
 }
 
 .textButton {
-  @apply text-sm text-gray-900 hover:text-blue-400 disabled:text-gray-400;
+  @apply text-sm rounded-none text-gray-900 hover:text-blue-400 disabled:text-gray-400;
 }
