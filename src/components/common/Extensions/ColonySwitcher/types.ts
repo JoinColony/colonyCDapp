@@ -24,6 +24,5 @@ export interface ColonyAvatarProps {
 
 export interface ColonyDropdownMobileProps {
   isOpen: boolean;
-  isMobile: boolean;
   userLoading?: boolean;
 }

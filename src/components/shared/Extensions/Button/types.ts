@@ -14,5 +14,5 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   textValues?: SimpleMessageValues;
   ariaLabel?: MessageDescriptor | string;
   isFullSize?: boolean;
-  isLoading?: boolean;
+  isPending?: boolean;
 }

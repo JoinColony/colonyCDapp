@@ -408,5 +408,6 @@
     "userInfo.colonyReputation.product": "Product",
     "copyWalletAddress": "Copy wallet address",
     "copy.address": "Copy address",
-    "copied": "Copied"
+    "copied": "Copied",
+    "pending": "Pending"
 }

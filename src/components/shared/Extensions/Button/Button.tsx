@@ -22,7 +22,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
   className,
   ariaLabel,
   isFullSize,
-  isLoading,
+  isPending,
   ...rest
 }) => {
   const { formatMessage } = useIntl();
@@ -58,10 +58,10 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
           {...rest}
         >
           {buttonText || children}
-          {mode === 'pending' && (
+          {mode === 'pending' && isPending && (
             <Icon
               name="spinner-gap"
-              className={`ml-[0.59375rem] w-[13px] h-[13px] ${isLoading ? 'animate-spin' : 'animate-none'}`}
+              className={`ml-[0.59375rem] w-[13px] h-[13px] ${isPending ? 'animate-spin' : 'animate-none'}`}
             />
           )}
         </button>
