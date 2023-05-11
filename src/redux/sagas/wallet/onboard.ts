@@ -1,8 +1,6 @@
 import Onboard, { InitOptions } from '@web3-onboard/core';
 import injectedWallets from '@web3-onboard/injected-wallets';
 
-import { private_keys as ganachePrivateKeys } from '../../../../amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json';
-
 import colonyIcon from '~images/icons/colony-logo.svg';
 import {
   isDev,
@@ -23,22 +21,33 @@ const { formatMessage } = intl({
   'metadata.description': `An iteration of the Colony Dapp sporting both a fully decentralized operating mode, as well as a mode enhanced by a metadata caching layer`,
 });
 
-const getDevelopmentWallets = () => {
-  if (isDev) {
-    return (
-      Object.values(ganachePrivateKeys)
-        .map((privateKey, index) => ganacheModule(privateKey, index + 1))
-        /*
-         * Remove the wallets used by the reputation miner and the block ingestor
-         * As to not cause any "unplesantness"
-         */
-        .slice(0, -2)
+let devWallets: ReturnType<typeof ganacheModule>[] = [];
+
+const setDevelopmentWallets = async () => {
+  try {
+    const { private_keys: ganachePrivateKeys } = await import(
+      '../../../../amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json'
+    );
+
+    devWallets = Object.values(ganachePrivateKeys)
+      .map((privateKey, index) => ganacheModule(privateKey, index + 1))
+      /*
+       * Remove the wallets used by the reputation miner and the block ingestor
+       * As to not cause any "unplesantness"
+       */
+      .slice(0, -2);
+  } catch {
+    console.error(
+      `Unable to fetch ganache private keys. Are you sure your network environment variable is correct?`,
     );
   }
-  return [];
 };
 
-const wallets = [injectedWallets(), ...getDevelopmentWallets()];
+if (isDev) {
+  setDevelopmentWallets();
+}
+
+const wallets = [injectedWallets(), ...devWallets];
 
 // chains: [
 //   {
