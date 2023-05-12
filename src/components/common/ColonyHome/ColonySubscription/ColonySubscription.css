@@ -30,9 +30,6 @@
 }
 
 button.menuIconContainer {
-  position: absolute;
-  top: 3px;
-  right: -7px;
   vertical-align: bottom;
   border-radius: var(--radius-normal);
 }
