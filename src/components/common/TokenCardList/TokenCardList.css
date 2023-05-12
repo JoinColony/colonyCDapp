@@ -1,10 +1,10 @@
-@value query428 from '~styles/queries.css';
+@value query850 from '~styles/queries.css';
 
 .tokenCardContainer {
   padding-bottom: 10px;
 }
 
-@media screen and query428 {
+@media screen and query850 {
   .tokenCardContainer {
     padding-bottom: 0;
   }

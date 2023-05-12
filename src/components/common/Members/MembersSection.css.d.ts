@@ -7,7 +7,7 @@ declare namespace MembersSectionCssNamespace {
     membersList: string;
     names: string;
     noResults: string;
-    query428: string;
+    query850: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;

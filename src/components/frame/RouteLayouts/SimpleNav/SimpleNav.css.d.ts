@@ -3,7 +3,7 @@ declare namespace SimpleNavCssNamespace {
     mappings: string;
     names: string;
     nav: string;
-    query428: string;
+    query850: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;

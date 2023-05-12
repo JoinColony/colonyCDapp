@@ -1,4 +1,4 @@
-@value query428 from '~styles/queries.css';
+@value query850 from '~styles/queries.css';
 
 .contractVersionLine {
   display: flex;
@@ -18,7 +18,7 @@
   background-color: color-mod(var(--grey-purple) alpha(15%));
 }
 
-@media screen and query428 {
+@media screen and query850 {
   .contractVersionLine {
     padding: 15px 0;
   }
