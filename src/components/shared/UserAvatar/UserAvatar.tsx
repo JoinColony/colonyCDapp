@@ -74,7 +74,7 @@ const UserAvatar = ({
   );
 
   if (showLink && user) {
-    return <Link to={`/user/${user.name.toLowerCase()}`}>{avatar}</Link>;
+    return <Link to={`/user/${user.name?.toLowerCase()}`}>{avatar}</Link>;
   }
 
   return avatar;

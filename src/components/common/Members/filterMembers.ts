@@ -15,7 +15,7 @@ const filterMemberBySearchTerm = (
       member?.user?.walletAddress
         ?.toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
-      member?.user?.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      member?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 };
 
