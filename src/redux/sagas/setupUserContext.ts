@@ -5,7 +5,7 @@ import actionsSagas from './actions';
 import colonySagas, { colonyCreateSaga } from './colony';
 import extensionSagas from './extensions';
 import { setContext, ContextModule, UserSettings } from '~context';
-import { ColonyWallet } from '~types';
+import { ColonyWallet, isFullWallet } from '~types';
 
 // import actionsSagas from './actions';
 // import colonySagas, {
@@ -74,7 +74,9 @@ export default function* setupUserContext() {
       setContext(ContextModule.UserSettings, userSettings);
     }
 
-    yield call(getGasPrices);
+    if (isFullWallet(wallet)) {
+      yield call(getGasPrices);
+    }
 
     /*
      * This needs to happen first because USER_CONTEXT_SETUP_SUCCESS causes a redirect
