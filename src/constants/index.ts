@@ -71,7 +71,7 @@ export const GNOSIS_NETWORK: NetworkInfo = {
   chainId: 100,
   shortName: 'xDai',
   displayENSDomain: 'joincolony.colonyxdai',
-  blockExplorerName: 'Blockscout',
+  blockExplorerName: 'Gnosisscan',
   blockExplorerUrl: 'https://blockscout.com/poa/xdai',
   tokenExplorerLink: 'https://blockscout.com/poa/xdai/tokens',
   contractAddressLink: 'https://blockscout.com/poa/xdai/address',
