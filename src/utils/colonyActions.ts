@@ -622,7 +622,7 @@ export const formatActionType = (actionType: AnyActionType) =>
   formatText({ id: 'action.type' }, { actionType });
 
 export const getColonyRoleSetTitleValues = (
-  encodedEvents: string | null,
+  encodedEvents?: string | null,
   eventId?: string,
 ) => {
   const role = JSON.parse(encodedEvents ?? '[]')?.find(
