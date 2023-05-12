@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import Button, { ThreeDotsButton } from '~shared/Button';
 import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
-import { useColonyContext } from '~hooks';
+import { useAppContext, useColonyContext } from '~hooks';
 import useColonySubscription from '~hooks/useColonySubscription';
 
 import ColonySubscriptionInfoPopover from './ColonySubscriptionInfoPopover';
@@ -29,8 +29,12 @@ const MSG = defineMessages({
 });
 
 const ColonySubscription = () => {
+  const { wallet, user, walletConnecting, userLoading } = useAppContext();
   const { colony, canInteractWithColony } = useColonyContext();
   const { canWatch, handleWatch, unwatch } = useColonySubscription();
+  const noRegisteredUser = !user && !userLoading;
+  const noWalletConnected = !wallet && !walletConnecting;
+  const showJoinButton = canWatch || noWalletConnected || noRegisteredUser;
 
   return (
     <div className={styles.main}>
@@ -45,7 +49,18 @@ const ColonySubscription = () => {
             </div>
           </InvisibleCopyableAddress>
         )}
-        {!canWatch && (
+        {showJoinButton ? (
+          <div className={styles.colonyJoin}>
+            <Button
+              onClick={handleWatch}
+              appearance={{ theme: 'blue', size: 'small' }}
+              data-test="joinColonyButton"
+              className={styles.colonyJoinBtn}
+            >
+              <FormattedMessage {...MSG.joinColony} />
+            </Button>
+          </div>
+        ) : (
           <ColonySubscriptionInfoPopover onUnsubscribe={unwatch} canUnsubscribe>
             {({ isOpen, toggle, ref, id }) => (
               <ThreeDotsButton
@@ -61,18 +76,6 @@ const ColonySubscription = () => {
               />
             )}
           </ColonySubscriptionInfoPopover>
-        )}
-        {canWatch && (
-          <div className={styles.colonyJoin}>
-            <Button
-              onClick={handleWatch}
-              appearance={{ theme: 'blue', size: 'small' }}
-              data-test="joinColonyButton"
-              className={styles.colonyJoinBtn}
-            >
-              <FormattedMessage {...MSG.joinColony} />
-            </Button>
-          </div>
         )}
       </div>
     </div>
