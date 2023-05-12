@@ -3,7 +3,7 @@ declare namespace SharedCssNamespace {
     mappings: string;
     names: string;
     paragraph: string;
-    query428: string;
+    query850: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;

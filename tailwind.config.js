@@ -134,9 +134,9 @@ module.exports = {
         fast: '175ms',
       },
       screens: {
-        sm: '26.75rem',
-        md: '64rem',
-        lg: '90rem',
+        sm: '850px',
+        md: '1024px',
+        lg: '1440px',
       },
     },
   },

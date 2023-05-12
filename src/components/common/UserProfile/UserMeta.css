@@ -1,5 +1,5 @@
 @value contentMargin: 12px;
-@value query428 from '~styles/queries.css';
+@value query850 from '~styles/queries.css';
 
 .main {
   width: 240px;
@@ -46,7 +46,7 @@
   box-shadow: 0 0 20px var(--light-grey);
 }
 
-@media screen and query428 {
+@media screen and query850 {
   .main {
     gap: 10px;
   }

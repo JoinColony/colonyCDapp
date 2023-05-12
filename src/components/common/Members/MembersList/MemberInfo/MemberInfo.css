@@ -1,4 +1,4 @@
-@value query428 from '~styles/queries.css';
+@value query850 from '~styles/queries.css';
 
 .section {
   padding: 20px 15px;
@@ -52,7 +52,7 @@
   width: 130px;
 }
 
-@media screen and query428 {
+@media screen and query850 {
   .section {
     order: -1;
   }

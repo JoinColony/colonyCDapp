@@ -1,4 +1,4 @@
-@value query428 from "~styles/queries.css";
+@value query850 from "~styles/queries.css";
 
 .wrapper {
   composes: stretchVertical stretchHorizontal from '~styles/layout.css';
@@ -14,7 +14,7 @@
   right: 0;
 }
 
-@media screen and query428 {
+@media screen and query850 {
   .nav {
     order: 1;
     padding: 0;

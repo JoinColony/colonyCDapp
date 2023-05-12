@@ -1,4 +1,4 @@
-@value query428 from '~styles/queries.css';
+@value query850 from '~styles/queries.css';
 
 .bar {
   display: flex;
@@ -39,7 +39,7 @@
   box-shadow: none;
 }
 
-@media screen and query428 {
+@media screen and query850 {
   .bar {
     justify-content: center;
     flex-direction: column;

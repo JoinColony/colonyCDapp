@@ -4,7 +4,7 @@ declare namespace UserNavigationCssNamespace {
     main: string;
     mappings: string;
     names: string;
-    query428: string;
+    query850: string;
     reputation: string;
     sourceRoot: string;
     sources: string;
