@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -13,20 +12,13 @@ import { handleNewUser } from '~utils/newUser';
 
 const useColonySubscription = () => {
   const { colony } = useColonyContext();
-  const {
-    user,
-    updateUser,
-    wallet,
-    walletConnecting,
-    connectWallet,
-    userLoading,
-  } = useAppContext();
+  const { user, updateUser, wallet, connectWallet } = useAppContext();
   const navigate = useNavigate();
 
   const watchedItem = getWatchedColony(colony, user?.watchlist?.items);
 
   /* Watch (follow) a colony */
-  const [watch, { data: watchData }] = useCreateWatchedColoniesMutation({
+  const [watch] = useCreateWatchedColoniesMutation({
     variables: {
       input: {
         colonyID: colony?.colonyAddress || '',
@@ -39,10 +31,13 @@ const useColonySubscription = () => {
         variables: { name: colony?.name },
       },
     ],
+    onCompleted() {
+      updateUser?.(user?.walletAddress);
+    },
   });
 
   /* Unwatch (unfollow) a colony */
-  const [unwatch, { data: unwatchData }] = useDeleteWatchedColoniesMutation({
+  const [unwatch] = useDeleteWatchedColoniesMutation({
     variables: { input: { id: watchedItem?.id || '' } },
     refetchQueries: [
       {
@@ -50,14 +45,10 @@ const useColonySubscription = () => {
         variables: { name: colony?.name },
       },
     ],
+    onCompleted() {
+      updateUser?.(user?.walletAddress);
+    },
   });
-
-  /* Update user on watch/unwatch */
-  useEffect(() => {
-    if (updateUser) {
-      updateUser(user?.walletAddress);
-    }
-  }, [user, updateUser, watchData, unwatchData]);
 
   const handleWatch = () => {
     if (user) {
@@ -71,7 +62,7 @@ const useColonySubscription = () => {
     }
   };
 
-  const canWatch = useCanJoinColony() && !walletConnecting && !userLoading;
+  const canWatch = useCanJoinColony();
 
   return {
     canWatch,
