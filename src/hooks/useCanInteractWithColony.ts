@@ -4,6 +4,7 @@ import { getWatchedColony } from '~utils/watching';
 import { isChainSupported } from '~utils/autoLogin';
 
 import useAppContext from './useAppContext';
+import useColonyContext from './useColonyContext';
 
 export const useUserAccountRegistered = (): boolean => {
   const { user } = useAppContext();
@@ -32,7 +33,10 @@ export const useCanInteractWithNetwork = (): boolean => {
   return userAccountRegistered && networkContractsAvailable;
 };
 
-const isUserAndColonyOnSameChain = (wallet?: ColonyWallet, colony?: Colony) => {
+const isUserAndColonyOnSameChain = (
+  wallet?: ColonyWallet | null,
+  colony?: Colony,
+) => {
   if (!wallet) {
     return false;
   }
@@ -72,8 +76,9 @@ export const useCanInteractWithColony = (colony?: Colony): boolean => {
   return sameChain && canInteractWithNetwork && isWatching;
 };
 
-export const useCanJoinColony = (wallet?: ColonyWallet, colony?: Colony) => {
-  const { user } = useAppContext();
+export const useCanJoinColony = () => {
+  const { colony } = useColonyContext();
+  const { user, wallet } = useAppContext();
   const sameChain = isUserAndColonyOnSameChain(wallet, colony);
   const canInteractWithNetwork = useCanInteractWithNetwork();
   const isAlreadyJoined = !!getWatchedColony(colony, user?.watchlist?.items);
