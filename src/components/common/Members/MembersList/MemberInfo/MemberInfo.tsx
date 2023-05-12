@@ -35,7 +35,7 @@ const MemberInfo = ({ isWhitelisted, user }: Props) => {
           {displayName}
         </span>
       )}
-      {user && (
+      {user && user.name && (
         <span className={styles.username}>
           <UserMention hasLink={false} user={user} />
         </span>
