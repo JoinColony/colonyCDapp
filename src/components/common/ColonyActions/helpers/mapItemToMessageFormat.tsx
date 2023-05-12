@@ -1,5 +1,6 @@
 import React from 'react';
 import Decimal from 'decimal.js';
+import { AddressZero } from '@ethersproject/constants';
 
 import Numeral from '~shared/Numeral';
 import FriendlyName from '~shared/FriendlyName';
@@ -33,6 +34,7 @@ import {
 import { VoteResults } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VoteOutcome/VoteResults';
 import { VotingWidgetHeading } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
 import MemberReputation from '~shared/MemberReputation';
+import MaskedAddress from '~shared/MaskedAddress';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
@@ -90,8 +92,11 @@ export const mapColonyActionToExpectedFormat = (
     ),
     recipient: (
       <span className={styles.titleDecoration}>
-        {/* @TODO All all the other recipient types, and the fallback */}
-        <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
+        {actionData.recipientUser ? (
+          <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
+        ) : (
+          <MaskedAddress address={actionData.recipientAddress || AddressZero} />
+        )}
       </span>
     ),
     toDomain:
@@ -151,8 +156,11 @@ export const mapActionEventToExpectedFormat = (
     ),
     recipient: (
       <span className={styles.userDecoration}>
-        {/* @TODO All all the other recipient types, and the fallback */}
-        <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
+        {actionData.recipientUser ? (
+          <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
+        ) : (
+          <MaskedAddress address={actionData.recipientAddress || AddressZero} />
+        )}
       </span>
     ),
     isSmiteAction:
