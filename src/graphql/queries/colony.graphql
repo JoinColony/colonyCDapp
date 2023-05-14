@@ -24,6 +24,7 @@ query GetMetacolony {
 
 query GetColonyExtensions($colonyAddress: ID!) {
   getColony(id: $colonyAddress) {
+    colonyAddress: id
     extensions(filter: { isDeleted: { eq: false } }) {
       items {
         ...Extension
