@@ -26,8 +26,7 @@ import { putError, takeFrom } from '../utils';
 
 function* createDomainAction({
   payload: {
-    colonyAddress,
-    colonyName,
+    colony,
     domainName,
     domainColor,
     domainPurpose,
@@ -62,7 +61,7 @@ function* createDomainAction({
     yield createGroupTransaction(createDomain, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'addDomainWithProofs(uint256)',
-      identifier: colonyAddress,
+      identifier: colony.colonyAddress,
       params: [],
       ready: false,
     });
@@ -108,7 +107,7 @@ function* createDomainAction({
       mutation: CreateDomainMetadataDocument,
       variables: {
         input: {
-          id: getDomainDatabaseId(colonyAddress, nativeDomainId),
+          id: getDomainDatabaseId(colony.colonyAddress, nativeDomainId),
           name: domainName,
           color: domainColor,
           description: domainPurpose,
@@ -159,10 +158,8 @@ function* createDomainAction({
       meta,
     });
 
-    if (colonyName) {
-      navigate(`/colony/${colonyName}/tx/${transactionHash}`, {
-        state: { isRedirect: true },
-      });
+    if (navigate) {
+      navigate(`/colony/${colony.name}/tx/${transactionHash}`);
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_DOMAIN_CREATE_ERROR, error, meta);

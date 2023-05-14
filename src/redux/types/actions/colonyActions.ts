@@ -21,13 +21,12 @@ export type ColonyActionsActionTypes =
   | UniqueActionType<
       ActionTypes.ACTION_DOMAIN_CREATE,
       {
-        colonyAddress: Address;
-        colonyName?: string;
         domainName: string;
         domainColor: DomainColor;
         domainPurpose: string;
         annotationMessage?: string;
         parentId?: number;
+        colony: Colony;
       },
       MetaWithNavigate<object>
     >
