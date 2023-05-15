@@ -2,6 +2,7 @@ import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 import { ExtensionStatusBadgeProps } from './types';
+import styles from './ExtensionStatusBadge.module.css';
 
 const displayName = 'common.Extensions.ExtensionStatusBadge';
 
@@ -19,6 +20,7 @@ const ExtensionStatusBadge: FC<PropsWithChildren<ExtensionStatusBadgeProps>> = (
   return (
     <span
       className={clsx(
+        styles.badge,
         'inline-flex items-center text-center text-sm font-medium px-3 py-1 rounded-3xl h-[1.625rem] capitalize',
         {
           'text-indigo-400 bg-indigo-100': mode === 'coming-soon',

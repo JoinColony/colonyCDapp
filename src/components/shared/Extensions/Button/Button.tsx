@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { ButtonProps } from './types';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
 import styles from './Button.module.css';
+import Icon from '~shared/Icon';
 
 const displayName = 'Extensions.Button';
 
@@ -22,6 +23,8 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
   isFullRounded = false,
   ariaLabel,
   isFullSize,
+  setTriggerRef,
+  isPending,
   ...rest
 }) => {
   const { formatMessage } = useIntl();
@@ -42,7 +45,9 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               [styles.primarySolid]: mode === 'primarySolid',
               [styles.primaryOutline]: mode === 'primaryOutline',
               [styles.secondarySolid]: mode === 'secondarySolid',
+              [styles.secondaryOutline]: mode === 'secondaryOutline',
               [styles.tertiaryOutline]: mode === 'tertiaryOutline',
+              [styles.quaternaryOutline]: mode === 'quaternaryOutline',
               [styles.textButton]: mode === 'textButton',
               'pointer-events-none': disabled,
               'w-full': isFullSize,
@@ -56,9 +61,16 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
           aria-busy={loading}
           title={titleText}
           type={type}
+          ref={setTriggerRef}
           {...rest}
         >
           {buttonText || children}
+          {mode === 'pending' && isPending && (
+            <Icon
+              name="spinner-gap"
+              className={`ml-[0.59375rem] w-[13px] h-[13px] ${isPending ? 'animate-spin' : 'animate-none'}`}
+            />
+          )}
         </button>
       )}
     </>

@@ -12,13 +12,16 @@ const LinkItem: FC<PropsWithChildren<LinkItemProps>> = ({ title, description, st
   return (
     <li className={styles.itemWrapper}>
       {/* <Link to="/"> */}
-      <div className={styles.title}>
-        <FormattedMessage {...title} />
-        {statusBadge}
-      </div>
-      <div className={styles.description}>
-        <FormattedMessage {...description} />
-      </div>
+      <a className={styles.link} href="/">
+        <span className={styles.title}>
+          <FormattedMessage {...title} />
+          <span className="ml-1 shrink-0">{statusBadge}</span>
+        </span>
+        <span className={styles.description}>
+          <FormattedMessage {...description} />
+        </span>
+      </a>
+
       {/* </Link> */}
     </li>
   );

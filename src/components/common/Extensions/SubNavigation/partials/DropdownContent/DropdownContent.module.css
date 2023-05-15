@@ -1,23 +1,11 @@
 .listWrapper {
-  @apply py-2 md:py-0;
-
-  &::after {
-    @apply bg-gray-200 mt-2 lg:mt-4 block h-px content-[""] mx-4;
-  }
+  @apply my-4 sm:mt-2;
 }
 
 .buttonWrapper {
-  @apply flex justify-center mt-6 md:mt-8 mx-4;
-
-  & button {
-    @apply w-full flex justify-center text-blue-400 font-semibold border-blue-400;
-  }
+  @apply flex justify-center pt-6 mx-6 border-t border-gray-200;
 }
 
 .infoWrapper {
-  @apply mt-6 md:mt-8 mb-4 text-sm flex justify-center font-normal items-center;
-}
-
-.questionIcon {
-  @apply mr-2 w-4 h-4;
+  @apply mt-6 mb-6;
 }

@@ -398,6 +398,7 @@
     "specific.side.panel.title": "Extension details",
     "file-text": "File text icon",
     "radio.error.governance": "Please select a governance style option before enabling",
+    "ariaLabel.open": "Open",
     "open.dropdown": "Open dropdown",
     "close.dropdown": "Close dropdown",
     "userInfo.about.section": "about",
@@ -406,10 +407,19 @@
     "userInfo.colonyReputation.business": "Business",
     "userInfo.colonyReputation.development": "Development",
     "userInfo.colonyReputation.product": "Product",
+    "userMenu.optionsTitle": "OPTIONS",
+    "userMenu.getStartedTitle": "Get started",
+    "userMenu.contactAndSupportTitle": "Contact and support",
+    "userMenu.developersTitle": "Developers",
+    "userMenu.legalAndPrivacyTitle": "Legal & Privacy",
+    "connectWallet": "Connect wallet",
     "copyWalletAddress": "Copy wallet address",
     "copy.address": "Copy address",
     "copied": "Copied",
     "pending": "Pending",
     "stakes": "Stakes",
-    "claimStakes": "Claim all stakes"
+    "claimStakes": "Claim all stakes",
+    "lightMode": "Light",
+    "darkMode": "Dark",
+    "help": "Help"
 }

@@ -11,7 +11,7 @@ const SubNavigation: FC<PropsWithChildren> = () => {
   const ref = useDetectClickOutside({ onTriggered: () => setOpenIndex(undefined) });
 
   return (
-    <ul className="flex gap-8 font-semibold text-md text-gray-700" ref={ref}>
+    <ul className="flex gap-8 text-md text-gray-700" ref={ref}>
       {subNavigationItems.map(({ id, label, content, icon }) => (
         <SubNavigationItem
           key={id}

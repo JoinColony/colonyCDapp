@@ -41,12 +41,8 @@ export const MSG = defineMessages({
     id: `common.Extensions.SubNavigation.partials.DropdownContent.buttonText`,
     defaultMessage: 'View active payments',
   },
-  helpTextPay: {
-    id: `common.Extensions.SubNavigation.partials.DropdownContent.helpText`,
-    defaultMessage: 'Need help with payments? <a>Learn more</a>',
-  },
-  commingSoon: {
-    id: `common.Extensions.SubNavigation.partials.DropdownContent.commingSoon`,
+  comingSoon: {
+    id: `common.Extensions.SubNavigation.partials.DropdownContent.comingSoon`,
     defaultMessage: 'Coming soon',
   },
   manageContentTitle: {
@@ -89,10 +85,6 @@ export const MSG = defineMessages({
     id: `common.Extensions.SubNavigation.partials.DropdownContent.buttonText`,
     defaultMessage: 'View admin area',
   },
-  helpTextManage: {
-    id: `common.Extensions.SubNavigation.partials.DropdownContent.helpText`,
-    defaultMessage: 'Need help with admin? <a>Learn more</a>',
-  },
   decisionsContentTitle: {
     id: `common.Extensions.SubNavigation.partials.DropdownContent.decisionsContentTitle`,
     defaultMessage: 'CREATE NEW DECISIONS',
@@ -116,9 +108,5 @@ export const MSG = defineMessages({
   buttonTextDecide: {
     id: `common.Extensions.SubNavigation.partials.DropdownContent.buttonText`,
     defaultMessage: 'View decisions',
-  },
-  helpTextDecide: {
-    id: `common.Extensions.SubNavigation.partials.DropdownContent.helpText`,
-    defaultMessage: 'Need help with decisions? <a>Learn more</a>',
   },
 });

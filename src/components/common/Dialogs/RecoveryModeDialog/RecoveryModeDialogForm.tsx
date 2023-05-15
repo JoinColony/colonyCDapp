@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { DialogSection, ActionDialogProps, DialogControls, DialogHeading } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 import PermissionsLabel from '~shared/PermissionsLabel';
-import ExternalLink from '~shared/ExternalLink';
+import ExternalLink from '~shared/Extensions/ExternalLink';
 
 import { useAppContext, useTransformer } from '~hooks';
 import { getAllUserRoles } from '~redux/transformers';

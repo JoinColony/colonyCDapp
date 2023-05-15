@@ -17,11 +17,11 @@
   }
 
   body {
-    @apply h-full overflow-scroll;
+    @apply h-full overflow-scroll overflow-x-hidden;
   }
 
   svg:not([class]) {
-    @apply fill-current stroke-current;
+    @apply fill-current stroke-none;
   }
 
   #root {
@@ -61,12 +61,6 @@
 @layer components {
   .inner {
     @apply px-6 w-full h-full max-w-[77.375rem] mx-auto;
-  }
-}
-
-@media screen and query428 {
-  html {
-    @apply bg-base-white;
   }
 }
 
