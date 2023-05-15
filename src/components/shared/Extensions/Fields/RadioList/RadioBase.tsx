@@ -7,7 +7,7 @@ import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge-new';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip';
 import Icon from '~shared/Icon';
 
-const displayName = 'Extensions.RadioList';
+const displayName = 'Extensions.Fields.RadioBase';
 
 const RadioBase: FC<RadioBaseProps> = ({ item, isError, register }) => {
   const { disabled, label, description, value, badge, tooltip } = item;

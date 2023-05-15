@@ -4,7 +4,7 @@ import { useAppContext } from '~hooks';
 import Button from '~shared/Extensions/Button';
 import { getLastWallet } from '~utils/autoLogin';
 
-const displayName = 'shared.Extensions.ConnectingWalletButton';
+const displayName = 'Extensions.ConnectingWalletButton';
 
 const ConnectingWalletButton = () => {
   const { formatMessage } = useIntl();

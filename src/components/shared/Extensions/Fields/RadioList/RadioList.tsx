@@ -8,7 +8,7 @@ import RadioBase from './RadioBase';
 import FormError from '~shared/Extensions/FormError/FormError';
 import Button from '~shared/Extensions/Button/Button';
 
-const displayName = 'Extensions.RadioList';
+const displayName = 'Extensions.Fields.RadioList';
 
 const RadioList: FC<RadioListProps> = ({ title, items }) => {
   const { formatMessage } = useIntl();

@@ -130,9 +130,9 @@ module.exports = {
         fast: '175ms',
       },
       screens: {
-        sm: '53.125rem',
-        md: '64rem',
-        lg: '90rem',
+        sm: '850px',
+        md: '1024px',
+        lg: '1440px',
       },
       transitionDuration: {
         slow: '175ms',

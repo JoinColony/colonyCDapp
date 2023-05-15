@@ -7,7 +7,7 @@
 }
 
 .button {
-  @apply text-gray-700 font-semibold text-sm flex;
+  @apply text-gray-700 font-semibold text-md flex;
 
   & i {
     @apply mr-2;
@@ -23,7 +23,7 @@
 }
 
 .activeButton {
-  @apply text-blue-400 font-semibold text-sm;
+  @apply text-blue-400 font-semibold text-md;
 
   & svg {
     @apply fill-blue-400 stroke-blue-400;
