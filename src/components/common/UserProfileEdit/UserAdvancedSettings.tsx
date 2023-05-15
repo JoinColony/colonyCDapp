@@ -4,7 +4,7 @@ import { string, bool, object, InferType } from 'yup';
 
 import { HookForm as Form } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
-import ExternalLink from '~shared/ExternalLink';
+import ExternalLink from '~shared/Extensions/ExternalLink';
 import { ADVANCED_SETTINGS } from '~constants';
 import useUserSettings, { SlotKey, UserSettingsHook } from '~hooks/useUserSettings';
 import { canUseMetatransactions } from '~utils/checks';

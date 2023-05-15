@@ -1,0 +1,11 @@
+.navLink {
+  @apply flex items-center justify-between w-full px-6 py-3 text-lg font-semibold transition-all duration-normal sm:min-h-[2rem] sm:rounded-lg sm:hover:text-gray-900 sm:hover:bg-base-bg sm:px-3 sm:py-1.5 sm:text-md sm:justify-start sm:w-auto;
+}
+
+.subMenu {
+  @apply bg-base-white transition-all duration-normal pointer-events-none absolute top-full left-0 pt-3;
+}
+
+.subMenuMobile {
+  @apply bg-base-white px-6;
+}

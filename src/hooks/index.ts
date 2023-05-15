@@ -36,6 +36,7 @@ export { default as useWindowSize } from './useWindowSize';
 export { default as useAppContext } from './useAppContext';
 export { default as useUserReputation } from './useUserReputation';
 export { default as useMobile } from './useMobile';
+export { default as useTablet } from './useTablet';
 export { default as useSortedContributors } from './useSortedContributors';
 export { default as useUserReputationForTopDomains, UserDomainReputation } from './useUserReputationForTopDomains';
 export { default as useColonyContext } from './useColonyContext';

@@ -6,6 +6,7 @@ export type ButtonMode =
   | 'primarySolid'
   | 'primaryOutline'
   | 'secondarySolid'
+  | 'secondaryOutline'
   | 'tertiaryOutline'
   | 'textButton'
   | 'pending';

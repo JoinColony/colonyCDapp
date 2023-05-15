@@ -3,9 +3,11 @@ import clsx from 'clsx';
 
 import { CardProps } from './types';
 
-const Card: FC<PropsWithChildren<CardProps>> = ({ hasShadow, rounded = 's', children, ...props }) => (
+const displayName = 'Extensions.Card';
+
+const Card: FC<PropsWithChildren<CardProps>> = ({ hasShadow, rounded = 's', children, className, ...props }) => (
   <div
-    className={clsx('border border-gray-200 p-6 flex flex-col w-full', {
+    className={clsx(className, 'border border-gray-200 p-6 flex flex-col w-full', {
       'rounded-lg': rounded === 's',
       'rounded-xl': rounded === 'm',
       'shadow-default': hasShadow,
@@ -15,5 +17,7 @@ const Card: FC<PropsWithChildren<CardProps>> = ({ hasShadow, rounded = 's', chil
     {children}
   </div>
 );
+
+Card.displayName = displayName;
 
 export default Card;

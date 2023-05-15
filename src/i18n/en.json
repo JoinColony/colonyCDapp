@@ -398,6 +398,7 @@
     "specific.side.panel.title": "Extension details",
     "file-text": "File text icon",
     "radio.error.governance": "Please select a governance style option before enabling",
+    "ariaLabel.open": "Open",
     "open.dropdown": "Open dropdown",
     "close.dropdown": "Close dropdown",
     "userInfo.about.section": "about",

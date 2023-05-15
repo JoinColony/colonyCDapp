@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useState } from 'react';
 import { AccordionContentItemProps } from '../types';
 import AccordionHeader from './AccordionHeader';
+import { accordionAnimation } from '~constants/accordionAnimation';
 
 const displayName = 'Extensions.Accordion.partials.AccordionContentItem';
 
@@ -20,9 +21,9 @@ const AccordionContentItem: FC<AccordionContentItemProps> = ({ accordionItem }) 
           {visibility && (
             <motion.div
               key="content"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
+              initial="hidden"
+              animate="visible"
+              variants={accordionAnimation}
               transition={{ duration: 0.4, ease: 'easeOut' }}
               className="overflow-hidden"
             >

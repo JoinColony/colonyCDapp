@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import ExternalLink from '~shared/ExternalLink';
+import ExternalLink from '~shared/Extensions/ExternalLink';
 
 import styles from './DownloadTemplate.css';
 
