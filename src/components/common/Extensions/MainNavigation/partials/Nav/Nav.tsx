@@ -7,6 +7,7 @@ import Icon from '~shared/Icon';
 import styles from './Nav.module.css';
 import SubMenu from '../SubMenu';
 import { useMobile } from '~hooks';
+import { accordionAnimation } from '~constants/accordionAnimation';
 
 const displayName = 'common.Extensions.MainNavigation.partials.Nav';
 
@@ -56,9 +57,9 @@ const NavItem: FC<NavItemProps> = ({ item }) => {
             {isOpen && (
               <motion.div
                 key="accordion-content"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
+                initial="hidden"
+                animate="visible"
+                variants={accordionAnimation}
                 transition={{ duration: 0.4, ease: 'easeOut' }}
                 className="overflow-hidden"
               >

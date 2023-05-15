@@ -7,6 +7,7 @@ import Icon from '~shared/Icon/Icon';
 
 import { SubNavigationItemProps } from './types';
 import styles from './SubNavigationItemMobile.module.css';
+import { accordionAnimation } from '~constants/accordionAnimation';
 
 const displayName = 'common.Extensions.SubNavigation.SubNavigationItem.SubNavigationItemMobile';
 
@@ -31,9 +32,9 @@ const SubNavigationItemMobile: FC<PropsWithChildren<SubNavigationItemProps>> = (
       {isOpen && (
         <motion.div
           key="accordion-content"
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
+          initial="hidden"
+          animate="visible"
+          variants={accordionAnimation}
           transition={{ duration: 0.4, ease: 'easeOut' }}
           className="overflow-hidden"
         >
