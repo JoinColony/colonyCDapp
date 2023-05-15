@@ -7,6 +7,7 @@ export type ButtonMode =
   | 'primaryOutline'
   | 'secondarySolid'
   | 'tertiaryOutline'
+  | 'quaternaryOutline'
   | 'textButton'
   | 'pending';
 
@@ -22,4 +23,5 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   isFullSize?: boolean;
   isPending?: boolean;
   isFullRounded?: boolean;
+  setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
 }

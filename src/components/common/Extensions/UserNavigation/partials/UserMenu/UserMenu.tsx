@@ -1,0 +1,95 @@
+import React, { FC } from 'react';
+import clsx from 'clsx';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { UserMenuProps } from './types';
+import { useAppContext, useMobile } from '~hooks';
+import Button from '~shared/Extensions/Button';
+import { MSG } from './consts';
+import Link from '~shared/Link';
+import Icon from '~shared/Icon';
+import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
+import styles from './UserMenu.module.css';
+
+const UserMenu: FC<UserMenuProps> = ({ tooltipProps, setTooltipRef, isWalletConnected }) => {
+  const isMobile = useMobile();
+  const { formatMessage } = useIntl();
+  const { connectWallet } = useAppContext();
+
+  return (
+    <div
+      ref={setTooltipRef}
+      {...tooltipProps({
+        className: clsx('px-0 md:px-6 py-6 flex justify-start z-[9999] tooltip-container', {
+          'w-full border-none shadow-none': isMobile,
+          'w-[20.125rem]': !isMobile,
+          'h-[32rem] md:h-[23rem]': !isWalletConnected,
+          'md:h-[28.125rem]': isWalletConnected,
+        }),
+      })}
+    >
+      {isWalletConnected ? (
+        <>Connected component</>
+      ) : (
+        <>
+          <div className={styles.mobileButtons}>
+            <Button mode="tertiaryOutline" isFullRounded>
+              <Icon name="cardholder" appearance={{ size: 'tiny' }} />
+              <p className="text-sm font-inter font-medium ml-1">{formatMessage({ id: 'Connect wallet' })}</p>
+            </Button>
+            <Button mode="tertiaryOutline" isFullRounded>
+              <Icon name="list" appearance={{ size: 'extraTiny' }} />
+              <p className="text-sm font-inter font-medium ml-1">{formatMessage({ id: 'Help' })}</p>
+            </Button>
+          </div>
+          <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">
+            <Button mode="quaternaryOutline" isFullSize onClick={connectWallet}>
+              {formatMessage({ id: 'Connect wallet' })}
+            </Button>
+          </div>
+        </>
+      )}
+      <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">
+        <p className="text-xs text-gray-400 font-medium font-inter mb-3">
+          <FormattedMessage {...MSG.optionsTitle} />
+        </p>
+        <ul className="text-lg font-semibold md:font-normal md:text-md text-gray-900">
+          <li className="mb-4">
+            <Link to="/" className="flex items-center">
+              <Icon name="circles-three-plus" appearance={{ size: 'tiny' }} />
+              <p className="ml-2">
+                <FormattedMessage {...MSG.getStartedTitle} />
+              </p>
+            </Link>
+          </li>
+          <li className="mb-4">
+            <Link to="/" className="flex items-center">
+              <Icon name="lifebuoy" appearance={{ size: 'tiny' }} />
+              <p className="ml-2">
+                <FormattedMessage {...MSG.contactAndSupportTitle} />
+              </p>
+            </Link>
+          </li>
+          <li className="mb-4">
+            <Link to="/" className="flex items-center">
+              <Icon name="code" appearance={{ size: 'tiny' }} />
+              <p className="ml-2">
+                <FormattedMessage {...MSG.developersTitle} />
+              </p>
+            </Link>
+          </li>
+          <li>
+            <Link to="/" className="flex items-center">
+              <Icon name="briefcase" appearance={{ size: 'tiny' }} />
+              <p className="ml-2">
+                <FormattedMessage {...MSG.legalAndPrivacyTitle} />
+              </p>
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <ThemeSwitcher />
+    </div>
+  );
+};
+
+export default UserMenu;
