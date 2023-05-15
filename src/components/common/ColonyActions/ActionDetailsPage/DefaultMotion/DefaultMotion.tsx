@@ -54,7 +54,7 @@ const DefaultMotion = ({
         />
       )}
       <div className={styles.container}>
-        <DefaultActionContent actionData={actionData} />
+        <DefaultActionContent actionData={actionData} colony={colony} />
         <div className={styles.widgets}>
           <MotionPhaseWidget
             actionData={actionData}

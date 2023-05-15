@@ -2,7 +2,7 @@ import React from 'react';
 
 import { getActionTitleValues } from '~common/ColonyActions/helpers';
 import { Heading3 } from '~shared/Heading';
-import { ColonyAction } from '~types';
+import { Colony, ColonyAction } from '~types';
 
 import {
   ActionDetailsPageFeed,
@@ -16,15 +16,19 @@ const displayName =
 
 interface DefaultActionContentProps {
   actionData: ColonyAction;
+  colony: Colony;
 }
 
-const DefaultActionContent = ({ actionData }: DefaultActionContentProps) => (
+const DefaultActionContent = ({
+  actionData,
+  colony,
+}: DefaultActionContentProps) => (
   <div className={styles.content}>
     <Heading3
       className={styles.heading}
       data-test="actionHeading"
       text={{ id: 'action.title' }}
-      textValues={getActionTitleValues(actionData)}
+      textValues={getActionTitleValues(actionData, colony)}
     />
     {actionData.isMotion ? (
       <MotionDetailsPageFeed actionData={actionData} />
