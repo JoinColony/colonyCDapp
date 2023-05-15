@@ -14,7 +14,8 @@ export const mergePayload =
   });
 
 export const mapPayload =
-  (mapFn: (arg0: any) => any) => (action: UniqueActionType<any, any, any>) => ({
+  <P = any>(mapFn: (arg0: any) => P) =>
+  (action: UniqueActionType<any, any, any>) => ({
     ...action,
     payload: mapFn(action.payload),
   });

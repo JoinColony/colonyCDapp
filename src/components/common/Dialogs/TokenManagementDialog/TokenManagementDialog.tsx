@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { string, object, array, boolean, InferType } from 'yup';
+import { isAddress } from 'ethers/lib/utils';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
@@ -10,7 +11,6 @@ import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { WizardDialogType } from '~hooks';
 import { formatText } from '~utils/intl';
 import { notNull } from '~utils/arrays';
-import { isAddress } from '~utils/web3';
 import { Token } from '~types';
 
 import { getTokenManagementDialogPayload } from './helpers';
@@ -120,20 +120,14 @@ const TokenManagementDialog = ({
         onSuccess={handleSuccess}
         onError={handleError}
       >
-        {({ watch }) => {
-          const forceActionValue = watch('forceAction');
-          if (forceActionValue !== isForce) {
-            setIsForce(forceActionValue);
-          }
-          return (
-            <TokenManagementDialogForm
-              colony={colony}
-              back={prevStep && callStep ? () => callStep(prevStep) : undefined}
-              close={close}
-              enabledExtensionData={enabledExtensionData}
-            />
-          );
-        }}
+        <TokenManagementDialogForm
+          colony={colony}
+          back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+          close={close}
+          enabledExtensionData={enabledExtensionData}
+          isForce={isForce}
+          setIsForce={setIsForce}
+        />
       </Form>
     </Dialog>
   );
