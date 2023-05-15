@@ -27,11 +27,11 @@
 }
 
 .placeholderIcon {
-  @apply w-full h-full [&_svg]:fill-current [&_svg]:stroke-current opacity-50;
+  @apply w-full h-full [&_svg]:fill-current [&_svg]:stroke-none opacity-50;
 }
 
 .placeholderIconNotSet {
-  @apply w-full h-full [&_svg]:fill-current [&_svg]:stroke-current opacity-100;
+  @apply w-full h-full [&_svg]:fill-current [&_svg]:stroke-none opacity-100;
 }
 
 .image {
