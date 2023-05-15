@@ -104,7 +104,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [updateUser, wallet]);
 
-  const asyncFunction = useAsyncFunction({
+  const setupUserContext = useAsyncFunction({
     submit: ActionTypes.WALLET_OPEN,
     error: ActionTypes.WALLET_OPEN_ERROR,
     success: ActionTypes.WALLET_OPEN_SUCCESS,
@@ -114,21 +114,16 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
    * Handle wallet connection
    */
   const connectWallet = useCallback(async () => {
-    setWalletConnecting?.(true);
-    let walletConnectSuccess = false;
+    setWalletConnecting(true);
     try {
-      await asyncFunction(undefined);
-      walletConnectSuccess = true;
+      await setupUserContext(undefined);
+      updateWallet();
     } catch (error) {
       console.error('Could not connect wallet', error);
+    } finally {
+      setWalletConnecting(false);
     }
-    if (updateWallet && walletConnectSuccess) {
-      updateWallet();
-    }
-    setWalletConnecting?.(false);
-  }, [asyncFunction, updateWallet, setWalletConnecting]);
-
-  // console.log(wallet);
+  }, [setupUserContext, updateWallet, setWalletConnecting]);
 
   const appContext = useMemo<AppContextValues>(
     () => ({
