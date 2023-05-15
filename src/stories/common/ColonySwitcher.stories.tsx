@@ -19,7 +19,7 @@ const meta: Meta<typeof ColonySwitcher> = {
 export default meta;
 type Story = StoryObj<typeof ColonySwitcher>;
 
-export const ColonySwitcherWithHooks = () => {
+const ColonySwitcherWithHooks = () => {
   const { userLoading } = useAppContext();
   const [isOpen, setIsOpen] = useState<boolean>();
 

@@ -409,5 +409,7 @@
     "copyWalletAddress": "Copy wallet address",
     "copy.address": "Copy address",
     "copied": "Copied",
-    "pending": "Pending"
+    "pending": "Pending",
+    "stakes": "Stakes",
+    "claimStakes": "Claim all stakes"
 }

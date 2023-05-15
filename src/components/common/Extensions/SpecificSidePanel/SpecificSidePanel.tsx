@@ -16,7 +16,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData
   const { formatMessage } = useIntl();
 
   return (
-    <div className="sm:w-[23.75rem] md:w-[17.625rem] lg:w-[20.4375rem] bg-base-white">
+    <div className="sm:w-full md:w-[17.625rem] lg:w-[20.4375rem] bg-base-white">
       <h3 className="font-semibold text-lg text-gray-900 pb-[1.375rem]">
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
@@ -25,9 +25,9 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData
           <Fragment key={id}>
             <div className={styles.panelRow}>
               <div className={styles.panelTitle}>{statusType.title}</div>
-              <div className="w-[50%] justify-start flex flex-row">
+              <div className="md:w-[50%] justify-start flex flex-col md:flex-row">
                 {statuses?.map((status) => (
-                  <div className="mr-1" key={status}>
+                  <div className="mr-1 mb-1 md:mb-0" key={status}>
                     <ExtensionStatusBadge mode={status} text={status} />
                   </div>
                 ))}
