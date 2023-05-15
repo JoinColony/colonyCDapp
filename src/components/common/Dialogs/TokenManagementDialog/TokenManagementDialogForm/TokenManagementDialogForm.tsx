@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { AddressZero } from '@ethersproject/constants';
@@ -13,13 +13,17 @@ import {
 import { Annotations } from '~shared/Fields';
 import { Heading4 } from '~shared/Heading';
 import Paragraph from '~shared/Paragraph';
-// import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import { useActionDialogStatus } from '~hooks';
 import { isEqual } from '~utils/lodash';
 import TokenSelector from '~shared/TokenSelector';
+import { SetStateFn } from '~types';
 
-import { NoPermissionMessage, PermissionRequiredInfo } from '../../Messages';
+import {
+  NoPermissionMessage,
+  NotEnoughReputation,
+  PermissionRequiredInfo,
+} from '../../Messages';
 import TokenItem from './TokenItem';
 import getTokenList from './getTokenList';
 import { FormValues } from '../TokenManagementDialog';
@@ -58,6 +62,8 @@ const MSG = defineMessages({
 
 interface Props extends ActionDialogProps {
   close: (val: any) => void;
+  isForce: boolean;
+  setIsForce: SetStateFn;
 }
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Root];
@@ -68,16 +74,30 @@ const TokenManagementDialogForm = ({
   colony: { tokens, nativeToken },
   back,
   enabledExtensionData,
+  isForce,
+  setIsForce,
 }: Props) => {
   const { watch } = useFormContext<FormValues>();
   const values = watch();
-  const { userHasPermission, disabledInput, disabledSubmit } =
-    useActionDialogStatus(
-      colony,
-      requiredRoles,
-      [Id.RootDomain],
-      enabledExtensionData,
-    );
+
+  const {
+    userHasPermission,
+    disabledInput,
+    disabledSubmit,
+    canOnlyForceAction,
+  } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
+
+  useEffect(() => {
+    if (values.forceAction !== isForce) {
+      setIsForce(values.forceAction);
+    }
+  }, [isForce, setIsForce, values.forceAction]);
+
   const tokenList = getTokenList();
   const colonyTokens = tokens?.items || [];
   const colonyTokenAddresses = colonyTokens.map(
@@ -104,7 +124,15 @@ const TokenManagementDialogForm = ({
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading title={MSG.title} />
+        <DialogHeading
+          title={MSG.title}
+          userHasPermission={userHasPermission}
+          colony={colony}
+          isRootMotion
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
+        />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -156,9 +184,11 @@ const TokenManagementDialogForm = ({
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
-      {/* {onlyForceAction && (
-        <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
-      )} */}
+      {canOnlyForceAction && (
+        <DialogSection>
+          <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
+        </DialogSection>
+      )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
           onSecondaryButtonClick={back === undefined ? close : back}
