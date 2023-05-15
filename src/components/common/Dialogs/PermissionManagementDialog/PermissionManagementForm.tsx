@@ -20,7 +20,7 @@ import SingleUserPicker, {
 import { ItemDataType } from '~shared/OmniPicker';
 import UserAvatar from '~shared/UserAvatar';
 
-import { User } from '~types';
+import { MemberUser, User } from '~types';
 import { notNull } from '~utils/arrays';
 import { findDomainByNativeId, getDomainOptions } from '~utils/domains';
 
@@ -73,7 +73,7 @@ const MSG = defineMessages({
 
 interface Props extends ActionDialogProps {
   close: (val: any) => void;
-  users?: User[];
+  users?: MemberUser[];
 }
 
 const supRenderAvatar = (item: ItemDataType<User>) => (

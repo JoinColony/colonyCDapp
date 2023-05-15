@@ -4,13 +4,13 @@ import { PopperOptions } from 'react-popper-tooltip';
 import Link from '~shared/Link';
 import Popover from '~shared/Popover';
 
-import { User } from '~types';
+import { MemberUser, User } from '~types';
 // import UserInfoPopover from '../InfoPopover/UserInfoPopover';
 
 import styles from './UserMention.css';
 
 interface Props {
-  user: User;
+  user: User | MemberUser;
 
   /** Alternate place to link to. Defaults to user profile */
   to?: string;

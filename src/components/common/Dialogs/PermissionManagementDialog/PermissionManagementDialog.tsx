@@ -106,7 +106,7 @@ const PermissionManagementDialog = ({
     walletAddress: '',
     name: '',
     ...user,
-    // Needed to satisly Omnipicker's key
+    // Needed to satisfy Omnipicker's key
     id: user?.walletAddress,
   }));
 
