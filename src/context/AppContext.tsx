@@ -5,6 +5,7 @@ import React, {
   useMemo,
   ReactNode,
   useCallback,
+  useEffect,
 } from 'react';
 
 import { ActionTypes } from '~redux';
@@ -13,7 +14,7 @@ import {
   GetCurrentUserQuery,
   GetCurrentUserQueryVariables,
 } from '~gql';
-import { ColonyWallet, User } from '~types';
+import { Address, ColonyWallet, User } from '~types';
 import { useAsyncFunction } from '~hooks';
 
 import { getContext, ContextModule } from './index';
@@ -124,6 +125,22 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       setWalletConnecting(false);
     }
   }, [setupUserContext, updateWallet, setWalletConnecting]);
+
+  /*
+   * When the user switches account in Metamask, re-initiate the wallet connect flow
+   * so as to update their wallet details in the app's memory.
+   */
+  useEffect(() => {
+    if (window.ethereum) {
+      // @ts-ignore
+      window.ethereum.on('accountsChanged', (accounts: Address[]) => {
+        const loggedInAccount = accounts[0];
+        if (loggedInAccount) {
+          connectWallet();
+        }
+      });
+    }
+  }, [connectWallet]);
 
   const appContext = useMemo<AppContextValues>(
     () => ({
