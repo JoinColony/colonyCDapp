@@ -17,7 +17,7 @@
     @apply text-blue-400 cursor-pointer;
 
     & svg {
-      @apply fill-blue-400 stroke-blue-400;
+      @apply fill-blue-400;
     }
   }
 }
@@ -26,6 +26,6 @@
   @apply text-blue-400 font-semibold text-md;
 
   & svg {
-    @apply fill-blue-400 stroke-blue-400;
+    @apply fill-blue-400;
   }
 }
