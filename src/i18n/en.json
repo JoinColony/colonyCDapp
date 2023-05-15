@@ -406,8 +406,17 @@
     "userInfo.colonyReputation.business": "Business",
     "userInfo.colonyReputation.development": "Development",
     "userInfo.colonyReputation.product": "Product",
+    "userMenu.optionsTitle": "OPTIONS",
+    "userMenu.getStartedTitle": "Get started",
+    "userMenu.contactAndSupportTitle": "Contact and support",
+    "userMenu.developersTitle": "Developers",
+    "userMenu.legalAndPrivacyTitle": "Legal & Privacy",
+    "connectWallet": "Connect wallet",
     "copyWalletAddress": "Copy wallet address",
     "copy.address": "Copy address",
     "copied": "Copied",
-    "pending": "Pending"
+    "pending": "Pending",
+    "lightMode": "Light",
+    "darkMode": "Dark",
+    "help": "Help"
 }

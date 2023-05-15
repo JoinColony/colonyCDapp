@@ -59,7 +59,7 @@ const UserNavigation: FC = () => {
         isButtonVisible && (
           <Button mode="tertiaryOutline" isFullRounded onClick={connectWallet}>
             <Icon name="cardholder" appearance={{ size: 'tiny' }} />
-            <p className="text-sm font-inter font-medium ml-1">{formatMessage({ id: 'Connect wallet' })}</p>
+            <p className="text-sm font-inter font-medium ml-1">{formatMessage({ id: 'connectWallet' })}</p>
           </Button>
         )
       )}

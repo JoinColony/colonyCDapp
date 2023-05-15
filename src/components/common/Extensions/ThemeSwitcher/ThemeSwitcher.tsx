@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import clsx from 'clsx';
+import { useIntl } from 'react-intl';
 import Icon from '~shared/Icon';
 import styles from './ThemeSwitcher.module.css';
-import { formatMessage } from '~utils/yup/tests/helpers';
 
-const ThemeSwitcher = () => {
-  const [isLightMode, setIsLightkMode] = useState<boolean>(true);
+const displayName = 'common.Extensions.ThemeSwitcher';
+
+const ThemeSwitcher: FC = () => {
+  const [isLightMode, setIsLightkMode] = useState(true);
+  const { formatMessage } = useIntl();
 
   return (
     <button
       type="button"
+      aria-label="Theme switcher"
       className="bg-gray-50 rounded flex items-center justify-between gap-2 h-10 border border-gray-100 relative"
       onClick={() => setIsLightkMode((prevState) => !prevState)}
     >
@@ -35,5 +39,7 @@ const ThemeSwitcher = () => {
     </button>
   );
 };
+
+ThemeSwitcher.displayName = displayName;
 
 export default ThemeSwitcher;
