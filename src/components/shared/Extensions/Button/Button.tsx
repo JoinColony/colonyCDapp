@@ -23,6 +23,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
   isFullRounded = false,
   ariaLabel,
   isFullSize,
+  setTriggerRef,
   isPending,
   ...rest
 }) => {
@@ -46,6 +47,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               [styles.secondarySolid]: mode === 'secondarySolid',
               [styles.secondaryOutline]: mode === 'secondaryOutline',
               [styles.tertiaryOutline]: mode === 'tertiaryOutline',
+              [styles.quaternaryOutline]: mode === 'quaternaryOutline',
               [styles.textButton]: mode === 'textButton',
               [styles.pending]: mode === 'pending',
               'pointer-events-none': disabled,
@@ -60,6 +62,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
           aria-busy={loading}
           title={titleText}
           type={type}
+          ref={setTriggerRef}
           {...rest}
         >
           {buttonText || children}

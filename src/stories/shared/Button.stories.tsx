@@ -78,6 +78,12 @@ export const TertiaryOutline: Story = {
   },
 };
 
+export const QuaternaryOutline: Story = {
+  args: {
+    mode: 'quaternaryOutline',
+  },
+};
+
 export const TextButton: Story = {
   args: {
     mode: 'textButton',
