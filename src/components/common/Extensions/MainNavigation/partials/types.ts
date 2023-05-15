@@ -1,4 +1,4 @@
-import { SubMenuItem } from '../SubMenu/types';
+import { SubMenuItem } from './SubMenu/types';
 
 export interface NavItem {
   label: string;
@@ -10,6 +10,11 @@ export interface NavItem {
 
 export interface NavItemProps {
   item: NavItem;
+}
+
+export interface NavItemMobileProps extends NavItemProps {
+  isOpen?: boolean;
+  toggleItem?: () => void;
 }
 
 export interface NavProps {

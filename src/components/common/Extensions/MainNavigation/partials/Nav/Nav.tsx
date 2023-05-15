@@ -1,13 +1,12 @@
 import React, { FC, useCallback, useState } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
-import { AnimatePresence, motion } from 'framer-motion';
-import { NavItemProps, NavProps } from './types';
+import { NavItemProps, NavProps } from '../types';
 import Icon from '~shared/Icon';
-import styles from './Nav.module.css';
+import styles from '../Nav.module.css';
 import SubMenu from '../SubMenu';
 import { useMobile } from '~hooks';
-import { accordionAnimation } from '~constants/accordionAnimation';
+import NavMobile from '../NavMobile/NavMobile';
 
 const displayName = 'common.Extensions.MainNavigation.partials.Nav';
 
@@ -25,55 +24,17 @@ const NavItem: FC<NavItemProps> = ({ item }) => {
     }
   }, [isOpen, item]);
 
-  const navLink = (
-    <a className={styles.navLink} href={item.href}>
-      {formatMessage({
-        id: `mainNavItem.${item.label}`,
-        defaultMessage: `${item.label}`,
-      })}
-    </a>
-  );
-
   return isMobile ? (
+    <NavMobile isOpen={isOpen} toggleItem={toggleItem} item={item} />
+  ) : (
     <>
       {item.href ? (
-        navLink
-      ) : (
-        <button type="button" className={clsx(styles.navLink, { 'text-blue-400': isOpen })} onClick={toggleItem}>
+        <a className={styles.navLink} href={item.href}>
           {formatMessage({
             id: `mainNavItem.${item.label}`,
             defaultMessage: `${item.label}`,
           })}
-          {item.subMenu && (
-            <span className={clsx('flex ml-2.5 transition-transform duration-normal', { 'rotate-180': isOpen })}>
-              <Icon name="caret-down" appearance={{ size: 'extraTiny' }} />
-            </span>
-          )}
-        </button>
-      )}
-      {item.subMenu && (
-        <div className={styles.subMenuMobile}>
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                key="accordion-content"
-                initial="hidden"
-                animate="visible"
-                variants={accordionAnimation}
-                transition={{ duration: 0.4, ease: 'easeOut' }}
-                className="overflow-hidden"
-              >
-                <SubMenu items={item.subMenu} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      )}
-    </>
-  ) : (
-    <>
-      {item.href ? (
-        navLink
+        </a>
       ) : (
         <button
           type="button"
