@@ -30,7 +30,6 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.SetUserRolesMotion} {{rolesChanged} in {fromDomain} {direction} {recipient}}
       ${ExtendedColonyActionType.UpdateAddressBook} {Address book was updated}
       ${ExtendedColonyActionType.UpdateTokens} {Colony tokens were updated}    
-      ${ColonyActionType.SetUserRolesMotion} {{rolesChanged} in {fromDomain} {direction} {recipient}}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
@@ -59,8 +58,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.EmitDomainReputationReward} {Award}
       ${ColonyActionType.EmitDomainReputationRewardMotion} {Award}
       ${ExtendedColonyActionType.UpdateAddressBook} {Update Address Book}
-      ${ExtendedColonyActionType.UpdateTokens} {Update Tokens}    
-      ${ColonyActionType.EmitDomainReputationRewardMotion} {Award}
+      ${ExtendedColonyActionType.UpdateTokens} {Update Tokens}
       other {Generic}
     }`,
 };

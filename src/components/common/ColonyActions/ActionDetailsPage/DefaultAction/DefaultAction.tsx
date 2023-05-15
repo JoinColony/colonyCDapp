@@ -30,7 +30,7 @@ const DefaultAction = ({ actionData }: DefaultActionProps) => {
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
       {isVotingReputationEnabled && <ForcedTag />}
       <div className={styles.container}>
-        <DefaultActionContent actionData={actionData} />
+        <DefaultActionContent actionData={actionData} colony={colony} />
         <DetailsWidget actionData={actionData} colony={colony} />
       </div>
     </div>
