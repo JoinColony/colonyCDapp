@@ -49,6 +49,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               [styles.tertiaryOutline]: mode === 'tertiaryOutline',
               [styles.quaternaryOutline]: mode === 'quaternaryOutline',
               [styles.textButton]: mode === 'textButton',
+              [styles.pending]: mode === 'pending',
               'pointer-events-none': disabled,
               'w-full': isFullSize,
               'rounded-full': isFullRounded,
