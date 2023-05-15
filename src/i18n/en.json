@@ -177,8 +177,8 @@
   "transaction.ColonyClient.setUserRolesWithProofs.title": "Assign permissions",
   "transaction.ColonyClient.setUserRolesWithProofs.description": "Assign permissions",
 
-  "transaction.group.enableExtension.title": "Enable Colony Extension",
-  "transaction.group.enableExtension.description": "Enable Colony Extension",
+  "transaction.group.enableExtensions.title": "Enable Colony Extension",
+  "transaction.group.enableExtensions.description": "Enable Colony Extension",
   "transaction.group.unistallExtensions.title": "Uninstall Colony Extension",
   "transaction.group.unistallExtensions.description": "Uninstall Colony Extension",
   "transaction.VotingReputationClient.initialise.title": "Initialize Voting Reputation Extension",
