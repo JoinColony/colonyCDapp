@@ -6,7 +6,7 @@ declare namespace StepCreateTokenCssNamespace {
     main: string;
     mappings: string;
     names: string;
-    query428: string;
+    query850: string;
     sourceRoot: string;
     sources: string;
     sourcesContent: string;

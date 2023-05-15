@@ -1,6 +1,6 @@
 @value paddingHorizontal: 60px;
 @value sidebarWidth: 340px;
-@value query428 from '~styles/queries.css';
+@value query850 from '~styles/queries.css';
 
 .main {
   display: flex;
@@ -45,7 +45,7 @@
   }
 }
 
-@media screen and query428 {
+@media screen and query850 {
   .main {
     flex-direction: column;
   }

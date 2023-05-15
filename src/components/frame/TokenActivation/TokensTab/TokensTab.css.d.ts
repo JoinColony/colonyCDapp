@@ -20,7 +20,7 @@ declare namespace TokensTabCssNamespace {
     names: string;
     noClaims: string;
     pendingError: string;
-    query428: string;
+    query850: string;
     questionmarkIcon: string;
     sourceRoot: string;
     sources: string;

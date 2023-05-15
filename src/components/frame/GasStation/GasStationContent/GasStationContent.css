@@ -1,4 +1,4 @@
-@value query428 from '~styles/queries.css';
+@value query850 from '~styles/queries.css';
 
 .main {
   width: 460px;
@@ -19,7 +19,7 @@
   align-items: center;
 }
 
-@media screen and query428 {
+@media screen and query850 {
   .main {
     width: calc(100% - 28px);
     border-radius: 5px;

@@ -8,7 +8,7 @@ const ColonyDropdownMobile: FC<PropsWithChildren<ColonyDropdownMobileProps>> = (
   <>
     {isOpen && (
       <div className="h-auto absolute left-[-1.5rem]">
-        <div className="h-[24.75rem] flex justify-center z-[9999] bg-base-white md:w-full w-[92vw]">
+        <div className="h-[24.75rem] flex justify-center z-[9999] bg-base-white md:w-full w-[94vw]">
           {userLoading && (
             <div className="h-[24.75rem] p-1 flex justify-center">
               <SpinnerLoader appearance={{ size: 'medium' }} />

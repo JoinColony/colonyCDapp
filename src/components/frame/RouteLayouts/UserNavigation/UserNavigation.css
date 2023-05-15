@@ -1,4 +1,4 @@
-@value query428 from "~styles/queries.css";
+@value query850 from "~styles/queries.css";
 
 .main {
   display: inline-flex;
@@ -39,7 +39,7 @@
   stroke: var(--colony-blue);
 }
 
-@media screen and query428 {
+@media screen and query850 {
   .elementWrapper {
     display: none;
   }

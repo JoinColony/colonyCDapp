@@ -1,10 +1,10 @@
-@value query428 from "~styles/queries.css";
+@value query850 from "~styles/queries.css";
 
 .hamburgerButton {
   display: none;
 }
 
-@media screen and query428 {
+@media screen and query850 {
   .hamburgerButton {
     display: block;
     padding: 0;

@@ -1,4 +1,4 @@
-@value query428 from '~styles/queries.css';
+@value query850 from '~styles/queries.css';
 
 .main {
   display: flex;
@@ -45,7 +45,7 @@
   max-width: 270px;
 }
 
-@media screen and query428 {
+@media screen and query850 {
   .main {
     height: auto;
     border: none;

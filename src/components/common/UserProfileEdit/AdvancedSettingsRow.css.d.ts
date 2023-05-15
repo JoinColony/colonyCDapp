@@ -5,7 +5,7 @@ declare namespace AdvancedSettingsRowCssNamespace {
     mappings: string;
     metaDesc: string;
     names: string;
-    query428: string;
+    query850: string;
     settingsRowExtra: string;
     sourceRoot: string;
     sources: string;

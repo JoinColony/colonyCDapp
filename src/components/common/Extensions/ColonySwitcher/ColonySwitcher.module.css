@@ -1,0 +1,3 @@
+.tooltipContainer {
+  @apply bg-white p-[1.2rem] shadow-default border border-gray-200 rounded-lg;
+}

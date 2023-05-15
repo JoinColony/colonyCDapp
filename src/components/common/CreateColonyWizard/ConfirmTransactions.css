@@ -1,4 +1,4 @@
-@value query428 from '~styles/queries.css';
+@value query850 from '~styles/queries.css';
 
 .container {
   display: flex;
@@ -10,7 +10,7 @@
   background-color: var(--light-ash);
 }
 
-@media screen and query428 {
+@media screen and query850 {
   .container {
     padding: 22px 0px 18px 0px;
   }

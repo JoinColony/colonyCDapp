@@ -25,9 +25,8 @@ const MainNavigation: FC = () => {
         <>
           <div className="border-t border-gray-200 mx-6 mt-3 mb-3" />
           <SubNavigationMobile />
-          <div className="border-t border-gray-200 mx-6 mt-3 mb-6" />
-          <div className="flex flex-col items-center justify-between px-3">
-            <div className="mb-6">
+          <div className="flex flex-col items-center justify-between mx-6 border-t border-gray-200 mt-4">
+            <div className="mb-6 mt-6">
               <Button text="Create new action" mode="secondaryOutline" isFullSize={isMobile} />
             </div>
             <LearnMore

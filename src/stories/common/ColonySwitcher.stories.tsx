@@ -9,6 +9,7 @@ import { useSelectedColony } from '~common/Extensions/ColonySwitcher/hooks';
 import { useAppContext, useDetectClickOutside, useMobile } from '~hooks';
 import Icon from '~shared/Icon';
 import ColonyDropdownMobile from '~common/Extensions/ColonySwitcher/partials/ColonyDropdownMobile';
+import styles from '~common/Extensions/ColonySwitcher/ColonySwitcher.module.css';
 
 const meta: Meta<typeof ColonySwitcher> = {
   title: 'Common/Colony Switcher',
@@ -87,10 +88,13 @@ export const ColonySwitcherWithHooks = () => {
                     <div
                       ref={setTooltipRef}
                       {...getTooltipProps({
-                        className: clsx('h-[24.75rem] p-1 flex justify-center z-[9999] tooltip-container', {
-                          'w-[26.75rem] border-none shadow-none': isMobile,
-                          'w-[15.1875rem]': !isMobile,
-                        }),
+                        className: clsx(
+                          `${styles.tooltipContainer} h-[24.75rem] p-1 flex justify-center z-[9999] tooltip-container`,
+                          {
+                            'w-[26.75rem] border-none shadow-none': isMobile,
+                            'w-[15.1875rem]': !isMobile,
+                          },
+                        ),
                       })}
                     >
                       {!!watchlistMock.length && !userLoading && (

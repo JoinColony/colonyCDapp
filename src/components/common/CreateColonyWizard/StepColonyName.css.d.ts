@@ -5,7 +5,7 @@ declare namespace StepColonyNameCssNamespace {
     mappings: string;
     nameForm: string;
     names: string;
-    query428: string;
+    query850: string;
     reminder: string;
     sourceRoot: string;
     sources: string;

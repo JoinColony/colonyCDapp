@@ -9,7 +9,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@value query428 from '~styles/queries.css';
+@value query850 from '~styles/queries.css';
 @value query1024 from '~styles/queries.css';
 
 @layer base {

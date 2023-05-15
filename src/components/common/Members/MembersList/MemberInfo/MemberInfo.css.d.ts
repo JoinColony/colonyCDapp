@@ -4,7 +4,7 @@ declare namespace MemberInfoCssNamespace {
     displayName: string;
     mappings: string;
     names: string;
-    query428: string;
+    query850: string;
     section: string;
     sourceRoot: string;
     sources: string;
