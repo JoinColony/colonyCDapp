@@ -1,6 +1,8 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { TitledContentProps } from './types';
 
+const displayName = 'common.Extensions.TitledContent';
+
 const TitledContent: FC<PropsWithChildren<TitledContentProps>> = ({ children, title, className }) => {
   return (
     <div className={className}>
@@ -9,5 +11,7 @@ const TitledContent: FC<PropsWithChildren<TitledContentProps>> = ({ children, ti
     </div>
   );
 };
+
+TitledContent.displayName = displayName;
 
 export default TitledContent;
