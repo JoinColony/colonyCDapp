@@ -9,7 +9,6 @@ import {
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
-import { notNull } from '~utils/arrays';
 
 import {
   createGroupTransaction,
@@ -27,6 +26,7 @@ import {
   transactionReady,
 } from '../../actionCreators';
 import {
+  getExistingTokenAddresses,
   getModifiedTokenAddresses,
   updateColonyTokens,
 } from '../utils/updateColonyTokens';
@@ -136,10 +136,7 @@ function* editColonyAction({
     );
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    const existingTokenAddresses =
-      colony.tokens?.items
-        .filter(notNull)
-        .map((tokenItem) => tokenItem?.token.tokenAddress) || [];
+    const existingTokenAddresses = getExistingTokenAddresses(colony);
     const modifiedTokenAddresses = getModifiedTokenAddresses(
       colony.nativeToken.tokenAddress,
       existingTokenAddresses,

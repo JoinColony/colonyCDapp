@@ -378,6 +378,11 @@ type Colony @model {
   roles: [ColonyRole] @hasMany
 }
 
+type PendingModifiedTokenAddresses {
+  added: [String!]
+  removed: [String!]
+}
+
 type ColonyMetadata @model {
   id: ID! # colony contract address
   displayName: String!
@@ -386,6 +391,7 @@ type ColonyMetadata @model {
   changelog: [ColonyMetadataChangelog!]
   isWhitelistActivated: Boolean
   whitelistedAddresses: [String!]
+  modifiedTokenAddresses: PendingModifiedTokenAddresses # only present on pendingColonyMetadata for consumption in block ingestor
 }
 
 type ColonyMetadataChangelog {

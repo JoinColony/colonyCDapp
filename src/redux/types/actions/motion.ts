@@ -157,7 +157,7 @@ export type MotionActionTypes =
         tokenAddresses?: Address[];
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.MOTION_EDIT_COLONY_ERROR, object>
   | ActionTypeWithMeta<

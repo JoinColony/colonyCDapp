@@ -152,6 +152,8 @@ export type ColonyAction = {
   isMotion?: Maybe<Scalars['Boolean']>;
   motionData?: Maybe<MotionData>;
   newColonyVersion?: Maybe<Scalars['Int']>;
+  pendingColonyMetadata?: Maybe<ColonyMetadata>;
+  pendingColonyMetadataId?: Maybe<Scalars['ID']>;
   pendingDomainMetadata?: Maybe<DomainMetadata>;
   pendingDomainMetadataId?: Maybe<Scalars['ID']>;
   recipient?: Maybe<User>;
@@ -326,6 +328,7 @@ export type ColonyMetadata = {
   displayName: Scalars['String'];
   id: Scalars['ID'];
   isWhitelistActivated?: Maybe<Scalars['Boolean']>;
+  modifiedTokenAddresses?: Maybe<PendingModifiedTokenAddresses>;
   thumbnail?: Maybe<Scalars['String']>;
   updatedAt: Scalars['AWSDateTime'];
   whitelistedAddresses?: Maybe<Array<Scalars['String']>>;
@@ -439,6 +442,7 @@ export type CreateColonyActionInput = {
   individualEvents?: InputMaybe<Scalars['String']>;
   initiatorAddress?: InputMaybe<Scalars['ID']>;
   newColonyVersion?: InputMaybe<Scalars['Int']>;
+  pendingColonyMetadataId?: InputMaybe<Scalars['ID']>;
   pendingDomainMetadataId?: InputMaybe<Scalars['ID']>;
   recipientAddress?: InputMaybe<Scalars['ID']>;
   roles?: InputMaybe<ColonyActionRolesInput>;
@@ -504,6 +508,7 @@ export type CreateColonyMetadataInput = {
   displayName: Scalars['String'];
   id?: InputMaybe<Scalars['ID']>;
   isWhitelistActivated?: InputMaybe<Scalars['Boolean']>;
+  modifiedTokenAddresses?: InputMaybe<PendingModifiedTokenAddressesInput>;
   thumbnail?: InputMaybe<Scalars['String']>;
   whitelistedAddresses?: InputMaybe<Array<Scalars['String']>>;
 };
@@ -919,6 +924,7 @@ export type ModelColonyActionConditionInput = {
   newColonyVersion?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyActionConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionConditionInput>>>;
+  pendingColonyMetadataId?: InputMaybe<ModelIdInput>;
   pendingDomainMetadataId?: InputMaybe<ModelIdInput>;
   recipientAddress?: InputMaybe<ModelIdInput>;
   showInActionsList?: InputMaybe<ModelBooleanInput>;
@@ -949,6 +955,7 @@ export type ModelColonyActionFilterInput = {
   newColonyVersion?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyActionFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionFilterInput>>>;
+  pendingColonyMetadataId?: InputMaybe<ModelIdInput>;
   pendingDomainMetadataId?: InputMaybe<ModelIdInput>;
   recipientAddress?: InputMaybe<ModelIdInput>;
   showInActionsList?: InputMaybe<ModelBooleanInput>;
@@ -1493,6 +1500,7 @@ export type ModelSubscriptionColonyActionFilterInput = {
   isMotion?: InputMaybe<ModelSubscriptionBooleanInput>;
   newColonyVersion?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionFilterInput>>>;
+  pendingColonyMetadataId?: InputMaybe<ModelSubscriptionIdInput>;
   pendingDomainMetadataId?: InputMaybe<ModelSubscriptionIdInput>;
   recipientAddress?: InputMaybe<ModelSubscriptionIdInput>;
   showInActionsList?: InputMaybe<ModelSubscriptionBooleanInput>;
@@ -2404,6 +2412,17 @@ export enum Network {
   Goerli = 'GOERLI',
   Mainnet = 'MAINNET'
 }
+
+export type PendingModifiedTokenAddresses = {
+  __typename?: 'PendingModifiedTokenAddresses';
+  added?: Maybe<Array<Scalars['String']>>;
+  removed?: Maybe<Array<Scalars['String']>>;
+};
+
+export type PendingModifiedTokenAddressesInput = {
+  added?: InputMaybe<Array<Scalars['String']>>;
+  removed?: InputMaybe<Array<Scalars['String']>>;
+};
 
 export type Profile = {
   __typename?: 'Profile';
@@ -3318,6 +3337,7 @@ export type UpdateColonyActionInput = {
   isMotion?: InputMaybe<Scalars['Boolean']>;
   motionData?: InputMaybe<MotionDataInput>;
   newColonyVersion?: InputMaybe<Scalars['Int']>;
+  pendingColonyMetadataId?: InputMaybe<Scalars['ID']>;
   pendingDomainMetadataId?: InputMaybe<Scalars['ID']>;
   recipientAddress?: InputMaybe<Scalars['ID']>;
   roles?: InputMaybe<ColonyActionRolesInput>;
@@ -3383,6 +3403,7 @@ export type UpdateColonyMetadataInput = {
   displayName?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   isWhitelistActivated?: InputMaybe<Scalars['Boolean']>;
+  modifiedTokenAddresses?: InputMaybe<PendingModifiedTokenAddressesInput>;
   thumbnail?: InputMaybe<Scalars['String']>;
   whitelistedAddresses?: InputMaybe<Array<Scalars['String']>>;
 };

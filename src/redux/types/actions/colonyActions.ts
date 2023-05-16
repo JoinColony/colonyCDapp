@@ -83,14 +83,8 @@ export type ColonyActionsActionTypes =
         colonyDisplayName?: string;
         colonyAvatarImage?: string;
         colonyThumbnail?: string;
-        hasAvatarChanged?: boolean;
         tokenAddresses?: Address[];
-        verifiedAddresses?: Address[];
-        isWhitelistActivated?: boolean;
         annotationMessage?: string;
-        /*
-         * @TODO I think this will also store the subscribed-to tokens list
-         */
       },
       MetaWithNavigate<object>
     >
