@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import { PopoverBaseProps } from './types';
 import Card from '../Card';
 
+const displayName = 'shared.Extensions.PopoverBase';
+
 const PopoverBase: FC<PropsWithChildren<PopoverBaseProps>> = ({
   tooltipProps,
   setTooltipRef,
@@ -24,5 +26,7 @@ const PopoverBase: FC<PropsWithChildren<PopoverBaseProps>> = ({
     </div>
   );
 };
+
+PopoverBase.displayName = displayName;
 
 export default PopoverBase;
