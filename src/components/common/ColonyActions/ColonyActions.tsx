@@ -1,15 +1,10 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { BigNumber } from 'ethers';
-import { useNavigate } from 'react-router-dom';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import LoadMoreButton from '~shared/LoadMoreButton';
 import ActionsList from '~shared/ActionsList';
-import { ActionButton } from '~shared/Button';
-import { ActionTypes } from '~redux';
 import { useColonyContext, usePaginatedActions } from '~hooks';
-import { mergePayload, pipe, withMeta } from '~utils/actions';
 
 import { ActionsListHeading } from '.';
 
@@ -33,7 +28,6 @@ const MSG = defineMessages({
 // };
 
 const ColonyActions = (/* { ethDomainId }: Props */) => {
-  const navigate = useNavigate();
   const { colony } = useColonyContext();
 
   const {
@@ -170,51 +164,6 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
 
   return (
     <div className={styles.main}>
-      <ActionButton
-        submit={ActionTypes.ACTION_MINT_TOKENS}
-        error={ActionTypes.ACTION_MINT_TOKENS_ERROR}
-        success={ActionTypes.ACTION_MINT_TOKENS_SUCCESS}
-        transform={pipe(
-          mergePayload({
-            colonyAddress: colony.colonyAddress,
-            colonyName: colony.name,
-            nativeTokenAddress: colony.nativeToken.tokenAddress,
-            amount: BigNumber.from(5).mul(BigNumber.from(10).pow(18)), // this is in wei
-          }),
-          withMeta({ navigate }),
-        )}
-        text="Test Mint Tokens"
-      />
-      <ActionButton
-        submit={ActionTypes.ACTION_UNLOCK_TOKEN}
-        error={ActionTypes.ACTION_UNLOCK_TOKEN_ERROR}
-        success={ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS}
-        transform={pipe(
-          mergePayload({
-            colonyAddress: colony.colonyAddress,
-            colonyName: colony.name,
-          }),
-          withMeta({ navigate }),
-        )}
-        text="Test Unlock Token"
-      />
-      <ActionButton
-        submit={ActionTypes.ACTION_MOVE_FUNDS}
-        error={ActionTypes.ACTION_MOVE_FUNDS_ERROR}
-        success={ActionTypes.ACTION_MOVE_FUNDS_SUCCESS}
-        transform={pipe(
-          mergePayload({
-            colonyAddress: colony.colonyAddress,
-            colonyName: colony.name,
-            fromDomain: colony.domains?.items.find((d) => d?.isRoot),
-            toDomain: colony.domains?.items.find((d) => !d?.isRoot),
-            amount: BigNumber.from(5).mul(BigNumber.from(10).pow(17)), // this is in wei
-            tokenAddress: colony.nativeToken.tokenAddress,
-          }),
-          withMeta({ navigate }),
-        )}
-        text="Test Move Funds"
-      />
       {actions.length ? (
         <>
           <ActionsListHeading
