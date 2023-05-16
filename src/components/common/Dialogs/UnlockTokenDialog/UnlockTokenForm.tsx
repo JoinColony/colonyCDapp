@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { ColonyRole, Id } from '@colony/colony-js';
+import { ColonyRole } from '@colony/colony-js';
 
 import ExternalLink from '~shared/ExternalLink';
 import {
@@ -13,8 +13,6 @@ import {
 import { Annotations } from '~shared/Fields';
 // import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
-import { useActionDialogStatus } from '~hooks';
-
 import { TOKEN_UNLOCK_INFO } from '~constants/externalUrls';
 
 import {
@@ -22,6 +20,8 @@ import {
   CannotCreateMotionMessage,
   PermissionRequiredInfo,
 } from '../Messages';
+
+import { useUnlockTokenDialogStatus } from './helpers';
 
 import styles from './UnlockTokenForm.css';
 
@@ -64,16 +64,13 @@ const UnlockTokenForm = ({
   back,
   enabledExtensionData,
 }: ActionDialogProps) => {
-  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } =
-    useActionDialogStatus(
-      colony,
-      requiredRoles,
-      [Id.RootDomain],
-      enabledExtensionData,
-    );
-  // @TODO: Integrate those checks into another hook that uses useActionDialogStatus internally, when the data is made available.
-  // const isNativeTokenLocked = !!colony?.nativeToken?.unlocked;
-  // const canUserUnlockNativeToken = hasRootPermission && status?.nativeToken?.unlockable && isNativeTokenLocked;
+  const {
+    userHasPermission,
+    disabledInput,
+    disabledSubmit,
+    canCreateMotion,
+    isNativeTokenUnlocked,
+  } = useUnlockTokenDialogStatus(colony, requiredRoles, enabledExtensionData);
 
   return (
     <>
@@ -88,16 +85,15 @@ const UnlockTokenForm = ({
         </DialogSection>
       )}
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        {/* {isNativeTokenLocked ? (
+        {!isNativeTokenUnlocked ? (
           <FormattedMessage {...MSG.description} />
         ) : (
           <div className={styles.unlocked}>
             <FormattedMessage {...MSG.unlockedDescription} />
           </div>
-        )} */}
-        <FormattedMessage {...MSG.description} />
+        )}
       </DialogSection>
-      {true && ( // isNativeTokenLocked
+      {!isNativeTokenUnlocked && (
         <>
           <DialogSection appearance={{ theme: 'sidePadding' }}>
             <div className={styles.note}>
@@ -119,7 +115,7 @@ const UnlockTokenForm = ({
           </DialogSection>
         </>
       )}
-      {!userHasPermission && ( // && isNativeTokenLocked
+      {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
