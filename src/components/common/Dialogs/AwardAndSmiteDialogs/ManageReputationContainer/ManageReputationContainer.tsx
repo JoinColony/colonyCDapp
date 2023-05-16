@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 
 import Decimal from 'decimal.js';
+import { extractUsersFromColonyMemberData } from '~utils/members';
 import Dialog from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
 
@@ -13,6 +14,7 @@ import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { useSelectedUser } from '~hooks';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { useGetMembersForColonyQuery } from '~gql';
 
 import DialogForm from '../ManageReputationDialogForm';
 import { AwardAndSmiteDialogProps } from '../types';
@@ -70,17 +72,27 @@ const ManageReputationContainer = ({
   const [isForce, setIsForce] = useState(false);
   const [schemaUserReputation, setSchemaUserReputation] = useState(0);
   const navigate = useNavigate();
-  /**
-   * @TODO This needs fixing as it relied on the empty array fallback,
-   * `watchers` don't exist on the colony object we were passing
-   */
-  // const colonyWatchers =
-  //   watchers?.items.filter(notNull).map((item) => item.user) || [];
-  const colonyWatchers = [];
+
+  const { data } = useGetMembersForColonyQuery({
+    skip: !colony.colonyAddress,
+    variables: {
+      input: {
+        colonyAddress: colony.colonyAddress,
+      },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+  const colonyContributors = extractUsersFromColonyMemberData(
+    data?.getMembersForColony?.contributors,
+  );
+  const colonyWatchers = extractUsersFromColonyMemberData(
+    data?.getMembersForColony?.watchers,
+  );
+  const colonyMembers = colonyContributors.concat(colonyWatchers);
 
   // const verifiedUsers = useMemo(() => {
-  //   return getVerifiedUsers(colony.whitelistedAddresses, colonyWatchers) || [];
-  // }, [colonyWatchers, colony]);
+  //   return getVerifiedUsers(colony.whitelistedAddresses, colonyMembers) || [];
+  // }, [colonyMembers, colony]);
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
@@ -139,7 +151,7 @@ const ManageReputationContainer = ({
 
   // const { isWhitelistActivated } = colony;
   // const selectedUser = useSelectedUser(
-  //   isWhitelistActivated ? verifiedUsers : colonyWatchers,
+  //   isWhitelistActivated ? verifiedUsers : colonyMembers,
   // );
 
   return (
@@ -170,7 +182,7 @@ const ManageReputationContainer = ({
               nativeTokenDecimals={nativeTokenDecimals}
               back={() => callStep(prevStep)}
               verifiedUsers={
-                colonyWatchers // isWhitelistActivated ? verifiedUsers : colonyWatchers
+                colonyMembers // isWhitelistActivated ? verifiedUsers : colonyMembers
               }
               updateSchemaUserReputation={
                 isSmiteAction ? setSchemaUserReputation : undefined

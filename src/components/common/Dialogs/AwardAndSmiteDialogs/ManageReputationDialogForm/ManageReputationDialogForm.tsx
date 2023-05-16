@@ -181,7 +181,7 @@ const ManageReputationDialogForm = ({
 
   const formattedData = verifiedUsers.map((user) => ({
     ...user,
-    id: user,
+    id: user.walletAddress,
   }));
 
   return (

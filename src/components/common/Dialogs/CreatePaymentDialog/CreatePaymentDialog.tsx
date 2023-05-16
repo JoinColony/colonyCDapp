@@ -16,12 +16,10 @@ import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
 import { WizardDialogType, useNetworkInverseFee } from '~hooks';
 import { useGetMembersForColonyQuery } from '~gql';
+import { extractUsersFromColonyMemberData } from '~utils/members';
 
 import DialogForm from './CreatePaymentDialogForm';
-import {
-  extractUsersFromColonyMemberData,
-  getCreatePaymentDialogPayload,
-} from './helpers';
+import { getCreatePaymentDialogPayload } from './helpers';
 import getValidationSchema from './validation';
 
 const displayName = 'common.CreatePaymentDialog';
