@@ -25,7 +25,7 @@ const ContractAddress: FC<PanelTypeProps> = ({ title, address }) => {
         <button
           type="button"
           aria-label={formatMessage({ id: 'copy.address' })}
-          className={styles.panelData}
+          className="font-normal text-md text-gray-90 justify-start"
           onClick={handleClipboardCopy}
         >
           {address}
