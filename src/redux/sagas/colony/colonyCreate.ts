@@ -301,6 +301,11 @@ function* colonyCreate({
         );
       }
       const network: EthersNetwork = yield colonyManager.provider.getNetwork();
+      const colonyClient = yield colonyManager.getClient(
+        ClientType.ColonyClient,
+        colonyAddress,
+      );
+      const isTokenLocked = yield colonyClient.tokenClient.locked();
 
       /*
        * Create colony in db
@@ -318,6 +323,13 @@ function* colonyCreate({
             version: toNumber(currentColonyVersion),
             chainMetadata: {
               chainId: network.chainId,
+            },
+            status: {
+              nativeToken: {
+                unlockable: tokenChoice === 'create',
+                unlocked: !isTokenLocked,
+                mintable: tokenChoice === 'create',
+              },
             },
           },
         },
@@ -393,10 +405,6 @@ function* colonyCreate({
        * Create root domain in the database
        * @NOTE: This is a temporary solution and this mutation should be called by block-ingestor on ColonyAdded event
        */
-      const colonyClient = yield colonyManager.getClient(
-        ClientType.ColonyClient,
-        colonyAddress,
-      );
       const [skillId, fundingPotId] = yield colonyClient.getDomain(
         Id.RootDomain,
       );

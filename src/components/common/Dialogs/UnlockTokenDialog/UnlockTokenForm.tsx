@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
-import { ColonyRole, Id } from '@colony/colony-js';
+import { ColonyRole } from '@colony/colony-js';
 
 import { SetStateFn } from '~types';
 import ExternalLink from '~shared/ExternalLink';
@@ -12,9 +12,6 @@ import {
   DialogControls,
 } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
-
-import { useActionDialogStatus } from '~hooks';
-
 import { TOKEN_UNLOCK_INFO } from '~constants/externalUrls';
 
 import {
@@ -23,6 +20,7 @@ import {
   PermissionRequiredInfo,
   NotEnoughReputation,
 } from '../Messages';
+import { useUnlockTokenDialogStatus } from './helpers';
 
 import styles from './UnlockTokenForm.css';
 
@@ -35,7 +33,7 @@ const MSG = defineMessages({
   },
   description: {
     id: `${displayName}.description`,
-    defaultMessage: `Your colony’s native token is locked and non-transferrable
+    defaultMessage: `Your colony's native token is locked and non-transferrable
      by default. This action allows you to unlock it so that it may be
      freely transferred between accounts.`,
   },
@@ -46,7 +44,7 @@ const MSG = defineMessages({
   },
   unlockedDescription: {
     id: `${displayName}.unlockedDescription`,
-    defaultMessage: `Your colony’s native token has already been unlocked.`,
+    defaultMessage: `Your colony's native token has already been unlocked.`,
   },
   annotation: {
     id: `${displayName}.annotation`,
@@ -74,22 +72,15 @@ const UnlockTokenForm = ({
 }: Props) => {
   const { watch } = useFormContext();
   const { forceAction } = watch();
+
   const {
     userHasPermission,
     disabledInput,
     disabledSubmit,
+    canCreateMotion,
+    isNativeTokenUnlocked,
     canOnlyForceAction,
-    hasMotionCompatibleVersion,
-    showPermissionErrors,
-  } = useActionDialogStatus(
-    colony,
-    requiredRoles,
-    [Id.RootDomain],
-    enabledExtensionData,
-  );
-  // @TODO: Integrate those checks into another hook that uses useActionDialogStatus internally, when the data is made available.
-  // const isNativeTokenLocked = !!colony?.nativeToken?.unlocked;
-  // const canUserUnlockNativeToken = hasRootPermission && status?.nativeToken?.unlockable && isNativeTokenLocked;
+  } = useUnlockTokenDialogStatus(colony, requiredRoles, enabledExtensionData);
 
   useEffect(() => {
     if (forceAction !== isForce) {
@@ -110,7 +101,7 @@ const UnlockTokenForm = ({
           isRootMotion
         />
       </DialogSection>
-      {showPermissionErrors && ( // && isNativeTokenLocked
+      {!userHasPermission && !isNativeTokenUnlocked && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <div className={styles.wrapper}>
             <PermissionRequiredInfo requiredRoles={[ColonyRole.Root]} />
@@ -118,16 +109,15 @@ const UnlockTokenForm = ({
         </DialogSection>
       )}
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        {/* {isNativeTokenLocked ? (
+        {!isNativeTokenUnlocked ? (
           <FormattedMessage {...MSG.description} />
         ) : (
           <div className={styles.unlocked}>
             <FormattedMessage {...MSG.unlockedDescription} />
           </div>
-        )} */}
-        <FormattedMessage {...MSG.description} />
+        )}
       </DialogSection>
-      {true && ( // isNativeTokenLocked
+      {!isNativeTokenUnlocked && (
         <>
           <DialogSection appearance={{ theme: 'sidePadding' }}>
             <div className={styles.note}>
@@ -149,17 +139,17 @@ const UnlockTokenForm = ({
           </DialogSection>
         </>
       )}
-      {showPermissionErrors && ( // && isNativeTokenLocked
+      {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
-      {canOnlyForceAction && ( // && isNativeTokenLocked
+      {canOnlyForceAction && !isNativeTokenUnlocked && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NotEnoughReputation includeForceCopy={userHasPermission} />
         </DialogSection>
       )}
-      {!hasMotionCompatibleVersion && (
+      {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>
