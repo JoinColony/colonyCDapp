@@ -417,6 +417,8 @@
     "copy.address": "Copy address",
     "copied": "Copied",
     "pending": "Pending",
+    "stakes": "Stakes",
+    "claimStakes": "Claim all stakes",
     "lightMode": "Light",
     "darkMode": "Dark",
     "help": "Help"
