@@ -21,6 +21,7 @@ exports.handler = async (event) => {
     type = 'COLONY',
     version,
     chainMetadata,
+    status,
   } = event.arguments?.input || {};
 
   /*
@@ -131,6 +132,7 @@ exports.handler = async (event) => {
         type,
         chainMetadata,
         version,
+        status,
       },
     },
     GRAPHQL_URI,

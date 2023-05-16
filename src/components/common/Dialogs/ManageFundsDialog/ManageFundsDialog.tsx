@@ -3,13 +3,11 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
-
 import {
   WizardDialogType,
   useUserAccountRegistered,
   useAppContext,
 } from '~hooks';
-
 import { getAllUserRoles } from '~transformers';
 import { hasRoot, canFund } from '~utils/checks';
 
@@ -202,7 +200,7 @@ const ManageFundsDialog = ({
       dataTest: 'unlockTokenDialogIndexItem',
     },
   ];
-  // @TODO: Uncomment code here when "status" is implemented as this filters menu items based on that. (Mint and Unlock token actions)
+
   const filteredItems =
     colony?.status?.nativeToken?.mintable &&
     colony?.status?.nativeToken?.unlockable
@@ -212,12 +210,12 @@ const ManageFundsDialog = ({
             icon === 'emoji-padlock' &&
             !colony?.status?.nativeToken?.unlockable
           ) {
-            return true; // false
+            return false;
           }
-          return true; // !(
-          //   icon === 'emoji-seed-sprout' &&
-          //   !colony.status?.nativeToken?.mintable
-          // );
+          return !(
+            icon === 'emoji-seed-sprout' &&
+            !colony.status?.nativeToken?.mintable
+          );
         });
   return (
     <IndexModal
