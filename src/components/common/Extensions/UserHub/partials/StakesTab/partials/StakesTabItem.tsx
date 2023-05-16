@@ -10,13 +10,13 @@ const StakesItems: FC<StakesProp> = ({ title, date, stake, transfer, status }) =
     <li className="flex flex-col py-4 border-b-[0.0625rem] border-gray-200">
       <div className="relative w-full">
         <div className="flex flex-row justify-between items-center">
-          <div className="flex flex-row items-center gap-[0.125rem]">
+          <div className="flex items-center gap-[0.125rem]">
             <div className="text-gray-900 text-md font-medium mr-2">{title}</div>
             <div className="text-gray-400 text-xs font-normal">{date}</div>
           </div>
           <ExtensionsStatusBadge mode={status as ExtensionStatusBadgeMode} text={status as ExtensionStatusBadgeMode} />
         </div>
-        <div className="flex flex-row">
+        <div className="flex">
           <div className="text-gray-400 text-xs font-medium mr-2">{stake}</div>
           <div className="text-gray-600 text-xs font-normal">{transfer}</div>
         </div>
