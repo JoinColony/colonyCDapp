@@ -7,7 +7,7 @@ import IndexModal from '~shared/IndexModal';
 import { WizardDialogType, useTransformer, useAppContext } from '~hooks';
 
 import { getAllUserRoles } from '~transformers';
-import { hasRoot } from '~utils/checks'; // canFund
+import { canFund, hasRoot } from '~utils/checks';
 
 const displayName = 'common.ManageFundsDialog';
 
@@ -116,13 +116,13 @@ const ManageFundsDialog = ({
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
-  // const canMoveFunds = canFund(allUserRoles);
-  // const canUserMintNativeToken = isVotingReputationEnabled
-  //   ? colony.status?.nativeToken?.mintable
-  //   : hasRoot(allUserRoles) && colony.status?.nativeToken?.mintable;
-  // const canUserUnlockNativeToken = isVotingReputationEnabled
-  //   ? colony.status?.nativeToken?.unlockable
-  //   : hasRoot(allUserRoles) && colony.status?.nativeToken?.unlockable;
+  const canMoveFunds = canFund(allUserRoles);
+  const canUserMintNativeToken = isVotingReputationEnabled
+    ? colony.status?.nativeToken?.mintable
+    : hasRoot(allUserRoles) && colony.status?.nativeToken?.mintable;
+  const canUserUnlockNativeToken = isVotingReputationEnabled
+    ? colony.status?.nativeToken?.unlockable
+    : hasRoot(allUserRoles) && colony.status?.nativeToken?.unlockable;
 
   const canManageTokens = hasRoot(allUserRoles);
 
@@ -131,7 +131,7 @@ const ManageFundsDialog = ({
       title: MSG.transferFundsTitle,
       description: MSG.transferFundsDescription,
       icon: 'emoji-world-globe',
-      permissionRequired: false, // !canMoveFunds || isVotingReputationEnabled,
+      permissionRequired: !canMoveFunds || isVotingReputationEnabled,
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
         permissionsList: <FormattedMessage {...MSG.paymentPermissionsList} />,
@@ -143,7 +143,7 @@ const ManageFundsDialog = ({
       title: MSG.mintTokensTitle,
       description: MSG.mintTokensDescription,
       icon: 'emoji-seed-sprout',
-      permissionRequired: false, // !canUserMintNativeToken,
+      permissionRequired: !canUserMintNativeToken,
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
         permissionsList: (
@@ -184,7 +184,7 @@ const ManageFundsDialog = ({
       description: MSG.unlockTokensDescription,
       icon: 'emoji-padlock',
       onClick: () => callStep(nextStepUnlockToken),
-      permissionRequired: false, // !canUserUnlockNativeToken,
+      permissionRequired: !canUserUnlockNativeToken,
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
         permissionsList: (
@@ -194,7 +194,7 @@ const ManageFundsDialog = ({
       dataTest: 'unlockTokenDialogIndexItem',
     },
   ];
-  // @TODO: Uncomment code here when "status" is implemented as this filters menu items based on that. (Mint and Unlock token actions)
+
   const filteredItems =
     colony?.status?.nativeToken?.mintable &&
     colony?.status?.nativeToken?.unlockable
@@ -204,12 +204,12 @@ const ManageFundsDialog = ({
             icon === 'emoji-padlock' &&
             !colony?.status?.nativeToken?.unlockable
           ) {
-            return true; // false
+            return false;
           }
-          return true; // !(
-          //   icon === 'emoji-seed-sprout' &&
-          //   !colony.status?.nativeToken?.mintable
-          // );
+          return !(
+            icon === 'emoji-seed-sprout' &&
+            !colony.status?.nativeToken?.mintable
+          );
         });
   return (
     <IndexModal
