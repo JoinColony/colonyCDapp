@@ -15,7 +15,7 @@ import {
   CreateDomainMetadataMutationVariables,
   DomainColor,
 } from '~gql';
-import { getMotionDomainDatabaseId } from '~utils/domains';
+import { getMetadataDatabaseId } from '~utils/domains';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
@@ -205,7 +205,7 @@ function* createEditDomainMotion({
         mutation: CreateDomainMetadataDocument,
         variables: {
           input: {
-            id: getMotionDomainDatabaseId(colonyAddress, txHash),
+            id: getMetadataDatabaseId(colonyAddress, txHash),
             name: domainName,
             color: domainColor || DomainColor.LightPink,
             description: domainPurpose || '',
@@ -220,7 +220,7 @@ function* createEditDomainMotion({
         mutation: CreateDomainMetadataDocument,
         variables: {
           input: {
-            id: getMotionDomainDatabaseId(colonyAddress, txHash),
+            id: getMetadataDatabaseId(colonyAddress, txHash),
             name: domainName,
             color: domainColor || domain.metadata.color,
             description: domainPurpose || domain.metadata.description,
