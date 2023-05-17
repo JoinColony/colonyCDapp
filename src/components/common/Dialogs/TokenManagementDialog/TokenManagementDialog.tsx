@@ -11,7 +11,8 @@ import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { WizardDialogType } from '~hooks';
 import { formatText } from '~utils/intl';
 import { notNull } from '~utils/arrays';
-import { Token } from '~types';
+import { createAddress } from '~utils/web3';
+import { Colony, Token } from '~types';
 
 import { getTokenManagementDialogPayload } from './helpers';
 import TokenManagementDialogForm from './TokenManagementDialogForm';
@@ -32,41 +33,63 @@ const MSG = defineMessages({
     defaultMessage:
       'Token data not found. Please check the token contract address.',
   },
+  tokenIsDuplicate: {
+    id: `${displayName}.tokenIsDuplicate`,
+    defaultMessage: 'This token already exists in this colony.',
+  },
 });
 
 type Props = DialogProps &
   Partial<WizardDialogType<object>> &
   ActionDialogProps;
 
-const validationSchema = object({
-  forceAction: boolean().defined(),
-  tokenAddress: string()
-    .notRequired()
-    .test(
-      'is-address',
-      () => MSG.invalidAddress,
-      (value) => !value || isAddress(value),
-    ),
-  token: object<Token>()
-    .nullable()
-    .test('doesTokenExist', '', function doesTokenExist(value, context) {
-      if (!context.parent.tokenAddress || !!value) {
-        // Skip validation if tokenAddress is empty or token has been found
-        return true;
-      }
+const getValidationSchema = (colony: Colony) =>
+  object({
+    forceAction: boolean().defined(),
+    tokenAddress: string()
+      .notRequired()
+      .test(
+        'is-address',
+        () => MSG.invalidAddress,
+        (value) => !value || isAddress(value),
+      )
+      .test(
+        'is-duplicate',
+        () => MSG.tokenIsDuplicate,
+        (value) => {
+          // skip this test if value is not valid.
+          if (!value || !isAddress(value)) {
+            return true;
+          }
 
-      return this.createError({
-        message: formatText(MSG.tokenNotFound),
-        path: 'tokenAddress',
-      });
-    }),
-  selectedTokenAddresses: array()
-    .of(string().address().defined())
-    .notRequired(),
-  annotationMessage: string().max(4000).notRequired(),
-}).defined();
+          return !colony.tokens?.items
+            .filter(notNull)
+            .some(
+              ({ token: { tokenAddress } }) =>
+                createAddress(tokenAddress) === createAddress(value),
+            );
+        },
+      ),
+    token: object<Token>()
+      .nullable()
+      .test('doesTokenExist', '', function doesTokenExist(value, context) {
+        if (!context.parent.tokenAddress || !!value) {
+          // Skip validation if tokenAddress is empty or token has been found
+          return true;
+        }
 
-export type FormValues = InferType<typeof validationSchema>;
+        return this.createError({
+          message: formatText(MSG.tokenNotFound),
+          path: 'tokenAddress',
+        });
+      }),
+    selectedTokenAddresses: array()
+      .of(string().address().defined())
+      .notRequired(),
+    annotationMessage: string().max(4000).notRequired(),
+  }).defined();
+
+export type FormValues = InferType<ReturnType<typeof getValidationSchema>>;
 
 const TokenManagementDialog = ({
   colony,
@@ -115,7 +138,7 @@ const TokenManagementDialog = ({
            * pass the value over to the motion, since it will always be 1
            */
         }}
-        validationSchema={validationSchema}
+        validationSchema={getValidationSchema(colony)}
         transform={transform}
         onSuccess={handleSuccess}
         onError={handleError}
