@@ -421,5 +421,15 @@
     "claimStakes": "Claim all stakes",
     "lightMode": "Light",
     "darkMode": "Dark",
-    "help": "Help"
+    "help": "Help",
+    "reputation.tab.title": "Your Colony overview",
+    "total.balance": "Total balance",
+    "active": "Active",
+    "staked": "Staked",
+    "balance.in.colony": "Balance in this Colony",
+    "reputation.in.colony": "Total reputation in this Colony",
+    "reputation.points": "Reputation points",
+    "view.all": "View all",
+    "pending.reputation": "pending reputation",
+    "next.update": "Next update"
 }
