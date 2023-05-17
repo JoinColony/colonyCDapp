@@ -50,10 +50,12 @@ export const getModifiedTokenAddresses = (
 };
 
 export const getPendingModifiedTokenAddresses = (
-  nativeTokenAddress: string,
-  existingTokenAddresses: string[],
+  colony: Colony,
   updatedTokenAddresses?: string[] | null,
 ) => {
+  const nativeTokenAddress = colony.nativeToken.tokenAddress;
+  const existingTokenAddresses = getExistingTokenAddresses(colony);
+
   const modifiedTokenAddresses: { added: string[]; removed: string[] } = {
     added: [],
     removed: [],

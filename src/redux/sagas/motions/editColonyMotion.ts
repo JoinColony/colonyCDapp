@@ -18,10 +18,7 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import {
-  getExistingTokenAddresses,
-  getPendingModifiedTokenAddresses,
-} from '../utils/updateColonyTokens';
+import { getPendingModifiedTokenAddresses } from '../utils/updateColonyTokens';
 
 function* editColonyMotion({
   payload: {
@@ -172,10 +169,8 @@ function* editColonyMotion({
     );
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    const existingTokenAddresses = getExistingTokenAddresses(colony);
     const modifiedTokenAddresses = getPendingModifiedTokenAddresses(
-      colony.nativeToken.tokenAddress,
-      existingTokenAddresses,
+      colony,
       tokenAddresses,
     );
 
@@ -196,10 +191,9 @@ function* editColonyMotion({
         variables: {
           input: {
             id: getMetadataDatabaseId(colonyAddress, txHash),
-            // For Manage Tokens, use existing metadata values
             displayName: colonyDisplayName ?? colony.metadata.displayName,
-            avatar: colonyAvatarImage ?? colony.metadata.avatar,
-            thumbnail: colonyThumbnail ?? colony.metadata.thumbnail,
+            avatar: colonyAvatarImage,
+            thumbnail: colonyThumbnail,
             isWhitelistActivated: colony.metadata.isWhitelistActivated,
             whitelistedAddresses: colony.metadata.whitelistedAddresses,
             // We only need a single entry here, as we'll be appending it to the colony's metadata
