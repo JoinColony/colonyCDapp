@@ -8,7 +8,7 @@ const CloseButton: FC<CloseButtonProps> = ({ closeToast }) => (
   <button
     type="button"
     aria-label="Close toast"
-    className="absolute right-5 top-4 h-4 w-4 [&>i>svg]:stroke-gray-400"
+    className="absolute right-5 top-4 h-4 w-4 [&>i>svg]:fill-gray-400"
     onClick={closeToast}
   >
     <Icon appearance={{ size: 'tiny' }} name="close" />

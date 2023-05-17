@@ -117,7 +117,7 @@ const ColonySwitcherWithHooks = () => {
                   type="button"
                   aria-label="Close dropdown"
                   onClick={() => setIsOpen(false)}
-                  className="[&<i<svg]:fill-gray-400 [&<i<svg]:stroke-gray-400 md:pr-4"
+                  className="[&<i<svg]:fill-gray-400 md:pr-4"
                 >
                   <Icon name="close" appearance={{ size: 'extraTiny' }} />
                 </button>

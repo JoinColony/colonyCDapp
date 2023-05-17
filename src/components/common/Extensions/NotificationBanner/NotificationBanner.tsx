@@ -31,9 +31,9 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
           <Icon
             name={status === 'success' ? 'check-circle' : 'warning-circle'}
             className={clsx('min-w-[0.875rem] min-h-[0.875rem]', {
-              'stroke-success-400 mt-[0.125rem] md:mt-0': status === 'success',
-              'stroke-warning-400 mt-[0.225rem] md:mt-0': status === 'warning',
-              'stroke-negative-400 mt-[0.225rem] md:mt-0': status === 'error',
+              'fill-success-400 mt-[0.125rem] md:mt-0': status === 'success',
+              'fill-warning-400 mt-[0.225rem] md:mt-0': status === 'warning',
+              'fill-negative-400 mt-[0.225rem] md:mt-0': status === 'error',
             })}
           />
           <div className="text-md font-normal text-gray-900 ml-2">{title}</div>
