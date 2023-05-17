@@ -2,11 +2,15 @@ import { ADDRESS_ZERO } from '~constants';
 import { Colony } from '~types';
 import { createAddress } from '~utils/web3';
 
-import { FormValues } from './TokenManagementDialog';
+import { FormValues as TokenManagementDialogFormValues } from './validation';
 
 export const getTokenManagementDialogPayload = (
   colony: Colony,
-  { tokenAddress, selectedTokenAddresses, annotationMessage }: FormValues,
+  {
+    tokenAddress,
+    selectedTokenAddresses,
+    annotationMessage,
+  }: TokenManagementDialogFormValues,
 ) => {
   let addresses = selectedTokenAddresses ?? [];
   if (tokenAddress && !selectedTokenAddresses?.includes(tokenAddress)) {
