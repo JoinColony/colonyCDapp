@@ -170,7 +170,8 @@
         "unlock",
         "user-plus",
         "wallet",
-        "verified"
+        "verified",
+        "arrow-circle-up-right"
     ],
     "multiColorIcons": [
         "circle-check-primary",

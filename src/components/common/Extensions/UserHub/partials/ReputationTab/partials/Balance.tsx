@@ -6,11 +6,13 @@ import Numeral from '~shared/Numeral';
 import styles from '../ReputationTab.module.css';
 import { BalanceProps } from '../types';
 import PopoverButton from '~shared/Extensions/PopoverButton';
+import { useMobile } from '~hooks';
 
 const displayName = 'common.Extensions.UserHub.partials.ReputationTab.partials.Balance';
 
 const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
   const { formatMessage } = useIntl();
+  const isMobile = useMobile();
 
   const { data: tokenBalanceQueryData } = useGetUserTokenBalanceQuery({
     variables: {
@@ -41,37 +43,55 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
           </div>
         </div>
         {/* @TODO: actived icons? */}
-        <div className={styles.row}>
-          <div className="flex flex-row gap-4 items-center">
-            <span className={styles.rowName}>{formatMessage({ id: 'active' })}</span>
-            <div className="flex flex-row gap-2">
-              <PopoverButton type="deposit" />
-              <PopoverButton type="withdraw" />
+        <div>
+          <div className={styles.row}>
+            <div className="flex flex-row gap-4 items-center">
+              <span className={styles.rowName}>{formatMessage({ id: 'active' })}</span>
+              {!isMobile && (
+                <div className="flex flex-row gap-2">
+                  <PopoverButton type="deposit" />
+                  <PopoverButton type="withdraw" />
+                </div>
+              )}
+            </div>
+            <div className={styles.value}>
+              <Numeral
+                className={styles.numeral}
+                value={tokenBalanceData?.activeBalance ?? 0}
+                decimals={tokenDecimals}
+                suffix={nativeToken?.symbol || 'CLNY'}
+              />
             </div>
           </div>
-          <div className={styles.value}>
-            <Numeral
-              className={styles.numeral}
-              value={tokenBalanceData?.activeBalance ?? 0}
-              decimals={tokenDecimals}
-              suffix={nativeToken?.symbol || 'CLNY'}
-            />
-          </div>
+          {isMobile && (
+            <div className="flex flex-row gap-2 w-full mt-3">
+              <PopoverButton type="deposit" isFullWidth />
+              <PopoverButton type="withdraw" isFullWidth />
+            </div>
+          )}
         </div>
+
         {/* @TODO: stacked icon vievd? */}
-        <div className={styles.row}>
-          <div className="flex flex-row gap-4 items-center">
-            <span className={styles.rowName}>{formatMessage({ id: 'staked' })}</span>
-            <PopoverButton type="view" />
+        <div>
+          <div className={styles.row}>
+            <div className="flex flex-row gap-4 items-center">
+              <span className={styles.rowName}>{formatMessage({ id: 'staked' })}</span>
+              {!isMobile && <PopoverButton type="view" />}
+            </div>
+            <div className={styles.value}>
+              <Numeral
+                className={styles.numeral}
+                value={tokenBalanceData?.lockedBalance ?? 0}
+                decimals={tokenDecimals}
+                suffix={nativeToken?.symbol || 'CLNY'}
+              />
+            </div>
           </div>
-          <div className={styles.value}>
-            <Numeral
-              className={styles.numeral}
-              value={tokenBalanceData?.lockedBalance ?? 0}
-              decimals={tokenDecimals}
-              suffix={nativeToken?.symbol || 'CLNY'}
-            />
-          </div>
+          {isMobile && (
+            <div className="mt-3">
+              <PopoverButton type="view" isFullWidth />
+            </div>
+          )}
         </div>
       </div>
     </div>

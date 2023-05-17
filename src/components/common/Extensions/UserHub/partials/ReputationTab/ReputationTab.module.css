@@ -3,7 +3,7 @@
 }
 
 .row {
-  @apply flex flex-row justify-between;
+  @apply flex md:flex-row justify-between;
 }
 
 .numeral {

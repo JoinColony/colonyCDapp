@@ -1,6 +1,7 @@
 export interface PopoverButtonProps {
-  isDisabled?: boolean;
   type: PopoverButtonType;
+  isDisabled?: boolean;
+  isFullWidth?: boolean;
 }
 
 export type PopoverButtonType = 'deposit' | 'withdraw' | 'view';
