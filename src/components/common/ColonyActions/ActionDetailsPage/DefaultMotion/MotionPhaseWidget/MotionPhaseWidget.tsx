@@ -2,7 +2,7 @@ import React from 'react';
 
 import { StakerRewards } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
-import { ColonyAction, ColonyActionType, Address } from '~types';
+import { ColonyActionType, Address } from '~types';
 import { MotionState } from '~utils/colonyMotions';
 
 import ClaimMotionStakes from './ClaimMotionStakes';
@@ -11,6 +11,7 @@ import StakingWidget, { StakingWidgetProvider } from './StakingWidget';
 import { VotingWidget } from './VotingWidget';
 import { RevealWidget } from './RevealWidget';
 import { VoteOutcome } from './VoteOutcome';
+import { MotionAction } from '~types/motions';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.MotionPhaseWidget';
@@ -32,7 +33,7 @@ export interface PollingControls {
 }
 
 interface MotionPhaseWidgetProps extends PollingControls {
-  actionData: ColonyAction;
+  actionData: MotionAction;
   motionState: MotionState;
 }
 
@@ -45,15 +46,6 @@ const MotionPhaseWidget = ({
   const { refetchColony } = useColonyContext();
   const { motionData, type, amount, fromDomain, tokenAddress } = actionData;
   const { stopPollingAction } = rest;
-
-  if (!motionData) {
-    /*
-     * Will not happen. Undefined motion data will result in the invalid transaction view being
-     * rendered by the parent. But, this is cleaner than creating a custom ColonyAction type to reflect
-     * the fact that motion data is defined here.
-     */
-    return null;
-  }
 
   switch (motionState) {
     case MotionState.Staked:
@@ -81,7 +73,7 @@ const MotionPhaseWidget = ({
               }
               {...rest}
             />
-            <VoteOutcome motionData={motionData} actionType={type} />
+            <VoteOutcome actionData={actionData} />
           </div>
         );
       }
@@ -101,7 +93,7 @@ const MotionPhaseWidget = ({
       return (
         <div>
           <ClaimMotionStakes motionData={motionData} {...rest} />
-          <VoteOutcome motionData={motionData} actionType={type} />
+          <VoteOutcome actionData={actionData} />
         </div>
       );
     }
@@ -110,7 +102,7 @@ const MotionPhaseWidget = ({
       return (
         <>
           <ClaimMotionStakes motionData={motionData} {...rest} />
-          <VoteOutcome motionData={motionData} actionType={type} />
+          <VoteOutcome actionData={actionData} />
         </>
       );
     }
@@ -118,8 +110,7 @@ const MotionPhaseWidget = ({
     case MotionState.Voting: {
       return (
         <VotingWidget
-          actionType={type}
-          motionData={motionData}
+          actionData={actionData}
           motionState={motionState}
           {...rest}
         />

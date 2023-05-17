@@ -6,12 +6,11 @@ import { BigNumber } from 'ethers';
 import { ActionHookForm as ActionForm, OnSuccess } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 
-import { ColonyActionType } from '~gql';
-import { MotionData } from '~types';
 import { MotionState } from '~utils/colonyMotions';
 import { useAppContext, useColonyContext } from '~hooks';
 import { mapPayload } from '~utils/actions';
 import { MotionVotePayload } from '~redux/sagas/motions/voteMotion';
+import { MotionAction } from '~types/motions';
 
 import { PollingControls } from '../MotionPhaseWidget';
 
@@ -43,17 +42,20 @@ const validationSchema = object()
 type VotingFormValues = InferType<typeof validationSchema>;
 
 interface VotingWidgetProps extends PollingControls {
-  actionType: ColonyActionType;
-  motionData: MotionData;
+  actionData: MotionAction;
   motionState: MotionState;
 }
 
 export const VOTE_FORM_KEY = 'vote';
 
 const VotingWidget = ({
-  actionType,
-  motionData: { motionDomainId, motionId, voterRecord },
-  motionData,
+  actionData: {
+    type,
+    transactionHash,
+    pendingColonyMetadata,
+    motionData: { motionDomainId, motionId, voterRecord },
+    motionData,
+  },
   motionState,
   startPollingAction,
   stopPollingAction,
@@ -98,7 +100,11 @@ const VotingWidget = ({
         onSuccess={handleSuccess}
       >
         <div className={styles.main}>
-          <VotingWidgetHeading actionType={actionType} />
+          <VotingWidgetHeading
+            transactionHash={transactionHash}
+            actionType={type}
+            pendingColonyMetadata={pendingColonyMetadata}
+          />
           <VotingPanel motionDomainId={Number(motionDomainId)} />
           <VoteDetails
             motionData={motionData}

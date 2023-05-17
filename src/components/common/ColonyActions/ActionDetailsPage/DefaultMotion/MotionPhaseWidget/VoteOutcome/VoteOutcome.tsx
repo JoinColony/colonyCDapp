@@ -3,10 +3,10 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { BigNumber } from 'ethers';
 
 import { useAppContext } from '~hooks';
-import { ColonyActionType, MotionData } from '~types';
 import { Heading4 } from '~shared/Heading';
 import { MotionVote } from '~utils/colonyMotions';
-import { formatActionType } from '~utils/colonyActions';
+import { formatActionType, getExtendedActionType } from '~utils/colonyActions';
+import { MotionAction } from '~types/motions';
 
 import { voteTitleMsg } from '../VotingWidget';
 import { VoteResults } from './VoteResults';
@@ -27,21 +27,25 @@ const MSG = defineMessages({
 });
 
 interface VoteOutcomeProps {
-  motionData: MotionData;
-  actionType: ColonyActionType;
+  actionData: MotionAction;
 }
 
 const VoteOutcome = ({
-  motionData: {
-    revealedVotes: {
-      raw: { yay: yayVotes, nay: nayVotes },
+  actionData: {
+    type,
+    transactionHash,
+    pendingColonyMetadata,
+    motionData: {
+      revealedVotes: {
+        raw: { yay: yayVotes, nay: nayVotes },
+      },
+      revealedVotes,
+      voterRecord,
     },
-    revealedVotes,
-    voterRecord,
   },
-  actionType,
 }: VoteOutcomeProps) => {
   const { user } = useAppContext();
+
   const votesHaveBeenRevealed = yayVotes !== '0' || nayVotes !== '0';
 
   if (!votesHaveBeenRevealed) {
@@ -74,7 +78,11 @@ const VoteOutcome = ({
       )}
       <Heading4
         text={voteTitleMsg}
-        textValues={{ actionType: formatActionType(actionType) }}
+        textValues={{
+          actionType: formatActionType(
+            getExtendedActionType(transactionHash, type, pendingColonyMetadata),
+          ),
+        }}
         appearance={{ weight: 'bold', theme: 'dark' }}
       />
       <VoteResults revealedVotes={revealedVotes} voterRecord={voterRecord} />
