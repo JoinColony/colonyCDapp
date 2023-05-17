@@ -9,7 +9,7 @@ const PendingReputation = () => {
 
   return (
     <div className="pt-6">
-      <div className="flex flex-row items-center">
+      <div className="flex items-center">
         <div className="text-gray-400 text-xs font-medium uppercase">{formatMessage({ id: 'pending.reputation' })}</div>
       </div>
 

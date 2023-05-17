@@ -11,7 +11,7 @@ const AccordionHeader: FC<AccordionItemProps> = ({ title, isOpen }) => (
         appearance={{ size: 'extraTiny' }}
         name={isOpen ? 'caret-up' : 'caret-down'}
         title={{ id: 'file-text' }}
-        className="stroke-gray-400 min-w-[0.875rem] min-h-[0.875rem]"
+        className="fill-gray-400 min-w-[0.875rem] min-h-[0.875rem]"
       />
     </div>
     <div className="w-full bg-gray-200 h-[1px]" />

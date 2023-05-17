@@ -45,7 +45,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
         {/* @TODO: actived icons? */}
         <div>
           <div className={styles.row}>
-            <div className="flex flex-row gap-4 items-center">
+            <div className="flex gap-4 items-center">
               <span className={styles.rowName}>{formatMessage({ id: 'active' })}</span>
               {!isMobile && (
                 <div className="flex flex-row gap-2">
@@ -64,7 +64,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
             </div>
           </div>
           {isMobile && (
-            <div className="flex flex-row gap-2 w-full mt-3">
+            <div className="flex gap-2 w-full mt-3">
               <PopoverButton type="deposit" isFullWidth />
               <PopoverButton type="withdraw" isFullWidth />
             </div>

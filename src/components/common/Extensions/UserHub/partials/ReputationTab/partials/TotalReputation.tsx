@@ -25,7 +25,7 @@ const TotalReputation: FC<ReputationProps> = ({ colonyAddress, wallet }) => {
 
   return (
     <div className="border-b border-gray-100 pt-6">
-      <div className="flex flex-row items-center justify-between">
+      <div className="flex items-center justify-between">
         <div className="text-gray-400 text-xs font-medium uppercase">
           {formatMessage({ id: 'reputation.in.colony' })}
         </div>

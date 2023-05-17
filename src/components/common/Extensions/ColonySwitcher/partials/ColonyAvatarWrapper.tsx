@@ -23,7 +23,7 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
       </span>
       <div
         className="w-[1.175rem] h-[1.175rem] flex items-center justify-center absolute top-0 right-0 bg-base-white
-            rounded-full border border-gray-200[&>i>svg]:stroke-base-white [&>i]:flex [&>i]:items-center
+            rounded-full border border-gray-200[&>i>svg]:fill-base-white [&>i]:flex [&>i]:items-center
             [&>i]:justify-center [&>i>svg]:w-[0.6875rem] [&>i>svg]:h-[0.6875rem]"
       >
         <Icon name="gnosis" />
@@ -35,7 +35,7 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
         {colonyToDisplay?.metadata?.displayName || colonyToDisplay?.name || 'Colony name'}
       </div>
     )}
-    <span className=" [&>i>svg]:fill-base-black [&>i>svg]:stroke-base-black" ref={setTriggerRef}>
+    <span className=" [&>i>svg]:fill-base-black" ref={setTriggerRef}>
       <Icon name={isOpen ? 'caret-up' : 'caret-down'} appearance={{ size: 'extraTiny' }} />
     </span>
   </>

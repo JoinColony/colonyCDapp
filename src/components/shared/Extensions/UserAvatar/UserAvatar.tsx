@@ -8,7 +8,14 @@ import Link from '~shared/NavLink';
 
 const displayName = 'Extensions.UserAvatar';
 
-const UserAvatar: FC<UserAvatarProps> = ({ user, isLink, preferThumbnail = true, userName, size, ...rest }) => {
+const UserAvatar: FC<UserAvatarProps> = ({
+  user,
+  isLink = false,
+  preferThumbnail = true,
+  userName,
+  size = 'xxs',
+  ...rest
+}) => {
   const address = user?.walletAddress;
   const { profile } = user || {};
   const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
@@ -31,7 +38,7 @@ const UserAvatar: FC<UserAvatarProps> = ({ user, isLink, preferThumbnail = true,
 
   if (isLink) {
     return (
-      <Link className="transition-all duration-normal hover:text-blue-400" to="/user/">
+      <Link className="inline-flex transition-all duration-normal hover:text-blue-400" to="/user/">
         {avatar}
       </Link>
     );
