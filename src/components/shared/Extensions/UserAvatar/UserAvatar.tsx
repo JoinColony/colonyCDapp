@@ -8,7 +8,14 @@ import Link from '~shared/NavLink';
 
 const displayName = 'Extensions.UserAvatar';
 
-const UserAvatar: FC<UserAvatarProps> = ({ user, isLink, preferThumbnail = true, userName, size = 'xxs', ...rest }) => {
+const UserAvatar: FC<UserAvatarProps> = ({
+  user,
+  isLink = false,
+  preferThumbnail = true,
+  userName,
+  size = 'xxs',
+  ...rest
+}) => {
   const address = user?.walletAddress;
   const { profile } = user || {};
   const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;

@@ -412,6 +412,9 @@
     "userMenu.contactAndSupportTitle": "Contact and support",
     "userMenu.developersTitle": "Developers",
     "userMenu.legalAndPrivacyTitle": "Legal & Privacy",
+    "userMenu.menageTitle": "Manage account",
+    "userMenu.disconnectWalletTitle": "Disconnect Wallet",
+    "userMenu.other": "Other",
     "connectWallet": "Connect wallet",
     "copyWalletAddress": "Copy wallet address",
     "copy.address": "Copy address",
@@ -421,5 +424,6 @@
     "claimStakes": "Claim all stakes",
     "lightMode": "Light",
     "darkMode": "Dark",
-    "help": "Help"
+    "help": "Help",
+    "helpAndAccount": "Help & account"
 }
