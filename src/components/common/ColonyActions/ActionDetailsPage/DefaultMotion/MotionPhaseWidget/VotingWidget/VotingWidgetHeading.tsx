@@ -3,7 +3,8 @@ import { defineMessages } from 'react-intl';
 
 import { ColonyActionType } from '~gql';
 import { Heading4 } from '~shared/Heading';
-import { formatActionType } from '~utils/colonyActions';
+import { formatActionType, getExtendedActionType } from '~utils/colonyActions';
+import { ColonyMetadata } from '~types';
 
 import styles from './VotingWidgetHeading.css';
 
@@ -20,16 +21,28 @@ const MSG = defineMessages({
 export const { title: voteTitleMsg } = MSG;
 
 interface VotingWidgetHeadingProps {
+  transactionHash: string;
   actionType: ColonyActionType;
+  pendingColonyMetadata?: ColonyMetadata | null;
 }
 
-const VotingWidgetHeading = ({ actionType }: VotingWidgetHeadingProps) => {
+const VotingWidgetHeading = ({
+  transactionHash,
+  actionType,
+  pendingColonyMetadata,
+}: VotingWidgetHeadingProps) => {
   return (
     <div className={styles.main}>
       <Heading4
         text={MSG.title}
         textValues={{
-          actionType: formatActionType(actionType),
+          actionType: formatActionType(
+            getExtendedActionType(
+              transactionHash,
+              actionType,
+              pendingColonyMetadata,
+            ),
+          ),
         }}
         appearance={{ weight: 'bold', theme: 'dark', margin: 'none' }}
       />

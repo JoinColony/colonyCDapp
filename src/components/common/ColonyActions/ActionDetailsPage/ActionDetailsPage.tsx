@@ -4,6 +4,7 @@ import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import { useColonyContext } from '~hooks';
 import LoadingTemplate from '~frame/LoadingTemplate';
+import { MotionAction } from '~types/motions';
 
 import {
   TransactionNotFound,
@@ -81,8 +82,8 @@ const ActionDetailsPage = () => {
     return (
       <Layout isMotion>
         <DefaultMotion
-          actionData={action}
-          // Safe casting since if it's a motion without motionState, we render TransactionNotFound.
+          // Safe castings since if it's a motion without motionState/data, we render TransactionNotFound.
+          actionData={action as MotionAction}
           networkMotionState={motionState as NetworkMotionState}
           refetchMotionState={refetchMotionState}
           startPollingAction={startPollingForAction}

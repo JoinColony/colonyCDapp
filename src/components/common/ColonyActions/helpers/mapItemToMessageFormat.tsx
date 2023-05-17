@@ -183,6 +183,8 @@ export const useMapMotionEventToExpectedFormat = (
     fromDomain,
     motionData,
     type: actionType,
+    transactionHash,
+    pendingColonyMetadata,
   } = actionData;
   const { colony } = useColonyContext();
 
@@ -192,6 +194,7 @@ export const useMapMotionEventToExpectedFormat = (
     fromDomain?.nativeId,
     motionData?.rootHash,
   );
+
   if (!motionData) {
     return {};
   }
@@ -221,7 +224,11 @@ export const useMapMotionEventToExpectedFormat = (
     passedTag: <PassedTag />,
     voteResultsWidget: (
       <div className={styles.voteResultsWrapper}>
-        <VotingWidgetHeading actionType={actionType} />
+        <VotingWidgetHeading
+          transactionHash={transactionHash}
+          actionType={actionType}
+          pendingColonyMetadata={pendingColonyMetadata}
+        />
         <VoteResults
           revealedVotes={motionData.revealedVotes}
           voterRecord={motionData.voterRecord}
