@@ -24,9 +24,9 @@ import {
   NotEnoughReputation,
   PermissionRequiredInfo,
 } from '../../Messages';
+import { FormValues } from '../validation';
 import TokenItem from './TokenItem';
 import getTokenList from './getTokenList';
-import { FormValues } from '../TokenManagementDialog';
 
 import styles from './TokenManagementDialogForm.css';
 
