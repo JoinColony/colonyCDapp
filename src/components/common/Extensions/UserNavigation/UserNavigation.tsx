@@ -50,7 +50,7 @@ const UserNavigation: FC = () => {
           {nativeToken && <Token nativeToken={nativeToken} />}
           <Button mode="tertiaryOutline" isFullRounded>
             <div className="flex items-center gap-3">
-              <UserAvatar user={user} userName={user?.name || ''} size="xxs" isLink={false} />
+              <UserAvatar user={user} userName={user?.name || ''} size="xxs" />
               <MemberReputation userReputation={userReputation} totalReputation={totalReputation} />
             </div>
           </Button>

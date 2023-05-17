@@ -18,7 +18,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   return (
     <div
       className={clsx(
-        `py-3 px-6 border border-solid rounded-lg flex justify-between min-w-[23.75rem] min-h-[2.75rem] flex-col md:w-full md:flex-row md:first-line:items-center`,
+        `py-3 px-6 border border-solid rounded-lg flex justify-between min-h-[2.75rem] flex-col md:flex-row md:first-line:items-center`,
         {
           'bg-success-100 border-success-100': status === 'success',
           'bg-warning-100 border-warning-100': status === 'warning',

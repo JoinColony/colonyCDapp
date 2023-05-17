@@ -8,28 +8,49 @@ import Link from '~shared/Link';
 import Icon from '~shared/Icon';
 import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
 import styles from './UserMenu.module.css';
+import PopoverBase from '~shared/Extensions/PopoverBase';
+import TitledContent from '~common/Extensions/TitledContent/TitledContent';
+import WalletConnectedTopMenu from '../WalletConnectedTopMenu/WalletConnectedTopMenu';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 
-const UserMenu: FC<UserMenuProps> = ({ tooltipProps, setTooltipRef, isWalletConnected }) => {
+const UserMenu: FC<UserMenuProps> = ({
+  tooltipProps,
+  setTooltipRef,
+  isWalletConnected,
+  userName,
+  isVerified,
+  walletAddress,
+  copyUrl,
+  userReputation,
+  totalReputation,
+  nativeToken,
+}) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
   const { connectWallet } = useAppContext();
 
   return (
-    <div
-      ref={setTooltipRef}
-      {...tooltipProps({
-        className: clsx('px-0 md:px-6 py-6 flex justify-start z-[9999] tooltip-container', {
-          'w-full border-none shadow-none': isMobile,
-          'w-[20.125rem]': !isMobile,
-          'h-[32rem] md:h-[23rem]': !isWalletConnected,
-          'md:h-[28.125rem]': isWalletConnected,
-        }),
+    <PopoverBase
+      setTooltipRef={setTooltipRef}
+      tooltipProps={tooltipProps}
+      classNames={clsx('px-0 md:px-6 py-6 flex justify-start z-[9999] tooltip-container', {
+        'w-full border-none shadow-none': isMobile,
+        'w-[20.125rem]': !isMobile,
+        'h-[32rem] md:h-[23rem]': !isWalletConnected,
+        'md:h-[31.5rem]': isWalletConnected,
       })}
     >
       {isWalletConnected ? (
-        <>Connected component</>
+        <WalletConnectedTopMenu
+          userName={userName}
+          isVerified={isVerified}
+          walletAddress={walletAddress}
+          copyUrl={copyUrl}
+          userReputation={userReputation}
+          totalReputation={totalReputation}
+          nativeToken={nativeToken}
+        />
       ) : (
         <>
           <div className={styles.mobileButtons}>
@@ -50,38 +71,47 @@ const UserMenu: FC<UserMenuProps> = ({ tooltipProps, setTooltipRef, isWalletConn
         </>
       )}
       <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">
-        <p className="text-xs text-gray-400 font-medium font-inter mb-3">
-          {formatMessage({ id: 'userMenu.optionsTitle' })}
-        </p>
-        <ul className="text-lg font-semibold md:font-normal md:text-md text-gray-900">
-          <li className="mb-4">
-            <Link to="/" className="flex items-center">
-              <Icon name="circles-three-plus" appearance={{ size: 'tiny' }} />
-              <p className="ml-2">{formatMessage({ id: 'userMenu.getStartedTitle' })}</p>
-            </Link>
-          </li>
-          <li className="mb-4">
-            <Link to="/" className="flex items-center">
-              <Icon name="lifebuoy" appearance={{ size: 'tiny' }} />
-              <p className="ml-2">{formatMessage({ id: 'userMenu.contactAndSupportTitle' })}</p>
-            </Link>
-          </li>
-          <li className="mb-4">
-            <Link to="/" className="flex items-center">
-              <Icon name="code" appearance={{ size: 'tiny' }} />
-              <p className="ml-2">{formatMessage({ id: 'userMenu.developersTitle' })}</p>
-            </Link>
-          </li>
-          <li>
-            <Link to="/" className="flex items-center">
-              <Icon name="briefcase" appearance={{ size: 'tiny' }} />
-              <p className="ml-2">{formatMessage({ id: 'userMenu.legalAndPrivacyTitle' })}</p>
-            </Link>
-          </li>
-        </ul>
+        <TitledContent title={formatMessage({ id: 'userMenu.optionsTitle' })}>
+          <ul className="text-lg font-semibold md:font-normal md:text-md text-gray-900">
+            <li className="mb-4">
+              <Link to="/" className="flex items-center">
+                <Icon name="circles-three-plus" appearance={{ size: 'tiny' }} />
+                <p className="ml-2">{formatMessage({ id: 'userMenu.getStartedTitle' })}</p>
+              </Link>
+            </li>
+            <li className="mb-4">
+              <Link to="/" className="flex items-center">
+                <Icon name="lifebuoy" appearance={{ size: 'tiny' }} />
+                <p className="ml-2">{formatMessage({ id: 'userMenu.contactAndSupportTitle' })}</p>
+              </Link>
+            </li>
+            <li className="mb-4">
+              <Link to="/" className="flex items-center">
+                <Icon name="code" appearance={{ size: 'tiny' }} />
+                <p className="ml-2">{formatMessage({ id: 'userMenu.developersTitle' })}</p>
+              </Link>
+            </li>
+            <li>
+              <Link to="/" className="flex items-center">
+                <Icon name="briefcase" appearance={{ size: 'tiny' }} />
+                <p className="ml-2">{formatMessage({ id: 'userMenu.legalAndPrivacyTitle' })}</p>
+              </Link>
+            </li>
+          </ul>
+        </TitledContent>
       </div>
+      {isWalletConnected && (
+        <div className="w-full mb-6 md:mb-5">
+          <TitledContent title={formatMessage({ id: 'userMenu.other' })}>
+            <Link to="/" className="flex items-center text-lg font-semibold md:font-normal md:text-md text-gray-900">
+              <Icon name="plugs" appearance={{ size: 'tiny' }} />
+              <p className="ml-2">{formatMessage({ id: 'userMenu.disconnectWalletTitle' })}</p>
+            </Link>
+          </TitledContent>
+        </div>
+      )}
       <ThemeSwitcher />
-    </div>
+    </PopoverBase>
   );
 };
 

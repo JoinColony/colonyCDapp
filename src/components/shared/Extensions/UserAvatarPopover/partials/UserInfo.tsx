@@ -7,6 +7,7 @@ import Icon from '~shared/Icon/Icon';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { useMobile } from '~hooks';
 import UserPermissionsBadge from '~common/Extensions/UserPermissionsBadge/UserPermissionsBadge';
+import TitledContent from '~common/Extensions/TitledContent/TitledContent';
 
 const displayName = 'Extensions.UserAvatarPopover.partials.UserInfo';
 
@@ -43,7 +44,7 @@ const UserInfo: FC<UserInfoProps> = ({
           {copyUrl ? (
             <button
               onClick={handleClipboardCopy}
-              onKeyPress={handleClipboardCopy}
+              onKeyDown={handleClipboardCopy}
               type="button"
               aria-label={formatMessage({ id: 'copyWalletAddress' })}
               className={clsx(
@@ -65,39 +66,43 @@ const UserInfo: FC<UserInfoProps> = ({
           )}
         </div>
       </div>
-      <h4 className="uppercase text-gray-400 text-xs mb-2 font-medium">
-        {formatMessage({ id: 'userInfo.about.section' })}
-      </h4>
-      <p className="text-md text-gray-600">{aboutDescriptionText}</p>
-      <h4 className="uppercase text-gray-400 text-xs mb-2 font-medium pt-6 mt-6 border-t border-gray-200">
-        {formatMessage({ id: 'userInfo.colonyReputation.section' })}
-      </h4>
-      <ul className="flex flex-col gap-2">
-        {colonyReputation.map(({ key, title, percentage, points }) => {
-          const titleText = typeof title === 'string' ? title : title && formatMessage(title);
+      <TitledContent title={formatMessage({ id: 'userInfo.about.section' })}>
+        <p className="text-md text-gray-600">{aboutDescriptionText}</p>
+      </TitledContent>
+      <TitledContent
+        title={formatMessage({ id: 'userInfo.colonyReputation.section' })}
+        className="pt-6 mt-6 border-t border-gray-200"
+      >
+        <ul className="flex flex-col gap-2">
+          {colonyReputation.map(({ key, title, percentage, points }) => {
+            const titleText = typeof title === 'string' ? title : title && formatMessage(title);
 
-          return (
-            <li key={key} className="grid grid-cols-[1fr,auto] gap-x-4 font-medium text-gray-900">
-              <span className="text-md">{titleText}</span>
-              <span className="inline-flex items-center text-sm [&_svg]:text-blue-400">
-                <Icon name="star" appearance={{ size: 'extraTiny' }} />
-                <span className="text-blue-400 inline-block ml-1 mr-2">{percentage}%</span>
-                <span>{points} pts</span>
-              </span>
+            return (
+              <li key={key} className="grid grid-cols-[1fr,auto] gap-x-4 font-medium text-gray-900">
+                <span className="text-md">{titleText}</span>
+                <span className="inline-flex items-center text-sm [&_svg]:text-blue-400">
+                  <Icon name="star" appearance={{ size: 'extraTiny' }} />
+                  <span className="text-blue-400 inline-block ml-1 mr-2">{percentage}%</span>
+                  <span>{points} pts</span>
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </TitledContent>
+
+      <TitledContent
+        title={formatMessage({ id: 'userInfo.permissions.section' })}
+        className="pt-6 mt-6 border-t border-gray-200"
+      >
+        <ul className="inline-flex flex-wrap gap-x-1 gap-y-2">
+          {permissions.map(({ key, text, description, name }) => (
+            <li key={key}>
+              <UserPermissionsBadge text={text} description={description} name={name} />
             </li>
-          );
-        })}
-      </ul>
-      <h4 className="uppercase text-gray-400 text-xs mb-2 font-medium pt-6 mt-6 border-t border-gray-200">
-        {formatMessage({ id: 'userInfo.permissions.section' })}
-      </h4>
-      <ul className="inline-flex flex-wrap gap-x-1 gap-y-2">
-        {permissions.map(({ key, text, description, name }) => (
-          <li key={key}>
-            <UserPermissionsBadge text={text} description={description} name={name} />
-          </li>
-        ))}
-      </ul>
+          ))}
+        </ul>
+      </TitledContent>
     </div>
   );
 };
