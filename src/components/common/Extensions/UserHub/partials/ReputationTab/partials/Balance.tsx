@@ -5,6 +5,7 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import Numeral from '~shared/Numeral';
 import styles from '../ReputationTab.module.css';
 import { BalanceProps } from '../types';
+import PopoverButton from '~shared/Extensions/PopoverButton';
 
 const displayName = 'common.Extensions.UserHub.partials.ReputationTab.partials.Balance';
 
@@ -41,7 +42,13 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
         </div>
         {/* @TODO: actived icons? */}
         <div className={styles.row}>
-          <span className={styles.rowName}>{formatMessage({ id: 'active' })}</span>
+          <div className="flex flex-row gap-4 items-center">
+            <span className={styles.rowName}>{formatMessage({ id: 'active' })}</span>
+            <div className="flex flex-row gap-2">
+              <PopoverButton type="deposit" />
+              <PopoverButton type="withdraw" />
+            </div>
+          </div>
           <div className={styles.value}>
             <Numeral
               className={styles.numeral}
@@ -53,7 +60,10 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
         </div>
         {/* @TODO: stacked icon vievd? */}
         <div className={styles.row}>
-          <span className={styles.rowName}>{formatMessage({ id: 'staked' })}</span>
+          <div className="flex flex-row gap-4 items-center">
+            <span className={styles.rowName}>{formatMessage({ id: 'staked' })}</span>
+            <PopoverButton type="view" />
+          </div>
           <div className={styles.value}>
             <Numeral
               className={styles.numeral}
