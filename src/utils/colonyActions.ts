@@ -12,6 +12,7 @@ import {
   ExtendedColonyActionType,
   ActionUserRoles,
   ColonyActionType,
+  ColonyMetadata,
 } from '~types';
 import { ColonyActionRoles } from '~gql';
 
@@ -597,17 +598,31 @@ export const getColonyRoleSetTitleValues = (
   };
 };
 
+const getChangelogItem = (
+  {
+    isMotion: actionIsMotion,
+    transactionHash,
+    pendingColonyMetadata,
+  }: ColonyAction,
+  colonyMetadata?: ColonyMetadata | null,
+) => {
+  const metadataObject = actionIsMotion
+    ? pendingColonyMetadata
+    : colonyMetadata;
+
+  return metadataObject?.changelog?.find(
+    (item) => item.transactionHash === transactionHash,
+  );
+};
 /**
  * Function returning action type based on the action data, that can include extended action types,
  * e.g. UpdateAddressBook, UpdateTokens
  */
 export const getExtendedActionType = (
   actionData: ColonyAction,
-  colony: Colony,
+  { metadata }: Colony,
 ): AnyActionType => {
-  const changelogItem = colony.metadata?.changelog?.find(
-    (item) => item.transactionHash === actionData.transactionHash,
-  );
+  const changelogItem = getChangelogItem(actionData, metadata);
 
   if (changelogItem?.haveTokensChanged) {
     return ExtendedColonyActionType.UpdateTokens;
