@@ -32,7 +32,7 @@ const UserNavigationWithData = () => {
       {nativeToken && <Token nativeToken={nativeToken} />}
       <Button mode="tertiaryOutline" isFullRounded>
         <div className="flex items-center gap-3">
-          <UserAvatar userName="panda" size="xxs" isLink={false} />
+          <UserAvatar userName="panda" size="xxs" />
           <MemberReputation userReputation={userReputation} totalReputation={totalReputation} />
         </div>
       </Button>
