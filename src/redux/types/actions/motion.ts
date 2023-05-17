@@ -162,7 +162,7 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_EDIT_COLONY_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_EDIT_COLONY_SUCCESS,
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | UniqueActionType<
       ActionTypes.MOTION_MOVE_FUNDS,

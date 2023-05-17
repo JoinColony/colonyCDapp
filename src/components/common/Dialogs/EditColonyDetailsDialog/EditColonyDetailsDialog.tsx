@@ -81,19 +81,13 @@ const EditColonyDetailsDialog = ({
         onSuccess={close}
         transform={transform}
       >
-        {({ getValues }) => {
-          const values = getValues();
-          if (values.forceAction !== isForce) {
-            setIsForce(values.forceAction);
-          }
-          return (
-            <EditColonyDetailsDialogForm
-              colony={colony}
-              back={() => callStep(prevStep)}
-              enabledExtensionData={enabledExtensionData}
-            />
-          );
-        }}
+        <EditColonyDetailsDialogForm
+          colony={colony}
+          back={() => callStep(prevStep)}
+          enabledExtensionData={enabledExtensionData}
+          isForce={isForce}
+          setIsForce={setIsForce}
+        />
       </Form>
     </Dialog>
   );

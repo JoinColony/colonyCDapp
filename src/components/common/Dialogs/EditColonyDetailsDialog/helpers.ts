@@ -14,8 +14,5 @@ export const getEditColonyDetailsDialogPayload = (
     typeof colonyThumbnail === 'string' || colonyThumbnail === null
       ? colonyThumbnail
       : colony.metadata?.thumbnail,
-  // verifiedAddresses: colonyData?.processedColony?.whitelistedAddresses,
   annotationMessage,
-  // isWhitelistActivated:
-  //   colonyData?.processedColony?.isWhitelistActivated,
 });
