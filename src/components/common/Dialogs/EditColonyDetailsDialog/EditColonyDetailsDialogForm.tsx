@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
@@ -16,7 +16,6 @@ import {
   InputStatus,
 } from '~shared/Fields';
 import ColonyAvatar from '~shared/ColonyAvatar';
-// import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import Avatar from '~shared/Avatar';
 import { useActionDialogStatus } from '~hooks';
 import {
@@ -24,10 +23,12 @@ import {
   getOptimisedThumbnail,
 } from '~images/optimisation';
 import { FileReaderFile } from '~utils/fileReader/types';
+import { SetStateFn } from '~types';
 
 import {
   CannotCreateMotionMessage,
   NoPermissionMessage,
+  NotEnoughReputation,
   PermissionRequiredInfo,
 } from '../Messages';
 
@@ -51,7 +52,7 @@ const MSG = defineMessages({
   },
   annotation: {
     id: `${displayName}.annotation`,
-    defaultMessage: `Explain why you’re editing the colony's details (optional)`,
+    defaultMessage: `Explain why you're editing the colony's details (optional)`,
   },
   invalidAvatarFormat: {
     id: `${displayName}.invalidAvatarFormat`,
@@ -61,24 +62,42 @@ const MSG = defineMessages({
 
 const requiredRoles = [ColonyRole.Root];
 
+interface EditColonyDetailsDialogFormProps extends ActionDialogProps {
+  isForce: boolean;
+  setIsForce: SetStateFn;
+}
+
 const EditColonyDetailsDialogForm = ({
   back,
   colony,
   colony: { colonyAddress, metadata },
   enabledExtensionData,
-}: ActionDialogProps) => {
-  const { setValue, getValues } = useFormContext();
-  const { colonyAvatarImage, colonyDisplayName } = getValues();
+  isForce,
+  setIsForce,
+}: EditColonyDetailsDialogFormProps) => {
+  const { setValue, watch } = useFormContext();
+  const { colonyAvatarImage, colonyDisplayName, forceAction } = watch();
   const [showUploadedAvatar, setShowUploadedAvatar] = useState(false);
   const [avatarFileError, setAvatarFileError] = useState(false);
 
-  const { userHasPermission, canCreateMotion, disabledInput, disabledSubmit } =
-    useActionDialogStatus(
-      colony,
-      requiredRoles,
-      [Id.RootDomain],
-      enabledExtensionData,
-    );
+  useEffect(() => {
+    if (forceAction !== isForce) {
+      setIsForce(forceAction);
+    }
+  }, [forceAction, isForce, setIsForce]);
+
+  const {
+    userHasPermission,
+    canCreateMotion,
+    disabledInput,
+    disabledSubmit,
+    canOnlyForceAction,
+  } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
 
   const handleFileRead = async (file: FileReaderFile) => {
     if (!file) {
@@ -117,7 +136,15 @@ const EditColonyDetailsDialogForm = ({
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading title={MSG.title} />
+        <DialogHeading
+          title={MSG.title}
+          userHasPermission={userHasPermission}
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
+          isRootMotion
+          colony={colony}
+        />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
@@ -193,9 +220,11 @@ const EditColonyDetailsDialogForm = ({
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
-      {/* {onlyForceAction && (
-        <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
-      )} */}
+      {canOnlyForceAction && (
+        <DialogSection>
+          <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
+        </DialogSection>
+      )}
       {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
@@ -206,6 +235,9 @@ const EditColonyDetailsDialogForm = ({
           disabled={disabledSubmit || avatarFileError || !hasEditedColony}
           dataTest="confirmButton"
           onSecondaryButtonClick={back}
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>
