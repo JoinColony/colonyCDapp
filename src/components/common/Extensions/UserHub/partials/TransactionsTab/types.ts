@@ -1,18 +1,23 @@
+type StatusType = 'passed' | 'failed';
+
+export interface TransactionHeaderProps {
+  title: string;
+  description: string;
+  date: string;
+  status?: StatusType;
+}
+
 export interface TransactionsContent {
   key: string;
   title: string;
   notificationInfo?: string;
-  status?: 'passed' | 'failed';
+  status?: StatusType;
   isCurrentAction?: boolean;
   isPending?: boolean;
 }
 
-export interface TransactionsItemProps {
+export interface TransactionsItemProps extends TransactionHeaderProps {
   key: string;
-  title: string;
-  description: string;
-  date: string;
-  status?: 'passed' | 'failed';
   content?: TransactionsContent[];
   isOpen?: boolean;
   onClick?: () => void;

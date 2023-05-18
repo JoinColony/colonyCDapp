@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import Button from '~shared/Extensions/Button/Button';
-import Icon from '~shared/Icon/Icon';
+import Icon from '~shared/Icon';
 
 import { SubNavigationItemProps } from './types';
 import styles from './SubNavigationItemMobile.module.css';

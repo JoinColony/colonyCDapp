@@ -69,7 +69,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
           {mode === 'pending' && isPending && (
             <Icon
               name="spinner-gap"
-              className={`ml-[0.59375rem] w-[13px] h-[13px] ${isPending ? 'animate-spin' : 'animate-none'}`}
+              className={`ml-[0.59375rem] w-[0.8125rem] h-[0.8125rem] ${isPending ? 'animate-spin' : 'animate-none'}`}
             />
           )}
         </button>

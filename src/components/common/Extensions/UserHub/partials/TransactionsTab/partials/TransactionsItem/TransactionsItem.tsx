@@ -2,11 +2,12 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
-import Icon from '~shared/Icon/Icon';
+import Icon from '~shared/Icon';
 import NotificationBanner from '~common/Extensions/NotificationBanner/NotificationBanner';
 import styles from './TransactionsItem.module.css';
 import { TransactionsItemProps } from '../../types';
 import { accordionAnimation } from '~constants/accordionAnimation';
+import TransactionsHeader from '../TransactionsHeader';
 
 export const displayName = 'common.Extensions.UserHub.partials.TransactionsItem';
 
@@ -21,24 +22,6 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  const transactionItemContent = (
-    <>
-      <div>
-        <h4 className="font-medium text-md text-gray-900">{title}</h4>
-        <p className="text-gray-600 text-xs">{description}</p>
-      </div>
-      <div
-        className={clsx('flex flex-col items-end', {
-          'text-success-400': status === 'passed',
-          'text-negative-400': status === 'failed',
-        })}
-      >
-        <Icon name={status === 'passed' ? 'check-circle' : 'x-circle'} appearance={{ size: 'tiny' }} />
-        <span className="text-gray-400 text-xs block mt-1">{date}</span>
-      </div>
-    </>
-  );
-
   return (
     <>
       {content ? (
@@ -51,10 +34,12 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
           onClick={onClick}
           className="flex gap-4 justify-between w-full text-left"
         >
-          {transactionItemContent}
+          <TransactionsHeader title={title} description={description} date={date} status={status} />
         </button>
       ) : (
-        <div className="flex gap-4 justify-between w-full text-left">{transactionItemContent}</div>
+        <div className="flex gap-4 justify-between w-full text-left">
+          <TransactionsHeader title={title} description={description} date={date} status={status} />
+        </div>
       )}
       {content && (
         <AnimatePresence>
@@ -98,7 +83,7 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                     {item.isPending && (
                       <Icon
                         name="spinner-gap"
-                        className="ml-[0.59375rem] w-[13px] h-[13px] animate-spin text-blue-400"
+                        className="ml-[0.59375rem] w-[0.8125rem] h-[0.8125rem] animate-spin text-blue-400"
                         appearance={{ size: 'tiny' }}
                       />
                     )}
