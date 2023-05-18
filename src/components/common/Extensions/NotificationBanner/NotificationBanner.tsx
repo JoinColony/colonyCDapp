@@ -52,7 +52,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
       </div>
       <div
         className={`underline text-xs font-medium mt-2 ml-6 md:mt-0 md:ml-2 [&_button]:underline ${
-          isAlt && 'self-center'
+          isAlt && 'ml-0 md:self-center'
         }`}
       >
         {actionType === 'copy-url' && <CopyUrl actionText={actionText} />}
