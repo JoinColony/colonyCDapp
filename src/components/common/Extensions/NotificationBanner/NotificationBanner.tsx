@@ -18,11 +18,11 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   return (
     <div
       className={clsx(
-        `py-3 px-6 border border-solid rounded-lg flex justify-between min-h-[2.75rem] flex-col md:flex-row md:first-line:items-center`,
+        `py-3 px-6 border border-solid rounded-lg flex justify-between min-h-[2.75rem] flex-col md:flex-row md:items-center`,
         {
-          'bg-success-100 border-success-100': status === 'success',
-          'bg-warning-100 border-warning-100': status === 'warning',
-          'bg-negative-100 border-negative-100': status === 'error',
+          'bg-success-100 border-success-200': status === 'success',
+          'bg-warning-100 border-warning-200': status === 'warning',
+          'bg-negative-100 border-negative-200': status === 'error',
         },
       )}
     >
@@ -38,11 +38,15 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
           />
           <div className="text-md font-normal text-gray-900 ml-2">{title}</div>
         </div>
-        {children && <div className="text-sm font-normal text-gray-600 max-w-[50rem] ml-6 md:ml-0">{children}</div>}
+        {children && <div className="text-sm font-normal text-gray-900 max-w-[50rem] ml-6 md:ml-0">{children}</div>}
       </div>
-      <div className="underline text-xs font-medium mt-2 ml-6 md:mt-0 md:ml-0">
+      <div className="underline text-xs font-medium mt-2 ml-6 md:mt-0 md:ml-0 text-gray-900">
         {actionType === 'copy-url' && <CopyUrl actionText={actionText} />}
-        {actionType === 'redirect' && <Link to="https://external-url.pl">{actionText}</Link>}
+        {actionType === 'redirect' && (
+          <Link className="text-gray-900" to="https://external-url.pl">
+            {actionText}
+          </Link>
+        )}
         {actionType === 'call-to-action' && actionText}
       </div>
     </div>

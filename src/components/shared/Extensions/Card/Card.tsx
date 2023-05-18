@@ -7,7 +7,7 @@ const displayName = 'Extensions.Card';
 
 const Card: FC<PropsWithChildren<CardProps>> = ({ hasShadow, rounded = 's', children, className, ...props }) => (
   <div
-    className={clsx(className, 'border border-gray-200 p-6 flex flex-col w-full', {
+    className={clsx(className, 'bg-base-white border border-gray-200 p-6 flex flex-col w-full', {
       'rounded-lg': rounded === 's',
       'rounded-xl': rounded === 'm',
       'shadow-default': hasShadow,

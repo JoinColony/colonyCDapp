@@ -16,8 +16,8 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData
   const { formatMessage } = useIntl();
 
   return (
-    <div className="sm:w-full md:w-[17.625rem] lg:w-[20.4375rem] bg-base-white">
-      <h3 className="font-semibold text-lg text-gray-900 pb-[1.375rem]">
+    <div className="sm:w-full md:w-[17.625rem] lg:w-[20.4375rem] bg-base-white flex gap-[1.25rem] flex-col">
+      <h3 className="font-semibold text-lg text-gray-900 pb-[0.2rem]">
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
       {sidePanelData.map(
@@ -43,7 +43,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData
             )}
             <Developer title={developer.title} developer={developer.developer} />
             <div className="flex flex-col justify-between">
-              <div className="font-normal text-sm text-gray-600 pb-[0.875rem] pt-[0.625rem]">{permissions.title}</div>
+              <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">{permissions.title}</div>
               <Permissions data={permissions.permissions} />
             </div>
           </Fragment>
