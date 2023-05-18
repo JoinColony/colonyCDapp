@@ -1,4 +1,4 @@
-import { ColonyAction, MotionData } from './graphql';
+import { ColonyAction, ColonyMotion } from './graphql';
 
 export enum StakeSide {
   Motion = 'MOTION',
@@ -10,5 +10,5 @@ export enum StakeSide {
  */
 
 export interface MotionAction extends Omit<ColonyAction, 'motionData'> {
-  motionData: MotionData;
+  motionData: ColonyMotion;
 }
