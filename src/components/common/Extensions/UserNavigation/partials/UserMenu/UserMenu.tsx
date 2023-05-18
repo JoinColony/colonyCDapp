@@ -71,7 +71,7 @@ const UserMenu: FC<UserMenuProps> = ({
         </>
       )}
       <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">
-        <TitledContent title={formatMessage({ id: 'userMenu.optionsTitle' })}>
+        <TitledContent title={{ id: 'userMenu.optionsTitle' }}>
           <ul className="text-lg font-semibold md:font-normal md:text-md text-gray-900">
             <li className="mb-4">
               <Link to="/" className="flex items-center">
@@ -102,7 +102,7 @@ const UserMenu: FC<UserMenuProps> = ({
       </div>
       {isWalletConnected && (
         <div className="w-full mb-6 md:mb-5">
-          <TitledContent title={formatMessage({ id: 'userMenu.other' })}>
+          <TitledContent title={{ id: 'userMenu.other' }}>
             <Link to="/" className="flex items-center text-lg font-semibold md:font-normal md:text-md text-gray-900">
               <Icon name="plugs" appearance={{ size: 'tiny' }} />
               <p className="ml-2">{formatMessage({ id: 'userMenu.disconnectWalletTitle' })}</p>

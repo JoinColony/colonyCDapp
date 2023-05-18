@@ -9,5 +9,5 @@ export interface PopoverBaseProps {
   setTooltipRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
   classNames?: string;
   cardProps?: CardProps;
-  withoutTooltipStyles?: boolean;
+  withTooltipStyles?: boolean;
 }

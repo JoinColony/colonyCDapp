@@ -5,7 +5,7 @@ import PopoverBase from '~shared/Extensions/PopoverBase';
 import Icon from '~shared/Icon';
 import Link from '~shared/Link';
 import styles from './WalletPopover.module.css';
-import WalletPopoverOption from '../../WalletPopoverOption';
+import WalletPopoverOption from '../WalletPopoverOption';
 import Button from '~shared/Extensions/Button';
 import { useAppContext, useMobile } from '~hooks';
 import TitledContent from '~common/Extensions/TitledContent/TitledContent';
@@ -22,7 +22,7 @@ const WalletPopover: FC<WalletPopoverProps> = ({ setTooltipRef, tooltipProps }) 
       setTooltipRef={setTooltipRef}
       tooltipProps={tooltipProps}
       classNames={styles.walletPopover}
-      withoutTooltipStyles
+      withTooltipStyles={false}
     >
       <div className={styles.mobileButtons}>
         <Button mode="tertiaryOutline" isFullRounded onClick={connectWallet}>
@@ -52,13 +52,13 @@ const WalletPopover: FC<WalletPopoverProps> = ({ setTooltipRef, tooltipProps }) 
             {formatMessage({ id: 'walletPopover.connectWallet' })}
           </h4>
           {isMobile && <p className="mt-2 text-sm text-gray-900">{formatMessage({ id: 'walletPopover.content' })}</p>}
-          <TitledContent title="available wallets" isTitleHiddenOnDesktop className="mt-6">
+          <TitledContent title={{ defaultMessage: 'available wallets' }} isTitleHiddenOnDesktop className="mt-6">
             <ul className="md:mt-6">
               <li>
                 {/* @TODO: Add metamask connection to API */}
                 <WalletPopoverOption
-                  title="MetaMask"
-                  description="Requires MetaMask browser extension"
+                  title={{ defaultMessage: 'MetaMask' }}
+                  description={{ defaultMessage: 'Requires MetaMask browser extension' }}
                   icon="metamask"
                   // eslint-disable-next-line no-console
                   onClick={() => console.log('MetaMask connect')}
