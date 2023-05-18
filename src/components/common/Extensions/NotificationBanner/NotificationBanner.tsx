@@ -37,18 +37,16 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
           {!isAlt && (
             <Icon
               name={status === 'success' ? 'check-circle' : 'warning-circle'}
-              className={clsx('min-w-[0.875rem] min-h-[0.875rem] mt-[0.125rem] md:mt-0', {
-                'text-success-400': status === 'success',
-                'text-warning-400': status === 'warning',
-                'text-negative-400': status === 'error',
+              className={clsx('min-w-[0.875rem] min-h-[0.875rem] md:mt-0', {
+                'text-success-400 mt-[0.125rem]': status === 'success',
+                'text-warning-400 mt-[0.225rem]': status === 'warning',
+                'text-negative-400 mt-[0.225rem]': status === 'error',
               })}
             />
           )}
           <div className={`font-normal ${isAlt ? 'text-sm' : 'text-md ml-2'}`}>{title}</div>
         </div>
-        {children && (
-          <div className="text-sm font-normal text-gray-600 max-w-[50rem] ml-6 md:ml-0 mt-1.5">{children}</div>
-        )}
+        <div className="text-sm font-normal text-gray-600 max-w-[50rem] ml-6 md:ml-0 mt-1.5">{children}</div>
       </div>
       <div
         className={`underline text-xs font-medium mt-2 ml-6 md:mt-0 md:ml-2 [&_button]:underline ${
@@ -56,11 +54,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
         }`}
       >
         {actionType === 'copy-url' && <CopyUrl actionText={actionText} />}
-        {actionType === 'redirect' && (
-          <Link className="" to="https://external-url.pl">
-            {actionText}
-          </Link>
-        )}
+        {actionType === 'redirect' && <Link to="https://external-url.pl">{actionText}</Link>}
         {actionType === 'call-to-action' && actionText}
       </div>
     </div>

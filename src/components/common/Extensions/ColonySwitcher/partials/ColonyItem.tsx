@@ -18,7 +18,7 @@ const ColonyItem: FC<ColonyItemProps> = ({ colony, chainName }) => (
             {colony?.metadata?.displayName || colony?.name}
           </div>
         </div>
-        <div className="w-[1.125rem] h-[1.125rem] text-base-white flex">
+        <div className="[&>i>svg]:w-[1.125rem] [&>i>svg]:h-[1.125rem] text-base-white [&>i]:flex">
           <Icon name={chainName} />
         </div>
       </div>

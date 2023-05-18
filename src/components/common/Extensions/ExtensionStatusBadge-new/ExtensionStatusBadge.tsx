@@ -25,11 +25,11 @@ const ExtensionStatusBadge: FC<PropsWithChildren<ExtensionStatusBadgeProps>> = (
         {
           'text-indigo-400 bg-indigo-100': mode === 'coming-soon',
           'text-blue-400 bg-blue-100': mode === 'not-installed' || mode === 'finalizable',
-          'text-green-400 bg-green-100': mode === 'enabled' || mode === 'new',
+          'text-green-400 bg-green-100': mode === 'new',
           'text-red-400 bg-red-100': mode === 'disabled',
           'text-purple-400 bg-purple-100': mode === 'deprecated',
           'text-gray-900 bg-base-white border border-gray-200': mode === 'governance',
-          'text-success-400 bg-success-100': mode === 'staking',
+          'text-success-400 bg-success-100': mode === 'staking' || mode === 'enabled',
           'text-gray-500 bg-gray-100': mode === 'claimed',
         },
       )}

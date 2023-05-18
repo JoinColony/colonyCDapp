@@ -16,10 +16,7 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
 }) => (
   <>
     <div className="relative">
-      <span
-        className="flex items-center justify-center bg-blue-300 w-[2.2725rem] h-[2.2725rem]
-            rounded-full"
-      >
+      <span className="flex items-center justify-center bg-blue-300 w-[2.2725rem] h-[2.2725rem] rounded-full">
         <ColonyAvatar colony={colonyToDisplay as Colony} colonyAddress={colonyToDisplayAddress || ''} size="xxs" />
       </span>
       <div
@@ -37,10 +34,12 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
       </div>
     )}
     <span
-      className={clsx('text-base-black transition-all duration-normal hover:text-gray-600', { 'rotate-180': isOpen })}
+      className={clsx('text-base-black transition-transform duration-normal', {
+        'rotate-180': isOpen,
+      })}
       ref={setTriggerRef}
     >
-      <Icon name="caret-down" appearance={{ size: 'extraTiny' }} />
+      <Icon name="caret-up" appearance={{ size: 'extraTiny' }} />
     </span>
   </>
 );

@@ -426,6 +426,16 @@
     "lightMode": "Light",
     "darkMode": "Dark",
     "help": "Help",
-    "helpAndAccount": "Help & account",
-    "retry": "Retry"
+    "retry": "Retry",
+    "reputation.tab.title": "Your Colony overview",
+    "total.balance": "Total balance",
+    "active": "Active",
+    "staked": "Staked",
+    "balance.in.colony": "Balance in this Colony",
+    "reputation.in.colony": "Total reputation in this Colony",
+    "reputation.points": "Reputation points",
+    "view.all": "View all",
+    "pending.reputation": "pending reputation",
+    "next.update": "Next update",
+    "helpAndAccount": "Help & account"
 }
