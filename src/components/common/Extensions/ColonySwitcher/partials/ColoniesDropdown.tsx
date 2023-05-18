@@ -19,7 +19,7 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({ watchlist = [], isMobile 
   }, {});
 
   return (
-    <div className="h-[70vh] w-full bg-base-white z-50 relative flex flex-col">
+    <div className="w-full bg-base-white z-50 relative flex flex-col">
       {!isMobile && (
         <>
           <div className="flex items-center py-2">
