@@ -33,13 +33,15 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } = usePopperTooltip({
     delayShow: 200,
     placement: 'bottom-end',
-    trigger: 'click',
+    trigger: ['click', 'hover'],
     interactive: true,
   });
 
   const button = (
     <button
       onClick={isMobile ? onOpenModal : noop}
+      onMouseEnter={() => onOpenModal()}
+      onMouseLeave={() => onCloseModal()}
       type="button"
       ref={setTriggerRef}
       className="inline-flex transition-all duration-normal text-gray-900 hover:text-blue-400"
