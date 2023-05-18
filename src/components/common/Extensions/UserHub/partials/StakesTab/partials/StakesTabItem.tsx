@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import ExtensionsStatusBadge from '~common/Extensions/ExtensionStatusBadge-new';
 import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge-new/types';
-import { StakesProp } from '../types';
+import { StakesProps } from '../types';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab.partials.StakesItems';
 
-const StakesItems: FC<StakesProp> = ({ title, date, stake, transfer, status }) => {
+const StakesItems: FC<StakesProps> = ({ title, date, stake, transfer, status }) => {
   return (
     <li className="flex flex-col py-4 border-b-[0.0625rem] border-gray-100">
       <div className="relative w-full">

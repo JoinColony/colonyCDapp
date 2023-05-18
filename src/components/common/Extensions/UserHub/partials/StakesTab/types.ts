@@ -1,6 +1,6 @@
 import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge-new/types';
 
-export interface StakesProp {
+export interface StakesProps {
   key: string;
   title: string;
   date: string;

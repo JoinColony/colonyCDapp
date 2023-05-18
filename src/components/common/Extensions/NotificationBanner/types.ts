@@ -4,6 +4,7 @@ export interface NotificationBannerProps {
   actionText: string;
   actionType: ActionType;
   isFullSize?: boolean;
+  isAlt?: boolean;
 }
 
 type ActionType = 'redirect' | 'copy-url' | 'call-to-action';

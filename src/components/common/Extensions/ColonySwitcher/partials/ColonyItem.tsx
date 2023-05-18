@@ -7,7 +7,7 @@ import { ColonyItemProps } from '../types';
 const displayName = 'common.Extensions.partials.ColonyItem';
 
 const ColonyItem: FC<ColonyItemProps> = ({ colony, chainName }) => (
-  <div className="py-2 px-6 sm:px-0 hover:bg-gray-50 rounded">
+  <div className="px-6 sm:px-0 hover:bg-gray-50 rounded [&_a]:block [&_a]:py-2">
     <NavLink title={colony?.name} to={`/colony/${colony?.name}`} className="group">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
@@ -18,7 +18,7 @@ const ColonyItem: FC<ColonyItemProps> = ({ colony, chainName }) => (
             {colony?.metadata?.displayName || colony?.name}
           </div>
         </div>
-        <div className="[&>i>svg]:w-[1.125rem] [&>i>svg]:h-[1.125rem] [&>i>svg]:fill-base-white [&>i]:flex">
+        <div className="[&>i>svg]:w-[1.125rem] [&>i>svg]:h-[1.125rem] text-base-white [&>i]:flex">
           <Icon name={chainName} />
         </div>
       </div>

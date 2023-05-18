@@ -1,0 +1,3 @@
+.banner {
+  @apply border border-solid rounded-lg flex justify-between min-h-[2.75rem] flex-col md:flex-row md:items-center;
+}
