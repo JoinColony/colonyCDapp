@@ -194,7 +194,11 @@ function* manageVerifiedRecipients({
     });
 
     if (colony.name && navigate) {
-      yield navigate(`/colony/${colony.name}/tx/${txHash}`);
+      yield navigate(`/colony/${colony.name}/tx/${txHash}`, {
+        state: {
+          isRedirect: true,
+        },
+      });
     }
   } catch (error) {
     return yield putError(
