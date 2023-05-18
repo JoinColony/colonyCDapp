@@ -116,6 +116,8 @@ const getDetailItemsMap = (
     recipient,
     token,
     motionData,
+    isMotion,
+    pendingColonyMetadata,
     pendingDomainMetadata,
   } = actionData; // roles,
   const shortenedHash = getShortenedHash(transactionHash || '');
@@ -123,7 +125,11 @@ const getDetailItemsMap = (
   const isSmiteAction = type.includes(
     ColonyActionType.EmitDomainReputationPenalty,
   );
-  const extendedActionType = getExtendedActionType(actionData, colony);
+  const extendedActionType = getExtendedActionType(
+    transactionHash,
+    type,
+    isMotion ? pendingColonyMetadata : colony.metadata,
+  );
   const motionDomain = findDomainByNativeId(
     Number(motionData?.motionDomainId ?? Id.RootDomain),
     colony,

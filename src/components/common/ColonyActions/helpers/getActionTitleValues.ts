@@ -76,8 +76,14 @@ const getMessageDescriptorKeys = (actionType: ColonyActionType) => {
 
 /* Returns the correct message values according to the action type. */
 const getActionTitleValues = (actionData: ColonyAction, colony: Colony) => {
+  const { type, isMotion, transactionHash, pendingColonyMetadata } = actionData;
+
   const updatedItem = mapColonyActionToExpectedFormat(actionData, colony);
-  const actionType = getExtendedActionType(actionData, colony);
+  const actionType = getExtendedActionType(
+    transactionHash,
+    type,
+    isMotion ? pendingColonyMetadata : colony.metadata,
+  );
   const keys = getMessageDescriptorKeys(actionData.type);
 
   return generateMessageValues(updatedItem, keys, {

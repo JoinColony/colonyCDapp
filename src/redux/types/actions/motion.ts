@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
-import { Address, Domain, DomainColor } from '~types';
+import { Address, Colony, Domain, DomainColor } from '~types';
 
 import { ActionTypes } from '../../actionTypes';
 
@@ -150,19 +150,14 @@ export type MotionActionTypes =
   | UniqueActionType<
       ActionTypes.MOTION_EDIT_COLONY,
       {
-        colonyAddress: Address;
-        colonyName: string;
-        colonyDisplayName: string;
+        colony: Colony;
+        colonyDisplayName?: string;
         colonyAvatarImage?: string;
-        colonyAvatarHash?: string;
-        hasAvatarChanged?: boolean;
-        colonyTokens?: Address[];
+        colonyThumbnail?: string;
+        tokenAddresses?: Address[];
         annotationMessage?: string;
-        /*
-         * @TODO I think this will also store the subscribed-to tokens list
-         */
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.MOTION_EDIT_COLONY_ERROR, object>
   | ActionTypeWithMeta<

@@ -26,9 +26,9 @@ export const getDomainDatabaseId = (
   return `${colonyAddress}_${nativeDomainId}`;
 };
 
-export const getMotionDomainDatabaseId = (
+export const getMetadataDatabaseId = (
   colonyAddress: string,
-  txHash: number,
+  txHash: string,
 ) => {
   return `${colonyAddress}_motion-${txHash}`;
 };

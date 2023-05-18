@@ -7,11 +7,10 @@ import {
   Token,
   Domain as ColonyDomain,
   AnyActionType,
-  ColonyAction,
-  Colony,
   ExtendedColonyActionType,
   ActionUserRoles,
   ColonyActionType,
+  ColonyMetadata,
 } from '~types';
 
 import { formatText } from './intl';
@@ -555,24 +554,26 @@ export const formatRolesTitle = (roles: ActionUserRoles[]) => {
  * e.g. UpdateAddressBook, UpdateTokens
  */
 export const getExtendedActionType = (
-  actionData: ColonyAction,
-  colony: Colony,
+  transactionHash: string,
+  type: ColonyActionType,
+  metadata?: ColonyMetadata | null,
 ): AnyActionType => {
-  const changelogItem = colony.metadata?.changelog?.find(
-    (item) => item.transactionHash === actionData.transactionHash,
+  const changelogItem = metadata?.changelog?.find(
+    (item) => item.transactionHash === transactionHash,
   );
 
   if (changelogItem?.haveTokensChanged) {
     return ExtendedColonyActionType.UpdateTokens;
   }
+
   if (changelogItem?.hasWhitelistChanged) {
     return ExtendedColonyActionType.UpdateAddressBook;
   }
 
   // logic for Safe control actions can be added here
 
-  return actionData.type;
+  return type;
 };
 
-export const formatActionType = (actionType: ColonyActionType) =>
+export const formatActionType = (actionType: AnyActionType) =>
   formatText({ id: 'action.type' }, { actionType });

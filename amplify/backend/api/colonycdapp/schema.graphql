@@ -374,6 +374,11 @@ type Colony @model {
   metadata: ColonyMetadata @hasOne(fields: ["id"])
 }
 
+type PendingModifiedTokenAddresses {
+  added: [String!]
+  removed: [String!]
+}
+
 type ColonyMetadata @model {
   id: ID! # colony contract address
   displayName: String!
@@ -382,6 +387,7 @@ type ColonyMetadata @model {
   changelog: [ColonyMetadataChangelog!]
   isWhitelistActivated: Boolean
   whitelistedAddresses: [String!]
+  modifiedTokenAddresses: PendingModifiedTokenAddresses # only present on pendingColonyMetadata for consumption in block ingestor
 }
 
 type ColonyMetadataChangelog {
@@ -711,4 +717,7 @@ type ColonyAction @model {
   pendingDomainMetadataId: ID
   pendingDomainMetadata: DomainMetadata
     @hasOne(fields: ["pendingDomainMetadataId"])
+  pendingColonyMetadataId: ID
+  pendingColonyMetadata: ColonyMetadata
+    @hasOne(fields: ["pendingColonyMetadataId"])
 }

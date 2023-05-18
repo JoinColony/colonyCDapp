@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
-import { string, object, array, boolean, InferType } from 'yup';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
@@ -10,11 +9,10 @@ import { pipe, mapPayload, withMeta } from '~utils/actions';
 import { WizardDialogType } from '~hooks';
 import { formatText } from '~utils/intl';
 import { notNull } from '~utils/arrays';
-import { isAddress } from '~utils/web3';
-import { Token } from '~types';
 
 import { getTokenManagementDialogPayload } from './helpers';
 import TokenManagementDialogForm from './TokenManagementDialogForm';
+import { FormValues, getValidationSchema } from './validation';
 
 const displayName = 'common.TokenManagementDialog';
 
@@ -23,50 +21,11 @@ const MSG = defineMessages({
     id: `${displayName}.errorAddingToken`,
     defaultMessage: `Sorry, there was an error adding this token. Learn more about tokens at: https://colony.io.`,
   },
-  invalidAddress: {
-    id: `${displayName}.invalidAddress`,
-    defaultMessage: 'This is not a valid address',
-  },
-  tokenNotFound: {
-    id: `${displayName}.tokenNotFound`,
-    defaultMessage:
-      'Token data not found. Please check the token contract address.',
-  },
 });
 
 type Props = DialogProps &
   Partial<WizardDialogType<object>> &
   ActionDialogProps;
-
-const validationSchema = object({
-  forceAction: boolean().defined(),
-  tokenAddress: string()
-    .notRequired()
-    .test(
-      'is-address',
-      () => MSG.invalidAddress,
-      (value) => !value || isAddress(value),
-    ),
-  token: object<Token>()
-    .nullable()
-    .test('doesTokenExist', '', function doesTokenExist(value, context) {
-      if (!context.parent.tokenAddress || !!value) {
-        // Skip validation if tokenAddress is empty or token has been found
-        return true;
-      }
-
-      return this.createError({
-        message: formatText(MSG.tokenNotFound),
-        path: 'tokenAddress',
-      });
-    }),
-  selectedTokenAddresses: array()
-    .of(string().address().defined())
-    .notRequired(),
-  annotationMessage: string().max(4000).notRequired(),
-}).defined();
-
-export type FormValues = InferType<typeof validationSchema>;
 
 const TokenManagementDialog = ({
   colony,
@@ -115,25 +74,19 @@ const TokenManagementDialog = ({
            * pass the value over to the motion, since it will always be 1
            */
         }}
-        validationSchema={validationSchema}
+        validationSchema={getValidationSchema(colony)}
         transform={transform}
         onSuccess={handleSuccess}
         onError={handleError}
       >
-        {({ watch }) => {
-          const forceActionValue = watch('forceAction');
-          if (forceActionValue !== isForce) {
-            setIsForce(forceActionValue);
-          }
-          return (
-            <TokenManagementDialogForm
-              colony={colony}
-              back={prevStep && callStep ? () => callStep(prevStep) : undefined}
-              close={close}
-              enabledExtensionData={enabledExtensionData}
-            />
-          );
-        }}
+        <TokenManagementDialogForm
+          colony={colony}
+          back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+          close={close}
+          enabledExtensionData={enabledExtensionData}
+          isForce={isForce}
+          setIsForce={setIsForce}
+        />
       </Form>
     </Dialog>
   );

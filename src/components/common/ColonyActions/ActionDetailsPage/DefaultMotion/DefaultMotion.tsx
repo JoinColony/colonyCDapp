@@ -3,8 +3,8 @@ import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import DetailsWidget from '~shared/DetailsWidget';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
-import { ColonyAction } from '~types';
 import { getMotionState } from '~utils/colonyMotions';
+import { MotionAction } from '~types/motions';
 
 import { DefaultActionContent } from '../DefaultAction';
 import { RefetchMotionState } from '../useGetColonyAction';
@@ -17,7 +17,7 @@ import styles from './DefaultMotion.css';
 const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion';
 
 interface DefaultMotionProps {
-  actionData: ColonyAction;
+  actionData: MotionAction;
   networkMotionState: NetworkMotionState;
   refetchMotionState: RefetchMotionState;
   startPollingAction: (pollingInterval: number) => void;
@@ -34,13 +34,12 @@ const DefaultMotion = ({
 
   const { isVotingReputationEnabled } = useEnabledExtensions();
 
-  if (!colony || !actionData.motionData) {
+  if (!colony) {
     return null;
   }
 
-  const motionState = getMotionState(networkMotionState, actionData.motionData);
-
   const { motionData, showInActionsList } = actionData;
+  const motionState = getMotionState(networkMotionState, motionData);
 
   return (
     <div className={styles.main}>

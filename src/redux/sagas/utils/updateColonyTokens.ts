@@ -12,7 +12,16 @@ import {
   GetTokenFromEverywhereQueryVariables,
 } from '~gql';
 import { Colony } from '~types';
+import { notNull } from '~utils/arrays';
 import { xor } from '~utils/lodash';
+
+/**
+ * Returns an array of the token addresses currently associated with the Colony.
+ */
+export const getExistingTokenAddresses = (colony: Colony) =>
+  colony.tokens?.items
+    .filter(notNull)
+    .map((tokenItem) => tokenItem.token.tokenAddress) || [];
 
 /**
  * Function returning an array of token addresses that were either added to or deleted
@@ -37,6 +46,51 @@ export const getModifiedTokenAddresses = (
       tokenAddress !== nativeTokenAddress && tokenAddress !== ADDRESS_ZERO,
   );
   return modifiedTokenAddress;
+};
+
+export const getPendingModifiedTokenAddresses = (
+  colony: Colony,
+  updatedTokenAddresses?: string[] | null,
+) => {
+  const nativeTokenAddress = colony.nativeToken.tokenAddress;
+  const existingTokenAddresses = getExistingTokenAddresses(colony);
+
+  const modifiedTokenAddresses: { added: string[]; removed: string[] } = {
+    added: [],
+    removed: [],
+  };
+
+  if (!updatedTokenAddresses) {
+    return modifiedTokenAddresses;
+  }
+
+  const prevAddresses = new Set(existingTokenAddresses);
+  const newAddresses = new Set(updatedTokenAddresses);
+
+  // If a new address is not in the previous address set it has been added.
+  // Ignore the chain's default and colony native tokens.
+  newAddresses.forEach((address) => {
+    const hasChanged = !prevAddresses.has(address);
+    const isSecondaryToken =
+      address !== nativeTokenAddress && address !== ADDRESS_ZERO;
+
+    if (isSecondaryToken && hasChanged) {
+      modifiedTokenAddresses.added.push(address);
+    }
+  });
+
+  // If a previous address is not in the new address set, it has been removed.
+  prevAddresses.forEach((address) => {
+    const hasChanged = !newAddresses.has(address);
+    const isSecondaryToken =
+      address !== nativeTokenAddress && address !== ADDRESS_ZERO;
+
+    if (isSecondaryToken && hasChanged) {
+      modifiedTokenAddresses.removed.push(address);
+    }
+  });
+
+  return modifiedTokenAddresses;
 };
 
 export function* updateColonyTokens(
@@ -108,3 +162,11 @@ export function* updateColonyTokens(
     }),
   );
 }
+
+export const getColonyMetadataDatabaseId = (
+  colonyAddress: string,
+  txHash: number,
+) => {
+  // Temp id we use to match metadata object with colony in block ingestor.
+  return `${colonyAddress}_motion-${txHash}`;
+};

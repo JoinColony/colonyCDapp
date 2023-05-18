@@ -40,6 +40,9 @@ fragment ColonyAction on ColonyAction {
   pendingDomainMetadata {
     ...DomainMetadata
   }
+  pendingColonyMetadata {
+    ...ColonyMetadata
+  }
 }
 
 fragment MotionStakeValues on MotionStakeValues {
