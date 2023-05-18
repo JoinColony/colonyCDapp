@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { Tabs as ReactTabs, Tab, TabScreen } from 'react-tabs-scrollable';
 import { useIntl } from 'react-intl';
 import { TabsProps } from './types';
@@ -7,19 +7,14 @@ import Icon from '~shared/Icon';
 
 const displayName = 'Extensions.Tabs';
 
-const Tabs: FC<TabsProps> = ({ items, initialActiveTab = 0 }) => {
+const Tabs: FC<PropsWithChildren<TabsProps>> = ({ items, activeTab, onTabClick, className, children }) => {
   const { formatMessage } = useIntl();
-  const [activeTab, setActiveTab] = React.useState(initialActiveTab);
-
-  const handleOnTabClick = (_, id) => {
-    setActiveTab(id);
-  };
 
   return (
     <>
       <ReactTabs
         activeTab={activeTab}
-        onTabClick={handleOnTabClick}
+        onTabClick={onTabClick}
         tabsUpperContainerClassName={styles.tabList}
         leftNavBtnClassName={styles.navLeftButton}
         rightNavBtnClassName={styles.navRightButton}
@@ -30,13 +25,23 @@ const Tabs: FC<TabsProps> = ({ items, initialActiveTab = 0 }) => {
         navBtnClassName={styles.navButton}
         hideNavBtnsOnMobile={false}
       >
-        {items.map(({ id, title }) => (
-          <Tab key={id}>{formatMessage({ id: `tabs.${id}`, defaultMessage: `${title}` })}</Tab>
+        {items.map(({ id, title, notificationNumber }) => (
+          <Tab key={id}>
+            {formatMessage({ id: `tabs.${id}`, defaultMessage: `${title}` })}
+            {notificationNumber && (
+              <span
+                className="text-blue-400 text-[0.375rem] font-bold bg-blue-100 
+              rounded-[0.125rem] ml-1 w-[0.8125rem] h-[0.8125rem] p-[0.2rem]"
+              >
+                <span>{notificationNumber}</span>
+              </span>
+            )}
+          </Tab>
         ))}
       </ReactTabs>
       {items.map(({ id, content }) => (
-        <TabScreen className={styles.panel} key={id} activeTab={activeTab} index={id}>
-          {content}
+        <TabScreen className={`${className} styles.panel`} key={id} activeTab={activeTab} index={id}>
+          {content || children}
         </TabScreen>
       ))}
     </>

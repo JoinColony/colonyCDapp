@@ -8,7 +8,7 @@ const Permissions: FC<PermissionsProps> = ({ data }) => (
   <div className="flex flex-wrap">
     {data?.map(({ text, key, name, description }) => (
       <span key={key} className="pr-1 pb-1">
-        <UserPermissionsBadge name={name} description={description}>
+        <UserPermissionsBadge name={name} text={text} description={description}>
           {text}
         </UserPermissionsBadge>
       </span>
