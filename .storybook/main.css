@@ -21,7 +21,7 @@
   }
 
   svg:not([class]) {
-    @apply stroke-none;
+    @apply fill-current stroke-none;
   }
 
   #root {

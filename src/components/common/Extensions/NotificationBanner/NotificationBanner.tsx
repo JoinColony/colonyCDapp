@@ -52,7 +52,11 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
       </div>
       <div className={clsx(styles.actionWrapper, { 'ml-0 md:ml-0 md:self-center': isAlt, 'ml-6 md:ml-2': !isAlt })}>
         {actionType === 'copy-url' && <CopyUrl actionText={actionText} />}
-        {actionType === 'redirect' && <Link to="https://external-url.pl">{actionText}</Link>}
+        {actionType === 'redirect' && (
+          <Link className="text-gray-900" to="https://external-url.pl">
+            {actionText}
+          </Link>
+        )}
         {actionType === 'call-to-action' && actionText}
       </div>
     </div>

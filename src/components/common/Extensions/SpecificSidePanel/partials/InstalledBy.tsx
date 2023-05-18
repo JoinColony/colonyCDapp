@@ -7,7 +7,7 @@ const displayName = 'common.Extensions.partials.InstalledBy';
 const InstalledBy: FC<PanelTypeProps> = ({ title, component }) => (
   <div className={styles.panelRow}>
     <div className={styles.panelTitle}>{title}</div>
-    <div>{component}</div>
+    <div className="flex">{component}</div>
   </div>
 );
 

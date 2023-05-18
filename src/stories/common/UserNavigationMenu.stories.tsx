@@ -14,7 +14,7 @@ import Icon from '~shared/Icon';
 import { formatMessage } from '~utils/yup/tests/helpers';
 
 const meta: Meta<typeof UserMenu> = {
-  title: 'Common/UserMenu',
+  title: 'Common/User Menu',
   component: UserMenu,
 };
 
