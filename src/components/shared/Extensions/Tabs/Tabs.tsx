@@ -15,14 +15,14 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({ items, activeTab, onTabClick, 
       <ReactTabs
         activeTab={activeTab}
         onTabClick={onTabClick}
-        tabsUpperContainerClassName={`${className} ${styles.tabList}`}
+        tabsUpperContainerClassName={styles.tabList}
         leftNavBtnClassName={styles.navLeftButton}
         rightNavBtnClassName={styles.navRightButton}
         // @ts-ignore - react-tabs-scrollable has invalid type for this prop
         leftBtnIcon={<Icon name="caret-left" appearance={{ size: 'extraTiny' }} />}
         // @ts-ignore - react-tabs-scrollable has invalid type for this prop
         rightBtnIcon={<Icon name="caret-right" appearance={{ size: 'extraTiny' }} />}
-        navBtnClassName={`${className} ${styles.navButton}`}
+        navBtnClassName={styles.navButton}
         hideNavBtnsOnMobile={false}
       >
         {items.map(({ id, title, notificationNumber }) => (
