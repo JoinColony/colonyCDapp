@@ -54,12 +54,7 @@ fragment ColonyMotion on ColonyMotion {
   databaseMotionId: id
   motionId: nativeMotionId
   motionStakes {
-    raw {
-      ...MotionStakeValues
-    }
-    percentage {
-      ...MotionStakeValues
-    }
+    ...MotionStakes
   }
   usersStakes {
     address
@@ -87,9 +82,7 @@ fragment ColonyMotion on ColonyMotion {
   }
   isFinalized
   voterRecord {
-    address
-    voteCount
-    vote
+    ...VoterRecord
   }
   revealedVotes {
     raw {
@@ -125,4 +118,19 @@ fragment MotionMessage on MotionMessage {
   }
   vote
   amount
+}
+
+fragment VoterRecord on VoterRecord {
+  address
+  voteCount
+  vote
+}
+
+fragment MotionStakes on MotionStakes {
+  raw {
+    ...MotionStakeValues
+  }
+  percentage {
+    ...MotionStakeValues
+  }
 }

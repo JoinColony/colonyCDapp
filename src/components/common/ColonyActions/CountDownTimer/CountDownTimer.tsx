@@ -4,7 +4,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { MotionState } from '~utils/colonyMotions';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import TimerValue from '~shared/TimerValue';
-import { MotionStakes } from '~gql';
+import { MotionStakes } from '~types';
 
 import { RefetchMotionState } from '../ActionDetailsPage';
 import { useMotionCountdown } from './helpers';

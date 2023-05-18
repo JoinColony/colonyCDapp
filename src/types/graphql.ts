@@ -22,6 +22,8 @@ import {
   ColonyBalancesFragment,
   ColonyMotionFragment,
   MotionMessageFragment,
+  MotionStakesFragment,
+  VoterRecordFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -80,3 +82,7 @@ export type MemberUser = MemberUserFragment;
 export type ColonyBalances = ColonyBalancesFragment;
 
 export type ColonyBalance = ColonyBalanceFragment;
+
+export type MotionStakes = MotionStakesFragment;
+
+export type VoterRecord = VoterRecordFragment;

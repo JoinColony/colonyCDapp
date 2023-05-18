@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { MotionStakes, VoterRecord } from '~gql';
+import { MotionStakes, VoterRecord } from '~types';
 import { MotionVote } from '~utils/colonyMotions';
 
 import VoteResultsItem from './VoteResultsItem';
