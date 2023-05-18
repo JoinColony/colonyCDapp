@@ -120,7 +120,7 @@ const AvatarUploader = ({
   appearance,
   avatar,
   avatarPlaceholder,
-  disabled,
+  disabled = false,
   elementOnly,
   extra,
   handleFileAccept,
@@ -178,7 +178,8 @@ const AvatarUploader = ({
       {showButtons && (
         <UploadControls
           handleFileRemove={handleFileRemove}
-          disableRemove={!avatar}
+          disableRemove={!avatar || disabled}
+          disableChoose={disabled}
           open={open}
         />
       )}

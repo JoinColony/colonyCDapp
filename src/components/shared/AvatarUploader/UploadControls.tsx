@@ -10,6 +10,7 @@ interface UploadControlsProps
   extends Pick<AvatarUploaderProps, 'handleFileRemove'> {
   open: () => void;
   disableRemove: boolean;
+  disableChoose?: boolean;
 }
 
 const displayName = 'AvatarUploader.UploadControls';
@@ -17,6 +18,7 @@ const displayName = 'AvatarUploader.UploadControls';
 const UploadControls = ({
   handleFileRemove,
   disableRemove,
+  disableChoose = false,
   open,
 }: UploadControlsProps) => (
   <div className={styles.buttonContainer}>
@@ -30,6 +32,7 @@ const UploadControls = ({
     <Button
       text={{ id: 'button.choose' }}
       onClick={open}
+      disabled={disableChoose}
       dataTest="avatarUploaderChoose"
     />
   </div>
