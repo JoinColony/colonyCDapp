@@ -46,7 +46,9 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
           )}
           <div className={`font-normal ${isAlt ? 'text-sm' : 'text-md ml-2'}`}>{title}</div>
         </div>
-        <div className="text-sm font-normal text-gray-600 max-w-[50rem] ml-6 md:ml-0 mt-1.5">{children}</div>
+        {children && (
+          <div className="text-sm font-normal text-gray-900 max-w-[50rem] ml-6 md:ml-0 mt-1.5">{children}</div>
+        )}
       </div>
       <div
         className={`underline text-xs font-medium mt-2 ml-6 md:mt-0 md:ml-2 [&_button]:underline ${
