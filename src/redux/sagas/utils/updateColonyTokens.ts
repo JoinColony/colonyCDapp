@@ -16,9 +16,8 @@ import { notNull } from '~utils/arrays';
 import { xor } from '~utils/lodash';
 
 /**
- 
+ * Returns an array of the token addresses currently associated with the Colony.
  */
-
 export const getExistingTokenAddresses = (colony: Colony) =>
   colony.tokens?.items
     .filter(notNull)
