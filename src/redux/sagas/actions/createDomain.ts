@@ -12,7 +12,6 @@ import {
   CreateDomainMetadataDocument,
   CreateDomainMetadataMutation,
   CreateDomainMetadataMutationVariables,
-  GetFullColonyByNameDocument,
 } from '~gql';
 import { getDomainDatabaseId } from '~utils/domains';
 import { toNumber } from '~utils/numbers';
@@ -113,7 +112,6 @@ function* createDomainAction({
           description: domainPurpose,
         },
       },
-      refetchQueries: [GetFullColonyByNameDocument],
     });
 
     // if (annotationMessage) {
