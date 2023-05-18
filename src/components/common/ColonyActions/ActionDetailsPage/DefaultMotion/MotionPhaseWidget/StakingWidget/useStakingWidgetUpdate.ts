@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { MotionStakes } from '~gql';
-import { SetStateFn } from '~types';
+import { SetStateFn, MotionStakes } from '~types';
 
 const compareMotionStakes = (
   oldMotionStakes: MotionStakes,

@@ -23,6 +23,8 @@ import {
   ColonyTokensConnectionFragment,
   ColonyMotionFragment,
   MotionMessageFragment,
+  MotionStakesFragment,
+  VoterRecordFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -95,3 +97,6 @@ export interface UnaliasedColonyTokensItem
    */
   id: string;
 }
+export type MotionStakes = MotionStakesFragment;
+
+export type VoterRecord = VoterRecordFragment;
