@@ -111,7 +111,7 @@ const ColonySwitcher = () => {
             type="button"
             aria-label={formatMessage({ id: 'close.dropdown' })}
             onClick={() => setIsOpen(false)}
-            className="[&<i<svg]:fill-gray-400 sm:pr-4"
+            className="text-gray-400 sm:pr-4"
           >
             <Icon name="close" appearance={{ size: 'extraTiny' }} />
           </button>

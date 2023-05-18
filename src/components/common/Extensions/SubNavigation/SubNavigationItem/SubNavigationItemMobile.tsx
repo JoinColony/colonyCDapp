@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import Button from '~shared/Extensions/Button/Button';
-import Icon from '~shared/Icon/Icon';
+import Icon from '~shared/Icon';
 
 import { SubNavigationItemProps } from './types';
 import styles from './SubNavigationItemMobile.module.css';
@@ -34,6 +34,7 @@ const SubNavigationItemMobile: FC<PropsWithChildren<SubNavigationItemProps>> = (
           key="accordion-content"
           initial="hidden"
           animate="visible"
+          exit="hidden"
           variants={accordionAnimation}
           transition={{ duration: 0.4, ease: 'easeOut' }}
           className="overflow-hidden"
