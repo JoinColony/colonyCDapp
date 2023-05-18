@@ -3,8 +3,8 @@ import { useLocation, useParams } from 'react-router-dom';
 
 import { failedLoadingDuration as pollingTimeout } from '~frame/LoadingTemplate';
 import { useGetColonyActionQuery, useGetMotionStateQuery } from '~gql';
-import { Colony } from '~types';
 import { isTransactionFormat } from '~utils/web3';
+import { useColonyContext } from '~hooks';
 
 import { ActionDetailsPageParams } from './ActionDetailsPage';
 
@@ -12,7 +12,8 @@ export type RefetchMotionState = ReturnType<
   typeof useGetMotionStateQuery
 >['refetch'];
 
-export const useGetColonyAction = (colony?: Colony | null) => {
+export const useGetColonyAction = () => {
+  const { colony, refetchColony } = useColonyContext();
   const { transactionHash } = useParams<ActionDetailsPageParams>();
   const isValidTx = isTransactionFormat(transactionHash);
   const skipQuery = !colony || !isValidTx;
@@ -37,6 +38,17 @@ export const useGetColonyAction = (colony?: Colony | null) => {
     const cancelPollingTimer = setTimeout(stopPollingForAction, pollingTimeout);
     return () => clearTimeout(cancelPollingTimer);
   }, [stopPollingForAction]);
+
+  /** Refetch colony when the action loads to update
+   * any fields that might have been modified by the action
+   */
+  useEffect(() => {
+    if (!actionData?.getColonyAction) {
+      return;
+    }
+
+    refetchColony();
+  }, [actionData, refetchColony]);
 
   const { state: locationState } = useLocation();
   /* Don't poll if we've not been redirected from the saga */

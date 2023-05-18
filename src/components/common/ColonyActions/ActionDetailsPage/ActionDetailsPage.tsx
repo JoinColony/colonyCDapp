@@ -43,7 +43,7 @@ const ActionDetailsPage = () => {
     refetchMotionState,
     startPollingForAction,
     stopPollingForAction,
-  } = useGetColonyAction(colony);
+  } = useGetColonyAction();
 
   // const status = action?.transactionStatus;
   if (!colony) {
