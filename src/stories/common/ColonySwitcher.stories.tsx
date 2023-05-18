@@ -66,7 +66,7 @@ const ColonySwitcherWithHooks = () => {
               <button
                 aria-label="Open dropdown"
                 className={clsx('flex items-center justify-between', {
-                  'w-[3.5225rem]': !isMobile,
+                  'w-[3.5rem]': !isMobile,
                 })}
                 onClick={() => setIsOpen((prevState) => !prevState)}
                 type="button"
@@ -117,7 +117,7 @@ const ColonySwitcherWithHooks = () => {
                   type="button"
                   aria-label="Close dropdown"
                   onClick={() => setIsOpen(false)}
-                  className="[&<i<svg]:fill-gray-400 [&<i<svg]:stroke-gray-400 md:pr-4"
+                  className="text-gray-400 md:pr-4"
                 >
                   <Icon name="close" appearance={{ size: 'extraTiny' }} />
                 </button>

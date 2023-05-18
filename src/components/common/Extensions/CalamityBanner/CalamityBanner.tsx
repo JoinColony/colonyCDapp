@@ -21,11 +21,7 @@ const CalamityBanner: FC<PropsWithChildren<CalamityBannerProps>> = ({ children, 
         >
           <div className="flex justify-between md:justify-normal items-start">
             <div className="text-base-white font-medium text-md">{children}</div>
-            <button
-              type="button"
-              className="[&>i>svg]:stroke-base-white [&>i>svg]:fill-base-white md:hidden"
-              onClick={() => setShowBanner(false)}
-            >
+            <button type="button" className="text-base-white md:hidden" onClick={() => setShowBanner(false)}>
               <Icon name="close" appearance={{ size: 'extraTiny' }} />
             </button>
           </div>
@@ -38,7 +34,7 @@ const CalamityBanner: FC<PropsWithChildren<CalamityBannerProps>> = ({ children, 
             </Button>
             <button
               type="button"
-              className="[&>i>svg]:stroke-base-white [&>i>svg]:fill-base-white hidden md:flex"
+              className="text-base-white transition-all duration-normal hidden md:flex hover:text-gray-300"
               onClick={() => setShowBanner(false)}
             >
               <Icon name="close" appearance={{ size: 'extraTiny' }} />

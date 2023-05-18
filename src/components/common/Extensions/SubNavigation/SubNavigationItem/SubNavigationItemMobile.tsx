@@ -34,6 +34,7 @@ const SubNavigationItemMobile: FC<PropsWithChildren<SubNavigationItemProps>> = (
           key="accordion-content"
           initial="hidden"
           animate="visible"
+          exit="hidden"
           variants={accordionAnimation}
           transition={{ duration: 0.4, ease: 'easeOut' }}
           className="overflow-hidden"

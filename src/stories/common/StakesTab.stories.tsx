@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import StakesTab from '~common/Extensions/UserHub/partials/StakesTab/StakesTab';
 
 const meta: Meta<typeof StakesTab> = {
-  title: 'Common/Stakes tab',
+  title: 'Common/User Hub/Stakes tab',
   component: StakesTab,
 };
 

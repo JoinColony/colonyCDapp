@@ -1,22 +1,25 @@
 export interface TransactionsContent {
   key: string;
   title: string;
-  info?: string;
-  state?: 'passed' | 'failed';
+  notificationInfo?: string;
+  status?: 'passed' | 'failed';
   isCurrentAction?: boolean;
+  isPending?: boolean;
 }
 
-export interface TransactionsItem {
+export interface TransactionsItemProps {
   key: string;
   title: string;
   description: string;
   date: string;
-  state?: 'passed' | 'failed';
-  content: TransactionsContent[];
+  status?: 'passed' | 'failed';
+  content?: TransactionsContent[];
+  isOpen?: boolean;
+  onClick?: () => void;
 }
 
 export interface TransactionsProps {
-  items: TransactionsItem[];
+  items: TransactionsItemProps[];
   openIndex?: number;
   onOpenIndexChange?: (newOpenIndex: number | undefined) => void;
 }

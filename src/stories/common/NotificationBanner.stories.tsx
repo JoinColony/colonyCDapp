@@ -6,6 +6,17 @@ import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 const meta: Meta<typeof NotificationBanner> = {
   title: 'Common/Notification Banner',
   component: NotificationBanner,
+  argTypes: {
+    isAlt: {
+      name: 'Is alt?',
+      control: {
+        type: 'boolean',
+      },
+    },
+  },
+  args: {
+    isAlt: false,
+  },
 };
 
 export default meta;
@@ -18,8 +29,9 @@ const NotificationBannerWithHooks = (args) => {
 };
 
 export const Success: Story = {
-  render: () => (
+  render: (args) => (
     <NotificationBannerWithHooks
+      {...args}
       status="success"
       title="The required permissions have been updated. You can now enable the extension."
       actionText="Enable extension"
@@ -29,8 +41,9 @@ export const Success: Story = {
 };
 
 export const Warning: Story = {
-  render: () => (
+  render: (args) => (
     <NotificationBannerWithHooks
+      {...args}
       status="warning"
       title="There is no reputation in this team yet"
       actionText="https://external-url.pl"
@@ -43,8 +56,9 @@ export const Warning: Story = {
 };
 
 export const Error: Story = {
-  render: () => (
+  render: (args) => (
     <NotificationBannerWithHooks
+      {...args}
       status="error"
       title="The Colony is missing permissions required for this extensions"
       actionText="http://example-url.pl"

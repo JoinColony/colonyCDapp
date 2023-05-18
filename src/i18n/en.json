@@ -422,8 +422,10 @@
     "pending": "Pending",
     "stakes": "Stakes",
     "claimStakes": "Claim all stakes",
+    "transactions": "Transactions",
     "lightMode": "Light",
     "darkMode": "Dark",
     "help": "Help",
-    "helpAndAccount": "Help & account"
+    "helpAndAccount": "Help & account",
+    "retry": "Retry"
 }

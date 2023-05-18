@@ -23,6 +23,7 @@ const AccordionContentItem: FC<AccordionContentItemProps> = ({ accordionItem }) 
               key="content"
               initial="hidden"
               animate="visible"
+              exit="hidden"
               variants={accordionAnimation}
               transition={{ duration: 0.4, ease: 'easeOut' }}
               className="overflow-hidden"

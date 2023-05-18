@@ -56,7 +56,7 @@ const ColonySwitcher = () => {
       <button
         aria-label={formatMessage({ id: 'open.dropdown' })}
         className={clsx('flex items-center justify-between', {
-          'w-[3.5225rem]': !isMobile,
+          'w-[3.5rem]': !isMobile,
         })}
         onClick={() => setIsOpen((prevState) => !prevState)}
         type="button"
@@ -110,7 +110,7 @@ const ColonySwitcher = () => {
           type="button"
           aria-label={formatMessage({ id: 'close.dropdown' })}
           onClick={() => setIsOpen(false)}
-          className="[&<i<svg]:fill-gray-400 [&<i<svg]:stroke-gray-400 pr-4"
+          className="text-gray-400  pr-4"
         >
           <Icon name="close" appearance={{ size: 'extraTiny' }} />
         </button>

@@ -10,9 +10,9 @@ const Toast: FC<ToastProps> = ({ type = 'success', title, description, linkName,
   <div className="flex bg-base-white relative">
     <div
       className={clsx({
-        '[&>i>svg]:fill-success-400 [&>i>svg]:stroke-success-400': type === 'success',
-        '[&>i>svg]:fill-warning-400 [&>i>svg]:stroke-warning-400': type === 'alert',
-        '[&>i>svg]:fill-negative-400 [&>i>svg]:stroke-negative-400': type === 'warning',
+        'text-success-400': type === 'success',
+        'text-warning-400': type === 'alert',
+        'text-negative-400': type === 'warning',
       })}
     >
       <Icon
