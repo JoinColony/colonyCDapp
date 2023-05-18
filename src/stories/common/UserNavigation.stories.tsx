@@ -9,7 +9,7 @@ import UserAvatar from '~shared/Extensions/UserAvatar';
 import Icon from '~shared/Icon';
 
 const meta: Meta<typeof UserNavigation> = {
-  title: 'Common/UserNavigation',
+  title: 'Common/User Navigation',
   component: UserNavigation,
 };
 
