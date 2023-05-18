@@ -1,5 +1,6 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
+import Icon from '~shared/Icon';
 import styles from './Tooltip.module.css';
 import { TooltipProps } from './types';
 
@@ -53,7 +54,16 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
               }`,
             })}
           />
-          <div className="max-w-[15.625rem] flex flex-col items-start">{tooltipContent}</div>
+          <div className="max-w-[15.625rem] flex flex-col items-start">
+            {isSuccess ? (
+              <div className="flex items-center [&>i>svg]:fill-base-white gap-2">
+                <Icon name="check" appearance={{ size: 'extraTiny' }} />
+                {tooltipContent}
+              </div>
+            ) : (
+              tooltipContent
+            )}
+          </div>
         </div>
       )}
     </>

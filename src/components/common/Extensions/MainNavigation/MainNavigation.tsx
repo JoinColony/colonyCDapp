@@ -14,16 +14,10 @@ const MainNavigation: FC = () => {
 
   return (
     <div className="py-6 sm:py-0">
-      {isMobile && (
-        <div className="inner">
-          top navigation
-          <div className="border-t border-gray-200 mt-3 mb-3" />
-        </div>
-      )}
       <Nav items={navMenuItems} />
       {isMobile && (
         <>
-          <div className="border-t border-gray-200 mx-6 mt-3 mb-3" />
+          <div className="border-t border-gray-200 mx-6 mb-3" />
           <SubNavigationMobile />
           <div className="flex flex-col items-center justify-between mx-6 border-t border-gray-200 mt-4">
             <div className="mb-6 mt-6">

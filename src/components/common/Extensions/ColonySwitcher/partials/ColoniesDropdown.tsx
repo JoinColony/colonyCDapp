@@ -19,7 +19,7 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({ watchlist = [], isMobile 
   }, {});
 
   return (
-    <div className="h-[24.75rem] p-1 w-full">
+    <div className="h-[70vh] w-full bg-base-white z-50 relative flex flex-col">
       {!isMobile && (
         <>
           <div className="flex items-center py-2">
@@ -34,7 +34,7 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({ watchlist = [], isMobile 
               {colonyToDisplay?.metadata?.displayName || colonyToDisplay?.name}
             </div>
           </div>
-          <div className="w-full h-[0.0625rem] bg-gray-200 md:my-2" />
+          <div className="w-full h-[0.0625rem] bg-gray-200" />
         </>
       )}
       {Object.keys(groupByCategory).map((key) => (
