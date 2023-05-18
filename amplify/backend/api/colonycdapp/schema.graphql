@@ -261,6 +261,7 @@ type ChainMetadata {
   transactionHash: String
   logIndex: Int
   blockNumber: Int
+  someRandomValueThatDoesNotExist: String
 }
 
 type ProfileMetadata {
