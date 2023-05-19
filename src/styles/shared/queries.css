@@ -1,3 +1,5 @@
-@value query850: (max-width: 26.75rem);
+/* 53.125rem - 1px */
+@value query850: (max-width: 53.0625rem);
 
-@value query1024: (max-width: 1024px);
+/* 64rem - 1px */
+@value query1024: (max-width: 63.9375rem);

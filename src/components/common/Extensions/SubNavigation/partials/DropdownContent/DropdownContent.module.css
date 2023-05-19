@@ -7,5 +7,5 @@
 }
 
 .infoWrapper {
-  @apply mt-6 mb-6;
+  @apply flex items-center justify-center mt-6 mb-6;
 }
