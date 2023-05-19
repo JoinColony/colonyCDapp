@@ -56,7 +56,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
           />
           <div className="max-w-[15.625rem] flex flex-col items-start">
             {isSuccess ? (
-              <div className="flex items-center [&>i>svg]:fill-base-white gap-2">
+              <div className="flex items-center text-base-white gap-2">
                 <Icon name="check" appearance={{ size: 'extraTiny' }} />
                 {tooltipContent}
               </div>

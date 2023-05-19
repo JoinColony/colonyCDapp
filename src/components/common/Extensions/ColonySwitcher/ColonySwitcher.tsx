@@ -51,6 +51,8 @@ const ColonySwitcher = () => {
     },
   );
 
+  const watchlistSorted = [...watchlist].sort(sortByDate);
+
   return (
     <div className="sm:mr-[2.5rem] mt-4 sm:mt-0">
       <div className="flex justify-between relative" ref={ref}>
@@ -93,13 +95,13 @@ const ColonySwitcher = () => {
                     <SpinnerLoader appearance={{ size: 'medium' }} />
                   </div>
                 )}
-                {!!watchlist.length && !userLoading && <ColoniesDropdown watchlist={[...watchlist].sort(sortByDate)} />}
+                {!!watchlist.length && !userLoading && <ColoniesDropdown watchlist={watchlistSorted} />}
               </div>
             )}
             {isMobile && (
               <ColonyDropdownMobile isOpen={isOpen} userLoading={userLoading}>
                 {!!watchlist.length && !userLoading && (
-                  <ColoniesDropdown watchlist={[...watchlist].sort(sortByDate)} isMobile={isMobile} />
+                  <ColoniesDropdown watchlist={watchlistSorted} isMobile={isMobile} />
                 )}
               </ColonyDropdownMobile>
             )}
