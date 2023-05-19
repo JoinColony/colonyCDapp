@@ -62,7 +62,7 @@ const UserColonies = ({
           : {
               friendlyUsername: (
                 <span
-                  title={profile?.displayName || name}
+                  title={profile?.displayName ?? name ?? ''}
                   className={styles.userHighlight}
                 >
                   {profile?.displayName || name}
