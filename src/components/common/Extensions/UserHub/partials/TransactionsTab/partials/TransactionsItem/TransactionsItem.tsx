@@ -9,7 +9,7 @@ import { TransactionsItemProps } from '../../types';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import TransactionsHeader from '../TransactionsHeader';
 
-export const displayName = 'common.Extensions.UserHub.partials.TransactionsItem';
+export const displayName = 'common.Extensions.UserHub.TransactionsTab.partials.TransactionsItem';
 
 const TransactionsItem: FC<TransactionsItemProps> = ({
   title,
