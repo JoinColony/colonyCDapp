@@ -29,7 +29,7 @@ exports.handler = async (event) => {
         },
       } = motionData;
 
-      // Motion did not go to a vote
+      // Motion failed without going to a vote
       if (yayPercent !== '100') {
         await updateStakerRewardsInDB(
           colonyAddress,
@@ -48,8 +48,6 @@ exports.handler = async (event) => {
       }
     }
 
-    const didPass = didMotionPass(motionData);
-
     if (
       motionState === MotionState.Reveal &&
       !motionStateHistory.inRevealPhase
@@ -66,6 +64,18 @@ exports.handler = async (event) => {
       motionState === MotionState.Finalizable ||
       motionState === MotionState.Finalized
     ) {
+      if (
+        // If the motion is finalizable, and we have voted, we expect the revealed votes to be populated to the db.
+        // If they have not yet been added, don't update the messages, else we'll show an incorrect vote outcome.
+        motionStateHistory.hasVoted &&
+        motionData.revealedVotes.raw.yay === '0' &&
+        motionData.revealedVotes.raw.nay === '0'
+      ) {
+        return motionState;
+      }
+
+      const didPass = didMotionPass(motionData);
+
       // Check if the motion passed and the messages have not already been stored in the db
       if (didPass && !motionStateHistory.hasPassed) {
         const newMessages = [];

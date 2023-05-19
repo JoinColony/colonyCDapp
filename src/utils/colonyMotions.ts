@@ -86,6 +86,18 @@ export const getMotionState = (
           return MotionState.Passed;
         }
 
+        if (
+          BigNumber.from(yayVotes).isZero() &&
+          BigNumber.from(nayVotes).isZero()
+        ) {
+          /*
+           * If the motion is finalizable, and we have voted, and the revealed votes haven't yet been populated to the db,
+           * we shouldn't display a passed/failed tag as we don't yet know the vote outcome.
+           * Instead, we show the previous stage's tag, until the vote outcome is updated in the db.
+           */
+          return MotionState.Reveal;
+        }
+
         return MotionState.Failed;
       }
 
