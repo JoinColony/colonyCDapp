@@ -8,7 +8,7 @@ import styles from './DropdownContent.module.css';
 import { MSG } from './consts';
 import LearnMore from '~shared/Extensions/LearnMore';
 
-const displayName = 'common.Extensions.SubNavigation.partils.DropdownContent.PayDropdown';
+const displayName = 'common.Extensions.SubNavigation.partials.DropdownContent.PayDropdown';
 
 const PayDropdown: FC<PropsWithChildren> = () => (
   <div className="text-gray-400 text-xs">
