@@ -1,12 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, Id } from '@colony/colony-js';
+
 import { Action, ActionTypes, AllActions } from '~redux';
-import {
-  createGroupTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
-import { putError, takeFrom } from '../utils';
 import {
   transactionAddParams,
   transactionPending,
@@ -21,10 +16,16 @@ import {
 import { getDomainDatabaseId } from '~utils/domains';
 import { toNumber } from '~utils/numbers';
 
+import {
+  createGroupTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
+import { putError, takeFrom } from '../utils';
+
 function* createDomainAction({
   payload: {
-    colonyAddress,
-    colonyName,
+    colony,
     domainName,
     domainColor,
     domainPurpose,
@@ -59,7 +60,7 @@ function* createDomainAction({
     yield createGroupTransaction(createDomain, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'addDomainWithProofs(uint256)',
-      identifier: colonyAddress,
+      identifier: colony.colonyAddress,
       params: [],
       ready: false,
     });
@@ -105,7 +106,7 @@ function* createDomainAction({
       mutation: CreateDomainMetadataDocument,
       variables: {
         input: {
-          id: getDomainDatabaseId(colonyAddress, nativeDomainId),
+          id: getDomainDatabaseId(colony.colonyAddress, nativeDomainId),
           name: domainName,
           color: domainColor,
           description: domainPurpose,
@@ -155,8 +156,8 @@ function* createDomainAction({
       meta,
     });
 
-    if (colonyName) {
-      navigate(`/colony/${colonyName}/tx/${transactionHash}`, {
+    if (navigate) {
+      navigate(`/colony/${colony.name}/tx/${transactionHash}`, {
         state: { isRedirect: true },
       });
     }
