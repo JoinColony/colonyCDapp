@@ -1,17 +1,14 @@
 import React, { PropsWithChildren, FC } from 'react';
 import { FormattedMessage } from 'react-intl';
-
 import Button from '~shared/Extensions/Button/Button';
 import { LEARN_MORE_PAYMENTS } from '~constants';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge-new';
-
 import LinkItem from '../LinkItem';
-
 import styles from './DropdownContent.module.css';
 import { MSG } from './consts';
 import LearnMore from '~shared/Extensions/LearnMore';
 
-const displayName = 'common.Extensions.SubNavigation.partials.DropdownContent.PayDropdown';
+const displayName = 'common.Extensions.SubNavigation.partils.DropdownContent.PayDropdown';
 
 const PayDropdown: FC<PropsWithChildren> = () => (
   <div className="text-gray-400 text-xs">

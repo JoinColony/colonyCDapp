@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import SubNavigation from './SubNavigation';
 
 const meta: Meta<typeof SubNavigation> = {
-  title: 'Common/SubNavigation',
+  title: 'Common/Sub Navigation',
   component: SubNavigation,
   parameters: {
     layout: 'fullscreen',
