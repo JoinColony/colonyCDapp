@@ -24,7 +24,7 @@ export interface Props {
   placeholderIcon?: string;
 
   /** Avatar size (default is between `s` and `m`) */
-  size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
+  size?: 'xxxs' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
 
   /** Title for a11y */
   title: string;
