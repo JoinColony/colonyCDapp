@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { ActionButton } from '~shared/Button';
@@ -19,7 +19,10 @@ const displayName = 'common.UnclaimedTransfers.UnclaimedTransfersItem';
 const MSG = defineMessages({
   buttonClaim: {
     id: `${displayName}.buttonClaim`,
-    defaultMessage: 'Claim for colony',
+    defaultMessage: `{isClaimed, select, 
+      false {Claim for colony}
+      other {Claimed}
+    }`,
   },
   from: {
     id: `${displayName}.from`,
@@ -37,6 +40,7 @@ interface Props {
 
 const UnclaimedTransfersItem = ({ claim }: Props) => {
   const { colony, canInteractWithColony } = useColonyContext();
+  const [isClaimed, setIsClaimed] = useState(false);
 
   const token = claim?.token;
 
@@ -72,12 +76,14 @@ const UnclaimedTransfersItem = ({ claim }: Props) => {
           </div>
           <ActionButton
             text={MSG.buttonClaim}
+            textValues={{ isClaimed }}
             className={styles.button}
             submit={ActionTypes.CLAIM_TOKEN}
             error={ActionTypes.CLAIM_TOKEN_ERROR}
             success={ActionTypes.CLAIM_TOKEN_SUCCESS}
             transform={transform}
-            disabled={!canInteractWithColony}
+            onSuccess={() => setIsClaimed(true)}
+            disabled={!canInteractWithColony || isClaimed}
             dataTest="claimForColonyButton"
           />
         </div>
