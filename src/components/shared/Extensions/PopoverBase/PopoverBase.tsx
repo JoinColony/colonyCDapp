@@ -11,14 +11,14 @@ const PopoverBase: FC<PropsWithChildren<PopoverBaseProps>> = ({
   classNames,
   children,
   cardProps,
-  withoutTooltipStyles,
+  withTooltipStyles = true,
 }) => {
   return (
     <div
       ref={setTooltipRef}
       {...tooltipProps({
         className: clsx(classNames, {
-          'z-[9999] tooltip-container': !withoutTooltipStyles,
+          'z-[9999] tooltip-container': withTooltipStyles,
         }),
       })}
     >

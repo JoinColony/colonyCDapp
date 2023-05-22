@@ -11,7 +11,7 @@ const displayName = 'common.Extensions.ImageCarousel';
 const ImageCarousel: FC<ImageCarouselProps> = ({ transitionTime = 300, slideUrls = images }) => {
   const windowSize = useWindowSize();
   const width = windowSize?.width ?? 0;
-  const setSlidePercentage = (width >= 1024 && 90) || (width >= 428 && 65) || (width >= 427 && 100);
+  const setSlidePercentage = (width >= 1024 && 90) || (width >= 850 && 65) || (width >= 427 && 100);
 
   return (
     <div className={styles.carouselWrapper}>

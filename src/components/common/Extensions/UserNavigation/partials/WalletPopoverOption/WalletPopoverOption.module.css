@@ -1,0 +1,3 @@
+.walletPopoverOption {
+  @apply border border-gray-100 rounded flex items-center justify-between md:w-[26.125rem] bg-gray-25 p-4 transition-colors duration-normal hover:bg-blue-100 hover:border-blue-400 w-full;
+}

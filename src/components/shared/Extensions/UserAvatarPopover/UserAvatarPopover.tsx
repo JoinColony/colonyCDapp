@@ -80,7 +80,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
               setTooltipRef={setTooltipRef}
               tooltipProps={getTooltipProps}
               classNames="max-w-[20rem]"
-              withoutTooltipStyles
+              withTooltipStyles={false}
               cardProps={{ rounded: 's' }}
             >
               {content}
