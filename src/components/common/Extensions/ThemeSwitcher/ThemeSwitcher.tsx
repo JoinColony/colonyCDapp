@@ -24,7 +24,7 @@ const ThemeSwitcher: FC = () => {
         })}
       />
       <span className="w-1/2 flex items-center justify-center z-10">
-        <Icon name="sun" className="w-[0.9375rem] h-[0.9375rem]" />
+        <Icon name="sun" appearance={{ size: 'tiny' }} />
         <p className="text-md font-medium font-inter text-gray-900 ml-2">{formatMessage({ id: 'lightMode' })}</p>
       </span>
       <span
@@ -33,7 +33,7 @@ const ThemeSwitcher: FC = () => {
           'text-gray-900': isLightMode,
         })}
       >
-        <Icon name="moon-stars" className="w-[0.9375rem] h-[0.9375rem]" />
+        <Icon name="moon-stars" appearance={{ size: 'tiny' }} />
         <p className="text-md font-medium font-inter ml-2">{formatMessage({ id: 'darkMode' })}</p>
       </span>
     </button>

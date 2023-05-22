@@ -76,7 +76,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <li className="mb-4">
               <Link to="/" className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Icon name="circles-three-plus" className="w-[0.6875rem] h-[0.6875rem]" />
+                  <Icon name="circles-three-plus" appearance={{ size: 'extraTiny' }} />
                   <p className="ml-2">{formatMessage({ id: 'userMenu.getStartedTitle' })}</p>
                 </div>
               </Link>
@@ -84,7 +84,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <li className="mb-4">
               <Link to="/" className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Icon name="lifebuoy" className="w-[0.8125rem] h-[0.8125rem]" />
+                  <Icon name="lifebuoy" appearance={{ size: 'extraTiny' }} />
                   <p className="ml-2">{formatMessage({ id: 'userMenu.contactAndSupportTitle' })}</p>
                 </div>
                 <Icon name="caret-right" className="w-[0.6875rem] h-[0.6875rem]" />
@@ -93,7 +93,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <li className="mb-4">
               <Link to="/" className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Icon name="code" className="w-[0.9375rem] h-3" />
+                  <Icon name="code" appearance={{ size: 'extraTiny' }} />
                   <p className="ml-2">{formatMessage({ id: 'userMenu.developersTitle' })}</p>
                 </div>
                 <Icon name="caret-right" className="w-[0.6875rem] h-[0.6875rem]" />
@@ -102,7 +102,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <li>
               <Link to="/" className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Icon name="briefcase" className="w-[0.8125rem] h-3" />
+                  <Icon name="briefcase" appearance={{ size: 'extraTiny' }} />
                   <p className="ml-2">{formatMessage({ id: 'userMenu.legalAndPrivacyTitle' })}</p>
                 </div>
                 <Icon name="caret-right" className="w-[0.6875rem] h-[0.6875rem]" />
