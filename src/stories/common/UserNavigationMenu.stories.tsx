@@ -89,7 +89,7 @@ const UserNavigationMenuNotConnected = () => {
         <div className="flex items-center gap-1">
           {isButtonVisible && (
             <Button
-              mode="Quinary"
+              mode="quinary"
               isFullRounded
               setTriggerRef={setWalletTriggerRef}
               onClick={() => isMobile && setIsWalletButtonVisible((prevState) => !prevState)}
@@ -116,7 +116,7 @@ const UserNavigationMenuNotConnected = () => {
                   'px-4 py-2.5 border-base-white': visible && isMobile,
                   'p-0': !visible && isMobile,
                 })}
-                mode="Quinary"
+                mode="quinary"
                 isFullRounded
                 setTriggerRef={setTriggerRef}
                 onClick={() => isMobile && setIsButtonVisible((prevState) => !prevState)}
@@ -187,7 +187,7 @@ const UserNavigationMenuConnected = () => {
                 'px-4 py-2.5 border-base-white': visible && isMobile,
                 'p-0': !visible && isMobile,
               })}
-              mode="Quinary"
+              mode="quinary"
               isFullRounded
               setTriggerRef={setTriggerRef}
               onClick={() => isMobile && setIsButtonVisible((prevState) => !prevState)}

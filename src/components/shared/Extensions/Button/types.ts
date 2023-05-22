@@ -8,7 +8,7 @@ export type ButtonMode =
   | 'secondarySolid'
   | 'secondaryOutline'
   | 'tertiaryOutline'
-  | 'Quinary'
+  | 'quinary'
   | 'quaternaryOutline'
   | 'textButton'
   | 'pending';
