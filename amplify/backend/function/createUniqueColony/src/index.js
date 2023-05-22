@@ -127,7 +127,7 @@ exports.handler = async (event) => {
     {
       input: {
         id: checksummedAddress,
-        colonyNativeTokenId: checksummedToken,
+        nativeTokenId: checksummedToken,
         name,
         type,
         chainMetadata,
