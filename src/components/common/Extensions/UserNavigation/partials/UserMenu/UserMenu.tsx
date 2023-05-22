@@ -87,7 +87,7 @@ const UserMenu: FC<UserMenuProps> = ({
                   <Icon name="lifebuoy" appearance={{ size: 'extraTiny' }} />
                   <p className="ml-2">{formatMessage({ id: 'userMenu.contactAndSupportTitle' })}</p>
                 </div>
-                <Icon name="caret-right" className="w-[0.6875rem] h-[0.6875rem]" />
+                <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
               </Link>
             </li>
             <li className="mb-4">
@@ -96,7 +96,7 @@ const UserMenu: FC<UserMenuProps> = ({
                   <Icon name="code" appearance={{ size: 'extraTiny' }} />
                   <p className="ml-2">{formatMessage({ id: 'userMenu.developersTitle' })}</p>
                 </div>
-                <Icon name="caret-right" className="w-[0.6875rem] h-[0.6875rem]" />
+                <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
               </Link>
             </li>
             <li>
@@ -105,7 +105,7 @@ const UserMenu: FC<UserMenuProps> = ({
                   <Icon name="briefcase" appearance={{ size: 'extraTiny' }} />
                   <p className="ml-2">{formatMessage({ id: 'userMenu.legalAndPrivacyTitle' })}</p>
                 </div>
-                <Icon name="caret-right" className="w-[0.6875rem] h-[0.6875rem]" />
+                <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
               </Link>
             </li>
           </ul>
