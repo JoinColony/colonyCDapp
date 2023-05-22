@@ -26,14 +26,6 @@
   @apply text-md h-[2.5rem] px-4 py-2.5 bg-base-white text-gray-700 border disabled:text-gray-300;
 }
 
-.quaternaryOutline {
-  @apply text-md h-[2.5rem] px-4 py-2.5 bg-base-white text-blue-400 border border-blue-400 hover:bg-blue-400 hover:text-base-white disabled:text-gray-300;
-}
-
-.quinary {
-  @apply text-md h-[2.5rem] px-4 py-2.5 bg-base-white text-gray-700 border disabled:text-gray-300;
-}
-
 .textButton {
   @apply text-sm rounded-none text-gray-900 hover:text-blue-400 disabled:text-gray-400;
 }
