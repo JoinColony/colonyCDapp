@@ -56,7 +56,6 @@ export type Colony = {
   balances?: Maybe<ColonyBalances>;
   chainFundsClaim?: Maybe<ColonyChainFundsClaim>;
   chainMetadata: ChainMetadata;
-  colonyNativeTokenId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   domains?: Maybe<ModelDomainConnection>;
   extensions?: Maybe<ModelColonyExtensionConnection>;
@@ -66,6 +65,7 @@ export type Colony = {
   motionsWithUnclaimedStakes?: Maybe<Array<ColonyUnclaimedStake>>;
   name: Scalars['String'];
   nativeToken: Token;
+  nativeTokenId: Scalars['ID'];
   roles?: Maybe<ModelColonyRoleConnection>;
   status?: Maybe<ColonyStatus>;
   tokens?: Maybe<ModelColonyTokensConnection>;
@@ -543,10 +543,10 @@ export type CreateColonyInput = {
   balances?: InputMaybe<ColonyBalancesInput>;
   chainFundsClaim?: InputMaybe<ColonyChainFundsClaimInput>;
   chainMetadata: ChainMetadataInput;
-  colonyNativeTokenId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
   motionsWithUnclaimedStakes?: InputMaybe<Array<ColonyUnclaimedStakeInput>>;
   name: Scalars['String'];
+  nativeTokenId: Scalars['ID'];
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
   version: Scalars['Int'];
@@ -1070,8 +1070,8 @@ export type ModelColonyActionTypeInput = {
 
 export type ModelColonyConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyConditionInput>>>;
-  colonyNativeTokenId?: InputMaybe<ModelIdInput>;
   name?: InputMaybe<ModelStringInput>;
+  nativeTokenId?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelColonyConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyConditionInput>>>;
   type?: InputMaybe<ModelColonyTypeInput>;
@@ -1121,9 +1121,9 @@ export type ModelColonyExtensionFilterInput = {
 
 export type ModelColonyFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyFilterInput>>>;
-  colonyNativeTokenId?: InputMaybe<ModelIdInput>;
   id?: InputMaybe<ModelIdInput>;
   name?: InputMaybe<ModelStringInput>;
+  nativeTokenId?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelColonyFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyFilterInput>>>;
   type?: InputMaybe<ModelColonyTypeInput>;
@@ -1694,6 +1694,7 @@ export type ModelSubscriptionColonyFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyFilterInput>>>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   name?: InputMaybe<ModelSubscriptionStringInput>;
+  nativeTokenId?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyFilterInput>>>;
   type?: InputMaybe<ModelSubscriptionStringInput>;
   version?: InputMaybe<ModelSubscriptionIntInput>;
@@ -2654,6 +2655,7 @@ export type ProfileMetadataInput = {
 export type Query = {
   __typename?: 'Query';
   getActionsByColony?: Maybe<ModelColonyActionConnection>;
+  getColoniesByNativeTokenId?: Maybe<ModelColonyConnection>;
   getColony?: Maybe<Colony>;
   getColonyAction?: Maybe<ColonyAction>;
   getColonyActionByMotionId?: Maybe<ModelColonyActionConnection>;
@@ -2726,6 +2728,15 @@ export type QueryGetActionsByColonyArgs = {
   createdAt?: InputMaybe<ModelStringKeyConditionInput>;
   filter?: InputMaybe<ModelColonyActionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+export type QueryGetColoniesByNativeTokenIdArgs = {
+  filter?: InputMaybe<ModelColonyFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nativeTokenId: Scalars['ID'];
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
@@ -3676,10 +3687,10 @@ export type UpdateColonyInput = {
   balances?: InputMaybe<ColonyBalancesInput>;
   chainFundsClaim?: InputMaybe<ColonyChainFundsClaimInput>;
   chainMetadata?: InputMaybe<ChainMetadataInput>;
-  colonyNativeTokenId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
   motionsWithUnclaimedStakes?: InputMaybe<Array<ColonyUnclaimedStakeInput>>;
   name?: InputMaybe<Scalars['String']>;
+  nativeTokenId?: InputMaybe<Scalars['ID']>;
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
   version?: InputMaybe<Scalars['Int']>;
