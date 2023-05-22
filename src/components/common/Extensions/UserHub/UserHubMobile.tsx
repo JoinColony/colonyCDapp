@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, KeyboardEvent } from 'react';
 import { useMobile } from '~hooks';
 import Icon from '~shared/Icon';
 import { UserHubMobileProps } from './types';
@@ -19,7 +19,7 @@ const UserHubMobile: FC<UserHubMobileProps> = ({ selectedTab, handleChange, tabL
     setIsOptionsOpen(false);
   };
 
-  const handleKeyDown = (index: number) => (event) => {
+  const handleKeyDown = (index: number) => (event: KeyboardEvent<HTMLElement>) => {
     switch (event.key) {
       case ' ':
       case 'SpaceBar':
@@ -32,7 +32,7 @@ const UserHubMobile: FC<UserHubMobileProps> = ({ selectedTab, handleChange, tabL
     }
   };
 
-  const handleListKeyDown = (event) => {
+  const handleListKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     switch (event.key) {
       case 'Escape':
         event.preventDefault();
