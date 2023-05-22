@@ -8,6 +8,7 @@ import styles from './TransactionsItem.module.css';
 import { TransactionsItemProps } from '../../types';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import TransactionsHeader from '../TransactionsHeader';
+import { TRANSACTION_STATUSES } from '~types';
 
 export const displayName = 'common.Extensions.UserHub.TransactionsTab.partials.TransactionsItem';
 
@@ -15,7 +16,7 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
   title,
   description,
   date,
-  status = 'passed',
+  status,
   content,
   isOpen,
   onClick,
@@ -58,24 +59,32 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                   key={item.key}
                   className={clsx(styles.listItem, {
                     'font-semibold text-gray-900': item.isCurrentAction,
-                    'before:bg-success-400': item.isCurrentAction && item.status === 'passed',
-                    'before:bg-negative-400': item.isCurrentAction && item.status === 'failed',
-                    'before:bg-blue-400': item.isCurrentAction && item.isPending,
+                    'before:bg-success-400':
+                      item.isCurrentAction &&
+                      (item.status === TRANSACTION_STATUSES.READY || item.status === TRANSACTION_STATUSES.SUCCEEDED),
+                    'before:bg-negative-400': item.isCurrentAction && item.status === TRANSACTION_STATUSES.FAILED,
+                    'before:!bg-blue-400': item.isCurrentAction && item.isPending,
                   })}
                 >
                   <div className="flex justify-between items-center">
                     <h4>
                       {index + 1}. {item.title}
                     </h4>
-                    {item.status && (
+                    {item.status && !item.isPending && (
                       <div
                         className={clsx('flex ml-2', {
-                          'text-success-400': item.status === 'passed',
-                          'text-negative-400': item.status === 'failed',
+                          'text-success-400':
+                            item.status === TRANSACTION_STATUSES.READY ||
+                            item.status === TRANSACTION_STATUSES.SUCCEEDED,
+                          'text-negative-400': TRANSACTION_STATUSES.FAILED,
                         })}
                       >
                         <Icon
-                          name={item.status === 'passed' ? 'check-circle' : 'warning-circle'}
+                          name={
+                            item.status === TRANSACTION_STATUSES.READY || item.status === TRANSACTION_STATUSES.SUCCEEDED
+                              ? 'check-circle'
+                              : 'warning-circle'
+                          }
                           appearance={{ size: 'tiny' }}
                         />
                       </div>
