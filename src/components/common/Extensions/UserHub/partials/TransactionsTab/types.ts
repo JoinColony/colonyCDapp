@@ -1,23 +1,23 @@
-type StatusType = 'passed' | 'failed';
+import { TRANSACTION_STATUSES } from '~types';
 
 export interface TransactionHeaderProps {
   title: string;
   description: string;
   date: string;
-  status?: StatusType;
+  status: TRANSACTION_STATUSES;
 }
 
 export interface TransactionsContent {
   key: string;
   title: string;
   notificationInfo?: string;
-  status?: StatusType;
+  status?: TRANSACTION_STATUSES;
   isCurrentAction?: boolean;
   isPending?: boolean;
 }
 
 export interface TransactionsItemProps extends TransactionHeaderProps {
-  key: string;
+  key: number;
   content?: TransactionsContent[];
   isOpen?: boolean;
   onClick?: () => void;

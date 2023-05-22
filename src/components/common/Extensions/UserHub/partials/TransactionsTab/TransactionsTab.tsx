@@ -22,7 +22,7 @@ const TransactionsTab: FC<TransactionsProps> = ({ items, openIndex, onOpenIndexC
 
   return (
     <div>
-      <div className="flex items-center justify-between py-4">
+      <div className="flex items-center justify-between pb-4">
         <div className="font-semibold text-lg text-gray-900">{formatMessage({ id: 'transactions' })}</div>
       </div>
       <ul>

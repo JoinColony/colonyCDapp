@@ -6,7 +6,7 @@ import ReputationTab from '~common/Extensions/UserHub/partials/ReputationTab';
 import { getContext, ContextModule } from '~context';
 
 const meta: Meta<typeof ReputationTab> = {
-  title: 'Common/Reputation tab',
+  title: 'Common/User Hub/Reputation tab',
   component: ReputationTab,
 };
 
