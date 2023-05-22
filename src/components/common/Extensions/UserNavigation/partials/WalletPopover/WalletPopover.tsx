@@ -52,13 +52,17 @@ const WalletPopover: FC<WalletPopoverProps> = ({ setTooltipRef, tooltipProps }) 
             {formatMessage({ id: 'walletPopover.connectWallet' })}
           </h4>
           {isMobile && <p className="mt-2 text-sm text-gray-900">{formatMessage({ id: 'walletPopover.content' })}</p>}
-          <TitledContent title={{ defaultMessage: 'available wallets' }} isTitleHiddenOnDesktop className="mt-6">
+          <TitledContent
+            title={{ defaultMessage: 'available wallets', id: 'availableWallets' }}
+            isTitleHiddenOnDesktop
+            className="mt-6"
+          >
             <ul className="md:mt-6">
               <li>
                 {/* @TODO: Add metamask connection to API */}
                 <WalletPopoverOption
-                  title={{ defaultMessage: 'MetaMask' }}
-                  description={{ defaultMessage: 'Requires MetaMask browser extension' }}
+                  title={{ defaultMessage: 'MetaMask', id: 'metaMask' }}
+                  description={{ defaultMessage: 'Requires MetaMask browser extension', id: 'metaMaskRequired' }}
                   icon="metamask"
                   // eslint-disable-next-line no-console
                   onClick={() => console.log('MetaMask connect')}

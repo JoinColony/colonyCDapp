@@ -34,7 +34,7 @@ const UserMenu: FC<UserMenuProps> = ({
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={tooltipProps}
-      classNames={clsx('px-0 md:px-6 py-6 flex justify-start z-[9999] tooltip-container', {
+      classNames={clsx('px-0 md:px-6 py-6 rounded-lg flex justify-start z-[9999] tooltip-container', {
         'w-full border-none shadow-none': isMobile,
         'w-[20.125rem]': !isMobile,
         'h-[32rem] md:h-[23rem]': !isWalletConnected,
@@ -75,25 +75,25 @@ const UserMenu: FC<UserMenuProps> = ({
           <ul className="text-lg font-semibold md:font-normal md:text-md text-gray-900">
             <li className="mb-4">
               <Link to="/" className="flex items-center">
-                <Icon name="circles-three-plus" appearance={{ size: 'tiny' }} />
+                <Icon name="circles-three-plus" appearance={{ size: 'extraTiny' }} />
                 <p className="ml-2">{formatMessage({ id: 'userMenu.getStartedTitle' })}</p>
               </Link>
             </li>
             <li className="mb-4">
               <Link to="/" className="flex items-center">
-                <Icon name="lifebuoy" appearance={{ size: 'tiny' }} />
+                <Icon name="lifebuoy" appearance={{ size: 'extraTiny' }} />
                 <p className="ml-2">{formatMessage({ id: 'userMenu.contactAndSupportTitle' })}</p>
               </Link>
             </li>
             <li className="mb-4">
               <Link to="/" className="flex items-center">
-                <Icon name="code" appearance={{ size: 'tiny' }} />
+                <Icon name="code" appearance={{ size: 'extraTiny' }} />
                 <p className="ml-2">{formatMessage({ id: 'userMenu.developersTitle' })}</p>
               </Link>
             </li>
             <li>
               <Link to="/" className="flex items-center">
-                <Icon name="briefcase" appearance={{ size: 'tiny' }} />
+                <Icon name="briefcase" appearance={{ size: 'extraTiny' }} />
                 <p className="ml-2">{formatMessage({ id: 'userMenu.legalAndPrivacyTitle' })}</p>
               </Link>
             </li>

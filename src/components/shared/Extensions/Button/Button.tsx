@@ -47,6 +47,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
               [styles.secondarySolid]: mode === 'secondarySolid',
               [styles.secondaryOutline]: mode === 'secondaryOutline',
               [styles.tertiaryOutline]: mode === 'tertiaryOutline',
+              [styles.tertiaryOutlineCustom]: mode === 'tertiaryOutlineCustom',
               [styles.quaternaryOutline]: mode === 'quaternaryOutline',
               [styles.textButton]: mode === 'textButton',
               [styles.pending]: mode === 'pending',
