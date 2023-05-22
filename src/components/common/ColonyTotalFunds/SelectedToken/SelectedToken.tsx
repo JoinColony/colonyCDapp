@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useEffect } from 'react';
+import React, { ReactNode, useState } from 'react';
 // import { defineMessages } from 'react-intl';
 
 import Numeral from '~shared/Numeral';
@@ -12,26 +12,11 @@ import { notNull } from '~utils/arrays';
 
 import ColonyTotalFundsPopover from './ColonyTotalFundsPopover';
 import TokenSymbol from './TokenSymbol';
+import { getCurrentToken, getCurrentTokenRootBalance } from './helpers';
 
 import styles from './SelectedToken.css';
 
 const displayName = 'common.ColonyTotalFunds.SelectedToken';
-
-// const MSG = defineMessages({
-//   loadingData: {
-//     id: `${displayName}.loadingData`,
-//     defaultMessage: 'Loading token information...',
-//   },
-// });
-
-const getCurrentToken = (tokens, currentTokenAddress) => {
-  if (tokens) {
-    return tokens.items.find(
-      (colonyToken) => colonyToken?.token.tokenAddress === currentTokenAddress,
-    );
-  }
-  return undefined;
-};
 
 type Props = {
   children?: ReactNode;
@@ -39,43 +24,23 @@ type Props = {
 
 const SelectedToken = ({ children }: Props) => {
   const { colony } = useColonyContext();
-  const { tokens, nativeToken } = colony || {};
+  const { tokens, nativeToken, balances } = colony || {};
   const { tokenAddress: nativeTokenAddress } = nativeToken || {};
-
-  // const { data, loading: isLoadingTokenBalances } =
-  //   useTokenBalancesForDomainsQuery({
-  //     variables: {
-  //       colonyAddress: colony?.colonyAddress,
-  //       domainIds: [COLONY_TOTAL_BALANCE_DOMAIN_ID],
-  //       tokenAddresses: colonyTokens.map(({ address }) => address),
-  //     },
-  //   });
-
-  const [currentTokenAddress, setCurrentTokenAddress] = useState<Address>();
-
+  const [currentTokenAddress, setCurrentTokenAddress] = useState<Address>(
+    nativeTokenAddress ?? '',
+  );
   const currentToken = getCurrentToken(tokens, currentTokenAddress);
-
-  useEffect(() => {
-    setCurrentTokenAddress(nativeTokenAddress);
-  }, [nativeTokenAddress]);
-
-  // if (!data || !currentToken || isLoadingTokenBalances) {
-  //   return (
-  //     <MiniSpinnerLoader
-  //       className={styles.main}
-  //       loadingText={MSG.loadingData}
-  //       titleTextValues={{ hasCounter: false }}
-  //     />
-  //   );
-  // }
+  const currentTokenBalance = getCurrentTokenRootBalance(
+    balances,
+    currentTokenAddress,
+  );
 
   return (
     <div className={styles.selectedToken}>
       <Numeral
         className={styles.selectedTokenAmount}
         decimals={getTokenDecimalsWithFallback(currentToken?.token?.decimals)}
-        // value={currentToken.balances[COLONY_TOTAL_BALANCE_DOMAIN_ID].amount}
-        value={0}
+        value={currentTokenBalance ?? 0}
         data-test="colonyTotalFunds"
       />
       <ColonyTotalFundsPopover
@@ -84,6 +49,7 @@ const SelectedToken = ({ children }: Props) => {
           .map((colonyToken) => colonyToken.token)}
         onSelectToken={setCurrentTokenAddress}
         currentTokenAddress={currentTokenAddress}
+        balances={balances}
       >
         <TokenSymbol
           token={currentToken?.token}
