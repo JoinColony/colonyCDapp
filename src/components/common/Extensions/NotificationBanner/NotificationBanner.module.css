@@ -1,3 +1,7 @@
 .banner {
   @apply border border-solid rounded-lg flex justify-between min-h-[2.75rem] flex-col md:flex-row md:items-center;
 }
+
+.actionWrapper {
+  @apply [&_a]:underline [&_button]:underline [&_a]:hover:no-underline [&_button]:hover:no-underline text-xs font-medium mt-2 md:mt-0;
+}
