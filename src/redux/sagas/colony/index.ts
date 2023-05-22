@@ -3,9 +3,13 @@ import { ClientType } from '@colony/colony-js';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { putError, takeFrom } from '../utils';
+import { putError } from '../utils';
 
-import { createTransaction, getTxChannel } from '../transactions';
+import {
+  createTransaction,
+  getTxChannel,
+  waitForTxResult,
+} from '../transactions';
 
 export { default as colonyCreateSaga } from './colonyCreate';
 
@@ -23,16 +27,17 @@ function* colonyClaimToken({
       params: [tokenAddress],
     });
 
-    const { payload } = yield takeFrom(
-      txChannel,
-      ActionTypes.TRANSACTION_SUCCEEDED,
-    );
+    const { payload, type } = yield waitForTxResult(txChannel);
 
-    yield put<AllActions>({
-      type: ActionTypes.CLAIM_TOKEN_SUCCESS,
-      payload,
-      meta,
-    });
+    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
+      yield put<AllActions>({
+        type: ActionTypes.CLAIM_TOKEN_SUCCESS,
+        payload,
+        meta,
+      });
+    } else {
+      throw new Error('Transaction cancelled.');
+    }
   } catch (error) {
     return yield putError(ActionTypes.CLAIM_TOKEN_ERROR, error, meta);
   } finally {
