@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { useMobile } from '~hooks';
 import Icon from '~shared/Icon';
 import { UserHubMobileProps } from './types';
 import styles from './UserHub.module.css';
@@ -7,6 +8,7 @@ export const displayName = 'common.Extensions.UserHub.partials.UserHubMobile';
 
 const UserHubMobile: FC<UserHubMobileProps> = ({ selectedTab, handleChange, tabList }) => {
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+  const isMobile = useMobile();
 
   const toggleOptions = () => {
     setIsOptionsOpen(!isOptionsOpen);
@@ -52,7 +54,7 @@ const UserHubMobile: FC<UserHubMobileProps> = ({ selectedTab, handleChange, tabL
   const selectedItem = tabList.find((item) => item.id === selectedTab);
 
   return (
-    <div className={styles.wrapper}>
+    <div className={`${isMobile ? 'pt-0' : 'pt-5'} ${styles.wrapper}`}>
       <div className={styles.container}>
         <button type="button" onClick={toggleOptions} className={styles.button}>
           {selectedItem?.label}

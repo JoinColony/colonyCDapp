@@ -25,7 +25,9 @@ const UserHub = () => {
 
   return (
     <div className={`${isMobile ? 'flex-col' : 'flex-row'} flex`}>
-      <div className={`flex pt-6 border-r border-gray-100 flex-col justify-between ${!isMobile ? 'px-2' : 'px-0'}`}>
+      <div
+        className={`flex border-r border-gray-100 flex-col justify-between ${!isMobile ? 'px-4 py-6' : 'px-0 pt-6'}`}
+      >
         {!isMobile ? (
           <div>
             <div className="text-gray-400 font-medium text-xs uppercase px-4 pb-5">
@@ -61,7 +63,7 @@ const UserHub = () => {
         {!isMobile && <Button mode="secondaryOutline">{formatMessage({ id: 'your.dashboard' })}</Button>}
       </div>
       {isMobile && <div className="h-[0.0625rem] w-full bg-gray-200 mt-6 mb-6" />}
-      <div className={`${!isMobile ? 'min-w-[29.125rem] py-4 p-6' : 'min-w-full'}`}>
+      <div className={`${!isMobile ? 'w-full min-w-[29.125rem] p-6' : 'min-w-full'}`}>
         <AnimatePresence>
           <motion.div
             key="stakes-tab"

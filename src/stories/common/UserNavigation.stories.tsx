@@ -79,8 +79,8 @@ const UserNavigationWithData = () => {
         </div>
         {!isMobile && isOpen && (
           <div
-            className={`flex relative h-auto bg-white p-[1.2rem] shadow-default
-            border border-gray-200 rounded-l mt-2 mr-12`}
+            className={`flex absolute right-[4.2rem] h-auto bg-white shadow-default
+            border border-gray-200 rounded mt-2 w-[44.375rem]`}
             ref={setTooltipRef}
           >
             <UserHub />

@@ -1,5 +1,5 @@
 .li {
-  @apply flex items-center justify-between text-gray-900 font-normal text-md leading-5 rounded px-4 ursor-pointer transition-all p-1 py-2 hover:bg-gray-100;
+  @apply flex items-center justify-between text-gray-900 font-normal text-md leading-5 rounded px-4 cursor-pointer transition-all hover:bg-gray-100 p-1 py-2;
 }
 
 .icon {
@@ -11,7 +11,7 @@
 }
 
 .wrapper {
-  @apply flex pt-5 w-full;
+  @apply flex w-full;
 }
 
 .container {
