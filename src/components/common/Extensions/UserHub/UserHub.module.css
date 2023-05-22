@@ -13,19 +13,3 @@
 .wrapper {
   @apply flex w-full;
 }
-
-.container {
-  @apply w-full relative;
-}
-
-.button {
-  @apply w-full px-4 py-3 border border-gray-300 rounded bg-base-white flex justify-between items-center text-md font-normal text-gray-900;
-}
-
-.options {
-  @apply border-gray-200 hidden;
-}
-
-.show {
-  @apply block p-4 border border-gray-300 rounded absolute left-0 z-50 bg-base-white w-full;
-}
