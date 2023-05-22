@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import Tooltip from '~shared/Extensions/Tooltip';
+import Icon from '~shared/Icon';
 
 const meta: Meta<typeof Tooltip> = {
   title: 'Shared/Tooltip',
@@ -52,6 +53,27 @@ export const WithLink: Story = {
 export const Success: Story = {
   render: (args) => (
     <Tooltip {...args} isSuccess tooltipContent={<span>Copied</span>}>
+      Trigger tooltip
+    </Tooltip>
+  ),
+};
+
+export const Top: Story = {
+  render: (args) => (
+    <Tooltip
+      {...args}
+      tooltipContent={
+        <>
+          <span className="mb-2.5 flex items-center px-3 py-1 rounded-3xl border border-base-white">
+            <span className="flex items-center flex-shrink-0">
+              <Icon name="crown-simple" appearance={{ size: 'extraTiny' }} />
+              <span className="ml-1 text-xs">Top </span>
+            </span>
+          </span>
+          This user is in the top 20% of contributors within this Colony.
+        </>
+      }
+    >
       Trigger tooltip
     </Tooltip>
   ),
