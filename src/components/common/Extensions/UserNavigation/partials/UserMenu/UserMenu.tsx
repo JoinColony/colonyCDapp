@@ -34,7 +34,7 @@ const UserMenu: FC<UserMenuProps> = ({
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={tooltipProps}
-      classNames={clsx('px-0 md:px-6 py-6 rounded-lg flex justify-start z-[9999] tooltip-container', {
+      classNames={clsx('px-0 md:px-6 py-6 rounded-lg flex border-gray-100 justify-start z-[9999] tooltip-container', {
         'w-full border-none shadow-none': isMobile,
         'w-[20.125rem]': !isMobile,
         'h-[32rem] md:h-[23rem]': !isWalletConnected,
@@ -74,27 +74,38 @@ const UserMenu: FC<UserMenuProps> = ({
         <TitledContent title={{ id: 'userMenu.optionsTitle' }}>
           <ul className="text-lg font-semibold md:font-normal md:text-md text-gray-900">
             <li className="mb-4">
-              <Link to="/" className="flex items-center">
-                <Icon name="circles-three-plus" appearance={{ size: 'extraTiny' }} />
-                <p className="ml-2">{formatMessage({ id: 'userMenu.getStartedTitle' })}</p>
+              <Link to="/" className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Icon name="circles-three-plus" className="w-[0.6875rem] h-[0.6875rem]" />
+                  <p className="ml-2">{formatMessage({ id: 'userMenu.getStartedTitle' })}</p>
+                </div>
               </Link>
             </li>
             <li className="mb-4">
-              <Link to="/" className="flex items-center">
-                <Icon name="lifebuoy" appearance={{ size: 'extraTiny' }} />
-                <p className="ml-2">{formatMessage({ id: 'userMenu.contactAndSupportTitle' })}</p>
+              <Link to="/" className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Icon name="lifebuoy" className="w-[0.8125rem] h-[0.8125rem]" />
+                  <p className="ml-2">{formatMessage({ id: 'userMenu.contactAndSupportTitle' })}</p>
+                </div>
+                <Icon name="caret-right" className="w-[0.6875rem] h-[0.6875rem]" />
               </Link>
             </li>
             <li className="mb-4">
-              <Link to="/" className="flex items-center">
-                <Icon name="code" appearance={{ size: 'extraTiny' }} />
-                <p className="ml-2">{formatMessage({ id: 'userMenu.developersTitle' })}</p>
+              <Link to="/" className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Icon name="code" className="w-[0.9375rem] h-3" />
+                  <p className="ml-2">{formatMessage({ id: 'userMenu.developersTitle' })}</p>
+                </div>
+                <Icon name="caret-right" className="w-[0.6875rem] h-[0.6875rem]" />
               </Link>
             </li>
             <li>
-              <Link to="/" className="flex items-center">
-                <Icon name="briefcase" appearance={{ size: 'extraTiny' }} />
-                <p className="ml-2">{formatMessage({ id: 'userMenu.legalAndPrivacyTitle' })}</p>
+              <Link to="/" className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Icon name="briefcase" className="w-[0.8125rem] h-3" />
+                  <p className="ml-2">{formatMessage({ id: 'userMenu.legalAndPrivacyTitle' })}</p>
+                </div>
+                <Icon name="caret-right" className="w-[0.6875rem] h-[0.6875rem]" />
               </Link>
             </li>
           </ul>
