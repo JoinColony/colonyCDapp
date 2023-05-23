@@ -34,7 +34,7 @@ const UserMenu: FC<UserMenuProps> = ({
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={tooltipProps}
-      classNames={clsx('px-0 md:px-6 py-6 flex justify-start z-[9999] tooltip-container', {
+      classNames={clsx('px-0 md:px-6 py-6 rounded-lg flex border-gray-100 justify-start z-[9999] tooltip-container', {
         'w-full border-none shadow-none': isMobile,
         'w-[20.125rem]': !isMobile,
         'h-[32rem] md:h-[23rem]': !isWalletConnected,
@@ -71,30 +71,41 @@ const UserMenu: FC<UserMenuProps> = ({
         </>
       )}
       <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">
-        <TitledContent title={formatMessage({ id: 'userMenu.optionsTitle' })}>
+        <TitledContent title={{ id: 'userMenu.optionsTitle' }}>
           <ul className="text-lg font-semibold md:font-normal md:text-md text-gray-900">
             <li className="mb-4">
-              <Link to="/" className="flex items-center">
-                <Icon name="circles-three-plus" appearance={{ size: 'tiny' }} />
-                <p className="ml-2">{formatMessage({ id: 'userMenu.getStartedTitle' })}</p>
+              <Link to="/" className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Icon name="circles-three-plus" appearance={{ size: 'extraTiny' }} />
+                  <p className="ml-2">{formatMessage({ id: 'userMenu.getStartedTitle' })}</p>
+                </div>
               </Link>
             </li>
             <li className="mb-4">
-              <Link to="/" className="flex items-center">
-                <Icon name="lifebuoy" appearance={{ size: 'tiny' }} />
-                <p className="ml-2">{formatMessage({ id: 'userMenu.contactAndSupportTitle' })}</p>
+              <Link to="/" className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Icon name="lifebuoy" appearance={{ size: 'extraTiny' }} />
+                  <p className="ml-2">{formatMessage({ id: 'userMenu.contactAndSupportTitle' })}</p>
+                </div>
+                <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
               </Link>
             </li>
             <li className="mb-4">
-              <Link to="/" className="flex items-center">
-                <Icon name="code" appearance={{ size: 'tiny' }} />
-                <p className="ml-2">{formatMessage({ id: 'userMenu.developersTitle' })}</p>
+              <Link to="/" className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Icon name="code" appearance={{ size: 'extraTiny' }} />
+                  <p className="ml-2">{formatMessage({ id: 'userMenu.developersTitle' })}</p>
+                </div>
+                <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
               </Link>
             </li>
             <li>
-              <Link to="/" className="flex items-center">
-                <Icon name="briefcase" appearance={{ size: 'tiny' }} />
-                <p className="ml-2">{formatMessage({ id: 'userMenu.legalAndPrivacyTitle' })}</p>
+              <Link to="/" className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Icon name="briefcase" appearance={{ size: 'extraTiny' }} />
+                  <p className="ml-2">{formatMessage({ id: 'userMenu.legalAndPrivacyTitle' })}</p>
+                </div>
+                <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
               </Link>
             </li>
           </ul>
@@ -102,7 +113,7 @@ const UserMenu: FC<UserMenuProps> = ({
       </div>
       {isWalletConnected && (
         <div className="w-full mb-6 md:mb-5">
-          <TitledContent title={formatMessage({ id: 'userMenu.other' })}>
+          <TitledContent title={{ id: 'userMenu.other' }}>
             <Link to="/" className="flex items-center text-lg font-semibold md:font-normal md:text-md text-gray-900">
               <Icon name="plugs" appearance={{ size: 'tiny' }} />
               <p className="ml-2">{formatMessage({ id: 'userMenu.disconnectWalletTitle' })}</p>

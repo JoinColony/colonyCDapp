@@ -32,15 +32,15 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
         },
       )}
     >
-      <div className={clsx('flex', { 'flex-col': children, 'flex-row': !children })}>
+      <div className={clsx('flex break-all flex-col', { 'flex-row': !children || isAlt })}>
         <div className="flex md:items-center">
           {!isAlt && (
             <Icon
               name={status === 'success' ? 'check-circle' : 'warning-circle'}
-              className={clsx('min-w-[0.875rem] min-h-[0.875rem] md:mt-0', {
-                'text-success-400 mt-[0.125rem]': status === 'success',
-                'text-warning-400 mt-[0.225rem]': status === 'warning',
-                'text-negative-400 mt-[0.225rem]': status === 'error',
+              className={clsx('min-w-[0.875rem] min-h-[0.875rem] mt-[0.125rem] md:mt-0', {
+                'text-success-400': status === 'success',
+                'text-warning-400': status === 'warning',
+                'text-negative-400': status === 'error',
               })}
             />
           )}
@@ -50,11 +50,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
           <div className="text-sm font-normal text-gray-900 max-w-[50rem] ml-6 md:ml-0 mt-1.5">{children}</div>
         )}
       </div>
-      <div
-        className={`underline text-xs font-medium mt-2 ml-6 md:mt-0 md:ml-2 [&_button]:underline ${
-          isAlt && 'ml-0 md:self-center'
-        }`}
-      >
+      <div className={clsx(styles.actionWrapper, { 'ml-0 md:ml-0 md:self-center': isAlt, 'ml-6 md:ml-2': !isAlt })}>
         {actionType === 'copy-url' && <CopyUrl actionText={actionText} />}
         {actionType === 'redirect' && <Link to="https://external-url.pl">{actionText}</Link>}
         {actionType === 'call-to-action' && actionText}

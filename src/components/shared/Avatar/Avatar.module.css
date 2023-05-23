@@ -2,6 +2,10 @@
   @apply h-[2.8125rem] w-[2.8125rem] relative;
 }
 
+.xxxs {
+  @apply relative w-[1rem] h-[1rem];
+}
+
 .xxs {
   @apply relative w-[1.125rem] h-[1.125rem];
 }

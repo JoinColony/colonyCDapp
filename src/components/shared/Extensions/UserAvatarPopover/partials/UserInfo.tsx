@@ -66,13 +66,10 @@ const UserInfo: FC<UserInfoProps> = ({
           )}
         </div>
       </div>
-      <TitledContent title={formatMessage({ id: 'userInfo.about.section' })}>
+      <TitledContent title={{ id: 'userInfo.about.section' }}>
         <p className="text-md text-gray-600">{aboutDescriptionText}</p>
       </TitledContent>
-      <TitledContent
-        title={formatMessage({ id: 'userInfo.colonyReputation.section' })}
-        className="pt-6 mt-6 border-t border-gray-200"
-      >
+      <TitledContent title={{ id: 'userInfo.colonyReputation.section' }} className="pt-6 mt-6 border-t border-gray-200">
         <ul className="flex flex-col gap-2">
           {colonyReputation.map(({ key, title, percentage, points }) => {
             const titleText = typeof title === 'string' ? title : title && formatMessage(title);
@@ -91,10 +88,7 @@ const UserInfo: FC<UserInfoProps> = ({
         </ul>
       </TitledContent>
 
-      <TitledContent
-        title={formatMessage({ id: 'userInfo.permissions.section' })}
-        className="pt-6 mt-6 border-t border-gray-200"
-      >
+      <TitledContent title={{ id: 'userInfo.permissions.section' }} className="pt-6 mt-6 border-t border-gray-200">
         <ul className="inline-flex flex-wrap gap-x-1 gap-y-2">
           {permissions.map(({ key, text, description, name }) => (
             <li key={key}>
