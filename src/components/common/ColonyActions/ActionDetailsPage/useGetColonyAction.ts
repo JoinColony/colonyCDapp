@@ -35,8 +35,13 @@ export const useGetColonyAction = () => {
   });
 
   useEffect(() => {
+    /* Cancel polling if our loader times out. */
     const cancelPollingTimer = setTimeout(stopPollingForAction, pollingTimeout);
-    return () => clearTimeout(cancelPollingTimer);
+    return () => {
+      clearTimeout(cancelPollingTimer);
+      /*  Stop polling if user leaves ActionDetailsPage */
+      stopPollingForAction();
+    };
   }, [stopPollingForAction]);
 
   /** Refetch colony when the action loads to update
