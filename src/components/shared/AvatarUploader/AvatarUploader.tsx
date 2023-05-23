@@ -145,7 +145,6 @@ const AvatarUploader = ({
       <SingleFileUpload
         dropzoneRootStyles={showButtons ? styles : noButtonStyles}
         dropzoneOptions={{
-          maxSize: NO_MAX,
           disabled,
         }}
         handleFileAccept={handleFileAccept}
