@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useIntl } from 'react-intl';
+import clsx from 'clsx';
 import { useMobile } from '~hooks';
 import ReputationTab from './partials/ReputationTab';
 import StakesTab from './partials/StakesTab';
@@ -24,10 +25,8 @@ const UserHub = () => {
   };
 
   return (
-    <div className={`${isMobile ? 'flex-col' : 'flex-row'} flex`}>
-      <div
-        className={`flex border-r border-gray-100 flex-col justify-between ${!isMobile ? 'px-4 py-6' : 'px-0 pt-6'}`}
-      >
+    <div className={clsx('flex', { 'flex-col': isMobile })}>
+      <div className={`flex border-r border-gray-100 flex-col justify-between ${isMobile ? 'px-0 pt-6' : 'px-4 py-6'}`}>
         {!isMobile ? (
           <div>
             <div className="text-gray-400 font-medium text-xs uppercase px-4 pb-5">
