@@ -3,7 +3,7 @@
 }
 
 .subMenu {
-  @apply bg-base-white transition-all duration-normal pointer-events-none absolute top-full left-0 pt-3;
+  @apply transition-all duration-normal pointer-events-none absolute top-full left-0 pt-2.5;
 }
 
 .subMenuMobile {

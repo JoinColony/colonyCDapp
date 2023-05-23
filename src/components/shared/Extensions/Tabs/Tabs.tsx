@@ -29,10 +29,7 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({ items, activeTab, onTabClick, 
           <Tab key={id}>
             {formatMessage({ id: `tabs.${id}`, defaultMessage: `${title}` })}
             {notificationNumber && (
-              <span
-                className="text-blue-400 text-[0.375rem] font-bold bg-blue-100 
-              rounded-[0.125rem] ml-1 w-[0.8125rem] h-[0.8125rem] p-[0.2rem]"
-              >
+              <span className={styles.notificationNumber}>
                 <span>{notificationNumber}</span>
               </span>
             )}
