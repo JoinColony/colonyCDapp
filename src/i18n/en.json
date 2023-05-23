@@ -441,5 +441,7 @@
     "view.all": "View all",
     "pending.reputation": "pending reputation",
     "next.update": "Next update",
-    "helpAndAccount": "Help & account"
+    "helpAndAccount": "Help & account",
+    "your.dashboard": " Your dashboard",
+    "your.colony.overview": "Your colony overview"
 }
