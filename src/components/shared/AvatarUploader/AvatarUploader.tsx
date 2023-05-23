@@ -34,10 +34,10 @@ export interface Props
     > {
   /** Appearance object for both label and status */
   appearance?: Appearance;
-  /** Avatar image string */
-  avatar: AvatarProps['avatar'];
   /** Avatar to be wrapped by File uploader */
   avatarPlaceholder: React.ReactElement;
+  /** Disable the remove avatar button */
+  disableRemove?: boolean;
   /** An error message */
   errorCode?: DropzoneErrors;
   /** An object in the format: { "message": string} for display a custom error message */
@@ -96,9 +96,9 @@ const getPlaceholder = (
 
 const AvatarUploader = ({
   appearance,
-  avatar,
   avatarPlaceholder,
   disabled = false,
+  disableRemove,
   elementOnly,
   extra,
   handleFileAccept,
@@ -159,7 +159,7 @@ const AvatarUploader = ({
       {showButtons && (
         <UploadControls
           handleFileRemove={handleFileRemove}
-          disableRemove={!avatar || disabled}
+          disableRemove={disableRemove || disabled}
           disableChoose={disabled}
           open={open}
         />
