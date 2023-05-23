@@ -34,8 +34,13 @@ export const useGetColonyAction = (colony?: Colony | null) => {
   });
 
   useEffect(() => {
+    /* Cancel polling if our loader times out. */
     const cancelPollingTimer = setTimeout(stopPollingForAction, pollingTimeout);
-    return () => clearTimeout(cancelPollingTimer);
+    return () => {
+      clearTimeout(cancelPollingTimer);
+      /*  Stop polling if user leaves ActionDetailsPage */
+      stopPollingForAction();
+    };
   }, [stopPollingForAction]);
 
   const { state: locationState } = useLocation();
