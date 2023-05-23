@@ -62,7 +62,7 @@ const UserHub = () => {
         {!isMobile && <Button mode="secondaryOutline">{formatMessage({ id: 'your.dashboard' })}</Button>}
       </div>
       {isMobile && <div className="h-[0.0625rem] w-full bg-gray-200 mt-6 mb-6" />}
-      <div className={`${!isMobile ? 'w-full min-w-[29.125rem] min-h-[27.75rem] p-6' : 'min-w-full'}`}>
+      <div className={`${isMobile ? 'min-w-full' : 'w-full min-w-[29.125rem] min-h-[27.75rem] p-6'}`}>
         <AnimatePresence>
           <motion.div
             key="stakes-tab"
