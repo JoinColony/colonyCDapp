@@ -2,12 +2,6 @@ import { ApolloClient, HttpLink } from '@apollo/client';
 
 import cache from '~cache';
 
-console.log('[AWS_APPSYNC_GRAPHQL_URL]: ', process.env.AWS_APPSYNC_GRAPHQL_URL);
-console.log(
-  '[NETWORK_CONTRACT_ADDRESS]: ',
-  process.env.NETWORK_CONTRACT_ADDRESS,
-);
-
 /*
  * @TODO This needs to be fetched from a proper location
  */
