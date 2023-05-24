@@ -9,6 +9,7 @@ import ColonyMembers from '~common/ColonyMembers';
 import FourOFour from '~frame/FourOFour';
 import UserProfile from '~common/UserProfile';
 import UserProfileEdit from '~common/UserProfileEdit';
+import ExtensionDetails from '~common/Extensions/ExtensionDetails';
 import {
   // NavBar, Plain, SimpleNav,
   Default,
@@ -36,6 +37,8 @@ import {
   LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
   ACTIONS_PAGE_ROUTE,
+  COLONY_EXTENSIONS_ROUTE,
+  COLONY_EXTENSION_DETAILS_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -44,6 +47,8 @@ import NotFoundRoute from './NotFoundRoute';
 import { ColonyContextProvider } from '~context/ColonyContext';
 import CreateColonyWizard from '~common/CreateColonyWizard';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
+import MainExtensionLayout from '~common/Extensions/Pages/MainExtensionLayout';
+import MainExtensionPage from '~common/Extensions/Pages/MainExtensionPage/MainExtensionPage';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -132,6 +137,26 @@ const Routes = () => {
               <Default routeProps={{ hasBackLink: false }}>
                 <ColonyHome />
               </Default>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_EXTENSIONS_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <MainExtensionLayout>
+                <MainExtensionPage />
+              </MainExtensionLayout>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_EXTENSION_DETAILS_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <MainExtensionLayout>
+                <ExtensionDetails />
+              </MainExtensionLayout>
             </ColonyContextProvider>
           }
         />

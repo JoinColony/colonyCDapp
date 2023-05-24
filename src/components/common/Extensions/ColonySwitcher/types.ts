@@ -15,7 +15,7 @@ export interface ColonyItemProps {
 }
 
 export interface ColonyAvatarProps {
-  colonyToDisplay: Colony;
+  colonyToDisplay?: Colony;
   colonyToDisplayAddress?: string;
   isMobile: boolean;
   isOpen?: boolean;
