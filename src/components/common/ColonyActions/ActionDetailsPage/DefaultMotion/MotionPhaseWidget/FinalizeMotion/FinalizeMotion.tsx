@@ -57,8 +57,11 @@ const FinalizeMotion = ({
   const { balances } = colony || {};
   const [isPolling, setIsPolling] = useState(false);
 
-  /* Stop polling if dismounted */
-  useEffect(() => stopPollingAction, [stopPollingAction]);
+  /* Stop polling when mounted / dismounted */
+  useEffect(() => {
+    stopPollingAction();
+    return stopPollingAction;
+  }, [stopPollingAction]);
 
   if (isPolling) {
     return (

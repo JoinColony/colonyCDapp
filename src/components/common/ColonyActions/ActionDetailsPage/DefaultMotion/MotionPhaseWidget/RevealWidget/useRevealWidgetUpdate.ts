@@ -31,7 +31,5 @@ export const useRevealWidgetUpdate = (
     setPrevVote(vote);
   }
 
-  useEffect(() => stopPollingAction, [stopPollingAction]);
-
   return { hasUserVoted, vote, userVoteRevealed, setUserVoteRevealed };
 };
