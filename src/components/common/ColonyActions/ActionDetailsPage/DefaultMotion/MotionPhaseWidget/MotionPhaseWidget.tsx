@@ -127,8 +127,6 @@ const MotionPhaseWidget = ({
       );
     }
 
-    /* Extend with other widgets as they get ported. */
-
     default: {
       return null;
     }
