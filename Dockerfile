@@ -66,8 +66,8 @@ EXPOSE 80
 # This is necessary since we aren't in a actual node process, they're just files served by nginx
 # Doing it like this allows us to use the same image for different deployments
 RUN if [ -z "$DEV" ]; then export PROCESS_VAR='[a-z]'; else export PROCESS_VAR='process'; fi && \
-        echo "sed -i \"s|${PROCESS_VAR}.env.NETWORK|\\\"\$NETWORK\\\"|g\" *.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.NETWORK_CONTRACT_ADDRESS|\\\"\$NETWORK_CONTRACT_ADDRESS\\\"|g\" *.js" \
+        echo "sed -i \"s|${PROCESS_VAR}.env.NETWORK_CONTRACT_ADDRESS|\\\"\$NETWORK_CONTRACT_ADDRESS\\\"|g\" *.js" \
+        "&& sed -i \"s|${PROCESS_VAR}.env.NETWORK|\\\"\$NETWORK\\\"|g\" *.js" \
         "&& sed -i \"s|${PROCESS_VAR}.env.AWS_APPSYNC_GRAPHQL_URL|\\\"\$AWS_APPSYNC_GRAPHQL_URL\\\"|g\" *.js" \
         "&& sed -i \"s|${PROCESS_VAR}.env.AWS_APPSYNC_KEY|\\\"\$AWS_APPSYNC_KEY\\\"|g\" *.js" \
         "&& sed -i \"s/${PROCESS_VAR}.env.METATRANSACTIONS/\\\"\$METATRANSACTIONS\\\"/g\" *.js" \
