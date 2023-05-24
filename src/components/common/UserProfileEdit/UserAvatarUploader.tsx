@@ -5,7 +5,7 @@ import { FileRejection } from 'react-dropzone';
 import { useUpdateUserProfileMutation } from '~gql';
 import { useAppContext } from '~hooks';
 import {
-  getOptimisedAvatar,
+  getOptimisedAvatarUnder300KB,
   getOptimisedThumbnail,
 } from '~images/optimisation';
 import AvatarUploader from '~shared/AvatarUploader';
@@ -48,7 +48,9 @@ const UserAvatarUploader = ({
     }
 
     try {
-      const updatedAvatar = await getOptimisedAvatar(avatarFile?.file);
+      const updatedAvatar = await getOptimisedAvatarUnder300KB(
+        avatarFile?.file,
+      );
       const thumbnail = await getOptimisedThumbnail(avatarFile?.file);
 
       await updateAvatar({

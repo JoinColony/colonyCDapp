@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
 import {
-  getOptimisedAvatar,
+  getOptimisedAvatarUnder300KB,
   getOptimisedThumbnail,
 } from '~images/optimisation';
 import Avatar from '~shared/Avatar';
@@ -54,7 +54,7 @@ const ColonyAvatarUploader = ({
     setAvatarFileError(undefined);
 
     try {
-      const optimisedImage = await getOptimisedAvatar(file.file);
+      const optimisedImage = await getOptimisedAvatarUnder300KB(file.file);
       const optimisedThumbnail = await getOptimisedThumbnail(file.file);
       setValue('colonyAvatarImage', optimisedImage, { shouldDirty: true });
       setValue('colonyThumbnail', optimisedThumbnail);
