@@ -28,8 +28,8 @@ import {
 } from '~utils/autoLogin';
 // import { ActionTypes } from '../../actionTypes';
 // import { Action, AllActions } from '../../types/actions';
-import onboard from './onboard';
 import { BasicWallet } from '~types';
+import { ContextModule, getContext } from '~context';
 // import { createAddress } from '~utils/web3';
 // import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';
 
@@ -96,6 +96,7 @@ export const connectWallet = async (
   lastWallet: LastWallet | null,
 ): Promise<WalletState | undefined> => {
   const connectOptions = getConnectOptions(lastWallet);
+  const onboard = getContext(ContextModule.Onboard);
   let [wallet] = await onboard.connectWallet(connectOptions);
 
   if (!wallet && lastWallet) {
