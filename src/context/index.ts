@@ -1,4 +1,5 @@
 import { ApolloClient as ApolloClientClass } from '@apollo/client';
+import { OnboardAPI } from '@web3-onboard/core';
 
 import { ColonyWallet } from '~types';
 
@@ -18,6 +19,7 @@ export enum ContextModule {
   ColonyManager = 'colonyManager',
   ApolloClient = 'apolloClient',
   UserSettings = 'userSettings',
+  Onboard = 'onboard',
 }
 
 export interface Context {
@@ -25,6 +27,7 @@ export interface Context {
   [ContextModule.ColonyManager]?: ColonyManagerClass;
   [ContextModule.ApolloClient]?: ApolloClientClass<object>;
   [ContextModule.UserSettings]?: UserSettingsClass;
+  [ContextModule.Onboard]?: OnboardAPI;
 }
 
 const context: Context = {
@@ -32,6 +35,7 @@ const context: Context = {
   [ContextModule.ColonyManager]: undefined,
   [ContextModule.Wallet]: undefined,
   [ContextModule.UserSettings]: undefined,
+  [ContextModule.Onboard]: undefined,
 };
 
 export const setContext = <K extends keyof Context>(

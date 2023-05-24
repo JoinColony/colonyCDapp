@@ -24,8 +24,6 @@ import {
   getTxChannel,
 } from '../transactions';
 
-import onboard from '../wallet/onboard';
-
 // import { transactionLoadRelated, transactionReady } from '../../actionCreators';
 
 // function* userAvatarRemove({ meta }: Action<ActionTypes.USER_AVATAR_REMOVE>) {
@@ -151,6 +149,7 @@ function* usernameCreate({
 }
 
 export const disconnectWallet = (walletLabel: string) => {
+  const onboard = getContext(ContextModule.Onboard);
   onboard.disconnectWallet({ label: walletLabel });
   removeContext(ContextModule.Wallet);
   clearLastWallet();
