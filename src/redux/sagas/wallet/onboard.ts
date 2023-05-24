@@ -3,7 +3,6 @@ import injectedWallets from '@web3-onboard/injected-wallets';
 
 import colonyIcon from '~images/icons/colony-logo.svg';
 import {
-  isDev,
   TERMS_AND_CONDITIONS,
   CDAPP_VERSION,
   TOKEN_DATA,
@@ -21,33 +20,28 @@ const { formatMessage } = intl({
   'metadata.description': `An iteration of the Colony Dapp sporting both a fully decentralized operating mode, as well as a mode enhanced by a metadata caching layer`,
 });
 
-let devWallets: ReturnType<typeof ganacheModule>[] = [];
-
-const setDevelopmentWallets = async () => {
-  try {
+const getDevelopmentWallets = async () => {
+  // variable injected by webpack
+  // @ts-ignore
+  // if we're using the webpack.dev config, include dev wallets
+  if (!WEBPACK_IS_PRODUCTION) {
     const { private_keys: ganachePrivateKeys } = await import(
       '../../../../amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json'
     );
 
-    devWallets = Object.values(ganachePrivateKeys)
-      .map((privateKey, index) => ganacheModule(privateKey, index + 1))
-      /*
-       * Remove the wallets used by the reputation miner and the block ingestor
-       * As to not cause any "unplesantness"
-       */
-      .slice(0, -2);
-  } catch {
-    console.error(
-      `Unable to fetch ganache private keys. Are you sure your network environment variable is correct?`,
+    return (
+      Object.values(ganachePrivateKeys)
+        .map((privateKey, index) => ganacheModule(privateKey, index + 1))
+        /*
+         * Remove the wallets used by the reputation miner and the block ingestor
+         * As to not cause any "unplesantness"
+         */
+        .slice(0, -2)
     );
   }
+
+  return [];
 };
-
-if (isDev) {
-  setDevelopmentWallets();
-}
-
-const wallets = [injectedWallets(), ...devWallets];
 
 // chains: [
 //   {
@@ -63,7 +57,7 @@ const wallets = [injectedWallets(), ...devWallets];
 // ],
 
 const onboardConfig: InitOptions = {
-  wallets,
+  wallets: [injectedWallets()],
   // Chains array only used in `ganacheModule` for use in development.
   chains: [
     {
@@ -93,6 +87,9 @@ const onboardConfig: InitOptions = {
   },
 };
 
-const onboard = Onboard(onboardConfig);
-
-export default onboard;
+const getOnboard = async () => {
+  const devWallets = await getDevelopmentWallets();
+  onboardConfig.wallets.push(...devWallets);
+  return Onboard(onboardConfig);
+};
+export default getOnboard;

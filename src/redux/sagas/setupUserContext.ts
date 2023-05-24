@@ -27,6 +27,7 @@ import { AllActions } from '../types/actions';
 import { getGasPrices, putError } from './utils';
 import setupOnBeforeUnload from './setupOnBeforeUnload';
 import setupWalletContext from './setupWalletContext';
+import getOnboard from './wallet/onboard';
 // import { setupUserBalanceListener } from './setupUserBalanceListener';
 
 function* setupContextDependentSagas() {
@@ -55,6 +56,9 @@ function* setupContextDependentSagas() {
  */
 export default function* setupUserContext() {
   try {
+    /* Instantiate the onboard object and load into context */
+    const onboard = yield getOnboard();
+    setContext(ContextModule.Onboard, onboard);
     /*
      * Get the new wallet and set it in context.
      */
