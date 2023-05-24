@@ -1,6 +1,6 @@
 const webpack = require('webpack');
-const path = require('path');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const Dotenv = require('dotenv-webpack');
 
 const webpackBaseConfig = require('./webpack.base').config;
 
@@ -44,6 +44,9 @@ module.exports = () => ({
     /*
      * Add the rest of the DEVELOPMENT environment required plugins here
      */
+    new Dotenv({
+      systemvars: !!process.env.CI || !!process.env.DEV,
+    }),
     new webpack.WatchIgnorePlugin({
       paths: [/css\.d\.ts$/],
     }),
