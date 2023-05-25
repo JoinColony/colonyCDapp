@@ -11,22 +11,23 @@ import styles from './ExtensionItem.module.css';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge-new/types';
 
-const ExtensionItem: FC<ExtensionItemProps> = ({ title, description, version, icon, extensionId }) => {
+const displayName = 'common.Extensions.ExtensionItem';
+
+const ExtensionItem: FC<ExtensionItemProps> = ({ title, description, version, icon, extensionId = '' }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
-  const { extensionData } = useExtensionData(extensionId ?? '');
+  const { extensionData } = useExtensionData(extensionId);
   const [status, setStatus] = useState<ExtensionStatusBadgeMode>();
   const [badgeMessage, setBadgeMessage] = useState<string>('');
 
-  const values = useMemo(() => {
+  const extensionValues = useMemo(() => {
     return {
       colonyAddress: colony?.colonyAddress,
       extensionData,
     };
   }, [colony?.colonyAddress, extensionData]);
 
-  // @TODO: Fix install functions
   const submit = ActionTypes.EXTENSION_INSTALL;
   const error = ActionTypes.EXTENSION_INSTALL_ERROR;
   const success = ActionTypes.EXTENSION_INSTALL_SUCCESS;
@@ -35,11 +36,11 @@ const ExtensionItem: FC<ExtensionItemProps> = ({ title, description, version, ic
 
   const handleClick = useCallback(async () => {
     try {
-      await asyncFunction(values);
+      await asyncFunction(extensionValues);
     } catch (err) {
       console.error(err);
     }
-  }, [asyncFunction, values]);
+  }, [asyncFunction, extensionValues]);
 
   const extensionUrl = `/colony/${colony?.name}/extensions/${extensionId}`;
   const isExtensionInstalled = extensionData && isInstalledExtensionData(extensionData);
@@ -88,5 +89,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({ title, description, version, ic
     </div>
   );
 };
+
+ExtensionItem.displayName = displayName;
 
 export default ExtensionItem;
