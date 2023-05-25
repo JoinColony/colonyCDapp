@@ -1,12 +1,9 @@
-import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge-new/types';
+import { MessageDescriptor } from 'react-intl';
 
 export interface ExtensionItemProps {
-  title: string;
-  description: string;
-  version: string;
-  status: ExtensionStatusBadgeMode;
-  badgeText: string;
-  isInstalled?: boolean;
+  title: MessageDescriptor;
+  description: MessageDescriptor;
+  version: number;
   icon: string;
   extensionId: string;
 }

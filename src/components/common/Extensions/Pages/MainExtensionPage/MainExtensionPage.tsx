@@ -9,7 +9,7 @@ import { SpinnerLoader } from '~shared/Preloaders';
 const displayName = 'common.Pages.MainExtensionPage';
 
 const MainExtensionPage: FC = () => {
-  const { loading } = useExtensionsData();
+  const { loading, availableExtensionsData, installedExtensionsData } = useExtensionsData();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
 
@@ -21,6 +21,8 @@ const MainExtensionPage: FC = () => {
       />
     );
   }
+
+  const allExtensions = [...availableExtensionsData, ...installedExtensionsData];
 
   return (
     <div className="mb-6">
@@ -39,57 +41,17 @@ const MainExtensionPage: FC = () => {
           <h4 className="text-xl font-semibold mb-6">{formatMessage({ id: 'extensionsPage.availableExtensions' })}</h4>
           <h5 className="text-md font-semibold mb-4">{formatMessage({ id: 'extensionsPage.payments' })}</h5>
           <ul className="pb-6 border-b border-gray-100">
-            <li className="mb-6">
-              <ExtensionItem
-                title="One Transaction Payment"
-                description="Make quick and simple payments to members or any address on the same network."
-                version="v3"
-                badgeText="Not installed"
-                status="not-installed"
-                icon="extension-one-transaction-payment"
-                extensionId="OneTxPayment"
-              />
-            </li>
-            <li>
-              <ExtensionItem
-                title="Advanced Payments"
-                description="Make payments to multiple recipients, with different tokens and times. Also make batch payments, split payments, staged payments & streaming payments."
-                version="v1"
-                badgeText="Coming soon"
-                status="coming-soon"
-                icon="extension-advanced-payments"
-                extensionId="OneTxPayment"
-              />
-            </li>
-          </ul>
-          <h5 className="text-md font-semibold mb-4 mt-6">{formatMessage({ id: 'extensionsPage.governance' })}</h5>
-          <ul className="pb-6 border-b border-gray-100">
-            <li>
-              <ExtensionItem
-                title="Lazy Consensus (Reputation Weighted)"
-                description="Enable efficient and decentralized decision making for your colony. Allowing members to propose actions to be taken."
-                version="v7"
-                badgeText="Enabled"
-                status="enabled"
-                icon="extension-lazy-consensus"
-                extensionId="OneTxPayment"
-                isInstalled
-              />
-            </li>
-          </ul>
-          <h5 className="text-md font-semibold mb-4 mt-6">{formatMessage({ id: 'extensionsPage.operations' })}</h5>
-          <ul>
-            <li>
-              <ExtensionItem
-                title="Incorporation"
-                description="Create a legal wrapper for your DAO to interact with legal entities and to protect contributors."
-                version="v1"
-                badgeText="Coming soon"
-                status="coming-soon"
-                icon="extension-incorporation"
-                extensionId="OneTxPayment"
-              />
-            </li>
+            {allExtensions.map((extension) => (
+              <li className="mb-6" key={extension.extensionId}>
+                <ExtensionItem
+                  title={extension.name}
+                  description={extension.descriptionShort}
+                  version={extension.availableVersion}
+                  icon={extension.icon}
+                  extensionId={extension.extensionId}
+                />
+              </li>
+            ))}
           </ul>
         </div>
       </div>
