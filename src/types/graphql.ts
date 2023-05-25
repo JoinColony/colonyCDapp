@@ -20,6 +20,7 @@ import {
   MemberUserFragment,
   ColonyBalanceFragment,
   ColonyBalancesFragment,
+  ColonyTokensConnectionFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -74,3 +75,17 @@ export type MemberUser = MemberUserFragment;
 export type ColonyBalances = ColonyBalancesFragment;
 
 export type ColonyBalance = ColonyBalanceFragment;
+
+export type ColonyTokensConnection = ColonyTokensConnectionFragment;
+
+type ColonyTokensConnectionItem = ColonyTokensConnectionFragment['items'][0];
+
+export interface UnaliasedColonyTokensItem
+  extends Omit<NonNullable<ColonyTokensConnectionItem>, 'colonyTokensId'> {
+  /*
+   * This is aliased as "colonyTokensId" in the "ColonyTokensConnection" fragment,
+   * but the cache only considers canonical field names. Therefore, to ensure type safety
+   * when manually modifying the cache, we must use this custom type.
+   */
+  id: string;
+}
