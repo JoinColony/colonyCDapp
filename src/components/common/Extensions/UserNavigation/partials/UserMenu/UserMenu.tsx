@@ -18,10 +18,9 @@ const UserMenu: FC<UserMenuProps> = ({
   tooltipProps,
   setTooltipRef,
   isWalletConnected,
-  userName,
+  user,
   isVerified,
   walletAddress,
-  copyUrl,
   userReputation,
   totalReputation,
   nativeToken,
@@ -29,27 +28,29 @@ const UserMenu: FC<UserMenuProps> = ({
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
   const { connectWallet } = useAppContext();
+  const { name, profile } = user || {};
 
   return (
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={tooltipProps}
-      classNames={clsx('px-0 md:px-6 py-6 rounded-lg flex border-gray-100 justify-start z-[9999] tooltip-container', {
+      classNames={clsx('p-6 rounded-lg flex border-gray-100 justify-start z-[9999] tooltip-container', {
         'w-full border-none shadow-none': isMobile,
         'w-[20.125rem]': !isMobile,
         'h-[32rem] md:h-[23rem]': !isWalletConnected,
-        'md:h-[31.5rem]': isWalletConnected,
+        'md:h-[29rem]': isWalletConnected,
       })}
     >
       {isWalletConnected ? (
         <WalletConnectedTopMenu
-          userName={userName}
+          userName={profile?.displayName || name}
           isVerified={isVerified}
           walletAddress={walletAddress}
-          copyUrl={copyUrl}
           userReputation={userReputation}
           totalReputation={totalReputation}
           nativeToken={nativeToken}
+          avatar={profile?.thumbnail || profile?.avatar || ''}
+          user={user}
         />
       ) : (
         <>

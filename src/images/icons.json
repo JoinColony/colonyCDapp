@@ -172,7 +172,11 @@
         "user-plus",
         "wallet",
         "verified",
-        "arrow-circle-up-right"
+        "arrow-circle-up-right",
+        "extension-incorporation",
+        "extension-lazy-consensus",
+        "extension-advanced-payments",
+        "extension-one-transaction-payment"
     ],
     "multiColorIcons": [
         "circle-check-primary",

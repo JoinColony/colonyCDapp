@@ -1,4 +1,5 @@
 import { PropsGetterArgs } from 'react-popper-tooltip';
+import { UserFragment } from '~gql';
 import { Token } from '~types';
 
 export interface UserMenuProps {
@@ -8,9 +9,8 @@ export interface UserMenuProps {
   };
   setTooltipRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
   isWalletConnected: boolean;
-  userName?: string;
+  user?: UserFragment | null;
   isVerified?: boolean;
-  copyUrl?: boolean;
   walletAddress?: string;
   userReputation?: string;
   totalReputation?: string;

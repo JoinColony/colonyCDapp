@@ -4,7 +4,12 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { mockNativeToken, mockTotalReputation, mockUserReputation } from '~common/Extensions/UserNavigation/consts';
+import {
+  mockNativeToken,
+  mockTotalReputation,
+  mockUser,
+  mockUserReputation,
+} from '~common/Extensions/UserNavigation/consts';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import Token from '~common/Extensions/UserNavigation/partials/Token';
 import UserMenu from '~common/Extensions/UserNavigation/partials/UserMenu';
@@ -201,11 +206,10 @@ const UserNavigationMenuConnected = () => {
                   setTooltipRef={setTooltipRef}
                   isWalletConnected={isWalletConnected}
                   nativeToken={mockNativeToken}
-                  userName="panda"
+                  user={mockUser}
                   walletAddress="0x155....1051"
                   userReputation={mockUserReputation}
                   totalReputation={mockTotalReputation}
-                  copyUrl
                   isVerified
                 />
               )}
