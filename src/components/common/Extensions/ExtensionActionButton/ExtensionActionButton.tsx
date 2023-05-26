@@ -7,7 +7,6 @@ import { ActionTypes } from '~redux';
 import Button, { ActionButton, IconButton } from '~shared/Button';
 import { AnyExtensionData } from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
-import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 
 const displayName = 'common.Extensions.ExtensionActionButton';
 
@@ -28,7 +27,7 @@ interface Props {
 
 const ExtensionActionButton = ({ extensionData }: Props) => {
   const navigate = useNavigate();
-  const { colony } = useColonyContext();
+  const { colony, isSupportedColonyVersion } = useColonyContext();
   const { user } = useAppContext();
 
   if (!colony || !user) {
@@ -40,9 +39,6 @@ const ExtensionActionButton = ({ extensionData }: Props) => {
       `/colony/${colony.name}/extensions/${extensionData.extensionId}/setup`,
     );
   };
-
-  const isSupportedColonyVersion =
-    colony.version >= MIN_SUPPORTED_COLONY_VERSION;
 
   if (!isInstalledExtensionData(extensionData)) {
     return (
