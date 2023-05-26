@@ -33,6 +33,16 @@ const MSG = defineMessages({
   },
 });
 
+interface FundingAsideProps {
+  selectedDomainId: number;
+}
+
+const FundingAside = ({ selectedDomainId }: FundingAsideProps) => (
+  <aside className={styles.aside}>
+    <ColonyFundingMenu filteredDomainId={selectedDomainId} />
+  </aside>
+);
+
 const ColonyFunding = () => {
   const isMobile = useMobile();
   const { colony } = useColonyContext();
@@ -61,13 +71,6 @@ const ColonyFunding = () => {
   const { label: selectedDomainLabel = '' } =
     domainChoices.find(({ value }) => value === selectedDomainId.toString()) ||
     {};
-
-  // eslint-disable-next-line react/no-unstable-nested-components
-  const Aside = () => (
-    <aside className={styles.aside}>
-      <ColonyFundingMenu />
-    </aside>
-  );
 
   return (
     <div className={styles.main}>
@@ -118,12 +121,12 @@ const ColonyFunding = () => {
             domainId={selectedDomainId}
           />
         </div>
-        {isMobile && <Aside />}
+        {isMobile && <FundingAside selectedDomainId={selectedDomainId} />}
         <div className={styles.banner}>
           <ColonyFundingBanner />
         </div>
       </div>
-      {!isMobile && <Aside />}
+      {!isMobile && <FundingAside selectedDomainId={selectedDomainId} />}
     </div>
   );
 };
