@@ -19,8 +19,8 @@ export const displayName = 'common.TransferFundsDialog';
 
 type FormValues = InferType<ReturnType<typeof getValidationSchema>>;
 
-type Props = Required<DialogProps> &
-  WizardDialogType<object> &
+type Props = DialogProps &
+  Partial<WizardDialogType<object>> &
   ActionDialogProps & {
     filteredDomainId?: number;
   };
