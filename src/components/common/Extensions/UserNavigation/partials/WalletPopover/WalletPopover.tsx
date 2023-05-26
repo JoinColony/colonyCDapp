@@ -37,6 +37,7 @@ const WalletPopover: FC<WalletPopoverProps> = ({ setTooltipRef, tooltipProps }) 
       <div className="flex flex-col md:flex-row h-full">
         <div className={styles.walletPopoverColumn}>
           {!isMobile && (
+            // there is no <Icon /> component here because the icon is oblong and the component turns it into a square
             <svg className="w-[6.25rem] h-5">
               <use xlinkHref="#colony-logo" />
             </svg>
