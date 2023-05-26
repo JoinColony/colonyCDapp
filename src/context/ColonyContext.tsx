@@ -12,11 +12,13 @@ interface ColonyContextValue {
   colony?: Colony;
   loading: boolean;
   canInteractWithColony: boolean;
+  isSupportedColonyVersion: boolean;
 }
 
 const ColonyContext = createContext<ColonyContextValue>({
   loading: false,
   canInteractWithColony: false,
+  isSupportedColonyVersion: false,
 });
 
 const displayName = 'ColonyContextProvider';
@@ -27,6 +29,8 @@ const MSG = defineMessages({
     defaultMessage: 'Loading Colony',
   },
 });
+
+const MIN_SUPPORTED_COLONY_VERSION = 5;
 
 export const ColonyContextProvider = ({
   children,
@@ -46,10 +50,17 @@ export const ColonyContextProvider = ({
   const colony = data?.getColonyByName?.items?.[0] ?? undefined;
 
   const canInteractWithColony = useCanInteractWithColony(colony);
+  const isSupportedColonyVersion =
+    (colony?.version ?? 0) >= MIN_SUPPORTED_COLONY_VERSION;
 
   const colonyContext = useMemo<ColonyContextValue>(
-    () => ({ colony, loading, canInteractWithColony }),
-    [colony, loading, canInteractWithColony],
+    () => ({
+      colony,
+      loading,
+      canInteractWithColony,
+      isSupportedColonyVersion,
+    }),
+    [colony, loading, canInteractWithColony, isSupportedColonyVersion],
   );
 
   if (!colonyName) {
