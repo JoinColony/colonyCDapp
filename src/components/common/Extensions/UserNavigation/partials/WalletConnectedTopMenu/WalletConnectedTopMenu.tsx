@@ -20,7 +20,7 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
   isVerified,
   nativeToken,
   totalReputation,
-  userName,
+  userName = '',
   userReputation,
   walletAddress,
   avatar,
@@ -36,7 +36,7 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
         {nativeToken && <Token nativeToken={nativeToken} />}
         <Button mode="tertiaryOutline" isFullRounded>
           <div className="flex items-center gap-3">
-            <UserAvatar userName={userName ?? ''} size="xxs" user={user} />
+            <UserAvatar userName={userName} size="xxs" user={user} />
             <MemberReputation userReputation={userReputation} totalReputation={totalReputation} hideOnMobile={false} />
           </div>
         </Button>
@@ -47,7 +47,7 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
       </div>
       <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">
         <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center mb-6">
-          <Avatar size="m" title={userName ?? ''} avatar={avatar} />
+          <Avatar size="m" title={userName} avatar={avatar} />
           <div>
             <div className="flex items-center mb-0.5">
               <p className="text-gray-900 font-semibold text-xl">{userName}</p>

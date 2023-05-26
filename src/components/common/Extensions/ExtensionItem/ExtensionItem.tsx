@@ -1,65 +1,21 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import { ExtensionItemProps } from './types';
 import ExtensionStatusBadge from '../ExtensionStatusBadge-new/ExtensionStatusBadge';
 import Button from '~shared/Extensions/Button';
 import Icon from '~shared/Icon';
-import { useAsyncFunction, useColonyContext, useExtensionData, useMobile } from '~hooks';
-import { ActionTypes } from '~redux';
-import Link from '~shared/Link/Link';
+import { useMobile } from '~hooks';
+import Link from '~shared/Link';
 import styles from './ExtensionItem.module.css';
-import { isInstalledExtensionData } from '~utils/extensions';
-import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge-new/types';
+import { useExtensionItem } from './hooks';
 
 const displayName = 'common.Extensions.ExtensionItem';
 
 const ExtensionItem: FC<ExtensionItemProps> = ({ title, description, version, icon, extensionId = '' }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const { colony } = useColonyContext();
-  const { extensionData } = useExtensionData(extensionId);
-  const [status, setStatus] = useState<ExtensionStatusBadgeMode>();
-  const [badgeMessage, setBadgeMessage] = useState<string>('');
-
-  const extensionValues = useMemo(() => {
-    return {
-      colonyAddress: colony?.colonyAddress,
-      extensionData,
-    };
-  }, [colony?.colonyAddress, extensionData]);
-
-  const submit = ActionTypes.EXTENSION_INSTALL;
-  const error = ActionTypes.EXTENSION_INSTALL_ERROR;
-  const success = ActionTypes.EXTENSION_INSTALL_SUCCESS;
-
-  const asyncFunction = useAsyncFunction({ submit, error, success });
-
-  const handleClick = useCallback(async () => {
-    try {
-      await asyncFunction(extensionValues);
-    } catch (err) {
-      console.error(err);
-    }
-  }, [asyncFunction, extensionValues]);
-
-  const extensionUrl = `/colony/${colony?.name}/extensions/${extensionId}`;
-  const isExtensionInstalled = extensionData && isInstalledExtensionData(extensionData);
-
-  useMemo(() => {
-    if (!isExtensionInstalled) {
-      setStatus('not-installed');
-      setBadgeMessage(formatMessage({ id: 'extensionsPage.notInstalled' }));
-    } else if (extensionData?.isDeprecated) {
-      setStatus('deprecated');
-      setBadgeMessage(formatMessage({ id: 'extensionsPage.deprecated' }));
-    } else if (extensionData?.isEnabled) {
-      setStatus('enabled');
-      setBadgeMessage(formatMessage({ id: 'extensionsPage.enabled' }));
-    } else {
-      setStatus('disabled');
-      setBadgeMessage(formatMessage({ id: 'extensionsPage.disabled' }));
-    }
-  }, [extensionData, formatMessage, isExtensionInstalled]);
+  const { badgeMessage, extensionUrl, handleInstallClick, isExtensionInstalled, status } =
+    useExtensionItem(extensionId);
 
   return (
     <div className="flex items-center">
@@ -81,7 +37,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({ title, description, version, ic
           </div>
         )}
         {!isExtensionInstalled && (
-          <Button mode="primarySolid" isFullSize={isMobile} onClick={handleClick}>
+          <Button mode="primarySolid" isFullSize={isMobile} onClick={handleInstallClick}>
             <p className="text-sm font-medium">{formatMessage({ id: 'extension.installButton' })}</p>
           </Button>
         )}

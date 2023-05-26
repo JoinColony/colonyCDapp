@@ -1,50 +1,30 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
-import { usePopperTooltip } from 'react-popper-tooltip';
+import React from 'react';
 import { ColoniesDropdown, ColonyAvatarWrapper } from '~common/Extensions/ColonySwitcher';
-import { watchlistMock } from '~common/Extensions/ColonySwitcher/consts';
-import { useSelectedColony } from '~common/Extensions/ColonySwitcher/hooks';
 import ColonyDropdownMobile from '~common/Extensions/ColonySwitcher/partials/ColonyDropdownMobile';
-import { useAppContext, useDetectClickOutside, useMobile } from '~hooks';
+import { useMobile } from '~hooks';
 import styles from './Header.module.css';
 import Icon from '~shared/Icon';
 import UserNavigation from '~common/Extensions/UserNavigation';
 import MainNavigation from '~common/Extensions/MainNavigation';
+import { watchlistMock } from '~common/Extensions/ColonySwitcher/consts';
+import { useHeader } from './hooks';
+
+const displayName = 'common.Extensions.Pages.Header';
 
 const Header = () => {
-  const { userLoading } = useAppContext();
-  const [isOpen, setIsOpen] = useState<boolean>();
-
-  const { colonyToDisplayAddress } = useSelectedColony(watchlistMock);
   const isMobile = useMobile();
-  const popperTooltipOffset = !isMobile ? [120, 8] : [0, 8];
-
-  const sortByDate = (firstWatchEntry, secondWatchEntry) => {
-    const firstWatchTime = new Date(firstWatchEntry?.createdAt || 1).getTime();
-    const secondWatchTime = new Date(secondWatchEntry?.createdAt || 1).getTime();
-    return firstWatchTime - secondWatchTime;
-  };
-
-  const ref = useDetectClickOutside({ onTriggered: () => setIsOpen(false) });
-  const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip(
-    {
-      delayShow: 200,
-      placement: 'bottom',
-      trigger: 'click',
-      visible: isOpen,
-      interactive: true,
-    },
-    {
-      modifiers: [
-        {
-          name: 'offset',
-          options: {
-            offset: popperTooltipOffset,
-          },
-        },
-      ],
-    },
-  );
+  const {
+    colonyToDisplayAddress,
+    getTooltipProps,
+    isOpen,
+    ref,
+    setIsOpen,
+    setTooltipRef,
+    setTriggerRef,
+    sortByDate,
+    userLoading,
+  } = useHeader();
 
   return (
     <header>
@@ -127,5 +107,7 @@ const Header = () => {
     </header>
   );
 };
+
+Header.displayName = displayName;
 
 export default Header;

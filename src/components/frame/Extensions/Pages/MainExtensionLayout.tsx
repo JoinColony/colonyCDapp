@@ -1,6 +1,8 @@
 import React, { FC, PropsWithChildren } from 'react';
 import Header from './Header';
-import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet/Wallet';
+import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
+
+const displayName = 'common.Extensions.Pages.MainExtensionLayout';
 
 const MainExtensionLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -14,5 +16,7 @@ const MainExtensionLayout: FC<PropsWithChildren> = ({ children }) => {
     </div>
   );
 };
+
+MainExtensionLayout.displayName = displayName;
 
 export default MainExtensionLayout;
