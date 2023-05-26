@@ -30,6 +30,8 @@ const UserMenu: FC<UserMenuProps> = ({
   const { connectWallet } = useAppContext();
   const { name, profile } = user || {};
 
+  const iconSize = isMobile ? 'small' : 'extraTiny';
+
   return (
     <PopoverBase
       setTooltipRef={setTooltipRef}
@@ -77,7 +79,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <li className="mb-4">
               <Link to="/" className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Icon name="circles-three-plus" appearance={{ size: 'extraTiny' }} />
+                  <Icon name="circles-three-plus" appearance={{ size: iconSize }} />
                   <p className="ml-2">{formatMessage({ id: 'userMenu.getStartedTitle' })}</p>
                 </div>
               </Link>
@@ -85,7 +87,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <li className="mb-4">
               <Link to="/" className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Icon name="lifebuoy" appearance={{ size: 'extraTiny' }} />
+                  <Icon name="lifebuoy" appearance={{ size: iconSize }} />
                   <p className="ml-2">{formatMessage({ id: 'userMenu.contactAndSupportTitle' })}</p>
                 </div>
                 <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
@@ -94,7 +96,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <li className="mb-4">
               <Link to="/" className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Icon name="code" appearance={{ size: 'extraTiny' }} />
+                  <Icon name="code" appearance={{ size: iconSize }} />
                   <p className="ml-2">{formatMessage({ id: 'userMenu.developersTitle' })}</p>
                 </div>
                 <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
@@ -103,7 +105,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <li>
               <Link to="/" className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Icon name="briefcase" appearance={{ size: 'extraTiny' }} />
+                  <Icon name="briefcase" appearance={{ size: iconSize }} />
                   <p className="ml-2">{formatMessage({ id: 'userMenu.legalAndPrivacyTitle' })}</p>
                 </div>
                 <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
@@ -116,7 +118,7 @@ const UserMenu: FC<UserMenuProps> = ({
         <div className="w-full mb-6 md:mb-5">
           <TitledContent title={{ id: 'userMenu.other' }}>
             <Link to="/" className="flex items-center text-lg font-semibold md:font-normal md:text-md text-gray-900">
-              <Icon name="plugs" appearance={{ size: 'tiny' }} />
+              <Icon name="plugs" appearance={{ size: iconSize }} />
               <p className="ml-2">{formatMessage({ id: 'userMenu.disconnectWalletTitle' })}</p>
             </Link>
           </TitledContent>

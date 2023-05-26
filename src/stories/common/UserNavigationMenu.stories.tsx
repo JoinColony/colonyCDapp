@@ -98,7 +98,7 @@ const UserNavigationMenuNotConnected = () => {
               isFullRounded
               setTriggerRef={setWalletTriggerRef}
               onClick={() => isMobile && setIsWalletButtonVisible((prevState) => !prevState)}
-              className={clsx('md:border-gray-300 md:hover:border-blue-400', {
+              className={clsx('md:border-gray-200 md:hover:border-blue-400', {
                 'px-4 py-2.5 border-base-white': isWalletVisible && isMobile,
                 'p-0': !isWalletVisible && isMobile,
               })}
@@ -117,7 +117,7 @@ const UserNavigationMenuNotConnected = () => {
           <div>
             {isWalletButtonVisible && (
               <Button
-                className={clsx('md:border-gray-300 md:hover:border-blue-400', {
+                className={clsx('md:border-gray-200 md:hover:border-blue-400', {
                   'px-4 py-2.5 border-base-white': visible && isMobile,
                   'p-0': !visible && isMobile,
                 })}
@@ -129,7 +129,7 @@ const UserNavigationMenuNotConnected = () => {
                 <Icon name={visible && isMobile ? 'close' : 'list'} appearance={{ size: 'tiny' }} />
               </Button>
             )}
-            <div className="w-full h-auto absolute top-[6.5rem] md:top-[2.3rem]">
+            <div className="w-full h-auto top-[6.5rem] md:top-[2.3rem]">
               {visible && (
                 <UserMenu
                   tooltipProps={getTooltipProps}
@@ -188,7 +188,7 @@ const UserNavigationMenuConnected = () => {
           )}
           <div>
             <Button
-              className={clsx('md:border-gray-300 md:hover:border-blue-400', {
+              className={clsx('md:border-gray-200 md:hover:border-blue-400', {
                 'px-4 py-2.5 border-base-white': visible && isMobile,
                 'p-0': !visible && isMobile,
               })}
@@ -199,7 +199,7 @@ const UserNavigationMenuConnected = () => {
             >
               <Icon name={visible && isMobile ? 'close' : 'list'} appearance={{ size: 'tiny' }} />
             </Button>
-            <div className="w-full h-auto absolute top-[6.5rem] md:top-[2.3rem]">
+            <div className="w-full h-auto top-[6.5rem] md:top-[2.3rem]">
               {visible && (
                 <UserMenu
                   tooltipProps={getTooltipProps}
