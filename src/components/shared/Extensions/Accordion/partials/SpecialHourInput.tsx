@@ -10,7 +10,7 @@ import { SpecialInputProps } from '../types';
 
 const displayName = 'Extensions.SpecialHourInput';
 
-const SpecialHourInput: FC<SpecialInputProps> = ({ maxValue }) => {
+const SpecialHourInput: FC<SpecialInputProps> = ({ defaultValue, maxValue }) => {
   const { formatMessage } = useIntl();
   const validationSchema = yup
     .object({
@@ -36,7 +36,8 @@ const SpecialHourInput: FC<SpecialInputProps> = ({ maxValue }) => {
     <div className="text-right">
       <form className="flex justify-end flex-col w-[8.75rem]">
         {/* <Form<FormValues> use it later */}
-        <SpecialInput
+        <SpecialInput // @ts-ignore
+          defaultValue={defaultValue}
           register={register}
           isError={!!errors.hour?.message}
           name="hour"

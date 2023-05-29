@@ -1,16 +1,16 @@
-import { useCallback, useMemo, useState } from 'react';
-import { useIntl } from 'react-intl';
+import { useCallback, useMemo } from 'react';
 import { useAsyncFunction, useColonyContext, useExtensionData } from '~hooks';
-import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge-new/types';
 import { ActionTypes } from '~redux';
 import { isInstalledExtensionData } from '~utils/extensions';
+import { useExtensionsBadge } from '~hooks/useExtensionsBadgeStatus';
 
 export const useExtensionItem = (extensionId: string) => {
-  const { formatMessage } = useIntl();
   const { colony } = useColonyContext();
   const { extensionData } = useExtensionData(extensionId);
-  const [status, setStatus] = useState<ExtensionStatusBadgeMode>();
-  const [badgeMessage, setBadgeMessage] = useState<string>('');
+
+  const isExtensionInstalled = extensionData && isInstalledExtensionData(extensionData);
+
+  const { status, badgeMessage } = useExtensionsBadge(extensionData);
 
   const extensionValues = useMemo(() => {
     return {
@@ -34,23 +34,6 @@ export const useExtensionItem = (extensionId: string) => {
   }, [asyncFunction, extensionValues]);
 
   const extensionUrl = `/colony/${colony?.name}/extensions/${extensionId}`;
-  const isExtensionInstalled = extensionData && isInstalledExtensionData(extensionData);
-
-  useMemo(() => {
-    if (!isExtensionInstalled) {
-      setStatus('not-installed');
-      setBadgeMessage(formatMessage({ id: 'extensionsPage.notInstalled' }));
-    } else if (extensionData?.isDeprecated) {
-      setStatus('deprecated');
-      setBadgeMessage(formatMessage({ id: 'extensionsPage.deprecated' }));
-    } else if (extensionData?.isEnabled) {
-      setStatus('enabled');
-      setBadgeMessage(formatMessage({ id: 'extensionsPage.enabled' }));
-    } else {
-      setStatus('disabled');
-      setBadgeMessage(formatMessage({ id: 'extensionsPage.disabled' }));
-    }
-  }, [extensionData, formatMessage, isExtensionInstalled]);
 
   return {
     extensionUrl,

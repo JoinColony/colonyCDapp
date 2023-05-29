@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import { SpecificSidePanelProps } from './types';
 import ExtensionStatusBadge from '../ExtensionStatusBadge-new/ExtensionStatusBadge';
@@ -12,7 +12,7 @@ import styles from './SpecificSidePanel.module.css';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 
-const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData }) => {
+const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ sidePanelData, permissions, status = '', badgeMessage }) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -20,35 +20,35 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData
       <h3 className="font-semibold text-lg text-gray-900 pb-[0.2rem]">
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
-      {sidePanelData.map(
-        ({ id, dateInstalled, installedBy, statusType, versionInstalled, contractAddress, developer, permissions }) => (
-          <Fragment key={id}>
-            <div className={styles.panelRow}>
-              <div className={styles.panelTitle}>{statusType.title}</div>
-              <div className="md:w-[50%] justify-start flex flex-col md:flex-row">
-                {statuses?.map((status) => (
-                  <div className="mr-1 mb-1 md:mb-0" key={status}>
-                    <ExtensionStatusBadge mode={status} text={status} />
-                  </div>
-                ))}
-              </div>
-            </div>
-            {!statuses?.includes('not-installed') && (
-              <InstalledBy title={installedBy.title} component={installedBy.component} />
-            )}
-            <DateInstalled title={dateInstalled.title} date={dateInstalled.date} />
-            <Version title={versionInstalled.title} version={versionInstalled.version} />
-            {!statuses?.includes('not-installed') && (
-              <ContractAddress title={contractAddress.title} address={contractAddress.address} />
-            )}
-            <Developer title={developer.title} developer={developer.developer} />
-            <div className="flex flex-col justify-between">
-              <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">{permissions.title}</div>
-              <Permissions data={permissions.permissions} />
-            </div>
-          </Fragment>
-        ),
+      <div className={styles.panelRow}>
+        <div className={styles.panelTitle}>Status</div>
+        <div className="md:w-[50%] justify-start flex flex-col md:flex-row">
+          <div className="mr-1 mb-1 md:mb-0">
+            {/* @ts-ignore */}
+            <ExtensionStatusBadge mode={status} text={badgeMessage} />
+          </div>
+        </div>
+      </div>
+      {status !== 'not-installed' && (
+        <InstalledBy
+          title="Installed by"
+          // @ts-ignore
+          installedBy={sidePanelData?.installedBy}
+          addressWallet={sidePanelData?.address}
+          // @ts-ignore
+          isVerified={sidePanelData?.isVerified}
+        />
       )}
+      <DateInstalled title="Date installed" date={sidePanelData?.installedAt} />
+      <Version title="Version installed" version={`v${sidePanelData?.availableVersion}`} />
+      {status !== 'not-installed' && <ContractAddress title="Contract address" address={sidePanelData?.address} />}
+      <Developer title="Developer" developer="Colony" />
+      <div className="flex flex-col justify-between">
+        <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">
+          {formatMessage({ id: 'permissions.list.title' })}
+        </div>
+        <Permissions data={permissions} />
+      </div>
     </div>
   );
 };

@@ -10,7 +10,7 @@ import { SpecialInputProps } from '../types';
 
 const displayName = 'Extensions.SpecialPercentageInput';
 
-const SpecialPercentageInput: FC<SpecialInputProps> = ({ maxValue }) => {
+const SpecialPercentageInput: FC<SpecialInputProps> = ({ defaultValue, maxValue }) => {
   const { formatMessage } = useIntl();
   const validationSchema = yup
     .object({
@@ -38,6 +38,8 @@ const SpecialPercentageInput: FC<SpecialInputProps> = ({ maxValue }) => {
       <form className="flex justify-end flex-col w-[8.8rem]">
         {/* <Form<FormValues> use it later */}
         <SpecialInput
+          // @ts-ignore
+          defaultValue={defaultValue}
           register={register}
           isError={!!errors.percentage?.message}
           name="percentage"

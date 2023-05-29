@@ -1,37 +1,14 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { FormRadioButton, RadioListProps } from './types';
+import { RadioListProps } from './types';
 import RadioBase from './RadioBase';
 import FormError from '~shared/Extensions/FormError/FormError';
 import Button from '~shared/Extensions/Button/Button';
 
 const displayName = 'Extensions.Fields.RadioList';
 
-const RadioList: FC<RadioListProps> = ({ title, items }) => {
+const RadioList: FC<RadioListProps> = ({ title, items, errors, register, handleSubmit, onSubmit }) => {
   const { formatMessage } = useIntl();
-
-  const validationSchema = yup.object().shape({
-    radio: yup
-      .string()
-      .required()
-      .typeError(formatMessage({ id: 'radio.error.governance' })),
-  });
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormRadioButton>({
-    mode: 'onChange',
-    resolver: yupResolver(validationSchema),
-  });
-
-  const onSubmit = (data) => {
-    alert(JSON.stringify(data));
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
