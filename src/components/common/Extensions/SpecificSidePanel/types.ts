@@ -39,4 +39,6 @@ export interface PanelTypeProps {
   isVerified?: boolean;
   copyUrl?: string;
   aboutDescription?: string;
+  colonyReputationItems?: any;
+  permissionsItems?: any;
 }

@@ -13,6 +13,7 @@ type Story = StoryObj<typeof SpecificSidePanel>;
 export const Base: Story = {
   args: {
     statuses: ['enabled'],
+    // @ts-ignore
     sidePanelData,
   },
 };
@@ -20,6 +21,7 @@ export const Base: Story = {
 export const DisabledDeprecated: Story = {
   args: {
     statuses: ['disabled', 'deprecated'],
+    // @ts-ignore
     sidePanelData,
   },
 };
@@ -27,6 +29,7 @@ export const DisabledDeprecated: Story = {
 export const NotInstalled: Story = {
   args: {
     statuses: ['not-installed'],
+    // @ts-ignore
     sidePanelData,
   },
 };

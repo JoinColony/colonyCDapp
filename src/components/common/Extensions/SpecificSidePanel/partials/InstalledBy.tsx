@@ -23,13 +23,15 @@ const InstalledBy: FC<PanelTypeProps> = ({
   return (
     <div className={styles.panelRow}>
       <div className={styles.panelTitle}>{title}</div>
-      {/* <div className="flex">{component}</div> */}
       <div className="flex">
         <UserAvatarPopover
           title="asdf"
+          // @ts-ignore
           userName={userDisplayName || username}
+          // @ts-ignore
           walletAddress={addressWallet}
           isVerified={isVerified}
+          // @ts-ignore
           copyUrl={copyUrl}
           aboutDescription={aboutDescription}
           colonyReputation={colonyReputationItems}

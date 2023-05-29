@@ -46,9 +46,9 @@ const LazyConsensusPage = () => {
     [onOpenIndexChange],
   );
 
-  if (!extensionData) {
-    return 'unsupportedExtension';
-  }
+  // if (!extensionData) {
+  //   return 'unsupportedExtension';
+  // }
 
   return (
     <>

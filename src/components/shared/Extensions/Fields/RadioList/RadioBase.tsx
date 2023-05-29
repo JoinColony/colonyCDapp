@@ -10,6 +10,7 @@ import Icon from '~shared/Icon';
 const displayName = 'Extensions.Fields.RadioBase';
 
 const RadioBase: FC<RadioBaseProps> = ({ item, isError, register }) => {
+  // @ts-ignore
   const { disabled, label, description, value, badge, tooltip } = item;
 
   const { formatMessage } = useIntl();
@@ -21,7 +22,7 @@ const RadioBase: FC<RadioBaseProps> = ({ item, isError, register }) => {
     <div className="relative w-full">
       <input
         type="radio"
-        {...register('radio')}
+        {...register?.('radio')}
         id={label}
         aria-disabled={disabled}
         disabled={disabled}
