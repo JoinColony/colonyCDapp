@@ -1,6 +1,5 @@
 import React, { useState, KeyboardEvent } from 'react';
 import clsx from 'clsx';
-import { useIntl } from 'react-intl';
 import { SelectProps } from './types';
 import styles from './Select.module.css';
 import Icon from '~shared/Icon';
@@ -8,8 +7,6 @@ import Icon from '~shared/Icon';
 const displayName = 'Extensions.Select';
 
 const Select = <T extends any[]>({ list, selectedElement, handleChange }: SelectProps<T>) => {
-  const { formatMessage } = useIntl();
-
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const toggleOptions = () => {
     setIsOptionsOpen(!isOptionsOpen);
@@ -65,7 +62,7 @@ const Select = <T extends any[]>({ list, selectedElement, handleChange }: Select
           'border border-gray-300 ': !isOptionsOpen,
         })}
       >
-        {formatMessage(selectedItem?.label)}
+        {selectedItem?.label}
         <Icon
           name="caret-down"
           className={clsx(`${styles.icon} transition-transform duration-normal`, {
@@ -98,7 +95,7 @@ const Select = <T extends any[]>({ list, selectedElement, handleChange }: Select
               setIsOptionsOpen(false);
             }}
           >
-            {formatMessage(option.label)}
+            {option.label}
           </li>
         ))}
       </ul>
