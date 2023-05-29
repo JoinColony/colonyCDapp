@@ -17,22 +17,22 @@ const oneTransactionPaymentMessages = {
   },
   oneTxPaymentDescriptionShort: {
     id: `${oneTransactionPaymentName}.description`,
-    defaultMessage: 'Pay a single account one type of token.',
+    defaultMessage: 'Make quick and simple payments to members or any address on the same network.',
   },
   oneTxPaymentDescriptionLong: {
     id: `${oneTransactionPaymentName}.descriptionLong`,
-    defaultMessage: 'Pay a single account one type of token.',
+    defaultMessage: 'Make quick and simple payments to members or any address on the same network.',
   },
 };
 
 const votingReputationMessages = {
   votingReputationName: {
     id: `${votingReputationName}.name`,
-    defaultMessage: 'Governance (Reputation Weighted)',
+    defaultMessage: 'Lazy Consensus (Reputation Weighted)',
   },
   votingReputationDescriptionShort: {
     id: `${votingReputationName}.description`,
-    defaultMessage: `Reputation weighted decentralized governance with a minimum of voting.`,
+    defaultMessage: `Enable efficient and decentralized decision making for your colony. Allowing members to propose actions to be taken.`,
   },
   votingReputationDescriptionLong: {
     id: `${votingReputationName}.descriptionLong`,
@@ -135,6 +135,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     name: MSG.oneTxPaymentName,
     descriptionShort: MSG.oneTxPaymentDescriptionShort,
     descriptionLong: MSG.oneTxPaymentDescriptionLong,
+    icon: 'extension-one-transaction-payment',
     neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
     // @NOTE: This is for testing only, should be set to false afterwards
     uninstallable: true,
@@ -145,6 +146,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     name: MSG.votingReputationName,
     descriptionShort: MSG.votingReputationDescriptionShort,
     descriptionLong: MSG.votingReputationDescriptionLong,
+    icon: 'extension-lazy-consensus',
     neededColonyPermissions: [
       ColonyRole.Root,
       ColonyRole.Administration,

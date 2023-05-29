@@ -44,9 +44,22 @@
   }
 }
 
-.carouselWrapper [class~='carousel-slider'],
-.carouselWrapper [class~='slider-wrapper'] {
-  @apply w-[33.5rem];
+@layer utilities {
+  .heading-1 {
+    @apply text-4xl font-semibold;
+  }
+
+  .heading-2 {
+    @apply text-3xl font-semibold;
+  }
+
+  .heading-3 {
+    @apply text-2xl font-semibold;
+  }
+
+  .heading-4 {
+    @apply text-xl font-semibold;
+  }
 }
 
 @layer components {

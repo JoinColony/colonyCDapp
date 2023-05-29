@@ -18,10 +18,7 @@ import { WizardDialogType, useNetworkInverseFee } from '~hooks';
 import { useGetMembersForColonyQuery } from '~gql';
 
 import DialogForm from './CreatePaymentDialogForm';
-import {
-  extractUsersFromColonyMemberData,
-  getCreatePaymentDialogPayload,
-} from './helpers';
+import { extractUsersFromColonyMemberData, getCreatePaymentDialogPayload } from './helpers';
 import getValidationSchema from './validation';
 
 const displayName = 'common.CreatePaymentDialog';
@@ -45,7 +42,20 @@ const CreatePaymentDialog = ({
 }: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
-  const colonyWatchers = colony?.watchers?.items.filter(notNull).map((item) => item.user) || [];
+
+  const { data } = useGetMembersForColonyQuery({
+    skip: !colony.colonyAddress,
+    variables: {
+      input: {
+        colonyAddress: colony.colonyAddress,
+      },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+  const colonyContributors = extractUsersFromColonyMemberData(data?.getMembersForColony?.contributors);
+  const colonyWatchers = extractUsersFromColonyMemberData(data?.getMembersForColony?.watchers);
+  const colonyMembers = colonyContributors.concat(colonyWatchers);
+
   const { isVotingReputationEnabled } = enabledExtensionData;
   const { networkInverseFee } = useNetworkInverseFee();
 
@@ -88,9 +98,7 @@ const CreatePaymentDialog = ({
   // };
 
   const transform = pipe(
-    mapPayload((payload) =>
-      getCreatePaymentDialogPayload(colony, payload, networkInverseFee),
-    ),
+    mapPayload((payload) => getCreatePaymentDialogPayload(colony, payload, networkInverseFee)),
     withMeta({ navigate }),
   );
 

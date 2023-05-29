@@ -15,7 +15,7 @@
 }
 
 .m {
-  @apply inline-block relative w-[3.75rem] h-[3.75rem];
+  @apply inline-block relative w-[4.375rem] h-[4.375rem];
 }
 
 .l {

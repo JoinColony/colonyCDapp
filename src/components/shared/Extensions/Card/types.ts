@@ -1,4 +1,5 @@
 export interface CardProps {
-  withShadow?: boolean;
+  hasShadow?: boolean;
   rounded?: 's' | 'm';
+  className?: string;
 }

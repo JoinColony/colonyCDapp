@@ -15,8 +15,11 @@ module.exports = {
     '@storybook/addon-interactions',
     "storybook-addon-apollo-client",
     'storybook-react-intl',
+    {
       name: '@storybook/addon-styling',
       options: {
+        // Check out https://github.com/storybookjs/addon-styling/blob/main/docs/api.md
+        // For more details on this addon's options.
         postCss: true,
       },
     },
@@ -55,6 +58,10 @@ module.exports = {
 
     config.module.rules = config.module.rules.filter(
       ({ test }, index) => !test || (!test.test('test.css') && !test.test('test.scss') && !test.test('test.tsx')),
+    );
+    config.module.rules.push({
+      test: /\.css$/,
+      oneOf: [
         {
           test: /\.global\.css$/,
           include: [path.resolve(__dirname, '..', 'src', 'components'), path.resolve(__dirname, '..', 'src', 'styles')],

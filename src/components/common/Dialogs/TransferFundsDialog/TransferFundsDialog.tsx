@@ -56,8 +56,6 @@ const TransferFundsDialog = ({
 
   const validationSchema = getValidationSchema(colony);
 
-  const validationSchema = getValidationSchema(colony);
-
   return (
     <Dialog cancel={cancel}>
       <Form<FormValues>

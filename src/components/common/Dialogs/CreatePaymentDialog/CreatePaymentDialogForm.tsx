@@ -61,10 +61,6 @@ const requiredRoles: ColonyRole[] = [ColonyRole.Funding, ColonyRole.Administrati
 
 const supRenderAvatar = (item: ItemDataType<User>) => <UserAvatar user={item} size="xs" />;
 
-const supRenderAvatar = (item: ItemDataType<User>) => (
-  <UserAvatar user={item} size="xs" />
-);
-
 const CreatePaymentDialogForm = ({
   back,
   verifiedUsers,

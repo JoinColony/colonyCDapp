@@ -14,7 +14,7 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
   className,
   notSet,
   placeholderIcon = 'circle-close',
-  size,
+  size = 'xs',
   title,
 }) => {
   const source = notSet ? null : avatar || getIcon(seed || title);

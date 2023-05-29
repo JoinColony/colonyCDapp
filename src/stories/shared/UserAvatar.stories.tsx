@@ -1,17 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { withRouter } from 'storybook-addon-react-router-v6';
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import UserAvatar from '~shared/Extensions/UserAvatar';
 
 const meta: Meta<typeof UserAvatar> = {
   title: 'Shared/User Avatar',
   component: UserAvatar,
   decorators: [
-    withRouter,
     (Story) => (
-      <div className="text-gray-900">
-        <Story />
-      </div>
+      <Router>
+        <div className="text-gray-900">
+          <Story />
+        </div>
+      </Router>
     ),
   ],
   parameters: {

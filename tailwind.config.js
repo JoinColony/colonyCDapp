@@ -11,7 +11,11 @@ module.exports = {
       md: ['0.875rem', 1.4],
       lg: ['1rem', 1.5],
       xl: ['1.125rem', 1.5],
+      '2xl': ['1.5rem', 1.25],
       '3xl': ['1.875rem', 1.3],
+      '4xl': ['2.375rem', 1.2],
+    },
+    extend: {
       colors: {
         gray: {
           25: '#FCFCFD',
@@ -131,16 +135,6 @@ module.exports = {
       },
       screens: {
         sm: '53.125rem',
-        md: '64rem',
-        lg: '90rem',
-      },
-      transitionDuration: {
-        slow: '175ms',
-        normal: '300ms',
-        fast: '175ms',
-      },
-      screens: {
-        sm: '26.75rem',
         md: '64rem',
         lg: '90rem',
       },

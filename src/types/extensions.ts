@@ -37,6 +37,7 @@ export interface ExtensionConfig {
   initializationParams?: ExtensionInitParam[];
   uninstallable: boolean;
   createdAt: number;
+  icon: string;
 }
 
 export type InstalledExtensionData = ExtensionConfig &

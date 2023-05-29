@@ -38,12 +38,6 @@
   input[type='number'] {
     -moz-appearance: textfield;
   }
-
-  input[type='number']::-webkit-inner-spin-button,
-  input[type='number']::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    @apply m-0;
-  }
 }
 
 @layer utilities {
@@ -96,56 +90,6 @@
 
 .rts___tab {
   @apply shadow-none border-0 relative inline-flex items-center justify-center px-0 py-2 text-md font-medium cursor-pointer border-b border-transparent transition-colors duration-normal  ml-0 mr-6 last:mr-0 hover:text-blue-400 rounded-none;
-}
-
-.rts___tab___selected {
-  @apply shadow-none text-blue-400 border-blue-400;
-}
-
-.rts___nav___btn:hover {
-  @apply bg-gray-300;
-}
-
-button:disabled.rts___btn,
-.rts___nav___btn:disabled,
-button[disabled].rts___btn {
-  @apply invisible;
-}
-
-.rts___nav___btn > svg {
-  @apply w-[0.75rem];
-}
-
-.rts___nav___btn:hover > svg {
-  @apply stroke-none;
-}
-
-.carouselWrapper .carousel {
-  @apply relative overflow-visible;
-}
-
-.carouselWrapper [class~='carousel'] {
-  @apply relative overflow-visible;
-}
-
-.carouselWrapper [class~='carousel-slider'],
-.carouselWrapper [class~='slider-wrapper'] {
-  @apply w-[33.5rem];
-}
-.carouselWrapper [class~='slide'] {
-  @apply mr-4 h-[15.5rem];
-}
-
-.carouselWrapper [class~='control-dots'] {
-  @apply bottom-[-2.5rem] overflow-visible flex justify-center;
-}
-
-.rts___tabs {
-  @apply py-0;
-}
-
-.rts___tab {
-  @apply shadow-none border-0 relative inline-flex items-center justify-center px-0 py-2 text-gray-700 text-md font-medium cursor-pointer border-b border-transparent transition-colors duration-normal  ml-0 mr-6 last:mr-0 hover:text-blue-400 rounded-none;
 }
 
 .rts___tab___selected {

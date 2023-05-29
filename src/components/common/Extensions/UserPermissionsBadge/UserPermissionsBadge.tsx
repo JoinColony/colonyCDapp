@@ -14,6 +14,7 @@ const UserPermissionsBadge: FC<PropsWithChildren<UserPermissionsBadgeProps>> = (
   textValues,
   description,
   descriptionValues,
+  name,
   ...rest
 }) => {
   const { formatMessage } = useIntl();

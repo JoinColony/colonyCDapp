@@ -17,6 +17,7 @@ const SpecialPercentageInput: FC<SpecialInputProps> = ({ maxValue }) => {
       percentage: yup
         .number()
         .positive('')
+        .integer('')
         .required('')
         .typeError(formatMessage({ id: 'special.percentage.input.error.min.value' }))
         .min(1, formatMessage({ id: 'special.percentage.input.error.min.value' }))

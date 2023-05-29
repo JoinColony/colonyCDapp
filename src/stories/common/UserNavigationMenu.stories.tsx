@@ -4,7 +4,12 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { mockNativeToken, mockTotalReputation, mockUserReputation } from '~common/Extensions/UserNavigation/consts';
+import {
+  mockNativeToken,
+  mockTotalReputation,
+  mockUser,
+  mockUserReputation,
+} from '~common/Extensions/UserNavigation/consts';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import Token from '~common/Extensions/UserNavigation/partials/Token';
 import UserMenu from '~common/Extensions/UserNavigation/partials/UserMenu';
@@ -93,7 +98,7 @@ const UserNavigationMenuNotConnected = () => {
               isFullRounded
               setTriggerRef={setWalletTriggerRef}
               onClick={() => isMobile && setIsWalletButtonVisible((prevState) => !prevState)}
-              className={clsx('md:border-gray-300 md:hover:border-blue-400', {
+              className={clsx('md:border-gray-200 md:hover:border-blue-400', {
                 'px-4 py-2.5 border-base-white': isWalletVisible && isMobile,
                 'p-0': !isWalletVisible && isMobile,
               })}
@@ -112,7 +117,7 @@ const UserNavigationMenuNotConnected = () => {
           <div>
             {isWalletButtonVisible && (
               <Button
-                className={clsx('md:border-gray-300 md:hover:border-blue-400', {
+                className={clsx('md:border-gray-200 md:hover:border-blue-400', {
                   'px-4 py-2.5 border-base-white': visible && isMobile,
                   'p-0': !visible && isMobile,
                 })}
@@ -124,7 +129,7 @@ const UserNavigationMenuNotConnected = () => {
                 <Icon name={visible && isMobile ? 'close' : 'list'} appearance={{ size: 'tiny' }} />
               </Button>
             )}
-            <div className="w-full h-auto absolute top-[6.5rem] md:top-[2.3rem]">
+            <div className="w-full h-auto top-[6.5rem] md:top-[2.3rem]">
               {visible && (
                 <UserMenu
                   tooltipProps={getTooltipProps}
@@ -183,7 +188,7 @@ const UserNavigationMenuConnected = () => {
           )}
           <div>
             <Button
-              className={clsx('md:border-gray-300 md:hover:border-blue-400', {
+              className={clsx('md:border-gray-200 md:hover:border-blue-400', {
                 'px-4 py-2.5 border-base-white': visible && isMobile,
                 'p-0': !visible && isMobile,
               })}
@@ -194,18 +199,17 @@ const UserNavigationMenuConnected = () => {
             >
               <Icon name={visible && isMobile ? 'close' : 'list'} appearance={{ size: 'tiny' }} />
             </Button>
-            <div className="w-full h-auto absolute top-[6.5rem] md:top-[2.3rem]">
+            <div className="w-full h-auto top-[6.5rem] md:top-[2.3rem]">
               {visible && (
                 <UserMenu
                   tooltipProps={getTooltipProps}
                   setTooltipRef={setTooltipRef}
                   isWalletConnected={isWalletConnected}
                   nativeToken={mockNativeToken}
-                  userName="panda"
+                  user={mockUser}
                   walletAddress="0x155....1051"
                   userReputation={mockUserReputation}
                   totalReputation={mockTotalReputation}
-                  copyUrl
                   isVerified
                 />
               )}
