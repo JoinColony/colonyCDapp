@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
+import { MessageDescriptor } from 'react-intl';
 
 export interface LearnMoreProps {
-  chunks: ReactNode;
+  message: MessageDescriptor;
   href: string;
 }
