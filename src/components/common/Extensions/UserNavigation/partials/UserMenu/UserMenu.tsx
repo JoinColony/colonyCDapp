@@ -18,10 +18,9 @@ const UserMenu: FC<UserMenuProps> = ({
   tooltipProps,
   setTooltipRef,
   isWalletConnected,
-  userName,
+  user,
   isVerified,
   walletAddress,
-  copyUrl,
   userReputation,
   totalReputation,
   nativeToken,
@@ -29,27 +28,31 @@ const UserMenu: FC<UserMenuProps> = ({
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
   const { connectWallet } = useAppContext();
+  const { name, profile } = user || {};
+
+  const iconSize = isMobile ? 'small' : 'extraTiny';
 
   return (
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={tooltipProps}
-      classNames={clsx('px-0 md:px-6 py-6 rounded-lg flex border-gray-100 justify-start z-[9999] tooltip-container', {
+      classNames={clsx('p-6 rounded-lg flex border-gray-100 justify-start z-[9999] tooltip-container', {
         'w-full border-none shadow-none': isMobile,
         'w-[20.125rem]': !isMobile,
         'h-[32rem] md:h-[23rem]': !isWalletConnected,
-        'md:h-[31.5rem]': isWalletConnected,
+        'md:h-[29rem]': isWalletConnected,
       })}
     >
       {isWalletConnected ? (
         <WalletConnectedTopMenu
-          userName={userName}
+          userName={profile?.displayName || name}
           isVerified={isVerified}
           walletAddress={walletAddress}
-          copyUrl={copyUrl}
           userReputation={userReputation}
           totalReputation={totalReputation}
           nativeToken={nativeToken}
+          avatar={profile?.thumbnail || profile?.avatar || ''}
+          user={user}
         />
       ) : (
         <>
@@ -76,7 +79,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <li className="mb-4">
               <Link to="/" className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Icon name="circles-three-plus" appearance={{ size: 'extraTiny' }} />
+                  <Icon name="circles-three-plus" appearance={{ size: iconSize }} />
                   <p className="ml-2">{formatMessage({ id: 'userMenu.getStartedTitle' })}</p>
                 </div>
               </Link>
@@ -84,7 +87,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <li className="mb-4">
               <Link to="/" className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Icon name="lifebuoy" appearance={{ size: 'extraTiny' }} />
+                  <Icon name="lifebuoy" appearance={{ size: iconSize }} />
                   <p className="ml-2">{formatMessage({ id: 'userMenu.contactAndSupportTitle' })}</p>
                 </div>
                 <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
@@ -93,7 +96,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <li className="mb-4">
               <Link to="/" className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Icon name="code" appearance={{ size: 'extraTiny' }} />
+                  <Icon name="code" appearance={{ size: iconSize }} />
                   <p className="ml-2">{formatMessage({ id: 'userMenu.developersTitle' })}</p>
                 </div>
                 <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
@@ -102,7 +105,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <li>
               <Link to="/" className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Icon name="briefcase" appearance={{ size: 'extraTiny' }} />
+                  <Icon name="briefcase" appearance={{ size: iconSize }} />
                   <p className="ml-2">{formatMessage({ id: 'userMenu.legalAndPrivacyTitle' })}</p>
                 </div>
                 <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
@@ -115,7 +118,7 @@ const UserMenu: FC<UserMenuProps> = ({
         <div className="w-full mb-6 md:mb-5">
           <TitledContent title={{ id: 'userMenu.other' }}>
             <Link to="/" className="flex items-center text-lg font-semibold md:font-normal md:text-md text-gray-900">
-              <Icon name="plugs" appearance={{ size: 'tiny' }} />
+              <Icon name="plugs" appearance={{ size: iconSize }} />
               <p className="ml-2">{formatMessage({ id: 'userMenu.disconnectWalletTitle' })}</p>
             </Link>
           </TitledContent>
