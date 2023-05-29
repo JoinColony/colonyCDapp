@@ -1,3 +1,7 @@
 .field {
-  @apply border-solid  bg-base-white text-md font-normal text-gray-900 pt-3 pb-3 transition-all;
+  @apply bg-base-white px-3.5 py-3 transition-all duration-normal min-w-[2.375rem] rounded-r border rounded-l-none text-center;
+}
+
+.input {
+  @apply bg-base-white px-3.5 py-3 transition-all duration-normal w-[3.75rem] rounded-l border rounded-r-none shrink-0 -mr-px -z-10;
 }
