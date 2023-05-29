@@ -19,7 +19,7 @@ const SpecialInput: FC<SpecialInputProps> = ({
 }) => {
   const { formatMessage } = useIntl();
   return (
-    <div className="flex group justify-end">
+    <div className="flex group justify-end font-normal text-gray-900 text-md">
       <input
         defaultValue={defaultValue}
         {...register(type)}
@@ -27,20 +27,18 @@ const SpecialInput: FC<SpecialInputProps> = ({
         type="number"
         min={min}
         max={max}
-        className={`${styles.field} w-[3.75rem] rounded-l pr-4 pl-3 border 
-          group-hover:border-blue-200 group-focus-within:border-blue-200 ${
-            isError ? 'border-negative-400' : 'border-gray-300'
-          } ${disabled && 'cursor-not-allowed opacity-50 group-hover:border-gray-300'}`}
+        className={`${styles.input} group-hover:border-blue-200 group-focus-within:border-blue-200 ${
+          isError ? 'border-negative-400' : 'border-gray-300'
+        } ${disabled && 'pointer-events-none opacity-50 group-hover:border-gray-300'}`}
         id={id}
         placeholder={placeholder}
         aria-disabled={disabled}
         disabled={disabled}
       />
       <div
-        className={`${styles.field} rounded-r pl-3 pr-3 border-l-0 border-y border-r group-focus-within:border-blue-200
-        group-hover:border-blue-200 ${isError ? 'border-negative-400' : 'border-gray-300'} ${
-          disabled && 'cursor-not-allowed opacity-50 group-hover:border-gray-300'
-        }`}
+        className={`${styles.field} group-focus-within:border-blue-200 group-hover:border-blue-200 ${
+          isError ? 'border-negative-400' : 'border-gray-300'
+        } ${disabled && 'pointer-events-none opacity-50 group-hover:border-gray-300'}`}
       >
         {type === 'hour' ? formatMessage({ id: 'hours' }) : '%'}
       </div>
