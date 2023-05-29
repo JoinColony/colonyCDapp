@@ -49,6 +49,7 @@ import CreateColonyWizard from '~common/CreateColonyWizard';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
 import MainExtensionLayout from '~frame/Extensions/Pages/MainExtensionLayout';
 import MainExtensionPage from '~frame/Extensions/Pages/MainExtensionPage';
+import LazyConsensusPage from '~frame/Extensions/Pages/LazyConsensusPage';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -156,6 +157,7 @@ const Routes = () => {
             <ColonyContextProvider>
               <MainExtensionLayout>
                 <ExtensionDetails />
+                <LazyConsensusPage />
               </MainExtensionLayout>
             </ColonyContextProvider>
           }
