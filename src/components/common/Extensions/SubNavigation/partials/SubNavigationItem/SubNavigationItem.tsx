@@ -8,7 +8,7 @@ import Icon from '~shared/Icon';
 import { SubNavigationItemProps } from './types';
 import styles from './SubNavigationItem.module.css';
 
-const displayName = 'common.Extensions.SubNavigation.SubNavigationItem';
+const displayName = 'common.Extensions.SubNavigation.partials.SubNavigationItem';
 
 const SubNavigationItem: FC<PropsWithChildren<SubNavigationItemProps>> = ({
   label,
