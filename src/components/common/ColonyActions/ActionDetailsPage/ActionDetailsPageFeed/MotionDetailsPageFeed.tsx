@@ -5,6 +5,7 @@ import {
   ColonyAndExtensionsEvents,
   SystemMessages,
 } from '~types';
+import { notNull } from '~utils/arrays';
 
 import MotionDetailsPageEvent from './MotionDetailsPageEvent/MotionDetailsPageEvent';
 
@@ -16,7 +17,7 @@ interface MotionDetailsPageFeedProps {
 }
 
 const MotionDetailsPageFeed = ({ actionData }: MotionDetailsPageFeedProps) => {
-  const messages = actionData.motionData?.messages;
+  const messages = actionData.motionData?.messages?.items.filter(notNull);
   return (
     <>
       {messages?.map((message) => (

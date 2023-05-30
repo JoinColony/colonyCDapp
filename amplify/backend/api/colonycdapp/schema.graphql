@@ -547,9 +547,16 @@ type MotionMessage @model {
   initiatorAddress: ID!
   name: String!
   messageKey: String!
+  motionId: ID!
+    @index(
+      name: "byMotionId"
+      queryField: "getMotionMessageByMotionId"
+      sortKeyFields: ["createdAt"]
+    )
   initiatorUser: User @hasOne(fields: ["initiatorAddress"])
   vote: String
   amount: String
+  createdAt: AWSDateTime!
 }
 
 input MotionStateHistoryInput {
@@ -610,7 +617,7 @@ type ColonyMotion @model {
   skillRep: String!
   hasObjection: Boolean!
   motionStateHistory: MotionStateHistory!
-  messages: [MotionMessage!]!
+  messages: [MotionMessage!]! @hasMany(indexName: "byMotionId", fields: ["id"])
 }
 
 # This will store the relevant events we care about for a particular colony

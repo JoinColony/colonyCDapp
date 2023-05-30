@@ -83,7 +83,9 @@ module.exports = {
           inRevealPhase
         }
         messages {
-          ...MotionMessage
+          items {
+            ...MotionMessage
+          }
         }
       }
     }
@@ -92,6 +94,13 @@ module.exports = {
     mutation UpdateColonyMotion($input: UpdateColonyMotionInput!) {
       updateColonyMotion(input: $input) {
         id
+      }
+    }
+  `,
+  createMotionMessage: /* GraphQL */ `
+    mutation CreateMotionMessage($input: CreateMotionMessageInput!) {
+      createMotionMessage(input: $input) {
+        messageKey
       }
     }
   `,
