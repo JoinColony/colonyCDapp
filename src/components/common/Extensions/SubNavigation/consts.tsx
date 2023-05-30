@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { SubNavigationItemProps } from './SubNavigationItem/types';
+import { SubNavigationItemProps } from './partials/SubNavigationItem/types';
 import PayDropdown from './partials/DropdownContent/PayDropdown';
 import DecideDropdown from './partials/DropdownContent/DecideDropdown';
 import ManageDropdown from './partials/DropdownContent/ManageDropdown';
