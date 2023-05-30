@@ -39,7 +39,6 @@ export type ChainMetadata = {
   chainId: Scalars['Int'];
   logIndex?: Maybe<Scalars['Int']>;
   network?: Maybe<Network>;
-  someRandomValueThatDoesNotExist?: Maybe<Scalars['String']>;
   transactionHash?: Maybe<Scalars['String']>;
 };
 
