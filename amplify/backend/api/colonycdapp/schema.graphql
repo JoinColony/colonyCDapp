@@ -372,7 +372,14 @@ type Colony @model {
   extensions: [ColonyExtension!] @hasMany(indexName: "byColony", fields: ["id"])
   version: Int!
   actions: [ColonyAction] @hasMany
+  motionsWithUnclaimedStakes: [ColonyUnclaimedStake!]
   metadata: ColonyMetadata @hasOne(fields: ["id"])
+}
+
+type ColonyUnclaimedStake {
+  transactionHash: String!
+  motionId: String! # database id
+  unclaimedRewards: [StakerRewards!]!
 }
 
 type PendingModifiedTokenAddresses {

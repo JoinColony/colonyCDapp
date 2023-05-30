@@ -45,6 +45,21 @@ fragment Colony on Colony {
   metadata {
     ...ColonyMetadata
   }
+  motionsWithUnclaimedStakes {
+    ...UnclaimedStakes
+  }
+}
+
+fragment UnclaimedStakes on ColonyUnclaimedStake {
+  motionId
+  transactionHash
+  unclaimedRewards {
+    address
+    rewards {
+      nay
+      yay
+    }
+  }
 }
 
 fragment WatchedColony on Colony {
