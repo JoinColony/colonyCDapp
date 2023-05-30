@@ -6,7 +6,6 @@ declare namespace ActionDetailsPageLayoutCssNamespace {
     main: string;
     mappings: string;
     names: string;
-    noTopPadding: string;
     query700: string;
     sourceRoot: string;
     sources: string;
