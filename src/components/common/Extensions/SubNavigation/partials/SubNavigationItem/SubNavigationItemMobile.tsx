@@ -6,10 +6,11 @@ import Button from '~shared/Extensions/Button/Button';
 import Icon from '~shared/Icon';
 
 import { SubNavigationItemProps } from './types';
+
 import styles from './SubNavigationItemMobile.module.css';
 import { accordionAnimation } from '~constants/accordionAnimation';
 
-const displayName = 'common.Extensions.SubNavigation.SubNavigationItem.SubNavigationItemMobile';
+const displayName = 'common.Extensions.SubNavigation.partials.SubNavigationItem.SubNavigationItemMobile';
 
 const SubNavigationItemMobile: FC<PropsWithChildren<SubNavigationItemProps>> = ({
   label,
