@@ -1,4 +1,4 @@
 export interface ImageCarouselProps {
-  slideUrls: string[];
+  slideUrls?: string[];
   transitionTime?: number;
 }
