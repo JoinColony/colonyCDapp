@@ -1,12 +1,11 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
+import { BigNumber } from 'ethers';
 
-import { SpinnerLoader } from '~shared/Preloaders';
 import { useAppContext, useColonyContext } from '~hooks';
 import { getFormattedTokenValue } from '~utils/tokens';
-// import { useMotionsTxHashesQuery } from '~data/index';
+import { SetStateFn, UnclaimedStakes } from '~types';
 
-import { MotionStakedEvent } from './types';
 import ClaimAllButton from './ClaimAllButton';
 import StakesListItem from './StakesListItem';
 
@@ -30,48 +29,14 @@ const MSG = defineMessages({
 });
 
 export interface Props {
-  unclaimedMotionStakeEvents?: MotionStakedEvent[];
-  isLoadingMotions: boolean;
-  setIsPopoverOpen: Dispatch<SetStateAction<boolean>>;
+  setIsPopoverOpen: SetStateFn<boolean>;
+  currentUserClaims: UnclaimedStakes[];
 }
 
-const StakesTab = ({
-  unclaimedMotionStakeEvents,
-  isLoadingMotions,
-  setIsPopoverOpen,
-}: Props) => {
+const StakesTab = ({ setIsPopoverOpen, currentUserClaims }: Props) => {
   const { colony } = useColonyContext();
-  const { wallet } = useAppContext();
-
+  const { wallet, user } = useAppContext();
   const { nativeToken } = colony || {};
-
-  // extract flat array of motionIds
-  // const motionIds = useMemo(
-  //   () =>
-  //     unclaimedMotionStakeEvents &&
-  //     unclaimedMotionStakeEvents.map((item) => item.values.motionId),
-  //   [unclaimedMotionStakeEvents],
-  // );
-
-  // get TX hashes for the motionIds
-  // const { data } = useMotionsTxHashesQuery({
-  //   variables: {
-  //     motionIds: motionIds || [],
-  //     colonyAddress: colony?.colonyAddress || '',
-  //   },
-  //   fetchPolicy: 'network-only',
-  // });
-
-  // Hardcoded TX hash
-  const txHash = '0xB93A5E663ee145fBEf82E9d57c49FaAf6F3f31FC';
-
-  if (isLoadingMotions) {
-    return (
-      <div className={styles.loader}>
-        <SpinnerLoader appearance={{ size: 'medium' }} />
-      </div>
-    );
-  }
 
   if (!nativeToken) {
     return null;
@@ -79,35 +44,41 @@ const StakesTab = ({
 
   return (
     <div className={styles.stakesContainer}>
-      {unclaimedMotionStakeEvents && unclaimedMotionStakeEvents?.length > 0 ? (
+      {currentUserClaims.length > 0 ? (
         <>
           <div className={styles.claimAllButtonSection}>
             <FormattedMessage {...MSG.yourStakes} />
             <ClaimAllButton
-              unclaimedMotionStakeEvents={unclaimedMotionStakeEvents}
+              unclaimedStakes={currentUserClaims}
               userAddress={wallet?.address || ''}
               colonyAddress={colony?.colonyAddress || ''}
               setIsPopoverOpen={setIsPopoverOpen}
             />
           </div>
           <ul data-test="claimableMotionsList">
-            {unclaimedMotionStakeEvents?.map((motion) => (
-              <StakesListItem
-                stakedAmount={getFormattedTokenValue(
-                  motion.values.stakeAmount,
-                  nativeToken.decimals,
-                )}
-                tokenSymbol={nativeToken.symbol}
-                colonyName={colony?.name || ''}
-                txHash={txHash}
-                // txHash={
-                //   data?.motionsTxHashes &&
-                //   data?.motionsTxHashes[motion.values.motionId]
-                // }
-                setIsPopoverOpen={setIsPopoverOpen}
-                key={motion.values.motionId}
-              />
-            ))}
+            {currentUserClaims?.map(({ unclaimedRewards, transactionHash }) => {
+              /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+              const currentUserRewards = unclaimedRewards.find(
+                ({ address }) => address === user?.walletAddress,
+              )!; // safe assertion: we use this condition as a filter condition when getting `currentUserClaims`
+              const stakedAmount = BigNumber.from(
+                currentUserRewards.rewards.yay,
+              ).add(currentUserRewards.rewards.nay);
+
+              return (
+                <StakesListItem
+                  stakedAmount={getFormattedTokenValue(
+                    stakedAmount,
+                    nativeToken.decimals,
+                  )}
+                  tokenSymbol={nativeToken.symbol}
+                  colonyName={colony?.name || ''}
+                  txHash={transactionHash}
+                  setIsPopoverOpen={setIsPopoverOpen}
+                  key={transactionHash}
+                />
+              );
+            })}
           </ul>
         </>
       ) : (

@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode } from 'react';
+import React, { createContext, useState, ReactNode, useMemo } from 'react';
 
 export const TokenActivationContext = createContext<{
   isOpen: boolean;
@@ -15,7 +15,7 @@ interface Props {
 const TokenActivationProvider = ({ children }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const value = React.useMemo(
+  const value = useMemo(
     () => ({
       isOpen,
       setIsOpen,

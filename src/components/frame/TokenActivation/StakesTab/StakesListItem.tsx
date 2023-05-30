@@ -35,9 +35,8 @@ const StakesListItem = ({
       <Link to={`/colony/${colonyName}/tx/${txHash}`}>
         <div
           role="button"
-          // 'any' used to stop warnings about MouseEvent incompatible types
-          onClick={setIsPopoverOpen as any}
-          onKeyPress={setIsPopoverOpen as any}
+          onClick={() => setIsPopoverOpen(false)}
+          onKeyDown={() => setIsPopoverOpen(false)}
           tabIndex={0}
           data-test="goToMotion"
         >
