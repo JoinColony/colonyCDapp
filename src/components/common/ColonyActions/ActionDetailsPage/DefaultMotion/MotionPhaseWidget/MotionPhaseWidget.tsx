@@ -45,7 +45,7 @@ const MotionPhaseWidget = ({
   const { user } = useAppContext();
   const { refetchColony } = useColonyContext();
   const { motionData, type, amount, fromDomain, tokenAddress } = actionData;
-  const { stopPollingAction } = rest;
+  const { startPollingAction, stopPollingAction } = rest;
 
   switch (motionState) {
     case MotionState.Staked:
@@ -99,6 +99,12 @@ const MotionPhaseWidget = ({
     }
 
     case MotionState.FailedNotFinalizable: {
+      startPollingAction(1000);
+      const { stakerRewards } = motionData;
+      if (stakerRewards.length) {
+        stopPollingAction();
+      }
+
       return (
         <>
           <ClaimMotionStakes motionData={motionData} {...rest} />
