@@ -10,7 +10,9 @@ import { HookFormInputProps as InputProps } from './Input';
 
 import styles from '../InputComponent.css';
 
-type CleaveChangeEvent = React.ChangeEvent<HTMLInputElement & { rawValue: string }>;
+type CleaveChangeEvent = React.ChangeEvent<
+  HTMLInputElement & { rawValue: string }
+>;
 
 const setCleaveRawValue = (cleave: ReactInstanceWithCleave, maxAmount: string, decimalPlaces = 5) => {
   const decimalValue = new Decimal(maxAmount);

@@ -1,6 +1,10 @@
 import { ColonyRole, Id } from '@colony/colony-js';
 
-import { EnabledExtensionData, useActionDialogStatus, useColonyContractVersion } from '~hooks';
+import {
+  EnabledExtensionData,
+  useActionDialogStatus,
+  useColonyContractVersion,
+} from '~hooks';
 import { RootMotionMethodNames } from '~redux';
 import { Colony } from '~types';
 import { canColonyBeUpgraded } from '~utils/checks';
@@ -53,7 +57,8 @@ export const useNetworkContractUpgradeDialogStatus = (
   return {
     userHasPermission,
     disabledInput: defaultDisabledInput || !canUpgradeVersion,
-    disabledSubmit: defaultDisabledSubmit || hasLegacyRecoveryRole || !canUpgradeVersion,
+    disabledSubmit:
+      defaultDisabledSubmit || hasLegacyRecoveryRole || !canUpgradeVersion,
     canCreateMotion,
     canOnlyForceAction,
     hasLegacyRecoveryRole,

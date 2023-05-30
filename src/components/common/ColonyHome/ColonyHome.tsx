@@ -4,8 +4,10 @@ import { Outlet, Route, Routes as RoutesSwitch, useLocation } from 'react-router
 import ColonyActions from '~common/ColonyActions';
 // import ColonyEvents from '~dashboard/ColonyEvents';
 
-import { COLONY_EVENTS_ROUTE } from '~routes/index';
+import { COLONY_EVENTS_ROUTE, COLONY_EXTENSIONS_ROUTE, COLONY_EXTENSION_DETAILS_ROUTE } from '~routes/index';
 import NotFoundRoute from '~routes/NotFoundRoute';
+import ColonyExtensions from '~common/ColonyExtensions';
+import ExtensionDetails from '~common/Extensions/ExtensionDetails';
 import { useColonyContext } from '~hooks';
 
 import ColonyHomeLayout from './ColonyHomeLayout';
@@ -41,6 +43,8 @@ const ColonyHome = () => {
             }
           >
             <Route path="/" element={<ColonyActions />} />
+            <Route path={COLONY_EXTENSIONS_ROUTE} element={<ColonyExtensions />} />
+            <Route path={COLONY_EXTENSION_DETAILS_ROUTE} element={<ExtensionDetails />} />
           </Route>
 
           <Route path="*" element={<NotFoundRoute />} />

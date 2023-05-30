@@ -42,7 +42,10 @@ export const getUpdatedColonyMetadataChangelog = (
       transactionHash,
       newDisplayName: newDisplayName ?? metadata.displayName,
       oldDisplayName: metadata.displayName,
-      hasAvatarChanged: newAvatarImage === undefined ? false : newAvatarImage !== metadata.avatar,
+      hasAvatarChanged:
+        newAvatarImage === undefined
+          ? false
+          : newAvatarImage !== metadata.avatar,
     },
   ];
 };

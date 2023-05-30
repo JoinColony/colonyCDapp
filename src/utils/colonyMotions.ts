@@ -6,7 +6,7 @@ import { ColonyRoles } from '@colony/colony-js';
 
 import { getRolesForUserAndDomain } from '~redux/transformers';
 import { ActionUserRoles, User } from '~types';
-import { TagColorSchema, TagTheme } from '~shared/Tag/enums';
+import { TagColorSchema, TagTheme } from '~shared/Tag/Tag';
 
 export const noMotionsVotingReputationVersion = 4;
 

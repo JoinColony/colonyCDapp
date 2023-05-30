@@ -116,7 +116,9 @@ const UnlockTokenForm = ({ colony, back, enabledExtensionData }: ActionDialogPro
           onSecondaryButtonClick={back}
           disabled={disabledSubmit}
           dataTest="unlockTokenConfirmButton"
-          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>

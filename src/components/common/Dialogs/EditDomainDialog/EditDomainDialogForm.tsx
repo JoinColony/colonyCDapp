@@ -145,7 +145,9 @@ const EditDomainDialogForm = ({ back, colony, domainOptions, enabledExtensionDat
           onSecondaryButtonClick={back}
           disabled={disabledSubmit}
           dataTest="editDomainConfirmButton"
-          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>

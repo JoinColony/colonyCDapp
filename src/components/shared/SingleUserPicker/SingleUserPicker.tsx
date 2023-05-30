@@ -248,4 +248,6 @@ const SingleUserPicker = ({
 SingleUserPicker.displayName = displayName;
 
 /** @NOTE I don't like it either, but digging through the HOC types seems counter productive considering we'll refactor it soon */
-export default withOmniPicker(SingleUserPicker) as unknown as ComponentType<Props>;
+export default withOmniPicker(
+  SingleUserPicker,
+) as unknown as ComponentType<Props>;

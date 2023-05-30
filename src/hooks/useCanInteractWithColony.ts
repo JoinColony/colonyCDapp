@@ -53,7 +53,8 @@ export const useCanInteractWithColony = (colony?: Colony): boolean => {
    * Check if connected to the same chain
    */
   const [{ id: walletHexChainId }] = wallet.chains;
-  const colonyChain = colony?.chainMetadata?.chainId || DEFAULT_NETWORK_INFO.chainId;
+  const colonyChain =
+    colony?.chainMetadata?.chainId || DEFAULT_NETWORK_INFO.chainId;
   const userWalletChain = parseInt(walletHexChainId.slice(2), 16);
 
   /*

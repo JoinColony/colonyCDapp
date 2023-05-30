@@ -114,7 +114,9 @@ const MintTokenDialogForm = ({ colony, back, enabledExtensionData }: ActionDialo
           onSecondaryButtonClick={back}
           disabled={disabledSubmit}
           dataTest="mintConfirmButton"
-          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>
