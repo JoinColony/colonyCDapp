@@ -575,29 +575,6 @@ type MotionStateHistory {
   inRevealPhase: Boolean!
 }
 
-# Duplicate of ColonyMotion type, required to mutate the motionData in `fetchMotionState` lamda
-input ColonyMotionInput {
-  id: ID! # to ensure uniqueness, we format as: chainId-votingRepExtnAddress_nativeMotionId
-  nativeMotionId: String!
-  usersStakes: [UserStakesInput!]!
-  stakerRewards: [StakerRewardsInput!]!
-  motionStakes: MotionStakesInput!
-  remainingStakes: [String!]! # tuple [nayRemaining, yayRemaining]
-  userMinStake: String!
-  requiredStake: String!
-  rootHash: String! # For calculating user's max stake in client
-  nativeMotionDomainId: String! # native domain id
-  isFinalized: Boolean!
-  createdBy: String! # voting rep extn address. Useful to check if we're viewing a "read-only" motion
-  voterRecord: [VoterRecordInput!]!
-  revealedVotes: MotionStakesInput! ## I.e. MotionVotes (same type)
-  repSubmitted: String!
-  skillRep: String!
-  hasObjection: Boolean!
-  motionStateHistory: MotionStateHistoryInput!
-  messages: [MotionMessageInput!]!
-}
-
 type ColonyMotion @model {
   id: ID! # to ensure uniqueness, we format as: chainId-votingRepExtnAddress_nativeMotionId
   nativeMotionId: String!

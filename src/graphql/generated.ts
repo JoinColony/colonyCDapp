@@ -328,28 +328,6 @@ export type ColonyMotionMessagesArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-export type ColonyMotionInput = {
-  createdBy: Scalars['String'];
-  hasObjection: Scalars['Boolean'];
-  id: Scalars['ID'];
-  isFinalized: Scalars['Boolean'];
-  messages: Array<MotionMessageInput>;
-  motionStakes: MotionStakesInput;
-  motionStateHistory: MotionStateHistoryInput;
-  nativeMotionDomainId: Scalars['String'];
-  nativeMotionId: Scalars['String'];
-  remainingStakes: Array<Scalars['String']>;
-  repSubmitted: Scalars['String'];
-  requiredStake: Scalars['String'];
-  revealedVotes: MotionStakesInput;
-  rootHash: Scalars['String'];
-  skillRep: Scalars['String'];
-  stakerRewards: Array<StakerRewardsInput>;
-  userMinStake: Scalars['String'];
-  usersStakes: Array<UserStakesInput>;
-  voterRecord: Array<VoterRecordInput>;
-};
-
 export type ColonyStatus = {
   __typename?: 'ColonyStatus';
   nativeToken?: Maybe<NativeTokenStatus>;
