@@ -612,3 +612,9 @@ type ColonyHistoricRole @model {
   role_6: Boolean # administration
   createdAt: AWSDateTime!
 }
+
+# Model storing block ingestor stats, as key-value entries
+type IngestorStats @model {
+  id: ID!
+  value: String!
+}

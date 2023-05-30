@@ -39,7 +39,6 @@ export type ChainMetadata = {
   chainId: Scalars['Int'];
   logIndex?: Maybe<Scalars['Int']>;
   network?: Maybe<Network>;
-  someRandomValueThatDoesNotExist?: Maybe<Scalars['String']>;
   transactionHash?: Maybe<Scalars['String']>;
 };
 
@@ -548,6 +547,11 @@ export type CreateDomainMetadataInput = {
   name: Scalars['String'];
 };
 
+export type CreateIngestorStatsInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  value: Scalars['String'];
+};
+
 export type CreateProfileInput = {
   avatar?: InputMaybe<Scalars['String']>;
   bio?: InputMaybe<Scalars['String']>;
@@ -675,6 +679,10 @@ export type DeleteDomainMetadataInput = {
   id: Scalars['ID'];
 };
 
+export type DeleteIngestorStatsInput = {
+  id: Scalars['ID'];
+};
+
 export type DeleteProfileInput = {
   id: Scalars['ID'];
 };
@@ -799,6 +807,14 @@ export type GetUserTokenBalanceReturn = {
   inactiveBalance?: Maybe<Scalars['String']>;
   lockedBalance?: Maybe<Scalars['String']>;
   pendingBalance?: Maybe<Scalars['String']>;
+};
+
+export type IngestorStats = {
+  __typename?: 'IngestorStats';
+  createdAt: Scalars['AWSDateTime'];
+  id: Scalars['ID'];
+  updatedAt: Scalars['AWSDateTime'];
+  value: Scalars['String'];
 };
 
 export type MembersForColonyInput = {
@@ -1284,6 +1300,27 @@ export type ModelIdInput = {
   size?: InputMaybe<ModelSizeInput>;
 };
 
+export type ModelIngestorStatsConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelIngestorStatsConditionInput>>>;
+  not?: InputMaybe<ModelIngestorStatsConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelIngestorStatsConditionInput>>>;
+  value?: InputMaybe<ModelStringInput>;
+};
+
+export type ModelIngestorStatsConnection = {
+  __typename?: 'ModelIngestorStatsConnection';
+  items: Array<Maybe<IngestorStats>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelIngestorStatsFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelIngestorStatsFilterInput>>>;
+  id?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelIngestorStatsFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelIngestorStatsFilterInput>>>;
+  value?: InputMaybe<ModelStringInput>;
+};
+
 export type ModelIntInput = {
   attributeExists?: InputMaybe<Scalars['Boolean']>;
   attributeType?: InputMaybe<ModelAttributeTypes>;
@@ -1548,6 +1585,13 @@ export type ModelSubscriptionIdInput = {
   notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
 };
 
+export type ModelSubscriptionIngestorStatsFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionIngestorStatsFilterInput>>>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionIngestorStatsFilterInput>>>;
+  value?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
 export type ModelSubscriptionIntInput = {
   between?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   eq?: InputMaybe<Scalars['Int']>;
@@ -1747,6 +1791,7 @@ export type Mutation = {
   createCurrentVersion?: Maybe<CurrentVersion>;
   createDomain?: Maybe<Domain>;
   createDomainMetadata?: Maybe<DomainMetadata>;
+  createIngestorStats?: Maybe<IngestorStats>;
   createProfile?: Maybe<Profile>;
   createToken?: Maybe<Token>;
   createUniqueColony?: Maybe<Colony>;
@@ -1767,6 +1812,7 @@ export type Mutation = {
   deleteCurrentVersion?: Maybe<CurrentVersion>;
   deleteDomain?: Maybe<Domain>;
   deleteDomainMetadata?: Maybe<DomainMetadata>;
+  deleteIngestorStats?: Maybe<IngestorStats>;
   deleteProfile?: Maybe<Profile>;
   deleteToken?: Maybe<Token>;
   deleteUser?: Maybe<User>;
@@ -1787,6 +1833,7 @@ export type Mutation = {
   updateDomain?: Maybe<Domain>;
   updateDomainMetadata?: Maybe<DomainMetadata>;
   updateExtensionByColonyAndHash?: Maybe<ColonyExtension>;
+  updateIngestorStats?: Maybe<IngestorStats>;
   updateProfile?: Maybe<Profile>;
   updateToken?: Maybe<Token>;
   updateUser?: Maybe<User>;
@@ -1870,6 +1917,12 @@ export type MutationCreateDomainArgs = {
 export type MutationCreateDomainMetadataArgs = {
   condition?: InputMaybe<ModelDomainMetadataConditionInput>;
   input: CreateDomainMetadataInput;
+};
+
+
+export type MutationCreateIngestorStatsArgs = {
+  condition?: InputMaybe<ModelIngestorStatsConditionInput>;
+  input: CreateIngestorStatsInput;
 };
 
 
@@ -1991,6 +2044,12 @@ export type MutationDeleteDomainMetadataArgs = {
 };
 
 
+export type MutationDeleteIngestorStatsArgs = {
+  condition?: InputMaybe<ModelIngestorStatsConditionInput>;
+  input: DeleteIngestorStatsInput;
+};
+
+
 export type MutationDeleteProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: DeleteProfileInput;
@@ -2109,6 +2168,12 @@ export type MutationUpdateExtensionByColonyAndHashArgs = {
 };
 
 
+export type MutationUpdateIngestorStatsArgs = {
+  condition?: InputMaybe<ModelIngestorStatsConditionInput>;
+  input: UpdateIngestorStatsInput;
+};
+
+
 export type MutationUpdateProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: UpdateProfileInput;
@@ -2217,6 +2282,7 @@ export type Query = {
   getDomain?: Maybe<Domain>;
   getDomainMetadata?: Maybe<DomainMetadata>;
   getExtensionByColonyAndHash?: Maybe<ModelColonyExtensionConnection>;
+  getIngestorStats?: Maybe<IngestorStats>;
   getMembersForColony?: Maybe<MembersForColonyReturn>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
@@ -2245,6 +2311,7 @@ export type Query = {
   listCurrentVersions?: Maybe<ModelCurrentVersionConnection>;
   listDomainMetadata?: Maybe<ModelDomainMetadataConnection>;
   listDomains?: Maybe<ModelDomainConnection>;
+  listIngestorStats?: Maybe<ModelIngestorStatsConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
   listTokens?: Maybe<ModelTokenConnection>;
   listUserTokens?: Maybe<ModelUserTokensConnection>;
@@ -2381,6 +2448,11 @@ export type QueryGetExtensionByColonyAndHashArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+export type QueryGetIngestorStatsArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -2570,6 +2642,13 @@ export type QueryListDomainsArgs = {
 };
 
 
+export type QueryListIngestorStatsArgs = {
+  filter?: InputMaybe<ModelIngestorStatsFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryListProfilesArgs = {
   filter?: InputMaybe<ModelProfileFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -2631,6 +2710,7 @@ export type Subscription = {
   onCreateCurrentVersion?: Maybe<CurrentVersion>;
   onCreateDomain?: Maybe<Domain>;
   onCreateDomainMetadata?: Maybe<DomainMetadata>;
+  onCreateIngestorStats?: Maybe<IngestorStats>;
   onCreateProfile?: Maybe<Profile>;
   onCreateToken?: Maybe<Token>;
   onCreateUser?: Maybe<User>;
@@ -2649,6 +2729,7 @@ export type Subscription = {
   onDeleteCurrentVersion?: Maybe<CurrentVersion>;
   onDeleteDomain?: Maybe<Domain>;
   onDeleteDomainMetadata?: Maybe<DomainMetadata>;
+  onDeleteIngestorStats?: Maybe<IngestorStats>;
   onDeleteProfile?: Maybe<Profile>;
   onDeleteToken?: Maybe<Token>;
   onDeleteUser?: Maybe<User>;
@@ -2667,6 +2748,7 @@ export type Subscription = {
   onUpdateCurrentVersion?: Maybe<CurrentVersion>;
   onUpdateDomain?: Maybe<Domain>;
   onUpdateDomainMetadata?: Maybe<DomainMetadata>;
+  onUpdateIngestorStats?: Maybe<IngestorStats>;
   onUpdateProfile?: Maybe<Profile>;
   onUpdateToken?: Maybe<Token>;
   onUpdateUser?: Maybe<User>;
@@ -2737,6 +2819,11 @@ export type SubscriptionOnCreateDomainArgs = {
 
 export type SubscriptionOnCreateDomainMetadataArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainMetadataFilterInput>;
+};
+
+
+export type SubscriptionOnCreateIngestorStatsArgs = {
+  filter?: InputMaybe<ModelSubscriptionIngestorStatsFilterInput>;
 };
 
 
@@ -2830,6 +2917,11 @@ export type SubscriptionOnDeleteDomainMetadataArgs = {
 };
 
 
+export type SubscriptionOnDeleteIngestorStatsArgs = {
+  filter?: InputMaybe<ModelSubscriptionIngestorStatsFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
 };
@@ -2917,6 +3009,11 @@ export type SubscriptionOnUpdateDomainArgs = {
 
 export type SubscriptionOnUpdateDomainMetadataArgs = {
   filter?: InputMaybe<ModelSubscriptionDomainMetadataFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateIngestorStatsArgs = {
+  filter?: InputMaybe<ModelSubscriptionIngestorStatsFilterInput>;
 };
 
 
@@ -3144,6 +3241,11 @@ export type UpdateExtensionByColonyAndHashInput = {
   isDeprecated?: InputMaybe<Scalars['Boolean']>;
   isInitialized?: InputMaybe<Scalars['Boolean']>;
   version?: InputMaybe<Scalars['Int']>;
+};
+
+export type UpdateIngestorStatsInput = {
+  id: Scalars['ID'];
+  value?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateProfileInput = {
