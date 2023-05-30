@@ -138,7 +138,9 @@ fragment ColonyMotion on ColonyMotion {
     inRevealPhase
   }
   messages {
-    ...MotionMessage
+    items {
+      ...MotionMessage
+    }
   }
 }
 

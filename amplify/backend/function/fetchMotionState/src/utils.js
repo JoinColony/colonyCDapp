@@ -6,7 +6,11 @@ const {
 } = require('@colony/colony-js');
 const { default: fetch, Request } = require('node-fetch');
 
-const { getColonyMotion, updateColonyMotion } = require('./graphql.js');
+const {
+  getColonyMotion,
+  updateColonyMotion,
+  createMotionMessage,
+} = require('./graphql.js');
 
 const API_KEY = 'da2-fakeApiId123456';
 const GRAPHQL_URI = 'http://localhost:20002/graphql';
@@ -200,24 +204,39 @@ const updateStakerRewardsInDB = async (colonyAddress, motionData) => {
 
 const updateMotionMessagesInDB = async (motionData, motionMessages, flag) => {
   const { messages, motionStateHistory } = motionData;
-  const updatedMessages = [...messages];
+  const updatedMessages = [];
   const updatedStateHistory = {
     ...motionStateHistory,
     [flag]: true,
   };
 
   motionMessages.forEach((message) => {
-    updatedMessages.push({
-      initiatorAddress: constants.AddressZero,
-      name: message,
-      messageKey: `${motionData.id}_${message}`,
+    const messageKey = `${motionData.id}_${message}`;
+    if (
+      !messages?.items?.find(
+        (motionMessage) => motionMessage.messageKey === messageKey,
+      )
+    ) {
+      updatedMessages.push({
+        initiatorAddress: constants.AddressZero,
+        name: message,
+        messageKey,
+        motionId: motionData.id,
+      });
+    }
+  });
+
+  const messagePromises = updatedMessages.map((message) => {
+    return graphqlRequest(createMotionMessage, {
+      input: message,
     });
   });
+
+  await Promise.all(messagePromises);
 
   await graphqlRequest(updateColonyMotion, {
     input: {
       ...motionData,
-      messages: updatedMessages,
       motionStateHistory: updatedStateHistory,
     },
   });
