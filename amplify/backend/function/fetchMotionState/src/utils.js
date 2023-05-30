@@ -10,6 +10,10 @@ const {
   getColonyMotion,
   updateColonyMotion,
   createMotionMessage,
+  getColonyAction,
+  updateColonyAction,
+  getColony,
+  updateColony,
 } = require('./graphql.js');
 
 const API_KEY = 'da2-fakeApiId123456';
@@ -174,6 +178,44 @@ const didMotionPass = ({
   return false;
 };
 
+const updateColonyUnclaimedStakes = async (
+  colonyAddress,
+  transactionHash,
+  motionId,
+  updatedStakerRewards,
+) => {
+  const { data } = await graphqlRequest(getColony, {
+    id: colonyAddress,
+  });
+
+  const motionsWithUnclaimedStakes =
+    data?.getColony?.motionsWithUnclaimedStakes ?? [];
+
+  const motionWithUnclaimedStake = motionsWithUnclaimedStakes?.find(
+    ({ transactionHash: txHash }) => txHash === transactionHash,
+  );
+
+  const unclaimedRewards = updatedStakerRewards.filter(
+    ({ isClaimed }) => !isClaimed,
+  );
+
+  if (!motionWithUnclaimedStake && unclaimedRewards.length) {
+    motionsWithUnclaimedStakes.push({
+      transactionHash,
+      motionId,
+      unclaimedRewards,
+    });
+  }
+
+  /* Update unclaimed motions on colony */
+  await graphqlRequest(updateColony, {
+    input: {
+      id: colonyAddress,
+      motionsWithUnclaimedStakes,
+    },
+  });
+};
+
 const updateStakerRewardsInDB = async (colonyAddress, motionData) => {
   const { nativeMotionId, usersStakes, stakerRewards } = motionData;
 
@@ -200,6 +242,13 @@ const updateStakerRewardsInDB = async (colonyAddress, motionData) => {
       stakerRewards: updatedStakerRewards,
     },
   });
+
+  await updateColonyUnclaimedStakes(
+    colonyAddress,
+    transactionHash,
+    motionId,
+    updatedStakerRewards,
+  );
 };
 
 const updateMotionMessagesInDB = async (motionData, motionMessages, flag) => {
