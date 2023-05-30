@@ -373,6 +373,18 @@ export type ColonyRole = {
   targetToken?: Maybe<Token>;
   targetUser?: Maybe<User>;
   updatedAt: Scalars['AWSDateTime'];
+  userMinStake: Scalars['String'];
+  usersStakes: Array<UserStakes>;
+  voterRecord: Array<VoterRecord>;
+};
+
+
+export type ColonyMotionMessagesArgs = {
+  createdAt?: InputMaybe<ModelStringKeyConditionInput>;
+  filter?: InputMaybe<ModelMotionMessageFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 export type ColonyStatus = {
