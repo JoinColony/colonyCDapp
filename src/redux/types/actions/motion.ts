@@ -95,7 +95,7 @@ export type MotionActionTypes =
       {
         userAddress: Address;
         colonyAddress: Address;
-        motionIds: Array<BigNumber>;
+        motionIds: string[];
       },
       MetaWithHistory<object>
     >

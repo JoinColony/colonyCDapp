@@ -1,17 +1,16 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
-import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
+import { ClientType } from '@colony/colony-js';
 import { ApolloQueryResult } from '@apollo/client';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { getContext, ContextModule, ColonyManager } from '~context';
+import { getContext, ContextModule } from '~context';
 import { Address, ColonyMotion } from '~types';
 import {
   GetColonyMotionDocument,
   GetColonyMotionQuery,
   GetColonyMotionQueryVariables,
 } from '~gql';
-import { getMotionDatabaseId } from '~utils/colonyMotions';
 
 import {
   ChannelDefinition,
@@ -20,29 +19,18 @@ import {
   getTxChannel,
 } from '../transactions';
 
-import { getColonyManager, putError, takeFrom } from '../utils';
+import { putError, takeFrom } from '../utils';
 
 export type ClaimAllMotionRewardsPayload =
   Action<ActionTypes.MOTION_CLAIM_ALL>['payload'];
 
 function* claimAllMotionRewards({
   meta,
-  payload: { userAddress, colonyAddress, motionIds },
+  payload: { userAddress, colonyAddress, motionIds: databaseMotionIds },
 }: Action<ActionTypes.MOTION_CLAIM_ALL>) {
   const txChannel = yield call(getTxChannel, meta.id);
-  const apolloClient = getContext(ContextModule.ApolloClient);
   try {
-    const colonyManager: ColonyManager = yield getColonyManager();
-    const { chainId } = yield colonyManager.provider.getNetwork();
-    const votingClient: AnyVotingReputationClient =
-      yield colonyManager.getClient(
-        ClientType.VotingReputationClient,
-        colonyAddress,
-      );
-
-    const databaseMotionIds = motionIds.map((nativeMotionId) =>
-      getMotionDatabaseId(chainId, votingClient.address, nativeMotionId),
-    );
+    const apolloClient = getContext(ContextModule.ApolloClient);
 
     const motions: ColonyMotion[] = [];
 
