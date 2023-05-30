@@ -12,7 +12,9 @@ const MainExtensionLayout: FC<PropsWithChildren> = ({ children }) => {
       <div className="hidden">
         <Wallet />
       </div>
-      <main className="lg:max-w-[74.375rem] px-6 mx-auto">{children}</main>
+      <main className="mt-9">
+        <div className="inner">{children}</div>
+      </main>
     </div>
   );
 };

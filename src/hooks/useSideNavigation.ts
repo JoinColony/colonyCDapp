@@ -7,7 +7,7 @@ const useSideNavigation = () => {
   const navigationItems = [
     {
       id: 0,
-      linkTo: `/colony/${name}`,
+      linkTo: `/colony/${name}/details`,
       label: 'Colony Details',
       value: 'colony-details',
     },
