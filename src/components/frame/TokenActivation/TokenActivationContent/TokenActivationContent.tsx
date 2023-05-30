@@ -1,10 +1,9 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
-import { BigNumber } from 'ethers';
 
 import { Tab, Tabs, TabList, TabPanel } from '~shared/Tabs';
-// import { useClaimableStakedMotionsQuery } from '~data/generated';
-// import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext, useColonyContext } from '~hooks';
+import { notNull } from '~utils/arrays';
 
 import TokensTab, { TokensTabProps } from '../TokensTab';
 import StakesTab from '../StakesTab';
@@ -33,44 +32,16 @@ const TokenActivationContent = ({
   ...otherProps
 }: TokenActivationContentProps) => {
   const [tabIndex, setTabIndex] = useState<number>(0);
-  // const { colony } = useColonyContext();
-  // const { wallet } = useAppContext();
+  const { colony } = useColonyContext();
+  const { user } = useAppContext();
 
-  // const { data: unclaimedMotions, loading } = useClaimableStakedMotionsQuery({
-  //   variables: {
-  //     colonyAddress: colony?.colonyAddress.toLowerCase() || '',
-  //     walletAddress: walletAddress?.toLowerCase(),
-  //   },
-  //   fetchPolicy: 'network-only',
-  // });
+  const currentUserClaims = colony?.motionsWithUnclaimedStakes
+    ?.filter(notNull)
+    .filter(({ unclaimedRewards }) =>
+      unclaimedRewards.some(({ address }) => address === user?.walletAddress),
+    );
 
-  const loading = false;
-
-  // const claimsCount = unclaimedMotions?.claimableStakedMotions
-  //   ? unclaimedMotions?.claimableStakedMotions?.unclaimedMotionStakeEvents
-  //       .length
-  //   : 0;
-  const claimsCount = 0;
-
-  const unclaimedMotionStakeEvents = [
-    {
-      address: '0x0000000',
-      blockNumber: 1234,
-      hash: '0x0000000',
-      index: '1',
-      name: 'test',
-      signature: 'test',
-      timestamp: 1234567890,
-      topic: 'test topic',
-      values: {
-        amount: '10',
-        motionId: '0x0000012',
-        stakeAmount: BigNumber.from(10 ** 15).toString(),
-        staker: '0x0000000',
-        vote: 123,
-      },
-    },
-  ];
+  const claimsCount = currentUserClaims?.length ?? 0;
 
   return (
     <div className={styles.main}>
@@ -108,9 +79,8 @@ const TokenActivationContent = ({
         <TabPanel className={styles.tabContainer}>
           <StakesTab
             {...otherProps}
-            unclaimedMotionStakeEvents={unclaimedMotionStakeEvents}
-            isLoadingMotions={loading}
             setIsPopoverOpen={setIsPopoverOpen}
+            currentUserClaims={currentUserClaims ?? []}
           />
         </TabPanel>
       </Tabs>

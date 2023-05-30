@@ -76,6 +76,6 @@ export interface RecordToJS<T> {
   toJS: (props: T) => void;
 }
 
-export type SetStateFn = ReturnType<typeof useState>[1];
+export type SetStateFn<T = any> = ReturnType<typeof useState<T>>[1];
 
 export type Falsy = undefined | null | false;
