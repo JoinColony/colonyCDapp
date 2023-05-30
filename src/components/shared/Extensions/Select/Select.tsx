@@ -50,6 +50,7 @@ const Select = <T extends any[]>({ list, selectedElement, handleChange }: Select
   };
 
   const selectedItem = list.find((item) => item.id === selectedElement);
+  const filteredList = list.filter((item) => item.value !== selectedItem.value);
 
   return (
     <div className={styles.container}>
@@ -77,8 +78,9 @@ const Select = <T extends any[]>({ list, selectedElement, handleChange }: Select
         aria-activedescendant={list[selectedElement].id.toString()}
         onKeyDown={(event) => handleListKeyDown(event)}
       >
-        {list?.map((option) => (
+        {filteredList?.map((option) => (
           <li
+            key={option.id}
             className={clsx(styles.li, {
               'text-blue-400 font-medium': selectedElement === option.id,
               'text-gray-900': selectedElement !== option.id,
