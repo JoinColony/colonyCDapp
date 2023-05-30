@@ -104,4 +104,30 @@ module.exports = {
       }
     }
   `,
+  updateColony: /* GraphQL */ `
+    mutation UpdateColony($input: UpdateColonyInput!) {
+      updateColony(input: $input) {
+        id
+      }
+    }
+  `,
+  getColony: /* GraphQL */ `
+    query GetColony($id: ID!) {
+      getColony(id: $id) {
+        colonyAddress: id
+        motionsWithUnclaimedStakes {
+          transactionHash
+          motionId
+          unclaimedRewards {
+            address
+            rewards {
+              yay
+              nay
+            }
+            isClaimed
+          }
+        }
+      }
+    }
+  `,
 };

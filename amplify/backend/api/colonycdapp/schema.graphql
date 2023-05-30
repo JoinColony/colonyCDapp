@@ -372,11 +372,18 @@ type Colony @model {
   extensions: [ColonyExtension!] @hasMany(indexName: "byColony", fields: ["id"])
   version: Int!
   actions: [ColonyAction] @hasMany
+  motionsWithUnclaimedStakes: [ColonyUnclaimedStake!]
   metadata: ColonyMetadata @hasOne(fields: ["id"])
   # @TODO This should not be fetched upfront
   # It should be retrieved on demand at the earliest occasion it's needed
   # ie: when opening a UAC modal
   roles: [ColonyRole] @hasMany
+}
+
+type ColonyUnclaimedStake {
+  transactionHash: String!
+  motionId: String! # database id
+  unclaimedRewards: [StakerRewards!]!
 }
 
 type PendingModifiedTokenAddresses {

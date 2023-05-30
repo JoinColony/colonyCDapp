@@ -62,6 +62,19 @@ fragment ColonyTokensConnection on ModelColonyTokensConnection {
     colonyTokensId: id
     token {
       ...Token
+  motionsWithUnclaimedStakes {
+    ...UnclaimedStakes
+  }
+}
+
+fragment UnclaimedStakes on ColonyUnclaimedStake {
+  motionId
+  transactionHash
+  unclaimedRewards {
+    address
+    rewards {
+      nay
+      yay
     }
   }
 }

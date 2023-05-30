@@ -25,6 +25,7 @@ import {
   MotionMessageFragment,
   MotionStakesFragment,
   VoterRecordFragment,
+  UnclaimedStakesFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -100,3 +101,5 @@ export interface UnaliasedColonyTokensItem
 export type MotionStakes = MotionStakesFragment;
 
 export type VoterRecord = VoterRecordFragment;
+
+export type UnclaimedStakes = UnclaimedStakesFragment;
