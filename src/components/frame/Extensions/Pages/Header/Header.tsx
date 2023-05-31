@@ -28,9 +28,9 @@ const Header = () => {
 
   return (
     <header>
-      <div className="bg-base-white w-full flex flex-row min-h-[5rem] sm:min-h-[6.6875rem] justify-center px-6">
+      <div className="bg-base-white w-full flex flex-row min-h-[5rem] sm:min-h-[6rem] justify-center px-6">
         <div className="flex items-center justify-between w-[90rem]">
-          <div>
+          <div className="mr-5 sm:mr-10">
             <div className="flex justify-between relative" ref={ref}>
               <button
                 aria-label="Open dropdown"
@@ -45,7 +45,6 @@ const Header = () => {
                   setTriggerRef={setTriggerRef}
                 />
               </button>
-
               {isOpen && (
                 <div className="h-auto absolute top-[3.5rem] sm:top-[2.3rem]">
                   {!isMobile && (
@@ -75,7 +74,6 @@ const Header = () => {
                   )}
                 </div>
               )}
-
               {isMobile && isOpen && (
                 <button
                   type="button"
