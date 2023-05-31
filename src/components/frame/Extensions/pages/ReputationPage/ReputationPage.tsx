@@ -10,7 +10,7 @@ const ReputationPage: FC = () => {
   if (loading) {
     return (
       <SpinnerLoader
-        loadingText={{ id: 'extensionsPage.loading' }}
+        loadingText={{ id: 'reputationPage.loading' }}
         appearance={{ theme: 'primary', size: 'massive' }}
       />
     );

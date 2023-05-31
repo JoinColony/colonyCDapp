@@ -10,7 +10,7 @@ const IntegrationsPage: FC = () => {
   if (loading) {
     return (
       <SpinnerLoader
-        loadingText={{ id: 'extensionsPage.loading' }}
+        loadingText={{ id: 'integrationsPage.loading' }}
         appearance={{ theme: 'primary', size: 'massive' }}
       />
     );

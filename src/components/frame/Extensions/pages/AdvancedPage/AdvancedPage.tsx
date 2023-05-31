@@ -9,10 +9,7 @@ const AdvancedPage: FC = () => {
 
   if (loading) {
     return (
-      <SpinnerLoader
-        loadingText={{ id: 'extensionsPage.loading' }}
-        appearance={{ theme: 'primary', size: 'massive' }}
-      />
+      <SpinnerLoader loadingText={{ id: 'advancedPage.loading' }} appearance={{ theme: 'primary', size: 'massive' }} />
     );
   }
 

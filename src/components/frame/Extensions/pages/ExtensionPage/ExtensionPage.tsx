@@ -18,7 +18,7 @@ const ExtensionPage: FC = () => {
   if (loading) {
     return (
       <SpinnerLoader
-        loadingText={{ id: 'extensionsPage.loading' }}
+        loadingText={{ id: 'incorporationPage.loading' }}
         appearance={{ theme: 'primary', size: 'massive' }}
       />
     );

@@ -10,7 +10,7 @@ const IncorporationPage: FC = () => {
   if (loading) {
     return (
       <SpinnerLoader
-        loadingText={{ id: 'extensionsPage.loading' }}
+        loadingText={{ id: 'incorporationsPage.loading' }}
         appearance={{ theme: 'primary', size: 'massive' }}
       />
     );

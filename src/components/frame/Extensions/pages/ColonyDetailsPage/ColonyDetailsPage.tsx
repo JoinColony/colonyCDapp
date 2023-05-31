@@ -10,7 +10,7 @@ const ColonyDetailsPage: FC = () => {
   if (loading) {
     return (
       <SpinnerLoader
-        loadingText={{ id: 'extensionsPage.loading' }}
+        loadingText={{ id: 'colonyDetailsPage.loading' }}
         appearance={{ theme: 'primary', size: 'massive' }}
       />
     );
