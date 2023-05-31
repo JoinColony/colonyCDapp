@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Heading from '~shared/Heading';
-import Link from '~shared/Link';
+import Link from '~shared/Extensions/Link';
 import ColonyAvatar from '~shared/ColonyAvatar';
 
 import { Colony, WatchedColony } from '~types';

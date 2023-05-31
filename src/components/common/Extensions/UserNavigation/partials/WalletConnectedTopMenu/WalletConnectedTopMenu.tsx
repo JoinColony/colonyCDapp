@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import styles from './WalletConnectedTopMenu.module.css';
 import Button from '~shared/Extensions/Button';
-import Link from '~shared/Link';
+import Link from '~shared/Extensions/Link';
 import Icon from '~shared/Icon';
 import Avatar from '~shared/Extensions/Avatar';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
@@ -82,7 +82,7 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
         </div>
         <Link to="/" className="flex items-center">
           <Icon name="user-circle-gear" appearance={{ size: 'tiny' }} />
-          <p className="ml-2 text-lg font-semibold md:font-normal md:text-md text-gray-900">
+          <p className="ml-2 text-lg font-semibold md:font-normal md:text-md">
             {formatMessage({ id: 'userMenu.menageTitle' })}
           </p>
         </Link>

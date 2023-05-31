@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Icon from '~shared/Icon';
-import Link from '~shared/Link';
+import Link from '~shared/Extensions/Link';
 import { useColonyContext } from '~hooks';
 
 import styles from './ManageFundsLink.css';

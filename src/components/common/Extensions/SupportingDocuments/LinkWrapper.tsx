@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import Icon from '~shared/Icon';
-import Link from '~shared/Link';
+import Link from '~shared/Extensions/Link';
 import { doubleLink, singleLink } from './consts';
 
 interface LinkWrapperProps {
