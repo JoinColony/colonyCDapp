@@ -16,6 +16,7 @@ const ContractAddress: FC<PanelTypeProps> = ({ title, address = '' }) => {
     <div className={styles.panelRow}>
       <div className={styles.panelTitle}>{title}</div>
       <Tooltip
+        interactive
         isSuccess={isCopied}
         tooltipContent={
           <span>

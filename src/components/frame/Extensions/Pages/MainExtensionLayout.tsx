@@ -1,5 +1,5 @@
 import React, { FC, PropsWithChildren } from 'react';
-import Header from './Header';
+import Header from '~frame/Header';
 import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
 
 const displayName = 'common.Extensions.Pages.MainExtensionLayout';
