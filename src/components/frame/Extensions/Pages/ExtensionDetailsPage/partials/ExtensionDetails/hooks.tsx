@@ -5,6 +5,7 @@ import { isInstalledExtensionData } from '~utils/extensions';
 import { useUserByNameOrAddress } from '~hooks';
 import UserAvatar from '~shared/Extensions/UserAvatar';
 import { AnyExtensionData, InstalledExtensionData } from '~types';
+import { SidePanelDataProps } from '~common/Extensions/SpecificSidePanel/types';
 
 export const useExtensionDetails = (extensionData: AnyExtensionData) => {
   const [status, setStatus] = useState<ExtensionStatusBadgeMode>('disabled');
@@ -29,7 +30,7 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
   const installedAtDate =
     installedExtensionData.installedAt && format(new Date(installedExtensionData.installedAt * 1000), 'dd MMMM yyyy');
 
-  const sidePanelData = [
+  const sidePanelData: SidePanelDataProps[] = [
     {
       id: 0,
       statusType: {
