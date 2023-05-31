@@ -14,4 +14,6 @@ export interface IconProps {
   title?: string | MessageDescriptor;
   titleValues?: SimpleMessageValues;
   viewBox?: string;
+  role?: string;
+  onClick?: () => void;
 }
