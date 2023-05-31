@@ -6,6 +6,7 @@ import { NavLinkProps } from './types';
 const displayName = 'Extensions.NavLink';
 
 const NavLink: FC<PropsWithChildren<NavLinkProps>> = ({
+  activeClassName,
   children,
   text,
   textValues,
@@ -20,7 +21,12 @@ const NavLink: FC<PropsWithChildren<NavLinkProps>> = ({
   const titleText = typeof title === 'string' ? title : title && formatMessage(title, titleValues);
 
   return (
-    <NavLinkComponent to={to} title={titleText} {...props}>
+    <NavLinkComponent
+      to={to}
+      title={titleText}
+      className={({ isActive }) => (isActive ? activeClassName : undefined)}
+      {...props}
+    >
       {linkText || children}
     </NavLinkComponent>
   );

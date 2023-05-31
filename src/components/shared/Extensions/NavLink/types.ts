@@ -8,4 +8,5 @@ export interface NavLinkProps extends Omit<ReactNavLinkProps, 'title'> {
   textValues?: SimpleMessageValues;
   title?: MessageDescriptor | string;
   titleValues?: SimpleMessageValues;
+  activeClassName?: string;
 }
