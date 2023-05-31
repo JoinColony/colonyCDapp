@@ -3,7 +3,7 @@
 }
 
 .button {
-  @apply w-full px-4 py-3 rounded bg-base-white flex justify-between items-center text-md font-normal text-gray-900;
+  @apply w-full px-4 py-3 rounded bg-base-white flex justify-between items-center text-md font-normal transition-all duration-normal;
 }
 
 .options {
@@ -11,13 +11,13 @@
 }
 
 .show {
-  @apply flex gap-4 flex-col py-4 px-[0.875rem] border border-gray-300 rounded absolute left-0 z-50 bg-base-white w-full mt-1;
+  @apply flex flex-col py-2 px-[0.875rem] border border-gray-300 rounded absolute left-0 z-50 bg-base-white w-full mt-1;
 }
 
 .li {
-  @apply flex items-center justify-between text-gray-900 font-normal text-md leading-5 rounded cursor-pointer transition-all hover:text-blue-400 hover:font-medium;
+  @apply flex items-center justify-between font-normal text-md leading-5 rounded cursor-pointer transition-all duration-normal hover:text-blue-400 py-2;
 }
 
 .icon {
-  @apply text-gray-900 w-[0.8125rem];
+  @apply w-[0.8125rem];
 }

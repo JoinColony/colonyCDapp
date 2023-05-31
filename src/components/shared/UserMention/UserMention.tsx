@@ -1,7 +1,7 @@
 import React from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
 
-import Link from '~shared/Link';
+import Link from '~shared/Extensions/Link';
 import Popover from '~shared/Popover';
 
 import { User } from '~types';

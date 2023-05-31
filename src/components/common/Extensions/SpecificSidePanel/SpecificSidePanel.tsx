@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, Fragment } from 'react';
 import { useIntl } from 'react-intl';
 import { SpecificSidePanelProps } from './types';
-import ExtensionStatusBadge from '../ExtensionStatusBadge-new/ExtensionStatusBadge';
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Permissions from './partials/Permissions';
 import DateInstalled from './partials/DateInstalled';
 import InstalledBy from './partials/InstalledBy';
@@ -9,11 +9,10 @@ import Version from './partials/Version';
 import ContractAddress from './partials/ContractAddress';
 import Developer from './partials/Developer';
 import styles from './SpecificSidePanel.module.css';
-import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge-new/types';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 
-const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ sidePanelData, permissions, status = '', badgeMessage }) => {
+const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData }) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -21,33 +20,41 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ sidePanelData, permissi
       <h3 className="font-semibold text-lg text-gray-900 pb-[0.2rem]">
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
-      <div className={styles.panelRow}>
-        <div className={styles.panelTitle}>Status</div>
-        <div className="md:w-[50%] justify-start flex flex-col md:flex-row">
-          <div className="mr-1 mb-1 md:mb-0">
-            <ExtensionStatusBadge mode={status as ExtensionStatusBadgeMode} text={badgeMessage} />
-          </div>
-        </div>
-      </div>
-      {status !== 'not-installed' && (
-        <InstalledBy
-          title="Installed by"
-          installedBy={sidePanelData?.installedBy}
-          addressWallet={sidePanelData?.address}
-          isVerified={sidePanelData?.isVerified}
-        />
+      {sidePanelData.map(
+        ({ id, dateInstalled, installedBy, statusType, versionInstalled, contractAddress, developer, permissions }) => (
+          <Fragment key={id}>
+            <div className={styles.panelRow}>
+              <div className={styles.panelTitle}>{statusType.title}</div>
+              <div className="md:w-[50%] justify-start flex flex-col md:flex-row">
+                {Array.isArray(statuses) ? (
+                  statuses.map((status) => (
+                    <div className="mr-1 mb-1 md:mb-0" key={status}>
+                      <ExtensionStatusBadge mode={status} text={status} />
+                    </div>
+                  ))
+                ) : (
+                  <ExtensionStatusBadge mode={statuses} text={statuses} />
+                )}
+              </div>
+            </div>
+            {!statuses?.includes('not-installed') && (
+              <InstalledBy title={installedBy.title} component={installedBy.component} />
+            )}
+            {!statuses?.includes('not-installed') && (
+              <DateInstalled title={dateInstalled.title} date={dateInstalled.date} />
+            )}
+            <Version title={versionInstalled.title} version={versionInstalled.version} />
+            {!statuses?.includes('not-installed') && (
+              <ContractAddress title={contractAddress.title} address={contractAddress.address} />
+            )}
+            <Developer title={developer.title} developer={developer.developer} />
+            <div className="flex flex-col justify-between">
+              <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">{permissions.title}</div>
+              <Permissions data={permissions.permissions} />
+            </div>
+          </Fragment>
+        ),
       )}
-      <DateInstalled title="Date installed" date={sidePanelData?.installedAt} />
-      <Version title="Version installed" version={`v${sidePanelData?.availableVersion}`} />
-      {status !== 'not-installed' && <ContractAddress title="Contract address" address={sidePanelData?.address} />}
-      <Developer title="Developer" developer="Colony" />
-      <div className="flex flex-col justify-between">
-        <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">
-          {formatMessage({ id: 'permissions.list.title' })}
-        </div>
-        {/* @TODO: fix it */}
-        <Permissions data={permissions} />
-      </div>
     </div>
   );
 };

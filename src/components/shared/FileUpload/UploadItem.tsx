@@ -5,7 +5,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import fileReader from '~utils/fileReader';
 
 import Button from '../Button';
-import Icon from '../Icon';
+import Icon from '~shared/Icon';
 import { Tooltip } from '../Popover';
 import ProgressBar from '../ProgressBar';
 import { FileUploadFormValues, HookFormUploadItemComponentProps, UploadFile } from './types';

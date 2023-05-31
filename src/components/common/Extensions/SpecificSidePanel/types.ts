@@ -1,31 +1,53 @@
 import React from 'react';
-import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge-new/types';
-// import { sidePanelData } from './consts';
-
-// interface SidePanelDataProps {
-//   installedAt: number;
-//   availableVersion: number;
-//   address: string;
-// }
+import { MessageDescriptor } from 'react-intl';
+import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
 
 export interface SpecificSidePanelProps {
-  statuses?: SpecificSidePanelStatus[];
-  sidePanelData: any;
-  permissions: any;
-  status?: ExtensionStatusBadgeMode;
-  badgeMessage: string;
+  statuses: SpecificSidePanelStatus | SpecificSidePanelStatus[];
+  sidePanelData: SidePanelDataProps[];
 }
 
-type SpecificSidePanelStatus = Extract<
-  ExtensionStatusBadgeMode,
-  'disabled' | 'enabled' | 'not-installed' | 'deprecated'
->;
+type SpecificSidePanelStatus = ExtensionStatusBadgeMode;
 
 export interface PermissionsProps {
-  data: { key: string; name: string; text: string; description: string }[];
+  data: { key: string; name: string; text: MessageDescriptor | string; description: MessageDescriptor | string }[];
 }
 
-// export type SidePanelDataProps = typeof sidePanelData;
+export type SidePanelDataProps = {
+  id: number;
+  statusType: {
+    title: string;
+  };
+  dateInstalled: {
+    title: string;
+    date: string;
+  };
+  installedBy: {
+    title: string;
+    component: JSX.Element;
+  };
+  versionInstalled: {
+    title: string;
+    version: string;
+  };
+  contractAddress: {
+    title: string;
+    address: string;
+  };
+  developer: {
+    title: string;
+    developer: string;
+  };
+  permissions: {
+    title: string;
+    permissions: {
+      key: string;
+      text: MessageDescriptor | string;
+      description: MessageDescriptor | string;
+      name: string;
+    }[];
+  };
+};
 
 export interface PanelTypeProps {
   title: string;

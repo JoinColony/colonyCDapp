@@ -10,7 +10,7 @@ import UserAvatar from '~shared/UserAvatar';
 import { ItemDataType, withOmniPicker, WrappedComponentProps } from '../OmniPicker';
 import { Props as WithOmnipickerInProps } from '../OmniPicker/withOmniPicker';
 import { InputLabel, HookFormInputStatus as InputStatus } from '../Fields';
-import Icon from '../Icon';
+import Icon from '~shared/Icon';
 import Button from '../Button';
 import ItemDefault from './ItemDefault';
 

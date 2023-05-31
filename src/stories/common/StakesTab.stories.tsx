@@ -15,9 +15,7 @@ export const Base: Story = {
   decorators: [
     (Story) => (
       <Router>
-        <div className="text-gray-900">
-          <Story />
-        </div>
+        <Story />
       </Router>
     ),
   ],

@@ -1,8 +1,6 @@
 import React, { PropsWithChildren, FC } from 'react';
 import { FormattedMessage } from 'react-intl';
-
-// import Link from '~shared/Link/Link';
-
+// import Link from '~shared/Extensions/Link';
 import { LinkItemProps } from './types';
 import styles from './LinkItem.module.css';
 

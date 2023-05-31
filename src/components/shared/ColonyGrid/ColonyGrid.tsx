@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { defineMessages, FormattedMessage, MessageDescriptor } from 'react-intl';
 
 import Heading from '~shared/Heading';
-import Link from '~shared/Link';
+import Link from '~shared/Extensions/Link';
 
 import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { WatchedColony } from '~types';

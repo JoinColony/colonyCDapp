@@ -9,7 +9,6 @@ import ColonyMembers from '~common/ColonyMembers';
 import FourOFour from '~frame/FourOFour';
 import UserProfile from '~common/UserProfile';
 import UserProfileEdit from '~common/UserProfileEdit';
-import ExtensionDetails from '~common/Extensions/ExtensionDetails';
 import {
   // NavBar, Plain, SimpleNav,
   Default,
@@ -50,6 +49,8 @@ import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
 import MainExtensionLayout from '~frame/Extensions/Pages/MainExtensionLayout';
 import MainExtensionPage from '~frame/Extensions/Pages/MainExtensionPage';
 import LazyConsensusPage from '~frame/Extensions/Pages/LazyConsensusPage';
+import ExtensionDetailsPage from '~frame/Extensions/Pages/ExtensionDetailsPage/ExtensionDetailsPage';
+import ExtensionDetails from '~common/Extensions/ExtensionDetails/ExtensionDetails';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -158,6 +159,8 @@ const Routes = () => {
               <MainExtensionLayout>
                 <ExtensionDetails />
                 <LazyConsensusPage />
+                {/* <ExtensionDetails /> */}
+                <ExtensionDetailsPage />
               </MainExtensionLayout>
             </ColonyContextProvider>
           }

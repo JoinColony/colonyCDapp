@@ -62,10 +62,7 @@ const ColonySwitcherWithHooks = () => {
   return (
     <ApolloProvider client={apolloClient}>
       <Router>
-        <div
-          className="bg-base-white w-full flex flex-row sm:min-h-[6.6875rem] 
-  justify-between px-6"
-        >
+        <div className="bg-base-white w-full flex flex-row sm:min-h-[6.6875rem] justify-between px-6">
           <div className="flex flex-col sm:items-center sm:flex-row w-[90rem]">
             <div className="sm:mr-[2.5rem] mt-4 sm:mt-0">
               <div className="flex justify-between relative" ref={ref}>

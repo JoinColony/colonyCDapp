@@ -6,7 +6,7 @@ import { isInstalledExtensionData } from '~utils/extensions';
 import { UserDetail } from '~shared/DetailsWidget';
 import Address from '~shared/Address';
 
-import ExtensionStatusBadge from '../ExtensionStatusBadge';
+import ExtensionStatusBadge from '~common/ExtensionStatusBadge';
 import { displayName } from './ExtensionDetailsAside';
 
 import styles from './ExtensionDetails.css';

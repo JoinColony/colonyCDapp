@@ -5,7 +5,7 @@ import CopyableAddress from '~shared/CopyableAddress';
 import ExternalLink from '~shared/Extensions/ExternalLink';
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
-import Link from '~shared/Link';
+import Link from '~shared/Extensions/Link';
 import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
 

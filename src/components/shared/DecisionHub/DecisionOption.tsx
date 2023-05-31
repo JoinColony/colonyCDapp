@@ -6,8 +6,8 @@ import { LinkProps } from 'react-router-dom';
 import { getMainClasses } from '~utils/css';
 import { useMobile } from '~hooks';
 
-import Icon from '../Icon';
-import Link from '../Link';
+import Icon from '~shared/Icon';
+import Link from '~shared/Extensions/Link';
 import { Tooltip } from '../Popover';
 import Heading from '../Heading';
 

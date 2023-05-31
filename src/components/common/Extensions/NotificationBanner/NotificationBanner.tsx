@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 import CopyUrl from './CopyUrl';
 import { NotificationBannerProps } from './types';
-import Link from '~shared/Link';
+import Link from '~shared/Extensions/Link';
 import Icon from '~shared/Icon';
 import styles from './NotificationBanner.module.css';
 

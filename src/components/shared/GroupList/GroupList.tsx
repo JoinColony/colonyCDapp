@@ -3,7 +3,7 @@ import { MessageDescriptor } from 'react-intl';
 
 import { SimpleMessageValues } from '~types';
 
-import Icon from '../Icon';
+import Icon from '~shared/Icon';
 import Heading from '../Heading';
 
 import styles from './GroupList.css';
