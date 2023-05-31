@@ -14,12 +14,16 @@ interface ColonyContextValue {
   loading: boolean;
   canInteractWithColony: boolean;
   refetchColony: (() => null) | ObservableQuery['refetch'];
+  startPolling: (pollInterval: number) => void;
+  stopPolling: () => void;
 }
 
 const ColonyContext = createContext<ColonyContextValue>({
   loading: false,
   canInteractWithColony: false,
   refetchColony: () => null,
+  startPolling: () => undefined,
+  stopPolling: () => undefined,
 });
 
 const displayName = 'ColonyContextProvider';
@@ -45,6 +49,7 @@ export const ColonyContextProvider = ({
     loading,
     error,
     refetch: refetchColony,
+    startPolling,
     stopPolling,
   } = useGetFullColonyByNameQuery({
     skip: !colonyName,
@@ -73,8 +78,17 @@ export const ColonyContextProvider = ({
       loading,
       canInteractWithColony,
       refetchColony,
+      startPolling,
+      stopPolling,
     }),
-    [colony, loading, canInteractWithColony, refetchColony],
+    [
+      colony,
+      loading,
+      canInteractWithColony,
+      refetchColony,
+      startPolling,
+      stopPolling,
+    ],
   );
 
   if (!colonyName) {
