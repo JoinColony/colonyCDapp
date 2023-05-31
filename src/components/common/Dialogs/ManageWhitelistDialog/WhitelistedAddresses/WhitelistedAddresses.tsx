@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { filterUserSelection, OmniPickerUser } from '~shared/SingleUserPicker';
 import { User } from '~types';
 import { formatText } from '~utils/intl';

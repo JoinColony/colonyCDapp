@@ -1,7 +1,7 @@
 import React, { HTMLAttributes } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { useMainClasses } from '~hooks';
 import { formatText } from '~utils/intl';
 

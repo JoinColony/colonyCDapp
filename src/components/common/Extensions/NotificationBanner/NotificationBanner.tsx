@@ -3,7 +3,7 @@ import React, { FC, PropsWithChildren } from 'react';
 import CopyUrl from './CopyUrl';
 import { NotificationBannerProps } from './types';
 import Link from '~shared/Extensions/Link';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import styles from './NotificationBanner.module.css';
 
 const displayName = 'common.Extensions.NotificationBanner';

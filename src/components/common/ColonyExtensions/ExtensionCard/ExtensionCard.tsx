@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import Card from '~shared/Card';
 import ExtensionStatusBadge from '~common/ExtensionStatusBadge';
 import { Heading4 } from '~shared/Heading';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import Link from '~shared/Extensions/Link';
 import { AnyExtensionData } from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';

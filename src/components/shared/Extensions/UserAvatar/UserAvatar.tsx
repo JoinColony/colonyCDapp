@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import styles from './UserAvatar.module.css';
 import { UserAvatarProps } from './types';
 import Avatar from '~shared/Extensions/Avatar';
-import Link from '~shared/NavLink';
+import NavLink from '~shared/Extensions/NavLink';
 
 const displayName = 'Extensions.UserAvatar';
 
@@ -38,9 +38,9 @@ const UserAvatar: FC<UserAvatarProps> = ({
 
   if (isLink) {
     return (
-      <Link className="inline-flex transition-all duration-normal hover:text-blue-400" to="/user/">
+      <NavLink className="inline-flex transition-all duration-normal hover:text-blue-400" to="/user/">
         {avatar}
-      </Link>
+      </NavLink>
     );
   }
 

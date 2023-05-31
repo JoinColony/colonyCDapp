@@ -2,8 +2,7 @@ import React from 'react';
 
 import CopyableAddress from '~shared/CopyableAddress';
 import Heading from '~shared/Heading';
-import Icon from '~shared/Icon';
-
+import Icon from '~shared/Extensions/Icon';
 import { useAppContext } from '~hooks';
 
 import styles from './GasStationHeader.css';

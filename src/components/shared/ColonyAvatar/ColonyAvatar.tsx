@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Address, Colony, WatchedColony } from '~types';
 import Avatar, { AvatarProps } from '~shared/Avatar';
-import NavLink from '~shared/NavLink';
+import NavLink from '~shared/Extensions/NavLink';
 
 export interface Props extends Pick<AvatarProps, 'className' | 'notSet' | 'size'> {
   /** Address of the colony for identicon fallback */

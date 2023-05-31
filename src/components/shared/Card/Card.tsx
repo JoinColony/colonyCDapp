@@ -1,6 +1,6 @@
 import React, { ReactNode, useState, useCallback } from 'react';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import styles from './Card.css';
 
 interface Props {

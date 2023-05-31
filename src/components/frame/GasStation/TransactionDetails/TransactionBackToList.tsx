@@ -1,8 +1,7 @@
 import React, { MouseEvent } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import Icon from '~shared/Icon';
-
+import Icon from '~shared/Extensions/Icon';
 import styles from './TransactionBackToList.css';
 
 const displayName = 'frame.GasStation.TransactionBackToList';

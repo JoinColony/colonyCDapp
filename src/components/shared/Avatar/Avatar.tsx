@@ -1,7 +1,7 @@
 import React, { CSSProperties, ReactNode } from 'react';
 
 import getIcon from './identicon';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import styles from './Avatar.module.css';
 
 export interface Props {

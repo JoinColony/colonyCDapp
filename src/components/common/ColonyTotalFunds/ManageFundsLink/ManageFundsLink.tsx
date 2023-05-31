@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import Link from '~shared/Extensions/Link';
 import { useColonyContext } from '~hooks';
 

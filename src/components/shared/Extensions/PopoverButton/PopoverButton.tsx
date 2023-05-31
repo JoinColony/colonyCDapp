@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
+
 import { useHover } from '~hooks/useHover';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { PopoverButtonProps } from './types';
 
 const displayName = 'Extensions.PopoverButton';

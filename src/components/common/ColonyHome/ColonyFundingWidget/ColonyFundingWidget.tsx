@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Heading from '~shared/Heading';
 import TokenInfoPopover from '~shared/TokenInfoPopover';
-import NavLink from '~shared/NavLink';
+import NavLink from '~shared/Extensions/NavLink';
 import { useColonyContext } from '~hooks';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { notNull } from '~utils/arrays';

@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
+
 import ColonyAvatar from '~shared/ColonyAvatar';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { ColonyItemProps } from '../types';
 
 const displayName = 'common.Extensions.partials.ColonyItem';

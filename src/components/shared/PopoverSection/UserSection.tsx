@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { DropdownMenuItem, DropdownMenuSection } from '~shared/DropdownMenu';
-import NavLink from '~shared/NavLink';
+import NavLink from '~shared/Extensions/NavLink';
 import { CREATE_USER_ROUTE, USER_EDIT_ROUTE } from '~routes/routeConstants';
 import { useAppContext, useUserAccountRegistered } from '~hooks';
 

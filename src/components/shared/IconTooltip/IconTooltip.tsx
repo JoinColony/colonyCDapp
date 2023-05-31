@@ -4,7 +4,7 @@ import { PopperOptions } from 'react-popper-tooltip';
 
 import cx from 'classnames';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { Tooltip } from '~shared/Popover';
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';

@@ -2,11 +2,12 @@ import React, { FC, useLayoutEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import clsx from 'clsx';
+
 import { useAppContext, useColonyContext, useMobile, useUserReputation } from '~hooks';
 import Button from '~shared/Extensions/Button';
 import UserAvatar from '~shared/Extensions/UserAvatar';
 import MemberReputation from './partials/MemberReputation';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import Token from './partials/Token';
 import UserMenu from './partials/UserMenu';
 import { getLastWallet } from '~utils/autoLogin';

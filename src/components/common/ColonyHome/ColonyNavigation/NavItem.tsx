@@ -1,7 +1,7 @@
 import React, { KeyboardEvent, useCallback } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
-import NavLink from '~shared/NavLink';
+import NavLink from '~shared/Extensions/NavLink';
 import { ENTER } from '~types/index';
 
 import styles from './NavItem.css';

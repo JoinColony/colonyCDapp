@@ -5,9 +5,8 @@ import { useField } from 'formik';
 import classnames from 'classnames';
 
 import { getMainClasses } from '~utils/css';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { UniversalMessageValues } from '~types';
-
 import styles from './CustomRadio.css';
 
 export interface Appearance {

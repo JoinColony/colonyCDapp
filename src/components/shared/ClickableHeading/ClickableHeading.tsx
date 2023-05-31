@@ -1,9 +1,8 @@
 import React, { ReactNode } from 'react';
 
 import Heading, { Appearance } from '~shared/Heading';
-import NavLink from '~shared/NavLink';
-import Icon from '~shared/Icon';
-
+import NavLink from '~shared/Extensions/NavLink';
+import Icon from '~shared/Extensions/Icon';
 import styles from './ClickableHeading.css';
 
 interface Props {

@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import { BigNumber } from 'ethers';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import TokenInfoPopover from '~shared/TokenInfoPopover';
 import TokenIcon from '~shared/TokenIcon';
 import Numeral from '~shared/Numeral';

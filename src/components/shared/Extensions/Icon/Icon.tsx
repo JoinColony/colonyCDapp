@@ -1,43 +1,11 @@
-import React, { HTMLAttributes } from 'react';
-import { MessageDescriptor } from 'react-intl';
-
-import { SimpleMessageValues } from '~types';
+import React, { FC } from 'react';
 import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
-
 import { icons as iconNames, multiColorIcons as multiColorIconNames } from '~images/icons.json';
-
 import styles from './Icon.module.css';
+import { IconProps } from './types';
 
-const displayName = 'Icon';
-
-type Appearance = {
-  theme?: 'primary' | 'invert';
-  size?: 'extraTiny' | 'tiny' | 'small' | 'normal' | 'medium' | 'large' | 'huge';
-};
-
-interface Props extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
-  /** Appearance object */
-  appearance?: Appearance;
-
-  /** Disallow children */
-  children?: never;
-
-  /** className for icon. Will override anything in appearance */
-  className?: string;
-
-  /** Name of icon sprite */
-  name: string;
-
-  /** Html title for the icon element */
-  title?: string | MessageDescriptor;
-
-  /** Values for html title (react-intl interpolation) */
-  titleValues?: SimpleMessageValues;
-
-  /** SVG viewbox string */
-  viewBox?: string;
-}
+const displayName = 'Extensions.Icon';
 
 const getIcons = (map: string[]) =>
   map.reduce((prev, current) => {
@@ -49,7 +17,7 @@ const getIcons = (map: string[]) =>
 const icons = getIcons(iconNames);
 const multiColorIcons = getIcons(multiColorIconNames);
 
-const Icon = ({
+const Icon: FC<IconProps> = ({
   appearance = { size: 'normal', theme: 'primary' },
   className,
   viewBox: viewBoxOverride = '0 0 30 30',
@@ -57,8 +25,7 @@ const Icon = ({
   title,
   titleValues,
   ...props
-}: Props) => {
-  // Remove the theme if it's a multiColor icon
+}) => {
   const multiColorAppearance = multiColorIcons[name] ? { size: appearance.size || 'normal' } : null;
   const icon = icons[name] || multiColorIcons[name];
   const iconHref = typeof icon === 'object' ? `#${icon.default.id}` : icon;

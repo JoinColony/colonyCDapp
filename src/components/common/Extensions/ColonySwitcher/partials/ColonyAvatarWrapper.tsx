@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
+
 import ColonyAvatar from '~shared/ColonyAvatar';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { Colony } from '~types';
 import { ColonyAvatarProps } from '../types';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Avatar, { AvatarProps } from '~shared/Avatar';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { Token } from '~types';
 
 interface Props extends Pick<AvatarProps, 'size'> {

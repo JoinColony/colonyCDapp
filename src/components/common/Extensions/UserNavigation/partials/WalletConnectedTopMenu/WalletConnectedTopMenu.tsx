@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
+
 import styles from './WalletConnectedTopMenu.module.css';
 import Button from '~shared/Extensions/Button';
 import Link from '~shared/Extensions/Link';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import Avatar from '~shared/Extensions/Avatar';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import Token from '../Token';

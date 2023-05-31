@@ -46,9 +46,9 @@ import NotFoundRoute from './NotFoundRoute';
 import { ColonyContextProvider } from '~context/ColonyContext';
 import CreateColonyWizard from '~common/CreateColonyWizard';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
-import MainExtensionLayout from '~frame/Extensions/Pages/MainExtensionLayout';
-import MainExtensionPage from '~frame/Extensions/Pages/MainExtensionPage';
-import ExtensionDetailsPage from '~frame/Extensions/Pages/ExtensionDetailsPage/ExtensionDetailsPage';
+import MainExtensionLayout from '~frame/Extensions/pages/MainExtensionLayout';
+import MainExtensionPage from '~frame/Extensions/pages/MainExtensionPage';
+import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage/ExtensionDetailsPage';
 
 // import useTitle from '~hooks/useTitle';
 

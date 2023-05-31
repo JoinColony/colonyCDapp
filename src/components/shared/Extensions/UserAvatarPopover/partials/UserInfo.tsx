@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
+
 import { UserInfoProps } from '../types';
 import Avatar from '~shared/Extensions/Avatar';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { useMobile } from '~hooks';
 import UserPermissionsBadge from '~common/Extensions/UserPermissionsBadge/UserPermissionsBadge';

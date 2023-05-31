@@ -2,7 +2,7 @@ import React from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
 import { MessageDescriptor, FormattedMessage } from 'react-intl';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { Tooltip } from '~shared/Popover';
 import { UniversalMessageValues } from '~types';
 

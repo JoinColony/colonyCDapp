@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
+
 import { useDetectClickOutside, useAppContext, useMobile } from '~hooks';
 import ColoniesDropdown from './partials/ColoniesDropdown';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { useSelectedColony } from './hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
 import ColonyAvatarWrapper from './partials/ColonyAvatarWrapper';

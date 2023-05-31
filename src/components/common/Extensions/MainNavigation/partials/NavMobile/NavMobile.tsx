@@ -2,8 +2,9 @@ import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+
 import { accordionAnimation } from '~constants/accordionAnimation';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import SubMenu from '../SubMenu';
 import { NavItemMobileProps } from '../types';
 import styles from '../Nav.module.css';

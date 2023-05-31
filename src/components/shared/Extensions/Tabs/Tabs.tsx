@@ -1,9 +1,10 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { Tabs as ReactTabs, Tab, TabScreen } from 'react-tabs-scrollable';
 import { useIntl } from 'react-intl';
+
 import { TabsProps } from './types';
 import styles from './Tabs.module.css';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 
 const displayName = 'Extensions.Tabs';
 

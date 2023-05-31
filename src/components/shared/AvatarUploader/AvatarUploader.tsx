@@ -3,13 +3,11 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { CoreInputProps, InputLabel, InputStatus, InputComponentAppearance as Appearance } from '~shared/Fields';
 import { SingleFileUpload, SingleFileUploadProps } from '~shared/FileUpload';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { formatText } from '~utils/intl';
 import { AvatarProps } from '~shared/Avatar';
 import { NO_MAX } from '~shared/FileUpload/limits';
-
 import UploadControls from './UploadControls';
-
 import styles from './AvatarUploader.css';
 
 const displayName = 'AvatarUploader';

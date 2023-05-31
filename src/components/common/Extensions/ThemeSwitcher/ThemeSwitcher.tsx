@@ -1,7 +1,8 @@
 import React, { FC, useState } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
-import Icon from '~shared/Icon';
+
+import Icon from '~shared/Extensions/Icon';
 import styles from './ThemeSwitcher.module.css';
 
 const displayName = 'common.Extensions.ThemeSwitcher';

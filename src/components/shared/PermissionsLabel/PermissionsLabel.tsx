@@ -2,7 +2,7 @@ import React from 'react';
 import { MessageDescriptor, useIntl, FormattedMessage } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { Tooltip } from '../Popover';
 import { permissionsObject } from './permissions';
 

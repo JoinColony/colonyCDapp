@@ -17,7 +17,7 @@ import WalletPopover from '~common/Extensions/UserNavigation/partials/WalletPopo
 import { useMobile } from '~hooks';
 import Button from '~shared/Extensions/Button';
 import UserAvatar from '~shared/Extensions/UserAvatar/UserAvatar';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { formatMessage } from '~utils/yup/tests/helpers';
 
 const meta: Meta<typeof UserMenu> = {

@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import styles from './FullscreenDialog.css';
 import Modal from '../Modal';
 

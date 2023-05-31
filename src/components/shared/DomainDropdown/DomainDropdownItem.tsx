@@ -6,7 +6,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import Button from '~shared/Button';
 import ColorTag from '~shared/ColorTag';
 import Heading from '~shared/Heading';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import Paragraph from '~shared/Paragraph';
 // import { OneDomain } from '~data/index';
 import { ENTER, DomainColor, Domain } from '~types';

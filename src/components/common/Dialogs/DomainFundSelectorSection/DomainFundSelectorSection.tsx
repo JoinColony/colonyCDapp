@@ -3,11 +3,9 @@ import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { Colony } from '~types';
-
 import DomainFundSelector from './DomainFundSelector';
-
 import styles from './DomainFundSelector.css';
 
 const displayName = 'DomainFundSelectorSection';

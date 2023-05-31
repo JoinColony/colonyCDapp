@@ -8,7 +8,7 @@ import ColonySwitcher, { ColoniesDropdown, ColonyAvatarWrapper } from '~common/E
 import { watchlistMock } from '~common/Extensions/ColonySwitcher/consts';
 import { useSelectedColony } from '~common/Extensions/ColonySwitcher/hooks';
 import { useAppContext, useDetectClickOutside, useMobile } from '~hooks';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import ColonyDropdownMobile from '~common/Extensions/ColonySwitcher/partials/ColonyDropdownMobile';
 import styles from '~common/Extensions/ColonySwitcher/ColonySwitcher.module.css';
 import UserNavigation from '~common/Extensions/UserNavigation';

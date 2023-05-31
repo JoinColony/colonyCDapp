@@ -1,12 +1,10 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { ColonyMotions } from '~types';
 import { EventValues } from '~utils/colonyActions';
-
 import { ACTION_TYPES_ICONS_MAP } from '../types';
-
 import styles from './ActionTypeDetail.css';
 
 const displayName = 'DetailsWidget.ActionTypeDetail';

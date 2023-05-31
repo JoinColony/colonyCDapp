@@ -2,7 +2,7 @@ import React, { useRef, ChangeEvent } from 'react';
 import { defineMessages } from 'react-intl';
 
 import Heading from '~shared/Heading';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { useMobile } from '~hooks';
 import ColonyDomainSelector from '~common/ColonyHome/ColonyDomainSelector';
 import { formatText } from '~utils/intl';

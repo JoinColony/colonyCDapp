@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { ActionButton } from '~shared/Button';
 import Heading from '~shared/Heading';
-import NavLink from '~shared/NavLink';
+import NavLink from '~shared/Extensions/NavLink';
 import Numeral from '~shared/Numeral';
 import { Tooltip } from '~shared/Popover';
 import Link from '~shared/Extensions/Link';

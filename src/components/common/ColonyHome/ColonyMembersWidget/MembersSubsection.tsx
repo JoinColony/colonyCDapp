@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import NavLink from '~shared/NavLink';
+import NavLink from '~shared/Extensions/NavLink';
 import { Tooltip } from '~shared/Popover';
 import UserAvatar from '~shared/UserAvatar';
 import ClickableHeading from '~shared/ClickableHeading';
@@ -9,8 +9,6 @@ import InviteLinkButton from '~shared/Button/InviteLinkButton';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useAvatarDisplayCounter } from '~hooks';
 import { Colony, Member } from '~types';
-// import Icon from '~shared/Icon';
-
 import styles from './ColonyMembersWidget.css';
 
 const displayName = 'common.ColonyHome.ColonyMembersWidget.MembersSubsection';

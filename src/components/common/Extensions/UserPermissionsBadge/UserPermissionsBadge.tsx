@@ -1,10 +1,11 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
+
 import { UserPermissionsBadgeProps } from './types';
 import styles from './UserPermissionsBadge.module.css';
 import Tooltip from '~shared/Extensions/Tooltip';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 
 const displayName = 'common.Extensions.UserPermissionsBadge';
 

@@ -3,10 +3,8 @@ import { FormattedMessage, MessageDescriptor } from 'react-intl';
 import classnames from 'classnames';
 
 import Button from '~shared/Button';
-import Icon from '~shared/Icon';
-
+import Icon from '~shared/Extensions/Icon';
 import { SortingMethod } from '~gql';
-
 import styles from './SortingButton.css';
 
 export interface Props {

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { Tooltip } from '~shared/Popover';
 import TransactionLink from '~shared/TransactionLink';
 import { SpinnerLoader } from '~shared/Preloaders';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { TRANSACTION_STATUSES } from '~types';

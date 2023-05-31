@@ -2,11 +2,11 @@ import React, { FC, useCallback, useState } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import { NavItemProps, NavProps } from '../types';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import styles from '../Nav.module.css';
 import SubMenu from '../SubMenu';
 import { useMobile } from '~hooks';
-import NavMobile from '../NavMobile/NavMobile';
+import NavMobile from '../NavMobile';
 
 const displayName = 'common.Extensions.MainNavigation.partials.Nav';
 

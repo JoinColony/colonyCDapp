@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+
 import { WalletPopoverOptionProps } from './types';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import styles from './WalletPopoverOption.module.css';
 
 const displayName = 'common.Extensions.UserNavigation.partials.WalletPopoverOption';

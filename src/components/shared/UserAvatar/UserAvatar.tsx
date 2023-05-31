@@ -3,13 +3,11 @@ import { PopperOptions } from 'react-popper-tooltip';
 
 import Popover from '~shared/Popover';
 import Avatar, { AvatarProps } from '~shared/Avatar';
-import Link from '~shared/NavLink';
 import UserInfoPopover from '~shared/UserInfoPopover';
 import { User } from '~types';
-
 import { getMainClasses } from '~utils/css';
-
 import styles from './UserAvatar.css';
+import NavLink from '~shared/Extensions/NavLink';
 
 export interface UserAvatarProps extends Pick<AvatarProps, 'size' | 'className' | 'notSet'> {
   /** Banned comment status */
@@ -67,7 +65,7 @@ const UserAvatar = ({
   );
 
   if (showLink && user) {
-    return <Link to={`/user/${user.name.toLowerCase()}`}>{avatar}</Link>;
+    return <NavLink to={`/user/${user.name.toLowerCase()}`}>{avatar}</NavLink>;
   }
 
   return avatar;

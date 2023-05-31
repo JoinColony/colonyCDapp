@@ -3,10 +3,11 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
+
 import { ButtonProps } from './types';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
 import styles from './Button.module.css';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 
 const displayName = 'Extensions.Button';
 

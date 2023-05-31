@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage, MessageDescriptor } from 'react-intl';
 
-import NavLink from '~shared/NavLink';
-import Icon from '~shared/Icon';
+import NavLink from '~shared/Extensions/NavLink';
+import Icon from '~shared/Extensions/Icon';
 import Heading from '~shared/Heading';
 import { SpinnerLoader } from '~shared/Preloaders';
 import ColonyAvatar from '~shared/ColonyAvatar';
-
 import { CREATE_COLONY_ROUTE, CREATE_USER_ROUTE } from '~routes';
 import { useGetMetacolonyQuery } from '~gql';
 import { useAppContext, useCanInteractWithNetwork } from '~hooks';

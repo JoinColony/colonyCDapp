@@ -1,7 +1,8 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
-import Icon from '~shared/Icon';
+
+import Icon from '~shared/Extensions/Icon';
 import { ModalProps } from './types';
 import ModalBase from './ModalBase';
 import styles from './Modal.module.css';

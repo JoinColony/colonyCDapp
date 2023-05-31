@@ -12,7 +12,7 @@ import { ContextModule, getContext } from '~context';
 import { useDetectClickOutside, useMobile } from '~hooks';
 import Button from '~shared/Extensions/Button';
 import UserAvatar from '~shared/Extensions/UserAvatar';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 
 const meta: Meta<typeof UserNavigation> = {
   title: 'Common/User Navigation',

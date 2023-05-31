@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
+
 import { UserMenuProps } from './types';
 import { useAppContext, useMobile } from '~hooks';
 import Button from '~shared/Extensions/Button';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
 import styles from './UserMenu.module.css';
 import PopoverBase from '~shared/Extensions/PopoverBase';

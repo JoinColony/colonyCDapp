@@ -1,17 +1,18 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
+
 import PageTitle from '~common/Extensions/PageTitle';
 import TwoColumns from '~frame/Extensions/TwoColumns';
 import { useAppContext, useColonyContext, useExtensionData, useMobile } from '~hooks';
 import Button from '~shared/Extensions/Button';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { isInstalledExtensionData } from '~utils/extensions';
 import ExtensionDetails from './partials/ExtensionDetails';
 import { useExtensionDetailsPage } from './hooks';
 
-const displayName = 'common.Extensions.Pages.ExtensionDetailsPage';
+const displayName = 'common.Extensions.pages.ExtensionDetailsPage';
 
 const ExtensionDetailsPage: FC = () => {
   const { extensionId } = useParams();

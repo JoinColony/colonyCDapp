@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { CloseButtonProps } from 'react-toastify';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 
 const displayName = 'Extensions.Toast.partials.CloseButton';
 

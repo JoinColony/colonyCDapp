@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import Paragraph from '~shared/Paragraph';
 import { Tooltip } from '~shared/Popover';
 

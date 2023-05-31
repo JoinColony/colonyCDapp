@@ -5,12 +5,10 @@ import { LinkProps } from 'react-router-dom';
 
 import { getMainClasses } from '~utils/css';
 import { useMobile } from '~hooks';
-
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import Link from '~shared/Extensions/Link';
 import { Tooltip } from '../Popover';
 import Heading from '../Heading';
-
 import styles from './DecisionOption.css';
 
 const displayName = 'DecisionHub.DecisionOption';

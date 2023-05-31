@@ -2,11 +2,9 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { TRANSACTION_STATUSES } from '~types';
-
 import { Tooltip } from '~shared/Popover';
 import { SpinnerLoader } from '~shared/Preloaders';
-import Icon from '~shared/Icon';
-
+import Icon from '~shared/Extensions/Icon';
 import styles from '../TransactionCard/TransactionStatus.css';
 
 const displayName = 'frame.GasStation.MessageCard.MessageCardStatus';

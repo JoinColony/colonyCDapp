@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
+
 import styles from './RadioList.module.css';
 import { RadioBaseProps } from './types';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 
 const displayName = 'Extensions.Fields.RadioBase';
 

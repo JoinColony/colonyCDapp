@@ -1,10 +1,8 @@
 import React, { ReactNode } from 'react';
 import { defineMessages } from 'react-intl';
 
-import Icon from '~shared/Icon';
-
+import Icon from '~shared/Extensions/Icon';
 import styles from './Dialog.css';
-
 import Modal from '../Modal';
 
 const MSG = defineMessages({

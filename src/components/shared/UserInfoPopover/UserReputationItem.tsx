@@ -1,10 +1,9 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import Numeral from '~shared/Numeral';
 import { ZeroValue } from '~utils/reputation';
-
 import styles from './UserInfoPopover.css';
 
 const displayName = `UserInfoPopover.UserReputationItem`;

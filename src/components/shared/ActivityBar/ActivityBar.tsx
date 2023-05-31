@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { DialogProps } from '../Dialog';
 import Modal from '../Modal';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import styles from './ActivityBar.css';
 import modalStyles from '../Modal/Modal.css';
 

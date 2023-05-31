@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 import { WizardStepProps } from '~shared/Wizard';
-import NavLink from '~shared/NavLink';
+import NavLink from '~shared/Extensions/NavLink';
 
 import {
   getGroupStatus,

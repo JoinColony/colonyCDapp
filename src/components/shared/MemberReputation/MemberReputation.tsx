@@ -3,8 +3,7 @@ import { defineMessages } from 'react-intl';
 import Decimal from 'decimal.js';
 
 import Numeral from '~shared/Numeral';
-import Icon from '~shared/Icon';
-
+import Icon from '~shared/Extensions/Icon';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { calculatePercentageReputation, ZeroValue } from '~utils/reputation';
 import { getFormattedTokenValue } from '~utils/tokens';

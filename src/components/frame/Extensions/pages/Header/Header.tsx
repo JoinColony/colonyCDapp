@@ -1,16 +1,17 @@
 import clsx from 'clsx';
 import React from 'react';
+
 import { ColoniesDropdown, ColonyAvatarWrapper } from '~common/Extensions/ColonySwitcher';
 import ColonyDropdownMobile from '~common/Extensions/ColonySwitcher/partials/ColonyDropdownMobile';
 import { useMobile } from '~hooks';
-import styles from './Header.module.css';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import UserNavigation from '~common/Extensions/UserNavigation';
 import MainNavigation from '~common/Extensions/MainNavigation';
 import { watchlistMock } from '~common/Extensions/ColonySwitcher/consts';
 import { useHeader } from './hooks';
+import styles from './Header.module.css';
 
-const displayName = 'common.Extensions.Pages.Header';
+const displayName = 'common.Extensions.pages.Header';
 
 const Header = () => {
   const isMobile = useMobile();

@@ -4,14 +4,12 @@ import { nanoid } from 'nanoid';
 import { useFormContext } from 'react-hook-form';
 
 import { InputLabel, HookFormInputStatus as InputStatus } from '~shared/Fields';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { DOWN, ENTER, ESC, Message, SPACE, UP } from '~types';
 import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
-
 import SelectListBox from '../SelectListBox';
 import { Appearance, SelectProps } from '../types';
-
 import styles from '../Select.css';
 
 const displayName = 'Select.HookFormSelect';

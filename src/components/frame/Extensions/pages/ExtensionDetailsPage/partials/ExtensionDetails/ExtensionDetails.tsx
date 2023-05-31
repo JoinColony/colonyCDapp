@@ -1,17 +1,18 @@
 import React, { FC } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { ExtensionDetailsProps } from './types';
+
 import SpecificSidePanel from '~common/Extensions/SpecificSidePanel/SpecificSidePanel';
 import Button from '~shared/Extensions/Button';
 import ImageCarousel from '~common/Extensions/ImageCarousel/ImageCarousel';
 import SupportingDocuments from '~common/Extensions/SupportingDocuments/SupportingDocuments';
+import { ExtensionDetailsProps } from './types';
 import { useExtensionDetails } from './hooks';
 
 const HeadingChunks = (chunks: React.ReactNode[]) => (
   <h4 className="font-semibold text-gray-900 mt-6 mb-4">{chunks}</h4>
 );
 
-const displayName = 'common.Extensions.Pages.ExtensionDetailsPage.partials.ExtensionDetails';
+const displayName = 'common.Extensions.pages.ExtensionDetailsPage.partials.ExtensionDetails';
 
 const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData, canBeDeprecated, canBeUninstalled }) => {
   const { formatMessage } = useIntl();

@@ -1,9 +1,10 @@
 import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
+
 import { PopoverBaseProps } from './types';
 import Card from '../Card';
 
-const displayName = 'shared.Extensions.PopoverBase';
+const displayName = 'Extensions.PopoverBase';
 
 const PopoverBase: FC<PropsWithChildren<PopoverBaseProps>> = ({
   tooltipProps,

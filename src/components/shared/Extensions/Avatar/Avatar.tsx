@@ -2,7 +2,7 @@ import React, { CSSProperties, FC, PropsWithChildren } from 'react';
 
 import getIcon from './identicon';
 import styles from './Avatar.module.css';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { AvatarProps } from './types';
 
 const displayName = 'Extensions.Avatar';

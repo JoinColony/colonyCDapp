@@ -2,7 +2,7 @@ import React from 'react';
 import { MessageDescriptor, FormattedMessage } from 'react-intl';
 
 import Button, { Props as DefaultButtonProps } from './Button';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { SimpleMessageValues } from '~types';
 import { useMainClasses } from '~hooks';
 

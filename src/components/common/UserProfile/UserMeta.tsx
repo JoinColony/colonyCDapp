@@ -4,11 +4,10 @@ import { defineMessages } from 'react-intl';
 import CopyableAddress from '~shared/CopyableAddress';
 import ExternalLink from '~shared/Extensions/ExternalLink';
 import Heading from '~shared/Heading';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import Link from '~shared/Extensions/Link';
 import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
-
 import { stripProtocol } from '~utils/strings';
 import { useAppContext, useMobile } from '~hooks';
 import { User } from '~types';

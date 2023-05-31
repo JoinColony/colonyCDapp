@@ -6,11 +6,10 @@ import { useFormContext } from 'react-hook-form';
 import { SimpleMessageValues, User } from '~types';
 import { getMainClasses } from '~utils/css';
 import UserAvatar from '~shared/UserAvatar';
-
 import { ItemDataType, withOmniPicker, WrappedComponentProps } from '../OmniPicker';
 import { Props as WithOmnipickerInProps } from '../OmniPicker/withOmniPicker';
 import { InputLabel, HookFormInputStatus as InputStatus } from '../Fields';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import Button from '../Button';
 import ItemDefault from './ItemDefault';
 

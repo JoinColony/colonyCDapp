@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+
 import { WalletPopoverProps } from './types';
 import PopoverBase from '~shared/Extensions/PopoverBase';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import Link from '~shared/Extensions/Link';
 import styles from './WalletPopover.module.css';
 import WalletPopoverOption from '../WalletPopoverOption';

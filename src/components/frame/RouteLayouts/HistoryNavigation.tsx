@@ -2,10 +2,9 @@ import React, { ComponentType, ReactNode } from 'react';
 import { MessageDescriptor, defineMessages, useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import Icon from '~shared/Icon';
-import NavLink from '~shared/NavLink';
+import Icon from '~shared/Extensions/Icon';
+import NavLink from '~shared/Extensions/NavLink';
 import { SimpleMessageValues } from '~types/index';
-
 import styles from './HistoryNavigation.css';
 
 const displayName = 'pages.NavigationWrapper.HistoryNavigation';

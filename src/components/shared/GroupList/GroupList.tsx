@@ -2,10 +2,8 @@ import React, { ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
 import { SimpleMessageValues } from '~types';
-
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import Heading from '../Heading';
-
 import styles from './GroupList.css';
 
 interface GroupListItem {

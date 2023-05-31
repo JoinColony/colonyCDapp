@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import Decimal from 'decimal.js';
+
 import { useUserReputation } from '~hooks';
 import { ReputationProps } from '../types';
 import styles from '../ReputationTab.module.css';
 import { calculatePercentageReputation, ZeroValue } from '~utils/reputation';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import Numeral from '~shared/Numeral';
 import { getFormattedTokenValue } from '~utils/tokens';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';

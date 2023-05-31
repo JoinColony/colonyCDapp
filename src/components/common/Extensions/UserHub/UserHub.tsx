@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useIntl } from 'react-intl';
+
 import clsx from 'clsx';
 import { useMobile } from '~hooks';
 import ReputationTab from './partials/ReputationTab';
@@ -8,7 +9,7 @@ import StakesTab from './partials/StakesTab';
 import TransactionsTab from './partials/TransactionsTab';
 import { transactionsItems } from '~common/Extensions/UserHub/partials/TransactionsTab/consts';
 import Button from '~shared/Extensions/Button';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import styles from './UserHub.module.css';
 import { tabList } from './consts';
 import UserHubMobile from './UserHubMobile';

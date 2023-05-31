@@ -5,12 +5,11 @@ import { nanoid } from 'nanoid';
 
 import { getMainClasses } from '~utils/css';
 import { DOWN, ENTER, ESC, SimpleMessageValues, SPACE, UP } from '~types';
-
 import SelectListBox from './SelectListBox';
 import { Appearance, SelectOption } from './types';
 import InputLabel from '../InputLabel';
 import InputStatus from '../InputStatus';
-import Icon from '../../Icon';
+import Icon from '~shared/Extensions/Icon';
 
 import styles from './Select.css';
 

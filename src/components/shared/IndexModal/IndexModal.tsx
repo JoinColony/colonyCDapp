@@ -5,10 +5,8 @@ import { nanoid } from 'nanoid';
 import Dialog, { DialogProps } from '~shared/Dialog';
 import { Heading3 } from '~shared/Heading';
 import Button from '~shared/Button';
-import Icon from '~shared/Icon';
-
+import Icon from '~shared/Extensions/Icon';
 import { UniversalMessageValues } from '~types';
-
 import IndexModalItem from './IndexModalItem';
 
 import styles from './IndexModal.css';

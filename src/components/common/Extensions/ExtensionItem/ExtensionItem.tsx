@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import { ExtensionItemProps } from './types';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Button from '~shared/Extensions/Button';
-import Icon from '~shared/Icon';
+import Icon from '~shared/Extensions/Icon';
 import { useMobile } from '~hooks';
 import Link from '~shared/Extensions/Link';
 import styles from './ExtensionItem.module.css';
