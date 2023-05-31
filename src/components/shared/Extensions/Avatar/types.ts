@@ -5,5 +5,5 @@ export interface AvatarProps {
   notSet?: boolean;
   placeholderIcon?: string;
   size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
-  title: string;
+  title?: string;
 }
