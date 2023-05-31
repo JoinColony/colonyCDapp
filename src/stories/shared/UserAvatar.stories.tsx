@@ -9,9 +9,7 @@ const meta: Meta<typeof UserAvatar> = {
   decorators: [
     (Story) => (
       <Router>
-        <div className="text-gray-900">
-          <Story />
-        </div>
+        <Story />
       </Router>
     ),
   ],

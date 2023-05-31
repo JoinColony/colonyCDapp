@@ -1,7 +1,7 @@
 import React, { FC, Fragment } from 'react';
 import { useIntl } from 'react-intl';
 import { SpecificSidePanelProps } from './types';
-import ExtensionStatusBadge from '../ExtensionStatusBadge-new/ExtensionStatusBadge';
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Permissions from './partials/Permissions';
 import DateInstalled from './partials/DateInstalled';
 import InstalledBy from './partials/InstalledBy';

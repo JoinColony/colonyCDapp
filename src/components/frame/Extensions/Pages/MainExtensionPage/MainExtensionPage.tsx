@@ -2,8 +2,9 @@
 import React, { FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import ExtensionItem from '~common/Extensions/ExtensionItem';
+import Navigation from '~common/Extensions/Navigation';
 import PageTitle from '~common/Extensions/PageTitle';
-import TwoColumns from '~frame/Extensions/TwoColumns/TwoColumns';
+import TwoColumns from '~frame/Extensions/TwoColumns';
 import { useExtensionsData, useMobile } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
 
@@ -29,9 +30,8 @@ const MainExtensionPage: FC = () => {
   }
 
   return (
-    <div className="mb-6">
-      {/* @TODO: Add sidepanel */}
-      {isMobile && <div>Sidepanel</div>}
+    <>
+      {isMobile && <Navigation />}
       <div className="mt-9 sm:mt-6">
         <PageTitle
           title={formatMessage({ id: 'extensionsPage.title' })}
@@ -39,30 +39,31 @@ const MainExtensionPage: FC = () => {
         />
       </div>
       <div className="flex lg:gap-[6.25rem] md:gap-12 mt-9">
-        {/* @TODO: Add sidepanel */}
-        <TwoColumns aside={<div>Sidepanel</div>}>
-          <div>
-            <h4 className="text-xl font-semibold mb-6">
-              {formatMessage({ id: 'extensionsPage.availableExtensions' })}
-            </h4>
-            <h5 className="text-md font-semibold mb-4">{formatMessage({ id: 'extensionsPage.payments' })}</h5>
-            <ul className="pb-6 border-b border-gray-100">
-              {allExtensions.map((extension) => (
-                <li className="mb-6" key={extension.extensionId}>
-                  <ExtensionItem
-                    title={extension.name}
-                    description={extension.descriptionShort}
-                    version={extension.availableVersion}
-                    icon={extension.icon}
-                    extensionId={extension.extensionId}
-                  />
-                </li>
-              ))}
-            </ul>
-          </div>
+        <TwoColumns
+          aside={
+            <div className="-mt-0.5">
+              <Navigation />
+            </div>
+          }
+        >
+          <h4 className="text-xl font-semibold mb-6">{formatMessage({ id: 'extensionsPage.availableExtensions' })}</h4>
+          <h5 className="text-md font-semibold mb-4">{formatMessage({ id: 'extensionsPage.payments' })}</h5>
+          <ul className="pb-6 border-b border-gray-100">
+            {allExtensions.map((extension) => (
+              <li className="mb-6" key={extension.extensionId}>
+                <ExtensionItem
+                  title={extension.name}
+                  description={extension.descriptionShort}
+                  version={extension.availableVersion}
+                  icon={extension.icon}
+                  extensionId={extension.extensionId}
+                />
+              </li>
+            ))}
+          </ul>
         </TwoColumns>
       </div>
-    </div>
+    </>
   );
 };
 

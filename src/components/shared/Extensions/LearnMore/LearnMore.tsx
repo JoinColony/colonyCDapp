@@ -12,7 +12,7 @@ const LearnMore: FC<PropsWithChildren<LearnMoreProps>> = ({ message, href }) => 
   const { id, defaultMessage } = message;
 
   return (
-    <div className="text-sm flex justify-center items-center font-normal text-gray-900">
+    <div className="text-sm flex justify-center items-center font-normal">
       <Icon name="question" appearance={{ size: 'tiny' }} />
       <span className="block ml-2">
         <FormattedMessage

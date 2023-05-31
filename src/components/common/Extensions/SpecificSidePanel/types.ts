@@ -1,6 +1,6 @@
 import React from 'react';
 import { MessageDescriptor } from 'react-intl';
-import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge-new/types';
+import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
 
 export interface SpecificSidePanelProps {
   statuses: SpecificSidePanelStatus | SpecificSidePanelStatus[];
