@@ -112,10 +112,10 @@ const getDetailItems = (
     fromDomain,
     toDomain,
     amount,
-    recipient,
+    recipientAddress,
     transactionHash,
     token,
-    /* roles */
+    roles,
   } = actionData;
 
   const extendedActionType = getExtendedActionType(actionData, colony);
@@ -163,8 +163,8 @@ const getDetailItems = (
     {
       label: MSG.toRecipient,
       labelValues: undefined,
-      item: detailsForAction.ToRecipient && recipient?.walletAddress && (
-        <UserDetail walletAddress={recipient.walletAddress} />
+      item: detailsForAction.ToRecipient && recipientAddress && (
+        <UserDetail walletAddress={recipientAddress} />
       ),
     },
     {
@@ -186,8 +186,8 @@ const getDetailItems = (
     {
       label: MSG.author,
       labelValues: undefined,
-      item: detailsForAction.Author && recipient?.walletAddress && (
-        <UserDetail walletAddress={recipient.walletAddress} />
+      item: detailsForAction.Author && recipientAddress && (
+        <UserDetail walletAddress={recipientAddress} />
       ),
     },
     {
