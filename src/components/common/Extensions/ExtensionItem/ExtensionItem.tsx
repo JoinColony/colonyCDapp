@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import { ExtensionItemProps } from './types';
-import ExtensionStatusBadge from '../ExtensionStatusBadge-new/ExtensionStatusBadge';
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Button from '~shared/Extensions/Button';
 import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';

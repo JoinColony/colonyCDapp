@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useAsyncFunction, useColonyContext, useExtensionData } from '~hooks';
-import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge-new/types';
+import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
 import { ActionTypes } from '~redux';
 import { isInstalledExtensionData } from '~utils/extensions';
 

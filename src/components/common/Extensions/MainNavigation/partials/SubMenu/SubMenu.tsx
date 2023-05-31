@@ -6,7 +6,7 @@ import LearnMore from '~shared/Extensions/LearnMore/LearnMore';
 import { LEARN_MORE_PAYMENTS } from '~constants';
 import Card from '~shared/Extensions/Card';
 import Button from '~shared/Extensions/Button';
-import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge-new';
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import { useMobile } from '~hooks';
 import styles from './SubMenu.module.css';
 
