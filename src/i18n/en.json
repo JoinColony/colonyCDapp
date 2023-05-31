@@ -466,5 +466,11 @@
     "custom.extension.parameters": "Custom extension parameters",
     "deprecate.extension": "Deprecate extension",
     "permissions.list.title": " Permissions the extension needs in the colony:",
-    "active.installs": "Active Installs"
+    "active.installs": "Active Installs",
+    "status": "Status",
+    "date.installed": "Date installed",
+    "installed.by": "Installed by",
+    "version.installed": "Version installed",
+    "contract.address": "Contract address",
+    "developer": "Developer"
 }

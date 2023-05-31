@@ -34,6 +34,7 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
         imageRendering: avatar ? undefined : 'pixelated',
       }
     : {};
+
   return (
     <figure className={className ? `${mainClass} ${className}` : mainClass} title={title}>
       {source ? (

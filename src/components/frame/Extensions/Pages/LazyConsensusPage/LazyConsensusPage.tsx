@@ -4,7 +4,6 @@ import SpecificSidePanel from '~common/Extensions/SpecificSidePanel';
 import ThreeColumns from '../../ThreeColumns';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { useLazyConsensusPage } from './hooks';
-import { sidePanelData } from '~common/Extensions/SpecificSidePanel/consts';
 import Icon from '~shared/Icon';
 import RadioList from '~shared/Extensions/Fields/RadioList';
 import Accordion from '~shared/Extensions/Accordion/Accordion';
@@ -15,7 +14,7 @@ import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 
 const LazyConsensusPage = () => {
   const { openIndex, onOpenIndexChange } = useAccordion();
-  const { loading, extensionData, status, badgeMessage, extensionContent, register, errors, handleSubmit, onSubmit } =
+  const { loading, extensionData, extensionContent, register, errors, handleSubmit, onSubmit } =
     useLazyConsensusPage(onOpenIndexChange);
   const { formatMessage } = useIntl();
 
@@ -37,14 +36,7 @@ const LazyConsensusPage = () => {
                 )}
               </div>
               <div className="mt-8">
-                <SpecificSidePanel
-                  // @ts-ignore
-                  sidePanelData={extensionData}
-                  status={status}
-                  badgeMessage={badgeMessage}
-                  // neededColonyPermissions={extensionData?.neededColonyPermissions}
-                  permissions={sidePanelData[0].permissions.permissions} // @TODO: fix that
-                />
+                <SpecificSidePanel />
                 {/* @TODO: handle deprecate action */}
                 <div className="mt-6">
                   <Button isFullSize mode="tertiaryOutline">

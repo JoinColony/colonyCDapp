@@ -5,7 +5,6 @@ import SpecificSidePanel from '~common/Extensions/SpecificSidePanel/SpecificSide
 import Button from '~shared/Extensions/Button';
 import ImageCarousel from '~common/Extensions/ImageCarousel/ImageCarousel';
 import SupportingDocuments from '~common/Extensions/SupportingDocuments/SupportingDocuments';
-import { useExtensionDetails } from './hooks';
 
 const HeadingChunks = (chunks: React.ReactNode[]) => (
   <h4 className="font-semibold text-gray-900 mt-6 mb-4">{chunks}</h4>
@@ -15,7 +14,6 @@ const displayName = 'common.Extensions.Pages.ExtensionDetailsPage.partials.Exten
 
 const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData, canBeDeprecated, canBeUninstalled }) => {
   const { formatMessage } = useIntl();
-  const { sidePanelData, status } = useExtensionDetails(extensionData);
 
   return (
     <div className="mt-6 w-full flex gap-12 justify-between">
@@ -35,7 +33,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData, canBeDepre
         </div>
       </div>
       <div className="sm:w-[20.375rem]">
-        <SpecificSidePanel statuses={status} sidePanelData={sidePanelData} />
+        <SpecificSidePanel />
         {/* @TODO: Add functionality and modals to deprecate and uninstall extension */}
         {canBeDeprecated && (
           <div className="mt-6">

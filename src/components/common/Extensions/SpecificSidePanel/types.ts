@@ -1,13 +1,5 @@
 import React from 'react';
 import { MessageDescriptor } from 'react-intl';
-import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
-
-export interface SpecificSidePanelProps {
-  statuses: SpecificSidePanelStatus | SpecificSidePanelStatus[];
-  sidePanelData: SidePanelDataProps[];
-}
-
-type SpecificSidePanelStatus = ExtensionStatusBadgeMode;
 
 export interface PermissionsProps {
   data: { key: string; name: string; text: MessageDescriptor | string; description: MessageDescriptor | string }[];

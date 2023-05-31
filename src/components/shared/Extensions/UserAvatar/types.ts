@@ -1,7 +1,7 @@
 import { User } from '~types';
 
 export interface UserAvatarProps {
-  userName: string;
+  userName?: string;
   preferThumbnail?: boolean;
   user?: User | null;
   isLink?: boolean;

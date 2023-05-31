@@ -1,6 +1,5 @@
-import React, { FC, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { useIntl } from 'react-intl';
-import { SpecificSidePanelProps } from './types';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Permissions from './partials/Permissions';
 import DateInstalled from './partials/DateInstalled';
@@ -9,18 +8,20 @@ import Version from './partials/Version';
 import ContractAddress from './partials/ContractAddress';
 import Developer from './partials/Developer';
 import styles from './SpecificSidePanel.module.css';
+import { useSpecificSidePanel } from './hooks';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 
-const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData }) => {
+const SpecificSidePanel = () => {
   const { formatMessage } = useIntl();
+  const { statuses, sidePanelData } = useSpecificSidePanel();
 
   return (
     <div className="sm:w-full md:w-[17.625rem] lg:w-[20.4375rem] bg-base-white flex gap-[1.25rem] flex-col">
       <h3 className="font-semibold text-lg text-gray-900 pb-[0.2rem]">
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
-      {sidePanelData.map(
+      {(sidePanelData || [])?.map(
         ({ id, dateInstalled, installedBy, statusType, versionInstalled, contractAddress, developer, permissions }) => (
           <Fragment key={id}>
             <div className={styles.panelRow}>
