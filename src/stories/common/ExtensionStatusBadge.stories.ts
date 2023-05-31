@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ExtensionsStatusBadge from '~common/Extensions/ExtensionStatusBadge-new';
+import ExtensionsStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 
 const meta: Meta<typeof ExtensionsStatusBadge> = {
   title: 'Common/Extension Status Badge',

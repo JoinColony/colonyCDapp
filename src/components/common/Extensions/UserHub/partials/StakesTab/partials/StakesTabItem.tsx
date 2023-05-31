@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import ExtensionsStatusBadge from '~common/Extensions/ExtensionStatusBadge-new';
-import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge-new/types';
+import ExtensionsStatusBadge from '~common/Extensions/ExtensionStatusBadge';
+import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
 import { StakesProps } from '../types';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab.partials.StakesItems';

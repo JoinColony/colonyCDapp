@@ -1,4 +1,4 @@
-import { ExtensionStatusBadgeProps } from '~common/Extensions/ExtensionStatusBadge-new/types';
+import { ExtensionStatusBadgeProps } from '~common/Extensions/ExtensionStatusBadge/types';
 
 export interface SubMenuItem {
   label: string;

@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { format } from 'date-fns';
-import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge-new/types';
+import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { useUserByNameOrAddress } from '~hooks';
 import UserAvatar from '~shared/Extensions/UserAvatar';
