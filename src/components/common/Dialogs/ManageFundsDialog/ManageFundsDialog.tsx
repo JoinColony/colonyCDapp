@@ -4,10 +4,14 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import { WizardDialogType, useTransformer, useAppContext } from '~hooks';
+import {
+  WizardDialogType,
+  useUserAccountRegistered,
+  useAppContext,
+} from '~hooks';
 
 import { getAllUserRoles } from '~transformers';
-import { hasRoot } from '~utils/checks'; // canFund
+import { hasRoot, canFund } from '~utils/checks';
 
 const displayName = 'common.ManageFundsDialog';
 
@@ -109,20 +113,19 @@ const ManageFundsDialog = ({
 }: Props) => {
   const { wallet } = useAppContext();
 
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
-  ]);
+  const userHasAccountRegistered = useUserAccountRegistered();
+
+  const allUserRoles = getAllUserRoles(colony, wallet?.address || '');
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
-  // const canMoveFunds = canFund(allUserRoles);
-  // const canUserMintNativeToken = isVotingReputationEnabled
-  //   ? colony.status?.nativeToken?.mintable
-  //   : hasRoot(allUserRoles) && colony.status?.nativeToken?.mintable;
-  // const canUserUnlockNativeToken = isVotingReputationEnabled
-  //   ? colony.status?.nativeToken?.unlockable
-  //   : hasRoot(allUserRoles) && colony.status?.nativeToken?.unlockable;
+  const canMoveFunds = canFund(allUserRoles);
+  const canUserMintNativeToken = isVotingReputationEnabled
+    ? colony.status?.nativeToken?.mintable
+    : hasRoot(allUserRoles) && colony.status?.nativeToken?.mintable;
+  const canUserUnlockNativeToken = isVotingReputationEnabled
+    ? colony.status?.nativeToken?.unlockable
+    : hasRoot(allUserRoles) && colony.status?.nativeToken?.unlockable;
 
   const canManageTokens = hasRoot(allUserRoles);
 
@@ -131,7 +134,9 @@ const ManageFundsDialog = ({
       title: MSG.transferFundsTitle,
       description: MSG.transferFundsDescription,
       icon: 'emoji-world-globe',
-      permissionRequired: false, // !canMoveFunds || isVotingReputationEnabled,
+      permissionRequired:
+        !userHasAccountRegistered ||
+        !(canMoveFunds || isVotingReputationEnabled),
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
         permissionsList: <FormattedMessage {...MSG.paymentPermissionsList} />,
@@ -143,7 +148,7 @@ const ManageFundsDialog = ({
       title: MSG.mintTokensTitle,
       description: MSG.mintTokensDescription,
       icon: 'emoji-seed-sprout',
-      permissionRequired: false, // !canUserMintNativeToken,
+      permissionRequired: !userHasAccountRegistered || !canUserMintNativeToken,
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
         permissionsList: (
@@ -157,7 +162,9 @@ const ManageFundsDialog = ({
       title: MSG.manageTokensTitle,
       description: MSG.manageTokensDescription,
       icon: 'emoji-pen',
-      permissionRequired: !(canManageTokens || isVotingReputationEnabled),
+      permissionRequired:
+        !userHasAccountRegistered ||
+        !(canManageTokens || isVotingReputationEnabled),
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
         permissionsList: (
@@ -184,7 +191,8 @@ const ManageFundsDialog = ({
       description: MSG.unlockTokensDescription,
       icon: 'emoji-padlock',
       onClick: () => callStep(nextStepUnlockToken),
-      permissionRequired: false, // !canUserUnlockNativeToken,
+      permissionRequired:
+        !userHasAccountRegistered || !canUserUnlockNativeToken,
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
         permissionsList: (
