@@ -9,8 +9,8 @@ import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge-new/types';
 // }
 
 export interface SpecificSidePanelProps {
-  statuses: SpecificSidePanelStatus[];
-  sidePanelData: PanelTypeProps;
+  statuses?: SpecificSidePanelStatus[];
+  sidePanelData: any;
   permissions: any;
   status?: ExtensionStatusBadgeMode;
   badgeMessage: string;

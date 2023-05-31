@@ -41,7 +41,7 @@ const LazyConsensusPage = () => {
                   sidePanelData={extensionData}
                   status={status}
                   badgeMessage={badgeMessage}
-                  neededColonyPermissions={extensionData?.neededColonyPermissions}
+                  // neededColonyPermissions={extensionData?.neededColonyPermissions}
                   permissions={sidePanelData[0].permissions.permissions} // @TODO: fix that
                 />
                 {/* @TODO: handle deprecate action */}
