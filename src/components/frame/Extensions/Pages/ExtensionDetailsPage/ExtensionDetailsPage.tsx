@@ -11,7 +11,7 @@ import { isInstalledExtensionData } from '~utils/extensions';
 import ExtensionDetails from './partials/ExtensionDetails';
 import { useExtensionDetailsPage } from './hooks';
 
-const displayName = 'common.Extensions.Pages.ExtensionDetailsPage';
+const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 
 const ExtensionDetailsPage: FC = () => {
   const { extensionId } = useParams();
