@@ -41,10 +41,9 @@ const TokenActivationPopover = ({ children, ...otherProps }: Props) => {
       showArrow={false}
       placement="bottom"
       isOpen={isOpen}
+      setIsOpen={setIsOpen}
       onClose={() => setIsOpen(false)}
-      renderContent={() => (
-        <TokenActivationContent {...otherProps} setIsPopoverOpen={setIsOpen} />
-      )}
+      renderContent={() => <TokenActivationContent {...otherProps} />}
       popperOptions={{
         modifiers: [
           {
