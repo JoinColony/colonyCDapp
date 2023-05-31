@@ -586,3 +586,27 @@ export const getColonyRoleSetTitleValues = (
     roleSetDirection: '',
   };
 };
+
+/**
+ * Function returning action type based on the action data, that can include extended action types,
+ * e.g. UpdateAddressBook, UpdateTokens
+ */
+export const getExtendedActionType = (
+  actionData: ColonyAction,
+  colony: Colony,
+): AnyActionType => {
+  const changelogItem = colony.metadata?.changelog?.find(
+    (item) => item.transactionHash === actionData.transactionHash,
+  );
+
+  if (changelogItem?.haveTokensChanged) {
+    return ExtendedColonyActionType.UpdateTokens;
+  }
+  if (changelogItem?.hasWhitelistChanged) {
+    return ExtendedColonyActionType.UpdateAddressBook;
+  }
+
+  // logic for Safe control actions can be added here
+
+  return actionData.type;
+};
