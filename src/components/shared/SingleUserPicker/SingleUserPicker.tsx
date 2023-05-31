@@ -10,7 +10,7 @@ import UserAvatar from '~shared/UserAvatar';
 import { ItemDataType, withOmniPicker, WrappedComponentProps } from '../OmniPicker';
 import { Props as WithOmnipickerInProps } from '../OmniPicker/withOmniPicker';
 import { InputLabel, HookFormInputStatus as InputStatus } from '../Fields';
-import Icon from '../Icon';
+import Icon from '~shared/Icon';
 import Button from '../Button';
 import ItemDefault from './ItemDefault';
 
@@ -248,6 +248,4 @@ const SingleUserPicker = ({
 SingleUserPicker.displayName = displayName;
 
 /** @NOTE I don't like it either, but digging through the HOC types seems counter productive considering we'll refactor it soon */
-export default withOmniPicker(
-  SingleUserPicker,
-) as unknown as ComponentType<Props>;
+export default withOmniPicker(SingleUserPicker) as unknown as ComponentType<Props>;

@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import Link from '~shared/Link';
+import Link from '~shared/Extensions/Link';
 import Numeral from '~shared/Numeral';
 
 import styles from './StakesTab.css';

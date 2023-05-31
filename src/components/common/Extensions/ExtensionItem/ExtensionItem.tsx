@@ -5,7 +5,7 @@ import ExtensionStatusBadge from '../ExtensionStatusBadge-new/ExtensionStatusBad
 import Button from '~shared/Extensions/Button';
 import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
-import Link from '~shared/Link';
+import Link from '~shared/Extensions/Link';
 import styles from './ExtensionItem.module.css';
 import { useExtensionItem } from './hooks';
 

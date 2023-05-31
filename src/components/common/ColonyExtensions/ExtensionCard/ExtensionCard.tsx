@@ -6,7 +6,7 @@ import Card from '~shared/Card';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import { Heading4 } from '~shared/Heading';
 import Icon from '~shared/Icon';
-import Link from '~shared/Link';
+import Link from '~shared/Extensions/Link';
 import { AnyExtensionData } from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
 
