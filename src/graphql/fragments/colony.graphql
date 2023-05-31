@@ -17,12 +17,7 @@ fragment Colony on Colony {
     network
   }
   tokens {
-    items {
-      colonyTokensId: id
-      token {
-        ...Token
-      }
-    }
+    ...ColonyTokensConnection
   }
   domains {
     items {
@@ -44,6 +39,15 @@ fragment Colony on Colony {
   version
   metadata {
     ...ColonyMetadata
+  }
+}
+
+fragment ColonyTokensConnection on ModelColonyTokensConnection {
+  items {
+    colonyTokensId: id
+    token {
+      ...Token
+    }
   }
 }
 

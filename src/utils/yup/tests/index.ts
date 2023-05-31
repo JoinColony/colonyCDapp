@@ -274,7 +274,7 @@ export const getHasEnoughBalanceTestFn = (
     const selectedDomainBalance = colonyBalances.find(
       (balance) =>
         balance.token.tokenAddress === tokenAddress &&
-        balance.domain.nativeId === fromDomainId,
+        balance.domain?.nativeId === fromDomainId,
     );
     const selectedToken = getSelectedToken(colony, tokenAddress);
 

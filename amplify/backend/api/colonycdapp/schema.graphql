@@ -410,7 +410,7 @@ type ColonyChainFundsClaim {
 type ColonyBalance {
   id: ID!
   balance: String!
-  domain: Domain!
+  domain: Domain
   # Note that for the chain native token, name and symbol are empty
   token: Token!
 }
