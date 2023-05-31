@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom';
 
 import Numeral from '~shared/Numeral';
 import { intl } from '~utils/intl';
-import { ColonyMotion } from '~types';
 import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
 import Button, { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
@@ -13,6 +12,7 @@ import { DetailItemProps } from '~shared/DetailsWidget';
 import { getTransactionHashFromPathName } from '~utils/urls';
 
 import { ClaimMotionStakesStyles } from './ClaimMotionStakes';
+import { ColonyMotion } from '~types';
 
 const { formatMessage } = intl({
   'label.stake': 'Stake',
@@ -23,7 +23,7 @@ const { formatMessage } = intl({
 });
 
 const useClaimWidgetConfig = (
-  { usersStakes, stakerRewards }: ColonyMotion,
+  { usersStakes, stakerRewards, databaseMotionId }: ColonyMotion,
   startPollingAction: (pollInterval: number) => void,
   styles: ClaimMotionStakesStyles,
 ) => {
@@ -41,6 +41,21 @@ const useClaimWidgetConfig = (
   const stakerReward = stakerRewards.find(
     ({ address }) => address === userAddress,
   );
+
+  // Keep isClaimed state in sync with changes to unclaimed motions on colony object
+  useEffect(() => {
+    if (colony?.motionsWithUnclaimedStakes) {
+      const motionIsUnclaimed = colony.motionsWithUnclaimedStakes.some(
+        ({ motionId }) => motionId === databaseMotionId,
+      );
+
+      if (!motionIsUnclaimed) {
+        setIsClaimed(true);
+      } else {
+        setIsClaimed(false);
+      }
+    }
+  }, [colony?.motionsWithUnclaimedStakes, databaseMotionId]);
 
   // Keep isClaimed state in sync with user changes
   useEffect(() => {

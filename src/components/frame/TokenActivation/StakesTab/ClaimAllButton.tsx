@@ -3,7 +3,7 @@ import React from 'react';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux/actionTypes';
 import { Address, UnclaimedStakes } from '~types/index';
-import { useTokenActivationContext } from '~hooks';
+import { useColonyContext, useTokenActivationContext } from '~hooks';
 
 const displayName = 'frame.TokenActivation.StakesTab.ClaimAllButton';
 
@@ -18,6 +18,7 @@ const ClaimAllButton = ({
   userAddress,
   colonyAddress,
 }: Props) => {
+  const { startPolling, stopPolling } = useColonyContext();
   const { setIsOpen } = useTokenActivationContext();
   return (
     <ActionButton
@@ -30,7 +31,11 @@ const ClaimAllButton = ({
       appearance={{ theme: 'primary', size: 'medium' }}
       text={{ id: 'button.claimAll' }}
       dataTest="claimAllStakesButton"
-      onSuccess={() => setIsOpen(false)}
+      onSuccess={() => {
+        setIsOpen(false);
+        startPolling(1000);
+        setTimeout(stopPolling, 10_000);
+      }}
     />
   );
 };
