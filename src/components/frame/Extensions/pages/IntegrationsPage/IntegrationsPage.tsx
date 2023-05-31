@@ -1,23 +1,10 @@
 import React, { FC } from 'react';
-import { useExtensionsData } from '~hooks';
-import { SpinnerLoader } from '~shared/Preloaders';
+
+import Spinner from '~shared/Extensions/Spinner';
 
 const displayName = 'frame.Extensions.pages.IntegrationsPage';
 
-const IntegrationsPage: FC = () => {
-  const { loading } = useExtensionsData();
-
-  if (loading) {
-    return (
-      <SpinnerLoader
-        loadingText={{ id: 'integrationsPage.loading' }}
-        appearance={{ theme: 'primary', size: 'massive' }}
-      />
-    );
-  }
-
-  return <p>Integrations page</p>;
-};
+const IntegrationsPage: FC = () => <Spinner loadingText="integrationsPage">Integrations page</Spinner>;
 
 IntegrationsPage.displayName = displayName;
 

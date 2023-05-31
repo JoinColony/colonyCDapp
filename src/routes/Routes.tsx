@@ -60,6 +60,7 @@ import ExtensionPage from '~frame/Extensions/pages/ExtensionPage';
 import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage';
 import IncorporationPage from '~frame/Extensions/pages/IncorporationPage';
 import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
+import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -199,7 +200,7 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionLayout>
-                <ExtensionPage />
+                <PermissionsPage />
               </ExtensionLayout>
             </ColonyContextProvider>
           }

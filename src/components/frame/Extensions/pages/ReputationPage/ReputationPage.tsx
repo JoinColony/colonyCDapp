@@ -1,23 +1,10 @@
 import React, { FC } from 'react';
-import { useExtensionsData } from '~hooks';
-import { SpinnerLoader } from '~shared/Preloaders';
+
+import Spinner from '~shared/Extensions/Spinner';
 
 const displayName = 'frame.Extensions.pages.ReputationPage';
 
-const ReputationPage: FC = () => {
-  const { loading } = useExtensionsData();
-
-  if (loading) {
-    return (
-      <SpinnerLoader
-        loadingText={{ id: 'reputationPage.loading' }}
-        appearance={{ theme: 'primary', size: 'massive' }}
-      />
-    );
-  }
-
-  return <p>Reputation page</p>;
-};
+const ReputationPage: FC = () => <Spinner loadingText="reputationPage">Reputation page</Spinner>;
 
 ReputationPage.displayName = displayName;
 

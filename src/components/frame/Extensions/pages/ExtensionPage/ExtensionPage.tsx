@@ -1,13 +1,14 @@
 import React, { FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
+
 import ExtensionItem from '~common/Extensions/ExtensionItem';
 import { useExtensionsData } from '~hooks';
-import { SpinnerLoader } from '~shared/Preloaders';
+import Spinner from '~shared/Extensions/Spinner';
 
 const displayName = 'frame.Extensions.pages.ExtensionPage';
 
 const ExtensionPage: FC = () => {
-  const { loading, availableExtensionsData, installedExtensionsData } = useExtensionsData();
+  const { availableExtensionsData, installedExtensionsData } = useExtensionsData();
   const { formatMessage } = useIntl();
 
   const allExtensions = useMemo(
@@ -15,17 +16,8 @@ const ExtensionPage: FC = () => {
     [availableExtensionsData, installedExtensionsData],
   );
 
-  if (loading) {
-    return (
-      <SpinnerLoader
-        loadingText={{ id: 'incorporationPage.loading' }}
-        appearance={{ theme: 'primary', size: 'massive' }}
-      />
-    );
-  }
-
   return (
-    <>
+    <Spinner loadingText="incorporationPage">
       <h4 className="text-xl font-semibold mb-6">{formatMessage({ id: 'extensionsPage.availableExtensions' })}</h4>
       <h5 className="text-md font-semibold mb-4">{formatMessage({ id: 'extensionsPage.payments' })}</h5>
       <ul className="pb-6 border-b border-gray-100">
@@ -41,7 +33,7 @@ const ExtensionPage: FC = () => {
           </li>
         ))}
       </ul>
-    </>
+    </Spinner>
   );
 };
 
