@@ -11,7 +11,7 @@ import Accordion from '~shared/Extensions/Accordion/Accordion';
 import { mockedGovernance } from './consts';
 import Button from '~shared/Extensions/Button';
 import { useAccordion } from '~shared/Extensions/Accordion/hooks';
-import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge-new';
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 
 const LazyConsensusPage = () => {
   const { openIndex, onOpenIndexChange } = useAccordion();
@@ -38,6 +38,7 @@ const LazyConsensusPage = () => {
               </div>
               <div className="mt-8">
                 <SpecificSidePanel
+                  // @ts-ignore
                   sidePanelData={extensionData}
                   status={status}
                   badgeMessage={badgeMessage}

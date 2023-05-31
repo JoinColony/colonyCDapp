@@ -41,6 +41,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData
               <InstalledBy title={installedBy.title} component={installedBy.component} />
             )}
             {!statuses?.includes('not-installed') && (
+              // @ts-ignore
               <DateInstalled title={dateInstalled.title} date={dateInstalled.date} />
             )}
             <Version title={versionInstalled.title} version={versionInstalled.version} />

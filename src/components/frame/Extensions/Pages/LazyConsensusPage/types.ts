@@ -1,4 +1,4 @@
-import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge-new/types';
+import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
 import { AccordionContent } from '~shared/Extensions/Accordion/types';
 import { AnyExtensionData } from '~types';
 
