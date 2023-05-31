@@ -4,6 +4,8 @@ import { UserSubmenuProps } from './types';
 import { userSubmenuItems } from './consts';
 import Icon from '~shared/Icon/Icon';
 
+const displayName = 'common.Extensions.UserNavigation.partials.UserSubmenu';
+
 const UserSubmenu: FC<UserSubmenuProps> = ({ submenuId }) => (
   <ul className="mt-2">
     {userSubmenuItems[submenuId].map((item) => (
@@ -16,5 +18,7 @@ const UserSubmenu: FC<UserSubmenuProps> = ({ submenuId }) => (
     ))}
   </ul>
 );
+
+UserSubmenu.displayName = displayName;
 
 export default UserSubmenu;
