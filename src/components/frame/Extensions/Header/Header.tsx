@@ -7,10 +7,10 @@ import styles from './Header.module.css';
 import Icon from '~shared/Icon';
 import UserNavigation from '~common/Extensions/UserNavigation';
 import MainNavigation from '~common/Extensions/MainNavigation';
-import { watchlistMock } from '~common/Extensions/ColonySwitcher/consts';
+import { watchListMock } from '~common/Extensions/ColonySwitcher/consts';
 import { useHeader } from './hooks';
 
-const displayName = 'common.Extensions.Pages.Header';
+const displayName = 'frame.Extensions.Header';
 
 const Header = () => {
   const isMobile = useMobile();
@@ -60,15 +60,15 @@ const Header = () => {
                         ),
                       })}
                     >
-                      {!!watchlistMock.length && !userLoading && (
-                        <ColoniesDropdown watchlist={[...watchlistMock].sort(sortByDate)} />
+                      {!!watchListMock.length && !userLoading && (
+                        <ColoniesDropdown watchlist={[...watchListMock].sort(sortByDate)} />
                       )}
                     </div>
                   )}
                   {isMobile && (
                     <ColonyDropdownMobile isOpen={isOpen} userLoading={userLoading}>
-                      {!!watchlistMock.length && (
-                        <ColoniesDropdown watchlist={[...watchlistMock].sort(sortByDate)} isMobile={isMobile} />
+                      {!!watchListMock.length && (
+                        <ColoniesDropdown watchlist={[...watchListMock].sort(sortByDate)} isMobile={isMobile} />
                       )}
                     </ColonyDropdownMobile>
                   )}

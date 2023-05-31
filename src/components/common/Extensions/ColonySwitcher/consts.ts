@@ -1,6 +1,6 @@
 import { WatchListItem } from '~types';
 
-export const watchlistMock: WatchListItem[] = [
+export const watchListMock: WatchListItem[] = [
   {
     colony: {
       __typename: 'Colony',
