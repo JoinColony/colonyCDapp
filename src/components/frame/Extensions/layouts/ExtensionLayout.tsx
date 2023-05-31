@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import Header from '~frame/Extensions/Header';
 import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
