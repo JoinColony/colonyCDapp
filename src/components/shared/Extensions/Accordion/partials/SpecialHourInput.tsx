@@ -35,9 +35,8 @@ const SpecialHourInput: FC<SpecialInputProps> = ({ defaultValue, maxValue }) => 
   return (
     <div className="text-right">
       <form className="flex justify-end flex-col w-[8.75rem]">
-        {/* <Form<FormValues> use it later */}
-        <SpecialInput // @ts-ignore
-          defaultValue={defaultValue}
+        <SpecialInput
+          defaultValue={defaultValue as number}
           register={register}
           isError={!!errors.hour?.message}
           name="hour"

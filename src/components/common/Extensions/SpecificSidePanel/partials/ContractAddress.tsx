@@ -4,10 +4,11 @@ import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import Tooltip from '~shared/Extensions/Tooltip';
 import styles from '../SpecificSidePanel.module.css';
 import { PanelTypeProps } from '../types';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 const displayName = 'common.Extensions.partials.ContractAddress';
 
-const ContractAddress: FC<PanelTypeProps> = ({ title, address }) => {
+const ContractAddress: FC<PanelTypeProps> = ({ title, address = '' }) => {
   const { isCopied, handleClipboardCopy } = useCopyToClipboard(address || '');
   const { formatMessage } = useIntl();
 
@@ -25,10 +26,10 @@ const ContractAddress: FC<PanelTypeProps> = ({ title, address }) => {
         <button
           type="button"
           aria-label={formatMessage({ id: 'copy.address' })}
-          className="font-normal text-md text-gray-900 justify-start"
+          className="font-normal text-md text-gray-900 justify-start text-ellipsis overflow-hidden"
           onClick={handleClipboardCopy}
         >
-          {address}
+          {splitWalletAddress(address)}
         </button>
       </Tooltip>
     </div>

@@ -42,7 +42,6 @@ const SpecialPercentageInputWithHooks = (args) => {
   return (
     <div className="text-right">
       <form className="flex justify-end flex-col w-[8.8rem]">
-        {/* <Form<FormValues> use it later */}
         <SpecialInput
           {...args}
           register={register}

@@ -36,10 +36,8 @@ const SpecialPercentageInput: FC<SpecialInputProps> = ({ defaultValue, maxValue 
   return (
     <div className="text-right">
       <form className="flex justify-end flex-col w-[8.8rem]">
-        {/* <Form<FormValues> use it later */}
         <SpecialInput
-          // @ts-ignore
-          defaultValue={defaultValue}
+          defaultValue={defaultValue as number}
           register={register}
           isError={!!errors.percentage?.message}
           name="percentage"

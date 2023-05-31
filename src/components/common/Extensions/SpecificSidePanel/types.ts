@@ -2,15 +2,15 @@ import React from 'react';
 import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge-new/types';
 // import { sidePanelData } from './consts';
 
-interface SidePanelDataProps {
-  installedAt: number;
-  availableVersion: number;
-  address: string;
-}
+// interface SidePanelDataProps {
+//   installedAt: number;
+//   availableVersion: number;
+//   address: string;
+// }
 
 export interface SpecificSidePanelProps {
   statuses: SpecificSidePanelStatus[];
-  sidePanelData: SidePanelDataProps;
+  sidePanelData: PanelTypeProps;
   permissions: any;
   status?: ExtensionStatusBadgeMode;
   badgeMessage: string;
@@ -35,8 +35,10 @@ export interface PanelTypeProps {
   address?: string;
   developer?: string;
   installedBy?: string;
+  installedAt?: number;
   addressWallet?: string;
   isVerified?: boolean;
+  availableVersion?: number;
   copyUrl?: string;
   aboutDescription?: string;
   colonyReputationItems?: any;

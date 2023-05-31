@@ -9,6 +9,7 @@ import Version from './partials/Version';
 import ContractAddress from './partials/ContractAddress';
 import Developer from './partials/Developer';
 import styles from './SpecificSidePanel.module.css';
+import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge-new/types';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 
@@ -24,18 +25,15 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ sidePanelData, permissi
         <div className={styles.panelTitle}>Status</div>
         <div className="md:w-[50%] justify-start flex flex-col md:flex-row">
           <div className="mr-1 mb-1 md:mb-0">
-            {/* @ts-ignore */}
-            <ExtensionStatusBadge mode={status} text={badgeMessage} />
+            <ExtensionStatusBadge mode={status as ExtensionStatusBadgeMode} text={badgeMessage} />
           </div>
         </div>
       </div>
       {status !== 'not-installed' && (
         <InstalledBy
           title="Installed by"
-          // @ts-ignore
           installedBy={sidePanelData?.installedBy}
           addressWallet={sidePanelData?.address}
-          // @ts-ignore
           isVerified={sidePanelData?.isVerified}
         />
       )}
@@ -47,6 +45,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ sidePanelData, permissi
         <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">
           {formatMessage({ id: 'permissions.list.title' })}
         </div>
+        {/* @TODO: fix it */}
         <Permissions data={permissions} />
       </div>
     </div>

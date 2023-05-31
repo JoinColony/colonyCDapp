@@ -22,7 +22,7 @@ const RadioBase: FC<RadioBaseProps> = ({ item, isError, register }) => {
     <div className="relative w-full">
       <input
         type="radio"
-        {...register?.('radio')}
+        {...register('radio')}
         id={label}
         aria-disabled={disabled}
         disabled={disabled}

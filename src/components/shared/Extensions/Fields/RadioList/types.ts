@@ -1,4 +1,4 @@
-import { FieldErrorsImpl, UseFormHandleSubmit, UseFormRegister } from 'react-hook-form';
+import { FieldErrorsImpl, UseFormRegister } from 'react-hook-form';
 import { ExtensionStatusBadgeProps } from '~common/Extensions/ExtensionStatusBadge-new/types';
 import { TooltipProps } from '~shared/Extensions/Tooltip/types';
 
@@ -13,7 +13,7 @@ export interface RadioItemProps {
 
 export interface RadioBaseProps {
   isError?: boolean;
-  register?: UseFormRegister<FormRadioButton>;
+  register: UseFormRegister<FormRadioButton>;
   item?: RadioItemProps;
 }
 
@@ -25,10 +25,11 @@ export interface RadioListProps extends RadioBaseProps {
       radio: string;
     }>
   >;
-  handleSubmit: UseFormHandleSubmit<FormRadioButton>;
-  onSubmit: (data: any) => void;
 }
 
 export interface FormRadioButton {
   radio: string;
+  extension: {
+    [key: string]: number;
+  };
 }
