@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -15,6 +15,11 @@ import { ActionTypes } from '~redux';
 import { mapPayload, mergePayload, pipe } from '~utils/actions';
 import { mapExtensionActionPayload } from '~common/Extensions/ExtensionSetup/utils';
 import { FormRadioButton } from '~shared/Extensions/Fields/RadioList/types';
+import {
+  extensionContentSpeedOverSecurity,
+  extensionContentSecurityOverSpeed,
+  extensionContentTestingGovernance,
+} from './consts';
 // import Toast from '~shared/Extensions/Toast/Toast';
 // import { toast } from 'react-toastify';
 
@@ -25,6 +30,7 @@ export const useLazyConsensusPage = (onOpenIndexChange) => {
   const { colony } = useColonyContext();
   const { extensionData, loading } = useExtensionData(extensionId ?? '');
   const { status, badgeMessage } = useExtensionsBadge(extensionData);
+  const [extensionContentParameters, setExtensionContentParameters] = useState<AccordionContent[]>();
 
   const initializationParamsMapped = extensionData?.initializationParams?.reduce(
     (obj, item) => Object.assign(obj, { [item.paramName]: item.defaultValue }),
@@ -47,6 +53,7 @@ export const useLazyConsensusPage = (onOpenIndexChange) => {
     register,
     formState: { errors },
     handleSubmit,
+    getValues,
   } = useForm<FormRadioButton>({
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
@@ -55,8 +62,6 @@ export const useLazyConsensusPage = (onOpenIndexChange) => {
       // extension: initializationParamsMapped && Object.assign({}, initializationParamsMapped )
     },
   });
-
-  // const aaa = getValues("extension");
 
   const transform = pipe(
     mapPayload((payload) =>
@@ -136,12 +141,32 @@ export const useLazyConsensusPage = (onOpenIndexChange) => {
     },
   ];
 
+  const selectedGovernance = getValues('radio');
+
+  useEffect(() => {
+    switch (selectedGovernance) {
+      case 'radio-button-1':
+        setExtensionContentParameters(extensionContentSpeedOverSecurity);
+        break;
+      case 'radio-button-2':
+        setExtensionContentParameters(extensionContentSecurityOverSpeed);
+        break;
+      case 'radio-button-3':
+        setExtensionContentParameters(extensionContentTestingGovernance);
+        break;
+      default:
+        setExtensionContentParameters(extensionContent);
+        break;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedGovernance]);
+
   return {
     loading,
     extensionData,
     status,
     badgeMessage,
-    extensionContent,
+    extensionContent: extensionContentParameters,
     register,
     errors,
     onSubmit,

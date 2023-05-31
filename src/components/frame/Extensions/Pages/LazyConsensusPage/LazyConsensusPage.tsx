@@ -37,7 +37,7 @@ const LazyConsensusPage = () => {
               </div>
               <div className="mt-8">
                 <SpecificSidePanel />
-                {/* @TODO: handle deprecate action */}
+                {/* @TODO: Add functionality and modals to deprecate and uninstall extension */}
                 <div className="mt-6">
                   <Button isFullSize mode="tertiaryOutline">
                     {formatMessage({ id: 'deprecate.extension' })}
@@ -75,7 +75,7 @@ const LazyConsensusPage = () => {
               />
             </div>
             <div className="mt-6">
-              <Accordion openIndex={openIndex} items={extensionContent} onOpenIndexChange={onOpenIndexChange} />
+              <Accordion openIndex={openIndex} items={extensionContent || []} onOpenIndexChange={onOpenIndexChange} />
             </div>
           </>
         </ThreeColumns>

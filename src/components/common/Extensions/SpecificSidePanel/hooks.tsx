@@ -21,7 +21,7 @@ export const useSpecificSidePanel = () => {
     'dd MMMM yyyy',
   );
 
-  const { user } = useUserByNameOrAddress((extensionData as InstalledExtensionData).installedBy);
+  const { user } = useUserByNameOrAddress((extensionData as InstalledExtensionData)?.installedBy);
 
   // @TODO: handle case when there can be more then one stutus
   useMemo(() => {
@@ -36,35 +36,38 @@ export const useSpecificSidePanel = () => {
     }
   }, [extensionData, isExtensionInstalled]);
 
-  const sidePanelData: SidePanelDataProps[] = [
-    {
-      id: 0,
-      statusType: {
-        title: formatMessage({ id: 'status' }),
+  const sidePanelData: SidePanelDataProps[] = useMemo(
+    () => [
+      {
+        id: 0,
+        statusType: {
+          title: formatMessage({ id: 'status' }),
+        },
+        dateInstalled: {
+          title: formatMessage({ id: 'date.installed' }),
+          date: installedAtDate,
+        },
+        installedBy: {
+          title: formatMessage({ id: 'installed.by' }),
+          component: <UserAvatar user={user} />,
+        },
+        versionInstalled: {
+          title: formatMessage({ id: 'version.installed' }),
+          version: `v${extensionData?.availableVersion}`,
+        },
+        contractAddress: {
+          title: formatMessage({ id: 'contract.address' }),
+          address: (extensionData as InstalledExtensionData).address,
+        },
+        developer: {
+          title: formatMessage({ id: 'developer' }),
+          developer: 'Colony',
+        },
+        permissions: (extensionData as InstalledExtensionData).permissions,
       },
-      dateInstalled: {
-        title: formatMessage({ id: 'date.installed' }),
-        date: installedAtDate,
-      },
-      installedBy: {
-        title: formatMessage({ id: 'installed.by' }),
-        component: <UserAvatar user={user} />,
-      },
-      versionInstalled: {
-        title: formatMessage({ id: 'version.installed' }),
-        version: `v${extensionData?.availableVersion}`,
-      },
-      contractAddress: {
-        title: formatMessage({ id: 'contract.address' }),
-        address: (extensionData as InstalledExtensionData).address,
-      },
-      developer: {
-        title: formatMessage({ id: 'developer' }),
-        developer: 'Colony',
-      },
-      permissions: (extensionData as InstalledExtensionData).permissions,
-    },
-  ];
+    ],
+    [extensionData],
+  );
 
   return {
     sidePanelData,
