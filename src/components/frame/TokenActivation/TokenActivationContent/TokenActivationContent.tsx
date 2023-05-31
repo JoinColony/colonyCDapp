@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { Tab, Tabs, TabList, TabPanel } from '~shared/Tabs';
@@ -23,14 +23,7 @@ const MSG = defineMessages({
   },
 });
 
-interface TokenActivationContentProps extends TokensTabProps {
-  setIsPopoverOpen: Dispatch<SetStateAction<boolean>>;
-}
-
-const TokenActivationContent = ({
-  setIsPopoverOpen,
-  ...otherProps
-}: TokenActivationContentProps) => {
+const TokenActivationContent = ({ ...otherProps }: TokensTabProps) => {
   const [tabIndex, setTabIndex] = useState<number>(0);
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -79,7 +72,6 @@ const TokenActivationContent = ({
         <TabPanel className={styles.tabContainer}>
           <StakesTab
             {...otherProps}
-            setIsPopoverOpen={setIsPopoverOpen}
             currentUserClaims={currentUserClaims ?? []}
           />
         </TabPanel>

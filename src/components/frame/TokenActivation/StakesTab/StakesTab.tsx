@@ -4,7 +4,7 @@ import { BigNumber } from 'ethers';
 
 import { useAppContext, useColonyContext } from '~hooks';
 import { getFormattedTokenValue } from '~utils/tokens';
-import { SetStateFn, UnclaimedStakes } from '~types';
+import { UnclaimedStakes } from '~types';
 
 import ClaimAllButton from './ClaimAllButton';
 import StakesListItem from './StakesListItem';
@@ -29,11 +29,10 @@ const MSG = defineMessages({
 });
 
 export interface Props {
-  setIsPopoverOpen: SetStateFn<boolean>;
   currentUserClaims: UnclaimedStakes[];
 }
 
-const StakesTab = ({ setIsPopoverOpen, currentUserClaims }: Props) => {
+const StakesTab = ({ currentUserClaims }: Props) => {
   const { colony } = useColonyContext();
   const { wallet, user } = useAppContext();
   const { nativeToken } = colony || {};
@@ -52,7 +51,6 @@ const StakesTab = ({ setIsPopoverOpen, currentUserClaims }: Props) => {
               unclaimedStakes={currentUserClaims}
               userAddress={wallet?.address || ''}
               colonyAddress={colony?.colonyAddress || ''}
-              setIsPopoverOpen={setIsPopoverOpen}
             />
           </div>
           <ul data-test="claimableMotionsList">
@@ -74,7 +72,6 @@ const StakesTab = ({ setIsPopoverOpen, currentUserClaims }: Props) => {
                   tokenSymbol={nativeToken.symbol}
                   colonyName={colony?.name || ''}
                   txHash={transactionHash}
-                  setIsPopoverOpen={setIsPopoverOpen}
                   key={transactionHash}
                 />
               );

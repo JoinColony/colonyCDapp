@@ -20,7 +20,7 @@ const TokenActivationProvider = ({ children }: Props) => {
       isOpen,
       setIsOpen,
     }),
-    [isOpen],
+    [isOpen, setIsOpen],
   );
 
   return (
