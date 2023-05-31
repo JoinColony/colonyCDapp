@@ -11,7 +11,7 @@ import PopoverBase from '~shared/Extensions/PopoverBase';
 import TitledContent from '~common/Extensions/TitledContent/TitledContent';
 import WalletConnectedTopMenu from '../WalletConnectedTopMenu/WalletConnectedTopMenu';
 import Link from '~shared/Extensions/Link';
-import UserSubmenu from '../UserSubmenu/UserSubmenu';
+import UserSubmenu from '../UserSubmenu';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 
@@ -57,6 +57,7 @@ const UserMenu: FC<UserMenuProps> = ({
       >
         <button
           type="button"
+          aria-label="Back to main menu"
           className="flex items-center text-gray-400 text-xs font-medium"
           onClick={() => setActiveSubmenu(null)}
         >
