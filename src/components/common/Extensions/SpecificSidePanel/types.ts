@@ -1,22 +1,43 @@
 import React from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge-new/types';
-import { sidePanelData } from './consts';
 
 export interface SpecificSidePanelProps {
   statuses: SpecificSidePanelStatus | SpecificSidePanelStatus[];
-  sidePanelData: SidePanelDataProps;
+  sidePanelData: SidePanelDataProps[];
 }
 
 type SpecificSidePanelStatus = ExtensionStatusBadgeMode;
 
 export interface PermissionsProps {
-  data: { key: string; name: string; text: string; description: string }[];
+  data: { key: string; name: string; text: MessageDescriptor | string; description: MessageDescriptor | string }[];
 }
 
-export type SidePanelData = typeof sidePanelData;
-
-export interface SidePanelDataProps extends Omit<SidePanelData, 'permissions'> {
+export type SidePanelDataProps = {
+  id: number;
+  statusType: {
+    title: string;
+  };
+  dateInstalled: {
+    title: string;
+    date: string;
+  };
+  installedBy: {
+    title: string;
+    component: JSX.Element;
+  };
+  versionInstalled: {
+    title: string;
+    version: string;
+  };
+  contractAddress: {
+    title: string;
+    address: string;
+  };
+  developer: {
+    title: string;
+    developer: string;
+  };
   permissions: {
     title: string;
     permissions: {
@@ -26,7 +47,7 @@ export interface SidePanelDataProps extends Omit<SidePanelData, 'permissions'> {
       name: string;
     }[];
   };
-}
+};
 
 export interface PanelTypeProps {
   title: string;
