@@ -20,10 +20,14 @@ export const getDomainMetadataChangesValue = ({
       (item) => item.transactionHash === transactionHash,
     ) || {};
 
-  const hasNameChanged = oldName && newName && newName !== oldName;
-  const hasColorChanged = oldColor && newColor && newColor !== oldColor;
+  const hasNameChanged =
+    oldName !== undefined && newName !== undefined && newName !== oldName;
+  const hasColorChanged =
+    oldColor !== undefined && newColor !== undefined && newColor !== oldColor;
   const hasDescriptionChanged =
-    oldDescription && newDescription && newDescription !== oldDescription;
+    oldDescription !== undefined &&
+    newDescription !== undefined &&
+    newDescription !== oldDescription;
   const hasNoChanges =
     !hasNameChanged && !hasColorChanged && !hasDescriptionChanged;
 
