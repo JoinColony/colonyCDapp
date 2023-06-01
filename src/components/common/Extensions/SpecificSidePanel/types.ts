@@ -12,7 +12,7 @@ export type SidePanelDataProps = {
   };
   dateInstalled: {
     title: string;
-    date: string;
+    date: string | null;
   };
   installedBy: {
     title: string;

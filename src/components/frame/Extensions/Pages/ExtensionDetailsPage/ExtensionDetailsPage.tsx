@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import PageTitle from '~common/Extensions/PageTitle';
 import TwoColumns from '~frame/Extensions/TwoColumns';
-import { useAppContext, useColonyContext, useExtensionData, useMobile } from '~hooks';
+import { useColonyContext, useExtensionData, useMobile } from '~hooks';
 import Button from '~shared/Extensions/Button';
 import Icon from '~shared/Icon';
 import { SpinnerLoader } from '~shared/Preloaders';
@@ -16,7 +16,6 @@ const displayName = 'common.Extensions.Pages.ExtensionDetailsPage';
 const ExtensionDetailsPage: FC = () => {
   const { extensionId } = useParams();
   const { colony } = useColonyContext();
-  const { user } = useAppContext();
   const { extensionData, loading } = useExtensionData(extensionId ?? '');
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -38,18 +37,6 @@ const ExtensionDetailsPage: FC = () => {
     );
   }
 
-  const hasRegisteredProfile = !!user;
-  const canExtensionBeUninstalled = !!(
-    hasRegisteredProfile &&
-    isInstalledExtensionData(extensionData) &&
-    extensionData.uninstallable &&
-    extensionData.isDeprecated
-  );
-  const canExtensionBeDeprecated =
-    hasRegisteredProfile &&
-    isInstalledExtensionData(extensionData) &&
-    extensionData.uninstallable &&
-    !extensionData.isDeprecated;
   const isExtensionInstalled = extensionData && isInstalledExtensionData(extensionData);
 
   return (
@@ -77,18 +64,14 @@ const ExtensionDetailsPage: FC = () => {
                     <p className="text-sm font-medium">{formatMessage({ id: 'extension.installButton' })}</p>
                   </Button>
                 )}
-                {extensionData.isInitialized && !extensionData.isInitialized && (
+                {!extensionData?.isInitialized && (
                   <Button mode="primarySolid" isFullSize={isMobile} onClick={handleEnableButtonClick}>
                     <p className="text-sm font-medium">{formatMessage({ id: 'extension.enableButton' })}</p>
                   </Button>
                 )}
               </div>
             </div>
-            <ExtensionDetails
-              extensionData={extensionData}
-              canBeDeprecated={canExtensionBeDeprecated}
-              canBeUninstalled={canExtensionBeUninstalled}
-            />
+            <ExtensionDetails extensionData={extensionData} />
           </div>
         </TwoColumns>
       </div>

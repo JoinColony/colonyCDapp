@@ -29,7 +29,7 @@ const LazyConsensusPage = () => {
             <>
               <div className="flex gap-6 items-center justify-end min-h-[2rem]">
                 <span className="text-gray-400 text-sm">{`17,876 ${formatMessage({ id: 'active.installs' })}`}</span>
-                {!extensionData?.isEnabled && (
+                {!extensionData?.isInitialized && (
                   <Button mode="primarySolid" type="submit">
                     {formatMessage({ id: 'button.enable' })}
                   </Button>
@@ -37,12 +37,6 @@ const LazyConsensusPage = () => {
               </div>
               <div className="mt-8">
                 <SpecificSidePanel />
-                {/* @TODO: Add functionality and modals to deprecate and uninstall extension */}
-                <div className="mt-6">
-                  <Button isFullSize mode="tertiaryOutline">
-                    {formatMessage({ id: 'deprecate.extension' })}
-                  </Button>
-                </div>
               </div>
             </>
           }
