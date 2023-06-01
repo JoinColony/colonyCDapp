@@ -36,6 +36,7 @@ const ExtensionLayout: FC<PropsWithChildren> = ({ children }) => {
 
   const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
   const canUpgradeColony = user?.name && hasRoot(allUserRoles);
+
   const handleUpgradeColony = () =>
     colony &&
     openUpgradeColonyDialog({
@@ -59,9 +60,9 @@ const ExtensionLayout: FC<PropsWithChildren> = ({ children }) => {
           buttonName="button.upgrade"
           linkName="learn.more"
           isButtonDisabled={!canUpgradeColony}
-          onUpgradeClick={handleUpgradeColony}
+          onUpgrade={handleUpgradeColony}
         >
-          A new version of the Colony Network is available!
+          {formatMessage({ id: 'calamityBanner.available' })}
         </CalamityBanner>
       )}
       <Header />

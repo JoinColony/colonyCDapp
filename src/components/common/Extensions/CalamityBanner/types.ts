@@ -4,5 +4,5 @@ export interface CalamityBannerProps {
   linkName: string;
   buttonName: string;
   isButtonDisabled?: boolean;
-  onUpgradeClick: () => DialogType<any> | undefined;
+  onUpgrade: () => DialogType<object> | undefined;
 }

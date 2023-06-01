@@ -433,6 +433,7 @@
     "extensionsPage.notInstalled": "Not Installed",
     "extensionsPage.disabled": "Disabled",
     "extensionsPage.deprecated": "Deprecated",
+    "calamityBanner.available": "A new version of the Colony Network is available!",
     "advancedPage.loading": "Loading Advanced",
     "colonyDetailsPage.loading": "Loading Colony Details",
     "incorporationPage.loading": "Loading Incorporation",

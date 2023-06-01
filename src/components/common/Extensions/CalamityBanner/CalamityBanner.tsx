@@ -14,7 +14,7 @@ const CalamityBanner: FC<PropsWithChildren<CalamityBannerProps>> = ({
   linkName,
   buttonName,
   isButtonDisabled,
-  onUpgradeClick,
+  onUpgrade,
 }) => {
   const { formatMessage } = useIntl();
   const { showBanner, setShowBanner } = useCalamityBanner();
@@ -42,7 +42,7 @@ const CalamityBanner: FC<PropsWithChildren<CalamityBannerProps>> = ({
                 className="md:mr-[1.6875rem] ml-4"
                 mode="primaryOutline"
                 disabled={isButtonDisabled}
-                onClick={onUpgradeClick}
+                onClick={onUpgrade}
               >
                 {formatMessage({ id: buttonName })}
               </Button>
