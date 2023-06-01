@@ -5,8 +5,21 @@ import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
 import Navigation from '~common/Extensions/Navigation';
 import PageTitle from '~common/Extensions/PageTitle';
 import TwoColumns from '~frame/Extensions/TwoColumns';
-import { useExtensionsData, useMobile } from '~hooks';
+import {
+  useAppContext,
+  useColonyContext,
+  useColonyContractVersion,
+  useEnabledExtensions,
+  useExtensionsData,
+  useMobile,
+  useTransformer,
+} from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
+import { canColonyBeUpgraded, hasRoot } from '~utils/checks';
+import CalamityBanner from '~common/Extensions/CalamityBanner/CalamityBanner';
+import { getAllUserRoles } from '~redux/transformers';
+import { useDialog } from '~shared/Dialog';
+import { NetworkContractUpgradeDialog } from '~common/Dialogs';
 
 const displayName = 'frame.Extensions.layouts.ExtensionLayout';
 
@@ -14,6 +27,21 @@ const ExtensionLayout: FC<PropsWithChildren> = ({ children }) => {
   const { loading } = useExtensionsData();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
+  const { colony } = useColonyContext();
+  const { colonyContractVersion } = useColonyContractVersion();
+  const { user, wallet } = useAppContext();
+  const allUserRoles = useTransformer(getAllUserRoles, [colony, wallet?.address]);
+  const openUpgradeColonyDialog = useDialog(NetworkContractUpgradeDialog);
+  const enabledExtensionData = useEnabledExtensions();
+
+  const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
+  const canUpgradeColony = user?.name && hasRoot(allUserRoles);
+  const handleUpgradeColony = () =>
+    colony &&
+    openUpgradeColonyDialog({
+      colony,
+      enabledExtensionData,
+    });
 
   if (loading) {
     return (
@@ -26,6 +54,16 @@ const ExtensionLayout: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <div>
+      {!canUpgrade && (
+        <CalamityBanner
+          buttonName="button.upgrade"
+          linkName="learn.more"
+          isButtonDisabled={!canUpgradeColony}
+          onUpgradeClick={handleUpgradeColony}
+        >
+          A new version of the Colony Network is available!
+        </CalamityBanner>
+      )}
       <Header />
       {/* @TODO: Remove wallet component when we have a proper wallet */}
       <div className="hidden">

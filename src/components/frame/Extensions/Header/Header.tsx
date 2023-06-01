@@ -29,7 +29,7 @@ const Header = () => {
   return (
     <header>
       <div className="bg-base-white w-full flex flex-row min-h-[5rem] sm:min-h-[6rem] justify-center px-6">
-        <div className="flex items-center justify-between w-[90rem]">
+        <div className="flex items-center justify-between max-w-[90rem] w-full">
           <div className="mr-5 sm:mr-10">
             <div className="flex justify-between relative" ref={ref}>
               <button
