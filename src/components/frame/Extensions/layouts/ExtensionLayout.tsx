@@ -54,7 +54,7 @@ const ExtensionLayout: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <div>
-      {!canUpgrade && (
+      {canUpgrade && (
         <CalamityBanner
           buttonName="button.upgrade"
           linkName="learn.more"
