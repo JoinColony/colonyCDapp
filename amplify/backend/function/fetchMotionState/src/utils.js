@@ -196,7 +196,7 @@ const updateStakerRewardsInDB = async (colonyAddress, motionData) => {
 
   await graphqlRequest(updateColonyMotion, {
     input: {
-      ...motionData,
+      id: motionData.id,
       stakerRewards: updatedStakerRewards,
     },
   });
@@ -236,7 +236,7 @@ const updateMotionMessagesInDB = async (motionData, motionMessages, flag) => {
 
   await graphqlRequest(updateColonyMotion, {
     input: {
-      ...motionData,
+      id: motionData.id,
       motionStateHistory: updatedStateHistory,
     },
   });
