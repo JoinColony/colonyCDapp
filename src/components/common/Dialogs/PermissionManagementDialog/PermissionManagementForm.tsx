@@ -104,11 +104,10 @@ const PermissionManagementForm = ({
     setValue('roles', formatRolesForForm(userRoles, selectedDomainId));
   }, [selectedDomainId, setValue, userRoles]);
 
-  const requiredRoles = [
+  const requiredRoles =
     selectedDomainId === Id.RootDomain
-      ? ColonyRole.Root
-      : ColonyRole.Architecture,
-  ];
+      ? [ColonyRole.Root, ColonyRole.Architecture]
+      : [ColonyRole.Architecture];
 
   const canRoleBeSet = useCanRoleBeSet(colony);
 
