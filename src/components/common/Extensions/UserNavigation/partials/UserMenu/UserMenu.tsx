@@ -12,6 +12,7 @@ import TitledContent from '~common/Extensions/TitledContent/TitledContent';
 import WalletConnectedTopMenu from '../WalletConnectedTopMenu/WalletConnectedTopMenu';
 import Link from '~shared/Extensions/Link';
 import UserSubmenu from '../UserSubmenu';
+import { userMenuItems } from './consts';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 
@@ -62,7 +63,7 @@ const UserMenu: FC<UserMenuProps> = ({
           onClick={() => setActiveSubmenu(null)}
         >
           <Icon name="caret-left" appearance={{ size: 'extraTiny' }} />
-          <p className="ml-2 uppercase">{activeSubmenu && formatMessage({ id: activeSubmenu })}</p>
+          {activeSubmenu && <p className="ml-2 uppercase">{activeSubmenu && formatMessage({ id: activeSubmenu })}</p>}
         </button>
         {activeSubmenu && <UserSubmenu submenuId={activeSubmenu} />}
       </div>
@@ -106,53 +107,32 @@ const UserMenu: FC<UserMenuProps> = ({
         <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">
           <TitledContent title={{ id: 'userMenu.optionsTitle' }}>
             <ul className="text-lg font-semibold md:font-normal md:text-md">
-              <li className="mb-4">
-                <Link to="/" className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <Icon name="circles-three-plus" appearance={{ size: iconSize }} />
-                    <p className="ml-2">{formatMessage({ id: 'userMenu.getStartedTitle' })}</p>
-                  </div>
-                </Link>
-              </li>
-              <li className="mb-4">
-                <button
-                  type="button"
-                  className="flex items-center justify-between w-full"
-                  onClick={() => setActiveSubmenu('userMenu.contactAndSupportTitle')}
-                >
-                  <div className="flex items-center">
-                    <Icon name="lifebuoy" appearance={{ size: iconSize }} />
-                    <p className="ml-2">{formatMessage({ id: 'userMenu.contactAndSupportTitle' })}</p>
-                  </div>
-                  <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
-                </button>
-              </li>
-              <li className="mb-4">
-                <button
-                  type="button"
-                  className="flex items-center justify-between w-full"
-                  onClick={() => setActiveSubmenu('userMenu.developersTitle')}
-                >
-                  <div className="flex items-center">
-                    <Icon name="code" appearance={{ size: iconSize }} />
-                    <p className="ml-2">{formatMessage({ id: 'userMenu.developersTitle' })}</p>
-                  </div>
-                  <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  className="flex items-center justify-between w-full"
-                  onClick={() => setActiveSubmenu('userMenu.legalAndPrivacyTitle')}
-                >
-                  <div className="flex items-center">
-                    <Icon name="briefcase" appearance={{ size: iconSize }} />
-                    <p className="ml-2">{formatMessage({ id: 'userMenu.legalAndPrivacyTitle' })}</p>
-                  </div>
-                  <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
-                </button>
-              </li>
+              {userMenuItems.map((item) => (
+                <li className="mb-4 last:mb-0" id={item.id}>
+                  {item.link ? (
+                    <Link to={item.link} className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <Icon name={item.icon} appearance={{ size: iconSize }} />
+                        <p className="ml-2">{formatMessage({ id: item.name })}</p>
+                      </div>
+                    </Link>
+                  ) : (
+                    <button
+                      type="button"
+                      className="flex items-center justify-between w-full"
+                      onClick={() => setActiveSubmenu(item.name)}
+                      aria-expanded={activeSubmenu === item.name}
+                      aria-controls="actionsWithVisibility"
+                    >
+                      <div className="flex items-center">
+                        <Icon name={item.icon} appearance={{ size: iconSize }} />
+                        <p className="ml-2">{formatMessage({ id: item.name })}</p>
+                      </div>
+                      <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
+                    </button>
+                  )}
+                </li>
+              ))}
             </ul>
           </TitledContent>
         </div>
