@@ -204,35 +204,27 @@ const updateStakerRewardsInDB = async (colonyAddress, motionData) => {
 
 const updateMotionMessagesInDB = async (motionData, motionMessages, flag) => {
   const { messages, motionStateHistory } = motionData;
-  const updatedMessages = [];
   const updatedStateHistory = {
     ...motionStateHistory,
     [flag]: true,
   };
 
-  motionMessages.forEach((message) => {
-    const messageKey = `${motionData.id}_${message}`;
-    if (
-      !messages?.items?.find(
-        (motionMessage) => motionMessage.messageKey === messageKey,
-      )
-    ) {
-      updatedMessages.push({
-        initiatorAddress: constants.AddressZero,
-        name: message,
-        messageKey,
-        motionId: motionData.id,
-      });
-    }
-  });
+  const messageKeys = new Set(messages.items.map((m) => m.messageKey));
 
-  const messagePromises = updatedMessages.map((message) => {
-    return graphqlRequest(createMotionMessage, {
-      input: message,
-    });
-  });
+  const newMessagesPromises = motionMessages
+    .filter((message) => !messageKeys.has(`${motionData.id}_${message}`))
+    .map((message) =>
+      graphqlRequest(createMotionMessage, {
+        input: {
+          initiatorAddress: constants.AddressZero,
+          name: message,
+          messageKey: `${motionData.id}_${message}`,
+          motionId: motionData.id,
+        },
+      }),
+    );
 
-  await Promise.all(messagePromises);
+  await Promise.all(newMessagesPromises);
 
   await graphqlRequest(updateColonyMotion, {
     input: {
