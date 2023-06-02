@@ -7,7 +7,7 @@ import { getMotionState } from '~utils/colonyMotions';
 import { MotionAction } from '~types/motions';
 
 import { DefaultActionContent } from '../DefaultAction';
-import { RefetchMotionState } from '../useGetColonyAction';
+import { RefetchAction, RefetchMotionState } from '../useGetColonyAction';
 import MotionHeading from './MotionHeading';
 import MotionPhaseWidget from './MotionPhaseWidget';
 import StakeRequiredBanner from './StakeRequiredBanner';
@@ -20,6 +20,7 @@ interface DefaultMotionProps {
   actionData: MotionAction;
   networkMotionState: NetworkMotionState;
   refetchMotionState: RefetchMotionState;
+  refetchAction: RefetchAction;
   startPollingAction: (pollingInterval: number) => void;
   stopPollingAction: () => void;
 }

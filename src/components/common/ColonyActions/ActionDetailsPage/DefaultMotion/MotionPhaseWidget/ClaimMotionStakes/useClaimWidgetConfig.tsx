@@ -13,6 +13,7 @@ import { getTransactionHashFromPathName } from '~utils/urls';
 
 import { ClaimMotionStakesStyles } from './ClaimMotionStakes';
 import { ColonyMotion } from '~types';
+import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
 
 const { formatMessage } = intl({
   'label.stake': 'Stake',
@@ -25,6 +26,7 @@ const { formatMessage } = intl({
 const useClaimWidgetConfig = (
   { usersStakes, stakerRewards, databaseMotionId }: ColonyMotion,
   startPollingAction: (pollInterval: number) => void,
+  refetchAction: RefetchAction,
   styles: ClaimMotionStakesStyles,
 ) => {
   const { user } = useAppContext();
@@ -51,11 +53,12 @@ const useClaimWidgetConfig = (
 
       if (!motionIsUnclaimed) {
         setIsClaimed(true);
+        refetchAction();
       } else {
         setIsClaimed(false);
       }
     }
-  }, [colony?.motionsWithUnclaimedStakes, databaseMotionId]);
+  }, [colony?.motionsWithUnclaimedStakes, databaseMotionId, refetchAction]);
 
   // Keep isClaimed state in sync with user changes
   useEffect(() => {

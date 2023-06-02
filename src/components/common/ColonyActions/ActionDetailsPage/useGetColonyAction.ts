@@ -12,6 +12,10 @@ export type RefetchMotionState = ReturnType<
   typeof useGetMotionStateQuery
 >['refetch'];
 
+export type RefetchAction = ReturnType<
+  typeof useGetColonyActionQuery
+>['refetch'];
+
 export const useGetColonyAction = () => {
   const { colony, refetchColony } = useColonyContext();
   const { transactionHash } = useParams<ActionDetailsPageParams>();
@@ -102,5 +106,6 @@ export const useGetColonyAction = () => {
     stopPollingForAction,
     motionState: motionStateData?.getMotionState,
     refetchMotionState,
+    refetchAction,
   };
 };

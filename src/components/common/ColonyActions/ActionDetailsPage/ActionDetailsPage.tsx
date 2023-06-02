@@ -43,6 +43,7 @@ const ActionDetailsPage = () => {
     refetchMotionState,
     startPollingForAction,
     stopPollingForAction,
+    refetchAction,
   } = useGetColonyAction();
 
   // const status = action?.transactionStatus;
@@ -88,6 +89,7 @@ const ActionDetailsPage = () => {
           refetchMotionState={refetchMotionState}
           startPollingAction={startPollingForAction}
           stopPollingAction={stopPollingForAction}
+          refetchAction={refetchAction}
         />
       </Layout>
     );

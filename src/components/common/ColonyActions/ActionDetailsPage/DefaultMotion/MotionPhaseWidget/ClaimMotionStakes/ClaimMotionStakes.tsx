@@ -2,6 +2,7 @@ import React from 'react';
 
 import DetailItem from '~shared/DetailsWidget/DetailItem';
 import { ColonyMotion } from '~types';
+import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
 
 import useClaimWidgetConfig from './useClaimWidgetConfig';
 import styles from './ClaimMotionStakes.css';
@@ -11,6 +12,7 @@ const displayName = `common.ColonyActions.ActionDetailsPage.DefaultMotion.ClaimM
 interface ClaimMotionStakesProps {
   motionData: ColonyMotion;
   startPollingAction: (pollInterval: number) => void;
+  refetchAction: RefetchAction;
 }
 
 export type ClaimMotionStakesStyles = typeof styles;
@@ -18,8 +20,14 @@ export type ClaimMotionStakesStyles = typeof styles;
 const ClaimMotionStakes = ({
   motionData,
   startPollingAction,
+  refetchAction,
 }: ClaimMotionStakesProps) => {
-  const config = useClaimWidgetConfig(motionData, startPollingAction, styles);
+  const config = useClaimWidgetConfig(
+    motionData,
+    startPollingAction,
+    refetchAction,
+    styles,
+  );
 
   return (
     <div>
