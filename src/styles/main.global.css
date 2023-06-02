@@ -97,3 +97,7 @@ button[disabled].rts___btn {
 .rts___nav___btn:hover > svg {
   @apply stroke-none;
 }
+
+.tooltip-container {
+  @apply text-gray-900;
+}

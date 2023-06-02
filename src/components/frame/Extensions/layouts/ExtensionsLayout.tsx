@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import Header from '~frame/Extensions/Header';
 import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
@@ -18,6 +18,9 @@ import { getAllUserRoles } from '~redux/transformers';
 import { useDialog } from '~shared/Dialog';
 import { NetworkContractUpgradeDialog } from '~common/Dialogs';
 import Spinner from '~shared/Extensions/Spinner';
+import { applyTheme } from '../themes/utils';
+import { Theme } from '../themes/enum';
+import { usePageThemeContext } from '~context/PageThemeContext';
 
 const displayName = 'frame.Extensions.layouts.ExtensionsLayout';
 
@@ -30,6 +33,7 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
   const allUserRoles = useTransformer(getAllUserRoles, [colony, wallet?.address]);
   const openUpgradeColonyDialog = useDialog(NetworkContractUpgradeDialog);
   const enabledExtensionData = useEnabledExtensions();
+  const { isDarkMode } = usePageThemeContext();
 
   const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
   const canUpgradeColony = user?.name && hasRoot(allUserRoles);
@@ -40,6 +44,10 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
       colony,
       enabledExtensionData,
     });
+
+  useEffect(() => {
+    applyTheme(isDarkMode ? Theme.dark : Theme.light);
+  }, [isDarkMode]);
 
   return (
     <Spinner loadingText="extensionsPage">
