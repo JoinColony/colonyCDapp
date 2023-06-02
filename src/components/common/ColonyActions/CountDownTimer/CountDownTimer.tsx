@@ -4,7 +4,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { MotionState } from '~utils/colonyMotions';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import TimerValue from '~shared/TimerValue';
-import { MotionData } from '~types';
+import { MotionStakes } from '~types';
 
 import { RefetchMotionState } from '../ActionDetailsPage';
 import { useMotionCountdown } from './helpers';
@@ -36,7 +36,7 @@ interface Props {
   motionState: MotionState;
   refetchMotionState: RefetchMotionState;
   motionId: string;
-  motionStakes: MotionData['motionStakes'];
+  motionStakes: MotionStakes;
 }
 
 const CountDownTimer = ({

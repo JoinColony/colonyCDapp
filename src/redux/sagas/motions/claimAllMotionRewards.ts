@@ -5,13 +5,12 @@ import { ApolloQueryResult } from '@apollo/client';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import { getContext, ContextModule, ColonyManager } from '~context';
-import { Address, ColonyAction } from '~types';
+import { Address, ColonyMotion } from '~types';
 import {
-  GetColonyActionsDocument,
-  GetColonyActionsQuery,
-  GetColonyActionsQueryVariables,
+  GetColonyMotionDocument,
+  GetColonyMotionQuery,
+  GetColonyMotionQueryVariables,
 } from '~gql';
-import { notNull } from '~utils/arrays';
 import { getMotionDatabaseId } from '~utils/colonyMotions';
 
 import {
@@ -41,32 +40,36 @@ function* claimAllMotionRewards({
         colonyAddress,
       );
 
-    const {
-      data: { getActionsByColony },
-    }: ApolloQueryResult<GetColonyActionsQuery> = yield apolloClient.query<
-      GetColonyActionsQuery,
-      GetColonyActionsQueryVariables
-    >({
-      query: GetColonyActionsDocument,
-      variables: {
-        colonyAddress,
-        filter: { isMotion: { eq: true } },
-      },
-    });
-
-    const motions = getActionsByColony?.items.filter(notNull);
-
-    if (!motions) {
-      throw new Error('Could not retrieve motions from database');
-    }
-
     const databaseMotionIds = motionIds.map((nativeMotionId) =>
       getMotionDatabaseId(chainId, votingClient.address, nativeMotionId),
     );
 
+    const motions: ColonyMotion[] = [];
+
+    for (const databaseMotionId of databaseMotionIds) {
+      const {
+        data: { getColonyMotion },
+      }: ApolloQueryResult<GetColonyMotionQuery> = yield apolloClient.query<
+        GetColonyMotionQuery,
+        GetColonyMotionQueryVariables
+      >({
+        query: GetColonyMotionDocument,
+        variables: {
+          id: databaseMotionId,
+        },
+      });
+
+      if (!getColonyMotion) {
+        throw new Error(
+          `Motion with database id ${databaseMotionId} does not exist`,
+        );
+      }
+
+      motions.push(getColonyMotion);
+    }
+
     const [motionsWithYayClaim, motionsWithNayClaim] = getMotionsWithClaims(
       motions,
-      databaseMotionIds,
       userAddress,
     );
 
@@ -136,50 +139,35 @@ export default function* claimAllMotionRewardsSaga() {
  * with outstanding claims by the given user
  */
 
-function getMotionsWithClaims(
-  motions: ColonyAction[],
-  databaseMotionIds: string[],
-  userAddress: Address,
-) {
+function getMotionsWithClaims(motions: ColonyMotion[], userAddress: Address) {
   const motionsWithYayClaims: string[] = [];
   const motionsWithNayClaims: string[] = [];
 
-  motions
-    /* Filter motions by those ids provided to saga */
-    .filter(({ motionData }) =>
-      motionData
-        ? databaseMotionIds.some(
-            (databaseId) => databaseId === motionData.databaseMotionId,
-          )
-        : false,
-    )
-    .forEach(({ motionData }) => {
-      if (motionData) {
-        const { motionId } = motionData;
-        const currentUserRewards = motionData.stakerRewards.find(
-          ({ address }) => address === userAddress,
-        );
+  motions.forEach((motion) => {
+    const { motionId, stakerRewards } = motion;
+    const currentUserRewards = stakerRewards.find(
+      ({ address }) => address === userAddress,
+    );
 
-        if (currentUserRewards) {
-          const {
-            rewards: { nay, yay },
-            isClaimed,
-          } = currentUserRewards;
+    if (currentUserRewards) {
+      const {
+        rewards: { nay, yay },
+        isClaimed,
+      } = currentUserRewards;
 
-          if (isClaimed) {
-            return;
-          }
-
-          if (nay !== '0') {
-            motionsWithNayClaims.push(motionId);
-          }
-
-          if (yay !== '0') {
-            motionsWithYayClaims.push(motionId);
-          }
-        }
+      if (isClaimed) {
+        return;
       }
-    });
+
+      if (nay !== '0') {
+        motionsWithNayClaims.push(motionId);
+      }
+
+      if (yay !== '0') {
+        motionsWithYayClaims.push(motionId);
+      }
+    }
+  });
 
   return [motionsWithYayClaims, motionsWithNayClaims];
 }

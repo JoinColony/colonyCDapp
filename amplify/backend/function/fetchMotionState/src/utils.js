@@ -6,7 +6,11 @@ const {
 } = require('@colony/colony-js');
 const { default: fetch, Request } = require('node-fetch');
 
-const { getColonyAction, updateColonyAction } = require('./graphql.js');
+const {
+  getColonyMotion,
+  updateColonyMotion,
+  createMotionMessage,
+} = require('./graphql.js');
 
 const API_KEY = 'da2-fakeApiId123456';
 const GRAPHQL_URI = 'http://localhost:20002/graphql';
@@ -81,18 +85,18 @@ const graphqlRequest = async (queryOrMutation, variables) => {
   }
 };
 
-const getMotionData = async (transactionHash) => {
-  const { data: actionData } = await graphqlRequest(getColonyAction, {
-    id: transactionHash,
+const getMotionData = async (databaseMotionId) => {
+  const { data: motionData } = await graphqlRequest(getColonyMotion, {
+    id: databaseMotionId,
   });
 
-  if (!actionData) {
+  if (!motionData) {
     console.error(
       'Could not find motion in db. This is a bug and should be investigated.',
     );
   }
 
-  return actionData?.getColonyAction?.motionData;
+  return motionData?.getColonyMotion;
 };
 
 const getStakerReward = async (motionId, userAddress, colonyAddress) => {
@@ -170,11 +174,7 @@ const didMotionPass = ({
   return false;
 };
 
-const updateStakerRewardsInDB = async (
-  colonyAddress,
-  transactionHash,
-  motionData,
-) => {
+const updateStakerRewardsInDB = async (colonyAddress, motionData) => {
   const { nativeMotionId, usersStakes, stakerRewards } = motionData;
 
   const updatedStakerRewards = await Promise.all(
@@ -194,41 +194,41 @@ const updateStakerRewardsInDB = async (
     }),
   );
 
-  await graphqlRequest(updateColonyAction, {
-    id: transactionHash,
-    motionData: {
-      ...motionData,
+  await graphqlRequest(updateColonyMotion, {
+    input: {
+      id: motionData.id,
       stakerRewards: updatedStakerRewards,
     },
   });
 };
 
-const updateMotionMessagesInDB = async (
-  transactionHash,
-  motionData,
-  motionMessages,
-  flag,
-) => {
+const updateMotionMessagesInDB = async (motionData, motionMessages, flag) => {
   const { messages, motionStateHistory } = motionData;
-  const updatedMessages = [...messages];
   const updatedStateHistory = {
     ...motionStateHistory,
     [flag]: true,
   };
 
-  motionMessages.forEach((message) => {
-    updatedMessages.push({
-      initiatorAddress: constants.AddressZero,
-      name: message,
-      messageKey: `${transactionHash}_${message}`,
-    });
-  });
+  const messageKeys = new Set(messages.items.map((m) => m.messageKey));
 
-  await graphqlRequest(updateColonyAction, {
-    id: transactionHash,
-    motionData: {
-      ...motionData,
-      messages: updatedMessages,
+  const newMessagesPromises = motionMessages
+    .filter((message) => !messageKeys.has(`${motionData.id}_${message}`))
+    .map((message) =>
+      graphqlRequest(createMotionMessage, {
+        input: {
+          initiatorAddress: constants.AddressZero,
+          name: message,
+          messageKey: `${motionData.id}_${message}`,
+          motionId: motionData.id,
+        },
+      }),
+    );
+
+  await Promise.all(newMessagesPromises);
+
+  await graphqlRequest(updateColonyMotion, {
+    input: {
+      id: motionData.id,
       motionStateHistory: updatedStateHistory,
     },
   });

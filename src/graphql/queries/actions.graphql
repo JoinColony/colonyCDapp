@@ -24,3 +24,9 @@ query GetColonyAction($transactionHash: ID!) {
     ...ColonyAction
   }
 }
+
+query GetColonyMotion($id: ID!) {
+  getColonyMotion(id: $id) {
+    ...ColonyMotion
+  }
+}

@@ -7,7 +7,7 @@ import { Extension } from '@colony/colony-js';
 import ProgressBar, { ProgressBarAppearance } from '~shared/ProgressBar';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 
-import { InstalledExtensionData, MotionData } from '~types';
+import { InstalledExtensionData, ColonyMotion } from '~types';
 import { useExtensionData } from '~hooks';
 
 import styles from './VotingProgress.css';
@@ -46,7 +46,7 @@ const progressBarAppearance = {
 } as ProgressBarAppearance;
 
 interface VotingProgressProps {
-  motionData: MotionData;
+  motionData: ColonyMotion;
 }
 
 const VotingProgress = ({

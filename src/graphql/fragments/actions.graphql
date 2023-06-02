@@ -26,7 +26,7 @@ fragment ColonyAction on ColonyAction {
   newColonyVersion
   isMotion
   motionData {
-    ...MotionData
+    ...ColonyMotion
   }
   colony {
     colonyAddress: id
@@ -50,16 +50,11 @@ fragment MotionStakeValues on MotionStakeValues {
   nay
 }
 
-fragment MotionData on MotionData {
-  databaseMotionId: motionId
+fragment ColonyMotion on ColonyMotion {
+  databaseMotionId: id
   motionId: nativeMotionId
   motionStakes {
-    raw {
-      ...MotionStakeValues
-    }
-    percentage {
-      ...MotionStakeValues
-    }
+    ...MotionStakes
   }
   usersStakes {
     address
@@ -76,7 +71,7 @@ fragment MotionData on MotionData {
   userMinStake
   requiredStake
   rootHash
-  motionDomainId
+  nativeMotionDomainId
   stakerRewards {
     address
     rewards {
@@ -87,9 +82,7 @@ fragment MotionData on MotionData {
   }
   isFinalized
   voterRecord {
-    address
-    voteCount
-    vote
+    ...VoterRecord
   }
   revealedVotes {
     raw {
@@ -112,7 +105,9 @@ fragment MotionData on MotionData {
     inRevealPhase
   }
   messages {
-    ...MotionMessage
+    items {
+      ...MotionMessage
+    }
   }
 }
 
@@ -125,4 +120,19 @@ fragment MotionMessage on MotionMessage {
   }
   vote
   amount
+}
+
+fragment VoterRecord on VoterRecord {
+  address
+  voteCount
+  vote
+}
+
+fragment MotionStakes on MotionStakes {
+  raw {
+    ...MotionStakeValues
+  }
+  percentage {
+    ...MotionStakeValues
+  }
 }

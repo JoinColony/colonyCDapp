@@ -7,7 +7,7 @@ import {
 
 import { isNil } from '~utils/lodash';
 import { getRolesForUserAndDomain } from '~redux/transformers';
-import { ActionUserRoles, MotionData, User } from '~types';
+import { ActionUserRoles, ColonyMotion, User } from '~types';
 import { useEnabledExtensions } from '~hooks';
 
 export enum MotionVote {
@@ -48,7 +48,7 @@ export const getMotionState = (
     revealedVotes: {
       raw: { yay: yayVotes, nay: nayVotes },
     },
-  }: MotionData,
+  }: ColonyMotion,
 ) => {
   switch (motionState) {
     case NetworkMotionState.Staking: {

@@ -3,14 +3,15 @@ import { ClientType } from '@colony/colony-js';
 import { ApolloQueryResult } from '@apollo/client';
 import { BigNumber } from 'ethers';
 
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
 import { getContext, ContextModule } from '~context';
 import {
   GetColonyActionDocument,
   GetColonyActionQuery,
   GetColonyActionQueryVariables,
 } from '~gql';
+
+import { ActionTypes } from '../../actionTypes';
+import { AllActions, Action } from '../../types/actions';
 
 import {
   ChannelDefinition,
