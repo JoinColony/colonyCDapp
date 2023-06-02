@@ -156,7 +156,7 @@ export const mapActionEventToExpectedFormat = (
     ),
     recipient: (
       <span className={styles.userDecoration}>
-        {actionData.recipientUser ? (
+        {actionData.recipientUser || actionData.recipientColony ? (
           <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
         ) : (
           <MaskedAddress address={actionData.recipientAddress || AddressZero} />
