@@ -8,7 +8,7 @@ import { usePageThemeContext } from '~context/PageThemeContext';
 const displayName = 'common.Extensions.ThemeSwitcher';
 
 const ThemeSwitcher: FC = () => {
-  const { isDarkMode, changeIsDarkMode } = usePageThemeContext();
+  const { isDarkMode, setIsDarkMode } = usePageThemeContext();
   const { formatMessage } = useIntl();
 
   return (
@@ -16,7 +16,7 @@ const ThemeSwitcher: FC = () => {
       type="button"
       aria-label="Theme switcher"
       className="bg-gray-50 rounded flex items-center justify-between h-10 border border-gray-100 relative px-3 w-full"
-      onClick={changeIsDarkMode}
+      onClick={setIsDarkMode}
     >
       <span
         className={clsx(styles.themeSwitcherSpan, {

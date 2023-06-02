@@ -4,8 +4,8 @@ import noop from '~utils/noop';
 
 export const PageThemeContext = createContext<{
   isDarkMode: boolean;
-  changeIsDarkMode: () => void;
-}>({ isDarkMode: false, changeIsDarkMode: noop });
+  setIsDarkMode: () => void;
+}>({ isDarkMode: false, setIsDarkMode: noop });
 
 export const PageThemeContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -15,7 +15,7 @@ export const PageThemeContextProvider: FC<PropsWithChildren> = ({ children }) =>
     setIsDarkMode((prev) => !prev);
   }, [setIsDarkMode]);
 
-  const value = useMemo(() => ({ isDarkMode, changeIsDarkMode }), [isDarkMode, changeIsDarkMode]);
+  const value = useMemo(() => ({ isDarkMode, setIsDarkMode: changeIsDarkMode }), [isDarkMode, changeIsDarkMode]);
 
   return <PageThemeContext.Provider {...{ value }}>{children}</PageThemeContext.Provider>;
 };
