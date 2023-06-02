@@ -2,8 +2,6 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import PageTitle from '~common/Extensions/PageTitle';
-import TwoColumns from '~frame/Extensions/TwoColumns';
 import { useAppContext, useColonyContext, useExtensionData, useMobile } from '~hooks';
 import Button from '~shared/Extensions/Button';
 import Icon from '~shared/Icon';
@@ -52,43 +50,32 @@ const ExtensionDetailsPage: FC = () => {
   return (
     <Spinner>
       <div className="mb-6">
-        {/* @TODO: Add sidepanel */}
-        {isMobile && <div>Sidepanel</div>}
-        <div className="mt-9 sm:mt-6">
-          <PageTitle
-            title={formatMessage({ id: 'extensionsPage.title' })}
-            subtitle={formatMessage({ id: 'extensionsPage.description' })}
-          />
-        </div>
-        <div className="flex lg:gap-[6.25rem] md:gap-12 mt-9">
-          {/* @TODO: Add sidepanel */}
-          <TwoColumns aside={<div>Sidepanel</div>}>
-            <div className="w-full">
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center">
-                  <Icon name={extensionData.icon} appearance={{ size: 'large' }} />
-                  <h4 className="ml-2 text-xl font-semibold text-gray-900">{formatMessage(extensionData.name)}</h4>
-                </div>
-                <div>
-                  {!isExtensionInstalled && (
-                    <Button mode="primarySolid" isFullSize={isMobile} onClick={handleInstallClick}>
-                      <p className="text-sm font-medium">{formatMessage({ id: 'extension.installButton' })}</p>
-                    </Button>
-                  )}
-                  {extensionData.isInitialized && !extensionData.isInitialized && (
-                    <Button mode="primarySolid" isFullSize={isMobile} onClick={handleEnableButtonClick}>
-                      <p className="text-sm font-medium">{formatMessage({ id: 'extension.enableButton' })}</p>
-                    </Button>
-                  )}
-                </div>
+        <div className="flex lg:gap-[6.25rem] md:gap-12">
+          <div className="w-full">
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center">
+                <Icon name={extensionData.icon} appearance={{ size: 'large' }} />
+                <h4 className="ml-2 text-xl font-semibold text-gray-900">{formatMessage(extensionData.name)}</h4>
               </div>
-              <ExtensionDetails
-                extensionData={extensionData}
-                canBeDeprecated={canExtensionBeDeprecated}
-                canBeUninstalled={canExtensionBeUninstalled}
-              />
+              <div>
+                {!isExtensionInstalled && (
+                  <Button mode="primarySolid" isFullSize={isMobile} onClick={handleInstallClick}>
+                    <p className="text-sm font-medium">{formatMessage({ id: 'extension.installButton' })}</p>
+                  </Button>
+                )}
+                {extensionData.isInitialized && !extensionData.isInitialized && (
+                  <Button mode="primarySolid" isFullSize={isMobile} onClick={handleEnableButtonClick}>
+                    <p className="text-sm font-medium">{formatMessage({ id: 'extension.enableButton' })}</p>
+                  </Button>
+                )}
+              </div>
             </div>
-          </TwoColumns>
+            <ExtensionDetails
+              extensionData={extensionData}
+              canBeDeprecated={canExtensionBeDeprecated}
+              canBeUninstalled={canExtensionBeUninstalled}
+            />
+          </div>
         </div>
       </div>
     </Spinner>

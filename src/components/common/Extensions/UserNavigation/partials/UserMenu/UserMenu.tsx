@@ -39,19 +39,16 @@ const UserMenu: FC<UserMenuProps> = ({
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={tooltipProps}
-      classNames={clsx(
-        'p-6 rounded-lg flex border-gray-100 justify-start z-[9999] tooltip-container relative overflow-hidden',
-        {
-          'w-full border-none shadow-none': isMobile,
-          'w-[20.125rem]': !isMobile,
-          'h-[32rem] md:h-[23rem]': !isWalletConnected && !activeSubmenu,
-          'h-[35rem] md:h-[29rem]': isWalletConnected && !activeSubmenu,
-          'h-[16rem]': activeSubmenu,
-        },
-      )}
+      classNames={clsx(styles.userMenuPopup, 'tooltip-container', {
+        'w-full border-none shadow-none': isMobile,
+        'w-[20.125rem]': !isMobile,
+        'h-[32rem] md:h-[23rem]': !isWalletConnected && !activeSubmenu,
+        'h-[35rem] md:h-[29rem]': isWalletConnected && !activeSubmenu,
+        'h-[16rem]': activeSubmenu,
+      })}
     >
       <div
-        className={clsx('absolute inset-0 p-6 transition-transform', {
+        className={clsx('absolute inset-0 p-6 transition-transform text-gray-900', {
           'translate-x-0': activeSubmenu,
           'translate-x-full': !activeSubmenu,
         })}
@@ -108,7 +105,7 @@ const UserMenu: FC<UserMenuProps> = ({
           <TitledContent title={{ id: 'userMenu.optionsTitle' }}>
             <ul className="text-lg font-semibold md:font-normal md:text-md">
               {userMenuItems.map((item) => (
-                <li className="mb-4 last:mb-0" id={item.id}>
+                <li className="mb-4 last:mb-0 text-gray-900" id={item.id}>
                   {item.link ? (
                     <Link to={item.link} className="flex items-center justify-between">
                       <div className="flex items-center">

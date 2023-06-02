@@ -80,7 +80,7 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
             </button>
           </div>
         </div>
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center text-gray-900">
           <Icon name="user-circle-gear" appearance={{ size: 'tiny' }} />
           <p className="ml-2 text-lg font-semibold md:font-normal md:text-md">
             {formatMessage({ id: 'userMenu.menageTitle' })}
