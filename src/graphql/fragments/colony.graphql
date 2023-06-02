@@ -52,7 +52,6 @@ fragment Colony on Colony {
 
 fragment UnclaimedStakes on ColonyUnclaimedStake {
   motionId
-  transactionHash
   unclaimedRewards {
     address
     rewards {

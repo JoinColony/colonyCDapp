@@ -377,7 +377,6 @@ type Colony @model {
 }
 
 type ColonyUnclaimedStake {
-  transactionHash: String!
   motionId: String! # database id
   unclaimedRewards: [StakerRewards!]!
 }
@@ -687,10 +686,7 @@ type ColonyAction @model {
   blockNumber: Int!
   isMotion: Boolean
   motionId: ID
-    @index(
-      name: "byMotionId"
-      queryField: "getColonyActionByMotionId"
-    )
+    @index(name: "byMotionId", queryField: "getColonyActionByMotionId")
   motionData: ColonyMotion @hasOne(fields: ["motionId"])
   showInActionsList: Boolean! # True for (forced) actions. True for motions if staked above 10%
   createdAt: AWSDateTime!
