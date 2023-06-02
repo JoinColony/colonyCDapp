@@ -9,19 +9,16 @@ import { ActionHookForm as Form } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 // import {
 //   useColonyFromNameQuery,
-//   useMembersSubscription,
-//   useNetworkContracts,
 // } from '~data/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
 import { WizardDialogType, useNetworkInverseFee } from '~hooks';
 import { useGetMembersForColonyQuery } from '~gql';
 
+import { extractUsersFromColonyMemberData } from '../helpers';
+
 import DialogForm from './CreatePaymentDialogForm';
-import {
-  extractUsersFromColonyMemberData,
-  getCreatePaymentDialogPayload,
-} from './helpers';
+import { getCreatePaymentDialogPayload } from './helpers';
 import getValidationSchema from './validation';
 
 const displayName = 'common.CreatePaymentDialog';
@@ -72,10 +69,6 @@ const CreatePaymentDialog = ({
       : ActionTypes.ACTION_EXPENDITURE_PAYMENT;
 
   const validationSchema = getValidationSchema(colony, networkInverseFee);
-
-  // const { data: colonyMembers } = useMembersSubscription({
-  //   variables: { colonyAddress },
-  // });
 
   /*
    * @NOTE This (extravagant) query retrieves the latest whitelist data.

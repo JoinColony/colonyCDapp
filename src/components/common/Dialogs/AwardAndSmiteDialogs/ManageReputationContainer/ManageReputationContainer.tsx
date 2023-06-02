@@ -3,17 +3,18 @@ import { string, object, number, boolean, InferType } from 'yup';
 import { Id } from '@colony/colony-js';
 import { useNavigate } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
-
 import Decimal from 'decimal.js';
+
 import Dialog from '~shared/Dialog';
 import { ActionHookForm as Form } from '~shared/Fields';
-
+import { useGetMembersForColonyQuery } from '~gql';
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 // import { useSelectedUser } from '~hooks';
 // import { getVerifiedUsers } from '~utils/verifiedRecipients';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
+import { extractUsersFromColonyMemberData } from '../../helpers';
 import DialogForm from '../ManageReputationDialogForm';
 import { AwardAndSmiteDialogProps } from '../types';
 
@@ -70,13 +71,24 @@ const ManageReputationContainer = ({
   const [isForce, setIsForce] = useState(false);
   const [schemaUserReputation, setSchemaUserReputation] = useState(0);
   const navigate = useNavigate();
-  /**
-   * @TODO This needs fixing as it relied on the empty array fallback,
-   * `watchers` don't exist on the colony object we were passing
-   */
-  // const colonyWatchers =
-  //   watchers?.items.filter(notNull).map((item) => item.user) || [];
-  const colonyWatchers = [];
+
+  const { data } = useGetMembersForColonyQuery({
+    skip: !colony?.colonyAddress,
+    variables: {
+      input: {
+        colonyAddress: colony?.colonyAddress ?? '',
+      },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const colonyContributors = extractUsersFromColonyMemberData(
+    data?.getMembersForColony?.contributors,
+  );
+  const colonyWatchers = extractUsersFromColonyMemberData(
+    data?.getMembersForColony?.watchers,
+  );
+  const colonyMembers = colonyContributors.concat(colonyWatchers);
 
   // const verifiedUsers = useMemo(() => {
   //   return getVerifiedUsers(colony.whitelistedAddresses, colonyWatchers) || [];
@@ -148,7 +160,7 @@ const ManageReputationContainer = ({
         defaultValues={{
           forceAction: false,
           domainId: filteredDomainId || Id.RootDomain,
-          // user: selectedUser,
+          user: undefined,
           motionDomainId: Id.RootDomain,
           amount: '',
           annotation: '',
@@ -170,7 +182,7 @@ const ManageReputationContainer = ({
               nativeTokenDecimals={nativeTokenDecimals}
               back={() => callStep(prevStep)}
               verifiedUsers={
-                colonyWatchers // isWhitelistActivated ? verifiedUsers : colonyWatchers
+                colonyMembers // isWhitelistActivated ? verifiedUsers : colonyMembers
               }
               updateSchemaUserReputation={
                 isSmiteAction ? setSchemaUserReputation : undefined
