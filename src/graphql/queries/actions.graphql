@@ -30,3 +30,11 @@ query GetColonyMotion($id: ID!) {
     ...ColonyMotion
   }
 }
+
+query GetMotionTransactionHash($motionId: ID!) {
+  getColonyActionByMotionId(motionId: $motionId) {
+    items {
+      id
+    }
+  }
+}

@@ -54,7 +54,7 @@ const StakesTab = ({ currentUserClaims }: Props) => {
             />
           </div>
           <ul data-test="claimableMotionsList">
-            {currentUserClaims?.map(({ unclaimedRewards, transactionHash }) => {
+            {currentUserClaims?.map(({ unclaimedRewards, motionId }) => {
               /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
               const currentUserRewards = unclaimedRewards.find(
                 ({ address }) => address === user?.walletAddress,
@@ -71,8 +71,8 @@ const StakesTab = ({ currentUserClaims }: Props) => {
                   )}
                   tokenSymbol={nativeToken.symbol}
                   colonyName={colony?.name || ''}
-                  txHash={transactionHash}
-                  key={transactionHash}
+                  key={motionId}
+                  motionId={motionId}
                 />
               );
             })}

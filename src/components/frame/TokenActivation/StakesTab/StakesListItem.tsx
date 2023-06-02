@@ -6,6 +6,7 @@ import Numeral from '~shared/Numeral';
 import { useTokenActivationContext } from '~hooks';
 
 import styles from './StakesTab.css';
+import { useGetMotionTransactionHashQuery } from '~gql';
 
 const displayName = 'frame.TokenActivation.StakesTab.StakesListItem';
 
@@ -20,20 +21,26 @@ interface Props {
   stakedAmount: string;
   tokenSymbol: string;
   colonyName: string;
-  txHash: string;
+  motionId: string;
 }
 
 const StakesListItem = ({
   stakedAmount,
   tokenSymbol,
   colonyName,
-  txHash,
+  motionId,
 }: Props) => {
   const { setIsOpen } = useTokenActivationContext();
+  const { data } = useGetMotionTransactionHashQuery({
+    variables: {
+      motionId,
+    },
+  });
 
+  const txHash = data?.getColonyActionByMotionId?.items[0]?.id ?? '';
   return (
     <li className={styles.stakesListItem}>
-      <Link to={`/colony/${colonyName}/tx/${txHash}`}>
+      <Link to={txHash ? `/colony/${colonyName}/tx/${txHash}` : ''}>
         <div
           role="button"
           onClick={() => setIsOpen(false)}

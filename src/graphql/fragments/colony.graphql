@@ -69,7 +69,6 @@ fragment ColonyTokensConnection on ModelColonyTokensConnection {
 
 fragment UnclaimedStakes on ColonyUnclaimedStake {
   motionId
-  transactionHash
   unclaimedRewards {
     address
     rewards {

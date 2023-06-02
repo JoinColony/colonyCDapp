@@ -116,7 +116,6 @@ module.exports = {
       getColony(id: $id) {
         colonyAddress: id
         motionsWithUnclaimedStakes {
-          transactionHash
           motionId
           unclaimedRewards {
             address

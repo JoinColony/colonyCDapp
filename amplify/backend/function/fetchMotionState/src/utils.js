@@ -180,8 +180,7 @@ const didMotionPass = ({
 
 const updateColonyUnclaimedStakes = async (
   colonyAddress,
-  transactionHash,
-  motionId,
+  databaseMotionId,
   updatedStakerRewards,
 ) => {
   const { data } = await graphqlRequest(getColony, {
@@ -192,7 +191,7 @@ const updateColonyUnclaimedStakes = async (
     data?.getColony?.motionsWithUnclaimedStakes ?? [];
 
   const motionWithUnclaimedStake = motionsWithUnclaimedStakes?.find(
-    ({ transactionHash: txHash }) => txHash === transactionHash,
+    ({ motionId }) => motionId === databaseMotionId,
   );
 
   const unclaimedRewards = updatedStakerRewards.filter(
@@ -201,8 +200,7 @@ const updateColonyUnclaimedStakes = async (
 
   if (!motionWithUnclaimedStake && unclaimedRewards.length) {
     motionsWithUnclaimedStakes.push({
-      transactionHash,
-      motionId,
+      motionId: databaseMotionId,
       unclaimedRewards,
     });
   }
@@ -217,7 +215,12 @@ const updateColonyUnclaimedStakes = async (
 };
 
 const updateStakerRewardsInDB = async (colonyAddress, motionData) => {
-  const { nativeMotionId, usersStakes, stakerRewards } = motionData;
+  const {
+    nativeMotionId,
+    usersStakes,
+    stakerRewards,
+    id: motionId,
+  } = motionData;
 
   const updatedStakerRewards = await Promise.all(
     // For every user who staked
@@ -238,14 +241,13 @@ const updateStakerRewardsInDB = async (colonyAddress, motionData) => {
 
   await graphqlRequest(updateColonyMotion, {
     input: {
-      id: motionData.id,
+      id: motionId,
       stakerRewards: updatedStakerRewards,
     },
   });
 
   await updateColonyUnclaimedStakes(
     colonyAddress,
-    transactionHash,
     motionId,
     updatedStakerRewards,
   );
