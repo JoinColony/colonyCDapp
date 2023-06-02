@@ -4,7 +4,6 @@ import { BigNumber } from 'ethers';
 import { useGetMembersForColonyQuery } from '~gql';
 import { Address, Colony, Member, MemberUser } from '~types';
 import { ManageReputationMotionPayload } from '~redux/sagas/motions/manageReputationMotion';
-
 import { notMaybe } from '~utils/arrays';
 
 import { FormValues } from './validation';
