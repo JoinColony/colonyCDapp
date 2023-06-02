@@ -39,16 +39,13 @@ const UserMenu: FC<UserMenuProps> = ({
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={tooltipProps}
-      classNames={clsx(
-        'p-6 rounded-lg flex border-gray-100 justify-start z-[9999] tooltip-container relative overflow-hidden',
-        {
-          'w-full border-none shadow-none': isMobile,
-          'w-[20.125rem]': !isMobile,
-          'h-[32rem] md:h-[23rem]': !isWalletConnected && !activeSubmenu,
-          'h-[35rem] md:h-[29rem]': isWalletConnected && !activeSubmenu,
-          'h-[16rem]': activeSubmenu,
-        },
-      )}
+      classNames={clsx(styles.userMenuPopup, 'tooltip-container', {
+        'w-full border-none shadow-none': isMobile,
+        'w-[20.125rem]': !isMobile,
+        'h-[32rem] md:h-[23rem]': !isWalletConnected && !activeSubmenu,
+        'h-[35rem] md:h-[29rem]': isWalletConnected && !activeSubmenu,
+        'h-[16rem]': activeSubmenu,
+      })}
     >
       <div
         className={clsx('absolute inset-0 p-6 transition-transform', {
@@ -139,7 +136,7 @@ const UserMenu: FC<UserMenuProps> = ({
         {isWalletConnected && (
           <div className="w-full mb-6 md:mb-5">
             <TitledContent title={{ id: 'userMenu.other' }}>
-              <Link to="/" className="flex items-center text-lg font-semibold md:font-normal md:text-md text-gray-900">
+              <Link to="/" className="flex items-center text-lg font-semibold md:font-normal md:text-md">
                 <Icon name="plugs" appearance={{ size: iconSize }} />
                 <p className="ml-2">{formatMessage({ id: 'userMenu.disconnectWalletTitle' })}</p>
               </Link>

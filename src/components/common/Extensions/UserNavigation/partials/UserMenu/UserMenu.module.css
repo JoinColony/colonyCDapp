@@ -1,3 +1,7 @@
 .mobileButtons {
   @apply w-full pb-6 mb-6 border-b border-b-gray-200 flex md:hidden items-center gap-1 md:pb-5 md:mb-5;
 }
+
+.userMenuPopup {
+  @apply p-6 rounded-lg flex border-gray-100 justify-start z-[9999] relative overflow-hidden bg-base-white;
+}

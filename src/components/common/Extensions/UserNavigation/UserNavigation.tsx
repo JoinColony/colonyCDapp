@@ -105,7 +105,7 @@ const UserNavigation: FC = () => {
           isFullRounded
           setTriggerRef={setWalletTriggerRef}
           onClick={() => isMobile && setIsWalletButtonVisible((prevState) => !prevState)}
-          className={clsx('md:border-gray-300 md:hover:border-blue-400', {
+          className={clsx('md:border-gray-200 md:hover:border-blue-400', {
             'px-4 py-2.5 border-base-white': isWalletVisible && isMobile,
             'p-0': !isWalletVisible && isMobile,
           })}
@@ -124,7 +124,7 @@ const UserNavigation: FC = () => {
       <div>
         {isWalletButtonVisible && (
           <Button
-            className={clsx('md:border-gray-300 md:hover:border-blue-400', {
+            className={clsx('md:border-gray-200 md:hover:border-blue-400', {
               'px-4 py-2.5 border-base-white': visible && isMobile,
               'p-0': !visible && isMobile,
             })}
