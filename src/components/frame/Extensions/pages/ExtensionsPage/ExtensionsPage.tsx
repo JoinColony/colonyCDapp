@@ -5,9 +5,9 @@ import ExtensionItem from '~common/Extensions/ExtensionItem';
 import { useExtensionsData } from '~hooks';
 import Spinner from '~shared/Extensions/Spinner';
 
-const displayName = 'frame.Extensions.pages.ExtensionPage';
+const displayName = 'frame.Extensions.pages.ExtensionsPage';
 
-const ExtensionPage: FC = () => {
+const ExtensionsPage: FC = () => {
   const { availableExtensionsData, installedExtensionsData } = useExtensionsData();
   const { formatMessage } = useIntl();
 
@@ -17,7 +17,7 @@ const ExtensionPage: FC = () => {
   );
 
   return (
-    <Spinner loadingText="incorporationPage">
+    <Spinner loadingText="extensionsPage">
       <h4 className="text-xl font-semibold mb-6">{formatMessage({ id: 'extensionsPage.availableExtensions' })}</h4>
       <h5 className="text-md font-semibold mb-4">{formatMessage({ id: 'extensionsPage.payments' })}</h5>
       <ul className="pb-6 border-b border-gray-100">
@@ -37,6 +37,6 @@ const ExtensionPage: FC = () => {
   );
 };
 
-ExtensionPage.displayName = displayName;
+ExtensionsPage.displayName = displayName;
 
-export default ExtensionPage;
+export default ExtensionsPage;

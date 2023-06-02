@@ -21,9 +21,9 @@ import { getAllUserRoles } from '~redux/transformers';
 import { useDialog } from '~shared/Dialog';
 import { NetworkContractUpgradeDialog } from '~common/Dialogs';
 
-const displayName = 'frame.Extensions.layouts.ExtensionLayout';
+const displayName = 'frame.Extensions.layouts.ExtensionsLayout';
 
-const ExtensionLayout: FC<PropsWithChildren> = ({ children }) => {
+const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
   const { loading } = useExtensionsData();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -96,6 +96,6 @@ const ExtensionLayout: FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
-ExtensionLayout.displayName = displayName;
+ExtensionsLayout.displayName = displayName;
 
-export default ExtensionLayout;
+export default ExtensionsLayout;

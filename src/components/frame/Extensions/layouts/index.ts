@@ -1,1 +1,1 @@
-export { default } from './ExtensionLayout';
+export { default } from './ExtensionsLayout';
