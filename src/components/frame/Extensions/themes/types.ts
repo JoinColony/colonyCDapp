@@ -2,7 +2,7 @@ export interface ITheme {
   [key: string]: string;
 }
 
-export interface IThemes {
+export interface IThemesList {
   [key: string]: ITheme;
 }
 

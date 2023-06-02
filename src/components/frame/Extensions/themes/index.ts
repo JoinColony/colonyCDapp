@@ -1,7 +1,7 @@
 import { light, dark } from './consts';
-import { IThemes } from './types';
+import { IThemesList } from './types';
 
-export const themeList: IThemes = {
+export const themeList: IThemesList = {
   light,
   dark,
 };
