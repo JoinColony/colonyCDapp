@@ -88,7 +88,6 @@ const ExtensionDetailsPage: FC = () => {
           />
         }
       >
-        {/* @TODO: Add images */}
         <div>
           <div className="mt:mt-[4.25rem] text-md text-gray-600">
             <FormattedMessage
