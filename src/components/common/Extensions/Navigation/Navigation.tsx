@@ -11,8 +11,8 @@ const Navigation: FC = () => {
   const navigationItems = useSideNavigation();
   const { pathname } = useLocation();
 
-  const currentPage = navigationItems.filter((element) => element.linkTo === pathname);
-  const { id } = currentPage[0];
+  const currentPathname = navigationItems.filter((item) => item.linkTo === pathname);
+  const { id } = currentPathname[0];
 
   const [selectedElement, setSelectedElement] = useState(id);
 
