@@ -52,11 +52,11 @@ import NotFoundRoute from './NotFoundRoute';
 import { ColonyContextProvider } from '~context/ColonyContext';
 import CreateColonyWizard from '~common/CreateColonyWizard';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
-import ExtensionLayout from '~frame/Extensions/layouts/ExtensionsLayout';
+import ExtensionsLayout from '~frame/Extensions/layouts/ExtensionsLayout';
 import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage';
 import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage/ColonyDetailsPage';
 import ReputationPage from '~frame/Extensions/pages/ReputationPage';
-import ExtensionPage from '~frame/Extensions/pages/ExtensionsPage';
+import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage';
 import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage';
 import IncorporationPage from '~frame/Extensions/pages/IncorporationPage';
 import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
@@ -156,10 +156,10 @@ const Routes = () => {
           path={COLONY_EXTENSION_DETAILS_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionLayout>
+              <ExtensionsLayout>
                 {/* <ExtensionDetails /> */}
                 <ExtensionDetailsPage />
-              </ExtensionLayout>
+              </ExtensionsLayout>
             </ColonyContextProvider>
           }
         />
@@ -179,9 +179,9 @@ const Routes = () => {
           path={COLONY_DETAILS_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionLayout>
+              <ExtensionsLayout>
                 <ColonyDetailsPage />
-              </ExtensionLayout>
+              </ExtensionsLayout>
             </ColonyContextProvider>
           }
         />
@@ -189,9 +189,9 @@ const Routes = () => {
           path={COLONY_REPUTATION_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionLayout>
+              <ExtensionsLayout>
                 <ReputationPage />
-              </ExtensionLayout>
+              </ExtensionsLayout>
             </ColonyContextProvider>
           }
         />
@@ -199,9 +199,9 @@ const Routes = () => {
           path={COLONY_PERMISSIONS_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionLayout>
+              <ExtensionsLayout>
                 <PermissionsPage />
-              </ExtensionLayout>
+              </ExtensionsLayout>
             </ColonyContextProvider>
           }
         />
@@ -209,9 +209,9 @@ const Routes = () => {
           path={COLONY_EXTENSIONS_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionLayout>
-                <ExtensionPage />
-              </ExtensionLayout>
+              <ExtensionsLayout>
+                <ExtensionsPage />
+              </ExtensionsLayout>
             </ColonyContextProvider>
           }
         />
@@ -219,9 +219,9 @@ const Routes = () => {
           path={COLONY_INTEGRATIONS_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionLayout>
+              <ExtensionsLayout>
                 <IntegrationsPage />
-              </ExtensionLayout>
+              </ExtensionsLayout>
             </ColonyContextProvider>
           }
         />
@@ -229,9 +229,9 @@ const Routes = () => {
           path={COLONY_INCORPORATION_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionLayout>
+              <ExtensionsLayout>
                 <IncorporationPage />
-              </ExtensionLayout>
+              </ExtensionsLayout>
             </ColonyContextProvider>
           }
         />
@@ -239,9 +239,9 @@ const Routes = () => {
           path={COLONY_ADVANCED_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionLayout>
+              <ExtensionsLayout>
                 <AdvancedPage />
-              </ExtensionLayout>
+              </ExtensionsLayout>
             </ColonyContextProvider>
           }
         />

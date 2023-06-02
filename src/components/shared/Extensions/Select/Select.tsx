@@ -97,11 +97,11 @@ const Select = <T extends any[]>({ list, selectedElement, handleChange }: Select
             }}
           >
             {option.linkTo ? (
-              <NavLink className="flex items-center w-full text-inherit" to={option.linkTo}>
+              <NavLink className="flex items-center w-full text-inherit py-2" to={option.linkTo}>
                 {option.label}
               </NavLink>
             ) : (
-              option.label
+              <span className="py-2">{option.label}</span>
             )}
           </li>
         ))}
