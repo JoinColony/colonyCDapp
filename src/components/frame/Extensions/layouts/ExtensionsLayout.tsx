@@ -21,7 +21,7 @@ import { getAllUserRoles } from '~redux/transformers';
 import { useDialog } from '~shared/Dialog';
 import { NetworkContractUpgradeDialog } from '~common/Dialogs';
 import { applyTheme } from '../themes/utils';
-import { Themes } from '../themes/enum';
+import { Theme } from '../themes/enum';
 import { usePageThemeContext } from '~context/PageThemeContext';
 
 const displayName = 'frame.Extensions.layouts.ExtensionsLayout';
@@ -49,7 +49,7 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
     });
 
   useEffect(() => {
-    applyTheme(isDarkMode ? Themes.dark : Themes.light);
+    applyTheme(isDarkMode ? Theme.dark : Theme.light);
   }, [isDarkMode]);
 
   if (loading) {

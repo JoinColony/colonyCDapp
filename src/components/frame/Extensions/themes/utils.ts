@@ -1,4 +1,4 @@
-import { themes } from './index';
+import { themeList } from './index';
 import { IMappedTheme, ITheme } from './types';
 
 export const mapTheme = (variables: ITheme): IMappedTheme => {
@@ -74,7 +74,7 @@ export const mapTheme = (variables: ITheme): IMappedTheme => {
 };
 
 export const applyTheme = (theme: string): void => {
-  const themeObject: IMappedTheme = mapTheme(themes[theme]);
+  const themeObject: IMappedTheme = mapTheme(themeList[theme]);
   if (!themeObject) return;
 
   const root = document.documentElement;
