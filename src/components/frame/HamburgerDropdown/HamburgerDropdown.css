@@ -16,9 +16,4 @@
   .activeDropdown {
     background-color: var(--grey-purple);
   }
-
-  li > a {
-    font-size: inherit;
-    font-weight: inherit;
-  }
 }

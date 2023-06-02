@@ -14,7 +14,7 @@ const ThemeSwitcher: FC = () => {
     <button
       type="button"
       aria-label="Theme switcher"
-      className="bg-gray-50 rounded flex items-center justify-between h-10 border border-gray-100 relative px-3"
+      className="bg-gray-50 rounded flex items-center justify-between h-10 border border-gray-100 relative px-3 w-full"
       onClick={() => setIsLightkMode((prevState) => !prevState)}
     >
       <span

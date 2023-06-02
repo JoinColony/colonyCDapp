@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { SelectProps } from './types';
 import styles from './Select.module.css';
 import Icon from '~shared/Icon';
+import NavLink from '~shared/Extensions/NavLink';
 
 const displayName = 'Extensions.Select';
 
@@ -95,7 +96,13 @@ const Select = <T extends any[]>({ list, selectedElement, handleChange }: Select
               setIsOptionsOpen(false);
             }}
           >
-            {option.label}
+            {option.linkTo ? (
+              <NavLink className="flex items-center w-full text-inherit" to={option.linkTo}>
+                {option.label}
+              </NavLink>
+            ) : (
+              option.label
+            )}
           </li>
         ))}
       </ul>

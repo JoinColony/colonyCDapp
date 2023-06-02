@@ -3,7 +3,13 @@
 
 export const COLONY_HOME_ROUTE = '/colony/:colonyName/*';
 export const COLONY_EVENTS_ROUTE = `/events`;
+export const COLONY_DETAILS_ROUTE = `/colony/:colonyName/details`;
+export const COLONY_REPUTATION_ROUTE = `/colony/:colonyName/reputation`;
+export const COLONY_PERMISSIONS_ROUTE = `/colony/:colonyName/permissions`;
 export const COLONY_EXTENSIONS_ROUTE = `/colony/:colonyName/extensions`;
+export const COLONY_INTEGRATIONS_ROUTE = `/colony/:colonyName/integrations`;
+export const COLONY_INCORPORATION_ROUTE = `/colony/:colonyName/incorporation`;
+export const COLONY_ADVANCED_ROUTE = `/colony/:colonyName/advanced`;
 export const COLONY_EXTENSION_DETAILS_ROUTE = `/colony/:colonyName/extensions/:extensionId/*`;
 export const COLONY_EXTENSION_SETUP_ROUTE = `/setup`;
 export const COLONY_FUNDING_ROUTE = `colony/:colonyName/funds`;
