@@ -4,27 +4,24 @@ import Header from '~frame/Extensions/Header';
 import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
 import Navigation from '~common/Extensions/Navigation';
 import PageTitle from '~common/Extensions/PageTitle';
-import TwoColumns from '~frame/Extensions/TwoColumns';
 import {
   useAppContext,
   useColonyContext,
   useColonyContractVersion,
   useEnabledExtensions,
-  useExtensionsData,
   useMobile,
   useTransformer,
 } from '~hooks';
-import { SpinnerLoader } from '~shared/Preloaders';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks';
 import CalamityBanner from '~common/Extensions/CalamityBanner/CalamityBanner';
 import { getAllUserRoles } from '~redux/transformers';
 import { useDialog } from '~shared/Dialog';
 import { NetworkContractUpgradeDialog } from '~common/Dialogs';
+import Spinner from '~shared/Extensions/Spinner';
 
 const displayName = 'frame.Extensions.layouts.ExtensionsLayout';
 
 const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
-  const { loading } = useExtensionsData();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
@@ -44,17 +41,8 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
       enabledExtensionData,
     });
 
-  if (loading) {
-    return (
-      <SpinnerLoader
-        loadingText={{ id: 'extensionsPage.loading' }}
-        appearance={{ theme: 'primary', size: 'massive' }}
-      />
-    );
-  }
-
   return (
-    <div>
+    <Spinner loadingText="extensionsPage">
       {canUpgrade && (
         <CalamityBanner
           buttonName="button.upgrade"
@@ -70,7 +58,7 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
       <div className="hidden">
         <Wallet />
       </div>
-      <main className="mt-9">
+      <main className="mt-9 mb-24">
         <div className="inner">
           {isMobile && <Navigation />}
           <div className="mt-9 sm:mt-6">
@@ -79,20 +67,10 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
               subtitle={formatMessage({ id: 'extensionsPage.description' })}
             />
           </div>
-          <div className="flex lg:gap-[6.25rem] md:gap-12 mt-9">
-            <TwoColumns
-              aside={
-                <div className="-mt-0.5">
-                  <Navigation />
-                </div>
-              }
-            >
-              {children}
-            </TwoColumns>
-          </div>
+          <div className="mt-10">{children}</div>
         </div>
       </main>
-    </div>
+    </Spinner>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useMobile, useSideNavigation } from '~hooks';
+
+import { useCurrentPage, useMobile, useSideNavigation } from '~hooks';
 import NavItem from './partials/NavItem';
 import Select from '~shared/Extensions/Select';
 
@@ -9,12 +9,9 @@ const displayName = 'common.Extensions.Navigation';
 const Navigation: FC = () => {
   const isMobile = useMobile();
   const navigationItems = useSideNavigation();
-  const { pathname } = useLocation();
+  const navId = useCurrentPage(navigationItems);
 
-  const currentPathname = navigationItems.filter((item) => item.linkTo === pathname);
-  const { id } = currentPathname[0];
-
-  const [selectedElement, setSelectedElement] = useState(id);
+  const [selectedElement, setSelectedElement] = useState(navId);
 
   const handleChange = (selectedOption: number) => {
     setSelectedElement(selectedOption);

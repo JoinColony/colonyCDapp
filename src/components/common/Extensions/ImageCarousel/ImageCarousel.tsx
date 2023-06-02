@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import styles from './ImageCarousel.module.css';
-import { ImageCarouselProps } from './ImageCarousel.types';
-import './ImageCarousel.css'; // to fix rendering styles in storybook
+import { ImageCarouselProps } from './types';
 import useWindowSize from '~hooks/useWindowSize';
 import { images } from './consts';
 
@@ -16,7 +15,6 @@ const ImageCarousel: FC<ImageCarouselProps> = ({ transitionTime = 300, slideUrls
   return (
     <div className={styles.carouselWrapper}>
       <Carousel
-        className="max-w-[23.75rem] sm:max-w-[49.0625rem] md:max-w-[35.75rem]"
         showArrows={false}
         showThumbs={false}
         showStatus={false}
