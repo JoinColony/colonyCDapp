@@ -11,7 +11,7 @@ const HeadingChunks = (chunks: React.ReactNode[]) => (
   <h4 className="font-semibold text-gray-900 mt-6 mb-4">{chunks}</h4>
 );
 
-const displayName = 'common.Extensions.Pages.ExtensionDetailsPage.partials.ExtensionDetails';
+const displayName = 'frame.Extensions.pages.ExtensionDetailsPage.partials.ExtensionDetails';
 
 const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData, canBeDeprecated, canBeUninstalled }) => {
   const { formatMessage } = useIntl();

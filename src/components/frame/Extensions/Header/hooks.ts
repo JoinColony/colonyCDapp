@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { useSelectedColony } from '~common/Extensions/ColonySwitcher/hooks';
 import { useAppContext, useDetectClickOutside, useMobile } from '~hooks';
-import { watchlistMock } from '~common/Extensions/ColonySwitcher/consts';
+import { watchListMock } from '~common/Extensions/ColonySwitcher/consts';
 
 export const useHeader = () => {
   const { userLoading } = useAppContext();
   const [isOpen, setIsOpen] = useState<boolean>();
 
-  const { colonyToDisplayAddress } = useSelectedColony(watchlistMock);
+  const { colonyToDisplayAddress } = useSelectedColony(watchListMock);
   const isMobile = useMobile();
   const popperTooltipOffset = !isMobile ? [120, 8] : [0, 8];
 
