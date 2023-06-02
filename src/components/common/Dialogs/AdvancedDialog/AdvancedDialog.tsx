@@ -150,8 +150,9 @@ const AdvancedDialog = ({
       permissionInfoTextValues: {
         permissionsList: <FormattedMessage {...MSG.recoveryPermissionsList} />,
       },
-      disabled: !isSupportedColonyVersion,
+      disabled: true, // !isSupportedColonyVersion, @TODO: disabled for now as we don't have the recovery mode implemented
       dataTest: 'recoveryDialogIndexItem',
+      comingSoon: true,
     },
     {
       title: MSG.upgradeTitle,
