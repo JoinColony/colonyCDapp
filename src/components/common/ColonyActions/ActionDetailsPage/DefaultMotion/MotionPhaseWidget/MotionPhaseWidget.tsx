@@ -12,6 +12,7 @@ import { VotingWidget } from './VotingWidget';
 import { RevealWidget } from './RevealWidget';
 import { VoteOutcome } from './VoteOutcome';
 import { MotionAction } from '~types/motions';
+import { RefetchAction } from '../../useGetColonyAction';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.MotionPhaseWidget';
@@ -30,6 +31,7 @@ const isMotionClaimed = (
 export interface PollingControls {
   startPollingAction: (pollingInterval: number) => void;
   stopPollingAction: () => void;
+  refetchAction: RefetchAction;
 }
 
 interface MotionPhaseWidgetProps extends PollingControls {
