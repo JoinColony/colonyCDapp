@@ -15,11 +15,10 @@ import { pipe, withMeta, mapPayload } from '~utils/actions';
 import { WizardDialogType, useNetworkInverseFee } from '~hooks';
 import { useGetMembersForColonyQuery } from '~gql';
 
+import { extractUsersFromColonyMemberData } from '../helpers';
+
 import DialogForm from './CreatePaymentDialogForm';
-import {
-  extractUsersFromColonyMemberData,
-  getCreatePaymentDialogPayload,
-} from './helpers';
+import { getCreatePaymentDialogPayload } from './helpers';
 import getValidationSchema from './validation';
 
 const displayName = 'common.CreatePaymentDialog';
@@ -44,6 +43,7 @@ const CreatePaymentDialog = ({
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
+  // @TODO: Could the below use the useGetColonyMembers hook?
   const { data } = useGetMembersForColonyQuery({
     skip: !colony.colonyAddress,
     variables: {
