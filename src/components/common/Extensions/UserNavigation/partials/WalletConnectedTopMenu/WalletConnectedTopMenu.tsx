@@ -50,7 +50,7 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
           <Avatar size="m" title={userName} avatar={avatar} />
           <div>
             <div className="flex items-center mb-0.5">
-              <p className="text-gray-900 font-semibold text-xl">{userName}</p>
+              <p className="font-semibold text-xl">{userName}</p>
               {isVerified && (
                 <span className="ml-2 flex shrink-0 [&_svg]:text-blue-400">
                   <Icon name="verified" appearance={{ size: 'tiny' }} />
@@ -80,7 +80,7 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
             </button>
           </div>
         </div>
-        <Link to="/" className="flex items-center text-gray-900">
+        <Link to="/" className="flex items-center">
           <Icon name="user-circle-gear" appearance={{ size: 'tiny' }} />
           <p className="ml-2 text-lg font-semibold md:font-normal md:text-md">
             {formatMessage({ id: 'userMenu.menageTitle' })}

@@ -55,7 +55,7 @@ const ExtensionDetailsPage: FC = () => {
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center">
                 <Icon name={extensionData.icon} appearance={{ size: 'large' }} />
-                <h4 className="ml-2 text-xl font-semibold text-gray-900">{formatMessage(extensionData.name)}</h4>
+                <h4 className="ml-2 text-xl font-semibold">{formatMessage(extensionData.name)}</h4>
               </div>
               <div>
                 {!isExtensionInstalled && (

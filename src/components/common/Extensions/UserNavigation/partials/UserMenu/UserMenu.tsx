@@ -48,7 +48,7 @@ const UserMenu: FC<UserMenuProps> = ({
       })}
     >
       <div
-        className={clsx('absolute inset-0 p-6 transition-transform text-gray-900', {
+        className={clsx('absolute inset-0 p-6 transition-transform', {
           'translate-x-0': activeSubmenu,
           'translate-x-full': !activeSubmenu,
         })}
@@ -105,7 +105,7 @@ const UserMenu: FC<UserMenuProps> = ({
           <TitledContent title={{ id: 'userMenu.optionsTitle' }}>
             <ul className="text-lg font-semibold md:font-normal md:text-md">
               {userMenuItems.map((item) => (
-                <li className="mb-4 last:mb-0 text-gray-900" id={item.id}>
+                <li className="mb-4 last:mb-0" id={item.id}>
                   {item.link ? (
                     <Link to={item.link} className="flex items-center justify-between">
                       <div className="flex items-center">
@@ -136,7 +136,7 @@ const UserMenu: FC<UserMenuProps> = ({
         {isWalletConnected && (
           <div className="w-full mb-6 md:mb-5">
             <TitledContent title={{ id: 'userMenu.other' }}>
-              <Link to="/" className="flex items-center text-lg font-semibold md:font-normal md:text-md text-gray-900">
+              <Link to="/" className="flex items-center text-lg font-semibold md:font-normal md:text-md">
                 <Icon name="plugs" appearance={{ size: iconSize }} />
                 <p className="ml-2">{formatMessage({ id: 'userMenu.disconnectWalletTitle' })}</p>
               </Link>
