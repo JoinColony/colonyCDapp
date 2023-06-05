@@ -30,7 +30,6 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
   const { extensionData } = useExtensionData(extensionId ?? '');
   const { status, badgeMessage } = useExtensionsBadge(extensionData);
   const [extensionContentParameters, setExtensionContentParameters] = useState<AccordionContent[]>();
-  // const [prevCustomExtentionState, setPrevCustomExtentionState] = useState();
 
   // @TODO: fix validation
   const validationSchema = yup.object().shape({
@@ -109,8 +108,6 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
-
-  const isSelectedCustemAdvancedRadioButton = getValues('governance');
 
   const isCustemExtentionErrorExist = [
     'totalStakeFraction',
@@ -199,7 +196,6 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
         },
       };
 
-      if (isSelectedCustemAdvancedRadioButton !== 'radio-button-4') return;
       await asyncFunction(extensionValues);
       // @TODO: show toast notification
       handleFormSuccess();
@@ -223,27 +219,19 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
       switch (getValues('governance')) {
         case 'radio-button-1':
           setExtensionContentParameters(extensionContent(extensionContentSpeedOverSecurity) as AccordionContent[]);
-          // setPrevCustomExtentionState(extensionContentSpeedOverSecurity);
           updateGovernanceFormFields(extensionContentSpeedOverSecurity);
-          // schema(extensionContentSpeedOverSecurity);
           break;
         case 'radio-button-2':
           setExtensionContentParameters(extensionContent(extensionContentSecurityOverSpeed) as AccordionContent[]);
-          // setPrevCustomExtentionState(extensionContentSpeedOverSecurity);
           updateGovernanceFormFields(extensionContentSecurityOverSpeed);
-          // schema(extensionContentSpeedOverSecurity);
           break;
         case 'radio-button-3':
           setExtensionContentParameters(extensionContent(extensionContentTestingGovernance) as AccordionContent[]);
-          // setPrevCustomExtentionState(extensionContentSpeedOverSecurity);
           updateGovernanceFormFields(extensionContentTestingGovernance);
-          // schema(extensionContentSpeedOverSecurity);
           break;
         default:
           setExtensionContentParameters(extensionContent(extensionData?.initializationParams) as AccordionContent[]);
           updateGovernanceFormFields(extensionData?.initializationParams);
-          // schema(extensionContentSpeedOverSecurity);
-          // setPrevCustomExtentionState(extensionContentSpeedOverSecurity);
           break;
       }
     },
