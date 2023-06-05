@@ -1,5 +1,6 @@
 import React, { FC, PropsWithChildren, useEffect } from 'react';
 import { useIntl } from 'react-intl';
+import { ToastContainer } from 'react-toastify';
 import Header from '~frame/Extensions/Header';
 import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
 import Navigation from '~common/Extensions/Navigation';
@@ -21,6 +22,8 @@ import Spinner from '~shared/Extensions/Spinner';
 import { applyTheme } from '../themes/utils';
 import { Theme } from '../themes/enum';
 import { usePageThemeContext } from '~context/PageThemeContext';
+import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
+import styles from '~shared/Extensions/Toast/Toast.module.css';
 
 const displayName = 'frame.Extensions.layouts.ExtensionsLayout';
 
@@ -61,12 +64,22 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
           {formatMessage({ id: 'calamityBanner.available' })}
         </CalamityBanner>
       )}
+      <ToastContainer
+        className={styles.toastNotification}
+        autoClose={3000}
+        hideProgressBar
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        pauseOnHover
+        closeButton={CloseButton}
+      />
       <Header />
       {/* @TODO: Remove wallet component when we have a proper wallet */}
       <div className="hidden">
         <Wallet />
       </div>
-      <main className="mt-9 mb-24">
+      <main className="mt-9 mb-24 bg-base-white">
         <div className="inner">
           {isMobile && <Navigation />}
           <div className="mt-9 sm:mt-6">

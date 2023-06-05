@@ -11,13 +11,13 @@ const Toast: FC<ToastProps> = ({ type = 'success', title, description, linkName,
     <div
       className={clsx({
         'text-success-400': type === 'success',
-        'text-warning-400': type === 'alert',
-        'text-negative-400': type === 'warning',
+        'text-warning-400': type === 'warn',
+        'text-negative-400': type === 'error',
       })}
     >
       <Icon
         appearance={{ size: 'normal' }}
-        name={(type === 'warning' && 'x-circle') || (type === 'alert' && 'warning-circle') || 'check-circle'}
+        name={(type === 'error' && 'x-circle') || (type === 'warn' && 'warning-circle') || 'check-circle'}
       />
     </div>
     <div className="flex flex-col ml-[1.140625rem]">
@@ -28,8 +28,8 @@ const Toast: FC<ToastProps> = ({ type = 'success', title, description, linkName,
           to={url}
           className={clsx('text-xs font-medium underline', {
             'text-success-400': type === 'success',
-            'text-warning-400': type === 'alert',
-            'text-negative-400': type === 'warning',
+            'text-warning-400': type === 'warn',
+            'text-negative-400': type === 'error',
           })}
         >
           {linkName}
