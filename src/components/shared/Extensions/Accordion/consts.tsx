@@ -1,5 +1,4 @@
 import React from 'react';
-import { AccordionContent } from './types';
 import ContentTypeAccordionContent from './partials/ContentTypeAccordionContent';
 import ContentTypeAccordionHeader from './partials/ContentTypeAccordionHeader';
 import ContentTypeText from './partials/ContentTypeText';
@@ -10,7 +9,7 @@ import SpecialPercentageInput from './partials/SpecialPercentageInput';
  * @TODO: display data from API, update components
  */
 
-export const accordionMocksContent: AccordionContent[] = [
+export const accordionMocksContent = [
   {
     id: 'step-0',
     title: 'Show extension parameters',

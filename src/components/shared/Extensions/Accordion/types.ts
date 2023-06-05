@@ -15,9 +15,11 @@ export interface ContentTypeProps {
     | {
         defaultMessage: string;
       };
-  subTitle?: {
-    defaultMessage: string;
-  };
+  subTitle?:
+    | string
+    | {
+        defaultMessage: string;
+      };
   details?: string;
 }
 
@@ -74,9 +76,9 @@ export interface AccordionContentItemProps {
 
 export interface SpecialInputProps {
   defaultValue?: number | string;
-  maxValue: number;
-  minValue: number;
-  name: string;
+  maxValue?: number;
+  minValue?: number;
+  name?: string;
   register?: UseFormRegister<FormRadioButton | FormPercentageInput>;
   errors?: Partial<
     | FieldErrorsImpl<{
