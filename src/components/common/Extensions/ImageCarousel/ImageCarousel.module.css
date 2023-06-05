@@ -1,11 +1,15 @@
+.carouselWrapper {
+  @apply lg:w-[35.75rem];
+}
+
 .carouselWrapper [class~='carousel'] {
-  @apply relative pb-9 overflow-visible;
+  @apply relative pb-9;
 }
 
 .carouselWrapper [class~='slide'] {
-  @apply max-w-[31.875rem] sm:mr-4;
+  @apply sm:h-[15.5rem] sm:mr-4 [&_img]:object-cover [&_img]:sm:h-[15.5rem]  min-w-full sm:min-w-[31.875rem];
 }
 
 .carouselWrapper [class~='control-dots'] {
-  @apply bottom-0 overflow-visible flex justify-center m-0;
+  @apply bottom-0 flex justify-center m-0;
 }

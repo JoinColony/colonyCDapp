@@ -88,18 +88,16 @@ const ExtensionDetailsPage: FC = () => {
           />
         }
       >
-        <div>
-          <div className="mt:mt-[4.25rem] text-md text-gray-600">
-            <FormattedMessage
-              {...extensionData.descriptionLong}
-              values={{
-                h4: HeadingChunks,
-              }}
-            />
-          </div>
-          <div className="mt-6">
-            <SupportingDocuments />
-          </div>
+        <div className="mt:mt-[4.25rem] text-md text-gray-600">
+          <FormattedMessage
+            {...extensionData.descriptionLong}
+            values={{
+              h4: HeadingChunks,
+            }}
+          />
+        </div>
+        <div className="mt-6">
+          <SupportingDocuments />
         </div>
       </ThreeColumns>
     </Spinner>
