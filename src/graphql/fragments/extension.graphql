@@ -9,3 +9,8 @@ fragment Extension on ColonyExtension {
   isDeleted
   isInitialized
 }
+
+fragment ExtensionDisplayFragment on ColonyExtension {
+  address: id
+  hash
+}

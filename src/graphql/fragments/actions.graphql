@@ -12,9 +12,11 @@ fragment ColonyAction on ColonyAction {
     ...ColonyDisplayFragment
   }
   initiatorExtension {
-    ...Extension
+    ...ExtensionDisplayFragment
   }
   initiatorToken {
+    # NOTE: Token doesn't have a lightweight Display-only Fragment, as the props
+    # on that fragment are just 2 less than the actual "full" version of the Fragment
     ...Token
   }
   recipientAddress
@@ -25,14 +27,18 @@ fragment ColonyAction on ColonyAction {
     ...ColonyDisplayFragment
   }
   recipientExtension {
-    ...Extension
+    ...ExtensionDisplayFragment
   }
   recipientToken {
+    # NOTE: Token doesn't have a lightweight Display-only Fragment, as the props
+    # on that fragment are just 2 less than the actual "full" version of the Fragment
     ...Token
   }
   amount
   tokenAddress
   token {
+    # NOTE: Token doesn't have a lightweight Display-only Fragment, as the props
+    # on that fragment are just 2 less than the actual "full" version of the Fragment
     ...Token
   }
   fromDomain {
