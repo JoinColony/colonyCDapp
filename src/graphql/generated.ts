@@ -332,10 +332,10 @@ export type ColonyMetadataChangelogInput = {
 
 export type ColonyRole = {
   __typename?: 'ColonyRole';
-  colonyRoleDomainId: Scalars['ID'];
   colonyRolesId?: Maybe<Scalars['ID']>;
   createdAt: Scalars['AWSDateTime'];
   domain: Domain;
+  domainId: Scalars['ID'];
   id: Scalars['ID'];
   latestBlock: Scalars['Int'];
   role_0?: Maybe<Scalars['Boolean']>;
@@ -486,8 +486,8 @@ export type CreateColonyMetadataInput = {
 };
 
 export type CreateColonyRoleInput = {
-  colonyRoleDomainId: Scalars['ID'];
   colonyRolesId?: InputMaybe<Scalars['ID']>;
+  domainId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
   latestBlock: Scalars['Int'];
   role_0?: InputMaybe<Scalars['Boolean']>;
@@ -1067,8 +1067,8 @@ export type ModelColonyMetadataFilterInput = {
 
 export type ModelColonyRoleConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyRoleConditionInput>>>;
-  colonyRoleDomainId?: InputMaybe<ModelIdInput>;
   colonyRolesId?: InputMaybe<ModelIdInput>;
+  domainId?: InputMaybe<ModelIdInput>;
   latestBlock?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyRoleConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyRoleConditionInput>>>;
@@ -1089,8 +1089,8 @@ export type ModelColonyRoleConnection = {
 
 export type ModelColonyRoleFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyRoleFilterInput>>>;
-  colonyRoleDomainId?: InputMaybe<ModelIdInput>;
   colonyRolesId?: InputMaybe<ModelIdInput>;
+  domainId?: InputMaybe<ModelIdInput>;
   id?: InputMaybe<ModelIdInput>;
   latestBlock?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyRoleFilterInput>;
@@ -1492,6 +1492,7 @@ export type ModelSubscriptionColonyMetadataFilterInput = {
 
 export type ModelSubscriptionColonyRoleFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyRoleFilterInput>>>;
+  domainId?: InputMaybe<ModelSubscriptionIdInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   latestBlock?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyRoleFilterInput>>>;
@@ -3171,8 +3172,8 @@ export type UpdateColonyMetadataInput = {
 };
 
 export type UpdateColonyRoleInput = {
-  colonyRoleDomainId?: InputMaybe<Scalars['ID']>;
   colonyRolesId?: InputMaybe<Scalars['ID']>;
+  domainId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
   latestBlock?: InputMaybe<Scalars['Int']>;
   role_0?: InputMaybe<Scalars['Boolean']>;
