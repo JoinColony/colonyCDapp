@@ -32,6 +32,7 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
   const [extensionContentParameters, setExtensionContentParameters] = useState<AccordionContent[]>();
   // const [prevCustomExtentionState, setPrevCustomExtentionState] = useState();
 
+  // @TODO: fix validation
   const validationSchema = yup.object().shape({
     governance: yup
       .string()
