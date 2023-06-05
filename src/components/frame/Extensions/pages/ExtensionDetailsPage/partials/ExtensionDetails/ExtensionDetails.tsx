@@ -17,7 +17,6 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData, canBeDepre
   return (
     <div>
       <SpecificSidePanel statuses={status} sidePanelData={sidePanelData} />
-      {/* @TODO: Add functionality and modals to uninstall extension */}
       <div className="sm:w-[20.375rem]">
         {canBeDeprecated && (
           <div className="mt-6">
