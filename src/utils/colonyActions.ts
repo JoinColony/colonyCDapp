@@ -503,10 +503,7 @@ export const normalizeRolesForAction = (
     { id: 6, setTo: roles.role_6 },
   ];
   return extractedRoles.filter(
-    ({ setTo }) => setTo !== null,
-    /*
-     * Have to force cast it, since TS doesn't pick up the above filter
-     */
+    ({ setTo }) => setTo !== null && setTo !== undefined,
   ) as ActionUserRoles[];
 };
 
