@@ -1,11 +1,12 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { format } from 'date-fns';
 import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
 import { isInstalledExtensionData } from '~utils/extensions';
-import { useUserByNameOrAddress } from '~hooks';
+import { useUserByNameOrAddress, useAsyncFunction, useColonyContext } from '~hooks';
 import UserAvatar from '~shared/Extensions/UserAvatar';
 import { AnyExtensionData, InstalledExtensionData } from '~types';
 import { SidePanelDataProps } from '~common/Extensions/SpecificSidePanel/types';
+import { ActionTypes } from '~redux';
 
 export const useExtensionDetails = (extensionData: AnyExtensionData) => {
   const [status, setStatus] = useState<ExtensionStatusBadgeMode>('disabled');
@@ -60,5 +61,29 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
     },
   ];
 
-  return { status, sidePanelData };
+  const submit = ActionTypes.EXTENSION_DEPRECATE;
+  const error = ActionTypes.EXTENSION_DEPRECATE_ERROR;
+  const success = ActionTypes.EXTENSION_DEPRECATE_SUCCESS;
+  const { colony } = useColonyContext();
+  const { extensionId } = extensionData;
+
+  const extensionValues = useMemo(() => {
+    return {
+      colonyAddress: colony?.colonyAddress,
+      extensionId,
+      isToDeprecate: true,
+    };
+  }, [colony?.colonyAddress, extensionId]);
+
+  const asyncFunction = useAsyncFunction({ submit, error, success });
+
+  const handleDeprecate = useCallback(async () => {
+    try {
+      await asyncFunction(extensionValues);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [asyncFunction, extensionValues]);
+
+  return { status, sidePanelData, handleDeprecate };
 };
