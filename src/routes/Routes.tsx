@@ -44,6 +44,7 @@ import {
   COLONY_INTEGRATIONS_ROUTE,
   COLONY_INCORPORATION_ROUTE,
   COLONY_ADVANCED_ROUTE,
+  COLONY_EXTENSION_DETAILS_SETUP_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -61,7 +62,7 @@ import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage';
 import IncorporationPage from '~frame/Extensions/pages/IncorporationPage';
 import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
 import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
-import LazyConsensusPage from '~frame/Extensions/Pages/LazyConsensusPage/LazyConsensusPage';
+import LazyConsensusPage from '~frame/Extensions/pages/LazyConsensusPage';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -158,8 +159,17 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsLayout>
-                <LazyConsensusPage />
                 <ExtensionDetailsPage />
+              </ExtensionsLayout>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_EXTENSION_DETAILS_SETUP_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsLayout>
+                <LazyConsensusPage />
               </ExtensionsLayout>
             </ColonyContextProvider>
           }

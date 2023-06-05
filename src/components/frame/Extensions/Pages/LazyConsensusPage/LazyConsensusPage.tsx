@@ -28,8 +28,8 @@ const LazyConsensusPage = () => {
         <ThreeColumns
           leftAside={<Navigation />}
           topRow={
-            <div className="flex items-center gap-12 justify-between">
-              <div className="flex items-center gap-2">
+            <div className="flex sm:items-center gap-5 sm:gap-12 justify-between flex-col sm:flex-row">
+              <div className="flex sm:items-center gap-2 flex-col sm:flex-row">
                 <Icon name={extensionData?.icon || ''} appearance={{ size: 'large' }} />
                 {extensionData?.name?.defaultMessage && (
                   <h4 className="ml-2 text-xl font-semibold text-gray-900">
@@ -38,12 +38,19 @@ const LazyConsensusPage = () => {
                 )}
 
                 {/* @TODO: add condition to show/hide pills */}
-                <ExtensionStatusBadge mode="governance" text={formatMessage({ id: 'extensionsPage.governance' })} />
+                <div className="flex justify-between items-center w-full sm:w-auto mt-5 sm:mt-0">
+                  <ExtensionStatusBadge mode="governance" text={formatMessage({ id: 'extensionsPage.governance' })} />
+                  <span className="flex sm:hidden text-gray-400 text-sm">{`17,876 ${formatMessage({
+                    id: 'active.installs',
+                  })}`}</span>
+                </div>
               </div>
 
               <div className="sm:ml-4">
                 <div className="flex gap-6 items-center justify-end min-h-[2rem]">
-                  <span className="text-gray-400 text-sm">{`17,876 ${formatMessage({ id: 'active.installs' })}`}</span>
+                  <span className="hidden sm:flex text-gray-400 text-sm">{`17,876 ${formatMessage({
+                    id: 'active.installs',
+                  })}`}</span>
                   {!extensionData?.isInitialized && (
                     <Button mode="primarySolid" isFullSize={isMobile} type="submit">
                       {formatMessage({ id: 'button.enable' })}

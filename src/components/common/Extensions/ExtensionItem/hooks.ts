@@ -33,7 +33,10 @@ export const useExtensionItem = (extensionId: string) => {
     }
   }, [asyncFunction, extensionValues]);
 
-  const extensionUrl = `/colony/${colony?.name}/extensions/${extensionId}`;
+  const extensionUrl =
+    extensionId === 'VotingReputation'
+      ? `/colony/${colony?.name}/extensions/${extensionId}/setup`
+      : `/colony/${colony?.name}/extensions/${extensionId}`;
 
   return {
     extensionUrl,
