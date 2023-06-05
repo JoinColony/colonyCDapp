@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
-import { useMobile, useSideNavigation } from '~hooks';
+
+import { useCurrentPage, useMobile, useSideNavigation } from '~hooks';
 import NavItem from './partials/NavItem';
 import Select from '~shared/Extensions/Select';
 
@@ -7,14 +8,14 @@ const displayName = 'common.Extensions.Navigation';
 
 const Navigation: FC = () => {
   const isMobile = useMobile();
+  const navigationItems = useSideNavigation();
+  const navId = useCurrentPage(navigationItems);
 
-  const [selectedElement, setSelectedElement] = useState(0);
+  const [selectedElement, setSelectedElement] = useState(navId);
 
   const handleChange = (selectedOption: number) => {
     setSelectedElement(selectedOption);
   };
-
-  const navigationItems = useSideNavigation();
 
   return (
     <nav role="navigation" className="flex flex-col w-full">

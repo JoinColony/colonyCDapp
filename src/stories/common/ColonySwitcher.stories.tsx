@@ -5,7 +5,7 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import ColonySwitcher, { ColoniesDropdown, ColonyAvatarWrapper } from '~common/Extensions/ColonySwitcher';
-import { watchlistMock } from '~common/Extensions/ColonySwitcher/consts';
+import { watchListMock } from '~common/Extensions/ColonySwitcher/consts';
 import { useSelectedColony } from '~common/Extensions/ColonySwitcher/hooks';
 import { useAppContext, useDetectClickOutside, useMobile } from '~hooks';
 import Icon from '~shared/Icon';
@@ -28,7 +28,7 @@ const ColonySwitcherWithHooks = () => {
   const apolloClient = getContext(ContextModule.ApolloClient);
   const [isOpen, setIsOpen] = useState<boolean>();
 
-  const { colonyToDisplay, colonyToDisplayAddress } = useSelectedColony(watchlistMock);
+  const { colonyToDisplay, colonyToDisplayAddress } = useSelectedColony(watchListMock);
   const isMobile = useMobile();
   const popperTooltipOffset = !isMobile ? [120, 8] : [0, 8];
 
@@ -100,15 +100,15 @@ const ColonySwitcherWithHooks = () => {
                           ),
                         })}
                       >
-                        {!!watchlistMock.length && !userLoading && (
-                          <ColoniesDropdown watchlist={[...watchlistMock].sort(sortByDate)} />
+                        {!!watchListMock.length && !userLoading && (
+                          <ColoniesDropdown watchlist={[...watchListMock].sort(sortByDate)} />
                         )}
                       </div>
                     )}
                     {isMobile && (
                       <ColonyDropdownMobile isOpen={isOpen} userLoading={userLoading}>
-                        {!!watchlistMock.length && (
-                          <ColoniesDropdown watchlist={[...watchlistMock].sort(sortByDate)} isMobile={isMobile} />
+                        {!!watchListMock.length && (
+                          <ColoniesDropdown watchlist={[...watchListMock].sort(sortByDate)} isMobile={isMobile} />
                         )}
                       </ColonyDropdownMobile>
                     )}

@@ -46,7 +46,6 @@ const ColonyHome = () => {
             <Route path={COLONY_EXTENSIONS_ROUTE} element={<ColonyExtensions />} />
             <Route path={COLONY_EXTENSION_DETAILS_ROUTE} element={<ExtensionDetails />} />
           </Route>
-
           <Route path="*" element={<NotFoundRoute />} />
         </RoutesSwitch>
       );

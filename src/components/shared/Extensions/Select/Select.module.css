@@ -15,7 +15,7 @@
 }
 
 .li {
-  @apply flex items-center justify-between font-normal text-md leading-5 rounded cursor-pointer transition-all duration-normal hover:text-blue-400 py-2;
+  @apply flex items-center justify-between font-normal text-md leading-5 rounded cursor-pointer transition-all duration-normal hover:text-blue-400;
 }
 
 .icon {

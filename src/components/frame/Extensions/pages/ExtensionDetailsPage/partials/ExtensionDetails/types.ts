@@ -2,4 +2,6 @@ import { AnyExtensionData } from '~types';
 
 export interface ExtensionDetailsProps {
   extensionData: AnyExtensionData;
+  canBeDeprecated: boolean;
+  canBeUninstalled: boolean;
 }

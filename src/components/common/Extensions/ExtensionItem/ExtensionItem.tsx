@@ -21,16 +21,16 @@ const ExtensionItem: FC<ExtensionItemProps> = ({ title, description, version, ic
     <div className="flex items-center flex-shrink-0">
       <Icon name={icon} appearance={{ size: 'large' }} />
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between ml-4 w-full gap-6 sm:gap-12">
-        <div className="max-w-[47.75rem]">
+        <div>
           <div className="flex items-center">
             <h5 className="text-md font-medium mr-2">{formatMessage(title)}</h5>
             <p className="text-xs font-medium text-gray-600 mr-2">v{version}</p>
             <ExtensionStatusBadge mode={status} text={badgeMessage} />
           </div>
-          <p className="text-sm text-gray-600 mt-1">{formatMessage(description)}</p>
+          <p className="text-sm text-gray-600 mt-0.5">{formatMessage(description)}</p>
         </div>
         {isExtensionInstalled && (
-          <div>
+          <div className="sm:ml-4 flex-shrink-0">
             <Link to={extensionUrl} className={styles.extensionItemButton}>
               <p className="text-sm font-medium">{formatMessage({ id: 'extension.manageButton' })}</p>
             </Link>

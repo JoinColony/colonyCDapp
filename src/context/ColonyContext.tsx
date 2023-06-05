@@ -7,6 +7,7 @@ import { Colony } from '~types';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import { useCanInteractWithColony } from '~hooks';
+import { PageThemeContextProvider } from './PageThemeContext';
 
 interface ColonyContextValue {
   colony?: Colony;
@@ -60,7 +61,11 @@ export const ColonyContextProvider = ({ children }: { children: ReactNode }) => 
     return <NotFoundRoute />;
   }
 
-  return <ColonyContext.Provider value={colonyContext}>{children}</ColonyContext.Provider>;
+  return (
+    <ColonyContext.Provider value={colonyContext}>
+      <PageThemeContextProvider>{children}</PageThemeContextProvider>
+    </ColonyContext.Provider>
+  );
 };
 
 ColonyContext.displayName = displayName;
