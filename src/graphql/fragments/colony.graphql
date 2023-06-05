@@ -40,6 +40,21 @@ fragment Colony on Colony {
   metadata {
     ...ColonyMetadata
   }
+  roles {
+    items {
+      ...ColonyRole
+    }
+  }
+}
+
+fragment ColonyDisplayFragment on Colony {
+  colonyAddress: id
+  name
+  metadata {
+    displayName
+    avatar
+    thumbnail
+  }
 }
 
 fragment ColonyTokensConnection on ModelColonyTokensConnection {
@@ -118,4 +133,19 @@ fragment ChainFundsClaim on ColonyChainFundsClaim {
   createdAtBlock
   createdAt
   amount
+}
+
+fragment ColonyRole on ColonyRole {
+  id
+  domain {
+    # @TODO Make a "Light" fragment out of this
+    nativeId
+  }
+  targetAddress
+  role_0
+  role_1
+  role_2
+  role_3
+  role_5
+  role_6
 }

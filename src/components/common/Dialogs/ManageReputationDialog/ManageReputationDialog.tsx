@@ -5,9 +5,13 @@ import { ColonyRole } from '@colony/colony-js';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import { WizardDialogType, useTransformer, useAppContext } from '~hooks';
+import {
+  WizardDialogType,
+  useUserAccountRegistered,
+  useAppContext,
+} from '~hooks';
 
-import { getAllUserRoles } from '~redux/transformers';
+import { getAllUserRoles } from '~transformers';
 import { userHasRole } from '~utils/checks';
 import { formatText } from '~utils/intl';
 
@@ -60,23 +64,21 @@ const ManageReputation = ({
   nextStepAwardReputation,
   enabledExtensionData,
 }: Props) => {
-  const { wallet, user } = useAppContext();
+  const { wallet } = useAppContext();
 
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
-  ]);
+  const userHasAccountRegistered = useUserAccountRegistered();
+
+  const allUserRoles = getAllUserRoles(colony, wallet?.address || '');
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
-  const hasRegisteredProfile = !!user?.name && !!wallet?.address;
   const canSmiteReputation =
-    hasRegisteredProfile &&
+    userHasAccountRegistered &&
     (userHasRole(allUserRoles, ColonyRole.Arbitration) ||
       isVotingReputationEnabled);
 
   const canAwardReputation =
-    hasRegisteredProfile &&
+    userHasAccountRegistered &&
     (userHasRole(allUserRoles, ColonyRole.Root) || isVotingReputationEnabled);
 
   const items = [

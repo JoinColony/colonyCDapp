@@ -6,15 +6,39 @@ fragment ColonyAction on ColonyAction {
   blockNumber
   initiatorAddress
   initiatorUser {
-    ...User
+    ...UserDisplayFragment
+  }
+  initiatorColony {
+    ...ColonyDisplayFragment
+  }
+  initiatorExtension {
+    ...ExtensionDisplayFragment
+  }
+  initiatorToken {
+    # NOTE: Token doesn't have a lightweight Display-only Fragment, as the props
+    # on that fragment are just 2 less than the actual "full" version of the Fragment
+    ...Token
   }
   recipientAddress
-  recipient {
-    ...User
+  recipientUser {
+    ...UserDisplayFragment
+  }
+  recipientColony {
+    ...ColonyDisplayFragment
+  }
+  recipientExtension {
+    ...ExtensionDisplayFragment
+  }
+  recipientToken {
+    # NOTE: Token doesn't have a lightweight Display-only Fragment, as the props
+    # on that fragment are just 2 less than the actual "full" version of the Fragment
+    ...Token
   }
   amount
   tokenAddress
   token {
+    # NOTE: Token doesn't have a lightweight Display-only Fragment, as the props
+    # on that fragment are just 2 less than the actual "full" version of the Fragment
     ...Token
   }
   fromDomain {
@@ -25,4 +49,13 @@ fragment ColonyAction on ColonyAction {
   }
   createdAt
   newColonyVersion
+  roles {
+    role_0
+    role_1
+    role_2
+    role_3
+    role_5
+    role_6
+  }
+  individualEvents
 }

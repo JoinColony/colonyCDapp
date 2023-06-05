@@ -4,8 +4,12 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import { WizardDialogType, useTransformer, useAppContext } from '~hooks';
-import { getAllUserRoles } from '~redux/transformers';
+import {
+  WizardDialogType,
+  useUserAccountRegistered,
+  useAppContext,
+} from '~hooks';
+import { getAllUserRoles } from '~transformers';
 import { canArchitect, hasRoot } from '~utils/checks';
 
 const displayName = 'common.ManageDomainsDialog';
@@ -75,16 +79,15 @@ const ManageDomainsDialog = ({
   colony,
   enabledExtensionData,
 }: Props) => {
-  const { wallet, user } = useAppContext();
+  const { wallet } = useAppContext();
 
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
-  ]);
-  const hasRegisteredProfile = !!user?.name && !!wallet?.address;
-  const hasRootPermission = hasRegisteredProfile && hasRoot(allUserRoles);
+  const userHasAccountRegistered = useUserAccountRegistered();
+
+  const allUserRoles = getAllUserRoles(colony, wallet?.address || '');
+
+  const hasRootPermission = userHasAccountRegistered && hasRoot(allUserRoles);
   const canCreateEditDomain =
-    hasRegisteredProfile && canArchitect(allUserRoles);
+    userHasAccountRegistered && canArchitect(allUserRoles);
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 

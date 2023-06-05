@@ -13,6 +13,10 @@ import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import {
+  formatRolesTitle,
+  getColonyRoleSetTitleValues,
+} from '~utils/colonyActions';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
@@ -45,7 +49,8 @@ export const mapColonyActionToExpectedFormat = (
   actionData: ColonyAction,
   colony?: Colony,
 ) => {
-  // const formattedRolesTitle = formatRolesTitle(item.roles); // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
+  //  // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
+  const formattedRolesTitle = formatRolesTitle(actionData.roles);
 
   return {
     ...actionData,
@@ -55,7 +60,7 @@ export const mapColonyActionToExpectedFormat = (
         decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
-    // direction: formattedRolesTitle.direction,
+    direction: formattedRolesTitle.direction,
     fromDomain:
       getDomainNameFromChangelog(
         actionData.transactionHash,
@@ -63,12 +68,14 @@ export const mapColonyActionToExpectedFormat = (
       ) ?? formatMessage({ id: 'unknownDomain' }),
     initiator: (
       <span className={styles.titleDecoration}>
+        {/* @TODO All all the other initiator types, and the fallback */}
         <FriendlyName user={actionData.initiatorUser} autoShrinkAddress />
       </span>
     ),
     recipient: (
       <span className={styles.titleDecoration}>
-        <FriendlyName user={actionData.recipient} autoShrinkAddress />
+        {/* @TODO All all the other recipient types, and the fallback */}
+        <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
       </span>
     ),
     toDomain:
@@ -87,7 +94,7 @@ export const mapColonyActionToExpectedFormat = (
         actionData.amount,
         getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
       ),
-    // rolesChanged: formattedRolesTitle.roleTitle,
+    rolesChanged: formattedRolesTitle.roleTitle,
     newVersion: actionData.newColonyVersion,
   };
 };
@@ -95,10 +102,9 @@ export const mapColonyActionToExpectedFormat = (
 export const mapColonyEventToExpectedFormat = (
   eventName: ColonyAndExtensionsEvents,
   actionData: ColonyAction,
+  eventId?: string,
   colony?: Colony,
 ) => {
-  // const role = item.roles[0];
-
   return {
     amount: (
       <Numeral
@@ -106,7 +112,7 @@ export const mapColonyEventToExpectedFormat = (
         decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
-    // ...getColonyRoleSetTitleValues(role?.setTo),
+    ...getColonyRoleSetTitleValues(actionData.individualEvents, eventId),
     domainMetadataChanges: getDomainMetadataChangesValue(actionData),
     colonyMetadataChanges: getColonyMetadataChangesValue(actionData, colony),
     fromDomain:
@@ -118,18 +124,19 @@ export const mapColonyEventToExpectedFormat = (
       actionData.toDomain?.metadata?.name ??
       formatMessage({ id: 'unknownDomain' }),
     eventNameDecorated: <b>{eventName}</b>,
-    // role: role && formatText({ id: `role.${role.id}` }),
     // clientOrExtensionType: (
     //   <span className={styles.highlight}>{event.emittedBy}</span>
     // ),
     initiator: (
       <span className={styles.userDecoration}>
+        {/* @TODO All all the other initiator types, and the fallback */}
         <FriendlyName user={actionData.initiatorUser} autoShrinkAddress />
       </span>
     ),
     recipient: (
       <span className={styles.userDecoration}>
-        <FriendlyName user={actionData.recipient} autoShrinkAddress />
+        {/* @TODO All all the other recipient types, and the fallback */}
+        <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
       </span>
     ),
     isSmiteAction:
@@ -156,7 +163,7 @@ Actions
 ======
 Note that the following transformations also exist in the Dapp. Because they are async,
 it would be ideal if they were handled higher up in the CDapp, and passed down. That would
-avoid the need to add async logic to this component (i.e. useEffect). 
+avoid the need to add async logic to this component (i.e. useEffect).
 (If necessary, however, this could be handled in a custom hook.)
 1.
 const updatedRoles = getUpdatedDecodedMotionRoles(
@@ -165,7 +172,7 @@ const updatedRoles = getUpdatedDecodedMotionRoles(
   historicColonyRoles?.historicColonyRoles as unknown as ColonyRoles,
   roles || [],
 );
-Requires historic roles: 
+Requires historic roles:
 const getColonyHistoricRoles = async (
   colonyAddress: Address,
   blockNumber: number,
@@ -189,7 +196,7 @@ const changedData = {
             * So if the version from the network resolver is greater than the
             * current colonyJS supported version, limit it to the version
             * returned by colonyJS
-            
+
     version.toNumber() <= CurrentColonyVersion
             ? version.toString()
             : String(CurrentColonyVersion),

@@ -158,11 +158,13 @@ export const generateMessageValues = (
 const getEventTitleValues = (
   eventName: ColonyAndExtensionsEvents,
   actionData: ColonyAction,
+  eventId?: string,
   colony?: Colony,
 ) => {
   const updatedItem = mapColonyEventToExpectedFormat(
     eventName,
     actionData,
+    eventId,
     colony,
   );
   const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;

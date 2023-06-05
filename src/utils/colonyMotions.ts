@@ -1,11 +1,11 @@
 import { defineMessages, MessageDescriptor } from 'react-intl';
 import { BigNumber } from 'ethers';
 import { Decimal } from 'decimal.js';
-import { isNil } from 'lodash';
-import { ColonyRoles } from '@colony/colony-js';
+// import { isNil } from 'lodash';
+// import { ColonyRoles } from '@colony/colony-js';
 
-import { getRolesForUserAndDomain } from '~redux/transformers';
-import { ActionUserRoles, User } from '~types';
+// import { getRolesForUserAndDomain } from '~transformers';
+// import { ActionUserRoles, User } from '~types';
 import { TagColorSchema, TagTheme } from '~shared/Tag/Tag';
 
 export const noMotionsVotingReputationVersion = 4;
@@ -193,26 +193,26 @@ export interface MotionValue {
   motionId: number;
 }
 
-export const getUpdatedDecodedMotionRoles = (
-  recipient: User,
-  fromDomain: number,
-  currentRoles: ColonyRoles = [],
-  setRoles: ActionUserRoles[],
-) => {
-  const currentUserRoles = getRolesForUserAndDomain(
-    currentRoles,
-    recipient.walletAddress,
-    fromDomain,
-  );
-  const updatedRoles = setRoles.filter((role) => {
-    const foundCurrentRole = currentUserRoles.find(
-      (currentRole) => currentRole === role.id,
-    );
-    if (!isNil(foundCurrentRole)) {
-      return !role.setTo;
-    }
-    return role.setTo;
-  });
+// export const getUpdatedDecodedMotionRoles = (
+//   recipient: User,
+//   fromDomain: number,
+//   currentRoles: ColonyRoles = [],
+//   setRoles: ActionUserRoles[],
+// ) => {
+//   const currentUserRoles = getRolesForUserAndDomain(
+//     currentRoles,
+//     recipient.walletAddress,
+//     fromDomain,
+//   );
+//   const updatedRoles = setRoles.filter((role) => {
+//     const foundCurrentRole = currentUserRoles.find(
+//       (currentRole) => currentRole === role.id,
+//     );
+//     if (!isNil(foundCurrentRole)) {
+//       return !role.setTo;
+//     }
+//     return role.setTo;
+//   });
 
-  return updatedRoles;
-};
+//   return updatedRoles;
+// };

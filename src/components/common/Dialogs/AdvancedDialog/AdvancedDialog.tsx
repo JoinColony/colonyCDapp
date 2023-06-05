@@ -4,9 +4,13 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import { WizardDialogType, useTransformer, useAppContext } from '~hooks';
+import {
+  WizardDialogType,
+  useUserAccountRegistered,
+  useAppContext,
+} from '~hooks';
 
-import { getAllUserRoles } from '~redux/transformers';
+import { getAllUserRoles } from '~transformers';
 import { canEnterRecoveryMode, hasRoot, canArchitect } from '~utils/checks';
 
 const displayName = 'common.AdvancedDialog';
@@ -104,22 +108,21 @@ const AdvancedDialog = ({
   colony,
   enabledExtensionData: { isVotingReputationEnabled },
 }: Props) => {
-  const { user } = useAppContext();
+  const { wallet } = useAppContext();
 
-  const hasRegisteredProfile = !!user?.name && !!user.walletAddress;
+  const userHasAccountRegistered = useUserAccountRegistered();
 
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    user?.walletAddress,
-  ]);
-  const hasRootPermission = hasRegisteredProfile && hasRoot(allUserRoles);
+  const allUserRoles = getAllUserRoles(colony, wallet?.address || '');
+
+  const hasRootPermission = userHasAccountRegistered && hasRoot(allUserRoles);
 
   const canEnterRecovery =
-    hasRegisteredProfile && canEnterRecoveryMode(allUserRoles);
+    userHasAccountRegistered && canEnterRecoveryMode(allUserRoles);
   const isSupportedColonyVersion = colony.version > 5;
 
   const canEnterPermissionManagement =
-    (hasRegisteredProfile && canArchitect(allUserRoles)) || hasRootPermission;
+    (userHasAccountRegistered && canArchitect(allUserRoles)) ||
+    hasRootPermission;
 
   const items = [
     {
