@@ -3,7 +3,8 @@ import { FieldValues, UseFormRegister } from 'react-hook-form';
 export interface SpecialInputProps {
   id?: string;
   name: string;
-  register: UseFormRegister<FieldValues>;
+  value?: number | string;
+  register?: UseFormRegister<FieldValues>;
   type: ComponentType;
   defaultValue?: number;
   placeholder?: string;
@@ -11,12 +12,13 @@ export interface SpecialInputProps {
   min?: number;
   max?: number;
   isError?: boolean;
+  onChange?: () => void;
 }
 
-export type ComponentType = 'percentage' | 'hour';
+export type ComponentType = 'percent' | 'hours';
 
 export type FormHourInput = {
-  hour?: number;
+  hours?: number;
 };
 
 export type FormPercentageInput = {

@@ -18,8 +18,7 @@ export interface PermissionsItem extends UserPermissionsBadgeProps {
 export interface UserInfoProps extends AvatarProps {
   userName?: string;
   isVerified?: boolean;
-  copyUrl?: boolean;
-  walletAddress: string;
+  walletAddress?: string;
   aboutDescription: MessageDescriptor | string;
   colonyReputation: ColonyReputationItem[];
   permissions: PermissionsItem[];

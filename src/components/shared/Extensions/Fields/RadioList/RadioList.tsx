@@ -5,15 +5,17 @@ import FormError from '~shared/Extensions/FormError/FormError';
 
 const displayName = 'Extensions.Fields.RadioList';
 
-const RadioList: FC<RadioListProps> = ({ title, items, errors, register }) => (
+const RadioList: FC<RadioListProps> = ({ title, items, onChange, errors, register, name }) => (
   <>
     <h3 className="text-gray-900 font-semibold text-md mb-4">{title}</h3>
     <ul className="flex flex-col gap-y-3">
       {items.map(({ value, disabled, label, description, badge, tooltip }) => (
         <li key={value}>
           <RadioBase
+            name={name}
             register={register}
-            isError={!!errors.radio?.message}
+            isError={!!errors.governance?.message}
+            onChange={onChange}
             item={{
               value,
               disabled,
@@ -26,9 +28,9 @@ const RadioList: FC<RadioListProps> = ({ title, items, errors, register }) => (
         </li>
       ))}
     </ul>
-    {errors.radio && (
+    {errors.governance && (
       <FormError isFullSize alignment="left">
-        {errors.radio.message}
+        {errors.governance.message}
       </FormError>
     )}
   </>

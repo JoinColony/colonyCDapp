@@ -20,7 +20,6 @@ export const sidePanelData = [
           userName="Panda"
           walletAddress="0x155....1051"
           isVerified
-          copyUrl
           aboutDescription="description"
           colonyReputation={colonyReputationItems}
           permissions={permissionsItems}

@@ -1,4 +1,7 @@
+import { FieldErrorsImpl, UseFormRegister } from 'react-hook-form';
 import { MessageFormatElement } from 'react-intl';
+import { ComponentType, FormPercentageInput } from '~common/Extensions/SpecialInput/types';
+import { FormRadioButton } from '../Fields/RadioList/types';
 
 export interface AccordionProps {
   items: AccordionContent[];
@@ -6,9 +9,27 @@ export interface AccordionProps {
   onOpenIndexChange: (newOpenIndex: number | undefined) => void;
 }
 
-export interface AccordionContent {
-  id: string;
-  title: string;
+export interface ContentTypeProps {
+  title?:
+    | string
+    | {
+        defaultMessage: string;
+      };
+  subTitle?: {
+    defaultMessage: string;
+  };
+  details?: string;
+}
+
+export interface AccordionContent extends ContentTypeProps {
+  paramName: string;
+  complementaryLabel: ComponentType;
+  id?: string;
+  description?: {
+    defaultMessage: MessageFormatElement[];
+  };
+  defaultValue: number;
+  maxValue: number;
   content?: AccordionContentDetails[];
 }
 
@@ -16,6 +37,20 @@ export interface AccordionContentDetails {
   id: number | string;
   textItem?: JSX.Element;
   inputItem?: JSX.Element;
+  inputData: {
+    inputType: 'percent' | 'hours';
+    maxValue: number;
+    minValue: number;
+    name: string;
+    errors: Partial<
+      | FieldErrorsImpl<{
+          percent: number;
+          hours: number;
+        }>
+      | undefined
+    >;
+    register?: UseFormRegister<FormRadioButton | FormPercentageInput>;
+  };
   accordionItem?: AccordionMocksItemProps[];
 }
 
@@ -30,11 +65,6 @@ export interface AccordionItemProps {
   isOpen?: boolean;
   onClick?: () => void;
 }
-export interface ContentTypeProps {
-  title?: string | MessageFormatElement[];
-  subTitle?: string | MessageFormatElement[];
-  details?: string;
-}
 
 export interface AccordionContentItemProps {
   accordionItem: AccordionMocksItemProps;
@@ -45,4 +75,14 @@ export interface AccordionContentItemProps {
 export interface SpecialInputProps {
   defaultValue?: number | string;
   maxValue: number;
+  minValue: number;
+  name: string;
+  register?: UseFormRegister<FormRadioButton | FormPercentageInput>;
+  errors?: Partial<
+    | FieldErrorsImpl<{
+        percent: number;
+        hours: number;
+      }>
+    | undefined
+  >;
 }

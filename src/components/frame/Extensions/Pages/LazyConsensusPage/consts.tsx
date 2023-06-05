@@ -1,7 +1,3 @@
-import React from 'react';
-import ContentTypeText from '~shared/Extensions/Accordion/partials/ContentTypeText';
-import SpecialHourInput from '~shared/Extensions/Accordion/partials/SpecialHourInput';
-import SpecialPercentageInput from '~shared/Extensions/Accordion/partials/SpecialPercentageInput';
 import { AccordionContent } from '~shared/Extensions/Accordion/types';
 import { RadioItemProps } from '~shared/Extensions/Fields/RadioList/types';
 
@@ -30,147 +26,177 @@ export const mockedGovernance: RadioItemProps[] = [
 
 export const extensionContentSpeedOverSecurity: AccordionContent[] = [
   {
-    id: 'step-0',
-    title: 'Custom extension parameters',
-    content: [
-      {
-        id: '0',
-        textItem: <ContentTypeText title="Required Stake" />,
-        inputItem: <SpecialPercentageInput defaultValue={1} maxValue={50} />,
-      },
-      {
-        id: '1',
-        textItem: <ContentTypeText title="Voter Reward" />,
-        inputItem: <SpecialPercentageInput defaultValue={20} maxValue={50} />,
-      },
-      {
-        id: '2',
-        textItem: <ContentTypeText title="Minimum Stake" />,
-        inputItem: <SpecialPercentageInput defaultValue={1} maxValue={100} />,
-      },
-      {
-        id: '3',
-        textItem: <ContentTypeText title="End Vote Threshold" />,
-        inputItem: <SpecialPercentageInput defaultValue={60} maxValue={100} />,
-      },
-      {
-        id: '4',
-        textItem: <ContentTypeText title="Staking Phase Duration" />,
-        inputItem: <SpecialHourInput defaultValue={72} maxValue={8760} />,
-      },
-      {
-        id: '5',
-        textItem: <ContentTypeText title="Voting Phase Duration" />,
-        inputItem: <SpecialHourInput defaultValue={72} maxValue={8760} />,
-      },
-      {
-        id: '6',
-        textItem: <ContentTypeText title="Reveal Phase Duration" />,
-        inputItem: <SpecialHourInput defaultValue={48} maxValue={8760} />,
-      },
-      {
-        id: '7',
-        textItem: <ContentTypeText title="Escalation Phase Duration" />,
-        inputItem: <SpecialHourInput defaultValue={48} maxValue={8760} />,
-      },
-    ],
+    paramName: 'totalStakeFraction',
+    complementaryLabel: 'percent',
+    title: 'Required Stake',
+    defaultValue: 1,
+    maxValue: 50,
+  },
+  {
+    paramName: 'voterRewardFraction',
+    complementaryLabel: 'percent',
+    title: 'Voter Reward',
+    defaultValue: 20,
+    maxValue: 50,
+  },
+  {
+    paramName: 'userMinStakeFraction',
+    complementaryLabel: 'percent',
+    title: 'Minimum Stake',
+    defaultValue: 1,
+    maxValue: 100,
+  },
+  {
+    paramName: 'maxVoteFraction',
+    complementaryLabel: 'percent',
+    title: 'End Vote Threshold',
+    defaultValue: 60,
+    maxValue: 100,
+  },
+  {
+    paramName: 'stakePeriod',
+    complementaryLabel: 'hours',
+    title: 'Staking Phase Duration',
+    defaultValue: 72,
+    maxValue: 8760,
+  },
+  {
+    paramName: 'submitPeriod',
+    complementaryLabel: 'hours',
+    title: 'Voting Phase Duration',
+    defaultValue: 72,
+    maxValue: 8760,
+  },
+  {
+    paramName: 'revealPeriod',
+    complementaryLabel: 'hours',
+    title: 'Reveal Phase Duration',
+    defaultValue: 42,
+    maxValue: 8760,
+  },
+  {
+    paramName: 'escalationPeriod',
+    complementaryLabel: 'hours',
+    title: 'Escalation Phase Duration',
+    defaultValue: 48,
+    maxValue: 8760,
   },
 ];
 
 export const extensionContentSecurityOverSpeed: AccordionContent[] = [
   {
-    id: 'step-0',
-    title: 'Custom extension parameters',
-    content: [
-      {
-        id: '0',
-        textItem: <ContentTypeText title="Required Stake" />,
-        inputItem: <SpecialPercentageInput defaultValue={1} maxValue={50} />,
-      },
-      {
-        id: '1',
-        textItem: <ContentTypeText title="Voter Reward" />,
-        inputItem: <SpecialPercentageInput defaultValue={20} maxValue={50} />,
-      },
-      {
-        id: '2',
-        textItem: <ContentTypeText title="Minimum Stake" />,
-        inputItem: <SpecialPercentageInput defaultValue={1} maxValue={100} />,
-      },
-      {
-        id: '3',
-        textItem: <ContentTypeText title="End Vote Threshold" />,
-        inputItem: <SpecialPercentageInput defaultValue={80} maxValue={100} />,
-      },
-      {
-        id: '4',
-        textItem: <ContentTypeText title="Staking Phase Duration" />,
-        inputItem: <SpecialHourInput defaultValue={120} maxValue={8760} />,
-      },
-      {
-        id: '5',
-        textItem: <ContentTypeText title="Voting Phase Duration" />,
-        inputItem: <SpecialHourInput defaultValue={120} maxValue={8760} />,
-      },
-      {
-        id: '6',
-        textItem: <ContentTypeText title="Reveal Phase Duration" />,
-        inputItem: <SpecialHourInput defaultValue={72} maxValue={8760} />,
-      },
-      {
-        id: '7',
-        textItem: <ContentTypeText title="Escalation Phase Duration" />,
-        inputItem: <SpecialHourInput defaultValue={72} maxValue={8760} />,
-      },
-    ],
+    paramName: 'totalStakeFraction',
+    complementaryLabel: 'percent',
+    title: 'Required Stake',
+    defaultValue: 1,
+    maxValue: 50,
+  },
+  {
+    paramName: 'voterRewardFraction',
+    complementaryLabel: 'percent',
+    title: 'Voter Reward',
+    defaultValue: 20,
+    maxValue: 50,
+  },
+  {
+    paramName: 'userMinStakeFraction',
+    complementaryLabel: 'percent',
+    title: 'Minimum Stake',
+    defaultValue: 1,
+    maxValue: 100,
+  },
+  {
+    paramName: 'maxVoteFraction',
+    complementaryLabel: 'percent',
+    title: 'End Vote Threshold',
+    defaultValue: 80,
+    maxValue: 100,
+  },
+  {
+    paramName: 'stakePeriod',
+    complementaryLabel: 'hours',
+    title: 'Staking Phase Duration',
+    defaultValue: 120,
+    maxValue: 8760,
+  },
+  {
+    paramName: 'submitPeriod',
+    complementaryLabel: 'hours',
+    title: 'Voting Phase Duration',
+    defaultValue: 120,
+    maxValue: 8760,
+  },
+  {
+    paramName: 'revealPeriod',
+    complementaryLabel: 'hours',
+    title: 'Reveal Phase Duration',
+    defaultValue: 72,
+    maxValue: 8760,
+  },
+  {
+    paramName: 'escalationPeriod',
+    complementaryLabel: 'hours',
+    title: 'Escalation Phase Duration',
+    defaultValue: 72,
+    maxValue: 8760,
   },
 ];
 
 export const extensionContentTestingGovernance: AccordionContent[] = [
   {
-    id: 'step-0',
-    title: 'Custom extension parameters',
-    content: [
-      {
-        id: '0',
-        textItem: <ContentTypeText title="Required Stake" />,
-        inputItem: <SpecialPercentageInput defaultValue={1} maxValue={50} />,
-      },
-      {
-        id: '1',
-        textItem: <ContentTypeText title="Voter Reward" />,
-        inputItem: <SpecialPercentageInput defaultValue={1} maxValue={50} />,
-      },
-      {
-        id: '2',
-        textItem: <ContentTypeText title="Minimum Stake" />,
-        inputItem: <SpecialPercentageInput defaultValue={1} maxValue={100} />,
-      },
-      {
-        id: '3',
-        textItem: <ContentTypeText title="End Vote Threshold" />,
-        inputItem: <SpecialPercentageInput defaultValue={51} maxValue={100} />,
-      },
-      {
-        id: '4',
-        textItem: <ContentTypeText title="Staking Phase Duration" />,
-        inputItem: <SpecialHourInput defaultValue={0.083} maxValue={8760} />,
-      },
-      {
-        id: '5',
-        textItem: <ContentTypeText title="Voting Phase Duration" />,
-        inputItem: <SpecialHourInput defaultValue={0.083} maxValue={8760} />,
-      },
-      {
-        id: '6',
-        textItem: <ContentTypeText title="Reveal Phase Duration" />,
-        inputItem: <SpecialHourInput defaultValue={0.083} maxValue={8760} />,
-      },
-      {
-        id: '7',
-        textItem: <ContentTypeText title="Escalation Phase Duration" />,
-        inputItem: <SpecialHourInput defaultValue={0.083} maxValue={8760} />,
-      },
-    ],
+    paramName: 'totalStakeFraction',
+    complementaryLabel: 'percent',
+    title: 'Required Stake',
+    defaultValue: 1,
+    maxValue: 50,
+  },
+  {
+    paramName: 'voterRewardFraction',
+    complementaryLabel: 'percent',
+    title: 'Voter Reward',
+    defaultValue: 1,
+    maxValue: 50,
+  },
+  {
+    paramName: 'userMinStakeFraction',
+    complementaryLabel: 'percent',
+    title: 'Minimum Stake',
+    defaultValue: 1,
+    maxValue: 100,
+  },
+  {
+    paramName: 'maxVoteFraction',
+    complementaryLabel: 'percent',
+    title: 'End Vote Threshold',
+    defaultValue: 51,
+    maxValue: 100,
+  },
+  {
+    paramName: 'stakePeriod',
+    complementaryLabel: 'hours',
+    title: 'Staking Phase Duration',
+    defaultValue: 0.083,
+    maxValue: 8760,
+  },
+  {
+    paramName: 'submitPeriod',
+    complementaryLabel: 'hours',
+    title: 'Voting Phase Duration',
+    defaultValue: 0.083,
+    maxValue: 8760,
+  },
+  {
+    paramName: 'revealPeriod',
+    complementaryLabel: 'hours',
+    title: 'Reveal Phase Duration',
+    defaultValue: 0.083,
+    maxValue: 8760,
+  },
+  {
+    paramName: 'escalationPeriod',
+    complementaryLabel: 'hours',
+    title: 'Escalation Phase Duration',
+    defaultValue: 0.083,
+    maxValue: 8760,
   },
 ];

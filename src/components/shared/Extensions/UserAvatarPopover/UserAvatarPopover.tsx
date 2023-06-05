@@ -14,7 +14,6 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
   userName,
   walletAddress,
   isVerified,
-  copyUrl,
   aboutDescription,
   colonyReputation,
   permissions,
@@ -56,7 +55,6 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
       title={userName}
       walletAddress={walletAddress}
       isVerified={isVerified}
-      copyUrl={copyUrl}
       aboutDescription={aboutDescription}
       colonyReputation={colonyReputation}
       permissions={permissions}

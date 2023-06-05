@@ -46,10 +46,10 @@ const SpecialPercentageInputWithHooks = (args) => {
           {...args}
           register={register}
           isError={!!errors.percentage?.message}
-          name="percentage"
+          name="percent"
           min={1}
           max={99}
-          type="percentage"
+          type="percent"
           placeholder="1"
         />
         {errors.percentage && <FormError>{errors.percentage.message}</FormError>}

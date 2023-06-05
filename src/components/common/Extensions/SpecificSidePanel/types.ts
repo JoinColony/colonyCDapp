@@ -1,4 +1,3 @@
-import React from 'react';
 import { MessageDescriptor } from 'react-intl';
 
 export interface PermissionsProps {
@@ -43,18 +42,4 @@ export type SidePanelDataProps = {
 
 export interface PanelTypeProps {
   title: string;
-  date?: number;
-  component?: React.ReactElement;
-  version?: string;
-  address?: string;
-  developer?: string;
-  installedBy?: string;
-  installedAt?: number;
-  addressWallet?: string;
-  isVerified?: boolean;
-  availableVersion?: number;
-  copyUrl?: string;
-  aboutDescription?: string;
-  colonyReputationItems?: any;
-  permissionsItems?: any;
 }

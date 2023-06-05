@@ -39,12 +39,9 @@ const SpecificSidePanel = () => {
                 )}
               </div>
             </div>
+            {!statuses?.includes('not-installed') && <InstalledBy title={installedBy.title} />}
             {!statuses?.includes('not-installed') && (
-              <InstalledBy title={installedBy.title} component={installedBy.component} />
-            )}
-            {!statuses?.includes('not-installed') && (
-              // @ts-ignore
-              <DateInstalled title={dateInstalled?.title} date={dateInstalled.date} />
+              <DateInstalled title={dateInstalled?.title} date={dateInstalled.date || ''} />
             )}
             <Version title={versionInstalled.title} version={versionInstalled.version} />
             {!statuses?.includes('not-installed') && (

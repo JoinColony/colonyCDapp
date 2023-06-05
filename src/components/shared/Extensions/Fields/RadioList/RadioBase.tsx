@@ -2,16 +2,15 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import styles from './RadioList.module.css';
-import { RadioBaseProps } from './types';
+import { RadioBaseProps, RadioItemProps } from './types';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip';
 import Icon from '~shared/Icon';
 
 const displayName = 'Extensions.Fields.RadioBase';
 
-const RadioBase: FC<RadioBaseProps> = ({ item, isError, register }) => {
-  // @ts-ignore
-  const { disabled, label, description, value, badge, tooltip } = item;
+const RadioBase: FC<RadioBaseProps> = ({ item, isError, register, onChange, name }) => {
+  const { disabled, label, description, value, badge, tooltip } = item as RadioItemProps;
 
   const { formatMessage } = useIntl();
 
@@ -22,14 +21,15 @@ const RadioBase: FC<RadioBaseProps> = ({ item, isError, register }) => {
     <div className="relative w-full">
       <input
         type="radio"
-        {...register('radio')}
+        {...register(name)}
+        value={value}
         id={label}
         aria-disabled={disabled}
         disabled={disabled}
         className={clsx('peer/radio hidden', {
           'pointer-events-none opacity-50': disabled,
         })}
-        value={value}
+        onChange={(e) => onChange?.(e.target.value)}
       />
       <label
         htmlFor={label}

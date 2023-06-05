@@ -21,7 +21,7 @@ const SpecialHourInputWithHooks = (args) => {
   const maxValue = 8766;
   const validationSchema = yup
     .object({
-      hour: yup
+      hours: yup
         .number()
         .positive('')
         .required('')
@@ -46,14 +46,14 @@ const SpecialHourInputWithHooks = (args) => {
         <SpecialInput
           {...args}
           register={register}
-          isError={!!errors.hour?.message}
+          isError={!!errors.hours?.message}
           name="hour"
           min={1}
           max={8765}
           type="hour"
           placeholder="8"
         />
-        {errors.hour && <FormError>{errors.hour.message}</FormError>}
+        {errors.hours && <FormError>{errors.hours.message}</FormError>}
       </form>
     </div>
   );

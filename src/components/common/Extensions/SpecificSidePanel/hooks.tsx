@@ -50,6 +50,7 @@ export const useSpecificSidePanel = () => {
         installedBy: {
           title: formatMessage({ id: 'installed.by' }),
           component: <UserAvatar user={user} />,
+          user,
         },
         versionInstalled: {
           title: formatMessage({ id: 'version.installed' }),
