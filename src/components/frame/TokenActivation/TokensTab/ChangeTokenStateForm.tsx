@@ -67,11 +67,13 @@ type FormValues = InferType<typeof validationSchema>;
 export interface ChangeTokenStateFormProps {
   tokenBalanceData: UserTokenBalanceData;
   hasLockedTokens: boolean;
+  pollTokenBalance: () => void;
 }
 
 const ChangeTokenStateForm = ({
   tokenBalanceData: { inactiveBalance, activeBalance, lockedBalance },
   hasLockedTokens,
+  pollTokenBalance,
 }: ChangeTokenStateFormProps) => {
   const { colony } = useColonyContext();
 
@@ -128,6 +130,10 @@ const ChangeTokenStateForm = ({
         actionType={actionType}
         validationSchema={validationSchema}
         transform={transform}
+        onSuccess={(_, __, { reset }) => {
+          pollTokenBalance();
+          reset();
+        }}
       >
         {({ formState: { isValid } }) => (
           <div className={styles.form}>

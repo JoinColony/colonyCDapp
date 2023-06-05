@@ -47,11 +47,13 @@ const MSG = defineMessages({
 interface Props {
   spinnerMsg: SimpleMessageValues;
   tokenBalanceData?: UserTokenBalanceData;
+  pollTokenBalance: () => void;
 }
 
 const AvatarDropdownPopoverMobile = ({
   spinnerMsg,
   tokenBalanceData,
+  pollTokenBalance,
 }: Props) => {
   const { colony } = useColonyContext();
   const { wallet } = useAppContext();
@@ -96,7 +98,10 @@ const AvatarDropdownPopoverMobile = ({
         <DropdownMenuItem>
           <div className={styles.buttonContainer}>
             {nativeToken && tokenBalanceData && (
-              <TokenActivationPopover tokenBalanceData={tokenBalanceData}>
+              <TokenActivationPopover
+                tokenBalanceData={tokenBalanceData}
+                pollTokenBalance={pollTokenBalance}
+              >
                 {({ toggle, ref }) => (
                   <Button
                     appearance={{
