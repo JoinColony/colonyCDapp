@@ -6,7 +6,7 @@ fragment ColonyAction on ColonyAction {
   blockNumber
   initiatorAddress
   initiatorUser {
-    ...User
+    ...UserDisplayFragment
   }
   initiatorColony {
     ...ColonyDisplayFragment
@@ -19,7 +19,7 @@ fragment ColonyAction on ColonyAction {
   }
   recipientAddress
   recipientUser {
-    ...User
+    ...UserDisplayFragment
   }
   recipientColony {
     ...ColonyDisplayFragment

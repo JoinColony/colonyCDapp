@@ -15,6 +15,16 @@ fragment User on User {
   }
 }
 
+fragment UserDisplayFragment on User {
+  walletAddress: id
+  name
+  profile {
+    displayName
+    avatar
+    thumbnail
+  }
+}
+
 fragment Profile on Profile {
   avatar
   bio
@@ -43,6 +53,6 @@ fragment Contributor on Contributor {
 
 fragment Watcher on Watcher {
   user {
-      ...MemberUser
+    ...MemberUser
   }
 }
