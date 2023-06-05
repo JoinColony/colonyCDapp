@@ -62,7 +62,7 @@ export interface AccordionMocksItemProps {
   content: JSX.Element;
 }
 export interface AccordionItemProps {
-  title?: string | JSX.Element;
+  title?: string | JSX.Element | { defaultMessage: string };
   content?: AccordionContentDetails[];
   isOpen?: boolean;
   onClick?: () => void;

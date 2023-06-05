@@ -42,4 +42,8 @@ export type SidePanelDataProps = {
 
 export interface PanelTypeProps {
   title: string;
+  address?: string;
+  date?: string;
+  developer?: string;
+  version?: string;
 }

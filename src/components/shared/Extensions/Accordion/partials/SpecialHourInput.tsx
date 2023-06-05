@@ -5,7 +5,7 @@ import { SpecialInputProps } from '../types';
 
 const displayName = 'Extensions.SpecialHourInput';
 
-const SpecialHourInput: FC<SpecialInputProps> = ({ defaultValue, maxValue, register, errors, name }) => (
+const SpecialHourInput: FC<SpecialInputProps> = ({ defaultValue, maxValue, register, errors, name = '' }) => (
   <div className="text-right">
     <div className="flex justify-end flex-col w-[8.75rem]">
       <SpecialInput
