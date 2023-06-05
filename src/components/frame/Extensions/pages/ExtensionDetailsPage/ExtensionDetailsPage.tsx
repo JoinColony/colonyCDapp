@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { useAppContext, useColonyContext, useExtensionData, useMobile } from '~hooks';
+import { useColonyContext, useExtensionData, useMobile } from '~hooks';
 import Button from '~shared/Extensions/Button';
 import Icon from '~shared/Icon';
-import { isInstalledExtensionData } from '~utils/extensions';
+
 import ExtensionDetails from './partials/ExtensionDetails';
 import { useExtensionDetailsPage } from './hooks';
 import Spinner from '~shared/Extensions/Spinner';
@@ -13,6 +13,7 @@ import ThreeColumns from '~frame/Extensions/ThreeColumns';
 import Navigation from '~common/Extensions/Navigation';
 import SupportingDocuments from '~common/Extensions/SupportingDocuments';
 import ImageCarousel from '~common/Extensions/ImageCarousel';
+import { isInstalledExtensionData } from '~utils/extensions';
 
 const HeadingChunks = (chunks: React.ReactNode[]) => (
   <h4 className="font-semibold text-gray-900 mt-6 mb-4">{chunks}</h4>
@@ -23,11 +24,12 @@ const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 const ExtensionDetailsPage: FC = () => {
   const { extensionId } = useParams();
   const { colony } = useColonyContext();
-  const { user } = useAppContext();
   const { extensionData } = useExtensionData(extensionId ?? '');
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { handleEnableButtonClick, handleInstallClick } = useExtensionDetailsPage();
+
+  const isExtensionInstalled = extensionData && isInstalledExtensionData(extensionData);
 
   if (!colony) {
     return null;
@@ -40,20 +42,6 @@ const ExtensionDetailsPage: FC = () => {
       </div>
     );
   }
-
-  const hasRegisteredProfile = !!user;
-  const canExtensionBeUninstalled = !!(
-    hasRegisteredProfile &&
-    isInstalledExtensionData(extensionData) &&
-    extensionData.uninstallable &&
-    extensionData.isDeprecated
-  );
-  const canExtensionBeDeprecated =
-    hasRegisteredProfile &&
-    isInstalledExtensionData(extensionData) &&
-    extensionData.uninstallable &&
-    !extensionData.isDeprecated;
-  const isExtensionInstalled = extensionData && isInstalledExtensionData(extensionData);
 
   return (
     <Spinner loadingText="extensionsPage">
@@ -80,13 +68,7 @@ const ExtensionDetailsPage: FC = () => {
           </div>
         }
         withSlider={<ImageCarousel />}
-        rightAside={
-          <ExtensionDetails
-            extensionData={extensionData}
-            canBeDeprecated={canExtensionBeDeprecated}
-            canBeUninstalled={canExtensionBeUninstalled}
-          />
-        }
+        rightAside={<ExtensionDetails extensionData={extensionData} />}
       >
         <div className="mt:mt-[4.25rem] text-md text-gray-600">
           <FormattedMessage

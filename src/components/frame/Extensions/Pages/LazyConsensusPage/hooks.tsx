@@ -27,7 +27,7 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
   const { extensionId } = useParams();
   const navigate = useNavigate();
   const { colony } = useColonyContext();
-  const { extensionData, loading } = useExtensionData(extensionId ?? '');
+  const { extensionData } = useExtensionData(extensionId ?? '');
   const { status, badgeMessage } = useExtensionsBadge(extensionData);
   const [extensionContentParameters, setExtensionContentParameters] = useState<AccordionContent[]>();
   // const [prevCustomExtentionState, setPrevCustomExtentionState] = useState();
@@ -259,7 +259,6 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
   }, [shouldBeRadioButtonChangeToCustom]);
 
   return {
-    loading,
     extensionData,
     status,
     badgeMessage,

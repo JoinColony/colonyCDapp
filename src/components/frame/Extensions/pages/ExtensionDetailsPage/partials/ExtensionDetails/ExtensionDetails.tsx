@@ -9,16 +9,16 @@ import Modal from '~shared/Extensions/Modal';
 
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage.partials.ExtensionDetails';
 
-const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData, canBeDeprecated, canBeUninstalled }) => {
+const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
   const { formatMessage } = useIntl();
-  const { handleDeprecate } = useExtensionDetails(extensionData);
+  const { handleDeprecate, canExtensionBeUninstalled, canExtensionBeDeprecated } = useExtensionDetails(extensionData);
   const [isDeprecateModalOpen, setIsDeprecateModalOpen] = useState(false);
 
   return (
     <div>
       <SpecificSidePanel />
       <div className="sm:w-[20.375rem]">
-        {canBeDeprecated && (
+        {canExtensionBeDeprecated && (
           <div className="mt-6">
             <Button mode="primaryOutline" isFullSize onClick={() => setIsDeprecateModalOpen(true)}>
               {formatMessage({ id: 'extensionDetailsPage.deprecate' })}
@@ -41,7 +41,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData, canBeDepre
           </div>
         )}
         {/* @TODO: Add functionality and modals to uninstall extension */}
-        {canBeUninstalled && (
+        {canExtensionBeUninstalled && (
           <div className="mt-6">
             <Button mode="primaryOutline" isFullSize>
               {formatMessage({ id: 'extensionDetailsPage.uninstall' })}

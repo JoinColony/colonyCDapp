@@ -1,13 +1,16 @@
 import { useCallback, useMemo } from 'react';
-import { useAsyncFunction, useColonyContext } from '~hooks';
+import { useAppContext, useAsyncFunction, useColonyContext } from '~hooks';
 import { AnyExtensionData } from '~types';
 import { ActionTypes } from '~redux';
+import { isInstalledExtensionData } from '~utils/extensions';
 
 export const useExtensionDetails = (extensionData: AnyExtensionData) => {
   const submit = ActionTypes.EXTENSION_DEPRECATE;
   const error = ActionTypes.EXTENSION_DEPRECATE_ERROR;
   const success = ActionTypes.EXTENSION_DEPRECATE_SUCCESS;
+
   const { colony } = useColonyContext();
+  const { user } = useAppContext();
   const { extensionId } = extensionData;
 
   const extensionValues = useMemo(() => {
@@ -28,5 +31,18 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
     }
   }, [asyncFunction, extensionValues]);
 
-  return { handleDeprecate };
+  const hasRegisteredProfile = !!user;
+  const canExtensionBeUninstalled = !!(
+    hasRegisteredProfile &&
+    isInstalledExtensionData(extensionData) &&
+    extensionData.uninstallable &&
+    extensionData.isDeprecated
+  );
+  const canExtensionBeDeprecated =
+    hasRegisteredProfile &&
+    isInstalledExtensionData(extensionData) &&
+    extensionData.uninstallable &&
+    !extensionData.isDeprecated;
+
+  return { handleDeprecate, canExtensionBeUninstalled, canExtensionBeDeprecated };
 };

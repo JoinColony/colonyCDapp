@@ -9,13 +9,12 @@ import ContractAddress from './partials/ContractAddress';
 import Developer from './partials/Developer';
 import styles from './SpecificSidePanel.module.css';
 import { useSpecificSidePanel } from './hooks';
-import Button from '~shared/Extensions/Button/Button';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 
 const SpecificSidePanel = () => {
   const { formatMessage } = useIntl();
-  const { statuses, sidePanelData, canExtensionBeDeprecated, canExtensionBeUninstalled } = useSpecificSidePanel();
+  const { statuses, sidePanelData } = useSpecificSidePanel();
 
   return (
     <div className="bg-base-white flex gap-[1.25rem] flex-col">
@@ -54,21 +53,6 @@ const SpecificSidePanel = () => {
             </div>
           </Fragment>
         ),
-      )}
-      {/* @TODO: Add functionality and modals to deprecate and uninstall extension */}
-      {canExtensionBeDeprecated && (
-        <div className="mt-6">
-          <Button mode="primaryOutline" isFullSize>
-            {formatMessage({ id: 'extensionDetailsPage.deprecate' })}
-          </Button>
-        </div>
-      )}
-      {canExtensionBeUninstalled && (
-        <div className="mt-6">
-          <Button mode="primaryOutline" isFullSize>
-            {formatMessage({ id: 'extensionDetailsPage.uninstall' })}
-          </Button>
-        </div>
       )}
     </div>
   );

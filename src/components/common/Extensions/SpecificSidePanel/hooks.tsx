@@ -21,7 +21,6 @@ export const useSpecificSidePanel = () => {
     format(new Date((extensionData as InstalledExtensionData)?.installedAt ?? 0 * 1000), 'dd MMMM yyyy');
 
   const { user } = useUserByNameOrAddress((extensionData as InstalledExtensionData)?.installedBy);
-  const hasRegisteredProfile = !!user;
 
   // @TODO: handle case when there can be more then one stutus
   useMemo(() => {
@@ -70,25 +69,8 @@ export const useSpecificSidePanel = () => {
     [extensionData, installedAtDate, user, formatMessage],
   );
 
-  const canExtensionBeDeprecated =
-    hasRegisteredProfile &&
-    extensionData &&
-    isInstalledExtensionData(extensionData) &&
-    extensionData.uninstallable &&
-    !extensionData.isDeprecated;
-
-  const canExtensionBeUninstalled = !!(
-    hasRegisteredProfile &&
-    extensionData &&
-    isInstalledExtensionData(extensionData) &&
-    extensionData.uninstallable &&
-    extensionData.isDeprecated
-  );
-
   return {
     sidePanelData,
     statuses,
-    canExtensionBeDeprecated,
-    canExtensionBeUninstalled,
   };
 };
