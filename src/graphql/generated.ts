@@ -273,10 +273,10 @@ export type ColonyHistoricRole = {
   __typename?: 'ColonyHistoricRole';
   blockNumber: Scalars['Int'];
   colony: Colony;
-  colonyHistoricRoleColonyId: Scalars['ID'];
-  colonyHistoricRoleDomainId: Scalars['ID'];
+  colonyId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   domain: Domain;
+  domainId: Scalars['ID'];
   id: Scalars['ID'];
   role_0?: Maybe<Scalars['Boolean']>;
   role_1?: Maybe<Scalars['Boolean']>;
@@ -332,10 +332,10 @@ export type ColonyMetadataChangelogInput = {
 
 export type ColonyRole = {
   __typename?: 'ColonyRole';
-  colonyRoleDomainId: Scalars['ID'];
   colonyRolesId?: Maybe<Scalars['ID']>;
   createdAt: Scalars['AWSDateTime'];
   domain: Domain;
+  domainId: Scalars['ID'];
   id: Scalars['ID'];
   latestBlock: Scalars['Int'];
   role_0?: Maybe<Scalars['Boolean']>;
@@ -449,9 +449,9 @@ export type CreateColonyFundsClaimInput = {
 
 export type CreateColonyHistoricRoleInput = {
   blockNumber: Scalars['Int'];
-  colonyHistoricRoleColonyId: Scalars['ID'];
-  colonyHistoricRoleDomainId: Scalars['ID'];
+  colonyId: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  domainId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
   role_0?: InputMaybe<Scalars['Boolean']>;
   role_1?: InputMaybe<Scalars['Boolean']>;
@@ -486,8 +486,8 @@ export type CreateColonyMetadataInput = {
 };
 
 export type CreateColonyRoleInput = {
-  colonyRoleDomainId: Scalars['ID'];
   colonyRolesId?: InputMaybe<Scalars['ID']>;
+  domainId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
   latestBlock: Scalars['Int'];
   role_0?: InputMaybe<Scalars['Boolean']>;
@@ -979,9 +979,9 @@ export type ModelColonyFundsClaimFilterInput = {
 export type ModelColonyHistoricRoleConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyHistoricRoleConditionInput>>>;
   blockNumber?: InputMaybe<ModelIntInput>;
-  colonyHistoricRoleColonyId?: InputMaybe<ModelIdInput>;
-  colonyHistoricRoleDomainId?: InputMaybe<ModelIdInput>;
+  colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
+  domainId?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelColonyHistoricRoleConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyHistoricRoleConditionInput>>>;
   role_0?: InputMaybe<ModelBooleanInput>;
@@ -1003,9 +1003,9 @@ export type ModelColonyHistoricRoleConnection = {
 export type ModelColonyHistoricRoleFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyHistoricRoleFilterInput>>>;
   blockNumber?: InputMaybe<ModelIntInput>;
-  colonyHistoricRoleColonyId?: InputMaybe<ModelIdInput>;
-  colonyHistoricRoleDomainId?: InputMaybe<ModelIdInput>;
+  colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
+  domainId?: InputMaybe<ModelIdInput>;
   id?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelColonyHistoricRoleFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyHistoricRoleFilterInput>>>;
@@ -1050,8 +1050,8 @@ export type ModelColonyMetadataFilterInput = {
 
 export type ModelColonyRoleConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyRoleConditionInput>>>;
-  colonyRoleDomainId?: InputMaybe<ModelIdInput>;
   colonyRolesId?: InputMaybe<ModelIdInput>;
+  domainId?: InputMaybe<ModelIdInput>;
   latestBlock?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyRoleConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyRoleConditionInput>>>;
@@ -1072,8 +1072,8 @@ export type ModelColonyRoleConnection = {
 
 export type ModelColonyRoleFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyRoleFilterInput>>>;
-  colonyRoleDomainId?: InputMaybe<ModelIdInput>;
   colonyRolesId?: InputMaybe<ModelIdInput>;
+  domainId?: InputMaybe<ModelIdInput>;
   id?: InputMaybe<ModelIdInput>;
   latestBlock?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyRoleFilterInput>;
@@ -1428,7 +1428,9 @@ export type ModelSubscriptionColonyFundsClaimFilterInput = {
 export type ModelSubscriptionColonyHistoricRoleFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyHistoricRoleFilterInput>>>;
   blockNumber?: InputMaybe<ModelSubscriptionIntInput>;
+  colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
+  domainId?: InputMaybe<ModelSubscriptionIdInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyHistoricRoleFilterInput>>>;
   role_0?: InputMaybe<ModelSubscriptionBooleanInput>;
@@ -1454,6 +1456,7 @@ export type ModelSubscriptionColonyMetadataFilterInput = {
 
 export type ModelSubscriptionColonyRoleFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyRoleFilterInput>>>;
+  domainId?: InputMaybe<ModelSubscriptionIdInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   latestBlock?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyRoleFilterInput>>>;
@@ -3036,9 +3039,9 @@ export type UpdateColonyFundsClaimInput = {
 
 export type UpdateColonyHistoricRoleInput = {
   blockNumber?: InputMaybe<Scalars['Int']>;
-  colonyHistoricRoleColonyId?: InputMaybe<Scalars['ID']>;
-  colonyHistoricRoleDomainId?: InputMaybe<Scalars['ID']>;
+  colonyId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  domainId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
   role_0?: InputMaybe<Scalars['Boolean']>;
   role_1?: InputMaybe<Scalars['Boolean']>;
@@ -3073,8 +3076,8 @@ export type UpdateColonyMetadataInput = {
 };
 
 export type UpdateColonyRoleInput = {
-  colonyRoleDomainId?: InputMaybe<Scalars['ID']>;
   colonyRolesId?: InputMaybe<Scalars['ID']>;
+  domainId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
   latestBlock?: InputMaybe<Scalars['Int']>;
   role_0?: InputMaybe<Scalars['Boolean']>;
