@@ -11,7 +11,7 @@ const SpecialPercentageInput: FC<SpecialInputProps> = ({
   minValue,
   register,
   errors,
-  name,
+  name = '',
 }) => (
   <div className="text-right">
     <div className="flex justify-end flex-col w-[8.8rem]">
