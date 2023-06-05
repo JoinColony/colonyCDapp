@@ -47,6 +47,16 @@ fragment Colony on Colony {
   }
 }
 
+fragment ColonyDisplayFragment on Colony {
+  colonyAddress: id
+  name
+  metadata {
+    displayName
+    avatar
+    thumbnail
+  }
+}
+
 fragment ColonyTokensConnection on ModelColonyTokensConnection {
   items {
     colonyTokensId: id
