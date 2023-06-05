@@ -16,7 +16,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData
   const { formatMessage } = useIntl();
 
   return (
-    <div className="sm:w-full md:w-[17.625rem] lg:w-[20.4375rem] bg-base-white flex gap-[1.25rem] flex-col">
+    <div className="bg-base-white flex gap-[1.25rem] flex-col">
       <h3 className="font-semibold text-lg text-gray-900 pb-[0.2rem]">
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>

@@ -16,7 +16,7 @@ const SupportingDocuments: FC<SupportingDocumentsProps> = ({ isDoubleLinkVisible
       <div className="font-semibold text-md text-gray-900">
         {formatMessage({ id: 'supporting.documents.subtitle' })}
       </div>
-      <div className="min-w-[35.75rem] h-[0.0625rem] bg-gray-200 my-4" />
+      <span className="block border-b border-gray-200 my-4" />
       <LinkWrapper isDoubleLinkVisible={isDoubleLinkVisible} />
     </div>
   );

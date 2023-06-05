@@ -64,26 +64,6 @@
   }
 }
 
-.carouselWrapper .carousel {
-  @apply relative overflow-visible;
-}
-
-.carouselWrapper [class~='carousel'] {
-  @apply relative overflow-visible;
-}
-
-.carouselWrapper [class~='carousel-slider'],
-.carouselWrapper [class~='slider-wrapper'] {
-  @apply w-[33.5rem];
-}
-.carouselWrapper [class~='slide'] {
-  @apply mr-4 h-[15.5rem];
-}
-
-.carouselWrapper [class~='control-dots'] {
-  @apply bottom-[-2.5rem] overflow-visible flex justify-center;
-}
-
 .rts___tabs {
   @apply py-0;
 }
