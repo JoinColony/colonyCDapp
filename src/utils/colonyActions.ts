@@ -566,7 +566,7 @@ export const formatRolesTitle = (roles?: ColonyActionRoles | null) => {
 };
 
 export const getColonyRoleSetTitleValues = (
-  encodedEvents?: string,
+  encodedEvents: string | null = '[]',
   eventId?: string,
 ) => {
   const role = JSON.parse(encodedEvents as string)?.find(

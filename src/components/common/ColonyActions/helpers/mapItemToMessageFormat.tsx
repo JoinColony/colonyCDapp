@@ -112,10 +112,7 @@ export const mapColonyEventToExpectedFormat = (
         decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
-    ...getColonyRoleSetTitleValues(
-      actionData?.individualEvents as string,
-      eventId,
-    ),
+    ...getColonyRoleSetTitleValues(actionData.individualEvents, eventId),
     domainMetadataChanges: getDomainMetadataChangesValue(actionData),
     colonyMetadataChanges: getColonyMetadataChangesValue(actionData, colony),
     fromDomain:
