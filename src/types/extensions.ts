@@ -58,6 +58,7 @@ export type InstalledExtensionData = ExtensionConfig &
 
 export type InstallableExtensionData = ExtensionConfig & {
   availableVersion: number;
+  isEnabled?: boolean;
   isInitialized?: boolean;
 };
 

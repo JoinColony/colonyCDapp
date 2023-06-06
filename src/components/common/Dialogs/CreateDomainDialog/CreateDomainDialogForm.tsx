@@ -86,9 +86,7 @@ const CreateDomainDialogForm = ({ back, colony, enabledExtensionData }: ActionDi
           onSecondaryButtonClick={back}
           disabled={disabledSubmit}
           dataTest="createDomainConfirmButton"
-          isVotingReputationEnabled={
-            enabledExtensionData.isVotingReputationEnabled
-          }
+          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
         />
       </DialogSection>
     </>

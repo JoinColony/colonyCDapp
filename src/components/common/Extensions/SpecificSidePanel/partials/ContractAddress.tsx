@@ -9,7 +9,7 @@ import { splitWalletAddress } from '~utils/splitWalletAddress';
 const displayName = 'common.Extensions.partials.ContractAddress';
 
 const ContractAddress: FC<PanelTypeProps> = ({ title, address = '' }) => {
-  const { isCopied, handleClipboardCopy } = useCopyToClipboard(address);
+  const { isCopied, handleClipboardCopy } = useCopyToClipboard(address || '');
   const { formatMessage } = useIntl();
 
   return (
@@ -27,7 +27,7 @@ const ContractAddress: FC<PanelTypeProps> = ({ title, address = '' }) => {
         <button
           type="button"
           aria-label={formatMessage({ id: 'copy.address' })}
-          className="font-normal text-md text-gray-900 justify-start"
+          className="font-normal text-md text-gray-900 justify-start text-ellipsis overflow-hidden"
           onClick={handleClipboardCopy}
         >
           {splitWalletAddress(address)}

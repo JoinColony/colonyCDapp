@@ -3,11 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
 import { Token, Colony } from '~types';
-import {
-  getTokenDecimalsWithFallback,
-  getSelectedToken,
-  getBalanceForTokenAndDomain,
-} from '~utils/tokens';
+import { getTokenDecimalsWithFallback, getSelectedToken, getBalanceForTokenAndDomain } from '~utils/tokens';
 import Numeral from '~shared/Numeral';
 
 import styles from './DomainFundSelector.css';
@@ -26,18 +22,10 @@ interface Props {
   domainFieldName: string;
 }
 
-const getDomainFundMessageValues = (
-  colony: Colony,
-  selectedToken: Token,
-  fromDomain: number,
-) => ({
+const getDomainFundMessageValues = (colony: Colony, selectedToken: Token, fromDomain: number) => ({
   amount: (
     <Numeral
-      value={getBalanceForTokenAndDomain(
-        colony.balances,
-        selectedToken.tokenAddress,
-        fromDomain,
-      )}
+      value={getBalanceForTokenAndDomain(colony.balances, selectedToken.tokenAddress, fromDomain)}
       decimals={getTokenDecimalsWithFallback(selectedToken?.decimals)}
     />
   ),
