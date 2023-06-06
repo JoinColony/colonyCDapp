@@ -3,5 +3,5 @@
 }
 
 .tooltipBadge {
-  @apply flex items-center text-center text-inherit px-3 py-1.5 rounded-3xl border border-base-white h-[1.875rem];
+  @apply flex items-center text-center px-3 py-1.5 rounded-3xl border border-base-white h-[1.875rem];
 }
