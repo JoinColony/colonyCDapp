@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import { useLazyConsensusPage } from './hooks';
 import Icon from '~shared/Icon';
@@ -15,7 +15,7 @@ import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails/
 import { AnyExtensionData } from '~types';
 import { useMobile } from '~hooks';
 
-const LazyConsensusPage = () => {
+const LazyConsensusPage: FC = () => {
   const { openIndex, onOpenIndexChange } = useAccordion();
   const { extensionData, extensionContent, register, errors, handleSubmit, onSubmit, onChangeGovernance } =
     useLazyConsensusPage(onOpenIndexChange, openIndex);
