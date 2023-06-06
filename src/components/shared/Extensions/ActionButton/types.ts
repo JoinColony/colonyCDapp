@@ -9,6 +9,7 @@ export interface ActionButtonProps extends ButtonProps {
   error: string;
   onConfirmToggled?: (...args: any[]) => void;
   onSuccess?: (result: any) => void;
+  onError?: (error: any) => void;
   submit: string;
   success: string;
   text?: MessageDescriptor | string;

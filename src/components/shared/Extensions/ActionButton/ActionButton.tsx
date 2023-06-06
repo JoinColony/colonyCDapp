@@ -12,6 +12,7 @@ const ActionButton: FC<ActionButtonProps> = ({
   submit,
   success,
   onSuccess,
+  onError,
   values,
   transform,
   ...props
@@ -27,13 +28,19 @@ const ActionButton: FC<ActionButtonProps> = ({
     try {
       const asyncFuncValues = typeof values == 'function' ? await values() : values;
       result = await asyncFunction(asyncFuncValues);
-      if (isMountedRef.current) setLoading(false);
-    } catch (err) {
-      setLoading(false);
 
-      return;
+      if (typeof onSuccess == 'function') {
+        onSuccess(result);
+      }
+    } catch (err) {
+      if (typeof onError == 'function') {
+        onError(err);
+      }
+    } finally {
+      if (isMountedRef.current) {
+        setLoading(false);
+      }
     }
-    if (typeof onSuccess == 'function') onSuccess(result);
   };
 
   const Button = button || DefaultButton;

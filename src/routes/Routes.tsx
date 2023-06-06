@@ -157,7 +157,6 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsLayout>
-                {/* <ExtensionDetails /> */}
                 <ExtensionDetailsPage />
               </ExtensionsLayout>
             </ColonyContextProvider>

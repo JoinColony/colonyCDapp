@@ -58,7 +58,7 @@ const ExtensionDetailsPage: FC = () => {
     return null;
   }
 
-  const mustUpgrade = extensionData.currentVersion === extensionData.availableVersion;
+  const mustUpgrade = extensionData.currentVersion < extensionData.availableVersion;
 
   return (
     <Spinner loadingText="extensionsPage">
@@ -71,6 +71,7 @@ const ExtensionDetailsPage: FC = () => {
                 <Icon name={extensionData.icon} appearance={{ size: 'large' }} />
                 <h4 className="ml-2 text-xl font-semibold text-gray-900">{formatMessage(extensionData.name)}</h4>
               </div>
+              {/* @TODO get these values from API (badge and active installs number) */}
               <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
                 <span>badge</span>
                 <p className="text-gray-400 text-sm">17,876 Active Installs</p>

@@ -12,7 +12,7 @@ export const light = {
   baseWhite: '#FFFFFF',
   baseBlack: '#000000',
   baseBg: '#F9FBFC',
-  baseSprite: '#343434',
+  baseSprite: 'rgba(52, 52, 52, 0.5)',
   blue100: '#EFF8FF',
   blue200: '#82B1FF',
   blue300: '#448AFF',
