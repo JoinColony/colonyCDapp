@@ -4,9 +4,9 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import Link from '~shared/Link';
 import Numeral from '~shared/Numeral';
 import { useTokenActivationContext } from '~hooks';
+import { useGetMotionTransactionHashQuery } from '~gql';
 
 import styles from './StakesTab.css';
-import { useGetMotionTransactionHashQuery } from '~gql';
 
 const displayName = 'frame.TokenActivation.StakesTab.StakesListItem';
 
