@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import { ExtensionDetailsProps } from './types';
 import SpecificSidePanel from '~common/Extensions/SpecificSidePanel/SpecificSidePanel';
 import Button from '~shared/Extensions/Button';
-import { useExtensionDetailsActions } from './hooks';
+import { useExtensionDetails } from './hooks';
 import Modal from '~shared/Extensions/Modal';
 import Checkbox from '~common/Extensions/Checkbox';
 
@@ -13,7 +13,7 @@ const displayName = 'frame.Extensions.pages.ExtensionDetailsPage.partials.Extens
 const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
   const { formatMessage } = useIntl();
   const { canExtensionBeUninstalled, canExtensionBeDeprecated, handleDeprecate, handleUninstall } =
-    useExtensionDetailsActions(extensionData);
+    useExtensionDetails(extensionData);
   const [isDeprecateModalOpen, setIsDeprecateModalOpen] = useState(false);
   const [isUninstallModalOpen, setIsUninstallModalOpen] = useState(false);
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
