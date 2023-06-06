@@ -15,7 +15,7 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
   notSet,
   placeholderIcon = 'circle-close',
   size = 'xs',
-  title,
+  title = '',
 }) => {
   const source = notSet ? null : avatar || getIcon(seed || title);
   const mainClass = size ? styles[size] : styles.main;
@@ -34,6 +34,7 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
         imageRendering: avatar ? undefined : 'pixelated',
       }
     : {};
+
   return (
     <figure className={className ? `${mainClass} ${className}` : mainClass} title={title}>
       {source ? (

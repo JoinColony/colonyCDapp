@@ -24,12 +24,6 @@ const meta: Meta<typeof UserAvatarPopover> = {
         type: 'boolean',
       },
     },
-    copyUrl: {
-      name: 'Is copied?',
-      control: {
-        type: 'boolean',
-      },
-    },
     aboutDescription: {
       name: 'About description',
       control: {
@@ -41,7 +35,6 @@ const meta: Meta<typeof UserAvatarPopover> = {
     userName: 'Panda',
     walletAddress: '0x155....1051',
     isVerified: true,
-    copyUrl: true,
     aboutDescription: `Passionate about sustainability and living a zero-waste lifestyle. Lover of all things vintage and retro. High-tops are my everything.`,
     colonyReputation: colonyReputationItems,
     permissions: permissionsItems,

@@ -42,15 +42,14 @@ const SpecialPercentageInputWithHooks = (args) => {
   return (
     <div className="text-right">
       <form className="flex justify-end flex-col w-[8.8rem]">
-        {/* <Form<FormValues> use it later */}
         <SpecialInput
           {...args}
           register={register}
           isError={!!errors.percentage?.message}
-          name="percentage"
+          name="percent"
           min={1}
           max={99}
-          type="percentage"
+          type="percent"
           placeholder="1"
         />
         {errors.percentage && <FormError>{errors.percentage.message}</FormError>}
