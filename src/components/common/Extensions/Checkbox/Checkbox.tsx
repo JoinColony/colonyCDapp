@@ -11,26 +11,15 @@ const Checkbox: FC<CheckboxProps> = ({ name, disabled, id, register, label, onCh
   return (
     <div className={clsx(classNames, 'flex items-center')}>
       <div className="relative h-4 w-4 mr-2 shrink-0">
-        {register ? (
-          <input
-            type="checkbox"
-            {...register(name)}
-            name={name}
-            id={id}
-            disabled={disabled}
-            onChange={onChange}
-            className="peer appearance-none relative z-[1]"
-          />
-        ) : (
-          <input
-            type="checkbox"
-            name={name}
-            id={id}
-            disabled={disabled}
-            onChange={onChange}
-            className="peer appearance-none relative z-[1]"
-          />
-        )}
+        <input
+          type="checkbox"
+          {...register?.(name)}
+          name={name}
+          id={id}
+          disabled={disabled}
+          onChange={onChange}
+          className="peer appearance-none relative z-[1]"
+        />
         <span
           className={clsx(
             styles.checkboxBox,
