@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { ColonyVersion, Extension, ExtensionVersion, isExtensionCompatible } from '@colony/colony-js';
 import { toast } from 'react-toastify';
 
+import { useIntl } from 'react-intl';
 import { ActionTypes } from '~redux/index';
 import { mapPayload } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
@@ -16,6 +17,7 @@ const displayName = 'common.Extensions.ExtensionUpgradeButton';
 const ExtensionUpgradeButton: FC<ExtensionUpgradeButtonProps> = ({ extensionData }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
+  const { formatMessage } = useIntl();
 
   if (!isInstalledExtensionData(extensionData) || extensionData.currentVersion >= extensionData.availableVersion) {
     return null;
@@ -57,8 +59,8 @@ const ExtensionUpgradeButton: FC<ExtensionUpgradeButtonProps> = ({ extensionData
         toast.success(
           <Toast
             type="success"
-            title="Extension upgraded"
-            description="The extension has been upgraded to the latest version."
+            title={formatMessage({ id: 'extensionUpgrade.toast.title.success' })}
+            description={formatMessage({ id: 'extensionUpgrade.toast.description.success' })}
           />,
         )
       }
@@ -66,8 +68,8 @@ const ExtensionUpgradeButton: FC<ExtensionUpgradeButtonProps> = ({ extensionData
         toast.error(
           <Toast
             type="error"
-            title="Extension failed to upgrade"
-            description="Due to a transaction error, the extension did not upgrade."
+            title={formatMessage({ id: 'extensionUpgrade.toast.title.error' })}
+            description={formatMessage({ id: 'extensionUpgrade.toast.description.error' })}
           />,
         )
       }

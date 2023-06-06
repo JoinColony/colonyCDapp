@@ -471,5 +471,9 @@
     "next.update": "Next update",
     "helpAndAccount": "Help & account",
     "your.dashboard": " Your dashboard",
-    "your.colony.overview": "Your colony overview"
+    "your.colony.overview": "Your colony overview",
+    "extensionUpgrade.toast.title.success": "Extension upgraded",
+    "extensionUpgrade.toast.description.success": "The extension has been upgraded to the latest version.",
+    "extensionUpgrade.toast.title.error": "Extension failed to upgrade",
+    "extensionUpgrade.toast.description.error": "Due to a transaction error, the extension did not upgrade."
 }
