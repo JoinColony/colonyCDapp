@@ -300,7 +300,8 @@ type ColonyID {
 type Colony @model {
   id: ID! @index(name: "byAddress", queryField: "getColonyByAddress") # colony contract address
   name: String! @index(name: "byName", queryField: "getColonyByName")
-  nativeToken: Token! @hasOne
+  nativeTokenId: ID! @index(name: "byNativeTokenId", queryField: "getColoniesByNativeTokenId")
+  nativeToken: Token! @hasOne(fields: ["nativeTokenId"])
   tokens: [Token] @manyToMany(relationName: "ColonyTokens")
   status: ColonyStatus
   domains: [Domain] @hasMany(indexName: "byColony", fields: ["id"])
