@@ -105,7 +105,7 @@ const UserMenu: FC<UserMenuProps> = ({
           <TitledContent title={{ id: 'userMenu.optionsTitle' }}>
             <ul className="text-lg font-semibold md:font-normal md:text-md">
               {userMenuItems.map((item) => (
-                <li className="mb-4 last:mb-0" id={item.id}>
+                <li className="mb-4 last:mb-0" key={item.id}>
                   {item.link ? (
                     <Link to={item.link} className="flex items-center justify-between">
                       <div className="flex items-center">
