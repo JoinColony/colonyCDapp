@@ -43,6 +43,7 @@
     "button.publish": "Publish",
     "button.update": "Update",
     "button.upgrade": "Upgrade",
+    "button.updateVersion": "Update version",
     "input.resetText": "Cancel",
     "label.amount": "Amount",
     "label.name": "Name",

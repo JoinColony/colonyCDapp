@@ -33,7 +33,7 @@ const CalamityBanner: FC<PropsWithChildren<CalamityBannerProps>> = ({
             <div className="flex items-center justify-betweenmd:justify-normal w-full md:w-auto mt-2 md:mt-0">
               <Link
                 to="https://docs.colony.io/use/advanced-features/upgrade-colony-and-extensions"
-                className="font-semibold text-sm text-base-white underline"
+                className="font-semibold text-sm text-base-white underline hover:text-base-white hover:no-underline"
               >
                 {formatMessage({ id: linkName })}
               </Link>

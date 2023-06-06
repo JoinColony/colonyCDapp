@@ -14,11 +14,7 @@ import {
   useEnabledExtensions,
 } from '~hooks';
 import { getNetworkReleaseLink } from '~utils/external';
-import {
-  hasRoot,
-  mustColonyBeUpgraded,
-  canColonyBeUpgraded,
-} from '~utils/checks';
+import { hasRoot, mustColonyBeUpgraded, canColonyBeUpgraded } from '~utils/checks';
 import { getAllUserRoles } from '~redux/transformers';
 
 import styles from './ColonyUpgrade.css';
@@ -99,12 +95,7 @@ const ColonyUpgrade = () => {
                 <FormattedMessage
                   {...MSG.upgradeSuggested}
                   values={{
-                    linkToRelease: (
-                      <ExternalLink
-                        text={{ id: 'text.learnMore' }}
-                        href={getNetworkReleaseLink()}
-                      />
-                    ),
+                    linkToRelease: <ExternalLink text={{ id: 'text.learnMore' }} href={getNetworkReleaseLink()} />,
                   }}
                 />
               </div>

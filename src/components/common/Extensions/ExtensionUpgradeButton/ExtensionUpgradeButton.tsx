@@ -1,19 +1,17 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { ColonyVersion, Extension, ExtensionVersion, isExtensionCompatible } from '@colony/colony-js';
 
-import { ActionButton } from '~shared/Button';
-import { AnyExtensionData } from '~types';
 import { ActionTypes } from '~redux/index';
 import { mapPayload } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
 import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 import { isInstalledExtensionData } from '~utils/extensions';
+import { ExtensionUpgradeButtonProps } from './types';
+import ActionButton from '~shared/Extensions/ActionButton';
 
-interface Props {
-  extensionData: AnyExtensionData;
-}
+const displayName = 'common.Extensions.ExtensionUpgradeButton';
 
-const ExtensionUpgradeButton = ({ extensionData }: Props) => {
+const ExtensionUpgradeButton: FC<ExtensionUpgradeButtonProps> = ({ extensionData }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
 
@@ -42,20 +40,21 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
   if (!user || extensionData.isDeprecated || !extensionData.isInitialized) {
     return null;
   }
-  // @TODO check user permissions for canUpgrade - hasRoot(allUserRoles)
+
   const canUpgrade = true;
 
   return (
     <ActionButton
-      appearance={{ theme: 'primary', size: 'medium' }}
       submit={ActionTypes.EXTENSION_UPGRADE}
       error={ActionTypes.EXTENSION_UPGRADE_ERROR}
       success={ActionTypes.EXTENSION_UPGRADE_SUCCESS}
       transform={transform}
-      text={{ id: 'button.upgrade' }}
+      text={{ id: 'button.updateVersion' }}
       disabled={!isSupportedColonyVersion || !extensionCompatible || !canUpgrade}
     />
   );
 };
+
+ExtensionUpgradeButton.displayName = displayName;
 
 export default ExtensionUpgradeButton;

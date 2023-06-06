@@ -21,19 +21,21 @@ const Toast: FC<ToastProps> = ({ type = 'success', title, description, linkName,
       />
     </div>
     <div className="flex flex-col ml-[1.140625rem]">
-      {title && <span className="text-md text-gray-900 font-semibold pb-1">{title}</span>}
-      {description && <span className="text-md text-gray-600 font-normal pb-1">{description}</span>}
+      {title && <span className="text-md text-gray-900 font-semibold">{title}</span>}
+      {description && <span className="text-md text-gray-600 font-normal mt-1">{description}</span>}
       {linkName && (
-        <Link
-          to={url}
-          className={clsx('text-xs font-medium underline', {
-            'text-success-400': type === 'success',
-            'text-warning-400': type === 'alert',
-            'text-negative-400': type === 'warning',
-          })}
-        >
-          {linkName}
-        </Link>
+        <div className="mt-1">
+          <Link
+            to={url}
+            className={clsx('text-xs font-medium underline', {
+              'text-success-400': type === 'success',
+              'text-warning-400': type === 'alert',
+              'text-negative-400': type === 'warning',
+            })}
+          >
+            {linkName}
+          </Link>
+        </div>
       )}
     </div>
   </div>

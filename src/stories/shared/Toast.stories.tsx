@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import clsx from 'clsx';
 import Toast from '~shared/Extensions/Toast/Toast';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
-import styles from '~components/shared/Extensions/Toast/Toast.module.css';
+import styles from '~shared/Extensions/Toast/Toast.module.css';
 
 const meta: Meta<typeof Toast> = {
   title: 'Shared/Toast',
