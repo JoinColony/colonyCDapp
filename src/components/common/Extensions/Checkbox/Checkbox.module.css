@@ -1,0 +1,3 @@
+.checkboxBox {
+  @apply flex absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 transition border h-full w-full rounded-[0.25rem] bg-base-white text-base-white;
+}

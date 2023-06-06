@@ -42,7 +42,7 @@ const ExtensionDetailsPage: FC = () => {
       <ThreeColumns
         leftAside={<Navigation />}
         topRow={
-          <div className="flex items-center">
+          <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Icon name={extensionData.icon} appearance={{ size: 'large' }} />
               <h4 className="ml-2 text-xl font-semibold text-gray-900">{formatMessage(extensionData.name)}</h4>
