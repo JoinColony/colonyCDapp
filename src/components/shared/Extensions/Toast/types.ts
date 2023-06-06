@@ -6,4 +6,4 @@ export interface ToastProps {
   type?: ToastType;
 }
 
-export type ToastType = 'success' | 'alert' | 'warning';
+export type ToastType = 'success' | 'warn' | 'error';

@@ -2,10 +2,9 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import clsx from 'clsx';
 import Toast from '~shared/Extensions/Toast/Toast';
+import styles from '~shared/Extensions/Toast/Toast.module.css';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
-import styles from '~components/shared/Extensions/Toast/Toast.module.css';
 
 const meta: Meta<typeof Toast> = {
   title: 'Shared/Toast',
@@ -16,7 +15,8 @@ export default meta;
 type Story = StoryObj<typeof Toast>;
 
 const ToastWithHooks = (args) => {
-  const notify = () => toast(<Toast {...args} />);
+  const { type } = args;
+  const notify = () => toast[type](<Toast {...args} />);
 
   return (
     <Router>
@@ -24,14 +24,7 @@ const ToastWithHooks = (args) => {
         Notify!
       </button>
       <ToastContainer
-        className={clsx(styles.toastify, {
-          // eslint-disable-next-line react/destructuring-assignment
-          '[&>div]:border-l-success-400 [&>div]:border-l-4': args?.type === 'success',
-          // eslint-disable-next-line react/destructuring-assignment
-          '[&>div]:border-l-warning-400 [&>div]:border-l-4': args?.type === 'alert',
-          // eslint-disable-next-line react/destructuring-assignment
-          '[&>div]:border-l-negative-400 [&>div]:border-l-4': args?.type === 'warning',
-        })}
+        className={styles.toastNotification}
         autoClose={3000}
         hideProgressBar
         closeOnClick
@@ -45,6 +38,9 @@ const ToastWithHooks = (args) => {
 };
 
 export const Success: Story = {
+  args: {
+    type: 'success',
+  },
   render: () => (
     <ToastWithHooks
       type="success"
@@ -56,13 +52,19 @@ export const Success: Story = {
 };
 
 export const Alert: Story = {
+  args: {
+    type: 'warn',
+  },
   render: () => (
-    <ToastWithHooks type="alert" title="Alert" description="Information about the alert" linkName="Button" />
+    <ToastWithHooks type="warn" title="Alert" description="Information about the alert" linkName="Button" />
   ),
 };
 
 export const Warning: Story = {
+  args: {
+    type: 'error',
+  },
   render: () => (
-    <ToastWithHooks type="warning" title="Warning" description="Information about the warning" linkName="Button" />
+    <ToastWithHooks type="error" title="Warning" description="Information about the warning" linkName="Button" />
   ),
 };
