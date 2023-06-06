@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import SpecificSidePanel from '~common/Extensions/SpecificSidePanel';
 import { sidePanelData } from '~common/Extensions/SpecificSidePanel/consts';
+import { SpecificSidePanelStoryProps } from '~common/Extensions/SpecificSidePanel/types';
 
 const meta: Meta<typeof SpecificSidePanel> = {
   title: 'Common/Specific Side Panel',
@@ -8,7 +9,7 @@ const meta: Meta<typeof SpecificSidePanel> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof SpecificSidePanel>;
+type Story = StoryObj<SpecificSidePanelStoryProps>;
 
 export const Base: Story = {
   args: {

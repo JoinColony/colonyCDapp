@@ -53,3 +53,8 @@ export interface PanelTypeProps {
 export interface SpecificSidePanelProps {
   extensionData: AnyExtensionData;
 }
+
+export interface SpecificSidePanelStoryProps {
+  statuses: string[];
+  sidePanelData: SidePanelDataProps;
+}
