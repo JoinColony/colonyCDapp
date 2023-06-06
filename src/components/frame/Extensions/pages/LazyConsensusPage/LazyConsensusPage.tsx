@@ -6,7 +6,6 @@ import Icon from '~shared/Icon';
 import RadioList from '~shared/Extensions/Fields/RadioList';
 import Accordion from '~shared/Extensions/Accordion/Accordion';
 import { mockedGovernance } from './consts';
-import Button from '~shared/Extensions/Button';
 import { useAccordion } from '~shared/Extensions/Accordion/hooks';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Navigation from '~common/Extensions/Navigation/Navigation';
@@ -14,14 +13,13 @@ import Spinner from '~shared/Extensions/Spinner';
 import ThreeColumns from '~frame/Extensions/ThreeColumns/ThreeColumns';
 import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails/ExtensionDetails';
 import { AnyExtensionData } from '~types';
-import { useMobile } from '~hooks';
+import ActionButtons from '../partials/ActionButtons';
 
 const LazyConsensusPage: FC = () => {
   const { openIndex, onOpenIndexChange } = useAccordion();
   const { extensionData, extensionContent, register, errors, handleSubmit, onSubmit, onChangeGovernance } =
     useLazyConsensusPage(onOpenIndexChange, openIndex);
   const { formatMessage } = useIntl();
-  const isMobile = useMobile();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -52,17 +50,8 @@ const LazyConsensusPage: FC = () => {
                   <span className="hidden sm:flex text-gray-400 text-sm">{`17,876 ${formatMessage({
                     id: 'active.installs',
                   })}`}</span>
-                  {!extensionData?.isInitialized && (
-                    <Button mode="primarySolid" isFullSize={isMobile} type="submit">
-                      {formatMessage({ id: 'button.enable' })}
-                    </Button>
-                  )}
+                  <ActionButtons />
                 </div>
-
-                {/* @TODO: add install action */}
-                {/* <Button mode="primarySolid" isFullSize={isMobile} onClick={handleInstallClick}>
-                  <p className="text-sm font-medium">{formatMessage({ id: 'extension.installButton' })}</p>
-                </Button> */}
               </div>
             </div>
           }
