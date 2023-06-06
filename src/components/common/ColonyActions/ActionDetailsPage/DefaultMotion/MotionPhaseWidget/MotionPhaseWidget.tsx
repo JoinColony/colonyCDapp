@@ -4,6 +4,7 @@ import { StakerRewards } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 import { ColonyActionType, Address } from '~types';
 import { MotionState } from '~utils/colonyMotions';
+import { MotionAction } from '~types/motions';
 
 import ClaimMotionStakes from './ClaimMotionStakes';
 import FinalizeMotion from './FinalizeMotion';
@@ -11,7 +12,6 @@ import StakingWidget, { StakingWidgetProvider } from './StakingWidget';
 import { VotingWidget } from './VotingWidget';
 import { RevealWidget } from './RevealWidget';
 import { VoteOutcome } from './VoteOutcome';
-import { MotionAction } from '~types/motions';
 import { RefetchAction } from '../../useGetColonyAction';
 
 const displayName =

@@ -10,10 +10,10 @@ import { ActionTypes } from '~redux';
 import { useAppContext, useColonyContext } from '~hooks';
 import { DetailItemProps } from '~shared/DetailsWidget';
 import { getTransactionHashFromPathName } from '~utils/urls';
-
-import { ClaimMotionStakesStyles } from './ClaimMotionStakes';
 import { ColonyMotion } from '~types';
 import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
+
+import { ClaimMotionStakesStyles } from './ClaimMotionStakes';
 
 const { formatMessage } = intl({
   'label.stake': 'Stake',
