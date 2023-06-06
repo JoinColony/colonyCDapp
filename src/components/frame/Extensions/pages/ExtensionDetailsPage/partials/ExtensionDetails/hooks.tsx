@@ -1,13 +1,16 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { format } from 'date-fns';
 import { toast } from 'react-toastify';
-import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
+import { ActionTypes } from '~redux';
+
 import { isInstalledExtensionData } from '~utils/extensions';
 import { useUserByNameOrAddress, useAsyncFunction, useColonyContext } from '~hooks';
-import UserAvatar from '~shared/Extensions/UserAvatar';
+
 import { AnyExtensionData, InstalledExtensionData } from '~types';
+import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
 import { SidePanelDataProps } from '~common/Extensions/SpecificSidePanel/types';
-import { ActionTypes } from '~redux';
+
+import UserAvatar from '~shared/Extensions/UserAvatar';
 import Toast from '~shared/Extensions/Toast';
 
 export const useExtensionDetails = (extensionData: AnyExtensionData) => {

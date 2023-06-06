@@ -2,6 +2,7 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
+
 import { CheckboxProps } from './types';
 import styles from './Checkbox.module.css';
 
