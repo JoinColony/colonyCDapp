@@ -13,9 +13,8 @@ const displayName = 'Extensions.UserAvatarPopover.partials.UserInfo';
 
 const UserInfo: FC<UserInfoProps> = ({
   userName,
-  walletAddress,
+  walletAddress = '',
   isVerified,
-  copyUrl,
   aboutDescription,
   colonyReputation,
   permissions,
@@ -26,7 +25,7 @@ const UserInfo: FC<UserInfoProps> = ({
   const aboutDescriptionText =
     typeof aboutDescription === 'string' ? aboutDescription : aboutDescription && formatMessage(aboutDescription);
 
-  const { handleClipboardCopy } = useCopyToClipboard(walletAddress);
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard(walletAddress);
 
   return (
     <div>
@@ -41,7 +40,7 @@ const UserInfo: FC<UserInfoProps> = ({
               </span>
             )}
           </div>
-          {copyUrl ? (
+          {isCopied ? (
             <button
               onClick={handleClipboardCopy}
               onKeyDown={handleClipboardCopy}

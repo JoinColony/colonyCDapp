@@ -3,5 +3,5 @@
 }
 
 .input {
-  @apply bg-base-white px-3.5 py-3 transition-all duration-normal w-[3.75rem] rounded-l border rounded-r-none shrink-0 -mr-px -z-10;
+  @apply bg-base-white px-3.5 py-3 transition-all duration-normal w-[3.75rem] rounded-l border rounded-r-none shrink-0 -mr-px;
 }

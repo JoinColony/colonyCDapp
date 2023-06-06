@@ -1,6 +1,5 @@
 import React, { FC, Fragment } from 'react';
 import { useIntl } from 'react-intl';
-import { SpecificSidePanelProps } from './types';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Permissions from './partials/Permissions';
 import DateInstalled from './partials/DateInstalled';
@@ -9,18 +8,20 @@ import Version from './partials/Version';
 import ContractAddress from './partials/ContractAddress';
 import Developer from './partials/Developer';
 import styles from './SpecificSidePanel.module.css';
+import { useSpecificSidePanel } from './hooks';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 
-const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData }) => {
+const SpecificSidePanel: FC = () => {
   const { formatMessage } = useIntl();
+  const { statuses, sidePanelData } = useSpecificSidePanel();
 
   return (
     <div className="bg-base-white flex gap-[1.25rem] flex-col">
       <h3 className="font-semibold text-lg text-gray-900 pb-[0.2rem]">
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
-      {sidePanelData.map(
+      {(sidePanelData || [])?.map(
         ({ id, dateInstalled, installedBy, statusType, versionInstalled, contractAddress, developer, permissions }) => (
           <Fragment key={id}>
             <div className={styles.panelRow}>
@@ -37,11 +38,9 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ statuses, sidePanelData
                 )}
               </div>
             </div>
+            {!statuses?.includes('not-installed') && <InstalledBy title={installedBy.title} />}
             {!statuses?.includes('not-installed') && (
-              <InstalledBy title={installedBy.title} component={installedBy.component} />
-            )}
-            {!statuses?.includes('not-installed') && (
-              <DateInstalled title={dateInstalled.title} date={dateInstalled.date} />
+              <DateInstalled title={dateInstalled?.title} date={dateInstalled.date || ''} />
             )}
             <Version title={versionInstalled.title} version={versionInstalled.version} />
             {!statuses?.includes('not-installed') && (

@@ -1,19 +1,48 @@
+import { FieldErrorsImpl, UseFormRegister } from 'react-hook-form';
+import { MessageDescriptor } from 'react-intl';
+import { ComponentType, FormPercentageInput } from '~common/Extensions/SpecialInput/types';
+import { FormRadioButton } from '../Fields/RadioList/types';
+
 export interface AccordionProps {
-  items: AccordionMocksContent[];
-  openIndex?: number;
-  onOpenIndexChange?: (newOpenIndex: number | undefined) => void;
+  items: AccordionContent[];
+  openIndex: number;
+  onOpenIndexChange: (newOpenIndex: number | undefined) => void;
 }
 
-export interface AccordionMocksContent {
-  id: string;
-  title: string;
-  content: AccordionMocksContentDetails[];
+export interface ContentTypeProps {
+  title?: string | React.ReactNode;
+  subTitle?: string | React.ReactNode;
+  details?: string;
 }
 
-export interface AccordionMocksContentDetails {
-  id: number;
+export interface AccordionContent extends ContentTypeProps {
+  paramName: string;
+  complementaryLabel: ComponentType;
+  id?: string;
+  description?: MessageDescriptor | string;
+  defaultValue: number;
+  maxValue: number;
+  content?: AccordionContentDetails[];
+}
+
+export interface AccordionContentDetails {
+  id: number | string;
   textItem?: JSX.Element;
   inputItem?: JSX.Element;
+  inputData: {
+    inputType: 'percent' | 'hours';
+    maxValue: number;
+    minValue: number;
+    name: string;
+    errors: Partial<
+      | FieldErrorsImpl<{
+          percent: number;
+          hours: number;
+        }>
+      | undefined
+    >;
+    register?: UseFormRegister<FormRadioButton | FormPercentageInput>;
+  };
   accordionItem?: AccordionMocksItemProps[];
 }
 
@@ -23,15 +52,10 @@ export interface AccordionMocksItemProps {
   content: JSX.Element;
 }
 export interface AccordionItemProps {
-  title?: string | JSX.Element;
-  content?: AccordionMocksContentDetails[];
+  title?: string | React.ReactNode;
+  content?: AccordionContentDetails[];
   isOpen?: boolean;
   onClick?: () => void;
-}
-export interface ContentTypeProps {
-  title?: string;
-  subTitle?: string;
-  details?: string;
 }
 
 export interface AccordionContentItemProps {
@@ -41,5 +65,16 @@ export interface AccordionContentItemProps {
 }
 
 export interface SpecialInputProps {
-  maxValue: number;
+  defaultValue?: number | string;
+  maxValue?: number;
+  minValue?: number;
+  name?: string;
+  register?: UseFormRegister<FormRadioButton | FormPercentageInput>;
+  errors?: Partial<
+    | FieldErrorsImpl<{
+        percent: number;
+        hours: number;
+      }>
+    | undefined
+  >;
 }

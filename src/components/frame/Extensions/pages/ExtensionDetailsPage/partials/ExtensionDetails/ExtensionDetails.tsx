@@ -4,16 +4,16 @@ import { useIntl } from 'react-intl';
 import { ExtensionDetailsProps } from './types';
 import SpecificSidePanel from '~common/Extensions/SpecificSidePanel/SpecificSidePanel';
 import Button from '~shared/Extensions/Button';
-import { useExtensionDetails, useExtensionDetailsActions } from './hooks';
+import { useExtensionDetailsActions } from './hooks';
 import Modal from '~shared/Extensions/Modal';
 import Checkbox from '~common/Extensions/Checkbox';
 
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage.partials.ExtensionDetails';
 
-const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData, canBeDeprecated, canBeUninstalled }) => {
+const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
   const { formatMessage } = useIntl();
-  const { sidePanelData, status } = useExtensionDetails(extensionData);
-  const { handleDeprecate, handleUninstall } = useExtensionDetailsActions(extensionData);
+  const { canExtensionBeUninstalled, canExtensionBeDeprecated, handleDeprecate, handleUninstall } =
+    useExtensionDetailsActions(extensionData);
   const [isDeprecateModalOpen, setIsDeprecateModalOpen] = useState(false);
   const [isUninstallModalOpen, setIsUninstallModalOpen] = useState(false);
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
@@ -26,9 +26,9 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData, canBeDepre
 
   return (
     <div>
-      <SpecificSidePanel statuses={status} sidePanelData={sidePanelData} />
+      <SpecificSidePanel />
       <div className="sm:w-[20.375rem]">
-        {canBeDeprecated && (
+        {canExtensionBeDeprecated && (
           <div className="mt-6">
             <Button mode="primaryOutline" isFullSize onClick={() => setIsDeprecateModalOpen(true)}>
               {formatMessage({ id: 'extensionDetailsPage.deprecate' })}
@@ -57,7 +57,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData, canBeDepre
             </Modal>
           </div>
         )}
-        {canBeUninstalled && (
+        {canExtensionBeUninstalled && (
           <div className="mt-6">
             <Button mode="primaryOutline" isFullSize onClick={() => setIsUninstallModalOpen(true)}>
               {formatMessage({ id: 'extensionDetailsPage.uninstall' })}

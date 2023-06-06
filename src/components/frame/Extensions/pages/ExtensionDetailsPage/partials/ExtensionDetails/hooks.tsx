@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { ActionTypes } from '~redux';
 
 import { isInstalledExtensionData } from '~utils/extensions';
-import { useUserByNameOrAddress, useAsyncFunction, useColonyContext } from '~hooks';
+import { useUserByNameOrAddress, useAsyncFunction, useColonyContext, useAppContext } from '~hooks';
 
 import { AnyExtensionData, InstalledExtensionData } from '~types';
 import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
@@ -77,6 +77,7 @@ export const useExtensionDetailsActions = (extensionData: AnyExtensionData) => {
   const uninstallError = ActionTypes.EXTENSION_UNINSTALL_ERROR;
   const uninstallSuccess = ActionTypes.EXTENSION_UNINSTALL_SUCCESS;
   const { colony } = useColonyContext();
+  const { user } = useAppContext();
   const { extensionId } = extensionData;
 
   const deprecateExtensionValues = useMemo(() => {
@@ -115,12 +116,31 @@ export const useExtensionDetailsActions = (extensionData: AnyExtensionData) => {
   const handleUninstall = useCallback(async () => {
     try {
       await uninstallAsyncFunction(uninstallExtensionValues).then(() =>
-        toast.success(<Toast type="success" title="Extension uninstalled successfully" />),
+        toast.success(
+          <Toast
+            type="success"
+            title="Extension uninstalled successfully"
+            description="You can reinstall the extension at anytime"
+          />,
+        ),
       );
     } catch (err) {
       console.error(err);
     }
   }, [uninstallAsyncFunction, uninstallExtensionValues]);
 
-  return { handleDeprecate, handleUninstall };
+  const hasRegisteredProfile = !!user;
+  const canExtensionBeUninstalled = !!(
+    hasRegisteredProfile &&
+    isInstalledExtensionData(extensionData) &&
+    extensionData.uninstallable &&
+    extensionData.isDeprecated
+  );
+  const canExtensionBeDeprecated =
+    hasRegisteredProfile &&
+    isInstalledExtensionData(extensionData) &&
+    extensionData.uninstallable &&
+    !extensionData.isDeprecated;
+
+  return { handleDeprecate, handleUninstall, canExtensionBeUninstalled, canExtensionBeDeprecated };
 };
