@@ -1,4 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
+import { AnyExtensionData } from '~types';
 
 export interface PermissionsProps {
   data: { key: string; name: string; text: MessageDescriptor | string; description: MessageDescriptor | string }[];
@@ -46,4 +47,9 @@ export interface PanelTypeProps {
   date?: string;
   developer?: string;
   version?: string;
+  extensionData?: AnyExtensionData;
+}
+
+export interface SpecificSidePanelProps {
+  extensionData: AnyExtensionData;
 }
