@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { format } from 'date-fns';
+import { toast } from 'react-toastify';
 import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { useUserByNameOrAddress, useAsyncFunction, useColonyContext } from '~hooks';
@@ -7,6 +8,7 @@ import UserAvatar from '~shared/Extensions/UserAvatar';
 import { AnyExtensionData, InstalledExtensionData } from '~types';
 import { SidePanelDataProps } from '~common/Extensions/SpecificSidePanel/types';
 import { ActionTypes } from '~redux';
+import Toast from '~shared/Extensions/Toast';
 
 export const useExtensionDetails = (extensionData: AnyExtensionData) => {
   const [status, setStatus] = useState<ExtensionStatusBadgeMode>('disabled');
@@ -61,29 +63,61 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
     },
   ];
 
-  const submit = ActionTypes.EXTENSION_DEPRECATE;
-  const error = ActionTypes.EXTENSION_DEPRECATE_ERROR;
-  const success = ActionTypes.EXTENSION_DEPRECATE_SUCCESS;
+  return { status, sidePanelData };
+};
+
+export const useExtensionDetailsActions = (extensionData: AnyExtensionData) => {
+  const deprecateSubmit = ActionTypes.EXTENSION_DEPRECATE;
+  const deprecateError = ActionTypes.EXTENSION_DEPRECATE_ERROR;
+  const deprecateSuccess = ActionTypes.EXTENSION_DEPRECATE_SUCCESS;
+  const uninstallSubmit = ActionTypes.EXTENSION_UNINSTALL;
+  const uninstallError = ActionTypes.EXTENSION_UNINSTALL_ERROR;
+  const uninstallSuccess = ActionTypes.EXTENSION_UNINSTALL_SUCCESS;
   const { colony } = useColonyContext();
   const { extensionId } = extensionData;
 
-  const extensionValues = useMemo(() => {
+  const deprecateExtensionValues = useMemo(() => {
     return {
       colonyAddress: colony?.colonyAddress,
       extensionId,
       isToDeprecate: true,
     };
   }, [colony?.colonyAddress, extensionId]);
+  const uninstallExtensionValues = useMemo(() => {
+    return {
+      colonyAddress: colony?.colonyAddress,
+      extensionId,
+    };
+  }, [colony?.colonyAddress, extensionId]);
 
-  const asyncFunction = useAsyncFunction({ submit, error, success });
+  const deprecateAsyncFunction = useAsyncFunction({
+    submit: deprecateSubmit,
+    error: deprecateError,
+    success: deprecateSuccess,
+  });
+
+  const uninstallAsyncFunction = useAsyncFunction({
+    submit: uninstallSubmit,
+    error: uninstallError,
+    success: uninstallSuccess,
+  });
 
   const handleDeprecate = useCallback(async () => {
     try {
-      await asyncFunction(extensionValues);
+      await deprecateAsyncFunction(deprecateExtensionValues);
     } catch (err) {
       console.error(err);
     }
-  }, [asyncFunction, extensionValues]);
+  }, [deprecateAsyncFunction, deprecateExtensionValues]);
+  const handleUninstall = useCallback(async () => {
+    try {
+      await uninstallAsyncFunction(uninstallExtensionValues).then(() =>
+        toast.success(<Toast type="success" title="Extension uninstalled successfully" />),
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  }, [uninstallAsyncFunction, uninstallExtensionValues]);
 
-  return { status, sidePanelData, handleDeprecate };
+  return { handleDeprecate, handleUninstall };
 };
