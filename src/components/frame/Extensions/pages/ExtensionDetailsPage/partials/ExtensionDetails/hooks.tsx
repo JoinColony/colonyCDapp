@@ -13,6 +13,9 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
   const uninstallSubmit = ActionTypes.EXTENSION_UNINSTALL;
   const uninstallError = ActionTypes.EXTENSION_UNINSTALL_ERROR;
   const uninstallSuccess = ActionTypes.EXTENSION_UNINSTALL_SUCCESS;
+  const reEnableSubmit = ActionTypes.EXTENSION_DEPRECATE;
+  const reEnableError = ActionTypes.EXTENSION_DEPRECATE_ERROR;
+  const reEnableSuccess = ActionTypes.EXTENSION_DEPRECATE_SUCCESS;
 
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -25,10 +28,19 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
       isToDeprecate: true,
     };
   }, [colony?.colonyAddress, extensionId]);
+
   const uninstallExtensionValues = useMemo(() => {
     return {
       colonyAddress: colony?.colonyAddress,
       extensionId,
+    };
+  }, [colony?.colonyAddress, extensionId]);
+
+  const reEnableExtensionValues = useMemo(() => {
+    return {
+      colonyAddress: colony?.colonyAddress,
+      extensionId,
+      isToDeprecate: false,
     };
   }, [colony?.colonyAddress, extensionId]);
 
@@ -44,13 +56,28 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
     success: uninstallSuccess,
   });
 
+  const reEnableAsyncFunction = useAsyncFunction({
+    submit: reEnableSubmit,
+    error: reEnableError,
+    success: reEnableSuccess,
+  });
+
   const handleDeprecate = useCallback(async () => {
     try {
-      await deprecateAsyncFunction(deprecateExtensionValues);
+      await deprecateAsyncFunction(deprecateExtensionValues).then(() =>
+        toast.success(
+          <Toast
+            type="success"
+            title={{ id: 'extensionDetailsPage.deprecateSuccessTitle' }}
+            description={{ id: 'extensionDetailsPage.deprecateSuccessDescription' }}
+          />,
+        ),
+      );
     } catch (err) {
       console.error(err);
     }
   }, [deprecateAsyncFunction, deprecateExtensionValues]);
+
   const handleUninstall = useCallback(async () => {
     try {
       await uninstallAsyncFunction(uninstallExtensionValues).then(() =>
@@ -67,6 +94,22 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
     }
   }, [uninstallAsyncFunction, uninstallExtensionValues]);
 
+  const handleReEnable = useCallback(async () => {
+    try {
+      await reEnableAsyncFunction(reEnableExtensionValues).then(() =>
+        toast.success(
+          <Toast
+            type="success"
+            title={{ id: 'extensionDetailsPage.reEnableSuccessTitle' }}
+            description={{ id: 'extensionDetailsPage.reEnableSuccessDescription' }}
+          />,
+        ),
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  }, [reEnableAsyncFunction, reEnableExtensionValues]);
+
   const hasRegisteredProfile = !!user;
   const canExtensionBeUninstalled = !!(
     hasRegisteredProfile &&
@@ -74,11 +117,12 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
     extensionData.uninstallable &&
     extensionData.isDeprecated
   );
+
   const canExtensionBeDeprecated =
     hasRegisteredProfile &&
     isInstalledExtensionData(extensionData) &&
     extensionData.uninstallable &&
     !extensionData.isDeprecated;
 
-  return { handleDeprecate, handleUninstall, canExtensionBeUninstalled, canExtensionBeDeprecated };
+  return { handleDeprecate, handleUninstall, handleReEnable, canExtensionBeUninstalled, canExtensionBeDeprecated };
 };
