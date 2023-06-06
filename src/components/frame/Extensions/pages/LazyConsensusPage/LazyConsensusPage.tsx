@@ -50,7 +50,7 @@ const LazyConsensusPage: FC = () => {
                   <span className="hidden sm:flex text-gray-400 text-sm">{`17,876 ${formatMessage({
                     id: 'active.installs',
                   })}`}</span>
-                  <ActionButtons />
+                  <ActionButtons extensionData={extensionData as AnyExtensionData} />
                 </div>
               </div>
             </div>

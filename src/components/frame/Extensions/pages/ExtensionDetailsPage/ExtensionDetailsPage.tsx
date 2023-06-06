@@ -48,7 +48,7 @@ const ExtensionDetailsPage: FC = () => {
               <h4 className="ml-2 text-xl font-semibold text-gray-900">{formatMessage(extensionData.name)}</h4>
             </div>
             <div className="sm:ml-4">
-              <ActionButtons />
+              <ActionButtons extensionData={extensionData} />
             </div>
           </div>
         }

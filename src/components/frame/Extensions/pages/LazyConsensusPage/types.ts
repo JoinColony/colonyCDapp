@@ -9,3 +9,7 @@ export interface LazyConsensusPageProps {
   badgeMessage: string;
   accordionContent: AccordionContent[];
 }
+
+export interface ActionButtonsProps {
+  extensionData: AnyExtensionData;
+}
