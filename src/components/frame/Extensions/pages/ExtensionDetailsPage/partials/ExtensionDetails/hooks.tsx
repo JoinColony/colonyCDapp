@@ -119,8 +119,8 @@ export const useExtensionDetailsActions = (extensionData: AnyExtensionData) => {
         toast.success(
           <Toast
             type="success"
-            title="Extension uninstalled successfully"
-            description="You can reinstall the extension at anytime"
+            title={{ id: 'extensionDetailsPage.uninstallSuccessTitle' }}
+            description={{ id: 'extensionDetailsPage.uninstallSuccessDescription' }}
           />,
         ),
       );

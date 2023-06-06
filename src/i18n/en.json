@@ -441,6 +441,8 @@
     "permissionsPage.loading": "Loading Permissions",
     "reputationPage.loading": "Loading Reputation",
     "extensionDetailsPage.unsupportedExtension": "This extension is not supported.",
+    "extensionDetailsPage.uninstallSuccessTitle": "Extension uninstalled successfully",
+    "extensionDetailsPage.uninstallSuccessDescription": "You can reinstall the extension at anytime",
     "extensionDetailsPage.uninstallTitle": "Extension removal warning",
     "extensionDetailsPage.uninstallDescription": "Uninstalling this extension will permanently delete all actions associated with this extension from this Colony. Ensure you understand the potential risks before continuing.",
     "extensionDetailsPage.uninstallBoxOne": "All actions will disappear from the application and can never be recovered.",
