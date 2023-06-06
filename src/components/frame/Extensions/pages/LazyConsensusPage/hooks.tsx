@@ -199,7 +199,7 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
       // @TODO: show toast notification
       handleFormSuccess();
     } catch (err) {
-      toast(<Toast type="alert" />);
+      toast(<Toast type="warn" />);
       console.error(err);
     }
   };
