@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+
 import { useLazyConsensusPage } from './hooks';
 import Icon from '~shared/Icon';
 import RadioList from '~shared/Extensions/Fields/RadioList';

@@ -7,7 +7,7 @@ const displayName = 'Extensions.Accordion.partials.AccordionHeader';
 const AccordionHeader: FC<AccordionItemProps> = ({ title, isOpen }) => (
   <div>
     <div className="flex justify-between items-center pb-2 pt-4">
-      {title as React.ReactNode}
+      {title}
       <Icon
         appearance={{ size: 'extraTiny' }}
         name={isOpen ? 'caret-up' : 'caret-down'}

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { FC, Fragment } from 'react';
 import { useIntl } from 'react-intl';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Permissions from './partials/Permissions';
@@ -12,7 +12,7 @@ import { useSpecificSidePanel } from './hooks';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 
-const SpecificSidePanel = () => {
+const SpecificSidePanel: FC = () => {
   const { formatMessage } = useIntl();
   const { statuses, sidePanelData } = useSpecificSidePanel();
 

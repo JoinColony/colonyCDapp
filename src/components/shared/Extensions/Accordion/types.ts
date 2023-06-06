@@ -1,5 +1,5 @@
 import { FieldErrorsImpl, UseFormRegister } from 'react-hook-form';
-import { MessageFormatElement } from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 import { ComponentType, FormPercentageInput } from '~common/Extensions/SpecialInput/types';
 import { FormRadioButton } from '../Fields/RadioList/types';
 
@@ -10,16 +10,8 @@ export interface AccordionProps {
 }
 
 export interface ContentTypeProps {
-  title?:
-    | string
-    | {
-        defaultMessage: string;
-      };
-  subTitle?:
-    | string
-    | {
-        defaultMessage: string;
-      };
+  title?: string | React.ReactNode;
+  subTitle?: string | React.ReactNode;
   details?: string;
 }
 
@@ -27,9 +19,7 @@ export interface AccordionContent extends ContentTypeProps {
   paramName: string;
   complementaryLabel: ComponentType;
   id?: string;
-  description?: {
-    defaultMessage: MessageFormatElement[];
-  };
+  description?: MessageDescriptor | string;
   defaultValue: number;
   maxValue: number;
   content?: AccordionContentDetails[];
@@ -62,7 +52,7 @@ export interface AccordionMocksItemProps {
   content: JSX.Element;
 }
 export interface AccordionItemProps {
-  title?: string | JSX.Element | { defaultMessage: string };
+  title?: string | React.ReactNode;
   content?: AccordionContentDetails[];
   isOpen?: boolean;
   onClick?: () => void;

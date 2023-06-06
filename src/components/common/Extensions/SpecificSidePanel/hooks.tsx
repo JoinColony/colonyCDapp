@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useIntl } from 'react-intl';
+
 import { useExtensionData, useUserByNameOrAddress } from '~hooks';
 import { SidePanelDataProps } from './types';
 import { InstalledExtensionData } from '~types';

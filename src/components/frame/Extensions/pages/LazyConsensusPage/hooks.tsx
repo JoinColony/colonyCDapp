@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Extension } from '@colony/colony-js/*';
 import { toast } from 'react-toastify';
+
 import { useAsyncFunction, useColonyContext, useExtensionData } from '~hooks';
 import { useExtensionsBadge } from '~hooks/useExtensionsBadgeStatus';
 import ContentTypeText from '~shared/Extensions/Accordion/partials/ContentTypeText';
@@ -19,8 +20,6 @@ import {
   extensionContentTestingGovernance,
 } from './consts';
 import Toast from '~shared/Extensions/Toast/Toast';
-// import Toast from '~shared/Extensions/Toast/Toast';
-// import { toast } from 'react-toastify';
 
 export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void, openIndex?: number) => {
   const { formatMessage } = useIntl();
