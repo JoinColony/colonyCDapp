@@ -46,7 +46,6 @@ const ActionDetailsPage = () => {
     refetchAction,
   } = useGetColonyAction();
 
-  // const status = action?.transactionStatus;
   if (!colony) {
     return null;
   }
@@ -72,7 +71,6 @@ const ActionDetailsPage = () => {
         <TransactionNotFound
           colonyName={colony.name}
           createdAt={createdAt}
-          // status={status}
           isUnknownTx={isUnknownTransaction}
         />
       </Layout>

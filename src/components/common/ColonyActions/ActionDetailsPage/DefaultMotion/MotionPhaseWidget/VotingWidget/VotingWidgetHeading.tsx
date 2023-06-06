@@ -1,10 +1,9 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { ColonyActionType } from '~gql';
 import { Heading4 } from '~shared/Heading';
 import { formatActionType, getExtendedActionType } from '~utils/colonyActions';
-import { ColonyMetadata } from '~types';
+import { ColonyAction, ColonyMetadata } from '~types';
 
 import styles from './VotingWidgetHeading.css';
 
@@ -21,14 +20,12 @@ const MSG = defineMessages({
 export const { title: voteTitleMsg } = MSG;
 
 interface VotingWidgetHeadingProps {
-  transactionHash: string;
-  actionType: ColonyActionType;
+  actionData: ColonyAction;
   pendingColonyMetadata?: ColonyMetadata | null;
 }
 
 const VotingWidgetHeading = ({
-  transactionHash,
-  actionType,
+  actionData,
   pendingColonyMetadata,
 }: VotingWidgetHeadingProps) => {
   return (
@@ -37,11 +34,7 @@ const VotingWidgetHeading = ({
         text={MSG.title}
         textValues={{
           actionType: formatActionType(
-            getExtendedActionType(
-              transactionHash,
-              actionType,
-              pendingColonyMetadata,
-            ),
+            getExtendedActionType(actionData, pendingColonyMetadata),
           ),
         }}
         appearance={{ weight: 'bold', theme: 'dark', margin: 'none' }}

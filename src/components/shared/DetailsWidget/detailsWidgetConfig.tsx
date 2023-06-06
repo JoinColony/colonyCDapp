@@ -108,7 +108,7 @@ interface DetailItemConfig {
 const getDetailItemsMap = (
   colony: Colony,
   actionData: ColonyAction,
-): { [key in Exclude<ActionPageDetails, 'Permissions'>]: DetailItemConfig } => {
+): { [key in ActionPageDetails]: DetailItemConfig } => {
   const {
     type,
     transactionHash,
@@ -132,8 +132,7 @@ const getDetailItemsMap = (
     ColonyActionType.EmitDomainReputationPenalty,
   );
   const extendedActionType = getExtendedActionType(
-    transactionHash,
-    type,
+    actionData,
     isMotion ? pendingColonyMetadata : colony.metadata,
   );
   const motionDomain = findDomainByNativeId(
@@ -203,7 +202,7 @@ const getDetailItemsMap = (
         />
       ),
     },
-    [ActionPageDetails.Roles]: {
+    [ActionPageDetails.Permissions]: {
       label: MSG.roles,
       labelValues: undefined,
       item: roles && <RolesDetail roles={normalizedRoles} />,

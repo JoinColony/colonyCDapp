@@ -52,7 +52,7 @@ const ColonyUpgrade = () => {
 
   const allUserRoles = useTransformer(getAllUserRoles, [
     colony,
-    wallet?.address,
+    wallet?.address ?? '',
   ]);
 
   const canUpgradeColony = user?.name && hasRoot(allUserRoles);

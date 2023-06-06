@@ -32,8 +32,6 @@ interface VoteOutcomeProps {
 
 const VoteOutcome = ({
   actionData: {
-    type,
-    transactionHash,
     pendingColonyMetadata,
     motionData: {
       revealedVotes: {
@@ -43,6 +41,7 @@ const VoteOutcome = ({
       voterRecord,
     },
   },
+  actionData,
 }: VoteOutcomeProps) => {
   const { user } = useAppContext();
 
@@ -80,7 +79,7 @@ const VoteOutcome = ({
         text={voteTitleMsg}
         textValues={{
           actionType: formatActionType(
-            getExtendedActionType(transactionHash, type, pendingColonyMetadata),
+            getExtendedActionType(actionData, pendingColonyMetadata),
           ),
         }}
         appearance={{ weight: 'bold', theme: 'dark' }}

@@ -178,14 +178,8 @@ export const useMapMotionEventToExpectedFormat = (
   motionMessageData: MotionMessage,
   actionData: ColonyAction,
 ) => {
-  const {
-    colonyAddress,
-    fromDomain,
-    motionData,
-    type: actionType,
-    transactionHash,
-    pendingColonyMetadata,
-  } = actionData;
+  const { colonyAddress, fromDomain, motionData, pendingColonyMetadata } =
+    actionData;
   const { colony } = useColonyContext();
 
   const initiatorUserReputation = useUserReputation(
@@ -225,8 +219,7 @@ export const useMapMotionEventToExpectedFormat = (
     voteResultsWidget: (
       <div className={styles.voteResultsWrapper}>
         <VotingWidgetHeading
-          transactionHash={transactionHash}
-          actionType={actionType}
+          actionData={actionData}
           pendingColonyMetadata={pendingColonyMetadata}
         />
         <VoteResults

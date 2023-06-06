@@ -16,6 +16,7 @@ const ActionDetailsPageFeed = ({ actionData }: ActionsPageFeedProps) => {
   const events =
     JSON.parse(actionData.individualEvents as string) ||
     ACTIONS_EVENTS[actionData.type];
+
   return (
     <>
       {events?.map((event) => (

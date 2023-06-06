@@ -11,6 +11,7 @@ import {
   ActionUserRoles,
   ColonyActionType,
   ColonyMetadata,
+  ColonyAction,
 } from '~types';
 import { ColonyActionRoles } from '~gql';
 
@@ -30,7 +31,6 @@ export enum ActionPageDetails {
   ReputationChange = 'ReputationChange',
   Author = 'Author',
   Generic = 'Generic',
-  Roles = 'Roles',
   Motion = 'Motion',
 }
 
@@ -617,13 +617,11 @@ const getChangelogItem = (
  * e.g. UpdateAddressBook, UpdateTokens
  */
 export const getExtendedActionType = (
-  transactionHash: string,
-  type: ColonyActionType,
+  actionData: ColonyAction,
   metadata?: ColonyMetadata | null,
 ): AnyActionType => {
-  const changelogItem = metadata?.changelog?.find(
-    (item) => item.transactionHash === transactionHash,
-  );
+  const { type } = actionData;
+  const changelogItem = getChangelogItem(actionData, metadata);
 
   if (changelogItem?.haveTokensChanged) {
     return ExtendedColonyActionType.UpdateTokens;

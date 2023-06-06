@@ -50,12 +50,11 @@ export const VOTE_FORM_KEY = 'vote';
 
 const VotingWidget = ({
   actionData: {
-    type,
-    transactionHash,
     pendingColonyMetadata,
     motionData: { nativeMotionDomainId, motionId, voterRecord },
     motionData,
   },
+  actionData,
   motionState,
   startPollingAction,
   stopPollingAction,
@@ -101,8 +100,7 @@ const VotingWidget = ({
       >
         <div className={styles.main}>
           <VotingWidgetHeading
-            transactionHash={transactionHash}
-            actionType={type}
+            actionData={actionData}
             pendingColonyMetadata={pendingColonyMetadata}
           />
           <VotingPanel motionDomainId={Number(nativeMotionDomainId)} />

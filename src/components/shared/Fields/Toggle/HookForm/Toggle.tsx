@@ -86,7 +86,6 @@ const HookFormToggle = ({
           tooltipPopperOptions={tooltipPopperOptions}
           tooltipClassName={tooltipClassName}
           tooltipTextValues={tooltipTextValues}
-          tooltipClassName={tooltipClassName}
         />
       )}
     </div>
