@@ -27,9 +27,9 @@ const MSG = defineMessages({
 });
 
 enum StakingValidationErrors {
-  CANT_STAKE_MORE = 'cantStakeMore',
-  MORE_REP_NEEDED = 'moreRepNeeded',
-  LIMIT_EXCEEDED = 'limitExceeded',
+  CantStakeMore = 'cantStakeMore',
+  MoreRepNeeded = 'moreRepNeeded',
+  LimitExceeded = 'limitExceeded',
 }
 
 interface StakingValidationMessageProps {
@@ -82,11 +82,11 @@ const StakingValidationMessage = ({
   const canStakeMore = userCanStakeMore(userMinStake, remainingToStake);
 
   if (!canStakeMore) {
-    errorType = StakingValidationErrors.CANT_STAKE_MORE;
+    errorType = StakingValidationErrors.CantStakeMore;
   } else if (userNeedsMoreReputation) {
-    errorType = StakingValidationErrors.MORE_REP_NEEDED;
+    errorType = StakingValidationErrors.MoreRepNeeded;
   } else if (limitExceeded) {
-    errorType = StakingValidationErrors.LIMIT_EXCEEDED;
+    errorType = StakingValidationErrors.LimitExceeded;
   }
 
   if (!errorType) {

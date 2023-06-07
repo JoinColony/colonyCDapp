@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ACTIONS_EVENTS } from '../staticMaps';
 import { ColonyAction } from '~types';
+import { ACTIONS_EVENTS } from '../staticMaps';
 
 import { ActionsPageEvent } from './ActionDetailsPageEvent';
 
