@@ -12,7 +12,6 @@ import Navigation from '~common/Extensions/Navigation/Navigation';
 import Spinner from '~shared/Extensions/Spinner';
 import ThreeColumns from '~frame/Extensions/ThreeColumns/ThreeColumns';
 import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails/ExtensionDetails';
-import { AnyExtensionData } from '~types';
 import ActionButtons from '../partials/ActionButtons';
 
 const LazyConsensusPage: FC = () => {
@@ -20,6 +19,14 @@ const LazyConsensusPage: FC = () => {
   const { extensionData, extensionContent, register, errors, handleSubmit, onSubmit, onChangeGovernance } =
     useLazyConsensusPage(onOpenIndexChange, openIndex);
   const { formatMessage } = useIntl();
+
+  if (!extensionData) {
+    return (
+      <div>
+        <p>{formatMessage({ id: 'extensionDetailsPage.unsupportedExtension' })}</p>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -50,12 +57,12 @@ const LazyConsensusPage: FC = () => {
                   <span className="hidden sm:flex text-gray-400 text-sm">{`17,876 ${formatMessage({
                     id: 'active.installs',
                   })}`}</span>
-                  <ActionButtons extensionData={extensionData as AnyExtensionData} />
+                  <ActionButtons extensionData={extensionData} />
                 </div>
               </div>
             </div>
           }
-          rightAside={<ExtensionDetails extensionData={extensionData as AnyExtensionData} />}
+          rightAside={<ExtensionDetails extensionData={extensionData} />}
         >
           <div className="w-full">
             {extensionData?.descriptionShort?.defaultMessage && (

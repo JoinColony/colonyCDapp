@@ -1,17 +1,17 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import { useColonyContext, useMobile } from '~hooks';
 
+import { useColonyContext, useMobile } from '~hooks';
 import Button from '~shared/Extensions/Button';
 import { useExtensionDetailsPage } from '../ExtensionDetailsPage/hooks';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
-import { ActionButtonsProps } from '../LazyConsensusPage/types';
+import { ActionButtonProps } from './types';
 
 const displayName = 'frame.Extensions.pages.partials.ActionButtons';
 
-const ActionButtons: FC<ActionButtonsProps> = ({ extensionData }) => {
-  const { handleEnableButtonClick, handleInstallClick } = useExtensionDetailsPage();
+const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
+  const { handleEnableButtonClick, handleInstallClick } = useExtensionDetailsPage(extensionData);
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();

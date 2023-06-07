@@ -1,19 +1,16 @@
 import React, { useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useIntl } from 'react-intl';
 
-import { useExtensionData, useUserByNameOrAddress } from '~hooks';
+import { useUserByNameOrAddress } from '~hooks';
 import { SidePanelDataProps } from './types';
 import { InstalledExtensionData } from '~types';
 import UserAvatar from '~shared/Extensions/UserAvatar';
 import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge/types';
 import { isInstalledExtensionData } from '~utils/extensions';
 
-export const useSpecificSidePanel = () => {
+export const useSpecificSidePanel = (extensionData) => {
   const [statuses, setStatuses] = useState<ExtensionStatusBadgeMode | ExtensionStatusBadgeMode[]>('disabled');
-  const { extensionId } = useParams();
-  const { extensionData } = useExtensionData(extensionId ?? '');
   const { formatMessage } = useIntl();
 
   const isExtensionInstalled = extensionData && isInstalledExtensionData(extensionData);

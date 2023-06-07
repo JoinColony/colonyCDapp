@@ -27,7 +27,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
 
   return (
     <div>
-      <SpecificSidePanel />
+      <SpecificSidePanel extensionData={extensionData} />
       <div className="sm:w-[20.375rem]">
         {canExtensionBeDeprecated && (
           <div className="mt-6">

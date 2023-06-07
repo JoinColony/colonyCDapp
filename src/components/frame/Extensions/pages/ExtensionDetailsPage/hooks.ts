@@ -1,7 +1,8 @@
 import { useCallback, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useAsyncFunction, useColonyContext, useExtensionData } from '~hooks';
+import { useNavigate } from 'react-router-dom';
+import { useAsyncFunction, useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
+import { AnyExtensionData } from '~types';
 
 export const useGetExtensionsViews = async () => {
   const colonyMetrics = 'https://api.thegraph.com/subgraphs/name/arrenv/colony-metrics-subgraph';
@@ -34,10 +35,8 @@ export const useGetExtensionsViews = async () => {
   return metricsOutput.data;
 };
 
-export const useExtensionDetailsPage = () => {
-  const { extensionId } = useParams();
+export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
   const { colony } = useColonyContext();
-  const { extensionData } = useExtensionData(extensionId ?? '');
   const navigate = useNavigate();
 
   const extensionValues = useMemo(() => {
