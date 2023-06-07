@@ -26,7 +26,7 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
   const isEnableButtonVisible =
     isInstalledExtensionData(extensionData) && extensionData.uninstallable && !extensionData.isDeprecated;
 
-  const isMustUpgradeVisible = useMemo(() => {
+  const isUpgradeButtonVisible = useMemo(() => {
     if (extensionData && isInstalledExtensionData(extensionData)) {
       return extensionData && extensionData.currentVersion < extensionData.availableVersion;
     }
@@ -55,7 +55,7 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
           {formatMessage({ id: 'extension.enableButton' })}
         </Button>
       )}
-      {isMustUpgradeVisible && (
+      {isUpgradeButtonVisible && (
         <Button
           mode="primarySolid"
           isFullSize={isMobile}

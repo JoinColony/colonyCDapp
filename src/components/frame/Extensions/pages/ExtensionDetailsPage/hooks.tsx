@@ -52,14 +52,6 @@ export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
     };
   }, [colony?.colonyAddress, extensionData]);
 
-  const submitInstall = ActionTypes.EXTENSION_INSTALL;
-  const errorInstall = ActionTypes.EXTENSION_INSTALL_ERROR;
-  const successInstall = ActionTypes.EXTENSION_INSTALL_SUCCESS;
-
-  const submitUpgrade = ActionTypes.EXTENSION_UPGRADE;
-  const errorUpgrade = ActionTypes.EXTENSION_UPGRADE_ERROR;
-  const successUpgrade = ActionTypes.EXTENSION_UPGRADE_SUCCESS;
-
   const transform = mapPayload(() => ({
     colonyAddress: colony?.colonyAddress,
     extensionId: extensionData.extensionId,
@@ -67,15 +59,15 @@ export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
   }));
 
   const asyncFunctionInstall = useAsyncFunction({
-    submit: submitInstall,
-    error: errorInstall,
-    success: successInstall,
+    submit: ActionTypes.EXTENSION_INSTALL,
+    error: ActionTypes.EXTENSION_INSTALL_ERROR,
+    success: ActionTypes.EXTENSION_INSTALL_SUCCESS,
   });
 
   const asyncFunctionUpgrade = useAsyncFunction({
-    submit: submitUpgrade,
-    error: errorUpgrade,
-    success: successUpgrade,
+    submit: ActionTypes.EXTENSION_UPGRADE,
+    error: ActionTypes.EXTENSION_UPGRADE_ERROR,
+    success: ActionTypes.EXTENSION_UPGRADE_SUCCESS,
     transform,
   });
 
