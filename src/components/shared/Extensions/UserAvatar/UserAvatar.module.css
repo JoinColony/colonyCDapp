@@ -1,0 +1,3 @@
+.main {
+  @apply flex max-w-max rounded-full;
+}
