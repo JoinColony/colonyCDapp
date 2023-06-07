@@ -116,8 +116,8 @@ const TransferFundsDialogForm = ({
           dataTest="transferFundsAnnotation"
         />
       </DialogSection>
-      {showPermissionErrors && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
+      {!userHasPermission && (
+        <DialogSection>
           <NoPermissionMessage
             requiredPermissions={requiredRoles}
             domainName={

@@ -115,8 +115,8 @@ const CreateDomainDialogForm = ({
           dataTest="createDomainAnnotation"
         />
       </DialogSection>
-      {showPermissionErrors && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
+      {!userHasPermission && (
+        <DialogSection>
           <NoPermissionMessage
             requiredPermissions={requiredRoles}
             domainName="Root"

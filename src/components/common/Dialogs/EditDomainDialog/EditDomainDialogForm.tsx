@@ -178,8 +178,8 @@ const EditDomainDialogForm = ({
           dataTest="editDomainAnnotation"
         />
       </DialogSection>
-      {domainOptions.length > 0 && showPermissionErrors && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
+      {domainOptions.length > 0 && !userHasPermission && (
+        <DialogSection>
           <NoPermissionMessage
             requiredPermissions={[ColonyRole.Architecture]}
             domainName={domainName}

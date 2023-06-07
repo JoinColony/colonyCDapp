@@ -229,8 +229,8 @@ const PermissionManagementForm = ({
           <CannotCreateMotionMessage />
         </DialogSection>
       )}
-      {showPermissionErrors && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
+      {!userHasPermission && (
+        <DialogSection>
           <NoPermissionMessage
             requiredPermissions={[ColonyRole.Architecture]}
           />
