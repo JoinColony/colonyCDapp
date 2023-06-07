@@ -1,0 +1,11 @@
+.carouselWrapper [class~='carousel'] {
+  @apply relative pb-9;
+}
+
+.carouselWrapper [class~='slide'] {
+  @apply sm:mr-4 [&_img]:aspect-[510/248] [&_img]:object-cover;
+}
+
+.carouselWrapper [class~='control-dots'] {
+  @apply bottom-0 flex justify-center m-0;
+}
