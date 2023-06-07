@@ -7,7 +7,7 @@ import Spinner from '~shared/Extensions/Spinner';
 const displayName = 'frame.Extensions.pages.AdvancedPage';
 
 const AdvancedPage: FC = () => (
-  <Spinner loadingText="advancedPage">
+  <Spinner loadingText={{ id: 'loading.advancedPage' }}>
     <TwoColumns aside={<Navigation />}>Advanced page</TwoColumns>
   </Spinner>
 );

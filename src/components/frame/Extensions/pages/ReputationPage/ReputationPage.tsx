@@ -7,7 +7,7 @@ import Spinner from '~shared/Extensions/Spinner';
 const displayName = 'frame.Extensions.pages.ReputationPage';
 
 const ReputationPage: FC = () => (
-  <Spinner loadingText="reputationPage">
+  <Spinner loadingText={{ id: 'loading.reputationPage' }}>
     <TwoColumns aside={<Navigation />}>Reputation page</TwoColumns>
   </Spinner>
 );

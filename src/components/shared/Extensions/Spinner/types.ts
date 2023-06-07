@@ -1,3 +1,5 @@
+import { MessageDescriptor } from 'react-intl';
+
 export interface SpinnerProps {
-  loadingText?: string;
+  loadingText?: MessageDescriptor | string;
 }
