@@ -1,0 +1,11 @@
+.walletPopover {
+  @apply h-[30rem] md:h-[22.375rem] md:border md:border-gray-200 flex flex-col md:rounded-lg md:shadow-default;
+}
+
+.walletPopoverColumn {
+  @apply md:bg-gray-50 py-6 md:p-6 md:rounded-l-lg md:w-[12.375rem] border-b md:border-b-0 md:border-r border-gray-200 hidden md:flex flex-col;
+}
+
+.mobileButtons {
+  @apply w-full pb-6 mb-0 border-b border-b-gray-200 flex md:hidden items-center gap-1 md:pb-5 md:mb-5;
+}
