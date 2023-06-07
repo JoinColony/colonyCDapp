@@ -33,7 +33,7 @@ const ActionButtons: FC = () => {
           <p className="text-sm font-medium">{formatMessage({ id: 'extension.installButton' })}</p>
         </Button>
       )}
-      {!extensionData?.isInitialized && (
+      {typeof extensionData?.isInitialized !== 'undefined' && !extensionData?.isInitialized && (
         <Button mode="primarySolid" isFullSize={isMobile} onClick={handleEnableButtonClick}>
           <p className="text-sm font-medium">{formatMessage({ id: 'extension.enableButton' })}</p>
         </Button>
