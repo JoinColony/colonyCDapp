@@ -1,0 +1,7 @@
+.subMenuList {
+  @apply grid gap-x-6 mb-6 text-gray-900 py-4 rounded-lg border border-gray-200 sm:border-none sm:rounded-none sm:py-0 sm:gap-y-3;
+}
+
+.linkItem {
+  @apply block transition-all duration-normal rounded-lg px-6 py-2 hover:bg-gray-50 sm:px-3 sm:py-2;
+}
