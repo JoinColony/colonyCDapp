@@ -86,7 +86,7 @@ const CreateDomainDialogForm = ({
         />
       </DialogSection>
       {!userHasPermission && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
+        <DialogSection>
           <NoPermissionMessage
             requiredPermissions={requiredRoles}
             domainName="Root"

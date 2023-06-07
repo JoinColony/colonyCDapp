@@ -94,7 +94,7 @@ const TransferFundsDialogForm = ({
         />
       </DialogSection>
       {!userHasPermission && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
+        <DialogSection>
           <NoPermissionMessage
             requiredPermissions={requiredRoles}
             domainName={
