@@ -1,0 +1,15 @@
+.itemWrapper {
+  @apply sm:mb-2 sm:last:mb-0;
+}
+
+.title {
+  @apply text-gray-900 font-semibold text-lg flex justify-between mb-1;
+}
+
+.description {
+  @apply text-gray-600 text-md flex-wrap;
+}
+
+.link {
+  @apply flex flex-col w-full px-6 py-2 hover:bg-gray-50 transition-all duration-normal sm:px-4 sm:mx-2 sm:w-[calc(100%-1rem)] sm:rounded;
+}
