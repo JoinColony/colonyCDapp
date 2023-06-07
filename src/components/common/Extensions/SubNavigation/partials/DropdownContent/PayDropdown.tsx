@@ -12,7 +12,7 @@ const displayName = 'common.Extensions.SubNavigation.partials.DropdownContent.Pa
 
 const PayDropdown: FC<PropsWithChildren> = () => (
   <div className="text-gray-400 text-xs">
-    <div className="hidden sm:block mx-6 mt-6">
+    <div className="hidden sm:block mx-6 mt-6 font-medium">
       <FormattedMessage {...MSG.paymentContentTitle} />
     </div>
     <ul className={styles.listWrapper}>

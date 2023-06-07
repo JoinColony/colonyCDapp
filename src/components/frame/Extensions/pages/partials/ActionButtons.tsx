@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useColonyContext, useMobile } from '~hooks';
@@ -11,7 +11,8 @@ import { ActionButtonProps } from './types';
 const displayName = 'frame.Extensions.pages.partials.ActionButtons';
 
 const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
-  const { handleEnableButtonClick, handleInstallClick } = useExtensionDetailsPage(extensionData);
+  const { handleEnableClick, handleInstallClick, handleUpdateVersionClick, isUpgradeButtonDisabled } =
+    useExtensionDetailsPage(extensionData);
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
@@ -25,8 +26,15 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
   const isEnableButtonVisible =
     isInstalledExtensionData(extensionData) && extensionData.uninstallable && !extensionData.isDeprecated;
 
+  const isUpgradeButtonVisible = useMemo(() => {
+    if (extensionData && isInstalledExtensionData(extensionData)) {
+      return extensionData && extensionData.currentVersion < extensionData.availableVersion;
+    }
+    return false;
+  }, [extensionData]);
+
   return (
-    <div className="sm:ml-4 flex gap-2">
+    <>
       {isInstallButtonVisible && (
         <Button
           mode="primarySolid"
@@ -34,20 +42,30 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
           onClick={handleInstallClick}
           disabled={!isSupportedColonyVersion}
         >
-          <p className="text-sm font-medium">{formatMessage({ id: 'extension.installButton' })}</p>
+          {formatMessage({ id: 'button.install' })}
         </Button>
       )}
       {isEnableButtonVisible && (
         <Button
           mode="primarySolid"
           isFullSize={isMobile}
-          onClick={handleEnableButtonClick}
+          onClick={handleEnableClick}
           disabled={!isSupportedColonyVersion}
         >
-          <p className="text-sm font-medium">{formatMessage({ id: 'extension.enableButton' })}</p>
+          {formatMessage({ id: 'button.enable' })}
         </Button>
       )}
-    </div>
+      {isUpgradeButtonVisible && (
+        <Button
+          mode="primarySolid"
+          isFullSize={isMobile}
+          onClick={handleUpdateVersionClick}
+          disabled={isUpgradeButtonDisabled}
+        >
+          {formatMessage({ id: 'button.updateVersion' })}
+        </Button>
+      )}
+    </>
   );
 };
 

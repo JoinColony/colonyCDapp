@@ -39,16 +39,12 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         </span>
       )}
       <button
-        aria-label={formatMessage({ id: 'shared.modal.buttonCloseAriaLabel' })}
+        aria-label={formatMessage({ id: 'modal.buttonClose.ariaLabel' })}
         type="button"
         className={styles.closeIcon}
         onClick={onClose}
       >
-        <Icon
-          appearance={{ size: 'extraTiny' }}
-          name="close"
-          title={formatMessage({ id: 'shared.modal.buttonCancel' })}
-        />
+        <Icon appearance={{ size: 'extraTiny' }} name="close" title={formatMessage({ id: 'button.cancel' })} />
       </button>
 
       <div className={styles.inner}>
