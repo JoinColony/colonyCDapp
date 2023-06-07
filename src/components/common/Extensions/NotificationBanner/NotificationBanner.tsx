@@ -1,11 +1,13 @@
-import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
-import CopyUrl from './CopyUrl';
-import { NotificationBannerProps } from './types';
+import clsx from 'clsx';
+
 import Link from '~shared/Extensions/Link';
 import Icon from '~shared/Icon';
+
+import CopyUrl from './CopyUrl';
 import styles from './NotificationBanner.module.css';
+import { NotificationBannerProps } from './types';
 
 const displayName = 'common.Extensions.NotificationBanner';
 
