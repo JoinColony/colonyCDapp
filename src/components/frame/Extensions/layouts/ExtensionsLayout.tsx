@@ -16,7 +16,7 @@ import {
 } from '~hooks';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks';
 import CalamityBanner from '~common/Extensions/CalamityBanner/CalamityBanner';
-import { getAllUserRoles } from '~redux/transformers';
+import { getAllUserRoles } from '~transformers';
 import { useDialog } from '~shared/Dialog';
 import { NetworkContractUpgradeDialog } from '~common/Dialogs';
 import Spinner from '~shared/Extensions/Spinner';

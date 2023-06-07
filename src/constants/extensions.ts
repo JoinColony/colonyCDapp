@@ -17,22 +17,24 @@ const oneTransactionPaymentMessages = {
   },
   oneTxPaymentDescriptionShort: {
     id: `${oneTransactionPaymentName}.description`,
-    defaultMessage: 'Pay a single account one type of token.',
+    defaultMessage:
+      'Make quick and simple payments to members or any address on the same network.',
   },
   oneTxPaymentDescriptionLong: {
     id: `${oneTransactionPaymentName}.descriptionLong`,
-    defaultMessage: 'Pay a single account one type of token.',
+    defaultMessage:
+      'Make quick and simple payments to members or any address on the same network.',
   },
 };
 
 const votingReputationMessages = {
   votingReputationName: {
     id: `${votingReputationName}.name`,
-    defaultMessage: 'Governance (Reputation Weighted)',
+    defaultMessage: 'Lazy Consensus (Reputation Weighted)',
   },
   votingReputationDescriptionShort: {
     id: `${votingReputationName}.description`,
-    defaultMessage: `Reputation weighted decentralized governance with a minimum of voting.`,
+    defaultMessage: `Enable efficient and decentralized decision making for your colony. Allowing members to propose actions to be taken.`,
   },
   votingReputationDescriptionLong: {
     id: `${votingReputationName}.descriptionLong`,
@@ -122,6 +124,42 @@ const votingReputationMessages = {
     id: `${votingReputationName}.param.validation.positiveError`,
     defaultMessage: 'Please enter a positive number',
   },
+  votingReputationPermissionArchitecture: {
+    id: `${votingReputationName}.param.permission.architecture`,
+    defaultMessage: 'Architecture',
+  },
+  votingReputationPermissionArchitectureDescription: {
+    id: `${votingReputationName}.param.permission.architectureDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+  votingReputationPermissionArbitration: {
+    id: `${votingReputationName}.param.permission.arbitration`,
+    defaultMessage: 'Arbitration',
+  },
+  votingReputationPermissionArbitrationDescription: {
+    id: `${votingReputationName}.param.permission.arbitrationDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+  votingReputationPermissionRecovery: {
+    id: `${votingReputationName}.param.permission.recovery`,
+    defaultMessage: 'Recovery',
+  },
+  votingReputationPermissionRecoveryDescription: {
+    id: `${votingReputationName}.param.permission.recoveryDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
+  votingReputationPermissionFunding: {
+    id: `${votingReputationName}.param.permission.funding`,
+    defaultMessage: 'Funding',
+  },
+  votingReputationPermissionFundingDescription: {
+    id: `${votingReputationName}.param.permission.fundingDescription`,
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
+  },
 };
 
 const MSG = defineMessages({
@@ -135,16 +173,47 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     name: MSG.oneTxPaymentName,
     descriptionShort: MSG.oneTxPaymentDescriptionShort,
     descriptionLong: MSG.oneTxPaymentDescriptionLong,
+    icon: 'extension-one-transaction-payment',
     neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
     // @NOTE: This is for testing only, should be set to false afterwards
     uninstallable: true,
     createdAt: 1557698400000,
+    permissions: {
+      title: 'Permissions the extension needs in the colony:',
+      permissions: [
+        {
+          key: '1',
+          text: MSG.votingReputationPermissionArchitecture,
+          description: MSG.votingReputationPermissionArchitectureDescription,
+          name: 'clipboard-text',
+        },
+        {
+          key: '2',
+          text: MSG.votingReputationPermissionArbitration,
+          description: MSG.votingReputationPermissionArbitrationDescription,
+          name: 'scales',
+        },
+        {
+          key: '3',
+          text: MSG.votingReputationPermissionRecovery,
+          description: MSG.votingReputationPermissionRecoveryDescription,
+          name: 'clock-counter-clockwise',
+        },
+        {
+          key: '4',
+          text: MSG.votingReputationPermissionFunding,
+          description: MSG.votingReputationPermissionFundingDescription,
+          name: 'bank',
+        },
+      ],
+    },
   },
   {
     extensionId: Extension.VotingReputation,
     name: MSG.votingReputationName,
     descriptionShort: MSG.votingReputationDescriptionShort,
     descriptionLong: MSG.votingReputationDescriptionLong,
+    icon: 'extension-lazy-consensus',
     neededColonyPermissions: [
       ColonyRole.Root,
       ColonyRole.Administration,
@@ -292,5 +361,28 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     ],
     uninstallable: true,
     createdAt: 1603915271852,
+    permissions: {
+      title: 'Permissions the extension needs in the colony:',
+      permissions: [
+        {
+          key: '1',
+          text: MSG.votingReputationPermissionArchitecture,
+          description: MSG.votingReputationPermissionArchitectureDescription,
+          name: 'clipboard-text',
+        },
+        {
+          key: '2',
+          text: MSG.votingReputationPermissionArbitration,
+          description: MSG.votingReputationPermissionArbitrationDescription,
+          name: 'scales',
+        },
+        {
+          key: '3',
+          text: MSG.votingReputationPermissionRecovery,
+          description: MSG.votingReputationPermissionRecoveryDescription,
+          name: 'clock-counter-clockwise',
+        },
+      ],
+    },
   },
 ];

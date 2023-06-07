@@ -37,16 +37,29 @@ export interface ExtensionConfig {
   initializationParams?: ExtensionInitParam[];
   uninstallable: boolean;
   createdAt: number;
+  icon: string;
+  permissions: {
+    title: string;
+    permissions: {
+      key: string;
+      text: MessageDescriptor;
+      description: MessageDescriptor;
+      name: string;
+    }[];
+  };
 }
 
 export type InstalledExtensionData = ExtensionConfig &
   ColonyExtension & {
     availableVersion: number;
     isEnabled: boolean;
+    address: string;
   };
 
 export type InstallableExtensionData = ExtensionConfig & {
   availableVersion: number;
+  isEnabled?: boolean;
+  isInitialized?: boolean;
 };
 
 export type AnyExtensionData =

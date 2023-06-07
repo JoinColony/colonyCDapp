@@ -40,12 +40,14 @@ export { default as useWindowSize } from './useWindowSize';
 export { default as useAppContext } from './useAppContext';
 export { default as useUserReputation } from './useUserReputation';
 export { default as useMobile } from './useMobile';
+export { default as useTablet } from './useTablet';
 export { default as useSortedContributors } from './useSortedContributors';
 export {
   default as useUserReputationForTopDomains,
   UserDomainReputation,
 } from './useUserReputationForTopDomains';
 export { default as useColonyContext } from './useColonyContext';
+export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
 export { default as useExtensionData } from './useExtensionData';
 export { default as useExtensionsData } from './useExtensionsData';
 export { default as usePaginatedActions } from './usePaginatedActions';
@@ -58,6 +60,9 @@ export { default as useColonyContractVersion } from './useColonyContractVersion'
 export { default as useNetworkInverseFee } from './useNetworkInverseFee';
 export { default as useUserByAddress } from './useUserByAddress';
 export { default as useUserByName } from './useUserByName';
+export { default as useDetectClickOutside } from './useDetectClickOutside';
+export { default as useSideNavigation } from './useSideNavigation';
+export { default as useCurrentPage } from './useCurrentPage';
 
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously

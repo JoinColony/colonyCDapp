@@ -41,6 +41,15 @@ import {
   LANDING_PAGE_ROUTE,
   NOT_FOUND_ROUTE,
   ACTIONS_PAGE_ROUTE,
+  COLONY_EXTENSIONS_ROUTE,
+  COLONY_EXTENSION_DETAILS_ROUTE,
+  COLONY_REPUTATION_ROUTE,
+  COLONY_DETAILS_ROUTE,
+  COLONY_PERMISSIONS_ROUTE,
+  COLONY_INTEGRATIONS_ROUTE,
+  COLONY_INCORPORATION_ROUTE,
+  COLONY_ADVANCED_ROUTE,
+  COLONY_EXTENSION_DETAILS_SETUP_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -49,6 +58,16 @@ import NotFoundRoute from './NotFoundRoute';
 import { ColonyContextProvider } from '~context/ColonyContext';
 import CreateColonyWizard from '~common/CreateColonyWizard';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
+import ExtensionsLayout from '~frame/Extensions/layouts/ExtensionsLayout';
+import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage';
+import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage/ColonyDetailsPage';
+import ReputationPage from '~frame/Extensions/pages/ReputationPage';
+import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage';
+import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage';
+import IncorporationPage from '~frame/Extensions/pages/IncorporationPage';
+import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
+import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
+import LazyConsensusPage from '~frame/Extensions/pages/LazyConsensusPage';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -143,6 +162,26 @@ const Routes = () => {
           }
         />
         <Route
+          path={COLONY_EXTENSION_DETAILS_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsLayout>
+                <ExtensionDetailsPage />
+              </ExtensionsLayout>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_EXTENSION_DETAILS_SETUP_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsLayout>
+                <LazyConsensusPage />
+              </ExtensionsLayout>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
           path={ACTIONS_PAGE_ROUTE}
           element={
             <ColonyContextProvider>
@@ -154,6 +193,76 @@ const Routes = () => {
         />
         <Route path={CREATE_COLONY_ROUTE} element={<CreateColonyWizard />} />
         <Route path={CREATE_USER_ROUTE} element={<CreateUserWizard />} />
+        <Route
+          path={COLONY_DETAILS_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsLayout>
+                <ColonyDetailsPage />
+              </ExtensionsLayout>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_REPUTATION_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsLayout>
+                <ReputationPage />
+              </ExtensionsLayout>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_PERMISSIONS_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsLayout>
+                <PermissionsPage />
+              </ExtensionsLayout>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_EXTENSIONS_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsLayout>
+                <ExtensionsPage />
+              </ExtensionsLayout>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_INTEGRATIONS_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsLayout>
+                <IntegrationsPage />
+              </ExtensionsLayout>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_INCORPORATION_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsLayout>
+                <IncorporationPage />
+              </ExtensionsLayout>
+            </ColonyContextProvider>
+          }
+        />
+        <Route
+          path={COLONY_ADVANCED_ROUTE}
+          element={
+            <ColonyContextProvider>
+              <ExtensionsLayout>
+                <AdvancedPage />
+              </ExtensionsLayout>
+            </ColonyContextProvider>
+          }
+        />
         <Route
           path={USER_ROUTE}
           element={
