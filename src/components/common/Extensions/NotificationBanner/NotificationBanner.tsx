@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
+import { useIntl } from 'react-intl';
 import CopyUrl from './CopyUrl';
 import { NotificationBannerProps } from './types';
 import Link from '~shared/Extensions/Link';
@@ -15,7 +16,11 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   actionText,
   actionType,
   isAlt = false,
+  onClick,
 }) => {
+  const { formatMessage } = useIntl();
+  const titleText = typeof title === 'string' ? title : formatMessage(title);
+  const actionMessage = typeof actionText === 'string' ? actionText : formatMessage(actionText);
   // @TODO: handle actionType 'call-to-action'
   return (
     <div
@@ -44,16 +49,20 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
               })}
             />
           )}
-          <div className={`font-normal ${isAlt ? 'text-sm' : 'text-md ml-2'}`}>{title}</div>
+          <div className={`font-normal ${isAlt ? 'text-sm' : 'text-md ml-2'}`}>{titleText}</div>
         </div>
         {children && (
           <div className="text-sm font-normal text-gray-900 max-w-[50rem] ml-6 md:ml-0 mt-1.5">{children}</div>
         )}
       </div>
       <div className={clsx(styles.actionWrapper, { 'ml-0 md:ml-0 md:self-center': isAlt, 'ml-6 md:ml-2': !isAlt })}>
-        {actionType === 'copy-url' && <CopyUrl actionText={actionText} />}
-        {actionType === 'redirect' && <Link to="https://external-url.pl">{actionText}</Link>}
-        {actionType === 'call-to-action' && actionText}
+        {actionType === 'copy-url' && <CopyUrl actionText={actionMessage} />}
+        {actionType === 'redirect' && <Link to="https://external-url.pl">{actionMessage}</Link>}
+        {actionType === 'call-to-action' && (
+          <button type="button" onClick={onClick}>
+            {actionMessage}
+          </button>
+        )}
       </div>
     </div>
   );

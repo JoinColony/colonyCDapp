@@ -1,10 +1,13 @@
+import { MessageDescriptor } from 'react-intl';
+
 export interface NotificationBannerProps {
   status: StatusType;
-  title: string;
-  actionText: string;
+  title: string | MessageDescriptor;
+  actionText: string | MessageDescriptor;
   actionType: ActionType;
   isFullSize?: boolean;
   isAlt?: boolean;
+  onClick?: () => void;
 }
 
 type ActionType = 'redirect' | 'copy-url' | 'call-to-action';
