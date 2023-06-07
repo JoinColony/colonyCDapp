@@ -12,7 +12,6 @@ import Navigation from '~common/Extensions/Navigation/Navigation';
 import Spinner from '~shared/Extensions/Spinner';
 import ThreeColumns from '~frame/Extensions/ThreeColumns/ThreeColumns';
 import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails/ExtensionDetails';
-import { AnyExtensionData } from '~types';
 import ActionButtons from '../partials/ActionButtons';
 
 const LazyConsensusPage: FC = () => {
@@ -63,7 +62,7 @@ const LazyConsensusPage: FC = () => {
               </div>
             </div>
           }
-          rightAside={<ExtensionDetails extensionData={extensionData as AnyExtensionData} />}
+          rightAside={<ExtensionDetails extensionData={extensionData} />}
         >
           <div className="w-full">
             {extensionData?.descriptionShort?.defaultMessage && (
