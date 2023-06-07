@@ -1,0 +1,3 @@
+.calamityBannerInner {
+  @apply max-w-[90rem] mx-auto flex flex-col md:flex-row items-center justify-normal md:justify-between;
+}
