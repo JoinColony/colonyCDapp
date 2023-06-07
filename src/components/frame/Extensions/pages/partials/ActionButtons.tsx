@@ -1,20 +1,18 @@
 import React, { FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
-import { useExtensionData, useMobile } from '~hooks';
+import { useMobile } from '~hooks';
 
 import { InstalledExtensionData } from '~types';
 import Button from '~shared/Extensions/Button';
 import { useExtensionDetailsPage } from '../ExtensionDetailsPage/hooks';
 import { isInstalledExtensionData } from '~utils/extensions';
 import ExtensionUpgradeButton from '~common/Extensions/ExtensionUpgradeButton';
+import { ActionButtonProps } from './types';
 
 const displayName = 'frame.Extensions.pages.partials.ActionButtons';
 
-const ActionButtons: FC = () => {
-  const { extensionId } = useParams();
-  const { extensionData } = useExtensionData(extensionId ?? '');
-  const { handleEnableButtonClick, handleInstallClick } = useExtensionDetailsPage();
+const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
+  const { handleEnableButtonClick, handleInstallClick } = useExtensionDetailsPage(extensionData);
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const isExtensionInstalled = extensionData && isInstalledExtensionData(extensionData);

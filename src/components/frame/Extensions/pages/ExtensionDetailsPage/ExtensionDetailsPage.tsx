@@ -54,7 +54,7 @@ const ExtensionDetailsPage: FC = () => {
                 <p className="text-gray-400 text-sm">17,876 Active Installs</p>
               </div>
             </div>
-            <ActionButtons />
+            <ActionButtons extensionData={extensionData} />
           </div>
         }
         withSlider={<ImageCarousel />}

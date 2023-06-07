@@ -21,6 +21,14 @@ const LazyConsensusPage: FC = () => {
     useLazyConsensusPage(onOpenIndexChange, openIndex);
   const { formatMessage } = useIntl();
 
+  if (!extensionData) {
+    return (
+      <div>
+        <p>{formatMessage({ id: 'extensionDetailsPage.unsupportedExtension' })}</p>
+      </div>
+    );
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Spinner loadingText="extensionsPage">
@@ -50,7 +58,7 @@ const LazyConsensusPage: FC = () => {
                   <span className="hidden sm:flex text-gray-400 text-sm">{`17,876 ${formatMessage({
                     id: 'active.installs',
                   })}`}</span>
-                  <ActionButtons />
+                  <ActionButtons extensionData={extensionData} />
                 </div>
               </div>
             </div>

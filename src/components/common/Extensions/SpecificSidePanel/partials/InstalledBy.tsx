@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
-import { useParams } from 'react-router-dom';
-import { useExtensionData, useUserByNameOrAddress } from '~hooks';
+import { useUserByNameOrAddress } from '~hooks';
 import UserAvatarPopover from '~shared/Extensions/UserAvatarPopover';
 import styles from '../SpecificSidePanel.module.css';
 import { PanelTypeProps } from '../types';
@@ -10,10 +9,7 @@ import { colonyReputationItems, permissionsItems } from '~shared/Extensions/User
 
 const displayName = 'common.Extensions.partials.InstalledBy';
 
-const InstalledBy: FC<PanelTypeProps> = ({ title }) => {
-  const { extensionId } = useParams();
-  const { extensionData } = useExtensionData(extensionId ?? '');
-
+const InstalledBy: FC<PanelTypeProps> = ({ title, extensionData }) => {
   const { user } = useUserByNameOrAddress((extensionData as InstalledExtensionData)?.installedBy);
   const userDisplayName = user?.profile?.displayName;
   const username = user?.name;

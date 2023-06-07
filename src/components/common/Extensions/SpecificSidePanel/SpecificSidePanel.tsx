@@ -9,12 +9,13 @@ import ContractAddress from './partials/ContractAddress';
 import Developer from './partials/Developer';
 import styles from './SpecificSidePanel.module.css';
 import { useSpecificSidePanel } from './hooks';
+import { SpecificSidePanelProps } from './types';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 
-const SpecificSidePanel: FC = () => {
+const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
   const { formatMessage } = useIntl();
-  const { statuses, sidePanelData } = useSpecificSidePanel();
+  const { statuses, sidePanelData } = useSpecificSidePanel(extensionData);
 
   return (
     <div className="bg-base-white flex gap-[1.25rem] flex-col">
@@ -38,7 +39,9 @@ const SpecificSidePanel: FC = () => {
                 )}
               </div>
             </div>
-            {!statuses?.includes('not-installed') && <InstalledBy title={installedBy.title} />}
+            {!statuses?.includes('not-installed') && (
+              <InstalledBy title={installedBy.title} extensionData={extensionData} />
+            )}
             {!statuses?.includes('not-installed') && (
               <DateInstalled title={dateInstalled?.title} date={dateInstalled.date || ''} />
             )}
