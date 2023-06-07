@@ -1,0 +1,3 @@
+.extensionItemButton {
+  @apply flex items-center justify-center font-medium transition-all duration-normal rounded-lg text-md h-[2.5rem] px-4 py-2.5 bg-base-white text-gray-700 border border-gray-300 hover:bg-blue-400 hover:border-blue-400 hover:text-base-white disabled:text-gray-300;
+}
