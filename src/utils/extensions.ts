@@ -10,7 +10,7 @@ import {
  * Type guard to distinguish installed extension data from installable extension data
  */
 export const isInstalledExtensionData = (extension: AnyExtensionData): extension is InstalledExtensionData =>
-  (extension as InstalledExtensionData).address !== undefined;
+  (extension as InstalledExtensionData)?.address !== undefined;
 
 export const mapToInstallableExtensionData = (
   extensionConfig: ExtensionConfig,

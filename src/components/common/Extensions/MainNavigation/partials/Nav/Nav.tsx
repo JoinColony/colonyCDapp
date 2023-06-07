@@ -57,7 +57,7 @@ const NavItem: FC<NavItemProps> = ({ item }) => {
       )}
       {item.subMenu && (
         <div
-          className={clsx(styles.subMenu, 'opacity-0 max-h-0', {
+          className={clsx(styles.subMenu, 'opacity-0 max-h-0 z-10', {
             'group-hover:opacity-100 group-hover:max-h-[9999px] sm:group-hover:pointer-events-auto': !isMobile,
             'max-h-[9999px] opacity-100': isOpen,
           })}

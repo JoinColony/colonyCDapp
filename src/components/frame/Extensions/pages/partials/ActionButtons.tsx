@@ -1,23 +1,32 @@
 import React, { FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { useMobile } from '~hooks';
 
-import { InstalledExtensionData } from '~types';
+import { useColonyContext, useMobile } from '~hooks';
 import Button from '~shared/Extensions/Button';
 import { useExtensionDetailsPage } from '../ExtensionDetailsPage/hooks';
 import { isInstalledExtensionData } from '~utils/extensions';
-import ExtensionUpgradeButton from '~common/Extensions/ExtensionUpgradeButton';
+import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 import { ActionButtonProps } from './types';
 
 const displayName = 'frame.Extensions.pages.partials.ActionButtons';
 
 const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
-  const { handleEnableButtonClick, handleInstallClick } = useExtensionDetailsPage(extensionData);
+  const { handleEnableClick, handleInstallClick, handleUpdateVersionClick, isUpgradeButtonDisabled } =
+    useExtensionDetailsPage(extensionData);
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const isExtensionInstalled = extensionData && isInstalledExtensionData(extensionData);
+  const { colony } = useColonyContext();
 
-  const mustUpgrade = useMemo(() => {
+  const isSupportedColonyVersion = colony?.version ?? MIN_SUPPORTED_COLONY_VERSION <= 0;
+
+  const isInstallButtonVisible =
+    // @ts-ignore
+    !isInstalledExtensionData(extensionData) && extensionData.uninstallable && !extensionData.isDeprecated;
+
+  const isEnableButtonVisible =
+    isInstalledExtensionData(extensionData) && extensionData.uninstallable && !extensionData.isDeprecated;
+
+  const isMustUpgradeVisible = useMemo(() => {
     if (extensionData && isInstalledExtensionData(extensionData)) {
       return extensionData && extensionData.currentVersion < extensionData.availableVersion;
     }
@@ -26,17 +35,36 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
 
   return (
     <>
-      {!isExtensionInstalled && (
-        <Button mode="primarySolid" isFullSize={isMobile} onClick={handleInstallClick}>
-          <p className="text-sm font-medium">{formatMessage({ id: 'extension.installButton' })}</p>
+      {isInstallButtonVisible && (
+        <Button
+          mode="primarySolid"
+          isFullSize={isMobile}
+          onClick={handleInstallClick}
+          disabled={!isSupportedColonyVersion}
+        >
+          {formatMessage({ id: 'extension.installButton' })}
         </Button>
       )}
-      {typeof extensionData?.isInitialized !== 'undefined' && !extensionData?.isInitialized && (
-        <Button mode="primarySolid" isFullSize={isMobile} onClick={handleEnableButtonClick}>
-          <p className="text-sm font-medium">{formatMessage({ id: 'extension.enableButton' })}</p>
+      {isEnableButtonVisible && (
+        <Button
+          mode="primarySolid"
+          isFullSize={isMobile}
+          onClick={handleEnableClick}
+          disabled={!isSupportedColonyVersion}
+        >
+          {formatMessage({ id: 'extension.enableButton' })}
         </Button>
       )}
-      {mustUpgrade && <ExtensionUpgradeButton extensionData={extensionData as InstalledExtensionData} />}
+      {isMustUpgradeVisible && (
+        <Button
+          mode="primarySolid"
+          isFullSize={isMobile}
+          onClick={handleUpdateVersionClick}
+          disabled={isUpgradeButtonDisabled}
+        >
+          {formatMessage({ id: 'button.updateVersion' })}
+        </Button>
+      )}
     </>
   );
 };

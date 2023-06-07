@@ -10,7 +10,7 @@ import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge/types';
 import { isInstalledExtensionData } from '~utils/extensions';
 
 export const useSpecificSidePanel = (extensionData) => {
-  const [statuses, setStatuses] = useState<ExtensionStatusBadgeMode>('disabled');
+  const [statuses, setStatuses] = useState<ExtensionStatusBadgeMode | ExtensionStatusBadgeMode[]>('disabled');
   const { formatMessage } = useIntl();
 
   const isExtensionInstalled = extensionData && isInstalledExtensionData(extensionData);
@@ -20,18 +20,24 @@ export const useSpecificSidePanel = (extensionData) => {
 
   const { user } = useUserByNameOrAddress((extensionData as InstalledExtensionData)?.installedBy);
 
-  // @TODO: handle case when there can be more then one stutus
+  const isExtensionDeprecatedAndDisabled = !!(
+    !!user &&
+    isExtensionInstalled &&
+    extensionData.uninstallable &&
+    extensionData.isDeprecated
+  );
+
   useMemo(() => {
     if (!isExtensionInstalled) {
       setStatuses('not-installed');
-    } else if (extensionData.isDeprecated) {
-      setStatuses('deprecated');
     } else if (extensionData.isEnabled) {
       setStatuses('enabled');
+    } else if (isExtensionDeprecatedAndDisabled) {
+      setStatuses(['disabled', 'deprecated']);
     } else {
       setStatuses('disabled');
     }
-  }, [extensionData, isExtensionInstalled]);
+  }, [extensionData, isExtensionInstalled, isExtensionDeprecatedAndDisabled]);
 
   const sidePanelData: SidePanelDataProps[] = useMemo(
     () => [
