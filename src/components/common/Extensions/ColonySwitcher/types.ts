@@ -11,7 +11,7 @@ export interface ColoniesDropdownProps {
 
 export interface ColonyItemProps {
   colony: Colony;
-  chainName: string;
+  chainId: string;
 }
 
 export interface ColonyAvatarProps {

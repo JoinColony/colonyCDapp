@@ -17,10 +17,10 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
 
   const groupByCategory = (watchlist as WatchListItem[]).reduce(
     (group, item) => {
-      const network = (item && item.colony.chainMetadata?.network) || '';
+      const chainId = (item && item.colony.chainMetadata?.chainId) || '';
       // eslint-disable-next-line no-param-reassign
-      group[network] = group[network] ?? [];
-      group[network].push(item);
+      group[chainId] = group[chainId] ?? [];
+      group[chainId].push(item);
       return group;
     },
     {},
@@ -54,7 +54,7 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
             <ColonyItem
               colony={item?.colony as Colony}
               key={item?.colony?.colonyAddress}
-              chainName={item?.colony?.chainMetadata?.network || ''}
+              chainId={item?.colony?.chainMetadata?.chainId || ''}
             />
           ))}
         </div>

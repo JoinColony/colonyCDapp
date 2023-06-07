@@ -76,7 +76,7 @@ const UserMenu: FC<UserMenuProps> = ({
       >
         {isWalletConnected && (
           <WalletConnectedTopMenu
-            userName={profile?.displayName || name}
+            userName={profile?.displayName || name || undefined}
             isVerified={isVerified}
             walletAddress={walletAddress}
             userReputation={userReputation}

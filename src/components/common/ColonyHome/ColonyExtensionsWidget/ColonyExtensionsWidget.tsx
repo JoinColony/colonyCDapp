@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import Heading from '~shared/Heading';
 import NavLink from '~shared/NavLink';
-import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
+import ExtensionStatusBadge from '~common/ExtensionStatusBadge';
 
 import { useColonyContext, useExtensionsData } from '~hooks';
 

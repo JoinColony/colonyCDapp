@@ -16,8 +16,8 @@ const InstalledBy: FC<PanelTypeProps> = ({ title, extensionData }) => {
   const { user } = useUserByNameOrAddress(
     (extensionData as InstalledExtensionData)?.installedBy,
   );
-  const userDisplayName = user?.profile?.displayName;
-  const username = user?.name;
+  const userDisplayName = user?.profile?.displayName || '';
+  const username = user?.name || '';
 
   // @TODO: display missing data from API
   return (

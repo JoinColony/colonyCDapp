@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import ReactModal from 'react-modal';
 import { Logger } from 'ethers/lib.esm/utils';
 
-import './styles/main.css';
+import './styles/main.global.css';
 
 import Entry from './Entry';
 import store from '~redux/createReduxStore';

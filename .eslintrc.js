@@ -15,6 +15,7 @@ module.exports = {
     'eslint-config-airbnb/rules/react',
     'eslint-config-airbnb/rules/react-a11y',
     'plugin:@typescript-eslint/recommended',
+    'plugin:storybook/recommended',
     '@colony/eslint-config-colony',
     'prettier',
   ],
