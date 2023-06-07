@@ -1,0 +1,27 @@
+:global :local(.toast-notification).Toastify__toast-container {
+  @apply w-auto;
+}
+
+:global :local(.toast-notification) .Toastify__toast {
+  @apply min-w-[24.375rem] p-6 mb-0 right-4 rounded-r-lg rounded-l-none shadow-lg border border-gray-200 bg-base-white relative before:block before:content-[''] before:h-full before:absolute before:top-0 before:left-0 before:w-[0.375rem];
+}
+
+:global :local(.toast-notification) .Toastify__toast-body {
+  @apply p-0;
+}
+
+:global :local(.toast-notification) .Toastify__toast-icon {
+  @apply hidden;
+}
+
+:global :local(.toast-notification) .Toastify__toast--error {
+  @apply before:bg-negative-400;
+}
+
+:global :local(.toast-notification) .Toastify__toast--success {
+  @apply before:bg-success-400;
+}
+
+:global :local(.toast-notification) .Toastify__toast--warning {
+  @apply before:bg-warning-400;
+}
