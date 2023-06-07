@@ -53,11 +53,11 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
           <div className="mt-6 flex flex-col gap-4">
             <div>
               <Button mode="primaryOutline" isFullSize onClick={() => setIsReEnablelModalOpen(true)}>
-                {formatMessage({ id: 'extensionDetailsPage.reEnable' })}
+                {formatMessage({ id: 'extensionReEnable.title' })}
               </Button>
               <Modal
-                title={formatMessage({ id: 'extensionDetailsPage.reEnable.modal.title' })}
-                subTitle={formatMessage({ id: 'extensionDetailsPage.reEnable.modal.subTitle' })}
+                title={formatMessage({ id: 'extensionReEnable.modal.title' })}
+                subTitle={formatMessage({ id: 'extensionReEnable.modal.subTitle' })}
                 isOpen={isReEnablelModalOpen}
                 onClose={() => setIsReEnablelModalOpen(false)}
                 onConfirm={handleReEnable}

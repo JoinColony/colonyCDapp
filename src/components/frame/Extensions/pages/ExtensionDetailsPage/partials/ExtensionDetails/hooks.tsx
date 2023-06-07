@@ -68,8 +68,8 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
         toast.success(
           <Toast
             type="success"
-            title={{ id: 'extensionDetailsPage.deprecateSuccessTitle' }}
-            description={{ id: 'extensionDetailsPage.deprecateSuccessDescription' }}
+            title={{ id: 'extensionDeprecate.toast.title.success' }}
+            description={{ id: 'extensionDeprecate.toast.description.success' }}
           />,
         ),
       );
@@ -100,8 +100,8 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
         toast.success(
           <Toast
             type="success"
-            title={{ id: 'extensionDetailsPage.reEnableSuccessTitle' }}
-            description={{ id: 'extensionDetailsPage.reEnableSuccessDescription' }}
+            title={{ id: 'extensionReEnable.toast.title.success' }}
+            description={{ id: 'extensionReEnable.toast.description.success' }}
           />,
         ),
       );
