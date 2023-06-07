@@ -21,13 +21,12 @@ export type ColonyActionsActionTypes =
   | UniqueActionType<
       ActionTypes.ACTION_DOMAIN_CREATE,
       {
-        colonyAddress: Address;
-        colonyName?: string;
         domainName: string;
         domainColor: DomainColor;
         domainPurpose: string;
         annotationMessage?: string;
         parentId?: number;
+        colony: Colony;
       },
       MetaWithNavigate<object>
     >
@@ -83,14 +82,8 @@ export type ColonyActionsActionTypes =
         colonyDisplayName?: string;
         colonyAvatarImage?: string;
         colonyThumbnail?: string;
-        hasAvatarChanged?: boolean;
         tokenAddresses?: Address[];
-        verifiedAddresses?: Address[];
-        isWhitelistActivated?: boolean;
         annotationMessage?: string;
-        /*
-         * @TODO I think this will also store the subscribed-to tokens list
-         */
       },
       MetaWithNavigate<object>
     >
@@ -245,7 +238,7 @@ export type ColonyActionsActionTypes =
         colonyAddress: Address;
         colonyName: string;
         domainId: number;
-        walletAddress: Address;
+        userAddress: Address;
         amount: BigNumber;
         isSmitingReputation?: boolean;
         annotationMessage?: string;

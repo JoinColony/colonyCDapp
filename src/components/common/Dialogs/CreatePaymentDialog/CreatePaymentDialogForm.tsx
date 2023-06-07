@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 import { isConfusing } from '@colony/unicode-confusables-noascii';
@@ -15,10 +15,9 @@ import { Annotations } from '~shared/Fields';
 import SingleUserPicker, {
   filterUserSelection,
 } from '~shared/SingleUserPicker';
-// import NotEnoughReputation from '~dashboard/NotEnoughReputation';
-import UserAvatar from '~shared/UserAvatar/UserAvatar';
-import { MemberUser, User } from '~types';
+import UserAvatar from '~shared/UserAvatar';
 import { ItemDataType } from '~shared/OmniPicker';
+import { MemberUser, SetStateFn, User } from '~types';
 
 import DomainFundSelectorSection from '../DomainFundSelectorSection';
 import TokenAmountInput from '../TokenAmountInput';
@@ -26,6 +25,7 @@ import {
   NoPermissionMessage,
   CannotCreateMotionMessage,
   PermissionRequiredInfo,
+  NotEnoughReputation,
 } from '../Messages';
 
 import { useCreatePaymentDialogStatus } from './helpers';
@@ -66,6 +66,8 @@ const MSG = defineMessages({
 interface Props extends ActionDialogProps {
   verifiedUsers: MemberUser[];
   // showWhitelistWarning: boolean;
+  handleIsForceChange: SetStateFn;
+  isForce: boolean;
 }
 
 const requiredRoles: ColonyRole[] = [
@@ -82,10 +84,12 @@ const CreatePaymentDialogForm = ({
   verifiedUsers,
   colony,
   enabledExtensionData,
+  handleIsForceChange,
+  isForce,
 }: // showWhitelistWarning,
 Props) => {
   const { watch } = useFormContext();
-  const recipient = watch('recipient');
+  const { recipient, fromDomainId, forceAction } = watch();
 
   const {
     userHasPermission,
@@ -93,16 +97,32 @@ Props) => {
     disabledInput,
     canCreateMotion,
     canCreatePayment,
+    canOnlyForceAction,
   } = useCreatePaymentDialogStatus(colony, requiredRoles, enabledExtensionData);
 
   const formattedData = verifiedUsers.map((user) => ({
     ...user,
     id: user.walletAddress,
   }));
+
+  useEffect(() => {
+    if (forceAction !== isForce) {
+      handleIsForceChange(forceAction);
+    }
+  }, [forceAction, isForce, handleIsForceChange]);
+
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading title={MSG.title} />
+        <DialogHeading
+          title={MSG.title}
+          colony={colony}
+          userHasPermission={userHasPermission}
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
+          selectedDomainId={fromDomainId}
+        />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
@@ -180,12 +200,14 @@ Props) => {
           </div>
         </DialogSection>
       )}
-      {/* {onlyForceAction && (
-        <NotEnoughReputation
-          appearance={{ marginTop: 'negative' }}
-          domainId={domainId}
-        />
-      )} */}
+      {canOnlyForceAction && (
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NotEnoughReputation
+            appearance={{ marginTop: 'negative' }}
+            domainId={fromDomainId}
+          />
+        </DialogSection>
+      )}
       {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />

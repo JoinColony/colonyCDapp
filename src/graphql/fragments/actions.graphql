@@ -1,5 +1,4 @@
 fragment ColonyAction on ColonyAction {
-  id
   transactionHash: id
   colonyAddress: colonyId
   type
@@ -58,4 +57,115 @@ fragment ColonyAction on ColonyAction {
     role_6
   }
   individualEvents
+  isMotion
+  motionData {
+    ...ColonyMotion
+  }
+  colony {
+    colonyAddress: id
+    nativeToken {
+      nativeTokenDecimals: decimals
+      nativeTokenSymbol: symbol
+      tokenAddress: id
+    }
+  }
+  showInActionsList
+  pendingDomainMetadata {
+    ...DomainMetadata
+  }
+  pendingColonyMetadata {
+    ...ColonyMetadata
+  }
+}
+
+fragment MotionStakeValues on MotionStakeValues {
+  yay
+  nay
+}
+
+fragment ColonyMotion on ColonyMotion {
+  databaseMotionId: id
+  motionId: nativeMotionId
+  motionStakes {
+    ...MotionStakes
+  }
+  usersStakes {
+    address
+    stakes {
+      raw {
+        ...MotionStakeValues
+      }
+      percentage {
+        ...MotionStakeValues
+      }
+    }
+  }
+  remainingStakes
+  userMinStake
+  requiredStake
+  rootHash
+  nativeMotionDomainId
+  stakerRewards {
+    address
+    rewards {
+      yay
+      nay
+    }
+    isClaimed
+  }
+  isFinalized
+  voterRecord {
+    ...VoterRecord
+  }
+  revealedVotes {
+    raw {
+      yay
+      nay
+    }
+    percentage {
+      yay
+      nay
+    }
+  }
+  skillRep
+  repSubmitted
+  hasObjection
+  motionStateHistory {
+    hasVoted
+    hasPassed
+    hasFailed
+    hasFailedNotFinalizable
+    inRevealPhase
+  }
+  messages {
+    items {
+      ...MotionMessage
+    }
+  }
+}
+
+fragment MotionMessage on MotionMessage {
+  initiatorAddress
+  name
+  messageKey
+  initiatorUser {
+    ...User
+  }
+  vote
+  amount
+}
+
+fragment VoterRecord on VoterRecord {
+  address
+  voteCount
+  vote
+}
+
+fragment MotionStakes on MotionStakes {
+  raw {
+    ...MotionStakeValues
+  }
+  percentage {
+    ...MotionStakeValues
+  }
 }

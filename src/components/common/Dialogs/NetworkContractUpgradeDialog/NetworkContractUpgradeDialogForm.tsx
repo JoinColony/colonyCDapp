@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
+import { useFormContext } from 'react-hook-form';
 
+import { SetStateFn } from '~types';
 import { useColonyContractVersion } from '~hooks';
 import {
   ActionDialogProps,
@@ -11,11 +13,12 @@ import {
 } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
-// import NotEnoughReputation from '~dashboard/NotEnoughReputation';
+
 import {
   CannotCreateMotionMessage,
   NoPermissionMessage,
   PermissionRequiredInfo,
+  NotEnoughReputation,
 } from '../Messages';
 
 import LegacyPermissionWarning from './LegacyPermissionWarning';
@@ -44,12 +47,21 @@ const MSG = defineMessages({
 
 const requiredRoles = [ColonyRole.Root];
 
+interface Props extends ActionDialogProps {
+  handleIsForceChange: SetStateFn;
+  isForce: boolean;
+}
+
 const NetworkContractUpgradeDialogForm = ({
   back,
   colony,
   colony: { version },
   enabledExtensionData,
-}: ActionDialogProps) => {
+  handleIsForceChange,
+  isForce,
+}: Props) => {
+  const { watch } = useFormContext();
+  const forceAction = watch('forceAction');
   const {
     userHasPermission,
     canCreateMotion,
@@ -57,6 +69,7 @@ const NetworkContractUpgradeDialogForm = ({
     disabledInput,
     hasLegacyRecoveryRole,
     isLoadingLegacyRecoveryRole,
+    canOnlyForceAction,
   } = useNetworkContractUpgradeDialogStatus(
     colony,
     requiredRoles,
@@ -65,10 +78,24 @@ const NetworkContractUpgradeDialogForm = ({
   const { colonyContractVersion, loadingColonyContractVersion } =
     useColonyContractVersion();
 
+  useEffect(() => {
+    if (forceAction !== isForce) {
+      handleIsForceChange(forceAction);
+    }
+  }, [forceAction, isForce, handleIsForceChange]);
+
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading title={MSG.title} />
+        <DialogHeading
+          title={MSG.title}
+          colony={colony}
+          userHasPermission={userHasPermission}
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
+          isRootMotion
+        />
       </DialogSection>
       {(isLoadingLegacyRecoveryRole || loadingColonyContractVersion) && (
         <DialogSection>
@@ -107,7 +134,11 @@ const NetworkContractUpgradeDialogForm = ({
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
-      {/* {onlyForceAction && <NotEnoughReputation />} */}
+      {canOnlyForceAction && (
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NotEnoughReputation />
+        </DialogSection>
+      )}
       {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
@@ -120,6 +151,9 @@ const NetworkContractUpgradeDialogForm = ({
           onSecondaryButtonClick={back}
           isLoading={
             isLoadingLegacyRecoveryRole || loadingColonyContractVersion
+          }
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
           }
         />
       </DialogSection>

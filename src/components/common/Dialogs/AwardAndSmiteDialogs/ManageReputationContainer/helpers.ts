@@ -1,12 +1,19 @@
 import Decimal from 'decimal.js';
+import { BigNumber } from 'ethers';
 
-import { Colony } from '~types';
+import { useGetMembersForColonyQuery } from '~gql';
+import { Address, Colony, Member, MemberUser } from '~types';
+import { ManageReputationMotionPayload } from '~redux/sagas/motions/manageReputationMotion';
+
+import { notMaybe } from '~utils/arrays';
+
+import { FormValues } from './validation';
 
 export const getManageReputationDialogPayload = (
   colony: Colony,
   isSmiteAction: boolean,
   nativeTokenDecimals: number,
-  { amount, domainId, annotation, user, motionDomainId },
+  { amount, domainId, annotation, user, motionDomainId }: FormValues,
 ) => {
   const reputationChangeAmount = new Decimal(amount)
     .mul(new Decimal(10).pow(nativeTokenDecimals))
@@ -17,10 +24,26 @@ export const getManageReputationDialogPayload = (
     colonyAddress: colony.colonyAddress,
     colonyName: colony.name,
     domainId,
-    walletAddress: user.walletAddress,
-    annotationMessage: annotation,
-    amount: reputationChangeAmount.toString(),
     motionDomainId,
+    userAddress: user?.walletAddress ?? '',
+    annotationMessage: annotation,
+    amount: BigNumber.from(reputationChangeAmount.toString()),
     isSmitingReputation: isSmiteAction,
-  };
+  } as ManageReputationMotionPayload;
+};
+
+export const useGetColonyMembers = (colonyAddress?: Address | null) => {
+  const { data } = useGetMembersForColonyQuery({
+    skip: !colonyAddress,
+    variables: {
+      input: {
+        colonyAddress: colonyAddress ?? '',
+      },
+    },
+  });
+
+  const watchers = data?.getMembersForColony?.watchers ?? [];
+  const contributors = data?.getMembersForColony?.contributors ?? [];
+  const allMembers: Member[] = [...watchers, ...contributors];
+  return allMembers.map((member) => member.user).filter<MemberUser>(notMaybe);
 };

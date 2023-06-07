@@ -1,0 +1,7 @@
+.userStake,
+.userStake span {
+  margin-top: 16px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  color: var(--grey-purple);
+}

@@ -113,6 +113,25 @@ input GetUserTokenBalanceInput {
   tokenAddress: String!
 }
 
+input GetMotionStateInput {
+  colonyAddress: String!
+  databaseMotionId: String!
+  transactionHash: String!
+}
+
+input GetVoterRewardsInput {
+  voterAddress: String!
+  colonyAddress: String!
+  nativeMotionDomainId: String!
+  motionId: String!
+  rootHash: String!
+}
+
+input GetMotionTimeoutPeriodsInput {
+  motionId: String!
+  colonyAddress: String!
+}
+
 type UserDomainReputation {
   domainId: Int!
   reputationPercentage: String!
@@ -130,6 +149,13 @@ type GetUserTokenBalanceReturn {
   pendingBalance: String
 }
 
+type GetMotionTimeoutPeriodsReturn {
+  timeLeftToStake: String!
+  timeLeftToVote: String!
+  timeLeftToReveal: String!
+  timeLeftToEscalate: String!
+}
+
 # Definitions:
 # Member = User watching a Colony, with or without reputation
 # Contributor = User watching a Colony WITH reputation
@@ -137,6 +163,12 @@ type GetUserTokenBalanceReturn {
 type MembersForColonyReturn {
   contributors: [Contributor!]
   watchers: [Watcher!]
+}
+
+type VoterRewardsReturn {
+  min: String!
+  max: String!
+  reward: String!
 }
 
 enum TokenType {
@@ -179,19 +211,31 @@ enum ColonyType {
 
 enum ColonyActionType {
   GENERIC
+  NULL_MOTION
   WRONG_COLONY
   PAYMENT
+  PAYMENT_MOTION
   RECOVERY
   MOVE_FUNDS
+  MOVE_FUNDS_MOTION
   UNLOCK_TOKEN
+  UNLOCK_TOKEN_MOTION
   MINT_TOKENS
+  MINT_TOKENS_MOTION
   CREATE_DOMAIN
+  CREATE_DOMAIN_MOTION
   VERSION_UPGRADE
+  VERSION_UPGRADE_MOTION
   COLONY_EDIT
+  COLONY_EDIT_MOTION
   EDIT_DOMAIN
+  EDIT_DOMAIN_MOTION
   SET_USER_ROLES
+  SET_USER_ROLES_MOTION
   EMIT_DOMAIN_REPUTATION_PENALTY
+  EMIT_DOMAIN_REPUTATION_PENALTY_MOTION
   EMIT_DOMAIN_REPUTATION_REWARD
+  EMIT_DOMAIN_REPUTATION_REWARD_MOTION
 }
 
 enum SortingMethod {
@@ -216,6 +260,13 @@ type Query {
   ): GetUserTokenBalanceReturn @function(name: "getUserTokenBalance")
   getMembersForColony(input: MembersForColonyInput): MembersForColonyReturn
     @function(name: "getMembersForColony")
+  getMotionState(input: GetMotionStateInput): Int!
+    @function(name: "fetchMotionState")
+  getVoterRewards(input: GetVoterRewardsInput): VoterRewardsReturn
+    @function(name: "fetchVoterRewards")
+  getMotionTimeoutPeriods(
+    input: GetMotionTimeoutPeriodsInput
+  ): GetMotionTimeoutPeriodsReturn @function(name: "fetchMotionTimeoutPeriods")
 }
 
 type Mutation {
@@ -321,11 +372,22 @@ type Colony @model {
   extensions: [ColonyExtension!] @hasMany(indexName: "byColony", fields: ["id"])
   version: Int!
   actions: [ColonyAction] @hasMany
+  motionsWithUnclaimedStakes: [ColonyUnclaimedStake!]
   metadata: ColonyMetadata @hasOne(fields: ["id"])
   # @TODO This should not be fetched upfront
   # It should be retrieved on demand at the earliest occasion it's needed
   # ie: when opening a UAC modal
   roles: [ColonyRole] @hasMany
+}
+
+type ColonyUnclaimedStake {
+  motionId: String! # database id
+  unclaimedRewards: [StakerRewards!]!
+}
+
+type PendingModifiedTokenAddresses {
+  added: [String!]
+  removed: [String!]
 }
 
 type ColonyMetadata @model {
@@ -336,6 +398,7 @@ type ColonyMetadata @model {
   changelog: [ColonyMetadataChangelog!]
   isWhitelistActivated: Boolean
   whitelistedAddresses: [String!]
+  modifiedTokenAddresses: PendingModifiedTokenAddresses # only present on pendingColonyMetadata for consumption in block ingestor
 }
 
 type ColonyMetadataChangelog {
@@ -428,6 +491,122 @@ input TokenInput {
   id: ID!
 }
 
+input MotionStakeValuesInput {
+  yay: String!
+  nay: String!
+}
+
+type MotionStakeValues {
+  yay: String!
+  nay: String!
+}
+
+input MotionStakesInput {
+  raw: MotionStakeValuesInput!
+  percentage: MotionStakeValuesInput!
+}
+
+type MotionStakes {
+  raw: MotionStakeValues!
+  percentage: MotionStakeValues!
+}
+
+input UserStakesInput {
+  address: String!
+  stakes: MotionStakesInput!
+}
+
+type UserStakes {
+  address: String!
+  stakes: MotionStakes!
+}
+
+input StakerRewardsInput {
+  address: String!
+  rewards: MotionStakeValuesInput!
+  isClaimed: Boolean!
+}
+
+type StakerRewards {
+  address: String!
+  rewards: MotionStakeValues!
+  isClaimed: Boolean!
+}
+
+input VoterRecordInput {
+  address: String!
+  voteCount: String!
+  vote: Int # nullable since we don't know the vote until it's revealed
+}
+
+type VoterRecord {
+  address: String!
+  voteCount: String!
+  vote: Int # nullable since we don't know the vote until it's revealed
+}
+
+input MotionMessageInput {
+  initiatorAddress: String!
+  name: String!
+  messageKey: String!
+  vote: String
+  amount: String
+}
+
+type MotionMessage @model {
+  initiatorAddress: ID!
+  name: String!
+  messageKey: String!
+  motionId: ID!
+    @index(
+      name: "byMotionId"
+      queryField: "getMotionMessageByMotionId"
+      sortKeyFields: ["createdAt"]
+    )
+  initiatorUser: User @hasOne(fields: ["initiatorAddress"])
+  vote: String
+  amount: String
+  createdAt: AWSDateTime!
+}
+
+input MotionStateHistoryInput {
+  hasVoted: Boolean!
+  hasPassed: Boolean!
+  hasFailed: Boolean!
+  hasFailedNotFinalizable: Boolean!
+  inRevealPhase: Boolean!
+}
+
+type MotionStateHistory {
+  hasVoted: Boolean!
+  hasPassed: Boolean!
+  hasFailed: Boolean!
+  hasFailedNotFinalizable: Boolean!
+  inRevealPhase: Boolean!
+}
+
+type ColonyMotion @model {
+  id: ID! # to ensure uniqueness, we format as: chainId-votingRepExtnAddress_nativeMotionId
+  nativeMotionId: String!
+  usersStakes: [UserStakes!]!
+  stakerRewards: [StakerRewards!]!
+  motionStakes: MotionStakes!
+  remainingStakes: [String!]! # tuple [nayRemaining, yayRemaining]
+  userMinStake: String!
+  requiredStake: String!
+  rootHash: String! # For calculating user's max stake in client
+  nativeMotionDomainId: String! # native domain id
+  isFinalized: Boolean!
+  createdBy: String! # voting rep extn address. Useful to check if we're viewing a "read-only" motion
+  voterRecord: [VoterRecord!]!
+  revealedVotes: MotionStakes! ## I.e. MotionVotes (same type)
+  repSubmitted: String!
+  skillRep: String!
+  hasObjection: Boolean!
+  motionStateHistory: MotionStateHistory!
+  messages: [MotionMessage!]! @hasMany(indexName: "byMotionId", fields: ["id"])
+}
+
 # This will store the relevant events we care about for a particular colony
 # Altough it might also hold events emmited by other clients (eg: network or token)
 # but are event pertaining to a colony
@@ -451,6 +630,22 @@ type ContractEvent @model {
   encodedArguments: String # basically a JSON string
 }
 
+type VotingReputationParams {
+  totalStakeFraction: String!
+  voterRewardFraction: String!
+  userMinStakeFraction: String!
+  maxVoteFraction: String!
+  stakePeriod: String!
+  submitPeriod: String!
+  revealPeriod: String!
+  escalationPeriod: String!
+}
+
+# Parameters an extension is initialised with, e.g VotingRepExtn
+type ExtensionParams {
+  votingReputation: VotingReputationParams
+}
+
 type ColonyExtension @model {
   id: ID!
   colonyId: ID!
@@ -467,6 +662,7 @@ type ColonyExtension @model {
   isDeleted: Boolean!
   isInitialized: Boolean!
   version: Int!
+  params: ExtensionParams
 }
 
 type CurrentVersion @model {
@@ -492,11 +688,15 @@ type ColonyAction @model {
   colony: Colony! @belongsTo(fields: ["colonyId"])
   type: ColonyActionType!
   blockNumber: Int!
+  isMotion: Boolean
+  motionId: ID
+    @index(name: "byMotionId", queryField: "getColonyActionByMotionId")
+  motionData: ColonyMotion @hasOne(fields: ["motionId"])
+  showInActionsList: Boolean! # True for (forced) actions. True for motions if staked above 10%
   createdAt: AWSDateTime!
-
+  initiatorAddress: ID!
   # Action type specific fields which might be null
-
-  initiatorAddress: ID # Amplify will automatically populate one of the following fields with related model if there is an initiator
+  # Amplify will automatically populate one of the following fields with related model if there is an initiator
   initiatorUser: User @hasOne(fields: ["initiatorAddress"])
   initiatorExtension: ColonyExtension @hasOne(fields: ["initiatorAddress"])
   initiatorColony: Colony @hasOne(fields: ["initiatorAddress"])
@@ -517,6 +717,13 @@ type ColonyAction @model {
   toDomain: Domain @hasOne(fields: ["toDomainId"])
   fundamentalChainId: Int
   newColonyVersion: Int
+  pendingDomainMetadataId: ID
+  pendingDomainMetadata: DomainMetadata
+    @hasOne(fields: ["pendingDomainMetadataId"])
+  pendingColonyMetadataId: ID
+  pendingColonyMetadata: ColonyMetadata
+    @hasOne(fields: ["pendingColonyMetadataId"])
+  motionDomainId: Int
   roles: ColonyActionRoles
 
   # Required since some actions might have multiple event entries in the list
@@ -580,7 +787,6 @@ type ColonyRole @model {
 
 type ColonyHistoricRole @model {
   id: ID! # colonyAddress_domainNativeId_userAddress_blockNumber_roles
-
   # I HATE AMPLIFY SORTING! MAY IT DIE A THOUSAND DEATHS!
   #
   # @NOTE Always set to `type` to "SortedHistoricRole" to enable Amplify sorting, it DOES NOT WORK with `id`

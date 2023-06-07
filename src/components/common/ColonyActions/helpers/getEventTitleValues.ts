@@ -3,9 +3,14 @@ import {
   Colony,
   ColonyAction,
   ColonyAndExtensionsEvents,
+  MotionMessage,
+  SystemMessages,
 } from '~types';
 
-import { mapColonyEventToExpectedFormat } from './mapItemToMessageFormat';
+import {
+  mapActionEventToExpectedFormat,
+  useMapMotionEventToExpectedFormat,
+} from './mapItemToMessageFormat';
 
 enum EventTitleMessageKeys {
   Amount = 'amount',
@@ -34,11 +39,16 @@ enum EventTitleMessageKeys {
   TokenSymbol = 'tokenSymbol',
   ToDomain = 'toDomain',
   TokensMinted = 'tokensMinted',
+  VotingTag = 'votingTag',
+  VoteResultsWidget = 'voteResultsWidget',
+  FailedTag = 'failedTag',
+  RevealTag = 'revealTag',
+  PassedTag = 'passedTag',
 }
 
 /* Maps eventType to message values as found in en-events.ts */
 const EVENT_TYPE_MESSAGE_KEYS_MAP: {
-  [key in ColonyAndExtensionsEvents]?: EventTitleMessageKeys[];
+  [key in ColonyAndExtensionsEvents | SystemMessages]?: EventTitleMessageKeys[];
 } = {
   [ColonyAndExtensionsEvents.OneTxPaymentMade]: [
     EventTitleMessageKeys.Amount,
@@ -71,12 +81,6 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
   [ColonyAndExtensionsEvents.ColonyUpgraded]: [
     EventTitleMessageKeys.NewVersion,
   ],
-  // [ColonyAndExtensionsEvents.MotionFinalized]: [
-  //   EventTitleMessageKeys.MotionTag,
-  // ],
-  // [ColonyAndExtensionsEvents.MotionRewardClaimed]: [
-  //   EventTitleMessageKeys.Staker,
-  // ],
   // [ColonyAndExtensionsEvents.RecoveryModeEntered]: [
   //   EventTitleMessageKeys.Initiator,
   // ],
@@ -90,25 +94,25 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
   // [ColonyAndExtensionsEvents.RecoveryModeExited]: [
   //   EventTitleMessageKeys.Initiator,
   // ],
-  // [ColonyAndExtensionsEvents.MotionCreated]: [
-  //   EventTitleMessageKeys.Initiator,
-  //   EventTitleMessageKeys.MotionTag,
-  // ],
-  // [ColonyAndExtensionsEvents.MotionStaked]: [
-  //   EventTitleMessageKeys.Staker,
-  //   EventTitleMessageKeys.BackedSideTag,
-  //   EventTitleMessageKeys.AmountTag,
-  // ],
-  // [ColonyAndExtensionsEvents.MotionFinalized]: [
-  //   EventTitleMessageKeys.MotionTag,
-  // ],
-  // [ColonyAndExtensionsEvents.ObjectionRaised]: [
-  //   EventTitleMessageKeys.Staker,
-  //   EventTitleMessageKeys.ObjectionTag,
-  // ],
-  // [ColonyAndExtensionsEvents.MotionRewardClaimed]: [
-  //   EventTitleMessageKeys.Staker,
-  // ],
+  [ColonyAndExtensionsEvents.MotionCreated]: [
+    EventTitleMessageKeys.Initiator,
+    EventTitleMessageKeys.MotionTag,
+  ],
+  [ColonyAndExtensionsEvents.MotionStaked]: [
+    EventTitleMessageKeys.Staker,
+    EventTitleMessageKeys.BackedSideTag,
+    EventTitleMessageKeys.AmountTag,
+  ],
+  [ColonyAndExtensionsEvents.MotionFinalized]: [
+    EventTitleMessageKeys.MotionTag,
+  ],
+  [ColonyAndExtensionsEvents.ObjectionRaised]: [
+    EventTitleMessageKeys.Staker,
+    EventTitleMessageKeys.ObjectionTag,
+  ],
+  [ColonyAndExtensionsEvents.MotionRewardClaimed]: [
+    EventTitleMessageKeys.Staker,
+  ],
   [ColonyAndExtensionsEvents.ColonyMetadata]: [
     EventTitleMessageKeys.Initiator,
     EventTitleMessageKeys.Changed,
@@ -133,6 +137,38 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
     EventTitleMessageKeys.ReputationChangeNumeral,
     EventTitleMessageKeys.Recipient,
   ],
+  [SystemMessages.ObjectionFullyStaked]: [
+    EventTitleMessageKeys.ObjectionTag,
+    EventTitleMessageKeys.MotionTag,
+  ],
+  [SystemMessages.MotionFullyStakedAfterObjection]: [
+    EventTitleMessageKeys.MotionTag,
+  ],
+  [SystemMessages.MotionFullyStaked]: [
+    EventTitleMessageKeys.ObjectionTag,
+    EventTitleMessageKeys.MotionTag,
+  ],
+  [SystemMessages.MotionVotingPhase]: [EventTitleMessageKeys.VotingTag],
+  [SystemMessages.MotionRevealResultObjectionWon]: [
+    EventTitleMessageKeys.MotionTag,
+    EventTitleMessageKeys.VoteResultsWidget,
+  ],
+  [SystemMessages.MotionRevealResultMotionWon]: [
+    EventTitleMessageKeys.MotionTag,
+    EventTitleMessageKeys.VoteResultsWidget,
+  ],
+  [SystemMessages.MotionHasFailedFinalizable]: [
+    EventTitleMessageKeys.MotionTag,
+    EventTitleMessageKeys.FailedTag,
+  ],
+  [SystemMessages.MotionRevealPhase]: [EventTitleMessageKeys.RevealTag],
+  [SystemMessages.MotionHasPassed]: [
+    EventTitleMessageKeys.MotionTag,
+    EventTitleMessageKeys.PassedTag,
+  ],
+  [SystemMessages.MotionHasFailedNotFinalizable]: [
+    EventTitleMessageKeys.MotionTag,
+  ],
 };
 
 const DEFAULT_KEYS = [
@@ -154,14 +190,14 @@ export const generateMessageValues = (
     initialEntry,
   );
 
-/* Returns the correct message values according to the event type. */
-const getEventTitleValues = (
+/* Returns the correct message values for Actions according to the event type. */
+export const getActionEventTitleValues = (
   eventName: ColonyAndExtensionsEvents,
   actionData: ColonyAction,
   eventId?: string,
   colony?: Colony,
 ) => {
-  const updatedItem = mapColonyEventToExpectedFormat(
+  const updatedItem = mapActionEventToExpectedFormat(
     eventName,
     actionData,
     eventId,
@@ -173,4 +209,18 @@ const getEventTitleValues = (
   });
 };
 
-export default getEventTitleValues;
+/* Returns the correct message values for Motions according to the event type. */
+export const useGetMotionEventTitleValues = (
+  eventName: ColonyAndExtensionsEvents | SystemMessages,
+  motionMessageData: MotionMessage,
+  actionData: ColonyAction,
+) => {
+  const updatedItem = useMapMotionEventToExpectedFormat(
+    motionMessageData,
+    actionData,
+  );
+  const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
+  return generateMessageValues(updatedItem, keys, {
+    eventName,
+  });
+};

@@ -17,7 +17,7 @@ import CreateDomainButton from './CreateDomainButton';
 import styles from './ColonyDomainSelector.css';
 
 interface FormValues {
-  filteredDomainId: string;
+  filteredDomainId: number;
 }
 
 interface Props {
@@ -87,7 +87,7 @@ const ColonyDomainSelector = ({
   return (
     <Form<FormValues>
       defaultValues={{
-        filteredDomainId: String(filteredDomainId),
+        filteredDomainId,
       }}
       onSubmit={() => {}}
     >

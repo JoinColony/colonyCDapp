@@ -150,6 +150,7 @@ function* usernameCreate({
 
 function* userLogout() {
   try {
+    removeContext(ContextModule.ColonyManager);
     removeContext(ContextModule.Wallet);
     clearLastWallet();
 

@@ -57,9 +57,7 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
   return (
     <ActionButton
       appearance={{ theme: 'primary', size: 'medium' }}
-      submit={ActionTypes.EXTENSION_UPGRADE}
-      error={ActionTypes.EXTENSION_UPGRADE_ERROR}
-      success={ActionTypes.EXTENSION_UPGRADE_SUCCESS}
+      actionType={ActionTypes.EXTENSION_UPGRADE}
       transform={transform}
       text={{ id: 'button.upgrade' }}
       disabled={

@@ -19,6 +19,9 @@ fragment Colony on Colony {
   tokens {
     ...ColonyTokensConnection
   }
+  motionsWithUnclaimedStakes {
+    ...UnclaimedStakes
+  }
   domains {
     items {
       ...Domain
@@ -62,6 +65,17 @@ fragment ColonyTokensConnection on ModelColonyTokensConnection {
     colonyTokensId: id
     token {
       ...Token
+    }
+  }
+}
+
+fragment UnclaimedStakes on ColonyUnclaimedStake {
+  motionId
+  unclaimedRewards {
+    address
+    rewards {
+      nay
+      yay
     }
   }
 }

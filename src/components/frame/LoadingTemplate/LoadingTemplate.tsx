@@ -35,7 +35,7 @@ const MSG = defineMessages({
 });
 
 const delayedLoadingDuration = 15 * 1000; // 15 seconds
-const failedLoadingDuration = 30 * 1000; // 30 seconds
+export const failedLoadingDuration = 30 * 1000; // 30 seconds
 
 const LoadingTemplate = ({ children, loadingText }: Props) => {
   type LoadingStateType = 'default' | 'delayed' | 'failed';

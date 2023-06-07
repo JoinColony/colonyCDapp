@@ -21,6 +21,11 @@ import {
   ColonyBalanceFragment,
   ColonyBalancesFragment,
   ColonyTokensConnectionFragment,
+  ColonyMotionFragment,
+  MotionMessageFragment,
+  MotionStakesFragment,
+  VoterRecordFragment,
+  UnclaimedStakesFragment,
 } from '~gql';
 
 export type User = UserFragment;
@@ -36,6 +41,10 @@ export type Watcher = WatcherFragment;
 export type Domain = DomainFragment;
 
 export type DomainMetadata = DomainMetadataFragment;
+
+export type ColonyMotion = ColonyMotionFragment;
+
+export type MotionMessage = MotionMessageFragment;
 
 export type Token = TokenFragment;
 
@@ -89,3 +98,8 @@ export interface UnaliasedColonyTokensItem
    */
   id: string;
 }
+export type MotionStakes = MotionStakesFragment;
+
+export type VoterRecord = VoterRecordFragment;
+
+export type UnclaimedStakes = UnclaimedStakesFragment;

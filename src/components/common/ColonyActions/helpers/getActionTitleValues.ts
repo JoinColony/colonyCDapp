@@ -1,4 +1,4 @@
-import { ColonyAction, ColonyActionType, ColonyMotions, Colony } from '~types';
+import { ColonyAction, ColonyActionType, Colony } from '~types';
 import { generateMessageValues } from './getEventTitleValues';
 
 import { mapColonyActionToExpectedFormat } from './mapItemToMessageFormat';
@@ -19,9 +19,7 @@ enum ActionTitleMessageKeys {
 }
 
 /* Maps actionTypes to message values as found in en-actions.ts */
-const getMessageDescriptorKeys = (
-  actionType: ColonyActionType | ColonyMotions,
-) => {
+const getMessageDescriptorKeys = (actionType: ColonyActionType) => {
   switch (true) {
     case actionType.includes(ColonyActionType.Payment):
       return [
@@ -78,8 +76,13 @@ const getMessageDescriptorKeys = (
 
 /* Returns the correct message values according to the action type. */
 const getActionTitleValues = (actionData: ColonyAction, colony: Colony) => {
+  const { isMotion, pendingColonyMetadata } = actionData;
+
   const updatedItem = mapColonyActionToExpectedFormat(actionData, colony);
-  const actionType = getExtendedActionType(actionData, colony);
+  const actionType = getExtendedActionType(
+    actionData,
+    isMotion ? pendingColonyMetadata : colony.metadata,
+  );
   const keys = getMessageDescriptorKeys(actionData.type);
 
   return generateMessageValues(updatedItem, keys, {

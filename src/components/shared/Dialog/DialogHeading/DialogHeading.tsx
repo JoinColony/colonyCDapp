@@ -1,11 +1,14 @@
 import React, { ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
+import { Id } from '@colony/colony-js';
 
 import { Heading3 } from '~shared/Heading';
-import { UniversalMessageValues } from '~types';
+import { Colony, UniversalMessageValues } from '~types';
+import { SelectOption } from '~shared/Fields';
 
-// import { ForceToggle } from '~shared/Fields';
-// import MotionDomainSelect from '~dashboard/MotionDomainSelect';
+import ForceToggle from './ForceToggle';
+import MotionDomainSelect from './MotionDomainSelect';
 
 import styles from './DialogHeading.css';
 
@@ -13,50 +16,52 @@ const displayName = 'DialogHeading';
 
 interface Props {
   title: MessageDescriptor;
+  userHasPermission: boolean;
+  colony: Colony;
+  isVotingExtensionEnabled: boolean;
+  isRootMotion?: boolean;
   titleValues?: UniversalMessageValues;
   children?: ReactNode;
+  selectedDomainId?: number;
 }
 
-const DialogHeading = ({ title, titleValues, children }: Props) => {
-  // const handleFilterMotionDomains = (optionDomain) => {
-  //     const optionDomainId = parseInt(optionDomain.value, 10);
-  //     if (currentFromDomain === Id.RootDomain) {
-  //       return optionDomainId === Id.RootDomain;
-  //     }
-  //     return (
-  //       optionDomainId === currentFromDomain ||
-  //       optionDomainId === Id.RootDomain
-  //     );
-  //   };
-
-  // const handleMotionDomainChange = (motionDomainId) => setFieldValue('motionDomainId', motionDomainId);
+const DialogHeading = ({
+  colony,
+  title,
+  titleValues,
+  children,
+  userHasPermission,
+  isVotingExtensionEnabled,
+  isRootMotion,
+  selectedDomainId = Id.RootDomain,
+}: Props) => {
+  const {
+    formState: { isSubmitting },
+  } = useFormContext();
+  const handleFilterMotionDomains = (optionDomain: SelectOption) =>
+    optionDomain.value === selectedDomainId ||
+    optionDomain.value === Id.RootDomain;
 
   return (
     <div className={styles.modalHeading}>
-      {/*
-       * @NOTE We can only create a motion to vote in a subdomain if we
-       * create a payment from that subdomain
-       */}
-      {/* {isVotingExtensionEnabled && (
+      {isVotingExtensionEnabled && (
         <div className={styles.motionVoteDomain}>
           <MotionDomainSelect
             colony={colony}
-            onDomainChange={handleMotionDomainChange}
-            disabled={values.forceAction || isSubmitting}
+            disabled={isRootMotion || isSubmitting}
             filterDomains={handleFilterMotionDomains}
-            initialSelectedDomain={domainId}
           />
         </div>
-      )} */}
+      )}
       <div className={styles.headingContainer}>
         <Heading3
           appearance={{ size: 'medium', margin: 'none', theme: 'dark' }}
           text={title}
           textValues={titleValues}
         />
-        {/* {hasRoles && isVotingExtensionEnabled && (
-          <ForceToggle disabled={!canMakePayment || isSubmitting} />
-        )} */}
+        {userHasPermission && isVotingExtensionEnabled && (
+          <ForceToggle disabled={isSubmitting} />
+        )}
       </div>
       {children}
     </div>

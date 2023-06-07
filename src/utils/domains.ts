@@ -26,6 +26,13 @@ export const getDomainDatabaseId = (
   return `${colonyAddress}_${nativeDomainId}`;
 };
 
+export const getMetadataDatabaseId = (
+  colonyAddress: string,
+  txHash: string,
+) => {
+  return `${colonyAddress}_motion-${txHash}`;
+};
+
 export const getDomainOptions = (colonyDomains: Domain[]) =>
   sortBy(
     colonyDomains.map((domain) => ({

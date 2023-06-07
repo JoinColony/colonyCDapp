@@ -1,4 +1,5 @@
 import React from 'react';
+import Decimal from 'decimal.js';
 
 import Numeral from '~shared/Numeral';
 import FriendlyName from '~shared/FriendlyName';
@@ -7,8 +8,11 @@ import {
   ColonyAndExtensionsEvents,
   ColonyAction,
   ColonyActionType,
-  Domain,
+  DomainMetadata,
+  MotionMessage,
 } from '~types';
+import { useColonyContext, useUserReputation } from '~hooks';
+import { MotionVote } from '~utils/colonyMotions';
 import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
@@ -17,6 +21,18 @@ import {
   formatRolesTitle,
   getColonyRoleSetTitleValues,
 } from '~utils/colonyActions';
+import {
+  AmountTag,
+  Motion as MotionTag,
+  Objection as ObjectionTag,
+  Voting as VotingTag,
+  Failed as FailedTag,
+  Reveal as RevealTag,
+  Passed as PassedTag,
+} from '~shared/Tag';
+import { VoteResults } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VoteOutcome/VoteResults';
+import { VotingWidgetHeading } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
+import MemberReputation from '~shared/MemberReputation';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
@@ -30,17 +46,17 @@ const { formatMessage } = intl({
 // Get the domain name at the time of a transaction with a given hash (or fallback to the current name)
 const getDomainNameFromChangelog = (
   transactionHash: string,
-  domain?: Domain | null,
+  domainMetadata?: DomainMetadata | null,
 ) => {
-  if (!domain?.metadata) {
+  if (!domainMetadata) {
     return null;
   }
 
-  const changelogItem = domain.metadata.changelog?.find(
+  const changelogItem = domainMetadata.changelog?.find(
     (item) => item.transactionHash === transactionHash,
   );
   if (!changelogItem?.newName) {
-    return domain.metadata.name;
+    return domainMetadata.name;
   }
   return changelogItem.newName;
 };
@@ -64,7 +80,7 @@ export const mapColonyActionToExpectedFormat = (
     fromDomain:
       getDomainNameFromChangelog(
         actionData.transactionHash,
-        actionData.fromDomain,
+        actionData.fromDomain?.metadata || actionData.pendingDomainMetadata,
       ) ?? formatMessage({ id: 'unknownDomain' }),
     initiator: (
       <span className={styles.titleDecoration}>
@@ -84,7 +100,7 @@ export const mapColonyActionToExpectedFormat = (
     tokenSymbol: actionData.token?.symbol,
     reputationChangeNumeral: actionData.amount && (
       <Numeral
-        value={actionData.amount}
+        value={new Decimal(actionData.amount).abs()}
         decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
       />
     ),
@@ -99,7 +115,7 @@ export const mapColonyActionToExpectedFormat = (
   };
 };
 
-export const mapColonyEventToExpectedFormat = (
+export const mapActionEventToExpectedFormat = (
   eventName: ColonyAndExtensionsEvents,
   actionData: ColonyAction,
   eventId?: string,
@@ -118,7 +134,7 @@ export const mapColonyEventToExpectedFormat = (
     fromDomain:
       getDomainNameFromChangelog(
         actionData.transactionHash,
-        actionData.fromDomain,
+        actionData.fromDomain?.metadata || actionData.pendingDomainMetadata,
       ) ?? formatMessage({ id: 'unknownDomain' }),
     toDomain:
       actionData.toDomain?.metadata?.name ??
@@ -154,6 +170,95 @@ export const mapColonyEventToExpectedFormat = (
         value={actionData.amount}
         decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
       />
+    ),
+  };
+};
+
+export const useMapMotionEventToExpectedFormat = (
+  motionMessageData: MotionMessage,
+  actionData: ColonyAction,
+) => {
+  const { colonyAddress, fromDomain, motionData, pendingColonyMetadata } =
+    actionData;
+  const { colony } = useColonyContext();
+
+  const initiatorUserReputation = useUserReputation(
+    colonyAddress,
+    motionMessageData.initiatorAddress,
+    fromDomain?.nativeId,
+    motionData?.rootHash,
+  );
+
+  if (!motionData) {
+    return {};
+  }
+
+  return {
+    eventNameDecorated: <b>{motionMessageData?.name}</b>,
+    amountTag: (
+      <AmountTag>
+        <Numeral
+          value={motionMessageData?.amount ?? 0}
+          decimals={colony?.nativeToken.decimals ?? undefined}
+          suffix={colony?.nativeToken.symbol ?? ''}
+        />
+      </AmountTag>
+    ),
+    backedSideTag:
+      Number(motionMessageData?.vote) === MotionVote.Yay ? (
+        <MotionTag />
+      ) : (
+        <ObjectionTag />
+      ),
+    motionTag: <MotionTag />,
+    objectionTag: <ObjectionTag />,
+    votingTag: <VotingTag />,
+    failedTag: <FailedTag />,
+    revealTag: <RevealTag />,
+    passedTag: <PassedTag />,
+    voteResultsWidget: (
+      <div className={styles.voteResultsWrapper}>
+        <VotingWidgetHeading
+          actionData={actionData}
+          pendingColonyMetadata={pendingColonyMetadata}
+        />
+        <VoteResults
+          revealedVotes={motionData.revealedVotes}
+          voterRecord={motionData.voterRecord}
+        />
+      </div>
+    ),
+    initiator: (
+      <>
+        <span className={styles.userDecoration}>
+          <FriendlyName
+            user={motionMessageData.initiatorUser}
+            autoShrinkAddress
+          />
+        </span>
+        <div className={styles.reputation}>
+          <MemberReputation
+            userReputation={initiatorUserReputation?.userReputation}
+            totalReputation={initiatorUserReputation?.totalReputation}
+          />
+        </div>
+      </>
+    ),
+    staker: (
+      <>
+        <span className={styles.userDecoration}>
+          <FriendlyName
+            user={motionMessageData.initiatorUser}
+            autoShrinkAddress
+          />
+        </span>
+        <div className={styles.reputation}>
+          <MemberReputation
+            userReputation={initiatorUserReputation?.userReputation}
+            totalReputation={initiatorUserReputation?.totalReputation}
+          />
+        </div>
+      </>
     ),
   };
 };
