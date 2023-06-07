@@ -42,7 +42,7 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
           onClick={handleInstallClick}
           disabled={!isSupportedColonyVersion}
         >
-          {formatMessage({ id: 'extension.installButton' })}
+          {formatMessage({ id: 'button.install' })}
         </Button>
       )}
       {isEnableButtonVisible && (
@@ -52,7 +52,7 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
           onClick={handleEnableClick}
           disabled={!isSupportedColonyVersion}
         >
-          {formatMessage({ id: 'extension.enableButton' })}
+          {formatMessage({ id: 'button.enable' })}
         </Button>
       )}
       {isUpgradeButtonVisible && (

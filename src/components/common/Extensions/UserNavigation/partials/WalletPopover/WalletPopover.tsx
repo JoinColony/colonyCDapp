@@ -45,7 +45,7 @@ const WalletPopover: FC<WalletPopoverProps> = ({ setTooltipRef, tooltipProps }) 
           <p className="mt-7 text-sm text-gray-900">{formatMessage({ id: 'walletPopover.content' })}</p>
           <div className="flex mt-auto text-xs font-medium text-gray-900">
             <p>
-              {formatMessage({ id: 'walletPopover.signin' })}{' '}
+              {formatMessage({ id: 'walletPopover.signIn' })}{' '}
               <Link to="/" className="inline text-blue-400 underline">
                 {formatMessage({ id: 'walletPopover.terms' })}
               </Link>
@@ -80,7 +80,7 @@ const WalletPopover: FC<WalletPopoverProps> = ({ setTooltipRef, tooltipProps }) 
           <div className="py-6 md:p-6 border-t border-gray-200">
             <div className="flex mt-auto text-xs font-medium text-gray-900">
               <p>
-                {formatMessage({ id: 'walletPopover.signin' })}{' '}
+                {formatMessage({ id: 'walletPopover.signIn' })}{' '}
                 <Link to="/" className="inline text-blue-400 underline">
                   {formatMessage({ id: 'walletPopover.terms' })}
                 </Link>

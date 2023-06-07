@@ -32,13 +32,13 @@ const ExtensionItem: FC<ExtensionItemProps> = ({ title, description, version, ic
         {isExtensionInstalled && (
           <div className="sm:ml-4 flex-shrink-0">
             <Link to={extensionUrl} className={styles.extensionItemButton}>
-              {formatMessage({ id: 'extension.manageButton' })}
+              {formatMessage({ id: 'button.manage' })}
             </Link>
           </div>
         )}
         {!isExtensionInstalled && (
           <Button mode="primarySolid" isFullSize={isMobile} onClick={handleInstallClick}>
-            {formatMessage({ id: 'extension.installButton' })}
+            {formatMessage({ id: 'button.install' })}
           </Button>
         )}
       </div>

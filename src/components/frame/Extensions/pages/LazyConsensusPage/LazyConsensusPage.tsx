@@ -30,7 +30,7 @@ const LazyConsensusPage: FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Spinner loadingText="extensionsPage">
+      <Spinner loadingText={{ id: 'loading.extensionsPage' }}>
         <ThreeColumns
           leftAside={<Navigation />}
           topRow={
@@ -77,7 +77,7 @@ const LazyConsensusPage: FC = () => {
 
             <div className="mt-6">
               <RadioList
-                title={formatMessage({ id: 'choose.governancestyle' })}
+                title={formatMessage({ id: 'choose.governanceStyle' })}
                 items={mockedGovernance}
                 register={register}
                 errors={errors}

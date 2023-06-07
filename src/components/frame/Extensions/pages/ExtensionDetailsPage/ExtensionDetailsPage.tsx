@@ -33,7 +33,7 @@ const ExtensionDetailsPage: FC = () => {
   }
 
   return (
-    <Spinner loadingText="extensionsPage">
+    <Spinner loadingText={{ id: 'loading.colonyDetailsPage' }}>
       <ThreeColumns
         leftAside={<Navigation />}
         topRow={
@@ -46,7 +46,7 @@ const ExtensionDetailsPage: FC = () => {
               {/* @TODO get these values from API (badge and active installs number) */}
               <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
                 <span>badge</span>
-                <p className="text-gray-400 text-sm">17,876 Active Installs</p>
+                <p className="text-gray-400 text-sm">17,876 {formatMessage({ id: 'active.installs' })}</p>
               </div>
             </div>
             <ActionButtons extensionData={extensionData} />
