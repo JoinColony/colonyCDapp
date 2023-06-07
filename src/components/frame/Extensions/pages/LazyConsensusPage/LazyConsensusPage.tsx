@@ -78,7 +78,7 @@ const LazyConsensusPage: FC = () => {
 
             <div className="mt-6">
               <RadioList
-                title={formatMessage({ id: 'choose.governancestyle' })}
+                title={formatMessage({ id: 'choose.governanceStyle' })}
                 items={mockedGovernance}
                 register={register}
                 errors={errors}

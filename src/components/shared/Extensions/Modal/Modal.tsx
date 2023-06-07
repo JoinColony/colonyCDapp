@@ -1,6 +1,7 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
+
 import Icon from '~shared/Icon';
 import { ModalProps } from './types';
 import ModalBase from './ModalBase';
@@ -30,16 +31,12 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         </span>
       )}
       <button
-        aria-label={formatMessage({ id: 'shared.modal.buttonCloseAriaLabel' })}
+        aria-label={formatMessage({ id: 'button.closeModal' })}
         type="button"
         className={styles.closeIcon}
         onClick={onClose}
       >
-        <Icon
-          appearance={{ size: 'extraTiny' }}
-          name="close"
-          title={formatMessage({ id: 'shared.modal.buttonCancel' })}
-        />
+        <Icon appearance={{ size: 'extraTiny' }} name="close" title={formatMessage({ id: 'button.cancel' })} />
       </button>
 
       <div className={styles.inner}>{children}</div>

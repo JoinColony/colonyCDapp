@@ -19,12 +19,12 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
     <div className="sm:ml-4">
       {!isExtensionInstalled && (
         <Button mode="primarySolid" isFullSize={isMobile} onClick={handleInstallClick}>
-          <p className="text-sm font-medium">{formatMessage({ id: 'extension.installButton' })}</p>
+          <p className="text-sm font-medium">{formatMessage({ id: 'button.install' })}</p>
         </Button>
       )}
       {typeof extensionData?.isInitialized !== 'undefined' && !extensionData?.isInitialized && (
         <Button mode="primarySolid" isFullSize={isMobile} onClick={handleEnableButtonClick}>
-          <p className="text-sm font-medium">{formatMessage({ id: 'extension.enableButton' })}</p>
+          <p className="text-sm font-medium">{formatMessage({ id: 'button.enable' })}</p>
         </Button>
       )}
     </div>
