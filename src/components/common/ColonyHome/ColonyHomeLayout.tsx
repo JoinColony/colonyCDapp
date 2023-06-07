@@ -34,12 +34,7 @@ type Props = {
 
 const displayName = 'common.ColonyHome.ColonyHomeLayout';
 
-const ColonyHomeLayout = ({
-  filteredDomainId,
-  children,
-
-  onDomainChange = () => null,
-}: Props) => {
+const ColonyHomeLayout = ({ filteredDomainId, children, onDomainChange = () => null }: Props) => {
   const { colony } = useColonyContext();
   const { pathname } = useLocation();
 

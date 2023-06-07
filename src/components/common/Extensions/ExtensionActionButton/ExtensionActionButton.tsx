@@ -35,7 +35,7 @@ const ExtensionActionButton = ({ extensionData }: Props) => {
     return null;
   }
 
-  const handleEnableButtonClick = () => {
+  const handleEnableClick = () => {
     navigate(`/colony/${colony.name}/extensions/${extensionData.extensionId}/setup`);
   };
 
@@ -66,7 +66,7 @@ const ExtensionActionButton = ({ extensionData }: Props) => {
     return (
       <Button
         appearance={{ theme: 'primary', size: 'medium' }}
-        onClick={handleEnableButtonClick}
+        onClick={handleEnableClick}
         text={MSG.enable}
         disabled={!isSupportedColonyVersion}
       />

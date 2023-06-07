@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 
 import { useColonyContext, useExtensionData } from '~hooks';
 import Icon from '~shared/Icon';
-
 import ExtensionDetails from './partials/ExtensionDetails';
 import Spinner from '~shared/Extensions/Spinner';
 import ThreeColumns from '~frame/Extensions/ThreeColumns';
@@ -25,16 +24,12 @@ const ExtensionDetailsPage: FC = () => {
   const { extensionData } = useExtensionData(extensionId ?? '');
   const { formatMessage } = useIntl();
 
-  if (!colony) {
+  if (!colony || !extensionData) {
     return null;
   }
 
   if (!extensionData) {
-    return (
-      <div>
-        <p>{formatMessage({ id: 'extensionDetailsPage.unsupportedExtension' })}</p>
-      </div>
-    );
+    return <p>{formatMessage({ id: 'extensionDetailsPage.unsupportedExtension' })}</p>;
   }
 
   return (
@@ -42,29 +37,36 @@ const ExtensionDetailsPage: FC = () => {
       <ThreeColumns
         leftAside={<Navigation />}
         topRow={
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <Icon name={extensionData.icon} appearance={{ size: 'large' }} />
-              <h4 className="ml-2 text-xl font-semibold text-gray-900">{formatMessage(extensionData.name)}</h4>
+          <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
+            <div className="flex flex-col sm:items-center sm:flex-row sm:gap-2 sm:grow">
+              <div className="flex items-center shrink-0">
+                <Icon name={extensionData.icon} appearance={{ size: 'large' }} />
+                <h4 className="ml-2 text-xl font-semibold text-gray-900">{formatMessage(extensionData.name)}</h4>
+              </div>
+              {/* @TODO get these values from API (badge and active installs number) */}
+              <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
+                <span>badge</span>
+                <p className="text-gray-400 text-sm">17,876 Active Installs</p>
+              </div>
             </div>
-            <div className="sm:ml-4">
-              <ActionButtons extensionData={extensionData} />
-            </div>
+            <ActionButtons extensionData={extensionData} />
           </div>
         }
         withSlider={<ImageCarousel />}
         rightAside={<ExtensionDetails extensionData={extensionData} />}
       >
-        <div className="mt:mt-[4.25rem] text-md text-gray-600">
-          <FormattedMessage
-            {...extensionData.descriptionLong}
-            values={{
-              h4: HeadingChunks,
-            }}
-          />
-        </div>
-        <div className="mt-6">
-          <SupportingDocuments />
+        <div>
+          <div className="mt:mt-[4.25rem] text-md text-gray-600">
+            <FormattedMessage
+              {...extensionData.descriptionLong}
+              values={{
+                h4: HeadingChunks,
+              }}
+            />
+          </div>
+          <div className="mt-6">
+            <SupportingDocuments />
+          </div>
         </div>
       </ThreeColumns>
     </Spinner>
