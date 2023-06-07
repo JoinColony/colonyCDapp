@@ -11,7 +11,6 @@ import Navigation from '~common/Extensions/Navigation';
 import SupportingDocuments from '~common/Extensions/SupportingDocuments';
 import ImageCarousel from '~common/Extensions/ImageCarousel';
 import ActionButtons from '../partials/ActionButtons';
-import { isInstalledExtensionData } from '~utils/extensions';
 
 const HeadingChunks = (chunks: React.ReactNode[]) => (
   <h4 className="font-semibold text-gray-900 mt-6 mb-4">{chunks}</h4>
@@ -31,10 +30,6 @@ const ExtensionDetailsPage: FC = () => {
 
   if (!extensionData) {
     return <p>{formatMessage({ id: 'extensionDetailsPage.unsupportedExtension' })}</p>;
-  }
-
-  if (!isInstalledExtensionData(extensionData)) {
-    return null;
   }
 
   return (
