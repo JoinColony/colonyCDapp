@@ -215,7 +215,7 @@ const PermissionManagementForm = ({
         </DialogSection>
       )} */}
       {!userHasPermission && (
-        <DialogSection appearance={{ theme: 'sidePadding' }}>
+        <DialogSection>
           <NoPermissionMessage
             requiredPermissions={[ColonyRole.Architecture]}
           />
