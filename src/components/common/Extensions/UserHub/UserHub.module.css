@@ -1,0 +1,15 @@
+.li {
+  @apply flex items-center justify-between text-gray-900 font-normal text-md leading-5 rounded px-4 cursor-pointer transition-all hover:bg-gray-100 p-1 py-2;
+}
+
+.icon {
+  @apply text-gray-900 w-[0.8125rem];
+}
+
+.iconArrow {
+  @apply icon mr-0 ml-[2.5rem];
+}
+
+.wrapper {
+  @apply flex w-full;
+}
