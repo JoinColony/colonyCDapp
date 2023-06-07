@@ -1,0 +1,23 @@
+.rowName {
+  @apply text-gray-900 font-medium text-md;
+}
+
+.row {
+  @apply flex md:flex-row justify-between;
+}
+
+.numeral {
+  @apply text-gray-900 font-medium ml-1;
+}
+
+.value {
+  @apply flex flex-row items-center [&>span]:text-sm;
+}
+
+.icon {
+  @apply [&>svg]:fill-blue-400 w-[0.875rem] mr-1;
+}
+
+.reputationValue {
+  @apply text-blue-400 font-medium text-sm;
+}
