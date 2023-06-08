@@ -23,9 +23,6 @@ const MSG = defineMessages({
 const UnclaimedTransfers = () => {
   const { colony } = useColonyContext();
   const claims = useColonyFundsClaims();
-  if (!claims.length) {
-    return null;
-  }
 
   return (
     <div className={styles.main}>

@@ -20,7 +20,7 @@ import SingleUserPicker, {
 import { ItemDataType } from '~shared/OmniPicker';
 import UserAvatar from '~shared/UserAvatar';
 
-import { MemberUser, User } from '~types';
+import { User } from '~types';
 import { notNull } from '~utils/arrays';
 import { findDomainByNativeId, getDomainOptions } from '~utils/domains';
 
@@ -73,7 +73,7 @@ const MSG = defineMessages({
 
 interface Props extends ActionDialogProps {
   close: (val: any) => void;
-  users?: MemberUser[];
+  users?: User[];
 }
 
 const supRenderAvatar = (item: ItemDataType<User>) => (
@@ -215,7 +215,7 @@ const PermissionManagementForm = ({
         </DialogSection>
       )} */}
       {!userHasPermission && (
-        <DialogSection>
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage
             requiredPermissions={[ColonyRole.Architecture]}
           />

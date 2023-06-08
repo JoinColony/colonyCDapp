@@ -9,7 +9,7 @@ export const navMenuItems: NavItem[] = [
   {
     label: 'Members',
     key: '2',
-    href: '/',
+    href: '/members',
   },
   {
     label: 'Decisions',

@@ -49,11 +49,7 @@ const UserNavigation = () => {
     wallet?.address,
   );
 
-  const {
-    data: tokenBalanceQueryData,
-    startPolling,
-    stopPolling,
-  } = useGetUserTokenBalanceQuery({
+  const { data: tokenBalanceQueryData } = useGetUserTokenBalanceQuery({
     variables: {
       input: {
         walletAddress: wallet?.address ?? '',
@@ -62,12 +58,6 @@ const UserNavigation = () => {
     },
     skip: !wallet?.address || !nativeToken?.tokenAddress,
   });
-
-  const startShortPollForUserTokenBalance = () => {
-    startPolling(1000);
-    setTimeout(stopPolling, 10_000);
-  };
-
   const tokenBalanceData = tokenBalanceQueryData?.getUserTokenBalance;
 
   return (
@@ -96,22 +86,22 @@ const UserNavigation = () => {
           </div>
         </Tooltip>
       )}
-      {canInteractWithNetwork && colony?.nativeToken && tokenBalanceData && (
-        <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
+      <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
+        {canInteractWithNetwork && colony?.nativeToken && tokenBalanceData && (
           <UserTokenActivationButton
             nativeToken={colony.nativeToken}
             tokenBalanceData={tokenBalanceData}
-            pollTokenBalance={startShortPollForUserTokenBalance}
             dataTest="tokenActivationButton"
           />
-        </div>
-      )}
+        )}
+      </div>
+
       <Wallet />
       <AvatarDropdown
         spinnerMsg={MSG.walletAutologin}
         tokenBalanceData={tokenBalanceData ?? undefined}
-        pollTokenBalance={startShortPollForUserTokenBalance}
       />
+
       <HamburgerDropdown />
     </div>
   );

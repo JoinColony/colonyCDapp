@@ -131,8 +131,6 @@ export function* waitForTxResult(channel: Channel<any>) {
   if (result.type === ActionTypes.TRANSACTION_ERROR) {
     throw new Error('Transaction failed');
   }
-
-  return result;
 }
 
 export const createGroupTransaction = (

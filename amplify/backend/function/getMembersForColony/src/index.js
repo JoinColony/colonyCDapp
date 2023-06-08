@@ -9,7 +9,7 @@ const {
   providers,
   utils: { Logger },
 } = require('ethers');
-const { getColonyNetworkClient, Network, Id } = require('@colony/colony-js');
+const { getColonyNetworkClient, Network } = require('@colony/colony-js');
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
@@ -39,7 +39,7 @@ exports.handler = async (event) => {
   const {
     colonyAddress,
     rootHash,
-    domainId = Id.RootDomain,
+    domainId = ROOT_DOMAIN_ID,
     sortingMethod = SortingMethod.BY_HIGHEST_REP,
   } = event?.arguments?.input || {};
   const provider = new providers.JsonRpcProvider(RPC_URL);
@@ -55,7 +55,7 @@ exports.handler = async (event) => {
   });
 
   const colonyClient = await networkClient.getColonyClient(colonyAddress);
-  const { skillId } = await colonyClient.getDomain(domainId || Id.RootDomain);
+  const { skillId } = await colonyClient.getDomain(domainId || ROOT_DOMAIN_ID);
   let addressesWithReputation;
   try {
     const { addresses } = await colonyClient.getMembersReputation(skillId);
@@ -101,7 +101,7 @@ exports.handler = async (event) => {
     return {
       contributors: [],
       watchers:
-        domainId > Id.RootDomain
+        domainId > ROOT_DOMAIN_ID
           ? [] // There will be no Watchers outside of the root domain
           : data?.getColonyByAddress?.items[0]?.watchers.items,
     };
@@ -121,7 +121,7 @@ exports.handler = async (event) => {
   });
 
   // There will be no Watchers outside of the root domain
-  if (domainId > Id.RootDomain) {
+  if (domainId > ROOT_DOMAIN_ID) {
     watchers.length = 0;
   }
 

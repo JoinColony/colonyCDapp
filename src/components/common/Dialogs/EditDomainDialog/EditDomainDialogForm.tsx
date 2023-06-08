@@ -178,7 +178,7 @@ const EditDomainDialogForm = ({
         />
       </DialogSection>
       {domainOptions.length > 0 && !userHasPermission && (
-        <DialogSection>
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage
             requiredPermissions={[ColonyRole.Architecture]}
             domainName={domainName}

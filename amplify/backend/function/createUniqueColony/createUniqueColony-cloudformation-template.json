@@ -1,11 +1,11 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"Amplify\",\"createdWith\":\"11.1.1\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+    "Description": "Lambda Function resource stack creation using Amplify CLI",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
-      "Default": "NONE",
-      "Description": " Schedule Expression"
+            "Default" : "NONE",
+            "Description" : " Schedule Expression"
     },
     "deploymentBucketName": {
       "Type": "String"
@@ -16,6 +16,8 @@
     "s3Key": {
       "Type": "String"
     }
+        
+    
   },
   "Conditions": {
     "ShouldNotCreateEnvResources": {
@@ -63,25 +65,9 @@
           ]
         },
         "Environment": {
-          "Variables": {
-            "ENV": {
-              "Ref": "env"
+                "Variables" : {"ENV":{"Ref":"env"},"REGION":{"Ref":"AWS::Region"}}
             },
-            "REGION": {
-              "Ref": "AWS::Region"
-            },
-            "APPSYNC_API_KEY": {
-              "Fn::ImportValue": "amplify-colonycdapp-qa-113801-apicolonycdapp-1E5THNV10BXQV:GraphQLApiKey"
-            },
-            "AWS_APPSYNC_GRAPHQL_URL": "https://4wbzavolujffngfax5dalwsywi.appsync-api.eu-west-2.amazonaws.com/graphql"
-          }
-        },
-        "Role": {
-          "Fn::GetAtt": [
-            "LambdaExecutionRole",
-            "Arn"
-          ]
-        },
+            "Role": { "Fn::GetAtt": ["LambdaExecutionRole", "Arn"] },
         "Runtime": "nodejs14.x",
         "Layers": [],
         "Timeout": 25
@@ -95,6 +81,7 @@
             "ShouldNotCreateEnvResources",
             "colonycdappLambdaRole23f5ce4d",
             {
+
               "Fn::Join": [
                 "",
                 [
@@ -125,50 +112,29 @@
           ]
         }
       }
-    },
-    "lambdaexecutionpolicy": {
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ],
+        }
+        ,"lambdaexecutionpolicy": {
+            "DependsOn": ["LambdaExecutionRole"],
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyName": "lambda-execution-policy",
-        "Roles": [
-          {
-            "Ref": "LambdaExecutionRole"
-          }
-        ],
+                "Roles": [{ "Ref": "LambdaExecutionRole" }],
         "PolicyDocument": {
           "Version": "2012-10-17",
           "Statement": [
             {
               "Effect": "Allow",
-              "Action": [
-                "logs:CreateLogGroup",
+                            "Action": ["logs:CreateLogGroup",
                 "logs:CreateLogStream",
-                "logs:PutLogEvents"
-              ],
-              "Resource": {
-                "Fn::Sub": [
-                  "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*",
-                  {
-                    "region": {
-                      "Ref": "AWS::Region"
-                    },
-                    "account": {
-                      "Ref": "AWS::AccountId"
-                    },
-                    "lambda": {
-                      "Ref": "LambdaFunction"
-                    }
-                  }
-                ]
-              }
+                            "logs:PutLogEvents"],
+                            "Resource": { "Fn::Sub": [ "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*", { "region": {"Ref": "AWS::Region"}, "account": {"Ref": "AWS::AccountId"}, "lambda": {"Ref": "LambdaFunction"}} ]}
             }
           ]
         }
       }
     }
+        
+        
   },
   "Outputs": {
     "Name": {
@@ -177,12 +143,7 @@
       }
     },
     "Arn": {
-      "Value": {
-        "Fn::GetAtt": [
-          "LambdaFunction",
-          "Arn"
-        ]
-      }
+            "Value": {"Fn::GetAtt": ["LambdaFunction", "Arn"]}
     },
     "Region": {
       "Value": {
@@ -193,14 +154,7 @@
       "Value": {
         "Ref": "LambdaExecutionRole"
       }
-    },
-    "LambdaExecutionRoleArn": {
-      "Value": {
-        "Fn::GetAtt": [
-          "LambdaExecutionRole",
-          "Arn"
-        ]
       }
+        
     }
   }
-}

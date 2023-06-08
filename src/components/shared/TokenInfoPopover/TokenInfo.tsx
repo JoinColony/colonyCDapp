@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { AddressZero } from '@ethersproject/constants';
 
@@ -6,9 +6,8 @@ import CopyableAddress from '~shared/CopyableAddress';
 import TokenLink from '~shared/TokenLink';
 import Button from '~shared/Button';
 import TokenIcon from '~shared/TokenIcon';
-import { RpcMethods, Token } from '~types';
+import { Token } from '~types';
 import { DEFAULT_NETWORK_INFO } from '~constants';
-import { TokenType } from '~gql';
 
 import styles from './TokenInfoPopover.css';
 
@@ -35,30 +34,27 @@ const MSG = defineMessages({
 });
 
 const TokenInfo = ({ token, isTokenNative }: Props) => {
-  const { name, symbol, tokenAddress, decimals, thumbnail } = token;
+  const {
+    name,
+    symbol,
+    tokenAddress,
+    // decimals,
+  } = token;
 
-  const handleAddAssetToMetamask = () => {
-    // https://docs.metamask.io/wallet/how-to/register-token/
-    if (window.ethereum) {
-      window.ethereum
-        // @ts-ignore
-        .request({
-          method: RpcMethods.WatchAsset,
-          params: {
-            type: TokenType.Erc20,
-            options: {
-              address: tokenAddress,
-              symbol,
-              decimals,
-              image: thumbnail,
-            },
-          },
-        })
-        .catch((e) => {
-          console.error(e);
-        });
-    }
-  };
+  const handleAddAssetToMetamask = useCallback(
+    /*
+     * @TODO Refactor to remove the user of puser
+     */
+    //   addToken({
+    // () =>
+    //     address,
+    //     symbol,
+    //     decimals,
+    //   }),
+    // [address, symbol, decimals],
+    () => {},
+    [],
+  );
 
   return (
     <div className={styles.main}>

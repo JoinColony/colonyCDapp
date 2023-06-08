@@ -5,7 +5,6 @@ import React, {
   ReactNode,
   useCallback,
 } from 'react';
-import { utils } from 'ethers';
 
 import { ActionTypes } from '~redux';
 import {
@@ -87,7 +86,6 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const updateWallet = useCallback((): void => {
     try {
       const updatedWallet = getContext(ContextModule.Wallet);
-      updatedWallet.address = utils.getAddress(updatedWallet.address);
       setWallet(updatedWallet);
       // Update the user as soon as the wallet address changes
       if (updatedWallet?.address !== wallet?.address) {
@@ -103,7 +101,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [updateUser, wallet]);
 
-  const setupUserContext = useAsyncFunction({
+  const asyncFunction = useAsyncFunction({
     submit: ActionTypes.WALLET_OPEN,
     error: ActionTypes.WALLET_OPEN_ERROR,
     success: ActionTypes.WALLET_OPEN_SUCCESS,
@@ -113,16 +111,19 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
    * Handle wallet connection
    */
   const connectWallet = useCallback(async () => {
-    setWalletConnecting(true);
+    setWalletConnecting?.(true);
+    let walletConnectSuccess = false;
     try {
-      await setupUserContext(undefined);
-      updateWallet();
+      await asyncFunction(undefined);
+      walletConnectSuccess = true;
     } catch (error) {
       console.error('Could not connect wallet', error);
-    } finally {
-      setWalletConnecting(false);
     }
-  }, [setupUserContext, updateWallet, setWalletConnecting]);
+    if (updateWallet && walletConnectSuccess) {
+      updateWallet();
+    }
+    setWalletConnecting?.(false);
+  }, [asyncFunction, updateWallet, setWalletConnecting]);
 
   const appContext = useMemo<AppContextValues>(
     () => ({

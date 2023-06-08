@@ -180,7 +180,7 @@ const TokenManagementDialogForm = ({
         </div>
       </DialogSection>
       {!userHasPermission && (
-        <DialogSection>
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}

@@ -168,7 +168,7 @@ const ManageWhitelistDialogForm = ({
         </Tabs>
       </DialogSection>
       {!userHasPermission && (
-        <DialogSection>
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}

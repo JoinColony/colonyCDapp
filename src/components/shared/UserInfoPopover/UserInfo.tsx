@@ -5,12 +5,12 @@ import Heading from '~shared/Heading';
 import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
 
-import { MemberUser, User } from '~types';
+import { User } from '~types';
 
 import styles from './UserInfo.css';
 
 interface Props {
-  user: User | MemberUser;
+  user: User;
 }
 
 const displayName = 'UserInfoPopover.UserInfo';

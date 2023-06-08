@@ -3,9 +3,10 @@ import React, { ReactNode, Dispatch, SetStateAction } from 'react';
 import Popover from '~shared/Popover';
 import TokenIcon from '~shared/TokenIcon';
 import Numeral from '~shared/Numeral';
-import { Address, ColonyBalances, Token } from '~types';
+// import { TokenBalancesForDomainsQuery } from '~data/index';
+import { Address, Token } from '~types';
+// import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { getCurrentTokenRootBalance } from './helpers';
 
 import styles from './ColonyTotalFundsPopover.css';
 
@@ -14,7 +15,6 @@ interface Props {
   tokens?: Token[];
   children?: ReactNode;
   currentTokenAddress?: Address;
-  balances?: ColonyBalances | null;
 }
 
 const displayName = 'common.ColonyTotalFunds.ColonyTotalFundsPopover';
@@ -24,7 +24,6 @@ const ColonyTotalFundsPopover = ({
   onSelectToken,
   tokens,
   currentTokenAddress,
-  balances,
 }: Props) => {
   return tokens ? (
     <Popover
@@ -58,12 +57,10 @@ const ColonyTotalFundsPopover = ({
                     <span className={styles.tokenBalance}>
                       <Numeral
                         decimals={getTokenDecimalsWithFallback(token.decimals)}
-                        value={
-                          getCurrentTokenRootBalance(
-                            balances,
-                            token.tokenAddress,
-                          ) ?? 0
-                        }
+                        // value={
+                        //   token.balances[COLONY_TOTAL_BALANCE_DOMAIN_ID].amount
+                        // }
+                        value={0}
                       />
                     </span>
                   </div>

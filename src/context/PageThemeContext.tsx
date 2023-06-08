@@ -24,8 +24,8 @@ export const PageThemeContextProvider: FC<PropsWithChildren> = ({
   );
 
   const changeIsDarkMode = useCallback(() => {
-    setIsDarkMode((prev) => !prev);
-  }, [setIsDarkMode]);
+    setIsDarkMode(!isDarkMode);
+  }, [isDarkMode, setIsDarkMode]);
 
   const value = useMemo(
     () => ({ isDarkMode, setIsDarkMode: changeIsDarkMode }),

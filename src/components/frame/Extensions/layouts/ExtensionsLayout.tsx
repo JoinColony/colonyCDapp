@@ -83,7 +83,7 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
       <div className="hidden">
         <Wallet />
       </div>
-      <main className="mt-9 mb-24 bg-base-white">
+      <main className="mt-9 mb-24">
         <div className="inner">
           {isMobile && <Navigation />}
           <div className="mt-9 sm:mt-6">

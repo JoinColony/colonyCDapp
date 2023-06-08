@@ -63,10 +63,9 @@ const MSG = defineMessages({
 
 export interface TokensTabProps {
   tokenBalanceData: UserTokenBalanceData;
-  pollTokenBalance: () => void;
 }
 
-const TokensTab = ({ tokenBalanceData, pollTokenBalance }: TokensTabProps) => {
+const TokensTab = ({ tokenBalanceData }: TokensTabProps) => {
   const { colony } = useColonyContext();
   const targetRef = useRef<HTMLParagraphElement>(null);
 
@@ -209,7 +208,6 @@ const TokensTab = ({ tokenBalanceData, pollTokenBalance }: TokensTabProps) => {
       <ChangeTokenStateForm
         tokenBalanceData={tokenBalanceData}
         hasLockedTokens={hasLockedTokens}
-        pollTokenBalance={pollTokenBalance}
       />
     </>
   );

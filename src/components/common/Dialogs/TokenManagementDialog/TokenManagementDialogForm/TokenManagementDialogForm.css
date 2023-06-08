@@ -2,7 +2,6 @@
 @value wideButton: 160px;
 
 .tokenChoiceContainer {
-  padding-left: 2px;
   max-height: 250px;
   position: relative;
   overflow: auto;

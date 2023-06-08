@@ -55,11 +55,11 @@ export const getFilteredUsers = (
   users: WhitelistedUser[],
   filterTerm: string,
 ) => {
-  return users.filter(({ user, address }) => {
+  return users.filter((user) => {
     return (
-      address.toLowerCase().includes(filterTerm) ||
-      user?.name?.toLowerCase().includes(filterTerm) ||
-      user?.profile?.displayName?.toLowerCase().includes(filterTerm)
+      user.address.toLowerCase().includes(filterTerm) ||
+      user.user?.name.toLowerCase().includes(filterTerm) ||
+      user.user?.profile?.displayName?.toLowerCase().includes(filterTerm)
     );
   });
 };

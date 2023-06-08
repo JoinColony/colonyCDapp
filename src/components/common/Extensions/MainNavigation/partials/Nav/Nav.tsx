@@ -5,12 +5,13 @@ import { NavItemProps, NavProps } from '../types';
 import Icon from '~shared/Icon';
 import styles from '../Nav.module.css';
 import SubMenu from '../SubMenu';
-import { useMobile } from '~hooks';
+import { useColonyContext, useMobile } from '~hooks';
 import NavMobile from '../NavMobile/NavMobile';
 
 const displayName = 'common.Extensions.MainNavigation.partials.Nav';
 
 const NavItem: FC<NavItemProps> = ({ item }) => {
+  const { colony } = useColonyContext();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
 
@@ -29,7 +30,10 @@ const NavItem: FC<NavItemProps> = ({ item }) => {
   ) : (
     <>
       {item.href ? (
-        <a className={styles.navLink} href={item.href}>
+        <a
+          className={styles.navLink}
+          href={`/colony/${colony?.name}${item.href}`}
+        >
           {formatMessage({
             id: `mainNavItem.${item.label}`,
             defaultMessage: `${item.label}`,
