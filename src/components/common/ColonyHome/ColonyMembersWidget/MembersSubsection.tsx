@@ -143,12 +143,12 @@ const MembersSubsection = ({
       {setHeading(true)}
       <ul className={styles.userAvatars}>
         {members.slice(0, avatarsDisplaySplitRules).map((member) => (
-          <li className={styles.userAvatar} key={member?.user?.walletAddress}>
+          <li className={styles.userAvatar} key={member?.address}>
             <UserAvatar
               size="xs"
               // banned={canAdministerComments && banned}
               showInfo
-              user={member?.user}
+              user={member?.address}
               popperOptions={{
                 placement: 'bottom',
                 showArrow: false,

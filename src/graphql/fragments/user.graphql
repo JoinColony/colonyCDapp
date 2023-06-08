@@ -34,6 +34,7 @@ fragment MemberUser on User {
 }
 
 fragment Contributor on Contributor {
+  address
   user {
     ...MemberUser
   }
@@ -42,7 +43,8 @@ fragment Contributor on Contributor {
 }
 
 fragment Watcher on Watcher {
+  address
   user {
-      ...MemberUser
+    ...MemberUser
   }
 }
