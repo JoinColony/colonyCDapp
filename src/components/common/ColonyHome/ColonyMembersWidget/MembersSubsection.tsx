@@ -151,12 +151,12 @@ const MembersSubsection = ({
         {members
           .slice(0, calculateLastSliceIndex(maxAvatars, members, false))
           .map((member) => (
-            <li className={styles.userAvatar} key={member?.user?.walletAddress}>
+            <li className={styles.userAvatar} key={member?.address}>
               <UserAvatar
                 size="xs"
                 // banned={canAdministerComments && banned}
                 showInfo
-                user={member?.user}
+                user={member?.address}
                 popperOptions={{
                   placement: 'bottom',
                   showArrow: false,
