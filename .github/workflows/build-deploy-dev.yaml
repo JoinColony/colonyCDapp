@@ -126,7 +126,7 @@ jobs:
 
     - name: Deploy to Kubernetes cluster
       run: |
-        kubectl set image deployment/cdapp-frontend-${{ env.ENVIRONMENT_TAG }} cdapp-frontend=${{ env.ECR_REPOSITORY }}:${{ env.ENVIRONMENT_TAG }} -n ${{ env.NAMESPACE }}
+        kubectl rollout restart deployment/cdapp-frontend-${{ env.ENVIRONMENT_TAG }} -n ${{ env.NAMESPACE }}
 
     - name: Validate Kubernetes deployment
       run: |
