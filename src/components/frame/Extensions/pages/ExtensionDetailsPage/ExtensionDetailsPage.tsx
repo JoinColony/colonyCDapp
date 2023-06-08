@@ -13,6 +13,9 @@ import ImageCarousel from '~common/Extensions/ImageCarousel';
 import ActionButtons from '../partials/ActionButtons';
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import { isInstalledExtensionData } from '~utils/extensions';
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
+import { useFetchActiveInstallsExtension } from './hooks';
+import { ACTIVE_INSTALLED_LIMIT } from '~constants';
 
 const HeadingChunks = (chunks: React.ReactNode[]) => (
   <h4 className="font-semibold text-gray-900 mt-6 mb-4">{chunks}</h4>
@@ -27,6 +30,7 @@ const ExtensionDetailsPage: FC = () => {
   const { formatMessage } = useIntl();
   // @TODO: Change extension missing permissions functionality
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
+  const { oneTxPaymentData, votingReputationData } = useFetchActiveInstallsExtension();
 
   if (!colony || !extensionData) {
     return null;
@@ -37,6 +41,10 @@ const ExtensionDetailsPage: FC = () => {
   }
 
   const showEnableBanner = extensionData.extensionId !== 'VotingReputation' && !isInstalledExtensionData(extensionData);
+
+  const isExtensionInstalled = isInstalledExtensionData(extensionData);
+
+  const activeInstalls = Number(extensionData.extensionId === 'OneTxPayment' ? oneTxPaymentData : votingReputationData);
 
   return (
     <Spinner loadingText={{ id: 'loading.colonyDetailsPage' }}>
@@ -71,8 +79,18 @@ const ExtensionDetailsPage: FC = () => {
                 </div>
                 {/* @TODO get these values from API (badge and active installs number) */}
                 <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
-                  <span>badge</span>
-                  <p className="text-gray-400 text-sm">17,876 {formatMessage({ id: 'active.installs' })}</p>
+                  <ExtensionStatusBadge mode="payments" text={formatMessage({ id: 'status.payments' })} />
+                  {!isExtensionInstalled && (
+                    <>
+                      {activeInstalls >= ACTIVE_INSTALLED_LIMIT ? (
+                        <p className="text-gray-400 text-sm">
+                          {activeInstalls.toLocaleString('en-US')} {formatMessage({ id: 'active.installs' })}
+                        </p>
+                      ) : (
+                        <ExtensionStatusBadge mode="new" text={{ id: 'status.new' }} />
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
               <ActionButtons extensionData={extensionData} />

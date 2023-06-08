@@ -1,6 +1,7 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
+
 import { ExtensionStatusBadgeProps } from './types';
 import styles from './ExtensionStatusBadge.module.css';
 
@@ -27,7 +28,7 @@ const ExtensionStatusBadge: FC<PropsWithChildren<ExtensionStatusBadgeProps>> = (
           'text-blue-400 bg-blue-100': mode === 'not-installed' || mode === 'finalizable',
           'text-red-400 bg-red-100': mode === 'disabled',
           'text-purple-400 bg-purple-100': mode === 'deprecated',
-          'text-gray-900 bg-base-white border border-gray-200': mode === 'governance',
+          'text-gray-900 bg-base-white border border-gray-200': mode === 'governance' || mode === 'payments',
           'text-success-400 bg-success-100': mode === 'staking' || mode === 'enabled' || mode === 'new',
           'text-gray-500 bg-gray-100': mode === 'claimed',
         },

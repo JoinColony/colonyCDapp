@@ -13,12 +13,20 @@ import Spinner from '~shared/Extensions/Spinner';
 import ThreeColumns from '~frame/Extensions/ThreeColumns/ThreeColumns';
 import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails/ExtensionDetails';
 import ActionButtons from '../partials/ActionButtons';
+import { useFetchActiveInstallsExtension } from '../ExtensionDetailsPage/hooks';
+import { ACTIVE_INSTALLED_LIMIT } from '~constants';
 
 const LazyConsensusPage: FC = () => {
+  const { formatMessage } = useIntl();
   const { openIndex, onOpenIndexChange } = useAccordion();
   const { extensionData, extensionContent, register, errors, handleSubmit, onSubmit, onChangeGovernance } =
     useLazyConsensusPage(onOpenIndexChange, openIndex);
-  const { formatMessage } = useIntl();
+
+  const { oneTxPaymentData, votingReputationData } = useFetchActiveInstallsExtension();
+
+  if (!extensionData) {
+    return null;
+  }
 
   if (!extensionData) {
     return (
@@ -28,47 +36,40 @@ const LazyConsensusPage: FC = () => {
     );
   }
 
+  const activeInstalls = Number(extensionData.extensionId === 'OneTxPayment' ? oneTxPaymentData : votingReputationData);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Spinner loadingText={{ id: 'loading.extensionsPage' }}>
         <ThreeColumns
           leftAside={<Navigation />}
           topRow={
-            <div className="flex sm:items-center gap-5 sm:gap-12 justify-between flex-col sm:flex-row">
-              <div className="flex sm:items-center gap-2 flex-col sm:flex-row">
-                <Icon name={extensionData?.icon || ''} appearance={{ size: 'large' }} />
-                {extensionData?.name?.defaultMessage && (
-                  <h4 className="ml-2 text-xl font-semibold text-gray-900">
-                    {extensionData?.name?.defaultMessage as React.ReactNode}
-                  </h4>
-                )}
-
+            <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
+              <div className="flex flex-col sm:items-center sm:flex-row sm:gap-2 sm:grow">
+                <div className="flex items-center shrink-0">
+                  <Icon name={extensionData.icon} appearance={{ size: 'large' }} />
+                  <h4 className="ml-2 text-xl font-semibold text-gray-900">{formatMessage(extensionData.name)}</h4>
+                </div>
                 {/* @TODO: add condition to show/hide pills */}
-                <div className="flex justify-between items-center w-full sm:w-auto mt-5 sm:mt-0">
-                  <ExtensionStatusBadge mode="governance" text={formatMessage({ id: 'extensionsPage.governance' })} />
-                  <span className="flex sm:hidden text-gray-400 text-sm">{`17,876 ${formatMessage({
-                    id: 'active.installs',
-                  })}`}</span>
+                <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
+                  <ExtensionStatusBadge mode="governance" text={formatMessage({ id: 'status.governance' })} />
+                  {activeInstalls >= ACTIVE_INSTALLED_LIMIT ? (
+                    <p className="text-gray-400 text-sm">
+                      {activeInstalls.toLocaleString('en-US')} {formatMessage({ id: 'active.installs' })}
+                    </p>
+                  ) : (
+                    <ExtensionStatusBadge mode="new" text={{ id: 'status.new' }} />
+                  )}
                 </div>
               </div>
-
-              <div className="sm:ml-4">
-                <div className="flex gap-6 items-center justify-end min-h-[2rem]">
-                  <span className="hidden sm:flex text-gray-400 text-sm">{`17,876 ${formatMessage({
-                    id: 'active.installs',
-                  })}`}</span>
-                  <ActionButtons extensionData={extensionData} />
-                </div>
-              </div>
+              <ActionButtons extensionData={extensionData} />
             </div>
           }
           rightAside={<ExtensionDetails extensionData={extensionData} />}
         >
           <div className="w-full">
-            {extensionData?.descriptionShort?.defaultMessage && (
-              <div className="text-md text-gray-600">
-                {extensionData?.descriptionShort.defaultMessage as React.ReactNode}
-              </div>
+            {extensionData.descriptionShort && (
+              <div className="text-md text-gray-600">{formatMessage(extensionData.descriptionShort)}</div>
             )}
             <br />
             <div className="text-md text-gray-600">

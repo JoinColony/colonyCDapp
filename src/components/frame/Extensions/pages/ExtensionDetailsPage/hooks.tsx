@@ -1,6 +1,7 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 import { ColonyVersion, Extension, ExtensionVersion, isExtensionCompatible } from '@colony/colony-js';
 import { useAsyncFunction, useColonyContext } from '~hooks';
@@ -10,35 +11,39 @@ import { mapPayload } from '~utils/actions';
 import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 import Toast from '~shared/Extensions/Toast';
 
-export const useGetExtensionsViews = async () => {
-  const colonyMetrics = 'https://api.thegraph.com/subgraphs/name/arrenv/colony-metrics-subgraph';
-  const metricsRes = fetch(colonyMetrics, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query: `{
-          votingReputationExtensions(first: 5) {
-            installs
-          }
-          oneTxPaymentExtensions(first: 5) {
-            installs
-          }
-        }`,
-      variables: {},
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      return data;
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+export const useFetchActiveInstallsExtension = () => {
+  const [oneTxPaymentData, setOneTxPaymentData] = useState();
+  const [votingReputationData, setVotingReputationData] = useState();
 
-  const [metricsOutput] = await Promise.all([metricsRes]);
-  return metricsOutput.data;
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios({
+        method: 'post',
+        url: 'https://api.thegraph.com/subgraphs/name/arrenv/colony-metrics-subgraph',
+        data: {
+          query: `{
+              votingReputationExtensions(first: 5) {
+                installs
+              }
+              oneTxPaymentExtensions(first: 5) {
+                installs
+              }
+            }`,
+        },
+      })
+        .then((response) => {
+          setOneTxPaymentData(response.data.data.oneTxPaymentExtensions[0].installs);
+          setVotingReputationData(response.data.data.votingReputationExtensions[0].installs);
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    };
+
+    fetchData();
+  }, []);
+
+  return { votingReputationData, oneTxPaymentData };
 };
 
 export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {

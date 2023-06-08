@@ -11,6 +11,7 @@ export type ExtensionStatusBadgeMode =
   | 'new'
   | 'staking'
   | 'finalizable'
+  | 'payments'
   | 'claimed';
 
 export interface ExtensionStatusBadgeProps {
