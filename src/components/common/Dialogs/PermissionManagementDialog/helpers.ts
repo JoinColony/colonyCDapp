@@ -109,7 +109,7 @@ export const usePermissionManagementDialogStatus = (
   enabledExtensionData: EnabledExtensionData,
 ) => {
   const { watch } = useFormContext();
-  const { domainId, roles, user: selectedUser } = watch();
+  const { domainId, roles, user: selectedUser, motionDomainId } = watch();
 
   const {
     userHasPermission,
@@ -122,6 +122,7 @@ export const usePermissionManagementDialogStatus = (
     requiredRoles,
     [domainId],
     enabledExtensionData,
+    motionDomainId,
   );
 
   const userDirectAndInheritedRoles = getUserRolesForDomain(
