@@ -89,8 +89,8 @@ export const getUserRolesForDomain = (
 };
 
 export const getAllUserRoles = (
-  colony: ColonyFragment,
-  userAddress: Address,
+  colony: ColonyFragment | undefined,
+  userAddress: Address | undefined,
 ): ColonyRole[] => {
   if (!colony || !userAddress) return [];
 

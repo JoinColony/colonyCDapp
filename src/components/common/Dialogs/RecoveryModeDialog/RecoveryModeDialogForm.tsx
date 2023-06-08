@@ -56,7 +56,8 @@ const HelpLink = (chunks: React.ReactNode[]) => (
 const RecoveryModeDialogForm = ({
   back,
   colony,
-}: Omit<ActionDialogProps, 'enabledExtensionData'>) => {
+  enabledExtensionData,
+}: ActionDialogProps) => {
   const { user } = useAppContext();
   const {
     formState: { isSubmitting },
@@ -74,7 +75,14 @@ const RecoveryModeDialogForm = ({
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading title={MSG.title} />
+        <DialogHeading
+          title={MSG.title}
+          colony={colony}
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
+          userHasPermission={userHasPermission}
+        />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
