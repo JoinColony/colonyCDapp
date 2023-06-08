@@ -130,22 +130,14 @@ const PermissionManagementDialog = ({
         actionType={actionType}
         transform={transform}
       >
-        {({ watch }) => {
-          const forceAction = watch('forceAction');
-          if (forceAction !== isForce) {
-            setIsForce(forceAction);
-          }
-
-          return (
-            <PermissionManagementForm
-              colony={colony}
-              back={prevStep && callStep ? () => callStep(prevStep) : undefined}
-              close={close}
-              enabledExtensionData={enabledExtensionData}
-              users={users}
-            />
-          );
-        }}
+        <PermissionManagementForm
+          colony={colony}
+          back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+          enabledExtensionData={enabledExtensionData}
+          users={users}
+          handleIsForceChange={setIsForce}
+          isForce={isForce}
+        />
       </Form>
     </Dialog>
   );
