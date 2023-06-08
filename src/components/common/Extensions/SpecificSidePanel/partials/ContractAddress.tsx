@@ -8,31 +8,33 @@ import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 const displayName = 'common.Extensions.partials.ContractAddress';
 
-const ContractAddress: FC<PanelTypeProps> = ({ title, address = '' }) => {
-  const { isCopied, handleClipboardCopy } = useCopyToClipboard(address || '');
+const ContractAddress: FC<PanelTypeProps> = ({ title, description }) => {
+  const { isCopied, handleClipboardCopy } = useCopyToClipboard(description || '');
   const { formatMessage } = useIntl();
 
   return (
     <div className={styles.panelRow}>
       <div className={styles.panelTitle}>{title}</div>
-      <Tooltip
-        interactive
-        isSuccess={isCopied}
-        tooltipContent={
-          <span>
-            <a href={address}>{formatMessage({ id: isCopied ? 'copied' : 'copy.address' })}</a>
-          </span>
-        }
-      >
-        <button
-          type="button"
-          aria-label={formatMessage({ id: 'copy.address' })}
-          className="font-normal text-md text-gray-900 justify-start text-ellipsis overflow-hidden"
-          onClick={handleClipboardCopy}
+      {description && (
+        <Tooltip
+          interactive
+          isSuccess={isCopied}
+          tooltipContent={
+            <span>
+              <a href={description}>{formatMessage({ id: isCopied ? 'copied' : 'copy.address' })}</a>
+            </span>
+          }
         >
-          {splitWalletAddress(address)}
-        </button>
-      </Tooltip>
+          <button
+            type="button"
+            aria-label={formatMessage({ id: 'copy.address' })}
+            className="font-normal text-md text-gray-900 justify-start text-ellipsis overflow-hidden"
+            onClick={handleClipboardCopy}
+          >
+            {splitWalletAddress(description)}
+          </button>
+        </Tooltip>
+      )}
     </div>
   );
 };

@@ -1,15 +1,14 @@
 import React, { FC, Fragment } from 'react';
 import { useIntl } from 'react-intl';
+
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Permissions from './partials/Permissions';
-import DateInstalled from './partials/DateInstalled';
 import InstalledBy from './partials/InstalledBy';
-import Version from './partials/Version';
 import ContractAddress from './partials/ContractAddress';
-import Developer from './partials/Developer';
 import styles from './SpecificSidePanel.module.css';
 import { useSpecificSidePanel } from './hooks';
 import { SpecificSidePanelProps } from './types';
+import SpecificSidePanelRow from './partials/SpecificSidePanelRow';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 
@@ -23,7 +22,18 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
       {(sidePanelData || [])?.map(
-        ({ id, dateInstalled, installedBy, statusType, versionInstalled, contractAddress, developer, permissions }) => (
+        ({
+          id,
+          dateInstalled,
+          installedBy,
+          dateCreated,
+          statusType,
+          latestVersion,
+          versionInstalled,
+          contractAddress,
+          developer,
+          permissions,
+        }) => (
           <Fragment key={id}>
             <div className={styles.panelRow}>
               <div className={styles.panelTitle}>{statusType.title}</div>
@@ -42,14 +52,20 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
             {!statuses?.includes('not-installed') && (
               <InstalledBy title={installedBy.title} extensionData={extensionData} />
             )}
-            {!statuses?.includes('not-installed') && (
-              <DateInstalled title={dateInstalled?.title} date={dateInstalled.date || ''} />
+            {statuses?.includes('not-installed') ? (
+              <SpecificSidePanelRow title={dateCreated?.title} description={dateCreated.date || ''} />
+            ) : (
+              <SpecificSidePanelRow title={dateInstalled?.title} description={dateInstalled.date || ''} />
             )}
-            <Version title={versionInstalled.title} version={versionInstalled.version} />
-            {!statuses?.includes('not-installed') && (
-              <ContractAddress title={contractAddress.title} address={contractAddress.address} />
+            {statuses?.includes('not-installed') ? (
+              <SpecificSidePanelRow title={latestVersion.title} description={latestVersion.version} />
+            ) : (
+              <SpecificSidePanelRow title={versionInstalled.title} description={versionInstalled.version} />
             )}
-            <Developer title={developer.title} developer={developer.developer} />
+            {!statuses?.includes('not-installed') && (
+              <ContractAddress title={contractAddress.title} description={contractAddress.address} />
+            )}
+            <SpecificSidePanelRow title={developer.title} description={developer.developer} />
             <div className="flex flex-col justify-between">
               <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">{permissions.title}</div>
               <Permissions data={permissions.permissions} />

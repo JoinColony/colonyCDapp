@@ -8,6 +8,10 @@ export const sidePanelData = [
     statusType: {
       title: 'Status',
     },
+    dateCreated: {
+      title: 'Date created',
+      date: '28 October 2020',
+    },
     dateInstalled: {
       title: 'Date installed',
       date: '28 October 2020',
@@ -29,6 +33,10 @@ export const sidePanelData = [
     versionInstalled: {
       title: 'Version installed',
       version: 'v3',
+    },
+    latestVersion: {
+      title: 'Latest version',
+      version: 'v4',
     },
     contractAddress: {
       title: 'Contract address',

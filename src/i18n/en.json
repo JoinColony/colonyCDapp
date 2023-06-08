@@ -502,6 +502,8 @@
     "active.installs": "Active Installs",
     "status": "Status",
     "date.installed": "Date installed",
+    "date.created": "Date created",
+    "latest.version": "Latest version",
     "installed.by": "Installed by",
     "version.installed": "Version installed",
     "contract.address": "Contract address",

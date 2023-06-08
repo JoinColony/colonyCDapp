@@ -17,6 +17,7 @@ export const useSpecificSidePanel = (extensionData) => {
   const installedAtDate =
     extensionData &&
     format(new Date((extensionData as InstalledExtensionData)?.installedAt ?? 0 * 1000), 'dd MMMM yyyy');
+  const createdAtDate = extensionData && format(new Date(extensionData?.createdAt ?? 0 * 1000), 'dd MMMM yyyy');
 
   const { user } = useUserByNameOrAddress((extensionData as InstalledExtensionData)?.installedBy);
 
@@ -46,6 +47,10 @@ export const useSpecificSidePanel = (extensionData) => {
         statusType: {
           title: formatMessage({ id: 'status' }),
         },
+        latestVersion: {
+          title: formatMessage({ id: 'latest.version' }),
+          version: `v${extensionData?.availableVersion}`,
+        },
         dateInstalled: {
           title: formatMessage({ id: 'date.installed' }),
           date: installedAtDate,
@@ -55,9 +60,13 @@ export const useSpecificSidePanel = (extensionData) => {
           component: <UserAvatar user={user} />,
           user,
         },
+        dateCreated: {
+          title: formatMessage({ id: 'date.created' }),
+          date: createdAtDate,
+        },
         versionInstalled: {
           title: formatMessage({ id: 'version.installed' }),
-          version: `v${extensionData?.availableVersion}`,
+          version: `v${extensionData?.currentVersion}`,
         },
         contractAddress: {
           title: formatMessage({ id: 'contract.address' }),
@@ -70,7 +79,7 @@ export const useSpecificSidePanel = (extensionData) => {
         permissions: (extensionData as InstalledExtensionData).permissions,
       },
     ],
-    [extensionData, installedAtDate, user, formatMessage],
+    [extensionData, installedAtDate, createdAtDate, user, formatMessage],
   );
 
   return {
