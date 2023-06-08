@@ -148,7 +148,8 @@ const MembersSubsection = ({
               size="xs"
               // banned={canAdministerComments && banned}
               showInfo
-              user={member?.address}
+              user={member?.user}
+              address={member?.address}
               popperOptions={{
                 placement: 'bottom',
                 showArrow: false,
