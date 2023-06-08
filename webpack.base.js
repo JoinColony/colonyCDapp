@@ -63,6 +63,27 @@ const config = {
     rules: [
       {
         test: /\.css$/,
+        oneOf: [
+          {
+            test: /\.global\.css$/,
+            include: [
+              path.resolve(__dirname, 'src', 'components'),
+              path.resolve(__dirname, 'src', 'styles'),
+            ],
+            use: [
+              'style-loader',
+              '@teamsupercell/typings-for-css-modules-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  importLoaders: 1,
+                },
+              },
+              'postcss-loader',
+            ],
+          },
+          {
+            test: /\.css$/,
         include: [
           path.resolve(__dirname, 'src', 'components'),
           path.resolve(__dirname, 'src', 'styles'),
@@ -84,11 +105,14 @@ const config = {
           'postcss-loader',
         ],
       },
+        ],
+      },
       {
         test: /\.css$/,
         include: [
           path.resolve('node_modules', 'draft-js'),
           path.resolve('node_modules', 'rc-slider'),
+          path.resolve('node_modules', 'react-responsive-carousel'),
         ],
         use: ['style-loader', 'css-loader'],
       },
