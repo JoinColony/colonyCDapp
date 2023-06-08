@@ -28,7 +28,7 @@ const MembersList = ({
       {members.filter(notNull).map((member) => (
         <MembersListItem
           extraItemContent={extraItemContent}
-          key={member.user?.walletAddress}
+          key={member.address}
           showUserInfo={showUserInfo}
           showUserReputation={showUserReputation}
           member={member}

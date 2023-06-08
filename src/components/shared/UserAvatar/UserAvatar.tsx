@@ -23,6 +23,8 @@ export interface UserAvatarProps
   showLink?: boolean;
   /** The corresponding user object if available */
   user?: User | MemberUser | null;
+  /** The address on the member object */
+  address?: string;
   /** Use the user's thumbnail instead of full-size avatar */
   preferThumbnail?: boolean;
 }
@@ -35,18 +37,21 @@ const UserAvatar = ({
   showInfo,
   showLink,
   user,
+  address,
   preferThumbnail = true,
   ...avatarProps
 }: UserAvatarProps) => {
   const trigger = showInfo ? 'click' : 'disabled';
   const showArrow = popperOptions && popperOptions.showArrow;
-  const address = user?.walletAddress;
+  const { walletAddress } = user || {};
   const { profile } = user || {};
   const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
 
   const avatar = (
     <Popover
-      renderContent={<UserInfoPopover user={user} banned={banned} />}
+      renderContent={
+        <UserInfoPopover user={user} banned={banned} address={address} />
+      }
       popperOptions={popperOptions}
       trigger={trigger}
       showArrow={showArrow}
@@ -63,9 +68,15 @@ const UserAvatar = ({
         <Avatar
           avatar={imageString}
           placeholderIcon="circle-person"
-          seed={address && address.toLowerCase()}
+          seed={walletAddress && walletAddress.toLowerCase()}
           title={
-            showInfo ? '' : profile?.displayName || user?.name || address || ''
+            showInfo
+              ? ''
+              : profile?.displayName ||
+                user?.name ||
+                walletAddress ||
+                address ||
+                ''
           }
           {...avatarProps}
         />
@@ -74,7 +85,7 @@ const UserAvatar = ({
   );
 
   if (showLink && user) {
-    return <Link to={`/user/${user.name?.toLowerCase()}`}>{avatar}</Link>;
+    return <Link to={`/user/${user.name.toLowerCase()}`}>{avatar}</Link>;
   }
 
   return avatar;
