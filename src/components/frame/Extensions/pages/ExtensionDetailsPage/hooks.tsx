@@ -13,6 +13,7 @@ import { ActionTypes } from '~redux';
 import { AnyExtensionData } from '~types';
 import { mapPayload } from '~utils/actions';
 import Toast from '~shared/Extensions/Toast';
+import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 
 export const useGetExtensionsViews = async () => {
   const colonyMetrics =
@@ -47,7 +48,7 @@ export const useGetExtensionsViews = async () => {
 };
 
 export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
-  const { colony, isSupportedColonyVersion } = useColonyContext();
+  const { colony } = useColonyContext();
   const navigate = useNavigate();
 
   const extensionValues = useMemo(() => {
@@ -75,6 +76,9 @@ export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
     success: ActionTypes.EXTENSION_UPGRADE_SUCCESS,
     transform,
   });
+
+  const isSupportedColonyVersion =
+    (colony?.version as ColonyVersion) >= MIN_SUPPORTED_COLONY_VERSION;
 
   const extensionCompatible = isExtensionCompatible(
     Extension[extensionData.extensionId],

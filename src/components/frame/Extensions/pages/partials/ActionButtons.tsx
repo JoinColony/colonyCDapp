@@ -6,6 +6,7 @@ import Button from '~shared/Extensions/Button';
 import { useExtensionDetailsPage } from '../ExtensionDetailsPage/hooks';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { ActionButtonProps } from './types';
+import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 
 const displayName = 'frame.Extensions.pages.partials.ActionButtons';
 
@@ -18,7 +19,7 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
   } = useExtensionDetailsPage(extensionData);
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const { isSupportedColonyVersion } = useColonyContext();
+  const { colony } = useColonyContext();
 
   const isInstallButtonVisible =
     // @ts-ignore
@@ -38,6 +39,13 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
     }
     return false;
   }, [extensionData]);
+
+  if (!colony) {
+    return null;
+  }
+
+  const isSupportedColonyVersion =
+    colony?.version >= MIN_SUPPORTED_COLONY_VERSION;
 
   return (
     <>

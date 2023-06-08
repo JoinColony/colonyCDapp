@@ -63,7 +63,7 @@ const RecoveryModeDialogForm = ({
   } = useFormContext();
   const allUserRoles = useTransformer(getAllUserRoles, [
     colony,
-    user?.walletAddress,
+    user?.walletAddress ?? '',
   ]);
 
   const hasRegisteredProfile = !!user?.name && !!user?.walletAddress;
