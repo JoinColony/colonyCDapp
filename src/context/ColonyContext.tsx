@@ -8,6 +8,7 @@ import { Colony } from '~types';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import NotFoundRoute from '~routes/NotFoundRoute';
 import { useCanInteractWithColony } from '~hooks';
+import { PageThemeContextProvider } from './PageThemeContext';
 
 interface ColonyContextValue {
   colony?: Colony;
@@ -105,7 +106,7 @@ export const ColonyContextProvider = ({
 
   return (
     <ColonyContext.Provider value={colonyContext}>
-      {children}
+      <PageThemeContextProvider>{children}</PageThemeContextProvider>
     </ColonyContext.Provider>
   );
 };

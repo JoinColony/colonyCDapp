@@ -6,7 +6,7 @@ import { ColonyItemProps } from '../types';
 
 const displayName = 'common.Extensions.partials.ColonyItem';
 
-const ColonyItem: FC<ColonyItemProps> = ({ colony, chainId }) => (
+const ColonyItem: FC<ColonyItemProps> = ({ colony, chainName }) => (
   <div className="px-6 sm:px-0 hover:bg-gray-50 rounded [&_a]:block [&_a]:py-2">
     <NavLink
       title={colony?.name}
@@ -27,7 +27,7 @@ const ColonyItem: FC<ColonyItemProps> = ({ colony, chainId }) => (
           </div>
         </div>
         <div className="[&>i>svg]:w-[1.125rem] [&>i>svg]:h-[1.125rem] text-base-white [&>i]:flex">
-          <Icon name={chainId} />
+          <Icon name={chainName} />
         </div>
       </div>
     </NavLink>

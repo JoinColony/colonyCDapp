@@ -30,7 +30,7 @@ const Spinner: FC<PropsWithChildren<SpinnerProps>> = ({
     );
   }
 
-  return <div className="bg-base-white">{children}</div>;
+  return <div className="h-full bg-base-white">{children}</div>;
 };
 
 Spinner.displayName = displayName;

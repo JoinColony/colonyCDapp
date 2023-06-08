@@ -17,11 +17,11 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
 }) => (
   <>
     <div className="relative">
-      <span className="flex items-center justify-center bg-blue-300 w-[2.2725rem] h-[2.2725rem] rounded-full">
+      <span className="flex items-center justify-center bg-blue-300 rounded-full">
         <ColonyAvatar
           colony={colonyToDisplay as Colony}
           colonyAddress={colonyToDisplayAddress || ''}
-          size="xxs"
+          size="sm"
         />
       </span>
       <div

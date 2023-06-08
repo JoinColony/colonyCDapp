@@ -8,6 +8,7 @@ declare namespace AvatarModuleCssNamespace {
     placeholderIcon: string;
     placeholderIconNotSet: string;
     s: string;
+    sm: string;
     xl: string;
     xs: string;
     xxs: string;

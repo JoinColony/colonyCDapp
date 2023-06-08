@@ -11,7 +11,7 @@ const displayName =
   'common.Extensions.SubNavigation.partials.DropdownContent.ManageDropdown';
 
 const ManageDropdown: FC<PropsWithChildren> = () => (
-  <div className="text-gray-400 text-xs">
+  <div className="bg-base-white text-gray-400 text-xs">
     <div className="hidden sm:block mx-6 mt-6 font-medium">
       <FormattedMessage {...MSG.manageContentTitle} />
     </div>
