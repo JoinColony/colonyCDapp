@@ -11,7 +11,7 @@ import { ActionButtonProps } from './types';
 const displayName = 'frame.Extensions.pages.partials.ActionButtons';
 
 const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
-  const { handleEnableButtonClick, handleInstallClick } = useExtensionDetailsPage(extensionData);
+  const { handleInstallClick } = useExtensionDetailsPage(extensionData);
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
@@ -21,9 +21,6 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
   const isInstallButtonVisible =
     // @ts-ignore
     !isInstalledExtensionData(extensionData) && extensionData.uninstallable && !extensionData.isDeprecated;
-
-  const isEnableButtonVisible =
-    isInstalledExtensionData(extensionData) && extensionData.uninstallable && !extensionData.isDeprecated;
 
   return (
     <div className="sm:ml-4 flex gap-2">
@@ -35,16 +32,6 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
           disabled={!isSupportedColonyVersion}
         >
           <p className="text-sm font-medium">{formatMessage({ id: 'extension.installButton' })}</p>
-        </Button>
-      )}
-      {isEnableButtonVisible && (
-        <Button
-          mode="primarySolid"
-          isFullSize={isMobile}
-          onClick={handleEnableButtonClick}
-          disabled={!isSupportedColonyVersion}
-        >
-          <p className="text-sm font-medium">{formatMessage({ id: 'extension.enableButton' })}</p>
         </Button>
       )}
     </div>

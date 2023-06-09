@@ -52,19 +52,20 @@ export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
 
   const asyncFunction = useAsyncFunction({ submit, error, success });
 
+  const navigateToExtensionSettingsPage = useCallback(() => {
+    navigate(`/colony/${colony?.name}/extensions/${extensionData?.extensionId}/setup`);
+  }, [navigate, colony?.name, extensionData?.extensionId]);
+
   const handleInstallClick = useCallback(async () => {
     try {
       await asyncFunction(extensionValues);
+      navigateToExtensionSettingsPage();
     } catch (err) {
       console.error(err);
     }
-  }, [asyncFunction, extensionValues]);
-  const handleEnableButtonClick = () => {
-    navigate(`/colony/${colony?.name}/extensions/${extensionData?.extensionId}/setup`);
-  };
+  }, [asyncFunction, extensionValues, navigateToExtensionSettingsPage]);
 
   return {
     handleInstallClick,
-    handleEnableButtonClick,
   };
 };

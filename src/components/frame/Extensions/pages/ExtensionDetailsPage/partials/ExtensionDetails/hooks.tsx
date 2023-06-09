@@ -7,16 +7,6 @@ import { isInstalledExtensionData } from '~utils/extensions';
 import Toast from '~shared/Extensions/Toast';
 
 export const useExtensionDetails = (extensionData: AnyExtensionData) => {
-  const deprecateSubmit = ActionTypes.EXTENSION_DEPRECATE;
-  const deprecateError = ActionTypes.EXTENSION_DEPRECATE_ERROR;
-  const deprecateSuccess = ActionTypes.EXTENSION_DEPRECATE_SUCCESS;
-  const uninstallSubmit = ActionTypes.EXTENSION_UNINSTALL;
-  const uninstallError = ActionTypes.EXTENSION_UNINSTALL_ERROR;
-  const uninstallSuccess = ActionTypes.EXTENSION_UNINSTALL_SUCCESS;
-  const reEnableSubmit = ActionTypes.EXTENSION_DEPRECATE;
-  const reEnableError = ActionTypes.EXTENSION_DEPRECATE_ERROR;
-  const reEnableSuccess = ActionTypes.EXTENSION_DEPRECATE_SUCCESS;
-
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const { extensionId } = extensionData;
@@ -45,21 +35,21 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
   }, [colony?.colonyAddress, extensionId]);
 
   const deprecateAsyncFunction = useAsyncFunction({
-    submit: deprecateSubmit,
-    error: deprecateError,
-    success: deprecateSuccess,
+    submit: ActionTypes.EXTENSION_DEPRECATE,
+    error: ActionTypes.EXTENSION_DEPRECATE_ERROR,
+    success: ActionTypes.EXTENSION_DEPRECATE_SUCCESS,
   });
 
   const uninstallAsyncFunction = useAsyncFunction({
-    submit: uninstallSubmit,
-    error: uninstallError,
-    success: uninstallSuccess,
+    submit: ActionTypes.EXTENSION_UNINSTALL,
+    error: ActionTypes.EXTENSION_UNINSTALL_ERROR,
+    success: ActionTypes.EXTENSION_UNINSTALL_SUCCESS,
   });
 
   const reEnableAsyncFunction = useAsyncFunction({
-    submit: reEnableSubmit,
-    error: reEnableError,
-    success: reEnableSuccess,
+    submit: ActionTypes.EXTENSION_DEPRECATE,
+    error: ActionTypes.EXTENSION_DEPRECATE_ERROR,
+    success: ActionTypes.EXTENSION_DEPRECATE_SUCCESS,
   });
 
   const handleDeprecate = useCallback(async () => {
@@ -124,5 +114,11 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
     extensionData.uninstallable &&
     !extensionData.isDeprecated;
 
-  return { handleDeprecate, handleUninstall, handleReEnable, canExtensionBeUninstalled, canExtensionBeDeprecated };
+  return {
+    handleDeprecate,
+    handleUninstall,
+    handleReEnable,
+    canExtensionBeUninstalled,
+    canExtensionBeDeprecated,
+  };
 };

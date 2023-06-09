@@ -14,7 +14,7 @@ const RadioList: FC<RadioListProps> = ({ title, items, onChange, errors, registe
           <RadioBase
             name={name}
             register={register}
-            isError={!!errors.governance?.message}
+            isError={!!errors?.governance?.message}
             onChange={onChange}
             item={{
               value,
@@ -28,9 +28,9 @@ const RadioList: FC<RadioListProps> = ({ title, items, onChange, errors, registe
         </li>
       ))}
     </ul>
-    {errors.governance && (
+    {errors?.governance && (
       <FormError isFullSize alignment="left">
-        {errors.governance.message}
+        {errors?.governance?.message}
       </FormError>
     )}
   </>
