@@ -40,12 +40,12 @@ const StakesListItem = ({
 
   const txHash = data?.getColonyActionByMotionId?.items[0]?.id ?? '';
   const location = useLocation();
-  const replace = location.pathname.indexOf('/tx') !== -1;
+  const isMotionPage = location.pathname.indexOf('/tx') !== -1;
 
   return (
     <li className={styles.stakesListItem}>
       <Link
-        replace={replace}
+        replace={isMotionPage}
         to={txHash ? `/colony/${colonyName}/tx/${txHash}` : ''}
       >
         <div
