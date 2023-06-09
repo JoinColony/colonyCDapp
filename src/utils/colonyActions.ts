@@ -97,6 +97,7 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
     case actionType.includes(ColonyActionType.SetUserRoles): {
       return [
         ActionPageDetails.Type,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
         ActionPageDetails.Domain,
         ActionPageDetails.ToRecipient,
         ActionPageDetails.Permissions,
