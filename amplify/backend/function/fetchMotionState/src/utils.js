@@ -10,8 +10,6 @@ const {
   getColonyMotion,
   updateColonyMotion,
   createMotionMessage,
-  getColonyAction,
-  updateColonyAction,
   getColony,
   updateColony,
 } = require('./graphql.js');
@@ -194,9 +192,11 @@ const updateColonyUnclaimedStakes = async (
     ({ motionId }) => motionId === databaseMotionId,
   );
 
-  const unclaimedRewards = updatedStakerRewards.filter(
-    ({ isClaimed }) => !isClaimed,
-  );
+  const unclaimedRewards = updatedStakerRewards
+    .filter(({ isClaimed }) => !isClaimed)
+    .filter(
+      (stakerReward) => stakerReward.yay !== '0' || stakerReward.nay !== '0',
+    );
 
   if (!motionWithUnclaimedStake && unclaimedRewards.length) {
     motionsWithUnclaimedStakes.push({
@@ -224,7 +224,7 @@ const updateStakerRewardsInDB = async (colonyAddress, motionData) => {
 
   const updatedStakerRewards = await Promise.all(
     // For every user who staked
-    usersStakes.map(async ({ address: stakerAddress }) => {
+    usersStakes.map(({ address: stakerAddress }) => {
       // Check if they have already had their reward calculated
       const existingStakerReward = stakerRewards.find(
         ({ address }) => address === stakerAddress,
