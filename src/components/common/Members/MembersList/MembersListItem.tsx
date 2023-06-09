@@ -30,7 +30,7 @@ const MembersListItem = ({
   member: { user },
   member,
 }: Props) => {
-  const { walletAddress } = user || {};
+  const { address: walletAddress } = member;
   const { colony } = useColonyContext();
   const { reputationAmount, reputationPercentage } = member as Contributor;
 
@@ -56,13 +56,14 @@ const MembersListItem = ({
           <UserAvatar
             size="s"
             user={user}
+            address={walletAddress || ''}
             showInfo={showUserInfo}
             notSet={false}
             // banned={isUserBanned}
             popperOptions={isMobile ? { placement: 'bottom' } : undefined}
           />
         </div>
-        <MemberInfo isWhitelisted={isWhitelisted} user={user} />
+        <MemberInfo isWhitelisted={isWhitelisted} member={member} />
         {renderedExtraItemContent && !isMobile && (
           <div>{renderedExtraItemContent}</div>
         )}
