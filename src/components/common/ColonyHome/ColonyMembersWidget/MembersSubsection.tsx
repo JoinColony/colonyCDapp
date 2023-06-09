@@ -9,6 +9,7 @@ import InviteLinkButton from '~shared/Button/InviteLinkButton';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useAvatarDisplayCounter } from '~hooks';
 import { Colony, Member } from '~types';
+import { notNull } from '~utils/arrays';
 // import Icon from '~shared/Icon';
 
 import styles from './ColonyMembersWidget.css';
@@ -142,35 +143,38 @@ const MembersSubsection = ({
     <div className={styles.main}>
       {setHeading(true)}
       <ul className={styles.userAvatars}>
-        {members.slice(0, avatarsDisplaySplitRules).map((member) => (
-          <li className={styles.userAvatar} key={member?.address}>
-            <UserAvatar
-              size="xs"
-              // banned={canAdministerComments && banned}
-              showInfo
-              user={member?.user}
-              address={member?.address}
-              popperOptions={{
-                placement: 'bottom',
-                showArrow: false,
-                modifiers: [
-                  {
-                    name: 'offset',
-                    options: {
-                      /*
-                       * @NOTE Values are set manual, exactly as the ones provided in the figma spec.
-                       *
-                       * There's no logic to how they are calculated, so next time you need
-                       * to change them you'll either have to go by exact specs, or change
-                       * them until it "feels right" :)
-                       */
-                      offset: [-208, -12],
+        {members
+          .slice(0, avatarsDisplaySplitRules)
+          .filter(notNull)
+          .map((member) => (
+            <li className={styles.userAvatar} key={member?.address}>
+              <UserAvatar
+                size="xs"
+                // banned={canAdministerComments && banned}
+                showInfo
+                user={member?.user}
+                address={member?.address}
+                popperOptions={{
+                  placement: 'bottom',
+                  showArrow: false,
+                  modifiers: [
+                    {
+                      name: 'offset',
+                      options: {
+                        /*
+                         * @NOTE Values are set manual, exactly as the ones provided in the figma spec.
+                         *
+                         * There's no logic to how they are calculated, so next time you need
+                         * to change them you'll either have to go by exact specs, or change
+                         * them until it "feels right" :)
+                         */
+                        offset: [-208, -12],
+                      },
                     },
-                  },
-                ],
-              }}
-            />
-            {/* {canAdministerComments && banned && (
+                  ],
+                }}
+              />
+              {/* {canAdministerComments && banned && (
                   <div className={styles.userBanned}>
                     <Icon
                       appearance={{ size: 'extraTiny' }}
@@ -179,8 +183,8 @@ const MembersSubsection = ({
                     />
                   </div>
                 )} */}
-          </li>
-        ))}
+            </li>
+          ))}
         {!!remainingAvatarsCount && (
           <li className={styles.remaningAvatars}>
             <NavLink to={membersPageRoute} title={MSG.viewMore}>
