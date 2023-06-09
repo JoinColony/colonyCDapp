@@ -1,7 +1,9 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, Id } from '@colony/colony-js';
 
+import { isDev } from '~constants';
 import { intArrayToBytes32 } from '~utils/web3';
+
 import { ActionTypes } from '../../actionTypes';
 import { Action } from '../../types/actions';
 import { createGroupTransaction, getTxChannel } from '../transactions';
@@ -14,7 +16,6 @@ import {
   setupEnablingGroupTransactions,
   takeFrom,
 } from '../utils';
-import { isDev } from '~constants';
 
 function* extensionEnable({
   meta,
