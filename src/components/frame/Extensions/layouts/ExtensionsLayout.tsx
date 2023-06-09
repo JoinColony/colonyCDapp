@@ -89,7 +89,7 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
               subtitle={formatMessage({ id: 'extensionsPage.description' })}
             />
           </div>
-          <div className="mt-10">{children}</div>
+          <div className="mt-9 sm:mt-10">{children}</div>
         </div>
       </main>
     </Spinner>

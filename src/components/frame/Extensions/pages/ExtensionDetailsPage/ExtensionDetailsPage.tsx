@@ -71,15 +71,20 @@ const ExtensionDetailsPage: FC = () => {
                 />
               </div>
             )}
-            <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
-              <div className="flex flex-col sm:items-center sm:flex-row sm:gap-2 sm:grow">
+            <div className="flex justify-between flex-col flex-wrap gap-y-4 sm:items-center sm:flex-row sm:gap-6">
+              <div className="flex flex-col sm:items-center sm:flex-row gap-4 sm:gap-2 sm:grow">
                 <div className="flex items-center shrink-0">
                   <Icon name={extensionData.icon} appearance={{ size: 'large' }} />
                   <h4 className="ml-2 text-xl font-semibold text-gray-900">{formatMessage(extensionData.name)}</h4>
                 </div>
                 {/* @TODO get these values from API (badge and active installs number) */}
-                <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
-                  <ExtensionStatusBadge mode="payments" text={formatMessage({ id: 'status.payments' })} />
+                <div className="flex items-center justify-between gap-4 sm:grow">
+                  <ExtensionStatusBadge
+                    mode={extensionData.extensionId === 'OneTxPayment' ? 'payments' : 'governance'}
+                    text={formatMessage({
+                      id: extensionData.extensionId === 'OneTxPayment' ? 'status.payments' : 'status.governance',
+                    })}
+                  />
                   {!isExtensionInstalled && (
                     <>
                       {activeInstalls >= ACTIVE_INSTALLED_LIMIT ? (

@@ -44,14 +44,14 @@ const LazyConsensusPage: FC = () => {
         <ThreeColumns
           leftAside={<Navigation />}
           topRow={
-            <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
-              <div className="flex flex-col sm:items-center sm:flex-row sm:gap-2 sm:grow">
+            <div className="flex justify-between flex-col flex-wrap gap-y-4 sm:items-center sm:flex-row sm:gap-6">
+              <div className="flex flex-col sm:items-center sm:flex-row gap-4 sm:gap-2 sm:grow">
                 <div className="flex items-center shrink-0">
                   <Icon name={extensionData.icon} appearance={{ size: 'large' }} />
                   <h4 className="ml-2 text-xl font-semibold text-gray-900">{formatMessage(extensionData.name)}</h4>
                 </div>
                 {/* @TODO: add condition to show/hide pills */}
-                <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
+                <div className="flex items-center justify-between gap-4 sm:grow">
                   <ExtensionStatusBadge mode="governance" text={formatMessage({ id: 'status.governance' })} />
                   {activeInstalls >= ACTIVE_INSTALLED_LIMIT ? (
                     <p className="text-gray-400 text-sm">
