@@ -13,6 +13,7 @@ const NavLink: FC<PropsWithChildren<NavLinkProps>> = ({
   title,
   titleValues,
   to,
+  className,
   ...props
 }) => {
   const { formatMessage } = useIntl();
@@ -21,7 +22,12 @@ const NavLink: FC<PropsWithChildren<NavLinkProps>> = ({
   const titleText = typeof title === 'string' ? title : title && formatMessage(title, titleValues);
 
   return (
-    <NavLinkComponent to={to} title={titleText} {...props}>
+    <NavLinkComponent
+      className={`${className} transition-all duration-normal hover:text-blue-400`}
+      to={to}
+      title={titleText}
+      {...props}
+    >
       {linkText || children}
     </NavLinkComponent>
   );
