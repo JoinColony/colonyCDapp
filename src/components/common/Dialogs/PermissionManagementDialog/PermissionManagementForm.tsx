@@ -148,6 +148,11 @@ const PermissionManagementForm = ({
         <DialogHeading
           title={MSG.title}
           titleValues={{ domain: domain?.metadata?.name }}
+          colony={colony}
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
+          userHasPermission={userHasPermission}
         />
       </DialogSection>
       {!userHasPermission && (
