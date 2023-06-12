@@ -31,7 +31,7 @@ const TabContent = (extensionData) => {
         'mt-4': isEnabled && uninstallable,
       })}
     >
-      <div className="mt:mt-[4.25rem] text-md text-gray-600">
+      <div className="md:mt-[4.25rem] text-md text-gray-600">
         <FormattedMessage
           {...descriptionLong}
           values={{
