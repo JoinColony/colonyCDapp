@@ -3,6 +3,7 @@ declare namespace ManageWhitelistDialogFormCssNamespace {
     tabsList: string;
     tabsListContainer: string;
     toggleContainer: string;
+    tooltip: string;
     warningContainer: string;
     warningLabel: string;
     warningText: string;

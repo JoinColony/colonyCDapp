@@ -1,11 +1,18 @@
 import React, { ReactNode } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
+import { Id } from '@colony/colony-js';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import Numeral from '~shared/Numeral';
 import TransactionLink from '~shared/TransactionLink';
 import { Colony, ColonyAction, ColonyActionType, UniversalMessageValues } from '~types';
-import { getDetailsForAction } from '~utils/colonyActions';
+import {
+  getExtendedActionType,
+  normalizeRolesForAction,
+  ActionPageDetails,
+  getDetailItemsKeys,
+} from '~utils/colonyActions';
+import { findDomainByNativeId } from '~utils/domains';
 import { splitTransactionHash } from '~utils/strings';
 
 import {
@@ -15,6 +22,7 @@ import {
   AmountDetail,
   DomainDescriptionDetail,
   ReputationChangeDetail,
+  RolesDetail,
 } from '../DetailsWidget';
 
 import styles from './DetailsWidget.css';
@@ -92,108 +100,107 @@ interface DetailItemConfig {
   item: ReactNode;
 }
 
-const getDetailItems = (
-  {
-    // motionDomain,
+const getDetailItemsMap = (
+  colony: Colony,
+  actionData: ColonyAction,
+): { [key in ActionPageDetails]: DetailItemConfig } => {
+  const {
     type,
+    transactionHash,
     fromDomain,
     toDomain,
     amount,
-    recipient,
-    transactionHash,
+    recipientAddress,
     token,
-  }: // roles,
-  ColonyAction,
-  colony: Colony,
-): DetailItemConfig[] => {
-  const detailsForAction = getDetailsForAction(type);
+    roles,
+    motionData,
+    isMotion,
+    pendingColonyMetadata,
+    pendingDomainMetadata,
+  } = actionData;
+
   const shortenedHash = getShortenedHash(transactionHash || '');
 
-  const isSmiteAction = type === ColonyActionType.EmitDomainReputationPenalty;
+  const normalizedRoles = roles ? normalizeRolesForAction(roles) : [];
 
-  return [
-    {
+  const isSmiteAction = type.includes(ColonyActionType.EmitDomainReputationPenalty);
+  const extendedActionType = getExtendedActionType(actionData, isMotion ? pendingColonyMetadata : colony.metadata);
+  const motionDomain = findDomainByNativeId(Number(motionData?.nativeMotionDomainId ?? Id.RootDomain), colony);
+  const domainMetadata = fromDomain?.metadata || pendingDomainMetadata;
+
+  return {
+    [ActionPageDetails.Type]: {
       label: MSG.actionType,
       labelValues: undefined,
-      item: <ActionTypeDetail actionType={type} />,
+      item: <ActionTypeDetail actionType={extendedActionType} />,
     },
-    // {
-    //   label: MSG.motionDomain,
-    //   labelValues: undefined,
-    //   item: motionDomain && <TeamDetail domain={motionDomain} />,
-    // },
-    {
+    [ActionPageDetails.FromDomain]: {
       label: MSG.fromDomain,
       labelValues: undefined,
-      item: detailsForAction.FromDomain && fromDomain?.metadata && <TeamDetail domainMetadata={fromDomain.metadata} />,
+      item: fromDomain?.metadata && <TeamDetail domainMetadata={fromDomain.metadata} />,
     },
-    {
+    [ActionPageDetails.Domain]: {
       label: MSG.domain,
       labelValues: undefined,
-      item: detailsForAction.Domain && fromDomain?.metadata && (
-        <TeamDetail transactionHash={transactionHash} domainMetadata={fromDomain.metadata} />
-      ),
+      item: domainMetadata && <TeamDetail domainMetadata={domainMetadata} />,
     },
-    {
+    [ActionPageDetails.ToDomain]: {
       label: MSG.toRecipient,
       labelValues: undefined,
-      item: detailsForAction.ToDomain && toDomain?.metadata && <TeamDetail domainMetadata={toDomain.metadata} />,
+      item: toDomain?.metadata && <TeamDetail domainMetadata={toDomain.metadata} />,
     },
-    {
+    [ActionPageDetails.ToRecipient]: {
       label: MSG.toRecipient,
       labelValues: undefined,
-      item: detailsForAction.ToRecipient && recipient?.walletAddress && (
-        <UserDetail walletAddress={recipient.walletAddress} />
-      ),
+      item: recipientAddress && <UserDetail walletAddress={recipientAddress} />,
     },
-    {
+    [ActionPageDetails.Amount]: {
       label: MSG.value,
       labelValues: undefined,
-      item: detailsForAction.Amount && amount && (
+      item: amount && (
         <AmountDetail
           amount={<Numeral value={amount} decimals={token?.decimals ?? DEFAULT_TOKEN_DECIMALS} />}
           symbol={token?.symbol}
-          token={token ?? undefined}
+          token={token}
         />
       ),
     },
-    {
+    [ActionPageDetails.Author]: {
       label: MSG.author,
       labelValues: undefined,
-      item: detailsForAction.Author && recipient?.walletAddress && (
-        <UserDetail walletAddress={recipient.walletAddress} />
-      ),
+      item: recipientAddress && <UserDetail walletAddress={recipientAddress} />,
     },
-    {
+    [ActionPageDetails.ReputationChange]: {
       label: MSG.reputationChange,
       labelValues: { isSmiteAction },
-      item: detailsForAction.ReputationChange && amount && (
+      item: amount && (
         <ReputationChangeDetail reputationChange={amount} decimals={token?.decimals ?? DEFAULT_TOKEN_DECIMALS} />
       ),
     },
-    // {
-    //   label: MSG.roles,
-    //   labelValues: undefined,
-    //   item: detailsForAction.Permissions && roles && (
-    //     <RolesDetail roles={roles} />
-    //   ),
-    // },
-    {
+    [ActionPageDetails.Permissions]: {
+      label: MSG.roles,
+      labelValues: undefined,
+      item: roles && <RolesDetail roles={normalizedRoles} />,
+    },
+    [ActionPageDetails.Description]: {
       label: MSG.domainDescription,
       labelValues: undefined,
-      item: detailsForAction.Description && fromDomain?.metadata?.description && (
-        <DomainDescriptionDetail description={fromDomain.metadata.description} />
-      ),
+      item: domainMetadata?.description && <DomainDescriptionDetail description={domainMetadata.description} />,
     },
-    {
+    [ActionPageDetails.Name]: {
       label: MSG.colonyName,
       labelValues: undefined,
-      item: detailsForAction.Name && colony.metadata?.displayName,
+      item: colony.metadata?.displayName,
     },
-    {
+    [ActionPageDetails.Motion]: {
+      label: MSG.motionDomain,
+      labelValues: undefined,
+      item: motionDomain?.metadata && <TeamDetail domainMetadata={motionDomain.metadata} />,
+    },
+    [ActionPageDetails.Generic]: {
       label: MSG.transactionHash,
       labelValues: undefined,
-      item: !!shortenedHash && type === ColonyActionType.Generic && (
+      item: !!shortenedHash && (
         <TransactionLink
           className={styles.transactionHashLink}
           hash={transactionHash as string}
@@ -202,7 +209,18 @@ const getDetailItems = (
         />
       ),
     },
-  ].filter((detail) => !!detail.item);
+  };
+};
+
+const getDetailItems = (actionData: ColonyAction, colony: Colony): DetailItemConfig[] => {
+  const detailItemsMap = getDetailItemsMap(colony, actionData);
+  const detailItemKeys = getDetailItemsKeys(actionData.type);
+
+  const detailItems = detailItemKeys
+    .map<DetailItemConfig | undefined>((itemKey) => detailItemsMap[itemKey])
+    .filter((detail): detail is DetailItemConfig => !!detail?.item);
+
+  return detailItems as DetailItemConfig[];
 };
 
 export default getDetailItems;

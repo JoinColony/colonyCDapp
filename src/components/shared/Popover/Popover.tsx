@@ -19,7 +19,7 @@ import { PopperOptions } from 'react-popper-tooltip';
 import { Placement } from '@popperjs/core';
 import { Unionize } from 'utility-types';
 
-import { SimpleMessageValues } from '~types';
+import { SetStateFn, SimpleMessageValues } from '~types';
 import { usePrevious } from '~hooks';
 
 import PopoverWrapper from './PopoverWrapper';
@@ -40,6 +40,8 @@ interface Props {
   renderContentValues?: SimpleMessageValues;
   /** Set the open state from outside */
   isOpen?: boolean;
+  /** State setter to sync external state with internal state */
+  setIsOpen?: SetStateFn<boolean>;
   /** Called when Popover closes */
   onClose?: (data?: any, modifiers?: { cancelled: boolean }) => void;
   /** Delay opening of popover for `openDelay` ms */
@@ -79,6 +81,7 @@ const Popover = ({
   renderContent,
   renderContentValues,
   isOpen: isOpenProp = false,
+  setIsOpen: setIsOpenProp,
   onClose,
   openDelay,
   closeDelay,
@@ -116,11 +119,12 @@ const Popover = ({
         clearTimeout(closeTimeoutRef.current);
       }
       setIsOpen(false);
+      setIsOpenProp?.(false);
       if (typeof onClose == 'function') {
         onClose(data, modifiers);
       }
     },
-    [onClose],
+    [onClose, setIsOpenProp],
   );
 
   useEffect(() => {
@@ -138,11 +142,13 @@ const Popover = ({
     if (openDelay) {
       openTimeoutRef.current = setTimeout(() => {
         setIsOpen(true);
+        setIsOpenProp?.(true);
       }, openDelay);
       return;
     }
     setIsOpen(true);
-  }, [isOpen, openDelay]);
+    setIsOpenProp?.(true);
+  }, [isOpen, openDelay, setIsOpenProp]);
 
   const handleWrapperFocus = useCallback(() => {
     if (retainRefFocus && referenceElement instanceof HTMLInputElement) {
@@ -244,8 +250,9 @@ const Popover = ({
         close();
       }
       setIsOpen(!!isOpenProp);
+      setIsOpenProp?.(!!isOpenProp);
     }
-  }, [close, isOpen, isOpenProp, lastIsOpenProp, requestOpen]);
+  }, [close, isOpen, isOpenProp, lastIsOpenProp, requestOpen, setIsOpenProp]);
 
   return (
     <>

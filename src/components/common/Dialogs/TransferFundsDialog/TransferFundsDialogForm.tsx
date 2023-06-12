@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
@@ -6,9 +6,14 @@ import { useFormContext } from 'react-hook-form';
 import { Annotations } from '~shared/Fields';
 import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
 import { findDomainByNativeId } from '~utils/domains';
-// import NotEnoughReputation from '~dashboard/NotEnoughReputation';
+import { SetStateFn } from '~types';
 
-import { NoPermissionMessage, CannotCreateMotionMessage, PermissionRequiredInfo } from '../Messages';
+import {
+  NoPermissionMessage,
+  CannotCreateMotionMessage,
+  PermissionRequiredInfo,
+  NotEnoughReputation,
+} from '../Messages';
 import TokenAmountInput from '../TokenAmountInput';
 import DomainFundSelectorSection from '../DomainFundSelectorSection';
 import { useTransferFundsDialogStatus } from './helpers';
@@ -34,9 +39,14 @@ const MSG = defineMessages({
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Funding];
 
-const TransferFundsDialogForm = ({ back, colony, enabledExtensionData }: ActionDialogProps) => {
+interface Props extends ActionDialogProps {
+  handleIsForceChange: SetStateFn;
+  isForce: boolean;
+}
+
+const TransferFundsDialogForm = ({ back, colony, enabledExtensionData, handleIsForceChange, isForce }: Props) => {
   const { watch } = useFormContext();
-  const { fromDomainId, toDomainId } = watch();
+  const { fromDomainId, toDomainId, forceAction } = watch();
 
   const fromDomain = findDomainByNativeId(fromDomainId, colony);
   const toDomain = findDomainByNativeId(toDomainId, colony);
@@ -44,10 +54,22 @@ const TransferFundsDialogForm = ({ back, colony, enabledExtensionData }: ActionD
   const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion, canOnlyForceAction, hasRoleInFromDomain } =
     useTransferFundsDialogStatus(colony, requiredRoles, enabledExtensionData);
 
+  useEffect(() => {
+    if (forceAction !== isForce) {
+      handleIsForceChange(forceAction);
+    }
+  }, [forceAction, isForce, handleIsForceChange]);
+
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading title={MSG.title} />
+        <DialogHeading
+          title={MSG.title}
+          colony={colony}
+          userHasPermission={userHasPermission}
+          isVotingExtensionEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isRootMotion
+        />
       </DialogSection>
       {!userHasPermission && (
         <div className={styles.permissionsRequired}>
@@ -78,9 +100,11 @@ const TransferFundsDialogForm = ({ back, colony, enabledExtensionData }: ActionD
           />
         </DialogSection>
       )}
-      {/* {onlyForceAction && (
-        <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
-      )} */}
+      {canOnlyForceAction && (
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
+        </DialogSection>
+      )}
       {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />

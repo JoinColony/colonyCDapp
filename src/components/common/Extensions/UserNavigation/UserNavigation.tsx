@@ -2,6 +2,7 @@ import React, { FC, useLayoutEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import clsx from 'clsx';
+
 import { useAppContext, useColonyContext, useMobile, useUserReputation } from '~hooks';
 import Button from '~shared/Extensions/Button';
 import UserAvatar from '~shared/Extensions/UserAvatar';

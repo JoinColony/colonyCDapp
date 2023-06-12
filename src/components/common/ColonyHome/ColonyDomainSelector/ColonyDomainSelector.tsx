@@ -17,7 +17,7 @@ import CreateDomainButton from './CreateDomainButton';
 import styles from './ColonyDomainSelector.css';
 
 interface FormValues {
-  filteredDomainId: string;
+  filteredDomainId: number;
 }
 
 interface Props {
@@ -77,7 +77,7 @@ const ColonyDomainSelector = ({ filteredDomainId = COLONY_TOTAL_BALANCE_DOMAIN_I
   return (
     <Form<FormValues>
       defaultValues={{
-        filteredDomainId: String(filteredDomainId),
+        filteredDomainId,
       }}
       onSubmit={() => {}}
     >

@@ -32,10 +32,17 @@ const MSG = defineMessages({
 
 interface MaxButtonProps {
   handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  disabled?: boolean;
 }
 
-export const MaxButton = ({ handleClick }: MaxButtonProps) => (
-  <Button className={styles.hookFormMaxButton} dataTest="inputMaxButton" onClick={handleClick} text={MSG.max} />
+export const MaxButton = ({ handleClick, disabled }: MaxButtonProps) => (
+  <Button
+    className={styles.hookFormMaxButton}
+    dataTest="inputMaxButton"
+    onClick={handleClick}
+    text={MSG.max}
+    disabled={disabled}
+  />
 );
 
 interface HookFormFormattedInputComponentProps
@@ -50,6 +57,7 @@ const HookFormFormattedInputComponent = ({
   name,
   value,
   onChange,
+  disabled,
   ...restInputProps
 }: HookFormFormattedInputComponentProps) => {
   const { setValue } = useFormContext();
@@ -93,9 +101,12 @@ const HookFormFormattedInputComponent = ({
 
   return (
     <>
-      {maxButtonParams && <MaxButton handleClick={(e) => handleMaxButtonClick(e, maxButtonParams)} />}
+      {maxButtonParams && (
+        <MaxButton handleClick={(e) => handleMaxButtonClick(e, maxButtonParams)} disabled={disabled} />
+      )}
       <Cleave
         {...restInputProps}
+        disabled={disabled}
         value={value}
         name={name}
         key={dynamicCleaveOptionKey}

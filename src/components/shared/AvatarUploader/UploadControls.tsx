@@ -9,11 +9,12 @@ import styles from './AvatarUploader.css';
 interface UploadControlsProps extends Pick<AvatarUploaderProps, 'handleFileRemove'> {
   open: () => void;
   disableRemove: boolean;
+  disableChoose?: boolean;
 }
 
 const displayName = 'AvatarUploader.UploadControls';
 
-const UploadControls = ({ handleFileRemove, disableRemove, open }: UploadControlsProps) => (
+const UploadControls = ({ handleFileRemove, disableRemove, disableChoose = false, open }: UploadControlsProps) => (
   <div className={styles.buttonContainer}>
     <Button
       appearance={{ theme: 'danger' }}
@@ -22,7 +23,7 @@ const UploadControls = ({ handleFileRemove, disableRemove, open }: UploadControl
       disabled={disableRemove}
       dataTest="avatarUploaderRemove"
     />
-    <Button text={{ id: 'button.choose' }} onClick={open} dataTest="avatarUploaderChoose" />
+    <Button text={{ id: 'button.choose' }} onClick={open} disabled={disableChoose} dataTest="avatarUploaderChoose" />
   </div>
 );
 

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+
 import Transactions from '~common/Extensions/UserHub/partials/TransactionsTab';
 import TransactionsTab from '~common/Extensions/UserHub/partials/TransactionsTab/TransactionsTab';
 import { transactionsItems } from '~common/Extensions/UserHub/partials/TransactionsTab/consts';

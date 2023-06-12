@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+
 import { Colony, WatchListItem } from '~types';
 import ColonyItem from './ColonyItem';
 import ColonyAvatar from '~shared/ColonyAvatar';

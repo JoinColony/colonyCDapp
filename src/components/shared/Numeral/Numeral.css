@@ -5,3 +5,7 @@
 .themeDark {
   color: var(--dark);
 }
+
+.sizeSmall {
+  font-size: var(--size-small);
+}

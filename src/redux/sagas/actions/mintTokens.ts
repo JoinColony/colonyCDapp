@@ -127,8 +127,10 @@ function* createMintTokensAction({
     });
 
     // Redirect to actions page
-    if (colonyName && navigate) {
-      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
+    if (colonyName) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (caughtError) {
     putError(ActionTypes.ACTION_MINT_TOKENS_ERROR, caughtError, meta);

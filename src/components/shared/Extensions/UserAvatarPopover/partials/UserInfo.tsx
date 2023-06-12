@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
+
 import { UserInfoProps } from '../types';
 import Avatar from '~shared/Extensions/Avatar';
 import Icon from '~shared/Icon';

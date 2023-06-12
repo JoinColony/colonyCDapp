@@ -73,6 +73,12 @@
       ],
       "~cache/*": [
         "src/cache/*"
+      ],
+      "~transformers": [
+        "src/transformers"
+      ],
+      "~transformers/*": [
+        "src/transformers/*"
       ]
     },
     "allowSyntheticDefaultImports": true,

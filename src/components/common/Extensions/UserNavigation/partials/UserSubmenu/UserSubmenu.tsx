@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+
 import { UserSubmenuProps } from './types';
 import { userSubmenuItems } from './consts';
 import Icon from '~shared/Icon';
