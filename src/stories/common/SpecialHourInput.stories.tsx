@@ -28,7 +28,13 @@ const SpecialHourInputWithHooks = (args) => {
         .required('')
         .typeError(formatMessage({ id: 'special.hour.input.error.min.value' }))
         .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
-        .max(maxValue, formatMessage({ id: 'special.hour.input.error.max.value' }, { maxValue })),
+        .max(
+          maxValue,
+          formatMessage(
+            { id: 'special.hour.input.error.max.value' },
+            { maxValue },
+          ),
+        ),
     })
     .required('');
 
@@ -65,5 +71,7 @@ export const Base: Story = {
 };
 
 export const Disabled: Story = {
-  render: () => <SpecialHourInputWithHooks defaultValue={0} disabled id="hour-2" />,
+  render: () => (
+    <SpecialHourInputWithHooks defaultValue={0} disabled id="hour-2" />
+  ),
 };

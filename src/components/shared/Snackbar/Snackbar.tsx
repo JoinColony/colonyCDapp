@@ -18,7 +18,13 @@ interface Props {
   delay?: number;
 }
 
-const Snackbar = ({ show, setShow, msg, type = SnackbarType.Success, delay = 3000 }: Props) => {
+const Snackbar = ({
+  show,
+  setShow,
+  msg,
+  type = SnackbarType.Success,
+  delay = 3000,
+}: Props) => {
   useEffect(() => {
     if (show) {
       const timeout = setTimeout(() => setShow(false), delay);
@@ -31,8 +37,18 @@ const Snackbar = ({ show, setShow, msg, type = SnackbarType.Success, delay = 300
 
   return (
     <div className={show ? styles.fadeIn : styles.fadeOut}>
-      <div className={type === SnackbarType.Success ? styles.containerSuccess : styles.containerError}>
-        <div className={type === SnackbarType.Success ? styles.dotSuccess : styles.dotError} />
+      <div
+        className={
+          type === SnackbarType.Success
+            ? styles.containerSuccess
+            : styles.containerError
+        }
+      >
+        <div
+          className={
+            type === SnackbarType.Success ? styles.dotSuccess : styles.dotError
+          }
+        />
         <p className={styles.msgText}>
           <FormattedMessage {...msg} />
         </p>

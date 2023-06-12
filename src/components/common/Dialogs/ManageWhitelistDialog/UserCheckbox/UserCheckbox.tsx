@@ -30,7 +30,13 @@ const UserCheckbox = ({
 }: Props) => {
   const [isChecked, setIsChecked] = useState<boolean>(true);
 
-  const { getArrowProps, getTooltipProps, setTooltipRef, setTriggerRef, visible } = usePopperTooltip({
+  const {
+    getArrowProps,
+    getTooltipProps,
+    setTooltipRef,
+    setTriggerRef,
+    visible,
+  } = usePopperTooltip({
     placement: 'right',
   }) as any;
 
@@ -38,7 +44,9 @@ const UserCheckbox = ({
   const { displayName = walletAddress } = profile || {};
 
   return (
-    <div className={classNames(styles.main, { [styles.notChecked]: !isChecked })}>
+    <div
+      className={classNames(styles.main, { [styles.notChecked]: !isChecked })}
+    >
       <div className={styles.user}>
         <div ref={setTriggerRef}>
           <Checkbox

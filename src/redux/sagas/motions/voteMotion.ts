@@ -6,7 +6,11 @@ import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import { putError, takeFrom, getColonyManager } from '../utils';
 
-import { createGroupTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import {
+  createGroupTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 import { transactionReady } from '../../actionCreators';
 import { signMessage } from '../messages';
 
@@ -18,17 +22,31 @@ function* voteMotion({
   const txChannel = yield call(getTxChannel, meta.id);
   try {
     const colonyManager = yield getColonyManager();
-    const colonyClient = yield colonyManager.getClient(ClientType.ColonyClient, colonyAddress);
-    const votingReputationClient: AnyVotingReputationClient = yield colonyManager.getClient(
-      ClientType.VotingReputationClient,
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
       colonyAddress,
     );
+    const votingReputationClient: AnyVotingReputationClient =
+      yield colonyManager.getClient(
+        ClientType.VotingReputationClient,
+        colonyAddress,
+      );
 
-    const { domainId, rootHash } = yield votingReputationClient.getMotion(motionId);
+    const { domainId, rootHash } = yield votingReputationClient.getMotion(
+      motionId,
+    );
 
-    const { skillId } = yield call([colonyClient, colonyClient.getDomain], domainId);
+    const { skillId } = yield call(
+      [colonyClient, colonyClient.getDomain],
+      domainId,
+    );
 
-    const { key, value, branchMask, siblings } = yield call(colonyClient.getReputation, skillId, userAddress, rootHash);
+    const { key, value, branchMask, siblings } = yield call(
+      colonyClient.getReputation,
+      skillId,
+      userAddress,
+      rootHash,
+    );
 
     /*
      * @NOTE We this to be all in one line (no new lines, or line breaks) since
@@ -40,9 +58,14 @@ function* voteMotion({
     } Motion ID: ${motionId.toNumber()}`;
 
     const signature = yield signMessage('motionVote', message);
-    const hash = utils.solidityKeccak256(['bytes', 'uint256'], [utils.keccak256(signature), vote]);
+    const hash = utils.solidityKeccak256(
+      ['bytes', 'uint256'],
+      [utils.keccak256(signature), vote],
+    );
 
-    const { voteMotionTransaction } = yield createTransactionChannels(meta.id, ['voteMotionTransaction']);
+    const { voteMotionTransaction } = yield createTransactionChannels(meta.id, [
+      'voteMotionTransaction',
+    ]);
 
     yield createGroupTransaction(voteMotionTransaction, 'voteMotion', meta, {
       context: ClientType.VotingReputationClient,
@@ -52,11 +75,17 @@ function* voteMotion({
       ready: false,
     });
 
-    yield takeFrom(voteMotionTransaction.channel, ActionTypes.TRANSACTION_CREATED);
+    yield takeFrom(
+      voteMotionTransaction.channel,
+      ActionTypes.TRANSACTION_CREATED,
+    );
 
     yield put(transactionReady(voteMotionTransaction.id));
 
-    yield takeFrom(voteMotionTransaction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield takeFrom(
+      voteMotionTransaction.channel,
+      ActionTypes.TRANSACTION_SUCCEEDED,
+    );
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_VOTE_SUCCESS,

@@ -21,7 +21,9 @@ const UserAvatar: FC<UserAvatarProps> = ({
   const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
 
   const avatar = (
-    <span className={clsx(styles.main, 'inline-flex items-center text-current')}>
+    <span
+      className={clsx(styles.main, 'inline-flex items-center text-current')}
+    >
       <Avatar
         size={size}
         avatar={imageString}
@@ -43,7 +45,10 @@ const UserAvatar: FC<UserAvatarProps> = ({
 
   if (isLink) {
     return (
-      <Link className="inline-flex transition-all duration-normal hover:text-blue-400" to="/user/">
+      <Link
+        className="inline-flex transition-all duration-normal hover:text-blue-400"
+        to="/user/"
+      >
         {avatar}
       </Link>
     );

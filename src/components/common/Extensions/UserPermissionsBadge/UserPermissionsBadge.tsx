@@ -9,7 +9,9 @@ import Icon from '~shared/Icon';
 
 const displayName = 'common.Extensions.UserPermissionsBadge';
 
-const UserPermissionsBadge: FC<PropsWithChildren<UserPermissionsBadgeProps>> = ({
+const UserPermissionsBadge: FC<
+  PropsWithChildren<UserPermissionsBadgeProps>
+> = ({
   children,
   text,
   textValues,
@@ -20,10 +22,13 @@ const UserPermissionsBadge: FC<PropsWithChildren<UserPermissionsBadgeProps>> = (
 }) => {
   const { formatMessage } = useIntl();
 
-  const userPermissionsBadgeText = typeof text == 'string' ? text : text && formatMessage(text, textValues);
+  const userPermissionsBadgeText =
+    typeof text == 'string' ? text : text && formatMessage(text, textValues);
 
   const userPermissionsBadgeDescription =
-    typeof description == 'string' ? description : description && formatMessage(description, descriptionValues);
+    typeof description == 'string'
+      ? description
+      : description && formatMessage(description, descriptionValues);
 
   const content = (
     <>

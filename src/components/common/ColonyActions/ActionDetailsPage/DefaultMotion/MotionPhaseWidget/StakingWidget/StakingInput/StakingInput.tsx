@@ -6,7 +6,8 @@ import { ActionTypes } from '~redux';
 
 import { StakingControls, StakingSlider, useStakingInput } from '.';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget';
 
 export const SLIDER_AMOUNT_KEY = 'amount';
 
@@ -30,7 +31,11 @@ const StakingInput = () => {
       transform={transform}
       onSuccess={handleSuccess}
     >
-      <StakingSlider isObjection={isObjection} limitExceeded={limitExceeded} setLimitExceeded={setLimitExceeded} />
+      <StakingSlider
+        isObjection={isObjection}
+        limitExceeded={limitExceeded}
+        setLimitExceeded={setLimitExceeded}
+      />
       <StakingControls limitExceeded={limitExceeded} />
     </ActionForm>
   );

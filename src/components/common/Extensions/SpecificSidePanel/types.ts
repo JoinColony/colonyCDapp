@@ -2,7 +2,12 @@ import { MessageDescriptor } from 'react-intl';
 import { AnyExtensionData } from '~types';
 
 export interface PermissionsProps {
-  data: { key: string; name: string; text: MessageDescriptor | string; description: MessageDescriptor | string }[];
+  data: {
+    key: string;
+    name: string;
+    text: MessageDescriptor | string;
+    description: MessageDescriptor | string;
+  }[];
 }
 
 export type SidePanelDataProps = {

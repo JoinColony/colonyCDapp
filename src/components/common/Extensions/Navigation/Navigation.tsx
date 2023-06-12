@@ -20,7 +20,11 @@ const Navigation: FC = () => {
   return (
     <nav role="navigation" className="flex flex-col w-full">
       {isMobile ? (
-        <Select list={navigationItems} selectedElement={selectedElement} handleChange={handleChange} />
+        <Select
+          list={navigationItems}
+          selectedElement={selectedElement}
+          handleChange={handleChange}
+        />
       ) : (
         navigationItems.map((item) => <NavItem key={item.id} {...item} />)
       )}

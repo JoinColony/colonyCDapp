@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import { HookFormInput as Input, HookFormInputProps as InputProps } from '~shared/Fields';
+import {
+  HookFormInput as Input,
+  HookFormInputProps as InputProps,
+} from '~shared/Fields';
 import { isAddress } from '~utils/web3';
 import { formatText } from '~utils/intl';
 import { connectionIs4G } from '~utils/network';
@@ -29,7 +32,8 @@ const MSG = defineMessages({
   },
 });
 
-interface Props extends Pick<InputProps, 'label' | 'appearance' | 'extra' | 'disabled'> {
+interface Props
+  extends Pick<InputProps, 'label' | 'appearance' | 'extra' | 'disabled'> {
   /** Name of token address input. Defaults to 'tokenAddress' */
   addressFieldName?: string;
   /** Name of token field. Defaults to 'token' */
@@ -104,7 +108,8 @@ const TokenSelector = ({
     });
   }, [addressFieldName, clearErrors, setValue, token, tokenFieldName]);
 
-  const displayLoading = isFetchingAddress || (isValidating && isAddress(tokenAddress));
+  const displayLoading =
+    isFetchingAddress || (isValidating && isAddress(tokenAddress));
 
   return (
     /**

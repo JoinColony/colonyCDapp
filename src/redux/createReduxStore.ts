@@ -21,7 +21,9 @@ const composeEnhancer =
 
 const store = createStore(
   createRootReducer(),
-  composeEnhancer(applyMiddleware(sagaMiddleware, reduxPromiseListener.middleware)),
+  composeEnhancer(
+    applyMiddleware(sagaMiddleware, reduxPromiseListener.middleware),
+  ),
 );
 
 sagaMiddleware.run(setupSagas);

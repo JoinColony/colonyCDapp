@@ -11,7 +11,8 @@ import { SLIDER_AMOUNT_KEY } from '..';
 
 import styles from './RequiredStakeMessage.css';
 
-const displayName = 'common.ColonyActions.DefaultMotion.StakingWidget.RequiredStakeMessage';
+const displayName =
+  'common.ColonyActions.DefaultMotion.StakingWidget.RequiredStakeMessage';
 
 const MSG = defineMessages({
   requiredStake: {
@@ -37,13 +38,23 @@ const RequiredStakeMessage = ({
 }: RequiredStakeMessageProps) => {
   const { watch } = useFormContext();
   const sliderAmount = watch(SLIDER_AMOUNT_KEY);
-  const isUnderThreshold = sliderAmount < STAKING_THRESHOLD - totalPercentageStaked;
-  const stake = getStakeFromSlider(sliderAmount, remainingToStake, userMinStake);
+  const isUnderThreshold =
+    sliderAmount < STAKING_THRESHOLD - totalPercentageStaked;
+  const stake = getStakeFromSlider(
+    sliderAmount,
+    remainingToStake,
+    userMinStake,
+  );
   const stakePercentage = getRemainingStakePercentage(stake, remainingToStake);
 
   return (
     <div>
-      <Numeral className={styles.amount} value={stake} decimals={nativeTokenDecimals} suffix={nativeTokenSymbol} />
+      <Numeral
+        className={styles.amount}
+        value={stake}
+        decimals={nativeTokenDecimals}
+        suffix={nativeTokenSymbol}
+      />
       <span
         className={classNames(styles.requiredStakeText, {
           [styles.requiredStakeUnderThreshold]: isUnderThreshold,

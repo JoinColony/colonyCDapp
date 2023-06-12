@@ -23,9 +23,18 @@ const MSG = defineMessages({
   },
 });
 
-type Props = DialogProps & Partial<WizardDialogType<object>> & ActionDialogProps;
+type Props = DialogProps &
+  Partial<WizardDialogType<object>> &
+  ActionDialogProps;
 
-const TokenManagementDialog = ({ colony, cancel, close, callStep, prevStep, enabledExtensionData }: Props) => {
+const TokenManagementDialog = ({
+  colony,
+  cancel,
+  close,
+  callStep,
+  prevStep,
+  enabledExtensionData,
+}: Props) => {
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
   const colonyTokens = colony?.tokens?.items.filter(notNull) || [];
@@ -33,7 +42,9 @@ const TokenManagementDialog = ({ colony, cancel, close, callStep, prevStep, enab
   const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
-    !isForce && isVotingReputationEnabled ? ActionTypes.MOTION_EDIT_COLONY : ActionTypes.ACTION_EDIT_COLONY;
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.MOTION_EDIT_COLONY
+      : ActionTypes.ACTION_EDIT_COLONY;
 
   const transform = pipe(
     mapPayload((payload) => getTokenManagementDialogPayload(colony, payload)),
@@ -53,7 +64,9 @@ const TokenManagementDialog = ({ colony, cancel, close, callStep, prevStep, enab
         defaultValues={{
           forceAction: false,
           tokenAddress: '',
-          selectedTokenAddresses: colonyTokens.map((token) => token?.token.tokenAddress),
+          selectedTokenAddresses: colonyTokens.map(
+            (token) => token?.token.tokenAddress,
+          ),
           annotationMessage: '',
           /*
            * @NOTE That since this a root motion, and we don't actually make use

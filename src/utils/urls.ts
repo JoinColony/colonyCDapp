@@ -1,1 +1,2 @@
-export const getTransactionHashFromPathName = (pathname: string) => pathname.split('/').pop();
+export const getTransactionHashFromPathName = (pathname: string) =>
+  pathname.split('/').pop();

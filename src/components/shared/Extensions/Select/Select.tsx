@@ -8,7 +8,11 @@ import NavLink from '~shared/Extensions/NavLink';
 
 const displayName = 'Extensions.Select';
 
-const Select = <T extends any[]>({ list, selectedElement, handleChange }: SelectProps<T>) => {
+const Select = <T extends any[]>({
+  list,
+  selectedElement,
+  handleChange,
+}: SelectProps<T>) => {
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const toggleOptions = () => {
     setIsOptionsOpen(!isOptionsOpen);
@@ -19,18 +23,19 @@ const Select = <T extends any[]>({ list, selectedElement, handleChange }: Select
     setIsOptionsOpen(false);
   };
 
-  const handleKeyDown = (index: number) => (event: KeyboardEvent<HTMLElement>) => {
-    switch (event.key) {
-      case ' ':
-      case 'SpaceBar':
-      case 'Enter':
-        event.preventDefault();
-        setSelectedThenCloseDropdown(index);
-        break;
-      default:
-        break;
-    }
-  };
+  const handleKeyDown =
+    (index: number) => (event: KeyboardEvent<HTMLElement>) => {
+      switch (event.key) {
+        case ' ':
+        case 'SpaceBar':
+        case 'Enter':
+          event.preventDefault();
+          setSelectedThenCloseDropdown(index);
+          break;
+        default:
+          break;
+      }
+    };
 
   const handleListKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     switch (event.key) {
@@ -40,11 +45,15 @@ const Select = <T extends any[]>({ list, selectedElement, handleChange }: Select
         break;
       case 'ArrowUp':
         event.preventDefault();
-        handleChange(selectedElement - 1 >= 0 ? selectedElement - 1 : list.length - 1);
+        handleChange(
+          selectedElement - 1 >= 0 ? selectedElement - 1 : list.length - 1,
+        );
         break;
       case 'ArrowDown':
         event.preventDefault();
-        handleChange(selectedElement === list.length - 1 ? 0 : selectedElement + 1);
+        handleChange(
+          selectedElement === list.length - 1 ? 0 : selectedElement + 1,
+        );
         break;
       default:
         break;
@@ -67,10 +76,13 @@ const Select = <T extends any[]>({ list, selectedElement, handleChange }: Select
         {selectedItem?.label}
         <Icon
           name="caret-down"
-          className={clsx(`${styles.icon} transition-transform duration-normal`, {
-            'rotate-180': isOptionsOpen,
-            'rotate-0': !isOptionsOpen,
-          })}
+          className={clsx(
+            `${styles.icon} transition-transform duration-normal`,
+            {
+              'rotate-180': isOptionsOpen,
+              'rotate-0': !isOptionsOpen,
+            },
+          )}
         />
       </button>
       <ul
@@ -98,7 +110,10 @@ const Select = <T extends any[]>({ list, selectedElement, handleChange }: Select
             }}
           >
             {option.linkTo ? (
-              <NavLink className="flex items-center w-full text-inherit py-2" to={option.linkTo}>
+              <NavLink
+                className="flex items-center w-full text-inherit py-2"
+                to={option.linkTo}
+              >
                 {option.label}
               </NavLink>
             ) : (

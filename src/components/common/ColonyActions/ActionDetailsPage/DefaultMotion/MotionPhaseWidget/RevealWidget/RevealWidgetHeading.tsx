@@ -7,7 +7,8 @@ import RevealedVote from './RevealedVote';
 
 import styles from './RevealWidgetHeading.css';
 
-const displayName = 'common.ActionDetailsPage.DefaultMotion.RevealWidgetHeading';
+const displayName =
+  'common.ActionDetailsPage.DefaultMotion.RevealWidgetHeading';
 
 const MSG = defineMessages({
   voteHiddenInfo: {
@@ -33,7 +34,11 @@ interface RevealWidgetHeadingProps {
   vote: number | null;
 }
 
-const RevealWidgetHeading = ({ hasUserVoted, userVoteRevealed, vote }: RevealWidgetHeadingProps) => (
+const RevealWidgetHeading = ({
+  hasUserVoted,
+  userVoteRevealed,
+  vote,
+}: RevealWidgetHeadingProps) => (
   <div className={styles.main}>
     <Heading4
       text={hasUserVoted ? MSG.title : MSG.titleNotVoted}

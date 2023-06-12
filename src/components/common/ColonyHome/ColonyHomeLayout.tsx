@@ -34,7 +34,11 @@ type Props = {
 
 const displayName = 'common.ColonyHome.ColonyHomeLayout';
 
-const ColonyHomeLayout = ({ filteredDomainId, children, onDomainChange = () => null }: Props) => {
+const ColonyHomeLayout = ({
+  filteredDomainId,
+  children,
+  onDomainChange = () => null,
+}: Props) => {
   const { colony } = useColonyContext();
   const { pathname } = useLocation();
 
@@ -46,7 +50,9 @@ const ColonyHomeLayout = ({ filteredDomainId, children, onDomainChange = () => n
 
   return (
     <div className={styles.main}>
-      <div className={isExtensions ? styles.mainContentGrid : styles.minimalGrid}>
+      <div
+        className={isExtensions ? styles.mainContentGrid : styles.minimalGrid}
+      >
         <ColonyHomeInfo />
         <div className={styles.mainContent}>
           {!isExtensions && (
@@ -54,7 +60,10 @@ const ColonyHomeLayout = ({ filteredDomainId, children, onDomainChange = () => n
               <ColonyTotalFunds />
               <div className={styles.contentActionsPanel}>
                 <div className={styles.domainsDropdownContainer}>
-                  <ColonyDomainSelector filteredDomainId={filteredDomainId} onDomainChange={onDomainChange} />
+                  <ColonyDomainSelector
+                    filteredDomainId={filteredDomainId}
+                    onDomainChange={onDomainChange}
+                  />
                 </div>
                 <NewActionButton filteredDomainId={filteredDomainId} />
               </div>

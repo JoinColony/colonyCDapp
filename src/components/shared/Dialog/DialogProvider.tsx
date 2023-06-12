@@ -1,9 +1,19 @@
-import React, { createContext, ComponentType, ReactNode, useCallback, useState, useMemo } from 'react';
+import React, {
+  createContext,
+  ComponentType,
+  ReactNode,
+  useCallback,
+  useState,
+  useMemo,
+} from 'react';
 import { nanoid } from 'nanoid';
 import { DialogType } from './types';
 
 export const DialogContext = createContext<{
-  openDialog?: <P extends object>(dialog: ComponentType<P>, props?: P) => DialogType<P>;
+  openDialog?: <P extends object>(
+    dialog: ComponentType<P>,
+    props?: P,
+  ) => DialogType<P>;
 }>({});
 
 interface Props {
@@ -19,7 +29,10 @@ const DialogProvider = ({ children }: Props) => {
       if (idx < 0) {
         return prevOpenDialogs;
       }
-      return [...prevOpenDialogs.slice(0, idx), ...prevOpenDialogs.slice(idx + 1, prevOpenDialogs.length)];
+      return [
+        ...prevOpenDialogs.slice(0, idx),
+        ...prevOpenDialogs.slice(idx + 1, prevOpenDialogs.length),
+      ];
     });
   }, []);
 

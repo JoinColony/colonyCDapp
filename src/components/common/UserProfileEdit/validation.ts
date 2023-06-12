@@ -4,7 +4,8 @@ import { TestContext } from 'yup';
 import { intl } from '~utils/intl';
 
 const { formatMessage } = intl({
-  'rpc.invalid': 'RPC returned incorrect chain id ({chainId}). Expected {expectedChainId}',
+  'rpc.invalid':
+    'RPC returned incorrect chain id ({chainId}). Expected {expectedChainId}',
 });
 
 export const isValidURL = (url: string) => {
@@ -30,7 +31,10 @@ async function validateCustomRPC(rpcURL: string, expectedChainId: string) {
       return true;
     }
     return (this as TestContext).createError({
-      message: formatMessage({ id: 'rpc.invalid' }, { expectedChainId, chainId }),
+      message: formatMessage(
+        { id: 'rpc.invalid' },
+        { expectedChainId, chainId },
+      ),
     });
   } catch (e) {
     return false;

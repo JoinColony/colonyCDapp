@@ -6,7 +6,8 @@ import Icon from '~shared/Icon';
 import { Colony } from '~types';
 import { ColonyAvatarProps } from '../types';
 
-const displayName = 'common.Extensions.ColonySwitcher.partials.ColonyAvatarWrapper';
+const displayName =
+  'common.Extensions.ColonySwitcher.partials.ColonyAvatarWrapper';
 
 const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
   colonyToDisplay,
@@ -18,7 +19,11 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
   <>
     <div className="relative">
       <span className="flex items-center justify-center bg-blue-300 w-[2.2725rem] h-[2.2725rem] rounded-full">
-        <ColonyAvatar colony={colonyToDisplay as Colony} colonyAddress={colonyToDisplayAddress || ''} size="xxs" />
+        <ColonyAvatar
+          colony={colonyToDisplay as Colony}
+          colonyAddress={colonyToDisplayAddress || ''}
+          size="xxs"
+        />
       </span>
       <div
         className="w-[1.175rem] h-[1.175rem] flex items-center justify-center absolute top-0 right-0 bg-base-white
@@ -31,7 +36,9 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
 
     {isMobile && colonyToDisplay && (
       <div className="font-semibold text-md text-gray-900 mx-2">
-        {colonyToDisplay?.metadata?.displayName || colonyToDisplay?.name || 'Colony name'}
+        {colonyToDisplay?.metadata?.displayName ||
+          colonyToDisplay?.name ||
+          'Colony name'}
       </div>
     )}
     <span

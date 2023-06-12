@@ -5,14 +5,17 @@ import { ACTIONS_EVENTS } from '../staticMaps';
 
 import { ActionsPageEvent } from './ActionDetailsPageEvent';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.ActionDetailsPageFeed';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.ActionDetailsPageFeed';
 
 interface ActionsPageFeedProps {
   actionData: ColonyAction;
 }
 
 const ActionDetailsPageFeed = ({ actionData }: ActionsPageFeedProps) => {
-  const events = JSON.parse(actionData.individualEvents as string) || ACTIONS_EVENTS[actionData.type];
+  const events =
+    JSON.parse(actionData.individualEvents as string) ||
+    ACTIONS_EVENTS[actionData.type];
 
   return (
     <>

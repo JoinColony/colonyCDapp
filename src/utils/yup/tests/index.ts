@@ -7,9 +7,18 @@ import { ContextModule, getContext } from '~context';
 import { Colony } from '~types';
 import { notNull } from '~utils/arrays';
 import { now } from '~utils/lodash';
-import { calculateFee, getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
+import {
+  calculateFee,
+  getSelectedToken,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens';
 
-import { cancelEarly, cleanQueryName, createUnknownError, formatMessage } from './helpers';
+import {
+  cancelEarly,
+  cleanQueryName,
+  createUnknownError,
+  formatMessage,
+} from './helpers';
 
 const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -105,11 +114,15 @@ export function createYupTestFromQuery({
       return isOptional;
     }
 
-    const queryName = (query.definitions[0] as OperationDefinitionNode).name?.value;
-    const variableKey = (query.definitions[0] as OperationDefinitionNode).variableDefinitions?.[0].variable.name.value;
+    const queryName = (query.definitions[0] as OperationDefinitionNode).name
+      ?.value;
+    const variableKey = (query.definitions[0] as OperationDefinitionNode)
+      .variableDefinitions?.[0].variable.name.value;
 
     if (!queryName || !variableKey) {
-      throw new Error('Query must be a named query and have exactly one named variable.');
+      throw new Error(
+        'Query must be a named query and have exactly one named variable.',
+      );
     }
 
     const result = await runQuery(
@@ -146,7 +159,11 @@ interface YupDebounceOptions {
  * which can improve performance.
  * @returns Debounced test function.
  */
-export function yupDebounce(fn: TestFunction, wait: number, options?: YupDebounceOptions) {
+export function yupDebounce(
+  fn: TestFunction,
+  wait: number,
+  options?: YupDebounceOptions,
+) {
   let lastCallTime;
   let lastValue;
   let lastReturnValue;
@@ -164,7 +181,9 @@ export function yupDebounce(fn: TestFunction, wait: number, options?: YupDebounc
        * If timeSinceLastCall is greater than or equal to wait, the delay period has elapsed.
        * If it's negative, system time has moved backwards. If so, just invoke as if delayed period has elapsed.
        */
-      lastCallTime === undefined || timeSinceLastCall >= wait || timeSinceLastCall < 0
+      lastCallTime === undefined ||
+      timeSinceLastCall >= wait ||
+      timeSinceLastCall < 0
     );
   }
 
@@ -241,7 +260,10 @@ export function yupDebounce(fn: TestFunction, wait: number, options?: YupDebounc
   return caller as TestFunction;
 }
 
-export const getHasEnoughBalanceTestFn = (colony: Colony, networkInverseFee?: string | undefined) => {
+export const getHasEnoughBalanceTestFn = (
+  colony: Colony,
+  networkInverseFee?: string | undefined,
+) => {
   const colonyBalances = colony.balances?.items?.filter(notNull) || [];
   return (value: number | undefined, context: TestContext) => {
     if (!value) {
@@ -250,7 +272,9 @@ export const getHasEnoughBalanceTestFn = (colony: Colony, networkInverseFee?: st
 
     const { fromDomainId, tokenAddress } = context.parent;
     const selectedDomainBalance = colonyBalances.find(
-      (balance) => balance.token.tokenAddress === tokenAddress && balance.domain?.nativeId === fromDomainId,
+      (balance) =>
+        balance.token.tokenAddress === tokenAddress &&
+        balance.domain?.nativeId === fromDomainId,
     );
     const selectedToken = getSelectedToken(colony, tokenAddress);
 
@@ -261,10 +285,13 @@ export const getHasEnoughBalanceTestFn = (colony: Colony, networkInverseFee?: st
     const tokenDecimals = getTokenDecimalsWithFallback(selectedToken.decimals);
 
     const amountWithFeesIncluded = networkInverseFee
-      ? calculateFee(value.toString(), networkInverseFee, tokenDecimals).totalToPay
+      ? calculateFee(value.toString(), networkInverseFee, tokenDecimals)
+          .totalToPay
       : value;
 
-    const convertedAmount = BigNumber.from(moveDecimal(amountWithFeesIncluded, tokenDecimals));
+    const convertedAmount = BigNumber.from(
+      moveDecimal(amountWithFeesIncluded, tokenDecimals),
+    );
 
     return convertedAmount.lte(selectedDomainBalance.balance);
   };

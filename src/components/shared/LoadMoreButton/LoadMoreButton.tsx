@@ -18,7 +18,12 @@ interface Props extends DefaultButtonProps {
 
 const LoadMoreButton = ({ isLoadingData, ...props }: Props) => (
   <div className={styles.loadMoreButton}>
-    <Button appearance={{ size: 'medium', theme: 'primary' }} text={MSG.label} loading={isLoadingData} {...props} />
+    <Button
+      appearance={{ size: 'medium', theme: 'primary' }}
+      text={MSG.label}
+      loading={isLoadingData}
+      {...props}
+    />
   </div>
 );
 

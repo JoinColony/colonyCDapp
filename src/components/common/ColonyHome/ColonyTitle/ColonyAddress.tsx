@@ -20,7 +20,10 @@ interface Props {
 }
 
 const ColonyAddress = ({ colonyAddress }: Props) => (
-  <InvisibleCopyableAddress address={colonyAddress} copyMessage={MSG.copyMessage}>
+  <InvisibleCopyableAddress
+    address={colonyAddress}
+    copyMessage={MSG.copyMessage}
+  >
     <div className={styles.colonyAddress}>
       <MaskedAddress address={colonyAddress} />
     </div>

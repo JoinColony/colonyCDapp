@@ -58,7 +58,10 @@ const IconTooltip = ({
   showArrow,
   dataTest,
 }: Props) => (
-  <div className={cx(getMainClasses(appearance, styles), className)} data-test={dataTest}>
+  <div
+    className={cx(getMainClasses(appearance, styles), className)}
+    data-test={dataTest}
+  >
     <Tooltip
       content={
         typeof tooltipText === 'string' ? (

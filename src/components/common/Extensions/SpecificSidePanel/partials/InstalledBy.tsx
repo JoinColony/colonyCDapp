@@ -6,12 +6,17 @@ import styles from '../SpecificSidePanel.module.css';
 import { PanelTypeProps } from '../types';
 import { InstalledExtensionData } from '~types';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
-import { colonyReputationItems, permissionsItems } from '~shared/Extensions/UserAvatarPopover/partials/consts';
+import {
+  colonyReputationItems,
+  permissionsItems,
+} from '~shared/Extensions/UserAvatarPopover/partials/consts';
 
 const displayName = 'common.Extensions.partials.InstalledBy';
 
 const InstalledBy: FC<PanelTypeProps> = ({ title, extensionData }) => {
-  const { user } = useUserByNameOrAddress((extensionData as InstalledExtensionData)?.installedBy);
+  const { user } = useUserByNameOrAddress(
+    (extensionData as InstalledExtensionData)?.installedBy,
+  );
   const userDisplayName = user?.profile?.displayName;
   const username = user?.name;
 

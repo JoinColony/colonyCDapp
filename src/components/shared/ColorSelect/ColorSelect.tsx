@@ -32,7 +32,12 @@ interface Props {
 
 const displayName = 'ColorSelect';
 
-const ColorSelect = ({ disabled, onColorChange, appearance, name = 'color' }: Props) => {
+const ColorSelect = ({
+  disabled,
+  onColorChange,
+  appearance,
+  name = 'color',
+}: Props) => {
   const { watch } = useFormContext();
   const activeOption = watch(name);
 

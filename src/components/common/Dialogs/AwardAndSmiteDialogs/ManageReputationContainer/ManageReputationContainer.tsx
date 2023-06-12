@@ -14,9 +14,16 @@ import { useSelectedUser } from '~hooks';
 import DialogForm from '../ManageReputationDialogForm';
 import { AwardAndSmiteDialogProps } from '../types';
 
-import { getManageReputationDialogPayload, useGetColonyMembers } from './helpers';
+import {
+  getManageReputationDialogPayload,
+  useGetColonyMembers,
+} from './helpers';
 
-import { FormValues, defaultValidationSchema, getAmountValidationSchema } from './validation';
+import {
+  FormValues,
+  defaultValidationSchema,
+  getAmountValidationSchema,
+} from './validation';
 
 const displayName = 'common.ManageReputationContainer';
 
@@ -43,19 +50,33 @@ const ManageReputationContainer = ({
   const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
-    !isForce && isVotingReputationEnabled ? ActionTypes.MOTION_MANAGE_REPUTATION : ActionTypes.ACTION_MANAGE_REPUTATION;
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.MOTION_MANAGE_REPUTATION
+      : ActionTypes.ACTION_MANAGE_REPUTATION;
 
   let smiteValidationSchema;
 
   if (isSmiteAction) {
-    const amountValidationSchema = getAmountValidationSchema(schemaUserReputation);
-    smiteValidationSchema = defaultValidationSchema.concat(amountValidationSchema);
+    const amountValidationSchema =
+      getAmountValidationSchema(schemaUserReputation);
+    smiteValidationSchema = defaultValidationSchema.concat(
+      amountValidationSchema,
+    );
   }
 
-  const nativeTokenDecimals = getTokenDecimalsWithFallback(nativeToken?.decimals);
+  const nativeTokenDecimals = getTokenDecimalsWithFallback(
+    nativeToken?.decimals,
+  );
 
   const transform = pipe(
-    mapPayload((payload) => getManageReputationDialogPayload(colony, isSmiteAction, nativeTokenDecimals, payload)),
+    mapPayload((payload) =>
+      getManageReputationDialogPayload(
+        colony,
+        isSmiteAction,
+        nativeTokenDecimals,
+        payload,
+      ),
+    ),
     withMeta({ navigate }),
   );
 
@@ -84,7 +105,9 @@ const ManageReputationContainer = ({
           users={
             allColonyMembers // isWhitelistActivated ? verifiedUsers : colonyWatchers
           }
-          updateSchemaUserReputation={isSmiteAction ? setSchemaUserReputation : undefined}
+          updateSchemaUserReputation={
+            isSmiteAction ? setSchemaUserReputation : undefined
+          }
           schemaUserReputation={schemaUserReputation}
           isSmiteAction={isSmiteAction}
           enabledExtensionData={enabledExtensionData}

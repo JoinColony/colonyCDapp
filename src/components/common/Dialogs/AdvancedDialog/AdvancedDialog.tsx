@@ -4,7 +4,11 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import { WizardDialogType, useUserAccountRegistered, useAppContext } from '~hooks';
+import {
+  WizardDialogType,
+  useUserAccountRegistered,
+  useAppContext,
+} from '~hooks';
 
 import { getAllUserRoles } from '~transformers';
 import { canEnterRecoveryMode, hasRoot, canArchitect } from '~utils/checks';
@@ -27,7 +31,8 @@ const MSG = defineMessages({
   },
   managePermissionsDescription: {
     id: `${displayName}.managePermissionsDescription`,
-    defaultMessage: 'Set permissions for trusted colony members. Use with caution!',
+    defaultMessage:
+      'Set permissions for trusted colony members. Use with caution!',
   },
   managePermissionsPermissionList: {
     id: `${displayName}.managePermissionsPermissionList`,
@@ -55,7 +60,8 @@ const MSG = defineMessages({
   },
   upgradeDescription: {
     id: `${displayName}.upgradeDescription`,
-    defaultMessage: 'New colony network version available? Get your colony’s swole on here.',
+    defaultMessage:
+      'New colony network version available? Get your colony’s swole on here.',
   },
   upgradePermissionsList: {
     id: `${displayName}.upgradePermissionsList`,
@@ -75,7 +81,8 @@ const MSG = defineMessages({
   },
   makeArbitraryTransactionDescription: {
     id: `${displayName}.makeArbitraryTransactionDescription`,
-    defaultMessage: 'Want to interact with DeFi, or govern an external smart contract?',
+    defaultMessage:
+      'Want to interact with DeFi, or govern an external smart contract?',
   },
 });
 
@@ -109,10 +116,13 @@ const AdvancedDialog = ({
 
   const hasRootPermission = userHasAccountRegistered && hasRoot(allUserRoles);
 
-  const canEnterRecovery = userHasAccountRegistered && canEnterRecoveryMode(allUserRoles);
+  const canEnterRecovery =
+    userHasAccountRegistered && canEnterRecoveryMode(allUserRoles);
   const isSupportedColonyVersion = colony.version > 5;
 
-  const canEnterPermissionManagement = (userHasAccountRegistered && canArchitect(allUserRoles)) || hasRootPermission;
+  const canEnterPermissionManagement =
+    (userHasAccountRegistered && canArchitect(allUserRoles)) ||
+    hasRootPermission;
 
   const items = [
     {
@@ -120,16 +130,22 @@ const AdvancedDialog = ({
       description: MSG.managePermissionsDescription,
       icon: 'emoji-building',
       onClick: () => callStep(nextStepPermissionManagement),
-      permissionRequired: !(canEnterPermissionManagement || isVotingReputationEnabled),
+      permissionRequired: !(
+        canEnterPermissionManagement || isVotingReputationEnabled
+      ),
       permissionInfoText: MSG.permissionsText,
       permissionInfoTextValues: {
-        permissionsList: <FormattedMessage {...MSG.managePermissionsPermissionList} />,
+        permissionsList: (
+          <FormattedMessage {...MSG.managePermissionsPermissionList} />
+        ),
       },
       dataTest: 'managePermissionsDialogIndexItem',
     },
     {
       title: MSG.recoveryTitle,
-      description: isSupportedColonyVersion ? MSG.recoveryDescription : MSG.recoveryPreventDescription,
+      description: isSupportedColonyVersion
+        ? MSG.recoveryDescription
+        : MSG.recoveryPreventDescription,
       icon: 'emoji-alarm-lamp',
       onClick: () => callStep(nextStepRecovery),
       permissionRequired: !canEnterRecovery,
@@ -171,7 +187,13 @@ const AdvancedDialog = ({
     },
   ];
   return (
-    <IndexModal cancel={cancel} close={close} title={MSG.dialogHeader} items={items} back={() => callStep(prevStep)} />
+    <IndexModal
+      cancel={cancel}
+      close={close}
+      title={MSG.dialogHeader}
+      items={items}
+      back={() => callStep(prevStep)}
+    />
   );
 };
 

@@ -21,7 +21,13 @@ const TabsWithHooks = () => {
   const handleOnTabClick = (_, id) => {
     setActiveTab(id);
   };
-  return <Tabs items={tabsItems} activeTab={activeTab} onTabClick={handleOnTabClick} />;
+  return (
+    <Tabs
+      items={tabsItems}
+      activeTab={activeTab}
+      onTabClick={handleOnTabClick}
+    />
+  );
 };
 
 export const Base: Story = {

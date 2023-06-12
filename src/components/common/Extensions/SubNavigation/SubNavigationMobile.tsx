@@ -10,7 +10,9 @@ const displayName = 'Extensions.SubNavigation.SubNavigationMobile';
 const SubNavigationMobile: FC<PropsWithChildren> = () => {
   const [openIndex, setOpenIndex] = useState<number>();
 
-  const ref = useDetectClickOutside({ onTriggered: () => setOpenIndex(undefined) });
+  const ref = useDetectClickOutside({
+    onTriggered: () => setOpenIndex(undefined),
+  });
 
   return (
     <ul className={styles.listWrapper} ref={ref}>
@@ -22,7 +24,9 @@ const SubNavigationMobile: FC<PropsWithChildren> = () => {
           content={content}
           icon={icon}
           isOpen={openIndex === id}
-          setOpen={() => setOpenIndex((prevState) => (prevState === id ? undefined : id))}
+          setOpen={() =>
+            setOpenIndex((prevState) => (prevState === id ? undefined : id))
+          }
         />
       ))}
     </ul>

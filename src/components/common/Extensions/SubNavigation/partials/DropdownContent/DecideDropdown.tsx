@@ -8,7 +8,8 @@ import { MSG } from './consts';
 import styles from './DropdownContent.module.css';
 import LearnMore from '~shared/Extensions/LearnMore';
 
-const displayName = 'common.Extensions.SubNavigation.partials.DropdownContent.DecideDropdown';
+const displayName =
+  'common.Extensions.SubNavigation.partials.DropdownContent.DecideDropdown';
 
 const DecideDropdown: FC<PropsWithChildren> = () => (
   <div className="text-gray-400 text-xs">
@@ -16,15 +17,24 @@ const DecideDropdown: FC<PropsWithChildren> = () => (
       <FormattedMessage {...MSG.decisionsContentTitle} />
     </div>
     <ul className={styles.listWrapper}>
-      <LinkItem title={MSG.createDecision} description={MSG.createDecisionDescription} />
-      <LinkItem title={MSG.simpleDiscussion} description={MSG.simpleDiscussionDescription} />
+      <LinkItem
+        title={MSG.createDecision}
+        description={MSG.createDecisionDescription}
+      />
+      <LinkItem
+        title={MSG.simpleDiscussion}
+        description={MSG.simpleDiscussionDescription}
+      />
     </ul>
     <div className={styles.buttonWrapper}>
       <Button text={MSG.buttonTextDecide} mode="secondaryOutline" isFullSize />
     </div>
     <div className={styles.infoWrapper}>
       <LearnMore
-        message={{ id: `${displayName}.helpText`, defaultMessage: 'Need help with decisions? <a>Learn more</a>' }}
+        message={{
+          id: `${displayName}.helpText`,
+          defaultMessage: 'Need help with decisions? <a>Learn more</a>',
+        }}
         href={LEARN_MORE_ADMIN}
       />
     </div>

@@ -27,6 +27,8 @@ const defaultValues: DefaultValues<Shared> = {
   status: TRANSACTION_STATUSES.CREATED,
 };
 
-export class MessageRecord extends Record<Shared>(defaultValues) implements RecordToJS<MessageType> {}
+export class MessageRecord
+  extends Record<Shared>(defaultValues)
+  implements RecordToJS<MessageType> {}
 
 export const Message = (p: Shared) => new MessageRecord(p);

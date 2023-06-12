@@ -70,7 +70,10 @@ const ExpandedParagraph = ({
   const [expanded, expandDescription] = useState(false);
   return (
     <>
-      {multiLineTextEllipsis(paragraph, expanded ? maximumCharacters : characterLimit)}
+      {multiLineTextEllipsis(
+        paragraph,
+        expanded ? maximumCharacters : characterLimit,
+      )}
       {elements && elements}
       {!expanded && (
         <div className={styles.controlContainer}>

@@ -4,15 +4,25 @@ import { useFormContext } from 'react-hook-form';
 import { useActionDialogStatus, EnabledExtensionData } from '~hooks';
 import { Colony, Member } from '~types';
 import { notNull, notUndefined } from '~utils/arrays';
-import { calculateFee, getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
+import {
+  calculateFee,
+  getSelectedToken,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens';
 
-export const extractUsersFromColonyMemberData = (members: Member[] | null | undefined) =>
+export const extractUsersFromColonyMemberData = (
+  members: Member[] | null | undefined,
+) =>
   members
     ?.map((member) => member.user)
     .filter(notNull)
     .filter(notUndefined) || [];
 
-export const getCreatePaymentDialogPayload = (colony: Colony, payload: any, networkInverseFee: string | undefined) => {
+export const getCreatePaymentDialogPayload = (
+  colony: Colony,
+  payload: any,
+  networkInverseFee: string | undefined,
+) => {
   const {
     amount,
     tokenAddress,
@@ -25,7 +35,9 @@ export const getCreatePaymentDialogPayload = (colony: Colony, payload: any, netw
 
   const decimals = getTokenDecimalsWithFallback(selectedToken?.decimals);
 
-  const amountWithFees = networkInverseFee ? calculateFee(amount, networkInverseFee, decimals).totalToPay : amount;
+  const amountWithFees = networkInverseFee
+    ? calculateFee(amount, networkInverseFee, decimals).totalToPay
+    : amount;
 
   return {
     colonyName: colony.name,
@@ -56,7 +68,13 @@ export const useCreatePaymentDialogStatus = (
     disabledInput: defaultDisabledInput,
     canCreateMotion,
     canOnlyForceAction,
-  } = useActionDialogStatus(colony, requiredRoles, [fromDomainId], enabledExtensionData, motionDomainId);
+  } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [fromDomainId],
+    enabledExtensionData,
+    motionDomainId,
+  );
   const disabledInput = defaultDisabledInput || !isOneTxPaymentEnabled;
 
   return {

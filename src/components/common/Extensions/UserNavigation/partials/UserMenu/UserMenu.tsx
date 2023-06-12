@@ -61,7 +61,11 @@ const UserMenu: FC<UserMenuProps> = ({
           onClick={() => setActiveSubmenu(null)}
         >
           <Icon name="caret-left" appearance={{ size: 'extraTiny' }} />
-          {activeSubmenu && <p className="ml-2 uppercase">{activeSubmenu && formatMessage({ id: activeSubmenu })}</p>}
+          {activeSubmenu && (
+            <p className="ml-2 uppercase">
+              {activeSubmenu && formatMessage({ id: activeSubmenu })}
+            </p>
+          )}
         </button>
         {activeSubmenu && <UserSubmenu submenuId={activeSubmenu} />}
       </div>
@@ -88,15 +92,23 @@ const UserMenu: FC<UserMenuProps> = ({
             <div className={styles.mobileButtons}>
               <Button mode="tertiaryOutline" isFullRounded>
                 <Icon name="cardholder" appearance={{ size: 'tiny' }} />
-                <p className="text-sm font-inter font-medium ml-1">{formatMessage({ id: 'connectWallet' })}</p>
+                <p className="text-sm font-inter font-medium ml-1">
+                  {formatMessage({ id: 'connectWallet' })}
+                </p>
               </Button>
               <Button mode="tertiaryOutline" isFullRounded>
                 <Icon name="list" appearance={{ size: 'extraTiny' }} />
-                <p className="text-sm font-inter font-medium ml-1">{formatMessage({ id: 'help' })}</p>
+                <p className="text-sm font-inter font-medium ml-1">
+                  {formatMessage({ id: 'help' })}
+                </p>
               </Button>
             </div>
             <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">
-              <Button mode="quaternaryOutline" isFullSize onClick={connectWallet}>
+              <Button
+                mode="quaternaryOutline"
+                isFullSize
+                onClick={connectWallet}
+              >
                 {formatMessage({ id: 'connectWallet' })}
               </Button>
             </div>
@@ -108,10 +120,18 @@ const UserMenu: FC<UserMenuProps> = ({
               {userMenuItems.map((item) => (
                 <li className="mb-4 last:mb-0" key={item.id}>
                   {item.link ? (
-                    <Link to={item.link} className="flex items-center justify-between">
+                    <Link
+                      to={item.link}
+                      className="flex items-center justify-between"
+                    >
                       <div className="flex items-center">
-                        <Icon name={item.icon} appearance={{ size: iconSize }} />
-                        <p className="ml-2">{formatMessage({ id: item.name })}</p>
+                        <Icon
+                          name={item.icon}
+                          appearance={{ size: iconSize }}
+                        />
+                        <p className="ml-2">
+                          {formatMessage({ id: item.name })}
+                        </p>
                       </div>
                     </Link>
                   ) : (
@@ -123,10 +143,18 @@ const UserMenu: FC<UserMenuProps> = ({
                       aria-controls="actionsWithVisibility"
                     >
                       <div className="flex items-center">
-                        <Icon name={item.icon} appearance={{ size: iconSize }} />
-                        <p className="ml-2">{formatMessage({ id: item.name })}</p>
+                        <Icon
+                          name={item.icon}
+                          appearance={{ size: iconSize }}
+                        />
+                        <p className="ml-2">
+                          {formatMessage({ id: item.name })}
+                        </p>
                       </div>
-                      <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
+                      <Icon
+                        name="caret-right"
+                        appearance={{ size: 'extraTiny' }}
+                      />
                     </button>
                   )}
                 </li>
@@ -137,9 +165,14 @@ const UserMenu: FC<UserMenuProps> = ({
         {isWalletConnected && (
           <div className="w-full mb-6 md:mb-5">
             <TitledContent title={{ id: 'userMenu.other' }}>
-              <Link to="/" className="flex items-center text-lg font-semibold md:font-normal md:text-md">
+              <Link
+                to="/"
+                className="flex items-center text-lg font-semibold md:font-normal md:text-md"
+              >
                 <Icon name="plugs" appearance={{ size: iconSize }} />
-                <p className="ml-2">{formatMessage({ id: 'userMenu.disconnectWalletTitle' })}</p>
+                <p className="ml-2">
+                  {formatMessage({ id: 'userMenu.disconnectWalletTitle' })}
+                </p>
               </Link>
             </TitledContent>
           </div>

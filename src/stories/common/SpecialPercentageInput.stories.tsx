@@ -26,9 +26,20 @@ const SpecialPercentageInputWithHooks = (args) => {
         .number()
         .positive('')
         .required('')
-        .typeError(formatMessage({ id: 'special.percentage.input.error.min.value' }))
-        .min(1, formatMessage({ id: 'special.percentage.input.error.min.value' }))
-        .max(maxValue, formatMessage({ id: 'special.percentage.input.error.max.value' }, { maxValue })),
+        .typeError(
+          formatMessage({ id: 'special.percentage.input.error.min.value' }),
+        )
+        .min(
+          1,
+          formatMessage({ id: 'special.percentage.input.error.min.value' }),
+        )
+        .max(
+          maxValue,
+          formatMessage(
+            { id: 'special.percentage.input.error.max.value' },
+            { maxValue },
+          ),
+        ),
     })
     .required('');
 
@@ -53,16 +64,26 @@ const SpecialPercentageInputWithHooks = (args) => {
           type="percent"
           placeholder="1"
         />
-        {errors.percentage && <FormError>{errors.percentage.message}</FormError>}
+        {errors.percentage && (
+          <FormError>{errors.percentage.message}</FormError>
+        )}
       </form>
     </div>
   );
 };
 
 export const Base: Story = {
-  render: () => <SpecialPercentageInputWithHooks defaultValue={1} id="percentage-1" />,
+  render: () => (
+    <SpecialPercentageInputWithHooks defaultValue={1} id="percentage-1" />
+  ),
 };
 
 export const Disabled: Story = {
-  render: () => <SpecialPercentageInputWithHooks defaultValue={0} disabled id="percentage-2" />,
+  render: () => (
+    <SpecialPercentageInputWithHooks
+      defaultValue={0}
+      disabled
+      id="percentage-2"
+    />
+  ),
 };

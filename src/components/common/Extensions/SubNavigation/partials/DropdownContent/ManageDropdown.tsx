@@ -8,7 +8,8 @@ import { MSG } from './consts';
 import styles from './DropdownContent.module.css';
 import LearnMore from '~shared/Extensions/LearnMore';
 
-const displayName = 'common.Extensions.SubNavigation.partials.DropdownContent.ManageDropdown';
+const displayName =
+  'common.Extensions.SubNavigation.partials.DropdownContent.ManageDropdown';
 
 const ManageDropdown: FC<PropsWithChildren> = () => (
   <div className="text-gray-400 text-xs">
@@ -16,17 +17,32 @@ const ManageDropdown: FC<PropsWithChildren> = () => (
       <FormattedMessage {...MSG.manageContentTitle} />
     </div>
     <ul className={styles.listWrapper}>
-      <LinkItem title={MSG.manageTeams} description={MSG.manageTeamsDescription} />
-      <LinkItem title={MSG.manageReputation} description={MSG.manageReputationDescription} />
-      <LinkItem title={MSG.managePermissions} description={MSG.managePermissionsDescription} />
-      <LinkItem title={MSG.organizationDetails} description={MSG.organizationDetailsDescription} />
+      <LinkItem
+        title={MSG.manageTeams}
+        description={MSG.manageTeamsDescription}
+      />
+      <LinkItem
+        title={MSG.manageReputation}
+        description={MSG.manageReputationDescription}
+      />
+      <LinkItem
+        title={MSG.managePermissions}
+        description={MSG.managePermissionsDescription}
+      />
+      <LinkItem
+        title={MSG.organizationDetails}
+        description={MSG.organizationDetailsDescription}
+      />
     </ul>
     <div className={styles.buttonWrapper}>
       <Button text={MSG.buttonTextManage} mode="secondaryOutline" isFullSize />
     </div>
     <div className={styles.infoWrapper}>
       <LearnMore
-        message={{ id: `${displayName}.helpText`, defaultMessage: 'Need help with admin? <a>Learn more</a>' }}
+        message={{
+          id: `${displayName}.helpText`,
+          defaultMessage: 'Need help with admin? <a>Learn more</a>',
+        }}
         href={LEARN_MORE_DECISIONS}
       />
     </div>

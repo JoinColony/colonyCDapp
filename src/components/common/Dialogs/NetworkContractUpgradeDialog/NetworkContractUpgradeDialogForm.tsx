@@ -5,7 +5,12 @@ import { useFormContext } from 'react-hook-form';
 
 import { SetStateFn } from '~types';
 import { useColonyContractVersion } from '~hooks';
-import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
+import {
+  ActionDialogProps,
+  DialogControls,
+  DialogHeading,
+  DialogSection,
+} from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 
@@ -22,7 +27,8 @@ import { useNetworkContractUpgradeDialogStatus } from './helpers';
 
 import styles from './NetworkContractUpgradeDialogForm.css';
 
-const displayName = 'common.NetworkContractUpgradeDialog.NetworkContractUpgradeDialogForm';
+const displayName =
+  'common.NetworkContractUpgradeDialog.NetworkContractUpgradeDialogForm';
 
 const MSG = defineMessages({
   title: {
@@ -64,8 +70,13 @@ const NetworkContractUpgradeDialogForm = ({
     hasLegacyRecoveryRole,
     isLoadingLegacyRecoveryRole,
     canOnlyForceAction,
-  } = useNetworkContractUpgradeDialogStatus(colony, requiredRoles, enabledExtensionData);
-  const { colonyContractVersion, loadingColonyContractVersion } = useColonyContractVersion();
+  } = useNetworkContractUpgradeDialogStatus(
+    colony,
+    requiredRoles,
+    enabledExtensionData,
+  );
+  const { colonyContractVersion, loadingColonyContractVersion } =
+    useColonyContractVersion();
 
   useEffect(() => {
     if (forceAction !== isForce) {
@@ -80,13 +91,18 @@ const NetworkContractUpgradeDialogForm = ({
           title={MSG.title}
           colony={colony}
           userHasPermission={userHasPermission}
-          isVotingExtensionEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
           isRootMotion
         />
       </DialogSection>
       {(isLoadingLegacyRecoveryRole || loadingColonyContractVersion) && (
         <DialogSection>
-          <MiniSpinnerLoader className={styles.loadingInfo} loadingText={MSG.loadingData} />
+          <MiniSpinnerLoader
+            className={styles.loadingInfo}
+            loadingText={MSG.loadingData}
+          />
         </DialogSection>
       )}
       {hasLegacyRecoveryRole && (
@@ -107,7 +123,11 @@ const NetworkContractUpgradeDialogForm = ({
         />
       </DialogSection>
       <DialogSection>
-        <Annotations label={MSG.annotation} name="annotation" disabled={disabledInput} />
+        <Annotations
+          label={MSG.annotation}
+          name="annotation"
+          disabled={disabledInput}
+        />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -129,8 +149,12 @@ const NetworkContractUpgradeDialogForm = ({
           disabled={disabledSubmit}
           dataTest="confirmButton"
           onSecondaryButtonClick={back}
-          isLoading={isLoadingLegacyRecoveryRole || loadingColonyContractVersion}
-          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isLoading={
+            isLoadingLegacyRecoveryRole || loadingColonyContractVersion
+          }
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>

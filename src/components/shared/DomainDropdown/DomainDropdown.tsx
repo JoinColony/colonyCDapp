@@ -34,7 +34,10 @@ interface Props {
   footerComponent?: ReactNode;
 
   /** The optional component (rendered via a function) to use as a trigger in order to open the dropdown */
-  renderActiveOptionFn?: (activeOption: SelectOption | undefined, activeOptionLabel: string) => ReactNode;
+  renderActiveOptionFn?: (
+    activeOption: SelectOption | undefined,
+    activeOptionLabel: string,
+  ) => ReactNode;
 
   /** Optional method to filter the options array */
   filterOptionsFn?: (option: SelectOption) => boolean;
@@ -113,8 +116,10 @@ const DomainDropdown = ({
     if (!colony) {
       return showAllDomainsOption;
     }
-    const sortByDomainId = ({ nativeId: firstDomainId }, { nativeId: secondDomainId }) =>
-      firstDomainId - secondDomainId;
+    const sortByDomainId = (
+      { nativeId: firstDomainId },
+      { nativeId: secondDomainId },
+    ) => firstDomainId - secondDomainId;
     const domainOptions = [
       ...showAllDomainsOption,
       ...(colony.domains?.items || [])
@@ -141,7 +146,14 @@ const DomainDropdown = ({
       return domainOptions.filter(filterOptionsFn);
     }
     return domainOptions;
-  }, [colony, currentDomainId, onDomainEdit, showDescription, showAllDomains, filterOptionsFn]);
+  }, [
+    colony,
+    currentDomainId,
+    onDomainEdit,
+    showDescription,
+    showAllDomains,
+    filterOptionsFn,
+  ]);
 
   return (
     <Select

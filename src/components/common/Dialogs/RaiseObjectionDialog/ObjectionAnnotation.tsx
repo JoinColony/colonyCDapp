@@ -19,7 +19,12 @@ interface ObjectionAnnotationProps {
 
 const ObjectionAnnotation = ({ disabled }: ObjectionAnnotationProps) => (
   <DialogSection appearance={{ border: 'top' }}>
-    <Annotations label={MSG.annotation} name="annotation" maxLength={4000} disabled={disabled} />
+    <Annotations
+      label={MSG.annotation}
+      name="annotation"
+      maxLength={4000}
+      disabled={disabled}
+    />
   </DialogSection>
 );
 

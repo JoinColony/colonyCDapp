@@ -16,14 +16,23 @@ import ActionButtons from '../partials/ActionButtons';
 
 const LazyConsensusPage: FC = () => {
   const { openIndex, onOpenIndexChange } = useAccordion();
-  const { extensionData, extensionContent, register, errors, handleSubmit, onSubmit, onChangeGovernance } =
-    useLazyConsensusPage(onOpenIndexChange, openIndex);
+  const {
+    extensionData,
+    extensionContent,
+    register,
+    errors,
+    handleSubmit,
+    onSubmit,
+    onChangeGovernance,
+  } = useLazyConsensusPage(onOpenIndexChange, openIndex);
   const { formatMessage } = useIntl();
 
   if (!extensionData) {
     return (
       <div>
-        <p>{formatMessage({ id: 'extensionDetailsPage.unsupportedExtension' })}</p>
+        <p>
+          {formatMessage({ id: 'extensionDetailsPage.unsupportedExtension' })}
+        </p>
       </div>
     );
   }
@@ -36,7 +45,10 @@ const LazyConsensusPage: FC = () => {
           topRow={
             <div className="flex sm:items-center gap-5 sm:gap-12 justify-between flex-col sm:flex-row">
               <div className="flex sm:items-center gap-2 flex-col sm:flex-row">
-                <Icon name={extensionData?.icon || ''} appearance={{ size: 'large' }} />
+                <Icon
+                  name={extensionData?.icon || ''}
+                  appearance={{ size: 'large' }}
+                />
                 {extensionData?.name?.defaultMessage && (
                   <h4 className="ml-2 text-xl font-semibold text-gray-900">
                     {extensionData?.name?.defaultMessage as React.ReactNode}
@@ -45,18 +57,25 @@ const LazyConsensusPage: FC = () => {
 
                 {/* @TODO: add condition to show/hide pills */}
                 <div className="flex justify-between items-center w-full sm:w-auto mt-5 sm:mt-0">
-                  <ExtensionStatusBadge mode="governance" text={formatMessage({ id: 'extensionsPage.governance' })} />
-                  <span className="flex sm:hidden text-gray-400 text-sm">{`17,876 ${formatMessage({
-                    id: 'active.installs',
-                  })}`}</span>
+                  <ExtensionStatusBadge
+                    mode="governance"
+                    text={formatMessage({ id: 'extensionsPage.governance' })}
+                  />
+                  <span className="flex sm:hidden text-gray-400 text-sm">{`17,876 ${formatMessage(
+                    {
+                      id: 'active.installs',
+                    },
+                  )}`}</span>
                 </div>
               </div>
 
               <div className="sm:ml-4">
                 <div className="flex gap-6 items-center justify-end min-h-[2rem]">
-                  <span className="hidden sm:flex text-gray-400 text-sm">{`17,876 ${formatMessage({
-                    id: 'active.installs',
-                  })}`}</span>
+                  <span className="hidden sm:flex text-gray-400 text-sm">{`17,876 ${formatMessage(
+                    {
+                      id: 'active.installs',
+                    },
+                  )}`}</span>
                   <ActionButtons extensionData={extensionData} />
                 </div>
               </div>
@@ -67,7 +86,10 @@ const LazyConsensusPage: FC = () => {
           <div className="w-full">
             {extensionData?.descriptionShort?.defaultMessage && (
               <div className="text-md text-gray-600">
-                {extensionData?.descriptionShort.defaultMessage as React.ReactNode}
+                {
+                  extensionData?.descriptionShort
+                    .defaultMessage as React.ReactNode
+                }
               </div>
             )}
             <br />
@@ -86,7 +108,11 @@ const LazyConsensusPage: FC = () => {
               />
             </div>
             <div className="mt-6">
-              <Accordion openIndex={openIndex} items={extensionContent || []} onOpenIndexChange={onOpenIndexChange} />
+              <Accordion
+                openIndex={openIndex}
+                items={extensionContent || []}
+                onOpenIndexChange={onOpenIndexChange}
+              />
             </div>
           </div>
         </ThreeColumns>

@@ -38,14 +38,22 @@ const ExtensionActionButton = ({ extensionData }: Props) => {
   }
 
   const handleEnableClick = () => {
-    navigate(`/colony/${colony.name}/extensions/${extensionData.extensionId}/setup`);
+    navigate(
+      `/colony/${colony.name}/extensions/${extensionData.extensionId}/setup`,
+    );
   };
 
-  const isSupportedColonyVersion = colony.version >= MIN_SUPPORTED_COLONY_VERSION;
+  const isSupportedColonyVersion =
+    colony.version >= MIN_SUPPORTED_COLONY_VERSION;
 
-  const userDomainRoles = getUserRolesForDomain(colony, wallet?.address || '', Id.RootDomain);
+  const userDomainRoles = getUserRolesForDomain(
+    colony,
+    wallet?.address || '',
+    Id.RootDomain,
+  );
 
-  const inputDisabled = !isSupportedColonyVersion || !userDomainRoles.includes(ColonyRole.Root);
+  const inputDisabled =
+    !isSupportedColonyVersion || !userDomainRoles.includes(ColonyRole.Root);
 
   if (!isInstalledExtensionData(extensionData)) {
     return (

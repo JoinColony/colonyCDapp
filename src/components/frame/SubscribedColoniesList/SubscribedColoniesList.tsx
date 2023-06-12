@@ -30,7 +30,9 @@ const SubscribedColoniesList = () => {
 
   const sortByDate = (firstWatchEntry, secondWatchEntry) => {
     const firstWatchTime = new Date(firstWatchEntry?.createdAt || 1).getTime();
-    const secondWatchTime = new Date(secondWatchEntry?.createdAt || 1).getTime();
+    const secondWatchTime = new Date(
+      secondWatchEntry?.createdAt || 1,
+    ).getTime();
     return firstWatchTime - secondWatchTime;
   };
 
@@ -45,11 +47,21 @@ const SubscribedColoniesList = () => {
         {!userLoading && isMobile && (
           <>
             {watchlist.length ? (
-              <SubscribedColoniesDropdown watchlist={[...watchlist].sort(sortByDate)} />
+              <SubscribedColoniesDropdown
+                watchlist={[...watchlist].sort(sortByDate)}
+              />
             ) : (
               <div className={styles.item}>
-                <NavLink className={styles.itemLink} to={CREATE_COLONY_ROUTE} data-test="createColony">
-                  <Icon className={styles.newColonyIcon} name="circle-plus" title={MSG.iconTitleCreateNewColony} />
+                <NavLink
+                  className={styles.itemLink}
+                  to={CREATE_COLONY_ROUTE}
+                  data-test="createColony"
+                >
+                  <Icon
+                    className={styles.newColonyIcon}
+                    name="circle-plus"
+                    title={MSG.iconTitleCreateNewColony}
+                  />
                 </NavLink>
               </div>
             )}
@@ -82,8 +94,16 @@ const SubscribedColoniesList = () => {
       </div>
       {canInteractWithNetwork && !isMobile && (
         <div className={`${styles.item} ${styles.newColonyItem}`}>
-          <NavLink className={styles.itemLink} to={CREATE_COLONY_ROUTE} data-test="createColony">
-            <Icon className={styles.newColonyIcon} name="circle-plus" title={MSG.iconTitleCreateNewColony} />
+          <NavLink
+            className={styles.itemLink}
+            to={CREATE_COLONY_ROUTE}
+            data-test="createColony"
+          >
+            <Icon
+              className={styles.newColonyIcon}
+              name="circle-plus"
+              title={MSG.iconTitleCreateNewColony}
+            />
           </NavLink>
         </div>
       )}

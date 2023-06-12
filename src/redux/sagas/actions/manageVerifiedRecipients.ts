@@ -11,8 +11,16 @@ import {
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
 
-import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
-import { getUpdatedColonyMetadataChangelog, putError, takeFrom } from '../utils';
+import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
+import {
+  getUpdatedColonyMetadataChangelog,
+  putError,
+  takeFrom,
+} from '../utils';
 
 function* manageVerifiedRecipients({
   payload: {
@@ -37,7 +45,9 @@ function* manageVerifiedRecipients({
      * Validate the required values for the transaction
      */
     if (!colonyDisplayName && colonyDisplayName !== null) {
-      throw new Error(`A colony name is required in order to add whitelist addresses to the colony`);
+      throw new Error(
+        `A colony name is required in order to add whitelist addresses to the colony`,
+      );
     }
 
     txChannel = yield call(getTxChannel, metaId);
@@ -117,7 +127,10 @@ function* manageVerifiedRecipients({
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
+    } = yield takeFrom(
+      editColony.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     // if (annotationMessage) {
@@ -150,14 +163,23 @@ function* manageVerifiedRecipients({
      * Update colony metadata in the db
      */
     if (colony.metadata) {
-      yield apolloClient.mutate<UpdateColonyMetadataMutation, UpdateColonyMetadataMutationVariables>({
+      yield apolloClient.mutate<
+        UpdateColonyMetadataMutation,
+        UpdateColonyMetadataMutationVariables
+      >({
         mutation: UpdateColonyMetadataDocument,
         variables: {
           input: {
             id: colonyAddress,
             isWhitelistActivated,
             whitelistedAddresses: verifiedAddresses,
-            changelog: getUpdatedColonyMetadataChangelog(txHash, colony.metadata, undefined, undefined, true),
+            changelog: getUpdatedColonyMetadataChangelog(
+              txHash,
+              colony.metadata,
+              undefined,
+              undefined,
+              true,
+            ),
           },
         },
         // Update colony object with modified metadata
@@ -179,7 +201,11 @@ function* manageVerifiedRecipients({
       });
     }
   } catch (error) {
-    return yield putError(ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_ERROR, error, meta);
+    return yield putError(
+      ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_ERROR,
+      error,
+      meta,
+    );
   } finally {
     txChannel.close();
   }
@@ -187,5 +213,8 @@ function* manageVerifiedRecipients({
 }
 
 export default function* manageVerifiedRecipientsSaga() {
-  yield takeEvery(ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE, manageVerifiedRecipients);
+  yield takeEvery(
+    ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE,
+    manageVerifiedRecipients,
+  );
 }

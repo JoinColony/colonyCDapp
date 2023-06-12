@@ -2,10 +2,18 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Button from '~shared/Button';
-import DropdownMenu, { DropdownMenuSection, DropdownMenuItem } from '~shared/DropdownMenu';
+import DropdownMenu, {
+  DropdownMenuSection,
+  DropdownMenuItem,
+} from '~shared/DropdownMenu';
 import MaskedAddress from '~shared/MaskedAddress';
 import MemberReputation from '~shared/MemberReputation';
-import { useAppContext, useColonyContext, useUserReputation, useCanInteractWithNetwork } from '~hooks';
+import {
+  useAppContext,
+  useColonyContext,
+  useUserReputation,
+  useCanInteractWithNetwork,
+} from '~hooks';
 import { SimpleMessageValues } from '~types/index';
 import { UserTokenBalanceData } from '~types';
 import UserTokenActivationDisplay from '~frame/UserTokenActivationButton/UserTokenActivationDisplay';
@@ -41,14 +49,20 @@ interface Props {
   tokenBalanceData?: UserTokenBalanceData;
 }
 
-const AvatarDropdownPopoverMobile = ({ spinnerMsg, tokenBalanceData }: Props) => {
+const AvatarDropdownPopoverMobile = ({
+  spinnerMsg,
+  tokenBalanceData,
+}: Props) => {
   const { colony } = useColonyContext();
   const { wallet } = useAppContext();
   const canInteractWithNetwork = useCanInteractWithNetwork();
 
   const { colonyAddress, nativeToken } = colony || {};
 
-  const { userReputation, totalReputation } = useUserReputation(colonyAddress, wallet?.address);
+  const { userReputation, totalReputation } = useUserReputation(
+    colonyAddress,
+    wallet?.address,
+  );
 
   return (
     <DropdownMenu>
@@ -61,7 +75,10 @@ const AvatarDropdownPopoverMobile = ({ spinnerMsg, tokenBalanceData }: Props) =>
         <DropdownMenuItem>
           <ItemContainer message={MSG.balance} spinnerMsg={spinnerMsg}>
             {canInteractWithNetwork && nativeToken && tokenBalanceData && (
-              <UserTokenActivationDisplay nativeToken={nativeToken} tokenBalanceData={tokenBalanceData} />
+              <UserTokenActivationDisplay
+                nativeToken={nativeToken}
+                tokenBalanceData={tokenBalanceData}
+              />
             )}
           </ItemContainer>
         </DropdownMenuItem>

@@ -8,7 +8,8 @@ import Numeral from '~shared/Numeral';
 
 import styles from './TokenErrorMessage.css';
 
-const displayName = 'common.ColonyActions.DefaultMotion.StakingWidget.TokenErrorMessage';
+const displayName =
+  'common.ColonyActions.DefaultMotion.StakingWidget.TokenErrorMessage';
 
 const MSG = defineMessages({
   tokens: {
@@ -21,9 +22,12 @@ interface TokenErrorMessageProps {
   tokensLeftToActivate: string;
 }
 
-const TokenErrorMessage = ({ tokensLeftToActivate }: TokenErrorMessageProps) => {
+const TokenErrorMessage = ({
+  tokensLeftToActivate,
+}: TokenErrorMessageProps) => {
   const { colony } = useColonyContext();
-  const { symbol: nativeTokenSymbol, decimals: nativeTokenDecimals } = colony?.nativeToken || {};
+  const { symbol: nativeTokenSymbol, decimals: nativeTokenDecimals } =
+    colony?.nativeToken || {};
   const { setIsOpen: openTokenActivationPopover } = useTokenActivationContext();
   return (
     <div className={styles.activateTokens}>

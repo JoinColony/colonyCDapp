@@ -32,7 +32,11 @@ export interface TransactionMetaProps {
   status?: TransactionStatuses;
 }
 
-const TransactionMeta = ({ createdAt, transactionHash, status }: TransactionMetaProps) => (
+const TransactionMeta = ({
+  createdAt,
+  transactionHash,
+  status,
+}: TransactionMetaProps) => (
   <ul className={styles.main}>
     {createdAt && (
       <li className={styles.items}>

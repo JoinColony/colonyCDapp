@@ -18,8 +18,9 @@ export enum ListItemStatus {
   Defused = 'Defused',
 }
 
-const stopPropagation = (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) =>
-  e.stopPropagation();
+const stopPropagation = (
+  e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>,
+) => e.stopPropagation();
 
 interface FormattedDateProps {
   parts: {
@@ -44,7 +45,9 @@ interface ListItemProps {
   /** Metadata to be displayed beneath the item title. */
   meta?: ReactNode;
   /** A click handler for the list item */
-  onClick?: (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => void;
+  onClick?: (
+    e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>,
+  ) => void;
   /** An ItemStatus. Styles the list item's 'before' psuedo-element. */
   status?: ListItemStatus;
   /** The tag to be displayed next to the title */
@@ -76,7 +79,13 @@ const ListItem = ({
       role="button"
       tabIndex={0}
     >
-      <div className={styles.avatar} onClick={stopPropagation} onKeyDown={stopPropagation} role="button" tabIndex={0}>
+      <div
+        className={styles.avatar}
+        onClick={stopPropagation}
+        onKeyDown={stopPropagation}
+        role="button"
+        tabIndex={0}
+      >
         {avatar}
       </div>
       <div className={styles.content}>

@@ -19,7 +19,13 @@ const SelectWithLogic = () => {
     setSelectedTab(selectedOption);
   };
 
-  return <Select list={tabList} selectedElement={selectedTab} handleChange={handleChange} />;
+  return (
+    <Select
+      list={tabList}
+      selectedElement={selectedTab}
+      handleChange={handleChange}
+    />
+  );
 };
 
 export const Base: Story = {

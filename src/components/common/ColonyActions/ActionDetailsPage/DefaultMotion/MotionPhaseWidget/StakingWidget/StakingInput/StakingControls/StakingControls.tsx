@@ -1,10 +1,17 @@
 import React from 'react';
 
-import { BackButton, ObjectButton, StakeButton, ActivateButton, useStakingControls } from '.';
+import {
+  BackButton,
+  ObjectButton,
+  StakeButton,
+  ActivateButton,
+  useStakingControls,
+} from '.';
 
 import styles from './StakingControls.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.StakingWidgetControls';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.StakingWidgetControls';
 
 interface StakingControlsProps {
   limitExceeded: boolean;

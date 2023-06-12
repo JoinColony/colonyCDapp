@@ -9,7 +9,8 @@ import { VOTE_FORM_KEY } from './VotingWidget';
 
 import styles from './VoteButton.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget.VoteButton';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget.VoteButton';
 
 interface VoteButtonProps {
   hasReputationToVote: boolean;
@@ -31,7 +32,13 @@ const VoteButton = ({ hasReputationToVote, hasUserVoted }: VoteButtonProps) => {
         text={formatText({
           id: hasUserVoted ? 'button.changeVote' : 'button.vote',
         })}
-        disabled={!isValid || !user || vote === undefined || !hasReputationToVote || isSubmitting}
+        disabled={
+          !isValid ||
+          !user ||
+          vote === undefined ||
+          !hasReputationToVote ||
+          isSubmitting
+        }
         type="submit"
         loading={isSubmitting}
         dataTest="voteButton"

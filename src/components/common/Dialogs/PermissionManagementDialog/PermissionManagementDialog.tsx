@@ -3,7 +3,13 @@ import { Id } from '@colony/colony-js';
 import { useNavigate } from 'react-router-dom';
 import { string, object, array, number, boolean, InferType } from 'yup';
 
-import { mergePayload, withKey, mapPayload, pipe, withMeta } from '~utils/actions';
+import {
+  mergePayload,
+  withKey,
+  mapPayload,
+  pipe,
+  withMeta,
+} from '~utils/actions';
 import { ActionTypes } from '~redux';
 import { WizardDialogType, useAppContext } from '~hooks';
 import { useGetMembersForColonyQuery } from '~gql';
@@ -60,7 +66,9 @@ const PermissionManagementDialog = ({
   const { user: currentUser } = useAppContext();
 
   const actionType =
-    !isForce && isVotingReputationEnabled ? ActionTypes.MOTION_USER_ROLES_SET : ActionTypes.ACTION_USER_ROLES_SET;
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.MOTION_USER_ROLES_SET
+      : ActionTypes.ACTION_USER_ROLES_SET;
 
   const transform = pipe(
     withKey(colonyAddress),
@@ -72,7 +80,9 @@ const PermissionManagementDialog = ({
     withMeta({ navigate }),
   );
 
-  const defaultDomain = !preselectedDomainId ? Id.RootDomain : preselectedDomainId;
+  const defaultDomain = !preselectedDomainId
+    ? Id.RootDomain
+    : preselectedDomainId;
 
   const { data } = useGetMembersForColonyQuery({
     skip: !colony?.colonyAddress,
@@ -100,7 +110,9 @@ const PermissionManagementDialog = ({
     id: user?.walletAddress,
   }));
 
-  const defaultUser = users.find((user) => user?.walletAddress === currentUser?.walletAddress) || users[0];
+  const defaultUser =
+    users.find((user) => user?.walletAddress === currentUser?.walletAddress) ||
+    users[0];
 
   return (
     <Dialog cancel={cancel}>

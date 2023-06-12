@@ -7,17 +7,24 @@ import { SpinnerProps } from './types';
 
 const displayName = 'Extensions.Spinner';
 
-const Spinner: FC<PropsWithChildren<SpinnerProps>> = ({ loadingText, children }) => {
+const Spinner: FC<PropsWithChildren<SpinnerProps>> = ({
+  loadingText,
+  children,
+}) => {
   const { loading } = useExtensionsData();
   const { formatMessage } = useIntl();
 
   const formattedLoadingText =
-    typeof loadingText === 'string' ? loadingText : loadingText && formatMessage(loadingText);
+    typeof loadingText === 'string'
+      ? loadingText
+      : loadingText && formatMessage(loadingText);
 
   if (loading) {
     return (
       <SpinnerLoader
-        loadingText={formattedLoadingText || formatMessage({ id: 'label.loading' })}
+        loadingText={
+          formattedLoadingText || formatMessage({ id: 'label.loading' })
+        }
         appearance={{ theme: 'primary', size: 'massive' }}
       />
     );

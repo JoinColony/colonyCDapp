@@ -16,7 +16,9 @@ const ReputationTab = () => {
 
   return (
     <div className="bg-base-white">
-      <div className="font-semibold text-lg text-gray-900 mb-4">{formatMessage({ id: 'reputation.tab.title' })}</div>
+      <div className="font-semibold text-lg text-gray-900 mb-4">
+        {formatMessage({ id: 'reputation.tab.title' })}
+      </div>
       <Balance nativeToken={nativeToken} wallet={wallet} />
       <TotalReputation colonyAddress={colonyAddress} wallet={wallet} />
       <PendingReputation />
