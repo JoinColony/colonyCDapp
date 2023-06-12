@@ -56,6 +56,10 @@ const ActionsListItem = ({
   const MotionTag = useMotionTag(isMotion, motionState);
   const showMotionCountdownTimer = useShouldDisplayMotionCountdownTime(motionState);
 
+  if (!colony) {
+    return null;
+  }
+
   return (
     <ListItem
       avatar={<UserAvatar size="s" user={item.initiatorUser} showInfo popperOptions={userAvatarPopoverOptions} />}

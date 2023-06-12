@@ -20,6 +20,7 @@ export type Given = (
 
 export { default as useNaiveBranchingDialogWizard, WizardDialogType } from './useNaiveBranchingDialogWizard';
 
+export { default as useUserByAddress } from './useUserByAddress';
 export { default as useColonyHasReputation } from './useColonyHasReputation';
 export { default as useDialogActionPermissions } from './useDialogActionPermissions';
 export { default as useActionDialogStatus } from './useActionDialogStatus';
