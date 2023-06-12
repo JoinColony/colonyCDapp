@@ -21,7 +21,7 @@ const LearnMore: FC<PropsWithChildren<LearnMoreProps>> = ({ message, href }) => 
           values={{
             // eslint-disable-next-line react/no-unstable-nested-components
             a: (chunks) => (
-              <ExternalLink className="underline font-semibold ml-px" href={href}>
+              <ExternalLink className="underline font-semibold" href={href}>
                 {chunks}
               </ExternalLink>
             ),
