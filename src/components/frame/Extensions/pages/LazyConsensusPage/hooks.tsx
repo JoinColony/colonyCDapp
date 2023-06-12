@@ -5,8 +5,8 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
+import { Extension } from '@colony/colony-js';
 
-import { Extension } from '@colony/colony-js/*';
 import { useAsyncFunction, useColonyContext, useExtensionData } from '~hooks';
 import { useExtensionsBadge } from '~hooks/useExtensionsBadgeStatus';
 import ContentTypeText from '~shared/Extensions/Accordion/partials/ContentTypeText';
@@ -204,7 +204,8 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
     navigate(`/colony/${colony?.name}/extensions`);
   }, [colony?.name, navigate]);
 
-  const { ...rest } = watch();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { governance, ...rest } = watch();
   const prepareInitializationParams = Object.entries(rest).map((item) => ({
     paramName: item[0],
     defaultValue: item[1],
@@ -226,16 +227,18 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
 
   const onSubmit = async (values) => {
     onOpenIndexChange?.(-1);
-    handleFormSuccess();
     try {
       await enableAsyncFunction(values).then(() => {
-        // return toast.success(
-        //   <Toast
-        //     type="success"
-        //     title={{ id: 'extensionReEnable.toast.title.success' }}
-        //     description={{ id: 'extensionReEnable.toast.description.success' }}
-        //   />,
-        // ),
+        return (
+          toast.success(
+            <Toast
+              type="success"
+              title={{ id: 'extensionReEnable.toast.title.success' }}
+              description={{ id: 'extensionReEnable.toast.description.success' }}
+            />,
+          ),
+          handleFormSuccess()
+        );
       });
     } catch (err) {
       toast.error(<Toast type="error" title="Error" description="Extension can't be changed" />);

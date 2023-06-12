@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-
 import { Extension } from '@colony/colony-js';
+
 import { useLazyConsensusPage } from './hooks';
 import Icon from '~shared/Icon';
 import RadioList from '~shared/Extensions/Fields/RadioList';
@@ -70,8 +70,8 @@ const LazyConsensusPage: FC = () => {
                   })}`}</span>
 
                   {isEnableButtonVisible && (
-                    <Button mode="primarySolid" type="submit" isFullSize={isMobile}>
-                      <p className="text-sm font-medium">{formatMessage({ id: 'extension.enableButton' })}</p>
+                    <Button mode="primarySolid" type="submit" isFullSize={isMobile} className="text-sm">
+                      {formatMessage({ id: 'status.enabled' })}
                     </Button>
                   )}
                   <ActionButtons extensionData={extensionData} />
