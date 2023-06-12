@@ -17,11 +17,10 @@ fragment Colony on Colony {
     network
   }
   tokens {
-    items {
-      token {
-        ...Token
-      }
-    }
+    ...ColonyTokensConnection
+  }
+  motionsWithUnclaimedStakes {
+    ...UnclaimedStakes
   }
   domains {
     items {
@@ -43,6 +42,41 @@ fragment Colony on Colony {
   version
   metadata {
     ...ColonyMetadata
+  }
+  roles {
+    items {
+      ...ColonyRole
+    }
+  }
+}
+
+fragment ColonyDisplayFragment on Colony {
+  colonyAddress: id
+  name
+  metadata {
+    displayName
+    avatar
+    thumbnail
+  }
+}
+
+fragment ColonyTokensConnection on ModelColonyTokensConnection {
+  items {
+    colonyTokensId: id
+    token {
+      ...Token
+    }
+  }
+}
+
+fragment UnclaimedStakes on ColonyUnclaimedStake {
+  motionId
+  unclaimedRewards {
+    address
+    rewards {
+      nay
+      yay
+    }
   }
 }
 
@@ -69,11 +103,15 @@ fragment ColonyMetadata on ColonyMetadata {
   displayName
   avatar
   thumbnail
+  isWhitelistActivated
+  whitelistedAddresses
   changelog {
     transactionHash
     newDisplayName
     oldDisplayName
     hasAvatarChanged
+    hasWhitelistChanged
+    haveTokensChanged
   }
 }
 
@@ -109,4 +147,19 @@ fragment ChainFundsClaim on ColonyChainFundsClaim {
   createdAtBlock
   createdAt
   amount
+}
+
+fragment ColonyRole on ColonyRole {
+  id
+  domain {
+    # @TODO Make a "Light" fragment out of this
+    nativeId
+  }
+  targetAddress
+  role_0
+  role_1
+  role_2
+  role_3
+  role_5
+  role_6
 }

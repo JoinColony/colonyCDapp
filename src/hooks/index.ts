@@ -20,13 +20,12 @@ export type Given = (
 
 export { default as useNaiveBranchingDialogWizard, WizardDialogType } from './useNaiveBranchingDialogWizard';
 
-export { default as useAvatarDisplayCounter } from './useAvatarDisplayCounter';
-export { default as useColonyReputation } from './useColonyReputation';
+export { default as useUserByAddress } from './useUserByAddress';
+export { default as useColonyHasReputation } from './useColonyHasReputation';
 export { default as useDialogActionPermissions } from './useDialogActionPermissions';
 export { default as useActionDialogStatus } from './useActionDialogStatus';
 export { default as useEnabledExtensions, EnabledExtensionData } from './useEnabledExtensions';
 export { default as useSelectedUser } from './useSelectedUser';
-export { default as useSplitTime } from './useSplitTime';
 export { default as useTitle } from './useTitle';
 export { default as useTokenInfo, TokenInfoProvider } from './useTokenInfo';
 export { default as useUserAvatarImageFromIPFS } from './useUserAvatarImageFromIPFS';
@@ -40,6 +39,7 @@ export { default as useTablet } from './useTablet';
 export { default as useSortedContributors } from './useSortedContributors';
 export { default as useUserReputationForTopDomains, UserDomainReputation } from './useUserReputationForTopDomains';
 export { default as useColonyContext } from './useColonyContext';
+export { default as useUserByName } from './useUserByName';
 export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
 export { default as useExtensionData } from './useExtensionData';
 export { default as useExtensionsData } from './useExtensionsData';

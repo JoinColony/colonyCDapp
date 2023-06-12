@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+
 import TokenIcon from '~shared/TokenIcon';
 import { TokenProps } from './types';
 

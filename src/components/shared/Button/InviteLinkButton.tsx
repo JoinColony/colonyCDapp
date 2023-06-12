@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import copyToClipboard from 'copy-to-clipboard';
 
 import { Tooltip } from '~shared/Popover';
-import Button, { Appearance as ButtonAppearance } from './Button';
+import Button, { Appearance } from './Button';
 
 import styles from './InviteLinkButton.css';
 
@@ -26,7 +26,7 @@ const MSG = defineMessages({
 
 interface Props {
   colonyName: string;
-  buttonAppearance?: ButtonAppearance;
+  buttonAppearance?: Appearance;
 }
 
 const InviteLinkButton = ({ colonyName, buttonAppearance }: Props) => {

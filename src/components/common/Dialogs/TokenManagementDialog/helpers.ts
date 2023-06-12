@@ -2,12 +2,14 @@ import { ADDRESS_ZERO } from '~constants';
 import { Colony } from '~types';
 import { createAddress } from '~utils/web3';
 
+import { FormValues as TokenManagementDialogFormValues } from './validation';
+
 export const getTokenManagementDialogPayload = (
   colony: Colony,
-  { tokenAddress, selectedTokenAddresses, annotationMessage },
+  { tokenAddress, selectedTokenAddresses, annotationMessage }: TokenManagementDialogFormValues,
 ) => {
-  let addresses = selectedTokenAddresses;
-  if (tokenAddress && !selectedTokenAddresses.includes(tokenAddress)) {
+  let addresses = selectedTokenAddresses ?? [];
+  if (tokenAddress && !selectedTokenAddresses?.includes(tokenAddress)) {
     addresses.push(tokenAddress);
   }
   addresses = [
@@ -23,15 +25,8 @@ export const getTokenManagementDialogPayload = (
     ),
   ];
   return {
-    colonyAddress: colony.colonyAddress,
-    colonyName: colony.name,
-    colonyDisplayName: colony.metadata?.displayName,
-    colonyAvatarImage: colony.metadata?.thumbnail,
-    colonyAvatarHash: colony.metadata?.avatar,
-    hasAvatarChanged: false,
-    colonyTokens: addresses,
-    // verifiedAddresses: whitelistedAddresses,
+    colony,
+    tokenAddresses: addresses,
     annotationMessage,
-    // isWhitelistActivated,
   };
 };

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
+
 import { useSelectedColony } from '~common/Extensions/ColonySwitcher/hooks';
 import { useAppContext, useDetectClickOutside, useMobile } from '~hooks';
 import { watchListMock } from '~common/Extensions/ColonySwitcher/consts';

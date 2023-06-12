@@ -18,6 +18,10 @@
   @apply h-[2.125rem] w-[2.125rem] relative;
 }
 
+.sm {
+  @apply h-[2.273rem] w-[2.273rem] relative;
+}
+
 .m {
   @apply h-[3.75rem] w-[3.75rem] relative;
 }

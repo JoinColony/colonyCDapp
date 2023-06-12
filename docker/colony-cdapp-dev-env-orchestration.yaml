@@ -1,6 +1,5 @@
 name: colony-cdapp-dev-env
 services:
-
   network-contracts:
     container_name: 'network'
     image: colony-cdapp-dev-env/network:latest
@@ -11,7 +10,7 @@ services:
       - '3002:3002'
       - '3004:3004'
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3002"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:3002']
       interval: 5s
       retries: 1000
 
@@ -26,7 +25,7 @@ services:
       network-contracts:
         condition: service_healthy
     links:
-    - "network-contracts:network-contracts.docker"
+      - 'network-contracts:network-contracts.docker'
 
   block-ingestor:
     container_name: 'ingestor'
@@ -41,8 +40,8 @@ services:
       amplify:
         condition: service_healthy
     links:
-      - "network-contracts:network-contracts.docker"
-      - "amplify:amplify.docker"
+      - 'network-contracts:network-contracts.docker'
+      - 'amplify:amplify.docker'
 
   amplify:
     container_name: 'amplify'
@@ -56,15 +55,15 @@ services:
         condition: service_healthy
     tty: true
     environment:
-      DEBUG_COLORS: "true"
+      DEBUG_COLORS: 'true'
       TERM: xterm-256color
       COLORTERM: truecolor
     links:
-      - "network-contracts:network-contracts.docker"
-      - "reputation-monitor:reputation-monitor.docker"
+      - 'network-contracts:network-contracts.docker'
+      - 'reputation-monitor:reputation-monitor.docker'
     ports:
       - '20002:20002'
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:20002"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:20002']
       interval: 5s
       retries: 1000

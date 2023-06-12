@@ -67,3 +67,8 @@
 .cancelDecision {
   composes: cancelDecision from '../TransactionCard/GroupedTransactionCard.css';
 }
+
+.messageContent {
+  word-break: break-word;
+  white-space: break-spaces;
+}

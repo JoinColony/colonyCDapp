@@ -3,7 +3,6 @@ import { MessageDescriptor } from 'react-intl';
 
 export * from './keyboard';
 export * from './actions';
-export * from './motions';
 export * from './extensions';
 export * from './transactions';
 export * from './wallet';
@@ -17,7 +16,6 @@ export type WithKey = {
   key: any;
 };
 
-export type Values<T> = T[keyof T];
 export type ExcludesNull = <T>(x: T | null) => x is T;
 export type RequireProps<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
 
@@ -74,6 +72,6 @@ export interface RecordToJS<T> {
   toJS: (props: T) => void;
 }
 
-export type SetStateFn = ReturnType<typeof useState>[1];
+export type SetStateFn<T = any> = ReturnType<typeof useState<T>>[1];
 
 export type Falsy = undefined | null | false;

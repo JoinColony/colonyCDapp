@@ -1,28 +1,28 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
 import { ContextModule, getContext } from '~context';
 import { Action, ActionTypes, AllActions } from '~redux';
-
-import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
-import { getUpdatedColonyMetadataChangelog, putError, takeFrom } from '../utils';
-import { transactionAddParams, transactionPending, transactionReady } from '../../actionCreators';
 import {
+  GetFullColonyByNameDocument,
   UpdateColonyMetadataDocument,
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
 
-/**
- * @TODO: Handle colony thumbnail change
- */
+import { createGroupTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import { getUpdatedColonyMetadataChangelog, putError, takeFrom } from '../utils';
+import { transactionAddParams, transactionPending, transactionReady } from '../../actionCreators';
+import { getExistingTokenAddresses, getModifiedTokenAddresses, updateColonyTokens } from '../utils/updateColonyTokens';
+
 function* editColonyAction({
   payload: {
     colony,
     colony: { colonyAddress, name: colonyName },
     colonyDisplayName,
     colonyAvatarImage,
-    // hasAvatarChanged,
+    colonyThumbnail,
+    tokenAddresses,
   },
   meta: { id: metaId, navigate },
   meta,
@@ -30,13 +30,6 @@ function* editColonyAction({
   let txChannel;
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
-
-    /*
-     * Validate the required values for the payment
-     */
-    if (!colonyDisplayName && colonyDisplayName !== null) {
-      throw new Error('A colony name is required in order to edit the colony');
-    }
 
     txChannel = yield call(getTxChannel, metaId);
 
@@ -46,17 +39,7 @@ function* editColonyAction({
       // annotateEditColonyAction: annotateEditColony,
     } = yield createTransactionChannels(metaId, ['editColonyAction', 'annotateEditColonyAction']);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(editColony, {
+    yield createGroupTransaction(editColony, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'editColony',
       identifier: colonyAddress,
@@ -131,6 +114,18 @@ function* editColonyAction({
     } = yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
+    const existingTokenAddresses = getExistingTokenAddresses(colony);
+    const modifiedTokenAddresses = getModifiedTokenAddresses(
+      colony.nativeToken.tokenAddress,
+      existingTokenAddresses,
+      tokenAddresses,
+    );
+    const haveTokensChanged = !!(tokenAddresses && modifiedTokenAddresses.length);
+
+    if (haveTokensChanged) {
+      yield updateColonyTokens(colony, existingTokenAddresses, modifiedTokenAddresses);
+    }
+
     /**
      * Save the updated metadata in the database
      */
@@ -142,9 +137,18 @@ function* editColonyAction({
             id: colonyAddress,
             displayName: colonyDisplayName,
             avatar: colonyAvatarImage,
-            changelog: getUpdatedColonyMetadataChangelog(txHash, colony.metadata, colonyDisplayName, colonyAvatarImage),
+            thumbnail: colonyThumbnail,
+            changelog: getUpdatedColonyMetadataChangelog(
+              txHash,
+              colony.metadata,
+              colonyDisplayName,
+              colonyAvatarImage,
+              false,
+              haveTokensChanged,
+            ),
           },
         },
+        refetchQueries: [GetFullColonyByNameDocument],
       });
     }
 
@@ -179,8 +183,10 @@ function* editColonyAction({
       meta,
     });
 
-    if (colonyName && navigate) {
-      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
+    if (colonyName) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_EDIT_COLONY_ERROR, error, meta);

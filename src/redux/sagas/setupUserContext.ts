@@ -4,7 +4,7 @@ import { all, call, fork, put } from 'redux-saga/effects';
 import actionsSagas from './actions';
 import colonySagas, { colonyCreateSaga } from './colony';
 import extensionSagas from './extensions';
-// import motionSagas from './motions';
+import motionSagas from './motions';
 // import whitelistSagas from './whitelist';
 // import vestingSagas from './vesting';
 import { setupUsersSagas } from './users';
@@ -29,7 +29,7 @@ function* setupContextDependentSagas() {
     call(colonySagas),
     call(colonyCreateSaga),
     call(extensionSagas),
-    // call(motionSagas),
+    call(motionSagas),
     // call(whitelistSagas),
     // call(vestingSagas),
     call(setupUsersSagas),

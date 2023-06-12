@@ -2,15 +2,14 @@ import React, { useMemo, useState } from 'react';
 import { Outlet, Route, Routes as RoutesSwitch, useLocation } from 'react-router-dom';
 
 import ColonyActions from '~common/ColonyActions';
-// import ColonyEvents from '~dashboard/ColonyEvents';
 
 import { COLONY_EVENTS_ROUTE, COLONY_EXTENSIONS_ROUTE, COLONY_EXTENSION_DETAILS_ROUTE } from '~routes/index';
 import NotFoundRoute from '~routes/NotFoundRoute';
-import ColonyExtensions from '~common/ColonyExtensions';
-import ExtensionDetails from '~common/Extensions/ExtensionDetails';
 import { useColonyContext } from '~hooks';
 
 import ColonyHomeLayout from './ColonyHomeLayout';
+import ColonyExtensions from '~common/ColonyExtensions';
+import ExtensionDetails from '~common/Extensions/ExtensionDetails';
 
 const displayName = 'common.ColonyHome';
 

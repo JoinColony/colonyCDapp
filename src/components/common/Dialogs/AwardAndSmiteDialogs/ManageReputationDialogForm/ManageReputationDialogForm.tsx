@@ -10,17 +10,21 @@ import { HookFormSelect as Select, Annotations } from '~shared/Fields';
 import ExternalLink from '~shared/Extensions/ExternalLink';
 import SingleUserPicker, { filterUserSelection } from '~shared/SingleUserPicker';
 import UserAvatar from '~shared/UserAvatar';
-// import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import { REPUTATION_LEARN_MORE } from '~constants/externalUrls';
 
-import { MemberUser, User } from '~types';
+import { MemberUser, SetStateFn, User } from '~types';
 
 import { useActionDialogStatus, useUserReputation } from '~hooks';
 import { sortBy } from '~utils/lodash';
 import { notNull } from '~utils/arrays';
 import { findDomainByNativeId } from '~utils/domains';
 
-import { NoPermissionMessage, CannotCreateMotionMessage, PermissionRequiredInfo } from '../../Messages';
+import {
+  NoPermissionMessage,
+  CannotCreateMotionMessage,
+  PermissionRequiredInfo,
+  NotEnoughReputation,
+} from '../../Messages';
 import ReputationAmountInput from './ReputationAmountInput';
 import TeamDropdownItem from './TeamDropdownItem';
 
@@ -69,10 +73,12 @@ const MSG = defineMessages({
 
 interface Props extends ActionDialogProps {
   nativeTokenDecimals: number;
-  verifiedUsers: MemberUser[];
+  users: MemberUser[];
   schemaUserReputation?: number;
   updateSchemaUserReputation?: (userPercentageReputation: number, totalRep?: string) => void;
   isSmiteAction?: boolean;
+  isForce: boolean;
+  setIsForce: SetStateFn;
 }
 
 const supRenderAvatar = (item: ItemDataType<User>) => <UserAvatar user={item} size="xs" />;
@@ -86,21 +92,25 @@ const ManageReputationDialogForm = ({
   schemaUserReputation,
   updateSchemaUserReputation,
   nativeTokenDecimals,
-  verifiedUsers,
+  users,
   isSmiteAction = false,
   enabledExtensionData,
+  isForce,
+  setIsForce,
 }: Props) => {
   const { watch, trigger } = useFormContext();
-  const { domainId, user: selectedUser } = watch();
+  const { domainId, motionDomainId, user: selectedUser, forceAction } = watch();
+
+  useEffect(() => {
+    if (forceAction !== isForce) {
+      setIsForce(forceAction);
+    }
+  }, [forceAction, isForce, setIsForce]);
 
   const requiredRoles = [isSmiteAction ? ColonyRole.Arbitration : ColonyRole.Root];
 
-  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } = useActionDialogStatus(
-    colony,
-    requiredRoles,
-    [domainId],
-    enabledExtensionData,
-  );
+  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion, canOnlyForceAction } =
+    useActionDialogStatus(colony, requiredRoles, [domainId], enabledExtensionData, motionDomainId);
 
   const { userReputation } = useUserReputation(colonyAddress, selectedUser?.walletAddress, Number(domainId));
 
@@ -143,9 +153,9 @@ const ManageReputationDialogForm = ({
     }
   }, [schemaUserReputation, isSmiteAction, trigger]);
 
-  const formattedData = verifiedUsers.map((user) => ({
+  const formattedData = users.map((user) => ({
     ...user,
-    id: user,
+    id: user.walletAddress,
   }));
 
   return (
@@ -156,6 +166,11 @@ const ManageReputationDialogForm = ({
           titleValues={{
             isSmiteAction,
           }}
+          userHasPermission={userHasPermission}
+          colony={colony}
+          isVotingExtensionEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isRootMotion={!isSmiteAction}
+          selectedDomainId={selectedDomain?.nativeId}
         >
           {!isSmiteAction && (
             <div className={styles.warningContainer}>
@@ -209,7 +224,7 @@ const ManageReputationDialogForm = ({
               name="domainId"
               appearance={{ theme: 'grey', width: 'fluid' }}
               renderActiveOption={renderActiveOption}
-              disabled={!userHasPermission}
+              disabled={!userHasPermission || canOnlyForceAction}
             />
           </div>
         </div>
@@ -238,12 +253,12 @@ const ManageReputationDialogForm = ({
           <NoPermissionMessage requiredPermissions={requiredRoles} domainName={domainName} />
         </DialogSection>
       )}
-      {/* {onlyForceAction && (
-        <NotEnoughReputation
-          appearance={{ marginTop: 'negative' }}
-          domainId={Number(domainId)}
-        />
-      )} */}
+
+      {canOnlyForceAction && (
+        <DialogSection>
+          <NotEnoughReputation appearance={{ marginTop: 'negative' }} domainId={Number(motionDomainId)} />
+        </DialogSection>
+      )}
       {!canCreateMotion && (
         <DialogSection>
           <CannotCreateMotionMessage />

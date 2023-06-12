@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useState } from 'react';
+
 import { AccordionContentItemProps } from '../types';
 import AccordionHeader from './AccordionHeader';
 import { accordionAnimation } from '~constants/accordionAnimation';

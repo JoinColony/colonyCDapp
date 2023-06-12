@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
+
 import { ColoniesDropdown, ColonyAvatarWrapper } from '~common/Extensions/ColonySwitcher';
 import ColonyDropdownMobile from '~common/Extensions/ColonySwitcher/partials/ColonyDropdownMobile';
 import { useMobile } from '~hooks';

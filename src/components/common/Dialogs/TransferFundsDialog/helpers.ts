@@ -4,7 +4,7 @@ import moveDecimal from 'move-decimal-point';
 import { useFormContext } from 'react-hook-form';
 
 import { useActionDialogStatus, useAppContext, useTransformer, EnabledExtensionData } from '~hooks';
-import { getUserRolesForDomain } from '~redux/transformers';
+import { getUserRolesForDomain } from '~transformers';
 import { Colony } from '~types';
 import { userHasRole } from '~utils/checks';
 import { findDomainByNativeId } from '~utils/domains';
@@ -43,7 +43,7 @@ export const useTransferFundsDialogStatus = (
   const { wallet } = useAppContext();
   const { watch } = useFormContext();
   const { fromDomainId, toDomainId } = watch();
-  const fromDomainRoles = useTransformer(getUserRolesForDomain, [colony, wallet?.address, fromDomainId]);
+  const fromDomainRoles = useTransformer(getUserRolesForDomain, [colony, wallet?.address ?? '', fromDomainId]);
   const { userHasPermission, disabledSubmit, disabledInput, canCreateMotion, canOnlyForceAction } =
     useActionDialogStatus(colony, requiredRoles, [fromDomainId, toDomainId], enabledExtensionData);
 

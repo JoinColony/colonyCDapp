@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
+
 import Icon from '~shared/Icon';
 import styles from './ThemeSwitcher.module.css';
 import { usePageThemeContext } from '~context/PageThemeContext';

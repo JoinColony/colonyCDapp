@@ -15,7 +15,7 @@ import {
 } from '~hooks';
 import { getNetworkReleaseLink } from '~utils/external';
 import { hasRoot, mustColonyBeUpgraded, canColonyBeUpgraded } from '~utils/checks';
-import { getAllUserRoles } from '~redux/transformers';
+import { getAllUserRoles } from '~transformers';
 
 import styles from './ColonyUpgrade.css';
 
@@ -46,7 +46,7 @@ const ColonyUpgrade = () => {
       enabledExtensionData,
     });
 
-  const allUserRoles = useTransformer(getAllUserRoles, [colony, wallet?.address]);
+  const allUserRoles = useTransformer(getAllUserRoles, [colony, wallet?.address ?? '']);
 
   const canUpgradeColony = user?.name && hasRoot(allUserRoles);
 

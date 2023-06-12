@@ -1,7 +1,10 @@
 declare namespace TokenManagementDialogFormCssNamespace {
   export interface ITokenManagementDialogFormCss {
     description: string;
+    domainSelectContainer: string;
     marginSize: string;
+    permissionChoiceContainer: string;
+    singleUserContainer: string;
     textarea: string;
     tokenChoiceContainer: string;
     wideButton: string;

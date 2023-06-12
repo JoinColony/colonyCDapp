@@ -1,5 +1,6 @@
 declare namespace ToggleCssNamespace {
   export interface IToggleCss {
+    checkboxContainer: string;
     checked: string;
     container: string;
     delegate: string;

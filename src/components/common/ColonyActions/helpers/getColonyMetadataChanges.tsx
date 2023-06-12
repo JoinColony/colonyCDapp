@@ -4,17 +4,31 @@ import { Colony, ColonyAction, SimpleMessageValues } from '~types';
 import { formatText } from '~utils/intl';
 
 export const getColonyMetadataChangesValue = ({ transactionHash }: ColonyAction, colony?: Colony) => {
-  const { newDisplayName, oldDisplayName, hasAvatarChanged } =
+  const { newDisplayName, oldDisplayName, hasAvatarChanged, hasWhitelistChanged, haveTokensChanged } =
     colony?.metadata?.changelog?.find((item) => item.transactionHash === transactionHash) || {};
 
   const hasNameChanged = oldDisplayName && newDisplayName && newDisplayName !== oldDisplayName;
 
-  const hasNoChanges = !hasNameChanged && !hasAvatarChanged;
+  const hasNoChanges = !hasNameChanged && !hasAvatarChanged && !hasWhitelistChanged && !haveTokensChanged;
 
   if (!colony || hasNoChanges) {
     return formatText({
       id: 'colonyMetadata.fallback',
       defaultMessage: 'metadata, but the values are the same',
+    });
+  }
+
+  if (hasWhitelistChanged) {
+    return formatText({
+      id: 'colonyMetadata.change',
+      defaultMessage: 'address book',
+    });
+  }
+
+  if (haveTokensChanged) {
+    return formatText({
+      id: 'colonyMetadata.change',
+      defaultMessage: 'tokens',
     });
   }
 
@@ -46,7 +60,8 @@ export const getColonyMetadataChangesValue = ({ transactionHash }: ColonyAction,
         },
         values,
       )}
-      {index < changeValues.length - 1 && ', '}
+      {index < changeValues.length - 2 && ', '}
+      {index === changeValues.length - 2 && ' and its '}
     </>
   ));
 };

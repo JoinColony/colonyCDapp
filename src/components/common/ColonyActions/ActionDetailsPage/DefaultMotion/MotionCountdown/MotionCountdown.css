@@ -1,0 +1,12 @@
+.countdownContainer {
+  display: flex;
+  align-items: baseline;
+}
+
+.votingCountdownContainer {
+  justify-content: flex-end;
+}
+
+.escalateContainer {
+  column-gap: 10px;
+}

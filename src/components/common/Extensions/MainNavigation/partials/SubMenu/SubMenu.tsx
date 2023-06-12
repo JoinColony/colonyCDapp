@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
+
 import { SubMenuProps } from './types';
 import LearnMore from '~shared/Extensions/LearnMore/LearnMore';
 import { LEARN_MORE_PAYMENTS } from '~constants';
