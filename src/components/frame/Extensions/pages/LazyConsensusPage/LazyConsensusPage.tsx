@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
+import { Extension } from '@colony/colony-js';
 import { useLazyConsensusPage } from './hooks';
 import Icon from '~shared/Icon';
 import RadioList from '~shared/Extensions/Fields/RadioList';
@@ -13,12 +14,16 @@ import Spinner from '~shared/Extensions/Spinner';
 import ThreeColumns from '~frame/Extensions/ThreeColumns/ThreeColumns';
 import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails/ExtensionDetails';
 import ActionButtons from '../partials/ActionButtons';
+import Button from '~shared/Extensions/Button/Button';
+import { isInstalledExtensionData } from '~utils/extensions';
+import { useMobile } from '~hooks';
 
 const LazyConsensusPage: FC = () => {
   const { openIndex, onOpenIndexChange } = useAccordion();
   const { extensionData, extensionContent, register, errors, handleSubmit, onSubmit, onChangeGovernance } =
     useLazyConsensusPage(onOpenIndexChange, openIndex);
   const { formatMessage } = useIntl();
+  const isMobile = useMobile();
 
   if (!extensionData) {
     return (
@@ -27,6 +32,12 @@ const LazyConsensusPage: FC = () => {
       </div>
     );
   }
+
+  const isEnableButtonVisible =
+    isInstalledExtensionData(extensionData) &&
+    extensionData.uninstallable &&
+    !extensionData.isDeprecated &&
+    extensionData?.extensionId === Extension.VotingReputation;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -57,6 +68,12 @@ const LazyConsensusPage: FC = () => {
                   <span className="hidden sm:flex text-gray-400 text-sm">{`17,876 ${formatMessage({
                     id: 'active.installs',
                   })}`}</span>
+
+                  {isEnableButtonVisible && (
+                    <Button mode="primarySolid" type="submit" isFullSize={isMobile}>
+                      <p className="text-sm font-medium">{formatMessage({ id: 'extension.enableButton' })}</p>
+                    </Button>
+                  )}
                   <ActionButtons extensionData={extensionData} />
                 </div>
               </div>

@@ -71,6 +71,7 @@ const TokenManagementDialog = ({ colony, cancel, close, callStep, prevStep, enab
           back={prevStep && callStep ? () => callStep(prevStep) : undefined}
           close={close}
           enabledExtensionData={enabledExtensionData}
+          // @ts-ignore @TODO: fix me
           isForce={isForce}
           setIsForce={setIsForce}
         />

@@ -34,11 +34,7 @@ export const useExtensionItem = (extensionId: string) => {
     }
   }, [asyncFunction, extensionValues]);
 
-  // when extensionId: "VotingReputation" and extenstion is installed and enabled then url should redirect to extenstion setup page
-  const extensionUrl =
-    isExtensionInstalled && extensionId === 'VotingReputation' && extensionData.isEnabled
-      ? `/colony/${colony?.name}/extensions/${extensionId}/setup`
-      : `/colony/${colony?.name}/extensions/${extensionId}`;
+  const extensionUrl = `/colony/${colony?.name}/extensions/${extensionId}`;
 
   return {
     extensionUrl,
