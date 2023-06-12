@@ -1,5 +1,6 @@
 import React, { PropsWithChildren, FC } from 'react';
 import { FormattedMessage } from 'react-intl';
+
 import Button from '~shared/Extensions/Button/Button';
 import { LEARN_MORE_ADMIN } from '~constants';
 import LinkItem from '../LinkItem';
@@ -11,7 +12,7 @@ const displayName = 'common.Extensions.SubNavigation.partials.DropdownContent.De
 
 const DecideDropdown: FC<PropsWithChildren> = () => (
   <div className="text-gray-400 text-xs">
-    <div className="hidden sm:block mx-6 mt-6">
+    <div className="hidden sm:block mx-6 mt-6 font-medium">
       <FormattedMessage {...MSG.decisionsContentTitle} />
     </div>
     <ul className={styles.listWrapper}>

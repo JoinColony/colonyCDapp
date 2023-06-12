@@ -1,10 +1,10 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
 // import { ContextModule, getContext } from '~context';
 import { Action, ActionTypes, AllActions } from '~redux';
 
-import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import { createGroupTransaction, createTransactionChannels, getTxChannel } from '../transactions';
 import { transactionReady } from '~redux/actionCreators';
 import { putError, takeFrom } from '../utils';
 
@@ -30,22 +30,9 @@ function* tokenUnlockAction({
     ]);
 
     /*
-     * Create a grouped transaction
-     */
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    /*
      * Add the tokenUnlock transaction to the group
      */
-    yield createGroupTransaction(tokenUnlock, {
+    yield createGroupTransaction(tokenUnlock, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'unlockToken',
       identifier: colonyAddress,
@@ -134,8 +121,10 @@ function* tokenUnlockAction({
       meta,
     });
 
-    if (colonyName && navigate) {
-      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
+    if (colonyName) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     putError(ActionTypes.ACTION_UNLOCK_TOKEN_ERROR, error, meta);

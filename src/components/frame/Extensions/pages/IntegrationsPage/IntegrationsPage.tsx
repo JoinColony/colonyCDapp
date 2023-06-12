@@ -7,7 +7,7 @@ import Spinner from '~shared/Extensions/Spinner';
 const displayName = 'frame.Extensions.pages.IntegrationsPage';
 
 const IntegrationsPage: FC = () => (
-  <Spinner loadingText="integrationsPage">
+  <Spinner loadingText={{ id: 'loading.integrationsPage' }}>
     <TwoColumns aside={<Navigation />}>Integrations page</TwoColumns>
   </Spinner>
 );

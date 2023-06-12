@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+
 import UserPermissionsBadge from '~common/Extensions/UserPermissionsBadge';
 import { PermissionsProps } from '../types';
 

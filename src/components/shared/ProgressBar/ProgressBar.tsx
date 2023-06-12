@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -5,7 +6,7 @@ import { getMainClasses } from '~utils/css';
 
 import styles from './ProgressBar.css';
 
-interface Appearance {
+export interface Appearance {
   barTheme?: 'primary' | 'danger';
   backgroundTheme?: 'default' | 'dark' | 'transparent';
   size?: 'small' | 'normal';
@@ -24,6 +25,7 @@ interface Props {
   value?: number;
   max?: number;
   threshold?: number;
+  hidePercentage?: boolean;
 }
 
 const displayName = 'ProgressBar';
@@ -39,19 +41,26 @@ const ProgressBar = ({
   value = 0,
   max = 100,
   threshold,
+  hidePercentage = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const titleText = formatMessage(MSG.titleProgress, { value, max });
   return (
     <div className={`${styles.wrapper} ${getMainClasses(appearance, styles)}`}>
-      {threshold && (
+      {!!threshold && (
         <div
           style={{
             left: `calc(${threshold}% - 12px)`,
           }}
           className={styles.threshold}
         >
-          <span className={styles.thresholdPercentage}>{threshold}%</span>
+          <span
+            className={classNames(styles.thresholdPercentage, {
+              [styles.thresholdVisibility]: hidePercentage,
+            })}
+          >
+            {threshold}%
+          </span>
           <div className={styles.thresholdSeparator} />
         </div>
       )}

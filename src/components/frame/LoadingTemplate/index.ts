@@ -1,1 +1,1 @@
-export { default } from './LoadingTemplate';
+export { default, failedLoadingDuration } from './LoadingTemplate';

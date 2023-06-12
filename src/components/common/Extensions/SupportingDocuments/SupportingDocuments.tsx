@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+
 import LinkWrapper from './LinkWrapper';
 import { SupportingDocumentsProps } from './types';
 

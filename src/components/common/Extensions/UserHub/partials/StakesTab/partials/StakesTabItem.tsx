@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+
 import ExtensionsStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
 import { StakesProps } from '../types';

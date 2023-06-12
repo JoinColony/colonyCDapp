@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useIntl } from 'react-intl';
+
 import SpecialInput from '~common/Extensions/SpecialInput/SpecialInput';
 import { FormPercentageInput } from '~common/Extensions/SpecialInput/types';
 import FormError from '~shared/Extensions/FormError/FormError';

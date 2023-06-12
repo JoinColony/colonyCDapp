@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { BrowserRouter as Router } from 'react-router-dom';
+
 import CalamityBanner from '~common/Extensions/CalamityBanner';
 
 const meta: Meta<typeof CalamityBanner> = {

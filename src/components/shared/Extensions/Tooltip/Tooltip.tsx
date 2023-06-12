@@ -1,5 +1,6 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
+
 import Icon from '~shared/Icon';
 import styles from './Tooltip.module.css';
 import { TooltipProps } from './types';

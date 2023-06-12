@@ -15,13 +15,12 @@ export type ColonyActionsActionTypes =
   | UniqueActionType<
       ActionTypes.ACTION_DOMAIN_CREATE,
       {
-        colonyAddress: Address;
-        colonyName?: string;
         domainName: string;
         domainColor: DomainColor;
         domainPurpose: string;
         annotationMessage?: string;
         parentId?: number;
+        colony: Colony;
       },
       MetaWithNavigate<object>
     >
@@ -67,14 +66,9 @@ export type ColonyActionsActionTypes =
         colony: Colony;
         colonyDisplayName?: string;
         colonyAvatarImage?: string;
-        hasAvatarChanged?: boolean;
-        colonyTokens?: Address[];
-        verifiedAddresses?: Address[];
-        isWhitelistActivated?: boolean;
+        colonyThumbnail?: string;
+        tokenAddresses?: Address[];
         annotationMessage?: string;
-        /*
-         * @TODO I think this will also store the subscribed-to tokens list
-         */
       },
       MetaWithNavigate<object>
     >
@@ -130,7 +124,7 @@ export type ColonyActionsActionTypes =
         roles: Record<ColonyRole, boolean>;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_USER_ROLES_SET_ERROR, object>
   | ActionTypeWithMeta<ActionTypes.ACTION_USER_ROLES_SET_SUCCESS, MetaWithHistory<object>>
@@ -199,7 +193,7 @@ export type ColonyActionsActionTypes =
         colonyAddress: Address;
         colonyName: string;
         domainId: number;
-        walletAddress: Address;
+        userAddress: Address;
         amount: BigNumber;
         isSmitingReputation?: boolean;
         annotationMessage?: string;
@@ -207,4 +201,18 @@ export type ColonyActionsActionTypes =
       MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_MANAGE_REPUTATION_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS, MetaWithNavigate<object>>;
+  | ActionTypeWithMeta<ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS, MetaWithNavigate<object>>
+  | UniqueActionType<
+      ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE,
+      {
+        colony: Colony;
+        colonyDisplayName: string;
+        verifiedAddresses: Address[];
+        colonyTokenAddresses: Address[];
+        annotationMessage?: string;
+        isWhitelistActivated: boolean;
+      },
+      MetaWithNavigate<object>
+    >
+  | ErrorActionType<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_ERROR, object>
+  | UniqueActionType<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_SUCCESS, object, object>;

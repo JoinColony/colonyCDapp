@@ -4,7 +4,7 @@ import React from 'react';
 import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
 import { HookFormInputProps } from '~shared/Fields/Input/HookForm';
-import { Message } from '~types';
+import { UniversalMessageValues, Message } from '~types';
 
 import styles from '../InputStatus.css';
 
@@ -12,6 +12,9 @@ interface HookFormInputStatusProps
   extends Pick<HookFormInputProps, 'appearance' | 'status' | 'statusValues' | 'isLoading' | 'loadingAnnotation'> {
   /** Error text (if applicable) */
   error?: Message;
+
+  /** Error message vaulues (if applicable) */
+  errorValues?: UniversalMessageValues;
 
   /** Has input field been touched? */
   touched?: boolean;
@@ -22,6 +25,7 @@ const displayName = 'HookFormInputStatus';
 const HookFormInputStatus = ({
   appearance = {},
   error,
+  errorValues,
   isLoading,
   loadingAnnotation = '',
   status,
@@ -29,7 +33,7 @@ const HookFormInputStatus = ({
   touched,
 }: HookFormInputStatusProps) => {
   const { formatMessage } = useIntl();
-  const errorText = formatText(error);
+  const errorText = formatText(error, errorValues);
   const statusText = formatText(status, statusValues);
   const loadingText = formatMessage({ id: 'status.loading' }, { optionalText: formatText(loadingAnnotation) });
   const text = errorText || statusText;

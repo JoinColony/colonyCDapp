@@ -159,6 +159,6 @@
       "Value": {
         "Ref": "LambdaExecutionRole"
       }
+      }
     }
   }
-}

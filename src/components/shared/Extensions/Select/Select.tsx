@@ -1,5 +1,6 @@
 import React, { useState, KeyboardEvent } from 'react';
 import clsx from 'clsx';
+
 import { SelectProps } from './types';
 import styles from './Select.module.css';
 import Icon from '~shared/Icon';

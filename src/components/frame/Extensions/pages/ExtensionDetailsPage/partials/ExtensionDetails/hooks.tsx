@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { toast } from 'react-toastify';
+
 import { useAppContext, useAsyncFunction, useColonyContext } from '~hooks';
 import { AnyExtensionData } from '~types';
 import { ActionTypes } from '~redux';

@@ -92,7 +92,7 @@ const MessageCardDetails = ({ message: { status, purpose, message: messageConten
                 </div>
               )}
             </span>
-            {messageContent}
+            <span className={styles.messageContent}>{messageContent}</span>
           </div>
         </Card>
       </CardList>

@@ -1,13 +1,9 @@
-.carouselWrapper {
-  @apply lg:w-[35.75rem];
-}
-
 .carouselWrapper [class~='carousel'] {
   @apply relative pb-9;
 }
 
 .carouselWrapper [class~='slide'] {
-  @apply sm:h-[15.5rem] sm:mr-4 [&_img]:object-cover [&_img]:sm:h-[15.5rem]  min-w-full sm:min-w-[31.875rem];
+  @apply sm:mr-4 [&_img]:aspect-[510/248] [&_img]:object-cover;
 }
 
 .carouselWrapper [class~='control-dots'] {

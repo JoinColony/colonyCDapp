@@ -1,5 +1,4 @@
 import pipe from 'lodash/fp/pipe';
-
 import { ActionTypes, UniqueActionType } from '~redux';
 
 export type ActionTransformFnType = (arg0: UniqueActionType<any, any, any>) => UniqueActionType<any, any, object>;

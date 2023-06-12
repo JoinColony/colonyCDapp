@@ -1,5 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
+
 import { useGetUserTokenBalanceQuery } from '~gql';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import Numeral from '~shared/Numeral';

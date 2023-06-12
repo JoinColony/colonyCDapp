@@ -3,19 +3,23 @@ import { ReactNode } from 'react';
 
 import { isEmpty } from '~utils/lodash';
 import {
-  ColonyActionType,
-  ColonyMotions,
   Address,
   Token,
   Domain as ColonyDomain,
-  ActionItemType,
+  AnyActionType,
+  ExtendedColonyActionType,
   ActionUserRoles,
+  ColonyActionType,
+  ColonyMetadata,
+  ColonyAction,
 } from '~types';
+import { ColonyActionRoles } from '~gql';
 
 import { formatText } from './intl';
 import { MotionVote } from './colonyMotions';
 
 export enum ActionPageDetails {
+  Type = 'Type',
   FromDomain = 'FromDomain',
   ToDomain = 'ToDomain',
   Domain = 'Domain',
@@ -26,75 +30,99 @@ export enum ActionPageDetails {
   Permissions = 'Permissions',
   ReputationChange = 'ReputationChange',
   Author = 'Author',
+  Generic = 'Generic',
+  Motion = 'Motion',
 }
 
-type DetailsValuesMap = Partial<{
-  [key in ActionPageDetails]: boolean;
-}>;
+type DetailsValuesMap = Partial<Record<ActionPageDetails, boolean>>;
 
-/*
- * Which details display for which type
- */
-type ActionsDetailsMap = Partial<{
-  [key in ActionItemType]: ActionPageDetails[];
-}>;
+const MOTION_SUFFIX = 'MOTION';
+const isMotion = (actionType: AnyActionType) => actionType.includes(MOTION_SUFFIX);
 
-export const DETAILS_FOR_ACTION: ActionsDetailsMap = {
-  [ColonyActionType.Payment]: [ActionPageDetails.FromDomain, ActionPageDetails.ToRecipient, ActionPageDetails.Amount],
-  [ColonyActionType.MoveFunds]: [ActionPageDetails.FromDomain, ActionPageDetails.ToDomain, ActionPageDetails.Amount],
-  [ColonyActionType.UnlockToken]: [ActionPageDetails.Domain],
-  [ColonyActionType.MintTokens]: [ActionPageDetails.Amount],
-  [ColonyActionType.CreateDomain]: [ActionPageDetails.Domain, ActionPageDetails.Description],
-  [ColonyActionType.ColonyEdit]: [ActionPageDetails.Name],
-  [ColonyActionType.EditDomain]: [ActionPageDetails.Domain, ActionPageDetails.Description],
-  [ColonyActionType.SetUserRoles]: [
-    ActionPageDetails.Domain,
-    ActionPageDetails.ToRecipient,
-    ActionPageDetails.Permissions,
-  ],
-  [ColonyActionType.Recovery]: [],
-  [ColonyActionType.EmitDomainReputationPenalty]: [
-    ActionPageDetails.Domain,
-    ActionPageDetails.ToRecipient,
-    ActionPageDetails.ReputationChange,
-  ],
-  [ColonyActionType.EmitDomainReputationReward]: [
-    ActionPageDetails.Domain,
-    ActionPageDetails.ToRecipient,
-    ActionPageDetails.ReputationChange,
-  ],
-  [ColonyMotions.MintTokensMotion]: [ActionPageDetails.Amount],
-  [ColonyMotions.PaymentMotion]: [
-    ActionPageDetails.FromDomain,
-    ActionPageDetails.ToRecipient,
-    ActionPageDetails.Amount,
-  ],
-  [ColonyMotions.MoveFundsMotion]: [ActionPageDetails.FromDomain, ActionPageDetails.ToDomain, ActionPageDetails.Amount],
-  [ColonyMotions.MintTokensMotion]: [ActionPageDetails.Amount],
-  [ColonyMotions.CreateDomainMotion]: [ActionPageDetails.Domain, ActionPageDetails.Description],
-  [ColonyMotions.ColonyEditMotion]: [ActionPageDetails.Name],
-  [ColonyMotions.EditDomainMotion]: [ActionPageDetails.Domain, ActionPageDetails.Description],
-  [ColonyMotions.SetUserRolesMotion]: [
-    ActionPageDetails.Domain,
-    ActionPageDetails.ToRecipient,
-    ActionPageDetails.Permissions,
-  ],
-  [ColonyMotions.EmitDomainReputationPenaltyMotion]: [
-    ActionPageDetails.Domain,
-    ActionPageDetails.ToRecipient,
-    ActionPageDetails.ReputationChange,
-  ],
-  [ColonyMotions.EmitDomainReputationRewardMotion]: [
-    ActionPageDetails.Domain,
-    ActionPageDetails.ToRecipient,
-    ActionPageDetails.ReputationChange,
-  ],
-  [ColonyMotions.UnlockTokenMotion]: [],
-  [ColonyMotions.CreateDecisionMotion]: [ActionPageDetails.Author],
+export const getDetailItemsKeys = (actionType: AnyActionType) => {
+  switch (true) {
+    case actionType.includes(ColonyActionType.Payment): {
+      return [
+        ActionPageDetails.Type,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
+        ActionPageDetails.FromDomain,
+        ActionPageDetails.ToRecipient,
+        ActionPageDetails.Amount,
+      ];
+    }
+    case actionType.includes(ColonyActionType.MoveFunds): {
+      return [
+        ActionPageDetails.Type,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
+        ActionPageDetails.FromDomain,
+        ActionPageDetails.ToDomain,
+        ActionPageDetails.Amount,
+      ];
+    }
+    case actionType.includes(ColonyActionType.UnlockToken): {
+      return [ActionPageDetails.Type, isMotion(actionType) ? ActionPageDetails.Motion : ActionPageDetails.Domain];
+    }
+    case actionType.includes(ColonyActionType.MintTokens): {
+      return [ActionPageDetails.Type, isMotion(actionType) ? ActionPageDetails.Motion : '', ActionPageDetails.Amount];
+    }
+    case actionType.includes(ColonyActionType.CreateDomain): {
+      return [
+        ActionPageDetails.Type,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
+        ActionPageDetails.Domain,
+        ActionPageDetails.Description,
+      ];
+    }
+    case actionType.includes(ColonyActionType.ColonyEdit): {
+      return [ActionPageDetails.Type, ActionPageDetails.Name];
+    }
+    case actionType.includes(ColonyActionType.EditDomain): {
+      return [
+        ActionPageDetails.Type,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
+        ActionPageDetails.Domain,
+        ActionPageDetails.Description,
+      ];
+    }
+    case actionType.includes(ColonyActionType.SetUserRoles): {
+      return [
+        ActionPageDetails.Type,
+        ActionPageDetails.Domain,
+        ActionPageDetails.ToRecipient,
+        ActionPageDetails.Permissions,
+      ];
+    }
+    case actionType.includes(ColonyActionType.EmitDomainReputationPenalty): {
+      return [
+        ActionPageDetails.Type,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
+        ActionPageDetails.ToRecipient,
+        ActionPageDetails.Domain,
+        ActionPageDetails.ReputationChange,
+      ];
+    }
+    case actionType.includes(ColonyActionType.EmitDomainReputationReward): {
+      return [
+        ActionPageDetails.Type,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
+        ActionPageDetails.ToRecipient,
+        ActionPageDetails.Domain,
+        ActionPageDetails.ReputationChange,
+      ];
+    }
+    // case actionType.includes(ColonyMotions.CreateDecisionMotion): {
+    //   return [ActionPageDetails.Type, ActionPageDetails.Author];
+    // }
+    case actionType.includes(ColonyActionType.Generic): {
+      return [ActionPageDetails.Type, ActionPageDetails.Generic];
+    }
+    default:
+      return [];
+  }
 };
 
 export interface EventValues {
-  actionType: ActionItemType;
+  actionType: ColonyActionType;
   amount?: string | ReactNode;
   token?: Token;
   tokenSymbol?: string | ReactNode;
@@ -126,8 +154,8 @@ export interface EventValues {
 /*
  * Get colony action details for DetailsWidget based on action type and ActionPageDetails map
  */
-export const getDetailsForAction = (actionType: ActionItemType): DetailsValuesMap => {
-  const detailsForActionType = DETAILS_FOR_ACTION[actionType];
+export const getDetailsForAction = (actionType: AnyActionType): DetailsValuesMap => {
+  const detailsForActionType = getDetailItemsKeys(actionType);
   return Object.keys(ActionPageDetails).reduce((detailsMap, detailsKey) => {
     return {
       ...detailsMap,
@@ -458,6 +486,21 @@ export const getDetailsForAction = (actionType: ActionItemType): DetailsValuesMa
 //   }
 // };
 
+export const normalizeRolesForAction = (roles: ColonyActionRoles): ActionUserRoles[] => {
+  /*
+   * Done manually since this list is static
+   */
+  const extractedRoles = [
+    { id: 0, setTo: roles.role_0 },
+    { id: 1, setTo: roles.role_1 },
+    { id: 2, setTo: roles.role_2 },
+    { id: 3, setTo: roles.role_3 },
+    { id: 5, setTo: roles.role_5 },
+    { id: 6, setTo: roles.role_6 },
+  ];
+  return extractedRoles.filter(({ setTo }) => setTo !== null && setTo !== undefined) as ActionUserRoles[];
+};
+
 const getFormattedRoleList = (roleGroupA: ActionUserRoles[], roleGroupB: ActionUserRoles[] | null) => {
   let roleList = '';
 
@@ -474,28 +517,80 @@ const getFormattedRoleList = (roleGroupA: ActionUserRoles[], roleGroupB: ActionU
   return roleList;
 };
 
-export const formatRolesTitle = (roles: ActionUserRoles[]) => {
+export const formatRolesTitle = (roles?: ColonyActionRoles | null) => {
   let roleTitle = '';
   let direction = '';
 
-  const assignedRoles = roles.filter((role) => role.setTo);
-  const unassignedRoles = roles.filter((role) => !role.setTo);
+  if (roles) {
+    const normalizedRoles = normalizeRolesForAction(roles);
 
-  if (!isEmpty(assignedRoles)) {
-    direction = 'to';
-    roleTitle += `Assign the${getFormattedRoleList(assignedRoles, unassignedRoles)}`;
+    const assignedRoles = normalizedRoles.filter((role) => role.setTo);
+    const unassignedRoles = normalizedRoles.filter((role) => !role.setTo);
+
+    if (!isEmpty(assignedRoles)) {
+      direction = 'to';
+      roleTitle += `Assign the${getFormattedRoleList(assignedRoles, unassignedRoles)}`;
+    }
+
+    if (!isEmpty(unassignedRoles)) {
+      direction += direction ? '/from' : 'from';
+      roleTitle += roleTitle ? ' and remove the' : 'Remove the';
+      roleTitle += getFormattedRoleList(unassignedRoles, null);
+    }
+
+    roleTitle += normalizedRoles.length > 1 ? ' permissions' : ' permission';
   }
-
-  if (!isEmpty(unassignedRoles)) {
-    direction += direction ? '/from' : 'from';
-    roleTitle += roleTitle ? ' and remove the' : 'Remove the';
-    roleTitle += getFormattedRoleList(unassignedRoles, null);
-  }
-
-  roleTitle += roles.length > 1 ? ' permissions' : ' permission';
 
   return {
     roleTitle,
     direction,
   };
 };
+
+export const getColonyRoleSetTitleValues = (encodedEvents: string | null = '[]', eventId?: string) => {
+  const role = JSON.parse(encodedEvents as string)?.find(({ id }) => id === eventId);
+  if (role) {
+    const { role: roleId, setTo } = role;
+    return {
+      role: formatText({ id: `role.${roleId}` }),
+      roleSetAction: formatText({ id: `role.${setTo ? 'assign' : 'remove'}` }),
+      roleSetDirection: formatText({ id: `role.${setTo ? 'to' : 'from'}` }),
+    };
+  }
+  return {
+    role: '',
+    roleSetAction: '',
+    roleSetDirection: '',
+  };
+};
+
+const getChangelogItem = (
+  { isMotion: actionIsMotion, transactionHash, pendingColonyMetadata }: ColonyAction,
+  colonyMetadata?: ColonyMetadata | null,
+) => {
+  const metadataObject = actionIsMotion ? pendingColonyMetadata : colonyMetadata;
+
+  return metadataObject?.changelog?.find((item) => item.transactionHash === transactionHash);
+};
+/**
+ * Function returning action type based on the action data, that can include extended action types,
+ * e.g. UpdateAddressBook, UpdateTokens
+ */
+export const getExtendedActionType = (actionData: ColonyAction, metadata?: ColonyMetadata | null): AnyActionType => {
+  const { type } = actionData;
+  const changelogItem = getChangelogItem(actionData, metadata);
+
+  if (changelogItem?.haveTokensChanged) {
+    return ExtendedColonyActionType.UpdateTokens;
+  }
+
+  if (changelogItem?.hasWhitelistChanged) {
+    return ExtendedColonyActionType.UpdateAddressBook;
+  }
+
+  // logic for Safe control actions can be added here
+
+  return type;
+};
+
+export const formatActionType = (actionType: AnyActionType) => formatText({ id: 'action.type' }, { actionType });

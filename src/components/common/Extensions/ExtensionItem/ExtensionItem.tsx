@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+
 import { ExtensionItemProps } from './types';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Button from '~shared/Extensions/Button';
@@ -32,13 +33,13 @@ const ExtensionItem: FC<ExtensionItemProps> = ({ title, description, version, ic
         {isExtensionInstalled && (
           <div className="sm:ml-4 flex-shrink-0">
             <Link to={extensionUrl} className={styles.extensionItemButton}>
-              <p className="text-sm font-medium">{formatMessage({ id: 'extension.manageButton' })}</p>
+              {formatMessage({ id: 'button.manage' })}
             </Link>
           </div>
         )}
         {!isExtensionInstalled && (
           <Button mode="primarySolid" isFullSize={isMobile} onClick={handleInstallClick}>
-            <p className="text-sm font-medium">{formatMessage({ id: 'extension.installButton' })}</p>
+            {formatMessage({ id: 'button.install' })}
           </Button>
         )}
       </div>

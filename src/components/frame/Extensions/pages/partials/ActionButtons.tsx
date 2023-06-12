@@ -23,7 +23,7 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
     !isInstalledExtensionData(extensionData) && extensionData.uninstallable && !extensionData.isDeprecated;
 
   return (
-    <div className="sm:ml-4 flex gap-2">
+    <div>
       {isInstallButtonVisible && (
         <Button
           mode="primarySolid"
@@ -31,7 +31,7 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
           onClick={handleInstallClick}
           disabled={!isSupportedColonyVersion}
         >
-          <p className="text-sm font-medium">{formatMessage({ id: 'extension.installButton' })}</p>
+          {formatMessage({ id: 'button.install' })}
         </Button>
       )}
     </div>

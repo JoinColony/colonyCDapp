@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+
 import { useUserByNameOrAddress } from '~hooks';
 import UserAvatarPopover from '~shared/Extensions/UserAvatarPopover';
 import styles from '../SpecificSidePanel.module.css';
@@ -20,7 +21,7 @@ const InstalledBy: FC<PanelTypeProps> = ({ title, extensionData }) => {
       <div className={styles.panelTitle}>{title}</div>
       <div className="flex">
         <UserAvatarPopover
-          userName={userDisplayName || username}
+          userName={userDisplayName || username || ''}
           walletAddress={splitWalletAddress(user?.walletAddress || '')}
           isVerified
           aboutDescription={`Passionate about sustainability and living a zero-waste lifestyle.

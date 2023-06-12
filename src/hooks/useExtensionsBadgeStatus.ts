@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
+
 import { ExtensionStatusBadgeMode } from '~common/Extensions/ExtensionStatusBadge/types';
 import { isInstalledExtensionData } from '~utils/extensions';
 
@@ -13,16 +14,16 @@ export const useExtensionsBadge = (extensionData) => {
   useMemo(() => {
     if (!isExtensionInstalled) {
       setStatus('not-installed');
-      setBadgeMessage(formatMessage({ id: 'extensionsPage.notInstalled' }));
+      setBadgeMessage(formatMessage({ id: 'status.notInstalled' }));
     } else if (extensionData?.isDeprecated) {
       setStatus('deprecated');
-      setBadgeMessage(formatMessage({ id: 'extensionsPage.deprecated' }));
+      setBadgeMessage(formatMessage({ id: 'status.deprecated' }));
     } else if (extensionData?.isEnabled) {
       setStatus('enabled');
-      setBadgeMessage(formatMessage({ id: 'extensionsPage.enabled' }));
+      setBadgeMessage(formatMessage({ id: 'status.enabled' }));
     } else {
       setStatus('disabled');
-      setBadgeMessage(formatMessage({ id: 'extensionsPage.disabled' }));
+      setBadgeMessage(formatMessage({ id: 'status.disabled' }));
     }
   }, [extensionData, formatMessage, isExtensionInstalled]);
 

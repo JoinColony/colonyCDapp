@@ -1,4 +1,5 @@
 import React from 'react';
+
 import UserAvatarPopover from '~shared/Extensions/UserAvatarPopover';
 import { colonyReputationItems, permissionsItems } from '~shared/Extensions/UserAvatarPopover/partials/consts';
 

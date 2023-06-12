@@ -1,6 +1,6 @@
 import { ColonyRole } from '@colony/colony-js';
 
-import { ColonyActionType, ColonyAndExtensionsEvents, ColonyMotions } from '~types';
+import { ColonyActionType, ColonyAndExtensionsEvents } from '~types';
 
 export enum TransactionStatuses {
   Failed = 'failed',
@@ -20,10 +20,6 @@ export const STATUS_MAP: { [k: number]: TransactionStatuses } = {
 
 type EventRolesMap = Partial<{
   [key in ColonyAndExtensionsEvents]: ColonyRole[];
-}>;
-
-type ActionsEventsMap = Partial<{
-  [key in ColonyActionType | ColonyMotions]: ColonyAndExtensionsEvents[];
 }>;
 
 export const EVENT_ROLES_MAP: EventRolesMap = {
@@ -57,6 +53,10 @@ const MOTION_EVENTS = [
   ColonyAndExtensionsEvents.MotionRewardClaimed,
 ];
 
+type ActionsEventsMap = Partial<{
+  [key in ColonyActionType]: ColonyAndExtensionsEvents[];
+}>;
+
 export const ACTIONS_EVENTS: ActionsEventsMap = {
   [ColonyActionType.Payment]: [ColonyAndExtensionsEvents.OneTxPaymentMade],
   [ColonyActionType.MoveFunds]: [ColonyAndExtensionsEvents.ColonyFundsMovedBetweenFundingPots],
@@ -75,15 +75,15 @@ export const ACTIONS_EVENTS: ActionsEventsMap = {
   ],
   [ColonyActionType.EmitDomainReputationPenalty]: [ColonyAndExtensionsEvents.ArbitraryReputationUpdate],
   [ColonyActionType.EmitDomainReputationReward]: [ColonyAndExtensionsEvents.ArbitraryReputationUpdate],
-  [ColonyMotions.UnlockTokenMotion]: MOTION_EVENTS,
-  [ColonyMotions.MintTokensMotion]: MOTION_EVENTS,
-  [ColonyMotions.CreateDomainMotion]: MOTION_EVENTS,
-  [ColonyMotions.EditDomainMotion]: MOTION_EVENTS,
-  [ColonyMotions.ColonyEditMotion]: MOTION_EVENTS,
-  [ColonyMotions.SetUserRolesMotion]: MOTION_EVENTS,
-  [ColonyMotions.PaymentMotion]: MOTION_EVENTS,
-  [ColonyMotions.MoveFundsMotion]: MOTION_EVENTS,
-  [ColonyMotions.EmitDomainReputationPenaltyMotion]: MOTION_EVENTS,
-  [ColonyMotions.EmitDomainReputationRewardMotion]: MOTION_EVENTS,
-  [ColonyMotions.CreateDecisionMotion]: MOTION_EVENTS,
+  [ColonyActionType.UnlockTokenMotion]: MOTION_EVENTS,
+  [ColonyActionType.MintTokensMotion]: MOTION_EVENTS,
+  [ColonyActionType.CreateDomainMotion]: MOTION_EVENTS,
+  [ColonyActionType.EditDomainMotion]: MOTION_EVENTS,
+  [ColonyActionType.ColonyEditMotion]: MOTION_EVENTS,
+  [ColonyActionType.SetUserRolesMotion]: MOTION_EVENTS,
+  [ColonyActionType.PaymentMotion]: MOTION_EVENTS,
+  [ColonyActionType.MoveFundsMotion]: MOTION_EVENTS,
+  [ColonyActionType.VersionUpgradeMotion]: MOTION_EVENTS,
+  [ColonyActionType.EmitDomainReputationPenaltyMotion]: MOTION_EVENTS,
+  [ColonyActionType.EmitDomainReputationRewardMotion]: MOTION_EVENTS,
 };

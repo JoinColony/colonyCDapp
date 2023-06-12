@@ -9,7 +9,7 @@ import styles from './DialogControls.css';
 const displayName = 'DialogControls';
 
 interface Props {
-  disabled: boolean;
+  disabled?: boolean;
   dataTest: string;
   onSecondaryButtonClick: (() => void) | ((val: any) => void) | undefined;
   isVotingReputationEnabled?: boolean;
@@ -20,7 +20,7 @@ interface Props {
 
 const DialogControls = ({
   onSecondaryButtonClick,
-  disabled,
+  disabled = false,
   dataTest,
   secondaryButtonText = { id: 'button.back' },
   submitButtonAppearance = { theme: 'primary', size: 'large' },

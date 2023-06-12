@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import clsx from 'clsx';
-
 import React, { useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -13,10 +12,10 @@ import {
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import Token from '~common/Extensions/UserNavigation/partials/Token';
 import UserMenu from '~common/Extensions/UserNavigation/partials/UserMenu';
-import WalletPopover from '~common/Extensions/UserNavigation/partials/WalletPopover/WalletPopover';
+import WalletPopover from '~common/Extensions/UserNavigation/partials/WalletPopover';
 import { useMobile } from '~hooks';
 import Button from '~shared/Extensions/Button';
-import UserAvatar from '~shared/Extensions/UserAvatar/UserAvatar';
+import UserAvatar from '~shared/Extensions/UserAvatar';
 import Icon from '~shared/Icon';
 import { formatMessage } from '~utils/yup/tests/helpers';
 

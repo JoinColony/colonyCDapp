@@ -1,12 +1,35 @@
 import React from 'react';
+import Decimal from 'decimal.js';
 
 import Numeral from '~shared/Numeral';
 import FriendlyName from '~shared/FriendlyName';
-import { Colony, ColonyAndExtensionsEvents, ColonyAction, ColonyActionType, Domain } from '~types';
+import {
+  Colony,
+  ColonyAndExtensionsEvents,
+  ColonyAction,
+  ColonyActionType,
+  DomainMetadata,
+  MotionMessage,
+} from '~types';
+import { useColonyContext, useUserReputation } from '~hooks';
+import { MotionVote } from '~utils/colonyMotions';
 import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { formatRolesTitle, getColonyRoleSetTitleValues } from '~utils/colonyActions';
+import {
+  AmountTag,
+  Motion as MotionTag,
+  Objection as ObjectionTag,
+  Voting as VotingTag,
+  Failed as FailedTag,
+  Reveal as RevealTag,
+  Passed as PassedTag,
+} from '~shared/Tag';
+import { VoteResults } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VoteOutcome/VoteResults';
+import { VotingWidgetHeading } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
+import MemberReputation from '~shared/MemberReputation';
 
 import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
@@ -18,20 +41,21 @@ const { formatMessage } = intl({
 });
 
 // Get the domain name at the time of a transaction with a given hash (or fallback to the current name)
-const getDomainNameFromChangelog = (transactionHash: string, domain?: Domain | null) => {
-  if (!domain?.metadata) {
+const getDomainNameFromChangelog = (transactionHash: string, domainMetadata?: DomainMetadata | null) => {
+  if (!domainMetadata) {
     return null;
   }
 
-  const changelogItem = domain.metadata.changelog?.find((item) => item.transactionHash === transactionHash);
+  const changelogItem = domainMetadata.changelog?.find((item) => item.transactionHash === transactionHash);
   if (!changelogItem?.newName) {
-    return domain.metadata.name;
+    return domainMetadata.name;
   }
   return changelogItem.newName;
 };
 
 export const mapColonyActionToExpectedFormat = (actionData: ColonyAction, colony?: Colony) => {
-  // const formattedRolesTitle = formatRolesTitle(item.roles); // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
+  //  // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
+  const formattedRolesTitle = formatRolesTitle(actionData.roles);
 
   return {
     ...actionData,
@@ -41,40 +65,46 @@ export const mapColonyActionToExpectedFormat = (actionData: ColonyAction, colony
         decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
-    // direction: formattedRolesTitle.direction,
+    direction: formattedRolesTitle.direction,
     fromDomain:
-      getDomainNameFromChangelog(actionData.transactionHash, actionData.fromDomain) ??
-      formatMessage({ id: 'unknownDomain' }),
+      getDomainNameFromChangelog(
+        actionData.transactionHash,
+        actionData.fromDomain?.metadata || actionData.pendingDomainMetadata,
+      ) ?? formatMessage({ id: 'unknownDomain' }),
     initiator: (
       <span className={styles.titleDecoration}>
+        {/* @TODO All all the other initiator types, and the fallback */}
         <FriendlyName user={actionData.initiatorUser} autoShrinkAddress />
       </span>
     ),
     recipient: (
       <span className={styles.titleDecoration}>
-        <FriendlyName user={actionData.recipient} autoShrinkAddress />
+        {/* @TODO All all the other recipient types, and the fallback */}
+        <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
       </span>
     ),
     toDomain: actionData.toDomain?.metadata?.name ?? formatMessage({ id: 'unknownDomain' }),
     tokenSymbol: actionData.token?.symbol,
     reputationChangeNumeral: actionData.amount && (
-      <Numeral value={actionData.amount} decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)} />
+      <Numeral
+        value={new Decimal(actionData.amount).abs()}
+        decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
+      />
     ),
     reputationChange:
       actionData.amount &&
       formatReputationChange(actionData.amount, getTokenDecimalsWithFallback(colony?.nativeToken.decimals)),
-    // rolesChanged: formattedRolesTitle.roleTitle,
+    rolesChanged: formattedRolesTitle.roleTitle,
     newVersion: actionData.newColonyVersion,
   };
 };
 
-export const mapColonyEventToExpectedFormat = (
+export const mapActionEventToExpectedFormat = (
   eventName: ColonyAndExtensionsEvents,
   actionData: ColonyAction,
+  eventId?: string,
   colony?: Colony,
 ) => {
-  // const role = item.roles[0];
-
   return {
     amount: (
       <Numeral
@@ -82,26 +112,29 @@ export const mapColonyEventToExpectedFormat = (
         decimals={actionData.token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
       />
     ),
-    // ...getColonyRoleSetTitleValues(role?.setTo),
+    ...getColonyRoleSetTitleValues(actionData.individualEvents, eventId),
     domainMetadataChanges: getDomainMetadataChangesValue(actionData),
     colonyMetadataChanges: getColonyMetadataChangesValue(actionData, colony),
     fromDomain:
-      getDomainNameFromChangelog(actionData.transactionHash, actionData.fromDomain) ??
-      formatMessage({ id: 'unknownDomain' }),
+      getDomainNameFromChangelog(
+        actionData.transactionHash,
+        actionData.fromDomain?.metadata || actionData.pendingDomainMetadata,
+      ) ?? formatMessage({ id: 'unknownDomain' }),
     toDomain: actionData.toDomain?.metadata?.name ?? formatMessage({ id: 'unknownDomain' }),
     eventNameDecorated: <b>{eventName}</b>,
-    // role: role && formatText({ id: `role.${role.id}` }),
     // clientOrExtensionType: (
     //   <span className={styles.highlight}>{event.emittedBy}</span>
     // ),
     initiator: (
       <span className={styles.userDecoration}>
+        {/* @TODO All all the other initiator types, and the fallback */}
         <FriendlyName user={actionData.initiatorUser} autoShrinkAddress />
       </span>
     ),
     recipient: (
       <span className={styles.userDecoration}>
-        <FriendlyName user={actionData.recipient} autoShrinkAddress />
+        {/* @TODO All all the other recipient types, and the fallback */}
+        <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
       </span>
     ),
     isSmiteAction: actionData.type === ColonyActionType.EmitDomainReputationPenalty,
@@ -116,12 +149,80 @@ export const mapColonyEventToExpectedFormat = (
   };
 };
 
+export const useMapMotionEventToExpectedFormat = (motionMessageData: MotionMessage, actionData: ColonyAction) => {
+  const { colonyAddress, fromDomain, motionData, pendingColonyMetadata } = actionData;
+  const { colony } = useColonyContext();
+
+  const initiatorUserReputation = useUserReputation(
+    colonyAddress,
+    motionMessageData.initiatorAddress,
+    fromDomain?.nativeId,
+    motionData?.rootHash,
+  );
+
+  if (!motionData) {
+    return {};
+  }
+
+  return {
+    eventNameDecorated: <b>{motionMessageData?.name}</b>,
+    amountTag: (
+      <AmountTag>
+        <Numeral
+          value={motionMessageData?.amount ?? 0}
+          decimals={colony?.nativeToken.decimals ?? undefined}
+          suffix={colony?.nativeToken.symbol ?? ''}
+        />
+      </AmountTag>
+    ),
+    backedSideTag: Number(motionMessageData?.vote) === MotionVote.Yay ? <MotionTag /> : <ObjectionTag />,
+    motionTag: <MotionTag />,
+    objectionTag: <ObjectionTag />,
+    votingTag: <VotingTag />,
+    failedTag: <FailedTag />,
+    revealTag: <RevealTag />,
+    passedTag: <PassedTag />,
+    voteResultsWidget: (
+      <div className={styles.voteResultsWrapper}>
+        <VotingWidgetHeading actionData={actionData} pendingColonyMetadata={pendingColonyMetadata} />
+        <VoteResults revealedVotes={motionData.revealedVotes} voterRecord={motionData.voterRecord} />
+      </div>
+    ),
+    initiator: (
+      <>
+        <span className={styles.userDecoration}>
+          <FriendlyName user={motionMessageData.initiatorUser} autoShrinkAddress />
+        </span>
+        <div className={styles.reputation}>
+          <MemberReputation
+            userReputation={initiatorUserReputation?.userReputation}
+            totalReputation={initiatorUserReputation?.totalReputation}
+          />
+        </div>
+      </>
+    ),
+    staker: (
+      <>
+        <span className={styles.userDecoration}>
+          <FriendlyName user={motionMessageData.initiatorUser} autoShrinkAddress />
+        </span>
+        <div className={styles.reputation}>
+          <MemberReputation
+            userReputation={initiatorUserReputation?.userReputation}
+            totalReputation={initiatorUserReputation?.totalReputation}
+          />
+        </div>
+      </>
+    ),
+  };
+};
+
 /*
 Actions
 ======
 Note that the following transformations also exist in the Dapp. Because they are async,
 it would be ideal if they were handled higher up in the CDapp, and passed down. That would
-avoid the need to add async logic to this component (i.e. useEffect). 
+avoid the need to add async logic to this component (i.e. useEffect).
 (If necessary, however, this could be handled in a custom hook.)
 1.
 const updatedRoles = getUpdatedDecodedMotionRoles(
@@ -130,7 +231,7 @@ const updatedRoles = getUpdatedDecodedMotionRoles(
   historicColonyRoles?.historicColonyRoles as unknown as ColonyRoles,
   roles || [],
 );
-Requires historic roles: 
+Requires historic roles:
 const getColonyHistoricRoles = async (
   colonyAddress: Address,
   blockNumber: number,
@@ -154,7 +255,7 @@ const changedData = {
             * So if the version from the network resolver is greater than the
             * current colonyJS supported version, limit it to the version
             * returned by colonyJS
-            
+
     version.toNumber() <= CurrentColonyVersion
             ? version.toString()
             : String(CurrentColonyVersion),

@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+
 import { useAsyncFunction, useColonyContext, useExtensionData } from '~hooks';
 import { ActionTypes } from '~redux';
 import { isInstalledExtensionData } from '~utils/extensions';
