@@ -23,7 +23,7 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({ watchlist = [], isMobile 
     <div className="w-full bg-base-white z-50 relative flex flex-col">
       {!isMobile && (
         <>
-          <div className="flex items-center py-2">
+          <div className="flex items-center pb-4">
             <div className="flex mr-2">
               <ColonyAvatar
                 colony={colonyToDisplay as Colony}
@@ -39,8 +39,8 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({ watchlist = [], isMobile 
         </>
       )}
       {Object.keys(groupByCategory).map((key) => (
-        <div className="mt-6" key={key}>
-          <div className="uppercase text-gray-400 text-xs font-medium pl-6 sm:pl-2">{key}</div>
+        <div className="mt-5" key={key}>
+          <div className="uppercase text-gray-400 text-xs font-medium pl-6 sm:pl-0">{key}</div>
           {groupByCategory[key].map((item) => (
             <ColonyItem
               colony={item?.colony as Colony}

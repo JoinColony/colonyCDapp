@@ -8,8 +8,8 @@ import { ColonyItemProps } from '../types';
 const displayName = 'common.Extensions.partials.ColonyItem';
 
 const ColonyItem: FC<ColonyItemProps> = ({ colony, chainName }) => (
-  <div className="px-6 sm:px-0 hover:bg-gray-50 rounded [&_a]:block [&_a]:py-2">
-    <NavLink title={colony?.name} to={`/colony/${colony?.name}`} className="group">
+  <div className="hover:bg-gray-50 rounded -mx-3">
+    <NavLink title={colony?.name} to={`/colony/${colony?.name}`} className="group block py-2 px-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <div className="flex mr-2">
