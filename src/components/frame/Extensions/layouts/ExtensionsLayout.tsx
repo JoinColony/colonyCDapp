@@ -25,6 +25,7 @@ import { usePageThemeContext } from '~context/PageThemeContext';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
 import { getAllUserRoles } from '~transformers';
+import { ColonyFragment } from '~gql';
 
 const displayName = 'frame.Extensions.layouts.ExtensionsLayout';
 
@@ -34,7 +35,7 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
   const { colony } = useColonyContext();
   const { colonyContractVersion } = useColonyContractVersion();
   const { user, wallet } = useAppContext();
-  const allUserRoles = useTransformer(getAllUserRoles, [colony, wallet?.address]);
+  const allUserRoles = useTransformer(getAllUserRoles, [colony as ColonyFragment, wallet?.address as string]);
   const openUpgradeColonyDialog = useDialog(NetworkContractUpgradeDialog);
   const enabledExtensionData = useEnabledExtensions();
   const { isDarkMode } = usePageThemeContext();

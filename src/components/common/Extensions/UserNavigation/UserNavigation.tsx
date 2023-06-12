@@ -137,7 +137,7 @@ const UserNavigation: FC = () => {
             <Icon name={visible && isMobile ? 'close' : 'list'} appearance={{ size: 'tiny' }} />
           </Button>
         )}
-        <div className="w-full h-auto absolute top-[6.5rem] md:top-[2.3rem]">
+        <div className="w-full h-auto">
           {visible && (
             <UserMenu
               tooltipProps={getTooltipProps}

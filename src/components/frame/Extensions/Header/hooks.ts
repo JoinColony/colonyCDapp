@@ -6,7 +6,7 @@ import { useAppContext, useDetectClickOutside, useMobile } from '~hooks';
 import { watchListMock } from '~common/Extensions/ColonySwitcher/consts';
 
 export const useHeader = () => {
-  const { userLoading } = useAppContext();
+  const { userLoading, user } = useAppContext();
   const [isOpen, setIsOpen] = useState<boolean>();
 
   const { colonyToDisplayAddress } = useSelectedColony(watchListMock);
@@ -50,5 +50,6 @@ export const useHeader = () => {
     sortByDate,
     isOpen,
     setIsOpen,
+    user,
   };
 };

@@ -47,7 +47,7 @@ const Entry = ({ store }: Props) => {
             <Router>
               <DialogProvider>
                 <TokenActivationProvider>
-                  <div className="h-full w-full overflow-x-hidden bg-base-white">
+                  <div className="h-full w-full bg-base-white">
                     <Routes />
                   </div>
                 </TokenActivationProvider>
