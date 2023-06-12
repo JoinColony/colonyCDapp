@@ -43,7 +43,7 @@ const UserMenu: FC<UserMenuProps> = ({
         'w-full border-none shadow-none': isMobile,
         'w-[20.125rem]': !isMobile,
         'h-[32rem] md:h-[23rem]': !isWalletConnected && !activeSubmenu,
-        'h-[35rem] md:h-[29rem]': isWalletConnected && !activeSubmenu,
+        'h-[37rem] md:h-[29rem]': isWalletConnected && !activeSubmenu,
         'h-[16rem]': activeSubmenu,
       })}
     >

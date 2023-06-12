@@ -23,7 +23,7 @@ const Spinner: FC<PropsWithChildren<SpinnerProps>> = ({ loadingText, children })
     );
   }
 
-  return <div className="bg-base-white">{children}</div>;
+  return <div className="bg-base-white overflow-x-hidden sm:overflow-auto">{children}</div>;
 };
 
 Spinner.displayName = displayName;

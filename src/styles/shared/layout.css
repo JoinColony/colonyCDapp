@@ -44,7 +44,6 @@
 .stretch {
   height: 100%;
   width: 100%;
-  overflow-x: hidden;
 }
 
 .stretch:global(.section) {
