@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useCallback, useState } from 'react';
+
 import Button from '~shared/Extensions/Button';
 import Modal from '~shared/Extensions/Modal';
 

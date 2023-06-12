@@ -1,0 +1,21 @@
+.amount {
+  align-self: flex-end;
+  margin-bottom: 2px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+  color: color-mod(var(--grey-purple) alpha(85%));
+  letter-spacing: var(--spacing-medium);
+}
+
+.requiredStakeUnderThreshold {
+  color: var(--golden);
+}
+
+.requiredStakeAboveThreshold {
+  color: var(--primary);
+}
+
+.requiredStakeText {
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-bold);
+}

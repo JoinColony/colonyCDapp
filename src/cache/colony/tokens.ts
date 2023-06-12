@@ -1,29 +1,33 @@
 import { DEFAULT_NETWORK_TOKEN, ADDRESS_ZERO } from '~constants';
 import { TokenType } from '~gql';
+import { UnaliasedColonyTokensItem } from '~types';
 
 const tokensFieldCache = {
   /*
-   * @NOTE Add the local's chain native token to the colony's tokens list
+   * @NOTE Add the local chain's native token to the colony's tokens list
    */
   tokens: {
-    read: (baseTokens) => ({
-      ...baseTokens,
-      items: [
-        ...baseTokens.items,
+    read: (baseTokens) => {
+      const updatedTokens: UnaliasedColonyTokensItem[] = [
         {
           __typename: 'ColonyTokens',
+          id: 'DEFAULT_TOKEN_ID',
           token: {
             __typename: 'Token',
             ...DEFAULT_NETWORK_TOKEN,
             id: ADDRESS_ZERO,
             avatar: null,
             thumbnail: null,
-            tokenAdress: ADDRESS_ZERO,
             type: TokenType.Colony,
           },
         },
-      ],
-    }),
+      ];
+
+      return {
+        ...baseTokens,
+        items: [...baseTokens.items, ...updatedTokens],
+      };
+    },
   },
 };
 

@@ -1,8 +1,10 @@
 declare namespace ItemStylesCssNamespace {
   export interface IItemStylesCss {
     highlight: string;
+    reputation: string;
     titleDecoration: string;
     userDecoration: string;
+    voteResultsWrapper: string;
   }
 }
 

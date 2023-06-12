@@ -3,13 +3,13 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import { DialogSection, ActionDialogProps, DialogControls, DialogHeading } from '~shared/Dialog';
+import { DialogSection, ActionDialogProps, DialogControls } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 import PermissionsLabel from '~shared/PermissionsLabel';
 import ExternalLink from '~shared/Extensions/ExternalLink';
 
 import { useAppContext, useTransformer } from '~hooks';
-import { getAllUserRoles } from '~redux/transformers';
+import { getAllUserRoles } from '~transformers';
 import { canEnterRecoveryMode } from '~utils/checks';
 
 import { RECOVERY_HELP } from '~constants/externalUrls';
@@ -50,7 +50,7 @@ const RecoveryModeDialogForm = ({ back, colony }: Omit<ActionDialogProps, 'enabl
   const {
     formState: { isSubmitting },
   } = useFormContext();
-  const allUserRoles = useTransformer(getAllUserRoles, [colony, user?.walletAddress]);
+  const allUserRoles = useTransformer(getAllUserRoles, [colony, user?.walletAddress ?? '']);
 
   const hasRegisteredProfile = !!user?.name && !!user?.walletAddress;
 
@@ -58,9 +58,7 @@ const RecoveryModeDialogForm = ({ back, colony }: Omit<ActionDialogProps, 'enabl
 
   return (
     <>
-      <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading title={MSG.title} />
-      </DialogSection>
+      <DialogSection appearance={{ theme: 'sidePadding' }}>{/* <DialogHeading title={MSG.title} /> */}</DialogSection>
       {!userHasPermission && (
         <DialogSection>
           <PermissionRequiredInfo requiredRoles={[ColonyRole.Recovery]} />

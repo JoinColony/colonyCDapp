@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
+
 import styles from './WalletConnectedTopMenu.module.css';
 import Button from '~shared/Extensions/Button';
 import Link from '~shared/Extensions/Link';
@@ -20,7 +21,7 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
   isVerified,
   nativeToken,
   totalReputation,
-  userName = '',
+  userName,
   userReputation,
   walletAddress,
   avatar,

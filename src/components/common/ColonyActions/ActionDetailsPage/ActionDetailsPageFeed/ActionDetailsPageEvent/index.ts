@@ -1,1 +1,1 @@
-export { default } from './ActionDetailsPageEvent';
+export { default as ActionsPageEvent } from './ActionDetailsPageEvent';

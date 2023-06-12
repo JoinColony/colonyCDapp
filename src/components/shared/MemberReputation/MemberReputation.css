@@ -31,7 +31,8 @@
   transform: translate(0, -50%);
 }
 
-.icon svg {
+/* Increase specificity */
+.icon.icon svg {
   position: absolute;
   top: 0;
   left: 0;

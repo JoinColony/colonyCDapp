@@ -1,8 +1,10 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Link from '~shared/Extensions/Link';
 import Numeral from '~shared/Numeral';
+import { useTokenActivationContext } from '~hooks';
+import { useGetMotionTransactionHashQuery } from '~gql';
 
 import styles from './StakesTab.css';
 
@@ -19,19 +21,25 @@ interface Props {
   stakedAmount: string;
   tokenSymbol: string;
   colonyName: string;
-  txHash: string;
-  setIsPopoverOpen: Dispatch<SetStateAction<boolean>>;
+  motionId: string;
 }
 
-const StakesListItem = ({ stakedAmount, tokenSymbol, colonyName, txHash, setIsPopoverOpen }: Props) => {
+const StakesListItem = ({ stakedAmount, tokenSymbol, colonyName, motionId }: Props) => {
+  const { setIsOpen } = useTokenActivationContext();
+  const { data } = useGetMotionTransactionHashQuery({
+    variables: {
+      motionId,
+    },
+  });
+
+  const txHash = data?.getColonyActionByMotionId?.items[0]?.id ?? '';
   return (
     <li className={styles.stakesListItem}>
-      <Link to={`/colony/${colonyName}/tx/${txHash}`}>
+      <Link to={txHash ? `/colony/${colonyName}/tx/${txHash}` : ''}>
         <div
           role="button"
-          // 'any' used to stop warnings about MouseEvent incompatible types
-          onClick={setIsPopoverOpen as any}
-          onKeyPress={setIsPopoverOpen as any}
+          onClick={() => setIsOpen(false)}
+          onKeyDown={() => setIsOpen(false)}
           tabIndex={0}
           data-test="goToMotion"
         >

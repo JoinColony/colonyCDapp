@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import Nav from './partials/Nav/Nav';
+
+import Nav from './partials/Nav';
 import { navMenuItems } from './partials/consts';
 import { useMobile } from '~hooks';
 import { SubNavigationMobile } from '~common/Extensions/SubNavigation';

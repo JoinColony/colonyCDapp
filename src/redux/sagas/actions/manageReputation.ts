@@ -1,11 +1,11 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 
 import { putError, takeFrom } from '../utils';
 
-import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import { createGroupTransaction, createTransactionChannels, getTxChannel } from '../transactions';
 import { transactionReady } from '~redux/actionCreators';
 
 function* manageReputationAction({
@@ -13,7 +13,7 @@ function* manageReputationAction({
     colonyAddress,
     colonyName,
     domainId,
-    walletAddress,
+    userAddress,
     amount,
     isSmitingReputation,
     /* annotationMessage */
@@ -25,7 +25,7 @@ function* manageReputationAction({
   try {
     const batchKey = isSmitingReputation ? 'emitDomainReputationPenalty' : 'emitDomainReputationReward';
 
-    if (!walletAddress) {
+    if (!userAddress) {
       throw new Error(`User address not set for ${batchKey} transaction`);
     }
 
@@ -44,21 +44,11 @@ function* manageReputationAction({
       // 'annotateManageReputation',
     ]);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(manageReputation, {
+    yield createGroupTransaction(manageReputation, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: isSmitingReputation ? 'emitDomainReputationPenaltyWithProofs' : 'emitDomainReputationReward',
       identifier: colonyAddress,
-      params: [domainId, walletAddress, amount],
+      params: [domainId, userAddress, amount],
       ready: false,
     });
 
@@ -119,8 +109,10 @@ function* manageReputationAction({
       meta,
     });
 
-    if (colonyName && navigate) {
-      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
+    if (colonyName) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_MANAGE_REPUTATION_ERROR, error, meta);

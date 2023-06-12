@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
+
 import { UserMenuProps } from './types';
 import { useAppContext, useMobile } from '~hooks';
 import Button from '~shared/Extensions/Button';
@@ -72,7 +73,7 @@ const UserMenu: FC<UserMenuProps> = ({
       >
         {isWalletConnected && (
           <WalletConnectedTopMenu
-            userName={profile?.displayName || name}
+            userName={profile?.displayName || name || ''}
             isVerified={isVerified}
             walletAddress={walletAddress}
             userReputation={userReputation}

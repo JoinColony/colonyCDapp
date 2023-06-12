@@ -250,7 +250,7 @@ export const getHasEnoughBalanceTestFn = (colony: Colony, networkInverseFee?: st
 
     const { fromDomainId, tokenAddress } = context.parent;
     const selectedDomainBalance = colonyBalances.find(
-      (balance) => balance.token.tokenAddress === tokenAddress && balance.domain.nativeId === fromDomainId,
+      (balance) => balance.token.tokenAddress === tokenAddress && balance.domain?.nativeId === fromDomainId,
     );
     const selectedToken = getSelectedToken(colony, tokenAddress);
 

@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useState } from 'react';
 import { noop } from 'lodash';
 import { usePopperTooltip } from 'react-popper-tooltip';
+
 import { UserAvatarPopoverProps } from './types';
 import UserAvatar from '~shared/Extensions/UserAvatar';
 import { useMobile } from '~hooks';

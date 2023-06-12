@@ -1,5 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import { useIntl } from 'react-intl';
+
 import { useAppContext } from '~hooks';
 import Button from '~shared/Extensions/Button';
 import { getLastWallet } from '~utils/autoLogin';

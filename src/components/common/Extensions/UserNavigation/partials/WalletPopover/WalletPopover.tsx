@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+
 import { WalletPopoverProps } from './types';
 import PopoverBase from '~shared/Extensions/PopoverBase';
 import Icon from '~shared/Icon';

@@ -1,21 +1,26 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
+import { useFormContext } from 'react-hook-form';
 
 import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
-// import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 import {
   useActionDialogStatus,
   // useTransformer,
   // useAppContext,
 } from '~hooks';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-
+import { SetStateFn } from '~types';
 // import { getAllUserRoles } from '~redux/transformers';
 // import { hasRoot } from '~utils/checks';
 
-import { NoPermissionMessage, CannotCreateMotionMessage, PermissionRequiredInfo } from '../Messages';
+import {
+  NoPermissionMessage,
+  CannotCreateMotionMessage,
+  PermissionRequiredInfo,
+  NotEnoughReputation,
+} from '../Messages';
 
 import styles from './MintTokenDialogForm.css';
 
@@ -42,13 +47,17 @@ const MSG = defineMessages({
 
 const requiredRoles: ColonyRole[] = [ColonyRole.Root];
 
-const MintTokenDialogForm = ({ colony, back, enabledExtensionData }: ActionDialogProps) => {
-  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion } = useActionDialogStatus(
-    colony,
-    requiredRoles,
-    [Id.RootDomain],
-    enabledExtensionData,
-  );
+interface Props extends ActionDialogProps {
+  handleIsForceChange: SetStateFn;
+  isForce: boolean;
+}
+
+const MintTokenDialogForm = ({ colony, back, enabledExtensionData, isForce, handleIsForceChange }: Props) => {
+  const { watch } = useFormContext();
+  const forceAction = watch('forceAction');
+
+  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion, canOnlyForceAction } =
+    useActionDialogStatus(colony, requiredRoles, [Id.RootDomain], enabledExtensionData);
   // @TODO: Integrate those checks into another hook that uses useActionDialogStatus internally, when the data is made available.
   // const { wallet } = useAppContext();
   // const allUserRoles = useTransformer(getAllUserRoles, [
@@ -67,10 +76,22 @@ const MintTokenDialogForm = ({ colony, back, enabledExtensionData }: ActionDialo
     [colony],
   );
 
+  useEffect(() => {
+    if (forceAction !== isForce) {
+      handleIsForceChange(forceAction);
+    }
+  }, [forceAction, isForce, handleIsForceChange]);
+
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading title={MSG.title} />
+        <DialogHeading
+          title={MSG.title}
+          colony={colony}
+          userHasPermission={userHasPermission}
+          isVotingExtensionEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isRootMotion
+        />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -103,7 +124,11 @@ const MintTokenDialogForm = ({ colony, back, enabledExtensionData }: ActionDialo
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
       )}
-      {/* {onlyForceAction && <NotEnoughReputation />} */}
+      {canOnlyForceAction && (
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NotEnoughReputation />
+        </DialogSection>
+      )}
       {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
