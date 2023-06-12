@@ -2,9 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 import copyToClipboard from 'copy-to-clipboard';
 
-import Button from '../Button';
+import Button, { ButtonAppearance } from '~shared/Button';
 
 interface Props {
+  /** Appearance object for styling */
+  appearance?: ButtonAppearance;
   /** Text for the button copy. Supports interpolation with the following variable: `valueIsCopied: boolean` */
   text?: MessageDescriptor;
   /** Value to be copied to the clipboard */
@@ -24,7 +26,7 @@ const MSG = defineMessages({
 
 const displayName = 'ClipboardCopy';
 
-const ClipboardCopy = ({ value, text = MSG.copyLabel }: Props) => {
+const ClipboardCopy = ({ appearance = { size: 'small', theme: 'blue' }, value, text = MSG.copyLabel }: Props) => {
   const [valueIsCopied, setValueIsCopied] = useState(false);
   const userFeedbackTimer = useRef<any>(null);
   const handleClipboardCopy = () => {
@@ -40,7 +42,7 @@ const ClipboardCopy = ({ value, text = MSG.copyLabel }: Props) => {
   useEffect(() => () => clearTimeout(userFeedbackTimer.current), [userFeedbackTimer]);
   return (
     <Button
-      appearance={{ size: 'small', theme: 'blue' }}
+      appearance={appearance}
       disabled={valueIsCopied}
       onClick={handleClipboardCopy}
       text={text}

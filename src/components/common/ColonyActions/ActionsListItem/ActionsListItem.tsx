@@ -6,10 +6,12 @@ import UserAvatar from '~shared/UserAvatar';
 import ListItem, { ListItemStatus } from '~shared/ListItem';
 import { ColonyAction } from '~types';
 import { useColonyContext } from '~hooks';
+import { MotionState, useShouldDisplayMotionCountdownTime } from '~utils/colonyMotions';
 
+import CountDownTimer from '../CountDownTimer';
 import { getActionTitleValues } from '../helpers';
-
 import ActionsListItemMeta from './ActionsListItemMeta';
+import { useColonyMotionState, useMotionTag } from './helpers';
 
 const displayName = 'common.ColonyActions.ActionsListItem';
 
@@ -26,18 +28,6 @@ const userAvatarPopoverOptions = {
   ],
 };
 
-// const isFullyNayStaked = (totalNayStake?: string, requiredStake?: string) =>
-//   BigNumber.from(totalNayStake || 0).gte(BigNumber.from(requiredStake || 0));
-
-// const shouldDisplayCountDownTimer = (motionId, motionState) => {
-//   const isMotionFinished =
-//     motionState === MotionState.Passed ||
-//     motionState === MotionState.Failed ||
-//     motionState === MotionState.FailedNoFinalizable;
-
-//   return motionId && !isMotionFinished;
-// };
-
 interface Props {
   item: ColonyAction;
 }
@@ -49,6 +39,8 @@ const ActionsListItem = ({
     // commentCount = 0,
     // status = ListItemStatus.Defused,
     createdAt,
+    isMotion,
+    motionData,
   },
   item,
 }: Props) => {
@@ -57,37 +49,32 @@ const ActionsListItem = ({
 
   const handleActionRedirect = () => navigate(`/colony/${colony?.name}/tx/${transactionHash}`);
 
-  // const { isVotingExtensionEnabled } = useEnabledExtensions({
-  //   colonyAddress: colony?.colonyAddress,
-  // });
-
-  // const isForced = true; //isVotingExtensionEnabled && !actionType?.endsWith('Motion');
-  // const tag = motionState || (isForced && MotionState.Forced) || MotionState.Invalid;
-
-  // const displayCountdownTimer = shouldDisplayCountDownTimer(
-  //   motionId,
-  //   motionState,
-  // );
-
   const status = ListItemStatus.Defused;
+
+  const { motionState, refetchMotionState } = useColonyMotionState(isMotion, motionData, transactionHash);
+
+  const MotionTag = useMotionTag(isMotion, motionState);
+  const showMotionCountdownTimer = useShouldDisplayMotionCountdownTime(motionState);
 
   return (
     <ListItem
       avatar={<UserAvatar size="s" user={item.initiatorUser} showInfo popperOptions={userAvatarPopoverOptions} />}
       createdAt={createdAt}
       extra={
-        null // displayCountdownTimer && (
-        //   <CountdownTimer
-        //     state={motionState as MotionState}
-        //     motionId={Number(motionId)}
-        //     isFullyNayStaked={isFullyNayStaked(totalNayStake, requiredStake)}
-        //   />
-        // )
+        showMotionCountdownTimer &&
+        motionData && (
+          <CountDownTimer
+            motionState={motionState as MotionState} // safe casting: if motionState is null, showMotionCountdownTimer will be false.
+            motionId={motionData.motionId}
+            motionStakes={motionData.motionStakes}
+            refetchMotionState={refetchMotionState}
+          />
+        )
       }
       meta={<ActionsListItemMeta fromDomain={fromDomain ?? undefined} />}
       onClick={handleActionRedirect}
       status={status}
-      // tag={tag}
+      tag={<MotionTag />}
       title={{ id: 'action.title' }}
       titleValues={getActionTitleValues(item, colony)}
     />

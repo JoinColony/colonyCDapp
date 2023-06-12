@@ -1,5 +1,6 @@
 import React, { FC, Fragment } from 'react';
 import { useIntl } from 'react-intl';
+
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Permissions from './partials/Permissions';
 import DateInstalled from './partials/DateInstalled';

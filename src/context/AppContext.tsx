@@ -1,7 +1,7 @@
 import React, { createContext, useState, useMemo, ReactNode, useCallback } from 'react';
 
 import { ActionTypes } from '~redux';
-import { GetCurrentUserDocument, GetCurrentUserQuery, GetCurrentUserQueryVariables } from '~gql';
+import { GetUserByAddressDocument, GetUserByAddressQuery, GetUserByAddressQueryVariables } from '~gql';
 import { Wallet, User } from '~types';
 import { useAsyncFunction } from '~hooks';
 
@@ -45,8 +45,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
           setUserLoading(true);
         }
         const apolloClient = getContext(ContextModule.ApolloClient);
-        const { data } = await apolloClient.query<GetCurrentUserQuery, GetCurrentUserQueryVariables>({
-          query: GetCurrentUserDocument,
+        const { data } = await apolloClient.query<GetUserByAddressQuery, GetUserByAddressQueryVariables>({
+          query: GetUserByAddressDocument,
           variables: { address },
           fetchPolicy: 'network-only',
         });

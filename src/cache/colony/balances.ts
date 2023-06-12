@@ -1,5 +1,6 @@
 import { BigNumber } from 'ethers';
 import { DEFAULT_NETWORK_TOKEN, ADDRESS_ZERO, COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
+import { ColonyBalance } from '~types';
 
 const BALANCE_TYPE_NAME = 'ColonyBalance';
 
@@ -96,13 +97,15 @@ const balancesFieldCache = {
         ...domainBalanceRefs,
         items: [
           ...allDomainBalances,
-          ...colonyTokens.map(({ token }) => ({
-            __typename: BALANCE_TYPE_NAME,
-            domain: null,
-            id: `${colonyChainId}_${colonyAddress}_${COLONY_TOTAL_BALANCE_DOMAIN_ID}_${token.id}_balance`,
-            token,
-            balance: totalTokenBalances[token.id].toString(),
-          })),
+          ...colonyTokens.map(
+            ({ token }): ColonyBalance => ({
+              __typename: BALANCE_TYPE_NAME,
+              domain: null,
+              id: `${colonyChainId}_${colonyAddress}_${COLONY_TOTAL_BALANCE_DOMAIN_ID}_${token.id}_balance`,
+              token,
+              balance: totalTokenBalances[token.id].toString(),
+            }),
+          ),
         ],
       };
     },

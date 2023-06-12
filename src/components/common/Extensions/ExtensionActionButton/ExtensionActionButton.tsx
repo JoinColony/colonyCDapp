@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
+import { ColonyRole, Id } from '@colony/colony-js';
 
 import { useAppContext, useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
@@ -8,6 +9,7 @@ import Button, { ActionButton, IconButton } from '~shared/Button';
 import { AnyExtensionData } from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
+import { getUserRolesForDomain } from '~transformers';
 
 const displayName = 'common.Extensions.ExtensionActionButton';
 
@@ -29,7 +31,7 @@ interface Props {
 const ExtensionActionButton = ({ extensionData }: Props) => {
   const navigate = useNavigate();
   const { colony } = useColonyContext();
-  const { user } = useAppContext();
+  const { user, wallet } = useAppContext();
 
   if (!colony || !user) {
     return null;
@@ -41,19 +43,21 @@ const ExtensionActionButton = ({ extensionData }: Props) => {
 
   const isSupportedColonyVersion = colony.version >= MIN_SUPPORTED_COLONY_VERSION;
 
+  const userDomainRoles = getUserRolesForDomain(colony, wallet?.address || '', Id.RootDomain);
+
+  const inputDisabled = !isSupportedColonyVersion || !userDomainRoles.includes(ColonyRole.Root);
+
   if (!isInstalledExtensionData(extensionData)) {
     return (
       <ActionButton
         button={IconButton}
-        submit={ActionTypes.EXTENSION_INSTALL}
-        error={ActionTypes.EXTENSION_INSTALL_ERROR}
-        success={ActionTypes.EXTENSION_INSTALL_SUCCESS}
+        actionType={ActionTypes.EXTENSION_INSTALL}
         values={{
           colonyAddress: colony.colonyAddress,
           extensionData,
         }}
         text={MSG.install}
-        disabled={!isSupportedColonyVersion}
+        disabled={inputDisabled}
       />
     );
   }
@@ -68,12 +72,10 @@ const ExtensionActionButton = ({ extensionData }: Props) => {
         appearance={{ theme: 'primary', size: 'medium' }}
         onClick={handleEnableClick}
         text={MSG.enable}
-        disabled={!isSupportedColonyVersion}
+        disabled={inputDisabled}
       />
     );
   }
-
-  // @TODO: Handle missing permissions
 
   return null;
 };

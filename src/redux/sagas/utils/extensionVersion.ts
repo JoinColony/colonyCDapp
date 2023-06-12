@@ -9,7 +9,6 @@ import {
 
 export const getOneTxPaymentVersion = async (): Promise<number> => {
   const apolloClient = getContext(ContextModule.ApolloClient);
-
   const { data } = await apolloClient.query<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>({
     query: GetCurrentExtensionVersionDocument,
     variables: {

@@ -1,17 +1,22 @@
-import React from 'react';
-import { ColonyRole } from '@colony/colony-js';
+import React, { useEffect } from 'react';
+import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
 import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
 import { HookFormInput as Input, Annotations, SelectOption } from '~shared/Fields';
-// import NotEnoughReputation from '~dashboard/NotEnoughReputation';
 
 import { DomainColor } from '~gql';
 import { findDomainByNativeId } from '~utils/domains';
+import { SetStateFn } from '~types';
 
 import DomainNameAndColorInputGroup from '../DomainNameAndColorInputGroup';
-import { NoPermissionMessage, CannotCreateMotionMessage, PermissionRequiredInfo } from '../Messages';
+import {
+  NoPermissionMessage,
+  CannotCreateMotionMessage,
+  PermissionRequiredInfo,
+  NotEnoughReputation,
+} from '../Messages';
 
 import { useEditDomainDialogStatus } from './helpers';
 
@@ -44,16 +49,22 @@ const requiredRoles: ColonyRole[] = [ColonyRole.Architecture];
 
 interface Props extends ActionDialogProps {
   domainOptions: SelectOption[];
+  handleIsForceChange: SetStateFn;
+  isForce: boolean;
 }
 
-const EditDomainDialogForm = ({ back, colony, domainOptions, enabledExtensionData }: Props) => {
+const EditDomainDialogForm = ({
+  back,
+  colony,
+  domainOptions,
+  enabledExtensionData,
+  handleIsForceChange,
+  isForce,
+}: Props) => {
   const { watch, reset: resetForm } = useFormContext();
-  const { domainName, domainPurpose, forceAction } = watch();
-  const { userHasPermission, disabledSubmit, disabledInput, canCreateMotion } = useEditDomainDialogStatus(
-    colony,
-    requiredRoles,
-    enabledExtensionData,
-  );
+  const { domainName, domainPurpose, forceAction, domainId, motionDomainId } = watch();
+  const { userHasPermission, disabledSubmit, disabledInput, canCreateMotion, canOnlyForceAction } =
+    useEditDomainDialogStatus(colony, requiredRoles, enabledExtensionData, domainOptions);
 
   const handleDomainChange = (selectedDomainValue: number) => {
     const selectedDomain = findDomainByNativeId(selectedDomainValue, colony);
@@ -66,21 +77,38 @@ const EditDomainDialogForm = ({ back, colony, domainOptions, enabledExtensionDat
         domainName: selectedDomain.metadata?.name || `Domain #${selectedDomain.nativeId}`,
         domainPurpose: selectedDomain.metadata?.description || '',
         forceAction,
+        motionDomainId:
+          /* @NOTE: We only want to update the motion domain id along with the selected domain for edit
+           * if motionDomainId is different from the selected domain and it's NOT Root.
+           *
+           * This is done to avoid cases in which the user may select a subdomain of Root, and then change the selected
+           * domain to another subdomain of Root. In cases like that, we need to change motion domain id because you can't create a motion
+           * in a subdomain, to edit a "sibling" subdomain.
+           */
+          motionDomainId !== Id.RootDomain && motionDomainId !== selectedDomainValue
+            ? selectedDomain.nativeId
+            : motionDomainId,
       });
-      // if (
-      //   selectedMotionDomainId !== Id.RootDomain &&
-      //   selectedMotionDomainId !== selectedDomainId
-      // ) {
-      //   setFieldValue('motionDomainId', selectedDomainId);
-      // }
     }
     return null;
   };
 
+  useEffect(() => {
+    if (forceAction !== isForce) {
+      handleIsForceChange(forceAction);
+    }
+  }, [forceAction, isForce, handleIsForceChange]);
+
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading title={MSG.titleEdit} />
+        <DialogHeading
+          title={MSG.titleEdit}
+          colony={colony}
+          userHasPermission={userHasPermission}
+          isVotingExtensionEnabled={enabledExtensionData.isVotingReputationEnabled}
+          selectedDomainId={domainId}
+        />
       </DialogSection>
       {domainOptions.length > 0 && !userHasPermission && (
         <DialogSection>
@@ -129,12 +157,11 @@ const EditDomainDialogForm = ({ back, colony, domainOptions, enabledExtensionDat
           <NoPermissionMessage requiredPermissions={[ColonyRole.Architecture]} domainName={domainName} />
         </DialogSection>
       )}
-      {/* {onlyForceAction && (
-        <NotEnoughReputation
-          appearance={{ marginTop: 'negative' }}
-          domainId={Number(domainId)}
-        />
-      )} */}
+      {canOnlyForceAction && (
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NotEnoughReputation appearance={{ marginTop: 'negative' }} domainId={domainId} />
+        </DialogSection>
+      )}
       {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />

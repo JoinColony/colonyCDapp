@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
+
 import styles from './RadioList.module.css';
 import { RadioBaseProps, RadioItemProps } from './types';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';

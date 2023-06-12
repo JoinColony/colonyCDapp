@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
+
 import ColonyAvatar from '~shared/ColonyAvatar';
 import Icon from '~shared/Icon';
 import { Colony } from '~types';

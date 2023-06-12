@@ -4,7 +4,7 @@ import React, { ReactNode, ButtonHTMLAttributes } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 
-import { SimpleMessageValues } from '~types';
+import { UniversalMessageValues } from '~types';
 import { useMainClasses } from '~hooks';
 
 import styles from './Button.css';
@@ -61,7 +61,7 @@ export interface Props extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'ti
   text?: MessageDescriptor | string;
 
   /** Values for loading text (react-intl interpolation) */
-  textValues?: SimpleMessageValues;
+  textValues?: UniversalMessageValues;
   /** Testing */
   dataTest?: string;
 }

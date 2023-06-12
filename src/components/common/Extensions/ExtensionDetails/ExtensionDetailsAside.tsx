@@ -106,9 +106,7 @@ const ExtensionDetailsAside = ({ extensionData, canBeDeprecated, canBeUninstalle
             children: <FormattedMessage {...MSG.textDeprecate} />,
           }}
           appearance={{ theme: 'blue' }}
-          submit={ActionTypes.EXTENSION_DEPRECATE}
-          error={ActionTypes.EXTENSION_DEPRECATE_ERROR}
-          success={ActionTypes.EXTENSION_DEPRECATE_SUCCESS}
+          actionType={ActionTypes.EXTENSION_DEPRECATE}
           text={MSG.buttonDeprecate}
           values={{
             colonyAddress,
@@ -126,9 +124,7 @@ const ExtensionDetailsAside = ({ extensionData, canBeDeprecated, canBeUninstalle
               children: <FormattedMessage {...MSG.textReEnable} />,
             }}
             appearance={{ theme: 'blue' }}
-            submit={ActionTypes.EXTENSION_DEPRECATE}
-            error={ActionTypes.EXTENSION_DEPRECATE_ERROR}
-            success={ActionTypes.EXTENSION_DEPRECATE_SUCCESS}
+            actionType={ActionTypes.EXTENSION_DEPRECATE}
             text={MSG.buttonReEnable}
             values={{
               colonyAddress,
@@ -143,9 +139,7 @@ const ExtensionDetailsAside = ({ extensionData, canBeDeprecated, canBeUninstalle
               children: <FormattedMessage {...MSG.textUninstall} />,
             }}
             appearance={{ theme: 'blue' }}
-            submit={ActionTypes.EXTENSION_UNINSTALL}
-            error={ActionTypes.EXTENSION_UNINSTALL_ERROR}
-            success={ActionTypes.EXTENSION_UNINSTALL_SUCCESS}
+            actionType={ActionTypes.EXTENSION_UNINSTALL}
             values={{
               colonyAddress,
               extensionId,

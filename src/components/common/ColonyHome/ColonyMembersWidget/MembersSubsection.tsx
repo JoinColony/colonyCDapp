@@ -7,9 +7,9 @@ import UserAvatar from '~shared/UserAvatar';
 import ClickableHeading from '~shared/ClickableHeading';
 import InviteLinkButton from '~shared/Button/InviteLinkButton';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { useAvatarDisplayCounter } from '~hooks';
 import { Colony, Member } from '~types';
 // import Icon from '~shared/Icon';
+import { calculateLastSliceIndex, calculateRemainingItems } from '~utils/avatars';
 
 import styles from './ColonyMembersWidget.css';
 
@@ -77,7 +77,7 @@ const MembersSubsection = ({
   //   userHasAccountRegistered &&
   //   (hasRoot(allUserRoles) || canAdminister(allUserRoles));
 
-  const { avatarsDisplaySplitRules, remainingAvatarsCount } = useAvatarDisplayCounter(maxAvatars, members ?? [], false);
+  const remainingAvatarsCount = calculateRemainingItems(maxAvatars, members ?? [], false);
 
   const BASE_MEMBERS_ROUTE = `/colony/${name}/members`;
   const membersPageRoute =
@@ -129,7 +129,7 @@ const MembersSubsection = ({
     <div className={styles.main}>
       {setHeading(true)}
       <ul className={styles.userAvatars}>
-        {members.slice(0, avatarsDisplaySplitRules).map((member) => (
+        {members.slice(0, calculateLastSliceIndex(maxAvatars, members, false)).map((member) => (
           <li className={styles.userAvatar} key={member?.user?.walletAddress}>
             <UserAvatar
               size="xs"

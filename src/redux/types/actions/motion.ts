@@ -1,16 +1,9 @@
 import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
 
+import { Address, Colony, Domain, DomainColor } from '~types';
 import { ActionTypes } from '../../actionTypes';
-import { Address, DomainColor } from '~types';
-
-import {
-  ErrorActionType,
-  UniqueActionType,
-  UniqueActionTypeWithoutPayload,
-  ActionTypeWithMeta,
-  MetaWithHistory,
-} from './index';
+import { ErrorActionType, UniqueActionType, ActionTypeWithMeta, MetaWithHistory, MetaWithNavigate } from './index';
 
 export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
@@ -22,14 +15,13 @@ export type MotionActionTypes =
   | UniqueActionType<
       ActionTypes.MOTION_STAKE,
       {
-        userAddress: Address;
         colonyAddress: Address;
         motionId: BigNumber;
         vote: number;
         amount: BigNumber;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      object
     >
   | ErrorActionType<ActionTypes.MOTION_STAKE_ERROR, object>
   | ActionTypeWithMeta<ActionTypes.MOTION_STAKE_SUCCESS, MetaWithHistory<object>>
@@ -72,30 +64,41 @@ export type MotionActionTypes =
       {
         userAddress: Address;
         colonyAddress: Address;
-        motionIds: Array<BigNumber>;
+        transactionHash: string;
       },
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.MOTION_CLAIM_ERROR, object>
   | ActionTypeWithMeta<ActionTypes.MOTION_CLAIM_SUCCESS, MetaWithHistory<object>>
   | UniqueActionType<
+      ActionTypes.MOTION_CLAIM_ALL,
+      {
+        userAddress: Address;
+        colonyAddress: Address;
+        motionIds: string[];
+      },
+      MetaWithHistory<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_CLAIM_ALL_ERROR, object>
+  | ActionTypeWithMeta<ActionTypes.MOTION_CLAIM_ALL_SUCCESS, MetaWithHistory<object>>
+  | UniqueActionType<
       ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
       {
         colonyAddress: Address;
+        isCreateDomain: boolean;
+        motionDomainId: number;
+        domain?: Domain;
         colonyName?: string;
         domainName: string;
         domainColor?: DomainColor;
         domainPurpose?: string;
         annotationMessage?: string;
         parentId?: number;
-        domainId?: number;
-        isCreateDomain: boolean;
-        motionDomainId: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.MOTION_DOMAIN_CREATE_EDIT_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.MOTION_DOMAIN_CREATE_EDIT_SUCCESS, MetaWithHistory<object>>
+  | ActionTypeWithMeta<ActionTypes.MOTION_DOMAIN_CREATE_EDIT_SUCCESS, MetaWithNavigate<object>>
   | UniqueActionType<
       ActionTypes.MOTION_EXPENDITURE_PAYMENT,
       {
@@ -111,45 +114,40 @@ export type MotionActionTypes =
         annotationMessage?: string;
         motionDomainId: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_PAYMENT_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.MOTION_EXPENDITURE_PAYMENT_SUCCESS, MetaWithHistory<object>>
+  | ActionTypeWithMeta<ActionTypes.MOTION_EXPENDITURE_PAYMENT_SUCCESS, MetaWithNavigate<object>>
   | UniqueActionType<
       ActionTypes.MOTION_EDIT_COLONY,
       {
-        colonyAddress: Address;
-        colonyName: string;
-        colonyDisplayName: string;
+        colony: Colony;
+        colonyDisplayName?: string;
         colonyAvatarImage?: string;
-        colonyAvatarHash?: string;
-        hasAvatarChanged?: boolean;
-        colonyTokens?: Address[];
+        colonyThumbnail?: string;
+        tokenAddresses?: Address[];
         annotationMessage?: string;
-        /*
-         * @TODO I think this will also store the subscribed-to tokens list
-         */
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.MOTION_EDIT_COLONY_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.MOTION_EDIT_COLONY_SUCCESS, MetaWithHistory<object>>
+  | ActionTypeWithMeta<ActionTypes.MOTION_EDIT_COLONY_SUCCESS, MetaWithNavigate<object>>
   | UniqueActionType<
       ActionTypes.MOTION_MOVE_FUNDS,
       {
         colonyAddress: Address;
         colonyName?: string;
-        version: string;
+        colonyVersion: number;
         tokenAddress: Address;
-        fromDomainId: number;
-        toDomainId: number;
+        fromDomain: Domain;
+        toDomain: Domain;
         amount: BigNumber;
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.MOTION_MOVE_FUNDS_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.MOTION_MOVE_FUNDS_SUCCESS, MetaWithHistory<object>>
+  | ActionTypeWithMeta<ActionTypes.MOTION_MOVE_FUNDS_SUCCESS, MetaWithNavigate<object>>
   | UniqueActionType<
       ActionTypes.ROOT_MOTION,
       {
@@ -159,7 +157,7 @@ export type MotionActionTypes =
         motionParams: [BigNumber] | [string];
         annotationMessage?: string;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ROOT_MOTION_ERROR, object>
   | ActionTypeWithMeta<ActionTypes.ROOT_MOTION_SUCCESS, MetaWithHistory<object>>
@@ -179,17 +177,6 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_USER_ROLES_SET_ERROR, object>
   | ActionTypeWithMeta<ActionTypes.MOTION_USER_ROLES_SET_SUCCESS, MetaWithHistory<object>>
   | UniqueActionType<
-      ActionTypes.MOTION_STATE_UPDATE,
-      {
-        colonyAddress: Address;
-        motionId: BigNumber;
-        userAddress: Address;
-      },
-      object
-    >
-  | ErrorActionType<ActionTypes.MOTION_STATE_UPDATE_ERROR, object>
-  | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_STATE_UPDATE_SUCCESS, object>
-  | UniqueActionType<
       ActionTypes.MOTION_ESCALATE,
       {
         userAddress: Address;
@@ -208,11 +195,11 @@ export type MotionActionTypes =
         domainId: number;
         userAddress: Address;
         amount: BigNumber;
-        motionDomainId: string;
+        motionDomainId: number;
         annotationMessage?: string;
         isSmitingReputation?: boolean;
       },
-      MetaWithHistory<object>
+      MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.MOTION_MANAGE_REPUTATION_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.MOTION_MANAGE_REPUTATION_SUCCESS, MetaWithHistory<object>>;
+  | ActionTypeWithMeta<ActionTypes.MOTION_MANAGE_REPUTATION_SUCCESS, MetaWithNavigate<object>>;

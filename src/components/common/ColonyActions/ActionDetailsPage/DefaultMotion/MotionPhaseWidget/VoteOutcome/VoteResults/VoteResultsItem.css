@@ -1,0 +1,27 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 320px;
+}
+
+.voteInfoContainer {
+  display: flex;
+  align-items: flex-end;
+  width: 85%;
+}
+
+.voteResults {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  width: calc(100% - 38px);
+}
+
+.themeApprove .votePercentageBar {
+  background-color: var(--primary);
+}
+
+.themeDisapprove .votePercentageBar {
+  background-color: var(--pink);
+}

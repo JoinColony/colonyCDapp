@@ -1,5 +1,5 @@
 import { Channel, buffers } from 'redux-saga';
-import { actionChannel, all, call, cancel, put, take, takeEvery } from 'redux-saga/effects';
+import { actionChannel, all, call, cancel, fork, put, take, takeEvery } from 'redux-saga/effects';
 
 import { TxConfig } from '~types';
 import { filterUniqueAction } from '~utils/actions';
@@ -112,3 +112,18 @@ export function* waitForTxResult(channel: Channel<any>) {
     throw new Error('Transaction failed');
   }
 }
+
+export const createGroupTransaction = (
+  { id, index }: { id: string; index: number },
+  key: string,
+  meta: { id: string },
+  config: TxConfig,
+) =>
+  fork(createTransaction, id, {
+    ...config,
+    group: {
+      key,
+      id: meta.id,
+      index,
+    },
+  });

@@ -1,0 +1,35 @@
+name: Amplify Backend CI/CD
+
+on:
+  workflow_dispatch: # Allows manual workflow trigger
+  repository_dispatch: # Allows API workflow trigger
+
+jobs:
+  deploy-amplify:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16
+
+    - name: Install Amplify CLI
+      run: npm install -g @aws-amplify/cli
+
+    - name: Configure Amplify CLI
+      run: |
+        amplify configure \
+        --no-use-profile \
+        --access-key-id ${{ secrets.AMPLIFY_QA_AWS_ACCESS_KEY_ID }} \
+        --secret-access-key ${{ secrets.AMPLIFY_QA_AWS_SECRET_ACCESS_KEY }} \
+        --region eu-west-2
+
+    - name: Checkout Amplify environment
+      run: amplify env checkout qa
+
+    - name: Deploy Amplify backend
+      run: amplify push --yes

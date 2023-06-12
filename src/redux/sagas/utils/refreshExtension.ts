@@ -69,6 +69,7 @@ export const refreshInstalledExtension = (
     isDeleted: false,
     isDeprecated: false,
     isInitialized: false,
+    params: null,
   };
 
   saveExtensionInCache(modifiedExtension);

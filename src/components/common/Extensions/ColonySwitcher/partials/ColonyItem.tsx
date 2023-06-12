@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
+
 import ColonyAvatar from '~shared/ColonyAvatar';
 import Icon from '~shared/Icon';
 import { ColonyItemProps } from '../types';

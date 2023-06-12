@@ -1,8 +1,7 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, Id } from '@colony/colony-js';
+
 import { Action, ActionTypes, AllActions } from '~redux';
-import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
-import { putError, takeFrom } from '../utils';
 import { transactionAddParams, transactionPending, transactionReady } from '~redux/actionCreators';
 import { ContextModule, getContext } from '~context';
 import {
@@ -13,16 +12,11 @@ import {
 import { getDomainDatabaseId } from '~utils/domains';
 import { toNumber } from '~utils/numbers';
 
+import { createGroupTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import { putError, takeFrom } from '../utils';
+
 function* createDomainAction({
-  payload: {
-    colonyAddress,
-    colonyName,
-    domainName,
-    domainColor,
-    domainPurpose,
-    annotationMessage,
-    parentId = Id.RootDomain,
-  },
+  payload: { colony, domainName, domainColor, domainPurpose, annotationMessage, parentId = Id.RootDomain },
   meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ACTION_DOMAIN_CREATE>) {
@@ -46,20 +40,10 @@ function* createDomainAction({
         // 'annotateCreateDomainAction',
       ]);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(createDomain, {
+    yield createGroupTransaction(createDomain, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'addDomainWithProofs(uint256)',
-      identifier: colonyAddress,
+      identifier: colony.colonyAddress,
       params: [],
       ready: false,
     });
@@ -99,7 +83,7 @@ function* createDomainAction({
       mutation: CreateDomainMetadataDocument,
       variables: {
         input: {
-          id: getDomainDatabaseId(colonyAddress, nativeDomainId),
+          id: getDomainDatabaseId(colony.colonyAddress, nativeDomainId),
           name: domainName,
           color: domainColor,
           description: domainPurpose,
@@ -149,8 +133,10 @@ function* createDomainAction({
       meta,
     });
 
-    if (colonyName && navigate) {
-      navigate(`/colony/${colonyName}/tx/${transactionHash}`);
+    if (navigate) {
+      navigate(`/colony/${colony.name}/tx/${transactionHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_DOMAIN_CREATE_ERROR, error, meta);

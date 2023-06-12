@@ -1,6 +1,7 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
+
 import { ExtensionStatusBadgeProps } from './types';
 import styles from './ExtensionStatusBadge.module.css';
 
