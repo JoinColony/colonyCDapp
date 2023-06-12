@@ -18,6 +18,7 @@ import { hasRoot, mustColonyBeUpgraded, canColonyBeUpgraded } from '~utils/check
 import { getAllUserRoles } from '~transformers';
 
 import styles from './ColonyUpgrade.css';
+import { ColonyFragment } from '~gql';
 
 const displayName = 'common.ColonyHome.ColonyUpgrade';
 
@@ -46,7 +47,7 @@ const ColonyUpgrade = () => {
       enabledExtensionData,
     });
 
-  const allUserRoles = useTransformer(getAllUserRoles, [colony, wallet?.address ?? '']);
+  const allUserRoles = useTransformer(getAllUserRoles, [colony as ColonyFragment, wallet?.address ?? '']);
 
   const canUpgradeColony = user?.name && hasRoot(allUserRoles);
 
