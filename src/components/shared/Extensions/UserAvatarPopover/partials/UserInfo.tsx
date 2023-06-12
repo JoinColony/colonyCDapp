@@ -69,24 +69,29 @@ const UserInfo: FC<UserInfoProps> = ({
       <TitledContent title={{ id: 'userInfo.about.section' }}>
         <p className="text-md text-gray-600">{aboutDescriptionText}</p>
       </TitledContent>
-      <TitledContent title={{ id: 'userInfo.colonyReputation.section' }} className="pt-6 mt-6 border-t border-gray-200">
-        <ul className="flex flex-col gap-2">
-          {colonyReputation.map(({ key, title, percentage, points }) => {
-            const titleText = typeof title === 'string' ? title : title && formatMessage(title);
+      {colonyReputation && colonyReputation.length ? (
+        <TitledContent
+          title={{ id: 'userInfo.colonyReputation.section' }}
+          className="pt-6 mt-6 border-t border-gray-200"
+        >
+          <ul className="flex flex-col gap-2">
+            {colonyReputation.map(({ key, title, percentage, points }) => {
+              const titleText = typeof title === 'string' ? title : title && formatMessage(title);
 
-            return (
-              <li key={key} className="grid grid-cols-[1fr,auto] gap-x-4 font-medium text-gray-900">
-                <span className="text-md">{titleText}</span>
-                <span className="inline-flex items-center text-sm [&_svg]:text-blue-400">
-                  <Icon name="star" appearance={{ size: 'extraTiny' }} />
-                  <span className="text-blue-400 inline-block ml-1 mr-2">{percentage}%</span>
-                  <span>{points} pts</span>
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-      </TitledContent>
+              return (
+                <li key={key} className="grid grid-cols-[1fr,auto] gap-x-4 font-medium text-gray-900">
+                  <span className="text-md">{titleText}</span>
+                  <span className="inline-flex items-center text-sm [&_svg]:text-blue-400">
+                    <Icon name="star" appearance={{ size: 'extraTiny' }} />
+                    <span className="text-blue-400 inline-block ml-1 mr-2">{percentage}%</span>
+                    {points && <span>{points} pts</span>}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </TitledContent>
+      ) : undefined}
 
       <TitledContent title={{ id: 'userInfo.permissions.section' }} className="pt-6 mt-6 border-t border-gray-200">
         <ul className="inline-flex flex-wrap gap-x-1 gap-y-2">
