@@ -81,13 +81,18 @@ export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
 
   const isUpgradeButtonDisabled = !isSupportedColonyVersion || !extensionCompatible;
 
+  const navigateToExtensionSettingsPage = useCallback(() => {
+    navigate(`/colony/${colony?.name}/extensions/${extensionData?.extensionId}/setup`);
+  }, [navigate, colony?.name, extensionData?.extensionId]);
+
   const handleInstallClick = useCallback(async () => {
     try {
       await asyncFunctionInstall(extensionValues);
+      navigateToExtensionSettingsPage();
     } catch (err) {
       console.error(err);
     }
-  }, [asyncFunctionInstall, extensionValues]);
+  }, [asyncFunctionInstall, extensionValues, navigateToExtensionSettingsPage]);
 
   const handleUpdateVersionClick = useCallback(async () => {
     try {
@@ -115,13 +120,8 @@ export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
     }
   }, [asyncFunctionUpgrade, extensionValues]);
 
-  const handleEnableClick = () => {
-    navigate(`/colony/${colony?.name}/extensions/${extensionData?.extensionId}/setup`);
-  };
-
   return {
     handleInstallClick,
-    handleEnableClick,
     handleUpdateVersionClick,
     isUpgradeButtonDisabled,
   };
