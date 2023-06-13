@@ -81,8 +81,17 @@ const LazyConsensusPage: FC = () => {
                 </div>
                 <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
                   <ExtensionStatusBadge
-                    mode="governance"
-                    text={formatMessage({ id: 'status.governance' })}
+                    mode={
+                      extensionData.extensionId === 'OneTxPayment'
+                        ? 'payments'
+                        : 'governance'
+                    }
+                    text={formatMessage({
+                      id:
+                        extensionData.extensionId === 'OneTxPayment'
+                          ? 'status.payments'
+                          : 'status.governance',
+                    })}
                   />
                   {activeInstalls >= ACTIVE_INSTALLED_LIMIT ? (
                     <p className="text-gray-400 text-sm">

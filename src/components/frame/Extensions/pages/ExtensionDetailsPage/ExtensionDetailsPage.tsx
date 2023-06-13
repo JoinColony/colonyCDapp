@@ -79,8 +79,6 @@ const ExtensionDetailsPage: FC = () => {
     extensionData.extensionId !== 'VotingReputation' &&
     !isInstalledExtensionData(extensionData);
 
-  const isExtensionInstalled = isInstalledExtensionData(extensionData);
-
   const activeInstalls = Number(
     extensionData.extensionId === 'OneTxPayment'
       ? oneTxPaymentData
@@ -127,8 +125,7 @@ const ExtensionDetailsPage: FC = () => {
                     {formatMessage(extensionData.name)}
                   </h4>
                 </div>
-                {/* @TODO get these values from API (badge and active installs number) */}
-                <div className="flex items-center justify-between gap-4 sm:grow">
+                <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
                   <ExtensionStatusBadge
                     mode={
                       extensionData.extensionId === 'OneTxPayment'
@@ -142,20 +139,16 @@ const ExtensionDetailsPage: FC = () => {
                           : 'status.governance',
                     })}
                   />
-                  {!isExtensionInstalled && (
-                    <>
-                      {activeInstalls >= ACTIVE_INSTALLED_LIMIT ? (
-                        <p className="text-gray-400 text-sm">
-                          {activeInstalls.toLocaleString('en-US')}{' '}
-                          {formatMessage({ id: 'active.installs' })}
-                        </p>
-                      ) : (
-                        <ExtensionStatusBadge
-                          mode="new"
-                          text={{ id: 'status.new' }}
-                        />
-                      )}
-                    </>
+                  {activeInstalls >= ACTIVE_INSTALLED_LIMIT ? (
+                    <p className="text-gray-400 text-sm">
+                      {activeInstalls.toLocaleString('en-US')}{' '}
+                      {formatMessage({ id: 'active.installs' })}
+                    </p>
+                  ) : (
+                    <ExtensionStatusBadge
+                      mode="new"
+                      text={{ id: 'status.new' }}
+                    />
                   )}
                 </div>
               </div>

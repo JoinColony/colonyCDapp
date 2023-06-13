@@ -39,7 +39,7 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
   }, [extensionData]);
 
   return (
-    <div>
+    <>
       {isInstallButtonVisible && (
         <Button
           mode="primarySolid"
@@ -60,7 +60,7 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
           {formatMessage({ id: 'button.updateVersion' })}
         </Button>
       )}
-    </div>
+    </>
   );
 };
 
