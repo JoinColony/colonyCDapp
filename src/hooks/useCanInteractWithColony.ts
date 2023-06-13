@@ -29,7 +29,8 @@ export const useCanInteractWithNetwork = (): boolean => {
   const userWalletChain = parseInt(walletHexChainId.slice(2), 16);
 
   const networkContractsAvailable = Object.keys(NETWORK_AVAILABLE_CHAINS).find(
-    (networkName) => NETWORK_AVAILABLE_CHAINS[networkName].chainId === userWalletChain,
+    (networkName) =>
+      NETWORK_AVAILABLE_CHAINS[networkName].chainId === userWalletChain,
   );
   return userAccountRegistered && !!networkContractsAvailable;
 };
@@ -53,7 +54,8 @@ export const useCanInteractWithColony = (colony?: Colony): boolean => {
    * Check if connected to the same chain
    */
   const [{ id: walletHexChainId }] = wallet.chains;
-  const colonyChain = colony?.chainMetadata?.chainId || DEFAULT_NETWORK_INFO.chainId;
+  const colonyChain =
+    colony?.chainMetadata?.chainId || DEFAULT_NETWORK_INFO.chainId;
   const userWalletChain = parseInt(walletHexChainId.slice(2), 16);
 
   /*
@@ -61,7 +63,9 @@ export const useCanInteractWithColony = (colony?: Colony): boolean => {
    */
   const isWatching = !!getWatchedColony(colony, user?.watchlist?.items);
 
-  return colonyChain === userWalletChain && canInteractWithNetwork && isWatching;
+  return (
+    colonyChain === userWalletChain && canInteractWithNetwork && isWatching
+  );
 };
 
 export default useCanInteractWithColony;

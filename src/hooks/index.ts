@@ -18,13 +18,19 @@ export type Given = (
   dependantSelector?: DependantSelector,
 ) => any | boolean;
 
-export { default as useNaiveBranchingDialogWizard, WizardDialogType } from './useNaiveBranchingDialogWizard';
+export {
+  default as useNaiveBranchingDialogWizard,
+  WizardDialogType,
+} from './useNaiveBranchingDialogWizard';
 
 export { default as useUserByAddress } from './useUserByAddress';
 export { default as useColonyHasReputation } from './useColonyHasReputation';
 export { default as useDialogActionPermissions } from './useDialogActionPermissions';
 export { default as useActionDialogStatus } from './useActionDialogStatus';
-export { default as useEnabledExtensions, EnabledExtensionData } from './useEnabledExtensions';
+export {
+  default as useEnabledExtensions,
+  EnabledExtensionData,
+} from './useEnabledExtensions';
 export { default as useSelectedUser } from './useSelectedUser';
 export { default as useTitle } from './useTitle';
 export { default as useTokenInfo, TokenInfoProvider } from './useTokenInfo';
@@ -37,7 +43,10 @@ export { default as useUserReputation } from './useUserReputation';
 export { default as useMobile } from './useMobile';
 export { default as useTablet } from './useTablet';
 export { default as useSortedContributors } from './useSortedContributors';
-export { default as useUserReputationForTopDomains, UserDomainReputation } from './useUserReputationForTopDomains';
+export {
+  default as useUserReputationForTopDomains,
+  UserDomainReputation,
+} from './useUserReputationForTopDomains';
 export { default as useColonyContext } from './useColonyContext';
 export { default as useUserByName } from './useUserByName';
 export { default as useUserByNameOrAddress } from './useUserByNameOrAddress';
@@ -58,7 +67,10 @@ export { default as useCurrentPage } from './useCurrentPage';
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously
  */
-export const useTransformer = <T extends (...args: any[]) => any, A extends Parameters<T>>(
+export const useTransformer = <
+  T extends (...args: any[]) => any,
+  A extends Parameters<T>,
+>(
   transform: T,
   args: A = [] as unknown as A,
 ): ReturnType<T> =>
@@ -128,5 +140,12 @@ export const useMounted = () => {
   return ref;
 };
 
-export const useMainClasses = (appearance: any, styles: any, className?: string) =>
-  useMemo(() => className || getMainClasses(appearance, styles), [appearance, className, styles]);
+export const useMainClasses = (
+  appearance: any,
+  styles: any,
+  className?: string,
+) =>
+  useMemo(
+    () => className || getMainClasses(appearance, styles),
+    [appearance, className, styles],
+  );

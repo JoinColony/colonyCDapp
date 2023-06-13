@@ -3,9 +3,14 @@ import { useEffect, useState } from 'react';
 import { VoterRecord } from '~gql';
 import { useAppContext } from '~hooks';
 
-export const useRevealWidgetUpdate = (voterRecord: VoterRecord[], stopPollingAction: () => void) => {
+export const useRevealWidgetUpdate = (
+  voterRecord: VoterRecord[],
+  stopPollingAction: () => void,
+) => {
   const { user } = useAppContext();
-  const currentVotingRecord = voterRecord.find(({ address }) => address === user?.walletAddress);
+  const currentVotingRecord = voterRecord.find(
+    ({ address }) => address === user?.walletAddress,
+  );
   const hasUserVoted = !!currentVotingRecord;
   const vote = currentVotingRecord?.vote ?? null;
   const [prevVote, setPrevVote] = useState(vote);

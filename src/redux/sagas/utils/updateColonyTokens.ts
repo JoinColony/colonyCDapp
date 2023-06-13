@@ -19,7 +19,9 @@ import { xor } from '~utils/lodash';
  * Returns an array of the token addresses currently associated with the Colony.
  */
 export const getExistingTokenAddresses = (colony: Colony) =>
-  colony.tokens?.items.filter(notNull).map((tokenItem) => tokenItem.token.tokenAddress) || [];
+  colony.tokens?.items
+    .filter(notNull)
+    .map((tokenItem) => tokenItem.token.tokenAddress) || [];
 
 /**
  * Function returning an array of token addresses that were either added to or deleted
@@ -36,13 +38,20 @@ export const getModifiedTokenAddresses = (
   }
 
   // get a token address that has been modified, excluding colony's native token and chain's default token
-  const modifiedTokenAddress = xor(existingTokenAddresses, modifiedTokenAddresses).filter(
-    (tokenAddress) => tokenAddress !== nativeTokenAddress && tokenAddress !== ADDRESS_ZERO,
+  const modifiedTokenAddress = xor(
+    existingTokenAddresses,
+    modifiedTokenAddresses,
+  ).filter(
+    (tokenAddress) =>
+      tokenAddress !== nativeTokenAddress && tokenAddress !== ADDRESS_ZERO,
   );
   return modifiedTokenAddress;
 };
 
-export const getPendingModifiedTokenAddresses = (colony: Colony, updatedTokenAddresses?: string[] | null) => {
+export const getPendingModifiedTokenAddresses = (
+  colony: Colony,
+  updatedTokenAddresses?: string[] | null,
+) => {
   const nativeTokenAddress = colony.nativeToken.tokenAddress;
   const existingTokenAddresses = getExistingTokenAddresses(colony);
 
@@ -62,7 +71,8 @@ export const getPendingModifiedTokenAddresses = (colony: Colony, updatedTokenAdd
   // Ignore the chain's default and colony native tokens.
   newAddresses.forEach((address) => {
     const hasChanged = !prevAddresses.has(address);
-    const isSecondaryToken = address !== nativeTokenAddress && address !== ADDRESS_ZERO;
+    const isSecondaryToken =
+      address !== nativeTokenAddress && address !== ADDRESS_ZERO;
 
     if (isSecondaryToken && hasChanged) {
       modifiedTokenAddresses.added.push(address);
@@ -72,7 +82,8 @@ export const getPendingModifiedTokenAddresses = (colony: Colony, updatedTokenAdd
   // If a previous address is not in the new address set, it has been removed.
   prevAddresses.forEach((address) => {
     const hasChanged = !newAddresses.has(address);
-    const isSecondaryToken = address !== nativeTokenAddress && address !== ADDRESS_ZERO;
+    const isSecondaryToken =
+      address !== nativeTokenAddress && address !== ADDRESS_ZERO;
 
     if (isSecondaryToken && hasChanged) {
       modifiedTokenAddresses.removed.push(address);
@@ -96,7 +107,10 @@ export function* updateColonyTokens(
          * Call the GetTokenFromEverywhere query to ensure the token
          * gets added to the DB if it doesn't already exist
          */
-        const response = await apolloClient.query<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>({
+        const response = await apolloClient.query<
+          GetTokenFromEverywhereQuery,
+          GetTokenFromEverywhereQueryVariables
+        >({
           query: GetTokenFromEverywhereDocument,
           variables: {
             input: {
@@ -110,7 +124,10 @@ export function* updateColonyTokens(
          * Otherwise, it will cause any query referencing it to fail
          */
         if (response?.data.getTokenFromEverywhere?.items?.length) {
-          await apolloClient.mutate<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>({
+          await apolloClient.mutate<
+            CreateColonyTokensMutation,
+            CreateColonyTokensMutationVariables
+          >({
             mutation: CreateColonyTokensDocument,
             variables: {
               input: {
@@ -124,10 +141,15 @@ export function* updateColonyTokens(
         // token needs to be removed
         // get the ID of the colony/token entry in the DB (this is separate from token or colony address)
         const { colonyTokensId } =
-          colony.tokens?.items.find((colonyToken) => colonyToken?.token.tokenAddress === tokenAddress) || {};
+          colony.tokens?.items.find(
+            (colonyToken) => colonyToken?.token.tokenAddress === tokenAddress,
+          ) || {};
 
         if (colonyTokensId) {
-          await apolloClient.mutate<DeleteColonyTokensMutation, DeleteColonyTokensMutationVariables>({
+          await apolloClient.mutate<
+            DeleteColonyTokensMutation,
+            DeleteColonyTokensMutationVariables
+          >({
             mutation: DeleteColonyTokensDocument,
             variables: {
               input: {
@@ -141,7 +163,10 @@ export function* updateColonyTokens(
   );
 }
 
-export const getColonyMetadataDatabaseId = (colonyAddress: string, txHash: number) => {
+export const getColonyMetadataDatabaseId = (
+  colonyAddress: string,
+  txHash: number,
+) => {
   // Temp id we use to match metadata object with colony in block ingestor.
   return `${colonyAddress}_motion-${txHash}`;
 };

@@ -39,8 +39,13 @@ const NavItem: FC<NavItemProps> = ({ item }) => {
       ) : (
         <button
           type="button"
-          className={clsx(styles.navLink, 'text-gray-700 group-hover:text-gray-900 group-hover:bg-base-bg')}
-          aria-label={`${formatMessage({ id: 'ariaLabel.open' })} ${formatMessage({
+          className={clsx(
+            styles.navLink,
+            'text-gray-700 group-hover:text-gray-900 group-hover:bg-base-bg',
+          )}
+          aria-label={`${formatMessage({
+            id: 'ariaLabel.open',
+          })} ${formatMessage({
             id: `mainNavItem.${item.label}`,
             defaultMessage: `${item.label}`,
           })}`}
@@ -59,7 +64,8 @@ const NavItem: FC<NavItemProps> = ({ item }) => {
       {item.subMenu && (
         <div
           className={clsx(styles.subMenu, 'opacity-0 max-h-0 z-10', {
-            'group-hover:opacity-100 group-hover:max-h-[9999px] sm:group-hover:pointer-events-auto': !isMobile,
+            'group-hover:opacity-100 group-hover:max-h-[9999px] sm:group-hover:pointer-events-auto':
+              !isMobile,
             'max-h-[9999px] opacity-100': isOpen,
           })}
         >

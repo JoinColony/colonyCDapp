@@ -4,7 +4,11 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import { WizardDialogType, useUserAccountRegistered, useAppContext } from '~hooks';
+import {
+  WizardDialogType,
+  useUserAccountRegistered,
+  useAppContext,
+} from '~hooks';
 
 import { getAllUserRoles } from '~transformers';
 import { hasRoot, canFund } from '~utils/checks';
@@ -63,7 +67,8 @@ const MSG = defineMessages({
   },
   rewardPayoutDescription: {
     id: `${displayName}.rewardPayoutDescription`,
-    defaultMessage: "Are there funds in your colony's reward pot? Make it rain!",
+    defaultMessage:
+      "Are there funds in your colony's reward pot? Make it rain!",
   },
   rewardsTitle: {
     id: `${displayName}.rewardsTitle`,
@@ -79,7 +84,8 @@ const MSG = defineMessages({
   },
   unlockTokensDescription: {
     id: `${displayName}.unlockTokensDescription`,
-    defaultMessage: 'Allow your native token to be transferred between accounts.',
+    defaultMessage:
+      'Allow your native token to be transferred between accounts.',
   },
 });
 
@@ -128,7 +134,9 @@ const ManageFundsDialog = ({
       title: MSG.transferFundsTitle,
       description: MSG.transferFundsDescription,
       icon: 'emoji-world-globe',
-      permissionRequired: !userHasAccountRegistered || !(canMoveFunds || isVotingReputationEnabled),
+      permissionRequired:
+        !userHasAccountRegistered ||
+        !(canMoveFunds || isVotingReputationEnabled),
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
         permissionsList: <FormattedMessage {...MSG.paymentPermissionsList} />,
@@ -143,7 +151,9 @@ const ManageFundsDialog = ({
       permissionRequired: !userHasAccountRegistered || !canUserMintNativeToken,
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
-        permissionsList: <FormattedMessage {...MSG.mintTokensPermissionsList} />,
+        permissionsList: (
+          <FormattedMessage {...MSG.mintTokensPermissionsList} />
+        ),
       },
       onClick: () => callStep(nextStepMintTokens),
       dataTest: 'mintTokensDialogItem',
@@ -152,10 +162,14 @@ const ManageFundsDialog = ({
       title: MSG.manageTokensTitle,
       description: MSG.manageTokensDescription,
       icon: 'emoji-pen',
-      permissionRequired: !userHasAccountRegistered || !(canManageTokens || isVotingReputationEnabled),
+      permissionRequired:
+        !userHasAccountRegistered ||
+        !(canManageTokens || isVotingReputationEnabled),
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
-        permissionsList: <FormattedMessage {...MSG.manageTokensPermissionsList} />,
+        permissionsList: (
+          <FormattedMessage {...MSG.manageTokensPermissionsList} />
+        ),
       },
       onClick: () => callStep(nextStepManageTokens),
       dataTest: 'manageTokensDialogItem',
@@ -177,20 +191,27 @@ const ManageFundsDialog = ({
       description: MSG.unlockTokensDescription,
       icon: 'emoji-padlock',
       onClick: () => callStep(nextStepUnlockToken),
-      permissionRequired: !userHasAccountRegistered || !canUserUnlockNativeToken,
+      permissionRequired:
+        !userHasAccountRegistered || !canUserUnlockNativeToken,
       permissionInfoText: MSG.permissionsListText,
       permissionInfoTextValues: {
-        permissionsList: <FormattedMessage {...MSG.manageTokensPermissionsList} />,
+        permissionsList: (
+          <FormattedMessage {...MSG.manageTokensPermissionsList} />
+        ),
       },
       dataTest: 'unlockTokenDialogIndexItem',
     },
   ];
   // @TODO: Uncomment code here when "status" is implemented as this filters menu items based on that. (Mint and Unlock token actions)
   const filteredItems =
-    colony?.status?.nativeToken?.mintable && colony?.status?.nativeToken?.unlockable
+    colony?.status?.nativeToken?.mintable &&
+    colony?.status?.nativeToken?.unlockable
       ? items
       : items.filter(({ icon }) => {
-          if (icon === 'emoji-padlock' && !colony?.status?.nativeToken?.unlockable) {
+          if (
+            icon === 'emoji-padlock' &&
+            !colony?.status?.nativeToken?.unlockable
+          ) {
             return true; // false
           }
           return true; // !(

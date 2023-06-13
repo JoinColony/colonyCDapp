@@ -26,14 +26,16 @@ export const Base: Story = {
     <TwoColumns
       aside={
         <div className="bg-gray-300">
-          Left Aside (navigation). The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy
-          dog. The quick brown fox jumps over the lazy dog.
+          Left Aside (navigation). The quick brown fox jumps over the lazy dog.
+          The quick brown fox jumps over the lazy dog. The quick brown fox jumps
+          over the lazy dog.
         </div>
       }
     >
       <div className="bg-gray-300">
-        Main column: The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick
-        brown fox jumps over the lazy dog.
+        Main column: The quick brown fox jumps over the lazy dog. The quick
+        brown fox jumps over the lazy dog. The quick brown fox jumps over the
+        lazy dog.
       </div>
     </TwoColumns>
   ),

@@ -20,7 +20,8 @@ const useActionDialogStatus = (
   } = useFormContext();
   const forceAction = watch('forceAction');
 
-  const { isVotingReputationEnabled, votingReputationVersion } = enabledExtensionData;
+  const { isVotingReputationEnabled, votingReputationVersion } =
+    enabledExtensionData;
 
   const [userHasPermission, canOnlyForceAction] = useDialogActionPermissions(
     colony,
@@ -29,10 +30,12 @@ const useActionDialogStatus = (
     requiredRolesDomains,
     requiredRepDomain,
   );
-  const disabledInput = !userHasPermission || canOnlyForceAction || isSubmitting;
+  const disabledInput =
+    !userHasPermission || canOnlyForceAction || isSubmitting;
   const disabledSubmit = disabledInput || !isValid;
 
-  const canCreateMotion = votingReputationVersion !== noMotionsVotingReputationVersion || forceAction;
+  const canCreateMotion =
+    votingReputationVersion !== noMotionsVotingReputationVersion || forceAction;
 
   return {
     userHasPermission,

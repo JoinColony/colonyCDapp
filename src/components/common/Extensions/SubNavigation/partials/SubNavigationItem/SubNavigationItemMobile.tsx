@@ -10,22 +10,27 @@ import { SubNavigationItemProps } from './types';
 import styles from './SubNavigationItemMobile.module.css';
 import { accordionAnimation } from '~constants/accordionAnimation';
 
-const displayName = 'common.Extensions.SubNavigation.partials.SubNavigationItem.SubNavigationItemMobile';
+const displayName =
+  'common.Extensions.SubNavigation.partials.SubNavigationItem.SubNavigationItemMobile';
 
-const SubNavigationItemMobile: FC<PropsWithChildren<SubNavigationItemProps>> = ({
-  label,
-  content,
-  isOpen,
-  setOpen,
-  icon,
-}) => (
+const SubNavigationItemMobile: FC<
+  PropsWithChildren<SubNavigationItemProps>
+> = ({ label, content, isOpen, setOpen, icon }) => (
   <li>
-    <Button onClick={setOpen} mode="textButton" className={clsx(styles.button, { [styles.activeButton]: isOpen })}>
+    <Button
+      onClick={setOpen}
+      mode="textButton"
+      className={clsx(styles.button, { [styles.activeButton]: isOpen })}
+    >
       <span className="flex items-center">
         <Icon name={icon} appearance={{ size: 'small' }} />
         <span className="flex ml-2">{label}</span>
       </span>
-      <span className={clsx('flex ml-2.5 transition-transform duration-normal', { 'rotate-180': isOpen })}>
+      <span
+        className={clsx('flex ml-2.5 transition-transform duration-normal', {
+          'rotate-180': isOpen,
+        })}
+      >
         <Icon name="caret-down" appearance={{ size: 'extraTiny' }} />
       </span>
     </Button>

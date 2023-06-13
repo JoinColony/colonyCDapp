@@ -40,12 +40,16 @@ const useClaimWidgetConfig = (
   const nativeTokenSymbol = colony?.nativeToken.symbol;
 
   const userStake = usersStakes.find(({ address }) => address === userAddress);
-  const stakerReward = stakerRewards.find(({ address }) => address === userAddress);
+  const stakerReward = stakerRewards.find(
+    ({ address }) => address === userAddress,
+  );
 
   // Keep isClaimed state in sync with changes to unclaimed motions on colony object
   useEffect(() => {
     if (colony?.motionsWithUnclaimedStakes) {
-      const motionIsUnclaimed = colony.motionsWithUnclaimedStakes.some(({ motionId }) => motionId === databaseMotionId);
+      const motionIsUnclaimed = colony.motionsWithUnclaimedStakes.some(
+        ({ motionId }) => motionId === databaseMotionId,
+      );
 
       if (!motionIsUnclaimed) {
         setIsClaimed(true);
@@ -68,7 +72,13 @@ const useClaimWidgetConfig = (
   const claimItem = {
     label: formatMessage({ id: 'label.claim' }),
     labelStyles: styles.claimLabel,
-    item: <Button appearance={{ theme: 'primary', size: 'medium' }} text={{ id: 'button.claim' }} disabled />,
+    item: (
+      <Button
+        appearance={{ theme: 'primary', size: 'medium' }}
+        text={{ id: 'button.claim' }}
+        disabled
+      />
+    ),
   };
 
   const config: DetailItemProps[] = [claimItem];
@@ -125,19 +135,37 @@ const useClaimWidgetConfig = (
 
   const stakeItem = {
     label: formatMessage({ id: 'label.stake' }),
-    item: <Numeral value={userTotalStake} decimals={nativeTokenDecimals} suffix={nativeTokenSymbol} />,
+    item: (
+      <Numeral
+        value={userTotalStake}
+        decimals={nativeTokenDecimals}
+        suffix={nativeTokenSymbol}
+      />
+    ),
   };
 
   const winningsItem = {
     label: formatMessage({
       id: userWinnings.gte(0) ? 'label.winnings' : 'label.penalty',
     }),
-    item: <Numeral value={userWinnings} decimals={nativeTokenDecimals} suffix={nativeTokenSymbol} />,
+    item: (
+      <Numeral
+        value={userWinnings}
+        decimals={nativeTokenDecimals}
+        suffix={nativeTokenSymbol}
+      />
+    ),
   };
 
   const totalItem = {
     label: formatMessage({ id: 'label.total' }),
-    item: <Numeral value={totals} decimals={nativeTokenDecimals} suffix={nativeTokenSymbol} />,
+    item: (
+      <Numeral
+        value={totals}
+        decimals={nativeTokenDecimals}
+        suffix={nativeTokenSymbol}
+      />
+    ),
   };
 
   config.push(stakeItem, winningsItem, totalItem);

@@ -2,7 +2,10 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { getBlockscoutUserURL } from '~constants';
-import DropdownMenu, { DropdownMenuSection, DropdownMenuItem } from '~shared/DropdownMenu';
+import DropdownMenu, {
+  DropdownMenuSection,
+  DropdownMenuItem,
+} from '~shared/DropdownMenu';
 import Button from '~shared/Button';
 import ExternalLink from '~shared/Extensions/ExternalLink';
 

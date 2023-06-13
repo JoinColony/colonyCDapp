@@ -1,12 +1,20 @@
 import React from 'react';
-import { defineMessages, FormattedMessage, MessageDescriptor } from 'react-intl';
+import {
+  defineMessages,
+  FormattedMessage,
+  MessageDescriptor,
+} from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { HookForm as Form } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
 import TokenSelector from '~shared/TokenSelector';
 
-import { FormValues, Step3, selectTokenValidationSchema as validationSchema } from '../CreateColonyWizard';
+import {
+  FormValues,
+  Step3,
+  selectTokenValidationSchema as validationSchema,
+} from '../CreateColonyWizard';
 import { SubmitFormButton, TruncatedName } from './shared';
 
 import styles from './StepSelectToken.css';
@@ -36,14 +44,20 @@ const MSG = defineMessages({
   },
 });
 
-type Props = Pick<WizardStepProps<FormValues, Step3>, 'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'>;
+type Props = Pick<
+  WizardStepProps<FormValues, Step3>,
+  'nextStep' | 'wizardForm' | 'wizardValues' | 'setStepsValues'
+>;
 
 /*
  * This is a custom link since it goes to a sibling step that appears
  * to be parallel to this one after the wizard steps diverge,
  * while making sure that the data form the previous wizard steps doesn't get lost
  */
-export const switchTokenInputType = (type: FormValues['tokenChoice'], setStepsValues: Props['setStepsValues']) => {
+export const switchTokenInputType = (
+  type: FormValues['tokenChoice'],
+  setStepsValues: Props['setStepsValues'],
+) => {
   setStepsValues((stepsValues) => {
     const steps = [...stepsValues];
     steps[1] = { tokenChoice: type };
@@ -60,8 +74,16 @@ interface LinkToOtherStepProps {
   linkText: MessageDescriptor;
 }
 
-export const LinkToOtherStep = ({ onClick, linkText }: LinkToOtherStepProps) => (
-  <button type="button" className={styles.linkToOtherStep} tabIndex={-2} onClick={onClick}>
+export const LinkToOtherStep = ({
+  onClick,
+  linkText,
+}: LinkToOtherStepProps) => (
+  <button
+    type="button"
+    className={styles.linkToOtherStep}
+    tabIndex={-2}
+    onClick={onClick}
+  >
     <FormattedMessage {...linkText} />
   </button>
 );
@@ -77,11 +99,20 @@ const StepSelectToken = ({
   return (
     <section className={styles.main}>
       <Heading3 text={MSG.heading} textValues={headingText} />
-      <Form<Step3> onSubmit={nextStep} validationSchema={validationSchema} defaultValues={defaultValues}>
+      <Form<Step3>
+        onSubmit={nextStep}
+        validationSchema={validationSchema}
+        defaultValues={defaultValues}
+      >
         {({ formState: { isValid, isValidating, isSubmitting } }) => (
           <div>
             <TokenSelector
-              extra={<LinkToOtherStep onClick={goToCreateToken} linkText={MSG.link} />}
+              extra={
+                <LinkToOtherStep
+                  onClick={goToCreateToken}
+                  linkText={MSG.link}
+                />
+              }
               appearance={{ theme: 'fat' }}
             />
             <SubmitFormButton

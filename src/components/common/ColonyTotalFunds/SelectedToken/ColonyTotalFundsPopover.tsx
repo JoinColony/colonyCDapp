@@ -19,7 +19,12 @@ interface Props {
 
 const displayName = 'common.ColonyTotalFunds.ColonyTotalFundsPopover';
 
-const ColonyTotalFundsPopover = ({ children, onSelectToken, tokens, currentTokenAddress }: Props) => {
+const ColonyTotalFundsPopover = ({
+  children,
+  onSelectToken,
+  tokens,
+  currentTokenAddress,
+}: Props) => {
   return tokens ? (
     <Popover
       renderContent={({ close }) => (
@@ -46,7 +51,9 @@ const ColonyTotalFundsPopover = ({ children, onSelectToken, tokens, currentToken
                         : styles.tokenInfoContainer
                     }
                   >
-                    <span className={styles.tokenSymbol}>{token.symbol || '???'}</span>
+                    <span className={styles.tokenSymbol}>
+                      {token.symbol || '???'}
+                    </span>
                     <span className={styles.tokenBalance}>
                       <Numeral
                         decimals={getTokenDecimalsWithFallback(token.decimals)}

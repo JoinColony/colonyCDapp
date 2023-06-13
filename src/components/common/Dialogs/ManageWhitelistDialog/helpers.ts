@@ -7,12 +7,19 @@ export enum TABS {
   WHITELISTED = 1,
 }
 
-type ManageWhitelistDialogPayload = Action<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE>['payload'];
+type ManageWhitelistDialogPayload =
+  Action<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE>['payload'];
 
 export const getManageWhitelistDialogPayload = (
   colony: Colony,
   tabIndex: number,
-  { annotation: annotationMessage, whitelistAddress, whitelistedAddresses, whitelistCSVUploader, isWhitelistActivated },
+  {
+    annotation: annotationMessage,
+    whitelistAddress,
+    whitelistedAddresses,
+    whitelistCSVUploader,
+    isWhitelistActivated,
+  },
 ): ManageWhitelistDialogPayload => {
   const colonyTokens = colony.tokens?.items.filter(notNull) || [];
   let verifiedAddresses: Address[];
@@ -24,7 +31,12 @@ export const getManageWhitelistDialogPayload = (
     verifiedAddresses =
       whitelistAddress !== undefined
         ? [...new Set([...whitelistedAddresses, whitelistAddress])]
-        : [...new Set([...whitelistedAddresses, ...whitelistCSVUploader.parsedData])];
+        : [
+            ...new Set([
+              ...whitelistedAddresses,
+              ...whitelistCSVUploader.parsedData,
+            ]),
+          ];
 
     if (verifiedAddresses.length) {
       whitelistActivated = true;
@@ -33,7 +45,9 @@ export const getManageWhitelistDialogPayload = (
   return {
     colony,
     colonyDisplayName: colony.metadata?.displayName ?? '',
-    colonyTokenAddresses: colonyTokens.map((token) => token?.token.tokenAddress),
+    colonyTokenAddresses: colonyTokens.map(
+      (token) => token?.token.tokenAddress,
+    ),
     verifiedAddresses,
     isWhitelistActivated: whitelistActivated,
     annotationMessage,

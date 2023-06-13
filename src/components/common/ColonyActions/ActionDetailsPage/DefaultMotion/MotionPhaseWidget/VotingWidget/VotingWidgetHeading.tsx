@@ -7,7 +7,8 @@ import { ColonyAction, ColonyMetadata } from '~types';
 
 import styles from './VotingWidgetHeading.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidgetHeading';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidgetHeading';
 
 const MSG = defineMessages({
   title: {
@@ -23,13 +24,18 @@ interface VotingWidgetHeadingProps {
   pendingColonyMetadata?: ColonyMetadata | null;
 }
 
-const VotingWidgetHeading = ({ actionData, pendingColonyMetadata }: VotingWidgetHeadingProps) => {
+const VotingWidgetHeading = ({
+  actionData,
+  pendingColonyMetadata,
+}: VotingWidgetHeadingProps) => {
   return (
     <div className={styles.main}>
       <Heading4
         text={MSG.title}
         textValues={{
-          actionType: formatActionType(getExtendedActionType(actionData, pendingColonyMetadata)),
+          actionType: formatActionType(
+            getExtendedActionType(actionData, pendingColonyMetadata),
+          ),
         }}
         appearance={{ weight: 'bold', theme: 'dark', margin: 'none' }}
       />

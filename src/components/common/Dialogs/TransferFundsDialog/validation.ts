@@ -29,12 +29,18 @@ export const getValidationSchema = (colony: Colony) => {
       fromDomainId: number().required(),
       toDomainId: number()
         .required()
-        .when('fromDomainId', (fromDomainId, schema) => schema.notOneOf([fromDomainId], MSG.sameDomain)),
+        .when('fromDomainId', (fromDomainId, schema) =>
+          schema.notOneOf([fromDomainId], MSG.sameDomain),
+        ),
       amount: number()
         .required()
         .transform((value) => toFinite(value))
         .moreThan(0, () => MSG.amountZero)
-        .test('has-enough-balance', () => MSG.notEnoughBalance, getHasEnoughBalanceTestFn(colony)),
+        .test(
+          'has-enough-balance',
+          () => MSG.notEnoughBalance,
+          getHasEnoughBalanceTestFn(colony),
+        ),
       tokenAddress: string().address().required(),
       annotation: string().max(4000).defined(),
     })

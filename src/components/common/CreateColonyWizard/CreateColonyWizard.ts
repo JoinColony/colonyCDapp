@@ -50,7 +50,10 @@ const stepFunction: StepsFn<any> = (
 
 export type Step1 = Pick<FormValues, 'colonyName' | 'displayName'>;
 export type Step2 = Pick<FormValues, 'tokenChoice'>;
-export type Step3 = Pick<FormValues, 'tokenAddress' | 'tokenName' | 'tokenSymbol' | 'token'>;
+export type Step3 = Pick<
+  FormValues,
+  'tokenAddress' | 'tokenName' | 'tokenSymbol' | 'token'
+>;
 
 const initialValues: [Step1, Step2, Step3] = [
   {

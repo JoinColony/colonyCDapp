@@ -9,7 +9,12 @@ export interface TokenTooltipProps {
   popperOffset?: [number, number];
 }
 
-const TokenTooltip = ({ children, className, content, popperOffset }: TokenTooltipProps) => {
+const TokenTooltip = ({
+  children,
+  className,
+  content,
+  popperOffset,
+}: TokenTooltipProps) => {
   const popperOptions = {
     modifiers: [
       {
@@ -22,7 +27,11 @@ const TokenTooltip = ({ children, className, content, popperOffset }: TokenToolt
   };
 
   return (
-    <Tooltip placement="top-start" content={content} popperOptions={popperOptions}>
+    <Tooltip
+      placement="top-start"
+      content={content}
+      popperOptions={popperOptions}
+    >
       <div className={className}>{children}</div>
     </Tooltip>
   );

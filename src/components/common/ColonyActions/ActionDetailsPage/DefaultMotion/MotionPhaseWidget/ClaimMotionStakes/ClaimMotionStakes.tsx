@@ -17,8 +17,17 @@ interface ClaimMotionStakesProps {
 
 export type ClaimMotionStakesStyles = typeof styles;
 
-const ClaimMotionStakes = ({ motionData, startPollingAction, refetchAction }: ClaimMotionStakesProps) => {
-  const config = useClaimWidgetConfig(motionData, startPollingAction, refetchAction, styles);
+const ClaimMotionStakes = ({
+  motionData,
+  startPollingAction,
+  refetchAction,
+}: ClaimMotionStakesProps) => {
+  const config = useClaimWidgetConfig(
+    motionData,
+    startPollingAction,
+    refetchAction,
+    styles,
+  );
 
   return (
     <div>

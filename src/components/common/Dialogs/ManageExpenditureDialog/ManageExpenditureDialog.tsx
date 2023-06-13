@@ -4,7 +4,11 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import { WizardDialogType, useAppContext, useUserAccountRegistered } from '~hooks';
+import {
+  WizardDialogType,
+  useAppContext,
+  useUserAccountRegistered,
+} from '~hooks';
 import { getAllUserRoles } from '~transformers';
 import { canAdminister, canFund } from '~utils/checks';
 
@@ -73,14 +77,17 @@ const ManageExpenditureDialog = ({
   enabledExtensionData,
 }: Props) => {
   const { wallet } = useAppContext();
-  const { isVotingReputationEnabled, isOneTxPaymentEnabled } = enabledExtensionData;
+  const { isVotingReputationEnabled, isOneTxPaymentEnabled } =
+    enabledExtensionData;
 
   const userHasAccountRegistered = useUserAccountRegistered();
 
   const allUserRoles = getAllUserRoles(colony, wallet?.address || '');
 
   const canCreatePayment =
-    userHasAccountRegistered && ((canAdminister(allUserRoles) && canFund(allUserRoles)) || isVotingReputationEnabled);
+    userHasAccountRegistered &&
+    ((canAdminister(allUserRoles) && canFund(allUserRoles)) ||
+      isVotingReputationEnabled);
 
   const items = [
     {
@@ -88,7 +95,9 @@ const ManageExpenditureDialog = ({
       description: MSG.paymentDescription,
       icon: 'emoji-dollar-stack',
       permissionRequired: !canCreatePayment || !isOneTxPaymentEnabled,
-      permissionInfoText: !canCreatePayment ? MSG.paymentPermissionsText : MSG.noOneTxExtension,
+      permissionInfoText: !canCreatePayment
+        ? MSG.paymentPermissionsText
+        : MSG.noOneTxExtension,
       permissionInfoTextValues: {
         permissionsList: <FormattedMessage {...MSG.paymentPermissionsList} />,
       },
@@ -109,7 +118,13 @@ const ManageExpenditureDialog = ({
     },
   ];
   return (
-    <IndexModal cancel={cancel} close={close} title={MSG.dialogHeader} items={items} back={() => callStep(prevStep)} />
+    <IndexModal
+      cancel={cancel}
+      close={close}
+      title={MSG.dialogHeader}
+      items={items}
+      back={() => callStep(prevStep)}
+    />
   );
 };
 

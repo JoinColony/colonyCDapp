@@ -29,7 +29,8 @@ export interface Appearance {
   size?: 'small' | 'medium' | 'large';
 }
 
-export interface Props extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title'> {
+export interface Props
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title'> {
   /** Appearance object */
   appearance?: Appearance;
 
@@ -43,7 +44,9 @@ export interface Props extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'ti
   disabled?: boolean;
 
   /** Pass a ref to the `<button>` element */
-  innerRef?: ((ref: HTMLElement | null) => void) | React.MutableRefObject<HTMLButtonElement | null>;
+  innerRef?:
+    | ((ref: HTMLElement | null) => void)
+    | React.MutableRefObject<HTMLButtonElement | null>;
 
   /** Use a link instead of a button. Like ReactRouter's `to` property */
   linkTo?: NavLinkProps['to'];
@@ -96,14 +99,20 @@ const Button = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  const titleText = typeof title == 'string' ? title : title && formatMessage(title);
-  const buttonText = typeof text == 'string' ? text : text && formatMessage(text, textValues);
+  const titleText =
+    typeof title == 'string' ? title : title && formatMessage(title);
+  const buttonText =
+    typeof text == 'string' ? text : text && formatMessage(text, textValues);
 
   const classNames = useMainClasses(appearance, styles, className);
 
   if (linkTo) {
     return (
-      <NavLink className={classNames} to={linkTo} {...(props as Omit<NavLinkProps, 'to'>)}>
+      <NavLink
+        className={classNames}
+        to={linkTo}
+        {...(props as Omit<NavLinkProps, 'to'>)}
+      >
         {buttonText || children}
       </NavLink>
     );

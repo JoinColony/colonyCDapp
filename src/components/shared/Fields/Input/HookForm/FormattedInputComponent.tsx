@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import Cleave from 'cleave.js/react';
-import { Props as CleaveProps, ReactInstanceWithCleave } from 'cleave.js/react/props';
+import {
+  Props as CleaveProps,
+  ReactInstanceWithCleave,
+} from 'cleave.js/react/props';
 import Decimal from 'decimal.js';
 import { useFormContext } from 'react-hook-form';
 
@@ -10,14 +13,22 @@ import { HookFormInputProps as InputProps } from './Input';
 
 import styles from '../InputComponent.css';
 
-type CleaveChangeEvent = React.ChangeEvent<HTMLInputElement & { rawValue: string }>;
+type CleaveChangeEvent = React.ChangeEvent<
+  HTMLInputElement & { rawValue: string }
+>;
 
-const setCleaveRawValue = (cleave: ReactInstanceWithCleave, maxAmount: string, decimalPlaces = 5) => {
+const setCleaveRawValue = (
+  cleave: ReactInstanceWithCleave,
+  maxAmount: string,
+  decimalPlaces = 5,
+) => {
   const decimalValue = new Decimal(maxAmount);
   if (decimalValue.lt(0.00001) && decimalValue.gt(0)) {
     cleave.setRawValue(maxAmount);
   } else {
-    cleave.setRawValue(new Decimal(maxAmount).toDP(decimalPlaces, Decimal.ROUND_DOWN).toString());
+    cleave.setRawValue(
+      new Decimal(maxAmount).toDP(decimalPlaces, Decimal.ROUND_DOWN).toString(),
+    );
   }
 };
 
@@ -73,7 +84,11 @@ const HookFormFormattedInputComponent = ({
 
   const handleMaxButtonClick = (
     e: React.MouseEvent<HTMLButtonElement>,
-    { maxAmount, options, customOnClickFn }: NonNullable<HookFormFormattedInputComponentProps['maxButtonParams']>,
+    {
+      maxAmount,
+      options,
+      customOnClickFn,
+    }: NonNullable<HookFormFormattedInputComponentProps['maxButtonParams']>,
   ) => {
     setValue(name, maxAmount, options);
     customOnClickFn?.(e);
@@ -102,7 +117,10 @@ const HookFormFormattedInputComponent = ({
   return (
     <>
       {maxButtonParams && (
-        <MaxButton handleClick={(e) => handleMaxButtonClick(e, maxButtonParams)} disabled={disabled} />
+        <MaxButton
+          handleClick={(e) => handleMaxButtonClick(e, maxButtonParams)}
+          disabled={disabled}
+        />
       )}
       <Cleave
         {...restInputProps}

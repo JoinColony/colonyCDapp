@@ -35,18 +35,27 @@ interface Props {
   includeNetworkFee?: boolean;
 }
 
-const TokenAmountInput = ({ colony, disabled, includeNetworkFee = false }: Props) => {
+const TokenAmountInput = ({
+  colony,
+  disabled,
+  includeNetworkFee = false,
+}: Props) => {
   const { watch, trigger } = useFormContext();
   const { amount, tokenAddress } = watch();
 
-  const colonyTokens = colony?.tokens?.items.filter(notNull).map((colonyToken) => colonyToken.token) || [];
+  const colonyTokens =
+    colony?.tokens?.items
+      .filter(notNull)
+      .map((colonyToken) => colonyToken.token) || [];
   const selectedToken = getSelectedToken(colony, tokenAddress);
   const formattingOptions = useMemo(
     () => ({
       delimiter: ',',
       numeral: true,
       numeralPositiveOnly: true,
-      numeralDecimalScale: getTokenDecimalsWithFallback(selectedToken && selectedToken.decimals),
+      numeralDecimalScale: getTokenDecimalsWithFallback(
+        selectedToken && selectedToken.decimals,
+      ),
     }),
     [selectedToken],
   );

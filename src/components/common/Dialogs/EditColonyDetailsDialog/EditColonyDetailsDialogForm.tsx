@@ -3,7 +3,12 @@ import { defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
+import {
+  ActionDialogProps,
+  DialogControls,
+  DialogHeading,
+  DialogSection,
+} from '~shared/Dialog';
 import { Annotations, HookFormInput as Input } from '~shared/Fields';
 import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
 import { useActionDialogStatus } from '~hooks';
@@ -17,7 +22,8 @@ import {
 } from '../Messages';
 import ColonyAvatarUploader from './ColonyAvatarUploader';
 
-const displayName = 'common.EditColonyDetailsDialog.EditColonyDetailsDialogForm';
+const displayName =
+  'common.EditColonyDetailsDialog.EditColonyDetailsDialogForm';
 
 const MSG = defineMessages({
   title: {
@@ -67,10 +73,22 @@ const EditColonyDetailsDialogForm = ({
     }
   }, [forceAction, isForce, setIsForce]);
 
-  const { userHasPermission, canCreateMotion, disabledInput, disabledSubmit, canOnlyForceAction } =
-    useActionDialogStatus(colony, requiredRoles, [Id.RootDomain], enabledExtensionData);
+  const {
+    userHasPermission,
+    canCreateMotion,
+    disabledInput,
+    disabledSubmit,
+    canOnlyForceAction,
+  } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
 
-  const hasEditedColony = metadata?.displayName !== colonyDisplayName || metadata?.avatar !== colonyAvatarImage;
+  const hasEditedColony =
+    metadata?.displayName !== colonyDisplayName ||
+    metadata?.avatar !== colonyAvatarImage;
 
   return (
     <>
@@ -78,7 +96,9 @@ const EditColonyDetailsDialogForm = ({
         <DialogHeading
           title={MSG.title}
           userHasPermission={userHasPermission}
-          isVotingExtensionEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
           isRootMotion
           colony={colony}
         />
@@ -107,7 +127,11 @@ const EditColonyDetailsDialogForm = ({
         />
       </DialogSection>
       <DialogSection>
-        <Annotations label={MSG.annotation} name="annotationMessage" disabled={disabledInput} />
+        <Annotations
+          label={MSG.annotation}
+          name="annotationMessage"
+          disabled={disabledInput}
+        />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
@@ -129,7 +153,9 @@ const EditColonyDetailsDialogForm = ({
           disabled={disabledSubmit || !!avatarFileError || !hasEditedColony}
           dataTest="confirmButton"
           onSecondaryButtonClick={back}
-          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>

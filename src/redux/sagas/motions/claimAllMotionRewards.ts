@@ -6,13 +6,23 @@ import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import { getContext, ContextModule } from '~context';
 import { Address, ColonyMotion } from '~types';
-import { GetColonyMotionDocument, GetColonyMotionQuery, GetColonyMotionQueryVariables } from '~gql';
+import {
+  GetColonyMotionDocument,
+  GetColonyMotionQuery,
+  GetColonyMotionQueryVariables,
+} from '~gql';
 
-import { ChannelDefinition, createGroupTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import {
+  ChannelDefinition,
+  createGroupTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 
 import { putError, takeFrom } from '../utils';
 
-export type ClaimAllMotionRewardsPayload = Action<ActionTypes.MOTION_CLAIM_ALL>['payload'];
+export type ClaimAllMotionRewardsPayload =
+  Action<ActionTypes.MOTION_CLAIM_ALL>['payload'];
 
 function* claimAllMotionRewards({
   meta,
@@ -38,13 +48,18 @@ function* claimAllMotionRewards({
       });
 
       if (!getColonyMotion) {
-        throw new Error(`Motion with database id ${databaseMotionId} does not exist`);
+        throw new Error(
+          `Motion with database id ${databaseMotionId} does not exist`,
+        );
       }
 
       motions.push(getColonyMotion);
     }
 
-    const [motionsWithYayClaim, motionsWithNayClaim] = getMotionsWithClaims(motions, userAddress);
+    const [motionsWithYayClaim, motionsWithNayClaim] = getMotionsWithClaims(
+      motions,
+      userAddress,
+    );
 
     const allMotionClaims = [...motionsWithYayClaim, ...motionsWithNayClaim];
 
@@ -58,7 +73,11 @@ function* claimAllMotionRewards({
       channelNames.push(String(index));
     }
 
-    const channels: { [id: string]: ChannelDefinition } = yield call(createTransactionChannels, meta.id, channelNames);
+    const channels: { [id: string]: ChannelDefinition } = yield call(
+      createTransactionChannels,
+      meta.id,
+      channelNames,
+    );
 
     yield all(
       Object.keys(channels).map((id) =>
@@ -66,14 +85,26 @@ function* claimAllMotionRewards({
           context: ClientType.VotingReputationClient,
           methodName: 'claimRewardWithProofs',
           identifier: colonyAddress,
-          params: [allMotionClaims[id], userAddress, parseInt(id, 10) > motionsWithYayClaim.length - 1 ? 0 : 1],
+          params: [
+            allMotionClaims[id],
+            userAddress,
+            parseInt(id, 10) > motionsWithYayClaim.length - 1 ? 0 : 1,
+          ],
         }),
       ),
     );
 
-    yield all(Object.keys(channels).map((id) => takeFrom(channels[id].channel, ActionTypes.TRANSACTION_CREATED)));
+    yield all(
+      Object.keys(channels).map((id) =>
+        takeFrom(channels[id].channel, ActionTypes.TRANSACTION_CREATED),
+      ),
+    );
 
-    yield all(Object.keys(channels).map((id) => takeFrom(channels[id].channel, ActionTypes.TRANSACTION_SUCCEEDED)));
+    yield all(
+      Object.keys(channels).map((id) =>
+        takeFrom(channels[id].channel, ActionTypes.TRANSACTION_SUCCEEDED),
+      ),
+    );
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_CLAIM_ALL_SUCCESS,
@@ -102,7 +133,9 @@ function getMotionsWithClaims(motions: ColonyMotion[], userAddress: Address) {
 
   motions.forEach((motion) => {
     const { motionId, stakerRewards } = motion;
-    const currentUserRewards = stakerRewards.find(({ address }) => address === userAddress);
+    const currentUserRewards = stakerRewards.find(
+      ({ address }) => address === userAddress,
+    );
 
     if (currentUserRewards) {
       const {

@@ -8,9 +8,13 @@ import { useColonyContext } from '~hooks';
 
 import { ActionDetailsPageParams } from './ActionDetailsPage';
 
-export type RefetchMotionState = ReturnType<typeof useGetMotionStateQuery>['refetch'];
+export type RefetchMotionState = ReturnType<
+  typeof useGetMotionStateQuery
+>['refetch'];
 
-export type RefetchAction = ReturnType<typeof useGetColonyActionQuery>['refetch'];
+export type RefetchAction = ReturnType<
+  typeof useGetColonyActionQuery
+>['refetch'];
 
 export const useGetColonyAction = () => {
   const { colony, refetchColony } = useColonyContext();
@@ -94,7 +98,8 @@ export const useGetColonyAction = () => {
 
   return {
     isInvalidTransactionHash: !isValidTx,
-    isUnknownTransaction: isValidTx && action?.colony?.colonyAddress !== colony?.colonyAddress,
+    isUnknownTransaction:
+      isValidTx && action?.colony?.colonyAddress !== colony?.colonyAddress,
     loadingAction: loadingAction || isPolling || loadingMotionState,
     action,
     startPollingForAction,

@@ -13,7 +13,11 @@ export type ButtonMode =
   | 'textButton'
   | 'pending';
 
-export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title' | 'aria-label'> {
+export interface ButtonProps
+  extends Omit<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    'title' | 'aria-label'
+  > {
   mode?: ButtonMode;
   disabled?: boolean;
   type?: 'submit' | 'reset' | 'button';

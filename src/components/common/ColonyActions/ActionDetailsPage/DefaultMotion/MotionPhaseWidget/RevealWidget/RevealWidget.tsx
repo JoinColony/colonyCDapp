@@ -14,7 +14,8 @@ import { PollingControls } from '../MotionPhaseWidget';
 import RevealWidgetHeading from './RevealWidgetHeading';
 import { useRevealWidgetUpdate } from './useRevealWidgetUpdate';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.RevealWidget';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.RevealWidget';
 
 interface RevealWidgetProps extends PollingControls {
   motionData: ColonyMotion;
@@ -30,10 +31,8 @@ const RevealWidget = ({
 }: RevealWidgetProps) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { hasUserVoted, vote, userVoteRevealed, setUserVoteRevealed } = useRevealWidgetUpdate(
-    voterRecord,
-    stopPollingAction,
-  );
+  const { hasUserVoted, vote, userVoteRevealed, setUserVoteRevealed } =
+    useRevealWidgetUpdate(voterRecord, stopPollingAction);
   const transform = mapPayload(
     () =>
       ({
@@ -50,8 +49,16 @@ const RevealWidget = ({
   };
 
   return (
-    <ActionForm actionType={ActionTypes.MOTION_REVEAL_VOTE} onSuccess={handleSuccess} transform={transform}>
-      <RevealWidgetHeading hasUserVoted={hasUserVoted} userVoteRevealed={userVoteRevealed} vote={vote} />
+    <ActionForm
+      actionType={ActionTypes.MOTION_REVEAL_VOTE}
+      onSuccess={handleSuccess}
+      transform={transform}
+    >
+      <RevealWidgetHeading
+        hasUserVoted={hasUserVoted}
+        userVoteRevealed={userVoteRevealed}
+        vote={vote}
+      />
       <VoteDetails
         motionData={motionData}
         motionState={motionState}

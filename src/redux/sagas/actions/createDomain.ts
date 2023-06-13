@@ -2,7 +2,11 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType, Id } from '@colony/colony-js';
 
 import { Action, ActionTypes, AllActions } from '~redux';
-import { transactionAddParams, transactionPending, transactionReady } from '~redux/actionCreators';
+import {
+  transactionAddParams,
+  transactionPending,
+  transactionReady,
+} from '~redux/actionCreators';
 import { ContextModule, getContext } from '~context';
 import {
   CreateDomainMetadataDocument,
@@ -12,11 +16,22 @@ import {
 import { getDomainDatabaseId } from '~utils/domains';
 import { toNumber } from '~utils/numbers';
 
-import { createGroupTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import {
+  createGroupTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 import { putError, takeFrom } from '../utils';
 
 function* createDomainAction({
-  payload: { colony, domainName, domainColor, domainPurpose, annotationMessage, parentId = Id.RootDomain },
+  payload: {
+    colony,
+    domainName,
+    domainColor,
+    domainPurpose,
+    annotationMessage,
+    parentId = Id.RootDomain,
+  },
   meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ACTION_DOMAIN_CREATE>) {
@@ -34,11 +49,13 @@ function* createDomainAction({
     txChannel = yield call(getTxChannel, metaId);
 
     const batchKey = 'createDomainAction';
-    const { createDomainAction: createDomain, annotateCreateDomainAction: annotateCreateDomain } =
-      yield createTransactionChannels(metaId, [
-        'createDomainAction',
-        // 'annotateCreateDomainAction',
-      ]);
+    const {
+      createDomainAction: createDomain,
+      annotateCreateDomainAction: annotateCreateDomain,
+    } = yield createTransactionChannels(metaId, [
+      'createDomainAction',
+      // 'annotateCreateDomainAction',
+    ]);
 
     yield createGroupTransaction(createDomain, batchKey, meta, {
       context: ClientType.ColonyClient,
@@ -60,7 +77,10 @@ function* createDomainAction({
 
     yield takeFrom(createDomain.channel, ActionTypes.TRANSACTION_CREATED);
     if (annotationMessage) {
-      yield takeFrom(annotateCreateDomain.channel, ActionTypes.TRANSACTION_CREATED);
+      yield takeFrom(
+        annotateCreateDomain.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
     }
 
     yield put(transactionPending(createDomain.id));
@@ -79,7 +99,10 @@ function* createDomainAction({
     /**
      * Save domain metadata in the database
      */
-    yield apolloClient.mutate<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>({
+    yield apolloClient.mutate<
+      CreateDomainMetadataMutation,
+      CreateDomainMetadataMutationVariables
+    >({
       mutation: CreateDomainMetadataDocument,
       variables: {
         input: {

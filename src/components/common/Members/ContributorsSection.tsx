@@ -4,7 +4,9 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 
 import MembersList from '~common/Members/MembersList';
 import LoadMoreButton from '~shared/LoadMoreButton';
-import SortingRow, { Props as SortingProps } from '~common/Members/MembersList/SortingRow';
+import SortingRow, {
+  Props as SortingProps,
+} from '~common/Members/MembersList/SortingRow';
 import { Contributor, MemberUser } from '~types';
 import { useSortedContributors } from '~hooks';
 
@@ -41,7 +43,8 @@ const ContributorsSection = ({
     setDataPage(dataPage + 1);
   };
 
-  const { sortedContributors, sortingMethod, handleSortingMethodChange } = useSortedContributors(paginatedMembers);
+  const { sortedContributors, sortingMethod, handleSortingMethodChange } =
+    useSortedContributors(paginatedMembers);
 
   return (
     <>
@@ -53,13 +56,20 @@ const ContributorsSection = ({
         >
           <FormattedMessage {...MSG.contributorsTitle} />
           {handleSortingMethodChange && sortingMethod && (
-            <SortingRow handleSortingMethodChange={handleSortingMethodChange} sortingMethod={sortingMethod} />
+            <SortingRow
+              handleSortingMethodChange={handleSortingMethodChange}
+              sortingMethod={sortingMethod}
+            />
           )}
         </div>
       </div>
       {paginatedMembers.length ? (
         <div className={styles.membersList}>
-          <MembersList extraItemContent={extraItemContent} members={sortedContributors} showUserReputation />
+          <MembersList
+            extraItemContent={extraItemContent}
+            members={sortedContributors}
+            showUserReputation
+          />
         </div>
       ) : (
         <div className={styles.noResults}>

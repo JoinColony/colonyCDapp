@@ -89,7 +89,8 @@ export type ColonyTokensConnection = ColonyTokensConnectionFragment;
 
 type ColonyTokensConnectionItem = ColonyTokensConnectionFragment['items'][0];
 
-export interface UnaliasedColonyTokensItem extends Omit<NonNullable<ColonyTokensConnectionItem>, 'colonyTokensId'> {
+export interface UnaliasedColonyTokensItem
+  extends Omit<NonNullable<ColonyTokensConnectionItem>, 'colonyTokensId'> {
   /*
    * This is aliased as "colonyTokensId" in the "ColonyTokensConnection" fragment,
    * but the cache only considers canonical field names. Therefore, to ensure type safety

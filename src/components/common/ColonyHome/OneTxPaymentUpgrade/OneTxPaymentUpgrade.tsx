@@ -42,7 +42,8 @@ const OneTxPaymentUpgrade = () => {
 
   const isOneTxPaymentDetailsRoute = extensionId === Extension.OneTxPayment;
 
-  const mustUpgrade = extensionData.currentVersion < extensionData.availableVersion;
+  const mustUpgrade =
+    extensionData.currentVersion < extensionData.availableVersion;
 
   if (mustUpgrade) {
     return (

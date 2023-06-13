@@ -30,7 +30,9 @@ const TokenActivationContent = ({ ...otherProps }: TokensTabProps) => {
 
   const currentUserClaims = colony?.motionsWithUnclaimedStakes
     ?.filter(notNull)
-    .filter(({ unclaimedRewards }) => unclaimedRewards.some(({ address }) => address === user?.walletAddress));
+    .filter(({ unclaimedRewards }) =>
+      unclaimedRewards.some(({ address }) => address === user?.walletAddress),
+    );
 
   const claimsCount = currentUserClaims?.length ?? 0;
 
@@ -42,8 +44,15 @@ const TokenActivationContent = ({ ...otherProps }: TokensTabProps) => {
           setTabIndex(newIndex);
         }}
       >
-        <TabList className={styles.tabsList} containerClassName={styles.tabsListContainer}>
-          <Tab selectedClassName={styles.tabSelected} className={styles.tab} data-test="yourTokensTab">
+        <TabList
+          className={styles.tabsList}
+          containerClassName={styles.tabsListContainer}
+        >
+          <Tab
+            selectedClassName={styles.tabSelected}
+            className={styles.tab}
+            data-test="yourTokensTab"
+          >
             <FormattedMessage {...MSG.yourTokens} />
           </Tab>
           <Tab selectedClassName={styles.tabSelected} className={styles.tab}>
@@ -61,7 +70,10 @@ const TokenActivationContent = ({ ...otherProps }: TokensTabProps) => {
           <TokensTab {...otherProps} />
         </TabPanel>
         <TabPanel className={styles.tabContainer}>
-          <StakesTab {...otherProps} currentUserClaims={currentUserClaims ?? []} />
+          <StakesTab
+            {...otherProps}
+            currentUserClaims={currentUserClaims ?? []}
+          />
         </TabPanel>
       </Tabs>
     </div>

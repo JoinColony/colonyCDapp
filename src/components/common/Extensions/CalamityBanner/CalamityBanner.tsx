@@ -26,8 +26,14 @@ const CalamityBanner: FC<PropsWithChildren<CalamityBannerProps>> = ({
         <div className="w-full bg-blue-400 px-6 py-[1.0625rem] h-[7.25rem] md:h-[4.25rem]">
           <div className={styles.calamityBannerInner}>
             <div className="flex justify-between w-full md:w-auto md:justify-normal items-start">
-              <div className="text-base-white font-medium text-md">{children}</div>
-              <button type="button" className="text-base-white md:hidden" onClick={() => setShowBanner(false)}>
+              <div className="text-base-white font-medium text-md">
+                {children}
+              </div>
+              <button
+                type="button"
+                className="text-base-white md:hidden"
+                onClick={() => setShowBanner(false)}
+              >
                 <Icon name="close" appearance={{ size: 'extraTiny' }} />
               </button>
             </div>

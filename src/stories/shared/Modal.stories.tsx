@@ -50,23 +50,37 @@ const ModalWithState = (args) => {
 
   return (
     <>
-      <Button mode="primaryOutline" aria-label="Open modal" text="Trigger button" onClick={onOpenModal} />
+      <Button
+        mode="primaryOutline"
+        aria-label="Open modal"
+        text="Trigger button"
+        onClick={onOpenModal}
+      />
       <Modal {...args} onClose={onCloseModal} isOpen={isOpen}>
-        The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox
-        jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy
-        dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown
-        fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the
-        lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick
-        brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over
-        the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The
-        quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps
-        over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The
-        quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps
-        over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The
-        quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps
-        over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The
-        quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps
-        over the lazy dog. The quick brown fox jumps over the lazy dog.
+        The quick brown fox jumps over the lazy dog. The quick brown fox jumps
+        over the lazy dog. The quick brown fox jumps over the lazy dog. The
+        quick brown fox jumps over the lazy dog. The quick brown fox jumps over
+        the lazy dog. The quick brown fox jumps over the lazy dog. The quick
+        brown fox jumps over the lazy dog. The quick brown fox jumps over the
+        lazy dog. The quick brown fox jumps over the lazy dog. The quick brown
+        fox jumps over the lazy dog. The quick brown fox jumps over the lazy
+        dog. The quick brown fox jumps over the lazy dog. The quick brown fox
+        jumps over the lazy dog. The quick brown fox jumps over the lazy dog.
+        The quick brown fox jumps over the lazy dog. The quick brown fox jumps
+        over the lazy dog. The quick brown fox jumps over the lazy dog. The
+        quick brown fox jumps over the lazy dog. The quick brown fox jumps over
+        the lazy dog. The quick brown fox jumps over the lazy dog. The quick
+        brown fox jumps over the lazy dog. The quick brown fox jumps over the
+        lazy dog. The quick brown fox jumps over the lazy dog. The quick brown
+        fox jumps over the lazy dog. The quick brown fox jumps over the lazy
+        dog. The quick brown fox jumps over the lazy dog. The quick brown fox
+        jumps over the lazy dog. The quick brown fox jumps over the lazy dog.
+        The quick brown fox jumps over the lazy dog. The quick brown fox jumps
+        over the lazy dog. The quick brown fox jumps over the lazy dog. The
+        quick brown fox jumps over the lazy dog. The quick brown fox jumps over
+        the lazy dog. The quick brown fox jumps over the lazy dog. The quick
+        brown fox jumps over the lazy dog. The quick brown fox jumps over the
+        lazy dog.
       </Modal>
     </>
   );

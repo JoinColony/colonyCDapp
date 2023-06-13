@@ -35,7 +35,10 @@ const WhitelistedAddresses = ({ whitelistedAddresses }: Props) => {
   const users = useWhitelistedUsers(whitelistedAddresses);
   const [filterTerm, setFilterTerm] = useState('');
 
-  const filteredUsers = useMemo(() => getFilteredUsers(users, filterTerm), [filterTerm, users]);
+  const filteredUsers = useMemo(
+    () => getFilteredUsers(users, filterTerm),
+    [filterTerm, users],
+  );
 
   return (
     <div className={styles.main}>

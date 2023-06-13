@@ -2,7 +2,10 @@ import { BigNumber } from 'ethers';
 import { ADDRESS_ZERO } from '~constants';
 import { useGetUserReputationQuery } from '~gql';
 
-const useColonyHasReputation = (colonyAddress: string, reputationDomain?: number): boolean => {
+const useColonyHasReputation = (
+  colonyAddress: string,
+  reputationDomain?: number,
+): boolean => {
   const { data, error, loading } = useGetUserReputationQuery({
     variables: {
       input: {

@@ -25,7 +25,13 @@ type Story = StoryObj<typeof Transactions>;
 const TransactionsTabHooks = () => {
   const { openIndex, onOpenIndexChange } = useAccordion();
 
-  return <TransactionsTab openIndex={openIndex} onOpenIndexChange={onOpenIndexChange} items={transactionsItems} />;
+  return (
+    <TransactionsTab
+      openIndex={openIndex}
+      onOpenIndexChange={onOpenIndexChange}
+      items={transactionsItems}
+    />
+  );
 };
 
 export const Base: Story = {

@@ -40,7 +40,9 @@ const TransferFundsDialog = ({
   const { isVotingReputationEnabled } = enabledExtensionData;
 
   const actionType =
-    !isForce && isVotingReputationEnabled ? ActionTypes.MOTION_MOVE_FUNDS : ActionTypes.ACTION_MOVE_FUNDS;
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.MOTION_MOVE_FUNDS
+      : ActionTypes.ACTION_MOVE_FUNDS;
 
   const colonyDomains = colony?.domains?.items.filter(notNull) || [];
   const domainOptions = getDomainOptions(colonyDomains);
@@ -52,7 +54,10 @@ const TransferFundsDialog = ({
 
   const defaultFromDomainId = selectedDomainId || Id.RootDomain;
   const defaultToDomainId =
-    Number(domainOptions.find((option) => option.value !== defaultFromDomainId)?.value) || Id.RootDomain;
+    Number(
+      domainOptions.find((option) => option.value !== defaultFromDomainId)
+        ?.value,
+    ) || Id.RootDomain;
 
   const validationSchema = getValidationSchema(colony);
 

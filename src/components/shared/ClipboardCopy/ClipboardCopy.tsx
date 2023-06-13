@@ -26,7 +26,11 @@ const MSG = defineMessages({
 
 const displayName = 'ClipboardCopy';
 
-const ClipboardCopy = ({ appearance = { size: 'small', theme: 'blue' }, value, text = MSG.copyLabel }: Props) => {
+const ClipboardCopy = ({
+  appearance = { size: 'small', theme: 'blue' },
+  value,
+  text = MSG.copyLabel,
+}: Props) => {
   const [valueIsCopied, setValueIsCopied] = useState(false);
   const userFeedbackTimer = useRef<any>(null);
   const handleClipboardCopy = () => {
@@ -39,7 +43,10 @@ const ClipboardCopy = ({ appearance = { size: 'small', theme: 'blue' }, value, t
    * function gets called on unmount.
    * The first one is only called on render.
    */
-  useEffect(() => () => clearTimeout(userFeedbackTimer.current), [userFeedbackTimer]);
+  useEffect(
+    () => () => clearTimeout(userFeedbackTimer.current),
+    [userFeedbackTimer],
+  );
   return (
     <Button
       appearance={appearance}

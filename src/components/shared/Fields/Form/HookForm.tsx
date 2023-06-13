@@ -1,5 +1,12 @@
 import React, { useEffect } from 'react';
-import { useForm, UseFormProps, FormProvider, UseFormReturn, FieldValues, FieldErrors } from 'react-hook-form';
+import {
+  useForm,
+  UseFormProps,
+  FormProvider,
+  UseFormReturn,
+  FieldValues,
+  FieldErrors,
+} from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Schema } from 'yup';
 
@@ -17,7 +24,9 @@ export type CustomSubmitErrorHandler<FormData extends FieldValues> = (
 ) => any | Promise<any>;
 
 export interface HookFormProps<FormData extends FieldValues> {
-  children: ((props: UseFormReturn<FormData>) => React.ReactNode) | React.ReactNode;
+  children:
+    | ((props: UseFormReturn<FormData>) => React.ReactNode)
+    | React.ReactNode;
   onSubmit: CustomSubmitHandler<FormData>;
   onError?: CustomSubmitErrorHandler<FormData>;
   validationSchema?: Schema<FormData>;

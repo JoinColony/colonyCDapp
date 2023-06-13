@@ -32,7 +32,13 @@ interface Props extends NumeralProps {
   value: number | string | BigNumber;
 }
 
-const EthUsd = ({ showPrefix = true, showSuffix = true, unit = 'ether', value, ...rest }: Props) => {
+const EthUsd = ({
+  showPrefix = true,
+  showSuffix = true,
+  unit = 'ether',
+  value,
+  ...rest
+}: Props) => {
   const [valueUsd, setValueUsd] = useState<number | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -54,7 +60,10 @@ const EthUsd = ({ showPrefix = true, showSuffix = true, unit = 'ether', value, .
       if (BigNumber.isBigNumber(value)) {
         valueToConvert = value;
       } else {
-        const fixedNum = typeof value === 'number' ? value.toFixed(DEFAULT_TOKEN_DECIMALS) : value;
+        const fixedNum =
+          typeof value === 'number'
+            ? value.toFixed(DEFAULT_TOKEN_DECIMALS)
+            : value;
         valueToConvert = parseUnits(fixedNum, unit);
       }
       const newValue = await getEthToUsd(valueToConvert);

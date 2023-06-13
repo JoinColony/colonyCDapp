@@ -27,7 +27,11 @@ const UserHub = () => {
 
   return (
     <div className={clsx('flex', { 'flex-col': isMobile })}>
-      <div className={`flex border-r border-gray-100 flex-col justify-between ${isMobile ? 'px-0 pt-6' : 'px-4 py-6'}`}>
+      <div
+        className={`flex border-r border-gray-100 flex-col justify-between ${
+          isMobile ? 'px-0 pt-6' : 'px-4 py-6'
+        }`}
+      >
         {!isMobile ? (
           <div>
             <div className="text-gray-400 font-medium text-xs uppercase px-4 pb-5">
@@ -44,12 +48,18 @@ const UserHub = () => {
                   onKeyDown={() => setSelectedTab(item.id)}
                 >
                   <div className="flex items-center">
-                    <Icon name={item.icon} appearance={{ size: 'normal' }} className={`${styles.icon}  mr-2`} />
+                    <Icon
+                      name={item.icon}
+                      appearance={{ size: 'normal' }}
+                      className={`${styles.icon}  mr-2`}
+                    />
                     {item.label}
                   </div>
                   <Icon
                     name="caret-right"
-                    className={`${styles.iconArrow} transition-transform duration-normal ${
+                    className={`${
+                      styles.iconArrow
+                    } transition-transform duration-normal ${
                       selectedTab === item.id ? 'rotate-90' : 'rotate-0'
                     }`}
                   />
@@ -58,12 +68,28 @@ const UserHub = () => {
             </ul>
           </div>
         ) : (
-          <UserHubMobile selectedTab={selectedTab} handleChange={handleChange} tabList={tabList} />
+          <UserHubMobile
+            selectedTab={selectedTab}
+            handleChange={handleChange}
+            tabList={tabList}
+          />
         )}
-        {!isMobile && <Button mode="secondaryOutline">{formatMessage({ id: 'your.dashboard' })}</Button>}
+        {!isMobile && (
+          <Button mode="secondaryOutline">
+            {formatMessage({ id: 'your.dashboard' })}
+          </Button>
+        )}
       </div>
-      {isMobile && <div className="h-[0.0625rem] w-full bg-gray-200 mt-6 mb-6" />}
-      <div className={`${isMobile ? 'min-w-full' : 'w-full min-w-[29.125rem] min-h-[27.75rem] p-6'}`}>
+      {isMobile && (
+        <div className="h-[0.0625rem] w-full bg-gray-200 mt-6 mb-6" />
+      )}
+      <div
+        className={`${
+          isMobile
+            ? 'min-w-full'
+            : 'w-full min-w-[29.125rem] min-h-[27.75rem] p-6'
+        }`}
+      >
         <AnimatePresence>
           <motion.div
             key="stakes-tab"

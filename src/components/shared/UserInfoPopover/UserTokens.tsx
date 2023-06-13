@@ -25,7 +25,10 @@ const MSG = defineMessages({
 });
 
 const UserTokens = ({ totalBalance, nativeToken }: Props) => {
-  const formattedTotalBalance = getFormattedTokenValue(totalBalance, nativeToken.decimals);
+  const formattedTotalBalance = getFormattedTokenValue(
+    totalBalance,
+    nativeToken.decimals,
+  );
 
   return (
     <div className={styles.sectionContainer}>

@@ -10,9 +10,13 @@ interface ResultsItemHeadingProps {
   votePercentage: number;
 }
 
-const displayName = 'common.ColonyActions.DefaultMotion.FinalizeMotion.VoteResults.VoterResultsItemHeading';
+const displayName =
+  'common.ColonyActions.DefaultMotion.FinalizeMotion.VoteResults.VoterResultsItemHeading';
 
-const ResultsItemHeading = ({ title, votePercentage }: ResultsItemHeadingProps) => (
+const ResultsItemHeading = ({
+  title,
+  votePercentage,
+}: ResultsItemHeadingProps) => (
   <div className={styles.main}>
     <Heading5
       appearance={{

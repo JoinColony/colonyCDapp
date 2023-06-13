@@ -20,7 +20,9 @@ const ContractAddress: FC<PanelTypeProps> = ({ title, address = '' }) => {
         isSuccess={isCopied}
         tooltipContent={
           <span>
-            <a href={address}>{formatMessage({ id: isCopied ? 'copied' : 'copy.address' })}</a>
+            <a href={address}>
+              {formatMessage({ id: isCopied ? 'copied' : 'copy.address' })}
+            </a>
           </span>
         }
       >

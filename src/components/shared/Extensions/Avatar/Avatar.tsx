@@ -22,7 +22,10 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
 
   if (children) {
     return (
-      <figure className={className ? `${mainClass} ${className}` : mainClass} title={title}>
+      <figure
+        className={className ? `${mainClass} ${className}` : mainClass}
+        title={title}
+      >
         {children}
       </figure>
     );
@@ -36,12 +39,17 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
     : {};
 
   return (
-    <figure className={className ? `${mainClass} ${className}` : mainClass} title={title}>
+    <figure
+      className={className ? `${mainClass} ${className}` : mainClass}
+      title={title}
+    >
       {source ? (
         <div className={styles.image} style={imageStyle} />
       ) : (
         <Icon
-          className={notSet ? styles.placeholderIconNotSet : styles.placeholderIcon}
+          className={
+            notSet ? styles.placeholderIconNotSet : styles.placeholderIcon
+          }
           name={placeholderIcon}
           title={title}
           data-test="avatar"

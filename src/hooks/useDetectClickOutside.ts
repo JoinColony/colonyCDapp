@@ -53,7 +53,13 @@ const useDetectClickOutside = ({
       [disableTouch, 'touchstart', clickOrTouchListener],
       [disableKeys, 'keyup', keyListener],
     ],
-    [disableClick, disableTouch, disableKeys, clickOrTouchListener, keyListener],
+    [
+      disableClick,
+      disableTouch,
+      disableKeys,
+      clickOrTouchListener,
+      keyListener,
+    ],
   );
 
   useEffect(() => {

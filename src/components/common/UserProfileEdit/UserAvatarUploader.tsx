@@ -4,7 +4,10 @@ import { FileRejection } from 'react-dropzone';
 
 import { useUpdateUserProfileMutation } from '~gql';
 import { useAppContext } from '~hooks';
-import { getOptimisedAvatarUnder300KB, getOptimisedThumbnail } from '~images/optimisation';
+import {
+  getOptimisedAvatarUnder300KB,
+  getOptimisedThumbnail,
+} from '~images/optimisation';
 import AvatarUploader from '~shared/AvatarUploader';
 import UserAvatar from '~shared/UserAvatar';
 import { Heading3 } from '~shared/Heading';
@@ -29,7 +32,10 @@ interface Props {
   user: User;
 }
 
-const UserAvatarUploader = ({ user, user: { walletAddress, profile } }: Props) => {
+const UserAvatarUploader = ({
+  user,
+  user: { walletAddress, profile },
+}: Props) => {
   const { updateUser } = useAppContext();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<DropzoneErrors>();
@@ -42,7 +48,9 @@ const UserAvatarUploader = ({ user, user: { walletAddress, profile } }: Props) =
     }
 
     try {
-      const updatedAvatar = await getOptimisedAvatarUnder300KB(avatarFile?.file);
+      const updatedAvatar = await getOptimisedAvatarUnder300KB(
+        avatarFile?.file,
+      );
       const thumbnail = await getOptimisedThumbnail(avatarFile?.file);
 
       await updateAvatar({
@@ -83,7 +91,9 @@ const UserAvatarUploader = ({ user, user: { walletAddress, profile } }: Props) =
       <Heading3 appearance={{ theme: 'dark' }} text={MSG.heading} />
       <AvatarUploader
         disableRemove={!profile?.avatar}
-        avatarPlaceholder={<UserAvatar user={user} size="xl" preferThumbnail={false} />}
+        avatarPlaceholder={
+          <UserAvatar user={user} size="xl" preferThumbnail={false} />
+        }
         handleFileAccept={handleFileUpload}
         handleFileRemove={handleFileRemove}
         handleFileReject={handleFileReject}

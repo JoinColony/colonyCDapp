@@ -1,4 +1,12 @@
-import React, { KeyboardEvent, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  KeyboardEvent,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
 import { useField } from 'formik';
 import { nanoid } from 'nanoid';
@@ -62,7 +70,10 @@ export interface Props {
   placeholder?: string | MessageDescriptor;
 
   /** Render the actively selected option */
-  renderActiveOption?: (activeOption: SelectOption | undefined, activeOptionLabel: string) => ReactNode;
+  renderActiveOption?: (
+    activeOption: SelectOption | undefined,
+    activeOptionLabel: string,
+  ) => ReactNode;
 
   /** Status text */
   status?: string | MessageDescriptor;
@@ -107,7 +118,10 @@ const Select = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<number>(-1);
 
-  const checkedOption = useMemo(() => options.findIndex((option) => option.value === value), [value, options]);
+  const checkedOption = useMemo(
+    () => options.findIndex((option) => option.value === value),
+    [value, options],
+  );
 
   const open = () => {
     if (disabled) return;
@@ -121,7 +135,11 @@ const Select = ({
 
   const handleOutsideClick = useCallback(
     (evt: MouseEvent) => {
-      if (wrapperRef.current && evt.target instanceof Node && !wrapperRef.current.contains(evt.target)) {
+      if (
+        wrapperRef.current &&
+        evt.target instanceof Node &&
+        !wrapperRef.current.contains(evt.target)
+      ) {
         close();
       }
     },
@@ -245,7 +263,10 @@ const Select = ({
     let activeOptionLabel;
     if (activeOption) {
       if (typeof activeOption.label === 'object') {
-        activeOptionLabel = formatMessage(activeOption.label, activeOption.labelValues);
+        activeOptionLabel = formatMessage(
+          activeOption.label,
+          activeOption.labelValues,
+        );
       } else if (activeOption.labelElement) {
         activeOptionLabel = activeOption.labelElement;
       } else {
@@ -277,7 +298,11 @@ const Select = ({
           aria-haspopup="listbox"
           aria-controls={listboxId}
           aria-expanded={isOpen}
-          aria-label={typeof label === 'object' ? formatMessage(label, labelValues) : label}
+          aria-label={
+            typeof label === 'object'
+              ? formatMessage(label, labelValues)
+              : label
+          }
           aria-disabled={disabled}
           id={id}
           tabIndex={0}
@@ -311,7 +336,12 @@ const Select = ({
         )}
       </div>
       {!elementOnly && (
-        <InputStatus appearance={{ theme: 'minimal' }} status={status} statusValues={statusValues} error={error} />
+        <InputStatus
+          appearance={{ theme: 'minimal' }}
+          status={status}
+          statusValues={statusValues}
+          error={error}
+        />
       )}
     </div>
   );

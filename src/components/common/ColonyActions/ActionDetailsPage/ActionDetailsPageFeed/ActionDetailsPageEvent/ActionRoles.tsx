@@ -4,7 +4,11 @@ import { defineMessages } from 'react-intl';
 
 import { EVENT_ROLES_MAP } from '~common/ColonyActions/ActionDetailsPage';
 import PermissionsLabel from '~shared/PermissionsLabel';
-import { AnyActionType, ColonyActionType, ColonyAndExtensionsEvents } from '~types';
+import {
+  AnyActionType,
+  ColonyActionType,
+  ColonyAndExtensionsEvents,
+} from '~types';
 
 import styles from './ActionRoles.css';
 
@@ -47,7 +51,9 @@ interface PermissionsLabelTooltipIconProps {
   role: ColonyRole;
 }
 
-const PermissionsLabelTooltipIcon = ({ role }: PermissionsLabelTooltipIconProps) => (
+const PermissionsLabelTooltipIcon = ({
+  role,
+}: PermissionsLabelTooltipIconProps) => (
   <div className={styles.tooltipIcon}>
     <PermissionsLabel permission={role} appearance={{ theme: 'white' }} />
   </div>

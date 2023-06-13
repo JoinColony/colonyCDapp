@@ -22,7 +22,11 @@ enum ActionTitleMessageKeys {
 const getMessageDescriptorKeys = (actionType: ColonyActionType) => {
   switch (true) {
     case actionType.includes(ColonyActionType.Payment):
-      return [ActionTitleMessageKeys.Recipient, ActionTitleMessageKeys.Amount, ActionTitleMessageKeys.TokenSymbol];
+      return [
+        ActionTitleMessageKeys.Recipient,
+        ActionTitleMessageKeys.Amount,
+        ActionTitleMessageKeys.TokenSymbol,
+      ];
     case actionType.includes(ColonyActionType.MoveFunds):
       return [
         ActionTitleMessageKeys.Amount,
@@ -33,7 +37,10 @@ const getMessageDescriptorKeys = (actionType: ColonyActionType) => {
     case actionType.includes(ColonyActionType.UnlockToken):
       return [ActionTitleMessageKeys.TokenSymbol];
     case actionType.includes(ColonyActionType.MintTokens):
-      return [ActionTitleMessageKeys.Amount, ActionTitleMessageKeys.TokenSymbol];
+      return [
+        ActionTitleMessageKeys.Amount,
+        ActionTitleMessageKeys.TokenSymbol,
+      ];
     case actionType.includes(ColonyActionType.CreateDomain):
       return [ActionTitleMessageKeys.FromDomain];
     case actionType.includes(ColonyActionType.VersionUpgrade):
@@ -72,7 +79,10 @@ const getActionTitleValues = (actionData: ColonyAction, colony: Colony) => {
   const { isMotion, pendingColonyMetadata } = actionData;
 
   const updatedItem = mapColonyActionToExpectedFormat(actionData, colony);
-  const actionType = getExtendedActionType(actionData, isMotion ? pendingColonyMetadata : colony.metadata);
+  const actionType = getExtendedActionType(
+    actionData,
+    isMotion ? pendingColonyMetadata : colony.metadata,
+  );
   const keys = getMessageDescriptorKeys(actionData.type);
 
   return generateMessageValues(updatedItem, keys, {

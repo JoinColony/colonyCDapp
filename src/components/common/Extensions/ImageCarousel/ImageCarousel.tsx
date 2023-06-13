@@ -8,7 +8,10 @@ import { useWindowSize } from '~hooks';
 
 const displayName = 'common.Extensions.ImageCarousel';
 
-const ImageCarousel: FC<ImageCarouselProps> = ({ transitionTime = 300, slideUrls = images }) => {
+const ImageCarousel: FC<ImageCarouselProps> = ({
+  transitionTime = 300,
+  slideUrls = images,
+}) => {
   const windowSize = useWindowSize();
   const width = windowSize?.width ?? 0;
   const setSlidePercentage = (width >= 1440 && 89) || (width >= 850 && 60);

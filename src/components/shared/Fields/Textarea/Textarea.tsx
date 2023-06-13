@@ -89,7 +89,9 @@ const Textarea = ({
 
   const length = value ? value.length : 0;
   const placeholder =
-    typeof placeholderProp === 'object' ? formatMessage(placeholderProp, placeholderValues) : placeholderProp;
+    typeof placeholderProp === 'object'
+      ? formatMessage(placeholderProp, placeholderValues)
+      : placeholderProp;
 
   return (
     <div className={styles.container}>
@@ -128,7 +130,12 @@ const Textarea = ({
         )}
       </div>
       {!elementOnly && (
-        <InputStatus appearance={appearance} status={status} statusValues={statusValues} error={error} />
+        <InputStatus
+          appearance={appearance}
+          status={status}
+          statusValues={statusValues}
+          error={error}
+        />
       )}
     </div>
   );

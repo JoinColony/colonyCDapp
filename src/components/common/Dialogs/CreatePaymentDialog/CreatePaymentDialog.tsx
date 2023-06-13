@@ -16,7 +16,10 @@ import { WizardDialogType, useNetworkInverseFee } from '~hooks';
 import { useGetMembersForColonyQuery } from '~gql';
 
 import DialogForm from './CreatePaymentDialogForm';
-import { extractUsersFromColonyMemberData, getCreatePaymentDialogPayload } from './helpers';
+import {
+  extractUsersFromColonyMemberData,
+  getCreatePaymentDialogPayload,
+} from './helpers';
 import getValidationSchema from './validation';
 
 const displayName = 'common.CreatePaymentDialog';
@@ -50,8 +53,12 @@ const CreatePaymentDialog = ({
     },
     fetchPolicy: 'cache-and-network',
   });
-  const colonyContributors = extractUsersFromColonyMemberData(data?.getMembersForColony?.contributors);
-  const colonyWatchers = extractUsersFromColonyMemberData(data?.getMembersForColony?.watchers);
+  const colonyContributors = extractUsersFromColonyMemberData(
+    data?.getMembersForColony?.contributors,
+  );
+  const colonyWatchers = extractUsersFromColonyMemberData(
+    data?.getMembersForColony?.watchers,
+  );
   const colonyMembers = colonyContributors.concat(colonyWatchers);
 
   const { isVotingReputationEnabled } = enabledExtensionData;
@@ -92,7 +99,9 @@ const CreatePaymentDialog = ({
   // };
 
   const transform = pipe(
-    mapPayload((payload) => getCreatePaymentDialogPayload(colony, payload, networkInverseFee)),
+    mapPayload((payload) =>
+      getCreatePaymentDialogPayload(colony, payload, networkInverseFee),
+    ),
     withMeta({ navigate }),
   );
 

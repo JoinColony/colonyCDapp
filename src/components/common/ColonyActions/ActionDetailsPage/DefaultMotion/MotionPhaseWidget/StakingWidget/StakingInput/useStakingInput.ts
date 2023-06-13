@@ -7,8 +7,14 @@ import { getHandleStakeSuccessFn, getStakingTransformFn } from './helpers';
 export const useStakingInput = () => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
-  const { isObjection, motionId, remainingToStake, userMinStake, setIsRefetching, startPollingAction } =
-    useStakingWidgetContext();
+  const {
+    isObjection,
+    motionId,
+    remainingToStake,
+    userMinStake,
+    setIsRefetching,
+    startPollingAction,
+  } = useStakingWidgetContext();
 
   const vote = isObjection ? MotionVote.Nay : MotionVote.Yay;
 
@@ -21,7 +27,10 @@ export const useStakingInput = () => {
     vote,
   );
 
-  const handleSuccess = getHandleStakeSuccessFn(setIsRefetching, startPollingAction);
+  const handleSuccess = getHandleStakeSuccessFn(
+    setIsRefetching,
+    startPollingAction,
+  );
 
   return {
     transform,

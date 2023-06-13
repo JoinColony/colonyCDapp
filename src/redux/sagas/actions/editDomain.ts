@@ -11,12 +11,31 @@ import {
 } from '~gql';
 import { getDomainDatabaseId } from '~utils/domains';
 
-import { createGroupTransaction, createTransactionChannels, getTxChannel } from '../transactions';
-import { transactionReady, transactionPending, transactionAddParams } from '../../actionCreators';
-import { putError, takeFrom, getUpdatedDomainMetadataChangelog } from '../utils';
+import {
+  createGroupTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
+import {
+  transactionReady,
+  transactionPending,
+  transactionAddParams,
+} from '../../actionCreators';
+import {
+  putError,
+  takeFrom,
+  getUpdatedDomainMetadataChangelog,
+} from '../utils';
 
 function* editDomainAction({
-  payload: { colonyAddress, colonyName, domainName, domainColor, domainPurpose, domain },
+  payload: {
+    colonyAddress,
+    colonyName,
+    domainName,
+    domainColor,
+    domainPurpose,
+    domain,
+  },
   meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ACTION_DOMAIN_EDIT>) {
@@ -76,14 +95,20 @@ function* editDomainAction({
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(editDomain.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
+    } = yield takeFrom(
+      editDomain.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
     yield takeFrom(editDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     /**
      * Save the updated metadata in the database
      */
     if (domain.metadata) {
-      yield apolloClient.mutate<UpdateDomainMetadataMutation, UpdateDomainMetadataMutationVariables>({
+      yield apolloClient.mutate<
+        UpdateDomainMetadataMutation,
+        UpdateDomainMetadataMutationVariables
+      >({
         mutation: UpdateDomainMetadataDocument,
         variables: {
           input: {

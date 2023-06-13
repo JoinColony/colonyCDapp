@@ -7,7 +7,11 @@ import { SimpleMessageValues, User } from '~types';
 import { getMainClasses } from '~utils/css';
 import UserAvatar from '~shared/UserAvatar';
 
-import { ItemDataType, withOmniPicker, WrappedComponentProps } from '../OmniPicker';
+import {
+  ItemDataType,
+  withOmniPicker,
+  WrappedComponentProps,
+} from '../OmniPicker';
 import { Props as WithOmnipickerInProps } from '../OmniPicker/withOmniPicker';
 import { InputLabel, HookFormInputStatus as InputStatus } from '../Fields';
 import Icon from '~shared/Icon';
@@ -118,7 +122,9 @@ const SingleUserPicker = ({
   openOmniPicker,
   placeholder,
   registerInputNode,
-  renderAvatar = (item?: ItemDataType<User>) => <UserAvatar user={item} size="xs" />,
+  renderAvatar = (item?: ItemDataType<User>) => (
+    <UserAvatar user={item} size="xs" />
+  ),
   renderItem: renderItemProp,
   dataTest,
   itemDataTest,
@@ -155,14 +161,24 @@ const SingleUserPicker = ({
     renderItemProp || // eslint-disable-next-line react-hooks/rules-of-hooks
     useCallback(
       (user: ItemDataType<User>) => (
-        <ItemDefault itemData={user} renderAvatar={renderAvatar} showMaskedAddress dataTest={itemDataTest} />
+        <ItemDefault
+          itemData={user}
+          renderAvatar={renderAvatar}
+          showMaskedAddress
+          dataTest={itemDataTest}
+        />
       ),
       [renderAvatar, itemDataTest],
     );
 
-  const labelAppearance = appearance ? { direction: appearance.direction } : undefined;
+  const labelAppearance = appearance
+    ? { direction: appearance.direction }
+    : undefined;
 
-  const placeholderText = !placeholder || typeof placeholder === 'string' ? placeholder : formatMessage(placeholder);
+  const placeholderText =
+    !placeholder || typeof placeholder === 'string'
+      ? placeholder
+      : formatMessage(placeholder);
 
   return (
     <div className={styles.omniContainer}>
@@ -199,7 +215,9 @@ const SingleUserPicker = ({
                   disabled={disabled}
                   data-test={valueDataTest}
                 >
-                  {value.profile.displayName || value.name || value.walletAddress}
+                  {value.profile.displayName ||
+                    value.name ||
+                    value.walletAddress}
                 </button>
               )
             }
@@ -218,7 +236,12 @@ const SingleUserPicker = ({
             <div className={styles.inputStatusContainer}>
               <InputStatus
                 appearance={{ theme: 'minimal' }}
-                error={errors[name]?.message as MessageDescriptor | string | undefined}
+                error={
+                  errors[name]?.message as
+                    | MessageDescriptor
+                    | string
+                    | undefined
+                }
                 touched={touchedFields[name]}
               />
             </div>
@@ -239,7 +262,11 @@ const SingleUserPicker = ({
         </div>
       </OmniPickerWrapper>
       {value && isResettable && (
-        <Button onClick={resetSelection} appearance={{ theme: 'blue', size: 'small' }} text={{ id: 'button.remove' }} />
+        <Button
+          onClick={resetSelection}
+          appearance={{ theme: 'blue', size: 'small' }}
+          text={{ id: 'button.remove' }}
+        />
       )}
     </div>
   );
@@ -248,4 +275,6 @@ const SingleUserPicker = ({
 SingleUserPicker.displayName = displayName;
 
 /** @NOTE I don't like it either, but digging through the HOC types seems counter productive considering we'll refactor it soon */
-export default withOmniPicker(SingleUserPicker) as unknown as ComponentType<Props>;
+export default withOmniPicker(
+  SingleUserPicker,
+) as unknown as ComponentType<Props>;

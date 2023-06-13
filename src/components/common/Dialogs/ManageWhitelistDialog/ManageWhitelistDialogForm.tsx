@@ -86,17 +86,21 @@ const ManageWhitelistDialogForm = ({
     reset: resetForm,
   } = useFormContext();
   const isWhitelistActivated = watch('isWhitelistActivated');
-  const { userHasPermission, disabledSubmit, disabledInput } = useActionDialogStatus(
-    colony,
-    requiredRoles,
-    [Id.RootDomain],
-    enabledExtensionData,
-  );
+  const { userHasPermission, disabledSubmit, disabledInput } =
+    useActionDialogStatus(
+      colony,
+      requiredRoles,
+      [Id.RootDomain],
+      enabledExtensionData,
+    );
 
   return (
     <>
       <DialogSection appearance={{ theme: 'heading' }}>
-        <Heading3 appearance={{ margin: 'none', theme: 'dark' }} text={MSG.title} />
+        <Heading3
+          appearance={{ margin: 'none', theme: 'dark' }}
+          text={MSG.title}
+        />
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
@@ -115,7 +119,10 @@ const ManageWhitelistDialogForm = ({
             return false;
           }}
         >
-          <TabList className={styles.tabsList} containerClassName={styles.tabsListContainer}>
+          <TabList
+            className={styles.tabsList}
+            containerClassName={styles.tabsListContainer}
+          >
             <Tab>
               <FormattedMessage {...MSG.addAddress} />
             </Tab>
@@ -135,14 +142,26 @@ const ManageWhitelistDialogForm = ({
               fileSuccessMsg={MSG.fileSuccess}
               disabledInput={disabledInput}
             />
-            <Annotations label={MSG.annotation} name="annotation" disabled={disabledInput} />
+            <Annotations
+              label={MSG.annotation}
+              name="annotation"
+              disabled={disabledInput}
+            />
           </TabPanel>
           <TabPanel>
             {(whitelistedAddresses?.length && (
               <>
-                <ManageWhitelistActiveToggle isWhitelistActivated={isWhitelistActivated} />
-                <WhitelistedAddresses whitelistedAddresses={whitelistedAddresses} />
-                <Annotations label={MSG.annotation} name="annotation" disabled={disabledInput} />
+                <ManageWhitelistActiveToggle
+                  isWhitelistActivated={isWhitelistActivated}
+                />
+                <WhitelistedAddresses
+                  whitelistedAddresses={whitelistedAddresses}
+                />
+                <Annotations
+                  label={MSG.annotation}
+                  name="annotation"
+                  disabled={disabledInput}
+                />
               </>
             )) || <NoWhitelistedAddressesState />}
           </TabPanel>
@@ -163,7 +182,9 @@ const ManageWhitelistDialogForm = ({
             theme: tabIndex === TABS.ADD_ADDRESS ? 'primary' : 'pink',
             size: 'large',
           }}
-          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>
