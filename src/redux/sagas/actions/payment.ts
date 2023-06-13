@@ -20,7 +20,11 @@ import {
 } from '../utils';
 // import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 
-import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 import {
   transactionReady,
   //   transactionPending,
@@ -63,7 +67,9 @@ function* createPaymentAction({
         throw new Error('Payment token not set for OneTxPayment transaction');
       }
       if (!singlePayment.decimals) {
-        throw new Error('Payment token decimals not set for OneTxPayment transaction');
+        throw new Error(
+          'Payment token decimals not set for OneTxPayment transaction',
+        );
       }
     }
     const { amount, tokenAddress, decimals = 18 } = singlePayment;
@@ -72,10 +78,11 @@ function* createPaymentAction({
      * setup batch ids and channels
      */
     const batchKey = 'paymentAction';
-    const { paymentAction /* annotatePaymentAction */ } = yield createTransactionChannels(metaId, [
-      'paymentAction',
-      'annotatePaymentAction',
-    ]);
+    const { paymentAction /* annotatePaymentAction */ } =
+      yield createTransactionChannels(metaId, [
+        'paymentAction',
+        'annotatePaymentAction',
+      ]);
     yield fork(createTransaction, paymentAction.id, {
       context: ClientType.OneTxPaymentClient,
       methodName: 'makePaymentFundedFromDomainWithProofs',
@@ -123,7 +130,10 @@ function* createPaymentAction({
     yield put(transactionReady(paymentAction.id));
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(paymentAction.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
+    } = yield takeFrom(
+      paymentAction.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
     yield takeFrom(paymentAction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
     //     if (annotationMessage) {
     //       yield put(transactionPending(annotatePaymentAction.id));

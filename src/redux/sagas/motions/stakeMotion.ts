@@ -5,10 +5,17 @@ import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import { putError, takeFrom, getColonyManager } from '../utils';
 
-import { createGroupTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import {
+  createGroupTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 import { transactionReady } from '../../actionCreators';
 
-function* stakeMotion({ meta, payload: { colonyAddress, motionId, vote, amount } }: Action<ActionTypes.MOTION_STAKE>) {
+function* stakeMotion({
+  meta,
+  payload: { colonyAddress, motionId, vote, amount },
+}: Action<ActionTypes.MOTION_STAKE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
     const colonyManager = yield call(getColonyManager);
@@ -19,17 +26,17 @@ function* stakeMotion({ meta, payload: { colonyAddress, motionId, vote, amount }
       colonyAddress,
     );
 
-    const { domainId } = yield call([votingReputationClient, votingReputationClient.getMotion], motionId);
+    const { domainId } = yield call(
+      [votingReputationClient, votingReputationClient.getMotion],
+      motionId,
+    );
 
-    const { approveStake, stakeMotionTransaction /* annotateStaking */ } = yield call(
-      createTransactionChannels,
-      meta.id,
-      [
+    const { approveStake, stakeMotionTransaction /* annotateStaking */ } =
+      yield call(createTransactionChannels, meta.id, [
         'approveStake',
         'stakeMotionTransaction',
         // 'annotateStaking',
-      ],
-    );
+      ]);
 
     const batchKey = 'stakeMotion';
 
@@ -60,7 +67,10 @@ function* stakeMotion({ meta, payload: { colonyAddress, motionId, vote, amount }
     // }
 
     yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
-    yield takeFrom(stakeMotionTransaction.channel, ActionTypes.TRANSACTION_CREATED);
+    yield takeFrom(
+      stakeMotionTransaction.channel,
+      ActionTypes.TRANSACTION_CREATED,
+    );
 
     // if (annotationMessage) {
     //   yield takeFrom(annotateStaking.channel, ActionTypes.TRANSACTION_CREATED);
@@ -72,9 +82,15 @@ function* stakeMotion({ meta, payload: { colonyAddress, motionId, vote, amount }
 
     yield put(transactionReady(stakeMotionTransaction.id));
 
-    yield takeFrom(stakeMotionTransaction.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
+    yield takeFrom(
+      stakeMotionTransaction.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
 
-    yield takeFrom(stakeMotionTransaction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield takeFrom(
+      stakeMotionTransaction.channel,
+      ActionTypes.TRANSACTION_SUCCEEDED,
+    );
 
     // if (annotationMessage) {
     //   yield put(transactionPending(annotateStaking.id));

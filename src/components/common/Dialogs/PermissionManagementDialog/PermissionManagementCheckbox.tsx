@@ -115,7 +115,11 @@ const PermissionManagementCheckbox = ({
       dataTest={dataTest}
     >
       <span className={styles.permissionChoiceDescription}>
-        <PermissionsLabel permission={role} name={formattedRole} inherited={asterisk} />
+        <PermissionsLabel
+          permission={role}
+          name={formattedRole}
+          inherited={asterisk}
+        />
         <FormattedMessage {...roleDescriptionMessage} />
       </span>
     </Checkbox>

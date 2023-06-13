@@ -22,7 +22,9 @@ const MSG = defineMessages({
 });
 
 const getDomainName = (fromDomain: Domain) =>
-  fromDomain.metadata?.name ?? <FormattedMessage {...MSG.domain} values={{ domainId: fromDomain.id }} />;
+  fromDomain.metadata?.name ?? (
+    <FormattedMessage {...MSG.domain} values={{ domainId: fromDomain.id }} />
+  );
 
 // interface CommentCountProps {
 //   commentCount: number;
@@ -58,7 +60,9 @@ const ActionsListItemMeta = ({
 }: ActionsListItemMetaProps) => {
   return (
     <div>
-      {fromDomain && <span className={styles.domain}>{getDomainName(fromDomain)}</span>}
+      {fromDomain && (
+        <span className={styles.domain}>{getDomainName(fromDomain)}</span>
+      )}
       {/* {!!commentCount && <CommentCount commentCount={commentCount} />} */}
     </div>
   );

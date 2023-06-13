@@ -28,7 +28,10 @@ const MSG = defineMessages({
 
 export interface Props
   extends Pick<SingleFileUploadProps, 'handleFileAccept' | 'handleFileReject'>,
-    Omit<CoreInputProps, 'name' | 'placeholder' | 'placeholderValues' | 'dataTest'> {
+    Omit<
+      CoreInputProps,
+      'name' | 'placeholder' | 'placeholderValues' | 'dataTest'
+    > {
   /** Appearance object for both label and status */
   appearance?: Appearance;
   /** Avatar to be wrapped by File uploader */
@@ -61,7 +64,11 @@ interface FileErrorProps {
 
 const FileError = ({ error }: FileErrorProps) => (
   <div className={styles.error}>
-    <Icon name="file" appearance={{ size: 'large' }} title={formatText(error)} />
+    <Icon
+      name="file"
+      appearance={{ size: 'large' }}
+      title={formatText(error)}
+    />
   </div>
 );
 
@@ -71,7 +78,11 @@ const LoadingOverlay = () => (
   </div>
 );
 
-const getPlaceholder = (isLoading: boolean, avatarPlaceholder: Props['avatarPlaceholder'], error?: Message) => {
+const getPlaceholder = (
+  isLoading: boolean,
+  avatarPlaceholder: Props['avatarPlaceholder'],
+  error?: Message,
+) => {
   if (error) {
     return <FileError error={error} />;
   }

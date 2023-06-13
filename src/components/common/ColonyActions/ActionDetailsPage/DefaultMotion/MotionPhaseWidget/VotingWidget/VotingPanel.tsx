@@ -8,7 +8,8 @@ import { CustomRadioGroup } from '~shared/Fields';
 import { getVotingPanelConfig } from './getVotingPanelConfig';
 import { VOTE_FORM_KEY } from './VotingWidget';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget.VotingPanel';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget.VotingPanel';
 
 interface VotingPanelProps {
   motionDomainId: number;
@@ -22,7 +23,11 @@ const VotingPanel = ({ motionDomainId }: VotingPanelProps) => {
     getValues,
   } = useFormContext();
 
-  const { userReputation } = useUserReputation(colony?.colonyAddress ?? '', user?.walletAddress ?? '', motionDomainId);
+  const { userReputation } = useUserReputation(
+    colony?.colonyAddress ?? '',
+    user?.walletAddress ?? '',
+    motionDomainId,
+  );
 
   const hasReputationToVote = BigNumber.from(userReputation ?? 0).gt(0);
   const vote = getValues(VOTE_FORM_KEY);

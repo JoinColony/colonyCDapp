@@ -1,7 +1,11 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { GetMotionTimeoutPeriodsReturn, MotionStakes, useGetMotionTimeoutPeriodsQuery } from '~gql';
+import {
+  GetMotionTimeoutPeriodsReturn,
+  MotionStakes,
+  useGetMotionTimeoutPeriodsQuery,
+} from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 import { MotionState } from '~utils/colonyMotions';
 
@@ -14,7 +18,10 @@ const splitTimeLeft = (period: number) => ({
   seconds: Math.floor(period % 60),
 });
 
-const getCurrentStatePeriodInMs = (motionState: MotionState, motionTimeoutPeriods: GetMotionTimeoutPeriodsReturn) => {
+const getCurrentStatePeriodInMs = (
+  motionState: MotionState,
+  motionTimeoutPeriods: GetMotionTimeoutPeriodsReturn,
+) => {
   switch (motionState) {
     case MotionState.Staking:
     case MotionState.Staked:
@@ -61,20 +68,27 @@ export const useMotionCountdown = (
   const { user } = useAppContext();
   const dispatch = useDispatch();
   const { percentage: percentageStaked } = motionStakes;
-  const isAnySideFullyStaked = percentageStaked.nay === '100' || percentageStaked.yay === '100';
+  const isAnySideFullyStaked =
+    percentageStaked.nay === '100' || percentageStaked.yay === '100';
 
-  const { motionTimeoutPeriods, loadingMotionTimeoutPeriods, refetchMotionTimeoutPeriods } = useMotionTimeoutPeriods(
-    colony?.colonyAddress,
-    motionId,
+  const {
+    motionTimeoutPeriods,
+    loadingMotionTimeoutPeriods,
+    refetchMotionTimeoutPeriods,
+  } = useMotionTimeoutPeriods(colony?.colonyAddress, motionId);
+
+  const currentStatePeriodInMs = getCurrentStatePeriodInMs(
+    state,
+    motionTimeoutPeriods,
   );
-
-  const currentStatePeriodInMs = getCurrentStatePeriodInMs(state, motionTimeoutPeriods);
 
   const [timeLeft, setTimeLeft] = useState<number>(-1);
 
   const prevStateRef: MutableRefObject<MotionState | null> = useRef(null);
   const isStakingPhaseState =
-    state === MotionState.Staking || state === MotionState.Staked || state === MotionState.Objection;
+    state === MotionState.Staking ||
+    state === MotionState.Staked ||
+    state === MotionState.Objection;
 
   /*
    * Set the initial timeout
@@ -107,11 +121,17 @@ export const useMotionCountdown = (
        *    isAnySideFullyStaked - The YAY or NAY  side is fully staked (For example, if the user fully staked the NAY side, the timer should reset).
        *    revStateRef.current === null - There's no previous reference of a timer, therefore, the user just loaded/reloaded the motion page and this is the "initial" timer.
        */
-      (!isStakingPhaseState || (isStakingPhaseState && (isAnySideFullyStaked || prevStateRef.current === null)))
+      (!isStakingPhaseState ||
+        (isStakingPhaseState &&
+          (isAnySideFullyStaked || prevStateRef.current === null)))
     ) {
       const currentStatePeriodInSeconds = Number(currentStatePeriodInMs) / 1000;
 
-      setTimeLeft(currentStatePeriodInSeconds > 0 ? currentStatePeriodInSeconds + 5 : currentStatePeriodInSeconds);
+      setTimeLeft(
+        currentStatePeriodInSeconds > 0
+          ? currentStatePeriodInSeconds + 5
+          : currentStatePeriodInSeconds,
+      );
       prevStateRef.current = state;
     }
   }, [
@@ -137,13 +157,26 @@ export const useMotionCountdown = (
     }
 
     return () => clearInterval(timer);
-  }, [timeLeft, currentStatePeriodInMs, dispatch, colony, motionId, user, refetchMotionState]);
+  }, [
+    timeLeft,
+    currentStatePeriodInMs,
+    dispatch,
+    colony,
+    motionId,
+    user,
+    refetchMotionState,
+  ]);
 
   useEffect(() => {
     if (!isStakingPhaseState || isAnySideFullyStaked) {
       refetchMotionTimeoutPeriods();
     }
-  }, [isStakingPhaseState, refetchMotionTimeoutPeriods, state, isAnySideFullyStaked]);
+  }, [
+    isStakingPhaseState,
+    refetchMotionTimeoutPeriods,
+    state,
+    isAnySideFullyStaked,
+  ]);
 
   /*
    * Split the time into h/m/s for display purpouses

@@ -5,7 +5,8 @@ import { Heading3 } from '~shared/Heading';
 
 import styles from './StakingSliderDescription.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.StakingSliderDescription';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.StakingSliderDescription';
 
 const MSG = defineMessages({
   descriptionStake: {
@@ -30,7 +31,9 @@ interface StakingSliderDescriptionProps {
   isObjection: boolean;
 }
 
-const StakingSliderDescription = ({ isObjection }: StakingSliderDescriptionProps) => (
+const StakingSliderDescription = ({
+  isObjection,
+}: StakingSliderDescriptionProps) => (
   <>
     <div className={styles.title}>
       <Heading3
@@ -40,7 +43,9 @@ const StakingSliderDescription = ({ isObjection }: StakingSliderDescriptionProps
       />
     </div>
     <p className={styles.description}>
-      <FormattedMessage {...(isObjection ? MSG.descriptionObject : MSG.descriptionStake)} />
+      <FormattedMessage
+        {...(isObjection ? MSG.descriptionObject : MSG.descriptionStake)}
+      />
     </p>
   </>
 );

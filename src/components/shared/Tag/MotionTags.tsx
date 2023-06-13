@@ -140,9 +140,22 @@ type TagsRecord = { [key in MotionState]: MotionTag };
 export const motionTags = Object.entries(MOTION_TAG_MAP).reduce<TagsRecord>(
   (acc, [motionState, { theme, colorSchema, text }]) => ({
     ...acc,
-    [motionState]: () => <Tag text={text} appearance={{ theme, colorSchema }} />,
+    [motionState]: () => (
+      <Tag text={text} appearance={{ theme, colorSchema }} />
+    ),
   }),
   {} as TagsRecord,
 );
 
-export const { Escalation, Failed, Forced, Invalid, Motion, Objection, Passed, Reveal, Staking, Voting } = motionTags;
+export const {
+  Escalation,
+  Failed,
+  Forced,
+  Invalid,
+  Motion,
+  Objection,
+  Passed,
+  Reveal,
+  Staking,
+  Voting,
+} = motionTags;

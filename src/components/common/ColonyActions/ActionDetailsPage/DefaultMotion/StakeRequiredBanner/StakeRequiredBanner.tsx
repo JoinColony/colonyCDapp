@@ -43,7 +43,9 @@ type StakeRequiredBannerProps = {
   isDecision?: boolean;
 };
 
-const StakeRequiredBanner = ({ isDecision = false }: StakeRequiredBannerProps) => (
+const StakeRequiredBanner = ({
+  isDecision = false,
+}: StakeRequiredBannerProps) => (
   <div className={styles.stakeRequiredBanner} data-test="stakeRequiredBanner">
     <Alert appearance={alertAppearance}>
       <BannerText isDecision={isDecision} />

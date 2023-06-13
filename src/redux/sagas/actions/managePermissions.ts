@@ -6,7 +6,11 @@ import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import { putError, takeFrom } from '../utils';
 
-import { createGroupTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import {
+  createGroupTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 import { transactionReady } from '../../actionCreators';
 
 function* managePermissionsAction({
@@ -29,14 +33,18 @@ function* managePermissionsAction({
     }
 
     if (roles[ColonyRole.ArchitectureSubdomain]) {
-      throw new Error('The Architecture Subdomain roles has been deprecated at a contract level and should not be set');
+      throw new Error(
+        'The Architecture Subdomain roles has been deprecated at a contract level and should not be set',
+      );
     }
 
     txChannel = yield call(getTxChannel, metaId);
 
     const batchKey = 'setUserRoles';
 
-    const { setUserRoles } = yield createTransactionChannels(metaId, ['setUserRoles']);
+    const { setUserRoles } = yield createTransactionChannels(metaId, [
+      'setUserRoles',
+    ]);
 
     const roleArray = Object.values(roles).reverse();
     /* Always make sure the Architecture Subdomain is false, it's deprecated */

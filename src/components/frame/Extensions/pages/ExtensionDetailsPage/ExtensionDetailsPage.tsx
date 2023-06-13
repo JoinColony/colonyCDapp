@@ -35,13 +35,19 @@ const ExtensionDetailsPage: FC = () => {
   }
 
   if (!extensionData) {
-    return <p>{formatMessage({ id: 'extensionDetailsPage.unsupportedExtension' })}</p>;
+    return (
+      <p>
+        {formatMessage({ id: 'extensionDetailsPage.unsupportedExtension' })}
+      </p>
+    );
   }
 
   const handleOnTabClick = (_, id) => {
     setActiveTab(id);
   };
-  const showEnableBanner = extensionData.extensionId !== 'VotingReputation' && !isInstalledExtensionData(extensionData);
+  const showEnableBanner =
+    extensionData.extensionId !== 'VotingReputation' &&
+    !isInstalledExtensionData(extensionData);
 
   return (
     <Spinner loadingText={{ id: 'loading.colonyDetailsPage' }}>
@@ -71,13 +77,20 @@ const ExtensionDetailsPage: FC = () => {
             <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
               <div className="flex flex-col sm:items-center sm:flex-row sm:gap-2 sm:grow">
                 <div className="flex items-center shrink-0">
-                  <Icon name={extensionData.icon} appearance={{ size: 'large' }} />
-                  <h4 className="ml-2 text-xl font-semibold text-gray-900">{formatMessage(extensionData.name)}</h4>
+                  <Icon
+                    name={extensionData.icon}
+                    appearance={{ size: 'large' }}
+                  />
+                  <h4 className="ml-2 text-xl font-semibold text-gray-900">
+                    {formatMessage(extensionData.name)}
+                  </h4>
                 </div>
                 {/* @TODO get these values from API (badge and active installs number) */}
                 <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
                   <span>badge</span>
-                  <p className="text-gray-400 text-sm">17,876 {formatMessage({ id: 'active.installs' })}</p>
+                  <p className="text-gray-400 text-sm">
+                    17,876 {formatMessage({ id: 'active.installs' })}
+                  </p>
                 </div>
               </div>
               <ActionButtons extensionData={extensionData} />
@@ -91,7 +104,12 @@ const ExtensionDetailsPage: FC = () => {
         {extensionData?.isEnabled &&
         extensionData?.uninstallable &&
         extensionData?.extensionId === Extension.VotingReputation ? (
-          <Tabs items={tabsItems} className="pt-0" activeTab={activeTab} onTabClick={handleOnTabClick}>
+          <Tabs
+            items={tabsItems}
+            className="pt-0"
+            activeTab={activeTab}
+            onTabClick={handleOnTabClick}
+          >
             <ul className="flex flex-col">
               <AnimatePresence>
                 <motion.div
@@ -104,12 +122,22 @@ const ExtensionDetailsPage: FC = () => {
                   {activeTab === 1 && (
                     <li>
                       {mockedExtensionSettings.map((item) => (
-                        <div key={item.title} className="border-b border-gray-200 py-4 last:border-none">
+                        <div
+                          key={item.title}
+                          className="border-b border-gray-200 py-4 last:border-none"
+                        >
                           <div className="flex items-center justify-between text-gray-900 text-md font-medium">
                             <p>{item.title}</p>
-                            <div>- {item.complementaryLabel === 'percent' ? '%' : 'Hours'}</div>
+                            <div>
+                              -{' '}
+                              {item.complementaryLabel === 'percent'
+                                ? '%'
+                                : 'Hours'}
+                            </div>
                           </div>
-                          <div className="text-gray-900 text-sm">{item.description}</div>
+                          <div className="text-gray-900 text-sm">
+                            {item.description}
+                          </div>
                         </div>
                       ))}
                     </li>

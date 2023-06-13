@@ -4,16 +4,25 @@ import { ApolloQueryResult } from '@apollo/client';
 import { BigNumber } from 'ethers';
 
 import { getContext, ContextModule } from '~context';
-import { GetColonyActionDocument, GetColonyActionQuery, GetColonyActionQueryVariables } from '~gql';
+import {
+  GetColonyActionDocument,
+  GetColonyActionQuery,
+  GetColonyActionQueryVariables,
+} from '~gql';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 
-import { ChannelDefinition, createGroupTransaction, createTransactionChannels } from '../transactions';
+import {
+  ChannelDefinition,
+  createGroupTransaction,
+  createTransactionChannels,
+} from '../transactions';
 
 import { putError, takeFrom } from '../utils';
 
-export type ClaimMotionRewardsPayload = Action<ActionTypes.MOTION_CLAIM>['payload'];
+export type ClaimMotionRewardsPayload =
+  Action<ActionTypes.MOTION_CLAIM>['payload'];
 
 function* claimMotionRewards({
   meta,
@@ -39,7 +48,9 @@ function* claimMotionRewards({
       throw new Error('Could not retrieve motion from database');
     }
 
-    const userRewards = motionData.stakerRewards.find(({ address }) => address === userAddress);
+    const userRewards = motionData.stakerRewards.find(
+      ({ address }) => address === userAddress,
+    );
 
     if (!userRewards) {
       throw new Error('Could not find rewards for given user address');
@@ -59,10 +70,11 @@ function* claimMotionRewards({
     const YAY_ID = 'yayClaim';
     const NAY_ID = 'nayClaim';
 
-    const channels: { [id: string]: ChannelDefinition } = yield call(createTransactionChannels, meta.id, [
-      ...(hasYayClaim ? [YAY_ID] : []),
-      ...(hasNayClaim ? [NAY_ID] : []),
-    ]);
+    const channels: { [id: string]: ChannelDefinition } = yield call(
+      createTransactionChannels,
+      meta.id,
+      [...(hasYayClaim ? [YAY_ID] : []), ...(hasNayClaim ? [NAY_ID] : [])],
+    );
 
     const BATCH_KEY = 'claimMotionRewards';
 
@@ -77,9 +89,17 @@ function* claimMotionRewards({
       ),
     );
 
-    yield all(Object.keys(channels).map((id) => takeFrom(channels[id].channel, ActionTypes.TRANSACTION_CREATED)));
+    yield all(
+      Object.keys(channels).map((id) =>
+        takeFrom(channels[id].channel, ActionTypes.TRANSACTION_CREATED),
+      ),
+    );
 
-    yield all(Object.keys(channels).map((id) => takeFrom(channels[id].channel, ActionTypes.TRANSACTION_SUCCEEDED)));
+    yield all(
+      Object.keys(channels).map((id) =>
+        takeFrom(channels[id].channel, ActionTypes.TRANSACTION_SUCCEEDED),
+      ),
+    );
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_CLAIM_SUCCESS,

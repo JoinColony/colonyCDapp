@@ -13,7 +13,17 @@ const meta: Meta<typeof Tooltip> = {
   argTypes: {
     placement: {
       name: 'Placement',
-      options: ['auto', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'right', 'left'],
+      options: [
+        'auto',
+        'top',
+        'top-start',
+        'top-end',
+        'bottom',
+        'bottom-start',
+        'bottom-end',
+        'right',
+        'left',
+      ],
       control: {
         type: 'select',
       },

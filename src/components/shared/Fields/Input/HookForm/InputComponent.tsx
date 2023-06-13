@@ -19,7 +19,8 @@ const LengthWidget = ({ length, maxLength }: LengthWidgetProps) => (
   </span>
 );
 
-export interface HookFormInputComponentProps extends Omit<InputProps, 'placeholder'> {
+export interface HookFormInputComponentProps
+  extends Omit<InputProps, 'placeholder'> {
   placeholder?: string;
   inputValueLength: number;
 }
@@ -64,7 +65,11 @@ const HookFormInputComponent = ({
   ...restInputProps
 }: HookFormInputComponentProps) => {
   const { register } = useFormContext();
-  const { onChange: hookFormOnChange, onBlur: hookFormOnBlur, ref } = register(name);
+  const {
+    onChange: hookFormOnChange,
+    onBlur: hookFormOnBlur,
+    ref,
+  } = register(name);
 
   const classes = getAppearanceObject(maxLength, maxButtonParams, appearance);
   const className = getMainClasses(classes, styles);
@@ -93,7 +98,11 @@ const HookFormInputComponent = ({
   return (
     <div className={styles.inputContainer}>
       {formattingOptions ? (
-        <FormattedInput {...props} maxButtonParams={maxButtonParams} options={formattingOptions} />
+        <FormattedInput
+          {...props}
+          maxButtonParams={maxButtonParams}
+          options={formattingOptions}
+        />
       ) : (
         <input {...props} className={className} ref={ref} />
       )}

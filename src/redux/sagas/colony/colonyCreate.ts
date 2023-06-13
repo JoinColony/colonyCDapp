@@ -44,8 +44,16 @@ import {
   transactionLoadRelated,
   transactionPending,
 } from '../../actionCreators';
-import { putError, takeFrom, takeLatestCancellable, getColonyManager } from '../utils';
-import { createTransactionChannels, createGroupTransaction } from '../transactions';
+import {
+  putError,
+  takeFrom,
+  takeLatestCancellable,
+  getColonyManager,
+} from '../utils';
+import {
+  createTransactionChannels,
+  createGroupTransaction,
+} from '../transactions';
 import { getOneTxPaymentVersion } from '../utils/extensionVersion';
 
 interface ChannelDefinition {
@@ -96,7 +104,11 @@ function* colonyCreate({
    * Define a manifest of transaction ids and their respective channels.
    */
 
-  const channels: { [id: string]: ChannelDefinition } = yield call(createTransactionChannels, meta.id, channelNames);
+  const channels: { [id: string]: ChannelDefinition } = yield call(
+    createTransactionChannels,
+    meta.id,
+    channelNames,
+  );
   const {
     createColony,
     createToken,
@@ -136,7 +148,9 @@ function* colonyCreate({
         context: ClientType.NetworkClient,
         methodName: 'createColony(address,uint256,string,string)',
         ready: false,
-        title: isDev ? { id: 'transaction.group.createColony.titleWithHold' } : undefined,
+        title: isDev
+          ? { id: 'transaction.group.createColony.titleWithHold' }
+          : undefined,
       });
     }
 
@@ -193,7 +207,11 @@ function* colonyCreate({
     /*
      * Wait until all transactions are created.
      */
-    yield all(Object.keys(channels).map((id) => takeFrom(channels[id].channel, ActionTypes.TRANSACTION_CREATED)));
+    yield all(
+      Object.keys(channels).map((id) =>
+        takeFrom(channels[id].channel, ActionTypes.TRANSACTION_CREATED),
+      ),
+    );
 
     /*
      * Dispatch a success action; this progresses to next wizard step,
@@ -214,7 +232,10 @@ function* colonyCreate({
     if (createToken) {
       const {
         payload: { deployedContractAddress },
-      } = yield takeFrom(createToken.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      } = yield takeFrom(
+        createToken.channel,
+        ActionTypes.TRANSACTION_SUCCEEDED,
+      );
       tokenAddress = createAddress(deployedContractAddress);
     } else {
       if (!givenTokenAddress) {
@@ -226,7 +247,10 @@ function* colonyCreate({
      * Add token to db.
      * The query is resolved by "fetchTokenFromChain", which handles the mutation.
      */
-    yield apolloClient.query<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>({
+    yield apolloClient.query<
+      GetTokenFromEverywhereQuery,
+      GetTokenFromEverywhereQueryVariables
+    >({
       query: GetTokenFromEverywhereDocument,
       variables: {
         input: { tokenAddress },
@@ -236,7 +260,10 @@ function* colonyCreate({
     /*
      * Add token to current user's token list.
      */
-    yield apolloClient.mutate<CreateUserTokensMutation, CreateUserTokensMutationVariables>({
+    yield apolloClient.mutate<
+      CreateUserTokensMutation,
+      CreateUserTokensMutationVariables
+    >({
       mutation: CreateUserTokensDocument,
       variables: {
         input: {
@@ -248,7 +275,8 @@ function* colonyCreate({
 
     let colonyAddress;
     if (createColony) {
-      const currentColonyVersion = yield networkClient.getCurrentColonyVersion();
+      const currentColonyVersion =
+        yield networkClient.getCurrentColonyVersion();
 
       yield put(
         transactionAddParams(createColony.id, [
@@ -266,17 +294,27 @@ function* colonyCreate({
             ColonyAdded: { colonyAddress: createdColonyAddress },
           },
         },
-      } = yield takeFrom(createColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      } = yield takeFrom(
+        createColony.channel,
+        ActionTypes.TRANSACTION_SUCCEEDED,
+      );
       colonyAddress = createdColonyAddress;
 
       if (!colonyAddress) {
-        return yield putError(ActionTypes.CREATE_ERROR, new Error('Missing colony address'), meta);
+        return yield putError(
+          ActionTypes.CREATE_ERROR,
+          new Error('Missing colony address'),
+          meta,
+        );
       }
 
       /*
        * Create colony in db
        */
-      yield apolloClient.mutate<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>({
+      yield apolloClient.mutate<
+        CreateUniqueColonyMutation,
+        CreateUniqueColonyMutationVariables
+      >({
         mutation: CreateUniqueColonyDocument,
         variables: {
           input: {
@@ -291,7 +329,10 @@ function* colonyCreate({
       /**
        * Save colony metadata to the db
        */
-      yield apolloClient.mutate<CreateColonyMetadataMutation, CreateColonyMetadataMutationVariables>({
+      yield apolloClient.mutate<
+        CreateColonyMetadataMutation,
+        CreateColonyMetadataMutationVariables
+      >({
         mutation: CreateColonyMetadataDocument,
         variables: {
           input: {
@@ -305,7 +346,10 @@ function* colonyCreate({
       /*
        * Add token to colony's token list
        */
-      yield apolloClient.mutate<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>({
+      yield apolloClient.mutate<
+        CreateColonyTokensMutation,
+        CreateColonyTokensMutationVariables
+      >({
         mutation: CreateColonyTokensDocument,
         variables: {
           input: {
@@ -318,7 +362,10 @@ function* colonyCreate({
       /*
        * Subscribe user to colony
        */
-      yield apolloClient.mutate<CreateWatchedColoniesMutation, CreateWatchedColoniesMutationVariables>({
+      yield apolloClient.mutate<
+        CreateWatchedColoniesMutation,
+        CreateWatchedColoniesMutationVariables
+      >({
         mutation: CreateWatchedColoniesDocument,
         variables: {
           input: {
@@ -331,7 +378,10 @@ function* colonyCreate({
       /*
        * Save root domain metadata to the database
        */
-      yield apolloClient.mutate<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>({
+      yield apolloClient.mutate<
+        CreateDomainMetadataMutation,
+        CreateDomainMetadataMutationVariables
+      >({
         mutation: CreateDomainMetadataDocument,
         variables: {
           input: {
@@ -346,9 +396,17 @@ function* colonyCreate({
        * Create root domain in the database
        * @NOTE: This is a temporary solution and this mutation should be called by block-ingestor on ColonyAdded event
        */
-      const colonyClient = yield colonyManager.getClient(ClientType.ColonyClient, colonyAddress);
-      const [skillId, fundingPotId] = yield colonyClient.getDomain(Id.RootDomain);
-      yield apolloClient.mutate<CreateDomainMutation, CreateDomainMutationVariables>({
+      const colonyClient = yield colonyManager.getClient(
+        ClientType.ColonyClient,
+        colonyAddress,
+      );
+      const [skillId, fundingPotId] = yield colonyClient.getDomain(
+        Id.RootDomain,
+      );
+      yield apolloClient.mutate<
+        CreateDomainMutation,
+        CreateDomainMutationVariables
+      >({
         mutation: CreateDomainDocument,
         variables: {
           input: {
@@ -372,12 +430,19 @@ function* colonyCreate({
      * Add a colonyAddress identifier to all pending transactions.
      */
     yield all(
-      [deployTokenAuthority, deployOneTx, setOneTxRoleAdministration, setOneTxRoleFunding]
+      [
+        deployTokenAuthority,
+        deployOneTx,
+        setOneTxRoleAdministration,
+        setOneTxRoleFunding,
+      ]
         .filter(Boolean)
         .map(({ id }) => put(transactionAddIdentifier(id, colonyAddress))),
     );
     yield all(
-      [setTokenAuthority, setOwner].filter(Boolean).map(({ id }) => put(transactionAddIdentifier(id, tokenAddress))),
+      [setTokenAuthority, setOwner]
+        .filter(Boolean)
+        .map(({ id }) => put(transactionAddIdentifier(id, tokenAddress))),
     );
 
     /*
@@ -401,22 +466,38 @@ function* colonyCreate({
        * Deploy TokenAuthority
        */
       const tokenLockingAddress = yield networkClient.getTokenLocking();
-      yield put(transactionAddParams(deployTokenAuthority.id, [tokenAddress, colonyAddress, [tokenLockingAddress]]));
+      yield put(
+        transactionAddParams(deployTokenAuthority.id, [
+          tokenAddress,
+          colonyAddress,
+          [tokenLockingAddress],
+        ]),
+      );
       yield put(transactionReady(deployTokenAuthority.id));
       const {
         payload: {
           eventData: {
-            TokenAuthorityDeployed: { tokenAuthorityAddress: deployedContractAddress },
+            TokenAuthorityDeployed: {
+              tokenAuthorityAddress: deployedContractAddress,
+            },
           },
         },
-      } = yield takeFrom(deployTokenAuthority.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      } = yield takeFrom(
+        deployTokenAuthority.channel,
+        ActionTypes.TRANSACTION_SUCCEEDED,
+      );
 
       /*
        * Set Token authority (to deployed TokenAuthority)
        */
-      yield put(transactionAddParams(setTokenAuthority.id, [deployedContractAddress]));
+      yield put(
+        transactionAddParams(setTokenAuthority.id, [deployedContractAddress]),
+      );
       yield put(transactionReady(setTokenAuthority.id));
-      yield takeFrom(setTokenAuthority.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      yield takeFrom(
+        setTokenAuthority.channel,
+        ActionTypes.TRANSACTION_SUCCEEDED,
+      );
     }
 
     if (setOwner) {
@@ -431,7 +512,9 @@ function* colonyCreate({
        */
       const oneTxHash = getExtensionHash(Extension.OneTxPayment);
       const oneTxVersion = yield call(getOneTxPaymentVersion);
-      yield put(transactionAddParams(deployOneTx.id, [oneTxHash, oneTxVersion]));
+      yield put(
+        transactionAddParams(deployOneTx.id, [oneTxHash, oneTxVersion]),
+      );
       yield put(transactionReady(deployOneTx.id));
 
       yield takeFrom(deployOneTx.channel, ActionTypes.TRANSACTION_SUCCEEDED);
@@ -444,7 +527,10 @@ function* colonyCreate({
       const oneTxPaymentExtension = yield poll(
         async () => {
           try {
-            const client = await colonyManager.getClient(ClientType.OneTxPaymentClient, colonyAddress);
+            const client = await colonyManager.getClient(
+              ClientType.OneTxPaymentClient,
+              colonyAddress,
+            );
             return client;
           } catch (err) {
             return undefined;
@@ -457,19 +543,37 @@ function* colonyCreate({
 
       const extensionAddress = oneTxPaymentExtension.address;
 
-      yield put(transactionAddParams(setOneTxRoleAdministration.id, [extensionAddress, Id.RootDomain, true]));
+      yield put(
+        transactionAddParams(setOneTxRoleAdministration.id, [
+          extensionAddress,
+          Id.RootDomain,
+          true,
+        ]),
+      );
       yield put(transactionReady(setOneTxRoleAdministration.id));
-      yield takeFrom(setOneTxRoleAdministration.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      yield takeFrom(
+        setOneTxRoleAdministration.channel,
+        ActionTypes.TRANSACTION_SUCCEEDED,
+      );
 
       /*
        * Set OneTx funding role
        */
-      yield put(transactionAddParams(setOneTxRoleFunding.id, [extensionAddress, Id.RootDomain, true]));
+      yield put(
+        transactionAddParams(setOneTxRoleFunding.id, [
+          extensionAddress,
+          Id.RootDomain,
+          true,
+        ]),
+      );
       yield put(transactionReady(setOneTxRoleFunding.id));
 
       yield colonyManager.setColonyClient(colonyAddress);
 
-      yield takeFrom(setOneTxRoleFunding.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      yield takeFrom(
+        setOneTxRoleFunding.channel,
+        ActionTypes.TRANSACTION_SUCCEEDED,
+      );
     }
 
     return null;
@@ -484,10 +588,18 @@ function* colonyCreate({
     /*
      * Close all transaction channels.
      */
-    yield all(Object.keys(channels).map((id) => call([channels[id].channel, channels[id].channel.close])));
+    yield all(
+      Object.keys(channels).map((id) =>
+        call([channels[id].channel, channels[id].channel.close]),
+      ),
+    );
   }
 }
 
 export default function* colonyCreateSaga() {
-  yield takeLatestCancellable(ActionTypes.CREATE, ActionTypes.CREATE_CANCEL, colonyCreate);
+  yield takeLatestCancellable(
+    ActionTypes.CREATE,
+    ActionTypes.CREATE_CANCEL,
+    colonyCreate,
+  );
 }

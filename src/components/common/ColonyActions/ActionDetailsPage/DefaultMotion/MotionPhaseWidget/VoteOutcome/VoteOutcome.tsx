@@ -13,7 +13,8 @@ import { VoteResults } from './VoteResults';
 
 import styles from './VoteOutcome.css';
 
-const displayName = 'common.ColonyActions.DefaultMotion.FinalizeMotion.VoteOutcome';
+const displayName =
+  'common.ColonyActions.DefaultMotion.FinalizeMotion.VoteOutcome';
 
 const MSG = defineMessages({
   outcomeCelebration: {
@@ -50,11 +51,15 @@ const VoteOutcome = ({
     return null;
   }
 
-  const currentUserRecord = voterRecord.find(({ address }) => address === user?.walletAddress);
+  const currentUserRecord = voterRecord.find(
+    ({ address }) => address === user?.walletAddress,
+  );
   const { vote: currentUserVote } = currentUserRecord || {};
 
   // Yay votes must be greater than nay for Yays to win.
-  const winningSide = BigNumber.from(yayVotes).gt(nayVotes) ? MotionVote.Yay : MotionVote.Nay;
+  const winningSide = BigNumber.from(yayVotes).gt(nayVotes)
+    ? MotionVote.Yay
+    : MotionVote.Nay;
 
   const userSideWon = winningSide === currentUserVote;
 
@@ -73,7 +78,9 @@ const VoteOutcome = ({
       <Heading4
         text={voteTitleMsg}
         textValues={{
-          actionType: formatActionType(getExtendedActionType(actionData, pendingColonyMetadata)),
+          actionType: formatActionType(
+            getExtendedActionType(actionData, pendingColonyMetadata),
+          ),
         }}
         appearance={{ weight: 'bold', theme: 'dark' }}
       />

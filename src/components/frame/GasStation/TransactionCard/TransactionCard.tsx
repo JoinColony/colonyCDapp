@@ -7,7 +7,11 @@ import Heading from '~shared/Heading';
 import { TransactionType } from '~redux/immutable';
 import { arrayToObject } from '~utils/arrays';
 
-import { getGroupKey, getGroupStatus, getGroupValues } from '../transactionGroup';
+import {
+  getGroupKey,
+  getGroupStatus,
+  getGroupValues,
+} from '../transactionGroup';
 import TransactionStatus from './TransactionStatus';
 
 import styles from './TransactionCard.css';
@@ -30,19 +34,32 @@ const TransactionCard = ({ idx, transactionGroup, onClick }: Props) => {
   const values = getGroupValues<TransactionType>(transactionGroup);
 
   const defaultTransactionGroupMessageDescriptorTitleId = {
-    id: `${transactionGroup[0].metatransaction ? 'meta' : ''}transaction.${groupKey}${
-      transactionGroup[0].methodContext ? `.${transactionGroup[0].methodContext}` : ''
+    id: `${
+      transactionGroup[0].metatransaction ? 'meta' : ''
+    }transaction.${groupKey}${
+      transactionGroup[0].methodContext
+        ? `.${transactionGroup[0].methodContext}`
+        : ''
     }.title`,
   };
   const defaultTransactionGroupMessageDescriptorDescriptionId = {
-    id: `${transactionGroup[0].metatransaction ? 'meta' : ''}transaction.${groupKey}${
-      transactionGroup[0].methodContext ? `.${transactionGroup[0].methodContext}` : ''
+    id: `${
+      transactionGroup[0].metatransaction ? 'meta' : ''
+    }transaction.${groupKey}${
+      transactionGroup[0].methodContext
+        ? `.${transactionGroup[0].methodContext}`
+        : ''
     }.description`,
   };
 
   return (
     <Card className={styles.main}>
-      <button type="button" className={styles.button} onClick={handleClick} disabled={!onClick}>
+      <button
+        type="button"
+        className={styles.button}
+        onClick={handleClick}
+        disabled={!onClick}
+      >
         <div className={styles.summary}>
           <div className={styles.description}>
             <Heading
@@ -51,15 +68,22 @@ const TransactionCard = ({ idx, transactionGroup, onClick }: Props) => {
                 ...defaultTransactionGroupMessageDescriptorTitleId,
                 ...values.group?.title,
               }}
-              textValues={values.group?.titleValues || arrayToObject(values.params)}
+              textValues={
+                values.group?.titleValues || arrayToObject(values.params)
+              }
             />
             <FormattedMessage
               {...defaultTransactionGroupMessageDescriptorDescriptionId}
               {...values.group?.description}
-              values={values.group?.descriptionValues || arrayToObject(values.params)}
+              values={
+                values.group?.descriptionValues || arrayToObject(values.params)
+              }
             />
           </div>
-          <TransactionStatus groupCount={transactionGroup.length} status={status} />
+          <TransactionStatus
+            groupCount={transactionGroup.length}
+            status={status}
+          />
         </div>
       </button>
     </Card>

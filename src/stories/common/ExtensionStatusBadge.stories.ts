@@ -7,7 +7,15 @@ const meta: Meta<typeof ExtensionsStatusBadge> = {
   argTypes: {
     mode: {
       name: 'Mode',
-      options: ['coming-soon', 'not-installed', 'enabled', 'disabled', 'deprecated', 'governance', 'new'],
+      options: [
+        'coming-soon',
+        'not-installed',
+        'enabled',
+        'disabled',
+        'deprecated',
+        'governance',
+        'new',
+      ],
       control: {
         type: 'select',
       },

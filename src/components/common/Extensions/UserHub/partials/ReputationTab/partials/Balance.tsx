@@ -9,7 +9,8 @@ import { BalanceProps } from '../types';
 import PopoverButton from '~shared/Extensions/PopoverButton';
 import { useMobile } from '~hooks';
 
-const displayName = 'common.Extensions.UserHub.partials.ReputationTab.partials.Balance';
+const displayName =
+  'common.Extensions.UserHub.partials.ReputationTab.partials.Balance';
 
 const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
   const { formatMessage } = useIntl();
@@ -26,14 +27,21 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
   });
   const tokenBalanceData = tokenBalanceQueryData?.getUserTokenBalance;
 
-  const tokenDecimals = useMemo(() => getTokenDecimalsWithFallback(nativeToken?.decimals), [nativeToken]);
+  const tokenDecimals = useMemo(
+    () => getTokenDecimalsWithFallback(nativeToken?.decimals),
+    [nativeToken],
+  );
 
   return (
     <div>
-      <div className="text-gray-400 text-xs font-medium uppercase">{formatMessage({ id: 'balance.in.colony' })}</div>
+      <div className="text-gray-400 text-xs font-medium uppercase">
+        {formatMessage({ id: 'balance.in.colony' })}
+      </div>
       <div className="flex flex-col gap-[1.3125rem] pt-2 pb-[1.625rem] border-b border-gray-100">
         <div className={styles.row}>
-          <span className={styles.rowName}>{formatMessage({ id: 'total.balance' })}</span>
+          <span className={styles.rowName}>
+            {formatMessage({ id: 'total.balance' })}
+          </span>
           <div className={styles.value}>
             <Numeral
               className={styles.numeral}
@@ -47,7 +55,9 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
         <div>
           <div className={styles.row}>
             <div className="flex gap-4 items-center">
-              <span className={styles.rowName}>{formatMessage({ id: 'active' })}</span>
+              <span className={styles.rowName}>
+                {formatMessage({ id: 'active' })}
+              </span>
               {!isMobile && (
                 <div className="flex flex-row gap-2">
                   <PopoverButton type="deposit" />
@@ -76,7 +86,9 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
         <div>
           <div className={styles.row}>
             <div className="flex flex-row gap-4 items-center">
-              <span className={styles.rowName}>{formatMessage({ id: 'staked' })}</span>
+              <span className={styles.rowName}>
+                {formatMessage({ id: 'staked' })}
+              </span>
               {!isMobile && <PopoverButton type="view" />}
             </div>
             <div className={styles.value}>

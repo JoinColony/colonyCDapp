@@ -2,7 +2,10 @@ import React, { useMemo } from 'react';
 
 import { User } from '~types';
 import { VoterRecord } from '~gql';
-import { calculateLastSliceIndex, calculateRemainingItems } from '~utils/avatars';
+import {
+  calculateLastSliceIndex,
+  calculateRemainingItems,
+} from '~utils/avatars';
 import { useAppContext } from '~hooks';
 import UserAvatar from '~shared/UserAvatar';
 
@@ -15,7 +18,8 @@ interface VoterAvatarsProps {
   maxAvatars: number;
 }
 
-const displayName = 'common.ColonyActions.DefaultMotion.FinalizeMotion.VoteResults.VoterAvatars';
+const displayName =
+  'common.ColonyActions.DefaultMotion.FinalizeMotion.VoteResults.VoterAvatars';
 
 const VoterAvatars = ({ voters, maxAvatars }: VoterAvatarsProps) => {
   const remainingAvatarsCount = calculateRemainingItems(maxAvatars, voters);
@@ -43,7 +47,10 @@ const VoterAvatars = ({ voters, maxAvatars }: VoterAvatarsProps) => {
       <ul className={styles.voterAvatars}>
         {registeredVoters.map((registeredVoter: User) => {
           return (
-            <li className={styles.voterAvatar} key={registeredVoter.walletAddress}>
+            <li
+              className={styles.voterAvatar}
+              key={registeredVoter.walletAddress}
+            >
               <UserAvatar size="xs" user={registeredVoter} />
             </li>
           );

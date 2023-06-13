@@ -10,13 +10,24 @@ import Icon from '~shared/Icon';
 
 const displayName = 'Extensions.Fields.RadioBase';
 
-const RadioBase: FC<RadioBaseProps> = ({ item, isError, register, onChange, name }) => {
-  const { disabled, label, description, value, badge, tooltip } = item as RadioItemProps;
+const RadioBase: FC<RadioBaseProps> = ({
+  item,
+  isError,
+  register,
+  onChange,
+  name,
+}) => {
+  const { disabled, label, description, value, badge, tooltip } =
+    item as RadioItemProps;
 
   const { formatMessage } = useIntl();
 
-  const labelText = typeof label == 'string' ? label : label && formatMessage(label);
-  const descriptionText = typeof description == 'string' ? description : description && formatMessage(description);
+  const labelText =
+    typeof label == 'string' ? label : label && formatMessage(label);
+  const descriptionText =
+    typeof description == 'string'
+      ? description
+      : description && formatMessage(description);
 
   return (
     <div className="relative w-full">
@@ -61,7 +72,9 @@ const RadioBase: FC<RadioBaseProps> = ({ item, isError, register, onChange, name
                 </div>
               )}
             </div>
-            {descriptionText && <span className={styles.description}>{descriptionText}</span>}
+            {descriptionText && (
+              <span className={styles.description}>{descriptionText}</span>
+            )}
           </div>
           {badge && (
             <div className="flex flex-shrink-0">

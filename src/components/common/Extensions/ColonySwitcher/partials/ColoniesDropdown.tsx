@@ -6,18 +6,26 @@ import ColonyAvatar from '~shared/ColonyAvatar';
 import { ColoniesDropdownProps } from '../types';
 import { useSelectedColony } from '../hooks';
 
-const displayName = 'common.Extensions.ColonySwitcher.partials.ColoniesDropdown';
+const displayName =
+  'common.Extensions.ColonySwitcher.partials.ColoniesDropdown';
 
-const ColoniesDropdown: FC<ColoniesDropdownProps> = ({ watchlist = [], isMobile }) => {
-  const { colonyToDisplay, colonyToDisplayAddress } = useSelectedColony(watchlist);
+const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
+  watchlist = [],
+  isMobile,
+}) => {
+  const { colonyToDisplay, colonyToDisplayAddress } =
+    useSelectedColony(watchlist);
 
-  const groupByCategory = (watchlist as WatchListItem[]).reduce((group, item) => {
-    const network = (item && item.colony.chainMetadata?.network) || '';
-    // eslint-disable-next-line no-param-reassign
-    group[network] = group[network] ?? [];
-    group[network].push(item);
-    return group;
-  }, {});
+  const groupByCategory = (watchlist as WatchListItem[]).reduce(
+    (group, item) => {
+      const network = (item && item.colony.chainMetadata?.network) || '';
+      // eslint-disable-next-line no-param-reassign
+      group[network] = group[network] ?? [];
+      group[network].push(item);
+      return group;
+    },
+    {},
+  );
 
   return (
     <div className="w-full bg-base-white z-50 relative flex flex-col">
@@ -40,7 +48,9 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({ watchlist = [], isMobile 
       )}
       {Object.keys(groupByCategory).map((key) => (
         <div className="mt-5" key={key}>
-          <div className="uppercase text-gray-400 text-xs font-medium pl-6 sm:pl-0">{key}</div>
+          <div className="uppercase text-gray-400 text-xs font-medium pl-6 sm:pl-0">
+            {key}
+          </div>
           {groupByCategory[key].map((item) => (
             <ColonyItem
               colony={item?.colony as Colony}

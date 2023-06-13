@@ -24,13 +24,22 @@ const NavMobile: FC<NavItemMobileProps> = ({ item, isOpen, toggleItem }) => {
           })}
         </a>
       ) : (
-        <button type="button" className={clsx(styles.navLink, { 'text-blue-400': isOpen })} onClick={toggleItem}>
+        <button
+          type="button"
+          className={clsx(styles.navLink, { 'text-blue-400': isOpen })}
+          onClick={toggleItem}
+        >
           {formatMessage({
             id: `mainNavItem.${item.label}`,
             defaultMessage: `${item.label}`,
           })}
           {item.subMenu && (
-            <span className={clsx('flex ml-2.5 transition-transform duration-normal', { 'rotate-180': isOpen })}>
+            <span
+              className={clsx(
+                'flex ml-2.5 transition-transform duration-normal',
+                { 'rotate-180': isOpen },
+              )}
+            >
               <Icon name="caret-down" appearance={{ size: 'extraTiny' }} />
             </span>
           )}

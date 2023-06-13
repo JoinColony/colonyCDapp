@@ -5,7 +5,9 @@ import { PopperOptions } from 'react-popper-tooltip';
 
 import InputLabel from '~shared/Fields/InputLabel';
 import { Tooltip } from '~shared/Popover';
-import asFieldArray, { AsFieldArrayEnhancedProps } from '~shared/Fields/asFieldArray';
+import asFieldArray, {
+  AsFieldArrayEnhancedProps,
+} from '~shared/Fields/asFieldArray';
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
@@ -117,7 +119,11 @@ const Checkbox = ({
   return (
     <label className={classNames} htmlFor={elementOnly ? inputId : undefined}>
       {disabled && tooltipText ? (
-        <Tooltip content={tooltipText} placement="bottom" popperOptions={tooltipPopperOptions}>
+        <Tooltip
+          content={tooltipText}
+          placement="bottom"
+          popperOptions={tooltipPopperOptions}
+        >
           <div>{checkboxInputContent}</div>
         </Tooltip>
       ) : (

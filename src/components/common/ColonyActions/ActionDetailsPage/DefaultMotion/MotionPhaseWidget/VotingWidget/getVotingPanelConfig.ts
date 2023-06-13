@@ -1,7 +1,11 @@
 import { CustomRadioProps } from '~shared/Fields';
 import { MotionVote } from '~utils/colonyMotions';
 
-const getIcon = (inputDisabled: boolean, vote: MotionVote, checkedValue?: MotionVote) => {
+const getIcon = (
+  inputDisabled: boolean,
+  vote: MotionVote,
+  checkedValue?: MotionVote,
+) => {
   const direction = vote === MotionVote.Nay ? 'down' : 'up';
   const icon = `circle-thumbs-${direction}`;
   if (inputDisabled) {

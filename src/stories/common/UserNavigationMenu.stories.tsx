@@ -33,29 +33,30 @@ const UserNavigationMenuNotConnected = () => {
   const [isWalletButtonVisible, setIsWalletButtonVisible] = useState(true);
 
   const popperTooltipOffset = !isMobile ? [0, 8] : [0, 0];
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } = usePopperTooltip(
-    {
-      delayShow: 200,
-      placement: 'bottom-start',
-      trigger: 'click',
-      interactive: true,
-      onVisibleChange: (newVisible) => {
-        if (!newVisible && isMobile) {
-          setIsButtonVisible(true);
-        }
-      },
-    },
-    {
-      modifiers: [
-        {
-          name: 'offset',
-          options: {
-            offset: popperTooltipOffset,
-          },
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    usePopperTooltip(
+      {
+        delayShow: 200,
+        placement: 'bottom-start',
+        trigger: 'click',
+        interactive: true,
+        onVisibleChange: (newVisible) => {
+          if (!newVisible && isMobile) {
+            setIsButtonVisible(true);
+          }
         },
-      ],
-    },
-  );
+      },
+      {
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: popperTooltipOffset,
+            },
+          },
+        ],
+      },
+    );
   const {
     getTooltipProps: getWalletTooltipProps,
     setTooltipRef: setWalletTooltipRef,
@@ -96,21 +97,31 @@ const UserNavigationMenuNotConnected = () => {
               mode="quinary"
               isFullRounded
               setTriggerRef={setWalletTriggerRef}
-              onClick={() => isMobile && setIsWalletButtonVisible((prevState) => !prevState)}
+              onClick={() =>
+                isMobile && setIsWalletButtonVisible((prevState) => !prevState)
+              }
               className={clsx('md:border-gray-200 md:hover:border-blue-400', {
                 'px-4 py-2.5 border-base-white': isWalletVisible && isMobile,
                 'p-0': !isWalletVisible && isMobile,
               })}
             >
-              <Icon name={isWalletVisible && isMobile ? 'close' : 'cardholder'} appearance={{ size: 'tiny' }} />
+              <Icon
+                name={isWalletVisible && isMobile ? 'close' : 'cardholder'}
+                appearance={{ size: 'tiny' }}
+              />
               {isWalletButtonVisible && (
-                <p className="text-sm font-medium ml-1">{formatMessage({ id: 'connectWallet' })}</p>
+                <p className="text-sm font-medium ml-1">
+                  {formatMessage({ id: 'connectWallet' })}
+                </p>
               )}
             </Button>
           )}
           {isWalletVisible && (
             <div className="w-full h-auto absolute top-[6.5rem] md:top-[2.3rem]">
-              <WalletPopover setTooltipRef={setWalletTooltipRef} tooltipProps={getWalletTooltipProps} />
+              <WalletPopover
+                setTooltipRef={setWalletTooltipRef}
+                tooltipProps={getWalletTooltipProps}
+              />
             </div>
           )}
           <div>
@@ -123,9 +134,14 @@ const UserNavigationMenuNotConnected = () => {
                 mode="quinary"
                 isFullRounded
                 setTriggerRef={setTriggerRef}
-                onClick={() => isMobile && setIsButtonVisible((prevState) => !prevState)}
+                onClick={() =>
+                  isMobile && setIsButtonVisible((prevState) => !prevState)
+                }
               >
-                <Icon name={visible && isMobile ? 'close' : 'list'} appearance={{ size: 'tiny' }} />
+                <Icon
+                  name={visible && isMobile ? 'close' : 'list'}
+                  appearance={{ size: 'tiny' }}
+                />
               </Button>
             )}
             <div className="w-full h-auto top-[6.5rem] md:top-[2.3rem]">
@@ -148,24 +164,25 @@ const UserNavigationMenuConnected = () => {
   const isMobile = useMobile();
 
   const popperTooltipOffset = !isMobile ? [0, 8] : [0, 0];
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } = usePopperTooltip(
-    {
-      delayShow: 200,
-      placement: 'bottom-start',
-      trigger: 'click',
-      interactive: true,
-    },
-    {
-      modifiers: [
-        {
-          name: 'offset',
-          options: {
-            offset: popperTooltipOffset,
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    usePopperTooltip(
+      {
+        delayShow: 200,
+        placement: 'bottom-start',
+        trigger: 'click',
+        interactive: true,
+      },
+      {
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: popperTooltipOffset,
+            },
           },
-        },
-      ],
-    },
-  );
+        ],
+      },
+    );
 
   const isWalletConnected = true;
   const [isButtonVisible, setIsButtonVisible] = useState(true);
@@ -180,7 +197,10 @@ const UserNavigationMenuConnected = () => {
               <Button mode="tertiaryOutline" isFullRounded>
                 <div className="flex items-center gap-3">
                   <UserAvatar userName="panda" size="xxs" />
-                  <MemberReputation userReputation={mockUserReputation} totalReputation={mockTotalReputation} />
+                  <MemberReputation
+                    userReputation={mockUserReputation}
+                    totalReputation={mockTotalReputation}
+                  />
                 </div>
               </Button>
             </div>
@@ -194,9 +214,14 @@ const UserNavigationMenuConnected = () => {
               mode="quinary"
               isFullRounded
               setTriggerRef={setTriggerRef}
-              onClick={() => isMobile && setIsButtonVisible((prevState) => !prevState)}
+              onClick={() =>
+                isMobile && setIsButtonVisible((prevState) => !prevState)
+              }
             >
-              <Icon name={visible && isMobile ? 'close' : 'list'} appearance={{ size: 'tiny' }} />
+              <Icon
+                name={visible && isMobile ? 'close' : 'list'}
+                appearance={{ size: 'tiny' }}
+              />
             </Button>
             <div className="w-full h-auto top-[6.5rem] md:top-[2.3rem]">
               {visible && (

@@ -7,7 +7,9 @@ export interface WhitelistedUser {
   user?: User;
 }
 
-const getWhitelistedAddressesQueryFilter = (whitelistedAddresses: Address[]): ModelUserFilterInput => {
+const getWhitelistedAddressesQueryFilter = (
+  whitelistedAddresses: Address[],
+): ModelUserFilterInput => {
   if (whitelistedAddresses.length === 1) {
     return {
       id: {
@@ -21,7 +23,9 @@ const getWhitelistedAddressesQueryFilter = (whitelistedAddresses: Address[]): Mo
   };
 };
 
-export const useWhitelistedUsers = (whitelistedAddresses: Address[]): WhitelistedUser[] => {
+export const useWhitelistedUsers = (
+  whitelistedAddresses: Address[],
+): WhitelistedUser[] => {
   const { data } = useGetUsersQuery({
     variables: {
       filter: getWhitelistedAddressesQueryFilter(whitelistedAddresses),
@@ -47,7 +51,10 @@ export const useWhitelistedUsers = (whitelistedAddresses: Address[]): Whiteliste
   return whitelistedUsers;
 };
 
-export const getFilteredUsers = (users: WhitelistedUser[], filterTerm: string) => {
+export const getFilteredUsers = (
+  users: WhitelistedUser[],
+  filterTerm: string,
+) => {
   return users.filter((user) => {
     return (
       user.address.toLowerCase().includes(filterTerm) ||

@@ -3,7 +3,12 @@ import { defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
+import {
+  ActionDialogProps,
+  DialogControls,
+  DialogHeading,
+  DialogSection,
+} from '~shared/Dialog';
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
 import {
   useActionDialogStatus,
@@ -52,12 +57,28 @@ interface Props extends ActionDialogProps {
   isForce: boolean;
 }
 
-const MintTokenDialogForm = ({ colony, back, enabledExtensionData, isForce, handleIsForceChange }: Props) => {
+const MintTokenDialogForm = ({
+  colony,
+  back,
+  enabledExtensionData,
+  isForce,
+  handleIsForceChange,
+}: Props) => {
   const { watch } = useFormContext();
   const forceAction = watch('forceAction');
 
-  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion, canOnlyForceAction } =
-    useActionDialogStatus(colony, requiredRoles, [Id.RootDomain], enabledExtensionData);
+  const {
+    userHasPermission,
+    disabledInput,
+    disabledSubmit,
+    canCreateMotion,
+    canOnlyForceAction,
+  } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
   // @TODO: Integrate those checks into another hook that uses useActionDialogStatus internally, when the data is made available.
   // const { wallet } = useAppContext();
   // const allUserRoles = useTransformer(getAllUserRoles, [
@@ -71,7 +92,9 @@ const MintTokenDialogForm = ({ colony, back, enabledExtensionData, isForce, hand
     () => ({
       numeral: true,
       numeralPositiveOnly: true,
-      numeralDecimalScale: getTokenDecimalsWithFallback(colony?.nativeToken?.decimals),
+      numeralDecimalScale: getTokenDecimalsWithFallback(
+        colony?.nativeToken?.decimals,
+      ),
     }),
     [colony],
   );
@@ -89,7 +112,9 @@ const MintTokenDialogForm = ({ colony, back, enabledExtensionData, isForce, hand
           title={MSG.title}
           colony={colony}
           userHasPermission={userHasPermission}
-          isVotingExtensionEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
           isRootMotion
         />
       </DialogSection>
@@ -109,14 +134,21 @@ const MintTokenDialogForm = ({ colony, back, enabledExtensionData, isForce, hand
               disabled={disabledInput}
             />
           </div>
-          <span className={styles.nativeToken} title={colony?.nativeToken?.name || undefined}>
+          <span
+            className={styles.nativeToken}
+            title={colony?.nativeToken?.name || undefined}
+          >
             {colony?.nativeToken?.symbol}
           </span>
         </div>
       </DialogSection>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <div className={styles.annotation}>
-          <Annotations label={MSG.annotationLabel} name="annotation" disabled={disabledInput} />
+          <Annotations
+            label={MSG.annotationLabel}
+            name="annotation"
+            disabled={disabledInput}
+          />
         </div>
       </DialogSection>
       {!userHasPermission && (
@@ -139,7 +171,9 @@ const MintTokenDialogForm = ({ colony, back, enabledExtensionData, isForce, hand
           onSecondaryButtonClick={back}
           disabled={disabledSubmit}
           dataTest="mintConfirmButton"
-          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>

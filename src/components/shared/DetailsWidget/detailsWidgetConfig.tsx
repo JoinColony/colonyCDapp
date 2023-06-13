@@ -5,7 +5,12 @@ import { Id } from '@colony/colony-js';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import Numeral from '~shared/Numeral';
 import TransactionLink from '~shared/TransactionLink';
-import { Colony, ColonyAction, ColonyActionType, UniversalMessageValues } from '~types';
+import {
+  Colony,
+  ColonyAction,
+  ColonyActionType,
+  UniversalMessageValues,
+} from '~types';
 import {
   getExtendedActionType,
   normalizeRolesForAction,
@@ -123,9 +128,17 @@ const getDetailItemsMap = (
 
   const normalizedRoles = roles ? normalizeRolesForAction(roles) : [];
 
-  const isSmiteAction = type.includes(ColonyActionType.EmitDomainReputationPenalty);
-  const extendedActionType = getExtendedActionType(actionData, isMotion ? pendingColonyMetadata : colony.metadata);
-  const motionDomain = findDomainByNativeId(Number(motionData?.nativeMotionDomainId ?? Id.RootDomain), colony);
+  const isSmiteAction = type.includes(
+    ColonyActionType.EmitDomainReputationPenalty,
+  );
+  const extendedActionType = getExtendedActionType(
+    actionData,
+    isMotion ? pendingColonyMetadata : colony.metadata,
+  );
+  const motionDomain = findDomainByNativeId(
+    Number(motionData?.nativeMotionDomainId ?? Id.RootDomain),
+    colony,
+  );
   const domainMetadata = fromDomain?.metadata || pendingDomainMetadata;
 
   return {
@@ -137,7 +150,9 @@ const getDetailItemsMap = (
     [ActionPageDetails.FromDomain]: {
       label: MSG.fromDomain,
       labelValues: undefined,
-      item: fromDomain?.metadata && <TeamDetail domainMetadata={fromDomain.metadata} />,
+      item: fromDomain?.metadata && (
+        <TeamDetail domainMetadata={fromDomain.metadata} />
+      ),
     },
     [ActionPageDetails.Domain]: {
       label: MSG.domain,
@@ -147,7 +162,9 @@ const getDetailItemsMap = (
     [ActionPageDetails.ToDomain]: {
       label: MSG.toRecipient,
       labelValues: undefined,
-      item: toDomain?.metadata && <TeamDetail domainMetadata={toDomain.metadata} />,
+      item: toDomain?.metadata && (
+        <TeamDetail domainMetadata={toDomain.metadata} />
+      ),
     },
     [ActionPageDetails.ToRecipient]: {
       label: MSG.toRecipient,
@@ -159,7 +176,12 @@ const getDetailItemsMap = (
       labelValues: undefined,
       item: amount && (
         <AmountDetail
-          amount={<Numeral value={amount} decimals={token?.decimals ?? DEFAULT_TOKEN_DECIMALS} />}
+          amount={
+            <Numeral
+              value={amount}
+              decimals={token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
+            />
+          }
           symbol={token?.symbol}
           token={token}
         />
@@ -174,7 +196,10 @@ const getDetailItemsMap = (
       label: MSG.reputationChange,
       labelValues: { isSmiteAction },
       item: amount && (
-        <ReputationChangeDetail reputationChange={amount} decimals={token?.decimals ?? DEFAULT_TOKEN_DECIMALS} />
+        <ReputationChangeDetail
+          reputationChange={amount}
+          decimals={token?.decimals ?? DEFAULT_TOKEN_DECIMALS}
+        />
       ),
     },
     [ActionPageDetails.Permissions]: {
@@ -185,7 +210,9 @@ const getDetailItemsMap = (
     [ActionPageDetails.Description]: {
       label: MSG.domainDescription,
       labelValues: undefined,
-      item: domainMetadata?.description && <DomainDescriptionDetail description={domainMetadata.description} />,
+      item: domainMetadata?.description && (
+        <DomainDescriptionDetail description={domainMetadata.description} />
+      ),
     },
     [ActionPageDetails.Name]: {
       label: MSG.colonyName,
@@ -195,7 +222,9 @@ const getDetailItemsMap = (
     [ActionPageDetails.Motion]: {
       label: MSG.motionDomain,
       labelValues: undefined,
-      item: motionDomain?.metadata && <TeamDetail domainMetadata={motionDomain.metadata} />,
+      item: motionDomain?.metadata && (
+        <TeamDetail domainMetadata={motionDomain.metadata} />
+      ),
     },
     [ActionPageDetails.Generic]: {
       label: MSG.transactionHash,
@@ -212,7 +241,10 @@ const getDetailItemsMap = (
   };
 };
 
-const getDetailItems = (actionData: ColonyAction, colony: Colony): DetailItemConfig[] => {
+const getDetailItems = (
+  actionData: ColonyAction,
+  colony: Colony,
+): DetailItemConfig[] => {
   const detailItemsMap = getDetailItemsMap(colony, actionData);
   const detailItemKeys = getDetailItemsKeys(actionData.type);
 

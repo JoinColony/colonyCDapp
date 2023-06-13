@@ -6,7 +6,8 @@ import TokenIcon from '~shared/TokenIcon';
 
 import styles from './VoteRewardItem.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget.VoteReward';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget.VoteReward';
 
 interface VoteRewardItemProps {
   minReward?: string;
@@ -20,7 +21,13 @@ const VoteRewardItem = ({ minReward, maxReward }: VoteRewardItemProps) => {
   const showRewardRange = minReward !== maxReward;
   return (
     <>
-      {nativeToken && <TokenIcon className={styles.tokenIcon} token={nativeToken} size="xxs" />}
+      {nativeToken && (
+        <TokenIcon
+          className={styles.tokenIcon}
+          token={nativeToken}
+          size="xxs"
+        />
+      )}
       {minReward && (
         <Numeral
           value={minReward}

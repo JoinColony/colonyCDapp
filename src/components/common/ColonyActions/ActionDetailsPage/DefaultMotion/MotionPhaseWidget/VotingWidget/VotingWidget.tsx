@@ -14,11 +14,17 @@ import { MotionAction } from '~types/motions';
 
 import { PollingControls } from '../MotionPhaseWidget';
 
-import { VoteDetails, VotingPanel, useVotingWidgetUpdate, VotingWidgetHeading } from '.';
+import {
+  VoteDetails,
+  VotingPanel,
+  useVotingWidgetUpdate,
+  VotingWidgetHeading,
+} from '.';
 
 import styles from './VotingWidget.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget';
 
 const MSG = defineMessages({
   voteHidden: {
@@ -55,7 +61,10 @@ const VotingWidget = ({
 }: VotingWidgetProps) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { hasUserVoted, setHasUserVoted } = useVotingWidgetUpdate(voterRecord, stopPollingAction);
+  const { hasUserVoted, setHasUserVoted } = useVotingWidgetUpdate(
+    voterRecord,
+    stopPollingAction,
+  );
 
   const transform = mapPayload(
     ({ vote }) =>
@@ -90,9 +99,16 @@ const VotingWidget = ({
         onSuccess={handleSuccess}
       >
         <div className={styles.main}>
-          <VotingWidgetHeading actionData={actionData} pendingColonyMetadata={pendingColonyMetadata} />
+          <VotingWidgetHeading
+            actionData={actionData}
+            pendingColonyMetadata={pendingColonyMetadata}
+          />
           <VotingPanel motionDomainId={Number(nativeMotionDomainId)} />
-          <VoteDetails motionData={motionData} motionState={motionState} hasUserVoted={hasUserVoted} />
+          <VoteDetails
+            motionData={motionData}
+            motionState={motionState}
+            hasUserVoted={hasUserVoted}
+          />
         </div>
       </ActionForm>
     </div>

@@ -2,7 +2,10 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { ColonyAndExtensionsEvents } from '~types';
-import { useGetMotionEventTitleValues, TransactionMeta } from '~common/ColonyActions';
+import {
+  useGetMotionEventTitleValues,
+  TransactionMeta,
+} from '~common/ColonyActions';
 
 import EventData from '../EventData';
 
@@ -10,7 +13,10 @@ import { MotionDetailsPageEventProps } from './MotionDetailsPageEvent';
 
 const displayName = 'common.ColonyActions.ActionDetailsPage.MotionEventData';
 
-type MotionEventDataProps = Pick<MotionDetailsPageEventProps, 'actionData' | 'eventName' | 'motionMessageData'>;
+type MotionEventDataProps = Pick<
+  MotionDetailsPageEventProps,
+  'actionData' | 'eventName' | 'motionMessageData'
+>;
 
 const MotionEventData = ({
   actionData: { createdAt, transactionHash },
@@ -18,17 +24,29 @@ const MotionEventData = ({
   motionMessageData,
   eventName,
 }: MotionEventDataProps) => {
-  const messageId = eventName in ColonyAndExtensionsEvents ? 'event.title' : 'systemMessage.title';
+  const messageId =
+    eventName in ColonyAndExtensionsEvents
+      ? 'event.title'
+      : 'systemMessage.title';
 
   return (
     <EventData
       text={
         <FormattedMessage
           id={messageId}
-          values={useGetMotionEventTitleValues(eventName, motionMessageData, actionData)}
+          values={useGetMotionEventTitleValues(
+            eventName,
+            motionMessageData,
+            actionData,
+          )}
         />
       }
-      details={<TransactionMeta transactionHash={transactionHash} createdAt={createdAt} />}
+      details={
+        <TransactionMeta
+          transactionHash={transactionHash}
+          createdAt={createdAt}
+        />
+      }
     />
   );
 };

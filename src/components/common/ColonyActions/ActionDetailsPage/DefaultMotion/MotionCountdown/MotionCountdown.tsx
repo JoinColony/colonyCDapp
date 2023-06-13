@@ -3,7 +3,10 @@ import classNames from 'classnames';
 import { Id } from '@colony/colony-js';
 
 import CountDownTimer from '~common/ColonyActions/CountDownTimer';
-import { MotionState, useShouldDisplayMotionCountdownTime } from '~utils/colonyMotions';
+import {
+  MotionState,
+  useShouldDisplayMotionCountdownTime,
+} from '~utils/colonyMotions';
 import { ColonyMotion } from '~types';
 import { useAppContext } from '~hooks';
 
@@ -29,11 +32,14 @@ const MotionCountdown = ({
 }: MotionCountdownProps) => {
   const { user } = useAppContext();
 
-  const showMotionCountdownTimer = useShouldDisplayMotionCountdownTime(motionState);
+  const showMotionCountdownTimer =
+    useShouldDisplayMotionCountdownTime(motionState);
 
   const showVotingProgress = motionState === MotionState.Voting;
   const showEscalateButton =
-    !!user && motionState === MotionState.Escalation && Number(nativeMotionDomainId) !== Id.RootDomain;
+    !!user &&
+    motionState === MotionState.Escalation &&
+    Number(nativeMotionDomainId) !== Id.RootDomain;
 
   return (
     <div

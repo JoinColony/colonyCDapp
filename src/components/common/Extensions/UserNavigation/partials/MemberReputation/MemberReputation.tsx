@@ -6,10 +6,18 @@ import { MemberReputationProps } from './types';
 import { ZeroValue, calculatePercentageReputation } from '~utils/reputation';
 import Numeral from '~shared/Numeral';
 
-export const displayName = 'common.Extensions.UserNavigation.partials.MemberReputation';
+export const displayName =
+  'common.Extensions.UserNavigation.partials.MemberReputation';
 
-const MemberReputation: FC<MemberReputationProps> = ({ userReputation, totalReputation, hideOnMobile = true }) => {
-  const percentageReputation = calculatePercentageReputation(userReputation, totalReputation);
+const MemberReputation: FC<MemberReputationProps> = ({
+  userReputation,
+  totalReputation,
+  hideOnMobile = true,
+}) => {
+  const percentageReputation = calculatePercentageReputation(
+    userReputation,
+    totalReputation,
+  );
 
   return (
     <div
@@ -22,9 +30,10 @@ const MemberReputation: FC<MemberReputationProps> = ({ userReputation, totalRepu
       <p className="text-sm font-inter font-medium ml-1">
         {!percentageReputation && '— %'}
         {percentageReputation === ZeroValue.NearZero && percentageReputation}
-        {percentageReputation && percentageReputation !== ZeroValue.NearZero && (
-          <Numeral value={percentageReputation} suffix="%" />
-        )}
+        {percentageReputation &&
+          percentageReputation !== ZeroValue.NearZero && (
+            <Numeral value={percentageReputation} suffix="%" />
+          )}
       </p>
     </div>
   );

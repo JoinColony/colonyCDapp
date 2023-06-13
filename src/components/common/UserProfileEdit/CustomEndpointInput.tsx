@@ -15,7 +15,11 @@ interface CustomEndpointInputProps {
   toggleName: string;
 }
 
-const CustomEndpointInput = ({ inputName, label, toggleName }: CustomEndpointInputProps) => {
+const CustomEndpointInput = ({
+  inputName,
+  label,
+  toggleName,
+}: CustomEndpointInputProps) => {
   const { watch } = useFormContext();
 
   const toggleOn: boolean = watch(toggleName);

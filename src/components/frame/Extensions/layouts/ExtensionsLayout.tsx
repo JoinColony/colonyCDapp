@@ -35,7 +35,10 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
   const { colony } = useColonyContext();
   const { colonyContractVersion } = useColonyContractVersion();
   const { user, wallet } = useAppContext();
-  const allUserRoles = useTransformer(getAllUserRoles, [colony as ColonyFragment, wallet?.address || '']);
+  const allUserRoles = useTransformer(getAllUserRoles, [
+    colony as ColonyFragment,
+    wallet?.address || '',
+  ]);
   const openUpgradeColonyDialog = useDialog(NetworkContractUpgradeDialog);
   const enabledExtensionData = useEnabledExtensions();
   const { isDarkMode } = usePageThemeContext();

@@ -18,7 +18,9 @@ const TitledContent: FC<PropsWithChildren<TitledContentProps>> = ({
   return (
     <div className={className}>
       {isTitleHiddenOnDesktop && isMobile && (
-        <h4 className="uppercase text-xs text-gray-400 font-medium font-inter mb-2">{formatMessage(title)}</h4>
+        <h4 className="uppercase text-xs text-gray-400 font-medium font-inter mb-2">
+          {formatMessage(title)}
+        </h4>
       )}
       {children}
     </div>

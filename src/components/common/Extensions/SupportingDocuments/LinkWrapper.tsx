@@ -25,7 +25,11 @@ const LinkWrapper: FC<LinkWrapperProps> = ({ isDoubleLinkVisible }) => {
             title={{ id: 'file-text' }}
             className="group-hover:[&>svg]:fill-blue-400 w-3 h-3"
           />
-          <Link key={item.url} to={item.url} className="font-normal text-sm text-gray-600 hover:text-blue-400 ml-2">
+          <Link
+            key={item.url}
+            to={item.url}
+            className="font-normal text-sm text-gray-600 hover:text-blue-400 ml-2"
+          >
             {formatMessage({ id: item.text })}
           </Link>
         </div>

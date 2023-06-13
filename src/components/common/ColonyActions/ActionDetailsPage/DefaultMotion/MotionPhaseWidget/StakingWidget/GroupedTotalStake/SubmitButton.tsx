@@ -6,7 +6,8 @@ import Button from '~shared/Button';
 
 import styles from './SubmitButton.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPAge.DefaultMotion.StakingWidget.GroupedTotalStake.SubmitButton';
+const displayName =
+  'common.ColonyActions.ActionDetailsPAge.DefaultMotion.StakingWidget.GroupedTotalStake.SubmitButton';
 
 const SubmitButton = () => {
   const { user } = useAppContext();

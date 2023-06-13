@@ -5,7 +5,11 @@ import { AccordionProps } from './types';
 
 const displayName = 'Extensions.Accordion';
 
-const Accordion: FC<AccordionProps> = ({ items, openIndex, onOpenIndexChange }) => {
+const Accordion: FC<AccordionProps> = ({
+  items,
+  openIndex,
+  onOpenIndexChange,
+}) => {
   const onClick = (index: number) => {
     if (!onOpenIndexChange) return;
 
@@ -21,7 +25,12 @@ const Accordion: FC<AccordionProps> = ({ items, openIndex, onOpenIndexChange }) 
   return (
     <div className="bg-base-white">
       {items?.map((item, index) => (
-        <AccordionItem {...item} key={item.id} isOpen={openIndex === index} onClick={() => onClick(index)} />
+        <AccordionItem
+          {...item}
+          key={item.id}
+          isOpen={openIndex === index}
+          onClick={() => onClick(index)}
+        />
       ))}
     </div>
   );

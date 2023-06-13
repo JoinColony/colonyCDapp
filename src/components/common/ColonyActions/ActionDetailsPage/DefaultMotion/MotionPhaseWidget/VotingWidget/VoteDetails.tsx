@@ -7,7 +7,8 @@ import { ColonyMotion } from '~types';
 import { useVoteDetailsConfig } from './useVoteDetailsConfig';
 import styles from './VoteDetails.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget.VoteDetails';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingWidget.VoteDetails';
 
 export interface VoteDetailsProps {
   motionState: MotionState;

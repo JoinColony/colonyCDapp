@@ -8,7 +8,10 @@ import Icon from '~shared/Icon';
 
 const displayName = 'Extensions.LearnMore';
 
-const LearnMore: FC<PropsWithChildren<LearnMoreProps>> = ({ message, href }) => {
+const LearnMore: FC<PropsWithChildren<LearnMoreProps>> = ({
+  message,
+  href,
+}) => {
   const { id, defaultMessage } = message;
 
   return (

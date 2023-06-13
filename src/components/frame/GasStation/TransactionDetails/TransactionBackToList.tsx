@@ -20,7 +20,11 @@ interface Props {
 
 const TransactionBackToList = ({ onClose }: Props) => (
   <button type="button" className={styles.returnToSummary} onClick={onClose}>
-    <Icon appearance={{ size: 'normal' }} name="caret-left" title={MSG.returnToSummary} />
+    <Icon
+      appearance={{ size: 'normal' }}
+      name="caret-left"
+      title={MSG.returnToSummary}
+    />
     <FormattedMessage {...MSG.returnToSummary} />
   </button>
 );

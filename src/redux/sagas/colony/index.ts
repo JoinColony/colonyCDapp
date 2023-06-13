@@ -9,7 +9,10 @@ import { createTransaction, getTxChannel } from '../transactions';
 
 export { default as colonyCreateSaga } from './colonyCreate';
 
-function* colonyClaimToken({ payload: { colonyAddress, tokenAddress }, meta }: Action<ActionTypes.CLAIM_TOKEN>) {
+function* colonyClaimToken({
+  payload: { colonyAddress, tokenAddress },
+  meta,
+}: Action<ActionTypes.CLAIM_TOKEN>) {
   let txChannel;
   try {
     txChannel = yield call(getTxChannel, meta.id);
@@ -20,7 +23,10 @@ function* colonyClaimToken({ payload: { colonyAddress, tokenAddress }, meta }: A
       params: [tokenAddress],
     });
 
-    const { payload } = yield takeFrom(txChannel, ActionTypes.TRANSACTION_SUCCEEDED);
+    const { payload } = yield takeFrom(
+      txChannel,
+      ActionTypes.TRANSACTION_SUCCEEDED,
+    );
 
     yield put<AllActions>({
       type: ActionTypes.CLAIM_TOKEN_SUCCESS,

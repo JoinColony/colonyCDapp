@@ -7,7 +7,11 @@ import Decimal from 'decimal.js';
 import { getMainClasses } from '~utils/css';
 
 import numbroLanguage from './numbroLanguage';
-import { adjustConvertedValue, convertToDecimalOrNull, getFormattedNumeralValue } from './helpers';
+import {
+  adjustConvertedValue,
+  convertToDecimalOrNull,
+  getFormattedNumeralValue,
+} from './helpers';
 
 import styles from './Numeral.css';
 
@@ -35,7 +39,15 @@ export interface Props extends HTMLAttributes<HTMLSpanElement> {
   decimals?: number;
 }
 
-const Numeral = ({ value, decimals, prefix, suffix, className, appearance, ...rest }: Props) => {
+const Numeral = ({
+  value,
+  decimals,
+  prefix,
+  suffix,
+  className,
+  appearance,
+  ...rest
+}: Props) => {
   let convertedValue = convertToDecimalOrNull(value);
   if (convertedValue && decimals) {
     convertedValue = adjustConvertedValue(convertedValue, decimals);
@@ -43,7 +55,10 @@ const Numeral = ({ value, decimals, prefix, suffix, className, appearance, ...re
 
   const formattedValue = getFormattedNumeralValue(convertedValue, value);
   return (
-    <span className={classNames(getMainClasses(appearance, styles), className)} {...rest}>
+    <span
+      className={classNames(getMainClasses(appearance, styles), className)}
+      {...rest}
+    >
       {prefix && `${prefix} `}
       {formattedValue}
       {suffix && ` ${suffix}`}

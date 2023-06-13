@@ -36,7 +36,10 @@ const AccordionContent: FC<AccordionItemProps> = ({ content }) => (
 
         {item?.accordionItem &&
           item?.accordionItem.map((accordionItem) => (
-            <AccordionContentItem key={accordionItem.id} accordionItem={accordionItem} />
+            <AccordionContentItem
+              key={accordionItem.id}
+              accordionItem={accordionItem}
+            />
           ))}
       </div>
     ))}

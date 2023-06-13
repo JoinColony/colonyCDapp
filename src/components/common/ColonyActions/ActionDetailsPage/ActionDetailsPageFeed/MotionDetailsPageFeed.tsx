@@ -1,11 +1,16 @@
 import React from 'react';
 
-import { ColonyAction, ColonyAndExtensionsEvents, SystemMessages } from '~types';
+import {
+  ColonyAction,
+  ColonyAndExtensionsEvents,
+  SystemMessages,
+} from '~types';
 import { notNull } from '~utils/arrays';
 
 import MotionDetailsPageEvent from './MotionDetailsPageEvent/MotionDetailsPageEvent';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.MotionDetailsPageFeed';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.MotionDetailsPageFeed';
 
 interface MotionDetailsPageFeedProps {
   actionData: ColonyAction;
@@ -19,7 +24,10 @@ const MotionDetailsPageFeed = ({ actionData }: MotionDetailsPageFeedProps) => {
         <MotionDetailsPageEvent
           actionData={actionData}
           motionMessageData={message}
-          eventName={ColonyAndExtensionsEvents[message.name] ?? SystemMessages[message.name]}
+          eventName={
+            ColonyAndExtensionsEvents[message.name] ??
+            SystemMessages[message.name]
+          }
           key={message.messageKey}
         />
       ))}

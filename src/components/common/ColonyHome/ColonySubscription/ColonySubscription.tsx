@@ -36,7 +36,10 @@ const ColonySubscription = () => {
     <div className={styles.main}>
       <div className={canInteractWithColony ? styles.colonySubscribed : ''}>
         {colony?.colonyAddress && (
-          <InvisibleCopyableAddress address={colony?.colonyAddress} copyMessage={MSG.copyMessage}>
+          <InvisibleCopyableAddress
+            address={colony?.colonyAddress}
+            copyMessage={MSG.copyMessage}
+          >
             <div className={styles.colonyAddress}>
               <MaskedAddress address={colony?.colonyAddress} />
             </div>

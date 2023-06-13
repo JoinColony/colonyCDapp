@@ -75,16 +75,20 @@ const FileUpload = ({
   const accept = acceptProp || DEFAULT_MIME_TYPES;
 
   const onDropAccepted = (acceptedFiles: File[]) => {
-    const acceptedFilesCount = files.filter((file) => !isRejectedFile(file)).length;
+    const acceptedFilesCount = files.filter(
+      (file) => !isRejectedFile(file),
+    ).length;
     const newFiles = acceptedFiles.slice(0, maxFilesLimit - acceptedFilesCount);
     newFiles.forEach((acceptedFile) => append({ file: acceptedFile }));
   };
 
   const onDropRejected = (rejectedFiles: FileRejection[]) => {
-    rejectedFiles.slice(0, maxFilesLimit - files.length).forEach((rejectedFile) => {
-      append(rejectedFile);
-      setError(name, { message: 'uploadRejected' });
-    });
+    rejectedFiles
+      .slice(0, maxFilesLimit - files.length)
+      .forEach((rejectedFile) => {
+        append(rejectedFile);
+        setError(name, { message: 'uploadRejected' });
+      });
   };
 
   const dropzoneState = useDropzone({
@@ -97,7 +101,8 @@ const FileUpload = ({
     ...dropzoneOptions,
   });
 
-  const { getRootProps, getInputProps, isDragAccept, isDragReject, open } = dropzoneState;
+  const { getRootProps, getInputProps, isDragAccept, isDragReject, open } =
+    dropzoneState;
 
   const renderExtraChildren = () => {
     if (!children) return null;
@@ -108,7 +113,10 @@ const FileUpload = ({
   };
 
   const getDropzoneClassName = () => {
-    const classes = [classNames.dropzone, ...(disabled ? [classNames.disabled] : [])];
+    const classes = [
+      classNames.dropzone,
+      ...(disabled ? [classNames.disabled] : []),
+    ];
     if (isDragAccept) {
       classes.push(classNames.dropzoneAccept);
     } else if (isDragReject) {
@@ -135,7 +143,11 @@ const FileUpload = ({
           extra={extra}
         />
       )}
-      <div className={dropzoneClassName} {...getRootProps()} data-test={dataTest}>
+      <div
+        className={dropzoneClassName}
+        {...getRootProps()}
+        data-test={dataTest}
+      >
         <input {...getInputProps()} />
         {maxFileLimitNotMet && renderPlaceholder}
         {files.length > 0 && (

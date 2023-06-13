@@ -14,13 +14,16 @@ import { VoteDetailsProps, VoteButton, VoteRewardItem } from '.';
 const { formatMessage } = intl({
   'label.votingMethod': 'Voting method',
   'value.votingMethod': 'Reputation-weighted',
-  'tooltip.votingMethod': 'Votes are weighted by reputation in the team in which the vote is happening.',
+  'tooltip.votingMethod':
+    'Votes are weighted by reputation in the team in which the vote is happening.',
   'label.reputationTeam': 'Reputation in team',
-  'tooltip.reputationTeam': 'This is the % of the reputation you have in this team.',
+  'tooltip.reputationTeam':
+    'This is the % of the reputation you have in this team.',
   'label.reward': 'Reward',
   'tooltip.reward': `This is the range of values between which your reward for voting will be, subject to the number of people that participate in the vote.`,
   'label.rules': 'Rules',
-  'tooltip.rules': 'Votes are secret and must be revealed at the end of the voting period to count.',
+  'tooltip.rules':
+    'Votes are secret and must be revealed at the end of the voting period to count.',
 });
 
 interface VoteDetailsConfig extends DetailItemProps {
@@ -55,7 +58,11 @@ export const useVoteDetailsConfig = ({
     fetchPolicy: 'cache-and-network',
   });
 
-  const { max: maxReward, min: minReward, reward: voterReward } = data?.getVoterRewards || {};
+  const {
+    max: maxReward,
+    min: minReward,
+    reward: voterReward,
+  } = data?.getVoterRewards || {};
   const hasReputationToVote = BigNumber.from(userReputation ?? 0).gt(0);
 
   const config = [
@@ -69,9 +76,15 @@ export const useVoteDetailsConfig = ({
       tooltipText: formatMessage({ id: 'tooltip.rules' }),
       item:
         motionState === MotionState.Voting ? (
-          <VoteButton hasReputationToVote={hasReputationToVote} hasUserVoted={hasUserVoted} />
+          <VoteButton
+            hasReputationToVote={hasReputationToVote}
+            hasUserVoted={hasUserVoted}
+          />
         ) : (
-          <RevealButton hasUserVoted={hasUserVoted} userVoteRevealed={userVoteRevealed} />
+          <RevealButton
+            hasUserVoted={hasUserVoted}
+            userVoteRevealed={userVoteRevealed}
+          />
         ),
     },
   ];
@@ -83,7 +96,12 @@ export const useVoteDetailsConfig = ({
       {
         label: formatMessage({ id: 'label.reputationTeam' }),
         tooltipText: formatMessage({ id: 'tooltip.reputationTeam' }),
-        item: <MemberReputation userReputation={userReputation} totalReputation={totalReputation} />,
+        item: (
+          <MemberReputation
+            userReputation={userReputation}
+            totalReputation={totalReputation}
+          />
+        ),
       },
       {
         label: formatMessage({ id: 'label.reward' }),

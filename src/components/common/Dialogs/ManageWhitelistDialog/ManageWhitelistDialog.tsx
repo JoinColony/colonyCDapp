@@ -8,7 +8,11 @@ import { ActionHookForm as Form } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-import { mergeSchemas, validationSchemaFile, validationSchemaInput } from '~utils/whitelistValidation';
+import {
+  mergeSchemas,
+  validationSchemaFile,
+  validationSchemaInput,
+} from '~utils/whitelistValidation';
 
 import ManageWhitelistDialogForm from './ManageWhitelistDialogForm';
 import { getManageWhitelistDialogPayload, TABS } from './helpers';
@@ -55,20 +59,27 @@ const ManageWhitelistDialog = ({
   };
 
   const transform = pipe(
-    mapPayload((payload) => getManageWhitelistDialogPayload(colony, tabIndex, payload)),
+    mapPayload((payload) =>
+      getManageWhitelistDialogPayload(colony, tabIndex, payload),
+    ),
     withMeta({ navigate }),
   );
 
   const addressesValidationSchema = useMemo(() => {
     if (tabIndex === TABS.WHITELISTED) {
       return object({
-        whitelistedAddresses: array().of(string().address().defined()).defined(),
+        whitelistedAddresses: array()
+          .of(string().address().defined())
+          .defined(),
       }).defined();
     }
     return showInput ? validationSchemaInput : validationSchemaFile;
   }, [tabIndex, showInput]);
 
-  const mergedSchemas = mergeSchemas(validationSchema, addressesValidationSchema);
+  const mergedSchemas = mergeSchemas(
+    validationSchema,
+    addressesValidationSchema,
+  );
 
   type FormValues = InferType<typeof mergedSchemas>;
 

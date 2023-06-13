@@ -11,21 +11,30 @@ import { ActionButtonProps } from './types';
 const displayName = 'frame.Extensions.pages.partials.ActionButtons';
 
 const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
-  const { handleInstallClick, handleUpdateVersionClick, isUpgradeButtonDisabled } =
-    useExtensionDetailsPage(extensionData);
+  const {
+    handleInstallClick,
+    handleUpdateVersionClick,
+    isUpgradeButtonDisabled,
+  } = useExtensionDetailsPage(extensionData);
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
 
-  const isSupportedColonyVersion = colony?.version ?? MIN_SUPPORTED_COLONY_VERSION <= 0;
+  const isSupportedColonyVersion =
+    colony?.version ?? MIN_SUPPORTED_COLONY_VERSION <= 0;
 
   const isInstallButtonVisible =
     // @ts-ignore
-    !isInstalledExtensionData(extensionData) && extensionData.uninstallable && !extensionData.isDeprecated;
+    !isInstalledExtensionData(extensionData) &&
+    extensionData.uninstallable &&
+    !extensionData.isDeprecated;
 
   const isUpgradeButtonVisible = useMemo(() => {
     if (extensionData && isInstalledExtensionData(extensionData)) {
-      return extensionData && extensionData.currentVersion < extensionData.availableVersion;
+      return (
+        extensionData &&
+        extensionData.currentVersion < extensionData.availableVersion
+      );
     }
     return false;
   }, [extensionData]);

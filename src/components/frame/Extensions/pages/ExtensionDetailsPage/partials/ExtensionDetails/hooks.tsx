@@ -76,7 +76,9 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
           <Toast
             type="success"
             title={{ id: 'extensionDetailsPage.uninstallSuccessTitle' }}
-            description={{ id: 'extensionDetailsPage.uninstallSuccessDescription' }}
+            description={{
+              id: 'extensionDetailsPage.uninstallSuccessDescription',
+            }}
           />,
         ),
       );

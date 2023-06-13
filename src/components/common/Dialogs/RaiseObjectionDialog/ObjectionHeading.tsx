@@ -25,19 +25,28 @@ const MSG = defineMessages({
 });
 
 const objectionDescriptionMessageValues = {
-  a: (chunks) => <ExternalLink href={MD_OBJECTIONS_HELP}>{chunks}</ExternalLink>,
+  a: (chunks) => (
+    <ExternalLink href={MD_OBJECTIONS_HELP}>{chunks}</ExternalLink>
+  ),
 };
 
 const ObjectionDescription = () => (
   <div className={styles.descriptionText}>
-    <FormattedMessage {...MSG.objectionDescription} values={objectionDescriptionMessageValues} />
+    <FormattedMessage
+      {...MSG.objectionDescription}
+      values={objectionDescriptionMessageValues}
+    />
   </div>
 );
 
 const ObjectionHeading = () => (
   <>
     <DialogSection appearance={{ theme: 'heading' }}>
-      <Heading3 appearance={{ margin: 'none' }} text={MSG.title} className={styles.title} />
+      <Heading3
+        appearance={{ margin: 'none' }}
+        text={MSG.title}
+        className={styles.title}
+      />
     </DialogSection>
     <DialogSection appearance={{ theme: 'sidePadding', border: 'bottom' }}>
       <ObjectionDescription />

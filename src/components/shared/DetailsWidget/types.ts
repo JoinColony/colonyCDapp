@@ -1,4 +1,8 @@
-import { AnyActionType, ColonyActionType, ExtendedColonyActionType } from '~types';
+import {
+  AnyActionType,
+  ColonyActionType,
+  ExtendedColonyActionType,
+} from '~types';
 
 /*
  * Which icons correspond to which action types in the details widget

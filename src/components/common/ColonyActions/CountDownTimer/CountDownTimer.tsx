@@ -39,11 +39,26 @@ interface Props {
   motionStakes: MotionStakes;
 }
 
-const CountDownTimer = ({ motionState, motionId, refetchMotionState, motionStakes }: Props) => {
-  const { countdown, loadingCountdown } = useMotionCountdown(motionState, motionId, refetchMotionState, motionStakes);
+const CountDownTimer = ({
+  motionState,
+  motionId,
+  refetchMotionState,
+  motionStakes,
+}: Props) => {
+  const { countdown, loadingCountdown } = useMotionCountdown(
+    motionState,
+    motionId,
+    refetchMotionState,
+    motionStakes,
+  );
 
   if (loadingCountdown) {
-    return <MiniSpinnerLoader loadingText={MSG.loadingText} className={styles.loader} />;
+    return (
+      <MiniSpinnerLoader
+        loadingText={MSG.loadingText}
+        className={styles.loader}
+      />
+    );
   }
 
   return (

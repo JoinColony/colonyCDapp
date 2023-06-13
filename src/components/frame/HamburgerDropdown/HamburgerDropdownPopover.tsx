@@ -2,8 +2,18 @@ import React from 'react';
 // import { defineMessages } from 'react-intl';
 
 import DropdownMenu from '~shared/DropdownMenu';
-import { ColonySection, CreateColonySection, HelperSection, MetaSection, UserSection } from '~shared/PopoverSection';
-import { useAppContext, useColonyContext, useCanInteractWithNetwork } from '~hooks';
+import {
+  ColonySection,
+  CreateColonySection,
+  HelperSection,
+  MetaSection,
+  UserSection,
+} from '~shared/PopoverSection';
+import {
+  useAppContext,
+  useColonyContext,
+  useCanInteractWithNetwork,
+} from '~hooks';
 
 import styles from './HamburgerDropdownPopover.css';
 

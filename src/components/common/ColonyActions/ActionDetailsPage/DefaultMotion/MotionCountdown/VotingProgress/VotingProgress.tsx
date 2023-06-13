@@ -12,7 +12,8 @@ import { useExtensionData } from '~hooks';
 
 import styles from './VotingProgress.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingProgress';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.VotingProgress';
 
 const MSG = defineMessages({
   or: {
@@ -48,12 +49,18 @@ interface VotingProgressProps {
   motionData: ColonyMotion;
 }
 
-const VotingProgress = ({ motionData: { repSubmitted, skillRep } }: VotingProgressProps) => {
+const VotingProgress = ({
+  motionData: { repSubmitted, skillRep },
+}: VotingProgressProps) => {
   const { extensionData } = useExtensionData(Extension.VotingReputation);
 
-  const maxVoteFraction = (extensionData as InstalledExtensionData)?.params?.votingReputation?.maxVoteFraction;
+  const maxVoteFraction = (extensionData as InstalledExtensionData)?.params
+    ?.votingReputation?.maxVoteFraction;
 
-  const currentReputationPercent = BigNumber.from(repSubmitted).mul(100).div(skillRep).toNumber();
+  const currentReputationPercent = BigNumber.from(repSubmitted)
+    .mul(100)
+    .div(skillRep)
+    .toNumber();
 
   const thresoldPercent = BigNumber.from(maxVoteFraction ?? '0')
     .mul(100)

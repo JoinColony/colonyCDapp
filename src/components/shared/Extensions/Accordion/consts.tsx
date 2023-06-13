@@ -28,11 +28,16 @@ export const accordionMocksContent = [
         accordionItem: [
           {
             id: 'step-0-0',
-            header: <ContentTypeAccordionHeader>Example scenario</ContentTypeAccordionHeader>,
+            header: (
+              <ContentTypeAccordionHeader>
+                Example scenario
+              </ContentTypeAccordionHeader>
+            ),
             content: (
               <ContentTypeAccordionContent>
-                If a team has 100 reputation points between them, and the Required Stake is 5%, then 5 tokens would need
-                to be staked to either support or object to a motion.
+                If a team has 100 reputation points between them, and the
+                Required Stake is 5%, then 5 tokens would need to be staked to
+                either support or object to a motion.
               </ContentTypeAccordionContent>
             ),
           },
@@ -56,18 +61,42 @@ export const accordionMocksContent = [
         accordionItem: [
           {
             id: 'step-1-0',
-            header: <ContentTypeAccordionHeader>Example scenario 1</ContentTypeAccordionHeader>,
-            content: <ContentTypeAccordionContent>content 1</ContentTypeAccordionContent>,
+            header: (
+              <ContentTypeAccordionHeader>
+                Example scenario 1
+              </ContentTypeAccordionHeader>
+            ),
+            content: (
+              <ContentTypeAccordionContent>
+                content 1
+              </ContentTypeAccordionContent>
+            ),
           },
           {
             id: 'step-1-1',
-            header: <ContentTypeAccordionHeader>Example scenario 2</ContentTypeAccordionHeader>,
-            content: <ContentTypeAccordionContent>content 2</ContentTypeAccordionContent>,
+            header: (
+              <ContentTypeAccordionHeader>
+                Example scenario 2
+              </ContentTypeAccordionHeader>
+            ),
+            content: (
+              <ContentTypeAccordionContent>
+                content 2
+              </ContentTypeAccordionContent>
+            ),
           },
           {
             id: 'step-1-2',
-            header: <ContentTypeAccordionHeader>Example scenario 3</ContentTypeAccordionHeader>,
-            content: <ContentTypeAccordionContent>content 3</ContentTypeAccordionContent>,
+            header: (
+              <ContentTypeAccordionHeader>
+                Example scenario 3
+              </ContentTypeAccordionHeader>
+            ),
+            content: (
+              <ContentTypeAccordionContent>
+                content 3
+              </ContentTypeAccordionContent>
+            ),
           },
         ],
       },

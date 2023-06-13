@@ -2,7 +2,12 @@ import React, { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { ColonyVersion, Extension, ExtensionVersion, isExtensionCompatible } from '@colony/colony-js';
+import {
+  ColonyVersion,
+  Extension,
+  ExtensionVersion,
+  isExtensionCompatible,
+} from '@colony/colony-js';
 import { useAsyncFunction, useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { AnyExtensionData } from '~types';
@@ -11,7 +16,8 @@ import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 import Toast from '~shared/Extensions/Toast';
 
 export const useGetExtensionsViews = async () => {
-  const colonyMetrics = 'https://api.thegraph.com/subgraphs/name/arrenv/colony-metrics-subgraph';
+  const colonyMetrics =
+    'https://api.thegraph.com/subgraphs/name/arrenv/colony-metrics-subgraph';
   const metricsRes = fetch(colonyMetrics, {
     method: 'POST',
     headers: {
@@ -71,7 +77,8 @@ export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
     transform,
   });
 
-  const isSupportedColonyVersion = (colony?.version as ColonyVersion) >= MIN_SUPPORTED_COLONY_VERSION;
+  const isSupportedColonyVersion =
+    (colony?.version as ColonyVersion) >= MIN_SUPPORTED_COLONY_VERSION;
 
   const extensionCompatible = isExtensionCompatible(
     Extension[extensionData.extensionId],
@@ -79,13 +86,18 @@ export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
     colony?.version as ColonyVersion,
   );
 
-  const isUpgradeButtonDisabled = !isSupportedColonyVersion || !extensionCompatible;
+  const isUpgradeButtonDisabled =
+    !isSupportedColonyVersion || !extensionCompatible;
 
   const navigateToExtensionSettingsPage = useCallback(() => {
     if (extensionData?.extensionId === Extension.VotingReputation) {
-      navigate(`/colony/${colony?.name}/extensions/${extensionData?.extensionId}/setup`);
+      navigate(
+        `/colony/${colony?.name}/extensions/${extensionData?.extensionId}/setup`,
+      );
     } else {
-      navigate(`/colony/${colony?.name}/extensions/${extensionData?.extensionId}`);
+      navigate(
+        `/colony/${colony?.name}/extensions/${extensionData?.extensionId}`,
+      );
     }
   }, [navigate, colony?.name, extensionData?.extensionId]);
 

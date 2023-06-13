@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import UserAvatarPopover from '~shared/Extensions/UserAvatarPopover';
-import { colonyReputationItems, permissionsItems } from '~shared/Extensions/UserAvatarPopover/partials/consts';
+import {
+  colonyReputationItems,
+  permissionsItems,
+} from '~shared/Extensions/UserAvatarPopover/partials/consts';
 
 const meta: Meta<typeof UserAvatarPopover> = {
   title: 'Shared/User Avatar Popover',

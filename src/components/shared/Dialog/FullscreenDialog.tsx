@@ -15,7 +15,12 @@ interface Props {
   isDismissable?: boolean;
 }
 
-const FullscreenDialog = ({ children, cancel, isDismissable = true, ...props }: Props) => (
+const FullscreenDialog = ({
+  children,
+  cancel,
+  isDismissable = true,
+  ...props
+}: Props) => (
   <Modal
     {...props}
     className={styles.modal}
@@ -26,7 +31,11 @@ const FullscreenDialog = ({ children, cancel, isDismissable = true, ...props }: 
   >
     {isDismissable && (
       <div className={styles.dialogOuterActions}>
-        <button type="button" className={styles.closeIconButton} onClick={cancel}>
+        <button
+          type="button"
+          className={styles.closeIconButton}
+          onClick={cancel}
+        >
           <Icon name="circle-close" title={{ id: 'button.cancel' }} />
         </button>
       </div>

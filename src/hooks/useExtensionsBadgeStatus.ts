@@ -9,7 +9,8 @@ export const useExtensionsBadge = (extensionData) => {
   const [status, setStatus] = useState<ExtensionStatusBadgeMode>();
   const [badgeMessage, setBadgeMessage] = useState<string>('');
 
-  const isExtensionInstalled = extensionData && isInstalledExtensionData(extensionData);
+  const isExtensionInstalled =
+    extensionData && isInstalledExtensionData(extensionData);
 
   useMemo(() => {
     if (!isExtensionInstalled) {
