@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import Tooltip from '~shared/Extensions/Tooltip';
 import styles from '../SpecificSidePanel.module.css';
@@ -17,18 +18,18 @@ const ContractAddress: FC<PanelTypeProps> = ({ title, description }) => {
   return (
     <div className={styles.panelRow}>
       <div className={styles.panelTitle}>{title}</div>
-      {description && (
-        <Tooltip
-          interactive
-          isSuccess={isCopied}
-          tooltipContent={
-            <span>
-              <a href={description}>
-                {formatMessage({ id: isCopied ? 'copied' : 'copy.address' })}
-              </a>
-            </span>
-          }
-        >
+      <Tooltip
+        interactive
+        isSuccess={isCopied}
+        tooltipContent={
+          <span>
+            <a href={description}>
+              {formatMessage({ id: isCopied ? 'copied' : 'copy.address' })}
+            </a>
+          </span>
+        }
+      >
+        {description && (
           <button
             type="button"
             aria-label={formatMessage({ id: 'copy.address' })}
@@ -37,8 +38,8 @@ const ContractAddress: FC<PanelTypeProps> = ({ title, description }) => {
           >
             {splitWalletAddress(description)}
           </button>
-        </Tooltip>
-      )}
+        )}
+      </Tooltip>
     </div>
   );
 };

@@ -31,7 +31,7 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
     <div className="w-full bg-base-white z-50 relative flex flex-col">
       {!isMobile && (
         <>
-          <div className="flex items-center py-2">
+          <div className="flex items-center pb-4">
             <div className="flex mr-2">
               <ColonyAvatar
                 colony={colonyToDisplay as Colony}
