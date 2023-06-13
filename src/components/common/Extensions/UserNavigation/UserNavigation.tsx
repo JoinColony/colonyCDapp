@@ -3,20 +3,14 @@ import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import clsx from 'clsx';
 
-import {
-  useAppContext,
-  useColonyContext,
-  useMobile,
-  useUserReputation,
-} from '~hooks';
+import { useAppContext, useColonyContext, useMobile } from '~hooks';
 import Button from '~shared/Extensions/Button';
-import UserAvatar from '~shared/Extensions/UserAvatar';
-import MemberReputation from './partials/MemberReputation';
 import Icon from '~shared/Icon';
 import Token from './partials/Token';
 import UserMenu from './partials/UserMenu';
 import { getLastWallet } from '~utils/autoLogin';
 import WalletPopover from './partials/WalletPopover/WalletPopover';
+import UserReputation from './partials/UserReputation/UserReputation';
 
 export const displayName = 'common.Extensions.UserNavigation';
 
@@ -25,7 +19,6 @@ const UserNavigation: FC = () => {
   const { wallet, user, connectWallet } = useAppContext();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const { profile } = user || {};
   const [isButtonVisible, setIsButtonVisible] = useState(true);
   const [isWalletButtonVisible, setIsWalletButtonVisible] = useState(true);
 
@@ -54,6 +47,7 @@ const UserNavigation: FC = () => {
         ],
       },
     );
+
   const {
     getTooltipProps: getWalletTooltipProps,
     setTooltipRef: setWalletTooltipRef,
@@ -84,11 +78,7 @@ const UserNavigation: FC = () => {
   );
 
   const isWalletConnected = !!wallet?.address;
-  const { colonyAddress, nativeToken } = colony || {};
-  const { userReputation, totalReputation } = useUserReputation(
-    colonyAddress,
-    wallet?.address,
-  );
+  const { nativeToken } = colony || {};
 
   useLayoutEffect(() => {
     if (!wallet && connectWallet && getLastWallet()) {
@@ -101,19 +91,7 @@ const UserNavigation: FC = () => {
       {isWalletConnected && isButtonVisible && (
         <>
           {nativeToken && <Token nativeToken={nativeToken} />}
-          <Button mode="tertiaryOutline" isFullRounded>
-            <div className="flex items-center gap-3">
-              <UserAvatar
-                user={user}
-                userName={profile?.displayName || user?.name || ''}
-                size="xxs"
-              />
-              <MemberReputation
-                userReputation={userReputation}
-                totalReputation={totalReputation}
-              />
-            </div>
-          </Button>
+          <UserReputation />
         </>
       )}
       {isButtonVisible && !isWalletConnected && (

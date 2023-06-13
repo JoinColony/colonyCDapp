@@ -77,16 +77,19 @@ const UserReputation: FC = () => {
           />
         </div>
       </Button>
-      <PopoverBase
-        setTooltipRef={setTooltipRef}
-        tooltipProps={getTooltipProps}
-        classNames={clsx({
-          'w-full border-none shadow-none': isMobile,
-          'w-[20.125rem]': !isMobile,
-        })}
-      >
-        <div ref={setTooltipRef}>{visible && <UserHub />}</div>
-      </PopoverBase>
+      {visible && (
+        <PopoverBase
+          setTooltipRef={setTooltipRef}
+          tooltipProps={getTooltipProps}
+          classNames={clsx({
+            'w-full border-none shadow-none': isMobile,
+          })}
+        >
+          <div className="p-4 md:p-0" ref={setTooltipRef}>
+            <UserHub />
+          </div>
+        </PopoverBase>
+      )}
     </>
   );
 };
