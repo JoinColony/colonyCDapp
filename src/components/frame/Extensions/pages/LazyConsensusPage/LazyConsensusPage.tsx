@@ -10,6 +10,7 @@ import Navigation from '~common/Extensions/Navigation/Navigation';
 import Spinner from '~shared/Extensions/Spinner';
 import ThreeColumns from '~frame/Extensions/ThreeColumns/ThreeColumns';
 import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails/ExtensionDetails';
+import TopRow from '../partials/TopRow';
 
 const LazyConsensusPage: FC = () => {
   const { formatMessage } = useIntl();
@@ -44,6 +45,7 @@ const LazyConsensusPage: FC = () => {
         <ThreeColumns
           leftAside={<Navigation />}
           rightAside={<ExtensionDetails extensionData={extensionData} />}
+          topRow={<TopRow extensionData={extensionData} />}
         >
           <div className="w-full">
             {extensionData.descriptionShort && (
