@@ -23,6 +23,7 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
     // @ts-ignore
     !isInstalledExtensionData(extensionData) &&
     extensionData.uninstallable &&
+    // @ts-ignore
     !extensionData.isDeprecated;
 
   return (
