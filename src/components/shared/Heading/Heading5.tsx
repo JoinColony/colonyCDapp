@@ -9,7 +9,10 @@ export interface Heading5Props extends Omit<HeadingProps, 'appearance'> {
 }
 
 const Heading5 = ({ appearance, ...props }: Heading5Props) => (
-  <Heading appearance={{ size: 'small', weight: 'bold', ...appearance }} {...props} />
+  <Heading
+    appearance={{ size: 'small', weight: 'bold', ...appearance }}
+    {...props}
+  />
 );
 
 Heading5.displayName = displayName;

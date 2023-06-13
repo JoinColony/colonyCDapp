@@ -2,10 +2,15 @@ import { useEffect, useState } from 'react';
 import { VoterRecord } from '~gql';
 import { useAppContext } from '~hooks';
 
-export const useVotingWidgetUpdate = (voterRecord: VoterRecord[], stopPollingAction: () => void) => {
+export const useVotingWidgetUpdate = (
+  voterRecord: VoterRecord[],
+  stopPollingAction: () => void,
+) => {
   const { user } = useAppContext();
 
-  const currentVotingRecord = voterRecord.find(({ address }) => address === user?.walletAddress);
+  const currentVotingRecord = voterRecord.find(
+    ({ address }) => address === user?.walletAddress,
+  );
 
   const [prevRecord, setPrevRecord] = useState(currentVotingRecord);
   const [hasUserVoted, setHasUserVoted] = useState(!!currentVotingRecord);

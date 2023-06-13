@@ -11,7 +11,8 @@ import { EscalateMotionPayload } from '~redux/sagas/motions/escalateMotion';
 
 import styles from './EscalateButton.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.EscalateButton';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.EscalateButton';
 
 const MSG = defineMessages({
   escalate: {

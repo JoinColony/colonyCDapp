@@ -89,7 +89,8 @@ const GroupedTransactionCard = ({
     dispatch(transactionCancel(id));
   }, [dispatch, id]);
 
-  const [isShowingCancelConfirmation, setIsShowingCancelConfirmation] = useState(false);
+  const [isShowingCancelConfirmation, setIsShowingCancelConfirmation] =
+    useState(false);
 
   const toggleCancelConfirmation = useCallback(() => {
     setIsShowingCancelConfirmation(!isShowingCancelConfirmation);
@@ -161,9 +162,9 @@ const GroupedTransactionCard = ({
   const hasDependency = ready && !selected;
 
   const defaultTransactionMessageDescriptorId = {
-    id: `${metatransaction ? 'meta' : ''}transaction.${context ? `${context}.` : ''}${methodName}.${
-      methodContext ? `${methodContext}.` : ''
-    }title`,
+    id: `${metatransaction ? 'meta' : ''}transaction.${
+      context ? `${context}.` : ''
+    }${methodName}.${methodContext ? `${methodContext}.` : ''}title`,
   };
 
   return (
@@ -204,16 +205,28 @@ const GroupedTransactionCard = ({
         <>
           {isShowingCancelConfirmation ? (
             <>
-              <button type="button" className={styles.confirmationButton} onClick={handleCancel}>
+              <button
+                type="button"
+                className={styles.confirmationButton}
+                onClick={handleCancel}
+              >
                 <FormattedMessage {...{ id: 'button.yes' }} />
               </button>
               <span className={styles.cancelDecision}>/</span>
-              <button type="button" className={styles.confirmationButton} onClick={toggleCancelConfirmation}>
+              <button
+                type="button"
+                className={styles.confirmationButton}
+                onClick={toggleCancelConfirmation}
+              >
                 <FormattedMessage {...{ id: 'button.no' }} />
               </button>
             </>
           ) : (
-            <button type="button" className={styles.cancelButton} onClick={toggleCancelConfirmation}>
+            <button
+              type="button"
+              className={styles.cancelButton}
+              onClick={toggleCancelConfirmation}
+            >
               <FormattedMessage {...{ id: 'button.cancel' }} />
             </button>
           )}

@@ -12,10 +12,14 @@ import { useGetInstalledByData } from './hooks';
 const displayName = 'common.Extensions.partials.InstalledBy';
 
 const InstalledBy: FC<PanelTypeProps> = ({ title, extensionData }) => {
-  const { user } = useUserByNameOrAddress((extensionData as InstalledExtensionData)?.installedBy);
+  const { user } = useUserByNameOrAddress(
+    (extensionData as InstalledExtensionData)?.installedBy,
+  );
   const { bio, displayName: userDisplayName } = user?.profile || {};
   const username = user?.name;
-  const installedByData = useGetInstalledByData(extensionData as AnyExtensionData);
+  const installedByData = useGetInstalledByData(
+    extensionData as AnyExtensionData,
+  );
   const { colonyReputationItems } = installedByData || {};
 
   // @TODO: display missing data from API

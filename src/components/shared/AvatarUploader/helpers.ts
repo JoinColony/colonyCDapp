@@ -5,7 +5,8 @@ const displayName = 'AvatarUploader';
 const MSG = defineMessages({
   fileCompressionError: {
     id: `${displayName}.fileCompressionError`,
-    defaultMessage: 'File could not be uploaded and may be corrupted. Try again with a different file.',
+    defaultMessage:
+      'File could not be uploaded and may be corrupted. Try again with a different file.',
   },
   fileSizeError: {
     id: `${displayName}.fileSizeError`,
@@ -13,7 +14,8 @@ const MSG = defineMessages({
   },
   fileTypeError: {
     id: `${displayName}.fileTypeError`,
-    defaultMessage: 'Unsupported file type. Accepted file types are: svg, jpg, png and webp',
+    defaultMessage:
+      'Unsupported file type. Accepted file types are: svg, jpg, png and webp',
   },
   customError: {
     id: `${displayName}.customError`,

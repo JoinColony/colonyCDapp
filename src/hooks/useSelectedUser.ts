@@ -10,7 +10,9 @@ const useSelectedUser = (colonyUsers: User[]) => {
     return firstSubscriber;
   }
 
-  return firstSubscriber?.walletAddress === user?.walletAddress ? secondSubscriber : firstSubscriber;
+  return firstSubscriber?.walletAddress === user?.walletAddress
+    ? secondSubscriber
+    : firstSubscriber;
 };
 
 export default useSelectedUser;

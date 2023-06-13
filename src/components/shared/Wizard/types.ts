@@ -19,13 +19,15 @@ interface SharedWizardProps<FormValues> {
   wizardValues: FormValues;
 }
 
-export interface WizardOuterProps<FormValues> extends SharedWizardProps<FormValues> {
+export interface WizardOuterProps<FormValues>
+  extends SharedWizardProps<FormValues> {
   children: JSX.Element;
   loggedInUser: AppContextValues['user'];
   hideQR?: boolean;
 }
 
-export interface WizardStepProps<FormValues, StepVals = Partial<FormValues>> extends SharedWizardProps<FormValues> {
+export interface WizardStepProps<FormValues, StepVals = Partial<FormValues>>
+  extends SharedWizardProps<FormValues> {
   setStepsValues: React.Dispatch<React.SetStateAction<StepsValues<FormValues>>>;
   wizardForm: {
     initialValues: StepVals;

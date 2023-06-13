@@ -3,11 +3,16 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { Tooltip } from '~shared/Popover';
 
-import { RequiredStakeMessage, RequiredStakeMessageProps, MinimumStakeMessage } from './StakingSliderMessages';
+import {
+  RequiredStakeMessage,
+  RequiredStakeMessageProps,
+  MinimumStakeMessage,
+} from './StakingSliderMessages';
 
 import styles from './StakingSliderLabel.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingSliderLabel';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingSliderLabel';
 
 const MSG = defineMessages({
   tooltip: {
@@ -33,7 +38,11 @@ interface StakingSliderLabelProps {
 }
 
 const StakingSliderLabel = ({
-  requiredStakeMessageProps: { userMinStake, nativeTokenDecimals, nativeTokenSymbol },
+  requiredStakeMessageProps: {
+    userMinStake,
+    nativeTokenDecimals,
+    nativeTokenSymbol,
+  },
   requiredStakeMessageProps,
   enoughTokensToStakeMinimum,
 }: StakingSliderLabelProps) => (
@@ -49,7 +58,11 @@ const StakingSliderLabel = ({
       popperOptions={tooltipOptions}
     >
       {!enoughTokensToStakeMinimum ? (
-        <MinimumStakeMessage userMinStake={userMinStake} decimals={nativeTokenDecimals} symbol={nativeTokenSymbol} />
+        <MinimumStakeMessage
+          userMinStake={userMinStake}
+          decimals={nativeTokenDecimals}
+          symbol={nativeTokenSymbol}
+        />
       ) : (
         <RequiredStakeMessage {...requiredStakeMessageProps} />
       )}

@@ -14,10 +14,16 @@ import { RevealWidget } from './RevealWidget';
 import { VoteOutcome } from './VoteOutcome';
 import { RefetchAction } from '../../useGetColonyAction';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.MotionPhaseWidget';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.MotionPhaseWidget';
 
-const isMotionClaimed = (stakerRewards: StakerRewards[], walletAddress: Address) => {
-  const userReward = stakerRewards.find(({ address }) => address === walletAddress);
+const isMotionClaimed = (
+  stakerRewards: StakerRewards[],
+  walletAddress: Address,
+) => {
+  const userReward = stakerRewards.find(
+    ({ address }) => address === walletAddress,
+  );
 
   return !!userReward?.isClaimed;
 };
@@ -33,7 +39,11 @@ interface MotionPhaseWidgetProps extends PollingControls {
   motionState: MotionState;
 }
 
-const MotionPhaseWidget = ({ actionData, motionState, ...rest }: MotionPhaseWidgetProps) => {
+const MotionPhaseWidget = ({
+  actionData,
+  motionState,
+  ...rest
+}: MotionPhaseWidgetProps) => {
   const { user } = useAppContext();
   const { refetchColony } = useColonyContext();
   const { motionData, type, amount, fromDomain, tokenAddress } = actionData;
@@ -58,7 +68,11 @@ const MotionPhaseWidget = ({ actionData, motionState, ...rest }: MotionPhaseWidg
               amount={amount}
               tokenAddress={tokenAddress}
               motionData={motionData}
-              requiresDomainFunds={!!fromDomain && !!amount && type !== ColonyActionType.MintTokensMotion}
+              requiresDomainFunds={
+                !!fromDomain &&
+                !!amount &&
+                type !== ColonyActionType.MintTokensMotion
+              }
               {...rest}
             />
             <VoteOutcome actionData={actionData} />
@@ -69,7 +83,10 @@ const MotionPhaseWidget = ({ actionData, motionState, ...rest }: MotionPhaseWidg
       /* Update colony object when motion gets finalized. */
       refetchColony();
 
-      const isClaimed = isMotionClaimed(motionData.stakerRewards, user?.walletAddress ?? '');
+      const isClaimed = isMotionClaimed(
+        motionData.stakerRewards,
+        user?.walletAddress ?? '',
+      );
 
       if (isClaimed) {
         stopPollingAction();
@@ -99,11 +116,23 @@ const MotionPhaseWidget = ({ actionData, motionState, ...rest }: MotionPhaseWidg
     }
 
     case MotionState.Voting: {
-      return <VotingWidget actionData={actionData} motionState={motionState} {...rest} />;
+      return (
+        <VotingWidget
+          actionData={actionData}
+          motionState={motionState}
+          {...rest}
+        />
+      );
     }
 
     case MotionState.Reveal: {
-      return <RevealWidget motionData={motionData} motionState={motionState} {...rest} />;
+      return (
+        <RevealWidget
+          motionData={motionData}
+          motionState={motionState}
+          {...rest}
+        />
+      );
     }
 
     default: {

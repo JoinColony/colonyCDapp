@@ -13,7 +13,11 @@ import {
 } from '~gql';
 import { getMetadataDatabaseId } from '~utils/domains';
 import { getColonyManager, putError, takeFrom } from '../utils';
-import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 import { getPendingModifiedTokenAddresses } from '../utils/updateColonyTokens';
 
 function* editColonyMotion({
@@ -33,23 +37,39 @@ function* editColonyMotion({
     const apolloClient = getContext(ContextModule.ApolloClient);
     const colonyManager = yield getColonyManager();
 
-    const colonyClient = yield colonyManager.getClient(ClientType.ColonyClient, colonyAddress);
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
 
-    const childSkillIndex = yield call(getChildIndex, colonyClient, Id.RootDomain, Id.RootDomain);
+    const childSkillIndex = yield call(
+      getChildIndex,
+      colonyClient,
+      Id.RootDomain,
+      Id.RootDomain,
+    );
 
-    const { skillId } = yield call([colonyClient, colonyClient.getDomain], Id.RootDomain);
+    const { skillId } = yield call(
+      [colonyClient, colonyClient.getDomain],
+      Id.RootDomain,
+    );
 
-    const { key, value, branchMask, siblings } = yield call(colonyClient.getReputation, skillId, ADDRESS_ZERO);
+    const { key, value, branchMask, siblings } = yield call(
+      colonyClient.getReputation,
+      skillId,
+      ADDRESS_ZERO,
+    );
 
     txChannel = yield call(getTxChannel, metaId);
 
     // setup batch ids and channels
     const batchKey = 'createMotion';
 
-    const { createMotion /* annotateEditColonyMotion */ } = yield createTransactionChannels(metaId, [
-      'createMotion',
-      // 'annotateEditColonyMotion',
-    ]);
+    const { createMotion /* annotateEditColonyMotion */ } =
+      yield createTransactionChannels(metaId, [
+        'createMotion',
+        // 'annotateEditColonyMotion',
+      ]);
 
     /*
      * Upload colony metadata to IPFS
@@ -88,14 +108,26 @@ function* editColonyMotion({
      * It will be replaced with the IPFS hash in due course.
      */
 
-    const encodedAction = colonyClient.interface.encodeFunctionData('editColony(string)', ['.']);
+    const encodedAction = colonyClient.interface.encodeFunctionData(
+      'editColony(string)',
+      ['.'],
+    );
 
     // create transaction
     yield fork(createTransaction, createMotion.id, {
       context: ClientType.VotingReputationClient,
       methodName: 'createMotion',
       identifier: colonyAddress,
-      params: [Id.RootDomain, childSkillIndex, ADDRESS_ZERO, encodedAction, key, value, branchMask, siblings],
+      params: [
+        Id.RootDomain,
+        childSkillIndex,
+        ADDRESS_ZERO,
+        encodedAction,
+        key,
+        value,
+        branchMask,
+        siblings,
+      ],
       group: {
         key: batchKey,
         id: metaId,
@@ -131,18 +163,30 @@ function* editColonyMotion({
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
+    } = yield takeFrom(
+      createMotion.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    const modifiedTokenAddresses = getPendingModifiedTokenAddresses(colony, tokenAddresses);
+    const modifiedTokenAddresses = getPendingModifiedTokenAddresses(
+      colony,
+      tokenAddresses,
+    );
 
-    const haveTokensChanged = !!(modifiedTokenAddresses.added.length || modifiedTokenAddresses.removed.length);
+    const haveTokensChanged = !!(
+      modifiedTokenAddresses.added.length ||
+      modifiedTokenAddresses.removed.length
+    );
 
     /*
      * Save the pending colony metadata in the database
      */
     if (colony.metadata) {
-      yield apolloClient.mutate<CreateColonyMetadataMutation, CreateColonyMetadataMutationVariables>({
+      yield apolloClient.mutate<
+        CreateColonyMetadataMutation,
+        CreateColonyMetadataMutationVariables
+      >({
         mutation: CreateColonyMetadataDocument,
         variables: {
           input: {
@@ -157,10 +201,13 @@ function* editColonyMotion({
             changelog: [
               {
                 transactionHash: txHash,
-                newDisplayName: colonyDisplayName ?? colony.metadata.displayName,
+                newDisplayName:
+                  colonyDisplayName ?? colony.metadata.displayName,
                 oldDisplayName: colony.metadata.displayName,
                 hasAvatarChanged:
-                  colonyAvatarImage === undefined ? false : colonyAvatarImage !== colony.metadata.avatar,
+                  colonyAvatarImage === undefined
+                    ? false
+                    : colonyAvatarImage !== colony.metadata.avatar,
                 hasWhitelistChanged: false,
                 haveTokensChanged,
               },

@@ -5,7 +5,10 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 
-import ColonySwitcher, { ColoniesDropdown, ColonyAvatarWrapper } from '~common/Extensions/ColonySwitcher';
+import ColonySwitcher, {
+  ColoniesDropdown,
+  ColonyAvatarWrapper,
+} from '~common/Extensions/ColonySwitcher';
 import { watchListMock } from '~common/Extensions/ColonySwitcher/consts';
 import { useSelectedColony } from '~common/Extensions/ColonySwitcher/hooks';
 import { useAppContext, useDetectClickOutside, useMobile } from '~hooks';
@@ -29,13 +32,16 @@ const ColonySwitcherWithHooks = () => {
   const apolloClient = getContext(ContextModule.ApolloClient);
   const [isOpen, setIsOpen] = useState<boolean>();
 
-  const { colonyToDisplay, colonyToDisplayAddress } = useSelectedColony(watchListMock);
+  const { colonyToDisplay, colonyToDisplayAddress } =
+    useSelectedColony(watchListMock);
   const isMobile = useMobile();
   const popperTooltipOffset = !isMobile ? [120, 8] : [0, 8];
 
   const sortByDate = (firstWatchEntry, secondWatchEntry) => {
     const firstWatchTime = new Date(firstWatchEntry?.createdAt || 1).getTime();
-    const secondWatchTime = new Date(secondWatchEntry?.createdAt || 1).getTime();
+    const secondWatchTime = new Date(
+      secondWatchEntry?.createdAt || 1,
+    ).getTime();
     return firstWatchTime - secondWatchTime;
   };
 
@@ -102,14 +108,22 @@ const ColonySwitcherWithHooks = () => {
                         })}
                       >
                         {!!watchListMock.length && !userLoading && (
-                          <ColoniesDropdown watchlist={[...watchListMock].sort(sortByDate)} />
+                          <ColoniesDropdown
+                            watchlist={[...watchListMock].sort(sortByDate)}
+                          />
                         )}
                       </div>
                     )}
                     {isMobile && (
-                      <ColonyDropdownMobile isOpen={isOpen} userLoading={userLoading}>
+                      <ColonyDropdownMobile
+                        isOpen={isOpen}
+                        userLoading={userLoading}
+                      >
                         {!!watchListMock.length && (
-                          <ColoniesDropdown watchlist={[...watchListMock].sort(sortByDate)} isMobile={isMobile} />
+                          <ColoniesDropdown
+                            watchlist={[...watchListMock].sort(sortByDate)}
+                            isMobile={isMobile}
+                          />
                         )}
                       </ColonyDropdownMobile>
                     )}

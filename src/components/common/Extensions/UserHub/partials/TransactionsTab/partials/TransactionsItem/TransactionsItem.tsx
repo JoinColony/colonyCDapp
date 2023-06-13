@@ -11,7 +11,8 @@ import { accordionAnimation } from '~constants/accordionAnimation';
 import TransactionsHeader from '../TransactionsHeader';
 import { TRANSACTION_STATUSES } from '~types';
 
-export const displayName = 'common.Extensions.UserHub.TransactionsTab.partials.TransactionsItem';
+export const displayName =
+  'common.Extensions.UserHub.TransactionsTab.partials.TransactionsItem';
 
 const TransactionsItem: FC<TransactionsItemProps> = ({
   title,
@@ -29,18 +30,30 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
       {content ? (
         <button
           type="button"
-          aria-label={`${formatMessage({ id: 'ariaLabel.open' })} ${formatMessage({
+          aria-label={`${formatMessage({
+            id: 'ariaLabel.open',
+          })} ${formatMessage({
             id: `transactionTab.${title}`,
             defaultMessage: `${title}`,
           })}`}
           onClick={onClick}
           className="flex gap-4 justify-between w-full text-left"
         >
-          <TransactionsHeader title={title} description={description} date={date} status={status} />
+          <TransactionsHeader
+            title={title}
+            description={description}
+            date={date}
+            status={status}
+          />
         </button>
       ) : (
         <div className="flex gap-4 justify-between w-full text-left">
-          <TransactionsHeader title={title} description={description} date={date} status={status} />
+          <TransactionsHeader
+            title={title}
+            description={description}
+            date={date}
+            status={status}
+          />
         </div>
       )}
       {content && (
@@ -62,9 +75,13 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                     'font-semibold text-gray-900': item.isCurrentAction,
                     'before:bg-success-400':
                       item.isCurrentAction &&
-                      (item.status === TRANSACTION_STATUSES.READY || item.status === TRANSACTION_STATUSES.SUCCEEDED),
-                    'before:bg-negative-400': item.isCurrentAction && item.status === TRANSACTION_STATUSES.FAILED,
-                    'before:!bg-blue-400': item.isCurrentAction && item.isPending,
+                      (item.status === TRANSACTION_STATUSES.READY ||
+                        item.status === TRANSACTION_STATUSES.SUCCEEDED),
+                    'before:bg-negative-400':
+                      item.isCurrentAction &&
+                      item.status === TRANSACTION_STATUSES.FAILED,
+                    'before:!bg-blue-400':
+                      item.isCurrentAction && item.isPending,
                   })}
                 >
                   <div className="flex justify-between items-center">
@@ -82,7 +99,8 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                       >
                         <Icon
                           name={
-                            item.status === TRANSACTION_STATUSES.READY || item.status === TRANSACTION_STATUSES.SUCCEEDED
+                            item.status === TRANSACTION_STATUSES.READY ||
+                            item.status === TRANSACTION_STATUSES.SUCCEEDED
                               ? 'check-circle'
                               : 'warning-circle'
                           }

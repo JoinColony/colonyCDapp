@@ -7,7 +7,8 @@ import { useStakingWidgetContext } from '../StakingWidgetProvider';
 
 import styles from './UserStakeMessage.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.UserStakeMessage';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.UserStakeMessage';
 
 const MSG = defineMessages({
   userStake: {
@@ -19,13 +20,20 @@ const UserStakeMessage = () => {
   const { usersStakes, isObjection } = useStakingWidgetContext();
   const { user } = useAppContext();
   const { colony } = useColonyContext();
-  const { symbol: nativeTokenSymbol, decimals: nativeTokenDecimals } = colony?.nativeToken || {};
+  const { symbol: nativeTokenSymbol, decimals: nativeTokenDecimals } =
+    colony?.nativeToken || {};
 
-  const userStakes = usersStakes.find(({ address }) => address === user?.walletAddress);
+  const userStakes = usersStakes.find(
+    ({ address }) => address === user?.walletAddress,
+  );
 
-  const userStake = isObjection ? userStakes?.stakes.raw.nay : userStakes?.stakes.raw.yay;
+  const userStake = isObjection
+    ? userStakes?.stakes.raw.nay
+    : userStakes?.stakes.raw.yay;
 
-  const userStakePercentage = isObjection ? userStakes?.stakes.percentage.nay : userStakes?.stakes.percentage.yay;
+  const userStakePercentage = isObjection
+    ? userStakes?.stakes.percentage.nay
+    : userStakes?.stakes.percentage.yay;
 
   const hasUserStaked = !!(userStake && userStake !== '0');
 
@@ -39,7 +47,13 @@ const UserStakeMessage = () => {
         {...MSG.userStake}
         values={{
           userStakePercentage,
-          userStake: <Numeral value={userStake} suffix={nativeTokenSymbol} decimals={nativeTokenDecimals} />,
+          userStake: (
+            <Numeral
+              value={userStake}
+              suffix={nativeTokenSymbol}
+              decimals={nativeTokenDecimals}
+            />
+          ),
         }}
       />
     </p>

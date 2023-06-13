@@ -12,7 +12,9 @@ const MSG = defineMessages({
   },
 });
 
-const UserProfileSpinner = () => <LoadingTemplate loadingText={MSG.loadingText} />;
+const UserProfileSpinner = () => (
+  <LoadingTemplate loadingText={MSG.loadingText} />
+);
 
 UserProfileSpinner.displayName = displayName;
 

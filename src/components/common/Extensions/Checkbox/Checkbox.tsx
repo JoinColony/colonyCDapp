@@ -6,7 +6,15 @@ import { useIntl } from 'react-intl';
 import { CheckboxProps } from './types';
 import styles from './Checkbox.module.css';
 
-const Checkbox: FC<CheckboxProps> = ({ name, disabled, id, register, label, onChange, classNames }) => {
+const Checkbox: FC<CheckboxProps> = ({
+  name,
+  disabled,
+  id,
+  register,
+  label,
+  onChange,
+  classNames,
+}) => {
   const { formatMessage } = useIntl();
 
   return (

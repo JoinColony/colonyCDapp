@@ -5,7 +5,11 @@ import { ColonyRole } from '@colony/colony-js';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import { WizardDialogType, useUserAccountRegistered, useAppContext } from '~hooks';
+import {
+  WizardDialogType,
+  useUserAccountRegistered,
+  useAppContext,
+} from '~hooks';
 
 import { getAllUserRoles } from '~transformers';
 import { userHasRole } from '~utils/checks';
@@ -37,7 +41,8 @@ const MSG = defineMessages({
   },
   smiteReputationDescription: {
     id: `${displayName}.smiteReputationDescription`,
-    defaultMessage: 'Punish undesirable behaviour by deducting reputation points.',
+    defaultMessage:
+      'Punish undesirable behaviour by deducting reputation points.',
   },
 });
 
@@ -68,10 +73,13 @@ const ManageReputation = ({
   const { isVotingReputationEnabled } = enabledExtensionData;
 
   const canSmiteReputation =
-    userHasAccountRegistered && (userHasRole(allUserRoles, ColonyRole.Arbitration) || isVotingReputationEnabled);
+    userHasAccountRegistered &&
+    (userHasRole(allUserRoles, ColonyRole.Arbitration) ||
+      isVotingReputationEnabled);
 
   const canAwardReputation =
-    userHasAccountRegistered && (userHasRole(allUserRoles, ColonyRole.Root) || isVotingReputationEnabled);
+    userHasAccountRegistered &&
+    (userHasRole(allUserRoles, ColonyRole.Root) || isVotingReputationEnabled);
 
   const items = [
     {
@@ -104,7 +112,13 @@ const ManageReputation = ({
     },
   ];
   return (
-    <IndexModal cancel={cancel} close={close} title={MSG.dialogHeader} items={items} back={() => callStep(prevStep)} />
+    <IndexModal
+      cancel={cancel}
+      close={close}
+      title={MSG.dialogHeader}
+      items={items}
+      back={() => callStep(prevStep)}
+    />
   );
 };
 

@@ -27,7 +27,14 @@ const SubscribedColoniesDropdown = ({ watchlist }: Props) => {
         <DropdownMenu>
           <DropdownMenuSection>
             {watchlist.map((item) => {
-              return item && <ColonyListItem colony={item.colony as Colony} key={item.colony.colonyAddress} />;
+              return (
+                item && (
+                  <ColonyListItem
+                    colony={item.colony as Colony}
+                    key={item.colony.colonyAddress}
+                  />
+                )
+              );
             })}
           </DropdownMenuSection>
         </DropdownMenu>
@@ -47,12 +54,18 @@ const SubscribedColoniesDropdown = ({ watchlist }: Props) => {
       }}
     >
       <NavLink
-        className={({ isActive }) => (isActive ? styles.activeColony : styles.itemLink)}
+        className={({ isActive }) =>
+          isActive ? styles.activeColony : styles.itemLink
+        }
         title={colonyToDisplay?.name}
         to={`/colony/${colonyToDisplay?.name}`}
       >
         <div className={styles.itemImage}>
-          <ColonyAvatar colony={colonyToDisplay as Colony} colonyAddress={colonyToDisplayAddress || ''} size="xs" />
+          <ColonyAvatar
+            colony={colonyToDisplay as Colony}
+            colonyAddress={colonyToDisplayAddress || ''}
+            size="xs"
+          />
         </div>
       </NavLink>
     </Popover>

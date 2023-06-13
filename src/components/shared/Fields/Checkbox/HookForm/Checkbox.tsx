@@ -83,9 +83,16 @@ const HookFormCheckbox = ({
   );
 
   return (
-    <fieldset className={classNames(mainClasses, className)} disabled={disabled}>
+    <fieldset
+      className={classNames(mainClasses, className)}
+      disabled={disabled}
+    >
       {showTooltip ? (
-        <Tooltip content={toolTipContent} placement="bottom" popperOptions={tooltipPopperOptions}>
+        <Tooltip
+          content={toolTipContent}
+          placement="bottom"
+          popperOptions={tooltipPopperOptions}
+        >
           {checkboxInput}
         </Tooltip>
       ) : (

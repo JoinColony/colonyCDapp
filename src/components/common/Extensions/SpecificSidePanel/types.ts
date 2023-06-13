@@ -3,7 +3,12 @@ import { ColonyReputationItem } from '~shared/Extensions/UserAvatarPopover/types
 import { AnyExtensionData } from '~types';
 
 export interface PermissionsProps {
-  data: { key: string; name: string; text: MessageDescriptor | string; description: MessageDescriptor | string }[];
+  data: {
+    key: string;
+    name: string;
+    text: MessageDescriptor | string;
+    description: MessageDescriptor | string;
+  }[];
 }
 
 export type SidePanelDataProps = {

@@ -37,7 +37,8 @@ const ColonyDomainDescription = ({ currentDomainId }: Props) => {
     return null;
   }
 
-  const { name, color, description } = findDomainByNativeId(currentDomainId, colony)?.metadata || {};
+  const { name, color, description } =
+    findDomainByNativeId(currentDomainId, colony)?.metadata || {};
 
   return (
     <div className={styles.main}>

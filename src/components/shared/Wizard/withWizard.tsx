@@ -3,7 +3,13 @@ import React, { ComponentType, useState } from 'react';
 import { AppContextValues } from '~context/AppContext';
 import { useAppContext } from '~hooks';
 
-import { InitialValuesProp, StepsValues, StepValues, WizardOuterProps, WizardStepProps } from './types';
+import {
+  InitialValuesProp,
+  StepsValues,
+  StepValues,
+  WizardOuterProps,
+  WizardStepProps,
+} from './types';
 
 export type StepType = ComponentType<any> & { stepName?: string };
 
@@ -17,7 +23,12 @@ interface WizardArgs<T> {
   steps: Steps;
 }
 
-const getStep = <T,>(steps: Steps, step: number, values: T, loggedInUser?: AppContextValues['user']) =>
+const getStep = <T,>(
+  steps: Steps,
+  step: number,
+  values: T,
+  loggedInUser?: AppContextValues['user'],
+) =>
   typeof steps === 'function' ? steps(step, values, loggedInUser) : steps[step];
 
 const all = <T,>(values: StepsValues<T>) =>
@@ -30,7 +41,11 @@ const all = <T,>(values: StepsValues<T>) =>
   );
 
 const withWizard =
-  <T,>({ initialValues: initialValuesProp = [], steps, stepCount: maxSteps }: WizardArgs<T>) =>
+  <T,>({
+    initialValues: initialValuesProp = [],
+    steps,
+    stepCount: maxSteps,
+  }: WizardArgs<T>) =>
   (
     OuterComponent: ComponentType<WizardOuterProps<T>>,
     outerProps?: Pick<WizardOuterProps<T>, 'hideQR'>,
@@ -74,7 +89,10 @@ const withWizard =
       };
 
       const stepValues = stepsValues[step];
-      const initialValues = typeof initialValuesProp === 'function' ? initialValuesProp(user) : initialValuesProp;
+      const initialValues =
+        typeof initialValuesProp === 'function'
+          ? initialValuesProp(user)
+          : initialValuesProp;
       const initialStepValues = initialValues[step];
       return (
         <OuterComponent

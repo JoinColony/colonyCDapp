@@ -1,11 +1,16 @@
 import React from 'react';
-import { defineMessages, FormattedMessage, MessageDescriptor } from 'react-intl';
+import {
+  defineMessages,
+  FormattedMessage,
+  MessageDescriptor,
+} from 'react-intl';
 
 import { TransactionStatus, TransactionStatuses } from '~common/ColonyActions';
 
 import styles from './TransactionHash.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.TransactionNotFound.Hash';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.TransactionNotFound.Hash';
 
 const MSG = defineMessages({
   fallbackTitle: {

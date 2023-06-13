@@ -27,6 +27,10 @@ const CheckboxWithHooks = (args) => {
 
 export const Base: Story = {
   render: () => (
-    <CheckboxWithHooks id="checkbox-1" name="checkbox-1" label={{ id: 'extensionDetailsPage.uninstallConfirmation' }} />
+    <CheckboxWithHooks
+      id="checkbox-1"
+      name="checkbox-1"
+      label={{ id: 'extensionDetailsPage.uninstallConfirmation' }}
+    />
   ),
 };

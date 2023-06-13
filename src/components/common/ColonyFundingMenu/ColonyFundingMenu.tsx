@@ -130,7 +130,9 @@ const ColonyFundingMenu = () =>
           text={text}
           appearance={{ theme: 'blue' }}
           onClick={handleClick}
-          disabled={!canInteractWithColony || !isSupportedColonyVersion || disabled}
+          disabled={
+            !canInteractWithColony || !isSupportedColonyVersion || disabled
+          }
         />
       </li>
     );

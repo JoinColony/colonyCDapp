@@ -24,7 +24,12 @@ interface Props {
   motionId: string;
 }
 
-const StakesListItem = ({ stakedAmount, tokenSymbol, colonyName, motionId }: Props) => {
+const StakesListItem = ({
+  stakedAmount,
+  tokenSymbol,
+  colonyName,
+  motionId,
+}: Props) => {
   const { setIsOpen } = useTokenActivationContext();
   const { data } = useGetMotionTransactionHashQuery({
     variables: {

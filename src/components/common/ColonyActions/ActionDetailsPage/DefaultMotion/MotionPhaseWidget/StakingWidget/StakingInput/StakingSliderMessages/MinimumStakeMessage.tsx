@@ -5,7 +5,8 @@ import Numeral from '~shared/Numeral';
 
 import styles from './MinimumStakeMessage.css';
 
-const displayName = 'common.ColonyActions.DefaultMotion.StakingWidget.StakingInput.MinimumStakeMessage';
+const displayName =
+  'common.ColonyActions.DefaultMotion.StakingWidget.StakingInput.MinimumStakeMessage';
 
 const MSG = defineMessages({
   minimumAmount: {
@@ -20,12 +21,23 @@ export interface MinimumStakeMessageProps {
   symbol: string;
 }
 
-const MinimumStakeMessage = ({ userMinStake, decimals, symbol }: MinimumStakeMessageProps) => (
+const MinimumStakeMessage = ({
+  userMinStake,
+  decimals,
+  symbol,
+}: MinimumStakeMessageProps) => (
   <span className={styles.minAmount}>
     <FormattedMessage
       {...MSG.minimumAmount}
       values={{
-        minStake: <Numeral className={styles.minAmount} value={userMinStake} decimals={decimals} suffix={symbol} />,
+        minStake: (
+          <Numeral
+            className={styles.minAmount}
+            value={userMinStake}
+            decimals={decimals}
+            suffix={symbol}
+          />
+        ),
       }}
     />
   </span>

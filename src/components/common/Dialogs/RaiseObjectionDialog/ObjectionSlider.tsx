@@ -13,7 +13,11 @@ const ObjectionSlider = () => {
   return (
     <DialogSection appearance={{ theme: 'sidePadding' }}>
       <div className={styles.main}>
-        <StakingSlider isObjection limitExceeded={limitExceeded} setLimitExceeded={setLimitExceeded} />
+        <StakingSlider
+          isObjection
+          limitExceeded={limitExceeded}
+          setLimitExceeded={setLimitExceeded}
+        />
       </div>
     </DialogSection>
   );

@@ -7,8 +7,12 @@ export const getEditColonyDetailsDialogPayload = (
   colony,
   colonyDisplayName,
   colonyAvatarImage:
-    typeof colonyAvatarImage === 'string' || colonyAvatarImage === null ? colonyAvatarImage : colony.metadata?.avatar,
+    typeof colonyAvatarImage === 'string' || colonyAvatarImage === null
+      ? colonyAvatarImage
+      : colony.metadata?.avatar,
   colonyThumbnail:
-    typeof colonyThumbnail === 'string' || colonyThumbnail === null ? colonyThumbnail : colony.metadata?.thumbnail,
+    typeof colonyThumbnail === 'string' || colonyThumbnail === null
+      ? colonyThumbnail
+      : colony.metadata?.thumbnail,
   annotationMessage,
 });

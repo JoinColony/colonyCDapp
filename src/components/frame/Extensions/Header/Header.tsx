@@ -1,7 +1,10 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { ColoniesDropdown, ColonyAvatarWrapper } from '~common/Extensions/ColonySwitcher';
+import {
+  ColoniesDropdown,
+  ColonyAvatarWrapper,
+} from '~common/Extensions/ColonySwitcher';
 import ColonyDropdownMobile from '~common/Extensions/ColonySwitcher/partials/ColonyDropdownMobile';
 import { useMobile } from '~hooks';
 import styles from './Header.module.css';
@@ -64,14 +67,22 @@ const Header = () => {
                       })}
                     >
                       {!!watchlist.length && !userLoading && (
-                        <ColoniesDropdown watchlist={[...watchlist].sort(sortByDate)} />
+                        <ColoniesDropdown
+                          watchlist={[...watchlist].sort(sortByDate)}
+                        />
                       )}
                     </div>
                   )}
                   {isMobile && (
-                    <ColonyDropdownMobile isOpen={isOpen} userLoading={userLoading}>
+                    <ColonyDropdownMobile
+                      isOpen={isOpen}
+                      userLoading={userLoading}
+                    >
                       {!!watchlist.length && (
-                        <ColoniesDropdown watchlist={[...watchlist].sort(sortByDate)} isMobile={isMobile} />
+                        <ColoniesDropdown
+                          watchlist={[...watchlist].sort(sortByDate)}
+                          isMobile={isMobile}
+                        />
                       )}
                     </ColonyDropdownMobile>
                   )}

@@ -3,11 +3,17 @@ import { defineMessages } from 'react-intl';
 
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 
-import { useStakingWidgetContext, StakingInput, SingleTotalStake, GroupedTotalStake } from '.';
+import {
+  useStakingWidgetContext,
+  StakingInput,
+  SingleTotalStake,
+  GroupedTotalStake,
+} from '.';
 
 import styles from './StakingWidget.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget';
 
 const MSG = defineMessages({
   loading: {
@@ -22,7 +28,10 @@ const StakingWidget = () => {
   if (isRefetching) {
     return (
       <div className={styles.main}>
-        <MiniSpinnerLoader className={styles.loading} loadingText={MSG.loading} />
+        <MiniSpinnerLoader
+          className={styles.loading}
+          loadingText={MSG.loading}
+        />
       </div>
     );
   }

@@ -6,11 +6,16 @@ import { HookForm as Form } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
 import ExternalLink from '~shared/Extensions/ExternalLink';
 import { ADVANCED_SETTINGS } from '~constants';
-import useUserSettings, { SlotKey, UserSettingsHook } from '~hooks/useUserSettings';
+import useUserSettings, {
+  SlotKey,
+  UserSettingsHook,
+} from '~hooks/useUserSettings';
 import { canUseMetatransactions } from '~utils/checks';
 import { yupDebounce } from '~utils/yup/tests';
 
-import AdvancedSettingsRow, { getAdvancedSettingsRows } from './AdvancedSettingsRow';
+import AdvancedSettingsRow, {
+  getAdvancedSettingsRows,
+} from './AdvancedSettingsRow';
 import SaveForm from './SaveForm';
 import { isValidURL, validateCustomGnosisRPC } from './validation';
 
@@ -56,8 +61,13 @@ const validationSchema = object({
 
 export type FormValues = InferType<typeof validationSchema>;
 
-const setFormValuesToLocalStorage = (values: FormValues, setSettingsKey: UserSettingsHook['setSettingsKey']) => {
-  Object.entries(values).forEach(([key, value]: [SlotKey, string | boolean]) => setSettingsKey(key, value));
+const setFormValuesToLocalStorage = (
+  values: FormValues,
+  setSettingsKey: UserSettingsHook['setSettingsKey'],
+) => {
+  Object.entries(values).forEach(([key, value]: [SlotKey, string | boolean]) =>
+    setSettingsKey(key, value),
+  );
 };
 
 const metatransactionsAvailable = canUseMetatransactions();
@@ -76,11 +86,17 @@ const headingTextValues = {
 const UserAdvancedSettings = () => {
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const {
-    settings: { metatransactions: metatransactionsSetting, decentralizedModeEnabled, customRpc },
+    settings: {
+      metatransactions: metatransactionsSetting,
+      decentralizedModeEnabled,
+      customRpc,
+    },
     setSettingsKey,
   } = useUserSettings();
 
-  const metatransasctionsDefault = metatransactionsAvailable ? metatransactionsSetting : false;
+  const metatransasctionsDefault = metatransactionsAvailable
+    ? metatransactionsSetting
+    : false;
 
   const handleSubmit = (values: FormValues) => {
     setFormValuesToLocalStorage(values, setSettingsKey);
@@ -88,7 +104,11 @@ const UserAdvancedSettings = () => {
 
   return (
     <>
-      <Heading3 appearance={{ theme: 'dark' }} text={MSG.heading} textValues={headingTextValues} />
+      <Heading3
+        appearance={{ theme: 'dark' }}
+        text={MSG.heading}
+        textValues={headingTextValues}
+      />
       <Form<FormValues>
         defaultValues={{
           [SlotKey.Metatransactions]: metatransasctionsDefault,
@@ -114,7 +134,12 @@ const UserAdvancedSettings = () => {
               />
             ))}
             <SaveForm
-              disabled={!metatransactionsAvailable || !isValid || !isDirty || isValidating}
+              disabled={
+                !metatransactionsAvailable ||
+                !isValid ||
+                !isDirty ||
+                isValidating
+              }
               setShowSnackbar={setShowSnackbar}
               showSnackbar={showSnackbar}
             />

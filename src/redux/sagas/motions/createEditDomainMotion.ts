@@ -1,5 +1,11 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, Id, getPermissionProofs, getChildIndex, ColonyRole } from '@colony/colony-js';
+import {
+  ClientType,
+  Id,
+  getPermissionProofs,
+  getChildIndex,
+  ColonyRole,
+} from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 
 import { ContextModule, getContext } from '~context';
@@ -21,7 +27,11 @@ import {
   getUpdatedDomainMetadataChangelog,
 } from '../utils';
 
-import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 // import { ipfsUpload } from '../ipfs';
 import {
   transactionReady,
@@ -61,11 +71,18 @@ function* createEditDomainMotion({
     txChannel = yield call(getTxChannel, metaId);
 
     /* additional editDomain check is for the TS to not ring alarm in getPermissionProofs */
-    const domainId = !isCreateDomain && domain?.nativeId ? domain.nativeId : parentId;
+    const domainId =
+      !isCreateDomain && domain?.nativeId ? domain.nativeId : parentId;
 
     const context = yield getColonyManager();
-    const colonyClient = yield context.getClient(ClientType.ColonyClient, colonyAddress);
-    const votingReputationClient = yield context.getClient(ClientType.VotingReputationClient, colonyAddress);
+    const colonyClient = yield context.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+    const votingReputationClient = yield context.getClient(
+      ClientType.VotingReputationClient,
+      colonyAddress,
+    );
 
     const [permissionDomainId, childSkillIndex] = yield call(
       getPermissionProofs,
@@ -75,11 +92,23 @@ function* createEditDomainMotion({
       votingReputationClient.address,
     );
 
-    const motionChildSkillIndex = yield call(getChildIndex, colonyClient, motionDomainId, domainId);
+    const motionChildSkillIndex = yield call(
+      getChildIndex,
+      colonyClient,
+      motionDomainId,
+      domainId,
+    );
 
-    const { skillId } = yield call([colonyClient, colonyClient.getDomain], motionDomainId);
+    const { skillId } = yield call(
+      [colonyClient, colonyClient.getDomain],
+      motionDomainId,
+    );
 
-    const { key, value, branchMask, siblings } = yield call(colonyClient.getReputation, skillId, AddressZero);
+    const { key, value, branchMask, siblings } = yield call(
+      colonyClient.getReputation,
+      skillId,
+      AddressZero,
+    );
 
     // setup batch ids and channels
     const batchKey = 'createMotion';
@@ -104,7 +133,9 @@ function* createEditDomainMotion({
     // );
 
     const encodedAction = colonyClient.interface.encodeFunctionData(
-      isCreateDomain ? 'addDomain(uint256,uint256,uint256,string)' : 'editDomain',
+      isCreateDomain
+        ? 'addDomain(uint256,uint256,uint256,string)'
+        : 'editDomain',
       [permissionDomainId, childSkillIndex, domainId, '.'], // domainMetadataIpfsHash
     );
 
@@ -113,7 +144,16 @@ function* createEditDomainMotion({
       context: ClientType.VotingReputationClient,
       methodName: 'createMotion',
       identifier: colonyAddress,
-      params: [motionDomainId, motionChildSkillIndex, AddressZero, encodedAction, key, value, branchMask, siblings],
+      params: [
+        motionDomainId,
+        motionChildSkillIndex,
+        AddressZero,
+        encodedAction,
+        key,
+        value,
+        branchMask,
+        siblings,
+      ],
       group: {
         key: batchKey,
         id: metaId,
@@ -146,7 +186,10 @@ function* createEditDomainMotion({
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
+    } = yield takeFrom(
+      createMotion.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     const apolloClient = getContext(ContextModule.ApolloClient);
@@ -155,7 +198,10 @@ function* createEditDomainMotion({
       /**
        * Save domain metadata in the database
        */
-      yield apolloClient.mutate<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>({
+      yield apolloClient.mutate<
+        CreateDomainMetadataMutation,
+        CreateDomainMetadataMutationVariables
+      >({
         mutation: CreateDomainMetadataDocument,
         variables: {
           input: {
@@ -167,7 +213,10 @@ function* createEditDomainMotion({
         },
       });
     } else if (domain?.metadata) {
-      yield apolloClient.mutate<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>({
+      yield apolloClient.mutate<
+        CreateDomainMetadataMutation,
+        CreateDomainMetadataMutationVariables
+      >({
         mutation: CreateDomainMetadataDocument,
         variables: {
           input: {
@@ -215,5 +264,8 @@ function* createEditDomainMotion({
 }
 
 export default function* createEditDomainMotionSaga() {
-  yield takeEvery(ActionTypes.MOTION_DOMAIN_CREATE_EDIT, createEditDomainMotion);
+  yield takeEvery(
+    ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
+    createEditDomainMotion,
+  );
 }

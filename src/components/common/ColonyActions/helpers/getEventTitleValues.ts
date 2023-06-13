@@ -7,7 +7,10 @@ import {
   SystemMessages,
 } from '~types';
 
-import { mapActionEventToExpectedFormat, useMapMotionEventToExpectedFormat } from './mapItemToMessageFormat';
+import {
+  mapActionEventToExpectedFormat,
+  useMapMotionEventToExpectedFormat,
+} from './mapItemToMessageFormat';
 
 enum EventTitleMessageKeys {
   Amount = 'amount',
@@ -62,15 +65,22 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
     EventTitleMessageKeys.ToDomain,
     EventTitleMessageKeys.TokenSymbol,
   ],
-  [ColonyAndExtensionsEvents.TokenUnlocked]: [EventTitleMessageKeys.TokenSymbol],
+  [ColonyAndExtensionsEvents.TokenUnlocked]: [
+    EventTitleMessageKeys.TokenSymbol,
+  ],
   [ColonyAndExtensionsEvents.TokensMinted]: [
     EventTitleMessageKeys.Amount,
     EventTitleMessageKeys.Initiator,
     EventTitleMessageKeys.Recipient,
     EventTitleMessageKeys.TokenSymbol,
   ],
-  [ColonyAndExtensionsEvents.DomainAdded]: [EventTitleMessageKeys.FromDomain, EventTitleMessageKeys.Initiator],
-  [ColonyAndExtensionsEvents.ColonyUpgraded]: [EventTitleMessageKeys.NewVersion],
+  [ColonyAndExtensionsEvents.DomainAdded]: [
+    EventTitleMessageKeys.FromDomain,
+    EventTitleMessageKeys.Initiator,
+  ],
+  [ColonyAndExtensionsEvents.ColonyUpgraded]: [
+    EventTitleMessageKeys.NewVersion,
+  ],
   // [ColonyAndExtensionsEvents.RecoveryModeEntered]: [
   //   EventTitleMessageKeys.Initiator,
   // ],
@@ -84,15 +94,25 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
   // [ColonyAndExtensionsEvents.RecoveryModeExited]: [
   //   EventTitleMessageKeys.Initiator,
   // ],
-  [ColonyAndExtensionsEvents.MotionCreated]: [EventTitleMessageKeys.Initiator, EventTitleMessageKeys.MotionTag],
+  [ColonyAndExtensionsEvents.MotionCreated]: [
+    EventTitleMessageKeys.Initiator,
+    EventTitleMessageKeys.MotionTag,
+  ],
   [ColonyAndExtensionsEvents.MotionStaked]: [
     EventTitleMessageKeys.Staker,
     EventTitleMessageKeys.BackedSideTag,
     EventTitleMessageKeys.AmountTag,
   ],
-  [ColonyAndExtensionsEvents.MotionFinalized]: [EventTitleMessageKeys.MotionTag],
-  [ColonyAndExtensionsEvents.ObjectionRaised]: [EventTitleMessageKeys.Staker, EventTitleMessageKeys.ObjectionTag],
-  [ColonyAndExtensionsEvents.MotionRewardClaimed]: [EventTitleMessageKeys.Staker],
+  [ColonyAndExtensionsEvents.MotionFinalized]: [
+    EventTitleMessageKeys.MotionTag,
+  ],
+  [ColonyAndExtensionsEvents.ObjectionRaised]: [
+    EventTitleMessageKeys.Staker,
+    EventTitleMessageKeys.ObjectionTag,
+  ],
+  [ColonyAndExtensionsEvents.MotionRewardClaimed]: [
+    EventTitleMessageKeys.Staker,
+  ],
   [ColonyAndExtensionsEvents.ColonyMetadata]: [
     EventTitleMessageKeys.Initiator,
     EventTitleMessageKeys.Changed,
@@ -117,9 +137,17 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
     EventTitleMessageKeys.ReputationChangeNumeral,
     EventTitleMessageKeys.Recipient,
   ],
-  [SystemMessages.ObjectionFullyStaked]: [EventTitleMessageKeys.ObjectionTag, EventTitleMessageKeys.MotionTag],
-  [SystemMessages.MotionFullyStakedAfterObjection]: [EventTitleMessageKeys.MotionTag],
-  [SystemMessages.MotionFullyStaked]: [EventTitleMessageKeys.ObjectionTag, EventTitleMessageKeys.MotionTag],
+  [SystemMessages.ObjectionFullyStaked]: [
+    EventTitleMessageKeys.ObjectionTag,
+    EventTitleMessageKeys.MotionTag,
+  ],
+  [SystemMessages.MotionFullyStakedAfterObjection]: [
+    EventTitleMessageKeys.MotionTag,
+  ],
+  [SystemMessages.MotionFullyStaked]: [
+    EventTitleMessageKeys.ObjectionTag,
+    EventTitleMessageKeys.MotionTag,
+  ],
   [SystemMessages.MotionVotingPhase]: [EventTitleMessageKeys.VotingTag],
   [SystemMessages.MotionRevealResultObjectionWon]: [
     EventTitleMessageKeys.MotionTag,
@@ -129,16 +157,31 @@ const EVENT_TYPE_MESSAGE_KEYS_MAP: {
     EventTitleMessageKeys.MotionTag,
     EventTitleMessageKeys.VoteResultsWidget,
   ],
-  [SystemMessages.MotionHasFailedFinalizable]: [EventTitleMessageKeys.MotionTag, EventTitleMessageKeys.FailedTag],
+  [SystemMessages.MotionHasFailedFinalizable]: [
+    EventTitleMessageKeys.MotionTag,
+    EventTitleMessageKeys.FailedTag,
+  ],
   [SystemMessages.MotionRevealPhase]: [EventTitleMessageKeys.RevealTag],
-  [SystemMessages.MotionHasPassed]: [EventTitleMessageKeys.MotionTag, EventTitleMessageKeys.PassedTag],
-  [SystemMessages.MotionHasFailedNotFinalizable]: [EventTitleMessageKeys.MotionTag],
+  [SystemMessages.MotionHasPassed]: [
+    EventTitleMessageKeys.MotionTag,
+    EventTitleMessageKeys.PassedTag,
+  ],
+  [SystemMessages.MotionHasFailedNotFinalizable]: [
+    EventTitleMessageKeys.MotionTag,
+  ],
 };
 
-const DEFAULT_KEYS = [EventTitleMessageKeys.EventNameDecorated, EventTitleMessageKeys.ClientOrExtensionType];
+const DEFAULT_KEYS = [
+  EventTitleMessageKeys.EventNameDecorated,
+  EventTitleMessageKeys.ClientOrExtensionType,
+];
 
 /* Filters the item by keys provided */
-export const generateMessageValues = (item: Record<string, any>, keys: string[], initialEntry: Record<string, any>) =>
+export const generateMessageValues = (
+  item: Record<string, any>,
+  keys: string[],
+  initialEntry: Record<string, any>,
+) =>
   keys.reduce<AnyMessageValues>(
     (values, key) => ({
       ...values,
@@ -154,7 +197,12 @@ export const getActionEventTitleValues = (
   eventId?: string,
   colony?: Colony,
 ) => {
-  const updatedItem = mapActionEventToExpectedFormat(eventName, actionData, eventId, colony);
+  const updatedItem = mapActionEventToExpectedFormat(
+    eventName,
+    actionData,
+    eventId,
+    colony,
+  );
   const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
   return generateMessageValues(updatedItem, keys, {
     eventName,
@@ -167,7 +215,10 @@ export const useGetMotionEventTitleValues = (
   motionMessageData: MotionMessage,
   actionData: ColonyAction,
 ) => {
-  const updatedItem = useMapMotionEventToExpectedFormat(motionMessageData, actionData);
+  const updatedItem = useMapMotionEventToExpectedFormat(
+    motionMessageData,
+    actionData,
+  );
   const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[eventName] ?? DEFAULT_KEYS;
   return generateMessageValues(updatedItem, keys, {
     eventName,

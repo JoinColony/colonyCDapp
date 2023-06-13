@@ -5,7 +5,10 @@ type TransactionAlerts = Record<string, SingleTransactionAlert>;
 
 export const GasStationContext = createContext<{
   transactionAlerts: TransactionAlerts;
-  updateTransactionAlert: (transactionId: string, alertPayload: SingleTransactionAlert) => void;
+  updateTransactionAlert: (
+    transactionId: string,
+    alertPayload: SingleTransactionAlert,
+  ) => void;
 }>({
   transactionAlerts: {},
   updateTransactionAlert: () => {},
@@ -16,7 +19,8 @@ interface Props {
 }
 
 const GasStationProvider = ({ children }: Props) => {
-  const [transactionAlerts, updateTransactionAlerts] = useState<TransactionAlerts>({});
+  const [transactionAlerts, updateTransactionAlerts] =
+    useState<TransactionAlerts>({});
 
   const updateTransactionAlert = (
     transactionId: string,

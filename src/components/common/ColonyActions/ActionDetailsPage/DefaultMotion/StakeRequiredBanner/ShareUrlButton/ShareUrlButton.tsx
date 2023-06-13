@@ -6,7 +6,8 @@ import { Tooltip } from '~shared/Popover';
 
 import styles from './ShareUrlButton.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakeRequiredBanner.ShareUrlButton';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakeRequiredBanner.ShareUrlButton';
 
 const MSG = defineMessages({
   shareUrl: {
@@ -21,8 +22,16 @@ const MSG = defineMessages({
 
 const ShareUrlButton = () => (
   <span className={styles.share}>
-    <Tooltip placement="left" trigger="click" content={<FormattedMessage {...MSG.copyURLTooltip} />}>
-      <ClipboardCopy value={window.location.href} appearance={{ theme: 'white' }} text={MSG.shareUrl} />
+    <Tooltip
+      placement="left"
+      trigger="click"
+      content={<FormattedMessage {...MSG.copyURLTooltip} />}
+    >
+      <ClipboardCopy
+        value={window.location.href}
+        appearance={{ theme: 'white' }}
+        text={MSG.shareUrl}
+      />
     </Tooltip>
   </span>
 );

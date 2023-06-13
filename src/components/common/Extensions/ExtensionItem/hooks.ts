@@ -9,7 +9,8 @@ export const useExtensionItem = (extensionId: string) => {
   const { colony } = useColonyContext();
   const { extensionData } = useExtensionData(extensionId);
 
-  const isExtensionInstalled = extensionData && isInstalledExtensionData(extensionData);
+  const isExtensionInstalled =
+    extensionData && isInstalledExtensionData(extensionData);
 
   const { status, badgeMessage } = useExtensionsBadge(extensionData);
 

@@ -6,9 +6,18 @@ import { ExternalLinkProps } from './types';
 
 const displayName = 'Extensions.ExternalLink';
 
-const ExternalLink = ({ children, href, text, textValues, className, title, download }: ExternalLinkProps) => {
+const ExternalLink = ({
+  children,
+  href,
+  text,
+  textValues,
+  className,
+  title,
+  download,
+}: ExternalLinkProps) => {
   const { formatMessage } = useIntl();
-  const typeOfText = typeof text == 'string' ? text : text && formatMessage(text, textValues);
+  const typeOfText =
+    typeof text == 'string' ? text : text && formatMessage(text, textValues);
   const linkText = children || typeOfText || href;
 
   return (

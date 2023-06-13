@@ -1,4 +1,10 @@
-import React, { createContext, ReactNode, useContext, useMemo, useState } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 
 import { ColonyMotion, SetStateFn } from '~types';
 
@@ -15,7 +21,9 @@ export interface StakingWidgetContextValues extends ColonyMotion {
   startPollingAction: (pollingInterval: number) => void;
 }
 
-const StakingWidgetContext = createContext<StakingWidgetContextValues | undefined>(undefined);
+const StakingWidgetContext = createContext<
+  StakingWidgetContextValues | undefined
+>(undefined);
 
 export const useStakingWidgetContext = () => {
   const ctx = useContext(StakingWidgetContext);
@@ -51,7 +59,10 @@ export const StakingWidgetProvider = ({
   const showSummary = Number(nayStakes) > 0;
   const [isSummary, setIsSummary] = useState<boolean>(showSummary);
   const remainingToStake = isObjection ? nayRemaining : yayRemaining;
-  const [isRefetching, setIsRefetching] = useStakingWidgetUpdate(motionStakes, stopPollingAction);
+  const [isRefetching, setIsRefetching] = useStakingWidgetUpdate(
+    motionStakes,
+    stopPollingAction,
+  );
 
   const stakingWidgetValues = useMemo(
     () => ({
@@ -78,5 +89,9 @@ export const StakingWidgetProvider = ({
     ],
   );
 
-  return <StakingWidgetContext.Provider value={stakingWidgetValues}>{children}</StakingWidgetContext.Provider>;
+  return (
+    <StakingWidgetContext.Provider value={stakingWidgetValues}>
+      {children}
+    </StakingWidgetContext.Provider>
+  );
 };

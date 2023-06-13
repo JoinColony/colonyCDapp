@@ -8,7 +8,8 @@ import Icon from '~shared/Icon';
 import { SubNavigationItemProps } from './types';
 import styles from './SubNavigationItem.module.css';
 
-const displayName = 'common.Extensions.SubNavigation.partials.SubNavigationItem';
+const displayName =
+  'common.Extensions.SubNavigation.partials.SubNavigationItem';
 
 const SubNavigationItem: FC<PropsWithChildren<SubNavigationItemProps>> = ({
   label,
@@ -43,7 +44,11 @@ const SubNavigationItem: FC<PropsWithChildren<SubNavigationItemProps>> = ({
 
   return (
     <li>
-      <Button onClick={setOpen} mode="textButton" className={clsx(styles.button, { [styles.activeButton]: isOpen })}>
+      <Button
+        onClick={setOpen}
+        mode="textButton"
+        className={clsx(styles.button, { [styles.activeButton]: isOpen })}
+      >
         <Icon name={icon} appearance={{ size: 'small' }} />
         <span className="flex ml-2" ref={setTriggerRef}>
           {label}

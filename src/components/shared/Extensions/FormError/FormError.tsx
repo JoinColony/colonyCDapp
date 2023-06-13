@@ -4,7 +4,11 @@ import { FormErrorProps } from './types';
 
 const displayName = 'Extensions.FormError';
 
-const FormError: FC<PropsWithChildren<FormErrorProps>> = ({ alignment = 'right', isFullSize, children }) => (
+const FormError: FC<PropsWithChildren<FormErrorProps>> = ({
+  alignment = 'right',
+  isFullSize,
+  children,
+}) => (
   <div
     className={clsx(`flex mt-1 w-[8.75rem]`, {
       'w-full': isFullSize,

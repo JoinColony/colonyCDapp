@@ -13,7 +13,8 @@ import { ActionDetailsPageParams } from '../ActionDetailsPage';
 
 import styles from './TransactionNotFound.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.TransactionNotFound';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.TransactionNotFound';
 
 const MSG = defineMessages({
   returnToColony: {
@@ -37,7 +38,12 @@ interface TransactionNotFoundProps {
   isUnknownTx: boolean;
 }
 
-const TransactionNotFound = ({ colonyName, createdAt, status, isUnknownTx }: TransactionNotFoundProps) => {
+const TransactionNotFound = ({
+  colonyName,
+  createdAt,
+  status,
+  isUnknownTx,
+}: TransactionNotFoundProps) => {
   const { transactionHash } = useParams<ActionDetailsPageParams>();
   return (
     <div className={styles.notFoundContainer}>

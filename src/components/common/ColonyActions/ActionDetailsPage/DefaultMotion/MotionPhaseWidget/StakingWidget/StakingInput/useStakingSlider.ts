@@ -12,17 +12,20 @@ export const useStakingSlider = (isObjection: boolean) => {
   const { user, userLoading, walletConnecting } = useAppContext();
   const { pathname } = useLocation();
   const transactionHash = getTransactionHashFromPathName(pathname);
-  const { data: actionData, loading: loadingActionData } = useGetColonyActionQuery({
-    variables: {
-      transactionHash: transactionHash ?? '',
-    },
-  });
+  const { data: actionData, loading: loadingActionData } =
+    useGetColonyActionQuery({
+      variables: {
+        transactionHash: transactionHash ?? '',
+      },
+    });
 
   const motionData = actionData?.getColonyAction?.motionData;
   const nativeToken = actionData?.getColonyAction?.colony.nativeToken;
 
   if (!motionData) {
-    throw new Error("Unable to find motion data. This is a bug since we're only calling this hook from a motion.");
+    throw new Error(
+      "Unable to find motion data. This is a bug since we're only calling this hook from a motion.",
+    );
   }
 
   if (!nativeToken) {
@@ -42,11 +45,17 @@ export const useStakingSlider = (isObjection: boolean) => {
     usersStakes,
   } = motionData;
 
-  const userStakes = usersStakes.find(({ address }) => address === user?.walletAddress);
+  const userStakes = usersStakes.find(
+    ({ address }) => address === user?.walletAddress,
+  );
 
   const { nativeTokenDecimals, nativeTokenSymbol, tokenAddress } = nativeToken;
 
-  const { enoughTokensToStakeMinimum, loadingUserTokenBalance, userActivatedTokens } = useEnoughTokensForStaking(
+  const {
+    enoughTokensToStakeMinimum,
+    loadingUserTokenBalance,
+    userActivatedTokens,
+  } = useEnoughTokensForStaking(
     tokenAddress,
     user?.walletAddress ?? '',
     userMinStake,
@@ -67,9 +76,12 @@ export const useStakingSlider = (isObjection: boolean) => {
   /* User cannot stake more than their reputation in tokens. */
   const userMaxStake = BigNumber.from(userReputation ?? '0');
   const remainingToStake = isObjection ? nayRemaining : yayRemaining;
-  const userTotalStake = isObjection ? userStakes?.stakes.raw.nay : userStakes?.stakes.raw.yay;
+  const userTotalStake = isObjection
+    ? userStakes?.stakes.raw.nay
+    : userStakes?.stakes.raw.yay;
 
-  const enoughReputationToStakeMinimum = userMaxStake.gt(0) && userMaxStake.gte(userMinStake);
+  const enoughReputationToStakeMinimum =
+    userMaxStake.gt(0) && userMaxStake.gte(userMinStake);
 
   const userStakeLimitDecimal = calculateStakeLimitDecimal(
     remainingToStake,
@@ -79,7 +91,8 @@ export const useStakingSlider = (isObjection: boolean) => {
     userActivatedTokens,
   );
 
-  const totalPercentageStaked = Number(nayPercentageStaked) + Number(yayPercentageStaked);
+  const totalPercentageStaked =
+    Number(nayPercentageStaked) + Number(yayPercentageStaked);
 
   return {
     remainingToStake: isObjection ? nayRemaining : yayRemaining,

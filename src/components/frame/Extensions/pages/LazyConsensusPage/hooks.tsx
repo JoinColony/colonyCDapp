@@ -22,14 +22,18 @@ import {
 import Toast from '~shared/Extensions/Toast/Toast';
 import { ExtensionInitParam } from '~types';
 
-export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void, openIndex?: number) => {
+export const useLazyConsensusPage = (
+  onOpenIndexChange?: (index: number) => void,
+  openIndex?: number,
+) => {
   const { formatMessage } = useIntl();
   const { extensionId } = useParams();
   const navigate = useNavigate();
   const { colony } = useColonyContext();
   const { extensionData } = useExtensionData(extensionId ?? '');
   const { status, badgeMessage } = useExtensionsBadge(extensionData);
-  const [extensionContentParameters, setExtensionContentParameters] = useState<AccordionContent[]>();
+  const [extensionContentParameters, setExtensionContentParameters] =
+    useState<AccordionContent[]>();
 
   // @TODO: fix validation
   const validationSchema = yup.object().shape({
@@ -42,57 +46,101 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
       .positive('')
       .integer('')
       .required('')
-      .typeError(formatMessage({ id: 'special.percentage.input.error.min.value' }))
+      .typeError(
+        formatMessage({ id: 'special.percentage.input.error.min.value' }),
+      )
       .min(1, formatMessage({ id: 'special.percentage.input.error.min.value' }))
-      .max(50, formatMessage({ id: 'special.percentage.input.error.max.value' })),
+      .max(
+        50,
+        formatMessage({ id: 'special.percentage.input.error.max.value' }),
+      ),
     voterRewardFraction: yup
       .number()
       .positive('')
       .integer('')
       .required('')
-      .typeError(formatMessage({ id: 'special.percentage.input.error.min.value' }))
+      .typeError(
+        formatMessage({ id: 'special.percentage.input.error.min.value' }),
+      )
       .min(1, formatMessage({ id: 'special.percentage.input.error.min.value' }))
-      .max(50, formatMessage({ id: 'special.percentage.input.error.max.value' })),
+      .max(
+        50,
+        formatMessage({ id: 'special.percentage.input.error.max.value' }),
+      ),
     userMinStakeFraction: yup
       .number()
       .positive('')
       .integer('')
       .required('')
-      .typeError(formatMessage({ id: 'special.percentage.input.error.min.value' }))
+      .typeError(
+        formatMessage({ id: 'special.percentage.input.error.min.value' }),
+      )
       .min(1, formatMessage({ id: 'special.percentage.input.error.min.value' }))
-      .max(50, formatMessage({ id: 'special.percentage.input.error.max.value' })),
+      .max(
+        50,
+        formatMessage({ id: 'special.percentage.input.error.max.value' }),
+      ),
     maxVoteFraction: yup
       .number()
       .positive('')
       .integer('')
       .required('')
-      .typeError(formatMessage({ id: 'special.percentage.input.error.min.value' }))
+      .typeError(
+        formatMessage({ id: 'special.percentage.input.error.min.value' }),
+      )
       .min(1, formatMessage({ id: 'special.percentage.input.error.min.value' }))
-      .max(50, formatMessage({ id: 'special.percentage.input.error.max.value' })),
+      .max(
+        50,
+        formatMessage({ id: 'special.percentage.input.error.max.value' }),
+      ),
     stakePeriod: yup
       .number()
       .positive('')
       .required('')
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
-      .max(50, formatMessage({ id: 'special.hour.input.error.max.value' }, { maxValue: 50 })),
+      .max(
+        50,
+        formatMessage(
+          { id: 'special.hour.input.error.max.value' },
+          { maxValue: 50 },
+        ),
+      ),
     submitPeriod: yup
       .number()
       .positive('')
       .required('')
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
-      .max(50, formatMessage({ id: 'special.hour.input.error.max.value' }, { maxValue: 50 })),
+      .max(
+        50,
+        formatMessage(
+          { id: 'special.hour.input.error.max.value' },
+          { maxValue: 50 },
+        ),
+      ),
     revealPeriod: yup
       .number()
       .positive('')
       .required('')
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
-      .max(50, formatMessage({ id: 'special.hour.input.error.max.value' }, { maxValue: 50 })),
+      .max(
+        50,
+        formatMessage(
+          { id: 'special.hour.input.error.max.value' },
+          { maxValue: 50 },
+        ),
+      ),
     escalationPeriod: yup
       .number()
       .positive('')
       .required('')
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
-      .max(50, formatMessage({ id: 'special.hour.input.error.max.value' }, { maxValue: 50 })),
+      .max(
+        50,
+        formatMessage(
+          { id: 'special.hour.input.error.max.value' },
+          { maxValue: 50 },
+        ),
+      ),
     // ...Object.fromEntries(Object.keys(extensionContentSpeedOverSecurity || {}).map(key => [key, yup.number().positive('').required('required').min(1, formatMessage({ id: `special.hour.input.error.min.value` })).max(50, formatMessage({ id: 'special.hour.input.error.max.value' }, { maxValue: 50 }))])),
   });
 
@@ -137,11 +185,14 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
             textItem: (
               <ContentTypeText
                 title={item?.title?.defaultMessage || item?.title}
-                subTitle={item?.description?.defaultMessage || item?.description}
+                subTitle={
+                  item?.description?.defaultMessage || item?.description
+                }
               />
             ),
             inputData: {
-              inputType: item.complementaryLabel === 'percent' ? 'percent' : 'hours',
+              inputType:
+                item.complementaryLabel === 'percent' ? 'percent' : 'hours',
               // @ts-ignore
               maxValue: item?.validation?.tests[0].OPTIONS.params.max,
               // @ts-ignore
@@ -160,7 +211,10 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
 
   const updateGovernanceFormFields = (data) =>
     extensionData?.initializationParams?.forEach((param) => {
-      return setValue(param.paramName, data.find((item) => item.paramName === param.paramName)?.defaultValue);
+      return setValue(
+        param.paramName,
+        data.find((item) => item.paramName === param.paramName)?.defaultValue,
+      );
     });
 
   const onChangeGovernance = useCallback(
@@ -171,19 +225,35 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
       clearErrors('governance');
       switch (getValues('governance')) {
         case 'radio-button-1':
-          setExtensionContentParameters(extensionContent(extensionContentSpeedOverSecurity) as AccordionContent[]);
+          setExtensionContentParameters(
+            extensionContent(
+              extensionContentSpeedOverSecurity,
+            ) as AccordionContent[],
+          );
           updateGovernanceFormFields(extensionContentSpeedOverSecurity);
           break;
         case 'radio-button-2':
-          setExtensionContentParameters(extensionContent(extensionContentSecurityOverSpeed) as AccordionContent[]);
+          setExtensionContentParameters(
+            extensionContent(
+              extensionContentSecurityOverSpeed,
+            ) as AccordionContent[],
+          );
           updateGovernanceFormFields(extensionContentSecurityOverSpeed);
           break;
         case 'radio-button-3':
-          setExtensionContentParameters(extensionContent(extensionContentTestingGovernance) as AccordionContent[]);
+          setExtensionContentParameters(
+            extensionContent(
+              extensionContentTestingGovernance,
+            ) as AccordionContent[],
+          );
           updateGovernanceFormFields(extensionContentTestingGovernance);
           break;
         default:
-          setExtensionContentParameters(extensionContent(extensionData?.initializationParams) as AccordionContent[]);
+          setExtensionContentParameters(
+            extensionContent(
+              extensionData?.initializationParams,
+            ) as AccordionContent[],
+          );
           updateGovernanceFormFields(extensionData?.initializationParams);
           break;
       }
@@ -212,7 +282,11 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
 
   const transform = pipe(
     mapPayload((payload) =>
-      mapExtensionActionPayload(extensionId as Extension, payload, prepareInitializationParams as ExtensionInitParam[]),
+      mapExtensionActionPayload(
+        extensionId as Extension,
+        payload,
+        prepareInitializationParams as ExtensionInitParam[],
+      ),
     ),
     mergePayload({ colonyAddress: colony?.colonyAddress, extensionData }),
   );
@@ -238,7 +312,13 @@ export const useLazyConsensusPage = (onOpenIndexChange?: (index: number) => void
         // ),
       });
     } catch (err) {
-      toast.error(<Toast type="error" title="Error" description="Extension can't be changed" />);
+      toast.error(
+        <Toast
+          type="error"
+          title="Error"
+          description="Extension can't be changed"
+        />,
+      );
       console.error(err);
     }
   };

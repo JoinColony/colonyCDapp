@@ -5,7 +5,10 @@ import { usePrevious, useMobile } from '~hooks';
 
 import { removeValueUnits } from '~utils/css';
 
-import { TransactionOrMessageGroups, transactionCount } from './transactionGroup';
+import {
+  TransactionOrMessageGroups,
+  transactionCount,
+} from './transactionGroup';
 
 import GasStationContent from './GasStationContent';
 
@@ -18,7 +21,10 @@ interface Props {
 
 const displayName = 'frame.GasStation.GasStationPopover';
 
-const GasStationPopover = ({ children, transactionAndMessageGroups }: Props) => {
+const GasStationPopover = ({
+  children,
+  transactionAndMessageGroups,
+}: Props) => {
   const [isOpen, setOpen] = useState(false);
   const [txNeedsSigning, setTxNeedsSigning] = useState(false);
   /*
@@ -28,7 +34,10 @@ const GasStationPopover = ({ children, transactionAndMessageGroups }: Props) => 
    */
   // @ts-ignore
   const transactionsAndMessages = transactionAndMessageGroups.toJS();
-  const txCount = useMemo(() => transactionCount(transactionsAndMessages), [transactionsAndMessages]);
+  const txCount = useMemo(
+    () => transactionCount(transactionsAndMessages),
+    [transactionsAndMessages],
+  );
 
   const prevTxCount: number | void = usePrevious(txCount);
   const isMobile = useMobile();

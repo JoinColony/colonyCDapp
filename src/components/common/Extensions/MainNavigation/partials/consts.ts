@@ -23,7 +23,8 @@ export const navMenuItems: NavItem[] = [
       {
         label: 'Activity',
         href: '/activity',
-        description: 'Latest activity in the Colony, including motions & actions.',
+        description:
+          'Latest activity in the Colony, including motions & actions.',
       },
       {
         label: 'About',
@@ -38,7 +39,8 @@ export const navMenuItems: NavItem[] = [
       {
         label: 'Members',
         href: '/members',
-        description: 'View and manage contributors and followers in this colony.',
+        description:
+          'View and manage contributors and followers in this colony.',
       },
       {
         label: 'Teams',

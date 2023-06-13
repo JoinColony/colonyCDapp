@@ -26,7 +26,12 @@ interface Props {
 
 const displayName = 'CopyableAddress';
 
-const CopyableAddress = ({ appearance, children: address, full, hideAddress = false }: Props) => {
+const CopyableAddress = ({
+  appearance,
+  children: address,
+  full,
+  hideAddress = false,
+}: Props) => {
   const getAddress = useCallback(() => {
     const addressElements = splitAddress(address);
     if (full && !(addressElements instanceof Error)) {
@@ -36,7 +41,9 @@ const CopyableAddress = ({ appearance, children: address, full, hideAddress = fa
   }, [address, full]);
   return (
     <div className={getMainClasses(appearance, styles)}>
-      <div className={styles.addressContainer}>{!hideAddress && getAddress()}</div>
+      <div className={styles.addressContainer}>
+        {!hideAddress && getAddress()}
+      </div>
       <span className={styles.copyButton}>
         <ClipboardCopy value={address} />
       </span>

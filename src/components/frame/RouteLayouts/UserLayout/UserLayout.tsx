@@ -18,7 +18,10 @@ interface Props {
 
 const displayName = 'frame.RouteLayouts.UserLayout';
 
-const UserLayout = ({ children, routeProps: { hasSubscribedColonies = true } = {} }: Props) => {
+const UserLayout = ({
+  children,
+  routeProps: { hasSubscribedColonies = true } = {},
+}: Props) => {
   const isMobile = useMobile();
 
   return (

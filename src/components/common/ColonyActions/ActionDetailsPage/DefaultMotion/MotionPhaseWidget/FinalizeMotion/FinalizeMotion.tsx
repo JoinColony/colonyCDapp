@@ -12,7 +12,8 @@ import FinalizeButton from './FinalizeButton';
 
 import styles from './FinalizeMotion.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.FinalizeMotion';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.FinalizeMotion';
 
 const MSG = defineMessages({
   finalizeLabel: {
@@ -63,10 +64,16 @@ const FinalizeMotion = ({
   }, [stopPollingAction]);
 
   if (isPolling) {
-    return <MiniSpinnerLoader className={styles.loading} loadingText={MSG.loading} />;
+    return (
+      <MiniSpinnerLoader className={styles.loading} loadingText={MSG.loading} />
+    );
   }
 
-  const domainBalance = getBalanceForTokenAndDomain(balances, tokenAddress ?? '', Number(nativeMotionDomainId));
+  const domainBalance = getBalanceForTokenAndDomain(
+    balances,
+    tokenAddress ?? '',
+    Number(nativeMotionDomainId),
+  );
 
   const isFinalizable =
     !requiresDomainFunds ||

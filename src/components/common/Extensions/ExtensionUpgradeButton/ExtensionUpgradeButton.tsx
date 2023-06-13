@@ -1,5 +1,10 @@
 import React from 'react';
-import { ColonyVersion, Extension, ExtensionVersion, isExtensionCompatible } from '@colony/colony-js';
+import {
+  ColonyVersion,
+  Extension,
+  ExtensionVersion,
+  isExtensionCompatible,
+} from '@colony/colony-js';
 
 import { ActionButton } from '~shared/Button';
 import { AnyExtensionData } from '~types';
@@ -17,7 +22,10 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
 
-  if (!isInstalledExtensionData(extensionData) || extensionData.currentVersion >= extensionData.availableVersion) {
+  if (
+    !isInstalledExtensionData(extensionData) ||
+    extensionData.currentVersion >= extensionData.availableVersion
+  ) {
     return null;
   }
 
@@ -31,7 +39,8 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
     return null;
   }
 
-  const isSupportedColonyVersion = colony.version >= MIN_SUPPORTED_COLONY_VERSION;
+  const isSupportedColonyVersion =
+    colony.version >= MIN_SUPPORTED_COLONY_VERSION;
 
   const extensionCompatible = isExtensionCompatible(
     Extension[extensionData.extensionId],
@@ -51,7 +60,9 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
       actionType={ActionTypes.EXTENSION_UPGRADE}
       transform={transform}
       text={{ id: 'button.upgrade' }}
-      disabled={!isSupportedColonyVersion || !extensionCompatible || !canUpgrade}
+      disabled={
+        !isSupportedColonyVersion || !extensionCompatible || !canUpgrade
+      }
     />
   );
 };

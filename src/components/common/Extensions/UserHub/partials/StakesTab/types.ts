@@ -6,5 +6,8 @@ export interface StakesProps {
   date: string;
   stake: string;
   transfer: string;
-  status?: Omit<ExtensionStatusBadgeMode, 'staking' | 'finalizable' | 'claimed'>;
+  status?: Omit<
+    ExtensionStatusBadgeMode,
+    'staking' | 'finalizable' | 'claimed'
+  >;
 }

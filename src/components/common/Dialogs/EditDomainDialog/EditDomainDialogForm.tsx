@@ -3,8 +3,17 @@ import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
-import { HookFormInput as Input, Annotations, SelectOption } from '~shared/Fields';
+import {
+  ActionDialogProps,
+  DialogControls,
+  DialogHeading,
+  DialogSection,
+} from '~shared/Dialog';
+import {
+  HookFormInput as Input,
+  Annotations,
+  SelectOption,
+} from '~shared/Fields';
 
 import { DomainColor } from '~gql';
 import { findDomainByNativeId } from '~utils/domains';
@@ -62,19 +71,32 @@ const EditDomainDialogForm = ({
   isForce,
 }: Props) => {
   const { watch, reset: resetForm } = useFormContext();
-  const { domainName, domainPurpose, forceAction, domainId, motionDomainId } = watch();
-  const { userHasPermission, disabledSubmit, disabledInput, canCreateMotion, canOnlyForceAction } =
-    useEditDomainDialogStatus(colony, requiredRoles, enabledExtensionData, domainOptions);
+  const { domainName, domainPurpose, forceAction, domainId, motionDomainId } =
+    watch();
+  const {
+    userHasPermission,
+    disabledSubmit,
+    disabledInput,
+    canCreateMotion,
+    canOnlyForceAction,
+  } = useEditDomainDialogStatus(
+    colony,
+    requiredRoles,
+    enabledExtensionData,
+    domainOptions,
+  );
 
   const handleDomainChange = (selectedDomainValue: number) => {
     const selectedDomain = findDomainByNativeId(selectedDomainValue, colony);
-    const selectedDomainColor = selectedDomain?.metadata?.color || DomainColor.LightPink;
+    const selectedDomainColor =
+      selectedDomain?.metadata?.color || DomainColor.LightPink;
 
     if (selectedDomain) {
       resetForm({
         domainId: selectedDomain.nativeId,
         domainColor: selectedDomainColor,
-        domainName: selectedDomain.metadata?.name || `Domain #${selectedDomain.nativeId}`,
+        domainName:
+          selectedDomain.metadata?.name || `Domain #${selectedDomain.nativeId}`,
         domainPurpose: selectedDomain.metadata?.description || '',
         forceAction,
         motionDomainId:
@@ -85,7 +107,8 @@ const EditDomainDialogForm = ({
            * domain to another subdomain of Root. In cases like that, we need to change motion domain id because you can't create a motion
            * in a subdomain, to edit a "sibling" subdomain.
            */
-          motionDomainId !== Id.RootDomain && motionDomainId !== selectedDomainValue
+          motionDomainId !== Id.RootDomain &&
+          motionDomainId !== selectedDomainValue
             ? selectedDomain.nativeId
             : motionDomainId,
       });
@@ -106,7 +129,9 @@ const EditDomainDialogForm = ({
           title={MSG.titleEdit}
           colony={colony}
           userHasPermission={userHasPermission}
-          isVotingExtensionEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
           selectedDomainId={domainId}
         />
       </DialogSection>
@@ -154,12 +179,18 @@ const EditDomainDialogForm = ({
       </DialogSection>
       {domainOptions.length > 0 && !userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <NoPermissionMessage requiredPermissions={[ColonyRole.Architecture]} domainName={domainName} />
+          <NoPermissionMessage
+            requiredPermissions={[ColonyRole.Architecture]}
+            domainName={domainName}
+          />
         </DialogSection>
       )}
       {canOnlyForceAction && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <NotEnoughReputation appearance={{ marginTop: 'negative' }} domainId={domainId} />
+          <NotEnoughReputation
+            appearance={{ marginTop: 'negative' }}
+            domainId={domainId}
+          />
         </DialogSection>
       )}
       {!canCreateMotion && (
@@ -172,7 +203,9 @@ const EditDomainDialogForm = ({
           onSecondaryButtonClick={back}
           disabled={disabledSubmit}
           dataTest="editDomainConfirmButton"
-          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>

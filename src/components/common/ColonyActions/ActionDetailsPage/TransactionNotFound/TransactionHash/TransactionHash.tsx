@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { TransactionMeta, TransactionMetaProps, TransactionStatuses } from '~common/ColonyActions';
+import {
+  TransactionMeta,
+  TransactionMetaProps,
+  TransactionStatuses,
+} from '~common/ColonyActions';
 
 import Hash from './Hash';
 
@@ -15,11 +19,22 @@ interface Props {
   createdAt?: TransactionMetaProps['createdAt'];
 }
 
-const TransactionHash = ({ transactionHash, status, showMeta = true, createdAt = Date.now() }: Props) => (
+const TransactionHash = ({
+  transactionHash,
+  status,
+  showMeta = true,
+  createdAt = Date.now(),
+}: Props) => (
   <div className={styles.main}>
     <div className={styles.transaction}>
       <Hash transactionHash={transactionHash} status={status} />
-      {showMeta && <TransactionMeta transactionHash={transactionHash} createdAt={createdAt} status={status} />}
+      {showMeta && (
+        <TransactionMeta
+          transactionHash={transactionHash}
+          createdAt={createdAt}
+          status={status}
+        />
+      )}
     </div>
   </div>
 );

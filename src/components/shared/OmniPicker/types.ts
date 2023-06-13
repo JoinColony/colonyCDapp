@@ -1,4 +1,9 @@
-import { ComponentType, ReactNode, SyntheticEvent, InputHTMLAttributes } from 'react';
+import {
+  ComponentType,
+  ReactNode,
+  SyntheticEvent,
+  InputHTMLAttributes,
+} from 'react';
 
 import { Props as InProps } from './withOmniPicker';
 
@@ -8,7 +13,10 @@ export type ItemDataType<D> = D & {
 
 export type EmptyRenderFnType = () => ReactNode;
 
-export type ItemRenderFnType<D> = (itemData: ItemDataType<D>, selected: boolean) => ReactNode;
+export type ItemRenderFnType<D> = (
+  itemData: ItemDataType<D>,
+  selected: boolean,
+) => ReactNode;
 
 export type Choose = (event: SyntheticEvent) => void;
 

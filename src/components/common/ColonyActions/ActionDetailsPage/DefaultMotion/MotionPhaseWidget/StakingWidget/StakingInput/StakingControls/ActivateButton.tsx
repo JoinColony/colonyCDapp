@@ -3,7 +3,8 @@ import React from 'react';
 import { useTokenActivationContext } from '~hooks';
 import Button from '~shared/Button';
 
-const displayName = 'common.ColonyActions.DefaultMotion.StakingWidget.StakingControls.ActivateButton';
+const displayName =
+  'common.ColonyActions.DefaultMotion.StakingWidget.StakingControls.ActivateButton';
 
 const ActivateButton = () => {
   const { setIsOpen } = useTokenActivationContext();

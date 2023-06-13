@@ -6,11 +6,16 @@ import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import { putError, takeFrom, getColonyManager } from '../utils';
 
-import { createGroupTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import {
+  createGroupTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 import { transactionReady } from '../../actionCreators';
 import { signMessage } from '../messages';
 
-export type RevealMotionPayload = Action<ActionTypes.MOTION_REVEAL_VOTE>['payload'];
+export type RevealMotionPayload =
+  Action<ActionTypes.MOTION_REVEAL_VOTE>['payload'];
 
 function* revealVoteMotion({
   meta,
@@ -19,17 +24,31 @@ function* revealVoteMotion({
   const txChannel = yield call(getTxChannel, meta.id);
   try {
     const colonyManager = yield getColonyManager();
-    const colonyClient = yield colonyManager.getClient(ClientType.ColonyClient, colonyAddress);
-    const votingReputationClient: AnyVotingReputationClient = yield colonyManager.getClient(
-      ClientType.VotingReputationClient,
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
       colonyAddress,
     );
+    const votingReputationClient: AnyVotingReputationClient =
+      yield colonyManager.getClient(
+        ClientType.VotingReputationClient,
+        colonyAddress,
+      );
 
-    const { domainId, rootHash } = yield votingReputationClient.getMotion(motionId);
+    const { domainId, rootHash } = yield votingReputationClient.getMotion(
+      motionId,
+    );
 
-    const { skillId } = yield call([colonyClient, colonyClient.getDomain], domainId);
+    const { skillId } = yield call(
+      [colonyClient, colonyClient.getDomain],
+      domainId,
+    );
 
-    const { key, value, branchMask, siblings } = yield call(colonyClient.getReputation, skillId, userAddress, rootHash);
+    const { key, value, branchMask, siblings } = yield call(
+      colonyClient.getReputation,
+      skillId,
+      userAddress,
+      rootHash,
+    );
 
     /*
      * @NOTE We this to be all in one line (no new lines, or line breaks) since
@@ -48,7 +67,15 @@ function* revealVoteMotion({
      */
     let sideVoted;
     try {
-      yield votingReputationClient.estimateGas.revealVote(motionId, salt, 0, key, value, branchMask, siblings);
+      yield votingReputationClient.estimateGas.revealVote(
+        motionId,
+        salt,
+        0,
+        key,
+        value,
+        branchMask,
+        siblings,
+      );
       sideVoted = 0;
     } catch (error) {
       /*
@@ -60,27 +87,49 @@ function* revealVoteMotion({
        */
     }
     try {
-      yield votingReputationClient.estimateGas.revealVote(motionId, salt, 1, key, value, branchMask, siblings);
+      yield votingReputationClient.estimateGas.revealVote(
+        motionId,
+        salt,
+        1,
+        key,
+        value,
+        branchMask,
+        siblings,
+      );
       sideVoted = 1;
     } catch (error) {
       // Same as above. Silent error
     }
     if (sideVoted !== undefined) {
-      const { revealVoteMotionTransaction } = yield createTransactionChannels(meta.id, ['revealVoteMotionTransaction']);
+      const { revealVoteMotionTransaction } = yield createTransactionChannels(
+        meta.id,
+        ['revealVoteMotionTransaction'],
+      );
 
-      yield createGroupTransaction(revealVoteMotionTransaction, 'revealVoteMotion', meta, {
-        context: ClientType.VotingReputationClient,
-        methodName: 'revealVote',
-        identifier: colonyAddress,
-        params: [motionId, salt, sideVoted, key, value, branchMask, siblings],
-        ready: false,
-      });
+      yield createGroupTransaction(
+        revealVoteMotionTransaction,
+        'revealVoteMotion',
+        meta,
+        {
+          context: ClientType.VotingReputationClient,
+          methodName: 'revealVote',
+          identifier: colonyAddress,
+          params: [motionId, salt, sideVoted, key, value, branchMask, siblings],
+          ready: false,
+        },
+      );
 
-      yield takeFrom(revealVoteMotionTransaction.channel, ActionTypes.TRANSACTION_CREATED);
+      yield takeFrom(
+        revealVoteMotionTransaction.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
 
       yield put(transactionReady(revealVoteMotionTransaction.id));
 
-      yield takeFrom(revealVoteMotionTransaction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      yield takeFrom(
+        revealVoteMotionTransaction.channel,
+        ActionTypes.TRANSACTION_SUCCEEDED,
+      );
 
       return yield put<AllActions>({
         type: ActionTypes.MOTION_REVEAL_VOTE_SUCCESS,

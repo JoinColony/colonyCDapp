@@ -17,7 +17,11 @@ export const getStakingTransformFn = (
   vote: number,
 ) =>
   mapPayload(({ amount: sliderAmount }) => {
-    const finalStake = getStakeFromSlider(sliderAmount, remainingToStake, userMinStake);
+    const finalStake = getStakeFromSlider(
+      sliderAmount,
+      remainingToStake,
+      userMinStake,
+    );
 
     return {
       amount: finalStake,
@@ -29,7 +33,10 @@ export const getStakingTransformFn = (
   });
 
 export const getHandleStakeSuccessFn =
-  (setIsRefetching: SetStateFn, startPolling: (pollingInterval: number) => void) =>
+  (
+    setIsRefetching: SetStateFn,
+    startPolling: (pollingInterval: number) => void,
+  ) =>
   (_, { reset }) => {
     reset();
     setIsRefetching(true);

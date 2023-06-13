@@ -1,5 +1,14 @@
 import { Channel, buffers } from 'redux-saga';
-import { actionChannel, all, call, cancel, fork, put, take, takeEvery } from 'redux-saga/effects';
+import {
+  actionChannel,
+  all,
+  call,
+  cancel,
+  fork,
+  put,
+  take,
+  takeEvery,
+} from 'redux-saga/effects';
 
 import { TxConfig } from '~types';
 import { filterUniqueAction } from '~utils/actions';
@@ -16,7 +25,9 @@ export function* createTransaction(id: string, config: TxConfig) {
   const shouldSendMetatransaction = yield getCanUserSendMetatransactions();
 
   if (!walletAddress) {
-    throw new Error('Could not create transaction. No current user address available');
+    throw new Error(
+      'Could not create transaction. No current user address available',
+    );
   }
 
   if (!id) {
@@ -39,7 +50,9 @@ export function* createTransaction(id: string, config: TxConfig) {
            * as it has very serious gas cost implications if the user is not aware
            * they are sending a transaction on mainnet !!!
            */
-          typeof config.metatransaction === 'boolean' ? config.metatransaction : true,
+          typeof config.metatransaction === 'boolean'
+            ? config.metatransaction
+            : true,
       }),
     );
   } else {
@@ -49,15 +62,22 @@ export function* createTransaction(id: string, config: TxConfig) {
   // Create tasks for estimating and sending; the actions may be taken multiple times
   let estimateGasTask;
   if (!shouldSendMetatransaction) {
-    estimateGasTask = yield takeEvery(filterUniqueAction(id, ActionTypes.TRANSACTION_ESTIMATE_GAS), estimateGasCost);
+    estimateGasTask = yield takeEvery(
+      filterUniqueAction(id, ActionTypes.TRANSACTION_ESTIMATE_GAS),
+      estimateGasCost,
+    );
   }
 
-  const sendTransactionTask = yield takeEvery(filterUniqueAction(id, ActionTypes.TRANSACTION_SEND), sendTransaction);
+  const sendTransactionTask = yield takeEvery(
+    filterUniqueAction(id, ActionTypes.TRANSACTION_SEND),
+    sendTransaction,
+  );
 
   // Wait for a success or cancel action before cancelling the tasks
   yield take(
     (action) =>
-      (action.type === ActionTypes.TRANSACTION_SUCCEEDED || action.type === ActionTypes.TRANSACTION_CANCEL) &&
+      (action.type === ActionTypes.TRANSACTION_SUCCEEDED ||
+        action.type === ActionTypes.TRANSACTION_CANCEL) &&
       action.meta.id === id,
   );
 

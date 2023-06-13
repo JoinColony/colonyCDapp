@@ -12,11 +12,22 @@ import { useExtensionItem } from './hooks';
 
 const displayName = 'common.Extensions.ExtensionItem';
 
-const ExtensionItem: FC<ExtensionItemProps> = ({ title, description, version, icon, extensionId = '' }) => {
+const ExtensionItem: FC<ExtensionItemProps> = ({
+  title,
+  description,
+  version,
+  icon,
+  extensionId = '',
+}) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const { badgeMessage, extensionUrl, handleInstallClick, isExtensionInstalled, status } =
-    useExtensionItem(extensionId);
+  const {
+    badgeMessage,
+    extensionUrl,
+    handleInstallClick,
+    isExtensionInstalled,
+    status,
+  } = useExtensionItem(extensionId);
 
   return (
     <div className="flex items-center flex-shrink-0">
@@ -28,7 +39,9 @@ const ExtensionItem: FC<ExtensionItemProps> = ({ title, description, version, ic
             <p className="text-xs font-medium text-gray-600 mr-2">v{version}</p>
             <ExtensionStatusBadge mode={status} text={badgeMessage} />
           </div>
-          <p className="text-sm text-gray-600 mt-0.5">{formatMessage(description)}</p>
+          <p className="text-sm text-gray-600 mt-0.5">
+            {formatMessage(description)}
+          </p>
         </div>
         {isExtensionInstalled && (
           <div className="sm:ml-4 flex-shrink-0">
@@ -38,7 +51,11 @@ const ExtensionItem: FC<ExtensionItemProps> = ({ title, description, version, ic
           </div>
         )}
         {!isExtensionInstalled && (
-          <Button mode="primarySolid" isFullSize={isMobile} onClick={handleInstallClick}>
+          <Button
+            mode="primarySolid"
+            isFullSize={isMobile}
+            onClick={handleInstallClick}
+          >
             {formatMessage({ id: 'button.install' })}
           </Button>
         )}

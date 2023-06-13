@@ -8,7 +8,10 @@ on selection
 
 export type OmniPickerUser = User & OmniPickerData;
 
-export const filterUserSelection = (data: OmniPickerUser[], filterValue: string | undefined) => {
+export const filterUserSelection = (
+  data: OmniPickerUser[],
+  filterValue: string | undefined,
+) => {
   if (!filterValue) {
     return data;
   }
@@ -17,7 +20,9 @@ export const filterUserSelection = (data: OmniPickerUser[], filterValue: string 
     (user) =>
       user?.name.toLowerCase().includes(filterValue.toLowerCase()) ||
       user?.walletAddress.toLowerCase().includes(filterValue.toLowerCase()) ||
-      user?.profile?.displayName?.toLowerCase().includes(filterValue.toLowerCase()),
+      user?.profile?.displayName
+        ?.toLowerCase()
+        .includes(filterValue.toLowerCase()),
   );
 
   const customUser: Omit<OmniPickerUser, 'name'> = {
