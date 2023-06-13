@@ -36,7 +36,10 @@ interface Props {
   extensionData: AnyExtensionData;
 }
 
-const ExtensionStatusBadge = ({ deprecatedOnly = false, extensionData }: Props) => {
+const ExtensionStatusBadge = ({
+  deprecatedOnly = false,
+  extensionData,
+}: Props) => {
   let status;
   let theme;
 
@@ -58,11 +61,14 @@ const ExtensionStatusBadge = ({ deprecatedOnly = false, extensionData }: Props) 
     theme = 'golden';
   }
 
-  const isDeprecated = isInstalledExtensionData(extensionData) && extensionData.isDeprecated;
+  const isDeprecated =
+    isInstalledExtensionData(extensionData) && extensionData.isDeprecated;
 
   return (
     <div className={styles.tagContainer}>
-      {(isDeprecated || !deprecatedOnly) && <Tag appearance={{ theme }} text={status} />}
+      {(isDeprecated || !deprecatedOnly) && (
+        <Tag appearance={{ theme }} text={status} />
+      )}
     </div>
   );
 };

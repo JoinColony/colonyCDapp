@@ -16,5 +16,7 @@ export const userHasInsufficientReputation = (
  * stake more than 100% of a motion)
  */
 
-export const userCanStakeMore = (userMinStake: string, remainingToStake: string) =>
-  BigNumber.from(remainingToStake).gte(userMinStake);
+export const userCanStakeMore = (
+  userMinStake: string,
+  remainingToStake: string,
+) => BigNumber.from(remainingToStake).gte(userMinStake);

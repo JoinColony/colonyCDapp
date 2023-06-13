@@ -14,7 +14,11 @@ import {
   useEnabledExtensions,
 } from '~hooks';
 import { getNetworkReleaseLink } from '~utils/external';
-import { hasRoot, mustColonyBeUpgraded, canColonyBeUpgraded } from '~utils/checks';
+import {
+  hasRoot,
+  mustColonyBeUpgraded,
+  canColonyBeUpgraded,
+} from '~utils/checks';
 import { getAllUserRoles } from '~transformers';
 
 import styles from './ColonyUpgrade.css';
@@ -47,7 +51,10 @@ const ColonyUpgrade = () => {
       enabledExtensionData,
     });
 
-  const allUserRoles = useTransformer(getAllUserRoles, [colony as ColonyFragment, wallet?.address ?? '']);
+  const allUserRoles = useTransformer(getAllUserRoles, [
+    colony as ColonyFragment,
+    wallet?.address ?? '',
+  ]);
 
   const canUpgradeColony = user?.name && hasRoot(allUserRoles);
 
@@ -96,7 +103,12 @@ const ColonyUpgrade = () => {
                 <FormattedMessage
                   {...MSG.upgradeSuggested}
                   values={{
-                    linkToRelease: <ExternalLink text={{ id: 'text.learnMore' }} href={getNetworkReleaseLink()} />,
+                    linkToRelease: (
+                      <ExternalLink
+                        text={{ id: 'text.learnMore' }}
+                        href={getNetworkReleaseLink()}
+                      />
+                    ),
                   }}
                 />
               </div>

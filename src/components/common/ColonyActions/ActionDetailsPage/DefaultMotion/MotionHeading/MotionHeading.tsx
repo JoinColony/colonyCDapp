@@ -9,7 +9,8 @@ import MotionCountdown from '../MotionCountdown';
 
 import styles from './MotionHeading.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.MotionHeading';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.MotionHeading';
 
 interface MotionHeadingProps {
   motionState: MotionState;
@@ -17,13 +18,21 @@ interface MotionHeadingProps {
   motionData: ColonyMotion;
 }
 
-const MotionHeading = ({ motionState, motionData, refetchMotionState }: MotionHeadingProps) => {
+const MotionHeading = ({
+  motionState,
+  motionData,
+  refetchMotionState,
+}: MotionHeadingProps) => {
   const MotionTag = motionTags[motionState];
 
   return (
     <div className={styles.main}>
       <MotionTag />
-      <MotionCountdown motionState={motionState} refetchMotionState={refetchMotionState} motionData={motionData} />
+      <MotionCountdown
+        motionState={motionState}
+        refetchMotionState={refetchMotionState}
+        motionData={motionData}
+      />
     </div>
   );
 };

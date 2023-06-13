@@ -1,4 +1,10 @@
-import React, { FocusEvent, useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  FocusEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 import { useField } from 'formik';
 import { nanoid } from 'nanoid';
@@ -49,9 +55,12 @@ const SingleLineEdit = ({
   const { formatMessage } = useIntl();
 
   const placeholder =
-    typeof placeholderProp === 'object' ? formatMessage(placeholderProp, placeholderValues) : placeholderProp;
+    typeof placeholderProp === 'object'
+      ? formatMessage(placeholderProp, placeholderValues)
+      : placeholderProp;
 
-  const [{ onBlur, onChange }, { error, value = '' }, { setValue }] = useField<string>(name);
+  const [{ onBlur, onChange }, { error, value = '' }, { setValue }] =
+    useField<string>(name);
 
   const setIsEditing = useCallback(
     (newIsEditing: boolean) => {
@@ -93,7 +102,11 @@ const SingleLineEdit = ({
 
   const handleOutsideClick = useCallback(
     (evt: MouseEvent) => {
-      if (inputRef && evt.target instanceof Node && !(inputRef as any).contains(evt.target)) {
+      if (
+        inputRef &&
+        evt.target instanceof Node &&
+        !(inputRef as any).contains(evt.target)
+      ) {
         setIsEditing(false);
       }
     },

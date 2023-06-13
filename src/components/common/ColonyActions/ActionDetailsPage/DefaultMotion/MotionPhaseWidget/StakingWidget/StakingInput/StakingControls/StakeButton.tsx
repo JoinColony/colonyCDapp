@@ -7,7 +7,8 @@ import Button from '~shared/Button';
 import { calculateStakeLimitDecimal } from '../../helpers';
 import { useStakingWidgetContext } from '../../StakingWidgetProvider';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.StakeButton';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.StakeButton';
 
 interface StakeButtonProps {
   isLoadingData: boolean;
@@ -29,11 +30,16 @@ const StakeButton = ({
   canStakeMore,
 }: StakeButtonProps) => {
   const { user } = useAppContext();
-  const { isObjection, remainingToStake, usersStakes, userMinStake } = useStakingWidgetContext();
+  const { isObjection, remainingToStake, usersStakes, userMinStake } =
+    useStakingWidgetContext();
 
-  const userStakes = usersStakes.find(({ address }) => address === user?.walletAddress);
+  const userStakes = usersStakes.find(
+    ({ address }) => address === user?.walletAddress,
+  );
 
-  const userTotalStake = isObjection ? userStakes?.stakes.raw.nay : userStakes?.stakes.raw.yay;
+  const userTotalStake = isObjection
+    ? userStakes?.stakes.raw.nay
+    : userStakes?.stakes.raw.yay;
 
   const limitIsZero = calculateStakeLimitDecimal(
     remainingToStake,

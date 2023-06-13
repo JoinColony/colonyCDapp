@@ -5,7 +5,11 @@ import { Action, ActionTypes, AllActions } from '~redux';
 
 import { putError, takeFrom } from '../utils';
 
-import { createGroupTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import {
+  createGroupTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 import { transactionReady } from '~redux/actionCreators';
 
 function* manageReputationAction({
@@ -23,7 +27,9 @@ function* manageReputationAction({
 }: Action<ActionTypes.ACTION_MANAGE_REPUTATION>) {
   let txChannel;
   try {
-    const batchKey = isSmitingReputation ? 'emitDomainReputationPenalty' : 'emitDomainReputationReward';
+    const batchKey = isSmitingReputation
+      ? 'emitDomainReputationPenalty'
+      : 'emitDomainReputationReward';
 
     if (!userAddress) {
       throw new Error(`User address not set for ${batchKey} transaction`);
@@ -39,14 +45,17 @@ function* manageReputationAction({
 
     txChannel = yield call(getTxChannel, metaId);
 
-    const { manageReputation /* annotateManageReputation */ } = yield createTransactionChannels(metaId, [
-      'manageReputation',
-      // 'annotateManageReputation',
-    ]);
+    const { manageReputation /* annotateManageReputation */ } =
+      yield createTransactionChannels(metaId, [
+        'manageReputation',
+        // 'annotateManageReputation',
+      ]);
 
     yield createGroupTransaction(manageReputation, batchKey, meta, {
       context: ClientType.ColonyClient,
-      methodName: isSmitingReputation ? 'emitDomainReputationPenaltyWithProofs' : 'emitDomainReputationReward',
+      methodName: isSmitingReputation
+        ? 'emitDomainReputationPenaltyWithProofs'
+        : 'emitDomainReputationReward',
       identifier: colonyAddress,
       params: [domainId, userAddress, amount],
       ready: false,
@@ -74,7 +83,10 @@ function* manageReputationAction({
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(manageReputation.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
+    } = yield takeFrom(
+      manageReputation.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
 
     yield takeFrom(manageReputation.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
@@ -115,7 +127,11 @@ function* manageReputationAction({
       });
     }
   } catch (error) {
-    return yield putError(ActionTypes.ACTION_MANAGE_REPUTATION_ERROR, error, meta);
+    return yield putError(
+      ActionTypes.ACTION_MANAGE_REPUTATION_ERROR,
+      error,
+      meta,
+    );
   } finally {
     txChannel.close();
   }

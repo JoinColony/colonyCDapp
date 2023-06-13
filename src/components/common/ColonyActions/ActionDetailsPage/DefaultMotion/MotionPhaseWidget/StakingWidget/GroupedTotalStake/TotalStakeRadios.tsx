@@ -5,7 +5,8 @@ import useTotalStakeRadios from './useTotalStakeRadios';
 
 import styles from './TotalStakeRadios.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.TotalStakeRadios';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.TotalStakeRadios';
 
 const TotalStakeRadios = () => {
   const { radioConfig, stakeSide } = useTotalStakeRadios();

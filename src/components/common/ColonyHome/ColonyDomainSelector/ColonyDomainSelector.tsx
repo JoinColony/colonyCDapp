@@ -27,7 +27,10 @@ interface Props {
 
 const displayName = 'common.ColonyHome.ColonyDomainSelector';
 
-const ColonyDomainSelector = ({ filteredDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID, onDomainChange }: Props) => {
+const ColonyDomainSelector = ({
+  filteredDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
+  onDomainChange,
+}: Props) => {
   const { colony, canInteractWithColony } = useColonyContext();
   const { domains } = colony || {};
   const enabledExtensionData = useEnabledExtensions();
@@ -41,7 +44,9 @@ const ColonyDomainSelector = ({ filteredDomainId = COLONY_TOTAL_BALANCE_DOMAIN_I
       enabledExtensionData,
     });
 
-  const getDomainColor = useCallback<(domainId: number | undefined) => DomainColor>(
+  const getDomainColor = useCallback<
+    (domainId: number | undefined) => DomainColor
+  >(
     (domainId) => {
       const rootDomainColor = DomainColor.LightPink;
       const defaultColor = DomainColor.Yellow;
@@ -51,19 +56,24 @@ const ColonyDomainSelector = ({ filteredDomainId = COLONY_TOTAL_BALANCE_DOMAIN_I
       if (!colony || !domainId) {
         return defaultColor;
       }
-      const domain = domains?.items?.find((currentDomain) => domainId === currentDomain?.nativeId);
+      const domain = domains?.items?.find(
+        (currentDomain) => domainId === currentDomain?.nativeId,
+      );
       return domain?.metadata?.color || defaultColor;
     },
     [colony, domains],
   );
 
-  const renderActiveOption = useCallback<(option: SelectOption | undefined, label: string) => ReactNode>(
+  const renderActiveOption = useCallback<
+    (option: SelectOption | undefined, label: string) => ReactNode
+  >(
     (option, label) => {
       const value = option ? option.value : undefined;
       const color = getDomainColor(Number(value));
       return (
         <div className={styles.activeItem}>
-          <ColorTag color={color} /> <div className={styles.activeItemLabel}>{label}</div>
+          <ColorTag color={color} />{' '}
+          <div className={styles.activeItemLabel}>{label}</div>
         </div>
       );
     },
@@ -87,7 +97,9 @@ const ColonyDomainSelector = ({ filteredDomainId = COLONY_TOTAL_BALANCE_DOMAIN_I
         currentDomainId={filteredDomainId}
         onDomainChange={onDomainChange}
         onDomainEdit={canInteractWithColony ? handleEditDomain : undefined}
-        footerComponent={canInteractWithColony ? <CreateDomainButton /> : undefined}
+        footerComponent={
+          canInteractWithColony ? <CreateDomainButton /> : undefined
+        }
         renderActiveOptionFn={renderActiveOption}
         showAllDomains
         showDescription

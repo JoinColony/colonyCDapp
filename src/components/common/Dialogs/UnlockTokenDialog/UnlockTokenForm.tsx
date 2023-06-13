@@ -4,7 +4,12 @@ import { useFormContext } from 'react-hook-form';
 import { ColonyRole, Id } from '@colony/colony-js';
 
 import { SetStateFn } from '~types';
-import { DialogSection, ActionDialogProps, DialogHeading, DialogControls } from '~shared/Dialog';
+import {
+  DialogSection,
+  ActionDialogProps,
+  DialogHeading,
+  DialogControls,
+} from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 
 import { useActionDialogStatus } from '~hooks';
@@ -35,7 +40,8 @@ const MSG = defineMessages({
   },
   note: {
     id: `${displayName}.note`,
-    defaultMessage: 'Please note: this action is irreversible. Use with caution',
+    defaultMessage:
+      'Please note: this action is irreversible. Use with caution',
   },
   unlockedDescription: {
     id: `${displayName}.unlockedDescription`,
@@ -58,11 +64,27 @@ interface Props extends ActionDialogProps {
   isForce: boolean;
 }
 
-const UnlockTokenForm = ({ colony, back, enabledExtensionData, handleIsForceChange, isForce }: Props) => {
+const UnlockTokenForm = ({
+  colony,
+  back,
+  enabledExtensionData,
+  handleIsForceChange,
+  isForce,
+}: Props) => {
   const { watch } = useFormContext();
   const { forceAction } = watch();
-  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion, canOnlyForceAction } =
-    useActionDialogStatus(colony, requiredRoles, [Id.RootDomain], enabledExtensionData);
+  const {
+    userHasPermission,
+    disabledInput,
+    disabledSubmit,
+    canCreateMotion,
+    canOnlyForceAction,
+  } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
   // @TODO: Integrate those checks into another hook that uses useActionDialogStatus internally, when the data is made available.
   // const isNativeTokenLocked = !!colony?.nativeToken?.unlocked;
   // const canUserUnlockNativeToken = hasRootPermission && status?.nativeToken?.unlockable && isNativeTokenLocked;
@@ -80,7 +102,9 @@ const UnlockTokenForm = ({ colony, back, enabledExtensionData, handleIsForceChan
           title={MSG.title}
           colony={colony}
           userHasPermission={userHasPermission}
-          isVotingExtensionEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
           isRootMotion
         />
       </DialogSection>
@@ -106,7 +130,11 @@ const UnlockTokenForm = ({ colony, back, enabledExtensionData, handleIsForceChan
           <DialogSection appearance={{ theme: 'sidePadding' }}>
             <div className={styles.note}>
               <FormattedMessage {...MSG.note} />
-              <ExternalLink className={styles.learnMoreLink} text={{ id: 'text.learnMore' }} href={TOKEN_UNLOCK_INFO} />
+              <ExternalLink
+                className={styles.learnMoreLink}
+                text={{ id: 'text.learnMore' }}
+                href={TOKEN_UNLOCK_INFO}
+              />
             </div>
           </DialogSection>
           <DialogSection appearance={{ theme: 'sidePadding' }}>
@@ -139,13 +167,16 @@ const UnlockTokenForm = ({ colony, back, enabledExtensionData, handleIsForceChan
           onSecondaryButtonClick={back}
           disabled={disabledSubmit}
           dataTest="unlockTokenConfirmButton"
-          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>
   );
 };
 
-UnlockTokenForm.displayName = 'common.ColonyHome.UnlockTokenDialog.UnlockTokenForm';
+UnlockTokenForm.displayName =
+  'common.ColonyHome.UnlockTokenDialog.UnlockTokenForm';
 
 export default UnlockTokenForm;

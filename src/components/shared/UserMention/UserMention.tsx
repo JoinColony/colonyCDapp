@@ -30,7 +30,14 @@ interface Props {
 
 const displayName = 'UserMention';
 
-const UserMention = ({ user, to, hasLink, showInfo, popperOptions, ...props }: Props) => {
+const UserMention = ({
+  user,
+  to,
+  hasLink,
+  showInfo,
+  popperOptions,
+  ...props
+}: Props) => {
   const fallbackTo = to || `/user/${user?.name}`;
   const trigger = showInfo ? 'click' : 'disabled';
   const showArrow = popperOptions && popperOptions.showArrow;
@@ -47,7 +54,12 @@ const UserMention = ({ user, to, hasLink, showInfo, popperOptions, ...props }: P
 
   const renderUserMention = () =>
     hasLink ? (
-      <Link to={fallbackTo} text={`@${user?.name}`} className={styles.mention} {...props} />
+      <Link
+        to={fallbackTo}
+        text={`@${user?.name}`}
+        className={styles.mention}
+        {...props}
+      />
     ) : (
       <span className={styles.mention} {...props}>
         {' '}
@@ -65,7 +77,12 @@ const UserMention = ({ user, to, hasLink, showInfo, popperOptions, ...props }: P
   const renderContent = null;
 
   return (
-    <Popover renderContent={renderContent} popperOptions={popperOptions} trigger={trigger} showArrow={showArrow}>
+    <Popover
+      renderContent={renderContent}
+      popperOptions={popperOptions}
+      trigger={trigger}
+      showArrow={showArrow}
+    >
       {renderUserMention()}
     </Popover>
   );

@@ -13,7 +13,11 @@ interface Props extends HTMLAttributes<any> {
 const displayName = 'TabPanel';
 
 const TabPanel = (props: Props) => (
-  <ReactTabPanel className={styles.main} selectedClassName={styles.selected} {...props} />
+  <ReactTabPanel
+    className={styles.main}
+    selectedClassName={styles.selected}
+    {...props}
+  />
 );
 
 TabPanel.tabsRole = 'TabPanel';

@@ -7,7 +7,9 @@ import { accordionAnimation } from '~constants/accordionAnimation';
 
 const displayName = 'Extensions.Accordion.partials.AccordionContentItem';
 
-const AccordionContentItem: FC<AccordionContentItemProps> = ({ accordionItem }) => {
+const AccordionContentItem: FC<AccordionContentItemProps> = ({
+  accordionItem,
+}) => {
   const [visibility, setVisibility] = useState(false);
 
   const onOpenIndexChange = () => {
@@ -16,7 +18,12 @@ const AccordionContentItem: FC<AccordionContentItemProps> = ({ accordionItem }) 
 
   return (
     <div className="relative">
-      <div onClick={onOpenIndexChange} onKeyUp={onOpenIndexChange} role="button" tabIndex={0}>
+      <div
+        onClick={onOpenIndexChange}
+        onKeyUp={onOpenIndexChange}
+        role="button"
+        tabIndex={0}
+      >
         <AccordionHeader title={accordionItem?.header} isOpen={visibility} />
         <AnimatePresence>
           {visibility && (

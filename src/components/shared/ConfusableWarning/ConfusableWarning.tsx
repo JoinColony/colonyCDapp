@@ -30,10 +30,15 @@ const MSG = {
   },
 };
 
-const WarningLabel = (chunks: React.ReactNode[]) => <span className={styles.warningLabel}>{chunks}</span>;
+const WarningLabel = (chunks: React.ReactNode[]) => (
+  <span className={styles.warningLabel}>{chunks}</span>
+);
 
 const ConfusableWarning = ({ walletAddress, colonyAddress }: Props) => {
-  const { userReputation, totalReputation } = useUserReputation(colonyAddress, walletAddress);
+  const { userReputation, totalReputation } = useUserReputation(
+    colonyAddress,
+    walletAddress,
+  );
   return (
     <>
       <div
@@ -43,7 +48,9 @@ const ConfusableWarning = ({ walletAddress, colonyAddress }: Props) => {
       >
         <p className={styles.warningText}>
           <FormattedMessage
-            {...(!walletAddress && !colonyAddress ? MSG.warningCurrentUserText : MSG.warningText)}
+            {...(!walletAddress && !colonyAddress
+              ? MSG.warningCurrentUserText
+              : MSG.warningText)}
             values={{
               span: WarningLabel,
             }}
@@ -55,7 +62,10 @@ const ConfusableWarning = ({ walletAddress, colonyAddress }: Props) => {
           <div className={styles.reputationLabel}>
             <FormattedMessage {...MSG.reputationLabel} />
           </div>
-          <MemberReputation userReputation={userReputation} totalReputation={totalReputation} />
+          <MemberReputation
+            userReputation={userReputation}
+            totalReputation={totalReputation}
+          />
         </div>
       )}
     </>

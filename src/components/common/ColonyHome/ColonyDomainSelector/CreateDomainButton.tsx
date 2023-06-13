@@ -33,7 +33,11 @@ const CreateDomainButton = () => {
     <div className={styles.container}>
       <button className={styles.main} onClick={handleClick} type="button">
         <div className={styles.buttonIcon}>
-          <Icon name="circle-plus" title={MSG.buttonCreateNewDomain} appearance={{ size: 'medium' }} />
+          <Icon
+            name="circle-plus"
+            title={MSG.buttonCreateNewDomain}
+            appearance={{ size: 'medium' }}
+          />
         </div>
         <div>
           <FormattedMessage {...MSG.buttonCreateNewDomain} />

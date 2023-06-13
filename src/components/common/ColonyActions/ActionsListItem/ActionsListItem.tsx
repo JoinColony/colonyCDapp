@@ -6,7 +6,10 @@ import UserAvatar from '~shared/UserAvatar';
 import ListItem, { ListItemStatus } from '~shared/ListItem';
 import { ColonyAction } from '~types';
 import { useColonyContext } from '~hooks';
-import { MotionState, useShouldDisplayMotionCountdownTime } from '~utils/colonyMotions';
+import {
+  MotionState,
+  useShouldDisplayMotionCountdownTime,
+} from '~utils/colonyMotions';
 
 import CountDownTimer from '../CountDownTimer';
 import { getActionTitleValues } from '../helpers';
@@ -47,14 +50,20 @@ const ActionsListItem = ({
   const { colony } = useColonyContext();
   const navigate = useNavigate();
 
-  const handleActionRedirect = () => navigate(`/colony/${colony?.name}/tx/${transactionHash}`);
+  const handleActionRedirect = () =>
+    navigate(`/colony/${colony?.name}/tx/${transactionHash}`);
 
   const status = ListItemStatus.Defused;
 
-  const { motionState, refetchMotionState } = useColonyMotionState(isMotion, motionData, transactionHash);
+  const { motionState, refetchMotionState } = useColonyMotionState(
+    isMotion,
+    motionData,
+    transactionHash,
+  );
 
   const MotionTag = useMotionTag(isMotion, motionState);
-  const showMotionCountdownTimer = useShouldDisplayMotionCountdownTime(motionState);
+  const showMotionCountdownTimer =
+    useShouldDisplayMotionCountdownTime(motionState);
 
   if (!colony) {
     return null;
@@ -62,7 +71,14 @@ const ActionsListItem = ({
 
   return (
     <ListItem
-      avatar={<UserAvatar size="s" user={item.initiatorUser} showInfo popperOptions={userAvatarPopoverOptions} />}
+      avatar={
+        <UserAvatar
+          size="s"
+          user={item.initiatorUser}
+          showInfo
+          popperOptions={userAvatarPopoverOptions}
+        />
+      }
       createdAt={createdAt}
       extra={
         showMotionCountdownTimer &&

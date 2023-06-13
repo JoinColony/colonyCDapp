@@ -6,7 +6,10 @@ import { SelectOption } from '~shared/Fields';
 import { Colony, Domain } from '~types';
 import { findDomainByNativeId } from '~utils/domains';
 
-export const getEditDomainDialogPayload = (colony: Colony, { domainId, ...rest }) => ({
+export const getEditDomainDialogPayload = (
+  colony: Colony,
+  { domainId, ...rest },
+) => ({
   ...rest,
   domain: findDomainByNativeId(domainId, colony),
   colonyAddress: colony.colonyAddress,
@@ -31,9 +34,18 @@ export const useEditDomainDialogStatus = (
     disabledInput: defaultDisabledInput,
     canCreateMotion,
     canOnlyForceAction,
-  } = useActionDialogStatus(colony, requiredRoles, [domainId], enabledExtensionData, motionDomainId);
+  } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [domainId],
+    enabledExtensionData,
+    motionDomainId,
+  );
 
-  const hasEditedDomain = dirtyFields.domainColor || dirtyFields.domainName || dirtyFields.domainPurpose;
+  const hasEditedDomain =
+    dirtyFields.domainColor ||
+    dirtyFields.domainName ||
+    dirtyFields.domainPurpose;
   const disabledSubmit = defaultDisabledSubmit || !hasEditedDomain;
   const disabledInput = defaultDisabledInput || domainOptions.length === 0;
 
@@ -46,4 +58,5 @@ export const useEditDomainDialogStatus = (
   };
 };
 
-export const notRootDomain = (domain: Domain) => domain.nativeId !== Id.RootDomain;
+export const notRootDomain = (domain: Domain) =>
+  domain.nativeId !== Id.RootDomain;

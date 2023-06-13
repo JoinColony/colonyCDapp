@@ -4,7 +4,12 @@ import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import { Annotations } from '~shared/Fields';
-import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
+import {
+  ActionDialogProps,
+  DialogControls,
+  DialogHeading,
+  DialogSection,
+} from '~shared/Dialog';
 import { findDomainByNativeId } from '~utils/domains';
 import { SetStateFn } from '~types';
 
@@ -44,15 +49,27 @@ interface Props extends ActionDialogProps {
   isForce: boolean;
 }
 
-const TransferFundsDialogForm = ({ back, colony, enabledExtensionData, handleIsForceChange, isForce }: Props) => {
+const TransferFundsDialogForm = ({
+  back,
+  colony,
+  enabledExtensionData,
+  handleIsForceChange,
+  isForce,
+}: Props) => {
   const { watch } = useFormContext();
   const { fromDomainId, toDomainId, forceAction } = watch();
 
   const fromDomain = findDomainByNativeId(fromDomainId, colony);
   const toDomain = findDomainByNativeId(toDomainId, colony);
 
-  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion, canOnlyForceAction, hasRoleInFromDomain } =
-    useTransferFundsDialogStatus(colony, requiredRoles, enabledExtensionData);
+  const {
+    userHasPermission,
+    disabledInput,
+    disabledSubmit,
+    canCreateMotion,
+    canOnlyForceAction,
+    hasRoleInFromDomain,
+  } = useTransferFundsDialogStatus(colony, requiredRoles, enabledExtensionData);
 
   useEffect(() => {
     if (forceAction !== isForce) {
@@ -67,7 +84,9 @@ const TransferFundsDialogForm = ({ back, colony, enabledExtensionData, handleIsF
           title={MSG.title}
           colony={colony}
           userHasPermission={userHasPermission}
-          isVotingExtensionEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingExtensionEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
           isRootMotion
         />
       </DialogSection>
@@ -79,7 +98,11 @@ const TransferFundsDialogForm = ({ back, colony, enabledExtensionData, handleIsF
         </div>
       )}
       <DialogSection>
-        <DomainFundSelectorSection colony={colony} transferBetweenDomains disabled={canOnlyForceAction} />
+        <DomainFundSelectorSection
+          colony={colony}
+          transferBetweenDomains
+          disabled={canOnlyForceAction}
+        />
       </DialogSection>
       <DialogSection>
         <TokenAmountInput colony={colony} disabled={disabledInput} />
@@ -96,7 +119,11 @@ const TransferFundsDialogForm = ({ back, colony, enabledExtensionData, handleIsF
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage
             requiredPermissions={requiredRoles}
-            domainName={hasRoleInFromDomain ? fromDomain?.metadata?.name : toDomain?.metadata?.name}
+            domainName={
+              hasRoleInFromDomain
+                ? fromDomain?.metadata?.name
+                : toDomain?.metadata?.name
+            }
           />
         </DialogSection>
       )}
@@ -115,7 +142,9 @@ const TransferFundsDialogForm = ({ back, colony, enabledExtensionData, handleIsF
           onSecondaryButtonClick={back}
           disabled={disabledSubmit}
           dataTest="transferFundsConfirmation"
-          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>

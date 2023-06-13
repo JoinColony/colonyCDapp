@@ -1,5 +1,9 @@
 import React, { ReactElement } from 'react';
-import { defineMessages, FormattedMessage, MessageDescriptor } from 'react-intl';
+import {
+  defineMessages,
+  FormattedMessage,
+  MessageDescriptor,
+} from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
 import { HookFormToggle as Toggle } from '~shared/Fields';
@@ -63,7 +67,9 @@ interface MetatransactionsDisabledProps {
   metatransactionsDisabled: boolean;
 }
 
-const MetatransactionsDisabled = ({ metatransactionsDisabled }: MetatransactionsDisabledProps) =>
+const MetatransactionsDisabled = ({
+  metatransactionsDisabled,
+}: MetatransactionsDisabledProps) =>
   metatransactionsDisabled ? (
     <div className={styles.metaDesc}>
       <FormattedMessage {...MSG.metaDescGlobalOff} />
@@ -79,7 +85,11 @@ export const getAdvancedSettingsRows = (
     toggleLabel: MSG.labelMetaTx,
     tooltipText: MSG.metaTooltip,
     tooltipTextValues: { br: <br /> },
-    extra: <MetatransactionsDisabled metatransactionsDisabled={!metatransactionsAvailable} />,
+    extra: (
+      <MetatransactionsDisabled
+        metatransactionsDisabled={!metatransactionsAvailable}
+      />
+    ),
   },
   {
     name: SlotKey.DecentralizedMode,
@@ -87,7 +97,11 @@ export const getAdvancedSettingsRows = (
     toggleLabel: MSG.customEndpoints,
     tooltipText: MSG.RPCTooltip,
     extra: (
-      <CustomEndpointInput label={MSG.labelRPC} inputName={SlotKey.CustomRPC} toggleName={SlotKey.DecentralizedMode} />
+      <CustomEndpointInput
+        label={MSG.labelRPC}
+        inputName={SlotKey.CustomRPC}
+        toggleName={SlotKey.DecentralizedMode}
+      />
     ),
   },
 ];

@@ -7,7 +7,11 @@ import styles from './Modal.module.css';
 
 const displayName = 'Extensions.ModalBase';
 
-const ModalBase: FC<ModalBaseProps> = ({ role = 'dialog', isFullOnMobile, ...props }) => (
+const ModalBase: FC<ModalBaseProps> = ({
+  role = 'dialog',
+  isFullOnMobile,
+  ...props
+}) => (
   <ReactModal
     role={role}
     overlayClassName={{

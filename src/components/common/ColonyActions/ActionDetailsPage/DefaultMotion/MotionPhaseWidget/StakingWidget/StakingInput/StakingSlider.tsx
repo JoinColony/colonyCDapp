@@ -10,7 +10,8 @@ import {
   useStakingSlider,
 } from '.';
 
-const displayName = 'common.ColonyActions.DefaultMotion.StakingWidget.StakingSlider';
+const displayName =
+  'common.ColonyActions.DefaultMotion.StakingWidget.StakingSlider';
 
 interface StakingSliderProps {
   isObjection: boolean;
@@ -18,7 +19,11 @@ interface StakingSliderProps {
   setLimitExceeded: SetStateFn;
 }
 
-const StakingSlider = ({ isObjection, limitExceeded, setLimitExceeded }: StakingSliderProps) => {
+const StakingSlider = ({
+  isObjection,
+  limitExceeded,
+  setLimitExceeded,
+}: StakingSliderProps) => {
   const { user } = useAppContext();
   const {
     remainingToStake,

@@ -7,7 +7,12 @@ import { accordionAnimation } from '~constants/accordionAnimation';
 
 const displayName = 'Extensions.Accordion.partials.AccordionItem';
 
-const AccordionItem: FC<AccordionItemProps> = ({ title, content, isOpen, onClick }) => (
+const AccordionItem: FC<AccordionItemProps> = ({
+  title,
+  content,
+  isOpen,
+  onClick,
+}) => (
   <>
     <div
       className="w-full text-gray-900 font-semibold text-md"

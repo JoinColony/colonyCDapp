@@ -6,7 +6,10 @@ import MaskedAddress from '~shared/MaskedAddress';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import Button from '~shared/Button';
 import { GasStationPopover, GasStationProvider } from '~frame/GasStation';
-import { readyTransactionsCount, TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
+import {
+  readyTransactionsCount,
+  TransactionOrMessageGroups,
+} from '~frame/GasStation/transactionGroup';
 
 import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { useAppContext, useMobile } from '~hooks';
@@ -31,7 +34,9 @@ const Wallet = () => {
   const { wallet, walletConnecting, connectWallet } = useAppContext();
   const isMobile = useMobile();
 
-  const transactionAndMessageGroups = useSelector(groupedTransactionsAndMessages);
+  const transactionAndMessageGroups = useSelector(
+    groupedTransactionsAndMessages,
+  );
 
   const readyTransactions = useMemo(
     // @ts-ignore
@@ -54,7 +59,11 @@ const Wallet = () => {
       )}
       {!wallet?.address && (
         <Button
-          className={walletConnecting ? styles.connectWalletButtonLoading : styles.connectWalletButton}
+          className={
+            walletConnecting
+              ? styles.connectWalletButtonLoading
+              : styles.connectWalletButton
+          }
           text={MSG.connectWallet}
           onClick={connectWallet}
         />
@@ -66,7 +75,9 @@ const Wallet = () => {
           wallet?.address && (
             <GasStationProvider>
               <GasStationPopover
-                transactionAndMessageGroups={transactionAndMessageGroups as unknown as TransactionOrMessageGroups}
+                transactionAndMessageGroups={
+                  transactionAndMessageGroups as unknown as TransactionOrMessageGroups
+                }
               >
                 <div className={styles.gasStationReference} />
               </GasStationPopover>
@@ -77,13 +88,19 @@ const Wallet = () => {
             {wallet?.address && (
               <GasStationProvider>
                 <GasStationPopover
-                  transactionAndMessageGroups={transactionAndMessageGroups as unknown as TransactionOrMessageGroups}
+                  transactionAndMessageGroups={
+                    transactionAndMessageGroups as unknown as TransactionOrMessageGroups
+                  }
                 >
                   {({ isOpen, toggle, ref }) => (
                     <>
                       <button
                         type="button"
-                        className={isOpen ? styles.walletAddressActive : styles.walletAddress}
+                        className={
+                          isOpen
+                            ? styles.walletAddressActive
+                            : styles.walletAddress
+                        }
                         ref={ref}
                         onClick={toggle}
                         data-test="gasStationPopover"

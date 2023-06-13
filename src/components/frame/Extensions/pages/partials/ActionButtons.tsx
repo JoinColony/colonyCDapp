@@ -16,11 +16,14 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
   const isMobile = useMobile();
   const { colony } = useColonyContext();
 
-  const isSupportedColonyVersion = colony?.version ?? MIN_SUPPORTED_COLONY_VERSION <= 0;
+  const isSupportedColonyVersion =
+    colony?.version ?? MIN_SUPPORTED_COLONY_VERSION <= 0;
 
   const isInstallButtonVisible =
     // @ts-ignore
-    !isInstalledExtensionData(extensionData) && extensionData.uninstallable && !extensionData.isDeprecated;
+    !isInstalledExtensionData(extensionData) &&
+    extensionData.uninstallable &&
+    !extensionData.isDeprecated;
 
   return (
     <div>

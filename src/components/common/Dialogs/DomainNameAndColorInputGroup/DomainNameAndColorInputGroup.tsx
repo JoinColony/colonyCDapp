@@ -4,7 +4,11 @@ import { useFormContext } from 'react-hook-form';
 
 import ColorSelect from '~shared/ColorSelect';
 
-import { HookFormInput as Input, HookFormSelect as Select, SelectOption } from '~shared/Fields';
+import {
+  HookFormInput as Input,
+  HookFormSelect as Select,
+  SelectOption,
+} from '~shared/Fields';
 
 import styles from './DomainNameAndColorInputGroup.css';
 
@@ -63,7 +67,11 @@ const DomainNameAndColorInputGroup = ({
           />
         )}
       </div>
-      <ColorSelect appearance={{ alignOptions: 'right' }} disabled={disabled} name="domainColor" />
+      <ColorSelect
+        appearance={{ alignOptions: 'right' }}
+        disabled={disabled}
+        name="domainColor"
+      />
     </div>
   );
 };

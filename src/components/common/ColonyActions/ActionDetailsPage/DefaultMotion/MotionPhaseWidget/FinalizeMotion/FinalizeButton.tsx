@@ -15,7 +15,12 @@ interface FinalizeButtonProps {
   setIsPolling: SetStateFn;
 }
 
-const FinalizeButton = ({ isFinalizable, motionId, startPollingAction, setIsPolling }: FinalizeButtonProps) => {
+const FinalizeButton = ({
+  isFinalizable,
+  motionId,
+  startPollingAction,
+  setIsPolling,
+}: FinalizeButtonProps) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
 

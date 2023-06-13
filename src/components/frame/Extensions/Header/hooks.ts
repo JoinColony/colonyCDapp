@@ -15,7 +15,9 @@ export const useHeader = () => {
 
   const sortByDate = (firstWatchEntry, secondWatchEntry) => {
     const firstWatchTime = new Date(firstWatchEntry?.createdAt || 1).getTime();
-    const secondWatchTime = new Date(secondWatchEntry?.createdAt || 1).getTime();
+    const secondWatchTime = new Date(
+      secondWatchEntry?.createdAt || 1,
+    ).getTime();
     return firstWatchTime - secondWatchTime;
   };
 

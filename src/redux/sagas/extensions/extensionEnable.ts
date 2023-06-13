@@ -34,23 +34,35 @@ function* extensionEnable({
         channels,
         transactionChannels,
         transactionChannels: { initialise },
-      } = yield setupEnablingGroupTransactions(meta.id, initParams, extensionId);
+      } = yield setupEnablingGroupTransactions(
+        meta.id,
+        initParams,
+        extensionId,
+      );
 
       const batchKey = 'enableExtensions';
 
       yield all(
         Object.keys(transactionChannels).map((channelName) =>
-          createGroupTransaction(transactionChannels[channelName], batchKey, meta, {
-            identifier: colonyAddress,
-            methodName: channelName,
-            ...channels[channelName],
-          }),
+          createGroupTransaction(
+            transactionChannels[channelName],
+            batchKey,
+            meta,
+            {
+              identifier: colonyAddress,
+              methodName: channelName,
+              ...channels[channelName],
+            },
+          ),
         ),
       );
 
       yield all(
         Object.keys(transactionChannels).map((id) =>
-          takeFrom(transactionChannels[id].channel, ActionTypes.TRANSACTION_CREATED),
+          takeFrom(
+            transactionChannels[id].channel,
+            ActionTypes.TRANSACTION_CREATED,
+          ),
         ),
       );
 

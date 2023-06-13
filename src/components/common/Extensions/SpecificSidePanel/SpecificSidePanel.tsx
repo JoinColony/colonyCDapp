@@ -24,7 +24,16 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
       {(sidePanelData || [])?.map(
-        ({ id, dateInstalled, installedBy, statusType, versionInstalled, contractAddress, developer, permissions }) => (
+        ({
+          id,
+          dateInstalled,
+          installedBy,
+          statusType,
+          versionInstalled,
+          contractAddress,
+          developer,
+          permissions,
+        }) => (
           <Fragment key={id}>
             <div className={styles.panelRow}>
               <div className={styles.panelTitle}>{statusType.title}</div>
@@ -41,18 +50,35 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
               </div>
             </div>
             {!statuses?.includes('not-installed') && (
-              <InstalledBy title={installedBy.title} extensionData={extensionData} />
+              <InstalledBy
+                title={installedBy.title}
+                extensionData={extensionData}
+              />
             )}
             {!statuses?.includes('not-installed') && (
-              <DateInstalled title={dateInstalled?.title} date={dateInstalled.date || ''} />
+              <DateInstalled
+                title={dateInstalled?.title}
+                date={dateInstalled.date || ''}
+              />
             )}
-            <Version title={versionInstalled.title} version={versionInstalled.version} />
+            <Version
+              title={versionInstalled.title}
+              version={versionInstalled.version}
+            />
             {!statuses?.includes('not-installed') && (
-              <ContractAddress title={contractAddress.title} address={contractAddress.address} />
+              <ContractAddress
+                title={contractAddress.title}
+                address={contractAddress.address}
+              />
             )}
-            <Developer title={developer.title} developer={developer.developer} />
+            <Developer
+              title={developer.title}
+              developer={developer.developer}
+            />
             <div className="flex flex-col justify-between">
-              <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">{permissions.title}</div>
+              <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">
+                {permissions.title}
+              </div>
               <Permissions data={permissions.permissions} />
             </div>
           </Fragment>

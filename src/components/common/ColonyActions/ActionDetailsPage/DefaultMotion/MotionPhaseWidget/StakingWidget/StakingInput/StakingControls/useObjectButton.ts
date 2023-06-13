@@ -32,7 +32,10 @@ const useObjectButton = () => {
     MotionVote.Nay,
   );
 
-  const handleStakeSuccess = getHandleStakeSuccessFn(setIsRefetching, startPollingAction);
+  const handleStakeSuccess = getHandleStakeSuccessFn(
+    setIsRefetching,
+    startPollingAction,
+  );
 
   const handleObjection = () =>
     openRaiseObjectionDialog({

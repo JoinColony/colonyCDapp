@@ -26,7 +26,10 @@ interface Props {
   /*
    * If set, it will change the default back link text
    */
-  backText?: string | MessageDescriptor | ComponentType<Record<string, unknown>>;
+  backText?:
+    | string
+    | MessageDescriptor
+    | ComponentType<Record<string, unknown>>;
 
   /*
    * Works in conjuction with the above to provide message descriptor selector values
@@ -45,7 +48,13 @@ interface Props {
   className?: string;
 }
 
-const HistoryNavigation = ({ backRoute, backText, backTextValues, className, customHandler }: Props) => {
+const HistoryNavigation = ({
+  backRoute,
+  backText,
+  backTextValues,
+  className,
+  customHandler,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   const navigate = useNavigate();
@@ -73,16 +82,26 @@ const HistoryNavigation = ({ backRoute, backText, backTextValues, className, cus
     <div className={className || styles.main} data-test="backButton">
       {backRoute ? (
         <NavLink to={backRoute} className={styles.back}>
-          <Icon name="circle-back" title={iconText} appearance={{ size: 'medium' }} />
+          <Icon
+            name="circle-back"
+            title={iconText}
+            appearance={{ size: 'medium' }}
+          />
           {linkText}
         </NavLink>
       ) : (
         <button
           className={styles.back}
           type="button"
-          onClick={() => (customHandler && customHandler() ? undefined : navigate(-1))}
+          onClick={() =>
+            customHandler && customHandler() ? undefined : navigate(-1)
+          }
         >
-          <Icon name="circle-back" title={iconText} appearance={{ size: 'medium' }} />
+          <Icon
+            name="circle-back"
+            title={iconText}
+            appearance={{ size: 'medium' }}
+          />
           {linkText}
         </button>
       )}

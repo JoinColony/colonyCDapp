@@ -15,7 +15,8 @@ const asFieldArray =
   ({ name, ...props }: P & Props) => {
     return createElement(FieldArray, {
       name,
-      render: (formikProps) => createElement(Component, { ...props, ...formikProps }),
+      render: (formikProps) =>
+        createElement(Component, { ...props, ...formikProps }),
     });
   };
 

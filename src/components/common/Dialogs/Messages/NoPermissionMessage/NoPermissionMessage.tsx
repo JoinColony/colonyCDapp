@@ -40,7 +40,10 @@ const RequiredRoleList = ({ requiredPermissions }) => {
 
   return requiredPermissions.map((permission, i) => (
     <span key={`role-label-${permission}`}>
-      <PermissionsLabel permission={permission} name={{ id: `role.${permission}` }} />
+      <PermissionsLabel
+        permission={permission}
+        name={{ id: `role.${permission}` }}
+      />
       {getSeparator(i)}
     </span>
   ));
@@ -52,7 +55,9 @@ const NoPermissionMessage = ({ requiredPermissions, domainName }: Props) => (
       {...MSG.noPermission}
       values={{
         permissionCount: requiredPermissions.length,
-        requiredRoleList: <RequiredRoleList requiredPermissions={requiredPermissions} />,
+        requiredRoleList: (
+          <RequiredRoleList requiredPermissions={requiredPermissions} />
+        ),
         hasDomain: !!domainName,
         domainName,
       }}

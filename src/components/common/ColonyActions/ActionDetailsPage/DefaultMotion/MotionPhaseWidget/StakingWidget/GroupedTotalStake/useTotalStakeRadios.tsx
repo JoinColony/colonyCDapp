@@ -10,7 +10,8 @@ import { StakeSide } from '~types/motions';
 
 import { useStakingWidgetContext } from '../StakingWidgetProvider';
 
-const displayName = 'common.ColonyActions.DefaultMotion.StakingWidget.GroupedTotalStake.useTotalStakeRadios';
+const displayName =
+  'common.ColonyActions.DefaultMotion.StakingWidget.GroupedTotalStake.useTotalStakeRadios';
 
 const MSG = defineMessages({
   YAYName: {
@@ -39,7 +40,8 @@ const useTotalStakeRadios = () => {
     },
   } = useStakingWidgetContext();
   const { colony } = useColonyContext();
-  const { symbol: nativeTokenSymbol, decimals: nativeTokenDecimals } = colony?.nativeToken || {};
+  const { symbol: nativeTokenSymbol, decimals: nativeTokenDecimals } =
+    colony?.nativeToken || {};
   const { getValues } = useFormContext();
   const { stakeSide } = getValues();
   const { user } = useAppContext();
@@ -52,11 +54,19 @@ const useTotalStakeRadios = () => {
       description: isYAYSideFullyStaked ? MSG.fullyStaked : MSG.stakeProgress,
       descriptionValues: {
         totalPercentage: yayPercentage,
-        requiredStake: <Numeral value={requiredStake} suffix={nativeTokenSymbol} decimals={nativeTokenDecimals} />,
+        requiredStake: (
+          <Numeral
+            value={requiredStake}
+            suffix={nativeTokenSymbol}
+            decimals={nativeTokenDecimals}
+          />
+        ),
       },
       label: MSG.YAYName,
       labelValues: {
-        fullyStakedEmoji: isYAYSideFullyStaked ? <Icon name="circle-check-primary" title={MSG.fullyStaked} /> : null,
+        fullyStakedEmoji: isYAYSideFullyStaked ? (
+          <Icon name="circle-check-primary" title={MSG.fullyStaked} />
+        ) : null,
       },
       appearance: { theme: 'primary' } as CustomRadioAppearance,
       disabled: isYAYSideFullyStaked || !user,
@@ -66,11 +76,19 @@ const useTotalStakeRadios = () => {
       description: isNAYSideFullyStaked ? MSG.fullyStaked : MSG.stakeProgress,
       descriptionValues: {
         totalPercentage: nayPercentage,
-        requiredStake: <Numeral value={requiredStake} suffix={nativeTokenSymbol} decimals={nativeTokenDecimals} />,
+        requiredStake: (
+          <Numeral
+            value={requiredStake}
+            suffix={nativeTokenSymbol}
+            decimals={nativeTokenDecimals}
+          />
+        ),
       },
       label: MSG.NAYName,
       labelValues: {
-        fullyStakedEmoji: isNAYSideFullyStaked ? <Icon name="circle-check-primary" title={MSG.fullyStaked} /> : null,
+        fullyStakedEmoji: isNAYSideFullyStaked ? (
+          <Icon name="circle-check-primary" title={MSG.fullyStaked} />
+        ) : null,
       },
       appearance: { theme: 'danger' } as CustomRadioAppearance,
       disabled: isNAYSideFullyStaked || !user,

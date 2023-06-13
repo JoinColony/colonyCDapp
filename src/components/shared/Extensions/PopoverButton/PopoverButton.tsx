@@ -7,10 +7,16 @@ import { PopoverButtonProps } from './types';
 
 const displayName = 'Extensions.PopoverButton';
 
-const PopoverButton: FC<PopoverButtonProps> = ({ isDisabled, isFullWidth, type }) => {
+const PopoverButton: FC<PopoverButtonProps> = ({
+  isDisabled,
+  isFullWidth,
+  type,
+}) => {
   const { isHovered, toggleHover } = useHover();
   const iconName =
-    (type === 'view' && 'eye') || (type === 'deposit' && 'arrow-circle-down-right') || 'arrow-circle-up-right';
+    (type === 'view' && 'eye') ||
+    (type === 'deposit' && 'arrow-circle-down-right') ||
+    'arrow-circle-up-right';
 
   return (
     <button

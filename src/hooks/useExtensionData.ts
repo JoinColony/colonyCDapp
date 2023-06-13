@@ -2,9 +2,15 @@ import { getExtensionHash } from '@colony/colony-js';
 import { useMemo } from 'react';
 
 import { supportedExtensionsConfig } from '~constants';
-import { useGetColonyExtensionQuery, useGetCurrentExtensionVersionQuery } from '~gql';
+import {
+  useGetColonyExtensionQuery,
+  useGetCurrentExtensionVersionQuery,
+} from '~gql';
 import { AnyExtensionData } from '~types';
-import { mapToInstallableExtensionData, mapToInstalledExtensionData } from '~utils/extensions';
+import {
+  mapToInstallableExtensionData,
+  mapToInstalledExtensionData,
+} from '~utils/extensions';
 
 import useColonyContext from './useColonyContext';
 
@@ -32,15 +38,18 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
   });
   const colonyExtension = data?.getExtensionByColonyAndHash?.items?.[0];
 
-  const { data: versionData, loading: versionLoading } = useGetCurrentExtensionVersionQuery({
-    variables: {
-      extensionHash,
-    },
-    fetchPolicy: 'cache-and-network',
-  });
+  const { data: versionData, loading: versionLoading } =
+    useGetCurrentExtensionVersionQuery({
+      variables: {
+        extensionHash,
+      },
+      fetchPolicy: 'cache-and-network',
+    });
   const { version } = versionData?.getCurrentVersionByKey?.items?.[0] || {};
 
-  const extensionConfig = supportedExtensionsConfig.find((e) => e.extensionId === extensionId);
+  const extensionConfig = supportedExtensionsConfig.find(
+    (e) => e.extensionId === extensionId,
+  );
 
   const extensionData = useMemo<AnyExtensionData | null>(() => {
     if (!version || !extensionConfig) {
@@ -48,7 +57,11 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
     }
 
     if (colonyExtension) {
-      return mapToInstalledExtensionData(extensionConfig, colonyExtension, version);
+      return mapToInstalledExtensionData(
+        extensionConfig,
+        colonyExtension,
+        version,
+      );
     }
 
     return mapToInstallableExtensionData(extensionConfig, version);

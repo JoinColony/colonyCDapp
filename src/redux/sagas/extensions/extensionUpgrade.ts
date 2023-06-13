@@ -4,7 +4,11 @@ import { ClientType, getExtensionHash } from '@colony/colony-js';
 import { AllActions, Action, ActionTypes } from '~redux';
 
 import { putError, refreshUpgradedExtension, takeFrom } from '../utils';
-import { createTransaction, getTxChannel, waitForTxResult } from '../transactions';
+import {
+  createTransaction,
+  getTxChannel,
+  waitForTxResult,
+} from '../transactions';
 
 function* extensionUpgrade({
   meta,

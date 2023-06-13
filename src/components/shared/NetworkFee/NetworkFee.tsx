@@ -2,7 +2,11 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import { calculateFee, getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
+import {
+  calculateFee,
+  getSelectedToken,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens';
 import Numeral from '~shared/Numeral';
 import { Colony } from '~types';
 import { useNetworkInverseFee } from '~hooks';
@@ -10,7 +14,8 @@ import { toFinite } from '~utils/lodash';
 
 import styles from './NetworkFee.css';
 
-const displayName = 'common.CreatePaymentDialog.CreatePaymentDialogForm.NetworkFee';
+const displayName =
+  'common.CreatePaymentDialog.CreatePaymentDialogForm.NetworkFee';
 
 const MSG = defineMessages({
   amount: {
@@ -49,7 +54,11 @@ const NetworkFee = ({ colony }: Props) => {
           fee: (
             <Numeral
               value={
-                calculateFee(amount, networkInverseFee, getTokenDecimalsWithFallback(selectedToken?.decimals)).feesInWei
+                calculateFee(
+                  amount,
+                  networkInverseFee,
+                  getTokenDecimalsWithFallback(selectedToken?.decimals),
+                ).feesInWei
               }
               decimals={getTokenDecimalsWithFallback(selectedToken?.decimals)}
             />

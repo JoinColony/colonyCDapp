@@ -86,7 +86,10 @@ const TextareaAutoresize = ({
   const { formatMessage } = useIntl();
   const [inputFieldProps, { error }] = useField(name);
 
-  const placeholder = typeof placeholderProp === 'object' ? formatMessage(placeholderProp) : placeholderProp;
+  const placeholder =
+    typeof placeholderProp === 'object'
+      ? formatMessage(placeholderProp)
+      : placeholderProp;
 
   const inputProps: TextareaAutosizeProps & {
     ref: ((ref: HTMLElement | null) => void) | undefined;
@@ -100,7 +103,8 @@ const TextareaAutoresize = ({
     placeholder,
     ref: innerRef,
     'data-test': dataTest,
-    title: typeof label === 'object' ? formatMessage(label, labelValues) : label,
+    title:
+      typeof label === 'object' ? formatMessage(label, labelValues) : label,
     ...rest,
     ...inputFieldProps,
   };
@@ -129,8 +133,15 @@ const TextareaAutoresize = ({
         extra={extra}
         screenReaderOnly={elementOnly}
       />
-      <div className={styles.textareaAutoresizeWrapper}>{renderAutoresizingTextarea()}</div>
-      <InputStatus appearance={appearance} status={status} statusValues={statusValues} error={error} />
+      <div className={styles.textareaAutoresizeWrapper}>
+        {renderAutoresizingTextarea()}
+      </div>
+      <InputStatus
+        appearance={appearance}
+        status={status}
+        statusValues={statusValues}
+        error={error}
+      />
     </div>
   );
 };

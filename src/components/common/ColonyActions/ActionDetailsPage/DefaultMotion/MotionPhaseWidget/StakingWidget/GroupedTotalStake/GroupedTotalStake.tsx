@@ -7,7 +7,8 @@ import { StakeSide } from '~types/motions';
 import { useStakingWidgetContext } from '../StakingWidgetProvider';
 import { GroupedTotalStakeHeading, TotalStakeRadios, SubmitButton } from '.';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.GroupedTotalStake';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.GroupedTotalStake';
 
 const validationSchema = object()
   .shape({

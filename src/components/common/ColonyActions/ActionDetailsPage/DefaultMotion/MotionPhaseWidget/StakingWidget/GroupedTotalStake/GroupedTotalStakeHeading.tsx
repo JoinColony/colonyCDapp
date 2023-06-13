@@ -6,7 +6,8 @@ import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 
 import styles from './GroupedTotalStakeHeading.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.GroupedTotalStakeHeading';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.GroupedTotalStakeHeading';
 
 const MSG = defineMessages({
   crowdfundStakeTitle: {

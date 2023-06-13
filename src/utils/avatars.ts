@@ -1,4 +1,8 @@
-export const calculateLastSliceIndex = (max: number, items: any[], includeLastItem = true) => {
+export const calculateLastSliceIndex = (
+  max: number,
+  items: any[],
+  includeLastItem = true,
+) => {
   if (!items?.length) {
     return 0;
   }
@@ -10,7 +14,11 @@ export const calculateLastSliceIndex = (max: number, items: any[], includeLastIt
   return includeLastItem ? max : max - 1;
 };
 
-export const calculateRemainingItems = (max: number, items: any[], includeLastItem = true) => {
+export const calculateRemainingItems = (
+  max: number,
+  items: any[],
+  includeLastItem = true,
+) => {
   if (!items?.length) {
     return 0;
   }

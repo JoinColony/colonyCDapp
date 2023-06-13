@@ -64,7 +64,12 @@ const ProgressBar = ({
           <div className={styles.thresholdSeparator} />
         </div>
       )}
-      <progress className={styles.main} value={value} max={max} title={titleText} />
+      <progress
+        className={styles.main}
+        value={value}
+        max={max}
+        title={titleText}
+      />
     </div>
   );
 };

@@ -26,7 +26,9 @@ const displayName = 'common.ColonyTotalFunds.SelectedToken';
 
 const getCurrentToken = (tokens, currentTokenAddress) => {
   if (tokens) {
-    return tokens.items.find((colonyToken) => colonyToken?.token.tokenAddress === currentTokenAddress);
+    return tokens.items.find(
+      (colonyToken) => colonyToken?.token.tokenAddress === currentTokenAddress,
+    );
   }
   return undefined;
 };
@@ -77,11 +79,16 @@ const SelectedToken = ({ children }: Props) => {
         data-test="colonyTotalFunds"
       />
       <ColonyTotalFundsPopover
-        tokens={tokens?.items.filter(notNull).map((colonyToken) => colonyToken.token)}
+        tokens={tokens?.items
+          .filter(notNull)
+          .map((colonyToken) => colonyToken.token)}
         onSelectToken={setCurrentTokenAddress}
         currentTokenAddress={currentTokenAddress}
       >
-        <TokenSymbol token={currentToken?.token} tokenAddress={currentTokenAddress} />
+        <TokenSymbol
+          token={currentToken?.token}
+          tokenAddress={currentTokenAddress}
+        />
       </ColonyTotalFundsPopover>
       {children}
     </div>

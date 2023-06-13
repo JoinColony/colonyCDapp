@@ -10,15 +10,25 @@ import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge/types';
 import { isInstalledExtensionData } from '~utils/extensions';
 
 export const useSpecificSidePanel = (extensionData) => {
-  const [statuses, setStatuses] = useState<ExtensionStatusBadgeMode | ExtensionStatusBadgeMode[]>('disabled');
+  const [statuses, setStatuses] = useState<
+    ExtensionStatusBadgeMode | ExtensionStatusBadgeMode[]
+  >('disabled');
   const { formatMessage } = useIntl();
 
-  const isExtensionInstalled = extensionData && isInstalledExtensionData(extensionData);
+  const isExtensionInstalled =
+    extensionData && isInstalledExtensionData(extensionData);
   const installedAtDate =
     extensionData &&
-    format(new Date((extensionData as InstalledExtensionData)?.installedAt ?? 0 * 1000), 'dd MMMM yyyy');
+    format(
+      new Date(
+        (extensionData as InstalledExtensionData)?.installedAt ?? 0 * 1000,
+      ),
+      'dd MMMM yyyy',
+    );
 
-  const { user } = useUserByNameOrAddress((extensionData as InstalledExtensionData)?.installedBy);
+  const { user } = useUserByNameOrAddress(
+    (extensionData as InstalledExtensionData)?.installedBy,
+  );
 
   const isExtensionDeprecatedAndDisabled = !!(
     !!user &&

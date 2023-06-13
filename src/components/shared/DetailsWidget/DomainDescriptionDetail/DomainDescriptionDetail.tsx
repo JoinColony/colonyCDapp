@@ -8,7 +8,9 @@ interface DomainDescriptionDetailProps {
   description: string;
 }
 
-const DomainDescriptionDetail = ({ description }: DomainDescriptionDetailProps) => (
+const DomainDescriptionDetail = ({
+  description,
+}: DomainDescriptionDetailProps) => (
   <div className={styles.domainDescription} title={description}>
     {description}
   </div>

@@ -39,7 +39,8 @@ const DialogHeading = ({
     formState: { isSubmitting },
   } = useFormContext();
   const handleFilterMotionDomains = (optionDomain: SelectOption) =>
-    optionDomain.value === selectedDomainId || optionDomain.value === Id.RootDomain;
+    optionDomain.value === selectedDomainId ||
+    optionDomain.value === Id.RootDomain;
 
   return (
     <div className={styles.modalHeading}>
@@ -58,7 +59,9 @@ const DialogHeading = ({
           text={title}
           textValues={titleValues}
         />
-        {userHasPermission && isVotingExtensionEnabled && <ForceToggle disabled={isSubmitting} />}
+        {userHasPermission && isVotingExtensionEnabled && (
+          <ForceToggle disabled={isSubmitting} />
+        )}
       </div>
       {children}
     </div>

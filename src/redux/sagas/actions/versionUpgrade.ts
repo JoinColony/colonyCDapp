@@ -4,7 +4,11 @@ import { BigNumber } from 'ethers';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 
-import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 import { transactionReady } from '../../actionCreators';
 import { getColonyManager, putError, takeFrom } from '../utils';
 
@@ -111,5 +115,8 @@ function* createVersionUpgradeAction({
 }
 
 export default function* versionUpgradeActionSaga() {
-  yield takeEvery(ActionTypes.ACTION_VERSION_UPGRADE, createVersionUpgradeAction);
+  yield takeEvery(
+    ActionTypes.ACTION_VERSION_UPGRADE,
+    createVersionUpgradeAction,
+  );
 }

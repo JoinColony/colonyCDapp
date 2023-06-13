@@ -57,7 +57,12 @@ export const Alert: Story = {
     type: 'warn',
   },
   render: () => (
-    <ToastWithHooks type="warn" title="Alert" description="Information about the alert" linkName="Button" />
+    <ToastWithHooks
+      type="warn"
+      title="Alert"
+      description="Information about the alert"
+      linkName="Button"
+    />
   ),
 };
 
@@ -66,6 +71,11 @@ export const Warning: Story = {
     type: 'error',
   },
   render: () => (
-    <ToastWithHooks type="error" title="Warning" description="Information about the warning" linkName="Button" />
+    <ToastWithHooks
+      type="error"
+      title="Warning"
+      description="Information about the warning"
+      linkName="Button"
+    />
   ),
 };

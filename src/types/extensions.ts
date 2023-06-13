@@ -62,4 +62,6 @@ export type InstallableExtensionData = ExtensionConfig & {
   isInitialized?: boolean;
 };
 
-export type AnyExtensionData = InstalledExtensionData | InstallableExtensionData;
+export type AnyExtensionData =
+  | InstalledExtensionData
+  | InstallableExtensionData;
