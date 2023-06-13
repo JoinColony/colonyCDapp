@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Extension } from '@colony/colony-js';
 
-import { useColonyContext, useExtensionData, useMobile } from '~hooks';
+import { useColonyContext, useExtensionData } from '~hooks';
 import ExtensionDetails from './partials/ExtensionDetails';
 import Spinner from '~shared/Extensions/Spinner';
 import ThreeColumns from '~frame/Extensions/ThreeColumns';
@@ -18,7 +18,6 @@ import NotificationBanner from '~common/Extensions/NotificationBanner';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Icon from '~shared/Icon';
 import ActionButtons from '../partials/ActionButtons';
-import Button from '~shared/Extensions/Button';
 import { useFetchActiveInstallsExtension } from './hooks';
 import { isInstalledExtensionData } from '~utils/extensions';
 import ActiveInstalls from '../partials/ActiveInstall';
@@ -28,7 +27,6 @@ const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 const ExtensionDetailsPage: FC = () => {
   const { extensionId } = useParams();
   const { colony } = useColonyContext();
-  const isMobile = useMobile();
   const { extensionData } = useExtensionData(extensionId ?? '');
   const { formatMessage } = useIntl();
   const [activeTab, setActiveTab] = useState(0);
@@ -57,12 +55,6 @@ const ExtensionDetailsPage: FC = () => {
       ? oneTxPaymentData
       : votingReputationData,
   );
-
-  const isEnableButtonVisible =
-    isInstalledExtensionData(extensionData) &&
-    extensionData.uninstallable &&
-    !extensionData.isDeprecated &&
-    extensionData?.extensionId === Extension.VotingReputation;
 
   // @TODO: Change extension missing permissions functionality
 
@@ -116,11 +108,6 @@ const ExtensionDetailsPage: FC = () => {
                   <ActiveInstalls activeInstalls={activeInstalls} />
                 </div>
               </div>
-              {isEnableButtonVisible && (
-                <Button mode="primarySolid" type="submit" isFullSize={isMobile}>
-                  {formatMessage({ id: 'button.enable' })}
-                </Button>
-              )}
               <ActionButtons extensionData={extensionData} />
             </div>
           </>
