@@ -47,6 +47,10 @@ const ExtensionDetails = () => {
     return <SpinnerLoader appearance={{ theme: 'primary', size: 'massive' }} />;
   }
 
+  if (!colony || !extensionData) {
+    return null;
+  }
+
   const isSetupRoute = pathname.replace(/\/$/, '').endsWith('setup');
   const extensionUrl = `/colony/${colony.name}/extensions/${extensionId}`;
   const breadCrumbs: Crumb[] = [
@@ -66,6 +70,7 @@ const ExtensionDetails = () => {
     extensionData.isDeprecated
   );
   const canExtensionBeDeprecated =
+    hasRegisteredProfile &&
     isInstalledExtensionData(extensionData) &&
     extensionData.uninstallable &&
     !extensionData.isDeprecated;

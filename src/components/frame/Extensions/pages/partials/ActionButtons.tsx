@@ -26,7 +26,7 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
     !extensionData.isDeprecated;
 
   return (
-    <div>
+    <>
       {isInstallButtonVisible && (
         <Button
           mode="primarySolid"
@@ -37,7 +37,7 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
           {formatMessage({ id: 'button.install' })}
         </Button>
       )}
-    </div>
+    </>
   );
 };
 
