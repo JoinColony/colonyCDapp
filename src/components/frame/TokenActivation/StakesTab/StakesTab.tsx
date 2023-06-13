@@ -56,12 +56,19 @@ const StakesTab = ({ currentUserClaims }: Props) => {
           <ul data-test="claimableMotionsList">
             {currentUserClaims?.map(({ unclaimedRewards, motionId }) => {
               /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-              const currentUserRewards = unclaimedRewards.find(({ address }) => address === user?.walletAddress)!; // safe assertion: we use this condition as a filter condition when getting `currentUserClaims`
-              const stakedAmount = BigNumber.from(currentUserRewards.rewards.yay).add(currentUserRewards.rewards.nay);
+              const currentUserRewards = unclaimedRewards.find(
+                ({ address }) => address === user?.walletAddress,
+              )!; // safe assertion: we use this condition as a filter condition when getting `currentUserClaims`
+              const stakedAmount = BigNumber.from(
+                currentUserRewards.rewards.yay,
+              ).add(currentUserRewards.rewards.nay);
 
               return (
                 <StakesListItem
-                  stakedAmount={getFormattedTokenValue(stakedAmount, nativeToken.decimals)}
+                  stakedAmount={getFormattedTokenValue(
+                    stakedAmount,
+                    nativeToken.decimals,
+                  )}
                   tokenSymbol={nativeToken.symbol}
                   colonyName={colony?.name || ''}
                   key={motionId}

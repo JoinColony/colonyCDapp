@@ -15,10 +15,18 @@ interface Props {
   }>;
 }
 
-const ActionsList = ({ items, handleItemClick, itemComponent: Item = ActionsListItem }: Props) => (
+const ActionsList = ({
+  items,
+  handleItemClick,
+  itemComponent: Item = ActionsListItem,
+}: Props) => (
   <ul>
     {items.map((item) => (
-      <Item key={item.transactionHash} item={item} handleOnClick={handleItemClick} />
+      <Item
+        key={item.transactionHash}
+        item={item}
+        handleOnClick={handleItemClick}
+      />
     ))}
   </ul>
 );

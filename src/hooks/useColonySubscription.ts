@@ -1,7 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { GetFullColonyByNameDocument, useCreateWatchedColoniesMutation, useDeleteWatchedColoniesMutation } from '~gql';
+import {
+  GetFullColonyByNameDocument,
+  useCreateWatchedColoniesMutation,
+  useDeleteWatchedColoniesMutation,
+} from '~gql';
 import { CREATE_USER_ROUTE } from '~routes';
 import { useAppContext, useColonyContext } from '~hooks';
 import { getWatchedColony } from '~utils/watching';
@@ -9,7 +13,14 @@ import { handleNewUser } from '~utils/newUser';
 
 const useColonySubscription = () => {
   const { colony, canInteractWithColony } = useColonyContext();
-  const { user, updateUser, wallet, walletConnecting, connectWallet, userLoading } = useAppContext();
+  const {
+    user,
+    updateUser,
+    wallet,
+    walletConnecting,
+    connectWallet,
+    userLoading,
+  } = useAppContext();
   const navigate = useNavigate();
 
   const watchedItem = getWatchedColony(colony, user?.watchlist?.items);

@@ -29,7 +29,9 @@ const validationSchema = yup.object().shape({
 
 const displayName = 'frame.GasStation.GasStationControls';
 
-const GasStationControls = ({ transaction: { id, error, metatransaction } }: Props) => {
+const GasStationControls = ({
+  transaction: { id, error, metatransaction },
+}: Props) => {
   const dispatch = useDispatch();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const transform = useCallback(withId(id), [id]);
@@ -73,7 +75,11 @@ const GasStationControls = ({ transaction: { id, error, metatransaction } }: Pro
       >
         {error && (
           <div className={styles.controls}>
-            <IconButton type="submit" text={{ id: 'button.retry' }} onClick={handleResetMetaTransactionAlert} />
+            <IconButton
+              type="submit"
+              text={{ id: 'button.retry' }}
+              onClick={handleResetMetaTransactionAlert}
+            />
           </div>
         )}
       </ActionForm>

@@ -23,14 +23,15 @@ const SingleFileUpload = ({
   handleFileReject,
   dataTest,
 }: SingleFileUploadProps & ForwardedRefProps) => {
-  const { getInputProps, getRootProps, open, isDragAccept, isDragReject } = useDropzoneWithFileReader({
-    dropzoneOptions: {
-      maxFiles: 1,
-      ...dropzoneOptions,
-    },
-    handleFileAccept,
-    handleFileReject,
-  });
+  const { getInputProps, getRootProps, open, isDragAccept, isDragReject } =
+    useDropzoneWithFileReader({
+      dropzoneOptions: {
+        maxFiles: 1,
+        ...dropzoneOptions,
+      },
+      handleFileAccept,
+      handleFileReject,
+    });
 
   // Allows parent to access the dropzone "open" method by passing down a ref.
   useImperativeHandle(ref, () => ({
@@ -57,4 +58,6 @@ const SingleFileUpload = ({
 
 SingleFileUpload.displayName = displayName;
 
-export default withForwardingRef(SingleFileUpload) as ComponentType<SingleFileUploadProps>;
+export default withForwardingRef(
+  SingleFileUpload,
+) as ComponentType<SingleFileUploadProps>;

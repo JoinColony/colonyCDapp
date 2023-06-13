@@ -35,14 +35,21 @@ const MotionDomainSelect = ({
   disabled = false,
   dropdownLabel,
 }: Props) => {
-  const renderActiveOption = (option: SelectOption | undefined, label: string) => {
+  const renderActiveOption = (
+    option: SelectOption | undefined,
+    label: string,
+  ) => {
     /*
      * @NOTE This is done so that the active item is displayed as `Root/Current Domain`
      * when a subdomain is selected, otherwise show `Root`
      */
-    const baseDropdownLabel = `${formatText(dropdownLabel || MSG.createDomain)} ${formatText({ id: 'domain.root' })}`;
+    const baseDropdownLabel = `${formatText(
+      dropdownLabel || MSG.createDomain,
+    )} ${formatText({ id: 'domain.root' })}`;
     const displayLabel =
-      (option?.value || Id.RootDomain) === Id.RootDomain ? baseDropdownLabel : `${baseDropdownLabel}/${label}`;
+      (option?.value || Id.RootDomain) === Id.RootDomain
+        ? baseDropdownLabel
+        : `${baseDropdownLabel}/${label}`;
     return <div className={styles.activeItem}>{displayLabel}</div>;
   };
 

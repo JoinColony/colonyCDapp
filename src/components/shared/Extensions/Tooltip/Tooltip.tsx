@@ -19,7 +19,13 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   isOpen,
   isSuccess = false,
 }) => {
-  const { getArrowProps, getTooltipProps, setTooltipRef, setTriggerRef, visible } = usePopperTooltip(
+  const {
+    getArrowProps,
+    getTooltipProps,
+    setTooltipRef,
+    setTriggerRef,
+    visible,
+  } = usePopperTooltip(
     {
       delayShow: 200,
       placement,
@@ -50,9 +56,9 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
         >
           <div
             {...getArrowProps({
-              className: `${showArrow ? `${styles.tooltipArrow} tooltip-arrow` : ''} ${
-                isSuccess ? 'text-success-400' : 'text-gray-900'
-              }`,
+              className: `${
+                showArrow ? `${styles.tooltipArrow} tooltip-arrow` : ''
+              } ${isSuccess ? 'text-success-400' : 'text-gray-900'}`,
             })}
           />
           <div className="max-w-[15.625rem] flex flex-col items-start">

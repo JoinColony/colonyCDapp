@@ -17,7 +17,10 @@ import { intl } from '~utils/intl';
 import { formatReputationChange } from '~utils/reputation';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { formatRolesTitle, getColonyRoleSetTitleValues } from '~utils/colonyActions';
+import {
+  formatRolesTitle,
+  getColonyRoleSetTitleValues,
+} from '~utils/colonyActions';
 import {
   AmountTag,
   Motion as MotionTag,
@@ -41,19 +44,27 @@ const { formatMessage } = intl({
 });
 
 // Get the domain name at the time of a transaction with a given hash (or fallback to the current name)
-const getDomainNameFromChangelog = (transactionHash: string, domainMetadata?: DomainMetadata | null) => {
+const getDomainNameFromChangelog = (
+  transactionHash: string,
+  domainMetadata?: DomainMetadata | null,
+) => {
   if (!domainMetadata) {
     return null;
   }
 
-  const changelogItem = domainMetadata.changelog?.find((item) => item.transactionHash === transactionHash);
+  const changelogItem = domainMetadata.changelog?.find(
+    (item) => item.transactionHash === transactionHash,
+  );
   if (!changelogItem?.newName) {
     return domainMetadata.name;
   }
   return changelogItem.newName;
 };
 
-export const mapColonyActionToExpectedFormat = (actionData: ColonyAction, colony?: Colony) => {
+export const mapColonyActionToExpectedFormat = (
+  actionData: ColonyAction,
+  colony?: Colony,
+) => {
   //  // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
   const formattedRolesTitle = formatRolesTitle(actionData.roles);
 
@@ -83,7 +94,9 @@ export const mapColonyActionToExpectedFormat = (actionData: ColonyAction, colony
         <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
       </span>
     ),
-    toDomain: actionData.toDomain?.metadata?.name ?? formatMessage({ id: 'unknownDomain' }),
+    toDomain:
+      actionData.toDomain?.metadata?.name ??
+      formatMessage({ id: 'unknownDomain' }),
     tokenSymbol: actionData.token?.symbol,
     reputationChangeNumeral: actionData.amount && (
       <Numeral
@@ -93,7 +106,10 @@ export const mapColonyActionToExpectedFormat = (actionData: ColonyAction, colony
     ),
     reputationChange:
       actionData.amount &&
-      formatReputationChange(actionData.amount, getTokenDecimalsWithFallback(colony?.nativeToken.decimals)),
+      formatReputationChange(
+        actionData.amount,
+        getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
+      ),
     rolesChanged: formattedRolesTitle.roleTitle,
     newVersion: actionData.newColonyVersion,
   };
@@ -120,7 +136,9 @@ export const mapActionEventToExpectedFormat = (
         actionData.transactionHash,
         actionData.fromDomain?.metadata || actionData.pendingDomainMetadata,
       ) ?? formatMessage({ id: 'unknownDomain' }),
-    toDomain: actionData.toDomain?.metadata?.name ?? formatMessage({ id: 'unknownDomain' }),
+    toDomain:
+      actionData.toDomain?.metadata?.name ??
+      formatMessage({ id: 'unknownDomain' }),
     eventNameDecorated: <b>{eventName}</b>,
     // clientOrExtensionType: (
     //   <span className={styles.highlight}>{event.emittedBy}</span>
@@ -137,20 +155,31 @@ export const mapActionEventToExpectedFormat = (
         <FriendlyName user={actionData.recipientUser} autoShrinkAddress />
       </span>
     ),
-    isSmiteAction: actionData.type === ColonyActionType.EmitDomainReputationPenalty,
+    isSmiteAction:
+      actionData.type === ColonyActionType.EmitDomainReputationPenalty,
     tokenSymbol: actionData.token?.symbol,
     reputationChange:
       actionData.amount &&
-      formatReputationChange(actionData.amount, getTokenDecimalsWithFallback(colony?.nativeToken.decimals)),
+      formatReputationChange(
+        actionData.amount,
+        getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
+      ),
     newVersion: actionData.newColonyVersion,
     reputationChangeNumeral: actionData.amount && (
-      <Numeral value={actionData.amount} decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)} />
+      <Numeral
+        value={actionData.amount}
+        decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
+      />
     ),
   };
 };
 
-export const useMapMotionEventToExpectedFormat = (motionMessageData: MotionMessage, actionData: ColonyAction) => {
-  const { colonyAddress, fromDomain, motionData, pendingColonyMetadata } = actionData;
+export const useMapMotionEventToExpectedFormat = (
+  motionMessageData: MotionMessage,
+  actionData: ColonyAction,
+) => {
+  const { colonyAddress, fromDomain, motionData, pendingColonyMetadata } =
+    actionData;
   const { colony } = useColonyContext();
 
   const initiatorUserReputation = useUserReputation(
@@ -175,7 +204,12 @@ export const useMapMotionEventToExpectedFormat = (motionMessageData: MotionMessa
         />
       </AmountTag>
     ),
-    backedSideTag: Number(motionMessageData?.vote) === MotionVote.Yay ? <MotionTag /> : <ObjectionTag />,
+    backedSideTag:
+      Number(motionMessageData?.vote) === MotionVote.Yay ? (
+        <MotionTag />
+      ) : (
+        <ObjectionTag />
+      ),
     motionTag: <MotionTag />,
     objectionTag: <ObjectionTag />,
     votingTag: <VotingTag />,
@@ -184,14 +218,23 @@ export const useMapMotionEventToExpectedFormat = (motionMessageData: MotionMessa
     passedTag: <PassedTag />,
     voteResultsWidget: (
       <div className={styles.voteResultsWrapper}>
-        <VotingWidgetHeading actionData={actionData} pendingColonyMetadata={pendingColonyMetadata} />
-        <VoteResults revealedVotes={motionData.revealedVotes} voterRecord={motionData.voterRecord} />
+        <VotingWidgetHeading
+          actionData={actionData}
+          pendingColonyMetadata={pendingColonyMetadata}
+        />
+        <VoteResults
+          revealedVotes={motionData.revealedVotes}
+          voterRecord={motionData.voterRecord}
+        />
       </div>
     ),
     initiator: (
       <>
         <span className={styles.userDecoration}>
-          <FriendlyName user={motionMessageData.initiatorUser} autoShrinkAddress />
+          <FriendlyName
+            user={motionMessageData.initiatorUser}
+            autoShrinkAddress
+          />
         </span>
         <div className={styles.reputation}>
           <MemberReputation
@@ -204,7 +247,10 @@ export const useMapMotionEventToExpectedFormat = (motionMessageData: MotionMessa
     staker: (
       <>
         <span className={styles.userDecoration}>
-          <FriendlyName user={motionMessageData.initiatorUser} autoShrinkAddress />
+          <FriendlyName
+            user={motionMessageData.initiatorUser}
+            autoShrinkAddress
+          />
         </span>
         <div className={styles.reputation}>
           <MemberReputation

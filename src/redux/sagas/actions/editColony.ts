@@ -10,10 +10,26 @@ import {
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
 
-import { createGroupTransaction, createTransactionChannels, getTxChannel } from '../transactions';
-import { getUpdatedColonyMetadataChangelog, putError, takeFrom } from '../utils';
-import { transactionAddParams, transactionPending, transactionReady } from '../../actionCreators';
-import { getExistingTokenAddresses, getModifiedTokenAddresses, updateColonyTokens } from '../utils/updateColonyTokens';
+import {
+  createGroupTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
+import {
+  getUpdatedColonyMetadataChangelog,
+  putError,
+  takeFrom,
+} from '../utils';
+import {
+  transactionAddParams,
+  transactionPending,
+  transactionReady,
+} from '../../actionCreators';
+import {
+  getExistingTokenAddresses,
+  getModifiedTokenAddresses,
+  updateColonyTokens,
+} from '../utils/updateColonyTokens';
 
 function* editColonyAction({
   payload: {
@@ -37,7 +53,10 @@ function* editColonyAction({
     const {
       editColonyAction: editColony,
       // annotateEditColonyAction: annotateEditColony,
-    } = yield createTransactionChannels(metaId, ['editColonyAction', 'annotateEditColonyAction']);
+    } = yield createTransactionChannels(metaId, [
+      'editColonyAction',
+      'annotateEditColonyAction',
+    ]);
 
     yield createGroupTransaction(editColony, batchKey, meta, {
       context: ClientType.ColonyClient,
@@ -111,7 +130,10 @@ function* editColonyAction({
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
+    } = yield takeFrom(
+      editColony.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     const existingTokenAddresses = getExistingTokenAddresses(colony);
@@ -120,17 +142,26 @@ function* editColonyAction({
       existingTokenAddresses,
       tokenAddresses,
     );
-    const haveTokensChanged = !!(tokenAddresses && modifiedTokenAddresses.length);
+    const haveTokensChanged = !!(
+      tokenAddresses && modifiedTokenAddresses.length
+    );
 
     if (haveTokensChanged) {
-      yield updateColonyTokens(colony, existingTokenAddresses, modifiedTokenAddresses);
+      yield updateColonyTokens(
+        colony,
+        existingTokenAddresses,
+        modifiedTokenAddresses,
+      );
     }
 
     /**
      * Save the updated metadata in the database
      */
     if (colony.metadata) {
-      yield apolloClient.mutate<UpdateColonyMetadataMutation, UpdateColonyMetadataMutationVariables>({
+      yield apolloClient.mutate<
+        UpdateColonyMetadataMutation,
+        UpdateColonyMetadataMutationVariables
+      >({
         mutation: UpdateColonyMetadataDocument,
         variables: {
           input: {

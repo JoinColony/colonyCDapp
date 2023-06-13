@@ -27,8 +27,11 @@ export enum MotionState {
   Forced = 'Forced',
 }
 
-export const getMotionDatabaseId = (chainId: number, votingRepExtnAddress: string, nativeMotionId: BigNumber): string =>
-  `${chainId}-${votingRepExtnAddress}_${nativeMotionId}`;
+export const getMotionDatabaseId = (
+  chainId: number,
+  votingRepExtnAddress: string,
+  nativeMotionId: BigNumber,
+): string => `${chainId}-${votingRepExtnAddress}_${nativeMotionId}`;
 
 export const getMotionState = (
   motionState: NetworkMotionState,
@@ -44,7 +47,8 @@ export const getMotionState = (
 ) => {
   switch (motionState) {
     case NetworkMotionState.Staking: {
-      return BigNumber.from(yayStakes).gte(requiredStake) && BigNumber.from(nayStakes).isZero()
+      return BigNumber.from(yayStakes).gte(requiredStake) &&
+        BigNumber.from(nayStakes).isZero()
         ? MotionState.Staked
         : MotionState.Staking;
     }
@@ -65,7 +69,10 @@ export const getMotionState = (
        * @TODO We're using gte as opposed to just eq to counteract a bug on the contracts
        * Once that is fixed, we can switch this back to equals
        */
-      if (BigNumber.from(nayStakes).gte(requiredStake) && BigNumber.from(yayStakes).gte(requiredStake)) {
+      if (
+        BigNumber.from(nayStakes).gte(requiredStake) &&
+        BigNumber.from(yayStakes).gte(requiredStake)
+      ) {
         /*
          * It only passes if the yay votes outnumber the nay votes
          * If the votes are equal, it fails
@@ -74,7 +81,10 @@ export const getMotionState = (
           return MotionState.Passed;
         }
 
-        if (BigNumber.from(yayVotes).isZero() && BigNumber.from(nayVotes).isZero()) {
+        if (
+          BigNumber.from(yayVotes).isZero() &&
+          BigNumber.from(nayVotes).isZero()
+        ) {
           /*
            * If the motion is finalizable, and we have voted, and the revealed votes haven't yet been populated to the db,
            * we shouldn't display a passed/failed tag as we don't yet know the vote outcome.
@@ -103,18 +113,29 @@ export const getMotionRequiredStake = (
   totalStakeFraction: BigNumber,
   decimals: number,
 ): BigNumber => {
-  const requiredStake = skillRep.mul(totalStakeFraction).div(BigNumber.from(10).pow(decimals));
+  const requiredStake = skillRep
+    .mul(totalStakeFraction)
+    .div(BigNumber.from(10).pow(decimals));
   return requiredStake;
 };
 
 const ONE_SECOND = 1000;
-export const getEarlierEventTimestamp = (currentTimestamp: number, subTime = ONE_SECOND) => {
+export const getEarlierEventTimestamp = (
+  currentTimestamp: number,
+  subTime = ONE_SECOND,
+) => {
   return currentTimestamp - subTime;
 };
 
-export const shouldDisplayMotion = (currentStake: string, requiredStake: string): boolean => {
+export const shouldDisplayMotion = (
+  currentStake: string,
+  requiredStake: string,
+): boolean => {
   if (requiredStake === '0') return true;
-  return new Decimal(currentStake).div(new Decimal(requiredStake)).times(100).gte(10);
+  return new Decimal(currentStake)
+    .div(new Decimal(requiredStake))
+    .times(100)
+    .gte(10);
 };
 
 export interface MotionValue {
@@ -145,7 +166,9 @@ export interface MotionValue {
 //   return updatedRoles;
 // };
 
-export const useShouldDisplayMotionCountdownTime = (motionState: MotionState | null) => {
+export const useShouldDisplayMotionCountdownTime = (
+  motionState: MotionState | null,
+) => {
   const { isVotingReputationEnabled } = useEnabledExtensions();
   return (
     isVotingReputationEnabled &&

@@ -4,7 +4,11 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 
-import { WizardDialogType, useUserAccountRegistered, useAppContext } from '~hooks';
+import {
+  WizardDialogType,
+  useUserAccountRegistered,
+  useAppContext,
+} from '~hooks';
 import { getAllUserRoles } from '~transformers';
 import { canArchitect, hasRoot } from '~utils/checks';
 
@@ -21,7 +25,8 @@ const MSG = defineMessages({
   },
   createNewDomainDescription: {
     id: `${displayName}.createNewDomainDescription`,
-    defaultMessage: 'Domains, departments, circles: teams let you group types of activity.',
+    defaultMessage:
+      'Domains, departments, circles: teams let you group types of activity.',
   },
   editDomainTitle: {
     id: `${displayName}.editDomainTitle`,
@@ -81,7 +86,8 @@ const ManageDomainsDialog = ({
   const allUserRoles = getAllUserRoles(colony, wallet?.address || '');
 
   const hasRootPermission = userHasAccountRegistered && hasRoot(allUserRoles);
-  const canCreateEditDomain = userHasAccountRegistered && canArchitect(allUserRoles);
+  const canCreateEditDomain =
+    userHasAccountRegistered && canArchitect(allUserRoles);
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
@@ -116,14 +122,22 @@ const ManageDomainsDialog = ({
       permissionRequired: !hasRootPermission,
       permissionInfoText: MSG.permissionsText,
       permissionInfoTextValues: {
-        permissionsList: <FormattedMessage {...MSG.manageWhitelistPermissionsList} />,
+        permissionsList: (
+          <FormattedMessage {...MSG.manageWhitelistPermissionsList} />
+        ),
       },
       onClick: () => callStep(nextStepManageWhitelist),
     },
   ];
 
   return (
-    <IndexModal title={MSG.dialogHeader} cancel={cancel} close={close} items={items} back={() => callStep(prevStep)} />
+    <IndexModal
+      title={MSG.dialogHeader}
+      cancel={cancel}
+      close={close}
+      items={items}
+      back={() => callStep(prevStep)}
+    />
   );
 };
 

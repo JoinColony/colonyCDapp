@@ -3,7 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-import { ColonyVersion, Extension, ExtensionVersion, isExtensionCompatible } from '@colony/colony-js';
+import {
+  ColonyVersion,
+  Extension,
+  ExtensionVersion,
+  isExtensionCompatible,
+} from '@colony/colony-js';
 import { useAsyncFunction, useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { AnyExtensionData } from '~types';
@@ -12,8 +17,8 @@ import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 import Toast from '~shared/Extensions/Toast';
 
 export const useFetchActiveInstallsExtension = () => {
-  const [oneTxPaymentData, setOneTxPaymentData] = useState();
-  const [votingReputationData, setVotingReputationData] = useState();
+  const [oneTxPaymentData, setOneTxPaymentData] = useState<string>();
+  const [votingReputationData, setVotingReputationData] = useState<string>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,8 +37,12 @@ export const useFetchActiveInstallsExtension = () => {
         },
       })
         .then((response) => {
-          setOneTxPaymentData(response.data.data.oneTxPaymentExtensions[0].installs);
-          setVotingReputationData(response.data.data.votingReputationExtensions[0].installs);
+          setOneTxPaymentData(
+            response.data.data.oneTxPaymentExtensions[0].installs,
+          );
+          setVotingReputationData(
+            response.data.data.votingReputationExtensions[0].installs,
+          );
         })
         .catch((e) => {
           console.error(e);
@@ -76,7 +85,8 @@ export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
     transform,
   });
 
-  const isSupportedColonyVersion = (colony?.version as ColonyVersion) >= MIN_SUPPORTED_COLONY_VERSION;
+  const isSupportedColonyVersion =
+    (colony?.version as ColonyVersion) >= MIN_SUPPORTED_COLONY_VERSION;
 
   const extensionCompatible = isExtensionCompatible(
     Extension[extensionData.extensionId],
@@ -84,7 +94,8 @@ export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
     colony?.version as ColonyVersion,
   );
 
-  const isUpgradeButtonDisabled = !isSupportedColonyVersion || !extensionCompatible;
+  const isUpgradeButtonDisabled =
+    !isSupportedColonyVersion || !extensionCompatible;
 
   const handleInstallClick = useCallback(async () => {
     try {
@@ -121,7 +132,9 @@ export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
   }, [asyncFunctionUpgrade, extensionValues]);
 
   const handleEnableClick = () => {
-    navigate(`/colony/${colony?.name}/extensions/${extensionData?.extensionId}/setup`);
+    navigate(
+      `/colony/${colony?.name}/extensions/${extensionData?.extensionId}/setup`,
+    );
   };
 
   return {

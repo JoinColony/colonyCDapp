@@ -28,10 +28,13 @@ const { formatMessage } = intl({
   'error.colonyURL': 'This is not a valid colony URL',
   'error.colonyNameRequired': 'Enter a name to continue',
   'error.colonyURLRequired': 'Enter a URL to continue',
-  'error.addressZeroError': 'You cannot use {symbol} token as a native token for colony.',
+  'error.addressZeroError':
+    'You cannot use {symbol} token as a native token for colony.',
   'error.tokenAddressRequired': 'Enter a token address to continue',
-  'error.invalidToken': 'Not a valid token. Only ERC20 tokens with 18 decimals are supported.',
-  'error.tokenNotFound': 'Token data not found. Please check the token contract address.',
+  'error.invalidToken':
+    'Not a valid token. Only ERC20 tokens with 18 decimals are supported.',
+  'error.tokenNotFound':
+    'Token data not found. Please check the token contract address.',
   'error.tokenNameRequired': 'Enter a token name to continue',
   'error.tokenSymbolRequired': 'Enter a token symbol to continue',
   'error.tokenNameLength': 'Token name should be 255 characters or fewer',
@@ -39,7 +42,9 @@ const { formatMessage } = intl({
 });
 
 export const colonyNameValidationSchema = object({
-  displayName: string().required(formatMessage({ id: 'error.colonyNameRequired' })),
+  displayName: string().required(
+    formatMessage({ id: 'error.colonyNameRequired' }),
+  ),
   colonyName: string()
     .required(formatMessage({ id: 'error.colonyURLRequired' }))
     .test('isValidName', formatMessage({ id: 'error.colonyURL' }), isValidName)
@@ -72,7 +77,11 @@ export const createTokenValidationSchema = object({
     .default('')
     .max(5)
     .required(formatMessage({ id: 'error.tokenSymbolRequired' }))
-    .test('isValidTokenSymbol', formatMessage({ id: 'error.tokenSymbol' }), isValidTokenSymbol),
+    .test(
+      'isValidTokenSymbol',
+      formatMessage({ id: 'error.tokenSymbol' }),
+      isValidTokenSymbol,
+    ),
   tokenName: string()
     .default('')
     .max(255, formatMessage({ id: 'error.tokenNameLength' }))

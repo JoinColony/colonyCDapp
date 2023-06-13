@@ -50,24 +50,47 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
               </div>
             </div>
             {!statuses?.includes('not-installed') && (
-              <InstalledBy title={installedBy.title} extensionData={extensionData} />
+              <InstalledBy
+                title={installedBy.title}
+                extensionData={extensionData}
+              />
             )}
             {statuses?.includes('not-installed') ? (
-              <SpecificSidePanelRow title={dateCreated?.title} description={dateCreated.date || ''} />
+              <SpecificSidePanelRow
+                title={dateCreated?.title}
+                description={dateCreated.date || ''}
+              />
             ) : (
-              <SpecificSidePanelRow title={dateInstalled?.title} description={dateInstalled.date || ''} />
+              <SpecificSidePanelRow
+                title={dateInstalled?.title}
+                description={dateInstalled.date || ''}
+              />
             )}
             {statuses?.includes('not-installed') ? (
-              <SpecificSidePanelRow title={latestVersion.title} description={latestVersion.version} />
+              <SpecificSidePanelRow
+                title={latestVersion.title}
+                description={latestVersion.version}
+              />
             ) : (
-              <SpecificSidePanelRow title={versionInstalled.title} description={versionInstalled.version} />
+              <SpecificSidePanelRow
+                title={versionInstalled.title}
+                description={versionInstalled.version}
+              />
             )}
             {!statuses?.includes('not-installed') && (
-              <ContractAddress title={contractAddress.title} description={contractAddress.address} />
+              <ContractAddress
+                title={contractAddress.title}
+                description={contractAddress.address}
+              />
             )}
-            <SpecificSidePanelRow title={developer.title} description={developer.developer} />
+            <SpecificSidePanelRow
+              title={developer.title}
+              description={developer.developer}
+            />
             <div className="flex flex-col justify-between">
-              <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">{permissions.title}</div>
+              <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">
+                {permissions.title}
+              </div>
               <Permissions data={permissions.permissions} />
             </div>
           </Fragment>

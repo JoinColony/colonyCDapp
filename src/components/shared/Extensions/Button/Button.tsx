@@ -29,9 +29,14 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  const titleText = typeof title === 'string' ? title : title && formatMessage(title);
-  const buttonText = typeof text === 'string' ? text : text && formatMessage(text, textValues);
-  const ariaLabelText = typeof ariaLabel === 'string' ? ariaLabel : ariaLabel && formatMessage(ariaLabel);
+  const titleText =
+    typeof title === 'string' ? title : title && formatMessage(title);
+  const buttonText =
+    typeof text === 'string' ? text : text && formatMessage(text, textValues);
+  const ariaLabelText =
+    typeof ariaLabel === 'string'
+      ? ariaLabel
+      : ariaLabel && formatMessage(ariaLabel);
 
   return (
     <>
@@ -70,7 +75,9 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
           {mode === 'pending' && isPending && (
             <Icon
               name="spinner-gap"
-              className={`ml-[0.625rem] w-[0.8125rem] h-[0.8125rem] ${isPending ? 'animate-spin' : 'animate-none'}`}
+              className={`ml-[0.625rem] w-[0.8125rem] h-[0.8125rem] ${
+                isPending ? 'animate-spin' : 'animate-none'
+              }`}
             />
           )}
         </button>

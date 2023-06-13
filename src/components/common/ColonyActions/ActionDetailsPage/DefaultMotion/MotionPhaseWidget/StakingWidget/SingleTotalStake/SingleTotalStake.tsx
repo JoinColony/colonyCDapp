@@ -11,7 +11,8 @@ import { useStakingWidgetContext } from '../StakingWidgetProvider';
 
 import styles from './SingleTotalStake.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.SingleTotalStake';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.SingleTotalStake';
 
 const MSG = defineMessages({
   progressTooltip: {
@@ -45,7 +46,9 @@ const SingleTotalStake = () => {
     isObjection,
   } = useStakingWidgetContext();
 
-  const totalPercentage = Number(isObjection ? percentageStaked.nay : percentageStaked.yay);
+  const totalPercentage = Number(
+    isObjection ? percentageStaked.nay : percentageStaked.yay,
+  );
 
   const isUnderThreshold = totalPercentage < STAKING_THRESHOLD;
 
@@ -65,8 +68,15 @@ const SingleTotalStake = () => {
 
   return (
     <>
-      <SingleTotalStakeHeading totalPercentage={totalPercentage} requiredStake={requiredStake} />
-      {isUnderThreshold ? <MinStakeTooltip>{progressBar}</MinStakeTooltip> : progressBar}
+      <SingleTotalStakeHeading
+        totalPercentage={totalPercentage}
+        requiredStake={requiredStake}
+      />
+      {isUnderThreshold ? (
+        <MinStakeTooltip>{progressBar}</MinStakeTooltip>
+      ) : (
+        progressBar
+      )}
       <UserStakeMessage />
     </>
   );

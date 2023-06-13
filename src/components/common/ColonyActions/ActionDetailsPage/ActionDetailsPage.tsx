@@ -6,7 +6,11 @@ import { useColonyContext } from '~hooks';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import { MotionAction } from '~types/motions';
 
-import { TransactionNotFound, ActionDetailsPageLayout as Layout, DefaultAction } from '.';
+import {
+  TransactionNotFound,
+  ActionDetailsPageLayout as Layout,
+  DefaultAction,
+} from '.';
 import { useGetColonyAction } from './useGetColonyAction';
 import DefaultMotion from './DefaultMotion';
 
@@ -23,7 +27,10 @@ const MSG = defineMessages({
   },
 });
 
-export type ActionDetailsPageParams = Record<'colonyName' | 'transactionHash', string>;
+export type ActionDetailsPageParams = Record<
+  'colonyName' | 'transactionHash',
+  string
+>;
 
 const ActionDetailsPage = () => {
   const { colony } = useColonyContext();
@@ -45,9 +52,14 @@ const ActionDetailsPage = () => {
 
   const isMotion = action?.isMotion;
   const createdAt = action?.createdAt;
-  const isInvalidMotion = (isMotion && !action.motionData) || (isMotion && motionState === undefined);
+  const isInvalidMotion =
+    (isMotion && !action.motionData) || (isMotion && motionState === undefined);
 
-  const isInvalidTransaction = isInvalidTransactionHash || isUnknownTransaction || !action || isInvalidMotion;
+  const isInvalidTransaction =
+    isInvalidTransactionHash ||
+    isUnknownTransaction ||
+    !action ||
+    isInvalidMotion;
 
   if (loadingAction) {
     return <LoadingTemplate loadingText={MSG.loading} />;
@@ -56,7 +68,11 @@ const ActionDetailsPage = () => {
   if (isInvalidTransaction) {
     return (
       <Layout center>
-        <TransactionNotFound colonyName={colony.name} createdAt={createdAt} isUnknownTx={isUnknownTransaction} />
+        <TransactionNotFound
+          colonyName={colony.name}
+          createdAt={createdAt}
+          isUnknownTx={isUnknownTransaction}
+        />
       </Layout>
     );
   }

@@ -22,7 +22,12 @@ interface SubmitFormButtonProps {
   className?: string;
 }
 
-export const SubmitFormButton = ({ disabled, loading, dataTest, className }: SubmitFormButtonProps) => (
+export const SubmitFormButton = ({
+  disabled,
+  loading,
+  dataTest,
+  className,
+}: SubmitFormButtonProps) => (
   <div className={className || styles.submitButton}>
     <Button
       appearance={{ theme: 'primary', size: 'large' }}
@@ -42,7 +47,12 @@ interface HeadingTextProps {
   appearance: Partial<Appearance>;
 }
 
-export const HeadingText = ({ text, textValues, paragraph, appearance }: HeadingTextProps) => (
+export const HeadingText = ({
+  text,
+  textValues,
+  paragraph,
+  appearance,
+}: HeadingTextProps) => (
   <>
     <Heading3 appearance={appearance} text={text} textValues={textValues} />
     <p className={styles.paragraph}>

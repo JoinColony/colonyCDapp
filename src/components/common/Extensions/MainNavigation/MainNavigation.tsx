@@ -22,7 +22,11 @@ const MainNavigation: FC = () => {
           <SubNavigationMobile />
           <div className="flex flex-col items-center justify-between mx-6 border-t border-gray-200 mt-4">
             <div className="mb-6 mt-6">
-              <Button text="Create new action" mode="secondaryOutline" isFullSize={isMobile} />
+              <Button
+                text="Create new action"
+                mode="secondaryOutline"
+                isFullSize={isMobile}
+              />
             </div>
             <LearnMore
               message={{

@@ -6,7 +6,11 @@ import { FormValues as TokenManagementDialogFormValues } from './validation';
 
 export const getTokenManagementDialogPayload = (
   colony: Colony,
-  { tokenAddress, selectedTokenAddresses, annotationMessage }: TokenManagementDialogFormValues,
+  {
+    tokenAddress,
+    selectedTokenAddresses,
+    annotationMessage,
+  }: TokenManagementDialogFormValues,
 ) => {
   let addresses = selectedTokenAddresses ?? [];
   if (tokenAddress && !selectedTokenAddresses?.includes(tokenAddress)) {
@@ -17,7 +21,10 @@ export const getTokenManagementDialogPayload = (
       addresses
         .map((address) => createAddress(address))
         .filter((address) => {
-          if (address === ADDRESS_ZERO || address === colony.nativeToken.tokenAddress) {
+          if (
+            address === ADDRESS_ZERO ||
+            address === colony.nativeToken.tokenAddress
+          ) {
             return false;
           }
           return true;

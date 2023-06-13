@@ -11,7 +11,11 @@ const DownloadTemplate = () => {
   }, []);
 
   return (
-    <ExternalLink href={fileDownloadUrl} download="template.csv" className={styles.link}>
+    <ExternalLink
+      href={fileDownloadUrl}
+      download="template.csv"
+      className={styles.link}
+    >
       Download template
     </ExternalLink>
   );

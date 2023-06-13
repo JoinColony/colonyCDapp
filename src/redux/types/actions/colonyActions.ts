@@ -5,7 +5,13 @@ import { ColonyRole } from '@colony/colony-js';
 import { ActionTypes } from '~redux';
 import { Address, WithKey, DomainColor, Domain, Colony } from '~types';
 
-import { ErrorActionType, UniqueActionType, ActionTypeWithMeta, MetaWithHistory, MetaWithNavigate } from './index';
+import {
+  ErrorActionType,
+  UniqueActionType,
+  ActionTypeWithMeta,
+  MetaWithHistory,
+  MetaWithNavigate,
+} from './index';
 
 /*
  * @NOTE About naming
@@ -25,7 +31,10 @@ export type ColonyActionsActionTypes =
       MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_DOMAIN_CREATE_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS, MetaWithNavigate<object>>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS,
+      MetaWithNavigate<object>
+    >
   | UniqueActionType<
       ActionTypes.ACTION_DOMAIN_EDIT,
       {
@@ -40,7 +49,10 @@ export type ColonyActionsActionTypes =
       MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_DOMAIN_EDIT_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.ACTION_DOMAIN_EDIT_SUCCESS, MetaWithNavigate<object>>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_DOMAIN_EDIT_SUCCESS,
+      MetaWithNavigate<object>
+    >
   | UniqueActionType<
       ActionTypes.ACTION_EXPENDITURE_PAYMENT,
       {
@@ -59,7 +71,10 @@ export type ColonyActionsActionTypes =
       MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS, MetaWithNavigate<object>>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS,
+      MetaWithNavigate<object>
+    >
   | UniqueActionType<
       ActionTypes.ACTION_EDIT_COLONY,
       {
@@ -73,7 +88,10 @@ export type ColonyActionsActionTypes =
       MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_EDIT_COLONY_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.ACTION_EDIT_COLONY_SUCCESS, MetaWithNavigate<object>>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_EDIT_COLONY_SUCCESS,
+      MetaWithNavigate<object>
+    >
   | UniqueActionType<
       ActionTypes.ACTION_MOVE_FUNDS,
       {
@@ -88,7 +106,10 @@ export type ColonyActionsActionTypes =
       MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_MOVE_FUNDS_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.ACTION_MOVE_FUNDS_SUCCESS, MetaWithNavigate<object>>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_MOVE_FUNDS_SUCCESS,
+      MetaWithNavigate<object>
+    >
   | UniqueActionType<
       ActionTypes.ACTION_MINT_TOKENS,
       {
@@ -101,7 +122,10 @@ export type ColonyActionsActionTypes =
       MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_MINT_TOKENS_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.ACTION_MINT_TOKENS_SUCCESS, MetaWithNavigate<object>>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_MINT_TOKENS_SUCCESS,
+      MetaWithNavigate<object>
+    >
   | UniqueActionType<
       ActionTypes.ACTION_VERSION_UPGRADE,
       {
@@ -112,7 +136,10 @@ export type ColonyActionsActionTypes =
       },
       MetaWithNavigate<object>
     >
-  | ActionTypeWithMeta<ActionTypes.ACTION_VERSION_UPGRADE_SUCCESS, MetaWithNavigate<object>>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_VERSION_UPGRADE_SUCCESS,
+      MetaWithNavigate<object>
+    >
   | ErrorActionType<ActionTypes.ACTION_VERSION_UPGRADE_ERROR, object>
   | UniqueActionType<
       ActionTypes.ACTION_USER_ROLES_SET,
@@ -127,7 +154,10 @@ export type ColonyActionsActionTypes =
       MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_USER_ROLES_SET_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.ACTION_USER_ROLES_SET_SUCCESS, MetaWithHistory<object>>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_USER_ROLES_SET_SUCCESS,
+      MetaWithHistory<object>
+    >
   | UniqueActionType<
       ActionTypes.ACTION_UNLOCK_TOKEN,
       {
@@ -137,7 +167,10 @@ export type ColonyActionsActionTypes =
       },
       MetaWithNavigate<object>
     >
-  | ActionTypeWithMeta<ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS, MetaWithNavigate<object>>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS,
+      MetaWithNavigate<object>
+    >
   | ErrorActionType<ActionTypes.ACTION_UNLOCK_TOKEN_ERROR, object>
   | UniqueActionType<
       ActionTypes.ACTION_RECOVERY,
@@ -150,7 +183,10 @@ export type ColonyActionsActionTypes =
       MetaWithHistory<object>
     >
   | ErrorActionType<ActionTypes.ACTION_RECOVERY_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.ACTION_RECOVERY_SUCCESS, MetaWithHistory<object>>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_RECOVERY_SUCCESS,
+      MetaWithHistory<object>
+    >
   | UniqueActionType<
       ActionTypes.ACTION_RECOVERY_SET_SLOT,
       {
@@ -163,7 +199,10 @@ export type ColonyActionsActionTypes =
       WithKey
     >
   | ErrorActionType<ActionTypes.ACTION_RECOVERY_SET_SLOT_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.ACTION_RECOVERY_SET_SLOT_SUCCESS, Record<string, unknown>>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_RECOVERY_SET_SLOT_SUCCESS,
+      Record<string, unknown>
+    >
   | UniqueActionType<
       ActionTypes.ACTION_RECOVERY_APPROVE,
       {
@@ -175,7 +214,10 @@ export type ColonyActionsActionTypes =
       WithKey
     >
   | ErrorActionType<ActionTypes.ACTION_RECOVERY_APPROVE_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.ACTION_RECOVERY_APPROVE_SUCCESS, Record<string, unknown>>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_RECOVERY_APPROVE_SUCCESS,
+      Record<string, unknown>
+    >
   | UniqueActionType<
       ActionTypes.ACTION_RECOVERY_EXIT,
       {
@@ -186,7 +228,10 @@ export type ColonyActionsActionTypes =
       WithKey
     >
   | ErrorActionType<ActionTypes.ACTION_RECOVERY_EXIT_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.ACTION_RECOVERY_EXIT_SUCCESS, Record<string, unknown>>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_RECOVERY_EXIT_SUCCESS,
+      Record<string, unknown>
+    >
   | UniqueActionType<
       ActionTypes.ACTION_MANAGE_REPUTATION,
       {
@@ -201,7 +246,10 @@ export type ColonyActionsActionTypes =
       MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_MANAGE_REPUTATION_ERROR, object>
-  | ActionTypeWithMeta<ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS, MetaWithNavigate<object>>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS,
+      MetaWithNavigate<object>
+    >
   | UniqueActionType<
       ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE,
       {
@@ -215,4 +263,8 @@ export type ColonyActionsActionTypes =
       MetaWithNavigate<object>
     >
   | ErrorActionType<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_ERROR, object>
-  | UniqueActionType<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_SUCCESS, object, object>;
+  | UniqueActionType<
+      ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_SUCCESS,
+      object,
+      object
+    >;

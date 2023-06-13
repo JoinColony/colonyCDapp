@@ -1,5 +1,9 @@
 import { Id } from '@colony/colony-js';
-import React, { KeyboardEventHandler, MouseEventHandler, useCallback } from 'react';
+import React, {
+  KeyboardEventHandler,
+  MouseEventHandler,
+  useCallback,
+} from 'react';
 import classnames from 'classnames';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
@@ -54,7 +58,9 @@ const DomainDropdownItem = ({
     [onDomainEdit, nativeId],
   );
 
-  const handleEditDomainKeyDown = useCallback<KeyboardEventHandler<HTMLButtonElement>>(
+  const handleEditDomainKeyDown = useCallback<
+    KeyboardEventHandler<HTMLButtonElement>
+  >(
     (evt) => {
       if (evt.key === ENTER) {
         evt.stopPropagation();
@@ -83,7 +89,10 @@ const DomainDropdownItem = ({
           <div className={styles.color}>
             <ColorTag color={metadata?.color ?? DomainColor.LightPink} />
           </div>
-          <div className={styles.headingWrapper} data-test="domainDropdownItemName">
+          <div
+            className={styles.headingWrapper}
+            data-test="domainDropdownItemName"
+          >
             <Heading
               appearance={{ margin: 'none', size: 'normal', theme: 'dark' }}
               text={metadata?.name || `Domain #${nativeId}`}
@@ -96,7 +105,11 @@ const DomainDropdownItem = ({
           )}
         </div>
         {metadata?.description && showDescription && (
-          <Paragraph className={styles.description} title={metadata.description} data-test="domainDropdownItemPurpose">
+          <Paragraph
+            className={styles.description}
+            title={metadata.description}
+            data-test="domainDropdownItemPurpose"
+          >
             {metadata.description}
           </Paragraph>
         )}
@@ -109,17 +122,19 @@ const DomainDropdownItem = ({
            * - the selected domain is "Root"
            * - we haven't provider a `onDomainEdit` method
            */
-          nativeId !== COLONY_TOTAL_BALANCE_DOMAIN_ID && nativeId !== Id.RootDomain && onDomainEdit && (
-            <div className={styles.editButton}>
-              <Button
-                appearance={{ theme: 'blue' }}
-                onClick={handleEditDomain}
-                onKeyDown={handleEditDomainKeyDown}
-                tabIndex={0}
-                text={{ id: 'button.edit' }}
-              />
-            </div>
-          )
+          nativeId !== COLONY_TOTAL_BALANCE_DOMAIN_ID &&
+            nativeId !== Id.RootDomain &&
+            onDomainEdit && (
+              <div className={styles.editButton}>
+                <Button
+                  appearance={{ theme: 'blue' }}
+                  onClick={handleEditDomain}
+                  onKeyDown={handleEditDomainKeyDown}
+                  tabIndex={0}
+                  text={{ id: 'button.edit' }}
+                />
+              </div>
+            )
         }
       </div>
     </div>

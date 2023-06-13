@@ -13,7 +13,10 @@ import TitledContent from '~common/Extensions/TitledContent/TitledContent';
 
 const displayName = 'common.Extensions.UserNavigation.partials.WalletPopover';
 
-const WalletPopover: FC<WalletPopoverProps> = ({ setTooltipRef, tooltipProps }) => {
+const WalletPopover: FC<WalletPopoverProps> = ({
+  setTooltipRef,
+  tooltipProps,
+}) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { connectWallet } = useAppContext();
@@ -28,11 +31,15 @@ const WalletPopover: FC<WalletPopoverProps> = ({ setTooltipRef, tooltipProps }) 
       <div className={styles.mobileButtons}>
         <Button mode="tertiaryOutline" isFullRounded onClick={connectWallet}>
           <Icon name="cardholder" appearance={{ size: 'tiny' }} />
-          <p className="text-sm font-inter font-medium ml-1">{formatMessage({ id: 'connectWallet' })}</p>
+          <p className="text-sm font-inter font-medium ml-1">
+            {formatMessage({ id: 'connectWallet' })}
+          </p>
         </Button>
         <Button mode="tertiaryOutline" isFullRounded>
           <Icon name="list" appearance={{ size: 'extraTiny' }} />
-          <p className="text-sm font-inter font-medium ml-1">{formatMessage({ id: 'help' })}</p>
+          <p className="text-sm font-inter font-medium ml-1">
+            {formatMessage({ id: 'help' })}
+          </p>
         </Button>
       </div>
       <div className="flex flex-col md:flex-row h-full">
@@ -43,7 +50,9 @@ const WalletPopover: FC<WalletPopoverProps> = ({ setTooltipRef, tooltipProps }) 
               <use xlinkHref="#colony-logo" />
             </svg>
           )}
-          <p className="mt-7 text-sm text-gray-900">{formatMessage({ id: 'walletPopover.content' })}</p>
+          <p className="mt-7 text-sm text-gray-900">
+            {formatMessage({ id: 'walletPopover.content' })}
+          </p>
           <div className="flex mt-auto text-xs font-medium text-gray-900">
             <p>
               {formatMessage({ id: 'walletPopover.signIn' })}{' '}
@@ -57,9 +66,16 @@ const WalletPopover: FC<WalletPopoverProps> = ({ setTooltipRef, tooltipProps }) 
           <h4 className="text-lg font-semibold text-gray-900">
             {formatMessage({ id: 'walletPopover.connectWallet' })}
           </h4>
-          {isMobile && <p className="mt-2 text-sm text-gray-900">{formatMessage({ id: 'walletPopover.content' })}</p>}
+          {isMobile && (
+            <p className="mt-2 text-sm text-gray-900">
+              {formatMessage({ id: 'walletPopover.content' })}
+            </p>
+          )}
           <TitledContent
-            title={{ defaultMessage: 'available wallets', id: 'availableWallets' }}
+            title={{
+              defaultMessage: 'available wallets',
+              id: 'availableWallets',
+            }}
             isTitleHiddenOnDesktop
             className="mt-6"
           >
@@ -68,7 +84,10 @@ const WalletPopover: FC<WalletPopoverProps> = ({ setTooltipRef, tooltipProps }) 
                 {/* @TODO: Add metamask connection to API */}
                 <WalletPopoverOption
                   title={{ defaultMessage: 'MetaMask', id: 'metaMask' }}
-                  description={{ defaultMessage: 'Requires MetaMask browser extension', id: 'metaMaskRequired' }}
+                  description={{
+                    defaultMessage: 'Requires MetaMask browser extension',
+                    id: 'metaMaskRequired',
+                  }}
                   icon="metamask"
                   // eslint-disable-next-line no-console
                   onClick={() => console.log('MetaMask connect')}

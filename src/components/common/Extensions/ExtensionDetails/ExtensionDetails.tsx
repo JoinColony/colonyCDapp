@@ -47,18 +47,6 @@ const ExtensionDetails = () => {
     return <SpinnerLoader appearance={{ theme: 'primary', size: 'massive' }} />;
   }
 
-  if (!colony) {
-    return null;
-  }
-
-  if (!extensionData) {
-    return (
-      <div>
-        <FormattedMessage {...MSG.unsupportedExtension} />
-      </div>
-    );
-  }
-
   const isSetupRoute = pathname.replace(/\/$/, '').endsWith('setup');
   const extensionUrl = `/colony/${colony.name}/extensions/${extensionId}`;
   const breadCrumbs: Crumb[] = [
@@ -78,7 +66,6 @@ const ExtensionDetails = () => {
     extensionData.isDeprecated
   );
   const canExtensionBeDeprecated =
-    hasRegisteredProfile &&
     isInstalledExtensionData(extensionData) &&
     extensionData.uninstallable &&
     !extensionData.isDeprecated;
@@ -114,7 +101,10 @@ const ExtensionDetails = () => {
             }
           />
           {isInstalledExtensionData(extensionData) && (
-            <Route path={COLONY_EXTENSION_SETUP_ROUTE} element={<ExtensionSetup extensionData={extensionData} />} />
+            <Route
+              path={COLONY_EXTENSION_SETUP_ROUTE}
+              element={<ExtensionSetup extensionData={extensionData} />}
+            />
           )}
           <Route path="*" element={<NotFoundRoute />} />
         </Routes>

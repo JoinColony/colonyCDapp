@@ -42,7 +42,11 @@ interface StepColonyNameInputsProps {
   cleaveDefaultValue: string;
 }
 
-const StepColonyNameInputs = ({ disabled, isMobile, cleaveDefaultValue }: StepColonyNameInputsProps) => (
+const StepColonyNameInputs = ({
+  disabled,
+  isMobile,
+  cleaveDefaultValue,
+}: StepColonyNameInputsProps) => (
   <>
     <Input
       appearance={{ theme: 'fat' }}

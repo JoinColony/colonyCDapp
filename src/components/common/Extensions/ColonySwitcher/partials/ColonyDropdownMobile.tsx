@@ -4,7 +4,9 @@ import { ColonyDropdownMobileProps } from '../types';
 
 const displayName = 'common.Extensions.partials.ColonyDropdownMobile';
 
-const ColonyDropdownMobile: FC<PropsWithChildren<ColonyDropdownMobileProps>> = ({ isOpen, userLoading, children }) => (
+const ColonyDropdownMobile: FC<
+  PropsWithChildren<ColonyDropdownMobileProps>
+> = ({ isOpen, userLoading, children }) => (
   <>
     {isOpen && (
       <div className="h-auto absolute left-[-1.5rem] bg-base-white">

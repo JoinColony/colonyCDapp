@@ -18,7 +18,13 @@ const RevealRewardItem = ({ voterReward }: RevealRewardProps) => {
 
   return (
     <>
-      {nativeToken && <TokenIcon className={styles.tokenIcon} token={nativeToken} size="xxs" />}
+      {nativeToken && (
+        <TokenIcon
+          className={styles.tokenIcon}
+          token={nativeToken}
+          size="xxs"
+        />
+      )}
       {voterReward && (
         <Numeral
           value={voterReward}

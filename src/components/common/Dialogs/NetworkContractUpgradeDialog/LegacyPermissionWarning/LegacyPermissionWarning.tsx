@@ -6,7 +6,8 @@ import PermissionsLabel from '~shared/PermissionsLabel';
 
 import styles from './LegacyPermissionWarning.css';
 
-const displayName = 'common.NetworkContractUpgradeDialog.NetworkContractUpgradeDialogForm.LegacyPermissionWarning';
+const displayName =
+  'common.NetworkContractUpgradeDialog.NetworkContractUpgradeDialogForm.LegacyPermissionWarning';
 
 const MSG = defineMessages({
   legacyPermissionsWarningTitle: {
@@ -48,7 +49,9 @@ const LegacyPermissionWarning = () => (
           recoveryRole: <PermissionsLabel permission={ColonyRole.Recovery} />,
           highlightInstruction: (
             <span className={styles.highlightInstruction}>
-              <FormattedMessage {...MSG.legacyPermissionsWarninghighlightInstruction} />
+              <FormattedMessage
+                {...MSG.legacyPermissionsWarninghighlightInstruction}
+              />
             </span>
           ),
         }}

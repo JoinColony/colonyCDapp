@@ -43,10 +43,17 @@ const NoReputationInfoLink = (chunks: React.ReactNode[]) => (
   <ExternalLink href={MD_REPUTATION_INFO}>{chunks}</ExternalLink>
 );
 
-const NotEnoughReputation = ({ domainId = Id.RootDomain, appearance, includeForceCopy = true }: Props) => (
+const NotEnoughReputation = ({
+  domainId = Id.RootDomain,
+  appearance,
+  includeForceCopy = true,
+}: Props) => (
   <div className={`${styles.container} ${getMainClasses(appearance, styles)}`}>
     <p className={styles.title}>
-      <FormattedMessage {...MSG.title} values={{ onRootDomain: domainId === Id.RootDomain }} />
+      <FormattedMessage
+        {...MSG.title}
+        values={{ onRootDomain: domainId === Id.RootDomain }}
+      />
     </p>
     <p className={styles.text}>
       <FormattedMessage

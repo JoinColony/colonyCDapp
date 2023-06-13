@@ -14,7 +14,11 @@ interface ObjectionControlsProps {
 
 const ObjectionControls = ({ cancel, disabled }: ObjectionControlsProps) => (
   <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
-    <Button appearance={{ theme: 'secondary', size: 'large' }} text={{ id: 'button.cancel' }} onClick={cancel} />
+    <Button
+      appearance={{ theme: 'secondary', size: 'large' }}
+      text={{ id: 'button.cancel' }}
+      onClick={cancel}
+    />
     <span className={styles.submitButton}>
       <Button
         appearance={{ theme: 'pink', size: 'large' }}

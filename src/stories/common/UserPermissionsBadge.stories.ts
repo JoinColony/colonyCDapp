@@ -17,7 +17,14 @@ const meta: Meta<typeof UserPermissionsBadge> = {
     },
     name: {
       name: 'Icon Name',
-      options: ['app-window', 'bank', 'buildings', 'clipboard-text', 'clock-counter-clockwise', 'scales'],
+      options: [
+        'app-window',
+        'bank',
+        'buildings',
+        'clipboard-text',
+        'clock-counter-clockwise',
+        'scales',
+      ],
       control: {
         type: 'select',
       },
@@ -30,7 +37,17 @@ const meta: Meta<typeof UserPermissionsBadge> = {
     },
     placement: {
       name: 'Placement',
-      options: ['auto', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'right', 'left'],
+      options: [
+        'auto',
+        'top',
+        'top-start',
+        'top-end',
+        'bottom',
+        'bottom-start',
+        'bottom-end',
+        'right',
+        'left',
+      ],
       control: {
         type: 'select',
       },
@@ -48,6 +65,7 @@ export const Base: Story = {
   args: {
     text: 'Architecture',
     name: 'buildings',
-    description: 'This permission allows users to create new domains, and manage permissions within those domains.',
+    description:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
   },
 };

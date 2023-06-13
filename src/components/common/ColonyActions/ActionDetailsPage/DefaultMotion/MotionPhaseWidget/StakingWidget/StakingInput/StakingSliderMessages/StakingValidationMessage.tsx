@@ -8,7 +8,8 @@ import NotEnoughReputationMessage from './NotEnoughReputationMessage';
 import styles from './StakingValidationMessage.css';
 import { userCanStakeMore, userHasInsufficientReputation } from './helpers';
 
-const displayName = 'common.ColonyActions.DefaultMotion.StakingWidget.StakingValidationMessage';
+const displayName =
+  'common.ColonyActions.DefaultMotion.StakingWidget.StakingValidationMessage';
 
 const MSG = defineMessages({
   limitExceeded: {
@@ -52,7 +53,9 @@ const StakingValidationMessage = ({
   userMaxStake,
   remainingToStake,
 }: StakingValidationMessageProps) => {
-  const tokensLeftToActivate = BigNumber.from(userMinStake).sub(userActivatedTokens).toString();
+  const tokensLeftToActivate = BigNumber.from(userMinStake)
+    .sub(userActivatedTokens)
+    .toString();
 
   if (!enoughReputationToStakeMinimum) {
     return (
@@ -70,7 +73,11 @@ const StakingValidationMessage = ({
 
   let errorType: StakingValidationErrors | undefined;
 
-  const userNeedsMoreReputation = userHasInsufficientReputation(userActivatedTokens, userMaxStake, remainingToStake);
+  const userNeedsMoreReputation = userHasInsufficientReputation(
+    userActivatedTokens,
+    userMaxStake,
+    remainingToStake,
+  );
 
   const canStakeMore = userCanStakeMore(userMinStake, remainingToStake);
 

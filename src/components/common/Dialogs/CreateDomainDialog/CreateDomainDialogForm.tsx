@@ -3,7 +3,12 @@ import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 
-import { ActionDialogProps, DialogControls, DialogHeading, DialogSection } from '~shared/Dialog';
+import {
+  ActionDialogProps,
+  DialogControls,
+  DialogHeading,
+  DialogSection,
+} from '~shared/Dialog';
 import { HookFormInput as Input, Annotations } from '~shared/Fields';
 import { SetStateFn } from '~types';
 import { useActionDialogStatus } from '~hooks';
@@ -50,8 +55,18 @@ const CreateDomainDialogForm = ({
 }: Props) => {
   const { watch } = useFormContext();
   const forceAction = watch('forceAction');
-  const { userHasPermission, disabledInput, disabledSubmit, canCreateMotion, canOnlyForceAction } =
-    useActionDialogStatus(colony, requiredRoles, [Id.RootDomain], enabledExtensionData);
+  const {
+    userHasPermission,
+    disabledInput,
+    disabledSubmit,
+    canCreateMotion,
+    canOnlyForceAction,
+  } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [Id.RootDomain],
+    enabledExtensionData,
+  );
 
   useEffect(() => {
     if (forceAction !== isForce) {
@@ -76,7 +91,10 @@ const CreateDomainDialogForm = ({
         </DialogSection>
       )}
       <DialogSection>
-        <DomainNameAndColorInputGroup isCreatingDomain disabled={disabledInput} />
+        <DomainNameAndColorInputGroup
+          isCreatingDomain
+          disabled={disabledInput}
+        />
       </DialogSection>
       <DialogSection>
         <Input
@@ -98,7 +116,10 @@ const CreateDomainDialogForm = ({
       </DialogSection>
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
-          <NoPermissionMessage requiredPermissions={requiredRoles} domainName="Root" />
+          <NoPermissionMessage
+            requiredPermissions={requiredRoles}
+            domainName="Root"
+          />
         </DialogSection>
       )}
       {canOnlyForceAction && (
@@ -116,7 +137,9 @@ const CreateDomainDialogForm = ({
           onSecondaryButtonClick={back}
           disabled={disabledSubmit}
           dataTest="createDomainConfirmButton"
-          isVotingReputationEnabled={enabledExtensionData.isVotingReputationEnabled}
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>

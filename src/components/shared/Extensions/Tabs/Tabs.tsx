@@ -8,7 +8,13 @@ import Icon from '~shared/Icon';
 
 const displayName = 'Extensions.Tabs';
 
-const Tabs: FC<PropsWithChildren<TabsProps>> = ({ items, activeTab, onTabClick, className, children }) => {
+const Tabs: FC<PropsWithChildren<TabsProps>> = ({
+  items,
+  activeTab,
+  onTabClick,
+  className,
+  children,
+}) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -20,9 +26,13 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({ items, activeTab, onTabClick, 
         leftNavBtnClassName={styles.navLeftButton}
         rightNavBtnClassName={styles.navRightButton}
         // @ts-ignore - react-tabs-scrollable has invalid type for this prop
-        leftBtnIcon={<Icon name="caret-left" appearance={{ size: 'extraTiny' }} />}
+        leftBtnIcon={
+          <Icon name="caret-left" appearance={{ size: 'extraTiny' }} />
+        }
         // @ts-ignore - react-tabs-scrollable has invalid type for this prop
-        rightBtnIcon={<Icon name="caret-right" appearance={{ size: 'extraTiny' }} />}
+        rightBtnIcon={
+          <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
+        }
         navBtnClassName={styles.navButton}
         hideNavBtnsOnMobile={false}
       >
@@ -38,7 +48,12 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({ items, activeTab, onTabClick, 
         ))}
       </ReactTabs>
       {items.map(({ id, content }) => (
-        <TabScreen className={`${className} styles.panel`} key={id} activeTab={activeTab} index={id}>
+        <TabScreen
+          className={`${className} styles.panel`}
+          key={id}
+          activeTab={activeTab}
+          index={id}
+        >
           {content || children}
         </TabScreen>
       ))}

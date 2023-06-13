@@ -24,7 +24,9 @@ const useColonyFundsClaims = (): ColonyClaims[] => {
   const chainClaimWithToken: ColonyChainClaimWithToken | null = chainFundsClaim
     ? {
         ...chainFundsClaim,
-        token: tokens?.items?.find((token) => token?.token?.tokenAddress === ADDRESS_ZERO)?.token,
+        token: tokens?.items?.find(
+          (token) => token?.token?.tokenAddress === ADDRESS_ZERO,
+        )?.token,
       }
     : null;
 
@@ -38,7 +40,10 @@ const useColonyFundsClaims = (): ColonyClaims[] => {
    */
   return [...claims, chainClaimWithToken]
     .filter(notNull)
-    .sort((first, second) => (second?.createdAtBlock || 0) - (first?.createdAtBlock || 0));
+    .sort(
+      (first, second) =>
+        (second?.createdAtBlock || 0) - (first?.createdAtBlock || 0),
+    );
 };
 
 export default useColonyFundsClaims;

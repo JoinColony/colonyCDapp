@@ -1,7 +1,10 @@
 import Decimal from 'decimal.js';
 import { BigNumber } from 'ethers';
 
-import { adjustConvertedValue, getFormattedNumeralValue } from '~shared/Numeral';
+import {
+  adjustConvertedValue,
+  getFormattedNumeralValue,
+} from '~shared/Numeral';
 
 export enum ZeroValue {
   Zero = '0',
@@ -31,12 +34,18 @@ export const calculatePercentageReputation = (
     return ZeroValue.NearZero;
   }
 
-  const reputation = userReputationNumber.mul(reputationSafeguard).div(totalReputationNumber).toNumber();
+  const reputation = userReputationNumber
+    .mul(reputationSafeguard)
+    .div(totalReputationNumber)
+    .toNumber();
 
   return reputation / 10 ** decimalPlaces;
 };
 
-export const formatReputationChange = (reputationChange: string, decimals: number) => {
+export const formatReputationChange = (
+  reputationChange: string,
+  decimals: number,
+) => {
   const absoluteChange = new Decimal(reputationChange).abs();
   const value = adjustConvertedValue(absoluteChange, decimals);
   return getFormattedNumeralValue(value, absoluteChange);

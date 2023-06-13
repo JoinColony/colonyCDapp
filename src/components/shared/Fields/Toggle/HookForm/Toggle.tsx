@@ -58,7 +58,11 @@ const HookFormToggle = ({
   return (
     <div className={styles.container}>
       {!elementOnly && label && (
-        <InputLabel label={label} labelValues={labelValues} appearance={{ colorSchema: 'grey' }} />
+        <InputLabel
+          label={label}
+          labelValues={labelValues}
+          appearance={{ colorSchema: 'grey' }}
+        />
       )}
       <div className={styles.checkboxContainer}>
         <input

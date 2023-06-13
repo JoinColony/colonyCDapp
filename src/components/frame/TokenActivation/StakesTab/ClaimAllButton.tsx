@@ -13,7 +13,11 @@ interface Props {
   userAddress: Address;
 }
 
-const ClaimAllButton = ({ unclaimedStakes, userAddress, colonyAddress }: Props) => {
+const ClaimAllButton = ({
+  unclaimedStakes,
+  userAddress,
+  colonyAddress,
+}: Props) => {
   const { startPolling, stopPolling } = useColonyContext();
   const { setIsOpen } = useTokenActivationContext();
   return (

@@ -40,7 +40,12 @@ interface Props {
   loadingRelated?: boolean;
 }
 
-const TransactionStatus = ({ hash, status, groupCount, loadingRelated }: Props) => (
+const TransactionStatus = ({
+  hash,
+  status,
+  groupCount,
+  loadingRelated,
+}: Props) => (
   <div
     className={classnames(styles.main, {
       [styles.mainStatusReady]: TRANSACTION_STATUSES.READY === status,
@@ -77,7 +82,8 @@ const TransactionStatus = ({ hash, status, groupCount, loadingRelated }: Props) 
        */}
       <div
         className={classnames(styles.statusIconContainer, {
-          [styles.statusIconContainerReady]: TRANSACTION_STATUSES.READY === status,
+          [styles.statusIconContainerReady]:
+            TRANSACTION_STATUSES.READY === status,
         })}
       >
         {groupCount && status === TRANSACTION_STATUSES.READY && (
@@ -86,7 +92,10 @@ const TransactionStatus = ({ hash, status, groupCount, loadingRelated }: Props) 
           </span>
         )}
         {status === TRANSACTION_STATUSES.SUCCEEDED && !loadingRelated && (
-          <span className={styles.completed} data-test="gasStationTransactionSucceeded">
+          <span
+            className={styles.completed}
+            data-test="gasStationTransactionSucceeded"
+          >
             <Icon
               appearance={{ size: 'tiny' }}
               name="check-mark"
@@ -103,7 +112,9 @@ const TransactionStatus = ({ hash, status, groupCount, loadingRelated }: Props) 
             <SpinnerLoader appearance={{ size: 'small', theme: 'primary' }} />
           </div>
         )}
-        {status === TRANSACTION_STATUSES.FAILED && <span className={styles.failed}>!</span>}
+        {status === TRANSACTION_STATUSES.FAILED && (
+          <span className={styles.failed}>!</span>
+        )}
       </div>
     </Tooltip>
   </div>

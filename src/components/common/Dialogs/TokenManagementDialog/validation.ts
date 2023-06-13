@@ -18,7 +18,8 @@ const MSG = defineMessages({
   },
   tokenNotFound: {
     id: `${displayName}.tokenNotFound`,
-    defaultMessage: 'Token data not found. Please check the token contract address.',
+    defaultMessage:
+      'Token data not found. Please check the token contract address.',
   },
   tokenIsDuplicate: {
     id: `${displayName}.tokenIsDuplicate`,
@@ -47,7 +48,10 @@ export const getValidationSchema = (colony: Colony) =>
 
           return !colony.tokens?.items
             .filter(notNull)
-            .some(({ token: { tokenAddress } }) => createAddress(tokenAddress) === createAddress(value));
+            .some(
+              ({ token: { tokenAddress } }) =>
+                createAddress(tokenAddress) === createAddress(value),
+            );
         },
       ),
     token: object<Token>()
@@ -63,7 +67,9 @@ export const getValidationSchema = (colony: Colony) =>
           path: 'tokenAddress',
         });
       }),
-    selectedTokenAddresses: array().of(string().address().defined()).notRequired(),
+    selectedTokenAddresses: array()
+      .of(string().address().defined())
+      .notRequired(),
     annotationMessage: string().max(4000).notRequired(),
   }).defined();
 

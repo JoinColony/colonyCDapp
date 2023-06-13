@@ -67,10 +67,17 @@ const UserNavigationWithData = () => {
         <div className="flex items-center w-full justify-end gap-1">
           {nativeToken && <Token nativeToken={nativeToken} />}
 
-          <Button mode="tertiaryOutline" isFullRounded onClick={() => setIsOpen(!isOpen)}>
+          <Button
+            mode="tertiaryOutline"
+            isFullRounded
+            onClick={() => setIsOpen(!isOpen)}
+          >
             <div className="flex items-center gap-3">
               <UserAvatar userName="panda" size="xxs" />
-              <MemberReputation userReputation={userReputation} totalReputation={totalReputation} />
+              <MemberReputation
+                userReputation={userReputation}
+                totalReputation={totalReputation}
+              />
             </div>
           </Button>
           <Button mode="tertiaryOutline" isFullRounded>

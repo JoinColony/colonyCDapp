@@ -1,7 +1,16 @@
 import { ActionPattern } from '@redux-saga/types';
 import { NavigateFunction, NavigateOptions } from 'react-router-dom';
 import { Channel } from 'redux-saga';
-import { all, call, cancel, fork, put, race, take, select } from 'redux-saga/effects';
+import {
+  all,
+  call,
+  cancel,
+  fork,
+  put,
+  race,
+  take,
+  select,
+} from 'redux-saga/effects';
 
 import { ErrorActionType, TakeFilter, Action } from '~redux';
 
@@ -12,7 +21,10 @@ export const takeFrom = (channel: Channel<any>, type: string | string[]) =>
   call(function* takeFromSaga() {
     while (true) {
       const action = yield take(channel);
-      if ((Array.isArray(type) && type.includes(action.type)) || action.type === type) {
+      if (
+        (Array.isArray(type) && type.includes(action.type)) ||
+        action.type === type
+      ) {
         return action;
       }
     }
@@ -44,7 +56,11 @@ export const putError = (type: string, error: Error, meta: object = {}) => {
  * Races the `take` of two actions, one success and one error. If success is
  * first, function returns. If error is first, function throws.
  */
-export const raceError = (successAction: string | TakeFilter, errorAction: string | TakeFilter, error?: Error) => {
+export const raceError = (
+  successAction: string | TakeFilter,
+  errorAction: string | TakeFilter,
+  error?: Error,
+) => {
   function* raceErrorGenerator() {
     const result = yield race([take(successAction), take(errorAction)]) as any;
     if (result.type === errorAction) throw error || new Error(result.payload);
@@ -53,9 +69,14 @@ export const raceError = (successAction: string | TakeFilter, errorAction: strin
   return call(raceErrorGenerator);
 };
 
-export function* selectAsJS(selector: (...selectorArgs: any[]) => any, ...args: any[]) {
+export function* selectAsJS(
+  selector: (...selectorArgs: any[]) => any,
+  ...args: any[]
+) {
   const selected = yield select(selector, ...args);
-  return selected && typeof selected.toJS === 'function' ? selected.toJS() : selected;
+  return selected && typeof selected.toJS === 'function'
+    ? selected.toJS()
+    : selected;
 }
 
 export const takeLatestCancellable = (
@@ -86,7 +107,11 @@ export const takeLatestCancellable = (
   ]);
 };
 
-export function* routeRedirect(route: string, navigateFunction: NavigateFunction, navigateOptions?: NavigateOptions) {
+export function* routeRedirect(
+  route: string,
+  navigateFunction: NavigateFunction,
+  navigateOptions?: NavigateOptions,
+) {
   if (route && navigateFunction) {
     // @ts-ignore TS only considering last overload as correct fn signature
     yield call<NavigateFunction>(navigateFunction, route, navigateOptions);

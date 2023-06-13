@@ -8,7 +8,8 @@ import styles from './DropdownContent.module.css';
 import { MSG } from './consts';
 import LearnMore from '~shared/Extensions/LearnMore';
 
-const displayName = 'common.Extensions.SubNavigation.partials.DropdownContent.PayDropdown';
+const displayName =
+  'common.Extensions.SubNavigation.partials.DropdownContent.PayDropdown';
 
 const PayDropdown: FC<PropsWithChildren> = () => (
   <div className="text-gray-400 text-xs">
@@ -16,13 +17,19 @@ const PayDropdown: FC<PropsWithChildren> = () => (
       <FormattedMessage {...MSG.paymentContentTitle} />
     </div>
     <ul className={styles.listWrapper}>
-      <LinkItem title={MSG.singlePayments} description={MSG.singlePaymentsDescription} />
+      <LinkItem
+        title={MSG.singlePayments}
+        description={MSG.singlePaymentsDescription}
+      />
       <LinkItem
         title={MSG.advancedPayments}
         description={MSG.advancedPaymentsDescription}
         statusBadge={<ExtensionStatusBadge text={MSG.comingSoon} />}
       />
-      <LinkItem title={MSG.streamingPayments} description={MSG.streamingPaymentsDescription} />
+      <LinkItem
+        title={MSG.streamingPayments}
+        description={MSG.streamingPaymentsDescription}
+      />
       <LinkItem title={MSG.moveFunds} description={MSG.moveFundsDescription} />
     </ul>
     <div className={styles.buttonWrapper}>
@@ -30,7 +37,10 @@ const PayDropdown: FC<PropsWithChildren> = () => (
     </div>
     <div className={styles.infoWrapper}>
       <LearnMore
-        message={{ id: `${displayName}.helpText`, defaultMessage: 'Need help with payments? <a>Learn more</a>' }}
+        message={{
+          id: `${displayName}.helpText`,
+          defaultMessage: 'Need help with payments? <a>Learn more</a>',
+        }}
         href={LEARN_MORE_PAYMENTS}
       />
     </div>

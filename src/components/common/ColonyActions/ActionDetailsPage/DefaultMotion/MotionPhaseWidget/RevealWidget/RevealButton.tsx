@@ -14,7 +14,10 @@ interface RevealButtonProps {
   userVoteRevealed: boolean;
 }
 
-const RevealButton = ({ hasUserVoted, userVoteRevealed }: RevealButtonProps) => {
+const RevealButton = ({
+  hasUserVoted,
+  userVoteRevealed,
+}: RevealButtonProps) => {
   const { user } = useAppContext();
 
   return (

@@ -3,7 +3,10 @@ import { FileRejection } from 'react-dropzone';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
-import { getOptimisedAvatarUnder300KB, getOptimisedThumbnail } from '~images/optimisation';
+import {
+  getOptimisedAvatarUnder300KB,
+  getOptimisedThumbnail,
+} from '~images/optimisation';
 import Avatar from '~shared/Avatar';
 import AvatarUploader from '~shared/AvatarUploader';
 import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
@@ -11,7 +14,8 @@ import { getFileRejectionErrors } from '~shared/FileUpload/utils';
 import { Colony, SetStateFn } from '~types';
 import { FileReaderFile } from '~utils/fileReader/types';
 
-const displayName = 'common.EditColonyDetailsDialog.EditColonyDetailsDialogForm.ColonyAvatarUploader';
+const displayName =
+  'common.EditColonyDetailsDialog.EditColonyDetailsDialogForm.ColonyAvatarUploader';
 
 const MSG = defineMessages({
   logo: {

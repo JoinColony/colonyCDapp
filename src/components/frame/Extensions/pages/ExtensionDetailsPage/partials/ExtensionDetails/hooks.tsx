@@ -86,7 +86,9 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
           <Toast
             type="success"
             title={{ id: 'extensionDetailsPage.uninstallSuccessTitle' }}
-            description={{ id: 'extensionDetailsPage.uninstallSuccessDescription' }}
+            description={{
+              id: 'extensionDetailsPage.uninstallSuccessDescription',
+            }}
           />,
         ),
       );
@@ -125,5 +127,11 @@ export const useExtensionDetails = (extensionData: AnyExtensionData) => {
     extensionData.uninstallable &&
     !extensionData.isDeprecated;
 
-  return { handleDeprecate, handleUninstall, handleReEnable, canExtensionBeUninstalled, canExtensionBeDeprecated };
+  return {
+    handleDeprecate,
+    handleUninstall,
+    handleReEnable,
+    canExtensionBeUninstalled,
+    canExtensionBeDeprecated,
+  };
 };

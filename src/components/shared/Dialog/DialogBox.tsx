@@ -7,6 +7,8 @@ interface Props {
   children: ReactNode;
 }
 
-const DialogBox = ({ children }: Props) => <div className={styles.dialogBox}>{children}</div>;
+const DialogBox = ({ children }: Props) => (
+  <div className={styles.dialogBox}>{children}</div>
+);
 
 export default DialogBox;

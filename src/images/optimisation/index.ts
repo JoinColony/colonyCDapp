@@ -9,7 +9,8 @@ const DEFAULT_USER_AVATAR_MAX_DIMENSION = 500;
 
 const fileReader = getFileReader();
 
-const getOptimisedBlob = (file: File, options: Options) => reducer.toBlob(file, options);
+const getOptimisedBlob = (file: File, options: Options) =>
+  reducer.toBlob(file, options);
 
 const createOptimisedImage = async (file: File, max: number) => {
   const blob = await getOptimisedBlob(file, {
@@ -28,7 +29,8 @@ const getOptimisedImage = async (file: File | undefined, max: number) => {
 };
 
 export const getOptimisedThumbnail = async (file: File | undefined) =>
-  (await getOptimisedImage(file, DEFAULT_THUMBNAIL_MAX_DIMENSION))?.data ?? null;
+  (await getOptimisedImage(file, DEFAULT_THUMBNAIL_MAX_DIMENSION))?.data ??
+  null;
 
 export const getOptimisedAvatarUnder300KB = async (file: File | undefined) => {
   let img = await getOptimisedImage(file, DEFAULT_USER_AVATAR_MAX_DIMENSION);

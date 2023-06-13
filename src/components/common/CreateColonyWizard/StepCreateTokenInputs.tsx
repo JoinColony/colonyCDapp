@@ -40,7 +40,11 @@ interface StepCreateTokenInputsProps {
   cleaveDefaultValue: string;
 }
 
-const StepCreateTokenInputs = ({ disabled, extra, cleaveDefaultValue }: StepCreateTokenInputsProps) => (
+const StepCreateTokenInputs = ({
+  disabled,
+  extra,
+  cleaveDefaultValue,
+}: StepCreateTokenInputsProps) => (
   <div className={styles.inputFields}>
     <div className={styles.inputFieldWrapper}>
       <Input

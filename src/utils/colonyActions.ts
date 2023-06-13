@@ -37,7 +37,8 @@ export enum ActionPageDetails {
 type DetailsValuesMap = Partial<Record<ActionPageDetails, boolean>>;
 
 const MOTION_SUFFIX = 'MOTION';
-const isMotion = (actionType: AnyActionType) => actionType.includes(MOTION_SUFFIX);
+const isMotion = (actionType: AnyActionType) =>
+  actionType.includes(MOTION_SUFFIX);
 
 export const getDetailItemsKeys = (actionType: AnyActionType) => {
   switch (true) {
@@ -60,10 +61,19 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
       ];
     }
     case actionType.includes(ColonyActionType.UnlockToken): {
-      return [ActionPageDetails.Type, isMotion(actionType) ? ActionPageDetails.Motion : ActionPageDetails.Domain];
+      return [
+        ActionPageDetails.Type,
+        isMotion(actionType)
+          ? ActionPageDetails.Motion
+          : ActionPageDetails.Domain,
+      ];
     }
     case actionType.includes(ColonyActionType.MintTokens): {
-      return [ActionPageDetails.Type, isMotion(actionType) ? ActionPageDetails.Motion : '', ActionPageDetails.Amount];
+      return [
+        ActionPageDetails.Type,
+        isMotion(actionType) ? ActionPageDetails.Motion : '',
+        ActionPageDetails.Amount,
+      ];
     }
     case actionType.includes(ColonyActionType.CreateDomain): {
       return [
@@ -154,12 +164,16 @@ export interface EventValues {
 /*
  * Get colony action details for DetailsWidget based on action type and ActionPageDetails map
  */
-export const getDetailsForAction = (actionType: AnyActionType): DetailsValuesMap => {
+export const getDetailsForAction = (
+  actionType: AnyActionType,
+): DetailsValuesMap => {
   const detailsForActionType = getDetailItemsKeys(actionType);
   return Object.keys(ActionPageDetails).reduce((detailsMap, detailsKey) => {
     return {
       ...detailsMap,
-      [detailsKey]: detailsForActionType?.includes(detailsKey as ActionPageDetails),
+      [detailsKey]: detailsForActionType?.includes(
+        detailsKey as ActionPageDetails,
+      ),
     };
   }, {});
 };
@@ -486,7 +500,9 @@ export const getDetailsForAction = (actionType: AnyActionType): DetailsValuesMap
 //   }
 // };
 
-export const normalizeRolesForAction = (roles: ColonyActionRoles): ActionUserRoles[] => {
+export const normalizeRolesForAction = (
+  roles: ColonyActionRoles,
+): ActionUserRoles[] => {
   /*
    * Done manually since this list is static
    */
@@ -498,10 +514,15 @@ export const normalizeRolesForAction = (roles: ColonyActionRoles): ActionUserRol
     { id: 5, setTo: roles.role_5 },
     { id: 6, setTo: roles.role_6 },
   ];
-  return extractedRoles.filter(({ setTo }) => setTo !== null && setTo !== undefined) as ActionUserRoles[];
+  return extractedRoles.filter(
+    ({ setTo }) => setTo !== null && setTo !== undefined,
+  ) as ActionUserRoles[];
 };
 
-const getFormattedRoleList = (roleGroupA: ActionUserRoles[], roleGroupB: ActionUserRoles[] | null) => {
+const getFormattedRoleList = (
+  roleGroupA: ActionUserRoles[],
+  roleGroupB: ActionUserRoles[] | null,
+) => {
   let roleList = '';
 
   roleGroupA.forEach((role: ActionUserRoles, i: number) => {
@@ -509,7 +530,10 @@ const getFormattedRoleList = (roleGroupA: ActionUserRoles[], roleGroupB: ActionU
     const formattedRole = formatText(roleNameMessage) as string;
     roleList += ` ${formattedRole.toLowerCase()}`;
 
-    if (i < roleGroupA.length - 1 || (i === roleGroupA.length - 1 && !isEmpty(roleGroupB))) {
+    if (
+      i < roleGroupA.length - 1 ||
+      (i === roleGroupA.length - 1 && !isEmpty(roleGroupB))
+    ) {
       roleList += ',';
     }
   });
@@ -529,7 +553,10 @@ export const formatRolesTitle = (roles?: ColonyActionRoles | null) => {
 
     if (!isEmpty(assignedRoles)) {
       direction = 'to';
-      roleTitle += `Assign the${getFormattedRoleList(assignedRoles, unassignedRoles)}`;
+      roleTitle += `Assign the${getFormattedRoleList(
+        assignedRoles,
+        unassignedRoles,
+      )}`;
     }
 
     if (!isEmpty(unassignedRoles)) {
@@ -547,8 +574,13 @@ export const formatRolesTitle = (roles?: ColonyActionRoles | null) => {
   };
 };
 
-export const getColonyRoleSetTitleValues = (encodedEvents: string | null = '[]', eventId?: string) => {
-  const role = JSON.parse(encodedEvents as string)?.find(({ id }) => id === eventId);
+export const getColonyRoleSetTitleValues = (
+  encodedEvents: string | null = '[]',
+  eventId?: string,
+) => {
+  const role = JSON.parse(encodedEvents as string)?.find(
+    ({ id }) => id === eventId,
+  );
   if (role) {
     const { role: roleId, setTo } = role;
     return {
@@ -565,18 +597,29 @@ export const getColonyRoleSetTitleValues = (encodedEvents: string | null = '[]',
 };
 
 const getChangelogItem = (
-  { isMotion: actionIsMotion, transactionHash, pendingColonyMetadata }: ColonyAction,
+  {
+    isMotion: actionIsMotion,
+    transactionHash,
+    pendingColonyMetadata,
+  }: ColonyAction,
   colonyMetadata?: ColonyMetadata | null,
 ) => {
-  const metadataObject = actionIsMotion ? pendingColonyMetadata : colonyMetadata;
+  const metadataObject = actionIsMotion
+    ? pendingColonyMetadata
+    : colonyMetadata;
 
-  return metadataObject?.changelog?.find((item) => item.transactionHash === transactionHash);
+  return metadataObject?.changelog?.find(
+    (item) => item.transactionHash === transactionHash,
+  );
 };
 /**
  * Function returning action type based on the action data, that can include extended action types,
  * e.g. UpdateAddressBook, UpdateTokens
  */
-export const getExtendedActionType = (actionData: ColonyAction, metadata?: ColonyMetadata | null): AnyActionType => {
+export const getExtendedActionType = (
+  actionData: ColonyAction,
+  metadata?: ColonyMetadata | null,
+): AnyActionType => {
   const { type } = actionData;
   const changelogItem = getChangelogItem(actionData, metadata);
 
@@ -593,4 +636,5 @@ export const getExtendedActionType = (actionData: ColonyAction, metadata?: Colon
   return type;
 };
 
-export const formatActionType = (actionType: AnyActionType) => formatText({ id: 'action.type' }, { actionType });
+export const formatActionType = (actionType: AnyActionType) =>
+  formatText({ id: 'action.type' }, { actionType });
