@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useIntl } from 'react-intl';
+import { Extension } from '@colony/colony-js';
 
 import NotificationBanner from '~common/Extensions/NotificationBanner';
 import { isInstalledExtensionData } from '~utils/extensions';
@@ -9,11 +10,14 @@ import Icon from '~shared/Icon';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import ActionButtons from './ActionButtons';
 import { MAX_INSTALLED_NUMBER } from '~constants';
+import Button from '~shared/Extensions/Button';
+import { useMobile } from '~hooks';
 
 const displayName = 'frame.Extensions.pages.partials.TopRow';
 
 const TopRow: FC<TopRowProps> = ({ extensionData }) => {
   const { formatMessage } = useIntl();
+  const isMobile = useMobile();
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
   const { oneTxPaymentData, votingReputationData } =
     useFetchActiveInstallsExtension();
@@ -27,6 +31,14 @@ const TopRow: FC<TopRowProps> = ({ extensionData }) => {
       ? oneTxPaymentData
       : votingReputationData,
   );
+
+  const isEnableButtonVisible =
+    isInstalledExtensionData(extensionData) &&
+    extensionData.uninstallable &&
+    !extensionData.isDeprecated &&
+    extensionData?.extensionId === Extension.VotingReputation;
+
+  const isOneTxPayment = extensionData.extensionId === 'OneTxPayment';
 
   return (
     <>
@@ -59,8 +71,10 @@ const TopRow: FC<TopRowProps> = ({ extensionData }) => {
           </div>
           <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
             <ExtensionStatusBadge
-              mode="payments"
-              text={formatMessage({ id: 'status.payments' })}
+              mode={isOneTxPayment ? 'payments' : 'governance'}
+              text={formatMessage({
+                id: isOneTxPayment ? 'status.payments' : 'status.governance',
+              })}
             />
             {activeInstalls >= MAX_INSTALLED_NUMBER ? (
               <p className="text-gray-400 text-sm">
@@ -72,6 +86,11 @@ const TopRow: FC<TopRowProps> = ({ extensionData }) => {
             )}
           </div>
         </div>
+        {isEnableButtonVisible && (
+          <Button mode="primarySolid" type="submit" isFullSize={isMobile}>
+            {formatMessage({ id: 'extension.enableButton' })}
+          </Button>
+        )}
         <ActionButtons extensionData={extensionData} />
       </div>
     </>
