@@ -3,26 +3,24 @@ import { useIntl } from 'react-intl';
 import { Extension } from '@colony/colony-js';
 
 import { useLazyConsensusPage } from './hooks';
+import Icon from '~shared/Icon';
 import RadioList from '~shared/Extensions/Fields/RadioList';
 import Accordion from '~shared/Extensions/Accordion/Accordion';
 import { mockedGovernance } from './consts';
 import { useAccordion } from '~shared/Extensions/Accordion/hooks';
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Navigation from '~common/Extensions/Navigation/Navigation';
 import Spinner from '~shared/Extensions/Spinner';
 import ThreeColumns from '~frame/Extensions/ThreeColumns/ThreeColumns';
-import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails/ExtensionDetails';
-import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
-import Icon from '~shared/Icon';
+import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails';
 import ActionButtons from '../partials/ActionButtons';
-import Button from '~shared/Extensions/Button';
+import Button from '~shared/Extensions/Button/Button';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { useMobile } from '~hooks';
 import { useFetchActiveInstallsExtension } from '../ExtensionDetailsPage/hooks';
 import ActiveInstalls from '../partials/ActiveInstall';
 
 const LazyConsensusPage: FC = () => {
-  const isMobile = useMobile();
-  const { formatMessage } = useIntl();
   const { openIndex, onOpenIndexChange } = useAccordion();
   const {
     extensionData,
@@ -33,8 +31,10 @@ const LazyConsensusPage: FC = () => {
     onSubmit,
     onChangeGovernance,
   } = useLazyConsensusPage(onOpenIndexChange, openIndex);
+  const { formatMessage } = useIntl();
   const { oneTxPaymentData, votingReputationData } =
     useFetchActiveInstallsExtension();
+  const isMobile = useMobile();
 
   if (!extensionData) {
     return (
@@ -74,7 +74,7 @@ const LazyConsensusPage: FC = () => {
                       {formatMessage(extensionData.name)}
                     </h4>
                   </div>
-                  <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
+                  <div className="flex justify-between items-center w-full sm:w-auto mt-5 sm:mt-0">
                     <ExtensionStatusBadge
                       mode="governance"
                       text={formatMessage({
@@ -100,11 +100,10 @@ const LazyConsensusPage: FC = () => {
           rightAside={<ExtensionDetails extensionData={extensionData} />}
         >
           <div className="w-full">
-            {extensionData.descriptionShort && (
-              <div className="text-md text-gray-600">
-                {formatMessage(extensionData.descriptionShort)}
-              </div>
-            )}
+            <div className="text-md text-gray-600">
+              {formatMessage(extensionData.descriptionShort)}
+            </div>
+
             <br />
             <div className="text-md text-gray-600">
               {formatMessage({ id: 'extensions.lazy.consensus.description' })}
