@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+
 import styles from '../SpecificSidePanel.module.css';
 import { PanelTypeProps } from '../types';
 
