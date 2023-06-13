@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useColonyContext, useMobile } from '~hooks';
@@ -11,7 +11,11 @@ import { ActionButtonProps } from './types';
 const displayName = 'frame.Extensions.pages.partials.ActionButtons';
 
 const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
-  const { handleInstallClick } = useExtensionDetailsPage(extensionData);
+  const {
+    handleInstallClick,
+    handleUpdateVersionClick,
+    isUpgradeButtonDisabled,
+  } = useExtensionDetailsPage(extensionData);
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
@@ -23,10 +27,21 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
     // @ts-ignore
     !isInstalledExtensionData(extensionData) &&
     extensionData.uninstallable &&
+    // @ts-ignore
     !extensionData.isDeprecated;
 
+  const isUpgradeButtonVisible = useMemo(() => {
+    if (extensionData && isInstalledExtensionData(extensionData)) {
+      return (
+        extensionData &&
+        extensionData.currentVersion < extensionData.availableVersion
+      );
+    }
+    return false;
+  }, [extensionData]);
+
   return (
-    <div>
+    <>
       {isInstallButtonVisible && (
         <Button
           mode="primarySolid"
@@ -37,7 +52,17 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
           {formatMessage({ id: 'button.install' })}
         </Button>
       )}
-    </div>
+      {isUpgradeButtonVisible && (
+        <Button
+          mode="primarySolid"
+          isFullSize={isMobile}
+          onClick={handleUpdateVersionClick}
+          disabled={isUpgradeButtonDisabled}
+        >
+          {formatMessage({ id: 'button.updateVersion' })}
+        </Button>
+      )}
+    </>
   );
 };
 

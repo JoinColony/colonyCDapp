@@ -90,9 +90,15 @@ export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
     !isSupportedColonyVersion || !extensionCompatible;
 
   const navigateToExtensionSettingsPage = useCallback(() => {
-    navigate(
-      `/colony/${colony?.name}/extensions/${extensionData?.extensionId}/setup`,
-    );
+    if (extensionData?.extensionId === Extension.VotingReputation) {
+      navigate(
+        `/colony/${colony?.name}/extensions/${extensionData?.extensionId}/setup`,
+      );
+    } else {
+      navigate(
+        `/colony/${colony?.name}/extensions/${extensionData?.extensionId}`,
+      );
+    }
   }, [navigate, colony?.name, extensionData?.extensionId]);
 
   const handleInstallClick = useCallback(async () => {
