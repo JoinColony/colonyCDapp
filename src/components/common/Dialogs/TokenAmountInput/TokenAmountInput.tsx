@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 import { notNull } from '~utils/arrays';
+import { toFinite } from '~utils/lodash';
 import { Colony } from '~types';
 import { HookFormInput as Input, TokenSymbolSelector } from '~shared/Fields';
 import EthUsd from '~shared/EthUsd';
@@ -97,7 +98,7 @@ const TokenAmountInput = ({
           <div className={styles.tokenAmountUsd}>
             <EthUsd
               // appearance={{ theme: 'grey' }}
-              value={amount}
+              value={toFinite(amount)}
             />
           </div>
         )}
