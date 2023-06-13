@@ -20,14 +20,15 @@ import SingleUserPicker, {
 import { ItemDataType } from '~shared/OmniPicker';
 import UserAvatar from '~shared/UserAvatar';
 
-import { User } from '~types';
+import { User, SetStateFn } from '~types';
 import { notNull } from '~utils/arrays';
-import { findDomainByNativeId, getDomainOptions } from '~utils/domains';
+import { getDomainOptions } from '~utils/domains';
 
 import {
-  // CannotCreateMotionMessage,
+  CannotCreateMotionMessage,
   NoPermissionMessage,
   PermissionRequiredInfo,
+  NotEnoughReputation,
 } from '../Messages';
 
 import { availableRoles } from './constants';
@@ -72,8 +73,9 @@ const MSG = defineMessages({
 });
 
 interface Props extends ActionDialogProps {
-  close: (val: any) => void;
   users?: User[];
+  handleIsForceChange: SetStateFn;
+  isForce: boolean;
 }
 
 const supRenderAvatar = (item: ItemDataType<User>) => (
@@ -81,14 +83,16 @@ const supRenderAvatar = (item: ItemDataType<User>) => (
 );
 
 const PermissionManagementForm = ({
+  back,
   colony: { domains },
   colony,
-  back,
-  close,
   enabledExtensionData,
   users,
+  handleIsForceChange,
+  isForce,
 }: Props) => {
   const { watch, setValue } = useFormContext();
+  const forceAction = watch('forceAction');
   const {
     domainId: selectedDomainId,
     user: selectedUser,
@@ -96,7 +100,6 @@ const PermissionManagementForm = ({
   } = watch();
 
   const colonyDomains = domains?.items.filter(notNull) || [];
-  const domain = findDomainByNativeId(selectedDomainId, colony);
 
   const userRoles = useSelectedUserRoles(colony, selectedUser?.walletAddress);
 
@@ -113,9 +116,10 @@ const PermissionManagementForm = ({
 
   const {
     userHasPermission,
-    // canCreateMotion,
+    canCreateMotion,
     disabledInput,
     disabledSubmit,
+    canOnlyForceAction,
   } = usePermissionManagementDialogStatus(
     colony,
     requiredRoles,
@@ -142,17 +146,23 @@ const PermissionManagementForm = ({
         )
       : availableRoles;
 
+  useEffect(() => {
+    if (forceAction !== isForce) {
+      handleIsForceChange(forceAction);
+    }
+  }, [forceAction, isForce, handleIsForceChange]);
+
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <DialogHeading
           title={MSG.title}
-          titleValues={{ domain: domain?.metadata?.name }}
           colony={colony}
+          userHasPermission={userHasPermission}
           isVotingExtensionEnabled={
             enabledExtensionData.isVotingReputationEnabled
           }
-          userHasPermission={userHasPermission}
+          selectedDomainId={selectedDomainId}
         />
       </DialogSection>
       {!userHasPermission && (
@@ -214,11 +224,11 @@ const PermissionManagementForm = ({
           dataTest="permissionAnnotation"
         />
       </DialogSection>
-      {/* {!canCreateMotion && (
+      {!canCreateMotion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>
-      )} */}
+      )}
       {!userHasPermission && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage
@@ -226,17 +236,22 @@ const PermissionManagementForm = ({
           />
         </DialogSection>
       )}
-      {/* {onlyForceAction && (
-        <NotEnoughReputation domainId={Number(domainId)} />
-      )} */}
+      {canOnlyForceAction && (
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
+          <NotEnoughReputation
+            appearance={{ marginTop: 'negative' }}
+            domainId={selectedDomainId}
+          />
+        </DialogSection>
+      )}
       <DialogSection appearance={{ align: 'right', theme: 'footer' }}>
         <DialogControls
+          onSecondaryButtonClick={back}
           disabled={disabledSubmit}
           dataTest="permissionConfirmButton"
-          onSecondaryButtonClick={back ?? close}
-          secondaryButtonText={{
-            id: back ? 'button.back' : 'button.cancel',
-          }}
+          isVotingReputationEnabled={
+            enabledExtensionData.isVotingReputationEnabled
+          }
         />
       </DialogSection>
     </>
