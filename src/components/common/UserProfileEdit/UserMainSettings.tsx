@@ -91,6 +91,7 @@ const UserMainSettings = ({
           id: walletAddress,
           ...updatedProfile,
           email: updatedProfile.email || null,
+          website: updatedProfile.website || null,
         },
       },
     });
