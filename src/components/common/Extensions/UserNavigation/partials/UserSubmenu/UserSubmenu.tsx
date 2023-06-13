@@ -13,7 +13,9 @@ const UserSubmenu: FC<UserSubmenuProps> = ({ submenuId }) => (
       <li key={item.id} className="mb-4 last:mb-0">
         <NavLink to={item.url} className="flex items-center">
           <Icon name={item.icon} appearance={{ size: 'small' }} />{' '}
-          <p className="ml-2 text-lg font-semibold md:font-normal md:text-md">{item.label}</p>
+          <p className="ml-2 text-lg font-semibold md:font-normal md:text-md">
+            {item.label}
+          </p>
         </NavLink>
       </li>
     ))}

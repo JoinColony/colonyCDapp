@@ -3,7 +3,10 @@ import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import StakesItems from './partials/StakesTabItem';
-import { stakesMock, tabsItems } from '~common/Extensions/UserHub/partials/StakesTab/consts';
+import {
+  stakesMock,
+  tabsItems,
+} from '~common/Extensions/UserHub/partials/StakesTab/consts';
 import Tabs from '~shared/Extensions/Tabs';
 import { useMobile } from '~hooks';
 
@@ -21,7 +24,9 @@ const StakesTab = () => {
     (e, id: number) => {
       setActiveTab(id);
       const [...filteredData] = stakes.filter(
-        (item) => (id === 0 && stakesMock) || item.filterBy === e.target?.childNodes?.[0]?.data?.toLowerCase(),
+        (item) =>
+          (id === 0 && stakesMock) ||
+          item.filterBy === e.target?.childNodes?.[0]?.data?.toLowerCase(),
       );
 
       setStakesMock(filteredData);
@@ -32,7 +37,9 @@ const StakesTab = () => {
   return (
     <div>
       <div className="flex items-center justify-between pb-4">
-        <div className="font-semibold text-lg text-gray-900">{formatMessage({ id: 'stakes' })}</div>
+        <div className="font-semibold text-lg text-gray-900">
+          {formatMessage({ id: 'stakes' })}
+        </div>
         {!isMobile && (
           <button
             type="button"
@@ -43,7 +50,12 @@ const StakesTab = () => {
           </button>
         )}
       </div>
-      <Tabs items={tabsItems} className="pt-0" activeTab={activeTab} onTabClick={handleOnTabClick}>
+      <Tabs
+        items={tabsItems}
+        className="pt-0"
+        activeTab={activeTab}
+        onTabClick={handleOnTabClick}
+      >
         <ul className="flex flex-col">
           <AnimatePresence>
             <motion.div

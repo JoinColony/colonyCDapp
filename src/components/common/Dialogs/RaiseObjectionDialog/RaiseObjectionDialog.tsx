@@ -7,7 +7,12 @@ import { ActionTypes } from '~redux';
 import { mapPayload } from '~utils/actions';
 
 import { SetStateFn } from '~types';
-import { ObjectionHeading, ObjectionSlider, ObjectionControls, ObjectionAnnotation } from '.';
+import {
+  ObjectionHeading,
+  ObjectionSlider,
+  ObjectionControls,
+  ObjectionAnnotation,
+} from '.';
 
 const displayName = 'common.Dialogs.RaiseObjectionDialog';
 
@@ -66,7 +71,10 @@ const RaiseObjectionDialog = ({
               <ObjectionHeading />
               <ObjectionSlider />
               <ObjectionAnnotation disabled={isSubmitting} />
-              <ObjectionControls cancel={close} disabled={isSubmitting /* || userActivatedTokens.lt(stake) */} />
+              <ObjectionControls
+                cancel={close}
+                disabled={isSubmitting /* || userActivatedTokens.lt(stake) */}
+              />
             </>
           );
         }}

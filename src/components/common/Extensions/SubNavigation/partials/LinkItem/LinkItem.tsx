@@ -6,7 +6,11 @@ import styles from './LinkItem.module.css';
 
 const displayName = 'common.Extensions.SubNavigation.partials.LinkItem';
 
-const LinkItem: FC<PropsWithChildren<LinkItemProps>> = ({ title, description, statusBadge }) => (
+const LinkItem: FC<PropsWithChildren<LinkItemProps>> = ({
+  title,
+  description,
+  statusBadge,
+}) => (
   <li className={styles.itemWrapper}>
     {/* <Link to="/"> */}
     <a className={styles.link} href="/">

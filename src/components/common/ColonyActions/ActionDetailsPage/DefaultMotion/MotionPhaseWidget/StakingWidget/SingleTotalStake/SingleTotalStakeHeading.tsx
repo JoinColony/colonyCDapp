@@ -11,7 +11,8 @@ import { useStakingWidgetContext } from '../StakingWidgetProvider';
 
 import styles from './SingleTotalStakeHeading.css';
 
-const displayName = 'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.SingleTotalStakeHeading';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.SingleTotalStakeHeading';
 
 const MSG = defineMessages({
   motionTitle: {
@@ -49,10 +50,14 @@ interface SingleTotalStakeHeadingProps {
   requiredStake: string;
 }
 
-const SingleTotalStakeHeading = ({ totalPercentage, requiredStake }: SingleTotalStakeHeadingProps) => {
+const SingleTotalStakeHeading = ({
+  totalPercentage,
+  requiredStake,
+}: SingleTotalStakeHeadingProps) => {
   const { isObjection } = useStakingWidgetContext();
   const { colony } = useColonyContext();
-  const { symbol: nativeTokenSymbol, decimals: nativeTokenDecimals } = colony?.nativeToken || {};
+  const { symbol: nativeTokenSymbol, decimals: nativeTokenDecimals } =
+    colony?.nativeToken || {};
 
   return (
     <div className={styles.widgetHeading}>
@@ -78,7 +83,13 @@ const SingleTotalStakeHeading = ({ totalPercentage, requiredStake }: SingleTotal
           {...MSG.stakeProgress}
           values={{
             totalPercentage,
-            requiredStake: <Numeral value={requiredStake} suffix={nativeTokenSymbol} decimals={nativeTokenDecimals} />,
+            requiredStake: (
+              <Numeral
+                value={requiredStake}
+                suffix={nativeTokenSymbol}
+                decimals={nativeTokenDecimals}
+              />
+            ),
           }}
         />
       </span>

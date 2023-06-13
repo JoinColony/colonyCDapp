@@ -23,7 +23,10 @@ export const MSG = defineMessages({
   },
 });
 
-export const subNavigationItems: Omit<SubNavigationItemProps, 'isOpen' | 'setOpen'>[] = [
+export const subNavigationItems: Omit<
+  SubNavigationItemProps,
+  'isOpen' | 'setOpen'
+>[] = [
   {
     id: 0,
     label: <FormattedMessage {...MSG.pay} />,

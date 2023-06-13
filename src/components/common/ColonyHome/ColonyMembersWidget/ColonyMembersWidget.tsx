@@ -28,7 +28,10 @@ interface Props {
   maxAvatars?: number;
 }
 
-const ColonyMembersWidget = ({ currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID, maxAvatars }: Props) => {
+const ColonyMembersWidget = ({
+  currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
+  maxAvatars,
+}: Props) => {
   const { colony } = useColonyContext();
 
   const { data, loading: loadingMembers } = useGetMembersForColonyQuery({
@@ -58,8 +61,13 @@ const ColonyMembersWidget = ({ currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
   }
   return (
     <>
-      <MembersSubsection members={contributors} colony={colony} isContributorsSubsection />
-      {(currentDomainId === Id.RootDomain || currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID) && (
+      <MembersSubsection
+        members={contributors}
+        colony={colony}
+        isContributorsSubsection
+      />
+      {(currentDomainId === Id.RootDomain ||
+        currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID) && (
         <MembersSubsection
           members={watchers}
           colony={colony}

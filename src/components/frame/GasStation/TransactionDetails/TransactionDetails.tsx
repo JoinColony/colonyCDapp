@@ -14,9 +14,12 @@ import MetaMaskWalletInteraction from '../MetaMaskWalletInteraction';
 import TransactionBackToList from './TransactionBackToList';
 
 const showPrice = (tx?: TransactionType) =>
-  !!tx && (tx.status === TRANSACTION_STATUSES.READY || tx.status === TRANSACTION_STATUSES.FAILED);
+  !!tx &&
+  (tx.status === TRANSACTION_STATUSES.READY ||
+    tx.status === TRANSACTION_STATUSES.FAILED);
 
-const showInteraction = (tx?: TransactionType) => !!tx && tx.status !== TRANSACTION_STATUSES.SUCCEEDED;
+const showInteraction = (tx?: TransactionType) =>
+  !!tx && tx.status !== TRANSACTION_STATUSES.SUCCEEDED;
 
 interface Props {
   /* If we are only showing the transaction details
@@ -29,7 +32,11 @@ interface Props {
 
 const displayName = 'frame.GasStation.TransactionDetails';
 
-const TransactionDetails = ({ onClose, transactionGroup, appearance }: Props) => {
+const TransactionDetails = ({
+  onClose,
+  transactionGroup,
+  appearance,
+}: Props) => {
   const { interactive } = appearance;
   const selectedTransactionIdx = getActiveTransactionIdx(transactionGroup) || 0;
   const selectedTransaction = transactionGroup[selectedTransactionIdx];
@@ -43,10 +50,18 @@ const TransactionDetails = ({ onClose, transactionGroup, appearance }: Props) =>
           selectedTransactionIdx={selectedTransactionIdx}
         />
       </CardList>
-      {showPrice(selectedTransaction) && <GasStationControls transaction={selectedTransaction as TransactionType} />}
+      {showPrice(selectedTransaction) && (
+        <GasStationControls
+          transaction={selectedTransaction as TransactionType}
+        />
+      )}
       {showInteraction(selectedTransaction) && (
         <MetaMaskWalletInteraction
-          transactionType={selectedTransaction.metatransaction ? 'metatransaction' : 'transaction'}
+          transactionType={
+            selectedTransaction.metatransaction
+              ? 'metatransaction'
+              : 'transaction'
+          }
         />
       )}
     </div>

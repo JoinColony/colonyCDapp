@@ -26,7 +26,10 @@ export interface RouteComponentProps {
   /*
    * If set, it will change the default back link text
    */
-  backText?: string | MessageDescriptor | ComponentType<Record<string, unknown>>;
+  backText?:
+    | string
+    | MessageDescriptor
+    | ComponentType<Record<string, unknown>>;
 
   /*
    * Works in conjuction with the above to provide message descriptor selector values

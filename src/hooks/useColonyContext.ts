@@ -6,7 +6,9 @@ const useColonyContext = () => {
   const context = useContext(ColonyContext);
 
   if (!context) {
-    throw new Error('This hook must be used within the "ColonyContext" provider');
+    throw new Error(
+      'This hook must be used within the "ColonyContext" provider',
+    );
   }
 
   return context;

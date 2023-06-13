@@ -18,7 +18,13 @@ interface Props {
   status?: any;
 }
 
-const ActionFileUpload = ({ submit, success, error, transform, ...props }: Props) => {
+const ActionFileUpload = ({
+  submit,
+  success,
+  error,
+  transform,
+  ...props
+}: Props) => {
   const asyncFunction = useAsyncFunction({ submit, error, success, transform });
   return <FileUpload upload={asyncFunction} {...props} />;
 };

@@ -15,7 +15,8 @@ import { WalletConnectedTopMenuProps } from './types';
 import { useMobile } from '~hooks';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 
-const displayName = 'common.Extensions.UserNavigation.partials.WalletConnectedTopMenu';
+const displayName =
+  'common.Extensions.UserNavigation.partials.WalletConnectedTopMenu';
 
 const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
   isVerified,
@@ -38,12 +39,18 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
         <Button mode="tertiaryOutline" isFullRounded>
           <div className="flex items-center gap-3">
             <UserAvatar userName={userName} size="xxs" user={user} />
-            <MemberReputation userReputation={userReputation} totalReputation={totalReputation} hideOnMobile={false} />
+            <MemberReputation
+              userReputation={userReputation}
+              totalReputation={totalReputation}
+              hideOnMobile={false}
+            />
           </div>
         </Button>
         <Button mode="tertiaryOutline" isFullRounded>
           <Icon name="list" appearance={{ size: 'extraTiny' }} />
-          <p className="text-sm font-inter font-medium ml-1">{formatMessage({ id: 'helpAndAccount' })}</p>
+          <p className="text-sm font-inter font-medium ml-1">
+            {formatMessage({ id: 'helpAndAccount' })}
+          </p>
         </Button>
       </div>
       <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">
@@ -70,11 +77,23 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
                   : 'text-sm text-gray-600',
               )}
             >
-              <span className={clsx('flex items-center', isMobile ? 'flex-row-reverse' : 'flex')}>
+              <span
+                className={clsx(
+                  'flex items-center',
+                  isMobile ? 'flex-row-reverse' : 'flex',
+                )}
+              >
                 <span>
-                  {isMobile ? formatMessage({ id: 'copyWalletAddress' }) : splitWalletAddress(walletAddress || '')}
+                  {isMobile
+                    ? formatMessage({ id: 'copyWalletAddress' })
+                    : splitWalletAddress(walletAddress || '')}
                 </span>
-                <span className={clsx('flex shrink-0', isMobile ? 'mr-1.5' : 'ml-1.5')}>
+                <span
+                  className={clsx(
+                    'flex shrink-0',
+                    isMobile ? 'mr-1.5' : 'ml-1.5',
+                  )}
+                >
                   <Icon name="copy-simple" appearance={{ size: 'extraTiny' }} />
                 </span>
               </span>

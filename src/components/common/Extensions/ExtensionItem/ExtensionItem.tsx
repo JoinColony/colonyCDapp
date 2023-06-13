@@ -12,18 +12,33 @@ import { useExtensionItem } from './hooks';
 
 const displayName = 'common.Extensions.ExtensionItem';
 
-const ExtensionItem: FC<ExtensionItemProps> = ({ title, description, version, icon, extensionId = '' }) => {
+const ExtensionItem: FC<ExtensionItemProps> = ({
+  title,
+  description,
+  version,
+  icon,
+  extensionId = '',
+}) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const { badgeMessage, extensionUrl, handleInstallClick, isExtensionInstalled, status } =
-    useExtensionItem(extensionId);
+  const {
+    badgeMessage,
+    extensionUrl,
+    handleInstallClick,
+    isExtensionInstalled,
+    status,
+  } = useExtensionItem(extensionId);
 
   const ActionButton = isExtensionInstalled ? (
     <Link to={extensionUrl} className={styles.extensionItemButton}>
       {formatMessage({ id: 'button.manage' })}
     </Link>
   ) : (
-    <Button mode="primarySolid" isFullSize={isMobile} onClick={handleInstallClick}>
+    <Button
+      mode="primarySolid"
+      isFullSize={isMobile}
+      onClick={handleInstallClick}
+    >
       {formatMessage({ id: 'button.install' })}
     </Button>
   );
@@ -37,11 +52,16 @@ const ExtensionItem: FC<ExtensionItemProps> = ({ title, description, version, ic
           <div>
             <div className="flex items-center justify-between sm:justify-start">
               <h5 className="flex items-center text-md font-medium mr-4">
-                {formatMessage(title)} <span className="block text-xs text-gray-600 ml-2">v{version}</span>
+                {formatMessage(title)}{' '}
+                <span className="block text-xs text-gray-600 ml-2">
+                  v{version}
+                </span>
               </h5>
               <ExtensionStatusBadge mode={status} text={badgeMessage} />
             </div>
-            <p className="text-sm text-gray-600 mt-0.5">{formatMessage(description)}</p>
+            <p className="text-sm text-gray-600 mt-0.5">
+              {formatMessage(description)}
+            </p>
           </div>
           {!isMobile && ActionButton}
         </div>

@@ -24,6 +24,8 @@ export interface UserInfoProps extends AvatarProps {
   permissions: PermissionsItem[];
 }
 
-export interface UserAvatarPopoverProps extends Omit<UserAvatarProps, 'isLink'>, Omit<UserInfoProps, 'size'> {
+export interface UserAvatarPopoverProps
+  extends Omit<UserAvatarProps, 'isLink'>,
+    Omit<UserInfoProps, 'size'> {
   popperOptions?: PopperOptions;
 }

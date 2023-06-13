@@ -21,11 +21,16 @@ interface Props {
   autoShrinkAddress?: boolean;
 }
 
-const FriendlyName = ({ user, maskedAddress = true, autoShrinkAddress = false }: Props) => {
+const FriendlyName = ({
+  user,
+  maskedAddress = true,
+  autoShrinkAddress = false,
+}: Props) => {
   const { colony } = useColonyContext();
   const addressRef = useRef<HTMLElement>(null);
   const colonyDisplayName = colony?.metadata?.displayName || colony?.name;
-  const colonyDisplayAddress = colony?.colonyAddress !== AddressZero ? colony?.colonyAddress : '';
+  const colonyDisplayAddress =
+    colony?.colonyAddress !== AddressZero ? colony?.colonyAddress : '';
   const walletAddress = user?.walletAddress;
   const userDisplayName = user?.profile?.displayName || user?.name;
   const userDisplayAddress = walletAddress !== AddressZero ? walletAddress : '';
@@ -44,7 +49,9 @@ const FriendlyName = ({ user, maskedAddress = true, autoShrinkAddress = false }:
     }
   }, [addressRef, autoShrinkAddress]);
 
-  const isColony = walletAddress === colony?.colonyAddress || (isEmpty(user) && !isEmpty(colony));
+  const isColony =
+    walletAddress === colony?.colonyAddress ||
+    (isEmpty(user) && !isEmpty(colony));
 
   return (
     <div className={styles.main}>

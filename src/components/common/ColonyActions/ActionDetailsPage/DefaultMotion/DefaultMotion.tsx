@@ -25,7 +25,12 @@ interface DefaultMotionProps {
   stopPollingAction: () => void;
 }
 
-const DefaultMotion = ({ actionData, networkMotionState, refetchMotionState, ...rest }: DefaultMotionProps) => {
+const DefaultMotion = ({
+  actionData,
+  networkMotionState,
+  refetchMotionState,
+  ...rest
+}: DefaultMotionProps) => {
   const { colony } = useColonyContext();
 
   const { isVotingReputationEnabled } = useEnabledExtensions();
@@ -42,12 +47,20 @@ const DefaultMotion = ({ actionData, networkMotionState, refetchMotionState, ...
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}
       {!showInActionsList && <StakeRequiredBanner isDecision={false} />}
       {isVotingReputationEnabled && (
-        <MotionHeading motionState={motionState} refetchMotionState={refetchMotionState} motionData={motionData} />
+        <MotionHeading
+          motionState={motionState}
+          refetchMotionState={refetchMotionState}
+          motionData={motionData}
+        />
       )}
       <div className={styles.container}>
         <DefaultActionContent actionData={actionData} colony={colony} />
         <div className={styles.widgets}>
-          <MotionPhaseWidget actionData={actionData} motionState={motionState} {...rest} />
+          <MotionPhaseWidget
+            actionData={actionData}
+            motionState={motionState}
+            {...rest}
+          />
           <DetailsWidget actionData={actionData} colony={colony} />
         </div>
       </div>

@@ -23,7 +23,12 @@ import { SetStateFn, SimpleMessageValues } from '~types';
 import { usePrevious } from '~hooks';
 
 import PopoverWrapper from './PopoverWrapper';
-import { PopoverAppearanceType, PopoverChildFn, PopoverContent, PopoverTriggerType } from './types';
+import {
+  PopoverAppearanceType,
+  PopoverChildFn,
+  PopoverContent,
+  PopoverTriggerType,
+} from './types';
 
 interface Props {
   /** Appearance object for styling */
@@ -94,7 +99,9 @@ const Popover = ({
 }: Props) => {
   // Use dangle to encourage use of callbackFn for setting state
   const [isOpen, setIsOpen] = useState<boolean>(isOpenProp);
-  const [referenceElement, setReferenceElement] = useState<Element | null>(null);
+  const [referenceElement, setReferenceElement] = useState<Element | null>(
+    null,
+  );
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
   const [arrowElement, setArrowElement] = useState<HTMLElement | null>(null);
 
@@ -102,11 +109,15 @@ const Popover = ({
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const { current: elementId } = useRef<string>(nanoid());
 
-  const { attributes, styles, state } = usePopper(referenceElement, popperElement, {
-    modifiers: [{ name: 'arrow', options: { element: arrowElement } }],
-    placement: placementProp,
-    ...popperOptions,
-  });
+  const { attributes, styles, state } = usePopper(
+    referenceElement,
+    popperElement,
+    {
+      modifiers: [{ name: 'arrow', options: { element: arrowElement } }],
+      placement: placementProp,
+      ...popperOptions,
+    },
+  );
 
   const lastIsOpenProp = usePrevious(isOpenProp);
 
@@ -165,7 +176,9 @@ const Popover = ({
   const handleOutsideClick = useCallback(
     (evt: Event) => {
       const targetInRefNode = (refNode: Element | null) => {
-        return evt.target instanceof Node && refNode && refNode.contains(evt.target);
+        return (
+          evt.target instanceof Node && refNode && refNode.contains(evt.target)
+        );
       };
       if (targetInRefNode(popperElement) || targetInRefNode(referenceElement)) {
         return;
@@ -235,7 +248,11 @@ const Popover = ({
     }
     return () => {
       if (referenceElement) {
-        referenceElement.removeEventListener('mouseleave', handleMouseLeave, true);
+        referenceElement.removeEventListener(
+          'mouseleave',
+          handleMouseLeave,
+          true,
+        );
       }
       document.body.removeEventListener('click', handleOutsideClick, true);
     };

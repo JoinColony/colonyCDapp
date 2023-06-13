@@ -20,7 +20,13 @@ interface Props {
   disabled?: boolean;
 }
 
-const DomainFundSelector = ({ colony, disabled, name, label, onChange }: Props) => {
+const DomainFundSelector = ({
+  colony,
+  disabled,
+  name,
+  label,
+  onChange,
+}: Props) => {
   const {
     formState: { isSubmitting, errors },
   } = useFormContext();
@@ -123,7 +129,9 @@ const DomainFundSelector = ({ colony, disabled, name, label, onChange }: Props) 
         dataTest="domainIdSelector"
         itemDataTest="domainIdItem"
       />
-      {!errors[name] && <DomainBalance colony={colony} domainFieldName={name} />}
+      {!errors[name] && (
+        <DomainBalance colony={colony} domainFieldName={name} />
+      )}
     </div>
   );
 };

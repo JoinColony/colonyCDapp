@@ -12,17 +12,18 @@ export const useColonyMotionState = (
   const { colony } = useColonyContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
 
-  const { data: motionStateData, refetch: refetchMotionState } = useGetMotionStateQuery({
-    skip: !isMotion || !motionData || !colony || !isVotingReputationEnabled,
-    variables: {
-      input: {
-        colonyAddress: colony?.colonyAddress ?? '',
-        databaseMotionId: motionData?.databaseMotionId ?? '',
-        transactionHash,
+  const { data: motionStateData, refetch: refetchMotionState } =
+    useGetMotionStateQuery({
+      skip: !isMotion || !motionData || !colony || !isVotingReputationEnabled,
+      variables: {
+        input: {
+          colonyAddress: colony?.colonyAddress ?? '',
+          databaseMotionId: motionData?.databaseMotionId ?? '',
+          transactionHash,
+        },
       },
-    },
-    fetchPolicy: 'cache-and-network',
-  });
+      fetchPolicy: 'cache-and-network',
+    });
   const networkMotionState = motionStateData?.getMotionState;
 
   /*
@@ -31,12 +32,17 @@ export const useColonyMotionState = (
    */
 
   const motionState =
-    networkMotionState !== undefined && motionData ? getMotionState(networkMotionState, motionData) : null;
+    networkMotionState !== undefined && motionData
+      ? getMotionState(networkMotionState, motionData)
+      : null;
 
   return { motionState, refetchMotionState };
 };
 
-export const useMotionTag = (isMotion: boolean | null | undefined, motionState: MotionState | null) => {
+export const useMotionTag = (
+  isMotion: boolean | null | undefined,
+  motionState: MotionState | null,
+) => {
   const { isVotingReputationEnabled } = useEnabledExtensions();
 
   // If not motion, then forced action

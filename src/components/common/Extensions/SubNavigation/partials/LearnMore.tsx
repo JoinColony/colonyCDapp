@@ -7,7 +7,10 @@ import Icon from '~shared/Icon';
 
 const displayName = 'Extensions.LearnMore';
 
-const LearnMore: FC<PropsWithChildren<LearnMoreProps>> = ({ message, href }) => {
+const LearnMore: FC<PropsWithChildren<LearnMoreProps>> = ({
+  message,
+  href,
+}) => {
   const { id, defaultMessage } = message;
 
   return (
@@ -20,7 +23,10 @@ const LearnMore: FC<PropsWithChildren<LearnMoreProps>> = ({ message, href }) => 
           values={{
             // eslint-disable-next-line react/no-unstable-nested-components
             a: (chunks) => (
-              <ExternalLink className="underline font-semibold ml-px" href={href}>
+              <ExternalLink
+                className="underline font-semibold ml-px"
+                href={href}
+              >
                 {chunks}
               </ExternalLink>
             ),

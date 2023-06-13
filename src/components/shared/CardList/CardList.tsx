@@ -24,7 +24,12 @@ interface Props {
 
 const displayName = 'CardList';
 
-const CardList = ({ appearance = { numCols: 'auto' }, children, className, ...props }: Props) => {
+const CardList = ({
+  appearance = { numCols: 'auto' },
+  children,
+  className,
+  ...props
+}: Props) => {
   const mainClass = getMainClasses(appearance, styles);
   const classNames = className ? `${mainClass} ${className}` : mainClass;
   return (

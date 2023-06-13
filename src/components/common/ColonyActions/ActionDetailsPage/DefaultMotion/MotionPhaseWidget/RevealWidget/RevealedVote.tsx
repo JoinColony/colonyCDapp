@@ -3,7 +3,8 @@ import React from 'react';
 import { CustomRadio } from '~shared/Fields';
 import { MotionVote } from '~utils/colonyMotions';
 
-const displayName = 'common.ColonyActions.DefaultMotion.RevealWidget.RevealedVote';
+const displayName =
+  'common.ColonyActions.DefaultMotion.RevealWidget.RevealedVote';
 
 interface RevealedVoteProps {
   vote: MotionVote;

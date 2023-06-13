@@ -25,7 +25,10 @@ const UserInfo = ({ user: { walletAddress, name, profile }, user }: Props) => {
       <UserAvatar size="s" user={user} />
       <div className={styles.textContainer}>
         {profile?.displayName && (
-          <Heading appearance={{ margin: 'none', size: 'normal', theme: 'dark' }} text={profile?.displayName} />
+          <Heading
+            appearance={{ margin: 'none', size: 'normal', theme: 'dark' }}
+            text={profile?.displayName}
+          />
         )}
         {name && (
           /*

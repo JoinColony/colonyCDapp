@@ -9,7 +9,8 @@ import { SLIDER_AMOUNT_KEY } from './StakingInput';
 
 import styles from './StakingWidgetSlider.css';
 
-const displayName = 'common.ColonyActions.DefaultMotion.StakingWidget.StakingWidgetSlider';
+const displayName =
+  'common.ColonyActions.DefaultMotion.StakingWidget.StakingWidgetSlider';
 
 interface StakingWidgetSliderProps {
   isLoading: boolean;

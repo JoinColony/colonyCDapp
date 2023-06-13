@@ -5,7 +5,9 @@ import ManageReputationContainer from '../ManageReputationContainer';
 
 const displayName = 'common.SmiteDialog';
 
-const SmiteDialog = (props: AwardAndSmiteDialogProps) => <ManageReputationContainer {...props} isSmiteAction />;
+const SmiteDialog = (props: AwardAndSmiteDialogProps) => (
+  <ManageReputationContainer {...props} isSmiteAction />
+);
 
 SmiteDialog.displayName = displayName;
 

@@ -18,7 +18,11 @@ import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
 import { getColonyManager, putError, takeFrom } from '../utils';
 import { getWallet } from '../wallet';
-import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 
 // import { transactionLoadRelated, transactionReady } from '../../actionCreators';
 
@@ -109,7 +113,10 @@ function* usernameCreate({
     /*
      * Write user to db
      */
-    yield apolloClient.mutate<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>({
+    yield apolloClient.mutate<
+      CreateUniqueUserMutation,
+      CreateUniqueUserMutationVariables
+    >({
       mutation: CreateUniqueUserDocument,
       variables: {
         input: {
@@ -164,14 +171,18 @@ function* userDepositToken({
   try {
     const colonyManager = yield getColonyManager();
 
-    const tokenLockingClient: TokenLockingClient = yield colonyManager.getClient(
-      ClientType.TokenLockingClient,
-      colonyAddress,
-    );
+    const tokenLockingClient: TokenLockingClient =
+      yield colonyManager.getClient(
+        ClientType.TokenLockingClient,
+        colonyAddress,
+      );
 
     const batchKey = 'deposit';
 
-    const { approve, deposit } = yield createTransactionChannels(meta.id, ['approve', 'deposit']);
+    const { approve, deposit } = yield createTransactionChannels(meta.id, [
+      'approve',
+      'deposit',
+    ]);
 
     const createGroupTransaction = ({ id, index }, config) =>
       fork(createTransaction, id, {

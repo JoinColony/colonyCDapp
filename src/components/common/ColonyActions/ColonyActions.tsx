@@ -8,7 +8,11 @@ import LoadMoreButton from '~shared/LoadMoreButton';
 import ActionsList from '~shared/ActionsList';
 import { ActionButton } from '~shared/Button';
 import { ActionTypes, RootMotionMethodNames } from '~redux';
-import { useColonyContext, usePaginatedActions, useEnabledExtensions } from '~hooks';
+import {
+  useColonyContext,
+  usePaginatedActions,
+  useEnabledExtensions,
+} from '~hooks';
 
 import { mergePayload, pipe, withMeta } from '~utils/actions';
 
@@ -164,14 +168,19 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
   if (loadingActions) {
     return (
       <div className={styles.loadingSpinner}>
-        <SpinnerLoader loadingText={MSG.loading} appearance={{ theme: 'primary', size: 'massive' }} />
+        <SpinnerLoader
+          loadingText={MSG.loading}
+          appearance={{ theme: 'primary', size: 'massive' }}
+        />
       </div>
     );
   }
 
   const isForce = false;
   const isMotion = !!isVotingReputationEnabled && !isForce;
-  const actionType = isMotion ? ActionTypes.ROOT_MOTION : ActionTypes.ACTION_MINT_TOKENS;
+  const actionType = isMotion
+    ? ActionTypes.ROOT_MOTION
+    : ActionTypes.ACTION_MINT_TOKENS;
 
   const amount = BigNumber.from(1);
   const transform = withMeta({ navigate });
@@ -205,7 +214,11 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
         text="Test Unlock Token"
       />
       <ActionButton
-        actionType={isMotion ? ActionTypes.MOTION_MOVE_FUNDS : ActionTypes.ACTION_MOVE_FUNDS}
+        actionType={
+          isMotion
+            ? ActionTypes.MOTION_MOVE_FUNDS
+            : ActionTypes.ACTION_MOVE_FUNDS
+        }
         error={ActionTypes.ACTION_MOVE_FUNDS_ERROR}
         success={ActionTypes.ACTION_MOVE_FUNDS_SUCCESS}
         transform={pipe(
@@ -224,7 +237,10 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
       />
       {actions.length ? (
         <>
-          <ActionsListHeading sortDirection={sortDirection} onSortChange={onSortDirectionChange} />
+          <ActionsListHeading
+            sortDirection={sortDirection}
+            onSortChange={onSortDirectionChange}
+          />
           <ActionsList items={actions} />
           {hasMoreActions && (
             <LoadMoreButton

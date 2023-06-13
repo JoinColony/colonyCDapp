@@ -22,7 +22,13 @@ const MSG = defineMessages({
   },
 });
 
-const CSVUploaderItem = ({ error, name, upload, processingData, handleProcessingData }: UploadItemComponentProps) => {
+const CSVUploaderItem = ({
+  error,
+  name,
+  upload,
+  processingData,
+  handleProcessingData,
+}: UploadItemComponentProps) => {
   const { watch } = useFormContext();
   const uploaderValue: FileReaderFile = watch(name);
 
@@ -35,7 +41,12 @@ const CSVUploaderItem = ({ error, name, upload, processingData, handleProcessing
   );
 
   useEffect(() => {
-    if (!uploaderValue?.file && !error && handleProcessingData && !processingData) {
+    if (
+      !uploaderValue?.file &&
+      !error &&
+      handleProcessingData &&
+      !processingData
+    ) {
       handleProcessingData(true);
     }
   }, [error, uploaderValue, handleProcessingData, processingData]);
@@ -55,7 +66,12 @@ const CSVUploaderItem = ({ error, name, upload, processingData, handleProcessing
     <div className={styles.main}>
       <span className={styles.fileName}>{uploaderValue?.file.name}</span>
       <div>
-        <Button type="button" onClick={handleRemoveClick} appearance={{ theme: 'blue' }} text={MSG.removeCSVText} />
+        <Button
+          type="button"
+          onClick={handleRemoveClick}
+          appearance={{ theme: 'blue' }}
+          text={MSG.removeCSVText}
+        />
       </div>
     </div>
   );

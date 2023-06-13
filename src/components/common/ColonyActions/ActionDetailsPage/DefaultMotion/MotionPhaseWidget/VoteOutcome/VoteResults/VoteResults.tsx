@@ -8,7 +8,8 @@ import VoteResultsItem from './VoteResultsItem';
 
 import styles from './VoteResults.css';
 
-const displayName = 'common.ColonyActions.DefaultMotion.FinalizeMotion.VoteResults';
+const displayName =
+  'common.ColonyActions.DefaultMotion.FinalizeMotion.VoteResults';
 
 const MSG = defineMessages({
   voteYAY: {
@@ -41,7 +42,12 @@ const VoteResults = ({
 
   return (
     <div className={styles.main}>
-      <VoteResultsItem value={Number(yayVotePercent)} maxValue={100} title={MSG.voteYAY} voters={yayVoters} />
+      <VoteResultsItem
+        value={Number(yayVotePercent)}
+        maxValue={100}
+        title={MSG.voteYAY}
+        voters={yayVoters}
+      />
       <VoteResultsItem
         value={Number(nayVotePercent)}
         maxValue={100}

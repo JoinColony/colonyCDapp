@@ -90,7 +90,11 @@ const TokenInfo = ({ token, isTokenNative }: Props) => {
         />
         {tokenAddress !== AddressZero && (
           <span className={styles.addToWallet}>
-            <Button appearance={{ theme: 'blue' }} text={MSG.addToWallet} onClick={handleAddAssetToMetamask} />
+            <Button
+              appearance={{ theme: 'blue' }}
+              text={MSG.addToWallet}
+              onClick={handleAddAssetToMetamask}
+            />
           </span>
         )}
       </div>

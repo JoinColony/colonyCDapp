@@ -36,7 +36,11 @@ const MSG = defineMessages({
   },
 });
 
-export const ColonyContextProvider = ({ children }: { children: ReactNode }) => {
+export const ColonyContextProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const { colonyName } = useParams<{ colonyName: string }>();
   const { state: locationState } = useLocation();
   const [isPolling, setIsPolling] = useState(!!colonyName);
@@ -78,7 +82,14 @@ export const ColonyContextProvider = ({ children }: { children: ReactNode }) => 
       startPolling,
       stopPolling,
     }),
-    [colony, loading, canInteractWithColony, refetchColony, startPolling, stopPolling],
+    [
+      colony,
+      loading,
+      canInteractWithColony,
+      refetchColony,
+      startPolling,
+      stopPolling,
+    ],
   );
 
   if (!colonyName) {

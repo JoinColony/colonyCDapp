@@ -35,10 +35,16 @@ const MSG = defineMessages({
 });
 
 const ColonyExtensions = () => {
-  const { installedExtensionsData, availableExtensionsData, loading } = useExtensionsData();
+  const { installedExtensionsData, availableExtensionsData, loading } =
+    useExtensionsData();
 
   if (loading) {
-    return <SpinnerLoader loadingText={MSG.loading} appearance={{ theme: 'primary', size: 'massive' }} />;
+    return (
+      <SpinnerLoader
+        loadingText={MSG.loading}
+        appearance={{ theme: 'primary', size: 'massive' }}
+      />
+    );
   }
 
   return (
@@ -54,11 +60,17 @@ const ColonyExtensions = () => {
       <div className={styles.content}>
         {installedExtensionsData.length > 0 && (
           <div>
-            <Heading3 appearance={{ size: 'normal' }} text={MSG.installedExtensions} />
+            <Heading3
+              appearance={{ size: 'normal' }}
+              text={MSG.installedExtensions}
+            />
 
             <div className={styles.cards}>
               {installedExtensionsData.map((extensionData) => (
-                <ExtensionCard key={extensionData.extensionId} extensionData={extensionData} />
+                <ExtensionCard
+                  key={extensionData.extensionId}
+                  extensionData={extensionData}
+                />
               ))}
             </div>
           </div>
@@ -66,11 +78,17 @@ const ColonyExtensions = () => {
 
         {availableExtensionsData.length > 0 && (
           <div>
-            <Heading3 appearance={{ size: 'normal' }} text={MSG.availableExtensions} />
+            <Heading3
+              appearance={{ size: 'normal' }}
+              text={MSG.availableExtensions}
+            />
 
             <div className={styles.cards}>
               {availableExtensionsData.map((extensionData) => (
-                <ExtensionCard key={extensionData.extensionId} extensionData={extensionData} />
+                <ExtensionCard
+                  key={extensionData.extensionId}
+                  extensionData={extensionData}
+                />
               ))}
             </div>
           </div>

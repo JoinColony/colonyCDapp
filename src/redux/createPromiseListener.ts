@@ -1,5 +1,9 @@
 import { Middleware } from 'redux';
-import createReduxPromiseListener, { State, Action, Config } from '@colony/redux-promise-listener';
+import createReduxPromiseListener, {
+  State,
+  Action,
+  Config,
+} from '@colony/redux-promise-listener';
 
 // More specific types than in package (with generics)
 export type AsyncFunction<Params, Return> = {
@@ -9,7 +13,9 @@ export type AsyncFunction<Params, Return> = {
 
 export type PromiseListener = {
   middleware: Middleware<State, Action>;
-  createAsyncFunction: <Params, Return>(arg0: Config) => AsyncFunction<Params, Return>;
+  createAsyncFunction: <Params, Return>(
+    arg0: Config,
+  ) => AsyncFunction<Params, Return>;
 };
 
 const reduxPromiseListener: PromiseListener = createReduxPromiseListener();

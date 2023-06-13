@@ -69,25 +69,29 @@ const MembersFilter = ({ onFilterChange, isRootOrAllDomains }: Props) => {
                   <Button
                     text={MSG.reset}
                     appearance={{ theme: 'blue' }}
-                    onClick={() => handleReset(onFilterChange, reset, defaultValues)}
+                    onClick={() =>
+                      handleReset(onFilterChange, reset, defaultValues)
+                    }
                   />
                 )}
               </div>
-              {filterItems.map(({ appearance, name, options, label, isRootRequired }) => {
-                const hideFilter = isRootRequired && !isRootOrAllDomains;
-                return (
-                  !hideFilter && (
-                    <Filter
-                      key={name}
-                      appearance={appearance}
-                      name={name}
-                      options={options}
-                      label={label}
-                      handleFilterChange={onFilterChange}
-                    />
-                  )
-                );
-              })}
+              {filterItems.map(
+                ({ appearance, name, options, label, isRootRequired }) => {
+                  const hideFilter = isRootRequired && !isRootOrAllDomains;
+                  return (
+                    !hideFilter && (
+                      <Filter
+                        key={name}
+                        appearance={appearance}
+                        name={name}
+                        options={options}
+                        label={label}
+                        handleFilterChange={onFilterChange}
+                      />
+                    )
+                  );
+                },
+              )}
             </div>
           );
         }}

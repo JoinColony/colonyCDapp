@@ -30,12 +30,13 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
     setIsOpen(false);
   }, []);
 
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } = usePopperTooltip({
-    delayShow: 200,
-    placement: 'bottom-end',
-    trigger: ['click', 'hover'],
-    interactive: true,
-  });
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    usePopperTooltip({
+      delayShow: 200,
+      placement: 'bottom-end',
+      trigger: ['click', 'hover'],
+      interactive: true,
+    });
 
   const button = (
     <button

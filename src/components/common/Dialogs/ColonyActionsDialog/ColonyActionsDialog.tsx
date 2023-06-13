@@ -51,7 +51,8 @@ const MSG = defineMessages({
   },
   advancedDesc: {
     id: `${displayName}.advancedDesc`,
-    defaultMessage: 'Need to tinker under the hood? This is the place to do it.',
+    defaultMessage:
+      'Need to tinker under the hood? This is the place to do it.',
   },
 });
 
@@ -112,7 +113,9 @@ const ColonyActionsDialog = ({
       dataTest: 'advancedDialogIndexItem',
     },
   ];
-  return <IndexModal cancel={cancel} close={close} title={MSG.title} items={items} />;
+  return (
+    <IndexModal cancel={cancel} close={close} title={MSG.title} items={items} />
+  );
 };
 
 ColonyActionsDialog.displayName = displayName;

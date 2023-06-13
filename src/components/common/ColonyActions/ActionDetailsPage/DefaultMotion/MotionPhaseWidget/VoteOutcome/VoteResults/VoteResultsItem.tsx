@@ -36,7 +36,8 @@ const VoteResultsItem = ({
   voters = [],
   maxAvatars = 3,
 }: Props) => {
-  const iconName = appearance.theme === 'approve' ? 'circle-thumbs-up' : 'circle-thumbs-down';
+  const iconName =
+    appearance.theme === 'approve' ? 'circle-thumbs-up' : 'circle-thumbs-down';
   const votePercentage = (value * maxPercentage) / maxValue;
   const barTheme = appearance.theme === 'approve' ? 'primary' : 'danger';
 

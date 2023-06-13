@@ -30,21 +30,32 @@ const ExtensionDetailsPage: FC = () => {
   const { formatMessage } = useIntl();
   // @TODO: Change extension missing permissions functionality
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
-  const { oneTxPaymentData, votingReputationData } = useFetchActiveInstallsExtension();
+  const { oneTxPaymentData, votingReputationData } =
+    useFetchActiveInstallsExtension();
 
   if (!colony || !extensionData) {
     return null;
   }
 
   if (!extensionData) {
-    return <p>{formatMessage({ id: 'extensionDetailsPage.unsupportedExtension' })}</p>;
+    return (
+      <p>
+        {formatMessage({ id: 'extensionDetailsPage.unsupportedExtension' })}
+      </p>
+    );
   }
 
-  const showEnableBanner = extensionData.extensionId !== 'VotingReputation' && !isInstalledExtensionData(extensionData);
+  const showEnableBanner =
+    extensionData.extensionId !== 'VotingReputation' &&
+    !isInstalledExtensionData(extensionData);
 
   const isExtensionInstalled = isInstalledExtensionData(extensionData);
 
-  const activeInstalls = Number(extensionData.extensionId === 'OneTxPayment' ? oneTxPaymentData : votingReputationData);
+  const activeInstalls = Number(
+    extensionData.extensionId === 'OneTxPayment'
+      ? oneTxPaymentData
+      : votingReputationData,
+  );
 
   return (
     <Spinner loadingText={{ id: 'loading.colonyDetailsPage' }}>
@@ -74,25 +85,41 @@ const ExtensionDetailsPage: FC = () => {
             <div className="flex justify-between flex-col flex-wrap gap-y-4 sm:items-center sm:flex-row sm:gap-6">
               <div className="flex flex-col sm:items-center sm:flex-row gap-4 sm:gap-2 sm:grow">
                 <div className="flex items-center shrink-0">
-                  <Icon name={extensionData.icon} appearance={{ size: 'large' }} />
-                  <h4 className="ml-2 text-xl font-semibold text-gray-900">{formatMessage(extensionData.name)}</h4>
+                  <Icon
+                    name={extensionData.icon}
+                    appearance={{ size: 'large' }}
+                  />
+                  <h4 className="ml-2 text-xl font-semibold text-gray-900">
+                    {formatMessage(extensionData.name)}
+                  </h4>
                 </div>
                 {/* @TODO get these values from API (badge and active installs number) */}
                 <div className="flex items-center justify-between gap-4 sm:grow">
                   <ExtensionStatusBadge
-                    mode={extensionData.extensionId === 'OneTxPayment' ? 'payments' : 'governance'}
+                    mode={
+                      extensionData.extensionId === 'OneTxPayment'
+                        ? 'payments'
+                        : 'governance'
+                    }
                     text={formatMessage({
-                      id: extensionData.extensionId === 'OneTxPayment' ? 'status.payments' : 'status.governance',
+                      id:
+                        extensionData.extensionId === 'OneTxPayment'
+                          ? 'status.payments'
+                          : 'status.governance',
                     })}
                   />
                   {!isExtensionInstalled && (
                     <>
                       {activeInstalls >= ACTIVE_INSTALLED_LIMIT ? (
                         <p className="text-gray-400 text-sm">
-                          {activeInstalls.toLocaleString('en-US')} {formatMessage({ id: 'active.installs' })}
+                          {activeInstalls.toLocaleString('en-US')}{' '}
+                          {formatMessage({ id: 'active.installs' })}
                         </p>
                       ) : (
-                        <ExtensionStatusBadge mode="new" text={{ id: 'status.new' }} />
+                        <ExtensionStatusBadge
+                          mode="new"
+                          text={{ id: 'status.new' }}
+                        />
                       )}
                     </>
                   )}

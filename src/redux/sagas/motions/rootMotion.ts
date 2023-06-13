@@ -6,13 +6,27 @@ import { ColonyManager } from '~context';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { transactionAddParams, transactionPending, transactionReady } from '../../actionCreators';
+import {
+  transactionAddParams,
+  transactionPending,
+  transactionReady,
+} from '../../actionCreators';
 
 import { putError, takeFrom, getColonyManager } from '../utils';
-import { createTransaction, createTransactionChannels, getTxChannel } from '../transactions';
+import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 
 function* createRootMotionSaga({
-  payload: { operationName, colonyAddress, colonyName, motionParams, annotationMessage },
+  payload: {
+    operationName,
+    colonyAddress,
+    colonyName,
+    motionParams,
+    annotationMessage,
+  },
   meta: { id: metaId, navigate },
   meta,
 }: Action<ActionTypes.ROOT_MOTION>) {
@@ -24,32 +38,60 @@ function* createRootMotionSaga({
 
     const colonyManager: ColonyManager = yield getColonyManager();
 
-    const colonyClient = yield colonyManager.getClient(ClientType.ColonyClient, colonyAddress);
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
 
-    const childSkillIndex = yield call(getChildIndex, colonyClient, Id.RootDomain, Id.RootDomain);
+    const childSkillIndex = yield call(
+      getChildIndex,
+      colonyClient,
+      Id.RootDomain,
+      Id.RootDomain,
+    );
 
-    const encodedAction = colonyClient.interface.encodeFunctionData(operationName, motionParams);
+    const encodedAction = colonyClient.interface.encodeFunctionData(
+      operationName,
+      motionParams,
+    );
 
-    const { skillId } = yield call([colonyClient, colonyClient.getDomain], Id.RootDomain);
+    const { skillId } = yield call(
+      [colonyClient, colonyClient.getDomain],
+      Id.RootDomain,
+    );
 
-    const { key, value, branchMask, siblings } = yield call(colonyClient.getReputation, skillId, AddressZero);
+    const { key, value, branchMask, siblings } = yield call(
+      colonyClient.getReputation,
+      skillId,
+      AddressZero,
+    );
 
     txChannel = yield call(getTxChannel, metaId);
 
     // setup batch ids and channels
     const batchKey = 'createMotion';
 
-    const { createMotion, annotateRootMotion } = yield createTransactionChannels(metaId, [
-      'createMotion',
-      'annotateRootMotion',
-    ]);
+    const { createMotion, annotateRootMotion } =
+      yield createTransactionChannels(metaId, [
+        'createMotion',
+        'annotateRootMotion',
+      ]);
 
     // create transactions
     yield fork(createTransaction, createMotion.id, {
       context: ClientType.VotingReputationClient,
       methodName: 'createMotion',
       identifier: colonyAddress,
-      params: [Id.RootDomain, childSkillIndex, AddressZero, encodedAction, key, value, branchMask, siblings],
+      params: [
+        Id.RootDomain,
+        childSkillIndex,
+        AddressZero,
+        encodedAction,
+        key,
+        value,
+        branchMask,
+        siblings,
+      ],
       group: {
         key: batchKey,
         id: metaId,
@@ -75,14 +117,20 @@ function* createRootMotionSaga({
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
     if (annotationMessage) {
-      yield takeFrom(annotateRootMotion.channel, ActionTypes.TRANSACTION_CREATED);
+      yield takeFrom(
+        annotateRootMotion.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
     }
 
     yield put(transactionReady(createMotion.id));
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
+    } = yield takeFrom(
+      createMotion.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (annotationMessage) {
@@ -93,7 +141,10 @@ function* createRootMotionSaga({
 
       yield put(transactionReady(annotateRootMotion.id));
 
-      yield takeFrom(annotateRootMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      yield takeFrom(
+        annotateRootMotion.channel,
+        ActionTypes.TRANSACTION_SUCCEEDED,
+      );
     }
     yield put<AllActions>({
       type: ActionTypes.ROOT_MOTION_SUCCESS,

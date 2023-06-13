@@ -17,11 +17,13 @@ const oneTransactionPaymentMessages = {
   },
   oneTxPaymentDescriptionShort: {
     id: `${oneTransactionPaymentName}.description`,
-    defaultMessage: 'Make quick and simple payments to members or any address on the same network.',
+    defaultMessage:
+      'Make quick and simple payments to members or any address on the same network.',
   },
   oneTxPaymentDescriptionLong: {
     id: `${oneTransactionPaymentName}.descriptionLong`,
-    defaultMessage: 'Make quick and simple payments to members or any address on the same network.',
+    defaultMessage:
+      'Make quick and simple payments to members or any address on the same network.',
   },
 };
 
@@ -128,7 +130,8 @@ const votingReputationMessages = {
   },
   votingReputationPermissionArchitectureDescription: {
     id: `${votingReputationName}.param.permission.architectureDescription`,
-    defaultMessage: 'This permission allows users to create new domains, and manage permissions within those domains.',
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
   },
   votingReputationPermissionArbitration: {
     id: `${votingReputationName}.param.permission.arbitration`,
@@ -136,7 +139,8 @@ const votingReputationMessages = {
   },
   votingReputationPermissionArbitrationDescription: {
     id: `${votingReputationName}.param.permission.arbitrationDescription`,
-    defaultMessage: 'This permission allows users to create new domains, and manage permissions within those domains.',
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
   },
   votingReputationPermissionRecovery: {
     id: `${votingReputationName}.param.permission.recovery`,
@@ -144,7 +148,8 @@ const votingReputationMessages = {
   },
   votingReputationPermissionRecoveryDescription: {
     id: `${votingReputationName}.param.permission.recoveryDescription`,
-    defaultMessage: 'This permission allows users to create new domains, and manage permissions within those domains.',
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
   },
   votingReputationPermissionFunding: {
     id: `${votingReputationName}.param.permission.funding`,
@@ -152,7 +157,8 @@ const votingReputationMessages = {
   },
   votingReputationPermissionFundingDescription: {
     id: `${votingReputationName}.param.permission.fundingDescription`,
-    defaultMessage: 'This permission allows users to create new domains, and manage permissions within those domains.',
+    defaultMessage:
+      'This permission allows users to create new domains, and manage permissions within those domains.',
   },
 };
 

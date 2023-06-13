@@ -44,7 +44,11 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         className={styles.closeIcon}
         onClick={onClose}
       >
-        <Icon appearance={{ size: 'extraTiny' }} name="close" title={formatMessage({ id: 'button.cancel' })} />
+        <Icon
+          appearance={{ size: 'extraTiny' }}
+          name="close"
+          title={formatMessage({ id: 'button.cancel' })}
+        />
       </button>
 
       <div className={styles.inner}>

@@ -44,12 +44,24 @@ interface Props extends HTMLAttributes<HTMLSpanElement> {
 
 const displayName = 'Tag';
 
-const Tag = ({ appearance, children, className, text, textValues, ...rest }: Props) => {
+const Tag = ({
+  appearance,
+  children,
+  className,
+  text,
+  textValues,
+  ...rest
+}: Props) => {
   const classNames = useMainClasses(appearance, styles, className);
   return (
     <span className={classNames} {...rest}>
       {appearance?.theme === 'banned' && (
-        <Icon title={text} name="emoji-goblin" appearance={{ size: 'normal' }} className={styles.icon} />
+        <Icon
+          title={text}
+          name="emoji-goblin"
+          appearance={{ size: 'normal' }}
+          className={styles.icon}
+        />
       )}
       {text ? formatText(text, textValues) : children}
     </span>

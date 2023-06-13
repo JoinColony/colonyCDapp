@@ -21,13 +21,16 @@ const ColonySwitcher = () => {
   const { items: watchlist = [] } = user?.watchlist || {};
 
   const { formatMessage } = useIntl();
-  const { colonyToDisplay, colonyToDisplayAddress } = useSelectedColony(watchlist);
+  const { colonyToDisplay, colonyToDisplayAddress } =
+    useSelectedColony(watchlist);
   const isMobile = useMobile();
   const popperTooltipOffset = !isMobile ? [120, 8] : [0, 8];
 
   const sortByDate = (firstWatchEntry, secondWatchEntry) => {
     const firstWatchTime = new Date(firstWatchEntry?.createdAt || 1).getTime();
-    const secondWatchTime = new Date(secondWatchEntry?.createdAt || 1).getTime();
+    const secondWatchTime = new Date(
+      secondWatchEntry?.createdAt || 1,
+    ).getTime();
     return firstWatchTime - secondWatchTime;
   };
 
@@ -95,13 +98,18 @@ const ColonySwitcher = () => {
                   <SpinnerLoader appearance={{ size: 'medium' }} />
                 </div>
               )}
-              {!!watchlist.length && !userLoading && <ColoniesDropdown watchlist={watchlistSorted} />}
+              {!!watchlist.length && !userLoading && (
+                <ColoniesDropdown watchlist={watchlistSorted} />
+              )}
             </div>
           )}
           {isMobile && (
             <ColonyDropdownMobile isOpen={isOpen} userLoading={userLoading}>
               {!!watchlist.length && !userLoading && (
-                <ColoniesDropdown watchlist={watchlistSorted} isMobile={isMobile} />
+                <ColoniesDropdown
+                  watchlist={watchlistSorted}
+                  isMobile={isMobile}
+                />
               )}
             </ColonyDropdownMobile>
           )}

@@ -13,7 +13,9 @@ import { pipe, withMeta, mapPayload } from '~utils/actions';
 import EditColonyDetailsDialogForm from './EditColonyDetailsDialogForm';
 import { getEditColonyDetailsDialogPayload } from './helpers';
 
-type Props = Required<DialogProps> & WizardDialogType<object> & ActionDialogProps;
+type Props = Required<DialogProps> &
+  WizardDialogType<object> &
+  ActionDialogProps;
 
 const displayName = 'common.EditColonyDetailsDialog';
 
@@ -50,7 +52,9 @@ const EditColonyDetailsDialog = ({
   const navigate = useNavigate();
 
   const actionType =
-    !isForce && isVotingReputationEnabled ? ActionTypes.MOTION_EDIT_COLONY : ActionTypes.ACTION_EDIT_COLONY;
+    !isForce && isVotingReputationEnabled
+      ? ActionTypes.MOTION_EDIT_COLONY
+      : ActionTypes.ACTION_EDIT_COLONY;
 
   const transform = pipe(
     mapPayload((payload) => getEditColonyDetailsDialogPayload(colony, payload)),

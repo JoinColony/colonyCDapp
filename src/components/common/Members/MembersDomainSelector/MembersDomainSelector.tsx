@@ -26,9 +26,16 @@ interface Props {
   handleDomainChange: (domainId: number) => void;
 }
 
-const MembersDomainSelector = ({ currentDomainId, handleDomainChange, domainSelectOptions }: Props) => {
+const MembersDomainSelector = ({
+  currentDomainId,
+  handleDomainChange,
+  domainSelectOptions,
+}: Props) => {
   return (
-    <Form<FormValues> defaultValues={{ filter: currentDomainId.toString() }} onSubmit={() => {}}>
+    <Form<FormValues>
+      defaultValues={{ filter: currentDomainId.toString() }}
+      onSubmit={() => {}}
+    >
       <div className={styles.titleSelect}>
         <Select
           appearance={{

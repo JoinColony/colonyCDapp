@@ -12,7 +12,11 @@ const PageTitle = ({ title, subtitle }: PageTitleProps) => (
     <div className="flex gap-12 items-baseline justify-between">
       <div className="sm:max-w-[54.5rem]">
         <h1 className="heading-3">{title}</h1>
-        {subtitle && <h2 className="text-lg text-gray-600 leading-normal mt-0.5">{subtitle}</h2>}
+        {subtitle && (
+          <h2 className="text-lg text-gray-600 leading-normal mt-0.5">
+            {subtitle}
+          </h2>
+        )}
       </div>
       <div className="hidden md:block">
         <SubNavigation />

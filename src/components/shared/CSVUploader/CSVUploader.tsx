@@ -24,7 +24,14 @@ const MIME_TYPES = {
   'text/csv': [],
 };
 
-const CSVUploader = ({ name, error, status, processingData, setProcessingData, setHasFile }: Props) => {
+const CSVUploader = ({
+  name,
+  error,
+  status,
+  processingData,
+  setProcessingData,
+  setHasFile,
+}: Props) => {
   const [CSVFile, setCSVFile] = useState<FileReaderFile | null>(null);
   const [parsedCSV, setParsedCSV] = useState<ParseResult<unknown> | null>(null);
   const {
@@ -60,14 +67,20 @@ const CSVUploader = ({ name, error, status, processingData, setProcessingData, s
     if (CSVFile && parsedCSV && isNil(uploaderValue?.parsedData)) {
       let validAddresses: string[] = [];
       if (parsedCSV.meta.fields?.length === 1) {
-        validAddresses = parsedCSV.data.flatMap((CSVRow: Record<string, any>) => {
-          const potentialAddress: string = CSVRow[Object.keys(CSVRow)[0]];
-          return potentialAddress ? [potentialAddress] : [];
-        });
+        validAddresses = parsedCSV.data.flatMap(
+          (CSVRow: Record<string, any>) => {
+            const potentialAddress: string = CSVRow[Object.keys(CSVRow)[0]];
+            return potentialAddress ? [potentialAddress] : [];
+          },
+        );
       }
 
       if (!isEqual(validAddresses, uploaderValue?.parsedData)) {
-        setValue(name, { ...CSVFile, parsedData: validAddresses }, { shouldTouch: true });
+        setValue(
+          name,
+          { ...CSVFile, parsedData: validAddresses },
+          { shouldTouch: true },
+        );
         trigger(name);
       }
     }
@@ -75,7 +88,16 @@ const CSVUploader = ({ name, error, status, processingData, setProcessingData, s
     if (processingData) {
       setProcessingData(false);
     }
-  }, [trigger, parsedCSV, uploaderValue, setValue, processingData, setProcessingData, name, CSVFile]);
+  }, [
+    trigger,
+    parsedCSV,
+    uploaderValue,
+    setValue,
+    processingData,
+    setProcessingData,
+    name,
+    CSVFile,
+  ]);
 
   const getPlaceholder = () => {
     if (!CSVFile) {

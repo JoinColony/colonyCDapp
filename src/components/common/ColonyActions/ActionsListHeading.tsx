@@ -26,7 +26,10 @@ interface ActionsListHeadingProps {
   onSortChange: SetStateFn;
 }
 
-const ActionsListHeading = ({ sortDirection, onSortChange }: ActionsListHeadingProps) => {
+const ActionsListHeading = ({
+  sortDirection,
+  onSortChange,
+}: ActionsListHeadingProps) => {
   const { colony } = useColonyContext();
   return (
     <div className={styles.bar}>
@@ -34,7 +37,11 @@ const ActionsListHeading = ({ sortDirection, onSortChange }: ActionsListHeadingP
         <FormattedMessage {...MSG.actionsTitle} />
       </div>
       <SortControls sortDirection={sortDirection} onChange={onSortChange} />
-      <Link className={styles.link} to={`/colony/${colony?.name}/events`} data-test="transactionsLog">
+      <Link
+        className={styles.link}
+        to={`/colony/${colony?.name}/events`}
+        data-test="transactionsLog"
+      >
         <FormattedMessage {...MSG.transactionsLogLink} />
       </Link>
     </div>

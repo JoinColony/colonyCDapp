@@ -136,17 +136,30 @@ export const broadcastMetatransaction = async (
   reponseStatus: 'fail' | 'success' | 'unknown';
   response: Response;
 }> => {
-  const response = await fetch(`${process.env.BROADCASTER_ENDPOINT}/broadcast`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  const response = await fetch(
+    `${process.env.BROADCASTER_ENDPOINT}/broadcast`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(broadcastData),
     },
-    body: JSON.stringify(broadcastData),
-  });
-  const { message: responseError, status: reponseStatus, data: responseData } = await response.json();
+  );
+  const {
+    message: responseError,
+    status: reponseStatus,
+    data: responseData,
+  } = await response.json();
 
   if (reponseStatus !== 'success') {
-    throw new Error(generateBroadcasterHumanReadableError(methodName, responseError, responseData));
+    throw new Error(
+      generateBroadcasterHumanReadableError(
+        methodName,
+        responseError,
+        responseData,
+      ),
+    );
   }
 
   return {

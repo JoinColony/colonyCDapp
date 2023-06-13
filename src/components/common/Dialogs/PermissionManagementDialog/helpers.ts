@@ -2,7 +2,11 @@ import { ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 import { useMemo } from 'react';
 
-import { EnabledExtensionData, useActionDialogStatus, useAppContext } from '~hooks';
+import {
+  EnabledExtensionData,
+  useActionDialogStatus,
+  useAppContext,
+} from '~hooks';
 import { Address, Colony } from '~types';
 import { ColonyFragment } from '~gql';
 import { isEqual, sortBy } from '~utils/lodash';
@@ -11,7 +15,13 @@ import { getUserRolesForDomain } from '~transformers';
 
 import { availableRoles } from './constants';
 
-export const getPermissionManagementDialogPayload = ({ roles, user, domainId, annotationMessage, motionDomainId }) => ({
+export const getPermissionManagementDialogPayload = ({
+  roles,
+  user,
+  domainId,
+  annotationMessage,
+  motionDomainId,
+}) => ({
   domainId,
   userAddress: user.walletAddress,
   roles: availableRoles
@@ -27,14 +37,19 @@ export const getPermissionManagementDialogPayload = ({ roles, user, domainId, an
   motionDomainId: parseInt(motionDomainId, 10),
 });
 
-export const useSelectedUserRoles = (colony: ColonyFragment, selectedUserAddress: Address) =>
+export const useSelectedUserRoles = (
+  colony: ColonyFragment,
+  selectedUserAddress: Address,
+) =>
   useMemo(() => {
     const formattedUserRoles = {
       direct: {},
       inherited: {},
     };
     if (colony?.roles && colony?.domains && selectedUserAddress) {
-      const allExistingUserRoles = colony.roles.items.filter((role) => role?.targetAddress === selectedUserAddress);
+      const allExistingUserRoles = colony.roles.items.filter(
+        (role) => role?.targetAddress === selectedUserAddress,
+      );
       colony.domains.items.map((domain) => {
         /*
          * @NOTE Re-filtering
@@ -68,7 +83,9 @@ export const useSelectedUserRoles = (colony: ColonyFragment, selectedUserAddress
            * decisions like this unanimous
            */
           // eslint-disable-next-line no-multi-assign
-          const currentDomainRoles = (formattedUserRoles[roleType][currentDomainId] = {
+          const currentDomainRoles = (formattedUserRoles[roleType][
+            currentDomainId
+          ] = {
             ...formattedUserRoles[roleType][currentDomainId],
             0: role?.role_0, // recovery
             1: role?.role_1, // root
@@ -100,16 +117,28 @@ export const usePermissionManagementDialogStatus = (
     disabledInput,
     canCreateMotion,
     canOnlyForceAction,
-  } = useActionDialogStatus(colony, requiredRoles, [domainId], enabledExtensionData);
+  } = useActionDialogStatus(
+    colony,
+    requiredRoles,
+    [domainId],
+    enabledExtensionData,
+  );
 
-  const userDirectAndInheritedRoles = getUserRolesForDomain(colony, selectedUser?.walletAddress || '', domainId);
+  const userDirectAndInheritedRoles = getUserRolesForDomain(
+    colony,
+    selectedUser?.walletAddress || '',
+    domainId,
+  );
 
   return {
     userHasPermission,
     disabledInput,
     disabledSubmit:
       defaultDisabledSubmit ||
-      isEqual(sortBy(roles), sortBy(userDirectAndInheritedRoles.map((role) => role.toString()))),
+      isEqual(
+        sortBy(roles),
+        sortBy(userDirectAndInheritedRoles.map((role) => role.toString())),
+      ),
     canCreateMotion,
     canOnlyForceAction,
   };
@@ -121,16 +150,24 @@ export const useCanRoleBeSet = (colony: Colony) => {
   const domainId = watch('domainId');
   const { user: currentUser } = useAppContext();
 
-  const currentUserRoles = useSelectedUserRoles(colony, currentUser?.walletAddress || '');
+  const currentUserRoles = useSelectedUserRoles(
+    colony,
+    currentUser?.walletAddress || '',
+  );
 
   const checkUserRole = (role: ColonyRole, inheritedRole = false) => {
-    return !!currentUserRoles[inheritedRole ? 'inherited' : 'direct']?.[domainId]?.[role];
+    return !!currentUserRoles[inheritedRole ? 'inherited' : 'direct']?.[
+      domainId
+    ]?.[role];
   };
 
   const isCurrentDomainRoot = domainId === Id.RootDomain;
   const hasInheritedRoot = checkUserRole(ColonyRole.Root, true);
   const hasDirectdRoot = checkUserRole(ColonyRole.Root);
-  const hasInheriteddArchitecture = checkUserRole(ColonyRole.Architecture, true);
+  const hasInheriteddArchitecture = checkUserRole(
+    ColonyRole.Architecture,
+    true,
+  );
   const hasDirectdArchitecture = checkUserRole(ColonyRole.Architecture);
   const hasRoot = hasInheritedRoot || hasDirectdRoot;
   const hasArchitecture = hasInheriteddArchitecture || hasDirectdArchitecture;
@@ -169,7 +206,10 @@ export const useCanRoleBeSet = (colony: Colony) => {
 };
 
 export const formatRolesForForm = (
-  userRoles: Record<string, Record<string, Record<string, boolean | undefined | null>>>,
+  userRoles: Record<
+    string,
+    Record<string, Record<string, boolean | undefined | null>>
+  >,
   domainId: number,
 ) => {
   if (userRoles) {

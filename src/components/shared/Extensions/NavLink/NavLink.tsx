@@ -19,12 +19,19 @@ const NavLink: FC<PropsWithChildren<NavLinkProps>> = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  const linkText = typeof text === 'string' ? text : text && formatMessage(text, textValues);
-  const titleText = typeof title === 'string' ? title : title && formatMessage(title, titleValues);
+  const linkText =
+    typeof text === 'string' ? text : text && formatMessage(text, textValues);
+  const titleText =
+    typeof title === 'string'
+      ? title
+      : title && formatMessage(title, titleValues);
 
   return (
     <NavLinkComponent
-      className={clsx(className, 'transition-all duration-normal hover:text-blue-400')}
+      className={clsx(
+        className,
+        'transition-all duration-normal hover:text-blue-400',
+      )}
       to={to}
       title={titleText}
       {...props}

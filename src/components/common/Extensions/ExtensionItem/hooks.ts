@@ -9,7 +9,8 @@ export const useExtensionItem = (extensionId: string) => {
   const { colony } = useColonyContext();
   const { extensionData } = useExtensionData(extensionId);
 
-  const isExtensionInstalled = extensionData && isInstalledExtensionData(extensionData);
+  const isExtensionInstalled =
+    extensionData && isInstalledExtensionData(extensionData);
 
   const { status, badgeMessage } = useExtensionsBadge(extensionData);
 
@@ -36,7 +37,9 @@ export const useExtensionItem = (extensionId: string) => {
 
   // when extensionId: "VotingReputation" and extenstion is installed and enabled then url should redirect to extenstion setup page
   const extensionUrl =
-    isExtensionInstalled && extensionId === 'VotingReputation' && extensionData.isEnabled
+    isExtensionInstalled &&
+    extensionId === 'VotingReputation' &&
+    extensionData.isEnabled
       ? `/colony/${colony?.name}/extensions/${extensionId}/setup`
       : `/colony/${colony?.name}/extensions/${extensionId}`;
 

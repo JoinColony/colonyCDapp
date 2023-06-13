@@ -4,13 +4,24 @@ import { TransactionError, TransactionType } from '~redux/immutable';
 import { MethodParams } from '~types';
 
 import { ActionTypes } from '../../actionTypes';
-import { ActionTypeWithMeta, ActionTypeWithPayloadAndMeta } from '../../types/actions';
+import {
+  ActionTypeWithMeta,
+  ActionTypeWithPayloadAndMeta,
+} from '../../types/actions';
 
 type Meta = { id: string; metatransaction?: boolean };
 
 export type TransactionActionTypes =
-  | ActionTypeWithPayloadAndMeta<ActionTypes.TRANSACTION_ADD_IDENTIFIER, { identifier: string }, Meta>
-  | ActionTypeWithPayloadAndMeta<ActionTypes.TRANSACTION_ADD_PARAMS, { params: MethodParams }, Meta>
+  | ActionTypeWithPayloadAndMeta<
+      ActionTypes.TRANSACTION_ADD_IDENTIFIER,
+      { identifier: string },
+      Meta
+    >
+  | ActionTypeWithPayloadAndMeta<
+      ActionTypes.TRANSACTION_ADD_PARAMS,
+      { params: MethodParams },
+      Meta
+    >
   | ActionTypeWithMeta<ActionTypes.TRANSACTION_READY, Meta>
   | ActionTypeWithMeta<ActionTypes.TRANSACTION_PENDING, Meta>
   | ActionTypeWithMeta<ActionTypes.TRANSACTION_CANCEL, Meta>
@@ -36,7 +47,11 @@ export type TransactionActionTypes =
       >,
       Meta
     >
-  | (ActionTypeWithPayloadAndMeta<ActionTypes.TRANSACTION_ERROR, { error: TransactionError }, { id: string }> & {
+  | (ActionTypeWithPayloadAndMeta<
+      ActionTypes.TRANSACTION_ERROR,
+      { error: TransactionError },
+      { id: string }
+    > & {
       error: true;
     })
   | ActionTypeWithMeta<ActionTypes.TRANSACTION_ESTIMATE_GAS, Meta>
@@ -45,8 +60,16 @@ export type TransactionActionTypes =
       { hash: string; blockHash: string; blockNumber: number; params: object },
       Meta
     >
-  | ActionTypeWithPayloadAndMeta<ActionTypes.TRANSACTION_GAS_UPDATE, { gasLimit?: string; gasPrice?: string }, Meta>
-  | ActionTypeWithPayloadAndMeta<ActionTypes.TRANSACTION_LOAD_RELATED, { loading: boolean }, Meta>
+  | ActionTypeWithPayloadAndMeta<
+      ActionTypes.TRANSACTION_GAS_UPDATE,
+      { gasLimit?: string; gasPrice?: string },
+      Meta
+    >
+  | ActionTypeWithPayloadAndMeta<
+      ActionTypes.TRANSACTION_LOAD_RELATED,
+      { loading: boolean },
+      Meta
+    >
   | ActionTypeWithPayloadAndMeta<
       ActionTypes.TRANSACTION_RECEIPT_RECEIVED,
       { receipt: TransactionReceipt; params: MethodParams },

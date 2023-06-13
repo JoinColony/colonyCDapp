@@ -6,7 +6,8 @@ import Numeral from '~shared/Numeral';
 
 import styles from './StakingValidationMessage.css';
 
-const displayName = 'common.ColonyActions.StakingWidget.StakingSliderMessages.NotEnoughReputationMessage.tsx';
+const displayName =
+  'common.ColonyActions.StakingWidget.StakingSliderMessages.NotEnoughReputationMessage.tsx';
 
 const MSG = defineMessages({
   notEnoughReputation: {
@@ -31,10 +32,18 @@ const NotEnoughReputationMessage = ({
       {...MSG.notEnoughReputation}
       values={{
         minimumReputation: (
-          <Numeral className={styles.validationError} value={userMinStake} decimals={nativeTokenDecimals} />
+          <Numeral
+            className={styles.validationError}
+            value={userMinStake}
+            decimals={nativeTokenDecimals}
+          />
         ),
         userReputation: (
-          <Numeral className={styles.validationError} value={userMaxStake} decimals={nativeTokenDecimals} />
+          <Numeral
+            className={styles.validationError}
+            value={userMaxStake}
+            decimals={nativeTokenDecimals}
+          />
         ),
       }}
     />

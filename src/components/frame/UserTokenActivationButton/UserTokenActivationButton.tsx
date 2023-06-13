@@ -14,7 +14,8 @@ const displayName = 'frame.UserTokenActivationButton';
 const MSG = defineMessages({
   tooltip: {
     id: `${displayName}.tooltip`,
-    defaultMessage: 'View and activate tokens for staking or claim any unclaimed stakes.',
+    defaultMessage:
+      'View and activate tokens for staking or claim any unclaimed stakes.',
   },
 });
 
@@ -24,11 +25,21 @@ interface Props {
   nativeToken: Token;
 }
 
-const UserTokenActivationButton = ({ dataTest, nativeToken, tokenBalanceData }: Props) => {
+const UserTokenActivationButton = ({
+  dataTest,
+  nativeToken,
+  tokenBalanceData,
+}: Props) => {
   return (
     <TokenActivationPopover tokenBalanceData={tokenBalanceData}>
       {({ isOpen, toggle, ref }) => (
-        <button type="button" className={styles.tokens} onClick={toggle} ref={ref} data-test={dataTest}>
+        <button
+          type="button"
+          className={styles.tokens}
+          onClick={toggle}
+          ref={ref}
+          data-test={dataTest}
+        >
           <Tooltip
             placement="bottom-start"
             trigger={!isOpen ? 'hover' : null}
@@ -48,7 +59,10 @@ const UserTokenActivationButton = ({ dataTest, nativeToken, tokenBalanceData }: 
               ],
             }}
           >
-            <UserTokenActivationDisplay tokenBalanceData={tokenBalanceData} nativeToken={nativeToken} />
+            <UserTokenActivationDisplay
+              tokenBalanceData={tokenBalanceData}
+              nativeToken={nativeToken}
+            />
           </Tooltip>
         </button>
       )}

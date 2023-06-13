@@ -22,7 +22,11 @@ const displayName = 'frame.AvatarDropdown';
 
 const { refWidth, horizontalOffset, verticalOffset } = styles;
 
-const AvatarDropdown = ({ preventTransactions = false, spinnerMsg, tokenBalanceData }: Props) => {
+const AvatarDropdown = ({
+  preventTransactions = false,
+  spinnerMsg,
+  tokenBalanceData,
+}: Props) => {
   const isMobile = useMobile();
   const { wallet, user } = useAppContext();
   const { colony } = useColonyContext();
@@ -41,7 +45,8 @@ const AvatarDropdown = ({ preventTransactions = false, spinnerMsg, tokenBalanceD
    * reference element.
    */
   const popoverOffset = useMemo(() => {
-    const skid = removeValueUnits(refWidth) + removeValueUnits(horizontalOffset);
+    const skid =
+      removeValueUnits(refWidth) + removeValueUnits(horizontalOffset);
     return isMobile ? [-70, 5] : [-1 * skid, removeValueUnits(verticalOffset)];
   }, [isMobile]);
 

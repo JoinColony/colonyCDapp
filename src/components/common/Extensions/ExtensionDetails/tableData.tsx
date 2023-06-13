@@ -1,7 +1,11 @@
 import React from 'react';
 import { MessageDescriptor, defineMessages, FormattedDate } from 'react-intl';
 
-import { AnyExtensionData, InstallableExtensionData, InstalledExtensionData } from '~types';
+import {
+  AnyExtensionData,
+  InstallableExtensionData,
+  InstalledExtensionData,
+} from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { UserDetail } from '~shared/DetailsWidget';
 import Address from '~shared/Address';
@@ -51,7 +55,9 @@ export type TableRowData = {
   value: string | JSX.Element;
 };
 
-const getInstalledExtensionTableData = (extensionData: InstalledExtensionData) => {
+const getInstalledExtensionTableData = (
+  extensionData: InstalledExtensionData,
+) => {
   return [
     {
       label: MSG.status,
@@ -84,7 +90,9 @@ const getInstalledExtensionTableData = (extensionData: InstalledExtensionData) =
   ];
 };
 
-const getInstallableExtensionData = (extensionData: InstallableExtensionData) => {
+const getInstallableExtensionData = (
+  extensionData: InstallableExtensionData,
+) => {
   return [
     {
       label: MSG.status,
@@ -109,7 +117,9 @@ const getInstallableExtensionData = (extensionData: InstallableExtensionData) =>
   ];
 };
 
-export const getTableData = (extensionData: AnyExtensionData): TableRowData[] => {
+export const getTableData = (
+  extensionData: AnyExtensionData,
+): TableRowData[] => {
   return isInstalledExtensionData(extensionData)
     ? getInstalledExtensionTableData(extensionData)
     : getInstallableExtensionData(extensionData);
