@@ -17,7 +17,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
   description,
   version,
   icon,
-  extensionId = '',
+  extensionId,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();

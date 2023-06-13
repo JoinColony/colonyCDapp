@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
+import { Extension } from '@colony/colony-js';
 import { useLazyConsensusPage } from './hooks';
 import Icon from '~shared/Icon';
 import RadioList from '~shared/Extensions/Fields/RadioList';
@@ -15,6 +16,9 @@ import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails/
 import ActionButtons from '../partials/ActionButtons';
 import { useFetchActiveInstallsExtension } from '../ExtensionDetailsPage/hooks';
 import { ACTIVE_INSTALLED_LIMIT } from '~constants';
+import { isInstalledExtensionData } from '~utils/extensions';
+import Button from '~shared/Extensions/Button';
+import { useMobile } from '~hooks';
 
 const LazyConsensusPage: FC = () => {
   const { formatMessage } = useIntl();
@@ -28,7 +32,7 @@ const LazyConsensusPage: FC = () => {
     onSubmit,
     onChangeGovernance,
   } = useLazyConsensusPage(onOpenIndexChange, openIndex);
-
+  const isMobile = useMobile();
   const { oneTxPaymentData, votingReputationData } =
     useFetchActiveInstallsExtension();
 
@@ -52,6 +56,12 @@ const LazyConsensusPage: FC = () => {
       : votingReputationData,
   );
 
+  const isEnableButtonVisible =
+    isInstalledExtensionData(extensionData) &&
+    extensionData.uninstallable &&
+    !extensionData.isDeprecated &&
+    extensionData?.extensionId === Extension.VotingReputation;
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Spinner loadingText={{ id: 'loading.extensionsPage' }}>
@@ -69,8 +79,7 @@ const LazyConsensusPage: FC = () => {
                     {formatMessage(extensionData.name)}
                   </h4>
                 </div>
-                {/* @TODO: add condition to show/hide pills */}
-                <div className="flex items-center justify-between gap-4 sm:grow">
+                <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
                   <ExtensionStatusBadge
                     mode="governance"
                     text={formatMessage({ id: 'status.governance' })}
@@ -87,6 +96,17 @@ const LazyConsensusPage: FC = () => {
                     />
                   )}
                 </div>
+                {isEnableButtonVisible && (
+                  <Button
+                    mode="primarySolid"
+                    type="submit"
+                    isFullSize={isMobile}
+                  >
+                    <p className="text-sm font-medium">
+                      {formatMessage({ id: 'extension.enableButton' })}
+                    </p>
+                  </Button>
+                )}
               </div>
               <ActionButtons extensionData={extensionData} />
             </div>

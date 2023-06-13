@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import Tooltip from '~shared/Extensions/Tooltip';
 import styles from '../SpecificSidePanel.module.css';

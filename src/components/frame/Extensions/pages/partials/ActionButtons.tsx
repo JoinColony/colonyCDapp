@@ -12,7 +12,6 @@ const displayName = 'frame.Extensions.pages.partials.ActionButtons';
 
 const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
   const {
-    handleEnableClick,
     handleInstallClick,
     handleUpdateVersionClick,
     isUpgradeButtonDisabled,
@@ -29,11 +28,6 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
     extensionData.uninstallable &&
     !extensionData.isDeprecated;
 
-  const isEnableButtonVisible =
-    isInstalledExtensionData(extensionData) &&
-    extensionData.uninstallable &&
-    !extensionData.isDeprecated;
-
   const isUpgradeButtonVisible = useMemo(() => {
     if (extensionData && isInstalledExtensionData(extensionData)) {
       return (
@@ -45,7 +39,7 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
   }, [extensionData]);
 
   return (
-    <>
+    <div>
       {isInstallButtonVisible && (
         <Button
           mode="primarySolid"
@@ -55,17 +49,7 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
         >
           {formatMessage({ id: 'button.install' })}
         </Button>
-      )}
-      {isEnableButtonVisible && (
-        <Button
-          mode="primarySolid"
-          isFullSize={isMobile}
-          onClick={handleEnableClick}
-          disabled={!isSupportedColonyVersion}
-        >
-          {formatMessage({ id: 'button.enable' })}
-        </Button>
-      )}
+      )}{' '}
       {isUpgradeButtonVisible && (
         <Button
           mode="primarySolid"
@@ -76,7 +60,7 @@ const ActionButtons: FC<ActionButtonProps> = ({ extensionData }) => {
           {formatMessage({ id: 'button.updateVersion' })}
         </Button>
       )}
-    </>
+    </div>
   );
 };
 

@@ -22,6 +22,7 @@ import {
 import { getAllUserRoles } from '~transformers';
 
 import styles from './ColonyUpgrade.css';
+import { ColonyFragment } from '~gql';
 
 const displayName = 'common.ColonyHome.ColonyUpgrade';
 
@@ -51,7 +52,7 @@ const ColonyUpgrade = () => {
     });
 
   const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
+    colony as ColonyFragment,
     wallet?.address ?? '',
   ]);
 

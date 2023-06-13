@@ -11,7 +11,6 @@ import styles from './Header.module.css';
 import Icon from '~shared/Icon';
 import UserNavigation from '~common/Extensions/UserNavigation';
 import MainNavigation from '~common/Extensions/MainNavigation';
-import { watchListMock } from '~common/Extensions/ColonySwitcher/consts';
 import { useHeader } from './hooks';
 
 const displayName = 'frame.Extensions.Header';
@@ -28,7 +27,10 @@ const Header = () => {
     setTriggerRef,
     sortByDate,
     userLoading,
+    user,
   } = useHeader();
+
+  const { items: watchlist = [] } = user?.watchlist || {};
 
   return (
     <header>
@@ -56,7 +58,7 @@ const Header = () => {
                       ref={setTooltipRef}
                       {...getTooltipProps({
                         className: clsx(
-                          `${styles.tooltipContainer} h-[24.75rem] p-1 flex justify-center z-[9999] tooltip-container`,
+                          `${styles.tooltipContainer} p-1 flex justify-start z-[9999] tooltip-container`,
                           {
                             'w-[26.75rem] border-none shadow-none': isMobile,
                             'w-[15.1875rem]': !isMobile,
@@ -64,9 +66,9 @@ const Header = () => {
                         ),
                       })}
                     >
-                      {!!watchListMock.length && !userLoading && (
+                      {!!watchlist.length && !userLoading && (
                         <ColoniesDropdown
-                          watchlist={[...watchListMock].sort(sortByDate)}
+                          watchlist={[...watchlist].sort(sortByDate)}
                         />
                       )}
                     </div>
@@ -76,9 +78,9 @@ const Header = () => {
                       isOpen={isOpen}
                       userLoading={userLoading}
                     >
-                      {!!watchListMock.length && (
+                      {!!watchlist.length && (
                         <ColoniesDropdown
-                          watchlist={[...watchListMock].sort(sortByDate)}
+                          watchlist={[...watchlist].sort(sortByDate)}
                           isMobile={isMobile}
                         />
                       )}

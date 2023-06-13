@@ -111,7 +111,7 @@ const Select = <T extends any[]>({
           >
             {option.linkTo ? (
               <NavLink
-                className="flex items-center w-full py-2"
+                className="flex items-center w-full text-inherit py-2"
                 to={option.linkTo}
               >
                 {option.label}
