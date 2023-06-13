@@ -22,12 +22,14 @@ const TopRow: FC<TopRowProps> = ({ extensionData }) => {
   const { oneTxPaymentData, votingReputationData } =
     useFetchActiveInstallsExtension();
 
+  const { extensionId } = extensionData;
+
   const showEnableBanner =
-    extensionData.extensionId !== 'VotingReputation' &&
+    extensionId !== Extension.VotingReputation &&
     !isInstalledExtensionData(extensionData);
 
   const activeInstalls = Number(
-    extensionData.extensionId === 'OneTxPayment'
+    extensionId === Extension.OneTxPayment
       ? oneTxPaymentData
       : votingReputationData,
   );
@@ -38,7 +40,7 @@ const TopRow: FC<TopRowProps> = ({ extensionData }) => {
     !extensionData.isDeprecated &&
     extensionData?.extensionId === Extension.VotingReputation;
 
-  const isOneTxPayment = extensionData.extensionId === 'OneTxPayment';
+  const isOneTxPayment = extensionId === Extension.OneTxPayment;
 
   return (
     <>
@@ -88,7 +90,7 @@ const TopRow: FC<TopRowProps> = ({ extensionData }) => {
         </div>
         {isEnableButtonVisible && (
           <Button mode="primarySolid" type="submit" isFullSize={isMobile}>
-            {formatMessage({ id: 'extension.enableButton' })}
+            {formatMessage({ id: 'button.enable' })}
           </Button>
         )}
         <ActionButtons extensionData={extensionData} />

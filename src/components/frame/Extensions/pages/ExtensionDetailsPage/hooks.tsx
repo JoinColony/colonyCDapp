@@ -22,31 +22,31 @@ export const useFetchActiveInstallsExtension = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await axios({
-        method: 'post',
-        url: 'https://api.thegraph.com/subgraphs/name/arrenv/colony-metrics-subgraph',
-        data: {
-          query: `{
-              votingReputationExtensions(first: 5) {
-                installs
-              }
-              oneTxPaymentExtensions(first: 5) {
-                installs
-              }
-            }`,
-        },
-      })
-        .then((response) => {
-          setOneTxPaymentData(
-            response.data.data.oneTxPaymentExtensions[0].installs,
-          );
-          setVotingReputationData(
-            response.data.data.votingReputationExtensions[0].installs,
-          );
-        })
-        .catch((e) => {
-          console.error(e);
+      try {
+        const responseData = await axios({
+          method: 'post',
+          url: 'https://api.thegraph.com/subgraphs/name/arrenv/colony-metrics-subgraph',
+          data: {
+            query: `{
+                votingReputationExtensions(first: 5) {
+                  installs
+                }
+                oneTxPaymentExtensions(first: 5) {
+                  installs
+                }
+              }`,
+          },
         });
+        setOneTxPaymentData(
+          responseData.data.data.oneTxPaymentExtensions[0].installs,
+        );
+        setVotingReputationData(
+          responseData.data.data.votingReputationExtensions[0].installs,
+        );
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      }
     };
 
     fetchData();
