@@ -1,61 +1,40 @@
 import React, { FC, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import clsx from 'clsx';
-
 import { Extension } from '@colony/colony-js';
-import { useColonyContext, useExtensionData } from '~hooks';
+
+import { useColonyContext, useExtensionData, useMobile } from '~hooks';
 import ExtensionDetails from './partials/ExtensionDetails';
 import Spinner from '~shared/Extensions/Spinner';
 import ThreeColumns from '~frame/Extensions/ThreeColumns';
 import Navigation from '~common/Extensions/Navigation';
-import SupportingDocuments from '~common/Extensions/SupportingDocuments';
 import ImageCarousel from '~common/Extensions/ImageCarousel';
 import Tabs from '~shared/Extensions/Tabs';
 import { tabsItems, mockedExtensionSettings } from './consts';
-import TopRow from '../partials/TopRow';
-
-const HeadingChunks = (chunks: React.ReactNode[]) => (
-  <h4 className="font-semibold text-gray-900 mt-6 mb-4">{chunks}</h4>
-);
-
-const TabContent = (extensionData) => {
-  const { isEnabled, uninstallable, descriptionLong } = extensionData;
-  return (
-    <li
-      className={clsx('list-none', {
-        'mt-4': isEnabled && uninstallable,
-      })}
-    >
-      <div className="mt:mt-[4.25rem] text-md text-gray-600">
-        <FormattedMessage
-          {...descriptionLong}
-          values={{
-            h4: HeadingChunks,
-          }}
-        />
-      </div>
-      <div className="mt-6">
-        <SupportingDocuments />
-      </div>
-    </li>
-  );
-};
+import { accordionAnimation } from '~constants/accordionAnimation';
+import TabContent from './partials/TabContent';
+import NotificationBanner from '~common/Extensions/NotificationBanner';
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
+import Icon from '~shared/Icon';
+import ActionButtons from '../partials/ActionButtons';
+import Button from '~shared/Extensions/Button';
+import { useFetchActiveInstallsExtension } from './hooks';
+import { isInstalledExtensionData } from '~utils/extensions';
+import ActiveInstalls from '../partials/ActiveInstall';
 
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 
 const ExtensionDetailsPage: FC = () => {
   const { extensionId } = useParams();
   const { colony } = useColonyContext();
+  const isMobile = useMobile();
   const { extensionData } = useExtensionData(extensionId ?? '');
   const { formatMessage } = useIntl();
   const [activeTab, setActiveTab] = useState(0);
-  // @TODO: Change extension missing permissions functionality
-
-  if (!colony || !extensionData) {
-    return null;
-  }
+  const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
+  const { oneTxPaymentData, votingReputationData } =
+    useFetchActiveInstallsExtension();
 
   if (!extensionData) {
     return (
@@ -65,6 +44,28 @@ const ExtensionDetailsPage: FC = () => {
     );
   }
 
+  if (!colony) {
+    return null;
+  }
+
+  const showEnableBanner =
+    extensionId !== Extension.VotingReputation &&
+    !isInstalledExtensionData(extensionData);
+
+  const activeInstalls = Number(
+    extensionData.extensionId === Extension.OneTxPayment
+      ? oneTxPaymentData
+      : votingReputationData,
+  );
+
+  const isEnableButtonVisible =
+    isInstalledExtensionData(extensionData) &&
+    extensionData.uninstallable &&
+    !extensionData.isDeprecated &&
+    extensionData?.extensionId === Extension.VotingReputation;
+
+  // @TODO: Change extension missing permissions functionality
+
   const handleOnTabClick = (_, id) => {
     setActiveTab(id);
   };
@@ -73,7 +74,57 @@ const ExtensionDetailsPage: FC = () => {
     <Spinner loadingText={{ id: 'loading.colonyDetailsPage' }}>
       <ThreeColumns
         leftAside={<Navigation />}
-        topRow={<TopRow extensionData={extensionData} />}
+        topRow={
+          <>
+            {showEnableBanner && (
+              <div className="mb-6">
+                <NotificationBanner
+                  title={
+                    isPermissionEnabled
+                      ? { id: 'extensionReEnable.notification.updated' }
+                      : { id: 'extensionReEnable.notification.missing' }
+                  }
+                  status={isPermissionEnabled ? 'success' : 'warning'}
+                  actionText={
+                    isPermissionEnabled
+                      ? { id: 'extensionReEnable.notification.enabled' }
+                      : { id: 'extensionReEnable.notification.enable' }
+                  }
+                  actionType="call-to-action"
+                  onClick={() => setIsPermissionEnabled(true)}
+                />
+              </div>
+            )}
+            <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
+              <div className="flex flex-col sm:items-center sm:flex-row sm:gap-2 sm:grow">
+                <div className="flex items-center shrink-0">
+                  <Icon
+                    name={extensionData.icon}
+                    appearance={{ size: 'large' }}
+                  />
+                  <h4 className="ml-2 text-xl font-semibold text-gray-900">
+                    {formatMessage(extensionData.name)}
+                  </h4>
+                </div>
+                <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
+                  <ExtensionStatusBadge
+                    mode="payments"
+                    text={formatMessage({
+                      id: 'status.payments',
+                    })}
+                  />
+                  <ActiveInstalls activeInstalls={activeInstalls} />
+                </div>
+              </div>
+              {isEnableButtonVisible && (
+                <Button mode="primarySolid" type="submit" isFullSize={isMobile}>
+                  {formatMessage({ id: 'button.enable' })}
+                </Button>
+              )}
+              <ActionButtons extensionData={extensionData} />
+            </div>
+          </>
+        }
         withSlider={<ImageCarousel />}
         rightAside={<ExtensionDetails extensionData={extensionData} />}
       >
@@ -91,8 +142,7 @@ const ExtensionDetailsPage: FC = () => {
               <AnimatePresence>
                 <motion.div
                   key="stakes-tab"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  variants={accordionAnimation}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.15 }}
                 >
@@ -100,19 +150,20 @@ const ExtensionDetailsPage: FC = () => {
                   {activeTab === 1 && (
                     <li>
                       {mockedExtensionSettings.map((item) => (
-                        <div className="border-b border-gray-200 py-4 last:border-none">
-                          <div className="flex items-center justify-between">
-                            <div className="text-gray-900 text-md font-medium">
-                              {item.title}
-                            </div>
-                            <div className="text-gray-900 text-md font-medium">
+                        <div
+                          key={item.title}
+                          className="border-b border-gray-200 py-4 last:border-none"
+                        >
+                          <div className="flex items-center justify-between text-gray-900 text-md font-medium">
+                            <p>{item.title}</p>
+                            <div>
                               -{' '}
                               {item.complementaryLabel === 'percent'
                                 ? '%'
                                 : 'Hours'}
                             </div>
                           </div>
-                          <div className="text-gray-00 text-sm">
+                          <div className="text-gray-900 text-sm">
                             {item.description}
                           </div>
                         </div>
