@@ -14,6 +14,7 @@ import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails'
 import ActionButtons from '../partials/ActionButtons';
 import Button from '~shared/Extensions/Button/Button';
 import { isInstalledExtensionData } from '~utils/extensions';
+import { useMobile } from '~hooks';
 
 const LazyConsensusPage: FC = () => {
   const { openIndex, onOpenIndexChange } = useAccordion();
