@@ -4,8 +4,8 @@ import { isAddress as isAddressFunction } from '~utils/web3';
 /*
  * Can't conditionally call the codegen query hooks so querying GraphQL directly
  */
-const useUserByNameOrAddress = (username: string) => {
-  const isAddress = isAddressFunction(username);
+const useUserByNameOrAddress = (userIdentifier: string) => {
+  const isAddress = isAddressFunction(userIdentifier);
 
   const {
     data: userData,
@@ -13,7 +13,7 @@ const useUserByNameOrAddress = (username: string) => {
     loading: userLoading,
   } = useGetUserByNameQuery({
     variables: {
-      name: username,
+      name: userIdentifier,
     },
     fetchPolicy: 'cache-and-network',
     skip: isAddress,
@@ -25,7 +25,7 @@ const useUserByNameOrAddress = (username: string) => {
     loading: addressLoading,
   } = useGetUserByAddressQuery({
     variables: {
-      address: username,
+      address: userIdentifier,
     },
     fetchPolicy: 'cache-and-network',
     skip: !isAddress,
