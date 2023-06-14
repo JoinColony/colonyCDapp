@@ -71,7 +71,7 @@ const useClaimWidgetConfig = (
 
   const config: DetailItemProps[] = [];
 
-  // Return basic view if we have insufficient data
+  // @NOTE: Hide details widget if we have insufficient data
   if (!userStake || !stakerReward || !userAddress || !colonyAddress) {
     return config;
   }
