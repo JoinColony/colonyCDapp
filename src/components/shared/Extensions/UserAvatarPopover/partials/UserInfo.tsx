@@ -118,7 +118,7 @@ const UserInfo: FC<UserInfoProps> = ({
         </TitledContent>
       ) : undefined}
 
-      {permissions && permissions.length ? (
+      {permissions && permissions.length && (
         <TitledContent
           title={{ id: 'userInfo.permissions.section' }}
           className="pt-6 mt-6 border-t border-gray-200"
@@ -135,7 +135,7 @@ const UserInfo: FC<UserInfoProps> = ({
             ))}
           </ul>
         </TitledContent>
-      ) : undefined}
+      )}
     </div>
   );
 };
