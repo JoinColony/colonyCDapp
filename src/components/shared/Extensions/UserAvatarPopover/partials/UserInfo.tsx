@@ -97,7 +97,7 @@ const UserInfo: FC<UserInfoProps> = ({
             return (
               <li
                 key={key}
-                className="grid grid-cols-[1fr,auto] gap-x-4 font-medium text-gray-900"
+                className="grid grid-cols-[1fr,auto] gap-x-4 font-medium"
               >
                 <span className="text-md">{titleText}</span>
                 <span className="inline-flex items-center text-sm text-blue-400">

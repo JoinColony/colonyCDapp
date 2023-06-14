@@ -34,6 +34,7 @@ const UserNavigation: FC = () => {
     usePopperTooltip(
       {
         delayShow: 200,
+        delayHide: 200,
         placement: 'bottom-end',
         trigger: 'click',
         interactive: true,
@@ -61,7 +62,7 @@ const UserNavigation: FC = () => {
     visible: isWalletVisible,
   } = usePopperTooltip(
     {
-      delayShow: 200,
+      delayHide: 200,
       placement: 'bottom-end',
       trigger: 'click',
       interactive: true,

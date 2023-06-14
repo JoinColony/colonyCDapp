@@ -25,6 +25,7 @@ export const useHeader = () => {
   const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip(
     {
       delayShow: 200,
+      delayHide: 200,
       placement: 'bottom',
       trigger: 'click',
       visible: isOpen,
