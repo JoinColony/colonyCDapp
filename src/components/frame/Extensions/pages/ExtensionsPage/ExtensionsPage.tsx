@@ -28,9 +28,9 @@ const ExtensionsPage: FC = () => {
         <h5 className="text-md font-semibold mb-4">
           {formatMessage({ id: 'extensionsPage.payments' })}
         </h5>
-        <ul className="pb-6 border-b border-gray-100">
+        <ul className="flex flex-col gap-y-6 border-b border-gray-100 pb-6">
           {allExtensions.map((extension) => (
-            <li className="mb-6" key={extension.extensionId}>
+            <li key={extension.extensionId}>
               <ExtensionItem
                 title={extension.name}
                 description={extension.descriptionShort}

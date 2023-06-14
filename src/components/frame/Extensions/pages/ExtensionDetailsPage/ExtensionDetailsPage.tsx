@@ -18,6 +18,7 @@ import NotificationBanner from '~common/Extensions/NotificationBanner';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import TabContent from './partials/TabContent';
+import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 
@@ -74,8 +75,8 @@ const ExtensionDetailsPage: FC = () => {
                 />
               </div>
             )}
-            <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
-              <div className="flex flex-col sm:items-center sm:flex-row sm:gap-2 sm:grow">
+            <div className="flex justify-between flex-col flex-wrap gap-y-4 sm:items-center sm:flex-row sm:gap-6">
+              <div className="flex flex-col sm:items-center sm:flex-row gap-4 sm:gap-2 sm:grow">
                 <div className="flex items-center shrink-0">
                   <Icon
                     name={extensionData.icon}
@@ -87,7 +88,10 @@ const ExtensionDetailsPage: FC = () => {
                 </div>
                 {/* @TODO get these values from API (badge and active installs number) */}
                 <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
-                  <span>badge</span>
+                  <ExtensionStatusBadge
+                    mode="payments"
+                    text={formatMessage({ id: 'status.payments' })}
+                  />
                   <p className="text-gray-400 text-sm">
                     17,876 {formatMessage({ id: 'active.installs' })}
                   </p>

@@ -54,8 +54,8 @@ const LazyConsensusPage: FC = () => {
         <ThreeColumns
           leftAside={<Navigation />}
           topRow={
-            <div className="flex sm:items-center gap-5 sm:gap-12 justify-between flex-col sm:flex-row">
-              <div className="flex sm:items-center gap-2 flex-col sm:flex-row">
+            <div className="flex justify-between flex-col flex-wrap gap-y-4 sm:items-center sm:flex-row sm:gap-6">
+              <div className="flex flex-col sm:items-center sm:flex-row gap-4 sm:gap-2 sm:grow">
                 <Icon
                   name={extensionData?.icon || ''}
                   appearance={{ size: 'large' }}
@@ -95,7 +95,7 @@ const LazyConsensusPage: FC = () => {
                       isFullSize={isMobile}
                       className="text-sm"
                     >
-                      {formatMessage({ id: 'status.enabled' })}
+                      {formatMessage({ id: 'button.enable' })}
                     </Button>
                   )}
                   <ActionButtons extensionData={extensionData} />

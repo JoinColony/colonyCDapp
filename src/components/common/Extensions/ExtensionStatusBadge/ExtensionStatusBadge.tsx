@@ -28,7 +28,7 @@ const ExtensionStatusBadge: FC<
           'text-red-400 bg-red-100': mode === 'disabled',
           'text-purple-400 bg-purple-100': mode === 'deprecated',
           'text-gray-900 bg-base-white border border-gray-200':
-            mode === 'governance',
+            mode === 'governance' || mode === 'payments',
           'text-success-400 bg-success-100':
             mode === 'staking' || mode === 'enabled',
           'text-gray-500 bg-gray-100': mode === 'claimed',
