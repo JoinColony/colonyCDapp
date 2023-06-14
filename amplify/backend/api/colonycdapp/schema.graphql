@@ -655,7 +655,7 @@ type ColonyExtension @model {
       queryField: "getExtensionByColonyAndHash"
     )
   colony: Colony! @belongsTo(fields: ["colonyId"])
-  hash: String!
+  hash: String! @index(name: "byHash", queryField: "getExtensionsByHash")
   installedBy: String!
   installedAt: AWSTimestamp!
   isDeprecated: Boolean!
