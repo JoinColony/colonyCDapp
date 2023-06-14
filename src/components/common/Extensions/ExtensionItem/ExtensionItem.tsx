@@ -3,12 +3,10 @@ import { useIntl } from 'react-intl';
 
 import { ExtensionItemProps } from './types';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
-import Button from '~shared/Extensions/Button';
 import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
-import Link from '~shared/Extensions/Link';
-import styles from './ExtensionItem.module.css';
 import { useExtensionItem } from './hooks';
+import ActionButton from './partials/ActionButton';
 
 const displayName = 'common.Extensions.ExtensionItem';
 
@@ -28,20 +26,6 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
     isExtensionInstalled,
     status,
   } = useExtensionItem(extensionId);
-
-  const ActionButton = isExtensionInstalled ? (
-    <Link to={extensionUrl} className={styles.extensionItemButton}>
-      {formatMessage({ id: 'button.manage' })}
-    </Link>
-  ) : (
-    <Button
-      mode="primarySolid"
-      isFullSize={isMobile}
-      onClick={handleInstallClick}
-    >
-      {formatMessage({ id: 'button.install' })}
-    </Button>
-  );
 
   return (
     <div className="flex flex-col items-end sm:block">
@@ -64,12 +48,22 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
               {formatMessage(description)}
             </p>
           </div>
-          {!isMobile && ActionButton}
+          {!isMobile && (
+            <ActionButton
+              isExtensionInstalled={!!isExtensionInstalled}
+              handleInstallClick={handleInstallClick}
+              extensionUrl={extensionUrl}
+            />
+          )}
         </div>
       </div>
       {isMobile && (
         <div className="w-[calc(100%-3.625rem)] mt-6 ml-3.625rem flex-shrink-0 sm:w-auto sm:ml-4 sm:mt-0">
-          {ActionButton}
+          <ActionButton
+            isExtensionInstalled={!!isExtensionInstalled}
+            handleInstallClick={handleInstallClick}
+            extensionUrl={extensionUrl}
+          />
         </div>
       )}
     </div>
