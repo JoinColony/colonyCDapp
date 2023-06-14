@@ -63,6 +63,7 @@ export { default as useNetworkInverseFee } from './useNetworkInverseFee';
 export { default as useDetectClickOutside } from './useDetectClickOutside';
 export { default as useSideNavigation } from './useSideNavigation';
 export { default as useCurrentPage } from './useCurrentPage';
+export { default as useFetchActiveInstallsExtension } from './useFetchActiveInstallsExtension';
 
 /* Used in cases where we need to memoize the transformed output of any data.
  * Transform function has to be pure, obviously

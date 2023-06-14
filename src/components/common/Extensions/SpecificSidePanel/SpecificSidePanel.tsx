@@ -19,8 +19,8 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
   const { statuses, sidePanelData } = useSpecificSidePanel(extensionData);
 
   return (
-    <div className="bg-base-white flex gap-[1.25rem] flex-col">
-      <h3 className="font-semibold text-lg text-gray-900 pb-[0.2rem]">
+    <div className="flex gap-[1.125rem] flex-col">
+      <h3 className="font-semibold text-lg pb-4">
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
       {(sidePanelData || [])?.map(
@@ -29,6 +29,8 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
           dateInstalled,
           installedBy,
           statusType,
+          dateCreated,
+          latestVersion,
           versionInstalled,
           contractAddress,
           developer,
@@ -37,10 +39,10 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
           <Fragment key={id}>
             <div className={styles.panelRow}>
               <div className={styles.panelTitle}>{statusType.title}</div>
-              <div className="md:w-[50%] justify-start flex flex-col md:flex-row">
+              <div className="flex justify-start flex-col md:flex-row md:flex-wrap md:gap-y-2 md:w-1/2">
                 {Array.isArray(statuses) ? (
                   statuses.map((status) => (
-                    <div className="mr-1 mb-1 md:mb-0" key={status}>
+                    <div key={status} className="flex flex-wrap gap-2">
                       <ExtensionStatusBadge mode={status} text={status} />
                     </div>
                   ))
@@ -55,16 +57,28 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
                 extensionData={extensionData}
               />
             )}
-            {!statuses?.includes('not-installed') && (
+            {statuses?.includes('not-installed') ? (
+              <DateInstalled
+                title={dateCreated?.title}
+                date={dateCreated.date || ''}
+              />
+            ) : (
               <DateInstalled
                 title={dateInstalled?.title}
                 date={dateInstalled.date || ''}
               />
             )}
-            <Version
-              title={versionInstalled.title}
-              version={versionInstalled.version}
-            />
+            {statuses?.includes('not-installed') ? (
+              <Version
+                title={latestVersion.title}
+                version={latestVersion.version}
+              />
+            ) : (
+              <Version
+                title={versionInstalled.title}
+                version={versionInstalled.version}
+              />
+            )}
             {!statuses?.includes('not-installed') && (
               <ContractAddress
                 title={contractAddress.title}

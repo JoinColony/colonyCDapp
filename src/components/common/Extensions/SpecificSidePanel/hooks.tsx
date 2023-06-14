@@ -29,6 +29,9 @@ export const useSpecificSidePanel = (extensionData) => {
   const { user } = useUserByNameOrAddress(
     (extensionData as InstalledExtensionData)?.installedBy,
   );
+  const createdAtDate =
+    extensionData &&
+    format(new Date(extensionData?.createdAt ?? 0 * 1000), 'dd MMMM yyyy');
 
   const isExtensionDeprecatedAndDisabled = !!(
     !!user &&
@@ -49,6 +52,9 @@ export const useSpecificSidePanel = (extensionData) => {
     }
   }, [extensionData, isExtensionInstalled, isExtensionDeprecatedAndDisabled]);
 
+  const { availableVersion, currentVersion, address, permissions } =
+    extensionData;
+
   const sidePanelData: SidePanelDataProps[] = useMemo(
     () => [
       {
@@ -56,9 +62,17 @@ export const useSpecificSidePanel = (extensionData) => {
         statusType: {
           title: formatMessage({ id: 'status' }),
         },
+        latestVersion: {
+          title: formatMessage({ id: 'latest.version' }),
+          version: `v${availableVersion}`,
+        },
         dateInstalled: {
           title: formatMessage({ id: 'date.installed' }),
           date: installedAtDate,
+        },
+        dateCreated: {
+          title: formatMessage({ id: 'date.created' }),
+          date: createdAtDate,
         },
         installedBy: {
           title: formatMessage({ id: 'installed.by' }),
@@ -67,20 +81,29 @@ export const useSpecificSidePanel = (extensionData) => {
         },
         versionInstalled: {
           title: formatMessage({ id: 'version.installed' }),
-          version: `v${extensionData?.availableVersion}`,
+          version: `v${currentVersion}`,
         },
         contractAddress: {
           title: formatMessage({ id: 'contract.address' }),
-          address: (extensionData as InstalledExtensionData).address,
+          address,
         },
         developer: {
           title: formatMessage({ id: 'developer' }),
           developer: 'Colony',
         },
-        permissions: (extensionData as InstalledExtensionData).permissions,
+        permissions,
       },
     ],
-    [extensionData, installedAtDate, user, formatMessage],
+    [
+      formatMessage,
+      availableVersion,
+      installedAtDate,
+      createdAtDate,
+      user,
+      currentVersion,
+      address,
+      permissions,
+    ],
   );
 
   return {
