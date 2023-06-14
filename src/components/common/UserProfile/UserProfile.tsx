@@ -15,7 +15,7 @@ const displayName = 'common.UserProfile';
 
 const UserProfile = () => {
   const { username } = useParams();
-  const { user, loading, error } = useUserByNameOrAddress(username || '');
+  const { user, error, loading } = useUserByNameOrAddress(username || '');
 
   if (loading) {
     return <UserProfileSpinner />;
