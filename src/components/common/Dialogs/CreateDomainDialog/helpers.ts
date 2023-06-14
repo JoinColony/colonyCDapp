@@ -4,5 +4,6 @@ export const getCreateDomainDialogPayload = (colony: Colony, payload) => ({
   ...payload,
   domainName: payload.teamName,
   isCreateDomain: true,
-  colony,
+  colonyAddress: colony.colonyAddress,
+  colonyName: colony.name,
 });
