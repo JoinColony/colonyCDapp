@@ -26,7 +26,7 @@ const ExtensionsPage: FC = () => {
           {formatMessage({ id: 'extensionsPage.availableExtensions' })}
         </h4>
         <h5 className="text-md font-semibold mb-4">
-          {formatMessage({ id: 'extensionsPage.payments' })}
+          {formatMessage({ id: 'status.payments' })}
         </h5>
         <ul className="flex flex-col gap-y-6 border-b border-gray-100 pb-6">
           {allExtensions.map((extension) => (

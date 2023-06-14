@@ -153,4 +153,6 @@ export const GANACHE_LOCAL_RPC_URL = 'http://localhost:8545';
 
 export const isDev = process.env.NODE_ENV === 'development';
 
+export const MAX_INSTALLED_NUMBER = 39;
+
 export const STAKING_THRESHOLD = 10;

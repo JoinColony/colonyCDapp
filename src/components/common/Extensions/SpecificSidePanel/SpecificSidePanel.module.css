@@ -1,5 +1,5 @@
 .panelRow {
-  @apply flex flex-row items-center h-[1.125rem];
+  @apply flex flex-row items-center min-h-[1.25rem];
 }
 
 .panelTitle {
