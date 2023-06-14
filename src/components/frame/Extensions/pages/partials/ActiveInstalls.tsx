@@ -18,7 +18,7 @@ const ActiveInstalls: FC<ActiveInstallsProps> = ({ activeInstalls }) => {
           {activeInstalls < MAX_INSTALLED_NUMBER ? (
             <ExtensionStatusBadge mode="new" text={{ id: 'status.new' }} />
           ) : (
-            <p className="text-gray-400 text-sm">
+            <p className="text-gray-400 text-sm text-right">
               {activeInstalls.toLocaleString('en-US')}{' '}
               {formatMessage({ id: 'active.installs' })}
             </p>

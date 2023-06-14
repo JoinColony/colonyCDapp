@@ -4,11 +4,7 @@ import { useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Extension } from '@colony/colony-js';
 
-import {
-  useColonyContext,
-  useExtensionData,
-  useFetchActiveInstallsExtension,
-} from '~hooks';
+import { useColonyContext, useExtensionData } from '~hooks';
 import ExtensionDetails from './partials/ExtensionDetails';
 import Spinner from '~shared/Extensions/Spinner';
 import ThreeColumns from '~frame/Extensions/ThreeColumns';
@@ -21,9 +17,6 @@ import NotificationBanner from '~common/Extensions/NotificationBanner';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import TabContent from './partials/TabContent';
-import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
-import ActiveInstalls from '../partials/ActiveInstalls';
-import HeadingIcon from '../partials/HeadingIcon';
 
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 
@@ -35,8 +28,6 @@ const ExtensionDetailsPage: FC = () => {
   const [activeTab, setActiveTab] = useState(0);
   // @TODO: Change extension missing permissions functionality
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
-  const { oneTxPaymentData, votingReputationData } =
-    useFetchActiveInstallsExtension();
 
   if (!colony || !extensionData) {
     return null;
@@ -49,12 +40,6 @@ const ExtensionDetailsPage: FC = () => {
       </p>
     );
   }
-
-  const activeInstalls = Number(
-    extensionData.extensionId === Extension.OneTxPayment
-      ? oneTxPaymentData
-      : votingReputationData,
-  );
 
   const handleOnTabClick = (_, id) => {
     setActiveTab(id);
@@ -89,21 +74,12 @@ const ExtensionDetailsPage: FC = () => {
               </div>
             )}
             <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
-              <div className="flex sm:items-center gap-2 flex-col sm:flex-row w-full">
-                <div className="flex flex-col sm:items-center sm:flex-row sm:gap-2 sm:grow">
-                  <HeadingIcon
-                    name={extensionData.name}
-                    icon={extensionData.icon}
-                  />
-                  <div className="flex justify-between items-center w-full mt-4 sm:mt-0">
-                    <ExtensionStatusBadge
-                      mode="payments"
-                      text={formatMessage({ id: 'status.payments' })}
-                    />
-                    <ActiveInstalls activeInstalls={activeInstalls} />
-                  </div>
-                </div>
-                <ActionButtons extensionData={extensionData} />
+              <div className="flex flex-wrap gap-4 flex-col w-full sm:flex-row sm:items-center md:gap-8">
+                <ActionButtons
+                  extensionData={extensionData}
+                  extensionStatusMode="payments"
+                  extensionStatusText={formatMessage({ id: 'status.payments' })}
+                />
               </div>
             </div>
           </>
