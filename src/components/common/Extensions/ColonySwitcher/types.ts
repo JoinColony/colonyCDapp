@@ -19,7 +19,7 @@ export interface ColonyAvatarProps {
   colonyToDisplayAddress?: string;
   isMobile: boolean;
   isOpen?: boolean;
-  setTriggerRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+  setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
 }
 
 export interface ColonyDropdownMobileProps {

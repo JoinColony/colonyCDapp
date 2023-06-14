@@ -40,13 +40,17 @@ const UserMenu: FC<UserMenuProps> = ({
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={tooltipProps}
-      classNames={clsx(styles.userMenuPopup, 'tooltip-container', {
-        'w-full border-none shadow-none': isMobile,
-        'w-[20.125rem]': !isMobile,
-        'h-[32rem] md:h-[23rem]': !isWalletConnected && !activeSubmenu,
-        'h-[37rem] md:h-[29rem]': isWalletConnected && !activeSubmenu,
-        'h-[16rem]': activeSubmenu,
-      })}
+      classNames={clsx(
+        styles.userMenuPopup,
+        'shadow-default tooltip-container',
+        {
+          'w-full border-none shadow-none': isMobile,
+          'w-[20.125rem]': !isMobile,
+          'h-[32rem] md:h-[23rem]': !isWalletConnected && !activeSubmenu,
+          'h-[37rem] md:h-[29rem]': isWalletConnected && !activeSubmenu,
+          'h-[16rem]': activeSubmenu,
+        },
+      )}
     >
       <div
         className={clsx('absolute inset-0 p-6 transition-transform', {
@@ -57,7 +61,7 @@ const UserMenu: FC<UserMenuProps> = ({
         <button
           type="button"
           aria-label="Back to main menu"
-          className="flex items-center text-gray-400 text-xs font-medium"
+          className={styles.backButton}
           onClick={() => setActiveSubmenu(null)}
         >
           <Icon name="caret-left" appearance={{ size: 'extraTiny' }} />
@@ -137,7 +141,7 @@ const UserMenu: FC<UserMenuProps> = ({
                   ) : (
                     <button
                       type="button"
-                      className="flex items-center justify-between w-full"
+                      className={styles.menuLink}
                       onClick={() => setActiveSubmenu(item.name)}
                       aria-expanded={activeSubmenu === item.name}
                       aria-controls="actionsWithVisibility"

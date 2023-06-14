@@ -19,6 +19,7 @@ const UserInfo: FC<UserInfoProps> = ({
   aboutDescription,
   colonyReputation,
   permissions,
+  avatar,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -32,8 +33,8 @@ const UserInfo: FC<UserInfoProps> = ({
 
   return (
     <div>
-      <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center mb-6">
-        <Avatar size="m" title={userName} />
+      <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center">
+        <Avatar size="m" title={userName} avatar={avatar} />
         <div>
           <div className="flex items-center mb-0.5">
             <p className="font-semibold text-xl">{userName}</p>
@@ -82,9 +83,14 @@ const UserInfo: FC<UserInfoProps> = ({
           )}
         </div>
       </div>
-      <TitledContent title={{ id: 'userInfo.about.section' }}>
-        <p className="text-md text-gray-600">{aboutDescriptionText}</p>
-      </TitledContent>
+      {aboutDescriptionText && (
+        <TitledContent
+          className="mt-6"
+          title={{ id: 'userInfo.about.section' }}
+        >
+          <p className="text-md text-gray-600">{aboutDescriptionText}</p>
+        </TitledContent>
+      )}
       {colonyReputation && colonyReputation.length ? (
         <TitledContent
           title={{ id: 'userInfo.colonyReputation.section' }}
@@ -117,22 +123,24 @@ const UserInfo: FC<UserInfoProps> = ({
         </TitledContent>
       ) : undefined}
 
-      <TitledContent
-        title={{ id: 'userInfo.permissions.section' }}
-        className="pt-6 mt-6 border-t border-gray-200"
-      >
-        <ul className="inline-flex flex-wrap gap-x-1 gap-y-2">
-          {permissions.map(({ key, text, description, name }) => (
-            <li key={key}>
-              <UserPermissionsBadge
-                text={text}
-                description={description}
-                name={name}
-              />
-            </li>
-          ))}
-        </ul>
-      </TitledContent>
+      {permissions && permissions.length ? (
+        <TitledContent
+          title={{ id: 'userInfo.permissions.section' }}
+          className="pt-6 mt-6 border-t border-gray-200"
+        >
+          <ul className="inline-flex flex-wrap gap-x-1 gap-y-2">
+            {permissions.map(({ key, text, description, name }) => (
+              <li key={key}>
+                <UserPermissionsBadge
+                  text={text}
+                  description={description}
+                  name={name}
+                />
+              </li>
+            ))}
+          </ul>
+        </TitledContent>
+      ) : undefined}
     </div>
   );
 };

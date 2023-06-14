@@ -5,3 +5,11 @@
 .userMenuPopup {
   @apply p-6 rounded-lg flex border-gray-100 justify-start z-[9999] overflow-hidden bg-base-white;
 }
+
+.backButton {
+  @apply flex items-center text-gray-400 text-xs font-medium transition-all duration-normal hover:text-blue-400;
+}
+
+.menuLink {
+  @apply flex items-center justify-between w-full transition-all duration-normal hover:text-blue-400;
+}

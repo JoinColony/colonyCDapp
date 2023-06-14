@@ -18,12 +18,13 @@ import Tabs from '~shared/Extensions/Tabs';
 import { tabsItems, mockedExtensionSettings } from './consts';
 import NotificationBanner from '~common/Extensions/NotificationBanner/NotificationBanner';
 import { isInstalledExtensionData } from '~utils/extensions';
+import { AnyExtensionData } from '~types';
 
 const HeadingChunks = (chunks: React.ReactNode[]) => (
   <h4 className="font-semibold text-gray-900 mt-6 mb-4">{chunks}</h4>
 );
 
-const TabContent = (extensionData) => {
+const TabContent = (extensionData: AnyExtensionData) => {
   const { isEnabled, uninstallable, descriptionLong } = extensionData;
   return (
     <li

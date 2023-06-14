@@ -1,5 +1,7 @@
 declare namespace UserMenuModuleCssNamespace {
   export interface IUserMenuModuleCss {
+    backButton: string;
+    menuLink: string;
     mobileButtons: string;
     userMenuPopup: string;
   }
