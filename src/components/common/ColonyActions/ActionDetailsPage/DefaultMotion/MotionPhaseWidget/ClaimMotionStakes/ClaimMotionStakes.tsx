@@ -3,6 +3,7 @@ import React from 'react';
 import DetailItem from '~shared/DetailsWidget/DetailItem';
 import { ColonyMotion } from '~types';
 import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
+import { isEmpty } from '~utils/lodash';
 
 import useClaimWidgetConfig from './useClaimWidgetConfig';
 import styles from './ClaimMotionStakes.css';
@@ -28,6 +29,10 @@ const ClaimMotionStakes = ({
     refetchAction,
     styles,
   );
+
+  if (isEmpty(config)) {
+    return null;
+  }
 
   return (
     <div>

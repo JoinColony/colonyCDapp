@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import Numeral from '~shared/Numeral';
 import { intl } from '~utils/intl';
 import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
-import Button, { ActionButton } from '~shared/Button';
+import { ActionButton } from '~shared/Button';
 import { ActionTypes } from '~redux';
 import { useAppContext, useColonyContext } from '~hooks';
 import { DetailItemProps } from '~shared/DetailsWidget';
@@ -69,21 +69,9 @@ const useClaimWidgetConfig = (
     }
   }, [user, stakerReward]);
 
-  const claimItem = {
-    label: formatMessage({ id: 'label.claim' }),
-    labelStyles: styles.claimLabel,
-    item: (
-      <Button
-        appearance={{ theme: 'primary', size: 'medium' }}
-        text={{ id: 'button.claim' }}
-        disabled
-      />
-    ),
-  };
+  const config: DetailItemProps[] = [];
 
-  const config: DetailItemProps[] = [claimItem];
-
-  // Return basic view if we have insufficient data
+  // @NOTE: Hide details widget if we have insufficient data
   if (!userStake || !stakerReward || !userAddress || !colonyAddress) {
     return config;
   }
@@ -121,17 +109,21 @@ const useClaimWidgetConfig = (
     transactionHash: getTransactionHashFromPathName(location.pathname),
   } as ClaimMotionRewardsPayload;
 
-  claimItem.item = (
-    <ActionButton
-      actionType={ActionTypes.MOTION_CLAIM}
-      values={claimPayload}
-      appearance={{ theme: 'primary', size: 'medium' }}
-      text={{ id: buttonTextId }}
-      disabled={!canClaimStakes}
-      dataTest="claimStakeButton"
-      onSuccess={handleClaimSuccess}
-    />
-  );
+  const claimItem = {
+    label: formatMessage({ id: 'label.claim' }),
+    labelStyles: styles.claimLabel,
+    item: (
+      <ActionButton
+        actionType={ActionTypes.MOTION_CLAIM}
+        values={claimPayload}
+        appearance={{ theme: 'primary', size: 'medium' }}
+        text={{ id: buttonTextId }}
+        disabled={!canClaimStakes}
+        dataTest="claimStakeButton"
+        onSuccess={handleClaimSuccess}
+      />
+    ),
+  };
 
   const stakeItem = {
     label: formatMessage({ id: 'label.stake' }),
@@ -168,7 +160,7 @@ const useClaimWidgetConfig = (
     ),
   };
 
-  config.push(stakeItem, winningsItem, totalItem);
+  config.push(claimItem, stakeItem, winningsItem, totalItem);
 
   return config;
 };
