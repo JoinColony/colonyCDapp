@@ -1,6 +1,7 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import { NavLink as NavLinkComponent } from 'react-router-dom';
+import clsx from 'clsx';
 
 import { NavLinkProps } from './types';
 
@@ -13,6 +14,7 @@ const NavLink: FC<PropsWithChildren<NavLinkProps>> = ({
   title,
   titleValues,
   to,
+  className,
   ...props
 }) => {
   const { formatMessage } = useIntl();
@@ -25,7 +27,15 @@ const NavLink: FC<PropsWithChildren<NavLinkProps>> = ({
       : title && formatMessage(title, titleValues);
 
   return (
-    <NavLinkComponent to={to} title={titleText} {...props}>
+    <NavLinkComponent
+      className={clsx(
+        className,
+        'transition-all duration-normal hover:text-blue-400',
+      )}
+      to={to}
+      title={titleText}
+      {...props}
+    >
       {linkText || children}
     </NavLinkComponent>
   );

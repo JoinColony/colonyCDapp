@@ -49,7 +49,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
           {...getTooltipProps({
             className: `${
               styles.tooltipContainer
-            } tooltip-container text-base-white z-[999] relative font-medium text-sm p-3 ${
+            } tooltip-container text-base-white relative font-medium text-sm p-3 ${
               isSuccess ? 'bg-success-400' : 'bg-gray-900 [&_a]:underline'
             }`,
           })}

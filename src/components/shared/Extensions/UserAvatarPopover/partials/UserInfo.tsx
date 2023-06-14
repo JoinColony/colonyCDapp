@@ -83,21 +83,16 @@ const UserInfo: FC<UserInfoProps> = ({
           )}
         </div>
       </div>
-      {aboutDescriptionText && (
-        <TitledContent
-          className="mt-6"
-          title={{ id: 'userInfo.about.section' }}
-        >
-          <p className="text-md text-gray-600">{aboutDescriptionText}</p>
-        </TitledContent>
-      )}
+      <TitledContent title={{ id: 'userInfo.about.section' }}>
+        <p className="text-md text-gray-600">{aboutDescriptionText}</p>
+      </TitledContent>
       {colonyReputation && colonyReputation.length ? (
         <TitledContent
           title={{ id: 'userInfo.colonyReputation.section' }}
           className="pt-6 mt-6 border-t border-gray-200"
         >
           <ul className="flex flex-col gap-2">
-            {colonyReputation.map(({ key, title, percentage, points }) => {
+            {colonyReputation?.map(({ key, title, percentage, points }) => {
               const titleText =
                 typeof title === 'string'
                   ? title
@@ -106,10 +101,10 @@ const UserInfo: FC<UserInfoProps> = ({
               return (
                 <li
                   key={key}
-                  className="grid grid-cols-[1fr,auto] gap-x-4 font-medium text-gray-900"
+                  className="grid grid-cols-[1fr,auto] gap-x-4 font-medium"
                 >
                   <span className="text-md">{titleText}</span>
-                  <span className="inline-flex items-center text-sm [&_svg]:text-blue-400">
+                  <span className="inline-flex items-center text-sm text-blue-400">
                     <Icon name="star" appearance={{ size: 'extraTiny' }} />
                     <span className="text-blue-400 inline-block ml-1 mr-2">
                       {percentage}%
