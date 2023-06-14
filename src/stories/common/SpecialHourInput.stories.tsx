@@ -56,7 +56,7 @@ const SpecialHourInputWithHooks = (args) => {
           name="hour"
           min={1}
           max={8765}
-          type="hour"
+          type="hours"
           placeholder="8"
         />
         {errors.hours && <FormError>{errors.hours.message}</FormError>}
