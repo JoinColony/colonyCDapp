@@ -41,6 +41,7 @@ const UserNavigationWithData = () => {
 
   const { setTooltipRef } = usePopperTooltip({
     delayShow: 200,
+    delayHide: 200,
     placement: 'bottom',
     trigger: 'click',
     visible: isOpen,
