@@ -62,7 +62,7 @@ const WalletPopover: FC<WalletPopoverProps> = ({
             </p>
           </div>
         </div>
-        <div className="py-6 md:p-6">
+        <div className="py-6 md:p-6 bg-base-white">
           <h4 className="text-lg font-semibold text-gray-900">
             {formatMessage({ id: 'walletPopover.connectWallet' })}
           </h4>

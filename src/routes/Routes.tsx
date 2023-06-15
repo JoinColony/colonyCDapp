@@ -68,6 +68,7 @@ import IncorporationPage from '~frame/Extensions/pages/IncorporationPage';
 import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
 import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
 import LazyConsensusPage from '~frame/Extensions/pages/LazyConsensusPage';
+import { ExtensionsContextProvider } from '~context/ExtensionsContext';
 
 // import useTitle from '~hooks/useTitle';
 
@@ -165,9 +166,11 @@ const Routes = () => {
           path={COLONY_EXTENSION_DETAILS_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionsLayout>
-                <ExtensionDetailsPage />
-              </ExtensionsLayout>
+              <ExtensionsContextProvider>
+                <ExtensionsLayout>
+                  <ExtensionDetailsPage />
+                </ExtensionsLayout>
+              </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
         />
@@ -175,9 +178,11 @@ const Routes = () => {
           path={COLONY_EXTENSION_DETAILS_SETUP_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionsLayout>
-                <LazyConsensusPage />
-              </ExtensionsLayout>
+              <ExtensionsContextProvider>
+                <ExtensionsLayout>
+                  <LazyConsensusPage />
+                </ExtensionsLayout>
+              </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
         />
@@ -197,9 +202,11 @@ const Routes = () => {
           path={COLONY_DETAILS_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionsLayout>
-                <ColonyDetailsPage />
-              </ExtensionsLayout>
+              <ExtensionsContextProvider>
+                <ExtensionsLayout>
+                  <ColonyDetailsPage />
+                </ExtensionsLayout>
+              </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
         />
@@ -207,9 +214,11 @@ const Routes = () => {
           path={COLONY_REPUTATION_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionsLayout>
-                <ReputationPage />
-              </ExtensionsLayout>
+              <ExtensionsContextProvider>
+                <ExtensionsLayout>
+                  <ReputationPage />
+                </ExtensionsLayout>
+              </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
         />
@@ -217,9 +226,11 @@ const Routes = () => {
           path={COLONY_PERMISSIONS_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionsLayout>
-                <PermissionsPage />
-              </ExtensionsLayout>
+              <ExtensionsContextProvider>
+                <ExtensionsLayout>
+                  <PermissionsPage />
+                </ExtensionsLayout>
+              </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
         />
@@ -227,9 +238,11 @@ const Routes = () => {
           path={COLONY_EXTENSIONS_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionsLayout>
-                <ExtensionsPage />
-              </ExtensionsLayout>
+              <ExtensionsContextProvider>
+                <ExtensionsLayout>
+                  <ExtensionsPage />
+                </ExtensionsLayout>
+              </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
         />
@@ -237,9 +250,11 @@ const Routes = () => {
           path={COLONY_INTEGRATIONS_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionsLayout>
-                <IntegrationsPage />
-              </ExtensionsLayout>
+              <ExtensionsContextProvider>
+                <ExtensionsLayout>
+                  <IntegrationsPage />
+                </ExtensionsLayout>
+              </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
         />
@@ -248,7 +263,9 @@ const Routes = () => {
           element={
             <ColonyContextProvider>
               <ExtensionsLayout>
-                <IncorporationPage />
+                <ExtensionsContextProvider>
+                  <IncorporationPage />
+                </ExtensionsContextProvider>
               </ExtensionsLayout>
             </ColonyContextProvider>
           }
@@ -257,9 +274,11 @@ const Routes = () => {
           path={COLONY_ADVANCED_ROUTE}
           element={
             <ColonyContextProvider>
-              <ExtensionsLayout>
-                <AdvancedPage />
-              </ExtensionsLayout>
+              <ExtensionsContextProvider>
+                <ExtensionsLayout>
+                  <AdvancedPage />
+                </ExtensionsLayout>
+              </ExtensionsContextProvider>
             </ColonyContextProvider>
           }
         />

@@ -1,3 +1,5 @@
+import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
+import { TransactionType } from '~redux/immutable';
 import { TRANSACTION_STATUSES } from '~types';
 
 export interface TransactionHeaderProps {
@@ -24,7 +26,48 @@ export interface TransactionsItemProps extends TransactionHeaderProps {
 }
 
 export interface TransactionsProps {
-  items: TransactionsItemProps[];
+  transactionAndMessageGroups: TransactionOrMessageGroups;
   openIndex?: number;
+  autoOpenTransaction?: boolean;
+  appearance: Appearance;
   onOpenIndexChange?: (newOpenIndex: number | undefined) => void;
+  close?: () => void;
+  setAutoOpenTransaction?: (boolean) => void;
+}
+
+export interface Appearance {
+  interactive?: boolean;
+  required?: boolean;
+}
+
+export interface GroupedTransactionContentProps {
+  appearance?: Appearance;
+  idx: number;
+  selected: boolean;
+  transaction: TransactionType;
+  selectedTransaction: TransactionType;
+}
+
+export interface TransactionDetailsProps {
+  appearance: Appearance;
+  transactionGroup: TransactionType[];
+  unselectTransactionGroup: (event: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+export interface GroupedTransactionProps {
+  appearance: Appearance;
+  transactionGroup: TransactionType[];
+  selectedTransactionIdx: number;
+  selectedTransaction: TransactionType;
+  unselectTransactionGroup: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => void;
+}
+
+export interface TransactionStatusProps {
+  groupCount?: number;
+  hash?: string;
+  status: TRANSACTION_STATUSES;
+  loadingRelated?: boolean;
+  date?: Date;
 }

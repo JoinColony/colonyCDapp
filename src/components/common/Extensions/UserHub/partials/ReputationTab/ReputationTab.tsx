@@ -14,6 +14,7 @@ const ReputationTab = () => {
   const { wallet } = useAppContext();
   const { colonyAddress, nativeToken } = colony || {};
 
+  // @TODO: handle empty state <EmptyContent />
   return (
     <div className="bg-base-white">
       <div className="font-semibold text-lg text-gray-900 mb-4">

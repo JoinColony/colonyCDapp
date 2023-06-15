@@ -11,9 +11,13 @@ import UserMenu from './partials/UserMenu';
 import { getLastWallet } from '~utils/autoLogin';
 import WalletPopover from './partials/WalletPopover/WalletPopover';
 import UserReputation from './partials/UserReputation/UserReputation';
+import { groupedTransactionsAndMessages } from '~redux/selectors';
+import { useSelector } from 'react-redux';
+import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
 
 export const displayName = 'common.Extensions.UserNavigation';
 
+// @TODO: change name to Wallet
 const UserNavigation: FC = () => {
   const { colony } = useColonyContext();
   const { wallet, user, connectWallet } = useAppContext();
@@ -80,6 +84,16 @@ const UserNavigation: FC = () => {
   const isWalletConnected = !!wallet?.address;
   const { nativeToken } = colony || {};
 
+  const transactionAndMessageGroups = useSelector(
+    groupedTransactionsAndMessages,
+  );
+
+  // const readyTransactions = useMemo(
+  //   // @ts-ignore
+  //   () => readyTransactionsCount(transactionAndMessageGroups),
+  //   [transactionAndMessageGroups],
+  // );
+
   useLayoutEffect(() => {
     if (!wallet && connectWallet && getLastWallet()) {
       connectWallet();
@@ -91,7 +105,11 @@ const UserNavigation: FC = () => {
       {isWalletConnected && isButtonVisible && (
         <>
           {nativeToken && <Token nativeToken={nativeToken} />}
-          <UserReputation />
+          <UserReputation
+            transactionAndMessageGroups={
+              transactionAndMessageGroups as unknown as TransactionOrMessageGroups
+            }
+          />
         </>
       )}
       {isButtonVisible && !isWalletConnected && (

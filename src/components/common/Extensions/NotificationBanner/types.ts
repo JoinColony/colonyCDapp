@@ -2,7 +2,7 @@ import { MessageDescriptor } from 'react-intl';
 
 export interface NotificationBannerProps {
   status: StatusType;
-  title: string | MessageDescriptor;
+  title?: string | MessageDescriptor;
   actionText: string | MessageDescriptor;
   actionType: ActionType;
   isFullSize?: boolean;

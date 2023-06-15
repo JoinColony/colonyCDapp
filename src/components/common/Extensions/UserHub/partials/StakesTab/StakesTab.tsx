@@ -9,6 +9,7 @@ import {
 } from '~common/Extensions/UserHub/partials/StakesTab/consts';
 import Tabs from '~shared/Extensions/Tabs';
 import { useMobile } from '~hooks';
+import EmptyContent from '../EmptyContent';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 
@@ -65,16 +66,20 @@ const StakesTab = () => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              {stakes.map((item) => (
-                <StakesItems
-                  title={item.title}
-                  date={item.date}
-                  stake={item.stake}
-                  transfer={item.transfer}
-                  key={item.key}
-                  status={item.status}
-                />
-              ))}
+              {stakes.length ? (
+                stakes.map((item) => (
+                  <StakesItems
+                    title={item.title}
+                    date={item.date}
+                    stake={item.stake}
+                    transfer={item.transfer}
+                    key={item.key}
+                    status={item.status}
+                  />
+                ))
+              ) : (
+                <EmptyContent contentName="stakes" />
+              )}
             </motion.div>
           </AnimatePresence>
         </ul>

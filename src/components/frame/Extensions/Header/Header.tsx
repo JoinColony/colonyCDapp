@@ -12,6 +12,7 @@ import Icon from '~shared/Icon';
 import UserNavigation from '~common/Extensions/UserNavigation';
 import MainNavigation from '~common/Extensions/MainNavigation';
 import { useHeader } from './hooks';
+import { useExtensionsContext } from '~context/ExtensionsContext';
 
 const displayName = 'frame.Extensions.Header';
 
@@ -29,7 +30,8 @@ const Header = () => {
     userLoading,
     user,
   } = useHeader();
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { isExtensionInstalling } = useExtensionsContext();
   const { items: watchlist = [] } = user?.watchlist || {};
 
   return (
