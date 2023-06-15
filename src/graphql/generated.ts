@@ -2675,6 +2675,7 @@ export type Query = {
   getDomain?: Maybe<Domain>;
   getDomainMetadata?: Maybe<DomainMetadata>;
   getExtensionByColonyAndHash?: Maybe<ModelColonyExtensionConnection>;
+  getExtensionsByHash?: Maybe<ModelColonyExtensionConnection>;
   getIngestorStats?: Maybe<IngestorStats>;
   getMembersForColony?: Maybe<MembersForColonyReturn>;
   getMotionMessage?: Maybe<MotionMessage>;
@@ -2859,6 +2860,15 @@ export type QueryGetExtensionByColonyAndHashArgs = {
   colonyId: Scalars['ID'];
   filter?: InputMaybe<ModelColonyExtensionFilterInput>;
   hash?: InputMaybe<ModelStringKeyConditionInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+export type QueryGetExtensionsByHashArgs = {
+  filter?: InputMaybe<ModelColonyExtensionFilterInput>;
+  hash: Scalars['String'];
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
