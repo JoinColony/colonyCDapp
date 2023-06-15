@@ -15,7 +15,7 @@ const ThemeSwitcher: FC = () => {
   return (
     <button
       type="button"
-      aria-label="Theme switcher"
+      aria-label={formatMessage({ id: 'ariaLabel.themeSwitcher' })}
       className="bg-gray-50 rounded flex items-center justify-between h-10 border border-gray-100 relative px-3 w-full"
       onClick={setIsDarkMode}
     >

@@ -3,14 +3,12 @@ import { useIntl } from 'react-intl';
 
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import Permissions from './partials/Permissions';
-import DateInstalled from './partials/DateInstalled';
 import InstalledBy from './partials/InstalledBy';
-import Version from './partials/Version';
 import ContractAddress from './partials/ContractAddress';
-import Developer from './partials/Developer';
 import styles from './SpecificSidePanel.module.css';
 import { useSpecificSidePanel } from './hooks';
 import { SpecificSidePanelProps } from './types';
+import SpecificSidePanelRow from './partials/SpecificSidePanelRow';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 
@@ -58,36 +56,36 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
               />
             )}
             {statuses?.includes('not-installed') ? (
-              <DateInstalled
+              <SpecificSidePanelRow
                 title={dateCreated?.title}
-                date={dateCreated.date || ''}
+                description={dateCreated.date || ''}
               />
             ) : (
-              <DateInstalled
+              <SpecificSidePanelRow
                 title={dateInstalled?.title}
-                date={dateInstalled.date || ''}
+                description={dateInstalled.date || ''}
               />
             )}
             {statuses?.includes('not-installed') ? (
-              <Version
+              <SpecificSidePanelRow
                 title={latestVersion.title}
-                version={latestVersion.version}
+                description={latestVersion.version}
               />
             ) : (
-              <Version
+              <SpecificSidePanelRow
                 title={versionInstalled.title}
-                version={versionInstalled.version}
+                description={versionInstalled.version}
               />
             )}
             {!statuses?.includes('not-installed') && (
               <ContractAddress
                 title={contractAddress.title}
-                address={contractAddress.address}
+                description={contractAddress.address}
               />
             )}
-            <Developer
+            <SpecificSidePanelRow
               title={developer.title}
-              developer={developer.developer}
+              description={developer.developer}
             />
             <div className="flex flex-col justify-between">
               <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">

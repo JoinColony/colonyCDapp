@@ -22,7 +22,11 @@ const ActionsList = ({
 }: Props) => (
   <ul>
     {items.map((item) => (
-      <Item key={item.id} item={item} handleOnClick={handleItemClick} />
+      <Item
+        key={item.transactionHash}
+        item={item}
+        handleOnClick={handleItemClick}
+      />
     ))}
   </ul>
 );

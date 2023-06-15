@@ -13,7 +13,7 @@ const displayName = 'common.Extensions.NotificationBanner';
 
 const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
   status,
-  title,
+  title = '',
   children,
   actionText,
   actionType,
@@ -29,7 +29,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
     <div
       className={clsx(
         styles.banner,
-        `text-gray-900 ${
+        `gap-2 ${
           isAlt
             ? 'rounded min-h-[3.75rem] p-4'
             : 'rounded-lg min-h-[2.75rem] py-3 px-6 '
@@ -68,7 +68,11 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
           </div>
         </div>
         {children && (
-          <div className="text-sm font-normal text-gray-900 max-w-[50rem] ml-6 md:ml-0 mt-1.5">
+          <div
+            className={clsx('text-sm max-w-[50rem] mt-1.5', {
+              'text-red-400': status === 'error',
+            })}
+          >
             {children}
           </div>
         )}

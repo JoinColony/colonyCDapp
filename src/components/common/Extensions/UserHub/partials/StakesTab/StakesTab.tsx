@@ -9,6 +9,7 @@ import {
 } from '~common/Extensions/UserHub/partials/StakesTab/consts';
 import Tabs from '~shared/Extensions/Tabs';
 import { useMobile } from '~hooks';
+import EmptyContent from '../EmptyContent';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 
@@ -43,7 +44,7 @@ const StakesTab = () => {
         {!isMobile && (
           <button
             type="button"
-            className="text-blue-400 font-medium text-xs"
+            className="text-blue-400 font-medium text-xs hover:text-gray-900 transition-all duration-normal"
             aria-label={formatMessage({ id: 'claimStakes' })}
           >
             {formatMessage({ id: 'claimStakes' })}
@@ -65,16 +66,20 @@ const StakesTab = () => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              {stakes.map((item) => (
-                <StakesItems
-                  title={item.title}
-                  date={item.date}
-                  stake={item.stake}
-                  transfer={item.transfer}
-                  key={item.key}
-                  status={item.status}
-                />
-              ))}
+              {stakes.length ? (
+                stakes.map(({ title, date, stake, transfer, status, key }) => (
+                  <StakesItems
+                    title={title}
+                    date={date}
+                    stake={stake}
+                    transfer={transfer}
+                    key={key}
+                    status={status}
+                  />
+                ))
+              ) : (
+                <EmptyContent contentName="stakes" />
+              )}
             </motion.div>
           </AnimatePresence>
         </ul>

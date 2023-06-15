@@ -7,7 +7,7 @@ import DropdownMenu, {
   DropdownMenuItem,
 } from '~shared/DropdownMenu';
 import Button from '~shared/Button';
-import ExternalLink from '~shared/ExternalLink';
+import ExternalLink from '~shared/Extensions/ExternalLink';
 
 import styles from './MemberActionsPopover.css';
 

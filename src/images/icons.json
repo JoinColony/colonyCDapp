@@ -174,9 +174,16 @@
     "tag",
     "three-dots-row",
     "triangle-warning",
+    "twitter-logo",
     "unlock",
     "user-plus",
-    "wallet"
+    "wallet",
+    "verified",
+    "arrow-circle-up-right",
+    "extension-incorporation",
+    "extension-lazy-consensus",
+    "extension-advanced-payments",
+    "extension-one-transaction-payment"
   ],
   "multiColorIcons": [
     "circle-check-primary",

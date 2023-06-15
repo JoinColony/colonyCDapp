@@ -10,6 +10,7 @@ import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
 import { getFormattedTokenValue } from '~utils/tokens';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import TitleLabel from '~shared/Extensions/TitleLabel';
 
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.TotalReputation';
@@ -34,14 +35,12 @@ const TotalReputation: FC<ReputationProps> = ({ colonyAddress, wallet }) => {
   return (
     <div className="border-b border-gray-100 pt-6">
       <div className="flex items-center justify-between">
-        <div className="text-gray-400 text-xs font-medium uppercase">
-          {formatMessage({ id: 'reputation.in.colony' })}
-        </div>
+        <TitleLabel text={formatMessage({ id: 'reputation.in.colony' })} />
         {/* @TODO: add action */}
         <button
           type="button"
-          aria-label="view all"
-          className="text-blue-400 font-medium text-xs"
+          aria-label={formatMessage({ id: 'ariaLabel.viewAll' })}
+          className="text-blue-400 font-medium text-xs hover:text-gray-900 transition-all duration-normal"
         >
           {formatMessage({ id: 'view.all' })}
         </button>

@@ -15,5 +15,12 @@ export { default as MintTokenDialog } from './MintTokenDialog';
 export { default as NetworkContractUpgradeDialog } from './NetworkContractUpgradeDialog';
 export { default as EditColonyDetailsDialog } from './EditColonyDetailsDialog';
 export { default as ManageReputationDialog } from './ManageReputationDialog';
-export { default as TokenManagementDialog } from './TokenManagementDialog';
+export { default as RaiseObjectionDialog } from './RaiseObjectionDialog';
+// export { default as NetworkContractUpgradeDialog } from './NetworkContractUpgradeDialog';
+// export { default as EditColonyDetailsDialog } from './EditColonyDetailsDialog';
+// export { default as ManageReputationDialog } from './ManageReputationDialog';
+export {
+  default as TokenManagementDialog,
+  FormValues as TokenManagementDialogFormValues,
+} from './TokenManagementDialog';
 export { SmiteDialog, AwardDialog } from './AwardAndSmiteDialogs';
