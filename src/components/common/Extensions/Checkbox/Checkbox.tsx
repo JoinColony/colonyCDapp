@@ -18,8 +18,15 @@ const Checkbox: FC<CheckboxProps> = ({
   const { formatMessage } = useIntl();
 
   return (
-    <div className={clsx(classNames, 'flex items-center')}>
-      <div className="relative h-4 w-4 mr-2 shrink-0">
+    <div
+      className={clsx(classNames, {
+        'pointer-events-none opacity-50': disabled,
+      })}
+    >
+      <label
+        htmlFor={id}
+        className="flex relative w-full text-gray-700 text-md cursor-pointer"
+      >
         <input
           type="checkbox"
           {...register?.(name)}
@@ -27,21 +34,14 @@ const Checkbox: FC<CheckboxProps> = ({
           id={id}
           disabled={disabled}
           onChange={onChange}
-          className="peer appearance-none relative z-[1]"
+          className="peer absolute top-0 left-0 overflow-hidden w-0 h-0 opacity-0"
         />
         <span
           className={clsx(
             styles.checkboxBox,
-            'peer-checked:bg-blue-300 peer-checked:border-blue-300 peer-disabled:bg-gray-50 peer-disabled:border-gray-50',
+            'peer-checked:bg-blue-400 peer-checked:border-blue-400 peer-disabled:bg-gray-40 peer-disabled:border-gray-40 peer-checked:after:border-l peer-checked:after:border-b',
           )}
         />
-      </div>
-      <label
-        htmlFor={id}
-        className={clsx('text-gray-700 text-md', {
-          'cursor-pointer': !disabled,
-        })}
-      >
         {formatMessage(label)}
       </label>
     </div>

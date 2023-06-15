@@ -1,5 +1,6 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
+
 import styles from '../ReputationTab.module.css';
 import TitleLabel from '~shared/Extensions/TitleLabel';
 
@@ -13,13 +14,13 @@ const PendingReputation = () => {
     <div className="pt-6">
       <TitleLabel text={formatMessage({ id: 'pending.reputation' })} />
 
-      <div className="flex flex-col gap-[1.3125rem] pt-2 pb-[1.625rem]">
+      <div className="flex flex-col gap-4 pt-2 pb-6">
         <div className={styles.row}>
           <p className={styles.rowName}>
             {formatMessage({ id: 'next.update' })}
           </p>
           {/* @TODO: implement data from API */}
-          <span className="text-gray-900 font-medium text-sm">~14 mins</span>
+          <span className="text-sm">~14 mins</span>
         </div>
       </div>
     </div>

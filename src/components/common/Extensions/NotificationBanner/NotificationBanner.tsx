@@ -32,7 +32,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
         `text-gray-900 ${
           isAlt
             ? 'rounded min-h-[3.75rem] p-4'
-            : 'rounded-lg min-h-[2.75rem] py-3 px-6 '
+            : 'rounded-lg min-h-[2.75rem] py-3 px-6'
         }`,
         {
           'bg-success-100 border-success-200': status === 'success',

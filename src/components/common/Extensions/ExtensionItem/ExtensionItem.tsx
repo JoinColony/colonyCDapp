@@ -30,7 +30,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
   return (
     <div className="flex flex-col items-end sm:block">
       <div className="flex items-center w-full sm:w-auto">
-        <div className="flex flex-shrink-0">
+        <div className="flex shrink-0">
           <Icon name={icon} appearance={{ size: 'large' }} />
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between ml-4 w-full gap-6 sm:gap-12">
@@ -58,7 +58,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
         </div>
       </div>
       {isMobile && (
-        <div className="w-[calc(100%-3.625rem)] mt-6 ml-3.625rem flex-shrink-0 sm:w-auto sm:ml-4 sm:mt-0">
+        <div className="w-[calc(100%-3.625rem)] mt-6 ml-3.625rem shrink-0 sm:w-auto sm:ml-4 sm:mt-0">
           <ActionButton
             isExtensionInstalled={!!isExtensionInstalled}
             handleInstallClick={handleInstallClick}

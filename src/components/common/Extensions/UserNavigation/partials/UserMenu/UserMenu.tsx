@@ -58,7 +58,7 @@ const UserMenu: FC<UserMenuProps> = ({
         <button
           type="button"
           aria-label={formatMessage({ id: 'ariaLabel.backToMainMenu' })}
-          className={styles.buttonBack}
+          className={clsx(styles.buttonBack, 'group')}
           onClick={() => setActiveSubmenu(null)}
         >
           <Icon name="caret-left" appearance={{ size: 'extraTiny' }} />

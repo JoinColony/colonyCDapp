@@ -512,5 +512,8 @@
   "installed.by": "Installed by",
   "version.installed": "Version installed",
   "contract.address": "Contract address",
-  "developer": "Developer"
+  "developer": "Developer",
+  "createNewDecisions": "CREATE NEW DECISIONS",
+  "manageColony": "MANAGE COLONY",
+  "createNewPayments": "CREATE NEW PAYMENTS"
 }

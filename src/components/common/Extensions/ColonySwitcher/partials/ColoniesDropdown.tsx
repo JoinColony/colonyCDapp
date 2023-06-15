@@ -5,6 +5,7 @@ import ColonyItem from './ColonyItem';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import { ColoniesDropdownProps } from '../types';
 import { useSelectedColony } from '../hooks';
+import TitleLabel from '~shared/Extensions/TitleLabel';
 
 const displayName =
   'common.Extensions.ColonySwitcher.partials.ColoniesDropdown';
@@ -48,9 +49,7 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
       )}
       {Object.keys(groupByCategory).map((key) => (
         <div className="mt-5" key={key}>
-          <div className="uppercase text-gray-400 text-xs font-medium pl-6 sm:pl-0">
-            {key}
-          </div>
+          <TitleLabel className="mb-1" text={key} />
           {groupByCategory[key].map((item) => (
             <ColonyItem
               colony={item?.colony as Colony}
