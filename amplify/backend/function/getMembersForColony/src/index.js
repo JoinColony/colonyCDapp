@@ -118,9 +118,15 @@ exports.handler = async (event) => {
         (address) => address.toLowerCase() === item.user.id.toLowerCase(),
       )
     ) {
-      contributors.push(item);
+      contributors.push({
+        address: item.user.id,
+        user: item.user,
+      });
     } else {
-      watchers.push(item);
+      watchers.push({
+        address: item.user.id,
+        user: item.user,
+      });
     }
   });
 
@@ -140,9 +146,7 @@ exports.handler = async (event) => {
 
     missingAddresses?.forEach((address) => {
       contributors?.push({
-        user: {
-          id: address,
-        },
+        address,
       });
     });
   }
@@ -163,7 +167,9 @@ exports.handler = async (event) => {
   // get reputation for each address
   const contributorsWithReputation = await Promise.all(
     contributors.map(async (contributor) => {
-      const address = contributor.user?.id;
+      const address = contributor.user
+        ? contributor.user?.id
+        : contributor.address;
       try {
         const userReputationForAllDomains =
           await colonyClient.getReputationAcrossDomains(address, rootHash);
@@ -197,6 +203,7 @@ exports.handler = async (event) => {
         );
 
         return {
+          address: contributor.address,
           user: contributor.user,
           reputationPercentage:
             formattedUserReputations[0]?.reputationPercentage,

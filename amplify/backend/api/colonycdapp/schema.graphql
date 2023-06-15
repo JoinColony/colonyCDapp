@@ -268,12 +268,14 @@ type ProfileMetadata {
 }
 
 type Contributor {
+  address: String!
   user: User
   reputationPercentage: String
   reputationAmount: String
 }
 
 type Watcher {
+  address: String!
   user: User
 }
 
@@ -350,7 +352,7 @@ type ColonyMetadataChangelog {
 
 type User @model {
   id: ID! @index(name: "byAddress", queryField: "getUserByAddress") # wallet address
-  name: String @index(name: "byName", queryField: "getUserByName")
+  name: String! @index(name: "byName", queryField: "getUserByName")
   tokens: [Token] @manyToMany(relationName: "UserTokens")
   profileId: ID
   profile: Profile @hasOne(fields: ["profileId"])
