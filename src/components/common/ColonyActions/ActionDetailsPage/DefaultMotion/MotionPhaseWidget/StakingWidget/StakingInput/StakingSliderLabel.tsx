@@ -42,6 +42,7 @@ const StakingSliderLabel = ({
     userMinStake,
     nativeTokenDecimals,
     nativeTokenSymbol,
+    remainingToStake,
   },
   requiredStakeMessageProps,
   enoughTokensToStakeMinimum,
@@ -57,13 +58,14 @@ const StakingSliderLabel = ({
       placement="top"
       popperOptions={tooltipOptions}
     >
-      {!enoughTokensToStakeMinimum ? (
+      {!enoughTokensToStakeMinimum && (
         <MinimumStakeMessage
           userMinStake={userMinStake}
           decimals={nativeTokenDecimals}
           symbol={nativeTokenSymbol}
         />
-      ) : (
+      )}
+      {remainingToStake !== '0' && (
         <RequiredStakeMessage {...requiredStakeMessageProps} />
       )}
     </Tooltip>

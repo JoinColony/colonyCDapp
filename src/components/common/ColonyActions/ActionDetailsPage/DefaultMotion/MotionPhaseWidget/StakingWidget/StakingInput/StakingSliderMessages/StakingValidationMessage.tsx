@@ -81,7 +81,7 @@ const StakingValidationMessage = ({
 
   const canStakeMore = userCanStakeMore(userMinStake, remainingToStake);
 
-  if (!canStakeMore) {
+  if (!canStakeMore && remainingToStake !== '0') {
     errorType = StakingValidationErrors.CantStakeMore;
   } else if (userNeedsMoreReputation) {
     errorType = StakingValidationErrors.MoreRepNeeded;

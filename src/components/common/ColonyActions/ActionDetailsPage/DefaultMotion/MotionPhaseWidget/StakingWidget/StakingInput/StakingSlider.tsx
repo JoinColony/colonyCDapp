@@ -39,7 +39,8 @@ const StakingSlider = ({
     userMaxStake,
   } = useStakingSlider(isObjection);
 
-  const displayErrMsg = !!user && !isLoadingData && remainingToStake !== '0';
+  const displayErrMsg =
+    !!user && !isLoadingData && totalPercentageStaked !== 200;
   const displayLabel = displayErrMsg && enoughReputationToStakeMinimum;
 
   return (
