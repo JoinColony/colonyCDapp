@@ -58,7 +58,7 @@
         },
         "Type": "String",
         "Value": "https://x2yqu43sc5fk7lgol5fagr6csq.appsync-api.eu-west-2.amazonaws.com/graphql",
-        "Description": "Reputation endpoint"
+        "Description": "App Sync Graphql Url endpoint"
       }
     }
   },
