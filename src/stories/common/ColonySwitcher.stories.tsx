@@ -44,11 +44,13 @@ const ColonySwitcherWithHooks = () => {
     ).getTime();
     return firstWatchTime - secondWatchTime;
   };
+  const menuPopperTooltipOffset = [0, 20];
 
   const ref = useDetectClickOutside({ onTriggered: () => setIsOpen(false) });
   const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip(
     {
       delayShow: 200,
+      delayHide: 200,
       placement: 'bottom',
       trigger: 'click',
       visible: isOpen,
@@ -60,6 +62,30 @@ const ColonySwitcherWithHooks = () => {
           name: 'offset',
           options: {
             offset: popperTooltipOffset,
+          },
+        },
+      ],
+    },
+  );
+
+  const {
+    getTooltipProps: mainMenuGetTooltipProps,
+    setTooltipRef: mainMenuSetTooltipRef,
+    visible: mainMenuVisible,
+  } = usePopperTooltip(
+    {
+      delayShow: 200,
+      delayHide: 200,
+      placement: 'bottom',
+      trigger: 'click',
+      interactive: true,
+    },
+    {
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: menuPopperTooltipOffset,
           },
         },
       ],
@@ -150,7 +176,11 @@ const ColonySwitcherWithHooks = () => {
               </div>
             ) : (
               <div className="flex justify-between w-full items-center">
-                <MainNavigation />
+                <MainNavigation
+                  setTooltipRef={mainMenuSetTooltipRef}
+                  tooltipProps={mainMenuGetTooltipProps}
+                  isMenuOpen={mainMenuVisible}
+                />
                 <div className="block ml-auto">
                   <UserNavigation />
                 </div>
@@ -160,7 +190,11 @@ const ColonySwitcherWithHooks = () => {
         </div>
         {isMobile && (
           <div className="border-t border-gray-200 mt-3 mb-3">
-            <MainNavigation />
+            <MainNavigation
+              setTooltipRef={mainMenuSetTooltipRef}
+              tooltipProps={mainMenuGetTooltipProps}
+              isMenuOpen={mainMenuVisible}
+            />
           </div>
         )}
       </Router>

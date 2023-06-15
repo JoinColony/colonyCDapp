@@ -37,6 +37,7 @@ const UserNavigationMenuNotConnected = () => {
     usePopperTooltip(
       {
         delayShow: 200,
+        delayHide: 200,
         placement: 'bottom-start',
         trigger: 'click',
         interactive: true,
@@ -64,7 +65,7 @@ const UserNavigationMenuNotConnected = () => {
     visible: isWalletVisible,
   } = usePopperTooltip(
     {
-      delayShow: 200,
+      delayHide: 200,
       placement: 'bottom-end',
       trigger: 'click',
       interactive: true,
@@ -167,7 +168,7 @@ const UserNavigationMenuConnected = () => {
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip(
       {
-        delayShow: 200,
+        delayHide: 200,
         placement: 'bottom-start',
         trigger: 'click',
         interactive: true,

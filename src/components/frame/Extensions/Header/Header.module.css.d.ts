@@ -1,5 +1,6 @@
 declare namespace HeaderModuleCssNamespace {
   export interface IHeaderModuleCss {
+    mobileButtons: string;
     tooltipContainer: string;
   }
 }

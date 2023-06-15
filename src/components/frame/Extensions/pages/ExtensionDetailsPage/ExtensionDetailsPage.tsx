@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Extension } from '@colony/colony-js';
 
 import { useColonyContext, useExtensionData } from '~hooks';
-import Icon from '~shared/Icon';
 import ExtensionDetails from './partials/ExtensionDetails';
 import Spinner from '~shared/Extensions/Spinner';
 import ThreeColumns from '~frame/Extensions/ThreeColumns';
@@ -75,25 +74,13 @@ const ExtensionDetailsPage: FC = () => {
               </div>
             )}
             <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
-              <div className="flex flex-col sm:items-center sm:flex-row sm:gap-2 sm:grow">
-                <div className="flex items-center shrink-0">
-                  <Icon
-                    name={extensionData.icon}
-                    appearance={{ size: 'large' }}
-                  />
-                  <h4 className="ml-2 text-xl font-semibold text-gray-900">
-                    {formatMessage(extensionData.name)}
-                  </h4>
-                </div>
-                {/* @TODO get these values from API (badge and active installs number) */}
-                <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0 sm:grow">
-                  <span>badge</span>
-                  <p className="text-gray-400 text-sm">
-                    17,876 {formatMessage({ id: 'active.installs' })}
-                  </p>
-                </div>
+              <div className="flex flex-wrap gap-4 flex-col w-full sm:flex-row sm:items-center md:gap-8">
+                <ActionButtons
+                  extensionData={extensionData}
+                  extensionStatusMode="payments"
+                  extensionStatusText={formatMessage({ id: 'status.payments' })}
+                />
               </div>
-              <ActionButtons extensionData={extensionData} />
             </div>
           </>
         }

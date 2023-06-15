@@ -3,6 +3,7 @@ import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import clsx from 'clsx';
 
+import { useSelector } from 'react-redux';
 import { useAppContext, useColonyContext, useMobile } from '~hooks';
 import Button from '~shared/Extensions/Button';
 import Icon from '~shared/Icon';
@@ -12,7 +13,6 @@ import { getLastWallet } from '~utils/autoLogin';
 import WalletPopover from './partials/WalletPopover/WalletPopover';
 import UserReputation from './partials/UserReputation/UserReputation';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
-import { useSelector } from 'react-redux';
 import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
 
 export const displayName = 'common.Extensions.UserNavigation';
@@ -31,6 +31,7 @@ const UserNavigation: FC = () => {
     usePopperTooltip(
       {
         delayShow: 200,
+        delayHide: 200,
         placement: 'bottom-end',
         trigger: 'click',
         interactive: true,
@@ -59,7 +60,7 @@ const UserNavigation: FC = () => {
     visible: isWalletVisible,
   } = usePopperTooltip(
     {
-      delayShow: 200,
+      delayHide: 200,
       placement: 'bottom-end',
       trigger: 'click',
       interactive: true,
@@ -172,6 +173,7 @@ const UserNavigation: FC = () => {
               isWalletConnected={isWalletConnected}
               user={user}
               walletAddress={user?.walletAddress}
+              nativeToken={nativeToken}
             />
           )}
         </div>

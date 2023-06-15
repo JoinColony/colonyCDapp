@@ -20,11 +20,19 @@ export type SidePanelDataProps = {
     title: string;
     date: string | null;
   };
+  dateCreated: {
+    title: string;
+    date: string | null;
+  };
   installedBy: {
     title: string;
     component: JSX.Element;
   };
   versionInstalled: {
+    title: string;
+    version: string;
+  };
+  latestVersion: {
     title: string;
     version: string;
   };

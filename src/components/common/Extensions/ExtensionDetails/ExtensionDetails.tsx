@@ -122,7 +122,6 @@ const ExtensionDetails = () => {
           <Route path="*" element={<NotFoundRoute />} />
         </Routes>
       </div>
-
       <ExtensionDetailsAside
         extensionData={extensionData}
         canBeDeprecated={canExtensionBeDeprecated}

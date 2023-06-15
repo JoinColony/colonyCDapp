@@ -5,3 +5,15 @@
 .userMenuPopup {
   @apply p-6 rounded-lg flex border-gray-100 justify-start z-[9999] overflow-hidden bg-base-white;
 }
+
+.button {
+  @apply flex items-center justify-between w-full transition-all duration-normal hover:text-blue-400;
+}
+
+.buttonBack {
+  @apply flex items-center text-gray-400 text-xs font-medium mb-6 transition-all duration-normal hover:text-blue-400;
+}
+
+.link {
+  @apply flex items-center text-lg transition-all duration-normal hover:text-blue-400 font-semibold md:font-normal md:text-md;
+}
