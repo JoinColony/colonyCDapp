@@ -47,8 +47,8 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
         </>
       )}
       {Object.keys(groupByCategory).map((key) => (
-        <div className="mt-5" key={key}>
-          <div className="uppercase text-gray-400 text-xs font-medium pl-6 sm:pl-0">
+        <div className="px-6 sm:px-0 sm:mt-5" key={key}>
+          <div className="uppercase text-gray-400 text-xs font-medium">
             {key}
           </div>
           {groupByCategory[key].map((item) => (

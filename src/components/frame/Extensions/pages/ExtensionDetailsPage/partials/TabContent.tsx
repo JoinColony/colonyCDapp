@@ -5,7 +5,8 @@ import { FormattedMessage } from 'react-intl';
 import SupportingDocuments from '~common/Extensions/SupportingDocuments/SupportingDocuments';
 import { AnyExtensionData } from '~types';
 
-const displayName = 'frame.Extensions.pages.ExtensionDetailsPage.partials.TabContent';
+const displayName =
+  'frame.Extensions.pages.ExtensionDetailsPage.partials.TabContent';
 
 const HeadingChunks = (chunks: React.ReactNode[]) => (
   <h4 className="font-semibold text-gray-900 mt-6 mb-4">{chunks}</h4>

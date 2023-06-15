@@ -177,6 +177,7 @@ const UserNavigation: FC = () => {
               isWalletConnected={isWalletConnected}
               user={user}
               walletAddress={user?.walletAddress}
+              nativeToken={nativeToken}
             />
           )}
         </div>

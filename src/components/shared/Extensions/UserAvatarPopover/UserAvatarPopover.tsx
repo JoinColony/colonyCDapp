@@ -18,9 +18,12 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
   aboutDescription,
   colonyReputation,
   permissions,
+  user,
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
+  const { profile } = user || {};
+  const { avatar, thumbnail } = profile || {};
 
   const onOpenModal = useCallback(() => {
     setIsOpen(true);
@@ -48,7 +51,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
       ref={setTriggerRef}
       className="inline-flex transition-all duration-normal hover:text-blue-400"
     >
-      <UserAvatar size="xs" userName={userName} />
+      <UserAvatar size="xs" userName={userName} user={user} />
     </button>
   );
 
@@ -61,6 +64,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
       aboutDescription={aboutDescription}
       colonyReputation={colonyReputation}
       permissions={permissions}
+      avatar={thumbnail || avatar || ''}
     />
   );
 
