@@ -25,7 +25,8 @@
         "getUserTokenBalance": {},
         "fetchMotionState": {},
         "fetchVoterRewards": {},
-        "fetchMotionTimeoutPeriods": {}
+        "fetchMotionTimeoutPeriods": {},
+        "qaSSMtest": {}
       }
     }
   },
