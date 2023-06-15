@@ -45,7 +45,7 @@ export const useHeader = () => {
     getTooltipProps: mainMenuGetTooltipProps,
     setTooltipRef: mainMenuSetTooltipRef,
     setTriggerRef: mainMenuSetTriggerRef,
-    visible: mainMenuVisible,
+    visible: isMainMenuVisible,
   } = usePopperTooltip(
     {
       delayShow: 200,
@@ -74,7 +74,7 @@ export const useHeader = () => {
     mainMenuGetTooltipProps,
     mainMenuSetTooltipRef,
     mainMenuSetTriggerRef,
-    mainMenuVisible,
+    isMainMenuVisible,
     userLoading,
     colonyToDisplayAddress,
     colonyToDisplay,

@@ -1,25 +1,26 @@
 import React, { FC } from 'react';
 
-import { useIntl } from 'react-intl';
-import Nav from './partials/Nav';
-import { navMenuItems } from './partials/consts';
 import {
   useAppContext,
   useColonyContext,
   useMobile,
   useUserReputation,
 } from '~hooks';
-import { SubNavigationMobile } from '~common/Extensions/SubNavigation';
 import { LEARN_MORE_PAYMENTS } from '~constants';
+
+import Nav from './partials/Nav';
+import { navMenuItems } from './partials/consts';
+import { SubNavigationMobile } from '~common/Extensions/SubNavigation';
 import LearnMore from '~shared/Extensions/LearnMore';
 import Button from '~shared/Extensions/Button';
-import { MainNavigationProps } from './types';
 import PopoverBase from '~shared/Extensions/PopoverBase';
 import UserAvatar from '~shared/Extensions/UserAvatar';
 import MemberReputation from '../UserNavigation/partials/MemberReputation';
 import Icon from '~shared/Icon';
 import Token from '../UserNavigation/partials/Token';
+
 import styles from './MainNavigation.module.css';
+import { MainNavigationProps } from './types';
 
 const displayName = 'common.Extensions.MainNavigation';
 
@@ -29,7 +30,6 @@ const MainNavigation: FC<MainNavigationProps> = ({
   isMenuOpen,
 }) => {
   const { colony } = useColonyContext();
-  const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { user, wallet } = useAppContext();
   const { profile } = user || {};
@@ -68,11 +68,6 @@ const MainNavigation: FC<MainNavigationProps> = ({
             </Button>
             <Button mode="tertiaryOutline" isFullRounded>
               <Icon name="list" appearance={{ size: 'extraTiny' }} />
-              {!isMobile && (
-                <p className="text-sm font-inter font-medium ml-1">
-                  {formatMessage({ id: 'helpAndAccount' })}
-                </p>
-              )}
             </Button>
           </div>
           <div className="px-6">
@@ -80,7 +75,7 @@ const MainNavigation: FC<MainNavigationProps> = ({
             <div className="border-t border-gray-200 mb-3" />
             <SubNavigationMobile />
             <div className="flex flex-col items-center justify-between border-t border-gray-200 mt-4">
-              <div className="mb-6 mt-6 w-full">
+              <div className="my-6 w-full">
                 <Button
                   text="Create new action"
                   mode="secondaryOutline"

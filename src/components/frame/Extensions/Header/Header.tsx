@@ -36,7 +36,7 @@ const Header = () => {
     mainMenuGetTooltipProps,
     mainMenuSetTooltipRef,
     mainMenuSetTriggerRef,
-    mainMenuVisible,
+    isMainMenuVisible,
     setTriggerRef,
     visible,
   } = useHeader();
@@ -50,7 +50,7 @@ const Header = () => {
 
   const { items: watchlist = [] } = user?.watchlist || {};
 
-  const showCloseButton = (mainMenuVisible || visible) && isMobile;
+  const isCloseButtonVisible = (isMainMenuVisible || visible) && isMobile;
 
   return (
     <header>
@@ -62,8 +62,8 @@ const Header = () => {
                 aria-label="Open dropdown"
                 ref={setTriggerRef}
                 className={clsx('flex items-center justify-between', {
-                  'w-[3.5225rem]': !mainMenuVisible,
-                  'w-[8rem]': mainMenuVisible,
+                  'w-[3.5225rem]': !isMainMenuVisible,
+                  'w-[8rem]': isMainMenuVisible,
                 })}
                 type="button"
               >
@@ -72,7 +72,7 @@ const Header = () => {
                   isMobile={isMobile}
                   colonyToDisplayAddress={colonyToDisplayAddress}
                   colonyToDisplay={
-                    mainMenuVisible ? colonyToDisplay : undefined
+                    isMainMenuVisible ? colonyToDisplay : undefined
                   }
                 />
               </button>
@@ -156,8 +156,8 @@ const Header = () => {
             <button
               type="button"
               className={clsx('items-center flex sm:hidden', {
-                'opacity-100 visible': !mainMenuVisible,
-                'opacity-0 invisible': mainMenuVisible,
+                'opacity-100 visible': !isMainMenuVisible,
+                'opacity-0 invisible': isMainMenuVisible,
               })}
               ref={mainMenuSetTriggerRef}
             >
@@ -169,10 +169,10 @@ const Header = () => {
             <MainNavigation
               setTooltipRef={mainMenuSetTooltipRef}
               tooltipProps={mainMenuGetTooltipProps}
-              isMenuOpen={mainMenuVisible}
+              isMenuOpen={isMainMenuVisible}
             />
             <div className="block ml-auto">
-              {showCloseButton ? (
+              {isCloseButtonVisible ? (
                 <Button
                   className="md:border-gray-200 md:hover:border-blue-400 px-4 py-2.5 border-base-white"
                   mode="quinary"
