@@ -90,7 +90,7 @@ const TransactionsTab: FC<TransactionsProps> = ({
   return (
     <>
       <div className="flex items-center justify-between pb-4 relative">
-        <div className="font-semibold text-lg text-gray-900">
+        <div className="font-semibold text-lg">
           {formatMessage({ id: 'transactions' })}
         </div>
       </div>

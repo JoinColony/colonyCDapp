@@ -16,7 +16,7 @@ const EmptyContent: FC<EmptyContentProps> = ({ contentName }) => {
     <div className="flex flex-col items-center justify-center absolute bottom-0 top-0 left-0 right-0">
       <div
         className={`flex items-center justify-center w-[2.375rem] h-[2.375rem] rounded-full
-      bg-gray-200 border-[0.375rem] border-gray-50 flex-shrink`}
+      bg-gray-200 border-[0.375rem] border-gray-50 shrink-0`}
       >
         <Icon name="binoculars" appearance={{ size: 'tiny' }} />
       </div>

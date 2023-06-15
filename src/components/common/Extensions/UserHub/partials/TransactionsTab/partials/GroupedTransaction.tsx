@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { TransactionType } from '~redux/immutable';
 import { arrayToObject } from '~utils/arrays';
@@ -24,6 +24,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
   selectedTransaction,
   unselectTransactionGroup,
 }) => {
+  const { formatMessage } = useIntl();
   // const { interactive } = appearance;
   // const [isOpen, setIsOpen] = useState<boolean>(true);
 
@@ -69,7 +70,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
     <li>
       <button
         type="button"
-        aria-label="handle unselect transaction"
+        aria-label={formatMessage({ id: 'handle.unselect.transaction' })}
         className="w-full"
         onClick={(event) => unselectTransactionGroup(event)}
       >

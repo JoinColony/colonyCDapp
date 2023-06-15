@@ -67,14 +67,14 @@ const StakesTab = () => {
               transition={{ duration: 0.15 }}
             >
               {stakes.length ? (
-                stakes.map((item) => (
+                stakes.map(({ title, date, stake, transfer, status, key }) => (
                   <StakesItems
-                    title={item.title}
-                    date={item.date}
-                    stake={item.stake}
-                    transfer={item.transfer}
-                    key={item.key}
-                    status={item.status}
+                    title={title}
+                    date={date}
+                    stake={stake}
+                    transfer={transfer}
+                    key={key}
+                    status={status}
                   />
                 ))
               ) : (
