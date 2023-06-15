@@ -39,7 +39,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         </span>
       )}
       <button
-        aria-label={formatMessage({ id: 'modal.buttonClose.ariaLabel' })}
+        aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
         type="button"
         className={styles.closeIcon}
         onClick={onClose}

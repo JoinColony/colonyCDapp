@@ -61,7 +61,7 @@ const ColonySwitcher = () => {
   return (
     <div className="flex justify-between relative" ref={ref}>
       <button
-        aria-label={formatMessage({ id: 'open.dropdown' })}
+        aria-label={formatMessage({ id: 'ariaLabel.openDropdown' })}
         className={clsx('flex items-center justify-between', {
           'w-[3.5225rem]': !isMobile,
         })}
@@ -120,7 +120,7 @@ const ColonySwitcher = () => {
       {isMobile && isOpen && (
         <button
           type="button"
-          aria-label={formatMessage({ id: 'close.dropdown' })}
+          aria-label={formatMessage({ id: 'ariaLabel.closeDropdown' })}
           onClick={() => setIsOpen(false)}
           className="text-gray-400 sm:pr-4"
         >

@@ -18,21 +18,19 @@ const LinkWrapper: FC<LinkWrapperProps> = ({ isDoubleLinkVisible }) => {
   return (
     <>
       {links.map((item) => (
-        <div className="pb-2 flex items-center group" key={item.text}>
+        <Link
+          key={item.url}
+          to={item.url}
+          className="flex items-center text-sm text-gray-600"
+        >
           <Icon
             appearance={{ size: 'tiny' }}
             name="file-text"
             title={{ id: 'file-text' }}
-            className="group-hover:[&>svg]:fill-blue-400 w-3 h-3"
+            className="w-3 h-3 mr-2"
           />
-          <Link
-            key={item.url}
-            to={item.url}
-            className="font-normal text-sm text-gray-600 hover:text-blue-400 ml-2"
-          >
-            {formatMessage({ id: item.text })}
-          </Link>
-        </div>
+          {formatMessage({ id: item.text })}
+        </Link>
       ))}
     </>
   );

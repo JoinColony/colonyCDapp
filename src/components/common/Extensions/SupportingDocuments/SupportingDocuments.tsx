@@ -20,7 +20,9 @@ const SupportingDocuments: FC<SupportingDocumentsProps> = ({
         {formatMessage({ id: 'supporting.documents.subtitle' })}
       </div>
       <span className="block border-b border-gray-200 my-4" />
-      <LinkWrapper isDoubleLinkVisible={isDoubleLinkVisible} />
+      <div className="mb-2 last:mb-0">
+        <LinkWrapper isDoubleLinkVisible={isDoubleLinkVisible} />
+      </div>
     </div>
   );
 };

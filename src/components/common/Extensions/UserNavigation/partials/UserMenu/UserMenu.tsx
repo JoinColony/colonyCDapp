@@ -14,6 +14,7 @@ import WalletConnectedTopMenu from '../WalletConnectedTopMenu/WalletConnectedTop
 import Link from '~shared/Extensions/Link';
 import UserSubmenu from '../UserSubmenu';
 import { userMenuItems } from './consts';
+import TitleLabel from '~shared/Extensions/TitleLabel';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 
@@ -60,15 +61,16 @@ const UserMenu: FC<UserMenuProps> = ({
       >
         <button
           type="button"
-          aria-label="Back to main menu"
+          aria-label={formatMessage({ id: 'ariaLabel.backToMainMenu' })}
           className={styles.buttonBack}
           onClick={() => setActiveSubmenu(null)}
         >
           <Icon name="caret-left" appearance={{ size: 'extraTiny' }} />
           {activeSubmenu && (
-            <p className="ml-2 uppercase">
-              {activeSubmenu && formatMessage({ id: activeSubmenu })}
-            </p>
+            <TitleLabel
+              className="ml-2"
+              text={formatMessage({ id: activeSubmenu })}
+            />
           )}
         </button>
         {activeSubmenu && <UserSubmenu submenuId={activeSubmenu} />}
