@@ -1,3 +1,5 @@
+const { default: fetch } = require('node-fetch');
+
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
