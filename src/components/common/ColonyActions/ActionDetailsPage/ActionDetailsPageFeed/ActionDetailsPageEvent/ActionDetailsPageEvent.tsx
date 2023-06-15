@@ -4,7 +4,7 @@ import { ColonyAction, ColonyAndExtensionsEvents } from '~types';
 import { TransactionStatus, TransactionStatuses } from '~common/ColonyActions';
 import ActionEventData from './ActionEventData';
 
-import styles from '../ActionDetailsPageEvent.css';
+import styles from './ActionDetailsPageEvent.css';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.ActionDetailsPageEvent';

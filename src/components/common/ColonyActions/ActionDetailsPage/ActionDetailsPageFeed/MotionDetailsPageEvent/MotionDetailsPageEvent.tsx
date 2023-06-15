@@ -9,7 +9,7 @@ import {
 import { TransactionStatus, TransactionStatuses } from '~common/ColonyActions';
 import MotionEventData from './MotionEventData';
 
-import styles from '../ActionDetailsPageEvent.css';
+import styles from '../ActionDetailsPageEvent/ActionDetailsPageEvent.css';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.MotionDetailsPageEvent';
