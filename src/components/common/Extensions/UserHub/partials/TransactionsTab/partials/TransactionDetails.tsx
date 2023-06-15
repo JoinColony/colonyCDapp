@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
+
 import { getActiveTransactionIdx } from '~frame/GasStation/transactionGroup';
+
 import { TransactionType } from '~redux/immutable';
 import GroupedTransaction from './GroupedTransaction';
 import { TransactionDetailsProps } from '../types';
@@ -17,17 +19,15 @@ const TransactionDetails: FC<TransactionDetailsProps> = ({
   const selectedTransaction = transactionGroup[selectedTransactionIdx];
 
   return (
-    <div>
-      <ul>
-        <GroupedTransaction
-          appearance={appearance}
-          transactionGroup={transactionGroup}
-          selectedTransactionIdx={selectedTransactionIdx}
-          selectedTransaction={selectedTransaction as TransactionType}
-          unselectTransactionGroup={unselectTransactionGroup}
-        />
-      </ul>
-    </div>
+    <ul>
+      <GroupedTransaction
+        appearance={appearance}
+        transactionGroup={transactionGroup}
+        selectedTransactionIdx={selectedTransactionIdx}
+        selectedTransaction={selectedTransaction as TransactionType}
+        unselectTransactionGroup={unselectTransactionGroup}
+      />
+    </ul>
   );
 };
 

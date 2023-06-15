@@ -1,10 +1,12 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 import { format } from 'date-fns';
+
 import { TRANSACTION_STATUSES } from '~types';
 
 import Icon from '~shared/Icon';
 import { SpinnerLoader } from '~shared/Preloaders';
+
 import { TransactionStatusProps } from '../types';
 
 const displayName =
@@ -12,7 +14,7 @@ const displayName =
 
 const TransactionStatus: FC<TransactionStatusProps> = ({
   status,
-  groupCount,
+  // groupCount,
   loadingRelated,
   date,
 }) => {
@@ -43,11 +45,9 @@ const TransactionStatus: FC<TransactionStatusProps> = ({
     )} */}
 
       {/* @TOOD: when it should appear? */}
-      {groupCount && ready && (
-        <span>
-          <span>{groupCount}</span>
-        </span>
-      )}
+      {/* {groupCount && ready && (
+            <span>{groupCount}</span>
+      )} */}
 
       {(pending || loadingRelated) && (
         <div data-test="gasStationTransactionPending">

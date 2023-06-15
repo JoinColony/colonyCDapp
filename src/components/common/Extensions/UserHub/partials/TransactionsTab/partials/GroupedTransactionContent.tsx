@@ -1,20 +1,12 @@
-import React, { useCallback, FC, useEffect, useContext } from 'react';
+import React, { FC } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
-import { toast } from 'react-toastify';
-import { ActionTypes } from '~redux';
-import { useAsyncFunction } from '~hooks';
-import { TRANSACTION_STATUSES } from '~types';
 
-import { transactionEstimateGas, transactionSend } from '~redux/actionCreators';
 import Icon from '~shared/Icon/Icon';
-import styles from '../partials/TransactionsItem/TransactionsItem.module.css';
+import styles from './TransactionsItem/TransactionsItem.module.css';
 import NotificationBanner from '~common/Extensions/NotificationBanner/NotificationBanner';
 import { GroupedTransactionContentProps } from '../types';
-import { withId } from '~utils/actions';
-import { GasStationContext } from '~frame/GasStation';
-import Toast from '~shared/Extensions/Toast';
+import { useGroupedTransactionContent } from './hooks';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransactionCard';
@@ -55,92 +47,28 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
   // const dispatch = useDispatch();
   const { formatMessage } = useIntl();
 
-  // const handleCancel = useCallback(() => {
-  //   dispatch(transactionCancel(id));
-  // }, [dispatch, id]);
-
-  // const [isShowingCancelConfirmation, setIsShowingCancelConfirmation] =
-  //   useState(false);
-
-  // const toggleCancelConfirmation = useCallback(() => {
-  //   setIsShowingCancelConfirmation(!isShowingCancelConfirmation);
-  // }, [isShowingCancelConfirmation]);
-
-  // const ready = status === TRANSACTION_STATUSES.READY;
-  const failed = status === TRANSACTION_STATUSES.FAILED;
-  // const succeeded = status === TRANSACTION_STATUSES.SUCCEEDED;
-  const pending = status === TRANSACTION_STATUSES.PENDING;
-
-  // Only transactions that can be signed can be cancelled
-  // const canBeSigned = selected && ready;
-
-  // A prior transaction was selected
-  // const hasDependency = ready && !selected;
-
-  const defaultTransactionMessageDescriptorId = {
-    id: `${metatransaction ? 'meta' : ''}transaction.${
-      context ? `${context}.` : ''
-    }${methodName}.${methodContext ? `${methodContext}.` : ''}title`,
-  };
-
-  const dispatch = useDispatch();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-
-  const { updateTransactionAlert } = useContext(GasStationContext);
-
-  useEffect(() => {
-    if (!error) {
-      if (metatransaction) {
-        dispatch(transactionSend(id));
-      } else {
-        dispatch(transactionEstimateGas(id));
-      }
-    }
-  }, [dispatch, id, error, metatransaction]);
-
-  const handleResetMetaTransactionAlert = useCallback(
-    () => updateTransactionAlert(id, { wasSeen: false }),
-    [id, updateTransactionAlert],
+  const {
+    defaultTransactionMessageDescriptorId,
+    handleRetryAction,
+    failed,
+    ready,
+    pending,
+    succeeded,
+  } = useGroupedTransactionContent(
+    id,
+    error,
+    methodContext,
+    methodName,
+    metatransaction,
+    context,
+    status,
   );
-
-  // @ts-ignore
-  const transform = useCallback(withId(id), [id]);
-  const asyncFunction = useAsyncFunction({
-    submit: ActionTypes.TRANSACTION_RETRY,
-    error: ActionTypes.TRANSACTION_ERROR,
-    success: ActionTypes.TRANSACTION_SENT,
-    transform,
-  });
-
-  const handleRetryAction = useCallback(async () => {
-    try {
-      handleResetMetaTransactionAlert();
-      await asyncFunction(id).then(() =>
-        toast.success(
-          <Toast
-            type="success"
-            title={{ id: 'extensionDeprecate.toast.title.success' }}
-            description={{
-              id: 'extensionDeprecate.toast.description.success',
-            }}
-          />,
-        ),
-      );
-    } catch (err) {
-      toast.error(
-        <Toast type="error" title="Error" description="Something went wrong" />,
-      );
-      console.error(err);
-    }
-  }, [asyncFunction, id, handleResetMetaTransactionAlert]);
 
   return (
     <li
-      className={clsx(`${styles.listItem} font-semibold text-gray-900`, {
-        'before:bg-success-400':
-          status === TRANSACTION_STATUSES.READY ||
-          status === TRANSACTION_STATUSES.SUCCEEDED,
-        'before:bg-negative-400': status === TRANSACTION_STATUSES.FAILED,
+      className={clsx(`${styles.listItem} font-semibold`, {
+        'before:bg-success-400': ready || succeeded,
+        'before:bg-negative-400': failed,
         'before:!bg-blue-400': pending,
       })}
     >
@@ -156,19 +84,12 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
         {!pending ? (
           <div
             className={clsx('flex ml-2', {
-              'text-success-400':
-                status === TRANSACTION_STATUSES.READY ||
-                status === TRANSACTION_STATUSES.SUCCEEDED,
-              'text-negative-400': TRANSACTION_STATUSES.FAILED,
+              'text-success-400': ready || succeeded,
+              'text-negative-400': failed,
             })}
           >
             <Icon
-              name={
-                status === TRANSACTION_STATUSES.READY ||
-                status === TRANSACTION_STATUSES.SUCCEEDED
-                  ? 'check-circle'
-                  : 'warning-circle'
-              }
+              name={ready || succeeded ? 'check-circle' : 'warning-circle'}
               appearance={{ size: 'tiny' }}
             />
           </div>

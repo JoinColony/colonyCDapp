@@ -1,5 +1,5 @@
-import { TransactionOrMessageGroups } from "~frame/GasStation/transactionGroup";
+import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
 
 export interface UserReputationProps {
-    transactionAndMessageGroups: TransactionOrMessageGroups;
+  transactionAndMessageGroups: TransactionOrMessageGroups;
 }

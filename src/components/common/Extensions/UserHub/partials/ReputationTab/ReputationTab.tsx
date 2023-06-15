@@ -17,7 +17,7 @@ const ReputationTab = () => {
   // @TODO: handle empty state <EmptyContent />
   return (
     <div className="bg-base-white">
-      <div className="font-semibold text-lg text-gray-900 mb-4">
+      <div className="font-semibold text-lg mb-4">
         {formatMessage({ id: 'reputation.tab.title' })}
       </div>
       <Balance nativeToken={nativeToken} wallet={wallet} />

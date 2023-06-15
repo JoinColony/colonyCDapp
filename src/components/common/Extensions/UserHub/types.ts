@@ -13,7 +13,7 @@ export type TabListProps = typeof tabList;
 export interface UserHubProps {
   appearance?: Appearance;
   transactionAndMessageGroups: TransactionOrMessageGroups;
-  autoOpenTransaction: boolean,
+  autoOpenTransaction: boolean;
   setAutoOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
   isTranactionTabVisible: boolean;
 }

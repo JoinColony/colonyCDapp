@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
+
 import {
   useAppContext,
   useColonyContext,
@@ -15,7 +16,9 @@ import Button from '~shared/Extensions/Button';
 import PopoverBase from '~shared/Extensions/PopoverBase/PopoverBase';
 import UserAvatar from '~shared/Extensions/UserAvatar';
 import MemberReputation from '~shared/MemberReputation/MemberReputation';
+
 import { UserReputationProps } from '../../types';
+
 import { transactionCount } from '~frame/GasStation/transactionGroup';
 
 export const displayName =
@@ -44,6 +47,7 @@ const UserReputation: FC<UserReputationProps> = ({
     usePopperTooltip(
       {
         delayShow: 200,
+        delayHide: 200,
         placement: 'bottom-end',
         trigger: 'click',
         interactive: true,

@@ -5,7 +5,9 @@ import React, {
   useContext,
   useMemo,
 } from 'react';
+
 import { useParams } from 'react-router-dom';
+
 import { useExtensionData } from '~hooks';
 
 export const ExtensionsContext = createContext<{

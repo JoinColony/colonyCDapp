@@ -69,12 +69,13 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
     <li>
       <button
         type="button"
+        aria-label="handle unselect transaction"
         className="w-full"
         onClick={(event) => unselectTransactionGroup(event)}
       >
         <div className="flex items-center justify-between py-3.5">
           <div className="flex flex-col items-start">
-            <h4 className="font-medium text-md text-gray-900">{value}</h4>
+            <h4 className="font-medium text-md">{value}</h4>
             <p className="text-gray-600 text-xs">
               <FormattedMessage
                 {...defaultTransactionGroupMessageDescriptorDescriptionId}

@@ -51,7 +51,9 @@ export interface GroupedTransactionContentProps {
 export interface TransactionDetailsProps {
   appearance: Appearance;
   transactionGroup: TransactionType[];
-  unselectTransactionGroup: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  unselectTransactionGroup: (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => void;
 }
 
 export interface GroupedTransactionProps {

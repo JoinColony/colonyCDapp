@@ -29,7 +29,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
     <div
       className={clsx(
         styles.banner,
-        `text-gray-900 gap-2 ${
+        `gap-2 ${
           isAlt
             ? 'rounded min-h-[3.75rem] p-4'
             : 'rounded-lg min-h-[2.75rem] py-3 px-6 '
@@ -69,9 +69,8 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
         </div>
         {children && (
           <div
-            className={clsx('text-sm font-normal max-w-[50rem] mt-1.5', {
+            className={clsx('text-sm max-w-[50rem] mt-1.5', {
               'text-red-400': status === 'error',
-              'text-gray-900': status !== 'error',
             })}
           >
             {children}
