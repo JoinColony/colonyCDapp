@@ -3,7 +3,6 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 
 import { useColonyContext, useMobile, useUserReputation } from '~hooks';
-
 import {
   ColoniesDropdown,
   ColonyAvatarWrapper,
@@ -16,7 +15,6 @@ import Button from '~shared/Extensions/Button';
 import Token from '~common/Extensions/UserNavigation/partials/Token';
 import UserAvatar from '~shared/Extensions/UserAvatar';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
-
 import styles from './Header.module.css';
 import { useHeader } from './hooks';
 
@@ -64,7 +62,7 @@ const Header = () => {
                 aria-label="Open dropdown"
                 ref={setTriggerRef}
                 className={clsx('flex items-center justify-between', {
-                  'w-[3.5225rem]': !isMainMenuVisible,
+                  'w-[3.5rem]': !isMainMenuVisible,
                   'w-[8rem]': isMainMenuVisible,
                 })}
                 type="button"
@@ -134,11 +132,6 @@ const Header = () => {
                               name="list"
                               appearance={{ size: 'extraTiny' }}
                             />
-                            {!isMobile && (
-                              <p className="text-sm font-inter font-medium ml-1">
-                                {formatMessage({ id: 'helpAndAccount' })}
-                              </p>
-                            )}
                           </Button>
                         </div>
                         {!!watchlist.length && (

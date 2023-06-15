@@ -106,7 +106,7 @@ const UserInfo: FC<UserInfoProps> = ({
                   <span className="text-md">{titleText}</span>
                   <span className="inline-flex items-center text-sm text-blue-400">
                     <Icon name="star" appearance={{ size: 'extraTiny' }} />
-                    <span className="text-blue-400 inline-block ml-1 mr-2">
+                    <span className="inline-block ml-1 mr-2">
                       {percentage}%
                     </span>
                     {points && <span>{points} pts</span>}

@@ -25,6 +25,7 @@ export const useHeader = () => {
     usePopperTooltip(
       {
         delayShow: 200,
+        delayHide: 200,
         placement: 'bottom',
         trigger: 'click',
         interactive: true,
