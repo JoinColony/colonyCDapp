@@ -1,22 +1,24 @@
 import clsx from 'clsx';
 import React from 'react';
-
 import { useIntl } from 'react-intl';
+
+import { useColonyContext, useMobile, useUserReputation } from '~hooks';
+
 import {
   ColoniesDropdown,
   ColonyAvatarWrapper,
 } from '~common/Extensions/ColonySwitcher';
 import ColonyDropdownMobile from '~common/Extensions/ColonySwitcher/partials/ColonyDropdownMobile';
-import { useColonyContext, useMobile, useUserReputation } from '~hooks';
-import styles from './Header.module.css';
 import Icon from '~shared/Icon';
 import UserNavigation from '~common/Extensions/UserNavigation';
 import MainNavigation from '~common/Extensions/MainNavigation';
-import { useHeader } from './hooks';
 import Button from '~shared/Extensions/Button';
 import Token from '~common/Extensions/UserNavigation/partials/Token';
 import UserAvatar from '~shared/Extensions/UserAvatar';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
+
+import styles from './Header.module.css';
+import { useHeader } from './hooks';
 
 const displayName = 'frame.Extensions.Header';
 
