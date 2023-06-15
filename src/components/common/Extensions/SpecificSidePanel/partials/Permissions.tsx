@@ -10,9 +10,9 @@ const Permissions: FC<PermissionsProps> = ({ data }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <div className="flex flex-wrap">
+    <div className="flex flex-wrap gap-x-1 gap-y-1">
       {data?.map(({ text, key, name, description }) => (
-        <span key={key} className="pr-1 pb-1">
+        <span key={key}>
           <UserPermissionsBadge
             name={name}
             text={text}

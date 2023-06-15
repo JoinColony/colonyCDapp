@@ -8,19 +8,21 @@ import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 const displayName = 'common.Extensions.partials.ContractAddress';
 
-const ContractAddress: FC<PanelTypeProps> = ({ title, address }) => {
-  const { isCopied, handleClipboardCopy } = useCopyToClipboard(address || '');
+const ContractAddress: FC<PanelTypeProps> = ({ title, description }) => {
+  const { isCopied, handleClipboardCopy } = useCopyToClipboard(
+    description || '',
+  );
   const { formatMessage } = useIntl();
 
   return (
     <div className={styles.panelRow}>
       <p className={styles.panelTitle}>{title}</p>
-      {address && (
+      {description && (
         <Tooltip
           interactive
           isSuccess={isCopied}
           tooltipContent={
-            <a className="block" href={address}>
+            <a className="block" href={description}>
               {formatMessage({ id: isCopied ? 'copied' : 'copy.address' })}
             </a>
           }
@@ -31,7 +33,7 @@ const ContractAddress: FC<PanelTypeProps> = ({ title, address }) => {
             className="font-normal text-md justify-start text-ellipsis overflow-hidden"
             onClick={handleClipboardCopy}
           >
-            {splitWalletAddress(address)}
+            {splitWalletAddress(description)}
           </button>
         </Tooltip>
       )}

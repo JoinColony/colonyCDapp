@@ -57,7 +57,7 @@ const UserNavigationWithData = () => {
           <div className="flex justify-end mb-2">
             <button
               type="button"
-              aria-label={formatMessage({ id: 'close.dropdown' })}
+              aria-label={formatMessage({ id: 'ariaLabel.closeDropdown' })}
               onClick={() => setIsOpen(false)}
               className="text-gray-400 sm:pr-4"
             >

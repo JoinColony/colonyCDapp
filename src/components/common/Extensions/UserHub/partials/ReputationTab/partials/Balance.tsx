@@ -8,6 +8,7 @@ import styles from '../ReputationTab.module.css';
 import { BalanceProps } from '../types';
 import PopoverButton from '~shared/Extensions/PopoverButton';
 import { useMobile } from '~hooks';
+import TitleLabel from '~shared/Extensions/TitleLabel/TitleLabel';
 
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.Balance';
@@ -34,9 +35,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
 
   return (
     <div>
-      <div className="text-gray-400 text-xs font-medium uppercase">
-        {formatMessage({ id: 'balance.in.colony' })}
-      </div>
+      <TitleLabel text={formatMessage({ id: 'balance.in.colony' })} />
       <div className="flex flex-col gap-[1.3125rem] pt-2 pb-[1.625rem] border-b border-gray-100">
         <div className={styles.row}>
           <span className={styles.rowName}>
@@ -82,7 +81,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
           )}
         </div>
 
-        {/* @TODO: stacked icon vievd? */}
+        {/* @TODO: stacked icon viewed? */}
         <div>
           <div className={styles.row}>
             <div className="flex flex-row gap-4 items-center">
