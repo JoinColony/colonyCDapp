@@ -1,0 +1,34 @@
+@value bannerHeight: 55px;
+
+.stakeRequiredBanner {
+  height: bannerHeight;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  font-size: var(--size-normal);
+  font-weight: var(--weight-normal);
+  text-align: center;
+}
+
+.stakeRequiredBanner > div {
+  display: grid;
+  justify-content: center;
+  padding: 9px 0;
+  grid-template:
+    'left text shareButton' 100%
+    / 1fr 6fr 1fr;
+  justify-items: center;
+  column-gap: 10px;
+}
+
+.stakeRequiredBanner > div > :nth-child(2) {
+  padding: 0px 5px;
+}
+
+.bannerText {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  grid-area: text;
+}

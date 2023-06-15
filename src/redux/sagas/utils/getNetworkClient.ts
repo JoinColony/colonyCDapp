@@ -8,7 +8,7 @@ import { providers } from 'ethers';
 
 import { DEFAULT_NETWORK } from '~constants';
 import { ContextModule, getContext } from '~context';
-import { ColonyJSNetworkMapping, isFullWallet } from '~types';
+import { Network, ColonyJSNetworkMapping } from '~types';
 
 /*
  * Return an initialized ColonyNetworkClient instance.
@@ -16,9 +16,7 @@ import { ColonyJSNetworkMapping, isFullWallet } from '~types';
 export default function* getNetworkClient() {
   const wallet = getContext(ContextModule.Wallet);
 
-  if (!isFullWallet(wallet)) {
-    throw new Error('Background login not yet completed.');
-  }
+  if (!wallet) throw new Error('No wallet in context');
 
   const network = DEFAULT_NETWORK;
 
@@ -26,19 +24,19 @@ export default function* getNetworkClient() {
 
   const signer = walletProvider.getSigner();
 
-  const reputationOracleUrl = new URL(`/reputation`, window.location.origin);
+  let reputationOracleUrl = new URL(`/reputation`, window.location.origin);
 
-  // if (network === Network.Ganache) {
-  //   reputationOracleUrl = new URL(`/reputation`, 'http://localhost:3001');
-  //   const {
-  //     etherRouterAddress: networkAddress,
-  //     // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
-  //   } = require('../../../../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-  //   return yield call(getColonyNetworkClient, ColonyJSNetwork.Custom, signer, {
-  //     networkAddress,
-  //     reputationOracleEndpoint: reputationOracleUrl.href,
-  //   });
-  // }
+  if (DEFAULT_NETWORK === Network.Ganache) {
+    reputationOracleUrl = new URL(`/reputation/local`, 'http://localhost:3001');
+    const {
+      etherRouterAddress: networkAddress,
+      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
+    } = require('../../../../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+    return yield call(getColonyNetworkClient, ColonyJSNetwork.Custom, signer, {
+      networkAddress,
+      reputationOracleEndpoint: reputationOracleUrl.href,
+    });
+  }
 
   return yield call(
     getColonyNetworkClient,

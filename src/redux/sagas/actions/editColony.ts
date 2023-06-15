@@ -1,4 +1,4 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
 import { ContextModule, getContext } from '~context';
@@ -9,10 +9,9 @@ import {
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
-import { notNull } from '~utils/arrays';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
@@ -27,6 +26,7 @@ import {
   transactionReady,
 } from '../../actionCreators';
 import {
+  getExistingTokenAddresses,
   getModifiedTokenAddresses,
   updateColonyTokens,
 } from '../utils/updateColonyTokens';
@@ -58,17 +58,7 @@ function* editColonyAction({
       'annotateEditColonyAction',
     ]);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(editColony, {
+    yield createGroupTransaction(editColony, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'editColony',
       identifier: colonyAddress,
@@ -146,10 +136,7 @@ function* editColonyAction({
     );
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    const existingTokenAddresses =
-      colony.tokens?.items
-        .filter(notNull)
-        .map((tokenItem) => tokenItem?.token.tokenAddress) || [];
+    const existingTokenAddresses = getExistingTokenAddresses(colony);
     const modifiedTokenAddresses = getModifiedTokenAddresses(
       colony.nativeToken.tokenAddress,
       existingTokenAddresses,
@@ -227,8 +214,10 @@ function* editColonyAction({
       meta,
     });
 
-    if (colonyName && navigate) {
-      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
+    if (colonyName) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_EDIT_COLONY_ERROR, error, meta);

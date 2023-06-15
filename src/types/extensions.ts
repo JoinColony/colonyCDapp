@@ -18,11 +18,11 @@ export enum ExtensionParamType {
 }
 
 export interface ExtensionInitParam {
-  title: MessageDescriptor;
+  title?: MessageDescriptor;
   description?: MessageDescriptor;
   defaultValue?: string | number;
   paramName: string;
-  validation: Schema<any>;
+  validation?: Schema<any>;
   type: ExtensionParamType;
   complementaryLabel?: 'hours' | 'periods' | 'percent';
   formattingOptions?: CleaveOptions;
@@ -60,6 +60,7 @@ export type InstallableExtensionData = ExtensionConfig & {
   availableVersion: number;
   isEnabled?: boolean;
   isInitialized?: boolean;
+  isDeprecated?: boolean;
 };
 
 export type AnyExtensionData =

@@ -152,8 +152,10 @@ function* createMoveFundsAction({
       meta,
     });
 
-    if (colonyName && navigate) {
-      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
+    if (colonyName) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (caughtError) {
     putError(ActionTypes.ACTION_MOVE_FUNDS_ERROR, caughtError, meta);

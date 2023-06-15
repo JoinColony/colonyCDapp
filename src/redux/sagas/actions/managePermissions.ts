@@ -1,4 +1,4 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { hexlify, hexZeroPad } from 'ethers/lib/utils';
 import { ClientType, ColonyRole } from '@colony/colony-js';
 
@@ -7,7 +7,7 @@ import { AllActions, Action } from '../../types/actions';
 import { putError, takeFrom } from '../utils';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
@@ -46,16 +46,6 @@ function* managePermissionsAction({
       'setUserRoles',
     ]);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
     const roleArray = Object.values(roles).reverse();
     /* Always make sure the Architecture Subdomain is false, it's deprecated */
     roleArray.splice(2, 0, false);
@@ -69,7 +59,7 @@ function* managePermissionsAction({
     const hexString = hexlify(parseInt(roleBitmask, 2));
     const zeroPadHexString = hexZeroPad(hexString, 32);
 
-    yield createGroupTransaction(setUserRoles, {
+    yield createGroupTransaction(setUserRoles, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'setUserRolesWithProofs',
       identifier: colonyAddress,
@@ -94,8 +84,10 @@ function* managePermissionsAction({
       meta,
     });
 
-    if (colonyName && navigate) {
-      navigate(`/colony/${colonyName}/tx/${transactionHash}`);
+    if (colonyName) {
+      navigate(`/colony/${colonyName}/tx/${transactionHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_USER_ROLES_SET_ERROR, error, meta);

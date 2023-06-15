@@ -1,9 +1,10 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 
 import { ContextModule, getContext } from '~context';
 import { Action, ActionTypes, AllActions } from '~redux';
 import {
+  GetFullColonyByNameDocument,
   UpdateDomainMetadataDocument,
   UpdateDomainMetadataMutation,
   UpdateDomainMetadataMutationVariables,
@@ -11,7 +12,7 @@ import {
 import { getDomainDatabaseId } from '~utils/domains';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
@@ -57,17 +58,7 @@ function* editDomainAction({
       // 'annotateEditDomainAction',
     ]);
 
-    const createGroupTransaction = ({ id, index }, config) =>
-      fork(createTransaction, id, {
-        ...config,
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-      });
-
-    yield createGroupTransaction(editDomain, {
+    yield createGroupTransaction(editDomain, batchKey, meta, {
       context: ClientType.ColonyClient,
       methodName: 'editDomainWithProofs',
       identifier: colonyAddress,
@@ -134,6 +125,7 @@ function* editDomainAction({
             ),
           },
         },
+        refetchQueries: [GetFullColonyByNameDocument],
       });
     }
 
@@ -168,8 +160,10 @@ function* editDomainAction({
       meta,
     });
 
-    if (colonyName && navigate) {
-      yield navigate(`/colony/${colonyName}/tx/${txHash}`);
+    if (colonyName) {
+      navigate(`/colony/${colonyName}/tx/${txHash}`, {
+        state: { isRedirect: true },
+      });
     }
   } catch (error) {
     return yield putError(ActionTypes.ACTION_DOMAIN_EDIT_ERROR, error, meta);

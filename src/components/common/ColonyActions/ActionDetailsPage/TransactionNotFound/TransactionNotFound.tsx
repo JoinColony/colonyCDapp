@@ -1,5 +1,6 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
+import { useParams } from 'react-router-dom';
 
 import { Heading3 } from '~shared/Heading';
 import Button from '~shared/Button';
@@ -8,10 +9,12 @@ import NakedMoleImage from '~images/naked-mole.svg';
 import { STATUS_MAP } from '../staticMaps';
 import TransactionHash from './TransactionHash';
 import { TransactionMetaProps } from '../TransactionMeta';
+import { ActionDetailsPageParams } from '../ActionDetailsPage';
 
 import styles from './TransactionNotFound.css';
 
-const displayName = 'common.ColonyActions.ActionsPage.TransactionNotFound';
+const displayName =
+  'common.ColonyActions.ActionDetailsPage.TransactionNotFound';
 
 const MSG = defineMessages({
   returnToColony: {
@@ -32,7 +35,6 @@ interface TransactionNotFoundProps {
   colonyName?: string;
   createdAt?: TransactionMetaProps['createdAt'];
   status?: number;
-  transactionHash?: string;
   isUnknownTx: boolean;
 }
 
@@ -40,9 +42,10 @@ const TransactionNotFound = ({
   colonyName,
   createdAt,
   status,
-  transactionHash,
   isUnknownTx,
-}: TransactionNotFoundProps) => (
+}: TransactionNotFoundProps) => {
+  const { transactionHash } = useParams<ActionDetailsPageParams>();
+  return (
   <div className={styles.notFoundContainer}>
     <NakedMoleImage />
     <Heading3
@@ -70,6 +73,7 @@ const TransactionNotFound = ({
     />
   </div>
 );
+};
 
 TransactionNotFound.displayName = displayName;
 

@@ -3,23 +3,20 @@ import React from 'react';
 import { ColonyAction } from '~types';
 import { ACTIONS_EVENTS } from '../staticMaps';
 
-import ActionsPageEvent from './ActionDetailsPageEvent';
+import { ActionsPageEvent } from './ActionDetailsPageEvent';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.ActionDetailsPageFeed';
 
 interface ActionsPageFeedProps {
   actionData: ColonyAction;
-  // networkEvents: FormattedEvent[];
 }
 
-const ActionDetailsPageFeed = ({
-  actionData,
-}: // networkEvents,
-ActionsPageFeedProps) => {
+const ActionDetailsPageFeed = ({ actionData }: ActionsPageFeedProps) => {
   const events =
     JSON.parse(actionData.individualEvents as string) ||
     ACTIONS_EVENTS[actionData.type];
+
   return (
     <>
       {events?.map((event) => (
