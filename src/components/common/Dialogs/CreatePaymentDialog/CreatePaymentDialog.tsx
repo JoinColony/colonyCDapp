@@ -15,10 +15,11 @@ import { pipe, withMeta, mapPayload } from '~utils/actions';
 import { WizardDialogType, useNetworkInverseFee } from '~hooks';
 import { useGetMembersForColonyQuery } from '~gql';
 
-import { extractUsersFromColonyMemberData } from '../helpers';
-
 import DialogForm from './CreatePaymentDialogForm';
-import { getCreatePaymentDialogPayload } from './helpers';
+import {
+  extractUsersFromColonyMemberData,
+  getCreatePaymentDialogPayload,
+} from './helpers';
 import getValidationSchema from './validation';
 
 const displayName = 'common.CreatePaymentDialog';
@@ -121,26 +122,19 @@ const CreatePaymentDialog = ({
         transform={transform}
         onSuccess={close}
       >
-        {({ watch }) => {
-          const forceActionvalue = watch('forceAction');
-          if (forceActionvalue !== isForce) {
-            setIsForce(forceActionvalue);
+        <DialogForm
+          back={() => callStep(prevStep)}
+          verifiedUsers={
+            colonyMembers // isWhitelistActivated ? verifiedUsers : ...
           }
-
-          return (
-            <DialogForm
-              back={() => callStep(prevStep)}
-              verifiedUsers={
-                colonyMembers // isWhitelistActivated ? verifiedUsers : ...
-              }
-              // showWhitelistWarning={showWarningForAddress(
-              //   values?.recipient?.walletAddress,
-              // )}
-              colony={colony}
-              enabledExtensionData={enabledExtensionData}
-            />
-          );
-        }}
+          // showWhitelistWarning={showWarningForAddress(
+          //   values?.recipient?.walletAddress,
+          // )}
+          colony={colony}
+          enabledExtensionData={enabledExtensionData}
+          handleIsForceChange={setIsForce}
+          isForce={isForce}
+        />
       </Form>
     </Dialog>
   );

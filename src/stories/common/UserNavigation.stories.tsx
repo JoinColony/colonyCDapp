@@ -1,9 +1,9 @@
 import { ApolloProvider } from '@apollo/client';
 import { useIntl } from 'react-intl';
 import type { Meta, StoryObj } from '@storybook/react';
-
 import React, { useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
+
 import UserHub from '~common/Extensions/UserHub';
 import UserNavigation from '~common/Extensions/UserNavigation';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
@@ -41,6 +41,7 @@ const UserNavigationWithData = () => {
 
   const { setTooltipRef } = usePopperTooltip({
     delayShow: 200,
+    delayHide: 200,
     placement: 'bottom',
     trigger: 'click',
     visible: isOpen,

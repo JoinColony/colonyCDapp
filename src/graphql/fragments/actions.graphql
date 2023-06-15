@@ -1,38 +1,43 @@
 fragment ColonyAction on ColonyAction {
-  id
   transactionHash: id
   colonyAddress: colonyId
   type
   blockNumber
   initiatorAddress
   initiatorUser {
-    ...User
+    ...UserDisplayFragment
   }
   initiatorColony {
-    ...Colony
+    ...ColonyDisplayFragment
   }
   initiatorExtension {
-    ...Extension
+    ...ExtensionDisplayFragment
   }
   initiatorToken {
+    # NOTE: Token doesn't have a lightweight Display-only Fragment, as the props
+    # on that fragment are just 2 less than the actual "full" version of the Fragment
     ...Token
   }
   recipientAddress
   recipientUser {
-    ...User
+    ...UserDisplayFragment
   }
   recipientColony {
-    ...Colony
+    ...ColonyDisplayFragment
   }
   recipientExtension {
-    ...Extension
+    ...ExtensionDisplayFragment
   }
   recipientToken {
+    # NOTE: Token doesn't have a lightweight Display-only Fragment, as the props
+    # on that fragment are just 2 less than the actual "full" version of the Fragment
     ...Token
   }
   amount
   tokenAddress
   token {
+    # NOTE: Token doesn't have a lightweight Display-only Fragment, as the props
+    # on that fragment are just 2 less than the actual "full" version of the Fragment
     ...Token
   }
   fromDomain {
@@ -52,4 +57,115 @@ fragment ColonyAction on ColonyAction {
     role_6
   }
   individualEvents
+  isMotion
+  motionData {
+    ...ColonyMotion
+  }
+  colony {
+    colonyAddress: id
+    nativeToken {
+      nativeTokenDecimals: decimals
+      nativeTokenSymbol: symbol
+      tokenAddress: id
+    }
+  }
+  showInActionsList
+  pendingDomainMetadata {
+    ...DomainMetadata
+  }
+  pendingColonyMetadata {
+    ...ColonyMetadata
+  }
+}
+
+fragment MotionStakeValues on MotionStakeValues {
+  yay
+  nay
+}
+
+fragment ColonyMotion on ColonyMotion {
+  databaseMotionId: id
+  motionId: nativeMotionId
+  motionStakes {
+    ...MotionStakes
+  }
+  usersStakes {
+    address
+    stakes {
+      raw {
+        ...MotionStakeValues
+      }
+      percentage {
+        ...MotionStakeValues
+      }
+    }
+  }
+  remainingStakes
+  userMinStake
+  requiredStake
+  rootHash
+  nativeMotionDomainId
+  stakerRewards {
+    address
+    rewards {
+      yay
+      nay
+    }
+    isClaimed
+  }
+  isFinalized
+  voterRecord {
+    ...VoterRecord
+  }
+  revealedVotes {
+    raw {
+      yay
+      nay
+    }
+    percentage {
+      yay
+      nay
+    }
+  }
+  skillRep
+  repSubmitted
+  hasObjection
+  motionStateHistory {
+    hasVoted
+    hasPassed
+    hasFailed
+    hasFailedNotFinalizable
+    inRevealPhase
+  }
+  messages {
+    items {
+      ...MotionMessage
+    }
+  }
+}
+
+fragment MotionMessage on MotionMessage {
+  initiatorAddress
+  name
+  messageKey
+  initiatorUser {
+    ...User
+  }
+  vote
+  amount
+}
+
+fragment VoterRecord on VoterRecord {
+  address
+  voteCount
+  vote
+}
+
+fragment MotionStakes on MotionStakes {
+  raw {
+    ...MotionStakeValues
+  }
+  percentage {
+    ...MotionStakeValues
+  }
 }

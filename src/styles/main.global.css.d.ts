@@ -359,6 +359,7 @@ declare namespace MainGlobalCssNamespace {
     'right-[425Rem]': string;
     right0: string;
     right6: string;
+    ring: string;
     root: string;
     rotate0: string;
     rotate180: string;

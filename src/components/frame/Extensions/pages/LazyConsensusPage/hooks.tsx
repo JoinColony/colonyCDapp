@@ -4,8 +4,8 @@ import { useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Extension } from '@colony/colony-js/*';
 import { toast } from 'react-toastify';
+import { Extension } from '@colony/colony-js';
 
 import { useAsyncFunction, useColonyContext, useExtensionData } from '~hooks';
 import { useExtensionsBadge } from '~hooks/useExtensionsBadgeStatus';
@@ -20,6 +20,7 @@ import {
   extensionContentTestingGovernance,
 } from './consts';
 import Toast from '~shared/Extensions/Toast/Toast';
+import { ExtensionInitParam } from '~types';
 
 export const useLazyConsensusPage = (
   onOpenIndexChange?: (index: number) => void,
@@ -151,6 +152,7 @@ export const useLazyConsensusPage = (
     setValue,
     resetField,
     clearErrors,
+    watch,
   } = useForm({
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
@@ -206,58 +208,6 @@ export const useLazyConsensusPage = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [extensionData?.initializationParams, errors],
   );
-
-  const handleFormSuccess = useCallback(() => {
-    navigate(`/colony/${colony?.name}/extensions`);
-  }, [colony?.name, navigate]);
-
-  const transform = pipe(
-    mapPayload((payload) =>
-      mapExtensionActionPayload(
-        extensionId as Extension,
-        payload,
-        extensionData?.initializationParams,
-      ),
-    ),
-    mergePayload({ colonyAddress: colony?.colonyAddress, extensionData }),
-  );
-
-  const submit = ActionTypes.EXTENSION_ENABLE;
-  const error = ActionTypes.EXTENSION_ENABLE_ERROR;
-  const success = ActionTypes.EXTENSION_ENABLE_SUCCESS;
-
-  const asyncFunction = useAsyncFunction({
-    submit,
-    error,
-    success,
-    transform,
-  });
-
-  const onSubmit = async (data) => {
-    onOpenIndexChange?.(-1);
-    try {
-      const extensionValues = {
-        colonyAddress: colony?.colonyAddress,
-        extensionData: {
-          totalStakeFraction: data.totalStakeFraction,
-          voterRewardFraction: data.voterRewardFraction,
-          userMinStakeFraction: data.userMinStakeFraction,
-          maxVoteFraction: data.maxVoteFraction,
-          stakePeriod: data.stakePeriod,
-          submitPeriod: data.submitPeriod,
-          revealPeriod: data.revealPeriod,
-          escalationPeriod: data.escalationPeriod,
-        },
-      };
-
-      await asyncFunction(extensionValues);
-      // @TODO: show toast notification
-      handleFormSuccess();
-    } catch (err) {
-      toast(<Toast type="warn" />);
-      console.error(err);
-    }
-  };
 
   const updateGovernanceFormFields = (data) =>
     extensionData?.initializationParams?.forEach((param) => {
@@ -319,6 +269,64 @@ export const useLazyConsensusPage = (
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldBeRadioButtonChangeToCustom]);
+
+  const handleFormSuccess = useCallback(() => {
+    navigate(`/colony/${colony?.name}/extensions`);
+  }, [colony?.name, navigate]);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { governance, ...rest } = watch();
+  const prepareInitializationParams = Object.entries(rest).map((item) => ({
+    paramName: item[0],
+    defaultValue: item[1],
+  }));
+
+  const transform = pipe(
+    mapPayload((payload) =>
+      mapExtensionActionPayload(
+        extensionId as Extension,
+        payload,
+        prepareInitializationParams as ExtensionInitParam[],
+      ),
+    ),
+    mergePayload({ colonyAddress: colony?.colonyAddress, extensionData }),
+  );
+
+  const enableAsyncFunction = useAsyncFunction({
+    submit: ActionTypes.EXTENSION_ENABLE,
+    error: ActionTypes.EXTENSION_ENABLE_ERROR,
+    success: ActionTypes.EXTENSION_ENABLE_SUCCESS,
+    transform,
+  });
+
+  const onSubmit = async (values) => {
+    onOpenIndexChange?.(-1);
+    try {
+      await enableAsyncFunction(values).then(() => {
+        return (
+          toast.success(
+            <Toast
+              type="success"
+              title={{ id: 'extensionReEnable.toast.title.success' }}
+              description={{
+                id: 'extensionReEnable.toast.description.success',
+              }}
+            />,
+          ),
+          handleFormSuccess()
+        );
+      });
+    } catch (err) {
+      toast.error(
+        <Toast
+          type="error"
+          title="Error"
+          description="Extension can't be changed"
+        />,
+      );
+      console.error(err);
+    }
+  };
 
   return {
     extensionData,

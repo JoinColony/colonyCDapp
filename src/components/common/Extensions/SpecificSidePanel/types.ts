@@ -1,4 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
+import { ColonyReputationItem } from '~shared/Extensions/UserAvatarPopover/types';
 import { AnyExtensionData } from '~types';
 
 export interface PermissionsProps {
@@ -19,11 +20,19 @@ export type SidePanelDataProps = {
     title: string;
     date: string | null;
   };
+  dateCreated: {
+    title: string;
+    date: string | null;
+  };
   installedBy: {
     title: string;
     component: JSX.Element;
   };
   versionInstalled: {
+    title: string;
+    version: string;
+  };
+  latestVersion: {
     title: string;
     version: string;
   };
@@ -62,4 +71,8 @@ export interface SpecificSidePanelProps {
 export interface SpecificSidePanelStoryProps {
   statuses: string[];
   sidePanelData: SidePanelDataProps;
+}
+
+export interface SpecificSidePanelHookProps {
+  colonyReputationItems: ColonyReputationItem[];
 }

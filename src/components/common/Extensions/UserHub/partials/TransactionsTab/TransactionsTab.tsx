@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+
 import { TransactionsProps } from './types';
 import TransactionsItem from './partials/TransactionsItem';
 

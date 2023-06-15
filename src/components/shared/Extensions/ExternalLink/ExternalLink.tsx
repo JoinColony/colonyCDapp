@@ -1,5 +1,6 @@
 import { useIntl } from 'react-intl';
 import React from 'react';
+
 import styles from './ExternalLink.module.css';
 import { ExternalLinkProps } from './types';
 

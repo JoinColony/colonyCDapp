@@ -2,6 +2,7 @@ import React, { FC, useLayoutEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import clsx from 'clsx';
+
 import {
   useAppContext,
   useColonyContext,
@@ -33,6 +34,7 @@ const UserNavigation: FC = () => {
     usePopperTooltip(
       {
         delayShow: 200,
+        delayHide: 200,
         placement: 'bottom-end',
         trigger: 'click',
         interactive: true,
@@ -60,7 +62,7 @@ const UserNavigation: FC = () => {
     visible: isWalletVisible,
   } = usePopperTooltip(
     {
-      delayShow: 200,
+      delayHide: 200,
       placement: 'bottom-end',
       trigger: 'click',
       interactive: true,
@@ -167,7 +169,7 @@ const UserNavigation: FC = () => {
             />
           </Button>
         )}
-        <div className="w-full h-auto absolute top-[6.5rem] md:top-[2.3rem]">
+        <div className="w-full h-auto">
           {visible && (
             <UserMenu
               tooltipProps={getTooltipProps}
@@ -175,6 +177,7 @@ const UserNavigation: FC = () => {
               isWalletConnected={isWalletConnected}
               user={user}
               walletAddress={user?.walletAddress}
+              nativeToken={nativeToken}
             />
           )}
         </div>

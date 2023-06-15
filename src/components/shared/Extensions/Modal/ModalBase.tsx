@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import ReactModal from 'react-modal';
 import clsx from 'clsx';
+
 import { ModalBaseProps } from './types';
 import styles from './Modal.module.css';
 

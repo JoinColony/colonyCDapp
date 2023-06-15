@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
+
 import styles from './SpecialInput.module.css';
 import { SpecialInputProps } from './types';
 

@@ -1,5 +1,6 @@
 :root {
   --primary: rgb(104, 210, 210); /* curreny colony primary */
+  --action-secondary: rgb(76, 93, 255); /* Stake required banner (motions) */
   --colony-white: rgb(251, 251, 251);
   --colony-black: rgb(31, 35, 39);
   --colony-blue: rgb(79, 93, 255);
@@ -13,7 +14,6 @@
     68,
     77
   ); /* Used for colony name display (colony simplified) */
-
   --grey-dark: rgb(47, 47, 47);
   --text-disabled: rgb(194, 204, 204);
   --colony-light-blue: rgb(238, 242, 245);
@@ -27,20 +27,17 @@
     238,
     242
   ); /* Used for user profile gradient start color */
-
   --light-ash: rgb(
     231,
     242,
     246
   ); /* Used for user profile gradient end color */
-
   --light-purple: rgb(200, 214, 247); /* Used for some box shadows */
   --grey-purple: rgb(
     118,
     116,
     139
   ); /* Used for the wallet connect button in the user navigation */
-
   --grey-blue: rgb(188, 197, 216);
   --light-grey: rgb(213, 213, 213);
   --light-grey-beige: rgb(227, 224, 227); /* Used for separator background */

@@ -1,5 +1,6 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
+
 import { TitledContentProps } from './types';
 import { useMobile } from '~hooks';
 

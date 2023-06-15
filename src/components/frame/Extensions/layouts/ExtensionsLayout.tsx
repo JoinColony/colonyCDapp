@@ -16,7 +16,6 @@ import {
 } from '~hooks';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks';
 import CalamityBanner from '~common/Extensions/CalamityBanner/CalamityBanner';
-import { getAllUserRoles } from '~transformers';
 import { useDialog } from '~shared/Dialog';
 import { NetworkContractUpgradeDialog } from '~common/Dialogs';
 import Spinner from '~shared/Extensions/Spinner';
@@ -25,6 +24,8 @@ import { Theme } from '../themes/enum';
 import { usePageThemeContext } from '~context/PageThemeContext';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
+import { getAllUserRoles } from '~transformers';
+import { ColonyFragment } from '~gql';
 
 const displayName = 'frame.Extensions.layouts.ExtensionsLayout';
 
@@ -35,8 +36,8 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
   const { colonyContractVersion } = useColonyContractVersion();
   const { user, wallet } = useAppContext();
   const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
-    wallet?.address,
+    colony as ColonyFragment,
+    wallet?.address || '',
   ]);
   const openUpgradeColonyDialog = useDialog(NetworkContractUpgradeDialog);
   const enabledExtensionData = useEnabledExtensions();
@@ -92,7 +93,7 @@ const ExtensionsLayout: FC<PropsWithChildren> = ({ children }) => {
               subtitle={formatMessage({ id: 'extensionsPage.description' })}
             />
           </div>
-          <div className="mt-10">{children}</div>
+          <div className="mt-9 sm:mt-10">{children}</div>
         </div>
       </main>
     </Spinner>

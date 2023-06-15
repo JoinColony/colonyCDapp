@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
+
 import styles from './NavItem.module.css';
 import NavLink from '~shared/Extensions/NavLink';
 import { NavItemProps } from '../../types';

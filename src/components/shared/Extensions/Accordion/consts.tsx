@@ -1,4 +1,5 @@
 import React from 'react';
+
 import ContentTypeAccordionContent from './partials/ContentTypeAccordionContent';
 import ContentTypeAccordionHeader from './partials/ContentTypeAccordionHeader';
 import ContentTypeText from './partials/ContentTypeText';

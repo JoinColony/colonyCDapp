@@ -12,6 +12,7 @@ import { useAsyncFunction, useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { AnyExtensionData } from '~types';
 import { mapPayload } from '~utils/actions';
+import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 import Toast from '~shared/Extensions/Toast';
 
 export const useGetExtensionsViews = async () => {
@@ -47,7 +48,7 @@ export const useGetExtensionsViews = async () => {
 };
 
 export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
-  const { colony, isSupportedColonyVersion } = useColonyContext();
+  const { colony } = useColonyContext();
   const navigate = useNavigate();
 
   const extensionValues = useMemo(() => {
@@ -76,6 +77,9 @@ export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
     transform,
   });
 
+  const isSupportedColonyVersion =
+    (colony?.version as ColonyVersion) >= MIN_SUPPORTED_COLONY_VERSION;
+
   const extensionCompatible = isExtensionCompatible(
     Extension[extensionData.extensionId],
     extensionData.availableVersion as ExtensionVersion,
@@ -85,13 +89,26 @@ export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
   const isUpgradeButtonDisabled =
     !isSupportedColonyVersion || !extensionCompatible;
 
+  const navigateToExtensionSettingsPage = useCallback(() => {
+    if (extensionData?.extensionId === Extension.VotingReputation) {
+      navigate(
+        `/colony/${colony?.name}/extensions/${extensionData?.extensionId}/setup`,
+      );
+    } else {
+      navigate(
+        `/colony/${colony?.name}/extensions/${extensionData?.extensionId}`,
+      );
+    }
+  }, [navigate, colony?.name, extensionData?.extensionId]);
+
   const handleInstallClick = useCallback(async () => {
     try {
       await asyncFunctionInstall(extensionValues);
+      navigateToExtensionSettingsPage();
     } catch (err) {
       console.error(err);
     }
-  }, [asyncFunctionInstall, extensionValues]);
+  }, [asyncFunctionInstall, extensionValues, navigateToExtensionSettingsPage]);
 
   const handleUpdateVersionClick = useCallback(async () => {
     try {
@@ -119,15 +136,8 @@ export const useExtensionDetailsPage = (extensionData: AnyExtensionData) => {
     }
   }, [asyncFunctionUpgrade, extensionValues]);
 
-  const handleEnableClick = () => {
-    navigate(
-      `/colony/${colony?.name}/extensions/${extensionData?.extensionId}/setup`,
-    );
-  };
-
   return {
     handleInstallClick,
-    handleEnableClick,
     handleUpdateVersionClick,
     isUpgradeButtonDisabled,
   };

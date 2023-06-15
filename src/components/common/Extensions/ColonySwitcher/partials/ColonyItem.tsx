@@ -1,17 +1,18 @@
 import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
+
 import ColonyAvatar from '~shared/ColonyAvatar';
 import Icon from '~shared/Icon';
 import { ColonyItemProps } from '../types';
 
 const displayName = 'common.Extensions.partials.ColonyItem';
 
-const ColonyItem: FC<ColonyItemProps> = ({ colony, chainId }) => (
-  <div className="px-6 sm:px-0 hover:bg-gray-50 rounded [&_a]:block [&_a]:py-2">
+const ColonyItem: FC<ColonyItemProps> = ({ colony, chainName }) => (
+  <div className="hover:bg-gray-50 rounded -mx-3">
     <NavLink
       title={colony?.name}
       to={`/colony/${colony?.name}`}
-      className="group"
+      className="group block py-2 px-3"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center">
@@ -27,7 +28,7 @@ const ColonyItem: FC<ColonyItemProps> = ({ colony, chainId }) => (
           </div>
         </div>
         <div className="[&>i>svg]:w-[1.125rem] [&>i>svg]:h-[1.125rem] text-base-white [&>i]:flex">
-          <Icon name={chainId} />
+          <Icon name={chainName} />
         </div>
       </div>
     </NavLink>

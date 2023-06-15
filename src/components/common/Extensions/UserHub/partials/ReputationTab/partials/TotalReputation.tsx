@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import Decimal from 'decimal.js';
+
 import { useUserReputation } from '~hooks';
 import { ReputationProps } from '../types';
 import styles from '../ReputationTab.module.css';

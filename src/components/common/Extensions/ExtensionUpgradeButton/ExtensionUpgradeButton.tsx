@@ -11,6 +11,7 @@ import { AnyExtensionData } from '~types';
 import { ActionTypes } from '~redux/index';
 import { mapPayload } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
+import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';
 import { isInstalledExtensionData } from '~utils/extensions';
 
 interface Props {
@@ -18,7 +19,7 @@ interface Props {
 }
 
 const ExtensionUpgradeButton = ({ extensionData }: Props) => {
-  const { colony, isSupportedColonyVersion } = useColonyContext();
+  const { colony } = useColonyContext();
   const { user } = useAppContext();
 
   if (
@@ -38,6 +39,9 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
     return null;
   }
 
+  const isSupportedColonyVersion =
+    colony.version >= MIN_SUPPORTED_COLONY_VERSION;
+
   const extensionCompatible = isExtensionCompatible(
     Extension[extensionData.extensionId],
     extensionData.availableVersion as ExtensionVersion,
@@ -53,9 +57,7 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
   return (
     <ActionButton
       appearance={{ theme: 'primary', size: 'medium' }}
-      submit={ActionTypes.EXTENSION_UPGRADE}
-      error={ActionTypes.EXTENSION_UPGRADE_ERROR}
-      success={ActionTypes.EXTENSION_UPGRADE_SUCCESS}
+      actionType={ActionTypes.EXTENSION_UPGRADE}
       transform={transform}
       text={{ id: 'button.upgrade' }}
       disabled={

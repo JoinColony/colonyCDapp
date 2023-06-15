@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+
 import { CopyUrlProps } from './types';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 

@@ -14,9 +14,13 @@ fragment Colony on Colony {
   }
   chainMetadata {
     chainId
+    network
   }
   tokens {
     ...ColonyTokensConnection
+  }
+  motionsWithUnclaimedStakes {
+    ...UnclaimedStakes
   }
   domains {
     items {
@@ -46,6 +50,16 @@ fragment Colony on Colony {
   }
 }
 
+fragment ColonyDisplayFragment on Colony {
+  colonyAddress: id
+  name
+  metadata {
+    displayName
+    avatar
+    thumbnail
+  }
+}
+
 fragment ColonyTokensConnection on ModelColonyTokensConnection {
   items {
     colonyTokensId: id
@@ -55,11 +69,23 @@ fragment ColonyTokensConnection on ModelColonyTokensConnection {
   }
 }
 
+fragment UnclaimedStakes on ColonyUnclaimedStake {
+  motionId
+  unclaimedRewards {
+    address
+    rewards {
+      nay
+      yay
+    }
+  }
+}
+
 fragment WatchedColony on Colony {
   colonyAddress: id
   name
   chainMetadata {
     chainId
+    network
   }
   metadata {
     ...ColonyMetadata

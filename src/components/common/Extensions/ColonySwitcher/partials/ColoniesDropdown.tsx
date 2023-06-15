@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+
 import { Colony, WatchListItem } from '~types';
 import ColonyItem from './ColonyItem';
 import ColonyAvatar from '~shared/ColonyAvatar';
@@ -17,10 +18,10 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
 
   const groupByCategory = (watchlist as WatchListItem[]).reduce(
     (group, item) => {
-      const chainId = (item && item.colony.chainMetadata?.chainId) || '';
+      const network = (item && item.colony.chainMetadata?.network) || '';
       // eslint-disable-next-line no-param-reassign
-      group[chainId] = group[chainId] ?? [];
-      group[chainId].push(item);
+      group[network] = group[network] ?? [];
+      group[network].push(item);
       return group;
     },
     {},
@@ -30,7 +31,7 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
     <div className="w-full bg-base-white z-50 relative flex flex-col">
       {!isMobile && (
         <>
-          <div className="flex items-center py-2">
+          <div className="flex items-center pb-4">
             <div className="flex mr-2">
               <ColonyAvatar
                 colony={colonyToDisplay as Colony}
@@ -46,15 +47,15 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
         </>
       )}
       {Object.keys(groupByCategory).map((key) => (
-        <div className="mt-6" key={key}>
-          <div className="uppercase text-gray-400 text-xs font-medium pl-6 sm:pl-2">
+        <div className="px-6 sm:px-0 sm:mt-5" key={key}>
+          <div className="uppercase text-gray-400 text-xs font-medium">
             {key}
           </div>
           {groupByCategory[key].map((item) => (
             <ColonyItem
               colony={item?.colony as Colony}
               key={item?.colony?.colonyAddress}
-              chainId={item?.colony?.chainMetadata?.chainId || ''}
+              chainName={item?.colony?.chainMetadata?.network || ''}
             />
           ))}
         </div>

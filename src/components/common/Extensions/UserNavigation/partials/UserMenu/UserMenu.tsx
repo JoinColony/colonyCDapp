@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
+
 import { UserMenuProps } from './types';
 import { useAppContext, useMobile } from '~hooks';
 import Button from '~shared/Extensions/Button';
@@ -39,13 +40,17 @@ const UserMenu: FC<UserMenuProps> = ({
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={tooltipProps}
-      classNames={clsx(styles.userMenuPopup, 'tooltip-container', {
-        'w-full border-none shadow-none': isMobile,
-        'w-[20.125rem]': !isMobile,
-        'h-[32rem] md:h-[23rem]': !isWalletConnected && !activeSubmenu,
-        'h-[35rem] md:h-[29rem]': isWalletConnected && !activeSubmenu,
-        'h-[16rem]': activeSubmenu,
-      })}
+      classNames={clsx(
+        styles.userMenuPopup,
+        'shadow-default tooltip-container',
+        {
+          'w-full border-none shadow-none': isMobile,
+          'w-[20.125rem]': !isMobile,
+          'h-[32rem] md:h-[23rem]': !isWalletConnected && !activeSubmenu,
+          'h-[37rem] md:h-[29rem]': isWalletConnected && !activeSubmenu,
+          'h-[16rem]': activeSubmenu,
+        },
+      )}
     >
       <div
         className={clsx('absolute inset-0 p-6 transition-transform', {
@@ -56,7 +61,7 @@ const UserMenu: FC<UserMenuProps> = ({
         <button
           type="button"
           aria-label="Back to main menu"
-          className="flex items-center text-gray-400 text-xs font-medium"
+          className={styles.buttonBack}
           onClick={() => setActiveSubmenu(null)}
         >
           <Icon name="caret-left" appearance={{ size: 'extraTiny' }} />
@@ -76,7 +81,7 @@ const UserMenu: FC<UserMenuProps> = ({
       >
         {isWalletConnected && (
           <WalletConnectedTopMenu
-            userName={profile?.displayName || name || undefined}
+            userName={profile?.displayName || name || ''}
             isVerified={isVerified}
             walletAddress={walletAddress}
             userReputation={userReputation}
@@ -121,27 +126,20 @@ const UserMenu: FC<UserMenuProps> = ({
                   {item.link ? (
                     <Link
                       to={item.link}
-                      className="flex items-center justify-between"
+                      className="flex items-center transition-all duration-normal hover:text-blue-400"
                     >
-                      <div className="flex items-center">
-                        <Icon
-                          name={item.icon}
-                          appearance={{ size: iconSize }}
-                        />
-                        <p className="ml-2">
-                          {formatMessage({ id: item.name })}
-                        </p>
-                      </div>
+                      <Icon name={item.icon} appearance={{ size: iconSize }} />
+                      <p className="ml-2">{formatMessage({ id: item.name })}</p>
                     </Link>
                   ) : (
                     <button
                       type="button"
-                      className="flex items-center justify-between w-full"
+                      className={styles.button}
                       onClick={() => setActiveSubmenu(item.name)}
                       aria-expanded={activeSubmenu === item.name}
                       aria-controls="actionsWithVisibility"
                     >
-                      <div className="flex items-center">
+                      <span className="flex items-center">
                         <Icon
                           name={item.icon}
                           appearance={{ size: iconSize }}
@@ -149,7 +147,7 @@ const UserMenu: FC<UserMenuProps> = ({
                         <p className="ml-2">
                           {formatMessage({ id: item.name })}
                         </p>
-                      </div>
+                      </span>
                       <Icon
                         name="caret-right"
                         appearance={{ size: 'extraTiny' }}
@@ -164,10 +162,7 @@ const UserMenu: FC<UserMenuProps> = ({
         {isWalletConnected && (
           <div className="w-full mb-6 md:mb-5">
             <TitledContent title={{ id: 'userMenu.other' }}>
-              <Link
-                to="/"
-                className="flex items-center text-lg font-semibold md:font-normal md:text-md"
-              >
+              <Link to="/" className={styles.link}>
                 <Icon name="plugs" appearance={{ size: iconSize }} />
                 <p className="ml-2">
                   {formatMessage({ id: 'userMenu.disconnectWalletTitle' })}

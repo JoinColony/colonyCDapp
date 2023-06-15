@@ -1,7 +1,6 @@
 import React, { PropsWithChildren, useState, FC } from 'react';
 
 import { useDetectClickOutside } from '~hooks';
-
 import SubNavigationItemMobile from './partials/SubNavigationItem/SubNavigationItemMobile';
 import { subNavigationItems } from './consts';
 import styles from './SubNavigationMobile.module.css';

@@ -2,12 +2,21 @@ import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import { useActionDialogStatus, EnabledExtensionData } from '~hooks';
-import { Colony } from '~types';
+import { Colony, Member } from '~types';
+import { notNull, notUndefined } from '~utils/arrays';
 import {
   calculateFee,
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
+
+export const extractUsersFromColonyMemberData = (
+  members: Member[] | null | undefined,
+) =>
+  members
+    ?.map((member) => member.user)
+    .filter(notNull)
+    .filter(notUndefined) || [];
 
 export const getCreatePaymentDialogPayload = (
   colony: Colony,
@@ -51,18 +60,20 @@ export const useCreatePaymentDialogStatus = (
   enabledExtensionData: EnabledExtensionData,
 ) => {
   const { watch } = useFormContext();
-  const fromDomain = watch('fromDomainId');
+  const { fromDomainId, motionDomainId } = watch();
   const { isOneTxPaymentEnabled } = enabledExtensionData;
   const {
     userHasPermission,
     disabledSubmit,
     disabledInput: defaultDisabledInput,
     canCreateMotion,
+    canOnlyForceAction,
   } = useActionDialogStatus(
     colony,
     requiredRoles,
-    [fromDomain],
+    [fromDomainId],
     enabledExtensionData,
+    motionDomainId,
   );
   const disabledInput = defaultDisabledInput || !isOneTxPaymentEnabled;
 
@@ -72,5 +83,6 @@ export const useCreatePaymentDialogStatus = (
     disabledSubmit,
     canCreateMotion,
     canCreatePayment: isOneTxPaymentEnabled,
+    canOnlyForceAction,
   };
 };

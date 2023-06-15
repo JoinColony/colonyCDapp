@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
+
 import { useDetectClickOutside, useAppContext, useMobile } from '~hooks';
 import ColoniesDropdown from './partials/ColoniesDropdown';
 import Icon from '~shared/Icon';
@@ -37,6 +38,7 @@ const ColonySwitcher = () => {
   const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip(
     {
       delayShow: 200,
+      delayHide: 200,
       placement: 'bottom',
       trigger: 'click',
       visible: isOpen,

@@ -7,11 +7,10 @@ import {
   DialogSection,
   ActionDialogProps,
   DialogControls,
-  DialogHeading,
 } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 import PermissionsLabel from '~shared/PermissionsLabel';
-import ExternalLink from '~shared/ExternalLink';
+import ExternalLink from '~shared/Extensions/ExternalLink';
 
 import { useAppContext, useTransformer } from '~hooks';
 import { getAllUserRoles } from '~transformers';
@@ -63,7 +62,7 @@ const RecoveryModeDialogForm = ({
   } = useFormContext();
   const allUserRoles = useTransformer(getAllUserRoles, [
     colony,
-    user?.walletAddress,
+    user?.walletAddress ?? '',
   ]);
 
   const hasRegisteredProfile = !!user?.name && !!user?.walletAddress;
@@ -74,7 +73,7 @@ const RecoveryModeDialogForm = ({
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading title={MSG.title} />
+        {/* <DialogHeading title={MSG.title} /> */}
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>

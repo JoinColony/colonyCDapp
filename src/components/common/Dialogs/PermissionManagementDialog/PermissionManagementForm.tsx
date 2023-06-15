@@ -11,7 +11,6 @@ import {
 import {
   ActionDialogProps,
   DialogControls,
-  DialogHeading,
   DialogSection,
 } from '~shared/Dialog';
 import SingleUserPicker, {
@@ -20,9 +19,9 @@ import SingleUserPicker, {
 import { ItemDataType } from '~shared/OmniPicker';
 import UserAvatar from '~shared/UserAvatar';
 
-import { MemberUser, User } from '~types';
+import { User } from '~types';
 import { notNull } from '~utils/arrays';
-import { findDomainByNativeId, getDomainOptions } from '~utils/domains';
+import { getDomainOptions } from '~utils/domains';
 
 import {
   // CannotCreateMotionMessage,
@@ -73,7 +72,7 @@ const MSG = defineMessages({
 
 interface Props extends ActionDialogProps {
   close: (val: any) => void;
-  users?: MemberUser[];
+  users?: User[];
 }
 
 const supRenderAvatar = (item: ItemDataType<User>) => (
@@ -96,7 +95,7 @@ const PermissionManagementForm = ({
   } = watch();
 
   const colonyDomains = domains?.items.filter(notNull) || [];
-  const domain = findDomainByNativeId(selectedDomainId, colony);
+  // const domain = findDomainByNativeId(selectedDomainId, colony);
 
   const userRoles = useSelectedUserRoles(colony, selectedUser?.walletAddress);
 
@@ -104,11 +103,10 @@ const PermissionManagementForm = ({
     setValue('roles', formatRolesForForm(userRoles, selectedDomainId));
   }, [selectedDomainId, setValue, userRoles]);
 
-  const requiredRoles = [
+  const requiredRoles =
     selectedDomainId === Id.RootDomain
-      ? ColonyRole.Root
-      : ColonyRole.Architecture,
-  ];
+      ? [ColonyRole.Root, ColonyRole.Architecture]
+      : [ColonyRole.Architecture];
 
   const canRoleBeSet = useCanRoleBeSet(colony);
 
@@ -146,10 +144,7 @@ const PermissionManagementForm = ({
   return (
     <>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
-        <DialogHeading
-          title={MSG.title}
-          titleValues={{ domain: domain?.metadata?.name }}
-        />
+        {/* <DialogHeading title={MSG.title} titleValues={{ domain: domain?.metadata?.name }} /> */}
       </DialogSection>
       {!userHasPermission && (
         <DialogSection>
@@ -216,7 +211,7 @@ const PermissionManagementForm = ({
         </DialogSection>
       )} */}
       {!userHasPermission && (
-        <DialogSection>
+        <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage
             requiredPermissions={[ColonyRole.Architecture]}
           />

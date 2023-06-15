@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
+
 import { useMobile } from '~hooks';
 import ReputationTab from './partials/ReputationTab';
 import StakesTab from './partials/StakesTab';

@@ -9,10 +9,10 @@ const ColonyDropdownMobile: FC<
 > = ({ isOpen, userLoading, children }) => (
   <>
     {isOpen && (
-      <div className="h-auto absolute left-[-1.5rem] bg-base-white">
-        <div className="h-[24.75rem] flex justify-center z-[9999] bg-base-white md:w-full w-screen">
+      <div className="h-auto bg-base-white">
+        <div className="flex flex-col z-[9999] bg-base-white md:w-full w-screen">
           {userLoading && (
-            <div className="h-[24.75rem] p-1 flex justify-center">
+            <div className="flex justify-center">
               <SpinnerLoader appearance={{ size: 'medium' }} />
             </div>
           )}

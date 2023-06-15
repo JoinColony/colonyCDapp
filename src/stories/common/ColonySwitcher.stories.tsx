@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
+
 import ColonySwitcher, {
   ColoniesDropdown,
   ColonyAvatarWrapper,

@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
+
 import Icon from '~shared/Icon';
 import { MemberReputationProps } from './types';
 import { ZeroValue, calculatePercentageReputation } from '~utils/reputation';

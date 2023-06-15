@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
+
 import Icon from '~shared/Icon';
 import NotificationBanner from '~common/Extensions/NotificationBanner/NotificationBanner';
 import styles from './TransactionsItem.module.css';

@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useIntl } from 'react-intl';
+
 import SpecialInput from '~common/Extensions/SpecialInput/SpecialInput';
 import { FormHourInput } from '~common/Extensions/SpecialInput/types';
 import FormError from '~shared/Extensions/FormError/FormError';
@@ -47,8 +48,7 @@ const SpecialHourInputWithHooks = (args) => {
 
   return (
     <div className="text-right">
-      <form className="flex justify-end flex-col w-[8.8rem]">
-        {/* <Form<FormValues> use it later */}
+      <form className="flex justify-end flex-col w-[8.875rem]">
         <SpecialInput
           {...args}
           register={register}
@@ -56,7 +56,7 @@ const SpecialHourInputWithHooks = (args) => {
           name="hour"
           min={1}
           max={8765}
-          type="hour"
+          type="hours"
           placeholder="8"
         />
         {errors.hours && <FormError>{errors.hours.message}</FormError>}

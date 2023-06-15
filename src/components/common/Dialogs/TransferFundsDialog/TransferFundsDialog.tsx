@@ -19,8 +19,8 @@ export const displayName = 'common.TransferFundsDialog';
 
 type FormValues = InferType<ReturnType<typeof getValidationSchema>>;
 
-type Props = DialogProps &
-  Partial<WizardDialogType<object>> &
+type Props = Required<DialogProps> &
+  WizardDialogType<object> &
   ActionDialogProps & {
     filteredDomainId?: number;
   };
@@ -82,19 +82,13 @@ const TransferFundsDialog = ({
         onSuccess={close}
         transform={transform}
       >
-        {({ watch }) => {
-          const forceActionValue = watch('forceAction');
-          if (forceActionValue !== isForce) {
-            setIsForce(forceActionValue);
-          }
-          return (
-            <TransferFundsDialogForm
-              colony={colony}
-              back={prevStep && callStep ? () => callStep(prevStep) : undefined}
-              enabledExtensionData={enabledExtensionData}
-            />
-          );
-        }}
+        <TransferFundsDialogForm
+          colony={colony}
+          back={prevStep && callStep ? () => callStep(prevStep) : undefined}
+          enabledExtensionData={enabledExtensionData}
+          handleIsForceChange={setIsForce}
+          isForce={isForce}
+        />
       </Form>
     </Dialog>
   );

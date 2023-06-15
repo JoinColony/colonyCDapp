@@ -1,0 +1,18 @@
+.text {
+  font-size: var(--size-small);
+  font-weight: var(--weight-bold);
+  color: var(--grey-purple);
+}
+
+.title {
+  composes: text;
+  color: var(--danger);
+}
+
+.container {
+  margin-bottom: 30px;
+}
+
+.marginTopNegative {
+  margin-top: -15px;
+}

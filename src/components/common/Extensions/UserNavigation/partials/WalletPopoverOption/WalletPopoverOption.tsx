@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+
 import { useIntl } from 'react-intl';
 import { WalletPopoverOptionProps } from './types';
 import Icon from '~shared/Icon';

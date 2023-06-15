@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
+
 import StakesItems from './partials/StakesTabItem';
 import {
   stakesMock,

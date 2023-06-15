@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
+
 import { UserInfoProps } from '../types';
 import Avatar from '~shared/Extensions/Avatar';
 import Icon from '~shared/Icon';
@@ -18,6 +19,7 @@ const UserInfo: FC<UserInfoProps> = ({
   aboutDescription,
   colonyReputation,
   permissions,
+  avatar,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -31,8 +33,8 @@ const UserInfo: FC<UserInfoProps> = ({
 
   return (
     <div>
-      <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center mb-6">
-        <Avatar size="m" title={userName} />
+      <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center">
+        <Avatar size="m" title={userName} avatar={avatar} />
         <div>
           <div className="flex items-center mb-0.5">
             <p className="font-semibold text-xl">{userName}</p>
@@ -84,50 +86,56 @@ const UserInfo: FC<UserInfoProps> = ({
       <TitledContent title={{ id: 'userInfo.about.section' }}>
         <p className="text-md text-gray-600">{aboutDescriptionText}</p>
       </TitledContent>
-      <TitledContent
-        title={{ id: 'userInfo.colonyReputation.section' }}
-        className="pt-6 mt-6 border-t border-gray-200"
-      >
-        <ul className="flex flex-col gap-2">
-          {colonyReputation.map(({ key, title, percentage, points }) => {
-            const titleText =
-              typeof title === 'string' ? title : title && formatMessage(title);
+      {colonyReputation && colonyReputation.length ? (
+        <TitledContent
+          title={{ id: 'userInfo.colonyReputation.section' }}
+          className="pt-6 mt-6 border-t border-gray-200"
+        >
+          <ul className="flex flex-col gap-2">
+            {colonyReputation?.map(({ key, title, percentage, points }) => {
+              const titleText =
+                typeof title === 'string'
+                  ? title
+                  : title && formatMessage(title);
 
-            return (
-              <li
-                key={key}
-                className="grid grid-cols-[1fr,auto] gap-x-4 font-medium text-gray-900"
-              >
-                <span className="text-md">{titleText}</span>
-                <span className="inline-flex items-center text-sm [&_svg]:text-blue-400">
-                  <Icon name="star" appearance={{ size: 'extraTiny' }} />
-                  <span className="text-blue-400 inline-block ml-1 mr-2">
-                    {percentage}%
+              return (
+                <li
+                  key={key}
+                  className="grid grid-cols-[1fr,auto] gap-x-4 font-medium"
+                >
+                  <span className="text-md">{titleText}</span>
+                  <span className="inline-flex items-center text-sm text-blue-400">
+                    <Icon name="star" appearance={{ size: 'extraTiny' }} />
+                    <span className="inline-block ml-1 mr-2">
+                      {percentage}%
+                    </span>
+                    {points && <span>{points} pts</span>}
                   </span>
-                  <span>{points} pts</span>
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-      </TitledContent>
+                </li>
+              );
+            })}
+          </ul>
+        </TitledContent>
+      ) : undefined}
 
-      <TitledContent
-        title={{ id: 'userInfo.permissions.section' }}
-        className="pt-6 mt-6 border-t border-gray-200"
-      >
-        <ul className="inline-flex flex-wrap gap-x-1 gap-y-2">
-          {permissions.map(({ key, text, description, name }) => (
-            <li key={key}>
-              <UserPermissionsBadge
-                text={text}
-                description={description}
-                name={name}
-              />
-            </li>
-          ))}
-        </ul>
-      </TitledContent>
+      {permissions && permissions.length && (
+        <TitledContent
+          title={{ id: 'userInfo.permissions.section' }}
+          className="pt-6 mt-6 border-t border-gray-200"
+        >
+          <ul className="inline-flex flex-wrap gap-x-1 gap-y-2">
+            {permissions.map(({ key, text, description, name }) => (
+              <li key={key}>
+                <UserPermissionsBadge
+                  text={text}
+                  description={description}
+                  name={name}
+                />
+              </li>
+            ))}
+          </ul>
+        </TitledContent>
+      )}
     </div>
   );
 };

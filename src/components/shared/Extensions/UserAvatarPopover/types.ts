@@ -8,7 +8,7 @@ export interface ColonyReputationItem {
   key: string;
   title: string;
   percentage: string;
-  points: string;
+  points?: string;
 }
 
 export interface PermissionsItem extends UserPermissionsBadgeProps {
@@ -20,8 +20,8 @@ export interface UserInfoProps extends AvatarProps {
   isVerified?: boolean;
   walletAddress?: string;
   aboutDescription: MessageDescriptor | string;
-  colonyReputation: ColonyReputationItem[];
-  permissions: PermissionsItem[];
+  colonyReputation?: ColonyReputationItem[];
+  permissions?: PermissionsItem[];
 }
 
 export interface UserAvatarPopoverProps

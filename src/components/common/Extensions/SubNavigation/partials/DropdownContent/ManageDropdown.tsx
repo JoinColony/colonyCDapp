@@ -1,5 +1,6 @@
 import React, { PropsWithChildren, FC } from 'react';
 import { FormattedMessage } from 'react-intl';
+
 import Button from '~shared/Extensions/Button/Button';
 import { LEARN_MORE_DECISIONS } from '~constants';
 import LinkItem from '../LinkItem';
