@@ -17,6 +17,7 @@ import UserAvatar from '~shared/Extensions/UserAvatar';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import styles from './Header.module.css';
 import { useHeader } from './hooks';
+import { useExtensionsContext } from '~context/ExtensionsContext';
 
 const displayName = 'frame.Extensions.Header';
 
@@ -40,6 +41,8 @@ const Header = () => {
     setTriggerRef,
     visible,
   } = useHeader();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { isExtensionInstalling } = useExtensionsContext();
 
   const { profile } = user || {};
   const { colonyAddress, nativeToken } = colony || {};

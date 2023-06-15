@@ -513,5 +513,8 @@
   "installed.by": "Installed by",
   "version.installed": "Version installed",
   "contract.address": "Contract address",
-  "developer": "Developer"
+  "developer": "Developer",
+  "empty.content.title": "There is no {contentName} to display",
+  "empty.content.subtitle": "New {contentName} will display here",
+  "handle.unselect.transaction": "handle unselect transaction"
 }

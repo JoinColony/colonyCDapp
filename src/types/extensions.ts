@@ -60,6 +60,7 @@ export type InstallableExtensionData = ExtensionConfig & {
   availableVersion: number;
   isEnabled?: boolean;
   isInitialized?: boolean;
+  isDeprecated?: boolean;
 };
 
 export type AnyExtensionData =
