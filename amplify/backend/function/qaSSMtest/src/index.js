@@ -1,4 +1,4 @@
-const { getParam } = require('./utils');
+const { getParam } = require('getParam');
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
