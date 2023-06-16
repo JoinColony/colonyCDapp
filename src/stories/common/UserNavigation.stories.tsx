@@ -91,9 +91,11 @@ const UserNavigationWithData = () => {
             border border-gray-200 rounded-lg mt-2 w-[44.375rem]`}
             ref={setTooltipRef}
           >
+            {/* @ts-ignore */}
             <UserHub />
           </div>
         )}
+        {/* @ts-ignore */}
         {isMobile && isOpen && <UserHub />}
       </div>
     </ApolloProvider>
