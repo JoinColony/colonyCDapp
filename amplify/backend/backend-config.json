@@ -25,6 +25,11 @@
     }
   },
   "function": {
+    "colonycdappSSMAccess": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer"
+    },
     "createUniqueColony": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -87,6 +92,15 @@
     },
     "qaSSMtest": {
       "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "colonycdappSSMAccess"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
