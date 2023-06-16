@@ -55,7 +55,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         {title && <h4 className="text-lg font-semibold mb-2">{title}</h4>}
         {subTitle && <p className="text-gray-600 text-md">{subTitle}</p>}
         {children}
-        <div className="flex gap-3 mt-8">
+        <div className="flex flex-wrap gap-3 mt-8">
           <Button mode="primaryOutline" isFullSize onClick={onClose}>
             {closeMessage}
           </Button>

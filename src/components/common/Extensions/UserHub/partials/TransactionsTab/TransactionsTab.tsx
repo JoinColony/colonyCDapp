@@ -77,7 +77,6 @@ const TransactionsTab: FC<TransactionsProps> = ({
       //     onClose={unselectTransactionGroup}
       //   />
       // );
-      return;
     }
     // return (
     //   <TransactionList

@@ -62,9 +62,12 @@ const ColonySwitcher = () => {
     <div className="flex justify-between relative" ref={ref}>
       <button
         aria-label={formatMessage({ id: 'ariaLabel.openDropdown' })}
-        className={clsx('flex items-center justify-between', {
-          'w-[3.5225rem]': !isMobile,
-        })}
+        className={clsx(
+          'flex items-center transition-all duration-normal hover:text-gray-500',
+          {
+            'w-[3.5rem]': !isMobile,
+          },
+        )}
         onClick={() => setIsOpen((prevState) => !prevState)}
         type="button"
       >
@@ -76,9 +79,7 @@ const ColonySwitcher = () => {
           setTriggerRef={setTriggerRef}
         />
       </button>
-
       {/* @TODO: add wallet buttons */}
-
       {isOpen && (
         <div className="h-auto absolute top-[8.1rem] sm:top-[2.3rem]">
           {!isMobile && (
@@ -116,7 +117,6 @@ const ColonySwitcher = () => {
           )}
         </div>
       )}
-
       {isMobile && isOpen && (
         <button
           type="button"

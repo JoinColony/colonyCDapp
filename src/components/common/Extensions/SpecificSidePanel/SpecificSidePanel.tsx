@@ -37,7 +37,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
           <Fragment key={id}>
             <div className={styles.panelRow}>
               <div className={styles.panelTitle}>{statusType.title}</div>
-              <div className="flex justify-start flex-col md:flex-row md:flex-wrap md:gap-y-2 md:w-1/2">
+              <div className="flex justify-start flex-col gap-y-2 md:flex-row md:flex-wrap">
                 {Array.isArray(statuses) ? (
                   statuses.map((status) => (
                     <div key={status} className="flex flex-wrap gap-2">

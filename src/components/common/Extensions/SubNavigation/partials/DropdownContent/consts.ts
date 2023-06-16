@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export const MSG = defineMessages({
-  paymentContentTitle: {
-    id: `common.Extensions.SubNavigation.partials.DropdownContent.paymentContentTitle`,
-    defaultMessage: 'CREATE NEW PAYMENTS',
-  },
   singlePayments: {
     id: `common.Extensions.SubNavigation.partials.DropdownContent.singlePayments`,
     defaultMessage: 'Single payments',
@@ -45,10 +41,6 @@ export const MSG = defineMessages({
     id: `common.Extensions.SubNavigation.partials.DropdownContent.comingSoon`,
     defaultMessage: 'Coming soon',
   },
-  manageContentTitle: {
-    id: `common.Extensions.SubNavigation.partials.DropdownContent.decisionsContentTitle`,
-    defaultMessage: 'MANAGE COLONY',
-  },
   manageTeams: {
     id: `common.Extensions.SubNavigation.partials.DropdownContent.manageTeams`,
     defaultMessage: 'Manage Teams',
@@ -84,10 +76,6 @@ export const MSG = defineMessages({
   buttonTextManage: {
     id: `common.Extensions.SubNavigation.partials.DropdownContent.buttonText`,
     defaultMessage: 'View admin area',
-  },
-  decisionsContentTitle: {
-    id: `common.Extensions.SubNavigation.partials.DropdownContent.decisionsContentTitle`,
-    defaultMessage: 'CREATE NEW DECISIONS',
   },
   createDecision: {
     id: `common.Extensions.SubNavigation.partials.DropdownContent.createDecision`,

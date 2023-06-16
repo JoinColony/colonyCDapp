@@ -514,6 +514,9 @@
   "version.installed": "Version installed",
   "contract.address": "Contract address",
   "developer": "Developer",
+  "createNewDecisions": "CREATE NEW DECISIONS",
+  "manageColony": "MANAGE COLONY",
+  "createNewPayments": "CREATE NEW PAYMENTS",
   "empty.content.title": "There is no {contentName} to display",
   "empty.content.subtitle": "New {contentName} will display here",
   "handle.unselect.transaction": "handle unselect transaction"
