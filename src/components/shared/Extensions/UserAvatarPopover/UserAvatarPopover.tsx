@@ -45,8 +45,8 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
   const button = (
     <button
       onClick={isMobile ? onOpenModal : noop}
-      onMouseEnter={() => onOpenModal()}
-      onMouseLeave={() => onCloseModal()}
+      onMouseEnter={isMobile ? noop : () => onOpenModal()}
+      onMouseLeave={isMobile ? noop : () => onCloseModal()}
       type="button"
       ref={setTriggerRef}
       className="inline-flex transition-all duration-normal hover:text-blue-400"

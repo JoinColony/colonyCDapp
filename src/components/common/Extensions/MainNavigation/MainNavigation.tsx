@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useIntl } from 'react-intl';
 
 import {
   useAppContext,
@@ -7,7 +8,6 @@ import {
   useUserReputation,
 } from '~hooks';
 import { LEARN_MORE_PAYMENTS } from '~constants';
-
 import Nav from './partials/Nav';
 import { navMenuItems } from './partials/consts';
 import { SubNavigationMobile } from '~common/Extensions/SubNavigation';
@@ -38,6 +38,7 @@ const MainNavigation: FC<MainNavigationProps> = ({
     colonyAddress,
     wallet?.address,
   );
+  const { formatMessage } = useIntl();
 
   return (
     <div className="py-6 sm:py-0">
@@ -68,6 +69,9 @@ const MainNavigation: FC<MainNavigationProps> = ({
             </Button>
             <Button mode="tertiaryOutline" isFullRounded>
               <Icon name="list" appearance={{ size: 'extraTiny' }} />
+              <span className="text-sm font-medium ml-1.5">
+                {formatMessage({ id: 'helpAndAccount' })}
+              </span>
             </Button>
           </div>
           <div className="px-6">

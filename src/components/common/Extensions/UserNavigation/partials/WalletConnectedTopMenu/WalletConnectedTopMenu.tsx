@@ -48,6 +48,9 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
         </Button>
         <Button mode="tertiaryOutline" isFullRounded>
           <Icon name="list" appearance={{ size: 'extraTiny' }} />
+          <span className="text-sm font-medium ml-1.5">
+            {formatMessage({ id: 'helpAndAccount' })}
+          </span>
         </Button>
       </div>
       <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">

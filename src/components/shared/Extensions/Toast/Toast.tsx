@@ -24,7 +24,7 @@ const Toast: FC<ToastProps> = ({
       : description && formatMessage(description);
 
   return (
-    <div className="flex bg-base-white relative font-inter">
+    <div className="flex bg-base-white relative">
       <div
         className={clsx({
           'text-success-400': type === 'success',
