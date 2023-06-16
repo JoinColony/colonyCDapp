@@ -65,7 +65,7 @@ const StakingSliderLabel = ({
           symbol={nativeTokenSymbol}
         />
       )}
-      {remainingToStake !== '0' && (
+      {enoughTokensToStakeMinimum && remainingToStake !== '0' && (
         <RequiredStakeMessage {...requiredStakeMessageProps} />
       )}
     </Tooltip>
