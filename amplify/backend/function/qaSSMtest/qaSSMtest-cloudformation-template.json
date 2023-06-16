@@ -19,6 +19,10 @@
     "functioncolonycdappSSMAccessArn": {
       "Type": "String",
       "Default": "functioncolonycdappSSMAccessArn"
+    },
+    "awsParametersAndSecretsManagerExtensionArn": {
+      "Type": "String",
+      "Default": "arn:aws:lambda:eu-west-2:133256977650:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4"
     }
   },
   "Conditions": {
@@ -86,6 +90,9 @@
         "Layers": [
           {
             "Ref": "functioncolonycdappSSMAccessArn"
+          },
+          {
+            "Ref": "awsParametersAndSecretsManagerExtensionArn"
           }
         ],
         "Timeout": 25
