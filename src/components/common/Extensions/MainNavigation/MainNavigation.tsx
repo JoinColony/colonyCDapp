@@ -14,13 +14,9 @@ import { SubNavigationMobile } from '~common/Extensions/SubNavigation';
 import LearnMore from '~shared/Extensions/LearnMore';
 import Button from '~shared/Extensions/Button';
 import PopoverBase from '~shared/Extensions/PopoverBase';
-import UserAvatar from '~shared/Extensions/UserAvatar';
-import MemberReputation from '../UserNavigation/partials/MemberReputation';
-import Icon from '~shared/Icon';
-import Token from '../UserNavigation/partials/Token';
-
 import styles from './MainNavigation.module.css';
 import { MainNavigationProps } from './types';
+import NavigationTools from '~common/Extensions/NavigationTools/NavigationTools';
 
 const displayName = 'common.Extensions.MainNavigation';
 
@@ -52,27 +48,16 @@ const MainNavigation: FC<MainNavigationProps> = ({
           classNames="w-full border-none shadow-none px-0 pb-6"
         >
           <div className={styles.mobileButtons}>
-            {nativeToken && <Token nativeToken={nativeToken} />}
-            <Button mode="tertiaryOutline" isFullRounded>
-              <div className="flex items-center gap-3">
-                <UserAvatar
-                  userName={profile?.displayName || user?.name || ''}
-                  size="xxs"
-                  user={user}
-                />
-                <MemberReputation
-                  userReputation={userReputation}
-                  totalReputation={totalReputation}
-                  hideOnMobile={false}
-                />
-              </div>
-            </Button>
-            <Button mode="tertiaryOutline" isFullRounded>
-              <Icon name="list" appearance={{ size: 'extraTiny' }} />
-              <span className="text-sm font-medium ml-1.5">
-                {formatMessage({ id: 'helpAndAccount' })}
-              </span>
-            </Button>
+            <NavigationTools
+              buttonLabel={formatMessage({
+                id: 'helpAndAccount',
+              })}
+              nativeToken={nativeToken}
+              totalReputation={totalReputation}
+              userName={profile?.displayName || user?.name || ''}
+              userReputation={userReputation}
+              user={user}
+            />
           </div>
           <div className="px-6">
             <Nav items={navMenuItems} />
