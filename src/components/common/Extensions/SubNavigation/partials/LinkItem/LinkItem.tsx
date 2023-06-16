@@ -1,5 +1,6 @@
 import React, { PropsWithChildren, FC } from 'react';
 import { FormattedMessage } from 'react-intl';
+import clsx from 'clsx';
 
 import { LinkItemProps } from './types';
 import styles from './LinkItem.module.css';
@@ -14,7 +15,7 @@ const LinkItem: FC<PropsWithChildren<LinkItemProps>> = ({
   <li className={styles.itemWrapper}>
     {/* <Link to="/"> */}
     <a className={styles.link} href="/">
-      <span className={styles.title}>
+      <span className={clsx(styles.title, 'heading-5')}>
         <FormattedMessage {...title} />
         <span className="ml-1 shrink-0">{statusBadge}</span>
       </span>

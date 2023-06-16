@@ -26,7 +26,7 @@ const WalletPopoverOption: FC<WalletPopoverOptionProps> = ({
       <div className="flex items-center">
         <Icon name={icon} appearance={{ size: 'large' }} />
         <div className="ml-4 flex flex-col justify-start">
-          <h5 className="text-lg font-semibold text-gray-900 text-left">
+          <h5 className="heading-5 text-gray-900 text-left">
             {formatMessage(title)}
           </h5>
           <p className="text-sm text-gray-600 font-normal">

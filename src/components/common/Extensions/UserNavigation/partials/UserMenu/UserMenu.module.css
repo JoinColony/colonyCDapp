@@ -15,5 +15,5 @@
 }
 
 .link {
-  @apply flex items-center text-lg transition-all duration-normal hover:text-blue-400 font-semibold md:font-normal md:text-md;
+  @apply flex items-center transition-all duration-normal hover:text-blue-400 sm:font-normal sm:text-md;
 }

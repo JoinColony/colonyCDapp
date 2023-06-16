@@ -50,12 +50,12 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
           <Icon name="list" appearance={{ size: 'extraTiny' }} />
         </Button>
       </div>
-      <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">
+      <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
         <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center mb-6">
           <Avatar size="m" title={userName} avatar={avatar} />
           <div>
             <div className="flex items-center mb-0.5">
-              <p className="font-semibold text-xl">{userName}</p>
+              <p className="heading-4">{userName}</p>
               {isVerified && (
                 <span className="ml-2 flex shrink-0 [&_svg]:text-blue-400">
                   <Icon name="verified" appearance={{ size: 'tiny' }} />
@@ -99,7 +99,7 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
         </div>
         <Link to="/" className="flex items-center">
           <Icon name="user-circle-gear" appearance={{ size: 'tiny' }} />
-          <p className="ml-2 text-lg font-semibold md:font-normal md:text-md">
+          <p className="ml-2 heading-5 sm:font-normal sm:text-md">
             {formatMessage({ id: 'userMenu.menageTitle' })}
           </p>
         </Link>

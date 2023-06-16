@@ -37,7 +37,7 @@ const UserInfo: FC<UserInfoProps> = ({
         <Avatar size="m" title={userName} avatar={avatar} />
         <div>
           <div className="flex items-center mb-0.5">
-            <p className="font-semibold text-xl">{userName}</p>
+            <p className="heading-4">{userName}</p>
             {isVerified && (
               <span className="ml-2 flex shrink-0 [&_svg]:text-blue-400">
                 <Icon name="verified" appearance={{ size: 'tiny' }} />

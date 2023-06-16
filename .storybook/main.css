@@ -56,7 +56,15 @@
   .heading-4 {
     @apply text-xl font-semibold;
   }
-}
+
+  .heading-5 {
+    @apply text-lg font-semibold;
+  }
+
+  .text-1 {
+    @apply text-sm font-medium;
+  }
+};
 
 @layer components {
   .inner {

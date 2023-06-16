@@ -17,7 +17,7 @@ const NavMobile: FC<NavItemMobileProps> = ({ item, isOpen, toggleItem }) => {
   return (
     <>
       {item.href ? (
-        <a className={styles.navLink} href={item.href}>
+        <a className={clsx(styles.navLink, 'heading-5')} href={item.href}>
           {formatMessage({
             id: `mainNavItem.${item.label}`,
             defaultMessage: `${item.label}`,
@@ -26,7 +26,9 @@ const NavMobile: FC<NavItemMobileProps> = ({ item, isOpen, toggleItem }) => {
       ) : (
         <button
           type="button"
-          className={clsx(styles.navLink, { 'text-blue-400': isOpen })}
+          className={clsx(styles.navLink, 'heading-5', {
+            'text-blue-400': isOpen,
+          })}
           onClick={toggleItem}
         >
           {formatMessage({

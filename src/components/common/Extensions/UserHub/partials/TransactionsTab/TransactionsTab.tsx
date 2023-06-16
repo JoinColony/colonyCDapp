@@ -87,19 +87,16 @@ const TransactionsTab: FC<TransactionsProps> = ({
   };
 
   return (
-    <>
-      <div className="flex items-center justify-between pb-4 relative">
-        <div className="font-semibold text-lg">
-          {formatMessage({ id: 'transactions' })}
-        </div>
-      </div>
-      <ul>
+    <div>
+      <p className="heading-5 mb-4">{formatMessage({ id: 'transactions' })}</p>
+      <div>
         {isEmpty ? (
           <EmptyContent contentName="transactions" />
         ) : (
           renderTransactions()
         )}
-        {/* {transactionsItems.map((item, index) => (
+        <ul>
+          {/* {transactionsItems.map((item, index) => (
           <li
             key={item.key}
             className="border-b border-gray-100 py-3.5 last:border-none first:pt-0 last:pb-0"
@@ -111,8 +108,9 @@ const TransactionsTab: FC<TransactionsProps> = ({
             />
           </li>
         ))} */}
-      </ul>
-    </>
+        </ul>
+      </div>
+    </div>
   );
 };
 

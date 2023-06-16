@@ -47,9 +47,6 @@ const UserMenu: FC<UserMenuProps> = ({
         {
           'w-full border-none shadow-none': isMobile,
           'w-[20.125rem]': !isMobile,
-          'h-[32rem] md:h-[23rem]': !isWalletConnected && !activeSubmenu,
-          'h-[37rem] md:h-[29rem]': isWalletConnected && !activeSubmenu,
-          'h-[16rem]': activeSubmenu,
         },
       )}
     >
@@ -98,18 +95,16 @@ const UserMenu: FC<UserMenuProps> = ({
             <div className={styles.mobileButtons}>
               <Button mode="tertiaryOutline" isFullRounded>
                 <Icon name="cardholder" appearance={{ size: 'tiny' }} />
-                <p className="text-sm font-inter font-medium ml-1">
+                <p className="text-1 ml-1">
                   {formatMessage({ id: 'connectWallet' })}
                 </p>
               </Button>
               <Button mode="tertiaryOutline" isFullRounded>
                 <Icon name="list" appearance={{ size: 'extraTiny' }} />
-                <p className="text-sm font-inter font-medium ml-1">
-                  {formatMessage({ id: 'help' })}
-                </p>
+                <p className="text-1 ml-1">{formatMessage({ id: 'help' })}</p>
               </Button>
             </div>
-            <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">
+            <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
               <Button
                 mode="quaternaryOutline"
                 isFullSize
@@ -120,9 +115,9 @@ const UserMenu: FC<UserMenuProps> = ({
             </div>
           </>
         )}
-        <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">
+        <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
           <TitledContent title={{ id: 'userMenu.optionsTitle' }}>
-            <ul className="text-lg font-semibold md:font-normal md:text-md">
+            <ul className="heading-5 sm:font-normal sm:text-md">
               {userMenuItems.map((item) => (
                 <li className="mb-4 last:mb-0" key={item.id}>
                   {item.link ? (
@@ -162,9 +157,9 @@ const UserMenu: FC<UserMenuProps> = ({
           </TitledContent>
         </div>
         {isWalletConnected && (
-          <div className="w-full mb-6 md:mb-5">
+          <div className="w-full mb-6 sm:mb-5">
             <TitledContent title={{ id: 'userMenu.other' }}>
-              <Link to="/" className={styles.link}>
+              <Link to="/" className={clsx(styles.link, 'heading-5')}>
                 <Icon name="plugs" appearance={{ size: iconSize }} />
                 <p className="ml-2">
                   {formatMessage({ id: 'userMenu.disconnectWalletTitle' })}

@@ -19,7 +19,7 @@ const ExtensionStatusBadge: FC<
     <span
       className={clsx(
         styles.badge,
-        'inline-flex items-center text-center text-sm font-medium px-3 py-1 rounded-3xl h-[1.625rem] capitalize',
+        'inline-flex items-center text-center text-1 px-3 py-1 rounded-3xl h-[1.625rem] capitalize text-1',
         {
           'text-indigo-400 bg-indigo-100': mode === 'coming-soon',
           'text-blue-400 bg-blue-100':

@@ -37,10 +37,8 @@ const StakesTab = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between pb-4">
-        <p className="font-semibold text-lg">
-          {formatMessage({ id: 'stakes' })}
-        </p>
+      <div className="flex items-center justify-between mb-4">
+        <p className="heading-5">{formatMessage({ id: 'stakes' })}</p>
         {!isMobile && (
           <button
             type="button"
