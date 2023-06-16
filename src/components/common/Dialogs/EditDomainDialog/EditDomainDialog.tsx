@@ -37,11 +37,12 @@ const validationSchema = object()
   .shape({
     forceAction: boolean().defined(),
     domainName: string()
+      .trim()
       .max(20)
       .required(() => MSG.requiredFieldError),
     domainId: number().required(),
     domainColor: string().defined(),
-    domainPurpose: string().max(90),
+    domainPurpose: string().trim().max(90),
     annotationMessage: string().max(4000),
     motionDomainId: number(),
   })
