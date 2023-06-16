@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
@@ -7,16 +7,21 @@ import { useMobile } from '~hooks';
 import ReputationTab from './partials/ReputationTab';
 import StakesTab from './partials/StakesTab';
 import TransactionsTab from './partials/TransactionsTab';
-import { transactionsItems } from '~common/Extensions/UserHub/partials/TransactionsTab/consts';
 import Button from '~shared/Extensions/Button';
 import Icon from '~shared/Icon';
 import styles from './UserHub.module.css';
 import { tabList } from './consts';
 import UserHubMobile from './UserHubMobile';
+import { UserHubProps } from './types';
 
 export const displayName = 'common.Extensions.UserHub.partials.UserHub';
 
-const UserHub = () => {
+const UserHub: FC<UserHubProps> = ({
+  transactionAndMessageGroups,
+  autoOpenTransaction,
+  setAutoOpenTransaction,
+  isTranactionTabVisible = false,
+}) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
   const [selectedTab, setSelectedTab] = useState(0);
@@ -24,6 +29,12 @@ const UserHub = () => {
   const handleChange = (selectedOption: number) => {
     setSelectedTab(selectedOption);
   };
+
+  useEffect(() => {
+    if (isTranactionTabVisible) {
+      setSelectedTab(2);
+    }
+  }, [isTranactionTabVisible]);
 
   return (
     <div className={clsx('flex', { 'flex-col': isMobile })}>
@@ -80,14 +91,12 @@ const UserHub = () => {
           </Button>
         )}
       </div>
-      {isMobile && (
-        <div className="h-[0.0625rem] w-full bg-gray-200 mt-6 mb-6" />
-      )}
+      {isMobile && <div className="h-px w-full bg-gray-200 mt-6 mb-6" />}
       <div
         className={`${
           isMobile
             ? 'min-w-full'
-            : 'w-full min-w-[29.125rem] min-h-[27.75rem] p-6'
+            : 'w-full min-w-[29.125rem] min-h-[27.75rem] p-6 relative'
         }`}
       >
         <AnimatePresence>
@@ -100,7 +109,20 @@ const UserHub = () => {
           >
             {selectedTab === 0 && <ReputationTab />}
             {selectedTab === 1 && <StakesTab />}
-            {selectedTab === 2 && <TransactionsTab items={transactionsItems} />}
+            {/* {selectedTab === 2 && (
+              <TransactionsTab
+                transactionAndMessageGroups={transactionsItems}
+                openIndex={0}
+              />
+            )} */}
+            {selectedTab === 2 && (
+              <TransactionsTab
+                transactionAndMessageGroups={transactionAndMessageGroups}
+                autoOpenTransaction={autoOpenTransaction}
+                setAutoOpenTransaction={setAutoOpenTransaction}
+                appearance={{ interactive: true }}
+              />
+            )}
           </motion.div>
         </AnimatePresence>
         {isMobile && (

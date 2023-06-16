@@ -482,6 +482,7 @@
   "darkMode": "Dark",
   "help": "Help",
   "retry": "Retry",
+  "menu": "Menu",
   "reputation.tab.title": "Your Colony overview",
   "total.balance": "Total balance",
   "active": "Active",
@@ -515,5 +516,8 @@
   "developer": "Developer",
   "createNewDecisions": "CREATE NEW DECISIONS",
   "manageColony": "MANAGE COLONY",
-  "createNewPayments": "CREATE NEW PAYMENTS"
+  "createNewPayments": "CREATE NEW PAYMENTS",
+  "empty.content.title": "There is no {contentName} to display",
+  "empty.content.subtitle": "New {contentName} will display here",
+  "handle.unselect.transaction": "handle unselect transaction"
 }

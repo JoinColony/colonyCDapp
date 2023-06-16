@@ -21,7 +21,7 @@ export interface UserInfoProps extends AvatarProps {
   walletAddress?: string;
   aboutDescription: MessageDescriptor | string;
   colonyReputation?: ColonyReputationItem[];
-  permissions: PermissionsItem[];
+  permissions?: PermissionsItem[];
 }
 
 export interface UserAvatarPopoverProps

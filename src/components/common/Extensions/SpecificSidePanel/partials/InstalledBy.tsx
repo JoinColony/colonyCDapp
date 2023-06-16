@@ -6,7 +6,6 @@ import styles from '../SpecificSidePanel.module.css';
 import { PanelTypeProps } from '../types';
 import { AnyExtensionData, InstalledExtensionData } from '~types';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
-import { permissionsItems } from '~shared/Extensions/UserAvatarPopover/partials/consts';
 import { useGetInstalledByData } from './hooks';
 
 const displayName = 'common.Extensions.partials.InstalledBy';
@@ -22,7 +21,7 @@ const InstalledBy: FC<PanelTypeProps> = ({ title, extensionData }) => {
   );
   const { colonyReputationItems } = installedByData || {};
 
-  // @TODO: display missing data from API
+  // @TODO: add permissions and verify badge after they will be added to API
   return (
     <div className={styles.panelRow}>
       <div className={styles.panelTitle}>{title}</div>
@@ -33,7 +32,8 @@ const InstalledBy: FC<PanelTypeProps> = ({ title, extensionData }) => {
           isVerified
           aboutDescription={bio || ''}
           colonyReputation={colonyReputationItems}
-          permissions={permissionsItems}
+          user={user}
+          // permissions={permissionsItems}
         />
       </div>
     </div>

@@ -1,17 +1,14 @@
-import { useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
-
 import { useSelectedColony } from '~common/Extensions/ColonySwitcher/hooks';
-import { useAppContext, useDetectClickOutside, useMobile } from '~hooks';
+import { useAppContext, useMobile } from '~hooks';
 import { watchListMock } from '~common/Extensions/ColonySwitcher/consts';
 
 export const useHeader = () => {
-  const { userLoading, user } = useAppContext();
-  const [isOpen, setIsOpen] = useState<boolean>();
-
-  const { colonyToDisplayAddress } = useSelectedColony(watchListMock);
+  const { userLoading, user, wallet } = useAppContext();
   const isMobile = useMobile();
-  const popperTooltipOffset = !isMobile ? [120, 8] : [0, 8];
+
+  const { colonyToDisplayAddress, colonyToDisplay } =
+    useSelectedColony(watchListMock);
 
   const sortByDate = (firstWatchEntry, secondWatchEntry) => {
     const firstWatchTime = new Date(firstWatchEntry?.createdAt || 1).getTime();
@@ -21,14 +18,41 @@ export const useHeader = () => {
     return firstWatchTime - secondWatchTime;
   };
 
-  const ref = useDetectClickOutside({ onTriggered: () => setIsOpen(false) });
-  const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip(
+  const popperTooltipOffset = !isMobile ? [120, 8] : [0, 20];
+  const menuPopperTooltipOffset = [0, 20];
+
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    usePopperTooltip(
+      {
+        delayShow: 200,
+        delayHide: 200,
+        placement: 'bottom',
+        trigger: 'click',
+        interactive: true,
+      },
+      {
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: popperTooltipOffset,
+            },
+          },
+        ],
+      },
+    );
+
+  const {
+    getTooltipProps: mainMenuGetTooltipProps,
+    setTooltipRef: mainMenuSetTooltipRef,
+    setTriggerRef: mainMenuSetTriggerRef,
+    visible: isMainMenuVisible,
+  } = usePopperTooltip(
     {
       delayShow: 200,
       delayHide: 200,
       placement: 'bottom',
       trigger: 'click',
-      visible: isOpen,
       interactive: true,
     },
     {
@@ -36,7 +60,7 @@ export const useHeader = () => {
         {
           name: 'offset',
           options: {
-            offset: popperTooltipOffset,
+            offset: menuPopperTooltipOffset,
           },
         },
       ],
@@ -44,15 +68,19 @@ export const useHeader = () => {
   );
 
   return {
-    ref,
     getTooltipProps,
     setTooltipRef,
     setTriggerRef,
+    visible,
+    mainMenuGetTooltipProps,
+    mainMenuSetTooltipRef,
+    mainMenuSetTriggerRef,
+    isMainMenuVisible,
     userLoading,
     colonyToDisplayAddress,
+    colonyToDisplay,
     sortByDate,
-    isOpen,
-    setIsOpen,
     user,
+    wallet,
   };
 };

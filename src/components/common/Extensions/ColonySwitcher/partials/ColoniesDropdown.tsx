@@ -33,22 +33,22 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
       {!isMobile && (
         <>
           <div className="flex items-center pb-4">
-            <div className="flex mr-2">
+            <div className="flex mr-2 shrink-0">
               <ColonyAvatar
                 colony={colonyToDisplay as Colony}
                 colonyAddress={colonyToDisplayAddress || ''}
                 size="xxs"
               />
             </div>
-            <div className="font-semibold text-md text-gray-900">
+            <p className="font-semibold text-md">
               {colonyToDisplay?.metadata?.displayName || colonyToDisplay?.name}
-            </div>
+            </p>
           </div>
-          <div className="w-full h-[0.0625rem] bg-gray-200" />
+          <div className="w-full h-px bg-gray-200" />
         </>
       )}
       {Object.keys(groupByCategory).map((key) => (
-        <div className="mt-5" key={key}>
+        <div className="px-6 sm:px-0 sm:mt-5" key={key}>
           <TitleLabel className="mb-1" text={key} />
           {groupByCategory[key].map((item) => (
             <ColonyItem

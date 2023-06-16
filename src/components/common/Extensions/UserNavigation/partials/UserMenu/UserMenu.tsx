@@ -41,13 +41,17 @@ const UserMenu: FC<UserMenuProps> = ({
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={tooltipProps}
-      classNames={clsx(styles.userMenuPopup, 'tooltip-container', {
-        'w-full border-none shadow-none': isMobile,
-        'w-[20.125rem]': !isMobile,
-        'h-[32rem] md:h-[23rem]': !isWalletConnected && !activeSubmenu,
-        'h-[37rem] md:h-[29rem]': isWalletConnected && !activeSubmenu,
-        'h-[16rem]': activeSubmenu,
-      })}
+      classNames={clsx(
+        styles.userMenuPopup,
+        'shadow-default tooltip-container',
+        {
+          'w-full border-none shadow-none': isMobile,
+          'w-[20.125rem]': !isMobile,
+          'h-[32rem] md:h-[23rem]': !isWalletConnected && !activeSubmenu,
+          'h-[37rem] md:h-[29rem]': isWalletConnected && !activeSubmenu,
+          'h-[16rem]': activeSubmenu,
+        },
+      )}
     >
       <div
         className={clsx('absolute inset-0 p-6 transition-transform', {
@@ -124,7 +128,7 @@ const UserMenu: FC<UserMenuProps> = ({
                   {item.link ? (
                     <Link
                       to={item.link}
-                      className="flex items-center transition-all duration-normal hover:text-blue-400"
+                      className="flex items-center transition-all duration-normal text-gray-700 hover:text-blue-400"
                     >
                       <Icon name={item.icon} appearance={{ size: iconSize }} />
                       <p className="ml-2">{formatMessage({ id: item.name })}</p>
