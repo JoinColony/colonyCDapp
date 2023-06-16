@@ -9,11 +9,12 @@ const ParamNames = {
   chainNetworkContract: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_network_contract`,
   chainRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_rpc_endpoint`,
   chainNetwork: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_network`,
+  appSyncApi: `%2Famplify%2Fcdapp%2F${ENV}%2Faws_appsync_api_key`,
 };
 
 const getParam = async (paramName) => {
   if (!(paramName in ParamNames)) {
-    return null;
+    return undefined;
   }
 
   // Retrieve param from Parameter Store
