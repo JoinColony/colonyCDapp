@@ -17,10 +17,12 @@ const getParam = async (paramName) => {
     return undefined;
   }
 
+  const decrpytParam = paramName === 'appSyncApi' ? '&withDecryption=true' : '';
+
   // Retrieve param from Parameter Store
   try {
     const res = await fetch(
-      `http://localhost:2773/systemsmanager/parameters/get?name=${ParamNames[paramName]}`,
+      `http://localhost:2773/systemsmanager/parameters/get?name=${ParamNames[paramName]}${decrpytParam}`,
       {
         headers: {
           'X-Aws-Parameters-Secrets-Token': AWS_SESSION_TOKEN,
