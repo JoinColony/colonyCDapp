@@ -1,4 +1,4 @@
-const { getParam } = require('getParam');
+const { getParam } = require('/opt/nodejs/getParam');
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -10,6 +10,8 @@ exports.handler = async () => {
   const chainNetworkContract = await getParam('chainNetworkContract');
   const chainRpcEndpoint = await getParam('chainRpcEndpoint');
   const chainNetwork = await getParam('chainNetwork');
- console.log({graphqlUrl, reputationEndpoint, chainNetworkContract, chainRpcEndpoint, chainNetwork})
+  const appSyncApi = await getParam('appSyncApi');
+
+ console.log({graphqlUrl, reputationEndpoint, chainNetworkContract, chainRpcEndpoint, chainNetwork, appSyncApi})
   return null;
 };
