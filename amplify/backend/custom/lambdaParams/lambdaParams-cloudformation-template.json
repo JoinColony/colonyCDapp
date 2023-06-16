@@ -13,7 +13,7 @@
           "Fn::Sub": "/amplify/cdapp/${env}/chain_network"
         },
         "Type": "String",
-        "Value": "xdai",
+        "Value": "Xdai",
         "Description": "The name of the network"
       }
     },
