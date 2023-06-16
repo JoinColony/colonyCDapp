@@ -40,6 +40,16 @@ const getParam = async (paramName) => {
   }
 };
 
+const getParams = async (params) => {
+  if (!Array.isArray(params)) {
+    console.error('Parameter names must be passed as an array of strings.');
+    return undefined;
+  }
+
+  return Promise.all(params.map((param) => getParam(param)));
+};
+
 module.exports = {
   getParam,
+  getParams,
 };
