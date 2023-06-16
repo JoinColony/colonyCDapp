@@ -57,17 +57,20 @@ const Header = () => {
 
   return (
     <header>
-      <div className="bg-base-white w-full flex flex-row min-h-[5rem] sm:min-h-[6rem] justify-center px-6">
+      <div className="bg-base-white w-full flex min-h-[5rem] sm:min-h-[6rem] justify-center px-6">
         <div className="flex items-center justify-between max-w-[90rem] w-full">
           <div className="mr-5 sm:mr-10">
             <div className="flex justify-between relative">
               <button
                 aria-label="Open dropdown"
                 ref={setTriggerRef}
-                className={clsx('flex items-center justify-between', {
-                  'w-[3.5rem]': !isMainMenuVisible,
-                  'w-[8rem]': isMainMenuVisible,
-                })}
+                className={clsx(
+                  'flex items-center justify-between transition-all duration-normal hover:text-gray-600',
+                  {
+                    'w-[3.5rem]': !isMainMenuVisible,
+                    'w-[8rem]': isMainMenuVisible,
+                  },
+                )}
                 type="button"
               >
                 <ColonyAvatarWrapper
@@ -153,14 +156,14 @@ const Header = () => {
           <div className="flex justify-between w-full items-center">
             <button
               type="button"
-              className={clsx('items-center flex sm:hidden', {
+              className={clsx('flex items-center sm:hidden', {
                 'opacity-100 visible': !isMainMenuVisible,
                 'opacity-0 invisible': isMainMenuVisible,
               })}
               ref={mainMenuSetTriggerRef}
             >
               <Icon name="list" appearance={{ size: 'tiny' }} />
-              <p className="text-sm font-medium ml-1">
+              <p className="text-sm font-medium ml-1.5">
                 {formatMessage({ id: 'menu' })}
               </p>
             </button>

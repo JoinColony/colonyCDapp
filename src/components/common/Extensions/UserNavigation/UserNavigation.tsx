@@ -30,7 +30,6 @@ const UserNavigation: FC = () => {
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip(
       {
-        delayShow: 200,
         delayHide: 200,
         placement: 'bottom-end',
         trigger: 'click',
@@ -132,7 +131,7 @@ const UserNavigation: FC = () => {
         </Button>
       )}
       {isWalletVisible && !isWalletConnected && (
-        <div className="w-full h-auto absolute top-[6.5rem] md:top-[2.3rem]">
+        <div className="w-full h-auto absolute top-[6.5rem] md:top-9">
           <WalletPopover
             setTooltipRef={setWalletTooltipRef}
             tooltipProps={getWalletTooltipProps}

@@ -45,8 +45,7 @@ const TotalReputation: FC<ReputationProps> = ({ colonyAddress, wallet }) => {
           {formatMessage({ id: 'view.all' })}
         </button>
       </div>
-
-      <div className="flex flex-col gap-[1.3125rem] pt-2 pb-[1.625rem]">
+      <div className="flex flex-col gap-4 pt-2 pb-6">
         <div className={styles.row}>
           <span className={styles.rowName}>
             {formatMessage({ id: 'total.balance' })}
@@ -59,9 +58,9 @@ const TotalReputation: FC<ReputationProps> = ({ colonyAddress, wallet }) => {
               titleValues={{ reputation: percentageReputation }}
             />
             {percentageReputation === ZeroValue.NearZero && (
-              <div className={styles.reputationValue}>
+              <span className={styles.reputationValue}>
                 {percentageReputation}
-              </div>
+              </span>
             )}
             {percentageReputation &&
               percentageReputation !== ZeroValue.NearZero && (
@@ -69,18 +68,19 @@ const TotalReputation: FC<ReputationProps> = ({ colonyAddress, wallet }) => {
                   className={styles.reputationValue}
                   value={percentageReputation || 0}
                   suffix="%"
+                  appearance={{ size: 'small' }}
                 />
               )}
           </div>
         </div>
-        <div className={`${styles.row} [&>span]:text-sm`}>
-          <div className={styles.rowName}>
+        <div className={styles.row}>
+          <span className={styles.rowName}>
             {formatMessage({ id: 'reputation.points' })}
-          </div>
+          </span>
           <Numeral
-            className="text-gray-900 font-medium"
             value={formattedReputationPoints}
             suffix="pts"
+            appearance={{ size: 'small' }}
           />
         </div>
       </div>

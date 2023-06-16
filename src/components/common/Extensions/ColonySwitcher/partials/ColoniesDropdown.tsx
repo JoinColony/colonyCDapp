@@ -5,6 +5,7 @@ import ColonyItem from './ColonyItem';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import { ColoniesDropdownProps } from '../types';
 import { useSelectedColony } from '../hooks';
+import TitleLabel from '~shared/Extensions/TitleLabel';
 
 const displayName =
   'common.Extensions.ColonySwitcher.partials.ColoniesDropdown';
@@ -32,25 +33,23 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
       {!isMobile && (
         <>
           <div className="flex items-center pb-4">
-            <div className="flex mr-2">
+            <div className="flex mr-2 shrink-0">
               <ColonyAvatar
                 colony={colonyToDisplay as Colony}
                 colonyAddress={colonyToDisplayAddress || ''}
                 size="xxs"
               />
             </div>
-            <div className="font-semibold text-md text-gray-900">
+            <p className="font-semibold text-md">
               {colonyToDisplay?.metadata?.displayName || colonyToDisplay?.name}
-            </div>
+            </p>
           </div>
-          <div className="w-full h-[0.0625rem] bg-gray-200" />
+          <div className="w-full h-px bg-gray-200" />
         </>
       )}
       {Object.keys(groupByCategory).map((key) => (
         <div className="px-6 sm:px-0 sm:mt-5" key={key}>
-          <div className="uppercase text-gray-400 text-xs font-medium">
-            {key}
-          </div>
+          <TitleLabel className="mb-1" text={key} />
           {groupByCategory[key].map((item) => (
             <ColonyItem
               colony={item?.colony as Colony}

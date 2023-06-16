@@ -1,17 +1,13 @@
 .rowName {
-  @apply font-medium text-md;
+  @apply text-md min-w-[2.875rem];
 }
 
 .row {
-  @apply flex justify-between;
+  @apply flex justify-between font-medium;
 }
 
 .numeral {
   @apply font-medium ml-1;
-}
-
-.value {
-  @apply flex flex-row items-center text-sm;
 }
 
 .icon {
@@ -19,5 +15,5 @@
 }
 
 .reputationValue {
-  @apply text-blue-400 font-medium text-sm;
+  @apply text-blue-400;
 }

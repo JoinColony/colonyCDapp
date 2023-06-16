@@ -32,7 +32,7 @@ const UserPermissionsBadge: FC<
 
   const content = (
     <>
-      <span className="flex items-center flex-shrink-0">
+      <span className="flex items-center shrink-0">
         <Icon name={name} appearance={{ size: 'extraTiny' }} />
       </span>
       <span className="ml-1.5">{userPermissionsBadgeText || children}</span>
