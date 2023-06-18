@@ -64,18 +64,15 @@ const Header = () => {
               <button
                 aria-label="Open dropdown"
                 ref={setTriggerRef}
-                className={clsx('flex items-center justify-between', {
-                  'w-[3.5rem]': !isMainMenuVisible,
-                  'w-[8rem]': isMainMenuVisible,
-                })}
+                className={clsx('flex items-center justify-between')}
                 type="button"
               >
                 <ColonyAvatarWrapper
-                  isOpen={visible}
+                  isOpen={visible || isMainMenuVisible}
                   isMobile={isMobile}
                   colonyToDisplayAddress={colonyToDisplayAddress}
                   colonyToDisplay={
-                    isMainMenuVisible ? colonyToDisplay : undefined
+                    isCloseButtonVisible ? colonyToDisplay : undefined
                   }
                 />
               </button>
@@ -151,19 +148,21 @@ const Header = () => {
             </div>
           </div>
           <div className="flex justify-between w-full items-center">
-            <button
-              type="button"
-              className={clsx('items-center flex sm:hidden', {
-                'opacity-100 visible': !isMainMenuVisible,
-                'opacity-0 invisible': isMainMenuVisible,
-              })}
-              ref={mainMenuSetTriggerRef}
-            >
-              <Icon name="list" appearance={{ size: 'tiny' }} />
-              <p className="text-sm font-medium ml-1">
-                {formatMessage({ id: 'menu' })}
-              </p>
-            </button>
+            {!visible && (
+              <button
+                type="button"
+                className={clsx('items-center flex sm:hidden', {
+                  'opacity-100 visible': !isMainMenuVisible,
+                  'opacity-0 invisible': isMainMenuVisible,
+                })}
+                ref={mainMenuSetTriggerRef}
+              >
+                <Icon name="list" appearance={{ size: 'tiny' }} />
+                <p className="text-sm font-medium ml-1">
+                  {formatMessage({ id: 'menu' })}
+                </p>
+              </button>
+            )}
             <MainNavigation
               setTooltipRef={mainMenuSetTooltipRef}
               tooltipProps={mainMenuGetTooltipProps}

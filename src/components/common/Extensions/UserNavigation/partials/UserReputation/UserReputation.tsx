@@ -15,7 +15,7 @@ import UserHub from '~common/Extensions/UserHub/UserHub';
 import Button from '~shared/Extensions/Button';
 import PopoverBase from '~shared/Extensions/PopoverBase/PopoverBase';
 import UserAvatar from '~shared/Extensions/UserAvatar';
-import MemberReputation from '~shared/MemberReputation/MemberReputation';
+import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 
 import { UserReputationProps } from '../../types';
 
@@ -102,7 +102,7 @@ const UserReputation: FC<UserReputationProps> = ({
         <div className="flex items-center gap-3">
           <UserAvatar
             user={user}
-            userName={profile?.displayName || user?.name || ''}
+            userName={profile?.displayName || user?.name}
             size="xxs"
           />
           <MemberReputation

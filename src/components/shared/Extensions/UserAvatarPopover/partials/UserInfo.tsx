@@ -83,7 +83,7 @@ const UserInfo: FC<UserInfoProps> = ({
           )}
         </div>
       </div>
-      <TitledContent title={{ id: 'userInfo.about.section' }}>
+      <TitledContent className="mt-2" title={{ id: 'userInfo.about.section' }}>
         <p className="text-md text-gray-600">{aboutDescriptionText}</p>
       </TitledContent>
       {colonyReputation && colonyReputation.length ? (

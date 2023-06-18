@@ -47,8 +47,8 @@ const UserMenu: FC<UserMenuProps> = ({
         {
           'w-full border-none shadow-none': isMobile,
           'w-[20.125rem]': !isMobile,
-          'h-[32rem] md:h-[23rem]': !isWalletConnected && !activeSubmenu,
-          'h-[37rem] md:h-[29rem]': isWalletConnected && !activeSubmenu,
+          'h-[32rem] sm:h-[23rem]': !isWalletConnected && !activeSubmenu,
+          'h-[37rem] sm:h-[29rem]': isWalletConnected && !activeSubmenu,
           'h-[16rem]': activeSubmenu,
         },
       )}
@@ -109,7 +109,7 @@ const UserMenu: FC<UserMenuProps> = ({
                 </p>
               </Button>
             </div>
-            <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">
+            <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
               <Button
                 mode="quaternaryOutline"
                 isFullSize
@@ -120,9 +120,9 @@ const UserMenu: FC<UserMenuProps> = ({
             </div>
           </>
         )}
-        <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">
+        <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
           <TitledContent title={{ id: 'userMenu.optionsTitle' }}>
-            <ul className="text-lg font-semibold md:font-normal md:text-md">
+            <ul className="text-lg font-semibold sm:font-normal sm:text-md">
               {userMenuItems.map((item) => (
                 <li className="mb-4 last:mb-0" key={item.id}>
                   {item.link ? (
@@ -162,7 +162,7 @@ const UserMenu: FC<UserMenuProps> = ({
           </TitledContent>
         </div>
         {isWalletConnected && (
-          <div className="w-full mb-6 md:mb-5">
+          <div className="w-full mb-6 sm:mb-5">
             <TitledContent title={{ id: 'userMenu.other' }}>
               <Link to="/" className={styles.link}>
                 <Icon name="plugs" appearance={{ size: iconSize }} />
