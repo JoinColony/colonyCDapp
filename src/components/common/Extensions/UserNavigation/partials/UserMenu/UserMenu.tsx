@@ -62,7 +62,7 @@ const UserMenu: FC<UserMenuProps> = ({
         <button
           type="button"
           aria-label={formatMessage({ id: 'ariaLabel.backToMainMenu' })}
-          className={styles.buttonBack}
+          className={clsx(styles.buttonBack, 'group')}
           onClick={() => setActiveSubmenu(null)}
         >
           <Icon name="caret-left" appearance={{ size: 'extraTiny' }} />
@@ -128,7 +128,7 @@ const UserMenu: FC<UserMenuProps> = ({
                   {item.link ? (
                     <Link
                       to={item.link}
-                      className="flex items-center transition-all duration-normal hover:text-blue-400"
+                      className="flex items-center transition-all duration-normal text-gray-700 hover:text-blue-400"
                     >
                       <Icon name={item.icon} appearance={{ size: iconSize }} />
                       <p className="ml-2">{formatMessage({ id: item.name })}</p>

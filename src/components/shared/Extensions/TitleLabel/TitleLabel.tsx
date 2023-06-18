@@ -16,7 +16,7 @@ const TitleLabel: FC<TitleLabelProps> = ({ text, className }) => {
     <span
       className={clsx(
         className,
-        'block text-gray-400 text-xs font-medium uppercase',
+        'block text-gray-400 text-xs font-medium uppercase group-hover:text-blue-400 transition-all duration-normal',
       )}
     >
       {textLabel}

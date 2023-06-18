@@ -30,7 +30,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
   return (
     <div className="flex flex-col items-end sm:block">
       <div className="flex items-center w-full sm:w-auto">
-        <div className="flex flex-shrink-0">
+        <div className="flex shrink-0">
           <Icon name={icon} appearance={{ size: 'large' }} />
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between ml-4 w-full gap-6 sm:gap-12">

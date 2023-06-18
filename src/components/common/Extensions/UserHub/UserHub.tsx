@@ -91,9 +91,7 @@ const UserHub: FC<UserHubProps> = ({
           </Button>
         )}
       </div>
-      {isMobile && (
-        <div className="h-[0.0625rem] w-full bg-gray-200 mt-6 mb-6" />
-      )}
+      {isMobile && <div className="h-px w-full bg-gray-200 mt-6 mb-6" />}
       <div
         className={`${
           isMobile
