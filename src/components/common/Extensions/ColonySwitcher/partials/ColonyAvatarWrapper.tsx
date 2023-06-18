@@ -5,6 +5,7 @@ import ColonyAvatar from '~shared/ColonyAvatar';
 import Icon from '~shared/Icon';
 import { Colony } from '~types';
 import { ColonyAvatarProps } from '../types';
+import styles from '../ColonySwitcher.module.css';
 
 const displayName =
   'common.Extensions.ColonySwitcher.partials.ColonyAvatarWrapper';
@@ -21,18 +22,14 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
   return (
     <>
       <div className="relative">
-        <span className="flex items-center justify-center bg-blue-300 w-[2.2725rem] h-[2.2725rem] rounded-full">
+        <span className="flex items-center justify-center bg-blue-300 w-[2.25rem] h-[2.25rem] rounded-full">
           <ColonyAvatar
             colony={colonyToDisplay as Colony}
             colonyAddress={colonyToDisplayAddress || ''}
             size="xxs"
           />
         </span>
-        <div
-          className="w-[1.175rem] h-[1.175rem] flex items-center justify-center absolute top-0 right-0 bg-base-white
-              rounded-full border border-gray-200 text-base-white [&>i]:flex [&>i]:items-center
-              [&>i]:justify-center [&>i>svg]:w-[0.6875rem] [&>i>svg]:h-[0.6875rem]"
-        >
+        <div className={styles.avatar}>
           <Icon name="gnosis" />
         </div>
       </div>

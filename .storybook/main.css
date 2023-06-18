@@ -17,7 +17,7 @@
   }
 
   body {
-    @apply min-h-full overflow-x-hidden;
+    @apply min-h-screen bg-base-white overflow-x-hidden;
   }
 
   svg:not([class]) {

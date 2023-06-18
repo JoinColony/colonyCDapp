@@ -77,7 +77,7 @@ const RadioBase: FC<RadioBaseProps> = ({
             )}
           </div>
           {badge && (
-            <div className="flex flex-shrink-0">
+            <div className="flex shrink-0">
               <ExtensionStatusBadge {...badge} />
             </div>
           )}
