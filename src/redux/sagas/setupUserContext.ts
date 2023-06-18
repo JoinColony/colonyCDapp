@@ -1,25 +1,33 @@
 import { all, call, fork, put } from 'redux-saga/effects';
 // import { formatEther } from 'ethers/lib/utils';
 
+import motionSagas from './motions';
+import { setContext, ContextModule, UserSettings } from '~context';
+import { ColonyWallet, isFullWallet } from '~types';
+
 import actionsSagas from './actions';
 import colonySagas, { colonyCreateSaga } from './colony';
 import extensionSagas from './extensions';
-import motionSagas from './motions';
+
+// import actionsSagas from './actions';
+// import colonySagas, {
+// } from './colony';
+// import colonyExtensionSagas from './extensions';
+// import motionSagas from './motions';
 // import whitelistSagas from './whitelist';
 // import vestingSagas from './vesting';
 import { setupUsersSagas } from './users';
-import { getWallet } from './wallet';
 
 import { ActionTypes } from '../actionTypes';
 import { AllActions } from '../types/actions';
-
-import { setContext, ContextModule, UserSettings } from '~context';
 
 // import setupResolvers from '~context/setupResolvers';
 // import AppLoadingState from '~context/appLoadingState';
 
 import { getGasPrices, putError } from './utils';
 import setupOnBeforeUnload from './setupOnBeforeUnload';
+import setupWalletContext from './setupWalletContext';
+import getOnboard from './wallet/onboard';
 // import { setupUserBalanceListener } from './setupUserBalanceListener';
 
 function* setupContextDependentSagas() {
@@ -48,13 +56,13 @@ function* setupContextDependentSagas() {
  */
 export default function* setupUserContext() {
   try {
+    /* Instantiate the onboard object and load into context */
+    const onboard = yield getOnboard();
+    setContext(ContextModule.Onboard, onboard);
     /*
      * Get the new wallet and set it in context.
      */
-    const wallet = yield call(getWallet);
-
-    setContext(ContextModule.Wallet, wallet);
-
+    const wallet: ColonyWallet | undefined = yield call(setupWalletContext);
     yield put<AllActions>({
       type: ActionTypes.WALLET_OPEN_SUCCESS,
     });
@@ -72,7 +80,9 @@ export default function* setupUserContext() {
       setContext(ContextModule.UserSettings, userSettings);
     }
 
+    if (isFullWallet(wallet)) {
       yield call(getGasPrices);
+    }
 
     /*
      * This needs to happen first because USER_CONTEXT_SETUP_SUCCESS causes a redirect

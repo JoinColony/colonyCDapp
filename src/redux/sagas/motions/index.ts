@@ -9,8 +9,7 @@ import claimAllMotionRewardsSaga from './claimAllMotionRewards';
 import rootMotionSaga from './rootMotion';
 import createEditDomainMotionSaga from './createEditDomainMotion';
 import moveFundsMotionSaga from './moveFundsMotion';
-// import managePermissionsMotionSaga from './managePermissionsMotion';
-// import editColonyMotionSaga from './editColonyMotion';
+import managePermissionsMotionSaga from './managePermissionsMotion';
 // import updateMotionStateSaga from './updateState';
 import paymentMotionSaga from './paymentMotion';
 // import escalateMotionSaga from './escalateMotion';
@@ -28,7 +27,7 @@ export default function* actionsSagas() {
     call(rootMotionSaga),
     call(createEditDomainMotionSaga),
     call(moveFundsMotionSaga),
-    // call(managePermissionsMotionSaga),
+    call(managePermissionsMotionSaga),
     call(editColonyMotionSaga),
     // call(updateMotionStateSaga),
     call(paymentMotionSaga),

@@ -70,17 +70,15 @@ export const getUserRolesForDomain = (
       domainRole?.targetAddress === userAddress,
   );
 
-  if (excludeInherited) {
-    return userRolesInRootDomain
-      ? convertRolesToArray(userRolesInRootDomain)
-      : [];
+  if (excludeInherited && userRolesInAnyDomain) {
+    return convertRolesToArray(userRolesInAnyDomain);
   }
 
-  if (!excludeInherited) {
+  if (!excludeInherited && (userRolesInAnyDomain || userRolesInRootDomain)) {
     return Array.from(
       new Set([
-        ...(convertRolesToArray(userRolesInAnyDomain) || []),
-        ...(convertRolesToArray(userRolesInRootDomain) || []),
+        ...convertRolesToArray(userRolesInAnyDomain),
+        ...convertRolesToArray(userRolesInRootDomain),
       ]),
     );
   }
@@ -89,8 +87,8 @@ export const getUserRolesForDomain = (
 };
 
 export const getAllUserRoles = (
-  colony: ColonyFragment,
-  userAddress: Address,
+  colony: ColonyFragment | undefined,
+  userAddress: Address | undefined,
 ): ColonyRole[] => {
   if (!colony || !userAddress) return [];
 
