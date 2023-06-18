@@ -47,9 +47,6 @@ const UserMenu: FC<UserMenuProps> = ({
         {
           'w-full border-none shadow-none': isMobile,
           'w-[20.125rem]': !isMobile,
-          'h-[32rem] sm:h-[23rem]': !isWalletConnected && !activeSubmenu,
-          'h-[37rem] sm:h-[29rem]': isWalletConnected && !activeSubmenu,
-          'h-[16rem]': activeSubmenu,
         },
       )}
     >
