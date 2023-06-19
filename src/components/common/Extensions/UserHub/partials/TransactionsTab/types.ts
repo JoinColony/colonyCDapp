@@ -71,3 +71,9 @@ export interface TransactionStatusProps {
 export interface TransactionListProps {
   transactionAndMessageGroups: TransactionOrMessageGroups;
 }
+
+export interface CancelTransactionProps {
+  isShowingCancelConfirmation: boolean;
+  handleCancelTransaction;
+  toggleCancelConfirmation;
+}

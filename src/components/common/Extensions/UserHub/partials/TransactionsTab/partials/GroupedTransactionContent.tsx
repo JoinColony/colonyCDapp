@@ -2,11 +2,12 @@ import React, { FC } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import clsx from 'clsx';
 
-import Icon from '~shared/Icon/Icon';
 import styles from './TransactionsItem/TransactionsItem.module.css';
-import NotificationBanner from '~common/Extensions/NotificationBanner/NotificationBanner';
+import NotificationBanner from '~common/Extensions/NotificationBanner';
 import { GroupedTransactionContentProps } from '../types';
 import { useGroupedTransactionContent } from './hooks';
+import CancelTransaction from './CancelTransaction';
+import TransactionStatus from './TransactionStatus';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransactionCard';
@@ -51,6 +52,10 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
     ready,
     pending,
     succeeded,
+    isShowingCancelConfirmation,
+    toggleCancelConfirmation,
+    handleCancelTransaction,
+    canBeSigned,
   } = useGroupedTransactionContent(
     id,
     error,
@@ -59,6 +64,7 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
     metatransaction,
     context,
     status,
+    selected,
   );
 
   return (
@@ -79,24 +85,15 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
             values={(titleValues || params) as Record<string, any>}
           />
         </h4>
-        {!pending ? (
-          <div
-            className={clsx('flex ml-2', {
-              'text-success-400': ready || succeeded,
-              'text-negative-400': failed,
-            })}
-          >
-            <Icon
-              name={ready || succeeded ? 'check-circle' : 'warning-circle'}
-              appearance={{ size: 'tiny' }}
-            />
-          </div>
-        ) : (
-          <Icon
-            name="spinner-gap"
-            className="ml-[0.59375rem] w-[0.8125rem] h-[0.8125rem] animate-spin text-blue-400"
-            appearance={{ size: 'tiny' }}
+
+        {canBeSigned ? (
+          <CancelTransaction
+            isShowingCancelConfirmation={isShowingCancelConfirmation}
+            handleCancelTransaction={handleCancelTransaction}
+            toggleCancelConfirmation={toggleCancelConfirmation}
           />
+        ) : (
+          <TransactionStatus status={status} />
         )}
       </div>
       {failed && error && (
