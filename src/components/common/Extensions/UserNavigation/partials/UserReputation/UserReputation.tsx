@@ -11,11 +11,11 @@ import {
   useUserReputation,
 } from '~hooks';
 
-import UserHub from '~common/Extensions/UserHub/UserHub';
+import UserHub from '~common/Extensions/UserHub';
 import Button from '~shared/Extensions/Button';
-import PopoverBase from '~shared/Extensions/PopoverBase/PopoverBase';
+import PopoverBase from '~shared/Extensions/PopoverBase';
 import UserAvatar from '~shared/Extensions/UserAvatar';
-import MemberReputation from '~shared/MemberReputation/MemberReputation';
+import MemberReputation from '~shared/MemberReputation';
 
 import { UserReputationProps } from '../../types';
 

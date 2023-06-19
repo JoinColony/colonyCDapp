@@ -2,7 +2,7 @@ import React, { PropsWithChildren, FC } from 'react';
 import clsx from 'clsx';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import Button from '~shared/Extensions/Button/Button';
+import Button from '~shared/Extensions/Button';
 import Icon from '~shared/Icon';
 
 import { SubNavigationItemProps } from './types';
@@ -20,7 +20,7 @@ const SubNavigationItemMobile: FC<
     <Button
       onClick={setOpen}
       mode="textButton"
-      className={clsx(styles.button, 'heading-5', {
+      className={clsx(styles.button, {
         [styles.activeButton]: isOpen,
       })}
     >

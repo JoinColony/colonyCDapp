@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+
 import AccordionHeader from './AccordionHeader';
 import AccordionContent from './AccordionContent';
 import { AccordionItemProps } from '../types';

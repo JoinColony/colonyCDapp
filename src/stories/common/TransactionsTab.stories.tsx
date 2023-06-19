@@ -1,14 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import Transactions from '~common/Extensions/UserHub/partials/TransactionsTab';
 import TransactionsTab from '~common/Extensions/UserHub/partials/TransactionsTab/TransactionsTab';
 import { transactionsItems } from '~common/Extensions/UserHub/partials/TransactionsTab/consts';
 import { useAccordion } from '~shared/Extensions/Accordion/hooks';
 
-const meta: Meta<typeof Transactions> = {
+const meta: Meta<typeof TransactionsTab> = {
   title: 'Common/User Hub/Transactions tab',
-  component: Transactions,
+  component: TransactionsTab,
   argTypes: {
     // @ts-ignore
     items: {
@@ -21,7 +20,7 @@ const meta: Meta<typeof Transactions> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Transactions>;
+type Story = StoryObj<typeof TransactionsTab>;
 
 const TransactionsTabHooks = () => {
   const { openIndex, onOpenIndexChange } = useAccordion();

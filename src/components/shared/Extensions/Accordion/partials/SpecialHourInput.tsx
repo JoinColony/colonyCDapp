@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
-import SpecialInput from '~common/Extensions/SpecialInput/SpecialInput';
-import FormError from '~shared/Extensions/FormError/FormError';
+import SpecialInput from '~common/Extensions/SpecialInput';
+import FormError from '~shared/Extensions/FormError';
 import { SpecialInputProps } from '../types';
 
 const displayName = 'Extensions.SpecialHourInput';
