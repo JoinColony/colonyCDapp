@@ -12,12 +12,10 @@ import Icon from '~shared/Icon';
 import UserNavigation from '~common/Extensions/UserNavigation';
 import MainNavigation from '~common/Extensions/MainNavigation';
 import Button from '~shared/Extensions/Button';
-import Token from '~common/Extensions/UserNavigation/partials/Token';
-import UserAvatar from '~shared/Extensions/UserAvatar';
-import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import styles from './Header.module.css';
 import { useHeader } from './hooks';
 import { useExtensionsContext } from '~context/ExtensionsContext';
+import NavigationTools from '~common/Extensions/NavigationTools/NavigationTools';
 
 const displayName = 'frame.Extensions.Header';
 
@@ -110,29 +108,17 @@ const Header = () => {
                         userLoading={userLoading}
                       >
                         <div className={styles.mobileButtons}>
-                          {nativeToken && <Token nativeToken={nativeToken} />}
-                          <Button mode="tertiaryOutline" isFullRounded>
-                            <div className="flex items-center gap-3">
-                              <UserAvatar
-                                userName={
-                                  profile?.displayName || user?.name || ''
-                                }
-                                size="xxs"
-                                user={user}
-                              />
-                              <MemberReputation
-                                userReputation={userReputation}
-                                totalReputation={totalReputation}
-                                hideOnMobile={false}
-                              />
-                            </div>
-                          </Button>
-                          <Button mode="tertiaryOutline" isFullRounded>
-                            <Icon
-                              name="list"
-                              appearance={{ size: 'extraTiny' }}
-                            />
-                          </Button>
+                          <NavigationTools
+                            // @TODO Help and account label
+                            // buttonLabel={formatMessage({
+                            //   id: 'helpAndAccount',
+                            // })}
+                            nativeToken={nativeToken}
+                            totalReputation={totalReputation}
+                            userName={profile?.displayName || user?.name || ''}
+                            userReputation={userReputation}
+                            user={user}
+                          />
                         </div>
                         {!!watchlist.length && (
                           <ColoniesDropdown

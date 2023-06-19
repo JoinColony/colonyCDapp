@@ -85,6 +85,7 @@ const UserReputation: FC<UserReputationProps> = ({
   const prevTxCount: number | void = usePrevious(txCount);
 
   useEffect(() => {
+    // this confition always will be false until we will be able to trigger transactions in Extension page
     if (prevTxCount != null && txCount > prevTxCount) {
       setOpen(true);
       setTxNeedsSigning(true);

@@ -26,10 +26,8 @@ const MSG = defineMessages({
 });
 
 const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
-  // appearance: { required },
-  // selectedTransaction,
   idx,
-  // selected,
+  selected,
   transaction: {
     context,
     error,
@@ -44,7 +42,6 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
     titleValues,
   },
 }) => {
-  // const dispatch = useDispatch();
   const { formatMessage } = useIntl();
 
   const {
@@ -66,10 +63,11 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
 
   return (
     <li
-      className={clsx(`${styles.listItem} font-semibold`, {
+      className={clsx(`${styles.listItem}`, {
         'before:bg-success-400': ready || succeeded,
         'before:bg-negative-400': failed,
-        'before:!bg-blue-400': pending,
+        'before:bg-blue-400': pending,
+        'font-bold': selected,
       })}
     >
       <div className="flex justify-between items-center">

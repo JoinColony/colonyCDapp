@@ -1,8 +1,8 @@
 import React, { FC, PropsWithChildren } from 'react';
-import { useIntl } from 'react-intl';
 
 import { TitledContentProps } from './types';
 import { useMobile } from '~hooks';
+import TitleLabel from '~shared/Extensions/TitleLabel/TitleLabel';
 
 const displayName = 'common.Extensions.TitledContent';
 
@@ -13,14 +13,11 @@ const TitledContent: FC<PropsWithChildren<TitledContentProps>> = ({
   isTitleHiddenOnDesktop,
 }) => {
   const isMobile = useMobile();
-  const { formatMessage } = useIntl();
 
   return (
     <div className={className}>
       {isTitleHiddenOnDesktop && isMobile && (
-        <h4 className="uppercase text-xs text-gray-400 font-medium font-inter mb-2">
-          {formatMessage(title)}
-        </h4>
+        <TitleLabel className="mb-2" text={title} />
       )}
       {children}
     </div>
