@@ -17,24 +17,12 @@ const { calculatePercentageReputation } = require('./reputation');
 const { graphqlRequest } = require('./utils');
 const { getWatchersInColony } = require('./graphql');
 
+let apiKey = 'da2-fakeApiId123456';
+let graphqlURL = 'http://localhost:20002/graphql';
+let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let reputationOracleEndpoint = 'http://network-contracts:3002';
+let network = Network.Custom;
 let networkAddress;
-try {
-  const artifacts = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-  networkAddress = artifacts.etherRouterAddress;
-} catch (error) {
-  // silent error
-  // means we're in a production environment without access to the contract build artifacts
-}
-
-const API_KEY = process.env.APPSYNC_API_KEY || 'da2-fakeApiId123456';
-const GRAPHQL_URI =
-  process.env.AWS_APPSYNC_GRAPHQL_URL || 'http://localhost:20002/graphql';
-const RPC_URL =
-  process.env.CHAIN_RPC_ENDPOINT || 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
-const REPUTATION_ENDPOINT =
-  process.env.REPUTATION_ENDPOINT || 'http://network-contracts:3002';
-const NETWORK = process.env.CHAIN_RPC_ENDPOINT || Network.Custom;
-const NETWORK_ADDRESS = process.env.CHAIN_NETWORK_CONTRACT || networkAddress;
 
 const SortingMethod = {
   BY_HIGHEST_REP: 'BY_HIGHEST_REP',
@@ -44,18 +32,51 @@ const SortingMethod = {
   // BY_LESS_PERMISSIONS,
 };
 
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [
+      apiKey,
+      graphqlURL,
+      rpcURL,
+      networkAddress,
+      reputationOracleEndpoint,
+      network,
+    ] = await getParams([
+      'appsyncApiKey',
+      'graphqlUrl',
+      'chainRpcEndpoint',
+      'networkContractAddress',
+      'reputationEndpoint',
+      'chainNetwork',
+    ]);
+  } else {
+    const {
+      etherRouterAddress,
+    } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+    networkAddress = etherRouterAddress;
+  }
+};
+
 exports.handler = async (event) => {
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw new Error('Unable to set env variables. Reason:', e);
+  }
+
   const {
     colonyAddress,
     rootHash,
     domainId = Id.RootDomain,
     sortingMethod = SortingMethod.BY_HIGHEST_REP,
   } = event?.arguments?.input || {};
-  const provider = new providers.JsonRpcProvider(RPC_URL);
+  const provider = new providers.JsonRpcProvider(rpcURL);
 
-  const networkClient = getColonyNetworkClient(NETWORK, provider, {
-    networkAddress: NETWORK_ADDRESS,
-    reputationOracleEndpoint: REPUTATION_ENDPOINT,
+  const networkClient = getColonyNetworkClient(network, provider, {
+    networkAddress,
+    reputationOracleEndpoint,
   });
 
   const colonyClient = await networkClient.getColonyClient(colonyAddress);
@@ -88,8 +109,8 @@ exports.handler = async (event) => {
   const { data, errors } = await graphqlRequest(
     getWatchersInColony,
     { id: checksummedAddress },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   if (errors || !data) {
