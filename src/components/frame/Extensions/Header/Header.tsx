@@ -69,9 +69,7 @@ const Header = () => {
                   isOpen={visible || isMainMenuVisible}
                   isMobile={isMobile}
                   colonyToDisplayAddress={colonyToDisplayAddress}
-                  colonyToDisplay={
-                    isCloseButtonVisible ? colonyToDisplay : undefined
-                  }
+                  colonyToDisplay={isCloseButtonVisible && colonyToDisplay}
                 />
               </button>
               {visible && (
