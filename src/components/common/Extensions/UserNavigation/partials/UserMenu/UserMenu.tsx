@@ -98,9 +98,9 @@ const UserMenu: FC<UserMenuProps> = ({
             <div className={styles.mobileButtons}>
               <Button mode="tertiaryOutline" isFullRounded>
                 <Icon name="cardholder" appearance={{ size: 'tiny' }} />
-                <p className="text-sm font-medium ml-1">
+                <span className="text-sm font-medium ml-1.5">
                   {formatMessage({ id: 'connectWallet' })}
-                </p>
+                </span>
               </Button>
               <Button mode="tertiaryOutline" isFullRounded>
                 <Icon name="list" appearance={{ size: 'extraTiny' }} />
