@@ -1,23 +1,24 @@
 const { default: fetch } = require('node-fetch');
 
-const AWS_SESSION_TOKEN =  process.env.AWS_SESSION_TOKEN;
+const AWS_SESSION_TOKEN = process.env.AWS_SESSION_TOKEN;
 const ENV = process.env.ENV;
 
 const ParamNames = {
   graphqlUrl: `%2Famplify%2Fcdapp%2F${ENV}%2Faws_appsync_graphql_url`,
   reputationEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2Freputation_endpoint`,
-  chainNetworkContract: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_network_contract`,
+  networkContractAddress: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_network_contract`,
   chainRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_rpc_endpoint`,
   chainNetwork: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_network`,
-  appSyncApi: `%2Famplify%2Fcdapp%2F${ENV}%2Faws_appsync_api_key`,
+  appsyncApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2Faws_appsync_api_key`,
 };
 
 const getParam = async (paramName) => {
   if (!(paramName in ParamNames)) {
-    return undefined;
+    throw Error(`Invalid param name '${paramName}' provided.`);
   }
 
-  const decrpytParam = paramName === 'appSyncApi' ? '&withDecryption=true' : '';
+  const decrpytParam =
+    paramName === 'appsyncApiKey' ? '&withDecryption=true' : '';
 
   // Retrieve param from Parameter Store
   try {

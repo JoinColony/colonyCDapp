@@ -21,8 +21,8 @@ const setEnvVariables = async () => {
   if (ENV === 'qa') {
     const { getParams } = require('/opt/nodejs/getParams');
     [networkAddress, apiKey, graphqlURL, rpcURL, network] = await getParams([
-      'chainNetworkContract',
-      'appSyncApi',
+      'networkContractAddress',
+      'appsyncApiKey',
       'graphqlUrl',
       'chainRpcEndpoint',
       'chainNetwork',
