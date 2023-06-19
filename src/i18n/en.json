@@ -400,6 +400,7 @@
   "file-text": "File text icon",
   "radio.error.governance": "Please select a governance style option before enabling",
   "ariaLabel.open": "Open",
+  "ariaLabel.openMenu": "Open menu",
   "ariaLabel.viewAll": "View all",
   "ariaLabel.showDetails": "Show details",
   "ariaLabel.closeModal": "Close the modal",
