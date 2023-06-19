@@ -15,7 +15,7 @@ const EmptyContent: FC<EmptyContentProps> = ({ contentName }) => {
       <div className={styles.emptyContent}>
         <Icon name="binoculars" appearance={{ size: 'tiny' }} />
       </div>
-      <p className="font-medium text-sm leading-5">
+      <p className="text-3 leading-5">
         {formatMessage({ id: 'empty.content.title' }, { contentName })}
       </p>
       <p className="text-xs text-gray-600">

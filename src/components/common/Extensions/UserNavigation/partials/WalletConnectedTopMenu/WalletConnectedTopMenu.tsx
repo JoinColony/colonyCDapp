@@ -3,17 +3,14 @@ import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 
 import styles from './WalletConnectedTopMenu.module.css';
-import Button from '~shared/Extensions/Button';
 import Link from '~shared/Extensions/Link';
 import Icon from '~shared/Icon';
 import Avatar from '~shared/Extensions/Avatar';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import Token from '../Token';
-import UserAvatar from '~shared/Extensions/UserAvatar';
-import MemberReputation from '../MemberReputation';
 import { WalletConnectedTopMenuProps } from './types';
 import { useMobile } from '~hooks';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
+import NavigationTools from '~common/Extensions/NavigationTools';
 
 const displayName =
   'common.Extensions.UserNavigation.partials.WalletConnectedTopMenu';
@@ -35,24 +32,17 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
   return (
     <>
       <div className={styles.mobileButtons}>
-        {nativeToken && <Token nativeToken={nativeToken} />}
-        <Button mode="tertiaryOutline" isFullRounded>
-          <div className="flex items-center gap-3">
-            <UserAvatar userName={userName} size="xxs" user={user} />
-            <MemberReputation
-              userReputation={userReputation}
-              totalReputation={totalReputation}
-              hideOnMobile={false}
-            />
-          </div>
-        </Button>
-        <Button mode="tertiaryOutline" isFullRounded>
-          <Icon name="list" appearance={{ size: 'extraTiny' }} />
-          {/* @TODO Help and Account */}
-          {/* <span className="text-sm font-medium ml-1.5">
-            {formatMessage({ id: 'helpAndAccount' })}
-          </span> */}
-        </Button>
+        <NavigationTools
+          // @TODO Help and account label
+          // buttonLabel={formatMessage({
+          //   id: 'helpAndAccount',
+          // })}
+          nativeToken={nativeToken}
+          totalReputation={totalReputation}
+          userName={userName}
+          userReputation={userReputation}
+          user={user}
+        />
       </div>
       <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
         <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center mb-6">

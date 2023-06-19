@@ -88,12 +88,6 @@ const UserNavigation: FC = () => {
     groupedTransactionsAndMessages,
   );
 
-  // const readyTransactions = useMemo(
-  //   // @ts-ignore
-  //   () => readyTransactionsCount(transactionAndMessageGroups),
-  //   [transactionAndMessageGroups],
-  // );
-
   useLayoutEffect(() => {
     if (!wallet && connectWallet && getLastWallet()) {
       connectWallet();
@@ -131,9 +125,9 @@ const UserNavigation: FC = () => {
             appearance={{ size: 'tiny' }}
           />
           {isWalletButtonVisible && (
-            <p className="text-3 ml-1">
+            <span className="text-3 ml-1">
               {formatMessage({ id: 'connectWallet' })}
-            </p>
+            </span>
           )}
         </Button>
       )}

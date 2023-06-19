@@ -10,6 +10,7 @@ const meta: Meta<typeof Transactions> = {
   title: 'Common/User Hub/Transactions tab',
   component: Transactions,
   argTypes: {
+    // @ts-ignore
     items: {
       name: 'Items',
       control: {
@@ -29,6 +30,7 @@ const TransactionsTabHooks = () => {
     <TransactionsTab
       openIndex={openIndex}
       onOpenIndexChange={onOpenIndexChange}
+      // @ts-ignore
       items={transactionsItems}
     />
   );
