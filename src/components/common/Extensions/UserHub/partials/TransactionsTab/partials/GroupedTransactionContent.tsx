@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import styles from './TransactionsItem/TransactionsItem.module.css';
-import NotificationBanner from '~common/Extensions/NotificationBanner/NotificationBanner';
+import NotificationBanner from '~common/Extensions/NotificationBanner';
 import { GroupedTransactionContentProps } from '../types';
 import { useGroupedTransactionContent } from './hooks';
 import CancelTransaction from './CancelTransaction';

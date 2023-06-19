@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { CancelTransactionProps } from '../types';
-import Button from '~shared/Extensions/Button/Button';
+import Button from '~shared/Extensions/Button';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.CancelTransaction';
