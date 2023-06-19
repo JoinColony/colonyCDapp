@@ -27,7 +27,7 @@
 }
 
 .textButton {
-  @apply rounded-none hover:text-blue-400 disabled:text-gray-400 font-semibold text-lg sm:text-md;
+  @apply text-sm rounded-none hover:text-blue-400 disabled:text-gray-400;
 }
 
 .pending {

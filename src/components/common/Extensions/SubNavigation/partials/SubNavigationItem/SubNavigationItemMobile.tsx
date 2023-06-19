@@ -2,7 +2,6 @@ import React, { PropsWithChildren, FC } from 'react';
 import clsx from 'clsx';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import Button from '~shared/Extensions/Button';
 import Icon from '~shared/Icon';
 
 import { SubNavigationItemProps } from './types';
@@ -17,15 +16,17 @@ const SubNavigationItemMobile: FC<
   PropsWithChildren<SubNavigationItemProps>
 > = ({ label, content, isOpen, setOpen, icon }) => (
   <li>
-    <Button
+    <button
+      type="button"
       onClick={setOpen}
-      mode="textButton"
       className={clsx(styles.button, {
         [styles.activeButton]: isOpen,
       })}
     >
       <span className="flex items-center">
-        <Icon name={icon} appearance={{ size: 'small' }} />
+        <span className="flex shrink-0">
+          <Icon name={icon} appearance={{ size: 'small' }} />
+        </span>
         <span className="flex ml-2">{label}</span>
       </span>
       <span
@@ -35,7 +36,7 @@ const SubNavigationItemMobile: FC<
       >
         <Icon name="caret-down" appearance={{ size: 'extraTiny' }} />
       </span>
-    </Button>
+    </button>
     <AnimatePresence>
       {isOpen && (
         <motion.div

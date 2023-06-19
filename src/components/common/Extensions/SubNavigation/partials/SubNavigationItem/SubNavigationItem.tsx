@@ -2,9 +2,7 @@ import React, { PropsWithChildren, FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import clsx from 'clsx';
 
-import Button from '~shared/Extensions/Button';
 import Icon from '~shared/Icon';
-
 import { SubNavigationItemProps } from './types';
 import styles from './SubNavigationItem.module.css';
 
@@ -45,9 +43,9 @@ const SubNavigationItem: FC<PropsWithChildren<SubNavigationItemProps>> = ({
 
   return (
     <li>
-      <Button
+      <button
+        type="button"
         onClick={setOpen}
-        mode="textButton"
         className={clsx(styles.button, {
           [styles.activeButton]: isOpen,
         })}
@@ -56,7 +54,7 @@ const SubNavigationItem: FC<PropsWithChildren<SubNavigationItemProps>> = ({
         <span className="flex ml-2" ref={setTriggerRef}>
           {label}
         </span>
-      </Button>
+      </button>
       <div className="relative h-auto">
         {isOpen && (
           <div
