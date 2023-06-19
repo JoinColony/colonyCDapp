@@ -74,4 +74,51 @@ module.exports = {
       }
     }
   `,
+  getColony2: /* GraphQL */ `
+    query GetColony($id: ID!, $name: String!) {
+      getColonyByAddress(id: $id) {
+        items {
+          id
+          name
+        }
+      }
+      getColonyByName(name: $name) {
+        items {
+          id
+          name
+        }
+      }
+      getColonyByType(type: METACOLONY) {
+        items {
+          id
+          name
+        }
+      }
+    }
+  `,
+  getTokenByAddress: /* GraphQL */ `
+    query GetTokenByAddress(
+      $id: ID!
+      $sortDirection: ModelSortDirection
+      $filter: ModelTokenFilterInput
+      $limit: Int
+    ) {
+      getTokenByAddress(
+        id: $id
+        sortDirection: $sortDirection
+        filter: $filter
+        limit: $limit
+      ) {
+        items {
+          id
+          name
+          symbol
+          decimals
+          type
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  `,
 };

@@ -1,7 +1,7 @@
 const { getColonyNetworkClient, Network } = require('@colony/colony-js');
 const { providers } = require('ethers');
 
-const { getColony } = require('./queries');
+const { getColony, getColony2, getTokenByAddress } = require('./queries');
 const { graphqlRequest } = require('./utils');
 
 let apiKey = 'da2-fakeApiId123456';
@@ -14,18 +14,7 @@ const setEnvVariables = async () => {
   const ENV = process.env.ENV;
   if (ENV === 'qa') {
     const { getParams } = require('/opt/nodejs/getParams');
-    [networkAddress, apiKey, graphqlURL, rpcURL, network] = await getParams([
-      'chainNetworkContract',
-      'appSyncApi',
-      'graphqlUrl',
-      'chainRpcEndpoint',
-      'chainNetwork',
-    ]);
-  } else {
-    const {
-      etherRouterAddress,
-    } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-    networkAddress = etherRouterAddress;
+    [apiKey, graphqlURL] = await getParams(['appSyncApi', 'graphqlUrl']);
   }
 };
 
@@ -33,50 +22,29 @@ const setEnvVariables = async () => {
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 
-exports.handler = async ({ source: { id: colonyAddress } }) => {
-  try {
-    await setEnvVariables();
-  } catch (e) {
-    console.error(
-      'Unable to set environment variables. Exiting lambda early. Reason:',
-      e,
-    );
-    return {
-      items: [],
-    };
-  }
+exports.handler = async (event) => {
+  const {
+    id: colonyAddress,
+    name,
+    colonyNativeTokenId,
+  } = event.arguments?.input || {};
 
-  console.log({
-    apiKey,
-    graphqlURL,
-    rpcURL,
-    network,
-    networkAddress,
-  });
+  await setEnvVariables();
 
-  const response = await graphqlRequest(
-    getColony,
-    { address: colonyAddress },
+  const colonyQuery = await graphqlRequest(
+    getColony2,
+    { id: colonyAddress, name },
     graphqlURL,
     apiKey,
   );
 
-  const { getColony: colony } = response?.data || {};
+  const tokenQuery = await graphqlRequest(
+    getTokenByAddress,
+    { id: colonyNativeTokenId },
+    graphqlURL,
+    apiKey,
+  );
 
-  if (!colony) {
-    return { items: [] };
-  }
-
-  const provider = new providers.JsonRpcProvider(rpcURL);
-  const networkClient = await getColonyNetworkClient(network, provider, {
-    networkAddress,
-  });
-
-  const colonyClient = await networkClient.getColonyClient(colonyAddress);
-
-  console.log({ response, colonyClient, networkClient });
-
-  return {
-    items: [],
-  };
+  console.log({ colonyQuery, tokenQuery });
+  return null;
 };
