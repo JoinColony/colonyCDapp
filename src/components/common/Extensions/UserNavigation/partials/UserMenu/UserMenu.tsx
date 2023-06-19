@@ -59,7 +59,7 @@ const UserMenu: FC<UserMenuProps> = ({
         <button
           type="button"
           aria-label={formatMessage({ id: 'ariaLabel.backToMainMenu' })}
-          className={clsx(styles.buttonBack, 'group')}
+          className={clsx(styles.buttonBack, 'group text-4')}
           onClick={() => setActiveSubmenu(null)}
         >
           <Icon name="caret-left" appearance={{ size: 'extraTiny' }} />
@@ -95,13 +95,13 @@ const UserMenu: FC<UserMenuProps> = ({
             <div className={styles.mobileButtons}>
               <Button mode="tertiaryOutline" isFullRounded>
                 <Icon name="cardholder" appearance={{ size: 'tiny' }} />
-                <p className="text-1 ml-1">
+                <p className="text-3 ml-1">
                   {formatMessage({ id: 'connectWallet' })}
                 </p>
               </Button>
               <Button mode="tertiaryOutline" isFullRounded>
                 <Icon name="list" appearance={{ size: 'extraTiny' }} />
-                <p className="text-1 ml-1">{formatMessage({ id: 'help' })}</p>
+                <p className="text-3 ml-1">{formatMessage({ id: 'help' })}</p>
               </Button>
             </div>
             <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">

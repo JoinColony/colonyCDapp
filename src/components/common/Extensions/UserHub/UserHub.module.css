@@ -7,7 +7,7 @@
 }
 
 .iconArrow {
-  @apply icon mr-0 ml-[2.5rem];
+  @apply icon mr-0 ml-10;
 }
 
 .wrapper {

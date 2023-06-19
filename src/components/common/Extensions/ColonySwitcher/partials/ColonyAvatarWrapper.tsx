@@ -32,7 +32,7 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
     </div>
 
     {isMobile && colonyToDisplay && (
-      <div className="font-semibold text-md text-gray-900 mx-2">
+      <div className="text-2 mx-2">
         {colonyToDisplay?.metadata?.displayName ||
           colonyToDisplay?.name ||
           'Colony name'}

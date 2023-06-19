@@ -104,7 +104,7 @@ const UserNavigationNotConnected = () => (
   <div className="flex items-center w-full justify-end gap-1">
     <Button mode="tertiaryOutline" isFullRounded>
       <Icon name="cardholder" appearance={{ size: 'tiny' }} />
-      <p className="text-1 ml-1">Connect wallet</p>
+      <p className="text-3 ml-1">Connect wallet</p>
     </Button>
     <Button mode="tertiaryOutline" isFullRounded>
       <Icon name="list" appearance={{ size: 'tiny' }} />

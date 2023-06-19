@@ -13,10 +13,10 @@ const SupportingDocuments: FC<SupportingDocumentsProps> = ({
 
   return (
     <div>
-      <p className="uppercase text-xs font-medium text-blue-400">
+      <p className="uppercase text-4 text-blue-400">
         {formatMessage({ id: 'supporting.documents.title' })}
       </p>
-      <p className="font-semibold text-md text-gray-900">
+      <p className="text-2">
         {formatMessage({ id: 'supporting.documents.subtitle' })}
       </p>
       <span className="block border-b border-gray-200 my-4" />

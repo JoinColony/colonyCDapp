@@ -42,7 +42,7 @@ const StakesTab = () => {
         {!isMobile && (
           <button
             type="button"
-            className="text-blue-400 font-medium text-xs hover:text-gray-900 transition-all duration-normal"
+            className="text-blue-400 text-4 hover:text-gray-900 transition-all duration-normal"
             aria-label={formatMessage({ id: 'claimStakes' })}
           >
             {formatMessage({ id: 'claimStakes' })}

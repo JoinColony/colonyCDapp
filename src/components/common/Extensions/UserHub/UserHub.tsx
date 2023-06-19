@@ -45,7 +45,7 @@ const UserHub: FC<UserHubProps> = ({
       >
         {!isMobile ? (
           <div>
-            <div className="text-gray-400 font-medium text-xs uppercase px-4 pb-5">
+            <div className="text-gray-400 text-4 uppercase px-4 pb-5">
               {formatMessage({ id: 'your.colony.overview' })}
             </div>
             <ul className="min-w-[12.5rem] flex flex-col">

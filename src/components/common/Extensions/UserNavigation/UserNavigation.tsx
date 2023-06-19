@@ -131,7 +131,7 @@ const UserNavigation: FC = () => {
             appearance={{ size: 'tiny' }}
           />
           {isWalletButtonVisible && (
-            <p className="text-1 ml-1">
+            <p className="text-3 ml-1">
               {formatMessage({ id: 'connectWallet' })}
             </p>
           )}
