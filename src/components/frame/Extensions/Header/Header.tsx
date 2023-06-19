@@ -87,10 +87,14 @@ const Header = () => {
                         ),
                       })}
                     >
-                      {!!watchlist.length && !userLoading && (
+                      {!!watchlist.length && !userLoading ? (
                         <ColoniesDropdown
                           watchlist={[...watchlist].sort(sortByDate)}
                         />
+                      ) : (
+                        <p className="text-sm">
+                          {formatMessage({ id: 'missing.colonies' })}
+                        </p>
                       )}
                     </div>
                   )}
@@ -118,11 +122,15 @@ const Header = () => {
                             user={user}
                           />
                         </div>
-                        {!!watchlist.length && (
+                        {watchlist.length ? (
                           <ColoniesDropdown
                             watchlist={[...watchlist].sort(sortByDate)}
                             isMobile={isMobile}
                           />
+                        ) : (
+                          <p className="text-sm px-6">
+                            {formatMessage({ id: 'missing.colonies' })}
+                          </p>
                         )}
                       </ColonyDropdownMobile>
                     </div>
