@@ -1,43 +1,36 @@
-const { default: fetch } = require('node-fetch');
+const { default: fetch, Request } = require('node-fetch');
 
-const AWS_SESSION_TOKEN =  process.env.AWS_SESSION_TOKEN;
-const ENV = process.env.ENV;
+const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
+  const options = {
+    method: 'POST',
+    headers: {
+      'x-api-key': authKey,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: queryOrMutation,
+      variables,
+    }),
+  };
 
-const ParamNames = {
-  graphqlUrl: `%2Famplify%2Fcdapp%2F${ENV}%2Faws_appsync_graphql_url`,
-  reputationEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2Freputation_endpoint`,
-  chainNetworkContract: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_network_contract`,
-  chainRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_rpc_endpoint`,
-  chainNetwork: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_network`,
-  appSyncApi: `%2Famplify%2Fcdapp%2F${ENV}%2Faws_appsync_api_key`,
-};
+  const request = new Request(url, options);
 
-const getParam = async (paramName) => {
-  if (!(paramName in ParamNames)) {
-    return undefined;
-  }
+  let body;
+  let response;
 
-  // Retrieve param from Parameter Store
   try {
-    const res = await fetch(
-      `http://localhost:2773/systemsmanager/parameters/get?name=${ParamNames[paramName]}`,
-      {
-        headers: {
-          'X-Aws-Parameters-Secrets-Token': AWS_SESSION_TOKEN,
-        },
-      },
-    );
-    const resource = await res.json();
-    const {
-      Parameter: { Value },
-    } = resource;
-    return Value;
-  } catch (e) {
-    console.error(e);
-    return undefined;
+    response = await fetch(request);
+    body = await response.json();
+    return body;
+  } catch (error) {
+    /*
+     * Something went wrong... obviously
+     */
+    console.error(error);
+    return null;
   }
 };
 
 module.exports = {
-  getParam,
+  graphqlRequest,
 };

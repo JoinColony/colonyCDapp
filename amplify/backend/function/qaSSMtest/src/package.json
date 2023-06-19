@@ -5,7 +5,10 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "dependencies": {
-    "node-fetch": "2.6.7"
+    "node-fetch": "2.6.7",
+    "@colony/colony-js": "^6.3.6",
+    "ethers": "^5.7.2"
+
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.92"
