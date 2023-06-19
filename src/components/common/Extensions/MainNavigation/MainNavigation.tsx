@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 
 import {
   useAppContext,
@@ -38,7 +37,6 @@ const MainNavigation: FC<MainNavigationProps> = ({
     colonyAddress,
     wallet?.address,
   );
-  const { formatMessage } = useIntl();
 
   return (
     <div className="py-6 sm:py-0">
@@ -69,9 +67,10 @@ const MainNavigation: FC<MainNavigationProps> = ({
             </Button>
             <Button mode="tertiaryOutline" isFullRounded>
               <Icon name="list" appearance={{ size: 'extraTiny' }} />
-              <span className="text-sm font-medium ml-1.5">
+              {/* @TODO Help and Account */}
+              {/* <span className="text-sm font-medium ml-1.5">
                 {formatMessage({ id: 'helpAndAccount' })}
-              </span>
+              </span> */}
             </Button>
           </div>
           <div className="px-6">
