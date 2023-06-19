@@ -14,7 +14,7 @@ const RadioList: FC<RadioListProps> = ({
   name,
 }) => (
   <>
-    <h3 className="text-gray-900 font-semibold text-md mb-4">{title}</h3>
+    <h3 className="text-2 mb-4">{title}</h3>
     <ul className="flex flex-col gap-y-3">
       {items.map(({ value, disabled, label, description, badge, tooltip }) => (
         <li key={value}>

@@ -20,7 +20,9 @@ const SubNavigationItemMobile: FC<
     <Button
       onClick={setOpen}
       mode="textButton"
-      className={clsx(styles.button, { [styles.activeButton]: isOpen })}
+      className={clsx(styles.button, 'heading-5', {
+        [styles.activeButton]: isOpen,
+      })}
     >
       <span className="flex items-center">
         <Icon name={icon} appearance={{ size: 'small' }} />

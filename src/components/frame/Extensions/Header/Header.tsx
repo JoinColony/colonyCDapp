@@ -134,22 +134,18 @@ const Header = () => {
             </div>
           </div>
           <div className="flex justify-between w-full items-center">
-            {!visible && (
-              <button
-                type="button"
-                className={clsx('items-center flex sm:hidden', {
-                  'opacity-100 visible': !isMainMenuVisible,
-                  'opacity-0 invisible': isMainMenuVisible,
-                })}
-                ref={mainMenuSetTriggerRef}
-                aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
-              >
-                <Icon name="list" appearance={{ size: 'tiny' }} />
-                <p className="text-sm font-medium ml-1">
-                  {formatMessage({ id: 'menu' })}
-                </p>
-              </button>
-            )}
+            <button
+              type="button"
+              className={clsx('flex items-center sm:hidden', {
+                'opacity-100 visible': !isMainMenuVisible,
+                'opacity-0 invisible': isMainMenuVisible,
+              })}
+              ref={mainMenuSetTriggerRef}
+              aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
+            >
+              <Icon name="list" appearance={{ size: 'tiny' }} />
+              <p className="text-3 ml-1.5">{formatMessage({ id: 'menu' })}</p>
+            </button>
             <MainNavigation
               setTooltipRef={mainMenuSetTooltipRef}
               tooltipProps={mainMenuGetTooltipProps}

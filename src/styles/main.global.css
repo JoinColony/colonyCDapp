@@ -60,6 +60,26 @@
   .heading-4 {
     @apply text-xl font-semibold;
   }
+
+  .heading-5 {
+    @apply text-lg font-semibold;
+  }
+
+  .text-1 {
+    @apply text-md font-medium;
+  }
+
+  .text-2 {
+    @apply text-md font-semibold;
+  }
+
+  .text-3 {
+    @apply text-sm font-medium;
+  }
+
+  .text-4 {
+    @apply text-xs font-medium;
+  }
 }
 
 @layer components {

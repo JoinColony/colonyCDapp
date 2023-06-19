@@ -49,7 +49,7 @@ const UserPermissionsBadge: FC<
         </>
       }
     >
-      <span className={styles.badge}>{content}</span>
+      <span className={clsx(styles.badge, 'text-3')}>{content}</span>
     </Tooltip>
   );
 };

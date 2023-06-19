@@ -52,7 +52,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
       </button>
 
       <div className={styles.inner}>
-        {title && <h4 className="text-lg font-semibold mb-2">{title}</h4>}
+        {title && <h4 className="heading-5 mb-2">{title}</h4>}
         {subTitle && <p className="text-gray-600 text-md">{subTitle}</p>}
         {children}
         <div className="flex flex-wrap gap-3 mt-8">

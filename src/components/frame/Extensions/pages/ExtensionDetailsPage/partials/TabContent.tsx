@@ -9,7 +9,7 @@ const displayName =
   'frame.Extensions.pages.ExtensionDetailsPage.partials.TabContent';
 
 const HeadingChunks = (chunks: React.ReactNode[]) => (
-  <h4 className="font-semibold text-gray-900 mt-6 mb-4">{chunks}</h4>
+  <h4 className="font-semibold mt-6 mb-4">{chunks}</h4>
 );
 
 const TabContent: FC<AnyExtensionData> = (extensionData: AnyExtensionData) => {

@@ -28,7 +28,7 @@ const PopoverButton: FC<PopoverButtonProps> = ({
       type="button"
       aria-label={formatMessage({ id: 'ariaLabel.showDetails' })}
       className={clsx(
-        `flex items-center bg-base-white rounded-sm capitalize border text-xs font-medium px-2 py-1 transition-all duration-normal`,
+        `flex items-center bg-base-white rounded-sm capitalize border text-4 px-2 py-1 transition-all duration-normal`,
         {
           'border border-gray-300 cursor-not-allowed text-gray-300': isDisabled,
           'text-blue-400 border-blue-400': isHovered && !isDisabled,

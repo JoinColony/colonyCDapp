@@ -19,7 +19,7 @@ const StakesItems: FC<StakesProps> = ({
       <div className="relative w-full">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-1 mr-2">
-            <p className="text-md font-medium mr-2">{title}</p>
+            <p className="text-1 mr-2">{title}</p>
             <span className="text-gray-400 text-xs">{date}</span>
           </div>
           <ExtensionsStatusBadge

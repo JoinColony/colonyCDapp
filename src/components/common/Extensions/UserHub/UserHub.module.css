@@ -7,9 +7,13 @@
 }
 
 .iconArrow {
-  @apply icon mr-0 ml-[2.5rem];
+  @apply icon mr-0 ml-10;
 }
 
 .wrapper {
   @apply flex w-full;
+}
+
+.emptyContent {
+  @apply flex items-center justify-center w-[2.375rem] h-[2.375rem] rounded-full bg-gray-200 border-[0.375rem] border-gray-50 shrink-0;
 }

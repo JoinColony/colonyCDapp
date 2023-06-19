@@ -11,9 +11,9 @@
 }
 
 .buttonBack {
-  @apply flex w-full items-center text-gray-400 text-xs font-medium mb-4 transition-all duration-normal hover:text-blue-400;
+  @apply flex w-full items-center text-gray-400 mb-4 transition-all duration-normal hover:text-blue-400;
 }
 
 .link {
-  @apply flex items-center text-lg transition-all duration-normal hover:text-blue-400 font-semibold sm:font-normal sm:text-md;
+  @apply flex items-center transition-all duration-normal hover:text-blue-400 sm:font-normal sm:text-md;
 }

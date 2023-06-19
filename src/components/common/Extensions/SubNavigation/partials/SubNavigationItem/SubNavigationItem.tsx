@@ -48,7 +48,9 @@ const SubNavigationItem: FC<PropsWithChildren<SubNavigationItemProps>> = ({
       <Button
         onClick={setOpen}
         mode="textButton"
-        className={clsx(styles.button, { [styles.activeButton]: isOpen })}
+        className={clsx(styles.button, 'text-2', {
+          [styles.activeButton]: isOpen,
+        })}
       >
         <Icon name={icon} appearance={{ size: 'small' }} />
         <span className="flex ml-2" ref={setTriggerRef}>

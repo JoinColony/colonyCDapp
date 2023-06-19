@@ -40,7 +40,7 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
                 size="xxs"
               />
             </div>
-            <p className="font-semibold text-md">
+            <p className="text-2">
               {colonyToDisplay?.metadata?.displayName || colonyToDisplay?.name}
             </p>
           </div>

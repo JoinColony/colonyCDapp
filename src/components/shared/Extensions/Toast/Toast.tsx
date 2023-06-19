@@ -42,11 +42,7 @@ const Toast: FC<ToastProps> = ({
         />
       </div>
       <div className="flex flex-col ml-[1.125rem] max-w-[90%]">
-        {title && (
-          <span className="text-md text-gray-900 font-semibold">
-            {titleText}
-          </span>
-        )}
+        {title && <span className="text-2">{titleText}</span>}
         {description && (
           <span className="text-md text-gray-600 font-normal mt-1">
             {descriptionText}
@@ -56,7 +52,7 @@ const Toast: FC<ToastProps> = ({
           <div className="mt-1">
             <Link
               to={url}
-              className={clsx('text-xs font-medium underline', {
+              className={clsx('text-4 underline', {
                 'text-success-400': type === 'success',
                 'text-warning-400': type === 'warn',
                 'text-negative-400': type === 'error',

@@ -59,7 +59,7 @@ const UserMenu: FC<UserMenuProps> = ({
         <button
           type="button"
           aria-label={formatMessage({ id: 'ariaLabel.backToMainMenu' })}
-          className={clsx(styles.buttonBack, 'group')}
+          className={clsx(styles.buttonBack, 'group text-4')}
           onClick={() => setActiveSubmenu(null)}
         >
           <Icon name="caret-left" appearance={{ size: 'extraTiny' }} />
@@ -95,15 +95,13 @@ const UserMenu: FC<UserMenuProps> = ({
             <div className={styles.mobileButtons}>
               <Button mode="tertiaryOutline" isFullRounded>
                 <Icon name="cardholder" appearance={{ size: 'tiny' }} />
-                <span className="text-sm font-medium ml-1.5">
+                <span className="text-3 ml-1.5">
                   {formatMessage({ id: 'connectWallet' })}
                 </span>
               </Button>
               <Button mode="tertiaryOutline" isFullRounded>
                 <Icon name="list" appearance={{ size: 'extraTiny' }} />
-                <p className="text-sm font-medium ml-1">
-                  {formatMessage({ id: 'help' })}
-                </p>
+                <p className="text-3 ml-1">{formatMessage({ id: 'help' })}</p>
               </Button>
             </div>
             <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
@@ -119,7 +117,7 @@ const UserMenu: FC<UserMenuProps> = ({
         )}
         <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
           <TitledContent title={{ id: 'userMenu.optionsTitle' }}>
-            <ul className="text-lg font-semibold sm:font-normal sm:text-md">
+            <ul className="heading-5 sm:font-normal sm:text-md">
               {userMenuItems.map((item) => (
                 <li className="mb-4 last:mb-0" key={item.id}>
                   {item.link ? (
@@ -161,7 +159,7 @@ const UserMenu: FC<UserMenuProps> = ({
         {isWalletConnected && (
           <div className="w-full mb-6 sm:mb-5">
             <TitledContent title={{ id: 'userMenu.other' }}>
-              <Link to="/" className={styles.link}>
+              <Link to="/" className={clsx(styles.link, 'heading-5')}>
                 <Icon name="plugs" appearance={{ size: iconSize }} />
                 <p className="ml-2">
                   {formatMessage({ id: 'userMenu.disconnectWalletTitle' })}
