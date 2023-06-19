@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import Icon from '~shared/Icon';
-import NotificationBanner from '~common/Extensions/NotificationBanner/NotificationBanner';
+import NotificationBanner from '~common/Extensions/NotificationBanner';
 import styles from './TransactionsItem.module.css';
 import { TransactionsItemProps } from '../../types';
 import { accordionAnimation } from '~constants/accordionAnimation';

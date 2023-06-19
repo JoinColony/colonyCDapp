@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
-import Toast from '~shared/Extensions/Toast/Toast';
+import Toast from '~shared/Extensions/Toast';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+
 import ExtensionsStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 
 const meta: Meta<typeof ExtensionsStatusBadge> = {

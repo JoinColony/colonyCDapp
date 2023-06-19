@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { BrowserRouter as Router } from 'react-router-dom';
+
 import {
   mockNativeToken,
   mockTotalReputation,

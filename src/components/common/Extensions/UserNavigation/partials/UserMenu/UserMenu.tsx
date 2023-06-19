@@ -117,7 +117,7 @@ const UserMenu: FC<UserMenuProps> = ({
         )}
         <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
           <TitledContent title={{ id: 'userMenu.optionsTitle' }}>
-            <ul className="heading-5 sm:font-normal sm:text-md">
+            <ul className="text-lg font-semibold sm:font-normal sm:text-md text-left">
               {userMenuItems.map((item) => (
                 <li className="mb-4 last:mb-0" key={item.id}>
                   {item.link ? (
@@ -136,7 +136,7 @@ const UserMenu: FC<UserMenuProps> = ({
                       aria-expanded={activeSubmenu === item.name}
                       aria-controls="actionsWithVisibility"
                     >
-                      <span className="flex items-center">
+                      <span className="flex items-center shrink-0">
                         <Icon
                           name={item.icon}
                           appearance={{ size: iconSize }}

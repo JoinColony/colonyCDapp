@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+
 import { AccordionItemProps } from '../types';
 import Icon from '~shared/Icon';
 

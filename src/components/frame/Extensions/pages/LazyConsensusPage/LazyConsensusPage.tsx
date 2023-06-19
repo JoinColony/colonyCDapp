@@ -4,15 +4,15 @@ import { Extension } from '@colony/colony-js';
 
 import { useLazyConsensusPage } from './hooks';
 import RadioList from '~shared/Extensions/Fields/RadioList';
-import Accordion from '~shared/Extensions/Accordion/Accordion';
+import Accordion from '~shared/Extensions/Accordion';
 import { mockedGovernance } from './consts';
 import { useAccordion } from '~shared/Extensions/Accordion/hooks';
-import Navigation from '~common/Extensions/Navigation/Navigation';
+import Navigation from '~common/Extensions/Navigation';
 import Spinner from '~shared/Extensions/Spinner';
-import ThreeColumns from '~frame/Extensions/ThreeColumns/ThreeColumns';
+import ThreeColumns from '~frame/Extensions/ThreeColumns';
 import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails';
 import ActionButtons from '../partials/ActionButtons';
-import Button from '~shared/Extensions/Button/Button';
+import Button from '~shared/Extensions/Button';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { useMobile } from '~hooks';
 

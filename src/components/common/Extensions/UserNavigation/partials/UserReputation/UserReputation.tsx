@@ -11,14 +11,12 @@ import {
   useUserReputation,
 } from '~hooks';
 
-import UserHub from '~common/Extensions/UserHub/UserHub';
+import UserHub from '~common/Extensions/UserHub';
 import Button from '~shared/Extensions/Button';
-import PopoverBase from '~shared/Extensions/PopoverBase/PopoverBase';
+import PopoverBase from '~shared/Extensions/PopoverBase';
 import UserAvatar from '~shared/Extensions/UserAvatar';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
-
 import { UserReputationProps } from '../../types';
-
 import { transactionCount } from '~frame/GasStation/transactionGroup';
 
 export const displayName =
