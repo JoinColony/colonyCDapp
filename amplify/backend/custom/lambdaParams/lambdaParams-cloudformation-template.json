@@ -13,7 +13,7 @@
           "Fn::Sub": "/amplify/cdapp/${env}/chain_network"
         },
         "Type": "String",
-        "Value": "Xdai",
+        "Value": "gnosis",
         "Description": "The name of the network"
       }
     },
@@ -24,7 +24,7 @@
           "Fn::Sub": "/amplify/cdapp/${env}/chain_rpc_endpoint"
         },
         "Type": "String",
-        "Value": "https://qa-cdapp.colony.io/rpc/",
+        "Value": "http://qa-cdapp.colony.io/rpc/",
         "Description": "Xdai chain RPC endpoint"
       }
     },
@@ -57,7 +57,7 @@
           "Fn::Sub": "/amplify/cdapp/${env}/aws_appsync_graphql_url"
         },
         "Type": "String",
-        "Value": "https://x2yqu43sc5fk7lgol5fagr6csq.appsync-api.eu-west-2.amazonaws.com/graphql",
+        "Value": "https://4wbzavolujffngfax5dalwsywi.appsync-api.eu-west-2.amazonaws.com/graphql",
         "Description": "App Sync Graphql Url endpoint"
       }
     }
