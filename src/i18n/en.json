@@ -519,5 +519,6 @@
   "createNewPayments": "CREATE NEW PAYMENTS",
   "empty.content.title": "There is no {contentName} to display",
   "empty.content.subtitle": "New {contentName} will display here",
-  "handle.unselect.transaction": "handle unselect transaction"
+  "handle.unselect.transaction": "handle unselect transaction",
+  "missing.colonies": "You don't have created colonies"
 }
