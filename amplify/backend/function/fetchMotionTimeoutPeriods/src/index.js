@@ -6,20 +6,44 @@ const {
   getBlockTime,
 } = require('@colony/colony-js');
 
-const RPC_URL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
-const {
-  etherRouterAddress: networkAddress,
-} = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let networkAddress;
+let network = Network.Custom;
+let reputationOracleEndpoint =
+  'http://reputation-monitor.docker:3001/reputation/local';
+
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [rpcURL, networkAddress, reputationOracleEndpoint, network] =
+      await getParams([
+        'chainRpcEndpoint',
+        'networkContractAddress',
+        'reputationEndpoint',
+        'chainNetwork',
+      ]);
+  } else {
+    const {
+      etherRouterAddress,
+    } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+    networkAddress = etherRouterAddress;
+  }
+};
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  const provider = new providers.JsonRpcProvider(RPC_URL);
-  const networkClient = getColonyNetworkClient(Network.Custom, provider, {
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw Error('Unable to set environment variables. Reason:', e);
+  }
+  const provider = new providers.JsonRpcProvider(rpcURL);
+  const networkClient = getColonyNetworkClient(network, provider, {
     networkAddress,
-    reputationOracleEndpoint:
-      'http://reputation-monitor.docker:3001/reputation/local',
+    reputationOracleEndpoint,
   });
 
   const { motionId, colonyAddress } = event.arguments?.input || {};
