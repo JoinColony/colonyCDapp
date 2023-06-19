@@ -88,12 +88,6 @@ const UserNavigation: FC = () => {
     groupedTransactionsAndMessages,
   );
 
-  // const readyTransactions = useMemo(
-  //   // @ts-ignore
-  //   () => readyTransactionsCount(transactionAndMessageGroups),
-  //   [transactionAndMessageGroups],
-  // );
-
   useLayoutEffect(() => {
     if (!wallet && connectWallet && getLastWallet()) {
       connectWallet();
