@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 
 import {
   useAppContext,
@@ -34,7 +33,6 @@ const MainNavigation: FC<MainNavigationProps> = ({
     colonyAddress,
     wallet?.address,
   );
-  const { formatMessage } = useIntl();
 
   return (
     <div className="py-6 sm:py-0">
@@ -49,9 +47,10 @@ const MainNavigation: FC<MainNavigationProps> = ({
         >
           <div className={styles.mobileButtons}>
             <NavigationTools
-              buttonLabel={formatMessage({
-                id: 'helpAndAccount',
-              })}
+              // @TODO Help and account label
+              // buttonLabel={formatMessage({
+              //   id: 'helpAndAccount',
+              // })}
               nativeToken={nativeToken}
               totalReputation={totalReputation}
               userName={profile?.displayName || user?.name || ''}

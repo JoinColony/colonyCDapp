@@ -6,6 +6,6 @@ import { UserAvatarProps } from '~shared/Extensions/UserAvatar/types';
 export interface NavigationToolsProps
   extends MemberReputationProps,
     Pick<UserAvatarProps, 'userName' | 'user'> {
-  buttonLabel: string | MessageDescriptor;
+  buttonLabel?: string | MessageDescriptor;
   nativeToken?: Token;
 }

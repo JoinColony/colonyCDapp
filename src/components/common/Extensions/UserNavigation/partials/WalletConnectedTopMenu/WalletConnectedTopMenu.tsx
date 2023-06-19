@@ -33,9 +33,10 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
     <>
       <div className={styles.mobileButtons}>
         <NavigationTools
-          buttonLabel={formatMessage({
-            id: 'helpAndAccount',
-          })}
+          // @TODO Help and account label
+          // buttonLabel={formatMessage({
+          //   id: 'helpAndAccount',
+          // })}
           nativeToken={nativeToken}
           totalReputation={totalReputation}
           userName={userName}

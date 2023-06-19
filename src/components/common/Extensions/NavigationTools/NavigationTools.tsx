@@ -38,7 +38,9 @@ const NavigationTools: FC<NavigationToolsProps> = ({
       </Button>
       <Button mode="tertiaryOutline" isFullRounded>
         <Icon name="list" appearance={{ size: 'extraTiny' }} />
-        <span className="text-sm font-medium ml-1.5">{buttonLabelText}</span>
+        {buttonLabel && (
+          <span className="text-sm font-medium ml-1.5">{buttonLabelText}</span>
+        )}
       </Button>
     </>
   );
