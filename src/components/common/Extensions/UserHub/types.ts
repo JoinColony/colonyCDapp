@@ -15,7 +15,7 @@ export interface UserHubProps {
   transactionAndMessageGroups: TransactionOrMessageGroups;
   autoOpenTransaction: boolean;
   setAutoOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
-  isTranactionTabVisible: boolean;
+  isTransactionTabVisible: boolean;
 }
 
 export interface EmptyContentProps {

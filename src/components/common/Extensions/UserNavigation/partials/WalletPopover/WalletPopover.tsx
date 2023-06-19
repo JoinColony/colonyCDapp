@@ -9,7 +9,7 @@ import styles from './WalletPopover.module.css';
 import WalletPopoverOption from '../WalletPopoverOption';
 import Button from '~shared/Extensions/Button';
 import { useAppContext, useMobile } from '~hooks';
-import TitledContent from '~common/Extensions/TitledContent/TitledContent';
+import TitledContent from '~common/Extensions/TitledContent';
 
 const displayName = 'common.Extensions.UserNavigation.partials.WalletPopover';
 

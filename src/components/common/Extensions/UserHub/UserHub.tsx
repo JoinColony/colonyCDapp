@@ -13,6 +13,7 @@ import styles from './UserHub.module.css';
 import { tabList } from './consts';
 import UserHubMobile from './UserHubMobile';
 import { UserHubProps } from './types';
+import TitleLabel from '~shared/Extensions/TitleLabel';
 
 export const displayName = 'common.Extensions.UserHub.partials.UserHub';
 
@@ -20,7 +21,7 @@ const UserHub: FC<UserHubProps> = ({
   transactionAndMessageGroups,
   autoOpenTransaction,
   setAutoOpenTransaction,
-  isTranactionTabVisible = false,
+  isTransactionTabVisible = false,
 }) => {
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
@@ -31,49 +32,52 @@ const UserHub: FC<UserHubProps> = ({
   };
 
   useEffect(() => {
-    if (isTranactionTabVisible) {
+    if (isTransactionTabVisible) {
       setSelectedTab(2);
     }
-  }, [isTranactionTabVisible]);
+  }, [isTransactionTabVisible]);
 
   return (
     <div className={clsx('flex', { 'flex-col': isMobile })}>
-      <div
-        className={`flex border-r border-gray-100 flex-col justify-between ${
-          isMobile ? 'px-0 pt-6' : 'px-4 py-6'
-        }`}
-      >
+      <div className={`${styles.wrapper} ${isMobile ? 'px-0 pt-6' : 'p-6'}`}>
         {!isMobile ? (
           <div>
-            <div className="text-gray-400 text-4 uppercase px-4 pb-5">
-              {formatMessage({ id: 'your.colony.overview' })}
-            </div>
-            <ul className="min-w-[12.5rem] flex flex-col">
-              {tabList.map((item) => (
+            <TitleLabel
+              className="pb-5"
+              text={formatMessage({ id: 'your.colony.overview' })}
+            />
+            <ul className="-ml-4 -mr-4 flex flex-col">
+              {tabList.map(({ value, id, icon, label }) => (
                 <li
-                  className={styles.li}
-                  key={item.value}
-                  onClick={() => setSelectedTab(item.id)}
-                  aria-selected={selectedTab === item.id}
+                  className={`${styles.li} ${
+                    selectedTab === id ? 'bg-gray-50' : ''
+                  }`}
+                  key={value}
+                  onClick={() => setSelectedTab(id)}
+                  aria-selected={selectedTab === id}
                   role="option"
-                  onKeyDown={() => setSelectedTab(item.id)}
+                  onKeyDown={() => setSelectedTab(id)}
                 >
-                  <div className="flex items-center">
-                    <Icon
-                      name={item.icon}
-                      appearance={{ size: 'normal' }}
-                      className={`${styles.icon}  mr-2`}
-                    />
-                    {item.label}
-                  </div>
-                  <Icon
-                    name="caret-right"
-                    className={`${
-                      styles.iconArrow
-                    } transition-transform duration-normal ${
-                      selectedTab === item.id ? 'rotate-90' : 'rotate-0'
+                  <div
+                    className={`flex items-center mr-2 ${
+                      selectedTab === id ? 'font-medium' : ''
                     }`}
-                  />
+                  >
+                    <span className="flex shrink-0 mr-1.5">
+                      <Icon name={icon} appearance={{ size: 'tiny' }} />
+                    </span>
+                    {label}
+                  </div>
+                  <span
+                    className={`flex shrink-0 transition-transform duration-normal ${
+                      selectedTab === id ? 'rotate-90' : 'rotate-0'
+                    }`}
+                  >
+                    <Icon
+                      name="caret-right"
+                      appearance={{ size: 'extraTiny' }}
+                    />
+                  </span>
                 </li>
               ))}
             </ul>
@@ -86,19 +90,15 @@ const UserHub: FC<UserHubProps> = ({
           />
         )}
         {!isMobile && (
-          <Button mode="secondaryOutline">
-            {formatMessage({ id: 'your.dashboard' })}
-          </Button>
+          <div className="mt-2">
+            <Button mode="secondaryOutline" isFullSize>
+              {formatMessage({ id: 'your.dashboard' })}
+            </Button>
+          </div>
         )}
       </div>
-      {isMobile && <div className="h-px w-full bg-gray-200 mt-6 mb-6" />}
-      <div
-        className={`${
-          isMobile
-            ? 'min-w-full'
-            : 'w-full min-w-[29.125rem] min-h-[27.75rem] p-6 relative'
-        }`}
-      >
+      {isMobile && <div className="h-px w-full bg-gray-200 my-6" />}
+      <div className={`${isMobile ? 'min-w-full' : 'w-full p-6 relative'}`}>
         <AnimatePresence>
           <motion.div
             key="stakes-tab"
