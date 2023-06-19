@@ -64,13 +64,7 @@ const Header = () => {
               <button
                 aria-label="Open dropdown"
                 ref={setTriggerRef}
-                className={clsx(
-                  'flex items-center justify-between transition-all duration-normal hover:text-gray-600',
-                  {
-                    'w-[3.5rem]': !isMainMenuVisible,
-                    'w-[8rem]': isMainMenuVisible,
-                  },
-                )}
+                className="flex items-center justify-between transition-all duration-normal hover:text-gray-600"
                 type="button"
               >
                 <ColonyAvatarWrapper

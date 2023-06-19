@@ -35,7 +35,7 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
       </div>
 
       {isMobile && colonyToDisplay && (
-        <div className="font-semibold text-md text-gray-900 mx-2">
+        <div className="font-semibold text-md text-gray-900 ml-2 shrink-0">
           {colonyToDisplay?.metadata?.displayName ||
             colonyToDisplay?.name ||
             'Colony name'}
@@ -44,7 +44,7 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
       {isArrowVisible && (
         <span
           className={clsx(
-            'text-base-black transition-transform duration-normal',
+            'text-base-black transition-transform duration-normal ml-2',
             {
               'rotate-180': isOpen,
             },
