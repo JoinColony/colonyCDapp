@@ -30,7 +30,7 @@ const UserNavigation: FC = () => {
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip(
       {
-        delayHide: 200,
+        delayHide: isMobile ? 0 : 200,
         placement: 'bottom-end',
         trigger: 'click',
         interactive: true,
@@ -59,7 +59,7 @@ const UserNavigation: FC = () => {
     visible: isWalletVisible,
   } = usePopperTooltip(
     {
-      delayHide: 200,
+      delayHide: isMobile ? 0 : 200,
       placement: 'bottom-end',
       trigger: 'click',
       interactive: true,
@@ -121,7 +121,8 @@ const UserNavigation: FC = () => {
             isMobile && setIsWalletButtonVisible((prevState) => !prevState)
           }
           className={clsx('md:border-gray-200 md:hover:border-blue-400', {
-            'px-4 py-2.5 border-base-white': isWalletVisible && isMobile,
+            'px-4 py-2.5 border-base-white text-gray-400':
+              isWalletVisible && isMobile,
             'p-0': !isWalletVisible && isMobile,
           })}
         >

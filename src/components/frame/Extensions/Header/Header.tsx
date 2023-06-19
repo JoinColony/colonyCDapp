@@ -138,6 +138,10 @@ const Header = () => {
                               name="list"
                               appearance={{ size: 'extraTiny' }}
                             />
+                            {/* @TODO Help and Account */}
+                            {/* <span className="text-sm font-medium ml-1.5">
+                              {formatMessage({ id: 'helpAndAccount' })}
+                            </span> */}
                           </Button>
                         </div>
                         {!!watchlist.length && (
