@@ -17,7 +17,7 @@ const setEnvVariables = async () => {
   const ENV = process.env.ENV;
   if (ENV === 'qa') {
     const { getParams } = require('/opt/nodejs/getParams');
-    [apiKey, graphqlURL] = await getParams(['appSyncApi', 'graphqlUrl']);
+    [apiKey, graphqlURL] = await getParams(['appsyncApiKey', 'graphqlUrl']);
   }
 };
 
