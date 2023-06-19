@@ -8,13 +8,13 @@ import Icon from '~shared/Icon';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { useMobile } from '~hooks';
 import UserPermissionsBadge from '~common/Extensions/UserPermissionsBadge/UserPermissionsBadge';
-import TitledContent from '~common/Extensions/TitledContent/TitledContent';
+import TitledContent from '~common/Extensions/TitledContent';
 
 const displayName = 'Extensions.UserAvatarPopover.partials.UserInfo';
 
 const UserInfo: FC<UserInfoProps> = ({
   userName,
-  walletAddress = '',
+  walletAddress,
   isVerified,
   aboutDescription,
   colonyReputation,
@@ -29,7 +29,9 @@ const UserInfo: FC<UserInfoProps> = ({
       ? aboutDescription
       : aboutDescription && formatMessage(aboutDescription);
 
-  const { handleClipboardCopy, isCopied } = useCopyToClipboard(walletAddress);
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard(
+    walletAddress || '',
+  );
 
   return (
     <div>
@@ -39,7 +41,7 @@ const UserInfo: FC<UserInfoProps> = ({
           <div className="flex items-center mb-0.5">
             <p className="heading-4">{userName}</p>
             {isVerified && (
-              <span className="ml-2 flex shrink-0 [&_svg]:text-blue-400">
+              <span className="ml-2 flex shrink-0 text-blue-400">
                 <Icon name="verified" appearance={{ size: 'tiny' }} />
               </span>
             )}

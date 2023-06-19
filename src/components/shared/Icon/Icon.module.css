@@ -35,9 +35,9 @@
 }
 
 .themePrimary {
-  @apply inline-block [&_svg]:fill-current [&_svg]:stroke-none;
+  @apply inline-block;
 }
 
 .themeInvert {
-  @apply inline-block [&_svg]:fill-current [&_svg]:stroke-none;
+  @apply inline-block;
 }

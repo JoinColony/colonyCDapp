@@ -55,7 +55,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
             confirmMessage={formatMessage({
               id: 'extensionDetailsPage.deprecate',
             })}
-            closeMessage={formatMessage({ id: 'extensionDetailsPage.cancel' })}
+            closeMessage={formatMessage({ id: 'button.cancel' })}
             buttonMode="primarySolid"
           >
             <p className="text-gray-600 text-md mt-6">
@@ -84,7 +84,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
               onConfirm={handleReEnable}
               confirmMessage={formatMessage({ id: 'button.confirm' })}
               closeMessage={formatMessage({
-                id: 'extensionDetailsPage.cancel',
+                id: 'button.cancel',
               })}
             />
           </div>
@@ -112,7 +112,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
                 id: 'extensionDetailsPage.confirmUninstall',
               })}
               closeMessage={formatMessage({
-                id: 'extensionDetailsPage.cancelUninstall',
+                id: 'button.cancelUninstall',
               })}
               disabled={!isCheckboxChecked}
             >

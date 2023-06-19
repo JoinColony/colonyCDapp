@@ -51,7 +51,7 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
             <div className="flex items-center mb-0.5">
               <p className="heading-4">{userName}</p>
               {isVerified && (
-                <span className="ml-2 flex shrink-0 [&_svg]:text-blue-400">
+                <span className="ml-2 flex shrink-0 text-blue-400">
                   <Icon name="verified" appearance={{ size: 'tiny' }} />
                 </span>
               )}

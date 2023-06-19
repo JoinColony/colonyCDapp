@@ -18,6 +18,7 @@ import UserAvatar from '~shared/Extensions/UserAvatar';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import { UserReputationProps } from '../../types';
 import { transactionCount } from '~frame/GasStation/transactionGroup';
+import styles from './UserReputation.module.css';
 
 export const displayName =
   'common.Extensions.UserNavigation.partials.UserReputation';
@@ -114,16 +115,19 @@ const UserReputation: FC<UserReputationProps> = ({
         <PopoverBase
           setTooltipRef={setTooltipRef}
           tooltipProps={getTooltipProps}
-          classNames={clsx({
-            'w-full border-none shadow-none': isMobile,
-          })}
+          classNames={clsx(styles.popover, 'bg-base-white')}
         >
-          <div className="p-4 md:p-0" ref={setTooltipRef}>
+          <div
+            className={clsx('w-full sm:w-[42.625rem]', {
+              inner: isMobile,
+            })}
+            ref={setTooltipRef}
+          >
             <UserHub
               transactionAndMessageGroups={transactionsAndMessages}
               autoOpenTransaction={txNeedsSigning}
               setAutoOpenTransaction={setTxNeedsSigning}
-              isTranactionTabVisible={isOpen && txNeedsSigning}
+              isTransactionTabVisible={isOpen && txNeedsSigning}
             />
           </div>
         </PopoverBase>

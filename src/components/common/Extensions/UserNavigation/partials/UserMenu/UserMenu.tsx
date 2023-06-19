@@ -9,8 +9,8 @@ import Icon from '~shared/Icon';
 import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
 import styles from './UserMenu.module.css';
 import PopoverBase from '~shared/Extensions/PopoverBase';
-import TitledContent from '~common/Extensions/TitledContent/TitledContent';
-import WalletConnectedTopMenu from '../WalletConnectedTopMenu/WalletConnectedTopMenu';
+import TitledContent from '~common/Extensions/TitledContent';
+import WalletConnectedTopMenu from '../WalletConnectedTopMenu';
 import Link from '~shared/Extensions/Link';
 import UserSubmenu from '../UserSubmenu';
 import { userMenuItems } from './consts';
@@ -41,14 +41,11 @@ const UserMenu: FC<UserMenuProps> = ({
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={tooltipProps}
-      classNames={clsx(
-        styles.userMenuPopup,
-        'shadow-default tooltip-container',
-        {
-          'w-full border-none shadow-none': isMobile,
-          'w-[20.125rem]': !isMobile,
-        },
-      )}
+      withTooltipStyles
+      classNames={clsx(styles.userMenuPopup, 'shadow-default', {
+        'w-full border-none shadow-none': isMobile,
+        'w-[20.125rem]': !isMobile,
+      })}
     >
       <div
         className={clsx('absolute inset-0 p-6 transition-transform', {
