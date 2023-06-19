@@ -3,5 +3,5 @@
 }
 
 .actionWrapper {
-  @apply [&_a]:underline [&_button]:underline [&_a]:hover:no-underline [&_button]:hover:no-underline text-xs font-medium mt-2 md:mt-0;
+  @apply [&_a]:underline [&_button]:underline [&_a]:hover:no-underline [&_button]:hover:no-underline mt-2 md:mt-0;
 }

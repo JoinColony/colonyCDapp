@@ -40,7 +40,7 @@ const TotalReputation: FC<ReputationProps> = ({ colonyAddress, wallet }) => {
         <button
           type="button"
           aria-label={formatMessage({ id: 'ariaLabel.viewAll' })}
-          className="text-blue-400 font-medium text-xs hover:text-gray-900 transition-all duration-normal"
+          className="text-blue-400 text-4 hover:text-gray-900 transition-all duration-normal"
         >
           {formatMessage({ id: 'view.all' })}
         </button>

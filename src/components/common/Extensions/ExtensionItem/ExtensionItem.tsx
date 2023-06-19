@@ -36,7 +36,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between ml-4 w-full gap-6 sm:gap-12">
           <div>
             <div className="flex items-center justify-between sm:justify-start">
-              <h5 className="flex items-center text-md font-medium mr-4">
+              <h5 className="flex items-center text-1 mr-4">
                 {formatMessage(title)}{' '}
                 <span className="block text-xs text-gray-600 ml-2">
                   v{version}

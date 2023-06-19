@@ -149,9 +149,7 @@ const Header = () => {
               ref={mainMenuSetTriggerRef}
             >
               <Icon name="list" appearance={{ size: 'tiny' }} />
-              <span className="text-sm font-medium ml-1.5">
-                {formatMessage({ id: 'menu' })}
-              </span>
+              <p className="text-3 ml-1.5">{formatMessage({ id: 'menu' })}</p>
             </button>
             <MainNavigation
               setTooltipRef={mainMenuSetTooltipRef}

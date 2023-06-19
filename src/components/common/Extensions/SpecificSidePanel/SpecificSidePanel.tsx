@@ -18,7 +18,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
 
   return (
     <div className="flex gap-[1.125rem] flex-col">
-      <h3 className="font-semibold text-lg pb-4">
+      <h3 className="heading-5 pb-4">
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
       {(sidePanelData || [])?.map(

@@ -7,5 +7,5 @@
 }
 
 .panelData {
-  @apply font-normal text-md text-gray-900 justify-start;
+  @apply font-normal text-md justify-start;
 }

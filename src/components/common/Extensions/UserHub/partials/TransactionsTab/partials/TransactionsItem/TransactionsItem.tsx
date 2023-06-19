@@ -72,7 +72,7 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                 <div
                   key={item.key}
                   className={clsx(styles.listItem, {
-                    'font-semibold text-gray-900': item.isCurrentAction,
+                    'font-semibold': item.isCurrentAction,
                     'before:bg-success-400':
                       item.isCurrentAction &&
                       (item.status === TRANSACTION_STATUSES.READY ||

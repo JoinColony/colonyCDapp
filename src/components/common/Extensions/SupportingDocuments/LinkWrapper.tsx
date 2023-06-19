@@ -23,12 +23,13 @@ const LinkWrapper: FC<LinkWrapperProps> = ({ isDoubleLinkVisible }) => {
           to={item.url}
           className="flex items-center text-sm text-gray-600"
         >
-          <Icon
-            appearance={{ size: 'tiny' }}
-            name="file-text"
-            title={{ id: 'file-text' }}
-            className="w-3 h-3 mr-2"
-          />
+          <span className="flex items-center shrink-0 mr-1">
+            <Icon
+              appearance={{ size: 'tiny' }}
+              name="file-text"
+              title={{ id: 'file-text' }}
+            />
+          </span>
           {formatMessage({ id: item.text })}
         </Link>
       ))}

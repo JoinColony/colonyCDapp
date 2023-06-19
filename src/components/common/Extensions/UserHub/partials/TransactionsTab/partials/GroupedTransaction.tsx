@@ -67,7 +67,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
       >
         <div className="flex items-center justify-between py-3.5">
           <div className="flex flex-col items-start">
-            <h4 className="font-medium text-md">{value}</h4>
+            <h4 className="text-1">{value}</h4>
             <p className="text-gray-600 text-xs">
               <FormattedMessage
                 {...defaultTransactionGroupMessageDescriptorDescriptionId}

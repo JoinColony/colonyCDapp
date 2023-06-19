@@ -21,7 +21,7 @@ const TransactionsHeader: FC<TransactionHeaderProps> = ({
   return (
     <>
       <div>
-        <h4 className="font-medium text-md text-gray-900">{title}</h4>
+        <h4 className="text-1">{title}</h4>
         <p className="text-gray-600 text-xs">{description}</p>
       </div>
       <div

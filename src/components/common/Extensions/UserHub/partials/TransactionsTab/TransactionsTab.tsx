@@ -63,18 +63,14 @@ const TransactionsTab: FC<TransactionsProps> = ({
 
   return (
     <>
-      <div className="flex items-center justify-between pb-4 relative">
-        <div className="font-semibold text-lg">
-          {formatMessage({ id: 'transactions' })}
-        </div>
-      </div>
-      <ul>
+      <p className="heading-5 mb-4">{formatMessage({ id: 'transactions' })}</p>
+      <div>
         {isEmpty ? (
           <EmptyContent contentName="transactions" />
         ) : (
           renderTransactions()
         )}
-      </ul>
+      </div>
     </>
   );
 };

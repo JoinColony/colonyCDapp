@@ -3,7 +3,7 @@
 }
 
 .title {
-  @apply text-gray-900 font-semibold text-lg flex justify-between mb-1;
+  @apply text-gray-900 flex justify-between mb-1;
 }
 
 .description {

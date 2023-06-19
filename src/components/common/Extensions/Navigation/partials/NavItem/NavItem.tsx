@@ -17,7 +17,7 @@ const NavItem: FC<NavItemProps> = ({ disabled = false, linkTo, label }) => {
   return (
     <NavLink
       aria-disabled={disabled}
-      className={clsx(styles.navLink, '[&.active]:bg-gray-50')}
+      className={clsx(styles.navLink, 'text-1 [&.active]:bg-gray-50')}
       to={linkTo}
     >
       <span>{labelText}</span>

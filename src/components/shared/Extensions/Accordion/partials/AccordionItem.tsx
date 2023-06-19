@@ -15,7 +15,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
 }) => (
   <>
     <div
-      className="w-full text-gray-900 font-semibold text-md"
+      className="w-full text-2"
       onClick={onClick}
       onKeyUp={onClick}
       role="button"

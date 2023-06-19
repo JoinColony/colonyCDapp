@@ -7,7 +7,7 @@
 }
 
 .button {
-  @apply text-gray-700 font-semibold text-md flex hover:text-blue-400;
+  @apply text-gray-700 flex hover:text-blue-400;
 }
 
 .activeButton {
