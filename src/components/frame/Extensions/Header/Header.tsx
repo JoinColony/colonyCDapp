@@ -156,6 +156,7 @@ const Header = () => {
                   'opacity-0 invisible': isMainMenuVisible,
                 })}
                 ref={mainMenuSetTriggerRef}
+                aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
               >
                 <Icon name="list" appearance={{ size: 'tiny' }} />
                 <p className="text-sm font-medium ml-1">
