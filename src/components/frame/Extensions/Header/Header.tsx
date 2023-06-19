@@ -62,22 +62,14 @@ const Header = () => {
               <button
                 aria-label="Open dropdown"
                 ref={setTriggerRef}
-                className={clsx(
-                  'flex items-center justify-between transition-all duration-normal hover:text-gray-600',
-                  {
-                    'w-[3.5rem]': !isMainMenuVisible,
-                    'w-[8rem]': isMainMenuVisible,
-                  },
-                )}
+                className="flex items-center justify-between transition-all duration-normal hover:text-gray-600"
                 type="button"
               >
                 <ColonyAvatarWrapper
-                  isOpen={visible}
+                  isOpen={visible || isMainMenuVisible}
                   isMobile={isMobile}
                   colonyToDisplayAddress={colonyToDisplayAddress}
-                  colonyToDisplay={
-                    isMainMenuVisible ? colonyToDisplay : undefined
-                  }
+                  colonyToDisplay={isCloseButtonVisible && colonyToDisplay}
                 />
               </button>
               {visible && (
@@ -147,6 +139,7 @@ const Header = () => {
                 'opacity-0 invisible': isMainMenuVisible,
               })}
               ref={mainMenuSetTriggerRef}
+              aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
             >
               <Icon name="list" appearance={{ size: 'tiny' }} />
               <p className="text-3 ml-1.5">{formatMessage({ id: 'menu' })}</p>

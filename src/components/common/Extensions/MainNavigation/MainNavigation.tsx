@@ -43,7 +43,7 @@ const MainNavigation: FC<MainNavigationProps> = ({
         <PopoverBase
           setTooltipRef={setTooltipRef}
           tooltipProps={tooltipProps}
-          classNames="w-full border-none shadow-none px-0 pb-6"
+          classNames="w-full border-none shadow-none px-0 pb-6 bg-base-white"
         >
           <div className={styles.mobileButtons}>
             <NavigationTools

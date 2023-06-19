@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useContext } from 'react';
+import React, { useCallback, useEffect, useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { ActionTypes } from '~redux';
@@ -6,7 +6,11 @@ import { ActionTypes } from '~redux';
 import { useAsyncFunction } from '~hooks';
 import { TRANSACTION_STATUSES } from '~types';
 
-import { transactionEstimateGas, transactionSend } from '~redux/actionCreators';
+import {
+  transactionEstimateGas,
+  transactionSend,
+  transactionCancel,
+} from '~redux/actionCreators';
 import { withId } from '~utils/actions';
 import { GasStationContext } from '~frame/GasStation';
 import Toast from '~shared/Extensions/Toast';
@@ -19,17 +23,36 @@ export const useGroupedTransactionContent = (
   metatransaction,
   context,
   status,
+  selected,
 ) => {
-  // const handleCancel = useCallback(() => {
-  //   dispatch(transactionCancel(id));
-  // }, [dispatch, id]);
+  const dispatch = useDispatch();
 
-  // const [isShowingCancelConfirmation, setIsShowingCancelConfirmation] =
-  //   useState(false);
+  const handleCancelTransaction = useCallback(() => {
+    try {
+      dispatch(transactionCancel(id));
+      toast.success(
+        <Toast
+          type="success"
+          title={{ id: 'extensionDeprecate.toast.title.success' }}
+          description={{
+            id: 'extensionDeprecate.toast.description.success',
+          }}
+        />,
+      );
+    } catch (err) {
+      toast.error(
+        <Toast type="error" title="Error" description="Something went wrong" />,
+      );
+      console.error(err);
+    }
+  }, [dispatch, id]);
 
-  // const toggleCancelConfirmation = useCallback(() => {
-  //   setIsShowingCancelConfirmation(!isShowingCancelConfirmation);
-  // }, [isShowingCancelConfirmation]);
+  const [isShowingCancelConfirmation, setIsShowingCancelConfirmation] =
+    useState(false);
+
+  const toggleCancelConfirmation = useCallback(() => {
+    setIsShowingCancelConfirmation(!isShowingCancelConfirmation);
+  }, [isShowingCancelConfirmation]);
 
   const ready = status === TRANSACTION_STATUSES.READY;
   const failed = status === TRANSACTION_STATUSES.FAILED;
@@ -37,7 +60,7 @@ export const useGroupedTransactionContent = (
   const pending = status === TRANSACTION_STATUSES.PENDING;
 
   // Only transactions that can be signed can be cancelled
-  // const canBeSigned = selected && ready;
+  const canBeSigned: boolean = selected && ready;
 
   // A prior transaction was selected
   // const hasDependency = ready && !selected;
@@ -47,9 +70,6 @@ export const useGroupedTransactionContent = (
       context ? `${context}.` : ''
     }${methodName}.${methodContext ? `${methodContext}.` : ''}title`,
   };
-
-  const dispatch = useDispatch();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   const { updateTransactionAlert } = useContext(GasStationContext);
 
@@ -68,7 +88,6 @@ export const useGroupedTransactionContent = (
     [id, updateTransactionAlert],
   );
 
-  // @ts-ignore
   const transform = useCallback(withId(id), [id]);
   const asyncFunction = useAsyncFunction({
     submit: ActionTypes.TRANSACTION_RETRY,
@@ -106,5 +125,9 @@ export const useGroupedTransactionContent = (
     ready,
     pending,
     succeeded,
+    isShowingCancelConfirmation,
+    toggleCancelConfirmation,
+    handleCancelTransaction,
+    canBeSigned,
   };
 };

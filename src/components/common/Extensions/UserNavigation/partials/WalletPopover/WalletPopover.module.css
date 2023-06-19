@@ -1,5 +1,5 @@
 .walletPopover {
-  @apply h-[30rem] md:h-[22.375rem] md:border md:border-gray-200 flex flex-col md:rounded-lg md:shadow-default;
+  @apply h-[30rem] md:h-[22.375rem] md:border md:border-gray-200 bg-base-white flex flex-col md:rounded-lg md:shadow-default z-[9999];
 }
 
 .walletPopoverColumn {
