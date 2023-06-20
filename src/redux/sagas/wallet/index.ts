@@ -3,7 +3,7 @@
 import Onboard, { ConnectOptions } from '@web3-onboard/core';
 import injectedModule from '@web3-onboard/injected-wallets';
 
-import colonyIcon from '~images/icons/colony-logo.svg';
+import colonyIcon from '~images/icons/colony-logo-wallet.svg';
 import {
   GANACHE_NETWORK,
   TOKEN_DATA,
@@ -60,9 +60,6 @@ const onboard = Onboard({
     desktop: { enabled: false },
     mobile: { enabled: false },
   },
-  connect: {
-    showSidebar: false,
-  },
   notify: {
     desktop: { enabled: false, transactionHandler: () => {} },
     mobile: { enabled: false, transactionHandler: () => {} },
@@ -73,7 +70,24 @@ const onboard = Onboard({
   appMetadata: {
     name: 'Colony CDapp',
     icon: colonyIcon.content.replace('symbol', 'svg'),
-    description: `A interation of the Colony Dapp sporting both a fully decentralized operating mode, as well as a mode enhanced by a metadata caching layer`,
+    description: `Logging into your Colony account is done using your wallet. You’ll get access to your funds and have a personalised experience.`,
+  },
+  i18n: {
+    en: {
+      connect: {
+        // @ts-ignore
+        selectingWallet: {
+          header: 'Connect your wallet to log in',
+          sidebar: {
+            heading: '',
+            subheading: '',
+            paragraph:
+              // eslint-disable-next-line max-len
+              'Logging into your Colony account is done using your wallet. You’ll get access to your funds and have a personalised experience.',
+          },
+        },
+      },
+    },
   },
 });
 

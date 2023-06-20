@@ -10,7 +10,6 @@ import Icon from '~shared/Icon';
 import Token from './partials/Token';
 import UserMenu from './partials/UserMenu';
 import { getLastWallet } from '~utils/autoLogin';
-import WalletPopover from './partials/WalletPopover/WalletPopover';
 import UserReputation from './partials/UserReputation/UserReputation';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
@@ -52,34 +51,30 @@ const UserNavigation: FC = () => {
       },
     );
 
-  const {
-    getTooltipProps: getWalletTooltipProps,
-    setTooltipRef: setWalletTooltipRef,
-    setTriggerRef: setWalletTriggerRef,
-    visible: isWalletVisible,
-  } = usePopperTooltip(
-    {
-      delayHide: isMobile ? 0 : 200,
-      placement: 'bottom-end',
-      trigger: 'click',
-      interactive: true,
-      onVisibleChange: (newVisible) => {
-        if (!newVisible && isMobile) {
-          setIsWalletButtonVisible(true);
-        }
-      },
-    },
-    {
-      modifiers: [
-        {
-          name: 'offset',
-          options: {
-            offset: popperTooltipOffset,
-          },
+  const { setTriggerRef: setWalletTriggerRef, visible: isWalletVisible } =
+    usePopperTooltip(
+      {
+        delayHide: isMobile ? 0 : 200,
+        placement: 'bottom-end',
+        trigger: 'click',
+        interactive: true,
+        onVisibleChange: (newVisible) => {
+          if (!newVisible && isMobile) {
+            setIsWalletButtonVisible(true);
+          }
         },
-      ],
-    },
-  );
+      },
+      {
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: popperTooltipOffset,
+            },
+          },
+        ],
+      },
+    );
 
   const isWalletConnected = !!wallet?.address;
   const { nativeToken } = colony || {};
@@ -111,9 +106,7 @@ const UserNavigation: FC = () => {
           mode="quinary"
           isFullRounded
           setTriggerRef={setWalletTriggerRef}
-          onClick={() =>
-            isMobile && setIsWalletButtonVisible((prevState) => !prevState)
-          }
+          onClick={connectWallet}
           className={clsx('md:border-gray-200 md:hover:border-blue-400', {
             'px-4 py-2.5 border-base-white text-gray-400':
               isWalletVisible && isMobile,
@@ -130,14 +123,6 @@ const UserNavigation: FC = () => {
             </span>
           )}
         </Button>
-      )}
-      {isWalletVisible && !isWalletConnected && (
-        <div className="w-full h-auto absolute top-[6.5rem] md:top-9">
-          <WalletPopover
-            setTooltipRef={setWalletTooltipRef}
-            tooltipProps={getWalletTooltipProps}
-          />
-        </div>
       )}
       <div>
         {isWalletButtonVisible && (

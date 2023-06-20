@@ -121,3 +121,41 @@ button[disabled].rts___btn {
 .tooltip-container {
   @apply text-gray-900;
 }
+
+:root {
+  --onboard-connect-sidebar-background: var(--color-gray-200);
+  --onboard-connect-sidebar-color: var(--color-gray-900);
+  --onboard-modal-border-radius: 0.5rem;
+  --onboard-modal-box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.05);
+  --onboard-wallet-app-icon-border-color: transparent;
+  --onboard-wallet-button-background: var(--color-gray-25);
+  --onboard-wallet-button-background-hover: var(--color-blue-100);
+  --onboard-wallet-button-border-color: var(--color-gray-100);
+  --onboard-wallet-button-box-shadow-hover: 0px 0px 0px 1px
+    var(--color-blue-400);
+  --onboard-wallet-button-border-radius: 0.25rem;
+  --onboard-close-button-color: transparent;
+  --onboard-close-button-background: transparent;
+  --onboard-connect-sidebar-progress-background: transparent;
+  --onboard-connect-sidebar-progress-color: transparent;
+  --onboard-wallet-columns: 1;
+  --onboard-font-family-normal: Inter, sans-serif;
+  --onboard-gray-100: var(--color-gray-100);
+  --onboard-gray-200: var(--color-gray-200);
+  --onboard-gray-300: var(--color-gray-300);
+  --onboard-gray-400: var(--color-gray-400);
+  --onboard-gray-500: var(--color-gray-500);
+  --onboard-gray-600: var(--color-gray-600);
+  --onboard-gray-700: var(--color-gray-700);
+  --onboard-success-100: var(--color-success-100);
+  --onboard-success-200: var(--color-success-200);
+  --onboard-success-300: var(--color-success-400);
+  --onboard-success-400: var(--color-success-400);
+  --onboard-success-500: var(--color-success-400);
+  --onboard-success-600: var(--color-success-400);
+  --onboard-success-700: var(--color-success-400);
+  --onboard-white: var(--color-base-white);
+  --onboard-black: var(--color-base-black);
+  --onboard-shadow-2: transparent;
+  --onboard-modal-z-index: 9999;
+}
