@@ -10,7 +10,7 @@ export interface AccordionProps {
   items: AccordionContent[];
   openIndex: number;
   onOpenIndexChange: (newOpenIndex: number | undefined) => void;
-  errors: Partial<
+  errors?: Partial<
     FieldErrorsImpl<{
       [x: string]: any;
     }>
