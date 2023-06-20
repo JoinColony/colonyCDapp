@@ -23,7 +23,7 @@ const TransactionList: FC<TransactionListProps> = ({
   }, []);
 
   return (
-    <ul>
+    <ul className="max-h-[31.25rem] overflow-y-scroll relative">
       {transactionAndMessageGroups.map(
         (transactionOrMessageGroup: TransactionOrMessageGroup, idx: number) =>
           isTxGroup(transactionOrMessageGroup) ? (

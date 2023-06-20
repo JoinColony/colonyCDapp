@@ -10,6 +10,11 @@ export interface AccordionProps {
   items: AccordionContent[];
   openIndex: number;
   onOpenIndexChange: (newOpenIndex: number | undefined) => void;
+  errors: Partial<
+    FieldErrorsImpl<{
+      [x: string]: any;
+    }>
+  >;
 }
 
 export interface ContentTypeProps {
@@ -47,6 +52,7 @@ export interface AccordionContentDetails {
     register?: UseFormRegister<FormRadioButton | FormPercentageInput>;
   };
   accordionItem?: AccordionMocksItemProps[];
+  maxValue: any;
 }
 
 export interface AccordionMocksItemProps {
@@ -59,6 +65,11 @@ export interface AccordionItemProps {
   content?: AccordionContentDetails[];
   isOpen?: boolean;
   onClick?: () => void;
+  errors?: Partial<
+    FieldErrorsImpl<{
+      [x: string]: any;
+    }>
+  >;
 }
 
 export interface AccordionContentItemProps {
