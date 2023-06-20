@@ -11,27 +11,40 @@ const {
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
+let rpcURL = 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
+let network = Network.Custom;
 let networkAddress;
-try {
-  const artifacts = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-  networkAddress = artifacts.etherRouterAddress;
-} catch (error) {
-  // silent error
-  // means we're in a production environment without access to the contract build artifacts
-}
 
-const RPC_URL =
-  process.env.CHAIN_RPC_ENDPOINT || 'http://network-contracts.docker:8545'; // this needs to be extended to all supported networks
-const NETWORK = process.env.CHAIN_RPC_ENDPOINT || Network.Custom;
-const NETWORK_ADDRESS = process.env.CHAIN_NETWORK_CONTRACT || networkAddress;
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [rpcURL, networkAddress, network] = await getParams([
+      'chainRpcEndpoint',
+      'networkContractAddress',
+      'chainNetwork',
+    ]);
+  } else {
+    const {
+      etherRouterAddress,
+    } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+    networkAddress = etherRouterAddress;
+  }
+};
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 (
   exports.handler = async (event) => {
+    try {
+      await setEnvVariables();
+    } catch (e) {
+      throw new Error('Unable to set env variables. Reason:', e);
+    }
+
     const { walletAddress, tokenAddress } = event.arguments?.input || {};
-    const provider = new providers.JsonRpcProvider(RPC_URL);
+    const provider = new providers.JsonRpcProvider(rpcURL);
 
     if (tokenAddress === constants.AddressZero) {
       // Get chain native token balance
@@ -50,8 +63,8 @@ const NETWORK_ADDRESS = process.env.CHAIN_NETWORK_CONTRACT || networkAddress;
       // Get token balance
       const tokenClient = await getTokenClient(tokenAddress, provider);
 
-      const networkClient = getColonyNetworkClient(NETWORK, provider, {
-        networkAddress: NETWORK_ADDRESS,
+      const networkClient = getColonyNetworkClient(network, provider, {
+        networkAddress,
       });
 
       const tokenLockingClient = await networkClient.getTokenLockingClient();
