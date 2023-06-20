@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+
 import SpecificSidePanel from '~common/Extensions/SpecificSidePanel';
 import { sidePanelData } from '~common/Extensions/SpecificSidePanel/consts';
 import { SpecificSidePanelStoryProps } from '~common/Extensions/SpecificSidePanel/types';

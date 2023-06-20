@@ -9,7 +9,7 @@ import styles from './WalletPopover.module.css';
 import WalletPopoverOption from '../WalletPopoverOption';
 import Button from '~shared/Extensions/Button';
 import { useAppContext, useMobile } from '~hooks';
-import TitledContent from '~common/Extensions/TitledContent/TitledContent';
+import TitledContent from '~common/Extensions/TitledContent';
 
 const displayName = 'common.Extensions.UserNavigation.partials.WalletPopover';
 
@@ -31,15 +31,13 @@ const WalletPopover: FC<WalletPopoverProps> = ({
       <div className={styles.mobileButtons}>
         <Button mode="tertiaryOutline" isFullRounded onClick={connectWallet}>
           <Icon name="cardholder" appearance={{ size: 'tiny' }} />
-          <p className="text-sm font-inter font-medium ml-1">
+          <span className="text-3 ml-1.5">
             {formatMessage({ id: 'connectWallet' })}
-          </p>
+          </span>
         </Button>
         <Button mode="tertiaryOutline" isFullRounded>
           <Icon name="list" appearance={{ size: 'extraTiny' }} />
-          <p className="text-sm font-inter font-medium ml-1">
-            {formatMessage({ id: 'help' })}
-          </p>
+          <p className="text-3 ml-1">{formatMessage({ id: 'help' })}</p>
         </Button>
       </div>
       <div className="flex flex-col md:flex-row h-full">
@@ -50,10 +48,10 @@ const WalletPopover: FC<WalletPopoverProps> = ({
               <use xlinkHref="#colony-logo" />
             </svg>
           )}
-          <p className="mt-7 text-sm text-gray-900">
+          <p className="mt-7 text-sm">
             {formatMessage({ id: 'walletPopover.content' })}
           </p>
-          <div className="flex mt-auto text-xs font-medium text-gray-900">
+          <div className="flex mt-auto text-4">
             <p>
               {formatMessage({ id: 'walletPopover.signIn' })}{' '}
               <Link to="/" className="inline text-blue-400 underline">
@@ -63,11 +61,11 @@ const WalletPopover: FC<WalletPopoverProps> = ({
           </div>
         </div>
         <div className="py-6 md:p-6 bg-base-white">
-          <h4 className="text-lg font-semibold">
+          <h4 className="heading-5">
             {formatMessage({ id: 'walletPopover.connectWallet' })}
           </h4>
           {isMobile && (
-            <p className="mt-2 text-sm text-gray-900">
+            <p className="mt-2 text-sm">
               {formatMessage({ id: 'walletPopover.content' })}
             </p>
           )}
@@ -98,7 +96,7 @@ const WalletPopover: FC<WalletPopoverProps> = ({
         </div>
         {isMobile && (
           <div className="py-6 md:p-6 border-t border-gray-200">
-            <div className="flex mt-auto text-xs font-medium text-gray-900">
+            <div className="flex mt-auto text-4">
               <p>
                 {formatMessage({ id: 'walletPopover.signIn' })}{' '}
                 <Link to="/" className="inline text-blue-400 underline">

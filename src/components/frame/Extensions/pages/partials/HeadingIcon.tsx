@@ -14,7 +14,7 @@ const HeadingIcon: FC<HeadingIconProps> = ({ icon, name }) => {
   return (
     <div className="flex items-center shrink-0">
       <Icon name={icon} appearance={{ size: 'large' }} />
-      <h4 className="ml-2 text-xl font-semibold">{title}</h4>
+      <h4 className="ml-2 heading-4">{title}</h4>
     </div>
   );
 };

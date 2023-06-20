@@ -19,7 +19,7 @@ import {
   extensionContentSecurityOverSpeed,
   extensionContentTestingGovernance,
 } from './consts';
-import Toast from '~shared/Extensions/Toast/Toast';
+import Toast from '~shared/Extensions/Toast';
 import { ExtensionInitParam } from '~types';
 
 export const useLazyConsensusPage = (

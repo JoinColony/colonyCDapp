@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
 import { SubMenuProps } from './types';
-import LearnMore from '~shared/Extensions/LearnMore/LearnMore';
+import LearnMore from '~shared/Extensions/LearnMore';
 import { LEARN_MORE_PAYMENTS } from '~constants';
 import Card from '~shared/Extensions/Card';
 import Button from '~shared/Extensions/Button';

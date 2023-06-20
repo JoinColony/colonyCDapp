@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+
 import AccordionHeader from './AccordionHeader';
 import AccordionContent from './AccordionContent';
 import { AccordionItemProps } from '../types';
@@ -15,7 +16,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
 }) => (
   <>
     <div
-      className="w-full text-gray-900 font-semibold text-md"
+      className="w-full text-2"
       onClick={onClick}
       onKeyUp={onClick}
       role="button"

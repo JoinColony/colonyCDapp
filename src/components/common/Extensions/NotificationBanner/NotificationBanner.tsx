@@ -78,7 +78,7 @@ const NotificationBanner: FC<PropsWithChildren<NotificationBannerProps>> = ({
         )}
       </div>
       <div
-        className={clsx(styles.actionWrapper, {
+        className={clsx(styles.actionWrapper, 'text-4', {
           'ml-0 md:ml-0 md:self-center': isAlt,
           'ml-6 md:ml-2': !isAlt,
         })}

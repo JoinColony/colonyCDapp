@@ -52,25 +52,31 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
       </button>
 
       <div className={styles.inner}>
-        {title && <h4 className="text-lg font-semibold mb-2">{title}</h4>}
+        {title && <h4 className="heading-5 mb-2">{title}</h4>}
         {subTitle && <p className="text-gray-600 text-md">{subTitle}</p>}
         {children}
-        <div className="flex flex-wrap gap-3 mt-8">
-          <Button mode="primaryOutline" isFullSize onClick={onClose}>
-            {closeMessage}
-          </Button>
-          <Button
-            mode={buttonMode}
-            isFullSize
-            disabled={disabled}
-            onClick={() => {
-              onConfirm?.();
-              onClose();
-            }}
-          >
-            {confirmMessage}
-          </Button>
-        </div>
+        {(closeMessage || confirmMessage) && (
+          <div className="flex flex-wrap gap-3 mt-8">
+            {closeMessage && (
+              <Button mode="primaryOutline" isFullSize onClick={onClose}>
+                {closeMessage}
+              </Button>
+            )}
+            {confirmMessage && (
+              <Button
+                mode={buttonMode}
+                isFullSize
+                disabled={disabled}
+                onClick={() => {
+                  onConfirm?.();
+                  onClose();
+                }}
+              >
+                {confirmMessage}
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     </ModalBase>
   );

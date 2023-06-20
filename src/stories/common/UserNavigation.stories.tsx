@@ -91,9 +91,11 @@ const UserNavigationWithData = () => {
             border border-gray-200 rounded-lg mt-2 w-[44.375rem]`}
             ref={setTooltipRef}
           >
+            {/* @ts-ignore */}
             <UserHub />
           </div>
         )}
+        {/* @ts-ignore */}
         {isMobile && isOpen && <UserHub />}
       </div>
     </ApolloProvider>
@@ -104,7 +106,7 @@ const UserNavigationNotConnected = () => (
   <div className="flex items-center w-full justify-end gap-1">
     <Button mode="tertiaryOutline" isFullRounded>
       <Icon name="cardholder" appearance={{ size: 'tiny' }} />
-      <p className="text-sm font-inter font-medium ml-1">Connect wallet</p>
+      <p className="text-3 ml-1">Connect wallet</p>
     </Button>
     <Button mode="tertiaryOutline" isFullRounded>
       <Icon name="list" appearance={{ size: 'tiny' }} />

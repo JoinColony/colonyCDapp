@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { TransactionType } from '~redux/immutable';
 import { arrayToObject } from '~utils/arrays';
 import { formatText } from '~utils/intl';
-import styles from '~frame/GasStation/TransactionCard/GroupedTransaction.css';
 import {
+  getActiveTransactionIdx,
   getGroupKey,
   getGroupStatus,
   getGroupValues,
@@ -13,20 +14,18 @@ import {
 import TransactionStatus from './TransactionStatus';
 import GroupedTransactionContent from './GroupedTransactionContent';
 import { GroupedTransactionProps } from '../types';
+import { accordionAnimation } from '~constants/accordionAnimation';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransaction';
 
 const GroupedTransaction: FC<GroupedTransactionProps> = ({
-  // appearance,
-  selectedTransactionIdx,
   transactionGroup,
-  selectedTransaction,
-  unselectTransactionGroup,
+  groupId,
+  isContentOpened,
+  onClick,
 }) => {
   const { formatMessage } = useIntl();
-  // const { interactive } = appearance;
-  // const [isOpen, setIsOpen] = useState<boolean>(true);
 
   const groupKey = getGroupKey(transactionGroup);
   const status = getGroupStatus(transactionGroup);
@@ -47,6 +46,8 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
         }transaction.${groupKey}.description`,
   };
 
+  const selectedTransactionIdx = getActiveTransactionIdx(transactionGroup) || 0;
+
   const value =
     formatText(
       {
@@ -56,27 +57,17 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
       values.group?.titleValues || arrayToObject(values.params),
     ) || '';
 
-  // const handleClose = useCallback(() => {
-  //   //   if (!isDismissible) return;
-  //   setIsOpen(false);
-  //   //   if (typeof callback === 'function') {
-  //   //     callback();
-  //   //   }
-  // }, []);
-
-  // if (!isOpen) return null;
-
   return (
-    <li>
+    <li className="border-b border-gray-200 last:border-none">
       <button
         type="button"
         aria-label={formatMessage({ id: 'handle.unselect.transaction' })}
         className="w-full"
-        onClick={(event) => unselectTransactionGroup(event)}
+        onClick={() => onClick(groupId)}
       >
         <div className="flex items-center justify-between py-3.5">
           <div className="flex flex-col items-start">
-            <h4 className="font-medium text-md">{value}</h4>
+            <h4 className="text-1">{value}</h4>
             <p className="text-gray-600 text-xs">
               <FormattedMessage
                 {...defaultTransactionGroupMessageDescriptorDescriptionId}
@@ -95,18 +86,31 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
           />
         </div>
       </button>
-      <ul className={styles.transactionList}>
-        {transactionGroup.map((transaction, idx) => (
-          <GroupedTransactionContent
-            key={transaction.id}
-            idx={idx}
-            selected={idx === selectedTransactionIdx}
-            transaction={transaction}
-            selectedTransaction={selectedTransaction}
-            // appearance={appearance}
-          />
-        ))}
-      </ul>
+
+      <AnimatePresence>
+        {isContentOpened && (
+          <motion.div
+            key="accordion-content"
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={accordionAnimation}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            className="overflow-hidden text-gray-600 text-md mt-2"
+          >
+            <ul>
+              {transactionGroup.map((transaction, idx) => (
+                <GroupedTransactionContent
+                  key={transaction.id}
+                  idx={idx}
+                  transaction={transaction}
+                  selected={idx === selectedTransactionIdx}
+                />
+              ))}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </li>
   );
 };

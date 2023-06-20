@@ -43,27 +43,21 @@ export interface Appearance {
 export interface GroupedTransactionContentProps {
   appearance?: Appearance;
   idx: number;
-  selected: boolean;
   transaction: TransactionType;
-  selectedTransaction: TransactionType;
+  selected: boolean;
 }
 
 export interface TransactionDetailsProps {
-  appearance: Appearance;
+  appearance?: Appearance;
   transactionGroup: TransactionType[];
-  unselectTransactionGroup: (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => void;
 }
 
 export interface GroupedTransactionProps {
-  appearance: Appearance;
+  appearance?: Appearance;
   transactionGroup: TransactionType[];
-  selectedTransactionIdx: number;
-  selectedTransaction: TransactionType;
-  unselectTransactionGroup: (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => void;
+  groupId?: string;
+  isContentOpened: boolean;
+  onClick: (id?: string) => void;
 }
 
 export interface TransactionStatusProps {
@@ -72,4 +66,14 @@ export interface TransactionStatusProps {
   status: TRANSACTION_STATUSES;
   loadingRelated?: boolean;
   date?: Date;
+}
+
+export interface TransactionListProps {
+  transactionAndMessageGroups: TransactionOrMessageGroups;
+}
+
+export interface CancelTransactionProps {
+  isShowingCancelConfirmation: boolean;
+  handleCancelTransaction;
+  toggleCancelConfirmation;
 }

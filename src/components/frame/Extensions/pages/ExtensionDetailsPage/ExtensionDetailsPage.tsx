@@ -113,7 +113,7 @@ const ExtensionDetailsPage: FC = () => {
                           key={item.title}
                           className="border-b border-gray-200 py-4 last:border-none"
                         >
-                          <div className="flex items-center justify-between text-gray-900 text-md font-medium">
+                          <div className="flex items-center justify-between text-1">
                             <p>{item.title}</p>
                             <div>
                               -{' '}
@@ -122,9 +122,7 @@ const ExtensionDetailsPage: FC = () => {
                                 : 'Hours'}
                             </div>
                           </div>
-                          <div className="text-gray-900 text-sm">
-                            {item.description}
-                          </div>
+                          <p className="text-sm">{item.description}</p>
                         </div>
                       ))}
                     </li>

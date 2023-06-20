@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { BrowserRouter as Router } from 'react-router-dom';
+
 import {
   mockNativeToken,
   mockTotalReputation,
@@ -111,7 +112,7 @@ const UserNavigationMenuNotConnected = () => {
                 appearance={{ size: 'tiny' }}
               />
               {isWalletButtonVisible && (
-                <p className="text-sm font-medium ml-1">
+                <p className="text-3 ml-1">
                   {formatMessage({ id: 'connectWallet' })}
                 </p>
               )}

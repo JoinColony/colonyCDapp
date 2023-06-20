@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import { Provider } from 'react-redux';
+
 import Navigation from '~common/Extensions/Navigation';
 import { getContext, ContextModule } from '~context';
 import store from '~redux/createReduxStore';

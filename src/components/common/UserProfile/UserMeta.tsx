@@ -2,10 +2,10 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import CopyableAddress from '~shared/CopyableAddress';
-import ExternalLink from '~shared/ExternalLink';
+import ExternalLink from '~shared/Extensions/ExternalLink';
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
-import Link from '~shared/Link';
+import Link from '~shared/Extensions/Link';
 import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
 

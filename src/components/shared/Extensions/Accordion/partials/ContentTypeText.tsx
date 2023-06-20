@@ -6,7 +6,7 @@ const displayName = 'Extensions.Accordion.partials.AccordionDetails';
 
 const ContentTypeText: FC<ContentTypeProps> = ({ title, subTitle }) => (
   <div>
-    <p className="font-medium text-md pb-1">{title}</p>
+    <p className="text-1 pb-1">{title}</p>
     <p className="text-sm text-gray-600">{subTitle}</p>
   </div>
 );

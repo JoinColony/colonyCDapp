@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Button from '~shared/Extensions/Button/Button';
+import Button from '~shared/Extensions/Button';
 import { LEARN_MORE_PAYMENTS } from '~constants';
 import ExtensionStatusBadge from '~common/Extensions/ExtensionStatusBadge';
 import LinkItem from '../LinkItem';

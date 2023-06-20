@@ -6,7 +6,7 @@ import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 import MaskedAddress from '~shared/MaskedAddress';
 import IconTooltip from '~shared/IconTooltip';
 
-import { MemberUser } from '~types';
+import { User } from '~types';
 
 import styles from './MemberInfo.css';
 
@@ -14,7 +14,7 @@ const componentDisplayName = 'MembersList.MembersListItem';
 
 interface Props {
   isWhitelisted: boolean;
-  user?: MemberUser | null;
+  user?: User | null;
 }
 
 const MSG = defineMessages({
@@ -35,7 +35,7 @@ const MemberInfo = ({ isWhitelisted, user }: Props) => {
           {displayName}
         </span>
       )}
-      {user && user.name && (
+      {user && (
         <span className={styles.username}>
           <UserMention hasLink={false} user={user} />
         </span>

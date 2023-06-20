@@ -1,15 +1,11 @@
 .li {
-  @apply flex items-center justify-between text-gray-900 font-normal text-md leading-5 rounded px-4 cursor-pointer transition-all hover:bg-gray-100 p-1 py-2;
-}
-
-.icon {
-  @apply text-gray-900 w-[0.8125rem];
-}
-
-.iconArrow {
-  @apply icon mr-0 ml-[2.5rem];
+  @apply flex items-center justify-between text-gray-900 font-normal text-md leading-5 rounded px-4 cursor-pointer transition-all hover:bg-gray-50 p-1 py-2;
 }
 
 .wrapper {
-  @apply flex w-full;
+  @apply flex border-r border-gray-100 flex-col justify-between sm:w-[13.75rem] sm:min-h-[27.75rem] shrink-0;
+}
+
+.emptyContent {
+  @apply flex items-center justify-center w-[2.375rem] h-[2.375rem] rounded-full bg-gray-200 border-[0.375rem] border-gray-50 shrink-0;
 }

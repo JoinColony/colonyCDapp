@@ -445,6 +445,7 @@
   "file-text": "File text icon",
   "radio.error.governance": "Please select a governance style option before enabling",
   "ariaLabel.open": "Open",
+  "ariaLabel.openMenu": "Open menu",
   "ariaLabel.viewAll": "View all",
   "ariaLabel.showDetails": "Show details",
   "ariaLabel.closeModal": "Close the modal",
@@ -530,7 +531,8 @@
   "darkMode": "Dark",
   "help": "Help",
   "retry": "Retry",
-  "reputation.tab.title": "Your Colony overview",
+  "menu": "Menu",
+  "reputation": "Your Colony overview",
   "total.balance": "Total balance",
   "active": "Active",
   "staked": "Staked",
@@ -566,5 +568,6 @@
   "createNewPayments": "CREATE NEW PAYMENTS",
   "empty.content.title": "There is no {contentName} to display",
   "empty.content.subtitle": "New {contentName} will display here",
-  "handle.unselect.transaction": "handle unselect transaction"
+  "handle.unselect.transaction": "handle unselect transaction",
+  "missing.colonies": "You don't have created colonies"
 }

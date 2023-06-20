@@ -11,7 +11,7 @@
 }
 
 .show {
-  @apply flex flex-col py-2 px-[0.875rem] border border-gray-300 rounded absolute left-0 z-50 bg-base-white w-full mt-1;
+  @apply flex flex-col py-2 px-[0.875rem] border border-gray-300 rounded absolute left-0 z-[1] bg-base-white w-full mt-1;
 }
 
 .li {

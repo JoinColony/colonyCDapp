@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import Icon from '~shared/Icon';
-import NotificationBanner from '~common/Extensions/NotificationBanner/NotificationBanner';
+import NotificationBanner from '~common/Extensions/NotificationBanner';
 import styles from './TransactionsItem.module.css';
 import { TransactionsItemProps } from '../../types';
 import { accordionAnimation } from '~constants/accordionAnimation';
@@ -72,7 +72,7 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                 <div
                   key={item.key}
                   className={clsx(styles.listItem, {
-                    'font-semibold text-gray-900': item.isCurrentAction,
+                    'font-semibold': item.isCurrentAction,
                     'before:bg-success-400':
                       item.isCurrentAction &&
                       (item.status === TRANSACTION_STATUSES.READY ||

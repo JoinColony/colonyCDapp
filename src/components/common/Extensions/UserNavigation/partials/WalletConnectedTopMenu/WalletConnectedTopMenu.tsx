@@ -3,17 +3,14 @@ import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 
 import styles from './WalletConnectedTopMenu.module.css';
-import Button from '~shared/Extensions/Button';
 import Link from '~shared/Extensions/Link';
 import Icon from '~shared/Icon';
 import Avatar from '~shared/Extensions/Avatar';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import Token from '../Token';
-import UserAvatar from '~shared/Extensions/UserAvatar';
-import MemberReputation from '../MemberReputation';
 import { WalletConnectedTopMenuProps } from './types';
 import { useMobile } from '~hooks';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
+import NavigationTools from '~common/Extensions/NavigationTools';
 
 const displayName =
   'common.Extensions.UserNavigation.partials.WalletConnectedTopMenu';
@@ -35,29 +32,26 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
   return (
     <>
       <div className={styles.mobileButtons}>
-        {nativeToken && <Token nativeToken={nativeToken} />}
-        <Button mode="tertiaryOutline" isFullRounded>
-          <div className="flex items-center gap-3">
-            <UserAvatar userName={userName} size="xxs" user={user} />
-            <MemberReputation
-              userReputation={userReputation}
-              totalReputation={totalReputation}
-              hideOnMobile={false}
-            />
-          </div>
-        </Button>
-        <Button mode="tertiaryOutline" isFullRounded>
-          <Icon name="list" appearance={{ size: 'extraTiny' }} />
-        </Button>
+        <NavigationTools
+          // @TODO Help and account label
+          // buttonLabel={formatMessage({
+          //   id: 'helpAndAccount',
+          // })}
+          nativeToken={nativeToken}
+          totalReputation={totalReputation}
+          userName={userName}
+          userReputation={userReputation}
+          user={user}
+        />
       </div>
-      <div className="w-full pb-6 mb-6 border-b border-b-gray-200 md:pb-5 md:mb-5">
+      <div className="w-full pb-6 mb-6 border-b border-b-gray-200 sm:pb-5 sm:mb-5">
         <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center mb-6">
           <Avatar size="m" title={userName} avatar={avatar} />
           <div>
             <div className="flex items-center mb-0.5">
-              <p className="font-semibold text-xl">{userName}</p>
+              <p className="heading-4">{userName}</p>
               {isVerified && (
-                <span className="ml-2 flex shrink-0 [&_svg]:text-blue-400">
+                <span className="ml-2 flex shrink-0 text-blue-400">
                   <Icon name="verified" appearance={{ size: 'tiny' }} />
                 </span>
               )}
@@ -99,7 +93,7 @@ const WalletConnectedTopMenu: FC<WalletConnectedTopMenuProps> = ({
         </div>
         <Link to="/" className="flex items-center">
           <Icon name="user-circle-gear" appearance={{ size: 'tiny' }} />
-          <p className="ml-2 text-lg font-semibold md:font-normal md:text-md">
+          <p className="ml-2 heading-5 sm:font-normal sm:text-md">
             {formatMessage({ id: 'userMenu.menageTitle' })}
           </p>
         </Link>

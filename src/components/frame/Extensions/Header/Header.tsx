@@ -12,12 +12,10 @@ import Icon from '~shared/Icon';
 import UserNavigation from '~common/Extensions/UserNavigation';
 import MainNavigation from '~common/Extensions/MainNavigation';
 import Button from '~shared/Extensions/Button';
-import Token from '~common/Extensions/UserNavigation/partials/Token';
-import UserAvatar from '~shared/Extensions/UserAvatar';
-import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import styles from './Header.module.css';
 import { useHeader } from './hooks';
 import { useExtensionsContext } from '~context/ExtensionsContext';
+import NavigationTools from '~common/Extensions/NavigationTools/NavigationTools';
 
 const displayName = 'frame.Extensions.Header';
 
@@ -64,22 +62,14 @@ const Header = () => {
               <button
                 aria-label="Open dropdown"
                 ref={setTriggerRef}
-                className={clsx(
-                  'flex items-center justify-between transition-all duration-normal hover:text-gray-600',
-                  {
-                    'w-[3.5rem]': !isMainMenuVisible,
-                    'w-[8rem]': isMainMenuVisible,
-                  },
-                )}
+                className="flex items-center justify-between transition-all duration-normal hover:text-gray-600"
                 type="button"
               >
                 <ColonyAvatarWrapper
-                  isOpen={visible}
+                  isOpen={visible || isMainMenuVisible}
                   isMobile={isMobile}
                   colonyToDisplayAddress={colonyToDisplayAddress}
-                  colonyToDisplay={
-                    isMainMenuVisible ? colonyToDisplay : undefined
-                  }
+                  colonyToDisplay={isCloseButtonVisible && colonyToDisplay}
                 />
               </button>
               {visible && (
@@ -97,10 +87,14 @@ const Header = () => {
                         ),
                       })}
                     >
-                      {!!watchlist.length && !userLoading && (
+                      {!!watchlist.length && !userLoading ? (
                         <ColoniesDropdown
                           watchlist={[...watchlist].sort(sortByDate)}
                         />
+                      ) : (
+                        <p className="text-sm">
+                          {formatMessage({ id: 'missing.colonies' })}
+                        </p>
                       )}
                     </div>
                   )}
@@ -116,35 +110,27 @@ const Header = () => {
                         userLoading={userLoading}
                       >
                         <div className={styles.mobileButtons}>
-                          {nativeToken && <Token nativeToken={nativeToken} />}
-                          <Button mode="tertiaryOutline" isFullRounded>
-                            <div className="flex items-center gap-3">
-                              <UserAvatar
-                                userName={
-                                  profile?.displayName || user?.name || ''
-                                }
-                                size="xxs"
-                                user={user}
-                              />
-                              <MemberReputation
-                                userReputation={userReputation}
-                                totalReputation={totalReputation}
-                                hideOnMobile={false}
-                              />
-                            </div>
-                          </Button>
-                          <Button mode="tertiaryOutline" isFullRounded>
-                            <Icon
-                              name="list"
-                              appearance={{ size: 'extraTiny' }}
-                            />
-                          </Button>
+                          <NavigationTools
+                            // @TODO Help and account label
+                            // buttonLabel={formatMessage({
+                            //   id: 'helpAndAccount',
+                            // })}
+                            nativeToken={nativeToken}
+                            totalReputation={totalReputation}
+                            userName={profile?.displayName || user?.name || ''}
+                            userReputation={userReputation}
+                            user={user}
+                          />
                         </div>
-                        {!!watchlist.length && (
+                        {watchlist.length ? (
                           <ColoniesDropdown
                             watchlist={[...watchlist].sort(sortByDate)}
                             isMobile={isMobile}
                           />
+                        ) : (
+                          <p className="text-sm px-6">
+                            {formatMessage({ id: 'missing.colonies' })}
+                          </p>
                         )}
                       </ColonyDropdownMobile>
                     </div>
@@ -161,11 +147,10 @@ const Header = () => {
                 'opacity-0 invisible': isMainMenuVisible,
               })}
               ref={mainMenuSetTriggerRef}
+              aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
             >
               <Icon name="list" appearance={{ size: 'tiny' }} />
-              <p className="text-sm font-medium ml-1.5">
-                {formatMessage({ id: 'menu' })}
-              </p>
+              <p className="text-3 ml-1.5">{formatMessage({ id: 'menu' })}</p>
             </button>
             <MainNavigation
               setTooltipRef={mainMenuSetTooltipRef}

@@ -32,14 +32,16 @@ const UserAvatar: FC<UserAvatarProps> = ({
         title={profile?.displayName || user?.name || address || ''}
         {...rest}
       />
-      <span
-        className={clsx('block font-medium', {
-          'text-sm ml-1': size === 'xxs',
-          'text-md ml-2': size === 'xs',
-        })}
-      >
-        {userName}
-      </span>
+      {userName && (
+        <span
+          className={clsx('block font-medium', {
+            'text-sm ml-1': size === 'xxs',
+            'text-md ml-2': size === 'xs',
+          })}
+        >
+          {userName}
+        </span>
+      )}
     </span>
   );
 
