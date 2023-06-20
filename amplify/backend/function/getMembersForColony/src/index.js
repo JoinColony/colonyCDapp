@@ -129,7 +129,12 @@ exports.handler = async (event) => {
       watchers:
         domainId > Id.RootDomain
           ? [] // There will be no Watchers outside of the root domain
-          : data?.getColonyByAddress?.items[0]?.watchers.items,
+          : data?.getColonyByAddress?.items[0]?.watchers.items.map(
+              ({ user }) => ({
+                address: user.id,
+                user,
+              }),
+            ),
     };
   }
 
