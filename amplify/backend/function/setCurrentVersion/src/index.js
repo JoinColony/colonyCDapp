@@ -5,14 +5,26 @@ const {
   createCurrentVersion,
 } = require('./graphql');
 
-const API_KEY = process.env.APPSYNC_API_KEY || 'da2-fakeApiId123456';
-const GRAPHQL_URI =
-  process.env.AWS_APPSYNC_GRAPHQL_URL || 'http://localhost:20002/graphql';
+let apiKey = 'da2-fakeApiId123456';
+let graphqlURL = 'http://localhost:20002/graphql';
 
+const setEnvVariables = async () => {
+  const ENV = process.env.ENV;
+  if (ENV === 'qa') {
+    const { getParams } = require('/opt/nodejs/getParams');
+    [apiKey, graphqlURL] = await getParams(['appsyncApiKey', 'graphqlUrl']);
+  }
+};
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
+  try {
+    await setEnvVariables();
+  } catch (e) {
+    throw new Error('Unable to set env variables. Reason:', e);
+  }
+
   const { key, version } = event.arguments?.input || {};
 
   const getCurrentVersionData = await graphqlRequest(
@@ -20,8 +32,8 @@ exports.handler = async (event) => {
     {
       key,
     },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   const existingEntryId =
@@ -36,8 +48,8 @@ exports.handler = async (event) => {
           version,
         },
       },
-      GRAPHQL_URI,
-      API_KEY,
+      graphqlURL,
+      apiKey,
     );
 
     return !!updateCurrentVersionData;
@@ -51,8 +63,8 @@ exports.handler = async (event) => {
         version,
       },
     },
-    GRAPHQL_URI,
-    API_KEY,
+    graphqlURL,
+    apiKey,
   );
 
   return !!createCurrentVersionData;
