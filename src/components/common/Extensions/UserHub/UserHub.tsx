@@ -109,12 +109,6 @@ const UserHub: FC<UserHubProps> = ({
           >
             {selectedTab === 0 && <ReputationTab />}
             {selectedTab === 1 && <StakesTab />}
-            {/* {selectedTab === 2 && (
-              <TransactionsTab
-                transactionAndMessageGroups={transactionsItems}
-                openIndex={0}
-              />
-            )} */}
             {selectedTab === 2 && (
               <TransactionsTab
                 transactionAndMessageGroups={transactionAndMessageGroups}

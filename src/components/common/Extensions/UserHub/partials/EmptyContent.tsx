@@ -11,16 +11,18 @@ const EmptyContent: FC<EmptyContentProps> = ({ contentName }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className={styles.emptyContent}>
-        <Icon name="binoculars" appearance={{ size: 'tiny' }} />
+    <div className="flex h-full flex-col">
+      <div className="flex flex-col items-center justify-center">
+        <div className={styles.emptyContent}>
+          <Icon name="binoculars" appearance={{ size: 'tiny' }} />
+        </div>
+        <p className="text-3 leading-5">
+          {formatMessage({ id: 'empty.content.title' }, { contentName })}
+        </p>
+        <p className="text-xs text-gray-600">
+          {formatMessage({ id: 'empty.content.subtitle' }, { contentName })}
+        </p>
       </div>
-      <p className="text-3 leading-5">
-        {formatMessage({ id: 'empty.content.title' }, { contentName })}
-      </p>
-      <p className="text-xs text-gray-600">
-        {formatMessage({ id: 'empty.content.subtitle' }, { contentName })}
-      </p>
     </div>
   );
 };

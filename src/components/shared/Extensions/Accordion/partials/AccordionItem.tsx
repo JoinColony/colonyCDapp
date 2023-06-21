@@ -13,6 +13,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
   content,
   isOpen,
   onClick,
+  errors,
 }) => (
   <>
     <div
@@ -36,7 +37,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
             transition={{ duration: 0.4, ease: 'easeOut' }}
             className="overflow-hidden"
           >
-            <AccordionContent content={content} isOpen={isOpen} />
+            <AccordionContent content={content} errors={errors} />
           </motion.div>
         )}
       </AnimatePresence>

@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import SpecialInput from '~common/Extensions/SpecialInput';
 import FormError from '~shared/Extensions/FormError';
 import { SpecialInputProps } from '../types';
+import ConnectForm from './ConnectForm';
 
 const displayName = 'Extensions.SpecialPercentageInput';
 
@@ -10,25 +11,28 @@ const SpecialPercentageInput: FC<SpecialInputProps> = ({
   defaultValue,
   maxValue,
   minValue,
-  register,
   errors,
   name = '',
 }) => (
-  <div className="text-right">
-    <div className="flex justify-end flex-col w-[8.875rem]">
-      <SpecialInput
-        defaultValue={defaultValue as number}
-        register={register}
-        isError={!!errors?.[name]?.message}
-        name={name}
-        min={minValue}
-        max={maxValue}
-        type="percent"
-        placeholder="1"
-      />
-      {errors?.[name] && <FormError>{errors?.[name]?.message}</FormError>}
-    </div>
-  </div>
+  <ConnectForm>
+    {({ register }) => (
+      <div className="text-right">
+        <div className="flex justify-end flex-col w-full md:max-w-[8.75rem]">
+          <SpecialInput
+            defaultValue={defaultValue as number}
+            register={register}
+            isError={!!errors?.[name]?.message}
+            name={name}
+            min={minValue}
+            max={maxValue}
+            type="percent"
+            placeholder="1"
+          />
+          {errors?.[name] && <FormError>{errors?.[name]?.message}</FormError>}
+        </div>
+      </div>
+    )}
+  </ConnectForm>
 );
 
 SpecialPercentageInput.displayName = displayName;

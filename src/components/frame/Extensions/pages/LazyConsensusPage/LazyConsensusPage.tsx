@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import { Extension } from '@colony/colony-js';
+import { FormProvider } from 'react-hook-form';
 
 import { useLazyConsensusPage } from './hooks';
 import RadioList from '~shared/Extensions/Fields/RadioList';
@@ -21,8 +22,7 @@ const LazyConsensusPage: FC = () => {
   const {
     extensionData,
     extensionContent,
-    register,
-    errors,
+    methods,
     handleSubmit,
     onSubmit,
     onChangeGovernance,
@@ -45,67 +45,72 @@ const LazyConsensusPage: FC = () => {
     extensionData?.extensionId === Extension.VotingReputation;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Spinner loadingText={{ id: 'loading.extensionsPage' }}>
-        <ThreeColumns
-          leftAside={<Navigation />}
-          topRow={
-            <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
-              <div className="flex flex-wrap gap-4 flex-col w-full sm:flex-row sm:items-center md:gap-8">
-                <ActionButtons
-                  extensionData={extensionData}
-                  extensionStatusMode="governance"
-                  extensionStatusText={formatMessage({
-                    id: 'status.governance',
-                  })}
-                />
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Spinner loadingText={{ id: 'loading.extensionsPage' }}>
+          <ThreeColumns
+            leftAside={<Navigation />}
+            topRow={
+              <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
+                <div className="flex flex-wrap gap-4 flex-col w-full sm:flex-row sm:items-center md:gap-8">
+                  <ActionButtons
+                    extensionData={extensionData}
+                    extensionStatusMode="governance"
+                    extensionStatusText={formatMessage({
+                      id: 'status.governance',
+                    })}
+                  />
 
-                <div className="flex gap-6 items-center justify-end min-h-[2rem]">
-                  {isEnableButtonVisible && (
-                    <Button
-                      mode="primarySolid"
-                      type="submit"
-                      isFullSize={isMobile}
-                    >
-                      {formatMessage({ id: 'button.enable' })}
-                    </Button>
-                  )}
+                  <div className="flex gap-6 items-center justify-end min-h-[2rem]">
+                    {isEnableButtonVisible && (
+                      <Button
+                        type="submit"
+                        disabled={
+                          !!Object.keys(methods.formState.errors).length
+                        }
+                        isFullSize={isMobile}
+                      >
+                        {formatMessage({ id: 'button.enable' })}
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          }
-          rightAside={<ExtensionDetails extensionData={extensionData} />}
-        >
-          <div className="w-full">
-            <p className="text-md text-gray-600">
-              {formatMessage(extensionData.descriptionShort)}
-            </p>
-            <br />
-            <p className="text-md text-gray-600">
-              {formatMessage({ id: 'extensions.lazy.consensus.description' })}
-            </p>
+            }
+            rightAside={<ExtensionDetails extensionData={extensionData} />}
+          >
+            <div className="w-full">
+              <p className="text-md text-gray-600">
+                {formatMessage(extensionData.descriptionShort)}
+              </p>
+              <br />
+              <p className="text-md text-gray-600">
+                {formatMessage({ id: 'extensions.lazy.consensus.description' })}
+              </p>
 
-            <div className="mt-6">
-              <RadioList
-                title={formatMessage({ id: 'choose.governanceStyle' })}
-                items={mockedGovernance}
-                register={register}
-                errors={errors}
-                onChange={onChangeGovernance}
-                name="governance"
-              />
+              <div className="mt-6">
+                <RadioList
+                  title={formatMessage({ id: 'choose.governanceStyle' })}
+                  items={mockedGovernance}
+                  register={methods.register}
+                  errors={methods.formState.errors}
+                  onChange={onChangeGovernance}
+                  name="governance"
+                />
+              </div>
+              <div className="mt-6">
+                <Accordion
+                  openIndex={openIndex}
+                  items={extensionContent || []}
+                  onOpenIndexChange={onOpenIndexChange}
+                  errors={methods.formState.errors}
+                />
+              </div>
             </div>
-            <div className="mt-6">
-              <Accordion
-                openIndex={openIndex}
-                items={extensionContent || []}
-                onOpenIndexChange={onOpenIndexChange}
-              />
-            </div>
-          </div>
-        </ThreeColumns>
-      </Spinner>
-    </form>
+          </ThreeColumns>
+        </Spinner>
+      </form>
+    </FormProvider>
   );
 };
 

@@ -35,7 +35,11 @@ export const useLazyConsensusPage = (
   const [extensionContentParameters, setExtensionContentParameters] =
     useState<AccordionContent[]>();
 
-  // @TODO: fix validation
+  const getMaxInputValues = useMemo(
+    () => extensionContentParameters?.[0].content,
+    [extensionContentParameters],
+  );
+
   const validationSchema = yup.object().shape({
     governance: yup
       .string()
@@ -51,8 +55,11 @@ export const useLazyConsensusPage = (
       )
       .min(1, formatMessage({ id: 'special.percentage.input.error.min.value' }))
       .max(
-        50,
-        formatMessage({ id: 'special.percentage.input.error.max.value' }),
+        getMaxInputValues?.[0]?.maxValue,
+        formatMessage(
+          { id: 'special.percentage.input.error.max.value' },
+          { maxValue: getMaxInputValues?.[0]?.maxValue },
+        ),
       ),
     voterRewardFraction: yup
       .number()
@@ -64,8 +71,11 @@ export const useLazyConsensusPage = (
       )
       .min(1, formatMessage({ id: 'special.percentage.input.error.min.value' }))
       .max(
-        50,
-        formatMessage({ id: 'special.percentage.input.error.max.value' }),
+        getMaxInputValues?.[1]?.maxValue,
+        formatMessage(
+          { id: 'special.percentage.input.error.max.value' },
+          { maxValue: getMaxInputValues?.[1]?.maxValue },
+        ),
       ),
     userMinStakeFraction: yup
       .number()
@@ -77,8 +87,13 @@ export const useLazyConsensusPage = (
       )
       .min(1, formatMessage({ id: 'special.percentage.input.error.min.value' }))
       .max(
-        50,
-        formatMessage({ id: 'special.percentage.input.error.max.value' }),
+        getMaxInputValues?.[2]?.maxValue,
+        formatMessage(
+          {
+            id: 'special.percentage.input.error.max.value',
+          },
+          { maxValue: getMaxInputValues?.[2]?.maxValue },
+        ),
       ),
     maxVoteFraction: yup
       .number()
@@ -90,8 +105,11 @@ export const useLazyConsensusPage = (
       )
       .min(1, formatMessage({ id: 'special.percentage.input.error.min.value' }))
       .max(
-        50,
-        formatMessage({ id: 'special.percentage.input.error.max.value' }),
+        getMaxInputValues?.[3]?.maxValue,
+        formatMessage(
+          { id: 'special.percentage.input.error.max.value' },
+          { maxValue: getMaxInputValues?.[3]?.maxValue },
+        ),
       ),
     stakePeriod: yup
       .number()
@@ -99,10 +117,10 @@ export const useLazyConsensusPage = (
       .required('')
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
       .max(
-        50,
+        getMaxInputValues?.[4]?.maxValue,
         formatMessage(
           { id: 'special.hour.input.error.max.value' },
-          { maxValue: 50 },
+          { maxValue: getMaxInputValues?.[4]?.maxValue },
         ),
       ),
     submitPeriod: yup
@@ -111,10 +129,10 @@ export const useLazyConsensusPage = (
       .required('')
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
       .max(
-        50,
+        getMaxInputValues?.[5]?.maxValue,
         formatMessage(
           { id: 'special.hour.input.error.max.value' },
-          { maxValue: 50 },
+          { maxValue: getMaxInputValues?.[5]?.maxValue },
         ),
       ),
     revealPeriod: yup
@@ -123,10 +141,10 @@ export const useLazyConsensusPage = (
       .required('')
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
       .max(
-        50,
+        getMaxInputValues?.[6]?.maxValue,
         formatMessage(
           { id: 'special.hour.input.error.max.value' },
-          { maxValue: 50 },
+          { maxValue: getMaxInputValues?.[6]?.maxValue },
         ),
       ),
     escalationPeriod: yup
@@ -135,25 +153,15 @@ export const useLazyConsensusPage = (
       .required('')
       .min(1, formatMessage({ id: 'special.hour.input.error.min.value' }))
       .max(
-        50,
+        getMaxInputValues?.[7]?.maxValue,
         formatMessage(
           { id: 'special.hour.input.error.max.value' },
-          { maxValue: 50 },
+          { maxValue: getMaxInputValues?.[7]?.maxValue },
         ),
       ),
-    // ...Object.fromEntries(Object.keys(extensionContentSpeedOverSecurity || {}).map(key => [key, yup.number().positive('').required('required').min(1, formatMessage({ id: `special.hour.input.error.min.value` })).max(50, formatMessage({ id: 'special.hour.input.error.max.value' }, { maxValue: 50 }))])),
   });
 
-  const {
-    register,
-    formState: { errors, isDirty },
-    handleSubmit,
-    getValues,
-    setValue,
-    resetField,
-    clearErrors,
-    watch,
-  } = useForm({
+  const methods = useForm({
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
@@ -167,11 +175,11 @@ export const useLazyConsensusPage = (
     'submitPeriod',
     'revealPeriod',
     'escalationPeriod',
-  ].some((item) => Object.keys(errors).includes(item));
+  ].some((item) => Object.keys(methods.formState.errors).includes(item));
 
   const shouldBeRadioButtonChangeToCustom = useMemo(
-    () => isDirty && isCustemExtentionErrorExist,
-    [isDirty, isCustemExtentionErrorExist],
+    () => methods.formState.isDirty && isCustemExtentionErrorExist,
+    [methods.formState, isCustemExtentionErrorExist],
   );
 
   const extensionContent = useCallback(
@@ -194,24 +202,32 @@ export const useLazyConsensusPage = (
               inputType:
                 item.complementaryLabel === 'percent' ? 'percent' : 'hours',
               // @ts-ignore
-              maxValue: item?.validation?.tests[0].OPTIONS.params.max,
+              maxValue: item?.validation?.tests[2].OPTIONS.params.max,
               // @ts-ignore
-              minValue: item?.validation?.tests[2].OPTIONS.params.more,
-              register,
+              minValue: item?.validation?.tests[0].OPTIONS.params.more,
+              register: methods.register,
+              unregister: methods.unregister,
+              watch: methods.watch,
               name: item.paramName,
-              errors,
             },
+            maxValue:
+              item.maxValue || item?.validation?.tests[2].OPTIONS.params.max,
           };
         }),
       },
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [extensionData?.initializationParams, errors],
+    [
+      extensionData?.initializationParams,
+      methods.formState.errors,
+      methods.register,
+      methods.unregister,
+      methods.watch,
+    ],
   );
 
   const updateGovernanceFormFields = (data) =>
     extensionData?.initializationParams?.forEach((param) => {
-      return setValue(
+      return methods.setValue(
         param.paramName,
         data.find((item) => item.paramName === param.paramName)?.defaultValue,
       );
@@ -220,10 +236,10 @@ export const useLazyConsensusPage = (
   const onChangeGovernance = useCallback(
     (selectedOption: string) => {
       onOpenIndexChange?.(-1);
-      setValue('governance', selectedOption);
+      methods.setValue('governance', selectedOption);
 
-      clearErrors('governance');
-      switch (getValues('governance')) {
+      methods.clearErrors('governance');
+      switch (methods.getValues('governance')) {
         case 'radio-button-1':
           setExtensionContentParameters(
             extensionContent(
@@ -255,27 +271,28 @@ export const useLazyConsensusPage = (
             ) as AccordionContent[],
           );
           updateGovernanceFormFields(extensionData?.initializationParams);
+          onOpenIndexChange?.(0);
           break;
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [extensionContent, openIndex],
+    [extensionContent, openIndex, extensionData],
   );
 
   useLayoutEffect(() => {
     if (shouldBeRadioButtonChangeToCustom) {
-      resetField('governance');
-      setValue('governance', 'radio-button-4');
+      methods.resetField('governance');
+      methods.setValue('governance', 'radio-button-4');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldBeRadioButtonChangeToCustom]);
 
   const handleFormSuccess = useCallback(() => {
-    navigate(`/colony/${colony?.name}/extensions`);
-  }, [colony?.name, navigate]);
+    navigate(`/colony/${colony?.name}/extensions/${extensionId}`);
+  }, [colony?.name, navigate, extensionId]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { governance, ...rest } = watch();
+  const { governance, ...rest } = methods.watch();
   const prepareInitializationParams = Object.entries(rest).map((item) => ({
     paramName: item[0],
     defaultValue: item[1],
@@ -302,20 +319,18 @@ export const useLazyConsensusPage = (
   const onSubmit = async (values) => {
     onOpenIndexChange?.(-1);
     try {
-      await enableAsyncFunction(values).then(() => {
-        return (
-          toast.success(
-            <Toast
-              type="success"
-              title={{ id: 'extensionReEnable.toast.title.success' }}
-              description={{
-                id: 'extensionReEnable.toast.description.success',
-              }}
-            />,
-          ),
-          handleFormSuccess()
-        );
-      });
+      methods.clearErrors();
+      handleFormSuccess();
+      toast.success(
+        <Toast
+          type="success"
+          title={{ id: 'extensionReEnable.toast.title.success' }}
+          description={{
+            id: 'extensionReEnable.toast.description.success',
+          }}
+        />,
+      );
+      await enableAsyncFunction(values);
     } catch (err) {
       toast.error(
         <Toast
@@ -333,10 +348,10 @@ export const useLazyConsensusPage = (
     status,
     badgeMessage,
     extensionContent: extensionContentParameters,
-    register,
-    errors,
     onSubmit,
-    handleSubmit,
+    handleSubmit: methods.handleSubmit,
     onChangeGovernance,
+    validationSchema,
+    methods,
   };
 };
