@@ -29,8 +29,8 @@ const EmptyContentBox: FC<EmptyContentBoxProps> = ({
         <Icon name={icon} appearance={{ size: 'normal' }} />
       </div>
       <h5 className="text-1 mt-5">{title}</h5>
-      <p className="mt-2 text-sm font-normal text-gray-600">{description}</p>
-      {onClick && buttonText && (
+      <p className="mt-2 text-sm text-gray-600">{description}</p>
+      {onClick && (
         // @TODO: Change to Button component
         <button type="button" className="mt-4" onClick={onClick}>
           {withButtonIcon && (
