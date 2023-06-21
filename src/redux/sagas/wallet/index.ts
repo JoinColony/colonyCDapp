@@ -81,9 +81,8 @@ const onboard = Onboard({
           sidebar: {
             heading: '',
             subheading: '',
-            paragraph:
-              // eslint-disable-next-line max-len
-              'Logging into your Colony account is done using your wallet. You’ll get access to your funds and have a personalised experience.',
+            paragraph: `Logging into your Colony account is done using your wallet.
+               You’ll get access to your funds and have a personalised experience.`,
           },
         },
       },
