@@ -15,10 +15,11 @@ import {
   useTransformer,
 } from '~hooks';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks';
-import CalamityBanner from '~common/Extensions/CalamityBanner/CalamityBanner';
+import CalamityBanner from '~common/Extensions/CalamityBanner';
+
 import { useDialog } from '~shared/Dialog';
 import { NetworkContractUpgradeDialog } from '~common/Dialogs';
-import Spinner from '~shared/Extensions/Spinner';
+import Spinner from '~v5/shared/Spinner';
 import { applyTheme } from '../themes/utils';
 import { Theme } from '../themes/enum';
 import { usePageThemeContext } from '~context/PageThemeContext';

@@ -9,7 +9,7 @@ import Accordion from '~shared/Extensions/Accordion';
 import { mockedGovernance } from './consts';
 import { useAccordion } from '~shared/Extensions/Accordion/hooks';
 import Navigation from '~v5/common/Navigation';
-import Spinner from '~shared/Extensions/Spinner';
+import Spinner from '~v5/shared/Spinner';
 import ThreeColumns from '~v5/frame/ThreeColumns';
 import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails';
 import ActionButtons from '../partials/ActionButtons';

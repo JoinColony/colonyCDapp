@@ -5,7 +5,7 @@ import ExtensionItem from '~common/Extensions/ExtensionItem';
 import Navigation from '~v5/common/Navigation';
 import TwoColumns from '~v5/frame/TwoColumns';
 import { useExtensionsData } from '~hooks';
-import Spinner from '~shared/Extensions/Spinner';
+import Spinner from '~v5/shared/Spinner';
 
 const displayName = 'frame.Extensions.pages.ExtensionsPage';
 

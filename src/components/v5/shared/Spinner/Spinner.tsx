@@ -5,7 +5,7 @@ import { useExtensionsData } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { SpinnerProps } from './types';
 
-const displayName = 'Extensions.Spinner';
+const displayName = 'v5.Spinner';
 
 const Spinner: FC<PropsWithChildren<SpinnerProps>> = ({
   loadingText,
