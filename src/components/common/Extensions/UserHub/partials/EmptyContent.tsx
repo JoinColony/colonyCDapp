@@ -11,7 +11,7 @@ const EmptyContent: FC<EmptyContentProps> = ({ contentName }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <div className="flex relative h-full flex-col">
+    <div className="flex h-full flex-col">
       <div className="flex flex-col items-center justify-center">
         <div className={styles.emptyContent}>
           <Icon name="binoculars" appearance={{ size: 'tiny' }} />

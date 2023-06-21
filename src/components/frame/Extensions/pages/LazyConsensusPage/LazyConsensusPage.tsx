@@ -64,7 +64,6 @@ const LazyConsensusPage: FC = () => {
                   <div className="flex gap-6 items-center justify-end min-h-[2rem]">
                     {isEnableButtonVisible && (
                       <Button
-                        mode="primarySolid"
                         type="submit"
                         disabled={
                           !!Object.keys(methods.formState.errors).length
