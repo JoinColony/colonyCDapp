@@ -85,6 +85,7 @@ const TokenManagementDialogForm = ({
     disabledInput,
     disabledSubmit,
     canOnlyForceAction,
+    showPermissionErrors,
   } = useActionDialogStatus(
     colony,
     requiredRoles,
@@ -134,12 +135,11 @@ const TokenManagementDialogForm = ({
           }
         />
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
       )}
-
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         {allTokens.length > 0 ? (
           <div className={styles.tokenChoiceContainer}>
@@ -179,7 +179,7 @@ const TokenManagementDialogForm = ({
           />
         </div>
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>

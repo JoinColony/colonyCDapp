@@ -71,8 +71,9 @@ const MintTokenDialogForm = ({
     userHasPermission,
     disabledInput,
     disabledSubmit,
-    canCreateMotion,
     canOnlyForceAction,
+    hasMotionCompatibleVersion,
+    showPermissionErrors,
   } = useActionDialogStatus(
     colony,
     requiredRoles,
@@ -118,7 +119,7 @@ const MintTokenDialogForm = ({
           isRootMotion
         />
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
@@ -151,7 +152,7 @@ const MintTokenDialogForm = ({
           />
         </div>
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
@@ -161,7 +162,7 @@ const MintTokenDialogForm = ({
           <NotEnoughReputation />
         </DialogSection>
       )}
-      {!canCreateMotion && (
+      {!hasMotionCompatibleVersion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>

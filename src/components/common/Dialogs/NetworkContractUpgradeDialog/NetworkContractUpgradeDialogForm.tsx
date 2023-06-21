@@ -64,12 +64,13 @@ const NetworkContractUpgradeDialogForm = ({
   const forceAction = watch('forceAction');
   const {
     userHasPermission,
-    canCreateMotion,
     disabledSubmit,
     disabledInput,
     hasLegacyRecoveryRole,
     isLoadingLegacyRecoveryRole,
     canOnlyForceAction,
+    hasMotionCompatibleVersion,
+    showPermissionErrors,
   } = useNetworkContractUpgradeDialogStatus(
     colony,
     requiredRoles,
@@ -110,7 +111,7 @@ const NetworkContractUpgradeDialogForm = ({
           <LegacyPermissionWarning />
         </DialogSection>
       )}
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection>
           <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
@@ -129,7 +130,7 @@ const NetworkContractUpgradeDialogForm = ({
           disabled={disabledInput}
         />
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
@@ -139,7 +140,7 @@ const NetworkContractUpgradeDialogForm = ({
           <NotEnoughReputation />
         </DialogSection>
       )}
-      {!canCreateMotion && (
+      {!hasMotionCompatibleVersion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>

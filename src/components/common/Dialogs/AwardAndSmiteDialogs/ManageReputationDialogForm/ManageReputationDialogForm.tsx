@@ -130,8 +130,9 @@ const ManageReputationDialogForm = ({
     userHasPermission,
     disabledInput,
     disabledSubmit,
-    canCreateMotion,
     canOnlyForceAction,
+    hasMotionCompatibleVersion,
+    showPermissionErrors,
   } = useActionDialogStatus(
     colony,
     requiredRoles,
@@ -234,7 +235,7 @@ const ManageReputationDialogForm = ({
         </DialogHeading>
       </DialogSection>
       {!isSmiteAction && <hr className={styles.divider} />}
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection>
           <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
@@ -268,7 +269,7 @@ const ManageReputationDialogForm = ({
               name="domainId"
               appearance={{ theme: 'grey', width: 'fluid' }}
               renderActiveOption={renderActiveOption}
-              disabled={!userHasPermission || canOnlyForceAction}
+              disabled={canOnlyForceAction}
             />
           </div>
         </div>
@@ -292,7 +293,7 @@ const ManageReputationDialogForm = ({
           dataTest="reputationAnnotation"
         />
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection>
           <NoPermissionMessage
             requiredPermissions={requiredRoles}
@@ -309,7 +310,7 @@ const ManageReputationDialogForm = ({
           />
         </DialogSection>
       )}
-      {!canCreateMotion && (
+      {!hasMotionCompatibleVersion && (
         <DialogSection>
           <CannotCreateMotionMessage />
         </DialogSection>

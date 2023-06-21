@@ -75,10 +75,11 @@ const EditColonyDetailsDialogForm = ({
 
   const {
     userHasPermission,
-    canCreateMotion,
     disabledInput,
     disabledSubmit,
     canOnlyForceAction,
+    hasMotionCompatibleVersion,
+    showPermissionErrors,
   } = useActionDialogStatus(
     colony,
     requiredRoles,
@@ -103,7 +104,7 @@ const EditColonyDetailsDialogForm = ({
           colony={colony}
         />
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection>
           <PermissionRequiredInfo requiredRoles={requiredRoles} />
         </DialogSection>
@@ -133,7 +134,7 @@ const EditColonyDetailsDialogForm = ({
           disabled={disabledInput}
         />
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection>
           <NoPermissionMessage requiredPermissions={requiredRoles} />
         </DialogSection>
@@ -143,7 +144,7 @@ const EditColonyDetailsDialogForm = ({
           <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
         </DialogSection>
       )}
-      {!canCreateMotion && (
+      {!hasMotionCompatibleVersion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>

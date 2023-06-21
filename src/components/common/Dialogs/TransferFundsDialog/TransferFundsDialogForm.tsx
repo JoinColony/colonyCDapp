@@ -66,8 +66,9 @@ const TransferFundsDialogForm = ({
     userHasPermission,
     disabledInput,
     disabledSubmit,
-    canCreateMotion,
     canOnlyForceAction,
+    hasMotionCompatibleVersion,
+    showPermissionErrors,
     hasRoleInFromDomain,
   } = useTransferFundsDialogStatus(colony, requiredRoles, enabledExtensionData);
 
@@ -90,7 +91,7 @@ const TransferFundsDialogForm = ({
           isRootMotion
         />
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <div className={styles.permissionsRequired}>
           <DialogSection>
             <PermissionRequiredInfo requiredRoles={requiredRoles} />
@@ -115,7 +116,7 @@ const TransferFundsDialogForm = ({
           dataTest="transferFundsAnnotation"
         />
       </DialogSection>
-      {!userHasPermission && (
+      {showPermissionErrors && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <NoPermissionMessage
             requiredPermissions={requiredRoles}
@@ -132,7 +133,7 @@ const TransferFundsDialogForm = ({
           <NotEnoughReputation appearance={{ marginTop: 'negative' }} />
         </DialogSection>
       )}
-      {!canCreateMotion && (
+      {!hasMotionCompatibleVersion && (
         <DialogSection appearance={{ theme: 'sidePadding' }}>
           <CannotCreateMotionMessage />
         </DialogSection>
