@@ -2,7 +2,7 @@ import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
-import Link from '~shared/Extensions/Link';
+import Link from '~v5/shared/Link';
 import Icon from '~shared/Icon';
 
 import CopyUrl from './CopyUrl';

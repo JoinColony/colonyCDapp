@@ -10,7 +10,7 @@ import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
 import { getFormattedTokenValue } from '~utils/tokens';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
-import TitleLabel from '~shared/Extensions/TitleLabel';
+import TitleLabel from '~v5/shared/TitleLabel';
 
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.TotalReputation';

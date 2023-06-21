@@ -9,13 +9,13 @@ import {
 import { LEARN_MORE_PAYMENTS } from '~constants';
 import Nav from './partials/Nav';
 import { navMenuItems } from './partials/consts';
-import { SubNavigationMobile } from '~common/Extensions/SubNavigation';
+import { SubNavigationMobile } from '~v5/common/SubNavigation';
 import LearnMore from '~shared/Extensions/LearnMore';
-import Button from '~shared/Extensions/Button';
-import PopoverBase from '~shared/Extensions/PopoverBase';
+import Button from '~v5/shared/Button';
 import styles from './MainNavigation.module.css';
 import { MainNavigationProps } from './types';
 import NavigationTools from '~common/Extensions/NavigationTools/NavigationTools';
+import PopoverBase from '~v5/shared/PopoverBase';
 
 const displayName = 'common.Extensions.MainNavigation';
 

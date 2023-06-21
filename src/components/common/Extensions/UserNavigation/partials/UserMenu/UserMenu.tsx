@@ -4,17 +4,17 @@ import { useIntl } from 'react-intl';
 
 import { UserMenuProps } from './types';
 import { useAppContext, useMobile } from '~hooks';
-import Button from '~shared/Extensions/Button';
+import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
 import styles from './UserMenu.module.css';
-import PopoverBase from '~shared/Extensions/PopoverBase';
+import PopoverBase from '~v5/shared/PopoverBase';
 import TitledContent from '~common/Extensions/TitledContent';
 import WalletConnectedTopMenu from '../WalletConnectedTopMenu';
-import Link from '~shared/Extensions/Link';
+import Link from '~v5/shared/Link';
 import UserSubmenu from '../UserSubmenu';
 import { userMenuItems } from './consts';
-import TitleLabel from '~shared/Extensions/TitleLabel';
+import TitleLabel from '~v5/shared/TitleLabel';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 

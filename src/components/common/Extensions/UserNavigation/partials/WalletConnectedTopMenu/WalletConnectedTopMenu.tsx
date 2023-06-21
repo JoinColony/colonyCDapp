@@ -3,9 +3,9 @@ import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 
 import styles from './WalletConnectedTopMenu.module.css';
-import Link from '~shared/Extensions/Link';
+import Link from '~v5/shared/Link';
 import Icon from '~shared/Icon';
-import Avatar from '~shared/Extensions/Avatar';
+import Avatar from '~v5/shared/Avatar';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { WalletConnectedTopMenuProps } from './types';
 import { useMobile } from '~hooks';

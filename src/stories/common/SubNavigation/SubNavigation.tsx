@@ -2,7 +2,7 @@ import React from 'react';
 
 import SubNavigationComponent, {
   SubNavigationMobile,
-} from '~common/Extensions/SubNavigation';
+} from '~v5/common/SubNavigation';
 import { useMobile } from '~hooks';
 
 const SubNavigation = () => {

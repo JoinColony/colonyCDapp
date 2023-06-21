@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useActiveInstalls, useColonyContext, useMobile } from '~hooks';
-import Button from '~shared/Extensions/Button';
+import Button from '~v5/shared/Button';
 import { useExtensionDetailsPage } from '../ExtensionDetailsPage/hooks';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { MIN_SUPPORTED_COLONY_VERSION } from '~constants';

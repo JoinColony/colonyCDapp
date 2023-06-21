@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import { useUserByNameOrAddress } from '~hooks';
 import { SidePanelDataProps } from './types';
 import { InstalledExtensionData } from '~types';
-import UserAvatar from '~shared/Extensions/UserAvatar';
+import UserAvatar from '~v5/shared/UserAvatar';
 import { ExtensionStatusBadgeMode } from '../ExtensionStatusBadge/types';
 import { isInstalledExtensionData } from '~utils/extensions';
 

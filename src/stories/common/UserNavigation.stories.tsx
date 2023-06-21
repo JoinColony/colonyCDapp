@@ -10,8 +10,8 @@ import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberR
 import Token from '~common/Extensions/UserNavigation/partials/Token';
 import { ContextModule, getContext } from '~context';
 import { useDetectClickOutside, useMobile } from '~hooks';
-import Button from '~shared/Extensions/Button';
-import UserAvatar from '~shared/Extensions/UserAvatar';
+import Button from '~v5/shared/Button';
+import UserAvatar from '~v5/shared/UserAvatar';
 import Icon from '~shared/Icon';
 
 const meta: Meta<typeof UserNavigation> = {

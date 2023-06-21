@@ -11,7 +11,7 @@ import ColonyDropdownMobile from '~common/Extensions/ColonySwitcher/partials/Col
 import Icon from '~shared/Icon';
 import UserNavigation from '~common/Extensions/UserNavigation';
 import MainNavigation from '~common/Extensions/MainNavigation';
-import Button from '~shared/Extensions/Button';
+import Button from '~v5/shared/Button';
 import styles from './Header.module.css';
 import { useHeader } from './hooks';
 import { useExtensionsContext } from '~context/ExtensionsContext';

@@ -17,6 +17,9 @@
       "~shared/*": [
         "src/components/shared/*"
       ],
+      "~v5/*": [
+        "src/components/v5/*"
+      ],
       "~common/*": [
         "src/components/common/*"
       ],

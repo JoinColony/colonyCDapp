@@ -2,7 +2,7 @@ import React, { FC, PropsWithChildren } from 'react';
 
 import { TitledContentProps } from './types';
 import { useMobile } from '~hooks';
-import TitleLabel from '~shared/Extensions/TitleLabel/TitleLabel';
+import TitleLabel from '~v5/shared/TitleLabel';
 
 const displayName = 'common.Extensions.TitledContent';
 

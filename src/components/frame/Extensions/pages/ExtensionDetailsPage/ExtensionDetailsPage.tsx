@@ -6,9 +6,9 @@ import { Extension } from '@colony/colony-js';
 
 import { useColonyContext, useExtensionData } from '~hooks';
 import ExtensionDetails from './partials/ExtensionDetails';
-import Spinner from '~shared/Extensions/Spinner';
-import ThreeColumns from '~frame/Extensions/ThreeColumns';
-import Navigation from '~common/Extensions/Navigation';
+import Spinner from '~v5/shared/Spinner';
+import ThreeColumns from '~v5/frame/ThreeColumns';
+import Navigation from '~v5/common/Navigation';
 import ImageCarousel from '~common/Extensions/ImageCarousel';
 import ActionButtons from '../partials/ActionButtons';
 import Tabs from '~shared/Extensions/Tabs';
