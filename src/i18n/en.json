@@ -520,5 +520,6 @@
   "empty.content.title": "There is no {contentName} to display",
   "empty.content.subtitle": "New {contentName} will display here",
   "handle.unselect.transaction": "handle unselect transaction",
-  "missing.colonies": "You don't have created colonies"
+  "missing.colonies": "You don't have created colonies",
+  "handle.close.filter": "Handle close filter"
 }
