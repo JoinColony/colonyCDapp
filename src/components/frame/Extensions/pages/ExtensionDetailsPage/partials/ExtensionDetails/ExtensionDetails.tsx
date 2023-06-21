@@ -112,7 +112,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
                 id: 'extensionDetailsPage.confirmUninstall',
               })}
               closeMessage={formatMessage({
-                id: 'button.cancelUninstall',
+                id: 'extensionDetailsPage.cancelUninstall',
               })}
               disabled={!isCheckboxChecked}
             >
