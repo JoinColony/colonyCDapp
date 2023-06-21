@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import TableFiltering from '~common/Extensions/TableFiltering/TableFiltering';
+
+import TableFiltering from '~common/Extensions/TableFiltering';
 
 const meta: Meta<typeof TableFiltering> = {
   title: 'Common/Table Filtering',

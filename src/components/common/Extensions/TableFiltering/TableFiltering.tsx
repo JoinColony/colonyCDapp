@@ -21,17 +21,12 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
       <div className="text-blue-400 font-semibold text-xs capitalize">
         {filterType}:
       </div>
-
       {Array.isArray(filterOptions) ? (
         filterOptions.map((name) => (
-          <div className="text-blue-400 font-medium text-xs capitalize">
-            {name}
-          </div>
+          <p className="text-blue-400 text-4 capitalize">{name}</p>
         ))
       ) : (
-        <div className="text-blue-400 font-medium text-xs capitalize">
-          {filterOptions}
-        </div>
+        <p className="text-blue-400 text-4 capitalize">{filterOptions}</p>
       )}
       <button
         type="button"
