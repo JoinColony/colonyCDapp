@@ -30,7 +30,7 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
       )}
       <button
         type="button"
-        aria-label={formatMessage({ id: 'handle.close.filter' })}
+        aria-label={formatMessage({ id: 'ariaLabel.closeFilter' })}
         onClick={onClick}
         className="ml-auto text-blue-400"
       >

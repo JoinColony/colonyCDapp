@@ -408,6 +408,7 @@
   "ariaLabel.openDropdown": "Open dropdown",
   "ariaLabel.backToMainMenu": "Back to main menu",
   "ariaLabel.closeDropdown": "Close dropdown",
+  "ariaLabel.closeFilter": "Close filter",
   "userInfo.about.section": "about",
   "userInfo.colonyReputation.section": "Colony reputation",
   "userInfo.permissions.section": "Permissions",
@@ -520,6 +521,5 @@
   "empty.content.title": "There is no {contentName} to display",
   "empty.content.subtitle": "New {contentName} will display here",
   "handle.unselect.transaction": "handle unselect transaction",
-  "missing.colonies": "You don't have created colonies",
-  "handle.close.filter": "Handle close filter"
+  "missing.colonies": "You don't have created colonies"
 }
