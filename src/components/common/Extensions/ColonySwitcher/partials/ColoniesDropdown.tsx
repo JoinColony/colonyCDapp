@@ -5,7 +5,7 @@ import ColonyItem from './ColonyItem';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import { ColoniesDropdownProps } from '../types';
 import { useSelectedColony } from '../hooks';
-import TitleLabel from '~shared/Extensions/TitleLabel';
+import TitleLabel from '~v5/shared/TitleLabel';
 
 const displayName =
   'common.Extensions.ColonySwitcher.partials.ColoniesDropdown';

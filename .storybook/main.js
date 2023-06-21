@@ -41,6 +41,7 @@ module.exports = {
       '~gql': path.resolve(__dirname, '../src/graphql'),
       '~constants': path.resolve(__dirname, '../src/constants'),
       '~shared': path.resolve(__dirname, '../src/components/shared'),
+      '~v5': path.resolve(__dirname, '../src/components/v5'),
       '~common': path.resolve(__dirname, '../src/components/common'),
       '~frame': path.resolve(__dirname, '../src/components/frame'),
       '~images/*': path.resolve(__dirname, '../src/images'),

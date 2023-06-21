@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { UserSubmenuProps } from './types';
 import { userSubmenuItems } from './consts';
 import Icon from '~shared/Icon';
-import NavLink from '~shared/Extensions/NavLink';
+import NavLink from '~v5/shared/NavLink';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserSubmenu';
 

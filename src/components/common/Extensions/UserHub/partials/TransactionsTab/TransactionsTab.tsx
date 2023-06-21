@@ -5,8 +5,8 @@ import { TransactionsProps } from './types';
 import { isTxGroup } from '~frame/GasStation/transactionGroup';
 import { MessageType, TransactionType } from '~redux/immutable';
 import TransactionDetails from './partials/TransactionDetails';
-import EmptyContent from '../EmptyContent';
-import MessageCardDetails from '~frame/GasStation/MessageCardDetails/MessageCardDetails';
+import EmptyContent from '~v5/common/EmptyContent';
+import MessageCardDetails from '~frame/GasStation/MessageCardDetails';
 import TransactionList from './partials/TransactionList';
 
 export const displayName = 'common.Extensions.UserHub.partials.TransactionsTab';

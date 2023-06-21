@@ -7,13 +7,13 @@ import { useMobile } from '~hooks';
 import ReputationTab from './partials/ReputationTab';
 import StakesTab from './partials/StakesTab';
 import TransactionsTab from './partials/TransactionsTab';
-import Button from '~shared/Extensions/Button';
+import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import styles from './UserHub.module.css';
 import { tabList } from './consts';
 import UserHubMobile from './UserHubMobile';
 import { UserHubProps } from './types';
-import TitleLabel from '~shared/Extensions/TitleLabel';
+import TitleLabel from '~v5/shared/TitleLabel';
 
 export const displayName = 'common.Extensions.UserHub.partials.UserHub';
 

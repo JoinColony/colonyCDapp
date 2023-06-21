@@ -2,11 +2,11 @@ import React, { FC, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { ExtensionDetailsProps } from './types';
-import SpecificSidePanel from '~common/Extensions/SpecificSidePanel/SpecificSidePanel';
-import Button from '~shared/Extensions/Button';
+import SpecificSidePanel from '~common/Extensions/SpecificSidePanel';
+import Button from '~v5/shared/Button';
 import { useExtensionDetails } from './hooks';
-import Modal from '~shared/Extensions/Modal';
-import Checkbox from '~common/Extensions/Checkbox';
+import Modal from '~v5/shared/Modal';
+import Checkbox from '~v5/common/Checkbox';
 
 const displayName =
   'frame.Extensions.pages.ExtensionDetailsPage.partials.ExtensionDetails';

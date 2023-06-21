@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import ColonyGrid from '~shared/ColonyGrid';
-import Link from '~shared/Extensions/Link';
+import Link from '~v5/shared/Link';
 import { SpinnerLoader } from '~shared/Preloaders';
 
 import { CREATE_COLONY_ROUTE } from '~routes/index';

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useCallback, useState } from 'react';
 
-import Button from '~shared/Extensions/Button';
-import Modal from '~shared/Extensions/Modal';
+import Button from '~v5/shared/Button';
+import Modal from '~v5/shared/Modal';
 
 const meta: Meta<typeof Modal> = {
   title: 'Shared/Modal',

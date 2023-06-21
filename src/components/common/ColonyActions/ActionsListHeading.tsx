@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { useColonyContext } from '~hooks';
-import Link from '~shared/Extensions/Link';
+import Link from '~v5/shared/Link';
 import SortControls from '~shared/SortControls';
 import { SetStateFn, SortDirection } from '~types';
 

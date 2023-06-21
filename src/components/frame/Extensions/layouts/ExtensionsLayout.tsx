@@ -4,8 +4,8 @@ import { ToastContainer } from 'react-toastify';
 
 import Header from '~frame/Extensions/Header';
 import Wallet from '~frame/RouteLayouts/UserNavigation/Wallet';
-import Navigation from '~common/Extensions/Navigation';
-import PageTitle from '~common/Extensions/PageTitle';
+import Navigation from '~v5/common/Navigation';
+import PageTitle from '~v5/common/PageTitle';
 import {
   useAppContext,
   useColonyContext,

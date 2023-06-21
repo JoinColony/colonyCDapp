@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import Link from '~shared/Extensions/Link';
+import Link from '~v5/shared/Link';
 import Numeral from '~shared/Numeral';
 import { useTokenActivationContext } from '~hooks';
 import { useGetMotionTransactionHashQuery } from '~gql';

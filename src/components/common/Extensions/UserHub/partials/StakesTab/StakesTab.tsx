@@ -9,7 +9,7 @@ import {
 } from '~common/Extensions/UserHub/partials/StakesTab/consts';
 import Tabs from '~shared/Extensions/Tabs';
 import { useMobile } from '~hooks';
-import EmptyContent from '../EmptyContent';
+import EmptyContent from '~v5/common/EmptyContent';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 

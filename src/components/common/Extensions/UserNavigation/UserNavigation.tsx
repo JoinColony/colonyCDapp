@@ -5,14 +5,14 @@ import clsx from 'clsx';
 
 import { useSelector } from 'react-redux';
 import { useAppContext, useColonyContext, useMobile } from '~hooks';
-import Button from '~shared/Extensions/Button';
+import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import Token from './partials/Token';
 import UserMenu from './partials/UserMenu';
 import { getLastWallet } from '~utils/autoLogin';
-import UserReputation from './partials/UserReputation/UserReputation';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
+import UserReputation from './partials/UserReputation';
 
 export const displayName = 'common.Extensions.UserNavigation';
 

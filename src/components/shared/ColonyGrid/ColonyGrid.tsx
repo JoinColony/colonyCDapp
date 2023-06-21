@@ -6,7 +6,7 @@ import {
 } from 'react-intl';
 
 import Heading from '~shared/Heading';
-import Link from '~shared/Extensions/Link';
+import Link from '~v5/shared/Link';
 
 import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { WatchedColony } from '~types';

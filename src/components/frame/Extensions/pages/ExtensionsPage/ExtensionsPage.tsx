@@ -2,8 +2,8 @@ import React, { FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
 import ExtensionItem from '~common/Extensions/ExtensionItem';
-import Navigation from '~common/Extensions/Navigation';
-import TwoColumns from '~frame/Extensions/TwoColumns';
+import Navigation from '~v5/common/Navigation';
+import TwoColumns from '~v5/frame/TwoColumns';
 import { useExtensionsData } from '~hooks';
 import Spinner from '~shared/Extensions/Spinner';
 

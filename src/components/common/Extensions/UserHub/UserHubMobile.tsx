@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useMobile } from '~hooks';
 
-import Select from '~shared/Extensions/Select';
+import Select from '~v5/shared/Select';
 import { UserHubMobileProps } from './types';
 
 export const displayName = 'common.Extensions.UserHub.partials.UserHubMobile';

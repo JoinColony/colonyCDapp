@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 
 import { useUserByNameOrAddress } from '~hooks';
-import UserAvatarPopover from '~shared/Extensions/UserAvatarPopover';
 import styles from '../SpecificSidePanel.module.css';
 import { PanelTypeProps } from '../types';
 import { AnyExtensionData, InstalledExtensionData } from '~types';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 import { useGetInstalledByData } from './hooks';
+import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
 
 const displayName = 'common.Extensions.partials.InstalledBy';
 

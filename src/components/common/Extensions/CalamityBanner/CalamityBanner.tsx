@@ -2,11 +2,11 @@ import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
 import { CalamityBannerProps } from './types';
-import Link from '~shared/Extensions/Link';
-import Button from '~shared/Extensions/Button';
+import Link from '~v5/shared/Link';
 import Icon from '~shared/Icon';
 import { useCalamityBanner } from './hooks';
 import styles from './CalamityBanner.module.css';
+import Button from '~v5/shared/Button';
 
 const displayName = 'common.Extensions.CalamityBanner';
 
